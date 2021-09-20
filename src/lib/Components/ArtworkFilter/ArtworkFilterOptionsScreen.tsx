@@ -133,7 +133,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
 
   return (
     <Flex style={{ flex: 1 }}>
-      <Flex flexGrow={0} flexDirection="row" justifyContent="space-between" alignItems="center" height={space(6)}>
+      <Flex flexGrow={0} flexDirection="row" justifyContent="space-between" alignItems="center" height={space("6")}>
         <Flex flex={1} alignItems="center">
           <Text variant="mediumText">{title}</Text>
         </Flex>

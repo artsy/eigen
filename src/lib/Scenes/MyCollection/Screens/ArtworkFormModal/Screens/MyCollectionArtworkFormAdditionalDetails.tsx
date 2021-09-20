@@ -67,7 +67,7 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
                   onChangeText={formik.handleChange("editionNumber")}
                   onBlur={formik.handleBlur("editionNumber")}
                   defaultValue={formikValues.editionNumber!}
-                  style={{ marginRight: space(1) }}
+                  style={{ marginRight: space("1") }}
                   data-test-id="EditionNumberInput"
                 />
                 <Input

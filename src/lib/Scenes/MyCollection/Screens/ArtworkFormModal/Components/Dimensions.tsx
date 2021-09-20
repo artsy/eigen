@@ -27,7 +27,7 @@ export const Dimensions: React.FC = () => {
           onChangeText={formik.handleChange("height")}
           onBlur={formik.handleBlur("height")}
           defaultValue={formik.values.height}
-          style={{ marginRight: space(1) }}
+          style={{ marginRight: space("1") }}
         />
         <Input
           placeholder="Width"
@@ -35,7 +35,7 @@ export const Dimensions: React.FC = () => {
           onChangeText={formik.handleChange("width")}
           onBlur={formik.handleBlur("width")}
           defaultValue={formik.values.width}
-          style={{ marginRight: space(1) }}
+          style={{ marginRight: space("1") }}
         />
         <Input
           placeholder="Depth"

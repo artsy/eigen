@@ -531,15 +531,15 @@ const AboveTheFoldPlaceholder: React.FC<{}> = ({}) => {
   const artworkHeight = screenDimensions.width >= 375 ? 340 : 290
 
   return (
-    <View style={{ flex: 1, padding: space(2) }}>
+    <View style={{ flex: 1, padding: space("2") }}>
       {/* Artwork thumbnail */}
       <PlaceholderBox height={artworkHeight} />
       <Spacer mb={2} />
       {/* save/share buttons */}
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
-        <PlaceholderText width={50} marginHorizontal={space(1)} />
-        <PlaceholderText width={50} marginHorizontal={space(1)} />
-        <PlaceholderText width={50} marginHorizontal={space(1)} />
+        <PlaceholderText width={50} marginHorizontal={space("1")} />
+        <PlaceholderText width={50} marginHorizontal={space("1")} />
+        <PlaceholderText width={50} marginHorizontal={space("1")} />
       </View>
       <Spacer mb={2} />
       {/* Artist name */}

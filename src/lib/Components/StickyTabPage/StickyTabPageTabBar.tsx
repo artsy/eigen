@@ -14,6 +14,7 @@ export const StickyTabPageTabBar: React.FC<{ onTabPress?(tab: { label: string; i
   const { tabLabels, activeTabIndex, setActiveTabIndex } = useStickyTabPageContext()
   activeTabIndex.useUpdates()
 
+  // @ts-ignore
   const [tabLayouts, setTabLayouts] = useState<Array<LayoutRectangle | null>>(tabLabels.map(() => null))
 
   useEffect(() => {

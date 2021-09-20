@@ -36,7 +36,7 @@ export const SectionTitle: React.FC<{
           )}
         </View>
         {!!onPress && (
-          <View style={{ flexShrink: 0, paddingLeft: space(1) }}>
+          <View style={{ flexShrink: 0, paddingLeft: space("1") }}>
             {RightButtonContent ? <RightButtonContent /> : <ArrowRightIcon />}
           </View>
         )}

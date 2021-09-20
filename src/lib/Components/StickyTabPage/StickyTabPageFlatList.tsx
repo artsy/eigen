@@ -107,7 +107,7 @@ export const StickyTabPageFlatList: React.FC<StickyTabFlatListProps> = (props) =
         style={[
           {
             flex: 1,
-            paddingHorizontal: props.paddingHorizontal ?? space(2),
+            paddingHorizontal: props.paddingHorizontal ?? space("2"),
           },
           style,
         ]}

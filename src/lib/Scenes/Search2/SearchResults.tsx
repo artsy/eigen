@@ -95,12 +95,12 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     <AboveTheFoldFlatList<AlgoliaSearchResult>
       listRef={flatListRef}
       initialNumToRender={isPad() ? 24 : 12}
-      contentContainerStyle={{ paddingVertical: space(1) }}
+      contentContainerStyle={{ paddingVertical: space("1") }}
       data={hits}
       keyExtractor={(item) => item.objectID}
       renderItem={({ item }) => (
         <Touchable onPress={() => onPress(item)}>
-          <Flex py={space(1)} px={space(2)} flexDirection="row" alignItems="center">
+          <Flex py={space("1")} px={space("2")} flexDirection="row" alignItems="center">
             <OpaqueImageView
               imageURL={item.image_url}
               style={{ width: 40, height: 40, borderRadius: 20, overflow: "hidden" }}

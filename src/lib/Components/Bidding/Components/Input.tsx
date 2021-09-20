@@ -7,7 +7,7 @@ export interface InputProps extends TextInputProps {
 }
 
 interface InputState {
-  borderColor: "black10" | /* TODO-PALETTE-V3 "blue100" */ "purple100" | "red100"
+  borderColor: "black10" | "blue100" | "red100"
 }
 
 export class Input extends Component<InputProps, InputState> {
@@ -44,7 +44,7 @@ export class Input extends Component<InputProps, InputState> {
       this.props.onFocus(e)
     }
 
-    this.setState({ borderColor: "purple100" /* TODO-PALETTE-V3 "blue100" */ })
+    this.setState({ borderColor: "blue100" })
   }
 
   render() {

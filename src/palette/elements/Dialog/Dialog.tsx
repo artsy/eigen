@@ -79,7 +79,7 @@ export const Dialog = (props: DialogProps) => {
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
-          padding: space(2),
+          padding: space("2"),
           backgroundColor: "transparent",
         }}
       >
@@ -104,7 +104,7 @@ export const Dialog = (props: DialogProps) => {
             {title}
           </Text>
           {!!detail && (
-            <ScrollView alwaysBounceVertical={false} contentContainerStyle={{ paddingHorizontal: space(2) }}>
+            <ScrollView alwaysBounceVertical={false} contentContainerStyle={{ paddingHorizontal: space("2") }}>
               <Text testID="dialog-detail" variant="caption" color="black60">
                 {detail}
               </Text>

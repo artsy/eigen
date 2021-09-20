@@ -40,8 +40,8 @@ export const LargeCard: React.FC<LargeCardProps> = ({ image, title, subtitle, ta
         style={{
           position: "absolute",
           bottom: 0,
-          left: space(2),
-          right: space(6),
+          left: space("2"),
+          right: space("6"),
         }}
       >
         <Sans size="5t" color={color("white100")}>
@@ -54,7 +54,7 @@ export const LargeCard: React.FC<LargeCardProps> = ({ image, title, subtitle, ta
         )}
         <Spacer mt={2} />
       </Flex>
-      {!!tag && <CardTag {...tag} style={{ position: "absolute", top: space(2), left: space(2) }} />}
+      {!!tag && <CardTag {...tag} style={{ position: "absolute", top: space("2"), left: space("2") }} />}
     </View>
   )
 }

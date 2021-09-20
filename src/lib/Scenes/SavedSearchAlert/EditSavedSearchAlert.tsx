@@ -60,7 +60,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
           <ScrollView
             keyboardDismissMode="on-drag"
             keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{ padding: space(2) }}
+            contentContainerStyle={{ padding: space("2") }}
           >
             <SavedSearchAlertForm
               initialValues={{ name: userAlertSettings?.name ?? "" }}

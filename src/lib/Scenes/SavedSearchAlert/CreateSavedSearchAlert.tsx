@@ -29,7 +29,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
       <ScrollView
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingHorizontal: space(2) }}
+        contentContainerStyle={{ paddingHorizontal: space("2") }}
       >
         <Sans size="8" mb={1}>
           Create an Alert

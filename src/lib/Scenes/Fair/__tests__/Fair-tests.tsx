@@ -3,7 +3,6 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { NavigationalTabs, Tab } from "palette/elements/Tabs"
 import { TabV3 } from "palette/elements/Tabs/Tab"
-import { __paletteStoreTestUtils__ } from "palette/PaletteFlag"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -199,7 +198,6 @@ describe("Fair", () => {
 
   describe("tracks taps navigating between the artworks tab and exhibitors tab", () => {
     it("When Using Palette V3", () => {
-      __paletteStoreTestUtils__.__setAllowV3(true)
       const wrapper = getWrapper({
         Fair: () => ({
           isActive: true,

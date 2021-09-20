@@ -53,7 +53,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
         <Flex position="absolute" left={0} alignItems="flex-start">
           {!!onLeftButtonPress && (
             <LeftButtonContainer
-              hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+              hitSlop={{ top: space("1"), bottom: space("1"), left: space("1"), right: space("1") }}
               onPress={() => onLeftButtonPress()}
               testID="fancy-modal-header-left-button"
             >
@@ -65,7 +65,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
         <Flex position="absolute" right={0} alignItems="flex-end">
           {!!onRightButtonPress && (
             <RightButtonContainer
-              hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+              hitSlop={{ top: space("1"), bottom: space("1"), left: space("1"), right: space("1") }}
               onPress={() => !rightButtonDisabled && onRightButtonPress()}
             >
               {rightButtonText ? (

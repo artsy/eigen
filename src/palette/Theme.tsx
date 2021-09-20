@@ -130,6 +130,125 @@ const fixTextTreatments = (
 }
 
 const THEMES = {
+  v3: {
+    ...eigenUsefulTHEME_V3,
+    colors: fixColorV3(eigenUsefulTHEME_V3.colors),
+    space: fixSpaceUnitsV3(spaceNumbers),
+    fonts: {
+      sans: {
+        regular: "Unica77LL-Regular",
+        italic: "Unica77LL-Italic",
+        medium: "Unica77LL-Medium",
+        mediumItalic: "Unica77LL-MediumItalic",
+      },
+    },
+    textTreatments: fixTextTreatments(textVariantsWithUnits),
+  },
+}
+
+type ThemeV3Type = typeof THEMES.v3
+export type ThemeType = ThemeV3Type
+
+const figureOutTheme = (theme: keyof typeof THEMES | ThemeType): ThemeType => {
+  if (!_.isString(theme)) {
+    return theme
+  }
+
+  // forcing v3 spaces, unless specifically requiring v2, in which case we use `spaceV2`
+  const mergedSpacesV2WithV3OnTop = {
+    ...THEMES.v3.space, // get the base v3
+    // now add the rest of the mappings
+    "0.3": THEMES.v3.space["0.5"], // TODO-PALETTE-V3 replace all {0.3} and "0.3" with "0.5"
+    "1.5": THEMES.v3.space["2"], // TODO-PALETTE-V3 replace all {1.5} and "1.5" with "2"
+    "3": THEMES.v3.space["4"], // TODO-PALETTE-V3 replace all {3} and "3" with "4"
+    "5": THEMES.v3.space["6"], // TODO-PALETTE-V3 replace all {5} and "5" with "6"
+    "9": THEMES.v3.space["6"], // TODO-PALETTE-V3 replace all {9} and "9" with "6"
+    "18": THEMES.v3.space["12"], // TODO-PALETTE-V3 replace all {18} and "18" with "12"
+  }
+  // TODO-PALETTE-V3 remove the mapping as the last TODO-PALETTE-V3 to be done for space
+
+  // default to v3
+  return { ...THEMES.v3, space: mergedSpacesV2WithV3OnTop }
+}
+
+export const Theme: React.FC<{
+  theme?: keyof typeof THEMES | ThemeType
+}> = ({ children, theme = "v3" }) => {
+  const actualTheme = figureOutTheme(theme)
+  return <ThemeProvider theme={actualTheme}>{children}</ThemeProvider>
+}
+
+export const ThemeV3: React.FC = ({ children }) => <Theme theme="v3">{children}</Theme>
+// TODO-PALETTE-V3 remove this
+export const ThemeV2: React.FC = ({ children }) => (
+  <Theme
+    theme={
+      {
+        ...THEME_V2,
+        fontFamily: {
+          sans: {
+            regular: { normal: "Unica77LL-Regular", italic: "Unica77LL-Italic" },
+            medium: { normal: "Unica77LL-Medium", italic: "Unica77LL-MediumItalic" },
+            semibold: { normal: null, italic: null },
+          },
+          serif: {
+            regular: { normal: "ReactNativeAGaramondPro-Regular", italic: "ReactNativeAGaramondPro-Italic" },
+            medium: { normal: null, italic: null },
+            semibold: { normal: "ReactNativeAGaramondPro-Semibold", italic: null },
+          },
+        },
+        fonts: { sans: "Unica77LL-Regular", serif: "ReactNativeAGaramondPro-Regular" },
+        space: fixSpaceUnitsV2(THEME_V2.space),
+      } as any
+    }
+  >
+    {children}
+  </Theme>
+)
+
+interface ColorFuncOverload {
+  (colorNumber: undefined): undefined
+  (colorNumber: Color): string
+  (colorNumber: Color | undefined): string | undefined
+}
+const color = (theme: ThemeType): ColorFuncOverload => (colorName: any): any => {
+  if (colorName === undefined) {
+    return undefined
+  }
+  return (theme.colors as { [key: string]: string })[colorName as Color]
+}
+
+const space = (theme: ThemeType) => (spaceName: SpacingUnitV3): number => theme.space[spaceName]
+
+export const useTheme = () => {
+  const theme: ThemeType = useContext(ThemeContext)
+
+  // if we are not wrapped in `<Theme>`, if we dev, throw error.
+  // if we are in prod, we will default to v2 to avoid a crash.
+  // if we are wrapped, then all good.
+  if ((__DEV__ || __TEST__) && theme === undefined) {
+    console.error(
+      "You are trying to use the `Theme` but you have not wrapped your component/screen with `<Theme>`. Please wrap and try again."
+    )
+    throw new Error("ThemeContext is not defined. Wrap your component with `<Theme>` and try again.")
+  }
+  const themeIfUnwrapped = THEMES.v3
+
+  return {
+    theme: theme ?? themeIfUnwrapped,
+    color: color(theme ?? themeIfUnwrapped),
+    space: space(theme ?? themeIfUnwrapped),
+  }
+}
+
+// export const isThemeV3 = (theme: ThemeType): theme is ThemeV3Type => theme.id === "v3"
+
+/**
+ * Only use this if it's are absolutely neccessary, and only in tests.
+ */
+// tslint:disable-next-line:variable-name
+export const _test_THEMES = {
+  ...THEMES,
   v2: {
     ...THEME_V2,
     fontFamily: {
@@ -147,124 +266,4 @@ const THEMES = {
     fonts: { sans: "Unica77LL-Regular", serif: "ReactNativeAGaramondPro-Regular" },
     space: fixSpaceUnitsV2(THEME_V2.space),
   },
-  v3: {
-    ...eigenUsefulTHEME_V3,
-    colors: fixColorV3(eigenUsefulTHEME_V3.colors),
-    space: fixSpaceUnitsV3(spaceNumbers),
-    fonts: {
-      sans: {
-        regular: "Unica77LL-Regular",
-        italic: "Unica77LL-Italic",
-        medium: "Unica77LL-Medium",
-        mediumItalic: "Unica77LL-MediumItalic",
-      },
-    },
-    textTreatments: fixTextTreatments(textVariantsWithUnits),
-  },
 }
-
-export type ThemeV2Type = typeof THEMES.v2
-export type ThemeV3Type = typeof THEMES.v3
-export type ThemeType = ThemeV3Type
-
-/**
- * Do not use this!! Use any the hooks instead!
- */
-export const themeProps = THEMES.v2
-
-const figureOutTheme = (theme: keyof typeof THEMES | ThemeType): ThemeType => {
-  if (!_.isString(theme)) {
-    return theme
-  }
-
-  // forcing v3 colors, unless specifically requiring v2, in which case we use `colorV2`
-  const mergedColorsV2WithV3OnTop = {
-    ...THEMES.v2.colors, // get the base v2
-    ...THEMES.v3.colors, // get the base v3 on top of that
-    // now add the rest of the mappings
-    black80: THEMES.v3.colors.black60, // TODO-PALETTE-V3 replace all black80 with black60
-    purple100: THEMES.v3.colors.blue100, // TODO-PALETTE-V3 replace all purple100 with blue100
-    purple30: THEMES.v3.colors.blue10, // TODO-PALETTE-V3 replace all purple30 with blue10
-    purple5: THEMES.v3.colors.blue10, // TODO-PALETTE-V3 replace all purple5 with blue10
-  }
-  // TODO-PALETTE-V3 remove the mapping as the last TODO-PALETTE-V3 to be done for color
-
-  // forcing v3 spaces, unless specifically requiring v2, in which case we use `spaceV2`
-  const mergedSpacesV2WithV3OnTop = {
-    ...THEMES.v2.space, // get the base v2
-    ...THEMES.v3.space, // get the base v3 on top of that
-    // now add the rest of the mappings
-    "0.3": THEMES.v3.space["0.5"], // TODO-PALETTE-V3 replace all {0.3} and "0.3" with "0.5"
-    "1.5": THEMES.v3.space["2"], // TODO-PALETTE-V3 replace all {1.5} and "1.5" with "2"
-    "3": THEMES.v3.space["4"], // TODO-PALETTE-V3 replace all {3} and "3" with "4"
-    "5": THEMES.v3.space["6"], // TODO-PALETTE-V3 replace all {5} and "5" with "6"
-    "9": THEMES.v3.space["6"], // TODO-PALETTE-V3 replace all {9} and "9" with "6"
-    "18": THEMES.v3.space["12"], // TODO-PALETTE-V3 replace all {18} and "18" with "12"
-  }
-  // TODO-PALETTE-V3 remove the mapping as the last TODO-PALETTE-V3 to be done for space
-
-  if (__TEST__ || theme === "v3") {
-    // if we are in tests, default to v3
-    return { ...THEMES.v3, colors: mergedColorsV2WithV3OnTop, space: mergedSpacesV2WithV3OnTop }
-  }
-
-  return { ...THEMES.v2, colors: mergedColorsV2WithV3OnTop, space: mergedSpacesV2WithV3OnTop }
-}
-
-export const Theme: React.FC<{
-  theme?: keyof typeof THEMES | ThemeType
-}> = ({ children, theme = "v2" }) => {
-  const actualTheme = figureOutTheme(theme)
-  return <ThemeProvider theme={actualTheme}>{children}</ThemeProvider>
-}
-
-export const ThemeV2: React.FC = ({ children }) => <Theme theme="v2">{children}</Theme>
-export const ThemeV3: React.FC = ({ children }) => <Theme theme="v3">{children}</Theme>
-
-interface ColorFuncOverload {
-  (colorNumber: undefined): undefined
-  (colorNumber: Color): string
-  (colorNumber: Color | undefined): string | undefined
-}
-const color = (theme: ThemeType): ColorFuncOverload => (colorName: any): any => {
-  if (colorName === undefined) {
-    return undefined
-  }
-  return (theme.colors as { [key: string]: string })[colorName as Color]
-}
-
-const space = (theme: ThemeType) => (spaceName: SpacingUnitV2 | SpacingUnitV3): number =>
-  isThemeV2(theme)
-    ? ((theme.space[spaceName as SpacingUnitV2] as unknown) as number)
-    : theme.space[spaceName as SpacingUnitV3]
-
-export const useTheme = () => {
-  const theme: ThemeType = useContext(ThemeContext)
-
-  // if we are not wrapped in `<Theme>`, if we dev, throw error.
-  // if we are in prod, we will default to v2 to avoid a crash.
-  // if we are wrapped, then all good.
-  if ((__DEV__ || __TEST__) && theme === undefined) {
-    console.error(
-      "You are trying to use the `Theme` but you have not wrapped your component/screen with `<Theme>`. Please wrap and try again."
-    )
-    throw new Error("ThemeContext is not defined. Wrap your component with `<Theme>` and try again.")
-  }
-  const themeIfUnwrapped = THEMES.v2
-
-  return {
-    theme: theme ?? themeIfUnwrapped,
-    color: color(theme ?? themeIfUnwrapped),
-    space: space(theme ?? themeIfUnwrapped),
-  }
-}
-
-// TODO-PALETTE-V3 these should be removed after we are v3
-export const isThemeV2 = (theme: ThemeType): theme is ThemeV2Type => theme.id === "v2"
-export const isThemeV3 = (theme: ThemeType): theme is ThemeV3Type => theme.id === "v3"
-
-/**
- * Only use this if it's are absolutely neccessary, and only in tests.
- */
-// tslint:disable-next-line:variable-name
-export const _test_THEMES = THEMES

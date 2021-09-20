@@ -36,7 +36,7 @@ class ShowGridItem extends React.Component<ShowGridItemProps> {
     return (
       <ClassTheme>
         {({ space }) => {
-          const styles = itemIndex % 2 === 0 ? { paddingRight: space(1) } : { paddingLeft: space(1) }
+          const styles = itemIndex % 2 === 0 ? { paddingRight: space("1") } : { paddingLeft: space("1") }
           return (
             <GridItem key={show.id}>
               <TouchableWithoutFeedback onPress={this.onPress}>
@@ -141,7 +141,7 @@ export const PartnerShows: React.FC<{
             contentContainerStyle={{ paddingTop: 20 }}
             ListEmptyComponent={<TabEmptyState text="There are no shows from this gallery yet" />}
             ListFooterComponent={
-              <Flex alignItems="center" justifyContent="center" height={space(6)}>
+              <Flex alignItems="center" justifyContent="center" height={space("6")}>
                 {isLoadingMore ? <ActivityIndicator /> : null}
               </Flex>
             }

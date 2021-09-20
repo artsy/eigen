@@ -130,7 +130,7 @@ const OnboardingPersonalizationModal: React.FC<OnboardingPersonalizationListProp
             : null
         }
         keyExtractor={(artist) => artist.id!}
-        contentContainerStyle={{ paddingVertical: space(2) }}
+        contentContainerStyle={{ paddingVertical: space("2") }}
         onEndReached={loadMore}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"

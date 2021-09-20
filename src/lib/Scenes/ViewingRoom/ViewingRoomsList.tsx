@@ -127,7 +127,7 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = (props
           ItemSeparatorComponent={() => <Spacer mt="3" />}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={1}
-          ListFooterComponent={() => (hasMore() ? <LoadingMorePlaceholder /> : <Flex height={space(6)} />)}
+          ListFooterComponent={() => (hasMore() ? <LoadingMorePlaceholder /> : <Flex height={space("6")} />)}
         />
       </Flex>
     </ProvideScreenTracking>

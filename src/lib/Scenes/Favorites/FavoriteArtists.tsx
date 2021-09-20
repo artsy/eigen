@@ -88,7 +88,7 @@ class Artists extends React.Component<Props, State> {
           <StickyTabPageFlatList
             data={rows}
             onEndReached={this.loadMore}
-            contentContainerStyle={{ paddingVertical: space(2) }}
+            contentContainerStyle={{ paddingVertical: space("2") }}
             onEndReachedThreshold={0.2}
             refreshControl={
               <RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />

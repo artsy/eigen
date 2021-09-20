@@ -16,7 +16,7 @@ export const SearchPills: React.FC<SearchPillsProps> = (props) => {
   return (
     <ScrollView
       horizontal
-      contentContainerStyle={{ paddingHorizontal: space(2) }}
+      contentContainerStyle={{ paddingHorizontal: space("2") }}
       showsHorizontalScrollIndicator={false}
     >
       {pills.map((pill) => {

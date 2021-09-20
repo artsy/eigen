@@ -1,5 +1,5 @@
 import { useTheme } from "palette"
-import { isThemeV3, TextSizeV3 } from "palette/Theme"
+import { TextSizeV3 } from "palette/Theme"
 import React from "react"
 import { StyleProp, TextStyle } from "react-native"
 import { Text as RNText, TextProps as RNTextProps } from "react-native"
@@ -28,10 +28,6 @@ export const Text: React.FC<TextProps> = React.forwardRef<RNText, TextProps>(
   ({ size = "sm", italic = false, caps, weight = "regular", style, children, ...rest }, ref) => {
     const { theme } = useTheme()
     const fontFamily = useFontFamilyFor({ italic, weight })
-    if (!isThemeV3(theme)) {
-      console.warn("Text is missing because null is returned. Wrap your Text with ThemeV3.")
-      return null
-    }
 
     const nativeTextStyle: StyleProp<TextStyle> = [caps ? { textTransform: "uppercase" } : {}]
 

@@ -1,3 +1,4 @@
+import { THEME_V2 } from "@artsy/palette-tokens"
 import React from "react"
 import { TextProps } from "react-native"
 import styled from "styled-components/native"
@@ -19,7 +20,7 @@ import {
   verticalAlign,
   VerticalAlignProps,
 } from "styled-system"
-import { _test_THEMES, themeProps } from "../../Theme"
+import { _test_THEMES } from "../../Theme"
 import { SansProps } from "./Sans"
 import { SerifProps } from "./Serif"
 
@@ -78,7 +79,7 @@ export function createStyledText<P extends StyledTextProps>(fontType: keyof Font
       )
     }
 
-    const fontMetrics = themeProps.typeSizes[fontType as "sans"][size as "4"]
+    const fontMetrics = THEME_V2.typeSizes[fontType as "sans"][size as "4"]
 
     if (fontMetrics == null) {
       throw new Error(`"${size}" is not a valid size for ${fontType}`)

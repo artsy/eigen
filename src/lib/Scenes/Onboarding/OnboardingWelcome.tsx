@@ -115,11 +115,11 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
         }}
       />
 
-      <Animated.View style={{ marginLeft: space(2), marginTop: space(6), opacity }}>
+      <Animated.View style={{ marginLeft: space("2"), marginTop: space("6"), opacity }}>
         <ArtsyMarkWhiteIcon height={40} width={40} />
       </Animated.View>
 
-      <Animated.View style={{ flex: 1, padding: space(2), justifyContent: "flex-end", opacity }}>
+      <Animated.View style={{ flex: 1, padding: space("2"), justifyContent: "flex-end", opacity }}>
         <Text color="white" fontSize="48px" lineHeight={52}>
           Collect Art{"\n"}by the World’s{"\n"}
           Leading Artists

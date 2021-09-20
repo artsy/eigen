@@ -145,7 +145,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
             </Disappearable>
           )}
           keyExtractor={(artist) => artist.internalID}
-          contentContainerStyle={{ paddingVertical: space(2) }}
+          contentContainerStyle={{ paddingVertical: space("2") }}
         />
       </ScrollView>
       <Flex p={2} position="absolute" bottom={0} backgroundColor="white">

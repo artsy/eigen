@@ -104,7 +104,7 @@ const AutosuggestResultsFlatList: React.FC<{
     <AboveTheFoldFlatList<AutosuggestResult>
       listRef={flatListRef}
       initialNumToRender={isPad() ? 24 : 12}
-      style={{ flex: 1, padding: space(2) }}
+      style={{ flex: 1, padding: space("2") }}
       data={nodes}
       showsVerticalScrollIndicator={false}
       ListFooterComponent={ListFooterComponent}

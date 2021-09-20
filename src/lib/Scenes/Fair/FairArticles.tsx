@@ -52,7 +52,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
   const [{ node: heroArticle }, ...remainingArticles] = compact(articles)
 
   const { width: screenWidth } = Dimensions.get("screen")
-  const imageWidth = screenWidth - space(4)
+  const imageWidth = screenWidth - space("4")
 
   const webURL = useEnvironment().webURL
 

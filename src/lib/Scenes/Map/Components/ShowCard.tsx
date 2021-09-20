@@ -162,8 +162,8 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
               keyExtractor={(item) => item.id}
               onScroll={this.onScroll}
               showsHorizontalScrollIndicator={false}
-              snapToInterval={this.cardWidth + space(1)}
-              contentContainerStyle={{ paddingLeft: space(0.5), paddingRight: space(2) + space(0.3) }}
+              snapToInterval={this.cardWidth + space("1")}
+              contentContainerStyle={{ paddingLeft: space("0.5"), paddingRight: space("2") + space("0.5") }}
               scrollEventThrottle={299}
               directionalLockEnabled={true}
               overScrollMode="always"

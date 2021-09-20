@@ -1,4 +1,5 @@
 import { SansSize } from "@artsy/palette-tokens/dist/themes/v2"
+import { useTheme } from "palette"
 import { useColor } from "palette/hooks"
 import React, { ReactNode, useState } from "react"
 import { GestureResponderEvent, TouchableWithoutFeedback } from "react-native"
@@ -6,7 +7,7 @@ import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
-import { themeProps, ThemeV2 } from "../../Theme"
+import { ThemeV2 } from "../../Theme"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
@@ -81,9 +82,10 @@ export interface ButtonBaseProps extends BoxProps {
  * @param variant
  */
 export function getColorsForVariant(variant: ButtonVariant, disabled: boolean = false) {
-  const {
-    colors: { black100, white100, red100 },
-  } = themeProps
+  const { color } = useTheme()
+  const black100 = color("black100")
+  const white100 = color("white100")
+  const red100 = color("red100")
 
   const opacity = disabled ? "0.1" : "1"
   const black100WithOpacity = `rgba(0, 0, 0, ${opacity})`

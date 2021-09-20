@@ -244,7 +244,7 @@ export function defaultRules({
       react: (node, output, state) => (
         <ClassTheme>
           {({ color, space }) => (
-            <View style={{ borderLeftColor: color("black10"), borderLeftWidth: 2, paddingLeft: space(1) }}>
+            <View style={{ borderLeftColor: color("black10"), borderLeftWidth: 2, paddingLeft: space("1") }}>
               {output(node.content, state)}
             </View>
           )}

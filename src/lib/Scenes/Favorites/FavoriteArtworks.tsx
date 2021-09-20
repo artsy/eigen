@@ -99,7 +99,7 @@ export class SavedWorks extends Component<Props, State> {
       <ClassTheme>
         {({ space }) => (
           <StickyTabPageScrollView
-            contentContainerStyle={{ paddingVertical: space(2) }}
+            contentContainerStyle={{ paddingVertical: space("2") }}
             onEndReached={this.loadMore}
             refreshControl={
               <RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />
