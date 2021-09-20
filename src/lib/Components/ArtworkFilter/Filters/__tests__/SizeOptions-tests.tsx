@@ -102,7 +102,7 @@ describe("SizeOptions", () => {
       const { getByTestId, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
-      fireEvent.changeText(getByTestId("minimum-width-input"), 5)
+      fireEvent.changeText(getByTestId("minimum-width-input"), "5")
 
       const filters = getFilters(getByTestId("debug"))
       const sizeFilter = getSizeFilterOption(filters)
@@ -119,7 +119,7 @@ describe("SizeOptions", () => {
       const { getByTestId, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
-      fireEvent.changeText(getByTestId("maximum-width-input"), 10)
+      fireEvent.changeText(getByTestId("maximum-width-input"), "10")
 
       const filters = getFilters(getByTestId("debug"))
       const sizeFilter = getSizeFilterOption(filters)
@@ -136,8 +136,8 @@ describe("SizeOptions", () => {
       const { getByTestId, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
-      fireEvent.changeText(getByTestId("minimum-width-input"), 5)
-      fireEvent.changeText(getByTestId("maximum-width-input"), 10)
+      fireEvent.changeText(getByTestId("minimum-width-input"), "5")
+      fireEvent.changeText(getByTestId("maximum-width-input"), "10")
 
       const filters = getFilters(getByTestId("debug"))
       const sizeFilter = getSizeFilterOption(filters)
@@ -154,7 +154,7 @@ describe("SizeOptions", () => {
       const { getByTestId, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
-      fireEvent.changeText(getByTestId("minimum-height-input"), 5)
+      fireEvent.changeText(getByTestId("minimum-height-input"), "5")
 
       const filters = getFilters(getByTestId("debug"))
       const sizeFilter = getSizeFilterOption(filters)
@@ -171,7 +171,7 @@ describe("SizeOptions", () => {
       const { getByTestId, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
-      fireEvent.changeText(getByTestId("maximum-height-input"), 10)
+      fireEvent.changeText(getByTestId("maximum-height-input"), "10")
 
       const filters = getFilters(getByTestId("debug"))
       const sizeFilter = getSizeFilterOption(filters)
@@ -188,8 +188,8 @@ describe("SizeOptions", () => {
       const { getByTestId, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
-      fireEvent.changeText(getByTestId("minimum-height-input"), 5)
-      fireEvent.changeText(getByTestId("maximum-height-input"), 10)
+      fireEvent.changeText(getByTestId("minimum-height-input"), "5")
+      fireEvent.changeText(getByTestId("maximum-height-input"), "10")
 
       const filters = getFilters(getByTestId("debug"))
       const sizeFilter = getSizeFilterOption(filters)
@@ -206,8 +206,8 @@ describe("SizeOptions", () => {
       const { getByTestId, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
-      fireEvent.changeText(getByTestId("minimum-width-input"), 5)
-      fireEvent.changeText(getByTestId("maximum-height-input"), 10)
+      fireEvent.changeText(getByTestId("minimum-width-input"), "5")
+      fireEvent.changeText(getByTestId("maximum-height-input"), "10")
 
       const filters = getFilters(getByTestId("debug"))
       const sizeFilter = getSizeFilterOption(filters)
@@ -224,14 +224,14 @@ describe("SizeOptions", () => {
       const { getByTestId, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
-      fireEvent.changeText(getByTestId("minimum-width-input"), 5)
+      fireEvent.changeText(getByTestId("minimum-width-input"), "5")
 
       const prevFilters = getFilters(getByTestId("debug"))
       const prevSizeFilter = getSizeFilterOption(prevFilters)
 
       expect(prevSizeFilter?.paramValue).toBe("0-*")
 
-      fireEvent.changeText(getByTestId("minimum-width-input"), "*")
+      fireEvent.changeText(getByTestId("minimum-width-input"), "")
 
       const currentFilters = getFilters(getByTestId("debug"))
       const currentSizeFilter = getSizeFilterOption(currentFilters)
