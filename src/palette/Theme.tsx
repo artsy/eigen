@@ -2,7 +2,6 @@ import { THEME_V2, THEME_V3 } from "@artsy/palette-tokens"
 import _ from "lodash"
 import React, { useContext } from "react"
 import { ThemeContext, ThemeProvider } from "styled-components/native"
-import { StringColor } from "./helpers/types"
 
 /**
  * All of the config for the Artsy theming system, based on the
@@ -23,7 +22,7 @@ import {
 type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
 export type Color = ColorV2 | ColorV3
 export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
-type ColorV3 = ColorV3BeforeDevPurple | "devpurple" | StringColor
+type ColorV3 = ColorV3BeforeDevPurple | "devpurple" | "yellow100" | "yellow30" | "yellow10" // yellows are temporary, until we add them to palette-tokens
 export { ColorV2, ColorV3, SpacingUnitV2, SpacingUnitV3 }
 export { TextSizeV3 }
 
@@ -97,6 +96,9 @@ const fixColorV3 = (
 ): typeof eigenUsefulTHEME_V3.colors & { devpurple: string } => {
   const ourColors = colors as any
   ourColors.devpurple = "#6E1EFF"
+  ourColors.yellow100 = "#A85F00"
+  ourColors.yellow30 = "#FAE7BA"
+  ourColors.yellow10 = "#F6EFE5"
   return colors as any
 }
 
@@ -179,7 +181,6 @@ export const Theme: React.FC<{
   return <ThemeProvider theme={actualTheme}>{children}</ThemeProvider>
 }
 
-export const ThemeV3: React.FC = ({ children }) => <Theme theme="v3">{children}</Theme>
 // TODO-PALETTE-V3 remove this
 export const ThemeV2: React.FC = ({ children }) => (
   <Theme
@@ -241,8 +242,6 @@ export const useTheme = () => {
     space: space(theme ?? themeIfUnwrapped),
   }
 }
-
-// export const isThemeV3 = (theme: ThemeType): theme is ThemeV3Type => theme.id === "v3"
 
 /**
  * Only use this if it's are absolutely neccessary, and only in tests.

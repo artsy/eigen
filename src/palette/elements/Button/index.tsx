@@ -1,4 +1,3 @@
-import { ThemeV3 } from "palette/Theme"
 import React from "react"
 
 // v3
@@ -40,17 +39,9 @@ const isV2Props = (props: ButtonProps): props is ButtonV2Props => {
 
 export const Button: React.FC<ButtonProps> = (props) => {
   if (isV2Props(props)) {
-    return (
-      <ThemeV3>
-        <ButtonV3 {...transformV3Props(props)} />
-      </ThemeV3>
-    )
+    return <ButtonV3 {...transformV3Props(props)} />
   } else {
-    return (
-      <ThemeV3>
-        <ButtonV3 {...props} />
-      </ThemeV3>
-    )
+    return <ButtonV3 {...props} />
   }
 }
 

@@ -1,4 +1,5 @@
 import { ColorV3, useTheme } from "palette"
+import { StringColor } from "palette/helpers/types"
 import { TextSizeV3 } from "palette/Theme"
 import React from "react"
 import { StyleProp, TextStyle } from "react-native"
@@ -44,7 +45,7 @@ export const Text: React.FC<TextProps> = React.forwardRef<RNText, TextProps>(
   }
 )
 
-type InnerStyledTextProps = ColorProps<any, ColorV3> & SpaceProps & TypographyProps & FontSizeProps
+type InnerStyledTextProps = ColorProps<any, ColorV3 | StringColor> & SpaceProps & TypographyProps & FontSizeProps
 const InnerStyledText = styled(RNText)<InnerStyledTextProps>`
   ${color}
   ${space}

@@ -1,12 +1,10 @@
 import { storiesOf } from "@storybook/react-native"
 import { CheckIcon, CloseIcon } from "palette"
 import React from "react"
-import { withThemeV3 } from "storybook/decorators"
 import { List } from "storybook/helpers"
 import { Pill } from "./Pill"
 
 storiesOf("Pill", module)
-  .addDecorator(withThemeV3)
   .add("Artist", () => (
     <List>
       <Pill size="sm" selected={false} rounded imageUrl={"https://ychef.files.bbci.co.uk/976x549/p0400cts.jpg"}>

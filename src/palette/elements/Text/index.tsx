@@ -1,5 +1,4 @@
 import _ from "lodash"
-import { ThemeV3 } from "palette/Theme"
 import React from "react"
 
 export * from "./helpers"
@@ -28,11 +27,7 @@ export { SerifV1, SerifV1Props, SerifV1Props as SerifProps }
  * Mapping:
  * 1: xs, 2: xs, 3: sm, 3t: sm, 4: md, 4t: md, 5: md, 5t: md, 6: lg, 8: lg, 10: xl, 12: xxl
  */
-export const Serif: React.FC<SerifV1Props> = (props) => (
-  <ThemeV3>
-    <TextV3 {...transformSerifPropsToV3(props)} />
-  </ThemeV3>
-)
+export const Serif: React.FC<SerifV1Props> = (props) => <TextV3 {...transformSerifPropsToV3(props)} />
 
 const transformSerifPropsToV3 = (props: SerifV1Props): TextV3Props => {
   const { size, weight, ...newProps } = _.clone(props)
@@ -72,11 +67,7 @@ const transformSerifPropsToV3 = (props: SerifV1Props): TextV3Props => {
  * Mapping:
  * 0: xs, 1: xs, 2: xs, 3: sm, 3t: sm, 4: md, 4t: md, 5: md, 5t: md, 6: lg, 8: lg, 10: xl, 12: xxl, 14: xxl, 16: xxl
  */
-export const Sans: React.FC<SansV1Props> = (props) => (
-  <ThemeV3>
-    <TextV3 {...transformSansPropsToV3(props)} />
-  </ThemeV3>
-)
+export const Sans: React.FC<SansV1Props> = (props) => <TextV3 {...transformSansPropsToV3(props)} />
 
 const transformSansPropsToV3 = (props: SansV1Props): TextV3Props => {
   const { size, weight, ...newProps } = _.clone(props)
@@ -141,17 +132,9 @@ export type TextProps = TextV2Props | TextV3Props
  */
 export const Text: React.FC<TextProps> = (props) => {
   if (isTextV2Props(props)) {
-    return (
-      <ThemeV3>
-        <TextV3 {...transformTextV2PropsToV3(props)} />
-      </ThemeV3>
-    )
+    return <TextV3 {...transformTextV2PropsToV3(props)} />
   } else {
-    return (
-      <ThemeV3>
-        <TextV3 {...props} />
-      </ThemeV3>
-    )
+    return <TextV3 {...props} />
   }
 }
 
