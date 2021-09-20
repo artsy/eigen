@@ -1,4 +1,4 @@
-import { Button, Sans, Serif, Text, Theme } from "palette"
+import { Button, Sans, Text, Theme } from "palette"
 import React from "react"
 
 import { Schema, screenTrack, track } from "../../../utils/track"
