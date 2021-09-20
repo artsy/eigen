@@ -1,4 +1,4 @@
-import { Button, Sans, Serif, Theme } from "palette"
+import { Button, Sans, Serif, Text, Theme } from "palette"
 import React from "react"
 
 import { Schema, screenTrack, track } from "../../../utils/track"
@@ -19,6 +19,7 @@ import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingV
 import { COUNTRY_SELECT_OPTIONS, CountrySelect } from "lib/Components/CountrySelect"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
+import { usePaletteFlagStore } from "palette/PaletteFlag"
 
 interface StyledInputInterface {
   /** The object which styled components wraps */
@@ -30,21 +31,23 @@ interface StyledInputProps extends InputProps {
   label: string
   errorMessage?: string
 }
-const StyledInput: React.FC<StyledInputProps> = ({ label, errorMessage, onLayout, ...props }) => (
-  <Flex mb={4} onLayout={onLayout}>
-    <Serif size="3" mb={1}>
-      {label}
-    </Serif>
-    <Input mb={2} error={Boolean(errorMessage)} {...props} />
-    <Flex height={18}>
-      {!!errorMessage && (
-        <Sans size="2" color="red100">
-          {errorMessage}
-        </Sans>
-      )}
+const StyledInput: React.FC<StyledInputProps> = ({ label, errorMessage, onLayout, ...props }) => {
+  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
+
+  return (
+    <Flex mb={4} onLayout={onLayout}>
+      <Text mb={allowV3 ? 0.5 : 3}>{allowV3 ? label.toLocaleUpperCase() : label}</Text>
+      <Input mb={2} error={Boolean(errorMessage)} {...props} />
+      <Flex height={18}>
+        {!!errorMessage && (
+          <Sans size="2" color="red100">
+            {errorMessage}
+          </Sans>
+        )}
+      </Flex>
     </Flex>
-  </Flex>
-)
+  )
+}
 
 const iOSAccessoryViewHeight = 60
 
