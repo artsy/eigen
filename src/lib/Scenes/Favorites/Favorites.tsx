@@ -83,30 +83,8 @@ export const Favorites: React.FC<Props> = ({
     },
   ])
 
-  const space = useSpace()
-  const StickyHeaderContent = () => {
-    return (
-      <View style={{ marginTop: enableMyCollection ? space(6) : space(2) }}>
-        {enableMyCollection ? (
-          <Sans size="8" m={space(2)}>
-            Follows
-          </Sans>
-        ) : (
-          <Sans size="4" weight="medium" textAlign="center">
-            Saves and Follows
-          </Sans>
-        )}
-        <StickyTabPageTabBar
-          onTabPress={({ label }) => {
-            fireTabSelectionAnalytics(label as Tab)
-          }}
-        />
-      </View>
-    )
-  }
-
   if (enableMyCollection && initialTab === Tab.works) {
-    throw new Error("Works Tab is not available for users enabled for My Collection lab feature")
+    throw new Error('Works Tab is not available for users who have "My Collection" enabled as a lab feature')
   }
   return (
     <ProvideScreenTracking
@@ -116,9 +94,41 @@ export const Favorites: React.FC<Props> = ({
       }}
     >
       <View style={{ flex: 1 }}>
-        <StickyTabPage tabs={tabs} staticHeaderContent={<></>} stickyHeaderContent={<StickyHeaderContent />} />
+        <StickyTabPage
+          tabs={tabs}
+          staticHeaderContent={<></>}
+          stickyHeaderContent={
+            <StickyHeaderContent enableMyCollection={enableMyCollection} onTabPress={fireTabSelectionAnalytics} />
+          }
+        />
         {!!isStaging && <DarkNavigationButton title="Warning: on staging, favourites don't migrate" />}
       </View>
     </ProvideScreenTracking>
+  )
+}
+
+interface StickyHeaderContentProps {
+  enableMyCollection: boolean
+  onTabPress: (label: Tab) => void
+}
+const StickyHeaderContent: React.FC<StickyHeaderContentProps> = ({ enableMyCollection, onTabPress }) => {
+  const space = useSpace()
+  return (
+    <View style={{ marginTop: enableMyCollection ? space(6) : space(2) }}>
+      {enableMyCollection ? (
+        <Sans size="8" m={space(2)}>
+          Follows
+        </Sans>
+      ) : (
+        <Sans size="4" weight="medium" textAlign="center">
+          Saves and Follows
+        </Sans>
+      )}
+      <StickyTabPageTabBar
+        onTabPress={({ label }) => {
+          onTabPress(label as Tab)
+        }}
+      />
+    </View>
   )
 }

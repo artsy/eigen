@@ -3,10 +3,10 @@ import Spinner from "lib/Components/Spinner"
 import { MyCollectionArtworkListItemFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
 import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Theme } from "palette"
+import { Flex, Theme } from "palette"
 import React from "react"
 import { useState } from "react"
-import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
+import { LayoutChangeEvent, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 type Artwork = MyCollectionArtworkGrid_artworks extends ReadonlyArray<infer MyCollectionArtwork>
@@ -125,9 +125,9 @@ export const MyCollectionArtworkGrid: React.FC<Props> = React.memo(
           marginRight: column === layoutState.sectionCount - 1 ? 0 : sectionMargin,
         }
         sections.push(
-          <View style={[styles.section, sectionSpecificStyle]} key={column} accessibilityLabel={"Section " + column}>
+          <Flex style={sectionSpecificStyle} key={column} accessibilityLabel={"Section " + column}>
             {artworkComponents}
-          </View>
+          </Flex>
         )
       }
       return sections
@@ -138,10 +138,10 @@ export const MyCollectionArtworkGrid: React.FC<Props> = React.memo(
     return (
       <Theme>
         <View onLayout={onLayout}>
-          <View style={styles.container} accessibilityLabel="Artworks Content View">
+          <Flex flexDirection="row" accessibilityLabel="Artworks Content View">
             {myCollectionArtworks}
-          </View>
-          {isLoading ? <Spinner style={styles.spinner} /> : null}
+          </Flex>
+          {isLoading ? <Spinner style={{ marginTop: 20 }} /> : null}
         </View>
       </Theme>
     )
@@ -154,24 +154,6 @@ export const MyCollectionArtworkGrid: React.FC<Props> = React.memo(
     return false
   }
 )
-
-interface Styles {
-  container: ViewStyle
-  section: ViewStyle
-  spinner: ViewStyle
-}
-
-const styles = StyleSheet.create<Styles>({
-  container: {
-    flexDirection: "row",
-  },
-  section: {
-    flexDirection: "column",
-  },
-  spinner: {
-    marginTop: 20,
-  },
-})
 
 const MyCollectionGrid = createFragmentContainer(MyCollectionArtworkGrid, {
   artworks: graphql`

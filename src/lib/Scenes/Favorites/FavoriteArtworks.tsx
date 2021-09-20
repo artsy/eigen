@@ -86,7 +86,7 @@ export class SavedWorks extends Component<Props, State> {
                 onPress={() => {
                   navigate("/")
                 }}
-                minWidth={"100%"}
+                block
               >
                 Browse works for you
               </Button>

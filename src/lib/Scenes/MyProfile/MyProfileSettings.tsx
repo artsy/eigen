@@ -73,29 +73,30 @@ const MyProfileSettings: React.FC<{ me: MyProfileSettings_me; relay: RelayRefetc
       <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
       <Separator my={1} borderColor={separatorColor} />
 
-      <MenuItem title="Push notifications" onPress={() => navigate("my-profile/push-notifications")} />
-      <Separator my={1} borderColor={separatorColor} />
-
       {!!showSavedAddresses && (
         <>
           <MenuItem title="Saved Addresses" onPress={() => navigate("my-profile/saved-addresses")} />
           <Separator my={1} borderColor={separatorColor} />
         </>
       )}
+
+      <MenuItem title="Push Notifications" onPress={() => navigate("my-profile/push-notifications")} />
+      <Separator my={1} borderColor={separatorColor} />
+
       <MenuItem
-        title="Send feedback"
+        title="Send Feedback"
         onPress={() => presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")}
       />
       <Separator my={1} borderColor={separatorColor} />
 
-      <MenuItem title="Personal data request" onPress={() => navigate("privacy-request")} />
+      <MenuItem title="Personal Data Request" onPress={() => navigate("privacy-request")} />
       <Separator my={1} borderColor={separatorColor} />
 
       <MenuItem title="About" onPress={() => navigate("about")} />
       <Separator my={1} borderColor={separatorColor} />
 
       <Flex flexDirection="row" alignItems="center" justifyContent="center" py={7.5} px="2" pr="15px">
-        <Button variant="primaryBlack" haptic onPress={confirmLogout} minWidth={"100%"}>
+        <Button variant="primaryBlack" haptic onPress={confirmLogout} block>
           Log Out{" "}
         </Button>
       </Flex>
@@ -144,6 +145,12 @@ export const MyProfileSettingsPlaceholder: React.FC<{}> = () => {
 
       <PlaceholderText width={randomWidth()} />
       <Separator my={1} borderColor={separatorColor} />
+      <Spacer mb={1} />
+      <Flex flexDirection="row" alignItems="center" justifyContent="center" py={7.5} px="2" pr="15px">
+        <Button variant="primaryBlack" haptic onPress={confirmLogout} block>
+          Log Out{" "}
+        </Button>
+      </Flex>
       <Spacer mb={1} />
     </Flex>
   )

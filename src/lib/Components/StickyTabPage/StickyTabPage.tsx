@@ -76,17 +76,19 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   const shouldHideBackButton = Animated.lessOrEq(headerOffsetY, -10)
   const updateShouldHideBackButton = useUpdadeShouldHideBackButton()
 
-  Animated.useCode(() => {
-    if (disableBackButtonUpdate) {
-      return false
-    }
-    return Animated.onChange(
-      shouldHideBackButton,
-      Animated.call([shouldHideBackButton], ([shouldHide]) => {
-        updateShouldHideBackButton(!!shouldHide)
-      })
-    )
-  }, [])
+  Animated.useCode(
+    () =>
+      Animated.cond(
+        Animated.not(disableBackButtonUpdate),
+        Animated.onChange(
+          shouldHideBackButton,
+          Animated.call([shouldHideBackButton], ([shouldHide]) => {
+            updateShouldHideBackButton(!!shouldHide)
+          })
+        )
+      ),
+    []
+  )
 
   return (
     <StickyTabPageContext.Provider

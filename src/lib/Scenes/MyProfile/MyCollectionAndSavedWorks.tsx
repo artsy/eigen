@@ -10,7 +10,7 @@ import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
 
 export enum Tab {
-  collections = "Collections",
+  collection = "Collection",
   savedWorks = "Saved Works",
 }
 
@@ -25,9 +25,9 @@ export const MyCollectionAndSavedWorks: React.FC<Props> = ({ initialTab = Tab.co
       disableBackButtonUpdate
       tabs={[
         {
-          title: Tab.collections,
+          title: Tab.collection,
           content: <MyCollectionQueryRenderer />,
-          initial: initialTab === Tab.collections,
+          initial: initialTab === Tab.collection,
         },
         {
           title: Tab.savedWorks,

@@ -9,15 +9,15 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
+import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
-import { Button, Flex, useSpace } from "palette"
+import { Button, Flex, Separator, Spacer, Theme, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
 import { RefreshControl, ScrollView, View } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { MyCollectionAndSavedWorksGridPlaceHolder } from "./MyCollectionGridPlaceHolder"
 import { MyCollectionArtworkFormModal } from "./Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
 
 const RefreshEvents = new EventEmitter()
@@ -92,7 +92,7 @@ const MyCollection: React.FC<{
             }}
             haptic
           >
-            {"Add Works"}
+            Add Works
           </Button>
         </View>
       )
@@ -137,7 +137,7 @@ const MyCollection: React.FC<{
                     setShowModal(true)
                     trackEvent(tracks.addCollectedArtwork())
                   }}
-                  minWidth={"100%"}
+                  block
                 >
                   Add artwork
                 </Button>
@@ -215,9 +215,43 @@ export const MyCollectionQueryRenderer: React.FC = () => {
       cacheConfig={{ force: true }}
       render={renderWithPlaceholder({
         Container: MyCollectionContainer,
-        renderPlaceholder: () => <MyCollectionAndSavedWorksGridPlaceHolder />,
+        renderPlaceholder: () => <LoadingSkeleton />,
       })}
     />
+  )
+}
+
+const LoadingSkeleton: React.FC<{}> = () => {
+  return (
+    <Theme>
+      <Flex>
+        <Flex flexDirection="row" justifyContent="space-between">
+          <Spacer />
+          <Spacer />
+          <PlaceholderText width={70} margin={20} />
+        </Flex>
+        <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
+          <Flex>
+            <Spacer mb={40} />
+            {/* Entity name */}
+            <PlaceholderText width={180} />
+            {/* subtitle text */}
+            <PlaceholderText width={100} />
+          </Flex>
+        </Flex>
+        <Spacer mb={3} />
+        {/* tabs */}
+        <Flex justifyContent="space-around" flexDirection="row" px={2}>
+          <PlaceholderText width={"40%"} />
+          <PlaceholderText width={"40%"} />
+        </Flex>
+        <Spacer mb={1} />
+        <Separator />
+        <Spacer mb={3} />
+        {/* masonry grid */}
+        <PlaceholderGrid />
+      </Flex>
+    </Theme>
   )
 }
 
