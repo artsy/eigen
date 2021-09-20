@@ -263,10 +263,6 @@ export const useTheme = () => {
     theme: theme ?? themeIfUnwrapped,
     color: color(theme ?? themeIfUnwrapped),
     space: space(theme ?? themeIfUnwrapped),
-    colorV2: color(THEMES.v2),
-    colorV3: color(THEMES.v3),
-    spaceV2: space(THEMES.v2),
-    spaceV3: space(THEMES.v3),
   }
 }
 
