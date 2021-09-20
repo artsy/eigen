@@ -1,9 +1,8 @@
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { View } from "react-native"
 import { useSpace } from "../../hooks"
-import { SpacingUnit, Theme } from "../../Theme"
+import { SpacingUnit } from "../../Theme"
 
 describe("space", () => {
   const SpaceView = ({ name }: { name: SpacingUnit }) => {
@@ -12,13 +11,7 @@ describe("space", () => {
   }
 
   it("returns the correct space with a Theme provider", () => {
-    const TestComponent = () => (
-      <GlobalStoreProvider>
-        <Theme>
-          <SpaceView name={1} />
-        </Theme>
-      </GlobalStoreProvider>
-    )
+    const TestComponent = () => <SpaceView name={1} />
 
     const tree = renderWithWrappers(<TestComponent />).root
     expect(tree.findByType(View).props.style.marginLeft).toBe(10)
@@ -26,15 +19,11 @@ describe("space", () => {
 
   it("returns the correct space with a Theme provider in v3", () => {
     const TestComponent = () => (
-      <GlobalStoreProvider>
-        <Theme theme="v3">
-          <>
-            {/* @ts-ignore */}
-            <SpaceView name="0.3" />
-            <SpaceView name="2" />
-          </>
-        </Theme>
-      </GlobalStoreProvider>
+      <>
+        {/* @ts-ignore */}
+        <SpaceView name="0.3" />
+        <SpaceView name="2" />
+      </>
     )
     const tree = renderWithWrappers(<TestComponent />).root
     const margins = tree.findAllByType(View).map((view) => view.props.style.marginLeft)

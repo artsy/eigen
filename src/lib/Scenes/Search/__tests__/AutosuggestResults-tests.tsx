@@ -3,11 +3,9 @@ import { AutosuggestResultsQueryRawResponse } from "__generated__/AutosuggestRes
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { CatchErrors } from "lib/utils/CatchErrors"
-import { Theme } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { act } from "react-test-renderer"
@@ -104,13 +102,9 @@ const inputBlurMock = jest.fn()
 
 const TestWrapper: typeof AutosuggestResults = (props) => (
   <SearchContext.Provider value={{ inputRef: { current: { blur: inputBlurMock } as any }, queryRef: { current: "" } }}>
-    <GlobalStoreProvider>
-      <Theme>
-        <CatchErrors>
-          <AutosuggestResults {...props} />
-        </CatchErrors>
-      </Theme>
-    </GlobalStoreProvider>
+    <CatchErrors>
+      <AutosuggestResults {...props} />
+    </CatchErrors>
   </SearchContext.Provider>
 )
 

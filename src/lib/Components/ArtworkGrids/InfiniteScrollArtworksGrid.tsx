@@ -19,7 +19,7 @@ import { PAGE_SIZE } from "lib/data/constants"
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, Button, Flex, Theme } from "palette"
+import { Box, Button, Flex } from "palette"
 import { graphql } from "relay-runtime"
 import ParentAwareScrollView from "../ParentAwareScrollView"
 
@@ -271,53 +271,51 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     const boxPadding = shouldAddPadding ? 2 : 0
 
     return (
-      <Theme>
-        <>
-          <ParentAwareScrollView
-            onScroll={(ev) => {
-              if (this.props.autoFetch) {
-                this.handleFetchNextPageOnScroll(ev)
-              }
-            }}
-            scrollEventThrottle={50}
-            onLayout={this.onLayout}
-            scrollsToTop={false}
-            accessibilityLabel="Artworks ScrollView"
-            stickyHeaderIndices={stickyHeaderIndices}
-          >
-            {this.renderHeader()}
-            <Box px={boxPadding}>
-              <View style={styles.container} accessibilityLabel="Artworks Content View">
-                {artworks}
-              </View>
-            </Box>
+      <>
+        <ParentAwareScrollView
+          onScroll={(ev) => {
+            if (this.props.autoFetch) {
+              this.handleFetchNextPageOnScroll(ev)
+            }
+          }}
+          scrollEventThrottle={50}
+          onLayout={this.onLayout}
+          scrollsToTop={false}
+          accessibilityLabel="Artworks ScrollView"
+          stickyHeaderIndices={stickyHeaderIndices}
+        >
+          {this.renderHeader()}
+          <Box px={boxPadding}>
+            <View style={styles.container} accessibilityLabel="Artworks Content View">
+              {artworks}
+            </View>
+          </Box>
 
-            {!this.props.autoFetch && !!hasMore() && (
-              <Button
-                mt={5}
-                mb={3}
-                variant="secondaryGray"
-                size="large"
-                block
-                onPress={this.fetchNextPage}
-                loading={this.state.isLoading}
-              >
-                Show more
-              </Button>
-            )}
-          </ParentAwareScrollView>
+          {!this.props.autoFetch && !!hasMore() && (
+            <Button
+              mt={5}
+              mb={3}
+              variant="secondaryGray"
+              size="large"
+              block
+              onPress={this.fetchNextPage}
+              loading={this.state.isLoading}
+            >
+              Show more
+            </Button>
+          )}
+        </ParentAwareScrollView>
 
-          <Flex
-            alignItems="center"
-            justifyContent="center"
-            p="3"
-            pb="9"
-            style={{ opacity: this.state.isLoading && hasMore() ? 1 : 0 }}
-          >
-            {!!this.props.autoFetch && <ActivityIndicator color={Platform.OS === "android" ? "black" : undefined} />}
-          </Flex>
-        </>
-      </Theme>
+        <Flex
+          alignItems="center"
+          justifyContent="center"
+          p="3"
+          pb="9"
+          style={{ opacity: this.state.isLoading && hasMore() ? 1 : 0 }}
+        >
+          {!!this.props.autoFetch && <ActivityIndicator color={Platform.OS === "android" ? "black" : undefined} />}
+        </Flex>
+      </>
     )
   }
 }

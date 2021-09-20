@@ -1,4 +1,4 @@
-import { Box, Flex, Theme } from "palette"
+import { Box, Flex } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -63,46 +63,44 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
   const tracking = useTracking()
 
   return artworks.length ? (
-    <Theme>
-      <View ref={railRef}>
-        <Flex pl="2" pr="2">
-          <SectionTitle
-            title={rail.title}
-            subtitle={subtitle}
-            onPress={
-              viewAllUrl
-                ? () => {
-                    const tapEvent = HomeAnalytics.artworkHeaderTapEvent(rail.key)
-                    if (tapEvent) {
-                      tracking.trackEvent(tapEvent)
-                    }
-                    navigate(viewAllUrl)
+    <View ref={railRef}>
+      <Flex pl="2" pr="2">
+        <SectionTitle
+          title={rail.title}
+          subtitle={subtitle}
+          onPress={
+            viewAllUrl
+              ? () => {
+                  const tapEvent = HomeAnalytics.artworkHeaderTapEvent(rail.key)
+                  if (tapEvent) {
+                    tracking.trackEvent(tapEvent)
                   }
-                : undefined
-            }
-          />
-        </Flex>
-        {useSmallTile ? (
-          <SmallTileRailContainer
-            listRef={listRef}
-            artworks={artworks}
-            contextModule={HomeAnalytics.artworkRailContextModule(rail.key)}
-          />
-        ) : (
-          <Box mx={2}>
-            <GenericGrid
-              artworks={artworks}
-              trackTap={(artworkSlug, index) => {
-                const tapEvent = HomeAnalytics.artworkThumbnailTapEventFromKey(rail.key, artworkSlug, index)
-                if (tapEvent) {
-                  tracking.trackEvent(tapEvent)
+                  navigate(viewAllUrl)
                 }
-              }}
-            />
-          </Box>
-        )}
-      </View>
-    </Theme>
+              : undefined
+          }
+        />
+      </Flex>
+      {useSmallTile ? (
+        <SmallTileRailContainer
+          listRef={listRef}
+          artworks={artworks}
+          contextModule={HomeAnalytics.artworkRailContextModule(rail.key)}
+        />
+      ) : (
+        <Box mx={2}>
+          <GenericGrid
+            artworks={artworks}
+            trackTap={(artworkSlug, index) => {
+              const tapEvent = HomeAnalytics.artworkThumbnailTapEventFromKey(rail.key, artworkSlug, index)
+              if (tapEvent) {
+                tracking.trackEvent(tapEvent)
+              }
+            }}
+          />
+        </Box>
+      )}
+    </View>
   ) : null
 }
 

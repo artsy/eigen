@@ -7,7 +7,6 @@ import Artwork, { ArtworkGridItemPlaceholder } from "./ArtworkGridItem"
 import { GenericGrid_artworks } from "__generated__/GenericGrid_artworks.graphql"
 import { RandomNumberGenerator } from "lib/utils/placeholders"
 import { times } from "lodash"
-import { Theme } from "palette"
 import { Stack } from "../Stack"
 
 interface Props {
@@ -172,14 +171,12 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
     return (
-      <Theme>
-        <View onLayout={this.onLayout}>
-          <View style={styles.container} accessibilityLabel="Artworks Content View">
-            {artworks}
-          </View>
-          {this.props.isLoading ? <Spinner style={styles.spinner} /> : null}
+      <View onLayout={this.onLayout}>
+        <View style={styles.container} accessibilityLabel="Artworks Content View">
+          {artworks}
         </View>
-      </Theme>
+        {this.props.isLoading ? <Spinner style={styles.spinner} /> : null}
+      </View>
     )
   }
 }

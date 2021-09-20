@@ -6,7 +6,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { once } from "lodash"
-import { Box, Button, Flex, Sans, ShareIcon, Spacer, Text, Theme } from "palette"
+import { Box, Button, Flex, Sans, ShareIcon, Spacer, Text } from "palette"
 import { _maxWidth as maxWidth } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, LayoutAnimation, Share, TouchableWithoutFeedback, View, ViewToken } from "react-native"
@@ -158,29 +158,27 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
 
   return (
     <ProvideScreenTracking info={tracks.context(viewingRoom.internalID, viewingRoom.slug)}>
-      <Theme>
-        <View style={{ flex: 1, position: "relative" }}>
-          <ShareButton />
-          <FlatList<ViewingRoomSection>
-            onViewableItemsChanged={useCallback(({ viewableItems }) => {
-              if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "body")) {
-                trackBodyImpression()
-                LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 150 })
-                setDisplayViewWorksButton(true)
-              }
-            }, [])}
-            contentContainerStyle={{ paddingBottom: 80 }}
-            viewabilityConfig={{ itemVisiblePercentThreshold: 15 }}
-            data={sections}
-            ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}
-            ItemSeparatorComponent={() => <Spacer mb={3} />}
-            renderItem={({ item }) => {
-              return item.content
-            }}
-          />
-          <ViewingRoomViewWorksButtonContainer isVisible={displayViewWorksButton} {...props} />
-        </View>
-      </Theme>
+      <View style={{ flex: 1, position: "relative" }}>
+        <ShareButton />
+        <FlatList<ViewingRoomSection>
+          onViewableItemsChanged={useCallback(({ viewableItems }) => {
+            if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "body")) {
+              trackBodyImpression()
+              LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 150 })
+              setDisplayViewWorksButton(true)
+            }
+          }, [])}
+          contentContainerStyle={{ paddingBottom: 80 }}
+          viewabilityConfig={{ itemVisiblePercentThreshold: 15 }}
+          data={sections}
+          ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}
+          ItemSeparatorComponent={() => <Spacer mb={3} />}
+          renderItem={({ item }) => {
+            return item.content
+          }}
+        />
+        <ViewingRoomViewWorksButtonContainer isVisible={displayViewWorksButton} {...props} />
+      </View>
     </ProvideScreenTracking>
   )
 }
