@@ -87,7 +87,7 @@ export const SaleInfo = ({
         </Text>
       </Flex>
       {!!line2 && (
-        <Text ml="25px" variant="caption" color="yellow100">
+        <Text ml="25px" variant="caption" color="copper100">
           {line2}
         </Text>
       )}

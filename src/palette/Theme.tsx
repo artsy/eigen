@@ -2,6 +2,7 @@ import { THEME_V2, THEME_V3 } from "@artsy/palette-tokens"
 import _ from "lodash"
 import React, { useContext } from "react"
 import { ThemeContext, ThemeProvider } from "styled-components/native"
+import { StringColor } from "./helpers/types"
 
 /**
  * All of the config for the Artsy theming system, based on the
@@ -22,7 +23,7 @@ import {
 type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
 export type Color = ColorV2 | ColorV3
 export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
-type ColorV3 = ColorV3BeforeDevPurple | "devpurple"
+type ColorV3 = ColorV3BeforeDevPurple | "devpurple" | StringColor
 export { ColorV2, ColorV3, SpacingUnitV2, SpacingUnitV3 }
 export { TextSizeV3 }
 

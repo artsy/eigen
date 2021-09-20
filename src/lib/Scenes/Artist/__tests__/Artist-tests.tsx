@@ -1,7 +1,6 @@
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeader"
 import { ArtistInsights } from "lib/Components/Artist/ArtistInsights/ArtistInsights"
-import { StickyTab } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -53,9 +52,9 @@ describe("availableTabs", () => {
     })
   }
 
-  const TestWrapper = (props: Record<string, any>) => {
-    return <ArtistQueryRenderer artistID="ignored" environment={environment} {...props} />
-  }
+  const TestWrapper = (props: Record<string, any>) => (
+    <ArtistQueryRenderer artistID="ignored" environment={environment} {...props} />
+  )
 
   it("returns an empty state if artist has no metadata, shows, insights, or works", async () => {
     const tree = renderWithWrappers(<TestWrapper />)
@@ -71,7 +70,6 @@ describe("availableTabs", () => {
       },
     })
     expect(tree.root.findAllByType(ArtistHeaderFragmentContainer)).toHaveLength(1)
-    expect(tree.root.findAllByType(StickyTab)).toHaveLength(1)
     expect(extractText(tree.root)).toContain(
       "There aren’t any works available by the artist at this time. Follow to receive notifications when new works are added"
     )
@@ -91,7 +89,6 @@ describe("availableTabs", () => {
       },
     })
     expect(tree.root.findAllByType(ArtistHeaderFragmentContainer)).toHaveLength(1)
-    expect(tree.root.findAllByType(StickyTab)).toHaveLength(1)
     expect(tree.root.findAllByType(ArtistAboutContainer)).toHaveLength(0)
     // it only shows below the fold
     mockMostRecentOperation("ArtistBelowTheFoldQuery")
@@ -162,25 +159,6 @@ describe("availableTabs", () => {
       context_screen_owner_id: '<mock-value-for-field-"internalID">',
       context_screen_owner_slug: '<mock-value-for-field-"slug">',
       context_screen_owner_type: "Artist",
-    })
-  })
-
-  describe("When using Palette V3", () => {
-    it("does not render StickyTab", () => {
-      const tree = renderWithWrappers(<TestWrapper />)
-      mockMostRecentOperation("ArtistAboveTheFoldQuery", {
-        Artist() {
-          return {
-            has_metadata: false,
-            counts: { articles: 0, related_artists: 0, artworks: 0, partner_shows: 0 },
-            auctionResultsConnection: {
-              totalCount: 0,
-            },
-          }
-        },
-      })
-      expect(tree.root.findAllByType(StickyTab)).toHaveLength(0)
-      expect(tree.root.findAllByType(Tab)).toHaveLength(1)
     })
   })
 })
