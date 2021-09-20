@@ -31,7 +31,12 @@ export type Home_homePageBelow$key = {
 
 
 const node: ReaderFragment = (function(){
-var v0 = {
+var v0 = [
+  "POPULAR_ARTISTS",
+  "RECENTLY_VIEWED_WORKS",
+  "SIMILAR_TO_RECENTLY_VIEWED"
+],
+v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -55,18 +60,8 @@ return {
       "args": [
         {
           "kind": "Literal",
-          "name": "exclude",
-          "value": [
-            "RECENTLY_VIEWED_WORKS",
-            "ACTIVE_BIDS",
-            "FOLLOWED_ARTISTS",
-            "SAVED_WORKS",
-            "GENERIC_GENES",
-            "LIVE_AUCTIONS",
-            "CURRENT_FAIRS",
-            "RELATED_ARTISTS",
-            "FOLLOWED_GENES"
-          ]
+          "name": "include",
+          "value": (v0/*: any*/)
         },
         {
           "kind": "Literal",
@@ -81,10 +76,7 @@ return {
         {
           "kind": "Literal",
           "name": "order",
-          "value": [
-            "RECOMMENDED_WORKS",
-            "FOLLOWED_GALLERIES"
-          ]
+          "value": (v0/*: any*/)
         }
       ],
       "concreteType": "HomePageArtworkModule",
@@ -92,14 +84,14 @@ return {
       "name": "artworkModules",
       "plural": true,
       "selections": [
-        (v0/*: any*/),
+        (v1/*: any*/),
         {
           "args": null,
           "kind": "FragmentSpread",
           "name": "ArtworkRail_rail"
         }
       ],
-      "storageKey": "artworkModules(exclude:[\"RECENTLY_VIEWED_WORKS\",\"ACTIVE_BIDS\",\"FOLLOWED_ARTISTS\",\"SAVED_WORKS\",\"GENERIC_GENES\",\"LIVE_AUCTIONS\",\"CURRENT_FAIRS\",\"RELATED_ARTISTS\",\"FOLLOWED_GENES\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"RECOMMENDED_WORKS\",\"FOLLOWED_GALLERIES\"])"
+      "storageKey": "artworkModules(include:[\"POPULAR_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SIMILAR_TO_RECENTLY_VIEWED\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"POPULAR_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SIMILAR_TO_RECENTLY_VIEWED\"])"
     },
     {
       "alias": null,
@@ -109,7 +101,7 @@ return {
       "name": "artistModules",
       "plural": true,
       "selections": [
-        (v0/*: any*/),
+        (v1/*: any*/),
         {
           "args": null,
           "kind": "FragmentSpread",
@@ -166,5 +158,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '6fa27b263326bc52f74685205870c514';
+(node as any).hash = 'cdf201bd5c4d13902db851e3c40ca4f1';
 export default node;
