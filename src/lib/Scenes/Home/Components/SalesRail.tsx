@@ -46,12 +46,13 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
-  // Checks to see if the artworks rail is being rendered and hides the separator accordingly
-  useEffect(() => {
-    salesModule.results?.length ? onShow?.() : onHide?.()
-  }, [salesModule.results])
+  const hasSales = salesModule.results?.length
 
-  if (!salesModule.results?.length) {
+  useEffect(() => {
+    hasSales ? onShow?.() : onHide?.()
+  }, [hasSales])
+
+  if (!hasSales) {
     return null
   }
 

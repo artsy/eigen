@@ -31,12 +31,13 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
-  // Checks to see if rail is being rendered and hides / shows the separator accordingly
+  const hasAuctionResults = auctionResultsByFollowedArtists?.length
+
   useEffect(() => {
-    auctionResultsByFollowedArtists?.length ? onShow?.() : onHide?.()
+    hasAuctionResults ? onShow?.() : onHide?.()
   }, [auctionResultsByFollowedArtists])
 
-  if (!auctionResultsByFollowedArtists?.length) {
+  if (!hasAuctionResults) {
     return null
   }
 
