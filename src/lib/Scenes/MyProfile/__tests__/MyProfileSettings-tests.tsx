@@ -53,13 +53,13 @@ describe(MyProfileSettingsQueryRenderer, () => {
   it("renders push notifications on iOS", () => {
     Platform.OS = "ios"
     const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Push notifications")
+    expect(extractText(tree.root)).toContain("Push Notifications")
   })
 
   it("renders push notifications on Android", () => {
     Platform.OS = "android"
     const tree = getWrapper()
-    expect(extractText(tree.root)).toContain("Push notifications")
+    expect(extractText(tree.root)).toContain("Push Notifications")
   })
 
   it("renders Saved Alerts only when the AREnableSavedSearchV2 flag is enable", () => {
