@@ -1,4 +1,4 @@
-import { Flex, Sans } from "palette"
+import { Flex, Text } from "palette"
 import React from "react"
 
 interface HeaderProps {
@@ -7,8 +7,8 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ title }) => (
   <Flex flexDirection="column">
-    <Sans size="4t" textAlign="left">
+    <Text size="md" textAlign="left">
       {title}
-    </Sans>
+    </Text>
   </Flex>
 )

@@ -25,7 +25,7 @@ describe("color", () => {
     )
     const tree = renderWithWrappers(<TestComponent />).root
     const bgColors = tree.findAllByType(View).map((view) => view.props.style.backgroundColor)
-    expect(bgColors[0]).toBe(undefined) // for now we keep v2 accessible, even in v3.
+    expect(bgColors[0]).toBe(_test_THEMES.v2.colors.yellow30) // for now we keep v2 accessible, even in v3.
     expect(bgColors[1]).toBe(_test_THEMES.v3.colors.copper100)
   })
 })
