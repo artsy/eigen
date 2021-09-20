@@ -96,7 +96,7 @@ describe("PriceRangeOptions", () => {
   it("renders the options", () => {
     const { getByText } = getTree()
 
-    expect(getByText("Custom")).toBeTruthy()
+    expect(getByText("Choose Your Price")).toBeTruthy()
     expect(getByText("$50,000+")).toBeTruthy()
     expect(getByText("$10,000–50,000")).toBeTruthy()
     expect(getByText("$5,000–10,000")).toBeTruthy()
@@ -178,7 +178,7 @@ describe("PriceRangeOptions", () => {
     const { queryByText, getByText } = getTree()
 
     fireEvent.press(getByText("$10,000–50,000"))
-    fireEvent.press(getByText("Custom"))
+    fireEvent.press(getByText("Choose Your Price"))
 
     expect(queryByText("Clear")).toBeNull()
   })

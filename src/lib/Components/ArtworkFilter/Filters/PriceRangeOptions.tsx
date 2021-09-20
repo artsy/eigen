@@ -19,7 +19,7 @@ interface PriceRangeOptionsScreenProps
 const PARAM_NAME = FilterParamName.priceRange
 
 const DEFAULT_PRICE_OPTION = {
-  displayText: "Custom",
+  displayText: "Choose Your Price",
   paramValue: "*-*",
   paramName: PARAM_NAME,
 }
