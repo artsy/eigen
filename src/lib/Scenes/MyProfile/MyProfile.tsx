@@ -16,7 +16,7 @@ import { OldMyProfileSettings } from "./MyProfileSettings"
 export const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const shouldDisplayMyCollection = me?.labFeatures?.includes("My Collection")
   if (shouldDisplayMyCollection) {
-    return <MyCollectionAndSavedWorks me={me} initialTab={Tab.collections} />
+    return <MyCollectionAndSavedWorks me={me} initialTab={Tab.collection} />
   }
   return <OldMyProfileSettings me={me} relay={relay} />
 }

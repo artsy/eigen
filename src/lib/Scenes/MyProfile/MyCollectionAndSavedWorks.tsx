@@ -19,7 +19,7 @@ interface Props extends ViewProps {
   me: MyProfile_me
 }
 
-export const MyCollectionAndSavedWorks: React.FC<Props> = ({ initialTab = Tab.collections, me }) => {
+export const MyCollectionAndSavedWorks: React.FC<Props> = ({ initialTab = Tab.collection, me }) => {
   return (
     <StickyTabPage
       disableBackButtonUpdate

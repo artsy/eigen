@@ -18,9 +18,9 @@ describe("MyCollectionAndSavedWorks", () => {
     name: "My Name",
     createdAt: new Date().toISOString(),
   }
-  const tree = renderWithWrappers(<MyCollectionAndSavedWorks me={me as MyProfile_me} initialTab={Tab.collections} />)
+  const tree = renderWithWrappers(<MyCollectionAndSavedWorks me={me as MyProfile_me} initialTab={Tab.collection} />)
   it("renders without throwing an error", () => {
-    renderWithWrappers(<MyCollectionAndSavedWorks me={me as MyProfile_me} initialTab={Tab.collections} />)
+    renderWithWrappers(<MyCollectionAndSavedWorks me={me as MyProfile_me} initialTab={Tab.collection} />)
   })
 
   it("renders the right tabs", () => {
