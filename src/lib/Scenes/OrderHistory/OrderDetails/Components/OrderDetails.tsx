@@ -29,19 +29,8 @@ export interface SectionListItem {
 
 const OrderDetails: FC<OrderDetailsProps> = ({ order }) => {
   const partnerName = extractNodes(order?.lineItems)?.[0]?.artwork?.partner
-  const fulfillmentType = order.requestedFulfillment?.__typename
-  const isShipping = fulfillmentType === "CommerceShipArta" || fulfillmentType === "CommerceShip"
-
-  const getShippingName = () => {
-    if (
-      order.requestedFulfillment?.__typename === "CommerceShipArta" ||
-      order.requestedFulfillment?.__typename === "CommerceShip"
-    ) {
-      return order?.requestedFulfillment?.name
-    }
-    return null
-  }
-
+  const shippingName =
+    order?.requestedFulfillment?.__typename === "CommerceShip" ? order?.requestedFulfillment.name : null
   const DATA: SectionListItem[] = compact([
     {
       key: "OrderDetailsHeader",
@@ -69,13 +58,13 @@ const OrderDetails: FC<OrderDetailsProps> = ({ order }) => {
     },
     order.requestedFulfillment?.__typename !== "CommercePickup" && {
       key: "ShipTo_Section",
-      title: `Ships to ${getShippingName()}`,
+      title: `Ships to ${shippingName}`,
       data: [<ShipsToSectionFragmentContainer address={order} />],
     },
     !!partnerName && {
-      key: "Sold_By",
+      key: "Sold By",
       title: `Sold by ${partnerName?.name}`,
-      data: [<SoldBySectionFragmentContainer soldBy={order} />],
+      data: [<SoldBySectionFragmentContainer testID="ShipsToSection" soldBy={order} />],
     },
   ])
 
@@ -184,15 +173,10 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
           __typename
           name
         }
-        ... on CommerceShipArta {
-          __typename
-          name
-        }
         ... on CommercePickup {
           __typename
         }
       }
-
       lineItems(first: 1) {
         edges {
           node {
@@ -204,7 +188,6 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
           }
         }
       }
-
       ...OrderDetailsHeader_info
       ...ArtworkInfoSection_artwork
       ...SummarySection_section

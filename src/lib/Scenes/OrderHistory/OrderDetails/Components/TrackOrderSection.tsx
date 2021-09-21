@@ -100,7 +100,6 @@ export const TrackOrderSectionFragmentContainer = createFragmentContainer(TrackO
               deliveryEnd
               estimatedDeliveryWindow
             }
-
             fulfillments(first: 1) {
               edges {
                 node {

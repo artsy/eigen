@@ -1,11 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-<<<<<<< HEAD
-/* @relayHash 0600489ff0ebffe46be054de734764a8 */
-=======
-/* @relayHash 994c01297ddd1fa1f25179e1bc6e7a87 */
->>>>>>> 5c361e82d3 (generated files)
+/* @relayHash a4aa5614acfbf5403705fd5458f368be */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -101,10 +97,6 @@ fragment OrderDetails_order on CommerceOrder {
   requestedFulfillment {
     __typename
     ... on CommerceShip {
-      __typename
-      name
-    }
-    ... on CommerceShipArta {
       __typename
       name
     }
@@ -267,102 +259,96 @@ v2 = {
   "name": "name",
   "storageKey": null
 },
-v3 = [
-  (v2/*: any*/),
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "addressLine1",
-    "storageKey": null
-  },
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "addressLine2",
-    "storageKey": null
-  },
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "city",
-    "storageKey": null
-  },
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "country",
-    "storageKey": null
-  },
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "phoneNumber",
-    "storageKey": null
-  },
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "postalCode",
-    "storageKey": null
-  },
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "region",
-    "storageKey": null
-  }
-],
-v4 = [
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "addressLine1",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "addressLine2",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "city",
+  "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "country",
+  "storageKey": null
+},
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "phoneNumber",
+  "storageKey": null
+},
+v8 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "postalCode",
+  "storageKey": null
+},
+v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "region",
+  "storageKey": null
+},
+v10 = [
   {
     "kind": "Literal",
     "name": "first",
     "value": 1
   }
 ],
-v5 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-<<<<<<< HEAD
-=======
-v5 = {
+v12 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "createdAt",
   "storageKey": null
 },
->>>>>>> 5c361e82d3 (generated files)
-v6 = [
+v13 = [
   {
     "kind": "Literal",
     "name": "precision",
     "value": 2
   }
 ],
-v7 = {
+v14 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "String"
 },
-v8 = {
+v15 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v9 = {
+v16 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
@@ -425,13 +411,30 @@ return {
               (v1/*: any*/),
               {
                 "kind": "InlineFragment",
-                "selections": (v3/*: any*/),
+                "selections": [
+                  (v2/*: any*/),
+                  (v3/*: any*/),
+                  (v4/*: any*/),
+                  (v5/*: any*/),
+                  (v6/*: any*/),
+                  (v7/*: any*/),
+                  (v8/*: any*/),
+                  (v9/*: any*/)
+                ],
                 "type": "CommerceShip",
                 "abstractKey": null
               },
               {
                 "kind": "InlineFragment",
-                "selections": (v3/*: any*/),
+                "selections": [
+                  (v3/*: any*/),
+                  (v4/*: any*/),
+                  (v5/*: any*/),
+                  (v6/*: any*/),
+                  (v7/*: any*/),
+                  (v8/*: any*/),
+                  (v9/*: any*/)
+                ],
                 "type": "CommerceShipArta",
                 "abstractKey": null
               }
@@ -440,7 +443,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v4/*: any*/),
+            "args": (v10/*: any*/),
             "concreteType": "CommerceLineItemConnection",
             "kind": "LinkedField",
             "name": "lineItems",
@@ -479,11 +482,11 @@ return {
                             "plural": false,
                             "selections": [
                               (v2/*: any*/),
-                              (v5/*: any*/)
+                              (v11/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v5/*: any*/),
+                          (v11/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -578,7 +581,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v5/*: any*/),
+                      (v11/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -594,10 +597,7 @@ return {
                             "name": "status",
                             "storageKey": null
                           },
-<<<<<<< HEAD
-                          (v5/*: any*/)
-=======
-                          (v4/*: any*/),
+                          (v11/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -633,7 +633,6 @@ return {
                             "name": "estimatedDeliveryWindow",
                             "storageKey": null
                           }
->>>>>>> 5c361e82d3 (generated files)
                         ],
                         "storageKey": null
                       },
@@ -652,13 +651,13 @@ return {
                             "name": "displayName",
                             "storageKey": null
                           },
-                          (v5/*: any*/)
+                          (v11/*: any*/)
                         ],
                         "storageKey": null
                       },
                       {
                         "alias": null,
-                        "args": (v4/*: any*/),
+                        "args": (v10/*: any*/),
                         "concreteType": "CommerceFulfillmentConnection",
                         "kind": "LinkedField",
                         "name": "fulfillments",
@@ -680,7 +679,7 @@ return {
                                 "name": "node",
                                 "plural": false,
                                 "selections": [
-                                  (v5/*: any*/),
+                                  (v12/*: any*/),
                                   {
                                     "alias": null,
                                     "args": null,
@@ -695,7 +694,7 @@ return {
                                     "name": "estimatedDelivery",
                                     "storageKey": null
                                   },
-                                  (v5/*: any*/)
+                                  (v11/*: any*/)
                                 ],
                                 "storageKey": null
                               }
@@ -714,7 +713,7 @@ return {
             ],
             "storageKey": "lineItems(first:1)"
           },
-          (v5/*: any*/),
+          (v12/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -731,28 +730,28 @@ return {
           },
           {
             "alias": null,
-            "args": (v6/*: any*/),
+            "args": (v13/*: any*/),
             "kind": "ScalarField",
             "name": "buyerTotal",
             "storageKey": "buyerTotal(precision:2)"
           },
           {
             "alias": null,
-            "args": (v6/*: any*/),
+            "args": (v13/*: any*/),
             "kind": "ScalarField",
             "name": "taxTotal",
             "storageKey": "taxTotal(precision:2)"
           },
           {
             "alias": null,
-            "args": (v6/*: any*/),
+            "args": (v13/*: any*/),
             "kind": "ScalarField",
             "name": "shippingTotal",
             "storageKey": "shippingTotal(precision:2)"
           },
           {
             "alias": null,
-            "args": (v6/*: any*/),
+            "args": (v13/*: any*/),
             "kind": "ScalarField",
             "name": "totalListPrice",
             "storageKey": "totalListPrice(precision:2)"
@@ -779,22 +778,18 @@ return {
                 "name": "lastDigits",
                 "storageKey": null
               },
-              (v5/*: any*/)
+              (v11/*: any*/)
             ],
             "storageKey": null
           },
-          (v5/*: any*/)
+          (v11/*: any*/)
         ],
         "storageKey": "commerceOrder(id:\"order-id\")"
       }
     ]
   },
   "params": {
-<<<<<<< HEAD
-    "id": "0600489ff0ebffe46be054de734764a8",
-=======
-    "id": "994c01297ddd1fa1f25179e1bc6e7a87",
->>>>>>> 5c361e82d3 (generated files)
+    "id": "a4aa5614acfbf5403705fd5458f368be",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "commerceOrder": {
@@ -803,21 +798,21 @@ return {
           "plural": false,
           "type": "CommerceOrder"
         },
-        "commerceOrder.__isCommerceOrder": (v7/*: any*/),
-        "commerceOrder.__typename": (v7/*: any*/),
-        "commerceOrder.buyerTotal": (v8/*: any*/),
-        "commerceOrder.code": (v7/*: any*/),
-        "commerceOrder.createdAt": (v7/*: any*/),
+        "commerceOrder.__isCommerceOrder": (v14/*: any*/),
+        "commerceOrder.__typename": (v14/*: any*/),
+        "commerceOrder.buyerTotal": (v15/*: any*/),
+        "commerceOrder.code": (v14/*: any*/),
+        "commerceOrder.createdAt": (v14/*: any*/),
         "commerceOrder.creditCard": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "CreditCard"
         },
-        "commerceOrder.creditCard.brand": (v7/*: any*/),
-        "commerceOrder.creditCard.id": (v9/*: any*/),
-        "commerceOrder.creditCard.lastDigits": (v7/*: any*/),
-        "commerceOrder.id": (v9/*: any*/),
+        "commerceOrder.creditCard.brand": (v14/*: any*/),
+        "commerceOrder.creditCard.id": (v16/*: any*/),
+        "commerceOrder.creditCard.lastDigits": (v14/*: any*/),
+        "commerceOrder.id": (v16/*: any*/),
         "commerceOrder.lineItems": {
           "enumValues": null,
           "nullable": true,
@@ -842,36 +837,36 @@ return {
           "plural": false,
           "type": "Artwork"
         },
-        "commerceOrder.lineItems.edges.node.artwork.artistNames": (v8/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.date": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.artistNames": (v15/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.date": (v15/*: any*/),
         "commerceOrder.lineItems.edges.node.artwork.dimensions": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "dimensions"
         },
-        "commerceOrder.lineItems.edges.node.artwork.dimensions.cm": (v8/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.dimensions.in": (v8/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.editionOf": (v8/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.id": (v9/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.dimensions.cm": (v15/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.dimensions.in": (v15/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.editionOf": (v15/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.id": (v16/*: any*/),
         "commerceOrder.lineItems.edges.node.artwork.image": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Image"
         },
-        "commerceOrder.lineItems.edges.node.artwork.image.url": (v8/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.medium": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.image.url": (v15/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.medium": (v15/*: any*/),
         "commerceOrder.lineItems.edges.node.artwork.partner": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Partner"
         },
-        "commerceOrder.lineItems.edges.node.artwork.partner.id": (v9/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.partner.name": (v8/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.shippingOrigin": (v8/*: any*/),
-        "commerceOrder.lineItems.edges.node.artwork.title": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.partner.id": (v16/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.partner.name": (v15/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.shippingOrigin": (v15/*: any*/),
+        "commerceOrder.lineItems.edges.node.artwork.title": (v15/*: any*/),
         "commerceOrder.lineItems.edges.node.fulfillments": {
           "enumValues": null,
           "nullable": true,
@@ -890,58 +885,48 @@ return {
           "plural": false,
           "type": "CommerceFulfillment"
         },
-<<<<<<< HEAD
-        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.estimatedDelivery": (v8/*: any*/),
-        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.id": (v9/*: any*/),
-=======
-        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.createdAt": (v7/*: any*/),
-        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.estimatedDelivery": (v8/*: any*/),
-        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.id": (v9/*: any*/),
-        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.trackingId": (v8/*: any*/),
->>>>>>> 5c361e82d3 (generated files)
-        "commerceOrder.lineItems.edges.node.id": (v9/*: any*/),
+        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.createdAt": (v14/*: any*/),
+        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.estimatedDelivery": (v15/*: any*/),
+        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.id": (v16/*: any*/),
+        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.trackingId": (v15/*: any*/),
+        "commerceOrder.lineItems.edges.node.id": (v16/*: any*/),
         "commerceOrder.lineItems.edges.node.selectedShippingQuote": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "CommerceShippingQuote"
         },
-        "commerceOrder.lineItems.edges.node.selectedShippingQuote.displayName": (v7/*: any*/),
-        "commerceOrder.lineItems.edges.node.selectedShippingQuote.id": (v9/*: any*/),
+        "commerceOrder.lineItems.edges.node.selectedShippingQuote.displayName": (v14/*: any*/),
+        "commerceOrder.lineItems.edges.node.selectedShippingQuote.id": (v16/*: any*/),
         "commerceOrder.lineItems.edges.node.shipment": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "CommerceShipment"
         },
-<<<<<<< HEAD
-        "commerceOrder.lineItems.edges.node.shipment.id": (v9/*: any*/),
-        "commerceOrder.lineItems.edges.node.shipment.status": (v8/*: any*/),
-=======
-        "commerceOrder.lineItems.edges.node.shipment.deliveryEnd": (v8/*: any*/),
-        "commerceOrder.lineItems.edges.node.shipment.deliveryStart": (v8/*: any*/),
-        "commerceOrder.lineItems.edges.node.shipment.estimatedDeliveryWindow": (v8/*: any*/),
-        "commerceOrder.lineItems.edges.node.shipment.id": (v9/*: any*/),
-        "commerceOrder.lineItems.edges.node.shipment.status": (v8/*: any*/),
-        "commerceOrder.lineItems.edges.node.shipment.trackingNumber": (v8/*: any*/),
-        "commerceOrder.lineItems.edges.node.shipment.trackingUrl": (v8/*: any*/),
->>>>>>> 5c361e82d3 (generated files)
+        "commerceOrder.lineItems.edges.node.shipment.deliveryEnd": (v15/*: any*/),
+        "commerceOrder.lineItems.edges.node.shipment.deliveryStart": (v15/*: any*/),
+        "commerceOrder.lineItems.edges.node.shipment.estimatedDeliveryWindow": (v15/*: any*/),
+        "commerceOrder.lineItems.edges.node.shipment.id": (v16/*: any*/),
+        "commerceOrder.lineItems.edges.node.shipment.status": (v15/*: any*/),
+        "commerceOrder.lineItems.edges.node.shipment.trackingNumber": (v15/*: any*/),
+        "commerceOrder.lineItems.edges.node.shipment.trackingUrl": (v15/*: any*/),
         "commerceOrder.requestedFulfillment": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "CommerceRequestedFulfillmentUnion"
         },
-        "commerceOrder.requestedFulfillment.__typename": (v7/*: any*/),
-        "commerceOrder.requestedFulfillment.addressLine1": (v8/*: any*/),
-        "commerceOrder.requestedFulfillment.addressLine2": (v8/*: any*/),
-        "commerceOrder.requestedFulfillment.city": (v8/*: any*/),
-        "commerceOrder.requestedFulfillment.country": (v8/*: any*/),
-        "commerceOrder.requestedFulfillment.name": (v8/*: any*/),
-        "commerceOrder.requestedFulfillment.phoneNumber": (v8/*: any*/),
-        "commerceOrder.requestedFulfillment.postalCode": (v8/*: any*/),
-        "commerceOrder.requestedFulfillment.region": (v8/*: any*/),
-        "commerceOrder.shippingTotal": (v8/*: any*/),
+        "commerceOrder.requestedFulfillment.__typename": (v14/*: any*/),
+        "commerceOrder.requestedFulfillment.addressLine1": (v15/*: any*/),
+        "commerceOrder.requestedFulfillment.addressLine2": (v15/*: any*/),
+        "commerceOrder.requestedFulfillment.city": (v15/*: any*/),
+        "commerceOrder.requestedFulfillment.country": (v15/*: any*/),
+        "commerceOrder.requestedFulfillment.name": (v15/*: any*/),
+        "commerceOrder.requestedFulfillment.phoneNumber": (v15/*: any*/),
+        "commerceOrder.requestedFulfillment.postalCode": (v15/*: any*/),
+        "commerceOrder.requestedFulfillment.region": (v15/*: any*/),
+        "commerceOrder.shippingTotal": (v15/*: any*/),
         "commerceOrder.state": {
           "enumValues": [
             "ABANDONED",
@@ -956,8 +941,8 @@ return {
           "plural": false,
           "type": "CommerceOrderStateEnum"
         },
-        "commerceOrder.taxTotal": (v8/*: any*/),
-        "commerceOrder.totalListPrice": (v8/*: any*/)
+        "commerceOrder.taxTotal": (v15/*: any*/),
+        "commerceOrder.totalListPrice": (v15/*: any*/)
       }
     },
     "name": "OrderDetailsTestsQuery",
