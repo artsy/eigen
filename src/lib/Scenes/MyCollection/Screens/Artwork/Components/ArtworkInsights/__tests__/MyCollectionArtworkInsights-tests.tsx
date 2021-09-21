@@ -9,7 +9,6 @@ import { MyCollectionArtworkArtistAuctionResultsFragmentContainer } from "../MyC
 import { MyCollectionArtworkArtistMarketFragmentContainer } from "../MyCollectionArtworkArtistMarket"
 import { MyCollectionArtworkDemandIndexFragmentContainer } from "../MyCollectionArtworkDemandIndex"
 import { MyCollectionArtworkInsightsFragmentContainer } from "../MyCollectionArtworkInsights"
-import { MyCollectionArtworkPriceEstimateFragmentContainer } from "../MyCollectionArtworkPriceEstimate"
 
 jest.unmock("react-relay")
 
@@ -61,7 +60,6 @@ describe("MyCollectionArtworkInsights", () => {
     expect(text).toContain("Price and market insights")
     expect(text).toContain('<mock-value-for-field-"sizebucket"> other by <mock-value-for-field-"name">')
     expect(wrapper.root.findByType(MyCollectionArtworkDemandIndexFragmentContainer)).toBeDefined()
-    expect(wrapper.root.findByType(MyCollectionArtworkPriceEstimateFragmentContainer)).toBeDefined()
     expect(wrapper.root.findByType(MyCollectionArtworkArtistMarketFragmentContainer)).toBeDefined()
     expect(wrapper.root.findByType(MyCollectionArtworkArtistAuctionResultsFragmentContainer)).toBeDefined()
     expect(wrapper.root.findByType(MyCollectionArtworkArtistArticlesFragmentContainer)).toBeDefined()
