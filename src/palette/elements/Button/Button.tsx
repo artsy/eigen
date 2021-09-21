@@ -120,7 +120,6 @@ export const Button: React.FC<ButtonProps> = ({
 
   const containerSize = getSize()
   const to = useStyleForVariantAndState(variant, testOnly_state ?? displayState)
-  const iconBox = <Box opacity={displayState === DisplayState.Loading ? 0 : 1}>{icon}</Box>
 
   return (
     <Spring native to={to} config={config.stiff}>
@@ -154,14 +153,20 @@ export const Button: React.FC<ButtonProps> = ({
             >
               <Box flex={1} mx={containerSize.mx}>
                 <VisibleTextContainer>
-                  {iconPosition === "left" && iconBox}
+                  {iconPosition === "left" && <IconBox position="left" icon={icon} displayState={displayState} />}
                   <AnimatedTextV3
                     size={size === "small" ? "xs" : "sm"}
-                    style={{ color: springProps.textColor, textDecorationLine: springProps.textDecorationLine }}
+                    style={{
+                      color: springProps.textColor,
+                      textDecorationLine: springProps.textDecorationLine,
+                      position: "absolute",
+                      width: "100%",
+                    }}
+                    textAlign="center"
                   >
                     {children}
                   </AnimatedTextV3>
-                  {iconPosition === "right" && iconBox}
+                  {iconPosition === "right" && <IconBox position="right" icon={icon} displayState={displayState} />}
                 </VisibleTextContainer>
 
                 <HiddenContainer>
@@ -326,10 +331,28 @@ const useStyleForVariantAndState = (
   return retval
 }
 
+const IconBox = ({
+  position,
+  icon,
+  displayState,
+}: {
+  position: "right" | "left"
+  icon: any
+  displayState: DisplayState
+}) => (
+  <Box
+    opacity={displayState === DisplayState.Loading ? 0 : 1}
+    position="absolute"
+    left={position === "left" ? 0 : undefined}
+    right={position === "right" ? 0 : undefined}
+  >
+    {icon}
+  </Box>
+)
+
 const VisibleTextContainer = styled(Box)`
   position: absolute;
   align-items: center;
-  justify-content: center;
   flex-direction: row;
   width: 100%;
   height: 100%;

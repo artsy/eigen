@@ -44,6 +44,20 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
     }
   }
 
+  const useGoogle = async () => {
+    try {
+      if (mode === "login") {
+        await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signIn" })
+      } else {
+        await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signUp", agreedToReceiveEmails: true })
+      }
+    } catch (error) {
+      if (typeof error === "string") {
+        Alert.alert("Try again", error)
+      }
+    }
+  }
+
   const useApple = async () => {
     try {
       await GlobalStore.actions.auth.authApple({ agreedToReceiveEmails: true })
@@ -82,6 +96,31 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
           >
             {mode === "login" ? "Continue with email" : "Sign up with email"}
           </Button>
+
+          {Platform.OS === "ios" && (
+            <Button
+              onPress={useApple}
+              block
+              haptic="impactMedium"
+              mb={1}
+              variant="primaryBlack"
+              icon={<Image source={require("@images/apple.webp")} resizeMode="contain" style={{ marginRight: 10 }} />}
+              testID="useApple"
+            >
+              {mode === "login" ? "Continue with Apple" : "Sign up with Apple"}
+            </Button>
+          )}
+          <Button
+            onPress={useGoogle}
+            block
+            haptic="impactMedium"
+            mb={1}
+            variant="secondaryOutline"
+            icon={<Image source={require("@images/google.webp")} resizeMode="contain" style={{ marginRight: 10 }} />}
+            testID="useGoogle"
+          >
+            {mode === "login" ? "Continue with Google" : "Sign up with Google"}
+          </Button>
           <Button
             onPress={useFacebook}
             block
@@ -93,19 +132,6 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
           >
             {mode === "login" ? "Continue with Facebook" : "Sign up with Facebook"}
           </Button>
-          {Platform.OS === "ios" && (
-            <Button
-              onPress={useApple}
-              block
-              haptic="impactMedium"
-              mb={1}
-              variant="secondaryOutline"
-              icon={<Image source={require("@images/apple.webp")} resizeMode="contain" style={{ marginRight: 10 }} />}
-              testID="useApple"
-            >
-              {mode === "login" ? "Continue with Apple" : "Sign up with Apple"}
-            </Button>
-          )}
         </>
 
         <Text variant="small" color="black60" textAlign="center">
