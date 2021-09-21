@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash fee64609d71acc09143fc4bdb90b3157 */
+/* @relayHash 43c5aeff5bdb6090d0abca7415a1b575 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -104,10 +104,6 @@ fragment OrderDetails_order on CommerceOrder {
       __typename
       name
     }
-    ... on CommerceShipArta {
-      __typename
-      name
-    }
     ... on CommercePickup {
       __typename
     }
@@ -130,6 +126,7 @@ fragment OrderDetails_order on CommerceOrder {
   ...ArtworkInfoSection_artwork
   ...SummarySection_section
   ...OrderDetailsPayment_order
+  ...TrackOrderSection_section
   ...ShipsToSection_address
   ...SoldBySection_soldBy
 }
@@ -211,6 +208,37 @@ fragment SummarySection_section on CommerceOrder {
     }
   }
 }
+
+fragment TrackOrderSection_section on CommerceOrder {
+  __isCommerceOrder: __typename
+  state
+  lineItems(first: 1) {
+    edges {
+      node {
+        shipment {
+          status
+          trackingUrl
+          trackingNumber
+          deliveryStart
+          deliveryEnd
+          estimatedDeliveryWindow
+          id
+        }
+        fulfillments(first: 1) {
+          edges {
+            node {
+              createdAt
+              trackingId
+              estimatedDelivery
+              id
+            }
+          }
+        }
+        id
+      }
+    }
+  }
+}
 */
 
 const node: ConcreteRequest = (function(){
@@ -242,73 +270,77 @@ v3 = {
   "name": "name",
   "storageKey": null
 },
-v4 = [
-  (v3/*: any*/),
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "addressLine1",
-    "storageKey": null
-  },
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "addressLine2",
-    "storageKey": null
-  },
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "city",
-    "storageKey": null
-  },
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "country",
-    "storageKey": null
-  },
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "phoneNumber",
-    "storageKey": null
-  },
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "postalCode",
-    "storageKey": null
-  },
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "region",
-    "storageKey": null
-  }
-],
-v5 = [
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "addressLine1",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "addressLine2",
+  "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "city",
+  "storageKey": null
+},
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "country",
+  "storageKey": null
+},
+v8 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "phoneNumber",
+  "storageKey": null
+},
+v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "postalCode",
+  "storageKey": null
+},
+v10 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "region",
+  "storageKey": null
+},
+v11 = [
   {
     "kind": "Literal",
     "name": "first",
     "value": 1
   }
 ],
-v6 = {
+v12 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v7 = [
+v13 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "createdAt",
+  "storageKey": null
+},
+v14 = [
   {
     "kind": "Literal",
     "name": "precision",
@@ -372,13 +404,30 @@ return {
               (v2/*: any*/),
               {
                 "kind": "InlineFragment",
-                "selections": (v4/*: any*/),
+                "selections": [
+                  (v3/*: any*/),
+                  (v4/*: any*/),
+                  (v5/*: any*/),
+                  (v6/*: any*/),
+                  (v7/*: any*/),
+                  (v8/*: any*/),
+                  (v9/*: any*/),
+                  (v10/*: any*/)
+                ],
                 "type": "CommerceShip",
                 "abstractKey": null
               },
               {
                 "kind": "InlineFragment",
-                "selections": (v4/*: any*/),
+                "selections": [
+                  (v4/*: any*/),
+                  (v5/*: any*/),
+                  (v6/*: any*/),
+                  (v7/*: any*/),
+                  (v8/*: any*/),
+                  (v9/*: any*/),
+                  (v10/*: any*/)
+                ],
                 "type": "CommerceShipArta",
                 "abstractKey": null
               }
@@ -387,7 +436,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v5/*: any*/),
+            "args": (v11/*: any*/),
             "concreteType": "CommerceLineItemConnection",
             "kind": "LinkedField",
             "name": "lineItems",
@@ -426,11 +475,11 @@ return {
                             "plural": false,
                             "selections": [
                               (v3/*: any*/),
-                              (v6/*: any*/)
+                              (v12/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v6/*: any*/),
+                          (v12/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -525,7 +574,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v6/*: any*/),
+                      (v12/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -541,7 +590,42 @@ return {
                             "name": "status",
                             "storageKey": null
                           },
-                          (v6/*: any*/)
+                          (v12/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "trackingUrl",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "trackingNumber",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "deliveryStart",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "deliveryEnd",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "estimatedDeliveryWindow",
+                            "storageKey": null
+                          }
                         ],
                         "storageKey": null
                       },
@@ -560,13 +644,13 @@ return {
                             "name": "displayName",
                             "storageKey": null
                           },
-                          (v6/*: any*/)
+                          (v12/*: any*/)
                         ],
                         "storageKey": null
                       },
                       {
                         "alias": null,
-                        "args": (v5/*: any*/),
+                        "args": (v11/*: any*/),
                         "concreteType": "CommerceFulfillmentConnection",
                         "kind": "LinkedField",
                         "name": "fulfillments",
@@ -588,6 +672,14 @@ return {
                                 "name": "node",
                                 "plural": false,
                                 "selections": [
+                                  (v13/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "trackingId",
+                                    "storageKey": null
+                                  },
                                   {
                                     "alias": null,
                                     "args": null,
@@ -595,7 +687,7 @@ return {
                                     "name": "estimatedDelivery",
                                     "storageKey": null
                                   },
-                                  (v6/*: any*/)
+                                  (v12/*: any*/)
                                 ],
                                 "storageKey": null
                               }
@@ -614,13 +706,7 @@ return {
             ],
             "storageKey": "lineItems(first:1)"
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "createdAt",
-            "storageKey": null
-          },
+          (v13/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -637,28 +723,28 @@ return {
           },
           {
             "alias": null,
-            "args": (v7/*: any*/),
+            "args": (v14/*: any*/),
             "kind": "ScalarField",
             "name": "buyerTotal",
             "storageKey": "buyerTotal(precision:2)"
           },
           {
             "alias": null,
-            "args": (v7/*: any*/),
+            "args": (v14/*: any*/),
             "kind": "ScalarField",
             "name": "taxTotal",
             "storageKey": "taxTotal(precision:2)"
           },
           {
             "alias": null,
-            "args": (v7/*: any*/),
+            "args": (v14/*: any*/),
             "kind": "ScalarField",
             "name": "shippingTotal",
             "storageKey": "shippingTotal(precision:2)"
           },
           {
             "alias": null,
-            "args": (v7/*: any*/),
+            "args": (v14/*: any*/),
             "kind": "ScalarField",
             "name": "totalListPrice",
             "storageKey": "totalListPrice(precision:2)"
@@ -685,18 +771,18 @@ return {
                 "name": "lastDigits",
                 "storageKey": null
               },
-              (v6/*: any*/)
+              (v12/*: any*/)
             ],
             "storageKey": null
           },
-          (v6/*: any*/)
+          (v12/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "fee64609d71acc09143fc4bdb90b3157",
+    "id": "43c5aeff5bdb6090d0abca7415a1b575",
     "metadata": {},
     "name": "OrderDetailsQuery",
     "operationKind": "query",
