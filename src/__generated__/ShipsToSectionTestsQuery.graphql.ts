@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f4927b7755f85bb9933c83460110ea95 */
+/* @relayHash f321e6cc7c0b10db691ff3d3dd1e8aeb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,6 +33,9 @@ fragment ShipsToSection_address on CommerceOrder {
   __isCommerceOrder: __typename
   requestedFulfillment {
     __typename
+    ... on CommercePickup {
+      __typename
+    }
     ... on CommerceShip {
       __typename
       addressLine1
@@ -43,8 +46,15 @@ fragment ShipsToSection_address on CommerceOrder {
       postalCode
       region
     }
-    ... on CommercePickup {
+    ... on CommerceShipArta {
       __typename
+      addressLine1
+      addressLine2
+      city
+      country
+      phoneNumber
+      postalCode
+      region
     }
   }
 }
@@ -72,19 +82,70 @@ v2 = {
   "name": "__typename",
   "storageKey": null
 },
-v3 = {
+v3 = [
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "addressLine1",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "addressLine2",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "city",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "country",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "phoneNumber",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "postalCode",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "region",
+    "storageKey": null
+  }
+],
+v4 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "String"
 },
-v4 = {
+v5 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v5 = {
+v6 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -149,58 +210,14 @@ return {
               (v2/*: any*/),
               {
                 "kind": "InlineFragment",
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "addressLine1",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "addressLine2",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "city",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "country",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "phoneNumber",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "postalCode",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "region",
-                    "storageKey": null
-                  }
-                ],
+                "selections": (v3/*: any*/),
                 "type": "CommerceShip",
+                "abstractKey": null
+              },
+              {
+                "kind": "InlineFragment",
+                "selections": (v3/*: any*/),
+                "type": "CommerceShipArta",
                 "abstractKey": null
               }
             ],
@@ -219,7 +236,7 @@ return {
     ]
   },
   "params": {
-    "id": "f4927b7755f85bb9933c83460110ea95",
+    "id": "f321e6cc7c0b10db691ff3d3dd1e8aeb",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "commerceOrder": {
@@ -228,24 +245,24 @@ return {
           "plural": false,
           "type": "CommerceOrder"
         },
-        "commerceOrder.__isCommerceOrder": (v3/*: any*/),
-        "commerceOrder.__typename": (v3/*: any*/),
-        "commerceOrder.id": (v4/*: any*/),
-        "commerceOrder.internalID": (v4/*: any*/),
+        "commerceOrder.__isCommerceOrder": (v4/*: any*/),
+        "commerceOrder.__typename": (v4/*: any*/),
+        "commerceOrder.id": (v5/*: any*/),
+        "commerceOrder.internalID": (v5/*: any*/),
         "commerceOrder.requestedFulfillment": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "CommerceRequestedFulfillmentUnion"
         },
-        "commerceOrder.requestedFulfillment.__typename": (v3/*: any*/),
-        "commerceOrder.requestedFulfillment.addressLine1": (v5/*: any*/),
-        "commerceOrder.requestedFulfillment.addressLine2": (v5/*: any*/),
-        "commerceOrder.requestedFulfillment.city": (v5/*: any*/),
-        "commerceOrder.requestedFulfillment.country": (v5/*: any*/),
-        "commerceOrder.requestedFulfillment.phoneNumber": (v5/*: any*/),
-        "commerceOrder.requestedFulfillment.postalCode": (v5/*: any*/),
-        "commerceOrder.requestedFulfillment.region": (v5/*: any*/)
+        "commerceOrder.requestedFulfillment.__typename": (v4/*: any*/),
+        "commerceOrder.requestedFulfillment.addressLine1": (v6/*: any*/),
+        "commerceOrder.requestedFulfillment.addressLine2": (v6/*: any*/),
+        "commerceOrder.requestedFulfillment.city": (v6/*: any*/),
+        "commerceOrder.requestedFulfillment.country": (v6/*: any*/),
+        "commerceOrder.requestedFulfillment.phoneNumber": (v6/*: any*/),
+        "commerceOrder.requestedFulfillment.postalCode": (v6/*: any*/),
+        "commerceOrder.requestedFulfillment.region": (v6/*: any*/)
       }
     },
     "name": "ShipsToSectionTestsQuery",
