@@ -40,7 +40,7 @@ export const TrackOrderSection: FC<Props> = ({ section }) => {
           </Text>
         ) : (
           <Text testID="noTrackingNumber" variant="text" color="black60">
-            Traking not available
+            Tracking not available
           </Text>
         )}
         {(!!shipment?.deliveryStart || !!createdAt) && (

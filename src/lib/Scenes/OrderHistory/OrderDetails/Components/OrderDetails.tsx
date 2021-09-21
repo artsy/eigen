@@ -64,7 +64,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({ order }) => {
     !!partnerName && {
       key: "Sold By",
       title: `Sold by ${partnerName?.name}`,
-      data: [<SoldBySectionFragmentContainer testID="ShipsToSection" soldBy={order} />],
+      data: [<SoldBySectionFragmentContainer soldBy={order} />],
     },
   ])
 

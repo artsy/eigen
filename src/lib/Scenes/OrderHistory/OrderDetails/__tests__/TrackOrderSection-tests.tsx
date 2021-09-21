@@ -88,7 +88,7 @@ describe("TrackOrderSection", () => {
 
       expect(extractText(tree.findByProps({ testID: "orderStatus" }))).toBe("pending")
       expect(tree.findAllByProps({ testID: "trackingNumber" })).toHaveLength(0)
-      expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe("Traking not available")
+      expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe("Tracking not available")
       expect(extractText(tree.findByProps({ testID: "shippedOn" }))).toContain("Sep 2, 2021")
       expect(extractText(tree.findByProps({ testID: "estimatedDelivery" }))).toContain("Oct 2, 2021")
       expect(extractText(tree.findByProps({ testID: "trackingUrl" }))).toContain("View full tracking details")
@@ -105,7 +105,7 @@ describe("TrackOrderSection", () => {
 
       expect(extractText(tree.findByProps({ testID: "orderStatus" }))).toBe("pending")
       expect(tree.findAllByProps({ testID: "trackingNumber" })).toHaveLength(0)
-      expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe("Traking not available")
+      expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe("Tracking not available")
       expect(tree.findAllByProps({ testID: "shippedOn" })).toHaveLength(0)
       expect(tree.findAllByProps({ testID: "estimatedDelivery" })).toHaveLength(0)
       expect(tree.findAllByProps({ testID: "trackingUrl" })).toHaveLength(0)
@@ -152,7 +152,7 @@ describe("TrackOrderSection", () => {
 
       expect(extractText(tree.findByProps({ testID: "orderStatus" }))).toBe("in transit")
       expect(tree.findAllByProps({ testID: "trackingNumber" })).toHaveLength(0)
-      expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe("Traking not available")
+      expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe("Tracking not available")
       expect(tree.findAllByProps({ testID: "shippedOn" })).toHaveLength(0)
       expect(tree.findAllByProps({ testID: "estimatedDelivery" })).toHaveLength(0)
       expect(tree.findAllByProps({ testID: "trackingUrl" })).toHaveLength(0)
