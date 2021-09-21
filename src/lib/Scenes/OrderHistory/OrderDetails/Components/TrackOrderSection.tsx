@@ -51,12 +51,13 @@ export const TrackOrderSection: FC<Props> = ({ section }) => {
             </Text>
           </Text>
         )}
-        {deliveredStatus && shipment?.deliveryEnd ? (
+        {!!deliveredStatus && !!shipment?.deliveryEnd && (
           <Text testID="deliveredStatus" variant="text" color="black60">
             {"Delivered on "}
             {DateTime.fromISO(shipment?.deliveryEnd).toLocaleString(DateTime.DATE_MED)}
           </Text>
-        ) : (
+        )}
+        {!deliveredStatus && (
           <>
             {(!!shipment?.estimatedDeliveryWindow || !!estimatedDelivery) && (
               <Text testID="estimatedDelivery" variant="text" color="black60">
