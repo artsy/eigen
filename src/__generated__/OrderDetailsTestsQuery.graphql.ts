@@ -1,7 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
+<<<<<<< HEAD
 /* @relayHash 0600489ff0ebffe46be054de734764a8 */
+=======
+/* @relayHash 994c01297ddd1fa1f25179e1bc6e7a87 */
+>>>>>>> 5c361e82d3 (generated files)
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -126,6 +130,7 @@ fragment OrderDetails_order on CommerceOrder {
   ...ArtworkInfoSection_artwork
   ...SummarySection_section
   ...OrderDetailsPayment_order
+  ...TrackOrderSection_section
   ...ShipsToSection_address
   ...SoldBySection_soldBy
 }
@@ -201,6 +206,37 @@ fragment SummarySection_section on CommerceOrder {
         selectedShippingQuote {
           displayName
           id
+        }
+        id
+      }
+    }
+  }
+}
+
+fragment TrackOrderSection_section on CommerceOrder {
+  __isCommerceOrder: __typename
+  state
+  lineItems(first: 1) {
+    edges {
+      node {
+        shipment {
+          status
+          trackingUrl
+          trackingNumber
+          deliveryStart
+          deliveryEnd
+          estimatedDeliveryWindow
+          id
+        }
+        fulfillments(first: 1) {
+          edges {
+            node {
+              createdAt
+              trackingId
+              estimatedDelivery
+              id
+            }
+          }
         }
         id
       }
@@ -297,6 +333,16 @@ v5 = {
   "name": "id",
   "storageKey": null
 },
+<<<<<<< HEAD
+=======
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "createdAt",
+  "storageKey": null
+},
+>>>>>>> 5c361e82d3 (generated files)
 v6 = [
   {
     "kind": "Literal",
@@ -548,7 +594,46 @@ return {
                             "name": "status",
                             "storageKey": null
                           },
+<<<<<<< HEAD
                           (v5/*: any*/)
+=======
+                          (v4/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "trackingUrl",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "trackingNumber",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "deliveryStart",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "deliveryEnd",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "estimatedDeliveryWindow",
+                            "storageKey": null
+                          }
+>>>>>>> 5c361e82d3 (generated files)
                         ],
                         "storageKey": null
                       },
@@ -595,6 +680,14 @@ return {
                                 "name": "node",
                                 "plural": false,
                                 "selections": [
+                                  (v5/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "trackingId",
+                                    "storageKey": null
+                                  },
                                   {
                                     "alias": null,
                                     "args": null,
@@ -621,13 +714,7 @@ return {
             ],
             "storageKey": "lineItems(first:1)"
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "createdAt",
-            "storageKey": null
-          },
+          (v5/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -703,7 +790,11 @@ return {
     ]
   },
   "params": {
+<<<<<<< HEAD
     "id": "0600489ff0ebffe46be054de734764a8",
+=======
+    "id": "994c01297ddd1fa1f25179e1bc6e7a87",
+>>>>>>> 5c361e82d3 (generated files)
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "commerceOrder": {
@@ -799,8 +890,15 @@ return {
           "plural": false,
           "type": "CommerceFulfillment"
         },
+<<<<<<< HEAD
         "commerceOrder.lineItems.edges.node.fulfillments.edges.node.estimatedDelivery": (v8/*: any*/),
         "commerceOrder.lineItems.edges.node.fulfillments.edges.node.id": (v9/*: any*/),
+=======
+        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.createdAt": (v7/*: any*/),
+        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.estimatedDelivery": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.id": (v9/*: any*/),
+        "commerceOrder.lineItems.edges.node.fulfillments.edges.node.trackingId": (v8/*: any*/),
+>>>>>>> 5c361e82d3 (generated files)
         "commerceOrder.lineItems.edges.node.id": (v9/*: any*/),
         "commerceOrder.lineItems.edges.node.selectedShippingQuote": {
           "enumValues": null,
@@ -816,8 +914,18 @@ return {
           "plural": false,
           "type": "CommerceShipment"
         },
+<<<<<<< HEAD
         "commerceOrder.lineItems.edges.node.shipment.id": (v9/*: any*/),
         "commerceOrder.lineItems.edges.node.shipment.status": (v8/*: any*/),
+=======
+        "commerceOrder.lineItems.edges.node.shipment.deliveryEnd": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.shipment.deliveryStart": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.shipment.estimatedDeliveryWindow": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.shipment.id": (v9/*: any*/),
+        "commerceOrder.lineItems.edges.node.shipment.status": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.shipment.trackingNumber": (v8/*: any*/),
+        "commerceOrder.lineItems.edges.node.shipment.trackingUrl": (v8/*: any*/),
+>>>>>>> 5c361e82d3 (generated files)
         "commerceOrder.requestedFulfillment": {
           "enumValues": null,
           "nullable": true,

@@ -1,7 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
+<<<<<<< HEAD
 /* @relayHash fee64609d71acc09143fc4bdb90b3157 */
+=======
+/* @relayHash d1c4320c2c1728f563eb10889ba3197c */
+>>>>>>> 5c361e82d3 (generated files)
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -130,6 +134,7 @@ fragment OrderDetails_order on CommerceOrder {
   ...ArtworkInfoSection_artwork
   ...SummarySection_section
   ...OrderDetailsPayment_order
+  ...TrackOrderSection_section
   ...ShipsToSection_address
   ...SoldBySection_soldBy
 }
@@ -205,6 +210,37 @@ fragment SummarySection_section on CommerceOrder {
         selectedShippingQuote {
           displayName
           id
+        }
+        id
+      }
+    }
+  }
+}
+
+fragment TrackOrderSection_section on CommerceOrder {
+  __isCommerceOrder: __typename
+  state
+  lineItems(first: 1) {
+    edges {
+      node {
+        shipment {
+          status
+          trackingUrl
+          trackingNumber
+          deliveryStart
+          deliveryEnd
+          estimatedDeliveryWindow
+          id
+        }
+        fulfillments(first: 1) {
+          edges {
+            node {
+              createdAt
+              trackingId
+              estimatedDelivery
+              id
+            }
+          }
         }
         id
       }
@@ -308,6 +344,16 @@ v6 = {
   "name": "id",
   "storageKey": null
 },
+<<<<<<< HEAD
+=======
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "createdAt",
+  "storageKey": null
+},
+>>>>>>> 5c361e82d3 (generated files)
 v7 = [
   {
     "kind": "Literal",
@@ -541,7 +587,46 @@ return {
                             "name": "status",
                             "storageKey": null
                           },
+<<<<<<< HEAD
                           (v6/*: any*/)
+=======
+                          (v5/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "trackingUrl",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "trackingNumber",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "deliveryStart",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "deliveryEnd",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "estimatedDeliveryWindow",
+                            "storageKey": null
+                          }
+>>>>>>> 5c361e82d3 (generated files)
                         ],
                         "storageKey": null
                       },
@@ -588,6 +673,14 @@ return {
                                 "name": "node",
                                 "plural": false,
                                 "selections": [
+                                  (v6/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "trackingId",
+                                    "storageKey": null
+                                  },
                                   {
                                     "alias": null,
                                     "args": null,
@@ -614,13 +707,7 @@ return {
             ],
             "storageKey": "lineItems(first:1)"
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "createdAt",
-            "storageKey": null
-          },
+          (v6/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -696,7 +783,11 @@ return {
     ]
   },
   "params": {
+<<<<<<< HEAD
     "id": "fee64609d71acc09143fc4bdb90b3157",
+=======
+    "id": "d1c4320c2c1728f563eb10889ba3197c",
+>>>>>>> 5c361e82d3 (generated files)
     "metadata": {},
     "name": "OrderDetailsQuery",
     "operationKind": "query",
