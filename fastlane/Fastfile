@@ -153,40 +153,19 @@ lane :set_git_properties_android do
   end
 end
 
-lane :ship_beta_android do
+lane :ship_beta_android_play_store do
   sh("yarn jetifier")
   sh("yarn relay")
 
   vname, vcode = set_build_version_android
-  # tag_and_push(tag: "android-#{vname}-#{vcode}")
+  tag_and_push(tag: "android-#{vname}-#{vcode}")
 
-  # sentry_release_name = "android-#{vname}-#{vcode}"
-  # update_sentry_release_name(sentry_release_name: sentry_release_name)
-  flag_android_beta(is_android_beta: true)
+  sentry_release_name = "android-#{vname}-#{vcode}"
+  update_sentry_release_name(sentry_release_name: sentry_release_name)
 
-  puts "CIRCLEMEM Memory before build 1"
-  sh("free -m")
-
-  gradle(
-    task: "bundle",
-    build_type: "Release",
-    project_dir: "android/",
-    flags: "--no-daemon --max-workers=1",
-  )
-
-  # firebase_app_distribution(
-  #   app: ENV["FIREBASE_APP_ID"],
-  #   groups: 'artsy-people',
-  #   android_artifact_path: "./android/app/build/outputs/bundle/release/app-release.aab"
-  # )
-
-  # upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
+  upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
 
   # build again with flag set to false for release candidates
-
-  puts "CIRCLEMEM Memory before build 2"
-  sh("free -m")
-
   flag_android_beta(is_android_beta: false)
   gradle(
     task: "bundle",
@@ -195,15 +174,37 @@ lane :ship_beta_android do
     flags: "--no-daemon --max-workers=1",
   )
 
-  puts "CIRCLEMEM Memory after build 2"
-  sh("free -m")
-
   supply(
     track: "alpha",
     skip_upload_apk: true,
     skip_upload_metadata: true,
     skip_upload_images: true,
     skip_upload_screenshots: true,
+  )
+end
+
+lane :ship_beta_android_firebase do
+  sh("yarn jetifier")
+  sh("yarn relay")
+
+  flag_android_beta(is_android_beta: true)
+
+  vname, vcode = set_build_version_android
+
+  sentry_release_name = "android-#{vname}-#{vcode}"
+  update_sentry_release_name(sentry_release_name: sentry_release_name)
+
+  gradle(
+    task: "bundle",
+    build_type: "Release",
+    project_dir: "android/",
+    flags: "--no-daemon --max-workers=1",
+  )
+
+  firebase_app_distribution(
+    app: ENV["FIREBASE_APP_ID"],
+    groups: 'artsy-people',
+    android_artifact_path: "./android/app/build/outputs/bundle/release/app-release.aab"
   )
 end
 
