@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7c9ce451e71445aa92af904eb370e325 */
+/* @relayHash 522dbaa747fbfc6245923fe22797ef34 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -110,9 +110,6 @@ fragment Feature_feature on Feature {
                 __isNode: __typename
                 id
               }
-              ... on Profile {
-                id
-              }
             }
           }
         }
@@ -179,10 +176,7 @@ v6 = {
   "kind": "ScalarField",
   "name": "title",
   "storageKey": null
-},
-v7 = [
-  (v4/*: any*/)
-];
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -576,15 +570,11 @@ return {
                                   },
                                   {
                                     "kind": "InlineFragment",
-                                    "selections": (v7/*: any*/),
+                                    "selections": [
+                                      (v4/*: any*/)
+                                    ],
                                     "type": "Node",
                                     "abstractKey": "__isNode"
-                                  },
-                                  {
-                                    "kind": "InlineFragment",
-                                    "selections": (v7/*: any*/),
-                                    "type": "Profile",
-                                    "abstractKey": null
                                   }
                                 ],
                                 "storageKey": null
@@ -611,7 +601,7 @@ return {
     ]
   },
   "params": {
-    "id": "7c9ce451e71445aa92af904eb370e325",
+    "id": "522dbaa747fbfc6245923fe22797ef34",
     "metadata": {},
     "name": "FeatureQuery",
     "operationKind": "query",

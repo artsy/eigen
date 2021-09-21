@@ -21,10 +21,16 @@ storiesOf("InputV3", module)
           <Input title="Title" description="Subtitle" />
         </Flex>
         <Flex width={200}>
-          <Input icon={<SearchIcon />} />
+          <Input title="Title" description="With clear button" enableClearButton />
         </Flex>
         <Flex width={200}>
-          <Input title="With Error" error="this is an error" />
+          <Input title="Title" description="With loading" loading />
+        </Flex>
+        <Flex width={200}>
+          <Input title="Title" description="With icon" icon={<SearchIcon />} />
+        </Flex>
+        <Flex width={200}>
+          <Input title="Title" description="With error" error="this is an error" />
         </Flex>
         <Flex width={200}>
           <Input title="Required" required />
