@@ -7,17 +7,12 @@ import { FragmentRefs } from "relay-runtime";
 export type MyCollection_me = {
     readonly id: string;
     readonly myCollectionConnection: {
-        readonly pageInfo: {
-            readonly hasNextPage: boolean;
-            readonly endCursor: string | null;
-        };
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
-                readonly slug: string;
-                readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkGrid_artworks">;
             } | null;
         } | null> | null;
+        readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_myCollectionConnection">;
     } | null;
     readonly " $refType": "MyCollection_me";
 };
@@ -77,31 +72,6 @@ return {
         {
           "alias": null,
           "args": null,
-          "concreteType": "PageInfo",
-          "kind": "LinkedField",
-          "name": "pageInfo",
-          "plural": false,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "hasNextPage",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "endCursor",
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
           "concreteType": "MyCollectionEdge",
           "kind": "LinkedField",
           "name": "edges",
@@ -120,20 +90,8 @@ return {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
-                  "name": "slug",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
-                },
-                {
-                  "args": null,
-                  "kind": "FragmentSpread",
-                  "name": "MyCollectionArtworkGrid_artworks"
                 }
               ],
               "storageKey": null
@@ -147,6 +105,36 @@ return {
             }
           ],
           "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "PageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "endCursor",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "hasNextPage",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "args": null,
+          "kind": "FragmentSpread",
+          "name": "InfiniteScrollArtworksGrid_myCollectionConnection"
         }
       ],
       "storageKey": null
@@ -156,5 +144,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '859deabc5950135b6e697d78dd7244a4';
+(node as any).hash = '5e699218dbe8ef52b0e6bddf40f3c869';
 export default node;

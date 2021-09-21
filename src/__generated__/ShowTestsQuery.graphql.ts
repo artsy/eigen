@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0a0588fbf3795f5ca0a8ed33c97a3796 */
+/* @relayHash b869529eddfea4aef149ae7691125cc5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -81,12 +81,33 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
         aspectRatio
       }
       ...ArtworkGridItem_artwork
+      ...MyCollectionArtworkListItem_artwork
     }
     ... on Node {
       __isNode: __typename
       id
     }
   }
+}
+
+fragment MyCollectionArtworkListItem_artwork on Artwork {
+  internalID
+  artist {
+    internalID
+    id
+  }
+  images {
+    url
+    isDefault
+  }
+  image {
+    aspectRatio
+  }
+  artistNames
+  medium
+  slug
+  title
+  date
 }
 
 fragment ShowArtworksEmptyState_show on Show {
@@ -433,23 +454,29 @@ v19 = {
 },
 v20 = {
   "enumValues": null,
-  "nullable": false,
-  "plural": false,
-  "type": "String"
+  "nullable": true,
+  "plural": true,
+  "type": "Image"
 },
 v21 = {
   "enumValues": null,
-  "nullable": true,
+  "nullable": false,
   "plural": false,
-  "type": "Int"
+  "type": "String"
 },
 v22 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
-  "type": "Boolean"
+  "type": "Int"
 },
 v23 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Boolean"
+},
+v24 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -1221,6 +1248,51 @@ return {
                             "plural": false,
                             "selections": (v8/*: any*/),
                             "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Artist",
+                            "kind": "LinkedField",
+                            "name": "artist",
+                            "plural": false,
+                            "selections": [
+                              (v2/*: any*/),
+                              (v7/*: any*/)
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Image",
+                            "kind": "LinkedField",
+                            "name": "images",
+                            "plural": true,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "url",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "isDefault",
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "medium",
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -1281,7 +1353,7 @@ return {
     ]
   },
   "params": {
-    "id": "0a0588fbf3795f5ca0a8ed33c97a3796",
+    "id": "b869529eddfea4aef149ae7691125cc5",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {
@@ -1320,13 +1392,8 @@ return {
         "show.formattedStartAt": (v15/*: any*/),
         "show.href": (v15/*: any*/),
         "show.id": (v17/*: any*/),
-        "show.images": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": true,
-          "type": "Image"
-        },
-        "show.images.__typename": (v20/*: any*/),
+        "show.images": (v20/*: any*/),
+        "show.images.__typename": (v21/*: any*/),
         "show.images.caption": (v15/*: any*/),
         "show.images.dimensions": {
           "enumValues": null,
@@ -1334,8 +1401,8 @@ return {
           "plural": false,
           "type": "ResizedImageUrl"
         },
-        "show.images.dimensions.height": (v21/*: any*/),
-        "show.images.dimensions.width": (v21/*: any*/),
+        "show.images.dimensions.height": (v22/*: any*/),
+        "show.images.dimensions.width": (v22/*: any*/),
         "show.images.internalID": {
           "enumValues": null,
           "nullable": true,
@@ -1344,7 +1411,7 @@ return {
         },
         "show.images.src": (v15/*: any*/),
         "show.internalID": (v17/*: any*/),
-        "show.isFairBooth": (v22/*: any*/),
+        "show.isFairBooth": (v23/*: any*/),
         "show.name": (v15/*: any*/),
         "show.partner": {
           "enumValues": null,
@@ -1352,8 +1419,8 @@ return {
           "plural": false,
           "type": "PartnerTypes"
         },
-        "show.partner.__isNode": (v20/*: any*/),
-        "show.partner.__typename": (v20/*: any*/),
+        "show.partner.__isNode": (v21/*: any*/),
+        "show.partner.__typename": (v21/*: any*/),
         "show.partner.artworksConnection": {
           "enumValues": null,
           "nullable": true,
@@ -1366,7 +1433,7 @@ return {
           "plural": true,
           "type": "ArtworkEdge"
         },
-        "show.partner.artworksConnection.edges.node": (v23/*: any*/),
+        "show.partner.artworksConnection.edges.node": (v24/*: any*/),
         "show.partner.artworksConnection.edges.node.id": (v17/*: any*/),
         "show.partner.artworksConnection.edges.node.image": (v18/*: any*/),
         "show.partner.artworksConnection.edges.node.image.url": (v15/*: any*/),
@@ -1389,7 +1456,7 @@ return {
           "plural": false,
           "type": "FilterArtworksConnection"
         },
-        "show.showArtworks.__isArtworkConnectionInterface": (v20/*: any*/),
+        "show.showArtworks.__isArtworkConnectionInterface": (v21/*: any*/),
         "show.showArtworks.aggregations": {
           "enumValues": null,
           "nullable": true,
@@ -1408,8 +1475,8 @@ return {
           "plural": false,
           "type": "Int"
         },
-        "show.showArtworks.aggregations.counts.name": (v20/*: any*/),
-        "show.showArtworks.aggregations.counts.value": (v20/*: any*/),
+        "show.showArtworks.aggregations.counts.name": (v21/*: any*/),
+        "show.showArtworks.aggregations.counts.value": (v21/*: any*/),
         "show.showArtworks.aggregations.slice": {
           "enumValues": [
             "ARTIST",
@@ -1448,12 +1515,20 @@ return {
           "plural": true,
           "type": "ArtworkEdgeInterface"
         },
-        "show.showArtworks.edges.__isNode": (v20/*: any*/),
-        "show.showArtworks.edges.__typename": (v20/*: any*/),
-        "show.showArtworks.edges.cursor": (v20/*: any*/),
+        "show.showArtworks.edges.__isNode": (v21/*: any*/),
+        "show.showArtworks.edges.__typename": (v21/*: any*/),
+        "show.showArtworks.edges.cursor": (v21/*: any*/),
         "show.showArtworks.edges.id": (v17/*: any*/),
-        "show.showArtworks.edges.node": (v23/*: any*/),
-        "show.showArtworks.edges.node.__typename": (v20/*: any*/),
+        "show.showArtworks.edges.node": (v24/*: any*/),
+        "show.showArtworks.edges.node.__typename": (v21/*: any*/),
+        "show.showArtworks.edges.node.artist": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Artist"
+        },
+        "show.showArtworks.edges.node.artist.id": (v17/*: any*/),
+        "show.showArtworks.edges.node.artist.internalID": (v17/*: any*/),
         "show.showArtworks.edges.node.artistNames": (v15/*: any*/),
         "show.showArtworks.edges.node.date": (v15/*: any*/),
         "show.showArtworks.edges.node.href": (v15/*: any*/),
@@ -1466,7 +1541,11 @@ return {
           "type": "Float"
         },
         "show.showArtworks.edges.node.image.url": (v15/*: any*/),
+        "show.showArtworks.edges.node.images": (v20/*: any*/),
+        "show.showArtworks.edges.node.images.isDefault": (v23/*: any*/),
+        "show.showArtworks.edges.node.images.url": (v15/*: any*/),
         "show.showArtworks.edges.node.internalID": (v17/*: any*/),
+        "show.showArtworks.edges.node.medium": (v15/*: any*/),
         "show.showArtworks.edges.node.partner": {
           "enumValues": null,
           "nullable": true,
@@ -1484,8 +1563,8 @@ return {
         "show.showArtworks.edges.node.sale.displayTimelyAt": (v15/*: any*/),
         "show.showArtworks.edges.node.sale.endAt": (v15/*: any*/),
         "show.showArtworks.edges.node.sale.id": (v17/*: any*/),
-        "show.showArtworks.edges.node.sale.isAuction": (v22/*: any*/),
-        "show.showArtworks.edges.node.sale.isClosed": (v22/*: any*/),
+        "show.showArtworks.edges.node.sale.isAuction": (v23/*: any*/),
+        "show.showArtworks.edges.node.sale.isClosed": (v23/*: any*/),
         "show.showArtworks.edges.node.saleArtwork": {
           "enumValues": null,
           "nullable": true,
@@ -1570,9 +1649,9 @@ return {
         },
         "show.viewingRoomsConnection.edges.node.image.imageURLs.normalized": (v15/*: any*/),
         "show.viewingRoomsConnection.edges.node.internalID": (v17/*: any*/),
-        "show.viewingRoomsConnection.edges.node.slug": (v20/*: any*/),
-        "show.viewingRoomsConnection.edges.node.status": (v20/*: any*/),
-        "show.viewingRoomsConnection.edges.node.title": (v20/*: any*/)
+        "show.viewingRoomsConnection.edges.node.slug": (v21/*: any*/),
+        "show.viewingRoomsConnection.edges.node.status": (v21/*: any*/),
+        "show.viewingRoomsConnection.edges.node.title": (v21/*: any*/)
       }
     },
     "name": "ShowTestsQuery",

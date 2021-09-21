@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c0e4b1a325a6ccdd5d1b1f8bea518661 */
+/* @relayHash c10047ffd04174163f649f14e4720bfb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -88,12 +88,33 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
         aspectRatio
       }
       ...ArtworkGridItem_artwork
+      ...MyCollectionArtworkListItem_artwork
     }
     ... on Node {
       __isNode: __typename
       id
     }
   }
+}
+
+fragment MyCollectionArtworkListItem_artwork on Artwork {
+  internalID
+  artist {
+    internalID
+    id
+  }
+  images {
+    url
+    isDefault
+  }
+  image {
+    aspectRatio
+  }
+  artistNames
+  medium
+  slug
+  title
+  date
 }
 
 fragment SaleArtworkListItem_artwork on Artwork {
@@ -286,6 +307,13 @@ v8 = {
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
+  "storageKey": null
+},
+v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
   "storageKey": null
 };
 return {
@@ -577,13 +605,7 @@ return {
                         "name": "title",
                         "storageKey": null
                       },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "internalID",
-                        "storageKey": null
-                      },
+                      (v9/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -691,6 +713,51 @@ return {
                           (v7/*: any*/)
                         ],
                         "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "artist",
+                        "plural": false,
+                        "selections": [
+                          (v9/*: any*/),
+                          (v7/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "kind": "LinkedField",
+                        "name": "images",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "url",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "isDefault",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "medium",
+                        "storageKey": null
                       }
                     ],
                     "storageKey": null
@@ -759,7 +826,7 @@ return {
     ]
   },
   "params": {
-    "id": "c0e4b1a325a6ccdd5d1b1f8bea518661",
+    "id": "c10047ffd04174163f649f14e4720bfb",
     "metadata": {},
     "name": "SaleBelowTheFoldQuery",
     "operationKind": "query",

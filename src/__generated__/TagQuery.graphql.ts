@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c4c9b95a1fca2767b294e351305f0031 */
+/* @relayHash 43411bd2d111398ea45e0bc55456f8ab */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -144,12 +144,33 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
         aspectRatio
       }
       ...ArtworkGridItem_artwork
+      ...MyCollectionArtworkListItem_artwork
     }
     ... on Node {
       __isNode: __typename
       id
     }
   }
+}
+
+fragment MyCollectionArtworkListItem_artwork on Artwork {
+  internalID
+  artist {
+    internalID
+    id
+  }
+  images {
+    url
+    isDefault
+  }
+  image {
+    aspectRatio
+  }
+  artistNames
+  medium
+  slug
+  title
+  date
 }
 
 fragment TagArtworks_tag_2VV6jB on Tag {
@@ -691,6 +712,51 @@ return {
                               (v7/*: any*/)
                             ],
                             "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Artist",
+                            "kind": "LinkedField",
+                            "name": "artist",
+                            "plural": false,
+                            "selections": [
+                              (v8/*: any*/),
+                              (v7/*: any*/)
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Image",
+                            "kind": "LinkedField",
+                            "name": "images",
+                            "plural": true,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "url",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "isDefault",
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "medium",
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -731,7 +797,7 @@ return {
     ]
   },
   "params": {
-    "id": "c4c9b95a1fca2767b294e351305f0031",
+    "id": "43411bd2d111398ea45e0bc55456f8ab",
     "metadata": {},
     "name": "TagQuery",
     "operationKind": "query",

@@ -18,6 +18,8 @@ import { PAGE_SIZE } from "lib/data/constants"
 
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
+import { InfiniteScrollArtworksGrid_myCollectionConnection } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
+import { MyCollectionArtworkListItemFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Box, Button, Flex, Theme } from "palette"
 import { graphql } from "relay-runtime"
@@ -80,12 +82,47 @@ export interface Props {
 
   /** To avoid layout jank, supply the width of the grid ahead of time. */
   width?: number
+
+  /** Allows to use MyCollectionArtworkListItem */
+  isMyCollection?: boolean
 }
 
 interface PrivateProps {
-  connection: InfiniteScrollArtworksGrid_connection
+  connection: InfiniteScrollArtworksGrid_connection | InfiniteScrollArtworksGrid_myCollectionConnection
   loadMore: RelayPaginationProp["loadMore"]
   hasMore: RelayPaginationProp["hasMore"]
+}
+
+interface MapperProps extends Omit<PrivateProps, "connection"> {
+  connection?: InfiniteScrollArtworksGrid_connection
+  myCollectionConnection?: InfiniteScrollArtworksGrid_myCollectionConnection
+}
+
+const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMyCollection">> = ({
+  connection,
+  myCollectionConnection,
+  loadMore,
+  hasMore,
+  ...otherProps
+}) => {
+  const theConnectionProp = !!connection ? connection : myCollectionConnection
+  type TheConnectionType<T> = T extends InfiniteScrollArtworksGrid_connection
+    ? InfiniteScrollArtworksGrid_connection
+    : InfiniteScrollArtworksGrid_myCollectionConnection
+  const isMyCollection = !!myCollectionConnection && !connection
+
+  if (!theConnectionProp) {
+    throw new Error("")
+  }
+  return (
+    <InfiniteScrollArtworksGrid
+      loadMore={loadMore}
+      hasMore={hasMore}
+      connection={theConnectionProp as TheConnectionType<typeof theConnectionProp>}
+      isMyCollection={isMyCollection}
+      {...otherProps}
+    />
+  )
 }
 
 interface State {
@@ -93,16 +130,19 @@ interface State {
   isLoading: boolean
 }
 
+export const DEFAULT_SECTION_MARGIN = 20
+export const DEFAULT_ITEM_MARGIN = 20
 class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, State> {
   static defaultProps = {
     sectionDirection: "column",
     sectionCount: Dimensions.get("window").width > 700 ? 3 : 2,
-    sectionMargin: 20,
-    itemMargin: 20,
+    sectionMargin: DEFAULT_SECTION_MARGIN,
+    itemMargin: DEFAULT_ITEM_MARGIN,
     shouldAddPadding: false,
     autoFetch: true,
     pageSize: PAGE_SIZE,
     hidePartner: false,
+    isMyCollection: false,
   }
 
   state = {
@@ -180,7 +220,8 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       // There are artworks without images and other ‘issues’. Like Force we’re just going to reject those for now.
       // See: https://github.com/artsy/eigen/issues/1667
       //
-      if (artwork.image) {
+      // Exception: Allow artworks without images for MyCollection
+      if (artwork.image || this.props.isMyCollection) {
         // Find section with lowest *inverted* aspect ratio sum, which is the shortest column.
         let lowestRatioSum = Number.MAX_VALUE // Start higher, so we always find a
         let sectionIndex: number | null = null
@@ -197,7 +238,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
           section.push(artwork)
 
           // Keep track of total section aspect ratio
-          const aspectRatio = artwork.image.aspectRatio || 1 // Ensure we never divide by null/0
+          const aspectRatio = artwork.image?.aspectRatio || 1 // Ensure we never divide by null/0
           // Invert the aspect ratio so that a lower value means a shorter section.
           sectionRatioSums[sectionIndex] += 1 / aspectRatio
         }
@@ -221,8 +262,9 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       for (let row = 0; row < sectionedArtworks[column].length; row++) {
         const artwork = sectionedArtworks[column][row]
         const itemIndex = row * columnCount + column
+        const ItemComponent = this.props.isMyCollection ? MyCollectionArtworkListItemFragmentContainer : Artwork
         artworkComponents.push(
-          <Artwork
+          <ItemComponent
             contextScreenOwnerType={this.props.contextScreenOwnerType}
             contextScreenOwnerId={this.props.contextScreenOwnerId}
             contextScreenOwnerSlug={this.props.contextScreenOwnerSlug}
@@ -337,7 +379,7 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export const InfiniteScrollArtworksGridContainer = createFragmentContainer(InfiniteScrollArtworksGrid, {
+export const InfiniteScrollArtworksGridContainer = createFragmentContainer(InfiniteScrollArtworksGridMapper, {
   connection: graphql`
     fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
       pageInfo {
@@ -353,8 +395,36 @@ export const InfiniteScrollArtworksGridContainer = createFragmentContainer(Infin
             aspectRatio
           }
           ...ArtworkGridItem_artwork
+          ...MyCollectionArtworkListItem_artwork
         }
       }
     }
   `,
 })
+
+/** Same as InfiniteScrollArtworksGridContainer but for MyCollection Artworks */
+export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentContainer(
+  InfiniteScrollArtworksGridMapper,
+  {
+    myCollectionConnection: graphql`
+      fragment InfiniteScrollArtworksGrid_myCollectionConnection on MyCollectionConnection {
+        pageInfo {
+          hasNextPage
+          startCursor
+          endCursor
+        }
+        edges {
+          node {
+            slug
+            id
+            image {
+              aspectRatio
+            }
+            ...ArtworkGridItem_artwork
+            ...MyCollectionArtworkListItem_artwork
+          }
+        }
+      }
+    `,
+  }
+)

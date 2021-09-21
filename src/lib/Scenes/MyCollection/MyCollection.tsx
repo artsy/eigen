@@ -2,7 +2,7 @@ import { addCollectedArtwork, OwnerType } from "@artsy/cohesion"
 import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { EventEmitter } from "events"
-import MyCollectionGrid from "lib/Components/ArtworkGrids/MyCollectionArtworkGrid"
+import { InfiniteScrollMyCollectionArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
@@ -35,7 +35,6 @@ const MyCollection: React.FC<{
   const [showModal, setShowModal] = useState(false)
 
   const artworks = extractNodes(me?.myCollectionConnection)
-  const { hasMore, isLoading, loadMore } = relay
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   useEffect(() => {
@@ -51,18 +50,6 @@ const MyCollection: React.FC<{
       setIsRefreshing(false)
       if (err && __DEV__) {
         console.error(err)
-      }
-    })
-  }
-
-  const fetchNextPage = () => {
-    if (!hasMore() || isLoading()) {
-      return
-    }
-
-    loadMore(PAGE_SIZE!, (error) => {
-      if (error) {
-        throw new Error(`Error fetching artworks in MyCollectionArtworkList.tsx: ${error}`)
       }
     })
   }
@@ -96,6 +83,9 @@ const MyCollection: React.FC<{
           </Button>
         </View>
       )
+    } else {
+      // remove already set JSX
+      setJSX(<></>)
     }
   }, [artworks.length])
 
@@ -148,10 +138,13 @@ const MyCollection: React.FC<{
       ) : (
         <StickyTabPageScrollView
           contentContainerStyle={{ paddingBottom: space(2) }}
-          onEndReached={fetchNextPage}
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
         >
-          <MyCollectionGrid artworks={artworks} />
+          <InfiniteScrollMyCollectionArtworksGridContainer
+            myCollectionConnection={me.myCollectionConnection!}
+            hasMore={relay.hasMore}
+            loadMore={relay.loadMore}
+          />
         </StickyTabPageScrollView>
       )}
     </ProvideScreenTrackingWithCohesionSchema>
@@ -167,17 +160,12 @@ export const MyCollectionContainer = createPaginationContainer(
         id
         myCollectionConnection(first: $count, after: $cursor, sort: CREATED_AT_DESC)
           @connection(key: "MyCollection_myCollectionConnection", filters: []) {
-          pageInfo {
-            hasNextPage
-            endCursor
-          }
           edges {
             node {
               id
-              slug
-              ...MyCollectionArtworkGrid_artworks
             }
           }
+          ...InfiniteScrollArtworksGrid_myCollectionConnection
         }
       }
     `,

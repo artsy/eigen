@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1b7a37c63ae5c351815cd4182182e21f */
+/* @relayHash 9562615c141170cf6262e6ae7b4e4d45 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -97,12 +97,33 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
         aspectRatio
       }
       ...ArtworkGridItem_artwork
+      ...MyCollectionArtworkListItem_artwork
     }
     ... on Node {
       __isNode: __typename
       id
     }
   }
+}
+
+fragment MyCollectionArtworkListItem_artwork on Artwork {
+  internalID
+  artist {
+    internalID
+    id
+  }
+  images {
+    url
+    isDefault
+  }
+  image {
+    aspectRatio
+  }
+  artistNames
+  medium
+  slug
+  title
+  date
 }
 
 fragment PartnerArtwork_partner_BRGa6 on Partner {
@@ -431,16 +452,23 @@ v15 = {
   "name": "endAt",
   "storageKey": null
 },
-v16 = [
+v16 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "url",
+  "storageKey": null
+},
+v17 = [
   (v2/*: any*/)
 ],
-v17 = {
+v18 = {
   "kind": "InlineFragment",
-  "selections": (v16/*: any*/),
+  "selections": (v17/*: any*/),
   "type": "Node",
   "abstractKey": "__isNode"
 },
-v18 = [
+v19 = [
   (v6/*: any*/),
   {
     "kind": "Literal",
@@ -448,7 +476,7 @@ v18 = [
     "value": "SORTABLE_ID_ASC"
   }
 ],
-v19 = {
+v20 = {
   "alias": null,
   "args": null,
   "concreteType": "PageInfo",
@@ -462,15 +490,8 @@ v19 = {
   ],
   "storageKey": null
 },
-v20 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "url",
-  "storageKey": null
-},
 v21 = [
-  (v20/*: any*/)
+  (v16/*: any*/)
 ],
 v22 = {
   "kind": "Literal",
@@ -877,11 +898,50 @@ return {
                               (v2/*: any*/)
                             ],
                             "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Artist",
+                            "kind": "LinkedField",
+                            "name": "artist",
+                            "plural": false,
+                            "selections": [
+                              (v3/*: any*/),
+                              (v2/*: any*/)
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Image",
+                            "kind": "LinkedField",
+                            "name": "images",
+                            "plural": true,
+                            "selections": [
+                              (v16/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "isDefault",
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "medium",
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
                       },
-                      (v17/*: any*/)
+                      (v18/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -914,13 +974,13 @@ return {
           },
           {
             "alias": "artists",
-            "args": (v18/*: any*/),
+            "args": (v19/*: any*/),
             "concreteType": "ArtistPartnerConnection",
             "kind": "LinkedField",
             "name": "artistsConnection",
             "plural": false,
             "selections": [
-              (v19/*: any*/),
+              (v20/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -1019,7 +1079,7 @@ return {
           },
           {
             "alias": "artists",
-            "args": (v18/*: any*/),
+            "args": (v19/*: any*/),
             "filters": [
               "sort"
             ],
@@ -1098,7 +1158,7 @@ return {
             "name": "showsConnection",
             "plural": false,
             "selections": [
-              (v19/*: any*/),
+              (v20/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -1128,7 +1188,7 @@ return {
                         "name": "coverImage",
                         "plural": false,
                         "selections": [
-                          (v20/*: any*/),
+                          (v16/*: any*/),
                           (v13/*: any*/)
                         ],
                         "storageKey": null
@@ -1162,7 +1222,7 @@ return {
             "name": "showsConnection",
             "plural": false,
             "selections": [
-              (v19/*: any*/),
+              (v20/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -1213,10 +1273,10 @@ return {
                             "type": "Partner",
                             "abstractKey": null
                           },
-                          (v17/*: any*/),
+                          (v18/*: any*/),
                           {
                             "kind": "InlineFragment",
-                            "selections": (v16/*: any*/),
+                            "selections": (v17/*: any*/),
                             "type": "ExternalPartner",
                             "abstractKey": null
                           }
@@ -1277,7 +1337,7 @@ return {
     ]
   },
   "params": {
-    "id": "1b7a37c63ae5c351815cd4182182e21f",
+    "id": "9562615c141170cf6262e6ae7b4e4d45",
     "metadata": {},
     "name": "PartnerQuery",
     "operationKind": "query",

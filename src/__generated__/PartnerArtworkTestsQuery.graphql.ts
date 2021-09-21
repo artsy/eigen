@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a0c250ccba53c9df1aabd230a100bf45 */
+/* @relayHash 9f8fd4f298b28d119072d72fd2f515ce */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -61,6 +61,15 @@ export type PartnerArtworkTestsQueryRawResponse = {
                         readonly name: string | null;
                         readonly id: string;
                     }) | null;
+                    readonly artist?: ({
+                        readonly internalID: string;
+                        readonly id: string;
+                    }) | null;
+                    readonly images?: ReadonlyArray<({
+                        readonly url: string | null;
+                        readonly isDefault: boolean | null;
+                    }) | null> | null;
+                    readonly medium?: string | null;
                 }) | null;
                 readonly cursor: string;
                 readonly __typename?: string;
@@ -145,12 +154,33 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
         aspectRatio
       }
       ...ArtworkGridItem_artwork
+      ...MyCollectionArtworkListItem_artwork
     }
     ... on Node {
       __isNode: __typename
       id
     }
   }
+}
+
+fragment MyCollectionArtworkListItem_artwork on Artwork {
+  internalID
+  artist {
+    internalID
+    id
+  }
+  images {
+    url
+    isDefault
+  }
+  image {
+    aspectRatio
+  }
+  artistNames
+  medium
+  slug
+  title
+  date
 }
 
 fragment PartnerArtwork_partner on Partner {
@@ -611,6 +641,51 @@ return {
                               (v5/*: any*/)
                             ],
                             "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Artist",
+                            "kind": "LinkedField",
+                            "name": "artist",
+                            "plural": false,
+                            "selections": [
+                              (v1/*: any*/),
+                              (v5/*: any*/)
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Image",
+                            "kind": "LinkedField",
+                            "name": "images",
+                            "plural": true,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "url",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "isDefault",
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "medium",
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -652,7 +727,7 @@ return {
     ]
   },
   "params": {
-    "id": "a0c250ccba53c9df1aabd230a100bf45",
+    "id": "9f8fd4f298b28d119072d72fd2f515ce",
     "metadata": {},
     "name": "PartnerArtworkTestsQuery",
     "operationKind": "query",

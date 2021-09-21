@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type InfiniteScrollArtworksGrid_connection = {
+export type InfiniteScrollArtworksGrid_myCollectionConnection = {
     readonly pageInfo: {
         readonly hasNextPage: boolean;
         readonly startCursor: string | null;
@@ -20,12 +20,12 @@ export type InfiniteScrollArtworksGrid_connection = {
             readonly " $fragmentRefs": FragmentRefs<"ArtworkGridItem_artwork" | "MyCollectionArtworkListItem_artwork">;
         } | null;
     } | null> | null;
-    readonly " $refType": "InfiniteScrollArtworksGrid_connection";
+    readonly " $refType": "InfiniteScrollArtworksGrid_myCollectionConnection";
 };
-export type InfiniteScrollArtworksGrid_connection$data = InfiniteScrollArtworksGrid_connection;
-export type InfiniteScrollArtworksGrid_connection$key = {
-    readonly " $data"?: InfiniteScrollArtworksGrid_connection$data;
-    readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
+export type InfiniteScrollArtworksGrid_myCollectionConnection$data = InfiniteScrollArtworksGrid_myCollectionConnection;
+export type InfiniteScrollArtworksGrid_myCollectionConnection$key = {
+    readonly " $data"?: InfiniteScrollArtworksGrid_myCollectionConnection$data;
+    readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_myCollectionConnection">;
 };
 
 
@@ -34,7 +34,7 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "InfiniteScrollArtworksGrid_connection",
+  "name": "InfiniteScrollArtworksGrid_myCollectionConnection",
   "selections": [
     {
       "alias": null,
@@ -71,7 +71,7 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": null,
-      "concreteType": null,
+      "concreteType": "MyCollectionEdge",
       "kind": "LinkedField",
       "name": "edges",
       "plural": true,
@@ -133,8 +133,8 @@ const node: ReaderFragment = {
       "storageKey": null
     }
   ],
-  "type": "ArtworkConnectionInterface",
-  "abstractKey": "__isArtworkConnectionInterface"
+  "type": "MyCollectionConnection",
+  "abstractKey": null
 };
-(node as any).hash = '711b4eac8154c9b3e618fbe40bf0922e';
+(node as any).hash = 'b7a3fdd19b04b918203315d94570dbe8';
 export default node;

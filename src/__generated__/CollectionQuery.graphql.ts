@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ba99ad264f966cb55a51e473f66b3e4b */
+/* @relayHash b7b34b565bcad3d42b7ad0b71b04d62e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -249,12 +249,33 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
         aspectRatio
       }
       ...ArtworkGridItem_artwork
+      ...MyCollectionArtworkListItem_artwork
     }
     ... on Node {
       __isNode: __typename
       id
     }
   }
+}
+
+fragment MyCollectionArtworkListItem_artwork on Artwork {
+  internalID
+  artist {
+    internalID
+    id
+  }
+  images {
+    url
+    isDefault
+  }
+  image {
+    aspectRatio
+  }
+  artistNames
+  medium
+  slug
+  title
+  date
 }
 
 fragment OtherCollectionsRail_collectionGroup on MarketingCollectionGroup {
@@ -388,22 +409,23 @@ v12 = {
 v13 = {
   "alias": null,
   "args": null,
+  "kind": "ScalarField",
+  "name": "url",
+  "storageKey": null
+},
+v14 = {
+  "alias": null,
+  "args": null,
   "concreteType": "Image",
   "kind": "LinkedField",
   "name": "image",
   "plural": false,
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "url",
-      "storageKey": null
-    }
+    (v13/*: any*/)
   ],
   "storageKey": null
 },
-v14 = {
+v15 = {
   "kind": "Literal",
   "name": "aggregations",
   "value": [
@@ -865,6 +887,45 @@ return {
                               (v2/*: any*/)
                             ],
                             "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Artist",
+                            "kind": "LinkedField",
+                            "name": "artist",
+                            "plural": false,
+                            "selections": [
+                              (v11/*: any*/),
+                              (v2/*: any*/)
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Image",
+                            "kind": "LinkedField",
+                            "name": "images",
+                            "plural": true,
+                            "selections": [
+                              (v13/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "isDefault",
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "medium",
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -975,7 +1036,7 @@ return {
                     "name": "deathday",
                     "storageKey": null
                   },
-                  (v13/*: any*/)
+                  (v14/*: any*/)
                 ],
                 "storageKey": "merchandisableArtists(size:4)"
               },
@@ -1046,7 +1107,7 @@ return {
                   {
                     "alias": null,
                     "args": [
-                      (v14/*: any*/),
+                      (v15/*: any*/),
                       {
                         "kind": "Literal",
                         "name": "first",
@@ -1076,7 +1137,7 @@ return {
                             "plural": false,
                             "selections": [
                               (v4/*: any*/),
-                              (v13/*: any*/),
+                              (v14/*: any*/),
                               (v2/*: any*/)
                             ],
                             "storageKey": null
@@ -1092,7 +1153,7 @@ return {
                   {
                     "alias": "featuredCollectionArtworks",
                     "args": [
-                      (v14/*: any*/),
+                      (v15/*: any*/),
                       (v6/*: any*/),
                       (v7/*: any*/)
                     ],
@@ -1117,7 +1178,7 @@ return {
                             "name": "node",
                             "plural": false,
                             "selections": [
-                              (v13/*: any*/),
+                              (v14/*: any*/),
                               (v2/*: any*/)
                             ],
                             "storageKey": null
@@ -1141,7 +1202,7 @@ return {
     ]
   },
   "params": {
-    "id": "ba99ad264f966cb55a51e473f66b3e4b",
+    "id": "b7b34b565bcad3d42b7ad0b71b04d62e",
     "metadata": {},
     "name": "CollectionQuery",
     "operationKind": "query",

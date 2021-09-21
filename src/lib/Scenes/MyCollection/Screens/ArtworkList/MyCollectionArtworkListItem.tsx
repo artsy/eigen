@@ -1,7 +1,7 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
 import { themeGet } from "@styled-system/theme-get"
 import { MyCollectionArtworkListItem_artwork } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
-import { DEFAULT_SECTION_MARGIN } from "lib/Components/ArtworkGrids/MyCollectionArtworkGrid"
+import { DEFAULT_SECTION_MARGIN } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
