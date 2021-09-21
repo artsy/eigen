@@ -7,7 +7,7 @@ import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { compact } from "lodash"
 import { Box, Flex, Separator, Text } from "palette"
-import React from "react"
+import React, { FC } from "react"
 import { SectionList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ArtworkInfoSectionFragmentContainer } from "./ArtworkInfoSection"
@@ -16,6 +16,7 @@ import { CreditCardSummaryItemFragmentContainer } from "./OrderDetailsPayment"
 import { ShipsToSectionFragmentContainer } from "./ShipsToSection"
 import { SoldBySectionFragmentContainer } from "./SoldBySection"
 import { SummarySectionFragmentContainer } from "./SummarySection"
+import { TrackOrderSectionFragmentContainer } from "./TrackOrderSection"
 
 export interface OrderDetailsProps {
   order: OrderDetails_order
@@ -26,7 +27,7 @@ export interface SectionListItem {
   data: readonly JSX.Element[]
 }
 
-const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
+const OrderDetails: FC<OrderDetailsProps> = ({ order }) => {
   const partnerName = extractNodes(order?.lineItems)?.[0]?.artwork?.partner
   const fulfillmentType = order.requestedFulfillment?.__typename
   const isShipping = fulfillmentType === "CommerceShipArta" || fulfillmentType === "CommerceShip"
@@ -61,7 +62,12 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
       title: "Payment Method",
       data: [<CreditCardSummaryItemFragmentContainer order={order} />],
     },
-    isShipping && {
+    order.requestedFulfillment?.__typename !== "CommercePickup" && {
+      key: "TrackOrder_Section",
+      title: "Track Order",
+      data: [<TrackOrderSectionFragmentContainer section={order} />],
+    },
+    order.requestedFulfillment?.__typename !== "CommercePickup" && {
       key: "ShipTo_Section",
       title: `Ships to ${getShippingName()}`,
       data: [<ShipsToSectionFragmentContainer address={order} />],
@@ -76,7 +82,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
   return (
     <PageWithSimpleHeader title="Order Details">
       <SectionList
-        initialNumToRender={18}
+        initialNumToRender={21}
         contentContainerStyle={{ paddingHorizontal: 20, marginTop: 20, paddingBottom: 47 }}
         sections={DATA}
         keyExtractor={(item, index) => item.key + index.toString()}
@@ -91,7 +97,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
         renderSectionHeader={({ section: { title, data } }) =>
           title && data ? (
             <Box>
-              <Text mt={20} mb={10} variant="mediumText">
+              <Text mt={20} mb={10} variant="text" weight="medium">
                 {title}
               </Text>
             </Box>
@@ -112,7 +118,7 @@ const OrderDetails: React.FC<OrderDetailsProps> = ({ order }) => {
   )
 }
 
-export const OrderDetailsPlaceholder: React.FC<{}> = () => (
+export const OrderDetailsPlaceholder: FC<{}> = () => (
   <PageWithSimpleHeader title="Order Details">
     <Flex px={2}>
       <Flex flexDirection="row" mt={2}>
@@ -203,13 +209,13 @@ export const OrderDetailsContainer = createFragmentContainer(OrderDetails, {
       ...ArtworkInfoSection_artwork
       ...SummarySection_section
       ...OrderDetailsPayment_order
+      ...TrackOrderSection_section
       ...ShipsToSection_address
       ...SoldBySection_soldBy
     }
   `,
 })
-
-export const OrderDetailsQueryRender: React.FC<{ orderID: string }> = ({ orderID: orderID }) => {
+export const OrderDetailsQueryRender: FC<{ orderID: string }> = ({ orderID: orderID }) => {
   return (
     <QueryRenderer<OrderDetailsQuery>
       environment={defaultEnvironment}
