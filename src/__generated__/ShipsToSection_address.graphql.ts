@@ -6,6 +6,8 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ShipsToSection_address = {
     readonly requestedFulfillment: ({
+        readonly __typename: "CommercePickup";
+    } | {
         readonly __typename: "CommerceShip";
         readonly addressLine1: string | null;
         readonly addressLine2: string | null;
@@ -15,7 +17,14 @@ export type ShipsToSection_address = {
         readonly postalCode: string | null;
         readonly region: string | null;
     } | {
-        readonly __typename: "CommercePickup";
+        readonly __typename: "CommerceShipArta";
+        readonly addressLine1: string | null;
+        readonly addressLine2: string | null;
+        readonly city: string | null;
+        readonly country: string | null;
+        readonly phoneNumber: string | null;
+        readonly postalCode: string | null;
+        readonly region: string | null;
     } | {
         /*This will never be '%other', but we need some
         value in case none of the concrete values match.*/
@@ -38,7 +47,59 @@ var v0 = {
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
-};
+},
+v1 = [
+  (v0/*: any*/),
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "addressLine1",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "addressLine2",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "city",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "country",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "phoneNumber",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "postalCode",
+    "storageKey": null
+  },
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "region",
+    "storageKey": null
+  }
+];
 return {
   "argumentDefinitions": [],
   "kind": "Fragment",
@@ -56,66 +117,21 @@ return {
         {
           "kind": "InlineFragment",
           "selections": [
-            (v0/*: any*/),
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "addressLine1",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "addressLine2",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "city",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "country",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "phoneNumber",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "postalCode",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "region",
-              "storageKey": null
-            }
+            (v0/*: any*/)
           ],
+          "type": "CommercePickup",
+          "abstractKey": null
+        },
+        {
+          "kind": "InlineFragment",
+          "selections": (v1/*: any*/),
           "type": "CommerceShip",
           "abstractKey": null
         },
         {
           "kind": "InlineFragment",
-          "selections": [
-            (v0/*: any*/)
-          ],
-          "type": "CommercePickup",
+          "selections": (v1/*: any*/),
+          "type": "CommerceShipArta",
           "abstractKey": null
         }
       ],
@@ -126,5 +142,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = '278325df71ae6be251db29d7cb7f067d';
+(node as any).hash = '6fcb7091e71d3ec76e0b818ef870c45c';
 export default node;

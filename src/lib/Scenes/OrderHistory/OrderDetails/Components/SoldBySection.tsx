@@ -7,7 +7,6 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
   soldBy: SoldBySection_soldBy
-  testID?: string
 }
 
 export const SoldBySection: React.FC<Props> = ({ soldBy }) => {

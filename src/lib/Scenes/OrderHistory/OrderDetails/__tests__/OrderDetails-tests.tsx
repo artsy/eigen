@@ -8,13 +8,24 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ArtworkInfoSectionFragmentContainer } from "../Components/ArtworkInfoSection"
-import { OrderDetailsContainer, OrderDetailsPlaceholder, OrderDetailsQueryRender } from "../Components/OrderDetails"
-import { OrderDetailsHeader } from "../Components/OrderDetailsHeader"
+import {
+  OrderDetailsContainer,
+  OrderDetailsPlaceholder,
+  OrderDetailsQueryRender,
+  SectionListItem,
+} from "../Components/OrderDetails"
+import { OrderDetailsHeaderFragmentContainer } from "../Components/OrderDetailsHeader"
 import { CreditCardSummaryItemFragmentContainer } from "../Components/OrderDetailsPayment"
 import { ShipsToSectionFragmentContainer } from "../Components/ShipsToSection"
+import { SoldBySectionFragmentContainer } from "../Components/SoldBySection"
 import { SummarySectionFragmentContainer } from "../Components/SummarySection"
 
 jest.unmock("react-relay")
+
+const order = {
+  requestedFulfillment: { __typename: "CommerceShip", name: "my name" },
+  lineItems: { edges: [{ node: { artwork: { partner: { name: "partnerName" } } } }] },
+}
 
 describe(OrderDetailsQueryRender, () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -38,6 +49,7 @@ describe(OrderDetailsQueryRender, () => {
       }}
     />
   )
+
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
@@ -49,51 +61,35 @@ describe(OrderDetailsQueryRender, () => {
   }
 
   it("renders without throwing an error", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappers(<TestRenderer />).root
+    mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => order })
+    expect(tree.findByType(SectionList)).toBeTruthy()
+    expect(tree.findByType(OrderDetailsHeaderFragmentContainer)).toBeTruthy()
+    expect(tree.findByType(ArtworkInfoSectionFragmentContainer)).toBeTruthy()
+    expect(tree.findByType(SummarySectionFragmentContainer)).toBeTruthy()
+    expect(tree.findByType(CreditCardSummaryItemFragmentContainer)).toBeTruthy()
+    expect(tree.findByType(ShipsToSectionFragmentContainer)).toBeTruthy()
+    expect(tree.findByType(SoldBySectionFragmentContainer)).toBeTruthy()
+  })
 
+  it("not render ShipsToSection when CommercePickup", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+    order.requestedFulfillment.__typename = "CommercePickup"
+    mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => order })
+    const sections: SectionListItem[] = tree.findByType(SectionList).props.sections
+    expect(sections.filter(({ key }) => key === "ShipTo_Section")).toHaveLength(0)
+  })
+
+  it("not render SoldBySection when partnerName null", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
     mockEnvironmentPayload(mockEnvironment, {
       CommerceOrder: () => ({
-        internalID: "222",
-        requestedFulfillment: {
-          name: "my name",
-          addressLine1: "myadress",
-          city: "mycity",
-          country: "BY",
-          postalCode: "11238",
-          phoneNumber: "7777",
-          region: "myregion",
-        },
-        lineItems: {
-          edges: [
-            {
-              node: {
-                artwork: {
-                  medium: "Rayon thread on poly twill backed",
-                  editionOf: "edit of 30",
-                  dimensions: {
-                    cm: "10.5 × 7.9 cm",
-                    in: "4 1/8 × 3 1/8 in",
-                  },
-                  artistNames: "Kerry James Marshall",
-                  date: "2017",
-                  image: {
-                    url: "https://homepages.cae.wisc.edu/~ece533/images/airplane.webp",
-                  },
-                  title: "Set of Six (Six) Scout Series Embroidered Patches",
-                },
-              },
-            },
-          ],
-        },
+        ...order,
+        lineItems: { edges: [{ node: { artwork: { partner: null } } }] },
       }),
     })
-
-    expect(tree.root.findByType(SectionList)).toBeTruthy()
-    expect(tree.root.findByType(ArtworkInfoSectionFragmentContainer)).toBeTruthy()
-    expect(tree.root.findByType(SummarySectionFragmentContainer)).toBeTruthy()
-    expect(tree.root.findByType(CreditCardSummaryItemFragmentContainer)).toBeTruthy()
-    expect(tree.root.findByType(ShipsToSectionFragmentContainer)).toBeTruthy()
-    expect(tree.root.findByType(OrderDetailsHeader)).toBeTruthy()
+    const sections: SectionListItem[] = tree.findByType(SectionList).props.sections
+    expect(sections.filter(({ key }) => key === "Sold_By")).toHaveLength(0)
   })
 
   it("renders without throwing an error", () => {
@@ -104,10 +100,7 @@ describe(OrderDetailsQueryRender, () => {
     const tree = getWrapper({
       CommerceOrder: () => ({
         internalID: "222",
-        requestedFulfillment: {
-          __typename: "CommerceShip",
-          name: "my name",
-        },
+        requestedFulfillment: { __typename: "CommerceShip", name: "my name" },
       }),
     })
     expect(extractText(tree.root)).toContain("my name")
@@ -119,7 +112,7 @@ describe(OrderDetailsQueryRender, () => {
   })
 
   it("Loads OrderHistoryQueryRender with OrderDetailsPlaceholder", () => {
-    const tree = renderWithWrappers(<OrderDetailsQueryRender orderID="21856921-fa90-4a36-a17e-dd52870952d2" />)
-    expect(tree.root.findAllByType(OrderDetailsPlaceholder)).toHaveLength(1)
+    const tree = renderWithWrappers(<OrderDetailsQueryRender orderID="21856921-fa90-4a36-a17e-dd52870952d2" />).root
+    expect(tree.findAllByType(OrderDetailsPlaceholder)).toHaveLength(1)
   })
 })

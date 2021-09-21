@@ -9,6 +9,9 @@ export type OrderDetails_order = {
         readonly __typename: "CommerceShip";
         readonly name: string | null;
     } | {
+        readonly __typename: "CommerceShipArta";
+        readonly name: string | null;
+    } | {
         readonly __typename: "CommercePickup";
     } | {
         /*This will never be '%other', but we need some
@@ -51,7 +54,11 @@ v1 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
-};
+},
+v2 = [
+  (v0/*: any*/),
+  (v1/*: any*/)
+];
 return {
   "argumentDefinitions": [],
   "kind": "Fragment",
@@ -68,11 +75,14 @@ return {
       "selections": [
         {
           "kind": "InlineFragment",
-          "selections": [
-            (v0/*: any*/),
-            (v1/*: any*/)
-          ],
+          "selections": (v2/*: any*/),
           "type": "CommerceShip",
+          "abstractKey": null
+        },
+        {
+          "kind": "InlineFragment",
+          "selections": (v2/*: any*/),
+          "type": "CommerceShipArta",
           "abstractKey": null
         },
         {
@@ -183,5 +193,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = 'c2ffedb0d1171b42b00381ca162cdbb5';
+(node as any).hash = 'beff1c9d6c74e128fd07df52975800eb';
 export default node;
