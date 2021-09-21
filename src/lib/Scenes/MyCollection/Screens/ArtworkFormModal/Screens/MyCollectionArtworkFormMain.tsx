@@ -4,7 +4,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { isEmpty } from "lodash"
-import { BorderBox, Box, Button, Flex, Join, Sans, Spacer } from "palette"
+import { BorderBox, Box, Button, Flex, Join, Sans, Spacer, Text } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
@@ -146,20 +146,18 @@ const PhotosButton: React.FC<{ onPress: () => void }> = ({ onPress }) => {
       <ScreenMargin>
         <ArrowButton onPress={onPress}>
           <Flex flexDirection="row">
-            <Sans size="3" weight="medium">
-              Photos
-            </Sans>
+            <Text size="xs">PHOTOS</Text>
           </Flex>
           {photos.length > 0 && (
             <>
               {photos.length === 1 ? (
-                <Sans size="3" data-test-id="onePhoto">
+                <Text size="xs" data-test-id="onePhoto">
                   1 photo added
-                </Sans>
+                </Text>
               ) : (
-                <Sans size="3" data-test-id="multiplePhotos">
+                <Text size="xs" data-test-id="multiplePhotos">
                   {photos.length} photos added
-                </Sans>
+                </Text>
               )}
             </>
           )}
@@ -175,12 +173,10 @@ const AdditionalDetailsButton: React.FC<{ onPress: () => void }> = ({ onPress })
       <ScreenMargin>
         <ArrowButton onPress={onPress}>
           <Flex flexDirection="row">
-            <Sans size="3" weight="medium">
-              Additional details
-            </Sans>
-            <Sans size="3" ml="2px">
+            <Text size="xs">ADDITIONAL DETAILS</Text>
+            <Text size="xs" ml="2px">
               (optional)
-            </Sans>
+            </Text>
           </Flex>
         </ArrowButton>
       </ScreenMargin>

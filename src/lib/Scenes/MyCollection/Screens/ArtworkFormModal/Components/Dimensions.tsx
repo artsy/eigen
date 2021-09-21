@@ -1,6 +1,6 @@
 import { Input } from "lib/Components/Input/Input"
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkFormModal/Form/useArtworkForm"
-import { Flex, Sans, Spacer, useSpace } from "palette"
+import { Flex, Spacer, Text, useSpace } from "palette"
 import { Select, SelectComponentI } from "palette/elements/Select"
 import React, { useRef } from "react"
 
@@ -12,12 +12,10 @@ export const Dimensions: React.FC = () => {
   return (
     <>
       <Flex flexDirection="row">
-        <Sans size="3" weight="medium">
-          Dimensions
-        </Sans>
-        <Sans size="3" ml="2px">
+        <Text size="xs">DIMENSIONS</Text>
+        <Text size="xs" ml="2px">
           (optional)
-        </Sans>
+        </Text>
       </Flex>
       <Spacer my={0.5} />
       <Flex flexDirection="row">
