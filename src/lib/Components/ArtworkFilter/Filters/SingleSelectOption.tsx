@@ -1,14 +1,14 @@
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { FancyModalHeader, FancyModalHeaderProps } from "lib/Components/FancyModal/FancyModalHeader"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { Flex, RadioDot, Text } from "palette"
 import React, { Fragment } from "react"
 import { FlatList, ScrollView } from "react-native"
 import styled from "styled-components/native"
 
-interface SingleSelectOptionScreenProps {
+interface SingleSelectOptionScreenProps extends FancyModalHeaderProps {
   navigation: StackNavigationProp<ParamListBase>
   filterHeaderText: string
   onSelect: (any: any) => void
@@ -32,6 +32,7 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
   ListHeaderComponent,
   withExtraPadding = false,
   useScrollView = false,
+  ...rest
 }) => {
   const handleBackNavigation = () => {
     navigation.goBack()
@@ -50,7 +51,9 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
 
   return (
     <Flex flexGrow={1}>
-      <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
+      <FancyModalHeader onLeftButtonPress={handleBackNavigation} {...rest}>
+        {filterHeaderText}
+      </FancyModalHeader>
 
       <Flex flexGrow={1}>
         {useScrollView ? (
@@ -76,7 +79,7 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
   )
 }
 
-const ListItem = ({
+export const ListItem = ({
   item,
   onSelect,
   selectedOption,
@@ -85,7 +88,7 @@ const ListItem = ({
   item: FilterData
   onSelect: (any: any) => void
   selectedOption: FilterData
-  withExtraPadding: boolean
+  withExtraPadding?: boolean
 }) => {
   const selected = item.displayText === selectedOption.displayText
 
