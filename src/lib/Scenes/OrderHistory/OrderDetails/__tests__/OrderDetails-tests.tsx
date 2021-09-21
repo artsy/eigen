@@ -19,6 +19,7 @@ import { CreditCardSummaryItemFragmentContainer } from "../Components/OrderDetai
 import { ShipsToSectionFragmentContainer } from "../Components/ShipsToSection"
 import { SoldBySectionFragmentContainer } from "../Components/SoldBySection"
 import { SummarySectionFragmentContainer } from "../Components/SummarySection"
+import { TrackOrderSectionFragmentContainer } from "../Components/TrackOrderSection"
 
 jest.unmock("react-relay")
 
@@ -68,6 +69,7 @@ describe(OrderDetailsQueryRender, () => {
     expect(tree.findByType(ArtworkInfoSectionFragmentContainer)).toBeTruthy()
     expect(tree.findByType(SummarySectionFragmentContainer)).toBeTruthy()
     expect(tree.findByType(CreditCardSummaryItemFragmentContainer)).toBeTruthy()
+    expect(tree.findByType(TrackOrderSectionFragmentContainer)).toBeTruthy()
     expect(tree.findByType(ShipsToSectionFragmentContainer)).toBeTruthy()
     expect(tree.findByType(SoldBySectionFragmentContainer)).toBeTruthy()
   })
@@ -78,6 +80,14 @@ describe(OrderDetailsQueryRender, () => {
     mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => order })
     const sections: SectionListItem[] = tree.findByType(SectionList).props.sections
     expect(sections.filter(({ key }) => key === "ShipTo_Section")).toHaveLength(0)
+  })
+
+  it("not render TrackOrderSection when CommercePickup", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+    order.requestedFulfillment.__typename = "CommercePickup"
+    mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => order })
+    const sections: SectionListItem[] = tree.findByType(SectionList).props.sections
+    expect(sections.filter(({ key }) => key === "TrackOrder_Section")).toHaveLength(0)
   })
 
   it("not render SoldBySection when partnerName null", () => {

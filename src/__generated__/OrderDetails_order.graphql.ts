@@ -9,9 +9,6 @@ export type OrderDetails_order = {
         readonly __typename: "CommerceShip";
         readonly name: string | null;
     } | {
-        readonly __typename: "CommerceShipArta";
-        readonly name: string | null;
-    } | {
         readonly __typename: "CommercePickup";
     } | {
         /*This will never be '%other', but we need some
@@ -29,7 +26,7 @@ export type OrderDetails_order = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"OrderDetailsHeader_info" | "ArtworkInfoSection_artwork" | "SummarySection_section" | "OrderDetailsPayment_order" | "ShipsToSection_address" | "SoldBySection_soldBy">;
+    readonly " $fragmentRefs": FragmentRefs<"OrderDetailsHeader_info" | "ArtworkInfoSection_artwork" | "SummarySection_section" | "OrderDetailsPayment_order" | "TrackOrderSection_section" | "ShipsToSection_address" | "SoldBySection_soldBy">;
     readonly " $refType": "OrderDetails_order";
 };
 export type OrderDetails_order$data = OrderDetails_order;
@@ -54,11 +51,7 @@ v1 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
-},
-v2 = [
-  (v0/*: any*/),
-  (v1/*: any*/)
-];
+};
 return {
   "argumentDefinitions": [],
   "kind": "Fragment",
@@ -75,14 +68,11 @@ return {
       "selections": [
         {
           "kind": "InlineFragment",
-          "selections": (v2/*: any*/),
+          "selections": [
+            (v0/*: any*/),
+            (v1/*: any*/)
+          ],
           "type": "CommerceShip",
-          "abstractKey": null
-        },
-        {
-          "kind": "InlineFragment",
-          "selections": (v2/*: any*/),
-          "type": "CommerceShipArta",
           "abstractKey": null
         },
         {
@@ -181,6 +171,11 @@ return {
     {
       "args": null,
       "kind": "FragmentSpread",
+      "name": "TrackOrderSection_section"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
       "name": "ShipsToSection_address"
     },
     {
@@ -193,5 +188,5 @@ return {
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = 'beff1c9d6c74e128fd07df52975800eb';
+(node as any).hash = '508f13e5ac0aeca2156c84f1f07245e2';
 export default node;
