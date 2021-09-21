@@ -64,7 +64,6 @@ export const MyCollectionArtworkInsightsFragmentContainer = createFragmentContai
       artist {
         name
       }
-      ...MyCollectionArtworkPriceEstimate_artwork
       ...MyCollectionArtworkArtistAuctionResults_artwork
       ...MyCollectionArtworkArtistArticles_artwork
       ...MyCollectionArtworkArtistMarket_artwork
@@ -74,7 +73,6 @@ export const MyCollectionArtworkInsightsFragmentContainer = createFragmentContai
   marketPriceInsights: graphql`
     fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights {
       ...MyCollectionArtworkDemandIndex_marketPriceInsights
-      ...MyCollectionArtworkPriceEstimate_marketPriceInsights
       ...MyCollectionArtworkArtistMarket_marketPriceInsights
     }
   `,
