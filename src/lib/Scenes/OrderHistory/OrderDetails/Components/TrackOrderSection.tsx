@@ -28,23 +28,23 @@ export const TrackOrderSection: FC<Props> = ({ section }) => {
   return (
     <Flex flexDirection="row" justifyContent="space-between">
       <Flex>
-        <Text variant="text" style={{ textTransform: "capitalize" }}>
+        <Text testID="orderStatus" variant="text" style={{ textTransform: "capitalize" }}>
           {orderStatus}
         </Text>
         {!!shipment?.trackingNumber ? (
-          <Text variant="text" color="black60">
+          <Text testID="trackingNumber" variant="text" color="black60">
             Tracking:&nbsp;
             <Text variant="text" color="black60" weight="medium">
               {shipment?.trackingNumber}
             </Text>
           </Text>
         ) : (
-          <Text variant="text" color="black60">
+          <Text testID="noTrackingNumber" variant="text" color="black60">
             Traking not available
           </Text>
         )}
         {(!!shipment?.deliveryStart || !!createdAt) && (
-          <Text variant="text" color="black60">
+          <Text testID="shippedOn" variant="text" color="black60">
             Shipped on&nbsp;
             <Text variant="text" color="black60" weight={!deliveredStatus ? "medium" : "regular"}>
               {DateTime.fromISO(shipment?.deliveryStart || createdAt).toLocaleString(DateTime.DATE_MED)}
@@ -52,26 +52,30 @@ export const TrackOrderSection: FC<Props> = ({ section }) => {
           </Text>
         )}
         {deliveredStatus && shipment?.deliveryEnd ? (
-          <Text variant="text" color="black60">
+          <Text testID="deliveredStatus" variant="text" color="black60">
             {"Delivered on "}
             {DateTime.fromISO(shipment?.deliveryEnd).toLocaleString(DateTime.DATE_MED)}
           </Text>
         ) : (
           <>
-            {!!shipment?.estimatedDeliveryWindow ||
-              (!!estimatedDelivery && (
-                <Text variant="text" color="black60">
-                  Estimated Delivery:&nbsp;
+            {(!!shipment?.estimatedDeliveryWindow || !!estimatedDelivery) && (
+              <Text testID="estimatedDelivery" variant="text" color="black60">
+                Estimated Delivery:&nbsp;
+                {!!estimatedDelivery ? (
                   <Text variant="text" color="black60" weight="medium">
-                    {shipment?.estimatedDeliveryWindow ||
-                      DateTime.fromISO(estimatedDelivery).toLocaleString(DateTime.DATE_MED)}
+                    {DateTime.fromISO(estimatedDelivery).toLocaleString(DateTime.DATE_MED)}
                   </Text>
-                </Text>
-              ))}
+                ) : (
+                  <Text variant="text" color="black60" weight="medium">
+                    {shipment?.estimatedDeliveryWindow}
+                  </Text>
+                )}
+              </Text>
+            )}
           </>
         )}
         {!!trackingUrl && (
-          <Button mt={2} block variant="primaryBlack" onPress={() => Linking.openURL(trackingUrl)}>
+          <Button testID="trackingUrl" mt={2} block variant="primaryBlack" onPress={() => Linking.openURL(trackingUrl)}>
             View full tracking details
           </Button>
         )}
