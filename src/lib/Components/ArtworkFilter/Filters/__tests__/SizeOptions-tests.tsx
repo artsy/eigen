@@ -99,10 +99,10 @@ describe("SizeOptions", () => {
     })
 
     it("returns the custom filter option if only minimum width is specified", () => {
-      const { getByTestId, getByText } = getTree()
+      const { getByTestId, getByA11yLabel, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
-      fireEvent.changeText(getByTestId("minimum-width-input"), "5")
+      fireEvent.changeText(getByA11yLabel("Minimum width input"), "5")
 
       const filters = getFilters(getByTestId("debug"))
       const sizeFilter = getSizeFilterOption(filters)
@@ -116,10 +116,10 @@ describe("SizeOptions", () => {
     })
 
     it("returns the custom filter option if only maximum width is specified", () => {
-      const { getByTestId, getByText } = getTree()
+      const { getByTestId, getByA11yLabel, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
-      fireEvent.changeText(getByTestId("maximum-width-input"), "10")
+      fireEvent.changeText(getByA11yLabel("Maximum width input"), "10")
 
       const filters = getFilters(getByTestId("debug"))
       const sizeFilter = getSizeFilterOption(filters)
@@ -133,11 +133,11 @@ describe("SizeOptions", () => {
     })
 
     it("returns the custom filter option if minimum and maximum width are specified", () => {
-      const { getByTestId, getByText } = getTree()
+      const { getByTestId, getByA11yLabel, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
-      fireEvent.changeText(getByTestId("minimum-width-input"), "5")
-      fireEvent.changeText(getByTestId("maximum-width-input"), "10")
+      fireEvent.changeText(getByA11yLabel("Minimum width input"), "5")
+      fireEvent.changeText(getByA11yLabel("Maximum width input"), "10")
 
       const filters = getFilters(getByTestId("debug"))
       const sizeFilter = getSizeFilterOption(filters)
@@ -151,10 +151,10 @@ describe("SizeOptions", () => {
     })
 
     it("returns the custom filter option if only minimum height is specified", () => {
-      const { getByTestId, getByText } = getTree()
+      const { getByTestId, getByA11yLabel, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
-      fireEvent.changeText(getByTestId("minimum-height-input"), "5")
+      fireEvent.changeText(getByA11yLabel("Minimum height input"), "5")
 
       const filters = getFilters(getByTestId("debug"))
       const sizeFilter = getSizeFilterOption(filters)
@@ -168,10 +168,10 @@ describe("SizeOptions", () => {
     })
 
     it("returns the custom filter option if only maximum height is specified", () => {
-      const { getByTestId, getByText } = getTree()
+      const { getByTestId, getByA11yLabel, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
-      fireEvent.changeText(getByTestId("maximum-height-input"), "10")
+      fireEvent.changeText(getByA11yLabel("Maximum height input"), "10")
 
       const filters = getFilters(getByTestId("debug"))
       const sizeFilter = getSizeFilterOption(filters)
@@ -185,11 +185,11 @@ describe("SizeOptions", () => {
     })
 
     it("returns the custom filter option if maximum and maximum height are specified", () => {
-      const { getByTestId, getByText } = getTree()
+      const { getByTestId, getByA11yLabel, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
-      fireEvent.changeText(getByTestId("minimum-height-input"), "5")
-      fireEvent.changeText(getByTestId("maximum-height-input"), "10")
+      fireEvent.changeText(getByA11yLabel("Minimum height input"), "5")
+      fireEvent.changeText(getByA11yLabel("Maximum height input"), "10")
 
       const filters = getFilters(getByTestId("debug"))
       const sizeFilter = getSizeFilterOption(filters)
@@ -203,11 +203,11 @@ describe("SizeOptions", () => {
     })
 
     it("returns the custom filter option if minimum width and the maximum height are specified", () => {
-      const { getByTestId, getByText } = getTree()
+      const { getByTestId, getByA11yLabel, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
-      fireEvent.changeText(getByTestId("minimum-width-input"), "5")
-      fireEvent.changeText(getByTestId("maximum-height-input"), "10")
+      fireEvent.changeText(getByA11yLabel("Minimum width input"), "5")
+      fireEvent.changeText(getByA11yLabel("Maximum height input"), "10")
 
       const filters = getFilters(getByTestId("debug"))
       const sizeFilter = getSizeFilterOption(filters)
@@ -221,17 +221,17 @@ describe("SizeOptions", () => {
     })
 
     it("returns the default filter option if nothing is specified in width or height", () => {
-      const { getByTestId, getByText } = getTree()
+      const { getByTestId, getByA11yLabel, getByText } = getTree()
 
       fireEvent.press(getByText("Custom Size"))
-      fireEvent.changeText(getByTestId("minimum-width-input"), "5")
+      fireEvent.changeText(getByA11yLabel("Minimum width input"), "5")
 
       const prevFilters = getFilters(getByTestId("debug"))
       const prevSizeFilter = getSizeFilterOption(prevFilters)
 
       expect(prevSizeFilter?.paramValue).toBe("0-*")
 
-      fireEvent.changeText(getByTestId("minimum-width-input"), "")
+      fireEvent.changeText(getByA11yLabel("Minimum width input"), "")
 
       const currentFilters = getFilters(getByTestId("debug"))
       const currentSizeFilter = getSizeFilterOption(currentFilters)
@@ -245,7 +245,7 @@ describe("SizeOptions", () => {
         paramValue: "*-16.0",
         paramName: FilterParamName.size,
       }
-      const { getByTestId, getByText } = getTree({
+      const { getByTestId, getByA11yLabel, getByText } = getTree({
         initialData: {
           ...INITIAL_DATA,
           appliedFilters: [option],
@@ -254,8 +254,8 @@ describe("SizeOptions", () => {
       })
 
       fireEvent.press(getByText("Custom Size"))
-      fireEvent.changeText(getByTestId("minimum-width-input"), "5")
-      fireEvent.changeText(getByTestId("minimum-width-input"), "")
+      fireEvent.changeText(getByA11yLabel("Minimum width input"), "5")
+      fireEvent.changeText(getByA11yLabel("Minimum width input"), "")
 
       const filters = getFilters(getByTestId("debug"))
       const sizeFilter = getSizeFilterOption(filters)
