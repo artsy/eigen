@@ -158,11 +158,14 @@ lane :ship_beta_android do
   sh("yarn relay")
 
   vname, vcode = set_build_version_android
-  tag_and_push(tag: "android-#{vname}-#{vcode}")
+  # tag_and_push(tag: "android-#{vname}-#{vcode}")
 
-  sentry_release_name = "android-#{vname}-#{vcode}"
-  update_sentry_release_name(sentry_release_name: sentry_release_name)
+  # sentry_release_name = "android-#{vname}-#{vcode}"
+  # update_sentry_release_name(sentry_release_name: sentry_release_name)
   flag_android_beta(is_android_beta: true)
+
+  puts "CIRCLEMEM Memory before build 1"
+  sh("free -m")
 
   gradle(
     task: "bundle",
@@ -171,15 +174,19 @@ lane :ship_beta_android do
     flags: "--no-daemon --max-workers=1",
   )
 
-  firebase_app_distribution(
-    app: ENV["FIREBASE_APP_ID"],
-    groups: 'artsy-people',
-    android_artifact_path: "./android/app/build/outputs/bundle/release/app-release.aab"
-  )
+  # firebase_app_distribution(
+  #   app: ENV["FIREBASE_APP_ID"],
+  #   groups: 'artsy-people',
+  #   android_artifact_path: "./android/app/build/outputs/bundle/release/app-release.aab"
+  # )
 
-  upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
+  # upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
 
   # build again with flag set to false for release candidates
+
+  puts "CIRCLEMEM Memory before build 2"
+  sh("free -m")
+
   flag_android_beta(is_android_beta: false)
   gradle(
     task: "bundle",
@@ -187,6 +194,9 @@ lane :ship_beta_android do
     project_dir: "android/",
     flags: "--no-daemon --max-workers=1",
   )
+
+  puts "CIRCLEMEM Memory after build 2"
+  sh("free -m")
 
   supply(
     track: "alpha",
