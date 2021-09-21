@@ -48,12 +48,11 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
       </FancyModalHeader>
       <ScrollView keyboardDismissMode={"on-drag"} keyboardShouldPersistTaps={"handled"}>
         <Spacer my={1} />
-
-        <Sans size="4" textAlign="center">
+        <Text textAlign="center">
           {addOrEditLabel} details about your artwork to access {"\n"}
           price and market insights.
-        </Sans>
-
+        </Text>
+        <Spacer my="1" />
         <ScreenMargin>
           <Join separator={<Spacer my={1} />}>
             <ArtistAutosuggest />
@@ -174,9 +173,6 @@ const AdditionalDetailsButton: React.FC<{ onPress: () => void }> = ({ onPress })
         <ArrowButton onPress={onPress}>
           <Flex flexDirection="row">
             <Text size="xs">ADDITIONAL DETAILS</Text>
-            <Text size="xs" ml="2px">
-              (optional)
-            </Text>
           </Flex>
         </ArrowButton>
       </ScreenMargin>
