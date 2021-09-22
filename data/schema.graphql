@@ -7268,7 +7268,7 @@ type HomePage {
     id: String
 
     # Module key
-    key: String
+    key: HomePageArtworkModuleTypes
 
     # ID of related artist to target for related artist rails
     relatedArtistID: String
