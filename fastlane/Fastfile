@@ -163,8 +163,6 @@ lane :ship_beta_android_play_store do
   sentry_release_name = "android-#{vname}-#{vcode}"
   update_sentry_release_name(sentry_release_name: sentry_release_name)
 
-  upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
-
   # build again with flag set to false for release candidates
   flag_android_beta(is_android_beta: false)
   gradle(
@@ -173,6 +171,8 @@ lane :ship_beta_android_play_store do
     project_dir: "android/",
     flags: "--no-daemon --max-workers=1",
   )
+
+  upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
 
   supply(
     track: "alpha",
