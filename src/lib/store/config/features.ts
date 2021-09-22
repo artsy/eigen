@@ -144,6 +144,11 @@ export const features = defineFeatures({
     description: "Enable phone number validation",
     showInAdminMenu: true,
   },
+  AREnableTrove: {
+    readyForRelease: false,
+    description: "Enable Trove in homepage",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ef83e44a7f8f181fa67f9051a269a0f4 */
+/* @relayHash 00cba07ffa317fa897b6696cb79421cf */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -311,6 +311,7 @@ fragment Home_homePageBelow_1IwJ0h on HomePage {
     ...CollectionsRail_collectionsModule
   }
   ...HomeHero_homePage_1IwJ0h
+  ...Trove_trove_1IwJ0h
 }
 
 fragment Home_meBelow on Me {
@@ -345,6 +346,17 @@ fragment SmallTileRail_artworks on Artwork {
   }
   image {
     imageURL
+  }
+}
+
+fragment Trove_trove_1IwJ0h on HomePage {
+  heroUnits(platform: MOBILE) {
+    title
+    subtitle
+    creditLine
+    href
+    backgroundImageURL(version: $heroImageVersion)
+    id
   }
 }
 
@@ -1543,7 +1555,7 @@ return {
     ]
   },
   "params": {
-    "id": "ef83e44a7f8f181fa67f9051a269a0f4",
+    "id": "00cba07ffa317fa897b6696cb79421cf",
     "metadata": {},
     "name": "HomeBelowTheFoldQuery",
     "operationKind": "query",

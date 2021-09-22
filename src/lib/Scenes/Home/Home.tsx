@@ -35,6 +35,7 @@ import { _FragmentRefs, createRefetchContainer, graphql, RelayRefetchProp } from
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
+import { TroveContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProps {
@@ -76,6 +77,7 @@ const Home = (props: Props) => {
   )
 
   const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
+  const troveEchoFlag = useFeatureFlag("AREnableTrove")
 
   /*
   Ordering is defined in https://www.notion.so/artsy/App-Home-Screen-4841255ded3f47c9bcdb73185ee3f335.
@@ -98,6 +100,7 @@ const Home = (props: Props) => {
         type: "auction-results",
       } as const),
     !!articlesConnection && ({ type: "articles" } as const),
+    !!troveEchoFlag && ({ type: "trove" } as const),
     !!viewingRoomsEchoFlag && !!featured && ({ type: "viewing-rooms" } as const),
     collectionsModule &&
       ({
@@ -178,6 +181,8 @@ const Home = (props: Props) => {
                       scrollRef={scrollRefs.current[index]}
                     />
                   )
+                case "trove":
+                  return homePageBelow ? <TroveContainer trove={homePageBelow} /> : <></>
                 case "viewing-rooms":
                   return featured ? <ViewingRoomsHomeRail featured={featured} /> : <></>
                 case "auction-results":
@@ -270,6 +275,7 @@ export const HomeFragmentContainer = createRefetchContainer(
           ...CollectionsRail_collectionsModule
         }
         ...HomeHero_homePage @arguments(heroImageVersion: $heroImageVersion)
+        ...Trove_trove @arguments(heroImageVersion: $heroImageVersion)
       }
     `,
     meAbove: graphql`
