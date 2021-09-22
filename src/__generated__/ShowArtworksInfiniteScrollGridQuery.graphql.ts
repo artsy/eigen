@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 50f839d92c4732046558355cb36bcddf */
+/* @relayHash e945b37ffea25419cbec3c06038dedde */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -137,33 +137,12 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
         aspectRatio
       }
       ...ArtworkGridItem_artwork
-      ...MyCollectionArtworkListItem_artwork
     }
     ... on Node {
       __isNode: __typename
       id
     }
   }
-}
-
-fragment MyCollectionArtworkListItem_artwork on Artwork {
-  internalID
-  artist {
-    internalID
-    id
-  }
-  images {
-    url
-    isDefault
-  }
-  image {
-    aspectRatio
-  }
-  artistNames
-  medium
-  slug
-  title
-  date
 }
 
 fragment ShowArtworks_show_YCAiB on Show {
@@ -699,51 +678,6 @@ return {
                               (v10/*: any*/)
                             ],
                             "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Artist",
-                            "kind": "LinkedField",
-                            "name": "artist",
-                            "plural": false,
-                            "selections": [
-                              (v7/*: any*/),
-                              (v10/*: any*/)
-                            ],
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Image",
-                            "kind": "LinkedField",
-                            "name": "images",
-                            "plural": true,
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "url",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "isDefault",
-                                "storageKey": null
-                              }
-                            ],
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "medium",
-                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -785,7 +719,7 @@ return {
     ]
   },
   "params": {
-    "id": "50f839d92c4732046558355cb36bcddf",
+    "id": "e945b37ffea25419cbec3c06038dedde",
     "metadata": {},
     "name": "ShowArtworksInfiniteScrollGridQuery",
     "operationKind": "query",

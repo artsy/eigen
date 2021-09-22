@@ -1,6 +1,7 @@
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileSettings_me } from "__generated__/MyProfileSettings_me.graphql"
 import { MyProfileSettingsQuery } from "__generated__/MyProfileSettingsQuery.graphql"
+import { LoadFailureView } from "lib/Components/LoadFailureView"
 import { MenuItem } from "lib/Components/MenuItem"
 import { presentEmailComposer } from "lib/NativeModules/presentEmailComposer"
 import { navigate } from "lib/navigation/navigate"
@@ -9,6 +10,7 @@ import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Button, Flex, Sans, Separator, Spacer, useColor } from "palette"
 import React, { useCallback, useRef, useState } from "react"
 import { Alert, FlatList, RefreshControl, ScrollView } from "react-native"
@@ -194,6 +196,7 @@ export const MyProfileSettingsQueryRenderer: React.FC<{}> = ({}) => (
     render={renderWithPlaceholder({
       Container: MyProfileSettingsContainer,
       renderPlaceholder: () => <MyProfileSettingsPlaceholder />,
+      renderFallback: ({ retry }) => <FailedScreen retry={retry} />,
     })}
     variables={{}}
   />
@@ -211,6 +214,24 @@ export function confirmLogout() {
       onPress: () => GlobalStore.actions.signOut(),
     },
   ])
+}
+
+const FailedScreen: React.FC<{ retry: (() => void) | null }> = ({ retry }) => {
+  const screenHeight = useScreenDimensions().height
+  return (
+    <Flex flex={1}>
+      <LoadFailureView onRetry={retry || undefined} />
+      <Flex position={"absolute"} top={screenHeight / 1.5} bottom={0} left={0} right={0}>
+        <Spacer mb={1} />
+        <Flex flexDirection="row" alignItems="center" justifyContent="center" py={7.5} px="2" pr="15px">
+          <Button variant="primaryBlack" haptic onPress={confirmLogout} block>
+            Log Out{" "}
+          </Button>
+        </Flex>
+        <Spacer mb={1} />
+      </Flex>
+    </Flex>
+  )
 }
 
 /*

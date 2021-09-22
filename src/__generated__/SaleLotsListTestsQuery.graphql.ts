@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 71c1096d5f6f06012dba181af67d679a */
+/* @relayHash 45967506c5f4f37bf69b7fde2f3d42b2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -76,33 +76,12 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
         aspectRatio
       }
       ...ArtworkGridItem_artwork
-      ...MyCollectionArtworkListItem_artwork
     }
     ... on Node {
       __isNode: __typename
       id
     }
   }
-}
-
-fragment MyCollectionArtworkListItem_artwork on Artwork {
-  internalID
-  artist {
-    internalID
-    id
-  }
-  images {
-    url
-    isDefault
-  }
-  image {
-    aspectRatio
-  }
-  artistNames
-  medium
-  slug
-  title
-  date
 }
 
 fragment SaleArtworkListItem_artwork on Artwork {
@@ -263,43 +242,36 @@ v5 = {
   "storageKey": null
 },
 v6 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-},
-v7 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "String"
 },
-v8 = {
+v7 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "FormattedNumber"
 },
-v9 = {
+v8 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v10 = {
+v9 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v11 = {
+v10 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Int"
 },
-v12 = {
+v11 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -583,7 +555,13 @@ return {
                         "name": "title",
                         "storageKey": null
                       },
-                      (v6/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "internalID",
+                        "storageKey": null
+                      },
                       {
                         "alias": null,
                         "args": null,
@@ -691,51 +669,6 @@ return {
                           (v4/*: any*/)
                         ],
                         "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "Artist",
-                        "kind": "LinkedField",
-                        "name": "artist",
-                        "plural": false,
-                        "selections": [
-                          (v6/*: any*/),
-                          (v4/*: any*/)
-                        ],
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "Image",
-                        "kind": "LinkedField",
-                        "name": "images",
-                        "plural": true,
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "url",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "isDefault",
-                            "storageKey": null
-                          }
-                        ],
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "medium",
-                        "storageKey": null
                       }
                     ],
                     "storageKey": null
@@ -792,7 +725,7 @@ return {
     ]
   },
   "params": {
-    "id": "71c1096d5f6f06012dba181af67d679a",
+    "id": "45967506c5f4f37bf69b7fde2f3d42b2",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "saleArtworksConnection": {
@@ -801,7 +734,7 @@ return {
           "plural": false,
           "type": "SaleArtworksConnection"
         },
-        "saleArtworksConnection.__isArtworkConnectionInterface": (v7/*: any*/),
+        "saleArtworksConnection.__isArtworkConnectionInterface": (v6/*: any*/),
         "saleArtworksConnection.aggregations": {
           "enumValues": null,
           "nullable": true,
@@ -820,8 +753,8 @@ return {
           "plural": false,
           "type": "Int"
         },
-        "saleArtworksConnection.aggregations.counts.name": (v7/*: any*/),
-        "saleArtworksConnection.aggregations.counts.value": (v7/*: any*/),
+        "saleArtworksConnection.aggregations.counts.name": (v6/*: any*/),
+        "saleArtworksConnection.aggregations.counts.value": (v6/*: any*/),
         "saleArtworksConnection.aggregations.slice": {
           "enumValues": [
             "ARTIST",
@@ -839,37 +772,29 @@ return {
           "plural": false,
           "type": "FilterSaleArtworksCounts"
         },
-        "saleArtworksConnection.counts.followedArtists": (v8/*: any*/),
-        "saleArtworksConnection.counts.total": (v8/*: any*/),
+        "saleArtworksConnection.counts.followedArtists": (v7/*: any*/),
+        "saleArtworksConnection.counts.total": (v7/*: any*/),
         "saleArtworksConnection.edges": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "ArtworkEdgeInterface"
         },
-        "saleArtworksConnection.edges.__isNode": (v7/*: any*/),
-        "saleArtworksConnection.edges.__typename": (v7/*: any*/),
-        "saleArtworksConnection.edges.cursor": (v9/*: any*/),
-        "saleArtworksConnection.edges.id": (v10/*: any*/),
+        "saleArtworksConnection.edges.__isNode": (v6/*: any*/),
+        "saleArtworksConnection.edges.__typename": (v6/*: any*/),
+        "saleArtworksConnection.edges.cursor": (v8/*: any*/),
+        "saleArtworksConnection.edges.id": (v9/*: any*/),
         "saleArtworksConnection.edges.node": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Artwork"
         },
-        "saleArtworksConnection.edges.node.__typename": (v7/*: any*/),
-        "saleArtworksConnection.edges.node.artist": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Artist"
-        },
-        "saleArtworksConnection.edges.node.artist.id": (v10/*: any*/),
-        "saleArtworksConnection.edges.node.artist.internalID": (v10/*: any*/),
-        "saleArtworksConnection.edges.node.artistNames": (v9/*: any*/),
-        "saleArtworksConnection.edges.node.date": (v9/*: any*/),
-        "saleArtworksConnection.edges.node.href": (v9/*: any*/),
-        "saleArtworksConnection.edges.node.id": (v10/*: any*/),
+        "saleArtworksConnection.edges.node.__typename": (v6/*: any*/),
+        "saleArtworksConnection.edges.node.artistNames": (v8/*: any*/),
+        "saleArtworksConnection.edges.node.date": (v8/*: any*/),
+        "saleArtworksConnection.edges.node.href": (v8/*: any*/),
+        "saleArtworksConnection.edges.node.id": (v9/*: any*/),
         "saleArtworksConnection.edges.node.image": {
           "enumValues": null,
           "nullable": true,
@@ -882,39 +807,30 @@ return {
           "plural": false,
           "type": "Float"
         },
-        "saleArtworksConnection.edges.node.image.height": (v11/*: any*/),
-        "saleArtworksConnection.edges.node.image.small": (v9/*: any*/),
-        "saleArtworksConnection.edges.node.image.url": (v9/*: any*/),
-        "saleArtworksConnection.edges.node.image.width": (v11/*: any*/),
-        "saleArtworksConnection.edges.node.images": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": true,
-          "type": "Image"
-        },
-        "saleArtworksConnection.edges.node.images.isDefault": (v12/*: any*/),
-        "saleArtworksConnection.edges.node.images.url": (v9/*: any*/),
-        "saleArtworksConnection.edges.node.internalID": (v10/*: any*/),
-        "saleArtworksConnection.edges.node.medium": (v9/*: any*/),
+        "saleArtworksConnection.edges.node.image.height": (v10/*: any*/),
+        "saleArtworksConnection.edges.node.image.small": (v8/*: any*/),
+        "saleArtworksConnection.edges.node.image.url": (v8/*: any*/),
+        "saleArtworksConnection.edges.node.image.width": (v10/*: any*/),
+        "saleArtworksConnection.edges.node.internalID": (v9/*: any*/),
         "saleArtworksConnection.edges.node.partner": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Partner"
         },
-        "saleArtworksConnection.edges.node.partner.id": (v10/*: any*/),
-        "saleArtworksConnection.edges.node.partner.name": (v9/*: any*/),
+        "saleArtworksConnection.edges.node.partner.id": (v9/*: any*/),
+        "saleArtworksConnection.edges.node.partner.name": (v8/*: any*/),
         "saleArtworksConnection.edges.node.sale": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Sale"
         },
-        "saleArtworksConnection.edges.node.sale.displayTimelyAt": (v9/*: any*/),
-        "saleArtworksConnection.edges.node.sale.endAt": (v9/*: any*/),
-        "saleArtworksConnection.edges.node.sale.id": (v10/*: any*/),
-        "saleArtworksConnection.edges.node.sale.isAuction": (v12/*: any*/),
-        "saleArtworksConnection.edges.node.sale.isClosed": (v12/*: any*/),
+        "saleArtworksConnection.edges.node.sale.displayTimelyAt": (v8/*: any*/),
+        "saleArtworksConnection.edges.node.sale.endAt": (v8/*: any*/),
+        "saleArtworksConnection.edges.node.sale.id": (v9/*: any*/),
+        "saleArtworksConnection.edges.node.sale.isAuction": (v11/*: any*/),
+        "saleArtworksConnection.edges.node.sale.isClosed": (v11/*: any*/),
         "saleArtworksConnection.edges.node.saleArtwork": {
           "enumValues": null,
           "nullable": true,
@@ -927,33 +843,33 @@ return {
           "plural": false,
           "type": "SaleArtworkCounts"
         },
-        "saleArtworksConnection.edges.node.saleArtwork.counts.bidderPositions": (v8/*: any*/),
+        "saleArtworksConnection.edges.node.saleArtwork.counts.bidderPositions": (v7/*: any*/),
         "saleArtworksConnection.edges.node.saleArtwork.currentBid": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "SaleArtworkCurrentBid"
         },
-        "saleArtworksConnection.edges.node.saleArtwork.currentBid.display": (v9/*: any*/),
-        "saleArtworksConnection.edges.node.saleArtwork.id": (v10/*: any*/),
-        "saleArtworksConnection.edges.node.saleArtwork.lotLabel": (v9/*: any*/),
-        "saleArtworksConnection.edges.node.saleMessage": (v9/*: any*/),
-        "saleArtworksConnection.edges.node.slug": (v10/*: any*/),
-        "saleArtworksConnection.edges.node.title": (v9/*: any*/),
+        "saleArtworksConnection.edges.node.saleArtwork.currentBid.display": (v8/*: any*/),
+        "saleArtworksConnection.edges.node.saleArtwork.id": (v9/*: any*/),
+        "saleArtworksConnection.edges.node.saleArtwork.lotLabel": (v8/*: any*/),
+        "saleArtworksConnection.edges.node.saleMessage": (v8/*: any*/),
+        "saleArtworksConnection.edges.node.slug": (v9/*: any*/),
+        "saleArtworksConnection.edges.node.title": (v8/*: any*/),
         "saleArtworksConnection.pageInfo": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "PageInfo"
         },
-        "saleArtworksConnection.pageInfo.endCursor": (v9/*: any*/),
+        "saleArtworksConnection.pageInfo.endCursor": (v8/*: any*/),
         "saleArtworksConnection.pageInfo.hasNextPage": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "Boolean"
         },
-        "saleArtworksConnection.pageInfo.startCursor": (v9/*: any*/)
+        "saleArtworksConnection.pageInfo.startCursor": (v8/*: any*/)
       }
     },
     "name": "SaleLotsListTestsQuery",

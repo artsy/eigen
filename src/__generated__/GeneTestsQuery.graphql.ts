@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1790f0f4b24442021f6cf58c82a84e0a */
+/* @relayHash 4e2dfb8793b02b9ffc540cea3ad1ed09 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -190,33 +190,12 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
         aspectRatio
       }
       ...ArtworkGridItem_artwork
-      ...MyCollectionArtworkListItem_artwork
     }
     ... on Node {
       __isNode: __typename
       id
     }
   }
-}
-
-fragment MyCollectionArtworkListItem_artwork on Artwork {
-  internalID
-  artist {
-    internalID
-    id
-  }
-  images {
-    url
-    isDefault
-  }
-  image {
-    aspectRatio
-  }
-  artistNames
-  medium
-  slug
-  title
-  date
 }
 
 fragment RelatedArtist_artist on Artist {
@@ -834,51 +813,6 @@ return {
                               (v5/*: any*/)
                             ],
                             "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Artist",
-                            "kind": "LinkedField",
-                            "name": "artist",
-                            "plural": false,
-                            "selections": [
-                              (v4/*: any*/),
-                              (v5/*: any*/)
-                            ],
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Image",
-                            "kind": "LinkedField",
-                            "name": "images",
-                            "plural": true,
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "url",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "isDefault",
-                                "storageKey": null
-                              }
-                            ],
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "medium",
-                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -920,7 +854,7 @@ return {
     ]
   },
   "params": {
-    "id": "1790f0f4b24442021f6cf58c82a84e0a",
+    "id": "4e2dfb8793b02b9ffc540cea3ad1ed09",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "gene": {
@@ -1005,14 +939,6 @@ return {
           "type": "Artwork"
         },
         "gene.artworks.edges.node.__typename": (v11/*: any*/),
-        "gene.artworks.edges.node.artist": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Artist"
-        },
-        "gene.artworks.edges.node.artist.id": (v13/*: any*/),
-        "gene.artworks.edges.node.artist.internalID": (v13/*: any*/),
         "gene.artworks.edges.node.artistNames": (v14/*: any*/),
         "gene.artworks.edges.node.date": (v14/*: any*/),
         "gene.artworks.edges.node.href": (v14/*: any*/),
@@ -1025,16 +951,7 @@ return {
           "type": "Float"
         },
         "gene.artworks.edges.node.image.url": (v14/*: any*/),
-        "gene.artworks.edges.node.images": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": true,
-          "type": "Image"
-        },
-        "gene.artworks.edges.node.images.isDefault": (v16/*: any*/),
-        "gene.artworks.edges.node.images.url": (v14/*: any*/),
         "gene.artworks.edges.node.internalID": (v13/*: any*/),
-        "gene.artworks.edges.node.medium": (v14/*: any*/),
         "gene.artworks.edges.node.partner": {
           "enumValues": null,
           "nullable": true,

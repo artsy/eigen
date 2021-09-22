@@ -132,7 +132,13 @@ return {
           "storageKey": null
         },
         {
-          "args": null,
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "skipArtworkGridItem",
+              "value": true
+            }
+          ],
           "kind": "FragmentSpread",
           "name": "InfiniteScrollArtworksGrid_myCollectionConnection"
         }
@@ -144,5 +150,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '5e699218dbe8ef52b0e6bddf40f3c869';
+(node as any).hash = 'f5a944150e87a8853d9b269b93484bbc';
 export default node;

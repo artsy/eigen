@@ -31,7 +31,13 @@ export type InfiniteScrollArtworksGrid_myCollectionConnection$key = {
 
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": true,
+      "kind": "LocalArgument",
+      "name": "skipArtworkGridItem"
+    }
+  ],
   "kind": "Fragment",
   "metadata": null,
   "name": "InfiniteScrollArtworksGrid_myCollectionConnection",
@@ -117,9 +123,16 @@ const node: ReaderFragment = {
               "storageKey": null
             },
             {
-              "args": null,
-              "kind": "FragmentSpread",
-              "name": "ArtworkGridItem_artwork"
+              "condition": "skipArtworkGridItem",
+              "kind": "Condition",
+              "passingValue": false,
+              "selections": [
+                {
+                  "args": null,
+                  "kind": "FragmentSpread",
+                  "name": "ArtworkGridItem_artwork"
+                }
+              ]
             },
             {
               "args": null,
@@ -136,5 +149,5 @@ const node: ReaderFragment = {
   "type": "MyCollectionConnection",
   "abstractKey": null
 };
-(node as any).hash = 'b7a3fdd19b04b918203315d94570dbe8';
+(node as any).hash = 'e789684cec31a79f9a3a9a7548b781a4';
 export default node;

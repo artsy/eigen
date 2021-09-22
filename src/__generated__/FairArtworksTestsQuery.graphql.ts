@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 38447d46c74ad0b47936abf132c138cf */
+/* @relayHash d5dc737ccc3385ce39713501cec51669 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -113,33 +113,12 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
         aspectRatio
       }
       ...ArtworkGridItem_artwork
-      ...MyCollectionArtworkListItem_artwork
     }
     ... on Node {
       __isNode: __typename
       id
     }
   }
-}
-
-fragment MyCollectionArtworkListItem_artwork on Artwork {
-  internalID
-  artist {
-    internalID
-    id
-  }
-  images {
-    url
-    isDefault
-  }
-  image {
-    aspectRatio
-  }
-  artistNames
-  medium
-  slug
-  title
-  date
 }
 */
 
@@ -637,51 +616,6 @@ return {
                               (v6/*: any*/)
                             ],
                             "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Artist",
-                            "kind": "LinkedField",
-                            "name": "artist",
-                            "plural": false,
-                            "selections": [
-                              (v3/*: any*/),
-                              (v6/*: any*/)
-                            ],
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Image",
-                            "kind": "LinkedField",
-                            "name": "images",
-                            "plural": true,
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "url",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "isDefault",
-                                "storageKey": null
-                              }
-                            ],
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "medium",
-                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -723,7 +657,7 @@ return {
     ]
   },
   "params": {
-    "id": "38447d46c74ad0b47936abf132c138cf",
+    "id": "d5dc737ccc3385ce39713501cec51669",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": {
@@ -809,14 +743,6 @@ return {
           "type": "Artwork"
         },
         "fair.fairArtworks.edges.node.__typename": (v8/*: any*/),
-        "fair.fairArtworks.edges.node.artist": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Artist"
-        },
-        "fair.fairArtworks.edges.node.artist.id": (v10/*: any*/),
-        "fair.fairArtworks.edges.node.artist.internalID": (v10/*: any*/),
         "fair.fairArtworks.edges.node.artistNames": (v11/*: any*/),
         "fair.fairArtworks.edges.node.date": (v11/*: any*/),
         "fair.fairArtworks.edges.node.href": (v11/*: any*/),
@@ -834,16 +760,7 @@ return {
           "type": "Float"
         },
         "fair.fairArtworks.edges.node.image.url": (v11/*: any*/),
-        "fair.fairArtworks.edges.node.images": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": true,
-          "type": "Image"
-        },
-        "fair.fairArtworks.edges.node.images.isDefault": (v12/*: any*/),
-        "fair.fairArtworks.edges.node.images.url": (v11/*: any*/),
         "fair.fairArtworks.edges.node.internalID": (v10/*: any*/),
-        "fair.fairArtworks.edges.node.medium": (v11/*: any*/),
         "fair.fairArtworks.edges.node.partner": {
           "enumValues": null,
           "nullable": true,

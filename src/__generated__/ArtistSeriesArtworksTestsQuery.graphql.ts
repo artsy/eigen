@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 122968c86daf67d742260d14755c84e3 */
+/* @relayHash 50e55edd5fade4e3df287928b8a78731 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -107,33 +107,12 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
         aspectRatio
       }
       ...ArtworkGridItem_artwork
-      ...MyCollectionArtworkListItem_artwork
     }
     ... on Node {
       __isNode: __typename
       id
     }
   }
-}
-
-fragment MyCollectionArtworkListItem_artwork on Artwork {
-  internalID
-  artist {
-    internalID
-    id
-  }
-  images {
-    url
-    isDefault
-  }
-  image {
-    aspectRatio
-  }
-  artistNames
-  medium
-  slug
-  title
-  date
 }
 */
 
@@ -614,51 +593,6 @@ return {
                               (v5/*: any*/)
                             ],
                             "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Artist",
-                            "kind": "LinkedField",
-                            "name": "artist",
-                            "plural": false,
-                            "selections": [
-                              (v2/*: any*/),
-                              (v5/*: any*/)
-                            ],
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Image",
-                            "kind": "LinkedField",
-                            "name": "images",
-                            "plural": true,
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "url",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "isDefault",
-                                "storageKey": null
-                              }
-                            ],
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "medium",
-                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -699,7 +633,7 @@ return {
     ]
   },
   "params": {
-    "id": "122968c86daf67d742260d14755c84e3",
+    "id": "50e55edd5fade4e3df287928b8a78731",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artistSeries": {
@@ -784,14 +718,6 @@ return {
           "type": "Artwork"
         },
         "artistSeries.artistSeriesArtworks.edges.node.__typename": (v7/*: any*/),
-        "artistSeries.artistSeriesArtworks.edges.node.artist": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Artist"
-        },
-        "artistSeries.artistSeriesArtworks.edges.node.artist.id": (v9/*: any*/),
-        "artistSeries.artistSeriesArtworks.edges.node.artist.internalID": (v9/*: any*/),
         "artistSeries.artistSeriesArtworks.edges.node.artistNames": (v10/*: any*/),
         "artistSeries.artistSeriesArtworks.edges.node.date": (v10/*: any*/),
         "artistSeries.artistSeriesArtworks.edges.node.href": (v10/*: any*/),
@@ -809,16 +735,7 @@ return {
           "type": "Float"
         },
         "artistSeries.artistSeriesArtworks.edges.node.image.url": (v10/*: any*/),
-        "artistSeries.artistSeriesArtworks.edges.node.images": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": true,
-          "type": "Image"
-        },
-        "artistSeries.artistSeriesArtworks.edges.node.images.isDefault": (v11/*: any*/),
-        "artistSeries.artistSeriesArtworks.edges.node.images.url": (v10/*: any*/),
         "artistSeries.artistSeriesArtworks.edges.node.internalID": (v9/*: any*/),
-        "artistSeries.artistSeriesArtworks.edges.node.medium": (v10/*: any*/),
         "artistSeries.artistSeriesArtworks.edges.node.partner": {
           "enumValues": null,
           "nullable": true,

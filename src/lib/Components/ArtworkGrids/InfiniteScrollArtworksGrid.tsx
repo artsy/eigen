@@ -381,7 +381,8 @@ const styles = StyleSheet.create<Styles>({
 
 export const InfiniteScrollArtworksGridContainer = createFragmentContainer(InfiniteScrollArtworksGridMapper, {
   connection: graphql`
-    fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
+    fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface
+    @argumentDefinitions(skipMyCollection: { type: "Boolean", defaultValue: true }) {
       pageInfo {
         hasNextPage
         startCursor
@@ -395,7 +396,7 @@ export const InfiniteScrollArtworksGridContainer = createFragmentContainer(Infin
             aspectRatio
           }
           ...ArtworkGridItem_artwork
-          ...MyCollectionArtworkListItem_artwork
+          ...MyCollectionArtworkListItem_artwork @skip(if: $skipMyCollection)
         }
       }
     }
@@ -407,7 +408,8 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
   InfiniteScrollArtworksGridMapper,
   {
     myCollectionConnection: graphql`
-      fragment InfiniteScrollArtworksGrid_myCollectionConnection on MyCollectionConnection {
+      fragment InfiniteScrollArtworksGrid_myCollectionConnection on MyCollectionConnection
+      @argumentDefinitions(skipArtworkGridItem: { type: "Boolean", defaultValue: true }) {
         pageInfo {
           hasNextPage
           startCursor
@@ -420,7 +422,7 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
             image {
               aspectRatio
             }
-            ...ArtworkGridItem_artwork
+            ...ArtworkGridItem_artwork @skip(if: $skipArtworkGridItem)
             ...MyCollectionArtworkListItem_artwork
           }
         }

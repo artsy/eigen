@@ -158,7 +158,7 @@ export const MyCollectionContainer = createPaginationContainer(
               id
             }
           }
-          ...InfiniteScrollArtworksGrid_myCollectionConnection
+          ...InfiniteScrollArtworksGrid_myCollectionConnection @arguments(skipArtworkGridItem: true)
         }
       }
     `,

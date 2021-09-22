@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 523ddbba9533e2f32a5b368471c57bf8 */
+/* @relayHash e828ff0222243db5f075d49ba9b154d9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -72,15 +72,6 @@ export type SaleLotsListQueryRawResponse = {
                     readonly name: string | null;
                     readonly id: string;
                 }) | null;
-                readonly artist?: ({
-                    readonly internalID: string;
-                    readonly id: string;
-                }) | null;
-                readonly images?: ReadonlyArray<({
-                    readonly url: string | null;
-                    readonly isDefault: boolean | null;
-                }) | null> | null;
-                readonly medium?: string | null;
             }) | null;
             readonly cursor: string | null;
             readonly id: string;
@@ -168,33 +159,12 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
         aspectRatio
       }
       ...ArtworkGridItem_artwork
-      ...MyCollectionArtworkListItem_artwork
     }
     ... on Node {
       __isNode: __typename
       id
     }
   }
-}
-
-fragment MyCollectionArtworkListItem_artwork on Artwork {
-  internalID
-  artist {
-    internalID
-    id
-  }
-  images {
-    url
-    isDefault
-  }
-  image {
-    aspectRatio
-  }
-  artistNames
-  medium
-  slug
-  title
-  date
 }
 
 fragment SaleArtworkListItem_artwork on Artwork {
@@ -395,13 +365,6 @@ v17 = {
   "args": null,
   "kind": "ScalarField",
   "name": "__typename",
-  "storageKey": null
-},
-v18 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
   "storageKey": null
 };
 return {
@@ -715,7 +678,13 @@ return {
                         "name": "title",
                         "storageKey": null
                       },
-                      (v18/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "internalID",
+                        "storageKey": null
+                      },
                       {
                         "alias": null,
                         "args": null,
@@ -823,51 +792,6 @@ return {
                           (v16/*: any*/)
                         ],
                         "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "Artist",
-                        "kind": "LinkedField",
-                        "name": "artist",
-                        "plural": false,
-                        "selections": [
-                          (v18/*: any*/),
-                          (v16/*: any*/)
-                        ],
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "Image",
-                        "kind": "LinkedField",
-                        "name": "images",
-                        "plural": true,
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "url",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "isDefault",
-                            "storageKey": null
-                          }
-                        ],
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "medium",
-                        "storageKey": null
                       }
                     ],
                     "storageKey": null
@@ -924,7 +848,7 @@ return {
     ]
   },
   "params": {
-    "id": "523ddbba9533e2f32a5b368471c57bf8",
+    "id": "e828ff0222243db5f075d49ba9b154d9",
     "metadata": {},
     "name": "SaleLotsListQuery",
     "operationKind": "query",
