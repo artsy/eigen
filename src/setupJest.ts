@@ -1,3 +1,5 @@
+// @ts-ignore
+import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js"
 import "@testing-library/jest-native/extend-expect"
 import "jest-extended"
 
@@ -53,18 +55,7 @@ jest.mock("tipsi-stripe", () => ({
 // Mock this separately so react-tracking can be unmocked in tests but not result in the `window` global being accessed.
 jest.mock("react-tracking/build/dispatchTrackingEvent")
 
-jest.mock("@react-native-community/netinfo", () => {
-  return {
-    fetch: jest.fn(() =>
-      Promise.resolve({
-        type: "cellular",
-        details: {
-          cellularGeneration: "5g",
-        },
-      })
-    ),
-  }
-})
+jest.mock("@react-native-community/netinfo", () => mockRNCNetInfo)
 
 jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
   NotificationsManager: new (require("events").EventEmitter)(),

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7f43da9fce7de1961642a2483a98f48c */
+/* @relayHash a117f42897b1c8689f73e8e5c5edceb4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -234,7 +234,6 @@ fragment MyCollectionArtworkInsights_artwork on Artwork {
     name
     id
   }
-  ...MyCollectionArtworkPriceEstimate_artwork
   ...MyCollectionArtworkArtistAuctionResults_artwork
   ...MyCollectionArtworkArtistArticles_artwork
   ...MyCollectionArtworkArtistMarket_artwork
@@ -243,7 +242,6 @@ fragment MyCollectionArtworkInsights_artwork on Artwork {
 
 fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights {
   ...MyCollectionArtworkDemandIndex_marketPriceInsights
-  ...MyCollectionArtworkPriceEstimate_marketPriceInsights
   ...MyCollectionArtworkArtistMarket_marketPriceInsights
 }
 
@@ -264,31 +262,6 @@ fragment MyCollectionArtworkMeta_artwork on Artwork {
   metric
   title
   width
-}
-
-fragment MyCollectionArtworkPriceEstimate_artwork on Artwork {
-  pricePaid {
-    display
-  }
-  internalID
-  sizeBucket
-  slug
-}
-
-fragment MyCollectionArtworkPriceEstimate_marketPriceInsights on MarketPriceInsights {
-  highRangeCents
-  largeHighRangeCents
-  largeLowRangeCents
-  largeMidRangeCents
-  lowRangeCents
-  mediumHighRangeCents
-  mediumLowRangeCents
-  mediumMidRangeCents
-  midRangeCents
-  smallHighRangeCents
-  smallLowRangeCents
-  smallMidRangeCents
-  artsyQInventory
 }
 */
 
@@ -1010,97 +983,6 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "highRangeCents",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "largeHighRangeCents",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "largeLowRangeCents",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "largeMidRangeCents",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "lowRangeCents",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "mediumHighRangeCents",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "mediumLowRangeCents",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "mediumMidRangeCents",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "midRangeCents",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "smallHighRangeCents",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "smallLowRangeCents",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "smallMidRangeCents",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "artsyQInventory",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
             "name": "annualLotsSold",
             "storageKey": null
           },
@@ -1146,7 +1028,7 @@ return {
     ]
   },
   "params": {
-    "id": "7f43da9fce7de1961642a2483a98f48c",
+    "id": "a117f42897b1c8689f73e8e5c5edceb4",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",

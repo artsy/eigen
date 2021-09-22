@@ -12,7 +12,11 @@ export const ShipsToSection: React.FC<Props> = ({ address }) => {
   if (!address.requestedFulfillment || address.requestedFulfillment.__typename === "CommercePickup") {
     return null
   }
-  if (address.requestedFulfillment.__typename === "CommerceShip") {
+
+  if (
+    address.requestedFulfillment.__typename === "CommerceShip" ||
+    address.requestedFulfillment.__typename === "CommerceShipArta"
+  ) {
     const { city, addressLine1, addressLine2, region, postalCode, country, phoneNumber } = address.requestedFulfillment
     const addedComma = city ? "," : ""
     return (
@@ -53,6 +57,9 @@ export const ShipsToSectionFragmentContainer = createFragmentContainer(ShipsToSe
   address: graphql`
     fragment ShipsToSection_address on CommerceOrder {
       requestedFulfillment {
+        ... on CommercePickup {
+          __typename
+        }
         ... on CommerceShip {
           __typename
           addressLine1
@@ -63,8 +70,15 @@ export const ShipsToSectionFragmentContainer = createFragmentContainer(ShipsToSe
           postalCode
           region
         }
-        ... on CommercePickup {
+        ... on CommerceShipArta {
           __typename
+          addressLine1
+          addressLine2
+          city
+          country
+          phoneNumber
+          postalCode
+          region
         }
       }
     }

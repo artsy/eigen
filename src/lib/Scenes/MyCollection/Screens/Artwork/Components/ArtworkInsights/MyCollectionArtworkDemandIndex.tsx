@@ -51,41 +51,25 @@ const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexPro
 }
 
 const DemandRankDetails: React.FC<{ demandRank: number }> = ({ demandRank }) => {
-  const Bubble: React.FC<{ title: string; subTitle: string }> = ({ title, subTitle }) => (
+  const Bubble: React.FC<{ title: string }> = ({ title }) => (
     <Box>
       <Text>{title}</Text>
-      <Text color="black60">{subTitle}</Text>
     </Box>
   )
 
   const getContent = () => {
     switch (true) {
       case demandRank >= 9: {
-        return (
-          <Bubble
-            title="Very Strong Demand (> 9.0)"
-            subTitle="This is a great time to sell. Works like these are highly sought after."
-          />
-        )
+        return <Bubble title="Very Strong Demand (> 9.0)" />
       }
       case demandRank >= 7 && demandRank < 9: {
-        return (
-          <Bubble
-            title="Strong Demand (7.0 – 9.0)"
-            subTitle="There are more collectors looking to buy works like these than there are available."
-          />
-        )
+        return <Bubble title="Strong Demand (7.0 – 9.0)" />
       }
       case demandRank >= 4 && demandRank < 7: {
-        return <Bubble title="Stable Market (4.0 – 7.0)" subTitle="The market is neutral for buying and selling." />
+        return <Bubble title="Stable Market (4.0 – 7.0)" />
       }
       case demandRank < 4: {
-        return (
-          <Bubble
-            title="Less Active Market  (< 4.0)"
-            subTitle="The market for selling isn’t very active yet. We will notify you when the market changes."
-          />
-        )
+        return <Bubble title="Less Active Market  (< 4.0)" />
       }
     }
   }

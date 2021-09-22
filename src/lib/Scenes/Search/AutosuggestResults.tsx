@@ -29,8 +29,9 @@ const AutosuggestResultsFlatList: React.FC<{
   results: AutosuggestResults_results | null
   relay: RelayPaginationProp
   showResultType?: boolean
+  showQuickNavigationButtons?: boolean
   onResultPress?: OnResultPress
-}> = ({ query, results: latestResults, relay, showResultType, onResultPress }) => {
+}> = ({ query, results: latestResults, relay, showResultType, showQuickNavigationButtons, onResultPress }) => {
   const space = useSpace()
   const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
 
@@ -125,7 +126,7 @@ const AutosuggestResultsFlatList: React.FC<{
               result={item}
               showResultType={showResultType}
               onResultPress={onResultPress}
-              showQuickNavigationButtons
+              showQuickNavigationButtons={showQuickNavigationButtons}
             />
           </Flex>
         )
@@ -198,9 +199,10 @@ export const AutosuggestResults: React.FC<{
   query: string
   entities?: AutosuggestResultsQueryVariables["entities"]
   showResultType?: boolean
+  showQuickNavigationButtons?: boolean
   onResultPress?: OnResultPress
 }> = React.memo(
-  ({ query, entities, showResultType, onResultPress }) => {
+  ({ query, entities, showResultType, showQuickNavigationButtons, onResultPress }) => {
     return (
       <QueryRenderer<AutosuggestResultsQuery>
         render={({ props, error }) => {
@@ -225,6 +227,7 @@ export const AutosuggestResults: React.FC<{
               query={query}
               results={props}
               showResultType={showResultType}
+              showQuickNavigationButtons={showQuickNavigationButtons}
               onResultPress={onResultPress}
             />
           )
