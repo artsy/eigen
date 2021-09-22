@@ -5,7 +5,7 @@ set -euxo pipefail
 
 DISTRIBUTION_TARGET="${1-"PLAY_STORE"}"
 if [ $DISTRIBUTION_TARGET == "FIREBASE" ]; then
-		bundle exec fastlane ship_beta_android_firebase
+  bundle exec fastlane ship_beta_android_firebase
 elif [ $DISTRIBUTION_TARGET == "PLAY_STORE" ]; then
-		bundle exec fastlane ship_beta_android_play_store
+  bundle exec fastlane ship_beta_android_play_store
 fi
