@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4f4847703a1096c6483d004505aa55fa */
+/* @relayHash 2deb519c2c3f0babb6886e2c84b60260 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -192,6 +192,7 @@ fragment SoldBySection_soldBy on CommerceOrder {
 
 fragment SummarySection_section on CommerceOrder {
   __isCommerceOrder: __typename
+  mode
   buyerTotal(precision: 2)
   taxTotal(precision: 2)
   shippingTotal(precision: 2)
@@ -205,6 +206,13 @@ fragment SummarySection_section on CommerceOrder {
         }
         id
       }
+    }
+  }
+  ... on CommerceOfferOrder {
+    lastOffer {
+      amount(precision: 2)
+      fromParticipant
+      id
     }
   }
 }
@@ -720,6 +728,13 @@ return {
           },
           {
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "mode",
+            "storageKey": null
+          },
+          {
+            "alias": null,
             "args": (v7/*: any*/),
             "kind": "ScalarField",
             "name": "buyerTotal",
@@ -772,14 +787,47 @@ return {
             ],
             "storageKey": null
           },
-          (v5/*: any*/)
+          (v5/*: any*/),
+          {
+            "kind": "InlineFragment",
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "CommerceOffer",
+                "kind": "LinkedField",
+                "name": "lastOffer",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": (v7/*: any*/),
+                    "kind": "ScalarField",
+                    "name": "amount",
+                    "storageKey": "amount(precision:2)"
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "fromParticipant",
+                    "storageKey": null
+                  },
+                  (v5/*: any*/)
+                ],
+                "storageKey": null
+              }
+            ],
+            "type": "CommerceOfferOrder",
+            "abstractKey": null
+          }
         ],
         "storageKey": "commerceOrder(id:\"order-id\")"
       }
     ]
   },
   "params": {
-    "id": "4f4847703a1096c6483d004505aa55fa",
+    "id": "2deb519c2c3f0babb6886e2c84b60260",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "commerceOrder": {
@@ -803,6 +851,23 @@ return {
         "commerceOrder.creditCard.id": (v10/*: any*/),
         "commerceOrder.creditCard.lastDigits": (v8/*: any*/),
         "commerceOrder.id": (v10/*: any*/),
+        "commerceOrder.lastOffer": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceOffer"
+        },
+        "commerceOrder.lastOffer.amount": (v9/*: any*/),
+        "commerceOrder.lastOffer.fromParticipant": {
+          "enumValues": [
+            "BUYER",
+            "SELLER"
+          ],
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceOrderParticipantEnum"
+        },
+        "commerceOrder.lastOffer.id": (v10/*: any*/),
         "commerceOrder.lineItems": {
           "enumValues": null,
           "nullable": true,
@@ -901,6 +966,15 @@ return {
         "commerceOrder.lineItems.edges.node.shipment.status": (v9/*: any*/),
         "commerceOrder.lineItems.edges.node.shipment.trackingNumber": (v9/*: any*/),
         "commerceOrder.lineItems.edges.node.shipment.trackingUrl": (v9/*: any*/),
+        "commerceOrder.mode": {
+          "enumValues": [
+            "BUY",
+            "OFFER"
+          ],
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceOrderModeEnum"
+        },
         "commerceOrder.requestedFulfillment": {
           "enumValues": null,
           "nullable": true,

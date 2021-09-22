@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c68481dd62a91ad45bcf76a2ff430d6d */
+/* @relayHash c14260a83f530dba6bb284d9de04736f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -196,6 +196,7 @@ fragment SoldBySection_soldBy on CommerceOrder {
 
 fragment SummarySection_section on CommerceOrder {
   __isCommerceOrder: __typename
+  mode
   buyerTotal(precision: 2)
   taxTotal(precision: 2)
   shippingTotal(precision: 2)
@@ -209,6 +210,13 @@ fragment SummarySection_section on CommerceOrder {
         }
         id
       }
+    }
+  }
+  ... on CommerceOfferOrder {
+    lastOffer {
+      amount(precision: 2)
+      fromParticipant
+      id
     }
   }
 }
@@ -713,6 +721,13 @@ return {
           },
           {
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "mode",
+            "storageKey": null
+          },
+          {
+            "alias": null,
             "args": (v8/*: any*/),
             "kind": "ScalarField",
             "name": "buyerTotal",
@@ -765,14 +780,47 @@ return {
             ],
             "storageKey": null
           },
-          (v6/*: any*/)
+          (v6/*: any*/),
+          {
+            "kind": "InlineFragment",
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "CommerceOffer",
+                "kind": "LinkedField",
+                "name": "lastOffer",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": (v8/*: any*/),
+                    "kind": "ScalarField",
+                    "name": "amount",
+                    "storageKey": "amount(precision:2)"
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "fromParticipant",
+                    "storageKey": null
+                  },
+                  (v6/*: any*/)
+                ],
+                "storageKey": null
+              }
+            ],
+            "type": "CommerceOfferOrder",
+            "abstractKey": null
+          }
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "c68481dd62a91ad45bcf76a2ff430d6d",
+    "id": "c14260a83f530dba6bb284d9de04736f",
     "metadata": {},
     "name": "OrderDetailsQuery",
     "operationKind": "query",
