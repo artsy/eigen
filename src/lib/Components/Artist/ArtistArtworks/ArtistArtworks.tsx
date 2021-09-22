@@ -21,7 +21,7 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { Box, Separator, Spacer } from "palette"
 import React, { useContext, useEffect, useMemo, useState } from "react"
-import { Platform } from "react-native"
+import { Platform, Text } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { SavedSearchBannerQueryRender } from "./SavedSearchBanner"
@@ -186,7 +186,12 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     if (artworksCount === 0) {
       return (
         <Box mb="80px" pt={1}>
-          <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} trackClear={trackClear} />
+          <FilteredArtworkGridZeroState
+            id={artist.id}
+            slug={artist.slug}
+            trackClear={trackClear}
+            hideClearButton={!appliedFilters.length}
+          />
         </Box>
       )
     } else {

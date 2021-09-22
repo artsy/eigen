@@ -3,7 +3,7 @@ import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFoll
 import { userHadMeaningfulInteraction } from "lib/NativeModules/Events"
 import { formatLargeNumberOfItems } from "lib/utils/formatLargeNumberOfItems"
 import { Box, bullet, Button, Flex, Sans, Spacer } from "palette"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Text } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -20,8 +20,14 @@ interface Props {
 export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
   const { trackEvent } = useTracking()
 
-  const [isFollowedChanging, setIsFollowedChanging] = useState<boolean>(false)
-  const followersCount = artist.counts?.follows ?? 0
+  const [isFollowedChanging, setIsFollowedChanging] = useState(false)
+  const [followersCount, setFollowersCount] = useState(0)
+
+  useEffect(() => {
+    if (artist?.counts?.follows) {
+      setFollowersCount(artist.counts.follows)
+    }
+  }, [artist])
 
   const getBirthdayString = () => {
     const birthday = artist.birthday
@@ -119,33 +125,33 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
     <Box px={2} pt={6} pb={1}>
       <Sans size="8">{artist.name}</Sans>
       <Spacer mb={1} />
-      {Boolean(followersCount || bylineRequired) && (
-        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-          <Flex flex={1}>
-            {!!bylineRequired && (
-              <Sans mr={1} size="3t">
-                {descriptiveString}
-              </Sans>
-            )}
-            <Sans size="3t">
-              {formatLargeNumberOfItems(artist.counts?.artworks ?? 0, "work")}
-              {` ${bullet} `}
-              {formatLargeNumberOfItems(artist.counts?.follows ?? 0, "follower")}
+
+      <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+        <Flex flex={1}>
+          {!!bylineRequired && (
+            <Sans mr={1} size="3t">
+              {descriptiveString}
             </Sans>
-          </Flex>
-          <Flex>
-            <Button
-              variant={artist.isFollowed ? "secondaryOutline" : "primaryBlack"}
-              onPress={handleFollowChange}
-              size="small"
-              longestText="Following"
-              haptic
-            >
-              {artist.isFollowed ? "Following" : "Follow"}
-            </Button>
-          </Flex>
+          )}
+          <Sans size="3t">
+            {formatLargeNumberOfItems(artist.counts?.artworks ?? 0, "work")}
+            {` ${bullet} `}
+            {formatLargeNumberOfItems(followersCount, "follower")}
+          </Sans>
         </Flex>
-      )}
+
+        <Flex>
+          <Button
+            variant={artist.isFollowed ? "secondaryOutline" : "primaryBlack"}
+            onPress={handleFollowChange}
+            size="small"
+            longestText="Following"
+            haptic
+          >
+            {artist.isFollowed ? "Following" : "Follow"}
+          </Button>
+        </Flex>
+      </Flex>
     </Box>
   )
 }
