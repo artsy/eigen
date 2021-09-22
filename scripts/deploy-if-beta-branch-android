@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+source ./scripts/source-for-bash-env
+
+if [ "${LOCAL_BRANCH}" == "beta-android" ]; then
+	DISTRIBUTION_TARGET="${1-"PLAY_STORE"}"
+	if [ $DISTRIBUTION_TARGET == "FIREBASE" ]; then
+		./scripts/distribute-android-firebase
+	elif [ $DISTRIBUTION_TARGET == "PLAY_STORE" ]; then
+		./scripts/distribute-android-play-store
+	fi
+fi

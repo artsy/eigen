@@ -409,7 +409,7 @@ jobs:
           branch: beta-android
       - run:
           name: Deploy if beta - firebase
-          command: ./scripts/deploy-if-beta-branch-android-firebase
+          command: ./scripts/deploy-if-beta-branch-android FIREBASE
 
   build-test-app-android-play-store:
     environment:
@@ -453,7 +453,7 @@ jobs:
           branch: beta-android
       - run:
           name: Deploy if beta - play store
-          command: ./scripts/deploy-if-beta-branch-android-play-store
+          command: ./scripts/deploy-if-beta-branch-android PLAY_STORE
 
 
   promote-beta-to-app-store:
