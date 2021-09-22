@@ -6,7 +6,7 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeader"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Sans } from "palette"
+import { Button, Sans } from "palette"
 
 jest.unmock("react-relay")
 
@@ -45,6 +45,16 @@ describe("ArtistHeader", () => {
     })
 
     expect(tree.root.findAllByType(Sans)[0].props.children).toMatch("Marcel Duchamp")
+  })
+
+  it("displays follow button for artist", () => {
+    const tree = renderWithWrappers(<TestRenderer />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Artist: () => mockArtist,
+    })
+
+    expect(tree.root.findAllByType(Button)[0].props.children).toMatch("Follow")
   })
 })
 
