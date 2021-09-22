@@ -135,8 +135,12 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
           )}
           <Sans size="3t">
             {formatLargeNumberOfItems(artist.counts?.artworks ?? 0, "work")}
-            {` ${bullet} `}
-            {formatLargeNumberOfItems(followersCount, "follower")}
+            {followersCount > 1 && (
+              <>
+                {` ${bullet} `}
+                {formatLargeNumberOfItems(followersCount, "follower")}
+              </>
+            )}
           </Sans>
         </Flex>
 
