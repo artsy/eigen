@@ -1,78 +1,24 @@
 import { OwnerType } from "@artsy/cohesion"
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
-import { MenuItem } from "lib/Components/MenuItem"
-import { presentEmailComposer } from "lib/NativeModules/presentEmailComposer"
-import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
-import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import { times } from "lodash"
-import { Flex, Join, Sans, Separator, Spacer } from "palette"
-import React, { useCallback, useRef, useState } from "react"
-import { Alert, FlatList, RefreshControl, ScrollView } from "react-native"
+import { Flex, Join, Separator } from "palette"
+import React from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
+import { MyCollectionAndSavedWorks, Tab } from "./MyCollectionAndSavedWorks"
+import { OldMyProfileSettings } from "./MyProfileSettings"
 
-const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
-  const showOrderHistory = useFeatureFlag("AREnableOrderHistoryOption")
-  const showSavedAddresses = useFeatureFlag("AREnableSavedAddresses")
-  const showSavedSearchV2 = useFeatureFlag("AREnableSavedSearchV2")
-  const listRef = useRef<FlatList<any>>(null)
-  const recentlySavedArtworks = extractNodes(me?.followsAndSaves?.artworksConnection)
+export const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const shouldDisplayMyCollection = me?.labFeatures?.includes("My Collection")
-  const [isRefreshing, setIsRefreshing] = useState(false)
-
-  const onRefresh = useCallback(() => {
-    setIsRefreshing(true)
-    relay.refetch(() => {
-      setIsRefreshing(false)
-      listRef.current?.scrollToOffset({ offset: 0, animated: false })
-    })
-  }, [])
-
-  return (
-    <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
-      <Sans size="8" mx="2" mt="3">
-        {me?.name}
-      </Sans>
-      <Separator my={2} />
-      <SectionHeading title="Favorites" />
-      {!!shouldDisplayMyCollection && (
-        <MenuItem isBeta={true} title="My Collection" onPress={() => navigate("my-collection")} />
-      )}
-      {!!showSavedSearchV2 && (
-        <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />
-      )}
-      <MenuItem title="Saves and follows" onPress={() => navigate("favorites")} />
-      {!!recentlySavedArtworks.length && (
-        <SmallTileRailContainer artworks={recentlySavedArtworks} listRef={listRef} contextModule={null as any} />
-      )}
-      <Separator mt={3} mb={2} />
-      <SectionHeading title="Account Settings" />
-      <MenuItem title="Account" onPress={() => navigate("my-account")} />
-      {!!showOrderHistory && <MenuItem title="Order History" onPress={() => navigate("/orders")} />}
-      <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
-
-      <MenuItem title="Push notifications" onPress={() => navigate("my-profile/push-notifications")} />
-
-      {!!showSavedAddresses && (
-        <MenuItem title="Saved Addresses" onPress={() => navigate("my-profile/saved-addresses")} />
-      )}
-      <MenuItem
-        title="Send feedback"
-        onPress={() => presentEmailComposer("support@artsy.net", "Feedback from the Artsy app")}
-      />
-      <MenuItem title="Personal data request" onPress={() => navigate("privacy-request")} />
-      <MenuItem title="About" onPress={() => navigate("about")} />
-      <MenuItem title="Log out" onPress={confirmLogout} chevron={null} />
-      <Spacer mb={1} />
-    </ScrollView>
-  )
+  if (shouldDisplayMyCollection) {
+    return <MyCollectionAndSavedWorks me={me} initialTab={Tab.collection} />
+  }
+  return <OldMyProfileSettings me={me} relay={relay} />
 }
 
 export const MyProfilePlaceholder: React.FC<{}> = () => (
@@ -103,12 +49,6 @@ export const MyProfilePlaceholder: React.FC<{}> = () => (
   </Flex>
 )
 
-const SectionHeading: React.FC<{ title: string }> = ({ title }) => (
-  <Sans size="3" color="black60" mb="1" mx="2">
-    {title}
-  </Sans>
-)
-
 export const MyProfileContainer = createRefetchContainer(
   MyProfile,
   {
@@ -116,6 +56,7 @@ export const MyProfileContainer = createRefetchContainer(
       fragment MyProfile_me on Me {
         name
         labFeatures
+        createdAt
         followsAndSaves {
           artworksConnection(first: 10, private: true) {
             edges {
@@ -157,17 +98,3 @@ export const MyProfileQueryRenderer: React.FC<{}> = ({}) => (
     />
   </ProvideScreenTrackingWithCohesionSchema>
 )
-
-export function confirmLogout() {
-  Alert.alert("Log out?", "Are you sure you want to log out?", [
-    {
-      text: "Cancel",
-      style: "cancel",
-    },
-    {
-      text: "Log out",
-      style: "destructive",
-      onPress: () => GlobalStore.actions.signOut(),
-    },
-  ])
-}

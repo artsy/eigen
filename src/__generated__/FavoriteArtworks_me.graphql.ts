@@ -5,6 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type FavoriteArtworks_me = {
+    readonly labFeatures: ReadonlyArray<string>;
     readonly followsAndSaves: {
         readonly artworks: {
             readonly pageInfo: {
@@ -59,6 +60,13 @@ const node: ReaderFragment = {
   },
   "name": "FavoriteArtworks_me",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "labFeatures",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": null,
@@ -171,5 +179,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '18cca48bc32f0ad88078d4b8bbef7d92';
+(node as any).hash = '36aca7a9ba45b593749fc9396cb5a1b2';
 export default node;

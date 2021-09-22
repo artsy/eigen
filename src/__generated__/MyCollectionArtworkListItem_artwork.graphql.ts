@@ -13,10 +13,14 @@ export type MyCollectionArtworkListItem_artwork = {
         readonly url: string | null;
         readonly isDefault: boolean | null;
     } | null> | null;
+    readonly image: {
+        readonly aspectRatio: number;
+    } | null;
     readonly artistNames: string | null;
     readonly medium: string | null;
     readonly slug: string;
     readonly title: string | null;
+    readonly date: string | null;
     readonly " $refType": "MyCollectionArtworkListItem_artwork";
 };
 export type MyCollectionArtworkListItem_artwork$data = MyCollectionArtworkListItem_artwork;
@@ -82,6 +86,24 @@ return {
     {
       "alias": null,
       "args": null,
+      "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "image",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "aspectRatio",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
       "kind": "ScalarField",
       "name": "artistNames",
       "storageKey": null
@@ -106,11 +128,18 @@ return {
       "kind": "ScalarField",
       "name": "title",
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "date",
+      "storageKey": null
     }
   ],
   "type": "Artwork",
   "abstractKey": null
 };
 })();
-(node as any).hash = 'edbe91f76afc8fa4e7fece2462373205';
+(node as any).hash = '0e467cea5c8f7c58823b7fe202fcac48';
 export default node;

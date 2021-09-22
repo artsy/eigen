@@ -74,7 +74,6 @@ describe("MyCollectionArtworkListItem", () => {
     const text = extractText(wrapper.root)
     expect(text).toContain("artistNames")
     expect(text).toContain("title")
-    expect(text).toContain("medium")
   })
 
   it("navigates to artwork detail on tap", () => {
