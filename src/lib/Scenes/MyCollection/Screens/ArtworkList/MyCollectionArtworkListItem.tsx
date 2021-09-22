@@ -30,7 +30,7 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
     (state) => state.myCollection.artwork.sessionState.lastUploadedPhoto
   )
 
-  // consistent with how sections are derived in MyCollectionGrid
+  // consistent with how sections are derived in InfiniteScrollArtworksGrid
   const screen = useScreenDimensions()
   const isPadHorizontal = isPad() && screen.width > screen.height
   const sectionCount = isPad() ? (isPadHorizontal ? 4 : 3) : 2

@@ -112,7 +112,7 @@ const InfiniteScrollArtworksGridMapper: React.FC<MapperProps & Omit<Props, "isMy
   const isMyCollection = !!myCollectionConnection && !connection
 
   if (!theConnectionProp) {
-    throw new Error("")
+    throw new Error("No connection prop supplied to InfiniteScrollArtworksGrid")
   }
   return (
     <InfiniteScrollArtworksGrid

@@ -61,14 +61,7 @@ const MyCollection: React.FC<{
   useEffect(() => {
     if (artworks.length) {
       setJSX(
-        <View
-          style={{
-            flexDirection: "row",
-            alignSelf: "flex-end",
-            paddingHorizontal: space(2),
-            paddingVertical: space(1),
-          }}
-        >
+        <Flex flexDirection="row" alignSelf="flex-end" px={2} py={1}>
           <Button
             data-test-id="add-artwork-button-non-zero-state"
             size="small"
@@ -81,7 +74,7 @@ const MyCollection: React.FC<{
           >
             Add Works
           </Button>
-        </View>
+        </Flex>
       )
     } else {
       // remove already set JSX
