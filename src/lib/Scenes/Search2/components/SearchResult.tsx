@@ -1,12 +1,16 @@
 import { navigate, navigateToPartner } from "lib/navigation/navigate"
 import { searchInsights } from "lib/utils/useSearchInsightsConfig"
 import React from "react"
+import { AlgoliaSearchResult } from "../types"
 import { SearchHighlight } from "./SearchHighlight"
 import { SearchListItem } from "./SearchListItem"
 
-// interface SearchResultsItemProps {}
+interface SearchResultsItemProps {
+  result: AlgoliaSearchResult
+  indexName: string
+}
 
-export const SearchResult: React.FC<any> = ({ result, indexName }) => {
+export const SearchResult: React.FC<SearchResultsItemProps> = ({ result, indexName }) => {
   const categoryName = indexName.split("_")[0]
 
   const onPress = (): void => {
@@ -32,7 +36,7 @@ export const SearchResult: React.FC<any> = ({ result, indexName }) => {
       onPress={onPress}
       imageURL={result.image_url}
       categoryName={categoryName}
-      Info={() => {
+      InfoComponent={() => {
         return <SearchHighlight attribute="name" hit={result} />
       }}
     />

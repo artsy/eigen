@@ -1,18 +1,72 @@
+import { themeGet } from "@styled-system/theme-get"
 import GraphemeSplitter from "grapheme-splitter"
 import { EntityType, navigate, navigateToEntity, navigateToPartner, SlugType } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { normalizeText } from "lib/utils/normalizeText"
 import { Schema } from "lib/utils/track"
-import { Sans } from "palette"
+import { ArtworkIcon, AuctionIcon, Box, Flex, Sans, Spacer, useSpace } from "palette"
 import React, { useContext } from "react"
-import { Text } from "react-native"
+import { Pressable, ScrollView, Text } from "react-native"
 import { useTracking } from "react-tracking"
+import styled from "styled-components/native"
 import { SearchListItem } from "../Search2/components/SearchListItem"
 import { AutosuggestResult } from "./AutosuggestResults"
 import { SearchContext } from "./SearchContext"
 
 export type OnResultPress = (result: AutosuggestResult) => void
+
 type ArtistTabs = "Insights" | "Artworks"
+
+type HandleResultPress = (passProps?: { artistTab: ArtistTabs }) => void
+
+const NavigationButtons: React.FC<{ onPress: HandleResultPress }> = ({ onPress }) => {
+  const space = useSpace()
+
+  return (
+    <>
+      <Spacer m={0.5} />
+
+      <Flex flexDirection="row" alignItems="center">
+        <ScrollView
+          horizontal
+          contentContainerStyle={{ paddingHorizontal: space(1) }}
+          showsHorizontalScrollIndicator={false}
+        >
+          <Spacer ml={1} />
+
+          <Pressable onPress={() => onPress({ artistTab: "Artworks" })}>
+            {({ pressed }) => (
+              <QuickNavigationButton>
+                <Box mr={0.5}>
+                  <ArtworkIcon fill={pressed ? "blue100" : "black100"} />
+                </Box>
+                <Sans size="3" color={pressed ? "blue100" : "black100"}>
+                  Artworks
+                </Sans>
+              </QuickNavigationButton>
+            )}
+          </Pressable>
+
+          <Spacer ml={1} />
+
+          <Pressable onPress={() => onPress({ artistTab: "Insights" })}>
+            {({ pressed }) => (
+              <QuickNavigationButton>
+                <Box mr={0.5}>
+                  <AuctionIcon fill={pressed ? "blue100" : "black100"} />
+                </Box>
+                <Sans size="3" color={pressed ? "blue100" : "black100"}>
+                  Auction Results
+                </Sans>
+              </QuickNavigationButton>
+            )}
+          </Pressable>
+        </ScrollView>
+      </Flex>
+    </>
+  )
+}
+
 export const AutosuggestSearchResult: React.FC<{
   result: AutosuggestResult
   highlight?: string
@@ -37,7 +91,7 @@ export const AutosuggestSearchResult: React.FC<{
   const showNavigationButtons =
     showQuickNavigationButtons && !!result.counts?.artworks && !!result.counts?.auctionResults
 
-  const onPress = (passProps?: { artistTab: ArtistTabs }) => {
+  const onPress: HandleResultPress = (passProps) => {
     if (onResultPress) {
       onResultPress(result)
     } else {
@@ -60,7 +114,7 @@ export const AutosuggestSearchResult: React.FC<{
     }
   }
 
-  const categoryName = result.displayType ?? result.__typename
+  const categoryName = result.displayType ?? (result.__typename === "Artist" ? result.__typename : "")
 
   return (
     <SearchListItem
@@ -68,8 +122,7 @@ export const AutosuggestSearchResult: React.FC<{
       imageURL={result.imageUrl}
       categoryName={categoryName}
       onDelete={onDelete}
-      showNavigationButtons={showNavigationButtons}
-      Info={() => {
+      InfoComponent={() => {
         return (
           <>
             <Text ellipsizeMode="tail" numberOfLines={1}>
@@ -77,15 +130,26 @@ export const AutosuggestSearchResult: React.FC<{
             </Text>
             {!!categoryName && (
               <Sans size="3t" color="black60">
-                {result.displayType || result.__typename}
+                {categoryName}
               </Sans>
             )}
           </>
         )
       }}
-    />
+    >
+      {!!showNavigationButtons && <NavigationButtons onPress={onPress} />}
+    </SearchListItem>
   )
 }
+
+const QuickNavigationButton = styled(Flex)`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 2px 10px;
+  border: 1px solid ${themeGet("colors.black30")};
+  border-radius: 20;
+`
 
 const splitter = new GraphemeSplitter()
 
