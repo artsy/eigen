@@ -2,6 +2,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { compact } from "lodash"
 import { Sans, useSpace, useTheme } from "palette"
 import { NavigationalTabs } from "palette/elements/Tabs"
+import { NavigationalTabsPlaceholder } from "palette/elements/Tabs/NavigationalTabs"
 import { usePaletteFlagStore } from "palette/PaletteFlag"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, LayoutRectangle, ScrollView, TouchableOpacity, View, ViewProps } from "react-native"
@@ -14,16 +15,16 @@ export const StickyTabPageTabBar: React.FC<{ onTabPress?(tab: { label: string; i
 }) => {
   const { color, space } = useTheme()
   const screen = useScreenDimensions()
-  const { tabLabels, activeTabIndex, setActiveTabIndex } = useStickyTabPageContext()
+  const { tabLabels, activeTabIndex, setActiveTabIndex, loading } = useStickyTabPageContext()
   activeTabIndex.useUpdates()
 
   const [tabLayouts, setTabLayouts] = useState<Array<LayoutRectangle | null>>(tabLabels.map(() => null))
 
   useEffect(() => {
-    if (tabLayouts.length !== tabLabels.length) {
+    if (!loading && tabLayouts.length !== tabLabels.length) {
       console.error("sticky tab page tab bar does not support a dynamic list of tabs yet")
     }
-  }, [tabLabels.length])
+  }, [tabLabels.length, loading])
 
   const allTabLayoutsArePresent = tabLayouts.every((l) => l)
   const scrollViewRef = useRef<ScrollView>(null)
@@ -42,8 +43,14 @@ export const StickyTabPageTabBar: React.FC<{ onTabPress?(tab: { label: string; i
   }, [activeTabIndex.current])
 
   const allowV3 = usePaletteFlagStore((state) => state.allowV3)
+
   if (allowV3) {
     const v3Tabs = tabLabels.map((label) => ({ label }))
+
+    if (loading) {
+      return <NavigationalTabsPlaceholder tabs={v3Tabs} />
+    }
+
     return (
       <NavigationalTabs
         tabs={v3Tabs}
@@ -55,6 +62,7 @@ export const StickyTabPageTabBar: React.FC<{ onTabPress?(tab: { label: string; i
       />
     )
   }
+
   return (
     <ScrollView
       ref={scrollViewRef}

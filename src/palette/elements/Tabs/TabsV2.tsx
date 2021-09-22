@@ -7,7 +7,7 @@ export type TabsType = Array<{
 }>
 
 interface TabProps {
-  label: string
+  label: string | Element
   active: boolean
   onPress: () => void
 }

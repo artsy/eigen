@@ -1,11 +1,10 @@
 import { Text } from "palette"
 import { useColor } from "palette/hooks"
 import React from "react"
-import { ViewProps } from "react-native"
-import { Pressable, View, ViewStyle } from "react-native"
+import { Pressable, View, ViewProps, ViewStyle } from "react-native"
 
 export interface TabV3Props {
-  label: string
+  label: string | Element
   active: boolean
   style?: ViewStyle
   onPress: () => void

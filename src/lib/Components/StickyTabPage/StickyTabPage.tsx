@@ -3,6 +3,7 @@ import { Schema } from "lib/utils/track"
 import { useAutoCollapsingMeasuredView } from "lib/utils/useAutoCollapsingMeasuredView"
 import { useGlobalState } from "lib/utils/useGlobalState"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { times } from "lodash"
 import { Box } from "palette"
 import React, { EffectCallback, useEffect, useMemo, useRef, useState } from "react"
 import { View } from "react-native"
@@ -13,6 +14,8 @@ import { StickyTabPageContext, useStickyTabPageContext } from "./SitckyTabPageCo
 import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
 import { StickyTabPageFlatListContext } from "./StickyTabPageFlatList"
 import { StickyTabPageTabBar } from "./StickyTabPageTabBar"
+
+const MAX_TABS_LENGTH = 20
 
 export interface TabProps {
   initial?: boolean
@@ -33,7 +36,9 @@ export const StickyTabPage: React.FC<{
   tabs: TabProps[]
   staticHeaderContent: JSX.Element
   stickyHeaderContent?: JSX.Element
-}> = ({ tabs, staticHeaderContent, stickyHeaderContent = <StickyTabPageTabBar /> }) => {
+  loading?: boolean
+}> = ({ tabs, staticHeaderContent, stickyHeaderContent = <StickyTabPageTabBar />, loading = false }) => {
+  const tracking = useTracking()
   const { width } = useScreenDimensions()
   const initialTabIndex = useMemo(
     () =>
@@ -41,8 +46,21 @@ export const StickyTabPage: React.FC<{
         tabs.findIndex((tab) => tab.initial),
         0
       ),
-    []
+    [tabs]
   )
+
+  const setActiveTab = (index: number) => {
+    setActiveTabIndex(index)
+    activeTabIndexNative.setValue(index)
+    railRef.current?.setOffset(index * width)
+    stickyRailRef.current?.setOffset(index * width)
+  }
+
+  useEffect(() => {
+    console.log("CHANGING TAB INDEX", initialTabIndex)
+    setActiveTab(initialTabIndex)
+  }, [initialTabIndex])
+
   const activeTabIndexNative = useAnimatedValue(initialTabIndex)
   const [activeTabIndex, setActiveTabIndex] = useGlobalState(initialTabIndex)
   const [tabSpecificStickyHeaderContent, setTabSpecificStickyHeaderContent] = useState<JSX.Element[]>([])
@@ -58,8 +76,10 @@ export const StickyTabPage: React.FC<{
     return useAutoCollapsingMeasuredView(tabSpecificStickyHeaderContent[i])
   })
 
+  // Making sure to always call the same number of hooks even when loading.
+  times(MAX_TABS_LENGTH - tabs.length, () => useAutoCollapsingMeasuredView(<></>))
+
   const { jsx: stickyHeader, nativeHeight: stickyHeaderHeight } = useAutoCollapsingMeasuredView(stickyHeaderContent)
-  const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
   const railRef = useRef<SnappyHorizontalRail>(null)
 
@@ -84,12 +104,10 @@ export const StickyTabPage: React.FC<{
         staticHeaderHeight,
         stickyHeaderHeight,
         headerOffsetY,
+        loading,
         tabLabels: tabs.map((tab) => tab.title),
         setActiveTabIndex(index) {
-          setActiveTabIndex(index)
-          activeTabIndexNative.setValue(index)
-          railRef.current?.setOffset(index * width)
-          stickyRailRef.current?.setOffset(index * width)
+          setActiveTab(index)
           tracking.trackEvent({
             action_name: tabs[index].title,
             action_type: Schema.ActionTypes.Tap,
