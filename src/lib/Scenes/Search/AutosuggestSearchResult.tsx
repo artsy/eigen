@@ -126,7 +126,7 @@ export const AutosuggestSearchResult: React.FC<{
         return (
           <>
             <Text ellipsizeMode="tail" numberOfLines={1}>
-              {applyHighlight(result.displayLabel!, highlight)}
+              {applyHighlight({ displayLabel: result.displayLabel!, highlight, categoryName })}
             </Text>
             {!!categoryName && (
               <Sans size="3t" color="black60">
@@ -151,6 +151,14 @@ const QuickNavigationButton = styled(Flex)`
   border-radius: 20;
 `
 
+const ItalicText: React.FC<{ color?: string }> = ({ color = "grey", children }) => {
+  return (
+    <Sans size="3t" italic color={color}>
+      {children}
+    </Sans>
+  )
+}
+
 const splitter = new GraphemeSplitter()
 
 /**
@@ -170,7 +178,65 @@ function navigateToResult(result: AutosuggestResult, artistTab: ArtistTabs = "Ar
   }
 }
 
-function applyHighlight(displayLabel: string, highlight: string | undefined) {
+function getResultWithItalic(result: string[]) {
+  const [nonMatch, match, nonMatch2] = result
+
+  // If the result string is e.g. "Henri Venne, The Sun Shines Cold (2015)",
+  // the part after the comma should be italic grey
+  // So let's assume the query is "Cold"
+  // the result array will be ["Henri Venne, The Sun Shines ", "Cold", " (2015)"]
+  if (nonMatch.includes(",")) {
+    const [mainNonMatch, ...rest] = nonMatch.split(",")
+    const restNonMatch = rest.join(",")
+    return (
+      <>
+        <Sans size="3t">{mainNonMatch}</Sans>
+
+        <ItalicText>
+          {restNonMatch}
+          <ItalicText color="blue100">{match}</ItalicText>
+          {nonMatch2}
+        </ItalicText>
+      </>
+    )
+  }
+
+  // If the result string is e.g. "Christ on the Cold Stone, Brabant (1990)",
+  // the part after the comma should be italic grey
+  // So let's assume the query is "Cold"
+  // the result array will be ["Christ on the ", "Cold", " Stone, Brabant (1990)"]
+  if (nonMatch2.includes(",")) {
+    const [mainNonMatch2, ...rest] = nonMatch2.split(",")
+    const restNonMatch2 = rest.join(",")
+    return (
+      <>
+        <Sans size="3t" weight="regular">
+          {nonMatch}
+          <Sans size="3t" weight="medium" color="blue100">
+            {match}
+          </Sans>
+          <Sans size="3t" weight="regular">
+            {mainNonMatch2}
+          </Sans>
+        </Sans>
+
+        <ItalicText>{restNonMatch2}</ItalicText>
+      </>
+    )
+  }
+
+  return null
+}
+
+function applyHighlight({
+  displayLabel,
+  highlight,
+  categoryName,
+}: {
+  displayLabel: string
+  highlight?: string
+  categoryName: string
+}) {
   // If highlight is not supplied then use medium weight, since the search result
   // is being rendered in a context that doesn't support highlights
   if (highlight === undefined) {
@@ -215,6 +281,7 @@ function applyHighlight(displayLabel: string, highlight: string | undefined) {
     ]
     break outerLoop
   }
+
   if (!result) {
     return (
       <Sans size="3t" weight="regular">
@@ -222,13 +289,23 @@ function applyHighlight(displayLabel: string, highlight: string | undefined) {
       </Sans>
     )
   }
+
+  if (categoryName === "Artwork") {
+    const resultWithItalic = getResultWithItalic(result)
+    if (resultWithItalic) {
+      return resultWithItalic
+    }
+  }
+
+  const [nonMatch, match, nonMatch2] = result
+
   return (
     <Sans size="3t" weight="regular">
-      {result[0]}
+      {nonMatch}
       <Sans size="3t" weight="medium" color="blue100" style={{ padding: 0, margin: 0 }}>
-        {result[1]}
+        {match}
       </Sans>
-      {result[2]}
+      {nonMatch2}
     </Sans>
   )
 }
