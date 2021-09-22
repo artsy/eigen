@@ -1,6 +1,6 @@
 import { addCollectedArtwork } from "@artsy/cohesion"
 import { MyCollectionTestsQuery } from "__generated__/MyCollectionTestsQuery.graphql"
-import MyCollectionGrid from "lib/Components/ArtworkGrids/MyCollectionArtworkGrid"
+import { InfiniteScrollMyCollectionArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -109,7 +109,7 @@ describe("MyCollection", () => {
 
     it("renders without throwing an error", () => {
       expect(tree.root.findByType(StickyTabPageScrollView)).toBeDefined()
-      expect(tree.root.findByType(MyCollectionGrid)).toBeDefined()
+      expect(tree.root.findByType(InfiniteScrollMyCollectionArtworksGridContainer)).toBeDefined()
     })
   })
 })

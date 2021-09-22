@@ -96,9 +96,26 @@ export const Favorites: React.FC<Props> = ({
       <View style={{ flex: 1 }}>
         <StickyTabPage
           tabs={tabs}
-          staticHeaderContent={<></>}
+          staticHeaderContent={
+            enableMyCollection ? <StickyHeaderContent enableMyCollection={enableMyCollection} /> : <></>
+          }
           stickyHeaderContent={
-            <StickyHeaderContent enableMyCollection={enableMyCollection} onTabPress={fireTabSelectionAnalytics} />
+            enableMyCollection ? (
+              <StickyTabPageTabBar
+                onTabPress={({ label }) => {
+                  fireTabSelectionAnalytics(label as Tab)
+                }}
+              />
+            ) : (
+              <>
+                <StickyHeaderContent enableMyCollection={enableMyCollection} />
+                <StickyTabPageTabBar
+                  onTabPress={({ label }) => {
+                    fireTabSelectionAnalytics(label as Tab)
+                  }}
+                />
+              </>
+            )
           }
         />
         {!!isStaging && <DarkNavigationButton title="Warning: on staging, favourites don't migrate" />}
@@ -109,9 +126,8 @@ export const Favorites: React.FC<Props> = ({
 
 interface StickyHeaderContentProps {
   enableMyCollection: boolean
-  onTabPress: (label: Tab) => void
 }
-const StickyHeaderContent: React.FC<StickyHeaderContentProps> = ({ enableMyCollection, onTabPress }) => {
+const StickyHeaderContent: React.FC<StickyHeaderContentProps> = ({ enableMyCollection }) => {
   const space = useSpace()
   return (
     <View style={{ marginTop: enableMyCollection ? space(6) : space(2) }}>
@@ -124,11 +140,6 @@ const StickyHeaderContent: React.FC<StickyHeaderContentProps> = ({ enableMyColle
           Saves and Follows
         </Sans>
       )}
-      <StickyTabPageTabBar
-        onTabPress={({ label }) => {
-          onTabPress(label as Tab)
-        }}
-      />
     </View>
   )
 }
