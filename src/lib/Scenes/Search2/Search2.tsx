@@ -41,12 +41,6 @@ interface SearchInputProps {
   onSubmitEditing: () => void
 }
 
-type SelectedPillType = "algolia" | "elastic"
-
-interface SelectedPill extends PillType {
-  type: SelectedPillType
-}
-
 const SEARCH_THROTTLE_INTERVAL = 500
 
 const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholder, refine, onSubmitEditing }) => {
@@ -96,7 +90,11 @@ interface SearchState {
   page?: number
 }
 
-const ARTWORKS_PILL: PillType = { name: "ARTWORK", displayName: "Artworks" }
+const ARTWORKS_PILL: PillType = {
+  name: "ARTWORK",
+  displayName: "Artworks",
+  type: "elastic",
+}
 const pills: PillType[] = [ARTWORKS_PILL]
 
 interface Search2Props {
@@ -107,7 +105,7 @@ interface Search2Props {
 export const Search2: React.FC<Search2Props> = (props) => {
   const { system, relay } = props
   const [searchState, setSearchState] = useState<SearchState>({})
-  const [selectedPill, setSelectedPill] = useState<SelectedPill | null>(null)
+  const [selectedPill, setSelectedPill] = useState<PillType | null>(null)
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
   const searchInsightsConfigured = useSearchInsightsConfig(system?.algolia?.appID, system?.algolia?.apiKey)
@@ -116,7 +114,12 @@ export const Search2: React.FC<Search2Props> = (props) => {
     const indices = system?.algolia?.indices
 
     if (Array.isArray(indices) && indices.length > 0) {
-      return [...pills, ...indices]
+      const formattedIndices: PillType[] = indices.map((indice) => ({
+        ...indice,
+        type: "algolia",
+      }))
+
+      return [...pills, ...formattedIndices]
     }
 
     return pills
@@ -142,20 +145,11 @@ export const Search2: React.FC<Search2Props> = (props) => {
 
   const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 1
 
-  const handlePillPress = ({ name, displayName }: PillType) => {
-    let type: SelectedPillType = "algolia"
-    let nextSelectedPill: SelectedPill | null = null
+  const handlePillPress = (pill: PillType) => {
+    let nextSelectedPill: PillType | null = pill
 
-    if (name === ARTWORKS_PILL.name) {
-      type = "elastic"
-    }
-
-    if (selectedPill?.name !== name) {
-      nextSelectedPill = {
-        type,
-        displayName,
-        name,
-      }
+    if (selectedPill?.name === pill.name) {
+      nextSelectedPill = null
     }
 
     setSearchState((prevState) => ({ ...prevState, page: 1 }))
@@ -168,13 +162,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
 
   const handleSubmitEditing = () => {
     if (shouldStartQuering) {
-      const { displayName, name } = ARTWORKS_PILL
-
-      setSelectedPill({
-        type: "elastic",
-        displayName,
-        name,
-      })
+      setSelectedPill(ARTWORKS_PILL)
     }
   }
 
