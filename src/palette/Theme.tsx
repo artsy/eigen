@@ -10,16 +10,13 @@ import { ThemeContext, ThemeProvider } from "styled-components/native"
  */
 
 import { Color as ColorV2, SpacingUnit as SpacingUnitV2 } from "@artsy/palette-tokens/dist/themes/v2"
-import {
-  Color as ColorV3BeforeDevPurple,
-  SpacingUnit as SpacingUnitV3Numbers,
-} from "@artsy/palette-tokens/dist/themes/v3"
+import { Color as ColorV3BeforeDevPurple } from "@artsy/palette-tokens/dist/themes/v3"
 import {
   TextTreatment as TextTreatmentWithUnits,
   TextVariant as TextVariantV3,
 } from "@artsy/palette-tokens/dist/typography/v3"
+import { SpacingUnit as SpacingUnitV3 } from "./tokens"
 
-type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
 export type Color = ColorV2 | ColorV3
 export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
 type ColorV3 = ColorV3BeforeDevPurple | "devpurple"

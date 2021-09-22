@@ -169,6 +169,7 @@
     "styled-components": "4.2.1",
     "styled-system": "5.1.5",
     "supercluster": "6.0.1",
+    "tailwind-rn": "^3.0.1",
     "tipsi-stripe": "https://github.com/artsy/tipsi-stripe.git#fix-infinite-loop",
     "url": "^0.11.0",
     "yup": "0.29.1",
@@ -222,6 +223,7 @@
     "@types/yup": "0.29.3",
     "argparse": "^2.0.1",
     "auto": "7.12.3",
+    "autoprefixer": "^10.3.6",
     "awesome-typescript-loader": "3.4.1",
     "babel-jest": "25.2.6",
     "babel-loader": "^8.2.2",
@@ -255,6 +257,7 @@
     "node-fetch": "2.6.1",
     "ora": "^5.4.0",
     "patch-package": "6.2.1",
+    "postcss": "^8.3.8",
     "postinstall-prepare": "1.0.1",
     "prettier": "^2.2.0",
     "pull-lock": "1.0.0",
@@ -273,6 +276,7 @@
     "relay-test-utils": "^10.0.1",
     "rimraf": "^3.0.2",
     "snapshot-diff": "0.2.2",
+    "tailwindcss": "^2.2.16",
     "tmp": "0.1.0",
     "ts-node": "8.4.1",
     "tslint": "5.14.0",
@@ -299,6 +303,9 @@
     ],
     "*.@(json|md)": [
       "yarn prettier-write"
+    ],
+    "tailwind.config.js": [
+      "yarn create-tailwind-rn"
     ]
   },
   "prettier": {

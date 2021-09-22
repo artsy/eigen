@@ -57,5 +57,6 @@
   "[json]": {
     "editor.formatOnSave": false
   },
-  "javascript.validate.enable": true
+  "javascript.validate.enable": true,
+  "tailwindCSS.experimental.classRegex": [["tailwind|yourModule\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]]
 }
