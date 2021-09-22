@@ -18,6 +18,7 @@ interface Props {
   containerStyle?: StyleProp<ViewStyle>
   disableNavigation?: boolean
   onFollowFinish?: () => void
+  enableMyCollection?: boolean
 }
 
 interface State {
@@ -104,9 +105,11 @@ export class ArtistListItem extends React.Component<Props, State> {
   }
 
   render() {
-    const { artist, withFeedback, containerStyle, disableNavigation } = this.props
+    const { artist, withFeedback, containerStyle, disableNavigation, enableMyCollection } = this.props
     const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
     const imageURl = image && image.url
+    const buttonVariant =
+      is_followed && enableMyCollection ? "primaryBlack" : is_followed ? "secondaryOutline" : "secondaryGray"
 
     if (!name) {
       return null
@@ -137,7 +140,7 @@ export class ArtistListItem extends React.Component<Props, State> {
               </Flex>
               <Flex>
                 <Button
-                  variant={is_followed ? "secondaryOutline" : "secondaryGray"}
+                  variant={buttonVariant}
                   onPress={this.handleFollowArtist.bind(this)}
                   size="small"
                   longestText="Following"

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d78a462254ad2ea7517268cae0fbb418 */
+/* @relayHash c66c8a7bf05200ee0e3bbf7b6686e495 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -49,6 +49,7 @@ fragment ArtistListItem_artist on Artist {
 }
 
 fragment FavoriteArtists_me_1G22uz on Me {
+  labFeatures
   followsAndSaves {
     artists: artistsConnection(first: $count, after: $cursor) {
       edges {
@@ -155,6 +156,13 @@ return {
         "name": "me",
         "plural": false,
         "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "labFeatures",
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": null,
@@ -348,7 +356,7 @@ return {
     ]
   },
   "params": {
-    "id": "d78a462254ad2ea7517268cae0fbb418",
+    "id": "c66c8a7bf05200ee0e3bbf7b6686e495",
     "metadata": {},
     "name": "FavoriteArtistsPaginationQuery",
     "operationKind": "query",

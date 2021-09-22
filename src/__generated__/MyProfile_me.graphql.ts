@@ -7,6 +7,7 @@ import { FragmentRefs } from "relay-runtime";
 export type MyProfile_me = {
     readonly name: string | null;
     readonly labFeatures: ReadonlyArray<string>;
+    readonly createdAt: string | null;
     readonly followsAndSaves: {
         readonly artworksConnection: {
             readonly edges: ReadonlyArray<{
@@ -45,6 +46,13 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "ScalarField",
       "name": "labFeatures",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "createdAt",
       "storageKey": null
     },
     {
@@ -118,5 +126,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '1e2dca43df112021af17d58cedd0c776';
+(node as any).hash = 'f3315541853656190fbeca35654286fb';
 export default node;
