@@ -2,6 +2,7 @@ import { NavigationContainer } from "@react-navigation/native"
 import { CardStyleInterpolators, createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { GlobalStore } from "lib/store/GlobalStore"
+import { NetworkAwareProvider } from "lib/utils/NetworkAwareProvider"
 import React from "react"
 import { View } from "react-native"
 import { ForgotPassword } from "./ForgotPassword"
@@ -79,6 +80,7 @@ export const Onboarding = () => {
       >
         <ArtsyKeyboardAvoidingView>
           {onboardingState === "incomplete" ? <OnboardingPersonalization /> : <OnboardingWelcomeScreens />}
+          <NetworkAwareProvider />
         </ArtsyKeyboardAvoidingView>
       </ArtsyKeyboardAvoidingViewContext.Provider>
     </View>
