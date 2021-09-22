@@ -18,8 +18,6 @@ const tracks = {
     type: "thumbnail",
   }),
 }
-
-export const _test_tracks = tracks // add this if we need to use these in test files.
 ```
 
 This will minimize the tracking code sprinkled over the component code to just one line per track event.
@@ -111,3 +109,32 @@ export class MyClassComp extends React.Component<Props> {
 ```
 
 **Notice that to call the function from the `Button` we need to do `() => this.follow()` or `this.follow.bind(this)`. Just `this.follow` is not enough to call the tracking wrapper code.**
+
+### Testing tracking calls
+
+To test these, the best way is something like the following:
+
+```ts
+it("tracks analytics event when button is tapped", () => {
+  const wrapper = renderWithWrappers(<TestScreen />)
+  wrapper.root.findByType(OurButtonWithTracking).props.onPress()
+
+  expect(trackEvent).toHaveBeenCalledTimes(1)
+  expect(trackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+    Array [
+      Object {
+        "action": "tappedInfoBubble",
+        "context_module": "myCollectionArtwork",
+        "context_screen_owner_id": "artwork-id",
+        "context_screen_owner_slug": "artwork-slug",
+        "context_screen_owner_type": "myCollectionArtwork",
+        "subject": "demandIndex",
+      },
+    ]
+  `)
+})
+```
+
+You can start with an empty snapshot like `expect(trackEvent.mock.calls[0]).toMatchInlineSnapshot()` and when you run the tests, jest will fill it in. Then check if it is correct, and you are ready to commit.
+
+If at some point the track properties change, then the snapshot will need to be updated. If there is a breakage and for some reason a property is not sent, then this snapshot will alert us correctly.

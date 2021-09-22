@@ -6,7 +6,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { _test_tracks, MyCollectionArtworkArtistMarketFragmentContainer } from "../MyCollectionArtworkArtistMarket"
+import { MyCollectionArtworkArtistMarketFragmentContainer } from "../MyCollectionArtworkArtistMarket"
 
 jest.unmock("react-relay")
 jest.mock("react-tracking")
@@ -103,6 +103,17 @@ describe("MyCollectionArtworkArtistMarket", () => {
     wrapper.root.findByType(InfoButton).props.onPress()
 
     expect(trackEvent).toHaveBeenCalledTimes(1)
-    expect(trackEvent).toHaveBeenCalledWith(_test_tracks.tappedInfoBubble("artwork-id", "artwork-slug"))
+    expect(trackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "action": "tappedInfoBubble",
+          "context_module": "myCollectionArtwork",
+          "context_screen_owner_id": "artwork-id",
+          "context_screen_owner_slug": "artwork-slug",
+          "context_screen_owner_type": "myCollectionArtwork",
+          "subject": "artistMarketStatistics",
+        },
+      ]
+    `)
   })
 })

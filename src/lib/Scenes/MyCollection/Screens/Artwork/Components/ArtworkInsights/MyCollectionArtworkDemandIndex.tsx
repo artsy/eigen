@@ -160,5 +160,3 @@ const tracks = {
     subject: "demandIndex",
   }),
 }
-
-export const _test_tracks = tracks
