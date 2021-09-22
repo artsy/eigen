@@ -1,20 +1,14 @@
 ### Use cohesion for all new tracking code
 
-Use [cohesion](https://github.com/artsy/cohesion) events and helpers for all new tracking code. Cohesion is an artsy library for keeping analytics across our applications _cohesive_, it defines schemas, events and helpers for tracking code. It was recently adopted in Eigen so there still exists a lot of tracking code and helpers not using cohesion, all new tracking code should use cohesion if at all possible.
+Use [cohesion](https://github.com/artsy/cohesion) events for all new tracking code. Cohesion is an artsy library for keeping analytics across our applications _cohesive_, it defines schemas for tracking code. It was recently adopted in Eigen so there still exists a lot of tracking code and helpers not using cohesion, all new tracking code should use cohesion if at all possible.
 
 ## Inside React components
 
 Make sure to declare all the track events and context in a dedicated place somewhere below the component code, something along the lines of:
 
 ```typescript
-export const tracks = {
-  context: (ownerId: string, slug: string) => ({
-    context_screen: Schema.PageNames.ViewingRoom,
-    context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-    context_screen_owner_id: ownerId,
-    context_screen_owner_slug: slug,
-  }),
-  tappedArtworkGroupThumbnail: (internalID: string, slug: string) => ({
+const tracks = {
+  tappedArtworkGroupThumbnail: (internalID: string, slug: string): TappedArtworkGroupThumbnail => ({
     action_name: Schema.ActionNames.TappedArtworkGroup,
     context_module: Schema.ContextModules.ViewingRoomArtworkRail,
     destination_screen: Schema.PageNames.ArtworkPage,
@@ -24,6 +18,8 @@ export const tracks = {
     type: "thumbnail",
   }),
 }
+
+export const _test_tracks = tracks // add this if we need to use these in test files.
 ```
 
 This will minimize the tracking code sprinkled over the component code to just one line per track event.

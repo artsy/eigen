@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType, tappedInfoBubble } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { MyCollectionArtworkArtistAuctionResultsTestsQuery } from "__generated__/MyCollectionArtworkArtistAuctionResultsTestsQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
@@ -10,7 +10,10 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MyCollectionArtworkArtistAuctionResultsFragmentContainer } from "../MyCollectionArtworkArtistAuctionResults"
+import {
+  _test_tracks,
+  MyCollectionArtworkArtistAuctionResultsFragmentContainer,
+} from "../MyCollectionArtworkArtistAuctionResults"
 
 jest.unmock("react-relay")
 jest.mock("react-tracking")
@@ -123,15 +126,7 @@ describe("MyCollectionArtworkArtistAuctionResults", () => {
     wrapper.root.findByType(InfoButton).props.onPress()
 
     expect(trackEvent).toHaveBeenCalledTimes(1)
-    expect(trackEvent).toHaveBeenCalledWith(
-      tappedInfoBubble({
-        contextModule: ContextModule.auctionResults,
-        contextScreenOwnerType: OwnerType.myCollectionArtwork,
-        subject: "auctionResults",
-        contextScreenOwnerId: "artwork-id",
-        contextScreenOwnerSlug: "artwork-slug",
-      })
-    )
+    expect(trackEvent).toHaveBeenCalledWith(_test_tracks.tappedInfoBubble("artwork-id", "artwork-slug"))
   })
 
   it("tracks analytics event when `Explore Auction Results` is tapped", () => {

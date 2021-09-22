@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import { AuctionResultQuery, AuctionResultQueryResponse } from "__generated__/AuctionResultQuery.graphql"
 import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
@@ -217,7 +217,7 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
                   </Text>
                 }
                 trackEvent={() => {
-                  tracking.trackEvent(tappedInfoBubble(tracks.tapMarketStatsInfo()))
+                  tracking.trackEvent(tracks.tapMarketStatsInfo())
                 }}
                 modalTitle="Sale Price"
                 maxModalHeight={180}
@@ -381,9 +381,10 @@ export const tracks = {
       context_screen_owner_id: id,
     }),
 
-  tapMarketStatsInfo: (): TappedInfoBubbleArgs => ({
-    contextModule: ContextModule.auctionResult,
-    contextScreenOwnerType: OwnerType.artistAuctionResults,
+  tapMarketStatsInfo: (): TappedInfoBubble => ({
+    action: ActionType.tappedInfoBubble,
+    context_module: ContextModule.auctionResult,
+    context_screen_owner_type: OwnerType.artistAuctionResults,
     subject: "auctionResultSalePrice",
   }),
 }

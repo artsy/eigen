@@ -1,4 +1,3 @@
-import { ContextModule, OwnerType, tappedInfoBubble } from "@artsy/cohesion"
 import { MyCollectionArtworkDemandIndexTestsQuery } from "__generated__/MyCollectionArtworkDemandIndexTestsQuery.graphql"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { extractText } from "lib/tests/extractText"
@@ -7,7 +6,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MyCollectionArtworkDemandIndexFragmentContainer, tests } from "../MyCollectionArtworkDemandIndex"
+import { _test_tracks, MyCollectionArtworkDemandIndexFragmentContainer, tests } from "../MyCollectionArtworkDemandIndex"
 
 jest.unmock("react-relay")
 jest.mock("react-tracking")
@@ -90,14 +89,6 @@ describe("MyCollectionArtworkDemandIndex", () => {
     wrapper.root.findByType(InfoButton).props.onPress()
 
     expect(trackEvent).toHaveBeenCalledTimes(1)
-    expect(trackEvent).toHaveBeenCalledWith(
-      tappedInfoBubble({
-        contextModule: ContextModule.myCollectionArtwork,
-        contextScreenOwnerType: OwnerType.myCollectionArtwork,
-        subject: "demandIndex",
-        contextScreenOwnerId: "artwork-id",
-        contextScreenOwnerSlug: "artwork-slug",
-      })
-    )
+    expect(trackEvent).toHaveBeenCalledWith(_test_tracks.tappedInfoBubble("artwork-id", "artwork-slug"))
   })
 })
