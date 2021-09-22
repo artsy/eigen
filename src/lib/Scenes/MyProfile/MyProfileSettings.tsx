@@ -216,23 +216,20 @@ export function confirmLogout() {
   ])
 }
 
-const FailedScreen: React.FC<{ retry: (() => void) | null }> = ({ retry }) => {
-  const screenHeight = useScreenDimensions().height
-  return (
-    <Flex flex={1}>
-      <LoadFailureView onRetry={retry || undefined} />
-      <Flex position={"absolute"} top={screenHeight / 1.5} bottom={0} left={0} right={0}>
-        <Spacer mb={1} />
-        <Flex flexDirection="row" alignItems="center" justifyContent="center" py={7.5} px="2" pr="15px">
-          <Button variant="primaryBlack" haptic onPress={confirmLogout} block>
-            Log Out{" "}
-          </Button>
-        </Flex>
-        <Spacer mb={1} />
+const FailedScreen: React.FC<{ retry: (() => void) | null }> = ({ retry }) => (
+  <Flex flex={1}>
+    <LoadFailureView onRetry={retry || undefined} />
+    <Flex position={"absolute"} bottom={0} left={0} right={0}>
+      <Spacer mb={1} />
+      <Flex flexDirection="row" alignItems="center" justifyContent="center" py={7.5} px="2" pr="15px">
+        <Button variant="primaryBlack" haptic onPress={confirmLogout} block>
+          Log Out{" "}
+        </Button>
       </Flex>
+      <Spacer mb={1} />
     </Flex>
-  )
-}
+  </Flex>
+)
 
 /*
  * TODO: Marked For Deletion. Remove when MyCollections is released
