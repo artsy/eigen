@@ -1,5 +1,5 @@
 import { Aggregations, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { extractPillFromAggregation, extractPills, getNamePlaceholder } from "../helpers"
+import { extractPillFromAggregation, extractPills, extractSizeLabel, getNamePlaceholder } from "../helpers"
 
 describe("extractPillFromAggregation", () => {
   it("returns pills", () => {
@@ -36,6 +36,24 @@ describe("extractPillFromAggregation", () => {
   })
 })
 
+describe("extractSizeLabel", () => {
+  it("returns correcly label when full range is specified", () => {
+    expect(extractSizeLabel("w", "5-10")).toBe("w: 5-10 in")
+  })
+
+  it("returns correcly label when only min value is specified", () => {
+    expect(extractSizeLabel("w", "5-*")).toBe("w: from 5 in")
+  })
+
+  it("returns correcly label when only max value is specified", () => {
+    expect(extractSizeLabel("w", "*-10")).toBe("w: to 10 in")
+  })
+
+  it("returns specified prefix", () => {
+    expect(extractSizeLabel("h", "5-10")).toBe("h: 5-10 in")
+  })
+})
+
 describe("extractPills", () => {
   it("should correctly extract pills", () => {
     const filters: FilterData[] = [
@@ -59,10 +77,29 @@ describe("extractPills", () => {
         paramValue: true,
         paramName: FilterParamName.waysToBuyMakeOffer,
       },
+      {
+        displayText: "5-10",
+        paramValue: "5-10",
+        paramName: FilterParamName.width,
+      },
+      {
+        displayText: "15-*",
+        paramValue: "15-*",
+        paramName: FilterParamName.height,
+      },
     ]
     const result = extractPills(filters, aggregations)
 
-    expect(result).toEqual(["Acrylic", "Canvas", "$5,000–10,000", "Limited Edition", "Open Edition", "Make Offer"])
+    expect(result).toEqual([
+      "Acrylic",
+      "Canvas",
+      "$5,000–10,000",
+      "Limited Edition",
+      "Open Edition",
+      "Make Offer",
+      "w: 5-10 in",
+      "h: from 15 in",
+    ])
   })
 })
 

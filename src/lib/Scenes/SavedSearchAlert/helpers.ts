@@ -1,11 +1,11 @@
 import {
   aggregationForFilter,
   Aggregations,
-  extractCustomSizeLabel,
   FilterArray,
   FilterData,
   FilterParamName,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { LOCALIZED_UNIT, parseRange } from "lib/Components/ArtworkFilter/Filters/helpers"
 import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
 import { compact, flatten, keyBy } from "lodash"
 import { bullet } from "palette"
@@ -25,27 +25,35 @@ export const extractPillFromAggregation = (filter: FilterData, aggregations: Agg
   return []
 }
 
-export const extractSizePill = (filters: FilterArray) => {
-  const label = extractCustomSizeLabel(filters)
+export const extractSizeLabel = (prefix: string, value: string) => {
+  const { min, max } = parseRange(value)
+  let label
 
-  if (label) {
-    return label
+  if (max === "*") {
+    label = `from ${min}`
+  } else if (min === "*") {
+    label = `to ${max}`
+  } else {
+    label = `${min}-${max}`
   }
 
-  return filters.find((filter) => filter.paramName === FilterParamName.dimensionRange)?.displayText
+  return `${prefix}: ${label} ${LOCALIZED_UNIT}`
 }
 
 export const extractPills = (filters: FilterArray, aggregations: Aggregations) => {
   const pills = filters.map((filter) => {
     const { paramName, paramValue, displayText } = filter
 
-    if (paramName === FilterParamName.dimensionRange) {
-      return extractSizePill(filters)
+    if (paramName === FilterParamName.dimensionRange && displayText === "Custom Size") {
+      return null
     }
 
-    // We skip width and height, since we extracted them in extractSizePill
-    if (paramName === FilterParamName.width || paramName === FilterParamName.height) {
-      return
+    if (paramName === FilterParamName.width) {
+      return extractSizeLabel("w", displayText)
+    }
+
+    if (paramName === FilterParamName.height) {
+      return extractSizeLabel("h", displayText)
     }
 
     // Extract label from aggregations
