@@ -5,10 +5,7 @@ import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 const Trove: React.FC<{ trove: Trove_trove }> = ({ trove }) => {
-  // console.log({ trove: JSON.stringify(trove) })
-  console.log(trove?.heroUnits?.[0])
   const troveUnit = trove?.heroUnits?.find((itm) => itm?.title === "Trove")
-  console.log({ troveUnit })
   if (!troveUnit || !troveUnit.backgroundImageURL || !troveUnit.href) {
     return null
   }

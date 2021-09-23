@@ -26,10 +26,7 @@ describe("Trove", () => {
           }
         }
       `}
-      render={({ props }) => {
-        console.log({ props })
-        return props?.homePage ? <TroveContainer trove={props.homePage} /> : null
-      }}
+      render={({ props }) => (props?.homePage ? <TroveContainer trove={props.homePage} /> : null)}
       variables={{}}
       environment={environment}
     />
@@ -39,16 +36,12 @@ describe("Trove", () => {
     const tree = renderWithWrappers(<TestRenderer />)
     environment.mock.resolveMostRecentOperation((op) =>
       MockPayloadGenerator.generate(op, {
-        TroveContainer() {
-          const res = {
+        HomePageHeroUnit() {
+          return {
             title: "Trove",
             subtitle: "Browse available artworks by emerging artists.",
             creditLine: "",
           }
-          const json = JSON.stringify(res)
-          console.log({ json })
-
-          return json
         },
       })
     )
@@ -61,7 +54,7 @@ describe("Trove", () => {
     const tree = renderWithWrappers(<TestRenderer />)
     environment.mock.resolveMostRecentOperation((op) =>
       MockPayloadGenerator.generate(op, {
-        TroveContainer() {
+        HomePageHeroUnit() {
           return {
             title: "Trove",
             href: "/gene/trove",
