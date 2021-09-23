@@ -186,7 +186,12 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     if (artworksCount === 0) {
       return (
         <Box mb="80px" pt={1}>
-          <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} trackClear={trackClear} />
+          <FilteredArtworkGridZeroState
+            id={artist.id}
+            slug={artist.slug}
+            trackClear={trackClear}
+            hideClearButton={!appliedFilters.length}
+          />
         </Box>
       )
     } else {
