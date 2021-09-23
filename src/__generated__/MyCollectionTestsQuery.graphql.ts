@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e5566ac02aaf5aac9a5451f12bd75217 */
+/* @relayHash 3c4c1b7ffe312dbe8cfcb9e6a5dc2f27 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,6 +26,24 @@ query MyCollectionTestsQuery {
   }
 }
 
+fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectionConnection {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    node {
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      ...MyCollectionArtworkListItem_artwork
+    }
+  }
+}
+
 fragment MyCollectionArtworkListItem_artwork on Artwork {
   internalID
   artist {
@@ -36,27 +54,30 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
     url
     isDefault
   }
+  image {
+    aspectRatio
+  }
   artistNames
   medium
   slug
   title
+  date
 }
 
 fragment MyCollection_me on Me {
   id
   myCollectionConnection(first: 20, sort: CREATED_AT_DESC) {
-    pageInfo {
-      hasNextPage
-      endCursor
-    }
     edges {
       node {
         id
-        slug
-        ...MyCollectionArtworkListItem_artwork
         __typename
       }
       cursor
+    }
+    ...InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX
+    pageInfo {
+      endCursor
+      hasNextPage
     }
   }
 }
@@ -160,31 +181,6 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "PageInfo",
-                "kind": "LinkedField",
-                "name": "pageInfo",
-                "plural": false,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "hasNextPage",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "endCursor",
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
                 "concreteType": "MyCollectionEdge",
                 "kind": "LinkedField",
                 "name": "edges",
@@ -203,7 +199,32 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "__typename",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "slug",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "kind": "LinkedField",
+                        "name": "image",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "aspectRatio",
+                            "storageKey": null
+                          }
+                        ],
                         "storageKey": null
                       },
                       (v2/*: any*/),
@@ -270,7 +291,7 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "__typename",
+                        "name": "date",
                         "storageKey": null
                       }
                     ],
@@ -281,6 +302,38 @@ return {
                     "args": null,
                     "kind": "ScalarField",
                     "name": "cursor",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "PageInfo",
+                "kind": "LinkedField",
+                "name": "pageInfo",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "hasNextPage",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "startCursor",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "endCursor",
                     "storageKey": null
                   }
                 ],
@@ -304,7 +357,7 @@ return {
     ]
   },
   "params": {
-    "id": "e5566ac02aaf5aac9a5451f12bd75217",
+    "id": "3c4c1b7ffe312dbe8cfcb9e6a5dc2f27",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -343,7 +396,20 @@ return {
         "me.myCollectionConnection.edges.node.artist.id": (v3/*: any*/),
         "me.myCollectionConnection.edges.node.artist.internalID": (v3/*: any*/),
         "me.myCollectionConnection.edges.node.artistNames": (v5/*: any*/),
+        "me.myCollectionConnection.edges.node.date": (v5/*: any*/),
         "me.myCollectionConnection.edges.node.id": (v3/*: any*/),
+        "me.myCollectionConnection.edges.node.image": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Image"
+        },
+        "me.myCollectionConnection.edges.node.image.aspectRatio": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "Float"
+        },
         "me.myCollectionConnection.edges.node.images": {
           "enumValues": null,
           "nullable": true,
@@ -373,7 +439,8 @@ return {
           "nullable": false,
           "plural": false,
           "type": "Boolean"
-        }
+        },
+        "me.myCollectionConnection.pageInfo.startCursor": (v5/*: any*/)
       }
     },
     "name": "MyCollectionTestsQuery",

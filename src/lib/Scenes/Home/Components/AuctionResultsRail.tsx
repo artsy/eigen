@@ -6,14 +6,19 @@ import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Separator } from "palette"
-import React, { useImperativeHandle, useRef } from "react"
+import React, { useEffect, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RailScrollProps } from "./types"
 
-const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollProps> = (props) => {
-  const { me, scrollRef } = props
+interface Props {
+  onHide?: () => void
+  onShow?: () => void
+}
+
+const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollProps & Props> = (props) => {
+  const { me, scrollRef, onHide, onShow } = props
   const { trackEvent } = useTracking()
   const auctionResultsByFollowedArtists = extractNodes(me?.auctionResultsByFollowedArtists)
   const listRef = useRef<FlatList<any>>()
@@ -26,7 +31,13 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
-  if (!auctionResultsByFollowedArtists?.length) {
+  const hasAuctionResults = auctionResultsByFollowedArtists?.length
+
+  useEffect(() => {
+    hasAuctionResults ? onShow?.() : onHide?.()
+  }, [auctionResultsByFollowedArtists])
+
+  if (!hasAuctionResults) {
     return null
   }
 

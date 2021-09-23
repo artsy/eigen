@@ -7,12 +7,14 @@ import { Platform } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MyProfileContainer, MyProfileQueryRenderer } from "../MyProfile"
+import { MyProfileContainer } from "../MyProfile"
 
 jest.mock("../LoggedInUserInfo")
 jest.unmock("react-relay")
 
-describe(MyProfileQueryRenderer, () => {
+describe("MyProfile: With My Collections Disabled", () => {
+  // Tests with MyCollections enabled are in MyProfileSettings-tests
+
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<MyProfileTestsQuery>
@@ -48,20 +50,6 @@ describe(MyProfileQueryRenderer, () => {
 
   it("renders without throwing an error", () => {
     getWrapper()
-  })
-
-  it("renders MyCollections app if feature flag is on", () => {
-    const tree = getWrapper({
-      Me: () => ({
-        labFeatures: ["My Collection"],
-      }),
-    })
-    expect(extractText(tree.root)).toContain("My Collection")
-  })
-
-  it("doesn't render MyCollections app if feature flag is not on", () => {
-    const tree = getWrapper()
-    expect(extractText(tree.root)).not.toContain("My Collection")
   })
 
   it("renders push notifications on iOS", () => {

@@ -20,6 +20,15 @@ export interface TabProps {
   content: JSX.Element | ((tabIndex: number) => JSX.Element)
 }
 
+interface StickyTabPageProps {
+  tabs: TabProps[]
+  staticHeaderContent: JSX.Element
+  stickyHeaderContent?: JSX.Element
+  // disableBackButtonUpdate allows the original BackButton visibility state. Useful when using StickyTabPage
+  // as a root view where you don't want BackButton to ever be visible.
+  disableBackButtonUpdate?: boolean
+}
+
 /**
  * This page wrapper encapsulates a disappearing header and sticky tabs each with their own content
  *
@@ -29,11 +38,12 @@ export interface TabProps {
  * Each tab optionally consumes a 'scroll view context' which could potentialy contain information
  * about whether the tab is being shown currently etc.
  */
-export const StickyTabPage: React.FC<{
-  tabs: TabProps[]
-  staticHeaderContent: JSX.Element
-  stickyHeaderContent?: JSX.Element
-}> = ({ tabs, staticHeaderContent, stickyHeaderContent = <StickyTabPageTabBar /> }) => {
+export const StickyTabPage: React.FC<StickyTabPageProps> = ({
+  tabs,
+  staticHeaderContent,
+  stickyHeaderContent = <StickyTabPageTabBar />,
+  disableBackButtonUpdate,
+}) => {
   const { width } = useScreenDimensions()
   const initialTabIndex = useMemo(
     () =>
@@ -68,11 +78,14 @@ export const StickyTabPage: React.FC<{
 
   Animated.useCode(
     () =>
-      Animated.onChange(
-        shouldHideBackButton,
-        Animated.call([shouldHideBackButton], ([shouldHide]) => {
-          updateShouldHideBackButton(!!shouldHide)
-        })
+      Animated.cond(
+        Animated.not(disableBackButtonUpdate),
+        Animated.onChange(
+          shouldHideBackButton,
+          Animated.call([shouldHideBackButton], ([shouldHide]) => {
+            updateShouldHideBackButton(!!shouldHide)
+          })
+        )
       ),
     []
   )

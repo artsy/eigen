@@ -5,12 +5,15 @@ import { withThemeV3 } from "storybook/decorators"
 import { DList, List } from "storybook/helpers"
 import { TextV3, TextV3Props } from "."
 
-const sizes: Array<TextV3Props["size"]> = ["xs", "sm", "md", "lg", "xl", "xxl"]
+const variants: Array<TextV3Props["variant"]> = ["xs", "sm", "md", "lg", "xl", "xxl"]
 
 storiesOf("Theme/TextV3", module)
   .addDecorator(withThemeV3)
-  .add("Sizes", () => (
-    <DList data={sizes} renderItem={({ item: size }) => <TextV3 size={size}>{size} ~~ This is a v3 text.</TextV3>} />
+  .add("Variants", () => (
+    <DList
+      data={variants}
+      renderItem={({ item: variant }) => <TextV3 variant={variant}>{variant} ~~ This is a v3 text.</TextV3>}
+    />
   ))
   .add("Basic props", () => (
     <List>

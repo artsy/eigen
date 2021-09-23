@@ -505,6 +505,8 @@ PODS:
     - React-Core
   - react-native-geolocation (2.0.2):
     - React
+  - react-native-in-app-review (3.2.2):
+    - React
   - react-native-mapbox-gl (8.2.0-beta2):
     - Mapbox-iOS-SDK (~> 6.3)
     - React
@@ -751,61 +753,62 @@ DEPENDENCIES:
   - ORStackView (= 2.0.3)
   - Pulley (from `https://github.com/artsy/Pulley.git`, branch `master`)
   - Quick (= 2.0.0)
-  - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
-  - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
-  - React (from `../node_modules/react-native/`)
-  - React-callinvoker (from `../node_modules/react-native/ReactCommon/callinvoker`)
-  - React-Core (from `../node_modules/react-native/`)
-  - React-Core/DevSupport (from `../node_modules/react-native/`)
-  - React-Core/RCTWebSocket (from `../node_modules/react-native/`)
-  - React-CoreModules (from `../node_modules/react-native/React/CoreModules`)
-  - React-cxxreact (from `../node_modules/react-native/ReactCommon/cxxreact`)
-  - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
-  - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
-  - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
-  - react-native-appboy-sdk (from `../node_modules/react-native-appboy-sdk`)
-  - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
-  - react-native-config (from `../node_modules/react-native-config`)
-  - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
-  - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
-  - react-native-flipper (from `../node_modules/react-native-flipper`)
-  - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
-  - "react-native-mapbox-gl (from `../node_modules/@react-native-mapbox-gl/maps`)"
-  - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
-  - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
-  - react-native-view-shot (from `../node_modules/react-native-view-shot`)
-  - "react-native-viewpager (from `../node_modules/@react-native-community/viewpager`)"
-  - react-native-webview (from `../node_modules/react-native-webview`)
-  - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
-  - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
-  - React-RCTBlob (from `../node_modules/react-native/Libraries/Blob`)
-  - React-RCTImage (from `../node_modules/react-native/Libraries/Image`)
-  - React-RCTLinking (from `../node_modules/react-native/Libraries/LinkingIOS`)
-  - React-RCTNetwork (from `../node_modules/react-native/Libraries/Network`)
-  - React-RCTSettings (from `../node_modules/react-native/Libraries/Settings`)
-  - React-RCTText (from `../node_modules/react-native/Libraries/Text`)
-  - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
-  - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - rn-fetch-blob (from `../node_modules/rn-fetch-blob`)
-  - "RNAnalytics (from `../node_modules/@segment/analytics-react-native`)"
-  - "RNAnalyticsIntegration-Adjust (from `../node_modules/@segment/analytics-react-native-adjust`)"
-  - "RNAnalyticsIntegration-Appboy (from `../node_modules/@segment/analytics-react-native-appboy`)"
-  - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
-  - RNBootSplash (from `../node_modules/react-native-bootsplash`)
-  - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
-  - "RNCClipboard (from `../node_modules/@react-native-community/clipboard`)"
-  - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
-  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
-  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
-  - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
-  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
-  - RNLocalize (from `../node_modules/react-native-localize`)
-  - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
-  - RNReanimated (from `../node_modules/react-native-reanimated`)
-  - RNScreens (from `../node_modules/react-native-screens`)
-  - "RNSentry (from `../node_modules/@sentry/react-native`)"
-  - RNShare (from `../node_modules/react-native-share`)
-  - RNSVG (from `../node_modules/react-native-svg`)
+  - RCTRequired (from `./node_modules/react-native/Libraries/RCTRequired`)
+  - RCTTypeSafety (from `./node_modules/react-native/Libraries/TypeSafety`)
+  - React (from `./node_modules/react-native/`)
+  - React-callinvoker (from `./node_modules/react-native/ReactCommon/callinvoker`)
+  - React-Core (from `./node_modules/react-native/`)
+  - React-Core/DevSupport (from `./node_modules/react-native/`)
+  - React-Core/RCTWebSocket (from `./node_modules/react-native/`)
+  - React-CoreModules (from `./node_modules/react-native/React/CoreModules`)
+  - React-cxxreact (from `./node_modules/react-native/ReactCommon/cxxreact`)
+  - React-jsi (from `./node_modules/react-native/ReactCommon/jsi`)
+  - React-jsiexecutor (from `./node_modules/react-native/ReactCommon/jsiexecutor`)
+  - React-jsinspector (from `./node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-appboy-sdk (from `node_modules/react-native-appboy-sdk`)
+  - "react-native-cameraroll (from `node_modules/@react-native-community/cameraroll`)"
+  - react-native-config (from `node_modules/react-native-config`)
+  - "react-native-cookies (from `node_modules/@react-native-cookies/cookies`)"
+  - react-native-fbsdk-next (from `node_modules/react-native-fbsdk-next`)
+  - react-native-flipper (from `node_modules/react-native-flipper`)
+  - "react-native-geolocation (from `node_modules/@react-native-community/geolocation`)"
+  - react-native-in-app-review (from `node_modules/react-native-in-app-review`)
+  - "react-native-mapbox-gl (from `node_modules/@react-native-mapbox-gl/maps`)"
+  - "react-native-netinfo (from `node_modules/@react-native-community/netinfo`)"
+  - react-native-safe-area-context (from `node_modules/react-native-safe-area-context`)
+  - react-native-view-shot (from `node_modules/react-native-view-shot`)
+  - "react-native-viewpager (from `node_modules/@react-native-community/viewpager`)"
+  - react-native-webview (from `node_modules/react-native-webview`)
+  - React-RCTActionSheet (from `./node_modules/react-native/Libraries/ActionSheetIOS`)
+  - React-RCTAnimation (from `./node_modules/react-native/Libraries/NativeAnimation`)
+  - React-RCTBlob (from `./node_modules/react-native/Libraries/Blob`)
+  - React-RCTImage (from `./node_modules/react-native/Libraries/Image`)
+  - React-RCTLinking (from `./node_modules/react-native/Libraries/LinkingIOS`)
+  - React-RCTNetwork (from `./node_modules/react-native/Libraries/Network`)
+  - React-RCTSettings (from `./node_modules/react-native/Libraries/Settings`)
+  - React-RCTText (from `./node_modules/react-native/Libraries/Text`)
+  - React-RCTVibration (from `./node_modules/react-native/Libraries/Vibration`)
+  - ReactCommon/turbomodule/core (from `./node_modules/react-native/ReactCommon`)
+  - rn-fetch-blob (from `node_modules/rn-fetch-blob`)
+  - "RNAnalytics (from `node_modules/@segment/analytics-react-native`)"
+  - "RNAnalyticsIntegration-Adjust (from `node_modules/@segment/analytics-react-native-adjust`)"
+  - "RNAnalyticsIntegration-Appboy (from `node_modules/@segment/analytics-react-native-appboy`)"
+  - "RNAppleAuthentication (from `node_modules/@invertase/react-native-apple-authentication`)"
+  - RNBootSplash (from `node_modules/react-native-bootsplash`)
+  - "RNCAsyncStorage (from `node_modules/@react-native-community/async-storage`)"
+  - "RNCClipboard (from `node_modules/@react-native-community/clipboard`)"
+  - "RNCMaskedView (from `node_modules/@react-native-community/masked-view`)"
+  - RNDeviceInfo (from `node_modules/react-native-device-info`)
+  - RNGestureHandler (from `node_modules/react-native-gesture-handler`)
+  - "RNGoogleSignin (from `node_modules/@react-native-google-signin/google-signin`)"
+  - RNImageCropPicker (from `node_modules/react-native-image-crop-picker`)
+  - RNLocalize (from `node_modules/react-native-localize`)
+  - RNReactNativeHapticFeedback (from `node_modules/react-native-haptic-feedback`)
+  - RNReanimated (from `node_modules/react-native-reanimated`)
+  - RNScreens (from `node_modules/react-native-screens`)
+  - "RNSentry (from `node_modules/@sentry/react-native`)"
+  - RNShare (from `node_modules/react-native-share`)
+  - RNSVG (from `node_modules/react-native-svg`)
   - SDWebImage (= 5.8.3)
   - Segment-Adjust
   - Segment-Appboy
@@ -966,7 +969,9 @@ EXTERNAL SOURCES:
   react-native-flipper:
     :path: "../node_modules/react-native-flipper"
   react-native-geolocation:
-    :path: "../node_modules/@react-native-community/geolocation"
+    :path: "node_modules/@react-native-community/geolocation"
+  react-native-in-app-review:
+    :path: node_modules/react-native-in-app-review
   react-native-mapbox-gl:
     :path: "../node_modules/@react-native-mapbox-gl/maps"
   react-native-netinfo:
@@ -1162,6 +1167,7 @@ SPEC CHECKSUMS:
   react-native-fbsdk-next: 19e974b071047b7ed1dad86a9dc3fe77dff76b8c
   react-native-flipper: e3da3457a7cb984b4beaddecb587674a8545b71d
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
+  react-native-in-app-review: 00a66a085c61dbd4474041dc14e7bfee81a86130
   react-native-mapbox-gl: 28350f5f43df85fdb6b85398821a96db1fab0c76
   react-native-netinfo: 7cb7877ff31ebeb3d03ce0b4fbb616f121ddd859
   react-native-safe-area-context: 61c8c484a3a9e7d1fda19f7b1794b35bbfd2262a

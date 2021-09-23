@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import { MarketStatsQuery } from "__generated__/MarketStatsQuery.graphql"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { formatLargeNumber } from "lib/utils/formatLargeNumber"
@@ -107,7 +107,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
             </Text>
           }
           trackEvent={() => {
-            tracking.trackEvent(tappedInfoBubble(tracks.tapMarketStatsInfo()))
+            tracking.trackEvent(tracks.tapMarketStatsInfo())
           }}
           modalTitle={"Market Signals"}
           modalContent={renderInfoModal()}
@@ -238,10 +238,11 @@ const LoadingSkeleton = () => {
   )
 }
 
-export const tracks = {
-  tapMarketStatsInfo: (): TappedInfoBubbleArgs => ({
-    contextModule: ContextModule.auctionResults,
-    contextScreenOwnerType: OwnerType.artistAuctionResults,
+const tracks = {
+  tapMarketStatsInfo: (): TappedInfoBubble => ({
+    action: ActionType.tappedInfoBubble,
+    context_module: ContextModule.auctionResults,
+    context_screen_owner_type: OwnerType.artistAuctionResults,
     subject: "artistMarketStatistics",
   }),
 }

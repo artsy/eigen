@@ -21,12 +21,13 @@ interface Props {
 
 export const SaleArtworksHomeRail: React.FC<Props> = ({ me, relay, onShow, onHide }) => {
   const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
+  const hasArtworks = artworks?.length
 
   useEffect(() => {
-    artworks.length ? onShow?.() : onHide?.()
-  }, [artworks.length])
+    hasArtworks ? onShow?.() : onHide?.()
+  }, [hasArtworks])
 
-  if (!artworks?.length) {
+  if (!hasArtworks) {
     return null
   }
 

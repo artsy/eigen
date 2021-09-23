@@ -106,7 +106,11 @@ export class RandomNumberGenerator {
   }
 }
 
-export const PlaceholderRaggedText: React.FC<{ numLines: number; seed?: number }> = ({ numLines, seed = 10 }) => {
+export const PlaceholderRaggedText: React.FC<{ numLines: number; seed?: number; textHeight?: number }> = ({
+  numLines,
+  seed = 10,
+  textHeight = TEXT_HEIGHT,
+}) => {
   const lengths = useMemo(() => {
     // create our own little deterministic math.random() to avoid snapshot churn
     const rng = new RandomNumberGenerator(seed)
@@ -123,7 +127,7 @@ export const PlaceholderRaggedText: React.FC<{ numLines: number; seed?: number }
     <View style={{ justifyContent: "flex-start" }}>
       {lengths.map((length, key) => (
         <View key={key} style={{ flexDirection: "row" }}>
-          <PlaceholderText flex={length}></PlaceholderText>
+          <PlaceholderText height={textHeight} flex={length}></PlaceholderText>
         </View>
       ))}
     </View>

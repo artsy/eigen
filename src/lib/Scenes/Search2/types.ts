@@ -7,3 +7,8 @@ export interface AlgoliaSearchResult {
   __position: number
   __queryID: string
 }
+
+export interface PillType {
+  name: string
+  displayName: string
+}

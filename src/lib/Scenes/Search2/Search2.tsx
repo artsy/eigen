@@ -9,7 +9,8 @@ import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
 import { useSearchInsightsConfig } from "lib/utils/useSearchInsightsConfig"
-import { Flex, Pill, Spacer } from "palette"
+import { throttle } from "lodash"
+import { Box, Flex, Spacer } from "palette"
 import React, { useMemo, useState } from "react"
 import {
   Configure,
@@ -26,33 +27,45 @@ import { AutosuggestResults } from "../Search/AutosuggestResults"
 import { CityGuideCTA } from "../Search/CityGuideCTA"
 import { RecentSearches } from "../Search/RecentSearches"
 import { SearchContext, useSearchProviderValues } from "../Search/SearchContext"
+import { SearchPills } from "./components/SearchPills"
 import { SearchPlaceholder } from "./components/SearchPlaceholder"
 import { RefetchWhenApiKeyExpiredContainer } from "./containers/RefetchWhenApiKeyExpired"
 import { SearchArtworksQueryRenderer } from "./containers/SearchArtworksContainer"
 import { SearchResults } from "./SearchResults"
+import { PillType } from "./types"
 
 interface SearchInputProps {
   placeholder: string
   currentRefinement: string
   refine: (value: string) => any
+  onSubmitEditing: () => void
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholder, refine }) => {
+const SEARCH_THROTTLE_INTERVAL = 500
+
+const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholder, refine, onSubmitEditing }) => {
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(currentRefinement)
+
+  const handleChangeText = useMemo(
+    () =>
+      throttle((queryText: string) => {
+        refine(queryText)
+        trackEvent({
+          action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
+          query: queryText,
+        })
+      }, SEARCH_THROTTLE_INTERVAL),
+    []
+  )
 
   return (
     <SearchBox
       ref={searchProviderValues.inputRef}
       enableCancelButton
       placeholder={placeholder}
-      onChangeText={(queryText) => {
-        refine(queryText)
-        trackEvent({
-          action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
-          query: queryText,
-        })
-      }}
+      onChangeText={handleChangeText}
+      onSubmitEditing={onSubmitEditing}
       onFocus={() => {
         trackEvent({
           action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
@@ -77,12 +90,8 @@ interface SearchState {
   page?: number
 }
 
-interface PillType {
-  name: string
-  displayName: string
-}
-
-const pills: PillType[] = [{ name: "ARTWORK", displayName: "Artworks" }]
+const ARTWORKS_PILL: PillType = { name: "ARTWORK", displayName: "Artworks" }
+const pills: PillType[] = [ARTWORKS_PILL]
 
 interface Search2Props {
   relay: RelayRefetchProp
@@ -127,7 +136,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
     return <AutosuggestResults query={searchState.query!} />
   }
 
-  const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 2
+  const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 1
 
   const handlePillPress = ({ name, displayName }: PillType) => {
     setActivePillDisplayName(displayName)
@@ -139,6 +148,21 @@ export const Search2: React.FC<Search2Props> = (props) => {
     }
     setElasticSearchEntity("")
     setSelectedAlgoliaIndex(selectedAlgoliaIndex === name ? "" : name)
+  }
+
+  const isSelected = (pill: PillType) => {
+    const { name } = pill
+    return selectedAlgoliaIndex === name || elasticSearchEntity === name
+  }
+
+  const handleSubmitEditing = () => {
+    if (shouldStartQuering) {
+      const { displayName, name } = ARTWORKS_PILL
+
+      setSelectedAlgoliaIndex("")
+      setActivePillDisplayName(displayName)
+      setElasticSearchEntity(name)
+    }
   }
 
   return (
@@ -153,28 +177,16 @@ export const Search2: React.FC<Search2Props> = (props) => {
           <Configure clickAnalytics />
           <RefetchWhenApiKeyExpiredContainer relay={relay} />
           <Flex p={2} pb={1}>
-            <SearchInputContainer placeholder="Search artists, artworks, galleries, etc" />
+            <SearchInputContainer
+              placeholder="Search artists, artworks, galleries, etc"
+              onSubmitEditing={handleSubmitEditing}
+            />
           </Flex>
           {!!shouldStartQuering ? (
             <>
-              <Flex p={2} pb={1}>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  {pillsArray.map((pill) => {
-                    const { name, displayName } = pill
-                    return (
-                      <Pill
-                        mr={1}
-                        key={name}
-                        rounded
-                        selected={selectedAlgoliaIndex === name || elasticSearchEntity === name}
-                        onPress={() => handlePillPress(pill)}
-                      >
-                        {displayName}
-                      </Pill>
-                    )
-                  })}
-                </ScrollView>
-              </Flex>
+              <Box pt={2} pb={1}>
+                <SearchPills pills={pillsArray} onPillPress={handlePillPress} isSelected={isSelected} />
+              </Box>
               {renderResults(activePillDisplayName)}
             </>
           ) : (

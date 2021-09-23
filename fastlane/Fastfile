@@ -156,7 +156,7 @@ lane :set_git_properties_android do
   end
 end
 
-lane :ship_beta_android do
+lane :ship_beta_android_play_store do
   sh("yarn jetifier")
   sh("yarn relay")
 
@@ -165,7 +165,37 @@ lane :ship_beta_android do
 
   sentry_release_name = "android-#{vname}-#{vcode}"
   update_sentry_release_name(sentry_release_name: sentry_release_name)
+
+  # build again with flag set to false for release candidates
+  flag_android_beta(is_android_beta: false)
+  gradle(
+    task: "bundle",
+    build_type: "Release",
+    project_dir: "android/",
+    flags: "--no-daemon --max-workers=1",
+  )
+
+  upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
+
+  supply(
+    track: "alpha",
+    skip_upload_apk: true,
+    skip_upload_metadata: true,
+    skip_upload_images: true,
+    skip_upload_screenshots: true,
+  )
+end
+
+lane :ship_beta_android_firebase do
+  sh("yarn jetifier")
+  sh("yarn relay")
+
   flag_android_beta(is_android_beta: true)
+
+  vname, vcode = set_build_version_android
+
+  sentry_release_name = "android-#{vname}-#{vcode}"
+  update_sentry_release_name(sentry_release_name: sentry_release_name)
 
   gradle(
     task: "bundle",
@@ -178,25 +208,6 @@ lane :ship_beta_android do
     app: ENV["FIREBASE_APP_ID"],
     groups: 'artsy-people',
     android_artifact_path: "./android/app/build/outputs/bundle/release/app-release.aab"
-  )
-
-  upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
-
-  # build again with flag set to false for release candidates
-  flag_android_beta(is_android_beta: false)
-  gradle(
-    task: "bundle",
-    build_type: "Release",
-    project_dir: "android/",
-    flags: "--no-daemon --max-workers=1",
-  )
-
-  supply(
-    track: "alpha",
-    skip_upload_apk: true,
-    skip_upload_metadata: true,
-    skip_upload_images: true,
-    skip_upload_screenshots: true,
   )
 end
 

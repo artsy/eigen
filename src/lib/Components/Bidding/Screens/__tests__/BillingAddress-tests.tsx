@@ -83,7 +83,7 @@ it("pre-fills the fields if initial billing address is provided", () => {
   expect(textInputComponent(component, "State, Province, or Region").props.value).toEqual("NY")
   expect(textInputComponent(component, "Postal code").props.value).toEqual("10013")
 
-  const countryField = component.root.findAllByType(Text)[2]
+  const countryField = component.root.findAllByType(Text)[9]
   expect(countryField.props.children).toEqual("United States")
 })
 

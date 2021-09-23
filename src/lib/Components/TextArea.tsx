@@ -1,5 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
 import { Text, useColor } from "palette"
+import { usePaletteFlagStore } from "palette/PaletteFlag"
 import React, { useState } from "react"
 import { TextInput, TextInputProps } from "react-native"
 import styled from "styled-components/native"
@@ -17,18 +18,25 @@ export const TextArea: React.FC<TextAreaProps> = ({ title, ...props }) => {
   const color = useColor()
   const [borderColor, setBorderColor] = useState(color("black10"))
 
+  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
+
   return (
     <>
-      {!!title && (
-        <Text mb={1} variant="mediumText">
-          {title}
-        </Text>
-      )}
+      {!!title &&
+        (allowV3 ? (
+          <Text mb={1} variant="xs">
+            {title}
+          </Text>
+        ) : (
+          <Text mb={1} variant="mediumText">
+            {title}
+          </Text>
+        ))}
       <StyledTextArea
         {...props}
         onFocus={(e) => {
           props.onFocus?.(e)
-          setBorderColor(color("purple100" /* TODO-PALETTE-V3 "blue100" */))
+          setBorderColor(allowV3 ? color("purple100") : color("blue100"))
         }}
         onBlur={(e) => {
           props.onBlur?.(e)

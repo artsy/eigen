@@ -1,5 +1,5 @@
 import { useTheme } from "palette"
-import { isThemeV3, TextSizeV3 } from "palette/Theme"
+import { isThemeV3, TextVariantV3 } from "palette/Theme"
 import React from "react"
 import { StyleProp, TextStyle } from "react-native"
 import { Text as RNText, TextProps as RNTextProps } from "react-native"
@@ -17,7 +17,7 @@ import {
 import { useFontFamilyFor } from "./helpers"
 
 export interface TextProps extends RNTextProps, InnerStyledTextProps {
-  size?: TextSizeV3
+  variant?: TextVariantV3
   italic?: boolean
   caps?: boolean
   weight?: "regular" | "medium"
@@ -25,7 +25,7 @@ export interface TextProps extends RNTextProps, InnerStyledTextProps {
 }
 
 export const Text: React.FC<TextProps> = React.forwardRef<RNText, TextProps>(
-  ({ size = "sm", italic = false, caps, weight = "regular", style, children, ...rest }, ref) => {
+  ({ variant = "sm", italic = false, caps, weight = "regular", style, children, ...rest }, ref) => {
     const { theme } = useTheme()
     const fontFamily = useFontFamilyFor({ italic, weight })
     if (!isThemeV3(theme)) {
@@ -40,7 +40,7 @@ export const Text: React.FC<TextProps> = React.forwardRef<RNText, TextProps>(
         ref={ref}
         style={[...nativeTextStyle, style]}
         fontFamily={fontFamily}
-        {...theme.textTreatments[size]}
+        {...theme.textTreatments[variant]}
         children={children}
         {...rest}
       />

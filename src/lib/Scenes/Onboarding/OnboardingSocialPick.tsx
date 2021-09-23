@@ -109,8 +109,8 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
         </>
 
         <Text variant="small" color="black60" textAlign="center">
-          By tapping Next, {mode === "login" ? "Continue with Facebook" : "Sign up with Facebook"} or Apple, you agree
-          to Artsy's{" "}
+          By tapping {mode === "login" ? "Continue with Facebook" : "Sign up with Facebook"} or Apple, you agree to
+          Artsy's{" "}
           <Text
             onPress={() => {
               Linking.openURL(`${webURL}/terms`)

@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType, tappedInfoBubble } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import { MyCollectionArtworkArtistMarket_artwork } from "__generated__/MyCollectionArtworkArtistMarket_artwork.graphql"
 import { MyCollectionArtworkArtistMarket_marketPriceInsights } from "__generated__/MyCollectionArtworkArtistMarket_marketPriceInsights.graphql"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
@@ -117,13 +117,12 @@ export const MyCollectionArtworkArtistMarketFragmentContainer = createFragmentCo
 )
 
 const tracks = {
-  tappedInfoBubble: (internalID: string, slug: string) => {
-    return tappedInfoBubble({
-      contextModule: ContextModule.myCollectionArtwork,
-      contextScreenOwnerType: OwnerType.myCollectionArtwork,
-      contextScreenOwnerId: internalID,
-      contextScreenOwnerSlug: slug,
-      subject: "artistMarketStatistics",
-    })
-  },
+  tappedInfoBubble: (internalID: string, slug: string): TappedInfoBubble => ({
+    action: ActionType.tappedInfoBubble,
+    context_module: ContextModule.myCollectionArtwork,
+    context_screen_owner_id: internalID,
+    context_screen_owner_slug: slug,
+    context_screen_owner_type: OwnerType.myCollectionArtwork,
+    subject: "artistMarketStatistics",
+  }),
 }

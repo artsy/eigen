@@ -1,4 +1,5 @@
 import { ShipsToSectionTestsQuery } from "__generated__/ShipsToSectionTestsQuery.graphql"
+import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -7,6 +8,19 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ShipsToSectionFragmentContainer } from "../Components/ShipsToSection"
 
 jest.unmock("react-relay")
+
+const order = {
+  requestedFulfillment: {
+    __typename: "CommerceShip",
+    name: "my name",
+    addressLine1: "myadress",
+    city: "mycity",
+    country: "BY",
+    postalCode: "11238",
+    phoneNumber: "7777",
+    region: "myregion",
+  },
+}
 
 describe("ShipsToSection", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -32,28 +46,37 @@ describe("ShipsToSection", () => {
       }}
     />
   )
-  it("renders auction result when auction results are available", () => {
-    const tree = renderWithWrappers(<TestRenderer />).root
-    mockEnvironmentPayload(mockEnvironment, {
-      CommerceOrder: () => ({
-        requestedFulfillment: {
-          __typename: "CommerceShip",
-          name: "my name",
-          addressLine1: "myadress",
-          city: "mycity",
-          country: "BY",
-          postalCode: "11238",
-          phoneNumber: "7777",
-          region: "myregion",
-        },
-      }),
-    })
 
-    expect(tree.findByProps({ testID: "addressLine1" }).props.children).toBe("myadress")
-    expect(tree.findByProps({ testID: "city" }).props.children).toBe("mycity, ")
-    expect(tree.findByProps({ testID: "region" }).props.children).toBe("myregion ")
-    expect(tree.findByProps({ testID: "phoneNumber" }).props.children).toBe("7777")
-    expect(tree.findByProps({ testID: "country" }).props.children).toBe("Belarus")
-    expect(tree.findByProps({ testID: "postalCode" }).props.children).toBe("11238")
+  it("renders section when CommerceShip", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+    mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => order })
+
+    expect(extractText(tree.findByProps({ testID: "addressLine1" }))).toBe("myadress")
+    expect(extractText(tree.findByProps({ testID: "city" }))).toBe("mycity, ")
+    expect(extractText(tree.findByProps({ testID: "region" }))).toBe("myregion ")
+    expect(extractText(tree.findByProps({ testID: "phoneNumber" }))).toBe("7777")
+    expect(extractText(tree.findByProps({ testID: "country" }))).toBe("Belarus")
+    expect(extractText(tree.findByProps({ testID: "postalCode" }))).toBe("11238")
+  })
+
+  it("renders section when CommerceShipArta", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+    order.requestedFulfillment.__typename = "CommerceShipArta"
+    mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => order })
+
+    expect(extractText(tree.findByProps({ testID: "addressLine1" }))).toBe("myadress")
+    expect(extractText(tree.findByProps({ testID: "city" }))).toBe("mycity, ")
+    expect(extractText(tree.findByProps({ testID: "region" }))).toBe("myregion ")
+    expect(extractText(tree.findByProps({ testID: "phoneNumber" }))).toBe("7777")
+    expect(extractText(tree.findByProps({ testID: "country" }))).toBe("Belarus")
+    expect(extractText(tree.findByProps({ testID: "postalCode" }))).toBe("11238")
+  })
+
+  it("not renders section when CommercePickup", () => {
+    const tree = renderWithWrappers(<TestRenderer />).root
+    order.requestedFulfillment.__typename = "CommercePickup"
+    mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => order })
+
+    expect(tree.instance).toBeNull()
   })
 })

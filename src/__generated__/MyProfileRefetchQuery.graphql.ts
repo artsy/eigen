@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 42e26ae150912e8a1ed24d753fff1f52 */
+/* @relayHash 8945b07024d2b618521f9af1f147435d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,6 +29,7 @@ query MyProfileRefetchQuery {
 fragment MyProfile_me on Me {
   name
   labFeatures
+  createdAt
   followsAndSaves {
     artworksConnection(first: 10, private: true) {
       edges {
@@ -135,6 +136,13 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "labFeatures",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "createdAt",
             "storageKey": null
           },
           {
@@ -354,7 +362,7 @@ return {
     ]
   },
   "params": {
-    "id": "42e26ae150912e8a1ed24d753fff1f52",
+    "id": "8945b07024d2b618521f9af1f147435d",
     "metadata": {},
     "name": "MyProfileRefetchQuery",
     "operationKind": "query",
