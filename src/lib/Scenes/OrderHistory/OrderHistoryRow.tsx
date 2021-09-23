@@ -71,7 +71,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
               onPress={() => navigate(`/user/purchases/${order.internalID}`)}
               data-test-id="view-order-button"
             >
-              View Order
+              {order.mode === "OFFER" ? "View Offer" : "View Order"}
             </Button>
           </Box>
           <Box width="50%" paddingLeft={0.5}>
@@ -97,7 +97,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
               onPress={() => navigate(`/user/purchases/${order.internalID}`)}
               data-test-id="view-order-button"
             >
-              View Order
+              {order.mode === "OFFER" ? "View Offer" : "View Order"}
             </Button>
           )}
         </Box>
@@ -111,6 +111,7 @@ export const OrderHistoryRowContainer = createFragmentContainer(OrderHistoryRow,
     fragment OrderHistoryRow_order on CommerceOrder {
       internalID
       state
+      mode
       buyerTotal(precision: 2)
       createdAt
       itemsTotal
