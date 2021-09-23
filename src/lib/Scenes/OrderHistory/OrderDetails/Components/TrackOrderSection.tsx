@@ -3,7 +3,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { getOrderStatus, OrderState } from "lib/utils/getOrderStatus"
 import { getTrackingUrl } from "lib/utils/getTrackingUrl"
 import { DateTime } from "luxon"
-import { Button, Flex, Text } from "palette"
+import { Button, Flex, Text, TextV3 } from "palette"
 import React, { FC } from "react"
 import { Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -34,9 +34,9 @@ export const TrackOrderSection: FC<Props> = ({ section }) => {
         {!!shipment?.trackingNumber ? (
           <Text testID="trackingNumber" variant="text" color="black60">
             Tracking:&nbsp;
-            <Text variant="text" color="black60" weight="medium">
+            <TextV3 variant="sm" color="black60" weight="medium">
               {shipment?.trackingNumber}
-            </Text>
+            </TextV3>
           </Text>
         ) : (
           <Text testID="noTrackingNumber" variant="text" color="black60">
@@ -46,9 +46,9 @@ export const TrackOrderSection: FC<Props> = ({ section }) => {
         {(!!shipment?.deliveryStart || !!createdAt) && (
           <Text testID="shippedOn" variant="text" color="black60">
             Shipped on&nbsp;
-            <Text variant="text" color="black60" weight={!deliveredStatus ? "medium" : "regular"}>
+            <TextV3 variant="sm" color="black60" weight={!deliveredStatus ? "medium" : "regular"}>
               {DateTime.fromISO(shipment?.deliveryStart || createdAt).toLocaleString(DateTime.DATE_MED)}
-            </Text>
+            </TextV3>
           </Text>
         )}
         {!!deliveredStatus && !!shipment?.deliveryEnd && (
@@ -63,13 +63,13 @@ export const TrackOrderSection: FC<Props> = ({ section }) => {
               <Text testID="estimatedDelivery" variant="text" color="black60">
                 Estimated Delivery:&nbsp;
                 {!!estimatedDelivery ? (
-                  <Text variant="text" color="black60" weight="medium">
+                  <TextV3 variant="sm" color="black60" weight="medium">
                     {DateTime.fromISO(estimatedDelivery).toLocaleString(DateTime.DATE_MED)}
-                  </Text>
+                  </TextV3>
                 ) : (
-                  <Text variant="text" color="black60" weight="medium">
+                  <TextV3 variant="sm" color="black60" weight="medium">
                     {shipment?.estimatedDeliveryWindow}
-                  </Text>
+                  </TextV3>
                 )}
               </Text>
             )}

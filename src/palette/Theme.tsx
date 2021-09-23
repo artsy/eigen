@@ -17,7 +17,7 @@ import {
 } from "@artsy/palette-tokens/dist/themes/v3"
 import {
   TextTreatment as TextTreatmentWithUnits,
-  TextVariant as TextSizeV3,
+  TextVariant as TextVariantV3,
 } from "@artsy/palette-tokens/dist/typography/v3"
 
 type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
@@ -25,7 +25,7 @@ export type Color = ColorV2 | ColorV3
 export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
 type ColorV3 = ColorV3BeforeDevPurple | "devpurple"
 export { ColorV2, ColorV3, SpacingUnitV2, SpacingUnitV3 }
-export { TextSizeV3 }
+export { TextVariantV3 }
 
 const {
   breakpoints: _eigenDoesntCareAboutBreakpoints,
@@ -109,7 +109,7 @@ export interface TextTreatment {
 // this function is removing the `px` and `em` suffix and making the values into numbers
 const fixTextTreatments = (
   variantsWithUnits: Record<"xxl" | "xl" | "lg" | "md" | "sm" | "xs", TextTreatmentWithUnits>
-): Record<TextSizeV3, TextTreatment> => {
+): Record<TextVariantV3, TextTreatment> => {
   const textTreatments = _.mapValues(variantsWithUnits, (treatmentWithUnits) => {
     const newTreatment = {} as TextTreatment
     ;([
