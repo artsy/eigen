@@ -6,7 +6,7 @@ describe(PlaceholderBox, () => {
   it(`requires a placeholder context`, () => {
     try {
       renderWithWrappers(<PlaceholderBox width={400} />)
-    } catch (error) {
+    } catch (error: any) {
       expect(error.message).toContain("Error: You're using a Placeholder outside of a PlaceholderContext")
     }
 

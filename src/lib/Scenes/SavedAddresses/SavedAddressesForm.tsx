@@ -128,7 +128,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
         toast.show("Address successfully added", "top")
       }
       goBack()
-    } catch (e) {
+    } catch (e: any) {
       captureMessage(e.stack)
       Alert.alert("Something went wrong while attempting to save your address. Please try again or contact us.")
     }
@@ -154,7 +154,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
         toast.show("Address successfully edited", "top")
       }
       goBack()
-    } catch (e) {
+    } catch (e: any) {
       Alert.alert("Something went wrong while attempting to save your address. Please try again or contact us.")
       captureMessage(e.stack)
     }

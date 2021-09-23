@@ -40,7 +40,7 @@ describe(errorMiddleware, () => {
         expect.assertions(1)
         try {
           await middleware(next)(request)
-        } catch (err) {
+        } catch (err: any) {
           expect(err.message).toContain("Relay request for `xxx` failed")
         }
       })
@@ -83,7 +83,7 @@ describe(errorMiddleware, () => {
         expect.assertions(1)
         try {
           await middleware(next)(request)
-        } catch (err) {
+        } catch (err: any) {
           expect(err.message).toContain("Relay request for `xxx` failed")
         }
       })
@@ -156,7 +156,7 @@ describe(errorMiddleware, () => {
         expect.assertions(1)
         try {
           await middleware(next)(request)
-        } catch (err) {
+        } catch (err: any) {
           expect(err.message).toContain("Relay request for `xxx` failed")
         }
       })

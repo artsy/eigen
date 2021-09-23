@@ -26,7 +26,7 @@ const MyAccountEditName: React.FC<{ me: MyAccountEditName_me; relay: RelayProp }
         try {
           await updateMyUserProfile({ name })
           dismiss()
-        } catch (e) {
+        } catch (e: any) {
           setReceivedErrors(e)
         }
       }}

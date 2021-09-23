@@ -53,7 +53,7 @@ export const renderWithWrappers = (component: ReactElement) => {
     }
 
     return renderedComponent
-  } catch (error) {
+  } catch (error: any) {
     if (error.message.includes("Element type is invalid")) {
       throw new Error(
         'Error: Relay test component failed to render. This may happen if you forget to add `jest.unmock("react-relay")` at the top ' +

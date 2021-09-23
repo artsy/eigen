@@ -181,7 +181,6 @@ export class MockRelayRenderer<T extends OperationType> extends React.Component<
     }
 
     if (this.state.caughtError) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const { error, errorInfo } = this.state.caughtError
       console.log({ error, errorInfo })
       return `Error occurred while rendering Relay component: ${error}`
