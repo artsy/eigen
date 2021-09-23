@@ -31,7 +31,7 @@ const AutosuggestResultsFlatList: React.FC<{
   showResultType?: boolean
   showQuickNavigationButtons?: boolean
   onResultPress?: OnResultPress
-}> = ({ query, results: latestResults, relay, showResultType, showQuickNavigationButtons, onResultPress }) => {
+}> = ({ query, results: latestResults, relay, showResultType = false, showQuickNavigationButtons, onResultPress }) => {
   const space = useSpace()
   const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
 

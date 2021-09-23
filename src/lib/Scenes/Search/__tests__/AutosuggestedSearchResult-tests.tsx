@@ -1,14 +1,15 @@
 import { EntityType, navigate, navigateToEntity, SlugType } from "lib/navigation/navigate"
+import { SearchListItem } from "lib/Scenes/Search2/components/SearchListItem"
 import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { CatchErrors } from "lib/utils/CatchErrors"
-import { CloseIcon } from "palette"
+import { CloseIcon, Sans, Touchable } from "palette"
 import React from "react"
-import { Pressable, TouchableOpacity } from "react-native"
+import { Pressable } from "react-native"
 import { act } from "react-test-renderer"
+import { AutosuggestSearchResult, ItalicText, ResultWithItalic } from "../AutosuggestSearchResult"
 import { SearchContext } from "../SearchContext"
-import { SearchResult } from "../SearchResult"
 
 const inputBlurMock = jest.fn()
 
@@ -22,14 +23,14 @@ const result = {
 
 let recentSearchesArray: any[] = []
 
-const _TestWrapper: typeof SearchResult = (props) => {
+const _TestWrapper: typeof AutosuggestSearchResult = (props) => {
   const recentSearches = GlobalStore.useAppState((state) => state.search.recentSearches)
 
   recentSearchesArray = recentSearches
-  return <SearchResult {...props} />
+  return <AutosuggestSearchResult {...props} />
 }
 
-const TestWrapper: typeof SearchResult = (props) => (
+const TestWrapper: typeof AutosuggestSearchResult = (props) => (
   <GlobalStoreProvider>
     <SearchContext.Provider
       value={{ inputRef: { current: { blur: inputBlurMock } as any }, queryRef: { current: "" } }}
@@ -41,17 +42,38 @@ const TestWrapper: typeof SearchResult = (props) => (
   </GlobalStoreProvider>
 )
 
-describe(SearchResult, () => {
+describe(AutosuggestSearchResult, () => {
   beforeEach(() => {
     require("@react-native-community/async-storage").__resetState()
     recentSearchesArray = []
     inputBlurMock.mockClear()
   })
   it(`works`, async () => {
-    const tree = renderWithWrappers(<TestWrapper result={result} />)
+    const tree = renderWithWrappers(<TestWrapper result={result} showResultType={true} />)
 
     expect(extractText(tree.root)).toContain("Banksy")
     expect(extractText(tree.root)).toContain("Artist")
+  })
+
+  it("renders SearchListItem and passing correct props to it", async () => {
+    const tree = renderWithWrappers(<TestWrapper result={result} onDelete={jest.fn()} />)
+
+    const searchListItem = tree.root.findByType(SearchListItem)
+    const searchListItemProps = searchListItem.props
+
+    expect(searchListItem).toBeDefined()
+    expect(searchListItemProps.categoryName).toEqual("Artist")
+    expect(searchListItemProps.imageURL).toEqual("blah")
+    expect(searchListItemProps.onPress).toBeDefined()
+    expect(searchListItemProps.onDelete).toBeDefined()
+  })
+
+  it("rensders children passed to SearchListItem", async () => {
+    const tree = renderWithWrappers(<TestWrapper result={result} showResultType={true} />)
+    const searchListItemText = extractText(tree.root.findByType(SearchListItem))
+
+    expect(searchListItemText).toContain("Banksy")
+    expect(searchListItemText).toContain("Artist")
   })
 
   it("has an optional onDelete action which shows a close button", () => {
@@ -66,7 +88,7 @@ describe(SearchResult, () => {
   it("blurs the input and navigates to the correct page when tapped", async () => {
     const tree = renderWithWrappers(<TestWrapper result={result} />)
     expect(navigate).not.toHaveBeenCalled()
-    tree.root.findByType(TouchableOpacity).props.onPress()
+    tree.root.findByType(Touchable).props.onPress()
     await new Promise((r) => setTimeout(r, 50))
     expect(inputBlurMock).toHaveBeenCalled()
     expect(navigate).toHaveBeenCalledWith(result.href, { passProps: { initialTab: "Artworks" } })
@@ -109,7 +131,7 @@ describe(SearchResult, () => {
     expect(navigate).not.toHaveBeenCalled()
     expect(recentSearchesArray).toHaveLength(0)
     act(() => {
-      tree.root.findByType(TouchableOpacity).props.onPress()
+      tree.root.findByType(Touchable).props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
     expect(recentSearchesArray).toHaveLength(1)
@@ -120,21 +142,21 @@ describe(SearchResult, () => {
     expect(navigate).not.toHaveBeenCalled()
     expect(recentSearchesArray).toHaveLength(0)
     act(() => {
-      tree.root.findByType(TouchableOpacity).props.onPress()
+      tree.root.findByType(Touchable).props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
     expect(recentSearchesArray).toHaveLength(0)
   })
 
   it(`optionally hides the entity type`, () => {
-    const tree = renderWithWrappers(<TestWrapper result={result} showResultType={false} />)
+    const tree = renderWithWrappers(<TestWrapper result={result} />)
     expect(extractText(tree.root)).not.toContain("Artist")
   })
 
   it(`allows for custom touch handlers on search result items`, () => {
     const spy = jest.fn()
     const tree = renderWithWrappers(<TestWrapper result={result} onResultPress={spy} />)
-    tree.root.findByType(TouchableOpacity).props.onPress()
+    tree.root.findByType(Touchable).props.onPress()
     expect(spy).toHaveBeenCalled()
   })
 
@@ -152,7 +174,7 @@ describe(SearchResult, () => {
       />
     )
     act(() => {
-      tree.root.findByType(TouchableOpacity).props.onPress()
+      tree.root.findByType(Touchable).props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
     expect(navigateToEntity).toHaveBeenCalledWith("/art-expo-diff-profile-slug", EntityType.Fair, SlugType.ProfileID)
@@ -249,5 +271,89 @@ describe(SearchResult, () => {
     })
     await new Promise((r) => setTimeout(r, 50))
     expect(navigate).toHaveBeenCalledWith("/artist/anto-carte", { passProps: { initialTab: "Insights" } })
+  })
+})
+
+describe("ResultWithItalic", () => {
+  describe("when match is in an artwork name", () => {
+    const array = ["Henri Venne, The Sun Shines ", "Cold", " (2015)"]
+    const tree = renderWithWrappers(<ResultWithItalic result={array} />)
+    const text = tree.root.findAllByType(Sans)
+    const italicText = tree.root.findAllByType(ItalicText)
+
+    it("renders 3 text elements", () => {
+      expect(text).toHaveLength(3)
+    })
+
+    it(`renders "Henri Venne" as plain text`, () => {
+      expect(text[0].props.italic).toBeFalsy()
+      expect(extractText(text[0])).toEqual("Henri Venne")
+    })
+
+    it("renders 2 italic text elements", () => {
+      expect(italicText).toHaveLength(2)
+    })
+
+    it(`renders "The Sun Shines " and " (2015)" as italic grey text elements`, () => {
+      expect(italicText[0].props.color).toBeUndefined()
+      expect(extractText(italicText[0])).toContain("The Sun Shines ")
+      expect(extractText(italicText[0])).toContain(" (2015)")
+    })
+
+    it(`renders "Cold" as italic blue text element`, () => {
+      expect(italicText[1].props.color).toEqual("blue100")
+      expect(extractText(italicText[1])).toContain("Cold")
+    })
+  })
+
+  describe("when match is in an artist name", () => {
+    const array = ["Christ on the ", "Cold", " Stone, Title, with comma (1990)"]
+    const tree = renderWithWrappers(<ResultWithItalic result={array} />)
+    const text = tree.root.findAllByType(Sans)
+    const italicText = tree.root.findAllByType(ItalicText)
+
+    it("renders 3 text elements", () => {
+      expect(text).toHaveLength(3)
+    })
+
+    it(`renders "Christ on the " and " Stone" as plain text element`, () => {
+      expect(text[0].props.italic).toBeFalsy()
+      expect(extractText(text[0])).toContain("Christ on the ")
+      expect(extractText(text[0])).toContain(" Stone")
+    })
+
+    it(`renders "Cold" as bold blue text element`, () => {
+      expect(text[1].props.weight).toEqual("medium")
+      expect(text[1].props.color).toEqual("blue100")
+      expect(extractText(text[1])).toEqual("Cold")
+    })
+
+    it(`renders " Title, with comma (1990)" as italic grey text element`, () => {
+      expect(italicText).toHaveLength(1)
+      expect(italicText[0].props.color).toBeUndefined()
+      expect(extractText(italicText[0])).toEqual(" Title, with comma (1990)")
+    })
+  })
+
+  describe("when there is no artwork name", () => {
+    const array = ["Ann ", "Veronica", " Janssens"]
+    const tree = renderWithWrappers(<ResultWithItalic result={array} />)
+    const text = tree.root.findAllByType(Sans)
+
+    it("renders 2 text elements", () => {
+      expect(text).toHaveLength(2)
+    })
+
+    it(`renders "Ann " and " Janssens" as plain text elements`, () => {
+      expect(text[0].props.italic).toBeFalsy()
+      expect(extractText(text[0])).toContain("Ann ")
+      expect(extractText(text[0])).toContain(" Janssens")
+    })
+
+    it(`renders "Veronica" as bold blue text element`, () => {
+      expect(text[1].props.weight).toEqual("medium")
+      expect(text[1].props.color).toEqual("blue100")
+      expect(extractText(text[1])).toEqual("Veronica")
+    })
   })
 })

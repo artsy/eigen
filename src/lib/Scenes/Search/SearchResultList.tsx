@@ -1,13 +1,13 @@
 import { FadeIn } from "lib/Components/FadeIn"
 import { Join, Spacer } from "palette"
 import React from "react"
-import { SearchResult } from "./SearchResult"
+import { AutosuggestSearchResult } from "./AutosuggestSearchResult"
 
 export const SearchResultList: React.FC<{ results: React.ReactElement[] }> = ({ results }) => {
   return (
     <Join separator={<Spacer mb="15px" />}>
       {React.Children.map(results, (child, i) => {
-        const props = child.props as Parameters<typeof SearchResult>[0]
+        const props = child.props as Parameters<typeof AutosuggestSearchResult>[0]
         if (!props.result?.href) {
           console.warn("children of SearchResultList should be only of type SearchResult")
         }

@@ -79,6 +79,7 @@ export const AutosuggestSearchResult: React.FC<{
 }> = ({
   result,
   highlight,
+  showResultType,
   onDelete,
   onResultPress,
   displayingRecentResult,
@@ -128,7 +129,7 @@ export const AutosuggestSearchResult: React.FC<{
             <Text ellipsizeMode="tail" numberOfLines={1}>
               {applyHighlight({ displayLabel: result.displayLabel!, highlight, categoryName })}
             </Text>
-            {!!categoryName && (
+            {!!showResultType && !!categoryName && (
               <Sans size="3t" color="black60">
                 {categoryName}
               </Sans>
@@ -151,7 +152,7 @@ const QuickNavigationButton = styled(Flex)`
   border-radius: 20;
 `
 
-const ItalicText: React.FC<{ color?: string }> = ({ color = "grey", children }) => {
+export const ItalicText: React.FC<{ color?: string }> = ({ color = "grey", children }) => {
   return (
     <Sans size="3t" italic color={color}>
       {children}
@@ -178,7 +179,21 @@ function navigateToResult(result: AutosuggestResult, artistTab: ArtistTabs = "Ar
   }
 }
 
-function getResultWithItalic(result: string[]) {
+const Result: React.FC<{ result: string[] }> = ({ result }) => {
+  const [nonMatch, match, nonMatch2] = result
+
+  return (
+    <Sans size="3t">
+      {nonMatch}
+      <Sans size="3t" weight="medium" color="blue100" style={{ padding: 0, margin: 0 }}>
+        {match}
+      </Sans>
+      {nonMatch2}
+    </Sans>
+  )
+}
+
+export const ResultWithItalic: React.FC<{ result: string[] }> = ({ result }) => {
   const [nonMatch, match, nonMatch2] = result
 
   // If the result string is e.g. "Henri Venne, The Sun Shines Cold (2015)",
@@ -210,14 +225,12 @@ function getResultWithItalic(result: string[]) {
     const restNonMatch2 = rest.join(",")
     return (
       <>
-        <Sans size="3t" weight="regular">
+        <Sans size="3t">
           {nonMatch}
           <Sans size="3t" weight="medium" color="blue100">
             {match}
           </Sans>
-          <Sans size="3t" weight="regular">
-            {mainNonMatch2}
-          </Sans>
+          {mainNonMatch2}
         </Sans>
 
         <ItalicText>{restNonMatch2}</ItalicText>
@@ -225,7 +238,7 @@ function getResultWithItalic(result: string[]) {
     )
   }
 
-  return null
+  return <Result result={result} />
 }
 
 function applyHighlight({
@@ -291,21 +304,8 @@ function applyHighlight({
   }
 
   if (categoryName === "Artwork") {
-    const resultWithItalic = getResultWithItalic(result)
-    if (resultWithItalic) {
-      return resultWithItalic
-    }
+    return <ResultWithItalic result={result} />
   }
 
-  const [nonMatch, match, nonMatch2] = result
-
-  return (
-    <Sans size="3t" weight="regular">
-      {nonMatch}
-      <Sans size="3t" weight="medium" color="blue100" style={{ padding: 0, margin: 0 }}>
-        {match}
-      </Sans>
-      {nonMatch2}
-    </Sans>
-  )
+  return <Result result={result} />
 }

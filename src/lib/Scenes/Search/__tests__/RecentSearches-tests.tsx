@@ -2,10 +2,10 @@ import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
+import { AutosuggestSearchResult as SearchResult } from "../AutosuggestSearchResult"
 import { RecentSearches } from "../RecentSearches"
 import { SearchContext } from "../SearchContext"
 import { RecentSearch } from "../SearchModel"
-import { SearchResult } from "../SearchResult"
 
 const banksy: RecentSearch = {
   type: "AUTOSUGGEST_RESULT_TAPPED",
