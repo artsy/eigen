@@ -24,7 +24,7 @@ export const TextArea: React.FC<TextAreaProps> = ({ title, ...props }) => {
     <>
       {!!title &&
         (allowV3 ? (
-          <Text mb={1} size="xs">
+          <Text mb={1} variant="xs">
             {title}
           </Text>
         ) : (

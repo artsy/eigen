@@ -13,7 +13,7 @@ export const InputTitle: React.FC<{ required?: boolean }> = ({ children: title, 
   if (allowV3) {
     return (
       <ThemeV3>
-        <Text size="xs" mb={0.5}>
+        <Text variant="xs" mb={0.5}>
           {title}
           {!!required && (
             <Text variant="mediumText" color={color("blue100")}>
