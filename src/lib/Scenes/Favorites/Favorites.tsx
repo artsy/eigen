@@ -128,11 +128,11 @@ const StickyHeaderContent: React.FC<{ enableMyCollection: boolean }> = ({ enable
   return (
     <Flex mt={enableMyCollection ? 4 : 2}>
       {enableMyCollection ? (
-        <Text size="lg" m={2}>
+        <Text variant="lg" m={2}>
           Follows
         </Text>
       ) : (
-        <Text size="md" weight="medium" textAlign="center">
+        <Text variant="md" weight="medium" textAlign="center">
           Saves and Follows
         </Text>
       )}
