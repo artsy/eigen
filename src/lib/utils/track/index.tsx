@@ -96,7 +96,9 @@ interface ProvideScreenTrackingProps {
   info: Schema.PageView
 }
 
-// Uses schema manually defined in Eigen
+/** Deprecated
+ * Please use `ProvideScreenTrackingWithCohesionSchema` instead.
+ */
 @screenTrack<ProvideScreenTrackingProps>((props) => props.info)
 export class ProvideScreenTracking extends React.Component<ProvideScreenTrackingProps> {
   render() {
