@@ -2,12 +2,14 @@ import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate, navigateToPartner } from "lib/navigation/navigate"
 import { isPad } from "lib/utils/hardware"
+import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { searchInsights } from "lib/utils/useSearchInsightsConfig"
 import { Box, Flex, Spacer, Spinner, Text, Touchable, useSpace } from "palette"
 import React, { useEffect, useRef } from "react"
 import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
 import { connectHighlight } from "react-instantsearch-native"
 import { FlatList } from "react-native"
+import { AlgoliaSearchPlaceholder } from "./components/AlgoliaSearchPlaceholder"
 import { AlgoliaSearchResult } from "./types"
 
 interface SearchResultsProps
@@ -42,6 +44,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   isSearchStalled,
   searchState,
   indexName,
+  searchResults,
   refineNext,
   categoryDisplayName,
 }) => {
@@ -77,7 +80,15 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     }
   }
 
-  if (!hits.length) {
+  if (loading && hits.length === 0) {
+    return (
+      <ProvidePlaceholderContext>
+        <AlgoliaSearchPlaceholder />
+      </ProvidePlaceholderContext>
+    )
+  }
+
+  if (searchResults.nbHits === 0) {
     return (
       <Box px={2} py={1}>
         <Spacer mt={4} />
