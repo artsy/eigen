@@ -27,7 +27,7 @@ export const SummarySection: React.FC<Props> = ({ section }) => {
             <Text variant="sm" testID="offerLabel">
               {isBuyerOffer ? "Your offer" : "Seller's offer"}
             </Text>
-            <Text variant="xs" testID="listPriceLabel">
+            <Text variant="sm" mt={0.5} testID="listPriceLabel">
               List price
             </Text>
           </>
@@ -52,7 +52,7 @@ export const SummarySection: React.FC<Props> = ({ section }) => {
             <Text variant="sm" color="black60" testID="lastOffer">
               {(!!lastOffer && lastOffer.amount) || "—"}
             </Text>
-            <Text variant="xs" color="black60" testID="listPrice">
+            <Text variant="sm" mt={0.5} color="black60" testID="listPrice">
               {totalListPrice}
             </Text>
           </>
