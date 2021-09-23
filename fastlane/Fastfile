@@ -19,9 +19,8 @@ end
 app_json_path = "../app.json"
 app_json = JSON.parse(File.read(app_json_path))
 
-app_plist = "../Artsy/App_Resources/Artsy-Info.plist"
-sticker_plist = "../Artsy Stickers/Info.plist"
-
+app_plist = "../ios/Artsy/App_Resources/Artsy-Info.plist"
+sticker_plist = "../ios/Artsy Stickers/Info.plist"
 
 lane :ship_beta_ios do
   api_key = app_store_connect_api_key(
@@ -43,19 +42,19 @@ lane :ship_beta_ios do
   sync_code_signing(app_identifier: ['net.artsy.artsy', 'net.artsy.artsy.Artsy-Stickers'], type: 'appstore')
 
   disable_automatic_code_signing(
-    path: 'Artsy.xcodeproj',
+    path: 'ios/Artsy.xcodeproj',
     team_id: '23KMWZ572J',
     targets: ['Artsy'],
     profile_name: 'match AppStore net.artsy.artsy'
   )
   disable_automatic_code_signing(
-    path: 'Artsy.xcodeproj',
+    path: 'ios/Artsy.xcodeproj',
     team_id: '23KMWZ572J',
     targets: ['Artsy Stickers'],
     profile_name: 'match AppStore net.artsy.artsy.Artsy-Stickers'
   )
 
-  root = File.expand_path('..', __dir__)
+  root = File.expand_path('../ios', __dir__)
   bundle_version = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, 'Artsy/App_Resources/Artsy-Info.plist')}`.strip
   tag_and_push(tag: "ios-#{latest_version}-#{bundle_version}")
 
@@ -64,7 +63,11 @@ lane :ship_beta_ios do
   sentry_release_name = "ios-#{latest_version}+#{bundle_version}"
   update_sentry_release_name(sentry_release_name: sentry_release_name)
 
-  build_ios_app(configuration: 'Store', silent: true)
+  build_ios_app(
+    workspace: "ios/Artsy.xcworkspace",
+    configuration: 'Store',
+    silent: true
+  )
 
   upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: bundle_version, platform: "ios")
 
@@ -82,7 +85,7 @@ lane :ship_beta_ios do
         changelog: beta_readme,
         itc_provider: 'ArtsyInc',
         distribute_external: true,
-        groups: ['Artsy People'])
+       groups: ['Artsy People'])
 end
 
 lane :update_version_string do
@@ -326,8 +329,8 @@ lane :upload_sentry_artifacts do |options|
   bundle_path = ''
   outfile = ''
   if platform == "ios"
-    source_map_path = 'emission/Pod/Assets/Emission.js.map'
-    bundle_path = 'emission/Pod/Assets/Emission.js'
+    source_map_path = 'ios/emission/Pod/Assets/Emission.js.map'
+    bundle_path = 'ios/emission/Pod/Assets/Emission.js'
     outfile = '~/Emission.js'
   else
     source_map_path = 'android/app/build/generated/sourcemaps/react/release/index.android.bundle.map'
