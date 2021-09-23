@@ -5,15 +5,6 @@ import React, { useState } from "react"
 import { Image, TouchableOpacity, View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 
-interface HeroUnit {
-  title: string
-  subtitle: string
-  creditLine: string
-  linkText: string
-  href: string
-  backgroundImageURL: string
-}
-
 interface Props {
   unit: any
   onPress: () => void
