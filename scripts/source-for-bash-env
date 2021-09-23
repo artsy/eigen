@@ -6,7 +6,7 @@ LOCAL_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 export LOCAL_BRANCH
 
 # ios
-export WORKSPACE="Artsy.xcworkspace"
+export WORKSPACE="ios/Artsy.xcworkspace"
 export SCHEME="Artsy"
 export DEVICE_HOST_PLAT="iOS Simulator"
 export DEVICE_HOST_OS="14.5"
