@@ -145,16 +145,16 @@ const PhotosButton: React.FC<{ onPress: () => void }> = ({ onPress }) => {
       <ScreenMargin>
         <ArrowButton onPress={onPress}>
           <Flex flexDirection="row">
-            <Text size="xs">PHOTOS</Text>
+            <Text variant="xs">PHOTOS</Text>
           </Flex>
           {photos.length > 0 && (
             <>
               {photos.length === 1 ? (
-                <Text size="xs" data-test-id="onePhoto">
+                <Text variant="xs" data-test-id="onePhoto">
                   1 photo added
                 </Text>
               ) : (
-                <Text size="xs" data-test-id="multiplePhotos">
+                <Text variant="xs" data-test-id="multiplePhotos">
                   {photos.length} photos added
                 </Text>
               )}
@@ -172,7 +172,7 @@ const AdditionalDetailsButton: React.FC<{ onPress: () => void }> = ({ onPress })
       <ScreenMargin>
         <ArrowButton onPress={onPress}>
           <Flex flexDirection="row">
-            <Text size="xs">ADDITIONAL DETAILS</Text>
+            <Text variant="xs">ADDITIONAL DETAILS</Text>
           </Flex>
         </ArrowButton>
       </ScreenMargin>
