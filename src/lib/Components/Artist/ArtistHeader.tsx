@@ -3,7 +3,7 @@ import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFoll
 import { userHadMeaningfulInteraction } from "lib/NativeModules/Events"
 import { formatLargeNumberOfItems } from "lib/utils/formatLargeNumberOfItems"
 import { Box, bullet, Button, Flex, Sans, Spacer } from "palette"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { Text } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -21,13 +21,6 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
   const { trackEvent } = useTracking()
 
   const [isFollowedChanging, setIsFollowedChanging] = useState(false)
-  const [followersCount, setFollowersCount] = useState(0)
-
-  useEffect(() => {
-    if (artist?.counts?.follows) {
-      setFollowersCount(artist.counts.follows)
-    }
-  }, [artist])
 
   const getBirthdayString = () => {
     const birthday = artist.birthday
@@ -135,10 +128,10 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
           )}
           <Sans size="3t">
             {formatLargeNumberOfItems(artist.counts?.artworks ?? 0, "work")}
-            {followersCount > 1 && (
+            {!!artist?.counts?.follows && artist.counts.follows > 1 && (
               <>
                 {` ${bullet} `}
-                {formatLargeNumberOfItems(followersCount, "follower")}
+                {formatLargeNumberOfItems(artist.counts.follows, "follower")}
               </>
             )}
           </Sans>

@@ -4,6 +4,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 
 import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeader"
+import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button, Sans } from "palette"
@@ -55,6 +56,20 @@ describe("ArtistHeader", () => {
     })
 
     expect(tree.root.findAllByType(Button)[0].props.children).toMatch("Follow")
+  })
+
+  it("does not show followers count when it is < 2", () => {
+    mockArtist.counts.follows = 1
+
+    const tree = renderWithWrappers(<TestRenderer />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Artist: () => mockArtist,
+    })
+
+    const text = extractText(tree.root)
+
+    expect(text.includes("1 followers")).toBeFalse()
   })
 })
 
