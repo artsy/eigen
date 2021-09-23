@@ -283,6 +283,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                       localClear()
                     }}
                     hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
+                    accessibilityLabel="Clear input button"
                   >
                     <XCircleIcon fill="black30" />
                   </TouchableOpacity>

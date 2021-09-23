@@ -39,11 +39,18 @@ interface SearchInputProps {
   currentRefinement: string
   refine: (value: string) => any
   onSubmitEditing: () => void
+  onReset: () => void
 }
 
 const SEARCH_THROTTLE_INTERVAL = 500
 
-const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholder, refine, onSubmitEditing }) => {
+const SearchInput: React.FC<SearchInputProps> = ({
+  currentRefinement,
+  placeholder,
+  refine,
+  onSubmitEditing,
+  onReset,
+}) => {
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(currentRefinement)
 
@@ -55,6 +62,10 @@ const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholde
           action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
           query: queryText,
         })
+
+        if (queryText.length === 0) {
+          onReset()
+        }
       }, SEARCH_THROTTLE_INTERVAL),
     []
   )
@@ -76,6 +87,10 @@ const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholde
         trackEvent({
           action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
         })
+        onReset()
+      }}
+      onCancelPress={() => {
+        handleChangeText("")
       }}
     />
   )
@@ -166,6 +181,10 @@ export const Search2: React.FC<Search2Props> = (props) => {
     }
   }
 
+  const handleResetSearchInput = () => {
+    setSelectedPill(null)
+  }
+
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <ArtsyKeyboardAvoidingView>
@@ -181,6 +200,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
             <SearchInputContainer
               placeholder="Search artists, artworks, galleries, etc"
               onSubmitEditing={handleSubmitEditing}
+              onReset={handleResetSearchInput}
             />
           </Flex>
           {!!shouldStartQuering ? (
