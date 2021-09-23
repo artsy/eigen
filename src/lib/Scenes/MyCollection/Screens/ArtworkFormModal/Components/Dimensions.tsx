@@ -10,7 +10,7 @@ export const Dimensions: React.FC = () => {
   return (
     <>
       <Flex flexDirection="row">
-        <Text size="xs">DIMENSIONS</Text>
+        <Text variant="xs">DIMENSIONS</Text>
       </Flex>
       <Spacer my={1} />
       <Flex flexDirection="row">

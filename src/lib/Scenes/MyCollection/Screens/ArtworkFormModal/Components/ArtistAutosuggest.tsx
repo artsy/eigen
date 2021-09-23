@@ -17,7 +17,7 @@ export const ArtistAutosuggest: React.FC = () => {
     <>
       {!!artistSearchResult ? (
         <>
-          <Text size="xs">ARTIST</Text>
+          <Text variant="xs">ARTIST</Text>
           <Spacer mt={0.5} />
           <ArtistSearchResult result={artistSearchResult} />
         </>
