@@ -29,9 +29,9 @@ rm -rf "$TMPDIR"/RelayFindGraphQLTags-*
 rm -rf .jest
 rm -rf "$TMPDIR"/metro* .metro
 
-echo 'Clear build artefacts (╯ರ ~ ರ）╯︵ ┻━┻'
-rm -rf emission/Pod/Assets/Emission*
-rm -rf emission/Pod/Assets/assets
+echo 'Clear build artifacts (╯ರ ~ ರ）╯︵ ┻━┻'
+rm -rf ios/emission/Pod/Assets/Emission*
+rm -rf ios/emission/Pod/Assets/assets
 
 echo 'Reinstall dependencies ┬─┬ノ( º _ ºノ)'
 yarn install
