@@ -80,6 +80,13 @@ describe("Order history row", () => {
       ).toBeTruthy()
     })
 
+    it("View Offer button when mode is Offer", () => {
+      const tree = renderWithWrappers(<TestRenderer />).root
+      mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => ({ ...mockOrder, mode: "OFFER" }) })
+
+      expect(extractText(tree.findByProps({ "data-test-id": "view-order-button" }))).toContain("View Offer")
+    })
+
     it("with gray box if no image", () => {
       const order = {
         ...mockOrder,
