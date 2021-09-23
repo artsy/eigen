@@ -1,20 +1,14 @@
 ### Use cohesion for all new tracking code
 
-Use [cohesion](https://github.com/artsy/cohesion) events and helpers for all new tracking code. Cohesion is an artsy library for keeping analytics across our applications _cohesive_, it defines schemas, events and helpers for tracking code. It was recently adopted in Eigen so there still exists a lot of tracking code and helpers not using cohesion, all new tracking code should use cohesion if at all possible.
+Use [cohesion](https://github.com/artsy/cohesion) events for all new tracking code. Cohesion is an artsy library for keeping analytics across our applications _cohesive_, it defines schemas for tracking code. It was recently adopted in Eigen so there still exists a lot of tracking code and helpers not using cohesion, all new tracking code should use cohesion if at all possible.
 
 ## Inside React components
 
 Make sure to declare all the track events and context in a dedicated place somewhere below the component code, something along the lines of:
 
 ```typescript
-export const tracks = {
-  context: (ownerId: string, slug: string) => ({
-    context_screen: Schema.PageNames.ViewingRoom,
-    context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,
-    context_screen_owner_id: ownerId,
-    context_screen_owner_slug: slug,
-  }),
-  tappedArtworkGroupThumbnail: (internalID: string, slug: string) => ({
+const tracks = {
+  tappedArtworkGroupThumbnail: (internalID: string, slug: string): TappedArtworkGroupThumbnail => ({
     action_name: Schema.ActionNames.TappedArtworkGroup,
     context_module: Schema.ContextModules.ViewingRoomArtworkRail,
     destination_screen: Schema.PageNames.ArtworkPage,
@@ -115,3 +109,32 @@ export class MyClassComp extends React.Component<Props> {
 ```
 
 **Notice that to call the function from the `Button` we need to do `() => this.follow()` or `this.follow.bind(this)`. Just `this.follow` is not enough to call the tracking wrapper code.**
+
+### Testing tracking calls
+
+To test these, the best way is something like the following:
+
+```ts
+it("tracks analytics event when button is tapped", () => {
+  const wrapper = renderWithWrappers(<TestScreen />)
+  wrapper.root.findByType(OurButtonWithTracking).props.onPress()
+
+  expect(trackEvent).toHaveBeenCalledTimes(1)
+  expect(trackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+    Array [
+      Object {
+        "action": "tappedInfoBubble",
+        "context_module": "myCollectionArtwork",
+        "context_screen_owner_id": "artwork-id",
+        "context_screen_owner_slug": "artwork-slug",
+        "context_screen_owner_type": "myCollectionArtwork",
+        "subject": "demandIndex",
+      },
+    ]
+  `)
+})
+```
+
+You can start with an empty snapshot like `expect(trackEvent.mock.calls[0]).toMatchInlineSnapshot()` and when you run the tests, jest will fill it in. Then check if it is correct, and you are ready to commit.
+
+If at some point the track properties change, then the snapshot will need to be updated. If there is a breakage and for some reason a property is not sent, then this snapshot will alert us correctly.
