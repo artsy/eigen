@@ -54,28 +54,32 @@ const SearchInput: React.FC<SearchInputProps> = ({
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(currentRefinement)
 
-  const handleChangeText = useMemo(
-    () =>
-      throttle((queryText: string) => {
-        refine(queryText)
-        trackEvent({
-          action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
-          query: queryText,
-        })
+  const handleChangeText = useMemo(() => throttle(refine, SEARCH_THROTTLE_INTERVAL), [])
 
-        if (queryText.length === 0) {
-          onReset()
-        }
-      }, SEARCH_THROTTLE_INTERVAL),
-    []
-  )
+  const handleReset = () => {
+    refine("")
+    handleChangeText.cancel()
+    onReset()
+  }
 
   return (
     <SearchBox
       ref={searchProviderValues.inputRef}
       enableCancelButton
       placeholder={placeholder}
-      onChangeText={handleChangeText}
+      onChangeText={(text) => {
+        trackEvent({
+          action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
+          query: text,
+        })
+
+        if (text.length === 0) {
+          handleReset()
+          return
+        }
+
+        handleChangeText(text)
+      }}
       onSubmitEditing={onSubmitEditing}
       onFocus={() => {
         trackEvent({
@@ -87,11 +91,9 @@ const SearchInput: React.FC<SearchInputProps> = ({
         trackEvent({
           action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
         })
-        onReset()
+        handleReset()
       }}
-      onCancelPress={() => {
-        handleChangeText("")
-      }}
+      onCancelPress={handleReset}
     />
   )
 }

@@ -23,7 +23,10 @@ const banksy: RecentSearch = {
 jest.unmock("react-relay")
 jest.mock("lodash", () => ({
   ...jest.requireActual("lodash"),
-  throttle: jest.fn((fn) => fn),
+  throttle: jest.fn((fn) => {
+    fn.cancel = jest.fn()
+    return fn
+  }),
 }))
 jest.mock("lib/utils/hardware", () => ({
   isPad: jest.fn(),
