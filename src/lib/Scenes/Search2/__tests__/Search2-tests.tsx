@@ -21,13 +21,6 @@ const banksy: RecentSearch = {
 }
 
 jest.unmock("react-relay")
-jest.mock("lodash", () => ({
-  ...jest.requireActual("lodash"),
-  throttle: jest.fn((fn) => {
-    fn.cancel = jest.fn()
-    return fn
-  }),
-}))
 jest.mock("lib/utils/hardware", () => ({
   isPad: jest.fn(),
 }))
@@ -147,7 +140,7 @@ describe("Search2 Screen", () => {
       })
     })
 
-    it("returns", () => {
+    it("when search query is empty", () => {
       const { queryByA11yState, getByPlaceholderText, getByText } = tree
       const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
