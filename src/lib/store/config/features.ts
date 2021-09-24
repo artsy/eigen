@@ -144,6 +144,16 @@ export const features = defineFeatures({
     description: "Enable phone number validation",
     showInAdminMenu: true,
   },
+  AREnableMyCollectionAndroid: {
+    readyForRelease: false,
+    description: "Enable My Collection (Android)",
+    showInAdminMenu: true,
+  },
+  AREnableMyCollectionIos: {
+    readyForRelease: false,
+    description: "Enable My Collection (iOS)",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

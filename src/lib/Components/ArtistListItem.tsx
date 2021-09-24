@@ -1,6 +1,7 @@
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import { navigate } from "lib/navigation/navigate"
+import { unsafe_getEnableMyCollection } from "lib/Scenes/MyCollection/MyCollection"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { Schema, track } from "lib/utils/track"
 import { Button, ClassTheme, EntityHeader, Flex, Touchable } from "palette"
@@ -18,7 +19,6 @@ interface Props {
   containerStyle?: StyleProp<ViewStyle>
   disableNavigation?: boolean
   onFollowFinish?: () => void
-  enableMyCollection?: boolean
 }
 
 interface State {
@@ -105,9 +105,10 @@ export class ArtistListItem extends React.Component<Props, State> {
   }
 
   render() {
-    const { artist, withFeedback, containerStyle, disableNavigation, enableMyCollection } = this.props
+    const { artist, withFeedback, containerStyle, disableNavigation } = this.props
     const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
     const imageURl = image && image.url
+    const enableMyCollection = unsafe_getEnableMyCollection()
     const buttonVariant =
       is_followed && enableMyCollection ? "primaryBlack" : is_followed ? "secondaryOutline" : "secondaryGray"
 

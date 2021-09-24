@@ -6,7 +6,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { getUrgencyTag } from "lib/utils/getUrgencyTag"
 import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "lib/utils/placeholders"
-import { Box, Flex, Sans, Spacer, Text, Touchable } from "palette"
+import { Box, Flex, Sans, Spacer, Text, TextV3Props, Touchable } from "palette"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -32,9 +32,13 @@ export interface ArtworkProps {
   hidePartner?: boolean
   // Show the lot number (Lot 213)
   showLotLabel?: boolean
-  // enableMyCollection apply different styling for myCollection enabled users
-  // TODO: Remove this prop when launching MyCollection
-  enableMyCollection?: boolean
+  // styles for each field: allows for customization of each field
+  urgencyTagTextStyle?: TextV3Props
+  lotLabelTextStyle?: TextV3Props
+  artistNamesTextStyle?: TextV3Props
+  titleTextStyle?: TextV3Props
+  saleInfoTextStyle?: TextV3Props
+  partnerNameTextStyle?: TextV3Props
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
@@ -48,7 +52,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
   hideUrgencyTags = false,
   hidePartner = false,
   showLotLabel = false,
-  enableMyCollection,
+  urgencyTagTextStyle,
+  lotLabelTextStyle,
+  artistNamesTextStyle,
+  titleTextStyle,
+  saleInfoTextStyle,
+  partnerNameTextStyle,
 }) => {
   const itemRef = useRef<any>()
   const tracking = useTracking()
@@ -106,7 +115,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 borderRadius={2}
                 alignSelf="flex-start"
               >
-                <Sans size="2" color="black100" numberOfLines={1}>
+                <Sans size="2" color="black100" numberOfLines={1} {...urgencyTagTextStyle}>
                   {urgencyTag}
                 </Sans>
               </Flex>
@@ -115,33 +124,28 @@ export const Artwork: React.FC<ArtworkProps> = ({
         )}
         <Box mt={1}>
           {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
-            <Text color="black60" numberOfLines={1}>
+            <Text color="black60" numberOfLines={1} {...lotLabelTextStyle}>
               Lot {artwork.saleArtwork.lotLabel}
             </Text>
           )}
           {!!artwork.artistNames && (
-            <Text lineHeight="20" weight={enableMyCollection ? "regular" : "medium"} numberOfLines={1}>
+            <Text lineHeight="20" weight={"medium"} numberOfLines={1} {...artistNamesTextStyle}>
               {artwork.artistNames}
             </Text>
           )}
           {!!artwork.title && (
-            <Text lineHeight="20" color="black60" numberOfLines={1}>
+            <Text lineHeight="20" color="black60" numberOfLines={1} {...titleTextStyle}>
               {artwork.title}
               {!!artwork.date && `, ${artwork.date}`}
             </Text>
           )}
           {!hidePartner && !!artwork.partner?.name && (
-            <Text lineHeight="20" color="black60" numberOfLines={1}>
+            <Text lineHeight="20" color="black60" numberOfLines={1} {...partnerNameTextStyle}>
               {artwork.partner.name}
             </Text>
           )}
           {!!saleInfo && (
-            <Text
-              weight={enableMyCollection ? "medium" : "regular"}
-              lineHeight="20"
-              numberOfLines={1}
-              color={enableMyCollection ? "black100" : "black60"}
-            >
+            <Text weight={"regular"} lineHeight="20" numberOfLines={1} color={"black60"} {...saleInfoTextStyle}>
               {saleInfo}
             </Text>
           )}

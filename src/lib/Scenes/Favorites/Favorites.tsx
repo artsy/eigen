@@ -5,12 +5,13 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 
-import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
+import { StickyTabPage, TabProps } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageTabBar } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import { useIsStaging } from "lib/store/GlobalStore"
 import { compact } from "lodash"
 import { Sans, SettingsIcon as _SettingsIcon, useSpace } from "palette"
 import { useTracking } from "react-tracking"
+import { useEnableMyCollection } from "../MyCollection/MyCollection"
 import { FavoriteArtistsQueryRenderer } from "./FavoriteArtists"
 import { FavoriteArtworksQueryRenderer } from "./FavoriteArtworks"
 import { FavoriteCategoriesQueryRenderer } from "./FavoriteCategories"
@@ -25,14 +26,9 @@ export enum Tab {
 
 interface Props extends ViewProps {
   initialTab: Tab
-  // We use a different layout design for users enabled for My Collection lab feature
-  enableMyCollection: boolean
 }
 
-export const Favorites: React.FC<Props> = ({
-  enableMyCollection = false,
-  initialTab = enableMyCollection ? Tab.artists : Tab.works,
-}) => {
+export const Favorites: React.FC<Props> = ({ initialTab = Tab.works }) => {
   const tracking = useTracking()
   const isStaging = useIsStaging()
 
@@ -58,34 +54,42 @@ export const Favorites: React.FC<Props> = ({
     })
   }
 
+  const enableMyCollection = useEnableMyCollection()
+
   const showFavoriteArtworksTab = !enableMyCollection
 
-  const tabs = compact([
+  const tabs: TabProps[] = compact([
     showFavoriteArtworksTab && {
       title: Tab.works,
       content: <FavoriteArtworksQueryRenderer />,
-      initial: initialTab === Tab.works,
     },
     {
       title: Tab.artists,
       content: <FavoriteArtistsQueryRenderer />,
-      initial: initialTab === Tab.artists,
     },
     {
       title: Tab.shows,
       content: <FavoriteShowsQueryRenderer />,
-      initial: initialTab === Tab.shows,
     },
     {
       title: Tab.categories,
       content: <FavoriteCategoriesQueryRenderer />,
-      initial: initialTab === Tab.categories,
     },
   ])
 
-  if (enableMyCollection && initialTab === Tab.works) {
-    throw new Error('Works Tab is not available for users who have "My Collection" enabled as a lab feature')
+  // default to first tab for initialTab
+  let finalInitialTab = tabs[0].title
+  if (tabs.find((tab) => (tab.title as Tab) === initialTab)) {
+    finalInitialTab = initialTab
+  } else {
+    console.warn("Specified Initial Tab is not available in tabs array.")
   }
+
+  // Set initial Tab
+  tabs.forEach((tab) => {
+    tab.initial = tab.title === finalInitialTab
+  })
+
   return (
     <ProvideScreenTracking
       info={{

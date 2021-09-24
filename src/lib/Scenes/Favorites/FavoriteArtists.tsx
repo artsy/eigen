@@ -61,16 +61,10 @@ class Artists extends React.Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const enableMyCollection = this.props.me?.labFeatures?.includes("My Collection")
     const rows = extractNodes(this.props.me.followsAndSaves?.artists, (node) => node.artist!).map((artist) => ({
       key: artist.id,
       content: (
-        <ArtistListItem
-          artist={artist}
-          withFeedback
-          containerStyle={{ paddingHorizontal: 20, paddingVertical: 5 }}
-          enableMyCollection={enableMyCollection}
-        />
+        <ArtistListItem artist={artist} withFeedback containerStyle={{ paddingHorizontal: 20, paddingVertical: 5 }} />
       ),
     }))
 
