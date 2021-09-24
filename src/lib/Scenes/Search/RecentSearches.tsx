@@ -18,6 +18,7 @@ export const RecentSearches: React.FC = () => {
             <AutosuggestSearchResult
               key={result.internalID}
               result={result}
+              showResultType={true}
               updateRecentSearchesOnTap={false}
               displayingRecentResult
               onDelete={() => {
