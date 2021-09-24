@@ -212,10 +212,9 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                   }
                   case "fairTabsAndFilter": {
                     const tabToShow = tabs ? tabs[activeTab] : null
-                    const TabVersionToUse = NavigationalTabs
                     return (
                       <Box paddingTop={safeAreaInsets.top} backgroundColor="white">
-                        <TabVersionToUse
+                        <NavigationalTabs
                           onTabPress={(_, index) => {
                             trackTappedNavigationTab(index as number)
                             setActiveTab(index)
