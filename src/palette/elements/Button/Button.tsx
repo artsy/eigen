@@ -156,7 +156,7 @@ export const Button: React.FC<ButtonProps> = ({
                 <VisibleTextContainer>
                   {iconPosition === "left" && iconBox}
                   <AnimatedText
-                    size={size === "small" ? "xs" : "sm"}
+                    variant={size === "small" ? "xs" : "sm"}
                     style={{ color: springProps.textColor, textDecorationLine: springProps.textDecorationLine }}
                   >
                     {children}
