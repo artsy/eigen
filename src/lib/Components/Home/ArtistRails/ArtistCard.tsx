@@ -109,7 +109,7 @@ export class ArtistCard extends React.Component<Props, State> {
             </MetadataContainer>
             <FollowButtonContainer>
               <Button
-                variant={this.state.following ? "secondaryOutline" : "secondaryGray"}
+                variant={this.state.following ? "outline" : "fillGray"}
                 onPress={this.handleFollowChange}
                 size="small"
                 block

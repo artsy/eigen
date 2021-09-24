@@ -123,7 +123,7 @@ const OnboardingPersonalizationModal: React.FC<OnboardingPersonalizationListProp
             ? () => {
                 return (
                   <Flex px={2} testID="noResults">
-                    <Text variant="text">We couldn't find anything for “{query}”</Text>
+                    <Text variant="sm">We couldn't find anything for “{query}”</Text>
                   </Flex>
                 )
               }

@@ -21,8 +21,8 @@ export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) =>
       <Flex m="0 auto" pt={2}>
         {!hideClearButton && (
           <Button
-            size="medium"
-            variant="secondaryGray"
+            size="small"
+            variant="fillGray"
             onPress={() => {
               if (trackClear) {
                 trackClear(id, slug)

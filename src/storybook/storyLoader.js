@@ -8,7 +8,6 @@ function loadStories() {
   require("../palette/colors.stories")
   require("../palette/elements/Avatar/Avatar.stories")
   require("../palette/elements/Button/Button.stories")
-  require("../palette/elements/Button/ButtonV2.stories")
   require("../palette/elements/Checkbox/Checkbox.stories")
   require("../palette/elements/Dialog/Dialog.stories")
   require("../palette/elements/Pill/Pill.stories")
@@ -25,7 +24,6 @@ const stories = [
   "../palette/colors.stories",
   "../palette/elements/Avatar/Avatar.stories",
   "../palette/elements/Button/Button.stories",
-  "../palette/elements/Button/ButtonV2.stories",
   "../palette/elements/Checkbox/Checkbox.stories",
   "../palette/elements/Dialog/Dialog.stories",
   "../palette/elements/Pill/Pill.stories",

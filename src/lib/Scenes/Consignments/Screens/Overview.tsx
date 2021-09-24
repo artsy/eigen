@@ -291,16 +291,16 @@ export class Overview extends React.Component<Props, State> {
             }}
           >
             <Box px={2}>
-              <Text variant="mediumText" style={{ textAlign: isPad ? "center" : "left" }}>
+              <Text variant="sm" style={{ textAlign: isPad ? "center" : "left" }}>
                 Step 1 of 2
               </Text>
               <Spacer mb={1} />
-              <Text variant="largeTitle" style={{ textAlign: isPad ? "center" : "left" }}>
+              <Text variant="lg" style={{ textAlign: isPad ? "center" : "left" }}>
                 Add details for your work
               </Text>
               <Spacer mb={1} />
               <Text
-                variant="text"
+                variant="sm"
                 color="black60"
                 style={{ textAlign: isPad ? "center" : "left", marginBottom: isPad ? 80 : 0 }}
               >

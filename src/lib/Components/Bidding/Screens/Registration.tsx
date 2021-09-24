@@ -47,7 +47,7 @@ interface RegistrationState {
 }
 
 const Hint: React.FC = ({ children }) => (
-  <Text variant="small" fontSize="2" mb="4">
+  <Text variant="xs" fontSize={12} mb="4">
     {children}
   </Text>
 )
@@ -315,12 +315,12 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           keyboardDismissMode={"on-drag"}
         >
           <Box p={20} pt={25} flex={1}>
-            <Text fontSize="4" variant="caption" mb="2">
+            <Text fontSize={16} variant="xs" mb="2">
               {sale.name}
             </Text>
 
             {saleTimeDetails.absolute !== null && (
-              <Text fontSize="2" variant="subtitle" color="black60">
+              <Text fontSize={12} variant="md" color="black60">
                 {saleTimeDetails.absolute}
               </Text>
             )}
@@ -364,7 +364,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
               closeModal={this.closeModal.bind(this)}
             />
             <Checkbox mb={4} onPress={() => this.conditionsOfSalePressed()} disabled={isLoading}>
-              <Text variant="small" fontSize="2">
+              <Text variant="xs" fontSize="2">
                 Agree to{" "}
                 <LinkText onPress={isLoading ? undefined : this.onPressConditionsOfSale}>Conditions of Sale</LinkText>
               </Text>

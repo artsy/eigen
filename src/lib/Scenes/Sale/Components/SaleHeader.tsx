@@ -65,7 +65,7 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
                   alignItems: "center",
                 }}
               >
-                <Text variant="subtitle" fontWeight="500" color="white">
+                <Text variant="md" fontWeight="500" color="white">
                   Auction closed
                 </Text>
               </Flex>
@@ -80,17 +80,17 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
         }}
       >
         <Flex mx="2" mt="2">
-          <Text variant="largeTitle" testID="saleName">
+          <Text variant="lg" testID="saleName">
             {sale.name}
           </Text>
           <Flex my="1">
             {saleTimeDetails.absolute !== null && (
-              <Text style={{ fontWeight: "bold" }} variant="text">
+              <Text style={{ fontWeight: "bold" }} variant="sm">
                 {saleTimeDetails.absolute}
               </Text>
             )}
             {!!saleTimeDetails.relative && (
-              <Text variant="text" color="black60">
+              <Text variant="sm" color="black60">
                 {saleTimeDetails.relative}
               </Text>
             )}

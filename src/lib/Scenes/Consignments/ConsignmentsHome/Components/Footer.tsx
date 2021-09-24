@@ -73,7 +73,7 @@ export const Footer: React.FC<FooterProps> = ({ onConsignPress }) => {
 
       <Spacer mb={3} />
 
-      <Button data-test-id="footer-cta" variant="primaryBlack" block onPress={handlePress} haptic>
+      <Button data-test-id="footer-cta" variant="fillDark" block onPress={handlePress} haptic>
         <Sans size="3">Submit a work</Sans>
       </Button>
     </Box>

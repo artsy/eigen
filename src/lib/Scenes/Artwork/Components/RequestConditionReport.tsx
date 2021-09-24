@@ -113,7 +113,7 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
         <Button
           mt={1}
           size="small"
-          variant="secondaryGray"
+          variant="fillGray"
           loading={requestingConditionReport}
           onPress={this.handleRequestConditionReportTap.bind(this)}
         >

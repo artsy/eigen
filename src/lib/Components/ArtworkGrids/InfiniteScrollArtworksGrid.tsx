@@ -338,7 +338,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
               <Button
                 mt={5}
                 mb={3}
-                variant="secondaryGray"
+                variant="fillGray"
                 size="large"
                 block
                 onPress={this.fetchNextPage}

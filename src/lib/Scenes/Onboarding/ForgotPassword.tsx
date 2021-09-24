@@ -46,7 +46,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
         keyboardShouldPersistTaps="always"
       >
         <Flex flex={1} px={1.5} paddingTop={60} justifyContent="flex-start">
-          <Text variant="largeTitle">Reset password</Text>
+          <Text variant="lg">Reset password</Text>
           <Text pt={1.5} color="black60">
             Please enter the email address associated with your Artsy account to receive a reset link.
           </Text>
@@ -84,7 +84,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
       <Flex px={1.5} paddingBottom={1.5}>
         {!!requestedPasswordReset ? (
           <Button
-            variant="secondaryGray"
+            variant="fillGray"
             onPress={() => navigation.goBack()}
             block
             haptic="impactMedium"

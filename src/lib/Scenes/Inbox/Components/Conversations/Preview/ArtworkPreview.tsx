@@ -72,12 +72,12 @@ export class ArtworkPreview extends React.Component<Props> {
             </ImageContainer>
           )}
           <TextContainer>
-            <Text variant="mediumText" color="white100">
+            <Text variant="sm" color="white100">
               {artwork.artistNames}
             </Text>
             <TitleAndDate>
               {/* Nested Text components are necessary for the correct behaviour on both short and long titles + dates */}
-              <Text variant="small" color="white100" numberOfLines={1} ellipsizeMode={"middle"}>
+              <Text variant="xs" color="white100" numberOfLines={1} ellipsizeMode={"middle"}>
                 {`${artwork.title} / ${artwork.date}`}
               </Text>
             </TitleAndDate>

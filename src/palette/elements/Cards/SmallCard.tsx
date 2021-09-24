@@ -52,13 +52,13 @@ export const SmallCard: React.FC<SmallCardProps> = ({ images, title, subtitle, t
       </Box>
 
       {!!title && (
-        <Text variant="text" mt={1}>
+        <Text variant="sm" mt={1}>
           {title}
         </Text>
       )}
 
       {!!subtitle && (
-        <Text variant="text" color="black60">
+        <Text variant="sm" color="black60">
           {subtitle}
         </Text>
       )}

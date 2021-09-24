@@ -123,7 +123,7 @@ describe("SavedSearchBanner", () => {
     const buttonComponent = tree.root.findByType(Button)
 
     expect(buttonComponent.props.children).toEqual("Create Alert")
-    expect(buttonComponent.props.variant).toBe("primaryBlack")
+    expect(buttonComponent.props.variant).toBe("fillDark")
     expect(buttonComponent.props.loading).toBe(false)
   })
 
@@ -134,7 +134,7 @@ describe("SavedSearchBanner", () => {
     const buttonComponent = tree.root.findByType(Button)
 
     expect(buttonComponent.props.children).toEqual("Remove Alert")
-    expect(buttonComponent.props.variant).toBe("secondaryOutline")
+    expect(buttonComponent.props.variant).toBe("outline")
     expect(buttonComponent.props.loading).toBe(false)
   })
 

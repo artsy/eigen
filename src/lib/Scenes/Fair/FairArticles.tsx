@@ -60,7 +60,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
     <ScrollView>
       <Theme>
         <Box px={2} py={6}>
-          <Text variant="largeTitle">Articles</Text>
+          <Text variant="lg">Articles</Text>
 
           <Spacer my={1} />
 
@@ -78,15 +78,15 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
                 />
 
                 <Box bg="white100" pt={2} px={2} width="85%" position="absolute" bottom={0} right={0}>
-                  <Text variant="title" mb={1}>
+                  <Text variant="md" mb={1}>
                     {heroArticle!.title}
                   </Text>
 
-                  <Text variant="caption" color="black60">
+                  <Text variant="xs" color="black60">
                     {heroArticle!.author?.name}
                   </Text>
 
-                  <Text variant="caption">{heroArticle!.publishedAt}</Text>
+                  <Text variant="xs">{heroArticle!.publishedAt}</Text>
 
                   <FairEditorialShare mt={1} subject={heroArticle!.title!} url={`${webURL}${heroArticle!.href}`} />
                 </Box>
@@ -111,15 +111,15 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
                     />
 
                     <Box width="95%">
-                      <Text variant="subtitle" mt={1} mb={1}>
+                      <Text variant="md" mt={1} mb={1}>
                         {article!.title}
                       </Text>
 
-                      <Text color="black60" variant="caption">
+                      <Text color="black60" variant="xs">
                         {article!.author?.name}
                       </Text>
 
-                      <Text variant="caption">{article!.publishedAt}</Text>
+                      <Text variant="xs">{article!.publishedAt}</Text>
 
                       <FairEditorialShare mt={1} subject={article!.title!} url={`${webURL}${article!.href}`} />
                     </Box>
@@ -130,7 +130,7 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
 
             {totalCount > FAIR2_ARTICLES_PAGE_SIZE && (
               <Button
-                variant="secondaryGray"
+                variant="fillGray"
                 block
                 width="100%"
                 loading={isLoading}

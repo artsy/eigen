@@ -46,7 +46,7 @@ const CountdownText: React.FC<CountdownProps> = ({ duration }) => {
   const separator = "  "
   const sections = durationSections(duration, ["d", "h", "m", "s"])
   return (
-    <Text variant="small" fontWeight={500} color="white100">
+    <Text variant="xs" fontWeight={500} color="white100">
       {sections
         .map(({ time, label }, idx) => (idx < sections.length - 1 ? time + label + separator : time + label))
         .join("")}
@@ -70,7 +70,7 @@ const Countdown: React.FC<{ startAt: string; endAt: string; status: string }> = 
 
   return (
     <>
-      <Text variant="small" fontWeight={500} color="white100">
+      <Text variant="xs" fontWeight={500} color="white100">
         {finalText}
       </Text>
       {status !== ViewingRoomStatus.CLOSED ? (
@@ -109,7 +109,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
           mb={0.5}
         >
           <Flex alignItems="center" flexDirection="column" flexGrow={1}>
-            <Text data-test-id="title" variant="largeTitle" textAlign="center" color="white100">
+            <Text data-test-id="title" variant="lg" textAlign="center" color="white100">
               {title}
             </Text>
           </Flex>
@@ -125,7 +125,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
                   />
                 </Box>
               )}
-              <Text variant="small" fontWeight={500} color="white100" data-test-id="partner-name">
+              <Text variant="xs" fontWeight={500} color="white100" data-test-id="partner-name">
                 {partner!.name}
               </Text>
             </Flex>

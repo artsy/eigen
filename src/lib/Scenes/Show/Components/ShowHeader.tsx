@@ -30,22 +30,22 @@ export const ShowHeader: React.FC<ShowHeaderProps> = ({ show, ...rest }) => {
 
   return (
     <Box {...rest}>
-      <Text variant="largeTitle" mb={1}>
+      <Text variant="lg" mb={1}>
         {show.name}
       </Text>
 
-      <Text variant="mediumText">
+      <Text variant="sm">
         {show.formattedStartAt} – {show.formattedEndAt}
       </Text>
 
       {!!show.startAt && !!show.endAt && (
-        <Text variant="text" color="black60">
+        <Text variant="sm" color="black60">
           {formattedTime}
         </Text>
       )}
 
       {!!show.partner && (
-        <Text variant="text" color="black60" mt={1}>
+        <Text variant="sm" color="black60" mt={1}>
           {show.partner.name}
         </Text>
       )}

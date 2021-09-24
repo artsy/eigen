@@ -80,7 +80,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
       <PageWithSimpleHeader
         left={
           <TouchableOpacity onPress={goBack}>
-            <Text variant="text" textAlign="left">
+            <Text variant="sm" textAlign="left">
               Cancel
             </Text>
           </TouchableOpacity>
@@ -89,7 +89,7 @@ export const MyAccountFieldEditScreen = React.forwardRef<
         right={
           !(isSaveButtonVisible === false) && (
             <TouchableOpacity disabled={!canSave} onPress={handleSave}>
-              <Text variant="text" opacity={canSave ? 1 : 0.3}>
+              <Text variant="sm" opacity={canSave ? 1 : 0.3}>
                 Save
               </Text>
             </TouchableOpacity>

@@ -150,7 +150,7 @@ export const PhoneInput = React.forwardRef<
           />
         )}
       />
-      <Text numberOfLines={1} variant="caption" color="red">
+      <Text numberOfLines={1} variant="xs" color="red">
         {validationMessage}
       </Text>
     </>

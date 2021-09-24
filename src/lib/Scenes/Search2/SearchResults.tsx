@@ -81,10 +81,10 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     return (
       <Box px={2} py={1}>
         <Spacer mt={4} />
-        <Text variant="subtitle">
+        <Text variant="md">
           No {categoryDisplayName} found for “{searchState.query}”.
         </Text>
-        <Text variant="subtitle" color="black60">
+        <Text variant="md" color="black60">
           Look at a different category or try another search term.
         </Text>
       </Box>

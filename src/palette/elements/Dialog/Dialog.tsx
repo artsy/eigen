@@ -100,12 +100,12 @@ export const Dialog = (props: DialogProps) => {
             shadowRadius: 10,
           }}
         >
-          <Text testID="dialog-title" variant="title" mb={0.5} mt={2} mx={2}>
+          <Text testID="dialog-title" variant="md" mb={0.5} mt={2} mx={2}>
             {title}
           </Text>
           {!!detail && (
             <ScrollView alwaysBounceVertical={false} contentContainerStyle={{ paddingHorizontal: space(2) }}>
-              <Text testID="dialog-detail" variant="caption" color="black60">
+              <Text testID="dialog-detail" variant="sm" color="black60">
                 {detail}
               </Text>
             </ScrollView>

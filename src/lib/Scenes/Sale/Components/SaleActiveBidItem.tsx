@@ -27,8 +27,8 @@ export const SaleActiveBidItem: React.FC<SaleActiveBidItemProps> = ({ lotStandin
       >
         <LotFragmentContainer saleArtwork={saleArtwork}>
           <Flex flexDirection="row">
-            <Text variant="caption">{sellingPrice}</Text>
-            <Text variant="caption" color="black60">
+            <Text variant="xs">{sellingPrice}</Text>
+            <Text variant="xs" color="black60">
               {" "}
               ({bidCount} {bidCount === 1 ? "bid" : "bids"})
             </Text>

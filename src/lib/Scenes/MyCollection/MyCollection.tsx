@@ -79,7 +79,7 @@ const MyCollection: React.FC<{
           <Button
             data-test-id="add-artwork-button-non-zero-state"
             size="small"
-            variant="primaryBlack"
+            variant="fillDark"
             onPress={() => {
               setShowModal(true)
               trackEvent(tracks.addCollectedArtwork())

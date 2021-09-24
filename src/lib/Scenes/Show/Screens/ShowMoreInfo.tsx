@@ -41,7 +41,7 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
       key: "title",
       element: (
         <Box mx={2}>
-          <Text variant="largeTitle">About</Text>
+          <Text variant="lg">About</Text>
         </Box>
       ),
     },
@@ -53,7 +53,7 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
             element: (
               <Box mx={2}>
                 {!!shouldDisplayPartnerType && (
-                  <Text variant="mediumText" mb={1}>
+                  <Text variant="sm" mb={1}>
                     {displayablePartnerType}
                   </Text>
                 )}
@@ -70,10 +70,10 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
             key: "about",
             element: (
               <Box mx={2}>
-                <Text variant="mediumText" mb={0.5}>
+                <Text variant="sm" mb={0.5}>
                   Statement
                 </Text>
-                <Text variant="text">{show.about}</Text>
+                <Text variant="sm">{show.about}</Text>
               </Box>
             ),
           },
@@ -86,7 +86,7 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
             key: "press-release",
             element: (
               <Box mx={2}>
-                <Text variant="mediumText" mb={0.5}>
+                <Text variant="sm" mb={0.5}>
                   Press Release
                 </Text>
                 <ReadMore content={show.pressRelease} textStyle="new" maxChars={500} />
@@ -102,7 +102,7 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
             key: "hours",
             element: (
               <Box mx={2}>
-                <Text variant="mediumText" mb={0.5}>
+                <Text variant="sm" mb={0.5}>
                   Hours
                 </Text>
                 <ShowHours show={show} />
@@ -118,7 +118,7 @@ export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
             key: "location",
             element: (
               <Box mx={2}>
-                <Text variant="mediumText" mb={0.5}>
+                <Text variant="sm" mb={0.5}>
                   Location
                 </Text>
                 <ShowLocation show={show} />

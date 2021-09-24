@@ -4,19 +4,13 @@ import React from "react"
 
 export * from "./helpers"
 
-// TextV3
-import { Text as TextV3, TextProps as TextV3Props } from "./Text"
-export { TextV3, TextV3Props }
+export * from "./Text"
 
-// TextV2
-import { Text as TextV2, TextProps as TextV2Props } from "./TextV2"
-export { TextV2, TextV2Props }
-
+import { Text, TextProps } from "./Text"
 // TextV1
 export { _maxWidth } from "./Typography-v1"
 import { Sans as SansV1, SansProps as SansV1Props } from "./Sans"
 export { SansV1, SansV1Props, SansV1Props as SansProps }
-import { TEXT_FONT_SIZES } from "@artsy/palette-tokens/dist/typography/v2"
 import { Serif as SerifV1, SerifProps as SerifV1Props } from "./Serif"
 export { SerifV1, SerifV1Props, SerifV1Props as SerifProps }
 
@@ -31,18 +25,18 @@ export const Serif: React.FC<SerifV1Props> = (props) => {
   // TODO-PALETTE-V3 remove this and replace all usages with the mapping. also remove Serif files.
   return (
     <ThemeV3>
-      <TextV3 {...transformSerifPropsToV3(props)} />
+      <Text {...transformSerifPropsToV3(props)} />
     </ThemeV3>
   )
 }
 
-const transformSerifPropsToV3 = (props: SerifV1Props): TextV3Props => {
+const transformSerifPropsToV3 = (props: SerifV1Props): TextProps => {
   const { size, weight, ...newProps } = _.clone(props)
 
   const actualSize = _.isArray(size) ? size[0] : size
   const sizeMap: Record<
     "1" | "2" | "3" | "3t" | "4" | "4t" | "5" | "5t" | "6" | "8" | "10" | "12",
-    TextV3Props["variant"]
+    TextProps["variant"]
   > = {
     "1": "xs",
     "2": "xs",
@@ -59,7 +53,7 @@ const transformSerifPropsToV3 = (props: SerifV1Props): TextV3Props => {
   }
 
   if (weight === "semibold") {
-    ;(newProps as TextV3Props).weight = "medium"
+    ;(newProps as TextProps).weight = "medium"
   }
 
   return {
@@ -77,18 +71,18 @@ export const Sans: React.FC<SansV1Props> = (props) => {
   // TODO-PALETTE-V3 remove this and replace all usages with the mapping. also remove Sans files.
   return (
     <ThemeV3>
-      <TextV3 {...transformSansPropsToV3(props)} />
+      <Text {...transformSansPropsToV3(props)} />
     </ThemeV3>
   )
 }
 
-const transformSansPropsToV3 = (props: SansV1Props): TextV3Props => {
+const transformSansPropsToV3 = (props: SansV1Props): TextProps => {
   const { size, weight, ...newProps } = _.clone(props)
 
   const actualSize = _.isArray(size) ? size[0] : size
   const sizeMap: Record<
     "0" | "1" | "2" | "3" | "3t" | "4" | "4t" | "5" | "5t" | "6" | "8" | "10" | "12" | "14" | "16",
-    TextV3Props["variant"]
+    TextProps["variant"]
   > = {
     "0": "xs",
     "1": "xs",
@@ -108,88 +102,11 @@ const transformSansPropsToV3 = (props: SansV1Props): TextV3Props => {
   }
 
   if (weight === "medium") {
-    ;(newProps as TextV3Props).weight = "medium"
+    ;(newProps as TextProps).weight = "medium"
   }
 
   return {
     ...newProps,
     variant: sizeMap[actualSize],
-  }
-}
-
-// V2 handler
-
-const isTextV2Props = (props: TextProps): props is TextV2Props => {
-  if (
-    (props as TextV2Props).variant !== undefined &&
-    ["small", "largeTitle", "title", "subtitle", "text", "mediumText", "caption"].includes(
-      (props as TextV2Props).variant!
-    )
-  ) {
-    return true
-  }
-
-  if (
-    (props as TextV3Props).variant !== undefined &&
-    ["xxl", "xl", "lg", "md", "sm", "xs"].includes((props as TextV3Props).variant!)
-  ) {
-    return false
-  }
-
-  if (typeof (props as TextV2Props).fontSize === "string") {
-    return true
-  }
-
-  // if nothing is obviously v2 or v3, assume v2
-  return true
-}
-
-export type TextProps = TextV2Props | TextV3Props
-
-/**
- * Deprecated. Use `TextV3` instead.
- * Mapping:
- * largeTitle: lg, title: md, subtitle: md, text: sm, mediumText: sm, caption: xs, small: xs
- */
-export const Text: React.FC<TextProps> = (props) => {
-  if (isTextV2Props(props)) {
-    return (
-      <ThemeV3>
-        <TextV3 {...transformTextV2PropsToV3(props)} />
-      </ThemeV3>
-    )
-  } else {
-    return (
-      <ThemeV3>
-        <TextV3 {...props} />
-      </ThemeV3>
-    )
-  }
-}
-
-const transformTextV2PropsToV3 = (props: TextV2Props): TextV3Props => {
-  // TODO-PALETTE-V3 remove this and replace all usages with the mapping. also remove TextV2 files.
-  const { variant, fontSize, ...newProps } = _.clone(props)
-
-  const variantMap: Record<
-    "small" | "largeTitle" | "title" | "subtitle" | "text" | "mediumText" | "caption",
-    TextV3Props["variant"]
-  > = {
-    largeTitle: "lg",
-    title: "md",
-    subtitle: "md",
-    text: "sm",
-    mediumText: "sm",
-    caption: "xs",
-    small: "xs",
-  }
-
-  if (typeof fontSize === "string") {
-    ;(newProps as TextV3Props).fontSize = TEXT_FONT_SIZES[fontSize as keyof typeof TEXT_FONT_SIZES] ?? fontSize
-  }
-
-  return {
-    ...newProps,
-    variant: variantMap[variant ?? "text"],
   }
 }

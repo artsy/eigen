@@ -284,7 +284,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
               }}
               block
               width={100}
-              variant="primaryBlack"
+              variant="fillDark"
               size="large"
             >
               Show results

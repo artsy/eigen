@@ -11,7 +11,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ tag }) => {
   return (
     <Box marginTop={60} justifyContent="center">
-      <Text variant="largeTitle">{tag.name}</Text>
+      <Text variant="lg">{tag.name}</Text>
     </Box>
   )
 }

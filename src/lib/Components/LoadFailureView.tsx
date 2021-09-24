@@ -28,8 +28,8 @@ export const LoadFailureView: React.FC<LoadFailureViewProps> = (props) => {
 
   return (
     <Flex flex={1} justifyContent="center" alignItems="center">
-      <Text variant="largeTitle">Unable to load</Text>
-      <Text variant="subtitle" mb="1">
+      <Text variant="lg">Unable to load</Text>
+      <Text variant="md" mb="1">
         Please try again
       </Text>
       <Touchable

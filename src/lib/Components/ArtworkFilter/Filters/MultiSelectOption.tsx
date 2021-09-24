@@ -73,7 +73,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
 
           {filteredOptions.length === 0 && (
             <Flex my={1.5} mx={2} alignItems="center">
-              <Text variant="caption">{noResultsLabel}</Text>
+              <Text variant="xs">{noResultsLabel}</Text>
             </Flex>
           )}
         </>
@@ -98,7 +98,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
                   testID="multi-select-option-button"
                 >
                   <OptionListItem>
-                    <Text variant="caption" color="black100">
+                    <Text variant="xs" color="black100">
                       {item.displayText}
                     </Text>
 

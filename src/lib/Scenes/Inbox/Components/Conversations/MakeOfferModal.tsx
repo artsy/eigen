@@ -42,8 +42,8 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
       </FancyModalHeader>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Flex p={1.5}>
-          <Text variant="largeTitle">Confirm Artwork</Text>
-          <Text variant="small" color="black60">
+          <Text variant="lg">Confirm Artwork</Text>
+          <Text variant="xs" color="black60">
             Make sure the artwork below matches the intended work you're making an offer on.
           </Text>
           <BorderBox p={0} my={2}>
@@ -65,7 +65,7 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
             </Flex>
           )}
           <InquiryMakeOfferButton
-            variant="primaryBlack"
+            variant="fillDark"
             buttonText="Confirm"
             artwork={artwork}
             disabled={!!artwork.isEdition && !selectedEdition}
@@ -75,7 +75,7 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
           <Button
             mt={1}
             size="large"
-            variant="secondaryOutline"
+            variant="outline"
             block
             width={100}
             onPress={() => {
@@ -85,7 +85,7 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
             Cancel
           </Button>
           <Flex bg="black5" p={1} mt={1} mb={6}>
-            <Text variant="small">
+            <Text variant="xs">
               Making an offer doesn’t guarantee you the work, as the seller might be receiving competing offers.
             </Text>
           </Flex>

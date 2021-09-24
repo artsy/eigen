@@ -96,8 +96,8 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   return (
     <>
       <ScreenMargin>
-        <Text variant="largeTitle">{artistNames}</Text>
-        <Text variant="subtitle" color="black60">
+        <Text variant="lg">{artistNames}</Text>
+        <Text variant="md" color="black60">
           {formattedTitleAndYear}
         </Text>
       </ScreenMargin>
@@ -126,7 +126,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
                 borderRadius: 3,
               }}
             >
-              <Text variant="small">
+              <Text variant="xs">
                 {images.length} photo{images.length > 1 ? "s" : ""}
               </Text>
             </Flex>

@@ -62,9 +62,9 @@ const OnboardingPersonalizationListHeader = ({ navigateToModal }: { navigateToMo
   return (
     <>
       <Box px={2}>
-        <Text variant="largeTitle">What artists do you collect?</Text>
+        <Text variant="lg">What artists do you collect?</Text>
         <Spacer mt={1.5} />
-        <Text variant="caption" color={color("black60")}>
+        <Text variant="xs" color={color("black60")}>
           Follow at least three artists you’re looking to collect or track so we can personalize your experience.
         </Text>
       </Box>
@@ -150,7 +150,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
       </ScrollView>
       <Flex p={2} position="absolute" bottom={0} backgroundColor="white">
         <Button
-          variant="primaryBlack"
+          variant="fillDark"
           block
           testID="doneButton"
           mb={safeAreaInsets.bottom}

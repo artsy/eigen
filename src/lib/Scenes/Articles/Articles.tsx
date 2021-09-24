@@ -103,7 +103,7 @@ export const ArticlesPlaceholder: React.FC = () => {
 }
 
 export const ArticlesHeader = () => (
-  <Text mx="2" variant={"largeTitle"} mb={1} mt={6}>
+  <Text mx="2" variant="lg" mb={1} mt={6}>
     Market News
   </Text>
 )
