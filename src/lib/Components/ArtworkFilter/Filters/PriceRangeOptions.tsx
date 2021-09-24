@@ -45,7 +45,7 @@ interface InputLabelProps extends InputProps {
 const InputLabel: React.FC<InputLabelProps> = ({ label, ...other }) => {
   return (
     <Flex flex={1}>
-      <Text color="black60" variant="small" mb={0.5}>
+      <Text color="black60" variant="xs" mb={0.5}>
         {label}
       </Text>
       <Input {...other} />

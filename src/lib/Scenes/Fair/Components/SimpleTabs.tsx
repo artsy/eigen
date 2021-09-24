@@ -8,7 +8,6 @@ export type TabsType = Array<{
 
 interface TabProps {
   label: string
-  active: boolean
   onPress: () => void
 }
 
@@ -16,7 +15,7 @@ interface TabProps {
  * The render method for an individual tab. Will underline the currently
  * active tab.
  */
-export const Tab: React.FC<TabProps> = ({ label, active, onPress }) => {
+export const Tab: React.FC<TabProps> = ({ label, onPress }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View
@@ -27,7 +26,7 @@ export const Tab: React.FC<TabProps> = ({ label, active, onPress }) => {
           paddingHorizontal: 15,
         }}
       >
-        <Text variant={active ? "mediumText" : "text"}>{label}</Text>
+        <Text variant="sm">{label}</Text>
       </View>
     </TouchableOpacity>
   )
@@ -65,7 +64,7 @@ export const Tabs: React.FC<TabsProps> = ({ setActiveTab, activeTab, tabs }) => 
             bottom="-1px"
             key={label}
           >
-            <Tab label={label} onPress={() => setActiveTab(index)} active={active} />
+            <Tab label={label} onPress={() => setActiveTab(index)} />
           </Box>
         )
       })}

@@ -110,7 +110,7 @@ export class Message extends React.Component<Props> {
                   }}
                 >
                   <Hyperlink onPress={this.onLinkPress.bind(this)} linkStyle={linkStyle}>
-                    <Text variant="text" color={textColor}>
+                    <Text variant="sm" color={textColor}>
                       {body}
                     </Text>
                   </Hyperlink>

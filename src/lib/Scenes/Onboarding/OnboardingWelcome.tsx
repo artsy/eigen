@@ -120,12 +120,12 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
       </Animated.View>
 
       <Animated.View style={{ flex: 1, padding: space(2), justifyContent: "flex-end", opacity }}>
-        <Text color="white" fontSize="48px" lineHeight={52}>
+        <Text color="white" fontSize={48} lineHeight={52}>
           Collect Art{"\n"}by the World’s{"\n"}
           Leading Artists
         </Text>
         <Spacer mt={1} />
-        <Text variant="text" color="white">
+        <Text variant="sm" color="white">
           Build your personalized profile, get market insights, and buy and sell art with confidence.
         </Text>
         <Spacer mt={2} />
@@ -154,7 +154,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           style={{ justifyContent: "center", alignItems: "center", height: BUTTON_HEIGHT }}
           testID="button-login"
         >
-          <Text color="white" variant="mediumText">
+          <Text color="white" variant="sm">
             Log in
           </Text>
         </Touchable>

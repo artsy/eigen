@@ -37,7 +37,7 @@ export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) =
   return (
     <Box {...rest}>
       <Box mx={2} mb={2} display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
-        <Text variant="subtitle">Related Reading</Text>
+        <Text variant="md">Related Reading</Text>
 
         {(fair.articles.totalCount ?? 0) > 5 && (
           <Touchable
@@ -45,7 +45,7 @@ export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) =
               navigate(`/fair/${fair.slug}/articles`)
             }}
           >
-            <Text variant="text" color="black60">
+            <Text variant="sm" color="black60">
               View all
             </Text>
           </Touchable>
@@ -69,9 +69,9 @@ export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) =
           >
             <Box flexDirection="row" py={1} px={2}>
               <Box flex={1} pr={2}>
-                <Text variant="subtitle">{article.title}</Text>
+                <Text variant="md">{article.title}</Text>
 
-                <Text variant="text" color="black60">
+                <Text variant="sm" color="black60">
                   {article.publishedAt}
                 </Text>
               </Box>

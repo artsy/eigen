@@ -24,7 +24,7 @@ export const ArtworkMedium: React.FC<Props> = ({ artwork }) => {
             <Join separator={<Spacer my={1.5} />} flatten>
               {!!artwork.mediumType && (
                 <>
-                  <Text variant="largeTitle">{artwork.mediumType.name}</Text>
+                  <Text variant="lg">{artwork.mediumType.name}</Text>
 
                   <Text>{artwork.mediumType.longDescription}</Text>
 

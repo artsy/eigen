@@ -44,7 +44,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
           onComplete={handleComplete}
           {...other}
         />
-        <Text variant="text" color="black60" textAlign="center" my={2}>
+        <Text variant="sm" color="black60" textAlign="center" my={2}>
           You will be able to access all your Saved Alerts in your Profile.
         </Text>
       </ScrollView>

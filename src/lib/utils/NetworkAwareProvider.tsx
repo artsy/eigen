@@ -32,13 +32,13 @@ export const NetworkAwareProvider: React.FC<{}> = () => {
     >
       <Flex flex={1} justifyContent="flex-end" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
         <Flex backgroundColor="white" alignItems="center" px={2} py={2} paddingBottom={safeAreaInsets.bottom + 20}>
-          <Text textAlign="center" variant="largeTitle">
+          <Text textAlign="center" variant="lg">
             Connection Error
           </Text>
 
           <Spacer mt={1} />
 
-          <Text textAlign="center" variant="text" color="black60">
+          <Text textAlign="center" variant="sm" color="black60">
             Oops! Looks like your device is not connected to the Internet.
           </Text>
 

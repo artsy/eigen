@@ -135,7 +135,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
     <Flex style={{ flex: 1 }}>
       <Flex flexGrow={0} flexDirection="row" justifyContent="space-between" alignItems="center" height={space(6)}>
         <Flex flex={1} alignItems="center">
-          <Text variant="mediumText">{title}</Text>
+          <Text variant="sm">{title}</Text>
         </Flex>
 
         <Flex position="absolute" alignItems="flex-start">
@@ -169,7 +169,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
               clearAllFilters()
             }}
           >
-            <Text variant="text" color={isClearAllButtonEnabled ? "black100" : "black30"}>
+            <Text variant="sm" color={isClearAllButtonEnabled ? "black100" : "black30"}>
               Clear all
             </Text>
           </ClearAllButton>
@@ -189,10 +189,10 @@ export const ArtworkFilterOptionsScreen: React.FC<
             <TouchableRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
               <OptionListItem p={2} pr={1.5}>
                 <Flex minWidth="45%">
-                  <Text variant="caption">
+                  <Text variant="xs">
                     {item.displayText}
                     {!!selectedFiltersCount && (
-                      <Text variant="caption" color="blue100" ml={4}>
+                      <Text variant="xs" color="blue100" ml={4}>
                         {` ${bullet} ${selectedFiltersCount}`}
                       </Text>
                     )}

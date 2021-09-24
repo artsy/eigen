@@ -52,7 +52,7 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = (
   return (
     <Box {...rest}>
       <Box flexDirection="row" justifyContent="space-between" mx={2} mb={2}>
-        <Text variant="subtitle">Works by artists you follow</Text>
+        <Text variant="md">Works by artists you follow</Text>
         {artworks.length > 3 && (
           <TouchableOpacity
             onPress={() => {
@@ -60,7 +60,7 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = (
               navigate(`/fair/${fair.slug}/followedArtists`)
             }}
           >
-            <Text variant="subtitle" color="black60">
+            <Text variant="md" color="black60">
               View all
             </Text>
           </TouchableOpacity>

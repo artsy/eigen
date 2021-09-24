@@ -34,7 +34,7 @@ export const ShowInstallShots: React.FC<ShowInstallShotsProps> = ({ show, ...res
 
               {!!image.caption && (
                 <Text
-                  variant="caption"
+                  variant="xs"
                   color="black60"
                   mt={0.5}
                   numberOfLines={1}

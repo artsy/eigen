@@ -134,7 +134,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         <Flex flexDirection="row" alignItems="center">
           <InfoButton
             titleElement={
-              <Text variant="title" mr={0.5}>
+              <Text variant="md" mr={0.5}>
                 Auction Results
               </Text>
             }
@@ -146,7 +146,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
             modalContent={renderAuctionResultsModal()}
           />
         </Flex>
-        <SortMode variant="small" color="black60">
+        <SortMode variant="xs" color="black60">
           {!!artist.auctionResultsConnection?.totalCount
             ? new Intl.NumberFormat().format(artist.auctionResultsConnection.totalCount)
             : 0}{" "}

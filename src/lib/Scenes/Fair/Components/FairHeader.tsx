@@ -73,7 +73,7 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
         <SafeTopMargin />
       )}
       <Box px={2}>
-        <Text variant="largeTitle" py={2}>
+        <Text variant="lg" py={2}>
           {name}
         </Text>
         <FairTiming fair={fair} />
@@ -81,7 +81,7 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
         {!!canShowMoreInfoLink && (
           <TouchableOpacity onPress={() => navigate(`/fair/${slug}/info`)}>
             <Flex pt={2} flexDirection="row" justifyContent="flex-start">
-              <Text variant="mediumText">More info</Text>
+              <Text variant="sm">More info</Text>
               <ChevronIcon mr="-5px" mt="2px" />
             </Flex>
           </TouchableOpacity>

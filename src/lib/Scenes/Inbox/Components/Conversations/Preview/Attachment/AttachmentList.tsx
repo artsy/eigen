@@ -26,7 +26,7 @@ const AttachmentList: React.FC<Props> = (props) => {
           return item && <FileDownload tiny={true} attachment={item} />
         }}
         ListHeaderComponent={
-          <Text variant="mediumText" mb={2} px={1}>
+          <Text variant="sm" mb={2} px={1}>
             Attachments
           </Text>
         }

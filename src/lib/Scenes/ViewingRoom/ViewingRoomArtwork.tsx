@@ -117,20 +117,20 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = (p
           )}
         </Flex>
         <Box mt="2" mx="2">
-          <Text variant="title" color="black100">
+          <Text variant="md" color="black100">
             {selectedArtwork.artistNames}
           </Text>
-          <Text variant="text" color="black60">
+          <Text variant="sm" color="black60">
             {selectedArtwork.title}, {selectedArtwork.date}
           </Text>
           <Spacer mt="2" />
-          <Text variant="text" color="black100">
+          <Text variant="sm" color="black100">
             {selectedArtwork.saleMessage}
           </Text>
           {!!selectedArtwork.additionalInformation && (
             <>
               <Spacer mt="2" />
-              <Text variant="text">{selectedArtwork.additionalInformation}</Text>
+              <Text variant="sm">{selectedArtwork.additionalInformation}</Text>
             </>
           )}
           <Spacer mt="4" />
@@ -152,7 +152,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = (p
               <Spacer mt="3" />
               <Separator />
               <Spacer mt="3" />
-              <Text variant="mediumText">More images</Text>
+              <Text variant="sm">More images</Text>
               <Spacer mt="2" />
             </Box>
             <FlatList
@@ -168,7 +168,7 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = (p
           <Spacer mt="3" />
           <Separator />
           <Spacer mt="3" />
-          <Text variant="mediumText">In viewing room</Text>
+          <Text variant="sm">In viewing room</Text>
           <Spacer mt="2" />
         </Box>
         <Touchable onPress={() => navigate(`/viewing-room/${vrInfo.slug!}`)}>

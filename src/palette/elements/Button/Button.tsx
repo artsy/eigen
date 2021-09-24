@@ -10,7 +10,7 @@ import styled from "styled-components/native"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
-import { TextV3 } from "../Text"
+import { Text } from "../Text"
 
 export interface ButtonProps extends BoxProps {
   children: ReactNode
@@ -155,18 +155,18 @@ export const Button: React.FC<ButtonProps> = ({
               <Box flex={1} mx={containerSize.mx}>
                 <VisibleTextContainer>
                   {iconPosition === "left" && iconBox}
-                  <AnimatedTextV3
+                  <AnimatedText
                     size={size === "small" ? "xs" : "sm"}
                     style={{ color: springProps.textColor, textDecorationLine: springProps.textDecorationLine }}
                   >
                     {children}
-                  </AnimatedTextV3>
+                  </AnimatedText>
                   {iconPosition === "right" && iconBox}
                 </VisibleTextContainer>
 
                 <HiddenContainer>
                   {icon}
-                  <TextV3 variant={size === "small" ? "xs" : "sm"}>{longestText ? longestText : children}</TextV3>
+                  <Text variant={size === "small" ? "xs" : "sm"}>{longestText ? longestText : children}</Text>
                 </HiddenContainer>
 
                 {displayState === DisplayState.Loading ? (
@@ -360,6 +360,6 @@ const SpinnerContainer = styled(Box)<ButtonProps>`
 `
 
 const AnimatedContainer = animated(Container)
-const AnimatedTextV3 = animated(TextV3)
+const AnimatedText = animated(Text)
 
 export { DisplayState as _test_DisplayState }

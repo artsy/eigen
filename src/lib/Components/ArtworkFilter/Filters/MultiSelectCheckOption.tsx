@@ -99,10 +99,10 @@ export const CheckMarkOptionListItem = ({
         pr={2}
         height={60}
       >
-        <Text color="black100" variant="caption">
+        <Text color="black100" variant="xs">
           {item.displayText}
           {!!item.count && (
-            <Text color="black60" variant="caption">
+            <Text color="black60" variant="xs">
               {" "}
               ({item.count})
             </Text>

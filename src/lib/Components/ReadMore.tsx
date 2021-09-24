@@ -28,7 +28,7 @@ export const ReadMore = React.memo(
     const TextComponent: React.ComponentType<SansProps | PaletteTextProps> = (textStyle === "new"
       ? PaletteText
       : Sans) as any
-    const textProps: SansProps | PaletteTextProps = textStyle === "new" ? { variant: "text" } : { size: "3" }
+    const textProps: SansProps | PaletteTextProps = textStyle === "new" ? { variant: "xs" } : { size: "3" }
     const rules = {
       ...basicRules,
       paragraph: {
@@ -134,7 +134,7 @@ function truncate({
             <>
               {"... "}
               <LinkText onPress={onExpand}>
-                <PaletteText variant="mediumText">{`Read${nbsp}more`}</PaletteText>
+                <PaletteText variant="sm">{`Read${nbsp}more`}</PaletteText>
               </LinkText>
             </>
           )

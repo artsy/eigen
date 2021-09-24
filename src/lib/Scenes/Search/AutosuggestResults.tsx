@@ -114,7 +114,7 @@ const AutosuggestResultsFlatList: React.FC<{
       ListEmptyComponent={
         noResults
           ? () => {
-              return <Text variant="text">We couldn't find anything for “{query}”</Text>
+              return <Text variant="sm">We couldn't find anything for “{query}”</Text>
             }
           : null
       }
@@ -215,7 +215,7 @@ export const AutosuggestResults: React.FC<{
             return (
               <Flex alignItems="center" justifyContent="center">
                 <Flex maxWidth={280}>
-                  <Text variant="text" textAlign="center">
+                  <Text variant="sm" textAlign="center">
                     There seems to be a problem with the connection. Please try again shortly.
                   </Text>
                 </Flex>

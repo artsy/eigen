@@ -92,16 +92,16 @@ const ConfirmContactInfo: React.FC<{
           }}
         >
           <Box px={2}>
-            <Text variant="mediumText" style={{ textAlign: isPad ? "center" : "left" }}>
+            <Text variant="sm" style={{ textAlign: isPad ? "center" : "left" }}>
               Step 2 of 2
             </Text>
             <Spacer mb={1} />
-            <Text variant="largeTitle" style={{ textAlign: isPad ? "center" : "left" }}>
+            <Text variant="lg" style={{ textAlign: isPad ? "center" : "left" }}>
               Confirm your contact information
             </Text>
             <Spacer mb={1} />
             <Text
-              variant="text"
+              variant="sm"
               color="black60"
               style={{ textAlign: isPad ? "center" : "left", marginBottom: isPad ? 80 : 0 }}
             >

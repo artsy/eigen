@@ -26,11 +26,11 @@ export const SectionTitle: React.FC<{
     <Wrapper onPress={onPress}>
       <Flex mb={2} flexDirection="row" alignItems="center">
         <View style={{ overflow: "hidden", flex: 1 }}>
-          <Text lineHeight="20" variant="mediumText" ellipsizeMode="tail" numberOfLines={1} data-test-id="title">
+          <Text lineHeight="20" variant="sm" ellipsizeMode="tail" numberOfLines={1} data-test-id="title">
             {title}
           </Text>
           {Boolean(subtitle) && (
-            <Text variant="mediumText" color="black60" lineHeight="20" data-test-id="subtitle">
+            <Text variant="sm" color="black60" lineHeight="20" data-test-id="subtitle">
               {subtitle}
             </Text>
           )}

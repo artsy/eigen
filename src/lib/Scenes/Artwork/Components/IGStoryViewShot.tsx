@@ -53,10 +53,10 @@ export const IGStoryViewShot: React.FC<IGStoryViewShotProps> = ({ shotRef, href,
             justifyContent="space-between"
           >
             <Flex>
-              <Text variant="mediumText" fontSize={43}>
+              <Text variant="sm" fontSize={43}>
                 {artist}
               </Text>
-              <Text variant="text" opacity={0.6} fontSize={43}>
+              <Text variant="sm" opacity={0.6} fontSize={43}>
                 {title}
               </Text>
             </Flex>

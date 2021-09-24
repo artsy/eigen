@@ -1,8 +1,8 @@
 import { useEventTiming } from "lib/utils/useEventTiming"
-import { Text, TextV2Props } from "palette"
+import { Text, TextProps } from "palette"
 import React from "react"
 
-interface Props extends TextV2Props {
+interface Props extends TextProps {
   startAt: string | null
   endAt: string | null
   currentTime: string
@@ -12,7 +12,7 @@ export const EventTiming: React.FC<Props> = ({ currentTime, startAt, endAt, ...r
   const { formattedTime } = useEventTiming({ currentTime, startAt: startAt ?? undefined, endAt: endAt ?? undefined })
 
   return (
-    <Text variant="mediumText" {...rest}>
+    <Text variant="sm" {...rest}>
       {formattedTime}
     </Text>
   )
