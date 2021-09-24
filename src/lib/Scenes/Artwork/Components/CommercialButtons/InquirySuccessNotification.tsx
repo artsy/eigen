@@ -1,7 +1,7 @@
 import { themeGet } from "@styled-system/theme-get"
 import { navigate } from "lib/navigation/navigate"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, Text, Theme } from "palette"
+import { Flex, Text } from "palette"
 import React, { useEffect } from "react"
 import { Animated, Modal, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
@@ -33,44 +33,42 @@ export const InquirySuccessNotification: React.FC<InquirySuccessNotificationProp
   }, [modalVisible])
 
   return (
-    <Theme>
-      <Modal visible={modalVisible} onRequestClose={() => toggleNotification(false)} animationType="fade" transparent>
-        <Animated.View
+    <Modal visible={modalVisible} onRequestClose={() => toggleNotification(false)} animationType="fade" transparent>
+      <Animated.View
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          bottom: 0,
+          top: useScreenDimensions().safeAreaInsets.top,
+        }}
+      >
+        <SuccessfulInquirySentContainer
           style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            bottom: 0,
-            top: useScreenDimensions().safeAreaInsets.top,
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 1,
+            },
+            shadowOpacity: 0.18,
+            shadowRadius: 5.0,
           }}
         >
-          <SuccessfulInquirySentContainer
-            style={{
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 0,
-                height: 1,
-              },
-              shadowOpacity: 0.18,
-              shadowRadius: 5.0,
-            }}
-          >
-            <TouchableOpacity onPress={navigateToConversation}>
-              <Flex p={1}>
-                <Flex flexDirection="row" justifyContent="space-between">
-                  <Text color="green100" variant="sm">
-                    Message Sent
-                  </Text>
-                </Flex>
-                <Text color="black60" variant="sm">
-                  Expect a response within 1-3 business days.
+          <TouchableOpacity onPress={navigateToConversation}>
+            <Flex p={1}>
+              <Flex flexDirection="row" justifyContent="space-between">
+                <Text color="green100" variant="sm">
+                  Message Sent
                 </Text>
               </Flex>
-            </TouchableOpacity>
-          </SuccessfulInquirySentContainer>
-        </Animated.View>
-      </Modal>
-    </Theme>
+              <Text color="black60" variant="sm">
+                Expect a response within 1-3 business days.
+              </Text>
+            </Flex>
+          </TouchableOpacity>
+        </SuccessfulInquirySentContainer>
+      </Animated.View>
+    </Modal>
   )
 }
 

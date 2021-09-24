@@ -11,7 +11,7 @@ import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/plac
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Flex, Separator, Spacer, Theme } from "palette"
+import { Box, Flex, Separator, Spacer } from "palette"
 import { NavigationalTabs, TabsType } from "palette/elements/Tabs"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, View } from "react-native"
@@ -174,90 +174,86 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
       }}
     >
       <ArtworkFiltersStoreProvider>
-        <Theme>
-          <>
-            <FlatList
-              data={sections}
-              ref={flatListRef}
-              viewabilityConfig={viewConfigRef.current}
-              ItemSeparatorComponent={() => <Spacer mb={3} />}
-              ListFooterComponent={<Spacer mb={3} />}
-              keyExtractor={(_item, index) => String(index)}
-              stickyHeaderIndices={[stickyIndex]}
-              onScroll={hideBackButtonOnScroll}
-              scrollEventThrottle={100}
-              // @ts-ignore
-              CellRendererComponent={cellItemRenderer}
-              renderItem={({ item }): null | any => {
-                switch (item) {
-                  case "fairHeader": {
-                    return (
-                      <>
-                        <FairHeaderFragmentContainer fair={fair} />
-                        <Separator mt={3} />
-                      </>
-                    )
-                  }
-                  case "notActive": {
-                    return <FairEmptyStateFragmentContainer fair={fair} />
-                  }
-                  case "fairFollowedArtistsRail": {
-                    return <FairFollowedArtistsRailFragmentContainer fair={fair} />
-                  }
-                  case "fairEditorial": {
-                    return <FairEditorialFragmentContainer fair={fair} />
-                  }
-                  case "fairCollections": {
-                    return <FairCollectionsFragmentContainer fair={fair} />
-                  }
-                  case "fairTabsAndFilter": {
-                    const tabToShow = tabs ? tabs[activeTab] : null
-                    return (
-                      <Box paddingTop={safeAreaInsets.top} backgroundColor="white">
-                        <NavigationalTabs
-                          onTabPress={(_, index) => {
-                            trackTappedNavigationTab(index as number)
-                            setActiveTab(index)
-                          }}
-                          activeTab={activeTab}
-                          tabs={tabs}
-                        />
-                        {tabToShow?.label === "Artworks" && <HeaderArtworksFilter onPress={openFilterArtworksModal} />}
-                      </Box>
-                    )
-                  }
-                  case "fairTabChildContent": {
-                    const tabToShow = tabs ? tabs[activeTab] : null
+        <FlatList
+          data={sections}
+          ref={flatListRef}
+          viewabilityConfig={viewConfigRef.current}
+          ItemSeparatorComponent={() => <Spacer mb={3} />}
+          ListFooterComponent={<Spacer mb={3} />}
+          keyExtractor={(_item, index) => String(index)}
+          stickyHeaderIndices={[stickyIndex]}
+          onScroll={hideBackButtonOnScroll}
+          scrollEventThrottle={100}
+          // @ts-ignore
+          CellRendererComponent={cellItemRenderer}
+          renderItem={({ item }): null | any => {
+            switch (item) {
+              case "fairHeader": {
+                return (
+                  <>
+                    <FairHeaderFragmentContainer fair={fair} />
+                    <Separator mt={3} />
+                  </>
+                )
+              }
+              case "notActive": {
+                return <FairEmptyStateFragmentContainer fair={fair} />
+              }
+              case "fairFollowedArtistsRail": {
+                return <FairFollowedArtistsRailFragmentContainer fair={fair} />
+              }
+              case "fairEditorial": {
+                return <FairEditorialFragmentContainer fair={fair} />
+              }
+              case "fairCollections": {
+                return <FairCollectionsFragmentContainer fair={fair} />
+              }
+              case "fairTabsAndFilter": {
+                const tabToShow = tabs ? tabs[activeTab] : null
+                return (
+                  <Box paddingTop={safeAreaInsets.top} backgroundColor="white">
+                    <NavigationalTabs
+                      onTabPress={(_, index) => {
+                        trackTappedNavigationTab(index as number)
+                        setActiveTab(index)
+                      }}
+                      activeTab={activeTab}
+                      tabs={tabs}
+                    />
+                    {tabToShow?.label === "Artworks" && <HeaderArtworksFilter onPress={openFilterArtworksModal} />}
+                  </Box>
+                )
+              }
+              case "fairTabChildContent": {
+                const tabToShow = tabs ? tabs[activeTab] : null
 
-                    if (!tabToShow) {
-                      return null
-                    }
-
-                    if (tabToShow.label === "Exhibitors") {
-                      return <FairExhibitorsFragmentContainer fair={fair} />
-                    }
-
-                    if (tabToShow.label === "Artworks") {
-                      return (
-                        <Box px={2}>
-                          <FairArtworksFragmentContainer fair={fair} />
-                          <ArtworkFilterNavigator
-                            isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-                            id={fair.internalID}
-                            slug={fair.slug}
-                            mode={FilterModalMode.Fair}
-                            exitModal={handleFilterArtworksModal}
-                            closeModal={closeFilterArtworksModal}
-                          />
-                        </Box>
-                      )
-                    }
-                  }
+                if (!tabToShow) {
+                  return null
                 }
-              }}
-            />
-          </>
-        </Theme>
+
+                if (tabToShow.label === "Exhibitors") {
+                  return <FairExhibitorsFragmentContainer fair={fair} />
+                }
+
+                if (tabToShow.label === "Artworks") {
+                  return (
+                    <Box px={2}>
+                      <FairArtworksFragmentContainer fair={fair} />
+                      <ArtworkFilterNavigator
+                        isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+                        id={fair.internalID}
+                        slug={fair.slug}
+                        mode={FilterModalMode.Fair}
+                        exitModal={handleFilterArtworksModal}
+                        closeModal={closeFilterArtworksModal}
+                      />
+                    </Box>
+                  )
+                }
+              }
+            }
+          }}
+        />
       </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>
   )

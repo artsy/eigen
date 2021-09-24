@@ -1,7 +1,7 @@
 import { storiesOf } from "@storybook/react-native"
 import React, { useState } from "react"
 import { View } from "react-native"
-import { withThemeV3 } from "storybook/decorators"
+import { withTheme } from "storybook/decorators"
 import { TabsProps, TabsType } from "."
 import { ContentTabs } from "./ContentTabs"
 import { NavigationalTabs } from "./NavigationalTabs"
@@ -22,7 +22,7 @@ const Wrapper: React.FC<WrapperProps> = ({ component: Component, tabs }) => {
 }
 
 storiesOf("Navigational Tabs", module)
-  .addDecorator(withThemeV3)
+  .addDecorator(withTheme)
   .add("With 3 Tabs", () => {
     const tabs: TabsType = [{ label: "Artist" }, { label: "Artworks" }, { label: "Insights" }]
     return <Wrapper component={NavigationalTabs} tabs={tabs} />

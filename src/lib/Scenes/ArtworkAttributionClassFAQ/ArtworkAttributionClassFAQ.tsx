@@ -4,7 +4,7 @@ import { goBack } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Button, Join, Separator, Spacer, Text, Theme } from "palette"
+import { Box, Button, Join, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -17,39 +17,37 @@ export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttribution
   const { safeAreaInsets } = useScreenDimensions()
 
   return (
-    <Theme>
-      <ScrollView>
-        <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
-          <Box my={3}>
-            <Join separator={<Spacer my={1.5} />}>
-              <Text variant="lg">Artwork classifications</Text>
+    <ScrollView>
+      <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
+        <Box my={3}>
+          <Join separator={<Spacer my={1.5} />}>
+            <Text variant="lg">Artwork classifications</Text>
 
-              <Join separator={<Spacer my={1} />}>
-                {artworkAttributionClasses.map((attributionClass, index) => {
-                  return (
-                    <React.Fragment key={index}>
-                      <Text variant="sm">{attributionClass.name}</Text>
+            <Join separator={<Spacer my={1} />}>
+              {artworkAttributionClasses.map((attributionClass, index) => {
+                return (
+                  <React.Fragment key={index}>
+                    <Text variant="sm">{attributionClass.name}</Text>
 
-                      <Text>{attributionClass.longDescription}</Text>
-                    </React.Fragment>
-                  )
-                })}
-              </Join>
-
-              <Separator />
-
-              <Text color="black60">
-                Our partners are responsible for providing accurate classification information for all works.
-              </Text>
-
-              <Button onPress={goBack} block>
-                OK
-              </Button>
+                    <Text>{attributionClass.longDescription}</Text>
+                  </React.Fragment>
+                )
+              })}
             </Join>
-          </Box>
+
+            <Separator />
+
+            <Text color="black60">
+              Our partners are responsible for providing accurate classification information for all works.
+            </Text>
+
+            <Button onPress={goBack} block>
+              OK
+            </Button>
+          </Join>
         </Box>
-      </ScrollView>
-    </Theme>
+      </Box>
+    </ScrollView>
   )
 }
 

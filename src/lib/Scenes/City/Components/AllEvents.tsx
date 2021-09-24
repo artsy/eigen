@@ -2,7 +2,7 @@ import { EventSection } from "lib/Scenes/City/Components/EventSection"
 import { BucketResults } from "lib/Scenes/Map/bucketCityResults"
 import { Show } from "lib/Scenes/Map/types"
 import { isEqual } from "lodash"
-import { Box, Separator, Serif, Spacer, Theme } from "palette"
+import { Box, Separator, Serif, Spacer } from "palette"
 import React from "react"
 import { FlatList, ViewProps } from "react-native"
 import { RelayProp } from "react-relay"
@@ -222,16 +222,14 @@ export class AllEvents extends React.Component<Props, State> {
   render() {
     const { sections } = this.state
     return (
-      <Theme>
-        <FlatList
-          data={sections}
-          ItemSeparatorComponent={this.renderItemSeparator}
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          keyExtractor={(item) => item.type}
-          renderItem={(item) => this.renderItem(item)}
-          ListFooterComponent={() => <Spacer m={3} />}
-        />
-      </Theme>
+      <FlatList
+        data={sections}
+        ItemSeparatorComponent={this.renderItemSeparator}
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        keyExtractor={(item) => item.type}
+        renderItem={(item) => this.renderItem(item)}
+        ListFooterComponent={() => <Spacer m={3} />}
+      />
     )
   }
 }
