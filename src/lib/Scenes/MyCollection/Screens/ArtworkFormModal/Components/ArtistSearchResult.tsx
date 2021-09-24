@@ -23,7 +23,7 @@ export const ArtistSearchResult: React.FC<{ result: AutosuggestResult }> = ({ re
       </Text>
       <Spacer ml="1" />
       <Button
-        variant="secondaryGray"
+        variant="fillGray"
         size="small"
         onPress={() => {
           GlobalStore.actions.myCollection.artwork.setArtistSearchResult(null)

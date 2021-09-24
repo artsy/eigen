@@ -139,7 +139,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
 
         <Flex>
           <Button
-            variant={artist.isFollowed ? "secondaryOutline" : "primaryBlack"}
+            variant={artist.isFollowed ? "outline" : "fillDark"}
             onPress={handleFollowChange}
             size="small"
             longestText="Following"

@@ -58,12 +58,7 @@ const ArtistAboutShows: React.FC<Props> = ({ artist }) => {
           contentContainerStyle={{ paddingBottom: 15, paddingLeft: 20 }}
         />
         {!!pastShows.length && (
-          <Button
-            variant={"secondaryGray"}
-            onPress={() => navigate(`/artist/${artist?.slug!}/shows`)}
-            size="medium"
-            block
-          >
+          <Button variant={"fillGray"} onPress={() => navigate(`/artist/${artist?.slug!}/shows`)} size="small" block>
             See all past shows
           </Button>
         )}

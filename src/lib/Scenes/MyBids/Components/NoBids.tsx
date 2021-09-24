@@ -27,7 +27,7 @@ export const NoBids: React.FC<{ headerText: string }> = ({ headerText }) => {
         Browse and bid in auctions around the world, from online-only sales to benefit auctions—all in the Artsy app.
       </Text>
       <Flex width="100%" justifyContent="center" flexDirection="row">
-        <Button variant="primaryBlack" onPress={handleViewAllAuctions}>
+        <Button variant="fillDark" onPress={handleViewAllAuctions}>
           {noBidsButtonText}
         </Button>
       </Flex>

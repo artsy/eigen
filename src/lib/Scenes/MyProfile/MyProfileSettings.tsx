@@ -97,7 +97,7 @@ const MyProfileSettings: React.FC<{ me: MyProfileSettings_me; relay: RelayRefetc
       <Separator my={1} borderColor={separatorColor} />
 
       <Flex flexDirection="row" alignItems="center" justifyContent="center" py={7.5} px="2" pr="15px">
-        <Button variant="primaryBlack" haptic onPress={confirmLogout} block>
+        <Button variant="fillDark" haptic onPress={confirmLogout} block>
           Log Out{" "}
         </Button>
       </Flex>
@@ -148,7 +148,7 @@ export const MyProfileSettingsPlaceholder: React.FC<{}> = () => {
       <Separator my={1} borderColor={separatorColor} />
       <Spacer mb={1} />
       <Flex flexDirection="row" alignItems="center" justifyContent="center" py={7.5} px="2" pr="15px">
-        <Button variant="primaryBlack" haptic onPress={confirmLogout} block>
+        <Button variant="fillDark" haptic onPress={confirmLogout} block>
           Log Out{" "}
         </Button>
       </Flex>
@@ -221,7 +221,7 @@ const FailedScreen: React.FC<{ retry: (() => void) | null }> = ({ retry }) => (
     <Flex position={"absolute"} bottom={0} left={0} right={0}>
       <Spacer mb={1} />
       <Flex flexDirection="row" alignItems="center" justifyContent="center" py={7.5} px="2" pr="15px">
-        <Button variant="primaryBlack" haptic onPress={confirmLogout} block>
+        <Button variant="fillDark" haptic onPress={confirmLogout} block>
           Log Out{" "}
         </Button>
       </Flex>

@@ -32,7 +32,7 @@ export class PrivacyRequest extends React.Component {
               </LinkText>{" "}
             </Sans>
             <Button
-              variant="secondaryGray"
+              variant="fillGray"
               block
               size="large"
               mt={1}
