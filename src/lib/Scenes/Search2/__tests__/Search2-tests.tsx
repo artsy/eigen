@@ -59,7 +59,7 @@ describe("Search2 Screen", () => {
 
     // should show City Guide
     expect(getByText("City Guide")).toBeTruthy()
-    expect(getByText("Recent searches")).toBeTruthy()
+    expect(getByText("Recent Searches")).toBeTruthy()
 
     fireEvent.changeText(searchInput, "Ba")
     expect(searchInput).toHaveProp("value", "Ba")
