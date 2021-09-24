@@ -4,9 +4,9 @@ import { EntityType, navigate, navigateToEntity, navigateToPartner, SlugType } f
 import { GlobalStore } from "lib/store/GlobalStore"
 import { normalizeText } from "lib/utils/normalizeText"
 import { Schema } from "lib/utils/track"
-import { ArtworkIcon, AuctionIcon, Box, Flex, Sans, Spacer, useSpace } from "palette"
+import { ArtworkIcon, AuctionIcon, Box, Flex, Spacer, Text, useSpace } from "palette"
 import React, { useContext } from "react"
-import { Pressable, ScrollView, Text } from "react-native"
+import { Pressable, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { SearchListItem } from "../Search2/components/SearchListItem"
@@ -24,8 +24,6 @@ const NavigationButtons: React.FC<{ onPress: HandleResultPress }> = ({ onPress }
 
   return (
     <>
-      <Spacer m={0.5} />
-
       <Flex flexDirection="row" alignItems="center">
         <ScrollView
           horizontal
@@ -40,9 +38,9 @@ const NavigationButtons: React.FC<{ onPress: HandleResultPress }> = ({ onPress }
                 <Box mr={0.5}>
                   <ArtworkIcon fill={pressed ? "blue100" : "black100"} />
                 </Box>
-                <Sans size="3" color={pressed ? "blue100" : "black100"}>
+                <Text variant="caption" color={pressed ? "blue100" : "black100"}>
                   Artworks
-                </Sans>
+                </Text>
               </QuickNavigationButton>
             )}
           </Pressable>
@@ -55,9 +53,9 @@ const NavigationButtons: React.FC<{ onPress: HandleResultPress }> = ({ onPress }
                 <Box mr={0.5}>
                   <AuctionIcon fill={pressed ? "blue100" : "black100"} />
                 </Box>
-                <Sans size="3" color={pressed ? "blue100" : "black100"}>
+                <Text variant="caption" color={pressed ? "blue100" : "black100"}>
                   Auction Results
-                </Sans>
+                </Text>
               </QuickNavigationButton>
             )}
           </Pressable>
@@ -126,13 +124,13 @@ export const AutosuggestSearchResult: React.FC<{
       InfoComponent={() => {
         return (
           <>
-            <Text ellipsizeMode="tail" numberOfLines={1}>
+            <Text variant="caption" numberOfLines={1}>
               {applyHighlight({ displayLabel: result.displayLabel!, highlight, categoryName })}
             </Text>
             {!!showResultType && !!categoryName && (
-              <Sans size="3t" color="black60">
+              <Text variant="caption" color="black60">
                 {categoryName}
-              </Sans>
+              </Text>
             )}
           </>
         )
@@ -154,9 +152,9 @@ const QuickNavigationButton = styled(Flex)`
 
 export const ItalicText: React.FC<{ color?: string }> = ({ color = "grey", children }) => {
   return (
-    <Sans size="3t" italic color={color}>
+    <Text variant="caption" italic color={color}>
       {children}
-    </Sans>
+    </Text>
   )
 }
 
@@ -183,13 +181,13 @@ const Result: React.FC<{ result: string[] }> = ({ result }) => {
   const [nonMatch, match, nonMatch2] = result
 
   return (
-    <Sans size="3t">
+    <Text variant="caption">
       {nonMatch}
-      <Sans size="3t" weight="medium" color="blue100" style={{ padding: 0, margin: 0 }}>
+      <Text variant="caption" weight="medium" color="blue100" style={{ padding: 0, margin: 0 }}>
         {match}
-      </Sans>
+      </Text>
       {nonMatch2}
-    </Sans>
+    </Text>
   )
 }
 
@@ -205,7 +203,7 @@ export const ResultWithItalic: React.FC<{ result: string[] }> = ({ result }) => 
     const restNonMatch = rest.join(",")
     return (
       <>
-        <Sans size="3t">{mainNonMatch}</Sans>
+        <Text variant="caption">{mainNonMatch}</Text>
 
         <ItalicText>
           {restNonMatch}
@@ -225,13 +223,13 @@ export const ResultWithItalic: React.FC<{ result: string[] }> = ({ result }) => 
     const restNonMatch2 = rest.join(",")
     return (
       <>
-        <Sans size="3t">
+        <Text variant="caption">
           {nonMatch}
-          <Sans size="3t" weight="medium" color="blue100">
+          <Text variant="caption" weight="medium" color="blue100">
             {match}
-          </Sans>
+          </Text>
           {mainNonMatch2}
-        </Sans>
+        </Text>
 
         <ItalicText>{restNonMatch2}</ItalicText>
       </>
@@ -254,16 +252,16 @@ function applyHighlight({
   // is being rendered in a context that doesn't support highlights
   if (highlight === undefined) {
     return (
-      <Sans size="3t" weight="medium">
+      <Text variant="caption" weight="medium">
         {displayLabel}
-      </Sans>
+      </Text>
     )
   }
   if (!highlight.trim()) {
     return (
-      <Sans size="3t" weight="regular">
+      <Text variant="caption" weight="regular">
         {displayLabel}
-      </Sans>
+      </Text>
     )
   }
   // search for `highlight` in `displayLabel` but ignore diacritics in `displayLabel`
@@ -297,9 +295,9 @@ function applyHighlight({
 
   if (!result) {
     return (
-      <Sans size="3t" weight="regular">
+      <Text variant="caption" weight="regular">
         {displayLabel}
-      </Sans>
+      </Text>
     )
   }
 

@@ -9,11 +9,13 @@ export const SearchHighlight = connectHighlight(
       <Text numberOfLines={1} ellipsizeMode="tail">
         {parsedHit.map(({ isHighlighted, value }, index) => {
           return isHighlighted ? (
-            <Text key={index} color="blue100" fontWeight="600" padding={0} margin={0}>
+            <Text variant="caption" key={index} color="blue100" fontWeight="600" padding={0} margin={0}>
               {value}
             </Text>
           ) : (
-            <Text key={index}>{value}</Text>
+            <Text variant="caption" key={index}>
+              {value}
+            </Text>
           )
         })}
       </Text>
