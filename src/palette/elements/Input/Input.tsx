@@ -174,6 +174,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
           ))}
         </View>
       ) : null
+
     const actualPlaceholder = () => {
       if (placeholder === undefined) {
         return placeholder
