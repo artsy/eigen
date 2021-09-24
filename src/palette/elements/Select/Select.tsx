@@ -6,6 +6,7 @@ import { FlatList, TextInput, TouchableOpacity } from "react-native"
 import { FancyModal } from "../../../lib/Components/FancyModal/FancyModal"
 import { SearchInput } from "../../../lib/Components/SearchInput"
 import { INPUT_HEIGHT } from "../Input"
+
 export interface SelectOption<ValueType> {
   value: ValueType
   label: NonNullable<React.ReactNode>
