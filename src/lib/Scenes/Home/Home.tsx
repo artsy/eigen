@@ -35,6 +35,7 @@ import { _FragmentRefs, createRefetchContainer, graphql, RelayRefetchProp } from
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
+import { NewWorksForYouRailContainer } from "./Components/NewWorksForYouRail"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProps {
@@ -76,6 +77,7 @@ const Home = (props: Props) => {
   )
 
   const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
+  const showNewNewWorksForYouRail = useFeatureFlag("AREnableNewNewWorksForYou")
 
   /*
   Ordering is defined in https://www.notion.so/artsy/App-Home-Screen-4841255ded3f47c9bcdb73185ee3f335.
@@ -84,6 +86,7 @@ const Home = (props: Props) => {
 
   const rowData = compact([
     // Above-the-fold modules (make sure to include enough modules in the above-the-fold query to cover the whole screen.)
+    !!showNewNewWorksForYouRail && ({ type: "newWorksForYou" } as const),
     artworkRails[0],
     { type: "lotsByFollowedArtists" } as const,
     artworkRails[1],
@@ -156,7 +159,14 @@ const Home = (props: Props) => {
                     <></>
                   )
                 case "artwork":
-                  return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
+                  return (
+                    <ArtworkRailFragmentContainer
+                      rail={item.data}
+                      scrollRef={scrollRefs.current[index]}
+                      onShow={() => separators.updateProps("leading", { hideSeparator: false })}
+                      onHide={() => separators.updateProps("leading", { hideSeparator: true })}
+                    />
+                  )
                 case "artist":
                   return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
                 case "fairs":
@@ -191,6 +201,13 @@ const Home = (props: Props) => {
                   ) : (
                     <></>
                   )
+                case "newWorksForYou":
+                  return meAbove ? (
+                    <NewWorksForYouRailContainer me={meAbove} scrollRef={scrollRefs.current[index]} />
+                  ) : (
+                    <></>
+                  )
+
                 case "lotsByFollowedArtists":
                   return meAbove ? (
                     <SaleArtworksHomeRailContainer
@@ -276,6 +293,7 @@ export const HomeFragmentContainer = createRefetchContainer(
       fragment Home_meAbove on Me {
         ...EmailConfirmationBanner_me
         ...SaleArtworksHomeRail_me
+        ...NewWorksForYouRail_me
       }
     `,
     meBelow: graphql`
@@ -305,6 +323,7 @@ export const HomeFragmentContainer = createRefetchContainer(
       me @optionalField {
         ...Home_meAbove
         ...AuctionResultsRail_me
+        ...NewWorksForYouRail_me
       }
       meBelow: me @optionalField {
         ...Home_meBelow
@@ -493,6 +512,7 @@ export const HomeQueryRenderer: React.FC = () => {
                 }
                 me @optionalField {
                   ...Home_meAbove
+                  ...NewWorksForYouRail_me
                 }
                 articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
                   ...Home_articlesConnection
