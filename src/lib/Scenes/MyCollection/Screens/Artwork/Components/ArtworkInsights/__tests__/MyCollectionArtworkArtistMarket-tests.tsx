@@ -1,4 +1,3 @@
-import { ContextModule, OwnerType, tappedInfoBubble } from "@artsy/cohesion"
 import { MyCollectionArtworkArtistMarketTestsQuery } from "__generated__/MyCollectionArtworkArtistMarketTestsQuery.graphql"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { extractText } from "lib/tests/extractText"
@@ -104,14 +103,17 @@ describe("MyCollectionArtworkArtistMarket", () => {
     wrapper.root.findByType(InfoButton).props.onPress()
 
     expect(trackEvent).toHaveBeenCalledTimes(1)
-    expect(trackEvent).toHaveBeenCalledWith(
-      tappedInfoBubble({
-        contextModule: ContextModule.myCollectionArtwork,
-        contextScreenOwnerType: OwnerType.myCollectionArtwork,
-        subject: "artistMarketStatistics",
-        contextScreenOwnerId: "artwork-id",
-        contextScreenOwnerSlug: "artwork-slug",
-      })
-    )
+    expect(trackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "action": "tappedInfoBubble",
+          "context_module": "myCollectionArtwork",
+          "context_screen_owner_id": "artwork-id",
+          "context_screen_owner_slug": "artwork-slug",
+          "context_screen_owner_type": "myCollectionArtwork",
+          "subject": "artistMarketStatistics",
+        },
+      ]
+    `)
   })
 })

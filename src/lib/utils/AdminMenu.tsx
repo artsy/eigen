@@ -10,7 +10,6 @@ import { DevToggleName, devToggles, FeatureName, features } from "lib/store/conf
 import { GlobalStore } from "lib/store/GlobalStore"
 import { capitalize, compact, sortBy } from "lodash"
 import { ChevronIcon, CloseIcon, Flex, ReloadIcon, Separator, Spacer, Text, useColor } from "palette"
-import { DevTogglePaletteFlag } from "palette/PaletteFlag"
 import React, { useEffect, useState } from "react"
 import {
   Alert,
@@ -114,7 +113,6 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         {configurableDevToggleKeys.map((devToggleKey) => {
           return <DevToggleItem key={devToggleKey} toggleKey={devToggleKey} />
         })}
-        <DevTogglePaletteFlag />
         <MenuItem
           title="Clear AsyncStorage"
           chevron={null}

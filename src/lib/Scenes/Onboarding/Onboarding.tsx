@@ -5,6 +5,7 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { NetworkAwareProvider } from "lib/utils/NetworkAwareProvider"
 import React from "react"
 import { View } from "react-native"
+import { useFeatureFlag } from "../../store/GlobalStore"
 import { ForgotPassword } from "./ForgotPassword"
 import {
   OnboardingCreateAccount,
@@ -72,6 +73,7 @@ export const OnboardingWelcomeScreens = () => {
 }
 export const Onboarding = () => {
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
+  const showNetworkUnavailableModal = useFeatureFlag("ARShowNetworkUnavailableModal")
 
   return (
     <View style={{ flex: 1 }}>
@@ -80,7 +82,7 @@ export const Onboarding = () => {
       >
         <ArtsyKeyboardAvoidingView>
           {onboardingState === "incomplete" ? <OnboardingPersonalization /> : <OnboardingWelcomeScreens />}
-          <NetworkAwareProvider />
+          {!!showNetworkUnavailableModal && <NetworkAwareProvider />}
         </ArtsyKeyboardAvoidingView>
       </ArtsyKeyboardAvoidingViewContext.Provider>
     </View>

@@ -144,6 +144,12 @@ export const features = defineFeatures({
     description: "Enable phone number validation",
     showInAdminMenu: true,
   },
+  ARShowNetworkUnavailableModal: {
+    readyForRelease: true,
+    description: "Enable network unavailable modal",
+    showInAdminMenu: true,
+    echoFlagKey: "ARShowNetworkUnavailableModal",
+  },
 })
 
 export interface DevToggleDescriptor {

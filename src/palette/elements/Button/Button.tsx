@@ -166,7 +166,7 @@ export const Button: React.FC<ButtonProps> = ({
 
                 <HiddenContainer>
                   {icon}
-                  <TextV3 size={size === "small" ? "xs" : "sm"}>{longestText ? longestText : children}</TextV3>
+                  <TextV3 variant={size === "small" ? "xs" : "sm"}>{longestText ? longestText : children}</TextV3>
                 </HiddenContainer>
 
                 {displayState === DisplayState.Loading ? (

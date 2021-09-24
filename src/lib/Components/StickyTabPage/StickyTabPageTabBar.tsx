@@ -1,8 +1,6 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { compact } from "lodash"
-import { Sans, useSpace, useTheme } from "palette"
+import { Sans } from "palette"
 import { NavigationalTabs } from "palette/elements/Tabs"
-import { usePaletteFlagStore } from "palette/PaletteFlag"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, LayoutRectangle, ScrollView, TouchableOpacity, View, ViewProps } from "react-native"
 import { useStickyTabPageContext } from "./SitckyTabPageContext"
@@ -12,12 +10,11 @@ export const TAB_BAR_HEIGHT = 48
 export const StickyTabPageTabBar: React.FC<{ onTabPress?(tab: { label: string; index: number }): void }> = ({
   onTabPress,
 }) => {
-  const { color, space } = useTheme()
   const screen = useScreenDimensions()
   const { tabLabels, activeTabIndex, setActiveTabIndex } = useStickyTabPageContext()
   activeTabIndex.useUpdates()
 
-  const [tabLayouts, setTabLayouts] = useState<Array<LayoutRectangle | null>>(tabLabels.map(() => null))
+  const [tabLayouts] = useState<Array<LayoutRectangle | null>>(tabLabels.map(() => null))
 
   useEffect(() => {
     if (tabLayouts.length !== tabLabels.length) {
@@ -41,71 +38,16 @@ export const StickyTabPageTabBar: React.FC<{ onTabPress?(tab: { label: string; i
     }
   }, [activeTabIndex.current])
 
-  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
-  if (allowV3) {
-    const v3Tabs = tabLabels.map((label) => ({ label }))
-    return (
-      <NavigationalTabs
-        tabs={v3Tabs}
-        onTabPress={(label, index) => {
-          setActiveTabIndex(index)
-          onTabPress?.({ label, index })
-        }}
-        activeTab={activeTabIndex.current}
-      />
-    )
-  }
+  const v3Tabs = tabLabels.map((label) => ({ label }))
   return (
-    <ScrollView
-      ref={scrollViewRef}
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{ minWidth: "100%" }}
-    >
-      {/* bottom border */}
-      <View
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          borderBottomWidth: 1,
-          borderBottomColor: color("black30"),
-        }}
-      />
-      <View
-        style={{
-          flex: 1,
-          minWidth: "100%",
-          height: TAB_BAR_HEIGHT,
-          flexDirection: "row",
-          paddingHorizontal: space(2),
-        }}
-      >
-        {tabLabels.map((label, index) => (
-          <StickyTab
-            key={index}
-            label={label}
-            active={index === activeTabIndex.current}
-            onLayout={(e) => {
-              const layout = e.nativeEvent.layout
-              setTabLayouts((layouts) => {
-                const result = layouts.slice(0)
-                result[index] = layout
-                return result
-              })
-            }}
-            onPress={() => {
-              setActiveTabIndex(index)
-              onTabPress?.({ label, index })
-            }}
-          />
-        ))}
-        {!!allTabLayoutsArePresent && (
-          <ActiveTabBorder tabLayouts={compact(tabLayouts)} activeTabIndex={activeTabIndex.current} />
-        )}
-      </View>
-    </ScrollView>
+    <NavigationalTabs
+      tabs={v3Tabs}
+      onTabPress={(label, index) => {
+        setActiveTabIndex(index)
+        onTabPress?.({ label, index })
+      }}
+      activeTab={activeTabIndex.current}
+    />
   )
 }
 
@@ -137,55 +79,4 @@ export const StickyTab: React.FC<{
 
 export function spring(node: Animated.Value, toValue: number) {
   return Animated.spring(node, { toValue, useNativeDriver: true, bounciness: -7, speed: 13 })
-}
-
-const ActiveTabBorder: React.FC<{ tabLayouts: LayoutRectangle[]; activeTabIndex: number }> = ({
-  tabLayouts,
-  activeTabIndex,
-}) => {
-  const space = useSpace()
-
-  // We resize this border using the `scaleX` transform property rather than the `width` property, to avoid running
-  // animations on the JS thread, so we need to set an initial, pre-transform span for the border.
-  const preTransformSpan = 100
-
-  const span = tabLayouts[activeTabIndex].width
-
-  let left = 0
-  for (let i = 0; i < activeTabIndex; i++) {
-    left += tabLayouts[i].width
-  }
-
-  const translateX = useRef(new Animated.Value(left)).current
-  const scaleX = useRef(new Animated.Value(span / preTransformSpan)).current
-
-  useEffect(() => {
-    Animated.parallel([spring(translateX, left), spring(scaleX, span / preTransformSpan)]).start()
-  }, [left, span])
-
-  const scaleXOffset = Animated.divide(
-    Animated.subtract(preTransformSpan, Animated.multiply(scaleX, preTransformSpan)),
-    2
-  )
-
-  return (
-    <Animated.View
-      style={{
-        height: 2,
-        width: preTransformSpan,
-        backgroundColor: "black",
-        position: "absolute",
-        bottom: 0,
-        left: space(2),
-        transform: [
-          {
-            translateX: Animated.subtract(translateX, scaleXOffset),
-          },
-          {
-            scaleX,
-          },
-        ],
-      }}
-    />
-  )
 }

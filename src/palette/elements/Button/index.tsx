@@ -1,4 +1,3 @@
-import { usePaletteFlagStore } from "palette/PaletteFlag"
 import { ThemeV3 } from "palette/Theme"
 import React from "react"
 
@@ -40,28 +39,19 @@ const isV2Props = (props: ButtonProps): props is ButtonV2Props => {
 }
 
 export const Button: React.FC<ButtonProps> = (props) => {
-  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
-
-  if (allowV3) {
-    if (isV2Props(props)) {
-      return (
-        <ThemeV3>
-          <ButtonV3 {...transformV3Props(props)} />
-        </ThemeV3>
-      )
-    } else {
-      return (
-        <ThemeV3>
-          <ButtonV3 {...props} />
-        </ThemeV3>
-      )
-    }
-  }
-
   if (isV2Props(props)) {
-    return <ButtonV2 {...props} />
+    return (
+      <ThemeV3>
+        <ButtonV3 {...transformV3Props(props)} />
+      </ThemeV3>
+    )
+  } else {
+    return (
+      <ThemeV3>
+        <ButtonV3 {...props} />
+      </ThemeV3>
+    )
   }
-  throw new Error("ButtonV2 used with v3 props. Don't do that.")
 }
 
 const transformV3Props = (props: ButtonV2Props): ButtonV3Props => {

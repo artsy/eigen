@@ -38,11 +38,12 @@ interface SearchInputProps {
   placeholder: string
   currentRefinement: string
   refine: (value: string) => any
+  onSubmitEditing: () => void
 }
 
 const SEARCH_THROTTLE_INTERVAL = 500
 
-const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholder, refine }) => {
+const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholder, refine, onSubmitEditing }) => {
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(currentRefinement)
 
@@ -64,6 +65,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholde
       enableCancelButton
       placeholder={placeholder}
       onChangeText={handleChangeText}
+      onSubmitEditing={onSubmitEditing}
       onFocus={() => {
         trackEvent({
           action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
@@ -88,7 +90,8 @@ interface SearchState {
   page?: number
 }
 
-const pills: PillType[] = [{ name: "ARTWORK", displayName: "Artworks" }]
+const ARTWORKS_PILL: PillType = { name: "ARTWORK", displayName: "Artworks" }
+const pills: PillType[] = [ARTWORKS_PILL]
 
 interface Search2Props {
   relay: RelayRefetchProp
@@ -152,6 +155,16 @@ export const Search2: React.FC<Search2Props> = (props) => {
     return selectedAlgoliaIndex === name || elasticSearchEntity === name
   }
 
+  const handleSubmitEditing = () => {
+    if (shouldStartQuering) {
+      const { displayName, name } = ARTWORKS_PILL
+
+      setSelectedAlgoliaIndex("")
+      setActivePillDisplayName(displayName)
+      setElasticSearchEntity(name)
+    }
+  }
+
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <ArtsyKeyboardAvoidingView>
@@ -164,7 +177,10 @@ export const Search2: React.FC<Search2Props> = (props) => {
           <Configure clickAnalytics />
           <RefetchWhenApiKeyExpiredContainer relay={relay} />
           <Flex p={2} pb={1}>
-            <SearchInputContainer placeholder="Search artists, artworks, galleries, etc" />
+            <SearchInputContainer
+              placeholder="Search artists, artworks, galleries, etc"
+              onSubmitEditing={handleSubmitEditing}
+            />
           </Flex>
           {!!shouldStartQuering ? (
             <>

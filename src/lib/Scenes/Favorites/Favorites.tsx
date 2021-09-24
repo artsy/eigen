@@ -9,7 +9,7 @@ import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageTabBar } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import { useIsStaging } from "lib/store/GlobalStore"
 import { compact } from "lodash"
-import { Sans, SettingsIcon as _SettingsIcon, useSpace } from "palette"
+import { Flex, SettingsIcon as _SettingsIcon, Text } from "palette"
 import { useTracking } from "react-tracking"
 import { FavoriteArtistsQueryRenderer } from "./FavoriteArtists"
 import { FavoriteArtworksQueryRenderer } from "./FavoriteArtworks"
@@ -124,22 +124,18 @@ export const Favorites: React.FC<Props> = ({
   )
 }
 
-interface StickyHeaderContentProps {
-  enableMyCollection: boolean
-}
-const StickyHeaderContent: React.FC<StickyHeaderContentProps> = ({ enableMyCollection }) => {
-  const space = useSpace()
+const StickyHeaderContent: React.FC<{ enableMyCollection: boolean }> = ({ enableMyCollection }) => {
   return (
-    <View style={{ marginTop: enableMyCollection ? space(6) : space(2) }}>
+    <Flex mt={enableMyCollection ? 4 : 2}>
       {enableMyCollection ? (
-        <Sans size="8" m={space(2)}>
+        <Text variant="lg" m={2}>
           Follows
-        </Sans>
+        </Text>
       ) : (
-        <Sans size="4" weight="medium" textAlign="center">
+        <Text variant="md" weight="medium" textAlign="center">
           Saves and Follows
-        </Sans>
+        </Text>
       )}
-    </View>
+    </Flex>
   )
 }

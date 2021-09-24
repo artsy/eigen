@@ -30,7 +30,7 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
         <Flex p={2}>
           <Join separator={<Spacer my={1} />}>
             <Input
-              title="Title"
+              title="TITLE"
               placeholder="Title"
               onChangeText={formik.handleChange("title")}
               onBlur={formik.handleBlur("title")}
@@ -38,7 +38,7 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
               defaultValue={formikValues.title}
             />
             <Input
-              title="Year created"
+              title="YEAR CREATED"
               keyboardType="number-pad"
               placeholder="Year created"
               onChangeText={formik.handleChange("date")}
@@ -81,7 +81,7 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
             )}
 
             <Input
-              title="Materials"
+              title="MATERIALS"
               placeholder="Materials"
               onChangeText={formik.handleChange("category")}
               onBlur={formik.handleBlur("category")}
@@ -90,15 +90,15 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
             />
 
             <TextArea
+              title="PROVENANCE"
               placeholder="Provenance"
-              title="Provenance"
               value={formikValues.provenance}
               onChangeText={formik.handleChange("provenance")}
               data-test-id="ProvenanceInput"
             />
 
             <Input
-              title="Price paid"
+              title="PRICE PAID"
               placeholder="Price paid"
               keyboardType="decimal-pad"
               onChangeText={formik.handleChange("pricePaidDollars")}

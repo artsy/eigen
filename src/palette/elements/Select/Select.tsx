@@ -109,7 +109,7 @@ const SelectButton: React.FC<{
   const color = useColor()
   return (
     <Flex>
-      {showTitleLabel ? <Text>{title?.toUpperCase()}</Text> : null}
+      {showTitleLabel ? <Text variant="xs">{title?.toUpperCase()}</Text> : null}
 
       {subTitle ? (
         <Text mb={0.5} color={color("black60")}>

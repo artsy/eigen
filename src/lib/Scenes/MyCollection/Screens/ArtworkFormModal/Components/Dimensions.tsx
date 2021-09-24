@@ -1,27 +1,27 @@
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkFormModal/Form/useArtworkForm"
-import { Flex, Input, Sans, Spacer, useSpace } from "palette"
-import { Select, SelectComponentI } from "palette/elements/Select"
+import { Flex, Input, RadioButton, Spacer, Text, useSpace } from "palette"
 import React, { useRef } from "react"
 
 export const Dimensions: React.FC = () => {
   const space = useSpace()
   const { formik } = useArtworkForm()
-  const metricInputRef = useRef<SelectComponentI>(null)
 
   return (
     <>
       <Flex flexDirection="row">
-        <Sans size="3" weight="medium">
-          Dimensions
-        </Sans>
-        <Sans size="3" ml="2px">
-          (optional)
-        </Sans>
+        <Text variant="xs">DIMENSIONS</Text>
       </Flex>
-      <Spacer my={0.5} />
+      <Spacer my={1} />
+      <Flex flexDirection="row">
+        <RadioButton selected={formik.values.metric === "cm"} onPress={() => formik.handleChange("metric")("cm")} />
+        <Text marginRight="3">cm</Text>
+        <RadioButton selected={formik.values.metric === "in"} onPress={() => formik.handleChange("metric")("in")} />
+        <Text>in</Text>
+      </Flex>
+      <Spacer my={1} />
       <Flex flexDirection="row">
         <Input
-          placeholder="Height"
+          title="HEIGHT"
           keyboardType="decimal-pad"
           onChangeText={formik.handleChange("height")}
           onBlur={formik.handleBlur("height")}
@@ -29,7 +29,7 @@ export const Dimensions: React.FC = () => {
           style={{ marginRight: space(1) }}
         />
         <Input
-          placeholder="Width"
+          title="WIDTH"
           keyboardType="decimal-pad"
           onChangeText={formik.handleChange("width")}
           onBlur={formik.handleBlur("width")}
@@ -37,38 +37,15 @@ export const Dimensions: React.FC = () => {
           style={{ marginRight: space(1) }}
         />
         <Input
-          placeholder="Depth"
+          title="DEPTH"
           keyboardType="decimal-pad"
           onChangeText={formik.handleChange("depth")}
           onBlur={formik.handleBlur("depth")}
           defaultValue={formik.values.depth}
         />
       </Flex>
-      <Spacer my={1} />
-      <Select
-        ref={metricInputRef}
-        onSelectValue={(value) => {
-          formik.handleChange("metric")(value)
-        }}
-        value={formik.values.metric}
-        enableSearch={false}
-        title="Units"
-        showTitleLabel={false}
-        placeholder="Units"
-        options={metricSelectOptions}
-      />
     </>
   )
 }
 
 export type Metric = "in" | "cm" | ""
-
-interface MetricSelectOption {
-  label: string
-  value: Metric
-}
-
-const metricSelectOptions: MetricSelectOption[] = [
-  { label: "Inches", value: "in" },
-  { label: "Centimeters", value: "cm" },
-]
