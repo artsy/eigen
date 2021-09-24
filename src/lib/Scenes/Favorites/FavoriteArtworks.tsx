@@ -15,6 +15,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Button, ClassTheme } from "palette"
+import { unsafe_getEnableMyCollection } from "../MyCollection/MyCollection"
 
 interface Props {
   me: FavoriteArtworks_me
@@ -69,7 +70,7 @@ export class SavedWorks extends Component<Props, State> {
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
     const artworks = extractNodes(this.props.me.followsAndSaves?.artworks)
-    const isEnabledForMyCollection = this.props.me.labFeatures?.includes("My Collection")
+    const isEnabledForMyCollection = unsafe_getEnableMyCollection()
 
     if (artworks.length === 0) {
       return (
@@ -110,7 +111,15 @@ export class SavedWorks extends Component<Props, State> {
               artworks={artworks}
               isLoading={this.state.fetchingMoreData}
               hidePartner={isEnabledForMyCollection}
-              enableMyCollection={isEnabledForMyCollection}
+              artistNamesTextStyle={isEnabledForMyCollection ? { weight: "regular" } : undefined}
+              saleInfoTextStyle={
+                isEnabledForMyCollection
+                  ? {
+                      weight: "medium",
+                      color: "black100",
+                    }
+                  : undefined
+              }
             />
           </StickyTabPageScrollView>
         )}

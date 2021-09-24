@@ -8,6 +8,7 @@ import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/Stick
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { unsafe_getFeatureFlag, useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -15,7 +16,7 @@ import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import { Button, Flex, Separator, Spacer, Theme, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
-import { RefreshControl, ScrollView } from "react-native"
+import { Platform, RefreshControl, ScrollView } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkFormModal } from "./Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
@@ -25,6 +26,19 @@ const REFRESH_KEY = "refresh"
 
 export function refreshMyCollection() {
   RefreshEvents.emit(REFRESH_KEY)
+}
+
+const featureFlagKey = Platform.select({
+  android: "AREnableMyCollectionAndroid",
+  default: "AREnableMyCollectionIos",
+}) as "AREnableMyCollectionIos" | "AREnableMyCollectionAndroid"
+
+export const useEnableMyCollection = () => {
+  return useFeatureFlag(featureFlagKey)
+}
+
+export function unsafe_getEnableMyCollection() {
+  return unsafe_getFeatureFlag(featureFlagKey)
 }
 
 const MyCollection: React.FC<{
