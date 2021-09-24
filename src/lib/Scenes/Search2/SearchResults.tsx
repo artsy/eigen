@@ -21,7 +21,7 @@ const Highlight = connectHighlight(({ highlight, attribute, hit, highlightProper
   const parsedHit = highlight({ attribute, hit, highlightProperty })
 
   return (
-    <Text>
+    <Text numberOfLines={1}>
       {parsedHit.map(({ isHighlighted, value }, index) =>
         isHighlighted ? (
           <Text key={index} color="blue100" fontWeight="600" padding={0} margin={0}>
@@ -106,7 +106,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
               style={{ width: 40, height: 40, borderRadius: 20, overflow: "hidden" }}
             />
             <Spacer ml={1} />
-            <Flex>
+            <Flex flex={1}>
               <Highlight attribute="name" hit={item} />
             </Flex>
           </Flex>

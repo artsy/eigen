@@ -1,5 +1,4 @@
-import { ThemeV2, ThemeV3 } from "palette"
-import { usePaletteFlagStore } from "palette/PaletteFlag"
+import { ThemeV3 } from "palette"
 import React from "react"
 
 // v3
@@ -18,21 +17,11 @@ export type SelectComponentI<ValueType = any> = React.FC<SelectProps<ValueType>>
 // export type SelectComponentI = React.FC<React.ComponentPropsWithRef<typeof SelectV2>>
 
 export const Select = <ValueType,>(props: SelectProps<ValueType>) => {
-  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
-
-  if (allowV3) {
-    return (
-      <ThemeV3>
-        <SelectV3 {...transformV3Props(props)} />
-      </ThemeV3>
-    )
-  } else {
-    return (
-      <ThemeV2>
-        <SelectV2 {...props} />
-      </ThemeV2>
-    )
-  }
+  return (
+    <ThemeV3>
+      <SelectV3 {...transformV3Props(props)} />
+    </ThemeV3>
+  )
 }
 
 const transformV3Props = <T,>(props: SelectV2Props<T>): SelectV3Props<T> => {

@@ -148,11 +148,19 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Enable My Collection (Android)",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableMyCollectionAndroid",
   },
   AREnableMyCollectionIos: {
     readyForRelease: false,
     description: "Enable My Collection (iOS)",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableMyCollectionIos",
+  },
+  ARShowNetworkUnavailableModal: {
+    readyForRelease: true,
+    description: "Enable network unavailable modal",
+    showInAdminMenu: true,
+    echoFlagKey: "ARShowNetworkUnavailableModal",
   },
 })
 

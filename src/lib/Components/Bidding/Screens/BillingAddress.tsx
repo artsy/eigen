@@ -19,7 +19,6 @@ import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingV
 import { COUNTRY_SELECT_OPTIONS, CountrySelect } from "lib/Components/CountrySelect"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { ScreenDimensionsContext } from "lib/utils/useScreenDimensions"
-import { usePaletteFlagStore } from "palette/PaletteFlag"
 
 interface StyledInputInterface {
   /** The object which styled components wraps */
@@ -32,11 +31,9 @@ interface StyledInputProps extends InputProps {
   errorMessage?: string
 }
 const StyledInput: React.FC<StyledInputProps> = ({ label, errorMessage, onLayout, ...props }) => {
-  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
-
   return (
     <Flex mb={4} onLayout={onLayout}>
-      <Text mb={allowV3 ? 0.5 : 3}>{allowV3 ? label.toLocaleUpperCase() : label}</Text>
+      <Text mb={0.5}>{label.toLocaleUpperCase()}</Text>
       <Input mb={2} error={Boolean(errorMessage)} {...props} />
       <Flex height={18}>
         {!!errorMessage && (

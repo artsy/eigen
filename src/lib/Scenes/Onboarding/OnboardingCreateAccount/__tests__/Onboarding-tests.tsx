@@ -1,6 +1,7 @@
 import React from "react"
 import { __globalStoreTestUtils__ } from "../../../../store/GlobalStore"
 import { renderWithWrappers } from "../../../../tests/renderWithWrappers"
+import { NetworkAwareProvider } from "../../../../utils/NetworkAwareProvider"
 import { Onboarding, OnboardingWelcomeScreens } from "../../Onboarding"
 import { OnboardingPersonalization } from "../../OnboardingPersonalization/OnboardingPersonalization"
 
@@ -26,5 +27,17 @@ describe("Onboarding", () => {
     __globalStoreTestUtils__?.injectState({ auth: { onboardingState: "incomplete" } })
     expect(tree.root.findAllByType(OnboardingPersonalization).length).toEqual(1)
     expect(tree.root.findAllByType(OnboardingWelcomeScreens).length).toEqual(0)
+  })
+
+  it("renders NetworkAwareProvider when ARShowNetworkUnavailableModal is set to true", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ ARShowNetworkUnavailableModal: true })
+    const tree = renderWithWrappers(<Onboarding />)
+    expect(tree.root.findAllByType(NetworkAwareProvider).length).toEqual(1)
+  })
+
+  it("does not render NetworkAwareProvider when ARShowNetworkUnavailableModal is set to false", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ ARShowNetworkUnavailableModal: false })
+    const tree = renderWithWrappers(<Onboarding />)
+    expect(tree.root.findAllByType(NetworkAwareProvider).length).toEqual(0)
   })
 })
