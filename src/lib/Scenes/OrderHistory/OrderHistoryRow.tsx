@@ -63,50 +63,32 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
           </Flex>
         </Flex>
       </Flex>
-      {trackingUrl ? (
-        <Flex flexDirection="row" justifyContent="space-between" mb={1}>
-          <Box width="50%" paddingRight={0.5}>
-            <Button
-              block
-              variant="fillGray"
-              onPress={() => navigate(`/user/purchases/${order.internalID}`)}
-              data-test-id="view-order-button"
-            >
-              {isViewOfferButton ? "View Offer" : "View Order"}
-            </Button>
-          </Box>
-          <Box width="50%" paddingLeft={0.5}>
-            <Button
-              paddingLeft={0.5}
-              width="50%"
-              block
-              variant="fillDark"
-              onPress={() => Linking.openURL(trackingUrl)}
-              data-test-id="track-package-button"
-            >
-              Track Package
-            </Button>
-          </Box>
-        </Flex>
-      ) : (
-        <Box data-test-id="view-order-button-box">
-          {!orderIsInactive && (
-            <Button
-              mb={1}
-              block
-              variant="fillGray"
-              onPress={() => navigate(`/user/purchases/${order.internalID}`)}
-              data-test-id="view-order-button"
-            >
-              {isViewOfferButton ? "View Offer" : "View Order"}
-            </Button>
-          )}
-        </Box>
-      )}
+      <Box mb={1} data-test-id="view-order-button-box">
+        {!!trackingUrl && (
+          <Button
+            mb={1}
+            block
+            variant="fillDark"
+            onPress={() => Linking.openURL(trackingUrl)}
+            data-test-id="track-package-button"
+          >
+            Track Package
+          </Button>
+        )}
+        {!orderIsInactive && (
+          <Button
+            block
+            variant="fillGray"
+            onPress={() => navigate(`/user/purchases/${order.internalID}`)}
+            data-test-id="view-order-button"
+          >
+            {isViewOfferButton ? "View Offer" : "View Order"}
+          </Button>
+        )}
+      </Box>
     </Flex>
   )
 }
-
 export const OrderHistoryRowContainer = createFragmentContainer(OrderHistoryRow, {
   order: graphql`
     fragment OrderHistoryRow_order on CommerceOrder {
