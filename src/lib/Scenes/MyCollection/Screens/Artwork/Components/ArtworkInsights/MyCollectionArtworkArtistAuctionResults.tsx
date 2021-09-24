@@ -51,10 +51,14 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
           data={auctionResults}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <AuctionResultFragmentContainer
-              auctionResult={item}
-              onPress={() => navigate(`/artist/${props?.artwork?.artist?.slug!}/auction-result/${item.internalID}`)}
-            />
+            <>
+              <Spacer mt="1" />
+              <AuctionResultFragmentContainer
+                auctionResult={item}
+                onPress={() => navigate(`/artist/${props?.artwork?.artist?.slug!}/auction-result/${item.internalID}`)}
+              />
+              <Spacer mb="1" />
+            </>
           )}
           ListHeaderComponent={() => (
             <Flex px={2}>
