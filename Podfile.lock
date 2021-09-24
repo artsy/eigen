@@ -505,6 +505,8 @@ PODS:
     - React-Core
   - react-native-geolocation (2.0.2):
     - React
+  - react-native-in-app-review (3.2.2):
+    - React
   - react-native-mapbox-gl (8.2.0-beta2):
     - Mapbox-iOS-SDK (~> 6.3)
     - React
@@ -770,6 +772,7 @@ DEPENDENCIES:
   - react-native-fbsdk-next (from `node_modules/react-native-fbsdk-next`)
   - react-native-flipper (from `node_modules/react-native-flipper`)
   - "react-native-geolocation (from `node_modules/@react-native-community/geolocation`)"
+  - react-native-in-app-review (from `node_modules/react-native-in-app-review`)
   - "react-native-mapbox-gl (from `node_modules/@react-native-mapbox-gl/maps`)"
   - "react-native-netinfo (from `node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `node_modules/react-native-safe-area-context`)
@@ -820,7 +823,14 @@ DEPENDENCIES:
   - Yoga (from `./node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://cdn.cocoapods.org/:
+  https://github.com/artsy/Specs.git:
+    - Aerodramus
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts"
+    - "Artsy+UILabels"
+    - Artsy-UIButtons
+    - Extraction
+  trunk:
     - Adjust
     - AFNetworkActivityLogger
     - AFNetworking
@@ -892,13 +902,6 @@ SPEC REPOS:
     - "UIView+BooleanAnimations"
     - "XCTest+OHHTTPStubSuiteCleanUp"
     - YogaKit
-  https://github.com/artsy/Specs.git:
-    - Aerodramus
-    - "Artsy+UIColors"
-    - "Artsy+UIFonts"
-    - "Artsy+UILabels"
-    - Artsy-UIButtons
-    - Extraction
 
 EXTERNAL SOURCES:
   AFOAuth1Client:
@@ -967,6 +970,8 @@ EXTERNAL SOURCES:
     :path: node_modules/react-native-flipper
   react-native-geolocation:
     :path: "node_modules/@react-native-community/geolocation"
+  react-native-in-app-review:
+    :path: node_modules/react-native-in-app-review
   react-native-mapbox-gl:
     :path: "node_modules/@react-native-mapbox-gl/maps"
   react-native-netinfo:
@@ -1162,6 +1167,7 @@ SPEC CHECKSUMS:
   react-native-fbsdk-next: 19e974b071047b7ed1dad86a9dc3fe77dff76b8c
   react-native-flipper: e3da3457a7cb984b4beaddecb587674a8545b71d
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
+  react-native-in-app-review: 00a66a085c61dbd4474041dc14e7bfee81a86130
   react-native-mapbox-gl: 28350f5f43df85fdb6b85398821a96db1fab0c76
   react-native-netinfo: 7cb7877ff31ebeb3d03ce0b4fbb616f121ddd859
   react-native-safe-area-context: 61c8c484a3a9e7d1fda19f7b1794b35bbfd2262a
