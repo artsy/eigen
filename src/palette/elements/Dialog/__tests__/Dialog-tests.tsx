@@ -8,7 +8,7 @@ describe("Dialog", () => {
   it("renders without error", () => {
     const { getByTestId } = renderWithWrappersTL(
       <Dialog
-        title="md"
+        title="title"
         isVisible={true}
         primaryCta={{
           text: "Primary Action Button",
@@ -23,7 +23,7 @@ describe("Dialog", () => {
   it("should render details if it is passed", () => {
     const { getByTestId } = renderWithWrappersTL(
       <Dialog
-        title="md"
+        title="title"
         detail="Some unique detail"
         isVisible={true}
         primaryCta={{
@@ -41,7 +41,7 @@ describe("Dialog", () => {
 
     const { getByTestId } = renderWithWrappersTL(
       <Dialog
-        title="md"
+        title="title"
         isVisible={true}
         primaryCta={{
           text: "Primary Action Button",
@@ -62,7 +62,7 @@ describe("Dialog", () => {
 
     const { getByTestId } = renderWithWrappersTL(
       <Dialog
-        title="md"
+        title="title"
         isVisible={true}
         primaryCta={{
           text: "Primary Action Button",
@@ -86,7 +86,7 @@ describe("Dialog", () => {
     const onBackgroundPressMock = jest.fn()
     const { getByTestId } = renderWithWrappersTL(
       <Dialog
-        title="md"
+        title="title"
         isVisible={true}
         onBackgroundPress={onBackgroundPressMock}
         primaryCta={{
