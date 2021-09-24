@@ -36,4 +36,18 @@ describe(MyProfileSettings, () => {
     const tree = getWrapper()
     expect(extractText(tree.root)).toContain("Saved Alerts")
   })
+
+  it("renders Orders when the AREnableOrderHistoryOption flag is enabled", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableOrderHistoryOption: true })
+
+    const tree = getWrapper()
+    expect(extractText(tree.root)).toContain("Order History")
+  })
+
+  it("renders Addresses when the AREnableSavedAddresses flag is enabled", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedAddresses: true })
+
+    const tree = getWrapper()
+    expect(extractText(tree.root)).toContain("Saved Addresses")
+  })
 })

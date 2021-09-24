@@ -49,7 +49,12 @@ export const OldMyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp 
   }, [])
 
   return (
-    <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
+    <ScrollView
+      testID={"my-old-profile-scrollview"}
+      refreshControl={
+        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} testID={"my-old-profile-scrollview"} />
+      }
+    >
       <Sans size="8" mx="2" mt="3">
         {me?.name}
       </Sans>
