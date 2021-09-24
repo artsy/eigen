@@ -7,7 +7,7 @@ const splitter = new GraphemeSplitter()
 
 export const Text: React.FC<TextProps> = ({ children, ...rest }) => {
   return (
-    <PaletteText variant="caption" {...rest}>
+    <PaletteText variant="xs" {...rest}>
       {children}
     </PaletteText>
   )

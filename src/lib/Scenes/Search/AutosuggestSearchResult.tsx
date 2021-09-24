@@ -33,7 +33,7 @@ const NavigationButton: React.FC<{ artistTab: ArtistTabs; displayText: string; o
             <Box mr={0.5}>
               <ArtworkIcon fill={pressed ? "blue100" : "black100"} />
             </Box>
-            <Text variant="caption" color={pressed ? "blue100" : "black100"}>
+            <Text variant="xs" color={pressed ? "blue100" : "black100"}>
               {displayText}
             </Text>
           </QuickNavigationButton>
@@ -113,7 +113,7 @@ export const AutosuggestSearchResult: React.FC<{
       InfoComponent={() => {
         return (
           <>
-            <Text variant="caption" numberOfLines={1}>
+            <Text variant="xs" numberOfLines={1}>
               <ResultWithHighlight
                 displayLabel={result.displayLabel!}
                 highlight={highlight}
@@ -121,7 +121,7 @@ export const AutosuggestSearchResult: React.FC<{
               />
             </Text>
             {!!showResultType && !!categoryName && (
-              <Text variant="caption" color="black60">
+              <Text variant="xs" color="black60">
                 {categoryName}
               </Text>
             )}
