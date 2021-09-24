@@ -19,6 +19,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const trackingUrl = getTrackingUrl(lineItem)
   const orderStatus = getOrderStatus(order.state as OrderState, lineItem)
   const orderIsInactive = orderStatus === "canceled" || orderStatus === "refunded"
+  const isViewOfferButton = orderStatus === "pending" && order?.mode === "OFFER"
 
   return (
     <Flex width="100%" data-test-id="order-container">
@@ -71,7 +72,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
               onPress={() => navigate(`/user/purchases/${order.internalID}`)}
               data-test-id="view-order-button"
             >
-              {order?.mode === "OFFER" ? "View Offer" : "View Order"}
+              {isViewOfferButton ? "View Offer" : "View Order"}
             </Button>
           </Box>
           <Box width="50%" paddingLeft={0.5}>
@@ -97,7 +98,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
               onPress={() => navigate(`/user/purchases/${order.internalID}`)}
               data-test-id="view-order-button"
             >
-              {order?.mode === "OFFER" ? "View Offer" : "View Order"}
+              {isViewOfferButton ? "View Offer" : "View Order"}
             </Button>
           )}
         </Box>
