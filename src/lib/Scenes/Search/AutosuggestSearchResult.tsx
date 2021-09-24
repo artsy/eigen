@@ -1,16 +1,15 @@
 import { themeGet } from "@styled-system/theme-get"
-import GraphemeSplitter from "grapheme-splitter"
 import { EntityType, navigate, navigateToEntity, navigateToPartner, SlugType } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
-import { normalizeText } from "lib/utils/normalizeText"
 import { Schema } from "lib/utils/track"
-import { ArtworkIcon, AuctionIcon, Box, Flex, Spacer, Text, useSpace } from "palette"
+import { ArtworkIcon, Box, Flex, Spacer, Text, useSpace } from "palette"
 import React, { useContext } from "react"
 import { Pressable, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { SearchListItem } from "../Search2/components/SearchListItem"
 import { AutosuggestResult } from "./AutosuggestResults"
+import { ResultWithHighlight } from "./ResultWithHighlight"
 import { SearchContext } from "./SearchContext"
 
 export type OnResultPress = (result: AutosuggestResult) => void
@@ -19,48 +18,27 @@ type ArtistTabs = "Insights" | "Artworks"
 
 type HandleResultPress = (passProps?: { artistTab: ArtistTabs }) => void
 
-const NavigationButtons: React.FC<{ onPress: HandleResultPress }> = ({ onPress }) => {
-  const space = useSpace()
-
+const NavigationButton: React.FC<{ artistTab: ArtistTabs; displayText: string; onPress: HandleResultPress }> = ({
+  artistTab,
+  displayText,
+  onPress,
+}) => {
   return (
     <>
-      <Flex flexDirection="row" alignItems="center">
-        <ScrollView
-          horizontal
-          contentContainerStyle={{ paddingHorizontal: space(1) }}
-          showsHorizontalScrollIndicator={false}
-        >
-          <Spacer ml={1} />
+      <Spacer ml={1} />
 
-          <Pressable onPress={() => onPress({ artistTab: "Artworks" })}>
-            {({ pressed }) => (
-              <QuickNavigationButton>
-                <Box mr={0.5}>
-                  <ArtworkIcon fill={pressed ? "blue100" : "black100"} />
-                </Box>
-                <Text variant="caption" color={pressed ? "blue100" : "black100"}>
-                  Artworks
-                </Text>
-              </QuickNavigationButton>
-            )}
-          </Pressable>
-
-          <Spacer ml={1} />
-
-          <Pressable onPress={() => onPress({ artistTab: "Insights" })}>
-            {({ pressed }) => (
-              <QuickNavigationButton>
-                <Box mr={0.5}>
-                  <AuctionIcon fill={pressed ? "blue100" : "black100"} />
-                </Box>
-                <Text variant="caption" color={pressed ? "blue100" : "black100"}>
-                  Auction Results
-                </Text>
-              </QuickNavigationButton>
-            )}
-          </Pressable>
-        </ScrollView>
-      </Flex>
+      <Pressable onPress={() => onPress({ artistTab })}>
+        {({ pressed }) => (
+          <QuickNavigationButton>
+            <Box mr={0.5}>
+              <ArtworkIcon fill={pressed ? "blue100" : "black100"} />
+            </Box>
+            <Text variant="caption" color={pressed ? "blue100" : "black100"}>
+              {displayText}
+            </Text>
+          </QuickNavigationButton>
+        )}
+      </Pressable>
     </>
   )
 }
@@ -86,6 +64,7 @@ export const AutosuggestSearchResult: React.FC<{
 }) => {
   const { inputRef, queryRef } = useContext(SearchContext)
   const { trackEvent } = useTracking()
+  const space = useSpace()
 
   const showNavigationButtons =
     showQuickNavigationButtons && !!result.counts?.artworks && !!result.counts?.auctionResults
@@ -113,7 +92,17 @@ export const AutosuggestSearchResult: React.FC<{
     }
   }
 
-  const categoryName = result.displayType ?? (result.__typename === "Artist" ? result.__typename : "")
+  const getCategoryName = () => {
+    if (result.displayType) {
+      return result.displayType
+    }
+    if (result.__typename === "Artist") {
+      return result.__typename
+    }
+    return ""
+  }
+
+  const categoryName = getCategoryName()
 
   return (
     <SearchListItem
@@ -125,7 +114,11 @@ export const AutosuggestSearchResult: React.FC<{
         return (
           <>
             <Text variant="caption" numberOfLines={1}>
-              {applyHighlight({ displayLabel: result.displayLabel!, highlight, categoryName })}
+              <ResultWithHighlight
+                displayLabel={result.displayLabel!}
+                highlight={highlight}
+                categoryName={categoryName}
+              />
             </Text>
             {!!showResultType && !!categoryName && (
               <Text variant="caption" color="black60">
@@ -136,7 +129,18 @@ export const AutosuggestSearchResult: React.FC<{
         )
       }}
     >
-      {!!showNavigationButtons && <NavigationButtons onPress={onPress} />}
+      {!!showNavigationButtons && (
+        <Flex flexDirection="row" alignItems="center">
+          <ScrollView
+            horizontal
+            contentContainerStyle={{ paddingHorizontal: space(1) }}
+            showsHorizontalScrollIndicator={false}
+          >
+            <NavigationButton displayText="Artworks" artistTab="Artworks" onPress={onPress} />
+            <NavigationButton displayText="Auction Results" artistTab="Insights" onPress={onPress} />
+          </ScrollView>
+        </Flex>
+      )}
     </SearchListItem>
   )
 }
@@ -149,16 +153,6 @@ const QuickNavigationButton = styled(Flex)`
   border: 1px solid ${themeGet("colors.black30")};
   border-radius: 20;
 `
-
-export const ItalicText: React.FC<{ color?: string }> = ({ color = "grey", children }) => {
-  return (
-    <Text variant="caption" italic color={color}>
-      {children}
-    </Text>
-  )
-}
-
-const splitter = new GraphemeSplitter()
 
 /**
  * For some entities (fairs, partners) we pass along some context
@@ -175,135 +169,4 @@ function navigateToResult(result: AutosuggestResult, artistTab: ArtistTabs = "Ar
   } else {
     navigate(result.href!)
   }
-}
-
-const Result: React.FC<{ result: string[] }> = ({ result }) => {
-  const [nonMatch, match, nonMatch2] = result
-
-  return (
-    <Text variant="caption">
-      {nonMatch}
-      <Text variant="caption" weight="medium" color="blue100" style={{ padding: 0, margin: 0 }}>
-        {match}
-      </Text>
-      {nonMatch2}
-    </Text>
-  )
-}
-
-export const ResultWithItalic: React.FC<{ result: string[] }> = ({ result }) => {
-  const [nonMatch, match, nonMatch2] = result
-
-  // If the result string is e.g. "Henri Venne, The Sun Shines Cold (2015)",
-  // the part after the comma should be italic grey
-  // So let's assume the query is "Cold"
-  // the result array will be ["Henri Venne, The Sun Shines ", "Cold", " (2015)"]
-  if (nonMatch.includes(",")) {
-    const [mainNonMatch, ...rest] = nonMatch.split(",")
-    const restNonMatch = rest.join(",")
-    return (
-      <>
-        <Text variant="caption">{mainNonMatch}</Text>
-
-        <ItalicText>
-          {restNonMatch}
-          <ItalicText color="blue100">{match}</ItalicText>
-          {nonMatch2}
-        </ItalicText>
-      </>
-    )
-  }
-
-  // If the result string is e.g. "Christ on the Cold Stone, Brabant (1990)",
-  // the part after the comma should be italic grey
-  // So let's assume the query is "Cold"
-  // the result array will be ["Christ on the ", "Cold", " Stone, Brabant (1990)"]
-  if (nonMatch2.includes(",")) {
-    const [mainNonMatch2, ...rest] = nonMatch2.split(",")
-    const restNonMatch2 = rest.join(",")
-    return (
-      <>
-        <Text variant="caption">
-          {nonMatch}
-          <Text variant="caption" weight="medium" color="blue100">
-            {match}
-          </Text>
-          {mainNonMatch2}
-        </Text>
-
-        <ItalicText>{restNonMatch2}</ItalicText>
-      </>
-    )
-  }
-
-  return <Result result={result} />
-}
-
-function applyHighlight({
-  displayLabel,
-  highlight,
-  categoryName,
-}: {
-  displayLabel: string
-  highlight?: string
-  categoryName: string
-}) {
-  // If highlight is not supplied then use medium weight, since the search result
-  // is being rendered in a context that doesn't support highlights
-  if (highlight === undefined) {
-    return (
-      <Text variant="caption" weight="medium">
-        {displayLabel}
-      </Text>
-    )
-  }
-  if (!highlight.trim()) {
-    return (
-      <Text variant="caption" weight="regular">
-        {displayLabel}
-      </Text>
-    )
-  }
-  // search for `highlight` in `displayLabel` but ignore diacritics in `displayLabel`
-  // so that a user can type, e.g. `Miro` and see `Miró` highlighted
-  const labelGraphemes = splitter.splitGraphemes(displayLabel)
-  const highlightGraphemes = splitter.splitGraphemes(highlight)
-  let result: [string, string, string] | null = null
-  outerLoop: for (let i = 0; i < labelGraphemes.length; i++) {
-    innerLoop: for (let j = 0; j < highlightGraphemes.length; j++) {
-      if (i + j >= labelGraphemes.length) {
-        continue outerLoop
-      }
-      const labelGrapheme = normalizeText(labelGraphemes[i + j])
-      const highlightGrapheme = normalizeText(highlightGraphemes[j])
-      if (labelGrapheme === highlightGrapheme) {
-        // might be a match, continue to see for sure
-        continue innerLoop
-      } else {
-        // not a match so go on to the next grapheme in the label
-        continue outerLoop
-      }
-    }
-    // innerloop eneded naturally so there was a match
-    result = [
-      labelGraphemes.slice(0, i).join(""),
-      labelGraphemes.slice(i, i + highlightGraphemes.length).join(""),
-      labelGraphemes.slice(i + highlightGraphemes.length).join(""),
-    ]
-    break outerLoop
-  }
-
-  if (!result) {
-    return (
-      <Text variant="caption" weight="regular">
-        {displayLabel}
-      </Text>
-    )
-  }
-
-  if (categoryName === "Artwork") {
-    return <ResultWithItalic result={result} />
-  }
-
-  return <Result result={result} />
 }
