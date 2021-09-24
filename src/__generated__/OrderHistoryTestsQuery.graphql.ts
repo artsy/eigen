@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 91a570dc7d3dba25a64140ccee4c2a39 */
+/* @relayHash 85e412a5fba4fafdf2b2e4d7c399d57b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,6 +34,7 @@ fragment OrderHistoryRow_order on CommerceOrder {
   __isCommerceOrder: __typename
   internalID
   state
+  mode
   buyerTotal(precision: 2)
   createdAt
   itemsTotal
@@ -252,6 +253,13 @@ return {
                         "args": null,
                         "kind": "ScalarField",
                         "name": "state",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "mode",
                         "storageKey": null
                       },
                       {
@@ -529,7 +537,7 @@ return {
     ]
   },
   "params": {
-    "id": "91a570dc7d3dba25a64140ccee4c2a39",
+    "id": "85e412a5fba4fafdf2b2e4d7c399d57b",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -645,6 +653,15 @@ return {
         "me.orders.edges.node.lineItems.edges.node.shipment.status": (v6/*: any*/),
         "me.orders.edges.node.lineItems.edges.node.shipment.trackingNumber": (v6/*: any*/),
         "me.orders.edges.node.lineItems.edges.node.shipment.trackingUrl": (v6/*: any*/),
+        "me.orders.edges.node.mode": {
+          "enumValues": [
+            "BUY",
+            "OFFER"
+          ],
+          "nullable": true,
+          "plural": false,
+          "type": "CommerceOrderModeEnum"
+        },
         "me.orders.edges.node.state": {
           "enumValues": [
             "ABANDONED",
