@@ -37,7 +37,7 @@ describe("ReadMore", () => {
 
   it("Renders an em dash if the text has line breaks when not expanded", () => {
     const { UNSAFE_queryAllByType } = renderWithWrappersTL(
-      <ReadMore maxChars={30} content={"Line break\n\nWhich should render an emdash"} />
+      <ReadMore maxChars={30} content="Line break\n\nWhich should render an emdash" />
     )
 
     expect(extractText(UNSAFE_queryAllByType(RNText)[2])).toContain(` ${emdash} Which should`)
@@ -45,7 +45,7 @@ describe("ReadMore", () => {
 
   it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
     const { queryByText, getAllByText, UNSAFE_queryAllByType } = renderWithWrappersTL(
-      <ReadMore maxChars={7} textStyle="new" content={"This text is slightly longer than is allowed."} />
+      <ReadMore maxChars={7} textStyle="new" content="This text is slightly longer than is allowed." />
     )
 
     expect(extractText(UNSAFE_queryAllByType(RNText)[0])).toBe(`This te... Read${nbsp}more`)
@@ -62,7 +62,7 @@ describe("ReadMore", () => {
       <ReadMore
         maxChars={7}
         textStyle="new"
-        content={"This [text](/artist/text) is slightly longer than is [allowed](/gene/allowed)."}
+        content="This [text](/artist/text) is slightly longer than is [allowed](/gene/allowed)."
       />
     )
 
@@ -78,7 +78,7 @@ describe("ReadMore", () => {
 
   it("opens links modally when specified", () => {
     const { UNSAFE_getAllByType } = renderWithWrappersTL(
-      <ReadMore maxChars={7} content={"Small [text](/artist/andy-warhol)."} presentLinksModally={true} />
+      <ReadMore maxChars={7} content="Small [text](/artist/andy-warhol)." presentLinksModally />
     )
 
     act(() => fireEvent.press(UNSAFE_getAllByType(LinkText)[0]))
@@ -88,7 +88,7 @@ describe("ReadMore", () => {
 
   it("doesn't open links modally when not specified", () => {
     const { UNSAFE_getAllByType } = renderWithWrappersTL(
-      <ReadMore maxChars={7} content={"Small [text](/artist/andy-warhol)."} />
+      <ReadMore maxChars={7} content="Small [text](/artist/andy-warhol)." />
     )
 
     act(() => fireEvent.press(UNSAFE_getAllByType(LinkText)[0]))

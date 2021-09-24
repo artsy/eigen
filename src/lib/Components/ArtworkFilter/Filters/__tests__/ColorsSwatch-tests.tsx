@@ -6,7 +6,7 @@ import { ColorsSwatch } from "../ColorsSwatch"
 describe("Colors swatch", () => {
   it("adds a check icon when selected", () => {
     const selectedTree = renderWithWrappers(
-      <ColorsSwatch width={30} backgroundColor="black" foregroundColor="#fff" name="darkblue" selected={true} />
+      <ColorsSwatch width={30} backgroundColor="black" foregroundColor="#fff" name="darkblue" selected />
     )
     const selectedCheckIcon = selectedTree.root.findByType(CheckIcon)
     expect(selectedCheckIcon.props.fill).toMatch("#fff")
@@ -20,7 +20,7 @@ describe("Colors swatch", () => {
 
   it("has correct background color for passed in color", () => {
     const darkblue = renderWithWrappers(
-      <ColorsSwatch width={30} backgroundColor="#435EA9" foregroundColor="#fff" name="darkblue" selected={true} />
+      <ColorsSwatch width={30} backgroundColor="#435EA9" foregroundColor="#fff" name="darkblue" selected />
     )
     const darkBlueView = darkblue.root.findAllByType(Box)[1]
     expect(darkBlueView.props.bg).toMatch("#435EA9")

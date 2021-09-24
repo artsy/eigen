@@ -9,7 +9,7 @@ storiesOf("RadioButton", module)
   .add("Variants", () => (
     <List>
       <RadioButton />
-      <RadioButton text={"RadioButton"} />
+      <RadioButton text="RadioButton" />
       <RadioButton
         text={`Multiline
 Text`}

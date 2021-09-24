@@ -381,7 +381,7 @@ export class GlobalMap extends React.Component<Props, State> {
               <MapboxGL.PointAnnotation
                 key={clusterId}
                 id={clusterId}
-                selected={true}
+                selected
                 coordinate={[clusterLat, clusterLng]}
               >
                 <SelectedCluster width={radius} height={radius}>
@@ -423,11 +423,11 @@ export class GlobalMap extends React.Component<Props, State> {
         lat &&
         lng &&
         id && (
-          <MapboxGL.PointAnnotation key={id} id={id} selected={true} coordinate={[lng, lat]}>
+          <MapboxGL.PointAnnotation key={id} id={id} selected coordinate={[lng, lat]}>
             {isSaved ? (
               <PinSavedSelected pinHeight={45} pinWidth={45} />
             ) : (
-              <Pin pinHeight={45} pinWidth={45} selected={true} />
+              <Pin pinHeight={45} pinWidth={45} selected />
             )}
           </MapboxGL.PointAnnotation>
         )

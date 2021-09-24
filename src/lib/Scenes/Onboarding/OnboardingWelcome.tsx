@@ -101,7 +101,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           style={{
             height: screenHeight,
           }}
-        ></Image>
+        />
       </Animated.View>
 
       <LinearGradient

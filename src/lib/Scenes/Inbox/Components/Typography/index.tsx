@@ -74,7 +74,7 @@ const PreviewText: React.FC<TextProps> = (props) => {
   const children: string = (props as any).children
   const style = [styles.bodyDefault, props.style || {}, styles.bodyRequired]
   return (
-    <Text key={children} style={style} numberOfLines={1} ellipsizeMode={"tail"}>
+    <Text key={children} style={style} numberOfLines={1} ellipsizeMode="tail">
       {children}
     </Text>
   )

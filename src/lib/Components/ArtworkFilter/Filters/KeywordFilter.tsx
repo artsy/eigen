@@ -83,7 +83,7 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
         handleChangeText(e)
       }}
       autoCorrect={false}
-      enableClearButton={true}
+      enableClearButton
       ref={inputRef}
       onFocus={onFocus}
     />

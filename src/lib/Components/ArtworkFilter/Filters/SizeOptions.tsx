@@ -215,7 +215,7 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
       filterHeaderText={FilterDisplayName.size}
       selectedOption={shouldShowCustomSize ? CUSTOM_SIZE_OPTION : selectedOption}
       navigation={navigation}
-      useScrollView={true}
+      useScrollView
       filterOptions={[
         ...SIZE_OPTIONS,
         ...(shouldShowCustomSize

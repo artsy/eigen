@@ -24,7 +24,7 @@ describe("<ParentAwareScrollView>", () => {
         data={[<ParentAwareScrollView onScroll={(e: typeof scrollEvent) => props.aFunc(e)} />]}
         renderItem={({ item }) => item}
         keyExtractor={(_, i) => i.toString()}
-      ></FlatList>
+      />
     )
     const tree = renderWithWrappers(<AFlatList />)
     const flatList = tree.root.findByType(FlatList)

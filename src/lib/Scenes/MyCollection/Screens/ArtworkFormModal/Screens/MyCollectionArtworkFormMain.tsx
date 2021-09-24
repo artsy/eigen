@@ -46,7 +46,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
       <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => route.params.onDismiss()}>
         {addOrEditLabel} Artwork
       </FancyModalHeader>
-      <ScrollView keyboardDismissMode={"on-drag"} keyboardShouldPersistTaps={"handled"}>
+      <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
         <Spacer my={1} />
         <Text textAlign="center">
           {addOrEditLabel} details about your artwork to access {"\n"}

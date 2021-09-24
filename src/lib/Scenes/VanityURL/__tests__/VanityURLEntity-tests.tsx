@@ -39,14 +39,14 @@ describe("VanityURLEntity", () => {
     if (__renderWithPlaceholderTestUtils__) {
       __renderWithPlaceholderTestUtils__.allowFallbacksAtTestTime = true
     }
-    const tree = renderWithWrappers(<TestRenderer entity="unknown" slug={"some-fair"} />)
+    const tree = renderWithWrappers(<TestRenderer entity="unknown" slug="some-fair" />)
     expect(tree.root.findAllByType(VanityURLPossibleRedirect)).toHaveLength(0)
     env.mock.resolveMostRecentOperation({ data: undefined, errors: [{ message: "404" }] })
     expect(tree.root.findAllByType(VanityURLPossibleRedirect)).toHaveLength(1)
   })
 
   it("renders a fairQueryRenderer when given a fair id", () => {
-    const tree = renderWithWrappers(<TestRenderer entity="fair" slugType={"fairID"} slug={"some-fair"} />)
+    const tree = renderWithWrappers(<TestRenderer entity="fair" slugType="fairID" slug="some-fair" />)
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("FairQuery")
     act(() => {
       env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation))

@@ -19,7 +19,7 @@ jest.unmock("react-relay")
 let env: ReturnType<typeof createMockEnvironment>
 
 const FakeApp = (props: MakeOfferModalTestsQueryResponse) => {
-  return <MakeOfferModalFragmentContainer artwork={props!.artwork!} conversationID={"test-conversation-id"} />
+  return <MakeOfferModalFragmentContainer artwork={props!.artwork!} conversationID="test-conversation-id" />
 }
 
 interface RenderComponentProps {

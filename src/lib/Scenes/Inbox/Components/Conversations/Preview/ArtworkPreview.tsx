@@ -77,7 +77,7 @@ export class ArtworkPreview extends React.Component<Props> {
             </Text>
             <TitleAndDate>
               {/* Nested Text components are necessary for the correct behaviour on both short and long titles + dates */}
-              <Text variant="xs" color="white100" numberOfLines={1} ellipsizeMode={"middle"}>
+              <Text variant="xs" color="white100" numberOfLines={1} ellipsizeMode="middle">
                 {`${artwork.title} / ${artwork.date}`}
               </Text>
             </TitleAndDate>

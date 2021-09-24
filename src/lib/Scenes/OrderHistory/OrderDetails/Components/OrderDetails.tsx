@@ -111,7 +111,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({ order }) => {
             flexDirection="column"
             justifyContent="center"
             alignItems="center"
-          ></Box>
+          />
         )}
       />
     </PageWithSimpleHeader>

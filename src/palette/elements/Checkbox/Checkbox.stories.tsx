@@ -9,7 +9,7 @@ storiesOf("Checkbox", module)
   .add("Variants", () => (
     <List>
       <Checkbox />
-      <Checkbox text={"Checkbox"} />
+      <Checkbox text="Checkbox" />
       <Checkbox
         text={`Multiline
 Text`}
