@@ -28,19 +28,16 @@ export function refreshMyCollection() {
   RefreshEvents.emit(REFRESH_KEY)
 }
 
+const featureFlagKey = Platform.select({
+  android: "AREnableMyCollectionAndroid",
+  default: "AREnableMyCollectionIos",
+}) as "AREnableMyCollectionIos" | "AREnableMyCollectionAndroid"
+
 export const useEnableMyCollection = () => {
-  const featureFlagKey = Platform.select({
-    android: "AREnableMyCollectionAndroid",
-    default: "AREnableMyCollectionIos",
-  }) as "AREnableMyCollectionIos" | "AREnableMyCollectionAndroid"
   return useFeatureFlag(featureFlagKey)
 }
 
 export function unsafe_getEnableMyCollection() {
-  const featureFlagKey = Platform.select({
-    android: "AREnableMyCollectionAndroid",
-    default: "AREnableMyCollectionIos",
-  }) as "AREnableMyCollectionIos" | "AREnableMyCollectionAndroid"
   return unsafe_getFeatureFlag(featureFlagKey)
 }
 
