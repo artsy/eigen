@@ -13,8 +13,7 @@ import { navigate } from "lib/navigation/navigate"
 import { formatDisplayTimelyAt } from "lib/Scenes/Sale/helpers"
 import { extractNodes } from "lib/utils/extractNodes"
 import { compact } from "lodash"
-import { bullet, Flex, Sans, Text } from "palette"
-import { usePaletteFlagStore } from "palette/PaletteFlag"
+import { bullet, Flex, Text } from "palette"
 import React, { useEffect, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -34,7 +33,6 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
   const { scrollRef, salesModule, onHide, onShow } = props
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
-  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
 
   const getSaleSubtitle = (liveStartAt: string | undefined | null, displayTimelyAt: string | undefined | null) => {
     const subtitle = !!liveStartAt ? "Live Auction" : "Timed Auction"
@@ -113,39 +111,19 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
                   </View>
                 </ArtworkImageContainer>
                 <MetadataContainer>
-                  {/* TODO-PALETTE-V3 remove V2 part */}
-                  {allowV3 ? (
-                    <>
-                      <Text numberOfLines={2} lineHeight="20" variant="mediumText">
-                        {result?.name}
-                      </Text>
-                      <Text
-                        numberOfLines={1}
-                        lineHeight="20"
-                        color="black60"
-                        variant="mediumText"
-                        data-test-id="sale-subtitle"
-                        ellipsizeMode="middle"
-                      >
-                        {getSaleSubtitle(result?.liveStartAt, result?.displayTimelyAt).trim()}
-                      </Text>
-                    </>
-                  ) : (
-                    <>
-                      <Sans numberOfLines={2} weight="medium" size="3t">
-                        {result?.name}
-                      </Sans>
-                      <Sans
-                        numberOfLines={1}
-                        size="3t"
-                        color="black60"
-                        data-test-id="sale-subtitle"
-                        ellipsizeMode="middle"
-                      >
-                        {getSaleSubtitle(result?.liveStartAt, result?.displayTimelyAt).trim()}
-                      </Sans>
-                    </>
-                  )}
+                  <Text numberOfLines={2} lineHeight="20" variant="mediumText">
+                    {result?.name}
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    lineHeight="20"
+                    color="black60"
+                    variant="mediumText"
+                    data-test-id="sale-subtitle"
+                    ellipsizeMode="middle"
+                  >
+                    {getSaleSubtitle(result?.liveStartAt, result?.displayTimelyAt).trim()}
+                  </Text>
                 </MetadataContainer>
               </View>
             </CardRailCard>
