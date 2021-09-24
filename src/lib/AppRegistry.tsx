@@ -90,7 +90,7 @@ import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
 import { MyCollectionArtworkImagesQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkImages/MyCollectionArtworkImages"
-import { MyProfileSettingsQueryRenderer } from "./Scenes/MyProfile/MyProfileSettings"
+import { MyProfileSettings } from "./Scenes/MyProfile/MyProfileSettings"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { SavedSearchAlertsListQueryRenderer } from "./Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
 import { SearchSwitchContainer } from "./Scenes/SearchSwitchContainer"
@@ -359,7 +359,7 @@ export const modules = defineModules({
   MyCollectionArtworkImages: reactModule(MyCollectionArtworkImagesQueryRenderer),
   MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
-  MyProfileSettings: reactModule(MyProfileSettingsQueryRenderer),
+  MyProfileSettings: reactModule(MyProfileSettings),
   OrderHistory: reactModule(OrderHistoryQueryRender),
   OrderDetails: reactModule(OrderDetailsQueryRender),
   MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, { hidesBackButton: true }),
