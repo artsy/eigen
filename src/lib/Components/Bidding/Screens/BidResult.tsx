@@ -130,7 +130,7 @@ export class BidResult extends React.Component<BidResultProps> {
                 Bid again
               </Button>
             ) : (
-              <Button variant="secondaryOutline" block width={100} onPress={this.exitBidFlow}>
+              <Button variant="outline" block width={100} onPress={this.exitBidFlow}>
                 Continue
               </Button>
             )}

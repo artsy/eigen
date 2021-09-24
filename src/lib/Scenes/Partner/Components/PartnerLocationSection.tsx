@@ -54,7 +54,7 @@ class PartnerLocationSection extends React.Component<Props> {
             .
           </Sans>
           <Spacer mb={2} />
-          <Button variant="secondaryGray" size="small" block width="100%" onPress={() => handleSeeAllLocations()}>
+          <Button variant="fillGray" size="small" block width="100%" onPress={() => handleSeeAllLocations()}>
             See all location details
           </Button>
           <Spacer mb={3} />

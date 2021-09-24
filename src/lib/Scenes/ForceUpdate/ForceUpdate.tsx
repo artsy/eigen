@@ -31,7 +31,7 @@ export const ForceUpdate: React.FC<ForceUpdateProps> = ({ forceUpdateMessage }) 
       <Text variant="caption" mt={3} textAlign="center" color={color("black60")}>
         {forceUpdateMessage}
       </Text>
-      <Button variant="secondaryGray" block size="large" mt={3} haptic="impactMedium" onPress={handleUpdate}>
+      <Button variant="fillGray" block size="large" mt={3} haptic="impactMedium" onPress={handleUpdate}>
         Update Artsy
       </Button>
     </Flex>

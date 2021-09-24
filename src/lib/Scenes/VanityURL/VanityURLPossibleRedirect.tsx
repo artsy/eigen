@@ -81,7 +81,7 @@ const NotFound: React.FC<{ url: string }> = ({ url }) => {
       </Text>
 
       <Button
-        variant="secondaryOutline"
+        variant="outline"
         onPress={() => {
           Linking.openURL(url)
         }}

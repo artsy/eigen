@@ -76,7 +76,7 @@ export const TrackOrderSection: FC<Props> = ({ section }) => {
           </>
         )}
         {!!trackingUrl && (
-          <Button testID="trackingUrl" mt={2} block variant="primaryBlack" onPress={() => Linking.openURL(trackingUrl)}>
+          <Button testID="trackingUrl" mt={2} block variant="fillDark" onPress={() => Linking.openURL(trackingUrl)}>
             View full tracking details
           </Button>
         )}

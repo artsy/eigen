@@ -76,7 +76,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             block
             haptic="impactMedium"
             mb={1}
-            variant="secondaryOutline"
+            variant="outline"
             icon={<EnvelopeIcon mr={1} />}
             testID="useEmail"
           >
@@ -87,7 +87,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             block
             haptic="impactMedium"
             mb={1}
-            variant="secondaryOutline"
+            variant="outline"
             icon={<Image source={require("@images/facebook.webp")} resizeMode="contain" style={{ marginRight: 10 }} />}
             testID="useFacebook"
           >
@@ -99,7 +99,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               block
               haptic="impactMedium"
               mb={1}
-              variant="secondaryOutline"
+              variant="outline"
               icon={<Image source={require("@images/apple.webp")} resizeMode="contain" style={{ marginRight: 10 }} />}
               testID="useApple"
             >

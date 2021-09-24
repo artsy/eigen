@@ -86,7 +86,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
 
             <Button
               size="large"
-              variant="secondaryGray"
+              variant="fillGray"
               block
               onPress={() => {
                 trackEvent(tracks.tappedShowMore(artwork.internalID, artwork.slug, "Learn More"))

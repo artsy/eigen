@@ -65,7 +65,7 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
             </Flex>
           )}
           <InquiryMakeOfferButton
-            variant="primaryBlack"
+            variant="fillDark"
             buttonText="Confirm"
             artwork={artwork}
             disabled={!!artwork.isEdition && !selectedEdition}
@@ -75,7 +75,7 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
           <Button
             mt={1}
             size="large"
-            variant="secondaryOutline"
+            variant="outline"
             block
             width={100}
             onPress={() => {
