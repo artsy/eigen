@@ -1,6 +1,6 @@
 import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, Sans, useColor } from "palette"
+import { Flex, Text, useColor } from "palette"
 import React, { useState } from "react"
 import { Image, TouchableOpacity, View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
@@ -43,18 +43,18 @@ export const HeroUnit: React.FC<Props> = ({ unit, onPress, isTrove = false }) =>
           />
         )}
         <Flex maxWidth={isPad() ? "65%" : undefined}>
-          <Sans size="8" color="white">
+          <Text size="xl" color="white">
             {unit.title}
-          </Sans>
+          </Text>
           {unit.subtitle ? (
-            <Sans size="3t" color="white" mt={0.5}>
+            <Text size="sm" color="white" mt={0.5}>
               {unit.subtitle}
-            </Sans>
+            </Text>
           ) : null}
           {unit.linkText ? (
-            <Sans size="3t" color="white" weight="medium" mt={0.5}>
+            <Text size="sm" color="white" weight="medium" mt={0.5}>
               {unit.linkText}
-            </Sans>
+            </Text>
           ) : null}
         </Flex>
         {hasLoaded && unit.creditLine ? (
@@ -75,9 +75,9 @@ export const HeroUnit: React.FC<Props> = ({ unit, onPress, isTrove = false }) =>
               opacity: 0.8,
             }}
           >
-            <Sans size="2" color="white">
+            <Text size="xs" color="white">
               {unit.creditLine}
-            </Sans>
+            </Text>
           </View>
         ) : null}
       </Flex>
