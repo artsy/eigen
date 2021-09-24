@@ -6,7 +6,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { getUrgencyTag } from "lib/utils/getUrgencyTag"
 import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "lib/utils/placeholders"
-import { Box, Flex, Sans, Spacer, Text, TextV3Props, Touchable } from "palette"
+import { Box, Flex, Sans, Spacer, Text, TextProps, Touchable } from "palette"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -33,12 +33,12 @@ export interface ArtworkProps {
   // Show the lot number (Lot 213)
   showLotLabel?: boolean
   // styles for each field: allows for customization of each field
-  urgencyTagTextStyle?: TextV3Props
-  lotLabelTextStyle?: TextV3Props
-  artistNamesTextStyle?: TextV3Props
-  titleTextStyle?: TextV3Props
-  saleInfoTextStyle?: TextV3Props
-  partnerNameTextStyle?: TextV3Props
+  urgencyTagTextStyle?: TextProps
+  lotLabelTextStyle?: TextProps
+  artistNamesTextStyle?: TextProps
+  titleTextStyle?: TextProps
+  saleInfoTextStyle?: TextProps
+  partnerNameTextStyle?: TextProps
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({

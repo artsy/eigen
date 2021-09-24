@@ -128,7 +128,7 @@ export class SavedWorks extends Component<Props, State> {
   }
 }
 
-export const FavoriteArtworksContainer = createPaginationContainer(
+const FavoriteArtworksContainer = createPaginationContainer(
   SavedWorks,
   {
     me: graphql`

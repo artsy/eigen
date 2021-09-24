@@ -8,7 +8,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionAndSavedWorks } from "../MyCollectionAndSavedWorks"
-import { MyProfile, MyProfileContainer, OldMyProfile } from "../MyProfile"
+import { MyProfile, MyProfileContainer } from "../MyProfile"
 
 jest.mock("../LoggedInUserInfo")
 jest.unmock("react-relay")
