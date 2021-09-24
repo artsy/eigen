@@ -4,11 +4,12 @@ import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { CatchErrors } from "lib/utils/CatchErrors"
-import { CloseIcon, Sans, Touchable } from "palette"
+import { CloseIcon, Touchable } from "palette"
 import React from "react"
 import { Pressable } from "react-native"
 import { act } from "react-test-renderer"
-import { AutosuggestSearchResult, ItalicText, ResultWithItalic } from "../AutosuggestSearchResult"
+import { AutosuggestSearchResult } from "../AutosuggestSearchResult"
+import { ItalicText, ResultWithItalic, Text } from "../ResultWithHighlight"
 import { SearchContext } from "../SearchContext"
 
 const inputBlurMock = jest.fn()
@@ -278,7 +279,7 @@ describe("ResultWithItalic", () => {
   describe("when match is in an artwork name", () => {
     const array = ["Henri Venne, The Sun Shines ", "Cold", " (2015)"]
     const tree = renderWithWrappers(<ResultWithItalic result={array} />)
-    const text = tree.root.findAllByType(Sans)
+    const text = tree.root.findAllByType(Text)
     const italicText = tree.root.findAllByType(ItalicText)
 
     it("renders 3 text elements", () => {
@@ -309,7 +310,7 @@ describe("ResultWithItalic", () => {
   describe("when match is in an artist name", () => {
     const array = ["Christ on the ", "Cold", " Stone, Title, with comma (1990)"]
     const tree = renderWithWrappers(<ResultWithItalic result={array} />)
-    const text = tree.root.findAllByType(Sans)
+    const text = tree.root.findAllByType(Text)
     const italicText = tree.root.findAllByType(ItalicText)
 
     it("renders 3 text elements", () => {
@@ -338,7 +339,7 @@ describe("ResultWithItalic", () => {
   describe("when there is no artwork name", () => {
     const array = ["Ann ", "Veronica", " Janssens"]
     const tree = renderWithWrappers(<ResultWithItalic result={array} />)
-    const text = tree.root.findAllByType(Sans)
+    const text = tree.root.findAllByType(Text)
 
     it("renders 2 text elements", () => {
       expect(text).toHaveLength(2)

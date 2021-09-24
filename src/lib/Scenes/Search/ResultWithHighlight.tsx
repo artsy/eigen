@@ -5,7 +5,7 @@ import React from "react"
 
 const splitter = new GraphemeSplitter()
 
-const Text: React.FC<TextProps> = ({ children, ...rest }) => {
+export const Text: React.FC<TextProps> = ({ children, ...rest }) => {
   return (
     <PaletteText variant="caption" {...rest}>
       {children}
@@ -13,7 +13,7 @@ const Text: React.FC<TextProps> = ({ children, ...rest }) => {
   )
 }
 
-const ItalicText: React.FC<{ color?: string }> = ({ color = "grey", children }) => {
+export const ItalicText: React.FC<{ color?: string }> = ({ color = "grey", children }) => {
   return (
     <Text italic color={color}>
       {children}
@@ -35,7 +35,7 @@ const Result: React.FC<{ result: string[] }> = ({ result }) => {
   )
 }
 
-const ResultWithItalic: React.FC<{ result: string[] }> = ({ result }) => {
+export const ResultWithItalic: React.FC<{ result: string[] }> = ({ result }) => {
   const [nonMatch, match, nonMatch2] = result
 
   // If the result string is e.g. "Henri Venne, The Sun Shines Cold (2015)",
