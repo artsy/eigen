@@ -5,13 +5,12 @@ jest.mock("../../../../../utils/googleMaps", () => ({
 
 import { InquiryModalTestsQuery, InquiryModalTestsQueryResponse } from "__generated__/InquiryModalTestsQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { Input } from "lib/Components/Input/Input"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { getLocationDetails, getLocationPredictions } from "lib/utils/googleMaps"
-import { Touchable } from "palette"
+import { Input, Touchable } from "palette"
 import React from "react"
 // TODO: replace with Palette's TextArea when available
 import { TextInput } from "react-native"

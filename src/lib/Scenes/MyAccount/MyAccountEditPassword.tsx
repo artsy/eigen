@@ -1,7 +1,6 @@
-import { Input } from "lib/Components/Input/Input"
 import { Stack } from "lib/Components/Stack"
 import { getCurrentEmissionState, GlobalStore, unsafe__getEnvironment } from "lib/store/GlobalStore"
-import { Flex, Separator } from "palette"
+import { Flex, Input, Separator } from "palette"
 import React, { useEffect, useState } from "react"
 import { MyAccountFieldEditScreen, MyAccountFieldEditScreenProps } from "./Components/MyAccountFieldEditScreen"
 

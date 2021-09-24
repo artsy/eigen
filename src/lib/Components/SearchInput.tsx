@@ -1,8 +1,7 @@
 import SearchIcon from "lib/Icons/SearchIcon"
-import { Flex, Sans } from "palette"
+import { Flex, Input, InputProps, Sans } from "palette"
 import React, { RefObject, useState } from "react"
 import { LayoutAnimation, TextInput, TouchableOpacity } from "react-native"
-import { Input, InputProps } from "./Input/Input"
 
 interface SearchInputProps extends InputProps {
   enableCancelButton?: boolean

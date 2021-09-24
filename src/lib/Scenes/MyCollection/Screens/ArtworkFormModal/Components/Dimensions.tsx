@@ -1,6 +1,5 @@
-import { Input } from "lib/Components/Input/Input"
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkFormModal/Form/useArtworkForm"
-import { Flex, RadioButton, Spacer, Text, useSpace } from "palette"
+import { Flex, Input, RadioButton, Spacer, Text, useSpace } from "palette"
 import React from "react"
 
 export const Dimensions: React.FC = () => {
