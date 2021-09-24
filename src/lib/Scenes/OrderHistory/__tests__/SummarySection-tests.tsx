@@ -95,26 +95,6 @@ describe("SummarySection", () => {
   })
 
   describe("if offer order", () => {
-    it("Render list price", () => {
-      const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, {
-        CommerceOrder: () => ({
-          mode: "OFFER",
-          buyerTotal: "€10,400",
-          taxTotal: "€0",
-          shippingTotal: "€200",
-          totalListPrice: "€11,000",
-          lastOffer: {
-            amount: "€10,200",
-            fromParticipant: "BUYER",
-          },
-        }),
-      })
-
-      expect(tree.findByProps({ testID: "listPriceLabel" }).props.children).toBe("List price")
-      expect(tree.findByProps({ testID: "listPrice" }).props.children).toBe("€11,000")
-    })
-
     it("Render correct price", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
       mockEnvironmentPayload(mockEnvironment, {

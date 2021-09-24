@@ -23,14 +23,9 @@ export const SummarySection: React.FC<Props> = ({ section }) => {
             Price
           </Text>
         ) : (
-          <>
-            <Text variant="sm" testID="offerLabel">
-              {isBuyerOffer ? "Your offer" : "Seller's offer"}
-            </Text>
-            <Text variant="sm" mt={0.5} testID="listPriceLabel">
-              List price
-            </Text>
-          </>
+          <Text variant="sm" testID="offerLabel">
+            {isBuyerOffer ? "Your offer" : "Seller's offer"}
+          </Text>
         )}
         <Text variant="sm" mt={0.5} testID="shippingTotalLabel">
           {shippingName}
@@ -48,14 +43,9 @@ export const SummarySection: React.FC<Props> = ({ section }) => {
             {totalListPrice}
           </Text>
         ) : (
-          <>
-            <Text variant="sm" color="black60" testID="lastOffer">
-              {(!!lastOffer && lastOffer.amount) || "—"}
-            </Text>
-            <Text variant="sm" mt={0.5} color="black60" testID="listPrice">
-              {totalListPrice}
-            </Text>
-          </>
+          <Text variant="sm" color="black60" testID="lastOffer">
+            {(!!lastOffer && lastOffer.amount) || "—"}
+          </Text>
         )}
         <Text variant="sm" color="black60" testID="shippingTotal" mt={0.5}>
           {shippingTotal}
