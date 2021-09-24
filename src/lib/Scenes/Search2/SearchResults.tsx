@@ -5,7 +5,7 @@ import { isPad } from "lib/utils/hardware"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { searchInsights } from "lib/utils/useSearchInsightsConfig"
 import { Box, Flex, Spacer, Spinner, Text, Touchable, useSpace } from "palette"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
 import { connectHighlight } from "react-instantsearch-native"
 import { FlatList } from "react-native"
@@ -48,13 +48,26 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   refineNext,
   categoryDisplayName,
 }) => {
+  const [showLoadingPlaceholder, setShowLoadingPlaceholder] = useState(true)
   const flatListRef = useRef<FlatList<AlgoliaSearchResult>>(null)
+  const didMountRef = useRef(false)
   const loading = searching || isSearchStalled
   const space = useSpace()
 
   useEffect(() => {
     flatListRef.current?.scrollToOffset({ offset: 1, animated: true })
   }, [searchState.query, indexName])
+
+  // When we get the first search results, we hide the loading placeholder
+
+  useEffect(() => {
+    // Skips the initial mount
+    if (didMountRef.current) {
+      setShowLoadingPlaceholder(false)
+    }
+
+    didMountRef.current = true
+  }, [searchResults.hits])
 
   const onPress = (item: AlgoliaSearchResult): void => {
     // TODO: I'm not sure why we need to use this `navigateToPartner` function but without it the header overlaps
@@ -80,7 +93,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     }
   }
 
-  if (loading && hits.length === 0) {
+  if (showLoadingPlaceholder) {
     return (
       <ProvidePlaceholderContext>
         <AlgoliaSearchPlaceholder />
