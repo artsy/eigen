@@ -162,7 +162,7 @@ export class ShowItemRow extends React.Component<Props, State> {
             </Flex>
             {!shouldHideSaveButton && (
               <Button
-                variant={show.is_followed ? "secondaryOutline" : "primaryBlack"}
+                variant={show.is_followed ? "outline" : "fillDark"}
                 size="small"
                 onPress={() => this.handleSave()}
                 loading={this.state.isFollowedSaving}

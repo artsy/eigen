@@ -86,7 +86,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
 
     return (
       <Button
-        variant={partner.profile?.isFollowed ? "secondaryOutline" : "primaryBlack"}
+        variant={partner.profile?.isFollowed ? "outline" : "fillDark"}
         onPress={this.handleFollowPartner.bind(this)}
         longestText="Following"
         size="small"

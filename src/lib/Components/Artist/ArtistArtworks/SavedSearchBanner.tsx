@@ -220,7 +220,7 @@ export const SavedSearchBanner: React.FC<SavedSearchBannerProps> = ({
 
   return (
     <Button
-      variant={enabled ? "secondaryOutline" : "primaryBlack"}
+      variant={enabled ? "outline" : "fillDark"}
       disabled={disabled}
       onPress={handleSaveSearchFiltersPress}
       icon={<BellIcon fill={enabled ? "black100" : "white100"} mr={0.5} width="16px" height="16px" />}

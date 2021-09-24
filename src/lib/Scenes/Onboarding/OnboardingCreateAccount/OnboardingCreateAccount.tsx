@@ -229,7 +229,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
             haptic="impactMedium"
             mb={1}
             mt={1.5}
-            variant="secondaryOutline"
+            variant="outline"
             testID="loginButton"
           >
             Go to Login
@@ -244,7 +244,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
         disabled={isLastStep && !values.acceptedTerms}
         loading={isSubmitting}
         testID="signUpButton"
-        variant="primaryBlack"
+        variant="fillDark"
         mb={safeAreaInsets.bottom}
       >
         Next

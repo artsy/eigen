@@ -105,7 +105,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
 
     return (
       <Button
-        variant={isFollowed ? "secondaryOutline" : "primaryBlack"}
+        variant={isFollowed ? "outline" : "fillDark"}
         onPress={() => this.handleFollowShow(show)}
         size="small"
         longestText="Following"

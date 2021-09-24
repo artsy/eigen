@@ -148,7 +148,7 @@ export class OnboardingPersonalizationArtistListItem extends React.Component<Pro
               </Flex>
               <Flex>
                 <Button
-                  variant={is_followed ? "secondaryOutline" : "secondaryGray"}
+                  variant={is_followed ? "outline" : "fillGray"}
                   onPress={this.handleFollowArtist.bind(this)}
                   size="small"
                   loading={isFollowedChanging}

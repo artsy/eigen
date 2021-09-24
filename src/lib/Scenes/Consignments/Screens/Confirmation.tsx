@@ -120,7 +120,7 @@ export default class Confirmation extends React.Component<Props, State> {
                 Done
               </Button>
               <Spacer mb={2} />
-              <Button block width={100} onPress={this.exitModalAndGoHome} variant="secondaryOutline">
+              <Button block width={100} onPress={this.exitModalAndGoHome} variant="outline">
                 Browse new works for sale
               </Button>
             </Flex>
@@ -150,7 +150,7 @@ export default class Confirmation extends React.Component<Props, State> {
             </Flex>
             <Spacer mb={2} />
             <Flex flexDirection="row" justifyContent="center">
-              <Button variant="secondaryOutline" block width={100} onPress={this.exitModal}>
+              <Button variant="outline" block width={100} onPress={this.exitModal}>
                 Quit
               </Button>
             </Flex>

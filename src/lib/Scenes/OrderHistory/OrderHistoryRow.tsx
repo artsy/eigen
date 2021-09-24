@@ -67,7 +67,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
           <Box width="50%" paddingRight={0.5}>
             <Button
               block
-              variant="secondaryGray"
+              variant="fillGray"
               onPress={() => navigate(`/user/purchases/${order.internalID}`)}
               data-test-id="view-order-button"
             >
@@ -79,7 +79,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
               paddingLeft={0.5}
               width="50%"
               block
-              variant="primaryBlack"
+              variant="fillDark"
               onPress={() => Linking.openURL(trackingUrl)}
               data-test-id="track-package-button"
             >
@@ -93,7 +93,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             <Button
               mb={1}
               block
-              variant="secondaryGray"
+              variant="fillGray"
               onPress={() => navigate(`/user/purchases/${order.internalID}`)}
               data-test-id="view-order-button"
             >
