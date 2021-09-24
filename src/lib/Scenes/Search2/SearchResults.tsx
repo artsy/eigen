@@ -84,6 +84,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
       contentContainerStyle={{ paddingVertical: space(1) }}
       data={hits}
       keyExtractor={(item) => item.objectID}
+      ItemSeparatorComponent={() => <Spacer mb={2} />}
       renderItem={({ item }) => <SearchResult result={item} indexName={indexName} />}
       onEndReached={loadMore}
       ListFooterComponent={
