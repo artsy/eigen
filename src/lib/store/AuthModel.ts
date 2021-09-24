@@ -1,7 +1,9 @@
+import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { isArtsyEmail } from "lib/utils/general"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { capitalize } from "lodash"
 import { stringify } from "qs"
@@ -378,6 +380,7 @@ export const getAuthModel = (): AuthModel => ({
 
       // The user account has been successfully created
       if (result.status === 201) {
+        postEventToProviders(tracks.createdAccount({ signUpMethod: body?.provider || "email" }))
         // @ts-ignore
         await actions.signIn({ email, password, accessToken, oauthProvider, idToken, appleUID })
         actions.setState({
@@ -644,3 +647,10 @@ export const getAuthModel = (): AuthModel => ({
     }
   ),
 })
+
+const tracks = {
+  createdAccount: ({ signUpMethod }: { signUpMethod: AuthService }): Partial<CreatedAccount> => ({
+    action: ActionType.createdAccount,
+    service: signUpMethod,
+  }),
+}
