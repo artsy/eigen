@@ -20,6 +20,8 @@ interface Props {
 }
 
 export const SaleArtworksHomeRail: React.FC<Props> = ({ me, relay, onShow, onHide }) => {
+  const [isLoading, setIsLoading] = useState(false)
+
   const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
   const hasArtworks = artworks?.length
 
@@ -30,8 +32,6 @@ export const SaleArtworksHomeRail: React.FC<Props> = ({ me, relay, onShow, onHid
   if (!hasArtworks) {
     return null
   }
-
-  const [isLoading, setIsLoading] = useState(false)
 
   const fetchNextPage = () => {
     if (!relay.hasMore() || isLoading) {
