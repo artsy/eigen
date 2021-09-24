@@ -34,7 +34,7 @@ export const EditionSelectBox: React.FC<Props> = ({ edition, selected, onPress }
         <RadioButton selected={selected} />
         <Flex mx={1} flexGrow={1}>
           <Text color={available ? "black100" : "black30"}>{edition.dimensions?.in}</Text>
-          <Text color={available ? "black60" : "black30"} variant="caption">
+          <Text color={available ? "black60" : "black30"} variant="xs">
             {edition.dimensions?.cm}
           </Text>
           <Text color={available ? "black60" : "black30"}>{edition.editionOf}</Text>

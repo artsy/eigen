@@ -36,12 +36,12 @@ export const ArticleCard: React.FC<ArticleCardProps> = ({ article, onPress, isFl
               <ImageView imageURL={article.thumbnailImage?.url} width={WIDTH} height={HEIGHT} />
             ))}
           <Spacer mb={1} />
-          <Text variant={"small"}>{article.vertical || " "}</Text>
-          <Text numberOfLines={3} ellipsizeMode="tail" variant="largeTitle">
+          <Text variant="xs">{article.vertical || " "}</Text>
+          <Text numberOfLines={3} ellipsizeMode="tail" variant="lg">
             {article.thumbnailTitle}
           </Text>
           {!!article.author && (
-            <Text color="black60" variant={"small"}>
+            <Text color="black60" variant="xs">
               {article.author.name}
             </Text>
           )}

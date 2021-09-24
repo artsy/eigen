@@ -83,11 +83,11 @@ export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
     <Flex py={1} px={2} backgroundColor={colors.backgroundColor}>
       <Flex flexDirection="row" justifyContent="space-between">
         <Flex flex={1} mr={!!onUndoPress ? 1 : 0}>
-          <Text color="white100" variant="subtitle" numberOfLines={1}>
+          <Text color="white100" variant="md" numberOfLines={1}>
             {title}
           </Text>
           {!!message && (
-            <Text color={colors.descriptionColor} variant="small">
+            <Text color={colors.descriptionColor} variant="xs">
               {message}
             </Text>
           )}
@@ -95,7 +95,7 @@ export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
         {!!onUndoPress && (
           <Box>
             <Touchable noFeedback onPress={handlePopoverMessageUndoPress}>
-              <Text variant="small" color={colors.descriptionColor} style={{ textDecorationLine: "underline" }}>
+              <Text variant="xs" color={colors.descriptionColor} style={{ textDecorationLine: "underline" }}>
                 Undo
               </Text>
             </Touchable>

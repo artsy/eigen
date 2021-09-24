@@ -36,7 +36,7 @@ export const ColorsSwatch: React.FC<ColorsSwatchProps> = ({
           )}
         </Box>
 
-        <Text mt={0.5} variant="small" textAlign="center">
+        <Text mt={0.5} variant="xs" textAlign="center">
           {name}
         </Text>
       </Box>

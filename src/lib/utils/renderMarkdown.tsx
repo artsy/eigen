@@ -75,7 +75,7 @@ export function defaultRules({
       match: SimpleMarkdown.blockRegex(/^((?:[^\n]|\n(?! *\n))+)(?:\n *)/),
       react: (node, output, state) => {
         return useNewTextStyles ? (
-          <Text variant="text" key={state.key}>
+          <Text variant="sm" key={state.key}>
             {output(node.content, state)}
           </Text>
         ) : (
@@ -89,7 +89,7 @@ export function defaultRules({
     strong: {
       react: (node, output, state) => {
         return useNewTextStyles ? (
-          <Text variant="mediumText" key={state.key}>
+          <Text variant="sm" key={state.key}>
             {output(node.content, state)}
           </Text>
         ) : (
@@ -103,7 +103,7 @@ export function defaultRules({
     em: {
       react: (node, output, state) => {
         return useNewTextStyles ? (
-          <Text variant="text" fontStyle="italic" key={state.key}>
+          <Text variant="sm" fontStyle="italic" key={state.key}>
             {output(node.content, state)}
           </Text>
         ) : (
@@ -132,13 +132,13 @@ export function defaultRules({
           let bullet
           if (node.ordered) {
             bullet = useNewTextStyles ? (
-              <Text variant="text" key={state.key}>{`${i + 1} . `}</Text>
+              <Text variant="sm" key={state.key}>{`${i + 1} . `}</Text>
             ) : (
               <Serif size="3t" key={state.key}>{`${i + 1} . `}</Serif>
             )
           } else {
             bullet = useNewTextStyles ? (
-              <Text variant="text" key={state.key}>
+              <Text variant="sm" key={state.key}>
                 -{" "}
               </Text>
             ) : (
@@ -149,7 +149,7 @@ export function defaultRules({
           }
 
           const listItemText = useNewTextStyles ? (
-            <Text variant="text" key={String(state.key) + 1}>
+            <Text variant="sm" key={String(state.key) + 1}>
               {output(node.content, state)}
             </Text>
           ) : (
@@ -172,7 +172,7 @@ export function defaultRules({
     codeBlock: {
       react: (node, _output, state) => {
         return useNewTextStyles ? (
-          <Text variant="text" key={state.key}>
+          <Text variant="sm" key={state.key}>
             {node.content}
           </Text>
         ) : (
@@ -186,7 +186,7 @@ export function defaultRules({
     inlineCode: {
       react: (node, _output, state) => {
         return useNewTextStyles ? (
-          <Text variant="text" key={state.key}>
+          <Text variant="sm" key={state.key}>
             {node.content}
           </Text>
         ) : (

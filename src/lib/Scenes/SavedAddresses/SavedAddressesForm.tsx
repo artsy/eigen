@@ -236,7 +236,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
         </Checkbox>
 
         {!!isEditForm && (
-          <Text onPress={() => deleteUserAddress(addressId!)} variant="caption" textAlign="center" mb={2} color="red">
+          <Text onPress={() => deleteUserAddress(addressId!)} variant="xs" textAlign="center" mb={2} color="red">
             Delete address
           </Text>
         )}

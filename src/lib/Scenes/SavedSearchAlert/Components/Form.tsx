@@ -56,7 +56,7 @@ export const Form: React.FC<FormProps> = (props) => {
               })
             }
           >
-            <Text variant="small" color="blue100" style={{ textDecorationLine: "underline" }}>
+            <Text variant="xs" color="blue100" style={{ textDecorationLine: "underline" }}>
               View Artworks
             </Text>
           </Touchable>

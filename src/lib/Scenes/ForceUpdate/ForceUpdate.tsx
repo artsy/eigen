@@ -28,7 +28,7 @@ export const ForceUpdate: React.FC<ForceUpdateProps> = ({ forceUpdateMessage }) 
   return (
     <Flex flex={1} justifyContent="center" alignItems="center" px={5}>
       <ArtsyLogoIcon />
-      <Text variant="caption" mt={3} textAlign="center" color={color("black60")}>
+      <Text variant="xs" mt={3} textAlign="center" color={color("black60")}>
         {forceUpdateMessage}
       </Text>
       <Button variant="fillGray" block size="large" mt={3} haptic="impactMedium" onPress={handleUpdate}>

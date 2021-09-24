@@ -30,7 +30,7 @@ interface Props {
 const AuctionSupport = () => {
   return (
     <Flex mt={1}>
-      <Text variant="subtitle" px={2} mb={15}>
+      <Text variant="md" px={2} mb={15}>
         Auction support
       </Text>
       <MenuItem
@@ -54,7 +54,7 @@ const AuctionIsLive = () => (
     <Sans size="5t" mb={2} mt={1}>
       This is a live auction
     </Sans>
-    <Text variant="text" color="black" fontSize="size4">
+    <Text variant="sm" color="black" fontSize={15}>
       Participating in a live auction means you’ll be competing against bidders in real time on an auction room floor.
       You can place max bids which will be represented by Artsy in the auction room or you can bid live when the auction
       opens.
@@ -81,10 +81,10 @@ export const SaleInfo: React.FC<Props> = ({ sale, me }) => {
 
     return (
       <Flex mb={1}>
-        <Text variant="text" color="black" fontSize="size4" mt={25} fontWeight="500">
+        <Text variant="sm" color="black" fontSize={15} mt={25} fontWeight="500">
           Live bidding opens on
         </Text>
-        <Text variant="text" color="black" fontSize="size4">
+        <Text variant="sm" color="black" fontSize={15}>
           {`${moment(sale.liveStartAt).format("dddd, MMMM, D, YYYY")} at ${moment(sale.liveStartAt)
             .tz(tz)
             .format("h:mma z")}`}
@@ -167,7 +167,7 @@ const BuyersPremiumItem: React.FC<BuyersPremiumItemProps> = (props) => {
     premiumText = `On the hammer price in excess of ${amount} up to and including ${nextValue?.amount}: ${percent}`
   }
   return (
-    <Text variant="text" mb={1}>
+    <Text variant="sm" mb={1}>
       {premiumText}
     </Text>
   )
@@ -182,13 +182,13 @@ const BuyersPremium: React.FC<{ sale: SaleInfo_sale }> = (props) => {
   }
 
   if (buyersPremium.length === 1) {
-    premiumDisplay = <Text variant="text">{makePercent(buyersPremium[0]?.percent || 0)}% on the hammer price</Text>
+    premiumDisplay = <Text variant="sm">{makePercent(buyersPremium[0]?.percent || 0)}% on the hammer price</Text>
   } else {
     premiumDisplay = createPremiumDisplay(props)
   }
   return (
     <Flex px={2}>
-      <Text variant="subtitle" mb={2} mt={1}>
+      <Text variant="md" mb={2} mt={1}>
         Buyer's Premium for this Auction
       </Text>
       {premiumDisplay}

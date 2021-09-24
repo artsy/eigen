@@ -21,30 +21,30 @@ export const ShipsToSection: React.FC<Props> = ({ address }) => {
     const addedComma = city ? "," : ""
     return (
       <Flex style={{ flexDirection: "column", justifyContent: "space-between" }}>
-        <Text testID="addressLine1" color="black60" variant="text">
+        <Text testID="addressLine1" color="black60" variant="sm">
           {addressLine1}
         </Text>
         {!!addressLine2 && (
-          <Text color="black60" variant="text">
+          <Text color="black60" variant="sm">
             {addressLine2}
           </Text>
         )}
 
         <Box display="flex" flexDirection="row">
-          <Text testID="city" color="black60" variant="text">
+          <Text testID="city" color="black60" variant="sm">
             {city + addedComma + " "}
           </Text>
-          <Text testID="region" color="black60" variant="text">
+          <Text testID="region" color="black60" variant="sm">
             {region + " "}
           </Text>
-          <Text testID="postalCode" color="black60" variant="text">
+          <Text testID="postalCode" color="black60" variant="sm">
             {postalCode}
           </Text>
         </Box>
-        <Text testID="country" color="black60" variant="text">
+        <Text testID="country" color="black60" variant="sm">
           {COUNTRY_SELECT_OPTIONS.find(({ value }) => value === country)?.label || country}
         </Text>
-        <Text testID="phoneNumber" color="black60" variant="text">
+        <Text testID="phoneNumber" color="black60" variant="sm">
           {phoneNumber}
         </Text>
       </Flex>

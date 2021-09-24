@@ -82,12 +82,12 @@ export const SaleInfo = ({
         <Box width="25px" alignSelf="center">
           <Icon fill={noteColor as any} />
         </Box>
-        <Text style={{ flex: -1 }} variant="caption" color={noteColor}>
+        <Text style={{ flex: -1 }} variant="xs" color={noteColor}>
           {line1}
         </Text>
       </Flex>
       {!!line2 && (
-        <Text ml="25px" variant="caption" color="yellow100">
+        <Text ml="25px" variant="xs" color="yellow100">
           {line2}
         </Text>
       )}

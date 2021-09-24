@@ -13,7 +13,7 @@ export const ArtistSearchResult: React.FC<{ result: AutosuggestResult }> = ({ re
       />
       <Spacer ml="1" />
       <Text
-        variant="subtitle"
+        variant="md"
         ellipsizeMode="tail"
         numberOfLines={1}
         data-test-id="displayLabel"

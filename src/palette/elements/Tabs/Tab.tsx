@@ -28,7 +28,7 @@ export const TabV3: React.FC<TabV3Props> = ({ label, active, onLayout, onPress, 
           }}
         >
           <Text
-            fontSize={"16px"}
+            fontSize={16}
             color={active ? color("black100") : pressed ? color("blue100") : color("black60")}
             style={{
               textDecorationLine: pressed ? "underline" : "none",

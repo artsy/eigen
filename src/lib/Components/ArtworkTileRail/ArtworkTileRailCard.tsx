@@ -92,13 +92,13 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
   )
 
   const artistNamesDisplay = artistNames ? (
-    <Text numberOfLines={1} lineHeight="20" variant="mediumText">
+    <Text numberOfLines={1} lineHeight="20" variant="sm">
       {artistNames}
     </Text>
   ) : null
 
   const saleMessageDisplay = saleMessage ? (
-    <Text lineHeight="20" variant="small" color="black60" numberOfLines={1}>
+    <Text lineHeight="20" variant="xs" color="black60" numberOfLines={1}>
       {saleMessage}
     </Text>
   ) : null

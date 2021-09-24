@@ -94,14 +94,14 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
                   </View>
                 </ArtworkImageContainer>
                 <MetadataContainer>
-                  <Text numberOfLines={1} lineHeight="20" variant="mediumText">
+                  <Text numberOfLines={1} lineHeight="20" variant="sm">
                     {result?.name}
                   </Text>
                   <Text
                     numberOfLines={1}
                     lineHeight="20"
                     color="black60"
-                    variant="mediumText"
+                    variant="sm"
                     data-test-id="card-subtitle"
                     ellipsizeMode="middle"
                   >

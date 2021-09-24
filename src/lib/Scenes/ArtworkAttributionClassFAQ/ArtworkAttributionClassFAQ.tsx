@@ -22,13 +22,13 @@ export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttribution
         <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2}>
           <Box my={3}>
             <Join separator={<Spacer my={1.5} />}>
-              <Text variant="largeTitle">Artwork classifications</Text>
+              <Text variant="lg">Artwork classifications</Text>
 
               <Join separator={<Spacer my={1} />}>
                 {artworkAttributionClasses.map((attributionClass, index) => {
                   return (
                     <React.Fragment key={index}>
-                      <Text variant="mediumText">{attributionClass.name}</Text>
+                      <Text variant="sm">{attributionClass.name}</Text>
 
                       <Text>{attributionClass.longDescription}</Text>
                     </React.Fragment>

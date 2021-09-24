@@ -58,11 +58,11 @@ export const InquirySuccessNotification: React.FC<InquirySuccessNotificationProp
             <TouchableOpacity onPress={navigateToConversation}>
               <Flex p={1}>
                 <Flex flexDirection="row" justifyContent="space-between">
-                  <Text color="green100" variant="mediumText">
+                  <Text color="green100" variant="sm">
                     Message Sent
                   </Text>
                 </Flex>
-                <Text color="black60" variant="text">
+                <Text color="black60" variant="sm">
                   Expect a response within 1-3 business days.
                 </Text>
               </Flex>

@@ -62,23 +62,23 @@ const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress, showAr
           <Flex flex={3}>
             <Flex>
               {!!showArtistName && !!auctionResult.artist?.name && (
-                <Text variant="caption" ellipsizeMode="middle" numberOfLines={2} fontWeight="bold">
+                <Text variant="xs" ellipsizeMode="middle" numberOfLines={2} fontWeight="bold">
                   {auctionResult.artist?.name}
                 </Text>
               )}
-              <Text variant="caption" ellipsizeMode="middle" numberOfLines={2} style={{ flexShrink: 1 }}>
+              <Text variant="xs" ellipsizeMode="middle" numberOfLines={2} style={{ flexShrink: 1 }}>
                 {auctionResult.title}
                 {!!auctionResult.dateText && auctionResult.dateText !== "" && `, ${auctionResult.dateText}`}
               </Text>
             </Flex>
             {!!auctionResult.mediumText && (
-              <Text variant="small" color="black60" numberOfLines={1}>
+              <Text variant="xs" color="black60" numberOfLines={1}>
                 {capitalize(auctionResult.mediumText)}
               </Text>
             )}
 
             {!!auctionResult.saleDate && (
-              <Text variant="small" color="black60" numberOfLines={1} testID="saleInfo">
+              <Text variant="xs" color="black60" numberOfLines={1} testID="saleInfo">
                 {moment(auctionResult.saleDate).utc().format("MMM D, YYYY")}
                 {` ${bullet} `}
                 {auctionResult.organization}
@@ -90,11 +90,11 @@ const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress, showAr
           <Flex alignItems="flex-end" pl={15}>
             {auctionResultHasPrice(auctionResult) ? (
               <Flex alignItems="flex-end">
-                <Text variant="caption" fontWeight="bold" testID="price">
+                <Text variant="xs" fontWeight="bold" testID="price">
                   {auctionResult.priceRealized?.display}
                 </Text>
                 {!!showPriceUSD && (
-                  <Text variant="caption" color="black60" testID="priceUSD">
+                  <Text variant="xs" color="black60" testID="priceUSD">
                     {auctionResult.priceRealized?.displayUSD}
                   </Text>
                 )}
@@ -104,7 +104,7 @@ const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress, showAr
               </Flex>
             ) : (
               <Flex alignItems="flex-end">
-                <Text variant="caption" fontWeight="bold" style={{ width: 100 }} textAlign="right" testID="price">
+                <Text variant="xs" fontWeight="bold" style={{ width: 100 }} textAlign="right" testID="price">
                   {auctionResultText(auctionResult)}
                 </Text>
               </Flex>

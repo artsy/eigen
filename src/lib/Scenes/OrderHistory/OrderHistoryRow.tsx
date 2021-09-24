@@ -36,23 +36,23 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             )}
           </Flex>
           <Flex width="40%" flexGrow={1} mr={2}>
-            <Text variant="mediumText" data-test-id="artist-names" ellipsizeMode="tail" numberOfLines={1}>
+            <Text variant="sm" data-test-id="artist-names" ellipsizeMode="tail" numberOfLines={1}>
               {artwork?.artistNames}
             </Text>
-            <Text variant="caption" color="black60" data-test-id="partner-name" ellipsizeMode="tail" numberOfLines={1}>
+            <Text variant="xs" color="black60" data-test-id="partner-name" ellipsizeMode="tail" numberOfLines={1}>
               {artwork?.partner?.name}
             </Text>
-            <Text variant="caption" color="black60" data-test-id="date">
+            <Text variant="xs" color="black60" data-test-id="date">
               {moment(order.createdAt).format("l")}
             </Text>
           </Flex>
           <Flex>
-            <Text textAlign="right" variant="text" data-test-id="price">
+            <Text textAlign="right" variant="sm" data-test-id="price">
               {order.buyerTotal}
             </Text>
             <Text
               textAlign="right"
-              variant="caption"
+              variant="xs"
               color={orderStatus === "canceled" ? "red100" : "black60"}
               style={{ textTransform: "capitalize" }}
               data-test-id="order-status"

@@ -1,14 +1,8 @@
 import { useTheme } from "palette"
 import { isThemeV3 } from "palette/Theme"
-import { TextV3Props } from "."
+import { TextProps } from "."
 
-export const useFontFamilyFor = ({
-  italic,
-  weight,
-}: {
-  italic: TextV3Props["italic"]
-  weight: TextV3Props["weight"]
-}) => {
+export const useFontFamilyFor = ({ italic, weight }: { italic: TextProps["italic"]; weight: TextProps["weight"] }) => {
   const { theme } = useTheme()
   if (!isThemeV3(theme)) {
     return "no-font"

@@ -17,14 +17,14 @@ export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = (pro
         <Box key={index} mt="3">
           {!!subsection.title && (
             <Box mx="2" testID="subsection">
-              <Text mb="1" variant="title" style={maxWidth}>
+              <Text mb="1" variant="md" style={maxWidth}>
                 {subsection.title}
               </Text>
             </Box>
           )}
           {!!subsection.body && (
             <Box mx="2">
-              <Text mb="2" variant="text" style={maxWidth}>
+              <Text mb="2" variant="sm" style={maxWidth}>
                 {subsection.body}
               </Text>
             </Box>
@@ -37,7 +37,7 @@ export const ViewingRoomSubsections: React.FC<ViewingRoomSubsectionProps> = (pro
           )}
           {!!subsection.caption && (
             <Box mx="2">
-              <Text mt="1" variant="caption" color="black60">
+              <Text mt="1" variant="xs" color="black60">
                 {subsection.caption}
               </Text>
             </Box>

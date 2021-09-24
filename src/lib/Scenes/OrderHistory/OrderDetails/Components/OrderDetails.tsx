@@ -6,7 +6,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { compact } from "lodash"
-import { Box, Flex, Separator, TextV3 } from "palette"
+import { Box, Flex, Separator, Text } from "palette"
 import React, { FC } from "react"
 import { SectionList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -97,9 +97,9 @@ const OrderDetails: FC<OrderDetailsProps> = ({ order }) => {
         renderSectionHeader={({ section: { title, data } }) =>
           title && data ? (
             <Box>
-              <TextV3 mt={20} mb={10} variant="sm" weight="medium">
+              <Text mt={20} mb={10} variant="sm" weight="medium">
                 {title}
-              </TextV3>
+              </Text>
             </Box>
           ) : null
         }

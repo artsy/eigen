@@ -62,7 +62,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
         }}
       />
       <Join separator={<Spacer height={60} />}>
-        <Text variant="largeTitle">{mode === "login" ? "Log in" : "Create account"}</Text>
+        <Text variant="lg">{mode === "login" ? "Log in" : "Create account"}</Text>
 
         <>
           <Button
@@ -108,14 +108,14 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
           )}
         </>
 
-        <Text variant="small" color="black60" textAlign="center">
+        <Text variant="xs" color="black60" textAlign="center">
           By tapping {mode === "login" ? "Continue with Facebook" : "Sign up with Facebook"} or Apple, you agree to
           Artsy's{" "}
           <Text
             onPress={() => {
               Linking.openURL(`${webURL}/terms`)
             }}
-            variant="small"
+            variant="xs"
             style={{ textDecorationLine: "underline" }}
           >
             Terms of Use
@@ -125,7 +125,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             onPress={() => {
               Linking.openURL(`${webURL}/privacy`)
             }}
-            variant="small"
+            variant="xs"
             style={{ textDecorationLine: "underline" }}
           >
             Privacy Policy

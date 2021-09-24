@@ -10,7 +10,7 @@ export const WhySell: React.FC = () => {
 
       <ScreenMargin>
         <Join separator={<Spacer my={1} />}>
-          <Text variant="title">Interested in selling this work?</Text>
+          <Text variant="md">Interested in selling this work?</Text>
           <WhySellStep
             step={1}
             title="Simple Steps"

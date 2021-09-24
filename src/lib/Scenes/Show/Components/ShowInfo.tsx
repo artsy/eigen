@@ -13,14 +13,14 @@ export const ShowInfo: React.FC<ShowInfoProps> = ({ show, ...rest }) => {
   return (
     <Box {...rest}>
       {!!show.about && (
-        <Text variant="text" mb={1}>
+        <Text variant="sm" mb={1}>
           {show.about}
         </Text>
       )}
 
       <TouchableOpacity onPress={() => navigate(`${show.href}/info`)}>
         <Box flexDirection="row" alignItems="center">
-          <Text variant="mediumText">More info</Text>
+          <Text variant="sm">More info</Text>
           <ChevronIcon />
         </Box>
       </TouchableOpacity>

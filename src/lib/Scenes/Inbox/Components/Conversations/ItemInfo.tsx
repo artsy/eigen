@@ -41,16 +41,16 @@ export const ItemInfo: React.FC<Props> = (props) => {
         <ImageView imageURL={itemInfo.imageURL} />
       </Box>
       <Flex flexDirection="column" ml={2} flexShrink={1}>
-        <Text variant="mediumText" numberOfLines={1}>
+        <Text variant="sm" numberOfLines={1}>
           {itemInfo.line1}
         </Text>
-        <Text variant="caption" color="black60" numberOfLines={1}>
+        <Text variant="xs" color="black60" numberOfLines={1}>
           {itemInfo.line2}
         </Text>
-        <Text variant="caption" color="black60" numberOfLines={1}>
+        <Text variant="xs" color="black60" numberOfLines={1}>
           {itemInfo.line3}
         </Text>
-        <Text variant="caption" color="black60" numberOfLines={1}>
+        <Text variant="xs" color="black60" numberOfLines={1}>
           {itemInfo.line4}
         </Text>
       </Flex>
