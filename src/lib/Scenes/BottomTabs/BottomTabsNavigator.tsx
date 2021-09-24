@@ -17,7 +17,7 @@ const TabContent = ({ route }: { route: { params: { tabName: BottomTabType; root
     return <NativeViewController viewName="TabNavigationStack" viewProps={route.params} />
   }
 
-  return <NavStack id={route.params.tabName} rootModuleName={route.params.rootModuleName}></NavStack>
+  return <NavStack id={route.params.tabName} rootModuleName={route.params.rootModuleName} />
 }
 
 export const BottomTabsNavigator = () => {

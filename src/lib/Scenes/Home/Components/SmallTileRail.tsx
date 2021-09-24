@@ -38,7 +38,7 @@ const SmallTileRail: React.FC<Props> = ({
       horizontal
       ListHeaderComponent={ListEndComponent}
       ListFooterComponent={ListFooterComponent}
-      ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
+      ItemSeparatorComponent={() => <Spacer width={15} />}
       showsHorizontalScrollIndicator={false}
       data={artworks}
       initialNumToRender={4}

@@ -378,12 +378,7 @@ export class GlobalMap extends React.Component<Props, State> {
         pointCount && (
           <ClassTheme>
             {({ color }) => (
-              <MapboxGL.PointAnnotation
-                key={clusterId}
-                id={clusterId}
-                selected
-                coordinate={[clusterLat, clusterLng]}
-              >
+              <MapboxGL.PointAnnotation key={clusterId} id={clusterId} selected coordinate={[clusterLat, clusterLng]}>
                 <SelectedCluster width={radius} height={radius}>
                   <Sans size="3" weight="medium" color={color("white100")}>
                     {pointCount}

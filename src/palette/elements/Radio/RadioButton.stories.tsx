@@ -11,11 +11,13 @@ storiesOf("RadioButton", module)
       <RadioButton />
       <RadioButton text="RadioButton" />
       <RadioButton
+        // tslint:disable-next-line: jsx-curly-brace-presence
         text={`Multiline
 Text`}
       />
       <RadioButton text="RadioButton" subtitle="Subtitle" />
       <RadioButton
+        // tslint:disable-next-line: jsx-curly-brace-presence
         text={`Multiline
 Text`}
         subtitle="With Subtitle"

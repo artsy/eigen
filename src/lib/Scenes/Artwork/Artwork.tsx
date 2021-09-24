@@ -291,7 +291,7 @@ export class Artwork extends React.Component<Props, State> {
             contextScreenOwnerSlug={artworkAboveTheFold.slug}
             contextScreenOwnerType={OwnerType.artwork}
             artist={artist}
-            artistSeriesHeader={"Series from this artist"}
+            artistSeriesHeader="Series from this artist"
           />
         ),
       })

@@ -175,7 +175,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
   return (
     <MyAccountFieldEditScreen
       ref={screenRef}
-      canSave={true}
+      canSave
       isSaveButtonVisible={false}
       title={isEditForm ? "Edit Address" : "Add New Address"}
     >
@@ -283,7 +283,7 @@ export const SavedAddressesFormPlaceholder: React.FC<{ addressId?: string }> = (
         {times(5).map((index: number) => (
           <Flex key={index} py={1}>
             <PlaceholderText height={15} width={50 + Math.random() * 100} />
-            <PlaceholderBox height={45} width={"100%"} />
+            <PlaceholderBox height={45} width="100%" />
           </Flex>
         ))}
       </Flex>

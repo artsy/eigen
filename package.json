@@ -31,7 +31,7 @@
     "flip_table": "./scripts/flip-table",
     "flip_table_extreme": "./scripts/flip-table-extreme",
     "install:all": "./scripts/install",
-    "lint-fix": "yarn lint --fix",
+    "lint-fix": "yarn lint --fix; yarn prettier-project",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "open-sim": "open -a Simulator",
     "open-url": "npx uri-scheme open",

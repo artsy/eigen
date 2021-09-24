@@ -39,8 +39,8 @@ export const ArtistList: React.FC<ArtistListProps> = ({ targetSupply, isLoading 
 
         <FlatList
           horizontal
-          ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
-          ListFooterComponent={() => <Spacer mr={2}></Spacer>}
+          ListHeaderComponent={() => <Spacer mr={2} />}
+          ListFooterComponent={() => <Spacer mr={2} />}
           ItemSeparatorComponent={() => <Spacer mr={3} />}
           showsHorizontalScrollIndicator={false}
           data={chunksOfArtists}
