@@ -1,6 +1,5 @@
-import { Input } from "lib/Components/Input/Input"
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkFormModal/Form/useArtworkForm"
-import { Flex, Sans, Spacer, useSpace } from "palette"
+import { Flex, Input, Sans, Spacer, useSpace } from "palette"
 import { Select, SelectComponentI } from "palette/elements/Select"
 import React, { useRef } from "react"
 

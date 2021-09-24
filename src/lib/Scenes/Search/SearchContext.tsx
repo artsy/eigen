@@ -1,4 +1,4 @@
-import { Input } from "lib/Components/Input/Input"
+import { Input } from "palette"
 import React, { RefObject, useRef } from "react"
 
 export const SearchContext = React.createContext<{
