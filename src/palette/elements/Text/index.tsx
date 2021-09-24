@@ -1,5 +1,4 @@
 import _ from "lodash"
-import { usePaletteFlagStore } from "palette/PaletteFlag"
 import { ThemeV3 } from "palette/Theme"
 import React from "react"
 
@@ -30,15 +29,11 @@ export { SerifV1, SerifV1Props, SerifV1Props as SerifProps }
  */
 export const Serif: React.FC<SerifV1Props> = (props) => {
   // TODO-PALETTE-V3 remove this and replace all usages with the mapping. also remove Serif files.
-  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
-  if (allowV3) {
-    return (
-      <ThemeV3>
-        <TextV3 {...transformSerifPropsToV3(props)} />
-      </ThemeV3>
-    )
-  }
-  return <SerifV1 {...props} />
+  return (
+    <ThemeV3>
+      <TextV3 {...transformSerifPropsToV3(props)} />
+    </ThemeV3>
+  )
 }
 
 const transformSerifPropsToV3 = (props: SerifV1Props): TextV3Props => {
@@ -80,15 +75,11 @@ const transformSerifPropsToV3 = (props: SerifV1Props): TextV3Props => {
  */
 export const Sans: React.FC<SansV1Props> = (props) => {
   // TODO-PALETTE-V3 remove this and replace all usages with the mapping. also remove Sans files.
-  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
-  if (allowV3) {
-    return (
-      <ThemeV3>
-        <TextV3 {...transformSansPropsToV3(props)} />
-      </ThemeV3>
-    )
-  }
-  return <SansV1 {...props} />
+  return (
+    <ThemeV3>
+      <TextV3 {...transformSansPropsToV3(props)} />
+    </ThemeV3>
+  )
 }
 
 const transformSansPropsToV3 = (props: SansV1Props): TextV3Props => {
@@ -161,27 +152,19 @@ export type TextProps = TextV2Props | TextV3Props
  * largeTitle: lg, title: md, subtitle: md, text: sm, mediumText: sm, caption: xs, small: xs
  */
 export const Text: React.FC<TextProps> = (props) => {
-  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
-  if (allowV3) {
-    if (isTextV2Props(props)) {
-      return (
-        <ThemeV3>
-          <TextV3 {...transformTextV2PropsToV3(props)} />
-        </ThemeV3>
-      )
-    } else {
-      return (
-        <ThemeV3>
-          <TextV3 {...props} />
-        </ThemeV3>
-      )
-    }
-  }
-
   if (isTextV2Props(props)) {
-    return <TextV2 {...props} />
+    return (
+      <ThemeV3>
+        <TextV3 {...transformTextV2PropsToV3(props)} />
+      </ThemeV3>
+    )
+  } else {
+    return (
+      <ThemeV3>
+        <TextV3 {...props} />
+      </ThemeV3>
+    )
   }
-  throw new Error("TextV2 used with v3 props. Don't do that.")
 }
 
 const transformTextV2PropsToV3 = (props: TextV2Props): TextV3Props => {
