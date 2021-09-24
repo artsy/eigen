@@ -23,7 +23,7 @@ export const SearchListItem: React.FC<SearchListItemProps> = ({
   return (
     <>
       <Touchable onPress={onPress}>
-        <Flex height={!!children ? "auto" : 40} py={space(1)} px={space(2)} flexDirection="row" alignItems="center">
+        <Flex height={!!children ? "auto" : 40} py={space(1)} flexDirection="row" alignItems="center">
           <OpaqueImageView
             imageURL={imageURL}
             style={{ width: 40, height: 40, borderRadius: categoryName === "Artist" ? 20 : 0, overflow: "hidden" }}
