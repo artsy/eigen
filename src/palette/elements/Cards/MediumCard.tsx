@@ -48,7 +48,7 @@ export const MediumCard: React.FC<MediumCardProps> = ({ image, title, subtitle, 
           {title}
         </Text>
         {!!subtitle && (
-          <Text color={color("white100")} variant="small">
+          <Text color={color("white100")} variant="sm">
             {subtitle}
           </Text>
         )}

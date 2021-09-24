@@ -55,7 +55,7 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event }) => {
         <Flex flexDirection="row">
           <Icon mt="1px" fill={color} />
           <Flex flexDirection="column" pl={1}>
-            <Text color={color} variant="small">
+            <Text color={color} variant="xs">
               {message}
             </Text>
           </Flex>

@@ -12,10 +12,10 @@ interface FairTimingProps {
 export const FairTiming: React.FC<FairTimingProps> = ({ fair: { exhibitionPeriod, startAt, endAt } }) => {
   return (
     <Box py={1}>
-      <Text variant="mediumText" color="black100">
+      <Text variant="sm" color="black100">
         {exhibitionPeriod}
       </Text>
-      <Text variant="text" color="black60">
+      <Text variant="sm" color="black60">
         <WithCurrentTime syncWithServer>
           {(currentTime) => {
             const props = {

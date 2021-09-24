@@ -81,7 +81,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   ) : null
 
   const saleMessageDisplay = artwork.saleMessage ? (
-    <Text variant="small" lineHeight="20" numberOfLines={1}>
+    <Text variant="xs" lineHeight="20" numberOfLines={1}>
       {artwork.saleMessage}
     </Text>
   ) : null
@@ -96,7 +96,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
   })
 
   const customSaleMessageDisplay = useCustomSaleMessage ? (
-    <Text variant="small" lineHeight="20" numberOfLines={1}>
+    <Text variant="xs" lineHeight="20" numberOfLines={1}>
       {customSaleMessage}
     </Text>
   ) : null
@@ -109,7 +109,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
     ) : null
 
   const lotNumber = saleArtwork.lotLabel ? (
-    <Text numberOfLines={1} lineHeight="20" variant="mediumText">
+    <Text numberOfLines={1} lineHeight="20" variant="sm">
       Lot {saleArtwork.lotLabel}
     </Text>
   ) : null

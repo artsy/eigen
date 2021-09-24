@@ -81,7 +81,7 @@ const CustomSizeInput: React.FC<CustomSizeInputProps> = ({ initialValue, onChang
 
   return (
     <Flex mt={1} mx={2} mb={2}>
-      <Text variant="mediumText" mb={1}>
+      <Text variant="sm" mb={1}>
         Width
       </Text>
 
@@ -107,7 +107,7 @@ const CustomSizeInput: React.FC<CustomSizeInputProps> = ({ initialValue, onChang
 
       <Spacer mt={2} />
 
-      <Text variant="mediumText" mb={1}>
+      <Text variant="sm" mb={1}>
         Height
       </Text>
 

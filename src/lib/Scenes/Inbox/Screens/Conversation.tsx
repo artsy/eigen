@@ -194,7 +194,7 @@ export class Conversation extends React.Component<Props, State> {
             <Flex flexDirection="row" alignSelf="stretch" mx={2}>
               <HeaderTextContainer>
                 <PlaceholderView />
-                <Text ml={1} variant="mediumText">
+                <Text ml={1} variant="sm">
                   {partnerName}
                 </Text>
                 <Touchable

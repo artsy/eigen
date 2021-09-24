@@ -75,7 +75,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
         keyboardShouldPersistTaps="always"
       >
         <Spacer mt={60} />
-        <Text variant="largeTitle">Log in with email</Text>
+        <Text variant="lg">Log in with email</Text>
         <Spacer mt={50} />
         <Box>
           <Input
@@ -147,7 +147,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
             navigation.navigate("ForgotPassword")
           }}
         >
-          <Text variant="text" color="black60" style={{ textDecorationLine: "underline" }}>
+          <Text variant="sm" color="black60" style={{ textDecorationLine: "underline" }}>
             Forgot password?
           </Text>
         </Touchable>

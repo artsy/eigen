@@ -176,11 +176,11 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
       >
         <Spacer mt={60} />
         <Box height={130}>
-          <Text variant="largeTitle">{title}</Text>
+          <Text variant="lg">{title}</Text>
           {!!caption && (
             <>
               <Spacer mt={1.5} />
-              <Text variant="caption" color={color("black60")}>
+              <Text variant="xs" color={color("black60")}>
                 {caption}
               </Text>
             </>

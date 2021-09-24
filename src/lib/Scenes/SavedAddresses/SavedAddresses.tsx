@@ -109,25 +109,25 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
                   {item.city}, {item.postalCode}
                 </Text>
                 <Spacer height={10} />
-                <Text variant="text" color="black60">
+                <Text variant="sm" color="black60">
                   {item?.phoneNumber}
                 </Text>
                 <Separator my={2} />
                 <Flex flexDirection="row">
                   <Flex flex={1} justifyContent="center">
-                    {!!item?.isDefault && <Text variant="small">Default Address</Text>}
+                    {!!item?.isDefault && <Text variant="xs">Default Address</Text>}
                   </Flex>
                   <Flex flex={1} flexDirection="row" justifyContent="space-between">
                     <Touchable
                       testID={`EditAddress-${item.internalID}`}
                       onPress={() => onPressEditAddress(item.internalID)}
                     >
-                      <Text variant="text" color="black100" style={{ textDecorationLine: "underline" }}>
+                      <Text variant="sm" color="black100" style={{ textDecorationLine: "underline" }}>
                         Edit
                       </Text>
                     </Touchable>
                     <Touchable onPress={() => onPressDeleteAddress(item.internalID)}>
-                      <Text variant="text" color="red100" style={{ textDecorationLine: "underline" }}>
+                      <Text variant="sm" color="red100" style={{ textDecorationLine: "underline" }}>
                         Delete
                       </Text>
                     </Touchable>
@@ -155,10 +155,10 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
         }
         ListEmptyComponent={
           <Flex py={3} px={2} alignItems="center" height="100%" justifyContent="center">
-            <Text variant="title" mb={2}>
+            <Text variant="md" mb={2}>
               No Saved Addresses
             </Text>
-            <Text variant="caption" textAlign="center" mb={3}>
+            <Text variant="xs" textAlign="center" mb={3}>
               Please add an address for a faster checkout experience in the future.
             </Text>
             <AddAddressButton

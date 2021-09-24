@@ -46,7 +46,7 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
       <ScrollView>
         <Theme>
           <Box px={2} pb={2} pt={6}>
-            <Text variant="largeTitle">About</Text>
+            <Text variant="lg">About</Text>
 
             <Spacer my={1} />
 
@@ -65,15 +65,15 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
 
             {!!fair.tagline && (
               <>
-                <Text variant="text">{fair.tagline}</Text>
+                <Text variant="sm">{fair.tagline}</Text>
                 <Spacer my={1} />
               </>
             )}
 
             {!!fair.location && (
               <>
-                <Text variant="mediumText">Location</Text>
-                {!!fair.location?.summary && <Text variant="text">{fair.location?.summary}</Text>}
+                <Text variant="sm">Location</Text>
+                {!!fair.location?.summary && <Text variant="sm">{fair.location?.summary}</Text>}
                 {!!shouldShowLocationMap(fair.location?.coordinates) && (
                   <>
                     <Spacer my={1} />
@@ -87,7 +87,7 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
             {!!shouldShowFairBMWArtActivationLink(fair) && (
               <TouchableOpacity onPress={() => navigate(`/fair/${fair.slug}/bmw-sponsored-content`)}>
                 <Flex py={2} flexDirection="row" justifyContent="flex-start">
-                  <Text variant="mediumText">View BMW art activations</Text>
+                  <Text variant="sm">View BMW art activations</Text>
                   <ChevronIcon mr="-5px" mt="3px" />
                 </Flex>
               </TouchableOpacity>
@@ -95,14 +95,14 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
 
             {!!fair.fairHours && (
               <>
-                <Text variant="mediumText">Hours</Text>
+                <Text variant="sm">Hours</Text>
                 <Markdown rules={markdownRules}>{fair.fairHours}</Markdown>
                 <Spacer my={1} />
               </>
             )}
             {!!fair.fairTickets && (
               <>
-                <Text variant="mediumText">Tickets</Text>
+                <Text variant="sm">Tickets</Text>
                 <Markdown rules={markdownRules}>{fair.fairTickets}</Markdown>
                 <Spacer my={1} />
               </>
@@ -117,14 +117,14 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
             )}
             {!!fair.fairLinks && (
               <>
-                <Text variant="mediumText">Links</Text>
+                <Text variant="sm">Links</Text>
                 <Markdown rules={markdownRules}>{fair.fairLinks}</Markdown>
                 <Spacer my={1} />
               </>
             )}
             {!!fair.fairContact && (
               <>
-                <Text variant="mediumText">Contact</Text>
+                <Text variant="sm">Contact</Text>
                 <Markdown rules={markdownRules}>{fair.fairContact}</Markdown>
                 <Spacer my={1} />
               </>

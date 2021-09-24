@@ -93,7 +93,7 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
     <Flex flexGrow={1}>
       <FancyModalHeader onLeftButtonPress={navigation.goBack}>Year created</FancyModalHeader>
       <Flex flexGrow={1} py={2}>
-        <YearText variant="caption" mb={15} mx={2}>
+        <YearText variant="xs" mb={15} mx={2}>
           {sliderValues[0]} – {sliderValues[1]}
         </YearText>
         <Flex alignItems="center" mx={2}>
@@ -153,7 +153,7 @@ export const OptionItem = ({ onPress, text, selected }: OptionItemProps) => (
   <TouchableRow onPress={onPress}>
     <Flex flexGrow={1} justifyContent="space-between" flexDirection="row" height={60}>
       <Flex flexDirection="row" justifyContent="space-between" flexGrow={1} alignItems="center" pl={2} pr={2}>
-        <Text variant="caption">{text}</Text>
+        <Text variant="xs">{text}</Text>
         {!!selected && (
           <Box mb={0.1}>
             <CheckIcon fill="black100" />

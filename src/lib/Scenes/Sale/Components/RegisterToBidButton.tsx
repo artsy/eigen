@@ -42,11 +42,11 @@ const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({ me, sale, con
 
         {sale.requireIdentityVerification ? (
           <Box>
-            <Text variant="caption" color="black60">
+            <Text variant="xs" color="black60">
               This auction requires identity verification to bid.
             </Text>
             <Text
-              variant="caption"
+              variant="xs"
               color="black60"
               style={{ textDecorationLine: "underline" }}
               onPress={() => navigate("/identity-verification-faq")}
@@ -55,7 +55,7 @@ const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({ me, sale, con
             </Text>
           </Box>
         ) : (
-          <Text variant="caption" color="black60">
+          <Text variant="xs" color="black60">
             Registration is required to bid.
           </Text>
         )}

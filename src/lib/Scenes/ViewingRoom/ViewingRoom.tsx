@@ -89,7 +89,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
       key: "introStatement",
       content: (
         <Flex mt="2" mx="2">
-          <Text data-test-id="intro-statement" mt="2" variant="text" mx="2" style={maxWidth}>
+          <Text data-test-id="intro-statement" mt="2" variant="sm" mx="2" style={maxWidth}>
             {viewingRoom.introStatement}
           </Text>
         </Flex>
@@ -108,7 +108,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
           <>
             {!!viewingRoom.pullQuote && (
               <Flex mx="2">
-                <Text data-test-id="pull-quote" variant="largeTitle" textAlign="center">
+                <Text data-test-id="pull-quote" variant="lg" textAlign="center">
                   {viewingRoom.pullQuote}
                 </Text>
               </Flex>
@@ -120,7 +120,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
         key: "body",
         content: (
           <Flex mx="2">
-            <Text data-test-id="body" variant="text" style={maxWidth}>
+            <Text data-test-id="body" variant="sm" style={maxWidth}>
               {viewingRoom.body}
             </Text>
           </Flex>
