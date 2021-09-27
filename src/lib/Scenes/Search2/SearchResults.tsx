@@ -67,7 +67,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     }
 
     didMountRef.current = true
-  }, [searchResults.hits])
+  }, [searchResults?.hits])
 
   const onPress = (item: AlgoliaSearchResult): void => {
     // TODO: I'm not sure why we need to use this `navigateToPartner` function but without it the header overlaps
