@@ -207,7 +207,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
         <InputTitle required={required}>{title}</InputTitle>
 
         {!!description && (
-          <Sans color="black60" mb={1} size="2">
+          <Sans color="black60" size="2" style={{ marginBottom: 4 }}>
             {description}
           </Sans>
         )}
