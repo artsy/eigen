@@ -2,7 +2,7 @@ import { themeGet } from "@styled-system/theme-get"
 import { EntityType, navigate, navigateToEntity, navigateToPartner, SlugType } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
-import { ArtworkIcon, Box, Flex, Spacer, Text, useSpace } from "palette"
+import { ArtworkIcon, Box, Flex, Spacer, Text } from "palette"
 import React, { useContext } from "react"
 import { Pressable, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
@@ -25,8 +25,6 @@ const NavigationButton: React.FC<{ artistTab: ArtistTabs; displayText: string; o
 }) => {
   return (
     <>
-      <Spacer ml={1} />
-
       <Pressable onPress={() => onPress({ artistTab })}>
         {({ pressed }) => (
           <QuickNavigationButton>
@@ -39,6 +37,8 @@ const NavigationButton: React.FC<{ artistTab: ArtistTabs; displayText: string; o
           </QuickNavigationButton>
         )}
       </Pressable>
+
+      <Spacer ml={1} />
     </>
   )
 }
@@ -64,7 +64,6 @@ export const AutosuggestSearchResult: React.FC<{
 }) => {
   const { inputRef, queryRef } = useContext(SearchContext)
   const { trackEvent } = useTracking()
-  const space = useSpace()
 
   const showNavigationButtons =
     showQuickNavigationButtons && !!result.counts?.artworks && !!result.counts?.auctionResults
@@ -131,11 +130,7 @@ export const AutosuggestSearchResult: React.FC<{
     >
       {!!showNavigationButtons && (
         <Flex flexDirection="row" alignItems="center">
-          <ScrollView
-            horizontal
-            contentContainerStyle={{ paddingHorizontal: space(1) }}
-            showsHorizontalScrollIndicator={false}
-          >
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <NavigationButton displayText="Artworks" artistTab="Artworks" onPress={onPress} />
             <NavigationButton displayText="Auction Results" artistTab="Insights" onPress={onPress} />
           </ScrollView>
