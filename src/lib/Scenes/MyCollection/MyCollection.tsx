@@ -216,7 +216,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
   )
 }
 
-const LoadingSkeleton: React.FC<{}> = () => {
+export const LoadingSkeleton: React.FC<{}> = () => {
   return (
     <Theme>
       <Flex>

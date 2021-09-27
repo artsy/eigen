@@ -17,7 +17,7 @@ import React, { useCallback, useRef, useState } from "react"
 import { FlatList, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
-import { useEnableMyCollection } from "../MyCollection/MyCollection"
+import { LoadingSkeleton as MyCollectionLoadingSkeleton, useEnableMyCollection } from "../MyCollection/MyCollection"
 import { MyCollectionAndSavedWorks, Tab } from "./MyCollectionAndSavedWorks"
 import { confirmLogout, SectionHeading } from "./MyProfileSettings"
 
@@ -90,33 +90,39 @@ export const OldMyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp 
   )
 }
 
-export const MyProfilePlaceholder: React.FC<{}> = () => (
-  <Flex pt="3" px="2">
-    <Join separator={<Separator my={2} />}>
-      <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
-      <Flex>
-        <PlaceholderText width={100 + Math.random() * 100} />
+export const MyProfilePlaceholder: React.FC<{}> = () => {
+  const shouldDisplayMyCollection = useEnableMyCollection()
+  if (shouldDisplayMyCollection) {
+    return <MyCollectionLoadingSkeleton />
+  }
+  return (
+    <Flex pt="3" px="2">
+      <Join separator={<Separator my={2} />}>
         <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
-        <Flex flexDirection="row" py={2}>
+        <Flex>
+          <PlaceholderText width={100 + Math.random() * 100} />
+          <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
+          <Flex flexDirection="row" py={2}>
+            {times(3).map((index: number) => (
+              <Flex key={index} marginRight={1}>
+                <PlaceholderBox height={120} width={120} />
+                <PlaceholderText marginTop={20} key={index} width={40 + Math.random() * 80} />
+              </Flex>
+            ))}
+          </Flex>
+        </Flex>
+        <Flex>
+          <PlaceholderText width={100 + Math.random() * 100} />
           {times(3).map((index: number) => (
-            <Flex key={index} marginRight={1}>
-              <PlaceholderBox height={120} width={120} />
-              <PlaceholderText marginTop={20} key={index} width={40 + Math.random() * 80} />
+            <Flex key={index} py={1}>
+              <PlaceholderText width={200 + Math.random() * 100} />
             </Flex>
           ))}
         </Flex>
-      </Flex>
-      <Flex>
-        <PlaceholderText width={100 + Math.random() * 100} />
-        {times(3).map((index: number) => (
-          <Flex key={index} py={1}>
-            <PlaceholderText width={200 + Math.random() * 100} />
-          </Flex>
-        ))}
-      </Flex>
-    </Join>
-  </Flex>
-)
+      </Join>
+    </Flex>
+  )
+}
 
 export const MyProfileContainer = createRefetchContainer(
   MyProfile,
