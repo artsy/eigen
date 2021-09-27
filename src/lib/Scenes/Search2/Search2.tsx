@@ -57,6 +57,10 @@ const SearchInput: React.FC<SearchInputProps> = ({
   const handleChangeText = useMemo(() => throttle(refine, SEARCH_THROTTLE_INTERVAL), [])
 
   const handleReset = () => {
+    trackEvent({
+      action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
+    })
+
     refine("")
     handleChangeText.cancel()
     onReset()
@@ -68,15 +72,15 @@ const SearchInput: React.FC<SearchInputProps> = ({
       enableCancelButton
       placeholder={placeholder}
       onChangeText={(text) => {
-        trackEvent({
-          action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
-          query: text,
-        })
-
         if (text.length === 0) {
           handleReset()
           return
         }
+
+        trackEvent({
+          action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
+          query: text,
+        })
 
         handleChangeText(text)
       }}
@@ -87,12 +91,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
           currentRefinement,
         })
       }}
-      onClear={() => {
-        trackEvent({
-          action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
-        })
-        handleReset()
-      }}
+      onClear={handleReset}
       onCancelPress={handleReset}
     />
   )
