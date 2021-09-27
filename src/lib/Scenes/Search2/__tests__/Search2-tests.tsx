@@ -180,6 +180,17 @@ describe("Search2 Screen", () => {
       expect(queryByA11yState({ selected: true })).toBeFalsy()
     })
 
+    it("when the query is changed", () => {
+      const { queryByA11yState, getByPlaceholderText, getByText } = tree
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+      fireEvent(searchInput, "changeText", "12")
+      fireEvent(getByText("Artists"), "press")
+      fireEvent(searchInput, "changeText", "123")
+
+      expect(queryByA11yState({ selected: true })).toBeFalsy()
+    })
+
     it("when clear button is pressed", () => {
       const { queryByA11yState, getByPlaceholderText, getByText, getByA11yLabel } = tree
       const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")

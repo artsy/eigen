@@ -83,6 +83,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
         })
 
         handleChangeText(text)
+        onReset()
       }}
       onSubmitEditing={onSubmitEditing}
       onFocus={() => {
