@@ -192,7 +192,15 @@ const Home = (props: Props) => {
                     />
                   )
                 case "trove":
-                  return homePageBelow ? <TroveContainer trove={homePageBelow} /> : <></>
+                  return homePageBelow ? (
+                    <TroveContainer
+                      trove={homePageBelow}
+                      onShow={() => separators.updateProps("trailing", { hideSeparator: false })}
+                      onHide={() => separators.updateProps("trailing", { hideSeparator: true })}
+                    />
+                  ) : (
+                    <></>
+                  )
                 case "viewing-rooms":
                   return featured ? <ViewingRoomsHomeRail featured={featured} /> : <></>
                 case "auction-results":

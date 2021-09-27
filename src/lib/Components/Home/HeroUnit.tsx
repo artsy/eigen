@@ -46,16 +46,16 @@ export const HeroUnit: React.FC<Props> = ({ unit, onPress, isTrove = false }) =>
           <Text variant="xl" color="white">
             {unit.title}
           </Text>
-          {unit.subtitle ? (
+          {!!unit.subtitle && (
             <Text variant="sm" color="white" mt={0.5}>
               {unit.subtitle}
             </Text>
-          ) : null}
-          {unit.linkText ? (
+          )}
+          {!!unit.linkText && (
             <Text variant="sm" color="white" weight="medium" mt={0.5}>
               {unit.linkText}
             </Text>
-          ) : null}
+          )}
         </Flex>
         {hasLoaded && unit.creditLine ? (
           // create a view the same size as the hero unit would be if you rotated it 90 degrees
