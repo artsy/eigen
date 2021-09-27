@@ -15,7 +15,6 @@ jest.unmock("react-relay")
 
 describe("AuctionResultsRailFragmentContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>
-  const mockScrollRef = jest.fn()
 
   const TestRenderer = () => (
     <QueryRenderer<AuctionResultsRailTestsQuery>
@@ -30,7 +29,7 @@ describe("AuctionResultsRailFragmentContainer", () => {
       variables={{}}
       render={({ props, error }) => {
         if (props) {
-          return <AuctionResultsRailFragmentContainer me={props.me!} scrollRef={mockScrollRef} />
+          return <AuctionResultsRailFragmentContainer me={props.me!} />
         } else if (error) {
           console.log(error)
         }

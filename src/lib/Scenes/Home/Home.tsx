@@ -193,7 +193,6 @@ const Home = (props: Props) => {
                 return meBelow ? (
                   <AuctionResultsRailFragmentContainer
                     me={meBelow}
-                    scrollRef={scrollRefs.current[index]}
                     onShow={() => separators.updateProps("leading", { hideSeparator: false })}
                     onHide={() => separators.updateProps("leading", { hideSeparator: true })}
                   />
