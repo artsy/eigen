@@ -57,7 +57,7 @@ describe("MyCollectionArtworkInsights", () => {
     const wrapper = renderWithWrappers(<TestRenderer />)
     resolveData()
     const text = extractText(wrapper.root)
-    expect(text).toContain("Price and market insights")
+    expect(text).toContain("Market Insights")
     expect(text).toContain('<mock-value-for-field-"sizebucket"> other by <mock-value-for-field-"name">')
     expect(wrapper.root.findByType(MyCollectionArtworkDemandIndexFragmentContainer)).toBeDefined()
     expect(wrapper.root.findByType(MyCollectionArtworkArtistMarketFragmentContainer)).toBeDefined()
