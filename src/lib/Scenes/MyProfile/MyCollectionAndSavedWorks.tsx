@@ -28,7 +28,6 @@ export const MyCollectionAndSavedWorks: React.FC<Props> = ({ initialTab = Tab.co
           title: Tab.collection,
           content: <MyCollectionQueryRenderer />,
           initial: initialTab === Tab.collection,
-          superscript: "Beta",
         },
         {
           title: Tab.savedWorks,
