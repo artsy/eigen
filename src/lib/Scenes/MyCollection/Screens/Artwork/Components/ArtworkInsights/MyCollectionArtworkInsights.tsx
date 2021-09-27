@@ -29,7 +29,7 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
           <Spacer my={1} />
 
           <ScreenMargin>
-            <Text variant="md">Price and market insights</Text>
+            <Text variant="md">Market Insights</Text>
             <Text variant="xs" color="black60">
               {capitalize(artwork.sizeBucket!)} {pluralizeMedium(artwork.medium!)} by{" "}
               {artwork.artist?.name || "Unknown Artist"}
