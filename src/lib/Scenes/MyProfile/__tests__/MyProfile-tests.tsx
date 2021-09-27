@@ -54,7 +54,7 @@ describe(MyProfile, () => {
 
   describe("When MyCollection is enabled", () => {
     it("Loads MyCollectionAndSavedArtworks Screen", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionIOS: true })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionIos: true })
       Platform.OS = "ios"
       const tree = getWrapper()
       expect(tree.root.findByType(MyCollectionAndSavedWorks)).toBeDefined()
