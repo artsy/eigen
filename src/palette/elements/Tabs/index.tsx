@@ -14,6 +14,7 @@ export const TAB_BAR_HEIGHT = 44
 
 export type TabsType = Array<{
   label: string
+  superscript: string | undefined
   completed?: boolean
 }>
 
