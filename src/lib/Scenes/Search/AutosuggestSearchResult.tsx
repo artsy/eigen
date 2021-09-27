@@ -18,6 +18,16 @@ type ArtistTabs = "Insights" | "Artworks"
 
 type HandleResultPress = (passProps?: { artistTab: ArtistTabs }) => void
 
+const getCategoryName = (result: AutosuggestResult) => {
+  if (result.displayType) {
+    return result.displayType
+  }
+  if (result.__typename === "Artist") {
+    return result.__typename
+  }
+  return ""
+}
+
 const NavigationButton: React.FC<{ artistTab: ArtistTabs; displayText: string; onPress: HandleResultPress }> = ({
   artistTab,
   displayText,
@@ -91,17 +101,7 @@ export const AutosuggestSearchResult: React.FC<{
     }
   }
 
-  const getCategoryName = () => {
-    if (result.displayType) {
-      return result.displayType
-    }
-    if (result.__typename === "Artist") {
-      return result.__typename
-    }
-    return ""
-  }
-
-  const categoryName = getCategoryName()
+  const categoryName = getCategoryName(result)
 
   return (
     <SearchListItem
