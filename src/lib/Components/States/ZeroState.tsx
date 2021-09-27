@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Flex, Sans, Spacer, useColor } from "palette"
+import { Flex, Sans, useColor } from "palette"
 
 interface ZeroStateProps {
   title?: string
@@ -13,28 +13,31 @@ export const ZeroState = (props: ZeroStateProps) => {
   const color = useColor()
   return (
     <Flex py="4" px="2" justifyContent="center" style={{ height: "100%" }}>
-      {!!props.title && (
-        <>
-          <Sans size="3" lineHeight="20" maxWidth="80%" color={color("black100")}>
-            {props.title}
-          </Sans>
-        </>
-      )}
+      <Flex minHeight={30}>
+        {!!props.title && (
+          <>
+            <Sans size="3" lineHeight="20" maxWidth="80%" color={color("black100")}>
+              {props.title}
+            </Sans>
+          </>
+        )}
+      </Flex>
 
-      {!!props.subtitle && (
-        <>
-          <Sans
-            size="3"
-            maxWidth={props.title ? "100%" : "80%"}
-            lineHeight="20"
-            color={props.title ? color("black60") : color("black100")}
-          >
-            {props.subtitle}
-          </Sans>
-        </>
-      )}
+      <Flex minHeight={80}>
+        {!!props.subtitle && (
+          <>
+            <Sans
+              size="3"
+              maxWidth={props.title ? "100%" : "80%"}
+              lineHeight="20"
+              color={props.title ? color("black60") : color("black100")}
+            >
+              {props.subtitle}
+            </Sans>
+          </>
+        )}
+      </Flex>
 
-      <Spacer mb={3} />
       {!!props.callToAction && <>{props.callToAction}</>}
     </Flex>
   )
