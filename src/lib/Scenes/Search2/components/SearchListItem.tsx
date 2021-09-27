@@ -1,6 +1,8 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { CloseIcon, Flex, Spacer, Touchable, useSpace } from "palette"
+import { CloseIcon, Flex, Spacer, Touchable } from "palette"
 import React from "react"
+
+const IMAGE_SIZE = 40
 
 interface SearchListItemProps {
   categoryName: string
@@ -18,18 +20,21 @@ export const SearchListItem: React.FC<SearchListItemProps> = ({
   InfoComponent,
   children,
 }) => {
-  const space = useSpace()
-
   return (
     <>
       <Touchable onPress={onPress}>
-        <Flex height={!!children ? "auto" : 40} py={space(1)} flexDirection="row" alignItems="center">
+        <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
           <OpaqueImageView
             imageURL={imageURL}
-            style={{ width: 40, height: 40, borderRadius: categoryName === "Artist" ? 20 : 0, overflow: "hidden" }}
+            style={{
+              width: IMAGE_SIZE,
+              height: IMAGE_SIZE,
+              borderRadius: categoryName === "Artist" ? 20 : 0,
+              overflow: "hidden",
+            }}
           />
           <Spacer ml={1} />
-          <Flex style={{ flex: 1 }}>
+          <Flex flex={1}>
             <InfoComponent />
           </Flex>
           {!!onDelete && (
@@ -48,6 +53,8 @@ export const SearchListItem: React.FC<SearchListItemProps> = ({
             </Touchable>
           )}
         </Flex>
+
+        {!!children && <Spacer mb={1} />}
       </Touchable>
 
       {children}
