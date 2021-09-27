@@ -10,7 +10,6 @@ import { DevToggleName, devToggles, FeatureName, features } from "lib/store/conf
 import { GlobalStore } from "lib/store/GlobalStore"
 import { capitalize, compact, sortBy } from "lodash"
 import { ChevronIcon, CloseIcon, Flex, ReloadIcon, Separator, Spacer, Text, useColor } from "palette"
-import { DevTogglePaletteFlag } from "palette/PaletteFlag"
 import React, { useEffect, useState } from "react"
 import {
   Alert,
@@ -62,7 +61,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
       pt={useScreenDimensions().safeAreaInsets.top + 20}
     >
       <Flex flexDirection="row" justifyContent="space-between">
-        <Text variant="largeTitle" pb="2" px="2">
+        <Text variant="lg" pb="2" px="2">
           Admin Settings
         </Text>
         <Buttons onClose={onClose} />
@@ -72,7 +71,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         style={{ flex: 1, backgroundColor: "white", borderRadius: 4, overflow: "hidden" }}
         contentContainerStyle={{ paddingVertical: 10 }}
       >
-        <Text variant="small" color="grey" mx="2">
+        <Text variant="xs" color="grey" mx="2">
           eigen v{getVersion()}, build {getBuildNumber()} ({ArtsyNativeModule.gitCommitShortHash})
         </Text>
         {Platform.OS === "ios" && (
@@ -99,7 +98,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           <Separator my="1" />
         </Flex>
 
-        <Text variant="title" my="1" mx="2">
+        <Text variant="md" my="1" mx="2">
           Feature Flags
         </Text>
         {configurableFeatureFlagKeys.map((flagKey) => {
@@ -108,13 +107,12 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         <Flex mx="2">
           <Separator my="1" />
         </Flex>
-        <Text variant="title" my="1" mx="2">
+        <Text variant="md" my="1" mx="2">
           Tools
         </Text>
         {configurableDevToggleKeys.map((devToggleKey) => {
           return <DevToggleItem key={devToggleKey} toggleKey={devToggleKey} />
         })}
-        <DevTogglePaletteFlag />
         <MenuItem
           title="Clear AsyncStorage"
           chevron={null}
@@ -241,11 +239,11 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
       }}
       value={
         isAdminOverrideInEffect ? (
-          <Text variant="subtitle" color="black100" fontWeight="bold">
+          <Text variant="md" color="black100" fontWeight="bold">
             {valText}
           </Text>
         ) : (
-          <Text variant="subtitle" color="black60">
+          <Text variant="md" color="black60">
             {valText}
           </Text>
         )
@@ -284,11 +282,11 @@ const DevToggleItem: React.FC<{ toggleKey: DevToggleName }> = ({ toggleKey }) =>
       }}
       value={
         currentValue ? (
-          <Text variant="subtitle" color="black100" fontWeight="bold">
+          <Text variant="md" color="black100" fontWeight="bold">
             {valText}
           </Text>
         ) : (
-          <Text variant="subtitle" color="black60">
+          <Text variant="md" color="black60">
             {valText}
           </Text>
         )
@@ -378,11 +376,11 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             >
               <Flex ml="2" mr="15px" my="5px" flexDirection="row" justifyContent="space-between" alignItems="center">
                 <Flex>
-                  <Text variant="caption" color="black60" mb="0.5">
+                  <Text variant="xs" color="black60" mb="0.5">
                     {description}
                   </Text>
                   <Flex key={key} flexDirection="row" justifyContent="space-between">
-                    <Text variant="caption">{strings[key as EnvironmentKey]}</Text>
+                    <Text variant="xs">{strings[key as EnvironmentKey]}</Text>
                   </Flex>
                 </Flex>
                 <ChevronIcon fill="black60" direction="right" />

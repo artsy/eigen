@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
 import { filterArtworksParams, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
@@ -134,19 +134,19 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         <Flex flexDirection="row" alignItems="center">
           <InfoButton
             titleElement={
-              <Text variant="title" mr={0.5}>
+              <Text variant="md" mr={0.5}>
                 Auction Results
               </Text>
             }
             trackEvent={() => {
-              tracking.trackEvent(tappedInfoBubble(tracks.tapAuctionResultsInfo()))
+              tracking.trackEvent(tracks.tapAuctionResultsInfo())
             }}
             modalTitle={"Auction Results"}
             maxModalHeight={310}
             modalContent={renderAuctionResultsModal()}
           />
         </Flex>
-        <SortMode variant="small" color="black60">
+        <SortMode variant="xs" color="black60">
           {!!artist.auctionResultsConnection?.totalCount
             ? new Intl.NumberFormat().format(artist.auctionResultsConnection.totalCount)
             : 0}{" "}
@@ -310,9 +310,10 @@ export const tracks = {
     type: "thumbnail",
   }),
 
-  tapAuctionResultsInfo: (): TappedInfoBubbleArgs => ({
-    contextModule: ContextModule.auctionResults,
-    contextScreenOwnerType: OwnerType.artistAuctionResults,
+  tapAuctionResultsInfo: (): TappedInfoBubble => ({
+    action: ActionType.tappedInfoBubble,
+    context_module: ContextModule.auctionResults,
+    context_screen_owner_type: OwnerType.artistAuctionResults,
     subject: "auctionResults",
   }),
 }

@@ -58,7 +58,7 @@ export class FairBMWArtActivation extends React.Component<Props, State> {
     if (sponsoredContent?.activationText) {
       sections.push({
         key: "art-activation",
-        content: <Text variant="text">{sponsoredContent.activationText}</Text>,
+        content: <Text variant="sm">{sponsoredContent.activationText}</Text>,
       })
     }
 

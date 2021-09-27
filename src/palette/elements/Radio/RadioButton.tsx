@@ -94,7 +94,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
         <Flex style={{ marginTop: !!children ? 0 : 2 }}>
           {!!text && <Text color={textColor}>{text}</Text>}
           {!!subtitle && (
-            <Text variant="small" color={subtitleColor}>
+            <Text variant="xs" color={subtitleColor}>
               {subtitle}
             </Text>
           )}

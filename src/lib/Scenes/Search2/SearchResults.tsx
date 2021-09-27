@@ -21,7 +21,7 @@ const Highlight = connectHighlight(({ highlight, attribute, hit, highlightProper
   const parsedHit = highlight({ attribute, hit, highlightProperty })
 
   return (
-    <Text>
+    <Text numberOfLines={1}>
       {parsedHit.map(({ isHighlighted, value }, index) =>
         isHighlighted ? (
           <Text key={index} color="blue100" fontWeight="600" padding={0} margin={0}>
@@ -81,10 +81,10 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     return (
       <Box px={2} py={1}>
         <Spacer mt={4} />
-        <Text variant="subtitle">
+        <Text variant="md">
           No {categoryDisplayName} found for “{searchState.query}”.
         </Text>
-        <Text variant="subtitle" color="black60">
+        <Text variant="md" color="black60">
           Look at a different category or try another search term.
         </Text>
       </Box>
@@ -106,7 +106,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
               style={{ width: 40, height: 40, borderRadius: 20, overflow: "hidden" }}
             />
             <Spacer ml={1} />
-            <Flex>
+            <Flex flex={1}>
               <Highlight attribute="name" hit={item} />
             </Flex>
           </Flex>

@@ -71,7 +71,7 @@ describe("PhoneInput", () => {
       tree.root.findByType(Input).props.onChangeText("")
     })
 
-    expect(tree.root.findByType(Text).props.children).toBe("This phone number is incomplete")
+    expect(tree.root.findAllByType(Text)[2].props.children).toBe("This phone number is incomplete")
   })
 
   it("does not show a validation message when a phone number is valid", () => {
@@ -82,6 +82,6 @@ describe("PhoneInput", () => {
       tree.root.findByType(Input).props.onChangeText("6466464646")
     })
 
-    expect(tree.root.findByType(Text).props.children).toBe("")
+    expect(tree.root.findAllByType(Text)[2].props.children).toBe("")
   })
 })

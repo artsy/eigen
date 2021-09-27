@@ -4,7 +4,10 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type CommerceOrderModeEnum = "BUY" | "OFFER" | "%future added value";
+export type CommerceOrderParticipantEnum = "BUYER" | "SELLER" | "%future added value";
 export type SummarySection_section = {
+    readonly mode: CommerceOrderModeEnum | null;
     readonly buyerTotal: string | null;
     readonly taxTotal: string | null;
     readonly shippingTotal: string | null;
@@ -17,6 +20,10 @@ export type SummarySection_section = {
                 } | null;
             } | null;
         } | null> | null;
+    } | null;
+    readonly lastOffer?: {
+        readonly amount: string | null;
+        readonly fromParticipant: CommerceOrderParticipantEnum | null;
     } | null;
     readonly " $refType": "SummarySection_section";
 };
@@ -42,6 +49,13 @@ return {
   "metadata": null,
   "name": "SummarySection_section",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "mode",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": (v0/*: any*/),
@@ -126,11 +140,43 @@ return {
         }
       ],
       "storageKey": "lineItems(first:1)"
+    },
+    {
+      "kind": "InlineFragment",
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "CommerceOffer",
+          "kind": "LinkedField",
+          "name": "lastOffer",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": (v0/*: any*/),
+              "kind": "ScalarField",
+              "name": "amount",
+              "storageKey": "amount(precision:2)"
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "fromParticipant",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
+      "type": "CommerceOfferOrder",
+      "abstractKey": null
     }
   ],
   "type": "CommerceOrder",
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = 'da9d714038b81677364c2b56750bcb6c';
+(node as any).hash = '6efdb67af648f9a9d701ae141f4e6753';
 export default node;

@@ -154,10 +154,10 @@ export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversati
         <Flex flexDirection="row">
           <Icon mt="3px" fill="white100" />
           <Flex flexDirection="column" pl={1}>
-            <Text color="white100" variant="mediumText">
+            <Text color="white100" variant="sm">
               {message}
             </Text>
-            <Text color="white100" variant="caption">
+            <Text color="white100" variant="xs">
               {subMessage}
             </Text>
           </Flex>

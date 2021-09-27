@@ -2,7 +2,7 @@ import { MakeOfferButton_artwork } from "__generated__/MakeOfferButton_artwork.g
 import { MakeOfferButtonOrderMutation } from "__generated__/MakeOfferButtonOrderMutation.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import { Button, ButtonVariant } from "palette"
+import { Button, ButtonProps } from "palette"
 import React from "react"
 import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -12,7 +12,7 @@ export interface MakeOfferButtonProps {
   relay: RelayProp
   // EditionSetID is passed down from the edition selected by the user
   editionSetID: string | null
-  variant?: ButtonVariant
+  variant?: ButtonProps["variant"]
   buttonText?: string
 }
 

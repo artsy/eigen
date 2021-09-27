@@ -1,11 +1,12 @@
 import { Box, Flex, Theme } from "palette"
-import React, { useImperativeHandle, useRef } from "react"
+import React, { useEffect, useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { compact } from "lodash"
 import { FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
@@ -40,12 +41,21 @@ Recently Saved
 */
 const smallTileKeys: Array<string | null> = ["active_bids", "followed_artists", "recently_viewed_works", "saved_works"]
 
-const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ rail, scrollRef }) => {
+interface ArtworkRailProps {
+  rail: ArtworkRail_rail
+  onHide?: () => void
+  onShow?: () => void
+}
+
+const ArtworkRail: React.FC<ArtworkRailProps & RailScrollProps> = ({ rail, scrollRef, onHide, onShow }) => {
+  const tracking = useTracking()
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)
   useImperativeHandle(scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
+
+  const showNewNewWorksForYouRail = useFeatureFlag("AREnableNewNewWorksForYou")
 
   const viewAllUrl = getViewAllUrl(rail)
   const useSmallTile = smallTileKeys.includes(rail.key)
@@ -60,7 +70,17 @@ const ArtworkRail: React.FC<{ rail: ArtworkRail_rail } & RailScrollProps> = ({ r
   }
   // This is to satisfy the TypeScript compiler based on Metaphysics types.
   const artworks = compact(rail.results ?? [])
-  const tracking = useTracking()
+
+  const isHiddenFollowedArtistsRail = rail.key === "followed_artists" && showNewNewWorksForYouRail
+  const showRail = artworks.length && !isHiddenFollowedArtistsRail
+
+  useEffect(() => {
+    showRail ? onShow?.() : onHide?.()
+  }, [showRail])
+
+  if (!showRail) {
+    return null
+  }
 
   return artworks.length ? (
     <Theme>

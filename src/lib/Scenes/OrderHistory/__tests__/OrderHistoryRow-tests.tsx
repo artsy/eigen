@@ -80,6 +80,24 @@ describe("Order history row", () => {
       ).toBeTruthy()
     })
 
+    describe("Offer mode", () => {
+      it("View Offer button when SUBMITTED state", () => {
+        const tree = renderWithWrappers(<TestRenderer />).root
+        mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => ({ ...mockOrder, mode: "OFFER" }) })
+
+        expect(extractText(tree.findByProps({ "data-test-id": "view-order-button" }))).toContain("View Offer")
+      })
+
+      it("View Order button when APPROVED state", () => {
+        const tree = renderWithWrappers(<TestRenderer />).root
+        mockEnvironmentPayload(mockEnvironment, {
+          CommerceOrder: () => ({ ...mockOrder, state: "APPROVED", mode: "OFFER" }),
+        })
+
+        expect(extractText(tree.findByProps({ "data-test-id": "view-order-button" }))).toContain("View Order")
+      })
+    })
+
     it("with gray box if no image", () => {
       const order = {
         ...mockOrder,

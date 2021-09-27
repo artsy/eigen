@@ -1,6 +1,7 @@
 import { ArtistListItem_artist } from "__generated__/ArtistListItem_artist.graphql"
 import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItemFollowArtistMutation.graphql"
 import { navigate } from "lib/navigation/navigate"
+import { unsafe_getEnableMyCollection } from "lib/Scenes/MyCollection/MyCollection"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { Schema, track } from "lib/utils/track"
 import { Button, ClassTheme, EntityHeader, Flex, Touchable } from "palette"
@@ -107,6 +108,8 @@ export class ArtistListItem extends React.Component<Props, State> {
     const { artist, withFeedback, containerStyle, disableNavigation } = this.props
     const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
     const imageURl = image && image.url
+    const enableMyCollection = unsafe_getEnableMyCollection()
+    const buttonVariant = is_followed && enableMyCollection ? "fillDark" : is_followed ? "outline" : "fillGray"
 
     if (!name) {
       return null
@@ -137,7 +140,7 @@ export class ArtistListItem extends React.Component<Props, State> {
               </Flex>
               <Flex>
                 <Button
-                  variant={is_followed ? "secondaryOutline" : "secondaryGray"}
+                  variant={buttonVariant}
                   onPress={this.handleFollowArtist.bind(this)}
                   size="small"
                   longestText="Following"

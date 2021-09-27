@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import { AuctionResultQuery, AuctionResultQueryResponse } from "__generated__/AuctionResultQuery.graphql"
 import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
@@ -71,10 +71,10 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   const { headerElement, scrollProps } = useStickyScrollHeader({
     header: (
       <Flex flex={1} pl={6} pr={4} pt={0.5} flexDirection="row">
-        <Text variant="mediumText" numberOfLines={1} style={{ flexShrink: 1 }}>
+        <Text variant="sm" numberOfLines={1} style={{ flexShrink: 1 }}>
           {auctionResult.title}
         </Text>
-        {!!auctionResult.dateText && <Text variant="mediumText">, {auctionResult.dateText}</Text>}
+        {!!auctionResult.dateText && <Text variant="sm">, {auctionResult.dateText}</Text>}
       </Flex>
     ),
   })
@@ -200,9 +200,9 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
                 onPress={() => artist?.href && navigate(artist.href)}
                 hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
               >
-                <Text variant="mediumText">{artist?.name}</Text>
+                <Text variant="sm">{artist?.name}</Text>
               </TouchableWithoutFeedback>
-              <Text variant="title">
+              <Text variant="md">
                 {auctionResult.title}
                 {!!auctionResult.dateText && `, ${auctionResult.dateText}`}
               </Text>
@@ -212,12 +212,12 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             <Flex flexDirection="row" mb={1}>
               <InfoButton
                 titleElement={
-                  <Text variant="title" mr={0.5}>
+                  <Text variant="md" mr={0.5}>
                     Sale Price
                   </Text>
                 }
                 trackEvent={() => {
-                  tracking.trackEvent(tappedInfoBubble(tracks.tapMarketStatsInfo()))
+                  tracking.trackEvent(tracks.tapMarketStatsInfo())
                 }}
                 modalTitle="Sale Price"
                 maxModalHeight={180}
@@ -228,26 +228,26 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
           {hasSalePrice ? (
             <>
               <Flex mb={0.5}>
-                <Text variant="largeTitle">{auctionResult.priceRealized?.display}</Text>
+                <Text variant="lg">{auctionResult.priceRealized?.display}</Text>
                 {!!showPriceUSD && (
-                  <Text variant="text" color="black60" testID="priceUSD">
+                  <Text variant="sm" color="black60" testID="priceUSD">
                     {auctionResult.priceRealized?.displayUSD}
                   </Text>
                 )}
               </Flex>
               {!!auctionResult.performance?.mid && (
                 <AuctionResultsMidEstimate
-                  textVariant="caption"
+                  textVariant="xs"
                   value={auctionResult.performance.mid}
                   shortDescription="mid-estimate"
                 />
               )}
             </>
           ) : (
-            <Text variant="largeTitle">{salePriceMessage}</Text>
+            <Text variant="lg">{salePriceMessage}</Text>
           )}
 
-          <Text variant="title" mt={4} mb={1}>
+          <Text variant="md" mt={4} mb={1}>
             Details
           </Text>
           {details}
@@ -381,9 +381,10 @@ export const tracks = {
       context_screen_owner_id: id,
     }),
 
-  tapMarketStatsInfo: (): TappedInfoBubbleArgs => ({
-    contextModule: ContextModule.auctionResult,
-    contextScreenOwnerType: OwnerType.artistAuctionResults,
+  tapMarketStatsInfo: (): TappedInfoBubble => ({
+    action: ActionType.tappedInfoBubble,
+    context_module: ContextModule.auctionResult,
+    context_screen_owner_type: OwnerType.artistAuctionResults,
     subject: "auctionResultSalePrice",
   }),
 }

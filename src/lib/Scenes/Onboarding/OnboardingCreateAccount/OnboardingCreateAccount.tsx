@@ -176,11 +176,11 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
       >
         <Spacer mt={60} />
         <Box height={130}>
-          <Text variant="largeTitle">{title}</Text>
+          <Text variant="lg">{title}</Text>
           {!!caption && (
             <>
               <Spacer mt={1.5} />
-              <Text variant="caption" color={color("black60")}>
+              <Text variant="xs" color={color("black60")}>
                 {caption}
               </Text>
             </>
@@ -229,7 +229,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
             haptic="impactMedium"
             mb={1}
             mt={1.5}
-            variant="secondaryOutline"
+            variant="outline"
             testID="loginButton"
           >
             Go to Login
@@ -244,7 +244,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
         disabled={isLastStep && !values.acceptedTerms}
         loading={isSubmitting}
         testID="signUpButton"
-        variant="primaryBlack"
+        variant="fillDark"
         mb={safeAreaInsets.bottom}
       >
         Next

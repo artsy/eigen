@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType, tappedInfoBubble } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import { MyCollectionArtworkDemandIndex_artwork } from "__generated__/MyCollectionArtworkDemandIndex_artwork.graphql"
 import { MyCollectionArtworkDemandIndex_marketPriceInsights } from "__generated__/MyCollectionArtworkDemandIndex_marketPriceInsights.graphql"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
@@ -91,7 +91,7 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
   return (
     <>
       <Box>
-        <Text variant="largeTitle" color="purple100" /* TODO-PALETTE-V3 "blue100" */>
+        <Text variant="lg" color="purple100" /* TODO-PALETTE-V3 "blue100" */>
           {adjustedDemandRank}
         </Text>
       </Box>
@@ -151,13 +151,12 @@ export const tests = {
 }
 
 const tracks = {
-  tappedInfoBubble: (internalID: string, slug: string) => {
-    return tappedInfoBubble({
-      contextModule: ContextModule.myCollectionArtwork,
-      contextScreenOwnerType: OwnerType.myCollectionArtwork,
-      contextScreenOwnerId: internalID,
-      contextScreenOwnerSlug: slug,
-      subject: "demandIndex",
-    })
-  },
+  tappedInfoBubble: (internalID: string, slug: string): TappedInfoBubble => ({
+    action: ActionType.tappedInfoBubble,
+    context_module: ContextModule.myCollectionArtwork,
+    context_screen_owner_type: OwnerType.myCollectionArtwork,
+    context_screen_owner_id: internalID,
+    context_screen_owner_slug: slug,
+    subject: "demandIndex",
+  }),
 }

@@ -17,13 +17,13 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({ 
     <Touchable haptic onPress={() => setChecked(!checked)}>
       <Flex flexDirection="row" alignItems="flex-start">
         <Checkbox error={error} checked={checked} onPress={() => setChecked(!checked)} mt={0.3}>
-          <Text variant="small">
+          <Text variant="xs">
             By checking this box, you consent to our{" "}
             <Text
               onPress={() => {
                 Linking.openURL(`${webURL}/terms`)
               }}
-              variant="small"
+              variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
               Terms of Use
@@ -33,7 +33,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({ 
               onPress={() => {
                 Linking.openURL(`${webURL}/privacy`)
               }}
-              variant="small"
+              variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
               Privacy Policy
@@ -43,7 +43,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({ 
               onPress={() => {
                 Linking.openURL(`${webURL}/conditions-of-sale`)
               }}
-              variant="small"
+              variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
               Conditions of Sale

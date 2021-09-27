@@ -72,7 +72,7 @@ export const Pill: React.FC<PillProps> = ({
         </>
       )}
       {!!imageUrl && <OpaqueImageViewContainer imageURL={imageUrl} />}
-      <Text variant="small" numberOfLines={1} fontSize={typeSize}>
+      <Text variant="xs" numberOfLines={1} fontSize={typeSize}>
         {children}
       </Text>
       {iconPosition === "right" && !!icon && (

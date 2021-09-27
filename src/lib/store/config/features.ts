@@ -106,6 +106,11 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableSavedSearch",
     description: "Enable Saved Search: iOS",
   },
+  AREnableNewNewWorksForYou: {
+    readyForRelease: false,
+    description: "Enable new 'New Works For You' rail",
+    showInAdminMenu: true,
+  },
   AREnableSavedSearchAndroid: {
     readyForRelease: true,
     echoFlagKey: "AREnableSavedSearchAndroid",
@@ -148,6 +153,22 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Enable Trove in homepage",
     showInAdminMenu: true,
+  },
+  AREnableMyCollectionAndroid: {
+    readyForRelease: false,
+    description: "Enable My Collection (Android)",
+    showInAdminMenu: true,
+  },
+  AREnableMyCollectionIos: {
+    readyForRelease: false,
+    description: "Enable My Collection (iOS)",
+    showInAdminMenu: true,
+  },
+  ARShowNetworkUnavailableModal: {
+    readyForRelease: true,
+    description: "Enable network unavailable modal",
+    showInAdminMenu: true,
+    echoFlagKey: "ARShowNetworkUnavailableModal",
   },
 })
 

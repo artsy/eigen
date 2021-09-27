@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType, tappedInfoBubble, TappedInfoBubbleArgs } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import { MarketStatsQuery } from "__generated__/MarketStatsQuery.graphql"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { formatLargeNumber } from "lib/utils/formatLargeNumber"
@@ -102,18 +102,18 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
       <Flex flexDirection="row" alignItems="center">
         <InfoButton
           titleElement={
-            <Text variant="title" mr={0.5}>
+            <Text variant="md" mr={0.5}>
               Market Signals
             </Text>
           }
           trackEvent={() => {
-            tracking.trackEvent(tappedInfoBubble(tracks.tapMarketStatsInfo()))
+            tracking.trackEvent(tracks.tapMarketStatsInfo())
           }}
           modalTitle={"Market Signals"}
           modalContent={renderInfoModal()}
         />
       </Flex>
-      <Text variant="small" color="black60" my={0.5}>
+      <Text variant="xs" color="black60" my={0.5}>
         Averages over last 36 months
       </Text>
       <Select
@@ -131,27 +131,27 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
       {/* Market Stats Values */}
       <Flex flexDirection="row" flexWrap="wrap" mt={15}>
         <Flex width="50%">
-          <Text variant="largeTitle" data-test-id="annualLotsSold">
+          <Text variant="lg" data-test-id="annualLotsSold">
             {selectedPriceInsight.annualLotsSold}
           </Text>
-          <Text variant="text">Yearly lots sold</Text>
+          <Text variant="sm">Yearly lots sold</Text>
         </Flex>
         <Flex width="50%">
-          <Text variant="largeTitle">{formattedSellThroughRate}%</Text>
-          <Text variant="text">Sell-through rate</Text>
+          <Text variant="lg">{formattedSellThroughRate}%</Text>
+          <Text variant="sm">Sell-through rate</Text>
         </Flex>
         <Flex width="50%" mt={2}>
-          <Text variant="largeTitle">${formattedAverageValueSold}</Text>
-          <Text variant="text">Sale price</Text>
+          <Text variant="lg">${formattedAverageValueSold}</Text>
+          <Text variant="sm">Sale price</Text>
         </Flex>
         <Flex width="50%" mt={2}>
           <Flex width="50%" flexDirection="row" alignItems="center">
             <Join separator={<Spacer mr={0.5} />}>
               {deltaIcon}
-              <Text variant="largeTitle">{formattedMedianSaleOverEstimatePercentage}%</Text>
+              <Text variant="lg">{formattedMedianSaleOverEstimatePercentage}%</Text>
             </Join>
           </Flex>
-          <Text variant="text">Sale price over estimate</Text>
+          <Text variant="sm">Sale price over estimate</Text>
         </Flex>
       </Flex>
       <Separator my={2} ml={-2} width={useScreenDimensions().width} />
@@ -203,11 +203,11 @@ const LoadingSkeleton = () => {
   return (
     <>
       <Flex flexDirection="row" alignItems="center">
-        <Text variant="title" mr={0.5}>
+        <Text variant="md" mr={0.5}>
           Market Signals
         </Text>
       </Flex>
-      <Text variant="small" color="black60" my={0.5}>
+      <Text variant="xs" color="black60" my={0.5}>
         Last 36 months
       </Text>
       <Spacer mb={0.5} />
@@ -216,32 +216,33 @@ const LoadingSkeleton = () => {
         <Flex width="50%">
           <Spacer mb={0.3} />
           <PlaceholderText width={30} height={25} />
-          <Text variant="text">Yearly lots sold</Text>
+          <Text variant="sm">Yearly lots sold</Text>
         </Flex>
         <Flex width="50%">
           <Spacer mb={0.3} />
           <PlaceholderText width={60} height={25} />
-          <Text variant="text">Sell-through rate</Text>
+          <Text variant="sm">Sell-through rate</Text>
         </Flex>
         <Flex width="50%" mt={2}>
           <Spacer mb={0.3} />
           <PlaceholderText width={50} height={25} />
-          <Text variant="text">Average sale price</Text>
+          <Text variant="sm">Average sale price</Text>
         </Flex>
         <Flex width="50%" mt={2}>
           <Spacer mb={0.3} />
           <PlaceholderText width={70} height={25} />
-          <Text variant="text">Sale price over estimate</Text>
+          <Text variant="sm">Sale price over estimate</Text>
         </Flex>
       </Flex>
     </>
   )
 }
 
-export const tracks = {
-  tapMarketStatsInfo: (): TappedInfoBubbleArgs => ({
-    contextModule: ContextModule.auctionResults,
-    contextScreenOwnerType: OwnerType.artistAuctionResults,
+const tracks = {
+  tapMarketStatsInfo: (): TappedInfoBubble => ({
+    action: ActionType.tappedInfoBubble,
+    context_module: ContextModule.auctionResults,
+    context_screen_owner_type: OwnerType.artistAuctionResults,
     subject: "artistMarketStatistics",
   }),
 }

@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType, tappedInfoBubble } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { MyCollectionArtworkArtistAuctionResultsTestsQuery } from "__generated__/MyCollectionArtworkArtistAuctionResultsTestsQuery.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
@@ -123,15 +123,18 @@ describe("MyCollectionArtworkArtistAuctionResults", () => {
     wrapper.root.findByType(InfoButton).props.onPress()
 
     expect(trackEvent).toHaveBeenCalledTimes(1)
-    expect(trackEvent).toHaveBeenCalledWith(
-      tappedInfoBubble({
-        contextModule: ContextModule.auctionResults,
-        contextScreenOwnerType: OwnerType.myCollectionArtwork,
-        subject: "auctionResults",
-        contextScreenOwnerId: "artwork-id",
-        contextScreenOwnerSlug: "artwork-slug",
-      })
-    )
+    expect(trackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "action": "tappedInfoBubble",
+          "context_module": "auctionResults",
+          "context_screen_owner_id": "artwork-id",
+          "context_screen_owner_slug": "artwork-slug",
+          "context_screen_owner_type": "myCollectionArtwork",
+          "subject": "auctionResults",
+        },
+      ]
+    `)
   })
 
   it("tracks analytics event when `Explore Auction Results` is tapped", () => {

@@ -19,6 +19,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const trackingUrl = getTrackingUrl(lineItem)
   const orderStatus = getOrderStatus(order.state as OrderState, lineItem)
   const orderIsInactive = orderStatus === "canceled" || orderStatus === "refunded"
+  const isViewOfferButton = orderStatus === "pending" && order?.mode === "OFFER"
 
   return (
     <Flex width="100%" data-test-id="order-container">
@@ -36,23 +37,23 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             )}
           </Flex>
           <Flex width="40%" flexGrow={1} mr={2}>
-            <Text variant="mediumText" data-test-id="artist-names" ellipsizeMode="tail" numberOfLines={1}>
+            <Text variant="sm" data-test-id="artist-names" ellipsizeMode="tail" numberOfLines={1}>
               {artwork?.artistNames}
             </Text>
-            <Text variant="caption" color="black60" data-test-id="partner-name" ellipsizeMode="tail" numberOfLines={1}>
+            <Text variant="xs" color="black60" data-test-id="partner-name" ellipsizeMode="tail" numberOfLines={1}>
               {artwork?.partner?.name}
             </Text>
-            <Text variant="caption" color="black60" data-test-id="date">
+            <Text variant="xs" color="black60" data-test-id="date">
               {moment(order.createdAt).format("l")}
             </Text>
           </Flex>
           <Flex>
-            <Text textAlign="right" variant="text" data-test-id="price">
+            <Text textAlign="right" variant="sm" data-test-id="price">
               {order.buyerTotal}
             </Text>
             <Text
               textAlign="right"
-              variant="caption"
+              variant="xs"
               color={orderStatus === "canceled" ? "red100" : "black60"}
               style={{ textTransform: "capitalize" }}
               data-test-id="order-status"
@@ -62,55 +63,38 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
           </Flex>
         </Flex>
       </Flex>
-      {trackingUrl ? (
-        <Flex flexDirection="row" justifyContent="space-between" mb={1}>
-          <Box width="50%" paddingRight={0.5}>
-            <Button
-              block
-              variant="secondaryGray"
-              onPress={() => navigate(`/user/purchases/${order.internalID}`)}
-              data-test-id="view-order-button"
-            >
-              View Order
-            </Button>
-          </Box>
-          <Box width="50%" paddingLeft={0.5}>
-            <Button
-              paddingLeft={0.5}
-              width="50%"
-              block
-              variant="primaryBlack"
-              onPress={() => Linking.openURL(trackingUrl)}
-              data-test-id="track-package-button"
-            >
-              Track Package
-            </Button>
-          </Box>
-        </Flex>
-      ) : (
-        <Box data-test-id="view-order-button-box">
-          {!orderIsInactive && (
-            <Button
-              mb={1}
-              block
-              variant="secondaryGray"
-              onPress={() => navigate(`/user/purchases/${order.internalID}`)}
-              data-test-id="view-order-button"
-            >
-              View Order
-            </Button>
-          )}
-        </Box>
-      )}
+      <Box mb={1} data-test-id="view-order-button-box">
+        {!!trackingUrl && (
+          <Button
+            mb={1}
+            block
+            variant="fillDark"
+            onPress={() => Linking.openURL(trackingUrl)}
+            data-test-id="track-package-button"
+          >
+            Track Package
+          </Button>
+        )}
+        {!orderIsInactive && (
+          <Button
+            block
+            variant="fillGray"
+            onPress={() => navigate(`/user/purchases/${order.internalID}`)}
+            data-test-id="view-order-button"
+          >
+            {isViewOfferButton ? "View Offer" : "View Order"}
+          </Button>
+        )}
+      </Box>
     </Flex>
   )
 }
-
 export const OrderHistoryRowContainer = createFragmentContainer(OrderHistoryRow, {
   order: graphql`
     fragment OrderHistoryRow_order on CommerceOrder {
       internalID
       state
+      mode
       buyerTotal(precision: 2)
       createdAt
       itemsTotal

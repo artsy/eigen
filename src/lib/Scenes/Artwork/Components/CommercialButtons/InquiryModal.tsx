@@ -90,7 +90,7 @@ const InquiryQuestionOption: React.FC<{
           <Flex flexDirection="row" justifyContent="space-between">
             <Flex flexDirection="row">
               <Checkbox data-test-id={`checkbox-${id}`} checked={questionSelected} onPress={setSelection} />
-              <Text variant="text">{question}</Text>
+              <Text variant="sm">{question}</Text>
             </Flex>
           </Flex>
 
@@ -109,7 +109,7 @@ const InquiryQuestionOption: React.FC<{
                 <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
                   {!state.shippingLocation ? (
                     <>
-                      <Text variant="text" color="black60">
+                      <Text variant="sm" color="black60">
                         Add your location
                       </Text>
                       <Box>
@@ -118,10 +118,10 @@ const InquiryQuestionOption: React.FC<{
                     </>
                   ) : (
                     <>
-                      <Text variant="text" color="black100" style={{ width: "70%" }}>
+                      <Text variant="sm" color="black100" style={{ width: "70%" }}>
                         {state.shippingLocation.name}
                       </Text>
-                      <Text variant="text" color="purple100" /* TODO-PALETTE-V3 "blue100" */>
+                      <Text variant="sm" color="purple100" /* TODO-PALETTE-V3 "blue100" */>
                         Edit
                       </Text>
                     </>
@@ -229,7 +229,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
       </FancyModalHeader>
       {!!mutationError && (
         <ErrorMessageFlex bg="red100" py={1} alignItems="center">
-          <Text variant="small" color="white">
+          <Text variant="xs" color="white">
             Sorry, we were unable to send this message. Please try again.
           </Text>
         </ErrorMessageFlex>
@@ -237,7 +237,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
       <ScrollView ref={scrollViewRef}>
         <CollapsibleArtworkDetailsFragmentContainer artwork={artwork} />
         <Box m={2}>
-          <Text variant="mediumText">What information are you looking for?</Text>
+          <Text variant="sm">What information are you looking for?</Text>
           {
             // NOTE: For now the inquiryQuestions field values are always present and therefore never null, so it is safe to destructure them
             questions!.map((inquiryQuestion) => {

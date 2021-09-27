@@ -23,7 +23,7 @@ export const RegistrationCTAWrapper: React.FunctionComponent<{ navLink?: string 
       {!props.children && (
         <>
           <ExclamationMarkCircleFill fill="black100" />
-          <Text mx={0.5} variant="mediumText">
+          <Text mx={0.5} variant="sm">
             Complete registration
           </Text>
           <ArrowRightIcon />
@@ -66,7 +66,7 @@ export const SaleCard: React.FC<SaleCardProps> = ({ sale, me, smallScreen, hideC
       RegistrationCTA = () => (
         <RegistrationCTAWrapper>
           <ClockFill fill="black60" />
-          <Text ml={0.5} color="black60" variant="mediumText">
+          <Text ml={0.5} color="black60" variant="sm">
             Registration pending
           </Text>
         </RegistrationCTAWrapper>
@@ -98,11 +98,11 @@ export const SaleCard: React.FC<SaleCardProps> = ({ sale, me, smallScreen, hideC
         <OpaqueImageView height={COVER_IMAGE_HEIGHT} imageURL={sale?.coverImage?.url} />
         <Flex style={{ margin: smallScreen! ? 10 : 15 }}>
           {!!sale.partner?.name && (
-            <Text variant="small" color="black60">
+            <Text variant="xs" color="black60">
               {sale?.partner?.name}
             </Text>
           )}
-          <Text variant="title">{sale?.name}</Text>
+          <Text variant="md">{sale?.name}</Text>
 
           <SaleInfo sale={sale} />
           <RegistrationCTA />

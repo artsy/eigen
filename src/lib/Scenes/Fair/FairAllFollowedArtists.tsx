@@ -37,7 +37,7 @@ export const FairAllFollowedArtists: React.FC<FairAllFollowedArtistsProps> = ({ 
       <Theme>
         <>
           <ScrollView>
-            <Text mt={2} mb={1} textAlign="center" variant="mediumText">
+            <Text mt={2} mb={1} textAlign="center" variant="sm">
               Artworks
             </Text>
             <Separator />

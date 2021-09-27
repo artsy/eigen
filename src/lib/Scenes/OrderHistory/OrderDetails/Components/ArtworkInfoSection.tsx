@@ -14,7 +14,7 @@ export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
   const artworkItem = extractNodes(artwork.lineItems)[0].artwork
   if (!artworkItem) {
     return (
-      <Text variant="text" color="black60">
+      <Text variant="sm" color="black60">
         Related artwork has been deleted
       </Text>
     )
@@ -36,28 +36,28 @@ export const ArtworkInfoSection: React.FC<Props> = ({ artwork }) => {
         <Box width={60} height={60} marginX={22} backgroundColor="black10" />
       )}
       <Box style={{ flex: 1, flexShrink: 1 }}>
-        <Text pb={1} variant="mediumText" testID="artistNames">
+        <Text pb={1} variant="sm" testID="artistNames">
           {artistNames}
         </Text>
         <Text>
-          <Text variant="text" color="black60" testID="title">
+          <Text variant="sm" color="black60" testID="title">
             {title + addedComma}
           </Text>
-          <Text variant="text" color="black60" testID="date">
+          <Text variant="sm" color="black60" testID="date">
             {date}
           </Text>
         </Text>
-        <Text variant="text" color="black60" testID="medium">
+        <Text variant="sm" color="black60" testID="medium">
           {medium}
         </Text>
         {!!dimensions?.in && !!dimensions?.cm && (
-          <Text variant="text" color="black60">
+          <Text variant="sm" color="black60">
             {LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US" ? dimensions!.in : dimensions!.cm}
           </Text>
         )}
 
         {!!editionOf && (
-          <Text testID="editionOf" variant="text" color="black60">
+          <Text testID="editionOf" variant="sm" color="black60">
             {editionOf}
           </Text>
         )}

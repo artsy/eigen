@@ -15,6 +15,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Button, ClassTheme } from "palette"
+import { unsafe_getEnableMyCollection } from "../MyCollection/MyCollection"
 
 interface Props {
   me: FavoriteArtworks_me
@@ -69,6 +70,7 @@ export class SavedWorks extends Component<Props, State> {
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
     const artworks = extractNodes(this.props.me.followsAndSaves?.artworks)
+    const isEnabledForMyCollection = unsafe_getEnableMyCollection()
 
     if (artworks.length === 0) {
       return (
@@ -81,11 +83,11 @@ export class SavedWorks extends Component<Props, State> {
             subtitle="Tap the heart on an artwork to save for later."
             callToAction={
               <Button
-                variant="secondaryOutline"
                 size="large"
                 onPress={() => {
                   navigate("/")
                 }}
+                block
               >
                 Browse works for you
               </Button>
@@ -105,7 +107,20 @@ export class SavedWorks extends Component<Props, State> {
               <RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />
             }
           >
-            <GenericGrid artworks={artworks} isLoading={this.state.fetchingMoreData} />
+            <GenericGrid
+              artworks={artworks}
+              isLoading={this.state.fetchingMoreData}
+              hidePartner={isEnabledForMyCollection}
+              artistNamesTextStyle={isEnabledForMyCollection ? { weight: "regular" } : undefined}
+              saleInfoTextStyle={
+                isEnabledForMyCollection
+                  ? {
+                      weight: "medium",
+                      color: "black100",
+                    }
+                  : undefined
+              }
+            />
           </StickyTabPageScrollView>
         )}
       </ClassTheme>
@@ -119,7 +134,7 @@ const FavoriteArtworksContainer = createPaginationContainer(
     me: graphql`
       fragment FavoriteArtworks_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
-        # TODO: This should move into followsAndSaves
+        labFeatures
         followsAndSaves {
           artworks: artworksConnection(private: true, first: $count, after: $cursor)
             @connection(key: "GenericGrid_artworks") {

@@ -6,7 +6,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { getUrgencyTag } from "lib/utils/getUrgencyTag"
 import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "lib/utils/placeholders"
-import { Box, Flex, Sans, Spacer, Text, Touchable } from "palette"
+import { Box, Flex, Sans, Spacer, Text, TextProps, Touchable } from "palette"
 import React, { useRef } from "react"
 import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -32,6 +32,13 @@ export interface ArtworkProps {
   hidePartner?: boolean
   // Show the lot number (Lot 213)
   showLotLabel?: boolean
+  // styles for each field: allows for customization of each field
+  urgencyTagTextStyle?: TextProps
+  lotLabelTextStyle?: TextProps
+  artistNamesTextStyle?: TextProps
+  titleTextStyle?: TextProps
+  saleInfoTextStyle?: TextProps
+  partnerNameTextStyle?: TextProps
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
@@ -45,6 +52,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
   hideUrgencyTags = false,
   hidePartner = false,
   showLotLabel = false,
+  urgencyTagTextStyle,
+  lotLabelTextStyle,
+  artistNamesTextStyle,
+  titleTextStyle,
+  saleInfoTextStyle,
+  partnerNameTextStyle,
 }) => {
   const itemRef = useRef<any>()
   const tracking = useTracking()
@@ -102,7 +115,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
                 borderRadius={2}
                 alignSelf="flex-start"
               >
-                <Sans size="2" color="black100" numberOfLines={1}>
+                <Sans size="2" color="black100" numberOfLines={1} {...urgencyTagTextStyle}>
                   {urgencyTag}
                 </Sans>
               </Flex>
@@ -111,28 +124,28 @@ export const Artwork: React.FC<ArtworkProps> = ({
         )}
         <Box mt={1}>
           {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
-            <Text color="black60" numberOfLines={1}>
+            <Text color="black60" numberOfLines={1} {...lotLabelTextStyle}>
               Lot {artwork.saleArtwork.lotLabel}
             </Text>
           )}
           {!!artwork.artistNames && (
-            <Text numberOfLines={1} lineHeight="20" variant="mediumText">
+            <Text lineHeight="20" weight={"medium"} numberOfLines={1} {...artistNamesTextStyle}>
               {artwork.artistNames}
             </Text>
           )}
           {!!artwork.title && (
-            <Text lineHeight="20" color="black60" numberOfLines={1}>
+            <Text lineHeight="20" color="black60" numberOfLines={1} {...titleTextStyle}>
               {artwork.title}
               {!!artwork.date && `, ${artwork.date}`}
             </Text>
           )}
           {!hidePartner && !!artwork.partner?.name && (
-            <Text lineHeight="20" color="black60" numberOfLines={1}>
+            <Text lineHeight="20" color="black60" numberOfLines={1} {...partnerNameTextStyle}>
               {artwork.partner.name}
             </Text>
           )}
           {!!saleInfo && (
-            <Text variant="small" lineHeight="20" numberOfLines={1}>
+            <Text weight={"regular"} lineHeight="20" numberOfLines={1} color={"black60"} {...saleInfoTextStyle}>
               {saleInfo}
             </Text>
           )}

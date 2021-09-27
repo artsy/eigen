@@ -48,7 +48,7 @@ export const ClosedNotice: React.FC<{ status: string; partnerHref: string }> = (
       <Sans mt="3" size="3t" mx="4" textAlign="center">
         {finalText}
       </Sans>
-      <Button variant="secondaryGray" onPress={() => navigate(partnerHref)} mt={2}>
+      <Button variant="fillGray" onPress={() => navigate(partnerHref)} mt={2}>
         Visit gallery
       </Button>
     </Flex>
@@ -89,7 +89,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
       key: "introStatement",
       content: (
         <Flex mt="2" mx="2">
-          <Text data-test-id="intro-statement" mt="2" variant="text" mx="2" style={maxWidth}>
+          <Text data-test-id="intro-statement" mt="2" variant="sm" mx="2" style={maxWidth}>
             {viewingRoom.introStatement}
           </Text>
         </Flex>
@@ -108,7 +108,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
           <>
             {!!viewingRoom.pullQuote && (
               <Flex mx="2">
-                <Text data-test-id="pull-quote" variant="largeTitle" textAlign="center">
+                <Text data-test-id="pull-quote" variant="lg" textAlign="center">
                   {viewingRoom.pullQuote}
                 </Text>
               </Flex>
@@ -120,7 +120,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
         key: "body",
         content: (
           <Flex mx="2">
-            <Text data-test-id="body" variant="text" style={maxWidth}>
+            <Text data-test-id="body" variant="sm" style={maxWidth}>
               {viewingRoom.body}
             </Text>
           </Flex>
