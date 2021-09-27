@@ -192,7 +192,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
       <ArtsyKeyboardAvoidingView>
         <InstantSearch
           searchClient={searchClient}
-          indexName={selectedPill?.name ?? ""}
+          indexName={selectedPill?.type === "algolia" ? selectedPill.name : ""}
           searchState={searchState}
           onSearchStateChange={setSearchState}
         >
