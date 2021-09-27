@@ -4,11 +4,11 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { isEmpty } from "lodash"
-import { BorderBox, Box, Button, Flex, Join, Sans, Spacer, Text } from "palette"
+import { Box, Button, Flex, Join, Sans, Separator, Spacer, Text } from "palette"
 import React from "react"
-import { ScrollView } from "react-native"
+import { ScrollView, TouchableOpacity } from "react-native"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
-import { ArrowButton } from "../Components/ArrowButton"
+import { ArrowDetails } from "../Components/ArrowDetails"
 import { ArtistAutosuggest } from "../Components/ArtistAutosuggest"
 import { Dimensions } from "../Components/Dimensions"
 import { MediumPicker } from "../Components/MediumPicker"
@@ -141,41 +141,52 @@ const PhotosButton: React.FC<{ onPress: () => void }> = ({ onPress }) => {
   const photos = artworkState.sessionState.formValues.photos
 
   return (
-    <BorderBox px={0} top={-1}>
-      <ScreenMargin>
-        <ArrowButton onPress={onPress}>
-          <Flex flexDirection="row">
-            <Text variant="xs">PHOTOS</Text>
-          </Flex>
-          {photos.length > 0 && (
-            <>
-              {photos.length === 1 ? (
-                <Text variant="xs" data-test-id="onePhoto">
-                  1 photo added
-                </Text>
-              ) : (
-                <Text variant="xs" data-test-id="multiplePhotos">
-                  {photos.length} photos added
-                </Text>
-              )}
-            </>
-          )}
-        </ArrowButton>
-      </ScreenMargin>
-    </BorderBox>
+    <>
+      <Separator />
+      <TouchableOpacity onPress={onPress}>
+        <Spacer mt={2} />
+        <ScreenMargin>
+          <ArrowDetails>
+            <Flex flexDirection="row">
+              <Text variant="xs">PHOTOS</Text>
+            </Flex>
+            {photos.length > 0 && (
+              <>
+                {photos.length === 1 ? (
+                  <Text variant="xs" data-test-id="onePhoto">
+                    1 photo added
+                  </Text>
+                ) : (
+                  <Text variant="xs" data-test-id="multiplePhotos">
+                    {photos.length} photos added
+                  </Text>
+                )}
+              </>
+            )}
+          </ArrowDetails>
+        </ScreenMargin>
+        <Spacer mb={2} />
+      </TouchableOpacity>
+      <Separator />
+    </>
   )
 }
 
 const AdditionalDetailsButton: React.FC<{ onPress: () => void }> = ({ onPress }) => {
   return (
-    <BorderBox px={0} position="relative" top={-2}>
-      <ScreenMargin>
-        <ArrowButton onPress={onPress}>
-          <Flex flexDirection="row">
-            <Text variant="xs">ADDITIONAL DETAILS</Text>
-          </Flex>
-        </ArrowButton>
-      </ScreenMargin>
-    </BorderBox>
+    <>
+      <TouchableOpacity onPress={onPress}>
+        <Spacer mt={2} />
+        <ScreenMargin>
+          <ArrowDetails>
+            <Flex flexDirection="row">
+              <Text variant="xs">ADDITIONAL DETAILS</Text>
+            </Flex>
+          </ArrowDetails>
+        </ScreenMargin>
+        <Spacer mb={2} />
+      </TouchableOpacity>
+      <Separator />
+    </>
   )
 }
