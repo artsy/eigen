@@ -10,10 +10,10 @@ export const InputTitle: React.FC<{ required?: boolean }> = ({ children: title, 
 
   return (
     <ThemeV3>
-      <Text variant="text" style={{ fontSize: 13, marginBottom: 2, textTransform: "uppercase" }}>
+      <Text variant="md" style={{ fontSize: 13, marginBottom: 2, textTransform: "uppercase" }}>
         {title}
         {!!required && (
-          <Text variant="mediumText" color={color("blue100")}>
+          <Text variant="md" color={color("blue100")}>
             *
           </Text>
         )}
