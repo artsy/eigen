@@ -70,7 +70,7 @@ const SmallTileRail: React.FC<Props> = ({
   )
 }
 
-const ListEndComponent = () => <Spacer mr={2}></Spacer>
+const ListEndComponent = () => <Spacer mr={2} />
 
 export const SmallTileRailContainer = createFragmentContainer(SmallTileRail, {
   artworks: graphql`
