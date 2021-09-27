@@ -2,7 +2,7 @@ import { CollectionQuery } from "__generated__/CollectionQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Box, Spacer, Theme } from "palette"
+import { Box, Spacer } from "palette"
 import React, { Component, createRef } from "react"
 import { Animated, Dimensions, FlatList, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -49,51 +49,46 @@ export class Collection extends Component<CollectionProps> {
 
     return (
       <ArtworkFiltersStoreProvider>
-        <Theme>
-          <View style={{ flex: 1 }}>
-            <Animated.FlatList
-              ref={this.flatList}
-              onScroll={Animated.event(
-                [{ nativeEvent: { contentOffset: { y: this.filterComponentAnimationValue } } }],
-                {
-                  useNativeDriver: true,
-                }
-              )}
-              keyExtractor={(_item, index) => String(index)}
-              data={sections}
-              ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
-              ItemSeparatorComponent={() => <Spacer mb={2} />}
-              stickyHeaderIndices={[3]}
-              renderItem={({ item }): null | any => {
-                switch (item) {
-                  case "collectionFeaturedArtists":
-                    return (
-                      <Box px={2}>
-                        <CollectionFeaturedArtists collection={collection} />
-                      </Box>
-                    )
-                  case "collectionHubsRails":
-                    return isDepartment ? (
-                      <CollectionHubsRails linkedCollections={linkedCollections} {...this.props} />
-                    ) : null
-                  case "collectionArtworksFilter":
-                    return (
-                      <CollectionArtworksFilter
-                        collection={collection}
-                        animationValue={this.filterComponentAnimationValue}
-                      />
-                    )
-                  case "collectionArtworks":
-                    return (
-                      <Box px={2}>
-                        <CollectionArtworks collection={collection} scrollToTop={() => this.scrollToTop()} />
-                      </Box>
-                    )
-                }
-              }}
-            />
-          </View>
-        </Theme>
+        <View style={{ flex: 1 }}>
+          <Animated.FlatList
+            ref={this.flatList}
+            onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: this.filterComponentAnimationValue } } }], {
+              useNativeDriver: true,
+            })}
+            keyExtractor={(_item, index) => String(index)}
+            data={sections}
+            ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
+            ItemSeparatorComponent={() => <Spacer mb={2} />}
+            stickyHeaderIndices={[3]}
+            renderItem={({ item }): null | any => {
+              switch (item) {
+                case "collectionFeaturedArtists":
+                  return (
+                    <Box px={2}>
+                      <CollectionFeaturedArtists collection={collection} />
+                    </Box>
+                  )
+                case "collectionHubsRails":
+                  return isDepartment ? (
+                    <CollectionHubsRails linkedCollections={linkedCollections} {...this.props} />
+                  ) : null
+                case "collectionArtworksFilter":
+                  return (
+                    <CollectionArtworksFilter
+                      collection={collection}
+                      animationValue={this.filterComponentAnimationValue}
+                    />
+                  )
+                case "collectionArtworks":
+                  return (
+                    <Box px={2}>
+                      <CollectionArtworks collection={collection} scrollToTop={() => this.scrollToTop()} />
+                    </Box>
+                  )
+              }
+            }}
+          />
+        </View>
       </ArtworkFiltersStoreProvider>
     )
   }

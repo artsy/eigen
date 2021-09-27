@@ -14,9 +14,9 @@ import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
-import { Button, Flex, Separator, Spacer, Theme, useSpace } from "palette"
+import { Button, Flex, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
-import { Platform, RefreshControl, ScrollView } from "react-native"
+import { Platform, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkFormModal } from "./Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
@@ -111,49 +111,35 @@ const MyCollection: React.FC<{
           refreshMyCollection()
         }}
       />
-      {artworks.length === 0 ? (
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefreshing}
-              onRefresh={() => {
-                refreshMyCollection()
-              }}
-            />
-          }
-          contentContainerStyle={{ flex: 1 }}
-        >
-          <Flex>
-            <ZeroState
-              title={"Primed and ready for artworks."}
-              subtitle="Add a work from your collection to access price and market insights."
-              callToAction={
-                <Button
-                  data-test-id="add-artwork-button-zero-state"
-                  onPress={() => {
-                    setShowModal(true)
-                    trackEvent(tracks.addCollectedArtwork())
-                  }}
-                  block
-                >
-                  Add artwork
-                </Button>
-              }
-            />
-          </Flex>
-        </ScrollView>
-      ) : (
-        <StickyTabPageScrollView
-          contentContainerStyle={{ paddingBottom: space(2) }}
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
-        >
+      <StickyTabPageScrollView
+        contentContainerStyle={{ paddingBottom: space(2) }}
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
+      >
+        {artworks.length === 0 ? (
+          <ZeroState
+            title={"Primed and ready for artworks."}
+            subtitle="Add a work from your collection to access price and market insights."
+            callToAction={
+              <Button
+                data-test-id="add-artwork-button-zero-state"
+                onPress={() => {
+                  setShowModal(true)
+                  trackEvent(tracks.addCollectedArtwork())
+                }}
+                block
+              >
+                Add artwork
+              </Button>
+            }
+          />
+        ) : (
           <InfiniteScrollMyCollectionArtworksGridContainer
             myCollectionConnection={me.myCollectionConnection!}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
           />
-        </StickyTabPageScrollView>
-      )}
+        )}
+      </StickyTabPageScrollView>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
@@ -216,37 +202,35 @@ export const MyCollectionQueryRenderer: React.FC = () => {
   )
 }
 
-const LoadingSkeleton: React.FC<{}> = () => {
+export const LoadingSkeleton: React.FC<{}> = () => {
   return (
-    <Theme>
-      <Flex>
-        <Flex flexDirection="row" justifyContent="space-between">
-          <Spacer />
-          <Spacer />
-          <PlaceholderText width={70} margin={20} />
-        </Flex>
-        <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
-          <Flex>
-            <Spacer mb={40} />
-            {/* Entity name */}
-            <PlaceholderText width={180} />
-            {/* subtitle text */}
-            <PlaceholderText width={100} />
-          </Flex>
-        </Flex>
-        <Spacer mb={3} />
-        {/* tabs */}
-        <Flex justifyContent="space-around" flexDirection="row" px={2}>
-          <PlaceholderText width={"40%"} />
-          <PlaceholderText width={"40%"} />
-        </Flex>
-        <Spacer mb={1} />
-        <Separator />
-        <Spacer mb={3} />
-        {/* masonry grid */}
-        <PlaceholderGrid />
+    <Flex>
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Spacer />
+        <Spacer />
+        <PlaceholderText width={70} margin={20} />
       </Flex>
-    </Theme>
+      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
+        <Flex>
+          <Spacer mb={40} />
+          {/* Entity name */}
+          <PlaceholderText width={180} />
+          {/* subtitle text */}
+          <PlaceholderText width={100} />
+        </Flex>
+      </Flex>
+      <Spacer mb={3} />
+      {/* tabs */}
+      <Flex justifyContent="space-around" flexDirection="row" px={2}>
+        <PlaceholderText width={"40%"} />
+        <PlaceholderText width={"40%"} />
+      </Flex>
+      <Spacer mb={1} />
+      <Separator />
+      <Spacer mb={3} />
+      {/* masonry grid */}
+      <PlaceholderGrid />
+    </Flex>
   )
 }
 

@@ -3,7 +3,7 @@ import { ScrollableTab } from "lib/Components/ScrollableTabBar"
 import TabBar from "lib/Components/TabBar"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { Schema, screenTrack, track } from "lib/utils/track"
-import { Box, Button, Flex, Sans, Theme } from "palette"
+import { Box, Button, Flex, Sans } from "palette"
 import React, { Component } from "react"
 import { View } from "react-native"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -177,61 +177,59 @@ export class CityView extends Component<Props, State> {
     const bottomInset = this.scrollViewVerticalStart + (verticalMargin || 0)
 
     return buckets || relayErrorState ? (
-      <Theme>
-        <Flex style={{ flex: 1 }}>
-          <Flex py={1} alignItems="center">
-            <Handle />
-          </Flex>
-          {relayErrorState ? (
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            <ErrorScreen relayErrorState={relayErrorState} key="error" />
-          ) : (
-            <ScrollableTabView
-              initialPage={this.props.initialTab || AllCityMetaTab}
-              onChangeTab={this.setSelectedTab}
-              renderTabBar={this.renderTabBar}
-              prerenderingSiblingsNumber={2}
-              onLayout={this.onScrollableTabViewLayout}
-              // These are the ScrollView props for inside the scrollable tab view
-              contentProps={{
-                contentInset: { bottom: bottomInset },
-                onLayout: this.onScrollViewLayout,
-              }}
-            >
-              <ScrollableTab tabLabel="All" key="all">
-                <AllEvents
-                  cityName={cityName}
-                  citySlug={citySlug}
-                  key={cityName}
-                  sponsoredContent={this.state.sponsoredContent as any /* STRICTNESS_MIGRATION */}
-                  buckets={buckets as any /* STRICTNESS_MIGRATION */}
-                  relay={this.state.relay as any /* STRICTNESS_MIGRATION */}
-                />
-              </ScrollableTab>
-
-              {cityTabs
-                .filter((tab) => tab.id !== "all")
-                .map((tab) => {
-                  return (
-                    <ScrollableTab tabLabel={tab.text} key={tab.id}>
-                      <EventList
-                        key={cityName + tab.id}
-                        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                        bucket={buckets[tab.id]}
-                        type={tab.id}
-                        cityName={cityName}
-                        citySlug={citySlug}
-                        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                        relay={this.state.relay}
-                        renderedInTab
-                      />
-                    </ScrollableTab>
-                  )
-                })}
-            </ScrollableTabView>
-          )}
+      <Flex style={{ flex: 1 }}>
+        <Flex py={1} alignItems="center">
+          <Handle />
         </Flex>
-      </Theme>
+        {relayErrorState ? (
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          <ErrorScreen relayErrorState={relayErrorState} key="error" />
+        ) : (
+          <ScrollableTabView
+            initialPage={this.props.initialTab || AllCityMetaTab}
+            onChangeTab={this.setSelectedTab}
+            renderTabBar={this.renderTabBar}
+            prerenderingSiblingsNumber={2}
+            onLayout={this.onScrollableTabViewLayout}
+            // These are the ScrollView props for inside the scrollable tab view
+            contentProps={{
+              contentInset: { bottom: bottomInset },
+              onLayout: this.onScrollViewLayout,
+            }}
+          >
+            <ScrollableTab tabLabel="All" key="all">
+              <AllEvents
+                cityName={cityName}
+                citySlug={citySlug}
+                key={cityName}
+                sponsoredContent={this.state.sponsoredContent as any /* STRICTNESS_MIGRATION */}
+                buckets={buckets as any /* STRICTNESS_MIGRATION */}
+                relay={this.state.relay as any /* STRICTNESS_MIGRATION */}
+              />
+            </ScrollableTab>
+
+            {cityTabs
+              .filter((tab) => tab.id !== "all")
+              .map((tab) => {
+                return (
+                  <ScrollableTab tabLabel={tab.text} key={tab.id}>
+                    <EventList
+                      key={cityName + tab.id}
+                      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                      bucket={buckets[tab.id]}
+                      type={tab.id}
+                      cityName={cityName}
+                      citySlug={citySlug}
+                      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                      relay={this.state.relay}
+                      renderedInTab
+                    />
+                  </ScrollableTab>
+                )
+              })}
+          </ScrollableTabView>
+        )}
+      </Flex>
     ) : null
   }
 }

@@ -12,7 +12,6 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
-import { Theme } from "palette"
 import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { BucketKey } from "../Map/bucketCityResults"
@@ -98,18 +97,16 @@ class CitySectionList extends React.Component<Props, State> {
         break
     }
     return (
-      <Theme>
-        <EventList
-          key={name + section}
-          cityName={name as any /* STRICTNESS_MIGRATION */}
-          header={headerText}
-          bucket={extractNodes(shows)}
-          type={section}
-          relay={relay as any /* STRICTNESS_MIGRATION */}
-          onScroll={isCloseToBottom(this.fetchData) as any /* STRICTNESS_MIGRATION */}
-          fetchingNextPage={fetchingNextPage}
-        />
-      </Theme>
+      <EventList
+        key={name + section}
+        cityName={name as any /* STRICTNESS_MIGRATION */}
+        header={headerText}
+        bucket={extractNodes(shows)}
+        type={section}
+        relay={relay as any /* STRICTNESS_MIGRATION */}
+        onScroll={isCloseToBottom(this.fetchData) as any /* STRICTNESS_MIGRATION */}
+        fetchingNextPage={fetchingNextPage}
+      />
     )
   }
 }

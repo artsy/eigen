@@ -39,32 +39,51 @@ interface SearchInputProps {
   currentRefinement: string
   refine: (value: string) => any
   onSubmitEditing: () => void
+  onReset: () => void
 }
 
 const SEARCH_THROTTLE_INTERVAL = 500
 
-const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholder, refine, onSubmitEditing }) => {
+const SearchInput: React.FC<SearchInputProps> = ({
+  currentRefinement,
+  placeholder,
+  refine,
+  onSubmitEditing,
+  onReset,
+}) => {
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(currentRefinement)
 
-  const handleChangeText = useMemo(
-    () =>
-      throttle((queryText: string) => {
-        refine(queryText)
-        trackEvent({
-          action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
-          query: queryText,
-        })
-      }, SEARCH_THROTTLE_INTERVAL),
-    []
-  )
+  const handleChangeText = useMemo(() => throttle(refine, SEARCH_THROTTLE_INTERVAL), [])
+
+  const handleReset = () => {
+    trackEvent({
+      action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
+    })
+
+    refine("")
+    handleChangeText.cancel()
+    onReset()
+  }
 
   return (
     <SearchBox
       ref={searchProviderValues.inputRef}
       enableCancelButton
       placeholder={placeholder}
-      onChangeText={handleChangeText}
+      onChangeText={(text) => {
+        if (text.length === 0) {
+          handleReset()
+          return
+        }
+
+        trackEvent({
+          action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
+          query: text,
+        })
+
+        handleChangeText(text)
+      }}
       onSubmitEditing={onSubmitEditing}
       onFocus={() => {
         trackEvent({
@@ -72,11 +91,8 @@ const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholde
           currentRefinement,
         })
       }}
-      onClear={() => {
-        trackEvent({
-          action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
-        })
-      }}
+      onClear={handleReset}
+      onCancelPress={handleReset}
     />
   )
 }
@@ -90,7 +106,11 @@ interface SearchState {
   page?: number
 }
 
-const ARTWORKS_PILL: PillType = { name: "ARTWORK", displayName: "Artworks" }
+const ARTWORKS_PILL: PillType = {
+  name: "ARTWORK",
+  displayName: "Artworks",
+  type: "elastic",
+}
 const pills: PillType[] = [ARTWORKS_PILL]
 
 interface Search2Props {
@@ -101,10 +121,8 @@ interface Search2Props {
 export const Search2: React.FC<Search2Props> = (props) => {
   const { system, relay } = props
   const [searchState, setSearchState] = useState<SearchState>({})
-  const [selectedAlgoliaIndex, setSelectedAlgoliaIndex] = useState("")
-  const [elasticSearchEntity, setElasticSearchEntity] = useState("")
+  const [selectedPill, setSelectedPill] = useState<PillType | null>(null)
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
-  const [activePillDisplayName, setActivePillDisplayName] = useState("")
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
   const searchInsightsConfigured = useSearchInsightsConfig(system?.algolia?.appID, system?.algolia?.apiKey)
 
@@ -112,7 +130,12 @@ export const Search2: React.FC<Search2Props> = (props) => {
     const indices = system?.algolia?.indices
 
     if (Array.isArray(indices) && indices.length > 0) {
-      return [...pills, ...indices]
+      const formattedIndices: PillType[] = indices.map((indice) => ({
+        ...indice,
+        type: "algolia",
+      }))
+
+      return [...pills, ...formattedIndices]
     }
 
     return pills
@@ -126,11 +149,11 @@ export const Search2: React.FC<Search2Props> = (props) => {
     )
   }
 
-  const renderResults = (categoryDisplayName: string) => {
-    if (!!selectedAlgoliaIndex) {
-      return <SearchResultsContainer indexName={selectedAlgoliaIndex} categoryDisplayName={categoryDisplayName} />
+  const renderResults = () => {
+    if (selectedPill?.type === "algolia") {
+      return <SearchResultsContainer indexName={selectedPill.name} categoryDisplayName={selectedPill.displayName} />
     }
-    if (!!elasticSearchEntity) {
+    if (selectedPill?.type === "elastic") {
       return <SearchArtworksQueryRenderer keyword={searchState.query!} />
     }
     return <AutosuggestResults query={searchState.query!} />
@@ -138,31 +161,29 @@ export const Search2: React.FC<Search2Props> = (props) => {
 
   const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 1
 
-  const handlePillPress = ({ name, displayName }: PillType) => {
-    setActivePillDisplayName(displayName)
-    setSearchState((prevState) => ({ ...prevState, page: 1 }))
-    if (name === "ARTWORK") {
-      setSelectedAlgoliaIndex("")
-      setElasticSearchEntity(elasticSearchEntity === name ? "" : name)
-      return
+  const handlePillPress = (pill: PillType) => {
+    let nextSelectedPill: PillType | null = pill
+
+    if (selectedPill?.name === pill.name) {
+      nextSelectedPill = null
     }
-    setElasticSearchEntity("")
-    setSelectedAlgoliaIndex(selectedAlgoliaIndex === name ? "" : name)
+
+    setSearchState((prevState) => ({ ...prevState, page: 1 }))
+    setSelectedPill(nextSelectedPill)
   }
 
   const isSelected = (pill: PillType) => {
-    const { name } = pill
-    return selectedAlgoliaIndex === name || elasticSearchEntity === name
+    return selectedPill?.name === pill.name
   }
 
   const handleSubmitEditing = () => {
     if (shouldStartQuering) {
-      const { displayName, name } = ARTWORKS_PILL
-
-      setSelectedAlgoliaIndex("")
-      setActivePillDisplayName(displayName)
-      setElasticSearchEntity(name)
+      setSelectedPill(ARTWORKS_PILL)
     }
+  }
+
+  const handleResetSearchInput = () => {
+    setSelectedPill(null)
   }
 
   return (
@@ -170,7 +191,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
       <ArtsyKeyboardAvoidingView>
         <InstantSearch
           searchClient={searchClient}
-          indexName={selectedAlgoliaIndex}
+          indexName={selectedPill?.type === "algolia" ? selectedPill.name : ""}
           searchState={searchState}
           onSearchStateChange={setSearchState}
         >
@@ -180,6 +201,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
             <SearchInputContainer
               placeholder="Search artists, artworks, galleries, etc"
               onSubmitEditing={handleSubmitEditing}
+              onReset={handleResetSearchInput}
             />
           </Flex>
           {!!shouldStartQuering ? (
@@ -187,7 +209,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
               <Box pt={2} pb={1}>
                 <SearchPills pills={pillsArray} onPillPress={handlePillPress} isSelected={isSelected} />
               </Box>
-              {renderResults(activePillDisplayName)}
+              {renderResults()}
             </>
           ) : (
             <Scrollable>

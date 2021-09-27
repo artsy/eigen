@@ -1,7 +1,6 @@
-import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { isPad } from "lib/utils/hardware"
-import { Theme } from "palette"
 import React from "react"
 import { TextInput } from "react-native"
 import { act } from "react-test-renderer"
@@ -40,15 +39,9 @@ jest.mock("../RecentSearches", () => ({
 
 const TestWrapper: typeof Search = (props) => {
   return (
-    <GlobalStoreProvider>
-      <Theme>
-        <CatchErrors>
-          <GlobalStoreProvider>
-            <Search {...props} />
-          </GlobalStoreProvider>
-        </CatchErrors>
-      </Theme>
-    </GlobalStoreProvider>
+    <CatchErrors>
+      <Search {...props} />
+    </CatchErrors>
   )
 }
 

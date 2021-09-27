@@ -10,7 +10,7 @@ import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "li
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { get, isEqual, uniq } from "lodash"
-import { Box, ClassTheme, Flex, Sans, Theme } from "palette"
+import { Box, ClassTheme, Flex, Sans } from "palette"
 import React from "react"
 import { Animated, Dimensions, Easing, Image, View } from "react-native"
 import Config from "react-native-config"
@@ -475,21 +475,19 @@ export class GlobalMap extends React.Component<Props, State> {
               height: 150,
             }}
           >
-            <Theme>
-              {!!hasShows && (
-                <ShowCard
-                  shows={updatedShows}
-                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                  relay={this.props.relay}
-                  onSaveStarted={() => {
-                    this.setState({ isSavingShow: true })
-                  }}
-                  onSaveEnded={() => {
-                    this.setState({ isSavingShow: false })
-                  }}
-                />
-              )}
-            </Theme>
+            {!!hasShows && (
+              <ShowCard
+                shows={updatedShows}
+                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                relay={this.props.relay}
+                onSaveStarted={() => {
+                  this.setState({ isSavingShow: true })
+                }}
+                onSaveEnded={() => {
+                  this.setState({ isSavingShow: false })
+                }}
+              />
+            )}
           </AnimatedView>
         )}
       </Spring>

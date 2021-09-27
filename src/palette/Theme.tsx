@@ -218,9 +218,6 @@ export const Theme: React.FC<{
   return <ThemeProvider theme={actualTheme}>{children}</ThemeProvider>
 }
 
-export const ThemeV2: React.FC = ({ children }) => <Theme theme="v2">{children}</Theme>
-export const ThemeV3: React.FC = ({ children }) => <Theme theme="v3">{children}</Theme>
-
 interface ColorFuncOverload {
   (colorNumber: undefined): undefined
   (colorNumber: Color): string

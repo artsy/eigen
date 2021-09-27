@@ -2,7 +2,6 @@ import { GenericGrid_artworks } from "__generated__/GenericGrid_artworks.graphql
 import Spinner from "lib/Components/Spinner"
 import { RandomNumberGenerator } from "lib/utils/placeholders"
 import { times } from "lodash"
-import { Theme } from "palette"
 import React from "react"
 import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -167,14 +166,12 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
     return (
-      <Theme>
-        <View onLayout={this.onLayout}>
-          <View style={styles.container} accessibilityLabel="Artworks Content View">
-            {artworks}
-          </View>
-          {this.props.isLoading ? <Spinner style={styles.spinner} /> : null}
+      <View onLayout={this.onLayout}>
+        <View style={styles.container} accessibilityLabel="Artworks Content View">
+          {artworks}
         </View>
-      </Theme>
+        {this.props.isLoading ? <Spinner style={styles.spinner} /> : null}
+      </View>
     )
   }
 }

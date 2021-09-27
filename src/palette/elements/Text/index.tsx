@@ -1,5 +1,4 @@
 import _ from "lodash"
-import { ThemeV3 } from "palette/Theme"
 import React from "react"
 
 export * from "./helpers"
@@ -23,11 +22,7 @@ export { SerifV1, SerifV1Props, SerifV1Props as SerifProps }
  */
 export const Serif: React.FC<SerifV1Props> = (props) => {
   // TODO-PALETTE-V3 remove this and replace all usages with the mapping. also remove Serif files.
-  return (
-    <ThemeV3>
-      <Text {...transformSerifPropsToV3(props)} />
-    </ThemeV3>
-  )
+  return <Text {...transformSerifPropsToV3(props)} />
 }
 
 const transformSerifPropsToV3 = (props: SerifV1Props): TextProps => {
@@ -69,11 +64,7 @@ const transformSerifPropsToV3 = (props: SerifV1Props): TextProps => {
  */
 export const Sans: React.FC<SansV1Props> = (props) => {
   // TODO-PALETTE-V3 remove this and replace all usages with the mapping. also remove Sans files.
-  return (
-    <ThemeV3>
-      <Text {...transformSansPropsToV3(props)} />
-    </ThemeV3>
-  )
+  return <Text {...transformSansPropsToV3(props)} />
 }
 
 const transformSansPropsToV3 = (props: SansV1Props): TextProps => {
