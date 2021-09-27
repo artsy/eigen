@@ -5,7 +5,7 @@ describe("findCountryNameByCountryCode util", () => {
     expect(findCountryNameByCountryCode("DE")).toEqual("Germany")
   })
 
-  it("return an empty string when county not found", () => {
-    expect(findCountryNameByCountryCode("x123")).toEqual("")
+  it("returns null when county not found", () => {
+    expect(findCountryNameByCountryCode("x123")).toEqual(null)
   })
 })

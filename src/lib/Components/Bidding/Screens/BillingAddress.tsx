@@ -76,7 +76,7 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({ onSubmit, naviga
       ...address,
       country: {
         shortName: countryCode,
-        longName: findCountryNameByCountryCode(countryCode),
+        longName: findCountryNameByCountryCode(countryCode) || "",
       },
     })
   }
