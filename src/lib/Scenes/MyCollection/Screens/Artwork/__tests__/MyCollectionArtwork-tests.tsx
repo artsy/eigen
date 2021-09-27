@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, editCollectedArtwork, OwnerType, tappedSell } from "@artsy/cohesion"
+import { ActionType, ContextModule, editCollectedArtwork, OwnerType } from "@artsy/cohesion"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { navigate } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
@@ -62,13 +62,6 @@ describe("MyCollectionArtworkDetail", () => {
       expect(spy).toHaveBeenCalledWith(artworkProps.artwork)
     })
 
-    it("navigates to consign submission when submit button is pressed", () => {
-      const artworkProps = { artwork: { internalID: "someInternalId" } }
-      const wrapper = getWrapper(artworkProps)
-      wrapper.root.findByProps({ "data-test-id": "SubmitButton" }).props.onPress()
-      expect(navigate).toHaveBeenCalledWith("/consign/submission")
-    })
-
     it("navigates to sales page when learn more button is pressed", () => {
       const artworkProps = { artwork: { internalID: "someInternalId" } }
       const wrapper = getWrapper(artworkProps)
@@ -88,25 +81,6 @@ describe("MyCollectionArtworkDetail", () => {
       expect(trackEvent).toHaveBeenCalledTimes(1)
       expect(trackEvent).toHaveBeenCalledWith(
         editCollectedArtwork({ contextOwnerId: "someInternalId", contextOwnerSlug: "someSlug" })
-      )
-    })
-
-    it("tracks an analytics event submit button is pressed", () => {
-      const artworkProps = { artwork: { internalID: "someInternalId", slug: "someSlug" } }
-      GlobalStore.actions.myCollection.artwork.startEditingArtwork = jest.fn() as any
-
-      const wrapper = getWrapper(artworkProps)
-      wrapper.root.findByProps({ "data-test-id": "SubmitButton" }).props.onPress()
-
-      expect(trackEvent).toHaveBeenCalledTimes(1)
-      expect(trackEvent).toHaveBeenCalledWith(
-        tappedSell({
-          contextModule: ContextModule.sellFooter,
-          contextScreenOwnerType: OwnerType.myCollectionArtwork,
-          contextScreenOwnerId: "someInternalId",
-          contextScreenOwnerSlug: "someSlug",
-          subject: "Submit this work",
-        })
       )
     })
 

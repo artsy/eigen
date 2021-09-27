@@ -30,8 +30,8 @@ export function refreshMyCollection() {
 
 const featureFlagKey = Platform.select({
   android: "AREnableMyCollectionAndroid",
-  default: "AREnableMyCollectionIos",
-}) as "AREnableMyCollectionIos" | "AREnableMyCollectionAndroid"
+  default: "AREnableMyCollectionIOS",
+}) as "AREnableMyCollectionIOS" | "AREnableMyCollectionAndroid"
 
 export const useEnableMyCollection = () => {
   return useFeatureFlag(featureFlagKey)
@@ -117,8 +117,8 @@ const MyCollection: React.FC<{
       >
         {artworks.length === 0 ? (
           <ZeroState
-            title={"Primed and ready for artworks."}
-            subtitle="Add a work from your collection to access price and market insights."
+            title="Your art collection in your pocket."
+            subtitle="Keep track of your collection all in one place and get market insights"
             callToAction={
               <Button
                 data-test-id="add-artwork-button-zero-state"

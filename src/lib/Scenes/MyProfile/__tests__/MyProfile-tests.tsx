@@ -1,6 +1,5 @@
 import { MyProfileTestsQuery } from "__generated__/MyProfileTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Platform } from "react-native"
@@ -54,47 +53,12 @@ describe(MyProfile, () => {
 
   describe("When MyCollection is enabled", () => {
     it("Loads MyCollectionAndSavedArtworks Screen", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionIos: true })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionIOS: true })
       Platform.OS = "ios"
       const tree = getWrapper()
       expect(tree.root.findByType(MyCollectionAndSavedWorks)).toBeDefined()
       // It does not display OldMyProfile
       expect(tree.root.findAllByProps({ testID: "my-old-profile-scrollview" })).toHaveLength(0)
-    })
-  })
-
-  describe("When MyCollection is NOT enabled: Using Old Profile", () => {
-    it("renders push notifications on iOS", () => {
-      Platform.OS = "ios"
-      const tree = getWrapper()
-      expect(extractText(tree.root)).toContain("Push notifications")
-    })
-
-    it("renders push notifications on Android", () => {
-      Platform.OS = "android"
-      const tree = getWrapper()
-      expect(extractText(tree.root)).toContain("Push notifications")
-    })
-
-    it("renders Saved Alerts only when the AREnableSavedSearchV2 flag is enable", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchV2: true })
-
-      const tree = getWrapper()
-      expect(extractText(tree.root)).toContain("Saved Alerts")
-    })
-
-    it("renders Orders when the AREnableOrderHistoryOption flag is enabled", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableOrderHistoryOption: true })
-
-      const tree = getWrapper()
-      expect(extractText(tree.root)).toContain("Order History")
-    })
-
-    it("renders Addresses when the AREnableSavedAddresses flag is enabled", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedAddresses: true })
-
-      const tree = getWrapper()
-      expect(extractText(tree.root)).toContain("Saved Addresses")
     })
   })
 })

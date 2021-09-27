@@ -10,7 +10,7 @@ import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
 
 export enum Tab {
-  collection = "Collection",
+  collection = "My Collection",
   savedWorks = "Saved Works",
 }
 
