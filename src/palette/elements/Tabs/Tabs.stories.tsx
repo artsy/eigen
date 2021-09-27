@@ -31,6 +31,10 @@ storiesOf("Navigational Tabs", module)
     const tabs: TabsType = [{ label: "Artist" }, { label: "Artworks" }]
     return <Wrapper tabs={tabs} component={NavigationalTabs} />
   })
+  .add("With superscript", () => {
+    const tabs: TabsType = [{ label: "Artist" }, { label: "Artworks", superscript: "Beta" }]
+    return <Wrapper tabs={tabs} component={NavigationalTabs} />
+  })
 
 storiesOf("Content Tabs", module).add("ContentTabs", () => {
   const tabs: TabsType = [
