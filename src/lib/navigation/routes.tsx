@@ -189,6 +189,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     // TODO: Follow-up about below route names
     new RouteMatcher("/collections/my-collection/artworks/new/submissions/new", "ConsignmentsSubmissionForm"),
     new RouteMatcher("/consign/submission", "ConsignmentsSubmissionForm"),
+    new RouteMatcher("/consign/submission/:artworkSlug", "ConsignmentsSubmissionFromArtworkForm"),
     new RouteMatcher("/collections/my-collection/marketing-landing", "SalesNotRootTabView"),
 
     webViewRoute("/conditions-of-sale"),

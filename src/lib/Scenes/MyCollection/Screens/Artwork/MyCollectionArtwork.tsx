@@ -74,7 +74,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
               block
               onPress={() => {
                 trackEvent(tracks.tappedSellArtwork(artwork.internalID, artwork.slug, "Submit this work"))
-                navigate("/consign/submission")
+                navigate(`/consign/submission/${artwork.slug}`)
               }}
               data-test-id="SubmitButton"
               haptic

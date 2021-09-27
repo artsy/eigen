@@ -84,6 +84,7 @@ import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult
 import { AuctionResultsForArtistsYouFollowQueryRenderer } from "./Scenes/AuctionResultsForArtistsYouFollow/AuctionResultsForArtistsYouFollow"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
+import { ConsignmentsSubmissionFromArtworkFormQueryRenderer } from "./Scenes/Consignments/ConsignmentsHome/ConsignmentsSubmissionFromArtworkForm"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { LotsByArtistsYouFollowQueryRenderer } from "./Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
@@ -313,6 +314,10 @@ export const modules = defineModules({
   CitySectionList: reactModule(CitySectionListQueryRenderer),
   Collection: reactModule(CollectionQueryRenderer, { fullBleed: true }),
   ConsignmentsSubmissionForm: reactModule(ConsignmentsSubmissionForm, {
+    alwaysPresentModally: true,
+    hasOwnModalCloseButton: true,
+  }),
+  ConsignmentsSubmissionFromArtworkForm: reactModule(ConsignmentsSubmissionFromArtworkFormQueryRenderer, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
   }),
