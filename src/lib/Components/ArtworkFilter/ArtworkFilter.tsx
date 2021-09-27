@@ -52,10 +52,10 @@ interface ArtworkFilterProps extends ViewProps {
 interface ArtworkFilterOptionsScreenParams {
   closeModal: () => void
   exitModal: () => void
-  id: string
+  id: string | null
   initiallyAppliedFilters?: FilterArray
   mode: ArtworkFilterMode
-  slug: string
+  slug: string | null
   title?: string
 }
 
