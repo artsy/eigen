@@ -1,11 +1,11 @@
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
-import { withThemeV3 } from "storybook/decorators"
+import { withTheme } from "storybook/decorators"
 import { List } from "storybook/helpers"
 import { Avatar } from "./Avatar"
 
 storiesOf("Avatar", module)
-  .addDecorator(withThemeV3)
+  .addDecorator(withTheme)
   .add("Sizes", () => (
     <List>
       <Avatar initials="MD" size="md" />

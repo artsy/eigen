@@ -4,7 +4,6 @@ import { defaultEnvironment as environment } from "lib/relay/createEnvironment"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { extractNodes } from "lib/utils/extractNodes"
 import { throttle } from "lodash"
-import { Theme } from "palette"
 import React from "react"
 import { Dimensions, View, ViewProps } from "react-native"
 import { fetchQuery, graphql } from "react-relay"
@@ -87,30 +86,28 @@ export default class Artist extends React.Component<Props, State> {
     const isPad = Dimensions.get("window").width > 700
 
     return (
-      <Theme>
-        <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
-          <FancyModalHeader onLeftButtonPress={this.doneTapped}>Artist name</FancyModalHeader>
-          <View
-            style={{
-              alignContent: "center",
-              justifyContent: isPad ? "center" : "flex-end",
-              flexGrow: 1,
-              marginLeft: 20,
-              marginRight: 20,
-            }}
-          >
-            <SearchResults
-              results={this.filteredResults()}
-              query={this.state.query}
-              placeholder="Artist/Designer Name"
-              noResultsMessage="Unfortunately we are not accepting consignments for works by"
-              onChangeText={this.textChanged}
-              searching={this.state.searching}
-              resultSelected={this.artistSelected}
-            />
-          </View>
-        </BottomAlignedButton>
-      </Theme>
+      <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
+        <FancyModalHeader onLeftButtonPress={this.doneTapped}>Artist name</FancyModalHeader>
+        <View
+          style={{
+            alignContent: "center",
+            justifyContent: isPad ? "center" : "flex-end",
+            flexGrow: 1,
+            marginLeft: 20,
+            marginRight: 20,
+          }}
+        >
+          <SearchResults
+            results={this.filteredResults()}
+            query={this.state.query}
+            placeholder="Artist/Designer Name"
+            noResultsMessage="Unfortunately we are not accepting consignments for works by"
+            onChangeText={this.textChanged}
+            searching={this.state.searching}
+            resultSelected={this.artistSelected}
+          />
+        </View>
+      </BottomAlignedButton>
     )
   }
 }

@@ -1,6 +1,6 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount, shallow } from "enzyme"
-import { Sans, Theme } from "palette"
+import { Sans, Text, Theme } from "palette"
 import React from "react"
 import { Header } from "../OtherWorks/Header"
 import { OtherWorksFragmentContainer as OtherWorks } from "../OtherWorks/OtherWorks"
@@ -68,7 +68,7 @@ describe("OtherWorks", () => {
       </GlobalStoreProvider>
     )
     expect(component.find(Header).length).toEqual(1)
-    expect(component.find(Sans).first().text()).toEqual("Other works by Andy Warhol")
+    expect(component.find(Text).first().text()).toEqual("Other works by Andy Warhol")
     component.find(TouchableWithoutFeedback).props().onPress()
     expect(navigate).toHaveBeenCalledWith("/artist/andy-warhol")
   })
@@ -100,7 +100,7 @@ describe("OtherWorks", () => {
       </GlobalStoreProvider>
     )
     expect(component.find(Header).length).toEqual(2)
-    expect(component.find(Sans).first().text()).toEqual("Other works by Andy Warhol")
+    expect(component.find(Text).first().text()).toEqual("Other works by Andy Warhol")
     expect(component.find(Sans).last().text()).toEqual("View all works from Gagosian Gallery")
 
     component.find(TouchableWithoutFeedback).first().props().onPress()
@@ -143,6 +143,6 @@ describe("OtherWorks", () => {
       </GlobalStoreProvider>
     )
     expect(component.find(Header).length).toEqual(1)
-    expect(component.find(Sans).first().text()).toEqual("Other works by Andy Warhol")
+    expect(component.find(Text).first().text()).toEqual("Other works by Andy Warhol")
   })
 })

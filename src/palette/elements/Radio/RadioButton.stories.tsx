@@ -1,11 +1,11 @@
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
-import { withThemeV3 } from "storybook/decorators"
+import { withTheme } from "storybook/decorators"
 import { List } from "storybook/helpers"
 import { RadioButton } from "./RadioButton"
 
 storiesOf("RadioButton", module)
-  .addDecorator(withThemeV3)
+  .addDecorator(withTheme)
   .add("Variants", () => (
     <List>
       <RadioButton />

@@ -7,7 +7,6 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
-import { Theme } from "palette"
 import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { EventList } from "./Components/EventList"
@@ -54,17 +53,15 @@ class CitySavedList extends React.Component<Props, State> {
   render() {
     const { fetchingNextPage } = this.state
     return (
-      <Theme>
-        <EventList
-          header="Saved shows"
-          cityName={this.props.city.name!}
-          bucket={extractNodes(this.props.me.followsAndSaves?.shows)}
-          type="saved"
-          relay={this.props.relay as any}
-          onScroll={isCloseToBottom(this.fetchData) as any}
-          fetchingNextPage={fetchingNextPage}
-        />
-      </Theme>
+      <EventList
+        header="Saved shows"
+        cityName={this.props.city.name!}
+        bucket={extractNodes(this.props.me.followsAndSaves?.shows)}
+        type="saved"
+        relay={this.props.relay as any}
+        onScroll={isCloseToBottom(this.fetchData) as any}
+        fetchingNextPage={fetchingNextPage}
+      />
     )
   }
 }

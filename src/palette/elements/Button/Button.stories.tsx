@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react-native"
 import { LinkIcon } from "palette"
 import React, { useState } from "react"
 import { Button as RNButton } from "react-native"
-import { withHooks, withThemeV3 } from "storybook/decorators"
+import { withHooks, withTheme } from "storybook/decorators"
 import { DList, List } from "storybook/helpers"
 import { Button, ButtonProps } from "."
 import { _test_DisplayState } from "./Button"
@@ -19,7 +19,7 @@ const states: Array<_test_DisplayState | undefined> = [
 ]
 
 storiesOf("ButtonV3", module)
-  .addDecorator(withThemeV3)
+  .addDecorator(withTheme)
   .addDecorator(withHooks)
   .add("Sizes", () => (
     <DList

@@ -7,7 +7,7 @@ jest.mock("moment-timezone", () => {
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { render } from "enzyme"
-import { Flex, Sans, Spacer } from "palette"
+import { Flex, Sans, Spacer, Theme } from "palette"
 import React from "react"
 import { LabeledTicker } from ".."
 import { CountdownProps, CountdownTimer } from "../CountdownTimer"
@@ -35,36 +35,42 @@ describe("CountdownTimer", () => {
 
   it("renders upcoming properly", () => {
     const comp = render(
-      <CountdownTimer
-        formattedOpeningHours="Opens May 10 at 8:22pm"
-        startAt="2018-05-10T20:22:42+00:00"
-        endAt="2018-05-14T10:24:31+00:00"
-        countdownComponent={CountdownText}
-      />
+      <Theme>
+        <CountdownTimer
+          formattedOpeningHours="Opens May 10 at 8:22pm"
+          startAt="2018-05-10T20:22:42+00:00"
+          endAt="2018-05-14T10:24:31+00:00"
+          countdownComponent={CountdownText}
+        />
+      </Theme>
     )
     expect(comp.text()).toContain("Opens May 10 at 8:22pm")
   })
 
   it("renders current properly", () => {
     const comp = render(
-      <CountdownTimer
-        formattedOpeningHours="Opens Apr 14 at 8:00pm"
-        startAt="2018-04-14T20:00:00+00:00"
-        endAt="2018-05-14T20:00:00+00:00"
-        countdownComponent={CountdownText}
-      />
+      <Theme>
+        <CountdownTimer
+          formattedOpeningHours="Opens Apr 14 at 8:00pm"
+          startAt="2018-04-14T20:00:00+00:00"
+          endAt="2018-05-14T20:00:00+00:00"
+          countdownComponent={CountdownText}
+        />
+      </Theme>
     )
     expect(comp.text()).toContain("Opens Apr 14 at 8:00pm")
   })
 
   it("renders closed properly", () => {
     const comp = render(
-      <CountdownTimer
-        formattedOpeningHours="Closed"
-        startAt={dateString(Date.now() - 2000)}
-        endAt={dateString(Date.now() - 1000)}
-        countdownComponent={CountdownText}
-      />
+      <Theme>
+        <CountdownTimer
+          formattedOpeningHours="Closed"
+          startAt={dateString(Date.now() - 2000)}
+          endAt={dateString(Date.now() - 1000)}
+          countdownComponent={CountdownText}
+        />
+      </Theme>
     )
     expect(comp.text()).toContain("")
   })
