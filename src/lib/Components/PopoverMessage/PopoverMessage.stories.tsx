@@ -2,7 +2,7 @@ import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
 import { Button } from "palette/elements/Button"
 import React from "react"
-import { withThemeV3 } from "storybook/decorators"
+import { withTheme } from "storybook/decorators"
 import { DList, List } from "storybook/helpers"
 import { PopoverMessageItem, PopoverMessageType } from "./PopoverMessage"
 import { usePopoverMessage } from "./popoverMessageHooks"
@@ -30,7 +30,7 @@ const PopoverMessage: React.FC<PopoverMessageItem & { label: string }> = (props)
 }
 
 storiesOf("Popover message", module)
-  .addDecorator(withThemeV3)
+  .addDecorator(withTheme)
   .add("Variants", () => (
     <DList
       data={variants}

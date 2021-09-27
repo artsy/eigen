@@ -8,7 +8,7 @@ import { ArtistSeriesHeaderFragmentContainer } from "lib/Scenes/ArtistSeries/Art
 import { ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { Box, Flex, Separator, Spacer, Theme } from "palette"
+import { Box, Flex, Separator, Spacer } from "palette"
 import React, { useState } from "react"
 
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
@@ -70,51 +70,49 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
       }}
     >
       <ArtworkFiltersStoreProvider>
-        <Theme>
-          <StickyHeaderPage
-            headerContent={
+        <StickyHeaderPage
+          headerContent={
+            <>
+              <Flex px={2}>
+                <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
+                <Spacer mt={2} mb={1} />
+                <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
+              </Flex>
+              <Separator mt={2} mb={1} />
+            </>
+          }
+          footerContent={
+            artistSeriesTotalCount !== 0 ? (
               <>
-                <Flex px={2}>
-                  <ArtistSeriesHeaderFragmentContainer artistSeries={artistSeries} />
-                  <Spacer mt={2} mb={1} />
-                  <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
-                </Flex>
-                <Separator mt={2} mb={1} />
+                <Separator mb={1} />
+                <Box pb={2} px={2}>
+                  <ArtistSeriesMoreSeriesFragmentContainer
+                    contextScreenOwnerId={artistSeries.internalID}
+                    contextScreenOwnerSlug={artistSeries.slug}
+                    contextScreenOwnerType={OwnerType.artistSeries}
+                    artist={artist}
+                    artistSeriesHeader="More series by this artist"
+                    currentArtistSeriesExcluded
+                  />
+                </Box>
               </>
-            }
-            footerContent={
-              artistSeriesTotalCount !== 0 ? (
-                <>
-                  <Separator mb={1} />
-                  <Box pb={2} px={2}>
-                    <ArtistSeriesMoreSeriesFragmentContainer
-                      contextScreenOwnerId={artistSeries.internalID}
-                      contextScreenOwnerSlug={artistSeries.slug}
-                      contextScreenOwnerType={OwnerType.artistSeries}
-                      artist={artist}
-                      artistSeriesHeader="More series by this artist"
-                      currentArtistSeriesExcluded
-                    />
-                  </Box>
-                </>
-              ) : undefined
-            }
-            stickyHeaderContent={<ArtistSeriesFilterHeader onFilterArtworksPress={openFilterArtworksModal} />}
-          >
-            <Flex px={2}>
-              <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
-              <ArtworkFilterNavigator
-                {...props}
-                isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-                id={artistSeries.internalID}
-                slug={artistSeries.slug}
-                mode={FilterModalMode.ArtistSeries}
-                exitModal={handleFilterArtworksModal}
-                closeModal={closeFilterArtworksModal}
-              />
-            </Flex>
-          </StickyHeaderPage>
-        </Theme>
+            ) : undefined
+          }
+          stickyHeaderContent={<ArtistSeriesFilterHeader onFilterArtworksPress={openFilterArtworksModal} />}
+        >
+          <Flex px={2}>
+            <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
+            <ArtworkFilterNavigator
+              {...props}
+              isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+              id={artistSeries.internalID}
+              slug={artistSeries.slug}
+              mode={FilterModalMode.ArtistSeries}
+              exitModal={handleFilterArtworksModal}
+              closeModal={closeFilterArtworksModal}
+            />
+          </Flex>
+        </StickyHeaderPage>
       </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>
   )
@@ -144,23 +142,21 @@ export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSerie
 
 const ArtistSeriesPlaceholder: React.FC<{}> = ({}) => {
   return (
-    <Theme>
-      <Box>
-        <Box px="2" pt="1">
-          {/* Series header image */}
-          <PlaceholderBox height={180} width={180} alignSelf="center" />
-          <Spacer mb={2} />
-          {/* Artist Series name */}
-          <PlaceholderText width={220} />
-          {/* Artist series info */}
-          <PlaceholderText width={190} />
-          <PlaceholderText width={190} />
-        </Box>
+    <Box>
+      <Box px="2" pt="1">
+        {/* Series header image */}
+        <PlaceholderBox height={180} width={180} alignSelf="center" />
         <Spacer mb={2} />
-        {/* masonry grid */}
-        <PlaceholderGrid />
+        {/* Artist Series name */}
+        <PlaceholderText width={220} />
+        {/* Artist series info */}
+        <PlaceholderText width={190} />
+        <PlaceholderText width={190} />
       </Box>
-    </Theme>
+      <Spacer mb={2} />
+      {/* masonry grid */}
+      <PlaceholderGrid />
+    </Box>
   )
 }
 

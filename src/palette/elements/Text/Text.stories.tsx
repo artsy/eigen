@@ -1,14 +1,14 @@
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
 import { View } from "react-native"
-import { withThemeV3 } from "storybook/decorators"
+import { withTheme } from "storybook/decorators"
 import { DList, List } from "storybook/helpers"
 import { Text, TextProps } from "."
 
 const variants: Array<TextProps["variant"]> = ["xs", "sm", "md", "lg", "xl", "xxl"]
 
 storiesOf("Theme/Text", module)
-  .addDecorator(withThemeV3)
+  .addDecorator(withTheme)
   .add("Variants", () => (
     <DList
       data={variants}

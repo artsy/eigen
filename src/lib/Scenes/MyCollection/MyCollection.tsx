@@ -14,7 +14,7 @@ import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
-import { Button, Flex, Separator, Spacer, Theme, useSpace } from "palette"
+import { Button, Flex, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
 import { Platform, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -204,35 +204,33 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 
 export const LoadingSkeleton: React.FC<{}> = () => {
   return (
-    <Theme>
-      <Flex>
-        <Flex flexDirection="row" justifyContent="space-between">
-          <Spacer />
-          <Spacer />
-          <PlaceholderText width={70} margin={20} />
-        </Flex>
-        <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
-          <Flex>
-            <Spacer mb={40} />
-            {/* Entity name */}
-            <PlaceholderText width={180} />
-            {/* subtitle text */}
-            <PlaceholderText width={100} />
-          </Flex>
-        </Flex>
-        <Spacer mb={3} />
-        {/* tabs */}
-        <Flex justifyContent="space-around" flexDirection="row" px={2}>
-          <PlaceholderText width={"40%"} />
-          <PlaceholderText width={"40%"} />
-        </Flex>
-        <Spacer mb={1} />
-        <Separator />
-        <Spacer mb={3} />
-        {/* masonry grid */}
-        <PlaceholderGrid />
+    <Flex>
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Spacer />
+        <Spacer />
+        <PlaceholderText width={70} margin={20} />
       </Flex>
-    </Theme>
+      <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
+        <Flex>
+          <Spacer mb={40} />
+          {/* Entity name */}
+          <PlaceholderText width={180} />
+          {/* subtitle text */}
+          <PlaceholderText width={100} />
+        </Flex>
+      </Flex>
+      <Spacer mb={3} />
+      {/* tabs */}
+      <Flex justifyContent="space-around" flexDirection="row" px={2}>
+        <PlaceholderText width={"40%"} />
+        <PlaceholderText width={"40%"} />
+      </Flex>
+      <Spacer mb={1} />
+      <Separator />
+      <Spacer mb={3} />
+      {/* masonry grid */}
+      <PlaceholderGrid />
+    </Flex>
   )
 }
 

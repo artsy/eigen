@@ -6,7 +6,6 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
-import { Theme } from "palette"
 import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { EventList } from "./Components/EventList"
@@ -59,18 +58,16 @@ class CityBMWList extends React.Component<Props, State> {
     } = this.props
     const { fetchingNextPage } = this.state
     return (
-      <Theme>
-        <EventList
-          key={name + "bmw"}
-          cityName={name!}
-          bucket={extractNodes(this.props.city.sponsoredContent?.shows)}
-          header="BMW Art Guide"
-          type="BMW Art Guide"
-          relay={relay as any}
-          onScroll={isCloseToBottom(this.fetchData)}
-          fetchingNextPage={fetchingNextPage}
-        />
-      </Theme>
+      <EventList
+        key={name + "bmw"}
+        cityName={name!}
+        bucket={extractNodes(this.props.city.sponsoredContent?.shows)}
+        header="BMW Art Guide"
+        type="BMW Art Guide"
+        relay={relay as any}
+        onScroll={isCloseToBottom(this.fetchData)}
+        fetchingNextPage={fetchingNextPage}
+      />
     )
   }
 }
