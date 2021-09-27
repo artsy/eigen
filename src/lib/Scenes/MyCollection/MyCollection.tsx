@@ -16,7 +16,7 @@ import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import { Button, Flex, Separator, Spacer, Theme, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
-import { Platform, RefreshControl, ScrollView } from "react-native"
+import { Platform, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkFormModal } from "./Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
@@ -111,49 +111,35 @@ const MyCollection: React.FC<{
           refreshMyCollection()
         }}
       />
-      {artworks.length === 0 ? (
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={isRefreshing}
-              onRefresh={() => {
-                refreshMyCollection()
-              }}
-            />
-          }
-          contentContainerStyle={{ flex: 1 }}
-        >
-          <Flex>
-            <ZeroState
-              title={"Primed and ready for artworks."}
-              subtitle="Add a work from your collection to access price and market insights."
-              callToAction={
-                <Button
-                  data-test-id="add-artwork-button-zero-state"
-                  onPress={() => {
-                    setShowModal(true)
-                    trackEvent(tracks.addCollectedArtwork())
-                  }}
-                  block
-                >
-                  Add artwork
-                </Button>
-              }
-            />
-          </Flex>
-        </ScrollView>
-      ) : (
-        <StickyTabPageScrollView
-          contentContainerStyle={{ paddingBottom: space(2) }}
-          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
-        >
+      <StickyTabPageScrollView
+        contentContainerStyle={{ paddingBottom: space(2) }}
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}
+      >
+        {artworks.length === 0 ? (
+          <ZeroState
+            title={"Primed and ready for artworks."}
+            subtitle="Add a work from your collection to access price and market insights."
+            callToAction={
+              <Button
+                data-test-id="add-artwork-button-zero-state"
+                onPress={() => {
+                  setShowModal(true)
+                  trackEvent(tracks.addCollectedArtwork())
+                }}
+                block
+              >
+                Add artwork
+              </Button>
+            }
+          />
+        ) : (
           <InfiniteScrollMyCollectionArtworksGridContainer
             myCollectionConnection={me.myCollectionConnection!}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
           />
-        </StickyTabPageScrollView>
-      )}
+        )}
+      </StickyTabPageScrollView>
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
