@@ -12,8 +12,9 @@ export const useAlgoliaClient = (appID: string, apiKey: string, options?: Algoli
       // @ts-ignore
       search(requests) {
         const isEmptyIndexName = requests.every((request) => request.indexName.length === 0)
+        const isEmptyQueryName = requests.every((request) => request.params?.query?.length === 0)
 
-        if (isEmptyIndexName) {
+        if (isEmptyIndexName || isEmptyQueryName) {
           return Promise.resolve({
             results: requests.map(() => ({
               hits: [],

@@ -1,5 +1,4 @@
 import { fireEvent } from "@testing-library/react-native"
-import { extractText } from "lib/tests/extractText"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { SearchPills, SearchPillsProps } from "../components/SearchPills"
@@ -9,14 +8,17 @@ const pills: PillType[] = [
   {
     name: "first",
     displayName: "First",
+    type: "algolia",
   },
   {
     name: "second",
     displayName: "Second",
+    type: "algolia",
   },
   {
     name: "third",
     displayName: "Third",
+    type: "algolia",
   },
 ]
 
@@ -40,6 +42,7 @@ describe("SearchPills", () => {
     fireEvent.press(getByText("Second"))
 
     expect(onPillPressMock).toBeCalledWith({
+      type: "algolia",
       name: "second",
       displayName: "Second",
     })
@@ -49,6 +52,6 @@ describe("SearchPills", () => {
     const isSelected = (pill: PillType) => pill.name === "second"
     const { getByA11yState } = renderWithWrappersTL(<TestRenderer isSelected={isSelected} />)
 
-    expect(extractText(getByA11yState({ selected: true }))).toBe("Second")
+    expect(getByA11yState({ selected: true })).toHaveTextContent("Second")
   })
 })

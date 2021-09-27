@@ -6,10 +6,11 @@ import { Input, InputProps } from "./Input/Input"
 
 interface SearchInputProps extends InputProps {
   enableCancelButton?: boolean
+  onCancelPress?: () => void
 }
 
 export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
-  ({ enableCancelButton, onChangeText, onClear, ...props }, ref) => {
+  ({ enableCancelButton, onChangeText, onClear, onCancelPress, ...props }, ref) => {
     const [inputFocused, setInputFocused] = useState(false)
 
     return (
@@ -45,6 +46,7 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
                 onPress={() => {
                   ;(ref as RefObject<TextInput>).current?.blur()
                   ;(ref as RefObject<TextInput>).current?.clear()
+                  onCancelPress?.()
                 }}
                 hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
               >
