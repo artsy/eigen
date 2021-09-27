@@ -1,5 +1,5 @@
+import { _test_THEMES } from "palette"
 import React from "react"
-
 import {
   Image,
   LayoutChangeEvent,
@@ -11,8 +11,6 @@ import {
   View,
   ViewProps,
 } from "react-native"
-
-import colors from "lib/data/colors"
 import { createGeminiUrl } from "./createGeminiUrl"
 
 interface Props extends ViewProps {
@@ -75,7 +73,7 @@ interface State {
 
 export default class OpaqueImageView extends React.Component<Props, State> {
   static defaultProps: Props = {
-    placeholderBackgroundColor: colors["gray-regular"],
+    placeholderBackgroundColor: _test_THEMES.v3.colors.black10,
   }
 
   constructor(props: Props) {

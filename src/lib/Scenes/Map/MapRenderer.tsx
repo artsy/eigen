@@ -1,7 +1,7 @@
 import { MapRendererQuery } from "__generated__/MapRendererQuery.graphql"
-import colors from "lib/data/colors"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
+import { useTheme } from "palette"
 import React from "react"
 import { View } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -20,7 +20,9 @@ export const MapRenderer: React.FC<{
   safeAreaInsets: SafeAreaInsets
   userLocationWithinCity: boolean
 }> = (props) => {
+  const { color } = useTheme()
   let isRetrying = false
+
   return (
     <QueryRenderer<MapRendererQuery>
       environment={defaultEnvironment}
@@ -65,7 +67,7 @@ export const MapRenderer: React.FC<{
           return <GlobalMap {...computedProps} />
         } else {
           // This shouldn't happen in practice, but let's return something in case it does.
-          return <View style={{ backgroundColor: colors["gray-light"] }} />
+          return <View style={{ backgroundColor: color("black5") }} />
         }
       }}
       cacheConfig={

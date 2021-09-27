@@ -1,6 +1,6 @@
+import { themeGet } from "@styled-system/theme-get"
 import { Inquiry_artwork } from "__generated__/Inquiry_artwork.graphql"
 import { InquiryQuery } from "__generated__/InquiryQuery.graphql"
-import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 import { dismissModal } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -63,7 +63,7 @@ const InquiryTextInput = styled.TextInput`
   font-family: ${fonts["garamond-regular"]};
 `
 const ResponseRate = styled(SmallHeadline)`
-  color: ${colors["yellow-bold"]};
+  color: ${themeGet("colors.yellow100")};
   margin-top: 5;
 `
 // TODO: Uncomment when use is uncommented in code below

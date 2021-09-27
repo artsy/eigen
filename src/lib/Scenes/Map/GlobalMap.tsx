@@ -1,6 +1,6 @@
 import MapboxGL, { OnPressEvent } from "@react-native-mapbox-gl/maps"
+import { themeGet } from "@styled-system/theme-get"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
-import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
 import PinFairSelected from "lib/Icons/PinFairSelected"
 import PinSavedSelected from "lib/Icons/PinSavedSelected"
@@ -574,89 +574,93 @@ export class GlobalMap extends React.Component<Props, State> {
     }
 
     return (
-      <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: colors["gray-light"] }}>
-        <LoadingScreen
-          source={require("../../../../images/map-bg.webp")}
-          resizeMode="cover"
-          style={{ ...this.backgroundImageSize }}
-        />
-        <TopButtonsContainer style={{ top: this.props.safeAreaInsets.top + 12 }}>
-          <Animated.View
-            style={{
-              transform: [
-                {
-                  translateY: this.hideButtons.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0, -(this.props.safeAreaInsets.top + 12 + 50)],
-                  }),
-                },
-              ],
-            }}
-          >
-            <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end" px={3}>
-              <CitySwitcherButton
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                sponsoredContentUrl={this.props.viewer && this.props.viewer.city.sponsoredContent.artGuideUrl}
-                city={city}
-                isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
-                onPress={this.onPressCitySwitcherButton}
-              />
-              {!!(this.state.userLocation && userLocationWithinCity) && (
-                <Box style={{ marginLeft: 10 }}>
-                  <UserPositionButton
-                    highlight={this.state.userLocation === this.state.currentLocation}
-                    onPress={this.onPressUserPositionButton}
-                  />
-                </Box>
-              )}
-            </Flex>
-          </Animated.View>
-        </TopButtonsContainer>
-        <Spring
-          native
-          from={{ opacity: 0 }}
-          to={mapLoaded ? { opacity: 1.0 } : { opacity: 0 }}
-          config={{
-            duration: 300,
-          }}
-          precision={1}
-        >
-          {({ opacity }: { opacity: number }) => (
-            <AnimatedView style={{ flex: 1, opacity }}>
-              <MapboxGL.MapView
-                ref={this.map}
-                style={{ width: "100%", height: Dimensions.get("window").height }}
-                {...mapProps}
-                onRegionIsChanging={this.onRegionIsChanging}
-                onDidFinishRenderingMapFully={this.onDidFinishRenderingMapFully}
-                onPress={this.onPressMap}
+      <ClassTheme>
+        {({ color }) => (
+          <Flex mb={0.5} flexDirection="column" style={{ backgroundColor: color("black5") }}>
+            <LoadingScreen
+              source={require("../../../../images/map-bg.webp")}
+              resizeMode="cover"
+              style={{ ...this.backgroundImageSize }}
+            />
+            <TopButtonsContainer style={{ top: this.props.safeAreaInsets.top + 12 }}>
+              <Animated.View
+                style={{
+                  transform: [
+                    {
+                      translateY: this.hideButtons.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, -(this.props.safeAreaInsets.top + 12 + 50)],
+                      }),
+                    },
+                  ],
+                }}
               >
-                <MapboxGL.Camera
-                  ref={this.camera}
-                  animationMode="flyTo"
-                  minZoomLevel={MinZoomLevel}
-                  maxZoomLevel={MaxZoomLevel}
-                  centerCoordinate={[centerLng, centerLat]}
-                />
-                <MapboxGL.UserLocation onUpdate={this.onUserLocationUpdate} />
-                {!!city && (
-                  <>
-                    {!!this.state.featureCollections && (
-                      <PinsShapeLayer
-                        filterID={cityTabs[this.state.activeIndex].id}
-                        featureCollections={this.state.featureCollections}
-                        onPress={(e) => this.handleFeaturePress(e)}
+                <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end" px={3}>
+                  <CitySwitcherButton
+                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                    sponsoredContentUrl={this.props.viewer && this.props.viewer.city.sponsoredContent.artGuideUrl}
+                    city={city}
+                    isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
+                    onPress={this.onPressCitySwitcherButton}
+                  />
+                  {!!(this.state.userLocation && userLocationWithinCity) && (
+                    <Box style={{ marginLeft: 10 }}>
+                      <UserPositionButton
+                        highlight={this.state.userLocation === this.state.currentLocation}
+                        onPress={this.onPressUserPositionButton}
                       />
+                    </Box>
+                  )}
+                </Flex>
+              </Animated.View>
+            </TopButtonsContainer>
+            <Spring
+              native
+              from={{ opacity: 0 }}
+              to={mapLoaded ? { opacity: 1.0 } : { opacity: 0 }}
+              config={{
+                duration: 300,
+              }}
+              precision={1}
+            >
+              {({ opacity }: { opacity: number }) => (
+                <AnimatedView style={{ flex: 1, opacity }}>
+                  <MapboxGL.MapView
+                    ref={this.map}
+                    style={{ width: "100%", height: Dimensions.get("window").height }}
+                    {...mapProps}
+                    onRegionIsChanging={this.onRegionIsChanging}
+                    onDidFinishRenderingMapFully={this.onDidFinishRenderingMapFully}
+                    onPress={this.onPressMap}
+                  >
+                    <MapboxGL.Camera
+                      ref={this.camera}
+                      animationMode="flyTo"
+                      minZoomLevel={MinZoomLevel}
+                      maxZoomLevel={MaxZoomLevel}
+                      centerCoordinate={[centerLng, centerLat]}
+                    />
+                    <MapboxGL.UserLocation onUpdate={this.onUserLocationUpdate} />
+                    {!!city && (
+                      <>
+                        {!!this.state.featureCollections && (
+                          <PinsShapeLayer
+                            filterID={cityTabs[this.state.activeIndex].id}
+                            featureCollections={this.state.featureCollections}
+                            onPress={(e) => this.handleFeaturePress(e)}
+                          />
+                        )}
+                        <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
+                        {!!mapLoaded && !!activeShows && !!activePin && this.renderSelectedPin()}
+                      </>
                     )}
-                    <ShowCardContainer>{this.renderShowCard()}</ShowCardContainer>
-                    {!!mapLoaded && !!activeShows && !!activePin && this.renderSelectedPin()}
-                  </>
-                )}
-              </MapboxGL.MapView>
-            </AnimatedView>
-          )}
-        </Spring>
-      </Flex>
+                  </MapboxGL.MapView>
+                </AnimatedView>
+              )}
+            </Spring>
+          </Flex>
+        )}
+      </ClassTheme>
     )
   }
 
@@ -768,7 +772,7 @@ export class GlobalMap extends React.Component<Props, State> {
 }
 
 const SelectedCluster = styled(Flex)`
-  background-color: ${colors["purple-regular"]};
+  background-color: ${themeGet("colors.blue100")};
   border-radius: 60;
   flex-direction: row;
   justify-content: center;

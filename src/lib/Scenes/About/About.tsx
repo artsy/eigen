@@ -10,7 +10,7 @@ import { getVersion } from "react-native-device-info"
 import useDebounce from "react-use/lib/useDebounce"
 
 export const About: React.FC = () => {
-  const { colorV2 } = useTheme()
+  const { color } = useTheme()
   const appVersion = getVersion()
   const toast = useToast()
   const [tapCount, updateTapCount] = useState(0)
@@ -51,11 +51,7 @@ export const About: React.FC = () => {
           text={appVersion}
           onPress={() => updateTapCount((count) => count + 1)}
           chevron={false}
-          style={
-            userIsDev
-              ? { borderRightColor: colorV2("purple100") /* TODO-PALETTE-V3 color("devpurple") */, borderRightWidth: 1 }
-              : undefined
-          }
+          style={userIsDev ? { borderRightColor: color("devpurple"), borderRightWidth: 1 } : undefined}
         />
       </ScrollView>
     </PageWithSimpleHeader>

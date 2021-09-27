@@ -11,7 +11,7 @@ import { AddIcon, BorderBox, Box, Button, Flex, Spacer, useColor, XCircleIcon } 
 import React, { useState } from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
 import { Image as RNCImage } from "react-native-image-crop-picker"
-import Separator from "../Separator"
+import { Separator } from "../Separator"
 
 const MARGIN = 20
 

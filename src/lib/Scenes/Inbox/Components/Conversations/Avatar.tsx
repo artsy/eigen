@@ -1,9 +1,9 @@
-import colors from "lib/data/colors"
+import { themeGet } from "@styled-system/theme-get"
 import React from "react"
 import styled from "styled-components/native"
 
 const BackgroundCircle = styled.View`
-  background-color: ${colors["gray-regular"]};
+  background-color: ${themeGet("colors.black60")};
   height: 46;
   width: 46;
   border-radius: 22;
@@ -14,7 +14,7 @@ interface NameProps {
 }
 
 const Name = styled.Text`
-  color: ${(props: NameProps) => (props.user ? "white" : colors["gray-semibold"])};
+  color: ${(props: NameProps) => themeGet(`colors.${props.user ? "white100" : "black60"}`)};
   font-family: "Unica77LL-Regular"; /* this should be taken from the theme, but in here we cant, so until we rework this component, hardcode it. */
   font-size: 12;
   align-self: center;

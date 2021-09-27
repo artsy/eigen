@@ -1,19 +1,19 @@
+import { themeGet } from "@styled-system/theme-get"
 import React from "react"
 import styled from "styled-components/native"
 
-import colors from "lib/data/colors"
 import fonts from "lib/data/fonts"
 
 // @ts-ignore
 const Container = styled.View`
   height: 30;
-  background-color: ${colors["yellow-regular"]};
+  background-color: ${themeGet("colors.yellow10")};
   justify-content: center;
   align-items: center;
 `
 
 const ConnectivityMessage = styled.Text`
-  color: ${colors["yellow-bold"]};
+  color: ${themeGet("colors.yellow100")};
   text-align: center;
   font-family: ${fonts["garamond-regular"]};
   font-size: 16;

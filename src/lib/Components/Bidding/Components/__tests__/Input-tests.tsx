@@ -17,7 +17,7 @@ it("shows a gray border by default", () => {
   expect((component.toJSON() as any)?.props.style[0].borderColor).toEqual(theme.colors.black10)
 })
 
-it("shows a purple border on focus", () => {
+it("shows a blue border on focus", () => {
   const component = renderWithWrappers(
     <BiddingThemeProvider>
       <Input />
@@ -29,7 +29,7 @@ it("shows a purple border on focus", () => {
   inputComponent.onFocus()
 
   expect(component.toJSON()).toBeTruthy()
-  expect((component.toJSON() as any)?.props.style[0].borderColor).toEqual(theme.colors.purple100)
+  expect((component.toJSON() as any)?.props.style[0].borderColor).toEqual(theme.colors.blue100)
 })
 
 it("changes the border color back to gray on blur", () => {

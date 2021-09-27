@@ -3,10 +3,9 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 import { StyleSheet, ViewStyle } from "react-native"
 
-import Biography from "./Biography"
-
 import RelatedArtists from "../RelatedArtists/RelatedArtists"
-import Separator from "../Separator"
+import { Separator } from "../Separator"
+import Biography from "./Biography"
 
 import { About_gene } from "__generated__/About_gene.graphql"
 import { StickyTabPageScrollView } from "../StickyTabPage/StickyTabPageScrollView"
