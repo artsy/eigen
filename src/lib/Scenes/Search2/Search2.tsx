@@ -162,14 +162,8 @@ export const Search2: React.FC<Search2Props> = (props) => {
   const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 1
 
   const handlePillPress = (pill: PillType) => {
-    let nextSelectedPill: PillType | null = pill
-
-    if (selectedPill?.name === pill.name) {
-      nextSelectedPill = null
-    }
-
     setSearchState((prevState) => ({ ...prevState, page: 1 }))
-    setSelectedPill(nextSelectedPill)
+    setSelectedPill(pill)
   }
 
   const isSelected = (pill: PillType) => {

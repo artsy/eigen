@@ -120,6 +120,34 @@ describe("Search2 Screen", () => {
     expect(getByA11yState({ selected: true })).toHaveTextContent("Artworks")
   })
 
+  it("should not be able to untoggle the same pill", () => {
+    const { getByPlaceholderText, getByText, getByA11yState } = renderWithWrappersTL(<TestRenderer />)
+    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Algolia: () => ({
+        appID: "",
+        apiKey: "",
+        indices: [
+          {
+            name: "Artist_staging",
+            displayName: "Artists",
+          },
+          {
+            name: "Gallery_staging",
+            displayName: "Gallery",
+          },
+        ],
+      }),
+    })
+
+    fireEvent(searchInput, "changeText", "prev value")
+    fireEvent(getByText("Artists"), "press")
+    fireEvent(getByText("Artists"), "press")
+
+    expect(getByA11yState({ selected: true })).toHaveTextContent("Artists")
+  })
+
   describe("Reset the state of the pills", () => {
     let tree: RenderAPI
 
