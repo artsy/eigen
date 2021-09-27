@@ -1,4 +1,4 @@
-import { Text, ThemeV3, useColor } from "palette"
+import { Text, Theme, useColor } from "palette"
 import React from "react"
 
 export const InputTitle: React.FC<{ required?: boolean }> = ({ children: title, required }) => {
@@ -9,7 +9,7 @@ export const InputTitle: React.FC<{ required?: boolean }> = ({ children: title, 
   }
 
   return (
-    <ThemeV3>
+    <Theme>
       <Text variant="md" style={{ fontSize: 13, marginBottom: 2, textTransform: "uppercase" }}>
         {title}
         {!!required && (
@@ -18,6 +18,6 @@ export const InputTitle: React.FC<{ required?: boolean }> = ({ children: title, 
           </Text>
         )}
       </Text>
-    </ThemeV3>
+    </Theme>
   )
 }
