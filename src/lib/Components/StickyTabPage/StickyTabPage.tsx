@@ -18,6 +18,7 @@ export interface TabProps {
   initial?: boolean
   title: string
   content: JSX.Element | ((tabIndex: number) => JSX.Element)
+  superscript?: string
 }
 
 interface StickyTabPageProps {
@@ -98,6 +99,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
         stickyHeaderHeight,
         headerOffsetY,
         tabLabels: tabs.map((tab) => tab.title),
+        tabSuperscripts: tabs.map((tab) => tab.superscript),
         setActiveTabIndex(index) {
           setActiveTabIndex(index)
           activeTabIndexNative.setValue(index)

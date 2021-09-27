@@ -79,8 +79,8 @@ describe("MyCollection", () => {
     })
 
     it("shows zerostate", () => {
-      expect(extractText(tree.root)).toContain("Primed and ready for artworks.")
-      expect(extractText(tree.root)).toContain("Add a work from your collection to access price and market insights")
+      expect(extractText(tree.root)).toContain("Your art collection in your pocket.")
+      expect(extractText(tree.root)).toContain("Keep track of your collection all in one place and get market insights")
     })
 
     it("shows form modal when Add Artwork is pressed", () => {
