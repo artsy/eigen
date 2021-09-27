@@ -120,6 +120,15 @@ describe("Search2 Screen", () => {
     expect(getByA11yState({ selected: true })).toHaveTextContent("Artworks")
   })
 
+  it('The "Top" pill should be selected by default', () => {
+    const { getByA11yState, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+    fireEvent.changeText(searchInput, "text")
+
+    expect(getByA11yState({ selected: true })).toHaveTextContent("Top")
+  })
+
   it("should not be able to untoggle the same pill", () => {
     const { getByPlaceholderText, getByText, getByA11yState } = renderWithWrappersTL(<TestRenderer />)
     const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
