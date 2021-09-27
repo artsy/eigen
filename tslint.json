@@ -21,6 +21,7 @@
     "jsx-curly-brace-presence": { "options": { "props": "never" } },
     "jsx-no-lambda": false,
     "jsx-boolean-value": [true, "never"],
-    "jsx-space-before-trailing-slash": true
+    "jsx-space-before-trailing-slash": true,
+    "jsx-no-bind": false // we still have some class components, they are old, don't bother with linting them too much.
   }
 }

@@ -46,7 +46,13 @@ describe("General TabBar Behaviour", () => {
   const tree = renderWithWrappers(
     <TabBarContainer tabLayouts={tabLayouts} activeTabIndex={0} scrollEnabled>
       {tabs.map((tab, index) => (
-        <Tab label={tab.label} onPress={() => null} onLayout={() => null} active={activeIndex === index} />
+        <Tab
+          key={`${index}`}
+          label={tab.label}
+          onPress={() => null}
+          onLayout={() => null}
+          active={activeIndex === index}
+        />
       ))}
     </TabBarContainer>
   )

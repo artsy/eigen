@@ -16,6 +16,7 @@ export const RecentSearches: React.FC = () => {
         <SearchResultList
           results={recentSearches.map(({ props: result }) => (
             <SearchResult
+              key={`${result.internalID}`}
               result={result}
               updateRecentSearchesOnTap={false}
               displayingRecentResult
@@ -27,7 +28,7 @@ export const RecentSearches: React.FC = () => {
           ))}
         />
       ) : (
-        <Message>We&rsquo;ll save your recent searches here</Message>
+        <Message>We’ll save your recent searches here</Message>
       )}
     </>
   )

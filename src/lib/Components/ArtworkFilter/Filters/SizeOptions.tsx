@@ -219,7 +219,13 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
       filterOptions={[
         ...SIZE_OPTIONS,
         ...(shouldShowCustomSize
-          ? [<CustomSizeInput initialValue={customInitialValue} onChange={handleCustomPriceChange} />]
+          ? [
+              <CustomSizeInput
+                key="custom-size-input"
+                initialValue={customInitialValue}
+                onChange={handleCustomPriceChange}
+              />,
+            ]
           : []),
       ]}
     />
