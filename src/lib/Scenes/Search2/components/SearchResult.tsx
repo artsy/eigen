@@ -7,12 +7,11 @@ import { SearchListItem } from "./SearchListItem"
 
 interface SearchResultsItemProps {
   result: AlgoliaSearchResult
+  categoryName: string
   indexName: string
 }
 
-export const SearchResult: React.FC<SearchResultsItemProps> = ({ result, indexName }) => {
-  const categoryName = indexName.split("_")[0]
-
+export const SearchResult: React.FC<SearchResultsItemProps> = ({ result, categoryName, indexName }) => {
   const onPress = (): void => {
     // TODO: I'm not sure why we need to use this `navigateToPartner` function but without it the header overlaps
     // with the back button

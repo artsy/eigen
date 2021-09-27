@@ -13,7 +13,7 @@ interface SearchResultsProps
   extends StateResultsProvided<AlgoliaSearchResult>,
     InfiniteHitsProvided<AlgoliaSearchResult> {
   indexName: string
-  categoryDisplayName?: string
+  categoryDisplayName: string
 }
 
 export const SearchResults: React.FC<SearchResultsProps> = ({
@@ -85,7 +85,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
       data={hits}
       keyExtractor={(item) => item.objectID}
       ItemSeparatorComponent={() => <Spacer mb={2} />}
-      renderItem={({ item }) => <SearchResult result={item} indexName={indexName} />}
+      renderItem={({ item }) => <SearchResult result={item} indexName={indexName} categoryName={categoryDisplayName} />}
       onEndReached={loadMore}
       ListFooterComponent={
         <Flex alignItems="center" my={2}>
