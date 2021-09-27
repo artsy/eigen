@@ -125,8 +125,8 @@ const MyCollection: React.FC<{
         >
           <Flex>
             <ZeroState
-              title={"Primed and ready for artworks."}
-              subtitle="Add a work from your collection to access price and market insights."
+              title={"Your art collection in your pocket."}
+              subtitle="Keep track of your collection all in one place and get market insights"
               callToAction={
                 <Button
                   data-test-id="add-artwork-button-zero-state"
