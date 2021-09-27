@@ -65,14 +65,17 @@ export const ClosedLotStanding = ({
 
   return (
     <TouchableOpacity onPress={() => handleLotTap()} style={{ marginHorizontal: 0, width: "100%" }}>
-      <Lot saleArtwork={saleArtwork!} subtitle={subtitle} ArtworkBadge={Badge}>
-        <Flex flexDirection="row">
-          <Text variant="xs">{sellingPrice}</Text>
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Lot saleArtwork={saleArtwork!} subtitle={subtitle} ArtworkBadge={Badge} />
+        <Flex flexDirection="column">
+          <Flex flexDirection="row">
+            <Text variant="xs">{sellingPrice}</Text>
+          </Flex>
+          <Flex flexDirection="row" alignItems="center">
+            <Result />
+          </Flex>
         </Flex>
-        <Flex flexDirection="row" alignItems="center">
-          <Result />
-        </Flex>
-      </Lot>
+      </Flex>
     </TouchableOpacity>
   )
 }

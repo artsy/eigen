@@ -43,20 +43,23 @@ export const WatchedLot: React.FC<WatchedLotProps> = ({ saleArtwork }) => {
 
   return (
     <TouchableOpacity style={{ marginHorizontal: 0, width: "100%" }} onPress={handleLotTap}>
-      <Lot saleArtwork={saleArtwork!} isSmallScreen={isSmallScreen}>
-        <Flex flexDirection="row" justifyContent="flex-end">
-          <Text variant="xs">{sellingPrice}</Text>
-          {!!bidCount && (
-            <Text variant="xs" color="black60">
-              {" "}
-              {displayBidCount()}
-            </Text>
-          )}
+      <Flex flexDirection="row" justifyContent="space-between">
+        <Lot saleArtwork={saleArtwork!} isSmallScreen={isSmallScreen} />
+        <Flex flexDirection="column">
+          <Flex flexDirection="row" justifyContent="flex-end">
+            <Text variant="xs">{sellingPrice}</Text>
+            {!!bidCount && (
+              <Text variant="xs" color="black60">
+                {" "}
+                {displayBidCount()}
+              </Text>
+            )}
+          </Flex>
+          <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
+            <Watching />
+          </Flex>
         </Flex>
-        <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
-          <Watching />
-        </Flex>
-      </Lot>
+      </Flex>
     </TouchableOpacity>
   )
 }

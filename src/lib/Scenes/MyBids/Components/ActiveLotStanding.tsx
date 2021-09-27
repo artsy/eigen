@@ -42,26 +42,29 @@ export const ActiveLotStanding = ({ saleArtwork }: { saleArtwork: ActiveLotStand
   return (
     saleArtwork && (
       <TouchableOpacity onPress={() => handleLotTap()} style={{ marginHorizontal: 0, width: "100%" }}>
-        <Lot saleArtwork={saleArtwork} isSmallScreen={isSmallScreen}>
-          <Flex flexDirection="row" justifyContent="flex-end">
-            <Text variant="xs">{sellingPrice}</Text>
-            <Text variant="xs" color="black60">
-              {" "}
-              {displayBidCount()}
-            </Text>
+        <Flex flexDirection="row" justifyContent="space-between">
+          <Lot saleArtwork={saleArtwork} isSmallScreen={isSmallScreen} />
+          <Flex flexDirection="column">
+            <Flex flexDirection="row" justifyContent="flex-end">
+              <Text variant="xs">{sellingPrice}</Text>
+              <Text variant="xs" color="black60">
+                {" "}
+                {displayBidCount()}
+              </Text>
+            </Flex>
+            <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
+              {!timelySale.isLAI &&
+              saleArtwork?.isHighestBidder &&
+              saleArtwork?.lotState?.reserveStatus === "ReserveNotMet" ? (
+                <ReserveNotMet />
+              ) : saleArtwork?.isHighestBidder ? (
+                <HighestBid />
+              ) : (
+                <Outbid />
+              )}
+            </Flex>
           </Flex>
-          <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
-            {!timelySale.isLAI &&
-            saleArtwork?.isHighestBidder &&
-            saleArtwork?.lotState?.reserveStatus === "ReserveNotMet" ? (
-              <ReserveNotMet />
-            ) : saleArtwork?.isHighestBidder ? (
-              <HighestBid />
-            ) : (
-              <Outbid />
-            )}
-          </Flex>
-        </Lot>
+        </Flex>
       </TouchableOpacity>
     )
   )
