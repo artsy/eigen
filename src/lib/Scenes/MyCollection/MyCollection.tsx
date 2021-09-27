@@ -30,8 +30,8 @@ export function refreshMyCollection() {
 
 const featureFlagKey = Platform.select({
   android: "AREnableMyCollectionAndroid",
-  default: "AREnableMyCollectionIos",
-}) as "AREnableMyCollectionIos" | "AREnableMyCollectionAndroid"
+  default: "AREnableMyCollectionIOS",
+}) as "AREnableMyCollectionIOS" | "AREnableMyCollectionAndroid"
 
 export const useEnableMyCollection = () => {
   return useFeatureFlag(featureFlagKey)
