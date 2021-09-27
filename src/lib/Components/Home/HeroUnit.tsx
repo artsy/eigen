@@ -43,16 +43,16 @@ export const HeroUnit: React.FC<Props> = ({ unit, onPress, isTrove = false }) =>
           />
         )}
         <Flex maxWidth={isPad() ? "65%" : undefined}>
-          <Text size="xl" color="white">
+          <Text variant="xl" color="white">
             {unit.title}
           </Text>
           {unit.subtitle ? (
-            <Text size="sm" color="white" mt={0.5}>
+            <Text variant="sm" color="white" mt={0.5}>
               {unit.subtitle}
             </Text>
           ) : null}
           {unit.linkText ? (
-            <Text size="sm" color="white" weight="medium" mt={0.5}>
+            <Text variant="sm" color="white" weight="medium" mt={0.5}>
               {unit.linkText}
             </Text>
           ) : null}
@@ -75,7 +75,7 @@ export const HeroUnit: React.FC<Props> = ({ unit, onPress, isTrove = false }) =>
               opacity: 0.8,
             }}
           >
-            <Text size="xs" color="white">
+            <Text variant="xs" color="white">
               {unit.creditLine}
             </Text>
           </View>
