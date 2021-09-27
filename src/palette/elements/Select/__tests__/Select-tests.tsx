@@ -1,7 +1,6 @@
-import { Input } from "lib/Components/Input/Input"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Text, Touchable } from "palette"
+import { Input, Text, Touchable } from "palette"
 import React from "react"
 import { Modal, TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
