@@ -101,7 +101,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     )
   }
 
-  if (searchResults.nbHits === 0) {
+  if (searchResults?.nbHits === 0) {
     return (
       <Box px={2} py={1}>
         <Spacer mt={4} />
