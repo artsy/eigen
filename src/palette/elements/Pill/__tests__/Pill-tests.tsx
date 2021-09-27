@@ -12,4 +12,17 @@ describe("<Pill />", () => {
     fireEvent.press(getByText("wow"))
     expect(onPress).toHaveBeenCalled()
   })
+
+  it("should not be pressable if disabled is passed", () => {
+    const onPress = jest.fn()
+
+    const { getByText } = renderWithWrappersTL(
+      <Pill disabled onPress={onPress}>
+        Press me
+      </Pill>
+    )
+
+    fireEvent.press(getByText("Press me"))
+    expect(onPress).not.toHaveBeenCalled()
+  })
 })

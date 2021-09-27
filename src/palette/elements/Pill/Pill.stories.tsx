@@ -1,3 +1,4 @@
+import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
 import { CheckIcon, CloseIcon } from "palette"
 import React from "react"
@@ -35,5 +36,13 @@ storiesOf("Pill", module)
         Not Selected
       </Pill>
       <Pill rounded>Selected</Pill>
+    </List>
+  ))
+  .add("Miscellaneous", () => (
+    <List>
+      <Pill onPress={() => action("pill tapped")}>Pressable</Pill>
+      <Pill disabled onPress={() => action("pill tapped")}>
+        Pressable (disabled)
+      </Pill>
     </List>
   ))
