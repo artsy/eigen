@@ -82,7 +82,7 @@ export const ArtsyReactWebViewPage: React.FC<
 
   const onRightButtonPress = () => {
     if (showShareButton) {
-      return handleArticleShare
+      return handleArticleShare()
     } else if (useRightCloseButton) {
       return goBack()
     }
@@ -108,7 +108,7 @@ export const ArtsyReactWebViewPage: React.FC<
                 }
           }
           useShareButton={showShareButton}
-          onRightButtonPress={onRightButtonPress}
+          onRightButtonPress={showShareButton || useRightCloseButton ? onRightButtonPress : undefined}
         >
           {title}
         </FancyModalHeader>

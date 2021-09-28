@@ -56,7 +56,7 @@ export const Form: React.FC<FormProps> = (props) => {
               })
             }
           >
-            <Text variant="small" color="blue100" style={{ textDecorationLine: "underline" }}>
+            <Text variant="xs" color="blue100" style={{ textDecorationLine: "underline" }}>
               View Artworks
             </Text>
           </Touchable>
@@ -86,7 +86,7 @@ export const Form: React.FC<FormProps> = (props) => {
       {!!savedSearchAlertId && (
         <>
           <Spacer mt={2} />
-          <Button testID="delete-alert-button" variant="secondaryOutline" size="large" block onPress={onDeletePress}>
+          <Button testID="delete-alert-button" variant="outline" size="large" block onPress={onDeletePress}>
             Delete Alert
           </Button>
         </>

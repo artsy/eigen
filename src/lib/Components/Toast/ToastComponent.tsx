@@ -44,7 +44,7 @@ export const ToastComponent: React.FC<ToastProps> = ({ id, positionIndex, placem
     const innerMiddle = (
       <Flex flex={1} alignItems="center" justifyContent="center">
         {Icon !== undefined ? <Icon fill="white100" width={45} height={45} /> : null}
-        <Text variant="caption" color="white100">
+        <Text variant="xs" color="white100">
           {message}
         </Text>
       </Flex>
@@ -80,7 +80,7 @@ export const ToastComponent: React.FC<ToastProps> = ({ id, positionIndex, placem
   const innerTopBottom = (
     <Flex flex={1} flexDirection="row" alignItems="center" mx="2">
       {Icon !== undefined ? <Icon fill="white100" width={25} height={25} mr="1" /> : null}
-      <Text variant="caption" color="white100">
+      <Text variant="xs" color="white100">
         {message}
       </Text>
     </Flex>

@@ -2,7 +2,6 @@ import { THEME_V2, THEME_V3 } from "@artsy/palette-tokens"
 import _ from "lodash"
 import React, { useContext } from "react"
 import { ThemeContext, ThemeProvider } from "styled-components/native"
-import { usePaletteFlagStore } from "./PaletteFlag"
 
 /**
  * All of the config for the Artsy theming system, based on the
@@ -17,7 +16,7 @@ import {
 } from "@artsy/palette-tokens/dist/themes/v3"
 import {
   TextTreatment as TextTreatmentWithUnits,
-  TextVariant as TextSizeV3,
+  TextVariant as TextVariantV3,
 } from "@artsy/palette-tokens/dist/typography/v3"
 
 type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
@@ -25,7 +24,7 @@ export type Color = ColorV2 | ColorV3
 export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
 type ColorV3 = ColorV3BeforeDevPurple | "devpurple"
 export { ColorV2, ColorV3, SpacingUnitV2, SpacingUnitV3 }
-export { TextSizeV3 }
+export { TextVariantV3 }
 
 const {
   breakpoints: _eigenDoesntCareAboutBreakpoints,
@@ -109,7 +108,7 @@ export interface TextTreatment {
 // this function is removing the `px` and `em` suffix and making the values into numbers
 const fixTextTreatments = (
   variantsWithUnits: Record<"xxl" | "xl" | "lg" | "md" | "sm" | "xs", TextTreatmentWithUnits>
-): Record<TextSizeV3, TextTreatment> => {
+): Record<TextVariantV3, TextTreatment> => {
   const textTreatments = _.mapValues(variantsWithUnits, (treatmentWithUnits) => {
     const newTreatment = {} as TextTreatment
     ;([
@@ -174,14 +173,8 @@ export type ThemeType = ThemeV2Type | ThemeV3Type
 export const themeProps = THEMES.v2
 
 const figureOutTheme = (theme: keyof typeof THEMES | ThemeType): ThemeType => {
-  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
-
   if (!_.isString(theme)) {
     return theme
-  }
-
-  if (!allowV3) {
-    return THEMES.v2
   }
 
   // forcing v3 colors, unless specifically requiring v2, in which case we use `colorV2`
@@ -220,13 +213,10 @@ const figureOutTheme = (theme: keyof typeof THEMES | ThemeType): ThemeType => {
 
 export const Theme: React.FC<{
   theme?: keyof typeof THEMES | ThemeType
-}> = ({ children, theme = "v2" }) => {
+}> = ({ children, theme = "v3" }) => {
   const actualTheme = figureOutTheme(theme)
   return <ThemeProvider theme={actualTheme}>{children}</ThemeProvider>
 }
-
-export const ThemeV2: React.FC = ({ children }) => <Theme theme="v2">{children}</Theme>
-export const ThemeV3: React.FC = ({ children }) => <Theme theme="v3">{children}</Theme>
 
 interface ColorFuncOverload {
   (colorNumber: undefined): undefined
@@ -257,7 +247,7 @@ export const useTheme = () => {
     )
     throw new Error("ThemeContext is not defined. Wrap your component with `<Theme>` and try again.")
   }
-  const themeIfUnwrapped = THEMES.v2
+  const themeIfUnwrapped = THEMES.v3
 
   return {
     theme: theme ?? themeIfUnwrapped,

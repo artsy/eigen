@@ -20,8 +20,7 @@ interface Props {
 export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
   const { trackEvent } = useTracking()
 
-  const [isFollowedChanging, setIsFollowedChanging] = useState<boolean>(false)
-  const followersCount = artist.counts?.follows ?? 0
+  const [isFollowedChanging, setIsFollowedChanging] = useState(false)
 
   const getBirthdayString = () => {
     const birthday = artist.birthday
@@ -119,33 +118,37 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
     <Box px={2} pt={6} pb={1}>
       <Sans size="8">{artist.name}</Sans>
       <Spacer mb={1} />
-      {Boolean(followersCount || bylineRequired) && (
-        <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-          <Flex flex={1}>
-            {!!bylineRequired && (
-              <Sans mr={1} size="3t">
-                {descriptiveString}
-              </Sans>
-            )}
-            <Sans size="3t">
-              {formatLargeNumberOfItems(artist.counts?.artworks ?? 0, "work")}
-              {` ${bullet} `}
-              {formatLargeNumberOfItems(artist.counts?.follows ?? 0, "follower")}
+
+      <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+        <Flex flex={1}>
+          {!!bylineRequired && (
+            <Sans mr={1} size="3t">
+              {descriptiveString}
             </Sans>
-          </Flex>
-          <Flex>
-            <Button
-              variant={artist.isFollowed ? "secondaryOutline" : "primaryBlack"}
-              onPress={handleFollowChange}
-              size="small"
-              longestText="Following"
-              haptic
-            >
-              {artist.isFollowed ? "Following" : "Follow"}
-            </Button>
-          </Flex>
+          )}
+          <Sans size="3t">
+            {formatLargeNumberOfItems(artist.counts?.artworks ?? 0, "work")}
+            {!!artist?.counts?.follows && artist.counts.follows > 1 && (
+              <>
+                {` ${bullet} `}
+                {formatLargeNumberOfItems(artist.counts.follows, "follower")}
+              </>
+            )}
+          </Sans>
         </Flex>
-      )}
+
+        <Flex>
+          <Button
+            variant={artist.isFollowed ? "outline" : "fillDark"}
+            onPress={handleFollowChange}
+            size="small"
+            longestText="Following"
+            haptic
+          >
+            {artist.isFollowed ? "Following" : "Follow"}
+          </Button>
+        </Flex>
+      </Flex>
     </Box>
   )
 }

@@ -36,10 +36,10 @@ class Lot extends React.Component<Props> {
             </Flex>
 
             <Flex alignItems="baseline">
-              <Text variant="caption" numberOfLines={2}>
+              <Text variant="xs" numberOfLines={2}>
                 {saleArtwork?.artwork?.artistNames}
               </Text>
-              <Text variant="caption" color="black60" numberOfLines={1}>
+              <Text variant="xs" color="black60" numberOfLines={1}>
                 {subtitle ? subtitle : !!saleArtwork.lotLabel && `Lot ${saleArtwork.lotLabel}`}
               </Text>
             </Flex>

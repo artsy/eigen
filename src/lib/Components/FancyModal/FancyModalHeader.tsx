@@ -57,7 +57,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
               onPress={() => onLeftButtonPress()}
               testID="fancy-modal-header-left-button"
             >
-              {leftButtonText ? <Text variant="text">{leftButtonText}</Text> : leftButton()}
+              {leftButtonText ? <Text variant="sm">{leftButtonText}</Text> : leftButton()}
             </LeftButtonContainer>
           )}
         </Flex>
@@ -69,7 +69,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
               onPress={() => !rightButtonDisabled && onRightButtonPress()}
             >
               {rightButtonText ? (
-                <Text variant="text" color={rightButtonDisabled ? "black30" : "black100"}>
+                <Text variant="sm" color={rightButtonDisabled ? "black30" : "black100"}>
                   {rightButtonText}
                 </Text>
               ) : (
@@ -80,7 +80,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
         </Flex>
 
         <Flex position="absolute" left={0} right={0} alignItems="center" pointerEvents="none">
-          <Text variant="mediumText" color="black100">
+          <Text variant="sm" color="black100">
             {children}
           </Text>
         </Flex>

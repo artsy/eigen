@@ -20,12 +20,12 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ 
         <Flex flexDirection="row">
           <CheckCircleIcon mr={1} mt="3px" />
           <Flex flexShrink={1}>
-            <Text color="black60" variant="small" mb={1}>
+            <Text color="black60" variant="xs" mb={1}>
               Only purchases completed with our secure checkout are protected by{" "}
               <Text
                 style={{ textDecorationLine: "underline" }}
                 color="black100"
-                variant="small"
+                variant="xs"
                 onPress={() => {
                   navigate(`/buyer-guarantee`)
                 }}
@@ -45,7 +45,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ 
             })
           }}
           size="large"
-          variant="primaryBlack"
+          variant="fillDark"
           block
           width={100}
         >

@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType, tappedInfoBubble } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import { MyCollectionArtworkDemandIndex_artwork } from "__generated__/MyCollectionArtworkDemandIndex_artwork.graphql"
 import { MyCollectionArtworkDemandIndex_marketPriceInsights } from "__generated__/MyCollectionArtworkDemandIndex_marketPriceInsights.graphql"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
@@ -51,41 +51,25 @@ const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexPro
 }
 
 const DemandRankDetails: React.FC<{ demandRank: number }> = ({ demandRank }) => {
-  const Bubble: React.FC<{ title: string; subTitle: string }> = ({ title, subTitle }) => (
+  const Bubble: React.FC<{ title: string }> = ({ title }) => (
     <Box>
       <Text>{title}</Text>
-      <Text color="black60">{subTitle}</Text>
     </Box>
   )
 
   const getContent = () => {
     switch (true) {
       case demandRank >= 9: {
-        return (
-          <Bubble
-            title="Very Strong Demand (> 9.0)"
-            subTitle="This is a great time to sell. Works like these are highly sought after."
-          />
-        )
+        return <Bubble title="Very Strong Demand (> 9.0)" />
       }
       case demandRank >= 7 && demandRank < 9: {
-        return (
-          <Bubble
-            title="Strong Demand (7.0 – 9.0)"
-            subTitle="There are more collectors looking to buy works like these than there are available."
-          />
-        )
+        return <Bubble title="Strong Demand (7.0 – 9.0)" />
       }
       case demandRank >= 4 && demandRank < 7: {
-        return <Bubble title="Stable Market (4.0 – 7.0)" subTitle="The market is neutral for buying and selling." />
+        return <Bubble title="Stable Market (4.0 – 7.0)" />
       }
       case demandRank < 4: {
-        return (
-          <Bubble
-            title="Less Active Market  (< 4.0)"
-            subTitle="The market for selling isn’t very active yet. We will notify you when the market changes."
-          />
-        )
+        return <Bubble title="Less Active Market  (< 4.0)" />
       }
     }
   }
@@ -107,7 +91,7 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
   return (
     <>
       <Box>
-        <Text variant="largeTitle" color="purple100" /* TODO-PALETTE-V3 "blue100" */>
+        <Text variant="lg" color="purple100" /* TODO-PALETTE-V3 "blue100" */>
           {adjustedDemandRank}
         </Text>
       </Box>
@@ -167,13 +151,12 @@ export const tests = {
 }
 
 const tracks = {
-  tappedInfoBubble: (internalID: string, slug: string) => {
-    return tappedInfoBubble({
-      contextModule: ContextModule.myCollectionArtwork,
-      contextScreenOwnerType: OwnerType.myCollectionArtwork,
-      contextScreenOwnerId: internalID,
-      contextScreenOwnerSlug: slug,
-      subject: "demandIndex",
-    })
-  },
+  tappedInfoBubble: (internalID: string, slug: string): TappedInfoBubble => ({
+    action: ActionType.tappedInfoBubble,
+    context_module: ContextModule.myCollectionArtwork,
+    context_screen_owner_type: OwnerType.myCollectionArtwork,
+    context_screen_owner_id: internalID,
+    context_screen_owner_slug: slug,
+    subject: "demandIndex",
+  }),
 }

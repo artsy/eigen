@@ -1,9 +1,9 @@
 import { storiesOf } from "@storybook/react-native"
 import React from "react"
 import { View } from "react-native"
-import { withThemeV3 } from "storybook/decorators"
+import { withTheme } from "storybook/decorators"
 import { List, Row } from "storybook/helpers"
-import { TextV3 } from "./elements/Text"
+import { Text } from "./elements/Text"
 import { useColor } from "./hooks"
 import { ColorV3 } from "./Theme"
 
@@ -26,14 +26,14 @@ const ColorSquare = ({ color: theColor, bright }: { color: ColorV3; bright?: boo
           },
         ]}
       />
-      <TextV3 color="black">{theColor}</TextV3>
-      <TextV3 color="lightgrey">{color(theColor)}</TextV3>
+      <Text color="black">{theColor}</Text>
+      <Text color="lightgrey">{color(theColor)}</Text>
     </View>
   )
 }
 
 storiesOf("Theme/Color", module)
-  .addDecorator(withThemeV3)
+  .addDecorator(withTheme)
   .add("colors", () => (
     <List>
       <Row>

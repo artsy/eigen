@@ -45,9 +45,9 @@ export const WatchedLot: React.FC<WatchedLotProps> = ({ saleArtwork }) => {
     <TouchableOpacity style={{ marginHorizontal: 0, width: "100%" }} onPress={handleLotTap}>
       <Lot saleArtwork={saleArtwork!} isSmallScreen={isSmallScreen}>
         <Flex flexDirection="row" justifyContent="flex-end">
-          <Text variant="caption">{sellingPrice}</Text>
+          <Text variant="xs">{sellingPrice}</Text>
           {!!bidCount && (
-            <Text variant="caption" color="black60">
+            <Text variant="xs" color="black60">
               {" "}
               {displayBidCount()}
             </Text>

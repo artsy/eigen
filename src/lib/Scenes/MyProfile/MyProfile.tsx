@@ -5,7 +5,7 @@ import { MenuItem } from "lib/Components/MenuItem"
 import { presentEmailComposer } from "lib/NativeModules/presentEmailComposer"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -14,17 +14,30 @@ import { screen } from "lib/utils/track/helpers"
 import { times } from "lodash"
 import { Flex, Join, Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useRef, useState } from "react"
-import { Alert, FlatList, RefreshControl, ScrollView } from "react-native"
+import { FlatList, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
+import { LoadingSkeleton as MyCollectionLoadingSkeleton, useEnableMyCollection } from "../MyCollection/MyCollection"
+import { MyCollectionAndSavedWorks, Tab } from "./MyCollectionAndSavedWorks"
+import { confirmLogout, SectionHeading } from "./MyProfileSettings"
 
-const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
+export const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
+  const shouldDisplayMyCollection = useEnableMyCollection()
+  if (shouldDisplayMyCollection) {
+    return <MyCollectionAndSavedWorks me={me} initialTab={Tab.collection} />
+  }
+  return <OldMyProfile me={me} relay={relay} />
+}
+
+/*
+ * TODO: Marked For Deletion. Remove when MyCollections is released
+ */
+export const OldMyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const showOrderHistory = useFeatureFlag("AREnableOrderHistoryOption")
   const showSavedAddresses = useFeatureFlag("AREnableSavedAddresses")
   const showSavedSearchV2 = useFeatureFlag("AREnableSavedSearchV2")
   const listRef = useRef<FlatList<any>>(null)
   const recentlySavedArtworks = extractNodes(me?.followsAndSaves?.artworksConnection)
-  const shouldDisplayMyCollection = me?.labFeatures?.includes("My Collection")
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const onRefresh = useCallback(() => {
@@ -36,15 +49,17 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
   }, [])
 
   return (
-    <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
+    <ScrollView
+      testID={"my-old-profile-scrollview"}
+      refreshControl={
+        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} testID={"my-old-profile-scrollview"} />
+      }
+    >
       <Sans size="8" mx="2" mt="3">
         {me?.name}
       </Sans>
       <Separator my={2} />
       <SectionHeading title="Favorites" />
-      {!!shouldDisplayMyCollection && (
-        <MenuItem isBeta={true} title="My Collection" onPress={() => navigate("my-collection")} />
-      )}
       {!!showSavedSearchV2 && (
         <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />
       )}
@@ -75,39 +90,39 @@ const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me
   )
 }
 
-export const MyProfilePlaceholder: React.FC<{}> = () => (
-  <Flex pt="3" px="2">
-    <Join separator={<Separator my={2} />}>
-      <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
-      <Flex>
-        <PlaceholderText width={100 + Math.random() * 100} />
+export const MyProfilePlaceholder: React.FC<{}> = () => {
+  const shouldDisplayMyCollection = useEnableMyCollection()
+  if (shouldDisplayMyCollection) {
+    return <MyCollectionLoadingSkeleton />
+  }
+  return (
+    <Flex pt="3" px="2">
+      <Join separator={<Separator my={2} />}>
         <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
-        <Flex flexDirection="row" py={2}>
+        <Flex>
+          <PlaceholderText width={100 + Math.random() * 100} />
+          <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
+          <Flex flexDirection="row" py={2}>
+            {times(3).map((index: number) => (
+              <Flex key={index} marginRight={1}>
+                <PlaceholderBox height={120} width={120} />
+                <PlaceholderText marginTop={20} key={index} width={40 + Math.random() * 80} />
+              </Flex>
+            ))}
+          </Flex>
+        </Flex>
+        <Flex>
+          <PlaceholderText width={100 + Math.random() * 100} />
           {times(3).map((index: number) => (
-            <Flex key={index} marginRight={1}>
-              <PlaceholderBox height={120} width={120} />
-              <PlaceholderText marginTop={20} key={index} width={40 + Math.random() * 80} />
+            <Flex key={index} py={1}>
+              <PlaceholderText width={200 + Math.random() * 100} />
             </Flex>
           ))}
         </Flex>
-      </Flex>
-      <Flex>
-        <PlaceholderText width={100 + Math.random() * 100} />
-        {times(3).map((index: number) => (
-          <Flex key={index} py={1}>
-            <PlaceholderText width={200 + Math.random() * 100} />
-          </Flex>
-        ))}
-      </Flex>
-    </Join>
-  </Flex>
-)
-
-const SectionHeading: React.FC<{ title: string }> = ({ title }) => (
-  <Sans size="3" color="black60" mb="1" mx="2">
-    {title}
-  </Sans>
-)
+      </Join>
+    </Flex>
+  )
+}
 
 export const MyProfileContainer = createRefetchContainer(
   MyProfile,
@@ -115,7 +130,7 @@ export const MyProfileContainer = createRefetchContainer(
     me: graphql`
       fragment MyProfile_me on Me {
         name
-        labFeatures
+        createdAt
         followsAndSaves {
           artworksConnection(first: 10, private: true) {
             edges {
@@ -157,17 +172,3 @@ export const MyProfileQueryRenderer: React.FC<{}> = ({}) => (
     />
   </ProvideScreenTrackingWithCohesionSchema>
 )
-
-export function confirmLogout() {
-  Alert.alert("Log out?", "Are you sure you want to log out?", [
-    {
-      text: "Cancel",
-      style: "cancel",
-    },
-    {
-      text: "Log out",
-      style: "destructive",
-      onPress: () => GlobalStore.actions.signOut(),
-    },
-  ])
-}

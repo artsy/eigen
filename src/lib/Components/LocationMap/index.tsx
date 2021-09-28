@@ -167,11 +167,11 @@ export const LocationMap: React.FC<Props> = (props) => {
     return (
       <Box m={2}>
         {!!partnerName && (
-          <Text variant="mediumText" color="black100" textAlign="center">
+          <Text variant="sm" color="black100" textAlign="center">
             {partnerName}
           </Text>
         )}
-        <Text variant="text" color="black60" textAlign="center">
+        <Text variant="sm" color="black60" textAlign="center">
           {summary}
         </Text>
       </Box>
@@ -182,22 +182,22 @@ export const LocationMap: React.FC<Props> = (props) => {
     return (
       <Box m={2}>
         {!!partnerName && (
-          <Text variant="mediumText" color="black100" textAlign="center">
+          <Text variant="sm" color="black100" textAlign="center">
             {partnerName}
           </Text>
         )}
         {!!address && (
-          <Text variant="text" color="black60" textAlign="center">
+          <Text variant="sm" color="black60" textAlign="center">
             {address}
           </Text>
         )}
         {!!address2 && (
-          <Text variant="text" color="black60" textAlign="center">
+          <Text variant="sm" color="black60" textAlign="center">
             {address2}
           </Text>
         )}
         {(!!city || !!postalCode) && (
-          <Text variant="text" color="black60" textAlign="center">
+          <Text variant="sm" color="black60" textAlign="center">
             {cityAndPostalCode(city, postalCode)}
           </Text>
         )}

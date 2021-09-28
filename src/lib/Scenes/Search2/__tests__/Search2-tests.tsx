@@ -1,4 +1,4 @@
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, RenderAPI, waitFor } from "@testing-library/react-native"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { RecentSearch } from "lib/Scenes/Search/SearchModel"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
@@ -59,7 +59,7 @@ describe("Search2 Screen", () => {
 
     // should show City Guide
     expect(getByText("City Guide")).toBeTruthy()
-    expect(getByText("Recent searches")).toBeTruthy()
+    expect(getByText("Recent Searches")).toBeTruthy()
 
     fireEvent.changeText(searchInput, "Ba")
     expect(searchInput).toHaveProp("value", "Ba")
@@ -99,5 +99,82 @@ describe("Search2 Screen", () => {
 
     fireEvent(searchInput, "focus")
     expect(queryByText("Cancel")).toBeTruthy()
+  })
+
+  it("selects artworks pill only when the user has typed the minimum allowed number of characters", () => {
+    const { queryByA11yState, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+    fireEvent(searchInput, "submitEditing")
+
+    expect(queryByA11yState({ selected: true })).toBeFalsy()
+  })
+
+  it("selects artworks pill when the search input is submitted", () => {
+    const { getByA11yState, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+    fireEvent.changeText(searchInput, "text")
+    fireEvent(searchInput, "submitEditing")
+
+    expect(getByA11yState({ selected: true })).toHaveTextContent("Artworks")
+  })
+
+  describe("Reset the state of the pills", () => {
+    let tree: RenderAPI
+
+    beforeEach(() => {
+      tree = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        Algolia: () => ({
+          appID: "",
+          apiKey: "",
+          indices: [
+            {
+              name: "Artist_staging",
+              displayName: "Artists",
+            },
+          ],
+        }),
+      })
+    })
+
+    it("when search query is empty", () => {
+      const { queryByA11yState, getByPlaceholderText, getByText } = tree
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+      fireEvent(searchInput, "changeText", "prev value")
+      fireEvent(getByText("Artists"), "press")
+      fireEvent(searchInput, "changeText", "")
+      fireEvent(searchInput, "changeText", "new value")
+
+      expect(queryByA11yState({ selected: true })).toBeFalsy()
+    })
+
+    it("when clear button is pressed", () => {
+      const { queryByA11yState, getByPlaceholderText, getByText, getByA11yLabel } = tree
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+      fireEvent(searchInput, "changeText", "prev value")
+      fireEvent(getByText("Artists"), "press")
+      fireEvent(getByA11yLabel("Clear input button"), "press")
+      fireEvent(searchInput, "changeText", "new value")
+
+      expect(queryByA11yState({ selected: true })).toBeFalsy()
+    })
+
+    it("when cancel button is pressed", () => {
+      const { queryByA11yState, getByPlaceholderText, getByText } = tree
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+      fireEvent(searchInput, "changeText", "prev value")
+      fireEvent(getByText("Artists"), "press")
+      fireEvent(searchInput, "focus")
+      fireEvent(getByText("Cancel"), "press")
+      fireEvent(searchInput, "changeText", "new value")
+
+      expect(queryByA11yState({ selected: true })).toBeFalsy()
+    })
   })
 })

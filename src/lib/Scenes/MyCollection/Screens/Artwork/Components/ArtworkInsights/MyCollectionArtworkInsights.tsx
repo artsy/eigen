@@ -10,7 +10,6 @@ import { MyCollectionArtworkArtistArticlesFragmentContainer } from "./MyCollecti
 import { MyCollectionArtworkArtistAuctionResultsFragmentContainer } from "./MyCollectionArtworkArtistAuctionResults"
 import { MyCollectionArtworkArtistMarketFragmentContainer } from "./MyCollectionArtworkArtistMarket"
 import { MyCollectionArtworkDemandIndexFragmentContainer } from "./MyCollectionArtworkDemandIndex"
-import { MyCollectionArtworkPriceEstimateFragmentContainer } from "./MyCollectionArtworkPriceEstimate"
 
 interface MyCollectionArtworkInsightsProps {
   artwork: MyCollectionArtworkInsights_artwork
@@ -30,21 +29,14 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
           <Spacer my={1} />
 
           <ScreenMargin>
-            <Text variant="title">Price and market insights</Text>
-            <Text variant="small" color="black60">
+            <Text variant="md">Market Insights</Text>
+            <Text variant="xs" color="black60">
               {capitalize(artwork.sizeBucket!)} {pluralizeMedium(artwork.medium!)} by{" "}
               {artwork.artist?.name || "Unknown Artist"}
             </Text>
           </ScreenMargin>
           <Spacer mt={3} />
           <MyCollectionArtworkDemandIndexFragmentContainer
-            artwork={artwork}
-            marketPriceInsights={marketPriceInsights}
-          />
-          <ScreenMargin my={3}>
-            <Separator />
-          </ScreenMargin>
-          <MyCollectionArtworkPriceEstimateFragmentContainer
             artwork={artwork}
             marketPriceInsights={marketPriceInsights}
           />
@@ -72,7 +64,6 @@ export const MyCollectionArtworkInsightsFragmentContainer = createFragmentContai
       artist {
         name
       }
-      ...MyCollectionArtworkPriceEstimate_artwork
       ...MyCollectionArtworkArtistAuctionResults_artwork
       ...MyCollectionArtworkArtistArticles_artwork
       ...MyCollectionArtworkArtistMarket_artwork
@@ -82,7 +73,6 @@ export const MyCollectionArtworkInsightsFragmentContainer = createFragmentContai
   marketPriceInsights: graphql`
     fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights {
       ...MyCollectionArtworkDemandIndex_marketPriceInsights
-      ...MyCollectionArtworkPriceEstimate_marketPriceInsights
       ...MyCollectionArtworkArtistMarket_marketPriceInsights
     }
   `,

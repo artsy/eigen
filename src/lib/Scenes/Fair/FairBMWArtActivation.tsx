@@ -5,7 +5,7 @@ import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { navigate } from "lib/navigation/navigate"
 import { BMWSponsorship } from "lib/Scenes/City/CityBMWSponsorship"
 import { Schema, screenTrack, track } from "lib/utils/track"
-import { Box, Text, Theme } from "palette"
+import { Box, Text } from "palette"
 import React from "react"
 import { FlatList, ViewProps } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -58,7 +58,7 @@ export class FairBMWArtActivation extends React.Component<Props, State> {
     if (sponsoredContent?.activationText) {
       sections.push({
         key: "art-activation",
-        content: <Text variant="text">{sponsoredContent.activationText}</Text>,
+        content: <Text variant="sm">{sponsoredContent.activationText}</Text>,
       })
     }
 
@@ -74,20 +74,18 @@ export class FairBMWArtActivation extends React.Component<Props, State> {
       })
     }
     return (
-      <Theme>
-        <Box px={2} py={6}>
-          <FlatList
-            data={sections}
-            renderItem={(item) => <Box my={1}>{item.item.content}</Box>}
-            ListHeaderComponent={
-              <Box mt={6} mb={1} display="flex" alignItems="center" flexDirection="row">
-                <BMWSponsorship logoText="BMW Art Activations" />
-              </Box>
-            }
-            ItemSeparatorComponent={this.renderItemSeparator}
-          />
-        </Box>
-      </Theme>
+      <Box px={2} py={6}>
+        <FlatList
+          data={sections}
+          renderItem={(item) => <Box my={1}>{item.item.content}</Box>}
+          ListHeaderComponent={
+            <Box mt={6} mb={1} display="flex" alignItems="center" flexDirection="row">
+              <BMWSponsorship logoText="BMW Art Activations" />
+            </Box>
+          }
+          ItemSeparatorComponent={this.renderItemSeparator}
+        />
+      </Box>
     )
   }
 }

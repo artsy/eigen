@@ -7,7 +7,6 @@ import { createFragmentContainer, graphql } from "react-relay"
 
 interface Props {
   soldBy: SoldBySection_soldBy
-  testID?: string
 }
 
 export const SoldBySection: React.FC<Props> = ({ soldBy }) => {
@@ -22,19 +21,19 @@ export const SoldBySection: React.FC<Props> = ({ soldBy }) => {
   return (
     <Box>
       <Box flexDirection="row" testID="soldByInfo">
-        <Text variant="text" color="black60">
+        <Text variant="sm" color="black60">
           {isForPickup ? "Pick up " : "Ships from "}
         </Text>
-        <Text testID="shippingOrigin" color="black60" variant="text">
+        <Text testID="shippingOrigin" color="black60" variant="sm">
           {isForPickup ? `(${artwork?.shippingOrigin})` : artwork?.shippingOrigin}
         </Text>
       </Box>
       {!!orderEstimatedDelivery && (
         <Box flexDirection="row">
-          <Text color="black60" variant="text">
+          <Text color="black60" variant="sm">
             Estimated Delivery:{" "}
           </Text>
-          <Text color="black60" testID="delivery" variant="text">
+          <Text color="black60" testID="delivery" variant="sm">
             {orderEstimatedDelivery.toLocaleString(DateTime.DATE_MED)}
           </Text>
         </Box>

@@ -9,35 +9,51 @@ interface Props {
 }
 
 export const SummarySection: React.FC<Props> = ({ section }) => {
-  const { buyerTotal, taxTotal, shippingTotal, totalListPrice, lineItems } = section
+  const { buyerTotal, taxTotal, shippingTotal, totalListPrice, lineItems, mode, lastOffer } = section
   const { selectedShippingQuote } = extractNodes(lineItems)?.[0] || {}
   const shippingName = selectedShippingQuote?.displayName ? `${selectedShippingQuote.displayName} delivery` : "Shipping"
+  const isBuyOrder = mode === "BUY"
+  const isBuyerOffer = !lastOffer || lastOffer.fromParticipant === "BUYER"
 
   return (
     <Flex flexDirection="row" justifyContent="space-between">
       <Flex>
-        <Text variant="text">Price</Text>
-        <Text variant="text" mt={0.5} testID="shippingTotalLabel">
+        {isBuyOrder ? (
+          <Text variant="sm" testID="totalListPriceLabel">
+            Price
+          </Text>
+        ) : (
+          <Text variant="sm" testID="offerLabel">
+            {isBuyerOffer ? "Your offer" : "Seller's offer"}
+          </Text>
+        )}
+        <Text variant="sm" mt={0.5} testID="shippingTotalLabel">
           {shippingName}
         </Text>
-        <Text mt={0.5} variant="text">
+        <Text mt={0.5} variant="sm">
           Tax
         </Text>
-        <Text variant="mediumText" mt={0.5}>
+        <Text variant="sm" mt={0.5}>
           Total
         </Text>
       </Flex>
       <Flex alignItems="flex-end">
-        <Text variant="text" color="black60" testID="totalListPrice">
-          {totalListPrice}
-        </Text>
-        <Text variant="text" color="black60" testID="shippingTotal" mt={0.5}>
+        {isBuyOrder ? (
+          <Text variant="sm" color="black60" testID="totalListPrice">
+            {totalListPrice}
+          </Text>
+        ) : (
+          <Text variant="sm" color="black60" testID="lastOffer">
+            {(!!lastOffer && lastOffer.amount) || "—"}
+          </Text>
+        )}
+        <Text variant="sm" color="black60" testID="shippingTotal" mt={0.5}>
           {shippingTotal}
         </Text>
-        <Text variant="text" color="black60" testID="taxTotal" mt={0.5}>
+        <Text variant="sm" color="black60" testID="taxTotal" mt={0.5}>
           {taxTotal}
         </Text>
-        <Text variant="mediumText" mt={0.5} testID="buyerTotal">
+        <Text variant="sm" mt={0.5} testID="buyerTotal">
           {buyerTotal}
         </Text>
       </Flex>
@@ -48,6 +64,7 @@ export const SummarySection: React.FC<Props> = ({ section }) => {
 export const SummarySectionFragmentContainer = createFragmentContainer(SummarySection, {
   section: graphql`
     fragment SummarySection_section on CommerceOrder {
+      mode
       buyerTotal(precision: 2)
       taxTotal(precision: 2)
       shippingTotal(precision: 2)
@@ -59,6 +76,12 @@ export const SummarySectionFragmentContainer = createFragmentContainer(SummarySe
               displayName
             }
           }
+        }
+      }
+      ... on CommerceOfferOrder {
+        lastOffer {
+          amount(precision: 2)
+          fromParticipant
         }
       }
     }

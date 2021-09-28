@@ -18,6 +18,7 @@ export const SearchPills: React.FC<SearchPillsProps> = (props) => {
       horizontal
       contentContainerStyle={{ paddingHorizontal: space(2) }}
       showsHorizontalScrollIndicator={false}
+      keyboardShouldPersistTaps="handled"
     >
       {pills.map((pill) => {
         const { name, displayName } = pill

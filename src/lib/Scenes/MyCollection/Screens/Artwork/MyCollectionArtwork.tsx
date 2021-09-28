@@ -71,22 +71,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
           <ScreenMargin>
             <Button
               size="large"
-              block
-              onPress={() => {
-                trackEvent(tracks.tappedSellArtwork(artwork.internalID, artwork.slug, "Submit this work"))
-                navigate("/consign/submission")
-              }}
-              data-test-id="SubmitButton"
-              haptic
-            >
-              Submit this work
-            </Button>
-
-            <Spacer my={0.5} />
-
-            <Button
-              size="large"
-              variant="secondaryGray"
+              variant="fillGray"
               block
               onPress={() => {
                 trackEvent(tracks.tappedShowMore(artwork.internalID, artwork.slug, "Learn More"))

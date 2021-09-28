@@ -6,7 +6,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Schema, screenTrack } from "lib/utils/track"
-import { Box, Separator, Serif, Theme } from "palette"
+import { Box, Separator, Serif } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -67,26 +67,24 @@ class CityFairList extends React.Component<Props, State> {
     } = this.props
     const { fetchingNextPage } = this.state
     return (
-      <Theme>
-        <Box mx={2}>
-          <FlatList
-            ListHeaderComponent={() => {
-              return (
-                <Box pt={6} mt={3} mb={2}>
-                  <Serif size="8">Fairs</Serif>
-                </Box>
-              )
-            }}
-            data={edges}
-            ItemSeparatorComponent={() => <Separator />}
-            keyExtractor={(item) => item.node.internalID}
-            renderItem={({ item }) => this.renderItem(item)}
-            onScroll={isCloseToBottom(this.fetchData)}
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            ListFooterComponent={!!fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
-          />
-        </Box>
-      </Theme>
+      <Box mx={2}>
+        <FlatList
+          ListHeaderComponent={() => {
+            return (
+              <Box pt={6} mt={3} mb={2}>
+                <Serif size="8">Fairs</Serif>
+              </Box>
+            )
+          }}
+          data={edges}
+          ItemSeparatorComponent={() => <Separator />}
+          keyExtractor={(item) => item.node.internalID}
+          renderItem={({ item }) => this.renderItem(item)}
+          onScroll={isCloseToBottom(this.fetchData)}
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          ListFooterComponent={!!fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
+        />
+      </Box>
     )
   }
 }

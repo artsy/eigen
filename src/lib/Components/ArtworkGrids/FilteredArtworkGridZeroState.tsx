@@ -5,8 +5,8 @@ import React from "react"
 import styled from "styled-components/native"
 
 interface ZeroStateProps {
-  id: string
-  slug: string
+  id?: string
+  slug?: string
   trackClear?: (id: string, slug: string) => void
   hideClearButton?: boolean
 }
@@ -21,10 +21,10 @@ export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) =>
       <Flex m="0 auto" pt={2}>
         {!hideClearButton && (
           <Button
-            size="medium"
-            variant="secondaryGray"
+            size="small"
+            variant="fillGray"
             onPress={() => {
-              if (trackClear) {
+              if (!!id && !!slug && trackClear) {
                 trackClear(id, slug)
               }
               clearFiltersZeroStateAction()

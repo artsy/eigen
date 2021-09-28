@@ -6,30 +6,24 @@ import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Separator } from "palette"
-import React, { useEffect, useImperativeHandle, useRef } from "react"
-import { FlatList, View } from "react-native"
+import React, { useEffect } from "react"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { RailScrollProps } from "./types"
 
 interface Props {
   onHide?: () => void
   onShow?: () => void
 }
 
-const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollProps & Props> = (props) => {
-  const { me, scrollRef, onHide, onShow } = props
+const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & Props> = (props) => {
+  const { me, onHide, onShow } = props
   const { trackEvent } = useTracking()
   const auctionResultsByFollowedArtists = extractNodes(me?.auctionResultsByFollowedArtists)
-  const listRef = useRef<FlatList<any>>()
   const navigateToAuctionResultsForArtistsYouFollow = () => {
     trackEvent(tracks.tappedHeader())
     navigate(`/auction-results-for-artists-you-follow`)
   }
-
-  useImperativeHandle(scrollRef, () => ({
-    scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
-  }))
 
   const hasAuctionResults = auctionResultsByFollowedArtists?.length
 
@@ -51,7 +45,6 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & RailScrollPro
       </Flex>
 
       <CardRailFlatList
-        listRef={listRef}
         data={auctionResultsByFollowedArtists}
         keyExtractor={(_, index) => String(index)}
         horizontal={false}

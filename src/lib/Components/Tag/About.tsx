@@ -21,7 +21,7 @@ const About: React.FC<AboutProps> = ({ tag }) => {
   return (
     <StickyTabPageScrollView contentContainerStyle={{ paddingTop: 15 }}>
       <View style={{ marginLeft: sideMargin, marginRight: sideMargin }}>
-        <Text variant="text" mb={2}>
+        <Text variant="sm" mb={2}>
           {removeMarkdown(tag.description)}
         </Text>
       </View>

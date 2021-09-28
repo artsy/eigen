@@ -5,7 +5,7 @@ import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridIte
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import { navigate } from "lib/navigation/navigate"
 import { Spacer } from "palette"
-import React from "react"
+import React, { ReactElement } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -16,16 +16,28 @@ interface Props {
   artworks: SmallTileRail_artworks
   listRef: React.RefObject<FlatList<any>>
   contextModule: Analytics.ContextModule | undefined
+  onEndReached?: () => void
+  onEndReachedThreshold?: number
+  ListFooterComponent?: ReactElement
 }
 
-const SmallTileRail: React.FC<Props> = ({ artworks, listRef, contextModule }) => {
+const SmallTileRail: React.FC<Props> = ({
+  artworks,
+  listRef,
+  contextModule,
+  onEndReached,
+  onEndReachedThreshold,
+  ListFooterComponent = ListEndComponent,
+}) => {
   const tracking = useTracking()
   return (
     <AboveTheFoldFlatList
+      onEndReached={onEndReached}
+      onEndReachedThreshold={onEndReachedThreshold}
       listRef={listRef}
       horizontal
-      ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
-      ListFooterComponent={() => <Spacer mr={2}></Spacer>}
+      ListHeaderComponent={ListEndComponent}
+      ListFooterComponent={ListFooterComponent}
       ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
       showsHorizontalScrollIndicator={false}
       data={artworks}
@@ -57,6 +69,8 @@ const SmallTileRail: React.FC<Props> = ({ artworks, listRef, contextModule }) =>
     />
   )
 }
+
+const ListEndComponent = () => <Spacer mr={2}></Spacer>
 
 export const SmallTileRailContainer = createFragmentContainer(SmallTileRail, {
   artworks: graphql`

@@ -1,5 +1,5 @@
 import moment from "moment"
-import { Box, BoxProps, Text, TextV2Props } from "palette"
+import { Box, BoxProps, Text, TextProps } from "palette"
 import React from "react"
 import { ViewStyle } from "react-native"
 
@@ -32,12 +32,12 @@ export const relativeDate = (time: string) => {
 }
 
 interface TimeSinceProps extends Omit<BoxProps, "color"> {
-  variant?: TextV2Props["variant"]
+  variant?: TextProps["variant"]
   time: string | null
   exact?: boolean
   style?: ViewStyle
 }
-export const TimeSince: React.FC<TimeSinceProps> = ({ variant = "small", time, exact, ...props }) => {
+export const TimeSince: React.FC<TimeSinceProps> = ({ variant = "xs", time, exact, ...props }) => {
   if (!time) {
     return null
   }

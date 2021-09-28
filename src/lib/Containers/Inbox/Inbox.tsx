@@ -38,7 +38,7 @@ const InboxTabs: React.FC<TabBarProps> = (props) => (
             <Text
               mr={2}
               color="black100"
-              variant="largeTitle"
+              variant="lg"
               onPress={() => {
                 if (!!props.goToPage) {
                   props.goToPage(page)

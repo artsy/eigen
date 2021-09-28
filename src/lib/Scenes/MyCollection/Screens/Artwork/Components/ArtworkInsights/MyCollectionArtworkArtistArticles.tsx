@@ -28,7 +28,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
       <Box my={3}>
         <Separator />
       </Box>
-      <Text variant="mediumText" mb="1">
+      <Text variant="sm" mb="1">
         Latest Articles featuring {artist?.name}
       </Text>
 

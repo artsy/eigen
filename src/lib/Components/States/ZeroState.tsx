@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Flex, Sans, Spacer } from "palette"
+import { Flex, Sans, useColor } from "palette"
 
 interface ZeroStateProps {
   title?: string
@@ -9,25 +9,36 @@ interface ZeroStateProps {
   callToAction?: JSX.Element
 }
 
-export const ZeroState = (props: ZeroStateProps) => (
-  <Flex py="4" px="2" alignItems="center" justifyContent="center" style={{ height: "100%" }}>
-    {!!props.title && (
-      <>
-        <Sans size="6" textAlign="center" maxWidth="80%">
-          {props.title}
-        </Sans>
-        <Spacer mb={3} />
-      </>
-    )}
+export const ZeroState = (props: ZeroStateProps) => {
+  const color = useColor()
+  return (
+    <Flex py="4" px="2" justifyContent="center" style={{ height: "100%" }}>
+      <Flex minHeight={30}>
+        {!!props.title && (
+          <>
+            <Sans size="3" lineHeight="20" maxWidth="80%" color={color("black100")}>
+              {props.title}
+            </Sans>
+          </>
+        )}
+      </Flex>
 
-    {!!props.subtitle && (
-      <>
-        <Sans size="4" textAlign="center" maxWidth={props.title ? "100%" : "80%"}>
-          {props.subtitle}
-        </Sans>
-        <Spacer mb={3} />
-      </>
-    )}
-    {!!props.callToAction && <>{props.callToAction}</>}
-  </Flex>
-)
+      <Flex minHeight={80}>
+        {!!props.subtitle && (
+          <>
+            <Sans
+              size="3"
+              maxWidth={props.title ? "100%" : "80%"}
+              lineHeight="20"
+              color={props.title ? color("black60") : color("black100")}
+            >
+              {props.subtitle}
+            </Sans>
+          </>
+        )}
+      </Flex>
+
+      {!!props.callToAction && <>{props.callToAction}</>}
+    </Flex>
+  )
+}

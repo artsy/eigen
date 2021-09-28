@@ -2,12 +2,14 @@ import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate, navigateToPartner } from "lib/navigation/navigate"
 import { isPad } from "lib/utils/hardware"
+import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { searchInsights } from "lib/utils/useSearchInsightsConfig"
 import { Box, Flex, Spacer, Spinner, Text, Touchable, useSpace } from "palette"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
 import { connectHighlight } from "react-instantsearch-native"
 import { FlatList } from "react-native"
+import { AlgoliaSearchPlaceholder } from "./components/AlgoliaSearchPlaceholder"
 import { AlgoliaSearchResult } from "./types"
 
 interface SearchResultsProps
@@ -21,7 +23,7 @@ const Highlight = connectHighlight(({ highlight, attribute, hit, highlightProper
   const parsedHit = highlight({ attribute, hit, highlightProperty })
 
   return (
-    <Text>
+    <Text numberOfLines={1}>
       {parsedHit.map(({ isHighlighted, value }, index) =>
         isHighlighted ? (
           <Text key={index} color="blue100" fontWeight="600" padding={0} margin={0}>
@@ -42,16 +44,30 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   isSearchStalled,
   searchState,
   indexName,
+  searchResults,
   refineNext,
   categoryDisplayName,
 }) => {
+  const [showLoadingPlaceholder, setShowLoadingPlaceholder] = useState(true)
   const flatListRef = useRef<FlatList<AlgoliaSearchResult>>(null)
+  const didMountRef = useRef(false)
   const loading = searching || isSearchStalled
   const space = useSpace()
 
   useEffect(() => {
     flatListRef.current?.scrollToOffset({ offset: 1, animated: true })
   }, [searchState.query, indexName])
+
+  // When we get the first search results, we hide the loading placeholder
+
+  useEffect(() => {
+    // Skips the initial mount
+    if (didMountRef.current) {
+      setShowLoadingPlaceholder(false)
+    }
+
+    didMountRef.current = true
+  }, [searchResults?.hits])
 
   const onPress = (item: AlgoliaSearchResult): void => {
     // TODO: I'm not sure why we need to use this `navigateToPartner` function but without it the header overlaps
@@ -77,14 +93,22 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     }
   }
 
-  if (!hits.length) {
+  if (showLoadingPlaceholder) {
+    return (
+      <ProvidePlaceholderContext>
+        <AlgoliaSearchPlaceholder />
+      </ProvidePlaceholderContext>
+    )
+  }
+
+  if (searchResults?.nbHits === 0) {
     return (
       <Box px={2} py={1}>
         <Spacer mt={4} />
-        <Text variant="subtitle">
+        <Text variant="md">
           No {categoryDisplayName} found for “{searchState.query}”.
         </Text>
-        <Text variant="subtitle" color="black60">
+        <Text variant="md" color="black60">
           Look at a different category or try another search term.
         </Text>
       </Box>
@@ -106,7 +130,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
               style={{ width: 40, height: 40, borderRadius: 20, overflow: "hidden" }}
             />
             <Spacer ml={1} />
-            <Flex>
+            <Flex flex={1}>
               <Highlight attribute="name" hit={item} />
             </Flex>
           </Flex>

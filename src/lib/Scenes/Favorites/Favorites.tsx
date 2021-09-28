@@ -5,11 +5,13 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 
 import DarkNavigationButton from "lib/Components/Buttons/DarkNavigationButton"
 
-import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
+import { StickyTabPage, TabProps } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageTabBar } from "lib/Components/StickyTabPage/StickyTabPageTabBar"
 import { useIsStaging } from "lib/store/GlobalStore"
-import { Sans, SettingsIcon as _SettingsIcon } from "palette"
+import { compact } from "lodash"
+import { Flex, SettingsIcon as _SettingsIcon, Text } from "palette"
 import { useTracking } from "react-tracking"
+import { useEnableMyCollection } from "../MyCollection/MyCollection"
 import { FavoriteArtistsQueryRenderer } from "./FavoriteArtists"
 import { FavoriteArtworksQueryRenderer } from "./FavoriteArtworks"
 import { FavoriteCategoriesQueryRenderer } from "./FavoriteCategories"
@@ -51,6 +53,43 @@ export const Favorites: React.FC<Props> = ({ initialTab = Tab.works }) => {
       action_type: Schema.ActionTypes.Tap,
     })
   }
+
+  const enableMyCollection = useEnableMyCollection()
+
+  const showFavoriteArtworksTab = !enableMyCollection
+
+  const tabs: TabProps[] = compact([
+    showFavoriteArtworksTab && {
+      title: Tab.works,
+      content: <FavoriteArtworksQueryRenderer />,
+    },
+    {
+      title: Tab.artists,
+      content: <FavoriteArtistsQueryRenderer />,
+    },
+    {
+      title: Tab.shows,
+      content: <FavoriteShowsQueryRenderer />,
+    },
+    {
+      title: Tab.categories,
+      content: <FavoriteCategoriesQueryRenderer />,
+    },
+  ])
+
+  // default to first tab for initialTab
+  let finalInitialTab = tabs[0].title
+  if (tabs.find((tab) => (tab.title as Tab) === initialTab)) {
+    finalInitialTab = initialTab
+  } else {
+    console.warn("Specified Initial Tab is not available in tabs array.")
+  }
+
+  // Set initial Tab
+  tabs.forEach((tab) => {
+    tab.initial = tab.title === finalInitialTab
+  })
+
   return (
     <ProvideScreenTracking
       info={{
@@ -60,44 +99,47 @@ export const Favorites: React.FC<Props> = ({ initialTab = Tab.works }) => {
     >
       <View style={{ flex: 1 }}>
         <StickyTabPage
-          tabs={[
-            {
-              title: Tab.works,
-              content: <FavoriteArtworksQueryRenderer />,
-              initial: initialTab === Tab.works,
-            },
-            {
-              title: Tab.artists,
-              content: <FavoriteArtistsQueryRenderer />,
-              initial: initialTab === Tab.artists,
-            },
-            {
-              title: Tab.shows,
-              content: <FavoriteShowsQueryRenderer />,
-              initial: initialTab === Tab.shows,
-            },
-            {
-              title: Tab.categories,
-              content: <FavoriteCategoriesQueryRenderer />,
-              initial: initialTab === Tab.categories,
-            },
-          ]}
-          staticHeaderContent={<></>}
+          tabs={tabs}
+          staticHeaderContent={
+            enableMyCollection ? <StickyHeaderContent enableMyCollection={enableMyCollection} /> : <></>
+          }
           stickyHeaderContent={
-            <View style={{ marginTop: 20 }}>
-              <Sans size="4" weight="medium" textAlign="center">
-                Saves and Follows
-              </Sans>
+            enableMyCollection ? (
               <StickyTabPageTabBar
                 onTabPress={({ label }) => {
                   fireTabSelectionAnalytics(label as Tab)
                 }}
               />
-            </View>
+            ) : (
+              <>
+                <StickyHeaderContent enableMyCollection={enableMyCollection} />
+                <StickyTabPageTabBar
+                  onTabPress={({ label }) => {
+                    fireTabSelectionAnalytics(label as Tab)
+                  }}
+                />
+              </>
+            )
           }
         />
         {!!isStaging && <DarkNavigationButton title="Warning: on staging, favourites don't migrate" />}
       </View>
     </ProvideScreenTracking>
+  )
+}
+
+const StickyHeaderContent: React.FC<{ enableMyCollection: boolean }> = ({ enableMyCollection }) => {
+  return (
+    <Flex mt={enableMyCollection ? 4 : 2}>
+      {enableMyCollection ? (
+        <Text variant="lg" m={2}>
+          Follows
+        </Text>
+      ) : (
+        <Text variant="md" weight="medium" textAlign="center">
+          Saves and Follows
+        </Text>
+      )}
+    </Flex>
   )
 }

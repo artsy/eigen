@@ -75,7 +75,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
         keyboardShouldPersistTaps="always"
       >
         <Spacer mt={60} />
-        <Text variant="largeTitle">Log in with email</Text>
+        <Text variant="lg">Log in with email</Text>
         <Spacer mt={50} />
         <Box>
           <Input
@@ -147,7 +147,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
             navigation.navigate("ForgotPassword")
           }}
         >
-          <Text variant="text" color="black60" style={{ textDecorationLine: "underline" }}>
+          <Text variant="sm" color="black60" style={{ textDecorationLine: "underline" }}>
             Forgot password?
           </Text>
         </Touchable>
@@ -161,7 +161,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
           disabled={!(isValid && dirty) || isSubmitting} // isSubmitting to prevent weird appearances of the errors caused by async submiting
           loading={isSubmitting}
           testID="loginButton"
-          variant="primaryBlack"
+          variant="fillDark"
           mb={safeAreaInsets.bottom}
         >
           Log in

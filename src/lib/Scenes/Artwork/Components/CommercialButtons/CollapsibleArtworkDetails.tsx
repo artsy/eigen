@@ -60,7 +60,7 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
           )}
           <Flex ml={2} flex={1}>
             <Text>{artwork.artistNames}</Text>
-            <Text color="black60" variant="caption">
+            <Text color="black60" variant="xs">
               {artwork.title}, {artwork.date}
             </Text>
           </Flex>

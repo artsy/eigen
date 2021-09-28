@@ -1,7 +1,6 @@
-import { __globalStoreTestUtils__, GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
+import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Theme } from "palette"
 import React from "react"
 import { RecentSearches } from "../RecentSearches"
 import { SearchContext } from "../SearchContext"
@@ -76,15 +75,9 @@ const anniAlbers: RecentSearch = {
 
 const TestPage = () => {
   return (
-    <GlobalStoreProvider>
-      <Theme>
-        <GlobalStoreProvider>
-          <SearchContext.Provider value={{ inputRef: { current: null }, queryRef: { current: null } }}>
-            <RecentSearches />
-          </SearchContext.Provider>
-        </GlobalStoreProvider>
-      </Theme>
-    </GlobalStoreProvider>
+    <SearchContext.Provider value={{ inputRef: { current: null }, queryRef: { current: null } }}>
+      <RecentSearches />
+    </SearchContext.Provider>
   )
 }
 
@@ -92,7 +85,7 @@ describe("Recent Searches", () => {
   it("has an empty state", () => {
     const tree = renderWithWrappers(<TestPage />)
 
-    expect(extractText(tree.root)).toMatchInlineSnapshot(`"Recent searchesWe’ll save your recent searches here"`)
+    expect(extractText(tree.root)).toMatchInlineSnapshot(`"Recent SearchesWe’ll save your recent searches here"`)
     expect(tree.root.findAllByType(SearchResult)).toHaveLength(0)
   })
 

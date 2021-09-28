@@ -2,7 +2,7 @@ import { BuyNowButton_artwork } from "__generated__/BuyNowButton_artwork.graphql
 import { BuyNowButtonOrderMutation } from "__generated__/BuyNowButtonOrderMutation.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import { Button, ButtonVariant } from "palette"
+import { Button, ButtonProps } from "palette"
 import React from "react"
 import { Alert } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -10,7 +10,7 @@ import { commitMutation, createFragmentContainer, graphql, RelayProp } from "rea
 export interface BuyNowButtonProps {
   artwork: BuyNowButton_artwork
   relay: RelayProp
-  variant?: ButtonVariant
+  variant?: ButtonProps["variant"]
   // EditionSetID is passed down from the edition selected by the user
   editionSetID: string | null
 }
@@ -122,9 +122,7 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
         width={100}
         haptic
       >
-        {variant && variant === "secondaryOutline" && artwork.saleMessage
-          ? `Buy now ${artwork.saleMessage}`
-          : "Buy now"}
+        {variant && variant === "outline" && artwork.saleMessage ? `Buy now ${artwork.saleMessage}` : "Buy now"}
       </Button>
     )
   }

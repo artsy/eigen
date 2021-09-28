@@ -6,7 +6,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { once } from "lodash"
-import { Box, Button, Flex, Sans, ShareIcon, Spacer, Text, Theme } from "palette"
+import { Box, Button, Flex, Sans, ShareIcon, Spacer, Text } from "palette"
 import { _maxWidth as maxWidth } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, LayoutAnimation, Share, TouchableWithoutFeedback, View, ViewToken } from "react-native"
@@ -48,7 +48,7 @@ export const ClosedNotice: React.FC<{ status: string; partnerHref: string }> = (
       <Sans mt="3" size="3t" mx="4" textAlign="center">
         {finalText}
       </Sans>
-      <Button variant="secondaryGray" onPress={() => navigate(partnerHref)} mt={2}>
+      <Button variant="fillGray" onPress={() => navigate(partnerHref)} mt={2}>
         Visit gallery
       </Button>
     </Flex>
@@ -89,7 +89,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
       key: "introStatement",
       content: (
         <Flex mt="2" mx="2">
-          <Text data-test-id="intro-statement" mt="2" variant="text" mx="2" style={maxWidth}>
+          <Text data-test-id="intro-statement" mt="2" variant="sm" mx="2" style={maxWidth}>
             {viewingRoom.introStatement}
           </Text>
         </Flex>
@@ -108,7 +108,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
           <>
             {!!viewingRoom.pullQuote && (
               <Flex mx="2">
-                <Text data-test-id="pull-quote" variant="largeTitle" textAlign="center">
+                <Text data-test-id="pull-quote" variant="lg" textAlign="center">
                   {viewingRoom.pullQuote}
                 </Text>
               </Flex>
@@ -120,7 +120,7 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
         key: "body",
         content: (
           <Flex mx="2">
-            <Text data-test-id="body" variant="text" style={maxWidth}>
+            <Text data-test-id="body" variant="sm" style={maxWidth}>
               {viewingRoom.body}
             </Text>
           </Flex>
@@ -158,29 +158,27 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
 
   return (
     <ProvideScreenTracking info={tracks.context(viewingRoom.internalID, viewingRoom.slug)}>
-      <Theme>
-        <View style={{ flex: 1, position: "relative" }}>
-          <ShareButton />
-          <FlatList<ViewingRoomSection>
-            onViewableItemsChanged={useCallback(({ viewableItems }) => {
-              if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "body")) {
-                trackBodyImpression()
-                LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 150 })
-                setDisplayViewWorksButton(true)
-              }
-            }, [])}
-            contentContainerStyle={{ paddingBottom: 80 }}
-            viewabilityConfig={{ itemVisiblePercentThreshold: 15 }}
-            data={sections}
-            ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}
-            ItemSeparatorComponent={() => <Spacer mb={3} />}
-            renderItem={({ item }) => {
-              return item.content
-            }}
-          />
-          <ViewingRoomViewWorksButtonContainer isVisible={displayViewWorksButton} {...props} />
-        </View>
-      </Theme>
+      <View style={{ flex: 1, position: "relative" }}>
+        <ShareButton />
+        <FlatList<ViewingRoomSection>
+          onViewableItemsChanged={useCallback(({ viewableItems }) => {
+            if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "body")) {
+              trackBodyImpression()
+              LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 150 })
+              setDisplayViewWorksButton(true)
+            }
+          }, [])}
+          contentContainerStyle={{ paddingBottom: 80 }}
+          viewabilityConfig={{ itemVisiblePercentThreshold: 15 }}
+          data={sections}
+          ListHeaderComponent={<ViewingRoomHeaderContainer viewingRoom={viewingRoom} />}
+          ItemSeparatorComponent={() => <Spacer mb={3} />}
+          renderItem={({ item }) => {
+            return item.content
+          }}
+        />
+        <ViewingRoomViewWorksButtonContainer isVisible={displayViewWorksButton} {...props} />
+      </View>
     </ProvideScreenTracking>
   )
 }

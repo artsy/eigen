@@ -1,4 +1,3 @@
-import { usePaletteFlagStore } from "palette/PaletteFlag"
 import { useTheme } from "palette/Theme"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Modal, StyleSheet, TouchableWithoutFeedback } from "react-native"
@@ -26,7 +25,6 @@ export const Dialog = (props: DialogProps) => {
   const { isVisible, title, detail, primaryCta, secondaryCta, onBackgroundPress, ...other } = props
   const [visible, setVisible] = useState(isVisible)
   const { space, color } = useTheme()
-  const allowV3 = usePaletteFlagStore((state) => state.allowV3)
   const value = useRef(new Animated.Value(Number(isVisible))).current
 
   const fadeIn = () => {
@@ -102,12 +100,12 @@ export const Dialog = (props: DialogProps) => {
             shadowRadius: 10,
           }}
         >
-          <Text testID="dialog-title" variant="title" mb={0.5} mt={2} mx={2}>
+          <Text testID="dialog-title" variant="md" mb={0.5} mt={2} mx={2}>
             {title}
           </Text>
           {!!detail && (
             <ScrollView alwaysBounceVertical={false} contentContainerStyle={{ paddingHorizontal: space(2) }}>
-              <Text testID="dialog-detail" variant="caption" color="black60">
+              <Text testID="dialog-detail" variant="sm" color="black60">
                 {detail}
               </Text>
             </ScrollView>
@@ -117,7 +115,7 @@ export const Dialog = (props: DialogProps) => {
               <Button
                 size="small"
                 testID="dialog-secondary-action-button"
-                variant={allowV3 ? "text" : "secondaryOutline"}
+                variant="text"
                 onPress={secondaryCta.onPress}
               >
                 {secondaryCta.text}
@@ -125,7 +123,7 @@ export const Dialog = (props: DialogProps) => {
             )}
             <Button
               size="small"
-              variant={allowV3 ? "fillDark" : "primaryBlack"}
+              variant="fillDark"
               testID="dialog-primary-action-button"
               ml={2}
               onPress={primaryCta.onPress}

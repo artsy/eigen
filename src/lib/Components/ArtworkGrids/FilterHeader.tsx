@@ -11,7 +11,7 @@ export const ArtworksFilterHeader: React.FC<ArtworksFilterHeaderProps> = (props)
 
   return (
     <Flex flexDirection="row" my={2} px={2} justifyContent="space-between" alignItems="center">
-      <Text variant="subtitle" color="black60">
+      <Text variant="md" color="black60">
         Showing {count} works
       </Text>
       <TouchableHighlightColor
@@ -20,7 +20,7 @@ export const ArtworksFilterHeader: React.FC<ArtworksFilterHeaderProps> = (props)
         render={({ color }) => (
           <Flex flexDirection="row" alignItems="center">
             <FilterIcon fill={color} width="20px" height="20px" />
-            <Text variant="subtitle" color={color}>
+            <Text variant="md" color={color}>
               Sort & Filter
             </Text>
           </Flex>

@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 
 import com.appboy.AppboyLifecycleCallbackListener;
+import com.segment.analytics.android.integrations.adjust.AdjustIntegration;
+import com.segment.analytics.Analytics;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactInstanceManager;
@@ -50,6 +52,15 @@ public class MainApplication extends Application implements ReactApplication {
     initializeFlipper(this, getReactNativeHost().getReactInstanceManager());
     ArtsyNativeModule.didLaunch(
         this.getSharedPreferences("launchConfig", MODE_PRIVATE));
+
+    String segmentWriteKey = BuildConfig.SEGMENT_PRODUCTION_WRITE_KEY_ANDROID;
+    if (BuildConfig.DEBUG) {
+      segmentWriteKey = BuildConfig.SEGMENT_STAGING_WRITE_KEY_ANDROID;
+    }
+    Analytics analytics = new Analytics.Builder(this, segmentWriteKey)
+                .use(AdjustIntegration.FACTORY)
+                .build();
+    Analytics.setSingletonInstance(analytics);
     registerActivityLifecycleCallbacks(new AppboyLifecycleCallbackListener(true, true));
   }
 

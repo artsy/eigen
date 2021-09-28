@@ -1,14 +1,12 @@
+import { GenericGrid_artworks } from "__generated__/GenericGrid_artworks.graphql"
 import Spinner from "lib/Components/Spinner"
+import { RandomNumberGenerator } from "lib/utils/placeholders"
+import { times } from "lodash"
 import React from "react"
 import { LayoutChangeEvent, StyleSheet, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import Artwork, { ArtworkGridItemPlaceholder } from "./ArtworkGridItem"
-
-import { GenericGrid_artworks } from "__generated__/GenericGrid_artworks.graphql"
-import { RandomNumberGenerator } from "lib/utils/placeholders"
-import { times } from "lodash"
-import { Theme } from "palette"
 import { Stack } from "../Stack"
+import Artwork, { ArtworkGridItemPlaceholder, ArtworkProps } from "./ArtworkGridItem"
 
 interface Props {
   artworks: GenericGrid_artworks
@@ -28,7 +26,11 @@ interface State {
   sectionCount: number
 }
 
-export class GenericArtworksGrid extends React.Component<Props, State> {
+type PropsForArtwork = Omit<ArtworkProps, "artwork">
+
+type GenericArtworkType = GenericGrid_artworks extends ReadonlyArray<infer GenericArtwork> ? GenericArtwork : never
+
+export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork, State> {
   static defaultProps = {
     sectionDirection: "column" as "column",
     sectionMargin: 20,
@@ -44,14 +46,12 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
 
   width = 0
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  layoutState(width): State {
+  layoutState(width: number): State {
     const isPad = width > 600
     const isPadHorizontal = width > 900
 
     const sectionCount = isPad ? (isPadHorizontal ? 4 : 3) : 2
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const sectionMargins = this.props.sectionMargin * (sectionCount - 1)
+    const sectionMargins = this.props.sectionMargin ?? 0 * (sectionCount - 1)
     const sectionDimension = (width - sectionMargins) / sectionCount
 
     return {
@@ -86,10 +86,8 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
   }
 
   sectionedArtworks() {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const sectionedArtworks = []
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const sectionRatioSums = []
+    const sectionedArtworks: GenericArtworkType[][] = []
+    const sectionRatioSums: number[] = []
     for (let i = 0; i < this.state.sectionCount; i++) {
       sectionedArtworks.push([])
       sectionRatioSums.push(0)
@@ -98,11 +96,9 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
     this.props.artworks.forEach((artwork) => {
       if (artwork.image) {
         let lowestRatioSum = Number.MAX_VALUE
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        let sectionIndex: number = null
+        let sectionIndex: number | null = null
 
         for (let j = 0; j < sectionRatioSums.length; j++) {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           const ratioSum = sectionRatioSums[j]
           if (ratioSum < lowestRatioSum) {
             sectionIndex = j
@@ -111,13 +107,11 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
         }
 
         if (sectionIndex != null) {
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           const section = sectionedArtworks[sectionIndex]
           section.push(artwork)
 
           // total section aspect ratio
           const aspectRatio = artwork.image.aspect_ratio || 1
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           sectionRatioSums[sectionIndex] += 1 / aspectRatio
         }
       }
@@ -143,12 +137,12 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
         artworkComponents.push(
           <Artwork
             artwork={artwork}
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             key={artwork.id + column + row}
             trackingFlow={trackingFlow}
             contextModule={contextModule}
             itemIndex={itemIndex}
             trackTap={trackTap}
+            {...this.props}
           />
         )
         if (row < artworks.length - 1) {
@@ -172,14 +166,12 @@ export class GenericArtworksGrid extends React.Component<Props, State> {
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
     return (
-      <Theme>
-        <View onLayout={this.onLayout}>
-          <View style={styles.container} accessibilityLabel="Artworks Content View">
-            {artworks}
-          </View>
-          {this.props.isLoading ? <Spinner style={styles.spinner} /> : null}
+      <View onLayout={this.onLayout}>
+        <View style={styles.container} accessibilityLabel="Artworks Content View">
+          {artworks}
         </View>
-      </Theme>
+        {this.props.isLoading ? <Spinner style={styles.spinner} /> : null}
+      </View>
     )
   }
 }

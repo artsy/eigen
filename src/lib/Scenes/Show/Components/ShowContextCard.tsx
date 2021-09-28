@@ -128,12 +128,12 @@ const ContextCard: React.FC<ContextCardProps> = ({
           )}
         </Box>
 
-        <Text variant="mediumText" mt={0.5}>
+        <Text variant="sm" mt={0.5}>
           {title}
         </Text>
 
         {!!subtitle && (
-          <Text variant="caption" color="black60">
+          <Text variant="xs" color="black60">
             {subtitle}
           </Text>
         )}

@@ -20,7 +20,7 @@ export const TextArea: React.FC<TextAreaProps> = ({ title, ...props }) => {
   return (
     <>
       {!!title && (
-        <Text mb={1} variant="mediumText">
+        <Text mb={1} variant="xs">
           {title}
         </Text>
       )}
@@ -28,7 +28,7 @@ export const TextArea: React.FC<TextAreaProps> = ({ title, ...props }) => {
         {...props}
         onFocus={(e) => {
           props.onFocus?.(e)
-          setBorderColor(color("purple100" /* TODO-PALETTE-V3 "blue100" */))
+          setBorderColor(color("blue100"))
         }}
         onBlur={(e) => {
           props.onBlur?.(e)

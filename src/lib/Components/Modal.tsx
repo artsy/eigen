@@ -77,7 +77,7 @@ export class Modal extends React.Component<ModalProps, any> {
                     }}
                     block
                     width={100}
-                    variant="secondaryOutline"
+                    variant="outline"
                   >
                     Ok
                   </Button>

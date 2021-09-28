@@ -4,7 +4,6 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { ArrowButton } from "../../Components/ArrowButton"
 import { ArtistAutosuggest } from "../../Components/ArtistAutosuggest"
 import { Dimensions } from "../../Components/Dimensions"
 import { MediumPicker } from "../../Components/MediumPicker"
@@ -227,7 +226,7 @@ describe("AddEditArtwork", () => {
     }
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
     const wrapper = renderWithWrappers(artworkForm)
-    wrapper.root.findByProps({ "data-test-id": "AdditionalDetailsButton" }).findByType(ArrowButton).props.onPress()
+    wrapper.root.findByProps({ "data-test-id": "AdditionalDetailsButton" }).props.onPress()
     expect(mockNavigate).toHaveBeenCalledWith("AdditionalDetails")
   })
 })

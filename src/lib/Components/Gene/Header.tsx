@@ -132,7 +132,7 @@ class Header extends React.Component<Props, State> {
     return (
       <Box mt={15}>
         <Button
-          variant={gene.isFollowed ? "secondaryOutline" : "primaryBlack"}
+          variant={gene.isFollowed ? "outline" : "fillDark"}
           block
           width={100}
           onPress={() => this.handleFollowChange()}

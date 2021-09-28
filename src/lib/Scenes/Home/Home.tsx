@@ -28,13 +28,14 @@ import {
 } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { compact, drop, times } from "lodash"
-import { ArtsyLogoIcon, Box, Flex, Join, Spacer, Theme } from "palette"
+import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, Platform, RefreshControl, View, ViewProps } from "react-native"
 import { _FragmentRefs, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
+import { NewWorksForYouRailContainer } from "./Components/NewWorksForYouRail"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProps {
@@ -76,6 +77,7 @@ const Home = (props: Props) => {
   )
 
   const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
+  const showNewNewWorksForYouRail = useFeatureFlag("AREnableNewNewWorksForYou")
 
   /*
   Ordering is defined in https://www.notion.so/artsy/App-Home-Screen-4841255ded3f47c9bcdb73185ee3f335.
@@ -84,6 +86,7 @@ const Home = (props: Props) => {
 
   const rowData = compact([
     // Above-the-fold modules (make sure to include enough modules in the above-the-fold query to cover the whole screen.)
+    !!showNewNewWorksForYouRail && ({ type: "newWorksForYou" } as const),
     artworkRails[0],
     { type: "lotsByFollowedArtists" } as const,
     artworkRails[1],
@@ -141,85 +144,96 @@ const Home = (props: Props) => {
         context_screen_owner_type: null as any,
       }}
     >
-      <Theme>
-        <View style={{ flex: 1 }}>
-          <AboveTheFoldFlatList
-            data={rowData}
-            initialNumToRender={5}
-            refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-            renderItem={({ item, index, separators }) => {
-              switch (item.type) {
-                case "articles":
-                  return articlesConnection ? (
-                    <ArticlesRailFragmentContainer articlesConnection={articlesConnection} />
-                  ) : (
-                    <></>
-                  )
-                case "artwork":
-                  return <ArtworkRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
-                case "artist":
-                  return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
-                case "fairs":
-                  return <FairsRailFragmentContainer fairsModule={item.data} scrollRef={scrollRefs.current[index]} />
-                case "sales":
-                  return (
-                    <SalesRailFragmentContainer
-                      salesModule={item.data}
-                      scrollRef={scrollRefs.current[index]}
-                      onShow={() => separators.updateProps("leading", { hideSeparator: false })}
-                      onHide={() => separators.updateProps("leading", { hideSeparator: true })}
-                    />
-                  )
-                case "collections":
-                  separators.updateProps("leading", { hideSeparator: false })
-                  return (
-                    <CollectionsRailFragmentContainer
-                      collectionsModule={item.data}
-                      scrollRef={scrollRefs.current[index]}
-                    />
-                  )
-                case "viewing-rooms":
-                  return featured ? <ViewingRoomsHomeRail featured={featured} /> : <></>
-                case "auction-results":
-                  return meBelow ? (
-                    <AuctionResultsRailFragmentContainer
-                      me={meBelow}
-                      scrollRef={scrollRefs.current[index]}
-                      onShow={() => separators.updateProps("leading", { hideSeparator: false })}
-                      onHide={() => separators.updateProps("leading", { hideSeparator: true })}
-                    />
-                  ) : (
-                    <></>
-                  )
-                case "lotsByFollowedArtists":
-                  return meAbove ? (
-                    <SaleArtworksHomeRailContainer
-                      me={meAbove}
-                      onShow={() => separators.updateProps("leading", { hideSeparator: false })}
-                      onHide={() => separators.updateProps("leading", { hideSeparator: true })}
-                    />
-                  ) : (
-                    <></>
-                  )
-              }
-            }}
-            ListHeaderComponent={
-              <Box mb={1} mt={2}>
-                <Flex alignItems="center">
-                  <ArtsyLogoIcon scale={0.75} />
-                </Flex>
-                <Spacer mb="15px" />
-                {!!homePageAbove && <HomeHeroContainer homePage={homePageAbove} />}
-                <Spacer mb="2" />
-              </Box>
+      <View style={{ flex: 1 }}>
+        <AboveTheFoldFlatList
+          data={rowData}
+          initialNumToRender={5}
+          refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+          renderItem={({ item, index, separators }) => {
+            switch (item.type) {
+              case "articles":
+                return articlesConnection ? (
+                  <ArticlesRailFragmentContainer articlesConnection={articlesConnection} />
+                ) : (
+                  <></>
+                )
+              case "artwork":
+                return (
+                  <ArtworkRailFragmentContainer
+                    rail={item.data}
+                    scrollRef={scrollRefs.current[index]}
+                    onShow={() => separators.updateProps("leading", { hideSeparator: false })}
+                    onHide={() => separators.updateProps("leading", { hideSeparator: true })}
+                  />
+                )
+              case "artist":
+                return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
+              case "fairs":
+                return <FairsRailFragmentContainer fairsModule={item.data} scrollRef={scrollRefs.current[index]} />
+              case "sales":
+                return (
+                  <SalesRailFragmentContainer
+                    salesModule={item.data}
+                    scrollRef={scrollRefs.current[index]}
+                    onShow={() => separators.updateProps("leading", { hideSeparator: false })}
+                    onHide={() => separators.updateProps("leading", { hideSeparator: true })}
+                  />
+                )
+              case "collections":
+                separators.updateProps("leading", { hideSeparator: false })
+                return (
+                  <CollectionsRailFragmentContainer
+                    collectionsModule={item.data}
+                    scrollRef={scrollRefs.current[index]}
+                  />
+                )
+              case "viewing-rooms":
+                return featured ? <ViewingRoomsHomeRail featured={featured} /> : <></>
+              case "auction-results":
+                return meBelow ? (
+                  <AuctionResultsRailFragmentContainer
+                    me={meBelow}
+                    onShow={() => separators.updateProps("leading", { hideSeparator: false })}
+                    onHide={() => separators.updateProps("leading", { hideSeparator: true })}
+                  />
+                ) : (
+                  <></>
+                )
+              case "newWorksForYou":
+                return meAbove ? (
+                  <NewWorksForYouRailContainer me={meAbove} scrollRef={scrollRefs.current[index]} />
+                ) : (
+                  <></>
+                )
+
+              case "lotsByFollowedArtists":
+                return meAbove ? (
+                  <SaleArtworksHomeRailContainer
+                    me={meAbove}
+                    onShow={() => separators.updateProps("leading", { hideSeparator: false })}
+                    onHide={() => separators.updateProps("leading", { hideSeparator: true })}
+                  />
+                ) : (
+                  <></>
+                )
             }
-            ItemSeparatorComponent={({ hideSeparator }) => (!hideSeparator ? <ModuleSeparator /> : null)}
-            ListFooterComponent={() => <Flex mb={3}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
-            keyExtractor={(_item, index) => String(index)}
-          />
-          {!!meAbove && <EmailConfirmationBannerFragmentContainer me={meAbove} />}
-        </View>
-      </Theme>
+          }}
+          ListHeaderComponent={
+            <Box mb={1} mt={2}>
+              <Flex alignItems="center">
+                <ArtsyLogoIcon scale={0.75} />
+              </Flex>
+              <Spacer mb="15px" />
+              {!!homePageAbove && <HomeHeroContainer homePage={homePageAbove} />}
+              <Spacer mb="2" />
+            </Box>
+          }
+          ItemSeparatorComponent={({ hideSeparator }) => (!hideSeparator ? <ModuleSeparator /> : null)}
+          ListFooterComponent={() => <Flex mb={3}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
+          keyExtractor={(_item, index) => String(index)}
+        />
+        {!!meAbove && <EmailConfirmationBannerFragmentContainer me={meAbove} />}
+      </View>
     </ProvideScreenTracking>
   )
 }
@@ -276,6 +290,7 @@ export const HomeFragmentContainer = createRefetchContainer(
       fragment Home_meAbove on Me {
         ...EmailConfirmationBanner_me
         ...SaleArtworksHomeRail_me
+        ...NewWorksForYouRail_me
       }
     `,
     meBelow: graphql`
@@ -305,6 +320,7 @@ export const HomeFragmentContainer = createRefetchContainer(
       me @optionalField {
         ...Home_meAbove
         ...AuctionResultsRail_me
+        ...NewWorksForYouRail_me
       }
       meBelow: me @optionalField {
         ...Home_meBelow
@@ -326,88 +342,7 @@ const BelowTheFoldPlaceholder: React.FC<{}> = () => {
 
   return (
     <ProvidePlaceholderContext>
-      <Theme>
-        <Flex>
-          {!!viewingRoomsEchoFlag && (
-            <Flex ml="2" mt="3">
-              <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
-              <Flex flexDirection="row">
-                {times(4).map((i) => (
-                  <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
-                ))}
-              </Flex>
-            </Flex>
-          )}
-          {times(2).map((r) => (
-            <Box key={r}>
-              <ModuleSeparator />
-              <Box ml={2} mr={2}>
-                <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-                <Flex flexDirection="row">
-                  <Join separator={<Spacer width={15} />}>
-                    {times(10).map((index) => (
-                      <PlaceholderBox key={index} height={270} width={270} />
-                    ))}
-                  </Join>
-                  <Spacer mb={2} />
-                </Flex>
-              </Box>
-            </Box>
-          ))}
-        </Flex>
-      </Theme>
-    </ProvidePlaceholderContext>
-  )
-}
-
-const HomePlaceholder: React.FC<{}> = () => {
-  const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
-
-  return (
-    <Theme>
       <Flex>
-        <Box mb={1} mt={2}>
-          <Flex alignItems="center">
-            <ArtsyLogoIcon scale={0.75} />
-          </Flex>
-        </Box>
-        <Spacer mb={4} />
-
-        {
-          // Small tiles to mimic the artwork rails
-          times(2).map((r) => (
-            <Box key={r} ml={2} mr={2}>
-              <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-              <Flex flexDirection="row" mt={1}>
-                <Join separator={<Spacer width={15} />}>
-                  {times(3 + useMemoizedRandom() * 10).map((index) => (
-                    <Flex key={index}>
-                      <PlaceholderBox height={120} width={120} />
-                      <Spacer mb={2} />
-                      <PlaceholderText width={120} />
-                      <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
-                      <ModuleSeparator />
-                    </Flex>
-                  ))}
-                </Join>
-              </Flex>
-            </Box>
-          ))
-        }
-
-        {/* Larger tiles to mimic the fairs, sales, and collections rails */}
-        <Box ml={2} mr={2}>
-          <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-          <Flex flexDirection="row" mt={1}>
-            <Join separator={<Spacer width={15} />}>
-              {times(10).map((index) => (
-                <PlaceholderBox key={index} height={270} width={270} />
-              ))}
-            </Join>
-            <ModuleSeparator />
-          </Flex>
-        </Box>
-
         {!!viewingRoomsEchoFlag && (
           <Flex ml="2" mt="3">
             <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
@@ -418,8 +353,85 @@ const HomePlaceholder: React.FC<{}> = () => {
             </Flex>
           </Flex>
         )}
+        {times(2).map((r) => (
+          <Box key={r}>
+            <ModuleSeparator />
+            <Box ml={2} mr={2}>
+              <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
+              <Flex flexDirection="row">
+                <Join separator={<Spacer width={15} />}>
+                  {times(10).map((index) => (
+                    <PlaceholderBox key={index} height={270} width={270} />
+                  ))}
+                </Join>
+                <Spacer mb={2} />
+              </Flex>
+            </Box>
+          </Box>
+        ))}
       </Flex>
-    </Theme>
+    </ProvidePlaceholderContext>
+  )
+}
+
+const HomePlaceholder: React.FC<{}> = () => {
+  const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
+
+  return (
+    <Flex>
+      <Box mb={1} mt={2}>
+        <Flex alignItems="center">
+          <ArtsyLogoIcon scale={0.75} />
+        </Flex>
+      </Box>
+      <Spacer mb={4} />
+
+      {
+        // Small tiles to mimic the artwork rails
+        times(2).map((r) => (
+          <Box key={r} ml={2} mr={2}>
+            <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
+            <Flex flexDirection="row" mt={1}>
+              <Join separator={<Spacer width={15} />}>
+                {times(3 + useMemoizedRandom() * 10).map((index) => (
+                  <Flex key={index}>
+                    <PlaceholderBox height={120} width={120} />
+                    <Spacer mb={2} />
+                    <PlaceholderText width={120} />
+                    <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
+                    <ModuleSeparator />
+                  </Flex>
+                ))}
+              </Join>
+            </Flex>
+          </Box>
+        ))
+      }
+
+      {/* Larger tiles to mimic the fairs, sales, and collections rails */}
+      <Box ml={2} mr={2}>
+        <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
+        <Flex flexDirection="row" mt={1}>
+          <Join separator={<Spacer width={15} />}>
+            {times(10).map((index) => (
+              <PlaceholderBox key={index} height={270} width={270} />
+            ))}
+          </Join>
+          <ModuleSeparator />
+        </Flex>
+      </Box>
+
+      {!!viewingRoomsEchoFlag && (
+        <Flex ml="2" mt="3">
+          <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
+          <Flex flexDirection="row">
+            {times(4).map((i) => (
+              <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
+            ))}
+          </Flex>
+        </Flex>
+      )}
+    </Flex>
   )
 }
 
@@ -493,6 +505,7 @@ export const HomeQueryRenderer: React.FC = () => {
                 }
                 me @optionalField {
                   ...Home_meAbove
+                  ...NewWorksForYouRail_me
                 }
                 articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
                   ...Home_articlesConnection

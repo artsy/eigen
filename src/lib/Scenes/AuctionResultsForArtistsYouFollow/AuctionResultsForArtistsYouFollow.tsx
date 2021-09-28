@@ -85,7 +85,7 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
             ListHeaderComponent={ListHeader}
             renderSectionHeader={({ section: { sectionTitle } }) => (
               <Flex bg="white" mx="2">
-                <Text my="2" variant="title">
+                <Text my="2" variant="md">
                   {sectionTitle}
                 </Text>
                 <Separator borderColor={"black10"} />

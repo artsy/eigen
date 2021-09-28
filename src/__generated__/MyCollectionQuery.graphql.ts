@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a7c2ee60fecf0fac7cad4fb91e27acd5 */
+/* @relayHash 40bc3e8a27e3c367aabbcec5f5d3d5bb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,6 +26,24 @@ query MyCollectionQuery {
   }
 }
 
+fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectionConnection {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    node {
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      ...MyCollectionArtworkListItem_artwork
+    }
+  }
+}
+
 fragment MyCollectionArtworkListItem_artwork on Artwork {
   internalID
   artist {
@@ -36,27 +54,30 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
     url
     isDefault
   }
+  image {
+    aspectRatio
+  }
   artistNames
   medium
   slug
   title
+  date
 }
 
 fragment MyCollection_me on Me {
   id
   myCollectionConnection(first: 20, sort: CREATED_AT_DESC) {
-    pageInfo {
-      hasNextPage
-      endCursor
-    }
     edges {
       node {
         id
-        slug
-        ...MyCollectionArtworkListItem_artwork
         __typename
       }
       cursor
+    }
+    ...InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX
+    pageInfo {
+      endCursor
+      hasNextPage
     }
   }
 }
@@ -142,31 +163,6 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "PageInfo",
-                "kind": "LinkedField",
-                "name": "pageInfo",
-                "plural": false,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "hasNextPage",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "endCursor",
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
                 "concreteType": "MyCollectionEdge",
                 "kind": "LinkedField",
                 "name": "edges",
@@ -185,7 +181,32 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "__typename",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "slug",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "kind": "LinkedField",
+                        "name": "image",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "aspectRatio",
+                            "storageKey": null
+                          }
+                        ],
                         "storageKey": null
                       },
                       (v2/*: any*/),
@@ -252,7 +273,7 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "__typename",
+                        "name": "date",
                         "storageKey": null
                       }
                     ],
@@ -263,6 +284,38 @@ return {
                     "args": null,
                     "kind": "ScalarField",
                     "name": "cursor",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "PageInfo",
+                "kind": "LinkedField",
+                "name": "pageInfo",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "hasNextPage",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "startCursor",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "endCursor",
                     "storageKey": null
                   }
                 ],
@@ -286,7 +339,7 @@ return {
     ]
   },
   "params": {
-    "id": "a7c2ee60fecf0fac7cad4fb91e27acd5",
+    "id": "40bc3e8a27e3c367aabbcec5f5d3d5bb",
     "metadata": {},
     "name": "MyCollectionQuery",
     "operationKind": "query",

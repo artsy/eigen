@@ -111,6 +111,7 @@ const FavoriteArtistsContainer = createPaginationContainer(
     me: graphql`
       fragment FavoriteArtists_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+        labFeatures
         followsAndSaves {
           artists: artistsConnection(first: $count, after: $cursor) @connection(key: "Artists_artists") {
             edges {

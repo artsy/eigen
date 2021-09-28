@@ -37,6 +37,7 @@ describe("SummarySection", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
     mockEnvironmentPayload(mockEnvironment, {
       CommerceOrder: () => ({
+        mode: "BUY",
         buyerTotal: "€11,200",
         taxTotal: "€0",
         shippingTotal: "€200",
@@ -48,6 +49,7 @@ describe("SummarySection", () => {
     expect(tree.findByProps({ testID: "taxTotal" }).props.children).toBe("€0")
     expect(tree.findByProps({ testID: "shippingTotal" }).props.children).toBe("€200")
     expect(tree.findByProps({ testID: "totalListPrice" }).props.children).toBe("€11,000")
+    expect(tree.findByProps({ testID: "totalListPriceLabel" }).props.children).toBe("Price")
   })
 
   it("Render correct shipping name if shipping quote selected", () => {
@@ -90,5 +92,47 @@ describe("SummarySection", () => {
     })
 
     expect(tree.findByProps({ testID: "shippingTotalLabel" }).props.children).toBe("Shipping")
+  })
+
+  describe("if offer order", () => {
+    it("Render correct price", () => {
+      const tree = renderWithWrappers(<TestRenderer />).root
+      mockEnvironmentPayload(mockEnvironment, {
+        CommerceOrder: () => ({
+          mode: "OFFER",
+          buyerTotal: "€10,400",
+          taxTotal: "€0",
+          shippingTotal: "€200",
+          totalListPrice: "€11,000",
+          lastOffer: {
+            amount: "€10,200",
+            fromParticipant: "BUYER",
+          },
+        }),
+      })
+
+      expect(tree.findByProps({ testID: "offerLabel" }).props.children).toBe("Your offer")
+      expect(tree.findByProps({ testID: "lastOffer" }).props.children).toBe("€10,200")
+    })
+
+    it("Render counteroffer", () => {
+      const tree = renderWithWrappers(<TestRenderer />).root
+      mockEnvironmentPayload(mockEnvironment, {
+        CommerceOrder: () => ({
+          mode: "OFFER",
+          buyerTotal: "€10,400",
+          taxTotal: "€0",
+          shippingTotal: "€200",
+          totalListPrice: "€11,000",
+          lastOffer: {
+            amount: "€10,200",
+            fromParticipant: "SELLER",
+          },
+        }),
+      })
+
+      expect(tree.findByProps({ testID: "offerLabel" }).props.children).toBe("Seller's offer")
+      expect(tree.findByProps({ testID: "lastOffer" }).props.children).toBe("€10,200")
+    })
   })
 })

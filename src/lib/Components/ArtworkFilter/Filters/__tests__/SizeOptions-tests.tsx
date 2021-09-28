@@ -1,18 +1,37 @@
-import { FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { Input } from "lib/Components/Input/Input"
-import { TouchableRow } from "lib/Components/TouchableRow"
+import { fireEvent } from "@testing-library/react-native"
+import { FilterArray, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { Text } from "palette"
 import React from "react"
-import { act, ReactTestRenderer } from "react-test-renderer"
+import { ReactTestInstance } from "react-test-renderer"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider, useSelectedOptionsDisplay } from "../../ArtworkFilterStore"
 import { SizeOptionsScreen } from "../SizeOptions"
 import { getEssentialProps } from "./helper"
 
-type Key = FilterParamName.dimensionRange | FilterParamName.width | FilterParamName.height
+// Helpers
+const getFilters = (element: ReactTestInstance) => {
+  return JSON.parse(extractText(element)) as FilterArray
+}
 
-describe("SizeOptionsNew", () => {
+const getFilterOptionByName = (filters: FilterArray, filterName: FilterParamName) => {
+  return filters.find((filter) => filter.paramName === filterName)
+}
+
+const getSizeFilterOption = (filters: FilterArray) => {
+  return getFilterOptionByName(filters, FilterParamName.size)
+}
+
+const getWidthFilterOption = (filters: FilterArray) => {
+  return getFilterOptionByName(filters, FilterParamName.width)
+}
+
+const getHeightFilterOption = (filters: FilterArray) => {
+  return getFilterOptionByName(filters, FilterParamName.height)
+}
+
+describe("SizeOptions", () => {
   const INITIAL_DATA: ArtworkFiltersState = {
     selectedFilters: [],
     appliedFilters: [],
@@ -30,198 +49,219 @@ describe("SizeOptionsNew", () => {
     const selected = useSelectedOptionsDisplay()
     return (
       <>
-        <Text>{JSON.stringify(selected)}</Text>
+        <Text testID="debug">{JSON.stringify(selected)}</Text>
         <SizeOptionsScreen {...getEssentialProps()} />
       </>
     )
   }
 
   const getTree = ({ initialData = INITIAL_DATA }: { initialData?: ArtworkFiltersState } = {}) => {
-    return renderWithWrappers(
+    return renderWithWrappersTL(
       <ArtworkFiltersStoreProvider initialData={initialData}>
         <MockPriceRangeOptionsScreen />
       </ArtworkFiltersStoreProvider>
     )
   }
 
-  const getData = (tree: ReactTestRenderer): Record<Key, FilterData> => {
-    return JSON.parse(extractText(tree.root.findAllByType(Text)[0]))
-      .filter(({ paramName }: FilterData) => {
-        return (
-          paramName === FilterParamName.dimensionRange ||
-          paramName === FilterParamName.width ||
-          paramName === FilterParamName.height
-        )
-      })
-      .reduce(
-        (acc: Record<Key, FilterData>, filterData: FilterData) => ({
-          ...acc,
-          [filterData.paramName]: filterData,
-        }),
-        {}
-      )
-  }
-
   it("renders the options", () => {
-    const tree = getTree()
-    const text = extractText(tree.root)
+    const { getByText } = getTree()
 
-    expect(text).toContain("All")
-    expect(text).toContain("Small (under 16in)")
-    expect(text).toContain("Medium (16in – 40in)")
-    expect(text).toContain("Large (over 40in)")
-    expect(text).toContain("Custom Size")
+    expect(getByText("All")).toBeTruthy()
+    expect(getByText("Small (under 16in)")).toBeTruthy()
+    expect(getByText("Medium (16in – 40in)")).toBeTruthy()
+    expect(getByText("Large (over 40in)")).toBeTruthy()
+    expect(getByText("Custom Size")).toBeTruthy()
   })
 
   it("selects an option", () => {
-    const tree = getTree()
+    const { getByText, getByA11yState } = getTree()
 
-    const options = tree.root.findAllByType(TouchableRow)
+    fireEvent.press(getByText("Small (under 16in)"))
 
-    expect(getData(tree).dimensionRange).toEqual({
-      paramName: "dimensionRange",
-      displayText: "All",
-      paramValue: "*-*",
-    })
-
-    act(() => {
-      options[1].props.onPress()
-    })
-
-    expect(getData(tree).dimensionRange).toEqual({
-      paramName: "dimensionRange",
-      displayText: "Small (under 16in)",
-      paramValue: "*-16.0",
-    })
+    expect(extractText(getByA11yState({ selected: true }))).toBe("Small (under 16in)")
   })
 
-  it("selects a custom size range", () => {
-    const tree = getTree()
+  describe("Custom Size", () => {
+    it("returns the default filter option if width and height are not specified", () => {
+      const { getByTestId, getByText } = getTree()
 
-    const options = tree.root.findAllByType(TouchableRow)
+      fireEvent.press(getByText("Custom Size"))
 
-    expect(getData(tree).dimensionRange).toEqual({
-      paramName: "dimensionRange",
-      displayText: "All",
-      paramValue: "*-*",
+      const filters = getFilters(getByTestId("debug"))
+      const sizeFilter = getSizeFilterOption(filters)
+      const widthFilter = getWidthFilterOption(filters)
+      const heightFilter = getWidthFilterOption(filters)
+
+      expect(sizeFilter?.displayText).toBe("All")
+      expect(sizeFilter?.paramValue).toBe("*-*")
+      expect(widthFilter).toBeUndefined()
+      expect(heightFilter).toBeUndefined()
     })
 
-    act(() => {
-      // Displays the custom range inputs
-      options[4].props.onPress()
+    it("returns the custom filter option if only minimum width is specified", () => {
+      const { getByTestId, getByA11yLabel, getByText } = getTree()
+
+      fireEvent.press(getByText("Custom Size"))
+      fireEvent.changeText(getByA11yLabel("Minimum width input"), "5")
+
+      const filters = getFilters(getByTestId("debug"))
+      const sizeFilter = getSizeFilterOption(filters)
+      const widthFilter = getWidthFilterOption(filters)
+      const heightFilter = getHeightFilterOption(filters)
+
+      expect(sizeFilter?.displayText).toBe("Custom Size")
+      expect(sizeFilter?.paramValue).toBe("0-*")
+      expect(widthFilter?.paramValue).toBe("5-*")
+      expect(heightFilter).toBeUndefined()
     })
 
-    const dimensionRange = {
-      displayText: "Custom Size",
-      paramValue: "0-*",
-      paramName: "dimensionRange",
-    }
+    it("returns the custom filter option if only maximum width is specified", () => {
+      const { getByTestId, getByA11yLabel, getByText } = getTree()
 
-    expect(getData(tree).dimensionRange).toEqual(dimensionRange)
+      fireEvent.press(getByText("Custom Size"))
+      fireEvent.changeText(getByA11yLabel("Maximum width input"), "10")
 
-    const [minWidthInput, maxWidthInput, minHeightInput, maxHeightInput] = tree.root.findAllByType(Input)
+      const filters = getFilters(getByTestId("debug"))
+      const sizeFilter = getSizeFilterOption(filters)
+      const widthFilter = getWidthFilterOption(filters)
+      const heightFilter = getHeightFilterOption(filters)
 
-    act(() => {
-      minWidthInput.props.onChangeText("10")
+      expect(sizeFilter?.displayText).toBe("Custom Size")
+      expect(sizeFilter?.paramValue).toBe("0-*")
+      expect(widthFilter?.paramValue).toBe("*-10")
+      expect(heightFilter).toBeUndefined()
     })
 
-    expect(getData(tree)).toEqual({
-      dimensionRange,
-      width: {
-        displayText: "10-*",
-        paramName: "width",
-        paramValue: "10-*",
-      },
+    it("returns the custom filter option if minimum and maximum width are specified", () => {
+      const { getByTestId, getByA11yLabel, getByText } = getTree()
+
+      fireEvent.press(getByText("Custom Size"))
+      fireEvent.changeText(getByA11yLabel("Minimum width input"), "5")
+      fireEvent.changeText(getByA11yLabel("Maximum width input"), "10")
+
+      const filters = getFilters(getByTestId("debug"))
+      const sizeFilter = getSizeFilterOption(filters)
+      const widthFilter = getWidthFilterOption(filters)
+      const heightFilter = getHeightFilterOption(filters)
+
+      expect(sizeFilter?.displayText).toBe("Custom Size")
+      expect(sizeFilter?.paramValue).toBe("0-*")
+      expect(widthFilter?.paramValue).toBe("5-10")
+      expect(heightFilter).toBeUndefined()
     })
 
-    act(() => {
-      maxWidthInput.props.onChangeText("200")
+    it("returns the custom filter option if only minimum height is specified", () => {
+      const { getByTestId, getByA11yLabel, getByText } = getTree()
+
+      fireEvent.press(getByText("Custom Size"))
+      fireEvent.changeText(getByA11yLabel("Minimum height input"), "5")
+
+      const filters = getFilters(getByTestId("debug"))
+      const sizeFilter = getSizeFilterOption(filters)
+      const widthFilter = getWidthFilterOption(filters)
+      const heightFilter = getHeightFilterOption(filters)
+
+      expect(sizeFilter?.displayText).toBe("Custom Size")
+      expect(sizeFilter?.paramValue).toBe("0-*")
+      expect(heightFilter?.paramValue).toBe("5-*")
+      expect(widthFilter).toBeUndefined()
     })
 
-    const width = {
-      displayText: "10-200",
-      paramName: "width",
-      paramValue: "10-200",
-    }
+    it("returns the custom filter option if only maximum height is specified", () => {
+      const { getByTestId, getByA11yLabel, getByText } = getTree()
 
-    expect(getData(tree)).toEqual({ dimensionRange, width })
+      fireEvent.press(getByText("Custom Size"))
+      fireEvent.changeText(getByA11yLabel("Maximum height input"), "10")
 
-    act(() => {
-      minHeightInput.props.onChangeText("33")
+      const filters = getFilters(getByTestId("debug"))
+      const sizeFilter = getSizeFilterOption(filters)
+      const widthFilter = getWidthFilterOption(filters)
+      const heightFilter = getHeightFilterOption(filters)
+
+      expect(sizeFilter?.displayText).toBe("Custom Size")
+      expect(sizeFilter?.paramValue).toBe("0-*")
+      expect(heightFilter?.paramValue).toBe("*-10")
+      expect(widthFilter).toBeUndefined()
     })
 
-    expect(getData(tree)).toEqual({
-      dimensionRange,
-      width,
-      height: {
-        displayText: "33-*",
-        paramName: "height",
-        paramValue: "33-*",
-      },
+    it("returns the custom filter option if maximum and maximum height are specified", () => {
+      const { getByTestId, getByA11yLabel, getByText } = getTree()
+
+      fireEvent.press(getByText("Custom Size"))
+      fireEvent.changeText(getByA11yLabel("Minimum height input"), "5")
+      fireEvent.changeText(getByA11yLabel("Maximum height input"), "10")
+
+      const filters = getFilters(getByTestId("debug"))
+      const sizeFilter = getSizeFilterOption(filters)
+      const widthFilter = getWidthFilterOption(filters)
+      const heightFilter = getHeightFilterOption(filters)
+
+      expect(sizeFilter?.displayText).toBe("Custom Size")
+      expect(sizeFilter?.paramValue).toBe("0-*")
+      expect(heightFilter?.paramValue).toBe("5-10")
+      expect(widthFilter).toBeUndefined()
     })
 
-    act(() => {
-      maxHeightInput.props.onChangeText("101.2")
+    it("returns the custom filter option if minimum width and the maximum height are specified", () => {
+      const { getByTestId, getByA11yLabel, getByText } = getTree()
+
+      fireEvent.press(getByText("Custom Size"))
+      fireEvent.changeText(getByA11yLabel("Minimum width input"), "5")
+      fireEvent.changeText(getByA11yLabel("Maximum height input"), "10")
+
+      const filters = getFilters(getByTestId("debug"))
+      const sizeFilter = getSizeFilterOption(filters)
+      const widthFilter = getWidthFilterOption(filters)
+      const heightFilter = getHeightFilterOption(filters)
+
+      expect(sizeFilter?.displayText).toBe("Custom Size")
+      expect(sizeFilter?.paramValue).toBe("0-*")
+      expect(widthFilter?.paramValue).toBe("5-*")
+      expect(heightFilter?.paramValue).toBe("*-10")
     })
 
-    expect(getData(tree)).toEqual({
-      dimensionRange,
-      width,
-      height: {
-        displayText: "33-101.2",
-        paramName: "height",
-        paramValue: "33-101.2",
-      },
-    })
-  })
+    it("returns the default filter option if nothing is specified in width or height", () => {
+      const { getByTestId, getByA11yLabel, getByText } = getTree()
 
-  it("selects a custom size range", () => {
-    const tree = getTree()
+      fireEvent.press(getByText("Custom Size"))
+      fireEvent.changeText(getByA11yLabel("Minimum width input"), "5")
 
-    const options = tree.root.findAllByType(TouchableRow)
+      const prevFilters = getFilters(getByTestId("debug"))
+      const prevSizeFilter = getSizeFilterOption(prevFilters)
 
-    expect(getData(tree).dimensionRange).toEqual({
-      paramName: "dimensionRange",
-      displayText: "All",
-      paramValue: "*-*",
+      expect(prevSizeFilter?.paramValue).toBe("0-*")
+
+      fireEvent.changeText(getByA11yLabel("Minimum width input"), "")
+
+      const currentFilters = getFilters(getByTestId("debug"))
+      const currentSizeFilter = getSizeFilterOption(currentFilters)
+
+      expect(currentSizeFilter?.paramValue).toBe("*-*")
     })
 
-    act(() => {
-      // Displays the custom range inputs
-      options[4].props.onPress()
-    })
+    it("returns the previously applied filter option if the invalid custom values are specified", () => {
+      const option: FilterData = {
+        displayText: "Small (under 40cm)",
+        paramValue: "*-16.0",
+        paramName: FilterParamName.size,
+      }
+      const { getByTestId, getByA11yLabel, getByText } = getTree({
+        initialData: {
+          ...INITIAL_DATA,
+          appliedFilters: [option],
+          previouslyAppliedFilters: [option],
+        },
+      })
 
-    const [minWidthInput, maxWidthInput] = tree.root.findAllByType(Input)
+      fireEvent.press(getByText("Custom Size"))
+      fireEvent.changeText(getByA11yLabel("Minimum width input"), "5")
+      fireEvent.changeText(getByA11yLabel("Minimum width input"), "")
 
-    act(() => {
-      minWidthInput.props.onChangeText("10")
-      maxWidthInput.props.onChangeText("200")
-    })
+      const filters = getFilters(getByTestId("debug"))
+      const sizeFilter = getSizeFilterOption(filters)
 
-    expect(getData(tree)).toEqual({
-      dimensionRange: {
-        displayText: "Custom Size",
-        paramValue: "0-*",
-        paramName: "dimensionRange",
-      },
-      width: {
-        displayText: "10-200",
-        paramName: "width",
-        paramValue: "10-200",
-      },
-    })
-
-    act(() => {
-      // Toggle to a preset size bucket
-      options[3].props.onPress()
-    })
-
-    expect(getData(tree)).toEqual({
-      dimensionRange: {
-        displayText: "Large (over 40in)",
-        paramName: "dimensionRange",
-        paramValue: "40.0-*",
-      },
+      expect(sizeFilter?.displayText).toBe("Small (under 40cm)")
+      expect(sizeFilter?.paramValue).toBe("*-16.0")
     })
   })
 })

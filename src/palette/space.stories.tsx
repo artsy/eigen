@@ -1,8 +1,8 @@
 import { storiesOf } from "@storybook/react-native"
-import { TextV3 } from "palette"
+import { Text } from "palette"
 import React from "react"
 import { View } from "react-native"
-import { withThemeV3 } from "storybook/decorators"
+import { withTheme } from "storybook/decorators"
 import { List } from "storybook/helpers"
 import { useSpace } from "./hooks"
 import { SpacingUnitV3 } from "./Theme"
@@ -19,14 +19,14 @@ const SpaceLine = ({ space: theSpace }: { space: SpacingUnitV3 }) => {
           marginBottom: 4,
         }}
       />
-      <TextV3 color="black">"{theSpace}"</TextV3>
-      <TextV3 color="black">{`${space(theSpace)}px`}</TextV3>
+      <Text color="black">"{theSpace}"</Text>
+      <Text color="black">{`${space(theSpace)}px`}</Text>
     </View>
   )
 }
 
 storiesOf("Theme/Space", module)
-  .addDecorator(withThemeV3)
+  .addDecorator(withTheme)
   .add("spaces", () => (
     <List style={{ marginLeft: 50 }} contentContainerStyle={{ alignItems: "flex-start" }}>
       <SpaceLine space="0.5" />

@@ -33,7 +33,7 @@ const ShowLocationHours: React.FC<ShowLocationHours> = ({ location: { openingHou
 
         return (
           <Box key={i}>
-            <Text variant="text">{[schedule.days, schedule.hours].filter(Boolean).join(", ")}</Text>
+            <Text variant="sm">{[schedule.days, schedule.hours].filter(Boolean).join(", ")}</Text>
           </Box>
         )
       })}

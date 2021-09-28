@@ -39,7 +39,7 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
       onSelect={handleSelect}
       ListHeaderComponent={
         <>
-          <Text variant="caption" color="black60" textAlign="center" my={15}>
+          <Text variant="xs" color="black60" textAlign="center" my={15}>
             Based on the artwork’s average dimension
           </Text>
           <Separator />

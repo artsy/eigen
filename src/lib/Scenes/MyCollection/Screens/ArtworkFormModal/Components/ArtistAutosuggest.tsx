@@ -3,7 +3,7 @@ import SearchIcon from "lib/Icons/SearchIcon"
 import { AutosuggestResults } from "lib/Scenes/Search/AutosuggestResults"
 import { SearchContext, useSearchProviderValues } from "lib/Scenes/Search/SearchContext"
 import { GlobalStore } from "lib/store/GlobalStore"
-import { Box, Sans, Spacer } from "palette"
+import { Box, Spacer, Text } from "palette"
 import React from "react"
 import { useArtworkForm } from "../Form/useArtworkForm"
 import { ArtistSearchResult } from "./ArtistSearchResult"
@@ -17,9 +17,7 @@ export const ArtistAutosuggest: React.FC = () => {
     <>
       {!!artistSearchResult ? (
         <>
-          <Sans size="3" mt="2px" weight="medium">
-            Artist
-          </Sans>
+          <Text variant="xs">ARTIST</Text>
           <Spacer mt={0.5} />
           <ArtistSearchResult result={artistSearchResult} />
         </>
@@ -27,7 +25,7 @@ export const ArtistAutosuggest: React.FC = () => {
         <SearchContext.Provider value={searchProviderValues}>
           <Box>
             <Input
-              title="Artist"
+              title="ARTIST"
               placeholder="Search artists"
               icon={<SearchIcon width={18} height={18} />}
               onChangeText={formik.handleChange("artist")}

@@ -6,7 +6,7 @@ import Toggle from "../Components/Toggle"
 import { ConsignmentSetup } from "../index"
 
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { Flex, Sans, Spacer, Theme } from "palette"
+import { Flex, Sans, Spacer } from "palette"
 import { BottomAlignedButton } from "../Components/BottomAlignedButton"
 import { Form, Row } from "../Components/FormElements"
 
@@ -54,69 +54,67 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
 
   render() {
     return (
-      <Theme>
-        <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
-          <FancyModalHeader onLeftButtonPress={this.doneTapped}>Edition & Authenticity</FancyModalHeader>
-          <Flex style={{ flex: 1 }} p={1}>
-            <Form>
-              <Flex justifyContent="space-between" alignItems="center" flexDirection="row" flexWrap="nowrap">
-                <Flex style={{ flex: 1 }}>
-                  <Sans size="4">Is this an edition?</Sans>
-                </Flex>
-                <Toggle selected={!!this.state.editionInfo} left="Yes" right="No" onPress={this.updateEdition} />
+      <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
+        <FancyModalHeader onLeftButtonPress={this.doneTapped}>Edition & Authenticity</FancyModalHeader>
+        <Flex style={{ flex: 1 }} p={1}>
+          <Form>
+            <Flex justifyContent="space-between" alignItems="center" flexDirection="row" flexWrap="nowrap">
+              <Flex style={{ flex: 1 }}>
+                <Sans size="4">Is this an edition?</Sans>
               </Flex>
-              <Spacer mb={2} />
-              {this.state.editionInfo ? (
-                <>
-                  <Row>
-                    <Text
-                      text={{
-                        placeholder: "Edition size",
-                        keyboardType: "phone-pad",
-                        onChangeText: this.updateEditionSize,
-                        value: this.state.editionInfo && this.state.editionInfo.size,
-                      }}
-                    />
-                    <Spacer mr={2} />
-                    <Text
-                      text={{
-                        placeholder: "Edition number",
-                        onChangeText: this.updateEditionNumber,
-                        value: this.state.editionInfo && this.state.editionInfo.number,
-                      }}
-                    />
-                  </Row>
-                  <Spacer mb={2} />
-                </>
-              ) : null}
-              <Flex justifyContent="space-between" alignItems="center" flexDirection="row" flexWrap="nowrap">
-                <Flex style={{ flex: 1 }}>
-                  <Sans size="4">Is this work signed?</Sans>
-                </Flex>
-                <Toggle
-                  selected={this.state.signed! /* STRICTNESS_MIGRATION */}
-                  left="Yes"
-                  right="No"
-                  onPress={this.updateSigned}
-                />
+              <Toggle selected={!!this.state.editionInfo} left="Yes" right="No" onPress={this.updateEdition} />
+            </Flex>
+            <Spacer mb={2} />
+            {this.state.editionInfo ? (
+              <>
+                <Row>
+                  <Text
+                    text={{
+                      placeholder: "Edition size",
+                      keyboardType: "phone-pad",
+                      onChangeText: this.updateEditionSize,
+                      value: this.state.editionInfo && this.state.editionInfo.size,
+                    }}
+                  />
+                  <Spacer mr={2} />
+                  <Text
+                    text={{
+                      placeholder: "Edition number",
+                      onChangeText: this.updateEditionNumber,
+                      value: this.state.editionInfo && this.state.editionInfo.number,
+                    }}
+                  />
+                </Row>
+                <Spacer mb={2} />
+              </>
+            ) : null}
+            <Flex justifyContent="space-between" alignItems="center" flexDirection="row" flexWrap="nowrap">
+              <Flex style={{ flex: 1 }}>
+                <Sans size="4">Is this work signed?</Sans>
               </Flex>
-              <Spacer mb={2} />
-              <Flex justifyContent="space-between" alignItems="center" flexDirection="row">
-                <Flex style={{ flex: 1 }}>
-                  <Sans size="4">Do you have a certificate of authenticity?</Sans>
-                </Flex>
-                <Spacer mr={2} />
-                <Toggle
-                  selected={this.state.certificateOfAuth! /* STRICTNESS_MIGRATION */}
-                  left="Yes"
-                  right="No"
-                  onPress={this.updateCert}
-                />
+              <Toggle
+                selected={this.state.signed! /* STRICTNESS_MIGRATION */}
+                left="Yes"
+                right="No"
+                onPress={this.updateSigned}
+              />
+            </Flex>
+            <Spacer mb={2} />
+            <Flex justifyContent="space-between" alignItems="center" flexDirection="row">
+              <Flex style={{ flex: 1 }}>
+                <Sans size="4">Do you have a certificate of authenticity?</Sans>
               </Flex>
-            </Form>
-          </Flex>
-        </BottomAlignedButton>
-      </Theme>
+              <Spacer mr={2} />
+              <Toggle
+                selected={this.state.certificateOfAuth! /* STRICTNESS_MIGRATION */}
+                left="Yes"
+                right="No"
+                onPress={this.updateCert}
+              />
+            </Flex>
+          </Form>
+        </Flex>
+      </BottomAlignedButton>
     )
   }
 }

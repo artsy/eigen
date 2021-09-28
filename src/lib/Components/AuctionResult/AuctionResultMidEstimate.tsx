@@ -1,17 +1,17 @@
-import { DecreaseIcon, Flex, IncreaseIcon, Text, TextV2Props } from "palette"
+import { DecreaseIcon, Flex, IncreaseIcon, Text, TextProps } from "palette"
 import React from "react"
 
 interface AuctionResultsMidEstimateProps {
   value: string
   shortDescription: string
-  textVariant?: TextV2Props["variant"]
+  textVariant?: TextProps["variant"]
 }
 
 type ArrowDirections = "up" | "down"
 
 export const AuctionResultsMidEstimate: React.FC<AuctionResultsMidEstimateProps> = ({
   value,
-  textVariant = "small",
+  textVariant = "xs",
   shortDescription,
 }) => {
   const arrowDirection: ArrowDirections = value[0] !== "-" ? "up" : "down"

@@ -24,7 +24,7 @@ export const ConversationDetails: React.FC<Props> = (props) => {
   const itemInfoSection = !!item && item.__typename !== "%other" && (
     <Box key="iteminfo-section">
       <Flex flexDirection="column" p={2}>
-        <Text mb={2} variant="mediumText">
+        <Text mb={2} variant="sm">
           {item.__typename}
         </Text>
 
@@ -45,7 +45,7 @@ export const ConversationDetails: React.FC<Props> = (props) => {
 
   const supportSection = (
     <Flex flexDirection="column" p={2} key="support-section">
-      <Text variant="mediumText" mb={2}>
+      <Text variant="sm" mb={2}>
         Support
       </Text>
       <Touchable
@@ -55,7 +55,7 @@ export const ConversationDetails: React.FC<Props> = (props) => {
       >
         <Flex mb={1} alignItems="center" flexDirection="row">
           <QuestionCircleIcon mr={1} />
-          <Text variant="text">Inquiries FAQ</Text>
+          <Text variant="sm">Inquiries FAQ</Text>
         </Flex>
       </Touchable>
     </Flex>

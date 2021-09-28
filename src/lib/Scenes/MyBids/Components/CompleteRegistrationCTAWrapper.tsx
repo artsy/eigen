@@ -36,7 +36,7 @@ export const CompleteRegistrationCTAWrapper: React.FunctionComponent<CompleteReg
         {
           <>
             <ExclamationMarkCircleFill fill="black100" />
-            <Text mx={0.5} variant="mediumText">
+            <Text mx={0.5} variant="sm">
               Complete registration
             </Text>
             <ArrowRightIcon />
