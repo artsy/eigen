@@ -1,6 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
+import { useTheme } from "palette"
 import React from "react"
 import { Platform, TextInputProps, View, ViewProps } from "react-native"
 import styled from "styled-components/native"
@@ -8,7 +7,7 @@ import styled from "styled-components/native"
 const Input = styled.TextInput`
   height: 100%;
   color: ${themeGet("colors.black100")};
-  font-family: "${fonts["unica77ll-regular"]}";
+  font-family: "Unica77LL-Regular";
   font-size: 16;
 `
 
@@ -17,6 +16,8 @@ export interface TextAreaProps extends ViewProps {
 }
 
 export const TextArea: React.FC<TextAreaProps> = (props) => {
+  const { color } = useTheme()
+
   const onChangeText = (text: string) => {
     props.text?.onChangeText?.(text)
   }
@@ -27,7 +28,7 @@ export const TextArea: React.FC<TextAreaProps> = (props) => {
         style={Platform.OS === "android" ? { textAlignVertical: "top" } : null}
         autoCapitalize="sentences"
         keyboardAppearance="dark"
-        selectionColor={colors["gray-medium"]}
+        selectionColor={color("black30")}
         multiline
         {...props.text}
         onChangeText={onChangeText}

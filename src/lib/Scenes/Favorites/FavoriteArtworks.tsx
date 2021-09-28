@@ -3,8 +3,8 @@ import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
 import GenericGrid, { GenericGridPlaceholder } from "lib/Components/ArtworkGrids/GenericGrid"
+import { PAGE_SIZE } from "lib/Components/constants"
 import { ZeroState } from "lib/Components/States/ZeroState"
-import { PAGE_SIZE } from "lib/data/constants"
 
 import { FavoriteArtworks_me } from "__generated__/FavoriteArtworks_me.graphql"
 import { FavoriteArtworksQuery } from "__generated__/FavoriteArtworksQuery.graphql"

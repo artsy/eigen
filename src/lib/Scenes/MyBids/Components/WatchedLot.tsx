@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { WatchedLot_saleArtwork } from "__generated__/WatchedLot_saleArtwork.graphql"
 import { navigate } from "lib/navigation/navigate"
-import { isSmallScreen } from "lib/Scenes/MyBids/helpers/screenDimensions"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
@@ -20,6 +20,7 @@ export const WatchedLot: React.FC<WatchedLotProps> = ({ saleArtwork }) => {
   const bidCount = lotState?.bidCount
   const sellingPrice = saleArtwork?.currentBid?.display || saleArtwork?.estimate
   const tracking = useTracking()
+  const { isSmallScreen } = useScreenDimensions()
 
   const displayBidCount = (): string | undefined => {
     if (isSmallScreen) {

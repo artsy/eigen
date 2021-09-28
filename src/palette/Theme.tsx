@@ -9,7 +9,7 @@ import { ThemeContext, ThemeProvider } from "styled-components/native"
  * https://www.notion.so/artsy/Master-Library-810612339f474d0997fe359af4285c56
  */
 
-import { Color as ColorV2, SpacingUnit as SpacingUnitV2 } from "@artsy/palette-tokens/dist/themes/v2"
+import { SpacingUnit as SpacingUnitV2 } from "@artsy/palette-tokens/dist/themes/v2"
 import {
   Color as ColorV3BeforeDevPurple,
   SpacingUnit as SpacingUnitV3Numbers,
@@ -20,10 +20,9 @@ import {
 } from "@artsy/palette-tokens/dist/typography/v3"
 
 type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
-export type Color = ColorV2 | ColorV3
 export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
-type ColorV3 = ColorV3BeforeDevPurple | "devpurple"
-export { ColorV2, ColorV3, SpacingUnitV2, SpacingUnitV3 }
+export type Color = ColorV3BeforeDevPurple | "devpurple" | "yellow100" | "yellow30" | "yellow10" // yellows are temporary, until we add them to palette-tokens
+export { SpacingUnitV2, SpacingUnitV3 }
 export { TextVariantV3 }
 
 const {
@@ -96,6 +95,9 @@ const fixColorV3 = (
 ): typeof eigenUsefulTHEME_V3.colors & { devpurple: string } => {
   const ourColors = colors as any
   ourColors.devpurple = "#6E1EFF"
+  ourColors.yellow100 = "#A85F00"
+  ourColors.yellow30 = "#FAE7BA"
+  ourColors.yellow10 = "#F6EFE5"
   return colors as any
 }
 
@@ -163,9 +165,8 @@ const THEMES = {
   },
 }
 
-export type ThemeV2Type = typeof THEMES.v2
 export type ThemeV3Type = typeof THEMES.v3
-export type ThemeType = ThemeV2Type | ThemeV3Type
+export type ThemeType = ThemeV3Type
 
 /**
  * Do not use this!! Use any the hooks instead!
@@ -176,18 +177,6 @@ const figureOutTheme = (theme: keyof typeof THEMES | ThemeType): ThemeType => {
   if (!_.isString(theme)) {
     return theme
   }
-
-  // forcing v3 colors, unless specifically requiring v2, in which case we use `colorV2`
-  const mergedColorsV2WithV3OnTop = {
-    ...THEMES.v2.colors, // get the base v2
-    ...THEMES.v3.colors, // get the base v3 on top of that
-    // now add the rest of the mappings
-    black80: THEMES.v3.colors.black60, // TODO-PALETTE-V3 replace all black80 with black60
-    purple100: THEMES.v3.colors.blue100, // TODO-PALETTE-V3 replace all purple100 with blue100
-    purple30: THEMES.v3.colors.blue10, // TODO-PALETTE-V3 replace all purple30 with blue10
-    purple5: THEMES.v3.colors.blue10, // TODO-PALETTE-V3 replace all purple5 with blue10
-  }
-  // TODO-PALETTE-V3 remove the mapping as the last TODO-PALETTE-V3 to be done for color
 
   // forcing v3 spaces, unless specifically requiring v2, in which case we use `spaceV2`
   const mergedSpacesV2WithV3OnTop = {
@@ -203,12 +192,7 @@ const figureOutTheme = (theme: keyof typeof THEMES | ThemeType): ThemeType => {
   }
   // TODO-PALETTE-V3 remove the mapping as the last TODO-PALETTE-V3 to be done for space
 
-  if (__TEST__ || theme === "v3") {
-    // if we are in tests, default to v3
-    return { ...THEMES.v3, colors: mergedColorsV2WithV3OnTop, space: mergedSpacesV2WithV3OnTop }
-  }
-
-  return { ...THEMES.v2, colors: mergedColorsV2WithV3OnTop, space: mergedSpacesV2WithV3OnTop }
+  return { ...THEMES.v3, space: mergedSpacesV2WithV3OnTop }
 }
 
 export const Theme: React.FC<{
@@ -231,9 +215,7 @@ const color = (theme: ThemeType): ColorFuncOverload => (colorName: any): any => 
 }
 
 const space = (theme: ThemeType) => (spaceName: SpacingUnitV2 | SpacingUnitV3): number =>
-  isThemeV2(theme)
-    ? ((theme.space[spaceName as SpacingUnitV2] as unknown) as number)
-    : theme.space[spaceName as SpacingUnitV3]
+  theme.space[spaceName as SpacingUnitV3]
 
 export const useTheme = () => {
   const theme: ThemeType = useContext(ThemeContext)
@@ -253,15 +235,9 @@ export const useTheme = () => {
     theme: theme ?? themeIfUnwrapped,
     color: color(theme ?? themeIfUnwrapped),
     space: space(theme ?? themeIfUnwrapped),
-    colorV2: color(THEMES.v2),
-    colorV3: color(THEMES.v3),
-    spaceV2: space(THEMES.v2),
-    spaceV3: space(THEMES.v3),
   }
 }
 
-// TODO-PALETTE-V3 these should be removed after we are v3
-export const isThemeV2 = (theme: ThemeType): theme is ThemeV2Type => theme.id === "v2"
 export const isThemeV3 = (theme: ThemeType): theme is ThemeV3Type => theme.id === "v3"
 
 /**

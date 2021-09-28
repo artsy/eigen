@@ -1,12 +1,11 @@
 import { themeGet } from "@styled-system/theme-get"
-import { Text, useColor } from "palette"
+import { Text, useTheme } from "palette"
 import React, { useState } from "react"
 import { PixelRatio, StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from "react-native"
 import styled from "styled-components/native"
 
 import { CssTransition } from "../../../lib/Components/Bidding/Components/Animation/CssTransition"
 import { Flex, FlexProps } from "../../../lib/Components/Bidding/Elements/Flex"
-import { theme } from "../../../lib/Components/Bidding/Elements/Theme"
 
 const CHECKBOX_SIZE = 20
 const DURATION = 250
@@ -31,7 +30,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   children,
   ...restProps
 }) => {
-  const color = useColor()
+  const { color, space } = useTheme()
 
   const fontScale = PixelRatio.getFontScale()
   const checkboxSize = CHECKBOX_SIZE * fontScale
@@ -86,7 +85,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       <Flex flexDirection="row" {...restProps}>
         <Flex mt={0.2}>
           <CssTransition
-            style={[styles(fontScale).container, checkboxStyle]}
+            style={[styles(fontScale).container, { marginRight: space("1") * fontScale }, checkboxStyle]}
             animate={["backgroundColor", "borderColor"]}
             duration={DURATION}
           >
@@ -116,7 +115,6 @@ const styles = (fontScale: number) =>
       alignItems: "center",
       borderWidth: 1,
       borderStyle: "solid",
-      marginRight: theme.space[3] * fontScale,
       width: CHECKBOX_SIZE * fontScale,
       height: CHECKBOX_SIZE * fontScale,
     },

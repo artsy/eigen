@@ -2,7 +2,6 @@ import React from "react"
 import { Image, ImageStyle, StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import colors from "lib/data/colors"
 import GenericGrid from "../ArtworkGrids/GenericGrid"
 
 import { Notification_notification } from "__generated__/Notification_notification.graphql"
@@ -43,7 +42,10 @@ export class Notification extends React.Component<Props> {
             <TouchableWithoutFeedback onPress={this.handleArtistTap.bind(this)}>
               <View style={styles.header}>
                 {!!notification.image && (
-                  <Image source={{ uri: notification.image.resized?.url! }} style={styles.artistAvatar} />
+                  <Image
+                    source={{ uri: notification.image.resized?.url! }}
+                    style={[styles.artistAvatar, { backgroundColor: color("black5") }]}
+                  />
                 )}
                 <View style={styles.metadataContainer}>
                   <Sans size="3t">{notification.artists}</Sans>
@@ -82,7 +84,6 @@ const styles = StyleSheet.create<Styles>({
   artistAvatar: {
     height: 40,
     width: 40,
-    backgroundColor: colors["gray-light"],
     alignSelf: "center",
     borderRadius: 20,
     marginRight: 10,

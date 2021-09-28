@@ -18,7 +18,7 @@ export const QAInfoManualPanel: React.FC<FlexProps> = (props) => {
     return null
   }
 
-  return <Flex borderColor="purple100" /* TODO-PALETTE-V3 "devpurple" */ borderWidth={1} {...props} />
+  return <Flex borderColor="devpurple" borderWidth={1} {...props} />
 }
 
 export const QAInfoRow: React.FC<{ name: string; value: string }> = ({ name, value }) => {

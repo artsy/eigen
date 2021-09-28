@@ -7,7 +7,7 @@ import { navigate } from "lib/navigation/navigate"
 import ConversationSnippet from "./ConversationSnippet"
 import { NoMessages } from "./NoMessages"
 
-import { PAGE_SIZE } from "lib/data/constants"
+import { PAGE_SIZE } from "lib/Components/constants"
 
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Conversations_me } from "__generated__/Conversations_me.graphql"

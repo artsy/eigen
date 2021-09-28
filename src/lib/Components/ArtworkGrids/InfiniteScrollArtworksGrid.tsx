@@ -14,7 +14,7 @@ import Artwork from "./ArtworkGridItem"
 
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 
-import { PAGE_SIZE } from "lib/data/constants"
+import { PAGE_SIZE } from "lib/Components/constants"
 
 import { ScreenOwnerType } from "@artsy/cohesion"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"

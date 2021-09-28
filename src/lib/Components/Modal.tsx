@@ -1,6 +1,5 @@
 import { TextAlignProperty } from "csstype"
-import { theme } from "lib/Components/Bidding/Elements/Theme"
-import { Button, Sans } from "palette"
+import { Button, ClassTheme, Sans } from "palette"
 import React from "react"
 import { Modal as RNModal, TouchableWithoutFeedback, View, ViewProps } from "react-native"
 import styled from "styled-components/native"
@@ -55,38 +54,42 @@ export class Modal extends React.Component<ModalProps, any> {
     const { headerText, detailText } = this.props
 
     return (
-      <View style={{ marginTop: 22 }}>
-        <RNModal animationType="fade" transparent visible={this.state.modalVisible}>
-          <TouchableWithoutFeedback onPress={() => this.closeModal()}>
-            <ModalBackgroundView>
-              <TouchableWithoutFeedback>
-                <ModalInnerView>
-                  <View style={{ paddingBottom: 10 }}>
-                    <Sans size="3" weight="medium" textAlign={this.props.textAlign}>
-                      {headerText}
-                    </Sans>
-                  </View>
-                  <View style={{ paddingBottom: 30 }}>
-                    <Sans size="3" color={theme.colors.black60} textAlign={this.props.textAlign}>
-                      {detailText}
-                    </Sans>
-                  </View>
-                  <Button
-                    onPress={() => {
-                      this.closeModal()
-                    }}
-                    block
-                    width={100}
-                    variant="outline"
-                  >
-                    Ok
-                  </Button>
-                </ModalInnerView>
+      <ClassTheme>
+        {({ color }) => (
+          <View style={{ marginTop: 22 }}>
+            <RNModal animationType="fade" transparent visible={this.state.modalVisible}>
+              <TouchableWithoutFeedback onPress={() => this.closeModal()}>
+                <ModalBackgroundView>
+                  <TouchableWithoutFeedback>
+                    <ModalInnerView>
+                      <View style={{ paddingBottom: 10 }}>
+                        <Sans size="3" weight="medium" textAlign={this.props.textAlign}>
+                          {headerText}
+                        </Sans>
+                      </View>
+                      <View style={{ paddingBottom: 30 }}>
+                        <Sans size="3" color={color("black60")} textAlign={this.props.textAlign}>
+                          {detailText}
+                        </Sans>
+                      </View>
+                      <Button
+                        onPress={() => {
+                          this.closeModal()
+                        }}
+                        block
+                        width={100}
+                        variant="outline"
+                      >
+                        Ok
+                      </Button>
+                    </ModalInnerView>
+                  </TouchableWithoutFeedback>
+                </ModalBackgroundView>
               </TouchableWithoutFeedback>
-            </ModalBackgroundView>
-          </TouchableWithoutFeedback>
-        </RNModal>
-      </View>
+            </RNModal>
+          </View>
+        )}
+      </ClassTheme>
     )
   }
 }

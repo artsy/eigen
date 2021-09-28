@@ -1,7 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
 import { Composer_conversation } from "__generated__/Composer_conversation.graphql"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
-import colors from "lib/data/colors"
 import { Schema, Track, track as _track } from "lib/utils/track"
 import { Button, ClassTheme, Flex, themeProps } from "palette"
 import React from "react"
@@ -21,7 +20,7 @@ const Container = styled.View`
   border-top-width: 1;
   border-top-color: ${themeGet("colors.black10")};
   padding: 10px;
-  background-color: ${(p: ContainerProps) => (p.active ? "white" : colors["gray-light"])};
+  background-color: ${(p: ContainerProps) => (p.active ? "white" : themeGet("colors.black5"))};
 `
 
 interface Props {
@@ -85,7 +84,7 @@ export default class Composer extends React.Component<Props, State> {
             paddingTop: 13,
             paddingBottom: 10,
             paddingRight: 10,
-            borderColor: this.state.active ? color("purple100" /* TODO-PALETTE-V3 "blue100" */) : "transparent",
+            borderColor: this.state.active ? color("blue100") : "transparent",
             borderWidth: 1,
             fontFamily: themeProps.fontFamily.sans.regular.normal,
           }
@@ -97,7 +96,7 @@ export default class Composer extends React.Component<Props, State> {
                 <Container active={this.state.active}>
                   <TextInput
                     placeholder="Type your message"
-                    placeholderTextColor={colors["gray-semibold"]}
+                    placeholderTextColor={color("black60")}
                     keyboardAppearance="dark"
                     onEndEditing={() => this.setState({ active: false })}
                     onFocus={() => this.setState({ active: this.input.isFocused() })}

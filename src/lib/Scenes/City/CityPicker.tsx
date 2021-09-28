@@ -1,9 +1,9 @@
 import { themeGet } from "@styled-system/theme-get"
-import { dimensions, screen } from "lib/data/ScreenSizes/screenSizes"
 import { CircleWhiteCheckIcon } from "lib/Icons/CircleWhiteCheckIcon"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { SansV1Props, SerifV1Props } from "palette"
 import { Box, Flex, Sans, Separator, Serif } from "palette"
 import React, { useEffect, useState } from "react"
 import { TouchableOpacity } from "react-native"
@@ -20,6 +20,7 @@ const cityList = cities.map((city) => city.name)
 
 export const CityPicker: React.FC<Props> = (props) => {
   const [selectedCity, setSelectedCity] = useState<string | null>(props.selectedCity)
+  const { size } = useScreenDimensions()
 
   const selectCity = (city: string, index: number) => {
     setSelectedCity(city)
@@ -34,18 +35,6 @@ export const CityPicker: React.FC<Props> = (props) => {
     }
     setSelectedCity(null)
   }, [selectedCity])
-
-  const handleCityList = (scrnHeight: number, city: string) => {
-    return (
-      <Serif
-        mt={1}
-        size={dimensions(scrnHeight)[screen(scrnHeight)].cityFontSize}
-        lineHeight={dimensions(scrnHeight)[screen(scrnHeight)].lineHeight}
-      >
-        {city}
-      </Serif>
-    )
-  }
 
   const { height: screenHeight } = useScreenDimensions()
   const { sponsoredContentUrl } = props
@@ -69,7 +58,13 @@ export const CityPicker: React.FC<Props> = (props) => {
             <Box key={i}>
               <TouchableOpacity onPress={() => selectCity(city, i)}>
                 <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-                  {handleCityList(screenHeight, city)}
+                  <Serif
+                    mt={1}
+                    size={dimensions(screenHeight)[size].cityFontSize}
+                    lineHeight={dimensions(screenHeight)[size].lineHeight}
+                  >
+                    {city}
+                  </Serif>
                   {selectedCity === city && (
                     <Box mb={2} mt={2}>
                       <CircleWhiteCheckIcon width={26} height={26} />
@@ -102,3 +97,22 @@ const LogoContainer = styled(Flex)`
   flex: 1;
   margin-top: 25px;
 `
+
+type FontSize = SansV1Props["size"] & SerifV1Props["size"]
+const dimensions = (size: number) => ({
+  small: {
+    cityFontSize: "4" as FontSize,
+    logoFontSize: "2" as FontSize,
+    lineHeight: size / 14,
+  },
+  standard: {
+    cityFontSize: "8" as FontSize,
+    logoFontSize: "3" as FontSize,
+    lineHeight: size / 12,
+  },
+  large: {
+    cityFontSize: "8" as FontSize,
+    logoFontSize: "3" as FontSize,
+    lineHeight: size / 11,
+  },
+})

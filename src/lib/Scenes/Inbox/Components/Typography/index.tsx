@@ -1,18 +1,12 @@
 import React from "react"
 import { StyleSheet, Text, TextProps, TextStyle } from "react-native"
 
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
-import { ThemeV2Type, ThemeV3Type, useTheme, useThemeConfig } from "palette"
+import { useTheme } from "palette"
 
 const LargeHeadline: React.FC<TextProps> = (props) => {
   const { theme } = useTheme()
-  const fontFamily = useThemeConfig({
-    v2: (theme as ThemeV2Type).fonts.sans,
-    v3: (theme as ThemeV3Type).fonts.sans.regular,
-  })
   const children: string = (props as any).children
-  const style = [styles.largeDefault, props.style || {}, { fontFamily }]
+  const style = [styles.largeDefault, props.style || {}, { fontFamily: theme.fonts.sans.regular }]
   return (
     <Text key={children} style={style}>
       {children}
@@ -21,13 +15,14 @@ const LargeHeadline: React.FC<TextProps> = (props) => {
 }
 
 const SmallHeadline: React.FC<TextProps & { disabled?: boolean }> = (props) => {
-  const { theme } = useTheme()
-  const fontFamily = useThemeConfig({
-    v2: (theme as ThemeV2Type).fonts.sans,
-    v3: (theme as ThemeV3Type).fonts.sans.regular,
-  })
+  const { theme, color } = useTheme()
   const children: string = (props as any).children
-  const style = [styles.smallDefault, props.disabled && styles.disabled, props.style || {}, { fontFamily }]
+  const style = [
+    styles.smallDefault,
+    props.disabled && { color: color("black30") },
+    props.style || {},
+    { fontFamily: theme.fonts.sans.regular },
+  ]
   return (
     <Text key={children} style={style}>
       {(children || "").toUpperCase()}
@@ -46,8 +41,9 @@ const Subtitle: React.FC<TextProps> = (props) => {
 }
 
 const FromSignatureText: React.FC<TextProps> = (props) => {
+  const { color } = useTheme()
   const children: string = (props as any).children
-  const style = [styles.fromSignatureDefault, props.style || {}]
+  const style = [styles.fromSignatureDefault, { color: color("black30") }, props.style || {}]
   return (
     <Text key={children} style={style}>
       {children}
@@ -56,13 +52,14 @@ const FromSignatureText: React.FC<TextProps> = (props) => {
 }
 
 const MetadataText: React.FC<TextProps> = (props) => {
-  const { theme } = useTheme()
-  const fontFamily = useThemeConfig({
-    v2: (theme as ThemeV2Type).fonts.sans,
-    v3: (theme as ThemeV3Type).fonts.sans.regular,
-  })
+  const { theme, color } = useTheme()
   const children: string = (props as any).children
-  const style = [styles.metadataDefault, props.style || {}, { fontFamily }]
+  const style = [
+    styles.metadataDefault,
+    { color: color("black30") },
+    props.style || {},
+    { fontFamily: theme.fonts.sans.regular },
+  ]
   return (
     <Text key={children} style={style}>
       {children.toUpperCase()}
@@ -81,8 +78,14 @@ const PreviewText: React.FC<TextProps> = (props) => {
 }
 
 const BodyText: React.FC<TextProps & { disabled?: boolean }> = (props) => {
+  const { color } = useTheme()
   const children: string = (props as any).children
-  const style = [styles.bodyDefault, props.disabled && styles.disabled, props.style || {}, styles.bodyRequired]
+  const style = [
+    styles.bodyDefault,
+    props.disabled && { color: color("black30") },
+    props.style || {},
+    styles.bodyRequired,
+  ]
   return (
     <Text key={children} style={style}>
       {children}
@@ -101,7 +104,6 @@ interface Styles {
   metadataDefault: TextStyle
   bodyRequired: TextStyle
   bodyDefault: TextStyle
-  disabled: TextStyle
 }
 
 const styles = StyleSheet.create<Styles>({
@@ -125,17 +127,15 @@ const styles = StyleSheet.create<Styles>({
   },
 
   subtitleRequired: {
-    fontFamily: fonts["garamond-italic"],
+    fontFamily: "ReactNativeAGaramondPro-Italic",
   },
 
   fromSignatureDefault: {
-    fontFamily: fonts["garamond-regular"],
-    color: colors["gray-medium"],
+    fontFamily: "ReactNativeAGaramondPro-Regular",
   },
 
   metadataDefault: {
     fontSize: 11,
-    color: colors["gray-medium"],
     textAlign: "left",
   },
 
@@ -146,10 +146,6 @@ const styles = StyleSheet.create<Styles>({
   },
 
   bodyRequired: {
-    fontFamily: fonts["garamond-regular"],
-  },
-
-  disabled: {
-    color: colors["gray-medium"],
+    fontFamily: "ReactNativeAGaramondPro-Regular",
   },
 })

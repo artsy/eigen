@@ -49,7 +49,7 @@ export const Pill: React.FC<PillProps> = ({
   onPress,
   ...other
 }) => {
-  const { colorV3 } = useTheme()
+  const { color } = useTheme()
   const { height, typeSize, paddingLeft, paddingRight } = SIZES[size]
 
   const content = (
@@ -59,7 +59,7 @@ export const Pill: React.FC<PillProps> = ({
       alignItems="center"
       borderWidth={1}
       borderRadius={icon || rounded ? 50 : 0}
-      borderColor={icon || selected ? colorV3("black60") : colorV3("black15")}
+      borderColor={icon || selected ? color("black60") : color("black15")}
       paddingLeft={paddingLeft}
       paddingRight={paddingRight}
       height={height}

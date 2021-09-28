@@ -7,7 +7,6 @@ import { Icon20 } from "../Components/Icon"
 import { Flex } from "../Elements/Flex"
 
 import { Markdown } from "../../Markdown"
-import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Title } from "../Components/Title"
 
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
@@ -158,27 +157,25 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
     }
 
     return (
-      <BiddingThemeProvider>
-        <View style={{ flex: 1 }}>
-          <Theme>
-            <FancyModalHeader useXButton onLeftButtonPress={dismissModal} />
-          </Theme>
-          <View style={{ padding: 20 }}>
-            <Flex alignItems="center">
-              {status !== RegistrationStatus.RegistrationStatusPending && <Icon20 source={Icons[status]} />}
-              <Title mt={2} mb={4}>
-                {title}
-              </Title>
-              <Markdown rules={markdownRules} mb={5}>
-                {msg}
-              </Markdown>
-            </Flex>
-            <Button variant="outline" onPress={dismissModal} block width={100}>
-              {status === RegistrationStatus.RegistrationStatusPending ? "View works in this sale" : "Continue"}
-            </Button>
-          </View>
+      <View style={{ flex: 1 }}>
+        <Theme>
+          <FancyModalHeader useXButton onLeftButtonPress={dismissModal} />
+        </Theme>
+        <View style={{ padding: 20 }}>
+          <Flex alignItems="center">
+            {status !== RegistrationStatus.RegistrationStatusPending && <Icon20 source={Icons[status]} />}
+            <Title mt={2} mb={4}>
+              {title}
+            </Title>
+            <Markdown rules={markdownRules} mb={5}>
+              {msg}
+            </Markdown>
+          </Flex>
+          <Button variant="outline" onPress={dismissModal} block width={100}>
+            {status === RegistrationStatus.RegistrationStatusPending ? "View works in this sale" : "Continue"}
+          </Button>
         </View>
-      </BiddingThemeProvider>
+      </View>
     )
   }
 }

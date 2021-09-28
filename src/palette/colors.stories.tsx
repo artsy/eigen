@@ -5,9 +5,9 @@ import { withTheme } from "storybook/decorators"
 import { List, Row } from "storybook/helpers"
 import { Text } from "./elements/Text"
 import { useColor } from "./hooks"
-import { ColorV3 } from "./Theme"
+import { Color } from "./Theme"
 
-const ColorSquare = ({ color: theColor, bright }: { color: ColorV3; bright?: boolean }) => {
+const ColorSquare = ({ color: theColor, bright }: { color: Color; bright?: boolean }) => {
   const color = useColor()
   return (
     <View>

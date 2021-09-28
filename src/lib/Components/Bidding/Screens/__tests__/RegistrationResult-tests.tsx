@@ -10,15 +10,12 @@ import { Linking } from "react-native"
 
 import { LinkText } from "lib/Components/Text/LinkText"
 import { extractText } from "lib/tests/extractText"
-import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { Icon20 } from "../../Components/Icon"
 
 describe("Registration result component", () => {
   it("renders registration pending properly", () => {
     const tree = renderWithWrappers(
-      <BiddingThemeProvider>
-        <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} needsIdentityVerification={false} />
-      </BiddingThemeProvider>
+      <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} needsIdentityVerification={false} />
     )
     expect(extractText(tree.root)).toMatch("Registration pending")
     expect(extractText(tree.root)).toMatch(
@@ -29,9 +26,7 @@ describe("Registration result component", () => {
 
   it("renders registration pending with an explanation about IDV", () => {
     const tree = renderWithWrappers(
-      <BiddingThemeProvider>
-        <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} needsIdentityVerification />
-      </BiddingThemeProvider>
+      <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} needsIdentityVerification />
     )
 
     expect(extractText(tree.root)).toMatch("Registration pending")
@@ -42,30 +37,18 @@ describe("Registration result component", () => {
   })
 
   it("does not render the icon when the registration status is pending", () => {
-    const component = renderWithWrappers(
-      <BiddingThemeProvider>
-        <RegistrationResult status={RegistrationStatus.RegistrationStatusPending} />
-      </BiddingThemeProvider>
-    )
+    const component = renderWithWrappers(<RegistrationResult status={RegistrationStatus.RegistrationStatusPending} />)
 
     expect(component.root.findAllByType(Icon20).length).toEqual(0)
   })
 
   it("renders registration complete properly", () => {
-    const tree = renderWithWrappers(
-      <BiddingThemeProvider>
-        <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
-      </BiddingThemeProvider>
-    )
+    const tree = renderWithWrappers(<RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />)
     expect(extractText(tree.root)).toMatch("Registration complete")
   })
 
   it("renders registration error properly", () => {
-    const tree = renderWithWrappers(
-      <BiddingThemeProvider>
-        <RegistrationResult status={RegistrationStatus.RegistrationStatusError} />
-      </BiddingThemeProvider>
-    )
+    const tree = renderWithWrappers(<RegistrationResult status={RegistrationStatus.RegistrationStatusError} />)
 
     expect(extractText(tree.root)).toMatch("An error occurred")
     expect(extractText(tree.root)).toMatch("Please contact")
@@ -73,11 +56,7 @@ describe("Registration result component", () => {
   })
 
   it("renders an error screen when the status is a network error", () => {
-    const tree = renderWithWrappers(
-      <BiddingThemeProvider>
-        <RegistrationResult status={RegistrationStatus.RegistrationStatusNetworkError} />
-      </BiddingThemeProvider>
-    )
+    const tree = renderWithWrappers(<RegistrationResult status={RegistrationStatus.RegistrationStatusNetworkError} />)
 
     expect(extractText(tree.root)).toMatch("An error occurred")
     expect(extractText(tree.root)).toMatch("Please\ncheck your internet connection\nand try again.")
@@ -87,22 +66,14 @@ describe("Registration result component", () => {
     Linking.canOpenURL = jest.fn().mockReturnValue(Promise.resolve(true))
     Linking.openURL = jest.fn()
 
-    const component = renderWithWrappers(
-      <BiddingThemeProvider>
-        <RegistrationResult status={RegistrationStatus.RegistrationStatusError} />
-      </BiddingThemeProvider>
-    )
+    const component = renderWithWrappers(<RegistrationResult status={RegistrationStatus.RegistrationStatusError} />)
     await component.root.findByType(LinkText).props.onPress()
     expect(Linking.openURL).toBeCalledWith("mailto:support@artsy.net")
   })
 
   it("dismisses the controller when the continue button is pressed", () => {
     jest.useFakeTimers()
-    const component = renderWithWrappers(
-      <BiddingThemeProvider>
-        <RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />
-      </BiddingThemeProvider>
-    )
+    const component = renderWithWrappers(<RegistrationResult status={RegistrationStatus.RegistrationStatusComplete} />)
     component.root.findByType(Button).props.onPress()
     jest.runAllTicks()
 
