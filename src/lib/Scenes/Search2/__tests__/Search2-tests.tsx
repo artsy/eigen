@@ -152,7 +152,6 @@ describe("Search2 Screen", () => {
 
     fireEvent(searchInput, "changeText", "prev value")
     fireEvent(getByText("Artists"), "press")
-    fireEvent(getByText("Artists"), "press")
 
     expect(getByA11yState({ selected: true })).toHaveTextContent("Artists")
   })
