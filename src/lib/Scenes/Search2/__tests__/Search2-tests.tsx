@@ -110,17 +110,17 @@ describe("Search2 Screen", () => {
     expect(queryByA11yState({ selected: true })).toBeFalsy()
   })
 
-  it("selects artworks pill when the search input is submitted", () => {
+  it("selects the top pill when the search input is submitted", () => {
     const { getByA11yState, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
     const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
     fireEvent.changeText(searchInput, "text")
     fireEvent(searchInput, "submitEditing")
 
-    expect(getByA11yState({ selected: true })).toHaveTextContent("Artworks")
+    expect(getByA11yState({ selected: true })).toHaveTextContent("Top")
   })
 
-  it('The "Top" pill should be selected by default', () => {
+  it('the "Top" pill should be selected by default', () => {
     const { getByA11yState, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
     const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
@@ -157,7 +157,7 @@ describe("Search2 Screen", () => {
     expect(getByA11yState({ selected: true })).toHaveTextContent("Artists")
   })
 
-  describe("Reset the state of the pills", () => {
+  describe("the top pill is selected by default", () => {
     let tree: RenderAPI
 
     beforeEach(() => {
@@ -186,7 +186,7 @@ describe("Search2 Screen", () => {
       fireEvent(searchInput, "changeText", "")
       fireEvent(searchInput, "changeText", "new value")
 
-      expect(queryByA11yState({ selected: true })).toBeFalsy()
+      expect(queryByA11yState({ selected: true })).toHaveTextContent("Top")
     })
 
     it("when the query is changed", () => {
@@ -197,7 +197,7 @@ describe("Search2 Screen", () => {
       fireEvent(getByText("Artists"), "press")
       fireEvent(searchInput, "changeText", "123")
 
-      expect(queryByA11yState({ selected: true })).toBeFalsy()
+      expect(queryByA11yState({ selected: true })).toHaveTextContent("Top")
     })
 
     it("when clear button is pressed", () => {
@@ -209,7 +209,7 @@ describe("Search2 Screen", () => {
       fireEvent(getByA11yLabel("Clear input button"), "press")
       fireEvent(searchInput, "changeText", "new value")
 
-      expect(queryByA11yState({ selected: true })).toBeFalsy()
+      expect(queryByA11yState({ selected: true })).toHaveTextContent("Top")
     })
 
     it("when cancel button is pressed", () => {
@@ -222,7 +222,7 @@ describe("Search2 Screen", () => {
       fireEvent(getByText("Cancel"), "press")
       fireEvent(searchInput, "changeText", "new value")
 
-      expect(queryByA11yState({ selected: true })).toBeFalsy()
+      expect(queryByA11yState({ selected: true })).toHaveTextContent("Top")
     })
   })
 })
