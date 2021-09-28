@@ -11,6 +11,7 @@ export interface ScreenDimensions {
   height: number
   orientation: ScreenOrientation
   size: "small" | "standard" | "large"
+  isSmallScreen: boolean
 }
 
 export interface ScreenDimensionsWithSafeAreas extends ScreenDimensions {
@@ -28,6 +29,9 @@ function getCurrentDimensions(): ScreenDimensions {
     height,
     orientation: width > height ? "landscape" : "portrait",
     size: height < 667 ? "small" : height <= 812 ? "standard" : "large",
+    get isSmallScreen() {
+      return this.size === "small"
+    },
   }
 }
 

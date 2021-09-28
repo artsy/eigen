@@ -8,10 +8,10 @@ import { MyBidsQuery } from "__generated__/MyBidsQuery.graphql"
 
 import { OwnerType } from "@artsy/cohesion"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { isSmallScreen } from "lib/Scenes/MyBids/helpers/screenDimensions"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { MyBidsPlaceholder, SaleCardFragmentContainer } from "./Components"
 import { LotStatusListItemContainer } from "./Components/LotStatusListItem"
 import { NoBids } from "./Components/NoBids"
@@ -25,6 +25,7 @@ export interface MyBidsProps {
 const MyBids: React.FC<MyBidsProps> = (props) => {
   const [isFetching, setIsFetching] = React.useState<boolean>(false)
   const { relay, isActiveTab, me } = props
+  const { isSmallScreen } = useScreenDimensions()
 
   const refreshMyBids = (withSpinner: boolean = false) => {
     if (withSpinner) {
