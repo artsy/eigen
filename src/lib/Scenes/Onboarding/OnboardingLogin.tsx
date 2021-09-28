@@ -75,7 +75,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
         keyboardShouldPersistTaps="always"
       >
         <Spacer mt={60} />
-        <Text variant="lg">Log in with email</Text>
+        <Text variant="lg">Login with Email</Text>
         <Spacer mt={50} />
         <Box>
           <Input
