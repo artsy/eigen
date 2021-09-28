@@ -24,7 +24,7 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
   return (
     <OnboardingCreateAccountScreenWrapper
       onBackButtonPress={navigation.goBack}
-      title="What’s your full name?"
+      title="What’s Your Full Name?"
       caption="This is used to build your profile and collection on Artsy."
     >
       <Input
