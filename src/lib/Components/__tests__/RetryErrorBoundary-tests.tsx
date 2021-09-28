@@ -14,7 +14,7 @@ afterEach(() => {
 })
 
 it("Renders the fallback view when the rendered component crashes", () => {
-  const tree = renderWithWrappers(<RetryErrorBoundary render={() => <CrashingComponent shouldCrash={true} />} />)
+  const tree = renderWithWrappers(<RetryErrorBoundary render={() => <CrashingComponent shouldCrash />} />)
   expect(tree.root.findAllByType(LoadFailureView)).toHaveLength(1)
 })
 
@@ -24,7 +24,7 @@ it("passes false for isRetry to render prop on first pass", () => {
     <RetryErrorBoundary
       render={({ isRetry }) => {
         receivedIsRetry = isRetry
-        return <CrashingComponent shouldCrash={true} />
+        return <CrashingComponent shouldCrash />
       }}
     />
   )

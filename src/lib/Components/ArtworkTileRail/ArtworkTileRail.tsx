@@ -36,9 +36,9 @@ export const ArtworkTileRailContainer: React.FC<ArtworkTileRailContainerProps> =
     <View>
       <FlatList
         horizontal
-        ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
-        ListFooterComponent={() => <Spacer mr={2}></Spacer>}
-        ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
+        ListHeaderComponent={() => <Spacer mr={2} />}
+        ListFooterComponent={() => <Spacer mr={2} />}
+        ItemSeparatorComponent={() => <Spacer width={15} />}
         showsHorizontalScrollIndicator={false}
         data={artworks}
         initialNumToRender={5}

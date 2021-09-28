@@ -129,7 +129,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             </Text>
           )}
           {!!artwork.artistNames && (
-            <Text lineHeight="20" weight={"medium"} numberOfLines={1} {...artistNamesTextStyle}>
+            <Text lineHeight="20" weight="medium" numberOfLines={1} {...artistNamesTextStyle}>
               {artwork.artistNames}
             </Text>
           )}
@@ -145,7 +145,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             </Text>
           )}
           {!!saleInfo && (
-            <Text weight={"regular"} lineHeight="20" numberOfLines={1} color={"black60"} {...saleInfoTextStyle}>
+            <Text weight="regular" lineHeight="20" numberOfLines={1} color="black60" {...saleInfoTextStyle}>
               {saleInfo}
             </Text>
           )}

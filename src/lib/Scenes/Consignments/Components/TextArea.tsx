@@ -25,7 +25,7 @@ export const TextArea: React.FC<TextAreaProps> = (props) => {
     <View style={[props.style, { flex: 1 }]}>
       <Input
         style={Platform.OS === "android" ? { textAlignVertical: "top" } : null}
-        autoCapitalize={"sentences"}
+        autoCapitalize="sentences"
         keyboardAppearance="dark"
         selectionColor={colors["gray-medium"]}
         multiline

@@ -75,7 +75,7 @@ export class ShowPreview extends React.Component<Props> {
             <Text variant="sm" color="white100">
               {name}
             </Text>
-            <Text variant="xs" color="white100" numberOfLines={1} ellipsizeMode={"middle"}>
+            <Text variant="xs" color="white100" numberOfLines={1} ellipsizeMode="middle">
               {show.partner?.name}
             </Text>
           </TextContainer>

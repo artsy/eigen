@@ -17,12 +17,12 @@ const emptyMeProps = {
 }
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(<InboxContainer me={meProps() as any} isVisible={true} />)
+  renderWithWrappers(<InboxContainer me={meProps() as any} isVisible />)
 })
 
 it("Shows a zero state when there are no bids/conversations", () => {
   const tree = JSON.stringify(
-    renderWithLayout(<InboxContainer me={emptyMeProps as any} isVisible={true} />, { width: 768, height: 1024 })
+    renderWithLayout(<InboxContainer me={emptyMeProps as any} isVisible />, { width: 768, height: 1024 })
   )
   // Taken from the title in ZeroStateInbox
   expect(tree).toContain("Buying art on Artsy is simple")

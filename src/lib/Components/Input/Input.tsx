@@ -156,6 +156,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
         >
           {placeholder.map((placeholderString, index) => (
             <Text
+              key={`${index}`}
               onLayout={(event) => {
                 placeholderWidths.current[index] = event.nativeEvent.layout.width
               }}

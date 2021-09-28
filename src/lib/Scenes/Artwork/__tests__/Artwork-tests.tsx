@@ -316,7 +316,7 @@ describe("Artwork", () => {
     expect(environment.mock.getAllOperations()).toHaveLength(0)
 
     tree.update(<TestRenderer isVisible={false} />)
-    tree.update(<TestRenderer isVisible={true} />)
+    tree.update(<TestRenderer isVisible />)
 
     mockMostRecentOperation("ArtworkRefetchQuery")
     await flushPromiseQueue()
@@ -341,7 +341,7 @@ describe("Artwork", () => {
     })
 
     tree.update(<TestRenderer isVisible={false} />)
-    tree.update(<TestRenderer isVisible={true} />)
+    tree.update(<TestRenderer isVisible />)
 
     mockMostRecentOperation("ArtworkRefetchQuery", {
       Artwork() {

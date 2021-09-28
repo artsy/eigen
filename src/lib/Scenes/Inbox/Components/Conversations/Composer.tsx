@@ -96,15 +96,15 @@ export default class Composer extends React.Component<Props, State> {
                 <ConversationCTAFragmentContainer show={!this.state.active} conversation={this.props.conversation} />
                 <Container active={this.state.active}>
                   <TextInput
-                    placeholder={"Type your message"}
+                    placeholder="Type your message"
                     placeholderTextColor={colors["gray-semibold"]}
-                    keyboardAppearance={"dark"}
+                    keyboardAppearance="dark"
                     onEndEditing={() => this.setState({ active: false })}
                     onFocus={() => this.setState({ active: this.input.isFocused() })}
                     onChangeText={(text) => this.setState({ text })}
                     ref={(input) => (this.input = input)}
                     style={inputStyles}
-                    multiline={true}
+                    multiline
                     value={this.state.text || undefined}
                   />
                   <TouchableWithoutFeedback disabled={disableSendButton} onPress={this.submitText.bind(this)}>

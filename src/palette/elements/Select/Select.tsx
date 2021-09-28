@@ -251,7 +251,7 @@ const SelectModal: React.FC<{
       onModalFinishedClosing={onModalFinishedClosing}
     >
       <Flex p="2" pb={15} flexDirection="row" alignItems="center" flexGrow={0}>
-        <Flex flex={1}></Flex>
+        <Flex flex={1} />
         <Flex flex={2} alignItems="center">
           <Text>{title}</Text>
         </Flex>

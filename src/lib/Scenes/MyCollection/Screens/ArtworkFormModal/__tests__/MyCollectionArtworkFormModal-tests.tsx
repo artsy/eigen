@@ -28,7 +28,7 @@ const uploadFileToS3Mock = uploadFileToS3 as jest.Mock<any>
 describe("MyCollectionArtworkFormModal", () => {
   it("creates a navigation stack containing expected components", () => {
     const wrapper = renderWithWrappers(
-      <MyCollectionArtworkFormModal visible={true} mode="add" onSuccess={jest.fn()} onDismiss={jest.fn()} />
+      <MyCollectionArtworkFormModal visible mode="add" onSuccess={jest.fn()} onDismiss={jest.fn()} />
     )
     expect(wrapper.root.findAllByType(NavigationContainer)).toBeDefined()
     expect(wrapper.root.findAllByType(MyCollectionArtworkFormMain)).toBeDefined()
@@ -39,7 +39,7 @@ describe("MyCollectionArtworkFormModal", () => {
   it("calls dismiss on background click", () => {
     const mockDismiss = jest.fn()
     const wrapper = renderWithWrappers(
-      <MyCollectionArtworkFormModal visible={true} mode="add" onSuccess={jest.fn()} onDismiss={mockDismiss} />
+      <MyCollectionArtworkFormModal visible mode="add" onSuccess={jest.fn()} onDismiss={mockDismiss} />
     )
     wrapper.root.findByType(FancyModal).props.onBackgroundPressed()
     expect(mockDismiss).toHaveBeenCalled()

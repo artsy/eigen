@@ -9,7 +9,7 @@ storiesOf("Pill", module)
   .addDecorator(withTheme)
   .add("Artist", () => (
     <List>
-      <Pill size="sm" selected={false} rounded imageUrl={"https://ychef.files.bbci.co.uk/976x549/p0400cts.jpg"}>
+      <Pill size="sm" selected={false} rounded imageUrl="https://ychef.files.bbci.co.uk/976x549/p0400cts.jpg">
         Artist Name Pill
       </Pill>
     </List>

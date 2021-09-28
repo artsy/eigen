@@ -150,7 +150,7 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
           />
         )
       }}
-      inverted={true}
+      inverted
       ref={flatList}
       keyExtractor={(group) => {
         return group[0].id

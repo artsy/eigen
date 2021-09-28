@@ -27,9 +27,9 @@ export const StepTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, tabs }) =
           <TouchableOpacity onPress={() => onTabSelect(label, index)} key={label + index}>
             <Box
               width={tabWidth}
-              justifyContent={"space-between"}
-              flexDirection={"row"}
-              alignItems={"center"}
+              justifyContent="space-between"
+              flexDirection="row"
+              alignItems="center"
               onLayout={(e) => {
                 const layout = e.nativeEvent.layout
                 setTabLayouts((layouts) => {
@@ -39,7 +39,7 @@ export const StepTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, tabs }) =
                 })
               }}
             >
-              <Box flexDirection={"row"} alignItems={"center"}>
+              <Box flexDirection="row" alignItems="center">
                 <Tab
                   label={label}
                   onPress={() => onTabSelect(label, index)}
@@ -49,9 +49,9 @@ export const StepTabs: React.FC<TabsProps> = ({ onTabPress, activeTab, tabs }) =
                     // noop
                   }}
                 />
-                {!!completed && <CheckIcon fill={"green100"} height={15} width={15} />}
+                {!!completed && <CheckIcon fill="green100" height={15} width={15} />}
               </Box>
-              <ChevronIcon fill={"black60"} height={10} width={10} />
+              <ChevronIcon fill="black60" height={10} width={10} />
             </Box>
           </TouchableOpacity>
         )

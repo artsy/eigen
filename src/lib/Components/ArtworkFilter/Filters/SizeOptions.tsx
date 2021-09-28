@@ -215,11 +215,17 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
       filterHeaderText={FilterDisplayName.size}
       selectedOption={shouldShowCustomSize ? CUSTOM_SIZE_OPTION : selectedOption}
       navigation={navigation}
-      useScrollView={true}
+      useScrollView
       filterOptions={[
         ...SIZE_OPTIONS,
         ...(shouldShowCustomSize
-          ? [<CustomSizeInput initialValue={customInitialValue} onChange={handleCustomPriceChange} />]
+          ? [
+              <CustomSizeInput
+                key="custom-size-input"
+                initialValue={customInitialValue}
+                onChange={handleCustomPriceChange}
+              />,
+            ]
           : []),
       ]}
     />

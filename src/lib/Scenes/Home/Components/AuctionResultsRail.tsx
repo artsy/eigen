@@ -51,7 +51,7 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & Props> = (pro
         initialNumToRender={3}
         ItemSeparatorComponent={() => (
           <Flex px={2} py={2}>
-            <Separator borderColor={"black10"} />
+            <Separator borderColor="black10" />
           </Flex>
         )}
         renderItem={({ item, index }) => {

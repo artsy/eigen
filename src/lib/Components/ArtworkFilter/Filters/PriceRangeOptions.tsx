@@ -132,10 +132,16 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
     <SingleSelectOptionScreen
       onSelect={selectOption}
       filterHeaderText={FilterDisplayName.priceRange}
-      useScrollView={true}
+      useScrollView
       filterOptions={[
-        <ListItem item={DEFAULT_PRICE_OPTION} selectedOption={selectedOption} onSelect={handleSelectCustomOption} />,
+        <ListItem
+          key="default-price"
+          item={DEFAULT_PRICE_OPTION}
+          selectedOption={selectedOption}
+          onSelect={handleSelectCustomOption}
+        />,
         <CustomPriceInput
+          key="custom-price"
           value={customPriceValue}
           onChange={handleCustomPriceChange}
           onFocus={handleSelectCustomOption}

@@ -312,7 +312,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       <BiddingThemeProvider>
         <ScrollView
           contentContainerStyle={{ flexGrow: 1, justifyContent: "space-between" }}
-          keyboardDismissMode={"on-drag"}
+          keyboardDismissMode="on-drag"
         >
           <Box p={20} pt={25} flex={1}>
             <Text fontSize={16} variant="xs" mb="2">

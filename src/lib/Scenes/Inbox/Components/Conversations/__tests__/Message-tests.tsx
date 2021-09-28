@@ -25,5 +25,5 @@ it("renders without throwing an error", () => {
       payment_url: "https://www.adopt-cats.org/pay-here",
     },
   }
-  renderWithWrappers(<Message conversationId={"420"} showTimeSince={true} message={props as any} />)
+  renderWithWrappers(<Message conversationId="420" showTimeSince message={props as any} />)
 })
