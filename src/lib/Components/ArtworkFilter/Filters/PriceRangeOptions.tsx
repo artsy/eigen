@@ -7,8 +7,7 @@ import {
   FilterParamName,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { Input, InputProps } from "lib/Components/Input/Input"
-import { Flex, Spacer, Text } from "palette"
+import { Flex, Input, Spacer } from "palette"
 import React, { useState } from "react"
 import { parsePriceRangeLabel, parseRange, Range } from "./helpers"
 import { ListItem, SingleSelectOptionScreen } from "./SingleSelectOption"
@@ -32,61 +31,6 @@ const PRICE_RANGE_OPTIONS: FilterData[] = [
   { displayText: "$0–1,000", paramValue: "*-1000", paramName: PARAM_NAME },
 ]
 
-interface CustomPriceInputProps {
-  value: Range
-  onChange: (value: Range) => void
-  onFocus: () => void
-}
-
-interface InputLabelProps extends InputProps {
-  label: string
-}
-
-const InputLabel: React.FC<InputLabelProps> = ({ label, ...other }) => {
-  return (
-    <Flex flex={1}>
-      <Text color="black60" variant="xs" mb={0.5}>
-        {label}
-      </Text>
-      <Input {...other} />
-    </Flex>
-  )
-}
-
-export const CustomPriceInput: React.FC<CustomPriceInputProps> = ({ value, onChange, onFocus }) => {
-  const handleChange = (key: "min" | "max") => (text: string) => {
-    const parsed = parseInt(text, 10)
-    const parsedValue = isNaN(parsed) ? "*" : parsed
-    onChange({ ...value, [key]: parsedValue })
-  }
-
-  return (
-    <Flex flexDirection="row" alignItems="center" mb={1} mx={2}>
-      <InputLabel
-        label="Min"
-        placeholder="$USD"
-        value={value.min === "*" ? undefined : String(value.min)}
-        keyboardType="number-pad"
-        onChangeText={handleChange("min")}
-        onFocus={onFocus}
-        testID="price-min-input"
-      />
-
-      <Spacer mx={2} />
-
-      <InputLabel
-        label="Max"
-        placeholder="$USD"
-        value={value.max === "*" ? undefined : String(value.max)}
-        keyboardType="number-pad"
-        onChangeText={handleChange("max")}
-        onFocus={onFocus}
-        testID="price-max-input"
-      />
-    </Flex>
-  )
-}
-
 export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
 
@@ -99,6 +43,12 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
   const [customSelected, setCustomSelected] = useState(isCustomOption)
   const selectedOption = customSelected ? DEFAULT_PRICE_OPTION : selectedFilterOption
   const isActive = selectedFilterOption.paramValue !== DEFAULT_PRICE_OPTION.paramValue
+
+  const handleChange = (key: "min" | "max") => (text: string) => {
+    const parsed = parseInt(text, 10)
+    const parsedValue = isNaN(parsed) ? "*" : parsed
+    handleCustomPriceChange({ ...customPriceValue, [key]: parsedValue })
+  }
 
   const selectOption = (option: AggregateOption) => {
     setCustomSelected(false)
@@ -134,18 +84,30 @@ export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = (
       filterHeaderText={FilterDisplayName.priceRange}
       useScrollView
       filterOptions={[
-        <ListItem
-          key="default-price"
-          item={DEFAULT_PRICE_OPTION}
-          selectedOption={selectedOption}
-          onSelect={handleSelectCustomOption}
-        />,
-        <CustomPriceInput
-          key="custom-price"
-          value={customPriceValue}
-          onChange={handleCustomPriceChange}
-          onFocus={handleSelectCustomOption}
-        />,
+        <ListItem item={DEFAULT_PRICE_OPTION} selectedOption={selectedOption} onSelect={handleSelectCustomOption} />,
+        <Flex flexDirection="row" alignItems="center" mb={1} mx={2}>
+          <Input
+            description="Min"
+            placeholder="$USD"
+            enableClearButton
+            keyboardType="number-pad"
+            value={customPriceValue.min === "*" ? undefined : String(customPriceValue.min)}
+            onChangeText={handleChange("min")}
+            onFocus={handleSelectCustomOption}
+            testID="price-min-input"
+          />
+          <Spacer mx={2} />
+          <Input
+            description="Max"
+            placeholder="$USD"
+            enableClearButton
+            keyboardType="number-pad"
+            value={customPriceValue.max === "*" ? undefined : String(customPriceValue.max)}
+            onChangeText={handleChange("max")}
+            onFocus={handleSelectCustomOption}
+            testID="price-max-input"
+          />
+        </Flex>,
         ...PRICE_RANGE_OPTIONS,
       ]}
       selectedOption={selectedOption}
