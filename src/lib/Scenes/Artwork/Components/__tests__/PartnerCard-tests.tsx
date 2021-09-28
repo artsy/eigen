@@ -132,7 +132,7 @@ describe("PartnerCard", () => {
     )
     expect(component.find(Button)).toHaveLength(1)
 
-    expect(component.find(Button).at(0).render().text()).toMatchInlineSnapshot(`"FollowFollowing"`)
+    expect(component.find(Button).at(0).render().text()).toMatchInlineSnapshot(`"FollowingFollow"`)
   })
 
   it("does not render when the partner is an auction house", () => {
@@ -245,7 +245,7 @@ describe("PartnerCard", () => {
       partnerCard.update()
 
       const updatedFollowButton = partnerCard.find(Button).at(0)
-      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"FollowFollowing"`)
+      expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"FollowingFollow"`)
     })
 
     it("correctly displays when the work is not followed, and allows following", async () => {
@@ -262,7 +262,7 @@ describe("PartnerCard", () => {
       })
 
       const followButton = partnerCard.find(Button).at(0)
-      expect(followButton.text()).toMatchInlineSnapshot(`"FollowFollowing"`)
+      expect(followButton.text()).toMatchInlineSnapshot(`"FollowingFollow"`)
 
       await partnerCard.find(Button).at(0).props().onPress()
 
