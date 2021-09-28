@@ -152,10 +152,17 @@ export const Button: React.FC<ButtonProps> = ({
               }}
             >
               <Box flex={1} mx={containerSize.mx}>
+                <HiddenContainer>
+                  {icon}
+                  <Text variant={size === "small" ? "xs" : "sm"} color="red">
+                    {longestText ? longestText : children}
+                  </Text>
+                </HiddenContainer>
+
                 <VisibleTextContainer>
                   {iconPosition === "left" && <IconBox position="left" icon={icon} displayState={displayState} />}
                   <AnimatedText
-                    size={size === "small" ? "xs" : "sm"}
+                    variant={size === "small" ? "xs" : "sm"}
                     style={{
                       color: springProps.textColor,
                       textDecorationLine: springProps.textDecorationLine,
@@ -168,11 +175,6 @@ export const Button: React.FC<ButtonProps> = ({
                   </AnimatedText>
                   {iconPosition === "right" && <IconBox position="right" icon={icon} displayState={displayState} />}
                 </VisibleTextContainer>
-
-                <HiddenContainer>
-                  {icon}
-                  <Text variant={size === "small" ? "xs" : "sm"}>{longestText ? longestText : children}</Text>
-                </HiddenContainer>
 
                 {displayState === DisplayState.Loading ? (
                   <SpinnerContainer>
