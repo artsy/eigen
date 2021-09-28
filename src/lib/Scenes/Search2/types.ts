@@ -8,7 +8,7 @@ export interface AlgoliaSearchResult {
   __queryID: string
 }
 
-export type PillEntityType = "algolia" | "elastic" | "global"
+export type PillEntityType = "algolia" | "elastic"
 
 export interface PillType {
   name: string

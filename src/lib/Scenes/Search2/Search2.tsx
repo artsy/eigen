@@ -110,7 +110,7 @@ interface SearchState {
 const TOP_PILL: PillType = {
   name: "TOP",
   displayName: "Top",
-  type: "global",
+  type: "elastic",
 }
 const ARTWORKS_PILL: PillType = {
   name: "ARTWORK",
@@ -159,10 +159,10 @@ export const Search2: React.FC<Search2Props> = (props) => {
     if (selectedPill.type === "algolia") {
       return <SearchResultsContainer indexName={selectedPill.name} categoryDisplayName={selectedPill.displayName} />
     }
-    if (selectedPill.type === "elastic") {
-      return <SearchArtworksQueryRenderer keyword={searchState.query!} />
+    if (selectedPill.name === TOP_PILL.name) {
+      return <AutosuggestResults query={searchState.query!} />
     }
-    return <AutosuggestResults query={searchState.query!} />
+    return <SearchArtworksQueryRenderer keyword={searchState.query!} />
   }
 
   const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 1
