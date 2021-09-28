@@ -55,11 +55,12 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   const space = useSpace()
 
   useEffect(() => {
-    flatListRef.current?.scrollToOffset({ offset: 1, animated: true })
-  }, [searchState.query, indexName])
+    requestAnimationFrame(() => {
+      flatListRef.current?.scrollToOffset({ offset: 0, animated: true })
+    })
+  }, [indexName])
 
   // When we get the first search results, we hide the loading placeholder
-
   useEffect(() => {
     // Skips the initial mount
     if (didMountRef.current) {
