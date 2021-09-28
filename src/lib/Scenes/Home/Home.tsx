@@ -180,11 +180,11 @@ const Home = (props: Props) => {
                   />
                 )
               case "collections":
-                separators.updateProps("leading", { hideSeparator: false })
                 return (
                   <CollectionsRailFragmentContainer
                     collectionsModule={item.data}
                     scrollRef={scrollRefs.current[index]}
+                    onShow={() => separators.updateProps("leading", { hideSeparator: false })}
                   />
                 )
               case "viewing-rooms":
