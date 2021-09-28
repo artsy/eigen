@@ -61,7 +61,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
         <CaretButton
           onPress={() => {
             trackEvent(tracks.tappedShowMore(props.artwork.internalID, props.artwork.slug, "See all articles"))
-            navigate(`/artist/${artist?.slug}/articles`)
+            navigate(`/artist/${artist?.internalID!}/articles`)
           }}
           text="See all articles"
         />
