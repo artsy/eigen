@@ -1,4 +1,3 @@
-import fonts from "lib/data/fonts"
 import { useTheme } from "palette"
 import React from "react"
 import { StyleSheet, Text, TextProps, TextStyle } from "react-native"
@@ -81,7 +80,7 @@ const styles = StyleSheet.create<Styles>({
   },
 
   largeHeadlineRequired: {
-    fontFamily: fonts["garamond-regular"],
+    fontFamily: "ReactNativeAGaramondPro-Regular",
   },
 
   smallHeadlineDefault: {
@@ -91,7 +90,7 @@ const styles = StyleSheet.create<Styles>({
   },
 
   smallHeadlineRequired: {
-    fontFamily: fonts["garamond-regular"],
+    fontFamily: "ReactNativeAGaramondPro-Regular",
   },
 
   subtitleDefault: {
@@ -102,7 +101,7 @@ const styles = StyleSheet.create<Styles>({
   },
 
   subtitleRequired: {
-    fontFamily: fonts["garamond-regular"],
+    fontFamily: "ReactNativeAGaramondPro-Regular",
   },
 
   bodyDefault: {
@@ -115,7 +114,7 @@ const styles = StyleSheet.create<Styles>({
   },
 
   bodyRequired: {
-    fontFamily: fonts["garamond-regular"],
+    fontFamily: "ReactNativeAGaramondPro-Regular",
   },
 
   smallPrintDefault: {
@@ -128,6 +127,6 @@ const styles = StyleSheet.create<Styles>({
   },
 
   smallPrintRequired: {
-    fontFamily: fonts["garamond-regular"],
+    fontFamily: "ReactNativeAGaramondPro-Regular",
   },
 })

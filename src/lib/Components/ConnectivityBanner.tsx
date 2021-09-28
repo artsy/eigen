@@ -2,8 +2,6 @@ import { themeGet } from "@styled-system/theme-get"
 import React from "react"
 import styled from "styled-components/native"
 
-import fonts from "lib/data/fonts"
-
 // @ts-ignore
 const Container = styled.View`
   height: 30;
@@ -15,7 +13,7 @@ const Container = styled.View`
 const ConnectivityMessage = styled.Text`
   color: ${themeGet("colors.yellow100")};
   text-align: center;
-  font-family: ${fonts["garamond-regular"]};
+  font-family: "ReactNativeAGaramondPro-Regular";
   font-size: 16;
   padding-top: 5;
 `

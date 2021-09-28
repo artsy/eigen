@@ -1,7 +1,6 @@
 import React from "react"
 import { StyleSheet, Text, TextProps, TextStyle } from "react-native"
 
-import fonts from "lib/data/fonts"
 import { useTheme } from "palette"
 
 const LargeHeadline: React.FC<TextProps> = (props) => {
@@ -128,11 +127,11 @@ const styles = StyleSheet.create<Styles>({
   },
 
   subtitleRequired: {
-    fontFamily: fonts["garamond-italic"],
+    fontFamily: "ReactNativeAGaramondPro-Italic",
   },
 
   fromSignatureDefault: {
-    fontFamily: fonts["garamond-regular"],
+    fontFamily: "ReactNativeAGaramondPro-Regular",
   },
 
   metadataDefault: {
@@ -147,6 +146,6 @@ const styles = StyleSheet.create<Styles>({
   },
 
   bodyRequired: {
-    fontFamily: fonts["garamond-regular"],
+    fontFamily: "ReactNativeAGaramondPro-Regular",
   },
 })

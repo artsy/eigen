@@ -1,7 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
 import { Inquiry_artwork } from "__generated__/Inquiry_artwork.graphql"
 import { InquiryQuery } from "__generated__/InquiryQuery.graphql"
-import fonts from "lib/data/fonts"
 import { dismissModal } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { BottomAlignedButton } from "lib/Scenes/Consignments/Components/BottomAlignedButton"
@@ -60,7 +59,7 @@ const Content = styled.View`
 const InquiryTextInput = styled.TextInput`
   font-size: 16;
   margin-top: 20;
-  font-family: ${fonts["garamond-regular"]};
+  font-family: "ReactNativeAGaramondPro-Regular";
 `
 const ResponseRate = styled(SmallHeadline)`
   color: ${themeGet("colors.yellow100")};

@@ -1,7 +1,7 @@
 import { CitySavedList_city } from "__generated__/CitySavedList_city.graphql"
 import { CitySavedList_me } from "__generated__/CitySavedList_me.graphql"
 import { CitySavedListQuery } from "__generated__/CitySavedListQuery.graphql"
-import { PAGE_SIZE } from "lib/data/constants"
+import { PAGE_SIZE } from "lib/Components/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"

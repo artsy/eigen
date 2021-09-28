@@ -1,4 +1,4 @@
-import { PAGE_SIZE } from "lib/data/constants"
+import { PAGE_SIZE } from "lib/Components/constants"
 import { useEffect, useMemo } from "react"
 import { RelayPaginationProp, Variables } from "react-relay"
 import {

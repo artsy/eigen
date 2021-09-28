@@ -1,4 +1,4 @@
-import { Button, Sans, Text, Theme } from "palette"
+import { Button, Sans, Text } from "palette"
 import React from "react"
 
 import { Schema, screenTrack, track } from "../../../utils/track"
@@ -31,9 +31,9 @@ interface StyledInputProps extends InputProps {
 }
 const StyledInput: React.FC<StyledInputProps> = ({ label, errorMessage, onLayout, ...props }) => {
   return (
-    <Flex mb={4} onLayout={onLayout}>
-      <Text mb={0.5}>{label.toLocaleUpperCase()}</Text>
-      <Input mb={2} error={Boolean(errorMessage)} {...props} />
+    <Flex mb="2" onLayout={onLayout}>
+      <Text mb="0.5">{label.toLocaleUpperCase()}</Text>
+      <Input mb="0.5" error={Boolean(errorMessage)} {...props} />
       <Flex height={18}>
         {!!errorMessage && (
           <Sans size="2" color="red100">
@@ -197,9 +197,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
 
     return (
       <ArtsyKeyboardAvoidingView>
-        <Theme>
-          <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>Add billing address</FancyModalHeader>
-        </Theme>
+        <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>Add billing address</FancyModalHeader>
         <ScrollView
           keyboardDismissMode="on-drag"
           keyboardShouldPersistTaps="handled"

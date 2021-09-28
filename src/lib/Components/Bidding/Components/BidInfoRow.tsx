@@ -17,11 +17,9 @@ export class BidInfoRow extends React.Component<BidInfoRowProps> {
 
     return (
       <TouchableWithoutFeedback onPress={onPress}>
-        <Row p={4} pb={3} mb={1} {...props}>
+        <Row p="2" pb="1" mb="1" {...props}>
           <Col>
-            <Text variant="sm" fontSize={12}>
-              {label}
-            </Text>
+            <Text variant="xs">{label}</Text>
           </Col>
 
           <Col alignItems="flex-end">{!!value && <Text numberOfLines={1}>{value}</Text>}</Col>

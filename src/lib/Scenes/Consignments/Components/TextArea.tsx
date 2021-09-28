@@ -1,5 +1,4 @@
 import { themeGet } from "@styled-system/theme-get"
-import fonts from "lib/data/fonts"
 import { useTheme } from "palette"
 import React from "react"
 import { Platform, TextInputProps, View, ViewProps } from "react-native"
@@ -8,7 +7,7 @@ import styled from "styled-components/native"
 const Input = styled.TextInput`
   height: 100%;
   color: ${themeGet("colors.black100")};
-  font-family: "${fonts["unica77ll-regular"]}";
+  font-family: "Unica77LL-Regular";
   font-size: 16;
 `
 
