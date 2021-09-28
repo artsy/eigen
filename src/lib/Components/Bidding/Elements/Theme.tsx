@@ -2,15 +2,14 @@
 export const theme = {
   colors: {
     black100: "#000000",
-    black60: "#707070",
-    black30: "#C2C2C2",
-    black10: "#E5E5E5",
-    black5: "#F7F7F7",
-    blue100: "#1023D7",
-    purple100: "#1023D7",
-    green100: "#127438",
-    red100: "#C82400",
-    white100: "#FFFFFF",
+    // black60: "#707070",
+    // black30: "#C2C2C2",
+    // black10: "#E5E5E5",
+    // black5: "#F7F7F7",
+    // blue100: "#1023D7",
+    // green100: "#127438",
+    // red100: "#C82400",
+    // white100: "#FFFFFF",
   },
 
   space: [0, 3, 5, 10, 20, 30, 40, 60, 90, 120, 180],

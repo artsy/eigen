@@ -1,8 +1,7 @@
+import fonts from "lib/data/fonts"
+import { useTheme } from "palette"
 import React from "react"
 import { StyleSheet, Text, TextProps, TextStyle } from "react-native"
-
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
 
 const LargeHeadline: React.FC<TextProps> = (props) => {
   const children: string = (props as any).children
@@ -35,8 +34,9 @@ const Subtitle: React.FC<TextProps> = (props) => {
 }
 
 const BodyText: React.FC<TextProps> = (props) => {
+  const { color } = useTheme()
   const children: string = (props as any).children
-  const style = [styles.bodyDefault, props.style || {}, styles.bodyRequired]
+  const style = [styles.bodyDefault, { color: color("black30") }, props.style || {}, styles.bodyRequired]
   return (
     <Text key={children} style={style}>
       {children}
@@ -45,8 +45,9 @@ const BodyText: React.FC<TextProps> = (props) => {
 }
 
 const SmallPrint: React.FC<TextProps> = (props) => {
+  const { color } = useTheme()
   const children: string = (props as any).children
-  const style = [styles.smallPrintDefault, props.style || {}, styles.smallPrintRequired]
+  const style = [styles.smallPrintDefault, { color: color("black30") }, props.style || {}, styles.smallPrintRequired]
   return (
     <Text key={children} style={style}>
       {children}
@@ -106,7 +107,6 @@ const styles = StyleSheet.create<Styles>({
 
   bodyDefault: {
     fontSize: 20,
-    color: colors["gray-medium"],
     paddingLeft: 20,
     paddingRight: 20,
     marginTop: 18,
@@ -120,7 +120,6 @@ const styles = StyleSheet.create<Styles>({
 
   smallPrintDefault: {
     fontSize: 14,
-    color: colors["gray-medium"],
     paddingLeft: 25,
     paddingRight: 25,
     marginTop: 18,
