@@ -41,21 +41,21 @@ import { LocationCitiesOptionsScreen } from "./Filters/LocationCitiesOptions"
 interface ArtworkFilterProps extends ViewProps {
   closeModal?: () => void
   exitModal?: () => void
-  id: string
+  id: string | null
   initiallyAppliedFilters?: FilterArray
   isFilterArtworksModalVisible: boolean
   mode: ArtworkFilterMode
-  slug: string
+  slug: string | null
   title?: string
 }
 
 interface ArtworkFilterOptionsScreenParams {
   closeModal: () => void
   exitModal: () => void
-  id: string
+  id: string | null
   initiallyAppliedFilters?: FilterArray
   mode: ArtworkFilterMode
-  slug: string
+  slug: string | null
   title?: string
 }
 
@@ -275,6 +275,15 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
                       actionType: ActionType.commercialFilterParamsChanged,
                       screenName: PageNames.GenePage,
                       ownerEntity: OwnerEntityTypes.Gene,
+                      currentParams: appliedFiltersParams,
+                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
+                    })
+                    break
+                  case ArtworkFilterMode.Search:
+                    trackChangeFilters({
+                      actionType: ActionType.commercialFilterParamsChanged,
+                      screenName: PageNames.Search,
+                      ownerEntity: OwnerEntityTypes.Search,
                       currentParams: appliedFiltersParams,
                       changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
                     })
