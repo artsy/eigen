@@ -35,6 +35,7 @@ interface PillProps extends FlexProps {
   imageUrl?: string
   icon?: ReactNode
   iconPosition?: "left" | "right"
+  disabled?: boolean
   onPress?: (event: GestureResponderEvent) => void
 }
 
@@ -46,6 +47,7 @@ export const Pill: React.FC<PillProps> = ({
   icon,
   iconPosition = "left",
   imageUrl,
+  disabled,
   onPress,
   ...other
 }) => {
@@ -85,7 +87,11 @@ export const Pill: React.FC<PillProps> = ({
   )
 
   if (onPress) {
-    return <TouchableOpacity onPress={onPress}>{content}</TouchableOpacity>
+    return (
+      <TouchableOpacity disabled={disabled} onPress={onPress}>
+        {content}
+      </TouchableOpacity>
+    )
   }
 
   return content

@@ -33,6 +33,7 @@ export const SearchPills: React.FC<SearchPillsProps> = (props) => {
             }}
             rounded
             selected={selected}
+            disabled={selected}
             onPress={() => onPillPress(pill)}
           >
             {displayName}
