@@ -8,7 +8,6 @@ import { sanitize } from "../persistence"
 jest.mock("lib/NativeModules/LegacyNativeModules", () => ({
   LegacyNativeModules: {
     ...jest.requireActual("lib/NativeModules/LegacyNativeModules").LegacyNativeModules,
-    // ...LegacyNativeModules,
     ARNotificationsManager: {
       ...jest.requireActual("lib/NativeModules/LegacyNativeModules").LegacyNativeModules.ARNotificationsManager,
       nativeState: {
@@ -158,6 +157,17 @@ describe(migrate, () => {
  */
 describe("artsy app store migrations", () => {
   it("are up to date", () => {
+    // Reset the nativeState to its original state
+    LegacyNativeModules.ARNotificationsManager.nativeState = {
+      userAgent: "Jest Unit Tests",
+      authenticationToken: null as any,
+      onboardingState: "none",
+      launchCount: 1,
+      deviceId: "testDevice",
+      userID: null as any,
+      userEmail: null as any,
+    }
+
     __globalStoreTestUtils__?.reset()
     expect(migrate({ state: { version: 0 } })).toEqual(sanitize(__globalStoreTestUtils__?.getCurrentState()))
   })
