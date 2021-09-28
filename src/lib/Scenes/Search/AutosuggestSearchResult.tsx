@@ -4,7 +4,7 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { ArtworkIcon, Box, Flex, Spacer, Text } from "palette"
 import React, { useContext } from "react"
-import { Pressable, ScrollView } from "react-native"
+import { Pressable } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { SearchListItem } from "../Search2/components/SearchListItem"
@@ -35,6 +35,8 @@ const NavigationButton: React.FC<{ artistTab: ArtistTabs; displayText: string; o
 }) => {
   return (
     <>
+      <Spacer ml={1} />
+
       <Pressable onPress={() => onPress({ artistTab })}>
         {({ pressed }) => (
           <QuickNavigationButton>
@@ -47,8 +49,6 @@ const NavigationButton: React.FC<{ artistTab: ArtistTabs; displayText: string; o
           </QuickNavigationButton>
         )}
       </Pressable>
-
-      <Spacer ml={1} />
     </>
   )
 }
@@ -130,10 +130,10 @@ export const AutosuggestSearchResult: React.FC<{
     >
       {!!showNavigationButtons && (
         <Flex flexDirection="row" alignItems="center">
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <NavigationButton displayText="Artworks" artistTab="Artworks" onPress={onPress} />
-            <NavigationButton displayText="Auction Results" artistTab="Insights" onPress={onPress} />
-          </ScrollView>
+          <Spacer ml={4} />
+
+          <NavigationButton displayText="Artworks" artistTab="Artworks" onPress={onPress} />
+          <NavigationButton displayText="Auction Results" artistTab="Insights" onPress={onPress} />
         </Flex>
       )}
     </SearchListItem>
