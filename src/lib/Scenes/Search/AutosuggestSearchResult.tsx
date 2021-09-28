@@ -2,12 +2,12 @@ import { themeGet } from "@styled-system/theme-get"
 import { EntityType, navigate, navigateToEntity, navigateToPartner, SlugType } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
-import { ArtworkIcon, Box, Flex, Spacer, Text } from "palette"
+import { ArtworkIcon, Box, CloseIcon, Flex, Spacer, Text, Touchable } from "palette"
 import React, { useContext } from "react"
 import { Pressable } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { SearchListItem } from "../Search2/components/SearchListItem"
+import { IMAGE_SIZE, SearchResultImage } from "../Search2/components/SearchResultImage"
 import { AutosuggestResult } from "./AutosuggestResults"
 import { ResultWithHighlight } from "./ResultWithHighlight"
 import { SearchContext } from "./SearchContext"
@@ -18,7 +18,7 @@ type ArtistTabs = "Insights" | "Artworks"
 
 type HandleResultPress = (passProps?: { artistTab: ArtistTabs }) => void
 
-const getCategoryName = (result: AutosuggestResult) => {
+const getResultType = (result: AutosuggestResult) => {
   if (result.displayType) {
     return result.displayType
   }
@@ -101,42 +101,60 @@ export const AutosuggestSearchResult: React.FC<{
     }
   }
 
-  const categoryName = getCategoryName(result)
+  const resultType = getResultType(result)
 
   return (
-    <SearchListItem
-      onPress={onPress}
-      imageURL={result.imageUrl}
-      categoryName={categoryName}
-      onDelete={onDelete}
-      InfoComponent={() => {
-        return (
-          <>
+    <>
+      <Touchable onPress={() => onPress()}>
+        <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
+          <SearchResultImage imageURL={result.imageUrl} resultType={resultType} />
+
+          <Flex flex={1}>
             <Text variant="xs" numberOfLines={1}>
               <ResultWithHighlight
                 displayLabel={result.displayLabel!}
                 highlight={highlight}
-                categoryName={categoryName}
+                categoryName={resultType}
               />
             </Text>
-            {!!showResultType && !!categoryName && (
+
+            {!!showResultType && !!resultType && (
               <Text variant="xs" color="black60">
-                {categoryName}
+                {resultType}
               </Text>
             )}
-          </>
-        )
-      }}
-    >
-      {!!showNavigationButtons && (
-        <Flex flexDirection="row" alignItems="center">
-          <Spacer ml={4} />
+          </Flex>
 
-          <NavigationButton displayText="Artworks" artistTab="Artworks" onPress={onPress} />
-          <NavigationButton displayText="Auction Results" artistTab="Insights" onPress={onPress} />
+          {!!onDelete && (
+            <Touchable
+              onPress={onDelete}
+              hitSlop={{
+                bottom: 20,
+                top: 20,
+                left: 10,
+                right: 20,
+              }}
+            >
+              <Flex pl={1}>
+                <CloseIcon fill="black60" />
+              </Flex>
+            </Touchable>
+          )}
         </Flex>
+      </Touchable>
+
+      {!!showNavigationButtons && (
+        <>
+          <Spacer mb={1} />
+          <Flex flexDirection="row" alignItems="center">
+            <Spacer ml={4} />
+
+            <NavigationButton displayText="Artworks" artistTab="Artworks" onPress={onPress} />
+            <NavigationButton displayText="Auction Results" artistTab="Insights" onPress={onPress} />
+          </Flex>
+        </>
       )}
-    </SearchListItem>
+    </>
   )
 }
 

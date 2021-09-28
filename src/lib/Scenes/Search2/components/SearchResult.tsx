@@ -1,9 +1,12 @@
 import { navigate, navigateToPartner } from "lib/navigation/navigate"
 import { searchInsights } from "lib/utils/useSearchInsightsConfig"
+import { Flex, Touchable } from "palette"
 import React from "react"
 import { AlgoliaSearchResult } from "../types"
 import { SearchHighlight } from "./SearchHighlight"
-import { SearchListItem } from "./SearchListItem"
+import { SearchResultImage } from "./SearchResultImage"
+
+const IMAGE_SIZE = 40
 
 interface SearchResultsItemProps {
   result: AlgoliaSearchResult
@@ -31,13 +34,14 @@ export const SearchResult: React.FC<SearchResultsItemProps> = ({ result, categor
   }
 
   return (
-    <SearchListItem
-      onPress={onPress}
-      imageURL={result.image_url}
-      categoryName={categoryName}
-      InfoComponent={() => {
-        return <SearchHighlight attribute="name" hit={result} />
-      }}
-    />
+    <Touchable onPress={onPress}>
+      <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
+        <SearchResultImage imageURL={result.image_url} resultType={categoryName} />
+
+        <Flex flex={1}>
+          <SearchHighlight attribute="name" hit={result} />
+        </Flex>
+      </Flex>
+    </Touchable>
   )
 }
