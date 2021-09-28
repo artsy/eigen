@@ -1,5 +1,4 @@
 import { EntityType, navigate, navigateToEntity, SlugType } from "lib/navigation/navigate"
-import { SearchListItem } from "lib/Scenes/Search2/components/SearchListItem"
 import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -9,10 +8,11 @@ import React from "react"
 import { Pressable } from "react-native"
 import { act } from "react-test-renderer"
 import { AutosuggestSearchResult } from "../AutosuggestSearchResult"
-import { ItalicText, ResultWithItalic, Text } from "../ResultWithHighlight"
+import { ItalicText, ResultWithHighlight, ResultWithItalic, Text } from "../ResultWithHighlight"
 import { SearchContext } from "../SearchContext"
 
 const inputBlurMock = jest.fn()
+const onDeleteMock = jest.fn()
 
 const result = {
   displayLabel: "Banksy",
@@ -47,8 +47,9 @@ describe(AutosuggestSearchResult, () => {
   beforeEach(() => {
     require("@react-native-community/async-storage").__resetState()
     recentSearchesArray = []
-    inputBlurMock.mockClear()
+    jest.clearAllMocks()
   })
+
   it(`works`, async () => {
     const tree = renderWithWrappers(<TestWrapper result={result} showResultType={true} />)
 
@@ -56,25 +57,40 @@ describe(AutosuggestSearchResult, () => {
     expect(extractText(tree.root)).toContain("Artist")
   })
 
-  it("renders SearchListItem and passing correct props to it", async () => {
-    const tree = renderWithWrappers(<TestWrapper result={result} onDelete={jest.fn()} />)
-
-    const searchListItem = tree.root.findByType(SearchListItem)
-    const searchListItemProps = searchListItem.props
-
-    expect(searchListItem).toBeDefined()
-    expect(searchListItemProps.categoryName).toEqual("Artist")
-    expect(searchListItemProps.imageURL).toEqual("blah")
-    expect(searchListItemProps.onPress).toBeDefined()
-    expect(searchListItemProps.onDelete).toBeDefined()
+  it("does not render result type when showResultType prop is not passed", async () => {
+    const tree = renderWithWrappers(<TestWrapper result={result} />)
+    expect(extractText(tree.root)).not.toContain("Artist")
   })
 
-  it("rensders children passed to SearchListItem", async () => {
-    const tree = renderWithWrappers(<TestWrapper result={result} showResultType={true} />)
-    const searchListItemText = extractText(tree.root.findByType(SearchListItem))
+  it("renders result type when showResultType prop is passed", async () => {
+    const tree = renderWithWrappers(<TestWrapper result={result} showResultType />)
+    expect(extractText(tree.root)).toContain("Artist")
+  })
 
-    expect(searchListItemText).toContain("Banksy")
-    expect(searchListItemText).toContain("Artist")
+  it("renders result with highlight and passes correct props to it", async () => {
+    const tree = renderWithWrappers(<TestWrapper result={result} highlight={"Ban"} />)
+    const resultWithHighlight = tree.root.findByType(ResultWithHighlight)
+    const resultWithHighlightProps = resultWithHighlight.props
+    expect(resultWithHighlight).toBeDefined()
+    expect(resultWithHighlightProps.displayLabel).toEqual("Banksy")
+    expect(resultWithHighlightProps.highlight).toEqual("Ban")
+    expect(resultWithHighlightProps.categoryName).toEqual("Artist")
+  })
+
+  it("does not render delete button when onDelete callback is not passed", async () => {
+    const tree = renderWithWrappers(<TestWrapper result={result} />)
+    expect(tree.root.findAllByType(CloseIcon).length).toEqual(0)
+  })
+
+  it("renders delete button when onDelete callback is passed", async () => {
+    const tree = renderWithWrappers(<TestWrapper result={result} onDelete={onDeleteMock} />)
+    expect(tree.root.findByType(CloseIcon)).toBeDefined()
+  })
+
+  it("calls onDelete calback when pressing on delete button", async () => {
+    const tree = renderWithWrappers(<TestWrapper result={result} onDelete={onDeleteMock} />)
+    tree.root.findAllByType(Touchable)[1].props.onPress()
+    expect(onDeleteMock).toHaveBeenCalled()
   })
 
   it("has an optional onDelete action which shows a close button", () => {
