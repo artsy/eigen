@@ -1,10 +1,8 @@
-import {
-  ArtistArticlesResultQuery,
-  ArtistArticlesResultQueryResponse,
-} from "__generated__/ArtistArticlesResultQuery.graphql"
+import { Articles_articlesConnection$key } from "__generated__/Articles_articlesConnection.graphql"
+import { ArtistArticlesResultQuery } from "__generated__/ArtistArticlesResultQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
-import { PlaceholderBox, ProvidePlaceholderContext, RandomWidthPlaceholderText } from "lib/utils/placeholders"
+import { PlaceholderBox, RandomWidthPlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import _ from "lodash"
 import { Flex, Separator, Spacer, Text } from "palette"
@@ -19,44 +17,42 @@ import { ArticlesList, ArticlesListItem, useNumColumns } from "../Articles/Artic
 const PAGE_SIZE = 10
 
 interface ArticlesProps {
-  artist: ArtistArticlesResultQueryResponse["artist"]
+  query: Articles_articlesConnection$key
 }
 
 export const ArtistArticles: React.FC<ArticlesProps> = (props) => {
-  // const [queryData, { isLoading, hasMore, loadMore, refetchConnection }] = usePagination(fragmentSpec, props.query)
-  // const articles = extractNodes(queryData.articlesConnection)
-  const articles = extractNodes(props.artist?.articlesConnection)
+  const [queryData, { isLoading, hasMore, loadMore, refetchConnection }] = usePagination(fragmentSpec, props.query)
+  const articles = extractNodes(queryData.articlesConnection)
 
   console.log("Coming....", articles)
 
-  // useEffect(() => {
-  //   loadMore(connectionConfig, PAGE_SIZE)
-  // }, [])
+  useEffect(() => {
+    loadMore(connectionConfig, PAGE_SIZE)
+  }, [])
 
-  // const [refreshing, setRefreshing] = useState(false)
+  const [refreshing, setRefreshing] = useState(false)
 
-  // const handleLoadMore = () => {
-  //   if (!hasMore() || isLoading()) {
-  //     return
-  //   }
-  //   loadMore(connectionConfig, PAGE_SIZE)
-  // }
-  // const handleRefresh = () => {
-  //   setRefreshing(true)
-  //   refetchConnection(connectionConfig, PAGE_SIZE)
-  //   setRefreshing(false)
-  // }
+  const handleLoadMore = () => {
+    if (!hasMore() || isLoading()) {
+      return
+    }
+    loadMore(connectionConfig, PAGE_SIZE)
+  }
+  const handleRefresh = () => {
+    setRefreshing(true)
+    refetchConnection(connectionConfig, PAGE_SIZE)
+    setRefreshing(false)
+  }
 
   return (
-    // <ArticlesList
-    //   articles={articles as any}
-    //   isLoading={isLoading}
-    //   hasMore={hasMore}
-    //   refreshing={refreshing}
-    //   handleLoadMore={handleLoadMore}
-    //   handleRefresh={handleRefresh}
-    // />
-    <Text>Something</Text>
+    <ArticlesList
+      articles={articles as any}
+      isLoading={isLoading}
+      hasMore={hasMore}
+      refreshing={refreshing}
+      handleLoadMore={handleLoadMore}
+      handleRefresh={handleRefresh}
+    />
   )
 }
 
@@ -92,6 +88,7 @@ export const ArtistArticlesQueryRenderer: React.FC<{
   )
 }
 
+// export const ArticlesPlaceholder: React.FC = () => {
 export const ArticlesPlaceholder = () => {
   const numColumns = useNumColumns()
 
