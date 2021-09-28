@@ -82,7 +82,7 @@ export const ArtsyReactWebViewPage: React.FC<
 
   const onRightButtonPress = () => {
     if (showShareButton) {
-      return handleArticleShare
+      return handleArticleShare()
     } else if (useRightCloseButton) {
       return goBack()
     }
