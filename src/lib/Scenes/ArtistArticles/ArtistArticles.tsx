@@ -23,39 +23,40 @@ interface ArticlesProps {
 }
 
 export const ArtistArticles: React.FC<ArticlesProps> = (props) => {
-  const [queryData, { isLoading, hasMore, loadMore, refetchConnection }] = usePagination(fragmentSpec, props.query)
+  // const [queryData, { isLoading, hasMore, loadMore, refetchConnection }] = usePagination(fragmentSpec, props.query)
   // const articles = extractNodes(queryData.articlesConnection)
   const articles = extractNodes(props.artist?.articlesConnection)
 
   console.log("Coming....", articles)
 
-  useEffect(() => {
-    loadMore(connectionConfig, PAGE_SIZE)
-  }, [])
+  // useEffect(() => {
+  //   loadMore(connectionConfig, PAGE_SIZE)
+  // }, [])
 
-  const [refreshing, setRefreshing] = useState(false)
+  // const [refreshing, setRefreshing] = useState(false)
 
-  const handleLoadMore = () => {
-    if (!hasMore() || isLoading()) {
-      return
-    }
-    loadMore(connectionConfig, PAGE_SIZE)
-  }
-  const handleRefresh = () => {
-    setRefreshing(true)
-    refetchConnection(connectionConfig, PAGE_SIZE)
-    setRefreshing(false)
-  }
+  // const handleLoadMore = () => {
+  //   if (!hasMore() || isLoading()) {
+  //     return
+  //   }
+  //   loadMore(connectionConfig, PAGE_SIZE)
+  // }
+  // const handleRefresh = () => {
+  //   setRefreshing(true)
+  //   refetchConnection(connectionConfig, PAGE_SIZE)
+  //   setRefreshing(false)
+  // }
 
   return (
-    <ArticlesList
-      articles={articles as any}
-      isLoading={isLoading}
-      hasMore={hasMore}
-      refreshing={refreshing}
-      handleLoadMore={handleLoadMore}
-      handleRefresh={handleRefresh}
-    />
+    // <ArticlesList
+    //   articles={articles as any}
+    //   isLoading={isLoading}
+    //   hasMore={hasMore}
+    //   refreshing={refreshing}
+    //   handleLoadMore={handleLoadMore}
+    //   handleRefresh={handleRefresh}
+    // />
+    <Text>Something</Text>
   )
 }
 
@@ -91,7 +92,7 @@ export const ArtistArticlesQueryRenderer: React.FC<{
   )
 }
 
-export const ArticlesPlaceholder: React.FC = () => {
+export const ArticlesPlaceholder = () => {
   const numColumns = useNumColumns()
 
   return (
