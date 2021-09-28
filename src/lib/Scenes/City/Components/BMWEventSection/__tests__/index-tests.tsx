@@ -36,7 +36,7 @@ describe("CityEvent", () => {
               featuredShows: [show as any],
             }}
             relay={{ environment: {} } as RelayProp}
-            citySlug={"new-york-us"}
+            citySlug="new-york-us"
           />
         </Theme>
       </GlobalStoreProvider>

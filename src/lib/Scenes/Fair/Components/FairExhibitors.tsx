@@ -59,7 +59,7 @@ const FairExhibitors: React.FC<FairExhibitorsProps> = ({ fair, relay }) => {
           </Box>
         ) : null
       }
-    ></FlatList>
+    />
   )
 }
 

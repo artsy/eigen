@@ -244,7 +244,7 @@ const SelectModal: React.FC<{
       onModalFinishedClosing={props.onModalFinishedClosing}
     >
       <Flex p="2" pb={15} flexDirection="row" alignItems="center" flexGrow={0}>
-        <Flex flex={1}></Flex>
+        <Flex flex={1} />
         <Flex flex={2} alignItems="center">
           <Sans size="4" weight="medium">
             {props.title}

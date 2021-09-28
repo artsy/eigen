@@ -17,7 +17,7 @@ const TabContent = ({ route }: { route: { params: { tabName: BottomTabType; root
     return <NativeViewController viewName="TabNavigationStack" viewProps={route.params} />
   }
 
-  return <NavStack id={route.params.tabName} rootModuleName={route.params.rootModuleName}></NavStack>
+  return <NavStack id={route.params.tabName} rootModuleName={route.params.rootModuleName} />
 }
 
 export const BottomTabsNavigator = () => {
@@ -28,11 +28,14 @@ export const BottomTabsNavigator = () => {
       <View style={{ flex: 1, paddingBottom: bottom }}>
         <FadeBetween
           views={[
-            <TabContent route={{ params: { tabName: "home", rootModuleName: "Home" } }} />,
-            <TabContent route={{ params: { tabName: "search", rootModuleName: "SearchSwitchContainer" } }} />,
-            <TabContent route={{ params: { tabName: "inbox", rootModuleName: "Inbox" } }} />,
-            <TabContent route={{ params: { tabName: "sell", rootModuleName: "Sales" } }} />,
-            <TabContent route={{ params: { tabName: "profile", rootModuleName: "MyProfile" } }} />,
+            <TabContent key="home" route={{ params: { tabName: "home", rootModuleName: "Home" } }} />,
+            <TabContent
+              key="search"
+              route={{ params: { tabName: "search", rootModuleName: "SearchSwitchContainer" } }}
+            />,
+            <TabContent key="inbox" route={{ params: { tabName: "inbox", rootModuleName: "Inbox" } }} />,
+            <TabContent key="sell" route={{ params: { tabName: "sell", rootModuleName: "Sales" } }} />,
+            <TabContent key="profile" route={{ params: { tabName: "profile", rootModuleName: "MyProfile" } }} />,
           ]}
           activeIndex={["home", "search", "inbox", "sell", "profile"].indexOf(selectedTab)}
         />

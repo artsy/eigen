@@ -35,7 +35,7 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me }> = ({ me }) => 
 
   return (
     <MyAccountFieldEditScreen
-      title={"Phone"}
+      title="Phone"
       canSave={canSave()}
       onSave={async (dismiss) => {
         try {

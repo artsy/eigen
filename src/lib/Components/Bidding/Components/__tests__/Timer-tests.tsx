@@ -103,7 +103,7 @@ it("shows 'Live' when the liveStartsAt prop is given", () => {
 it("shows 'Starts' the sale has not started yet", () => {
   const timer = renderWithWrappers(
     <BiddingThemeProvider>
-      <Timer startsAt="2018-04-14T20:00:00+00:00" isPreview={true} liveStartsAt="2018-05-14T20:00:00+00:00" />
+      <Timer startsAt="2018-04-14T20:00:00+00:00" isPreview liveStartsAt="2018-05-14T20:00:00+00:00" />
     </BiddingThemeProvider>
   )
 
@@ -113,12 +113,7 @@ it("shows 'Starts' the sale has not started yet", () => {
 it("shows 'Bidding closed' when the auction is closed", () => {
   const timer = renderWithWrappers(
     <BiddingThemeProvider>
-      <Timer
-        startsAt="2018-04-14T20:00:00+00:00"
-        isPreview={false}
-        liveStartsAt="2018-05-14T20:00:00+00:00"
-        isClosed={true}
-      />
+      <Timer startsAt="2018-04-14T20:00:00+00:00" isPreview={false} liveStartsAt="2018-05-14T20:00:00+00:00" isClosed />
     </BiddingThemeProvider>
   )
 
@@ -212,7 +207,7 @@ describe("timer transitions", () => {
     const timer = mount(
       <Theme>
         {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-        <Timer isPreview={true} startsAt={futureTime} endsAt={futureTime} />
+        <Timer isPreview startsAt={futureTime} endsAt={futureTime} />
       </Theme>
     )
 
@@ -229,7 +224,7 @@ describe("timer transitions", () => {
     const timer = mount(
       <Theme>
         {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-        <Timer isPreview={true} startsAt={futureTime} liveStartsAt={futureTime} />
+        <Timer isPreview startsAt={futureTime} liveStartsAt={futureTime} />
       </Theme>
     )
 

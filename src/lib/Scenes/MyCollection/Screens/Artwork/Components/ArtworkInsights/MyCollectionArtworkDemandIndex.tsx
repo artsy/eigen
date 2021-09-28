@@ -45,7 +45,7 @@ const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexPro
       <Spacer my={0.5} />
       <DemandRankScale demandRank={demandRank} />
       <Spacer my={1} />
-      <DemandRankDetails demandRank={demandRank}></DemandRankDetails>
+      <DemandRankDetails demandRank={demandRank} />
     </ScreenMargin>
   )
 }

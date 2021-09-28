@@ -87,7 +87,7 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
       </TouchableOpacity>
       <FlatList
         horizontal
-        ItemSeparatorComponent={() => <Spacer width={10}></Spacer>}
+        ItemSeparatorComponent={() => <Spacer width={10} />}
         showsHorizontalScrollIndicator={false}
         data={artworks}
         initialNumToRender={5}

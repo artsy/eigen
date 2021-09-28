@@ -129,7 +129,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
                     const { saleArtworks } = closedSale!
 
                     return (
-                      <Join separator={<Separator my={2} />}>
+                      <Join key={`${closedSale?.sale?.internalID}-join`} separator={<Separator my={2} />}>
                         {saleArtworks!.map((saleArtwork) => {
                           if (!saleArtwork) {
                             return null

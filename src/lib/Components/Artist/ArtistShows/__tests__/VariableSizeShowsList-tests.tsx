@@ -11,7 +11,7 @@ it("renders without throwing an error", () => {
   show2.location.city = "London"
 
   const shows = [show1, show2]
-  renderWithWrappers(<ShowsList shows={shows as any} showSize={"medium"} />)
+  renderWithWrappers(<ShowsList shows={shows as any} showSize="medium" />)
 })
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

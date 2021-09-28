@@ -214,7 +214,7 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
                 {...this.defaultPropsForInput("fullName")}
                 label="Full name"
                 placeholder="Add your full name"
-                autoFocus={true}
+                autoFocus
                 textContentType="name"
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 onSubmitEditing={() => this.addressLine1.focus()}

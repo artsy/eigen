@@ -101,7 +101,7 @@ export class BidResult extends React.Component<BidResultProps> {
       <BiddingThemeProvider>
         <View style={{ flex: 1 }}>
           <Theme>
-            <FancyModalHeader useXButton onLeftButtonPress={dismissModal}></FancyModalHeader>
+            <FancyModalHeader useXButton onLeftButtonPress={dismissModal} />
           </Theme>
           <Container mt={6}>
             <View>

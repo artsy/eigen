@@ -1,4 +1,5 @@
 import { DecoratorFunction } from "@storybook/addons"
+import { TrackProvider } from "lib/tests/renderWithWrappers"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Theme } from "palette"
 import React from "react"
@@ -13,6 +14,8 @@ export const withSafeArea: DecoratorFunction<React.ReactNode> = (story) => (
 export const withScreenDimensions: DecoratorFunction<React.ReactNode> = (story) => (
   <ProvideScreenDimensions>{story()}</ProvideScreenDimensions>
 )
+
+export const withTracking: DecoratorFunction<React.ReactNode> = (story) => <TrackProvider>{story()}</TrackProvider>
 
 /**
  * Add this as the last decorator, if you use any other decorators that use hooks in them.

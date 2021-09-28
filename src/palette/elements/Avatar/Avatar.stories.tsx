@@ -17,9 +17,7 @@ storiesOf("Avatar", module)
   .add("Variants", () => (
     <List>
       <Avatar
-        src={
-          "https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F2qiqRkUQYxTnUaib3yIgpA%2Funtouched-jpg.jpg&width=1820&height=1214&quality=75"
-        }
+        src="https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F2qiqRkUQYxTnUaib3yIgpA%2Funtouched-jpg.jpg&width=1820&height=1214&quality=75"
         size="md"
       />
       <Avatar size="md" />

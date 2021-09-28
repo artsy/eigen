@@ -3,5 +3,5 @@ import React from "react"
 import Toggle from "../Toggle"
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(<Toggle selected={true} left="L" right="R" />)
+  renderWithWrappers(<Toggle selected left="L" right="R" />)
 })

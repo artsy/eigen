@@ -222,8 +222,8 @@ export const LoadingSkeleton: React.FC<{}> = () => {
       <Spacer mb={3} />
       {/* tabs */}
       <Flex justifyContent="space-around" flexDirection="row" px={2}>
-        <PlaceholderText width={"40%"} />
-        <PlaceholderText width={"40%"} />
+        <PlaceholderText width="40%" />
+        <PlaceholderText width="40%" />
       </Flex>
       <Spacer mb={1} />
       <Separator />

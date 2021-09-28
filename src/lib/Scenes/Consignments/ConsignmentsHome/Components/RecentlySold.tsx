@@ -47,9 +47,9 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
           <Join separator={<Spacer mr={0.5} />}>
             <FlatList
               horizontal
-              ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
-              ListFooterComponent={() => <Spacer mr={2}></Spacer>}
-              ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
+              ListHeaderComponent={() => <Spacer mr={2} />}
+              ListFooterComponent={() => <Spacer mr={2} />}
+              ItemSeparatorComponent={() => <Spacer width={15} />}
               showsHorizontalScrollIndicator={false}
               initialNumToRender={5}
               windowSize={3}

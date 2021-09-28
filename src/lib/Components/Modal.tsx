@@ -56,7 +56,7 @@ export class Modal extends React.Component<ModalProps, any> {
 
     return (
       <View style={{ marginTop: 22 }}>
-        <RNModal animationType="fade" transparent={true} visible={this.state.modalVisible}>
+        <RNModal animationType="fade" transparent visible={this.state.modalVisible}>
           <TouchableWithoutFeedback onPress={() => this.closeModal()}>
             <ModalBackgroundView>
               <TouchableWithoutFeedback>

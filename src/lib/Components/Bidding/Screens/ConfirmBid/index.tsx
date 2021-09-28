@@ -478,7 +478,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                   <Image resizeMode="contain" style={{ width: 50, height: 50 }} source={{ uri: artworkImage.url }} />
                 )}
 
-                <Serif mt={4} size="4t" weight="semibold" numberOfLines={1} ellipsizeMode={"tail"}>
+                <Serif mt={4} size="4t" weight="semibold" numberOfLines={1} ellipsizeMode="tail">
                   {
                     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     artwork.artist_names
@@ -488,7 +488,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
                   Lot {lot_label}
                 </Serif>
 
-                <Serif italic size="2" color="black60" textAlign="center" numberOfLines={1} ellipsizeMode={"tail"}>
+                <Serif italic size="2" color="black60" textAlign="center" numberOfLines={1} ellipsizeMode="tail">
                   {
                     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     artwork.title

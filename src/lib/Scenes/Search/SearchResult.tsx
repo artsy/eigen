@@ -110,7 +110,7 @@ export const SearchResult: React.FC<{
           <Spacer m={0.5} />
 
           <Flex flexDirection="row" alignItems="center">
-            <View style={{ width: imageSide }}></View>
+            <View style={{ width: imageSide }} />
             <Spacer ml={1} />
 
             <Pressable onPress={() => onPress({ artistTab: "Artworks" })}>

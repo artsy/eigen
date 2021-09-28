@@ -10,7 +10,7 @@ describe("Field", () => {
   })
 
   it("returns value when value is falsy", () => {
-    const wrapper = renderWithWrappers(<Field label="foo" value={""} />)
+    const wrapper = renderWithWrappers(<Field label="foo" value="" />)
     expect(extractText(wrapper.root)).not.toContain(false)
   })
 
