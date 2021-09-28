@@ -23,7 +23,6 @@ import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayP
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
 import { LinkText } from "../../Text/LinkText"
-import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { PaymentInfo } from "../Components/PaymentInfo"
 import { Address, PaymentCardTextFieldParams, StripeToken } from "../types"
 import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
@@ -309,81 +308,77 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     const saleTimeDetails = saleTime(sale)
 
     return (
-      <BiddingThemeProvider>
-        <ScrollView
-          contentContainerStyle={{ flexGrow: 1, justifyContent: "space-between" }}
-          keyboardDismissMode="on-drag"
-        >
-          <Box p={20} pt={25} flex={1}>
-            <Text fontSize={16} variant="xs" mb="2">
-              {sale.name}
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, justifyContent: "space-between" }}
+        keyboardDismissMode="on-drag"
+      >
+        <Box p={20} pt={25} flex={1}>
+          <Text fontSize={16} variant="xs" mb="2">
+            {sale.name}
+          </Text>
+
+          {saleTimeDetails.absolute !== null && (
+            <Text fontSize={12} variant="md" color="black60">
+              {saleTimeDetails.absolute}
             </Text>
-
-            {saleTimeDetails.absolute !== null && (
-              <Text fontSize={12} variant="md" color="black60">
-                {saleTimeDetails.absolute}
-              </Text>
-            )}
-          </Box>
-
-          {!!requiresPaymentInformation && (
-            <Flex flex={1} py={20}>
-              <PaymentInfo
-                navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
-                onCreditCardAdded={this.onCreditCardAdded.bind(this)}
-                onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
-                billingAddress={this.state.billingAddress}
-                creditCardFormParams={this.state.creditCardFormParams}
-                creditCardToken={this.state.creditCardToken}
-              />
-            </Flex>
           )}
-          <Flex px={20} flex={1}>
-            {!!requiresPaymentInformation && <Hint>A valid credit card is required.</Hint>}
-            {
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              !!bidderNeedsIdentityVerification({ sale, user: me }) && (
-                <>
-                  <Hint>This auction requires Artsy to verify your identity before bidding.</Hint>
-                  <Hint>
-                    After you register, you’ll receive an email with a link to complete identity verification.
-                  </Hint>
-                </>
-              )
-            }
-            {
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              !requiresPaymentInformation && !bidderNeedsIdentityVerification({ sale, user: me }) && (
-                <Hint>To complete your registration, please confirm that you agree to the Conditions of Sale.</Hint>
-              )
-            }
-            <Modal
-              visible={this.state.errorModalVisible}
-              headerText="An error occurred"
-              detailText={this.state.errorModalDetailText}
-              closeModal={this.closeModal.bind(this)}
-            />
-            <Checkbox mb={4} onPress={() => this.conditionsOfSalePressed()} disabled={isLoading}>
-              <Text variant="xs" fontSize="2">
-                Agree to{" "}
-                <LinkText onPress={isLoading ? undefined : this.onPressConditionsOfSale}>Conditions of Sale</LinkText>
-              </Text>
-            </Checkbox>
-          </Flex>
+        </Box>
 
-          <Box m={4}>
-            <Button
-              onPress={this.canCreateBidder() ? this.register.bind(this) : null}
-              loading={isLoading}
-              block
-              width={100}
-              disabled={!this.canCreateBidder()}
-            >
-              Complete registration
-            </Button>
-          </Box>
-        </ScrollView>
-      </BiddingThemeProvider>
+        {!!requiresPaymentInformation && (
+          <Flex flex={1} py={20}>
+            <PaymentInfo
+              navigator={isLoading ? ({ push: () => null } as any) : this.props.navigator}
+              onCreditCardAdded={this.onCreditCardAdded.bind(this)}
+              onBillingAddressAdded={this.onBillingAddressAdded.bind(this)}
+              billingAddress={this.state.billingAddress}
+              creditCardFormParams={this.state.creditCardFormParams}
+              creditCardToken={this.state.creditCardToken}
+            />
+          </Flex>
+        )}
+        <Flex px={20} flex={1}>
+          {!!requiresPaymentInformation && <Hint>A valid credit card is required.</Hint>}
+          {
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            !!bidderNeedsIdentityVerification({ sale, user: me }) && (
+              <>
+                <Hint>This auction requires Artsy to verify your identity before bidding.</Hint>
+                <Hint>After you register, you’ll receive an email with a link to complete identity verification.</Hint>
+              </>
+            )
+          }
+          {
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            !requiresPaymentInformation && !bidderNeedsIdentityVerification({ sale, user: me }) && (
+              <Hint>To complete your registration, please confirm that you agree to the Conditions of Sale.</Hint>
+            )
+          }
+          <Modal
+            visible={this.state.errorModalVisible}
+            headerText="An error occurred"
+            detailText={this.state.errorModalDetailText}
+            closeModal={this.closeModal.bind(this)}
+          />
+          <Checkbox mb={4} onPress={() => this.conditionsOfSalePressed()} disabled={isLoading}>
+            <Text variant="xs" fontSize="2">
+              Agree to{" "}
+              <LinkText onPress={isLoading ? undefined : this.onPressConditionsOfSale}>Conditions of Sale</LinkText>
+            </Text>
+          </Checkbox>
+        </Flex>
+
+        <Box m={4}>
+          <Button
+            onPress={this.canCreateBidder() ? this.register.bind(this) : null}
+            loading={isLoading}
+            block
+            width={100}
+            disabled={!this.canCreateBidder()}
+          >
+            Complete registration
+          </Button>
+        </Box>
+      </ScrollView>
     )
   }
 }

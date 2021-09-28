@@ -8,8 +8,6 @@ import { PaymentInfo } from "../PaymentInfo"
 
 import { BidInfoRow } from "../../Components/BidInfoRow"
 
-import { BiddingThemeProvider } from "../BiddingThemeProvider"
-
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),
   paymentRequestWithCardForm: jest.fn(),
@@ -23,19 +21,11 @@ const mockNavigator = { push: (route) => (nextStep = route), pop: () => null }
 jest.useFakeTimers()
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(
-    <BiddingThemeProvider>
-      <PaymentInfo {...initialProps} />
-    </BiddingThemeProvider>
-  )
+  renderWithWrappers(<PaymentInfo {...initialProps} />)
 })
 
 it("shows the billing address that the user typed in the billing address form", () => {
-  const billingAddressRow = renderWithWrappers(
-    <BiddingThemeProvider>
-      <PaymentInfo {...initialProps} />
-    </BiddingThemeProvider>
-  ).root.findAllByType(BidInfoRow)[1]
+  const billingAddressRow = renderWithWrappers(<PaymentInfo {...initialProps} />).root.findAllByType(BidInfoRow)[1]
   billingAddressRow.instance.props.onPress()
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   expect(nextStep.component).toEqual(BillingAddress)
@@ -44,11 +34,7 @@ it("shows the billing address that the user typed in the billing address form", 
 })
 
 it("shows the cc info that the user had typed into the form", () => {
-  const creditCardRow = renderWithWrappers(
-    <BiddingThemeProvider>
-      <PaymentInfo {...initialProps} />
-    </BiddingThemeProvider>
-  ).root.findAllByType(BidInfoRow)[0]
+  const creditCardRow = renderWithWrappers(<PaymentInfo {...initialProps} />).root.findAllByType(BidInfoRow)[0]
   creditCardRow.instance.props.onPress()
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   expect(nextStep.component).toEqual(CreditCardForm)

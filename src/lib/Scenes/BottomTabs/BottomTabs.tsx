@@ -6,7 +6,7 @@ import { BottomTabsButton } from "./BottomTabsButton"
 import { ICON_HEIGHT } from "./BottomTabsIcon"
 
 export const BottomTabs: React.FC = () => {
-  const { color, colorV2 } = useTheme()
+  const { color } = useTheme()
   const unreadConversationCount = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.unreadConversationCount
   )
@@ -26,7 +26,7 @@ export const BottomTabs: React.FC = () => {
     <Flex>
       <Separator
         style={{
-          borderColor: isStaging ? colorV2("purple100") /* TODO-PALETTE-V3 color("devpurple") */ : color("black10"),
+          borderColor: isStaging ? color("devpurple") : color("black10"),
         }}
       />
       <Flex flexDirection="row" height={ICON_HEIGHT} px={1}>

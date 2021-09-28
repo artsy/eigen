@@ -2,10 +2,10 @@ import React from "react"
 import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
+import { PAGE_SIZE } from "lib/Components/constants"
 import { SavedItemRow } from "lib/Components/Lists/SavedItemRow"
 import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
-import { PAGE_SIZE } from "lib/data/constants"
 
 import { FavoriteCategories_me } from "__generated__/FavoriteCategories_me.graphql"
 import { StickyTabPageFlatList } from "lib/Components/StickyTabPage/StickyTabPageFlatList"

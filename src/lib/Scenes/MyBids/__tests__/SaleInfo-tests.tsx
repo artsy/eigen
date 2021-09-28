@@ -38,11 +38,11 @@ describe(SaleInfo, () => {
         const liveStartAt = DateTime.now().minus({ minutes: 5 }).toJSON()
         tree = renderWithWrappers(<SaleInfo sale={saleFixture({ liveStartAt, status: "open" })} />)
       })
-      it("has a purple100 icon + note if live bidding is active, black60 otherwise", () => {
-        expect(tree.root.findByType(BoltFill).props.fill).toMatch("purple100")
+      it("has a blue100 icon + note if live bidding is active, black60 otherwise", () => {
+        expect(tree.root.findByType(BoltFill).props.fill).toMatch("blue100")
       })
-      it("has purple100 text", () => {
-        expect(tree.root.findByType(Text).props.color).toEqual("purple100")
+      it("has blue100 text", () => {
+        expect(tree.root.findByType(Text).props.color).toEqual("blue100")
       })
       it("has no line 2 text", () => {
         expect(tree.root.findAllByType(Text).length).toEqual(1)
