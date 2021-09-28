@@ -9,7 +9,7 @@ import React from "react"
 import ReactTestRenderer from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 
-export const Wrappers: React.FC = ({ children }) => {
+const Wrappers: React.FC = ({ children }) => {
   return (
     <TrackProvider>
       <GlobalStoreProvider>
@@ -29,11 +29,14 @@ export const Wrappers: React.FC = ({ children }) => {
  * Returns given component wrapped with our page wrappers
  * @param component
  */
-export const componentWithWrappers = (component: ReactElement) => {
+const componentWithWrappers = (component: ReactElement) => {
   return <Wrappers>{component}</Wrappers>
 }
 
 /**
+ * @deprecated
+ * Use `renderWithWrappersTL` instead.
+ *
  * Renders a React Component with our page wrappers
  * @param component
  */
