@@ -61,7 +61,7 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
         <CaretButton
           onPress={() => {
             trackEvent(tracks.tappedShowMore(props.artwork.internalID, props.artwork.slug, "See all articles"))
-            navigate(`/artist/${artist?.slug}/articles`)
+            navigate(`/artist/${artist?.internalID!}/articles`)
           }}
           text="See all articles"
         />
@@ -80,6 +80,7 @@ export const MyCollectionArtworkArtistArticlesFragmentContainer = createFragment
         artist {
           slug
           name
+          internalID
           articlesConnection(first: 3, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
             edges {
               node {
