@@ -159,7 +159,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
     return <AutosuggestResults query={searchState.query!} />
   }
 
-  const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 1
+  const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 2
 
   const handlePillPress = (pill: PillType) => {
     let nextSelectedPill: PillType | null = pill
