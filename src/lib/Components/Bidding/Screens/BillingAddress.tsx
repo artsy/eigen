@@ -10,7 +10,6 @@ import { Flex } from "../Elements/Flex"
 
 import { validatePresence } from "../Validators"
 
-import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"
 import { Input, InputProps } from "../Components/Input"
 import { Address, Country } from "../types"
@@ -197,120 +196,116 @@ export class BillingAddress extends React.Component<BillingAddressProps, Billing
     const errorForCountry = this.state.errors.country
 
     return (
-      <BiddingThemeProvider>
-        <ArtsyKeyboardAvoidingView>
-          <Theme>
-            <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>
+      <ArtsyKeyboardAvoidingView>
+        <Theme>
+          <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>Add billing address</FancyModalHeader>
+        </Theme>
+        <ScrollView
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
+          ref={(scrollView) => (this.scrollView = scrollView as any)}
+        >
+          <Container>
+            <StyledInput
+              {...this.defaultPropsForInput("fullName")}
+              label="Full name"
+              placeholder="Add your full name"
+              autoFocus
+              textContentType="name"
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              onSubmitEditing={() => this.addressLine1.focus()}
+              testID="input-full-name"
+            />
+
+            <StyledInput
+              {...this.defaultPropsForInput("addressLine1")}
+              label="Address line 1"
+              placeholder="Add your street address"
+              textContentType="streetAddressLine1"
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              onSubmitEditing={() => this.addressLine2.focus()}
+              testID="input-address-1"
+            />
+
+            <StyledInput
+              {...this.defaultPropsForInput("addressLine2")}
+              label="Address line 2 (optional)"
+              placeholder="Add your apt, floor, suite, etc."
+              textContentType="streetAddressLine2"
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              onSubmitEditing={() => this.city.focus()}
+              testID="input-address-2"
+            />
+
+            <StyledInput
+              {...this.defaultPropsForInput("city")}
+              label="City"
+              placeholder="Add your city"
+              textContentType="addressCity"
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              onSubmitEditing={() => this.stateProvinceRegion.focus()}
+              testID="input-city"
+            />
+
+            <StyledInput
+              {...this.defaultPropsForInput("state")}
+              label="State, Province, or Region"
+              placeholder="Add state, province, or region"
+              textContentType="addressState"
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              onSubmitEditing={() => this.postalCode.focus()}
+              inputRef={(el) => (this.stateProvinceRegion = el)}
+              testID="input-state-province-region"
+            />
+
+            <StyledInput
+              {...this.defaultPropsForInput("postalCode")}
+              label="Postal code"
+              placeholder="Add your postal code"
+              textContentType="postalCode"
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              onSubmitEditing={() => this.phoneNumber.focus()}
+              testID="input-post-code"
+            />
+
+            <StyledInput
+              {...this.defaultPropsForInput("phoneNumber")}
+              label="Phone"
+              placeholder="Add your phone number"
+              keyboardType="phone-pad"
+              textContentType="telephoneNumber"
+              testID="input-phone"
+            />
+
+            <ScreenDimensionsContext.Consumer>
+              {({ height }) => (
+                <Flex mb={4}>
+                  <CountrySelect
+                    maxModalHeight={height * 0.95}
+                    onSelectValue={(value) => {
+                      this.onCountrySelected({
+                        shortName: value,
+                        longName: COUNTRY_SELECT_OPTIONS.find((opt) => opt.value === value)!.label,
+                      } as Country)
+                    }}
+                    value={this.state.values.country?.shortName}
+                    hasError={!!errorForCountry}
+                  />
+                  {!!errorForCountry && (
+                    <Sans size="2" color="red100">
+                      {errorForCountry}
+                    </Sans>
+                  )}
+                </Flex>
+              )}
+            </ScreenDimensionsContext.Consumer>
+
+            <Button block width={100} onPress={() => this.onSubmit()} testID="button-add">
               Add billing address
-            </FancyModalHeader>
-          </Theme>
-          <ScrollView
-            keyboardDismissMode="on-drag"
-            keyboardShouldPersistTaps="handled"
-            ref={(scrollView) => (this.scrollView = scrollView as any)}
-          >
-            <Container>
-              <StyledInput
-                {...this.defaultPropsForInput("fullName")}
-                label="Full name"
-                placeholder="Add your full name"
-                autoFocus
-                textContentType="name"
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                onSubmitEditing={() => this.addressLine1.focus()}
-                testID="input-full-name"
-              />
-
-              <StyledInput
-                {...this.defaultPropsForInput("addressLine1")}
-                label="Address line 1"
-                placeholder="Add your street address"
-                textContentType="streetAddressLine1"
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                onSubmitEditing={() => this.addressLine2.focus()}
-                testID="input-address-1"
-              />
-
-              <StyledInput
-                {...this.defaultPropsForInput("addressLine2")}
-                label="Address line 2 (optional)"
-                placeholder="Add your apt, floor, suite, etc."
-                textContentType="streetAddressLine2"
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                onSubmitEditing={() => this.city.focus()}
-                testID="input-address-2"
-              />
-
-              <StyledInput
-                {...this.defaultPropsForInput("city")}
-                label="City"
-                placeholder="Add your city"
-                textContentType="addressCity"
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                onSubmitEditing={() => this.stateProvinceRegion.focus()}
-                testID="input-city"
-              />
-
-              <StyledInput
-                {...this.defaultPropsForInput("state")}
-                label="State, Province, or Region"
-                placeholder="Add state, province, or region"
-                textContentType="addressState"
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                onSubmitEditing={() => this.postalCode.focus()}
-                inputRef={(el) => (this.stateProvinceRegion = el)}
-                testID="input-state-province-region"
-              />
-
-              <StyledInput
-                {...this.defaultPropsForInput("postalCode")}
-                label="Postal code"
-                placeholder="Add your postal code"
-                textContentType="postalCode"
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                onSubmitEditing={() => this.phoneNumber.focus()}
-                testID="input-post-code"
-              />
-
-              <StyledInput
-                {...this.defaultPropsForInput("phoneNumber")}
-                label="Phone"
-                placeholder="Add your phone number"
-                keyboardType="phone-pad"
-                textContentType="telephoneNumber"
-                testID="input-phone"
-              />
-
-              <ScreenDimensionsContext.Consumer>
-                {({ height }) => (
-                  <Flex mb={4}>
-                    <CountrySelect
-                      maxModalHeight={height * 0.95}
-                      onSelectValue={(value) => {
-                        this.onCountrySelected({
-                          shortName: value,
-                          longName: COUNTRY_SELECT_OPTIONS.find((opt) => opt.value === value)!.label,
-                        } as Country)
-                      }}
-                      value={this.state.values.country?.shortName}
-                      hasError={!!errorForCountry}
-                    />
-                    {!!errorForCountry && (
-                      <Sans size="2" color="red100">
-                        {errorForCountry}
-                      </Sans>
-                    )}
-                  </Flex>
-                )}
-              </ScreenDimensionsContext.Consumer>
-
-              <Button block width={100} onPress={() => this.onSubmit()} testID="button-add">
-                Add billing address
-              </Button>
-            </Container>
-          </ScrollView>
-        </ArtsyKeyboardAvoidingView>
-      </BiddingThemeProvider>
+            </Button>
+          </Container>
+        </ScrollView>
+      </ArtsyKeyboardAvoidingView>
     )
   }
 

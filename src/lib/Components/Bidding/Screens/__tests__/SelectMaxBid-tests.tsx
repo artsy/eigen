@@ -13,7 +13,6 @@ import Spinner from "../../../../Components/Spinner"
 import { SelectMaxBid_me } from "__generated__/SelectMaxBid_me.graphql"
 import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"
 import { ActivityIndicator } from "react-native"
-import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { SelectMaxBid } from "../SelectMaxBid"
 
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
@@ -77,9 +76,7 @@ beforeEach(() => {
 
 it("renders without throwing an error", () => {
   renderWithWrappers(
-    <BiddingThemeProvider>
-      <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
-    </BiddingThemeProvider>
+    <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
   )
 })
 
@@ -96,9 +93,7 @@ it("shows a spinner while fetching new bid increments", () => {
 
 it("refetches in next component's refreshSaleArtwork", () => {
   const component = renderWithWrappers(
-    <BiddingThemeProvider>
-      <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
-    </BiddingThemeProvider>
+    <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
   )
   component.root.findByType(Button).props.onPress()
   const nextScreen = fakeNavigator.nextStep()
@@ -113,9 +108,7 @@ it("refetches in next component's refreshSaleArtwork", () => {
 
 it("removes the spinner once the refetch is complete", () => {
   const component = renderWithWrappers(
-    <BiddingThemeProvider>
-      <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
-    </BiddingThemeProvider>
+    <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
   )
   component.root.findByType(Button).props.onPress()
   const nextScreen = fakeNavigator.nextStep()
