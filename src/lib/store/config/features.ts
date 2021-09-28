@@ -166,6 +166,12 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "ARShowNetworkUnavailableModal",
   },
+  ARGoogleAuth: {
+    readyForRelease: true,
+    description: "Enable Google authentication",
+    showInAdminMenu: true,
+    echoFlagKey: "ARGoogleAuth",
+  },
 })
 
 export interface DevToggleDescriptor {

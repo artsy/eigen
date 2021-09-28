@@ -5,6 +5,7 @@ import { Button, Flex, Join, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
 import { Alert, Image, Linking, Platform } from "react-native"
 import { EnvelopeIcon } from "../../../palette/svgs/EnvelopeIcon"
+import { useFeatureFlag } from "../../store/GlobalStore"
 
 interface OnboardingSocialPickProps {
   mode: "login" | "signup"
@@ -13,6 +14,8 @@ interface OnboardingSocialPickProps {
 export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode }) => {
   const webURL = useEnvironment().webURL
   const navigation = useNavigation()
+
+  const enableGoogleAuth = useFeatureFlag("ARGoogleAuth")
 
   /**
    * When we land on OnboardingSocialPick coming from OnboardingCreatAccount or OnboardingLogin
@@ -69,117 +72,128 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
   }
 
   return (
-    <Flex justifyContent="center" alignItems="center" flex={1} px={1.5} backgroundColor="white">
+    <Flex justifyContent="center" flex={1} backgroundColor="white">
       <BackButton
         onPress={() => {
           navigation.goBack()
         }}
       />
-      <Join separator={<Spacer height={60} />}>
-        <Text variant="lg">{mode === "login" ? "Log in" : "Create account"}</Text>
+      <Flex px={1.5}>
+        <Join separator={<Spacer height={60} />}>
+          <Text variant="xxl">{mode === "login" ? "Log in" : "Create account"}</Text>
 
-        <>
-          <Button
-            onPress={() => {
-              if (mode === "login") {
-                navigation.navigate("OnboardingLoginWithEmail")
-              } else {
-                navigation.navigate("OnboardingCreateAccountWithEmail")
-              }
-            }}
-            block
-            haptic="impactMedium"
-            mb={1}
-            variant="outline"
-            icon={<EnvelopeIcon mr={1} />}
-            testID="useEmail"
-          >
-            {mode === "login" ? "Continue with email" : "Sign up with email"}
-          </Button>
-          {Platform.OS === "ios" && (
+          <>
             <Button
-              onPress={useApple}
+              onPress={() => {
+                if (mode === "login") {
+                  navigation.navigate("OnboardingLoginWithEmail")
+                } else {
+                  navigation.navigate("OnboardingCreateAccountWithEmail")
+                }
+              }}
               block
               haptic="impactMedium"
               mb={1}
-              variant="fillDark"
-              icon={<Image source={require("@images/apple.webp")} resizeMode="contain" style={{ marginRight: 10 }} />}
-              testID="useApple"
+              variant="outline"
+              icon={<EnvelopeIcon mr={1} />}
+              testID="useEmail"
             >
-              {mode === "login" ? "Continue with Apple" : "Sign up with Apple"}
+              {mode === "login" ? "Continue with email" : "Sign up with email"}
             </Button>
-          )}
-          <Button
-            onPress={useGoogle}
-            block
-            haptic="impactMedium"
-            mb={1}
-            variant="outline"
-            icon={<Image source={require("@images/google.webp")} resizeMode="contain" style={{ marginRight: 10 }} />}
-            testID="useGoogle"
-          >
-            {mode === "login" ? "Continue with Google" : "Sign up with Google"}
-          </Button>
-          <Button
-            onPress={useFacebook}
-            block
-            haptic="impactMedium"
-            mb={1}
-            variant="outline"
-            icon={<Image source={require("@images/facebook.webp")} resizeMode="contain" style={{ marginRight: 10 }} />}
-            testID="useFacebook"
-          >
-            {mode === "login" ? "Continue with Facebook" : "Sign up with Facebook"}
-          </Button>
-        </>
+            {Platform.OS === "ios" && (
+              <Button
+                onPress={useApple}
+                block
+                haptic="impactMedium"
+                mb={1}
+                variant="fillDark"
+                icon={<Image source={require("@images/apple.webp")} resizeMode="contain" style={{ marginRight: 10 }} />}
+                testID="useApple"
+              >
+                {mode === "login" ? "Continue with Apple" : "Sign up with Apple"}
+              </Button>
+            )}
+            {!!enableGoogleAuth && (
+              <Button
+                onPress={useGoogle}
+                block
+                haptic="impactMedium"
+                mb={1}
+                variant="outline"
+                icon={
+                  <Image source={require("@images/google.webp")} resizeMode="contain" style={{ marginRight: 10 }} />
+                }
+                testID="useGoogle"
+              >
+                {mode === "login" ? "Continue with Google" : "Sign up with Google"}
+              </Button>
+            )}
 
-        <Text variant="xs" color="black60" textAlign="center">
-          By tapping {mode === "login" ? "Continue with Facebook" : "Sign up with Facebook"} or Apple, you agree to
-          Artsy's{" "}
-          <Text
-            onPress={() => {
-              Linking.openURL(`${webURL}/terms`)
-            }}
-            variant="xs"
-            style={{ textDecorationLine: "underline" }}
-          >
-            Terms of Use
-          </Text>{" "}
-          and{" "}
-          <Text
-            onPress={() => {
-              Linking.openURL(`${webURL}/privacy`)
-            }}
-            variant="xs"
-            style={{ textDecorationLine: "underline" }}
-          >
-            Privacy Policy
+            <Button
+              onPress={useFacebook}
+              block
+              haptic="impactMedium"
+              mb={1}
+              variant="outline"
+              icon={
+                <Image source={require("@images/facebook.webp")} resizeMode="contain" style={{ marginRight: 10 }} />
+              }
+              testID="useFacebook"
+            >
+              {mode === "login" ? "Continue with Facebook" : "Sign up with Facebook"}
+            </Button>
+          </>
+
+          <Text variant="xs" color="black60" textAlign="center">
+            By tapping {mode === "login" ? "Continue with Facebook" : "Sign up with Facebook"}{" "}
+            {!!enableGoogleAuth ? ",Google" : ""} or Apple, you agree to Artsy's{" "}
+            <Text
+              onPress={() => {
+                Linking.openURL(`${webURL}/terms`)
+              }}
+              variant="xs"
+              style={{ textDecorationLine: "underline" }}
+            >
+              Terms of Use
+            </Text>{" "}
+            and{" "}
+            <Text
+              onPress={() => {
+                Linking.openURL(`${webURL}/privacy`)
+              }}
+              variant="xs"
+              style={{ textDecorationLine: "underline" }}
+            >
+              Privacy Policy
+            </Text>
           </Text>
-        </Text>
-      </Join>
-      <Flex position="absolute" bottom={40}>
+        </Join>
+      </Flex>
+      <Flex position="absolute" bottom={40} width="100%">
         {mode === "login" ? (
-          <Text>
-            Don’t have an account?{" "}
+          <Text variant="lg" textAlign="center">
+            Don’t have an account?{"\n"}
             <Text
               onPress={() => {
                 // @ts-ignore
                 navigation.replace("OnboardingCreateAccount", { withFadeAnimation: true })
               }}
               style={{ textDecorationLine: "underline" }}
+              variant="lg"
             >
               Sign up
             </Text>
           </Text>
         ) : (
-          <Text>
-            Already have an account?{" "}
+          <Text variant="lg" textAlign="center">
+            Already have an account?{"\n"}
             <Text
               onPress={() => {
                 // @ts-ignore
                 navigation.replace("OnboardingLogin", { withFadeAnimation: true })
               }}
               style={{ textDecorationLine: "underline" }}
+              variant="lg"
             >
               Log in
             </Text>
