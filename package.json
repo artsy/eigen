@@ -91,7 +91,7 @@
     "cheerio": "0.22.0"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.1.0",
+    "@artsy/cohesion": "4.4.0",
     "@artsy/palette-tokens": "2.6.0",
     "@artsy/to-title-case": "^1.0.3",
     "@expo/react-native-action-sheet": "^3.8.0",
