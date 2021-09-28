@@ -2,7 +2,7 @@ import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { AutosuggestSearchResult as SearchResult } from "../AutosuggestSearchResult"
+import { AutosuggestSearchResult } from "../AutosuggestSearchResult"
 import { RecentSearches } from "../RecentSearches"
 import { SearchContext } from "../SearchContext"
 import { RecentSearch } from "../SearchModel"
@@ -86,7 +86,7 @@ describe("Recent Searches", () => {
     const tree = renderWithWrappers(<TestPage />)
 
     expect(extractText(tree.root)).toMatchInlineSnapshot(`"Recent SearchesWe’ll save your recent searches here"`)
-    expect(tree.root.findAllByType(SearchResult)).toHaveLength(0)
+    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(0)
   })
 
   it("shows recent searches if there were any", () => {
@@ -94,12 +94,12 @@ describe("Recent Searches", () => {
 
     GlobalStore.actions.search.addRecentSearch(banksy)
 
-    expect(tree.root.findAllByType(SearchResult)).toHaveLength(1)
+    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(1)
     expect(extractText(tree.root)).toContain("Banksy")
 
     GlobalStore.actions.search.addRecentSearch(andyWarhol)
 
-    expect(tree.root.findAllByType(SearchResult)).toHaveLength(2)
+    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(2)
     expect(extractText(tree.root)).toContain("Andy Warhol")
   })
 
@@ -113,7 +113,7 @@ describe("Recent Searches", () => {
     GlobalStore.actions.search.addRecentSearch(joanMitchell)
     GlobalStore.actions.search.addRecentSearch(anniAlbers)
 
-    expect(tree.root.findAllByType(SearchResult)).toHaveLength(5)
+    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(5)
     expect(extractText(tree.root)).not.toContain("Banksy")
     expect(extractText(tree.root)).toContain("Andy Warhol")
     expect(extractText(tree.root)).toContain("Keith Haring")

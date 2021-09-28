@@ -8,7 +8,7 @@ import React from "react"
 import { Pressable } from "react-native"
 import { act } from "react-test-renderer"
 import { AutosuggestSearchResult } from "../AutosuggestSearchResult"
-import { ItalicText, ResultWithHighlight, ResultWithItalic, Text } from "../ResultWithHighlight"
+import { ItalicText, ResultWithHighlight, ResultWithItalic, SmallText } from "../ResultWithHighlight"
 import { SearchContext } from "../SearchContext"
 
 const inputBlurMock = jest.fn()
@@ -51,7 +51,7 @@ describe(AutosuggestSearchResult, () => {
   })
 
   it(`works`, async () => {
-    const tree = renderWithWrappers(<TestWrapper result={result} showResultType={true} />)
+    const tree = renderWithWrappers(<TestWrapper result={result} showResultType />)
 
     expect(extractText(tree.root)).toContain("Banksy")
     expect(extractText(tree.root)).toContain("Artist")
@@ -295,7 +295,7 @@ describe("ResultWithItalic", () => {
   describe("when match is in an artwork name", () => {
     const array = ["Henri Venne, The Sun Shines ", "Cold", " (2015)"]
     const tree = renderWithWrappers(<ResultWithItalic result={array} />)
-    const text = tree.root.findAllByType(Text)
+    const text = tree.root.findAllByType(SmallText)
     const italicText = tree.root.findAllByType(ItalicText)
 
     it("renders 3 text elements", () => {
@@ -326,7 +326,7 @@ describe("ResultWithItalic", () => {
   describe("when match is in an artist name", () => {
     const array = ["Christ on the ", "Cold", " Stone, Title, with comma (1990)"]
     const tree = renderWithWrappers(<ResultWithItalic result={array} />)
-    const text = tree.root.findAllByType(Text)
+    const text = tree.root.findAllByType(SmallText)
     const italicText = tree.root.findAllByType(ItalicText)
 
     it("renders 3 text elements", () => {
@@ -355,7 +355,7 @@ describe("ResultWithItalic", () => {
   describe("when there is no artwork name", () => {
     const array = ["Ann ", "Veronica", " Janssens"]
     const tree = renderWithWrappers(<ResultWithItalic result={array} />)
-    const text = tree.root.findAllByType(Text)
+    const text = tree.root.findAllByType(SmallText)
 
     it("renders 2 text elements", () => {
       expect(text).toHaveLength(2)

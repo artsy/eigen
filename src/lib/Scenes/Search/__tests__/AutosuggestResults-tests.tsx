@@ -11,7 +11,7 @@ import { FlatList } from "react-native"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { AutosuggestResults } from "../AutosuggestResults"
-import { AutosuggestSearchResult as SearchResult } from "../AutosuggestSearchResult"
+import { AutosuggestSearchResult } from "../AutosuggestSearchResult"
 import { SearchContext } from "../SearchContext"
 
 const FixturePage1: AutosuggestResultsQueryRawResponse = {
@@ -154,12 +154,12 @@ describe("AutosuggestResults", () => {
 
   it(`has no elements to begin with`, async () => {
     const tree = renderWithWrappers(<TestWrapper query="" />)
-    expect(tree.root.findAllByType(SearchResult)).toHaveLength(0)
+    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(0)
   })
 
   it(`has some elements to begin with if you give it some`, async () => {
     const tree = renderWithWrappers(<TestWrapper query="michael" />)
-    expect(tree.root.findAllByType(SearchResult)).toHaveLength(0)
+    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(0)
 
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("AutosuggestResultsQuery")
     expect(env.mock.getMostRecentOperation().request.variables.query).toBe("michael")
@@ -168,7 +168,7 @@ describe("AutosuggestResults", () => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
     })
 
-    expect(tree.root.findAllByType(SearchResult)).toHaveLength(1)
+    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(1)
   })
 
   it(`doesn't call loadMore until you start scrolling`, () => {
@@ -176,7 +176,7 @@ describe("AutosuggestResults", () => {
     act(() => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
     })
-    expect(tree.root.findAllByType(SearchResult)).toHaveLength(1)
+    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(1)
 
     expect(env.mock.getAllOperations()).toHaveLength(0)
 
@@ -197,7 +197,7 @@ describe("AutosuggestResults", () => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage2 })
     })
 
-    expect(tree.root.findAllByType(SearchResult)).toHaveLength(2)
+    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(2)
     expect(extractText(tree.root)).toContain("Banksy")
     expect(extractText(tree.root)).toContain("Andy Warhol")
 
@@ -213,7 +213,7 @@ describe("AutosuggestResults", () => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage3 })
     })
 
-    expect(tree.root.findAllByType(SearchResult)).toHaveLength(3)
+    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(3)
     expect(extractText(tree.root)).toContain("Banksy")
     expect(extractText(tree.root)).toContain("Andy Warhol")
     expect(extractText(tree.root)).toContain("Alex Katz")
@@ -257,7 +257,7 @@ describe("AutosuggestResults", () => {
     const tree = renderWithWrappers(<TestWrapper query="michael" />)
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixtureEmpty }))
 
-    expect(tree.root.findAllByType(SearchResult)).toHaveLength(0)
+    expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(0)
     expect(extractText(tree.root)).toContain("We couldn't find anything for “michael”")
   })
 
@@ -271,7 +271,7 @@ describe("AutosuggestResults", () => {
     const spy = jest.fn()
     const tree = renderWithWrappers(<TestWrapper query="michael" showResultType={false} onResultPress={spy} />)
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
-    tree.root.findByType(SearchResult).props.onResultPress()
+    tree.root.findByType(AutosuggestSearchResult).props.onResultPress()
     expect(spy).toHaveBeenCalled()
   })
 })

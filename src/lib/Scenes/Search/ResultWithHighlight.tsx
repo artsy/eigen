@@ -1,23 +1,18 @@
 import GraphemeSplitter from "grapheme-splitter"
 import { normalizeText } from "lib/utils/normalizeText"
-import { Text as PaletteText, TextProps } from "palette"
+import { Text } from "palette"
 import React from "react"
+import styled from "styled-components/native"
 
 const splitter = new GraphemeSplitter()
 
-export const Text: React.FC<TextProps> = ({ children, ...rest }) => {
-  return (
-    <PaletteText variant="xs" {...rest}>
-      {children}
-    </PaletteText>
-  )
-}
+export const SmallText = styled(Text).attrs({ variant: "xs" })``
 
-export const ItalicText: React.FC<{ color?: string }> = ({ color = "grey", children }) => {
+export const ItalicText: React.FC<{ color?: string }> = ({ color = "black60", children }) => {
   return (
-    <Text italic color={color}>
+    <SmallText italic color={color}>
       {children}
-    </Text>
+    </SmallText>
   )
 }
 
@@ -25,13 +20,13 @@ const Result: React.FC<{ result: string[] }> = ({ result }) => {
   const [nonMatch, match, nonMatch2] = result
 
   return (
-    <Text>
+    <SmallText>
       {nonMatch}
-      <Text weight="medium" color="blue100" style={{ padding: 0, margin: 0 }}>
+      <SmallText weight="medium" color="blue100" style={{ padding: 0, margin: 0 }}>
         {match}
-      </Text>
+      </SmallText>
       {nonMatch2}
-    </Text>
+    </SmallText>
   )
 }
 
@@ -47,7 +42,7 @@ export const ResultWithItalic: React.FC<{ result: string[] }> = ({ result }) => 
     const restNonMatch = rest.join(",")
     return (
       <>
-        <Text>{mainNonMatch}</Text>
+        <SmallText>{mainNonMatch}</SmallText>
 
         <ItalicText>
           {restNonMatch}
@@ -67,13 +62,13 @@ export const ResultWithItalic: React.FC<{ result: string[] }> = ({ result }) => 
     const restNonMatch2 = rest.join(",")
     return (
       <>
-        <Text>
+        <SmallText>
           {nonMatch}
-          <Text weight="medium" color="blue100">
+          <SmallText weight="medium" color="blue100">
             {match}
-          </Text>
+          </SmallText>
           {mainNonMatch2}
-        </Text>
+        </SmallText>
 
         <ItalicText>{restNonMatch2}</ItalicText>
       </>
@@ -95,10 +90,10 @@ export const ResultWithHighlight = ({
   // If highlight is not supplied then use medium weight, since the search result
   // is being rendered in a context that doesn't support highlights
   if (highlight === undefined) {
-    return <Text weight="medium">{displayLabel}</Text>
+    return <SmallText weight="medium">{displayLabel}</SmallText>
   }
   if (!highlight.trim()) {
-    return <Text weight="regular">{displayLabel}</Text>
+    return <SmallText weight="regular">{displayLabel}</SmallText>
   }
   // search for `highlight` in `displayLabel` but ignore diacritics in `displayLabel`
   // so that a user can type, e.g. `Miro` and see `Miró` highlighted
@@ -130,7 +125,7 @@ export const ResultWithHighlight = ({
   }
 
   if (!result) {
-    return <Text weight="regular">{displayLabel}</Text>
+    return <SmallText weight="regular">{displayLabel}</SmallText>
   }
 
   if (categoryName === "Artwork") {

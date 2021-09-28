@@ -109,6 +109,8 @@ export const AutosuggestSearchResult: React.FC<{
         <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
           <SearchResultImage imageURL={result.imageUrl} resultType={resultType} />
 
+          <Spacer ml={1} />
+
           <Flex flex={1}>
             <Text variant="xs" numberOfLines={1}>
               <ResultWithHighlight
