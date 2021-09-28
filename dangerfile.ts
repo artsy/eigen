@@ -14,7 +14,7 @@ const typescriptOnly = (file: string) => file.includes(".ts")
 const filesOnly = (file: string) => fs.existsSync(file) && fs.lstatSync(file).isFile()
 
 // Modified or Created can be treated the same a lot of the time
-const getCreatedFiles = (createdFiles: string[]) => createdFiles.filter(filesOnly)
+const getCreatedFileNames = (createdFiles: string[]) => createdFiles.filter(filesOnly)
 
 const testOnlyFilter = (filename: string) => filename.includes("-tests") && typescriptOnly(filename)
 
@@ -23,7 +23,7 @@ const testOnlyFilter = (filename: string) => filename.includes("-tests") && type
  */
 // We are trying to migrate away from moment towards luxon
 const preventUsingMoment = () => {
-  const newMomentImports = getCreatedFiles(danger.git.created_files).filter((filename) => {
+  const newMomentImports = getCreatedFileNames(danger.git.created_files).filter((filename) => {
     const content = fs.readFileSync(filename).toString()
     return content.includes('from "moment"') || content.includes('from "moment-timezone"')
   })
@@ -39,7 +39,7 @@ See [docs](https://moment.github.io/luxon/api-docs/index.html).
 
 // We are trying to migrate away from Enzyme towards react-test-renderer
 const preventUsingEnzyme = () => {
-  const newEnzymeImports = getCreatedFiles(danger.git.created_files)
+  const newEnzymeImports = getCreatedFileNames(danger.git.created_files)
     .filter(testOnlyFilter)
     .filter((filename) => {
       const content = fs.readFileSync(filename).toString()
@@ -56,7 +56,7 @@ See [\`placeholders-tests.tsx\`](https://github.com/artsy/eigen/blob/aebce6e50ec
 }
 
 const preventUsingRenderRelayTree = () => {
-  const newRenderRelayTreeImports = getCreatedFiles(danger.git.created_files)
+  const newRenderRelayTreeImports = getCreatedFileNames(danger.git.created_files)
     .filter(testOnlyFilter)
     .filter((filename) => {
       const content = fs.readFileSync(filename).toString()
@@ -147,10 +147,35 @@ export const validatePRChangelog = () => {
 
   return markdown(message)
 }
+
+// Force the usage of WebPs
+const IMAGE_EXTENSIONS_TO_AVOID = ["png", "jpg", "jpeg"]
+const IMAGE_EXTENSIONS = [...IMAGE_EXTENSIONS_TO_AVOID, "webp"]
+
+export const useWebPs = (fileNames: string[]) => {
+  const hasNonWebImages = Boolean(
+    fileNames
+      .map((fileName) => fileName.split(".").pop() || "")
+      .filter((fileExtension) => {
+        return IMAGE_EXTENSIONS.includes(fileExtension)
+      })
+      .find((imageFileExtension) => IMAGE_EXTENSIONS_TO_AVOID.includes(imageFileExtension))
+  )
+
+  console.log(hasNonWebImages)
+  if (hasNonWebImages) {
+    warn(
+      "❌ **It seems like you added some non WebP images to Eigen, please convert them to WebPs using `source images/script.sh` script **"
+    )
+  }
+}
 ;(async function () {
+  const newCreatedFileNames = getCreatedFileNames(danger.git.created_files)
+
   preventUsingMoment()
   preventUsingEnzyme()
   preventUsingRenderRelayTree()
   verifyRemainingDevWork()
   validatePRChangelog()
+  useWebPs(newCreatedFileNames)
 })()

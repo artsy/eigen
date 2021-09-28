@@ -5,7 +5,7 @@ export const ArtsyLogoWhiteIcon: React.FC<IconProps> = (props) => {
   return (
     <Icon {...props} viewBox="0 0 94 32">
       <G fill="none" fillRule="evenodd">
-        <Path fill="#F8F8F8" d="M0 0h94v32H0z" />
+        <Path fill="none" d="M0 0h94v32H0z" />
         <Path
           d="M2.355 2.173h89.323v27.613H53.872v-4.55h-2.119v4.55H2.355V2.173zM.162 31.953h93.71V.006H.161v31.945z"
           fill="#FFF"
