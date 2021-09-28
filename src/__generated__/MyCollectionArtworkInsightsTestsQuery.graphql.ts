@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d2d3f152b03420cfd70433aa451cd7ab */
+/* @relayHash 4d8fa5dcd2401df8920c4a676fe4deb8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -74,6 +74,7 @@ fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
   artist {
     slug
     name
+    internalID
     articlesConnection(first: 3, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
       edges {
         node {
@@ -558,6 +559,7 @@ return {
                 ],
                 "storageKey": "auctionResultsConnection(first:3,sort:\"DATE_DESC\")"
               },
+              (v6/*: any*/),
               {
                 "alias": null,
                 "args": [
@@ -734,7 +736,7 @@ return {
     ]
   },
   "params": {
-    "id": "d2d3f152b03420cfd70433aa451cd7ab",
+    "id": "4d8fa5dcd2401df8920c4a676fe4deb8",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -853,6 +855,7 @@ return {
         "artwork.artist.auctionResultsConnection.edges.node.saleDate": (v10/*: any*/),
         "artwork.artist.auctionResultsConnection.edges.node.title": (v10/*: any*/),
         "artwork.artist.id": (v9/*: any*/),
+        "artwork.artist.internalID": (v9/*: any*/),
         "artwork.artist.name": (v10/*: any*/),
         "artwork.artist.slug": (v9/*: any*/),
         "artwork.id": (v9/*: any*/),
