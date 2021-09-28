@@ -68,10 +68,10 @@ export const ClosedLotStanding = ({
       <Flex flexDirection="row" justifyContent="space-between">
         <Lot saleArtwork={saleArtwork!} subtitle={subtitle} ArtworkBadge={Badge} />
         <Flex flexDirection="column">
-          <Flex flexDirection="row">
+          <Flex flexDirection="row" justifyContent="flex-end">
             <Text variant="xs">{sellingPrice}</Text>
           </Flex>
-          <Flex flexDirection="row" alignItems="center">
+          <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
             <Result />
           </Flex>
         </Flex>
