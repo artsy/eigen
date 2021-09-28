@@ -311,7 +311,7 @@ export class Registration extends React.Component<RegistrationProps, Registratio
       <ScrollView
         contentContainerStyle={{ flexGrow: 1, justifyContent: "space-between" }}
         keyboardDismissMode="on-drag"
-
+      >
         <Box p={20} pt={25} flex={1}>
           <Text fontSize={16} variant="xs" mb="2">
             {sale.name}
