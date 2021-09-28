@@ -178,7 +178,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
 
   const handleSubmitEditing = () => {
     if (shouldStartQuering) {
-      setSelectedPill(ARTWORKS_PILL)
+      setSelectedPill(TOP_PILL)
     }
   }
 
