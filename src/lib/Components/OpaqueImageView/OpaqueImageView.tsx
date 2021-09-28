@@ -1,5 +1,4 @@
 import React from "react"
-
 import {
   Image,
   LayoutChangeEvent,
@@ -11,8 +10,6 @@ import {
   View,
   ViewProps,
 } from "react-native"
-
-import colors from "lib/data/colors"
 import { createGeminiUrl } from "./createGeminiUrl"
 
 interface Props extends ViewProps {
@@ -75,7 +72,7 @@ interface State {
 
 export default class OpaqueImageView extends React.Component<Props, State> {
   static defaultProps: Props = {
-    placeholderBackgroundColor: colors["gray-regular"],
+    placeholderBackgroundColor: "#E7E7E7", // this is black10. Change it to that when this component becomes a function component.
   }
 
   constructor(props: Props) {

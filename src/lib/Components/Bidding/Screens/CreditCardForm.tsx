@@ -7,7 +7,6 @@ import stripe, { StripeToken } from "tipsi-stripe"
 
 import { BottomAlignedButtonWrapper } from "lib/Components/Buttons/BottomAlignedButtonWrapper"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { BiddingThemeProvider } from "../Components/BiddingThemeProvider"
 import { Container } from "../Components/Containers"
 import { PaymentCardTextFieldParams } from "../types"
 
@@ -89,51 +88,49 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
     const errorText = "There was an error. Please try again."
 
     return (
-      <BiddingThemeProvider>
-        <BottomAlignedButtonWrapper
-          onPress={this.state.valid ? () => this.tokenizeCardAndSubmit() : undefined}
-          buttonComponent={buttonComponent}
-        >
-          <Theme>
-            <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>Add credit card</FancyModalHeader>
-          </Theme>
-          <ScrollView scrollEnabled={false}>
-            <Container m={0}>
-              <View>
-                <Box m={4}>
-                  <Serif size="3t" mb={2}>
-                    Card Information
-                  </Serif>
-                  <LiteCreditCardInput
-                    ref={this.paymentInfo}
-                    onChange={({ valid, values }) => {
-                      this.setState({
-                        valid,
-                        params: {
-                          cvc: values.cvc,
-                          expMonth: Number(values.expiry.split("/")[0]),
-                          expYear: Number(values.expiry.split("/")[1]),
-                          number: values.number,
-                        },
-                      })
-                    }}
-                  />
-                  {!!this.state.isError && (
-                    <Sans size="2" mt={3} color="red100">
-                      {errorText}
-                    </Sans>
-                  )}
-                  <Sans mt="6" size="3" color="black60" textAlign="center">
-                    Registration is free.
-                    {"\n"}A credit card is required to bid. Artsy will never charge this card without your permission,
-                    and you are not required to use this card to pay if you win.
+      <BottomAlignedButtonWrapper
+        onPress={this.state.valid ? () => this.tokenizeCardAndSubmit() : undefined}
+        buttonComponent={buttonComponent}
+      >
+        <Theme>
+          <FancyModalHeader onLeftButtonPress={() => this.props.navigator?.pop()}>Add credit card</FancyModalHeader>
+        </Theme>
+        <ScrollView scrollEnabled={false}>
+          <Container m={0}>
+            <View>
+              <Box m={4}>
+                <Serif size="3t" mb={2}>
+                  Card Information
+                </Serif>
+                <LiteCreditCardInput
+                  ref={this.paymentInfo}
+                  onChange={({ valid, values }) => {
+                    this.setState({
+                      valid,
+                      params: {
+                        cvc: values.cvc,
+                        expMonth: Number(values.expiry.split("/")[0]),
+                        expYear: Number(values.expiry.split("/")[1]),
+                        number: values.number,
+                      },
+                    })
+                  }}
+                />
+                {!!this.state.isError && (
+                  <Sans size="2" mt={3} color="red100">
+                    {errorText}
                   </Sans>
-                </Box>
-              </View>
-            </Container>
-          </ScrollView>
-        </BottomAlignedButtonWrapper>
-      </BiddingThemeProvider>
+                )}
+                <Sans mt="6" size="3" color="black60" textAlign="center">
+                  Registration is free.
+                  {"\n"}A credit card is required to bid. Artsy will never charge this card without your permission, and
+                  you are not required to use this card to pay if you win.
+                </Sans>
+              </Box>
+            </View>
+          </Container>
+        </ScrollView>
+      </BottomAlignedButtonWrapper>
     )
   }
 }

@@ -45,7 +45,7 @@ const getWrapper = (mockResolvers: MockResolvers = {}) => {
       `}
       render={({ props, error }) => {
         if (props) {
-          return <InboxContainer me={props!.me!} isVisible={true} />
+          return <InboxContainer me={props!.me!} isVisible />
         } else if (error) {
           console.error(error)
         }

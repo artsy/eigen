@@ -83,6 +83,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
         })
 
         handleChangeText(text)
+        onReset()
       }}
       onSubmitEditing={onSubmitEditing}
       onFocus={() => {
@@ -106,12 +107,17 @@ interface SearchState {
   page?: number
 }
 
+const TOP_PILL: PillType = {
+  name: "TOP",
+  displayName: "Top",
+  type: "elastic",
+}
 const ARTWORKS_PILL: PillType = {
   name: "ARTWORK",
   displayName: "Artworks",
   type: "elastic",
 }
-const pills: PillType[] = [ARTWORKS_PILL]
+const pills: PillType[] = [TOP_PILL, ARTWORKS_PILL]
 
 interface Search2Props {
   relay: RelayRefetchProp
@@ -121,7 +127,7 @@ interface Search2Props {
 export const Search2: React.FC<Search2Props> = (props) => {
   const { system, relay } = props
   const [searchState, setSearchState] = useState<SearchState>({})
-  const [selectedPill, setSelectedPill] = useState<PillType | null>(null)
+  const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
   const searchInsightsConfigured = useSearchInsightsConfig(system?.algolia?.appID, system?.algolia?.apiKey)
@@ -150,40 +156,34 @@ export const Search2: React.FC<Search2Props> = (props) => {
   }
 
   const renderResults = () => {
-    if (selectedPill?.type === "algolia") {
+    if (selectedPill.type === "algolia") {
       return <SearchResultsContainer indexName={selectedPill.name} categoryDisplayName={selectedPill.displayName} />
     }
-    if (selectedPill?.type === "elastic") {
-      return <SearchArtworksQueryRenderer keyword={searchState.query!} />
+    if (selectedPill.name === TOP_PILL.name) {
+      return <AutosuggestResults query={searchState.query!} />
     }
-    return <AutosuggestResults query={searchState.query!} />
+    return <SearchArtworksQueryRenderer keyword={searchState.query!} />
   }
 
-  const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 1
+  const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 2
 
   const handlePillPress = (pill: PillType) => {
-    let nextSelectedPill: PillType | null = pill
-
-    if (selectedPill?.name === pill.name) {
-      nextSelectedPill = null
-    }
-
     setSearchState((prevState) => ({ ...prevState, page: 1 }))
-    setSelectedPill(nextSelectedPill)
+    setSelectedPill(pill)
   }
 
   const isSelected = (pill: PillType) => {
-    return selectedPill?.name === pill.name
+    return selectedPill.name === pill.name
   }
 
   const handleSubmitEditing = () => {
     if (shouldStartQuering) {
-      setSelectedPill(ARTWORKS_PILL)
+      setSelectedPill(TOP_PILL)
     }
   }
 
   const handleResetSearchInput = () => {
-    setSelectedPill(null)
+    setSelectedPill(TOP_PILL)
   }
 
   return (
@@ -191,7 +191,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
       <ArtsyKeyboardAvoidingView>
         <InstantSearch
           searchClient={searchClient}
-          indexName={selectedPill?.type === "algolia" ? selectedPill.name : ""}
+          indexName={selectedPill.type === "algolia" ? selectedPill.name : ""}
           searchState={searchState}
           onSearchStateChange={setSearchState}
         >

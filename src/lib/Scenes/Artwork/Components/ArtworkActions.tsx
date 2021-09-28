@@ -106,15 +106,10 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
           {isOpenSale ? (
             <Touchable haptic onPress={() => this.handleArtworkSave()}>
               <UtilButton pr={2}>
-                <Box mr={0.5}>
-                  {is_saved ? <BellFillIcon fill="purple100" /* TODO-PALETTE-V3 "blue100" */ /> : <BellIcon />}
-                </Box>
+                <Box mr={0.5}>{is_saved ? <BellFillIcon fill="blue100" /> : <BellIcon />}</Box>
                 <ClassTheme>
                   {({ color }) => (
-                    <Sans
-                      size="3"
-                      color={is_saved ? color("purple100" /* TODO-PALETTE-V3 "blue100" */) : color("black100")}
-                    >
+                    <Sans size="3" color={is_saved ? color("blue100") : color("black100")}>
                       Watch lot
                     </Sans>
                   )}
@@ -124,15 +119,10 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
           ) : (
             <Touchable haptic onPress={() => this.handleArtworkSave()}>
               <UtilButton pr={2}>
-                <Box mr={0.5}>
-                  {is_saved ? <HeartFillIcon fill="purple100" /* TODO-PALETTE-V3 "blue100" */ /> : <HeartIcon />}
-                </Box>
+                <Box mr={0.5}>{is_saved ? <HeartFillIcon fill="blue100" /> : <HeartIcon />}</Box>
                 <ClassTheme>
                   {({ color }) => (
-                    <Sans
-                      size="3"
-                      color={is_saved ? color("purple100" /* TODO-PALETTE-V3 "blue100" */) : color("black100")}
-                    >
+                    <Sans size="3" color={is_saved ? color("blue100") : color("black100")}>
                       {is_saved ? "Saved" : "Save"}
                     </Sans>
                   )}

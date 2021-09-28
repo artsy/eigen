@@ -9,7 +9,7 @@ describe("Dialog", () => {
     const { getByTestId } = renderWithWrappersTL(
       <Dialog
         title="title"
-        isVisible={true}
+        isVisible
         primaryCta={{
           text: "Primary Action Button",
           onPress: jest.fn(),
@@ -25,7 +25,7 @@ describe("Dialog", () => {
       <Dialog
         title="title"
         detail="Some unique detail"
-        isVisible={true}
+        isVisible
         primaryCta={{
           text: "Primary Action Button",
           onPress: jest.fn(),
@@ -42,7 +42,7 @@ describe("Dialog", () => {
     const { getByTestId } = renderWithWrappersTL(
       <Dialog
         title="title"
-        isVisible={true}
+        isVisible
         primaryCta={{
           text: "Primary Action Button",
           onPress: primaryActionMock,
@@ -63,7 +63,7 @@ describe("Dialog", () => {
     const { getByTestId } = renderWithWrappersTL(
       <Dialog
         title="title"
-        isVisible={true}
+        isVisible
         primaryCta={{
           text: "Primary Action Button",
           onPress: jest.fn(),
@@ -87,7 +87,7 @@ describe("Dialog", () => {
     const { getByTestId } = renderWithWrappersTL(
       <Dialog
         title="title"
-        isVisible={true}
+        isVisible
         onBackgroundPress={onBackgroundPressMock}
         primaryCta={{
           text: "Primary Action Button",

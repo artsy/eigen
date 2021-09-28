@@ -1,3 +1,4 @@
+import { themeGet } from "@styled-system/theme-get"
 import moment from "moment"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -5,7 +6,6 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { Schema, Track, track as _track } from "lib/utils/track"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { Colors } from "lib/data/colors"
 import styled from "styled-components/native"
 
 import { ConversationSnippet_conversation } from "__generated__/ConversationSnippet_conversation.graphql"
@@ -15,7 +15,7 @@ const Unread = styled(Flex)`
   height: 14;
   width: 14;
   border-radius: 7;
-  background-color: ${Colors.White};
+  background-color: ${themeGet("colors.white100")};
   position: absolute;
   left: -7;
   top: -7;
@@ -28,7 +28,7 @@ const Indicator = styled.View`
   height: 10;
   width: 10;
   border-radius: 5;
-  background-color: ${Colors.PurpleRegular};
+  background-color: ${themeGet("colors.blue100")};
 `
 
 const ImageView = styled(OpaqueImageView)`

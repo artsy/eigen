@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { SavedSearchesList_me } from "__generated__/SavedSearchesList_me.graphql"
-import { SAVED_SERCHES_PAGE_SIZE } from "lib/data/constants"
+import { SAVED_SERCHES_PAGE_SIZE } from "lib/Components/constants"
 import { navigate, navigationEvents } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"

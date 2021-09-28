@@ -33,7 +33,7 @@ describe("KeywordFilter", () => {
   it("renders and filters when input changes", () => {
     const selectedTree = renderWithWrappers(
       <ArtworkFiltersStoreProvider initialData={initialFilterData}>
-        <KeywordFilter artistId={"artist-id"} artistSlug={"artist-slug"} />
+        <KeywordFilter artistId="artist-id" artistSlug="artist-slug" />
       </ArtworkFiltersStoreProvider>
     )
 

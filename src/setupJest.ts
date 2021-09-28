@@ -366,6 +366,8 @@ jest.mock("./lib/utils/useScreenDimensions", () => {
     width: 380,
     height: 550,
     orientation: "portrait",
+    size: "small",
+    isSmallScreen: true,
     safeAreaInsets: {
       top: 20,
       left: 0,

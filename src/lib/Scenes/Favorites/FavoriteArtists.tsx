@@ -5,7 +5,7 @@ import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp 
 import Spinner from "lib/Components/Spinner"
 import { ZeroState } from "lib/Components/States/ZeroState"
 
-import { PAGE_SIZE } from "lib/data/constants"
+import { PAGE_SIZE } from "lib/Components/constants"
 
 import { FavoriteArtists_me } from "__generated__/FavoriteArtists_me.graphql"
 import { FavoriteArtistsQuery } from "__generated__/FavoriteArtistsQuery.graphql"

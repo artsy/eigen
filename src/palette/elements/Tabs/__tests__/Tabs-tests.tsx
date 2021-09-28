@@ -27,14 +27,14 @@ const tabs = [{ label: "Tab one" }, { label: "Tab Two" }]
 
 describe("Tab", () => {
   it("renders without throwing a error", () => {
-    renderWithWrappers(<TabV3 onPress={() => null} label={"Tab"} active={false} onLayout={() => null} />)
+    renderWithWrappers(<TabV3 onPress={() => null} label="Tab" active={false} onLayout={() => null} />)
   })
 
   it("Is pressable", () => {
     const mockOnPress = jest.fn()
 
     const tree = renderWithWrappers(
-      <TabV3 onPress={mockOnPress} label={"TabLabel"} active={false} onLayout={() => null} />
+      <TabV3 onPress={mockOnPress} label="TabLabel" active={false} onLayout={() => null} />
     )
     tree.root.findAllByType(Pressable)[0].props.onPress()
     expect(mockOnPress).toHaveBeenCalled()
@@ -46,7 +46,13 @@ describe("General TabBar Behaviour", () => {
   const tree = renderWithWrappers(
     <TabBarContainer tabLayouts={tabLayouts} activeTabIndex={0} scrollEnabled>
       {tabs.map((tab, index) => (
-        <Tab label={tab.label} onPress={() => null} onLayout={() => null} active={activeIndex === index} />
+        <Tab
+          key={`${index}`}
+          label={tab.label}
+          onPress={() => null}
+          onLayout={() => null}
+          active={activeIndex === index}
+        />
       ))}
     </TabBarContainer>
   )

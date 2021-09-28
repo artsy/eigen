@@ -1,10 +1,9 @@
 import { Schema, Track, track as _track } from "lib/utils/track"
-import { Flex, Text, Touchable } from "palette"
+import { ClassTheme, Flex, Text, Touchable } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import colors from "lib/data/colors"
 import styled from "styled-components/native"
 
 import { themeGet } from "@styled-system/theme-get"
@@ -57,30 +56,35 @@ export class ShowPreview extends React.Component<Props> {
   render() {
     const show = this.props.show
     const name = show.fair ? show.fair.name : show.name
+
     return (
-      <Touchable
-        underlayColor={colors["gray-light"]}
-        onPress={() => this.attachmentSelected()}
-        style={{ maxWidth: "66.67%", flex: 1 }}
-      >
-        <Container>
-          <ImageContainer>
-            <OpaqueImageView
-              imageURL={show.coverImage?.url}
-              style={{ flex: 1 }}
-              aspectRatio={show.coverImage?.aspectRatio}
-            />
-          </ImageContainer>
-          <TextContainer>
-            <Text variant="sm" color="white100">
-              {name}
-            </Text>
-            <Text variant="xs" color="white100" numberOfLines={1} ellipsizeMode={"middle"}>
-              {show.partner?.name}
-            </Text>
-          </TextContainer>
-        </Container>
-      </Touchable>
+      <ClassTheme>
+        {({ color }) => (
+          <Touchable
+            underlayColor={color("black5")}
+            onPress={() => this.attachmentSelected()}
+            style={{ maxWidth: "66.67%", flex: 1 }}
+          >
+            <Container>
+              <ImageContainer>
+                <OpaqueImageView
+                  imageURL={show.coverImage?.url}
+                  style={{ flex: 1 }}
+                  aspectRatio={show.coverImage?.aspectRatio}
+                />
+              </ImageContainer>
+              <TextContainer>
+                <Text variant="sm" color="white100">
+                  {name}
+                </Text>
+                <Text variant="xs" color="white100" numberOfLines={1} ellipsizeMode="middle">
+                  {show.partner?.name}
+                </Text>
+              </TextContainer>
+            </Container>
+          </Touchable>
+        )}
+      </ClassTheme>
     )
   }
 }

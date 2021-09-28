@@ -1,12 +1,11 @@
 import { themeGet } from "@styled-system/theme-get"
-import { Text, useColor } from "palette"
+import { Text, useTheme } from "palette"
 import React, { useState } from "react"
 import { StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from "react-native"
 import styled from "styled-components/native"
 
 import { CssTransition } from "lib/Components/Bidding/Components/Animation/CssTransition"
 import { Flex, FlexProps } from "lib/Components/Bidding/Elements/Flex"
-import { theme } from "../../../lib/Components/Bidding/Elements/Theme"
 
 const RADIOBUTTON_SIZE = 20
 const DURATION = 250
@@ -32,7 +31,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
   children,
   ...restProps
 }) => {
-  const color = useColor()
+  const { color, space } = useTheme()
 
   const [selected, setSelected] = useState(selectedProp)
   const isSelected = selectedProp ?? selected
@@ -83,7 +82,13 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
     >
       <Flex flexDirection="row" {...restProps}>
         <CssTransition
-          style={[styles.container, radioButtonStyle]}
+          style={[
+            styles.container,
+            {
+              marginRight: space("1"),
+            },
+            radioButtonStyle,
+          ]}
           animate={["backgroundColor", "borderColor"]}
           duration={DURATION}
         >
@@ -114,7 +119,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderStyle: "solid",
-    marginRight: theme.space[3],
     height: 20,
     width: 20,
     borderRadius: 10,

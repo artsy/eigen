@@ -17,17 +17,15 @@ export class BidInfoRow extends React.Component<BidInfoRowProps> {
 
     return (
       <TouchableWithoutFeedback onPress={onPress}>
-        <Row p={4} pb={3} mb={1} {...props}>
+        <Row p="2" pb="1" mb="1" {...props}>
           <Col>
-            <Text variant="sm" fontSize={12}>
-              {label}
-            </Text>
+            <Text variant="xs">{label}</Text>
           </Col>
 
           <Col alignItems="flex-end">{!!value && <Text numberOfLines={1}>{value}</Text>}</Col>
 
           <Col alignItems="flex-end" flexGrow={0} flexShrink={0} flexBasis="auto" flex={null}>
-            <Text color="purple100" /* TODO-PALETTE-V3 "blue100" */ ml={3}>
+            <Text color="blue100" ml={3}>
               {Boolean(value) ? "Edit" : "Add"}
             </Text>
           </Col>

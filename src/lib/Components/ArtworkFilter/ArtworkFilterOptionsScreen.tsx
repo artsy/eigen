@@ -62,6 +62,7 @@ export enum FilterModalMode {
   Show = "Show",
   Gene = "Gene",
   Tag = "Tag",
+  Search = "Search",
 }
 
 export const ArtworkFilterOptionsScreen: React.FC<
@@ -164,6 +165,9 @@ export const ArtworkFilterOptionsScreen: React.FC<
                 case FilterModalMode.Gene:
                   trackClear(PageNames.GenePage, OwnerEntityTypes.Gene)
                   break
+                case FilterModalMode.Search:
+                  trackClear(PageNames.Search, OwnerEntityTypes.Search)
+                  break
               }
 
               clearAllFilters()
@@ -256,6 +260,9 @@ export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
       sortOrder = ArtistSeriesFiltersSorted
       break
     case FilterModalMode.Artworks:
+      sortOrder = ArtworksFiltersSorted
+      break
+    case FilterModalMode.Search:
       sortOrder = ArtworksFiltersSorted
       break
     case FilterModalMode.Show:

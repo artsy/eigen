@@ -51,7 +51,7 @@ export const MyProfileHeader: React.FC<{ name: string | null; createdAt: string 
         onRightButtonPress={() => {
           navigate("/my-profile/settings")
         }}
-      ></FancyModalHeader>
+      />
       <Box px={space(2)} pb={space(6)}>
         <Sans size="8" color={color("black100")}>
           {name}

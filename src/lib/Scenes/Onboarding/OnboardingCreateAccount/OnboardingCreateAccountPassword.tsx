@@ -19,7 +19,7 @@ export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPa
   return (
     <OnboardingCreateAccountScreenWrapper
       onBackButtonPress={navigation.goBack}
-      title="Create a password"
+      title="Create a Password"
       caption="Password must be at least 8 characters and include a lowercase letter, uppercase letter, and digit."
     >
       <Input

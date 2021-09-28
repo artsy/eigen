@@ -68,16 +68,16 @@ export const FeatureHeaderPlaceholder: React.FC<{}> = ({}) => {
     <Flex flexDirection="row" borderBottomWidth={1} borderBottomColor="black">
       <PlaceholderBox height={imageHeight} flex={1} />
       <Stack px="2" alignItems="center" justifyContent="center" flex={1}>
-        <PlaceholderText width={220}></PlaceholderText>
-        <PlaceholderText width={330}></PlaceholderText>
+        <PlaceholderText width={220} />
+        <PlaceholderText width={330} />
       </Stack>
     </Flex>
   ) : (
     <Stack spacing={4} borderBottomWidth={1} borderBottomColor="black" pb="4">
       <PlaceholderBox height={imageHeight} />
       <Stack mx="2" alignItems="center" justifyContent="center" minHeight={140}>
-        <PlaceholderText width={220}></PlaceholderText>
-        <PlaceholderText width={330}></PlaceholderText>
+        <PlaceholderText width={220} />
+        <PlaceholderText width={330} />
       </Stack>
     </Stack>
   )

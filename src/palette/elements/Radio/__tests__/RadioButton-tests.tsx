@@ -5,7 +5,7 @@ import { TouchableWithoutFeedback } from "react-native"
 import { RadioButton } from "../RadioButton"
 
 it("shows text and subtitle within the radio button", () => {
-  const component = renderWithWrappers(<RadioButton text={"Remember me"} subtitle={"Subtitle"} />)
+  const component = renderWithWrappers(<RadioButton text="Remember me" subtitle="Subtitle" />)
 
   expect(component.root.findAllByType(Text).length).toEqual(2)
   expect(component.root.findAllByType(Text)[0].props.children).toEqual("Remember me")

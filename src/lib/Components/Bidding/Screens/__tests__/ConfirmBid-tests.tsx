@@ -22,7 +22,6 @@ import relay from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
 import { LinkText } from "../../../Text/LinkText"
-import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { BidInfoRow } from "../../Components/BidInfoRow"
 import { Address } from "../../types"
 import { BidResultScreen } from "../BidResult"
@@ -62,11 +61,7 @@ const findPlaceBidButton = (component) => {
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const mountConfirmBidComponent = (props) => {
-  return renderWithWrappers(
-    <BiddingThemeProvider>
-      <ConfirmBid {...props} />
-    </BiddingThemeProvider>
-  )
+  return renderWithWrappers(<ConfirmBid {...props} />)
 }
 
 beforeEach(() => {
@@ -104,11 +99,7 @@ it("displays the artwork title correctly with date", () => {
 
 it("displays the artwork title correctly without date", () => {
   const datelessProps = merge({}, initialProps, { sale_artwork: { artwork: { date: null } } })
-  const component = renderWithWrappers(
-    <BiddingThemeProvider>
-      <ConfirmBid {...datelessProps} />
-    </BiddingThemeProvider>
-  )
+  const component = renderWithWrappers(<ConfirmBid {...datelessProps} />)
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   expect(serifChildren(component)).not.toContain(`${saleArtwork.artwork.title},`)

@@ -45,37 +45,37 @@ const OrderDetails: FC<OrderDetailsProps> = ({ order }) => {
   const DATA: SectionListItem[] = compact([
     {
       key: "OrderDetailsHeader",
-      data: [<OrderDetailsHeaderFragmentContainer info={order} />],
+      data: [<OrderDetailsHeaderFragmentContainer key="OrderDetailsHeaderComponent" info={order} />],
     },
     {
       key: "Artwork_Info",
       title: "Artwork Info",
-      data: [<ArtworkInfoSectionFragmentContainer artwork={order} />],
+      data: [<ArtworkInfoSectionFragmentContainer key="Artwork_InfoComponent" artwork={order} />],
     },
     {
       key: "Summary_Section",
       title: "Order Summary",
-      data: [<SummarySectionFragmentContainer section={order} />],
+      data: [<SummarySectionFragmentContainer key="Summary_SectionComponent" section={order} />],
     },
     {
       key: "Payment_Method",
       title: "Payment Method",
-      data: [<CreditCardSummaryItemFragmentContainer order={order} />],
+      data: [<CreditCardSummaryItemFragmentContainer key="Payment_MethodComponent" order={order} />],
     },
     isShipping && {
       key: "TrackOrder_Section",
       title: "Track Order",
-      data: [<TrackOrderSectionFragmentContainer section={order} />],
+      data: [<TrackOrderSectionFragmentContainer key="TrackOrder_SectionComponent" section={order} />],
     },
     isShipping && {
       key: "ShipTo_Section",
       title: `Ships to ${getShippingName()}`,
-      data: [<ShipsToSectionFragmentContainer address={order} />],
+      data: [<ShipsToSectionFragmentContainer key="ShipTo_SectionComponent" address={order} />],
     },
     !!partnerName && {
       key: "Sold By",
       title: `Sold by ${partnerName?.name}`,
-      data: [<SoldBySectionFragmentContainer soldBy={order} />],
+      data: [<SoldBySectionFragmentContainer key="Sold ByComponent" soldBy={order} />],
     },
   ])
 
@@ -111,7 +111,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({ order }) => {
             flexDirection="column"
             justifyContent="center"
             alignItems="center"
-          ></Box>
+          />
         )}
       />
     </PageWithSimpleHeader>

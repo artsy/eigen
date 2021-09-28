@@ -46,13 +46,13 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
       >
         <Flex flex={1} px={1.5} paddingTop={60} justifyContent="flex-start">
           <Text variant="lg">Reset password</Text>
-          <Text pt={1.5} color="black60">
+          <Text pt={1.5} color="black100">
             Please enter the email address associated with your Artsy account to receive a reset link.
           </Text>
           <Spacer mt={100} />
 
           {!!requestedPasswordReset ? (
-            <Text color="black60">Password reset link sent. Check your email.</Text>
+            <Text color="blue100">Password reset link sent. Check your email.</Text>
           ) : (
             <Input
               ref={inputRef}
@@ -82,25 +82,40 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
       <BackButton onPress={() => navigation.goBack()} />
       <Flex px={1.5} paddingBottom={1.5}>
         {!!requestedPasswordReset ? (
-          <Button
-            variant="fillGray"
-            onPress={() => navigation.goBack()}
-            block
-            haptic="impactMedium"
-            testID="returnToLoginButton"
-          >
-            Return to login
-          </Button>
+          <>
+            <Button
+              variant="fillDark"
+              onPress={() => navigation.goBack()}
+              block
+              haptic="impactMedium"
+              testID="returnToLoginButton"
+            >
+              Return to login
+            </Button>
+            <Spacer mt={1} />
+            <Button
+              onPress={handleSubmit}
+              block
+              haptic="impactMedium"
+              disabled={!isValid || !dirty}
+              loading={isSubmitting}
+              testID="resetButton"
+              variant="outline"
+            >
+              Send Again
+            </Button>
+          </>
         ) : (
           <Button
             onPress={handleSubmit}
             block
+            variant="fillDark"
             haptic="impactMedium"
             disabled={!isValid || !dirty}
             loading={isSubmitting}
             testID="resetButton"
           >
-            Send reset link
+            Send Reset Link
           </Button>
         )}
       </Flex>

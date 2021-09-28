@@ -38,7 +38,7 @@ const SmallTileRail: React.FC<Props> = ({
       horizontal
       ListHeaderComponent={ListEndComponent}
       ListFooterComponent={ListFooterComponent}
-      ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
+      ItemSeparatorComponent={() => <Spacer width={15} />}
       showsHorizontalScrollIndicator={false}
       data={artworks}
       initialNumToRender={4}
@@ -70,7 +70,7 @@ const SmallTileRail: React.FC<Props> = ({
   )
 }
 
-const ListEndComponent = () => <Spacer mr={2}></Spacer>
+const ListEndComponent = () => <Spacer mr={2} />
 
 export const SmallTileRailContainer = createFragmentContainer(SmallTileRail, {
   artworks: graphql`

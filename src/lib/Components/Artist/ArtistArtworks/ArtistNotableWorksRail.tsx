@@ -61,9 +61,9 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist 
       <ArtistNotableWorksRailWrapper>
         <AboveTheFoldFlatList<NotableArtwork>
           horizontal
-          ListHeaderComponent={() => <Spacer mr={2}></Spacer>}
-          ListFooterComponent={() => <Spacer mr={2}></Spacer>}
-          ItemSeparatorComponent={() => <Spacer width={15}></Spacer>}
+          ListHeaderComponent={() => <Spacer mr={2} />}
+          ListFooterComponent={() => <Spacer mr={2} />}
+          ItemSeparatorComponent={() => <Spacer width={15} />}
           showsHorizontalScrollIndicator={false}
           data={artworks}
           initialNumToRender={3}

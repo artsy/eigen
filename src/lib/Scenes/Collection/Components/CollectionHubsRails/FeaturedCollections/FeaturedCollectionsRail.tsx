@@ -49,7 +49,7 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
 
   return collections.length > 0 ? (
     <>
-      <Flex ml={"-20px"}>
+      <Flex ml="-20px">
         <Sans size="4" my={2} ml={4} data-test-id="group">
           {collectionGroup.name}
         </Sans>
@@ -90,7 +90,7 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
                   height={190}
                   imageURL={result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.url ?? ""}
                 />
-                <Sans size="3t" weight="medium" mt={"15px"} data-test-id={"title-" + index}>
+                <Sans size="3t" weight="medium" mt="15px" data-test-id={"title-" + index}>
                   {result.title}
                 </Sans>
                 {!!result.priceGuidance && (

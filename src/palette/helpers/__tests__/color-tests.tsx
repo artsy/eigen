@@ -4,10 +4,9 @@ import { View } from "react-native"
 import { _test_THEMES, Color, useTheme } from "../../Theme"
 
 describe("color", () => {
-  const ColorView = ({ name, forceV2 }: { name: Color; forceV2?: boolean }) => {
-    const { color, colorV2 } = useTheme()
-    const colorFunc = forceV2 ? colorV2 : color
-    return <View style={{ backgroundColor: colorFunc(name as any) }} />
+  const ColorView = ({ name }: { name: Color }) => {
+    const { color } = useTheme()
+    return <View style={{ backgroundColor: color(name as any) }} />
   }
 
   it("returns the correct color with a Theme provider", () => {

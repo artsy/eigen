@@ -1,7 +1,7 @@
 import { CityFairList_city } from "__generated__/CityFairList_city.graphql"
 import { CityFairListQuery, CityFairListQueryVariables } from "__generated__/CityFairListQuery.graphql"
+import { PAGE_SIZE } from "lib/Components/constants"
 import Spinner from "lib/Components/Spinner"
-import { PAGE_SIZE } from "lib/data/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"

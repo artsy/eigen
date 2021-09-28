@@ -161,7 +161,7 @@ export const FancyModalCard = React.forwardRef<
               backgroundColor: "black",
               opacity: backdropOpacity,
             }}
-          ></Animated.View>
+          />
         </TouchableWithoutFeedback>
       )}
       <Animated.View

@@ -56,9 +56,8 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }
   return (
     <>
       <ArtworkFilterNavigator
-        // TODO: use appropriate id and slug for our case
-        id={"artist.internalID"}
-        slug={"artist.slug"}
+        id={null}
+        slug={null}
         isFilterArtworksModalVisible={isFilterArtworksModalVisible}
         exitModal={handleCloseFilterArtworksModal}
         closeModal={closeFilterArtworksModal}
@@ -69,11 +68,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }
       {artworksCount === 0 ? (
         <Box mb="80px" pt={1}>
           <Box mb="80px" pt={1}>
-            <FilteredArtworkGridZeroState
-              // TODO: use appropriate id and slug for our case same as above
-              id={"artist.id"}
-              slug={"artist.slug"}
-            />
+            <FilteredArtworkGridZeroState hideClearButton />
           </Box>
         </Box>
       ) : (

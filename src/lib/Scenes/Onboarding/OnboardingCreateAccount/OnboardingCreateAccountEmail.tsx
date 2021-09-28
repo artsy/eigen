@@ -24,7 +24,7 @@ export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmail
   return (
     <OnboardingCreateAccountScreenWrapper
       onBackButtonPress={route.params.navigateToWelcomeScreen}
-      title="Sign up with email"
+      title="Sign Up with Email"
     >
       <Input
         autoCapitalize="none"

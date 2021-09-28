@@ -1,6 +1,6 @@
 import { CollectionsRail_collectionsModule } from "__generated__/CollectionsRail_collectionsModule.graphql"
 import { Flex, Sans } from "palette"
-import React, { useImperativeHandle, useRef } from "react"
+import React, { useEffect, useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
@@ -24,6 +24,7 @@ import { RailScrollProps } from "./types"
 
 interface Props {
   collectionsModule: CollectionsRail_collectionsModule
+  onShow?: () => void
 }
 
 type Collection = CollectionsRail_collectionsModule["results"][0]
@@ -31,6 +32,11 @@ type Collection = CollectionsRail_collectionsModule["results"][0]
 const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
+
+  // This is required for the home screen for proper spacing
+  useEffect(() => {
+    props.onShow?.()
+  }, [])
 
   useImperativeHandle(props.scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),

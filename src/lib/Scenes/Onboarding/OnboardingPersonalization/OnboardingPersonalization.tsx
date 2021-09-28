@@ -62,9 +62,9 @@ const OnboardingPersonalizationListHeader = ({ navigateToModal }: { navigateToMo
   return (
     <>
       <Box px={2}>
-        <Text variant="lg">What artists do you collect?</Text>
+        <Text variant="lg">What Artists do You Collect?</Text>
         <Spacer mt={1.5} />
-        <Text variant="xs" color={color("black60")}>
+        <Text variant="xs" color={color("black100")}>
           Follow at least three artists you’re looking to collect or track so we can personalize your experience.
         </Text>
       </Box>

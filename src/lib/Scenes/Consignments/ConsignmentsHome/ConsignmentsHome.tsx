@@ -78,7 +78,7 @@ export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRender
         `}
         render={renderWithPlaceholder({
           Container: ConsignmentsHomeContainer,
-          renderPlaceholder: () => <ConsignmentsHome isLoading={true} targetSupply={null as any} />,
+          renderPlaceholder: () => <ConsignmentsHome isLoading targetSupply={null as any} />,
         })}
       />
     </ProvideScreenTracking>

@@ -9,8 +9,6 @@ import "react-native"
 import { mockTimezone } from "lib/tests/mockTimezone"
 import { Timer } from "../Timer"
 
-import { BiddingThemeProvider } from "../BiddingThemeProvider"
-
 const SECONDS = 1000
 const MINUTES = 60 * SECONDS
 
@@ -53,58 +51,36 @@ it("formats the remaining time in '00d  00h  00m  00s'", () => {
   let timer
 
   // Thursday, May 14, 2018 10:24:31.000 AM UTC
-  timer = renderWithWrappers(
-    <BiddingThemeProvider>
-      <Timer endsAt="2018-05-14T10:24:31+00:00" />
-    </BiddingThemeProvider>
-  )
+  timer = renderWithWrappers(<Timer endsAt="2018-05-14T10:24:31+00:00" />)
 
   expect(getTimerText(timer)).toEqual("03d  14h  01m  59s")
 
   // Thursday, May 10, 2018 8:42:32.000 PM UTC
-  timer = renderWithWrappers(
-    <BiddingThemeProvider>
-      <Timer endsAt="2018-05-10T20:42:32+00:00" />
-    </BiddingThemeProvider>
-  )
+  timer = renderWithWrappers(<Timer endsAt="2018-05-10T20:42:32+00:00" />)
 
   expect(getTimerText(timer)).toEqual("00d  00h  20m  00s")
 
   // Thursday, May 10, 2018 8:22:42.000 PM UTC
-  timer = renderWithWrappers(
-    <BiddingThemeProvider>
-      <Timer endsAt="2018-05-10T20:22:42+00:00" />
-    </BiddingThemeProvider>
-  )
+  timer = renderWithWrappers(<Timer endsAt="2018-05-10T20:22:42+00:00" />)
 
   expect(getTimerText(timer)).toEqual("00d  00h  00m  10s")
 })
 
 it("shows 'Ends' when it's an online-only sale with an ending time", () => {
-  const timer = renderWithWrappers(
-    <BiddingThemeProvider>
-      <Timer endsAt="2018-05-14T20:00:00+00:00" />
-    </BiddingThemeProvider>
-  )
+  const timer = renderWithWrappers(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
 
   expect(getTimerLabel(timer)).toContain("Ends")
 })
 
 it("shows 'Live' when the liveStartsAt prop is given", () => {
-  const timer = renderWithWrappers(
-    <BiddingThemeProvider>
-      <Timer liveStartsAt="2018-05-14T20:00:00+00:00" />
-    </BiddingThemeProvider>
-  )
+  const timer = renderWithWrappers(<Timer liveStartsAt="2018-05-14T20:00:00+00:00" />)
 
   expect(getTimerLabel(timer)).toContain("Live")
 })
 
 it("shows 'Starts' the sale has not started yet", () => {
   const timer = renderWithWrappers(
-    <BiddingThemeProvider>
-      <Timer startsAt="2018-04-14T20:00:00+00:00" isPreview={true} liveStartsAt="2018-05-14T20:00:00+00:00" />
-    </BiddingThemeProvider>
+    <Timer startsAt="2018-04-14T20:00:00+00:00" isPreview liveStartsAt="2018-05-14T20:00:00+00:00" />
   )
 
   expect(getTimerLabel(timer)).toContain("Starts")
@@ -112,14 +88,7 @@ it("shows 'Starts' the sale has not started yet", () => {
 
 it("shows 'Bidding closed' when the auction is closed", () => {
   const timer = renderWithWrappers(
-    <BiddingThemeProvider>
-      <Timer
-        startsAt="2018-04-14T20:00:00+00:00"
-        isPreview={false}
-        liveStartsAt="2018-05-14T20:00:00+00:00"
-        isClosed={true}
-      />
-    </BiddingThemeProvider>
+    <Timer startsAt="2018-04-14T20:00:00+00:00" isPreview={false} liveStartsAt="2018-05-14T20:00:00+00:00" isClosed />
   )
 
   expect(getTimerLabel(timer)).toContain("Bidding closed")
@@ -127,28 +96,22 @@ it("shows 'Bidding closed' when the auction is closed", () => {
 
 it("shows 'In progress' when the auction is in live auction integration mode", () => {
   const timer = renderWithWrappers(
-    <BiddingThemeProvider>
-      <Timer
-        startsAt="2018-04-14T20:00:00+00:00"
-        isPreview={false}
-        liveStartsAt={
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          pastTime
-        }
-        isClosed={false}
-      />
-    </BiddingThemeProvider>
+    <Timer
+      startsAt="2018-04-14T20:00:00+00:00"
+      isPreview={false}
+      liveStartsAt={
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        pastTime
+      }
+      isClosed={false}
+    />
   )
 
   expect(getTimerLabel(timer)).toContain("In progress")
 })
 
 it("counts down to zero", () => {
-  const timer = renderWithWrappers(
-    <BiddingThemeProvider>
-      <Timer endsAt="2018-05-14T10:23:10+00:00" />
-    </BiddingThemeProvider>
-  )
+  const timer = renderWithWrappers(<Timer endsAt="2018-05-14T10:23:10+00:00" />)
 
   expect(getTimerText(timer)).toEqual("03d  14h  00m  38s")
 
@@ -166,11 +129,7 @@ it("shows month, date, and hour adjusted for the timezone where the user is", ()
 
   // Thursday, May 14, 2018 8:00:00.000 PM UTC
   // Thursday, May 14, 2018 1:00:00.000 PM PDT in LA
-  const timer = renderWithWrappers(
-    <BiddingThemeProvider>
-      <Timer endsAt="2018-05-14T20:00:00+00:00" />
-    </BiddingThemeProvider>
-  )
+  const timer = renderWithWrappers(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
 
   expect(getTimerLabel(timer)).toEqual("Ends May 14, 1 PM PDT")
 })
@@ -178,19 +137,11 @@ it("shows month, date, and hour adjusted for the timezone where the user is", ()
 it("displays the minutes when the sale does not end on the hour", () => {
   mockTimezone("America/New_York")
 
-  let timer = renderWithWrappers(
-    <BiddingThemeProvider>
-      <Timer endsAt="2018-05-14T20:01:00+00:00" />
-    </BiddingThemeProvider>
-  )
+  let timer = renderWithWrappers(<Timer endsAt="2018-05-14T20:01:00+00:00" />)
 
   expect(getTimerLabel(timer)).toEqual("Ends May 14, 4:01 PM EDT")
 
-  timer = renderWithWrappers(
-    <BiddingThemeProvider>
-      <Timer endsAt="2018-05-14T20:30:00+00:00" />
-    </BiddingThemeProvider>
-  )
+  timer = renderWithWrappers(<Timer endsAt="2018-05-14T20:30:00+00:00" />)
 
   expect(getTimerLabel(timer)).toEqual("Ends May 14, 4:30 PM EDT")
 })
@@ -198,11 +149,7 @@ it("displays the minutes when the sale does not end on the hour", () => {
 it("omits the minutes when the sale ends on the hour", () => {
   mockTimezone("America/New_York")
 
-  const timer = renderWithWrappers(
-    <BiddingThemeProvider>
-      <Timer endsAt="2018-05-14T20:00:00+00:00" />
-    </BiddingThemeProvider>
-  )
+  const timer = renderWithWrappers(<Timer endsAt="2018-05-14T20:00:00+00:00" />)
 
   expect(getTimerLabel(timer)).toEqual("Ends May 14, 4 PM EDT")
 })
@@ -212,7 +159,7 @@ describe("timer transitions", () => {
     const timer = mount(
       <Theme>
         {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-        <Timer isPreview={true} startsAt={futureTime} endsAt={futureTime} />
+        <Timer isPreview startsAt={futureTime} endsAt={futureTime} />
       </Theme>
     )
 
@@ -229,7 +176,7 @@ describe("timer transitions", () => {
     const timer = mount(
       <Theme>
         {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
-        <Timer isPreview={true} startsAt={futureTime} liveStartsAt={futureTime} />
+        <Timer isPreview startsAt={futureTime} liveStartsAt={futureTime} />
       </Theme>
     )
 
