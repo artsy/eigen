@@ -1,4 +1,3 @@
-import { _test_THEMES } from "palette"
 import React from "react"
 import {
   Image,
@@ -73,7 +72,7 @@ interface State {
 
 export default class OpaqueImageView extends React.Component<Props, State> {
   static defaultProps: Props = {
-    placeholderBackgroundColor: _test_THEMES.v3.colors.black10,
+    placeholderBackgroundColor: "#E7E7E7", // this is black10. Change it to that when this component becomes a function component.
   }
 
   constructor(props: Props) {
