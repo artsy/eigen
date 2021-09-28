@@ -175,10 +175,8 @@ export function unsafe_getUserAccessToken() {
 
 export function getCurrentEmissionState() {
   const state = globalStoreInstance().getState() ?? null
-  if (!unsafe_getFeatureFlag("AREnableNewOnboardingFlow")) {
-    if (Platform.OS === "ios") {
-      return state?.native.sessionState ?? LegacyNativeModules.ARNotificationsManager.nativeState
-    }
+  if (Platform.OS === "ios") {
+    return state?.native.sessionState ?? LegacyNativeModules.ARNotificationsManager.nativeState
   }
 
   // `getUserAgentSync` breaks the Chrome Debugger, so we use a string instead.
