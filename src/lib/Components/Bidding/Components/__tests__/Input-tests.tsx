@@ -2,7 +2,7 @@ import React from "react"
 import { TextInput } from "react-native"
 
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { theme } from "../../Elements/Theme"
+import { _test_THEMES } from "palette"
 import { BiddingThemeProvider } from "../BiddingThemeProvider"
 import { Input } from "../Input"
 
@@ -14,7 +14,7 @@ it("shows a gray border by default", () => {
   )
 
   expect(component.toJSON()).toBeTruthy()
-  expect((component.toJSON() as any)?.props.style[0].borderColor).toEqual(theme.colors.black10)
+  expect((component.toJSON() as any)?.props.style[0].borderColor).toEqual(_test_THEMES.v3.colors.black10)
 })
 
 it("shows a blue border on focus", () => {
@@ -29,7 +29,7 @@ it("shows a blue border on focus", () => {
   inputComponent.onFocus()
 
   expect(component.toJSON()).toBeTruthy()
-  expect((component.toJSON() as any)?.props.style[0].borderColor).toEqual(theme.colors.blue100)
+  expect((component.toJSON() as any)?.props.style[0].borderColor).toEqual(_test_THEMES.v3.colors.blue100)
 })
 
 it("changes the border color back to gray on blur", () => {
@@ -45,7 +45,7 @@ it("changes the border color back to gray on blur", () => {
   inputComponent.onBlur()
 
   expect(component.toJSON()).toBeTruthy()
-  expect((component.toJSON() as any)?.props.style[0].borderColor).toEqual(theme.colors.black10)
+  expect((component.toJSON() as any)?.props.style[0].borderColor).toEqual(_test_THEMES.v3.colors.black10)
 })
 
 it("shows a red border if error is true", () => {
@@ -56,7 +56,7 @@ it("shows a red border if error is true", () => {
   )
 
   expect(component.toJSON()).toBeTruthy()
-  expect((component.toJSON() as any)?.props.style[0].borderColor).toEqual(theme.colors.red100)
+  expect((component.toJSON() as any)?.props.style[0].borderColor).toEqual(_test_THEMES.v3.colors.red100)
 })
 
 it("updates the border color when the parent component updates the error prop", () => {
@@ -75,19 +75,19 @@ it("updates the border color when the parent component updates the error prop", 
   const component = renderWithWrappers(<TestFormForInput />)
 
   expect(component.toJSON()).toBeTruthy()
-  expect((component.toJSON() as any)?.props.style[0].borderColor).toEqual(theme.colors.black10)
+  expect((component.toJSON() as any)?.props.style[0].borderColor).toEqual(_test_THEMES.v3.colors.black10)
 
   // Explicitly calling setState to force-render the Input component
   const parentComponent = component.root.findByType(TestFormForInput).instance
   parentComponent.setState({ error: true })
 
   expect(component.toJSON()).toBeTruthy()
-  expect((component.toJSON() as any)?.props.style[0].borderColor).toEqual(theme.colors.red100)
+  expect((component.toJSON() as any)?.props.style[0].borderColor).toEqual(_test_THEMES.v3.colors.red100)
 
   parentComponent.setState({ error: false })
 
   expect(component.toJSON()).toBeTruthy()
-  expect((component.toJSON() as any)?.props.style[0].borderColor).toEqual(theme.colors.black10)
+  expect((component.toJSON() as any)?.props.style[0].borderColor).toEqual(_test_THEMES.v3.colors.black10)
 })
 
 it("allows for capturing the ref to the actual text input", () => {

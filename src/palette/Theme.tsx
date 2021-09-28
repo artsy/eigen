@@ -214,7 +214,8 @@ const color = (theme: ThemeType): ColorFuncOverload => (colorName: any): any => 
   return (theme.colors as { [key: string]: string })[colorName as Color]
 }
 
-const space = (theme: ThemeType) => (spaceName: SpacingUnitV3): number => theme.space[spaceName as SpacingUnitV3]
+const space = (theme: ThemeType) => (spaceName: SpacingUnitV2 | SpacingUnitV3): number =>
+  theme.space[spaceName as SpacingUnitV3]
 
 export const useTheme = () => {
   const theme: ThemeType = useContext(ThemeContext)
