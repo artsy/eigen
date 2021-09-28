@@ -1,16 +1,5 @@
 import _ from "lodash"
-import {
-  Color,
-  EyeOpenedIcon,
-  Flex,
-  Sans,
-  Spinner,
-  ThemeV2Type,
-  ThemeV3Type,
-  useTheme,
-  useThemeConfig,
-  XCircleIcon,
-} from "palette"
+import { Color, EyeOpenedIcon, Flex, Sans, Spinner, ThemeV3Type, useTheme, XCircleIcon } from "palette"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,
@@ -106,10 +95,8 @@ export const Input = React.forwardRef<TextInput, InputProps>(
 
     useImperativeHandle(ref, () => input.current!)
 
-    const fontFamily = useThemeConfig({
-      v2: (theme as ThemeV2Type).fonts.sans,
-      v3: (theme as ThemeV3Type).fonts.sans.regular,
-    })
+    const fontFamily = (theme as ThemeV3Type).fonts.sans.regular
+
     useEffect(() => {
       /* to make the font work for secure text inputs,
       see https://github.com/facebook/react-native/issues/30123#issuecomment-711076098 */
@@ -155,6 +142,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
         >
           {placeholder.map((placeholderString, index) => (
             <Text
+              key={index}
               onLayout={(event) => {
                 placeholderWidths.current[index] = event.nativeEvent.layout.width
               }}
