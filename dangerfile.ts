@@ -50,7 +50,7 @@ const preventUsingEnzyme = () => {
 
 ${newEnzymeImports.map((filename) => `- \`${filename}\``).join("\n")}
 
-See [\`placeholders-tests.tsx\`](https://github.com/artsy/eigen/blob/2f32d462bb3b4ce358c8a14e3ed09b42523de8bd/src/palette/elements/Pill/__tests__/Pill-tests.tsx) as an example, or [the docs](https://callstack.github.io/react-native-testing-library/docs/api-queries).
+See [\`Pill-tests.tsx\`](https://github.com/artsy/eigen/blob/2f32d462bb3b4ce358c8a14e3ed09b42523de8bd/src/palette/elements/Pill/__tests__/Pill-tests.tsx) as an example, or [the docs](https://callstack.github.io/react-native-testing-library/docs/api-queries).
   `)
   }
 }
