@@ -60,27 +60,20 @@ interface ConsignmentsHomeQueryRendererProps {
 
 export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRendererProps> = ({ environment }) => {
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.Sell,
-        context_screen_owner_type: null,
-      }}
-    >
-      <QueryRenderer<ConsignmentsHomeQuery>
-        environment={environment || defaultEnvironment}
-        variables={{}}
-        query={graphql`
-          query ConsignmentsHomeQuery {
-            targetSupply {
-              ...ConsignmentsHome_targetSupply
-            }
+    <QueryRenderer<ConsignmentsHomeQuery>
+      environment={environment || defaultEnvironment}
+      variables={{}}
+      query={graphql`
+        query ConsignmentsHomeQuery {
+          targetSupply {
+            ...ConsignmentsHome_targetSupply
           }
-        `}
-        render={renderWithPlaceholder({
-          Container: ConsignmentsHomeContainer,
-          renderPlaceholder: () => <ConsignmentsHome isLoading targetSupply={null as any} />,
-        })}
-      />
-    </ProvideScreenTracking>
+        }
+      `}
+      render={renderWithPlaceholder({
+        Container: ConsignmentsHomeContainer,
+        renderPlaceholder: () => <ConsignmentsHome isLoading targetSupply={null as any} />,
+      })}
+    />
   )
 }

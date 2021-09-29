@@ -501,12 +501,7 @@ export const HomeQueryRenderer: React.FC = () => {
   }, [flash_message])
 
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.Home,
-        context_screen_owner_type: null as any,
-      }}
-    >
+    <>
       {/* Avoid rendering when user is logged out, it will fail anyway */}
       {!!userAccessToken && (
         <AboveTheFoldQueryRenderer<HomeAboveTheFoldQuery, HomeBelowTheFoldQuery>
@@ -569,6 +564,6 @@ export const HomeQueryRenderer: React.FC = () => {
           belowTheFoldTimeout={100}
         />
       )}
-    </ProvideScreenTracking>
+    </>
   )
 }
