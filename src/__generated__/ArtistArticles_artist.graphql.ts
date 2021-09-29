@@ -4,7 +4,9 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtistArticles_articlesConnection = {
+export type ArtistArticles_artist = {
+    readonly internalID: string;
+    readonly name: string | null;
     readonly articlesConnection: {
         readonly edges: ReadonlyArray<{
             readonly cursor: string;
@@ -15,23 +17,26 @@ export type ArtistArticles_articlesConnection = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "ArtistArticles_articlesConnection";
+    readonly " $refType": "ArtistArticles_artist";
 };
-export type ArtistArticles_articlesConnection$data = ArtistArticles_articlesConnection;
-export type ArtistArticles_articlesConnection$key = {
-    readonly " $data"?: ArtistArticles_articlesConnection$data;
-    readonly " $fragmentRefs": FragmentRefs<"ArtistArticles_articlesConnection">;
+export type ArtistArticles_artist$data = ArtistArticles_artist;
+export type ArtistArticles_artist$key = {
+    readonly " $data"?: ArtistArticles_artist$data;
+    readonly " $fragmentRefs": FragmentRefs<"ArtistArticles_artist">;
 };
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "after"
-    },
     {
       "defaultValue": 10,
       "kind": "LocalArgument",
@@ -40,12 +45,7 @@ const node: ReaderFragment = {
     {
       "defaultValue": null,
       "kind": "LocalArgument",
-      "name": "inEditorialFeed"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "sort"
+      "name": "cursor"
     }
   ],
   "kind": "Fragment",
@@ -53,7 +53,7 @@ const node: ReaderFragment = {
     "connection": [
       {
         "count": "count",
-        "cursor": "after",
+        "cursor": "cursor",
         "direction": "forward",
         "path": [
           "articlesConnection"
@@ -61,20 +61,28 @@ const node: ReaderFragment = {
       }
     ]
   },
-  "name": "ArtistArticles_articlesConnection",
+  "name": "ArtistArticles_artist",
   "selections": [
+    (v0/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "name",
+      "storageKey": null
+    },
     {
       "alias": "articlesConnection",
       "args": [
         {
-          "kind": "Variable",
+          "kind": "Literal",
           "name": "inEditorialFeed",
-          "variableName": "inEditorialFeed"
+          "value": true
         },
         {
-          "kind": "Variable",
+          "kind": "Literal",
           "name": "sort",
-          "variableName": "sort"
+          "value": "PUBLISHED_AT_DESC"
         }
       ],
       "concreteType": "ArticleConnection",
@@ -105,13 +113,7 @@ const node: ReaderFragment = {
               "name": "node",
               "plural": false,
               "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "internalID",
-                  "storageKey": null
-                },
+                (v0/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -163,11 +165,12 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
-      "storageKey": null
+      "storageKey": "__ArtistArticles_articlesConnection_connection(inEditorialFeed:true,sort:\"PUBLISHED_AT_DESC\")"
     }
   ],
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = 'c57c4ad6add0d53b0826ec270f9421b9';
+})();
+(node as any).hash = '1a1755c2c0ab1b06289280787a184eab';
 export default node;

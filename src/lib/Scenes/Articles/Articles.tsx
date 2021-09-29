@@ -4,13 +4,13 @@ import { LoadFailureView } from "lib/Components/LoadFailureView"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, ProvidePlaceholderContext, RandomWidthPlaceholderText } from "lib/utils/placeholders"
 import _ from "lodash"
-import { Flex, Separator, Spacer, Text } from "palette"
+import { Flex, Separator, Spacer } from "palette"
 import React, { useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { ConnectionConfig } from "react-relay"
 import { usePagination, useQuery } from "relay-hooks"
 import { graphql } from "relay-runtime"
-import { ArticlesList, ArticlesListItem, useNumColumns } from "./ArticlesList"
+import { ArticlesHeader, ArticlesList, ArticlesListItem, useNumColumns } from "./ArticlesList"
 
 const PAGE_SIZE = 10
 
@@ -45,6 +45,7 @@ export const Articles: React.FC<ArticlesProps> = (props) => {
       articles={articles as any}
       isLoading={isLoading}
       hasMore={hasMore}
+      title="Market News"
       refreshing={refreshing}
       handleLoadMore={handleLoadMore}
       handleRefresh={handleRefresh}
@@ -101,12 +102,6 @@ export const ArticlesPlaceholder: React.FC = () => {
     </ProvidePlaceholderContext>
   )
 }
-
-export const ArticlesHeader = () => (
-  <Text mx="2" variant="lg" mb={1} mt={6}>
-    Market News
-  </Text>
-)
 
 const fragmentSpec = graphql`
   fragment Articles_articlesConnection on Query

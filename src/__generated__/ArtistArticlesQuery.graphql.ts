@@ -1,21 +1,18 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ec0d61afcb64cd0a545a1aa426b952a9 */
+/* @relayHash 0e8126788ad58ec983153c12a2ac1c24 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArticleSorts = "PUBLISHED_AT_ASC" | "PUBLISHED_AT_DESC" | "%future added value";
 export type ArtistArticlesQueryVariables = {
-    id: string;
+    artistID: string;
     count?: number | null;
-    after?: string | null;
-    sort?: ArticleSorts | null;
-    inEditorialFeed?: boolean | null;
+    cursor?: string | null;
 };
 export type ArtistArticlesQueryResponse = {
     readonly artist: {
-        readonly " $fragmentRefs": FragmentRefs<"ArtistArticles_articlesConnection">;
+        readonly " $fragmentRefs": FragmentRefs<"ArtistArticles_artist">;
     } | null;
 };
 export type ArtistArticlesQuery = {
@@ -27,14 +24,12 @@ export type ArtistArticlesQuery = {
 
 /*
 query ArtistArticlesQuery(
-  $id: String!
+  $artistID: String!
   $count: Int
-  $after: String
-  $sort: ArticleSorts
-  $inEditorialFeed: Boolean
+  $cursor: String
 ) {
-  artist(id: $id) @principalField {
-    ...ArtistArticles_articlesConnection_44T6UW
+  artist(id: $artistID) @principalField {
+    ...ArtistArticles_artist_1G22uz
     id
   }
 }
@@ -54,8 +49,10 @@ fragment ArticleCard_article on Article {
   vertical
 }
 
-fragment ArtistArticles_articlesConnection_44T6UW on Artist {
-  articlesConnection(first: $count, after: $after, sort: $sort, inEditorialFeed: $inEditorialFeed) {
+fragment ArtistArticles_artist_1G22uz on Artist {
+  internalID
+  name
+  articlesConnection(first: $count, after: $cursor, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
     edges {
       cursor
       node {
@@ -75,64 +72,67 @@ fragment ArtistArticles_articlesConnection_44T6UW on Artist {
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "after"
-},
-v1 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "count"
-},
-v2 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "id"
-},
-v3 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "inEditorialFeed"
-},
-v4 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "sort"
-},
-v5 = [
+var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "artistID"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "count"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "cursor"
+  }
+],
+v1 = [
   {
     "kind": "Variable",
     "name": "id",
-    "variableName": "id"
+    "variableName": "artistID"
   }
 ],
-v6 = {
-  "kind": "Variable",
-  "name": "after",
-  "variableName": "after"
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
 },
-v7 = {
-  "kind": "Variable",
-  "name": "inEditorialFeed",
-  "variableName": "inEditorialFeed"
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
 },
-v8 = {
-  "kind": "Variable",
-  "name": "sort",
-  "variableName": "sort"
-},
-v9 = [
-  (v6/*: any*/),
+v4 = [
+  {
+    "kind": "Variable",
+    "name": "after",
+    "variableName": "cursor"
+  },
   {
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
   },
-  (v7/*: any*/),
-  (v8/*: any*/)
+  {
+    "kind": "Literal",
+    "name": "inEditorialFeed",
+    "value": true
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "PUBLISHED_AT_DESC"
+  }
 ],
-v10 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -141,20 +141,14 @@ v10 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": [
-      (v0/*: any*/),
-      (v1/*: any*/),
-      (v2/*: any*/),
-      (v3/*: any*/),
-      (v4/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "ArtistArticlesQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v5/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "Artist",
         "kind": "LinkedField",
         "name": "artist",
@@ -162,17 +156,19 @@ return {
         "selections": [
           {
             "args": [
-              (v6/*: any*/),
               {
                 "kind": "Variable",
                 "name": "count",
                 "variableName": "count"
               },
-              (v7/*: any*/),
-              (v8/*: any*/)
+              {
+                "kind": "Variable",
+                "name": "cursor",
+                "variableName": "cursor"
+              }
             ],
             "kind": "FragmentSpread",
-            "name": "ArtistArticles_articlesConnection"
+            "name": "ArtistArticles_artist"
           }
         ],
         "storageKey": null
@@ -183,27 +179,23 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [
-      (v2/*: any*/),
-      (v1/*: any*/),
-      (v0/*: any*/),
-      (v4/*: any*/),
-      (v3/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "ArtistArticlesQuery",
     "selections": [
       {
         "alias": null,
-        "args": (v5/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "Artist",
         "kind": "LinkedField",
         "name": "artist",
         "plural": false,
         "selections": [
+          (v2/*: any*/),
+          (v3/*: any*/),
           {
             "alias": null,
-            "args": (v9/*: any*/),
+            "args": (v4/*: any*/),
             "concreteType": "ArticleConnection",
             "kind": "LinkedField",
             "name": "articlesConnection",
@@ -232,13 +224,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "internalID",
-                        "storageKey": null
-                      },
+                      (v2/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -254,14 +240,8 @@ return {
                         "name": "author",
                         "plural": false,
                         "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "name",
-                            "storageKey": null
-                          },
-                          (v10/*: any*/)
+                          (v3/*: any*/),
+                          (v5/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -310,7 +290,7 @@ return {
                         "name": "vertical",
                         "storageKey": null
                       },
-                      (v10/*: any*/),
+                      (v5/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -354,7 +334,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v9/*: any*/),
+            "args": (v4/*: any*/),
             "filters": [
               "sort",
               "inEditorialFeed"
@@ -364,14 +344,14 @@ return {
             "kind": "LinkedHandle",
             "name": "articlesConnection"
           },
-          (v10/*: any*/)
+          (v5/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "ec0d61afcb64cd0a545a1aa426b952a9",
+    "id": "0e8126788ad58ec983153c12a2ac1c24",
     "metadata": {},
     "name": "ArtistArticlesQuery",
     "operationKind": "query",
@@ -379,5 +359,5 @@ return {
   }
 };
 })();
-(node as any).hash = '4d6fe0520de90900cf23ddb2246d9c7e';
+(node as any).hash = 'dbf677c6638e8ba3e1d997d0241864da';
 export default node;

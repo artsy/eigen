@@ -1,54 +1,52 @@
-import { Articles_articlesConnection$key } from "__generated__/Articles_articlesConnection.graphql"
+import { ArtistArticles_artist } from "__generated__/ArtistArticles_artist.graphql"
 import { ArtistArticlesResultQuery } from "__generated__/ArtistArticlesResultQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, RandomWidthPlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import _ from "lodash"
-import { Flex, Separator, Spacer, Text } from "palette"
-import React, { useEffect, useState } from "react"
+import { Flex, Separator, Spacer } from "palette"
+import React, { useState } from "react"
 import { FlatList } from "react-native"
-import { ConnectionConfig, QueryRenderer } from "react-relay"
-import { usePagination } from "relay-hooks"
+import { createPaginationContainer, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { graphql } from "relay-runtime"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
-import { ArticlesList, ArticlesListItem, useNumColumns } from "../Articles/ArticlesList"
+import { ArticlesList, ArticlesListItem } from "../Articles/ArticlesList"
 
 const PAGE_SIZE = 10
 
 interface ArticlesProps {
-  query: Articles_articlesConnection$key
+  artist: ArtistArticles_artist
+  relay: RelayPaginationProp
 }
 
-export const ArtistArticles: React.FC<ArticlesProps> = (props) => {
-  const [queryData, { isLoading, hasMore, loadMore, refetchConnection }] = usePagination(fragmentSpec, props.query)
-  const articles = extractNodes(queryData.articlesConnection)
-
-  console.log("Coming....", articles)
-
-  useEffect(() => {
-    loadMore(connectionConfig, PAGE_SIZE)
-  }, [])
+export const ArtistArticles: React.FC<ArticlesProps> = ({ artist, relay }) => {
+  const articles = extractNodes(artist.articlesConnection)
 
   const [refreshing, setRefreshing] = useState(false)
 
   const handleLoadMore = () => {
-    if (!hasMore() || isLoading()) {
+    if (!relay.hasMore() || relay.isLoading()) {
       return
     }
-    loadMore(connectionConfig, PAGE_SIZE)
+    relay.loadMore(PAGE_SIZE, (error) => {
+      if (error) {
+        console.error("Failure fetching Artist Articles ", error.message)
+      }
+    })
   }
   const handleRefresh = () => {
     setRefreshing(true)
-    refetchConnection(connectionConfig, PAGE_SIZE)
+    relay.refetchConnection(PAGE_SIZE)
     setRefreshing(false)
   }
 
   return (
     <ArticlesList
       articles={articles as any}
-      isLoading={isLoading}
-      hasMore={hasMore}
+      isLoading={relay.isLoading}
+      title={artist.name + " articles"}
+      hasMore={relay.hasMore}
       refreshing={refreshing}
       handleLoadMore={handleLoadMore}
       handleRefresh={handleRefresh}
@@ -56,41 +54,8 @@ export const ArtistArticles: React.FC<ArticlesProps> = (props) => {
   )
 }
 
-export const ArtistArticlesQueryRenderer: React.FC<{
-  artistID: string
-  environment: RelayModernEnvironment
-}> = ({ artistID, environment }) => {
-  return (
-    <QueryRenderer<ArtistArticlesResultQuery>
-      environment={environment || defaultEnvironment}
-      query={graphql`
-        query ArtistArticlesResultQuery($artistID: String!) {
-          artist(id: $artistID) {
-            id
-            articlesConnection(first: 10) {
-              edges {
-                node {
-                  id
-                }
-              }
-            }
-          }
-        }
-      `}
-      variables={{
-        artistID,
-      }}
-      render={renderWithPlaceholder({
-        Container: ArtistArticles,
-        renderPlaceholder: ArticlesPlaceholder,
-      })}
-    />
-  )
-}
-
-// export const ArticlesPlaceholder: React.FC = () => {
 export const ArticlesPlaceholder = () => {
-  const numColumns = useNumColumns()
+  const numColumns = 1
 
   return (
     <Flex flexDirection="column" justifyContent="space-between" height="100%" pb={8}>
@@ -98,7 +63,6 @@ export const ArticlesPlaceholder = () => {
       <FlatList
         numColumns={numColumns}
         key={`${numColumns}`}
-        ListHeaderComponent={() => <ArticlesHeader />}
         data={_.times(6)}
         keyExtractor={(item) => `${item}-${numColumns}`}
         renderItem={({ item }) => {
@@ -119,49 +83,66 @@ export const ArticlesPlaceholder = () => {
   )
 }
 
-export const ArticlesHeader = () => (
-  <Text mx="2" variant={"largeTitle"} mb={1} mt={6}>
-    Market News
-  </Text>
-)
-
-const fragmentSpec = graphql`
-  fragment ArtistArticles_articlesConnection on Artist
-  @argumentDefinitions(
-    count: { type: "Int", defaultValue: 10 }
-    after: { type: "String" }
-    sort: { type: "ArticleSorts" }
-    inEditorialFeed: { type: "Boolean" }
-  ) {
-    articlesConnection(first: $count, after: $after, sort: $sort, inEditorialFeed: $inEditorialFeed)
-      @connection(key: "ArtistArticles_articlesConnection") {
-      edges {
-        cursor
-        node {
-          internalID
-          slug
-          ...ArticleCard_article
+export const ArtistArticlesContainer = createPaginationContainer(
+  ArtistArticles,
+  {
+    artist: graphql`
+      fragment ArtistArticles_artist on Artist
+      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
+        internalID
+        name
+        articlesConnection(first: $count, after: $cursor, sort: PUBLISHED_AT_DESC, inEditorialFeed: true)
+          @connection(key: "ArtistArticles_articlesConnection") {
+          edges {
+            cursor
+            node {
+              internalID
+              slug
+              ...ArticleCard_article
+            }
+          }
         }
       }
-    }
+    `,
+  },
+  {
+    getConnectionFromProps: ({ artist }) => artist.articlesConnection,
+    getVariables: (__, { count, cursor }, _fragmentVariables) => ({
+      ..._fragmentVariables,
+      count,
+      cursor,
+    }),
+    query: graphql`
+      query ArtistArticlesQuery($artistID: String!, $count: Int, $cursor: String) {
+        artist(id: $artistID) @principalField {
+          ...ArtistArticles_artist @arguments(count: $count, cursor: $cursor)
+        }
+      }
+    `,
   }
-`
+)
 
-const query = graphql`
-  query ArtistArticlesQuery($id: String!, $count: Int, $after: String, $sort: ArticleSorts, $inEditorialFeed: Boolean) {
-    artist(id: $id) @principalField {
-      ...ArtistArticles_articlesConnection
-        @arguments(count: $count, after: $after, sort: $sort, inEditorialFeed: $inEditorialFeed)
-    }
-  }
-`
-
-const connectionConfig: ConnectionConfig = {
-  query,
-  getVariables: (_props, { count, cursor }, _fragmentVariables) => ({
-    count,
-    after: cursor,
-    inEditorialFeed: true,
-    sort: "PUBLISHED_AT_DESC",
-  }),
+export const ArtistArticlesQueryRenderer: React.FC<{
+  artistID: string
+  environment: RelayModernEnvironment
+}> = ({ artistID, environment }) => {
+  return (
+    <QueryRenderer<ArtistArticlesResultQuery>
+      environment={environment || defaultEnvironment}
+      query={graphql`
+        query ArtistArticlesResultQuery($artistID: String!) {
+          artist(id: $artistID) {
+            ...ArtistArticles_artist
+          }
+        }
+      `}
+      variables={{
+        artistID,
+      }}
+      render={renderWithPlaceholder({
+        Container: ArtistArticlesContainer,
+        renderPlaceholder: ArticlesPlaceholder,
+      })}
+    />
+  )
 }
