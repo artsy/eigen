@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4309566091b947247c0c981d00a225bb */
+/* @relayHash 7a004f2a905c491ba66c3167d12333ba */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -523,7 +523,6 @@ fragment Trove_trove_1IwJ0h on HomePage {
     subtitle
     creditLine
     href
-    linkText
     backgroundImageURL(version: $heroImageVersion)
     id
   }
@@ -2289,7 +2288,7 @@ return {
     ]
   },
   "params": {
-    "id": "4309566091b947247c0c981d00a225bb",
+    "id": "7a004f2a905c491ba66c3167d12333ba",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",

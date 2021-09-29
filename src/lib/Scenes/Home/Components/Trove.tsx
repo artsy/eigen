@@ -39,7 +39,6 @@ export const TroveFragmentContainer = createFragmentContainer(Trove, {
         subtitle
         creditLine
         href
-        linkText
         backgroundImageURL(version: $heroImageVersion)
       }
     }

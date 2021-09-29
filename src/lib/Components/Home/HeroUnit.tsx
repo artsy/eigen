@@ -28,6 +28,8 @@ export const HeroUnit: React.FC<Props> = ({ unit, onPress, isTrove = false }) =>
 
   const { width, height } = useHeroDimensions()
 
+  const linkText = !isTrove && (unit as any).linkText
+
   return (
     <TouchableOpacity activeOpacity={0.9} onPress={onPress}>
       <Flex height={height} justifyContent="flex-end" p="2" style={{ backgroundColor: color("black30") }}>
@@ -56,11 +58,11 @@ export const HeroUnit: React.FC<Props> = ({ unit, onPress, isTrove = false }) =>
               {unit.subtitle}
             </Text>
           )}
-          {!isTrove && unit.linkText ? (
+          {!!linkText && (
             <Text variant="sm" color="white" weight="medium" mt={0.5}>
-              {unit.linkText}
+              {linkText}
             </Text>
-          ) : null}
+          )}
         </Flex>
         {hasLoaded && unit.creditLine ? (
           // create a view the same size as the hero unit would be if you rotated it 90 degrees
