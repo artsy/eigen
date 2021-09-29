@@ -1,5 +1,5 @@
 import _ from "lodash"
-import { Color, EyeOpenedIcon, Flex, Sans, Spinner, ThemeV3Type, useTheme, XCircleIcon } from "palette"
+import { Color, EyeOpenedIcon, Flex, Sans, Spinner, useTheme, XCircleIcon } from "palette"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,
