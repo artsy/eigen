@@ -113,11 +113,7 @@ export const AutosuggestSearchResult: React.FC<{
 
           <Flex flex={1}>
             <Text variant="xs" numberOfLines={1}>
-              <ResultWithHighlight
-                displayLabel={result.displayLabel!}
-                highlight={highlight}
-                categoryName={resultType}
-              />
+              <ResultWithHighlight displayLabel={result.displayLabel!} highlight={highlight} />
             </Text>
 
             {!!showResultType && !!resultType && (

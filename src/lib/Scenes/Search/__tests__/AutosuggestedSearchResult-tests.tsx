@@ -8,7 +8,7 @@ import React from "react"
 import { Pressable } from "react-native"
 import { act } from "react-test-renderer"
 import { AutosuggestSearchResult } from "../AutosuggestSearchResult"
-import { ItalicText, ResultWithHighlight, ResultWithItalic, SmallText } from "../ResultWithHighlight"
+import { ResultWithHighlight } from "../ResultWithHighlight"
 import { SearchContext } from "../SearchContext"
 
 const inputBlurMock = jest.fn()
@@ -74,7 +74,6 @@ describe(AutosuggestSearchResult, () => {
     expect(resultWithHighlight).toBeDefined()
     expect(resultWithHighlightProps.displayLabel).toEqual("Banksy")
     expect(resultWithHighlightProps.highlight).toEqual("Ban")
-    expect(resultWithHighlightProps.categoryName).toEqual("Artist")
   })
 
   it("does not render delete button when onDelete callback is not passed", async () => {
@@ -288,89 +287,5 @@ describe(AutosuggestSearchResult, () => {
     })
     await new Promise((r) => setTimeout(r, 50))
     expect(navigate).toHaveBeenCalledWith("/artist/anto-carte", { passProps: { initialTab: "Insights" } })
-  })
-})
-
-describe("ResultWithItalic", () => {
-  describe("when match is in an artwork name", () => {
-    const array = ["Henri Venne, The Sun Shines ", "Cold", " (2015)"]
-    const tree = renderWithWrappers(<ResultWithItalic result={array} />)
-    const text = tree.root.findAllByType(SmallText)
-    const italicText = tree.root.findAllByType(ItalicText)
-
-    it("renders 3 text elements", () => {
-      expect(text).toHaveLength(3)
-    })
-
-    it(`renders "Henri Venne" as plain text`, () => {
-      expect(text[0].props.italic).toBeFalsy()
-      expect(extractText(text[0])).toEqual("Henri Venne")
-    })
-
-    it("renders 2 italic text elements", () => {
-      expect(italicText).toHaveLength(2)
-    })
-
-    it(`renders "The Sun Shines " and " (2015)" as italic grey text elements`, () => {
-      expect(italicText[0].props.color).toBeUndefined()
-      expect(extractText(italicText[0])).toContain("The Sun Shines ")
-      expect(extractText(italicText[0])).toContain(" (2015)")
-    })
-
-    it(`renders "Cold" as italic blue text element`, () => {
-      expect(italicText[1].props.color).toEqual("blue100")
-      expect(extractText(italicText[1])).toContain("Cold")
-    })
-  })
-
-  describe("when match is in an artist name", () => {
-    const array = ["Christ on the ", "Cold", " Stone, Title, with comma (1990)"]
-    const tree = renderWithWrappers(<ResultWithItalic result={array} />)
-    const text = tree.root.findAllByType(SmallText)
-    const italicText = tree.root.findAllByType(ItalicText)
-
-    it("renders 3 text elements", () => {
-      expect(text).toHaveLength(3)
-    })
-
-    it(`renders "Christ on the " and " Stone" as plain text element`, () => {
-      expect(text[0].props.italic).toBeFalsy()
-      expect(extractText(text[0])).toContain("Christ on the ")
-      expect(extractText(text[0])).toContain(" Stone")
-    })
-
-    it(`renders "Cold" as bold blue text element`, () => {
-      expect(text[1].props.weight).toEqual("medium")
-      expect(text[1].props.color).toEqual("blue100")
-      expect(extractText(text[1])).toEqual("Cold")
-    })
-
-    it(`renders " Title, with comma (1990)" as italic grey text element`, () => {
-      expect(italicText).toHaveLength(1)
-      expect(italicText[0].props.color).toBeUndefined()
-      expect(extractText(italicText[0])).toEqual(" Title, with comma (1990)")
-    })
-  })
-
-  describe("when there is no artwork name", () => {
-    const array = ["Ann ", "Veronica", " Janssens"]
-    const tree = renderWithWrappers(<ResultWithItalic result={array} />)
-    const text = tree.root.findAllByType(SmallText)
-
-    it("renders 2 text elements", () => {
-      expect(text).toHaveLength(2)
-    })
-
-    it(`renders "Ann " and " Janssens" as plain text elements`, () => {
-      expect(text[0].props.italic).toBeFalsy()
-      expect(extractText(text[0])).toContain("Ann ")
-      expect(extractText(text[0])).toContain(" Janssens")
-    })
-
-    it(`renders "Veronica" as bold blue text element`, () => {
-      expect(text[1].props.weight).toEqual("medium")
-      expect(text[1].props.color).toEqual("blue100")
-      expect(extractText(text[1])).toEqual("Veronica")
-    })
   })
 })
