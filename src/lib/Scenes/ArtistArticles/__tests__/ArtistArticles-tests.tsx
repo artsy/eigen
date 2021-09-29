@@ -1,4 +1,4 @@
-import { ArtistArticlesResultQuery } from "__generated__/ArtistArticlesResultQuery.graphql"
+import { ArtistArticlesTestsQuery } from "__generated__/ArtistArticlesTestsQuery.graphql"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -8,7 +8,7 @@ import { ArtistArticles, ArtistArticlesContainer } from "../ArtistArticles"
 
 jest.unmock("react-relay")
 
-describe("ArtistInsightsAuctionResults", () => {
+describe("Artist Articles", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
@@ -16,10 +16,10 @@ describe("ArtistInsightsAuctionResults", () => {
   })
 
   const TestRenderer = () => (
-    <QueryRenderer<ArtistArticlesResultQuery>
+    <QueryRenderer<ArtistArticlesTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query ArtistArticlesResultQuery @relay_test_operation {
+        query ArtistArticlesTestsQuery @relay_test_operation {
           artist(id: "some-id") {
             ...ArtistArticles_artist
           }
