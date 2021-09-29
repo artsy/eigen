@@ -11,10 +11,10 @@ import { GlobalStoreProvider } from "./store/GlobalStore"
 import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
 
 export const AppProviders = ({ children }: { children: ReactNode }) => (
-  <RelayEnvironmentProvider environment={defaultEnvironment}>
-    <SafeAreaProvider>
-      <ProvideScreenDimensions>
-        <GlobalStoreProvider>
+  <SafeAreaProvider>
+    <ProvideScreenDimensions>
+      <GlobalStoreProvider>
+        <RelayEnvironmentProvider environment={defaultEnvironment}>
           <Theme>
             <ActionSheetProvider>
               <PopoverMessageProvider>
@@ -28,8 +28,8 @@ export const AppProviders = ({ children }: { children: ReactNode }) => (
               </PopoverMessageProvider>
             </ActionSheetProvider>
           </Theme>
-        </GlobalStoreProvider>
-      </ProvideScreenDimensions>
-    </SafeAreaProvider>
-  </RelayEnvironmentProvider>
+        </RelayEnvironmentProvider>
+      </GlobalStoreProvider>
+    </ProvideScreenDimensions>
+  </SafeAreaProvider>
 )

@@ -28,6 +28,7 @@ const afterSocialAuthLogin = (res: any, reject: (reason?: any) => void, provider
   }
 }
 
+type OnboardingState = "none" | "incomplete" | "complete"
 export interface AuthModel {
   // State
   userID: string | null
@@ -35,7 +36,7 @@ export interface AuthModel {
   userAccessTokenExpiresIn: string | null
   xAppToken: string | null
   xApptokenExpiresIn: string | null
-  onboardingState: "none" | "incomplete" | "complete"
+  onboardingState: OnboardingState
   userEmail: string | null
 
   userHasArtsyEmail: Computed<this, boolean, GlobalStoreModel>
@@ -54,6 +55,7 @@ export interface AuthModel {
         oauthProvider?: never
         idToken?: never
         appleUID?: never
+        onboardingState?: OnboardingState
       }
     | {
         email: string
@@ -63,6 +65,7 @@ export interface AuthModel {
         password?: never
         idToken?: never
         appleUID?: never
+        onboardingState?: OnboardingState
       }
     | {
         email: string
@@ -72,6 +75,7 @@ export interface AuthModel {
 
         password?: never
         accessToken?: never
+        onboardingState?: OnboardingState
       },
     {},
     GlobalStoreModel,
@@ -239,96 +243,99 @@ export const getAuthModel = (): AuthModel => ({
     }
     return false
   }),
-  signIn: thunk(async (actions, { email, password, accessToken, oauthProvider, idToken, appleUID }) => {
-    let body
-    switch (oauthProvider) {
-      case "facebook":
-      case "google":
-        body = {
-          oauth_provider: oauthProvider,
-          oauth_token: accessToken,
-          client_id: Config.ARTSY_API_CLIENT_KEY,
-          client_secret: Config.ARTSY_API_CLIENT_SECRET,
-          grant_type: "oauth_token",
-          scope: "offline_access",
-        }
-        break
-      case "apple":
-        body = {
-          oauth_provider: oauthProvider,
-          apple_uid: appleUID,
-          id_token: idToken,
-          client_id: Config.ARTSY_API_CLIENT_KEY,
-          client_secret: Config.ARTSY_API_CLIENT_SECRET,
-          grant_type: "apple_uid",
-          scope: "offline_access",
-        }
-        break
-      default:
-        body = {
-          email,
-          password,
-          client_id: Config.ARTSY_API_CLIENT_KEY,
-          client_secret: Config.ARTSY_API_CLIENT_SECRET,
-          grant_type: "credentials",
-          scope: "offline_access",
-        }
-        break
-    }
-
-    const result = await actions.gravityUnauthenticatedRequest({
-      path: `/oauth2/access_token`,
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body,
-    })
-
-    if (result.status === 201) {
-      const { expires_in, access_token } = await result.json()
-      const { id } = await (
-        await actions.gravityUnauthenticatedRequest({
-          path: `/api/v1/user?${stringify({ email })}`,
-        })
-      ).json()
-
-      actions.setState({
-        userAccessToken: access_token,
-        userAccessTokenExpiresIn: expires_in,
-        userID: id,
-        userEmail: email,
-      })
-      actions.notifyTracking({ userId: id })
-
-      if (Platform.OS === "android") {
-        PushNotification.checkPermissions((permissions) => {
-          if (!permissions.alert) {
-            // settimeout so alerts show when/immediately after page loads not before.
-            setTimeout(() => {
-              Alert.alert(
-                "Artsy Would Like to Send You Notifications",
-                "Turn on notifications to get important updates about artists you follow.",
-                [
-                  {
-                    text: "Dismiss",
-                    style: "cancel",
-                  },
-                  {
-                    text: "Settings",
-                    onPress: () => Linking.openSettings(),
-                  },
-                ]
-              )
-            }, 3000)
+  signIn: thunk(
+    async (actions, { email, password, accessToken, oauthProvider, idToken, appleUID, onboardingState }) => {
+      let body
+      switch (oauthProvider) {
+        case "facebook":
+        case "google":
+          body = {
+            oauth_provider: oauthProvider,
+            oauth_token: accessToken,
+            client_id: Config.ARTSY_API_CLIENT_KEY,
+            client_secret: Config.ARTSY_API_CLIENT_SECRET,
+            grant_type: "oauth_token",
+            scope: "offline_access",
           }
-        })
+          break
+        case "apple":
+          body = {
+            oauth_provider: oauthProvider,
+            apple_uid: appleUID,
+            id_token: idToken,
+            client_id: Config.ARTSY_API_CLIENT_KEY,
+            client_secret: Config.ARTSY_API_CLIENT_SECRET,
+            grant_type: "apple_uid",
+            scope: "offline_access",
+          }
+          break
+        default:
+          body = {
+            email,
+            password,
+            client_id: Config.ARTSY_API_CLIENT_KEY,
+            client_secret: Config.ARTSY_API_CLIENT_SECRET,
+            grant_type: "credentials",
+            scope: "offline_access",
+          }
+          break
       }
-      return true
-    }
 
-    return false
-  }),
+      const result = await actions.gravityUnauthenticatedRequest({
+        path: `/oauth2/access_token`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body,
+      })
+
+      if (result.status === 201) {
+        const { expires_in, access_token } = await result.json()
+        const { id } = await (
+          await actions.gravityUnauthenticatedRequest({
+            path: `/api/v1/user?${stringify({ email })}`,
+          })
+        ).json()
+
+        actions.setState({
+          userAccessToken: access_token,
+          userAccessTokenExpiresIn: expires_in,
+          userID: id,
+          userEmail: email,
+          onboardingState: onboardingState ?? "complete",
+        })
+        actions.notifyTracking({ userId: id })
+
+        if (Platform.OS === "android") {
+          PushNotification.checkPermissions((permissions) => {
+            if (!permissions.alert) {
+              // settimeout so alerts show when/immediately after page loads not before.
+              setTimeout(() => {
+                Alert.alert(
+                  "Artsy Would Like to Send You Notifications",
+                  "Turn on notifications to get important updates about artists you follow.",
+                  [
+                    {
+                      text: "Dismiss",
+                      style: "cancel",
+                    },
+                    {
+                      text: "Settings",
+                      onPress: () => Linking.openSettings(),
+                    },
+                  ]
+                )
+              }, 3000)
+            }
+          })
+        }
+        return true
+      }
+
+      return false
+    }
+  ),
   signUp: thunk(
     async (
       actions,
@@ -382,10 +389,16 @@ export const getAuthModel = (): AuthModel => ({
       if (result.status === 201) {
         postEventToProviders(tracks.createdAccount({ signUpMethod: body?.provider || "email" }))
         // @ts-ignore
-        await actions.signIn({ email, password, accessToken, oauthProvider, idToken, appleUID })
-        actions.setState({
+        await actions.signIn({
+          email,
+          password,
+          accessToken,
+          oauthProvider,
+          idToken,
+          appleUID,
           onboardingState: "incomplete",
         })
+
         return { success: true }
       }
 

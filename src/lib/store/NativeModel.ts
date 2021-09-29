@@ -87,20 +87,20 @@ listenToNativeEvents((event: NativeEvent) => {
             : (() => undefined)()
         }
       }
-      GlobalStore.actions.native.setLocalState(event.payload)
       // We need to set the values we get from the native state on iOS to the global store
       // to have parity between the auth on native and react-native
-      if (event.payload.userEmail) {
-        GlobalStore.actions.auth.setState({ userEmail: event.payload.userEmail })
-      }
-      if (event.payload.onboardingState) {
-        GlobalStore.actions.auth.setState({ userEmail: event.payload.onboardingState })
-      }
-      if (event.payload.userID) {
-        GlobalStore.actions.auth.setState({ userID: event.payload.userID })
-      }
-      if (event.payload.authenticationToken) {
-        GlobalStore.actions.auth.setState({ userAccessToken: event.payload.authenticationToken })
+      if (
+        event.payload.userEmail &&
+        event.payload.onboardingState &&
+        event.payload.userID &&
+        event.payload.authenticationToken
+      ) {
+        GlobalStore.actions.auth.setState({
+          userEmail: event.payload.userEmail,
+          userAccessToken: event.payload.authenticationToken,
+          userID: event.payload.userID,
+          onboardingState: event.payload.onboardingState,
+        })
       }
 
       return
