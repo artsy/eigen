@@ -1,9 +1,10 @@
 import { TroveTestsQuery } from "__generated__/TroveTestsQuery.graphql"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Touchable } from "palette"
 import React from "react"
-import { Image, TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { TroveFragmentContainer } from "../Trove"
@@ -46,7 +47,7 @@ describe("Trove", () => {
       })
     )
 
-    expect(tree.root.findAllByType(Image)).toHaveLength(1)
+    expect(tree.root.findAllByType(OpaqueImageView)).toHaveLength(1)
     expect(extractText(tree.root)).toMatchInlineSnapshot(`"TroveBrowse available artworks by emerging artists."`)
   })
 
@@ -64,7 +65,7 @@ describe("Trove", () => {
     )
 
     expect(navigate).not.toHaveBeenCalled()
-    tree.root.findByType(TouchableOpacity).props.onPress()
+    tree.root.findByType(Touchable).props.onPress()
     expect(navigate).toHaveBeenCalledWith("/gene/trove")
   })
 })

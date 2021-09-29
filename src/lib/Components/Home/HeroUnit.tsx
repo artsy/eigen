@@ -29,7 +29,7 @@ export const HeroUnit: React.FC<Props> = ({ unit, onPress, isTrove = false }) =>
 
   const { width, height } = useHeroDimensions()
 
-  const linkText = !isTrove && (unit as any).linkText
+  const linkText = (unit as any)?.linkText
 
   return (
     <Touchable haptic activeOpacity={0.9} onPress={onPress}>
