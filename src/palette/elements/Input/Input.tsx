@@ -95,7 +95,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
 
     useImperativeHandle(ref, () => input.current!)
 
-    const fontFamily = (theme as ThemeV3Type).fonts.sans.regular
+    const fontFamily = theme.fonts.sans.regular
 
     useEffect(() => {
       /* to make the font work for secure text inputs,
