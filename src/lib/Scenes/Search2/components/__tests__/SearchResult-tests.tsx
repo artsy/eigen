@@ -32,7 +32,7 @@ const TestPage = (props: any) => {
         ...initialResult,
         ...result,
       }}
-      indexName={"Article_staging"}
+      indexName="Article_staging"
       {...rest}
     />
   )

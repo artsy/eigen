@@ -68,7 +68,7 @@ describe(AutosuggestSearchResult, () => {
   })
 
   it("renders result with highlight and passes correct props to it", async () => {
-    const tree = renderWithWrappers(<TestWrapper result={result} highlight={"Ban"} />)
+    const tree = renderWithWrappers(<TestWrapper result={result} highlight="Ban" />)
     const resultWithHighlight = tree.root.findByType(ResultWithHighlight)
     const resultWithHighlightProps = resultWithHighlight.props
     expect(resultWithHighlight).toBeDefined()
