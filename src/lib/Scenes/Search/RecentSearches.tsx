@@ -3,8 +3,8 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { Message } from "palette"
 import React from "react"
 import { LayoutAnimation } from "react-native"
+import { AutosuggestSearchResult } from "./AutosuggestSearchResult"
 import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "./SearchModel"
-import { SearchResult } from "./SearchResult"
 import { SearchResultList } from "./SearchResultList"
 
 export const RecentSearches: React.FC = () => {
@@ -15,8 +15,8 @@ export const RecentSearches: React.FC = () => {
       {recentSearches.length ? (
         <SearchResultList
           results={recentSearches.map(({ props: result }) => (
-            <SearchResult
-              key={`${result.internalID}`}
+            <AutosuggestSearchResult
+              key={result.internalID}
               result={result}
               updateRecentSearchesOnTap={false}
               displayingRecentResult

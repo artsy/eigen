@@ -1,21 +1,19 @@
-import { themeGet } from "@styled-system/theme-get"
 import GraphemeSplitter from "grapheme-splitter"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { EntityType, navigate, navigateToEntity, navigateToPartner, SlugType } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { normalizeText } from "lib/utils/normalizeText"
 import { Schema } from "lib/utils/track"
-import { ArtworkIcon, AuctionIcon, Box, CloseIcon, Flex, Sans, Spacer } from "palette"
+import { Sans } from "palette"
 import React, { useContext } from "react"
-import { Pressable, Text, TouchableOpacity, View } from "react-native"
+import { Text } from "react-native"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
+import { SearchListItem } from "../Search2/components/SearchListItem"
 import { AutosuggestResult } from "./AutosuggestResults"
 import { SearchContext } from "./SearchContext"
 
 export type OnResultPress = (result: AutosuggestResult) => void
 type ArtistTabs = "Insights" | "Artworks"
-export const SearchResult: React.FC<{
+export const AutosuggestSearchResult: React.FC<{
   result: AutosuggestResult
   highlight?: string
   updateRecentSearchesOnTap?: boolean
@@ -30,13 +28,11 @@ export const SearchResult: React.FC<{
   onDelete,
   onResultPress,
   displayingRecentResult,
-  showResultType = true,
   updateRecentSearchesOnTap = true,
   showQuickNavigationButtons = false,
 }) => {
   const { inputRef, queryRef } = useContext(SearchContext)
   const { trackEvent } = useTracking()
-  const imageSide = 40
 
   const showNavigationButtons =
     showQuickNavigationButtons && !!result.counts?.artworks && !!result.counts?.auctionResults
@@ -63,96 +59,34 @@ export const SearchResult: React.FC<{
       })
     }
   }
+
+  const categoryName = result.displayType ?? result.__typename
+
   return (
-    <>
-      <TouchableOpacity onPress={() => onPress()}>
-        <Flex flexDirection="row" alignItems="center">
-          <OpaqueImageView
-            imageURL={result.imageUrl}
-            style={{
-              width: imageSide,
-              height: imageSide,
-              borderRadius: showNavigationButtons ? imageSide / 2 : 2,
-              overflow: "hidden",
-            }}
-          />
-          <Spacer ml={1} />
-          <View style={{ flex: 1 }}>
+    <SearchListItem
+      onPress={onPress}
+      imageURL={result.imageUrl}
+      categoryName={categoryName}
+      onDelete={onDelete}
+      showNavigationButtons={showNavigationButtons}
+      Info={() => {
+        return (
+          <>
             <Text ellipsizeMode="tail" numberOfLines={1}>
               {applyHighlight(result.displayLabel!, highlight)}
             </Text>
-            {(!!result.displayType || result.__typename === "Artist") && !!showResultType && (
+            {!!categoryName && (
               <Sans size="3t" color="black60">
                 {result.displayType || result.__typename}
               </Sans>
             )}
-          </View>
-          {!!onDelete && (
-            <TouchableOpacity
-              onPress={onDelete}
-              hitSlop={{
-                bottom: 20,
-                top: 20,
-                left: 10,
-                right: 20,
-              }}
-            >
-              <Flex pl={1}>
-                <CloseIcon fill="black60" />
-              </Flex>
-            </TouchableOpacity>
-          )}
-        </Flex>
-      </TouchableOpacity>
-
-      {showNavigationButtons && (
-        <>
-          <Spacer m={0.5} />
-
-          <Flex flexDirection="row" alignItems="center">
-            <View style={{ width: imageSide }} />
-            <Spacer ml={1} />
-
-            <Pressable onPress={() => onPress({ artistTab: "Artworks" })}>
-              {({ pressed }) => (
-                <QuickNavigationButton>
-                  <Box mr={0.5}>
-                    <ArtworkIcon fill={pressed ? "blue100" : "black100"} />
-                  </Box>
-                  <Sans size="3" color={pressed ? "blue100" : "black100"}>
-                    Artworks
-                  </Sans>
-                </QuickNavigationButton>
-              )}
-            </Pressable>
-
-            <Spacer ml={1} />
-
-            <Pressable onPress={() => onPress({ artistTab: "Insights" })}>
-              {({ pressed }) => (
-                <QuickNavigationButton>
-                  <Box mr={0.5}>
-                    <AuctionIcon fill={pressed ? "blue100" : "black100"} />
-                  </Box>
-                  <Sans size="3" color={pressed ? "blue100" : "black100"}>
-                    Auction Results
-                  </Sans>
-                </QuickNavigationButton>
-              )}
-            </Pressable>
-          </Flex>
-        </>
-      )}
-    </>
+          </>
+        )
+      }}
+    />
   )
 }
-const QuickNavigationButton = styled(Flex)`
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 2px 10px;
-  border: 1px solid ${themeGet("colors.black30")};
-`
+
 const splitter = new GraphemeSplitter()
 
 /**
@@ -227,7 +161,7 @@ function applyHighlight(displayLabel: string, highlight: string | undefined) {
   return (
     <Sans size="3t" weight="regular">
       {result[0]}
-      <Sans size="3t" weight="medium" style={{ padding: 0, margin: 0 }}>
+      <Sans size="3t" weight="medium" color="blue100" style={{ padding: 0, margin: 0 }}>
         {result[1]}
       </Sans>
       {result[2]}

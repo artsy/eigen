@@ -14,7 +14,7 @@ import React from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
-import { OnResultPress, SearchResult } from "./SearchResult"
+import { AutosuggestSearchResult, OnResultPress } from "./AutosuggestSearchResult"
 
 export type AutosuggestResult = NonNullable<
   NonNullable<NonNullable<NonNullable<AutosuggestResults_results["results"]>["edges"]>[0]>["node"]
@@ -121,7 +121,7 @@ const AutosuggestResultsFlatList: React.FC<{
       renderItem={({ item }) => {
         return (
           <Flex mb={2}>
-            <SearchResult
+            <AutosuggestSearchResult
               highlight={query}
               result={item}
               showResultType={showResultType}

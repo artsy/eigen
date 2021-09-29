@@ -1,41 +1,20 @@
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { navigate, navigateToPartner } from "lib/navigation/navigate"
 import { isPad } from "lib/utils/hardware"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
-import { searchInsights } from "lib/utils/useSearchInsightsConfig"
-import { Box, Flex, Spacer, Spinner, Text, Touchable, useSpace } from "palette"
+import { Box, Flex, Spacer, Spinner, Text, useSpace } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
-import { connectHighlight } from "react-instantsearch-native"
 import { FlatList } from "react-native"
 import { AlgoliaSearchPlaceholder } from "./components/AlgoliaSearchPlaceholder"
+import { SearchResult } from "./components/SearchResult"
 import { AlgoliaSearchResult } from "./types"
 
 interface SearchResultsProps
   extends StateResultsProvided<AlgoliaSearchResult>,
     InfiniteHitsProvided<AlgoliaSearchResult> {
   indexName: string
-  categoryDisplayName: string
+  categoryDisplayName?: string
 }
-
-const Highlight = connectHighlight(({ highlight, attribute, hit, highlightProperty = "_highlightResult" }) => {
-  const parsedHit = highlight({ attribute, hit, highlightProperty })
-
-  return (
-    <Text numberOfLines={1}>
-      {parsedHit.map(({ isHighlighted, value }, index) =>
-        isHighlighted ? (
-          <Text key={index} color="blue100" fontWeight="600" padding={0} margin={0}>
-            {value}
-          </Text>
-        ) : (
-          <Text key={index}>{value}</Text>
-        )
-      )}
-    </Text>
-  )
-})
 
 export const SearchResults: React.FC<SearchResultsProps> = ({
   hits,
@@ -69,24 +48,6 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
 
     didMountRef.current = true
   }, [searchResults?.hits])
-
-  const onPress = (item: AlgoliaSearchResult): void => {
-    // TODO: I'm not sure why we need to use this `navigateToPartner` function but without it the header overlaps
-    // with the back button
-    if (item.href.startsWith("/partner/")) {
-      navigateToPartner(item.slug)
-    } else {
-      navigate(item.href)
-    }
-
-    searchInsights("clickedObjectIDsAfterSearch", {
-      index: indexName,
-      eventName: "Search item clicked",
-      positions: [item.__position],
-      queryID: item.__queryID,
-      objectIDs: [item.objectID],
-    })
-  }
 
   const loadMore = () => {
     if (hasMore && !loading) {
@@ -123,20 +84,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
       contentContainerStyle={{ paddingVertical: space(1) }}
       data={hits}
       keyExtractor={(item) => item.objectID}
-      renderItem={({ item }) => (
-        <Touchable onPress={() => onPress(item)}>
-          <Flex py={space(1)} px={space(2)} flexDirection="row" alignItems="center">
-            <OpaqueImageView
-              imageURL={item.image_url}
-              style={{ width: 40, height: 40, borderRadius: 20, overflow: "hidden" }}
-            />
-            <Spacer ml={1} />
-            <Flex flex={1}>
-              <Highlight attribute="name" hit={item} />
-            </Flex>
-          </Flex>
-        </Touchable>
-      )}
+      renderItem={({ item }) => <SearchResult result={item} indexName={indexName} />}
       onEndReached={loadMore}
       ListFooterComponent={
         <Flex alignItems="center" my={2}>
