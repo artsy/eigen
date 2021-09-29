@@ -11,6 +11,7 @@ function loadStories() {
   require("../palette/elements/Button/Button.stories")
   require("../palette/elements/Checkbox/Checkbox.stories")
   require("../palette/elements/Dialog/Dialog.stories")
+  require("../palette/elements/Input/Input.stories")
   require("../palette/elements/Pill/Pill.stories")
   require("../palette/elements/Radio/RadioButton.stories")
   require("../palette/elements/Select/Select.stories")
