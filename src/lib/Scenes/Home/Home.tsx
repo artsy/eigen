@@ -36,6 +36,7 @@ import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHome
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
 import { NewWorksForYouRailContainer } from "./Components/NewWorksForYouRail"
+import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProps {
@@ -77,6 +78,7 @@ const Home = (props: Props) => {
   )
 
   const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
+  const troveEchoFlag = useFeatureFlag("AREnableTrove")
   const showNewNewWorksForYouRail = useFeatureFlag("AREnableNewNewWorksForYou")
 
   /*
@@ -101,6 +103,7 @@ const Home = (props: Props) => {
         type: "auction-results",
       } as const),
     !!articlesConnection && ({ type: "articles" } as const),
+    !!troveEchoFlag && ({ type: "trove" } as const),
     !!viewingRoomsEchoFlag && !!featured && ({ type: "viewing-rooms" } as const),
     collectionsModule &&
       ({
@@ -186,6 +189,16 @@ const Home = (props: Props) => {
                     scrollRef={scrollRefs.current[index]}
                     onShow={() => separators.updateProps("leading", { hideSeparator: false })}
                   />
+                )
+              case "trove":
+                return homePageBelow ? (
+                  <TroveFragmentContainer
+                    trove={homePageBelow}
+                    onShow={() => separators.updateProps("trailing", { hideSeparator: false })}
+                    onHide={() => separators.updateProps("trailing", { hideSeparator: true })}
+                  />
+                ) : (
+                  <></>
                 )
               case "viewing-rooms":
                 return featured ? <ViewingRoomsHomeRail featured={featured} /> : <></>
@@ -284,6 +297,7 @@ export const HomeFragmentContainer = createRefetchContainer(
           ...CollectionsRail_collectionsModule
         }
         ...HomeHero_homePage @arguments(heroImageVersion: $heroImageVersion)
+        ...Trove_trove @arguments(heroImageVersion: $heroImageVersion)
       }
     `,
     meAbove: graphql`
