@@ -6,7 +6,6 @@ import { __unsafe_switchTab } from "lib/NativeModules/ARScreenPresenterModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import { GlobalStore, unsafe__getSelectedTab } from "lib/store/GlobalStore"
-import { Schema } from "lib/utils/track"
 import { postEventToProviders } from "lib/utils/track/providers"
 import { Linking, Platform } from "react-native"
 import { matchRoute } from "./routes"
@@ -123,7 +122,7 @@ const tracks = {
         tabScreen = OwnerType.inbox
         break
       case "profile":
-        tabScreen = OwnerType.myCollection
+        tabScreen = OwnerType.profile
         break
       case "search":
         tabScreen = OwnerType.search

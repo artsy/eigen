@@ -4,7 +4,6 @@ import { ConsignmentsHomeQuery } from "__generated__/ConsignmentsHomeQuery.graph
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Join, Separator } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
