@@ -123,7 +123,7 @@ const tracks = {
         tabScreen = OwnerType.inbox
         break
       case "profile":
-        tabScreen = OwnerType.profile
+        tabScreen = OwnerType.myCollection
         break
       case "search":
         tabScreen = OwnerType.search
