@@ -13,12 +13,16 @@ import { Flex, Join, Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { MyProfileQueryResponse } from "../../../__generated__/MyProfileQuery.graphql"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
 import { LoadingSkeleton as MyCollectionLoadingSkeleton, useEnableMyCollection } from "../MyCollection/MyCollection"
 import { MyCollectionAndSavedWorks, Tab } from "./MyCollectionAndSavedWorks"
 import { confirmLogout, SectionHeading } from "./MyProfileSettings"
 
-export const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
+export const MyProfile: React.FC<{ me: NonNullable<MyProfileQueryResponse["me"]>; relay: RelayRefetchProp }> = ({
+  me,
+  relay,
+}) => {
   const shouldDisplayMyCollection = useEnableMyCollection()
   if (shouldDisplayMyCollection) {
     return <MyCollectionAndSavedWorks me={me} initialTab={Tab.collection} />
@@ -140,27 +144,39 @@ export const MyProfileContainer = createRefetchContainer(
   },
   graphql`
     query MyProfileRefetchQuery {
-      me {
+      me @optionalField {
         ...MyProfile_me
       }
     }
   `
 )
 
-export const MyProfileQueryRenderer: React.FC<{}> = ({}) => (
-  <QueryRenderer<MyProfileQuery>
-    environment={defaultEnvironment}
-    query={graphql`
-      query MyProfileQuery {
-        me @optionalField {
-          ...MyProfile_me
-        }
-      }
-    `}
-    render={renderWithPlaceholder({
-      Container: MyProfileContainer,
-      renderPlaceholder: () => <MyProfilePlaceholder />,
-    })}
-    variables={{}}
-  />
-)
+export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
+  const shouldDisplayMyCollection = useEnableMyCollection()
+  if (shouldDisplayMyCollection) {
+    return (
+      <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.profile })}>
+        <MyCollectionAndSavedWorks />
+      </ProvideScreenTrackingWithCohesionSchema>
+    )
+  }
+  return (
+    <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.profile })}>
+      <QueryRenderer<MyProfileQuery>
+        environment={defaultEnvironment}
+        query={graphql`
+          query MyProfileQuery {
+            me @optionalField {
+              ...MyProfile_me
+            }
+          }
+        `}
+        render={renderWithPlaceholder({
+          Container: MyProfileContainer,
+          renderPlaceholder: () => <MyProfilePlaceholder />,
+        })}
+        variables={{}}
+      />
+    </ProvideScreenTrackingWithCohesionSchema>
+  )
+}
