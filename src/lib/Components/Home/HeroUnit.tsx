@@ -2,10 +2,11 @@ import { HomeHero_homePage } from "__generated__/HomeHero_homePage.graphql"
 import { Trove_trove } from "__generated__/Trove_trove.graphql"
 import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, Text, useColor } from "palette"
+import { Flex, Text, Touchable, useColor } from "palette"
 import React, { useState } from "react"
-import { Image, TouchableOpacity, View } from "react-native"
+import { View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
+import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
 type UnitType = NonNullable<NonNullable<HomeHero_homePage["heroUnits"] | Trove_trove["heroUnits"]>[0]>
 
@@ -31,22 +32,18 @@ export const HeroUnit: React.FC<Props> = ({ unit, onPress, isTrove = false }) =>
   const linkText = !isTrove && (unit as any).linkText
 
   return (
-    <TouchableOpacity activeOpacity={0.9} onPress={onPress}>
+    <Touchable haptic activeOpacity={0.9} onPress={onPress}>
       <Flex height={height} justifyContent="flex-end" p="2" style={{ backgroundColor: color("black30") }}>
-        <Image
+        <OpaqueImageView
           style={{ width, height, position: "absolute" }}
-          source={{ uri: unit.backgroundImageURL! }}
+          imageURL={unit.backgroundImageURL}
           onLoad={() => setHasLoaded(true)}
         />
         {!!isTrove && (
           <LinearGradient
             colors={["rgba(0, 0, 0, 0)", "rgba(0, 0, 0, 0.12)"]}
             locations={[0.4, 1]}
-            style={{
-              position: "absolute",
-              width,
-              height,
-            }}
+            style={{ width, height, position: "absolute" }}
           />
         )}
         <Flex maxWidth={isPad() ? "65%" : undefined}>
@@ -88,6 +85,6 @@ export const HeroUnit: React.FC<Props> = ({ unit, onPress, isTrove = false }) =>
           </View>
         ) : null}
       </Flex>
-    </TouchableOpacity>
+    </Touchable>
   )
 }
