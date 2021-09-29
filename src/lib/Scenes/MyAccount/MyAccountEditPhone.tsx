@@ -41,7 +41,7 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me }> = ({ me }) => 
         try {
           await updateMyUserProfile({ phone })
           dismiss()
-        } catch (e) {
+        } catch (e: any) {
           setReceivedError(e)
         }
       }}
