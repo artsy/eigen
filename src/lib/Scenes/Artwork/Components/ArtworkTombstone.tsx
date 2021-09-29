@@ -141,11 +141,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
         <Spacer mb={1} />
         {!!displayAuctionLotLabel && (
           <Sans color="black100" size="3" weight="medium">
-            Lot{" "}
-            {
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              artwork.saleArtwork.lotLabel
-            }
+            Lot {artwork.saleArtwork.lotLabel}
           </Sans>
         )}
         <Flex flexDirection="row" flexWrap="wrap">

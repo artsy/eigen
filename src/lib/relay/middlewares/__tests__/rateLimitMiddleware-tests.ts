@@ -47,7 +47,7 @@ describe("rateLimitMiddleware", () => {
 
     try {
       await middleware(next)(request)
-    } catch (err) {
+    } catch (err: any) {
       expect(err.message).toEqual("Rate limit exceeded: ExampleQuery")
     }
   })

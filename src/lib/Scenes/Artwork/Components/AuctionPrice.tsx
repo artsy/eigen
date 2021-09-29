@@ -61,7 +61,6 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
     const myBidPresent = !!(myLotStanding && myLotStanding.mostRecentBid)
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const myBidWinning = myBidPresent && get(myLotStanding, (s) => s.activeBid.isWinning)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const myMostRecent = myBidPresent && myLotStanding.mostRecentBid
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const myMaxBid = get(myMostRecent, (bid) => bid.maxBid.display)

@@ -138,7 +138,7 @@ export class Overview extends React.Component<Props, State> {
         const utmMedium = this.props.params.utm_medium
         const utmTerm = this.props.params.utm_term
         updateConsignmentSubmission({ ...this.state, utmSource, utmTerm, utmMedium })
-      } catch (error) {
+      } catch (error: any) {
         this.showUploadFailureAlert(error)
       }
     } else if (this.state.artist) {

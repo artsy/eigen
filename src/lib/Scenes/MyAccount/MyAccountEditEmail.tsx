@@ -31,7 +31,7 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
         try {
           await updateMyUserProfile({ email })
           dismiss()
-        } catch (e) {
+        } catch (e: any) {
           setReceivedError(e)
         }
       }}
