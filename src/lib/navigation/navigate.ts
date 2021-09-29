@@ -1,3 +1,4 @@
+import { ActionType, OwnerType, Screen } from "@artsy/cohesion"
 import { addBreadcrumb } from "@sentry/react-native"
 import { EventEmitter } from "events"
 import { AppModule, modules, ViewOptions } from "lib/AppRegistry"
@@ -5,6 +6,8 @@ import { __unsafe_switchTab } from "lib/NativeModules/ARScreenPresenterModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import { GlobalStore, unsafe__getSelectedTab } from "lib/store/GlobalStore"
+import { Schema } from "lib/utils/track"
+import { postEventToProviders } from "lib/utils/track/providers"
 import { Linking, Platform } from "react-native"
 import { matchRoute } from "./routes"
 
@@ -95,6 +98,10 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
 export const navigationEvents = new EventEmitter()
 
 export function switchTab(tab: BottomTabType, props?: object) {
+  // root tabs are only mounted once so cannot be tracked
+  // like other screens manually track screen views here
+  postEventToProviders(tracks.tabScreenView(tab))
+
   if (props) {
     GlobalStore.actions.bottomTabs.setTabProps({ tab, props })
   }
@@ -103,6 +110,34 @@ export function switchTab(tab: BottomTabType, props?: object) {
   } else {
     __unsafe_switchTab(tab)
   }
+}
+
+const tracks = {
+  tabScreenView: (tab: BottomTabType): Screen => {
+    let tabScreen = OwnerType.home
+    switch (tab) {
+      case "home":
+        tabScreen = OwnerType.home
+        break
+      case "inbox":
+        tabScreen = OwnerType.inbox
+        break
+      case "profile":
+        tabScreen = OwnerType.profile
+        break
+      case "search":
+        tabScreen = OwnerType.search
+        break
+      case "sell":
+        tabScreen = OwnerType.sell
+        break
+    }
+
+    return {
+      context_screen_owner_type: tabScreen,
+      action: ActionType.screen,
+    }
+  },
 }
 
 export function dismissModal() {
