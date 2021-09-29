@@ -94,7 +94,7 @@ export function metaphysicsURLMiddleware() {
         "Content-Type": "application/json",
         "User-Agent": userAgent,
         "X-USER-ID": userID,
-        "X-ACCESS-TOKEN": unsafe_getUserAccessToken() || authenticationToken,
+        "X-ACCESS-TOKEN": authenticationToken ?? unsafe_getUserAccessToken(),
         "X-TIMEZONE": LegacyNativeModules.ARCocoaConstantsModule.LocalTimeZone,
       }
     },
