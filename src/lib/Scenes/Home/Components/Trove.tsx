@@ -28,10 +28,10 @@ const Trove: React.FC<TroveProps> = ({ trove, onHide, onShow }) => {
     navigate(path)
   }
 
-  return <HeroUnit unit={troveUnit} onPress={handleOnPress} isTrove />
+  return <HeroUnit unit={troveUnit!} onPress={handleOnPress} isTrove />
 }
 
-export const TroveContainer = createFragmentContainer(Trove, {
+export const TroveFragmentContainer = createFragmentContainer(Trove, {
   trove: graphql`
     fragment Trove_trove on HomePage @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
       heroUnits(platform: MOBILE) {
@@ -39,6 +39,7 @@ export const TroveContainer = createFragmentContainer(Trove, {
         subtitle
         creditLine
         href
+        linkText
         backgroundImageURL(version: $heroImageVersion)
       }
     }

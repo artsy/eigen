@@ -6,7 +6,7 @@ import React from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { TroveContainer } from "../Trove"
+import { TroveFragmentContainer } from "../Trove"
 
 jest.unmock("react-relay")
 
@@ -26,7 +26,7 @@ describe("Trove", () => {
           }
         }
       `}
-      render={({ props }) => (props?.homePage ? <TroveContainer trove={props.homePage} /> : null)}
+      render={({ props }) => (props?.homePage ? <TroveFragmentContainer trove={props.homePage} /> : null)}
       variables={{}}
       environment={environment}
     />

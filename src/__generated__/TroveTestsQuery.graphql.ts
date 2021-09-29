@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d4e51a8d9d6d146eff5256ce3521bc41 */
+/* @relayHash 03b858b83cef810991e8c48470c8cfee */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,6 +31,7 @@ fragment Trove_trove on HomePage {
     subtitle
     creditLine
     href
+    linkText
     backgroundImageURL
     id
   }
@@ -124,6 +125,13 @@ const node: ConcreteRequest = {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
+                "name": "linkText",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
                 "name": "backgroundImageURL",
                 "storageKey": null
               },
@@ -143,7 +151,7 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "id": "d4e51a8d9d6d146eff5256ce3521bc41",
+    "id": "03b858b83cef810991e8c48470c8cfee",
     "metadata": {},
     "name": "TroveTestsQuery",
     "operationKind": "query",

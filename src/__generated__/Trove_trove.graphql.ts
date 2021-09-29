@@ -10,6 +10,7 @@ export type Trove_trove = {
         readonly subtitle: string | null;
         readonly creditLine: string | null;
         readonly href: string | null;
+        readonly linkText: string | null;
         readonly backgroundImageURL: string | null;
     } | null> | null;
     readonly " $refType": "Trove_trove";
@@ -78,6 +79,13 @@ const node: ReaderFragment = {
         },
         {
           "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "linkText",
+          "storageKey": null
+        },
+        {
+          "alias": null,
           "args": [
             {
               "kind": "Variable",
@@ -96,5 +104,5 @@ const node: ReaderFragment = {
   "type": "HomePage",
   "abstractKey": null
 };
-(node as any).hash = 'f4d29f9c7f0884383378c66642d6193c';
+(node as any).hash = '77a877dfaad417a06155a4cd452c885d';
 export default node;

@@ -1,3 +1,5 @@
+import { HomeHero_homePage } from "__generated__/HomeHero_homePage.graphql"
+import { Trove_trove } from "__generated__/Trove_trove.graphql"
 import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Text, useColor } from "palette"
@@ -5,14 +7,17 @@ import React, { useState } from "react"
 import { Image, TouchableOpacity, View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 
+type UnitType = NonNullable<NonNullable<HomeHero_homePage["heroUnits"] | Trove_trove["heroUnits"]>[0]>
+
 interface Props {
-  unit: any
+  unit: UnitType
   onPress: () => void
   isTrove?: boolean
 }
 
 const useHeroDimensions = () => {
   const { width, height: screenHeight } = useScreenDimensions()
+  // component height is either 480 or 60% of screen height, whichever is lower
   const height = Math.floor(Math.min(480, screenHeight * 0.6))
   return { width, height }
 }
@@ -28,7 +33,7 @@ export const HeroUnit: React.FC<Props> = ({ unit, onPress, isTrove = false }) =>
       <Flex height={height} justifyContent="flex-end" p="2" style={{ backgroundColor: color("black30") }}>
         <Image
           style={{ width, height, position: "absolute" }}
-          source={{ uri: unit.backgroundImageURL }}
+          source={{ uri: unit.backgroundImageURL! }}
           onLoad={() => setHasLoaded(true)}
         />
         {!!isTrove && (
@@ -51,11 +56,11 @@ export const HeroUnit: React.FC<Props> = ({ unit, onPress, isTrove = false }) =>
               {unit.subtitle}
             </Text>
           )}
-          {!!unit.linkText && (
+          {!isTrove && unit.linkText ? (
             <Text variant="sm" color="white" weight="medium" mt={0.5}>
               {unit.linkText}
             </Text>
-          )}
+          ) : null}
         </Flex>
         {hasLoaded && unit.creditLine ? (
           // create a view the same size as the hero unit would be if you rotated it 90 degrees

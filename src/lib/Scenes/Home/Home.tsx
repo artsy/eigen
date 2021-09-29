@@ -36,7 +36,7 @@ import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHome
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
 import { NewWorksForYouRailContainer } from "./Components/NewWorksForYouRail"
-import { TroveContainer } from "./Components/Trove"
+import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProps {
@@ -192,7 +192,7 @@ const Home = (props: Props) => {
                 )
               case "trove":
                 return homePageBelow ? (
-                  <TroveContainer
+                  <TroveFragmentContainer
                     trove={homePageBelow}
                     onShow={() => separators.updateProps("trailing", { hideSeparator: false })}
                     onHide={() => separators.updateProps("trailing", { hideSeparator: true })}
