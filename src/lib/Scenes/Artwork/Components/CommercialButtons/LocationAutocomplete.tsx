@@ -1,7 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
-import { Input } from "lib/Components/Input/Input"
 import { getLocationPredictions, SimpleLocation } from "lib/utils/googleMaps"
-import { Flex, LocationIcon, Text, Touchable } from "palette"
+import { Flex, Input, LocationIcon, Text, Touchable } from "palette"
 import React, { useEffect, useState } from "react"
 import { Dimensions, TouchableWithoutFeedback, View } from "react-native"
 import styled from "styled-components/native"
