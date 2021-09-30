@@ -145,7 +145,6 @@ export enum OwnerEntityTypes {
   AllArtistSeries = "AllArtistSeries",
   Artist = "Artist",
   ArtistSeries = "ArtistSeries",
-  ArtistArticles = "ArtistArticles",
   Artwork = "Artwork",
   AuctionInfo = "AuctionInfo",
   Auction = "Auction",

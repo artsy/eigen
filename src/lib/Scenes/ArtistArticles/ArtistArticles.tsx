@@ -2,16 +2,13 @@ import { ArtistArticles_artist } from "__generated__/ArtistArticles_artist.graph
 import { ArtistArticlesResultQuery } from "__generated__/ArtistArticlesResultQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
-import { PlaceholderBox, RandomWidthPlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import _ from "lodash"
-import { Flex, Separator, Spacer } from "palette"
 import React, { useState } from "react"
-import { FlatList } from "react-native"
 import { createPaginationContainer, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { graphql } from "relay-runtime"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
-import { ArticlesList, ArticlesListItem } from "../Articles/ArticlesList"
+import { ArticlesList, ArticlesPlaceholder } from "../Articles/ArticlesList"
 
 const PAGE_SIZE = 10
 
@@ -51,35 +48,6 @@ export const ArtistArticles: React.FC<ArticlesProps> = ({ artist, relay }) => {
       handleLoadMore={handleLoadMore}
       handleRefresh={handleRefresh}
     />
-  )
-}
-
-export const ArticlesPlaceholder = () => {
-  const numColumns = 1
-
-  return (
-    <Flex flexDirection="column" justifyContent="space-between" height="100%" pb={8}>
-      <Separator />
-      <FlatList
-        numColumns={numColumns}
-        key={`${numColumns}`}
-        data={_.times(6)}
-        keyExtractor={(item) => `${item}-${numColumns}`}
-        renderItem={({ item }) => {
-          return (
-            <ArticlesListItem index={item} key={item}>
-              <PlaceholderBox aspectRatio={1.33} width="100%" marginBottom={10} />
-              <RandomWidthPlaceholderText minWidth={50} maxWidth={100} marginTop={1} />
-              <RandomWidthPlaceholderText height={18} minWidth={200} maxWidth={200} marginTop={1} />
-              <RandomWidthPlaceholderText minWidth={100} maxWidth={100} marginTop={1} />
-              <Spacer mb={2} />
-            </ArticlesListItem>
-          )
-        }}
-        ItemSeparatorComponent={() => <Spacer mt="3" />}
-        onEndReachedThreshold={1}
-      />
-    </Flex>
   )
 }
 
