@@ -206,6 +206,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
   }
 
   getSectionDimension(width: number | null | undefined) {
+    // Setting the dimension to 1 for tests to avoid adjisting the screen width
+    if (__TEST__) {
+      return 1
+    }
+
     if (width) {
       // This is the sum of all margins in between sections, so do not count to the right of last column.
       const sectionMargins = this.props.sectionMargin! * (this.props.sectionCount! - 1)
