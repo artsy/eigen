@@ -10,7 +10,6 @@ export type MyCollectionArtworkArtistArticles_artwork = {
     readonly artist: {
         readonly slug: string;
         readonly name: string | null;
-        readonly internalID: string;
         readonly articlesConnection: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
@@ -79,7 +78,6 @@ return {
       "selections": [
         (v1/*: any*/),
         (v2/*: any*/),
-        (v0/*: any*/),
         {
           "alias": null,
           "args": [
@@ -196,5 +194,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '9bdf0cb3c9557b2b0c1601fb6ca7c71e';
+(node as any).hash = 'f78acdccca4fb6a057ede81d4f1cef0b';
 export default node;
