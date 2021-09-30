@@ -19,6 +19,10 @@ export type AutosuggestResults_results = {
                     readonly artworks: number | null;
                     readonly auctionResults: number | null;
                 } | null;
+                readonly date?: string | null;
+                readonly artist?: {
+                    readonly name: string | null;
+                } | null;
             } | null;
         } | null> | null;
     } | null;
@@ -210,6 +214,38 @@ return {
                   ],
                   "type": "Artist",
                   "abstractKey": null
+                },
+                {
+                  "kind": "InlineFragment",
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "date",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "concreteType": "Artist",
+                      "kind": "LinkedField",
+                      "name": "artist",
+                      "plural": false,
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "name",
+                          "storageKey": null
+                        }
+                      ],
+                      "storageKey": null
+                    }
+                  ],
+                  "type": "Artwork",
+                  "abstractKey": null
                 }
               ],
               "storageKey": null
@@ -257,5 +293,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'e9155b8891618f6bcae79f330dad3306';
+(node as any).hash = '528809a99a33bb119be804bca33d8b0e';
 export default node;

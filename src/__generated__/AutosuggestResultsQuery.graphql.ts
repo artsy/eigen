@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash af4e61e0a1aafe2e2be937d1665777b0 */
+/* @relayHash 0c64a194cbb3cfdb56bc64afa2a95eb3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -39,6 +39,18 @@ export type AutosuggestResultsQueryRawResponse = {
                 readonly counts: ({
                     readonly artworks: number | null;
                     readonly auctionResults: number | null;
+                }) | null;
+            } | {
+                readonly imageUrl: string | null;
+                readonly href: string | null;
+                readonly displayLabel: string | null;
+                readonly __typename: "Artwork";
+                readonly __isNode: "Artwork";
+                readonly id: string;
+                readonly date: string | null;
+                readonly artist: ({
+                    readonly name: string | null;
+                    readonly id: string;
                 }) | null;
             } | {
                 readonly imageUrl: string | null;
@@ -92,6 +104,14 @@ fragment AutosuggestResults_results_2KyZFR on Query {
           counts {
             artworks
             auctionResults
+          }
+        }
+        ... on Artwork {
+          displayLabel
+          date
+          artist {
+            name
+            id
           }
         }
         ... on Node {
@@ -161,6 +181,13 @@ v7 = {
   "args": null,
   "kind": "ScalarField",
   "name": "slug",
+  "storageKey": null
+},
+v8 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
@@ -310,9 +337,36 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "id",
+                        "name": "date",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "artist",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "name",
+                            "storageKey": null
+                          },
+                          (v8/*: any*/)
+                        ],
                         "storageKey": null
                       }
+                    ],
+                    "type": "Artwork",
+                    "abstractKey": null
+                  },
+                  {
+                    "kind": "InlineFragment",
+                    "selections": [
+                      (v8/*: any*/)
                     ],
                     "type": "Node",
                     "abstractKey": "__isNode"
@@ -374,7 +428,7 @@ return {
     ]
   },
   "params": {
-    "id": "af4e61e0a1aafe2e2be937d1665777b0",
+    "id": "0c64a194cbb3cfdb56bc64afa2a95eb3",
     "metadata": {},
     "name": "AutosuggestResultsQuery",
     "operationKind": "query",

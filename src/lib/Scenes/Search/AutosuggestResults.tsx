@@ -169,6 +169,13 @@ const AutosuggestResultsContainer = createPaginationContainer(
                   auctionResults
                 }
               }
+              ... on Artwork {
+                displayLabel
+                date
+                artist {
+                  name
+                }
+              }
             }
           }
         }

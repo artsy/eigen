@@ -15,7 +15,7 @@ export class Autocomplete<T> {
     stopWords = ["of", "the", "and"]
   ) {
     for (const entry of entries) {
-      entry.searchTerms = entry.searchTerms.map(normalizeText)
+      entry.searchTerms = entry.searchTerms.map((term) => normalizeText(term))
       for (const searchTerm of entry.searchTerms.slice(0)) {
         const parts = searchTerm.split(/\s+/).filter((s) => !stopWords.includes(s))
         if (parts.length > 1) {

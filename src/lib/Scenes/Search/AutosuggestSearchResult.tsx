@@ -22,9 +22,12 @@ const getResultType = (result: AutosuggestResult) => {
   if (result.displayType) {
     return result.displayType
   }
-  if (result.__typename === "Artist") {
+
+  const allowedTypes = ["Artist", "Artwork"]
+  if (allowedTypes.includes(result.__typename)) {
     return result.__typename
   }
+
   return ""
 }
 
@@ -113,7 +116,13 @@ export const AutosuggestSearchResult: React.FC<{
 
           <Flex flex={1}>
             <Text variant="xs" numberOfLines={1}>
-              <ResultWithHighlight displayLabel={result.displayLabel!} highlight={highlight} />
+              <ResultWithHighlight
+                displayLabel={result.displayLabel!}
+                artistName={result.artist?.name}
+                date={result.date}
+                highlight={highlight}
+                categoryName={resultType}
+              />
             </Text>
 
             {!!showResultType && !!resultType && (

@@ -176,6 +176,9 @@ const defaultDiacriticsRemovalMap = [
   { base: "z", letters: "\u007A\u24E9\uFF5A\u017A\u1E91\u017C\u017E\u1E93\u1E95\u01B6\u0225\u0240\u2C6C\uA763" },
 ]
 
+// punctuation https://stackoverflow.com/a/25575009
+export const punctuationRegex = /[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]/
+
 const diacriticsMap: Record<string, string> = {}
 for (const { letters, base } of defaultDiacriticsRemovalMap) {
   for (const letter of letters) {
@@ -184,20 +187,18 @@ for (const { letters, base } of defaultDiacriticsRemovalMap) {
 }
 
 // "what?" version ... http://jsperf.com/diacritics/12
-export function normalizeText(text: string) {
-  return (
-    text
-      .trim()
-      .toLocaleLowerCase()
-      // remove diacritics which can be decomposed via unicode
-      // https://stackoverflow.com/questions/990904/remove-accents-diacritics-in-a-string-in-javascript
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      // handle other edge cases like ø
-      .replace(/[^\u0000-\u007E]/g, (a) => {
-        return diacriticsMap[a] || a
-      })
-      // remove punctuation https://stackoverflow.com/a/25575009
-      .replace(/[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]/, "")
-  )
+export function normalizeText(text: string, allowPunctuation: boolean = false) {
+  const normalizedText = text
+    .trim()
+    .toLocaleLowerCase()
+    // remove diacritics which can be decomposed via unicode
+    // https://stackoverflow.com/questions/990904/remove-accents-diacritics-in-a-string-in-javascript
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    // handle other edge cases like ø
+    .replace(/[^\u0000-\u007E]/g, (a) => {
+      return diacriticsMap[a] || a
+    })
+
+  return allowPunctuation ? normalizedText : normalizedText.replace(punctuationRegex, "")
 }
