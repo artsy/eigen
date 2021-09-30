@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4920b1a6bc2ca503bf47fd16939bdabc */
+/* @relayHash a117f42897b1c8689f73e8e5c5edceb4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -146,7 +146,6 @@ fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
   artist {
     slug
     name
-    internalID
     articlesConnection(first: 3, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) {
       edges {
         node {
@@ -1029,7 +1028,7 @@ return {
     ]
   },
   "params": {
-    "id": "4920b1a6bc2ca503bf47fd16939bdabc",
+    "id": "a117f42897b1c8689f73e8e5c5edceb4",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",

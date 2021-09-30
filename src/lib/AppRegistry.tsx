@@ -80,7 +80,6 @@ import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReac
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { useSentryConfig } from "./ErrorReporting"
 import { ArticlesQueryRenderer } from "./Scenes/Articles/Articles"
-import { ArtistArticlesQueryRenderer } from "./Scenes/ArtistArticles/ArtistArticles"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import { AuctionResultsForArtistsYouFollowQueryRenderer } from "./Scenes/AuctionResultsForArtistsYouFollow/AuctionResultsForArtistsYouFollow"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
@@ -282,7 +281,6 @@ export const modules = defineModules({
   Articles: reactModule(ArticlesQueryRenderer),
   Artist: reactModule(ArtistQueryRenderer),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
-  ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
   Artwork: reactModule(Artwork),
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
