@@ -135,8 +135,9 @@ interface RadioDotProps {
   size: number
 }
 
-// This component represents the √ mark in CSS. We are not using styled-system since it's easier to specify raw CSS
+// This component represents the white ● mark in CSS. We are not using styled-system since it's easier to specify raw CSS
 // properties with styled-component.
+// Height, Width, and Border Radius calculations are used to maintain the size of the white dot when scaling
 export const RadioDot = styled.View.attrs<RadioDotProps>({})`
   height: ${({ size }) => size * 0.625};
   width: ${({ size }) => size * 0.625};
