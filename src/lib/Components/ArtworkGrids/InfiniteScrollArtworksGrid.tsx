@@ -30,7 +30,7 @@ import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScr
 import { InfiniteScrollArtworksGrid_myCollectionConnection } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import { MyCollectionArtworkListItemFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, Button, Flex } from "palette"
+import { Box, Button, Flex, Spinner } from "palette"
 import { graphql } from "relay-runtime"
 import ParentAwareScrollView from "../ParentAwareScrollView"
 
@@ -97,6 +97,9 @@ export interface Props {
 
   /** Wether to use `ParentAwareScrollView` or `ScrollView` (defaults to true) */
   useParentAwareScrollView?: boolean
+
+  /** Wether to show a loading spinner (defaults to false) */
+  showLoadingSpinner?: boolean
 }
 
 interface PrivateProps {
@@ -156,6 +159,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     hidePartner: false,
     isMyCollection: false,
     useParentAwareScrollView: true,
+    showLoadingSpinner: false,
   }
 
   state = {
@@ -360,6 +364,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             >
               Show more
             </Button>
+          )}
+          {!!this.props.showLoadingSpinner && !!this.state.isLoading && (
+            <Flex mt={2} mb={4} flexDirection="row" justifyContent="center">
+              <Spinner />
+            </Flex>
           )}
         </ScrollViewWrapper>
 

@@ -25,6 +25,7 @@ export const LotsByArtistsYouFollow: React.FC<LotsByArtistsYouFollowProps> = ({ 
             shouldAddPadding
             HeaderComponent={<Spacer mt={2} />}
             useParentAwareScrollView={false}
+            showLoadingSpinner
           />
         ) : (
           <Message m={2}>Nothing yet. Please check back later.</Message>

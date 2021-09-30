@@ -4,11 +4,15 @@ import { NewWorksForYouQuery } from "__generated__/NewWorksForYouQuery.graphql"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { PlaceholderGrid, ProvidePlaceholderContext } from "lib/utils/placeholders"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { screen } from "lib/utils/track/helpers"
 import { Box, Message, Spacer } from "palette"
 import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
+const SCREEN_TITLE = "New Works for You"
 const PAGE_SIZE = 10
 
 interface NewWorksForYouProps {
@@ -20,26 +24,27 @@ const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ me, relay }) => {
   const { hasMore, loadMore } = relay
 
   return (
-    <PageWithSimpleHeader title="New Works for You">
-      <Box>
-        {!!me.artworks?.edges?.length ? (
-          <InfiniteScrollArtworksGridContainer
-            connection={me.artworks!}
-            loadMore={loadMore}
-            hasMore={hasMore}
-            pageSize={PAGE_SIZE}
-            contextScreenOwnerType={OwnerType.artist} // TODO: Add values for this
-            contextScreenOwnerId={"TODO"}
-            contextScreenOwnerSlug={"TODO"}
-            HeaderComponent={<Spacer mt={2} />}
-            shouldAddPadding
-            useParentAwareScrollView={false}
-          />
-        ) : (
-          <Message m={2}>Nothing yet. Please check back later.</Message>
-        )}
-      </Box>
-    </PageWithSimpleHeader>
+    <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.worksForYou })}>
+      <PageWithSimpleHeader title={SCREEN_TITLE}>
+        <Box>
+          {!!me.artworks?.edges?.length ? (
+            <InfiniteScrollArtworksGridContainer
+              connection={me.artworks!}
+              loadMore={loadMore}
+              hasMore={hasMore}
+              pageSize={PAGE_SIZE}
+              contextScreenOwnerType={OwnerType.worksForYou}
+              HeaderComponent={<Spacer mt={2} />}
+              shouldAddPadding
+              showLoadingSpinner
+              useParentAwareScrollView={false}
+            />
+          ) : (
+            <Message m={2}>Nothing yet. Please check back later.</Message>
+          )}
+        </Box>
+      </PageWithSimpleHeader>
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }
 
@@ -100,7 +105,22 @@ export const NewWorksForYouQueryRenderer: React.FC = () => {
         }
       `}
       variables={{}}
-      render={renderWithLoadProgress(NewWorksForYouFragmentContainer)}
+      render={renderWithPlaceholder({
+        Container: NewWorksForYouFragmentContainer,
+        renderPlaceholder: Placeholder,
+        renderFallback: () => null,
+      })}
     />
+  )
+}
+
+const Placeholder = () => {
+  return (
+    <ProvidePlaceholderContext>
+      <PageWithSimpleHeader title={SCREEN_TITLE}>
+        <Spacer mt={2} />
+        <PlaceholderGrid />
+      </PageWithSimpleHeader>
+    </ProvidePlaceholderContext>
   )
 }
