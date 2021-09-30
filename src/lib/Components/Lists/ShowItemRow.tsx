@@ -2,7 +2,6 @@ import { themeGet } from "@styled-system/theme-get"
 import { ShowItemRow_show } from "__generated__/ShowItemRow_show.graphql"
 import { ShowItemRowMutation } from "__generated__/ShowItemRowMutation.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import colors from "lib/data/colors"
 import { Pin } from "lib/Icons/Pin"
 import { navigate } from "lib/navigation/navigate"
 import { exhibitionDates } from "lib/Scenes/Map/exhibitionPeriodParser"
@@ -236,7 +235,7 @@ export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
 
 const DefaultImageContainer = styled(Box)`
   align-items: center;
-  background-color: ${colors["gray-regular"]};
+  background-color: ${themeGet("colors.black10")};
   height: ${themeGet("space.6")}px;
   width: ${themeGet("space.6")}px;
 `

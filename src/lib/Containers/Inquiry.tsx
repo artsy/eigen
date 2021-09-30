@@ -1,7 +1,6 @@
+import { themeGet } from "@styled-system/theme-get"
 import { Inquiry_artwork } from "__generated__/Inquiry_artwork.graphql"
 import { InquiryQuery } from "__generated__/InquiryQuery.graphql"
-import colors from "lib/data/colors"
-import fonts from "lib/data/fonts"
 import { dismissModal } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { BottomAlignedButton } from "lib/Scenes/Consignments/Components/BottomAlignedButton"
@@ -60,10 +59,10 @@ const Content = styled.View`
 const InquiryTextInput = styled.TextInput`
   font-size: 16;
   margin-top: 20;
-  font-family: ${fonts["garamond-regular"]};
+  font-family: "ReactNativeAGaramondPro-Regular";
 `
 const ResponseRate = styled(SmallHeadline)`
-  color: ${colors["yellow-bold"]};
+  color: ${themeGet("colors.yellow100")};
   margin-top: 5;
 `
 // TODO: Uncomment when use is uncommented in code below
@@ -209,7 +208,7 @@ export class Inquiry extends React.Component<Props, State> {
             <InquiryTextInput
               value={message || undefined}
               keyboardAppearance="dark"
-              multiline={true}
+              multiline
               autoFocus={typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
               onEndEditing={() => {
                 this.setState({ text: null })

@@ -7,7 +7,7 @@ import { navigate } from "lib/navigation/navigate"
 import DarkNavigationButton from "../DarkNavigationButton"
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(<DarkNavigationButton title={"uI am a navigation button"} href="/some/path" />)
+  renderWithWrappers(<DarkNavigationButton title="uI am a navigation button" href="/some/path" />)
 })
 
 describe("routing", () => {

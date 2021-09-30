@@ -4,7 +4,7 @@ import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilter
 import { useArtworkFilters } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { ARTIST_SERIES_PAGE_SIZE } from "lib/data/constants"
+import { ARTIST_SERIES_PAGE_SIZE } from "lib/Components/constants"
 import { Schema } from "lib/utils/track"
 import { Box, Spacer } from "palette"
 import React, { useEffect } from "react"

@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
-import { Input } from "lib/Components/Input/Input"
+import { Input } from "palette"
 import { useColor } from "palette/hooks"
 import React from "react"
 import {
@@ -19,7 +19,7 @@ export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPa
   return (
     <OnboardingCreateAccountScreenWrapper
       onBackButtonPress={navigation.goBack}
-      title="Create a password"
+      title="Create a Password"
       caption="Password must be at least 8 characters and include a lowercase letter, uppercase letter, and digit."
     >
       <Input

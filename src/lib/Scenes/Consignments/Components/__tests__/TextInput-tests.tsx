@@ -9,7 +9,7 @@ it("shows an activity indicator when searching ", () => {
       text={{
         value: "My mocked",
       }}
-      searching={true}
+      searching
     />
   )
   expect(component.root.findAllByType(ActivityIndicator)).toHaveLength(1)

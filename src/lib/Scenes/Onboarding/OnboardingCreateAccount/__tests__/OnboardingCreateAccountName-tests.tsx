@@ -69,8 +69,8 @@ describe("OnboardingCreateAccountName", () => {
       expect(onSubmitMock).not.toBeCalled()
     })
 
-    it.only("submits when the user did accepts the terms and conditions", async () => {
-      const tree = renderWithWrappers(<Test name="Andy warhol" acceptedTerms={true} />)
+    it("submits when the user did accepts the terms and conditions", async () => {
+      const tree = renderWithWrappers(<Test name="Andy warhol" acceptedTerms />)
       const input = tree.root.findByProps({ testID: "nameInput" })
       input.props.onSubmitEditing()
       await flushPromiseQueue()

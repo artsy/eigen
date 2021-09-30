@@ -1,5 +1,5 @@
+import { themeGet } from "@styled-system/theme-get"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import colors from "lib/data/colors"
 import { navigate } from "lib/navigation/navigate"
 import React from "react"
 import { Dimensions, TouchableWithoutFeedback } from "react-native"
@@ -40,7 +40,7 @@ const MetadataContainer = styled.View`
 const Separator = styled.View`
   height: 1;
   width: 100%;
-  background-color: ${colors["gray-regular"]};
+  background-color: ${themeGet("colors.black10")};
 `
 
 const StatusLabel = styled(MetadataText)`
@@ -48,13 +48,13 @@ const StatusLabel = styled(MetadataText)`
   color: ${(props: { status: BidStatus }) => {
     switch (props.status) {
       case "winning":
-        return colors["green-regular"]
+        return themeGet("colors.green100")
       case "reserve":
-        return colors["yellow-bold"]
+        return themeGet("colors.yellow100")
       case "losing":
-        return colors["red-regular"]
+        return themeGet("colors.red100")
       case "live_auction":
-        return colors["purple-regular"]
+        return themeGet("colors.blue100")
     }
   }};
 `

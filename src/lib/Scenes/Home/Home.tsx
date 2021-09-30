@@ -36,6 +36,7 @@ import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHome
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
 import { NewWorksForYouRailContainer } from "./Components/NewWorksForYouRail"
+import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProps {
@@ -77,6 +78,7 @@ const Home = (props: Props) => {
   )
 
   const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
+  const troveEchoFlag = useFeatureFlag("AREnableTrove")
   const showNewNewWorksForYouRail = useFeatureFlag("AREnableNewNewWorksForYou")
 
   /*
@@ -101,6 +103,7 @@ const Home = (props: Props) => {
         type: "auction-results",
       } as const),
     !!articlesConnection && ({ type: "articles" } as const),
+    !!troveEchoFlag && ({ type: "trove" } as const),
     !!viewingRoomsEchoFlag && !!featured && ({ type: "viewing-rooms" } as const),
     collectionsModule &&
       ({
@@ -180,12 +183,22 @@ const Home = (props: Props) => {
                   />
                 )
               case "collections":
-                separators.updateProps("leading", { hideSeparator: false })
                 return (
                   <CollectionsRailFragmentContainer
                     collectionsModule={item.data}
                     scrollRef={scrollRefs.current[index]}
+                    onShow={() => separators.updateProps("leading", { hideSeparator: false })}
                   />
+                )
+              case "trove":
+                return homePageBelow ? (
+                  <TroveFragmentContainer
+                    trove={homePageBelow}
+                    onShow={() => separators.updateProps("trailing", { hideSeparator: false })}
+                    onHide={() => separators.updateProps("trailing", { hideSeparator: true })}
+                  />
+                ) : (
+                  <></>
                 )
               case "viewing-rooms":
                 return featured ? <ViewingRoomsHomeRail featured={featured} /> : <></>
@@ -193,7 +206,6 @@ const Home = (props: Props) => {
                 return meBelow ? (
                   <AuctionResultsRailFragmentContainer
                     me={meBelow}
-                    scrollRef={scrollRefs.current[index]}
                     onShow={() => separators.updateProps("leading", { hideSeparator: false })}
                     onHide={() => separators.updateProps("leading", { hideSeparator: true })}
                   />
@@ -285,6 +297,7 @@ export const HomeFragmentContainer = createRefetchContainer(
           ...CollectionsRail_collectionsModule
         }
         ...HomeHero_homePage @arguments(heroImageVersion: $heroImageVersion)
+        ...Trove_trove @arguments(heroImageVersion: $heroImageVersion)
       }
     `,
     meAbove: graphql`
@@ -488,12 +501,7 @@ export const HomeQueryRenderer: React.FC = () => {
   }, [flash_message])
 
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.Home,
-        context_screen_owner_type: null as any,
-      }}
-    >
+    <>
       {/* Avoid rendering when user is logged out, it will fail anyway */}
       {!!userAccessToken && (
         <AboveTheFoldQueryRenderer<HomeAboveTheFoldQuery, HomeBelowTheFoldQuery>
@@ -556,6 +564,6 @@ export const HomeQueryRenderer: React.FC = () => {
           belowTheFoldTimeout={100}
         />
       )}
-    </ProvideScreenTracking>
+    </>
   )
 }

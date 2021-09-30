@@ -1,3 +1,4 @@
+import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
 import { CheckIcon, CloseIcon } from "palette"
 import React from "react"
@@ -9,7 +10,7 @@ storiesOf("Pill", module)
   .addDecorator(withTheme)
   .add("Artist", () => (
     <List>
-      <Pill size="sm" selected={false} rounded imageUrl={"https://ychef.files.bbci.co.uk/976x549/p0400cts.jpg"}>
+      <Pill size="sm" selected={false} rounded imageUrl="https://ychef.files.bbci.co.uk/976x549/p0400cts.jpg">
         Artist Name Pill
       </Pill>
     </List>
@@ -35,5 +36,13 @@ storiesOf("Pill", module)
         Not Selected
       </Pill>
       <Pill rounded>Selected</Pill>
+    </List>
+  ))
+  .add("Miscellaneous", () => (
+    <List>
+      <Pill onPress={() => action("pill tapped")}>Pressable</Pill>
+      <Pill disabled onPress={() => action("pill tapped")}>
+        Pressable (disabled)
+      </Pill>
     </List>
   ))

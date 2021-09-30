@@ -82,7 +82,7 @@ export const ArtsyReactWebViewPage: React.FC<
 
   const onRightButtonPress = () => {
     if (showShareButton) {
-      return handleArticleShare
+      return handleArticleShare()
     } else if (useRightCloseButton) {
       return goBack()
     }
@@ -216,7 +216,7 @@ const ProgressBar: React.FC<{ loadProgress: number | null }> = ({ loadProgress }
         left: 0,
         width: progressPercent + "%",
         height: 2,
-        backgroundColor: color("purple100" /* TODO-PALETTE-V3 "blue100" */),
+        backgroundColor: color("blue100"),
       }}
     />
   )

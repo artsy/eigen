@@ -4,8 +4,7 @@ import styled from "styled-components/native"
 
 import { ArtworkPreview_artwork } from "__generated__/ArtworkPreview_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { Colors } from "lib/data/colors"
-import { Flex, Text, Touchable } from "palette"
+import { ClassTheme, Flex, Text, Touchable } from "palette"
 
 import { themeGet } from "@styled-system/theme-get"
 import { Schema, Track, track as _track } from "lib/utils/track"
@@ -64,26 +63,33 @@ export class ArtworkPreview extends React.Component<Props> {
     const artworkImage = artwork.image
 
     return (
-      <Touchable underlayColor={Colors.GrayLight} onPress={this.props.onSelected && this.attachmentSelected.bind(this)}>
-        <Container>
-          {!!artworkImage && (
-            <ImageContainer>
-              <OpaqueImageView aspectRatio={artworkImage.aspectRatio} imageURL={artworkImage.url} />
-            </ImageContainer>
-          )}
-          <TextContainer>
-            <Text variant="sm" color="white100">
-              {artwork.artistNames}
-            </Text>
-            <TitleAndDate>
-              {/* Nested Text components are necessary for the correct behaviour on both short and long titles + dates */}
-              <Text variant="xs" color="white100" numberOfLines={1} ellipsizeMode={"middle"}>
-                {`${artwork.title} / ${artwork.date}`}
-              </Text>
-            </TitleAndDate>
-          </TextContainer>
-        </Container>
-      </Touchable>
+      <ClassTheme>
+        {({ color }) => (
+          <Touchable
+            underlayColor={color("black10")}
+            onPress={this.props.onSelected && this.attachmentSelected.bind(this)}
+          >
+            <Container>
+              {!!artworkImage && (
+                <ImageContainer>
+                  <OpaqueImageView aspectRatio={artworkImage.aspectRatio} imageURL={artworkImage.url} />
+                </ImageContainer>
+              )}
+              <TextContainer>
+                <Text variant="sm" color="white100">
+                  {artwork.artistNames}
+                </Text>
+                <TitleAndDate>
+                  {/* Nested Text components are necessary for the correct behaviour on both short and long titles + dates */}
+                  <Text variant="xs" color="white100" numberOfLines={1} ellipsizeMode="middle">
+                    {`${artwork.title} / ${artwork.date}`}
+                  </Text>
+                </TitleAndDate>
+              </TextContainer>
+            </Container>
+          </Touchable>
+        )}
+      </ClassTheme>
     )
   }
 }

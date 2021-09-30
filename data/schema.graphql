@@ -8245,6 +8245,18 @@ type Me implements Node {
   savedSearchesConnection(after: String, before: String, first: Int, last: Int): SearchCriteriaConnection
   secondFactors(kinds: [SecondFactorKind]): [SecondFactor]
   shareFollows: Boolean!
+
+  # A list of shows by followed artists
+  showsByFollowedArtists(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    sort: ShowSorts
+
+    # Filter shows by chronological event status
+    status: EventStatus
+  ): ShowConnection
   type: String
 
   # The count of conversations with unread messages.

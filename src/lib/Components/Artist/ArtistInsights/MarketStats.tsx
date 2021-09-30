@@ -57,19 +57,19 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
         other additional fees (e.g., Artist’s Resale Rights). The data set only includes works valued over $1,000.
       </Text>
       <Spacer mb={2} />
-      <Text fontWeight={"bold"}>Average yearly lots sold</Text>
+      <Text fontWeight="bold">Average yearly lots sold</Text>
       <Spacer mb={1} />
       <Text>The average number of lots sold per year at auction over the past 36 months.</Text>
       <Spacer mb={2} />
-      <Text fontWeight={"bold"}>Sell-through rate</Text>
+      <Text fontWeight="bold">Sell-through rate</Text>
       <Spacer mb={1} />
       <Text>The percentage of lots in auctions that sold over the past 36 months.</Text>
       <Spacer mb={2} />
-      <Text fontWeight={"bold"}>Average sale price</Text>
+      <Text fontWeight="bold">Average sale price</Text>
       <Spacer mb={1} />
       <Text>The average sale price of lots sold at auction over the past 36 months.</Text>
       <Spacer mb={2} />
-      <Text fontWeight={"bold"}>Sale price over estimate</Text>
+      <Text fontWeight="bold">Sale price over estimate</Text>
       <Spacer mb={1} />
       <Text lineHeight={50}>
         The average percentage difference of the sale price over the mid-estimate (the midpoint of the low and high
@@ -109,7 +109,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
           trackEvent={() => {
             tracking.trackEvent(tracks.tapMarketStatsInfo())
           }}
-          modalTitle={"Market Signals"}
+          modalTitle="Market Signals"
           modalContent={renderInfoModal()}
         />
       </Flex>

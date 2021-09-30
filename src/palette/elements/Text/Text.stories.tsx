@@ -1,4 +1,5 @@
 import { storiesOf } from "@storybook/react-native"
+import { Box } from "palette"
 import React from "react"
 import { View } from "react-native"
 import { withTheme } from "storybook/decorators"
@@ -13,6 +14,16 @@ storiesOf("Theme/Text", module)
     <DList
       data={variants}
       renderItem={({ item: variant }) => <Text variant={variant}>{variant} ~~ This is a text.</Text>}
+    />
+  ))
+  .add("Variants in boxes", () => (
+    <DList
+      data={variants}
+      renderItem={({ item: variant }) => (
+        <Box borderWidth={1} borderColor="black" width={100}>
+          <Text variant={variant}>{variant} ~~ This is a text.</Text>
+        </Box>
+      )}
     />
   ))
   .add("Basic props", () => (

@@ -2,8 +2,6 @@ import React from "react"
 import { ViewProps } from "react-native"
 import styled from "styled-components/native"
 
-import fonts from "lib/data/fonts"
-
 const Header = styled.View`
   padding: 10px;
   padding-top: 25px;
@@ -13,7 +11,7 @@ const Header = styled.View`
 `
 
 const Title = styled.Text`
-  font-family: ${fonts["garamond-regular"]};
+  font-family: "ReactNativeAGaramondPro-Regular";
   font-size: 30px;
   text-align: left;
 `

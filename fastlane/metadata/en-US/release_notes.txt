@@ -1,3 +1,7 @@
-This update includes a number of improvements and bug fixes.
+This update includes a number of improvements and bug fixes including:
+
+- Use the new My Collection feature to keep track of your artworks and receive market insights
+- Home screen improvements
+- Order details screen improvements
 
 Have feedback? Email us at support@artsy.net

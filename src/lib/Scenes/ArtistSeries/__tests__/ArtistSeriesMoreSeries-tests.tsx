@@ -48,8 +48,8 @@ describe("ArtistSeriesMoreSeries", () => {
               artist={artist}
               artistSeriesHeader="This is a header"
               currentArtistSeriesExcluded
-              contextScreenOwnerId={"artist-series-id"}
-              contextScreenOwnerSlug={"artist-series-slug"}
+              contextScreenOwnerId="artist-series-id"
+              contextScreenOwnerSlug="artist-series-slug"
               contextScreenOwnerType={OwnerType.artistSeries}
               contextModule={ContextModule.artistSeriesRail}
             />

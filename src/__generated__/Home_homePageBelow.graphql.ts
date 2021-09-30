@@ -19,7 +19,7 @@ export type Home_homePageBelow = {
     readonly marketingCollectionsModule: {
         readonly " $fragmentRefs": FragmentRefs<"CollectionsRail_collectionsModule">;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"HomeHero_homePage">;
+    readonly " $fragmentRefs": FragmentRefs<"HomeHero_homePage" | "Trove_trove">;
     readonly " $refType": "Home_homePageBelow";
 };
 export type Home_homePageBelow$data = Home_homePageBelow;
@@ -42,7 +42,14 @@ v1 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
-};
+},
+v2 = [
+  {
+    "kind": "Variable",
+    "name": "heroImageVersion",
+    "variableName": "heroImageVersion"
+  }
+];
 return {
   "argumentDefinitions": [
     {
@@ -143,20 +150,19 @@ return {
       "storageKey": null
     },
     {
-      "args": [
-        {
-          "kind": "Variable",
-          "name": "heroImageVersion",
-          "variableName": "heroImageVersion"
-        }
-      ],
+      "args": (v2/*: any*/),
       "kind": "FragmentSpread",
       "name": "HomeHero_homePage"
+    },
+    {
+      "args": (v2/*: any*/),
+      "kind": "FragmentSpread",
+      "name": "Trove_trove"
     }
   ],
   "type": "HomePage",
   "abstractKey": null
 };
 })();
-(node as any).hash = 'cdf201bd5c4d13902db851e3c40ca4f1';
+(node as any).hash = '682dd4cb91dc9cfd158cc397cb3ee42e';
 export default node;

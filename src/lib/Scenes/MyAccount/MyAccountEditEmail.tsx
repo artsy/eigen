@@ -1,8 +1,8 @@
 import { MyAccountEditEmailQuery } from "__generated__/MyAccountEditEmailQuery.graphql"
-import { Input } from "lib/Components/Input/Input"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { Input } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { string } from "yup"
@@ -25,13 +25,13 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
   return (
     <MyAccountFieldEditScreen
       ref={editScreenRef}
-      title={"Email"}
+      title="Email"
       canSave={isEmailValid}
       onSave={async (dismiss) => {
         try {
           await updateMyUserProfile({ email })
           dismiss()
-        } catch (e) {
+        } catch (e: any) {
           setReceivedError(e)
         }
       }}

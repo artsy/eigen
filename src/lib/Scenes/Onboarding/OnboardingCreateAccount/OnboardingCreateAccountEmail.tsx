@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
-import { Input } from "lib/Components/Input/Input"
+import { Input } from "palette"
 import { useColor } from "palette/hooks"
 import React from "react"
 import { Platform } from "react-native"
@@ -24,7 +24,7 @@ export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmail
   return (
     <OnboardingCreateAccountScreenWrapper
       onBackButtonPress={route.params.navigateToWelcomeScreen}
-      title="Sign up with email"
+      title="Sign Up with Email"
     >
       <Input
         autoCapitalize="none"

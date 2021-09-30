@@ -2,19 +2,16 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { useAnimatedValue } from "lib/Components/StickyTabPage/reanimatedHelpers"
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Button, Flex, Spacer, Text, Touchable, useTheme } from "palette"
+import { ArtsyLogoWhiteIcon, Button, Flex, Spacer, Text, useTheme } from "palette"
 import React, { useEffect } from "react"
 import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import Animated, { Easing } from "react-native-reanimated"
 import backgoundImage from "../../../../images/WelcomeImage.webp"
-import { ArtsyMarkWhiteIcon } from "../../../palette/svgs/ArtsyMarkWhiteIcon"
 import { useFeatureFlag } from "../../store/GlobalStore"
 import { OnboardingNavigationStack } from "./Onboarding"
 
 interface OnboardingWelcomeProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingWelcome"> {}
-
-const BUTTON_HEIGHT = 41
 
 const imgProps = Image.resolveAssetSource(backgoundImage)
 
@@ -101,11 +98,11 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
           style={{
             height: screenHeight,
           }}
-        ></Image>
+        />
       </Animated.View>
 
       <LinearGradient
-        colors={["rgba(0, 0, 0, 0.14)", `rgba(0, 0, 0, 0.94)`]}
+        colors={["rgba(0, 0, 0, 0)", `rgba(0, 0, 0, 0.74)`]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
         style={{
@@ -115,49 +112,54 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
         }}
       />
 
-      <Animated.View style={{ marginLeft: space(2), marginTop: space(6), opacity }}>
-        <ArtsyMarkWhiteIcon height={40} width={40} />
+      <Animated.View style={{ alignItems: "center", marginTop: space(6), opacity, width: "100%" }}>
+        <ArtsyLogoWhiteIcon height={25} width={75} />
       </Animated.View>
 
       <Animated.View style={{ flex: 1, padding: space(2), justifyContent: "flex-end", opacity }}>
-        <Text color="white" fontSize={48} lineHeight={52}>
-          Collect Art{"\n"}by the World’s{"\n"}
-          Leading Artists
+        <Text variant="xxl" color="white">
+          Collect Art by the World’s Leading Artists
         </Text>
         <Spacer mt={1} />
         <Text variant="sm" color="white">
-          Build your personalized profile, get market insights, and buy and sell art with confidence.
+          Build your personalized profile, get market insights, buy and sell art with confidence.
         </Text>
         <Spacer mt={2} />
-        <Button
-          variant="fillLight"
-          block
-          haptic="impactMedium"
-          onPress={() =>
-            AREnableNewOnboardingFlow
-              ? navigation.navigate("OnboardingCreateAccount")
-              : navigation.navigate("OnboardingCreateAccountWithEmail")
-          }
-          testID="button-create"
-        >
-          Create account
-        </Button>
+        <Flex justifyContent="space-around" flexDirection="row">
+          <Flex flex={1} px={1}>
+            <Button
+              variant="fillLight"
+              block
+              haptic="impactMedium"
+              onPress={() =>
+                AREnableNewOnboardingFlow
+                  ? navigation.navigate("OnboardingCreateAccount")
+                  : navigation.navigate("OnboardingCreateAccountWithEmail")
+              }
+              testID="button-create"
+            >
+              Sign up
+            </Button>
+          </Flex>
 
-        <Touchable
-          onPress={() =>
-            AREnableNewOnboardingFlow
-              ? navigation.navigate("OnboardingLogin")
-              : navigation.navigate("OnboardingLoginWithEmail")
-          }
-          underlayColor="transparent"
-          haptic="impactMedium"
-          style={{ justifyContent: "center", alignItems: "center", height: BUTTON_HEIGHT }}
-          testID="button-login"
-        >
-          <Text color="white" variant="sm">
-            Log in
-          </Text>
-        </Touchable>
+          <Flex flex={1} px={1}>
+            <Button
+              onPress={() =>
+                AREnableNewOnboardingFlow
+                  ? navigation.navigate("OnboardingLogin")
+                  : navigation.navigate("OnboardingLoginWithEmail")
+              }
+              block
+              testID="button-login"
+              variant="outlineLight"
+            >
+              Log in
+            </Button>
+          </Flex>
+        </Flex>
+        <Text textAlign="center" color="black30" mt={4}>
+          Faith Ringgold <Text fontStyle="italic">Groovin' High, 1996</Text>.
+        </Text>
       </Animated.View>
     </Flex>
   )

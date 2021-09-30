@@ -16,7 +16,7 @@ export interface ButtonProps extends BoxProps {
   children: ReactNode
 
   size?: "small" | "large"
-  variant?: "fillDark" | "fillLight" | "fillGray" | "outline" | "text"
+  variant?: "fillDark" | "fillLight" | "fillGray" | "outline" | "outlineLight" | "text"
   onPress?: PressableProps["onPress"]
 
   icon?: ReactNode
@@ -120,7 +120,6 @@ export const Button: React.FC<ButtonProps> = ({
 
   const containerSize = getSize()
   const to = useStyleForVariantAndState(variant, testOnly_state ?? displayState)
-  const iconBox = <Box opacity={displayState === DisplayState.Loading ? 0 : 1}>{icon}</Box>
 
   return (
     <Spring native to={to} config={config.stiff}>
@@ -153,21 +152,29 @@ export const Button: React.FC<ButtonProps> = ({
               }}
             >
               <Box flex={1} mx={containerSize.mx}>
+                <HiddenContainer>
+                  {icon}
+                  <Text variant={size === "small" ? "xs" : "sm"} color="red">
+                    {longestText ? longestText : children}
+                  </Text>
+                </HiddenContainer>
+
                 <VisibleTextContainer>
-                  {iconPosition === "left" && iconBox}
+                  {iconPosition === "left" && <IconBox position="left" icon={icon} displayState={displayState} />}
                   <AnimatedText
                     variant={size === "small" ? "xs" : "sm"}
-                    style={{ color: springProps.textColor, textDecorationLine: springProps.textDecorationLine }}
+                    style={{
+                      color: springProps.textColor,
+                      textDecorationLine: springProps.textDecorationLine,
+                      position: "absolute",
+                      width: "100%",
+                    }}
+                    textAlign="center"
                   >
                     {children}
                   </AnimatedText>
-                  {iconPosition === "right" && iconBox}
+                  {iconPosition === "right" && <IconBox position="right" icon={icon} displayState={displayState} />}
                 </VisibleTextContainer>
-
-                <HiddenContainer>
-                  {icon}
-                  <Text variant={size === "small" ? "xs" : "sm"}>{longestText ? longestText : children}</Text>
-                </HiddenContainer>
 
                 {displayState === DisplayState.Loading ? (
                   <SpinnerContainer>
@@ -298,6 +305,29 @@ const useStyleForVariantAndState = (
       }
       break
 
+    case "outlineLight":
+      switch (state) {
+        case DisplayState.Enabled:
+          retval.backgroundColor = "rgba(0, 0, 0, 0)"
+          retval.borderColor = color("white100")
+          retval.textColor = color("white100")
+          break
+        case DisplayState.Disabled:
+          retval.backgroundColor = "rgba(0, 0, 0, 0)"
+          retval.borderColor = color("black30")
+          retval.textColor = color("black30")
+          break
+        case DisplayState.Pressed:
+          retval.backgroundColor = color("blue100")
+          retval.borderColor = color("blue100")
+          retval.textColor = color("white100")
+          retval.textDecorationLine = "underline"
+          break
+        default:
+          assertNever(state)
+      }
+      break
+
     case "text":
       retval.backgroundColor = "rgba(0, 0, 0, 0)"
       retval.borderColor = "rgba(0, 0, 0, 0)"
@@ -326,10 +356,28 @@ const useStyleForVariantAndState = (
   return retval
 }
 
+const IconBox = ({
+  position,
+  icon,
+  displayState,
+}: {
+  position: "right" | "left"
+  icon: any
+  displayState: DisplayState
+}) => (
+  <Box
+    opacity={displayState === DisplayState.Loading ? 0 : 1}
+    position="absolute"
+    left={position === "left" ? 0 : undefined}
+    right={position === "right" ? 0 : undefined}
+  >
+    {icon}
+  </Box>
+)
+
 const VisibleTextContainer = styled(Box)`
   position: absolute;
   align-items: center;
-  justify-content: center;
   flex-direction: row;
   width: 100%;
   height: 100%;

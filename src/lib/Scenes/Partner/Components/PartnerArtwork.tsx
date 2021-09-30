@@ -37,7 +37,7 @@ export const PartnerArtwork: React.FC<{
       </StickyTabPageScrollView>
 
       <AnimatedArtworkFilterButton
-        isVisible={true}
+        isVisible
         onPress={() => {
           setIsFilterArtworksModalVisible(true)
         }}

@@ -127,7 +127,7 @@ export const PlaceholderRaggedText: React.FC<{ numLines: number; seed?: number; 
     <View style={{ justifyContent: "flex-start" }}>
       {lengths.map((length, key) => (
         <View key={key} style={{ flexDirection: "row" }}>
-          <PlaceholderText height={textHeight} flex={length}></PlaceholderText>
+          <PlaceholderText height={textHeight} flex={length} />
         </View>
       ))}
     </View>

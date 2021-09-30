@@ -1,8 +1,8 @@
 import { MyAccountEditNameQuery } from "__generated__/MyAccountEditNameQuery.graphql"
-import { Input } from "lib/Components/Input/Input"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { Input } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { MyAccountEditName_me } from "../../../__generated__/MyAccountEditName_me.graphql"
@@ -20,13 +20,13 @@ const MyAccountEditName: React.FC<{ me: MyAccountEditName_me; relay: RelayProp }
 
   return (
     <MyAccountFieldEditScreen
-      title={"Full Name"}
+      title="Full Name"
       canSave={!!name.trim() && name.trim() !== me.name}
       onSave={async (dismiss) => {
         try {
           await updateMyUserProfile({ name })
           dismiss()
-        } catch (e) {
+        } catch (e: any) {
           setReceivedErrors(e)
         }
       }}

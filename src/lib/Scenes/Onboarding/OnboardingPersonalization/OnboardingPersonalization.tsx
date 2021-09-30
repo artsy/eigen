@@ -4,13 +4,13 @@ import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPe
 import { OnboardingPersonalizationListQuery } from "__generated__/OnboardingPersonalizationListQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem, ArtistListItemPlaceholder } from "lib/Components/ArtistListItem"
 import { Disappearable } from "lib/Components/Disappearable"
-import { INPUT_HEIGHT } from "lib/Components/Input/Input"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { compact, times } from "lodash"
 import { Box, Button, Flex, Join, Spacer, Text, useColor, useSpace } from "palette"
+import { INPUT_HEIGHT } from "palette/elements/Input/Input"
 import React, { useEffect, useRef, useState } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
@@ -62,9 +62,9 @@ const OnboardingPersonalizationListHeader = ({ navigateToModal }: { navigateToMo
   return (
     <>
       <Box px={2}>
-        <Text variant="lg">What artists do you collect?</Text>
+        <Text variant="lg">What Artists do You Collect?</Text>
         <Spacer mt={1.5} />
-        <Text variant="xs" color={color("black60")}>
+        <Text variant="xs" color={color("black100")}>
           Follow at least three artists you’re looking to collect or track so we can personalize your experience.
         </Text>
       </Box>

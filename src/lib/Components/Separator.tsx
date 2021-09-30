@@ -1,21 +1,23 @@
+import { useTheme } from "palette"
 import React from "react"
-import { Dimensions, StyleSheet, View, ViewProps } from "react-native"
-
-import colors from "lib/data/colors"
+import { Dimensions, View, ViewProps } from "react-native"
 
 const negativeMargin = Dimensions.get("window").width > 700 ? -40 : -20
 
-export default class Separator extends React.Component<ViewProps, any> {
-  render() {
-    return <View style={[styles.separator, this.props.style]} />
-  }
-}
+export const Separator: React.FC<ViewProps> = ({ style }) => {
+  const { color } = useTheme()
 
-const styles = StyleSheet.create({
-  separator: {
-    height: 1,
-    marginLeft: negativeMargin,
-    marginRight: negativeMargin,
-    backgroundColor: colors["gray-regular"],
-  },
-})
+  return (
+    <View
+      style={[
+        {
+          height: 1,
+          marginLeft: negativeMargin,
+          marginRight: negativeMargin,
+          backgroundColor: color("black10"),
+        },
+        style,
+      ]}
+    />
+  )
+}

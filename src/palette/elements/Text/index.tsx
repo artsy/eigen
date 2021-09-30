@@ -6,12 +6,15 @@ export * from "./helpers"
 export * from "./Text"
 
 import { Text, TextProps } from "./Text"
+
 // TextV1
 export { _maxWidth } from "./Typography-v1"
 import { Sans as SansV1, SansProps as SansV1Props } from "./Sans"
 export { SansV1, SansV1Props, SansV1Props as SansProps }
 import { Serif as SerifV1, SerifProps as SerifV1Props } from "./Serif"
 export { SerifV1, SerifV1Props, SerifV1Props as SerifProps }
+
+// TODO-PALETTE-V3 remove all `garamond` references from the app
 
 // V1 handler
 

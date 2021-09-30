@@ -55,7 +55,7 @@ export const Search: React.FC = () => {
           />
         </Flex>
         {query.length >= 2 ? (
-          <AutosuggestResults query={query} showQuickNavigationButtons={true} />
+          <AutosuggestResults query={query} showResultType showQuickNavigationButtons />
         ) : (
           <Scrollable>
             <RecentSearches />

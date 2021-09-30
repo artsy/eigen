@@ -106,10 +106,10 @@
     "@algolia/logger-common" "4.10.4"
     "@algolia/requester-common" "4.10.4"
 
-"@artsy/cohesion@4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.1.0.tgz#d3309eb799debc3b9ebf3fa38def62113a02c705"
-  integrity sha512-9DCOcuNzAJoX4yJY5maA67NBH4kr6ZK9OwhIvDTSxhv14uvj3i7rxyszwUn1uoRDZBVGTpJdg0f3q+/iVjkRpg==
+"@artsy/cohesion@4.4.1":
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.4.1.tgz#6037b1d0eb994cef6be9098e3f960bd16027bbc3"
+  integrity sha512-ZzzubWMfMl8D6z8JL5IgD1pc3OQM/EIPpe5LEEaf99nyLShdXDGK1DgwZYBEjSG2YBa8+0nqsZFgmo+mo8rRfg==
   dependencies:
     core-js "3"
 
@@ -18641,6 +18641,13 @@ tslint-plugin-relay@0.0.2:
   resolved "https://registry.yarnpkg.com/tslint-plugin-relay/-/tslint-plugin-relay-0.0.2.tgz#8d4b05d8776b39d23a4abbe0b9ad4f8063437312"
   integrity sha512-f6VSbZfplckkCMXGAlQkV9d3iB6yzr982sW/cbYm/ad0mHL2wLFH+CbcUpdhn1O/YWtAArfpZ89kyQVpllyzXw==
 
+tslint-react@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/tslint-react/-/tslint-react-5.0.0.tgz#d0ae644e8163bdd3e134012e9353094904e8dd44"
+  integrity sha512-/IbcSmoBPlFic8kQaRfQ4knTY4mivwo5LVzvozvX6Dyu2ynEnrh1dIcR2ujjyp/IodXqY/H5GbxFxSMo/Kf2Hg==
+  dependencies:
+    tsutils "^3.17.1"
+
 tslint@5.14.0:
   version "5.14.0"
   resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.14.0.tgz#be62637135ac244fc9b37ed6ea5252c9eba1616e"
@@ -18664,6 +18671,13 @@ tsutils@^2.29.0:
   version "2.29.0"
   resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-2.29.0.tgz#32b488501467acbedd4b85498673a0812aca0b99"
   integrity sha512-g5JVHCIJwzfISaXpXE1qvNalca5Jwob6FjI4AoPlqMusJ6ftFE7IkkFoMhVLRgK+4Kx3gkzb8UZK5t5yTTvEmA==
+  dependencies:
+    tslib "^1.8.1"
+
+tsutils@^3.17.1:
+  version "3.21.0"
+  resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-3.21.0.tgz#b48717d394cea6c1e096983eed58e9d61715b623"
+  integrity sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==
   dependencies:
     tslib "^1.8.1"
 
@@ -18763,10 +18777,10 @@ typescript-template-language-service-decorator@^2.2.0:
   resolved "https://registry.yarnpkg.com/typescript-template-language-service-decorator/-/typescript-template-language-service-decorator-2.2.0.tgz#4ee6d580f307fb9239978e69626f2775b8a59b2a"
   integrity sha512-xiolqt1i7e22rpqMaprPgSFVgU64u3b9n6EJlAaUYE61jumipKAdI1+O5khPlWslpTUj80YzjUKjJ2jxT0D74w==
 
-typescript@4.3.5:
-  version "4.3.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.5.tgz#4d1c37cc16e893973c45a06886b7113234f119f4"
-  integrity sha512-DqQgihaQ9cUrskJo9kIyW/+g0Vxsk8cDtZ52a3NGh0YNTfpUSArXSohyUGnvbPazEPLu398C0UxmKSOrPumUzA==
+typescript@4.4.3:
+  version "4.4.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.4.3.tgz#bdc5407caa2b109efd4f82fe130656f977a29324"
+  integrity sha512-4xfscpisVgqqDfPaJo5vkd+Qd/ItkoagnHpufr+i2QCHBsNYp+G7UAoyFl8aPtx879u38wPV65rZ8qbGZijalA==
 
 typical@^4.0.0:
   version "4.0.0"

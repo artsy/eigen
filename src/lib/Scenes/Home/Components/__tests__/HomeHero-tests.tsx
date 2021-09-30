@@ -1,9 +1,10 @@
 import { HomeHeroTestsQuery } from "__generated__/HomeHeroTestsQuery.graphql"
+import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { Touchable } from "palette"
 import React from "react"
-import { Image, TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -57,7 +58,7 @@ describe("HomeHero", () => {
       })
     )
 
-    expect(tree.root.findAllByType(Image)).toHaveLength(1)
+    expect(tree.root.findAllByType(OpaqueImageView)).toHaveLength(1)
     expect(extractText(tree.root)).toMatchInlineSnapshot(`"Art Keeps GoingArt in the time of pandemicLearn More"`)
   })
 
@@ -77,7 +78,7 @@ describe("HomeHero", () => {
     )
 
     expect(extractText(tree.root)).not.toContain("Warhol")
-    tree.root.findByType(Image).props.onLoad()
+    tree.root.findByType(OpaqueImageView).props.onLoad()
     expect(extractText(tree.root)).toContain("Warhol")
   })
 
@@ -95,7 +96,7 @@ describe("HomeHero", () => {
     )
 
     expect(navigate).not.toHaveBeenCalled()
-    tree.root.findByType(TouchableOpacity).props.onPress()
+    tree.root.findByType(Touchable).props.onPress()
     expect(navigate).toHaveBeenCalledWith("/my-special-href")
     expect(trackEvent).toHaveBeenCalledWith(
       expect.objectContaining({

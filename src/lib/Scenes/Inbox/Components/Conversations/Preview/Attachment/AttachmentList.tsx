@@ -23,7 +23,7 @@ const AttachmentList: React.FC<Props> = (props) => {
         data={attachmentItems}
         keyExtractor={(item, index) => String(item?.id || index)}
         renderItem={({ item }) => {
-          return item && <FileDownload tiny={true} attachment={item} />
+          return item && <FileDownload tiny attachment={item} />
         }}
         ListHeaderComponent={
           <Text variant="sm" mb={2} px={1}>

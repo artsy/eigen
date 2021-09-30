@@ -1,6 +1,6 @@
 import { CityBMWList_city } from "__generated__/CityBMWList_city.graphql"
 import { CityBMWListQuery, CityBMWListQueryVariables } from "__generated__/CityBMWListQuery.graphql"
-import { PAGE_SIZE } from "lib/data/constants"
+import { PAGE_SIZE } from "lib/Components/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"

@@ -6,6 +6,8 @@ import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { stringify } from "query-string"
 import React from "react"
+// @ts-ignore
+import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { act } from "react-test-renderer"
 import { __webViewTestUtils__, ArtsyReactWebViewPage, useWebViewCookies } from "../ArtsyReactWebView"
@@ -42,6 +44,7 @@ describe(ArtsyReactWebViewPage, () => {
     const tree = render({ showShareButton: true })
     tree.root.findByType(FancyModalHeader).props.onRightButtonPress()
     waitFor(() => expect(jest.fn()).toHaveBeenCalledTimes(1))
+    expect(Share.open).toHaveBeenCalledWith({ url: "https://staging.artsy.net/hello" })
   })
   it("calls goBack when the close/back button is pressed", () => {
     const tree = render()

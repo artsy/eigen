@@ -1,10 +1,9 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { Input } from "lib/Components/Input/Input"
 import { BackButton } from "lib/navigation/BackButton"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Button, Flex, Spacer, Text, useColor } from "palette"
+import { Box, Button, Flex, Input, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useRef } from "react"
 import { ScrollView, View } from "react-native"
 import DeviceInfo from "react-native-device-info"
@@ -75,7 +74,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
         keyboardShouldPersistTaps="always"
       >
         <Spacer mt={60} />
-        <Text variant="lg">Log in with email</Text>
+        <Text variant="lg">Login with Email</Text>
         <Spacer mt={50} />
         <Box>
           <Input

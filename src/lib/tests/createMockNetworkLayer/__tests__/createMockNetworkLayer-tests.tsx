@@ -62,7 +62,7 @@ describe("createMockNetworkLayer", () => {
           artwork: { id: "blah" },
         },
       })
-    } catch (e) {
+    } catch (e: any) {
       expect(e.message).toMatchInlineSnapshot(
         `"RelayMockNetworkLayerError: A mock for field at path 'artwork/title' of type 'String' was expected for operation 'createMockNetworkLayerTestsQuery', but none was found."`
       )

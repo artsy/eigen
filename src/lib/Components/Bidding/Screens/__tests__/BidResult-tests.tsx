@@ -6,7 +6,6 @@ import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
-import { BiddingThemeProvider } from "../../Components/BiddingThemeProvider"
 import { BidderPositionResult } from "../../types"
 import { BidResult } from "../BidResult"
 
@@ -59,15 +58,13 @@ describe("BidResult component", () => {
     // marking this as pending since this component depends on the Timer component that depends on local timezone
     xit("renders winning screen properly", () => {
       renderWithWrappers(
-        <BiddingThemeProvider>
-          <BidResult
-            refreshBidderInfo={refreshBidderInfoMock}
-            refreshSaleArtwork={refreshSaleArtworkInfoMock}
-            bidderPositionResult={Statuses.winning}
-            sale_artwork={saleArtwork}
-            navigator={jest.fn() as any}
-          />
-        </BiddingThemeProvider>
+        <BidResult
+          refreshBidderInfo={refreshBidderInfoMock}
+          refreshSaleArtwork={refreshSaleArtworkInfoMock}
+          bidderPositionResult={Statuses.winning}
+          sale_artwork={saleArtwork}
+          navigator={jest.fn() as any}
+        />
       )
     })
 
@@ -87,15 +84,13 @@ describe("BidResult component", () => {
 
     it("dismisses the controller when the continue button is pressed", () => {
       const bidResult = renderWithWrappers(
-        <BiddingThemeProvider>
-          <BidResult
-            refreshBidderInfo={refreshBidderInfoMock}
-            refreshSaleArtwork={refreshSaleArtworkInfoMock}
-            bidderPositionResult={Statuses.winning}
-            sale_artwork={saleArtwork}
-            navigator={jest.fn() as any}
-          />
-        </BiddingThemeProvider>
+        <BidResult
+          refreshBidderInfo={refreshBidderInfoMock}
+          refreshSaleArtwork={refreshSaleArtworkInfoMock}
+          bidderPositionResult={Statuses.winning}
+          sale_artwork={saleArtwork}
+          navigator={jest.fn() as any}
+        />
       )
 
       bidResult.root.findByType(Button).props.onPress()
@@ -110,15 +105,13 @@ describe("BidResult component", () => {
     // marking this as pending since this component depends on the Timer component that depends on local timezone
     xit("renders without throwing an error", () => {
       renderWithWrappers(
-        <BiddingThemeProvider>
-          <BidResult
-            refreshBidderInfo={refreshBidderInfoMock}
-            refreshSaleArtwork={refreshSaleArtworkInfoMock}
-            bidderPositionResult={Statuses.outbid}
-            sale_artwork={saleArtwork}
-            navigator={jest.fn() as any}
-          />
-        </BiddingThemeProvider>
+        <BidResult
+          refreshBidderInfo={refreshBidderInfoMock}
+          refreshSaleArtwork={refreshSaleArtworkInfoMock}
+          bidderPositionResult={Statuses.outbid}
+          sale_artwork={saleArtwork}
+          navigator={jest.fn() as any}
+        />
       )
     })
 
@@ -138,15 +131,13 @@ describe("BidResult component", () => {
 
     it("pops to root when bid-again button is pressed", () => {
       const bidResult = renderWithWrappers(
-        <BiddingThemeProvider>
-          <BidResult
-            refreshBidderInfo={refreshBidderInfoMock}
-            refreshSaleArtwork={refreshSaleArtworkInfoMock}
-            bidderPositionResult={Statuses.outbid}
-            sale_artwork={saleArtwork}
-            navigator={mockNavigator as any}
-          />
-        </BiddingThemeProvider>
+        <BidResult
+          refreshBidderInfo={refreshBidderInfoMock}
+          refreshSaleArtwork={refreshSaleArtworkInfoMock}
+          bidderPositionResult={Statuses.outbid}
+          sale_artwork={saleArtwork}
+          navigator={mockNavigator as any}
+        />
       )
 
       bidResult.root.findByType(Button).props.onPress()
@@ -161,15 +152,13 @@ describe("BidResult component", () => {
     // marking this as pending since this component depends on the Timer component that depends on local timezone
     xit("renders without throwing an error", () => {
       renderWithWrappers(
-        <BiddingThemeProvider>
-          <BidResult
-            refreshBidderInfo={refreshBidderInfoMock}
-            refreshSaleArtwork={refreshSaleArtworkInfoMock}
-            bidderPositionResult={Statuses.live_bidding_started}
-            sale_artwork={saleArtwork}
-            navigator={jest.fn() as any}
-          />
-        </BiddingThemeProvider>
+        <BidResult
+          refreshBidderInfo={refreshBidderInfoMock}
+          refreshSaleArtwork={refreshSaleArtworkInfoMock}
+          bidderPositionResult={Statuses.live_bidding_started}
+          sale_artwork={saleArtwork}
+          navigator={jest.fn() as any}
+        />
       )
     })
 
@@ -189,15 +178,13 @@ describe("BidResult component", () => {
 
     it("dismisses controller and presents live interface when continue button is pressed", () => {
       const bidResult = renderWithWrappers(
-        <BiddingThemeProvider>
-          <BidResult
-            refreshBidderInfo={refreshBidderInfoMock}
-            refreshSaleArtwork={refreshSaleArtworkInfoMock}
-            bidderPositionResult={Statuses.live_bidding_started}
-            sale_artwork={saleArtwork}
-            navigator={jest.fn() as any}
-          />
-        </BiddingThemeProvider>
+        <BidResult
+          refreshBidderInfo={refreshBidderInfoMock}
+          refreshSaleArtwork={refreshSaleArtworkInfoMock}
+          bidderPositionResult={Statuses.live_bidding_started}
+          sale_artwork={saleArtwork}
+          navigator={jest.fn() as any}
+        />
       )
 
       bidResult.root.findByType(Button).props.onPress()

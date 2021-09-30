@@ -35,13 +35,13 @@ const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me }> = ({ me }) => 
 
   return (
     <MyAccountFieldEditScreen
-      title={"Phone"}
+      title="Phone"
       canSave={canSave()}
       onSave={async (dismiss) => {
         try {
           await updateMyUserProfile({ phone })
           dismiss()
-        } catch (e) {
+        } catch (e: any) {
           setReceivedError(e)
         }
       }}

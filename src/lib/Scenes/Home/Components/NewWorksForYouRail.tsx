@@ -75,7 +75,7 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
     <Theme>
       <View ref={railRef}>
         <Flex pl="2" pr="2">
-          <SectionTitle title={"New Works for You"} onPress={navigateToAuctionResultsForArtistsYouFollow} />
+          <SectionTitle title="New Works for You" onPress={navigateToAuctionResultsForArtistsYouFollow} />
         </Flex>
         {
           <SmallTileRailContainer

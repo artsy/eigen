@@ -175,12 +175,12 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
         keyboardShouldPersistTaps="always"
       >
         <Spacer mt={60} />
-        <Box height={130}>
+        <Box minHeight={100}>
           <Text variant="lg">{title}</Text>
           {!!caption && (
             <>
               <Spacer mt={1.5} />
-              <Text variant="xs" color={color("black60")}>
+              <Text variant="xs" color={color("black100")}>
                 {caption}
               </Text>
             </>

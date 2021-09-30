@@ -8,7 +8,7 @@ describe("Row", () => {
   it("row passes style props, and other props into the view", () => {
     const tree = renderWithWrappers(
       <Row
-        renderToHardwareTextureAndroid={true}
+        renderToHardwareTextureAndroid
         style={{
           scaleX: 23,
         }}

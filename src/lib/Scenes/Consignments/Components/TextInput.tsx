@@ -1,6 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
-import { Fonts } from "lib/data/fonts"
-import { Box, ClassTheme, useColor } from "palette"
+import { Box, ClassTheme, useColor, useTheme } from "palette"
 import React, { FunctionComponent } from "react"
 import {
   ActivityIndicator,
@@ -33,7 +32,7 @@ interface State {
 const Input = styled.TextInput`
   height: 40;
   color: ${themeGet("colors.black100")};
-  font-family: "${Fonts.Unica77LLRegular}";
+  font-family: "Unica77LL-Regular";
   font-size: 16;
   flex: 1;
 `
@@ -51,12 +50,12 @@ const Separator = (focused: boolean) => {
 }
 
 const ReadOnlyInput = (props: TextInputProps) => {
-  const color = useColor()
+  const { theme, color } = useTheme()
   return (
     <Text
       style={{
         color: color("black100"),
-        fontFamily: Fonts.Unica77LLRegular,
+        fontFamily: theme.fonts.sans.regular,
         fontSize: 16,
         paddingTop: 8,
       }}

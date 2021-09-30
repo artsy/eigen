@@ -3,14 +3,16 @@ import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { CatchErrors } from "lib/utils/CatchErrors"
-import { CloseIcon } from "palette"
+import { CloseIcon, Touchable } from "palette"
 import React from "react"
-import { Pressable, TouchableOpacity } from "react-native"
+import { Pressable } from "react-native"
 import { act } from "react-test-renderer"
+import { AutosuggestSearchResult } from "../AutosuggestSearchResult"
+import { ResultWithHighlight } from "../ResultWithHighlight"
 import { SearchContext } from "../SearchContext"
-import { SearchResult } from "../SearchResult"
 
 const inputBlurMock = jest.fn()
+const onDeleteMock = jest.fn()
 
 const result = {
   displayLabel: "Banksy",
@@ -22,14 +24,14 @@ const result = {
 
 let recentSearchesArray: any[] = []
 
-const _TestWrapper: typeof SearchResult = (props) => {
+const _TestWrapper: typeof AutosuggestSearchResult = (props) => {
   const recentSearches = GlobalStore.useAppState((state) => state.search.recentSearches)
 
   recentSearchesArray = recentSearches
-  return <SearchResult {...props} />
+  return <AutosuggestSearchResult {...props} />
 }
 
-const TestWrapper: typeof SearchResult = (props) => (
+const TestWrapper: typeof AutosuggestSearchResult = (props) => (
   <GlobalStoreProvider>
     <SearchContext.Provider
       value={{ inputRef: { current: { blur: inputBlurMock } as any }, queryRef: { current: "" } }}
@@ -41,17 +43,53 @@ const TestWrapper: typeof SearchResult = (props) => (
   </GlobalStoreProvider>
 )
 
-describe(SearchResult, () => {
+describe(AutosuggestSearchResult, () => {
   beforeEach(() => {
     require("@react-native-community/async-storage").__resetState()
     recentSearchesArray = []
-    inputBlurMock.mockClear()
+    jest.clearAllMocks()
   })
+
   it(`works`, async () => {
-    const tree = renderWithWrappers(<TestWrapper result={result} />)
+    const tree = renderWithWrappers(<TestWrapper result={result} showResultType />)
 
     expect(extractText(tree.root)).toContain("Banksy")
     expect(extractText(tree.root)).toContain("Artist")
+  })
+
+  it("does not render result type when showResultType prop is not passed", async () => {
+    const tree = renderWithWrappers(<TestWrapper result={result} />)
+    expect(extractText(tree.root)).not.toContain("Artist")
+  })
+
+  it("renders result type when showResultType prop is passed", async () => {
+    const tree = renderWithWrappers(<TestWrapper result={result} showResultType />)
+    expect(extractText(tree.root)).toContain("Artist")
+  })
+
+  it("renders result with highlight and passes correct props to it", async () => {
+    const tree = renderWithWrappers(<TestWrapper result={result} highlight="Ban" />)
+    const resultWithHighlight = tree.root.findByType(ResultWithHighlight)
+    const resultWithHighlightProps = resultWithHighlight.props
+    expect(resultWithHighlight).toBeDefined()
+    expect(resultWithHighlightProps.displayLabel).toEqual("Banksy")
+    expect(resultWithHighlightProps.highlight).toEqual("Ban")
+  })
+
+  it("does not render delete button when onDelete callback is not passed", async () => {
+    const tree = renderWithWrappers(<TestWrapper result={result} />)
+    expect(tree.root.findAllByType(CloseIcon).length).toEqual(0)
+  })
+
+  it("renders delete button when onDelete callback is passed", async () => {
+    const tree = renderWithWrappers(<TestWrapper result={result} onDelete={onDeleteMock} />)
+    expect(tree.root.findByType(CloseIcon)).toBeDefined()
+  })
+
+  it("calls onDelete calback when pressing on delete button", async () => {
+    const tree = renderWithWrappers(<TestWrapper result={result} onDelete={onDeleteMock} />)
+    tree.root.findAllByType(Touchable)[1].props.onPress()
+    expect(onDeleteMock).toHaveBeenCalled()
   })
 
   it("has an optional onDelete action which shows a close button", () => {
@@ -66,7 +104,7 @@ describe(SearchResult, () => {
   it("blurs the input and navigates to the correct page when tapped", async () => {
     const tree = renderWithWrappers(<TestWrapper result={result} />)
     expect(navigate).not.toHaveBeenCalled()
-    tree.root.findByType(TouchableOpacity).props.onPress()
+    tree.root.findByType(Touchable).props.onPress()
     await new Promise((r) => setTimeout(r, 50))
     expect(inputBlurMock).toHaveBeenCalled()
     expect(navigate).toHaveBeenCalledWith(result.href, { passProps: { initialTab: "Artworks" } })
@@ -109,7 +147,7 @@ describe(SearchResult, () => {
     expect(navigate).not.toHaveBeenCalled()
     expect(recentSearchesArray).toHaveLength(0)
     act(() => {
-      tree.root.findByType(TouchableOpacity).props.onPress()
+      tree.root.findByType(Touchable).props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
     expect(recentSearchesArray).toHaveLength(1)
@@ -120,21 +158,21 @@ describe(SearchResult, () => {
     expect(navigate).not.toHaveBeenCalled()
     expect(recentSearchesArray).toHaveLength(0)
     act(() => {
-      tree.root.findByType(TouchableOpacity).props.onPress()
+      tree.root.findByType(Touchable).props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
     expect(recentSearchesArray).toHaveLength(0)
   })
 
   it(`optionally hides the entity type`, () => {
-    const tree = renderWithWrappers(<TestWrapper result={result} showResultType={false} />)
+    const tree = renderWithWrappers(<TestWrapper result={result} />)
     expect(extractText(tree.root)).not.toContain("Artist")
   })
 
   it(`allows for custom touch handlers on search result items`, () => {
     const spy = jest.fn()
     const tree = renderWithWrappers(<TestWrapper result={result} onResultPress={spy} />)
-    tree.root.findByType(TouchableOpacity).props.onPress()
+    tree.root.findByType(Touchable).props.onPress()
     expect(spy).toHaveBeenCalled()
   })
 
@@ -152,7 +190,7 @@ describe(SearchResult, () => {
       />
     )
     act(() => {
-      tree.root.findByType(TouchableOpacity).props.onPress()
+      tree.root.findByType(Touchable).props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
     expect(navigateToEntity).toHaveBeenCalledWith("/art-expo-diff-profile-slug", EntityType.Fair, SlugType.ProfileID)

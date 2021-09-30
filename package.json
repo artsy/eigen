@@ -31,7 +31,7 @@
     "flip_table": "./scripts/flip-table",
     "flip_table_extreme": "./scripts/flip-table-extreme",
     "install:all": "./scripts/install",
-    "lint-fix": "yarn lint --fix",
+    "lint-fix": "yarn lint --fix; yarn prettier-project",
     "lint": "tslint 'src/**/*.{ts,tsx}'",
     "open-sim": "open -a Simulator",
     "open-url": "npx uri-scheme open",
@@ -91,7 +91,7 @@
     "cheerio": "0.22.0"
   },
   "dependencies": {
-    "@artsy/cohesion": "4.1.0",
+    "@artsy/cohesion": "4.4.1",
     "@artsy/palette-tokens": "2.6.0",
     "@artsy/to-title-case": "^1.0.3",
     "@expo/react-native-action-sheet": "^3.8.0",
@@ -278,7 +278,8 @@
     "tslint": "5.14.0",
     "tslint-config-prettier": "1.18.0",
     "tslint-plugin-relay": "0.0.2",
-    "typescript": "4.3.5",
+    "tslint-react": "^5.0.0",
+    "typescript": "4.4.3",
     "typescript-styled-plugin": "0.18.0",
     "vscode-apollo-relay": "1.5.1"
   },

@@ -4,7 +4,6 @@ import { ConsignmentsHomeQuery } from "__generated__/ConsignmentsHomeQuery.graph
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Join, Separator } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
@@ -60,27 +59,20 @@ interface ConsignmentsHomeQueryRendererProps {
 
 export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRendererProps> = ({ environment }) => {
   return (
-    <ProvideScreenTracking
-      info={{
-        context_screen: Schema.PageNames.Sell,
-        context_screen_owner_type: null,
-      }}
-    >
-      <QueryRenderer<ConsignmentsHomeQuery>
-        environment={environment || defaultEnvironment}
-        variables={{}}
-        query={graphql`
-          query ConsignmentsHomeQuery {
-            targetSupply {
-              ...ConsignmentsHome_targetSupply
-            }
+    <QueryRenderer<ConsignmentsHomeQuery>
+      environment={environment || defaultEnvironment}
+      variables={{}}
+      query={graphql`
+        query ConsignmentsHomeQuery {
+          targetSupply {
+            ...ConsignmentsHome_targetSupply
           }
-        `}
-        render={renderWithPlaceholder({
-          Container: ConsignmentsHomeContainer,
-          renderPlaceholder: () => <ConsignmentsHome isLoading={true} targetSupply={null as any} />,
-        })}
-      />
-    </ProvideScreenTracking>
+        }
+      `}
+      render={renderWithPlaceholder({
+        Container: ConsignmentsHomeContainer,
+        renderPlaceholder: () => <ConsignmentsHome isLoading targetSupply={null as any} />,
+      })}
+    />
   )
 }

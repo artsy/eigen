@@ -1,7 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
-import { Input } from "lib/Components/Input/Input"
-import { Flex } from "palette"
+import { Flex, Input } from "palette"
 import { useColor } from "palette/hooks"
 import React, { useState } from "react"
 import { Keyboard } from "react-native"
@@ -24,7 +23,7 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
   return (
     <OnboardingCreateAccountScreenWrapper
       onBackButtonPress={navigation.goBack}
-      title="What’s your full name?"
+      title="What’s Your Full Name?"
       caption="This is used to build your profile and collection on Artsy."
     >
       <Input

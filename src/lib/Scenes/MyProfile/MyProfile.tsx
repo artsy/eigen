@@ -1,4 +1,3 @@
-import { OwnerType } from "@artsy/cohesion"
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
@@ -9,8 +8,6 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
-import { screen } from "lib/utils/track/helpers"
 import { times } from "lodash"
 import { Flex, Join, Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useRef, useState } from "react"
@@ -50,9 +47,9 @@ export const OldMyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp 
 
   return (
     <ScrollView
-      testID={"my-old-profile-scrollview"}
+      testID="my-old-profile-scrollview"
       refreshControl={
-        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} testID={"my-old-profile-scrollview"} />
+        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} testID="my-old-profile-scrollview" />
       }
     >
       <Sans size="8" mx="2" mt="3">
@@ -154,21 +151,19 @@ export const MyProfileContainer = createRefetchContainer(
 )
 
 export const MyProfileQueryRenderer: React.FC<{}> = ({}) => (
-  <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.profile })}>
-    <QueryRenderer<MyProfileQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query MyProfileQuery {
-          me @optionalField {
-            ...MyProfile_me
-          }
+  <QueryRenderer<MyProfileQuery>
+    environment={defaultEnvironment}
+    query={graphql`
+      query MyProfileQuery {
+        me @optionalField {
+          ...MyProfile_me
         }
-      `}
-      render={renderWithPlaceholder({
-        Container: MyProfileContainer,
-        renderPlaceholder: () => <MyProfilePlaceholder />,
-      })}
-      variables={{}}
-    />
-  </ProvideScreenTrackingWithCohesionSchema>
+      }
+    `}
+    render={renderWithPlaceholder({
+      Container: MyProfileContainer,
+      renderPlaceholder: () => <MyProfilePlaceholder />,
+    })}
+    variables={{}}
+  />
 )

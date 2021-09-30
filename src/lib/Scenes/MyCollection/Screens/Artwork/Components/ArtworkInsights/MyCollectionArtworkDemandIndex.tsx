@@ -45,7 +45,7 @@ const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexPro
       <Spacer my={0.5} />
       <DemandRankScale demandRank={demandRank} />
       <Spacer my={1} />
-      <DemandRankDetails demandRank={demandRank}></DemandRankDetails>
+      <DemandRankDetails demandRank={demandRank} />
     </ScreenMargin>
   )
 }
@@ -91,7 +91,7 @@ const DemandRankScale: React.FC<{ demandRank: number }> = ({ demandRank }) => {
   return (
     <>
       <Box>
-        <Text variant="lg" color="purple100" /* TODO-PALETTE-V3 "blue100" */>
+        <Text variant="lg" color="blue100">
           {adjustedDemandRank}
         </Text>
       </Box>

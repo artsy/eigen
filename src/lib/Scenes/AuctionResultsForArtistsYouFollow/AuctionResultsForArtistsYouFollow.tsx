@@ -2,10 +2,10 @@ import { ActionType, ContextModule, OwnerType, tappedLink } from "@artsy/cohesio
 import { AuctionResultsForArtistsYouFollow_me } from "__generated__/AuctionResultsForArtistsYouFollow_me.graphql"
 import { AuctionResultsForArtistsYouFollowContainerQuery } from "__generated__/AuctionResultsForArtistsYouFollowContainerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { PAGE_SIZE } from "lib/Components/constants"
 import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { LinkText } from "lib/Components/Text/LinkText"
-import { PAGE_SIZE } from "lib/data/constants"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -88,13 +88,13 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
                 <Text my="2" variant="md">
                   {sectionTitle}
                 </Text>
-                <Separator borderColor={"black10"} />
+                <Separator borderColor="black10" />
               </Flex>
             )}
             renderSectionFooter={() => <Flex mt="2" />}
             ItemSeparatorComponent={() => (
               <Flex px={2}>
-                <Separator borderColor={"black10"} />
+                <Separator borderColor="black10" />
               </Flex>
             )}
             renderItem={({ item }) =>
@@ -241,7 +241,7 @@ const LoadingSkeleton = () => {
           </Flex>
         </Flex>
         <Spacer height={10} />
-        <Separator borderColor={"black10"} />
+        <Separator borderColor="black10" />
       </React.Fragment>
     )
   }
@@ -252,7 +252,7 @@ const LoadingSkeleton = () => {
         <Spacer height={20} />
         <PlaceholderText height={24} width={100 + Math.random() * 50} />
         <Spacer height={10} />
-        <Separator borderColor={"black10"} />
+        <Separator borderColor="black10" />
         {placeholderResults}
       </Flex>
     </PageWithSimpleHeader>

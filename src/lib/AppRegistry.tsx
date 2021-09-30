@@ -233,9 +233,7 @@ function register(
   Component: React.ComponentType<any>,
   options?: Omit<PageWrapperProps, "ViewComponent" | "viewProps">
 ) {
-  const WrappedComponent = (props: any) => (
-    <PageWrapper {...options} ViewComponent={Component} viewProps={props}></PageWrapper>
-  )
+  const WrappedComponent = (props: any) => <PageWrapper {...options} ViewComponent={Component} viewProps={props} />
   AppRegistry.registerComponent(screenName, () => WrappedComponent)
 }
 

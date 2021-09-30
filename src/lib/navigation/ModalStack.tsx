@@ -20,7 +20,7 @@ export const ModalStack: React.FC = ({ children }) => {
     <NavigationContainer ref={__unsafe_mainModalStackRef} initialState={initialState}>
       <Stack.Navigator mode="modal" screenOptions={{ headerShown: false, cardStyle: { backgroundColor: "white" } }}>
         <Stack.Screen name="root">{() => children}</Stack.Screen>
-        <Stack.Screen name="modal" component={ModalNavStack}></Stack.Screen>
+        <Stack.Screen name="modal" component={ModalNavStack} />
       </Stack.Navigator>
     </NavigationContainer>
   )

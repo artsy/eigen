@@ -1,20 +1,21 @@
 import { OrderHistory_me } from "__generated__/OrderHistory_me.graphql"
 import { OrderHistoryQuery } from "__generated__/OrderHistoryQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
-import colors from "lib/data/colors"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderButton, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, Flex, Sans, Separator } from "palette"
+import { Box, Flex, Sans, Separator, useTheme } from "palette"
 import React, { useCallback, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { OrderHistoryRowContainer } from "./OrderHistoryRow"
+
 const NUM_ORDERS_TO_FETCH = 10
 
 export const OrderHistory: React.FC<{ me: OrderHistory_me; relay: RelayPaginationProp }> = ({ relay, me }) => {
+  const { color } = useTheme()
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
 
@@ -51,7 +52,7 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me; relay: RelayPaginatio
         )}
         ListEmptyComponent={
           <Flex flex={1} flexDirection="column" justifyContent="center" alignItems="center" px={15}>
-            <Sans size="5t" color={colors["gray-semibold"]}>
+            <Sans size="5t" color={color("black60")}>
               No orders
             </Sans>
           </Flex>

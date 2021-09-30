@@ -149,6 +149,11 @@ export const features = defineFeatures({
     description: "Enable phone number validation",
     showInAdminMenu: true,
   },
+  AREnableTrove: {
+    readyForRelease: false,
+    description: "Enable Trove in homepage",
+    showInAdminMenu: true,
+  },
   AREnableMyCollectionAndroid: {
     readyForRelease: false,
     description: "Enable My Collection (Android)",
@@ -165,6 +170,12 @@ export const features = defineFeatures({
     description: "Enable network unavailable modal",
     showInAdminMenu: true,
     echoFlagKey: "ARShowNetworkUnavailableModal",
+  },
+  ARGoogleAuth: {
+    readyForRelease: true,
+    description: "Enable Google authentication",
+    showInAdminMenu: true,
+    echoFlagKey: "ARGoogleAuth",
   },
 })
 

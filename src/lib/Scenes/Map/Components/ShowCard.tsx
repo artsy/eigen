@@ -90,7 +90,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
               relay={this.props.relay}
               onSaveStarted={this.props.onSaveStarted}
               onSaveEnded={this.props.onSaveEnded}
-              shouldHideSaveButton={true}
+              shouldHideSaveButton
             />
           ) : (
             <TabFairItemRow item={item} />
@@ -165,7 +165,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
               snapToInterval={this.cardWidth + space(1)}
               contentContainerStyle={{ paddingLeft: space(0.5), paddingRight: space(2) + space(0.3) }}
               scrollEventThrottle={299}
-              directionalLockEnabled={true}
+              directionalLockEnabled
               overScrollMode="always"
               snapToAlignment="start"
               decelerationRate="fast"

@@ -1,5 +1,5 @@
 import { ArtistShows2_artist } from "__generated__/ArtistShows2_artist.graphql"
-import { PAGE_SIZE } from "lib/data/constants"
+import { PAGE_SIZE } from "lib/Components/constants"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox } from "lib/utils/placeholders"

@@ -7,7 +7,7 @@ import { Subtitle } from "../"
 
 it("passes on props to subtitle", () => {
   const text = shallow(
-    <Subtitle numberOfLines={1} ellipsizeMode={"middle"}>
+    <Subtitle numberOfLines={1} ellipsizeMode="middle">
       My Subtitle
     </Subtitle>
   ).dive()

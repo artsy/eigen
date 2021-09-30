@@ -3,7 +3,6 @@ import { SavedAddressesForm_me } from "__generated__/SavedAddressesForm_me.graph
 import { SavedAddressesFormQuery } from "__generated__/SavedAddressesFormQuery.graphql"
 import { Action, action, computed, Computed, createComponentStore } from "easy-peasy"
 import { CountrySelect } from "lib/Components/CountrySelect"
-import { Input } from "lib/Components/Input/Input"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { Stack } from "lib/Components/Stack"
@@ -15,7 +14,7 @@ import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { times } from "lodash"
-import { Flex, Text } from "palette"
+import { Flex, Input, Text } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
@@ -129,7 +128,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
         toast.show("Address successfully added", "top")
       }
       goBack()
-    } catch (e) {
+    } catch (e: any) {
       captureMessage(e.stack)
       Alert.alert("Something went wrong while attempting to save your address. Please try again or contact us.")
     }
@@ -155,7 +154,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
         toast.show("Address successfully edited", "top")
       }
       goBack()
-    } catch (e) {
+    } catch (e: any) {
       Alert.alert("Something went wrong while attempting to save your address. Please try again or contact us.")
       captureMessage(e.stack)
     }
@@ -175,7 +174,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
   return (
     <MyAccountFieldEditScreen
       ref={screenRef}
-      canSave={true}
+      canSave
       isSaveButtonVisible={false}
       title={isEditForm ? "Edit Address" : "Add New Address"}
     >
@@ -283,7 +282,7 @@ export const SavedAddressesFormPlaceholder: React.FC<{ addressId?: string }> = (
         {times(5).map((index: number) => (
           <Flex key={index} py={1}>
             <PlaceholderText height={15} width={50 + Math.random() * 100} />
-            <PlaceholderBox height={45} width={"100%"} />
+            <PlaceholderBox height={45} width="100%" />
           </Flex>
         ))}
       </Flex>

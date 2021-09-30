@@ -1,10 +1,10 @@
 import { ActionType, ContextModule } from "@artsy/cohesion"
 import { filterArtworksParams, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { Input } from "lib/Components/Input/Input"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import { debounce, throttle } from "lodash"
+import { Input } from "palette"
 import React, { useEffect, useMemo, useRef } from "react"
 import { Platform } from "react-native"
 import { useTracking } from "react-tracking"
@@ -83,7 +83,7 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
         handleChangeText(e)
       }}
       autoCorrect={false}
-      enableClearButton={true}
+      enableClearButton
       ref={inputRef}
       onFocus={onFocus}
     />

@@ -4,8 +4,8 @@ import { CloseIcon, Flex, Separator, Spacer, Text, Touchable, useColor } from "p
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
 import { FancyModal } from "../../../lib/Components/FancyModal/FancyModal"
-import { INPUT_HEIGHT } from "../../../lib/Components/Input/Input"
 import { SearchInput } from "../../../lib/Components/SearchInput"
+import { INPUT_HEIGHT } from "../Input"
 
 export interface SelectOption<ValueType> {
   value: ValueType
@@ -251,7 +251,7 @@ const SelectModal: React.FC<{
       onModalFinishedClosing={onModalFinishedClosing}
     >
       <Flex p="2" pb={15} flexDirection="row" alignItems="center" flexGrow={0}>
-        <Flex flex={1}></Flex>
+        <Flex flex={1} />
         <Flex flex={2} alignItems="center">
           <Text>{title}</Text>
         </Flex>

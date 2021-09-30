@@ -6,8 +6,8 @@ import { ORDERED_AUCTION_RESULTS_SORTS } from "lib/Components/ArtworkFilter/Filt
 import { useArtworkFilters } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
+import { PAGE_SIZE } from "lib/Components/constants"
 import Spinner from "lib/Components/Spinner"
-import { PAGE_SIZE } from "lib/data/constants"
 import { navigate } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -111,8 +111,8 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
     <>
       <Spacer my={1} />
       <Text>
-        These auction results bring together sale data from top auction houses around the world, including
-        Christie&rsquo;s, Sotheby&rsquo;s, Phillips and Bonhams. Results are updated daily.
+        These auction results bring together sale data from top auction houses around the world, including Christie’s,
+        Sotheby’s, Phillips and Bonhams. Results are updated daily.
       </Text>
       <Spacer mb={2} />
       <Text>
@@ -141,7 +141,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
             trackEvent={() => {
               tracking.trackEvent(tracks.tapAuctionResultsInfo())
             }}
-            modalTitle={"Auction Results"}
+            modalTitle="Auction Results"
             maxModalHeight={310}
             modalContent={renderAuctionResultsModal()}
           />
