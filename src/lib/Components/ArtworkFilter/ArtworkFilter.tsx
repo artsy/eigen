@@ -3,8 +3,10 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import {
   changedFiltersParams,
+  defaultCommonFilterOptions,
   FilterArray,
   filterArtworksParams,
+  FilterParamName,
   FilterParams,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
@@ -138,8 +140,18 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
     })
   }
 
+  const selectedFilters = selectedFiltersState.filter(({ paramName, paramValue }) => {
+    const isCustomSizeFilter = paramName === FilterParamName.width || paramName === FilterParamName.height
+
+    if (isCustomSizeFilter && paramValue === defaultCommonFilterOptions[paramName]) {
+      return false
+    }
+
+    return true
+  })
+
   const isApplyButtonEnabled =
-    selectedFiltersState.length > 0 || (previouslyAppliedFiltersState.length === 0 && appliedFiltersState.length > 0)
+    selectedFilters.length > 0 || (previouslyAppliedFiltersState.length === 0 && appliedFiltersState.length > 0)
 
   return (
     <NavigationContainer independent>

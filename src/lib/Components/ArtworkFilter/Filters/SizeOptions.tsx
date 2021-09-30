@@ -165,6 +165,7 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
   const selectOption = (option: AggregateOption) => {
     if (option.displayText === CUSTOM_SIZE_OPTION.displayText) {
       showCustomSize(true)
+      restoreCustomPrice()
       selectFiltersAction(defaultOption)
     } else {
       showCustomSize(false)
@@ -175,6 +176,16 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
         paramName: PARAM_NAME,
       })
     }
+  }
+
+  const restoreCustomPrice = () => {
+    CUSTOM_SIZE_OPTION_KEYS.forEach((paramName) => {
+      const sizeFilter = appliedFilters.find((filter) => filter.paramName === paramName)
+
+      if (sizeFilter) {
+        selectFiltersAction(sizeFilter)
+      }
+    })
   }
 
   const resetCustomPrice = () => {
