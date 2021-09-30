@@ -4,6 +4,7 @@ import { Home_homePageAbove } from "__generated__/Home_homePageAbove.graphql"
 import { Home_homePageBelow } from "__generated__/Home_homePageBelow.graphql"
 import { Home_meAbove } from "__generated__/Home_meAbove.graphql"
 import { Home_meBelow } from "__generated__/Home_meBelow.graphql"
+import { Home_showsConnection } from "__generated__/Home_showsConnection.graphql"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
@@ -36,11 +37,13 @@ import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHome
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
 import { NewWorksForYouRailContainer } from "./Components/NewWorksForYouRail"
+import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProps {
   articlesConnection: Home_articlesConnection | null
+  showsConnection: Home_showsConnection | null
   featured: Home_featured | null
   homePageAbove: Home_homePageAbove | null
   homePageBelow: Home_homePageBelow | null
@@ -51,7 +54,16 @@ interface Props extends ViewProps {
 }
 
 const Home = (props: Props) => {
-  const { homePageAbove, homePageBelow, meAbove, meBelow, articlesConnection, featured, loading } = props
+  const {
+    homePageAbove,
+    homePageBelow,
+    meAbove,
+    meBelow,
+    articlesConnection,
+    showsConnection,
+    featured,
+    loading,
+  } = props
   const artworkModules = (homePageAbove?.artworkModules || []).concat(homePageBelow?.artworkModules || [])
   const salesModule = homePageAbove?.salesModule
   const collectionsModule = homePageBelow?.marketingCollectionsModule
@@ -103,6 +115,7 @@ const Home = (props: Props) => {
         type: "auction-results",
       } as const),
     !!articlesConnection && ({ type: "articles" } as const),
+    !!showsConnection && ({ type: "shows" } as const),
     !!troveEchoFlag && ({ type: "trove" } as const),
     !!viewingRoomsEchoFlag && !!featured && ({ type: "viewing-rooms" } as const),
     collectionsModule &&
@@ -160,6 +173,8 @@ const Home = (props: Props) => {
                 ) : (
                   <></>
                 )
+              case "shows":
+                return showsConnection ? <ShowsRailFragmentContainer showsConnection={showsConnection} /> : <></>
               case "artwork":
                 return (
                   <ArtworkRailFragmentContainer
@@ -317,6 +332,11 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...ArticlesRail_articlesConnection
       }
     `,
+    showsConnection: graphql`
+      fragment Home_showsConnection on ShowConnection {
+        ...ShowsRail_showsConnection
+      }
+    `,
     featured: graphql`
       fragment Home_featured on ViewingRoomConnection {
         ...ViewingRoomsListFeatured_featured
@@ -344,6 +364,9 @@ export const HomeFragmentContainer = createRefetchContainer(
       }
       articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
         ...Home_articlesConnection
+      }
+      showsConnection(first: 10, status: CLOSED) @optionalField {
+        ...Home_showsConnection
       }
     }
   `
@@ -536,6 +559,9 @@ export const HomeQueryRenderer: React.FC = () => {
                   ...Home_meBelow
                   ...AuctionResultsRail_me
                 }
+                showsConnection(first: 10, status: CLOSED) @optionalField {
+                  ...Home_showsConnection
+                }
               }
             `,
             variables: { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
@@ -552,6 +578,7 @@ export const HomeQueryRenderer: React.FC = () => {
                   featured={below ? below.featured : null}
                   homePageAbove={above.homePage}
                   homePageBelow={below ? below.homePage : null}
+                  showsConnection={below?.showsConnection ?? null}
                   meAbove={above.me}
                   meBelow={below ? below.me : null}
                   loading={!below}
