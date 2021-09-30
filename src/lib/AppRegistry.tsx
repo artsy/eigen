@@ -91,6 +91,7 @@ import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
 import { MyCollectionArtworkImagesQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkImages/MyCollectionArtworkImages"
 import { MyProfileSettings } from "./Scenes/MyProfile/MyProfileSettings"
+import { NewWorksForYouQueryRenderer } from "./Scenes/NewWorksForYou/NewWorksForYou"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { SavedSearchAlertsListQueryRenderer } from "./Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
 import { SearchSwitchContainer } from "./Scenes/SearchSwitchContainer"
@@ -389,6 +390,7 @@ export const modules = defineModules({
     hasOwnModalCloseButton: true,
   }),
   WorksForYou: reactModule(WorksForYouQueryRenderer),
+  NewWorksForYou: reactModule(NewWorksForYouQueryRenderer),
   LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer),
   Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
   SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer, { onlyShowInTabName: "profile" }),

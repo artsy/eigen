@@ -1,5 +1,6 @@
 import { NewWorksForYouRail_me } from "__generated__/NewWorksForYouRail_me.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Spinner, Theme } from "palette"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
@@ -65,11 +66,16 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
     return null
   }
 
+  const navigateToAuctionResultsForArtistsYouFollow = () => {
+    // TODO: Track event
+    navigate(`/new-works-for-you`)
+  }
+
   return (
     <Theme>
       <View ref={railRef}>
         <Flex pl="2" pr="2">
-          <SectionTitle title={"New Works for You"} />
+          <SectionTitle title={"New Works for You"} onPress={navigateToAuctionResultsForArtistsYouFollow} />
         </Flex>
         {
           <SmallTileRailContainer

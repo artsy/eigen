@@ -15,7 +15,7 @@ interface LotsByArtistsYouFollowProps {
 
 export const LotsByArtistsYouFollow: React.FC<LotsByArtistsYouFollowProps> = ({ me, relay }) => {
   return (
-    <PageWithSimpleHeader title="Auction lots for you">
+    <PageWithSimpleHeader title="Auction Lots for You">
       <Box>
         {!!me.lotsByFollowedArtistsConnection?.edges?.length ? (
           <InfiniteScrollArtworksGridContainer
@@ -24,6 +24,7 @@ export const LotsByArtistsYouFollow: React.FC<LotsByArtistsYouFollowProps> = ({ 
             connection={me.lotsByFollowedArtistsConnection}
             shouldAddPadding
             HeaderComponent={<Spacer mt={2} />}
+            useParentAwareScrollView={false}
           />
         ) : (
           <Message m={2}>Nothing yet. Please check back later.</Message>

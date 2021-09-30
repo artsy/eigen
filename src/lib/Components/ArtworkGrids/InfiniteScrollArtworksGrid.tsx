@@ -7,7 +7,16 @@
 // 4. Update height of grid to encompass all items.
 
 import React from "react"
-import { ActivityIndicator, Dimensions, LayoutChangeEvent, Platform, StyleSheet, View, ViewStyle } from "react-native"
+import {
+  ActivityIndicator,
+  Dimensions,
+  LayoutChangeEvent,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from "react-native"
 import { createFragmentContainer, RelayPaginationProp } from "react-relay"
 
 import Artwork from "./ArtworkGridItem"
@@ -85,6 +94,9 @@ export interface Props {
 
   /** Allows to use MyCollectionArtworkListItem */
   isMyCollection?: boolean
+
+  /** Wether to use `ParentAwareScrollView` or `ScrollView` (defaults to true) */
+  useParentAwareScrollView?: boolean
 }
 
 interface PrivateProps {
@@ -143,6 +155,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     pageSize: PAGE_SIZE,
     hidePartner: false,
     isMyCollection: false,
+    useParentAwareScrollView: true,
   }
 
   state = {
@@ -309,12 +322,14 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
-    const { shouldAddPadding, hasMore, stickyHeaderIndices } = this.props
+    const { shouldAddPadding, hasMore, stickyHeaderIndices, useParentAwareScrollView } = this.props
     const boxPadding = shouldAddPadding ? 2 : 0
+
+    const ScrollViewWrapper = useParentAwareScrollView ? ParentAwareScrollView : ScrollView
 
     return (
       <>
-        <ParentAwareScrollView
+        <ScrollViewWrapper
           onScroll={(ev) => {
             if (this.props.autoFetch) {
               this.handleFetchNextPageOnScroll(ev)
@@ -346,7 +361,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
               Show more
             </Button>
           )}
-        </ParentAwareScrollView>
+        </ScrollViewWrapper>
 
         <Flex
           alignItems="center"
