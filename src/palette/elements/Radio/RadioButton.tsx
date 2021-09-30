@@ -1,7 +1,7 @@
 import { themeGet } from "@styled-system/theme-get"
 import { Text, useTheme } from "palette"
 import React, { useState } from "react"
-import { StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from "react-native"
+import { PixelRatio, StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from "react-native"
 import styled from "styled-components/native"
 
 import { CssTransition } from "lib/Components/Bidding/Components/Animation/CssTransition"
@@ -32,6 +32,9 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
   ...restProps
 }) => {
   const { color, space } = useTheme()
+
+  const fontScale = PixelRatio.getFontScale()
+  const radioButtonSize = RADIOBUTTON_SIZE * fontScale
 
   const [selected, setSelected] = useState(selectedProp)
   const isSelected = selectedProp ?? selected
@@ -81,22 +84,24 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
       }}
     >
       <Flex flexDirection="row" {...restProps}>
-        <CssTransition
-          style={[
-            styles.container,
-            {
-              marginRight: space("1"),
-            },
-            radioButtonStyle,
-          ]}
-          animate={["backgroundColor", "borderColor"]}
-          duration={DURATION}
-        >
-          {!!isSelected &&
-            (!!disabled ? <DisabledDot size={RADIOBUTTON_SIZE} /> : <RadioDot size={RADIOBUTTON_SIZE} />)}
-        </CssTransition>
+        <Flex mt={0.2}>
+          <CssTransition
+            style={[
+              styles(fontScale).container,
+              {
+                marginRight: space("1") * fontScale,
+              },
+              radioButtonStyle,
+            ]}
+            animate={["backgroundColor", "borderColor"]}
+            duration={DURATION}
+          >
+            {!!isSelected &&
+              (!!disabled ? <DisabledDot size={radioButtonSize} /> : <RadioDot size={radioButtonSize} />)}
+          </CssTransition>
+        </Flex>
 
-        <Flex style={{ marginTop: !!children ? 0 : 2 }}>
+        <Flex justifyContent="center">
           {!!text && <Text color={textColor}>{text}</Text>}
           {!!subtitle && (
             <Text variant="xs" color={subtitleColor}>
@@ -112,29 +117,31 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
 }
 
 // styled-component does not have support for Animated.View
-const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    borderStyle: "solid",
-    height: 20,
-    width: 20,
-    borderRadius: 10,
-  },
-})
+const styles = (fontScale: number) =>
+  StyleSheet.create({
+    container: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      borderWidth: 1,
+      borderStyle: "solid",
+      height: RADIOBUTTON_SIZE * fontScale,
+      width: RADIOBUTTON_SIZE * fontScale,
+      borderRadius: (RADIOBUTTON_SIZE * fontScale) / 2,
+    },
+  })
 
 interface RadioDotProps {
   size: number
 }
 
-// This component represents the √ mark in CSS. We are not using styled-system since it's easier to specify raw CSS
+// This component represents the white ● mark in CSS. We are not using styled-system since it's easier to specify raw CSS
 // properties with styled-component.
+// Height, Width, and Border Radius calculations are used to maintain the size of the white dot when scaling
 export const RadioDot = styled.View.attrs<RadioDotProps>({})`
-  height: 12;
-  width: 12;
-  border-radius: 5px;
+  height: ${({ size }) => size * 0.625};
+  width: ${({ size }) => size * 0.625};
+  border-radius: ${({ size }) => `${size * 0.3125}px`};
   background-color: white;
 `
 

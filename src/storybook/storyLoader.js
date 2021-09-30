@@ -28,6 +28,7 @@ const stories = [
   "../palette/elements/Button/Button.stories",
   "../palette/elements/Checkbox/Checkbox.stories",
   "../palette/elements/Dialog/Dialog.stories",
+  "../palette/elements/Input/Input.stories",
   "../palette/elements/Pill/Pill.stories",
   "../palette/elements/Radio/RadioButton.stories",
   "../palette/elements/Select/Select.stories",

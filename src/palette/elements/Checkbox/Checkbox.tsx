@@ -92,7 +92,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             {!!isChecked && (!!disabled ? <DisabledMark size={checkboxSize} /> : <CheckMark size={checkboxSize} />)}
           </CssTransition>
         </Flex>
-        <Flex justifyContent="center" flex={1}>
+        <Flex justifyContent="center">
           {!!text && <Text color={textColor}>{text}</Text>}
           {!!subtitle && (
             <Text variant="xs" color={subtitleColor}>
