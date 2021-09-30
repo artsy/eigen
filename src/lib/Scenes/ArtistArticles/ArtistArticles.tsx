@@ -68,7 +68,7 @@ export const ArticlesPlaceholder = () => {
         renderItem={({ item }) => {
           return (
             <ArticlesListItem index={item} key={item}>
-              <PlaceholderBox aspectRatio={1.33} width={"100%"} marginBottom={10} />
+              <PlaceholderBox aspectRatio={1.33} width="100%" marginBottom={10} />
               <RandomWidthPlaceholderText minWidth={50} maxWidth={100} marginTop={1} />
               <RandomWidthPlaceholderText height={18} minWidth={200} maxWidth={200} marginTop={1} />
               <RandomWidthPlaceholderText minWidth={100} maxWidth={100} marginTop={1} />
