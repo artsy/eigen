@@ -421,13 +421,9 @@ const Main: React.FC<{}> = track()(({}) => {
   }, [])
   const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
-  const isLoggedIn = GlobalStore.useAppState(
-    (store) => store.native.sessionState.authenticationToken ?? store.auth.userAccessToken
-  )
+  const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken)
 
-  const onboardingState = GlobalStore.useAppState(
-    (state) => state.auth.onboardingState || state.native.sessionState.onboardingState
-  )
+  const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
   const forceUpdateMessage = GlobalStore.useAppState((state) => state.config.echo.forceUpdateMessage)
 
   useSentryConfig()

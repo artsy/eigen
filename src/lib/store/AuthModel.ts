@@ -11,6 +11,7 @@ import { Alert, Linking, Platform } from "react-native"
 import Config from "react-native-config"
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from "react-native-fbsdk-next"
 import PushNotification from "react-native-push-notification"
+import { LegacyNativeModules } from "../NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
@@ -292,19 +293,32 @@ export const getAuthModel = (): AuthModel => ({
 
       if (result.status === 201) {
         const { expires_in, access_token } = await result.json()
-        const { id } = await (
+        const user = await (
           await actions.gravityUnauthenticatedRequest({
-            path: `/api/v1/user?${stringify({ email })}`,
+            path: `/api/v1/me`,
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "X-ACCESS-TOKEN": access_token,
+            },
           })
         ).json()
 
         actions.setState({
           userAccessToken: access_token,
           userAccessTokenExpiresIn: expires_in,
-          userID: id,
+          userID: user.id,
           userEmail: email,
           onboardingState: onboardingState ?? "complete",
         })
+
+        // Keep native iOS in sync with react-native auth state
+        if (Platform.OS === "ios") {
+          requestAnimationFrame(() => {
+            LegacyNativeModules.ArtsyNativeModule.updateAuthState(access_token, expires_in, user)
+          })
+        }
+
         actions.notifyTracking({ userId: id })
 
         if (Platform.OS === "android") {

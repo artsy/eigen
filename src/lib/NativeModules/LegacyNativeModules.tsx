@@ -27,6 +27,9 @@ interface LegacyNativeModules {
     clearUserData(): Promise<void>
     getUserEmail(): string
   }
+  ArtsyNativeModule: {
+    updateAuthState(userAccessToken: string, userAccessTokenExpiresIn: string, user: any): void
+  }
   ARNotificationsManager: {
     nativeState: NativeState
     postNotificationName(type: string, data: object): void
