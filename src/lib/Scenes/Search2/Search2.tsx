@@ -147,17 +147,19 @@ export const Search2: React.FC<Search2Props> = (props) => {
     )
   }
 
+  const { query } = searchState
+
   const renderResults = () => {
     if (selectedPill.type === "algolia") {
       return <SearchResultsContainer indexName={selectedPill.name} categoryDisplayName={selectedPill.displayName} />
     }
     if (selectedPill.name === TOP_PILL.name) {
-      return <AutosuggestResults query={searchState.query!} showResultType showQuickNavigationButtons />
+      return <AutosuggestResults query={query!} showResultType showQuickNavigationButtons />
     }
-    return <SearchArtworksQueryRenderer keyword={searchState.query!} />
+    return <SearchArtworksQueryRenderer keyword={query!} />
   }
 
-  const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 2
+  const shouldStartQuering = !!query?.length && query.length >= 2
 
   const handlePillPress = (pill: PillType) => {
     setSearchState((prevState) => ({ ...prevState, page: 1 }))
