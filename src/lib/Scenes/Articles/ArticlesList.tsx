@@ -114,7 +114,7 @@ export const useNumColumns = () => {
 }
 
 export const ArticlesPlaceholder = () => {
-  const numColumns = 1
+  const numColumns = useNumColumns()
 
   return (
     <ProvidePlaceholderContext>
