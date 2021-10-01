@@ -1,3 +1,4 @@
+import { MyCollectionAndSavedWorks_me } from "__generated__/MyCollectionAndSavedWorks_me.graphql"
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
@@ -18,9 +19,9 @@ describe("MyCollectionAndSavedWorks", () => {
     name: "My Name",
     createdAt: new Date().toISOString(),
   }
-  const tree = renderWithWrappers(<MyCollectionAndSavedWorks me={me as MyProfile_me} initialTab={Tab.collection} />)
+  const tree = renderWithWrappers(<MyCollectionAndSavedWorks me={me as MyCollectionAndSavedWorks_me} />)
   it("renders without throwing an error", () => {
-    renderWithWrappers(<MyCollectionAndSavedWorks me={me as MyProfile_me} initialTab={Tab.collection} />)
+    renderWithWrappers(<MyCollectionAndSavedWorks me={me as MyCollectionAndSavedWorks_me} />)
   })
 
   it("renders the right tabs", () => {

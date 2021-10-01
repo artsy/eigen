@@ -4,11 +4,11 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Box, Sans, useColor, useSpace } from "palette"
 import React from "react"
 import { createFragmentContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
-import { renderWithPlaceholder } from "../../utils/renderWithPlaceholder"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
 
@@ -17,7 +17,7 @@ export enum Tab {
   savedWorks = "Saved Works",
 }
 
-export const MyCollectionAndSavedWorks: React.FC<{}> = ({}) => {
+export const MyCollectionAndSavedWorks: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({ me }) => {
   return (
     <StickyTabPage
       disableBackButtonUpdate
@@ -33,7 +33,7 @@ export const MyCollectionAndSavedWorks: React.FC<{}> = ({}) => {
           initial: false,
         },
       ]}
-      staticHeaderContent={<MyProfileHeaderQueryRenderer />}
+      staticHeaderContent={<MyProfileHeader me={me} />}
     />
   )
 }
@@ -62,7 +62,16 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
   )
 }
 
-const MyProfileHeaderFragmentContainer = createFragmentContainer(MyProfileHeader, {
+// const MyProfileHeaderFragmentContainer = createFragmentContainer(MyProfileHeader, {
+//   me: graphql`
+//     fragment MyCollectionAndSavedWorks_me on Me {
+//       name
+//       createdAt
+//     }
+//   `,
+// })
+
+const MyCollectionAndSavedWorksFragmentContainer = createFragmentContainer(MyCollectionAndSavedWorks, {
   me: graphql`
     fragment MyCollectionAndSavedWorks_me on Me {
       name
@@ -71,7 +80,25 @@ const MyProfileHeaderFragmentContainer = createFragmentContainer(MyProfileHeader
   `,
 })
 
-const MyProfileHeaderQueryRenderer = () => (
+// const MyProfileHeaderQueryRenderer = () => (
+//   <QueryRenderer<MyCollectionAndSavedWorksQuery>
+//     environment={defaultEnvironment}
+//     query={graphql`
+//       query MyCollectionAndSavedWorksQuery {
+//         me {
+//           ...MyCollectionAndSavedWorks_me
+//         }
+//       }
+//     `}
+//     render={renderWithPlaceholder({
+//       Container: MyProfileHeaderFragmentContainer,
+//       renderPlaceholder: () => <MyProfileHeader />,
+//     })}
+//     variables={{}}
+//   />
+// )
+
+export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => (
   <QueryRenderer<MyCollectionAndSavedWorksQuery>
     environment={defaultEnvironment}
     query={graphql`
@@ -81,10 +108,7 @@ const MyProfileHeaderQueryRenderer = () => (
         }
       }
     `}
-    render={renderWithPlaceholder({
-      Container: MyProfileHeaderFragmentContainer,
-      renderPlaceholder: () => <MyProfileHeader />,
-    })}
+    render={renderWithLoadProgress(MyCollectionAndSavedWorksFragmentContainer)}
     variables={{}}
   />
 )

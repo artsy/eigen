@@ -319,7 +319,7 @@ export const getAuthModel = (): AuthModel => ({
           })
         }
 
-        actions.notifyTracking({ userId: id })
+        actions.notifyTracking({ userId: user.id })
 
         if (Platform.OS === "android") {
           PushNotification.checkPermissions((permissions) => {

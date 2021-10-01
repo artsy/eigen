@@ -109,6 +109,10 @@ export const LegacyNativeModules: LegacyNativeModules =
           LocalTimeZone: getTimeZone(),
         },
 
+        ArtsyNativeModule: {
+          updateAuthState: noop("updateAuthState"),
+        },
+
         ARNotificationsManager: {
           nativeState: null as any,
           postNotificationName: noop("postNotificationName"),
