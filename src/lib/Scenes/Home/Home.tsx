@@ -30,7 +30,7 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { compact, drop, times } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
-import { Alert, Platform, RefreshControl, View, ViewProps } from "react-native"
+import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { _FragmentRefs, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
@@ -477,13 +477,6 @@ export const HomeQueryRenderer: React.FC = () => {
     flash_message?: string
   }
 
-  const userAccessToken = GlobalStore.useAppState((store) => {
-    if (Platform.OS === "ios") {
-      return store.native.sessionState.authenticationToken ?? store.auth.userAccessToken
-    }
-    return store.auth.userAccessToken
-  })
-
   useEffect(() => {
     if (flash_message) {
       const message = messages[flash_message as keyof typeof messages]
@@ -501,69 +494,64 @@ export const HomeQueryRenderer: React.FC = () => {
   }, [flash_message])
 
   return (
-    <>
-      {/* Avoid rendering when user is logged out, it will fail anyway */}
-      {!!userAccessToken && (
-        <AboveTheFoldQueryRenderer<HomeAboveTheFoldQuery, HomeBelowTheFoldQuery>
-          environment={defaultEnvironment}
-          above={{
-            query: graphql`
-              query HomeAboveTheFoldQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
-                homePage @optionalField {
-                  ...Home_homePageAbove @arguments(heroImageVersion: $heroImageVersion)
-                }
-                me @optionalField {
-                  ...Home_meAbove
-                  ...NewWorksForYouRail_me
-                }
-                articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
-                  ...Home_articlesConnection
-                }
-              }
-            `,
-            variables: { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
-          }}
-          below={{
-            query: graphql`
-              query HomeBelowTheFoldQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
-                homePage @optionalField {
-                  ...Home_homePageBelow @arguments(heroImageVersion: $heroImageVersion)
-                }
-                featured: viewingRooms(featured: true) @optionalField {
-                  ...Home_featured
-                }
-                me @optionalField {
-                  ...Home_meBelow
-                  ...AuctionResultsRail_me
-                }
-              }
-            `,
-            variables: { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
-          }}
-          render={{
-            renderComponent: ({ above, below }) => {
-              if (!above) {
-                throw new Error("no data")
-              }
+    <AboveTheFoldQueryRenderer<HomeAboveTheFoldQuery, HomeBelowTheFoldQuery>
+      environment={defaultEnvironment}
+      above={{
+        query: graphql`
+          query HomeAboveTheFoldQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
+            homePage @optionalField {
+              ...Home_homePageAbove @arguments(heroImageVersion: $heroImageVersion)
+            }
+            me @optionalField {
+              ...Home_meAbove
+              ...NewWorksForYouRail_me
+            }
+            articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
+              ...Home_articlesConnection
+            }
+          }
+        `,
+        variables: { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
+      }}
+      below={{
+        query: graphql`
+          query HomeBelowTheFoldQuery($heroImageVersion: HomePageHeroUnitImageVersion) {
+            homePage @optionalField {
+              ...Home_homePageBelow @arguments(heroImageVersion: $heroImageVersion)
+            }
+            featured: viewingRooms(featured: true) @optionalField {
+              ...Home_featured
+            }
+            me @optionalField {
+              ...Home_meBelow
+              ...AuctionResultsRail_me
+            }
+          }
+        `,
+        variables: { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
+      }}
+      render={{
+        renderComponent: ({ above, below }) => {
+          if (!above) {
+            throw new Error("no data")
+          }
 
-              return (
-                <HomeFragmentContainer
-                  articlesConnection={above?.articlesConnection ?? null}
-                  featured={below ? below.featured : null}
-                  homePageAbove={above.homePage}
-                  homePageBelow={below ? below.homePage : null}
-                  meAbove={above.me}
-                  meBelow={below ? below.me : null}
-                  loading={!below}
-                />
-              )
-            },
-            renderPlaceholder: () => <HomePlaceholder />,
-          }}
-          cacheConfig={{ force: true }}
-          belowTheFoldTimeout={100}
-        />
-      )}
-    </>
+          return (
+            <HomeFragmentContainer
+              articlesConnection={above?.articlesConnection ?? null}
+              featured={below ? below.featured : null}
+              homePageAbove={above.homePage}
+              homePageBelow={below ? below.homePage : null}
+              meAbove={above.me}
+              meBelow={below ? below.me : null}
+              loading={!below}
+            />
+          )
+        },
+        renderPlaceholder: () => <HomePlaceholder />,
+      }}
+      cacheConfig={{ force: true }}
+      belowTheFoldTimeout={100}
+    />
   )
 }
