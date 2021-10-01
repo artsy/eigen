@@ -214,6 +214,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/auctions", "Auctions"),
     new RouteMatcher("/lots-by-artists-you-follow", "LotsByArtistsYouFollow"),
     new RouteMatcher("/works-for-you", "WorksForYou"),
+    new RouteMatcher("/new-works-for-you", "NewWorksForYou"),
     webViewRoute("/categories"),
     webViewRoute("/privacy"),
     webViewRoute("/identity-verification-faq"),
