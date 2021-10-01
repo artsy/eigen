@@ -3,11 +3,13 @@ import { LotsByArtistsYouFollowQuery } from "__generated__/LotsByArtistsYouFollo
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { PlaceholderGrid, ProvidePlaceholderContext } from "lib/utils/placeholders"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Box, Message, Spacer } from "palette"
 import React from "react"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 
+const SCREEN_TITLE = "Auction Lots for You"
 interface LotsByArtistsYouFollowProps {
   me: LotsByArtistsYouFollow_me
   relay: RelayPaginationProp
@@ -15,7 +17,7 @@ interface LotsByArtistsYouFollowProps {
 
 export const LotsByArtistsYouFollow: React.FC<LotsByArtistsYouFollowProps> = ({ me, relay }) => {
   return (
-    <PageWithSimpleHeader title="Auction Lots for You">
+    <PageWithSimpleHeader title={SCREEN_TITLE}>
       <Box>
         {!!me.lotsByFollowedArtistsConnection?.edges?.length ? (
           <InfiniteScrollArtworksGridContainer
@@ -75,7 +77,22 @@ export const LotsByArtistsYouFollowQueryRenderer: React.FC = () => {
       variables={{
         count: 10,
       }}
-      render={renderWithLoadProgress(LotsByArtistsYouFollowFragmentContainer)}
+      render={renderWithPlaceholder({
+        Container: LotsByArtistsYouFollowFragmentContainer,
+        renderPlaceholder: Placeholder,
+        renderFallback: () => null,
+      })}
     />
+  )
+}
+
+const Placeholder = () => {
+  return (
+    <ProvidePlaceholderContext>
+      <PageWithSimpleHeader title={SCREEN_TITLE}>
+        <Spacer mt={2} />
+        <PlaceholderGrid />
+      </PageWithSimpleHeader>
+    </ProvidePlaceholderContext>
   )
 }

@@ -8,7 +8,6 @@ import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import { FlatList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import HomeAnalytics from "../homeAnalytics"
 import { SmallTileRailContainer } from "./SmallTileRail"
 import { RailScrollProps } from "./types"
 
