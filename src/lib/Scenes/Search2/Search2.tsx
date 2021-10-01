@@ -191,12 +191,12 @@ export const Search2: React.FC<Search2Props> = (props) => {
             />
           </Flex>
           {!!shouldStartQuering ? (
-            <>
+            <Flex flex={1} collapsable={false}>
               <Box pt={2} pb={1}>
                 <SearchPills pills={pillsArray} onPillPress={handlePillPress} isSelected={isSelected} />
               </Box>
               {renderResults()}
-            </>
+            </Flex>
           ) : (
             <Scrollable>
               <RecentSearches />
