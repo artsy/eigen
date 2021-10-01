@@ -85,7 +85,7 @@ export class WorksForYou extends React.Component<Props, State> {
        otherwise, it should not use any flex growth.
     */
     return (
-      <PageWithSimpleHeader title="New Works For You">
+      <PageWithSimpleHeader title="New Works for You">
         <FlatList
           data={this.state.width === null ? [] : notifications}
           keyExtractor={(item) => item.id}
