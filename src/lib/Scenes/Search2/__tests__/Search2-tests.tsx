@@ -6,7 +6,9 @@ import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { isPad } from "lib/utils/hardware"
 import React from "react"
+import { Keyboard } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
+import { SearchPills } from "../components/SearchPills"
 import { Search2QueryRenderer } from "../Search2"
 
 const banksy: RecentSearch = {
@@ -135,6 +137,32 @@ describe("Search2 Screen", () => {
     fireEvent(getByText("Artists"), "press")
 
     expect(getByA11yState({ selected: true })).toHaveTextContent("Artists")
+  })
+
+  describe("SearchPills", () => {
+    it("is not displayed when the user has not typed the minimum allowed number of characters", () => {
+      const { container } = renderWithWrappersTL(<TestRenderer />)
+      const searchPills = container.findAllByType(SearchPills)
+      expect(searchPills.length).toEqual(0)
+    })
+
+    it("is displayed when the user has typed the minimum allowed number of characters", () => {
+      const { container, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      fireEvent(searchInput, "changeText", "Ba")
+      const searchPills = container.findByType(SearchPills)
+      expect(searchPills).toBeDefined()
+    })
+
+    it("hides keyboard when selecting other pill", () => {
+      const { container, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      const keyboardDismissSpy = jest.spyOn(Keyboard, "dismiss")
+      fireEvent(searchInput, "changeText", "Ba")
+      const searchPills = container.findByType(SearchPills)
+      searchPills.props.onPillPress({ type: "algolia", name: "Artist" })
+      expect(keyboardDismissSpy).toHaveBeenCalled()
+    })
   })
 
   describe("the top pill is selected by default", () => {
