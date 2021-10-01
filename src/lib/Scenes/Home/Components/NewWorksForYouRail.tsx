@@ -1,15 +1,18 @@
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { NewWorksForYouRail_me } from "__generated__/NewWorksForYouRail_me.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Spinner, Theme } from "palette"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import { FlatList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-import HomeAnalytics from "../homeAnalytics"
+import { useTracking } from "react-tracking"
 import { SmallTileRailContainer } from "./SmallTileRail"
 import { RailScrollProps } from "./types"
 
 const PAGE_SIZE = 10
+const MAX_ARTWORKS = 30
 
 interface NewWorksForYouRailProps {
   me: NewWorksForYouRail_me
@@ -25,6 +28,8 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
   onHide,
   onShow,
 }) => {
+  const { trackEvent } = useTracking()
+
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)
 
@@ -40,7 +45,7 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
   const artworks = extractNodes(me?.newWorksByInterestingArtists)
 
   const loadMoreArtworks = () => {
-    if (!hasMore() || isLoading()) {
+    if (!hasMore() || isLoading() || artworks.length >= MAX_ARTWORKS) {
       return
     }
 
@@ -65,17 +70,22 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
     return null
   }
 
+  const navigateToNewWorksForYou = () => {
+    trackEvent(tracks.tappedHeader())
+    navigate(`/new-works-for-you`)
+  }
+
   return (
     <Theme>
       <View ref={railRef}>
         <Flex pl="2" pr="2">
-          <SectionTitle title="New Works for You" />
+          <SectionTitle title="New Works for You" onPress={navigateToNewWorksForYou} />
         </Flex>
         {
           <SmallTileRailContainer
             listRef={listRef}
             artworks={artworks as any}
-            contextModule={HomeAnalytics.artworkRailContextModule("a-key")}
+            contextModule={ContextModule.newWorksForYouRail}
             onEndReached={loadMoreArtworks}
             onEndReachedThreshold={0.1}
             ListFooterComponent={
@@ -140,3 +150,13 @@ export const NewWorksForYouRailContainer = createPaginationContainer(
     `,
   }
 )
+
+const tracks = {
+  tappedHeader: () => ({
+    action: ActionType.tappedArtworkGroup,
+    context_module: ContextModule.newWorksForYouRail,
+    context_screen_owner_type: OwnerType.home,
+    destination_screen_owner_type: OwnerType.newWorksForYou,
+    type: "header",
+  }),
+}

@@ -108,7 +108,7 @@ export const features = defineFeatures({
   },
   AREnableNewNewWorksForYou: {
     readyForRelease: false,
-    description: "Enable new 'New Works For You' rail",
+    description: "Enable new 'New Works for You' rail",
     showInAdminMenu: true,
   },
   AREnableSavedSearchAndroid: {

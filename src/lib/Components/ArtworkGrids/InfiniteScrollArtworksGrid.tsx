@@ -7,7 +7,16 @@
 // 4. Update height of grid to encompass all items.
 
 import React from "react"
-import { ActivityIndicator, Dimensions, LayoutChangeEvent, Platform, StyleSheet, View, ViewStyle } from "react-native"
+import {
+  ActivityIndicator,
+  Dimensions,
+  LayoutChangeEvent,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from "react-native"
 import { createFragmentContainer, RelayPaginationProp } from "react-relay"
 
 import Artwork from "./ArtworkGridItem"
@@ -21,7 +30,7 @@ import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScr
 import { InfiniteScrollArtworksGrid_myCollectionConnection } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import { MyCollectionArtworkListItemFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Box, Button, Flex } from "palette"
+import { Box, Button, Flex, Spinner } from "palette"
 import { graphql } from "relay-runtime"
 import ParentAwareScrollView from "../ParentAwareScrollView"
 
@@ -85,6 +94,12 @@ export interface Props {
 
   /** Allows to use MyCollectionArtworkListItem */
   isMyCollection?: boolean
+
+  /** Whether to use `ParentAwareScrollView` or `ScrollView` (defaults to true) */
+  useParentAwareScrollView?: boolean
+
+  /** Wether to show a loading spinner (defaults to false) */
+  showLoadingSpinner?: boolean
 }
 
 interface PrivateProps {
@@ -143,6 +158,8 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     pageSize: PAGE_SIZE,
     hidePartner: false,
     isMyCollection: false,
+    useParentAwareScrollView: true,
+    showLoadingSpinner: false,
   }
 
   state = {
@@ -189,6 +206,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
   }
 
   getSectionDimension(width: number | null | undefined) {
+    // Setting the dimension to 1 for tests to avoid adjusting the screen width
+    if (__TEST__) {
+      return 1
+    }
+
     if (width) {
       // This is the sum of all margins in between sections, so do not count to the right of last column.
       const sectionMargins = this.props.sectionMargin! * (this.props.sectionCount! - 1)
@@ -309,12 +331,14 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
 
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
-    const { shouldAddPadding, hasMore, stickyHeaderIndices } = this.props
+    const { shouldAddPadding, hasMore, stickyHeaderIndices, useParentAwareScrollView } = this.props
     const boxPadding = shouldAddPadding ? 2 : 0
+
+    const ScrollViewWrapper = useParentAwareScrollView ? ParentAwareScrollView : ScrollView
 
     return (
       <>
-        <ParentAwareScrollView
+        <ScrollViewWrapper
           onScroll={(ev) => {
             if (this.props.autoFetch) {
               this.handleFetchNextPageOnScroll(ev)
@@ -346,7 +370,12 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
               Show more
             </Button>
           )}
-        </ParentAwareScrollView>
+          {!!this.props.showLoadingSpinner && !!this.state.isLoading && (
+            <Flex mt={2} mb={4} flexDirection="row" justifyContent="center">
+              <Spinner />
+            </Flex>
+          )}
+        </ScrollViewWrapper>
 
         <Flex
           alignItems="center"
