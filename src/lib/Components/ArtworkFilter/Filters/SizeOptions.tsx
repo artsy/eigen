@@ -138,12 +138,11 @@ interface SizeOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigatio
 
 export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation }) => {
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
-  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const setSelectedFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.setSelectedFiltersAction)
+  const selectedFilters = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
 
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedOption = selectedOptions.find((option) => option.paramName === PARAM_NAME)!
-  const appliedOption = appliedFilters.find((option) => option.paramName === PARAM_NAME)
-  const defaultOption = appliedOption ?? DEFAULT_SIZE_OPTION
   const selectedCustomOptions = selectedOptions.filter((option) =>
     CUSTOM_SIZE_OPTION_KEYS.includes(option.paramName as keyof CustomSize)
   )
@@ -165,8 +164,7 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
   const selectOption = (option: AggregateOption) => {
     if (option.displayText === CUSTOM_SIZE_OPTION.displayText) {
       showCustomSize(true)
-      restoreCustomPrice()
-      selectFiltersAction(defaultOption)
+      resetSelectedSizeFilters()
     } else {
       showCustomSize(false)
       resetCustomPrice()
@@ -176,16 +174,6 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
         paramName: PARAM_NAME,
       })
     }
-  }
-
-  const restoreCustomPrice = () => {
-    CUSTOM_SIZE_OPTION_KEYS.forEach((paramName) => {
-      const sizeFilter = appliedFilters.find((filter) => filter.paramName === paramName)
-
-      if (sizeFilter) {
-        selectFiltersAction(sizeFilter)
-      }
-    })
   }
 
   const resetCustomPrice = () => {
@@ -206,10 +194,14 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
 
     // Populate the custom size filter only when we have at least one specified input
     if (isEmptyCustomValues) {
-      selectFiltersAction(defaultOption)
+      resetSelectedSizeFilters()
     } else {
-      selectFiltersAction(CUSTOM_SIZE_OPTION)
+      selectCustomSizeFilters(value)
     }
+  }
+
+  const selectCustomSizeFilters = (value: CustomSize) => {
+    selectFiltersAction(CUSTOM_SIZE_OPTION)
 
     CUSTOM_SIZE_OPTION_KEYS.forEach((paramName) => {
       selectFiltersAction({
@@ -218,6 +210,17 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
         paramValue: `${toIn(value[paramName].min, LOCALIZED_UNIT)}-${toIn(value[paramName].max, LOCALIZED_UNIT)}`,
       })
     })
+  }
+
+  const resetSelectedSizeFilters = () => {
+    const nextSelectedFilters = selectedFilters.filter((filter) => {
+      const isSizeFilter = filter.paramName === FilterParamName.dimensionRange
+      const isCustomSizeFilter = CUSTOM_SIZE_OPTION_KEYS.includes(filter.paramName as keyof CustomSize)
+
+      return !isSizeFilter && !isCustomSizeFilter
+    })
+
+    setSelectedFiltersAction(nextSelectedFilters)
   }
 
   return (
