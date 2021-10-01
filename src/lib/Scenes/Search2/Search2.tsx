@@ -19,7 +19,7 @@ import {
   connectStateResults,
   InstantSearch,
 } from "react-instantsearch-native"
-import { Platform, ScrollView } from "react-native"
+import { Keyboard, Platform, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components"
@@ -38,19 +38,12 @@ interface SearchInputProps {
   placeholder: string
   currentRefinement: string
   refine: (value: string) => any
-  onSubmitEditing: () => void
   onReset: () => void
 }
 
 const SEARCH_THROTTLE_INTERVAL = 500
 
-const SearchInput: React.FC<SearchInputProps> = ({
-  currentRefinement,
-  placeholder,
-  refine,
-  onSubmitEditing,
-  onReset,
-}) => {
+const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholder, refine, onReset }) => {
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(currentRefinement)
 
@@ -85,7 +78,6 @@ const SearchInput: React.FC<SearchInputProps> = ({
         handleChangeText(text)
         onReset()
       }}
-      onSubmitEditing={onSubmitEditing}
       onFocus={() => {
         trackEvent({
           action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
@@ -170,16 +162,11 @@ export const Search2: React.FC<Search2Props> = (props) => {
   const handlePillPress = (pill: PillType) => {
     setSearchState((prevState) => ({ ...prevState, page: 1 }))
     setSelectedPill(pill)
+    Keyboard.dismiss()
   }
 
   const isSelected = (pill: PillType) => {
     return selectedPill.name === pill.name
-  }
-
-  const handleSubmitEditing = () => {
-    if (shouldStartQuering) {
-      setSelectedPill(TOP_PILL)
-    }
   }
 
   const handleResetSearchInput = () => {
@@ -200,7 +187,6 @@ export const Search2: React.FC<Search2Props> = (props) => {
           <Flex p={2} pb={1}>
             <SearchInputContainer
               placeholder="Search artists, artworks, galleries, etc"
-              onSubmitEditing={handleSubmitEditing}
               onReset={handleResetSearchInput}
             />
           </Flex>
