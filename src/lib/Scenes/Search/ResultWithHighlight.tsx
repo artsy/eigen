@@ -2,16 +2,13 @@ import match from "autosuggest-highlight/match"
 import parse from "autosuggest-highlight/parse"
 import { Text } from "palette"
 import React from "react"
-import styled from "styled-components/native"
-
-export const SmallText = styled(Text).attrs({ variant: "xs" })``
 
 export const ResultWithHighlight = ({ displayLabel, highlight }: { displayLabel: string; highlight?: string }) => {
   const matches = match(displayLabel, highlight!)
   const parts = parse(displayLabel, matches)
 
   return (
-    <Text variant="xs">
+    <Text variant="xs" numberOfLines={1}>
       {parts.map((part, i) => (
         <Text
           key={i}

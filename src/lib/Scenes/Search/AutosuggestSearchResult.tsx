@@ -112,9 +112,7 @@ export const AutosuggestSearchResult: React.FC<{
           <Spacer ml={1} />
 
           <Flex flex={1}>
-            <Text variant="xs" numberOfLines={1}>
-              <ResultWithHighlight displayLabel={result.displayLabel!} highlight={highlight} />
-            </Text>
+            <ResultWithHighlight displayLabel={result.displayLabel!} highlight={highlight} />
 
             {!!showResultType && !!resultType && (
               <Text variant="xs" color="black60">
@@ -125,6 +123,7 @@ export const AutosuggestSearchResult: React.FC<{
 
           {!!onDelete && (
             <Touchable
+              accessibilityLabel="Remove recent search item"
               onPress={onDelete}
               hitSlop={{
                 bottom: 20,
