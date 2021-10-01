@@ -149,7 +149,7 @@ describe("availableTabs", () => {
     expect(tree.root.findAllByType(ArtistInsights)).toHaveLength(0)
   })
 
-  fit("tracks a page view", () => {
+  it("tracks a page view", () => {
     renderWithWrappers(<TestWrapper />)
     mockMostRecentOperation("ArtistAboveTheFoldQuery")
     expect(postEventToProviders).toHaveBeenCalledTimes(1)
