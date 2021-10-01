@@ -44,8 +44,8 @@ export const ActiveLotStanding = ({ saleArtwork }: { saleArtwork: ActiveLotStand
       <TouchableOpacity onPress={() => handleLotTap()} style={{ marginHorizontal: 0, width: "100%" }}>
         <Flex flexDirection="row" justifyContent="space-between">
           <Lot saleArtwork={saleArtwork} isSmallScreen={isSmallScreen} />
-          <Flex flexDirection="column">
-            <Flex flexDirection="row" justifyContent="flex-end">
+          <Flex>
+            <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
               <Text variant="xs">{sellingPrice}</Text>
               <Text variant="xs" color="black60">
                 {" "}
