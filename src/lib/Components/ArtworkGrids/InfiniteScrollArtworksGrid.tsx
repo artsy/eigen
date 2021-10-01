@@ -206,7 +206,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
   }
 
   getSectionDimension(width: number | null | undefined) {
-    // Setting the dimension to 1 for tests to avoid adjisting the screen width
+    // Setting the dimension to 1 for tests to avoid adjusting the screen width
     if (__TEST__) {
       return 1
     }
