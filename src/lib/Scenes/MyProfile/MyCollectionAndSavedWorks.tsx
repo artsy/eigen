@@ -62,15 +62,6 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
   )
 }
 
-// const MyProfileHeaderFragmentContainer = createFragmentContainer(MyProfileHeader, {
-//   me: graphql`
-//     fragment MyCollectionAndSavedWorks_me on Me {
-//       name
-//       createdAt
-//     }
-//   `,
-// })
-
 const MyCollectionAndSavedWorksFragmentContainer = createFragmentContainer(MyCollectionAndSavedWorks, {
   me: graphql`
     fragment MyCollectionAndSavedWorks_me on Me {
@@ -79,24 +70,6 @@ const MyCollectionAndSavedWorksFragmentContainer = createFragmentContainer(MyCol
     }
   `,
 })
-
-// const MyProfileHeaderQueryRenderer = () => (
-//   <QueryRenderer<MyCollectionAndSavedWorksQuery>
-//     environment={defaultEnvironment}
-//     query={graphql`
-//       query MyCollectionAndSavedWorksQuery {
-//         me {
-//           ...MyCollectionAndSavedWorks_me
-//         }
-//       }
-//     `}
-//     render={renderWithPlaceholder({
-//       Container: MyProfileHeaderFragmentContainer,
-//       renderPlaceholder: () => <MyProfileHeader />,
-//     })}
-//     variables={{}}
-//   />
-// )
 
 export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => (
   <QueryRenderer<MyCollectionAndSavedWorksQuery>
