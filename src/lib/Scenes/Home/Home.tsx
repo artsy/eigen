@@ -365,7 +365,7 @@ export const HomeFragmentContainer = createRefetchContainer(
       articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
         ...Home_articlesConnection
       }
-      showsConnection(first: 10, status: CLOSED) @optionalField {
+      showsConnection(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
         ...Home_showsConnection
       }
     }
@@ -559,7 +559,7 @@ export const HomeQueryRenderer: React.FC = () => {
                   ...Home_meBelow
                   ...AuctionResultsRail_me
                 }
-                showsConnection(first: 10, status: CLOSED) @optionalField {
+                showsConnection(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
                   ...Home_showsConnection
                 }
               }

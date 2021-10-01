@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0c1bcda0d8133d805be5754f83d7a10d */
+/* @relayHash dc8e5c56444bd4c8b9369c97013f3643 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -65,7 +65,7 @@ query HomeRefetchQuery(
   articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
     ...Home_articlesConnection
   }
-  showsConnection(first: 10, status: CLOSED) @optionalField {
+  showsConnection(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
     ...Home_showsConnection
   }
 }
@@ -641,7 +641,7 @@ v5 = [
   {
     "kind": "Literal",
     "name": "status",
-    "value": "CLOSED"
+    "value": "RUNNING_AND_UPCOMING"
   }
 ],
 v6 = [
@@ -1562,7 +1562,7 @@ return {
             "name": "Home_showsConnection"
           }
         ],
-        "storageKey": "showsConnection(first:10,status:\"CLOSED\")"
+        "storageKey": "showsConnection(first:10,status:\"RUNNING_AND_UPCOMING\")"
       }
     ],
     "type": "Query",
@@ -2450,12 +2450,12 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "showsConnection(first:10,status:\"CLOSED\")"
+        "storageKey": "showsConnection(first:10,status:\"RUNNING_AND_UPCOMING\")"
       }
     ]
   },
   "params": {
-    "id": "0c1bcda0d8133d805be5754f83d7a10d",
+    "id": "dc8e5c56444bd4c8b9369c97013f3643",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",
@@ -2463,5 +2463,5 @@ return {
   }
 };
 })();
-(node as any).hash = '66da0beb70a8531f9b12abdb44afddb7';
+(node as any).hash = 'ef3f826f0db85808fff80ef7c8c84a91';
 export default node;

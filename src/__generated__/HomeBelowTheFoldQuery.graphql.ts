@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1c57f312f19e045ec3421fc3c0e6e4f2 */
+/* @relayHash 1f8172db742673bd029d6328a546667c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -45,7 +45,7 @@ query HomeBelowTheFoldQuery(
     ...AuctionResultsRail_me
     id
   }
-  showsConnection(first: 10, status: CLOSED) @optionalField {
+  showsConnection(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
     ...Home_showsConnection
   }
 }
@@ -452,7 +452,7 @@ v2 = [
   {
     "kind": "Literal",
     "name": "status",
-    "value": "CLOSED"
+    "value": "RUNNING_AND_UPCOMING"
   }
 ],
 v3 = [
@@ -726,7 +726,7 @@ return {
             "name": "Home_showsConnection"
           }
         ],
-        "storageKey": "showsConnection(first:10,status:\"CLOSED\")"
+        "storageKey": "showsConnection(first:10,status:\"RUNNING_AND_UPCOMING\")"
       }
     ],
     "type": "Query",
@@ -1722,12 +1722,12 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "showsConnection(first:10,status:\"CLOSED\")"
+        "storageKey": "showsConnection(first:10,status:\"RUNNING_AND_UPCOMING\")"
       }
     ]
   },
   "params": {
-    "id": "1c57f312f19e045ec3421fc3c0e6e4f2",
+    "id": "1f8172db742673bd029d6328a546667c",
     "metadata": {},
     "name": "HomeBelowTheFoldQuery",
     "operationKind": "query",
@@ -1735,5 +1735,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'f6f5f734be45d66262c3519d97595ada';
+(node as any).hash = 'b0dd41a6006c535ef8bdce4026178028';
 export default node;
