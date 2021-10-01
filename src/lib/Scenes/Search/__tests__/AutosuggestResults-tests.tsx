@@ -4,7 +4,7 @@ import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { CatchErrors } from "lib/utils/CatchErrors"
 import React from "react"
 import { FlatList } from "react-native"
@@ -273,5 +273,19 @@ describe("AutosuggestResults", () => {
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
     tree.root.findByType(AutosuggestSearchResult).props.onResultPress()
     expect(spy).toHaveBeenCalled()
+  })
+
+  it('should show the loading placeholder only when "showLoadingPlaceholder" is passed', () => {
+    const { getByA11yLabel } = renderWithWrappersTL(<TestWrapper query="michael" showLoadingPlaceholder />)
+
+    expect(getByA11yLabel("Autosuggest results are loading")).toBeTruthy()
+  })
+
+  it("should hide the loading placeholder when results are received", () => {
+    const { queryByA11yLabel } = renderWithWrappersTL(<TestWrapper query="michael" showLoadingPlaceholder />)
+
+    act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
+
+    expect(queryByA11yLabel("Autosuggest results are loading")).toBeFalsy()
   })
 })
