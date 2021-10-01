@@ -12,6 +12,7 @@ import { SmallTileRailContainer } from "./SmallTileRail"
 import { RailScrollProps } from "./types"
 
 const PAGE_SIZE = 10
+const MAX_ARTWORKS = 30
 
 interface NewWorksForYouRailProps {
   me: NewWorksForYouRail_me
@@ -44,7 +45,7 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
   const artworks = extractNodes(me?.newWorksByInterestingArtists)
 
   const loadMoreArtworks = () => {
-    if (!hasMore() || isLoading()) {
+    if (!hasMore() || isLoading() || artworks.length >= MAX_ARTWORKS) {
       return
     }
 
