@@ -24,7 +24,7 @@ const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ me, relay }) => {
   const { hasMore, loadMore } = relay
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.worksForYou })}>
+    <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}>
       <PageWithSimpleHeader title={SCREEN_TITLE}>
         <Box>
           {!!me.artworks?.edges?.length ? (
@@ -33,7 +33,7 @@ const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ me, relay }) => {
               loadMore={loadMore}
               hasMore={hasMore}
               pageSize={PAGE_SIZE}
-              contextScreenOwnerType={OwnerType.worksForYou}
+              contextScreenOwnerType={OwnerType.newWorksForYou}
               HeaderComponent={<Spacer mt={2} />}
               shouldAddPadding
               showLoadingSpinner
