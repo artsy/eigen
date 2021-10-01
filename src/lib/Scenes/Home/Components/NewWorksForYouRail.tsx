@@ -85,7 +85,7 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
           <SmallTileRailContainer
             listRef={listRef}
             artworks={artworks as any}
-            contextModule={HomeAnalytics.artworkRailContextModule(ContextModule.worksByArtistsYouFollowRail)}
+            contextModule={ContextModule.newWorksForYouRail}
             onEndReached={loadMoreArtworks}
             onEndReachedThreshold={0.1}
             ListFooterComponent={
