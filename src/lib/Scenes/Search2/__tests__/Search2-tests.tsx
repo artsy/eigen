@@ -101,25 +101,6 @@ describe("Search2 Screen", () => {
     expect(queryByText("Cancel")).toBeTruthy()
   })
 
-  it("selects artworks pill only when the user has typed the minimum allowed number of characters", () => {
-    const { queryByA11yState, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
-    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
-
-    fireEvent(searchInput, "submitEditing")
-
-    expect(queryByA11yState({ selected: true })).toBeFalsy()
-  })
-
-  it("selects the top pill when the search input is submitted", () => {
-    const { getByA11yState, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
-    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
-
-    fireEvent.changeText(searchInput, "text")
-    fireEvent(searchInput, "submitEditing")
-
-    expect(getByA11yState({ selected: true })).toHaveTextContent("Top")
-  })
-
   it('the "Top" pill should be selected by default', () => {
     const { getByA11yState, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
     const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
