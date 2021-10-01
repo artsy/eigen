@@ -1,15 +1,15 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArticleCard_article } from "__generated__/ArticleCard_article.graphql"
 import { ArticleCardContainer } from "lib/Components/ArticleCard"
+import { PlaceholderBox, ProvidePlaceholderContext, RandomWidthPlaceholderText } from "lib/utils/placeholders"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, Separator, Spacer } from "palette"
+import _ from "lodash"
+import { Flex, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
 import { useTracking } from "react-tracking"
-import { ArticlesHeader } from "./Articles"
-
 interface ArticlesListProps {
   articles: ArticleCard_article[]
   isLoading: () => boolean
@@ -17,6 +17,7 @@ interface ArticlesListProps {
   refreshing: boolean
   handleLoadMore: () => void
   handleRefresh: () => void
+  title: string
 }
 
 export const ArticlesList: React.FC<ArticlesListProps> = ({
@@ -26,6 +27,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
   refreshing,
   handleLoadMore,
   handleRefresh,
+  title,
 }) => {
   const numColumns = useNumColumns()
 
@@ -42,7 +44,7 @@ export const ArticlesList: React.FC<ArticlesListProps> = ({
         <FlatList
           numColumns={numColumns}
           key={`${numColumns}`}
-          ListHeaderComponent={() => <ArticlesHeader />}
+          ListHeaderComponent={() => <ArticlesHeader title={title} />}
           data={articles}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
           keyExtractor={(item) => `${item.internalID}-${numColumns}`}
@@ -111,6 +113,38 @@ export const useNumColumns = () => {
   return orientation === "portrait" ? 2 : 3
 }
 
+export const ArticlesPlaceholder = () => {
+  const numColumns = useNumColumns()
+
+  return (
+    <ProvidePlaceholderContext>
+      <Flex flexDirection="column" justifyContent="space-between" height="100%" pb={8}>
+        <Separator />
+        <FlatList
+          numColumns={numColumns}
+          key={`${numColumns}`}
+          ListHeaderComponent={() => <ArticlesHeader />}
+          data={_.times(6)}
+          keyExtractor={(item) => `${item}-${numColumns}`}
+          renderItem={({ item }) => {
+            return (
+              <ArticlesListItem index={item} key={item}>
+                <PlaceholderBox aspectRatio={1.33} width="100%" marginBottom={10} />
+                <RandomWidthPlaceholderText minWidth={50} maxWidth={100} marginTop={1} />
+                <RandomWidthPlaceholderText height={18} minWidth={200} maxWidth={200} marginTop={1} />
+                <RandomWidthPlaceholderText minWidth={100} maxWidth={100} marginTop={1} />
+                <Spacer mb={2} />
+              </ArticlesListItem>
+            )
+          }}
+          ItemSeparatorComponent={() => <Spacer mt="3" />}
+          onEndReachedThreshold={1}
+        />
+      </Flex>
+    </ProvidePlaceholderContext>
+  )
+}
+
 export const tracks = {
   tapArticlesListItem: (articleId: string, articleSlug: string) => ({
     action: ActionType.tappedArticleGroup,
@@ -121,3 +155,9 @@ export const tracks = {
     destination_screen_owner_slug: articleSlug,
   }),
 }
+
+export const ArticlesHeader = ({ title = "" }) => (
+  <Text mx="2" variant="lg" mb={1} mt={6}>
+    {title}
+  </Text>
+)
