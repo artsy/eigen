@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 95d9d70bcd807a4cf5cee0b6ab9bd2a4 */
+/* @relayHash ccfb597f7b828563e39131626d86ba42 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -20,7 +20,7 @@ export type MyCollectionAndSavedWorksQuery = {
 
 /*
 query MyCollectionAndSavedWorksQuery {
-  me {
+  me @optionalField {
     ...MyCollectionAndSavedWorks_me
     id
   }
@@ -100,12 +100,12 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "id": "95d9d70bcd807a4cf5cee0b6ab9bd2a4",
+    "id": "ccfb597f7b828563e39131626d86ba42",
     "metadata": {},
     "name": "MyCollectionAndSavedWorksQuery",
     "operationKind": "query",
     "text": null
   }
 };
-(node as any).hash = 'b02eab589770b09d796179af8dfa5d54';
+(node as any).hash = 'e2528a0edab35bb34cd3e89a63547d21';
 export default node;

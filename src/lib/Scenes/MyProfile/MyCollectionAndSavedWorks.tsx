@@ -103,7 +103,7 @@ export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => (
     environment={defaultEnvironment}
     query={graphql`
       query MyCollectionAndSavedWorksQuery {
-        me {
+        me @optionalField {
           ...MyCollectionAndSavedWorks_me
         }
       }
