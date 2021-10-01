@@ -95,7 +95,7 @@ export interface Props {
   /** Allows to use MyCollectionArtworkListItem */
   isMyCollection?: boolean
 
-  /** Wether to use `ParentAwareScrollView` or `ScrollView` (defaults to true) */
+  /** Whether to use `ParentAwareScrollView` or `ScrollView` (defaults to true) */
   useParentAwareScrollView?: boolean
 
   /** Wether to show a loading spinner (defaults to false) */
