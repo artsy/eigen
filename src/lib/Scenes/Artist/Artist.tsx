@@ -8,7 +8,7 @@ import {
 } from "__generated__/ArtistBelowTheFoldQuery.graphql"
 import { ArtistAboutContainer } from "lib/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
-import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeader"
+import { ArtistHeaderFragmentContainer, ArtistHeaderPlaceholder } from "lib/Components/Artist/ArtistHeader"
 import { ArtistInsightsFragmentContainer } from "lib/Components/Artist/ArtistInsights/ArtistInsights"
 import { DEFAULT_ARTWORK_SORT } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { getOnlyFilledSearchCriteriaValues } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
@@ -20,8 +20,9 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SearchCriteriaQueryRenderer } from "lib/Scenes/Artist/SearchCriteria"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
+import { PlaceholderGridWithoutPadding, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { Flex, Message } from "palette"
+import { Flex, Message, Spacer } from "palette"
 import React from "react"
 import { useEffect } from "react"
 import { ActivityIndicator, View } from "react-native"
@@ -34,7 +35,7 @@ export interface NotificationPayload {
 }
 
 interface ArtistProps {
-  artistAboveTheFold: NonNullable<ArtistAboveTheFoldQuery["response"]["artist"]>
+  artistAboveTheFold?: ArtistAboveTheFoldQuery["response"]["artist"]
   artistBelowTheFold?: ArtistBelowTheFoldQuery["response"]["artist"]
   initialTab?: string
   searchCriteria: SearchCriteriaAttributes | null
@@ -46,9 +47,9 @@ export const Artist: React.FC<ArtistProps> = (props) => {
   const popoverMessage = usePopoverMessage()
   const tabs: TabProps[] = []
   const displayAboutSection =
-    artistAboveTheFold.has_metadata ||
-    (artistAboveTheFold.counts?.articles ?? 0) > 0 ||
-    (artistAboveTheFold.counts?.related_artists ?? 0) > 0
+    artistAboveTheFold?.has_metadata ||
+    (artistAboveTheFold?.counts?.articles ?? 0) > 0 ||
+    (artistAboveTheFold?.counts?.related_artists ?? 0) > 0
 
   useEffect(() => {
     if (!!fetchCriteriaError) {
@@ -61,21 +62,27 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     }
   }, [fetchCriteriaError])
 
-  if (displayAboutSection) {
+  const isLoading = !artistAboveTheFold
+
+  if (isLoading || displayAboutSection) {
     tabs.push({
       title: "Overview",
       content: artistBelowTheFold ? <ArtistAboutContainer artist={artistBelowTheFold} /> : <LoadingPage />,
     })
   }
 
-  if ((artistAboveTheFold.counts?.artworks ?? 0) > 0) {
+  if (isLoading || (artistAboveTheFold?.counts?.artworks ?? 0) > 0) {
     tabs.push({
       title: "Artworks",
-      content: <ArtistArtworks artist={artistAboveTheFold} searchCriteria={searchCriteria} />,
+      content: artistAboveTheFold ? (
+        <ArtistArtworks artist={artistAboveTheFold} searchCriteria={searchCriteria} />
+      ) : (
+        <ArtworksTabPlaceholder />
+      ),
     })
   }
 
-  if (artistAboveTheFold?.auctionResultsConnection?.totalCount) {
+  if (isLoading || artistAboveTheFold?.auctionResultsConnection?.totalCount) {
     tabs.push({
       title: "Insights",
       content: artistBelowTheFold ? (
@@ -86,7 +93,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     })
   }
 
-  if (tabs.length === 0) {
+  if (!isLoading && tabs.length === 0) {
     tabs.push({
       title: "Artworks",
       content: (
@@ -110,14 +117,17 @@ export const Artist: React.FC<ArtistProps> = (props) => {
       info={{
         context_screen: Schema.PageNames.ArtistPage,
         context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-        context_screen_owner_slug: artistAboveTheFold.slug,
-        context_screen_owner_id: artistAboveTheFold.internalID,
+        context_screen_owner_slug: artistAboveTheFold?.slug,
+        context_screen_owner_id: artistAboveTheFold?.internalID,
       }}
     >
       <Flex style={{ flex: 1 }}>
         <StickyTabPage
-          staticHeaderContent={<ArtistHeaderFragmentContainer artist={artistAboveTheFold!} />}
+          staticHeaderContent={
+            isLoading ? <ArtistHeaderPlaceholder /> : <ArtistHeaderFragmentContainer artist={artistAboveTheFold} />
+          }
           tabs={tabs}
+          loading={isLoading}
         />
       </Flex>
     </ProvideScreenTracking>
@@ -185,22 +195,18 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                 `,
                 variables: { artistID },
               }}
-              render={{
-                renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
-                renderComponent: ({ above, below }) => {
-                  if (!above.artist) {
-                    throw new Error("no artist data")
-                  }
-                  return (
-                    <Artist
-                      artistAboveTheFold={above.artist}
-                      artistBelowTheFold={below?.artist}
-                      initialTab={initialTab}
-                      searchCriteria={savedSearchCriteria}
-                      fetchCriteriaError={fetchCriteriaError}
-                    />
-                  )
-                },
+              render={({ props: renderProps }) => {
+                const { above, below } = renderProps || {}
+
+                return (
+                  <Artist
+                    artistAboveTheFold={above?.artist}
+                    artistBelowTheFold={below?.artist}
+                    initialTab={initialTab}
+                    searchCriteria={savedSearchCriteria}
+                    fetchCriteriaError={fetchCriteriaError}
+                  />
+                )
               }}
             />
           )
@@ -221,5 +227,16 @@ const LoadingPage: React.FC<{}> = ({}) => {
     <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
       <ActivityIndicator />
     </View>
+  )
+}
+
+const ArtworksTabPlaceholder: React.FC = () => {
+  return (
+    <ProvidePlaceholderContext>
+      <StickyTabPageScrollView>
+        <Spacer mb={1} />
+        <PlaceholderGridWithoutPadding />
+      </StickyTabPageScrollView>
+    </ProvidePlaceholderContext>
   )
 }

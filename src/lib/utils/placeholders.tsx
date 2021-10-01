@@ -152,3 +152,11 @@ export const PlaceholderGrid: React.FC = () => {
     </Flex>
   )
 }
+
+export const PlaceholderGridWithoutPadding: React.FC = () => {
+  return (
+    <Flex flexDirection="row">
+      <GenericGridPlaceholder width={useScreenDimensions().width - 40} />
+    </Flex>
+  )
+}

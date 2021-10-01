@@ -1,6 +1,7 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Sans } from "palette"
 import { NavigationalTabs } from "palette/elements/Tabs"
+import { NavigationalTabsPlaceholder } from "palette/elements/Tabs/NavigationalTabs"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, LayoutRectangle, ScrollView, TouchableOpacity, View, ViewProps } from "react-native"
 import { useStickyTabPageContext } from "./SitckyTabPageContext"
@@ -11,16 +12,16 @@ export const StickyTabPageTabBar: React.FC<{ onTabPress?(tab: { label: string; i
   onTabPress,
 }) => {
   const screen = useScreenDimensions()
-  const { tabLabels, activeTabIndex, setActiveTabIndex, tabSuperscripts } = useStickyTabPageContext()
+  const { tabLabels, activeTabIndex, setActiveTabIndex, tabSuperscripts, loading } = useStickyTabPageContext()
   activeTabIndex.useUpdates()
 
   const [tabLayouts] = useState<Array<LayoutRectangle | null>>(tabLabels.map(() => null))
 
   useEffect(() => {
-    if (tabLayouts.length !== tabLabels.length) {
+    if (!loading && tabLayouts.length !== tabLabels.length) {
       console.error("sticky tab page tab bar does not support a dynamic list of tabs yet")
     }
-  }, [tabLabels.length])
+  }, [tabLabels.length, loading])
 
   const allTabLayoutsArePresent = tabLayouts.every((l) => l)
   const scrollViewRef = useRef<ScrollView>(null)
@@ -39,6 +40,11 @@ export const StickyTabPageTabBar: React.FC<{ onTabPress?(tab: { label: string; i
   }, [activeTabIndex.current])
 
   const v3Tabs = tabLabels.map((label, index) => ({ label, superscript: tabSuperscripts[index] }))
+
+  if (loading) {
+    return <NavigationalTabsPlaceholder tabs={v3Tabs} />
+  }
+
   return (
     <NavigationalTabs
       tabs={v3Tabs}

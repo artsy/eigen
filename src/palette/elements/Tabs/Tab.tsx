@@ -5,7 +5,7 @@ import { ViewProps } from "react-native"
 import { Pressable, View, ViewStyle } from "react-native"
 
 export interface TabV3Props {
-  label: string
+  label: string | Element
   superscript?: string
   active: boolean
   style?: ViewStyle
