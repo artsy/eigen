@@ -15,7 +15,9 @@ import { SnappyHorizontalRail } from "./SnappyHorizontalRail"
 import { StickyTabPageFlatListContext } from "./StickyTabPageFlatList"
 import { StickyTabPageTabBar } from "./StickyTabPageTabBar"
 
+// We need to limit the number of tabs to make sure to always call the same number of hooks.
 const MAX_TABS_LENGTH = 20
+
 export interface TabProps {
   initial?: boolean
   title: string

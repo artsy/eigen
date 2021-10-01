@@ -1,4 +1,5 @@
 import { GenericGridPlaceholder } from "lib/Components/ArtworkGrids/GenericGrid"
+import { ResponsiveValue } from "lib/Components/Bidding/Elements/types"
 import { Flex, useColor } from "palette"
 import React, { useContext, useEffect, useMemo, useRef } from "react"
 import { View, ViewStyle } from "react-native"
@@ -145,17 +146,9 @@ export const PlaceholderImage: React.FC<{ height: number }> = ({ height }) => {
   )
 }
 
-export const PlaceholderGrid: React.FC = () => {
+export const PlaceholderGrid: React.FC<{ mx?: ResponsiveValue<string | number | symbol> }> = ({ mx = 2 }) => {
   return (
-    <Flex mx={2} flexDirection="row">
-      <GenericGridPlaceholder width={useScreenDimensions().width - 40} />
-    </Flex>
-  )
-}
-
-export const PlaceholderGridWithoutPadding: React.FC = () => {
-  return (
-    <Flex flexDirection="row">
+    <Flex mx={mx} flexDirection="row">
       <GenericGridPlaceholder width={useScreenDimensions().width - 40} />
     </Flex>
   )

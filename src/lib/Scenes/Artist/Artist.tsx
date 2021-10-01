@@ -20,7 +20,7 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { SearchCriteriaQueryRenderer } from "lib/Scenes/Artist/SearchCriteria"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
-import { PlaceholderGridWithoutPadding, ProvidePlaceholderContext } from "lib/utils/placeholders"
+import { PlaceholderGrid, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Flex, Message, Spacer } from "palette"
 import React from "react"
@@ -112,6 +112,23 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     tab.initial = tab.title === initialTab
   })
 
+  const ScreenComponent = () => (
+    <Flex style={{ flex: 1 }}>
+      <StickyTabPage
+        staticHeaderContent={
+          isLoading ? <ArtistHeaderPlaceholder /> : <ArtistHeaderFragmentContainer artist={artistAboveTheFold} />
+        }
+        tabs={tabs}
+        loading={isLoading}
+      />
+    </Flex>
+  )
+
+  // Don't track before the content is loaded include data about the artist (id & slug) in the event
+  if (isLoading) {
+    return <ScreenComponent />
+  }
+
   return (
     <ProvideScreenTracking
       info={{
@@ -121,15 +138,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
         context_screen_owner_id: artistAboveTheFold?.internalID,
       }}
     >
-      <Flex style={{ flex: 1 }}>
-        <StickyTabPage
-          staticHeaderContent={
-            isLoading ? <ArtistHeaderPlaceholder /> : <ArtistHeaderFragmentContainer artist={artistAboveTheFold} />
-          }
-          tabs={tabs}
-          loading={isLoading}
-        />
-      </Flex>
+      <ScreenComponent />
     </ProvideScreenTracking>
   )
 }
@@ -196,12 +205,10 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                 variables: { artistID },
               }}
               render={({ props: renderProps }) => {
-                const { above, below } = renderProps || {}
-
                 return (
                   <Artist
-                    artistAboveTheFold={above?.artist}
-                    artistBelowTheFold={below?.artist}
+                    artistAboveTheFold={renderProps?.above?.artist}
+                    artistBelowTheFold={renderProps?.below?.artist}
                     initialTab={initialTab}
                     searchCriteria={savedSearchCriteria}
                     fetchCriteriaError={fetchCriteriaError}
@@ -235,7 +242,7 @@ const ArtworksTabPlaceholder: React.FC = () => {
     <ProvidePlaceholderContext>
       <StickyTabPageScrollView>
         <Spacer mb={1} />
-        <PlaceholderGridWithoutPadding />
+        <PlaceholderGrid mx={0} />
       </StickyTabPageScrollView>
     </ProvidePlaceholderContext>
   )
