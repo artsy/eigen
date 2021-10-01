@@ -109,9 +109,7 @@ export const ArtistArticlesQueryRenderer: React.FC<{
       }}
       render={renderWithPlaceholder({
         Container: ArtistArticlesContainer,
-        renderPlaceholder: () => {
-          return <ArticlesPlaceholder />
-        },
+        renderPlaceholder: () => <ArticlesPlaceholder />,
       })}
     />
   )
