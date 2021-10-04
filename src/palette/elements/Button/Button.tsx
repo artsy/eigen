@@ -1,7 +1,7 @@
 import { MeasuredView, ViewMeasurements } from "lib/utils/MeasuredView"
 import { useColor } from "palette/hooks"
 import React, { ReactNode, useState } from "react"
-import { LayoutChangeEvent, PressableProps, TextStyle, View } from "react-native"
+import { PressableProps, TextStyle } from "react-native"
 import { GestureResponderEvent, Pressable } from "react-native"
 import Haptic, { HapticFeedbackTypes } from "react-native-haptic-feedback"
 import { config } from "react-spring"
