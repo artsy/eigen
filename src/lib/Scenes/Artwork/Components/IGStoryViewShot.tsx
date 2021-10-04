@@ -1,5 +1,5 @@
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { ArtsyLogoBlackIcon, Flex, FlexProps, Text } from "palette"
+import { useOffscreenStyle } from "lib/utils/useOffscreenStyle"
+import { ArtsyLogoBlackIcon, Flex, Text } from "palette"
 import React, { RefObject } from "react"
 import { Image } from "react-native"
 import ViewShot from "react-native-view-shot"
@@ -24,16 +24,10 @@ export interface IGStoryViewShotProps {
 }
 
 export const IGStoryViewShot: React.FC<IGStoryViewShotProps> = ({ shotRef, href, artist, title }) => {
-  const { height: screenHeight, width: screenWidth } = useScreenDimensions()
-
-  const renderOffScreenStyle: FlexProps = {
-    position: "absolute",
-    left: screenWidth + screenHeight,
-    top: screenWidth + screenHeight,
-  }
+  const offscreenStyle = useOffscreenStyle()
 
   return (
-    <Flex {...renderOffScreenStyle} alignItems="center">
+    <Flex {...offscreenStyle} alignItems="center">
       <ViewShot ref={shotRef} options={{ format: "png", result: "base64" }}>
         <Flex
           width={InstagramStoryBackgroundDimensions.width}
