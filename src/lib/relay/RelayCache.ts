@@ -25,11 +25,11 @@ function cacheKey(queryID: string, variables: object) {
 }
 
 interface CacheRecord {
-  response: string
+  response: string | null
   expires: number
 }
 
-export async function set(queryID: string, variables: object, response: string, ttlSeconds: number = 0) {
+export async function set(queryID: string, variables: object, response: string | null, ttlSeconds: number = 0) {
   if (ttlSeconds === 0) {
     // default should be one day according to objc code
     ttlSeconds = 60 * 60 * 24
@@ -64,4 +64,11 @@ export async function clearAll() {
   const ks = await AsyncStorage.getAllKeys()
   const cacheKeys = ks.filter((k) => k.startsWith(CACHE_KEY_PREFIX))
   await AsyncStorage.multiRemove(cacheKeys)
+}
+
+export const RelayCache = {
+  clearAll,
+  clear,
+  get,
+  set,
 }
