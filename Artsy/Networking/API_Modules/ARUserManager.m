@@ -24,7 +24,6 @@
 #import "ARScreenPresenterModule.h"
 
 #import <Emission/AREmission.h>
-#import <Emission/ARGraphQLQueryCache.h>
 
 #import "RNCAsyncStorage.h"
 
@@ -535,7 +534,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     [ARRouter setAuthToken:nil];
     manager.currentUser = nil;
 
-    [[[AREmission sharedInstance] graphQLQueryCacheModule] clearAll];
     [ARScreenPresenterModule clearCachedNavigationStacks];
 
     RNCAsyncStorage *asyncStorage = [[[AREmission sharedInstance] bridge] moduleForName:@"RNCAsyncStorage"];

@@ -3,7 +3,7 @@
 #import <React/RCTBridgeModule.h>
 #import "ARNotificationsManager.h"
 
-@class AREventsModule, ARTemporaryAPIModule, ARTakeCameraPhotoModule, ARPHPhotoPickerModule, RCTBridge, ARGraphQLQueryPreloader, ARGraphQLQueryCache;
+@class AREventsModule, ARTemporaryAPIModule, ARTakeCameraPhotoModule, ARPHPhotoPickerModule, RCTBridge;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -19,8 +19,6 @@ extern NSString *const AREnvTest;
 @property (nonatomic, strong, readonly) ARTakeCameraPhotoModule *cameraModule;
 @property (nonatomic, strong, readonly) ARPHPhotoPickerModule *phPhotoPickerModule;
 @property (nonatomic, strong, readonly) ARNotificationsManager *notificationsManagerModule;
-@property (nonatomic, strong, readonly) ARGraphQLQueryPreloader *graphQLQueryPreloaderModule;
-@property (nonatomic, strong, readonly) ARGraphQLQueryCache *graphQLQueryCacheModule;
 
 + (instancetype)sharedInstance;
 + (void)setSharedInstance:(AREmission *)instance;
