@@ -118,10 +118,10 @@
   resolved "https://registry.yarnpkg.com/@artsy/palette-tokens/-/palette-tokens-2.6.0.tgz#3d780ff65994fef0daadef29d43d11f89470b728"
   integrity sha512-UQP6P+xv/5hm82ep0z5X3kCFFnk03H6y8kdW/wTU+xPq45ESUay7aNFYXeub47tmW2v6dXJ8Oa01Z0iwc6BVpA==
 
-"@artsy/to-title-case@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@artsy/to-title-case/-/to-title-case-1.0.3.tgz#e0c983d8dd3ff98d18fb8ae410483cb073df0516"
-  integrity sha512-f0ogCJS1BdWEDPihp+0etp64SD3ppfhVCK8y5eEfkh32SUo227B1Y35+qvR4mczexRSqoCnOvdWCUFdu4wbSNA==
+"@artsy/to-title-case@1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@artsy/to-title-case/-/to-title-case-1.1.0.tgz#ed22a9d926d88edc7b3833900c6c6cef9d5bc282"
+  integrity sha512-n2GISILNv3X9xVjkUC1thoOl7rVKPeDskobQJsC5G8poFpF4HNxxSJD97NjvCK3Ai1RplSMsN2MCmMAy7plx9Q==
   dependencies:
     lodash.deburr "^4.1.0"
     lodash.isnumber "^3.0.3"
