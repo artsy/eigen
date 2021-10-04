@@ -162,7 +162,14 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
   }, DEFAULT_CUSTOM_SIZE)
 
   const selectOption = (option: AggregateOption) => {
-    if (option.displayText === CUSTOM_SIZE_OPTION.displayText) {
+    const isCustomSizeOption = option.displayText === CUSTOM_SIZE_OPTION.displayText
+
+    // Don't clear entered values if the custom option is selected again
+    if (shouldShowCustomSize && isCustomSizeOption) {
+      return
+    }
+
+    if (isCustomSizeOption) {
       showCustomSize(true)
       removeSelectedSizeFilters()
     } else {
