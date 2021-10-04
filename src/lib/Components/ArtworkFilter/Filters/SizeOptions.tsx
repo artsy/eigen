@@ -164,10 +164,10 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
   const selectOption = (option: AggregateOption) => {
     if (option.displayText === CUSTOM_SIZE_OPTION.displayText) {
       showCustomSize(true)
-      resetSelectedSizeFilters()
+      removeSelectedSizeFilters()
     } else {
       showCustomSize(false)
-      resetCustomPrice()
+      resetCustomSizeFilters()
       selectFiltersAction({
         displayText: option.displayText,
         paramValue: option.paramValue,
@@ -176,7 +176,7 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
     }
   }
 
-  const resetCustomPrice = () => {
+  const resetCustomSizeFilters = () => {
     CUSTOM_SIZE_OPTION_KEYS.forEach((paramName) => {
       selectFiltersAction({
         displayText: "All",
@@ -186,7 +186,7 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
     })
   }
 
-  const handleCustomPriceChange = (value: CustomSize) => {
+  const handleCustomSizeChange = (value: CustomSize) => {
     const isEmptyCustomValues = CUSTOM_SIZE_OPTION_KEYS.every((key) => {
       const paramValue = value[key]
       return paramValue.min === "*" && paramValue.max === "*"
@@ -194,7 +194,7 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
 
     // Populate the custom size filter only when we have at least one specified input
     if (isEmptyCustomValues) {
-      resetSelectedSizeFilters()
+      removeSelectedSizeFilters()
     } else {
       selectCustomSizeFilters(value)
     }
@@ -212,7 +212,7 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
     })
   }
 
-  const resetSelectedSizeFilters = () => {
+  const removeSelectedSizeFilters = () => {
     const nextSelectedFilters = selectedFilters.filter((filter) => {
       const isSizeFilter = filter.paramName === FilterParamName.dimensionRange
       const isCustomSizeFilter = CUSTOM_SIZE_OPTION_KEYS.includes(filter.paramName as keyof CustomSize)
@@ -237,7 +237,7 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
               <CustomSizeInput
                 key="custom-size-input"
                 initialValue={customInitialValue}
-                onChange={handleCustomPriceChange}
+                onChange={handleCustomSizeChange}
               />,
             ]
           : []),
