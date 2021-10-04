@@ -147,7 +147,7 @@ describe("artsy app store migrations", () => {
     expect(CURRENT_APP_VERSION).toBe(_.max(Object.values(Versions)))
   })
 
-  it("Versions start from `1` and go increase by `1`", () => {
+  it("Versions list starts from `1` and increases by `1`", () => {
     expect(_.min(Object.values(Versions))).toBe(1)
     expect(Object.values(Versions).sort((a, b) => a - b)).toStrictEqual(_.range(1, Object.values(Versions).length + 1))
   })
