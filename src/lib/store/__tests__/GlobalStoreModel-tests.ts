@@ -4,7 +4,7 @@ import { __globalStoreTestUtils__, GlobalStore } from "../GlobalStore"
 import { CURRENT_APP_VERSION } from "../migration"
 
 describe("GlobalStoreModel", () => {
-  it("has a version", () => {
+  it("has latest version on install", () => {
     expect(__globalStoreTestUtils__?.getCurrentState().version).toBe(CURRENT_APP_VERSION)
   })
 
