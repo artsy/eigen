@@ -1,9 +1,9 @@
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
-import { LinkIcon } from "palette"
+import { Box, Flex, LinkIcon, Spacer } from "palette"
 import React, { useState } from "react"
 import { Button as RNButton } from "react-native"
-import { withTheme } from "storybook/decorators"
+import { withHooks, withScreenDimensions, withTheme } from "storybook/decorators"
 import { DList, List } from "storybook/helpers"
 import { Button, ButtonProps } from "."
 import { _test_DisplayState } from "./Button"
@@ -18,8 +18,10 @@ const states: Array<_test_DisplayState | undefined> = [
   _test_DisplayState.Pressed,
 ]
 
-storiesOf("ButtonV3", module)
+storiesOf("Button", module)
   .addDecorator(withTheme)
+  .addDecorator(withScreenDimensions)
+  .addDecorator(withHooks)
   .add("Sizes", () => (
     <DList
       data={sizes}
@@ -72,15 +74,46 @@ storiesOf("ButtonV3", module)
   ))
   .add("Miscellaneous", () => (
     <List>
-      <Button loading>loading</Button>
-      <Button disabled>disabled</Button>
       <Button loading disabled>
         loading and disabled
       </Button>
       <Button block>block</Button>
-      <Button icon={<LinkIcon />}>left icon</Button>
-      <Button icon={<LinkIcon />} iconPosition="right">
+      <Flex backgroundColor="orange" width={400} height={80} alignItems="center" justifyContent="center">
+        <Button variant="fillLight" icon={<LinkIcon />}>
+          left icon
+        </Button>
+      </Flex>
+      <Button icon={<LinkIcon fill="white100" />} iconPosition="right">
         right icon
+      </Button>
+      <Button size="small" icon={<LinkIcon fill="white100" />} iconPosition="right">
+        right icon small
+      </Button>
+      <Box flexDirection="row">
+        <Box width={2} height="100%" backgroundColor="green100" />
+        <Box>
+          <Button
+            size="small"
+            icon={<LinkIcon fill="white100" />}
+            iconPosition="right"
+            longestText="this is a very long text"
+          >
+            shortest text
+          </Button>
+          <Spacer mb={1} />
+          <Button
+            size="small"
+            icon={<LinkIcon fill="white100" />}
+            iconPosition="right"
+            longestText="this is a very long text"
+          >
+            this is a very long text
+          </Button>
+        </Box>
+        <Box width={2} height="100%" backgroundColor="green100" />
+      </Box>
+      <Button icon={<LinkIcon fill="white100" />} block iconPosition="left-start">
+        left-start aligned icon
       </Button>
     </List>
   ))
