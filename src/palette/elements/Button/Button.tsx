@@ -1,3 +1,4 @@
+import { MeasuredView, ViewMeasurements } from "lib/utils/MeasuredView"
 import { useColor } from "palette/hooks"
 import React, { ReactNode, useState } from "react"
 import { PressableProps, TextStyle } from "react-native"
@@ -20,7 +21,7 @@ export interface ButtonProps extends BoxProps {
   onPress?: PressableProps["onPress"]
 
   icon?: ReactNode
-  iconPosition?: "left" | "right"
+  iconPosition?: "left" | "left-start" | "right"
 
   /**
    * `haptic` can be used like:
@@ -71,6 +72,8 @@ export const Button: React.FC<ButtonProps> = ({
   ...rest
 }) => {
   const [innerDisplayState, setInnerDisplayState] = useState(DisplayState.Enabled)
+
+  const [longestTextMeasurements, setLongestTextMeasurements] = useState<ViewMeasurements>({ width: 0, height: 0 })
 
   const displayState =
     testOnly_state ?? // if we use the test prop, use that
@@ -151,37 +154,39 @@ export const Button: React.FC<ButtonProps> = ({
                 height: containerSize.height,
               }}
             >
-              <Box flex={1} mx={containerSize.mx}>
-                <HiddenContainer>
-                  {icon}
-                  <Text variant={size === "small" ? "xs" : "sm"} color="red">
-                    {longestText ? longestText : children}
-                  </Text>
-                </HiddenContainer>
-
-                <VisibleTextContainer>
-                  {iconPosition === "left" && <IconBox position="left" icon={icon} displayState={displayState} />}
+              <Flex mx={containerSize.mx}>
+                <Flex height="100%" flexDirection="row" alignItems="center" justifyContent="center">
+                  {iconPosition === "left-start" ? (
+                    <Box position="absolute" left={0}>
+                      {icon}
+                    </Box>
+                  ) : null}
+                  {iconPosition === "left" ? icon : null}
+                  <MeasuredView setMeasuredState={setLongestTextMeasurements}>
+                    <Text variant={size === "small" ? "xs" : "sm"} color="red">
+                      {longestText ? longestText : children}
+                    </Text>
+                  </MeasuredView>
                   <AnimatedText
                     variant={size === "small" ? "xs" : "sm"}
                     style={{
+                      width: longestTextMeasurements.width,
                       color: springProps.textColor,
                       textDecorationLine: springProps.textDecorationLine,
-                      position: "absolute",
-                      width: "100%",
                     }}
                     textAlign="center"
                   >
                     {children}
                   </AnimatedText>
-                  {iconPosition === "right" && <IconBox position="right" icon={icon} displayState={displayState} />}
-                </VisibleTextContainer>
+                  {iconPosition === "right" ? icon : null}
+                </Flex>
 
                 {displayState === DisplayState.Loading ? (
                   <SpinnerContainer>
                     <Spinner size={size} color={spinnerColor} />
                   </SpinnerContainer>
                 ) : null}
-              </Box>
+              </Flex>
             </AnimatedContainer>
           </Flex>
         </Pressable>
@@ -355,41 +360,6 @@ const useStyleForVariantAndState = (
 
   return retval
 }
-
-const IconBox = ({
-  position,
-  icon,
-  displayState,
-}: {
-  position: "right" | "left"
-  icon: any
-  displayState: DisplayState
-}) => (
-  <Box
-    opacity={displayState === DisplayState.Loading ? 0 : 1}
-    position="absolute"
-    left={position === "left" ? 0 : undefined}
-    right={position === "right" ? 0 : undefined}
-  >
-    {icon}
-  </Box>
-)
-
-const VisibleTextContainer = styled(Box)`
-  position: absolute;
-  align-items: center;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-`
-
-const HiddenContainer = styled(Box)<ButtonProps>`
-  flex: 1;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-`
 
 const Container = styled(Box)<ButtonProps>`
   position: relative;

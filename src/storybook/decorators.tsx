@@ -12,7 +12,9 @@ export const withSafeArea: DecoratorFunction<React.ReactNode> = (story) => (
 )
 
 export const withScreenDimensions: DecoratorFunction<React.ReactNode> = (story) => (
-  <ProvideScreenDimensions>{story()}</ProvideScreenDimensions>
+  <SafeAreaProvider>
+    <ProvideScreenDimensions>{story()}</ProvideScreenDimensions>
+  </SafeAreaProvider>
 )
 
 export const withTracking: DecoratorFunction<React.ReactNode> = (story) => <TrackProvider>{story()}</TrackProvider>
