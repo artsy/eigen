@@ -95,6 +95,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               haptic="impactMedium"
               mb={1}
               variant="outline"
+              iconPosition="left-start"
               icon={<EnvelopeIcon mr={1} />}
               testID="useEmail"
             >
@@ -107,6 +108,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                 haptic="impactMedium"
                 mb={1}
                 variant="fillDark"
+                iconPosition="left-start"
                 icon={<Image source={require("@images/apple.webp")} resizeMode="contain" style={{ marginRight: 10 }} />}
                 testID="useApple"
               >
@@ -120,6 +122,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                 haptic="impactMedium"
                 mb={1}
                 variant="outline"
+                iconPosition="left-start"
                 icon={
                   <Image source={require("@images/google.webp")} resizeMode="contain" style={{ marginRight: 10 }} />
                 }
@@ -135,6 +138,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               haptic="impactMedium"
               mb={1}
               variant="outline"
+              iconPosition="left-start"
               icon={
                 <Image source={require("@images/facebook.webp")} resizeMode="contain" style={{ marginRight: 10 }} />
               }
