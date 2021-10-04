@@ -78,8 +78,4 @@ it(@"removes JSON nulls when specified to", ^{
     [apiMock stopMocking];
 });
 
-itBehavesLike(@"API writes", @{@"method": @"POST"});
-itBehavesLike(@"API writes", @{@"method": @"PUT"});
-itBehavesLike(@"API writes", @{@"method": @"DELETE"});
-
 SpecEnd;
