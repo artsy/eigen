@@ -2,6 +2,7 @@ import { tappedCollectedArtworkImages } from "@artsy/cohesion"
 import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
+import { getMeasurements, Size } from "lib/Scenes/Artwork/Components/ImageCarousel/geometry"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Image } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -81,14 +82,35 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
         </Flex>
       )
     } else {
+      const maxImageHeight = dimensions.height / 2.5
+      const boundingBox: Size = {
+        height: defaultImage.height < maxImageHeight ? defaultImage.height : maxImageHeight,
+        width: dimensions.width,
+      }
+      const measurements = getMeasurements({
+        images: [
+          {
+            height: defaultImage.height,
+            width: defaultImage.width,
+          },
+        ],
+        boundingBox,
+      })[0]
+
+      const { cumulativeScrollOffset, ...styles } = measurements
+      // remove all vertical margins for pics taken in landscape mode
+      boundingBox.height = boundingBox.height - (styles.marginBottom + styles.marginTop)
       return (
-        <OpaqueImageView
-          imageURL={defaultImage.imageURL.replace(":version", "normalized")}
-          useRawURL
-          retryFailedURLs
-          height={defaultImage.height * (dimensions.width / defaultImage.width)}
-          width={dimensions.width}
-        />
+        <Flex style={boundingBox} bg="black5" alignItems="center">
+          <OpaqueImageView
+            imageURL={defaultImage.imageURL.replace(":version", "normalized")}
+            useRawURL
+            retryFailedURLs
+            height={styles.height}
+            width={styles.width}
+            aspectRatio={styles.width / styles.height}
+          />
+        </Flex>
       )
     }
   }
