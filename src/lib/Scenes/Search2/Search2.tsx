@@ -190,21 +190,23 @@ export const Search2: React.FC<Search2Props> = (props) => {
               onReset={handleResetSearchInput}
             />
           </Flex>
-          {!!shouldStartQuering ? (
-            <Flex flex={1} collapsable={false}>
-              <Box pt={2} pb={1}>
-                <SearchPills pills={pillsArray} onPillPress={handlePillPress} isSelected={isSelected} />
-              </Box>
-              {renderResults()}
-            </Flex>
-          ) : (
-            <Scrollable>
-              <RecentSearches />
-              <Spacer mb={3} />
-              {!isPad() && Platform.OS === "ios" && <CityGuideCTA />}
-              <Spacer mb="40px" />
-            </Scrollable>
-          )}
+          <Flex flex={1} collapsable={false}>
+            {!!shouldStartQuering ? (
+              <>
+                <Box pt={2} pb={1}>
+                  <SearchPills pills={pillsArray} onPillPress={handlePillPress} isSelected={isSelected} />
+                </Box>
+                {renderResults()}
+              </>
+            ) : (
+              <Scrollable>
+                <RecentSearches />
+                <Spacer mb={3} />
+                {!isPad() && Platform.OS === "ios" && <CityGuideCTA />}
+                <Spacer mb="40px" />
+              </Scrollable>
+            )}
+          </Flex>
         </InstantSearch>
       </ArtsyKeyboardAvoidingView>
     </SearchContext.Provider>
