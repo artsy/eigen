@@ -6,6 +6,7 @@ import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { isPad } from "lib/utils/hardware"
 import React from "react"
+import { Keyboard } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
 import { Search2QueryRenderer } from "../Search2"
 
@@ -135,6 +136,43 @@ describe("Search2 Screen", () => {
     fireEvent(getByText("Artists"), "press")
 
     expect(getByA11yState({ selected: true })).toHaveTextContent("Artists")
+  })
+
+  describe("search pills", () => {
+    it("are displayed when the user has typed the minimum allowed number of characters", () => {
+      const { getByPlaceholderText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        Algolia: () => ({
+          appID: "",
+          apiKey: "",
+          indices: [{ name: "Artist_staging", displayName: "Artist" }],
+        }),
+      })
+
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      fireEvent(searchInput, "changeText", "Ba")
+      expect(queryByText("Top")).toBeDefined()
+      expect(queryByText("Artist")).toBeDefined()
+    })
+
+    it("hide keyboard when selecting other pill", () => {
+      const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        Algolia: () => ({
+          appID: "",
+          apiKey: "",
+          indices: [{ name: "Artist_staging", displayName: "Artist" }],
+        }),
+      })
+
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      const keyboardDismissSpy = jest.spyOn(Keyboard, "dismiss")
+      fireEvent(searchInput, "changeText", "Ba")
+      fireEvent(getByText("Artist"), "press")
+      expect(keyboardDismissSpy).toHaveBeenCalled()
+    })
   })
 
   describe("the top pill is selected by default", () => {
