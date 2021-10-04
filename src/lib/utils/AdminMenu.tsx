@@ -3,8 +3,8 @@ import * as Sentry from "@sentry/react-native"
 import { MenuItem } from "lib/Components/MenuItem"
 import { useToast } from "lib/Components/Toast/toastHook"
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
-import { clearAll } from "lib/NativeModules/GraphQLQueryCache"
 import { dismissModal, navigate } from "lib/navigation/navigate"
+import { RelayCache } from "lib/relay/RelayCache"
 import { environment, EnvironmentKey } from "lib/store/config/EnvironmentModel"
 import { DevToggleName, devToggles, FeatureName, features } from "lib/store/config/features"
 import { GlobalStore } from "lib/store/GlobalStore"
@@ -124,7 +124,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           title="Clear Relay Cache"
           chevron={null}
           onPress={() => {
-            clearAll()
+            RelayCache.clearAll()
           }}
         />
         <MenuItem

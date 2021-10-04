@@ -20,7 +20,6 @@
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <Emission/AREmission.h>
 #import <Sentry/SentrySDK.h>
-#import <Emission/ARGraphQLQueryCache.h>
 #import <React/RCTBridge.h>
 #import <React/RCTDevSettings.h>
 

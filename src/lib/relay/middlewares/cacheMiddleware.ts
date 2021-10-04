@@ -1,6 +1,5 @@
-import { Platform } from "react-native"
+import { RelayCache as cache } from "lib/relay/RelayCache"
 import { MiddlewareNextFn } from "react-relay-network-modern/node8"
-import * as cache from "../../NativeModules/GraphQLQueryCache"
 import { GraphQLRequest } from "./types"
 
 const IGNORE_CACHE_CLEAR_MUTATION_ALLOWLIST = ["ArtworkMarkAsRecentlyViewedQuery"]
@@ -21,13 +20,7 @@ export const cacheMiddleware = () => {
       }
     }
 
-    if (Platform.OS === "ios") {
-      // TODO: figure out if we can remove this branch
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      cache.set(queryID, variables, null)
-    } else {
-      cache.clear(queryID!, variables)
-    }
+    cache.set(queryID!, variables, null)
 
     const response = await next(req)
 

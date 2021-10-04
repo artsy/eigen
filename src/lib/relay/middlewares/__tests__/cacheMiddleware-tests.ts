@@ -1,5 +1,5 @@
-jest.mock("../../../NativeModules/GraphQLQueryCache")
-import * as _cache from "../../../NativeModules/GraphQLQueryCache"
+jest.mock("lib/relay/RelayCache")
+import { RelayCache as _cache } from "lib/relay/RelayCache"
 import { GraphQLRequest } from "../types"
 
 const cache: jest.Mocked<typeof _cache> = _cache as any
