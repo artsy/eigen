@@ -6,7 +6,7 @@ import styled from "styled-components/native"
 
 const Title = styled.Text`
   color: white;
-  font-family: "${themeGet("fonts.sans")}";
+  font-family: "${themeGet("fonts.sans.regular")}";
   font-size: 11;
   letter-spacing: 0.75;
   width: 24;
