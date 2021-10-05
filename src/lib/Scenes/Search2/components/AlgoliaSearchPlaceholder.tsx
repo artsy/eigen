@@ -8,7 +8,7 @@ const IMAGE_SIZE = 40
 export const AlgoliaSearchPlaceholder: React.FC = () => {
   return (
     <>
-      <Box py={1} px={2}>
+      <Box px={2}>
         {times(20).map((index) => (
           <Flex key={`algolia-search-placeholder-${index}`} flexDirection="row" my={1}>
             <PlaceholderBox width={IMAGE_SIZE} height={IMAGE_SIZE} borderRadius={IMAGE_SIZE / 2} />
