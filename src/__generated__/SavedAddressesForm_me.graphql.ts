@@ -19,6 +19,7 @@ export type SavedAddressesForm_me = {
                 readonly city: string;
                 readonly region: string | null;
                 readonly postalCode: string | null;
+                readonly phoneNumber: string | null;
                 readonly isDefault: boolean;
             } | null;
         } | null> | null;
@@ -150,6 +151,13 @@ const node: ReaderFragment = {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
+                  "name": "phoneNumber",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "isDefault",
                   "storageKey": null
                 }
@@ -166,5 +174,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'b8dc20f08a969820d3a2cd8dc6b674ba';
+(node as any).hash = '8ff0c0d27e5344b9c9a750dfea54c8fc';
 export default node;

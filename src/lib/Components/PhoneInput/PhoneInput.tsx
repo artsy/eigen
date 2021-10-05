@@ -27,7 +27,7 @@ export const PhoneInput = React.forwardRef<
   const initialValues = cleanUserPhoneNumber(value ?? "")
   const showPhoneValidationMessage = useFeatureFlag("ARPhoneValidation")
 
-  const [countryCode, setCountryCode] = useState(initialValues.countryCode)
+  const [countryCode, setCountryCode] = useState<string>(initialValues.countryCode)
   const [phoneNumber, setPhoneNumber] = useState(
     formatPhoneNumber({ current: initialValues.phoneNumber, previous: initialValues.phoneNumber, countryCode })
   )
@@ -35,6 +35,22 @@ export const PhoneInput = React.forwardRef<
   const dialCode = countryIndex[countryCode].dialCode
   const countryISO2Code = countryIndex[countryCode].iso2
   const phoneUtil = PhoneNumberUtil.getInstance()
+
+  useEffect(() => {
+    if (isFirstRun.current) {
+      return
+    }
+
+    const cleanPhoneNumber = cleanUserPhoneNumber(value ?? "")
+    const formattedPhoneNumber = formatPhoneNumber({
+      current: cleanPhoneNumber.phoneNumber,
+      previous: initialValues.phoneNumber,
+      countryCode: cleanPhoneNumber.countryCode,
+    })
+
+    setPhoneNumber(formattedPhoneNumber.replace(/[\D]$/, ""))
+    setCountryCode(cleanPhoneNumber.countryCode);
+  }, [value])
 
   const isValidNumber = (number: string, code: string) => {
     try {
