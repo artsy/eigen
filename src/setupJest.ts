@@ -72,7 +72,7 @@ jest.mock("react-native-share", () => ({
 jest.mock("react-native-device-info", () => ({
   getBuildNumber: jest.fn(),
   getVersion: jest.fn(),
-  getModel: jest.fn(),
+  getModel: () => "testDevice",
   getUserAgentSync: jest.fn(),
   getDeviceType: jest.fn(),
   hasNotch: jest.fn(),

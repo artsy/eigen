@@ -114,7 +114,7 @@ export const MyProfilePlaceholder: React.FC<{}> = () => {
   )
 }
 
-export const MyProfileContainer = createRefetchContainer(
+export const OldMyProfileContainer = createRefetchContainer(
   MyProfile,
   {
     me: graphql`
@@ -143,9 +143,29 @@ export const MyProfileContainer = createRefetchContainer(
   `
 )
 
+export const OldMyProfileQueryRenderer = () => (
+  <QueryRenderer<MyProfileQuery>
+    environment={defaultEnvironment}
+    query={graphql`
+      query MyProfileQuery {
+        me @optionalField {
+          ...MyProfile_me
+        }
+      }
+    `}
+    render={renderWithPlaceholder({
+      Container: OldMyProfileContainer,
+      renderPlaceholder: () => <MyProfilePlaceholder />,
+    })}
+    variables={{}}
+  />
+)
+
 export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
   const shouldDisplayMyCollection = useEnableMyCollection()
+
   if (shouldDisplayMyCollection) {
+    console.log("here1")
     return (
       <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.profile })}>
         <MyCollectionAndSavedWorksQueryRenderer />
@@ -155,21 +175,7 @@ export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
 
   return (
     <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.profile })}>
-      <QueryRenderer<MyProfileQuery>
-        environment={defaultEnvironment}
-        query={graphql`
-          query MyProfileQuery {
-            me @optionalField {
-              ...MyProfile_me
-            }
-          }
-        `}
-        render={renderWithPlaceholder({
-          Container: MyProfileContainer,
-          renderPlaceholder: () => <MyProfilePlaceholder />,
-        })}
-        variables={{}}
-      />
+      <OldMyProfileQueryRenderer />
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
