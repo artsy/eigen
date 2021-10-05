@@ -5,10 +5,12 @@ import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids
 
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader2"
+import { ActionTypes, OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import { Box, Separator, useTheme } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { useTracking } from "react-tracking"
 
 export interface SearchArtworksGridProps {
   viewer: SearchArtworksGrid_viewer
@@ -22,11 +24,20 @@ interface ArtworkSection {
 
 const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }) => {
   const { space } = useTheme()
+  const { trackEvent } = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
-  const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
-  const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
-  const artworksCount = viewer.artworks?.edges?.length
 
+  const handleCloseFilterArtworksModal = () => {
+    trackEvent(tracks.closeFilterModal)
+    setFilterArtworkModalVisible(false)
+  }
+
+  const handleOpenFilterArtworksModal = () => {
+    trackEvent(tracks.openFilterModal)
+    setFilterArtworkModalVisible(true)
+  }
+
+  const artworksCount = viewer.artworks?.edges?.length
   const appliedFiltersCount = useSelectedFiltersCount()
 
   useArtworkFilters({
@@ -34,10 +45,6 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }
     aggregations: viewer.aggregations?.aggregations,
     componentPath: "Search2/SearchArtworksGrid",
   })
-
-  const closeFilterArtworksModal = () => {
-    handleCloseFilterArtworksModal()
-  }
 
   const content: ArtworkSection[] = [
     {
@@ -60,16 +67,14 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }
         slug={null}
         isFilterArtworksModalVisible={isFilterArtworksModalVisible}
         exitModal={handleCloseFilterArtworksModal}
-        closeModal={closeFilterArtworksModal}
-        mode={FilterModalMode.Artworks}
+        closeModal={handleCloseFilterArtworksModal}
+        mode={FilterModalMode.Search}
       />
       <ArtworksFilterHeader selectedFiltersCount={appliedFiltersCount} onFilterPress={handleOpenFilterArtworksModal} />
       <Separator />
       {artworksCount === 0 ? (
         <Box mb="80px" pt={1}>
-          <Box mb="80px" pt={1}>
-            <FilteredArtworkGridZeroState hideClearButton />
-          </Box>
+          <FilteredArtworkGridZeroState hideClearButton />
         </Box>
       ) : (
         <FlatList<ArtworkSection>
@@ -150,3 +155,22 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
     `,
   }
 )
+
+const tracks = {
+  openFilterModal: () => ({
+    action_name: "openFilterModal",
+    context_screen_owner_type: OwnerEntityTypes.Search,
+    context_screen: PageNames.Search,
+    context_screen_owner_id: null,
+    context_screen_owner_slug: null,
+    action_type: ActionTypes.Tap,
+  }),
+  closeFilterModal: () => ({
+    action_name: "closeFilterModal",
+    context_screen_owner_type: OwnerEntityTypes.Search,
+    context_screen: PageNames.Search,
+    context_screen_owner_id: null,
+    context_screen_owner_slug: null,
+    action_type: ActionTypes.Tap,
+  }),
+}
