@@ -1,14 +1,14 @@
+import { fireEvent } from "@testing-library/react-native"
 import { EntityType, navigate, navigateToEntity, SlugType } from "lib/navigation/navigate"
 import { GlobalStore, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { CatchErrors } from "lib/utils/CatchErrors"
-import { CloseIcon, Touchable } from "palette"
+import { Touchable } from "palette"
 import React from "react"
 import { Pressable } from "react-native"
 import { act } from "react-test-renderer"
 import { AutosuggestSearchResult } from "../AutosuggestSearchResult"
-import { ResultWithHighlight } from "../ResultWithHighlight"
 import { SearchContext } from "../SearchContext"
 
 const inputBlurMock = jest.fn()
@@ -51,54 +51,39 @@ describe(AutosuggestSearchResult, () => {
   })
 
   it(`works`, async () => {
-    const tree = renderWithWrappers(<TestWrapper result={result} showResultType />)
+    const { queryAllByText } = renderWithWrappersTL(<TestWrapper result={result} showResultType />)
 
-    expect(extractText(tree.root)).toContain("Banksy")
-    expect(extractText(tree.root)).toContain("Artist")
+    expect(queryAllByText("Banksy")).toBeTruthy()
+    expect(queryAllByText("Artist")).toBeTruthy()
   })
 
   it("does not render result type when showResultType prop is not passed", async () => {
-    const tree = renderWithWrappers(<TestWrapper result={result} />)
-    expect(extractText(tree.root)).not.toContain("Artist")
+    const { queryByText } = renderWithWrappersTL(<TestWrapper result={result} />)
+    expect(queryByText("Artist")).toBeFalsy()
   })
 
   it("renders result type when showResultType prop is passed", async () => {
-    const tree = renderWithWrappers(<TestWrapper result={result} showResultType />)
-    expect(extractText(tree.root)).toContain("Artist")
+    const { queryByText } = renderWithWrappersTL(<TestWrapper result={result} showResultType />)
+    expect(queryByText("Artist")).toBeTruthy()
   })
 
-  it("renders result with highlight and passes correct props to it", async () => {
-    const tree = renderWithWrappers(<TestWrapper result={result} highlight="Ban" />)
-    const resultWithHighlight = tree.root.findByType(ResultWithHighlight)
-    const resultWithHighlightProps = resultWithHighlight.props
-    expect(resultWithHighlight).toBeDefined()
-    expect(resultWithHighlightProps.displayLabel).toEqual("Banksy")
-    expect(resultWithHighlightProps.highlight).toEqual("Ban")
+  it("renders result and highlights the query", async () => {
+    const { getByText } = renderWithWrappersTL(<TestWrapper result={result} highlight="Ban" />)
+
+    expect(getByText("Ban")).toHaveProp("color", "blue100")
+    expect(getByText("ksy")).toHaveProp("color", "black100")
   })
 
   it("does not render delete button when onDelete callback is not passed", async () => {
-    const tree = renderWithWrappers(<TestWrapper result={result} />)
-    expect(tree.root.findAllByType(CloseIcon).length).toEqual(0)
-  })
-
-  it("renders delete button when onDelete callback is passed", async () => {
-    const tree = renderWithWrappers(<TestWrapper result={result} onDelete={onDeleteMock} />)
-    expect(tree.root.findByType(CloseIcon)).toBeDefined()
+    const { queryByA11yLabel } = renderWithWrappersTL(<TestWrapper result={result} />)
+    expect(queryByA11yLabel("Remove recent search item")).toBeFalsy()
   })
 
   it("calls onDelete calback when pressing on delete button", async () => {
-    const tree = renderWithWrappers(<TestWrapper result={result} onDelete={onDeleteMock} />)
-    tree.root.findAllByType(Touchable)[1].props.onPress()
-    expect(onDeleteMock).toHaveBeenCalled()
-  })
+    const { getByA11yLabel } = renderWithWrappersTL(<TestWrapper result={result} onDelete={onDeleteMock} />)
 
-  it("has an optional onDelete action which shows a close button", () => {
-    const tree = renderWithWrappers(<TestWrapper result={result} />)
-    expect(tree.root.findAllByType(CloseIcon)).toHaveLength(0)
-    act(() => {
-      tree.update(<TestWrapper result={result} onDelete={() => void 0} />)
-    })
-    expect(tree.root.findAllByType(CloseIcon)).toHaveLength(1)
+    fireEvent.press(getByA11yLabel("Remove recent search item"))
+    expect(onDeleteMock).toHaveBeenCalled()
   })
 
   it("blurs the input and navigates to the correct page when tapped", async () => {
@@ -110,26 +95,8 @@ describe(AutosuggestSearchResult, () => {
     expect(navigate).toHaveBeenCalledWith(result.href, { passProps: { initialTab: "Artworks" } })
   })
 
-  it(`highlights a part of the string if possible`, async () => {
-    const tree = renderWithWrappers(<TestWrapper result={result} highlight="an" />)
-
-    expect(extractText(tree.root.findByProps({ weight: "medium" }))).toBe("an")
-  })
-
   it(`highlights a part of the string even when the string has diacritics but the highlight doesn't`, async () => {
-    const tree = renderWithWrappers(
-      <TestWrapper
-        result={{
-          ...result,
-          displayLabel: "Joãn Miró",
-        }}
-        highlight="an"
-      />
-    )
-
-    expect(extractText(tree.root.findByProps({ weight: "medium" }))).toBe("ãn")
-
-    tree.update(
+    const { queryByText } = renderWithWrappersTL(
       <TestWrapper
         result={{
           ...result,
@@ -139,7 +106,7 @@ describe(AutosuggestSearchResult, () => {
       />
     )
 
-    expect(extractText(tree.root.findByProps({ weight: "medium" }))).toBe("Miró")
+    expect(queryByText("Miró")).toHaveProp("color", "blue100")
   })
 
   it(`updates recent searches by default`, async () => {
