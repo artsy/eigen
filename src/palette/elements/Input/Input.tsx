@@ -1,10 +1,10 @@
 import _ from "lodash"
-import { Color, EyeOpenedIcon, Flex, Sans, Spinner, useTheme, XCircleIcon } from "palette"
+import { Color, EyeOpenedIcon, Flex, Spinner, Text, useTheme, XCircleIcon } from "palette"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,
   Platform,
-  Text,
+  Text as RNText,
   TextInput,
   TextInputProps,
   TextStyle,
@@ -141,7 +141,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
           }}
         >
           {placeholder.map((placeholderString, index) => (
-            <Text
+            <RNText
               key={index}
               onLayout={(event) => {
                 placeholderWidths.current[index] = event.nativeEvent.layout.width
@@ -158,7 +158,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
               }}
             >
               {placeholderString}
-            </Text>
+            </RNText>
           ))}
         </View>
       ) : null
@@ -195,9 +195,9 @@ export const Input = React.forwardRef<TextInput, InputProps>(
         <InputTitle required={required}>{title}</InputTitle>
 
         {!!description && (
-          <Sans color="black60" size="2" style={{ marginBottom: 5 }}>
+          <Text color="black60" variant="xs" mb={0.5}>
             {description}
-          </Sans>
+          </Text>
         )}
         <TouchableWithoutFeedback onPressIn={() => input.current?.focus()}>
           <View
@@ -282,9 +282,9 @@ export const Input = React.forwardRef<TextInput, InputProps>(
           </View>
         </TouchableWithoutFeedback>
         {!!error && (
-          <Sans color="red100" mt="1" size="2">
+          <Text color="red100" mt={1} variant="xs">
             {error}
-          </Sans>
+          </Text>
         )}
       </Flex>
     )

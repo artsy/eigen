@@ -3,18 +3,16 @@ import { createStackNavigator, StackScreenProps, TransitionPresets } from "@reac
 import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPersonalization_highlights.graphql"
 import { OnboardingPersonalizationListQuery } from "__generated__/OnboardingPersonalizationListQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem, ArtistListItemPlaceholder } from "lib/Components/ArtistListItem"
-import { Disappearable } from "lib/Components/Disappearable"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { compact, times } from "lodash"
-import { Box, Button, Flex, Join, Spacer, Text, useColor, useSpace } from "palette"
+import { Box, Button, Flex, Join, Spacer, Text, Touchable, useColor, useSpace } from "palette"
 import { INPUT_HEIGHT } from "palette/elements/Input/Input"
-import React, { useEffect, useRef, useState } from "react"
+import React from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
-import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
 import { OnboardingPersonalizationModalQueryRenderer } from "./OnboardingPersonalizationModal"
 
@@ -54,26 +52,35 @@ interface OnboardingPersonalizationListNavigationProps
 
 interface OnboardingPersonalizationListProps extends OnboardingPersonalizationListNavigationProps {
   highlights: OnboardingPersonalization_highlights
-  relay: RelayRefetchProp
 }
 
 const OnboardingPersonalizationListHeader = ({ navigateToModal }: { navigateToModal: () => void }) => {
   const color = useColor()
   return (
     <>
-      <Box px={2}>
+      <Touchable
+        haptic="impactLight"
+        onPress={() => {
+          GlobalStore.actions.auth.setState({ onboardingState: "complete" })
+        }}
+      >
+        <Text textAlign="right" variant="xs" px={2}>
+          Skip
+        </Text>
+      </Touchable>
+      <Box px={2} mt={2}>
         <Text variant="lg">What Artists do You Collect?</Text>
-        <Spacer mt={1.5} />
+        <Spacer mt={0.5} />
         <Text variant="xs" color={color("black100")}>
           Follow at least three artists you’re looking to collect or track so we can personalize your experience.
         </Text>
       </Box>
-      <Spacer mt={20} />
+      <Spacer mt={2} />
 
       {/* Fake search Input */}
       <Flex px={2}>
         <TouchableWithoutFeedback onPress={navigateToModal} testID="searchArtistButton">
-          <Flex flexDirection="row" borderWidth={1} borderColor={color("black10")} height={INPUT_HEIGHT}>
+          <Flex flexDirection="row" borderWidth={1} borderColor={color("black60")} height={INPUT_HEIGHT}>
             <Flex pl="1" justifyContent="center" flexGrow={0}>
               <SearchIcon width={18} height={18} />
             </Flex>
@@ -92,32 +99,12 @@ const OnboardingPersonalizationListHeader = ({ navigateToModal }: { navigateToMo
 export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationListProps> = ({ ...props }) => {
   const space = useSpace()
   const popularArtists = compact(props.highlights.popularArtists)
-  const animatedOpacitiesRef = useRef<{ [key: string]: Disappearable | null }>({})
-  const { safeAreaInsets } = useScreenDimensions()
-
-  const [excludeArtistIDs, setExcludeArtistIDs] = useState<string[]>([])
-
-  const updateListOfArtists = (artistID: string) => {
-    if (excludeArtistIDs.includes(artistID)) {
-      return
-    }
-    setExcludeArtistIDs(excludeArtistIDs.concat(artistID))
-  }
-
-  useEffect(() => {
-    props.relay.refetch({ excludeArtistIDs })
-  }, [excludeArtistIDs])
-
-  const fadeRow = (artistID: string) => {
-    animatedOpacitiesRef.current[artistID]?.disappear()
-  }
 
   return (
     <SafeAreaView style={{ backgroundColor: "white", flexGrow: 1 }}>
       <ScrollView
         contentContainerStyle={{
-          paddingTop: 60,
-          paddingBottom: 80,
+          paddingBottom: 60,
           justifyContent: "flex-start",
         }}
       >
@@ -131,18 +118,12 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
           data={popularArtists}
           initialNumToRender={8}
           renderItem={({ item: artist }) => (
-            <Disappearable ref={(ref) => (animatedOpacitiesRef.current[artist.internalID] = ref)} animateScale={false}>
-              <ArtistListItem
-                artist={artist}
-                withFeedback
-                containerStyle={{ paddingHorizontal: 20, paddingVertical: 10 }}
-                onFollowFinish={() => {
-                  updateListOfArtists(artist.internalID)
-                  fadeRow(artist.internalID)
-                }}
-                disableNavigation
-              />
-            </Disappearable>
+            <ArtistListItem
+              artist={artist}
+              withFeedback
+              containerStyle={{ paddingHorizontal: 20, paddingVertical: 10 }}
+              disableNavigation
+            />
           )}
           keyExtractor={(artist) => artist.internalID}
           contentContainerStyle={{ paddingVertical: space(2) }}
@@ -153,7 +134,6 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
           variant="fillDark"
           block
           testID="doneButton"
-          mb={safeAreaInsets.bottom}
           onPress={() => {
             GlobalStore.actions.auth.setState({ onboardingState: "complete" })
           }}
@@ -165,27 +145,17 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
   )
 }
 
-export const OnboardingPersonalizationListRefetchContainer = createRefetchContainer(
-  OnboardingPersonalizationList,
-  {
-    highlights: graphql`
-      fragment OnboardingPersonalization_highlights on Highlights
-      @argumentDefinitions(excludeArtistIDs: { type: "[String]" }) {
-        popularArtists(excludeFollowedArtists: true, excludeArtistIDs: $excludeArtistIDs) {
-          internalID
-          ...ArtistListItem_artist
-        }
-      }
-    `,
-  },
-  graphql`
-    query OnboardingPersonalizationListRefetchQuery($excludeArtistIDs: [String]) {
-      highlights {
-        ...OnboardingPersonalization_highlights @arguments(excludeArtistIDs: $excludeArtistIDs)
+export const OnboardingPersonalizationListRefetchContainer = createFragmentContainer(OnboardingPersonalizationList, {
+  highlights: graphql`
+    fragment OnboardingPersonalization_highlights on Highlights
+    @argumentDefinitions(excludeArtistIDs: { type: "[String]" }) {
+      popularArtists(excludeFollowedArtists: true, excludeArtistIDs: $excludeArtistIDs) {
+        internalID
+        ...ArtistListItem_artist
       }
     }
-  `
-)
+  `,
+})
 
 const OnboardingPersonalizationListQueryRenderer: React.FC<OnboardingPersonalizationListNavigationProps> = (props) => (
   <QueryRenderer<OnboardingPersonalizationListQuery>

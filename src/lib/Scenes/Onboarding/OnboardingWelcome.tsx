@@ -102,7 +102,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
       </Animated.View>
 
       <LinearGradient
-        colors={["rgba(0, 0, 0, 0)", `rgba(0, 0, 0, 0.74)`]}
+        colors={["rgba(0, 0, 0, 0)", `rgba(0, 0, 0, 0.75)`]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
         style={{
@@ -116,7 +116,9 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
         <ArtsyLogoWhiteIcon height={25} width={75} />
       </Animated.View>
 
-      <Animated.View style={{ flex: 1, padding: space(2), justifyContent: "flex-end", opacity }}>
+      <Animated.View
+        style={{ flex: 1, paddingTop: space(2), paddingHorizontal: space(2), justifyContent: "flex-end", opacity }}
+      >
         <Text variant="xxl" color="white">
           Collect Art by the World’s Leading Artists
         </Text>

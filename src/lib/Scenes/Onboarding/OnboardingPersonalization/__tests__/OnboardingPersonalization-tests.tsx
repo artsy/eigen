@@ -1,6 +1,5 @@
 import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPersonalization_highlights.graphql"
 import { OnboardingPersonalizationTestsQuery } from "__generated__/OnboardingPersonalizationTestsQuery.graphql"
-import { ArtistListItem } from "lib/Components/ArtistListItem"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -13,7 +12,6 @@ import { OnboardingPersonalizationList } from "../OnboardingPersonalization"
 jest.unmock("react-relay")
 
 const navigateMock = jest.fn()
-const refetchMock = jest.fn()
 
 describe("OnboardingPersonalizationList", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -40,7 +38,6 @@ describe("OnboardingPersonalizationList", () => {
               highlights={props.highlights as OnboardingPersonalization_highlights}
               navigation={{ navigate: navigateMock } as any}
               route={null as any}
-              relay={{ refetch: refetchMock } as any}
             />
           )
         }
@@ -61,20 +58,6 @@ describe("OnboardingPersonalizationList", () => {
       const searchInput = tree.root.findByProps({ testID: "searchArtistButton" })
       searchInput.props.onPress()
       expect(navigateMock).toHaveBeenCalledWith("OnboardingPersonalizationModal")
-    })
-  })
-
-  describe("List of artist", () => {
-    it("refetches connection with excludeArtistIDs after following an artist", async () => {
-      const tree = renderWithWrappers(<TestRenderer />)
-      mockEnvironmentPayload(mockEnvironment)
-
-      const firstArtistRow = tree.root.findAllByType(ArtistListItem)[0]
-      firstArtistRow.props.onFollowFinish()
-
-      await flushPromiseQueue()
-
-      expect(refetchMock).toHaveBeenLastCalledWith({ excludeArtistIDs: ["internalID-1"] })
     })
   })
 
