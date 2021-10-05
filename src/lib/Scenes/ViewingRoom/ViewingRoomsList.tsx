@@ -3,13 +3,14 @@ import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoom
 import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
 import { PAGE_SIZE } from "lib/Components/constants"
 import { LoadFailureView } from "lib/Components/LoadFailureView"
+import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
-import { Flex, Sans, Separator, Spacer, useSpace } from "palette"
+import { Flex, Spacer, useSpace } from "palette"
 import React, { useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
 import { ConnectionConfig } from "react-relay"
@@ -17,6 +18,8 @@ import { graphql, useFragment, usePagination, useQuery } from "relay-hooks"
 import { RailScrollRef } from "../Home/Components/types"
 import { featuredFragment, FeaturedRail } from "./Components/ViewingRoomsListFeatured"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
+
+const SCREEN_TITLE = "Viewing Rooms"
 
 const fragmentSpec = graphql`
   fragment ViewingRoomsList_query on Query @argumentDefinitions(count: { type: "Int" }, after: { type: "String" }) {
@@ -75,61 +78,59 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = (props
 
   return (
     <ProvideScreenTracking info={tracks.screen()}>
-      <Flex flexDirection="column" justifyContent="space-between" height="100%">
-        <Sans size="4t" weight="medium" textAlign="center" mb={1} mt={2}>
-          Viewing Rooms
-        </Sans>
-        <Separator />
-        <FlatList
-          numColumns={numColumns}
-          key={`${numColumns}`}
-          ListHeaderComponent={() => (
-            <>
-              <Spacer mt="2" />
-              {featuredLength > 0 && (
-                <>
-                  <Flex mx="2">
-                    <SectionTitle title="Featured" />
-                  </Flex>
-                  <FeaturedRail featured={props.featured} scrollRef={scrollRef} />
-                  <Spacer mt="4" />
-                </>
-              )}
-              <Flex mx="2">
-                <SectionTitle title="Latest" />
-              </Flex>
-            </>
-          )}
-          data={viewingRooms}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-          keyExtractor={(item) => `${item.internalID}-${numColumns}`}
-          renderItem={({ item, index }) => {
-            if (numColumns === 1) {
-              return (
+      <PageWithSimpleHeader title={SCREEN_TITLE}>
+        <Flex flexDirection="column" justifyContent="space-between" height="100%">
+          <FlatList
+            numColumns={numColumns}
+            key={`${numColumns}`}
+            ListHeaderComponent={() => (
+              <>
+                <Spacer mt="2" />
+                {featuredLength > 0 && (
+                  <>
+                    <Flex mx="2">
+                      <SectionTitle title="Featured" />
+                    </Flex>
+                    <FeaturedRail featured={props.featured} scrollRef={scrollRef} />
+                    <Spacer mt="4" />
+                  </>
+                )}
                 <Flex mx="2">
-                  <ViewingRoomsListItem item={item} />
+                  <SectionTitle title="Latest" />
                 </Flex>
-              )
-            } else {
-              return (
-                <Flex flex={1 / numColumns} flexDirection="row">
-                  {/* left list padding */ index % numColumns === 0 && <Spacer ml="2" />}
-                  {/* left side separator */ index % numColumns > 0 && <Spacer ml="1" />}
-                  <Flex flex={1}>
+              </>
+            )}
+            data={viewingRooms}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
+            keyExtractor={(item) => `${item.internalID}-${numColumns}`}
+            renderItem={({ item, index }) => {
+              if (numColumns === 1) {
+                return (
+                  <Flex mx="2">
                     <ViewingRoomsListItem item={item} />
                   </Flex>
-                  {/* right side separator*/ index % numColumns < numColumns - 1 && <Spacer mr="1" />}
-                  {/* right list padding */ index % numColumns === numColumns - 1 && <Spacer mr="2" />}
-                </Flex>
-              )
-            }
-          }}
-          ItemSeparatorComponent={() => <Spacer mt="3" />}
-          onEndReached={handleLoadMore}
-          onEndReachedThreshold={1}
-          ListFooterComponent={() => (hasMore() ? <LoadingMorePlaceholder /> : <Flex height={space(6)} />)}
-        />
-      </Flex>
+                )
+              } else {
+                return (
+                  <Flex flex={1 / numColumns} flexDirection="row">
+                    {/* left list padding */ index % numColumns === 0 && <Spacer ml="2" />}
+                    {/* left side separator */ index % numColumns > 0 && <Spacer ml="1" />}
+                    <Flex flex={1}>
+                      <ViewingRoomsListItem item={item} />
+                    </Flex>
+                    {/* right side separator*/ index % numColumns < numColumns - 1 && <Spacer mr="1" />}
+                    {/* right list padding */ index % numColumns === numColumns - 1 && <Spacer mr="2" />}
+                  </Flex>
+                )
+              }
+            }}
+            ItemSeparatorComponent={() => <Spacer mt="3" />}
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={1}
+            ListFooterComponent={() => (hasMore() ? <LoadingMorePlaceholder /> : <Flex height={space(6)} />)}
+          />
+        </Flex>
+      </PageWithSimpleHeader>
     </ProvideScreenTracking>
   )
 }
@@ -162,26 +163,27 @@ const connectionConfig: ConnectionConfig = {
 
 const Placeholder = () => (
   <ProvidePlaceholderContext>
-    <PlaceholderText width={100 + Math.random() * 100} marginTop={30} alignSelf="center" />
-    <Separator mt="1" mb="2" />
-    <Flex ml="2">
-      <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
-      <Flex flexDirection="row">
-        {_.times(4).map((i) => (
-          <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
+    <PageWithSimpleHeader title={SCREEN_TITLE}>
+      <Spacer mb="2" />
+      <Flex ml="2">
+        <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
+        <Flex flexDirection="row">
+          {_.times(4).map((i) => (
+            <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
+          ))}
+        </Flex>
+      </Flex>
+      <Flex mx="2" mt="4">
+        <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
+        {_.times(2).map((i) => (
+          <React.Fragment key={i}>
+            <PlaceholderBox width="100%" height={220} />
+            <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
+            <PlaceholderText width={80 + Math.random() * 100} marginTop={5} />
+          </React.Fragment>
         ))}
       </Flex>
-    </Flex>
-    <Flex mx="2" mt="4">
-      <PlaceholderText width={100 + Math.random() * 100} marginBottom={20} />
-      {_.times(2).map((i) => (
-        <React.Fragment key={i}>
-          <PlaceholderBox width="100%" height={220} />
-          <PlaceholderText width={120 + Math.random() * 100} marginTop={10} />
-          <PlaceholderText width={80 + Math.random() * 100} marginTop={5} />
-        </React.Fragment>
-      ))}
-    </Flex>
+    </PageWithSimpleHeader>
   </ProvidePlaceholderContext>
 )
 
