@@ -1,3 +1,4 @@
+import { themeGet } from "@styled-system/theme-get"
 import _ from "lodash"
 import { Color, EyeOpenedIcon, Flex, Sans, Spinner, useTheme, XCircleIcon } from "palette"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
@@ -317,14 +318,7 @@ export const computeBorderColor = (inputStatus: InputStatus): Color => {
 
 const StyledInput = styled(TextInput)`
   padding: 0;
-  margin: 0;
-  /* to make sure the KeyboardAvoidingView keeps some padding below the input */
-  position: absolute;
-  left: 10;
-  right: 10;
-  top: ${Platform.OS === "ios" ? 14 : 10}; /* to center the text nicely */
-  padding-bottom: 30;
-  /* to center the text */
-  font-family: "Unica77LL-Regular"; /* this should be taken from the theme, but in here we cant, so until we rework this component, hardcode it. */
+  margin: 0 ${themeGet("space.1")}px;
+  font-family: ${themeGet("fonts.sans.regular")};
 `
 StyledInput.displayName = "StyledInput"

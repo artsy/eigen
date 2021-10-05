@@ -1,46 +1,24 @@
 import { storiesOf } from "@storybook/react-native"
 import SearchIcon from "lib/Icons/SearchIcon"
-import { Flex, Input } from "palette"
+import { Input } from "palette"
 import React from "react"
-import { View } from "react-native"
 import { withTheme } from "storybook/decorators"
 import { List } from "storybook/helpers"
 
-storiesOf("InputV3", module)
+storiesOf("Input", module)
   .addDecorator(withTheme)
   .add("Variants", () => (
-    <View style={{ flex: 1, width: "100%" }}>
-      <List>
-        <Flex width={200}>
-          <Input />
-        </Flex>
-        <Flex width={200}>
-          <Input title="Title" />
-        </Flex>
-        <Flex width={200}>
-          <Input title="Title" description="Subtitle" />
-        </Flex>
-        <Flex width={200}>
-          <Input title="Title" description="With clear button" enableClearButton />
-        </Flex>
-        <Flex width={200}>
-          <Input title="Title" description="With loading" loading />
-        </Flex>
-        <Flex width={200}>
-          <Input title="Title" description="With icon" icon={<SearchIcon />} />
-        </Flex>
-        <Flex width={200}>
-          <Input title="Title" description="With error" error="this is an error" />
-        </Flex>
-        <Flex width={200}>
-          <Input title="Required" required />
-        </Flex>
-        <Flex width={200}>
-          <Input title="Disabled" disabled />
-        </Flex>
-        <Flex width={200}>
-          <Input placeholder="I'm a placeholder" />
-        </Flex>
-      </List>
-    </View>
+    <List contentContainerStyle={{ marginHorizontal: 20, alignItems: "stretch" }}>
+      <Input />
+      <Input title="Title" />
+      <Input title="Title" description="Subtitle" />
+      <Input title="Title" description="With clear button" enableClearButton />
+      <Input title="Title" description="With loading" loading />
+      <Input title="Title" description="With icon" icon={<SearchIcon />} />
+      <Input title="Title" description="With error" error="this is an error" />
+      <Input title="Required" required />
+      <Input title="Disabled" disabled />
+      <Input placeholder="I'm a placeholder" />
+      <Input title="full text" value="Wow this is a long text, I wonder if I can read the whole thing!" />
+    </List>
   ))
