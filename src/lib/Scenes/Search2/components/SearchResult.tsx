@@ -1,4 +1,4 @@
-import { navigate, navigateToPartner } from "lib/navigation/navigate"
+import { navigate } from "lib/navigation/navigate"
 import { searchInsights } from "lib/utils/useSearchInsightsConfig"
 import { Flex, Spacer, Touchable } from "palette"
 import React from "react"
@@ -16,13 +16,7 @@ interface SearchResultsItemProps {
 
 export const SearchResult: React.FC<SearchResultsItemProps> = ({ result, categoryName, indexName }) => {
   const onPress = (): void => {
-    // TODO: I'm not sure why we need to use this `navigateToPartner` function but without it the header overlaps
-    // with the back button
-    if (result.href.startsWith("/partner/")) {
-      navigateToPartner(result.slug)
-    } else {
-      navigate(result.href)
-    }
+    navigate(result.href)
 
     searchInsights("clickedObjectIDsAfterSearch", {
       index: indexName,
