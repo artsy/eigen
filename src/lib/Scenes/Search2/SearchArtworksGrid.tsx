@@ -5,7 +5,7 @@ import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids
 
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader2"
-import { ActionTypes, OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
+import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import { Box, Separator, useTheme } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
@@ -28,12 +28,12 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
 
   const handleCloseFilterArtworksModal = () => {
-    trackEvent(tracks.closeFilterModal)
+    trackEvent(tracks.closeFilterModal())
     setFilterArtworkModalVisible(false)
   }
 
   const handleOpenFilterArtworksModal = () => {
-    trackEvent(tracks.openFilterModal)
+    trackEvent(tracks.openFilterModal())
     setFilterArtworkModalVisible(true)
   }
 
@@ -158,19 +158,17 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
 
 const tracks = {
   openFilterModal: () => ({
-    action_name: "openFilterModal",
+    action: "openFilterModal",
     context_screen_owner_type: OwnerEntityTypes.Search,
     context_screen: PageNames.Search,
     context_screen_owner_id: null,
     context_screen_owner_slug: null,
-    action_type: ActionTypes.Tap,
   }),
   closeFilterModal: () => ({
-    action_name: "closeFilterModal",
+    action: "closeFilterModal",
     context_screen_owner_type: OwnerEntityTypes.Search,
     context_screen: PageNames.Search,
     context_screen_owner_id: null,
     context_screen_owner_slug: null,
-    action_type: ActionTypes.Tap,
   }),
 }
