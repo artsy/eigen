@@ -122,7 +122,7 @@ export const PhoneInput = React.forwardRef<
                       <TriangleDown width="8" />
                     </Flex>
                     <Flex justifyContent="center" pl="1">
-                      <Sans color="black60" size="3" mt="2px">
+                      <Sans color="black60" size="3">
                         +{dialCode}
                       </Sans>
                     </Flex>
