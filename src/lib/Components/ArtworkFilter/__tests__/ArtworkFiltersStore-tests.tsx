@@ -2205,3 +2205,137 @@ describe("SetFilterCounts", () => {
     })
   })
 })
+
+describe("SetSelectedFiltersAction", () => {
+  it("set the selected filters when the previously selected filters is empty", () => {
+    filterState = {
+      applyFilters: false,
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      selectedFilters: [],
+      aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+    }
+
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+
+    filterArtworksStore.getActions().setSelectedFiltersAction([
+      {
+        displayText: "Artwork Year (Descending)",
+        paramName: FilterParamName.sort,
+        paramValue: "-year",
+      },
+    ])
+
+    expect(filterArtworksStore.getState()).toEqual({
+      applyFilters: false,
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      selectedFilters: [
+        {
+          displayText: "Artwork Year (Descending)",
+          paramName: FilterParamName.sort,
+          paramValue: "-year",
+        },
+      ],
+      aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+    })
+  })
+
+  it("replace the previously selected filters with passed filters", () => {
+    filterState = {
+      applyFilters: false,
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      selectedFilters: [
+        {
+          paramName: FilterParamName.artistIDs,
+          paramValue: ["artist-1"],
+          displayText: "Artist 1",
+        },
+      ],
+      aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+    }
+
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+
+    filterArtworksStore.getActions().setSelectedFiltersAction([
+      {
+        displayText: "Artwork Year (Descending)",
+        paramName: FilterParamName.sort,
+        paramValue: "-year",
+      },
+    ])
+
+    expect(filterArtworksStore.getState()).toEqual({
+      applyFilters: false,
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      selectedFilters: [
+        {
+          displayText: "Artwork Year (Descending)",
+          paramName: FilterParamName.sort,
+          paramValue: "-year",
+        },
+      ],
+      aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+    })
+  })
+
+  it("should reset the selected filters if empty filters are passed", () => {
+    filterState = {
+      applyFilters: false,
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      selectedFilters: [
+        {
+          paramName: FilterParamName.artistIDs,
+          paramValue: ["artist-1"],
+          displayText: "Artist 1",
+        },
+      ],
+      aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+    }
+
+    const filterArtworksStore = getFilterArtworksStore(filterState)
+
+    filterArtworksStore.getActions().setSelectedFiltersAction([])
+
+    expect(filterArtworksStore.getState()).toEqual({
+      applyFilters: false,
+      appliedFilters: [],
+      previouslyAppliedFilters: [],
+      selectedFilters: [],
+      aggregations: [],
+      filterType: "artwork",
+      counts: {
+        total: null,
+        followedArtists: null,
+      },
+    })
+  })
+})

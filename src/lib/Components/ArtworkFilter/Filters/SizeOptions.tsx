@@ -138,12 +138,11 @@ interface SizeOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigatio
 
 export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation }) => {
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
-  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const setSelectedFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.setSelectedFiltersAction)
+  const selectedFilters = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
 
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedOption = selectedOptions.find((option) => option.paramName === PARAM_NAME)!
-  const appliedOption = appliedFilters.find((option) => option.paramName === PARAM_NAME)
-  const defaultOption = appliedOption ?? DEFAULT_SIZE_OPTION
   const selectedCustomOptions = selectedOptions.filter((option) =>
     CUSTOM_SIZE_OPTION_KEYS.includes(option.paramName as keyof CustomSize)
   )
@@ -163,12 +162,19 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
   }, DEFAULT_CUSTOM_SIZE)
 
   const selectOption = (option: AggregateOption) => {
-    if (option.displayText === CUSTOM_SIZE_OPTION.displayText) {
+    const isCustomSizeOption = option.displayText === CUSTOM_SIZE_OPTION.displayText
+
+    // Don't clear entered values if the custom option is selected again
+    if (shouldShowCustomSize && isCustomSizeOption) {
+      return
+    }
+
+    if (isCustomSizeOption) {
       showCustomSize(true)
-      selectFiltersAction(defaultOption)
+      removeSelectedSizeFilters()
     } else {
       showCustomSize(false)
-      resetCustomPrice()
+      resetCustomSizeFilters()
       selectFiltersAction({
         displayText: option.displayText,
         paramValue: option.paramValue,
@@ -177,7 +183,7 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
     }
   }
 
-  const resetCustomPrice = () => {
+  const resetCustomSizeFilters = () => {
     CUSTOM_SIZE_OPTION_KEYS.forEach((paramName) => {
       selectFiltersAction({
         displayText: "All",
@@ -187,7 +193,7 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
     })
   }
 
-  const handleCustomPriceChange = (value: CustomSize) => {
+  const handleCustomSizeChange = (value: CustomSize) => {
     const isEmptyCustomValues = CUSTOM_SIZE_OPTION_KEYS.every((key) => {
       const paramValue = value[key]
       return paramValue.min === "*" && paramValue.max === "*"
@@ -195,10 +201,14 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
 
     // Populate the custom size filter only when we have at least one specified input
     if (isEmptyCustomValues) {
-      selectFiltersAction(defaultOption)
+      removeSelectedSizeFilters()
     } else {
-      selectFiltersAction(CUSTOM_SIZE_OPTION)
+      selectCustomSizeFilters(value)
     }
+  }
+
+  const selectCustomSizeFilters = (value: CustomSize) => {
+    selectFiltersAction(CUSTOM_SIZE_OPTION)
 
     CUSTOM_SIZE_OPTION_KEYS.forEach((paramName) => {
       selectFiltersAction({
@@ -207,6 +217,17 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
         paramValue: `${toIn(value[paramName].min, LOCALIZED_UNIT)}-${toIn(value[paramName].max, LOCALIZED_UNIT)}`,
       })
     })
+  }
+
+  const removeSelectedSizeFilters = () => {
+    const nextSelectedFilters = selectedFilters.filter((filter) => {
+      const isSizeFilter = filter.paramName === FilterParamName.dimensionRange
+      const isCustomSizeFilter = CUSTOM_SIZE_OPTION_KEYS.includes(filter.paramName as keyof CustomSize)
+
+      return !isSizeFilter && !isCustomSizeFilter
+    })
+
+    setSelectedFiltersAction(nextSelectedFilters)
   }
 
   return (
@@ -223,7 +244,7 @@ export const SizeOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation
               <CustomSizeInput
                 key="custom-size-input"
                 initialValue={customInitialValue}
-                onChange={handleCustomPriceChange}
+                onChange={handleCustomSizeChange}
               />,
             ]
           : []),
