@@ -20,7 +20,6 @@ describe("Saved search banner on artist screen", () => {
   let environment = createMockEnvironment()
 
   beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchV2: true })
     environment = createMockEnvironment()
     console.error = jest.fn()
     console.warn = jest.fn()
@@ -54,16 +53,6 @@ describe("Saved search banner on artist screen", () => {
     )
   }
 
-  it("should not render saved search button when AREnableSavedSearch flag set to false", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: false })
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchV2: false })
-
-    const { queryByText } = getTree("search-criteria-id")
-
-    mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
-    expect(queryByText("Create Alert")).toBeNull()
-  })
-
   it("should convert the criteria attributes to the filter params format", async () => {
     const { getByText } = getTree("search-criteria-id")
 
@@ -87,7 +76,7 @@ describe("Saved search banner on artist screen", () => {
     expect(getByText("Failed to get saved search criteria")).toBeTruthy()
   })
 
-  it("should render new saved search component if AREnableSavedSearchV2 flag set to true", async () => {
+  it("should render new saved search component", async () => {
     const { queryByTestId } = getTree("search-criteria-id")
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)

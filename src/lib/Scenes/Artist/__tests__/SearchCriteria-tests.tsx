@@ -11,26 +11,7 @@ describe("SearchCriteria", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchV2: true })
     mockEnvironment = createMockEnvironment()
-  })
-
-  it("should not query the search criteria when `SavedSearchBanner` flag is set to false", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearch: false })
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchV2: false })
-    const mockRenderComponent = jest.fn(() => <></>)
-
-    renderWithWrappersTL(
-      <SearchCriteriaQueryRenderer
-        searchCriteriaId="search-criter-id"
-        render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
-      />
-    )
-
-    expect(mockRenderComponent).toBeCalledWith({
-      fetchCriteriaError: null,
-      savedSearchCriteria: null,
-    })
   })
 
   it("should not query the search criteria when searchCriteriaId is not passed", () => {

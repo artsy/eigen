@@ -1,11 +1,9 @@
-import { SearchCriteriaAttributes } from "__generated__/SavedSearchBannerCreateSavedSearchMutation.graphql"
+import { SearchCriteriaAttributes } from "__generated__/createSavedSearchAlertMutation.graphql"
 import { SearchCriteriaQuery } from "__generated__/SearchCriteriaQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { isNull } from "lodash"
 import React from "react"
-import { Platform } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 
@@ -24,11 +22,8 @@ export interface SearchCriteriaQueryRendererProps {
 export const SearchCriteriaQueryRenderer: React.FC<SearchCriteriaQueryRendererProps> = (props) => {
   const { render, searchCriteriaId, environment = defaultEnvironment } = props
   const { renderComponent, renderPlaceholder } = render
-  const enableSavedSearch =
-    Platform.OS === "ios" ? useFeatureFlag("AREnableSavedSearch") : useFeatureFlag("AREnableSavedSearchAndroid")
-  const enableSavedSearchV2 = useFeatureFlag("AREnableSavedSearchV2")
 
-  if ((enableSavedSearch || enableSavedSearchV2) && searchCriteriaId) {
+  if (searchCriteriaId) {
     return (
       <QueryRenderer<SearchCriteriaQuery>
         environment={environment}
