@@ -6,8 +6,9 @@ import { EventEmitter } from "events"
 import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
-import { navigate } from "lib/navigation/navigate"
+import { navigate, NavigateOptions } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { useEnableMyCollection } from "lib/Scenes/MyCollection/MyCollection"
 import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import {
   SavedSearchAlertFormPropsBase,
@@ -48,6 +49,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   criteria,
 }) => {
   const tracking = useTracking()
+  const shouldDisplayMyCollection = useEnableMyCollection()
   const [visibleForm, setVisibleForm] = useState(false)
   const [refetching, setRefetching] = useState(false)
   const popover = usePopoverMessage()
@@ -77,10 +79,20 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
     popover.show({
       title: "Your alert has been created.",
       message: "You can edit your alerts with your Profile.",
-      onPress: () => {
-        navigate("my-profile/saved-search-alerts", {
+      onPress: async () => {
+        const options: NavigateOptions = {
           popToRootTabView: true,
-        })
+          showInTabName: "profile",
+        }
+
+        if (shouldDisplayMyCollection) {
+          await navigate("/my-profile/settings", options)
+          navigate("/my-profile/saved-search-alerts")
+
+          return
+        }
+
+        navigate("/my-profile/saved-search-alerts", options)
       },
     })
   }
