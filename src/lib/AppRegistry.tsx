@@ -135,14 +135,6 @@ interface ArtworkProps {
 
 const Artwork: React.FC<ArtworkProps> = (props) => <ArtworkQueryRenderer {...props} />
 
-interface PartnerProps {
-  partnerID: string
-  safeAreaInsets: SafeAreaInsets
-  isVisible: boolean
-}
-
-const Partner: React.FC<PartnerProps> = (props) => <PartnerQueryRenderer {...props} />
-
 interface PartnerLocationsProps {
   partnerID: string
   safeAreaInsets: SafeAreaInsets
@@ -366,7 +358,7 @@ export const modules = defineModules({
   MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, { hidesBackButton: true }),
   MyProfilePushNotifications: reactModule(MyProfilePushNotificationsQueryRenderer),
   MySellingProfile: reactModule(View),
-  Partner: reactModule(Partner, { fullBleed: true }),
+  Partner: reactModule(PartnerQueryRenderer),
   PartnerLocations: reactModule(PartnerLocations),
   PrivacyRequest: reactModule(PrivacyRequest),
   Sales: reactModule(Consignments, { isRootViewForTabName: "sell" }),
