@@ -88,7 +88,12 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     }
 
     if (delayExecution) {
-      requestAnimationFrame(pushView)
+      await new Promise((resolve) => {
+        requestAnimationFrame(() => {
+          pushView()
+          resolve(null)
+        })
+      })
     } else {
       pushView()
     }
