@@ -7,7 +7,6 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Button, Flex, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useRef } from "react"
 import { Alert, Animated, ScrollView } from "react-native"
-import DeviceInfo from "react-native-device-info"
 import * as Yup from "yup"
 import { OnboardingNavigationStack } from "../Onboarding"
 import { OnboardingSocialPick } from "../OnboardingSocialPick"
@@ -175,18 +174,18 @@ export const OnboardingCreateAccountScreenWrapper: React.FC<OnboardingCreateAcco
         keyboardShouldPersistTaps="always"
       >
         <Spacer mt={60} />
-        <Box minHeight={100}>
+        <Box minHeight={85}>
           <Text variant="lg">{title}</Text>
           {!!caption && (
             <>
-              <Spacer mt={1.5} />
+              <Spacer mt={0.5} />
               <Text variant="xs" color={color("black100")}>
                 {caption}
               </Text>
             </>
           )}
         </Box>
-        <Spacer mt={50} />
+        <Spacer mt={2} />
         {children}
       </ScrollView>
       {!!onBackButtonPress && <BackButton onPress={onBackButtonPress} />}
@@ -205,7 +204,6 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
 
   const isLastStep = getCurrentRoute() === "OnboardingCreateAccountName"
   const yTranslateAnim = useRef(new Animated.Value(0))
-  const { safeAreaInsets } = useScreenDimensions()
 
   useEffect(() => {
     if (errors.email === EMAIL_EXISTS_ERROR_MESSAGE) {
@@ -220,7 +218,7 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
   }, [errors.email])
 
   return (
-    <Flex px={1.5} paddingBottom={DeviceInfo.hasNotch() ? 0 : 1.5} backgroundColor="white" pt={0.5}>
+    <Flex px={2} paddingBottom={2} backgroundColor="white" pt={0.5}>
       {errors.email === EMAIL_EXISTS_ERROR_MESSAGE && (
         <Animated.View style={{ bottom: -50, transform: [{ translateY: yTranslateAnim.current }] }}>
           <Button
@@ -245,7 +243,6 @@ export const OnboardingCreateAccountButton: React.FC<OnboardingCreateAccountButt
         loading={isSubmitting}
         testID="signUpButton"
         variant="fillDark"
-        mb={safeAreaInsets.bottom}
       >
         Next
       </Button>

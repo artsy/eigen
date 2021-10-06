@@ -1,5 +1,4 @@
 import { useNavigation } from "@react-navigation/native"
-import { BackButton } from "lib/navigation/BackButton"
 import { GlobalStore, useEnvironment } from "lib/store/GlobalStore"
 import { Button, Flex, Join, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
@@ -73,14 +72,9 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
 
   return (
     <Flex justifyContent="center" flex={1} backgroundColor="white">
-      <BackButton
-        onPress={() => {
-          navigation.goBack()
-        }}
-      />
       <Flex px={1.5}>
         <Join separator={<Spacer height={60} />}>
-          <Text variant="xxl">{mode === "login" ? "Log in" : "Create account"}</Text>
+          <Text variant="xxl">{mode === "login" ? "Log in" : "Sign Up"}</Text>
 
           <>
             <Button
@@ -99,7 +93,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               icon={<EnvelopeIcon mr={1} />}
               testID="useEmail"
             >
-              {mode === "login" ? "Continue with email" : "Sign up with email"}
+              Continue with Email
             </Button>
             {Platform.OS === "ios" && (
               <Button
@@ -112,7 +106,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                 icon={<Image source={require("@images/apple.webp")} resizeMode="contain" style={{ marginRight: 10 }} />}
                 testID="useApple"
               >
-                {mode === "login" ? "Continue with Apple" : "Sign up with Apple"}
+                Continue with Apple
               </Button>
             )}
             {!!enableGoogleAuth && (
@@ -128,7 +122,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                 }
                 testID="useGoogle"
               >
-                {mode === "login" ? "Continue with Google" : "Sign up with Google"}
+                Continue with Google
               </Button>
             )}
 
@@ -144,13 +138,13 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               }
               testID="useFacebook"
             >
-              {mode === "login" ? "Continue with Facebook" : "Sign up with Facebook"}
+              Continue with Facebook
             </Button>
           </>
 
           <Text variant="xs" color="black60" textAlign="center">
-            By tapping {mode === "login" ? "Continue with Facebook" : "Sign up with Facebook"}{" "}
-            {!!enableGoogleAuth ? ",Google" : ""} or Apple, you agree to Artsy's{" "}
+            By tapping Continue with Facebook
+            {!!enableGoogleAuth ? ", Google" : ""} or Apple, you agree to Artsy's{" "}
             <Text
               onPress={() => {
                 Linking.openURL(`${webURL}/terms`)
