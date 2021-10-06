@@ -1,5 +1,5 @@
-import { SearchCriteriaAttributes } from "__generated__/createSavedSearchAlertMutation.graphql"
 import { SearchCriteriaQuery } from "__generated__/SearchCriteriaQuery.graphql"
+import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { isNull } from "lodash"

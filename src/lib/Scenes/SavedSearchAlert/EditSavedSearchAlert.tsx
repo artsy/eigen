@@ -1,5 +1,4 @@
 import { OwnerType } from "@artsy/cohesion"
-import { SearchCriteriaAttributes } from "__generated__/createSavedSearchAlertMutation.graphql"
 import { EditSavedSearchAlert_artist } from "__generated__/EditSavedSearchAlert_artist.graphql"
 import { EditSavedSearchAlert_artworksConnection } from "__generated__/EditSavedSearchAlert_artworksConnection.graphql"
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
@@ -8,6 +7,7 @@ import { emitSavedSearchRefetchEvent } from "lib/Components/Artist/ArtistArtwork
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { Aggregations } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
+import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { goBack } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
