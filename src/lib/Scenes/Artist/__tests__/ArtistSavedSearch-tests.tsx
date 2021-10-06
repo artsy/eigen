@@ -76,14 +76,13 @@ describe("Saved search banner on artist screen", () => {
     expect(getByText("Failed to get saved search criteria")).toBeTruthy()
   })
 
-  it("should render new saved search component", async () => {
+  it("should render saved search component", async () => {
     const { queryByTestId } = getTree("search-criteria-id")
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
     expect(queryByTestId("create-saved-search-button")).toBeTruthy()
-    expect(queryByTestId("create-saved-search-banner")).toBeNull()
   })
 })
 
