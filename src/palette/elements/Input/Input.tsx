@@ -3,7 +3,6 @@ import _ from "lodash"
 import { Color, EyeOpenedIcon, Flex, Sans, Spinner, useTheme, XCircleIcon } from "palette"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
-  LayoutAnimation,
   Platform,
   Text,
   TextInput,
@@ -13,6 +12,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native"
+import Animated, { Easing } from "react-native-reanimated"
 import styled from "styled-components/native"
 import { EyeClosedIcon } from "../../svgs/EyeClosedIcon"
 import { InputTitle } from "./InputTitle"
@@ -20,6 +20,7 @@ import { InputTitle } from "./InputTitle"
 export const INPUT_HEIGHT = 50
 
 export interface InputProps extends Omit<TextInputProps, "placeholder"> {
+  animationValue?: Animated.Value<number>
   containerStyle?: React.ComponentProps<typeof Flex>["style"]
   description?: string
   error?: string
@@ -28,6 +29,8 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   disabled?: boolean
   required?: boolean
   title?: string
+  width?: number
+  shrinkedWidth?: number
   /**
    * The placeholder can be an array of string, specifically for android, because of a bug.
    * On ios, the longest string will always be picked, as ios can add ellipsis.
@@ -63,6 +66,7 @@ export type Input = TextInput
 export const Input = React.forwardRef<TextInput, InputProps>(
   (
     {
+      animationValue,
       containerStyle,
       description,
       disabled,
@@ -78,6 +82,8 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       canHidePassword,
       inputTextStyle,
       placeholder,
+      width,
+      shrinkedWidth,
       ...rest
     },
     ref
@@ -191,102 +197,124 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       return placeholder[placeholder.length - 1]
     }
 
+    const animateTo = (toValue: 1 | 0): void => {
+      if (!animationValue) {
+        return
+      }
+
+      Animated.timing(animationValue, {
+        toValue,
+        easing: Easing.ease,
+        duration: 180,
+      }).start()
+    }
+
     return (
       <Flex flexGrow={1} style={containerStyle}>
-        <InputTitle required={required}>{title}</InputTitle>
+        <Animated.View
+          style={[
+            {
+              width:
+                animationValue && width && shrinkedWidth
+                  ? animationValue.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [width, shrinkedWidth],
+                    })
+                  : "auto",
+            },
+          ]}
+        >
+          <InputTitle required={required}>{title}</InputTitle>
 
-        {!!description && (
-          <Sans color="black60" size="2" style={{ marginBottom: 5 }}>
-            {description}
-          </Sans>
-        )}
-        <TouchableWithoutFeedback onPressIn={() => input.current?.focus()}>
-          <View
-            style={[
-              rest.style,
-              {
-                flexDirection: "row",
-                borderWidth: 1,
-                borderColor: color(computeBorderColor({ disabled, error: !!error, focused })),
-                height: INPUT_HEIGHT,
-                backgroundColor: disabled ? color("black5") : color("white100"),
-              },
-            ]}
-          >
-            {renderLeftHandSection?.()}
-            {!!icon && (
-              <Flex pl="1" justifyContent="center" flexGrow={0}>
-                {icon}
-              </Flex>
-            )}
-            <Flex flex={1}>
-              {placeholderMeasuringHack}
-              <StyledInput
-                editable={!disabled}
-                onLayout={(event) => {
-                  const newWidth = event.nativeEvent.layout.width
-                  if (newWidth > inputWidth) {
-                    requestAnimationFrame(() => setInputWidth(newWidth))
-                  } else {
-                    setInputWidth(newWidth)
-                  }
-                }}
-                ref={input}
-                placeholderTextColor={color("black60")}
-                style={{ flex: 1, fontSize: 16, ...inputTextStyle }}
-                numberOfLines={1}
-                secureTextEntry={!showPassword}
-                textAlignVertical="center"
-                placeholder={actualPlaceholder()}
-                value={value}
-                {...(rest as any)}
-                onChangeText={localOnChangeText}
-                onFocus={(e) => {
-                  if (Platform.OS === "android") {
-                    LayoutAnimation.configureNext(LayoutAnimation.create(60, "easeInEaseOut", "opacity"))
-                  }
-                  setFocused(true)
-                  rest.onFocus?.(e)
-                }}
-                onBlur={(e) => {
-                  if (Platform.OS === "android") {
-                    LayoutAnimation.configureNext(LayoutAnimation.create(60, "easeInEaseOut", "opacity"))
-                  }
-                  setFocused(false)
-                  rest.onBlur?.(e)
-                }}
-              />
-            </Flex>
-            {renderShowPasswordIcon()}
-            {loading ? (
-              <Flex pr="3" justifyContent="center" flexGrow={0}>
-                <Spinner
-                  size="medium"
-                  style={{ marginLeft: 3, width: 15, height: 4, backgroundColor: color("black60") }}
+          {!!description && (
+            <Sans color="black60" size="2" style={{ marginBottom: 5 }}>
+              {description}
+            </Sans>
+          )}
+          <TouchableWithoutFeedback onPressIn={() => input.current?.focus()}>
+            <View
+              style={[
+                rest.style,
+                {
+                  flexDirection: "row",
+                  borderWidth: 1,
+                  borderColor: color(computeBorderColor({ disabled, error: !!error, focused })),
+                  height: INPUT_HEIGHT,
+                  backgroundColor: disabled ? color("black5") : color("white100"),
+                },
+              ]}
+            >
+              {renderLeftHandSection?.()}
+              {!!icon && (
+                <Flex pl="1" justifyContent="center" flexGrow={0}>
+                  {icon}
+                </Flex>
+              )}
+              <Flex flex={1}>
+                {placeholderMeasuringHack}
+                <StyledInput
+                  editable={!disabled}
+                  onLayout={(event) => {
+                    const newWidth = event.nativeEvent.layout.width
+                    if (newWidth > inputWidth) {
+                      requestAnimationFrame(() => setInputWidth(newWidth))
+                    } else {
+                      setInputWidth(newWidth)
+                    }
+                  }}
+                  ref={input}
+                  placeholderTextColor={color("black60")}
+                  style={{ flex: 1, fontSize: 16, ...inputTextStyle }}
+                  numberOfLines={1}
+                  secureTextEntry={!showPassword}
+                  textAlignVertical="center"
+                  placeholder={actualPlaceholder()}
+                  value={value}
+                  {...(rest as any)}
+                  onChangeText={localOnChangeText}
+                  onFocus={(e) => {
+                    animateTo(1)
+                    setFocused(true)
+                    rest.onFocus?.(e)
+                  }}
+                  onBlur={(e) => {
+                    animateTo(0)
+                    setFocused(false)
+                    rest.onBlur?.(e)
+                  }}
                 />
               </Flex>
-            ) : (
-              !!(value !== undefined && value !== "" && enableClearButton) && (
-                <Flex pr="1" justifyContent="center" flexGrow={0}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      localClear()
-                    }}
-                    hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
-                    accessibilityLabel="Clear input button"
-                  >
-                    <XCircleIcon fill="black30" />
-                  </TouchableOpacity>
+              {renderShowPasswordIcon()}
+              {loading ? (
+                <Flex pr="3" justifyContent="center" flexGrow={0}>
+                  <Spinner
+                    size="medium"
+                    style={{ marginLeft: 3, width: 15, height: 4, backgroundColor: color("black60") }}
+                  />
                 </Flex>
-              )
-            )}
-          </View>
-        </TouchableWithoutFeedback>
-        {!!error && (
-          <Sans color="red100" mt="1" size="2">
-            {error}
-          </Sans>
-        )}
+              ) : (
+                !!(value !== undefined && value !== "" && enableClearButton) && (
+                  <Flex pr="1" justifyContent="center" flexGrow={0}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        localClear()
+                      }}
+                      hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
+                      accessibilityLabel="Clear input button"
+                    >
+                      <XCircleIcon fill="black30" />
+                    </TouchableOpacity>
+                  </Flex>
+                )
+              )}
+            </View>
+          </TouchableWithoutFeedback>
+          {!!error && (
+            <Sans color="red100" mt="1" size="2">
+              {error}
+            </Sans>
+          )}
+        </Animated.View>
       </Flex>
     )
   }
