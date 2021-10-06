@@ -18,7 +18,6 @@ const imgProps = Image.resolveAssetSource(backgoundImage)
 export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation }) => {
   const { space } = useTheme()
   const { width: screenWidth } = useScreenDimensions()
-  const { safeAreaInsets } = useScreenDimensions()
   const AREnableNewOnboardingFlow = useFeatureFlag("AREnableNewOnboardingFlow")
   // useScreenDimensions() returns the window height instead of the screen
   // We need the entire screen height here because the background image should fill
@@ -80,7 +79,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
   }, [navigation])
 
   return (
-    <Flex flex={1} style={{ paddingBottom: safeAreaInsets.bottom }}>
+    <Flex flex={1} style={{ paddingBottom: 20 }}>
       <Animated.View
         style={{
           alignItems: "flex-end",
@@ -102,7 +101,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
       </Animated.View>
 
       <LinearGradient
-        colors={["rgba(0, 0, 0, 0)", `rgba(0, 0, 0, 0.74)`]}
+        colors={["rgba(0, 0, 0, 0)", `rgba(0, 0, 0, 0.75)`]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
         style={{
@@ -116,7 +115,9 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
         <ArtsyLogoWhiteIcon height={25} width={75} />
       </Animated.View>
 
-      <Animated.View style={{ flex: 1, padding: space(2), justifyContent: "flex-end", opacity }}>
+      <Animated.View
+        style={{ flex: 1, paddingTop: space(2), paddingHorizontal: space(2), justifyContent: "flex-end", opacity }}
+      >
         <Text variant="xxl" color="white">
           Collect Art by the World’s Leading Artists
         </Text>
