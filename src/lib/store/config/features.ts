@@ -101,22 +101,10 @@ export const features = defineFeatures({
     description: "Enable Order History in settings",
     showInAdminMenu: true,
   },
-  AREnableSavedSearch: {
-    readyForRelease: true,
-    echoFlagKey: "AREnableSavedSearch",
-  },
   AREnableNewNewWorksForYou: {
     readyForRelease: false,
     description: "Enable new 'New Works for You' rail",
     showInAdminMenu: true,
-  },
-  AREnableSavedSearchAndroid: {
-    readyForRelease: true,
-    echoFlagKey: "AREnableSavedSearchAndroid",
-  },
-  AREnableSavedSearchV2: {
-    readyForRelease: true,
-    echoFlagKey: "AREnableSavedSearchV2",
   },
   AREnableNewOnboardingFlow: {
     readyForRelease: false,
