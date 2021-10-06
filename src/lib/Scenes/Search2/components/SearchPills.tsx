@@ -7,14 +7,18 @@ export interface SearchPillsProps {
   pills: PillType[]
   onPillPress: (pill: PillType) => void
   isSelected: (pill: PillType) => boolean
+  ref: React.Ref<ScrollView>
 }
 
-export const SearchPills: React.FC<SearchPillsProps> = (props) => {
+export const SearchPills: React.FC<SearchPillsProps> = React.forwardRef((props, ref) => {
   const { pills, onPillPress, isSelected } = props
   const space = useSpace()
 
   return (
     <ScrollView
+      accessible
+      accessibilityLabel="pill scrollview"
+      ref={ref}
       horizontal
       contentContainerStyle={{ paddingHorizontal: space(2) }}
       showsHorizontalScrollIndicator={false}
@@ -42,4 +46,4 @@ export const SearchPills: React.FC<SearchPillsProps> = (props) => {
       })}
     </ScrollView>
   )
-}
+})

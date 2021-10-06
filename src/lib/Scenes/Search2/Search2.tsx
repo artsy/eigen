@@ -11,7 +11,7 @@ import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
 import { useSearchInsightsConfig } from "lib/utils/useSearchInsightsConfig"
 import { throttle } from "lodash"
 import { Box, Flex, Spacer } from "palette"
-import React, { useMemo, useState } from "react"
+import React, { useMemo, useRef, useState } from "react"
 import {
   Configure,
   connectInfiniteHits,
@@ -118,6 +118,7 @@ interface Search2Props {
 
 export const Search2: React.FC<Search2Props> = (props) => {
   const { system, relay } = props
+  const searchPillsRef = useRef<ScrollView>(null)
   const [searchState, setSearchState] = useState<SearchState>({})
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
@@ -170,6 +171,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
   }
 
   const handleResetSearchInput = () => {
+    searchPillsRef?.current?.scrollTo({ x: 0, y: 0, animated: true })
     setSelectedPill(TOP_PILL)
   }
 
@@ -194,7 +196,12 @@ export const Search2: React.FC<Search2Props> = (props) => {
             {!!shouldStartQuering ? (
               <>
                 <Box pt={2} pb={1}>
-                  <SearchPills pills={pillsArray} onPillPress={handlePillPress} isSelected={isSelected} />
+                  <SearchPills
+                    ref={searchPillsRef}
+                    pills={pillsArray}
+                    onPillPress={handlePillPress}
+                    isSelected={isSelected}
+                  />
                 </Box>
                 {renderResults()}
               </>
