@@ -1,0 +1,32 @@
+version: 2
+updates:
+  - package-ecosystem: "bundler"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    # Limit to 0 to enable only security updates:
+    open-pull-requests-limit: 0
+    assignees:
+      - "brainbicycle"
+    reviewers:
+      - "artsy/collector-experience"
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    # Limit to 0 to enable only security updates:
+    open-pull-requests-limit: 0
+    assignees:
+      - "brainbicycle"
+    reviewers:
+      - "artsy/collector-experience"
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    # Limit to 0 to enable only security updates:
+    open-pull-requests-limit: 0
+    assignees:
+      - "brainbicycle"
+    reviewers:
+      - "artsy/collector-experience"
