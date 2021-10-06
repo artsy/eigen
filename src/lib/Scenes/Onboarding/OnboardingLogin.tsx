@@ -6,7 +6,6 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Button, Flex, Input, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useRef } from "react"
 import { ScrollView, View } from "react-native"
-import DeviceInfo from "react-native-device-info"
 import * as Yup from "yup"
 import { Touchable } from "../../../palette/elements/Touchable/Touchable"
 import { OnboardingNavigationStack } from "./Onboarding"
@@ -44,7 +43,6 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
 
   const passwordInputRef = useRef<Input>(null)
   const emailInputRef = useRef<Input>(null)
-  const { safeAreaInsets } = useScreenDimensions()
 
   /**
    * When we land on OnboardingLogin from the OnboardingCreatAccount
@@ -74,7 +72,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
         keyboardShouldPersistTaps="always"
       >
         <Spacer mt={60} />
-        <Text variant="lg">Login with Email</Text>
+        <Text variant="lg">Log In</Text>
         <Spacer mt={50} />
         <Box>
           <Input
@@ -84,7 +82,6 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
             // There is no need to autofocus here if we are getting
             // the email already from the navigation params
             autoFocus={!route.params?.email}
-            enableClearButton
             keyboardType="email-address"
             onChangeText={(text) => {
               handleChange("email")(text.trim())
@@ -152,7 +149,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
         </Touchable>
       </ScrollView>
       <BackButton onPress={() => navigation.goBack()} />
-      <Flex px={1.5} paddingBottom={DeviceInfo.hasNotch() ? 0 : 1.5}>
+      <Flex px={2} paddingBottom={2}>
         <Button
           onPress={handleSubmit}
           block
@@ -161,7 +158,6 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
           loading={isSubmitting}
           testID="loginButton"
           variant="fillDark"
-          mb={safeAreaInsets.bottom}
         >
           Log in
         </Button>

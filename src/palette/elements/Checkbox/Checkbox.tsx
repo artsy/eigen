@@ -83,7 +83,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       }}
     >
       <Flex flexDirection="row" {...restProps}>
-        <Flex mt={0.2}>
+        <Flex mt={0.2} height={20} width={20}>
           <CssTransition
             style={[styles(fontScale).container, { marginRight: space("1") * fontScale }, checkboxStyle]}
             animate={["backgroundColor", "borderColor"]}
@@ -92,7 +92,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
             {!!isChecked && (!!disabled ? <DisabledMark size={checkboxSize} /> : <CheckMark size={checkboxSize} />)}
           </CssTransition>
         </Flex>
-        <Flex justifyContent="center">
+        <Flex justifyContent="center" flex={1} pl={1}>
           {!!text && <Text color={textColor}>{text}</Text>}
           {!!subtitle && (
             <Text variant="xs" color={subtitleColor}>
