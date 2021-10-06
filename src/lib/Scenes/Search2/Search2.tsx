@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import { Search2_system } from "__generated__/Search2_system.graphql"
 import { Search2Query } from "__generated__/Search2Query.graphql"
@@ -11,7 +12,7 @@ import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
 import { useSearchInsightsConfig } from "lib/utils/useSearchInsightsConfig"
 import { throttle } from "lodash"
 import { Box, Flex, Spacer } from "palette"
-import React, { useMemo, useRef, useState } from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import {
   Configure,
   connectInfiniteHits,
@@ -46,7 +47,8 @@ const SEARCH_THROTTLE_INTERVAL = 500
 const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholder, refine, onReset }) => {
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(currentRefinement)
-
+  const isAndroid = Platform.OS === "android"
+  const navigation = isAndroid ? useNavigation() : null
   const handleChangeText = useMemo(() => throttle(refine, SEARCH_THROTTLE_INTERVAL), [])
 
   const handleReset = () => {
@@ -59,8 +61,21 @@ const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholde
     onReset()
   }
 
+  useEffect(() => {
+    if (searchProviderValues.inputRef?.current && isAndroid) {
+      const unsubscribe = navigation?.addListener("focus", () => {
+        // setTimeout here is to make sure that the search screen is focused in order to focus on text input
+        // without that the searchInput is not focused
+        setTimeout(() => searchProviderValues.inputRef.current?.focus(), 100)
+      })
+
+      return unsubscribe
+    }
+  }, [navigation, searchProviderValues.inputRef.current])
+
   return (
     <SearchBox
+      autoFocus
       ref={searchProviderValues.inputRef}
       enableCancelButton
       placeholder={placeholder}
