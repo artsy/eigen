@@ -64,9 +64,11 @@ const OnboardingPersonalizationListHeader = ({ navigateToModal }: { navigateToMo
           GlobalStore.actions.auth.setState({ onboardingState: "complete" })
         }}
       >
-        <Text textAlign="right" variant="xs" px={2}>
-          Skip
-        </Text>
+        <Flex height={20} alignItems="flex-end" justifyContent="center" px={2}>
+          <Text textAlign="right" variant="xs">
+            Skip
+          </Text>
+        </Flex>
       </Touchable>
       <Box px={2} mt={2}>
         <Text variant="lg">What Artists do You Collect?</Text>
@@ -104,6 +106,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
     <SafeAreaView style={{ backgroundColor: "white", flexGrow: 1 }}>
       <ScrollView
         contentContainerStyle={{
+          paddingTop: 10,
           paddingBottom: 60,
           justifyContent: "flex-start",
         }}
