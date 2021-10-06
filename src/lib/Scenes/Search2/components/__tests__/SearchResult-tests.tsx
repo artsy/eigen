@@ -39,7 +39,6 @@ const TestPage = (props: any) => {
 }
 
 describe("SearchListItem", () => {
-  const navigateToPartnerSpy = jest.spyOn(navigation, "navigateToPartner")
   const navigateSpy = jest.spyOn(navigation, "navigate")
 
   const searchInsightsSpy = jest.spyOn(useSearchInsightsConfig, "searchInsights")
@@ -77,13 +76,6 @@ describe("SearchListItem", () => {
       queryID: "test-query-id",
       objectIDs: ["test-id"],
     })
-  })
-
-  it(`calls navigation.navigateToPartner with slug on press when href starts with "/partner"`, () => {
-    const { container } = renderWithWrappersTL(<TestPage result={{ href: "/partner/some-href" }} />)
-
-    container.findByType(Touchable).props.onPress()
-    expect(navigateToPartnerSpy).toHaveBeenCalledWith("test-slug")
   })
 
   it(`calls navigation.navigate with href on press when href does not start with "/partner"`, () => {
