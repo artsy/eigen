@@ -23,8 +23,9 @@ const pills: PillType[] = [
 ]
 
 describe("SearchPills", () => {
+  const mockRef = jest.fn()
   const TestRenderer = (props: Partial<SearchPillsProps>) => {
-    return <SearchPills pills={pills} onPillPress={jest.fn} isSelected={() => false} {...props} />
+    return <SearchPills ref={mockRef} pills={pills} onPillPress={jest.fn} isSelected={() => false} {...props} />
   }
 
   it("renders without throwing an error", () => {
