@@ -24,6 +24,7 @@ export interface NavigateOptions {
   replace?: boolean
   // Only when onlyShowInTabName specified
   popToRootTabView?: boolean
+  showInTabName?: BottomTabType
 }
 
 let lastInvocation = { url: "", timestamp: 0 }
@@ -50,7 +51,7 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
 
   const module = modules[result.module]
   const presentModally = options.modal ?? module.options.alwaysPresentModally ?? false
-  const { replace = false, popToRootTabView } = options
+  const { replace = false, popToRootTabView, showInTabName } = options
 
   const screenDescriptor: ViewDescriptor = {
     type: module.type,
@@ -71,7 +72,7 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     await LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(module.options.isRootViewForTabName)
     switchTab(module.options.isRootViewForTabName, screenDescriptor.props)
   } else {
-    const { onlyShowInTabName } = module.options
+    const onlyShowInTabName = module.options.onlyShowInTabName || showInTabName
     const selectedTab = unsafe__getSelectedTab()
     const delayExecution = !!onlyShowInTabName && onlyShowInTabName !== selectedTab
     const pushView = () => {
