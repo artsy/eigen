@@ -150,9 +150,10 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableTrove: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Trove in homepage",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableTrove",
   },
   AREnableMyCollectionAndroid: {
     readyForRelease: false,
