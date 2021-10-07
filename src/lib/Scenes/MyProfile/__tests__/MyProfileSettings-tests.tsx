@@ -30,9 +30,7 @@ describe(MyProfileSettings, () => {
     expect(extractText(tree.root)).toContain("Push Notifications")
   })
 
-  it("renders Saved Alerts only when the AREnableSavedSearchV2 flag is enable", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchV2: true })
-
+  it("renders Saved Alerts", () => {
     const tree = getWrapper()
     expect(extractText(tree.root)).toContain("Saved Alerts")
   })

@@ -32,7 +32,6 @@ export const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> 
 export const OldMyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
   const showOrderHistory = useFeatureFlag("AREnableOrderHistoryOption")
   const showSavedAddresses = useFeatureFlag("AREnableSavedAddresses")
-  const showSavedSearchV2 = useFeatureFlag("AREnableSavedSearchV2")
   const listRef = useRef<FlatList<any>>(null)
   const recentlySavedArtworks = extractNodes(me?.followsAndSaves?.artworksConnection)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -57,9 +56,7 @@ export const OldMyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp 
       </Sans>
       <Separator my={2} />
       <SectionHeading title="Favorites" />
-      {!!showSavedSearchV2 && (
-        <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />
-      )}
+      <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />
       <MenuItem title="Saves and follows" onPress={() => navigate("favorites")} />
       {!!recentlySavedArtworks.length && (
         <SmallTileRailContainer artworks={recentlySavedArtworks} listRef={listRef} contextModule={null as any} />

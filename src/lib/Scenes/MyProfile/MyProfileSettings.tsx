@@ -10,7 +10,6 @@ import { Tab } from "../Favorites/Favorites"
 export const MyProfileSettings: React.FC<{}> = () => {
   const showOrderHistory = useFeatureFlag("AREnableOrderHistoryOption")
   const showSavedAddresses = useFeatureFlag("AREnableSavedAddresses")
-  const showSavedSearchV2 = useFeatureFlag("AREnableSavedSearchV2")
 
   const color = useColor()
   const separatorColor = color("black5")
@@ -23,12 +22,8 @@ export const MyProfileSettings: React.FC<{}> = () => {
       <Spacer mt={3} mb={2} />
       <SectionHeading title="FAVORITES" />
       <Spacer my={1} />
-      {!!showSavedSearchV2 && (
-        <>
-          <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />
-          <Separator my={1} borderColor={separatorColor} />
-        </>
-      )}
+      <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />
+      <Separator my={1} borderColor={separatorColor} />
       <MenuItem
         title="Follows"
         onPress={() =>
