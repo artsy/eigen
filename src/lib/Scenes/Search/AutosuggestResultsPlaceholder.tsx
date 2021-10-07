@@ -17,9 +17,15 @@ export const AutosuggestResultsPlaceholder: React.FC<AutosuggestResultsPlacehold
         <Flex key={`autosuggest-result-${index}`} flexDirection="row" mb={2}>
           <PlaceholderBox width={IMAGE_SIZE} height={IMAGE_SIZE} borderRadius={IMAGE_SIZE / 2} />
           <Flex flex={1} ml={1} justifyContent="center">
-            <RandomWidthPlaceholderText minWidth={100} maxWidth={150} height={TEXT_SIZE} />
+            <RandomWidthPlaceholderText minWidth={100} maxWidth={150} height={TEXT_SIZE} marginBottom={0} />
             {!!showResultType && (
-              <RandomWidthPlaceholderText minWidth={50} maxWidth={100} height={TEXT_SIZE} marginBottom={0} />
+              <RandomWidthPlaceholderText
+                minWidth={50}
+                maxWidth={100}
+                height={TEXT_SIZE}
+                marginTop={5}
+                marginBottom={0}
+              />
             )}
           </Flex>
         </Flex>
