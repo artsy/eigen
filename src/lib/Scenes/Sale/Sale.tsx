@@ -320,7 +320,7 @@ export const SaleContainer = createRefetchContainer(
   },
   graphql`
     query SaleRefetchQuery($saleID: String!, $saleSlug: ID!) {
-      me {
+      me @optionalField {
         ...Sale_me
       }
       sale(id: $saleID) {
@@ -352,7 +352,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayMo
                   sale(id: $saleID) {
                     ...Sale_sale
                   }
-                  me {
+                  me @optionalField {
                     ...Sale_me
                   }
                 }
