@@ -1,5 +1,5 @@
 import SearchIcon from "lib/Icons/SearchIcon"
-import { Box, Flex, Input, InputProps, Sans } from "palette"
+import { Box, Flex, Input, INPUT_HEIGHT, InputProps, Sans } from "palette"
 import React, { RefObject, useCallback, useState } from "react"
 import { Dimensions, LayoutChangeEvent, TextInput, TouchableOpacity } from "react-native"
 import Animated from "react-native-reanimated"
@@ -14,15 +14,24 @@ interface SearchInputProps extends InputProps {
 
 export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
   ({ enableCancelButton, onChangeText, onClear, onCancelPress, ...props }, ref) => {
-    const [cancelButtonWidth, setCancelButtonWidth] = useState(0)
+    const [cancelButtonSize, setCancelButtonSize] = useState({ width: 0, height: 0 })
     const animationValue = useAnimatedValue(0)
     const screenWidth = Dimensions.get("window").width
     const inputFullWidth = screenWidth - INPUT_INDENT
-    const shrinkedWidth = inputFullWidth - cancelButtonWidth
+    const shrinkedWidth = inputFullWidth - cancelButtonSize.width
 
-    const handleCancelButtonLayout = useCallback(({ nativeEvent }: LayoutChangeEvent) => {
-      setCancelButtonWidth(nativeEvent.layout.width)
-    }, [])
+    const handleCancelButtonLayout = useCallback(
+      ({
+        nativeEvent: {
+          layout: { width, height },
+        },
+      }: LayoutChangeEvent) => {
+        setCancelButtonSize({ width, height })
+      },
+      []
+    )
+
+    const cancelButtonTopPosition = INPUT_HEIGHT / 2 - cancelButtonSize.height / 2
 
     return (
       <Flex flexDirection="row">
@@ -46,8 +55,8 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
           }}
         />
         {!!enableCancelButton && (
-          <Flex alignItems="center" justifyContent="center" flexDirection="row">
-            <Box onLayout={handleCancelButtonLayout}>
+          <Flex position="relative" alignItems="center" justifyContent="center" flexDirection="row">
+            <Box onLayout={handleCancelButtonLayout} position="absolute" top={cancelButtonTopPosition} right={0}>
               <TouchableOpacity
                 onPress={() => {
                   ;(ref as RefObject<TextInput>).current?.blur()
@@ -56,21 +65,7 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
                 }}
                 hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
               >
-                <Animated.View
-                  style={[
-                    {
-                      opacity: animationValue,
-                      transform: [
-                        {
-                          translateX: animationValue.interpolate({
-                            inputRange: [0, 1],
-                            outputRange: [cancelButtonWidth - INPUT_INDENT, 0],
-                          }),
-                        },
-                      ],
-                    },
-                  ]}
-                >
+                <Animated.View style={[{ opacity: animationValue }]}>
                   <Flex pl={1}>
                     <Sans size="2" color="black60">
                       Cancel

@@ -214,6 +214,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
         <Animated.View
           style={[
             {
+              zIndex: 10,
               width:
                 animationValue && width && shrinkedWidth
                   ? animationValue.interpolate({
