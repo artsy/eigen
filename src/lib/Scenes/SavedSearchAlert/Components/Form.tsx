@@ -4,6 +4,7 @@ import { Box, Button, Flex, Input, InputTitle, Pill, Spacer, Text, Touchable } f
 import React from "react"
 import { getNamePlaceholder } from "../helpers"
 import { SavedSearchAlertFormValues } from "../SavedSearchAlertModel"
+import { Toggle } from "./Toggle"
 
 interface FormProps {
   pills: string[]
@@ -25,6 +26,10 @@ export const Form: React.FC<FormProps> = (props) => {
     handleChange,
   } = useFormikContext<SavedSearchAlertFormValues>()
   const namePlaceholder = getNamePlaceholder(artistName, pills)
+
+  const handleSwitchToggle = () => {
+    console.log("toggled")
+  }
 
   return (
     <Box>
@@ -70,7 +75,11 @@ export const Form: React.FC<FormProps> = (props) => {
           ))}
         </Flex>
       </Box>
-      <Spacer mt={4} />
+      <Spacer mt={1} />
+      <Toggle label="Email Alerts" onChange={handleSwitchToggle} active />
+      <Spacer mt={2} />
+      <Toggle label="Mobile Alerts" onChange={handleSwitchToggle} active={false} />
+      <Spacer mt={6} />
       <Button
         testID="save-alert-button"
         disabled={!!savedSearchAlertId && !(dirty || values.name.length === 0)}
