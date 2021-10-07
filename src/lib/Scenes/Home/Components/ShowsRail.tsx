@@ -83,14 +83,14 @@ export const ShowsRailFragmentContainer = createFragmentContainer(ShowsRail, {
 export const tracks = {
   tappedHeader: () => ({
     action: ActionType.tappedShowGroup,
-    context_module: ContextModule.showRail,
+    context_module: ContextModule.showsRail,
     context_screen_owner_type: OwnerType.home,
     destination_screen_owner_type: OwnerType.shows,
     type: "header",
   }),
   tappedThumbnail: (showID?: string, showSlug?: string, index?: number): TappedShowGroup => ({
     action: ActionType.tappedShowGroup,
-    context_module: ContextModule.showRail,
+    context_module: ContextModule.showsRail,
     context_screen_owner_type: OwnerType.home,
     destination_screen_owner_type: OwnerType.show,
     destination_screen_owner_id: showID,
