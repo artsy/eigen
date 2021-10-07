@@ -157,6 +157,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "ARGoogleAuth",
   },
+  AREnableSavedSearchToggles: {
+    readyForRelease: false,
+    description: "Enable Saved Search toggles",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
