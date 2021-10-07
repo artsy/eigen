@@ -8,12 +8,14 @@ import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
+import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Flex, Text, useSpace } from "palette"
-import { useCallback, useEffect, useMemo, useRef } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import React from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
+import { AutosuggestResultsPlaceholder } from "./AutosuggestResultsPlaceholder"
 import { AutosuggestSearchResult, OnResultPress } from "./AutosuggestSearchResult"
 
 export type AutosuggestResult = NonNullable<
@@ -33,6 +35,7 @@ const AutosuggestResultsFlatList: React.FC<{
   onResultPress?: OnResultPress
 }> = ({ query, results: latestResults, relay, showResultType = false, showQuickNavigationButtons, onResultPress }) => {
   const space = useSpace()
+  const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
   const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
 
   // We only want to load more results after the user has started scrolling, and unfortunately
@@ -59,6 +62,13 @@ const AutosuggestResultsFlatList: React.FC<{
       userHasStartedScrolling.current = false
     }
   }, [query])
+
+  // Show loading placeholder for the first time
+  useEffect(() => {
+    if (latestResults !== null) {
+      setShouldShowLoadingPlaceholder(false)
+    }
+  }, [latestResults])
 
   // When the user has scrolled down some and then starts typing again we want to
   // take them back to the top of the results list. But if we do that immediately
@@ -100,6 +110,14 @@ const AutosuggestResultsFlatList: React.FC<{
   }, [hasMoreResults])
 
   const noResults = results.current && results.current.results?.edges?.length === 0
+
+  if (shouldShowLoadingPlaceholder) {
+    return (
+      <ProvidePlaceholderContext>
+        <AutosuggestResultsPlaceholder showResultType={showResultType} />
+      </ProvidePlaceholderContext>
+    )
+  }
 
   return (
     <AboveTheFoldFlatList<AutosuggestResult>
