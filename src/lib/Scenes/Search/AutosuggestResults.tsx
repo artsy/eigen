@@ -132,7 +132,7 @@ const AutosuggestResultsFlatList: React.FC<{
       ListEmptyComponent={
         noResults
           ? () => {
-              return <Text variant="sm">We couldn't find anything for “{query}”</Text>
+              return <Text variant="sm">We couldn't find anything for “{query}.”</Text>
             }
           : null
       }
