@@ -75,7 +75,6 @@ const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholde
 
   return (
     <SearchBox
-      autoFocus
       ref={searchProviderValues.inputRef}
       enableCancelButton
       placeholder={placeholder}
