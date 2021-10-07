@@ -29,11 +29,11 @@ export const ShowCard: React.FC<ShowCardProps> = ({ show, onPress, isFluid }) =>
         <Flex width={isFluid ? "100%" : WIDTH} overflow="hidden">
           {!!imageURL &&
             (isFluid ? (
-              <View style={{ width: "100%", aspectRatio: 1.33, flexDirection: "row" }}>
-                <ImageView imageURL={show.metaImage?.url} style={{ flex: 1 }} />
+              <View style={{ width: "100%" }}>
+                <ImageView imageURL={imageURL} style={{ flex: 1 }} />
               </View>
             ) : (
-              <ImageView imageURL={show.metaImage?.url} width={WIDTH} height={HEIGHT} />
+              <ImageView imageURL={imageURL} width={WIDTH} height={HEIGHT} />
             ))}
           <Spacer mb={1} />
           <Text numberOfLines={3} ellipsizeMode="tail" variant="lg">
@@ -57,7 +57,7 @@ export const ShowCardContainer = createFragmentContainer(ShowCard, {
       formattedEndAt: endAt(format: "MMM D")
       href
       metaImage {
-        url(version: "large")
+        url(version: "small")
       }
       partner {
         ... on Partner {

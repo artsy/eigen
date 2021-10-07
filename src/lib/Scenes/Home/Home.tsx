@@ -174,7 +174,15 @@ const Home = (props: Props) => {
                   <></>
                 )
               case "shows":
-                return showsConnection ? <ShowsRailFragmentContainer showsConnection={showsConnection} /> : <></>
+                return showsConnection ? (
+                  <ShowsRailFragmentContainer
+                    showsConnection={showsConnection}
+                    onShow={() => separators.updateProps("trailing", { hideSeparator: false })}
+                    onHide={() => separators.updateProps("trailing", { hideSeparator: true })}
+                  />
+                ) : (
+                  <></>
+                )
               case "artwork":
                 return (
                   <ArtworkRailFragmentContainer

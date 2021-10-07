@@ -85,12 +85,12 @@ return {
             {
               "kind": "Literal",
               "name": "version",
-              "value": "large"
+              "value": "small"
             }
           ],
           "kind": "ScalarField",
           "name": "url",
-          "storageKey": "url(version:\"large\")"
+          "storageKey": "url(version:\"small\")"
         }
       ],
       "storageKey": null
@@ -123,5 +123,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'e50c094195ccdd73d54e3d00bbc8bcbc';
+(node as any).hash = '680ac84749bbfd3dc7d12072ff4d317c';
 export default node;

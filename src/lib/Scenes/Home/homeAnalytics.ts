@@ -85,31 +85,6 @@ export default class HomeAnalytics {
     })
   }
 
-  // Show events
-
-  static showThumbnailTapEvent(showID?: string, showSlug?: string, index?: number): Analytics.TappedEntityGroup {
-    return Analytics.tappedEntityGroup({
-      contextScreenOwnerType: Analytics.OwnerType.home,
-      destinationScreenOwnerId: showID,
-      destinationScreenOwnerSlug: showSlug,
-      destinationScreenOwnerType: Analytics.OwnerType.show,
-      contextModule: Analytics.ContextModule.showRail,
-      horizontalSlidePosition: index,
-      moduleHeight: "double",
-      type: "thumbnail",
-    })
-  }
-
-  static showsHeaderTapEvent(): Analytics.TappedEntityGroup {
-    return Analytics.tappedEntityGroup({
-      contextModule: Analytics.ContextModule.showRail,
-      contextScreenOwnerType: Analytics.OwnerType.home,
-      destinationScreenOwnerType: Analytics.OwnerType.shows,
-      moduleHeight: "double",
-      type: "header",
-    })
-  }
-
   // Artwork Events
 
   static artworkHeaderTapEvent(key: string | null): Analytics.TappedEntityGroup | null {

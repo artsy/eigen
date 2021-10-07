@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1f8172db742673bd029d6328a546667c */
+/* @relayHash e3362b789205e1db1d8d687ac1edb293 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -334,7 +334,7 @@ fragment ShowCard_show on Show {
   formattedEndAt: endAt(format: "MMM D")
   href
   metaImage {
-    url(version: "large")
+    url(version: "small")
   }
   partner {
     __typename
@@ -580,13 +580,25 @@ v19 = {
 },
 v20 = [
   {
+    "alias": null,
+    "args": [
+      {
+        "kind": "Literal",
+        "name": "version",
+        "value": "small"
+      }
+    ],
+    "kind": "ScalarField",
+    "name": "url",
+    "storageKey": "url(version:\"small\")"
+  }
+],
+v21 = [
+  {
     "kind": "Literal",
     "name": "first",
     "value": 3
   }
-],
-v21 = [
-  (v14/*: any*/)
 ],
 v22 = {
   "alias": null,
@@ -595,7 +607,9 @@ v22 = {
   "kind": "LinkedField",
   "name": "image",
   "plural": false,
-  "selections": (v21/*: any*/),
+  "selections": [
+    (v14/*: any*/)
+  ],
   "storageKey": null
 },
 v23 = [
@@ -1046,21 +1060,7 @@ return {
                     "kind": "LinkedField",
                     "name": "image",
                     "plural": false,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": [
-                          {
-                            "kind": "Literal",
-                            "name": "version",
-                            "value": "small"
-                          }
-                        ],
-                        "kind": "ScalarField",
-                        "name": "url",
-                        "storageKey": "url(version:\"small\")"
-                      }
-                    ],
+                    "selections": (v20/*: any*/),
                     "storageKey": null
                   },
                   (v17/*: any*/),
@@ -1073,7 +1073,7 @@ return {
                   },
                   {
                     "alias": null,
-                    "args": (v20/*: any*/),
+                    "args": (v21/*: any*/),
                     "concreteType": "ArtworkConnection",
                     "kind": "LinkedField",
                     "name": "artworksConnection",
@@ -1222,7 +1222,7 @@ return {
                   (v8/*: any*/),
                   {
                     "alias": null,
-                    "args": (v20/*: any*/),
+                    "args": (v21/*: any*/),
                     "concreteType": "FilterArtworksConnection",
                     "kind": "LinkedField",
                     "name": "artworksConnection",
@@ -1412,7 +1412,7 @@ return {
         "selections": [
           {
             "alias": null,
-            "args": (v20/*: any*/),
+            "args": (v21/*: any*/),
             "concreteType": "AuctionResultConnection",
             "kind": "LinkedField",
             "name": "auctionResultsByFollowedArtists",
@@ -1684,7 +1684,7 @@ return {
                     "kind": "LinkedField",
                     "name": "metaImage",
                     "plural": false,
-                    "selections": (v21/*: any*/),
+                    "selections": (v20/*: any*/),
                     "storageKey": null
                   },
                   {
@@ -1727,7 +1727,7 @@ return {
     ]
   },
   "params": {
-    "id": "1f8172db742673bd029d6328a546667c",
+    "id": "e3362b789205e1db1d8d687ac1edb293",
     "metadata": {},
     "name": "HomeBelowTheFoldQuery",
     "operationKind": "query",
