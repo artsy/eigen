@@ -14,7 +14,6 @@ interface SearchInputProps extends InputProps {
 
 export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
   ({ enableCancelButton, onChangeText, onClear, onCancelPress, ...props }, ref) => {
-    const [inputFocused, setInputFocused] = useState(false)
     const [cancelButtonWidth, setCancelButtonWidth] = useState(0)
     const animationValue = useAnimatedValue(0)
     const screenWidth = Dimensions.get("window").width
@@ -40,49 +39,46 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
           shrinkedWidth={shrinkedWidth}
           {...props}
           onFocus={(e) => {
-            setInputFocused(true)
             props.onFocus?.(e)
           }}
           onBlur={(e) => {
-            setInputFocused(false)
             props.onBlur?.(e)
           }}
         />
         {!!enableCancelButton && (
           <Flex alignItems="center" justifyContent="center" flexDirection="row">
-            {!!inputFocused && (
-              <Box onLayout={handleCancelButtonLayout}>
-                <TouchableOpacity
-                  onPress={() => {
-                    ;(ref as RefObject<TextInput>).current?.blur()
-                    ;(ref as RefObject<TextInput>).current?.clear()
-                    onCancelPress?.()
-                  }}
-                  hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
+            <Box onLayout={handleCancelButtonLayout}>
+              <TouchableOpacity
+                onPress={() => {
+                  ;(ref as RefObject<TextInput>).current?.blur()
+                  ;(ref as RefObject<TextInput>).current?.clear()
+                  onCancelPress?.()
+                }}
+                hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
+              >
+                <Animated.View
+                  style={[
+                    {
+                      opacity: animationValue,
+                      transform: [
+                        {
+                          translateX: animationValue.interpolate({
+                            inputRange: [0, 1],
+                            outputRange: [cancelButtonWidth - INPUT_INDENT, 0],
+                          }),
+                        },
+                      ],
+                    },
+                  ]}
                 >
-                  <Animated.View
-                    style={[
-                      {
-                        transform: [
-                          {
-                            translateX: animationValue.interpolate({
-                              inputRange: [0, 1],
-                              outputRange: [cancelButtonWidth - INPUT_INDENT, 0],
-                            }),
-                          },
-                        ],
-                      },
-                    ]}
-                  >
-                    <Flex pl={1}>
-                      <Sans size="2" color="black60">
-                        Cancel
-                      </Sans>
-                    </Flex>
-                  </Animated.View>
-                </TouchableOpacity>
-              </Box>
-            )}
+                  <Flex pl={1}>
+                    <Sans size="2" color="black60">
+                      Cancel
+                    </Sans>
+                  </Flex>
+                </Animated.View>
+              </TouchableOpacity>
+            </Box>
           </Flex>
         )}
       </Flex>
