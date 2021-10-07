@@ -275,14 +275,14 @@ describe("AutosuggestResults", () => {
     expect(spy).toHaveBeenCalled()
   })
 
-  it('should show the loading placeholder only when "showLoadingPlaceholder" is passed', () => {
-    const { getByA11yLabel } = renderWithWrappersTL(<TestWrapper query="michael" showLoadingPlaceholder />)
+  it("should show the loading placeholder ", () => {
+    const { getByA11yLabel } = renderWithWrappersTL(<TestWrapper query="michael" />)
 
     expect(getByA11yLabel("Autosuggest results are loading")).toBeTruthy()
   })
 
   it("should hide the loading placeholder when results are received", () => {
-    const { queryByA11yLabel } = renderWithWrappersTL(<TestWrapper query="michael" showLoadingPlaceholder />)
+    const { queryByA11yLabel } = renderWithWrappersTL(<TestWrapper query="michael" />)
 
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
 

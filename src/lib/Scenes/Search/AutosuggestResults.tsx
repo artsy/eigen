@@ -33,16 +33,7 @@ const AutosuggestResultsFlatList: React.FC<{
   showResultType?: boolean
   showQuickNavigationButtons?: boolean
   onResultPress?: OnResultPress
-  showLoadingPlaceholder?: boolean
-}> = ({
-  query,
-  results: latestResults,
-  relay,
-  showResultType = false,
-  showQuickNavigationButtons,
-  onResultPress,
-  showLoadingPlaceholder = false,
-}) => {
+}> = ({ query, results: latestResults, relay, showResultType = false, showQuickNavigationButtons, onResultPress }) => {
   const space = useSpace()
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
   const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
@@ -120,7 +111,7 @@ const AutosuggestResultsFlatList: React.FC<{
 
   const noResults = results.current && results.current.results?.edges?.length === 0
 
-  if (showLoadingPlaceholder && shouldShowLoadingPlaceholder) {
+  if (shouldShowLoadingPlaceholder) {
     return (
       <ProvidePlaceholderContext>
         <AutosuggestResultsPlaceholder showResultType={showResultType} />
@@ -227,10 +218,9 @@ export const AutosuggestResults: React.FC<{
   entities?: AutosuggestResultsQueryVariables["entities"]
   showResultType?: boolean
   showQuickNavigationButtons?: boolean
-  showLoadingPlaceholder?: boolean
   onResultPress?: OnResultPress
 }> = React.memo(
-  ({ query, entities, showResultType, showQuickNavigationButtons, showLoadingPlaceholder, onResultPress }) => {
+  ({ query, entities, showResultType, showQuickNavigationButtons, onResultPress }) => {
     return (
       <QueryRenderer<AutosuggestResultsQuery>
         render={({ props, error }) => {
@@ -256,7 +246,6 @@ export const AutosuggestResults: React.FC<{
               results={props}
               showResultType={showResultType}
               showQuickNavigationButtons={showQuickNavigationButtons}
-              showLoadingPlaceholder={showLoadingPlaceholder}
               onResultPress={onResultPress}
             />
           )
