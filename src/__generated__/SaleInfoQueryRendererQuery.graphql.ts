@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 545e763cc8095d32e90a2241d3de783d */
+/* @relayHash d0e85d004813c732d88259384ca71940 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,7 +31,7 @@ query SaleInfoQueryRendererQuery(
     ...SaleInfo_sale
     id
   }
-  me {
+  me @optionalField {
     ...SaleInfo_me
     id
   }
@@ -328,7 +328,7 @@ return {
     ]
   },
   "params": {
-    "id": "545e763cc8095d32e90a2241d3de783d",
+    "id": "d0e85d004813c732d88259384ca71940",
     "metadata": {},
     "name": "SaleInfoQueryRendererQuery",
     "operationKind": "query",
@@ -336,5 +336,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'be263aae79f20bc38de2bd05f6b0c1c7';
+(node as any).hash = 'c148784d1b44fa2a19f4bc980533cd50';
 export default node;
