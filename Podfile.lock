@@ -47,7 +47,7 @@ PODS:
     - Appboy-iOS-SDK/NewsFeed
   - ARGenericTableViewController (1.0.2)
   - "Artsy+UIColors (3.1.0)"
-  - "Artsy+UIFonts (3.3.3)"
+  - "Artsy+UIFonts (3.3.4)"
   - "Artsy+UILabels (2.2.0)":
     - "Artsy+UIColors (~> 3.0)"
     - "Artsy+UIFonts"
@@ -690,7 +690,7 @@ DEPENDENCIES:
   - AFOAuth1Client (from `https://github.com/artsy/AFOAuth1Client.git`, tag `0.4.0-subspec-fix`)
   - ARGenericTableViewController (from `https://github.com/artsy/ARGenericTableViewController.git`)
   - "Artsy+UIColors"
-  - "Artsy+UIFonts (= 3.3.3)"
+  - "Artsy+UIFonts (= 3.3.4)"
   - "Artsy+UILabels"
   - Artsy-UIButtons
   - BVLinearGradient (from `node_modules/react-native-linear-gradient`)
@@ -822,14 +822,7 @@ DEPENDENCIES:
   - Yoga (from `./node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/artsy/Specs.git:
-    - Aerodramus
-    - "Artsy+UIColors"
-    - "Artsy+UIFonts"
-    - "Artsy+UILabels"
-    - Artsy-UIButtons
-    - Extraction
-  trunk:
+  https://cdn.cocoapods.org/:
     - Adjust
     - AFNetworkActivityLogger
     - AFNetworking
@@ -901,6 +894,13 @@ SPEC REPOS:
     - "UIView+BooleanAnimations"
     - "XCTest+OHHTTPStubSuiteCleanUp"
     - YogaKit
+  https://github.com/artsy/Specs.git:
+    - Aerodramus
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts"
+    - "Artsy+UILabels"
+    - Artsy-UIButtons
+    - Extraction
 
 EXTERNAL SOURCES:
   AFOAuth1Client:
@@ -1082,7 +1082,7 @@ SPEC CHECKSUMS:
   Appboy-iOS-SDK: 33b31d5ade91a7d0718534798f4ab1146e7b0681
   ARGenericTableViewController: 61a0897ba66c35111b5d1cc3b44884282bd3c1a5
   "Artsy+UIColors": 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
-  "Artsy+UIFonts": 597c44f264aead6bdc21898b690addd90e14edbd
+  "Artsy+UIFonts": 19efbc985ba95156d75a860633df5538c8045b80
   "Artsy+UILabels": 7cb6e290a4f70dddba037b7dbeb21e90b49d7275
   Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
@@ -1220,6 +1220,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 497cfe9dfe5ff0a7be2cbf3b99e579ef3544dff0
+PODFILE CHECKSUM: 97b655dc2fa9b6b598383b4018a3a5bb77bfe405
 
 COCOAPODS: 1.10.1
