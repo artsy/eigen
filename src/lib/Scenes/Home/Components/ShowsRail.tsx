@@ -18,6 +18,8 @@ interface ShowsRailProps {
 }
 
 export const ShowsRail: React.FC<ShowsRailProps> = ({ showsConnection, onHide, onShow }) => {
+  const tracking = useTracking()
+
   const shows = extractNodes(showsConnection)
 
   const hasShows = shows?.length
@@ -29,7 +31,6 @@ export const ShowsRail: React.FC<ShowsRailProps> = ({ showsConnection, onHide, o
   if (!hasShows) {
     return null
   }
-  const tracking = useTracking()
 
   return (
     <Flex>
@@ -81,7 +82,7 @@ export const ShowsRailFragmentContainer = createFragmentContainer(ShowsRail, {
 })
 
 export const tracks = {
-  tappedHeader: () => ({
+  tappedHeader: (): TappedShowGroup => ({
     action: ActionType.tappedShowGroup,
     context_module: ContextModule.showsRail,
     context_screen_owner_type: OwnerType.home,

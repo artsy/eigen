@@ -1,14 +1,12 @@
+import { ShowsRailTestsQuery } from "__generated__/ShowsRailTestsQuery.graphql"
+import { SectionTitle } from "lib/Components/SectionTitle"
+import { navigate } from "lib/navigation/navigate"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { first } from "lodash"
 import React from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-
-import { navigate } from "lib/navigation/navigate"
-
-import { ShowsRailTestsQuery } from "__generated__/ShowsRailTestsQuery.graphql"
-import { SectionTitle } from "lib/Components/SectionTitle"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { ShowsRailFragmentContainer } from "../ShowsRail"
 
 jest.unmock("react-relay")

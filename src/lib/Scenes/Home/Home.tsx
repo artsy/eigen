@@ -92,6 +92,7 @@ const Home = (props: Props) => {
   const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
   const troveEchoFlag = useFeatureFlag("AREnableTrove")
   const showNewNewWorksForYouRail = useFeatureFlag("AREnableNewNewWorksForYou")
+  const showShowsForYouRail = useFeatureFlag("AREnableShowsRail")
 
   /*
   Ordering is defined in https://www.notion.so/artsy/App-Home-Screen-4841255ded3f47c9bcdb73185ee3f335.
@@ -115,7 +116,7 @@ const Home = (props: Props) => {
         type: "auction-results",
       } as const),
     !!articlesConnection && ({ type: "articles" } as const),
-    !!showsConnection && ({ type: "shows" } as const),
+    !!showShowsForYouRail && !!showsConnection && ({ type: "shows" } as const),
     !!troveEchoFlag && ({ type: "trove" } as const),
     !!viewingRoomsEchoFlag && !!featured && ({ type: "viewing-rooms" } as const),
     collectionsModule &&
