@@ -5,7 +5,7 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { Dialog } from "palette"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
 import { useTracking } from "react-tracking"
 import { Form } from "./Components/Form"
@@ -78,6 +78,14 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       }
     },
   })
+
+  /**
+   * If the initial value of enablePushNotifications has changed (for example, the user has minimized the app and turned off Push notifications in settings)
+   * then we sync the updated value with the formik state
+   */
+  useEffect(() => {
+    formik.setFieldValue("enablePushNotifications", initialValues.enablePushNotifications)
+  }, [initialValues.enablePushNotifications])
 
   const requestNotificationPermissions = () => {
     // permissions not determined: Android should never need this
