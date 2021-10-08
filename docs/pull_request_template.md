@@ -23,6 +23,9 @@ This PR resolves []
 - [ ] I have added an app state migration, or my changes do not require one. ([What are migrations?](https://github.com/artsy/eigen/blob/master/docs/adding_state_migrations.md))
 - [ ] I have added a changelog entry below or my changes do not require one.
 
+### To the reviewers 👀
+- [ ] I would like at least one of the reviewers to run this PR on the simulator or device.
+
 <details><summary>Changelog updates</summary>
 
 ### Changelog updates
