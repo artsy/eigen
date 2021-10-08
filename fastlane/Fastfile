@@ -168,8 +168,7 @@ lane :ship_beta_android_play_store do
   gradle(
     task: "bundle",
     build_type: "Release",
-    project_dir: "android/",
-    flags: "--no-daemon --max-workers=1",
+    project_dir: "android/"
   )
 
   upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
@@ -197,8 +196,7 @@ lane :ship_beta_android_firebase do
   gradle(
     task: "bundle",
     build_type: "Release",
-    project_dir: "android/",
-    flags: "--no-daemon --max-workers=1",
+    project_dir: "android/"
   )
 
   firebase_app_distribution(
