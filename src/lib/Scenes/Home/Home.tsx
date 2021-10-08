@@ -4,7 +4,7 @@ import { Home_homePageAbove } from "__generated__/Home_homePageAbove.graphql"
 import { Home_homePageBelow } from "__generated__/Home_homePageBelow.graphql"
 import { Home_meAbove } from "__generated__/Home_meAbove.graphql"
 import { Home_meBelow } from "__generated__/Home_meBelow.graphql"
-import { Home_showsConnection } from "__generated__/Home_showsConnection.graphql"
+import { Home_showsByFollowedArtists } from "__generated__/Home_showsByFollowedArtists.graphql"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
@@ -43,7 +43,7 @@ import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProps {
   articlesConnection: Home_articlesConnection | null
-  showsConnection: Home_showsConnection | null
+  showsByFollowedArtists: Home_showsByFollowedArtists | null
   featured: Home_featured | null
   homePageAbove: Home_homePageAbove | null
   homePageBelow: Home_homePageBelow | null
@@ -60,7 +60,7 @@ const Home = (props: Props) => {
     meAbove,
     meBelow,
     articlesConnection,
-    showsConnection,
+    showsByFollowedArtists,
     featured,
     loading,
   } = props
@@ -116,7 +116,7 @@ const Home = (props: Props) => {
         type: "auction-results",
       } as const),
     !!articlesConnection && ({ type: "articles" } as const),
-    !!showShowsForYouRail && !!showsConnection && ({ type: "shows" } as const),
+    !!showShowsForYouRail && !!showsByFollowedArtists && ({ type: "shows" } as const),
     !!troveEchoFlag && ({ type: "trove" } as const),
     !!viewingRoomsEchoFlag && !!featured && ({ type: "viewing-rooms" } as const),
     collectionsModule &&
@@ -175,9 +175,9 @@ const Home = (props: Props) => {
                   <></>
                 )
               case "shows":
-                return showsConnection ? (
+                return showsByFollowedArtists ? (
                   <ShowsRailFragmentContainer
-                    showsConnection={showsConnection}
+                    showsConnection={showsByFollowedArtists}
                     onShow={() => separators.updateProps("trailing", { hideSeparator: false })}
                     onHide={() => separators.updateProps("trailing", { hideSeparator: true })}
                   />
@@ -341,8 +341,8 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...ArticlesRail_articlesConnection
       }
     `,
-    showsConnection: graphql`
-      fragment Home_showsConnection on ShowConnection {
+    showsByFollowedArtists: graphql`
+      fragment Home_showsByFollowedArtists on ShowConnection {
         ...ShowsRail_showsConnection
       }
     `,
@@ -364,6 +364,9 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...Home_meAbove
         ...AuctionResultsRail_me
         ...NewWorksForYouRail_me
+        showsByFollowedArtists(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
+          ...Home_showsByFollowedArtists
+        }
       }
       meBelow: me @optionalField {
         ...Home_meBelow
@@ -373,9 +376,6 @@ export const HomeFragmentContainer = createRefetchContainer(
       }
       articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
         ...Home_articlesConnection
-      }
-      showsConnection(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
-        ...Home_showsConnection
       }
     }
   `
@@ -567,9 +567,9 @@ export const HomeQueryRenderer: React.FC = () => {
                 me @optionalField {
                   ...Home_meBelow
                   ...AuctionResultsRail_me
-                }
-                showsConnection(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
-                  ...Home_showsConnection
+                  showsByFollowedArtists(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
+                    ...Home_showsByFollowedArtists
+                  }
                 }
               }
             `,
@@ -587,7 +587,7 @@ export const HomeQueryRenderer: React.FC = () => {
                   featured={below ? below.featured : null}
                   homePageAbove={above.homePage}
                   homePageBelow={below ? below.homePage : null}
-                  showsConnection={below?.showsConnection ?? null}
+                  showsByFollowedArtists={below?.me?.showsByFollowedArtists ?? null}
                   meAbove={above.me}
                   meBelow={below ? below.me : null}
                   loading={!below}

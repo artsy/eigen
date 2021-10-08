@@ -4,14 +4,14 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Home_showsConnection = {
+export type Home_showsByFollowedArtists = {
     readonly " $fragmentRefs": FragmentRefs<"ShowsRail_showsConnection">;
-    readonly " $refType": "Home_showsConnection";
+    readonly " $refType": "Home_showsByFollowedArtists";
 };
-export type Home_showsConnection$data = Home_showsConnection;
-export type Home_showsConnection$key = {
-    readonly " $data"?: Home_showsConnection$data;
-    readonly " $fragmentRefs": FragmentRefs<"Home_showsConnection">;
+export type Home_showsByFollowedArtists$data = Home_showsByFollowedArtists;
+export type Home_showsByFollowedArtists$key = {
+    readonly " $data"?: Home_showsByFollowedArtists$data;
+    readonly " $fragmentRefs": FragmentRefs<"Home_showsByFollowedArtists">;
 };
 
 
@@ -20,7 +20,7 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "Home_showsConnection",
+  "name": "Home_showsByFollowedArtists",
   "selections": [
     {
       "args": null,
@@ -31,5 +31,5 @@ const node: ReaderFragment = {
   "type": "ShowConnection",
   "abstractKey": null
 };
-(node as any).hash = '6e5205aaf3084a49c8f19a13a6a24493';
+(node as any).hash = 'e901d84ccabc3cf865cdb6195e73bb12';
 export default node;

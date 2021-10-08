@@ -33,7 +33,7 @@ export const ShowsRail: React.FC<ShowsRailProps> = ({ showsConnection, onHide, o
   }
 
   return (
-    <Flex>
+    <>
       <Flex mx={2}>
         <SectionTitle
           title="Shows for You"
@@ -55,15 +55,15 @@ export const ShowsRail: React.FC<ShowsRailProps> = ({ showsConnection, onHide, o
           keyExtractor={(item) => `${item.internalID}`}
           renderItem={({ item, index }) => (
             <ShowCardContainer
+              show={item}
               onPress={() => {
                 tracking.trackEvent(tracks.tappedThumbnail(item.internalID, item.slug || "", index))
               }}
-              show={item}
             />
           )}
         />
       </Flex>
-    </Flex>
+    </>
   )
 }
 

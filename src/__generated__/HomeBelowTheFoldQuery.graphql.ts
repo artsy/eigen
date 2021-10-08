@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e3362b789205e1db1d8d687ac1edb293 */
+/* @relayHash e1811457434667d266735eace41f43b1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -17,10 +17,10 @@ export type HomeBelowTheFoldQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"Home_featured">;
     } | null;
     readonly me: {
+        readonly showsByFollowedArtists: {
+            readonly " $fragmentRefs": FragmentRefs<"Home_showsByFollowedArtists">;
+        } | null;
         readonly " $fragmentRefs": FragmentRefs<"Home_meBelow" | "AuctionResultsRail_me">;
-    } | null;
-    readonly showsConnection: {
-        readonly " $fragmentRefs": FragmentRefs<"Home_showsConnection">;
     } | null;
 };
 export type HomeBelowTheFoldQuery = {
@@ -43,10 +43,10 @@ query HomeBelowTheFoldQuery(
   me @optionalField {
     ...Home_meBelow
     ...AuctionResultsRail_me
+    showsByFollowedArtists(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
+      ...Home_showsByFollowedArtists
+    }
     id
-  }
-  showsConnection(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
-    ...Home_showsConnection
   }
 }
 
@@ -324,7 +324,7 @@ fragment Home_meBelow on Me {
   ...AuctionResultsRail_me
 }
 
-fragment Home_showsConnection on ShowConnection {
+fragment Home_showsByFollowedArtists on ShowConnection {
   ...ShowsRail_showsConnection
 }
 
@@ -714,6 +714,22 @@ return {
         "plural": false,
         "selections": [
           {
+            "alias": null,
+            "args": (v2/*: any*/),
+            "concreteType": "ShowConnection",
+            "kind": "LinkedField",
+            "name": "showsByFollowedArtists",
+            "plural": false,
+            "selections": [
+              {
+                "args": null,
+                "kind": "FragmentSpread",
+                "name": "Home_showsByFollowedArtists"
+              }
+            ],
+            "storageKey": "showsByFollowedArtists(first:10,status:\"RUNNING_AND_UPCOMING\")"
+          },
+          {
             "args": null,
             "kind": "FragmentSpread",
             "name": "Home_meBelow"
@@ -725,22 +741,6 @@ return {
           }
         ],
         "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": (v2/*: any*/),
-        "concreteType": "ShowConnection",
-        "kind": "LinkedField",
-        "name": "showsConnection",
-        "plural": false,
-        "selections": [
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "Home_showsConnection"
-          }
-        ],
-        "storageKey": "showsConnection(first:10,status:\"RUNNING_AND_UPCOMING\")"
       }
     ],
     "type": "Query",
@@ -1631,103 +1631,103 @@ return {
             ],
             "storageKey": "auctionResultsByFollowedArtists(first:3)"
           },
-          (v4/*: any*/)
-        ],
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": (v2/*: any*/),
-        "concreteType": "ShowConnection",
-        "kind": "LinkedField",
-        "name": "showsConnection",
-        "plural": false,
-        "selections": [
           {
             "alias": null,
-            "args": null,
-            "concreteType": "ShowEdge",
+            "args": (v2/*: any*/),
+            "concreteType": "ShowConnection",
             "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
+            "name": "showsByFollowedArtists",
+            "plural": false,
             "selections": [
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Show",
+                "concreteType": "ShowEdge",
                 "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
+                "name": "edges",
+                "plural": true,
                 "selections": [
-                  (v9/*: any*/),
-                  (v8/*: any*/),
-                  (v11/*: any*/),
-                  {
-                    "alias": "formattedStartAt",
-                    "args": (v28/*: any*/),
-                    "kind": "ScalarField",
-                    "name": "startAt",
-                    "storageKey": "startAt(format:\"MMM D\")"
-                  },
-                  {
-                    "alias": "formattedEndAt",
-                    "args": (v28/*: any*/),
-                    "kind": "ScalarField",
-                    "name": "endAt",
-                    "storageKey": "endAt(format:\"MMM D\")"
-                  },
-                  (v7/*: any*/),
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "Image",
+                    "concreteType": "Show",
                     "kind": "LinkedField",
-                    "name": "metaImage",
-                    "plural": false,
-                    "selections": (v20/*: any*/),
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": null,
-                    "kind": "LinkedField",
-                    "name": "partner",
+                    "name": "node",
                     "plural": false,
                     "selections": [
-                      (v16/*: any*/),
+                      (v9/*: any*/),
+                      (v8/*: any*/),
+                      (v11/*: any*/),
                       {
-                        "kind": "InlineFragment",
+                        "alias": "formattedStartAt",
+                        "args": (v28/*: any*/),
+                        "kind": "ScalarField",
+                        "name": "startAt",
+                        "storageKey": "startAt(format:\"MMM D\")"
+                      },
+                      {
+                        "alias": "formattedEndAt",
+                        "args": (v28/*: any*/),
+                        "kind": "ScalarField",
+                        "name": "endAt",
+                        "storageKey": "endAt(format:\"MMM D\")"
+                      },
+                      (v7/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "kind": "LinkedField",
+                        "name": "metaImage",
+                        "plural": false,
+                        "selections": (v20/*: any*/),
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": null,
+                        "kind": "LinkedField",
+                        "name": "partner",
+                        "plural": false,
                         "selections": [
-                          (v11/*: any*/)
+                          (v16/*: any*/),
+                          {
+                            "kind": "InlineFragment",
+                            "selections": [
+                              (v11/*: any*/)
+                            ],
+                            "type": "Partner",
+                            "abstractKey": null
+                          },
+                          {
+                            "kind": "InlineFragment",
+                            "selections": (v12/*: any*/),
+                            "type": "ExternalPartner",
+                            "abstractKey": null
+                          },
+                          (v19/*: any*/)
                         ],
-                        "type": "Partner",
-                        "abstractKey": null
+                        "storageKey": null
                       },
-                      {
-                        "kind": "InlineFragment",
-                        "selections": (v12/*: any*/),
-                        "type": "ExternalPartner",
-                        "abstractKey": null
-                      },
-                      (v19/*: any*/)
+                      (v4/*: any*/)
                     ],
                     "storageKey": null
-                  },
-                  (v4/*: any*/)
+                  }
                 ],
                 "storageKey": null
               }
             ],
-            "storageKey": null
-          }
+            "storageKey": "showsByFollowedArtists(first:10,status:\"RUNNING_AND_UPCOMING\")"
+          },
+          (v4/*: any*/)
         ],
-        "storageKey": "showsConnection(first:10,status:\"RUNNING_AND_UPCOMING\")"
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "e3362b789205e1db1d8d687ac1edb293",
+    "id": "e1811457434667d266735eace41f43b1",
     "metadata": {},
     "name": "HomeBelowTheFoldQuery",
     "operationKind": "query",
@@ -1735,5 +1735,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'b0dd41a6006c535ef8bdce4026178028';
+(node as any).hash = '7c8d80c0f27ae4efe8a4d9c5029c4be8';
 export default node;
