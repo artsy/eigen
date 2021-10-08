@@ -1,5 +1,6 @@
 import { useFormikContext } from "formik"
 import { navigate } from "lib/navigation/navigate"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Box, Button, Flex, Input, InputTitle, Pill, Spacer, Text, Touchable } from "palette"
 import React from "react"
 import { getNamePlaceholder } from "../helpers"
@@ -36,6 +37,7 @@ export const Form: React.FC<FormProps> = (props) => {
     handleBlur,
     handleChange,
   } = useFormikContext<SavedSearchAlertFormValues>()
+  const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const namePlaceholder = getNamePlaceholder(artistName, pills)
 
   return (
@@ -82,11 +84,15 @@ export const Form: React.FC<FormProps> = (props) => {
           ))}
         </Flex>
       </Box>
-      <Spacer mt={1} />
-      <Toggle label="Email Alerts" onChange={onToggleEmailNotification} active={values.enableEmailNotifications} />
-      <Spacer mt={2} />
-      <Toggle label="Mobile Alerts" onChange={onTogglePushNotification} active={values.enablePushNotifications} />
-      <Spacer mt={6} />
+      {!!enableSavedSearchToggles && (
+        <>
+          <Toggle label="Email Alerts" onChange={onToggleEmailNotification} active={values.enableEmailNotifications} />
+          <Spacer mt={2} />
+          <Toggle label="Mobile Alerts" onChange={onTogglePushNotification} active={values.enablePushNotifications} />
+          <Spacer mt={2} />
+        </>
+      )}
+      <Spacer mt={4} />
       <Button
         testID="save-alert-button"
         disabled={!!savedSearchAlertId && !(dirty || values.name.length === 0)}

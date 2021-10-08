@@ -2,6 +2,7 @@ import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@a
 import { FormikProvider, useFormik } from "formik"
 import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { Dialog } from "palette"
 import React, { useState } from "react"
@@ -41,6 +42,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const pills = extractPills(filters, aggregations)
   const tracking = useTracking()
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
+  const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const formik = useFormik<SavedSearchAlertFormValues>({
     initialValues,
     initialErrors: {},
@@ -147,6 +149,11 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   }
 
   const handleSubmit = async () => {
+    if (enableSavedSearchToggles) {
+      formik.handleSubmit()
+      return
+    }
+
     const granted = await checkIsPushNotificationGranted()
 
     if (granted) {
