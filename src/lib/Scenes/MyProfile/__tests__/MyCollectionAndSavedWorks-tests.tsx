@@ -1,15 +1,13 @@
 import { MyCollectionAndSavedWorks_me } from "__generated__/MyCollectionAndSavedWorks_me.graphql"
-import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "lib/navigation/navigate"
 import { FavoriteArtworksQueryRenderer } from "lib/Scenes/Favorites/FavoriteArtworks"
 import { MyCollectionQueryRenderer } from "lib/Scenes/MyCollection/MyCollection"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { MyCollectionAndSavedWorks, MyProfileHeader, Tab } from "../MyCollectionAndSavedWorks"
+import { MyCollectionAndSavedWorks, MyProfileHeader } from "../MyCollectionAndSavedWorks"
 
 jest.mock("../LoggedInUserInfo")
 jest.unmock("react-relay")

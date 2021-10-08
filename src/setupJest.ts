@@ -268,6 +268,7 @@ function getNativeModules(): OurNativeModules {
       lockActivityScreenOrientation: jest.fn(),
       gitCommitShortHash: "de4dc0de",
       isBetaOrDev: true,
+      updateAuthState: jest.fn(),
     },
   }
 }

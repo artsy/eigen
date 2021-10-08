@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
@@ -8,6 +9,8 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { screen } from "lib/utils/track/helpers"
 import { times } from "lodash"
 import { Flex, Join, Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useRef, useState } from "react"
@@ -165,7 +168,6 @@ export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
   const shouldDisplayMyCollection = useEnableMyCollection()
 
   if (shouldDisplayMyCollection) {
-    console.log("here1")
     return (
       <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.profile })}>
         <MyCollectionAndSavedWorksQueryRenderer />
