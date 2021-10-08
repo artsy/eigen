@@ -167,11 +167,6 @@ lane :ship_beta_android_play_store do
   flag_android_beta(is_android_beta: false)
 
   gradle(
-    task: "clean",
-    project_dir: "android/"
-  )
-
-  gradle(
     task: "bundle",
     build_type: "Release",
     project_dir: "android/",
@@ -199,11 +194,6 @@ lane :ship_beta_android_firebase do
 
   sentry_release_name = "android-#{vname}-#{vcode}"
   update_sentry_release_name(sentry_release_name: sentry_release_name)
-
-  gradle(
-    task: "clean",
-    project_dir: "android/"
-  )
 
   gradle(
     task: "bundle",
