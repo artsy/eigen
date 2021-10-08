@@ -92,12 +92,7 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     }
 
     if (waitForTabsToChange) {
-      await new Promise((resolve) => {
-        requestAnimationFrame(() => {
-          pushView()
-          resolve(null)
-        })
-      })
+      requestAnimationFrame(pushView)
     } else {
       pushView()
     }

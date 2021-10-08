@@ -87,7 +87,9 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
 
         if (shouldDisplayMyCollection) {
           await navigate("/my-profile/settings", options)
-          navigate("/my-profile/saved-search-alerts")
+          setTimeout(() => {
+            navigate("/my-profile/saved-search-alerts")
+          }, 100)
 
           return
         }

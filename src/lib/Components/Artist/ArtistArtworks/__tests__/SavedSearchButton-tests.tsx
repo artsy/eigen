@@ -6,7 +6,6 @@ import { navigate } from "lib/navigation/navigate"
 import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import { SavedSearchAlertMutationResult } from "lib/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
@@ -161,7 +160,7 @@ describe("SavedSearchButton", () => {
     act(() => tree.root.findByType(CreateSavedSearchAlert).props.onComplete(mockedMutationResult))
     act(() => tree.root.findByType(PopoverMessage).props.onPress())
 
-    await flushPromiseQueue()
+    await new Promise((r) => setTimeout(r, 100))
 
     expect(navigate).toHaveBeenCalledWith("/my-profile/settings", {
       popToRootTabView: true,

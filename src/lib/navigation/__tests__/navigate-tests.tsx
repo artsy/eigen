@@ -168,6 +168,9 @@ describe(navigate, () => {
       popToRootTabView: true,
       showInTabName: "profile",
     })
+
+    await flushPromiseQueue()
+
     expect(GlobalStore.actions.bottomTabs.switchTab).toHaveBeenCalledWith("profile")
     expect(args(LegacyNativeModules.ARScreenPresenterModule.pushView as any)).toMatchInlineSnapshot(`
       Array [
