@@ -91,17 +91,6 @@ describe("Search2 Screen", () => {
     expect(getByText("Explore art on view")).toBeTruthy()
   })
 
-  it("shows the cancel button when the input focuses", () => {
-    const { queryByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
-
-    expect(queryByText("Cancel")).toBeFalsy()
-
-    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
-
-    fireEvent(searchInput, "focus")
-    expect(queryByText("Cancel")).toBeTruthy()
-  })
-
   it('the "Top" pill should be selected by default', () => {
     const { getByA11yState, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
     const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
@@ -231,13 +220,13 @@ describe("Search2 Screen", () => {
     })
 
     it("when cancel button is pressed", () => {
-      const { queryByA11yState, getByPlaceholderText, getByText } = tree
+      const { queryByA11yState, getByPlaceholderText, getByText, getAllByText } = tree
       const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
       fireEvent(searchInput, "changeText", "prev value")
       fireEvent(getByText("Artists"), "press")
       fireEvent(searchInput, "focus")
-      fireEvent(getByText("Cancel"), "press")
+      fireEvent(getAllByText("Cancel")[0], "press")
       fireEvent(searchInput, "changeText", "new value")
 
       expect(queryByA11yState({ selected: true })).toHaveTextContent("Top")

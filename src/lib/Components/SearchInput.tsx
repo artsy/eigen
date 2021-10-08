@@ -7,7 +7,7 @@ import { useAnimatedValue } from "./StickyTabPage/reanimatedHelpers"
 
 const MX = 2
 
-interface SearchInputProps extends InputProps {
+export interface SearchInputProps extends InputProps {
   mx?: SpacingUnitV2 | SpacingUnitV3
   enableCancelButton?: boolean
   onCancelPress?: () => void
