@@ -13,8 +13,8 @@ interface FormProps {
   artistName: string
   onDeletePress?: () => void
   onSubmitPress?: () => void
-  onTogglePushNotification: (nextState: boolean) => void
-  onToggleEmailNotification: (nextState: boolean) => void
+  onTogglePushNotification: (enabled: boolean) => void
+  onToggleEmailNotification: (enabled: boolean) => void
 }
 
 export const Form: React.FC<FormProps> = (props) => {
