@@ -2,7 +2,7 @@ import { themeGet } from "@styled-system/theme-get"
 import { EntityType, navigate, navigateToEntity, navigateToPartner, SlugType } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
-import { ArtworkIcon, Box, CloseIcon, Flex, Spacer, Text, Touchable } from "palette"
+import { ArtworkIcon, AuctionIcon, Box, CloseIcon, Flex, Spacer, Text, Touchable } from "palette"
 import React, { useContext } from "react"
 import { Pressable } from "react-native"
 import { useTracking } from "react-tracking"
@@ -41,7 +41,11 @@ const NavigationButton: React.FC<{ artistTab: ArtistTabs; displayText: string; o
         {({ pressed }) => (
           <QuickNavigationButton>
             <Box mr={0.5}>
-              <ArtworkIcon fill={pressed ? "blue100" : "black100"} />
+              {displayText === "Auction Results" ? (
+                <AuctionIcon fill={pressed ? "blue100" : "black100"} />
+              ) : (
+                <ArtworkIcon fill={pressed ? "blue100" : "black100"} />
+              )}
             </Box>
             <Text variant="xs" color={pressed ? "blue100" : "black100"}>
               {displayText}
