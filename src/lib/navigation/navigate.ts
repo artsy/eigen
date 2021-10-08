@@ -74,11 +74,15 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
   } else {
     const onlyShowInTabName = module.options.onlyShowInTabName || showInTabName
     const selectedTab = unsafe__getSelectedTab()
-    const delayExecution = !!onlyShowInTabName && onlyShowInTabName !== selectedTab
+
+    // If we need to switch to a tab that is different from the selected one
+    // we will need to delay the navigation action until we change tabs
+    const waitForTabsToChange = !!onlyShowInTabName && onlyShowInTabName !== selectedTab
     const pushView = () => {
       LegacyNativeModules.ARScreenPresenterModule.pushView(onlyShowInTabName ?? selectedTab, screenDescriptor)
     }
 
+    // If the screen should be on a tab, then switch to this tab first
     if (onlyShowInTabName) {
       if (popToRootTabView) {
         await LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(onlyShowInTabName)
@@ -87,7 +91,7 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
       switchTab(onlyShowInTabName)
     }
 
-    if (delayExecution) {
+    if (waitForTabsToChange) {
       await new Promise((resolve) => {
         requestAnimationFrame(() => {
           pushView()
