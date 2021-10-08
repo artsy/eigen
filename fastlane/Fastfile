@@ -165,10 +165,17 @@ lane :ship_beta_android_play_store do
 
   # build again with flag set to false for release candidates
   flag_android_beta(is_android_beta: false)
+
+  gradle(
+    task: "clean",
+    project_dir: "android/"
+  )
+
   gradle(
     task: "bundle",
     build_type: "Release",
-    project_dir: "android/"
+    project_dir: "android/",
+    flags: "--max-workers=2 --no-daemon"
   )
 
   upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
@@ -194,9 +201,15 @@ lane :ship_beta_android_firebase do
   update_sentry_release_name(sentry_release_name: sentry_release_name)
 
   gradle(
+    task: "clean",
+    project_dir: "android/"
+  )
+
+  gradle(
     task: "bundle",
     build_type: "Release",
-    project_dir: "android/"
+    project_dir: "android/",
+    flags: "--max-workers=2 --no-daemon"
   )
 
   firebase_app_distribution(
