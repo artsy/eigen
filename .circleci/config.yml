@@ -407,6 +407,7 @@ jobs:
             - build-success.log
       - await-previous-builds:
           branch: beta-android
+      - generate-query-map
       - run:
           name: Create JS bundle
           command: yarn bundle:android
