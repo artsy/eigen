@@ -552,13 +552,13 @@ workflows:
                 - app_store_submission
                 - play_store_submission
                 - update-changelog
-      - build-test-js:
-          filters:
-            branches:
-              ignore:
-                - app_store_submission
-                - play_store_submission
-                - update-changelog
+      # - build-test-js:
+      #     filters:
+      #       branches:
+      #         ignore:
+      #           - app_store_submission
+      #           - play_store_submission
+      #           - update-changelog
       - horizon/block:
           context: horizon
           project_id: 37
