@@ -525,13 +525,13 @@ workflows:
                 - app_store_submission
                 - play_store_submission
                 - update-changelog
-      # - build-test-js:
-      #     filters:
-      #       branches:
-      #         ignore:
-      #           - app_store_submission
-      #           - play_store_submission
-      #           - update-changelog
+      - build-test-js:
+          filters:
+            branches:
+              ignore:
+                - app_store_submission
+                - play_store_submission
+                - update-changelog
       - horizon/block:
           context: horizon
           project_id: 37
@@ -549,7 +549,7 @@ workflows:
                 - beta-android
                 - update-changelog
           requires:
-            # - build-test-js
+            - build-test-js
             - horizon/block
       - build-test-app-android:
           filters:
@@ -560,7 +560,7 @@ workflows:
                 - beta-ios
                 - update-changelog
           requires:
-            # - build-test-js
+            - build-test-js
             - horizon/block
       - update-metaphysics:
           filters:
