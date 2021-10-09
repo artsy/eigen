@@ -397,6 +397,8 @@ jobs:
       - image: circleci/android:api-29-node
     steps:
       - prep-android-env
+      - await-previous-builds:
+          branch: beta-android
       - run:
           name: Create JS bundle
           command: yarn bundle:android
