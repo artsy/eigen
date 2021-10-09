@@ -198,7 +198,7 @@ commands:
       - generate-query-map
       - run:
           name: Create JS bundle
-          command: yarn bundle:android
+          command: touch android/app/src/main/assets/index.android.bundle && yarn bundle:android
       - run:
           name: Build App
           command: ./scripts/ci-android
