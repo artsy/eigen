@@ -225,6 +225,8 @@ lane :ship_beta_android_both do
     flags: "--no-daemon -x bundleReleaseJsAndAssets",
   )
 
+  upload_sentry_artifacts(sentry_release_name: sentry_release_name, dist_version: "#{vcode}", platform: "android")
+
   supply(
     track: "alpha",
     skip_upload_apk: true,
