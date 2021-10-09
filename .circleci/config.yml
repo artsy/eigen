@@ -576,7 +576,7 @@ workflows:
                 - beta-android
                 - update-changelog
           requires:
-            - build-test-js
+            # - build-test-js
             - horizon/block
       - build-test-app-android-play-store:
           filters:
@@ -587,7 +587,7 @@ workflows:
                 - beta-ios
                 - update-changelog
           requires:
-            - build-test-js
+            # - build-test-js
             - horizon/block
       - build-test-app-android-firebase:
           filters:
@@ -598,7 +598,7 @@ workflows:
                 - beta-ios
                 - update-changelog
           requires:
-            - build-test-js
+            # - build-test-js
             - horizon/block
       - update-metaphysics:
           filters:
