@@ -6,5 +6,5 @@ set -euxo pipefail
 yarn jetifier
 
 cd android
-./gradlew buildRelease --no-daemon -x bundleReleaseJsAndAssets
+./gradlew bundleRelease --no-daemon -x bundleReleaseJsAndAssets
 cd -
