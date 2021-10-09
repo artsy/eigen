@@ -208,6 +208,39 @@ lane :ship_beta_android_firebase do
   )
 end
 
+lane :ship_beta_android_both do
+  sh("yarn jetifier")
+
+  flag_android_beta(is_android_beta: true)
+
+  vname, vcode = set_build_version_android
+
+  sentry_release_name = "android-#{vname}-#{vcode}"
+  update_sentry_release_name(sentry_release_name: sentry_release_name)
+
+  gradle(
+    task: "bundle",
+    build_type: "Release",
+    project_dir: "android/",
+    flags: "--no-daemon -x bundleReleaseJsAndAssets",
+  )
+
+  supply(
+    track: "alpha",
+    skip_upload_apk: true,
+    skip_upload_metadata: true,
+    skip_upload_images: true,
+    skip_upload_screenshots: true,
+  )
+
+
+  firebase_app_distribution(
+    app: ENV["FIREBASE_APP_ID"],
+    groups: 'artsy-people',
+    android_artifact_path: "./android/app/build/outputs/bundle/release/app-release.aab"
+  )
+end
+
 lane :promote_beta_android do
   current_version_code = google_play_track_version_codes(
     track: "alpha",
