@@ -195,6 +195,10 @@ commands:
       - restore_cache:
           keys:
             - v1-app_build_android-{{ checksum ".manifests/app_build" }}
+      - generate-query-map
+      - run:
+          name: Create JS bundle
+          command: yarn bundle:android
       - run:
           name: Build App
           command: ./scripts/ci-android
@@ -399,10 +403,6 @@ jobs:
       - prep-android-env
       - await-previous-builds:
           branch: beta-android
-      - generate-query-map
-      - run:
-          name: Create JS bundle
-          command: yarn bundle:android
       - build-app-android
       - run:
           name: Save success file
