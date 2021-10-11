@@ -258,7 +258,7 @@ export const SaleInfoQueryRenderer: React.FC<{ saleID: string }> = ({ saleID: sa
           sale(id: $saleID) {
             ...SaleInfo_sale
           }
-          me @optionalField {
+          me {
             ...SaleInfo_me
           }
         }

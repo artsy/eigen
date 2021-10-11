@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 94541769f226579d4de707bf9cd940a7 */
+/* @relayHash e123a1d6effa89423d725d38b2dbfccb */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,7 +33,7 @@ query SaleAboveTheFoldQuery(
     ...Sale_sale
     id
   }
-  me @optionalField {
+  me {
     ...Sale_me
     id
   }
@@ -776,7 +776,7 @@ return {
     ]
   },
   "params": {
-    "id": "94541769f226579d4de707bf9cd940a7",
+    "id": "e123a1d6effa89423d725d38b2dbfccb",
     "metadata": {},
     "name": "SaleAboveTheFoldQuery",
     "operationKind": "query",
@@ -784,5 +784,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'b27927ed14ec0d8e136150c47975fde0';
+(node as any).hash = 'f4efd71b81babcfaf9b937604d23728f';
 export default node;

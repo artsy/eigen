@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d8bf60d0108d15bffaf0f787ef140dae */
+/* @relayHash 6a2a285e24685f8bf25e925e9dce895f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,7 +29,7 @@ query SaleRefetchQuery(
   $saleID: String!
   $saleSlug: ID!
 ) {
-  me @optionalField {
+  me {
     ...Sale_me
     id
   }
@@ -776,7 +776,7 @@ return {
     ]
   },
   "params": {
-    "id": "d8bf60d0108d15bffaf0f787ef140dae",
+    "id": "6a2a285e24685f8bf25e925e9dce895f",
     "metadata": {},
     "name": "SaleRefetchQuery",
     "operationKind": "query",
@@ -784,5 +784,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'd1ce7540826a7089de856f2fa5c00593';
+(node as any).hash = 'd688b52a0b92afa8123cede3e13bce7a';
 export default node;

@@ -258,7 +258,7 @@ describe("AutosuggestResults", () => {
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixtureEmpty }))
 
     expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(0)
-    expect(extractText(tree.root)).toContain("We couldn't find anything for “michael.”")
+    expect(extractText(tree.root)).toContain("We couldn't find anything for “michael”")
   })
 
   it(`optionally hides the result type`, () => {
