@@ -101,4 +101,7 @@ extern NSString *const ARUserSessionStartedNotification;
                           success:(void (^)(void))success
                           failure:(void (^)(NSError *error))failure;
 
+- (void)handleAuthState:(NSString *)token
+       expiryDateString:(NSString *)expiryDateString
+                   JSON: (id) JSON;
 @end
