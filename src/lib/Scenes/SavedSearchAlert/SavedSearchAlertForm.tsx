@@ -142,7 +142,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     )
   }
 
-  const checkIsPushNotificationGranted = async () => {
+  const checkOrRequestPushPermissions = async () => {
     const notificationStatus = await getNotificationPermissionsStatus()
 
     if (notificationStatus === PushAuthorizationStatus.Denied) {
@@ -162,9 +162,9 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       return
     }
 
-    const granted = await checkIsPushNotificationGranted()
+    const isPushGranted = await checkOrRequestPushPermissions()
 
-    if (granted) {
+    if (isPushGranted) {
       formik.handleSubmit()
     }
   }
@@ -172,9 +172,9 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const handleTogglePushNotification = async (enabled: boolean) => {
     // If mobile alerts is selected, then we check the permissions for push notifications
     if (enabled) {
-      const granted = await checkIsPushNotificationGranted()
+      const isPushGranted = await checkOrRequestPushPermissions()
 
-      if (!granted) {
+      if (!isPushGranted) {
         return
       }
     }
