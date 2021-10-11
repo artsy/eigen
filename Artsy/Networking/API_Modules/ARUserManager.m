@@ -462,6 +462,27 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     [op start];
 }
 
+// When the user authenticates from react-native, we need to make sure that native side
+// is synchronized with react-native
+- (void)handleAuthState:(NSString *)token
+       expiryDateString:(NSString *)expiryDateString
+                   JSON: (id) JSON;
+{
+    [ARRouter setAuthToken:token];
+
+    User *user = [User modelWithJSON:JSON];
+    self.currentUser = user;
+    [self storeUserData];
+    [user updateProfile:^{
+        [self storeUserData];
+    }];
+
+    // Create an Expiration Date
+    ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
+    NSDate *expiryDate = [dateFormatter dateFromString:expiryDateString];
+    [self saveUserOAuthToken:token expiryDate:expiryDate];
+}
+
 - (void)sendPasswordResetForEmail:(NSString *)email success:(void (^)(void))success failure:(void (^)(NSError *))failure
 {
     [ArtsyAPI getXappTokenWithCompletion:^(NSString *xappToken, NSDate *expirationDate) {

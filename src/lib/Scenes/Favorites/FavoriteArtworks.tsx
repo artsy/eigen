@@ -69,7 +69,7 @@ export class SavedWorks extends Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const artworks = extractNodes(this.props.me.followsAndSaves?.artworks)
+    const artworks = extractNodes(this.props.me?.followsAndSaves?.artworks)
     const isEnabledForMyCollection = unsafe_getEnableMyCollection()
 
     if (artworks.length === 0) {

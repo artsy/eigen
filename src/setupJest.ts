@@ -72,7 +72,7 @@ jest.mock("react-native-share", () => ({
 jest.mock("react-native-device-info", () => ({
   getBuildNumber: jest.fn(),
   getVersion: jest.fn(),
-  getModel: jest.fn(),
+  getModel: () => "testDevice",
   getUserAgentSync: jest.fn(),
   getDeviceType: jest.fn(),
   hasNotch: jest.fn(),
@@ -268,6 +268,7 @@ function getNativeModules(): OurNativeModules {
       lockActivityScreenOrientation: jest.fn(),
       gitCommitShortHash: "de4dc0de",
       isBetaOrDev: true,
+      updateAuthState: jest.fn(),
     },
   }
 }
