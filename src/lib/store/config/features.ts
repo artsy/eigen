@@ -139,7 +139,7 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableTrove",
   },
   AREnableShowsRail: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Shows in homepage",
     showInAdminMenu: true,
   },
