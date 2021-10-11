@@ -12,6 +12,15 @@ import WebView, { WebViewProps } from "react-native-webview"
 import { act } from "react-test-renderer"
 import { __webViewTestUtils__, ArtsyReactWebViewPage, useWebViewCookies } from "../ArtsyReactWebView"
 
+jest.mock("react-native-device-info", () => ({
+  getBuildNumber: () => "build-number",
+  getVersion: jest.fn(),
+  getModel: jest.fn(),
+  getUserAgentSync: jest.fn(),
+  getDeviceType: jest.fn(),
+  hasNotch: jest.fn(),
+}))
+
 describe(ArtsyReactWebViewPage, () => {
   const render = (props: Partial<React.ComponentProps<typeof ArtsyReactWebViewPage>> = {}) =>
     renderWithWrappers(<ArtsyReactWebViewPage url="https://staging.artsy.net/hello" {...props} />)
@@ -71,11 +80,15 @@ describe(ArtsyReactWebViewPage, () => {
   })
   it("sets the user agent correctly", () => {
     const tree = render()
-    expect(tree.root.findByType(WebView).props.userAgent).toBe("Jest Unit Tests")
+    expect(tree.root.findByType(WebView).props.userAgent).toBe(
+      "Artsy-Mobile ios Artsy-Mobile/7.0.3 Eigen/build-number/7.0.3"
+    )
   })
   it("sets the user agent correctly", () => {
     const tree = render()
-    expect(tree.root.findByType(WebView).props.userAgent).toBe("Jest Unit Tests")
+    expect(tree.root.findByType(WebView).props.userAgent).toBe(
+      "Artsy-Mobile ios Artsy-Mobile/7.0.3 Eigen/build-number/7.0.3"
+    )
   })
 
   describe("mimicBrowserBackButton", () => {

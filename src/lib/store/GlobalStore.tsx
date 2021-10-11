@@ -2,7 +2,6 @@ import { useNavigationState } from "@react-navigation/native"
 import { createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import { __unsafe_mainModalStackRef } from "lib/NativeModules/ARScreenPresenterModule"
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNavigationState"
 import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import React from "react"
@@ -175,11 +174,6 @@ export function unsafe_getUserAccessToken() {
 
 export function getCurrentEmissionState() {
   const state = globalStoreInstance().getState() ?? null
-  if (!unsafe_getFeatureFlag("AREnableNewOnboardingFlow")) {
-    if (Platform.OS === "ios") {
-      return state?.native.sessionState ?? LegacyNativeModules.ARNotificationsManager.nativeState
-    }
-  }
 
   // `getUserAgentSync` breaks the Chrome Debugger, so we use a string instead.
   const userAgent = `${
@@ -187,7 +181,7 @@ export function getCurrentEmissionState() {
   } Artsy-Mobile/${version} Eigen/${getBuildNumber()}/${version}`
 
   const data: GlobalStoreModel["native"]["sessionState"] = {
-    authenticationToken: state?.auth.userAccessToken!,
+    authenticationToken: state?.auth.userAccessToken || "",
     deviceId: `${Platform.OS} ${getModel()}`,
     launchCount: ArtsyNativeModule.launchCount,
     onboardingState: "none", // not used on android

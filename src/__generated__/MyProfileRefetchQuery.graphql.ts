@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a86e24ad9b87a0aa576f4f2ff276db76 */
+/* @relayHash 315b29932c478a9f9702265c573e4e9e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -20,7 +20,7 @@ export type MyProfileRefetchQuery = {
 
 /*
 query MyProfileRefetchQuery {
-  me {
+  me @optionalField {
     ...MyProfile_me
     id
   }
@@ -354,7 +354,7 @@ return {
     ]
   },
   "params": {
-    "id": "a86e24ad9b87a0aa576f4f2ff276db76",
+    "id": "315b29932c478a9f9702265c573e4e9e",
     "metadata": {},
     "name": "MyProfileRefetchQuery",
     "operationKind": "query",
@@ -362,5 +362,5 @@ return {
   }
 };
 })();
-(node as any).hash = '4815dd6a0b1d21156d449fede1623f28';
+(node as any).hash = '735b9070a215885b6111dd7191f4b713';
 export default node;

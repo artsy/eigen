@@ -27,6 +27,9 @@ interface LegacyNativeModules {
     clearUserData(): Promise<void>
     getUserEmail(): string
   }
+  ArtsyNativeModule: {
+    updateAuthState(userAccessToken: string, userAccessTokenExpiresIn: string, user: any): void
+  }
   ARNotificationsManager: {
     nativeState: NativeState
     postNotificationName(type: string, data: object): void
@@ -104,6 +107,10 @@ export const LegacyNativeModules: LegacyNativeModules =
           AREnabled: false,
           CurrentLocale: getLocales()[0].languageTag,
           LocalTimeZone: getTimeZone(),
+        },
+
+        ArtsyNativeModule: {
+          updateAuthState: noop("updateAuthState"),
         },
 
         ARNotificationsManager: {

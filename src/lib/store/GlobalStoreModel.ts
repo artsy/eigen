@@ -63,10 +63,6 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
     // keep existing config state
     const existingConfig = store.getState().config
     const config = sanitize(existingConfig) as typeof existingConfig
-    if (Platform.OS === "ios") {
-      await LegacyNativeModules.ARTemporaryAPIModule.clearUserData()
-    }
-
     const signOutGoogle = async () => {
       try {
         await GoogleSignin.revokeAccess()
@@ -77,10 +73,13 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
       }
     }
 
-    await signOutGoogle()
-    CookieManager.clearAll()
-    RelayCache.clearAll()
-    actions.reset({ config })
+    await Promise.all([
+      Platform.OS === "ios" ? await LegacyNativeModules.ARTemporaryAPIModule.clearUserData() : Promise.resolve(),
+      await signOutGoogle(),
+      CookieManager.clearAll(),
+      RelayCache.clearAll(),
+      actions.reset({ config }),
+    ])
   }),
   didRehydrate: thunkOn(
     (actions) => actions.rehydrate,
