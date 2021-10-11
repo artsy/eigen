@@ -46,6 +46,7 @@ const SEARCH_THROTTLE_INTERVAL = 500
 const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholder, refine, onReset }) => {
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(currentRefinement)
+
   const handleChangeText = useMemo(() => throttle(refine, SEARCH_THROTTLE_INTERVAL), [])
 
   const handleReset = () => {
