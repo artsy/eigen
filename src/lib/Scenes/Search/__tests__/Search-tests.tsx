@@ -84,15 +84,6 @@ describe("The Search page", () => {
     expect(tree.root.findAllByType(AutosuggestResults)).toHaveLength(0)
   })
 
-  it(`shows the cancel button when the input focues`, () => {
-    const tree = renderWithWrappers(<TestWrapper />)
-    expect(extractText(tree.root)).not.toContain("Cancel")
-    act(() => {
-      tree.root.findByType(TextInput).props.onFocus()
-    })
-    expect(extractText(tree.root)).toContain("Cancel")
-  })
-
   it(`passes the query to the AutosuggestResults when the query.length is >= 2`, async () => {
     const tree = renderWithWrappers(<TestWrapper />)
 
