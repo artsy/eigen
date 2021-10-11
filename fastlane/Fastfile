@@ -376,8 +376,9 @@ lane :upload_sentry_artifacts do |options|
     bundle_path = 'emission/Pod/Assets/Emission.js'
     outfile = '~/Emission.js'
   else
-    source_map_path = 'android/app/build/generated/sourcemaps/react/release/index.android.bundle.map'
-    bundle_path = 'android/app/build/generated/assets/react/release/index.android.bundle'
+    # the bundle name, path and source map come from the react-native bundle step when running yarn bundle:android
+    source_map_path = 'android/app/src/main/assets/index.android.bundle.map'
+    bundle_path = 'android/app/src/main/assets/index.android.bundle'
     outfile = '~/index.android.bundle'
   end
 
