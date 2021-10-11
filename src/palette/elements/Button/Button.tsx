@@ -170,7 +170,7 @@ export const Button: React.FC<ButtonProps> = ({
                   <AnimatedText
                     variant={size === "small" ? "xs" : "sm"}
                     style={{
-                      width: longestTextMeasurements.width,
+                      width: Math.ceil(longestTextMeasurements.width),
                       color: springProps.textColor,
                       textDecorationLine: springProps.textDecorationLine,
                     }}
