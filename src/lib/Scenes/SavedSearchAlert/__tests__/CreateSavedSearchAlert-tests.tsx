@@ -1,6 +1,7 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
@@ -34,7 +35,7 @@ describe("CreateSavedSearchAlert", () => {
 
   beforeEach(() => {
     mockEnvironment.mockClear()
-    notificationPermissions.mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Authorized))
+    notificationPermissions.mockClear()
   })
 
   it("renders without throwing an error", () => {
@@ -55,7 +56,9 @@ describe("CreateSavedSearchAlert", () => {
   })
 
   it("calls onComplete when the mutation is completed", async () => {
+    notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
     const onCompleteMock = jest.fn()
+
     const { getByTestId } = renderWithWrappersTL(
       <CreateSavedSearchAlert {...defaultProps} onComplete={onCompleteMock} />
     )
@@ -74,5 +77,29 @@ describe("CreateSavedSearchAlert", () => {
     expect(onCompleteMock).toHaveBeenCalledWith({
       id: "internalID",
     })
+  })
+
+  it("Mobile alerts toggle should be disabled by default if Push notification permissions are not granted", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
+    notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.NotDetermined))
+
+    const { findAllByA11yState } = renderWithWrappersTL(<CreateSavedSearchAlert {...defaultProps} />)
+
+    const results = await findAllByA11yState({ selected: true })
+
+    // Email alerts are enabled, Mobile alerts are disabled
+    expect(results).toHaveLength(1)
+  })
+
+  it("Mobile alerts toggle should be enabled by default if Push notification permissions are granted", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
+    notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
+
+    const { findAllByA11yState } = renderWithWrappersTL(<CreateSavedSearchAlert {...defaultProps} />)
+
+    const results = await findAllByA11yState({ selected: true })
+
+    // Email and Mobile alerts are enabled
+    expect(results).toHaveLength(2)
   })
 })
