@@ -107,7 +107,7 @@ commands:
             - v6-metro-{{ checksum ".manifests/js_transform" }}
       - run:
           name: Bundle emission
-          command: ls emission/Pod/Assets/Emission.js || yarn bundle-for-native-ci
+          command: ls emission/Pod/Assets/Emission.js || yarn bundle-for-native-ci:ios
       - save_cache:
           key: v6-metro-{{ checksum ".manifests/js_transform" }}
           paths:
@@ -195,12 +195,16 @@ commands:
       - restore_cache:
           keys:
             - v1-app_build_android-{{ checksum ".manifests/app_build" }}
-      - run:
-          name: Build App
-          command: ./scripts/ci-android
+      - generate-query-map
       - run:
           name: Download fonts from s3
           command: ./scripts/download-assets
+      - run:
+          name: Create JS bundle
+          command: touch android/app/src/main/assets/index.android.bundle && yarn bundle:android
+      - run:
+          name: Build App
+          command: ./scripts/ci-android
       - save_cache:
           key: v1-app_build_android-{{ checksum ".manifests/app_build" }}
           paths:
@@ -390,15 +394,15 @@ jobs:
           no_output_timeout: 20m
           command: ./scripts/deploy-if-beta-branch-ios
 
-  build-test-app-android-firebase:
+  build-test-app-android:
     environment:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
-
     docker:
       - image: circleci/android:api-29-node
-
     steps:
       - prep-android-env
+      - await-previous-builds:
+          branch: beta-android
       - build-app-android
       - run:
           name: Save success file
@@ -407,34 +411,9 @@ jobs:
           key: v6-test-success-{{ checksum "../workspace/.manifests/android_native" }}
           paths:
             - build-success.log
-
-      - await-previous-builds:
-          branch: beta-android
       - run:
-          name: Deploy if beta - firebase
-          command: ./scripts/deploy-if-beta-branch-android FIREBASE
-
-  build-test-app-android-play-store:
-    environment:
-      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
-    docker:
-      - image: circleci/android:api-29-node
-    steps:
-      - prep-android-env
-      - build-app-android
-      - run:
-          name: Save success file
-          command: echo yes > 'build-success.log'
-      - save_cache:
-          key: v6-test-success-{{ checksum "../workspace/.manifests/android_native" }}
-          paths:
-            - build-success.log
-      - await-previous-builds:
-          branch: beta-android
-      - run:
-          name: Deploy if beta - play store
-          command: ./scripts/deploy-if-beta-branch-android PLAY_STORE
-
+          name: Deploy if beta - play store and firebase
+          command: ./scripts/deploy-if-beta-branch-android BOTH
 
   promote-beta-to-app-store:
     environment:
@@ -572,18 +551,7 @@ workflows:
           requires:
             - build-test-js
             - horizon/block
-      - build-test-app-android-play-store:
-          filters:
-            branches:
-              ignore:
-                - app_store_submission
-                - play_store_submission
-                - beta-ios
-                - update-changelog
-          requires:
-            - build-test-js
-            - horizon/block
-      - build-test-app-android-firebase:
+      - build-test-app-android:
           filters:
             branches:
               ignore:
@@ -604,5 +572,4 @@ workflows:
                 - update-changelog
           requires:
             - build-test-app-ios
-            - build-test-app-android-play-store
-            - build-test-app-android-firebase
+            - build-test-app-android

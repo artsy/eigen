@@ -4,8 +4,8 @@ set -euxo pipefail
 ./scripts/setup-distribute-linux
 
 yarn jetifier
-yarn relay
 
 cd android
-./gradlew buildRelease
+./gradlew clean
+./gradlew bundleRelease --no-daemon -x bundleReleaseJsAndAssets
 cd -
