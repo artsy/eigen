@@ -1,6 +1,7 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { Aggregations, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
@@ -198,7 +199,7 @@ describe("Saved search alert form", () => {
       <SavedSearchAlertForm
         {...baseProps}
         savedSearchAlertId="savedSearchAlertId"
-        initialValues={{ name: "update value", enableEmailNotifications: false, enablePushNotifications: true }}
+        initialValues={{ ...baseProps.initialValues, name: "update value" }}
       />
     )
 
@@ -213,6 +214,52 @@ describe("Saved search alert form", () => {
           },
         },
       })
+    })
+  })
+
+  it("should hide notification toggles if AREnableSavedSearchToggles is disabled", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: false })
+    const { queryByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+    expect(queryByText("Email Alerts")).toBeFalsy()
+    expect(queryByText("Mobile Alerts")).toBeFalsy()
+  })
+
+  it("should display notification toggles if AREnableSavedSearchToggles is enabled", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
+    const { queryByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+    expect(queryByText("Email Alerts")).toBeTruthy()
+    expect(queryByText("Mobile Alerts")).toBeTruthy()
+  })
+
+  it('should check Push notification permissions when "the mobile alerts toggle" is enabled', async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
+    const notificationPermissionsMock = mockFetchNotificationPermissions(false)
+
+    const { getByA11yLabel } = renderWithWrappersTL(
+      <SavedSearchAlertForm
+        {...baseProps}
+        initialValues={{ ...baseProps.initialValues, enablePushNotifications: false }}
+      />
+    )
+
+    fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", true)
+
+    expect(notificationPermissionsMock).toBeCalled()
+  })
+
+  it("should immediately call mutation if AREnableSavedSearchToggles is enabled", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
+    mockFetchNotificationPermissions(false)
+
+    const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+    fireEvent.press(getByTestId("save-alert-button"))
+
+    await waitFor(() => {
+      const mutation = mockEnvironment.mock.getMostRecentOperation()
+      expect(mutation).toBeTruthy()
     })
   })
 })
