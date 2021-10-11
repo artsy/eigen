@@ -2,7 +2,7 @@ import { themeGet } from "@styled-system/theme-get"
 import { EntityType, navigate, navigateToEntity, navigateToPartner, SlugType } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
-import { ArtworkIcon, Box, CloseIcon, Flex, Spacer, Text, Touchable } from "palette"
+import { ArtworkIcon, AuctionIcon, Box, CloseIcon, Flex, IconProps, Spacer, Text, Touchable } from "palette"
 import React, { useContext } from "react"
 import { Pressable } from "react-native"
 import { useTracking } from "react-tracking"
@@ -28,11 +28,12 @@ const getResultType = (result: AutosuggestResult) => {
   return ""
 }
 
-const NavigationButton: React.FC<{ artistTab: ArtistTabs; displayText: string; onPress: HandleResultPress }> = ({
-  artistTab,
-  displayText,
-  onPress,
-}) => {
+const NavigationButton: React.FC<{
+  artistTab: ArtistTabs
+  displayText: string
+  onPress: HandleResultPress
+  Icon: React.FC<IconProps>
+}> = ({ artistTab, displayText, onPress, Icon }) => {
   return (
     <>
       <Spacer ml={1} />
@@ -41,7 +42,7 @@ const NavigationButton: React.FC<{ artistTab: ArtistTabs; displayText: string; o
         {({ pressed }) => (
           <QuickNavigationButton>
             <Box mr={0.5}>
-              <ArtworkIcon fill={pressed ? "blue100" : "black100"} />
+              <Icon fill={pressed ? "blue100" : "black100"} />
             </Box>
             <Text variant="xs" color={pressed ? "blue100" : "black100"}>
               {displayText}
@@ -146,8 +147,8 @@ export const AutosuggestSearchResult: React.FC<{
           <Flex flexDirection="row" alignItems="center">
             <Spacer ml={4} />
 
-            <NavigationButton displayText="Artworks" artistTab="Artworks" onPress={onPress} />
-            <NavigationButton displayText="Auction Results" artistTab="Insights" onPress={onPress} />
+            <NavigationButton displayText="Artworks" Icon={ArtworkIcon} artistTab="Artworks" onPress={onPress} />
+            <NavigationButton displayText="Auction Results" Icon={AuctionIcon} artistTab="Insights" onPress={onPress} />
           </Flex>
         </>
       )}
