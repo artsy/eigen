@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
@@ -8,6 +9,8 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { screen } from "lib/utils/track/helpers"
 import { times } from "lodash"
 import { Flex, Join, Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useRef, useState } from "react"
@@ -15,14 +18,10 @@ import { FlatList, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
 import { LoadingSkeleton as MyCollectionLoadingSkeleton, useEnableMyCollection } from "../MyCollection/MyCollection"
-import { MyCollectionAndSavedWorks, Tab } from "./MyCollectionAndSavedWorks"
+import { MyCollectionAndSavedWorksQueryRenderer } from "./MyCollectionAndSavedWorks"
 import { confirmLogout, SectionHeading } from "./MyProfileSettings"
 
 export const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
-  const shouldDisplayMyCollection = useEnableMyCollection()
-  if (shouldDisplayMyCollection) {
-    return <MyCollectionAndSavedWorks me={me} initialTab={Tab.collection} />
-  }
   return <OldMyProfile me={me} relay={relay} />
 }
 
@@ -118,7 +117,7 @@ export const MyProfilePlaceholder: React.FC<{}> = () => {
   )
 }
 
-export const MyProfileContainer = createRefetchContainer(
+export const OldMyProfileContainer = createRefetchContainer(
   MyProfile,
   {
     me: graphql`
@@ -140,14 +139,14 @@ export const MyProfileContainer = createRefetchContainer(
   },
   graphql`
     query MyProfileRefetchQuery {
-      me {
+      me @optionalField {
         ...MyProfile_me
       }
     }
   `
 )
 
-export const MyProfileQueryRenderer: React.FC<{}> = ({}) => (
+export const OldMyProfileQueryRenderer = () => (
   <QueryRenderer<MyProfileQuery>
     environment={defaultEnvironment}
     query={graphql`
@@ -158,9 +157,27 @@ export const MyProfileQueryRenderer: React.FC<{}> = ({}) => (
       }
     `}
     render={renderWithPlaceholder({
-      Container: MyProfileContainer,
+      Container: OldMyProfileContainer,
       renderPlaceholder: () => <MyProfilePlaceholder />,
     })}
     variables={{}}
   />
 )
+
+export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
+  const shouldDisplayMyCollection = useEnableMyCollection()
+
+  if (shouldDisplayMyCollection) {
+    return (
+      <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.profile })}>
+        <MyCollectionAndSavedWorksQueryRenderer />
+      </ProvideScreenTrackingWithCohesionSchema>
+    )
+  }
+
+  return (
+    <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.profile })}>
+      <OldMyProfileQueryRenderer />
+    </ProvideScreenTrackingWithCohesionSchema>
+  )
+}

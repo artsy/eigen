@@ -1,11 +1,14 @@
-import React from "react"
-import { ViewProps } from "react-native"
-
-import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
+import { MyCollectionAndSavedWorks_me } from "__generated__/MyCollectionAndSavedWorks_me.graphql"
+import { MyCollectionAndSavedWorksQuery } from "__generated__/MyCollectionAndSavedWorksQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "lib/navigation/navigate"
-import { Box, Sans, SettingsIcon as _SettingsIcon, useColor, useSpace } from "palette"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { Box, Sans, useColor, useSpace } from "palette"
+import React from "react"
+import { createFragmentContainer, QueryRenderer } from "react-relay"
+import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
 
@@ -14,12 +17,7 @@ export enum Tab {
   savedWorks = "Saved Works",
 }
 
-interface Props extends ViewProps {
-  initialTab: Tab
-  me: MyProfile_me
-}
-
-export const MyCollectionAndSavedWorks: React.FC<Props> = ({ initialTab = Tab.collection, me }) => {
+export const MyCollectionAndSavedWorks: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({ me }) => {
   return (
     <StickyTabPage
       disableBackButtonUpdate
@@ -27,20 +25,20 @@ export const MyCollectionAndSavedWorks: React.FC<Props> = ({ initialTab = Tab.co
         {
           title: Tab.collection,
           content: <MyCollectionQueryRenderer />,
-          initial: initialTab === Tab.collection,
+          initial: true,
         },
         {
           title: Tab.savedWorks,
           content: <FavoriteArtworksQueryRenderer />,
-          initial: initialTab === Tab.savedWorks,
+          initial: false,
         },
       ]}
-      staticHeaderContent={<MyProfileHeader name={me.name} createdAt={me.createdAt} />}
+      staticHeaderContent={<MyProfileHeader me={me} />}
     />
   )
 }
 
-export const MyProfileHeader: React.FC<{ name: string | null; createdAt: string | null }> = ({ name, createdAt }) => {
+export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({ me }) => {
   const space = useSpace()
   const color = useColor()
   return (
@@ -54,12 +52,36 @@ export const MyProfileHeader: React.FC<{ name: string | null; createdAt: string 
       />
       <Box px={space(2)} pb={space(6)}>
         <Sans size="8" color={color("black100")}>
-          {name}
+          {me?.name}
         </Sans>
-        {!!createdAt && (
-          <Sans size="2" color={color("black60")}>{`Member since ${new Date(createdAt).getFullYear()}`}</Sans>
+        {!!me?.createdAt && (
+          <Sans size="2" color={color("black60")}>{`Member since ${new Date(me?.createdAt).getFullYear()}`}</Sans>
         )}
       </Box>
     </>
   )
 }
+
+const MyCollectionAndSavedWorksFragmentContainer = createFragmentContainer(MyCollectionAndSavedWorks, {
+  me: graphql`
+    fragment MyCollectionAndSavedWorks_me on Me {
+      name
+      createdAt
+    }
+  `,
+})
+
+export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => (
+  <QueryRenderer<MyCollectionAndSavedWorksQuery>
+    environment={defaultEnvironment}
+    query={graphql`
+      query MyCollectionAndSavedWorksQuery {
+        me @optionalField {
+          ...MyCollectionAndSavedWorks_me
+        }
+      }
+    `}
+    render={renderWithLoadProgress(MyCollectionAndSavedWorksFragmentContainer)}
+    variables={{}}
+  />
+)
