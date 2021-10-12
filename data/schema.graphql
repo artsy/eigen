@@ -4262,6 +4262,13 @@ type Consignment {
   submissionID: ID
 }
 
+enum ConsignmentAttributionClass {
+  LIMITED_EDITION
+  OPEN_EDITION
+  UNIQUE
+  UNKNOWN_EDITION
+}
+
 # The connection type for Consignment.
 type ConsignmentConnection {
   # A list of edges.
@@ -4748,6 +4755,7 @@ type ConsignmentSubmission {
   artist: Artist
   artistId: String!
   assets: [ConsignmentSubmissionCategoryAsset]
+  attributionClass: ConsignmentAttributionClass
   authenticityCertificate: Boolean
   category: String
   createdAt: ISO8601DateTime
@@ -4902,6 +4910,12 @@ enum ConsignmentSubmissionSort {
 
   # sort by authenticity_certificate in descending order
   AUTHENTICITY_CERTIFICATE_DESC
+
+  # sort by cataloguer in ascending order
+  CATALOGUER_ASC
+
+  # sort by cataloguer in descending order
+  CATALOGUER_DESC
 
   # sort by category in ascending order
   CATEGORY_ASC
@@ -5100,6 +5114,12 @@ enum ConsignmentSubmissionSort {
 
   # sort by rejected_by in descending order
   REJECTED_BY_DESC
+
+  # sort by rejection_reason in ascending order
+  REJECTION_REASON_ASC
+
+  # sort by rejection_reason in descending order
+  REJECTION_REASON_DESC
 
   # sort by reminders_sent_count in ascending order
   REMINDERS_SENT_COUNT_ASC
@@ -5551,6 +5571,7 @@ type CreateSmsSecondFactorPayload {
 input CreateSubmissionMutationInput {
   additionalInfo: String
   artistID: String!
+  attributionClass: ConsignmentAttributionClass
   authenticityCertificate: Boolean
   category: ConsignmentSubmissionCategoryAggregation
 
@@ -12251,6 +12272,7 @@ type UpdateSmsSecondFactorPayload {
 input UpdateSubmissionMutationInput {
   additionalInfo: String
   artistID: String
+  attributionClass: ConsignmentAttributionClass
   authenticityCertificate: Boolean
   category: ConsignmentSubmissionCategoryAggregation
 
