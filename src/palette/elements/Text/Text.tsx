@@ -38,7 +38,11 @@ export const Text: React.FC<TextProps> = React.forwardRef<RNText, TextProps>(
     return (
       <InnerStyledText
         ref={ref}
-        style={[...nativeTextStyle, style]}
+        style={[
+          ...nativeTextStyle,
+          style,
+          { textAlignVertical: "center" }, // android renders text higher by default, so we bring it down to be consistent with ios
+        ]}
         fontFamily={fontFamily}
         {...theme.textTreatments[variant]}
         children={children}

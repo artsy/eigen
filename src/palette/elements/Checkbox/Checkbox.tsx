@@ -82,24 +82,34 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         onPress?.(event)
       }}
     >
-      <Flex flexDirection="row" {...restProps}>
-        <Flex mt={0.2} height={20} width={20}>
-          <CssTransition
-            style={[styles(fontScale).container, { marginRight: space("1") * fontScale }, checkboxStyle]}
-            animate={["backgroundColor", "borderColor"]}
-            duration={DURATION}
-          >
-            {!!isChecked && (!!disabled ? <DisabledMark size={checkboxSize} /> : <CheckMark size={checkboxSize} />)}
-          </CssTransition>
+      <Flex {...restProps}>
+        <Flex flexDirection="row">
+          <Flex mt="2px">
+            <CssTransition
+              style={[styles(fontScale).container, { marginRight: space("1") * fontScale }, checkboxStyle]}
+              animate={["backgroundColor", "borderColor"]}
+              duration={DURATION}
+            >
+              {!!isChecked && (!!disabled ? <DisabledMark size={checkboxSize} /> : <CheckMark size={checkboxSize} />)}
+            </CssTransition>
+          </Flex>
+
+          <Flex justifyContent="center">
+            {!!text && (
+              <Text variant="md" color={textColor}>
+                {text}
+              </Text>
+            )}
+            {children}
+          </Flex>
         </Flex>
-        <Flex justifyContent="center" flex={1} pl={1}>
-          {!!text && <Text color={textColor}>{text}</Text>}
+
+        <Flex ml={(CHECKBOX_SIZE + space("1")) * fontScale} mt="6px">
           {!!subtitle && (
             <Text variant="xs" color={subtitleColor}>
               {subtitle}
             </Text>
           )}
-          {children}
         </Flex>
       </Flex>
     </TouchableWithoutFeedback>
