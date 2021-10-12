@@ -10,14 +10,18 @@ RCT_EXPORT_MODULE();
 RCT_EXPORT_METHOD(requestSettingsNotificationPermissions)
 {
     /* Used in settings screen to directly ask user for push permissions */
-    self.settingsNotificationPermissionPrompter();
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.settingsNotificationPermissionPrompter();
+    });
 }
 
 
 RCT_EXPORT_METHOD(requestLoginNotificationPermissions)
 {
     /* Used on login with some additional logic before requesting permissions */
-    self.loginNotificationPermissionPrompter();
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.loginNotificationPermissionPrompter();
+    });
 }
 
 RCT_EXPORT_METHOD(fetchNotificationPermissions:(RCTResponseSenderBlock)callback)

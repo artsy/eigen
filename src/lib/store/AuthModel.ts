@@ -343,6 +343,9 @@ export const getAuthModel = (): AuthModel => ({
               }, 3000)
             }
           })
+        } else {
+          // iOS
+          LegacyNativeModules.ARTemporaryAPIModule.requestLoginNotificationPermissions()
         }
         return true
       }
