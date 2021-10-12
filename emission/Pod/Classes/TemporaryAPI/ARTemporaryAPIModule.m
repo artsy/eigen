@@ -7,10 +7,17 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(requestNotificationPermissions)
+RCT_EXPORT_METHOD(requestSettingsNotificationPermissions)
 {
-    /* In eigen, this should request push notification permissions */
-    self.notificationPermissionPrompter();
+    /* Used in settings screen to directly ask user for push permissions */
+    self.settingsNotificationPermissionPrompter();
+}
+
+
+RCT_EXPORT_METHOD(requestLoginNotificationPermissions)
+{
+    /* Used on login with some additional logic before requesting permissions */
+    self.loginNotificationPermissionPrompter();
 }
 
 RCT_EXPORT_METHOD(fetchNotificationPermissions:(RCTResponseSenderBlock)callback)

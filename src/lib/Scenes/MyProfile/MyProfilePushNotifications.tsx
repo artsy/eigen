@@ -69,7 +69,7 @@ export const AllowPushNotificationsBanner = () => (
       <Button
         size="large"
         onPress={() => {
-          LegacyNativeModules.ARTemporaryAPIModule.requestNotificationPermissions()
+          LegacyNativeModules.ARTemporaryAPIModule.requestSettingsNotificationPermissions()
         }}
       >
         Enable

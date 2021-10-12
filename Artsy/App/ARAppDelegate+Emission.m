@@ -139,9 +139,14 @@ SOFTWARE.
 
 #pragma mark - Native Module: Push Notification Permissions
 
-    emission.APIModule.notificationPermissionPrompter = ^() {
+    emission.APIModule.settingsNotificationPermissionPrompter = ^() {
         ARAppNotificationsDelegate *delegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
         [delegate registerForDeviceNotificationsWithApple];
+    };
+
+    emission.APIModule.loginNotificationPermissionPrompter = ^() {
+        ARAppNotificationsDelegate *delegate = [[JSDecoupledAppDelegate sharedAppDelegate] remoteNotificationsDelegate];
+        [delegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
     };
 
 #pragma mark - Native Module: Follow status

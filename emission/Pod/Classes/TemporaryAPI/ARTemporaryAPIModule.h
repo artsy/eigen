@@ -16,7 +16,14 @@ typedef void(^ARRelativeURLResolver)(NSString *path, RCTPromiseResolveBlock reso
 
 @interface ARTemporaryAPIModule : NSObject <RCTBridgeModule>
 
-@property (nonatomic, copy, readwrite) ARNotificationPermissionsPrompter notificationPermissionPrompter;
+
+
+
+// Just shows the apple dialog, used for explicitly asking permission in settings
+@property (nonatomic, copy, readwrite) ARNotificationPermissionsPrompter settingsNotificationPermissionPrompter;
+
+// Uses some logic to pre-prompt, redirect to settings, and eventually prompt with apple dialog, used on login
+@property (nonatomic, copy, readwrite) ARNotificationPermissionsPrompter loginNotificationPermissionPrompter;
 
 @property (nonatomic, copy, readwrite) ARNotificationReadStatusAssigner notificationReadStatusAssigner;
 
