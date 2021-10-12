@@ -156,7 +156,7 @@ export const features = defineFeatures({
     echoFlagKey: "ARShowNetworkUnavailableModal",
   },
   ARGoogleAuth: {
-    readyForRelease: true,
+    readyForRelease: false,
     description: "Enable Google authentication",
     showInAdminMenu: true,
     echoFlagKey: "ARGoogleAuth",
