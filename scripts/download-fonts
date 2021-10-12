@@ -2,13 +2,19 @@
 set -euxo pipefail
 
 
-# Create fonts directory
-mkdir -p android/app/src/main/assets/fonts
-
 # Get fonts from eigen s3 bucket
-aws s3 cp s3://artsy-citadel/eigen/fonts.tar.gz android/app/src/main/assets/fonts
+aws s3 cp s3://artsy-citadel/eigen/fonts.tar.gz ./fonts.tar.gz
 
-# Extract fonts from the fonts directory
-cd android/app/src/main/assets/fonts
-tar -xvzf fonts.tar.gz
-rm fonts.tar.gz
+# Extract fonts
+tar -xvzf fonts.tar.gz -C ./fonts
+
+# Android
+mkdir -p android/app/src/main/assets/fonts
+cp ./fonts/android/* android/app/src/main/assets/fonts
+
+# iOS
+# for now, ios is handled in the UIFonts pod. we should change that to be somewhere in our project dir.
+
+# Cleanup
+rm -rf ./fonts.tar.gz
+rm -rf ./fonts
