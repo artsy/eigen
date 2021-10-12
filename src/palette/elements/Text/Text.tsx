@@ -1,7 +1,7 @@
 import { useTheme } from "palette"
 import { isThemeV3, TextVariantV3 } from "palette/Theme"
 import React from "react"
-import { StyleProp, TextStyle } from "react-native"
+import { Platform, StyleProp, TextStyle } from "react-native"
 import { Text as RNText, TextProps as RNTextProps } from "react-native"
 import styled from "styled-components/native"
 import {
@@ -38,7 +38,11 @@ export const Text: React.FC<TextProps> = React.forwardRef<RNText, TextProps>(
     return (
       <InnerStyledText
         ref={ref}
-        style={[...nativeTextStyle, style]}
+        style={[
+          ...nativeTextStyle,
+          style,
+          Platform.OS === "android" ? { textAlignVertical: "center" } : {}, // android renders text higher by default, so we bring it down to be consistent with ios
+        ]}
         fontFamily={fontFamily}
         {...theme.textTreatments[variant]}
         children={children}
