@@ -9,5 +9,6 @@ if [ $DISTRIBUTION_TARGET == "FIREBASE" ]; then
 elif [ $DISTRIBUTION_TARGET == "PLAY_STORE" ]; then
   bundle exec fastlane ship_beta_android_play_store
 elif [ $DISTRIBUTION_TARGET == "BOTH" ]; then
-  bundle exec fastlane ship_beta_android_both
+  bundle exec fastlane ship_beta_android_firebase
+  bundle exec fastlane ship_beta_android_play_store
 fi
