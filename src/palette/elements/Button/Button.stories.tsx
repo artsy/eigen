@@ -1,6 +1,6 @@
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
-import { Box, Flex, LinkIcon, Spacer } from "palette"
+import { BellIcon, Box, Flex, LinkIcon, Spacer } from "palette"
 import React, { useState } from "react"
 import { Button as RNButton } from "react-native"
 import { withHooks, withScreenDimensions, withTheme } from "storybook/decorators"
@@ -87,7 +87,10 @@ storiesOf("Button", module)
         right icon
       </Button>
       <Button size="small" icon={<LinkIcon fill="white100" />} iconPosition="right">
-        right icon small
+        Right Icon Small
+      </Button>
+      <Button variant="fillDark" size="small" icon={<BellIcon fill="white100" width="16px" height="16px" />}>
+        Create Alert
       </Button>
       <Box flexDirection="row">
         <Box width={2} height="100%" backgroundColor="green100" />

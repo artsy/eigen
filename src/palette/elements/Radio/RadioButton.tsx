@@ -17,7 +17,6 @@ export interface RadioButtonProps extends TouchableWithoutFeedbackProps, FlexPro
   error?: boolean
   text?: React.ReactElement | string
   subtitle?: React.ReactElement | string
-  children?: React.ReactElement | string
 }
 
 export const RadioButton: React.FC<RadioButtonProps> = ({
@@ -83,33 +82,34 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
         onPress?.(event)
       }}
     >
-      <Flex flexDirection="row" {...restProps}>
-        <Flex mt={0.2}>
-          <CssTransition
-            style={[
-              styles(fontScale).container,
-              {
-                marginRight: space("1") * fontScale,
-              },
-              radioButtonStyle,
-            ]}
-            animate={["backgroundColor", "borderColor"]}
-            duration={DURATION}
-          >
-            {!!isSelected &&
-              (!!disabled ? <DisabledDot size={radioButtonSize} /> : <RadioDot size={radioButtonSize} />)}
-          </CssTransition>
+      <Flex {...restProps}>
+        <Flex flexDirection="row">
+          <Flex mt="2px">
+            <CssTransition
+              style={[styles(fontScale).container, { marginRight: space("1") * fontScale }, radioButtonStyle]}
+              animate={["backgroundColor", "borderColor"]}
+              duration={DURATION}
+            >
+              {!!isSelected &&
+                (!!disabled ? <DisabledDot size={radioButtonSize} /> : <RadioDot size={radioButtonSize} />)}
+            </CssTransition>
+          </Flex>
+
+          <Flex justifyContent="center">
+            {!!text && (
+              <Text variant="md" color={textColor}>
+                {text}
+              </Text>
+            )}
+          </Flex>
         </Flex>
 
-        <Flex justifyContent="center">
-          {!!text && <Text color={textColor}>{text}</Text>}
+        <Flex ml={(RADIOBUTTON_SIZE + space("1")) * fontScale} mt="6px">
           {!!subtitle && (
             <Text variant="xs" color={subtitleColor}>
               {subtitle}
             </Text>
           )}
-          {/* TODO: Remove once the migration from V2 to V3 is completed. */}
-          {children}
         </Flex>
       </Flex>
     </TouchableWithoutFeedback>

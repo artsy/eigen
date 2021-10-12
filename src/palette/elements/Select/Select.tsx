@@ -1,6 +1,6 @@
 import { TriangleDown } from "lib/Icons/TriangleDown"
 import { Autocomplete } from "lib/utils/Autocomplete"
-import { CloseIcon, Flex, Separator, Spacer, Text, Touchable, useColor } from "palette"
+import { CloseIcon, Flex, Separator, Spacer, Text, Touchable, useColor, useTextStyleForPalette } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
 import { FancyModal } from "../../../lib/Components/FancyModal/FancyModal"
@@ -108,12 +108,14 @@ const SelectButton: React.FC<{
   onPress(): void
 }> = ({ value, placeholder, onPress, title, showTitleLabel, subTitle, hasError }) => {
   const color = useColor()
+  const textStyle = useTextStyleForPalette("sm")
+
   return (
     <Flex>
       {showTitleLabel ? <Text variant="xs">{title?.toUpperCase()}</Text> : null}
 
       {subTitle ? (
-        <Text mb={0.5} color={color("black60")}>
+        <Text variant="xs" color="black60" mb={0.5}>
           {subTitle}
         </Text>
       ) : (
@@ -129,15 +131,9 @@ const SelectButton: React.FC<{
           justifyContent="space-between"
           alignItems="center"
         >
-          {value ? (
-            <Text color="black100" mr={0.5}>
-              {value}
-            </Text>
-          ) : (
-            <Text color="black60" mr={0.5}>
-              {placeholder ?? "Pick an option"}
-            </Text>
-          )}
+          <Text style={textStyle} color={value ? "black100" : "black60"} mr={0.5}>
+            {value ?? placeholder ?? "Pick an option"}
+          </Text>
           <TriangleDown />
         </Flex>
       </TouchableOpacity>

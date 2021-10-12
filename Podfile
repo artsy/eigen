@@ -100,7 +100,7 @@ target 'Artsy' do
   pod 'ObjectiveSugar'
 
   # Artsy Spec repo stuff
-  pod 'Artsy+UIFonts' , '3.3.3'
+  pod 'Artsy+UIFonts', '~> 3.3.4'
   pod 'Artsy-UIButtons'
   pod 'Artsy+UIColors'
   pod 'Artsy+UILabels'
