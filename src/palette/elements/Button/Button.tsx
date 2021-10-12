@@ -1,4 +1,5 @@
 import { MeasuredView, ViewMeasurements } from "lib/utils/MeasuredView"
+import { Spacer } from "palette"
 import { useColor } from "palette/hooks"
 import React, { ReactNode, useState } from "react"
 import { PressableProps, TextStyle } from "react-native"
@@ -161,9 +162,15 @@ export const Button: React.FC<ButtonProps> = ({
                   {iconPosition === "left-start" ? (
                     <Box position="absolute" left={0}>
                       {icon}
+                      <Spacer mr={0.5} />
                     </Box>
                   ) : null}
-                  {iconPosition === "left" ? icon : null}
+                  {iconPosition === "left" ? (
+                    <>
+                      {icon}
+                      <Spacer mr={0.5} />
+                    </>
+                  ) : null}
                   <MeasuredView setMeasuredState={setLongestTextMeasurements}>
                     <Text color="red" style={textStyle}>
                       {longestText ? longestText : children}
@@ -182,7 +189,12 @@ export const Button: React.FC<ButtonProps> = ({
                   >
                     {children}
                   </AnimatedText>
-                  {iconPosition === "right" ? icon : null}
+                  {iconPosition === "right" ? (
+                    <>
+                      <Spacer mr={0.5} />
+                      {icon}
+                    </>
+                  ) : null}
                 </Flex>
 
                 {displayState === DisplayState.Loading ? (

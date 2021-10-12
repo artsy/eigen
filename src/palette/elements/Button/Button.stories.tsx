@@ -89,7 +89,7 @@ storiesOf("Button", module)
       <Button size="small" icon={<LinkIcon fill="white100" />} iconPosition="right">
         Right Icon Small
       </Button>
-      <Button variant="fillDark" size="small" icon={<BellIcon fill="white100" mr={0.5} width="16px" height="16px" />}>
+      <Button variant="fillDark" size="small" icon={<BellIcon fill="white100" width="16px" height="16px" />}>
         Create Alert
       </Button>
       <Box flexDirection="row">

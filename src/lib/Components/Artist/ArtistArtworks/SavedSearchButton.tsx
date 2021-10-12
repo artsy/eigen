@@ -102,7 +102,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
       <Button
         variant="fillDark"
         size="small"
-        icon={<BellIcon fill="white100" mr={0.5} width="16px" height="16px" />}
+        icon={<BellIcon fill="white100" width="16px" height="16px" />}
         disabled={isSavedSearch || filters.length === 0}
         loading={loading || refetching}
         onPress={handleCreateAlertPress}
