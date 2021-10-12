@@ -88,13 +88,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
         <Flex flexDirection="row">
           <Flex justifyContent="center">
             <CssTransition
-              style={[
-                styles(fontScale).container,
-                {
-                  marginRight: space("1") * fontScale,
-                },
-                radioButtonStyle,
-              ]}
+              style={[styles(fontScale).container, { marginRight: space("1") * fontScale }, radioButtonStyle]}
               animate={["backgroundColor", "borderColor"]}
               duration={DURATION}
             >
@@ -105,7 +99,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
 
           <Flex justifyContent="center">
             {!!text && (
-              <Text color={textColor} mt="2px" style={textStyleTitle}>
+              <Text color={textColor} style={textStyleTitle}>
                 {text}
               </Text>
             )}

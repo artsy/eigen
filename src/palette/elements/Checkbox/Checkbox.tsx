@@ -1,5 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
-import { Text, useTheme } from "palette"
+import { Text, useTextStyleForPalette, useTheme } from "palette"
 import React, { useState } from "react"
 import { PixelRatio, StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from "react-native"
 import styled from "styled-components/native"
@@ -16,7 +16,6 @@ export interface CheckboxProps extends TouchableWithoutFeedbackProps, FlexProps 
   error?: boolean
   text?: React.ReactElement | string
   subtitle?: React.ReactElement | string
-  children?: React.ReactElement | string
 }
 
 export const Checkbox: React.FC<CheckboxProps> = ({
@@ -31,6 +30,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   ...restProps
 }) => {
   const { color, space } = useTheme()
+  const textStyleTitle = useTextStyleForPalette("sm")
+  const textStyleSubtitle = useTextStyleForPalette("xs")
 
   const fontScale = PixelRatio.getFontScale()
   const checkboxSize = CHECKBOX_SIZE * fontScale
@@ -82,24 +83,33 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         onPress?.(event)
       }}
     >
-      <Flex flexDirection="row" {...restProps}>
-        <Flex mt={0.2} height={20} width={20}>
-          <CssTransition
-            style={[styles(fontScale).container, { marginRight: space("1") * fontScale }, checkboxStyle]}
-            animate={["backgroundColor", "borderColor"]}
-            duration={DURATION}
-          >
-            {!!isChecked && (!!disabled ? <DisabledMark size={checkboxSize} /> : <CheckMark size={checkboxSize} />)}
-          </CssTransition>
+      <Flex {...restProps}>
+        <Flex flexDirection="row">
+          <Flex justifyContent="center">
+            <CssTransition
+              style={[styles(fontScale).container, { marginRight: space("1") * fontScale }, checkboxStyle]}
+              animate={["backgroundColor", "borderColor"]}
+              duration={DURATION}
+            >
+              {!!isChecked && (!!disabled ? <DisabledMark size={checkboxSize} /> : <CheckMark size={checkboxSize} />)}
+            </CssTransition>
+          </Flex>
+
+          <Flex justifyContent="center">
+            {!!text && (
+              <Text color={textColor} style={textStyleTitle}>
+                {text}
+              </Text>
+            )}
+          </Flex>
         </Flex>
-        <Flex justifyContent="center" flex={1} pl={1}>
-          {!!text && <Text color={textColor}>{text}</Text>}
+
+        <Flex ml={(CHECKBOX_SIZE + space("1")) * fontScale} mt="6px">
           {!!subtitle && (
-            <Text variant="xs" color={subtitleColor}>
+            <Text color={subtitleColor} style={textStyleSubtitle}>
               {subtitle}
             </Text>
           )}
-          {children}
         </Flex>
       </Flex>
     </TouchableWithoutFeedback>
