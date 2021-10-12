@@ -128,11 +128,6 @@ export const features = defineFeatures({
     description: "Enable improved search experience",
     showInAdminMenu: true,
   },
-  ARPhoneValidation: {
-    readyForRelease: false,
-    description: "Enable phone number validation",
-    showInAdminMenu: true,
-  },
   AREnableTrove: {
     readyForRelease: true,
     description: "Enable Trove in homepage",

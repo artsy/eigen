@@ -1,6 +1,5 @@
-import { PhoneNumberUtil } from "google-libphonenumber"
+import * as glibphone from "google-libphonenumber"
 import { TriangleDown } from "lib/Icons/TriangleDown"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import replace from "lodash/replace"
 import { Flex, Input, InputProps, Sans, Spacer, Text, Touchable, useColor } from "palette"
 import { useEffect, useRef, useState } from "react"
@@ -17,7 +16,7 @@ const UNDERLINE_TEXTINPUT_HEIGHT_ANDROID = 1.5
 export const PhoneInput = React.forwardRef<
   Input,
   {
-    setValidation?: (value: boolean) => void
+    setValidation: (value: boolean) => void
     onChange?: (value: string) => void
     maxModalHeight?: number
   } & Omit<InputProps, "onChange">
@@ -25,8 +24,6 @@ export const PhoneInput = React.forwardRef<
   const color = useColor()
   const innerRef = useRef<Input | null>()
   const initialValues = cleanUserPhoneNumber(value ?? "")
-  const showPhoneValidationMessage = useFeatureFlag("ARPhoneValidation")
-
   const [countryCode, setCountryCode] = useState<string>(initialValues.countryCode)
   const [phoneNumber, setPhoneNumber] = useState(
     formatPhoneNumber({ current: initialValues.phoneNumber, previous: initialValues.phoneNumber, countryCode })
@@ -34,7 +31,7 @@ export const PhoneInput = React.forwardRef<
   const [validationMessage, setValidationMessage] = useState<string | undefined>(undefined)
   const dialCode = countryIndex[countryCode].dialCode
   const countryISO2Code = countryIndex[countryCode].iso2
-  const phoneUtil = PhoneNumberUtil.getInstance()
+  const phoneUtil = glibphone.PhoneNumberUtil.getInstance()
 
   useEffect(() => {
     if (isFirstRun.current) {
@@ -49,7 +46,7 @@ export const PhoneInput = React.forwardRef<
     })
 
     setPhoneNumber(formattedPhoneNumber.replace(/[\D]$/, ""))
-    setCountryCode(cleanPhoneNumber.countryCode);
+    setCountryCode(cleanPhoneNumber.countryCode)
   }, [value])
 
   const isValidNumber = (number: string, code: string) => {
@@ -64,23 +61,21 @@ export const PhoneInput = React.forwardRef<
 
   const handleValidation = () => {
     const isValid = isValidNumber(phoneNumber, countryISO2Code)
-    if (typeof setValidation === "function") {
-      setValidation(isValid)
-    }
+    setValidation(isValid)
     setValidationMessage(isValid ? "" : "This phone number is incomplete")
   }
 
   const isFirstRun = useRef(true)
   useEffect(() => {
-    if (showPhoneValidationMessage) {
-      handleValidation()
-    }
     if (isFirstRun.current) {
       isFirstRun.current = false
       return
     }
 
+    handleValidation()
+
     const newValue = phoneNumber ? `+${dialCode} ${phoneNumber}` : ""
+
     onChangeText?.(newValue)
     onChange?.(newValue)
   }, [phoneNumber, dialCode])

@@ -1,4 +1,3 @@
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Input, Text } from "palette"
@@ -10,16 +9,27 @@ import { PhoneInput } from "../PhoneInput"
 describe("PhoneInput", () => {
   let onChange = jest.fn()
   let onChangeText = jest.fn()
+  const setValidation = jest.fn()
 
   beforeEach(() => {
     onChange = jest.fn()
     onChangeText = jest.fn()
-    __globalStoreTestUtils__?.injectFeatureFlags({ ARPhoneValidation: false })
   })
 
   it("renders an input with the phone number pre-filled", () => {
     const tree = renderWithWrappers(
-      <PhoneInput value="+447825577664" onChange={onChange} onChangeText={onChangeText} />
+      <PhoneInput value="+447825577664" onChange={onChange} onChangeText={onChangeText} setValidation={setValidation} />
+    )
+    expect(tree.root.findAllByType(Input)).toHaveLength(1)
+    expect(extractText(tree.root.findByType(Input))).toBe("🇬🇧+447825 577664")
+    tree.root.findByType(Input).props.onChangeText("999")
+    expect(extractText(tree.root.findByType(Input))).toBe("🇬🇧+44999")
+    tree.root.findByType(Input).props.onChangeText("9998764")
+    expect(extractText(tree.root.findByType(Input))).toBe("🇬🇧+449998 764")
+  })
+  it("renders an input with the phone number pre-filled", () => {
+    const tree = renderWithWrappers(
+      <PhoneInput value="+447825577664" onChange={onChange} onChangeText={onChangeText} setValidation={setValidation} />
     )
     expect(tree.root.findAllByType(Input)).toHaveLength(1)
     expect(extractText(tree.root.findByType(Input))).toBe("🇬🇧+447825 577664")
@@ -31,20 +41,28 @@ describe("PhoneInput", () => {
 
   it("provides a Select for the country", () => {
     const tree = renderWithWrappers(
-      <PhoneInput value="+447825577664" onChange={onChange} onChangeText={onChangeText} />
+      <PhoneInput
+        value="+447825577664"
+        onChange={onChange}
+        onChangeText={onChangeText}
+        setValidation={() => {
+          return true
+        }}
+      />
     )
+
     expect(tree.root.findAllByType(Select)).toHaveLength(1)
     tree.root.findByType(Select).props.onSelectValue("de")
-    expect(extractText(tree.root)).toBe("🇩🇪+4978 25577664")
+    expect(extractText(tree.root)).toContain("🇩🇪+4978 25577664")
     tree.root.findByType(Select).props.onSelectValue("fr")
-    expect(extractText(tree.root)).toBe("🇫🇷+3378 25 57 76 64")
+    expect(extractText(tree.root)).toContain("🇫🇷+3378 25 57 76 64")
     tree.root.findByType(Select).props.onSelectValue("us")
-    expect(extractText(tree.root)).toBe("🇺🇸+1(782) 557-7664")
+    expect(extractText(tree.root)).toContain("🇺🇸+1(782) 557-7664")
   })
 
   it("calls onChange and onChangeText when the value changes", () => {
     const tree = renderWithWrappers(
-      <PhoneInput value="+447825577664" onChange={onChange} onChangeText={onChangeText} />
+      <PhoneInput value="+447825577664" onChange={onChange} onChangeText={onChangeText} setValidation={setValidation} />
     )
     expect(onChange).not.toHaveBeenCalled()
     expect(onChangeText).not.toHaveBeenCalled()
@@ -63,8 +81,16 @@ describe("PhoneInput", () => {
   })
 
   it("shows a validation message when a phone number is invalid", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ ARPhoneValidation: true })
-    const tree = renderWithWrappers(<PhoneInput value="447825577664" onChange={onChange} onChangeText={onChangeText} />)
+    const tree = renderWithWrappers(
+      <PhoneInput
+        value="447825577664"
+        onChange={onChange}
+        onChangeText={onChangeText}
+        setValidation={() => {
+          return false
+        }}
+      />
+    )
 
     act(() => {
       tree.root.findByType(Input).props.onChangeText("")
@@ -73,9 +99,17 @@ describe("PhoneInput", () => {
     expect(tree.root.findAllByType(Text)[2].props.children).toBe("This phone number is incomplete")
   })
 
-  it("does not show a validation message when a phone number is valid", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ ARPhoneValidation: true })
-    const tree = renderWithWrappers(<PhoneInput value="" onChange={onChange} onChangeText={onChangeText} />)
+  it("does not show a validation message when phone number valid", () => {
+    const tree = renderWithWrappers(
+      <PhoneInput
+        value=""
+        onChange={onChange}
+        onChangeText={onChangeText}
+        setValidation={() => {
+          return true
+        }}
+      />
+    )
 
     act(() => {
       tree.root.findByType(Input).props.onChangeText("6466464646")
