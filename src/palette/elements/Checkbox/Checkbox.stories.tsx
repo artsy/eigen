@@ -1,4 +1,6 @@
 import { storiesOf } from "@storybook/react-native"
+import { LinkText } from "lib/Components/Text/LinkText"
+import { Text } from "palette"
 import React from "react"
 import { withTheme } from "storybook/decorators"
 import { List } from "storybook/helpers"
@@ -28,5 +30,10 @@ Text`}
       <Checkbox disabled text="Disabled" />
       <Checkbox error text="With Error" />
       <Checkbox error text="With Error" subtitle="Subtitle" />
+      <Checkbox>
+        <Text variant="md">
+          Agree to <LinkText onPress={() => console.warn("tapped")}>Conditions of Sale</LinkText>
+        </Text>
+      </Checkbox>
     </List>
   ))
