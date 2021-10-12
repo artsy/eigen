@@ -41,7 +41,7 @@ export const Text: React.FC<TextProps> = React.forwardRef<RNText, TextProps>(
         style={[
           ...nativeTextStyle,
           style,
-          Platform.OS === "android" ? { textAlignVertical: "center" } : {}, // android renders text higher by default, so we bring it down to be consistent with ios
+          { textAlignVertical: "center" }, // android renders text higher by default, so we bring it down to be consistent with ios
         ]}
         fontFamily={fontFamily}
         {...theme.textTreatments[variant]}

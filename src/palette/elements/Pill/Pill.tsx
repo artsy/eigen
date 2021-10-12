@@ -5,24 +5,21 @@ import { GestureResponderEvent, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
 import { useTheme } from "../../Theme"
 import { Flex, FlexProps } from "../Flex"
-import { Text } from "../Text"
+import { Text, useTextStyleForPalette } from "../Text"
 
 const SIZES = {
   xxs: {
     height: 28,
-    typeSize: 13,
     paddingRight: 10,
     paddingLeft: 10,
   },
   xs: {
     height: 40,
-    typeSize: 16,
     paddingRight: 20,
     paddingLeft: 20,
   },
   sm: {
     height: 50,
-    typeSize: 16,
     paddingRight: 20,
     paddingLeft: 10,
   },
@@ -52,7 +49,8 @@ export const Pill: React.FC<PillProps> = ({
   ...other
 }) => {
   const { color } = useTheme()
-  const { height, typeSize, paddingLeft, paddingRight } = SIZES[size]
+  const { height, paddingLeft, paddingRight } = SIZES[size]
+  const textStyle = useTextStyleForPalette(size === "xxs" ? "xs" : "sm")
 
   const content = (
     <Flex
@@ -74,7 +72,7 @@ export const Pill: React.FC<PillProps> = ({
         </>
       )}
       {!!imageUrl && <OpaqueImageViewContainer imageURL={imageUrl} />}
-      <Text variant="xs" numberOfLines={1} fontSize={typeSize}>
+      <Text numberOfLines={1} style={textStyle}>
         {children}
       </Text>
       {iconPosition === "right" && !!icon && (

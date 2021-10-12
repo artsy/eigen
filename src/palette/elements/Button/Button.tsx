@@ -11,7 +11,7 @@ import styled from "styled-components/native"
 import { Box, BoxProps } from "../Box"
 import { Flex } from "../Flex"
 import { Spinner } from "../Spinner"
-import { Text } from "../Text"
+import { Text, useTextStyleForPalette } from "../Text"
 
 export interface ButtonProps extends BoxProps {
   children: ReactNode
@@ -71,6 +71,8 @@ export const Button: React.FC<ButtonProps> = ({
   testID,
   ...rest
 }) => {
+  const textStyle = useTextStyleForPalette(size === "small" ? "xs" : "sm")
+
   const [innerDisplayState, setInnerDisplayState] = useState(DisplayState.Enabled)
 
   const [longestTextMeasurements, setLongestTextMeasurements] = useState<ViewMeasurements>({ width: 0, height: 0 })
@@ -163,17 +165,19 @@ export const Button: React.FC<ButtonProps> = ({
                   ) : null}
                   {iconPosition === "left" ? icon : null}
                   <MeasuredView setMeasuredState={setLongestTextMeasurements}>
-                    <Text variant={size === "small" ? "xs" : "sm"} color="red">
+                    <Text color="red" style={textStyle}>
                       {longestText ? longestText : children}
                     </Text>
                   </MeasuredView>
                   <AnimatedText
-                    variant={size === "small" ? "xs" : "sm"}
-                    style={{
-                      width: Math.ceil(longestTextMeasurements.width),
-                      color: springProps.textColor,
-                      textDecorationLine: springProps.textDecorationLine,
-                    }}
+                    style={[
+                      {
+                        width: Math.ceil(longestTextMeasurements.width),
+                        color: springProps.textColor,
+                        textDecorationLine: springProps.textDecorationLine,
+                      },
+                      textStyle,
+                    ]}
                     textAlign="center"
                   >
                     {children}

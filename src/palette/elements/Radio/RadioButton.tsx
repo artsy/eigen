@@ -1,5 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
-import { Text, useTheme } from "palette"
+import { Text, useTextStyleForPalette, useTheme } from "palette"
 import React, { useState } from "react"
 import { PixelRatio, StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from "react-native"
 import styled from "styled-components/native"
@@ -17,7 +17,6 @@ export interface RadioButtonProps extends TouchableWithoutFeedbackProps, FlexPro
   error?: boolean
   text?: React.ReactElement | string
   subtitle?: React.ReactElement | string
-  children?: React.ReactElement | string
 }
 
 export const RadioButton: React.FC<RadioButtonProps> = ({
@@ -32,6 +31,8 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
   ...restProps
 }) => {
   const { color, space } = useTheme()
+  const textStyleTitle = useTextStyleForPalette("sm")
+  const textStyleSubtitle = useTextStyleForPalette("xs")
 
   const fontScale = PixelRatio.getFontScale()
   const radioButtonSize = RADIOBUTTON_SIZE * fontScale
@@ -83,33 +84,40 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
         onPress?.(event)
       }}
     >
-      <Flex flexDirection="row" {...restProps}>
-        <Flex mt={0.2}>
-          <CssTransition
-            style={[
-              styles(fontScale).container,
-              {
-                marginRight: space("1") * fontScale,
-              },
-              radioButtonStyle,
-            ]}
-            animate={["backgroundColor", "borderColor"]}
-            duration={DURATION}
-          >
-            {!!isSelected &&
-              (!!disabled ? <DisabledDot size={radioButtonSize} /> : <RadioDot size={radioButtonSize} />)}
-          </CssTransition>
+      <Flex {...restProps}>
+        <Flex flexDirection="row">
+          <Flex justifyContent="center">
+            <CssTransition
+              style={[
+                styles(fontScale).container,
+                {
+                  marginRight: space("1") * fontScale,
+                },
+                radioButtonStyle,
+              ]}
+              animate={["backgroundColor", "borderColor"]}
+              duration={DURATION}
+            >
+              {!!isSelected &&
+                (!!disabled ? <DisabledDot size={radioButtonSize} /> : <RadioDot size={radioButtonSize} />)}
+            </CssTransition>
+          </Flex>
+
+          <Flex justifyContent="center">
+            {!!text && (
+              <Text color={textColor} mt="2px" style={textStyleTitle}>
+                {text}
+              </Text>
+            )}
+          </Flex>
         </Flex>
 
-        <Flex justifyContent="center">
-          {!!text && <Text color={textColor}>{text}</Text>}
+        <Flex ml={(RADIOBUTTON_SIZE + space("1")) * fontScale} mt="6px">
           {!!subtitle && (
-            <Text variant="xs" color={subtitleColor}>
+            <Text color={subtitleColor} style={textStyleSubtitle}>
               {subtitle}
             </Text>
           )}
-          {/* TODO: Remove once the migration from V2 to V3 is completed. */}
-          {children}
         </Flex>
       </Flex>
     </TouchableWithoutFeedback>
