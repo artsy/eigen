@@ -6,6 +6,7 @@ set -euxo pipefail
 aws s3 cp s3://artsy-citadel/eigen/fonts.tar.gz ./fonts.tar.gz
 
 # Extract fonts
+mkdir -p ./fonts
 tar -xvzf fonts.tar.gz -C ./fonts
 
 # Android
