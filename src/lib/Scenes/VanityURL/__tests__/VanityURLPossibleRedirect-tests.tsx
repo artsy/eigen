@@ -13,6 +13,7 @@ import { VanityURLPossibleRedirect } from "../VanityURLPossibleRedirect"
 
 beforeEach(() => {
   __globalStoreTestUtils__?.setProductionMode()
+  __globalStoreTestUtils__?.injectState({ auth: { userAccessToken: "authenticationToken" } })
   fetchMock.resetMocks()
 })
 

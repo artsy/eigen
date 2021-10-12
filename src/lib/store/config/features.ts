@@ -107,9 +107,10 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableNewOnboardingFlow: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable new onboarding flow",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableNewOnboardingFlow",
   },
   AREnableSavedAddresses: {
     readyForRelease: false,
@@ -156,7 +157,7 @@ export const features = defineFeatures({
     echoFlagKey: "ARShowNetworkUnavailableModal",
   },
   ARGoogleAuth: {
-    readyForRelease: true,
+    readyForRelease: false,
     description: "Enable Google authentication",
     showInAdminMenu: true,
     echoFlagKey: "ARGoogleAuth",
