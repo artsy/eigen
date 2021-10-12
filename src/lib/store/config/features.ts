@@ -142,6 +142,7 @@ export const features = defineFeatures({
     readyForRelease: true,
     description: "Enable Shows in homepage",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableShowsRail",
   },
   AREnableMyCollectionAndroid: {
     readyForRelease: false,
