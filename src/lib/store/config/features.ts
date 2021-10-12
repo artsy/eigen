@@ -107,9 +107,10 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableNewOnboardingFlow: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable new onboarding flow",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableNewOnboardingFlow",
   },
   AREnableSavedAddresses: {
     readyForRelease: false,
