@@ -200,9 +200,6 @@ commands:
           name: Download fonts from s3
           command: ./scripts/download-assets
       - run:
-          name: Create JS bundle
-          command: touch android/app/src/main/assets/index.android.bundle && yarn bundle:android
-      - run:
           name: Build App
           command: ./scripts/ci-android
       - save_cache:
