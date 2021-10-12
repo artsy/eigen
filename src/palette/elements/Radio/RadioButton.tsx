@@ -1,5 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
-import { Text, useTextStyleForPalette, useTheme } from "palette"
+import { Text, useTheme } from "palette"
 import React, { useState } from "react"
 import { PixelRatio, StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from "react-native"
 import styled from "styled-components/native"
@@ -31,8 +31,6 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
   ...restProps
 }) => {
   const { color, space } = useTheme()
-  const textStyleTitle = useTextStyleForPalette("sm")
-  const textStyleSubtitle = useTextStyleForPalette("xs")
 
   const fontScale = PixelRatio.getFontScale()
   const radioButtonSize = RADIOBUTTON_SIZE * fontScale
@@ -86,7 +84,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
     >
       <Flex {...restProps}>
         <Flex flexDirection="row">
-          <Flex justifyContent="center">
+          <Flex mt="2px">
             <CssTransition
               style={[styles(fontScale).container, { marginRight: space("1") * fontScale }, radioButtonStyle]}
               animate={["backgroundColor", "borderColor"]}
@@ -99,7 +97,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
 
           <Flex justifyContent="center">
             {!!text && (
-              <Text color={textColor} style={textStyleTitle}>
+              <Text variant="md" color={textColor}>
                 {text}
               </Text>
             )}
@@ -108,7 +106,7 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
 
         <Flex ml={(RADIOBUTTON_SIZE + space("1")) * fontScale} mt="6px">
           {!!subtitle && (
-            <Text color={subtitleColor} style={textStyleSubtitle}>
+            <Text variant="xs" color={subtitleColor}>
               {subtitle}
             </Text>
           )}

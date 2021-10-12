@@ -1,5 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
-import { Text, useTextStyleForPalette, useTheme } from "palette"
+import { Text, useTheme } from "palette"
 import React, { useState } from "react"
 import { PixelRatio, StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from "react-native"
 import styled from "styled-components/native"
@@ -30,8 +30,6 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   ...restProps
 }) => {
   const { color, space } = useTheme()
-  const textStyleTitle = useTextStyleForPalette("sm")
-  const textStyleSubtitle = useTextStyleForPalette("xs")
 
   const fontScale = PixelRatio.getFontScale()
   const checkboxSize = CHECKBOX_SIZE * fontScale
@@ -85,7 +83,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
     >
       <Flex {...restProps}>
         <Flex flexDirection="row">
-          <Flex justifyContent="center">
+          <Flex mt="2px">
             <CssTransition
               style={[styles(fontScale).container, { marginRight: space("1") * fontScale }, checkboxStyle]}
               animate={["backgroundColor", "borderColor"]}
@@ -97,7 +95,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 
           <Flex justifyContent="center">
             {!!text && (
-              <Text color={textColor} style={textStyleTitle}>
+              <Text variant="md" color={textColor}>
                 {text}
               </Text>
             )}
@@ -106,7 +104,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 
         <Flex ml={(CHECKBOX_SIZE + space("1")) * fontScale} mt="6px">
           {!!subtitle && (
-            <Text color={subtitleColor} style={textStyleSubtitle}>
+            <Text variant="xs" color={subtitleColor}>
               {subtitle}
             </Text>
           )}
