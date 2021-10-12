@@ -28,6 +28,7 @@ const ConfirmContactInfo: React.FC<{
   const [isInputFocused, setIsInputFocused] = useState(false)
   const inputRef = useRef<Input>(null)
   const [submitting, setSubmitting] = useState(false)
+  const [isValidNumber, setIsValidNumber] = useState<boolean>(false)
 
   useEffect(() => {
     setPhoneNumber(me?.phone)
@@ -76,7 +77,7 @@ const ConfirmContactInfo: React.FC<{
   return (
     <BottomAlignedButton
       buttonText="Submit"
-      disabled={!Boolean(me && phoneNumber) || submitting}
+      disabled={!Boolean(me && phoneNumber) || submitting || !isValidNumber}
       onPress={submit}
       showSeparator={isInputFocused}
     >
@@ -118,6 +119,7 @@ const ConfirmContactInfo: React.FC<{
                 onFocus={() => setIsInputFocused(true)}
                 onBlur={() => setIsInputFocused(false)}
                 disabled={submitting}
+                setValidation={setIsValidNumber}
               />
             ) : (
               <ActivityIndicator />
