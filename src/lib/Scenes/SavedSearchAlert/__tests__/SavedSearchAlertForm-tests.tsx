@@ -229,32 +229,11 @@ describe("Saved search alert form", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
     })
 
-    it("push notification permissions should be checked if mobile alerts is enabled", async () => {
-      const { getByA11yLabel } = renderWithWrappersTL(
-        <SavedSearchAlertForm {...baseProps} initialValues={{ ...baseProps.initialValues, push: false }} />
-      )
-
-      fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", true)
-
-      expect(notificationPermissionsMock).toBeCalled()
-    })
-
     it("the notification toggles should be displayed", async () => {
       const { queryByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
 
       expect(queryByText("Email Alerts")).toBeTruthy()
       expect(queryByText("Mobile Alerts")).toBeTruthy()
-    })
-
-    it("mutation should be called immediately", async () => {
-      const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
-
-      fireEvent.press(getByTestId("save-alert-button"))
-
-      await waitFor(() => {
-        const mutation = mockEnvironment.mock.getMostRecentOperation()
-        expect(mutation).toBeTruthy()
-      })
     })
 
     it("the notification settings should be passed in mutation", async () => {

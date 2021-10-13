@@ -5,7 +5,7 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { Dialog } from "palette"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
 import { useTracking } from "react-tracking"
 import { Form } from "./Components/Form"
@@ -89,14 +89,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     },
   })
 
-  /**
-   * If the initial value of push has changed (for example, the user has minimized the app and turned off Push notifications in settings)
-   * then we sync the updated value with the formik state
-   */
-  useEffect(() => {
-    formik.setFieldValue("push", initialValues.push)
-  }, [initialValues.push])
-
   const requestNotificationPermissions = () => {
     // permissions not determined: Android should never need this
     if (Platform.OS === "ios") {
@@ -152,43 +144,19 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     )
   }
 
-  const checkOrRequestPushPermissions = async () => {
+  const handleSubmit = async () => {
     const notificationStatus = await getNotificationPermissionsStatus()
 
-    if (notificationStatus === PushAuthorizationStatus.Denied) {
+    if (notificationStatus === PushAuthorizationStatus.Authorized) {
+      formik.handleSubmit()
+    } else if (notificationStatus === PushAuthorizationStatus.Denied) {
       showHowToEnableNotificationInstructionAlert()
-    }
-
-    if (notificationStatus === PushAuthorizationStatus.NotDetermined) {
+    } else {
       requestNotificationPermissions()
-    }
-
-    return notificationStatus === PushAuthorizationStatus.Authorized
-  }
-
-  const handleSubmit = async () => {
-    if (enableSavedSearchToggles) {
-      formik.handleSubmit()
-      return
-    }
-
-    const isPushGranted = await checkOrRequestPushPermissions()
-
-    if (isPushGranted) {
-      formik.handleSubmit()
     }
   }
 
   const handleTogglePushNotification = async (enabled: boolean) => {
-    // If mobile alerts is selected, then we check the permissions for push notifications
-    if (enabled) {
-      const isPushGranted = await checkOrRequestPushPermissions()
-
-      if (!isPushGranted) {
-        return
-      }
-    }
-
     formik.setFieldValue("push", enabled)
   }
 

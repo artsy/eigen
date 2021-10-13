@@ -78,28 +78,4 @@ describe("CreateSavedSearchAlert", () => {
       id: "internalID",
     })
   })
-
-  it("Mobile alerts toggle should be disabled by default if Push notification permissions are not granted", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
-    notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.NotDetermined))
-
-    const { findAllByA11yState } = renderWithWrappersTL(<CreateSavedSearchAlert {...defaultProps} />)
-
-    const results = await findAllByA11yState({ selected: true })
-
-    // Email alerts are enabled, Mobile alerts are disabled
-    expect(results).toHaveLength(1)
-  })
-
-  it("Mobile alerts toggle should be enabled by default if Push notification permissions are granted", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
-    notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
-
-    const { findAllByA11yState } = renderWithWrappersTL(<CreateSavedSearchAlert {...defaultProps} />)
-
-    const results = await findAllByA11yState({ selected: true })
-
-    // Email and Mobile alerts are enabled
-    expect(results).toHaveLength(2)
-  })
 })
