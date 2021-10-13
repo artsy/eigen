@@ -64,7 +64,7 @@ export const Form: React.FC<FormProps> = (props) => {
         <InputTitle>Filters</InputTitle>
         <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
           {pills.map((pill, index) => (
-            <Pill testID="alert-pill" m={0.5} key={`filter-label-${index}`}>
+            <Pill selected testID="alert-pill" m={0.5} key={`filter-label-${index}`}>
               {pill}
             </Pill>
           ))}
