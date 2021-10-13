@@ -88,7 +88,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         [
           {
             text: "Proceed",
-            onPress: () => LegacyNativeModules.ARTemporaryAPIModule.requestNotificationPermissions(),
+            onPress: () => LegacyNativeModules.ARTemporaryAPIModule.requestDirectNotificationPermissions(),
           },
           {
             text: "Cancel",
