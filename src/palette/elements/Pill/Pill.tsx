@@ -1,14 +1,18 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { Color, Flex, IconProps, Spacer, Text, useColor, useTextStyleForPalette } from "palette"
+import { Flex, FlexProps } from "../Flex"
+import { Text, useTextStyleForPalette } from "../Text"
+
+import { Color, IconProps, Spacer, useColor } from "palette"
 import React, { ReactNode, useState } from "react"
 import { GestureResponderEvent, Pressable, PressableProps } from "react-native"
 import { config } from "react-spring"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native"
 import styled from "styled-components/native"
+
 type PillSize = "xxs" | "xs" | "sm"
 
-export interface PillProps {
+export interface PillProps extends FlexProps {
   children: ReactNode
   size?: PillSize
   onPress?: PressableProps["onPress"]
@@ -94,7 +98,7 @@ export const Pill: React.FC<PillProps> = ({
     <Spring native to={to} config={config.stiff}>
       {(springProps: typeof to) => (
         <Pressable
-          disabled={!onPress ?? disabled}
+          disabled={disabled || !onPress}
           onPress={handlePress}
           onPressIn={() => {
             setInnerDisplayState(DisplayState.Pressed)
@@ -114,7 +118,7 @@ export const Pill: React.FC<PillProps> = ({
             style={{
               borderColor: springProps.borderColor,
             }}
-            icon={Icon}
+            Icon={Icon}
             {...rest}
           >
             {iconPosition === "left" && !!Icon && (
