@@ -232,7 +232,7 @@ function getNativeModules(): OurNativeModules {
     },
 
     ARTemporaryAPIModule: {
-      requestLoginNotificationPermissions: jest.fn(),
+      requestPrepromptNotificationPermissions: jest.fn(),
       requestDirectNotificationPermissions: jest.fn(),
       fetchNotificationPermissions: jest.fn(),
       markNotificationsRead: jest.fn(),
