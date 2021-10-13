@@ -2,14 +2,14 @@ import { Flex, Text, useColor } from "palette"
 import React from "react"
 import { Platform, Switch } from "react-native"
 
-export interface ToggleProps {
+export interface SavedSearchAlertSwitchProps {
   onChange: (value: boolean) => void
   active: boolean
   label: string
   description?: string
 }
 
-export const Toggle = ({ onChange, active, label }: ToggleProps) => {
+export const SavedSearchAlertSwitch = ({ onChange, active, label }: SavedSearchAlertSwitchProps) => {
   const color = useColor()
   let thumbColor = color("white100")
   let disabledTrackColor = color("black30")

@@ -1,13 +1,13 @@
 import { fireEvent } from "@testing-library/react-native"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { Toggle, ToggleProps } from "../Components/Toggle"
+import { SavedSearchAlertSwitch, SavedSearchAlertSwitchProps } from "../Components/SavedSearchAlertSwitch"
 
-describe("Toggle", () => {
+describe("SavedSearchAlertSwitch", () => {
   const onChangeMock = jest.fn()
 
-  const TestRenderer = (props: Partial<ToggleProps>) => {
-    return <Toggle onChange={onChangeMock} active={false} label="Label" {...props} />
+  const TestRenderer = (props: Partial<SavedSearchAlertSwitchProps>) => {
+    return <SavedSearchAlertSwitch onChange={onChangeMock} active={false} label="Label" {...props} />
   }
 
   afterEach(() => {
