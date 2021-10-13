@@ -1,9 +1,8 @@
 import { EntityType, navigate, navigateToEntity, navigateToPartner, SlugType } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
-import { ArtworkIcon, AuctionIcon, CloseIcon, Flex, IconProps, Pill, Spacer, Text, Touchable } from "palette"
+import { ArtworkIcon, AuctionIcon, CloseIcon, Flex, Pill, Spacer, Text, Touchable } from "palette"
 import React, { useContext } from "react"
-import { Pressable } from "react-native"
 import { useTracking } from "react-tracking"
 import { IMAGE_SIZE, SearchResultImage } from "../Search2/components/SearchResultImage"
 import { AutosuggestResult } from "./AutosuggestResults"
@@ -24,31 +23,6 @@ const getResultType = (result: AutosuggestResult) => {
     return result.__typename
   }
   return ""
-}
-
-const NavigationButton: React.FC<{
-  artistTab: ArtistTabs
-  displayText: string
-  onPress: HandleResultPress
-  Icon: React.FC<IconProps>
-}> = ({ artistTab, displayText, onPress, Icon }) => {
-  return (
-    <>
-      <Spacer ml={1} />
-      <Pressable onPress={() => onPress({ artistTab })}>
-        {({ pressed }) => (
-          <Pill
-            textColor={pressed ? "blue100" : "black100"}
-            rounded
-            borderColor="black15"
-            icon={<Icon fill={pressed ? "blue100" : "black100"} />}
-          >
-            {displayText}
-          </Pill>
-        )}
-      </Pressable>
-    </>
-  )
 }
 
 export const AutosuggestSearchResult: React.FC<{
@@ -144,8 +118,14 @@ export const AutosuggestSearchResult: React.FC<{
           <Flex flexDirection="row" alignItems="center">
             <Spacer ml={4} />
 
-            <NavigationButton displayText="Artworks" Icon={ArtworkIcon} artistTab="Artworks" onPress={onPress} />
-            <NavigationButton displayText="Auction Results" Icon={AuctionIcon} artistTab="Insights" onPress={onPress} />
+            <Spacer ml={1} />
+            <Pill Icon={ArtworkIcon} onPress={() => onPress({ artistTab: "Artworks" })}>
+              Artworks
+            </Pill>
+            <Spacer ml={1} />
+            <Pill Icon={AuctionIcon} onPress={() => onPress({ artistTab: "Insights" })}>
+              Auction Results
+            </Pill>
           </Flex>
         </>
       )}
