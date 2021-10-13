@@ -159,13 +159,13 @@ export const Button: React.FC<ButtonProps> = ({
             >
               <Flex mx={containerSize.mx}>
                 <Flex height="100%" flexDirection="row" alignItems="center" justifyContent="center">
-                  {iconPosition === "left-start" ? (
+                  {iconPosition === "left-start" && !!icon ? (
                     <Box position="absolute" left={0}>
                       {icon}
                       <Spacer mr={0.5} />
                     </Box>
                   ) : null}
-                  {iconPosition === "left" ? (
+                  {iconPosition === "left" && !!icon ? (
                     <>
                       {icon}
                       <Spacer mr={0.5} />
@@ -189,7 +189,7 @@ export const Button: React.FC<ButtonProps> = ({
                   >
                     {children}
                   </AnimatedText>
-                  {iconPosition === "right" ? (
+                  {iconPosition === "right" && !!icon ? (
                     <>
                       <Spacer mr={0.5} />
                       {icon}
