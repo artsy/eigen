@@ -7,10 +7,9 @@ import { postEventToProviders } from "lib/utils/track/providers"
 import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { capitalize } from "lodash"
 import { stringify } from "qs"
-import { Alert, Linking, Platform } from "react-native"
+import { Platform } from "react-native"
 import Config from "react-native-config"
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from "react-native-fbsdk-next"
-import PushNotification from "react-native-push-notification"
 import { LegacyNativeModules } from "../NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
@@ -321,29 +320,6 @@ export const getAuthModel = (): AuthModel => ({
 
         actions.notifyTracking({ userId: user.id })
 
-        if (Platform.OS === "android") {
-          PushNotification.checkPermissions((permissions) => {
-            if (!permissions.alert) {
-              // settimeout so alerts show when/immediately after page loads not before.
-              setTimeout(() => {
-                Alert.alert(
-                  "Artsy Would Like to Send You Notifications",
-                  "Turn on notifications to get important updates about artists you follow.",
-                  [
-                    {
-                      text: "Dismiss",
-                      style: "cancel",
-                    },
-                    {
-                      text: "Settings",
-                      onPress: () => Linking.openSettings(),
-                    },
-                  ]
-                )
-              }, 3000)
-            }
-          })
-        }
         return true
       }
 
