@@ -108,13 +108,7 @@ describe("Saved search alert form", () => {
       expect(mutation.request.node.operation.name).toBe("createSavedSearchAlertMutation")
       expect(mutation.request.variables).toEqual({
         input: {
-          attributes: {
-            artistID: "artistID",
-            attributionClass: ["limited edition"],
-            partnerIDs: ["tate-ward-auctions"],
-            locationCities: ["New York, NY, USA"],
-            additionalGeneIDs: ["photography", "prints"],
-          },
+          attributes: createMutationAttributes,
           userAlertSettings: {
             name: "something new",
           },
@@ -225,38 +219,104 @@ describe("Saved search alert form", () => {
     expect(queryByText("Mobile Alerts")).toBeFalsy()
   })
 
-  it("should display notification toggles if AREnableSavedSearchToggles is enabled", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
-    const { queryByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
-
-    expect(queryByText("Email Alerts")).toBeTruthy()
-    expect(queryByText("Mobile Alerts")).toBeTruthy()
-  })
-
-  it('should check Push notification permissions when "the mobile alerts toggle" is enabled', async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
+  describe("When AREnableSavedSearchToggles is enabled", () => {
     const notificationPermissionsMock = mockFetchNotificationPermissions(false)
 
-    const { getByA11yLabel } = renderWithWrappersTL(
-      <SavedSearchAlertForm {...baseProps} initialValues={{ ...baseProps.initialValues, push: false }} />
-    )
+    beforeEach(() => {
+      notificationPermissionsMock.mockImplementationOnce((cb) => {
+        cb(null, PushAuthorizationStatus.Authorized)
+      })
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
+    })
 
-    fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", true)
+    it("push notification permissions should be checked if mobile alerts is enabled", async () => {
+      const { getByA11yLabel } = renderWithWrappersTL(
+        <SavedSearchAlertForm {...baseProps} initialValues={{ ...baseProps.initialValues, push: false }} />
+      )
 
-    expect(notificationPermissionsMock).toBeCalled()
-  })
+      fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", true)
 
-  it("should immediately call mutation if AREnableSavedSearchToggles is enabled", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
-    mockFetchNotificationPermissions(false)
+      expect(notificationPermissionsMock).toBeCalled()
+    })
 
-    const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+    it("the notification toggles should be displayed", async () => {
+      const { queryByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
 
-    fireEvent.press(getByTestId("save-alert-button"))
+      expect(queryByText("Email Alerts")).toBeTruthy()
+      expect(queryByText("Mobile Alerts")).toBeTruthy()
+    })
 
-    await waitFor(() => {
-      const mutation = mockEnvironment.mock.getMostRecentOperation()
-      expect(mutation).toBeTruthy()
+    it("mutation should be called immediately", async () => {
+      const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+      fireEvent.press(getByTestId("save-alert-button"))
+
+      await waitFor(() => {
+        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        expect(mutation).toBeTruthy()
+      })
+    })
+
+    it("the notification settings should be passed in mutation", async () => {
+      const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+      fireEvent.press(getByTestId("save-alert-button"))
+
+      await waitFor(() => {
+        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        expect(mutation.request.variables).toEqual({
+          input: {
+            attributes: createMutationAttributes,
+            userAlertSettings: {
+              name: "artistName • 5 filters",
+              email: true,
+              push: true,
+            },
+          },
+        })
+      })
+    })
+
+    it("the email notification setting should be passed in mutation", async () => {
+      const { getByTestId, getByA11yLabel } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+      fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
+      fireEvent.press(getByTestId("save-alert-button"))
+
+      await waitFor(() => {
+        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        expect(mutation.request.variables).toEqual({
+          input: {
+            attributes: createMutationAttributes,
+            userAlertSettings: {
+              name: "artistName • 5 filters",
+              email: false,
+              push: true,
+            },
+          },
+        })
+      })
+    })
+
+    it("the push notification setting should be passed in mutation", async () => {
+      const { getByTestId, getByA11yLabel } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+      fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", false)
+      fireEvent.press(getByTestId("save-alert-button"))
+
+      await waitFor(() => {
+        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        expect(mutation.request.variables).toEqual({
+          input: {
+            attributes: createMutationAttributes,
+            userAlertSettings: {
+              name: "artistName • 5 filters",
+              email: true,
+              push: false,
+            },
+          },
+        })
+      })
     })
   })
 })
@@ -336,6 +396,14 @@ const aggregations: Aggregations = [
     ],
   },
 ]
+
+const createMutationAttributes = {
+  artistID: "artistID",
+  attributionClass: ["limited edition"],
+  partnerIDs: ["tate-ward-auctions"],
+  locationCities: ["New York, NY, USA"],
+  additionalGeneIDs: ["photography", "prints"],
+}
 
 const baseProps: SavedSearchAlertFormProps = {
   initialValues: {
