@@ -385,7 +385,7 @@ export const modules = defineModules({
   NewWorksForYou: reactModule(NewWorksForYouQueryRenderer),
   LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer),
   Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
-  SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer, { onlyShowInTabName: "profile" }),
+  SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer),
 })
 

@@ -24,6 +24,7 @@ export interface NavigateOptions {
   replace?: boolean
   // Only when onlyShowInTabName specified
   popToRootTabView?: boolean
+  showInTabName?: BottomTabType
 }
 
 let lastInvocation = { url: "", timestamp: 0 }
@@ -50,7 +51,7 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
 
   const module = modules[result.module]
   const presentModally = options.modal ?? module.options.alwaysPresentModally ?? false
-  const { replace = false, popToRootTabView } = options
+  const { replace = false, popToRootTabView, showInTabName } = options
 
   const screenDescriptor: ViewDescriptor = {
     type: module.type,
@@ -71,13 +72,17 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     await LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(module.options.isRootViewForTabName)
     switchTab(module.options.isRootViewForTabName, screenDescriptor.props)
   } else {
-    const { onlyShowInTabName } = module.options
+    const onlyShowInTabName = module.options.onlyShowInTabName || showInTabName
     const selectedTab = unsafe__getSelectedTab()
-    const delayExecution = !!onlyShowInTabName && onlyShowInTabName !== selectedTab
+
+    // If we need to switch to a tab that is different from the selected one
+    // we will need to delay the navigation action until we change tabs
+    const waitForTabsToChange = !!onlyShowInTabName && onlyShowInTabName !== selectedTab
     const pushView = () => {
       LegacyNativeModules.ARScreenPresenterModule.pushView(onlyShowInTabName ?? selectedTab, screenDescriptor)
     }
 
+    // If the screen should be on a tab, then switch to this tab first
     if (onlyShowInTabName) {
       if (popToRootTabView) {
         await LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(onlyShowInTabName)
@@ -86,7 +91,7 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
       switchTab(onlyShowInTabName)
     }
 
-    if (delayExecution) {
+    if (waitForTabsToChange) {
       requestAnimationFrame(pushView)
     } else {
       pushView()
