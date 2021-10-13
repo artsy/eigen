@@ -20,7 +20,7 @@ const noop: any = (name: string) => () => console.warn(`method ${name} doesn't e
 
 interface LegacyNativeModules {
   ARTemporaryAPIModule: {
-    requestLoginNotificationPermissions(): void
+    requestPrepromptNotificationPermissions(): void
     requestDirectNotificationPermissions(): void
     fetchNotificationPermissions(callback: (error: any, result: PushAuthorizationStatus) => void): void
     markNotificationsRead(callback: (error?: Error) => any): void
@@ -122,7 +122,7 @@ export const LegacyNativeModules: LegacyNativeModules =
         },
 
         ARTemporaryAPIModule: {
-          requestLoginNotificationPermissions: noop("requestLoginNotificationPermissions"),
+          requestPrepromptNotificationPermissions: noop("requestPrepromptNotificationPermissions"),
           requestDirectNotificationPermissions: noop("requestDirectNotificationPermissions"),
           fetchNotificationPermissions: noop("fetchNotificationPermissions"),
           markNotificationsRead: noop("markNotificationsRead"),
