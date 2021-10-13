@@ -8,7 +8,9 @@ import { commitMutation, graphql } from "relay-runtime"
 
 export const createSavedSearchAlert = (
   name: string,
-  attributes: SearchCriteriaAttributes
+  attributes: SearchCriteriaAttributes,
+  enablePushNotifications?: boolean,
+  enableEmailNotifications?: boolean
 ): Promise<createSavedSearchAlertMutationResponse> => {
   return new Promise((resolve, reject) => {
     commitMutation<createSavedSearchAlertMutation>(defaultEnvironment, {
@@ -28,6 +30,8 @@ export const createSavedSearchAlert = (
           attributes,
           userAlertSettings: {
             name,
+            email: enableEmailNotifications,
+            push: enablePushNotifications,
           },
         },
       },
