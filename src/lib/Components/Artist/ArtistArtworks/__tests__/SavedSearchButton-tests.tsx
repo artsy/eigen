@@ -5,6 +5,7 @@ import { PopoverMessage } from "lib/Components/PopoverMessage/PopoverMessage"
 import { navigate } from "lib/navigation/navigate"
 import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import { SavedSearchAlertMutationResult } from "lib/Scenes/SavedSearchAlert/SavedSearchAlertModel"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
@@ -146,7 +147,26 @@ describe("SavedSearchButton", () => {
     act(() => tree.root.findByType(CreateSavedSearchAlert).props.onComplete(mockedMutationResult))
     act(() => tree.root.findByType(PopoverMessage).props.onPress())
 
-    expect(navigate).toHaveBeenCalled()
+    expect(navigate).toHaveBeenCalledWith("/my-profile/settings", {
+      popToRootTabView: true,
+      showInTabName: "profile",
+    })
+  })
+
+  it('should call navigate twice when "My Collection" is enabled', async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionIOS: true })
+    const tree = renderWithWrappers(<TestRenderer />)
+
+    act(() => tree.root.findByType(CreateSavedSearchAlert).props.onComplete(mockedMutationResult))
+    act(() => tree.root.findByType(PopoverMessage).props.onPress())
+
+    await new Promise((r) => setTimeout(r, 100))
+
+    expect(navigate).toHaveBeenCalledWith("/my-profile/settings", {
+      popToRootTabView: true,
+      showInTabName: "profile",
+    })
+    expect(navigate).toHaveBeenCalledWith("/my-profile/saved-search-alerts")
   })
 
   it("tracks clicks when the create alert button is pressed", async () => {
