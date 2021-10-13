@@ -1,7 +1,8 @@
 This update includes a number of improvements and bug fixes including:
 
-- Use the new My Collection feature to keep track of your artworks and receive market insights
-- Home screen improvements
-- Order details screen improvements
+- New improved app onboarding
+- Discover Trove on the home screen, featuring the best works on Artsy this week
+- New Works for You screen
+- Fixed "Unable to load" bug when visiting screens
 
 Have feedback? Email us at support@artsy.net
