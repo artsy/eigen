@@ -90,8 +90,8 @@ describe("Saved search alert form", () => {
     expect(mockTrackEvent).toHaveBeenCalledWith(
       tracks.editedSavedSearch(
         "savedSearchAlertId",
-        { name: "", enableEmailNotifications: true, enablePushNotifications: true },
-        { name: "something new", enableEmailNotifications: true, enablePushNotifications: true }
+        { name: "", email: true, push: true },
+        { name: "something new", email: true, push: true }
       )
     )
   })
@@ -238,10 +238,7 @@ describe("Saved search alert form", () => {
     const notificationPermissionsMock = mockFetchNotificationPermissions(false)
 
     const { getByA11yLabel } = renderWithWrappersTL(
-      <SavedSearchAlertForm
-        {...baseProps}
-        initialValues={{ ...baseProps.initialValues, enablePushNotifications: false }}
-      />
+      <SavedSearchAlertForm {...baseProps} initialValues={{ ...baseProps.initialValues, push: false }} />
     )
 
     fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", true)
@@ -343,8 +340,8 @@ const aggregations: Aggregations = [
 const baseProps: SavedSearchAlertFormProps = {
   initialValues: {
     name: "",
-    enableEmailNotifications: true,
-    enablePushNotifications: true,
+    email: true,
+    push: true,
   },
   filters,
   aggregations,

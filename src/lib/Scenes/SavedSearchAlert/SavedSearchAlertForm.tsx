@@ -59,8 +59,8 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       }
 
       if (enableSavedSearchToggles) {
-        userAlertSettings.push = values.enablePushNotifications
-        userAlertSettings.email = values.enableEmailNotifications
+        userAlertSettings.push = values.push
+        userAlertSettings.email = values.email
       }
 
       try {
@@ -90,12 +90,12 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   })
 
   /**
-   * If the initial value of enablePushNotifications has changed (for example, the user has minimized the app and turned off Push notifications in settings)
+   * If the initial value of push has changed (for example, the user has minimized the app and turned off Push notifications in settings)
    * then we sync the updated value with the formik state
    */
   useEffect(() => {
-    formik.setFieldValue("enablePushNotifications", initialValues.enablePushNotifications)
-  }, [initialValues.enablePushNotifications])
+    formik.setFieldValue("push", initialValues.push)
+  }, [initialValues.push])
 
   const requestNotificationPermissions = () => {
     // permissions not determined: Android should never need this
@@ -189,11 +189,11 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       }
     }
 
-    formik.setFieldValue("enablePushNotifications", enabled)
+    formik.setFieldValue("push", enabled)
   }
 
   const handleToggleEmailNotification = (enabled: boolean) => {
-    formik.setFieldValue("enableEmailNotifications", enabled)
+    formik.setFieldValue("email", enabled)
   }
 
   const onDelete = async () => {

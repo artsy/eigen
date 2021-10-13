@@ -65,8 +65,8 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
             <SavedSearchAlertForm
               initialValues={{
                 name: userAlertSettings?.name ?? "",
-                enableEmailNotifications: true,
-                enablePushNotifications: true,
+                email: true,
+                push: true,
               }}
               artistId={artist.internalID}
               artistName={artist.name!}

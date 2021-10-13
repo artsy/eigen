@@ -86,9 +86,9 @@ export const Form: React.FC<FormProps> = (props) => {
       </Box>
       {!!enableSavedSearchToggles && (
         <>
-          <Toggle label="Email Alerts" onChange={onToggleEmailNotification} active={values.enableEmailNotifications} />
+          <Toggle label="Email Alerts" onChange={onToggleEmailNotification} active={values.email} />
           <Spacer mt={2} />
-          <Toggle label="Mobile Alerts" onChange={onTogglePushNotification} active={values.enablePushNotifications} />
+          <Toggle label="Mobile Alerts" onChange={onTogglePushNotification} active={values.push} />
           <Spacer mt={2} />
         </>
       )}

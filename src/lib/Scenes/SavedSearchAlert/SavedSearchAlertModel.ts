@@ -2,8 +2,8 @@ import { Aggregations, FilterData } from "lib/Components/ArtworkFilter/ArtworkFi
 
 export interface SavedSearchAlertFormValues {
   name: string
-  enablePushNotifications: boolean
-  enableEmailNotifications: boolean
+  push: boolean
+  email: boolean
 }
 
 export interface SavedSearchAlertFormPropsBase {
@@ -17,6 +17,7 @@ export interface SavedSearchAlertMutationResult {
   id: string
 }
 
+// TODO: When AREnableSavedSearchToggles is released then we can use SavedSearchAlertFormValues instead
 export interface SavedSearchAlertUserAlertSettings {
   name: string
   email?: boolean
