@@ -1,12 +1,10 @@
-import { themeGet } from "@styled-system/theme-get"
 import { EntityType, navigate, navigateToEntity, navigateToPartner, SlugType } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
-import { ArtworkIcon, AuctionIcon, Box, CloseIcon, Flex, IconProps, Spacer, Text, Touchable } from "palette"
+import { ArtworkIcon, AuctionIcon, CloseIcon, Flex, IconProps, Pill, Spacer, Text, Touchable } from "palette"
 import React, { useContext } from "react"
 import { Pressable } from "react-native"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
 import { IMAGE_SIZE, SearchResultImage } from "../Search2/components/SearchResultImage"
 import { AutosuggestResult } from "./AutosuggestResults"
 import { ResultWithHighlight } from "./ResultWithHighlight"
@@ -37,17 +35,16 @@ const NavigationButton: React.FC<{
   return (
     <>
       <Spacer ml={1} />
-
       <Pressable onPress={() => onPress({ artistTab })}>
         {({ pressed }) => (
-          <QuickNavigationButton>
-            <Box mr={0.5}>
-              <Icon fill={pressed ? "blue100" : "black100"} />
-            </Box>
-            <Text variant="xs" color={pressed ? "blue100" : "black100"}>
-              {displayText}
-            </Text>
-          </QuickNavigationButton>
+          <Pill
+            textColor={pressed ? "blue100" : "black100"}
+            rounded
+            borderColor="black15"
+            icon={<Icon fill={pressed ? "blue100" : "black100"} />}
+          >
+            {displayText}
+          </Pill>
         )}
       </Pressable>
     </>
@@ -155,15 +152,6 @@ export const AutosuggestSearchResult: React.FC<{
     </>
   )
 }
-
-const QuickNavigationButton = styled(Flex)`
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 2px 10px;
-  border: 1px solid ${themeGet("colors.black30")};
-  border-radius: 20;
-`
 
 /**
  * For some entities (fairs, partners) we pass along some context

@@ -3,7 +3,7 @@ import { Spacer } from "palette"
 import React, { ReactNode } from "react"
 import { GestureResponderEvent, TouchableOpacity } from "react-native"
 import styled from "styled-components/native"
-import { useTheme } from "../../Theme"
+import { Color, useTheme } from "../../Theme"
 import { Flex, FlexProps } from "../Flex"
 import { Text, useTextStyleForPalette } from "../Text"
 
@@ -34,6 +34,7 @@ interface PillProps extends FlexProps {
   iconPosition?: "left" | "right"
   disabled?: boolean
   onPress?: (event: GestureResponderEvent) => void
+  textColor?: Color
 }
 
 export const Pill: React.FC<PillProps> = ({
@@ -44,6 +45,7 @@ export const Pill: React.FC<PillProps> = ({
   icon,
   iconPosition = "left",
   imageUrl,
+  textColor,
   disabled,
   onPress,
   ...other
@@ -72,7 +74,7 @@ export const Pill: React.FC<PillProps> = ({
         </>
       )}
       {!!imageUrl && <OpaqueImageViewContainer imageURL={imageUrl} />}
-      <Text numberOfLines={1} style={textStyle}>
+      <Text numberOfLines={1} style={[textStyle, { color: color(textColor) }]}>
         {children}
       </Text>
       {iconPosition === "right" && !!icon && (
