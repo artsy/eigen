@@ -144,7 +144,7 @@ const handleFinishOnboardingPersonalization = async () => {
   const pushNotificationsPermissionsStatus = await getNotificationPermissionsStatus()
   if (pushNotificationsPermissionsStatus !== PushAuthorizationStatus.Authorized) {
     if (Platform.OS === "ios") {
-      LegacyNativeModules.ARTemporaryAPIModule.requestLoginNotificationPermissions()
+      LegacyNativeModules.ARTemporaryAPIModule.requestPrepromptNotificationPermissions()
     } else {
       setTimeout(() => {
         Alert.alert(

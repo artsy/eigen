@@ -78,7 +78,7 @@ describe("OnboardingPersonalizationList", () => {
 
       await flushPromiseQueue()
       expect(__globalStoreTestUtils__?.getCurrentState().auth.onboardingState).toEqual("complete")
-      expect(LegacyNativeModules.ARTemporaryAPIModule.requestLoginNotificationPermissions).toBeCalled()
+      expect(LegacyNativeModules.ARTemporaryAPIModule.requestPrepromptNotificationPermissions).toBeCalled()
     })
   })
 })
