@@ -37,6 +37,9 @@ export interface GlobalStoreModel extends GlobalStoreStateModel {
   signOut: Thunk<GlobalStoreModel>
   didRehydrate: ThunkOn<GlobalStoreModel>
 
+  // for dev only.
+  _setVersion: Action<GlobalStoreModel, number>
+
   // for testing only. noop otherwise.
   __inject: Action<GlobalStoreModel, DeepPartial<State<GlobalStoreStateModel>>>
   __manipulate: Action<GlobalStoreModel, (store: GlobalStoreModel) => void>
@@ -104,6 +107,11 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   auth: getAuthModel(),
   toast: getToastModel(),
   pendingPushNotification: getPendingPushNotificationModel(),
+
+  // for dev only.
+  _setVersion: action((state, newVersion) => {
+    state.version = newVersion
+  }),
 
   // for testing only. noop otherwise.
   __inject: __TEST__
