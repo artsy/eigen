@@ -40,8 +40,6 @@ const meResponseMock = {
   ],
 }
 
-const trackEvent = jest.fn()
-
 describe("ShowsRailFragmentContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>
 
