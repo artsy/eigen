@@ -1,6 +1,7 @@
 This update includes a number of improvements and bug fixes including:
 
-- Home screen improvements
-- Order details screen improvements
+- You can now create an account using Facebook
+- Discover Trove on the home screen, featuring the best works on Artsy this week
+- New Works for You screen
 
 Have feedback? Email us at support@artsy.net
