@@ -28,9 +28,7 @@ export type SearchCriteriaAttributes = {
     width?: string | null;
 };
 export type UserAlertSettingsInput = {
-    email?: boolean | null;
     name?: string | null;
-    push?: boolean | null;
 };
 export type createSavedSearchAlertMutationVariables = {
     input: CreateSavedSearchInput;

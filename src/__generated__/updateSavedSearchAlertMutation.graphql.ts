@@ -10,9 +10,7 @@ export type UpdateSavedSearchInput = {
     userAlertSettings?: UserAlertSettingsInput | null;
 };
 export type UserAlertSettingsInput = {
-    email?: boolean | null;
     name?: string | null;
-    push?: boolean | null;
 };
 export type updateSavedSearchAlertMutationVariables = {
     input: UpdateSavedSearchInput;

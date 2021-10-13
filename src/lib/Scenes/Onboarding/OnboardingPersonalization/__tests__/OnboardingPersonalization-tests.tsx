@@ -1,7 +1,10 @@
 import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPersonalization_highlights.graphql"
 import { OnboardingPersonalizationTestsQuery } from "__generated__/OnboardingPersonalizationTestsQuery.graphql"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
+import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
@@ -62,7 +65,11 @@ describe("OnboardingPersonalizationList", () => {
   })
 
   describe("Button", () => {
-    it("Sets the onboarding state to complete", async () => {
+    it("Sets the onboarding state to complete and requests for push notifications permission when it's not yet determined", async () => {
+      mockFetchNotificationPermissions(false).mockImplementationOnce((cb) =>
+        cb(null, PushAuthorizationStatus.NotDetermined)
+      )
+
       const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironmentPayload(mockEnvironment)
 
@@ -71,6 +78,7 @@ describe("OnboardingPersonalizationList", () => {
 
       await flushPromiseQueue()
       expect(__globalStoreTestUtils__?.getCurrentState().auth.onboardingState).toEqual("complete")
+      expect(LegacyNativeModules.ARTemporaryAPIModule.requestLoginNotificationPermissions).toBeCalled()
     })
   })
 })
