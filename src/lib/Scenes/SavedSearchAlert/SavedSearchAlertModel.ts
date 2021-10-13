@@ -16,3 +16,9 @@ export interface SavedSearchAlertFormPropsBase {
 export interface SavedSearchAlertMutationResult {
   id: string
 }
+
+export interface SavedSearchAlertUserAlertSettings {
+  name: string
+  email?: boolean
+  push?: boolean
+}

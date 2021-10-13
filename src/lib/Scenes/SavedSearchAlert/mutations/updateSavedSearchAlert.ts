@@ -4,12 +4,11 @@ import {
 } from "__generated__/updateSavedSearchAlertMutation.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
+import { SavedSearchAlertUserAlertSettings } from "../SavedSearchAlertModel"
 
 export const updateSavedSearchAlert = (
-  name: string,
-  savedSearchAlertId: string,
-  enablePushNotifications?: boolean,
-  enableEmailNotifications?: boolean
+  userAlertSettings: SavedSearchAlertUserAlertSettings,
+  savedSearchAlertId: string
 ): Promise<updateSavedSearchAlertMutationResponse> => {
   return new Promise((resolve, reject) => {
     commitMutation<updateSavedSearchAlertMutation>(defaultEnvironment, {
@@ -30,11 +29,7 @@ export const updateSavedSearchAlert = (
       variables: {
         input: {
           searchCriteriaID: savedSearchAlertId,
-          userAlertSettings: {
-            name,
-            push: enablePushNotifications,
-            email: enableEmailNotifications,
-          },
+          userAlertSettings,
         },
       },
       onCompleted: (response) => {

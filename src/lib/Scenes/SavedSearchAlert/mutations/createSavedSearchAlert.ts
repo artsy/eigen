@@ -5,12 +5,11 @@ import {
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
+import { SavedSearchAlertUserAlertSettings } from "../SavedSearchAlertModel"
 
 export const createSavedSearchAlert = (
-  name: string,
-  attributes: SearchCriteriaAttributes,
-  enablePushNotifications?: boolean,
-  enableEmailNotifications?: boolean
+  userAlertSettings: SavedSearchAlertUserAlertSettings,
+  attributes: SearchCriteriaAttributes
 ): Promise<createSavedSearchAlertMutationResponse> => {
   return new Promise((resolve, reject) => {
     commitMutation<createSavedSearchAlertMutation>(defaultEnvironment, {
@@ -28,11 +27,7 @@ export const createSavedSearchAlert = (
       variables: {
         input: {
           attributes,
-          userAlertSettings: {
-            name,
-            email: enableEmailNotifications,
-            push: enablePushNotifications,
-          },
+          userAlertSettings,
         },
       },
       onCompleted: (response) => {

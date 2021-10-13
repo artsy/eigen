@@ -17,6 +17,7 @@ import {
   SavedSearchAlertFormPropsBase,
   SavedSearchAlertFormValues,
   SavedSearchAlertMutationResult,
+  SavedSearchAlertUserAlertSettings,
 } from "./SavedSearchAlertModel"
 
 export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase {
@@ -48,28 +49,25 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     initialErrors: {},
     onSubmit: async (values) => {
       let alertName = values.name
-      let enablePushNotifications
-      let enableEmailNotifications
 
       if (alertName.length === 0) {
         alertName = getNamePlaceholder(artistName, pills)
       }
 
+      const userAlertSettings: SavedSearchAlertUserAlertSettings = {
+        name: alertName,
+      }
+
       if (enableSavedSearchToggles) {
-        enablePushNotifications = values.enablePushNotifications
-        enableEmailNotifications = values.enableEmailNotifications
+        userAlertSettings.push = values.enablePushNotifications
+        userAlertSettings.email = values.enableEmailNotifications
       }
 
       try {
         let result: SavedSearchAlertMutationResult
 
         if (isUpdateForm) {
-          const response = await updateSavedSearchAlert(
-            alertName,
-            savedSearchAlertId!,
-            enablePushNotifications,
-            enableEmailNotifications
-          )
+          const response = await updateSavedSearchAlert(userAlertSettings, savedSearchAlertId!)
           tracking.trackEvent(tracks.editedSavedSearch(savedSearchAlertId!, initialValues, values))
 
           result = {
@@ -77,12 +75,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
           }
         } else {
           const criteria = getSearchCriteriaFromFilters(artistId, filters)
-          const response = await createSavedSearchAlert(
-            alertName,
-            criteria,
-            enablePushNotifications,
-            enableEmailNotifications
-          )
+          const response = await createSavedSearchAlert(userAlertSettings, criteria)
 
           result = {
             id: response.createSavedSearch?.savedSearchOrErrors.internalID!,
