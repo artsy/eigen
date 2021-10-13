@@ -119,11 +119,11 @@ export const AutosuggestSearchResult: React.FC<{
             <Spacer ml={4} />
 
             <Spacer ml={1} />
-            <Pill Icon={ArtworkIcon} onPress={() => onPress({ artistTab: "Artworks" })}>
+            <Pill highlightEnabled Icon={ArtworkIcon} onPress={() => onPress({ artistTab: "Artworks" })}>
               Artworks
             </Pill>
             <Spacer ml={1} />
-            <Pill Icon={AuctionIcon} onPress={() => onPress({ artistTab: "Insights" })}>
+            <Pill highlightEnabled Icon={AuctionIcon} onPress={() => onPress({ artistTab: "Insights" })}>
               Auction Results
             </Pill>
           </Flex>

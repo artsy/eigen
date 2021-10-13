@@ -3,7 +3,7 @@ import { Flex, FlexProps } from "../Flex"
 import { Text, useTextStyleForPalette } from "../Text"
 
 import { Color, IconProps, Spacer, useColor } from "palette"
-import React, { ReactNode, useState } from "react"
+import React, { ReactNode, useEffect, useState } from "react"
 import { GestureResponderEvent, Pressable, PressableProps } from "react-native"
 import { config } from "react-spring"
 // @ts-ignore
@@ -22,6 +22,7 @@ export interface PillProps extends FlexProps {
   disabled?: boolean
   selected?: boolean
   imageUrl?: string
+  highlightEnabled?: boolean
 }
 
 enum DisplayState {
@@ -63,6 +64,7 @@ export const Pill: React.FC<PillProps> = ({
   children,
   disabled,
   rounded,
+  highlightEnabled = false,
   ...rest
 }) => {
   const textStyle = useTextStyleForPalette(size === "xxs" ? "xs" : "sm")
@@ -75,19 +77,16 @@ export const Pill: React.FC<PillProps> = ({
       return
     }
 
-    // Did someone tap really fast? Flick the highlighted state
-    if (displayState === DisplayState.Enabled) {
-      setInnerDisplayState(DisplayState.Pressed)
-      setTimeout(() => {
-        setInnerDisplayState(initialDisplayState)
-      }, 0.3)
-    } else {
-      // Was already selected
+    if (displayState === DisplayState.Pressed) {
       setInnerDisplayState(initialDisplayState)
     }
 
     onPress(event)
   }
+
+  useEffect(() => {
+    setInnerDisplayState(initialDisplayState)
+  }, [selected])
 
   const iconSpacerMargin = size === "xxs" ? 0.5 : 1
 
@@ -101,10 +100,15 @@ export const Pill: React.FC<PillProps> = ({
           disabled={disabled || !onPress}
           onPress={handlePress}
           onPressIn={() => {
-            setInnerDisplayState(DisplayState.Pressed)
+            if (highlightEnabled) {
+              setInnerDisplayState(DisplayState.Pressed)
+            }
           }}
+          onLongPress={handlePress}
           onPressOut={() => {
-            setInnerDisplayState(initialDisplayState)
+            if (highlightEnabled && displayState === DisplayState.Pressed) {
+              setInnerDisplayState(innerDisplayState)
+            }
           }}
         >
           <AnimatedContainer

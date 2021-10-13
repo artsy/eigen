@@ -40,10 +40,10 @@ storiesOf("Pill", module)
   ))
   .add("Navigation Button", () => (
     <List>
-      <Pill Icon={ArtworkIcon} onPress={() => action("pill tapped")}>
+      <Pill highlightEnabled Icon={ArtworkIcon} onPress={() => action("pill tapped")}>
         Artworks
       </Pill>
-      <Pill Icon={AuctionIcon} onPress={() => action("pill tapped")}>
+      <Pill highlightEnabled Icon={AuctionIcon} onPress={() => action("pill tapped")}>
         Auctions
       </Pill>
     </List>
