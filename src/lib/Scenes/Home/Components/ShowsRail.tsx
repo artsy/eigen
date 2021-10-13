@@ -2,7 +2,6 @@ import { ActionType, ContextModule, OwnerType, TappedShowGroup } from "@artsy/co
 import { ShowsRail_showsConnection } from "__generated__/ShowsRail_showsConnection.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { ShowCardContainer } from "lib/Components/ShowCard"
-import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Spacer } from "palette"
 import React, { useEffect } from "react"
@@ -35,13 +34,7 @@ export const ShowsRail: React.FC<ShowsRailProps> = ({ showsConnection, onHide, o
   return (
     <>
       <Flex mx={2}>
-        <SectionTitle
-          title="Shows for You"
-          onPress={() => {
-            tracking.trackEvent(tracks.tappedHeader())
-            navigate("/shows")
-          }}
-        />
+        <SectionTitle title="Shows for You" />
       </Flex>
       <Flex>
         <FlatList
@@ -82,13 +75,6 @@ export const ShowsRailFragmentContainer = createFragmentContainer(ShowsRail, {
 })
 
 export const tracks = {
-  tappedHeader: (): TappedShowGroup => ({
-    action: ActionType.tappedShowGroup,
-    context_module: ContextModule.showsRail,
-    context_screen_owner_type: OwnerType.home,
-    destination_screen_owner_type: OwnerType.shows,
-    type: "header",
-  }),
   tappedThumbnail: (showID?: string, showSlug?: string, index?: number): TappedShowGroup => ({
     action: ActionType.tappedShowGroup,
     context_module: ContextModule.showsRail,

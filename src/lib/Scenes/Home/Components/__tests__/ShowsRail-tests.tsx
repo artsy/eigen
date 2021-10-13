@@ -1,8 +1,6 @@
 import { ShowsRailTestsQuery } from "__generated__/ShowsRailTestsQuery.graphql"
-import { SectionTitle } from "lib/Components/SectionTitle"
-import { navigate } from "lib/navigation/navigate"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { first } from "lodash"
+import { cloneDeep } from "lodash"
 import React from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -41,6 +39,8 @@ const meResponseMock = {
     },
   ],
 }
+
+const trackEvent = jest.fn()
 
 describe("ShowsRailFragmentContainer", () => {
   let env: ReturnType<typeof createMockEnvironment>
@@ -81,17 +81,19 @@ describe("ShowsRailFragmentContainer", () => {
     )
   })
 
-  it("routes to shows URL", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+  it("renders without throwing an error when missing shows", () => {
+    const showsCopy = cloneDeep(meResponseMock)
+    showsCopy.me.forEach((me) => {
+      me.showsByFollowedArtists.edges = []
+    })
+
+    renderWithWrappers(<TestRenderer />)
     env.mock.resolveMostRecentOperation((operation) =>
       MockPayloadGenerator.generate(operation, {
         Query: () => ({
-          me: meResponseMock,
+          me: showsCopy,
         }),
       })
     )
-
-    first(tree.root.findAllByType(SectionTitle))?.props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/shows")
   })
 })
