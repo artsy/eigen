@@ -185,6 +185,25 @@ describe("Artist options screen", () => {
       expect(queryByText("All Artists I Follow")).toBeTruthy()
     })
 
+    it("should be visible if counts has followedArtists ", () => {
+      const injectedState: ArtworkFiltersState = {
+        selectedFilters: [],
+        appliedFilters: [],
+        previouslyAppliedFilters: [],
+        applyFilters: false,
+        aggregations: mockAggregations,
+        filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: 10,
+        },
+      }
+
+      const { queryByText } = renderWithWrappersTL(<MockArtistScreen initialData={injectedState} />)
+
+      expect(queryByText("All Artists I Follow")).toBeTruthy()
+    })
+
     it("should be hidden if there are no followed artists in the aggregation", () => {
       const aggregations: Aggregations = [
         {

@@ -21,6 +21,7 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
   const selectedOptions = useSelectedOptionsDisplay()
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+  const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
 
   const selectedArtistIFollowOption = selectedOptions.find((value) => {
     return value.paramName === FilterParamName.artistsIFollow
@@ -47,12 +48,15 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
 
   // If FOLLOWED_ARTISTS is included in the list of available aggregations, it means
   // the user has at least one artist they follow in the fair.
-  const hasWorksByFollowedArtists = !!aggregations.find((agg) => agg.slice === ("FOLLOWED_ARTISTS" as AggregationName))
+  const hasFollowedArtistsInAggregations = !!aggregations.find(
+    (agg) => agg.slice === ("FOLLOWED_ARTISTS" as AggregationName)
+  )
+  const hasFollowArtistsInCounts = !!counts.followedArtists
 
   // Add in Artists I Follow at the start of the list
   let allOptions: FilterData[] = sortedArtistOptions
 
-  if (hasWorksByFollowedArtists) {
+  if (hasFollowedArtistsInAggregations || hasFollowArtistsInCounts) {
     allOptions = [
       {
         displayText: "All Artists I Follow",
