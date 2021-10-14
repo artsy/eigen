@@ -2,7 +2,7 @@ import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/Artw
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { Check } from "palette"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
@@ -180,9 +180,31 @@ describe("Artist options screen", () => {
       const selectedOptions = selectedArtistOptions(tree)
       expect(selectedOptions).toHaveLength(0)
     })
+  })
 
-    it("disables the artists I follow button if there are no followed artists in the fair", () => {
-      const noFollowedArtistsAggregations: Aggregations = [
+  describe("Artists I follow option", () => {
+    it("should be visible if there are followed artists in the aggregation", () => {
+      const injectedState: ArtworkFiltersState = {
+        selectedFilters: [],
+        appliedFilters: [],
+        previouslyAppliedFilters: [],
+        applyFilters: false,
+        aggregations: mockAggregations,
+        filterType: "artwork",
+        counts: {
+          total: null,
+          followedArtists: null,
+        },
+      }
+
+      const { queryByText } = renderWithWrappersTL(<MockArtistScreen initialData={injectedState} />)
+
+      // Artists I followed option should be hidden
+      expect(queryByText("All Artists I Follow")).toBeTruthy()
+    })
+
+    it("should be hidden if there are no followed artists in the aggregation", () => {
+      const aggregations: Aggregations = [
         {
           slice: "ARTIST",
           counts: [
@@ -190,16 +212,6 @@ describe("Artist options screen", () => {
               name: "Artist 1",
               count: 2956,
               value: "artist-1",
-            },
-            {
-              name: "Artist 2",
-              count: 513,
-              value: "artist-2",
-            },
-            {
-              name: "Artist 3",
-              count: 277,
-              value: "artist-3",
             },
           ],
         },
@@ -210,7 +222,7 @@ describe("Artist options screen", () => {
         appliedFilters: [],
         previouslyAppliedFilters: [],
         applyFilters: false,
-        aggregations: noFollowedArtistsAggregations,
+        aggregations,
         filterType: "artwork",
         counts: {
           total: null,
@@ -218,13 +230,10 @@ describe("Artist options screen", () => {
         },
       }
 
-      const tree = renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
+      const { queryByText } = renderWithWrappersTL(<MockArtistScreen initialData={injectedState} />)
 
-      expect(tree.root.findAllByType(Check)).toHaveLength(4)
-
-      // Artists I followed option should be disabled
-      const firstOptionInstance = tree.root.findAllByType(Check)[0]
-      expect(firstOptionInstance.props.disabled).toEqual(true)
+      // Artists I followed option should be hidden
+      expect(queryByText("All Artists I Follow")).toBeFalsy()
     })
   })
 })

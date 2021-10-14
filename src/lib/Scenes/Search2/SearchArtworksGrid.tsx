@@ -112,6 +112,7 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
             MAJOR_PERIOD
             COLOR
             PARTNER
+            FOLLOWED_ARTISTS
           ]
         ) {
           aggregations {

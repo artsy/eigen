@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2fe4571d55f8c8a06188f20dc5460ba9 */
+/* @relayHash 97d99a8d65aa28c858bb2a644fcfdfa2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -93,7 +93,7 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
 }
 
 fragment SearchArtworksGrid_viewer_2BDVGC on Viewer {
-  aggregations: artworksConnection(first: 0, aggregations: [ARTIST, MEDIUM, PRICE_RANGE, DIMENSION_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY, LOCATION_CITY, MAJOR_PERIOD, COLOR, PARTNER]) {
+  aggregations: artworksConnection(first: 0, aggregations: [ARTIST, MEDIUM, PRICE_RANGE, DIMENSION_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY, LOCATION_CITY, MAJOR_PERIOD, COLOR, PARTNER, FOLLOWED_ARTISTS]) {
     aggregations {
       slice
       counts {
@@ -248,7 +248,8 @@ return {
                   "LOCATION_CITY",
                   "MAJOR_PERIOD",
                   "COLOR",
-                  "PARTNER"
+                  "PARTNER",
+                  "FOLLOWED_ARTISTS"
                 ]
               },
               {
@@ -308,7 +309,7 @@ return {
               },
               (v3/*: any*/)
             ],
-            "storageKey": "artworksConnection(aggregations:[\"ARTIST\",\"MEDIUM\",\"PRICE_RANGE\",\"DIMENSION_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"COLOR\",\"PARTNER\"],first:0)"
+            "storageKey": "artworksConnection(aggregations:[\"ARTIST\",\"MEDIUM\",\"PRICE_RANGE\",\"DIMENSION_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"COLOR\",\"PARTNER\",\"FOLLOWED_ARTISTS\"],first:0)"
           },
           {
             "alias": "artworks",
@@ -640,7 +641,7 @@ return {
     ]
   },
   "params": {
-    "id": "2fe4571d55f8c8a06188f20dc5460ba9",
+    "id": "97d99a8d65aa28c858bb2a644fcfdfa2",
     "metadata": {},
     "name": "SearchArtworksContainerQuery",
     "operationKind": "query",

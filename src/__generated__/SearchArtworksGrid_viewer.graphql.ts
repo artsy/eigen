@@ -88,7 +88,8 @@ const node: ReaderFragment = {
             "LOCATION_CITY",
             "MAJOR_PERIOD",
             "COLOR",
-            "PARTNER"
+            "PARTNER",
+            "FOLLOWED_ARTISTS"
           ]
         },
         {
@@ -153,7 +154,7 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
-      "storageKey": "artworksConnection(aggregations:[\"ARTIST\",\"MEDIUM\",\"PRICE_RANGE\",\"DIMENSION_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"COLOR\",\"PARTNER\"],first:0)"
+      "storageKey": "artworksConnection(aggregations:[\"ARTIST\",\"MEDIUM\",\"PRICE_RANGE\",\"DIMENSION_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"COLOR\",\"PARTNER\",\"FOLLOWED_ARTISTS\"],first:0)"
     },
     {
       "alias": "artworks",
@@ -254,5 +255,5 @@ const node: ReaderFragment = {
   "type": "Viewer",
   "abstractKey": null
 };
-(node as any).hash = 'c03bf0e0bb060c43785fdeffcd44354d';
+(node as any).hash = '162f79270a2f0b41e1fadffc0746c841';
 export default node;

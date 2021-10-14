@@ -45,15 +45,23 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
   const formattedArtistOptions = artistDisplayOptions.map((option) => ({ ...option, paramValue: isSelected(option) }))
   const sortedArtistOptions = sortBy(formattedArtistOptions, ["displayText"])
 
+  // If FOLLOWED_ARTISTS is included in the list of available aggregations, it means
+  // the user has at least one artist they follow in the fair.
+  const hasWorksByFollowedArtists = !!aggregations.find((agg) => agg.slice === ("FOLLOWED_ARTISTS" as AggregationName))
+
   // Add in Artists I Follow at the start of the list
-  const allOptions = [
-    {
-      displayText: "All Artists I Follow",
-      paramName: FilterParamName.artistsIFollow,
-      paramValue: !!selectedArtistIFollowOption?.paramValue,
-    },
-    ...sortedArtistOptions,
-  ]
+  let allOptions: FilterData[] = sortedArtistOptions
+
+  if (hasWorksByFollowedArtists) {
+    allOptions = [
+      {
+        displayText: "All Artists I Follow",
+        paramName: FilterParamName.artistsIFollow,
+        paramValue: !!selectedArtistIFollowOption?.paramValue,
+      },
+      ...sortedArtistOptions,
+    ]
+  }
 
   const selectOption = (option: FilterData, updatedValue: boolean) => {
     if (option.paramName === FilterParamName.artistsIFollow) {
@@ -67,20 +75,12 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
     }
   }
 
-  // If FOLLOWED_ARTISTS is included in the list of available aggregations, it means
-  // the user has at least one artist they follow in the fair.
-  const hasWorksByFollowedArtists = !!aggregations.find((agg) => agg.slice === ("FOLLOWED_ARTISTS" as AggregationName))
-  const itemIsDisabled = (item: FilterData): boolean => {
-    return item.paramName === FilterParamName.artistsIFollow && !hasWorksByFollowedArtists
-  }
-
   return (
     <MultiSelectOptionScreen
       filterHeaderText={FilterDisplayName.artistIDs}
       filterOptions={allOptions}
       onSelect={selectOption}
       navigation={navigation}
-      isDisabled={itemIsDisabled}
     />
   )
 }
