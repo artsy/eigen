@@ -4,6 +4,8 @@ import { SavedAddressesFormQuery } from "__generated__/SavedAddressesFormQuery.g
 import { Action, action, computed, Computed, createComponentStore } from "easy-peasy"
 import { CountrySelect } from "lib/Components/CountrySelect"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
+import { cleanUserPhoneNumber } from "lib/Components/PhoneInput/cleanUserPhoneNumber"
+import { countryCodes } from "lib/Components/PhoneInput/countries"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { Stack } from "lib/Components/Stack"
 import { useToast } from "lib/Components/Toast/toastHook"
@@ -106,6 +108,8 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
   const screenRef = useRef<MyAccountFieldEditScreen>(null)
 
   const submitAddAddress = async () => {
+    const phoneNumberCountryCode = countryCodes[cleanUserPhoneNumber(phoneNumber)?.countryCode?.toLocaleUpperCase()]
+
     try {
       const creatingResponse = await createUserAddress({
         name: state.fields.name.value!,
@@ -116,6 +120,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
         city: state.fields.city.value!,
         region: state.fields.region.value,
         phoneNumber,
+        phoneNumberCountryCode,
       })
 
       if (isDefaultAddress) {
@@ -132,6 +137,8 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
   }
 
   const editUserAddress = async (userAddressID: string) => {
+    const phoneNumberCountryCode = countryCodes[cleanUserPhoneNumber(phoneNumber)?.countryCode?.toLocaleUpperCase()]
+
     try {
       const response = await updateUserAddress(userAddressID, {
         name: state.fields.name.value!,
@@ -142,6 +149,7 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
         city: state.fields.city.value!,
         region: state.fields.region.value,
         phoneNumber,
+        phoneNumberCountryCode,
       })
 
       if (isDefaultAddress) {
