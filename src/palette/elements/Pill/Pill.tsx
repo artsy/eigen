@@ -77,7 +77,7 @@ export const Pill: React.FC<PillProps> = ({
       return
     }
 
-    if (displayState === DisplayState.Pressed) {
+    if (highlightEnabled && innerDisplayState === DisplayState.Pressed) {
       setInnerDisplayState(initialDisplayState)
     }
 
@@ -90,8 +90,7 @@ export const Pill: React.FC<PillProps> = ({
 
   const iconSpacerMargin = size === "xxs" ? 0.5 : 1
 
-  const displayState = innerDisplayState
-  const to = useStyleForState(displayState)
+  const to = useStyleForState(innerDisplayState)
 
   return (
     <Spring native to={to} config={config.stiff}>
@@ -104,10 +103,9 @@ export const Pill: React.FC<PillProps> = ({
               setInnerDisplayState(DisplayState.Pressed)
             }
           }}
-          onLongPress={handlePress}
           onPressOut={() => {
-            if (highlightEnabled && displayState === DisplayState.Pressed) {
-              setInnerDisplayState(innerDisplayState)
+            if (highlightEnabled) {
+              setInnerDisplayState(initialDisplayState)
             }
           }}
         >
