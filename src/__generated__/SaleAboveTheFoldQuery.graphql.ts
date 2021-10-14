@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f887da5f21ba647b0b8c73a65693102a */
+/* @relayHash 8a5e0d6f09e6b9007e158384de16f64b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -40,8 +40,9 @@ query SaleAboveTheFoldQuery(
 }
 
 fragment BuyNowArtworksRail_sale on Sale {
+  internalID
   promotedSale {
-    saleArtworksConnection(first: 10) {
+    saleArtworksConnection(first: 4) {
       edges {
         node {
           artwork {
@@ -50,6 +51,7 @@ fragment BuyNowArtworksRail_sale on Sale {
             date
             saleMessage
             artistNames
+            href
             image {
               imageURL
             }
@@ -57,10 +59,15 @@ fragment BuyNowArtworksRail_sale on Sale {
               name
               id
             }
-            href
           }
           id
+          __typename
         }
+        cursor
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
       }
     }
     id
@@ -272,11 +279,13 @@ v6 = {
   "name": "id",
   "storageKey": null
 },
-v7 = {
-  "kind": "Literal",
-  "name": "first",
-  "value": 10
-},
+v7 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 4
+  }
+],
 v8 = {
   "alias": null,
   "args": null,
@@ -499,9 +508,7 @@ return {
             "selections": [
               {
                 "alias": null,
-                "args": [
-                  (v7/*: any*/)
-                ],
+                "args": (v7/*: any*/),
                 "concreteType": "SaleArtworkConnection",
                 "kind": "LinkedField",
                 "name": "saleArtworksConnection",
@@ -536,6 +543,7 @@ return {
                               (v9/*: any*/),
                               (v10/*: any*/),
                               (v11/*: any*/),
+                              (v12/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -566,20 +574,67 @@ return {
                                   (v6/*: any*/)
                                 ],
                                 "storageKey": null
-                              },
-                              (v12/*: any*/)
+                              }
                             ],
                             "storageKey": null
                           },
-                          (v6/*: any*/)
+                          (v6/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "__typename",
+                            "storageKey": null
+                          }
                         ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "cursor",
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "PageInfo",
+                    "kind": "LinkedField",
+                    "name": "pageInfo",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "endCursor",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "hasNextPage",
                         "storageKey": null
                       }
                     ],
                     "storageKey": null
                   }
                 ],
-                "storageKey": "saleArtworksConnection(first:10)"
+                "storageKey": "saleArtworksConnection(first:4)"
+              },
+              {
+                "alias": null,
+                "args": (v7/*: any*/),
+                "filters": null,
+                "handle": "connection",
+                "key": "Sale_saleArtworksConnection",
+                "kind": "LinkedHandle",
+                "name": "saleArtworksConnection"
               },
               (v6/*: any*/)
             ],
@@ -607,7 +662,11 @@ return {
           {
             "alias": null,
             "args": [
-              (v7/*: any*/),
+              {
+                "kind": "Literal",
+                "name": "first",
+                "value": 10
+              },
               {
                 "kind": "Literal",
                 "name": "includeArtworksByFollowedArtists",
@@ -906,7 +965,7 @@ return {
     ]
   },
   "params": {
-    "id": "f887da5f21ba647b0b8c73a65693102a",
+    "id": "8a5e0d6f09e6b9007e158384de16f64b",
     "metadata": {},
     "name": "SaleAboveTheFoldQuery",
     "operationKind": "query",

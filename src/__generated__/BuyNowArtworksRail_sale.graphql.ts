@@ -5,6 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type BuyNowArtworksRail_sale = {
+    readonly internalID: string;
     readonly promotedSale: {
         readonly saleArtworksConnection: {
             readonly edges: ReadonlyArray<{
@@ -15,13 +16,13 @@ export type BuyNowArtworksRail_sale = {
                         readonly date: string | null;
                         readonly saleMessage: string | null;
                         readonly artistNames: string | null;
+                        readonly href: string | null;
                         readonly image: {
                             readonly imageURL: string | null;
                         } | null;
                         readonly partner: {
                             readonly name: string | null;
                         } | null;
-                        readonly href: string | null;
                     } | null;
                 } | null;
             } | null> | null;
@@ -40,15 +41,39 @@ export type BuyNowArtworksRail_sale$key = {
 const node: ReaderFragment = {
   "argumentDefinitions": [
     {
+      "defaultValue": 4,
+      "kind": "LocalArgument",
+      "name": "count"
+    },
+    {
       "defaultValue": null,
       "kind": "LocalArgument",
-      "name": "id"
+      "name": "cursor"
     }
   ],
   "kind": "Fragment",
-  "metadata": null,
+  "metadata": {
+    "connection": [
+      {
+        "count": "count",
+        "cursor": "cursor",
+        "direction": "forward",
+        "path": [
+          "promotedSale",
+          "saleArtworksConnection"
+        ]
+      }
+    ]
+  },
   "name": "BuyNowArtworksRail_sale",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": null,
@@ -58,17 +83,11 @@ const node: ReaderFragment = {
       "plural": false,
       "selections": [
         {
-          "alias": null,
-          "args": [
-            {
-              "kind": "Literal",
-              "name": "first",
-              "value": 10
-            }
-          ],
+          "alias": "saleArtworksConnection",
+          "args": null,
           "concreteType": "SaleArtworkConnection",
           "kind": "LinkedField",
-          "name": "saleArtworksConnection",
+          "name": "__Sale_saleArtworksConnection_connection",
           "plural": false,
           "selections": [
             {
@@ -133,6 +152,13 @@ const node: ReaderFragment = {
                         {
                           "alias": null,
                           "args": null,
+                          "kind": "ScalarField",
+                          "name": "href",
+                          "storageKey": null
+                        },
+                        {
+                          "alias": null,
+                          "args": null,
                           "concreteType": "Image",
                           "kind": "LinkedField",
                           "name": "image",
@@ -165,25 +191,57 @@ const node: ReaderFragment = {
                             }
                           ],
                           "storageKey": null
-                        },
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "href",
-                          "storageKey": null
                         }
                       ],
                       "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "__typename",
+                      "storageKey": null
                     }
                   ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "cursor",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "PageInfo",
+              "kind": "LinkedField",
+              "name": "pageInfo",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "endCursor",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "hasNextPage",
                   "storageKey": null
                 }
               ],
               "storageKey": null
             }
           ],
-          "storageKey": "saleArtworksConnection(first:10)"
+          "storageKey": null
         }
       ],
       "storageKey": null
@@ -192,5 +250,5 @@ const node: ReaderFragment = {
   "type": "Sale",
   "abstractKey": null
 };
-(node as any).hash = '6cb5967b44609ac90a73f1d261d6db4d';
+(node as any).hash = 'dd1fdeeb5c170daa7239fc85d019ba48';
 export default node;

@@ -3,24 +3,44 @@ import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
+import { isCloseToEdge } from "lib/utils/isCloseToEdge"
 import { Flex, Spacer } from "palette"
-import React from "react"
+import React, { useState } from "react"
 import { FlatList } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+
+export const INITIAL_NUMBER_TO_RENDER = 4
+const PAGE_SIZE = 4
 
 interface BuyNowArtworksRailProps {
   sale: BuyNowArtworksRail_sale
+  relay: RelayPaginationProp
 }
 
-export const BuyNowArtworksRail: React.FC<BuyNowArtworksRailProps> = ({ sale }) => {
+export const BuyNowArtworksRail: React.FC<BuyNowArtworksRailProps> = ({ sale, relay }) => {
   const artworks = extractNodes(sale?.promotedSale?.saleArtworksConnection)
+
+  const [fetchingNextPage, setFetchingNextPage] = useState(false)
+
+  const fetchNextPage = () => {
+    if (fetchingNextPage) {
+      return
+    }
+    setFetchingNextPage(true)
+    relay.loadMore(PAGE_SIZE, (error) => {
+      if (error) {
+        console.error("BuyNowArtworksRail.tsx", error.message)
+      }
+      setFetchingNextPage(false)
+    })
+  }
 
   if (!artworks?.length) {
     return null
   }
 
   return (
-    <Flex mt={3}>
+    <Flex mt={3} testID="bnmo-rail-wrapper">
       <Flex mx={2}>
         <SectionTitle title="Buy now" />
       </Flex>
@@ -31,8 +51,9 @@ export const BuyNowArtworksRail: React.FC<BuyNowArtworksRailProps> = ({ sale }) 
         ItemSeparatorComponent={() => <Spacer width={15} />}
         showsHorizontalScrollIndicator={false}
         data={artworks}
-        initialNumToRender={5}
+        initialNumToRender={INITIAL_NUMBER_TO_RENDER}
         windowSize={3}
+        onScroll={isCloseToEdge(fetchNextPage)}
         renderItem={({ item: { artwork } }) => (
           <ArtworkTileRailCard
             onPress={() => {
@@ -54,31 +75,55 @@ export const BuyNowArtworksRail: React.FC<BuyNowArtworksRailProps> = ({ sale }) 
   )
 }
 
-export const BuyNowArtworksRailContainer = createFragmentContainer(BuyNowArtworksRail, {
-  sale: graphql`
-    fragment BuyNowArtworksRail_sale on Sale @argumentDefinitions(id: { type: "ID" }) {
-      promotedSale {
-        saleArtworksConnection(first: 10) {
-          edges {
-            node {
-              artwork {
-                id
-                title
-                date
-                saleMessage
-                artistNames
-                image {
-                  imageURL
+export const BuyNowArtworksRailContainer = createPaginationContainer(
+  BuyNowArtworksRail,
+  {
+    sale: graphql`
+      fragment BuyNowArtworksRail_sale on Sale
+      @argumentDefinitions(count: { type: "Int", defaultValue: 4 }, cursor: { type: "String" }) {
+        internalID
+        promotedSale {
+          saleArtworksConnection(first: $count, after: $cursor) @connection(key: "Sale_saleArtworksConnection") {
+            edges {
+              node {
+                artwork {
+                  id
+                  title
+                  date
+                  saleMessage
+                  artistNames
+                  href
+                  image {
+                    imageURL
+                  }
+                  partner {
+                    name
+                  }
                 }
-                partner {
-                  name
-                }
-                href
               }
             }
           }
         }
       }
-    }
-  `,
-})
+    `,
+  },
+  {
+    getConnectionFromProps(props) {
+      return props.sale.promotedSale?.saleArtworksConnection
+    },
+    getVariables(props, { count, cursor }) {
+      return {
+        id: props.sale.internalID,
+        count,
+        cursor,
+      }
+    },
+    query: graphql`
+      query BuyNowArtworksRailQuery($id: String!, $cursor: String, $count: Int!) {
+        sale(id: $id) {
+          ...BuyNowArtworksRail_sale @arguments(count: $count, cursor: $cursor)
+        }
+      }
+    `,
+  }
+)
