@@ -311,14 +311,15 @@ export const getAuthModel = (): AuthModel => ({
           onboardingState: onboardingState ?? "complete",
         })
 
+        actions.notifyTracking({ userId: user.id })
+        postEventToProviders(tracks.loggedIn(oauthProvider ?? "email"))
+
         // Keep native iOS in sync with react-native auth state
         if (Platform.OS === "ios") {
           requestAnimationFrame(() => {
             LegacyNativeModules.ArtsyNativeModule.updateAuthState(access_token, expires_in, user)
           })
         }
-
-        actions.notifyTracking({ userId: user.id })
 
         return true
       }
@@ -655,5 +656,9 @@ const tracks = {
   createdAccount: ({ signUpMethod }: { signUpMethod: AuthService }): Partial<CreatedAccount> => ({
     action: ActionType.createdAccount,
     service: signUpMethod,
+  }),
+  loggedIn: (service: AuthService) => ({
+    action: ActionType.successfullyLoggedIn,
+    service,
   }),
 }

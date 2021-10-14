@@ -1,10 +1,10 @@
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import { mockPostEventToProviders } from "lib/tests/globallyMockedStuff"
 import { AccessToken, GraphRequest, LoginManager } from "react-native-fbsdk-next"
 import { __globalStoreTestUtils__, GlobalStore } from "../GlobalStore"
 
 const mockFetch = jest.fn()
-
 ;(global as any).fetch = mockFetch
 
 function mockFetchResponseOnce(response: Partial<Response>) {
@@ -174,6 +174,23 @@ describe("AuthModel", () => {
       expect(__globalStoreTestUtils__?.getCurrentState().auth.userID).toBe("my-user-id")
     })
 
+    it("tracks the event", async () => {
+      mockFetchJsonOnce({ access_token: "my-access-token", expires_in: "a billion years" }, 201)
+      mockFetchJsonOnce({ id: "my-user-id" })
+
+      await GlobalStore.actions.auth.signIn({ email: "user@example.com", password: "hunter2" })
+
+      expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
+      expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "action": "successfullyLoggedIn",
+            "service": "email",
+          },
+        ]
+      `)
+    })
+
     it("returns false if the token creation fails", async () => {
       mockFetchJsonOnce({ error: "bad times" }, 500)
       const result = await GlobalStore.actions.auth.signIn({
@@ -330,6 +347,25 @@ describe("AuthModel", () => {
       })
     })
 
+    it("tracks the event", async () => {
+      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
+      mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
+      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
+      mockFetchJsonOnce({ id: "my-user-id" })
+
+      await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" })
+
+      expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
+      expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "action": "successfullyLoggedIn",
+            "service": "facebook",
+          },
+        ]
+      `)
+    })
+
     it("throws an error if getting X-ACCESS-TOKEN fails", async () => {
       mockFetchJsonOnce({ error_description: "getting X-ACCESS-TOKEN error" })
 
@@ -402,6 +438,25 @@ describe("AuthModel", () => {
       })
     })
 
+    it("tracks the event", async () => {
+      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
+      mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
+      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
+      mockFetchJsonOnce({ id: "my-user-id" })
+
+      await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signIn" })
+
+      expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
+      expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "action": "successfullyLoggedIn",
+            "service": "google",
+          },
+        ]
+      `)
+    })
+
     it("throws an error if getting X-ACCESS-TOKEN fails", async () => {
       mockFetchJsonOnce({ error_description: "getting X-ACCESS-TOKEN error" })
 
@@ -459,6 +514,25 @@ describe("AuthModel", () => {
         idToken: "apple-id-token",
         oauthProvider: "apple",
       })
+    })
+
+    it("tracks the event", async () => {
+      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
+      mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
+      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
+      mockFetchJsonOnce({ id: "my-user-id" })
+
+      await GlobalStore.actions.auth.authApple({})
+
+      expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
+      expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "action": "successfullyLoggedIn",
+            "service": "apple",
+          },
+        ]
+      `)
     })
 
     it("throws an error if getting X-ACCESS-TOKEN fails", async () => {

@@ -42,7 +42,6 @@ extern NSString *const ARAnalyticsPushNotificationApple;
 // Note: Sign in / Sign up analyics live entirely in ARUserManager and OnboardingViewController
 
 extern NSString *const ARAnalyticsAccountCreated;
-extern NSString *const ARAnalyticsLoggedIn;
 extern NSString *const ARAnalyticsAuthError;
 
 // Onboarding Account actions
