@@ -2,33 +2,23 @@ import { fireEvent, waitFor } from "@testing-library/react-native"
 import { Aggregations, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { bullet } from "palette"
 import React from "react"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { SavedSearchAlertForm, SavedSearchAlertFormProps, tracks } from "../SavedSearchAlertForm"
 
 describe("Saved search alert form", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
   const notificationPermissions = mockFetchNotificationPermissions(false)
-  const trackEvent = jest.fn()
 
   beforeEach(() => {
     mockEnvironment.mockClear()
     notificationPermissions.mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Authorized))
-    ;(useTracking as jest.Mock).mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
-  })
-
-  afterEach(() => {
-    trackEvent.mockClear()
   })
 
   it("renders without throwing an error", () => {
@@ -96,7 +86,7 @@ describe("Saved search alert form", () => {
       mockEnvironmentPayload(mockEnvironment)
     })
 
-    expect(trackEvent).toHaveBeenCalledWith(
+    expect(mockTrackEvent).toHaveBeenCalledWith(
       tracks.editedSavedSearch("savedSearchAlertId", { name: "" }, { name: "something new" })
     )
   })
@@ -180,7 +170,7 @@ describe("Saved search alert form", () => {
       mockEnvironmentPayload(mockEnvironment)
     })
 
-    expect(trackEvent).toHaveBeenCalledWith(tracks.deletedSavedSearch("savedSearchAlertId"))
+    expect(mockTrackEvent).toHaveBeenCalledWith(tracks.deletedSavedSearch("savedSearchAlertId"))
   })
 
   it("should auto populate alert name for the create mutation", async () => {

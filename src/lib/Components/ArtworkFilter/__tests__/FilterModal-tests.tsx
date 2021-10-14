@@ -17,29 +17,20 @@ import { TouchableRow } from "lib/Components/TouchableRow"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Sans, Theme } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { extractText } from "../../../tests/extractText"
 import { closeModalMock, getEssentialProps, MockFilterScreen, navigateMock } from "../__tests__/FilterTestHelper"
 
 const exitModalMock = jest.fn()
-const trackEvent = jest.fn()
 
 jest.unmock("react-relay")
-
-beforeEach(() => {
-  ;(useTracking as jest.Mock).mockImplementation(() => {
-    return {
-      trackEvent,
-    }
-  })
-})
 
 const mockAggregations: Aggregations = [
   {
@@ -501,7 +492,7 @@ describe("Applying filters on Artworks", () => {
     const applyButton = filterModal.root.findByType(ApplyButton)
 
     applyButton.props.onPress()
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(mockTrackEvent).toHaveBeenCalledWith({
       action_type: "commercialFilterParamsChanged",
       changed: JSON.stringify({
         medium: "work-on-paper",

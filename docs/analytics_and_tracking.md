@@ -115,12 +115,14 @@ export class MyClassComp extends React.Component<Props> {
 To test these, the best way is something like the following:
 
 ```ts
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
+
 it("tracks analytics event when button is tapped", () => {
   const wrapper = renderWithWrappers(<TestScreen />)
   wrapper.root.findByType(OurButtonWithTracking).props.onPress()
 
-  expect(trackEvent).toHaveBeenCalledTimes(1)
-  expect(trackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+  expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+  expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
     Array [
       Object {
         "action": "tappedInfoBubble",

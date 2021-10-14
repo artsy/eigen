@@ -11,6 +11,7 @@ import { ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMore
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { merge } from "lodash"
 import _ from "lodash"
@@ -18,7 +19,6 @@ import { Touchable } from "palette"
 import React, { Suspense } from "react"
 import { ActivityIndicator } from "react-native"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { Artwork, ArtworkQueryRenderer } from "../Artwork"
@@ -36,8 +36,6 @@ type ArtworkQueries =
   | "ArtworkBelowTheFoldQuery"
   | "ArtworkMarkAsRecentlyViewedQuery"
   | "ArtworkRefetchQuery"
-
-const trackEvent = jest.fn()
 
 jest.unmock("react-relay")
 
@@ -101,11 +99,6 @@ describe("Artwork", () => {
   beforeEach(() => {
     require("lib/relay/createEnvironment").reset()
     environment = require("lib/relay/createEnvironment").defaultEnvironment
-    ;(useTracking as jest.Mock).mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
   })
 
   afterEach(() => {
@@ -243,7 +236,7 @@ describe("Artwork", () => {
       const artistSeriesButton = tree.root.findByType(ArtistSeriesListItem).findByType(Touchable)
       act(() => artistSeriesButton.props.onPress())
 
-      expect(trackEvent).toHaveBeenCalledWith({
+      expect(mockTrackEvent).toHaveBeenCalledWith({
         action: "tappedArtistSeriesGroup",
         context_module: "moreSeriesByThisArtist",
         context_screen_owner_id: "artwork123",

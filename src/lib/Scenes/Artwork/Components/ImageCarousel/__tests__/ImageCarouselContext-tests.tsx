@@ -1,7 +1,7 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import React from "react"
-import { useTracking } from "react-tracking"
 import { ImageCarouselContext, useNewImageCarouselContext } from "../ImageCarouselContext"
 
 const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
@@ -23,7 +23,6 @@ const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
 
 describe("image carousel context", () => {
   let context: ImageCarouselContext
-  const trackEvent = jest.fn()
   function Mock() {
     const value = useNewImageCarouselContext(contextMock)
     return (
@@ -37,13 +36,6 @@ describe("image carousel context", () => {
       </ImageCarouselContext.Provider>
     )
   }
-  beforeEach(() => {
-    ;(useTracking as jest.Mock).mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
-  })
   afterEach(() => {
     jest.clearAllMocks()
   })
@@ -120,15 +112,15 @@ describe("image carousel context", () => {
 
   it("tracks the imageIndex changes", () => {
     context.dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex: 1 })
-    expect(trackEvent).toHaveBeenCalled()
-    trackEvent.mockReset()
+    expect(mockTrackEvent).toHaveBeenCalled()
+    mockTrackEvent.mockReset()
     context.dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex: 3 })
-    expect(trackEvent).toHaveBeenCalled()
-    trackEvent.mockReset()
+    expect(mockTrackEvent).toHaveBeenCalled()
+    mockTrackEvent.mockReset()
     context.dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex: 3 })
-    expect(trackEvent).not.toHaveBeenCalled()
-    trackEvent.mockReset()
+    expect(mockTrackEvent).not.toHaveBeenCalled()
+    mockTrackEvent.mockReset()
     context.dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex: 2 })
-    expect(trackEvent).toHaveBeenCalled()
+    expect(mockTrackEvent).toHaveBeenCalled()
   })
 })

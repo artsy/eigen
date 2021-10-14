@@ -6,13 +6,13 @@ import { navigate } from "lib/navigation/navigate"
 import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import { SavedSearchAlertMutationResult } from "lib/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { SavedSearchButtonRefetchContainer as SavedSearchButton, tracks } from "../SavedSearchButton"
 
@@ -36,19 +36,9 @@ const mockedFilters = [
 
 describe("SavedSearchButton", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const trackEvent = jest.fn()
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    ;(useTracking as jest.Mock).mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
-  })
-
-  afterEach(() => {
-    trackEvent.mockClear()
   })
 
   const TestRenderer = ({ attributes = mockedAttributes }) => {
@@ -138,7 +128,7 @@ describe("SavedSearchButton", () => {
 
     act(() => tree.root.findByType(Button).props.onPress())
 
-    expect(trackEvent).toHaveBeenCalledWith(tracks.tappedCreateAlert("artistID", "artistSlug"))
+    expect(mockTrackEvent).toHaveBeenCalledWith(tracks.tappedCreateAlert("artistID", "artistSlug"))
   })
 
   it("should navigate to the saved search alerts list when popover is pressed", async () => {
@@ -174,7 +164,7 @@ describe("SavedSearchButton", () => {
 
     act(() => tree.root.findByType(CreateSavedSearchAlert).props.onComplete(mockedMutationResult))
 
-    expect(trackEvent).toHaveBeenCalledWith(
+    expect(mockTrackEvent).toHaveBeenCalledWith(
       tracks.toggleSavedSearch(true, "artistID", "artistSlug", "savedSearchAlertId")
     )
   })

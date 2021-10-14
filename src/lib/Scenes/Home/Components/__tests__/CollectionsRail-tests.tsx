@@ -9,8 +9,8 @@ import { navigate } from "lib/navigation/navigate"
 
 import { CollectionsRailTestsQuery } from "__generated__/CollectionsRailTestsQuery.graphql"
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { useTracking } from "react-tracking"
 import HomeAnalytics from "../../homeAnalytics"
 import { CollectionsRailFragmentContainer } from "../CollectionsRail"
 
@@ -103,12 +103,6 @@ describe("CollectionsRailFragmentContainer", () => {
   })
 
   it("tracks collection thumbnail taps", () => {
-    ;(useTracking as jest.Mock).mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
-
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
       env.mock.resolveMostRecentOperation({
@@ -122,11 +116,10 @@ describe("CollectionsRailFragmentContainer", () => {
     })
     // @ts-ignore
     first(tree.root.findAllByType(CardRailCard)).props.onPress()
-    expect(trackEvent).toHaveBeenCalledWith(HomeAnalytics.collectionThumbnailTapEvent("test-collection-one", 0))
+    expect(mockTrackEvent).toHaveBeenCalledWith(HomeAnalytics.collectionThumbnailTapEvent("test-collection-one", 0))
   })
 })
 
-const trackEvent = jest.fn()
 const artworkNode = {
   node: {
     artwork: {

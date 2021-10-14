@@ -8,7 +8,6 @@ import { TouchableHighlightColor } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { Tag } from "../Tag"
@@ -16,21 +15,11 @@ import { Tag } from "../Tag"
 jest.unmock("react-relay")
 
 describe("Tag", () => {
-  const trackEvent = jest.fn()
   const tagID = "skull"
   let environment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
     environment = createMockEnvironment()
-    ;(useTracking as jest.Mock).mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
-  })
-
-  afterEach(() => {
-    trackEvent.mockClear()
   })
 
   function mockMostRecentOperation(mockResolvers: MockResolvers = {}) {

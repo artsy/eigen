@@ -394,7 +394,6 @@
 - (void)personalizeLoginWithPasswordDone:(NSString *)password
 {
     [self loginUserWithEmail:self.email password:password withSuccess:^{
-        [[AREmission sharedInstance] sendEvent:ARAnalyticsLoggedIn traits:@{@"context_type" : @"email"}];
         [self finishAccountCreation];
     }];
 }
