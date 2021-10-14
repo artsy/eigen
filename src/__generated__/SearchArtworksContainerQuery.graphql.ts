@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 97d99a8d65aa28c858bb2a644fcfdfa2 */
+/* @relayHash d1a742415415b8382d82668d05e52060 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -93,7 +93,7 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
 }
 
 fragment SearchArtworksGrid_viewer_2BDVGC on Viewer {
-  aggregations: artworksConnection(first: 0, aggregations: [ARTIST, MEDIUM, PRICE_RANGE, DIMENSION_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY, LOCATION_CITY, MAJOR_PERIOD, COLOR, PARTNER, FOLLOWED_ARTISTS]) {
+  aggregations: artworksConnection(first: 0, keyword: $keyword, aggregations: [ARTIST, MEDIUM, PRICE_RANGE, DIMENSION_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY, LOCATION_CITY, MAJOR_PERIOD, COLOR, PARTNER, FOLLOWED_ARTISTS]) {
     aggregations {
       slice
       counts {
@@ -101,6 +101,9 @@ fragment SearchArtworksGrid_viewer_2BDVGC on Viewer {
         name
         value
       }
+    }
+    counts {
+      followedArtists
     }
     id
   }
@@ -256,7 +259,8 @@ return {
                 "kind": "Literal",
                 "name": "first",
                 "value": 0
-              }
+              },
+              (v1/*: any*/)
             ],
             "concreteType": "FilterArtworksConnection",
             "kind": "LinkedField",
@@ -307,9 +311,27 @@ return {
                 ],
                 "storageKey": null
               },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "FilterArtworksCounts",
+                "kind": "LinkedField",
+                "name": "counts",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "followedArtists",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              },
               (v3/*: any*/)
             ],
-            "storageKey": "artworksConnection(aggregations:[\"ARTIST\",\"MEDIUM\",\"PRICE_RANGE\",\"DIMENSION_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"COLOR\",\"PARTNER\",\"FOLLOWED_ARTISTS\"],first:0)"
+            "storageKey": null
           },
           {
             "alias": "artworks",
@@ -641,7 +663,7 @@ return {
     ]
   },
   "params": {
-    "id": "97d99a8d65aa28c858bb2a644fcfdfa2",
+    "id": "d1a742415415b8382d82668d05e52060",
     "metadata": {},
     "name": "SearchArtworksContainerQuery",
     "operationKind": "query",

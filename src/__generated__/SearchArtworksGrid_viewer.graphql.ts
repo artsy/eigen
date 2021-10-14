@@ -15,6 +15,9 @@ export type SearchArtworksGrid_viewer = {
                 readonly value: string;
             } | null> | null;
         } | null> | null;
+        readonly counts: {
+            readonly followedArtists: number | null;
+        } | null;
     } | null;
     readonly artworks: {
         readonly edges: ReadonlyArray<{
@@ -34,7 +37,13 @@ export type SearchArtworksGrid_viewer$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "kind": "Variable",
+  "name": "keyword",
+  "variableName": "keyword"
+};
+return {
   "argumentDefinitions": [
     {
       "defaultValue": 20,
@@ -96,7 +105,8 @@ const node: ReaderFragment = {
           "kind": "Literal",
           "name": "first",
           "value": 0
-        }
+        },
+        (v0/*: any*/)
       ],
       "concreteType": "FilterArtworksConnection",
       "kind": "LinkedField",
@@ -152,9 +162,27 @@ const node: ReaderFragment = {
             }
           ],
           "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "FilterArtworksCounts",
+          "kind": "LinkedField",
+          "name": "counts",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "followedArtists",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
         }
       ],
-      "storageKey": "artworksConnection(aggregations:[\"ARTIST\",\"MEDIUM\",\"PRICE_RANGE\",\"DIMENSION_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"COLOR\",\"PARTNER\",\"FOLLOWED_ARTISTS\"],first:0)"
+      "storageKey": null
     },
     {
       "alias": "artworks",
@@ -164,11 +192,7 @@ const node: ReaderFragment = {
           "name": "input",
           "variableName": "input"
         },
-        {
-          "kind": "Variable",
-          "name": "keyword",
-          "variableName": "keyword"
-        }
+        (v0/*: any*/)
       ],
       "concreteType": "FilterArtworksConnection",
       "kind": "LinkedField",
@@ -255,5 +279,6 @@ const node: ReaderFragment = {
   "type": "Viewer",
   "abstractKey": null
 };
-(node as any).hash = '162f79270a2f0b41e1fadffc0746c841';
+})();
+(node as any).hash = '54e54717b6478b98283ad7bb54994259';
 export default node;
