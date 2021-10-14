@@ -674,7 +674,6 @@
                                                       // we've logged them in, let's wrap up
                                                       [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
                                                       if (sself.state == AROnboardingStagePersonalizeEmail || sself.state == AROnboardingStateAcceptConditions) {
-                                                        [[AREmission sharedInstance] sendEvent:ARAnalyticsLoggedIn traits:@{@"context_type" : @"facebook"}];
                                                         [sself finishAccountCreation];
                                                       } else if (sself.state == AROnboardingStagePersonalizeName) {
                                                           [sself presentPersonalizationQuestionnaires];
@@ -815,7 +814,6 @@
                                                           // we've logged them in, let's wrap up
                                                           [sself ar_removeIndeterminateLoadingIndicatorAnimated:YES];
                                                           if (sself.state == AROnboardingStagePersonalizeEmail || sself.state == AROnboardingStateAcceptConditions) {
-                                                              [[AREmission sharedInstance] sendEvent:ARAnalyticsLoggedIn traits:@{@"context_type" : @"apple"}];
                                                               [sself finishAccountCreation];
                                                           } else if (sself.state == AROnboardingStagePersonalizeName) {
                                                               [sself presentPersonalizationQuestionnaires];
