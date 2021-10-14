@@ -144,7 +144,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
 
           <Text variant="xs" color="black60" textAlign="center">
             By tapping Continue with Facebook
-            {!!enableGoogleAuth ? ", Google" : ""} or Apple, you agree to Artsy's{" "}
+            {!!enableGoogleAuth ? ", Google" : ""}{Platform.OS === "ios" ? " or Apple" : ""}, you agree to Artsy's{" "}
             <Text
               onPress={() => {
                 Linking.openURL(`${webURL}/terms`)
