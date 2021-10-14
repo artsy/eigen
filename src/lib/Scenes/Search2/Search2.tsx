@@ -92,12 +92,6 @@ const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholde
         handleChangeText(text)
         onReset()
       }}
-      onFocus={() => {
-        trackEvent({
-          action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
-          currentRefinement,
-        })
-      }}
       onClear={handleReset}
       onCancelPress={handleReset}
     />
