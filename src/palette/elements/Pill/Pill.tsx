@@ -81,9 +81,8 @@ export const Pill: React.FC<PillProps> = ({
   }, [selected])
 
   const iconSpacerMargin = size === "xxs" ? 0.5 : 1
-
+  const iconColor = innerDisplayState === "pressed" ? "blue100" : "black100"
   const to = useStyleForState(innerDisplayState)
-
   return (
     <Spring native to={to} config={config.stiff}>
       {(springProps: typeof to) => (
@@ -116,7 +115,7 @@ export const Pill: React.FC<PillProps> = ({
           >
             {iconPosition === "left" && !!Icon && (
               <>
-                {<Icon />}
+                {<Icon fill={iconColor} />}
                 <Spacer mr={iconSpacerMargin} />
               </>
             )}
@@ -127,7 +126,7 @@ export const Pill: React.FC<PillProps> = ({
             {iconPosition === "right" && !!Icon && (
               <>
                 <Spacer mr={iconSpacerMargin} />
-                {<Icon />}
+                {<Icon fill={iconColor} />}
               </>
             )}
           </AnimatedContainer>
