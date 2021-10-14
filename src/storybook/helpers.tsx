@@ -6,22 +6,27 @@ export const DList = <ItemT,>({
   data,
   keyExtractor,
   renderItem,
+  contentContainerStyle,
 }: {
   data: ItemT[]
   keyExtractor?: (item: ItemT, index: number) => string
   renderItem: (info: { item: ItemT; index: number }) => React.ReactElement | null
+  contentContainerStyle?: StyleProp<ViewStyle>
 }) => (
   <FlatList
     data={data}
     keyExtractor={keyExtractor ?? ((item) => `${item}`)}
     renderItem={renderItem}
     ItemSeparatorComponent={() => <Spacer mb="4" />}
-    contentContainerStyle={{
-      flexGrow: 1,
-      alignItems: "center",
-      justifyContent: "center",
-      paddingVertical: 30,
-    }}
+    contentContainerStyle={[
+      {
+        flexGrow: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        paddingVertical: 30,
+      },
+      contentContainerStyle,
+    ]}
   />
 )
 

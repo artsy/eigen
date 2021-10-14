@@ -1,9 +1,9 @@
 import { storiesOf } from "@storybook/react-native"
 import SearchIcon from "lib/Icons/SearchIcon"
-import { Input } from "palette"
+import { Box, Input } from "palette"
 import React from "react"
 import { withTheme } from "storybook/decorators"
-import { List } from "storybook/helpers"
+import { DList, List } from "storybook/helpers"
 
 storiesOf("Input", module)
   .addDecorator(withTheme)
@@ -22,3 +22,23 @@ storiesOf("Input", module)
       <Input title="full text" value="Wow this is a long text, I wonder if I can read the whole thing!" />
     </List>
   ))
+  .add("Multiple placeholders", () => {
+    const placeholders = [
+      "this is a very long placeholder",
+      "this is slightly shorter",
+      "how about this one",
+      "much shorter",
+      "even more",
+    ]
+    return (
+      <DList
+        contentContainerStyle={{ marginHorizontal: 20, alignItems: "flex-start" }}
+        data={[350, 300, 250, 200, 170, 150, 100]}
+        renderItem={({ item: width }) => (
+          <Box width={width}>
+            <Input placeholder={placeholders} />
+          </Box>
+        )}
+      />
+    )
+  })

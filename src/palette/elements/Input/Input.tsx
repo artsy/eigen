@@ -1,11 +1,11 @@
 import { themeGet } from "@styled-system/theme-get"
+import { MeasuredView } from "lib/utils/MeasuredView"
 import _ from "lodash"
 import { Color, EyeOpenedIcon, Flex, Spinner, Text, useTheme, XCircleIcon } from "palette"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,
   Platform,
-  Text as RNText,
   TextInput,
   TextInputProps,
   TextStyle,
@@ -129,39 +129,38 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       rest.onChangeText?.(text)
     }
 
-    const placeholderWidths = useRef<number[]>([])
+    const [placeholderWidths, setPlaceholderWidths] = useState<number[]>([])
     const [inputWidth, setInputWidth] = useState(0)
     const placeholderMeasuringHack =
       Platform.OS === "android" && _.isArray(placeholder) ? (
-        <View
-          style={{
-            position: "absolute",
-            top: -10000, // make sure its off the screen
-            width: 10000, // make sure Texts can take as much space as they need
-            alignItems: "baseline", // this is to make Texts get the smallest width they can get to fit the text
-          }}
-        >
+        <>
           {placeholder.map((placeholderString, index) => (
-            <RNText
-              key={index}
-              onLayout={(event) => {
-                placeholderWidths.current[index] = event.nativeEvent.layout.width
-              }}
-              numberOfLines={1}
-              style={{
-                borderColor: "red",
-                borderWidth: 1,
-                flex: 1,
-                fontFamily,
-                fontSize: 15,
-                textAlign: "left",
-                ...inputTextStyle,
-              }}
+            <MeasuredView
+              key={`${index}`}
+              setMeasuredState={({ width }) =>
+                setPlaceholderWidths((widths) => {
+                  widths[index] = width
+                  return widths
+                })
+              }
             >
-              {placeholderString}
-            </RNText>
+              <Text
+                numberOfLines={1}
+                style={{
+                  borderColor: "red",
+                  borderWidth: 1,
+                  flex: 1,
+                  fontFamily,
+                  fontSize: 15,
+                  textAlign: "left",
+                  ...inputTextStyle,
+                }}
+              >
+                {placeholderString}
+              </Text>
+            </MeasuredView>
           ))}
-        </View>
+        </>
       ) : null
 
     const actualPlaceholder = () => {
@@ -180,8 +179,8 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       }
 
       // otherwise, find a placeholder that has longest width that fits in the inputtext
-      const longestFittingStringIndex = placeholderWidths.current.findIndex((placeholderWidth) => {
-        return placeholderWidth <= inputWidth
+      const longestFittingStringIndex = placeholderWidths.findIndex((placeholderWidth) => {
+        return placeholderWidth <= inputWidth - 10 /* 10px left margin that the StyleInput has */
       })
       if (longestFittingStringIndex > -1) {
         return placeholder[longestFittingStringIndex]
