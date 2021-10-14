@@ -342,7 +342,7 @@ export enum ActionNames {
    * Search (names preserved from eigen for searchability)
    */
   ARAnalyticsSearchCleared = "Cleared input in search screen",
-  // dispatch this on search input focus and again any time they type
+  // dispatch this when the user enters a query in search input
   ARAnalyticsSearchStartedQuery = "Searched",
   ARAnalyticsSearchItemSelected = "Selected result from search screen",
   ARAnalyticsSearchRecentItemSelected = "selected_recent_item_from_search",

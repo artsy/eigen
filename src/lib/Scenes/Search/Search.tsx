@@ -41,12 +41,6 @@ export const Search: React.FC = () => {
                 query: queryText,
               })
             }}
-            onFocus={() => {
-              trackEvent({
-                action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
-                query,
-              })
-            }}
             onClear={() => {
               trackEvent({
                 action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
