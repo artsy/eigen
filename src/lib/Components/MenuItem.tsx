@@ -12,6 +12,7 @@ export const MenuItem: React.FC<{
   chevron?: React.ReactNode
   ellipsizeMode?: SansProps["ellipsizeMode"]
   style?: StyleProp<ViewStyle>
+  rightView?: React.ReactNode
 }> = ({
   title,
   text,
@@ -22,6 +23,7 @@ export const MenuItem: React.FC<{
   chevron = <ChevronIcon direction="right" fill="black60" />,
   ellipsizeMode,
   style,
+  rightView,
 }) => {
   const color = useColor()
   return (
@@ -59,6 +61,8 @@ export const MenuItem: React.FC<{
             {text}
           </Sans>
         )}
+
+        {rightView}
       </Flex>
     </Touchable>
   )
