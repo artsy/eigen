@@ -8,9 +8,11 @@ import { RelayCache } from "lib/relay/RelayCache"
 import { environment, EnvironmentKey } from "lib/store/config/EnvironmentModel"
 import { DevToggleName, devToggles, FeatureName, features } from "lib/store/config/features"
 import { GlobalStore } from "lib/store/GlobalStore"
+import { Versions } from "lib/store/migration"
 import { capitalize, compact, sortBy } from "lodash"
 import { ChevronIcon, CloseIcon, Flex, ReloadIcon, Separator, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useState } from "react"
+import { Button as RNButton } from "react-native"
 import {
   Alert,
   AlertButton,
@@ -35,6 +37,8 @@ const configurableDevToggleKeys = sortBy(Object.entries(devToggles), ([k, { desc
 )
 
 export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModal }) => {
+  const migrationVersion = GlobalStore.useAppState((s) => s.version)
+
   useEffect(
     React.useCallback(() => {
       BackHandler.addEventListener("hardwareBackPress", handleBackButton)
@@ -114,22 +118,33 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           return <DevToggleItem key={devToggleKey} toggleKey={devToggleKey} />
         })}
         <MenuItem
+          title="Migration version"
+          rightView={
+            <Flex flexDirection="row" alignItems="center">
+              <RNButton title="-" onPress={() => GlobalStore.actions._setVersion(migrationVersion - 1)} />
+              <Text>{migrationVersion}</Text>
+              <RNButton title="+" onPress={() => GlobalStore.actions._setVersion(migrationVersion + 1)} />
+            </Flex>
+          }
+        />
+        <MenuItem
+          title="Migration name"
+          value={(Object.entries(Versions).find(([_, v]) => v === migrationVersion) ?? ["N/A"])[0]}
+        />
+        <MenuItem
           title="Clear AsyncStorage"
-          chevron={null}
           onPress={() => {
             AsyncStorage.clear()
           }}
         />
         <MenuItem
           title="Clear Relay Cache"
-          chevron={null}
           onPress={() => {
             RelayCache.clearAll()
           }}
         />
         <MenuItem
           title="Log out"
-          chevron={null}
           onPress={() => {
             GlobalStore.actions.signOut()
           }}
