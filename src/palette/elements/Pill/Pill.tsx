@@ -73,15 +73,7 @@ export const Pill: React.FC<PillProps> = ({
   const { height, paddingLeft, paddingRight } = getSize(size)
 
   const handlePress = (event: GestureResponderEvent) => {
-    if (onPress === undefined || onPress === null) {
-      return
-    }
-
-    if (highlightEnabled && innerDisplayState === DisplayState.Pressed) {
-      setInnerDisplayState(initialDisplayState)
-    }
-
-    onPress(event)
+    onPress?.(event)
   }
 
   useEffect(() => {
@@ -120,7 +112,6 @@ export const Pill: React.FC<PillProps> = ({
             style={{
               borderColor: springProps.borderColor,
             }}
-            Icon={Icon}
             {...rest}
           >
             {iconPosition === "left" && !!Icon && (
