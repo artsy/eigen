@@ -345,6 +345,8 @@ jobs:
       - run:
           name: Quit early if Draft PR
           command: |
+            brew install gh
+            gh auth login $GH_TOKEN
             if gh pr view ${CIRCLE_PULL_REQUEST##*/} --json isDraft --jq ".isDraft"
             then
               circleci step halt
