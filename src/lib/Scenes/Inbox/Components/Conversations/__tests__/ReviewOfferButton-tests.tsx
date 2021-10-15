@@ -1,26 +1,17 @@
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { DateTime } from "luxon"
 import { AlertCircleFillIcon } from "palette"
 import { MoneyFillIcon } from "palette/svgs/MoneyFillIcon"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { useTracking } from "react-tracking"
 import { ReviewOfferButton, ReviewOfferButtonProps, ReviewOfferCTAKind } from "../ReviewOfferButton"
+
 jest.unmock("react-relay")
 
 describe("ReviewOfferButton", () => {
-  const trackEvent = jest.fn()
-
-  beforeEach(() => {
-    ;(useTracking as jest.Mock).mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
-  })
-
   const getWrapper = (kind: ReviewOfferCTAKind, activeOrder: Partial<ReviewOfferButtonProps["activeOrder"]> = {}) => {
     const props = {
       conversationID: "conversation-id",
@@ -138,7 +129,7 @@ describe("ReviewOfferButton", () => {
 
     wrapper.root.findByType(TouchableWithoutFeedback).props.onPress()
 
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedViewOffer",
       context_owner_type: "conversation",
       impulse_conversation_id: "conversation-id",

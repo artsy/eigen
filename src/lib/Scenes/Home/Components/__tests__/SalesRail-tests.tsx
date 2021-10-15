@@ -4,16 +4,15 @@ import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
 import { first, last } from "lodash"
 import React from "react"
 import "react-native"
-import { useTracking } from "react-tracking"
 import HomeAnalytics from "../../homeAnalytics"
 import { SalesRailFragmentContainer } from "../SalesRail"
 
-const trackEvent = jest.fn()
 const mockScrollRef = jest.fn()
 
 const artworkNode = {
@@ -145,20 +144,12 @@ it("routes to live URL if present, otherwise href", () => {
 })
 
 describe("analytics", () => {
-  beforeEach(() => {
-    ;(useTracking as jest.Mock).mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
-  })
-
   it("tracks auction header taps", () => {
     const tree = renderWithWrappers(
       <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
     )
     tree.root.findByType(SectionTitle as any).props.onPress()
-    expect(trackEvent).toHaveBeenCalledWith(HomeAnalytics.auctionHeaderTapEvent())
+    expect(mockTrackEvent).toHaveBeenCalledWith(HomeAnalytics.auctionHeaderTapEvent())
   })
 
   it("tracks auction thumbnail taps", () => {
@@ -167,7 +158,7 @@ describe("analytics", () => {
     )
     const cards = tree.root.findAllByType(CardRailCard)
     cards[0].props.onPress()
-    expect(trackEvent).toHaveBeenCalledWith(
+    expect(mockTrackEvent).toHaveBeenCalledWith(
       HomeAnalytics.auctionThumbnailTapEvent("the-sale-internal-id", "the-sales-slug", 0)
     )
   })

@@ -5,18 +5,16 @@ import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionArtworkArtistAuctionResultsFragmentContainer } from "../MyCollectionArtworkArtistAuctionResults"
 
 jest.unmock("react-relay")
-jest.mock("react-tracking")
 
 describe("MyCollectionArtworkArtistAuctionResults", () => {
-  const trackEvent = jest.fn()
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionArtworkArtistAuctionResultsTestsQuery>
@@ -40,12 +38,6 @@ describe("MyCollectionArtworkArtistAuctionResults", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    const mockTracking = useTracking as jest.Mock
-    mockTracking.mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
   })
 
   afterEach(() => {
@@ -122,8 +114,8 @@ describe("MyCollectionArtworkArtistAuctionResults", () => {
     })
     wrapper.root.findByType(InfoButton).props.onPress()
 
-    expect(trackEvent).toHaveBeenCalledTimes(1)
-    expect(trackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
         Object {
           "action": "tappedInfoBubble",
@@ -147,8 +139,8 @@ describe("MyCollectionArtworkArtistAuctionResults", () => {
     })
     wrapper.root.findByType(CaretButton).props.onPress()
 
-    expect(trackEvent).toHaveBeenCalledTimes(1)
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+    expect(mockTrackEvent).toHaveBeenCalledWith({
       action: ActionType.tappedShowMore,
       context_module: ContextModule.auctionResults,
       context_screen_owner_type: OwnerType.myCollectionArtwork,

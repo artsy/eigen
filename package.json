@@ -64,7 +64,8 @@
     "build-storybook": "build-storybook",
     "prestart-storybook": "yarn storybook-load-new",
     "start-storybook": "STORYBOOK=1 yarn start",
-    "detect-secrets": "scripts/detect-secrets",
+    "detect-secrets-staged": "scripts/detect-secrets-staged",
+    "detect-secrets-all": "scripts/detect-secrets-all",
     "update-metaphysics": "node scripts/update-metaphysics.js"
   },
   "repository": {

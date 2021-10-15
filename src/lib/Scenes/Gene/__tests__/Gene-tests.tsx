@@ -8,28 +8,17 @@ import { TouchableHighlightColor } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 import { Gene } from "../Gene"
 
 jest.unmock("react-relay")
 
 describe("Gene", () => {
-  const trackEvent = jest.fn()
   const geneID = "gene-id"
   let environment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
     environment = createMockEnvironment()
-    ;(useTracking as jest.Mock).mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
-  })
-
-  afterEach(() => {
-    trackEvent.mockClear()
   })
 
   const TestRenderer = () => {

@@ -3,12 +3,12 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ShowContextCard, ShowContextCardFragmentContainer } from "../Components/ShowContextCard"
 
@@ -16,15 +16,9 @@ jest.unmock("react-relay")
 
 describe("ShowContextCard", () => {
   let env: ReturnType<typeof createMockEnvironment>
-  const trackEvent = jest.fn()
 
   beforeEach(() => {
     env = createMockEnvironment()
-    ;(useTracking as jest.Mock).mockImplementation(() => ({ trackEvent }))
-  })
-
-  afterEach(() => {
-    trackEvent.mockClear()
   })
 
   const TestRenderer = () => (
@@ -120,7 +114,7 @@ describe("ShowContextCard", () => {
         wrapper.root.findAllByType(TouchableOpacity)[0].props.onPress()
       })
 
-      expect(trackEvent).toBeCalledWith({
+      expect(mockTrackEvent).toBeCalledWith({
         action: "tappedFairCard",
         context_module: "presentingFair",
         context_screen_owner_id: "example-show-id",
@@ -197,7 +191,7 @@ describe("ShowContextCard", () => {
         wrapper.root.findAllByType(TouchableOpacity)[0].props.onPress()
       })
 
-      expect(trackEvent).toBeCalledWith({
+      expect(mockTrackEvent).toBeCalledWith({
         action: "tappedPartnerCard",
         context_module: "presentingPartner",
         context_screen_owner_id: "example-show-id",

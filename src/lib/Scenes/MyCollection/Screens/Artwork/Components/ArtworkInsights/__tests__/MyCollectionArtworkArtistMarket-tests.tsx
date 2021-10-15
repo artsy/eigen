@@ -1,18 +1,16 @@
 import { MyCollectionArtworkArtistMarketTestsQuery } from "__generated__/MyCollectionArtworkArtistMarketTestsQuery.graphql"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { extractText } from "lib/tests/extractText"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionArtworkArtistMarketFragmentContainer } from "../MyCollectionArtworkArtistMarket"
 
 jest.unmock("react-relay")
-jest.mock("react-tracking")
 
 describe("MyCollectionArtworkArtistMarket", () => {
-  const trackEvent = jest.fn()
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionArtworkArtistMarketTestsQuery>
@@ -44,12 +42,6 @@ describe("MyCollectionArtworkArtistMarket", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    const mockTracking = useTracking as jest.Mock
-    mockTracking.mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
   })
 
   afterEach(() => {
@@ -102,8 +94,8 @@ describe("MyCollectionArtworkArtistMarket", () => {
     })
     wrapper.root.findByType(InfoButton).props.onPress()
 
-    expect(trackEvent).toHaveBeenCalledTimes(1)
-    expect(trackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
       Array [
         Object {
           "action": "tappedInfoBubble",
