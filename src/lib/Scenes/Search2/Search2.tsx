@@ -161,7 +161,14 @@ export const Search2: React.FC<Search2Props> = (props) => {
       return <SearchResultsContainer indexName={selectedPill.name} categoryDisplayName={selectedPill.displayName} />
     }
     if (selectedPill.name === TOP_PILL.name) {
-      return <AutosuggestResults query={searchState.query!} showResultType showQuickNavigationButtons />
+      return (
+        <AutosuggestResults
+          query={searchState.query!}
+          showResultType
+          showQuickNavigationButtons
+          showOnRetryErrorMessage
+        />
+      )
     }
     return <SearchArtworksQueryRenderer keyword={searchState.query!} />
   }
