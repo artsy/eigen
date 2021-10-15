@@ -37,7 +37,11 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
   const getSaleSubtitle = (liveStartAt: string | undefined | null, displayTimelyAt: string | undefined | null) => {
     const subtitle = !!liveStartAt ? "Live Auction" : "Timed Auction"
     const dateAt = formatDisplayTimelyAt(displayTimelyAt !== undefined ? displayTimelyAt : null)
-    return `${subtitle} ${bullet} ${dateAt}`
+    if (dateAt) {
+      return `${subtitle} ${bullet} ${dateAt}`
+    } else {
+      return `${subtitle}`
+    }
   }
 
   useImperativeHandle(scrollRef, () => ({
