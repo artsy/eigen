@@ -131,10 +131,17 @@ jest.mock("./RecentSearches", () => {
 const notifyRecentSearchMock = require("./RecentSearches").useRecentSearches().notifyRecentSearch
 
 const env = (defaultEnvironment as any) as ReturnType<typeof createMockEnvironment>
-
 const consoleErrorMock = jest.fn()
-console.error = (...args: string[]) => {
-  if (args[0].startsWith("Warning: An update to %s inside a test was not wrapped in act(...).")) {
+const whiteListErrors = ["Warning: An update to %s inside a test was not wrapped in act(...).", "Bad connection"]
+
+console.error = (...args: any[]) => {
+  let error = args[0]
+
+  if (error instanceof Error) {
+    error = error.message
+  }
+
+  if (whiteListErrors.some((errorMessage) => error.startsWith(errorMessage))) {
     return
   }
   consoleErrorMock(...args)
@@ -287,5 +294,21 @@ describe("AutosuggestResults", () => {
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
 
     expect(queryByA11yLabel("Autosuggest results are loading")).toBeFalsy()
+  })
+
+  it("should show the default error message", async () => {
+    const { getByText } = renderWithWrappersTL(<TestWrapper query="michael" />)
+
+    act(() => env.mock.rejectMostRecentOperation(new Error("Bad connection")))
+
+    expect(getByText("There seems to be a problem with the connection. Please try again shortly.")).toBeTruthy()
+  })
+
+  it("should show the unable to load error message when showOnRetryErrorMessage prop is true", () => {
+    const { getByText } = renderWithWrappersTL(<TestWrapper query="michael" showOnRetryErrorMessage />)
+
+    act(() => env.mock.rejectMostRecentOperation(new Error("Bad connection")))
+
+    expect(getByText("Unable to load")).toBeTruthy()
   })
 })
