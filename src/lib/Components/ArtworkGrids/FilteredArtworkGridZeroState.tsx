@@ -4,7 +4,7 @@ import React from "react"
 
 type ResultsType = "search" | "filter"
 
-interface ZeroStateProps {
+export interface ZeroStateProps {
   id?: string
   slug?: string
   trackClear?: (id: string, slug: string) => void
