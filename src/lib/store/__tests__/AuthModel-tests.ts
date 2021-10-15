@@ -174,7 +174,7 @@ describe("AuthModel", () => {
       expect(__globalStoreTestUtils__?.getCurrentState().auth.userID).toBe("my-user-id")
     })
 
-    it("tracks the event", async () => {
+    it("tracks successful login event", async () => {
       mockFetchJsonOnce({ access_token: "my-access-token", expires_in: "a billion years" }, 201)
       mockFetchJsonOnce({ id: "my-user-id" })
 
