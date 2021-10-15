@@ -347,7 +347,7 @@ describe("AuthModel", () => {
       })
     })
 
-    it("tracks the event", async () => {
+    it("tracks the login event for social auth", async () => {
       mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
       mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
       mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
