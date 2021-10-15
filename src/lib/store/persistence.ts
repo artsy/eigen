@@ -6,16 +6,18 @@ import { GlobalStoreModel } from "./GlobalStoreModel"
 import { migrate } from "./migration"
 
 export const SESSION_KEY = "sessionState"
+export const SPLIT_IO_CLIENT_KEY = "experiments"
 export const STORAGE_KEY = "artsy-app-state"
 
+const DO_NOT_SANITIZE = [SESSION_KEY, SPLIT_IO_CLIENT_KEY]
 export const LEGACY_SEARCH_STORAGE_KEY = "SEARCH/RECENT_SEARCHES"
 
 export function sanitize(object: unknown, path: Array<string | number> = []): unknown {
   if (isPlainObject(object)) {
     const result = {} as any
     for (const key of Object.keys(object as any)) {
-      // ignore computed properties and sessionState
-      if (key !== SESSION_KEY && !Object.getOwnPropertyDescriptor(object, key)?.get) {
+      // ignore computed properties, sessionState and client
+      if (!DO_NOT_SANITIZE.includes(key) && !Object.getOwnPropertyDescriptor(object, key)?.get) {
         result[key] = sanitize((object as any)[key], [...path, key])
       }
     }

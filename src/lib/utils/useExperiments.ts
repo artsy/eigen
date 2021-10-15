@@ -17,7 +17,7 @@ export const useExperiments = () => {
 
   useEffect(() => {
     client.on(client.Event.SDK_READY, () => {
-      console.log("do something")
+      GlobalStore.actions.config.experiments.setState({ isReady: true, client })
     })
 
     // TODO: Discuss client.destroy()
