@@ -48,7 +48,7 @@ def remove_mapbox_creds
   if $user_already_had_netrc_file
     contents = File.read($netrc_path)
     cleaned = contents.gsub(/machine api\.mapbox\.com\nlogin mapbox\npassword #{ENV['MAPBOX_DOWNLOAD_TOKEN']}\n/, "")
-    File.open($netrc_path, 'w') { |f|
+    File.open($netrc_path, 'w', 0600) { |f|
       f.write(cleaned)
     }
   else
