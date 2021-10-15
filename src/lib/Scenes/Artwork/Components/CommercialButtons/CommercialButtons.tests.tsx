@@ -10,7 +10,7 @@ import { ArtworkInquiryContextState } from "lib/utils/ArtworkInquiry/ArtworkInqu
 import { Button, Theme } from "palette"
 import React from "react"
 import { _FragmentRefs, graphql } from "react-relay"
-import { CommercialButtonsFragmentContainer } from "../CommercialButtons"
+import { CommercialButtonsFragmentContainer } from "./CommercialButtons"
 
 jest.unmock("react-relay")
 

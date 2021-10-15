@@ -1,9 +1,9 @@
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import _ from "lodash"
 import { Platform } from "react-native"
-import { __globalStoreTestUtils__ } from "../GlobalStore"
-import { CURRENT_APP_VERSION, migrate, Versions } from "../migration"
-import { sanitize } from "../persistence"
+import { __globalStoreTestUtils__ } from "./GlobalStore"
+import { CURRENT_APP_VERSION, migrate, Versions } from "./migration"
+import { sanitize } from "./persistence"
 
 jest.mock("lib/NativeModules/LegacyNativeModules", () => ({
   LegacyNativeModules: {

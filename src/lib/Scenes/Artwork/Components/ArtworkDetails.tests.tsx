@@ -4,7 +4,7 @@ import { mount } from "enzyme"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
-import { ArtworkDetails } from "../ArtworkDetails"
+import { ArtworkDetails } from "./ArtworkDetails"
 
 jest.unmock("react-relay")
 

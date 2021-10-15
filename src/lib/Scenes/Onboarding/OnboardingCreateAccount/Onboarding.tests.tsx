@@ -1,11 +1,11 @@
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { NetworkAwareProvider } from "lib/utils/NetworkAwareProvider"
 import React from "react"
-import { __globalStoreTestUtils__ } from "../../../../store/GlobalStore"
-import { renderWithWrappers } from "../../../../tests/renderWithWrappers"
-import { NetworkAwareProvider } from "../../../../utils/NetworkAwareProvider"
-import { Onboarding, OnboardingWelcomeScreens } from "../../Onboarding"
-import { OnboardingPersonalization } from "../../OnboardingPersonalization/OnboardingPersonalization"
+import { OnboardingPersonalization } from "../OnboardingPersonalization/OnboardingPersonalization"
+import { Onboarding, OnboardingWelcomeScreens } from "./Onboarding"
 
-jest.mock("../../OnboardingPersonalization/OnboardingPersonalization.tsx", () => ({
+jest.mock("./OnboardingPersonalization/OnboardingPersonalization.tsx", () => ({
   OnboardingPersonalization: () => "OnboardingPersonalization",
 }))
 

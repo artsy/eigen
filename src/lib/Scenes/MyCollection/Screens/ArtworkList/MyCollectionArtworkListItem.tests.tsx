@@ -9,7 +9,7 @@ import React from "react"
 import { Image as RNImage } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MyCollectionArtworkListItemFragmentContainer, tests } from "../MyCollectionArtworkListItem"
+import { MyCollectionArtworkListItemFragmentContainer, tests } from "./MyCollectionArtworkListItem"
 
 jest.unmock("react-relay")
 

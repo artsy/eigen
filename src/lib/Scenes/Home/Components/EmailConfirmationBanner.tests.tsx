@@ -9,7 +9,7 @@ import { EmailConfirmationBanner_me } from "__generated__/EmailConfirmationBanne
 import { EmailConfirmationBannerTestsQuery } from "__generated__/EmailConfirmationBannerTestsQuery.graphql"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { EmailConfirmationBannerFragmentContainer } from "../EmailConfirmationBanner"
+import { EmailConfirmationBannerFragmentContainer } from "./EmailConfirmationBanner"
 
 jest.unmock("react-relay")
 const originalError = console.error

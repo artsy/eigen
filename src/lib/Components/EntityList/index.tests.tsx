@@ -2,7 +2,7 @@
 import { mount } from "enzyme"
 import { Theme } from "palette"
 import React from "react"
-import { EntityList } from "../index"
+import { EntityList } from "./index"
 
 describe("EntityList", () => {
   it("correctly renders one item", () => {

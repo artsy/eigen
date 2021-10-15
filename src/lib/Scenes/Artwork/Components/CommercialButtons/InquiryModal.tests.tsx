@@ -1,4 +1,4 @@
-jest.mock("../../../../../utils/googleMaps", () => ({
+jest.mock("./../../utils/googleMaps", () => ({
   getLocationPredictions: jest.fn(),
   getLocationDetails: jest.fn(),
 }))
@@ -17,8 +17,8 @@ import { TextInput } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { InquiryModalFragmentContainer } from "../InquiryModal"
-import { ShippingModal } from "../ShippingModal"
+import { InquiryModalFragmentContainer } from "./InquiryModal"
+import { ShippingModal } from "./ShippingModal"
 import { press, typeInInput } from "./helpers"
 
 jest.unmock("react-relay")

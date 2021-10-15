@@ -2,8 +2,8 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 
-import Text from "../../Components/TextInput"
-import Edition from "../Edition"
+import Text from "../Components/TextInput"
+import Edition from "./Edition"
 
 const nav = {} as any
 

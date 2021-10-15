@@ -2,9 +2,9 @@ import { fetchMockResponseOnce } from "lib/tests/fetchMockHelpers"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
-import { __globalStoreTestUtils__ } from "../../../../store/GlobalStore"
-import { flushPromiseQueue } from "../../../../tests/flushPromiseQueue"
-import { OnboardingCreateAccountWithEmail } from "../OnboardingCreateAccount"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { OnboardingCreateAccountWithEmail } from "./OnboardingCreateAccount"
 
 const goBackMock = jest.fn()
 const replaceMock = jest.fn()

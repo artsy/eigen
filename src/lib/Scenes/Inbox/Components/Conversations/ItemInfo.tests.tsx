@@ -8,7 +8,7 @@ import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { ItemInfoFragmentContainer } from "../ItemInfo"
+import { ItemInfoFragmentContainer } from "./ItemInfo"
 
 jest.unmock("react-relay")
 

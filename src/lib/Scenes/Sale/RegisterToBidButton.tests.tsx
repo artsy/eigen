@@ -6,8 +6,8 @@ import { Button, Text } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { extractText } from "../../../tests/extractText"
-import { RegisterToBidButtonContainer } from "../Components/RegisterToBidButton"
+import { extractText } from "lib/tests/extractText"
+import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 
 jest.unmock("react-relay")
 

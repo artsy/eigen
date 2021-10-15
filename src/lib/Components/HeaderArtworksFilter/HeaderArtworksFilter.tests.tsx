@@ -4,7 +4,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Text, TouchableHighlightColor } from "palette"
 import React from "react"
 import { act } from "react-test-renderer"
-import { FilterProps, HeaderArtworksFilter, SeparatorWithSmoothOpacity } from "../HeaderArtworksFilter"
+import { FilterProps, HeaderArtworksFilter, SeparatorWithSmoothOpacity } from "./HeaderArtworksFilter"
 
 describe("HeaderArtworksFilter", () => {
   const onPress = jest.fn()

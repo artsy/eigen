@@ -5,7 +5,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { TrackOrderSectionFragmentContainer } from "../Components/TrackOrderSection"
+import { TrackOrderSectionFragmentContainer } from "./Components/TrackOrderSection"
 
 jest.unmock("react-relay")
 

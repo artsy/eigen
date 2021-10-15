@@ -3,8 +3,8 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { debounce } from "lodash"
 import { Input } from "palette"
 import React from "react"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "../../ArtworkFilterStore"
-import { KeywordFilter } from "../KeywordFilter"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "../ArtworkFilterStore"
+import { KeywordFilter } from "./KeywordFilter"
 
 jest.mock("lodash", () => ({
   ...jest.requireActual("lodash"),

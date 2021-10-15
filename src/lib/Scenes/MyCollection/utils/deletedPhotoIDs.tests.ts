@@ -1,5 +1,5 @@
-import { Image } from "../../State/MyCollectionArtworkModel"
-import { deletedPhotoIDs } from "../deletedPhotoIDs"
+import { Image } from "./State/MyCollectionArtworkModel"
+import { deletedPhotoIDs } from "./deletedPhotoIDs"
 
 describe("deletedPhotoIDs", () => {
   const image = (id: string): Image => {

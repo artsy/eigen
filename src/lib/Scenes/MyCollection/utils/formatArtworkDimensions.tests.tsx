@@ -1,4 +1,4 @@
-import { formatArtworkDimensions } from "../formatArtworkDimensions"
+import { formatArtworkDimensions } from "./formatArtworkDimensions"
 
 describe("formatArtworkDimensions", () => {
   it("return null if height width metric is missing", () => {

@@ -1,7 +1,7 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { View } from "react-native"
-import { _test_THEMES, Color, useTheme } from "../../Theme"
+import { _test_THEMES, Color, useTheme } from "../Theme"
 
 describe("color", () => {
   const ColorView = ({ name }: { name: Color }) => {

@@ -1,10 +1,10 @@
 import { fireEvent } from "@testing-library/react-native"
 import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { FakeNavigator } from "../../__tests__/Helpers/FakeNavigator"
-import { BillingAddress } from "../BillingAddress"
+import { BillingAddress } from "./BillingAddress"
+import { FakeNavigator } from "../Helpers/FakeNavigator"
 
-import { mockFullAddress } from "../../__mocks__/billingAddress"
+import { mockFullAddress } from "../__mocks__/billingAddress"
 
 describe("BillingAddress component", () => {
   const onSubmitMock = jest.fn()

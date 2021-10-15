@@ -4,7 +4,7 @@ import { Sans } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MyAccountContainer, MyAccountQueryRenderer } from "../MyAccount"
+import { MyAccountContainer, MyAccountQueryRenderer } from "./MyAccount"
 
 jest.unmock("react-relay")
 

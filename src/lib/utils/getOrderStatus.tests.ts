@@ -1,4 +1,4 @@
-import { getOrderStatus } from "../getOrderStatus"
+import { getOrderStatus } from "./getOrderStatus"
 
 describe(getOrderStatus, () => {
   let mockLineItem: any

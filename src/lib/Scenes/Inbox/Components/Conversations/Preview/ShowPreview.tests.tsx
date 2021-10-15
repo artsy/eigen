@@ -2,7 +2,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 
-import ShowPreview from "../ShowPreview"
+import ShowPreview from "./ShowPreview"
 
 it("renders without throwing an error", () => {
   renderWithWrappers(<ShowPreview show={show as any} />)

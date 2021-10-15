@@ -1,4 +1,4 @@
-import { artworkMediumCategories } from "../artworkMediumCategories"
+import { artworkMediumCategories } from "./artworkMediumCategories"
 
 describe("artworkMediumCategories", () => {
   it("maps raw (Gravity) artwork category labels to their respective values", () => {

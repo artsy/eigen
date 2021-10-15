@@ -6,7 +6,7 @@ import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { Flex, Serif } from "palette"
 import { join } from "path"
 import React from "react"
-import { defaultRules, renderMarkdown } from "../renderMarkdown"
+import { defaultRules, renderMarkdown } from "./renderMarkdown"
 
 describe("renderMarkdown", () => {
   it("returns markdown for a simple string", () => {

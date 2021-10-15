@@ -1,4 +1,4 @@
-import { formatCentsToDollars } from "../formatCentsToDollars"
+import { formatCentsToDollars } from "./formatCentsToDollars"
 
 describe("formatCentsToDollars", () => {
   it("ignores negative numbers", () => {

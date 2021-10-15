@@ -9,12 +9,12 @@ import { Spinner } from "palette"
 import React from "react"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { VanityURLEntityRenderer } from "../VanityURLEntity"
-import { VanityURLPossibleRedirect } from "../VanityURLPossibleRedirect"
+import { VanityURLEntityRenderer } from "./VanityURLEntity"
+import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 
 jest.unmock("react-relay")
 
-jest.mock("../VanityURLPossibleRedirect", () => {
+jest.mock("./VanityURLPossibleRedirect", () => {
   return {
     VanityURLPossibleRedirect: () => null,
   }

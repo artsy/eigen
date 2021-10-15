@@ -11,8 +11,8 @@ import { CollectionsRailTestsQuery } from "__generated__/CollectionsRailTestsQue
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import HomeAnalytics from "../../homeAnalytics"
-import { CollectionsRailFragmentContainer } from "../CollectionsRail"
+import HomeAnalytics from "../homeAnalytics"
+import { CollectionsRailFragmentContainer } from "./CollectionsRail"
 
 jest.unmock("react-relay")
 

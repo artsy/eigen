@@ -5,8 +5,8 @@ import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { SaleActiveBidItemContainer } from "../Components/SaleActiveBidItem"
-import { SaleActiveBidsContainer } from "../Components/SaleActiveBids"
+import { SaleActiveBidItemContainer } from "./Components/SaleActiveBidItem"
+import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
 
 jest.unmock("react-relay")
 

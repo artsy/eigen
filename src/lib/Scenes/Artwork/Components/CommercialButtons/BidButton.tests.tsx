@@ -21,7 +21,7 @@ import { View } from "react-native"
 import { graphql } from "react-relay"
 
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
-import { BidButtonFragmentContainer as BidButton } from "../BidButton"
+import { BidButtonFragmentContainer as BidButton } from "./BidButton"
 
 jest.unmock("react-relay")
 

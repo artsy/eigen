@@ -4,8 +4,8 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { PartnerArtworkFixture } from "../__fixtures__/PartnerArtwork-fixture"
-import { PartnerArtworkFragmentContainer as PartnerArtwork } from "../PartnerArtwork"
+import { PartnerArtworkFixture } from "./__fixtures__/PartnerArtwork-fixture"
+import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./PartnerArtwork"
 
 jest.unmock("react-relay")
 

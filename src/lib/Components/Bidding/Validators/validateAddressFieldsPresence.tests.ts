@@ -1,5 +1,5 @@
-import { mockFullAddress, mockPartiallyEmptyAddress } from "../../__mocks__/billingAddress"
-import { validateAddressFieldsPresence } from "../validateAddressFieldsPresence"
+import { mockFullAddress, mockPartiallyEmptyAddress } from "../__mocks__/billingAddress"
+import { validateAddressFieldsPresence } from "./validateAddressFieldsPresence"
 
 describe("Presence validator", () => {
   it("returns empty array when all required address fields present", () => {

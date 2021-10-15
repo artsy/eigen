@@ -3,7 +3,7 @@ import { Button, Sans } from "palette"
 import React from "react"
 
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import { CreditCardForm } from "../CreditCardForm"
+import { CreditCardForm } from "./CreditCardForm"
 
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),

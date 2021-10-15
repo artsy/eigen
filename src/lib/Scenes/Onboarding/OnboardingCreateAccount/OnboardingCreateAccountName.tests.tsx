@@ -2,11 +2,11 @@ import { FormikProvider, useFormik } from "formik"
 import { BackButton } from "lib/navigation/BackButton"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { flushPromiseQueue } from "../../../../tests/flushPromiseQueue"
-import { EmailSubscriptionCheckbox } from "../EmailSubscriptionCheckbox"
-import { FormikSchema, nameSchema } from "../OnboardingCreateAccount"
-import { OnboardingCreateAccountName } from "../OnboardingCreateAccountName"
-import { TermsOfServiceCheckbox } from "../TermsOfServiceCheckbox"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { EmailSubscriptionCheckbox } from "./EmailSubscriptionCheckbox"
+import { FormikSchema, nameSchema } from "./OnboardingCreateAccount"
+import { OnboardingCreateAccountName } from "./OnboardingCreateAccountName"
+import { TermsOfServiceCheckbox } from "./TermsOfServiceCheckbox"
 
 const goBackMock = jest.fn()
 

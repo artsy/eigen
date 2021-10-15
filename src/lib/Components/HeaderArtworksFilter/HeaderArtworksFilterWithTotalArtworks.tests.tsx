@@ -3,7 +3,7 @@ import { useAnimatedValue } from "lib/Scenes/Artwork/Components/ImageCarousel/us
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { HeaderArtworksFilterWithTotalArtworks } from "../HeaderArtworksFilterWithTotalArtworks"
+import { HeaderArtworksFilterWithTotalArtworks } from "./HeaderArtworksFilterWithTotalArtworks"
 
 describe("HeaderArtworksFilterWithTotalArtworks", () => {
   const onPress = jest.fn()

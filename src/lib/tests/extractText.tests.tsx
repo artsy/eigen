@@ -1,7 +1,7 @@
 import React from "react"
 import { Text as RNText, TextInput as RNTextInput } from "react-native"
-import { extractText } from "../extractText"
-import { renderWithWrappersTL } from "../renderWithWrappers"
+import { extractText } from "./extractText"
+import { renderWithWrappersTL } from "./renderWithWrappers"
 
 describe("extractText", () => {
   it("works for a string", () => {

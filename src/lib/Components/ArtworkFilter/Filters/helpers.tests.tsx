@@ -1,4 +1,4 @@
-import { parseRange } from "../helpers"
+import { parseRange } from "./helpers"
 
 describe("parseRange", () => {
   it("parses a default range string", () => {

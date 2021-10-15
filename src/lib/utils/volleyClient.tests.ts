@@ -1,5 +1,5 @@
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { volleyClient } from "../volleyClient"
+import { volleyClient } from "./volleyClient"
 
 jest.mock("lodash", () => ({
   ...jest.requireActual("lodash"),

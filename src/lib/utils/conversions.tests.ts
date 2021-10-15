@@ -1,4 +1,4 @@
-import { cm2in, in2cm } from "../conversions"
+import { cm2in, in2cm } from "./conversions"
 
 describe(cm2in, () => {
   it("converts cm to inches correctly", () => {

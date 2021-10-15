@@ -1,5 +1,5 @@
 import { DateTime } from "luxon"
-import { groupConversationItems } from "../utils/groupConversationItems"
+import { groupConversationItems } from "./utils/groupConversationItems"
 
 const today = DateTime.local()
 

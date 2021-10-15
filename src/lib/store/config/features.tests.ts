@@ -1,7 +1,7 @@
 import { echoLaunchJson } from "lib/utils/jsonFiles"
 import { intersection } from "lodash"
 import { env } from "process"
-import { devToggles, features } from "../features"
+import { devToggles, features } from "./features"
 
 Object.entries(features).forEach(([key, val]) => {
   describe(`The ${key} feature`, () => {

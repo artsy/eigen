@@ -2,7 +2,7 @@
 import { shallow } from "enzyme"
 import moment from "moment"
 import React from "react"
-import { DurationProvider } from "../DurationProvider"
+import { DurationProvider } from "./DurationProvider"
 
 describe("DurationProvider", () => {
   const DurationConsumer: React.FC<any> = jest.fn()

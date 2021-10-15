@@ -1,4 +1,4 @@
-import { formatMedium } from "../formatArtworkMedium"
+import { formatMedium } from "./formatArtworkMedium"
 
 describe("formatArtworkMedium", () => {
   it("formats medium correctly", () => {

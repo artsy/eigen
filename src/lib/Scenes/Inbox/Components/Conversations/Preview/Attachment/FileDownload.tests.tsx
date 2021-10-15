@@ -4,8 +4,8 @@ import React from "react"
 import "react-native"
 import { Linking } from "react-native"
 
-import AttachmentPreview from "../AttachmentPreview"
-import { FileDownloadFragmentContainer as FileDownload } from "../FileDownload"
+import AttachmentPreview from "./AttachmentPreview"
+import { FileDownloadFragmentContainer as FileDownload } from "./FileDownload"
 
 Linking.openURL = jest.fn()
 it("opens file url when it is selected", async () => {

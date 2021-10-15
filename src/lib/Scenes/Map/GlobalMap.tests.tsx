@@ -1,7 +1,7 @@
 import { CityFixture } from "lib/__fixtures__/CityFixture"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { graphql } from "react-relay"
-import { GlobalMapContainer } from "../GlobalMap"
+import { GlobalMapContainer } from "./GlobalMap"
 
 jest.unmock("react-relay")
 jest.mock("@react-native-mapbox-gl/maps", () => ({

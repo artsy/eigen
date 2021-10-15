@@ -1,7 +1,7 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Box, CheckIcon } from "palette"
 import React from "react"
-import { ColorsSwatch } from "../ColorsSwatch"
+import { ColorsSwatch } from "./ColorsSwatch"
 
 describe("Colors swatch", () => {
   it("adds a check icon when selected", () => {

@@ -7,7 +7,7 @@ import { Touchable } from "palette"
 import React from "react"
 import "react-native"
 import { act } from "react-test-renderer"
-import Artwork from "../ArtworkGridItem"
+import Artwork from "./ArtworkGridItem"
 
 const ArtworkWithProviders = (props: any) => {
   return (

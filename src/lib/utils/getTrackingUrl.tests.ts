@@ -1,4 +1,4 @@
-import { getTrackingUrl } from "../getTrackingUrl"
+import { getTrackingUrl } from "./getTrackingUrl"
 
 describe(getTrackingUrl, () => {
   let mockOrderLineItem: any

@@ -3,7 +3,7 @@ import { shallow } from "enzyme"
 import React from "react"
 import "react-native"
 
-import { Subtitle } from "../"
+import { Subtitle } from "./"
 
 it("passes on props to subtitle", () => {
   const text = shallow(

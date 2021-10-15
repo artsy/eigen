@@ -2,7 +2,7 @@
 import { mount } from "enzyme"
 import React, { useState } from "react"
 import { Animated, View } from "react-native"
-import { useAnimatedValue } from "../useAnimatedValue"
+import { useAnimatedValue } from "./useAnimatedValue"
 
 describe(useAnimatedValue, () => {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

@@ -4,8 +4,8 @@ import { CheckIcon } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
-import { CATEGORIES_OPTIONS, CategoriesOptionsScreen } from "../CategoriesOptions"
-import { CheckMarkOptionListItem } from "../MultiSelectCheckOption"
+import { CATEGORIES_OPTIONS, CategoriesOptionsScreen } from "./CategoriesOptions"
+import { CheckMarkOptionListItem } from "./MultiSelectCheckOption"
 import { getEssentialProps } from "./helper"
 
 describe("Categories options screen", () => {

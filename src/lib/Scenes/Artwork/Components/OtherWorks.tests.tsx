@@ -2,8 +2,8 @@
 import { mount, shallow } from "enzyme"
 import { Sans, Text, Theme } from "palette"
 import React from "react"
-import { Header } from "../OtherWorks/Header"
-import { OtherWorksFragmentContainer as OtherWorks } from "../OtherWorks/OtherWorks"
+import { Header } from "./OtherWorks/Header"
+import { OtherWorksFragmentContainer as OtherWorks } from "./OtherWorks/OtherWorks"
 
 import { navigate } from "lib/navigation/navigate"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"

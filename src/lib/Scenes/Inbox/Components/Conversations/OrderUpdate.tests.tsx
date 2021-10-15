@@ -9,7 +9,7 @@ import { QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { graphql } from "relay-runtime"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { OrderUpdateFragmentContainer as OrderUpdate } from "../OrderUpdate"
+import { OrderUpdateFragmentContainer as OrderUpdate } from "./OrderUpdate"
 
 jest.unmock("react-relay")
 

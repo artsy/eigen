@@ -6,7 +6,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Image, ScrollView } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
-import { AuctionResultQueryRenderer } from "../AuctionResult"
+import { AuctionResultQueryRenderer } from "./AuctionResult"
 
 jest.unmock("react-relay")
 

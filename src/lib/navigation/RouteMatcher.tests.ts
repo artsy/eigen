@@ -1,4 +1,4 @@
-import { RouteMatcher } from "../RouteMatcher"
+import { RouteMatcher } from "./RouteMatcher"
 
 describe(RouteMatcher, () => {
   it("throws an error if you try to give a route that looks wrong", () => {

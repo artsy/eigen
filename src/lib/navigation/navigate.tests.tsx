@@ -2,13 +2,13 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { Linking } from "react-native"
-import { navigate } from "../navigate"
+import { navigate } from "./navigate"
 
 function args(mock: jest.Mock) {
   return mock.mock.calls[mock.mock.calls.length - 1]
 }
 
-jest.unmock("../navigate")
+jest.unmock("./navigate")
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
 
 describe(navigate, () => {

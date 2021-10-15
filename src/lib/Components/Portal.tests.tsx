@@ -3,7 +3,7 @@ import { mount } from "enzyme"
 import React from "react"
 
 import { Text, View } from "react-native"
-import { Portal, PortalProvider } from "../Portal"
+import { Portal, PortalProvider } from "./Portal"
 
 describe("Portal", () => {
   it("Renders children as children of PortalProvider", () => {

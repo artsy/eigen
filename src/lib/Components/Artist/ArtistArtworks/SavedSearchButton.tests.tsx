@@ -14,7 +14,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { SavedSearchButtonRefetchContainer as SavedSearchButton, tracks } from "../SavedSearchButton"
+import { SavedSearchButtonRefetchContainer as SavedSearchButton, tracks } from "./SavedSearchButton"
 
 jest.unmock("react-relay")
 

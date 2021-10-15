@@ -8,8 +8,8 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Check } from "palette"
 import React from "react"
-import { OptionListItem as MultiSelectOptionListItem } from "../MultiSelectOption"
-import { TimePeriodOptionsScreen } from "../TimePeriodOptions"
+import { OptionListItem as MultiSelectOptionListItem } from "./MultiSelectOption"
+import { TimePeriodOptionsScreen } from "./TimePeriodOptions"
 import { getEssentialProps } from "./helper"
 
 describe("TimePeriodOptions Screen", () => {

@@ -4,9 +4,9 @@ import { MyCollectionArtworkFormMain } from "lib/Scenes/MyCollection/Screens/Art
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Image } from "react-native-image-crop-picker"
-import { MyCollectionArtworkFormModal, uploadPhotos } from "../MyCollectionArtworkFormModal"
-import { MyCollectionAdditionalDetailsForm } from "../Screens/MyCollectionArtworkFormAdditionalDetails"
-import { MyCollectionAddPhotos } from "../Screens/MyCollectionArtworkFormAddPhotos"
+import { MyCollectionArtworkFormModal, uploadPhotos } from "./MyCollectionArtworkFormModal"
+import { MyCollectionAdditionalDetailsForm } from "./Screens/MyCollectionArtworkFormAdditionalDetails"
+import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
 
 jest.mock("lib/Scenes/Consignments/Submission/geminiUploadToS3", () => ({
   getConvectionGeminiKey: jest.fn(),

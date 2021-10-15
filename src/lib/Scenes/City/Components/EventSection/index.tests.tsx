@@ -4,7 +4,7 @@ import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { RelayProp } from "react-relay"
-import { EventSection } from "../index"
+import { EventSection } from "./index"
 
 const data = [
   {

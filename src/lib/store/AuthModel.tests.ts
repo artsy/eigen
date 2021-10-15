@@ -2,7 +2,7 @@ import { appleAuth } from "@invertase/react-native-apple-authentication"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { mockPostEventToProviders } from "lib/tests/globallyMockedStuff"
 import { AccessToken, GraphRequest, LoginManager } from "react-native-fbsdk-next"
-import { __globalStoreTestUtils__, GlobalStore } from "../GlobalStore"
+import { __globalStoreTestUtils__, GlobalStore } from "./GlobalStore"
 
 const mockFetch = jest.fn()
 ;(global as any).fetch = mockFetch

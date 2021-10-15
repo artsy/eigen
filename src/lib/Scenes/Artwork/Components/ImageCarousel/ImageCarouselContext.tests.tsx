@@ -2,7 +2,7 @@
 import { mount } from "enzyme"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import React from "react"
-import { ImageCarouselContext, useNewImageCarouselContext } from "../ImageCarouselContext"
+import { ImageCarouselContext, useNewImageCarouselContext } from "./ImageCarouselContext"
 
 const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
   images: [

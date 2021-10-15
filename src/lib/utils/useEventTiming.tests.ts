@@ -1,6 +1,6 @@
 import { renderHook } from "@testing-library/react-hooks"
 import { DateTime } from "luxon"
-import { useEventTiming } from "../useEventTiming"
+import { useEventTiming } from "./useEventTiming"
 
 type Time = Partial<{
   day: number

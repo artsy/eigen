@@ -1,7 +1,7 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 
-import Header from "../Header"
+import Header from "./Header"
 
 it("renders without throwing a error", () => {
   const gene = {

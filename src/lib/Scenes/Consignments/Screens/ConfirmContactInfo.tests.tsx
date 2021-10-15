@@ -9,7 +9,7 @@ import React from "react"
 import { Alert } from "react-native"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ConfirmContactInfoQueryRenderer } from "../ConfirmContactInfo"
+import { ConfirmContactInfoQueryRenderer } from "./ConfirmContactInfo"
 
 jest.unmock("react-relay")
 jest.mock("lib/relay/createEnvironment", () => {

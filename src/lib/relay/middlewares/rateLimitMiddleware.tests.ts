@@ -1,5 +1,5 @@
 import { MiddlewareNextFn, RelayNetworkLayerRequest, RelayNetworkLayerResponse } from "react-relay-network-modern/node8"
-import { rateLimitMiddleware } from "../rateLimitMiddleware"
+import { rateLimitMiddleware } from "./rateLimitMiddleware"
 
 describe("rateLimitMiddleware", () => {
   const relayResponse: RelayNetworkLayerResponse = {

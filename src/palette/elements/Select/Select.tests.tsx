@@ -4,7 +4,7 @@ import { Input, Text, Touchable } from "palette"
 import React from "react"
 import { Modal, TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
-import { Select } from "../Select"
+import { Select } from "./Select"
 
 const options = [
   {

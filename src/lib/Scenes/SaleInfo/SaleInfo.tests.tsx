@@ -5,7 +5,7 @@ import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWr
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { SaleInfoContainer, tests } from "../SaleInfo"
+import { SaleInfoContainer, tests } from "./SaleInfo"
 
 jest.unmock("react-relay")
 

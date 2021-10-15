@@ -2,7 +2,7 @@ import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { OnboardingWelcome } from "../OnboardingWelcome"
+import { OnboardingWelcome } from "./OnboardingWelcome"
 
 const navigateMock = jest.fn()
 

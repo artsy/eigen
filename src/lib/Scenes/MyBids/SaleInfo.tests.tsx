@@ -6,7 +6,7 @@ import { Text } from "palette"
 import { BoltFill, Stopwatch } from "palette/svgs/sf"
 import React from "react"
 import { ReactTestRenderer } from "react-test-renderer"
-import { SaleInfo } from "../Components/SaleInfo"
+import { SaleInfo } from "./Components/SaleInfo"
 
 Settings.now = () => Date.parse("2020-07-31T05:21:14+00:00")
 Settings.defaultZone = "America/New_York"

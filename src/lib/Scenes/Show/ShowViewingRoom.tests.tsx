@@ -7,7 +7,7 @@ import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ShowViewingRoomFragmentContainer } from "../Components/ShowViewingRoom"
+import { ShowViewingRoomFragmentContainer } from "./Components/ShowViewingRoom"
 
 jest.unmock("react-relay")
 

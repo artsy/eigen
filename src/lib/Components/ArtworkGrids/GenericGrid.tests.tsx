@@ -1,8 +1,8 @@
 import React from "react"
 import "react-native"
-import { renderWithLayout } from "../../../tests/renderWithLayout"
+import { renderWithLayout } from "lib/tests/renderWithLayout"
 
-import RelayGenericArtworksGrid, { GenericArtworksGrid } from "../GenericGrid"
+import RelayGenericArtworksGrid, { GenericArtworksGrid } from "./GenericGrid"
 
 it("renders without throwing an error", () => {
   const artworks = [artwork(), artwork(), artwork()]

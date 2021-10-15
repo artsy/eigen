@@ -1,5 +1,5 @@
 import * as danger from "danger"
-import { validatePRChangelog } from "../../dangerfile"
+import { validatePRChangelog } from "./dangerfile"
 const dm = danger as any
 
 jest.spyOn(console, "log").mockImplementation()

@@ -1,7 +1,7 @@
 import { navigate } from "lib/navigation/navigate"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { About } from "../About"
+import { About } from "./About"
 
 describe("About", () => {
   it("renders Terms and conditions", () => {

@@ -2,7 +2,7 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { ArrowRightIcon } from "palette"
 import React from "react"
-import { SectionTitle } from "../SectionTitle"
+import { SectionTitle } from "./SectionTitle"
 
 describe("SectionTitle", () => {
   it(`renders a title alone`, async () => {

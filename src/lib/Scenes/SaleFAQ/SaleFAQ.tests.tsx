@@ -1,7 +1,7 @@
 import React from "react"
 import WebView from "react-native-webview"
-import { renderWithWrappers } from "../../../tests/renderWithWrappers"
-import { SaleFAQ } from "../SaleFAQ"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { SaleFAQ } from "./SaleFAQ"
 
 describe("SaleFAQ", () => {
   it("returns a webview", () => {

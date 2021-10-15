@@ -2,7 +2,7 @@ import { fireEvent } from "@testing-library/react-native"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { Dialog } from "../Dialog"
+import { Dialog } from "./Dialog"
 
 describe("Dialog", () => {
   it("renders without error", () => {

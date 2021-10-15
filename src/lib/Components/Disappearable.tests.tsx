@@ -2,7 +2,7 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Text } from "react-native"
-import { Disappearable } from "../Disappearable"
+import { Disappearable } from "./Disappearable"
 
 describe("Disappearable", () => {
   const ref = { current: null as null | Disappearable }

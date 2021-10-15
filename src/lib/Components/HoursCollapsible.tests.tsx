@@ -5,7 +5,7 @@ import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { HoursCollapsible } from "../HoursCollapsible"
+import { HoursCollapsible } from "./HoursCollapsible"
 
 describe("HoursCollapsible", () => {
   const hours = {

@@ -7,7 +7,7 @@ import { Touchable } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { TroveFragmentContainer } from "../Trove"
+import { TroveFragmentContainer } from "./Trove"
 
 jest.unmock("react-relay")
 

@@ -1,14 +1,14 @@
 import { OptionListItem as FilterModalOptionListItem } from "lib/Components/ArtworkFilter"
-import { OptionListItem as MultiSelectOptionListItem } from "../MultiSelectOption"
+import { OptionListItem as MultiSelectOptionListItem } from "./MultiSelectOption"
 
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Check } from "palette"
 import React from "react"
-import { MockFilterScreen } from "../../__tests__/FilterTestHelper"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "../../ArtworkFilterStore"
-import { GalleriesAndInstitutionsOptionsScreen } from "../GalleriesAndInstitutionsOptions"
+import { MockFilterScreen } from "../FilterTestHelper"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "../ArtworkFilterStore"
+import { GalleriesAndInstitutionsOptionsScreen } from "./GalleriesAndInstitutionsOptions"
 import { getEssentialProps } from "./helper"
 
 describe("Galleries and Institutions Options Screen", () => {

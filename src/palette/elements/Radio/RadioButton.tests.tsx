@@ -2,7 +2,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { RadioButton } from "../RadioButton"
+import { RadioButton } from "./RadioButton"
 
 it("shows text and subtitle within the radio button", () => {
   const component = renderWithWrappers(<RadioButton text="Remember me" subtitle="Subtitle" />)

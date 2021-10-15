@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { OnboardingSocialPick } from "../../OnboardingSocialPick"
+import { OnboardingSocialPick } from "../OnboardingSocialPick"
 
 jest.mock("@react-navigation/native")
 

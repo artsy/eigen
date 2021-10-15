@@ -1,5 +1,5 @@
 import { ArtworkExtraLinks_artwork } from "__generated__/ArtworkExtraLinks_artwork.graphql"
-import { partnerName } from "../partnerName"
+import { partnerName } from "./partnerName"
 
 describe("partnerName", () => {
   const sale = { isBenefit: false, partner: null } as ArtworkExtraLinks_artwork["sale"]

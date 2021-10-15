@@ -2,7 +2,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Text } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { Checkbox } from "../Checkbox"
+import { Checkbox } from "./Checkbox"
 
 it("shows text and subtitle within the checkbox", () => {
   const component = renderWithWrappers(<Checkbox text="Remember me" subtitle="Subtitle" />)

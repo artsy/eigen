@@ -4,8 +4,8 @@ import { CheckIcon } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
-import { AUCTION_HOUSE_OPTIONS, AuctionHouseOptionsScreen } from "../AuctionHouseOptions"
-import { CheckMarkOptionListItem } from "../MultiSelectCheckOption"
+import { AUCTION_HOUSE_OPTIONS, AuctionHouseOptionsScreen } from "./AuctionHouseOptions"
+import { CheckMarkOptionListItem } from "./MultiSelectCheckOption"
 import { getEssentialProps } from "./helper"
 
 describe("AuctionHouse options screen", () => {

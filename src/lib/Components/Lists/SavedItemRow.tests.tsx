@@ -1,7 +1,7 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 
-import { SavedItemRow } from "../SavedItemRow"
+import { SavedItemRow } from "./SavedItemRow"
 
 const props = {
   href: "/artist/petra-collins",

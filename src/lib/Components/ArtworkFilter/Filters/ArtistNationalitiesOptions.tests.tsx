@@ -5,8 +5,8 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Check } from "palette"
 import React from "react"
-import { ArtistNationalitiesOptionsScreen } from "../ArtistNationalitiesOptions"
-import { OptionListItem } from "../MultiSelectOption"
+import { ArtistNationalitiesOptionsScreen } from "./ArtistNationalitiesOptions"
+import { OptionListItem } from "./MultiSelectOption"
 import { getEssentialProps } from "./helper"
 
 const MOCK_AGGREGATIONS: Aggregations = [

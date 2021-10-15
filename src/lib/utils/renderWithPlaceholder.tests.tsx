@@ -2,7 +2,7 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Text } from "react-native"
-import { renderWithPlaceholder } from "../renderWithPlaceholder"
+import { renderWithPlaceholder } from "./renderWithPlaceholder"
 
 describe(renderWithPlaceholder, () => {
   it(`renders the placeholder while the graphqls are loading`, () => {

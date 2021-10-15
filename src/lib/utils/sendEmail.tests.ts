@@ -1,5 +1,5 @@
 import { Alert, Linking } from "react-native"
-import { sendEmail } from "../sendEmail"
+import { sendEmail } from "./sendEmail"
 
 describe("sendEmail", () => {
   beforeEach(() => {

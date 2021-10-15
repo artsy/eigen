@@ -4,7 +4,7 @@ import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Sans, Theme } from "palette"
 import React from "react"
 import { Text } from "react-native"
-import { ArtworkExtraLinks } from "../index"
+import { ArtworkExtraLinks } from "./index"
 
 jest.unmock("react-tracking")
 

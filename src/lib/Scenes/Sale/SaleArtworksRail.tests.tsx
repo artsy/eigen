@@ -7,7 +7,7 @@ import { Flex } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { INITIAL_NUMBER_TO_RENDER, SaleArtworksRailContainer } from "../Components/SaleArtworksRail"
+import { INITIAL_NUMBER_TO_RENDER, SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
 
 jest.unmock("react-relay")
 

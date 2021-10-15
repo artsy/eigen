@@ -13,11 +13,11 @@ import { TouchableWithoutFeedback } from "react-native"
 import relay from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
-import { BidInfoRow } from "../../Components/BidInfoRow"
-import { Address } from "../../types"
-import { BillingAddress } from "../BillingAddress"
-import { CreditCardForm } from "../CreditCardForm"
-import { Registration } from "../Registration"
+import { BidInfoRow } from "../Components/BidInfoRow"
+import { Address } from "../types"
+import { BillingAddress } from "./BillingAddress"
+import { CreditCardForm } from "./CreditCardForm"
+import { Registration } from "./Registration"
 
 // This lets us import the actual react-relay module, and replace specific functions within it with mocks.
 jest.unmock("react-relay")

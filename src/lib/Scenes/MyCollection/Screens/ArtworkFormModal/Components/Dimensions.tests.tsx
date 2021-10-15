@@ -2,7 +2,7 @@ import { useFormikContext } from "formik"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Input } from "palette"
 import React from "react"
-import { Dimensions } from "../Dimensions"
+import { Dimensions } from "./Dimensions"
 
 jest.mock("formik")
 

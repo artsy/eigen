@@ -4,7 +4,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { merge } from "lodash"
 import { StarCircleFill } from "palette/svgs/sf"
 import React from "react"
-import { ClosedLotStanding } from "../Components/ClosedLotStanding"
+import { ClosedLotStanding } from "./Components/ClosedLotStanding"
 
 const defaultSaleArtwork = {
   isHighestBidder: true,

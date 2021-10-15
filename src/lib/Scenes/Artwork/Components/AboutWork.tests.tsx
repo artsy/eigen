@@ -1,7 +1,7 @@
 import { AboutWork_artwork } from "__generated__/AboutWork_artwork.graphql"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { AboutWork } from "../AboutWork"
+import { AboutWork } from "./AboutWork"
 
 jest.mock("lib/utils/hardware", () => ({
   truncatedTextLimit: jest.fn(),

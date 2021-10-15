@@ -4,7 +4,7 @@ import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { CommercialEditionSetInformation } from "../CommercialEditionSetInformation"
+import { CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
 
 const artwork = {
   editionSets: [

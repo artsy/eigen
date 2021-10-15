@@ -3,7 +3,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Text, TouchableHighlightColor } from "palette"
 import React from "react"
 import { act } from "react-test-renderer"
-import { ArtworksFilterHeader } from "../FilterHeader"
+import { ArtworksFilterHeader } from "./FilterHeader"
 
 describe("ArtistSeriesFilterHeader", () => {
   const onPress = jest.fn()

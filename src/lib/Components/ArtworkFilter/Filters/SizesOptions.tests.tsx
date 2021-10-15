@@ -4,8 +4,8 @@ import { CheckIcon } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
-import { CheckMarkOptionListItem } from "../MultiSelectCheckOption"
-import { SIZES_OPTIONS, SizesOptionsScreen } from "../SizesOptions"
+import { CheckMarkOptionListItem } from "./MultiSelectCheckOption"
+import { SIZES_OPTIONS, SizesOptionsScreen } from "./SizesOptions"
 import { getEssentialProps } from "./helper"
 
 describe("Sizes options screen", () => {

@@ -3,7 +3,7 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { FeatureQueryRenderer } from "../Feature"
+import { FeatureQueryRenderer } from "./Feature"
 
 jest.unmock("react-relay")
 jest.mock("lib/relay/createEnvironment", () => {

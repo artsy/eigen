@@ -1,4 +1,4 @@
-import { findCountryNameByCountryCode } from "../findCountryNameByCountryCode"
+import { findCountryNameByCountryCode } from "./findCountryNameByCountryCode"
 
 describe("findCountryNameByCountryCode util", () => {
   it("correctly returns the full name of country", () => {

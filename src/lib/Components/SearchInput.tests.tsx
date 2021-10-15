@@ -3,7 +3,7 @@ import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TextInput } from "react-native"
 import Animated, { Easing } from "react-native-reanimated"
-import { SearchInput, SearchInputProps } from "../SearchInput"
+import { SearchInput, SearchInputProps } from "./SearchInput"
 
 describe("SearchInput", () => {
   const onCancelPressMock = jest.fn()

@@ -4,7 +4,7 @@ import "react-native"
 // Note: test renderer must be required after react-native.
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 
-import About from "../About"
+import About from "./About"
 
 it("renders without throwing a error", () => {
   const gene = {

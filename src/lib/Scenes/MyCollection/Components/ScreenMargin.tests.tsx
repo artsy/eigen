@@ -1,7 +1,7 @@
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { ScreenMargin } from "../ScreenMargin"
+import { ScreenMargin } from "./ScreenMargin"
 
 describe("Navigator", () => {
   it("renders child components", () => {

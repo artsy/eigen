@@ -1,7 +1,7 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { DecreaseIcon, IncreaseIcon, Text } from "palette"
 import React from "react"
-import { AuctionResultsMidEstimate } from "../AuctionResultMidEstimate"
+import { AuctionResultsMidEstimate } from "./AuctionResultMidEstimate"
 
 describe("AuctionResultMidEstimate", () => {
   it("renders properly when the percentage is greater than 5", () => {

@@ -2,8 +2,8 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 
-import { ConsignmentMetadata } from "../../index"
-import Metadata from "../Metadata"
+import { ConsignmentMetadata } from "../index"
+import Metadata from "./Metadata"
 
 const nav = {} as any
 

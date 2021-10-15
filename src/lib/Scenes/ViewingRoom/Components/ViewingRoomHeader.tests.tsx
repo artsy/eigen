@@ -6,7 +6,7 @@ import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { PartnerIconImage, ViewingRoomHeaderContainer } from "../ViewingRoomHeader"
+import { PartnerIconImage, ViewingRoomHeaderContainer } from "./ViewingRoomHeader"
 
 jest.unmock("react-relay")
 

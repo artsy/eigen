@@ -7,8 +7,8 @@ import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { extractText } from "../../../tests/extractText"
-import { SaleActiveBidItemContainer } from "../Components/SaleActiveBidItem"
+import { SaleActiveBidItemContainer } from "./Components/SaleActiveBidItem"
+import { extractText } from "lib/tests/extractText"
 
 jest.unmock("react-relay")
 

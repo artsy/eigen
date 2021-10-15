@@ -1,7 +1,7 @@
 import Cookies from "@react-native-cookies/cookies"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { __globalStoreTestUtils__, GlobalStore } from "../GlobalStore"
-import { CURRENT_APP_VERSION } from "../migration"
+import { __globalStoreTestUtils__, GlobalStore } from "./GlobalStore"
+import { CURRENT_APP_VERSION } from "./migration"
 
 describe("GlobalStoreModel", () => {
   it("has latest version on install", () => {

@@ -4,9 +4,9 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-import { mockEnvironmentPayload } from "../../../../tests/mockEnvironmentPayload"
-import { ArtistInsightsFragmentContainer } from "../ArtistInsights"
-import { ArtistInsightsAuctionResultsPaginationContainer } from "../ArtistInsightsAuctionResults"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
+import { ArtistInsightsFragmentContainer } from "./ArtistInsights"
+import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 
 const trackEvent = useTracking().trackEvent
 

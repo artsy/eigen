@@ -8,7 +8,7 @@ import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { ArtworkTombstone } from "../ArtworkTombstone"
+import { ArtworkTombstone } from "./ArtworkTombstone"
 
 describe("ArtworkTombstone", () => {
   it("renders fields correctly", () => {

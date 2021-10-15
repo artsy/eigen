@@ -1,5 +1,5 @@
 /* eslint-disable promise/always-return */
-import { getUrgencyTag } from "../getUrgencyTag"
+import { getUrgencyTag } from "./getUrgencyTag"
 
 describe(getUrgencyTag, () => {
   it("returns the right urgency tag when a sale has a future endDate that is less than 5 days in the future", async () => {

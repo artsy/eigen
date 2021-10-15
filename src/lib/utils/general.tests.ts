@@ -1,4 +1,4 @@
-import { isArtsyEmail } from "../general"
+import { isArtsyEmail } from "./general"
 
 describe(isArtsyEmail, () => {
   it("detects artsy users correctly", () => {

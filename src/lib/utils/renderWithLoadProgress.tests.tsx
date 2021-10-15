@@ -3,7 +3,7 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Text } from "react-native"
-import renderWithLoadProgress from "../renderWithLoadProgress"
+import renderWithLoadProgress from "./renderWithLoadProgress"
 
 describe(renderWithLoadProgress, () => {
   it(`renders a spinner while the graphqls are loading`, () => {

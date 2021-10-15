@@ -1,3 +1,4 @@
+import { ArtistAboutContainer } from "lib/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeader"
 import { ArtistInsights } from "lib/Components/Artist/ArtistInsights/ArtistInsights"
@@ -10,8 +11,7 @@ import React from "react"
 import "react-native"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
-import { ArtistAboutContainer } from "../../../Components/Artist/ArtistAbout/ArtistAbout"
-import { ArtistQueryRenderer } from "../Artist"
+import { ArtistQueryRenderer } from "./Artist"
 
 jest.unmock("react-relay")
 jest.unmock("react-tracking")

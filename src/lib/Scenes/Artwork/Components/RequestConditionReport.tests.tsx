@@ -7,7 +7,7 @@ import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { Button, Theme } from "palette"
 import React from "react"
-import { RequestConditionReport } from "../RequestConditionReport"
+import { RequestConditionReport } from "./RequestConditionReport"
 
 const artwork: RequestConditionReport_artwork = {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

@@ -4,7 +4,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Sans } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
-import { CollectionGroupMemberPill, OtherCollectionsRail } from "../OtherCollectionsRail"
+import { CollectionGroupMemberPill, OtherCollectionsRail } from "./OtherCollectionsRail"
 
 describe("Other Collections Rail", () => {
   const TestRenderer = () => (

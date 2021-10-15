@@ -1,4 +1,4 @@
-import { findClosestIndex, fitInside, getMeasurements } from "../geometry"
+import { findClosestIndex, fitInside, getMeasurements } from "./geometry"
 
 describe(fitInside, () => {
   it("returns one of the given boxes if they are the same", () => {

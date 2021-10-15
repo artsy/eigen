@@ -3,8 +3,8 @@ import { Touchable } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import { act } from "react-test-renderer"
-import { ToastComponent } from "../ToastComponent"
-import { useToast } from "../toastHook"
+import { ToastComponent } from "./ToastComponent"
+import { useToast } from "./toastHook"
 
 const TestRenderer: React.FC = () => {
   const toast = useToast()

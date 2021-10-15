@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 import React from "react"
 import { View } from "react-native"
 
-import { TimeOffsetProvider } from "../TimeOffsetProvider"
+import { TimeOffsetProvider } from "./TimeOffsetProvider"
 
 // tslint:disable-next-line:no-var-requires
 const RelayRuntime = require("relay-runtime")

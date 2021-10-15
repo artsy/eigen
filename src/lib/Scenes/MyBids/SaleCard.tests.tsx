@@ -5,8 +5,8 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { CompleteRegistrationCTAWrapper } from "../Components/CompleteRegistrationCTAWrapper"
-import { RegistrationCTAWrapper, SaleCard, SaleCardFragmentContainer } from "../Components/SaleCard"
+import { CompleteRegistrationCTAWrapper } from "./Components/CompleteRegistrationCTAWrapper"
+import { RegistrationCTAWrapper, SaleCard, SaleCardFragmentContainer } from "./Components/SaleCard"
 
 jest.unmock("react-relay")
 

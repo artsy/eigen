@@ -6,8 +6,8 @@ import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { AttachmentListFragmentContainer } from "../AttachmentList"
-import { FileDownload } from "../FileDownload"
+import { AttachmentListFragmentContainer } from "./AttachmentList"
+import { FileDownload } from "./FileDownload"
 
 jest.unmock("react-relay")
 

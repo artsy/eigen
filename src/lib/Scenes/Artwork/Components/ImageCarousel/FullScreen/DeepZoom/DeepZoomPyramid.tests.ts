@@ -1,5 +1,5 @@
-import { DeepZoomPyramid } from "../DeepZoomPyramid"
-import { DeepZoomTileID } from "../DeepZoomTile"
+import { DeepZoomPyramid } from "./DeepZoomPyramid"
+import { DeepZoomTileID } from "./DeepZoomTile"
 
 describe(DeepZoomPyramid, () => {
   jest.useFakeTimers()

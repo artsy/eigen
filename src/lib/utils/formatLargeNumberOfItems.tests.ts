@@ -1,4 +1,4 @@
-import { formatLargeNumberOfItems } from "../formatLargeNumberOfItems"
+import { formatLargeNumberOfItems } from "./formatLargeNumberOfItems"
 
 describe(formatLargeNumberOfItems, () => {
   describe("default pluralization", () => {

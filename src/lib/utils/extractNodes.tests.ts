@@ -1,4 +1,4 @@
-import { extractNodes } from "../extractNodes"
+import { extractNodes } from "./extractNodes"
 
 describe(extractNodes, () => {
   it(`extracts nodes from a connection`, async () => {

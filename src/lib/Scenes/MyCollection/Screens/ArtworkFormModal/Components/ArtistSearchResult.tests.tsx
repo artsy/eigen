@@ -4,7 +4,7 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
-import { ArtistSearchResult } from "../ArtistSearchResult"
+import { ArtistSearchResult } from "./ArtistSearchResult"
 
 describe("ArtistSearchResult", () => {
   const displayLabel = "some display label"

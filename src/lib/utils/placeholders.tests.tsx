@@ -1,6 +1,6 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { PlaceholderBox, PlaceholderRaggedText, ProvidePlaceholderContext } from "../placeholders"
+import { PlaceholderBox, PlaceholderRaggedText, ProvidePlaceholderContext } from "./placeholders"
 
 describe(PlaceholderBox, () => {
   it(`requires a placeholder context`, () => {

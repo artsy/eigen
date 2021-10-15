@@ -9,8 +9,8 @@ import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestInstance } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { Conversation, ConversationFragmentContainer } from "../Conversation"
-import { ConversationDetailsQueryRenderer } from "../ConversationDetails"
+import { Conversation, ConversationFragmentContainer } from "./Conversation"
+import { ConversationDetailsQueryRenderer } from "./ConversationDetails"
 
 jest.unmock("react-tracking")
 jest.unmock("react-relay")

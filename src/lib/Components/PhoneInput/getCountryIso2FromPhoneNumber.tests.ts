@@ -1,4 +1,4 @@
-import { getCountryIso2FromPhoneNumber } from "../getCountryIso2FromPhoneNumber"
+import { getCountryIso2FromPhoneNumber } from "./getCountryIso2FromPhoneNumber"
 
 describe(getCountryIso2FromPhoneNumber, () => {
   it("works for canada", () => {

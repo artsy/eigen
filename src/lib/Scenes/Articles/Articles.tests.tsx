@@ -3,7 +3,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { RelayEnvironmentProvider } from "relay-hooks"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ArticlesQueryRenderer } from "../Articles"
+import { ArticlesQueryRenderer } from "./Articles"
 
 jest.unmock("react-relay")
 

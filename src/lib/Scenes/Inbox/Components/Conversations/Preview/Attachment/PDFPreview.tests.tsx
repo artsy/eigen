@@ -2,7 +2,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 
-import PDFPreview from "../PDFPreview"
+import PDFPreview from "./PDFPreview"
 
 it("renders without throwing an error", () => {
   renderWithWrappers(<PDFPreview attachment={attachment as any} />)

@@ -25,8 +25,8 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-import { extractText } from "../../../tests/extractText"
-import { closeModalMock, getEssentialProps, MockFilterScreen, navigateMock } from "../__tests__/FilterTestHelper"
+import { extractText } from "lib/tests/extractText"
+import { closeModalMock, getEssentialProps, MockFilterScreen, navigateMock } from "./__tests__/FilterTestHelper"
 
 const exitModalMock = jest.fn()
 const trackEvent = jest.fn()

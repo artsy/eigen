@@ -3,7 +3,7 @@ import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { act } from "react-test-renderer"
-import { BottomTabsNavigator } from "../BottomTabsNavigator"
+import { BottomTabsNavigator } from "./BottomTabsNavigator"
 
 describe(BottomTabsNavigator, () => {
   it("shows the current tab content", async () => {

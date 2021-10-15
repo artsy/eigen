@@ -1,5 +1,5 @@
 import { getCountry } from "react-native-localize"
-import { cleanUserPhoneNumber } from "../cleanUserPhoneNumber"
+import { cleanUserPhoneNumber } from "./cleanUserPhoneNumber"
 
 describe(cleanUserPhoneNumber, () => {
   it("handles +-prefixed numbers correctly", () => {

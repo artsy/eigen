@@ -2,7 +2,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 
-import ShowsList from "../VariableSizeShowsList"
+import ShowsList from "./VariableSizeShowsList"
 
 it("renders without throwing an error", () => {
   const show1 = showProps(1)

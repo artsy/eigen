@@ -8,8 +8,8 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
-import { flushPromiseQueue } from "../../../tests/flushPromiseQueue"
-import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "../ShowArtistsPreview"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "./ShowArtistsPreview"
 
 jest.unmock("react-relay")
 

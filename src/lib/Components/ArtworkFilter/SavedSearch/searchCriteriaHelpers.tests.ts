@@ -1,10 +1,10 @@
-import { FilterParamName } from "../../ArtworkFilterHelpers"
+import { FilterParamName } from "./ArtworkFilterHelpers"
 import {
   getAllowedFiltersForSavedSearchInput,
   getOnlyFilledSearchCriteriaValues,
   getSearchCriteriaFromFilters,
   prepareFilterDataForSaveSearchInput,
-} from "../searchCriteriaHelpers"
+} from "./searchCriteriaHelpers"
 
 describe("getOnlyFilledSearchCriteriaValues", () => {
   it("should return nothing", () => {

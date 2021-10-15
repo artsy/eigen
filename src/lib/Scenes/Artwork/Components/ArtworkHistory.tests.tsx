@@ -3,7 +3,7 @@ import { mount } from "enzyme"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
-import { ArtworkHistory } from "../ArtworkHistory"
+import { ArtworkHistory } from "./ArtworkHistory"
 
 jest.unmock("react-relay")
 

@@ -2,7 +2,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { ArrowRightIcon } from "palette"
 import React from "react"
 import { View } from "react-native"
-import { ArrowDetails } from "../ArrowDetails"
+import { ArrowDetails } from "./ArrowDetails"
 
 describe("ArrowDetails", () => {
   it("renders correct components", () => {

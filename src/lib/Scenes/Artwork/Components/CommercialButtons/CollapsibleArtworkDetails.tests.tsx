@@ -9,7 +9,7 @@ import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { CollapsibleArtworkDetailsFragmentContainer } from "../CollapsibleArtworkDetails"
+import { CollapsibleArtworkDetailsFragmentContainer } from "./CollapsibleArtworkDetails"
 
 jest.unmock("react-relay")
 

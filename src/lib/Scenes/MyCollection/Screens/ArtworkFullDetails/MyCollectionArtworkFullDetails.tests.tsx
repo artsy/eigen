@@ -8,7 +8,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { MyCollectionArtworkFullDetailsContainer } from "../MyCollectionArtworkFullDetails"
+import { MyCollectionArtworkFullDetailsContainer } from "./MyCollectionArtworkFullDetails"
 
 jest.unmock("react-relay")
 

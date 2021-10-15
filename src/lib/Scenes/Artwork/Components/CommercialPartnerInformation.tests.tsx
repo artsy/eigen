@@ -3,7 +3,7 @@ import { mount } from "enzyme"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Sans, Theme } from "palette"
 import React from "react"
-import { CommercialPartnerInformation } from "../CommercialPartnerInformation"
+import { CommercialPartnerInformation } from "./CommercialPartnerInformation"
 
 describe("CommercialPartnerInformation", () => {
   it("renders all seller information when work is for sale and is not in a closed auction", () => {

@@ -5,7 +5,7 @@ import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { RelayProp } from "react-relay"
-import { Event } from "../index"
+import { Event } from "./index"
 
 const eventData = ({
   name: "PALAY, Trapunto Murals by Pacita Abad",

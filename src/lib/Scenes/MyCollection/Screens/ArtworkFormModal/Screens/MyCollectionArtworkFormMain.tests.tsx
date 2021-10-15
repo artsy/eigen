@@ -4,11 +4,11 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { ArtistAutosuggest } from "../../Components/ArtistAutosuggest"
-import { Dimensions } from "../../Components/Dimensions"
-import { MediumPicker } from "../../Components/MediumPicker"
-import { ArtworkFormMode } from "../../MyCollectionArtworkFormModal"
-import { MyCollectionArtworkFormMain } from "../MyCollectionArtworkFormMain"
+import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
+import { Dimensions } from "./Components/Dimensions"
+import { MediumPicker } from "./Components/MediumPicker"
+import { ArtworkFormMode } from "./MyCollectionArtworkFormModal"
+import { MyCollectionArtworkFormMain } from "./MyCollectionArtworkFormMain"
 
 jest.mock("formik")
 
@@ -16,19 +16,19 @@ jest.mock("lib/Components/FancyModal/FancyModalHeader", () => ({
   FancyModalHeader: () => null,
 }))
 
-jest.mock("../../Components/ArtistAutosuggest", () => ({
+jest.mock("./Components/ArtistAutosuggest", () => ({
   ArtistAutosuggest: () => null,
 }))
 
-jest.mock("../../Components/MediumPicker", () => ({
+jest.mock("./Components/MediumPicker", () => ({
   MediumPicker: () => null,
 }))
 
-jest.mock("../../Components/MediumPicker", () => ({
+jest.mock("./Components/MediumPicker", () => ({
   MediumPicker: () => null,
 }))
 
-jest.mock("../../Components/Dimensions", () => ({
+jest.mock("./Components/Dimensions", () => ({
   Dimensions: () => null,
 }))
 

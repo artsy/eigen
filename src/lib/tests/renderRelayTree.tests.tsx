@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Image, Text, View } from "react-native"
-import { renderRelayTree } from "../renderRelayTree"
+import { renderRelayTree } from "./renderRelayTree"
 import { Artwork, query, renderToString } from "./MockRelayRendererFixtures"
 
 jest.unmock("react-relay")

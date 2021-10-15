@@ -5,9 +5,9 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { EmptyMessage } from "../EmptyMessage"
-import { SavedSearchesListContainer as SavedSearchesList } from "../SavedSearchesList"
-import { SavedSearchListItem } from "../SavedSearchListItem"
+import { EmptyMessage } from "./EmptyMessage"
+import { SavedSearchesListContainer as SavedSearchesList } from "./SavedSearchesList"
+import { SavedSearchListItem } from "./SavedSearchListItem"
 
 jest.unmock("react-relay")
 

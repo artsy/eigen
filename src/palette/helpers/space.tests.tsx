@@ -1,8 +1,8 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { View } from "react-native"
-import { useSpace } from "../../hooks"
-import { SpacingUnit } from "../../Theme"
+import { useSpace } from "../hooks"
+import { SpacingUnit } from "../Theme"
 
 describe("space", () => {
   const SpaceView = ({ name }: { name: SpacingUnit }) => {

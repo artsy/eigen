@@ -6,7 +6,7 @@ import React from "react"
 import { QueryRenderer } from "react-relay"
 import { graphql, RelayEnvironmentProvider } from "relay-hooks"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { FeaturedRail } from "../ViewingRoomsListFeatured"
+import { FeaturedRail } from "./ViewingRoomsListFeatured"
 
 jest.unmock("react-relay")
 

@@ -9,7 +9,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MyCollectionArtworkMetaFragmentContainer } from "../MyCollectionArtworkMeta"
+import { MyCollectionArtworkMetaFragmentContainer } from "./MyCollectionArtworkMeta"
 
 jest.unmock("react-relay")
 

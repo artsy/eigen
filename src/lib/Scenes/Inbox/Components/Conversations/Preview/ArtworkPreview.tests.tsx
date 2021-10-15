@@ -2,7 +2,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 
-import ArtworkPreview from "../ArtworkPreview"
+import ArtworkPreview from "./ArtworkPreview"
 
 import { Touchable } from "palette"
 

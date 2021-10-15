@@ -3,7 +3,7 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Text } from "palette"
 import React from "react"
-import { OpenInquiryModalButton } from "../OpenInquiryModalButton"
+import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
 
 jest.unmock("react-relay")
 

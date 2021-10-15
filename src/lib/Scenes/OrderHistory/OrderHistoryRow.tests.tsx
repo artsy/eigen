@@ -6,7 +6,7 @@ import { Button } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { OrderHistoryRowContainer } from "../OrderHistoryRow"
+import { OrderHistoryRowContainer } from "./OrderHistoryRow"
 
 jest.unmock("react-relay")
 

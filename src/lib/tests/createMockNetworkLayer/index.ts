@@ -14,7 +14,7 @@ import { INetwork as RelayNetwork, Network } from "relay-runtime"
 import uuid from "uuid"
 
 import { get } from "lib/utils/get"
-import schema from "../../../../data/schema.graphql"
+import schema from "./../data/schema.graphql"
 import FormattedNumber from "./CustomScalars/formatted_number"
 /**
  * @deprecated use createMockNetworkLayer2
@@ -27,7 +27,7 @@ export const createMockNetworkLayer = (mockResolvers: IMocks) => {
       mocks: { FormattedNumber: () => FormattedNumber, ...mockResolvers },
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       resolveQueryFromOperation: ({ id }) => {
-        return require("../../../../data/complete.queryMap.json")[id]
+        return require("./../data/complete.queryMap.json")[id]
       },
     })
   )
@@ -129,7 +129,7 @@ export const createMockFetchQuery = ({
     schema,
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     resolveQueryFromOperation: ({ id }) => {
-      return require("../../../../data/complete.queryMap.json")[id]
+      return require("./../data/complete.queryMap.json")[id]
     },
     resolvers: {
       FormattedNumber: () => FormattedNumber,

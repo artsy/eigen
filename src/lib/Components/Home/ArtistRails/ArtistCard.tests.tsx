@@ -2,7 +2,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 
-import { ArtistCard } from "../ArtistCard"
+import { ArtistCard } from "./ArtistCard"
 
 it("renders without throwing a error", () => {
   renderWithWrappers(<ArtistCard artist={artistProps().artist as any} />)

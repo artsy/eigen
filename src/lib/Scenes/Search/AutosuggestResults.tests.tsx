@@ -10,9 +10,9 @@ import React from "react"
 import { FlatList } from "react-native"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { AutosuggestResults } from "../AutosuggestResults"
-import { AutosuggestSearchResult } from "../AutosuggestSearchResult"
-import { SearchContext } from "../SearchContext"
+import { AutosuggestResults } from "./AutosuggestResults"
+import { AutosuggestSearchResult } from "./AutosuggestSearchResult"
+import { SearchContext } from "./SearchContext"
 
 const FixturePage1: AutosuggestResultsQueryRawResponse = {
   results: {
@@ -118,7 +118,7 @@ jest.unmock("react-relay")
 // tslint:disable-next-line:no-empty
 jest.mock("@sentry/react-native", () => ({ captureMessage() {} }))
 
-jest.mock("../RecentSearches", () => {
+jest.mock("./RecentSearches", () => {
   const notifyRecentSearch = jest.fn()
   return {
     useRecentSearches() {
@@ -128,7 +128,7 @@ jest.mock("../RecentSearches", () => {
 })
 
 // tslint:disable-next-line:no-var-requires
-const notifyRecentSearchMock = require("../RecentSearches").useRecentSearches().notifyRecentSearch
+const notifyRecentSearchMock = require("./RecentSearches").useRecentSearches().notifyRecentSearch
 
 const env = (defaultEnvironment as any) as ReturnType<typeof createMockEnvironment>
 

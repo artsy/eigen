@@ -10,7 +10,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
-import { Tag } from "../Tag"
+import { Tag } from "./Tag"
 
 jest.unmock("react-relay")
 

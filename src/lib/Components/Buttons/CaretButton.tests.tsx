@@ -1,7 +1,7 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 
-import { CaretButton } from "../CaretButton"
+import { CaretButton } from "./CaretButton"
 
 import { extractText } from "lib/tests/extractText"
 import { TouchableOpacity } from "react-native"

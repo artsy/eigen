@@ -3,13 +3,13 @@ AsyncStorage.setItem = jest.fn()
 AsyncStorage.getItem = jest.fn()
 AsyncStorage.removeItem = jest.fn()
 
-import { Overview } from "../Overview"
+import { Overview } from "./Overview"
 
-jest.mock("../../Submission/updateConsignmentSubmission", () => ({ updateConsignmentSubmission: jest.fn() }))
-import { updateConsignmentSubmission } from "../../Submission/updateConsignmentSubmission"
+jest.mock("./Submission/updateConsignmentSubmission", () => ({ updateConsignmentSubmission: jest.fn() }))
+import { updateConsignmentSubmission } from "./Submission/updateConsignmentSubmission"
 
-jest.mock("../../Submission/uploadPhotoToGemini", () => ({ uploadImageAndPassToGemini: jest.fn() }))
-import { uploadImageAndPassToGemini } from "../../Submission/uploadPhotoToGemini"
+jest.mock("./Submission/uploadPhotoToGemini", () => ({ uploadImageAndPassToGemini: jest.fn() }))
+import { uploadImageAndPassToGemini } from "./Submission/uploadPhotoToGemini"
 
 const nav = {} as any
 const route = {} as any

@@ -5,8 +5,8 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { DateTime } from "luxon"
 import React, { Suspense } from "react"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { RegisterToBidButtonContainer } from "../Components/RegisterToBidButton"
-import { SaleQueryRenderer } from "../Sale"
+import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
+import { SaleQueryRenderer } from "./Sale"
 
 jest.unmock("react-relay")
 

@@ -6,7 +6,7 @@ import { Box } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { ViewingRoomSubsectionsContainer } from "../ViewingRoomSubsections"
+import { ViewingRoomSubsectionsContainer } from "./ViewingRoomSubsections"
 
 jest.unmock("react-relay")
 

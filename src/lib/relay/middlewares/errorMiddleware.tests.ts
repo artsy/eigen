@@ -1,6 +1,6 @@
 import { MiddlewareNextFn, RelayNetworkLayerResponse } from "react-relay-network-modern/node8"
-import { errorMiddleware } from "../errorMiddleware"
-import { GraphQLRequest } from "../types"
+import { errorMiddleware } from "./errorMiddleware"
+import { GraphQLRequest } from "./types"
 
 describe(errorMiddleware, () => {
   const middleware = errorMiddleware()

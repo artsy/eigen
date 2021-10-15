@@ -2,8 +2,8 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Linking, Text } from "react-native"
 
-import { Markdown } from "../Markdown"
-import { LinkText } from "../Text/LinkText"
+import { Markdown } from "./Markdown"
+import { LinkText } from "./Text/LinkText"
 
 import { navigate } from "lib/navigation/navigate"
 import { defaultRules } from "lib/utils/renderMarkdown"

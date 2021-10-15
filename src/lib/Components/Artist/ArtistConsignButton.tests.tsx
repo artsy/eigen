@@ -10,7 +10,7 @@ import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { ArtistConsignButtonFragmentContainer, tests } from "../ArtistConsignButton"
+import { ArtistConsignButtonFragmentContainer, tests } from "./ArtistConsignButton"
 
 jest.unmock("react-relay")
 

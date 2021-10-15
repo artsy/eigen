@@ -6,7 +6,7 @@ import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { SavedAddressesContainer, SavedAddressesQueryRenderer, util } from "../SavedAddresses"
+import { SavedAddressesContainer, SavedAddressesQueryRenderer, util } from "./SavedAddresses"
 
 jest.unmock("react-relay")
 

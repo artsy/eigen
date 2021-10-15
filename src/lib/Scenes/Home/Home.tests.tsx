@@ -21,8 +21,8 @@ import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { GraphQLResponse } from "relay-runtime"
-import { FairsRailFragmentContainer } from "../Components/FairsRail"
-import { HomeQueryRenderer } from "../Home"
+import { FairsRailFragmentContainer } from "./Components/FairsRail"
+import { HomeQueryRenderer } from "./Home"
 
 jest.unmock("react-relay")
 const env = (defaultEnvironment as any) as ReturnType<typeof createMockEnvironment>

@@ -8,7 +8,7 @@ describe("useArtworkForm", () => {
 import { useFormikContext } from "formik"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { useEffect } from "react"
-import { useArtworkForm } from "../useArtworkForm"
+import { useArtworkForm } from "./useArtworkForm"
 
 jest.mock("formik")
 jest.mock("react")

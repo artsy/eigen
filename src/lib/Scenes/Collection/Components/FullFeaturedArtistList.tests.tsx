@@ -5,8 +5,8 @@ import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { Theme } from "palette"
 import React from "react"
 import { graphql } from "react-relay"
-import { FullFeaturedArtistListCollectionFixture } from "../__fixtures__/CollectionFixture"
-import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "../FullFeaturedArtistList"
+import { FullFeaturedArtistListCollectionFixture } from "./__fixtures__/CollectionFixture"
+import { CollectionFeaturedArtistsContainer as CollectionFeaturedArtists } from "./FullFeaturedArtistList"
 jest.unmock("react-relay")
 
 describe("FullFeaturedArtistList", () => {

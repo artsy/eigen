@@ -5,7 +5,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ShowArtworksEmptyStateFragmentContainer } from "../Components/ShowArtworksEmptyState"
+import { ShowArtworksEmptyStateFragmentContainer } from "./Components/ShowArtworksEmptyState"
 
 jest.unmock("react-relay")
 

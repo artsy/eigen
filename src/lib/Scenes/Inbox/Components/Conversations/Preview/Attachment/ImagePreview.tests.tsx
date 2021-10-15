@@ -2,7 +2,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 
-import { ImagePreview } from "../ImagePreview"
+import { ImagePreview } from "./ImagePreview"
 
 it("renders without throwing an error", () => {
   renderWithWrappers(<ImagePreview attachment={attachment as any} />)

@@ -1,7 +1,7 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { FlatList } from "react-native"
-import ParentAwareScrollView from "../ParentAwareScrollView"
+import ParentAwareScrollView from "./ParentAwareScrollView"
 
 const props = {
   aFunc: jest.fn(),

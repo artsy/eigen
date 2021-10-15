@@ -1,6 +1,6 @@
 import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import React from "react"
-import { MediumOptionsScreen } from "../MediumOptions"
+import { MediumOptionsScreen } from "./MediumOptions"
 import { sharedAggregateFilterValidation, ValidationParams } from "./AggregationOptionCommonValidation"
 import { getEssentialProps } from "./helper"
 

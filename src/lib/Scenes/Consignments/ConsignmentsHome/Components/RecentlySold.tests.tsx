@@ -8,7 +8,7 @@ import { extractText } from "lib/tests/extractText"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { RecentlySoldFragmentContainer } from "../RecentlySold"
+import { RecentlySoldFragmentContainer } from "./RecentlySold"
 
 jest.unmock("react-relay")
 

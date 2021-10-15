@@ -8,7 +8,7 @@ import { isPad } from "lib/utils/hardware"
 import React from "react"
 import { Keyboard } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
-import { Search2QueryRenderer } from "../Search2"
+import { Search2QueryRenderer } from "./Search2"
 
 const banksy: RecentSearch = {
   type: "AUTOSUGGEST_RESULT_TAPPED",
@@ -29,7 +29,7 @@ jest.mock("lib/utils/useSearchInsightsConfig", () => ({
   useSearchInsightsConfig: () => true,
 }))
 
-jest.mock("../../Search/AutosuggestResults.tsx", () => ({ AutosuggestResults: () => null }))
+jest.mock("./Search/AutosuggestResults.tsx", () => ({ AutosuggestResults: () => null }))
 
 describe("Search2 Screen", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>

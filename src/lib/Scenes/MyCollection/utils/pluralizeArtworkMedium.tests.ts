@@ -1,4 +1,4 @@
-import { pluralizeMedium } from "../pluralizeArtworkMedium"
+import { pluralizeMedium } from "./pluralizeArtworkMedium"
 
 describe("pluralizeArtworkMedium", () => {
   it("pluralize medium correctly", () => {

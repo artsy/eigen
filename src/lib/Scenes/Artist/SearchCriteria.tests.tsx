@@ -3,7 +3,7 @@ import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
-import { SearchCriteriaQueryRenderer } from "../SearchCriteria"
+import { SearchCriteriaQueryRenderer } from "./SearchCriteria"
 
 jest.unmock("react-relay")
 

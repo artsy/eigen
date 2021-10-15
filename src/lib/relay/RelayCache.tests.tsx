@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-community/async-storage"
-import { clear, clearAll, get, requestFingerprint, set } from "../RelayCache"
+import { clear, clearAll, get, requestFingerprint, set } from "./RelayCache"
 
 describe(requestFingerprint, () => {
   it("makes a fingerprint of a graphql request with a stable key ordering", () => {

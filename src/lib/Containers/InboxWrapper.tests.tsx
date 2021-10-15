@@ -1,9 +1,9 @@
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { InboxWrapper } from "../Inbox"
-import { InboxQueryRenderer } from "../Inbox/Inbox"
-import { InboxOldQueryRenderer } from "../Inbox/InboxOld"
+import { InboxWrapper } from "./Inbox"
+import { InboxQueryRenderer } from "./Inbox/Inbox"
+import { InboxOldQueryRenderer } from "./Inbox/InboxOld"
 
 jest.mock("lib/Containers/Inbox/Inbox", () => ({
   InboxQueryRenderer: () => "(The InboxQueryRenderer)",

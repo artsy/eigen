@@ -1,7 +1,7 @@
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { Platform } from "react-native"
 import { openPicker } from "react-native-image-crop-picker"
-import { requestPhotos } from "../requestPhotos"
+import { requestPhotos } from "./requestPhotos"
 
 jest.mock("react-native-image-crop-picker", () => ({
   openPicker: jest.fn(),

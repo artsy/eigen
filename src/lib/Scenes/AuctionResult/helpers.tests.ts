@@ -1,5 +1,5 @@
 import moment from "moment"
-import { auctionResultHasPrice, AuctionResultHelperData, auctionResultText } from "../helpers"
+import { auctionResultHasPrice, AuctionResultHelperData, auctionResultText } from "./helpers"
 
 describe("auction result helpers", () => {
   it("works for existing price", () => {

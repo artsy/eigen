@@ -5,7 +5,7 @@ import { Environment } from "relay-runtime"
 import { renderWithLayout } from "lib/tests/renderWithLayout"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 
-import { InboxOld as ActualInbox, InboxOldContainer as InboxContainer } from "../Inbox/InboxOld"
+import { InboxOld as ActualInbox, InboxOldContainer as InboxContainer } from "./Inbox/InboxOld"
 
 jest.mock("lib/Scenes/Inbox/Components/Conversations/Conversations", () => ({
   ConversationsContainer: () => "Conversations",

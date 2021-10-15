@@ -5,8 +5,8 @@ import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { emdash, nbsp } from "palette"
 import React from "react"
 import { Text as RNText } from "react-native"
-import { ReadMore } from "../ReadMore"
-import { LinkText } from "../Text/LinkText"
+import { ReadMore } from "./ReadMore"
+import { LinkText } from "./Text/LinkText"
 
 describe("ReadMore", () => {
   it("Doesn't show the 'Read more' link when the length of the text is < the number of characters allowed", () => {

@@ -8,7 +8,7 @@ import { Touchable } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { HomeHeroContainer } from "../HomeHero"
+import { HomeHeroContainer } from "./HomeHero"
 
 jest.unmock("react-relay")
 describe("HomeHero", () => {

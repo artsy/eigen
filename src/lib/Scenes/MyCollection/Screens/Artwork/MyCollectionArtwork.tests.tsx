@@ -5,20 +5,20 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { MyCollectionArtworkInsightsFragmentContainer } from "../Components/ArtworkInsights/MyCollectionArtworkInsights"
-import { MyCollectionArtworkHeaderRefetchContainer } from "../Components/MyCollectionArtworkHeader"
-import { MyCollectionArtworkMetaFragmentContainer } from "../Components/MyCollectionArtworkMeta"
-import { tests } from "../MyCollectionArtwork"
+import { MyCollectionArtworkInsightsFragmentContainer } from "./Components/ArtworkInsights/MyCollectionArtworkInsights"
+import { MyCollectionArtworkHeaderRefetchContainer } from "./Components/MyCollectionArtworkHeader"
+import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
+import { tests } from "./MyCollectionArtwork"
 
-jest.mock("../Components/MyCollectionArtworkHeader", () => ({
+jest.mock("./Components/MyCollectionArtworkHeader", () => ({
   MyCollectionArtworkHeaderRefetchContainer: () => null,
 }))
 
-jest.mock("../Components/MyCollectionArtworkMeta", () => ({
+jest.mock("./Components/MyCollectionArtworkMeta", () => ({
   MyCollectionArtworkMetaFragmentContainer: () => null,
 }))
 
-jest.mock("../Components/ArtworkInsights/MyCollectionArtworkInsights", () => ({
+jest.mock("./Components/ArtworkInsights/MyCollectionArtworkInsights", () => ({
   MyCollectionArtworkInsightsFragmentContainer: () => null,
 }))
 

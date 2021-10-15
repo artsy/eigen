@@ -9,7 +9,7 @@ import { navigate } from "lib/navigation/navigate"
 import { AuctionResultsRailTestsQuery } from "__generated__/AuctionResultsRailTestsQuery.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { AuctionResultsRailFragmentContainer } from "../AuctionResultsRail"
+import { AuctionResultsRailFragmentContainer } from "./AuctionResultsRail"
 
 jest.unmock("react-relay")
 

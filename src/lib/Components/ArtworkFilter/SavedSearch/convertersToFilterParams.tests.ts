@@ -1,4 +1,4 @@
-import { Aggregation, Aggregations, FilterParamName } from "../../ArtworkFilterHelpers"
+import { Aggregation, Aggregations, FilterParamName } from "./ArtworkFilterHelpers"
 import {
   AggregationByFilterParamName,
   convertAggregationValueNamesToFilterParam,
@@ -9,8 +9,8 @@ import {
   convertSavedSearchCriteriaToFilterParams,
   convertSizeToFilterParams,
   convertWaysToBuyToFilterParams,
-} from "../convertersToFilterParams"
-import { SearchCriteriaAttributes } from "../types"
+} from "./convertersToFilterParams"
+import { SearchCriteriaAttributes } from "./types"
 
 describe("convertPriceToFilterParam", () => {
   it("returns `$100–200` price range", () => {

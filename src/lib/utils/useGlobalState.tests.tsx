@@ -3,7 +3,7 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Text } from "react-native"
-import { useGlobalState } from "../useGlobalState"
+import { useGlobalState } from "./useGlobalState"
 
 describe(useGlobalState, () => {
   let [n, setN] = [null, null] as any

@@ -4,7 +4,7 @@ import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { ArtistListItem } from "lib/Components/ArtistListItem"
 import { Text, Theme } from "palette"
 import React from "react"
-import { AboutArtist } from "../AboutArtist"
+import { AboutArtist } from "./AboutArtist"
 
 describe("AboutArtist", () => {
   it("renders about artist correctly for one artist", () => {

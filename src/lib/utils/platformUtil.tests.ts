@@ -16,7 +16,7 @@ beforeEach(() => {
 })
 
 import { Platform } from "react-native"
-import { osMajorVersion } from "../platformUtil"
+import { osMajorVersion } from "./platformUtil"
 
 describe(osMajorVersion, () => {
   it("returns the correct version when version is a string", () => {

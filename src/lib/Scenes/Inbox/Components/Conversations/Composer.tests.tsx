@@ -10,10 +10,10 @@ import { TouchableWithoutFeedback } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ComposerFragmentContainer } from "../Composer"
-import { CTAPopUp } from "../CTAPopUp"
-import { OpenInquiryModalButton } from "../OpenInquiryModalButton"
-import { ReviewOfferButton } from "../ReviewOfferButton"
+import { ComposerFragmentContainer } from "./Composer"
+import { CTAPopUp } from "./CTAPopUp"
+import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
+import { ReviewOfferButton } from "./ReviewOfferButton"
 
 jest.unmock("react-tracking")
 jest.unmock("react-relay")

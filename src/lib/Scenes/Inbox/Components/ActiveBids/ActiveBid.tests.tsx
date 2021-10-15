@@ -1,7 +1,7 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 
-import ActiveBid from "../ActiveBid"
+import ActiveBid from "./ActiveBid"
 
 import { extractText } from "lib/tests/extractText"
 

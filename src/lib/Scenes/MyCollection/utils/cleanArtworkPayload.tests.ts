@@ -1,5 +1,5 @@
-import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
-import { cleanArtworkPayload, explicitlyClearedFields } from "../cleanArtworkPayload"
+import { ArtworkFormValues } from "../State/MyCollectionArtworkModel"
+import { cleanArtworkPayload, explicitlyClearedFields } from "./cleanArtworkPayload"
 
 describe("cleanArtworkPayload", () => {
   describe("with a payload including a key with a null value", () => {

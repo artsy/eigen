@@ -3,7 +3,7 @@ import moment from "moment"
 import React from "react"
 import "react-native"
 
-import ConversationSnippet from "../ConversationSnippet"
+import ConversationSnippet from "./ConversationSnippet"
 
 it("renders with an artwork without throwing an error", () => {
   renderWithWrappers(<ConversationSnippet conversation={artworkConversation as any} onSelected={undefined} />)

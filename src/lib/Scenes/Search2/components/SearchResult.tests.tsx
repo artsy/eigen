@@ -4,14 +4,14 @@ import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import * as useSearchInsightsConfig from "lib/utils/useSearchInsightsConfig"
 import { Touchable } from "palette"
 import React from "react"
-import { SearchHighlight } from "../SearchHighlight"
-import { SearchResult } from "../SearchResult"
-import { SearchResultImage } from "../SearchResultImage"
+import { SearchHighlight } from "./SearchHighlight"
+import { SearchResult } from "./SearchResult"
+import { SearchResultImage } from "./SearchResultImage"
 
 jest.mock("lib/utils/useSearchInsightsConfig", () => ({
   searchInsights: jest.fn(),
 }))
-jest.mock("../SearchHighlight.tsx", () => ({ SearchHighlight: () => null }))
+jest.mock("./SearchHighlight.tsx", () => ({ SearchHighlight: () => null }))
 
 const initialResult = {
   href: "/test-href",

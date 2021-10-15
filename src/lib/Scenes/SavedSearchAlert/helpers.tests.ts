@@ -1,5 +1,5 @@
 import { Aggregations, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { extractPillFromAggregation, extractPills, extractSizeLabel, getNamePlaceholder } from "../helpers"
+import { extractPillFromAggregation, extractPills, extractSizeLabel, getNamePlaceholder } from "./helpers"
 
 describe("extractPillFromAggregation", () => {
   it("returns pills", () => {

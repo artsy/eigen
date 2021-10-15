@@ -1,4 +1,4 @@
-import { formatPhoneNumber } from "../formatPhoneNumber"
+import { formatPhoneNumber } from "./formatPhoneNumber"
 
 describe(formatPhoneNumber, () => {
   it("leaves the current value alone if the user is deleting characters", () => {

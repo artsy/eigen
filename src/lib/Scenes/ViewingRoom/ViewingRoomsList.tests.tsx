@@ -2,8 +2,8 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { RelayEnvironmentProvider } from "relay-hooks"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ViewingRoomsListItem } from "../Components/ViewingRoomsListItem"
-import { ViewingRoomsListQueryRenderer } from "../ViewingRoomsList"
+import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
+import { ViewingRoomsListQueryRenderer } from "./ViewingRoomsList"
 
 jest.unmock("react-relay")
 

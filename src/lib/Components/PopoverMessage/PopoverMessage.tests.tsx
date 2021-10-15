@@ -4,8 +4,8 @@ import { Touchable } from "palette"
 import React from "react"
 import { Text } from "react-native"
 import { act } from "react-test-renderer"
-import { AnimatedFlex, PopoverMessage, PopoverMessageItem } from "../PopoverMessage"
-import { usePopoverMessage } from "../popoverMessageHooks"
+import { AnimatedFlex, PopoverMessage, PopoverMessageItem } from "./PopoverMessage"
+import { usePopoverMessage } from "./popoverMessageHooks"
 
 const TestRenderer: React.FC<{ options: PopoverMessageItem }> = (props) => {
   const popoverMessage = usePopoverMessage()

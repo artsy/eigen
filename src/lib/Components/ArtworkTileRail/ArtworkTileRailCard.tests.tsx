@@ -3,7 +3,7 @@ import { mount } from "enzyme"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
-import { ArtworkTileRailCard, ArtworkTileRailCardProps } from "../ArtworkTileRailCard"
+import { ArtworkTileRailCard, ArtworkTileRailCardProps } from "./ArtworkTileRailCard"
 
 describe("ArtworkTileRailCard", () => {
   const defaultProps: ArtworkTileRailCardProps = {

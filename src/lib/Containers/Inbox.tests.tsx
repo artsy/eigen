@@ -1,5 +1,5 @@
 import { InboxTestsQuery } from "__generated__/InboxTestsQuery.graphql"
-import { press } from "lib/Scenes/Artwork/Components/CommercialButtons/__tests__/helpers"
+import { press } from "lib/Scenes/Artwork/Components/CommercialButtons/helpers"
 import { ConversationsContainer } from "lib/Scenes/Inbox/Components/Conversations/Conversations"
 import { MyBidsContainer } from "lib/Scenes/MyBids/MyBids"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -10,7 +10,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { OperationDescriptor } from "relay-runtime"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
-import { InboxContainer } from "../Inbox/Inbox"
+import { InboxContainer } from "./Inbox/Inbox"
 
 jest.unmock("react-relay")
 jest.unmock("react-native-scrollable-tab-view")

@@ -1,4 +1,4 @@
-import { limitWithCount } from "../limitWithCount"
+import { limitWithCount } from "./limitWithCount"
 
 describe("limitWithCount", () => {
   it("returns empty array if no array of strings is given", () => {

@@ -3,7 +3,7 @@ import moment from "moment"
 import React from "react"
 import "react-native"
 
-import Message from "../Message"
+import Message from "./Message"
 
 it("renders without throwing an error", () => {
   // tslint:disable-next-line:max-line-length

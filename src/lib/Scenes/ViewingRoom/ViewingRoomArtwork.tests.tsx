@@ -4,7 +4,7 @@ import { Button } from "palette"
 import React from "react"
 import { RelayEnvironmentProvider } from "relay-hooks"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ViewingRoomArtworkQueryRenderer } from "../ViewingRoomArtwork"
+import { ViewingRoomArtworkQueryRenderer } from "./ViewingRoomArtwork"
 
 jest.unmock("react-relay")
 

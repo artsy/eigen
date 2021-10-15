@@ -1,7 +1,7 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import LoadingModal from "../LoadingModal"
+import LoadingModal from "./LoadingModal"
 
 describe("LoadingModal", () => {
   it("renders without throwing when invisible", () => {

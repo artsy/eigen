@@ -1,4 +1,4 @@
-jest.mock("../../../../../utils/googleMaps", () => ({ getLocationPredictions: jest.fn() }))
+jest.mock("./../../utils/googleMaps", () => ({ getLocationPredictions: jest.fn() }))
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -6,7 +6,7 @@ import { getLocationPredictions, SimpleLocation } from "lib/utils/googleMaps"
 import { Input, Touchable } from "palette"
 import React from "react"
 import { ReactTestRenderer } from "react-test-renderer"
-import { LocationAutocomplete, LocationPredictions } from "../LocationAutocomplete"
+import { LocationAutocomplete, LocationPredictions } from "./LocationAutocomplete"
 import { press, typeInInput } from "./helpers"
 
 const mockOnChange = jest.fn()

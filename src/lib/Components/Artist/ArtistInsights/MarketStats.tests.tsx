@@ -8,7 +8,7 @@ import React from "react"
 import { ReactTestInstance } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-import { MarketStatsFragmentContainer, MarketStatsQueryRenderer } from "../MarketStats"
+import { MarketStatsFragmentContainer, MarketStatsQueryRenderer } from "./MarketStats"
 
 jest.unmock("react-relay")
 

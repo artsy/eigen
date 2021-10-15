@@ -7,9 +7,9 @@ import { renderWithLayout } from "lib/tests/renderWithLayout"
 
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
-import { SalesFragmentContainer } from "../index"
+import { SalesFragmentContainer } from "./index"
 
-jest.mock("../Components/LotsByFollowedArtists", () => "")
+jest.mock("./Components/LotsByFollowedArtists", () => "")
 
 it("renders the ZeroState when there are no sales", () => {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

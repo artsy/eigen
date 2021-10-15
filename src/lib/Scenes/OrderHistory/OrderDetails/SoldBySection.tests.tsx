@@ -5,7 +5,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { SoldBySectionFragmentContainer } from "../Components/SoldBySection"
+import { SoldBySectionFragmentContainer } from "./Components/SoldBySection"
 
 jest.unmock("react-relay")
 

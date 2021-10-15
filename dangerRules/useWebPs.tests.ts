@@ -1,5 +1,5 @@
 import * as danger from "danger"
-import { useWebPs } from "../../dangerfile"
+import { useWebPs } from "./dangerfile"
 const dm = danger as any
 
 describe("validatePRChangelog", () => {

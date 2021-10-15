@@ -1,7 +1,7 @@
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { Field } from "../Field"
+import { Field } from "./Field"
 
 describe("Field", () => {
   it("returns null when value isnt defined", () => {

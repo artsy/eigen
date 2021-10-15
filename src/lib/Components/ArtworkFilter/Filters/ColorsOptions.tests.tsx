@@ -3,8 +3,8 @@ import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
-import { ColorsOptionsScreen } from "../ColorsOptions"
-import { ColorsSwatch } from "../ColorsSwatch"
+import { ColorsOptionsScreen } from "./ColorsOptions"
+import { ColorsSwatch } from "./ColorsSwatch"
 import { getEssentialProps } from "./helper"
 
 describe("Colors options screen", () => {

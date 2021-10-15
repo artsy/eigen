@@ -1,4 +1,4 @@
-import { MyAccountEditNameQueryRenderer } from "../MyAccountEditName"
+import { MyAccountEditNameQueryRenderer } from "./MyAccountEditName"
 
 describe(MyAccountEditNameQueryRenderer, () => {
   it.todo("No tests yet")

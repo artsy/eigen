@@ -7,7 +7,7 @@ import { Alert } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { InquiryMakeOfferButtonFragmentContainer } from "../InquiryMakeOfferButton"
+import { InquiryMakeOfferButtonFragmentContainer } from "./InquiryMakeOfferButton"
 
 jest.unmock("react-relay")
 

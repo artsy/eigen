@@ -6,7 +6,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { CONTAINER_HEIGHT, SaleArtworkTileRailCardContainer } from ".."
-import OpaqueImageView from "../../OpaqueImageView/OpaqueImageView"
+import OpaqueImageView from "./OpaqueImageView/OpaqueImageView"
 
 jest.unmock("react-relay")
 

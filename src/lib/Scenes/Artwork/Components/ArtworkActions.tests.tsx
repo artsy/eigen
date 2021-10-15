@@ -9,7 +9,7 @@ import { BellIcon, Sans, Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql } from "react-relay"
-import { ArtworkActions, ArtworkActionsFragmentContainer, shareContent } from "../ArtworkActions"
+import { ArtworkActions, ArtworkActionsFragmentContainer, shareContent } from "./ArtworkActions"
 
 jest.unmock("react-relay")
 

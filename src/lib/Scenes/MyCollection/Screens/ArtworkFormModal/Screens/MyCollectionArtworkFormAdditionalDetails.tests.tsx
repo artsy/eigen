@@ -3,7 +3,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
 import { ReactElement } from "simple-markdown"
-import { MyCollectionAdditionalDetailsForm } from "../MyCollectionArtworkFormAdditionalDetails"
+import { MyCollectionAdditionalDetailsForm } from "./MyCollectionArtworkFormAdditionalDetails"
 
 jest.mock("formik")
 

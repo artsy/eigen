@@ -9,7 +9,7 @@ import { Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, RelayProp } from "react-relay"
-import { FollowArtistButton, FollowArtistButtonFragmentContainer } from "../FollowArtistButton"
+import { FollowArtistButton, FollowArtistButtonFragmentContainer } from "./FollowArtistButton"
 
 jest.unmock("react-relay")
 

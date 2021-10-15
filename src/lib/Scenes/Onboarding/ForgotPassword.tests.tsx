@@ -1,8 +1,8 @@
 import { Input } from "palette"
 import React from "react"
 import { act } from "react-test-renderer"
-import { renderWithWrappers } from "../../../tests/renderWithWrappers"
-import { ForgotPasswordForm } from "../ForgotPassword"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { ForgotPasswordForm } from "./ForgotPassword"
 
 const navigateMock = jest.fn()
 

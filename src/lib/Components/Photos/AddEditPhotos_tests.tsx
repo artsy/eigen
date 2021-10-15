@@ -2,7 +2,7 @@ import { Photo } from "lib/Scenes/Consignments"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Image } from "react-native"
-import { AddEditPhotos } from "../AddEditPhotos"
+import { AddEditPhotos } from "./AddEditPhotos"
 
 jest.mock("lib/utils/requestPhotos", () => ({
   showPhotoActionSheet: jest.fn(),

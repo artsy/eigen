@@ -10,7 +10,7 @@ import React from "react"
 import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { act } from "react-test-renderer"
-import { __webViewTestUtils__, ArtsyReactWebViewPage, useWebViewCookies } from "../ArtsyReactWebView"
+import { __webViewTestUtils__, ArtsyReactWebViewPage, useWebViewCookies } from "./ArtsyReactWebView"
 
 jest.mock("react-native-device-info", () => ({
   getBuildNumber: () => "build-number",

@@ -3,9 +3,9 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Platform } from "react-native"
-import { MyProfileSettings } from "../MyProfileSettings"
+import { MyProfileSettings } from "./MyProfileSettings"
 
-jest.mock("../LoggedInUserInfo")
+jest.mock("./LoggedInUserInfo")
 jest.unmock("react-relay")
 
 describe(MyProfileSettings, () => {

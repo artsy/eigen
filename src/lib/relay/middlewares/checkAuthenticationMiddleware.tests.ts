@@ -1,8 +1,8 @@
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { last } from "lodash"
 import { GraphQLResponseErrors, MiddlewareNextFn, RelayNetworkLayerResponse } from "react-relay-network-modern/node8"
-import { checkAuthenticationMiddleware } from "../checkAuthenticationMiddleware"
-import { GraphQLRequest } from "../types"
+import { checkAuthenticationMiddleware } from "./checkAuthenticationMiddleware"
+import { GraphQLRequest } from "./types"
 
 describe(checkAuthenticationMiddleware, () => {
   const middleware = checkAuthenticationMiddleware()

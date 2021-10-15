@@ -8,9 +8,9 @@ import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { __globalStoreTestUtils__ } from "../../../../store/GlobalStore"
-import { flushPromiseQueue } from "../../../../tests/flushPromiseQueue"
-import { OnboardingPersonalizationList } from "../OnboardingPersonalization"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { OnboardingPersonalizationList } from "./OnboardingPersonalization"
 
 jest.unmock("react-relay")
 

@@ -10,7 +10,7 @@ import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { ConversationDetailsFragmentContainer } from "../ConversationDetails"
+import { ConversationDetailsFragmentContainer } from "./ConversationDetails"
 
 jest.unmock("react-relay")
 

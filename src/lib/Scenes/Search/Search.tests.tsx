@@ -4,12 +4,12 @@ import { isPad } from "lib/utils/hardware"
 import React from "react"
 import { TextInput } from "react-native"
 import { act } from "react-test-renderer"
-import { CatchErrors } from "../../../utils/CatchErrors"
-import { AutosuggestResults } from "../AutosuggestResults"
-import { CityGuideCTA } from "../CityGuideCTA"
-import { RecentSearches } from "../RecentSearches"
-import { Search } from "../Search"
-import { RecentSearch } from "../SearchModel"
+import { CatchErrors } from "lib/utils/CatchErrors"
+import { AutosuggestResults } from "./AutosuggestResults"
+import { CityGuideCTA } from "./CityGuideCTA"
+import { RecentSearches } from "./RecentSearches"
+import { Search } from "./Search"
+import { RecentSearch } from "./SearchModel"
 
 const banksy: RecentSearch = {
   type: "AUTOSUGGEST_RESULT_TAPPED",
@@ -27,8 +27,8 @@ jest.mock("lib/utils/hardware", () => ({
 }))
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 
-jest.mock("../AutosuggestResults", () => ({ AutosuggestResults: () => null }))
-jest.mock("../RecentSearches", () => ({
+jest.mock("./AutosuggestResults", () => ({ AutosuggestResults: () => null }))
+jest.mock("./RecentSearches", () => ({
   RecentSearches: () => null,
   ProvideRecentSearches: ({ children }: any) => children,
   RecentSearchContext: {

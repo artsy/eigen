@@ -3,7 +3,7 @@ import "react-native"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 
-import { ArtistShowFragmentContainer } from "../ArtistShow"
+import { ArtistShowFragmentContainer } from "./ArtistShow"
 
 const showProps = {
   href: "artsy.net/show",

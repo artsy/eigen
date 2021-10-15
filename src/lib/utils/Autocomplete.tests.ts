@@ -1,4 +1,4 @@
-import { Autocomplete, AutocompleteEntry } from "../Autocomplete"
+import { Autocomplete, AutocompleteEntry } from "./Autocomplete"
 
 const artists: Array<AutocompleteEntry<string>> = [
   {

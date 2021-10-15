@@ -7,7 +7,7 @@ import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { SavedAddressesFormContainer, SavedAddressesFormQueryRenderer } from "../SavedAddressesForm"
+import { SavedAddressesFormContainer, SavedAddressesFormQueryRenderer } from "./SavedAddressesForm"
 
 jest.unmock("react-relay")
 

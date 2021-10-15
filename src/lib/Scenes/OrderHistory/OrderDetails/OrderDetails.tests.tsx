@@ -7,19 +7,19 @@ import { SectionList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ArtworkInfoSectionFragmentContainer } from "../Components/ArtworkInfoSection"
+import { ArtworkInfoSectionFragmentContainer } from "./Components/ArtworkInfoSection"
 import {
   OrderDetailsContainer,
   OrderDetailsPlaceholder,
   OrderDetailsQueryRender,
   SectionListItem,
-} from "../Components/OrderDetails"
-import { OrderDetailsHeaderFragmentContainer } from "../Components/OrderDetailsHeader"
-import { CreditCardSummaryItemFragmentContainer } from "../Components/OrderDetailsPayment"
-import { ShipsToSectionFragmentContainer } from "../Components/ShipsToSection"
-import { SoldBySectionFragmentContainer } from "../Components/SoldBySection"
-import { SummarySectionFragmentContainer } from "../Components/SummarySection"
-import { TrackOrderSectionFragmentContainer } from "../Components/TrackOrderSection"
+} from "./Components/OrderDetails"
+import { OrderDetailsHeaderFragmentContainer } from "./Components/OrderDetailsHeader"
+import { CreditCardSummaryItemFragmentContainer } from "./Components/OrderDetailsPayment"
+import { ShipsToSectionFragmentContainer } from "./Components/ShipsToSection"
+import { SoldBySectionFragmentContainer } from "./Components/SoldBySection"
+import { SummarySectionFragmentContainer } from "./Components/SummarySection"
+import { TrackOrderSectionFragmentContainer } from "./Components/TrackOrderSection"
 
 jest.unmock("react-relay")
 

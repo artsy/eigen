@@ -6,8 +6,8 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import useInterval from "react-use/lib/useInterval"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { BottomTabs } from "../BottomTabs"
-import { BottomTabsButton } from "../BottomTabsButton"
+import { BottomTabs } from "./BottomTabs"
+import { BottomTabsButton } from "./BottomTabsButton"
 
 jest.mock("react-use/lib/useInterval")
 jest.unmock("react-relay")

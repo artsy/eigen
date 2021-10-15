@@ -4,7 +4,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { InfoCircleIcon, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
-import { InfoButton } from "../InfoButton"
+import { InfoButton } from "./InfoButton"
 
 describe("InfoButton", () => {
   it("renders a button", () => {

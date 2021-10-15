@@ -9,7 +9,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { PartnerOverviewFragmentContainer as PartnerOverview } from "../PartnerOverview"
+import { PartnerOverviewFragmentContainer as PartnerOverview } from "./PartnerOverview"
 
 jest.unmock("react-relay")
 

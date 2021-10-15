@@ -2,10 +2,10 @@ import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Platform } from "react-native"
-import { MyCollectionAndSavedWorksQueryRenderer } from "../MyCollectionAndSavedWorks"
-import { MyProfile, MyProfileQueryRenderer, OldMyProfileQueryRenderer } from "../MyProfile"
+import { MyCollectionAndSavedWorksQueryRenderer } from "./MyCollectionAndSavedWorks"
+import { MyProfile, MyProfileQueryRenderer, OldMyProfileQueryRenderer } from "./MyProfile"
 
-jest.mock("../LoggedInUserInfo")
+jest.mock("./LoggedInUserInfo")
 jest.unmock("react-relay")
 
 describe(MyProfile, () => {

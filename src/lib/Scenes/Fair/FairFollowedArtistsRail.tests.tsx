@@ -7,7 +7,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { FairFollowedArtistsRailFragmentContainer } from "../Components/FairFollowedArtistsRail"
+import { FairFollowedArtistsRailFragmentContainer } from "./Components/FairFollowedArtistsRail"
 
 jest.unmock("react-relay")
 

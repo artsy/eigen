@@ -9,7 +9,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button, Spinner } from "palette"
 import React from "react"
 import { Linking } from "react-native"
-import { VanityURLPossibleRedirect } from "../VanityURLPossibleRedirect"
+import { VanityURLPossibleRedirect } from "./VanityURLPossibleRedirect"
 
 beforeEach(() => {
   __globalStoreTestUtils__?.setProductionMode()

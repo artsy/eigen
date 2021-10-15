@@ -3,7 +3,7 @@ import "react-native"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 
-import Metadata from "../Metadata"
+import Metadata from "./Metadata"
 
 it("renders properly", () => {
   const show = {

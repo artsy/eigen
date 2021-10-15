@@ -7,9 +7,9 @@ import { MyCollectionQueryRenderer } from "lib/Scenes/MyCollection/MyCollection"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { MyCollectionAndSavedWorks, MyProfileHeader } from "../MyCollectionAndSavedWorks"
+import { MyCollectionAndSavedWorks, MyProfileHeader } from "./MyCollectionAndSavedWorks"
 
-jest.mock("../LoggedInUserInfo")
+jest.mock("./LoggedInUserInfo")
 jest.unmock("react-relay")
 
 describe("MyCollectionAndSavedWorks", () => {

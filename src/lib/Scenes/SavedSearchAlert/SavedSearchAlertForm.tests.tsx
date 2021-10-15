@@ -11,7 +11,7 @@ import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { bullet } from "palette"
 import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
-import { SavedSearchAlertForm, SavedSearchAlertFormProps, tracks } from "../SavedSearchAlertForm"
+import { SavedSearchAlertForm, SavedSearchAlertFormProps, tracks } from "./SavedSearchAlertForm"
 
 describe("Saved search alert form", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>

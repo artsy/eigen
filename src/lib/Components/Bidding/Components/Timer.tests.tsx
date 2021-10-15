@@ -7,7 +7,7 @@ import React from "react"
 import "react-native"
 
 import { mockTimezone } from "lib/tests/mockTimezone"
-import { Timer } from "../Timer"
+import { Timer } from "./Timer"
 
 const SECONDS = 1000
 const MINUTES = 60 * SECONDS

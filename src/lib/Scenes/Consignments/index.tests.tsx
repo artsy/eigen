@@ -4,7 +4,7 @@ import "react-native"
 
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
 
-import { Consignments } from "../"
+import { Consignments } from "./"
 
 jest.unmock("react-relay")
 

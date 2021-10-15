@@ -3,9 +3,9 @@ import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ArtistList } from "../Components/ArtistList"
-import { RecentlySold } from "../Components/RecentlySold"
-import { ConsignmentsHomeQueryRenderer } from "../ConsignmentsHome"
+import { ArtistList } from "./Components/ArtistList"
+import { RecentlySold } from "./Components/RecentlySold"
+import { ConsignmentsHomeQueryRenderer } from "./ConsignmentsHome"
 
 jest.unmock("react-relay")
 

@@ -7,7 +7,7 @@ jest.mock("@react-native-community/cameraroll", () => jest.fn())
 
 jest.unmock("react-tracking")
 
-import { Overview } from "../Overview"
+import { Overview } from "./Overview"
 
 const nav = {} as any
 

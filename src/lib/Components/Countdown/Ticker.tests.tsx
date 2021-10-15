@@ -4,7 +4,7 @@ import moment from "moment"
 import { Theme } from "palette"
 import React from "react"
 import { Text } from "react-native"
-import { LabeledTicker, SimpleTicker } from "../Ticker"
+import { LabeledTicker, SimpleTicker } from "./Ticker"
 
 Date.now = () => 1525983752000 // Thursday, May 10, 2018 8:22:32.000 PM UTC in milliseconds
 const duration = moment.duration(1000)

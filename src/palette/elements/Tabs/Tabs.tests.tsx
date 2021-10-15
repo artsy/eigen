@@ -5,8 +5,8 @@ import { LayoutRectangle } from "react-native"
 import { TouchableOpacity } from "react-native"
 import { Pressable } from "react-native"
 import { act } from "react-test-renderer"
-import { StepTabs, Tab } from "../index"
-import { ActiveTabBorder, TabBarContainer } from "../TabBarContainer"
+import { StepTabs, Tab } from "./index"
+import { ActiveTabBorder, TabBarContainer } from "./TabBarContainer"
 
 const tabLayouts: LayoutRectangle[] = [
   {

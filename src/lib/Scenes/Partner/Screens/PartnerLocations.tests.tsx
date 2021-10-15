@@ -2,8 +2,8 @@ import { PartnerLocations_partner } from "__generated__/PartnerLocations_partner
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { graphql, RelayPaginationProp } from "react-relay"
-import { PartnerLocationsFixture } from "../__fixtures__/PartnerLocations-fixture"
-import { PartnerLocationsContainer as PartnerLocations } from "../PartnerLocations"
+import { PartnerLocationsFixture } from "./__fixtures__/PartnerLocations-fixture"
+import { PartnerLocationsContainer as PartnerLocations } from "./PartnerLocations"
 
 jest.unmock("react-relay")
 

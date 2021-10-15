@@ -4,7 +4,7 @@ import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { Theme } from "palette"
 import React from "react"
 import { graphql } from "react-relay"
-import { PartnerLocationSectionContainer as PartnerLocationSection } from "../PartnerLocationSection"
+import { PartnerLocationSectionContainer as PartnerLocationSection } from "./PartnerLocationSection"
 
 jest.unmock("react-relay")
 

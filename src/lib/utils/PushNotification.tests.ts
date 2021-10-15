@@ -6,7 +6,7 @@ import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
 import { Platform } from "react-native"
 import PushNotification from "react-native-push-notification"
-import * as Push from "../PushNotification"
+import * as Push from "./PushNotification"
 
 Object.defineProperty(Platform, "OS", { get: jest.fn(() => "android") }) // We only use this for android only for now
 const mockFetch = jest.fn()

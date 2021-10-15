@@ -2,7 +2,7 @@ import { dismissModal } from "lib/navigation/navigate"
 import { getTextTree } from "lib/utils/getTestWrapper"
 import React from "react"
 import "react-native"
-import Confirmation, { SubmissionTypes } from "../Confirmation"
+import Confirmation, { SubmissionTypes } from "./Confirmation"
 
 jest.mock("@react-native-community/cameraroll", () => jest.fn())
 

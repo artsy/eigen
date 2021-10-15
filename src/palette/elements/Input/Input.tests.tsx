@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import React from "react"
-import { renderWithWrappers, renderWithWrappersTL } from "../../../../lib/tests/renderWithWrappers"
-import { Input } from "../Input"
+import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { Input } from "./Input"
 
 describe("Input", () => {
   const testID = "input"

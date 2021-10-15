@@ -14,7 +14,7 @@ beforeEach(() => {
 })
 
 import { Dimensions, Platform } from "react-native"
-import { isPad, truncatedTextLimit } from "../hardware"
+import { isPad, truncatedTextLimit } from "./hardware"
 
 describe(isPad, () => {
   it("returns true if device is an iPad", () => {

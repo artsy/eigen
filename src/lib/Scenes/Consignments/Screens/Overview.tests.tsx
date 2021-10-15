@@ -3,13 +3,13 @@ import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import React from "react"
 import "react-native"
 
-import Artist from "../ConsignmentsArtist"
-import Edition from "../Edition"
-import Location from "../Location"
-import Metadata from "../Metadata"
-import { Overview } from "../Overview"
+import Artist from "./ConsignmentsArtist"
+import Edition from "./Edition"
+import Location from "./Location"
+import Metadata from "./Metadata"
+import { Overview } from "./Overview"
 
-import Provenance from "../Provenance"
+import Provenance from "./Provenance"
 
 jest.mock("lib/utils/requestPhotos", () => ({
   showPhotoActionSheet: jest.fn(() => Promise.resolve({ photos: [] })),

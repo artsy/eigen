@@ -1,6 +1,6 @@
 import { CityFixture } from "lib/__fixtures__/CityFixture"
 import { uniq } from "lodash"
-import { bucketCityResults } from "../bucketCityResults"
+import { bucketCityResults } from "./bucketCityResults"
 
 // The stubbed data needs re-creating
 //

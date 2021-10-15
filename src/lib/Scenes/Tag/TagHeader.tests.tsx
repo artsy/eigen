@@ -1,7 +1,7 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 
-import Header from "../TagHeader"
+import Header from "./TagHeader"
 
 it("renders without throwing a error", () => {
   const tag = {

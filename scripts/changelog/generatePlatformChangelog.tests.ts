@@ -1,6 +1,6 @@
 import { getCombinedChangeLog, getPlaformSpecificChangeLog, isMergedAfter } from "./generatePlatformChangelog"
 
-jest.mock("../../app.json", () => ({ version: "6.9.4" }))
+jest.mock("./app.json", () => ({ version: "6.9.4" }))
 
 beforeEach(() => {
   jest

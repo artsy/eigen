@@ -8,7 +8,7 @@ import React from "react"
 import { Animated } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { SaleHeaderContainer } from "../Components/SaleHeader"
+import { SaleHeaderContainer } from "./Components/SaleHeader"
 
 jest.unmock("react-relay")
 

@@ -1,6 +1,6 @@
 import { echoLaunchJson } from "lib/utils/jsonFiles"
-import { __globalStoreTestUtils__, GlobalStore } from "../../GlobalStore"
-import { DevToggleDescriptor, FeatureDescriptor, features } from "../features"
+import { __globalStoreTestUtils__, GlobalStore } from "./GlobalStore"
+import { DevToggleDescriptor, FeatureDescriptor, features } from "./features"
 
 import * as loads from "lib/utils/jsonFiles"
 const echoLaunchJsonSpy = jest.spyOn(loads, "echoLaunchJson")

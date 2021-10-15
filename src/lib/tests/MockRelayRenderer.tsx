@@ -9,8 +9,8 @@ import {
   RecordSource,
   Store,
 } from "relay-runtime"
-import { ContextConsumer, ContextProvider } from "../utils/Context"
-import renderWithLoadProgress from "../utils/renderWithLoadProgress"
+import { ContextConsumer, ContextProvider } from "./utils/Context"
+import renderWithLoadProgress from "./utils/renderWithLoadProgress"
 import { createMockNetworkLayer, createMockNetworkLayer2 } from "./createMockNetworkLayer"
 
 // TODO: Copied from https://github.com/artsy/reaction/blob/master/src/DevTools/createMockNetworkLayer/index.ts
@@ -174,7 +174,7 @@ export class MockRelayRenderer<T extends OperationType> extends React.Component<
     // TODO: When extracting these test utils to their own package, this check
     //       should probably become a custom TSLint rule, as there’s no good way
     //       to test this in a generic way, plus with the rule we get fixes.
-    if (__TEST__ && QueryRenderer === require("../../../__mocks__/react-relay").QueryRenderer) {
+    if (__TEST__ && QueryRenderer === require("./__mocks__/react-relay").QueryRenderer) {
       throw new Error(
         "The `react-relay` module has been mocked, be sure to unmock it with: " + '`jest.unmock("react-relay")`'
       )

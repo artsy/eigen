@@ -7,9 +7,9 @@ import React, { ElementType } from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ConversationCTA, ConversationCTAFragmentContainer } from "../ConversationCTA"
-import { OpenInquiryModalButton } from "../OpenInquiryModalButton"
-import { ReviewOfferButton } from "../ReviewOfferButton"
+import { ConversationCTA, ConversationCTAFragmentContainer } from "./ConversationCTA"
+import { OpenInquiryModalButton } from "./OpenInquiryModalButton"
+import { ReviewOfferButton } from "./ReviewOfferButton"
 jest.unmock("react-relay")
 
 describe("ConversationCTA", () => {

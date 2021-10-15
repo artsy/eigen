@@ -8,7 +8,7 @@ import { first } from "lodash"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { AuctionResultsForArtistsYouFollowContainer } from "../AuctionResultsForArtistsYouFollow"
+import { AuctionResultsForArtistsYouFollowContainer } from "./AuctionResultsForArtistsYouFollow"
 
 jest.unmock("react-relay")
 

@@ -2,7 +2,7 @@
 import { mount } from "enzyme"
 import { Text, Theme } from "palette"
 import React from "react"
-import { Header } from "../Header"
+import { Header } from "./Header"
 
 describe("ArtworkAvailability", () => {
   it("renders artwork availability correctly", () => {

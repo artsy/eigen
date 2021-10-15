@@ -6,7 +6,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
-import { BottomTabsButton } from "../BottomTabsButton"
+import { BottomTabsButton } from "./BottomTabsButton"
 
 const trackEvent = useTracking().trackEvent
 

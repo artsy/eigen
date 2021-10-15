@@ -3,7 +3,7 @@ import React from "react"
 import "react-native"
 
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import SaleListItem from "../SaleListItem"
+import SaleListItem from "./SaleListItem"
 
 it("renders without throwing an error", () => {
   renderWithWrappers(<SaleListItem sale={props as any} containerWidth={750} index={0} columnCount={4} />)

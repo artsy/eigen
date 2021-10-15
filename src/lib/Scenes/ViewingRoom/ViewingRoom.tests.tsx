@@ -9,9 +9,9 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ViewingRoomArtworkRailContainer } from "../Components/ViewingRoomArtworkRail"
-import { ViewingRoomSubsections } from "../Components/ViewingRoomSubsections"
-import { ClosedNotice, tracks, ViewingRoomFragmentContainer } from "../ViewingRoom"
+import { ViewingRoomArtworkRailContainer } from "./Components/ViewingRoomArtworkRail"
+import { ViewingRoomSubsections } from "./Components/ViewingRoomSubsections"
+import { ClosedNotice, tracks, ViewingRoomFragmentContainer } from "./ViewingRoom"
 
 jest.unmock("react-relay")
 

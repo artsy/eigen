@@ -10,7 +10,7 @@ import { FlatList, TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-import { tracks, ViewingRoomArtworksContainer } from "../ViewingRoomArtworks"
+import { tracks, ViewingRoomArtworksContainer } from "./ViewingRoomArtworks"
 
 jest.unmock("react-relay")
 

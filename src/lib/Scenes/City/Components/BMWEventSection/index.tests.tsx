@@ -4,7 +4,7 @@ import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { RelayProp } from "react-relay"
-import { BMWEventSection } from "../index"
+import { BMWEventSection } from "./index"
 
 const show = {
   name: "PALAY, Trapunto Murals by Pacita Abad",

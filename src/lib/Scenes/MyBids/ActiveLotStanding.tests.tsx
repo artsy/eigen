@@ -4,7 +4,7 @@ import { ActiveLotStanding_saleArtwork } from "__generated__/ActiveLotStanding_s
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { merge } from "lodash"
-import { ActiveLotStanding } from "../Components/ActiveLotStanding"
+import { ActiveLotStanding } from "./Components/ActiveLotStanding"
 
 const defaultSaleArtwork = {
   isHighestBidder: true,

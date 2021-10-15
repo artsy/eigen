@@ -7,7 +7,7 @@ import { postEventToProviders } from "lib/utils/track/providers"
 import { Theme } from "palette"
 import React from "react"
 import { graphql } from "react-relay"
-import { CollectionFeaturedArtistsContainer as FeaturedArtists, ViewAll } from "../FeaturedArtists"
+import { CollectionFeaturedArtistsContainer as FeaturedArtists, ViewAll } from "./FeaturedArtists"
 jest.unmock("react-relay")
 jest.unmock("react-tracking")
 

@@ -6,8 +6,8 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { flushPromiseQueue } from "../../../../tests/flushPromiseQueue"
-import { PAGE_SIZE, SaleArtworksHomeRailContainer } from "..//SaleArtworksHomeRail"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { PAGE_SIZE, SaleArtworksHomeRailContainer } from "./SaleArtworksHomeRail"
 
 jest.unmock("react-relay")
 

@@ -13,7 +13,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { GeneArtworksPaginationContainer } from "../GeneArtworks"
+import { GeneArtworksPaginationContainer } from "./GeneArtworks"
 
 jest.unmock("react-relay")
 

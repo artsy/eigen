@@ -2,7 +2,7 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import { EventTiming } from "../EventTiming"
+import { EventTiming } from "./EventTiming"
 
 const currentTime = "2018-05-10T20:22:32.000Z"
 

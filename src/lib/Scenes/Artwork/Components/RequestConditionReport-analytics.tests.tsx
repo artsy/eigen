@@ -8,7 +8,7 @@ import { mockTracking } from "lib/tests/mockTracking"
 import { postEventToProviders } from "lib/utils/track/providers"
 import { Button, Theme } from "palette"
 import React from "react"
-import { RequestConditionReport } from "../RequestConditionReport"
+import { RequestConditionReport } from "./RequestConditionReport"
 
 jest.unmock("react-tracking")
 

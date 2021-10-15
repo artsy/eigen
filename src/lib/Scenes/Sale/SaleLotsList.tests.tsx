@@ -9,8 +9,8 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { SaleArtworkListContainer } from "../Components/SaleArtworkList"
-import { FilterDescription, FilterTitle, SaleLotsListContainer, SaleLotsListSortMode } from "../Components/SaleLotsList"
+import { SaleArtworkListContainer } from "./Components/SaleArtworkList"
+import { FilterDescription, FilterTitle, SaleLotsListContainer, SaleLotsListSortMode } from "./Components/SaleLotsList"
 
 jest.unmock("react-relay")
 

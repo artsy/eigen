@@ -8,7 +8,7 @@ import {
   getParamsForInputByFilterType,
   getSelectedFiltersCounts,
   prepareFilterArtworksParamsForInput,
-} from "../ArtworkFilterHelpers"
+} from "./ArtworkFilterHelpers"
 
 describe("changedFiltersParams helper", () => {
   it("when a medium selection changed and sort selection unchanged", () => {

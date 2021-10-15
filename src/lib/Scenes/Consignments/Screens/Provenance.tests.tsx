@@ -1,7 +1,7 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import Provenance from "../Provenance"
+import Provenance from "./Provenance"
 
 const emptyProps = { navigator: {} as any, route: {} as any }
 

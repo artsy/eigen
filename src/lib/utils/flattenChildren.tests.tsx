@@ -1,6 +1,6 @@
 import React from "react"
 import { View } from "react-native"
-import { flattenChildren } from "../flattenChildren"
+import { flattenChildren } from "./flattenChildren"
 
 describe("flattenChildren", () => {
   it("flattens the children", () => {

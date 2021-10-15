@@ -4,7 +4,7 @@ import { Input, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import React from "react"
 import { act } from "react-test-renderer"
-import { PhoneInput } from "../PhoneInput"
+import { PhoneInput } from "./PhoneInput"
 
 describe("PhoneInput", () => {
   let onChange = jest.fn()

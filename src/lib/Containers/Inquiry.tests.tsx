@@ -2,7 +2,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 
-import { InquiryFragmentContainer } from "../Inquiry"
+import { InquiryFragmentContainer } from "./Inquiry"
 
 it("renders without throwing an error", () => {
   renderWithWrappers(<InquiryFragmentContainer artwork={inquiryProps as any} />)

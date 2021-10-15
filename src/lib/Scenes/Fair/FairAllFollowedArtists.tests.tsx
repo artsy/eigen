@@ -4,8 +4,8 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { FairArtworksFragmentContainer } from "../Components/FairArtworks"
-import { FairAllFollowedArtists, FairAllFollowedArtistsFragmentContainer } from "../FairAllFollowedArtists"
+import { FairArtworksFragmentContainer } from "./Components/FairArtworks"
+import { FairAllFollowedArtists, FairAllFollowedArtistsFragmentContainer } from "./FairAllFollowedArtists"
 
 jest.unmock("react-relay")
 

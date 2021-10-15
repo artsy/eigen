@@ -10,8 +10,8 @@ import { cloneDeep } from "lodash"
 import { first, last } from "lodash"
 import React from "react"
 import "react-native"
-import HomeAnalytics from "../../homeAnalytics"
-import { SalesRailFragmentContainer } from "../SalesRail"
+import HomeAnalytics from "../homeAnalytics"
+import { SalesRailFragmentContainer } from "./SalesRail"
 
 const mockScrollRef = jest.fn()
 

@@ -3,9 +3,9 @@ import { mount } from "enzyme"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
 import { Platform } from "react-native"
-import { ImageCarouselContext, useNewImageCarouselContext } from "../ImageCarouselContext"
-import { ImageCarouselEmbedded } from "../ImageCarouselEmbedded"
-import { ImageWithLoadingState } from "../ImageWithLoadingState"
+import { ImageCarouselContext, useNewImageCarouselContext } from "./ImageCarouselContext"
+import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
+import { ImageWithLoadingState } from "./ImageWithLoadingState"
 
 const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
   images: [

@@ -6,8 +6,8 @@ import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
-import { BidderPositionResult } from "../../types"
-import { BidResult } from "../BidResult"
+import { BidderPositionResult } from "./types"
+import { BidResult } from "./BidResult"
 
 const popToTop = jest.fn()
 const mockNavigator = { popToTop }

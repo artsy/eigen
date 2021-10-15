@@ -9,7 +9,7 @@ import { postEventToProviders } from "lib/utils/track/providers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { tracks, ViewingRoomArtworkRailContainer } from "../ViewingRoomArtworkRail"
+import { tracks, ViewingRoomArtworkRailContainer } from "./ViewingRoomArtworkRail"
 
 jest.unmock("react-relay")
 jest.unmock("react-tracking")

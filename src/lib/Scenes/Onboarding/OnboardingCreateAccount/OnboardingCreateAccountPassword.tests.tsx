@@ -2,9 +2,9 @@ import { FormikProvider, useFormik } from "formik"
 import { BackButton } from "lib/navigation/BackButton"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { flushPromiseQueue } from "../../../../tests/flushPromiseQueue"
-import { passwordSchema, UserSchema } from "../OnboardingCreateAccount"
-import { OnboardingCreateAccountPassword } from "../OnboardingCreateAccountPassword"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { passwordSchema, UserSchema } from "./OnboardingCreateAccount"
+import { OnboardingCreateAccountPassword } from "./OnboardingCreateAccountPassword"
 
 const goBackMock = jest.fn()
 

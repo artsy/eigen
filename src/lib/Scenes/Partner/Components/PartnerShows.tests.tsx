@@ -6,8 +6,8 @@ import { cloneDeep } from "lodash"
 import { Theme } from "palette"
 import React from "react"
 import { graphql } from "react-relay"
-import { PartnerShowRailItem as RailItem } from "../PartnerShowRailItem"
-import { PartnerShowsFragmentContainer as PartnerShows } from "../PartnerShows"
+import { PartnerShowRailItem as RailItem } from "./PartnerShowRailItem"
+import { PartnerShowsFragmentContainer as PartnerShows } from "./PartnerShows"
 
 jest.unmock("react-relay")
 

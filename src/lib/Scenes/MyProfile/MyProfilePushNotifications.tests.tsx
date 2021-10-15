@@ -14,7 +14,7 @@ import {
   MyProfilePushNotifications,
   MyProfilePushNotificationsQueryRenderer,
   OpenSettingsBanner,
-} from "../MyProfilePushNotifications"
+} from "./MyProfilePushNotifications"
 
 jest.mock("lib/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),

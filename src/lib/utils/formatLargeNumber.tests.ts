@@ -1,4 +1,4 @@
-import { formatLargeNumber } from "../formatLargeNumber"
+import { formatLargeNumber } from "./formatLargeNumber"
 
 describe(formatLargeNumber, () => {
   describe("no decimal places specified", () => {

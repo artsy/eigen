@@ -6,10 +6,10 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestInstance } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ActiveLotStanding } from "../Components/ActiveLotStanding"
-import { ClosedLotStanding } from "../Components/ClosedLotStanding"
-import { WatchedLot } from "../Components/WatchedLot"
-import { MyBidsContainer, MyBidsQueryRenderer } from "../MyBids"
+import { ActiveLotStanding } from "./Components/ActiveLotStanding"
+import { ClosedLotStanding } from "./Components/ClosedLotStanding"
+import { WatchedLot } from "./Components/WatchedLot"
+import { MyBidsContainer, MyBidsQueryRenderer } from "./MyBids"
 
 jest.unmock("react-relay")
 

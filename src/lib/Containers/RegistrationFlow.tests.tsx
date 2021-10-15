@@ -2,7 +2,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 
-import { RegistrationFlow } from "../RegistrationFlow"
+import { RegistrationFlow } from "./RegistrationFlow"
 
 jest.unmock("react-relay")
 

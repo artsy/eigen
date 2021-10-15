@@ -12,7 +12,7 @@ import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { MyCollectionArtworkHeader, MyCollectionArtworkHeaderRefetchContainer } from "../MyCollectionArtworkHeader"
+import { MyCollectionArtworkHeader, MyCollectionArtworkHeaderRefetchContainer } from "./MyCollectionArtworkHeader"
 
 jest.unmock("react-relay")
 

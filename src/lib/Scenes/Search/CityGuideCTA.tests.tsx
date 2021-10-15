@@ -3,7 +3,7 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
-import { CityGuideCTA } from "../CityGuideCTA"
+import { CityGuideCTA } from "./CityGuideCTA"
 
 describe("Search page empty state", () => {
   it(`renders correctly`, async () => {

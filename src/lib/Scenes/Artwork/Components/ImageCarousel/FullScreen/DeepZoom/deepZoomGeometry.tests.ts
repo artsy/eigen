@@ -1,4 +1,4 @@
-import { getVisibleRowsAndColumns } from "../deepZoomGeometry"
+import { getVisibleRowsAndColumns } from "./deepZoomGeometry"
 
 describe(getVisibleRowsAndColumns, () => {
   const decimalGrid = {

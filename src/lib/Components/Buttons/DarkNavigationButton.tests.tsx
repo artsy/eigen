@@ -4,7 +4,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 
 import { navigate } from "lib/navigation/navigate"
-import DarkNavigationButton from "../DarkNavigationButton"
+import DarkNavigationButton from "./DarkNavigationButton"
 
 it("renders without throwing an error", () => {
   renderWithWrappers(<DarkNavigationButton title="uI am a navigation button" href="/some/path" />)

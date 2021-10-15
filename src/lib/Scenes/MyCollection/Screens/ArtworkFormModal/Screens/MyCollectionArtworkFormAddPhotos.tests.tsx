@@ -5,7 +5,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import React, { ReactElement } from "react"
 import { Image, TouchableOpacity } from "react-native"
-import { MyCollectionAddPhotos, tests } from "../MyCollectionArtworkFormAddPhotos"
+import { MyCollectionAddPhotos, tests } from "./MyCollectionArtworkFormAddPhotos"
 
 jest.mock("lib/utils/requestPhotos", () => ({
   showPhotoActionSheet: jest.fn(() => Promise.resolve({ photos: [] })),

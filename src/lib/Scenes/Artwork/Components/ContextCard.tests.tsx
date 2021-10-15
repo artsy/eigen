@@ -5,7 +5,7 @@ import { Box, Button, EntityHeader, Sans, Theme } from "palette"
 import React from "react"
 import { Image } from "react-native"
 import { RelayProp } from "react-relay"
-import { ContextCard } from "../ContextCard"
+import { ContextCard } from "./ContextCard"
 
 jest.unmock("react-relay")
 

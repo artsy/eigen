@@ -3,9 +3,9 @@ import { mount } from "enzyme"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
-import { ImageCarouselContext, useNewImageCarouselContext } from "../../ImageCarouselContext"
-import { ImageCarouselFullScreen } from "../ImageCarouselFullScreen"
-import { ImageZoomView } from "../ImageZoomView"
+import { ImageCarouselContext, useNewImageCarouselContext } from "../ImageCarouselContext"
+import { ImageCarouselFullScreen } from "./ImageCarouselFullScreen"
+import { ImageZoomView } from "./ImageZoomView"
 
 describe("ImageCarouselFullScreen", () => {
   const Mock = () => {

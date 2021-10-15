@@ -7,7 +7,7 @@ import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { Theme } from "palette"
 import React from "react"
 import { graphql } from "react-relay"
-import { ArtistCollectionsRailFragmentContainer } from "../ArtistCollectionsRail"
+import { ArtistCollectionsRailFragmentContainer } from "./ArtistCollectionsRail"
 
 jest.unmock("react-relay")
 

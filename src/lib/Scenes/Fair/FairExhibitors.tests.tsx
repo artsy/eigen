@@ -4,8 +4,8 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { FairExhibitorRailFragmentContainer } from "../Components/FairExhibitorRail"
-import { FairExhibitorsFragmentContainer } from "../Components/FairExhibitors"
+import { FairExhibitorRailFragmentContainer } from "./Components/FairExhibitorRail"
+import { FairExhibitorsFragmentContainer } from "./Components/FairExhibitors"
 
 jest.unmock("react-relay")
 

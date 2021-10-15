@@ -7,12 +7,12 @@ import "moment-timezone"
 import { _test_THEMES, Sans, Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { ArtworkExtraLinks } from "../ArtworkExtraLinks"
-import { BidButton } from "../CommercialButtons/BidButton"
-import { BuyNowButton } from "../CommercialButtons/BuyNowButton"
-import { CommercialButtons } from "../CommercialButtons/CommercialButtons"
-import { CommercialEditionSetInformation } from "../CommercialEditionSetInformation"
-import { CommercialInformationTimerWrapper, SaleAvailability } from "../CommercialInformation"
+import { ArtworkExtraLinks } from "./ArtworkExtraLinks"
+import { BidButton } from "./CommercialButtons/BidButton"
+import { BuyNowButton } from "./CommercialButtons/BuyNowButton"
+import { CommercialButtons } from "./CommercialButtons/CommercialButtons"
+import { CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
+import { CommercialInformationTimerWrapper, SaleAvailability } from "./CommercialInformation"
 
 const Wrapper: React.FC<{}> = ({ children }) => {
   return (

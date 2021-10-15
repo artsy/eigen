@@ -1,5 +1,5 @@
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import { ExecutionQueue } from "../ExecutionQueue"
+import { ExecutionQueue } from "./ExecutionQueue"
 
 describe(ExecutionQueue, () => {
   it("prevents async tasks from overlapping", async () => {

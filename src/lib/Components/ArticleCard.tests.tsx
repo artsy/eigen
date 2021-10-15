@@ -2,7 +2,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 import { TouchableWithoutFeedback } from "react-native-gesture-handler"
-import { ArticleCard } from "../ArticleCard"
+import { ArticleCard } from "./ArticleCard"
 
 it("renders without throwing an error", () => {
   const onPress = jest.fn()

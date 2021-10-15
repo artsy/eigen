@@ -9,7 +9,7 @@ import { QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { graphql } from "relay-runtime"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import Messages from "../Messages"
+import Messages from "./Messages"
 
 jest.unmock("react-relay")
 

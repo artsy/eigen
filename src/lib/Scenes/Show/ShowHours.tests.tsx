@@ -5,7 +5,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ShowHoursFragmentContainer } from "../Components/ShowHours"
+import { ShowHoursFragmentContainer } from "./Components/ShowHours"
 
 jest.unmock("react-relay")
 

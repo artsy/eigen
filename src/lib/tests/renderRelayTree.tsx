@@ -4,7 +4,7 @@ import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import React from "react"
 import { Variables } from "relay-runtime"
-import { LoadingTestID } from "../utils/renderWithLoadProgress"
+import { LoadingTestID } from "lib/utils/renderWithLoadProgress"
 import { MockRelayRenderer, MockRelayRendererProps } from "./MockRelayRenderer"
 
 import "./renderUntil"

@@ -7,7 +7,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { FairMoreInfoFragmentContainer } from "../FairMoreInfo"
+import { FairMoreInfoFragmentContainer } from "./FairMoreInfo"
 
 jest.unmock("react-relay")
 

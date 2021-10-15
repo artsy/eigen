@@ -2,7 +2,7 @@
 import { mount } from "enzyme"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import React from "react"
-import { ImageWithLoadingState } from "../ImageWithLoadingState"
+import { ImageWithLoadingState } from "./ImageWithLoadingState"
 
 const imageURL = "https://image.com/image.jpg"
 const style = { width: 100, height: 300 }

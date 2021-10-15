@@ -6,7 +6,7 @@ import fetchMock from "jest-fetch-mock"
 import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import moment from "moment"
-import { Echo } from "../EchoModel"
+import { Echo } from "./EchoModel"
 
 const originalDate = moment("2021-03-20T14:41:42.845Z")
 const earlierDate = originalDate.clone().subtract(2, "days")

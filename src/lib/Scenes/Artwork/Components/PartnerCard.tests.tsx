@@ -9,7 +9,7 @@ import { Button, Sans, Theme } from "palette"
 import React from "react"
 import { Image } from "react-native"
 import { graphql, RelayProp } from "react-relay"
-import { PartnerCard, PartnerCardFragmentContainer } from "../PartnerCard"
+import { PartnerCard, PartnerCardFragmentContainer } from "./PartnerCard"
 
 jest.unmock("react-relay")
 

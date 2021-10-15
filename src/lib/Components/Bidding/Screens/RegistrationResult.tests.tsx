@@ -2,7 +2,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 
 import { Button } from "palette"
-import { RegistrationResult, RegistrationStatus } from "../RegistrationResult"
+import { RegistrationResult, RegistrationStatus } from "./RegistrationResult"
 
 import { dismissModal, navigate } from "lib/navigation/navigate"
 
@@ -10,7 +10,7 @@ import { Linking } from "react-native"
 
 import { LinkText } from "lib/Components/Text/LinkText"
 import { extractText } from "lib/tests/extractText"
-import { Icon20 } from "../../Components/Icon"
+import { Icon20 } from "./Components/Icon"
 
 describe("Registration result component", () => {
   it("renders registration pending properly", () => {

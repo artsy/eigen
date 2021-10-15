@@ -5,7 +5,7 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { Button } from "palette"
 import React from "react"
-import { PrivacyRequest } from "../PrivacyRequest"
+import { PrivacyRequest } from "./PrivacyRequest"
 
 describe(PrivacyRequest, () => {
   it("handles privacy policy link taps", () => {

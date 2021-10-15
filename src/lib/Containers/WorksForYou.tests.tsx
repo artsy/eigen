@@ -1,7 +1,7 @@
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { WorksForYou } from "../WorksForYou"
+import { WorksForYou } from "./WorksForYou"
 
 beforeAll(() => {
   WorksForYou.prototype.componentDidUpdate = () => {

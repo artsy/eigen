@@ -7,7 +7,7 @@ import { TouchableHighlight } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { tracks, ViewingRoomViewWorksButtonContainer } from "../ViewingRoomViewWorksButton"
+import { tracks, ViewingRoomViewWorksButtonContainer } from "./ViewingRoomViewWorksButton"
 
 jest.unmock("react-relay")
 

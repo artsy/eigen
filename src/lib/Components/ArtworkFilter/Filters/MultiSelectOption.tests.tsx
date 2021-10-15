@@ -2,8 +2,8 @@ import { fireEvent } from "@testing-library/react-native"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { FilterData, FilterParamName } from "../../ArtworkFilterHelpers"
-import { MultiSelectOptionScreen } from "../MultiSelectOption"
+import { FilterData, FilterParamName } from "../ArtworkFilterHelpers"
+import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { getEssentialProps } from "./helper"
 
 const EXAMPLE_FILTER_OPTIONS: FilterData[] = [

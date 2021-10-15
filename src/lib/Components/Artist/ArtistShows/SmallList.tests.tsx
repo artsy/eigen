@@ -3,7 +3,7 @@ import "react-native"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 
-import SmallList from "../SmallList"
+import SmallList from "./SmallList"
 
 it("renders without throwing an error", () => {
   const show1 = showProps()

@@ -5,7 +5,7 @@ import React from "react"
 import { QueryRenderer } from "react-relay"
 import { graphql } from "relay-hooks"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { NewWorksForYouFragmentContainer } from "../NewWorksForYou"
+import { NewWorksForYouFragmentContainer } from "./NewWorksForYou"
 
 jest.unmock("react-relay")
 

@@ -3,7 +3,7 @@ import "react-native"
 import React from "react"
 
 import { getTestWrapper } from "lib/utils/getTestWrapper"
-import { LotsByFollowedArtists } from "../LotsByFollowedArtists"
+import { LotsByFollowedArtists } from "./LotsByFollowedArtists"
 
 describe("LotsByFollowedArtists", () => {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

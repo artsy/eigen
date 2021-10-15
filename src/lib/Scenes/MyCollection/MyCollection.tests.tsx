@@ -9,8 +9,8 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MyCollectionContainer } from "../MyCollection"
-import { MyCollectionArtworkFormModal } from "../Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
+import { MyCollectionContainer } from "./MyCollection"
+import { MyCollectionArtworkFormModal } from "./Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
 
 jest.unmock("react-relay")
 

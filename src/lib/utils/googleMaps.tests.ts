@@ -1,5 +1,5 @@
 import { fetchMockResponseOnce } from "lib/tests/fetchMockHelpers"
-import { getLocationPredictions } from "../googleMaps"
+import { getLocationPredictions } from "./googleMaps"
 
 describe("queryLocation()", () => {
   it("queries the google maps api and returns some formatted results", async () => {

@@ -1,8 +1,8 @@
 import { Flex } from "palette"
 import React from "react"
 import { Text, View } from "react-native"
-import { plainTextFromTree } from "../plainTextFromTree"
-import { renderMarkdown } from "../renderMarkdown"
+import { plainTextFromTree } from "./plainTextFromTree"
+import { renderMarkdown } from "./renderMarkdown"
 
 describe("plainTextFromTree", () => {
   it("returns the original string if given just a string", () => {

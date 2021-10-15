@@ -12,7 +12,7 @@ jest.mock("moment-timezone", () => {
   return momentMock
 })
 
-import { saleTime } from "../saleTime"
+import { saleTime } from "./saleTime"
 
 const times = {
   past20: "2020-08-01T15:00:00",

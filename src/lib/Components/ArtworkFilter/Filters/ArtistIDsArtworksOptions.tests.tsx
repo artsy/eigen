@@ -6,8 +6,8 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Check } from "palette"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
-import { ArtistIDsArtworksOptionsScreen } from "../ArtistIDsArtworksOptions"
-import { OptionListItem } from "../MultiSelectOption"
+import { ArtistIDsArtworksOptionsScreen } from "./ArtistIDsArtworksOptions"
+import { OptionListItem } from "./MultiSelectOption"
 import { getEssentialProps } from "./helper"
 
 describe("Artist options screen", () => {

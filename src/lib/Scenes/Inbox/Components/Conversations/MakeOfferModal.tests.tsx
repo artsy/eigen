@@ -10,9 +10,9 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestInstance } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { EditionSelectBox } from "../EditionSelectBox"
-import { InquiryMakeOfferButton } from "../InquiryMakeOfferButton"
-import { MakeOfferModalFragmentContainer } from "../MakeOfferModal"
+import { EditionSelectBox } from "./EditionSelectBox"
+import { InquiryMakeOfferButton } from "./InquiryMakeOfferButton"
+import { MakeOfferModalFragmentContainer } from "./MakeOfferModal"
 
 jest.unmock("react-relay")
 

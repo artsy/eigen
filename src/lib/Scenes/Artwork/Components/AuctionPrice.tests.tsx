@@ -19,7 +19,7 @@ import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { CheckCircleIcon, CloseCircleIcon, Sans, Theme } from "palette"
 import React from "react"
 import { graphql } from "react-relay"
-import { AuctionPriceFragmentContainer as AuctionPrice } from "../AuctionPrice"
+import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
 
 jest.unmock("react-relay")
 

@@ -6,8 +6,8 @@ import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { Text } from "palette"
 import React from "react"
 import { ReactTestInstance } from "react-test-renderer"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider, useSelectedOptionsDisplay } from "../../ArtworkFilterStore"
-import { SizeOptionsScreen } from "../SizeOptions"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider, useSelectedOptionsDisplay } from "../ArtworkFilterStore"
+import { SizeOptionsScreen } from "./SizeOptions"
 import { getEssentialProps } from "./helper"
 
 // Helpers

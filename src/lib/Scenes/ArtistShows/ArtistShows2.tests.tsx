@@ -7,8 +7,8 @@ import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { extractText } from "../../../tests/extractText"
-import { ArtistShows2PaginationContainer } from "../ArtistShows2"
+import { extractText } from "lib/tests/extractText"
+import { ArtistShows2PaginationContainer } from "./ArtistShows2"
 
 jest.unmock("react-relay")
 
