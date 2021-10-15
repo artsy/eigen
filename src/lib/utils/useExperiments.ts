@@ -2,7 +2,7 @@ import { SplitFactory } from "@splitsoftware/splitio-react-native"
 import { useEffect } from "react"
 import Config from "react-native-config"
 import { GlobalStore } from "../store/GlobalStore"
-import { TREATMENT_NAME } from "./treatments"
+import { EXPERIMENT_NAME, experiments } from "./experiments"
 
 export const useExperiments = () => {
   // Instantiate the SDK
@@ -26,21 +26,27 @@ export const useExperiments = () => {
   return
 }
 
-export const useTreatment = (treatment: TREATMENT_NAME) => {
+export const useTreatment = (treatment: EXPERIMENT_NAME) => {
   const client = GlobalStore.useAppState((store) => store.config.experiments.client)
   const isReady = GlobalStore.useAppState((store) => store.config.experiments.isReady)
 
-  if (isReady && client) {
+  if (isReady) {
+    if (!client) {
+      return experiments[treatment].defaultKey
+    }
     return client.getTreatment(treatment)
   }
   return undefined
 }
 
-export const useTreatments = (treatments: TREATMENT_NAME[]) => {
+export const useTreatments = (treatments: EXPERIMENT_NAME[]) => {
   const client = GlobalStore.useAppState((store) => store.config.experiments.client)
   const isReady = GlobalStore.useAppState((store) => store.config.experiments.isReady)
 
-  if (isReady && client) {
+  if (isReady) {
+    if (!client) {
+      return treatments.map((treatment) => experiments[treatment].defaultKey)
+    }
     return client.getTreatments(treatments)
   }
   return undefined
