@@ -24,3 +24,23 @@ export const useExperiments = () => {
   }, [])
   return
 }
+
+export const useTreatment = (treatment: string) => {
+  const client = GlobalStore.useAppState((store) => store.config.experiments.client)
+  const isReady = GlobalStore.useAppState((store) => store.config.experiments.isReady)
+
+  if (isReady && client) {
+    return client.getTreatment(treatment)
+  }
+  return undefined
+}
+
+export const useTreatments = (treatments: string[]) => {
+  const client = GlobalStore.useAppState((store) => store.config.experiments.client)
+  const isReady = GlobalStore.useAppState((store) => store.config.experiments.isReady)
+
+  if (isReady && client) {
+    return client.getTreatments(treatments)
+  }
+  return undefined
+}
