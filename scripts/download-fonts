@@ -10,7 +10,6 @@ mkdir -p ./fonts
 tar -xvzf fonts.tar.gz -C ./fonts
 
 # Android
-mkdir -p android/app/src/main/assets/fonts
 cp ./fonts/android/* android/app/src/main/assets/fonts
 
 # iOS

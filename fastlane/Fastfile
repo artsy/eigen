@@ -166,7 +166,7 @@ lane :ship_beta_android_play_store do
   # build again with flag set to false for release candidates
   flag_android_beta(is_android_beta: false)
 
-  sh("mkdir -p android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && yarn bundle:android")
+  sh("touch android/app/src/main/assets/index.android.bundle && yarn bundle:android")
   gradle(
     task: "bundle",
     build_type: "Release",
@@ -196,7 +196,7 @@ lane :ship_beta_android_firebase do
   sentry_release_name = "android-#{vname}-#{vcode}"
   update_sentry_release_name(sentry_release_name: sentry_release_name)
 
-  sh("mkdir -p android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && yarn bundle:android")
+  sh("touch android/app/src/main/assets/index.android.bundle && yarn bundle:android")
   gradle(
     task: "bundle",
     build_type: "Release",
