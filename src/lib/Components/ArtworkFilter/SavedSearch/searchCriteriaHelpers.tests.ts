@@ -1,4 +1,4 @@
-import { FilterParamName } from "./ArtworkFilterHelpers"
+import { FilterParamName } from "../ArtworkFilterHelpers"
 import {
   getAllowedFiltersForSavedSearchInput,
   getOnlyFilledSearchCriteriaValues,

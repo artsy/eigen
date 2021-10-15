@@ -1,16 +1,16 @@
 import { OptionListItem as FilterModalOptionListItem } from "lib/Components/ArtworkFilter"
-import { MockFilterScreen } from "lib/Components/ArtworkFilter/__tests__/FilterTestHelper"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkFiltersState } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { MockFilterScreen } from "lib/Components/ArtworkFilter/FilterTestHelper"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Check } from "palette"
 import React from "react"
+import { getEssentialProps } from "./helper"
 import { OptionListItem as MultiSelectOptionListItem } from "./MultiSelectOption"
 import { TimePeriodOptionsScreen } from "./TimePeriodOptions"
-import { getEssentialProps } from "./helper"
 
 describe("TimePeriodOptions Screen", () => {
   const initialState: ArtworkFiltersState = {

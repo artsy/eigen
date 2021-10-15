@@ -9,7 +9,7 @@ jest.mock("moment-timezone", () => {
 import { render } from "enzyme"
 import { Flex, Sans, Spacer, Theme } from "palette"
 import React from "react"
-import { LabeledTicker } from ".."
+import { LabeledTicker } from "."
 import { CountdownProps, CountdownTimer } from "./CountdownTimer"
 
 const dateString = (m: number) => new Date(m).toISOString()

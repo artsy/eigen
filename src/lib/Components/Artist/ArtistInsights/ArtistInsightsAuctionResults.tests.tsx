@@ -1,15 +1,15 @@
 import { ArtistInsightsAuctionResultsTestsQuery } from "__generated__/ArtistInsightsAuctionResultsTestsQuery.graphql"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
+import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import { extractText } from "lib/tests/extractText"
 import { mockEdges } from "lib/tests/mockEnvironmentPayload"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { AuctionResultFragmentContainer } from "./Lists/AuctionResultListItem"
 import { ArtistInsightsAuctionResultsPaginationContainer, SortMode } from "./ArtistInsightsAuctionResults"
 
 jest.unmock("react-relay")

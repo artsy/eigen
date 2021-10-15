@@ -17,6 +17,7 @@ import { TouchableRow } from "lib/Components/TouchableRow"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Sans, Theme } from "palette"
@@ -25,8 +26,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-import { extractText } from "lib/tests/extractText"
-import { closeModalMock, getEssentialProps, MockFilterScreen, navigateMock } from "./__tests__/FilterTestHelper"
+import { closeModalMock, getEssentialProps, MockFilterScreen, navigateMock } from "./FilterTestHelper"
 
 const exitModalMock = jest.fn()
 const trackEvent = jest.fn()

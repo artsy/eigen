@@ -3,10 +3,10 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Text } from "react-native"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider, useSelectedOptionsDisplay } from "./ArtworkFilterStore"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider, useSelectedOptionsDisplay } from "../ArtworkFilterStore"
+import { getEssentialProps } from "./helper"
 import { Range } from "./helpers"
 import { PriceRangeOptionsScreen } from "./PriceRangeOptions"
-import { getEssentialProps } from "./helper"
 
 import { Input } from "palette"
 

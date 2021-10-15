@@ -1,3 +1,4 @@
+import { ArtistAboutShowsTestsQuery } from "__generated__/ArtistAboutShowsTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -6,7 +7,6 @@ import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { ArtistAboutShowsTestsQuery } from "./../../__generated__/ArtistAboutShowsTestsQuery.graphql"
 import { ArtistAboutShowsFragmentContainer } from "./ArtistAboutShows"
 
 jest.unmock("react-relay")

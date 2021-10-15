@@ -1,4 +1,4 @@
-import { Image } from "./State/MyCollectionArtworkModel"
+import { Image } from "../State/MyCollectionArtworkModel"
 import { deletedPhotoIDs } from "./deletedPhotoIDs"
 
 describe("deletedPhotoIDs", () => {

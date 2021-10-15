@@ -2,7 +2,7 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Button, View } from "react-native"
 import { useTracking } from "react-tracking"
-import { ProvideScreenTracking } from "."
+import { ProvideScreenTracking, screenTrack, track } from "."
 import { postEventToProviders } from "./providers"
 
 describe("Tracking", () => {

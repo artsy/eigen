@@ -2,11 +2,11 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Text } from "palette"
 import React from "react"
 
-import { BillingAddress } from "./Screens/BillingAddress"
-import { CreditCardForm } from "./Screens/CreditCardForm"
+import { BillingAddress } from "../Screens/BillingAddress"
+import { CreditCardForm } from "../Screens/CreditCardForm"
 import { PaymentInfo } from "./PaymentInfo"
 
-import { BidInfoRow } from "./Components/BidInfoRow"
+import { BidInfoRow } from "../Components/BidInfoRow"
 
 jest.mock("tipsi-stripe", () => ({
   setOptions: jest.fn(),

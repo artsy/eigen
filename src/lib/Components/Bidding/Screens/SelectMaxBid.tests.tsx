@@ -5,10 +5,10 @@ jest.mock("lib/Components/Bidding/Screens/ConfirmBid/PriceSummary", () => ({
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import { FakeNavigator } from "./Helpers/FakeNavigator"
+import { FakeNavigator } from "../Helpers/FakeNavigator"
 
+import Spinner from "lib/Components/Spinner"
 import { Button } from "palette"
-import Spinner from "./../Components/Spinner"
 
 import { SelectMaxBid_me } from "__generated__/SelectMaxBid_me.graphql"
 import { SelectMaxBid_sale_artwork } from "__generated__/SelectMaxBid_sale_artwork.graphql"

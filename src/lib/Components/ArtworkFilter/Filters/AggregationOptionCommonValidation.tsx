@@ -7,7 +7,7 @@ import { RadioDot } from "palette"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
-import { InnerOptionListItem, OptionListItem } from "../SingleSelectOption"
+import { InnerOptionListItem, OptionListItem } from "./SingleSelectOption"
 
 type MockScreen = (props: { initialState?: ArtworkFiltersState }) => ReactElement
 
