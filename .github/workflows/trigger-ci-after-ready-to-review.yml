@@ -10,6 +10,7 @@ jobs:
     steps:
       - name: Trigger release
         run: |
+          echo $GITHUB_REF
           curl \
             -X POST \
             --header "Content-Type: application/json" \
