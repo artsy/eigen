@@ -82,7 +82,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
       <Separator />
       {artworksCount === 0 ? (
         <Box mb="80px" pt={1}>
-          <FilteredArtworkGridZeroState hideClearButton />
+          <FilteredArtworkGridZeroState hideClearButton resultsType="search" />
         </Box>
       ) : (
         <FlatList<ArtworkSection>
