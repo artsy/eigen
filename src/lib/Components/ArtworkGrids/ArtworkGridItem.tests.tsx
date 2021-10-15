@@ -19,8 +19,6 @@ const ArtworkWithProviders = (props: any) => {
 }
 
 describe("tracking", () => {
-  const getRecentSearches = () => __globalStoreTestUtils__?.getCurrentState().search.recentSearches!
-
   const trackEvent = jest.fn()
 
   beforeEach(() => {
@@ -71,8 +69,16 @@ describe("tracking", () => {
       type: "thumbnail",
     })
   })
+})
 
-  it("when an artwork clicked and updateRecentSearchesOnTap is true, adds the artwork to global recent searches", () => {
+describe("recent searches", () => {
+  const getRecentSearches = () => __globalStoreTestUtils__?.getCurrentState().search.recentSearches!
+
+  afterEach(() => {
+    __globalStoreTestUtils__?.reset()
+  })
+
+  it("is updated when an artwork clicked and updateRecentSearchesOnTap is true", () => {
     const { container } = renderWithWrappersTL(
       <ArtworkWithProviders
         artwork={artworkProps()}
@@ -101,7 +107,7 @@ describe("tracking", () => {
     ])
   })
 
-  it("when updateRecentSearchesOnTap is not passed, it falls to false by default and does not update global recent searches", () => {
+  it("not updated when updateRecentSearchesOnTap is not passed, falling to false by default", () => {
     const { container } = renderWithWrappersTL(
       <ArtworkWithProviders
         artwork={artworkProps()}
