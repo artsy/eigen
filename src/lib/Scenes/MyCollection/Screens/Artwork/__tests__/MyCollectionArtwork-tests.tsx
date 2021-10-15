@@ -2,9 +2,9 @@ import { ActionType, ContextModule, editCollectedArtwork, OwnerType } from "@art
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { navigate } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { useTracking } from "react-tracking"
 import { MyCollectionArtworkInsightsFragmentContainer } from "../Components/ArtworkInsights/MyCollectionArtworkInsights"
 import { MyCollectionArtworkHeaderRefetchContainer } from "../Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "../Components/MyCollectionArtworkMeta"
@@ -22,23 +22,10 @@ jest.mock("../Components/ArtworkInsights/MyCollectionArtworkInsights", () => ({
   MyCollectionArtworkInsightsFragmentContainer: () => null,
 }))
 
-jest.mock("react-tracking")
-
 describe("MyCollectionArtworkDetail", () => {
-  const trackEvent = jest.fn()
-
   const getWrapper = (props?: any) => {
     return renderWithWrappers(<tests.MyCollectionArtwork {...props} />)
   }
-
-  beforeEach(() => {
-    const mockTracking = useTracking as jest.Mock
-    mockTracking.mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
-  })
 
   afterEach(() => {
     jest.clearAllMocks()
@@ -78,8 +65,8 @@ describe("MyCollectionArtworkDetail", () => {
       const wrapper = getWrapper(artworkProps)
       wrapper.root.findByType(FancyModalHeader).props.onRightButtonPress()
 
-      expect(trackEvent).toHaveBeenCalledTimes(1)
-      expect(trackEvent).toHaveBeenCalledWith(
+      expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+      expect(mockTrackEvent).toHaveBeenCalledWith(
         editCollectedArtwork({ contextOwnerId: "someInternalId", contextOwnerSlug: "someSlug" })
       )
     })
@@ -91,8 +78,8 @@ describe("MyCollectionArtworkDetail", () => {
       const wrapper = getWrapper(artworkProps)
       wrapper.root.findByProps({ "data-test-id": "LearnMoreButton" }).props.onPress()
 
-      expect(trackEvent).toHaveBeenCalledTimes(1)
-      expect(trackEvent).toHaveBeenCalledWith({
+      expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+      expect(mockTrackEvent).toHaveBeenCalledWith({
         action: ActionType.tappedShowMore,
         context_module: ContextModule.sellFooter,
         context_screen_owner_type: OwnerType.myCollectionArtwork,

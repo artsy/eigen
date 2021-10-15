@@ -5,29 +5,21 @@ import {
 import { ArtistSeriesFullArtistSeriesListFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { extractText } from "lib/tests/extractText"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
 
-jest.mock("react-tracking")
 jest.unmock("react-relay")
 
 describe("Full Artist Series List", () => {
   let env: ReturnType<typeof createMockEnvironment>
-  const trackEvent = jest.fn()
 
   beforeEach(() => {
     env = createMockEnvironment()
-    const mockTracking = useTracking as jest.Mock
-    mockTracking.mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
   })
 
   const TestRenderer = () => (
@@ -78,17 +70,23 @@ describe("Full Artist Series List", () => {
     const wrapper = getWrapper()
     const seriesButton = wrapper.root.findAllByType(ArtistSeriesListItem)[0].findByType(Touchable)
     seriesButton.props.onPress()
-    expect(trackEvent).toHaveBeenCalledWith({
-      action: "tappedArtistSeriesGroup",
-      context_module: "artistSeriesRail",
-      context_screen_owner_type: "allArtistSeries",
-      curation_boost: true,
-      destination_screen_owner_id: "da821a13-92fc-49c2-bbd5-bebb790f7020",
-      destination_screen_owner_slug: "yayoi-kusama-plums",
-      destination_screen_owner_type: "artistSeries",
-      horizontal_slide_position: 0,
-      type: "thumbnail",
-    })
+    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "action": "tappedArtistSeriesGroup",
+          "context_module": "artistSeriesRail",
+          "context_screen_owner_id": undefined,
+          "context_screen_owner_slug": undefined,
+          "context_screen_owner_type": "allArtistSeries",
+          "curation_boost": true,
+          "destination_screen_owner_id": "da821a13-92fc-49c2-bbd5-bebb790f7020",
+          "destination_screen_owner_slug": "yayoi-kusama-plums",
+          "destination_screen_owner_type": "artistSeries",
+          "horizontal_slide_position": 0,
+          "type": "thumbnail",
+        },
+      ]
+    `)
   })
 })
 

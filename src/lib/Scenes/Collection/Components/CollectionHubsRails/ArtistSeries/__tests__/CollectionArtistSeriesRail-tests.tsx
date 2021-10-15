@@ -22,15 +22,13 @@ import {
   CollectionArtistSeriesRailContainer,
 } from "lib/Scenes/Collection/Components/CollectionHubsRails/ArtistSeries/CollectionArtistSeriesRail"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { Theme } from "palette"
-import { useTracking } from "react-tracking"
 
 jest.unmock("react-relay")
-jest.mock("react-tracking")
 
 describe("Artist Series Rail", () => {
-  const trackEvent = jest.fn()
   let env: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (
@@ -78,12 +76,6 @@ describe("Artist Series Rail", () => {
 
   beforeEach(() => {
     env = createMockEnvironment()
-    const mockTracking = useTracking as jest.Mock
-    mockTracking.mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
   })
 
   afterEach(() => {
@@ -99,7 +91,7 @@ describe("Artist Series Rail", () => {
     const wrapper = getWrapper()
     wrapper.root.findAllByType(CardRailCard)[0].props.onPress()
 
-    expect(trackEvent).toBeCalledWith({
+    expect(mockTrackEvent).toBeCalledWith({
       action_type: "tappedCollectionGroup",
       context_module: "artistSeriesRail",
       context_screen_owner_id: "collection0",
