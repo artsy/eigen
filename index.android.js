@@ -2,7 +2,7 @@ global.__TEST__ = false
 global.__STORYBOOK__ = false
 
 // start storybook depending on content of storybook.json
-let startStorybook = false
+let startStorybook = falseewr
 
 if (__DEV__) {
   try {
