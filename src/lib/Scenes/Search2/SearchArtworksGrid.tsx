@@ -44,13 +44,13 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }
 
   useArtworkFilters({
     relay,
-    aggregations: viewer.aggregations?.aggregations,
+    aggregations: viewer.artworks?.aggregations,
     componentPath: "Search2/SearchArtworksGrid",
   })
 
   useEffect(() => {
-    if (viewer.aggregations?.counts) {
-      setFiltersCountAction({ followedArtists: viewer.aggregations.counts.followedArtists, total: null })
+    if (viewer.artworks?.counts) {
+      setFiltersCountAction({ followedArtists: viewer.artworks.counts.followedArtists, total: null })
     }
   }, [setFiltersCountAction])
 
@@ -107,8 +107,9 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
         keyword: { type: "String" }
         input: { type: "FilterArtworksInput" }
       ) {
-        aggregations: artworksConnection(
-          first: 0
+        artworks: artworksConnection(
+          first: $count
+          after: $cursor
           keyword: $keyword
           aggregations: [
             ARTIST
@@ -123,7 +124,8 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
             PARTNER
             FOLLOWED_ARTISTS
           ]
-        ) {
+          input: $input
+        ) @connection(key: "SearchArtworksGrid_artworks") {
           aggregations {
             slice
             counts {
@@ -135,9 +137,6 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
           counts {
             followedArtists
           }
-        }
-        artworks: artworksConnection(first: $count, after: $cursor, keyword: $keyword, input: $input)
-          @connection(key: "SearchArtworksGrid_artworks") {
           edges {
             node {
               id

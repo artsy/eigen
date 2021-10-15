@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e3e2ff7b494d40cf7df6f3220185746d */
+/* @relayHash b77413371332a1265afbfa42d6a634ac */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -146,7 +146,7 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
 }
 
 fragment SearchArtworksGrid_viewer_wRDQt on Viewer {
-  aggregations: artworksConnection(first: 0, keyword: $keyword, aggregations: [ARTIST, MEDIUM, PRICE_RANGE, DIMENSION_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY, LOCATION_CITY, MAJOR_PERIOD, COLOR, PARTNER, FOLLOWED_ARTISTS]) {
+  artworks: artworksConnection(first: $count, after: $cursor, keyword: $keyword, aggregations: [ARTIST, MEDIUM, PRICE_RANGE, DIMENSION_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY, LOCATION_CITY, MAJOR_PERIOD, COLOR, PARTNER, FOLLOWED_ARTISTS], input: $input) {
     aggregations {
       slice
       counts {
@@ -158,9 +158,6 @@ fragment SearchArtworksGrid_viewer_wRDQt on Viewer {
     counts {
       followedArtists
     }
-    id
-  }
-  artworks: artworksConnection(first: $count, after: $cursor, keyword: $keyword, input: $input) {
     edges {
       node {
         id
@@ -209,25 +206,28 @@ v5 = {
   "name": "keyword",
   "variableName": "keyword"
 },
-v6 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "name",
-  "storageKey": null
-},
-v7 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v8 = [
+v6 = [
   {
     "kind": "Variable",
     "name": "after",
     "variableName": "cursor"
+  },
+  {
+    "kind": "Literal",
+    "name": "aggregations",
+    "value": [
+      "ARTIST",
+      "MEDIUM",
+      "PRICE_RANGE",
+      "DIMENSION_RANGE",
+      "MATERIALS_TERMS",
+      "ARTIST_NATIONALITY",
+      "LOCATION_CITY",
+      "MAJOR_PERIOD",
+      "COLOR",
+      "PARTNER",
+      "FOLLOWED_ARTISTS"
+    ]
   },
   {
     "kind": "Variable",
@@ -237,6 +237,20 @@ v8 = [
   (v4/*: any*/),
   (v5/*: any*/)
 ],
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v8 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
 v9 = {
   "alias": null,
   "args": null,
@@ -309,32 +323,8 @@ return {
         "plural": false,
         "selections": [
           {
-            "alias": "aggregations",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "aggregations",
-                "value": [
-                  "ARTIST",
-                  "MEDIUM",
-                  "PRICE_RANGE",
-                  "DIMENSION_RANGE",
-                  "MATERIALS_TERMS",
-                  "ARTIST_NATIONALITY",
-                  "LOCATION_CITY",
-                  "MAJOR_PERIOD",
-                  "COLOR",
-                  "PARTNER",
-                  "FOLLOWED_ARTISTS"
-                ]
-              },
-              {
-                "kind": "Literal",
-                "name": "first",
-                "value": 0
-              },
-              (v5/*: any*/)
-            ],
+            "alias": "artworks",
+            "args": (v6/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "kind": "LinkedField",
             "name": "artworksConnection",
@@ -370,7 +360,7 @@ return {
                         "name": "count",
                         "storageKey": null
                       },
-                      (v6/*: any*/),
+                      (v7/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -402,18 +392,6 @@ return {
                 ],
                 "storageKey": null
               },
-              (v7/*: any*/)
-            ],
-            "storageKey": null
-          },
-          {
-            "alias": "artworks",
-            "args": (v8/*: any*/),
-            "concreteType": "FilterArtworksConnection",
-            "kind": "LinkedField",
-            "name": "artworksConnection",
-            "plural": false,
-            "selections": [
               {
                 "alias": null,
                 "args": null,
@@ -430,7 +408,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v7/*: any*/),
+                      (v8/*: any*/),
                       (v9/*: any*/)
                     ],
                     "storageKey": null
@@ -470,7 +448,7 @@ return {
                 ],
                 "storageKey": null
               },
-              (v7/*: any*/),
+              (v8/*: any*/),
               {
                 "kind": "InlineFragment",
                 "selections": [
@@ -625,7 +603,7 @@ return {
                                 "name": "endAt",
                                 "storageKey": null
                               },
-                              (v7/*: any*/)
+                              (v8/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -680,7 +658,7 @@ return {
                                 "name": "lotLabel",
                                 "storageKey": null
                               },
-                              (v7/*: any*/)
+                              (v8/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -692,8 +670,8 @@ return {
                             "name": "partner",
                             "plural": false,
                             "selections": [
-                              (v6/*: any*/),
-                              (v7/*: any*/)
+                              (v7/*: any*/),
+                              (v8/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -703,7 +681,7 @@ return {
                       {
                         "kind": "InlineFragment",
                         "selections": [
-                          (v7/*: any*/)
+                          (v8/*: any*/)
                         ],
                         "type": "Node",
                         "abstractKey": "__isNode"
@@ -720,9 +698,10 @@ return {
           },
           {
             "alias": "artworks",
-            "args": (v8/*: any*/),
+            "args": (v6/*: any*/),
             "filters": [
               "keyword",
+              "aggregations",
               "input"
             ],
             "handle": "connection",
@@ -736,7 +715,7 @@ return {
     ]
   },
   "params": {
-    "id": "e3e2ff7b494d40cf7df6f3220185746d",
+    "id": "b77413371332a1265afbfa42d6a634ac",
     "metadata": {},
     "name": "SearchArtworksGridQuery",
     "operationKind": "query",

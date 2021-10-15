@@ -6,7 +6,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtworkAggregation = "ARTIST" | "ARTIST_NATIONALITY" | "ATTRIBUTION_CLASS" | "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "LOCATION_CITY" | "MAJOR_PERIOD" | "MATERIALS_TERMS" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 export type SearchArtworksGrid_viewer = {
-    readonly aggregations: {
+    readonly artworks: {
         readonly aggregations: ReadonlyArray<{
             readonly slice: ArtworkAggregation | null;
             readonly counts: ReadonlyArray<{
@@ -18,8 +18,6 @@ export type SearchArtworksGrid_viewer = {
         readonly counts: {
             readonly followedArtists: number | null;
         } | null;
-    } | null;
-    readonly artworks: {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
@@ -37,13 +35,7 @@ export type SearchArtworksGrid_viewer$key = {
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "kind": "Variable",
-  "name": "keyword",
-  "variableName": "keyword"
-};
-return {
+const node: ReaderFragment = {
   "argumentDefinitions": [
     {
       "defaultValue": 20,
@@ -82,7 +74,7 @@ return {
   "name": "SearchArtworksGrid_viewer",
   "selections": [
     {
-      "alias": "aggregations",
+      "alias": "artworks",
       "args": [
         {
           "kind": "Literal",
@@ -102,15 +94,19 @@ return {
           ]
         },
         {
-          "kind": "Literal",
-          "name": "first",
-          "value": 0
+          "kind": "Variable",
+          "name": "input",
+          "variableName": "input"
         },
-        (v0/*: any*/)
+        {
+          "kind": "Variable",
+          "name": "keyword",
+          "variableName": "keyword"
+        }
       ],
       "concreteType": "FilterArtworksConnection",
       "kind": "LinkedField",
-      "name": "artworksConnection",
+      "name": "__SearchArtworksGrid_artworks_connection",
       "plural": false,
       "selections": [
         {
@@ -180,25 +176,7 @@ return {
             }
           ],
           "storageKey": null
-        }
-      ],
-      "storageKey": null
-    },
-    {
-      "alias": "artworks",
-      "args": [
-        {
-          "kind": "Variable",
-          "name": "input",
-          "variableName": "input"
         },
-        (v0/*: any*/)
-      ],
-      "concreteType": "FilterArtworksConnection",
-      "kind": "LinkedField",
-      "name": "__SearchArtworksGrid_artworks_connection",
-      "plural": false,
-      "selections": [
         {
           "alias": null,
           "args": null,
@@ -279,6 +257,5 @@ return {
   "type": "Viewer",
   "abstractKey": null
 };
-})();
-(node as any).hash = '54e54717b6478b98283ad7bb54994259';
+(node as any).hash = '4ccf70f7078ed770d1ab2e8d9918664b';
 export default node;
