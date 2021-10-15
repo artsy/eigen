@@ -1,9 +1,5 @@
 export interface ExperimentDescriptor {
   /**
-   * Set readyForRelease to `true` when the experiment is ready to be shipped to user.
-   */
-  readonly readyForRelease: boolean
-  /**
    * Provide a treatment key to allow this feature to be toggled via split.io.
    */
   readonly treatmentKey?: string
@@ -21,7 +17,6 @@ function defineExperiments<T extends string>(expirmentMap: { readonly [experimen
 
 export const experiments = defineExperiments({
   HomeScreenWorksForYouVsWorksByArtistsYouFollow: {
-    readyForRelease: false,
     treatmentKey: "HomeScreenWorksForYouVsWorksByArtistsYouFollow",
     defaultKey: "worksByArtistsYouFolow",
   },
