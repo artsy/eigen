@@ -35,6 +35,7 @@ import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { _FragmentRefs, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
+import { HomeExperiment } from "./Components/HomeExperiment"
 import { HomeHeroContainer } from "./Components/HomeHero"
 import { NewWorksForYouRailContainer } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
@@ -118,6 +119,9 @@ const Home = (props: Props) => {
             }
 
             switch (item.type) {
+              case "experiment":
+                return <HomeExperiment />
+
               case "articles":
                 return <ArticlesRailFragmentContainer articlesConnection={item.data} />
               case "artist":
