@@ -5,12 +5,12 @@ on:
   pull_request:
     types: [ready_for_review]
 jobs:
-  build:
+  trigger:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger release
         run: |
-          echo $GITHUB_REF
+          echo $GITHUB_HEAD_REF
           curl \
             -X POST \
             --header "Content-Type: application/json" \
