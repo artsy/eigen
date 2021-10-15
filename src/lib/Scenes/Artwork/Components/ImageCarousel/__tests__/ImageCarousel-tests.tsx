@@ -3,12 +3,10 @@ import { renderRelayTree } from "lib/tests/renderRelayTree"
 import React from "react"
 import { Animated, FlatList } from "react-native"
 import { graphql } from "react-relay"
-import { useTracking } from "react-tracking"
 import { getMeasurements } from "../geometry"
 import { ImageCarouselFragmentContainer, PaginationDot } from "../ImageCarousel"
 
 jest.unmock("react-relay")
-const trackEvent = jest.fn()
 
 const deepZoomFixture: NonNullable<
   NonNullable<NonNullable<NonNullable<ImageCarouselTestsQueryRawResponse["artwork"]>["images"]>[0]>["deepZoom"]
@@ -88,11 +86,6 @@ describe("ImageCarouselFragmentContainer", () => {
   describe("with five images", () => {
     beforeEach(() => {
       jest.useFakeTimers()
-      ;(useTracking as jest.Mock).mockImplementation(() => {
-        return {
-          trackEvent,
-        }
-      })
     })
     afterEach(() => {
       jest.clearAllMocks()

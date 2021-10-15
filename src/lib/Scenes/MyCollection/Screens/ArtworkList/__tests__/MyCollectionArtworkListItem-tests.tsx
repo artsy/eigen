@@ -3,19 +3,17 @@ import { MyCollectionArtworkListItemTestsQuery } from "__generated__/MyCollectio
 import { navigate } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Image as RNImage } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionArtworkListItemFragmentContainer, tests } from "../MyCollectionArtworkListItem"
 
 jest.unmock("react-relay")
-jest.mock("react-tracking")
 
 describe("MyCollectionArtworkListItem", () => {
-  const trackEvent = jest.fn()
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionArtworkListItemTestsQuery>
@@ -39,12 +37,6 @@ describe("MyCollectionArtworkListItem", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    const mockTracking = useTracking as jest.Mock
-    mockTracking.mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
   })
 
   afterEach(() => {
@@ -93,8 +85,8 @@ describe("MyCollectionArtworkListItem", () => {
     resolveData()
     wrapper.root.findByType(tests.TouchElement).props.onPress()
 
-    expect(trackEvent).toHaveBeenCalledTimes(1)
-    expect(trackEvent).toHaveBeenCalledWith(
+    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+    expect(mockTrackEvent).toHaveBeenCalledWith(
       tappedCollectedArtwork({
         destinationOwnerId: "artwork-id",
         destinationOwnerSlug: "artwork-slug",

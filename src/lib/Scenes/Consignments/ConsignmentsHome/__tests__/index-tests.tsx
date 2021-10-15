@@ -1,28 +1,19 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ArtistList } from "../Components/ArtistList"
 import { RecentlySold } from "../Components/RecentlySold"
 import { ConsignmentsHomeQueryRenderer } from "../ConsignmentsHome"
 
 jest.unmock("react-relay")
-jest.mock("react-tracking")
 
 describe("ConsignmentsHome index", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const trackEvent = jest.fn()
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    ;(useTracking as jest.Mock).mockReturnValue({
-      trackEvent,
-    })
-  })
-
-  afterEach(() => {
-    trackEvent.mockClear()
   })
 
   const TestWrapper = () => {
@@ -44,8 +35,8 @@ describe("ConsignmentsHome index", () => {
 
     tree.root.findByProps({ "data-test-id": "header-cta" }).props.onPress()
 
-    expect(trackEvent).toHaveBeenCalledTimes(1)
-    expect(trackEvent).toHaveBeenLastCalledWith(
+    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+    expect(mockTrackEvent).toHaveBeenLastCalledWith(
       expect.objectContaining({
         context_module: ContextModule.sellHeader,
         context_screen_owner_type: OwnerType.sell,
@@ -60,8 +51,8 @@ describe("ConsignmentsHome index", () => {
 
     tree.root.findByProps({ "data-test-id": "footer-cta" }).props.onPress()
 
-    expect(trackEvent).toHaveBeenCalledTimes(1)
-    expect(trackEvent).toHaveBeenLastCalledWith(
+    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+    expect(mockTrackEvent).toHaveBeenLastCalledWith(
       expect.objectContaining({
         context_module: ContextModule.sellFooter,
         context_screen_owner_type: OwnerType.sell,

@@ -27,15 +27,12 @@ jest.mock("react-native-screens/native-stack", () => {
 // tslint:disable-next-line:no-var-requires
 require("jest-fetch-mock").enableMocks()
 
+import { mockPostEventToProviders, mockTrackEvent } from "lib/tests/globallyMockedStuff"
+
 jest.mock("react-tracking")
 import track, { useTracking } from "react-tracking"
-const trackEvent = jest.fn()
 ;(track as jest.Mock).mockImplementation(() => (x: any) => x)
-;(useTracking as jest.Mock).mockImplementation(() => {
-  return {
-    trackEvent,
-  }
-})
+;(useTracking as jest.Mock).mockImplementation(() => ({ trackEvent: mockTrackEvent }))
 
 jest.mock("lib/utils/track/providers", () => ({
   ...jest.requireActual("lib/utils/track/providers"),
@@ -191,7 +188,6 @@ mockedModule("./lib/Components/Gene/Header.tsx", "Header")
 // Native modules
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { postEventToProviders } from "lib/utils/track/providers"
 import { ScreenDimensionsWithSafeAreas } from "lib/utils/useScreenDimensions"
 import { NativeModules } from "react-native"
 
@@ -343,8 +339,8 @@ if (process.env.ALLOW_CONSOLE_LOGS !== "true") {
   }
 
   beforeEach((done) => {
-    trackEvent.mockClear()
-    ;(postEventToProviders as jest.Mock).mockClear()
+    mockTrackEvent.mockClear()
+    mockPostEventToProviders.mockClear()
     const types: Array<"error" | "warn"> = ["error", "warn"]
     types.forEach((type) => {
       // Don't spy on loggers that have been modified by the current test.

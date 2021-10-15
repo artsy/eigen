@@ -3,19 +3,17 @@ import { MyCollectionArtworkArtistArticlesTestsQuery } from "__generated__/MyCol
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionArtworkArtistArticlesFragmentContainer } from "../MyCollectionArtworkArtistArticles"
 
 jest.unmock("react-relay")
-jest.mock("react-tracking")
 
 describe("MyCollectionArtworkArtistArticles", () => {
-  const trackEvent = jest.fn()
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <QueryRenderer<MyCollectionArtworkArtistArticlesTestsQuery>
@@ -39,12 +37,6 @@ describe("MyCollectionArtworkArtistArticles", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    const mockTracking = useTracking as jest.Mock
-    mockTracking.mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
   })
 
   afterEach(() => {
@@ -103,8 +95,8 @@ describe("MyCollectionArtworkArtistArticles", () => {
       }),
     })
     wrapper.root.findAllByType(CaretButton)[0].props.onPress()
-    expect(trackEvent).toHaveBeenCalledTimes(1)
-    expect(trackEvent).toHaveBeenCalledWith({
+    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+    expect(mockTrackEvent).toHaveBeenCalledWith({
       action: ActionType.tappedShowMore,
       context_module: ContextModule.relatedArticles,
       context_screen_owner_type: OwnerType.myCollectionArtwork,

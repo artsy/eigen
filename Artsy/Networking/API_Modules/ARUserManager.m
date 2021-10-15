@@ -751,8 +751,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         } else {
             NSDictionary *account = [(__bridge NSArray *)credentials firstObject];
             if (account) {
-                [[AREmission sharedInstance] sendEvent:ARAnalyticsLoggedIn traits:@{@"context_type" : @"safari keychain"}];
-
                 [[ARUserManager sharedManager] loginWithUsername:account[(__bridge NSString *)kSecAttrAccount]
                                                         password:account[(__bridge NSString *)kSecSharedPassword]
                                           successWithCredentials:nil

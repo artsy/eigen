@@ -1,31 +1,22 @@
 import React from "react"
 import "react-native"
 import { graphql, QueryRenderer } from "react-relay"
-import { useTracking } from "react-tracking"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 import { ArtistListTestsQuery } from "__generated__/ArtistListTestsQuery.graphql"
 import { extractText } from "lib/tests/extractText"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { ArtistListFragmentContainer } from "../ArtistList"
 
 jest.unmock("react-relay")
-jest.mock("react-tracking")
 
 describe("ArtistList", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const trackEvent = jest.fn()
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    ;(useTracking as jest.Mock).mockReturnValue({
-      trackEvent,
-    })
-  })
-
-  afterEach(() => {
-    trackEvent.mockClear()
   })
 
   const TestRenderer = () => (
@@ -84,8 +75,8 @@ describe("ArtistList", () => {
     })
 
     tree.root.findByProps({ "data-test-id": "artist-item" }).props.onPress()
-    expect(trackEvent).toHaveBeenCalledTimes(1)
-    expect(trackEvent).toHaveBeenLastCalledWith(
+    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+    expect(mockTrackEvent).toHaveBeenLastCalledWith(
       expect.objectContaining({
         context_module: "artistHighDemandGrid",
         context_screen_owner_type: "sell",

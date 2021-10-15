@@ -2,18 +2,16 @@ import { ArtistCollectionsRailTestsQueryRawResponse } from "__generated__/Artist
 import { GenericArtistSeriesRail } from "lib/Components/GenericArtistSeriesRail"
 import { CardRailCard } from "lib/Components/Home/CardRailCard"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { Theme } from "palette"
 import React from "react"
 import { graphql } from "react-relay"
-import { useTracking } from "react-tracking"
 import { ArtistCollectionsRailFragmentContainer } from "../ArtistCollectionsRail"
 
 jest.unmock("react-relay")
-jest.mock("react-tracking")
 
 describe("Artist Series Rail", () => {
-  const trackEvent = jest.fn()
   const getWrapper = async () => {
     return renderRelayTree({
       Component: (props: any) => {
@@ -42,15 +40,6 @@ describe("Artist Series Rail", () => {
     })
   }
 
-  beforeEach(() => {
-    const mockTracking = useTracking as jest.Mock
-    mockTracking.mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
-  })
-
   afterEach(() => {
     jest.clearAllMocks()
   })
@@ -65,7 +54,7 @@ describe("Artist Series Rail", () => {
 
     wrapper.find(CardRailCard).at(0).simulate("click")
 
-    expect(trackEvent).toBeCalledWith({
+    expect(mockTrackEvent).toBeCalledWith({
       action_type: "tappedCollectionGroup",
       context_module: "artistSeriesRail",
       context_screen_owner_id: "artist0",
