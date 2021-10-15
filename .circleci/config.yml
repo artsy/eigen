@@ -345,9 +345,7 @@ jobs:
       - run:
           name: Quit early if Draft PR
           command: |
-            brew install gh
-            gh auth login $GH_TOKEN
-            if gh pr view ${CIRCLE_PULL_REQUEST##*/} --json isDraft --jq ".isDraft"
+            if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/eigen/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
             then
               circleci step halt
             fi
