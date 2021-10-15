@@ -1,0 +1,17 @@
+# CircleCI doesn't automatically run builds after a draft PR is marked "ready for review"
+# so this is a github action to force it to do so.
+name: Trigger CI after "Draft" -> "Ready for Review"
+on:
+  pull_request:
+    types: [ready_for_review]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger release
+        run: |
+          curl \
+            -X POST \
+            --header "Content-Type: application/json" \
+            -d '{"branch": "$GITHUB_REF"}' \
+            https://circleci.com/api/v1.1/project/github/artsy/eigen/build?circle-token=${{ secrets.CircleToken }}
