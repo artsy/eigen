@@ -1,3 +1,6 @@
+import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
+import { Platform } from "react-native"
+
 export function createGeminiUrl({
   imageURL,
   width,
@@ -13,7 +16,8 @@ export function createGeminiUrl({
   imageQuality?: number
   resizeMode?: "fit" | "fill"
 }) {
-  return `https://${geminiHost}/?resize_to=${resizeMode}&width=${width}&height=${height}&quality=${imageQuality}&src=${encodeURIComponent(
-    imageURL
-  )}`
+  const enableWebPImages = unsafe_getFeatureFlag("AREnableWebPImages") && Platform.OS === "android"
+  return `https://${geminiHost}/?${
+    enableWebPImages ? "convert_to=webp&" : ""
+  }resize_to=${resizeMode}&width=${width}&height=${height}&quality=${imageQuality}&src=${encodeURIComponent(imageURL)}`
 }
