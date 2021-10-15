@@ -1,4 +1,3 @@
-
 # Xcode
 .DS_Store
 build/
@@ -132,7 +131,7 @@ android-secret.json
 
 
 # Fonts
-android/app/src/main/assets/fonts
+android/app/src/main/assets/fonts/*
 
 
 # Firebase files
