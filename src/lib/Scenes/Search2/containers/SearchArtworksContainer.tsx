@@ -34,7 +34,7 @@ export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ key
 }
 
 const SearchArtworksGridSkeleton: React.FC = () => (
-  <Flex>
+  <Flex accessibilityLabel="Search artworks are loading">
     <Flex height={28} my={1} px={2} justifyContent="space-between">
       <Flex flex={1} flexDirection="row">
         <PlaceholderButton width={20} height={20} />
