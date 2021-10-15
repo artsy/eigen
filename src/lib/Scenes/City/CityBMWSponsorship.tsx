@@ -16,9 +16,9 @@ export const BMWSponsorship: React.FC<BMWSponsorshipProps> = (props) => {
   const tracking = useTracking()
 
   const view = (
-    <Flex flexDirection="row" alignItems="center">
+    <Flex flexDirection="row" alignItems="center" mb={2}>
       <Logo resizeMode="contain" source={require("@images/bmw-logo.webp")} />
-      <Sans size="3t" ml={1}>
+      <Sans size="3t" mx={1}>
         {logoText}
       </Sans>
     </Flex>
