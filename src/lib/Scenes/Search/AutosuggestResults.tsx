@@ -10,7 +10,7 @@ import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
-import { Flex, Text, useSpace } from "palette"
+import { Flex, Spacer, Text, useSpace } from "palette"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import React from "react"
 import { FlatList } from "react-native"
@@ -142,7 +142,16 @@ const AutosuggestResultsFlatList: React.FC<{
       ListEmptyComponent={
         noResults
           ? () => {
-              return <Text variant="sm">We couldn't find anything for “{query}.”</Text>
+              return (
+                <>
+                  <Spacer mt={1} />
+                  <Spacer mt={2} />
+                  <Text variant="md">Sorry, we couldn’t find anything for “{query}.”</Text>
+                  <Text variant="md" color="black60">
+                    Please try searching again with a different spelling.
+                  </Text>
+                </>
+              )
             }
           : null
       }
