@@ -368,3 +368,22 @@ describe("CopyIOSNativeSessionAuthToTS migration", () => {
     expect(migratedState.auth.userID).toEqual("userID")
   })
 })
+
+describe.only("AddExperimentsModel migration", () => {
+  const migrationToTest = Versions.AddExperimentsModel
+
+  it("adds the ExperimentsModel to the config Model", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.config.experiments.isReady).toEqual(false)
+    expect(migratedState.config.experiments.client).toEqual(undefined)
+  })
+})
