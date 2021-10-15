@@ -17,7 +17,19 @@ export function createGeminiUrl({
   resizeMode?: "fit" | "fill"
 }) {
   const enableWebPImages = unsafe_getFeatureFlag("AREnableWebPImages") && Platform.OS === "android"
-  return `https://${geminiHost}/?${
-    enableWebPImages ? "convert_to=webp&" : ""
-  }resize_to=${resizeMode}&width=${width}&height=${height}&quality=${imageQuality}&src=${encodeURIComponent(imageURL)}`
+  const src = encodeURIComponent(imageURL)
+  
+  const params = [
+    `height=${height}`,
+    `quality=${imageQuality}`,
+    `resize_to=${resizeMode}`,
+    `src=${src}`,
+    `width=${width}`,
+  ]
+  
+  if (enableWebPImages) {
+    params.push("convert_to=webp")
+  }
+  
+  return `https://${geminiHost}/?${params.join("&")}`
 }
