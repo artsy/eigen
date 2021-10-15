@@ -10,9 +10,8 @@ jobs:
     steps:
       - name: Trigger release
         run: |
-          echo $GITHUB_HEAD_REF
           curl \
             -X POST \
             --header "Content-Type: application/json" \
-            -d '{"branch": "$GITHUB_REF"}' \
+            -d "{\"branch\": \"$GITHUB_HEAD_REF\"}" \
             https://circleci.com/api/v1.1/project/github/artsy/eigen/build?circle-token=${{ secrets.CircleToken }}
