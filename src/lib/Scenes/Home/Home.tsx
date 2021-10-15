@@ -34,6 +34,7 @@ import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { _FragmentRefs, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
+import { HomeExperiment } from "./Components/HomeExperiment"
 import { HomeHeroContainer } from "./Components/HomeHero"
 import { NewWorksForYouRailContainer } from "./Components/NewWorksForYouRail"
 import { TroveFragmentContainer } from "./Components/Trove"
@@ -88,6 +89,9 @@ const Home = (props: Props) => {
 
   const rowData = compact([
     // Above-the-fold modules (make sure to include enough modules in the above-the-fold query to cover the whole screen.)
+    {
+      type: "experiment",
+    } as const,
     !!showNewNewWorksForYouRail && ({ type: "newWorksForYou" } as const),
     artworkRails[0],
     { type: "lotsByFollowedArtists" } as const,
@@ -154,6 +158,9 @@ const Home = (props: Props) => {
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
           renderItem={({ item, index, separators }) => {
             switch (item.type) {
+              case "experiment":
+                return <HomeExperiment />
+
               case "articles":
                 return articlesConnection ? (
                   <ArticlesRailFragmentContainer articlesConnection={articlesConnection} />
