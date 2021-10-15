@@ -4,6 +4,7 @@ import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilter
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { getUrgencyTag } from "lib/utils/getUrgencyTag"
 import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "lib/utils/placeholders"
 import { Box, Flex, Sans, Spacer, Text, TextProps, Touchable } from "palette"
@@ -39,6 +40,8 @@ export interface ArtworkProps {
   titleTextStyle?: TextProps
   saleInfoTextStyle?: TextProps
   partnerNameTextStyle?: TextProps
+  // allows for artwork to be added to recent searches
+  updateRecentSearchesOnTap?: boolean
 }
 
 export const Artwork: React.FC<ArtworkProps> = ({
@@ -58,6 +61,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   titleTextStyle,
   saleInfoTextStyle,
   partnerNameTextStyle,
+  updateRecentSearchesOnTap = false,
 }) => {
   const itemRef = useRef<any>()
   const tracking = useTracking()
@@ -71,6 +75,20 @@ export const Artwork: React.FC<ArtworkProps> = ({
   }
 
   const handleTap = () => {
+    if (updateRecentSearchesOnTap) {
+      GlobalStore.actions.search.addRecentSearch({
+        type: "AUTOSUGGEST_RESULT_TAPPED",
+        props: {
+          imageUrl: artwork?.image?.url ? artwork.image.url : null,
+          href: artwork.href,
+          slug: artwork.slug,
+          displayLabel: `${artwork.artistNames}, ${artwork.title} (${artwork.date})`,
+          __typename: "Artwork",
+          displayType: "Artwork",
+        },
+      })
+    }
+
     trackArtworkTap()
     onPress && artwork.slug ? onPress(artwork.slug) : navigate(artwork.href!)
   }

@@ -1,8 +1,9 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import React from "react"
 import "react-native"
@@ -18,8 +19,21 @@ const ArtworkWithProviders = (props: any) => {
 }
 
 describe("tracking", () => {
+  const getRecentSearches = () => __globalStoreTestUtils__?.getCurrentState().search.recentSearches!
+
+  const trackEvent = jest.fn()
+
+  beforeEach(() => {
+    ;(useTracking as any).mockImplementation(() => {
+      return {
+        trackEvent,
+      }
+    })
+  })
+
   afterEach(() => {
     jest.clearAllMocks()
+    __globalStoreTestUtils__?.reset()
   })
 
   it("sends an event when trackTap is passed", () => {
@@ -56,6 +70,51 @@ describe("tracking", () => {
       sort: "-decayed_merch",
       type: "thumbnail",
     })
+  })
+
+  it("when an artwork clicked and updateRecentSearchesOnTap is true, adds the artwork to global recent searches", () => {
+    const { container } = renderWithWrappersTL(
+      <ArtworkWithProviders
+        artwork={artworkProps()}
+        contextScreenOwnerType={OwnerType.artist}
+        contextScreenOwnerId="abc124"
+        contextScreenOwnerSlug="andy-warhol"
+        itemIndex={0}
+        updateRecentSearchesOnTap
+      />
+    )
+
+    container.findByType(Touchable).props.onPress()
+
+    expect(getRecentSearches()).toEqual([
+      {
+        type: "AUTOSUGGEST_RESULT_TAPPED",
+        props: {
+          imageUrl: "artsy.net/image-url",
+          href: "/artwork/mikael-olson-some-kind-of-dinosaur",
+          slug: "cool-artwork",
+          displayLabel: "undefined, Some Kind of Dinosaur (2015)",
+          __typename: "Artwork",
+          displayType: "Artwork",
+        },
+      },
+    ])
+  })
+
+  it("when updateRecentSearchesOnTap is not passed, it falls to false by default and does not update global recent searches", () => {
+    const { container } = renderWithWrappersTL(
+      <ArtworkWithProviders
+        artwork={artworkProps()}
+        contextScreenOwnerType={OwnerType.artist}
+        contextScreenOwnerId="abc124"
+        contextScreenOwnerSlug="andy-warhol"
+        itemIndex={0}
+      />
+    )
+
+    container.findByType(Touchable).props.onPress()
+
+    expect(getRecentSearches()).toEqual([])
   })
 })
 

@@ -1,4 +1,5 @@
 import { navigate } from "lib/navigation/navigate"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { searchInsights } from "lib/utils/useSearchInsightsConfig"
 import { Flex, Spacer, Touchable } from "palette"
 import React from "react"
@@ -17,6 +18,19 @@ interface SearchResultsItemProps {
 export const SearchResult: React.FC<SearchResultsItemProps> = ({ result, categoryName, indexName }) => {
   const onPress = (): void => {
     navigate(result.href)
+
+    // add currently tapped search resullt to GlobalStore's recent searches
+    GlobalStore.actions.search.addRecentSearch({
+      type: "AUTOSUGGEST_RESULT_TAPPED",
+      props: {
+        imageUrl: result.image_url,
+        href: result.href,
+        slug: result.slug,
+        displayLabel: result.name,
+        __typename: categoryName,
+        displayType: categoryName,
+      },
+    })
 
     searchInsights("clickedObjectIDsAfterSearch", {
       index: indexName,

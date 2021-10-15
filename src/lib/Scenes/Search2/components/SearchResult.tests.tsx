@@ -39,12 +39,18 @@ const TestPage = (props: any) => {
 }
 
 describe("SearchListItem", () => {
+  const getRecentSearches = () => __globalStoreTestUtils__?.getCurrentState().search.recentSearches!
+
   const navigateSpy = jest.spyOn(navigation, "navigate")
 
   const searchInsightsSpy = jest.spyOn(useSearchInsightsConfig, "searchInsights")
 
   beforeEach(() => {
     jest.clearAllMocks()
+  })
+
+  afterEach(() => {
+    __globalStoreTestUtils__?.reset()
   })
 
   it("renders image with correct props", () => {
@@ -76,6 +82,26 @@ describe("SearchListItem", () => {
       queryID: "test-query-id",
       objectIDs: ["test-id"],
     })
+  })
+
+  it("when a result is pressed, correctly adds it to global recent searches", () => {
+    const { container } = renderWithWrappersTL(<TestPage />)
+
+    container.findByType(Touchable).props.onPress()
+
+    expect(getRecentSearches()).toEqual([
+      {
+        type: "AUTOSUGGEST_RESULT_TAPPED",
+        props: {
+          imageUrl: "test-url",
+          href: "/test-href",
+          slug: "test-slug",
+          displayLabel: "Test Name",
+          __typename: "Article",
+          displayType: "Article",
+        },
+      },
+    ])
   })
 
   it(`calls navigation.navigate with href on press when href does not start with "/partner"`, () => {
