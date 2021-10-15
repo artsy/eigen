@@ -343,6 +343,13 @@ jobs:
               circleci step halt
             fi
       - run:
+          name: Quit early if Draft PR
+          command: |
+            if gh pr view ${CIRCLE_PULL_REQUEST##*/} --json isDraft --jq ".isDraft"
+            then
+              circleci step halt
+            fi
+      - run:
           name: Clear project dir
           command: |
             rm -rf /Users/distiller/project
