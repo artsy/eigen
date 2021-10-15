@@ -32,7 +32,7 @@ export const useTreatment = (treatment: EXPERIMENT_NAME) => {
 
   if (isReady) {
     if (!client) {
-      return experiments[treatment].defaultKey
+      return experiments[treatment].defaultTreatment
     }
     return client.getTreatment(treatment)
   }
@@ -45,7 +45,7 @@ export const useTreatments = (treatments: EXPERIMENT_NAME[]) => {
 
   if (isReady) {
     if (!client) {
-      return treatments.map((treatment) => experiments[treatment].defaultKey)
+      return treatments.map((treatment) => experiments[treatment].defaultTreatment)
     }
     return client.getTreatments(treatments)
   }

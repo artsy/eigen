@@ -7,7 +7,7 @@ export interface ExperimentDescriptor {
    * This refers to the value we show to the user in case something goes wrong with the client
    * initiation or when we no longer use split.io
    */
-  readonly defaultKey: string
+  readonly defaultTreatment: string
 }
 
 // Helper function to get good typings and intellisense
@@ -18,7 +18,7 @@ function defineExperiments<T extends string>(expirmentMap: { readonly [experimen
 export const experiments = defineExperiments({
   HomeScreenWorksForYouVsWorksByArtistsYouFollow: {
     treatmentKey: "HomeScreenWorksForYouVsWorksByArtistsYouFollow",
-    defaultKey: "worksByArtistsYouFolow",
+    defaultTreatment: "worksByArtistsYouFolow",
   },
 })
 export type EXPERIMENT_NAME = keyof typeof experiments
