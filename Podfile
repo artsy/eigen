@@ -36,7 +36,7 @@ end
 $netrc_path = File.expand_path('~/.netrc')
 $user_already_had_netrc_file = File.exists?($netrc_path)
 def add_mapbox_creds
-  File.open($netrc_path, 'a+') { |f|
+  File.open($netrc_path, 'a+', 0600) { |f|
     f.write("""machine api.mapbox.com
 login mapbox
 password #{ENV['MAPBOX_DOWNLOAD_TOKEN']}
