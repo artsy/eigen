@@ -3,7 +3,6 @@ import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
-import { isCloseToEdge } from "lib/utils/isCloseToEdge"
 import { Flex, Spacer } from "palette"
 import React, { useState } from "react"
 import { FlatList } from "react-native"
@@ -20,18 +19,18 @@ interface BuyNowArtworksRailProps {
 export const BuyNowArtworksRail: React.FC<BuyNowArtworksRailProps> = ({ sale, relay }) => {
   const artworks = extractNodes(sale?.promotedSale?.saleArtworksConnection)
 
-  const [fetchingNextPage, setFetchingNextPage] = useState(false)
+  const [fetchingMore, setFetchingMore] = useState(false)
 
-  const fetchNextPage = () => {
-    if (fetchingNextPage) {
+  const handleLoadMore = () => {
+    if (!relay.hasMore() || fetchingMore) {
       return
     }
-    setFetchingNextPage(true)
+    setFetchingMore(true)
     relay.loadMore(PAGE_SIZE, (error) => {
       if (error) {
         console.error("BuyNowArtworksRail.tsx", error.message)
       }
-      setFetchingNextPage(false)
+      setFetchingMore(false)
     })
   }
 
@@ -53,7 +52,7 @@ export const BuyNowArtworksRail: React.FC<BuyNowArtworksRailProps> = ({ sale, re
         data={artworks}
         initialNumToRender={INITIAL_NUMBER_TO_RENDER}
         windowSize={3}
-        onScroll={isCloseToEdge(fetchNextPage)}
+        onEndReached={handleLoadMore}
         renderItem={({ item: { artwork } }) => (
           <ArtworkTileRailCard
             onPress={() => {
