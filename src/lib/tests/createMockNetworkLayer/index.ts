@@ -14,7 +14,7 @@ import { INetwork as RelayNetwork, Network } from "relay-runtime"
 import uuid from "uuid"
 
 import { get } from "lib/utils/get"
-import schema from "./../data/schema.graphql"
+import schema from "../../../../data/schema.graphql"
 import FormattedNumber from "./CustomScalars/formatted_number"
 /**
  * @deprecated use createMockNetworkLayer2

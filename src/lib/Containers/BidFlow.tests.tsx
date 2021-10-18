@@ -6,7 +6,7 @@ import { BidFlow } from "./BidFlow"
 
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
 
-jest.mock("./Components/Bidding/Context/TimeOffsetProvider.tsx", () => ({
+jest.mock("../Components/Bidding/Context/TimeOffsetProvider.tsx", () => ({
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   TimeOffsetProvider: ({ children }) => children,
 }))

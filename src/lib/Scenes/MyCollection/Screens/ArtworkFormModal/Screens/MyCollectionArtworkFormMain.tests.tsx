@@ -16,19 +16,19 @@ jest.mock("lib/Components/FancyModal/FancyModalHeader", () => ({
   FancyModalHeader: () => null,
 }))
 
-jest.mock("./Components/ArtistAutosuggest", () => ({
+jest.mock("../Components/ArtistAutosuggest", () => ({
   ArtistAutosuggest: () => null,
 }))
 
-jest.mock("./Components/MediumPicker", () => ({
+jest.mock("../Components/MediumPicker", () => ({
   MediumPicker: () => null,
 }))
 
-jest.mock("./Components/MediumPicker", () => ({
+jest.mock("../Components/MediumPicker", () => ({
   MediumPicker: () => null,
 }))
 
-jest.mock("./Components/Dimensions", () => ({
+jest.mock("../Components/Dimensions", () => ({
   Dimensions: () => null,
 }))
 
