@@ -38,7 +38,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
           Receive alerts as Push Notifications directly to your device.
         </Sans>
         <SavedSearchAlertForm
-          initialValues={{ name: "" }}
+          initialValues={{ name: "", email: true, push: true }}
           aggregations={aggregations}
           filters={filters}
           onComplete={handleComplete}
