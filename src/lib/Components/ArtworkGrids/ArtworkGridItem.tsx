@@ -74,7 +74,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     filterParams = filterArtworksParams(appliedFilters)
   }
 
-  const handleTap = () => {
+  const addArtworkToRecentSearches = () => {
     if (updateRecentSearchesOnTap) {
       GlobalStore.actions.search.addRecentSearch({
         type: "AUTOSUGGEST_RESULT_TAPPED",
@@ -88,7 +88,10 @@ export const Artwork: React.FC<ArtworkProps> = ({
         },
       })
     }
+  }
 
+  const handleTap = () => {
+    addArtworkToRecentSearches()
     trackArtworkTap()
     onPress && artwork.slug ? onPress(artwork.slug) : navigate(artwork.href!)
   }

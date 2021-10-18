@@ -16,10 +16,7 @@ interface SearchResultsItemProps {
 }
 
 export const SearchResult: React.FC<SearchResultsItemProps> = ({ result, categoryName, indexName }) => {
-  const onPress = (): void => {
-    navigate(result.href)
-
-    // add currently tapped search resullt to GlobalStore's recent searches
+  const addArtworkToRecentSearches = () => {
     GlobalStore.actions.search.addRecentSearch({
       type: "AUTOSUGGEST_RESULT_TAPPED",
       props: {
@@ -31,6 +28,11 @@ export const SearchResult: React.FC<SearchResultsItemProps> = ({ result, categor
         displayType: categoryName,
       },
     })
+  }
+
+  const onPress = (): void => {
+    navigate(result.href)
+    addArtworkToRecentSearches()
 
     searchInsights("clickedObjectIDsAfterSearch", {
       index: indexName,
