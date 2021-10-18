@@ -117,17 +117,6 @@ You can run tests via the CLI using:
 ./scripts/test-ios
 ```
 
-### Update snapshots
-
-We use [Nimble-Snapshots](https://github.com/ashfurrow/Nimble-Snapshots) to take screenshots while running tests and
-these screenshots are checked in to the source control. When you change e.g. the background color of a particular
-button, it calculates the diff between two screenshots and makes the test fail if the delta is above a certain
-threshold.
-
-In order to update existing screenshots, run './scripts/record-snapshots-enable`. This will do some small edits in the `Pods/`directory. After that you can run the tests again, using`cmd+u`. They will fail again but they will generate the new snapshots. Now run the second script `./scripts/record-snapshots-disable`, which will revert the changes. Now run the tests again using `cmd+u` and tests should pass.
-
-If you are still having some tests failing, try commenting out the failing line, run the test, and comment in the line again and run again. If that still fails, then try replacing `haveValidSnapshot` with `recordSnapshot`, run test, go back to `haveValidSnapshot`, run test again. Hopefully that would fix all your failing tests.
-
 ## Certificates
 
 We use Xcode's auto-codesigning. It should magically "just work" if you log in to Xcode with an iTunes account
