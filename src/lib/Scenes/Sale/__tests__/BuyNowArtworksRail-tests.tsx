@@ -35,7 +35,7 @@ describe("BuyNowArtworksRail", () => {
   it(`renders title "Buy now"`, () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(mockEnvironment, mockProps)
-    expect(getByText("Buy now")).toBeDefined()
+    expect(getByText("Artworks Available to Buy Now")).toBeDefined()
   })
   it("renders initial amount of cards with proper text", () => {
     const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
