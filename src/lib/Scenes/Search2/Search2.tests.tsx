@@ -187,6 +187,39 @@ describe("Search2 Screen", () => {
         query: "text",
       })
     })
+
+    it("should correctly track the previusly applied pill context module", () => {
+      const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        Algolia: () => ({
+          appID: "",
+          apiKey: "",
+          indices: [{ name: "Artist_staging", displayName: "Artist" }],
+        }),
+      })
+
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      fireEvent(searchInput, "changeText", "text")
+
+      fireEvent(getByText("Artist"), "press")
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        context_screen_owner_type: "search",
+        context_screen: "Search",
+        context_module: "topTab",
+        subject: "Artist",
+        query: "text",
+      })
+
+      fireEvent(getByText("Artworks"), "press")
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        context_screen_owner_type: "search",
+        context_screen: "Search",
+        context_module: "artistsTab",
+        subject: "Artworks",
+        query: "text",
+      })
+    })
   })
 
   describe("the top pill is selected by default", () => {
