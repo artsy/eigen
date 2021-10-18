@@ -2,6 +2,7 @@ import { fireEvent, RenderAPI, waitFor } from "@testing-library/react-native"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { RecentSearch } from "lib/Scenes/Search/SearchModel"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { isPad } from "lib/utils/hardware"
@@ -161,6 +162,30 @@ describe("Search2 Screen", () => {
       fireEvent(searchInput, "changeText", "Ba")
       fireEvent(getByText("Artist"), "press")
       expect(keyboardDismissSpy).toHaveBeenCalled()
+    })
+
+    it("should track event when a pill is tapped", () => {
+      const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        Algolia: () => ({
+          appID: "",
+          apiKey: "",
+          indices: [{ name: "Artist_staging", displayName: "Artist" }],
+        }),
+      })
+
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      fireEvent(searchInput, "changeText", "text")
+
+      fireEvent(getByText("Artist"), "press")
+      expect(mockTrackEvent).toHaveBeenCalledWith({
+        context_screen_owner_type: "search",
+        context_screen: "Search",
+        context_module: "Artist",
+        subject: "artistsTab",
+        query: "text",
+      })
     })
   })
 
