@@ -13,9 +13,15 @@ interface Props {
   auctionResult: AuctionResultListItem_auctionResult
   onPress: () => void
   showArtistName?: boolean
+  withHorizontalPadding?: boolean
 }
 
-const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress, showArtistName }) => {
+const AuctionResultListItem: React.FC<Props> = ({
+  auctionResult,
+  onPress,
+  showArtistName,
+  withHorizontalPadding = true,
+}) => {
   const color = useColor()
 
   const showPriceUSD = auctionResult.priceRealized?.displayUSD && auctionResult.currency !== "USD"
@@ -28,7 +34,7 @@ const AuctionResultListItem: React.FC<Props> = ({ auctionResult, onPress, showAr
 
   return (
     <Touchable underlayColor={color("black5")} onPress={onPress}>
-      <Flex px={2} flexDirection="row">
+      <Flex px={withHorizontalPadding ? 2 : 0} flexDirection="row">
         {/* Sale Artwork Thumbnail Image */}
         {!auctionResult.images?.thumbnail?.url ? (
           <Flex

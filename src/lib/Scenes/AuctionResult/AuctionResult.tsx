@@ -20,6 +20,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { getImageDimensions } from "../Sale/Components/SaleArtworkListItem"
+import { ComparableWorksFragmentContainer as ComparableWorks } from "./ComparableWorks"
 import { auctionResultHasPrice, AuctionResultHelperData, auctionResultText } from "./helpers"
 
 const CONTAINER_HEIGHT = 80
@@ -229,9 +230,10 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
           )}
 
           <Text variant="md" mt={4} mb={1}>
-            Details
+            Stats
           </Text>
           {details}
+          <ComparableWorks auctionResult={auctionResult} />
         </Box>
         <QAInfo />
       </Animated.ScrollView>
