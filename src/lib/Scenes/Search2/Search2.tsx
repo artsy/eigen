@@ -186,7 +186,9 @@ export const Search2: React.FC<Search2Props> = (props) => {
     setSelectedPill(pill)
     Keyboard.dismiss()
 
-    tracking.trackEvent(tracks.tappedPill(pill.displayName, contextByPillName[pill.displayName], searchState.query!))
+    tracking.trackEvent(
+      tracks.tappedPill(selectedPill.displayName, contextByPillName[pill.displayName], searchState.query!)
+    )
   }
 
   const isSelected = (pill: PillType) => {
