@@ -1,4 +1,4 @@
-import { OwnerType } from "@artsy/cohesion"
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import { Search2_system } from "__generated__/Search2_system.graphql"
@@ -120,15 +120,15 @@ const ARTWORKS_PILL: PillType = {
 }
 const pills: PillType[] = [TOP_PILL, ARTWORKS_PILL]
 
-const contextByPillName: Record<string, string> = {
-  Top: "topTab",
-  Artworks: "artworksTab",
-  Artist: "artistsTab",
-  Auction: "auctionTab",
-  "Artist Series": "artistSeriesTab",
-  Fair: "fairTab",
-  Show: "showTab",
-  Gallery: "galleryTab",
+const contextModuleByPillName: Record<string, ContextModule> = {
+  Top: ContextModule.topTab,
+  Artworks: ContextModule.artworksTab,
+  Artist: ContextModule.artistsTab,
+  Auction: ContextModule.auctionTab,
+  "Artist Series": ContextModule.artistSeriesTab,
+  Fair: ContextModule.fairTab,
+  Show: ContextModule.showTab,
+  Gallery: ContextModule.galleryTab,
 }
 
 interface Search2Props {
@@ -187,7 +187,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
     Keyboard.dismiss()
 
     tracking.trackEvent(
-      tracks.tappedPill(selectedPill.displayName, contextByPillName[pill.displayName], searchState.query!)
+      tracks.tappedPill(contextModuleByPillName[selectedPill.displayName], pill.displayName, searchState.query!)
     )
   }
 
@@ -308,10 +308,10 @@ const Scrollable = styled(ScrollView).attrs(() => ({
 `
 
 export const tracks = {
-  tappedPill: (tabName: string, subject: string, query: string) => ({
+  tappedPill: (contextModule: ContextModule, subject: string, query: string) => ({
     context_screen_owner_type: OwnerType.search,
     context_screen: Schema.PageNames.Search,
-    context_module: tabName,
+    context_module: contextModule,
     subject,
     query,
   }),

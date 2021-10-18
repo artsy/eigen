@@ -182,8 +182,8 @@ describe("Search2 Screen", () => {
       expect(mockTrackEvent).toHaveBeenCalledWith({
         context_screen_owner_type: "search",
         context_screen: "Search",
-        context_module: "Top",
-        subject: "artistsTab",
+        context_module: "topTab",
+        subject: "Artist",
         query: "text",
       })
     })
