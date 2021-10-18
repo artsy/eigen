@@ -4,6 +4,7 @@ import { Home_homePageAbove } from "__generated__/Home_homePageAbove.graphql"
 import { Home_homePageBelow } from "__generated__/Home_homePageBelow.graphql"
 import { Home_meAbove } from "__generated__/Home_meAbove.graphql"
 import { Home_meBelow } from "__generated__/Home_meBelow.graphql"
+import { Home_showsByFollowedArtists } from "__generated__/Home_showsByFollowedArtists.graphql"
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
@@ -36,11 +37,13 @@ import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHome
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
 import { NewWorksForYouRailContainer } from "./Components/NewWorksForYouRail"
+import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
 
 interface Props extends ViewProps {
   articlesConnection: Home_articlesConnection | null
+  showsByFollowedArtists: Home_showsByFollowedArtists | null
   featured: Home_featured | null
   homePageAbove: Home_homePageAbove | null
   homePageBelow: Home_homePageBelow | null
@@ -51,7 +54,16 @@ interface Props extends ViewProps {
 }
 
 const Home = (props: Props) => {
-  const { homePageAbove, homePageBelow, meAbove, meBelow, articlesConnection, featured, loading } = props
+  const {
+    homePageAbove,
+    homePageBelow,
+    meAbove,
+    meBelow,
+    articlesConnection,
+    showsByFollowedArtists,
+    featured,
+    loading,
+  } = props
   const artworkModules = (homePageAbove?.artworkModules || []).concat(homePageBelow?.artworkModules || [])
   const salesModule = homePageAbove?.salesModule
   const collectionsModule = homePageBelow?.marketingCollectionsModule
@@ -80,6 +92,7 @@ const Home = (props: Props) => {
   const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
   const troveEchoFlag = useFeatureFlag("AREnableTrove")
   const showNewNewWorksForYouRail = useFeatureFlag("AREnableNewNewWorksForYou")
+  const showShowsForYouRail = useFeatureFlag("AREnableShowsRail")
 
   /*
   Ordering is defined in https://www.notion.so/artsy/App-Home-Screen-4841255ded3f47c9bcdb73185ee3f335.
@@ -103,6 +116,7 @@ const Home = (props: Props) => {
         type: "auction-results",
       } as const),
     !!articlesConnection && ({ type: "articles" } as const),
+    !!showShowsForYouRail && !!showsByFollowedArtists && ({ type: "shows" } as const),
     !!troveEchoFlag && ({ type: "trove" } as const),
     !!viewingRoomsEchoFlag && !!featured && ({ type: "viewing-rooms" } as const),
     collectionsModule &&
@@ -157,6 +171,16 @@ const Home = (props: Props) => {
               case "articles":
                 return articlesConnection ? (
                   <ArticlesRailFragmentContainer articlesConnection={articlesConnection} />
+                ) : (
+                  <></>
+                )
+              case "shows":
+                return showsByFollowedArtists ? (
+                  <ShowsRailFragmentContainer
+                    showsConnection={showsByFollowedArtists}
+                    onShow={() => separators.updateProps("trailing", { hideSeparator: false })}
+                    onHide={() => separators.updateProps("trailing", { hideSeparator: true })}
+                  />
                 ) : (
                   <></>
                 )
@@ -317,6 +341,11 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...ArticlesRail_articlesConnection
       }
     `,
+    showsByFollowedArtists: graphql`
+      fragment Home_showsByFollowedArtists on ShowConnection {
+        ...ShowsRail_showsConnection
+      }
+    `,
     featured: graphql`
       fragment Home_featured on ViewingRoomConnection {
         ...ViewingRoomsListFeatured_featured
@@ -335,6 +364,9 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...Home_meAbove
         ...AuctionResultsRail_me
         ...NewWorksForYouRail_me
+        showsByFollowedArtists(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
+          ...Home_showsByFollowedArtists
+        }
       }
       meBelow: me @optionalField {
         ...Home_meBelow
@@ -525,6 +557,9 @@ export const HomeQueryRenderer: React.FC = () => {
             me @optionalField {
               ...Home_meBelow
               ...AuctionResultsRail_me
+              showsByFollowedArtists(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
+                ...Home_showsByFollowedArtists
+              }
             }
           }
         `,
@@ -539,6 +574,7 @@ export const HomeQueryRenderer: React.FC = () => {
           return (
             <HomeFragmentContainer
               articlesConnection={above?.articlesConnection ?? null}
+              showsByFollowedArtists={below?.me?.showsByFollowedArtists ?? null}
               featured={below ? below.featured : null}
               homePageAbove={above.homePage}
               homePageBelow={below ? below.homePage : null}
