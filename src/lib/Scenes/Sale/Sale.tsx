@@ -26,6 +26,7 @@ import useInterval from "react-use/lib/useInterval"
 import usePrevious from "react-use/lib/usePrevious"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { SaleBelowTheFoldQueryResponse } from "../../../__generated__/SaleBelowTheFoldQuery.graphql"
+import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
 import { SaleArtworksRailContainer } from "./Components/SaleArtworksRail"
@@ -49,6 +50,7 @@ const SALE_HEADER = "header"
 const SALE_REGISTER_TO_BID = "registerToBid"
 const SALE_ACTIVE_BIDS = "saleActiveBids"
 const SALE_ARTWORKS_RAIL = "saleArtworksRail"
+const BUY_NOW_ARTWORKS_RAIL = "buyNowArtworksRail"
 const SALE_LOTS_LIST = "saleLotsList"
 
 // Types related to showing filter button on scroll
@@ -167,6 +169,10 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
     {
       key: SALE_ARTWORKS_RAIL,
       content: <SaleArtworksRailContainer me={me} />,
+    },
+    {
+      key: BUY_NOW_ARTWORKS_RAIL,
+      content: <BuyNowArtworksRailContainer sale={sale} />,
     },
     {
       key: SALE_LOTS_LIST,
@@ -309,6 +315,7 @@ export const SaleContainer = createRefetchContainer(
       fragment Sale_sale on Sale {
         ...SaleHeader_sale
         ...RegisterToBidButton_sale
+        ...BuyNowArtworksRail_sale
         endAt
         internalID
         liveStartAt
