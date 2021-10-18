@@ -1,10 +1,10 @@
 import { ArtistInsightsTestsQuery } from "__generated__/ArtistInsightsTestsQuery.graphql"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { ArtistInsightsFragmentContainer } from "./ArtistInsights"
 import { ArtistInsightsAuctionResultsPaginationContainer } from "./ArtistInsightsAuctionResults"
 

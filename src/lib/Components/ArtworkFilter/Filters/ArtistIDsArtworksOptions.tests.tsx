@@ -7,8 +7,8 @@ import { Check } from "palette"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { ArtistIDsArtworksOptionsScreen } from "./ArtistIDsArtworksOptions"
-import { OptionListItem } from "./MultiSelectOption"
 import { getEssentialProps } from "./helper"
+import { OptionListItem } from "./MultiSelectOption"
 
 describe("Artist options screen", () => {
   const mockAggregations: Aggregations = [

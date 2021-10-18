@@ -1,12 +1,12 @@
 import { SaleArtworksHomeRailTestsQuery } from "__generated__/SaleArtworksHomeRailTestsQuery.graphql"
 import { SaleArtworkTileRailCardContainer } from "lib/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "lib/Components/SectionTitle"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { PAGE_SIZE, SaleArtworksHomeRailContainer } from "./SaleArtworksHomeRail"
 
 jest.unmock("react-relay")

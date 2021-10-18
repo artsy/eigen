@@ -1,5 +1,6 @@
 import { ArtistShows2TestsQuery } from "__generated__/ArtistShows2TestsQuery.graphql"
 import { ArtistShowFragmentContainer } from "lib/Components/Artist/ArtistShows/ArtistShow"
+import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Text } from "palette"
@@ -7,7 +8,6 @@ import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { extractText } from "lib/tests/extractText"
 import { ArtistShows2PaginationContainer } from "./ArtistShows2"
 
 jest.unmock("react-relay")

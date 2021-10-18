@@ -1,11 +1,11 @@
 import { OnboardingPersonalizationModalTestsQuery } from "__generated__/OnboardingPersonalizationModalTestsQuery.graphql"
+import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
-import { extractText } from "lib/tests/extractText"
 import { OnboardingPersonalizationModalPaginationContainer } from "./OnboardingPersonalizationModal"
 
 jest.unmock("react-relay")

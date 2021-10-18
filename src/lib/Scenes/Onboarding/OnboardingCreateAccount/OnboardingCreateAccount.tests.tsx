@@ -1,9 +1,9 @@
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { fetchMockResponseOnce } from "lib/tests/fetchMockHelpers"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { OnboardingCreateAccountWithEmail } from "./OnboardingCreateAccount"
 
 const goBackMock = jest.fn()

@@ -5,8 +5,8 @@ import React from "react"
 import { TouchableOpacity } from "react-native"
 import { act } from "react-test-renderer"
 import { CATEGORIES_OPTIONS, CategoriesOptionsScreen } from "./CategoriesOptions"
-import { CheckMarkOptionListItem } from "./MultiSelectCheckOption"
 import { getEssentialProps } from "./helper"
+import { CheckMarkOptionListItem } from "./MultiSelectCheckOption"
 
 describe("Categories options screen", () => {
   const MockCategoryScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {

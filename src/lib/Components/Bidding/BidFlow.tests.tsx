@@ -9,8 +9,8 @@ import "react-native"
 import { Button } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import relay from "react-relay"
-import { SelectMaxBid } from "./Screens/SelectMaxBid"
 import { FakeNavigator } from "./Helpers/FakeNavigator"
+import { SelectMaxBid } from "./Screens/SelectMaxBid"
 
 jest.mock("lib/Components/Bidding/Screens/ConfirmBid/BidderPositionQuery", () => ({
   bidderPositionQuery: jest.fn(),

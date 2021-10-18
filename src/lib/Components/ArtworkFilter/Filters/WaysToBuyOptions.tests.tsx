@@ -1,14 +1,14 @@
 import { OptionListItem as FilterModalOptionListItem } from "lib/Components/ArtworkFilter"
-import { MockFilterScreen } from "lib/Components/ArtworkFilter/FilterTestHelper"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { MockFilterScreen } from "lib/Components/ArtworkFilter/FilterTestHelper"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Check } from "palette"
 import React from "react"
+import { getEssentialProps } from "./helper"
 import { OptionListItem } from "./MultiSelectOption"
 import { WaysToBuyOptionsScreen } from "./WaysToBuyOptions"
-import { getEssentialProps } from "./helper"
 
 describe("Ways to Buy Options Screen", () => {
   const initialState: ArtworkFiltersState = {

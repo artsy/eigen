@@ -6,8 +6,8 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Check } from "palette"
 import React from "react"
 import { ArtistNationalitiesOptionsScreen } from "./ArtistNationalitiesOptions"
-import { OptionListItem } from "./MultiSelectOption"
 import { getEssentialProps } from "./helper"
+import { OptionListItem } from "./MultiSelectOption"
 
 const MOCK_AGGREGATIONS: Aggregations = [
   {

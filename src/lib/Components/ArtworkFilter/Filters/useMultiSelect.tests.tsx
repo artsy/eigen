@@ -9,8 +9,8 @@ import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Text, TouchableHighlight, TouchableWithoutFeedback, View } from "react-native"
-import { useMultiSelect } from "./useMultiSelect"
 import { getEssentialProps } from "./helper"
+import { useMultiSelect } from "./useMultiSelect"
 
 describe("useMultiSelect", () => {
   const initialState: ArtworkFiltersState = {

@@ -3,8 +3,8 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { FilterData, FilterParamName } from "../ArtworkFilterHelpers"
-import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { getEssentialProps } from "./helper"
+import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
 const EXAMPLE_FILTER_OPTIONS: FilterData[] = [
   { displayText: "First Example", paramValue: "first-example", paramName: FilterParamName.partnerIDs },

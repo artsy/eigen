@@ -1,6 +1,7 @@
 import { SaleActiveBidItemTestsQuery } from "__generated__/SaleActiveBidItemTestsQuery.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { HighestBid, Outbid, ReserveNotMet } from "lib/Scenes/MyBids/Components/BiddingStatuses"
+import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -8,7 +9,6 @@ import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { SaleActiveBidItemContainer } from "./Components/SaleActiveBidItem"
-import { extractText } from "lib/tests/extractText"
 
 jest.unmock("react-relay")
 

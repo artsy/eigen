@@ -6,11 +6,11 @@ import { MockRelayRendererFixturesArtistQuery } from "__generated__/MockRelayRen
 import cheerio from "cheerio"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { render } from "enzyme"
+import { ContextConsumer } from "lib/utils/Context"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import * as React from "react"
 import { Image, Text, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
-import { ContextConsumer } from "lib/utils/Context"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 
 const Metadata = createFragmentContainer(
   (props: { artworkMetadata: MockRelayRendererFixtures_artworkMetadata }) => <Text>{props.artworkMetadata.title}</Text>,

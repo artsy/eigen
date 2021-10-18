@@ -5,10 +5,10 @@ import { createMockEnvironment } from "relay-test-utils"
 import { ShowArtistsPreviewTestsQuery } from "__generated__/ShowArtistsPreviewTestsQuery.graphql"
 import { ArtistListItem } from "lib/Components/ArtistListItem"
 import { extractText } from "lib/tests/extractText"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { ShowArtistsPreviewContainer as ShowArtistsPreview } from "./ShowArtistsPreview"
 
 jest.unmock("react-relay")

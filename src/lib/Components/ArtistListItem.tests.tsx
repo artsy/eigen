@@ -1,10 +1,10 @@
 import { ArtistListItemTestsQuery } from "__generated__/ArtistListItemTestsQuery.graphql"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Touchable } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { ArtistListItemContainer, formatTombstoneText } from "./ArtistListItem"
 
 jest.unmock("react-relay")

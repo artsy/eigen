@@ -1,12 +1,12 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { RegisterToBidButtonTestsQuery } from "__generated__/RegisterToBidButtonTestsQuery.graphql"
+import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button, Text } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { extractText } from "lib/tests/extractText"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 
 jest.unmock("react-relay")

@@ -1,15 +1,15 @@
 import { OptionListItem as FilterModalOptionListItem } from "lib/Components/ArtworkFilter"
-import { MockFilterScreen } from "lib/Components/ArtworkFilter/FilterTestHelper"
 import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { MockFilterScreen } from "lib/Components/ArtworkFilter/FilterTestHelper"
 import { RightButtonContainer } from "lib/Components/FancyModal/FancyModalHeader"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Check } from "palette"
 import React from "react"
 import { AdditionalGeneIDsOptionsScreen } from "./AdditionalGeneIDsOptions"
-import { OptionListItem } from "./MultiSelectOption"
 import { getEssentialProps } from "./helper"
+import { OptionListItem } from "./MultiSelectOption"
 
 const MOCK_AGGREGATIONS: Aggregations = [
   {

@@ -4,8 +4,8 @@ import { Theme } from "palette"
 import * as React from "react"
 import { Image, Text, View } from "react-native"
 import { MockRelayRenderer } from "./MockRelayRenderer"
-import { renderUntil } from "./renderUntil"
 import { Artwork, badQuery, query, renderToString } from "./MockRelayRendererFixtures"
+import { renderUntil } from "./renderUntil"
 
 jest.unmock("react-relay")
 

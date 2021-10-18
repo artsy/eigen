@@ -1,6 +1,8 @@
 import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPersonalization_highlights.graphql"
 import { OnboardingPersonalizationTestsQuery } from "__generated__/OnboardingPersonalizationTestsQuery.graphql"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -8,8 +10,6 @@ import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { OnboardingPersonalizationList } from "./OnboardingPersonalization"
 
 jest.unmock("react-relay")

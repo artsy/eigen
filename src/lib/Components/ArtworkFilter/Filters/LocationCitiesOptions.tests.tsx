@@ -6,10 +6,10 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Check } from "palette"
 import React from "react"
-import { MockFilterScreen } from "../FilterTestHelper"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "../ArtworkFilterStore"
-import { LocationCitiesOptionsScreen } from "./LocationCitiesOptions"
+import { MockFilterScreen } from "../FilterTestHelper"
 import { getEssentialProps } from "./helper"
+import { LocationCitiesOptionsScreen } from "./LocationCitiesOptions"
 
 describe(LocationCitiesOptionsScreen, () => {
   const initialState: ArtworkFiltersState = {

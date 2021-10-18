@@ -1,12 +1,12 @@
 import { AuctionResultListItemTestsQuery } from "__generated__/AuctionResultListItemTestsQuery.graphql"
 import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { extractNodes } from "lib/utils/extractNodes"
 import moment from "moment"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { AuctionResultFragmentContainer } from "./AuctionResultListItem"
 
 jest.unmock("react-relay")

@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/react-native"
-import React from "react"
 import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import React from "react"
 import { Input } from "./Input"
 
 describe("Input", () => {

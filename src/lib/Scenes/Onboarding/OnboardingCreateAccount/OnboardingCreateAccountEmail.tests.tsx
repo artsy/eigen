@@ -1,9 +1,9 @@
 import { FormikProvider, useFormik } from "formik"
 import { BackButton } from "lib/navigation/BackButton"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Input } from "palette"
 import React from "react"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { emailSchema, UserSchema } from "./OnboardingCreateAccount"
 import { OnboardingCreateAccountEmail } from "./OnboardingCreateAccountEmail"
 

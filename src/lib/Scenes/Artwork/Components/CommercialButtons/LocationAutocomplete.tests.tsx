@@ -6,8 +6,8 @@ import { getLocationPredictions, SimpleLocation } from "lib/utils/googleMaps"
 import { Input, Touchable } from "palette"
 import React from "react"
 import { ReactTestRenderer } from "react-test-renderer"
-import { LocationAutocomplete, LocationPredictions } from "./LocationAutocomplete"
 import { press, typeInInput } from "./helpers"
+import { LocationAutocomplete, LocationPredictions } from "./LocationAutocomplete"
 
 const mockOnChange = jest.fn()
 const getWrapper = (initialLocation: SimpleLocation | null = null) =>

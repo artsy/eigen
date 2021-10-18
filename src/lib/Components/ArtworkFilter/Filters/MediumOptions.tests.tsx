@@ -1,8 +1,8 @@
 import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import React from "react"
-import { MediumOptionsScreen } from "./MediumOptions"
 import { sharedAggregateFilterValidation, ValidationParams } from "./AggregationOptionCommonValidation"
 import { getEssentialProps } from "./helper"
+import { MediumOptionsScreen } from "./MediumOptions"
 
 describe("Medium Options Screen", () => {
   const mockAggregations: Aggregations = [

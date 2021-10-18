@@ -6,9 +6,9 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { RadioDot } from "palette"
 import React from "react"
 import { ReactTestRenderer } from "react-test-renderer"
+import { getEssentialProps } from "./helper"
 import { InnerOptionListItem, OptionListItem } from "./SingleSelectOption"
 import { SortOptionsScreen } from "./SortOptions"
-import { getEssentialProps } from "./helper"
 
 describe("Sort Options Screen", () => {
   const initialState: ArtworkFiltersState = {
