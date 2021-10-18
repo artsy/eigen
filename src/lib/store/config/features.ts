@@ -134,6 +134,12 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableTrove",
   },
+  AREnableShowsRail: {
+    readyForRelease: true,
+    description: "Enable Shows in homepage",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableShowsRail",
+  },
   AREnableMyCollectionAndroid: {
     readyForRelease: false,
     description: "Enable My Collection (Android)",
