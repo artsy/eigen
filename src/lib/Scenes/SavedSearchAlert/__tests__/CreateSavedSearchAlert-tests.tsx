@@ -1,6 +1,7 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
@@ -34,7 +35,7 @@ describe("CreateSavedSearchAlert", () => {
 
   beforeEach(() => {
     mockEnvironment.mockClear()
-    notificationPermissions.mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Authorized))
+    notificationPermissions.mockClear()
   })
 
   it("renders without throwing an error", () => {
@@ -55,7 +56,9 @@ describe("CreateSavedSearchAlert", () => {
   })
 
   it("calls onComplete when the mutation is completed", async () => {
+    notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
     const onCompleteMock = jest.fn()
+
     const { getByTestId } = renderWithWrappersTL(
       <CreateSavedSearchAlert {...defaultProps} onComplete={onCompleteMock} />
     )
