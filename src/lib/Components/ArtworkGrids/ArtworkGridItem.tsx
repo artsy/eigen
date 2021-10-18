@@ -79,7 +79,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       GlobalStore.actions.search.addRecentSearch({
         type: "AUTOSUGGEST_RESULT_TAPPED",
         props: {
-          imageUrl: artwork?.image?.url ? artwork.image.url : null,
+          imageUrl: artwork?.image?.url ?? null,
           href: artwork.href,
           slug: artwork.slug,
           displayLabel: `${artwork.artistNames}, ${artwork.title} (${artwork.date})`,
