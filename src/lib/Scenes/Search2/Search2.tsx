@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import { Search2_system } from "__generated__/Search2_system.graphql"
@@ -119,6 +120,17 @@ const ARTWORKS_PILL: PillType = {
 }
 const pills: PillType[] = [TOP_PILL, ARTWORKS_PILL]
 
+const contextByPillName: Record<string, string> = {
+  Top: "topTab",
+  Artworks: "artworksTab",
+  Artist: "artistsTab",
+  Auction: "auctionTab",
+  "Artist Series": "artistSeriesTab",
+  Fair: "fairTab",
+  Show: "showTab",
+  Gallery: "galleryTab",
+}
+
 interface Search2Props {
   relay: RelayRefetchProp
   system: Search2_system | null
@@ -132,6 +144,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
   const searchInsightsConfigured = useSearchInsightsConfig(system?.algolia?.appID, system?.algolia?.apiKey)
+  const tracking = useTracking()
 
   const pillsArray = useMemo<PillType[]>(() => {
     const indices = system?.algolia?.indices
@@ -172,6 +185,8 @@ export const Search2: React.FC<Search2Props> = (props) => {
     setSearchState((prevState) => ({ ...prevState, page: 1 }))
     setSelectedPill(pill)
     Keyboard.dismiss()
+
+    tracking.trackEvent(tracks.tappedPill(pill.displayName, contextByPillName[pill.displayName], searchState.query!))
   }
 
   const isSelected = (pill: PillType) => {
@@ -289,3 +304,13 @@ const Scrollable = styled(ScrollView).attrs(() => ({
   padding: 0 20px;
   padding-top: 20px;
 `
+
+export const tracks = {
+  tappedPill: (tabName: string, subject: string, query: string) => ({
+    context_screen_owner_type: OwnerType.search,
+    context_screen: Schema.PageNames.Search,
+    context_module: tabName,
+    subject,
+    query,
+  }),
+}
