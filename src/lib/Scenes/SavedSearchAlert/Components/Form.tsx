@@ -13,10 +13,21 @@ interface FormProps {
   artistName: string
   onDeletePress?: () => void
   onSubmitPress?: () => void
+  onTogglePushNotification: (nextState: boolean) => void
+  onToggleEmailNotification: (nextState: boolean) => void
 }
 
 export const Form: React.FC<FormProps> = (props) => {
-  const { pills, artistId, artistName, savedSearchAlertId, onDeletePress, onSubmitPress } = props
+  const {
+    pills,
+    artistId,
+    artistName,
+    savedSearchAlertId,
+    onDeletePress,
+    onSubmitPress,
+    onTogglePushNotification,
+    onToggleEmailNotification,
+  } = props
   const {
     isSubmitting,
     values,
@@ -26,10 +37,6 @@ export const Form: React.FC<FormProps> = (props) => {
     handleChange,
   } = useFormikContext<SavedSearchAlertFormValues>()
   const namePlaceholder = getNamePlaceholder(artistName, pills)
-
-  const handleSwitchToggle = () => {
-    console.log("toggled")
-  }
 
   return (
     <Box>
@@ -76,9 +83,9 @@ export const Form: React.FC<FormProps> = (props) => {
         </Flex>
       </Box>
       <Spacer mt={1} />
-      <Toggle label="Email Alerts" onChange={handleSwitchToggle} active />
+      <Toggle label="Email Alerts" onChange={onToggleEmailNotification} active={values.enableEmailNotifications} />
       <Spacer mt={2} />
-      <Toggle label="Mobile Alerts" onChange={handleSwitchToggle} active={false} />
+      <Toggle label="Mobile Alerts" onChange={onTogglePushNotification} active={values.enablePushNotifications} />
       <Spacer mt={6} />
       <Button
         testID="save-alert-button"

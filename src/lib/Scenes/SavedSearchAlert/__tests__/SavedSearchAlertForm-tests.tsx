@@ -87,7 +87,11 @@ describe("Saved search alert form", () => {
     })
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
-      tracks.editedSavedSearch("savedSearchAlertId", { name: "" }, { name: "something new" })
+      tracks.editedSavedSearch(
+        "savedSearchAlertId",
+        { name: "", enableEmailNotifications: true, enablePushNotifications: true },
+        { name: "something new", enableEmailNotifications: true, enablePushNotifications: true }
+      )
     )
   })
 
@@ -194,7 +198,7 @@ describe("Saved search alert form", () => {
       <SavedSearchAlertForm
         {...baseProps}
         savedSearchAlertId="savedSearchAlertId"
-        initialValues={{ name: "update value" }}
+        initialValues={{ name: "update value", enableEmailNotifications: false, enablePushNotifications: true }}
       />
     )
 
@@ -292,6 +296,8 @@ const aggregations: Aggregations = [
 const baseProps: SavedSearchAlertFormProps = {
   initialValues: {
     name: "",
+    enableEmailNotifications: true,
+    enablePushNotifications: true,
   },
   filters,
   aggregations,

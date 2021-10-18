@@ -19,9 +19,7 @@ import {
 } from "./SavedSearchAlertModel"
 
 export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase {
-  initialValues: {
-    name: string
-  }
+  initialValues: SavedSearchAlertFormValues
   savedSearchAlertId?: string
   onComplete?: (result: SavedSearchAlertMutationResult) => void
   onDeleteComplete?: () => void
@@ -146,6 +144,14 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     }
   }
 
+  const handleTogglePushNotification = (nextState: boolean) => {
+    formik.setFieldValue("enablePushNotifications", nextState)
+  }
+
+  const handleToggleEmailNotification = (nextState: boolean) => {
+    formik.setFieldValue("enableEmailNotifications", nextState)
+  }
+
   const onDelete = async () => {
     try {
       await deleteSavedSearchMutation(savedSearchAlertId!)
@@ -169,6 +175,8 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         artistName={artistName}
         onDeletePress={handleDeletePress}
         onSubmitPress={handleSubmit}
+        onTogglePushNotification={handleTogglePushNotification}
+        onToggleEmailNotification={handleToggleEmailNotification}
         {...other}
       />
       {!!savedSearchAlertId && (

@@ -2,6 +2,8 @@ import { Aggregations, FilterData } from "lib/Components/ArtworkFilter/ArtworkFi
 
 export interface SavedSearchAlertFormValues {
   name: string
+  enablePushNotifications: boolean
+  enableEmailNotifications: boolean
 }
 
 export interface SavedSearchAlertFormPropsBase {
