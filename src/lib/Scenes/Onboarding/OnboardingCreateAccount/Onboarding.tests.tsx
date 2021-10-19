@@ -5,7 +5,7 @@ import React from "react"
 import { Onboarding, OnboardingWelcomeScreens } from "../Onboarding"
 import { OnboardingPersonalization } from "../OnboardingPersonalization/OnboardingPersonalization"
 
-jest.mock("./OnboardingPersonalization/OnboardingPersonalization.tsx", () => ({
+jest.mock("../OnboardingPersonalization/OnboardingPersonalization.tsx", () => ({
   OnboardingPersonalization: () => "OnboardingPersonalization",
 }))
 
