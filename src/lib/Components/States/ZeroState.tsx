@@ -38,7 +38,7 @@ export const ZeroState = (props: ZeroStateProps) => {
         )}
       </Flex>
 
-      {!!props.callToAction && <>{props.callToAction}</>}
+      <Flex minHeight={80}>{!!props.callToAction && <>{props.callToAction}</>}</Flex>
     </Flex>
   )
 }
