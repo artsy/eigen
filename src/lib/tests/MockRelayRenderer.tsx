@@ -1,4 +1,6 @@
 import { IMocks } from "graphql-tools/dist/Interfaces"
+import { ContextConsumer, ContextProvider } from "lib/utils/Context"
+import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import React from "react"
 import { QueryRenderer } from "react-relay"
 import {
@@ -9,8 +11,6 @@ import {
   RecordSource,
   Store,
 } from "relay-runtime"
-import { ContextConsumer, ContextProvider } from "../utils/Context"
-import renderWithLoadProgress from "../utils/renderWithLoadProgress"
 import { createMockNetworkLayer, createMockNetworkLayer2 } from "./createMockNetworkLayer"
 
 // TODO: Copied from https://github.com/artsy/reaction/blob/master/src/DevTools/createMockNetworkLayer/index.ts

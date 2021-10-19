@@ -10,7 +10,7 @@ module.exports = {
     "@images/(.*)": "<rootDir>/images/$1",
     "@relay/(.*)": "<rootDir>/src/lib/relay/$1",
   },
-  testMatch: ["<rootDir>/src/**/__tests__/*tests.(ts|tsx|js)", "<rootDir>/scripts/**/*tests.(ts|tsx|js)", "<rootDir>/__tests__/**/*tests.(ts|tsx|js)"],
+  testMatch: ["<rootDir>/**/*.tests.(ts|tsx|js)"],
   testEnvironment: "jsdom",
   testURL: "http://localhost/",
   setupFilesAfterEnv: ["jest-extended", "@testing-library/jest-native/extend-expect", "./src/setupJest.ts"],
@@ -21,9 +21,8 @@ module.exports = {
     ".*(ts|tsx|js|jsx)$": "babel-jest",
     "\\.graphql$": "jest-raw-loader",
   },
-  transformIgnorePatterns: ["node_modules/(?!(react-native(-.*)?/(@react-native-community/.*))?|react-navigation|@react-navigation/.*)"],
-  watchPlugins: [
-    "jest-watch-typeahead/filename",
-    "jest-watch-typeahead/testname",
+  transformIgnorePatterns: [
+    "node_modules/(?!(react-native(-.*)?/(@react-native-community/.*))?|react-navigation|@react-navigation/.*)",
   ],
+  watchPlugins: ["jest-watch-typeahead/filename", "jest-watch-typeahead/testname"],
 }
