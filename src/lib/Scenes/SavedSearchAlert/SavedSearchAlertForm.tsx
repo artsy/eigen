@@ -2,6 +2,7 @@ import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@a
 import { FormikProvider, useFormik } from "formik"
 import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { Dialog } from "palette"
 import React, { useState } from "react"
@@ -16,12 +17,11 @@ import {
   SavedSearchAlertFormPropsBase,
   SavedSearchAlertFormValues,
   SavedSearchAlertMutationResult,
+  SavedSearchAlertUserAlertSettings,
 } from "./SavedSearchAlertModel"
 
 export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase {
-  initialValues: {
-    name: string
-  }
+  initialValues: SavedSearchAlertFormValues
   savedSearchAlertId?: string
   onComplete?: (result: SavedSearchAlertMutationResult) => void
   onDeleteComplete?: () => void
@@ -43,6 +43,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const pills = extractPills(filters, aggregations)
   const tracking = useTracking()
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
+  const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const formik = useFormik<SavedSearchAlertFormValues>({
     initialValues,
     initialErrors: {},
@@ -53,11 +54,20 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         alertName = getNamePlaceholder(artistName, pills)
       }
 
+      const userAlertSettings: SavedSearchAlertUserAlertSettings = {
+        name: alertName,
+      }
+
+      if (enableSavedSearchToggles) {
+        userAlertSettings.push = values.push
+        userAlertSettings.email = values.email
+      }
+
       try {
         let result: SavedSearchAlertMutationResult
 
         if (isUpdateForm) {
-          const response = await updateSavedSearchAlert(alertName, savedSearchAlertId!)
+          const response = await updateSavedSearchAlert(userAlertSettings, savedSearchAlertId!)
           tracking.trackEvent(tracks.editedSavedSearch(savedSearchAlertId!, initialValues, values))
 
           result = {
@@ -65,7 +75,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
           }
         } else {
           const criteria = getSearchCriteriaFromFilters(artistId, filters)
-          const response = await createSavedSearchAlert(alertName, criteria)
+          const response = await createSavedSearchAlert(userAlertSettings, criteria)
 
           result = {
             id: response.createSavedSearch?.savedSearchOrErrors.internalID!,
@@ -146,6 +156,14 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     }
   }
 
+  const handleTogglePushNotification = async (enabled: boolean) => {
+    formik.setFieldValue("push", enabled)
+  }
+
+  const handleToggleEmailNotification = (enabled: boolean) => {
+    formik.setFieldValue("email", enabled)
+  }
+
   const onDelete = async () => {
     try {
       await deleteSavedSearchMutation(savedSearchAlertId!)
@@ -169,6 +187,8 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         artistName={artistName}
         onDeletePress={handleDeletePress}
         onSubmitPress={handleSubmit}
+        onTogglePushNotification={handleTogglePushNotification}
+        onToggleEmailNotification={handleToggleEmailNotification}
         {...other}
       />
       {!!savedSearchAlertId && (
