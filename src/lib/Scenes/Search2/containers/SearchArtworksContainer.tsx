@@ -23,6 +23,7 @@ export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ key
         render={renderWithPlaceholder({
           Container: SearchArtworksGridPaginationContainer,
           renderPlaceholder: () => <SearchArtworksGridSkeleton />,
+          initialProps: { keyword },
         })}
         variables={{ count: 20, keyword }}
         cacheConfig={{ force: true }}
