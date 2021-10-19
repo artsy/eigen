@@ -146,8 +146,10 @@ const AutosuggestResultsFlatList: React.FC<{
                 <>
                   <Spacer mt={1} />
                   <Spacer mt={2} />
-                  <Text variant="md">Sorry, we couldn’t find anything for “{query}.”</Text>
-                  <Text variant="md" color="black60">
+                  <Text variant="md" textAlign="center">
+                    Sorry, we couldn’t find anything for “{query}.”
+                  </Text>
+                  <Text variant="md" color="black60" textAlign="center">
                     Please try searching again with a different spelling.
                   </Text>
                 </>
