@@ -1,4 +1,4 @@
-jest.mock("./../../utils/googleMaps", () => ({
+jest.mock("lib/utils/googleMaps", () => ({
   getLocationPredictions: jest.fn(),
   getLocationDetails: jest.fn(),
 }))

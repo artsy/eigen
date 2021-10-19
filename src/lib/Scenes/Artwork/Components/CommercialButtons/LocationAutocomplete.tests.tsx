@@ -1,4 +1,4 @@
-jest.mock("./../../utils/googleMaps", () => ({ getLocationPredictions: jest.fn() }))
+jest.mock("lib/utils/googleMaps", () => ({ getLocationPredictions: jest.fn() }))
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"

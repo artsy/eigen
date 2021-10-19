@@ -5,10 +5,10 @@ AsyncStorage.removeItem = jest.fn()
 
 import { Overview } from "./Overview"
 
-jest.mock("./Submission/updateConsignmentSubmission", () => ({ updateConsignmentSubmission: jest.fn() }))
+jest.mock("../Submission/updateConsignmentSubmission", () => ({ updateConsignmentSubmission: jest.fn() }))
 import { updateConsignmentSubmission } from "../Submission/updateConsignmentSubmission"
 
-jest.mock("./Submission/uploadPhotoToGemini", () => ({ uploadImageAndPassToGemini: jest.fn() }))
+jest.mock("../Submission/uploadPhotoToGemini", () => ({ uploadImageAndPassToGemini: jest.fn() }))
 import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
 
 const nav = {} as any

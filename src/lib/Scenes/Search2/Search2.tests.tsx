@@ -29,7 +29,7 @@ jest.mock("lib/utils/useSearchInsightsConfig", () => ({
   useSearchInsightsConfig: () => true,
 }))
 
-jest.mock("./Search/AutosuggestResults.tsx", () => ({ AutosuggestResults: () => null }))
+jest.mock("../Search/AutosuggestResults.tsx", () => ({ AutosuggestResults: () => null }))
 
 describe("Search2 Screen", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>

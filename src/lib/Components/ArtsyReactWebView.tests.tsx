@@ -81,13 +81,13 @@ describe(ArtsyReactWebViewPage, () => {
   it("sets the user agent correctly", () => {
     const tree = render()
     expect(tree.root.findByType(WebView).props.userAgent).toBe(
-      "Artsy-Mobile ios Artsy-Mobile/7.0.3 Eigen/build-number/7.0.3"
+      "Artsy-Mobile ios Artsy-Mobile/7.1.0 Eigen/build-number/7.1.0"
     )
   })
   it("sets the user agent correctly", () => {
     const tree = render()
     expect(tree.root.findByType(WebView).props.userAgent).toBe(
-      "Artsy-Mobile ios Artsy-Mobile/7.0.3 Eigen/build-number/7.0.3"
+      "Artsy-Mobile ios Artsy-Mobile/7.1.0 Eigen/build-number/7.1.0"
     )
   })
 
