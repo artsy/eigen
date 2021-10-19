@@ -206,9 +206,9 @@ const AutosuggestResultsContainer = createPaginationContainer(
               ... on Artist {
                 internalID
                 slug
+                isDisplayAuctionLink
                 counts {
                   artworks
-                  auctionResults
                 }
               }
             }

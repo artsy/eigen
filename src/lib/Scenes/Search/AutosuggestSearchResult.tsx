@@ -52,8 +52,7 @@ export const AutosuggestSearchResult: React.FC<{
   const { inputRef, queryRef } = useContext(SearchContext)
   const { trackEvent } = useTracking()
 
-  const showNavigationButtons =
-    showQuickNavigationButtons && !!result.counts?.artworks && !!result.counts?.auctionResults
+  const showNavigationButtons = showQuickNavigationButtons && !!result.counts?.artworks && !!result.isDisplayAuctionLink
 
   const onPress: HandleResultPress = (passProps) => {
     if (onResultPress) {

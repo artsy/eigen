@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ff31f0121075d7bc66bb3f13532c55e2 */
+/* @relayHash f3e3acc2e0afcfc5c2d2f6582837e89e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,9 +37,9 @@ export type AutosuggestResultsPaginationQueryRawResponse = {
                 readonly id: string;
                 readonly internalID: string;
                 readonly slug: string;
+                readonly isDisplayAuctionLink: boolean | null;
                 readonly counts: ({
                     readonly artworks: number | null;
-                    readonly auctionResults: number | null;
                 }) | null;
             } | {
                 readonly imageUrl: string | null;
@@ -91,9 +91,9 @@ fragment AutosuggestResults_results_1qwknJ on Query {
         ... on Artist {
           internalID
           slug
+          isDisplayAuctionLink
           counts {
             artworks
-            auctionResults
           }
         }
         ... on Node {
@@ -296,6 +296,13 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "kind": "ScalarField",
+                        "name": "isDisplayAuctionLink",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "concreteType": "ArtistCounts",
                         "kind": "LinkedField",
                         "name": "counts",
@@ -306,13 +313,6 @@ return {
                             "args": null,
                             "kind": "ScalarField",
                             "name": "artworks",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "auctionResults",
                             "storageKey": null
                           }
                         ],
@@ -393,7 +393,7 @@ return {
     ]
   },
   "params": {
-    "id": "ff31f0121075d7bc66bb3f13532c55e2",
+    "id": "f3e3acc2e0afcfc5c2d2f6582837e89e",
     "metadata": {},
     "name": "AutosuggestResultsPaginationQuery",
     "operationKind": "query",

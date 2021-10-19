@@ -15,9 +15,9 @@ export type AutosuggestResults_results = {
                 readonly internalID?: string;
                 readonly displayType?: string | null;
                 readonly slug?: string;
+                readonly isDisplayAuctionLink?: boolean | null;
                 readonly counts?: {
                     readonly artworks: number | null;
-                    readonly auctionResults: number | null;
                 } | null;
             } | null;
         } | null> | null;
@@ -185,6 +185,13 @@ return {
                     {
                       "alias": null,
                       "args": null,
+                      "kind": "ScalarField",
+                      "name": "isDisplayAuctionLink",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
                       "concreteType": "ArtistCounts",
                       "kind": "LinkedField",
                       "name": "counts",
@@ -195,13 +202,6 @@ return {
                           "args": null,
                           "kind": "ScalarField",
                           "name": "artworks",
-                          "storageKey": null
-                        },
-                        {
-                          "alias": null,
-                          "args": null,
-                          "kind": "ScalarField",
-                          "name": "auctionResults",
                           "storageKey": null
                         }
                       ],
@@ -257,5 +257,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'e9155b8891618f6bcae79f330dad3306';
+(node as any).hash = '71079eb705994fabe92b629db52b5c6a';
 export default node;
