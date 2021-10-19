@@ -40,7 +40,6 @@
     "src/**/*.tsx",
     "scripts/changelog/**/*.ts",
     "dangerfile.ts",
-    "__tests__/**/*.ts"
   ],
   "exclude": [
     "node_modules",

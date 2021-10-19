@@ -16,7 +16,7 @@ const filesOnly = (file: string) => fs.existsSync(file) && fs.lstatSync(file).is
 // Modified or Created can be treated the same a lot of the time
 const getCreatedFileNames = (createdFiles: string[]) => createdFiles.filter(filesOnly)
 
-const testOnlyFilter = (filename: string) => filename.includes("-tests") && typescriptOnly(filename)
+const testOnlyFilter = (filename: string) => filename.includes(".tests") && typescriptOnly(filename)
 
 /**
  * Danger Rules
@@ -50,7 +50,7 @@ const preventUsingEnzyme = () => {
 
 ${newEnzymeImports.map((filename) => `- \`${filename}\``).join("\n")}
 
-See [\`Pill-tests.tsx\`](https://github.com/artsy/eigen/blob/2f32d462bb3b4ce358c8a14e3ed09b42523de8bd/src/palette/elements/Pill/__tests__/Pill-tests.tsx) as an example, or [the docs](https://callstack.github.io/react-native-testing-library/docs/api-queries).
+See [\`Pill.tests.tsx\`](https://github.com/artsy/eigen/blob/2f32d462bb3b4ce358c8a14e3ed09b42523de8bd/src/palette/elements/Pill/__tests__/Pill-tests.tsx) as an example, or [the docs](https://callstack.github.io/react-native-testing-library/docs/api-queries).
   `)
   }
 }
@@ -71,7 +71,7 @@ const preventUsingTestRenderer = () => {
 
 ${newTRImports.map((filename) => `- \`${filename}\``).join("\n")}
 
-See [\`Pill-tests.tsx\`](https://github.com/artsy/eigen/blob/2f32d462bb3b4ce358c8a14e3ed09b42523de8bd/src/palette/elements/Pill/__tests__/Pill-tests.tsx) as an example, or [the docs](https://callstack.github.io/react-native-testing-library/docs/api-queries).
+See [\`Pill.tests.tsx\`](https://github.com/artsy/eigen/blob/2f32d462bb3b4ce358c8a14e3ed09b42523de8bd/src/palette/elements/Pill/__tests__/Pill-tests.tsx) as an example, or [the docs](https://callstack.github.io/react-native-testing-library/docs/api-queries).
   `)
   }
 }
@@ -183,7 +183,6 @@ export const useWebPs = (fileNames: string[]) => {
       .find((imageFileExtension) => IMAGE_EXTENSIONS_TO_AVOID.includes(imageFileExtension))
   )
 
-  console.log(hasNonWebImages)
   if (hasNonWebImages) {
     warn(
       "❌ **It seems like you added some non WebP images to Eigen, please convert them to WebPs using `source images/script.sh` script **"

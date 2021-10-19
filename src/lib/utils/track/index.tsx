@@ -180,7 +180,7 @@ export function screenTrack<P>(trackingInfo: TrackingInfo<Schema.PageView, P, nu
  * By default we mock `react-tracking`, so it's not possible to test the code easily.
  *
  * A good pattern for testing analytics code is to have a completely separate file
- * for the tests. For example: `__tests__/Overview-analytics-tests.tsx`. Jest has each
+ * for the tests. For example: `Overview-analytics-tests.tsx`. Jest has each
  * test file run in a unique environment, so in that file we can unmock react-tracking.
  *
  * Here's a full example:
