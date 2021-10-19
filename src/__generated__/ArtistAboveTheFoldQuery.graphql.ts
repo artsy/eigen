@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d74797e1d61502554354eaf9da6af6aa */
+/* @relayHash a9c7cb031ceebb0e65c55734645b367c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -71,9 +71,7 @@ export type ArtistAboveTheFoldQueryResponse = {
             readonly related_artists: number | null;
             readonly articles: number | null;
         } | null;
-        readonly auctionResultsConnection: {
-            readonly totalCount: number | null;
-        } | null;
+        readonly isDisplayAuctionLink: boolean | null;
         readonly " $fragmentRefs": FragmentRefs<"ArtistHeader_artist" | "ArtistArtworks_artist">;
     } | null;
 };
@@ -101,9 +99,7 @@ query ArtistAboveTheFoldQuery(
     }
     ...ArtistHeader_artist
     ...ArtistArtworks_artist_2VV6jB
-    auctionResultsConnection {
-      totalCount
-    }
+    isDisplayAuctionLink
     id
   }
 }
@@ -290,19 +286,8 @@ v8 = {
 v9 = {
   "alias": null,
   "args": null,
-  "concreteType": "AuctionResultConnection",
-  "kind": "LinkedField",
-  "name": "auctionResultsConnection",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "totalCount",
-      "storageKey": null
-    }
-  ],
+  "kind": "ScalarField",
+  "name": "isDisplayAuctionLink",
   "storageKey": null
 },
 v10 = {
@@ -866,7 +851,7 @@ return {
     ]
   },
   "params": {
-    "id": "d74797e1d61502554354eaf9da6af6aa",
+    "id": "a9c7cb031ceebb0e65c55734645b367c",
     "metadata": {},
     "name": "ArtistAboveTheFoldQuery",
     "operationKind": "query",
@@ -874,5 +859,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'c77a30c411c594acc62fcfa05072964f';
+(node as any).hash = '80b4df88b30560b86a30f44f091bb728';
 export default node;

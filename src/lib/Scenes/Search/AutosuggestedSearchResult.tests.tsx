@@ -171,9 +171,9 @@ describe(AutosuggestSearchResult, () => {
           href: "/artist/anto-carte",
           imageUrl: "blah",
           __typename: "Artist",
+          isDisplayAuctionLink: true,
           counts: {
             artworks: 12,
-            auctionResults: 4,
           },
         }}
         showQuickNavigationButtons
@@ -192,9 +192,9 @@ describe(AutosuggestSearchResult, () => {
           href: "/artist/anto-carte",
           imageUrl: "blah",
           __typename: "Artist",
+          isDisplayAuctionLink: true,
           counts: {
             artworks: 12,
-            auctionResults: 4,
           },
         }}
         showQuickNavigationButtons={false}
@@ -213,9 +213,9 @@ describe(AutosuggestSearchResult, () => {
           href: "/artist/anto-carte",
           imageUrl: "blah",
           __typename: "Artist",
+          isDisplayAuctionLink: false,
           counts: {
             artworks: 12,
-            auctionResults: 0,
           },
         }}
         showQuickNavigationButtons
@@ -234,9 +234,9 @@ describe(AutosuggestSearchResult, () => {
           href: "/artist/anto-carte",
           imageUrl: "blah",
           __typename: "Artist",
+          isDisplayAuctionLink: true,
           counts: {
             artworks: 12,
-            auctionResults: 4,
           },
         }}
         showQuickNavigationButtons

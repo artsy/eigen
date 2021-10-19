@@ -75,7 +75,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     })
   }
 
-  if (artistAboveTheFold?.auctionResultsConnection?.totalCount) {
+  if (artistAboveTheFold?.isDisplayAuctionLink) {
     tabs.push({
       title: "Insights",
       content: artistBelowTheFold ? (
@@ -167,9 +167,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                       }
                       ...ArtistHeader_artist
                       ...ArtistArtworks_artist @arguments(input: $input)
-                      auctionResultsConnection {
-                        totalCount
-                      }
+                      isDisplayAuctionLink
                     }
                   }
                 `,
