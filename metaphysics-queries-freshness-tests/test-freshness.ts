@@ -33,7 +33,7 @@ const doIt = async (): Promise<never> => {
     },
   })
 
-  const allQueries = values(require("../data/complete.queryMap.json")) as string[]
+  const allQueries = values(require("./data/complete.queryMap.json")) as string[]
   const problemQueries = allQueries.filter(
     (q) =>
       q.includes("$conversationID") ||
@@ -150,4 +150,3 @@ const doIt = async (): Promise<never> => {
 }
 
 doIt()
-

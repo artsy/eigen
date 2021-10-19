@@ -143,7 +143,7 @@ If you're still unsure whether your change requires a new migration, please reac
     }
    ```
 
-5. Test your migration in `migration-tests.ts`.
+5. Test your migration in `migration.tests.ts`.
 
    ```ts
    describe("App version Versions.RenameOldNameToNewName", () => {
