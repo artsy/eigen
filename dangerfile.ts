@@ -183,7 +183,6 @@ export const useWebPs = (fileNames: string[]) => {
       .find((imageFileExtension) => IMAGE_EXTENSIONS_TO_AVOID.includes(imageFileExtension))
   )
 
-  console.log(hasNonWebImages)
   if (hasNonWebImages) {
     warn(
       "❌ **It seems like you added some non WebP images to Eigen, please convert them to WebPs using `source images/script.sh` script **"
