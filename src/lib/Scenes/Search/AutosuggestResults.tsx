@@ -156,7 +156,7 @@ const AutosuggestResultsFlatList: React.FC<{
               onResultPress={onResultPress}
               showQuickNavigationButtons={showQuickNavigationButtons}
               trackResultPress={trackResultPress}
-              index={index}
+              position={index + 1}
             />
           </Flex>
         )

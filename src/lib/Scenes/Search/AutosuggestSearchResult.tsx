@@ -33,7 +33,7 @@ export const AutosuggestSearchResult: React.FC<{
   displayingRecentResult?: boolean
   showResultType?: boolean
   showQuickNavigationButtons?: boolean
-  index?: number
+  position?: number
   trackResultPress?: TrackResultPress
   onResultPress?: OnResultPress
   onDelete?(): void
@@ -41,7 +41,7 @@ export const AutosuggestSearchResult: React.FC<{
   result,
   highlight,
   showResultType,
-  index,
+  position,
   trackResultPress,
   onDelete,
   onResultPress,
@@ -69,7 +69,7 @@ export const AutosuggestSearchResult: React.FC<{
       }, 20)
 
       if (trackResultPress) {
-        trackResultPress(result, index)
+        trackResultPress(result, position)
 
         return
       }
