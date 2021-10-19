@@ -34,7 +34,7 @@ describe("SearchArtworks", () => {
   it("should render loading state", () => {
     const { getByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
 
-    expect(getByA11yLabel("Search artworks are loading")).toBeTruthy()
+    expect(getByA11yLabel("Artwork results are loading")).toBeTruthy()
   })
 
   it("should render error state", () => {
