@@ -33,6 +33,7 @@ import { SearchPills } from "./components/SearchPills"
 import { SearchPlaceholder } from "./components/SearchPlaceholder"
 import { RefetchWhenApiKeyExpiredContainer } from "./containers/RefetchWhenApiKeyExpired"
 import { SearchArtworksQueryRenderer } from "./containers/SearchArtworksContainer"
+import { getContextModuleByPillName } from "./helpers"
 import { SearchResults } from "./SearchResults"
 import { PillType } from "./types"
 
@@ -120,17 +121,6 @@ const ARTWORKS_PILL: PillType = {
 }
 const pills: PillType[] = [TOP_PILL, ARTWORKS_PILL]
 
-const contextModuleByPillName: Record<string, ContextModule> = {
-  Top: ContextModule.topTab,
-  Artworks: ContextModule.artworksTab,
-  Artist: ContextModule.artistsTab,
-  Auction: ContextModule.auctionTab,
-  "Artist Series": ContextModule.artistSeriesTab,
-  Fair: ContextModule.fairTab,
-  Show: ContextModule.showTab,
-  Gallery: ContextModule.galleryTab,
-}
-
 interface Search2Props {
   relay: RelayRefetchProp
   system: Search2_system | null
@@ -182,13 +172,13 @@ export const Search2: React.FC<Search2Props> = (props) => {
   const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 2
 
   const handlePillPress = (pill: PillType) => {
+    const contextModule = getContextModuleByPillName(selectedPill.displayName)
+
     setSearchState((prevState) => ({ ...prevState, page: 1 }))
     setSelectedPill(pill)
-    Keyboard.dismiss()
 
-    tracking.trackEvent(
-      tracks.tappedPill(contextModuleByPillName[selectedPill.displayName], pill.displayName, searchState.query!)
-    )
+    Keyboard.dismiss()
+    tracking.trackEvent(tracks.tappedPill(contextModule, pill.displayName, searchState.query!))
   }
 
   const isSelected = (pill: PillType) => {
