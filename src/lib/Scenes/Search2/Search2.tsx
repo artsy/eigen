@@ -134,7 +134,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
   const searchInsightsConfigured = useSearchInsightsConfig(system?.algolia?.appID, system?.algolia?.apiKey)
-  const tracking = useTracking()
+  const { trackEvent } = useTracking()
 
   const pillsArray = useMemo<PillType[]>(() => {
     const indices = system?.algolia?.indices
@@ -176,9 +176,8 @@ export const Search2: React.FC<Search2Props> = (props) => {
 
     setSearchState((prevState) => ({ ...prevState, page: 1 }))
     setSelectedPill(pill)
-
     Keyboard.dismiss()
-    tracking.trackEvent(tracks.tappedPill(contextModule, pill.displayName, searchState.query!))
+    trackEvent(tracks.tappedPill(contextModule, pill.displayName, searchState.query!))
   }
 
   const isSelected = (pill: PillType) => {
