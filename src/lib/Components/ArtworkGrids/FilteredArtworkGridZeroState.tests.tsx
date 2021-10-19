@@ -19,18 +19,9 @@ describe("FilteredArtworkGridZeroState", () => {
     trackClearMock.mockClear()
   })
 
-  it("display correct text when used for filter results", () => {
-    const { getByText, queryAllByText } = renderWithWrappersTL(<TestWrapper resultsType="filter" />)
+  it("displays correct text", () => {
+    const { getByText } = renderWithWrappersTL(<TestWrapper />)
     expect(getByText("No results found\nPlease try another search.")).toBeDefined()
-    expect(queryAllByText("No results were found.")).toHaveLength(0)
-    expect(queryAllByText("Please try another search term.")).toHaveLength(0)
-  })
-
-  it("display correct text when used for search results", () => {
-    const { getByText, queryAllByText } = renderWithWrappersTL(<TestWrapper resultsType="search" />)
-    expect(getByText("No results were found.")).toBeDefined()
-    expect(getByText("Please try another search term.")).toBeDefined()
-    expect(queryAllByText("No results found\nPlease try another search.")).toHaveLength(0)
   })
 
   it(`displays "Clear filters" button`, () => {

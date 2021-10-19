@@ -4,10 +4,9 @@ import { useArtworkFilters, useSelectedFiltersCount } from "lib/Components/Artwo
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader2"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
-import { Box, Separator, useTheme } from "palette"
+import { Box, Separator, Text, useTheme } from "palette"
 import React, { useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -16,7 +15,7 @@ import { useTracking } from "react-tracking"
 export interface SearchArtworksGridProps {
   viewer: SearchArtworksGrid_viewer
   relay: RelayPaginationProp
-  keyword?: string
+  keyword: string
 }
 
 interface ArtworkSection {
@@ -82,7 +81,12 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
       <Separator />
       {artworksCount === 0 ? (
         <Box mb="80px" pt={1}>
-          <FilteredArtworkGridZeroState hideClearButton resultsType="search" />
+          <Box px={2}>
+            <Text variant="md">Sorry, we couldn’t find Artworks for ”{keyword}.”</Text>
+            <Text variant="md" color="black60">
+              Please try searching again with a different spelling.
+            </Text>
+          </Box>
         </Box>
       ) : (
         <FlatList<ArtworkSection>
