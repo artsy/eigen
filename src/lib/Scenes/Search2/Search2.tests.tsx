@@ -179,13 +179,17 @@ describe("Search2 Screen", () => {
       fireEvent(searchInput, "changeText", "text")
 
       fireEvent(getByText("Artist"), "press")
-      expect(mockTrackEvent).toHaveBeenCalledWith({
-        context_screen_owner_type: "search",
-        context_screen: "Search",
-        context_module: "topTab",
-        subject: "Artist",
-        query: "text",
-      })
+      expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "context_module": "topTab",
+            "context_screen": "Search",
+            "context_screen_owner_type": "search",
+            "query": "text",
+            "subject": "Artist",
+          },
+        ]
+      `)
     })
 
     it("should correctly track the previusly applied pill context module", () => {
@@ -203,22 +207,30 @@ describe("Search2 Screen", () => {
       fireEvent(searchInput, "changeText", "text")
 
       fireEvent(getByText("Artist"), "press")
-      expect(mockTrackEvent).toHaveBeenCalledWith({
-        context_screen_owner_type: "search",
-        context_screen: "Search",
-        context_module: "topTab",
-        subject: "Artist",
-        query: "text",
-      })
+      expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "context_module": "topTab",
+            "context_screen": "Search",
+            "context_screen_owner_type": "search",
+            "query": "text",
+            "subject": "Artist",
+          },
+        ]
+      `)
 
       fireEvent(getByText("Artworks"), "press")
-      expect(mockTrackEvent).toHaveBeenCalledWith({
-        context_screen_owner_type: "search",
-        context_screen: "Search",
-        context_module: "artistsTab",
-        subject: "Artworks",
-        query: "text",
-      })
+      expect(mockTrackEvent.mock.calls[2]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "context_module": "artistsTab",
+            "context_screen": "Search",
+            "context_screen_owner_type": "search",
+            "query": "text",
+            "subject": "Artworks",
+          },
+        ]
+      `)
     })
   })
 
