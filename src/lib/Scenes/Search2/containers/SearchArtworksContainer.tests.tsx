@@ -4,7 +4,7 @@ import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { __renderWithPlaceholderTestUtils__ } from "lib/utils/renderWithPlaceholder"
 import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
-import { SearchArtworksQueryRenderer } from "../SearchArtworksContainer"
+import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 
 jest.unmock("react-relay")
 
