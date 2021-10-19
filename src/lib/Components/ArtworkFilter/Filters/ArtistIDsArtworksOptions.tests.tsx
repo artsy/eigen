@@ -1,14 +1,10 @@
+import { fireEvent } from "@testing-library/react-native"
 import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { TouchableRow } from "lib/Components/TouchableRow"
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWrappers"
-import { Check } from "palette"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { act, ReactTestRenderer } from "react-test-renderer"
 import { ArtistIDsArtworksOptionsScreen } from "./ArtistIDsArtworksOptions"
 import { getEssentialProps } from "./helper"
-import { OptionListItem } from "./MultiSelectOption"
 
 describe("Artist options screen", () => {
   const mockAggregations: Aggregations = [
@@ -54,14 +50,6 @@ describe("Artist options screen", () => {
     },
   ]
 
-  const selectedArtistOptions = (componentTree: ReactTestRenderer) => {
-    const artistOptions = componentTree.root.findAllByType(OptionListItem)
-    const selectedOptions = artistOptions.filter((item) => {
-      return item.findByType(Check).props.selected === true
-    })
-    return selectedOptions
-  }
-
   const MockArtistScreen = ({ initialData }: { initialData?: ArtworkFiltersState }) => {
     return (
       <ArtworkFiltersStoreProvider initialData={initialData}>
@@ -83,11 +71,9 @@ describe("Artist options screen", () => {
         followedArtists: null,
       },
     }
-    const tree = renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
+    const { getAllByA11yState } = renderWithWrappersTL(<MockArtistScreen initialData={injectedState} />)
 
-    // Includes a button for each artist + one for followed artists,
-    // but our FlatList is configured to only show 4 in the initial render pass
-    expect(tree.root.findAllByType(Check)).toHaveLength(6)
+    expect(getAllByA11yState({ checked: false })).toHaveLength(6)
   })
 
   describe("selecting an artist option", () => {
@@ -111,10 +97,10 @@ describe("Artist options screen", () => {
         },
       }
 
-      const component = renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
+      const { getAllByA11yState } = renderWithWrappersTL(<MockArtistScreen initialData={injectedState} />)
+      const selectedOptions = getAllByA11yState({ checked: true })
 
-      const selectedOption = selectedArtistOptions(component)[0]
-      expect(extractText(selectedOption)).toEqual("Artist 2")
+      expect(selectedOptions[0]).toHaveTextContent("Artist 2")
     })
 
     it("allows multiple artist options to be selected", () => {
@@ -131,21 +117,18 @@ describe("Artist options screen", () => {
         },
       }
 
-      const tree = renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
+      const { getByText, getAllByA11yState } = renderWithWrappersTL(<MockArtistScreen initialData={injectedState} />)
 
-      const firstOptionInstance = tree.root.findAllByType(TouchableRow)[0] // Artists I follow
-      const secondOptionInstance = tree.root.findAllByType(TouchableRow)[1] // Artist 1
-      const thirdOptionInstance = tree.root.findAllByType(TouchableRow)[2] // Artist 2
+      fireEvent.press(getByText("All Artists I Follow"))
+      fireEvent.press(getByText("Artist 1"))
+      fireEvent.press(getByText("Artist 2"))
 
-      act(() => firstOptionInstance.props.onPress())
-      act(() => secondOptionInstance.props.onPress())
-      act(() => thirdOptionInstance.props.onPress())
+      const selectedOptions = getAllByA11yState({ checked: true })
 
-      const selectedOptions = selectedArtistOptions(tree)
       expect(selectedOptions).toHaveLength(3)
-      expect(extractText(selectedOptions[0])).toMatch("All Artists I Follow")
-      expect(extractText(selectedOptions[1])).toMatch("Artist 1")
-      expect(extractText(selectedOptions[2])).toMatch("Artist 2")
+      expect(selectedOptions[0]).toHaveTextContent("All Artists I Follow")
+      expect(selectedOptions[1]).toHaveTextContent("Artist 1")
+      expect(selectedOptions[2]).toHaveTextContent("Artist 2")
     })
 
     it("deselects artist option if it is already selected and then tapped again", () => {
@@ -168,17 +151,17 @@ describe("Artist options screen", () => {
         },
       }
 
-      const tree = renderWithWrappers(<MockArtistScreen initialData={injectedState} />)
+      const { queryByA11yState, getAllByA11yState, getByText } = renderWithWrappersTL(
+        <MockArtistScreen initialData={injectedState} />
+      )
 
-      const secondOptionInstance = tree.root.findAllByType(TouchableRow)[2] // Artists I follow, Artist 1, Artist 2
-      const selectedOptionsBeforeTapping = selectedArtistOptions(tree)
+      const selectedOptionsBeforeTapping = getAllByA11yState({ checked: true })
       expect(selectedOptionsBeforeTapping).toHaveLength(1)
-      expect(extractText(selectedOptionsBeforeTapping[0])).toEqual("Artist 2")
+      expect(selectedOptionsBeforeTapping[0]).toHaveTextContent("Artist 2")
 
-      act(() => secondOptionInstance.props.onPress())
+      fireEvent.press(getByText("Artist 2"))
 
-      const selectedOptions = selectedArtistOptions(tree)
-      expect(selectedOptions).toHaveLength(0)
+      expect(queryByA11yState({ checked: true })).toBeFalsy()
     })
   })
 
@@ -199,7 +182,6 @@ describe("Artist options screen", () => {
 
       const { queryByText } = renderWithWrappersTL(<MockArtistScreen initialData={injectedState} />)
 
-      // Artists I followed option should be hidden
       expect(queryByText("All Artists I Follow")).toBeTruthy()
     })
 
@@ -232,7 +214,6 @@ describe("Artist options screen", () => {
 
       const { queryByText } = renderWithWrappersTL(<MockArtistScreen initialData={injectedState} />)
 
-      // Artists I followed option should be hidden
       expect(queryByText("All Artists I Follow")).toBeFalsy()
     })
   })
