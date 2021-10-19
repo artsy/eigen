@@ -14,7 +14,7 @@ export interface FancyModalHeaderProps {
   useXButton?: boolean
   useShareButton?: boolean
   rightCloseButton?: boolean
-  renderRightButton: () => JSX.Element
+  renderRightButton?: () => JSX.Element
 }
 
 export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
