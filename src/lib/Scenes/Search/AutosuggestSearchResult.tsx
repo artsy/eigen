@@ -1,12 +1,9 @@
-import { themeGet } from "@styled-system/theme-get"
 import { EntityType, navigate, navigateToEntity, navigateToPartner, SlugType } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
-import { ArtworkIcon, AuctionIcon, Box, CloseIcon, Flex, IconProps, Spacer, Text, Touchable } from "palette"
+import { ArtworkIcon, AuctionIcon, CloseIcon, Flex, Pill, Spacer, Text, Touchable } from "palette"
 import React, { useContext } from "react"
-import { Pressable } from "react-native"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
 import { IMAGE_SIZE, SearchResultImage } from "../Search2/components/SearchResultImage"
 import { AutosuggestResult } from "./AutosuggestResults"
 import { ResultWithHighlight } from "./ResultWithHighlight"
@@ -26,32 +23,6 @@ const getResultType = (result: AutosuggestResult) => {
     return result.__typename
   }
   return ""
-}
-
-const NavigationButton: React.FC<{
-  artistTab: ArtistTabs
-  displayText: string
-  onPress: HandleResultPress
-  Icon: React.FC<IconProps>
-}> = ({ artistTab, displayText, onPress, Icon }) => {
-  return (
-    <>
-      <Spacer ml={1} />
-
-      <Pressable onPress={() => onPress({ artistTab })}>
-        {({ pressed }) => (
-          <QuickNavigationButton>
-            <Box mr={0.5}>
-              <Icon fill={pressed ? "blue100" : "black100"} />
-            </Box>
-            <Text variant="xs" color={pressed ? "blue100" : "black100"}>
-              {displayText}
-            </Text>
-          </QuickNavigationButton>
-        )}
-      </Pressable>
-    </>
-  )
 }
 
 export const AutosuggestSearchResult: React.FC<{
@@ -147,23 +118,20 @@ export const AutosuggestSearchResult: React.FC<{
           <Flex flexDirection="row" alignItems="center">
             <Spacer ml={4} />
 
-            <NavigationButton displayText="Artworks" Icon={ArtworkIcon} artistTab="Artworks" onPress={onPress} />
-            <NavigationButton displayText="Auction Results" Icon={AuctionIcon} artistTab="Insights" onPress={onPress} />
+            <Spacer ml={1} />
+            <Pill highlightEnabled Icon={ArtworkIcon} onPress={() => onPress({ artistTab: "Artworks" })}>
+              Artworks
+            </Pill>
+            <Spacer ml={1} />
+            <Pill highlightEnabled Icon={AuctionIcon} onPress={() => onPress({ artistTab: "Insights" })}>
+              Auction Results
+            </Pill>
           </Flex>
         </>
       )}
     </>
   )
 }
-
-const QuickNavigationButton = styled(Flex)`
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 2px 10px;
-  border: 1px solid ${themeGet("colors.black30")};
-  border-radius: 20;
-`
 
 /**
  * For some entities (fairs, partners) we pass along some context
