@@ -82,7 +82,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
       {artworksCount === 0 ? (
         <Box mb="80px" pt={1}>
           <Box px={2}>
-            <Text variant="md">Sorry, we couldn’t find Artworks for ”{keyword}.”</Text>
+            <Text variant="md">Sorry, we couldn’t find any Artworks for ”{keyword}.”</Text>
             <Text variant="md" color="black60">
               Please try searching again with a different spelling.
             </Text>
