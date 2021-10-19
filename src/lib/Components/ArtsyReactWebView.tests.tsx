@@ -4,6 +4,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { goBack, navigate } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { appJson } from "lib/utils/jsonFiles"
 import { stringify } from "query-string"
 import React from "react"
 // @ts-ignore
@@ -81,13 +82,13 @@ describe(ArtsyReactWebViewPage, () => {
   it("sets the user agent correctly", () => {
     const tree = render()
     expect(tree.root.findByType(WebView).props.userAgent).toBe(
-      "Artsy-Mobile ios Artsy-Mobile/7.1.0 Eigen/build-number/7.1.0"
+      `Artsy-Mobile ios Artsy-Mobile/${appJson().version} Eigen/build-number/${appJson().version}`
     )
   })
   it("sets the user agent correctly", () => {
     const tree = render()
     expect(tree.root.findByType(WebView).props.userAgent).toBe(
-      "Artsy-Mobile ios Artsy-Mobile/7.1.0 Eigen/build-number/7.1.0"
+      `Artsy-Mobile ios Artsy-Mobile/${appJson().version} Eigen/build-number/${appJson().version}`
     )
   })
 

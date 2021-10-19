@@ -14,7 +14,7 @@ import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
-import { Button, Flex, Join, Spacer } from "palette"
+import { Button, Flex, Join, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -54,13 +54,17 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
           artwork={artwork}
         />
         <FancyModalHeader
-          rightButtonText="Edit"
           onRightButtonPress={() => {
             trackEvent(tracks.editCollectedArtwork(artwork.internalID, artwork.slug))
             GlobalStore.actions.myCollection.artwork.startEditingArtwork(artwork as any)
             setShowModal(true)
           }}
           hideBottomDivider
+          renderRightButton={() => (
+            <Flex pt="2px">
+              <Text>Edit</Text>
+            </Flex>
+          )}
         />
         <Join separator={<Spacer my={1} />}>
           <MyCollectionArtworkHeaderRefetchContainer artwork={artwork} />
