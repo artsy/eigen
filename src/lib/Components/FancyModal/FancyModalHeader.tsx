@@ -14,6 +14,7 @@ export interface FancyModalHeaderProps {
   useXButton?: boolean
   useShareButton?: boolean
   rightCloseButton?: boolean
+  renderRightButton: () => JSX.Element
 }
 
 export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
@@ -27,6 +28,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
   useXButton,
   useShareButton,
   rightCloseButton,
+  renderRightButton,
 }) => {
   const { space } = useTheme()
   const leftButton = () => {
@@ -43,6 +45,8 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
     }
     if (rightCloseButton) {
       return <CloseIcon fill="black100" />
+    } else if (renderRightButton) {
+      return renderRightButton()
     } else {
       return <ArrowRightIcon fill="black100" />
     }
@@ -99,9 +103,13 @@ export const Container = styled(Flex)`
 `
 
 export const LeftButtonContainer = styled(TouchableOpacity)`
-  padding: ${themeGet("space.2")}px;
+  padding-left: ${themeGet("space.2")}px;
+  padding-right: ${themeGet("space.2")}px;
+  justify-content: center;
 `
 
 export const RightButtonContainer = styled(TouchableOpacity)`
-  padding: ${themeGet("space.2")}px;
+  padding-left: ${themeGet("space.2")}px;
+  padding-right: ${themeGet("space.2")}px;
+  justify-content: center;
 `
