@@ -87,3 +87,15 @@ console.log(source) // => { uri: "pods/Assets/.../some-video.mp4" }
 ```
 
 See [Video.tsx](https://github.com/artsy/emission/tree/master/src/lib/Components/Video.tsx) for an example implementation and [here](https://facebook.github.io/react-native/docs/images#static-non-image-resources) for a list of supported file formats.
+
+
+### Update native snapshots
+
+We use [Nimble-Snapshots](https://github.com/ashfurrow/Nimble-Snapshots) to take screenshots while running tests and
+these screenshots are checked in to the source control. When you change e.g. the background color of a particular
+button, it calculates the diff between two screenshots and makes the test fail if the delta is above a certain
+threshold.
+
+In order to update existing screenshots, run `./scripts/record-snapshots-enable`. This will do some small edits in the `Pods/`directory. After that you can run the tests again, using`cmd+u`. They will fail again but they will generate the new snapshots. Now run the second script `./scripts/record-snapshots-disable`, which will revert the changes. Now run the tests again using `cmd+u` and tests should pass.
+
+If you are still having some tests failing, try commenting out the failing line, run the test, and comment in the line again and run again. If that still fails, then try replacing `haveValidSnapshot` with `recordSnapshot`, run test, go back to `haveValidSnapshot`, run test again. Hopefully that would fix all your failing tests.
