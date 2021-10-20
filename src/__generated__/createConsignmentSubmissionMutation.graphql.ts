@@ -21,8 +21,12 @@ export type CreateSubmissionMutationInput = {
     dimensionsMetric?: string | null;
     edition?: boolean | null;
     editionNumber?: string | null;
+<<<<<<< HEAD
     editionSize?: number | null;
     editionSizeFormatted?: string | null;
+=======
+    editionSize?: string | null;
+>>>>>>> 1beb668ae ([SwA-43] Migrate the edition size field in Convection to a string)
     height?: string | null;
     locationCity?: string | null;
     locationCountry?: string | null;

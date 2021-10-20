@@ -5605,10 +5605,14 @@ input CreateSubmissionMutationInput {
   dimensionsMetric: String
   edition: Boolean
   editionNumber: String
+<<<<<<< HEAD
 
   # Deprecated: Use edition_size_formatted field instead
   editionSize: Int
   editionSizeFormatted: String
+=======
+  editionSize: String
+>>>>>>> 1beb668ae ([SwA-43] Migrate the edition size field in Convection to a string)
   height: String
   locationCity: String
   locationCountry: String
@@ -12308,10 +12312,14 @@ input UpdateSubmissionMutationInput {
   dimensionsMetric: String
   edition: Boolean
   editionNumber: String
+<<<<<<< HEAD
 
   # Deprecated: Use edition_size_formatted field instead
   editionSize: Int
   editionSizeFormatted: String
+=======
+  editionSize: String
+>>>>>>> 1beb668ae ([SwA-43] Migrate the edition size field in Convection to a string)
   height: String
   id: ID!
   locationCity: String
