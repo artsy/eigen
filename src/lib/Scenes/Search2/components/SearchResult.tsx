@@ -12,12 +12,19 @@ interface SearchResultsItemProps {
   result: AlgoliaSearchResult
   categoryName: string
   indexName: string
+  trackResultPress?: (result: AlgoliaSearchResult) => void
 }
 
-export const SearchResult: React.FC<SearchResultsItemProps> = ({ result, categoryName, indexName }) => {
+export const SearchResult: React.FC<SearchResultsItemProps> = ({
+  result,
+  categoryName,
+  indexName,
+  trackResultPress,
+}) => {
   const onPress = (): void => {
     navigate(result.href)
 
+    trackResultPress?.(result)
     searchInsights("clickedObjectIDsAfterSearch", {
       index: indexName,
       eventName: "Search item clicked",

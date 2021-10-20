@@ -16,6 +16,7 @@ interface SearchResultsProps
   indexName: string
   categoryDisplayName: string
   onRetry?: () => void
+  trackResultPress?: (result: AlgoliaSearchResult) => void
 }
 
 export const SearchResults: React.FC<SearchResultsProps> = ({
@@ -26,10 +27,11 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   searchState,
   indexName,
   searchResults,
-  refineNext,
   categoryDisplayName,
   error,
   onRetry,
+  refineNext,
+  trackResultPress,
 }) => {
   const [showLoadingPlaceholder, setShowLoadingPlaceholder] = useState(true)
   const flatListRef = useRef<FlatList<AlgoliaSearchResult>>(null)
@@ -93,7 +95,14 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
       data={hits}
       keyExtractor={(item) => item.objectID}
       ItemSeparatorComponent={() => <Spacer mb={2} />}
-      renderItem={({ item }) => <SearchResult result={item} indexName={indexName} categoryName={categoryDisplayName} />}
+      renderItem={({ item }) => (
+        <SearchResult
+          result={item}
+          indexName={indexName}
+          categoryName={categoryDisplayName}
+          trackResultPress={trackResultPress}
+        />
+      )}
       onEndReached={loadMore}
       ListFooterComponent={
         <Flex alignItems="center" my={2}>
