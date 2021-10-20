@@ -80,7 +80,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
       <ArtworksFilterHeader selectedFiltersCount={appliedFiltersCount} onFilterPress={handleOpenFilterArtworksModal} />
       <Separator />
       {artworksCount === 0 ? (
-        <Box mb="80px" pt={1}>
+        <Box mb="80px" pt={6}>
           <Box px={2}>
             <Text variant="md" textAlign="center">
               Sorry, we couldn’t find any Artworks for ”{keyword}.”
