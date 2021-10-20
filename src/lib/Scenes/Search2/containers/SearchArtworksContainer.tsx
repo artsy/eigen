@@ -24,6 +24,7 @@ export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ key
         render={renderWithPlaceholder({
           Container: SearchArtworksGridPaginationContainer,
           renderPlaceholder: () => <SearchArtworksGridSkeleton />,
+          initialProps: { keyword },
           renderFallback: ({ retry }) => <LoadFailureView onRetry={retry!} />,
         })}
         variables={{ count: 20, keyword }}

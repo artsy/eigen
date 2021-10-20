@@ -16,6 +16,7 @@ import { useTracking } from "react-tracking"
 export interface SearchArtworksGridProps {
   viewer: SearchArtworksGrid_viewer
   relay: RelayPaginationProp
+  keyword?: string
 }
 
 interface ArtworkSection {
@@ -23,7 +24,7 @@ interface ArtworkSection {
   content: JSX.Element
 }
 
-const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }) => {
+const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, keyword }) => {
   const { space } = useTheme()
   const { trackEvent } = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
@@ -33,7 +34,6 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }
     trackEvent(tracks.closeFilterModal())
     setFilterArtworkModalVisible(false)
   }
-
   const handleOpenFilterArtworksModal = () => {
     trackEvent(tracks.openFilterModal())
     setFilterArtworkModalVisible(true)
@@ -67,12 +67,12 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay }
       ),
     },
   ]
-
   return (
     <>
       <ArtworkFilterNavigator
         id={null}
         slug={null}
+        query={keyword}
         isFilterArtworksModalVisible={isFilterArtworksModalVisible}
         exitModal={handleCloseFilterArtworksModal}
         closeModal={handleCloseFilterArtworksModal}
