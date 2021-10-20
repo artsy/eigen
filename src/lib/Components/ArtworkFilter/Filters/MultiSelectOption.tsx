@@ -86,6 +86,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
           data={filteredOptions}
           renderItem={({ item }) => {
             const disabled = itemIsDisabled(item)
+            const selected = itemIsSelected(item)
 
             return (
               <Box ml={0.5}>
@@ -96,13 +97,14 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
                   }}
                   disabled={disabled}
                   testID="multi-select-option-button"
+                  accessibilityState={{ checked: selected }}
                 >
                   <OptionListItem>
                     <Text variant="xs" color="black100">
                       {item.displayText}
                     </Text>
 
-                    <Check selected={itemIsSelected(item)} disabled={disabled} />
+                    <Check selected={selected} disabled={disabled} />
                   </OptionListItem>
                 </TouchableRow>
               </Box>
