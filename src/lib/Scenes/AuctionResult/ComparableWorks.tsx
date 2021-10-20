@@ -5,7 +5,7 @@ import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Separator, Text } from "palette"
 import React from "react"
-import { FlatList, View } from "react-native"
+import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ComparableWorks {
@@ -14,9 +14,7 @@ interface ComparableWorks {
 const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
   // const { trackEvent } = useTracking()
 
-  // TODO: Add real data
-  // const auctionResultsByFollowedArtists = extractNodes(auctionResult?.comparableWorks)
-  const auctionResultsByFollowedArtists = extractNodes(MOCK_DATA)
+  const auctionResultsByFollowedArtists = extractNodes(auctionResult?.comparableWorks)
 
   const hasAuctionResults = auctionResultsByFollowedArtists?.length
 
@@ -63,9 +61,9 @@ const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
 }
 
 export const ComparableWorksFragmentContainer = createFragmentContainer(ComparableWorks, {
-  comparableWorks: graphql`
+  comparableAuctionResults: graphql`
     fragment ComparableWorks_me on AuctionResult {
-      comparableWorks(first: 3) {
+      comparableAuctionResults(first: 3) {
         totalCount
         edges {
           cursor
@@ -90,29 +88,4 @@ export const tracks = {
     destination_screen_owner_id: auctionResultId,
     type: "thumbnail",
   }),
-}
-
-const MOCK_DATA = {
-  edges: [
-    {
-      cursor: "YXJyYXljb25uZWN0aW9uOjE=",
-      node: {
-        title: "Tristesse Du Roi (The Sadness of the King)",
-        priceRealized: {
-          display: "$1,211",
-          displayUSD: "$1,211",
-        },
-      },
-    },
-    {
-      cursor: "YXJyYXljb25uZWN0aW9uOjI=",
-      node: {
-        title: "Végétaux, from Verve, Vol. IX, 35/36",
-        priceRealized: {
-          display: "$1,083",
-          displayUSD: "$1,083",
-        },
-      },
-    },
-  ],
 }
