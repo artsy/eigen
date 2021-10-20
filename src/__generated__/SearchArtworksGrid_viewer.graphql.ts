@@ -6,7 +6,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtworkAggregation = "ARTIST" | "ARTIST_NATIONALITY" | "ATTRIBUTION_CLASS" | "COLOR" | "DIMENSION_RANGE" | "FOLLOWED_ARTISTS" | "GALLERY" | "INSTITUTION" | "LOCATION_CITY" | "MAJOR_PERIOD" | "MATERIALS_TERMS" | "MEDIUM" | "MERCHANDISABLE_ARTISTS" | "PARTNER" | "PARTNER_CITY" | "PERIOD" | "PRICE_RANGE" | "TOTAL" | "%future added value";
 export type SearchArtworksGrid_viewer = {
-    readonly aggregations: {
+    readonly artworks: {
         readonly aggregations: ReadonlyArray<{
             readonly slice: ArtworkAggregation | null;
             readonly counts: ReadonlyArray<{
@@ -15,8 +15,9 @@ export type SearchArtworksGrid_viewer = {
                 readonly value: string;
             } | null> | null;
         } | null> | null;
-    } | null;
-    readonly artworks: {
+        readonly counts: {
+            readonly followedArtists: number | null;
+        } | null;
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
@@ -73,7 +74,7 @@ const node: ReaderFragment = {
   "name": "SearchArtworksGrid_viewer",
   "selections": [
     {
-      "alias": "aggregations",
+      "alias": "artworks",
       "args": [
         {
           "kind": "Literal",
@@ -88,18 +89,24 @@ const node: ReaderFragment = {
             "LOCATION_CITY",
             "MAJOR_PERIOD",
             "COLOR",
-            "PARTNER"
+            "PARTNER",
+            "FOLLOWED_ARTISTS"
           ]
         },
         {
-          "kind": "Literal",
-          "name": "first",
-          "value": 0
+          "kind": "Variable",
+          "name": "input",
+          "variableName": "input"
+        },
+        {
+          "kind": "Variable",
+          "name": "keyword",
+          "variableName": "keyword"
         }
       ],
       "concreteType": "FilterArtworksConnection",
       "kind": "LinkedField",
-      "name": "artworksConnection",
+      "name": "__SearchArtworksGrid_artworks_connection",
       "plural": false,
       "selections": [
         {
@@ -151,29 +158,25 @@ const node: ReaderFragment = {
             }
           ],
           "storageKey": null
-        }
-      ],
-      "storageKey": "artworksConnection(aggregations:[\"ARTIST\",\"MEDIUM\",\"PRICE_RANGE\",\"DIMENSION_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"COLOR\",\"PARTNER\"],first:0)"
-    },
-    {
-      "alias": "artworks",
-      "args": [
-        {
-          "kind": "Variable",
-          "name": "input",
-          "variableName": "input"
         },
         {
-          "kind": "Variable",
-          "name": "keyword",
-          "variableName": "keyword"
-        }
-      ],
-      "concreteType": "FilterArtworksConnection",
-      "kind": "LinkedField",
-      "name": "__SearchArtworksGrid_artworks_connection",
-      "plural": false,
-      "selections": [
+          "alias": null,
+          "args": null,
+          "concreteType": "FilterArtworksCounts",
+          "kind": "LinkedField",
+          "name": "counts",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "followedArtists",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
         {
           "alias": null,
           "args": null,
@@ -254,5 +257,5 @@ const node: ReaderFragment = {
   "type": "Viewer",
   "abstractKey": null
 };
-(node as any).hash = 'c03bf0e0bb060c43785fdeffcd44354d';
+(node as any).hash = '4ccf70f7078ed770d1ab2e8d9918664b';
 export default node;
