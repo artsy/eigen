@@ -2,8 +2,8 @@ import { PlaceholderBox, RandomWidthPlaceholderText } from "lib/utils/placeholde
 import { times } from "lodash"
 import { Box, Flex } from "palette"
 import React from "react"
+import { IMAGE_SIZE } from "../Search2/components/SearchResultImage"
 
-const IMAGE_SIZE = 40
 const TEXT_SIZE = 12
 
 interface AutosuggestResultsPlaceholderProps {

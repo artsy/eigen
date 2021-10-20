@@ -5,9 +5,7 @@ import { Flex, Spacer, Touchable } from "palette"
 import React from "react"
 import { AlgoliaSearchResult } from "../types"
 import { SearchHighlight } from "./SearchHighlight"
-import { SearchResultImage } from "./SearchResultImage"
-
-const IMAGE_SIZE = 40
+import { IMAGE_SIZE, SearchResultImage } from "./SearchResultImage"
 
 interface SearchResultsItemProps {
   result: AlgoliaSearchResult
