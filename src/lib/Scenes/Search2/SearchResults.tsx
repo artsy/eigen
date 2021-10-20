@@ -1,4 +1,5 @@
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
+import { LoadFailureView } from "lib/Components/LoadFailureView"
 import { isPad } from "lib/utils/hardware"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Box, Flex, Spacer, Spinner, Text, useSpace } from "palette"
@@ -14,6 +15,7 @@ interface SearchResultsProps
     InfiniteHitsProvided<AlgoliaSearchResult> {
   indexName: string
   categoryDisplayName: string
+  onRetry?: () => void
 }
 
 export const SearchResults: React.FC<SearchResultsProps> = ({
@@ -26,6 +28,8 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   searchResults,
   refineNext,
   categoryDisplayName,
+  error,
+  onRetry,
 }) => {
   const [showLoadingPlaceholder, setShowLoadingPlaceholder] = useState(true)
   const flatListRef = useRef<FlatList<AlgoliaSearchResult>>(null)
@@ -53,6 +57,10 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     if (hasMore && !loading) {
       refineNext()
     }
+  }
+
+  if (hits.length === 0 && error && !loading) {
+    return <LoadFailureView onRetry={onRetry} />
   }
 
   if (showLoadingPlaceholder) {
