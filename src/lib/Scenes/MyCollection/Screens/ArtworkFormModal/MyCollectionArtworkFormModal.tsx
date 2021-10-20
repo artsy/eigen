@@ -173,6 +173,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
             options: ["Discard", "Keep editing"],
             destructiveButtonIndex: 0,
             cancelButtonIndex: 1,
+            useModal: true,
           },
           (buttonIndex) => {
             if (buttonIndex === 0) {
