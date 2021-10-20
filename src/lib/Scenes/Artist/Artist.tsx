@@ -47,7 +47,7 @@ export const Artist: React.FC<ArtistProps> = (props) => {
   const tabs: TabProps[] = []
   const displayAboutSection =
     artistAboveTheFold.has_metadata ||
-    (artistAboveTheFold.counts?.articles ?? 0) > 0 ||
+    !!artistAboveTheFold.statuses?.articles ||
     (artistAboveTheFold.counts?.related_artists ?? 0) > 0
 
   useEffect(() => {
@@ -68,14 +68,14 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     })
   }
 
-  if ((artistAboveTheFold.counts?.artworks ?? 0) > 0) {
+  if (!!artistAboveTheFold.statuses?.artworks) {
     tabs.push({
       title: "Artworks",
       content: <ArtistArtworks artist={artistAboveTheFold} searchCriteria={searchCriteria} />,
     })
   }
 
-  if (artistAboveTheFold?.isDisplayAuctionLink) {
+  if (!!artistAboveTheFold?.statuses?.auctionLots) {
     tabs.push({
       title: "Insights",
       content: artistBelowTheFold ? (
@@ -160,14 +160,16 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
                       slug
                       has_metadata: hasMetadata
                       counts {
-                        artworks
                         partner_shows: partnerShows
                         related_artists: relatedArtists
-                        articles
                       }
                       ...ArtistHeader_artist
                       ...ArtistArtworks_artist @arguments(input: $input)
-                      isDisplayAuctionLink
+                      statuses {
+                        artworks
+                        auctionLots
+                        articles
+                      }
                     }
                   }
                 `,

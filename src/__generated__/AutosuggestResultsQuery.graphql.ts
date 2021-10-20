@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 49f059d48c4bb509a5a2e5ef3658b389 */
+/* @relayHash 10fc1913caed3340aa7b2f644d32588a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -36,9 +36,9 @@ export type AutosuggestResultsQueryRawResponse = {
                 readonly id: string;
                 readonly internalID: string;
                 readonly slug: string;
-                readonly isDisplayAuctionLink: boolean | null;
-                readonly counts: ({
-                    readonly artworks: number | null;
+                readonly statuses: ({
+                    readonly artworks: boolean | null;
+                    readonly auctionLots: boolean | null;
                 }) | null;
             } | {
                 readonly imageUrl: string | null;
@@ -89,9 +89,9 @@ fragment AutosuggestResults_results_2KyZFR on Query {
         ... on Artist {
           internalID
           slug
-          isDisplayAuctionLink
-          counts {
+          statuses {
             artworks
+            auctionLots
           }
         }
         ... on Node {
@@ -277,16 +277,9 @@ return {
                       {
                         "alias": null,
                         "args": null,
-                        "kind": "ScalarField",
-                        "name": "isDisplayAuctionLink",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "ArtistCounts",
+                        "concreteType": "ArtistStatuses",
                         "kind": "LinkedField",
-                        "name": "counts",
+                        "name": "statuses",
                         "plural": false,
                         "selections": [
                           {
@@ -294,6 +287,13 @@ return {
                             "args": null,
                             "kind": "ScalarField",
                             "name": "artworks",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "auctionLots",
                             "storageKey": null
                           }
                         ],
@@ -374,7 +374,7 @@ return {
     ]
   },
   "params": {
-    "id": "49f059d48c4bb509a5a2e5ef3658b389",
+    "id": "10fc1913caed3340aa7b2f644d32588a",
     "metadata": {},
     "name": "AutosuggestResultsQuery",
     "operationKind": "query",
