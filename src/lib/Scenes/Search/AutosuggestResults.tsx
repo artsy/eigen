@@ -5,6 +5,7 @@ import {
   AutosuggestResultsQueryVariables,
 } from "__generated__/AutosuggestResultsQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
+import { LoadFailureView } from "lib/Components/LoadFailureView"
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
@@ -218,18 +219,24 @@ export const AutosuggestResults: React.FC<{
   entities?: AutosuggestResultsQueryVariables["entities"]
   showResultType?: boolean
   showQuickNavigationButtons?: boolean
+  showOnRetryErrorMessage?: boolean
   onResultPress?: OnResultPress
 }> = React.memo(
-  ({ query, entities, showResultType, showQuickNavigationButtons, onResultPress }) => {
+  ({ query, entities, showResultType, showQuickNavigationButtons, showOnRetryErrorMessage, onResultPress }) => {
     return (
       <QueryRenderer<AutosuggestResultsQuery>
-        render={({ props, error }) => {
+        render={({ props, error, retry }) => {
           if (error) {
             if (__DEV__) {
               console.error(error)
             } else {
               captureMessage(error.stack!)
             }
+
+            if (showOnRetryErrorMessage && retry) {
+              return <LoadFailureView onRetry={retry} />
+            }
+
             return (
               <Flex alignItems="center" justifyContent="center">
                 <Flex maxWidth={280}>
