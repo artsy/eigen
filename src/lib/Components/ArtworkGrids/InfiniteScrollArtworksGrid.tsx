@@ -100,6 +100,9 @@ export interface Props {
 
   /** Wether to show a loading spinner (defaults to false) */
   showLoadingSpinner?: boolean
+
+  /** Whether to add the tapped artwork to recent searches */
+  updateRecentSearchesOnTap?: boolean
 }
 
 interface PrivateProps {
@@ -160,6 +163,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     isMyCollection: false,
     useParentAwareScrollView: true,
     showLoadingSpinner: false,
+    updateRecentSearchesOnTap: false,
   }
 
   state = {
@@ -296,6 +300,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             hidePartner={this.props.hidePartner}
             showLotLabel={this.props.showLotLabel}
             itemIndex={itemIndex}
+            updateRecentSearchesOnTap={this.props.updateRecentSearchesOnTap}
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
