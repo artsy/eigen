@@ -17,7 +17,7 @@ export type UpdateSubmissionMutationInput = {
     dimensionsMetric?: string | null;
     edition?: boolean | null;
     editionNumber?: string | null;
-    editionSize?: number | null;
+    editionSize?: string | null;
     height?: string | null;
     id: string;
     locationCity?: string | null;
