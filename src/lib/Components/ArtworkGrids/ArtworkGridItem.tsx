@@ -27,6 +27,8 @@ export interface ArtworkProps {
   contextScreenOwnerType?: ScreenOwnerType
   contextScreenOwnerId?: string
   contextScreenOwnerSlug?: string
+  contextScreenQuery?: string
+  contextScreen?: string
   // Hide urgency tags (3 Days left, 1 hour left)
   hideUrgencyTags?: boolean
   // Hide partner name
@@ -52,6 +54,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
   contextScreenOwnerId,
   contextScreenOwnerSlug,
   contextScreenOwnerType,
+  contextScreenQuery,
+  contextScreen,
   hideUrgencyTags = false,
   hidePartner = false,
   showLotLabel = false,
@@ -101,6 +105,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
     // taps from the grid.
     if (trackTap || contextScreenOwnerType) {
       const genericTapEvent = tappedMainArtworkGrid({
+        contextScreen,
         contextScreenOwnerType: contextScreenOwnerType!,
         contextScreenOwnerId,
         contextScreenOwnerSlug,
@@ -109,6 +114,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
         position: itemIndex,
         // This is always a string; types are incorrect
         sort: String(filterParams?.sort),
+        query: contextScreenQuery,
       })
 
       trackTap ? trackTap(artwork.slug, itemIndex) : tracking.trackEvent(genericTapEvent)
