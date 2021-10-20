@@ -65,10 +65,10 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     return <LoadFailureView onRetry={onRetry} />
   }
 
-  if (showLoadingPlaceholder) {
+  if (showLoadingPlaceholder || loading) {
     return (
       <ProvidePlaceholderContext>
-        <AlgoliaSearchPlaceholder />
+        <AlgoliaSearchPlaceholder hasRoundedImages={categoryDisplayName === "Artist"} />
       </ProvidePlaceholderContext>
     )
   }
