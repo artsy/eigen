@@ -13,9 +13,15 @@ interface SearchResultsItemProps {
   result: AlgoliaSearchResult
   categoryName: string
   indexName: string
+  trackResultPress?: (result: AlgoliaSearchResult) => void
 }
 
-export const SearchResult: React.FC<SearchResultsItemProps> = ({ result, categoryName, indexName }) => {
+export const SearchResult: React.FC<SearchResultsItemProps> = ({
+  result,
+  categoryName,
+  indexName,
+  trackResultPress,
+}) => {
   const addArtworkToRecentSearches = () => {
     GlobalStore.actions.search.addRecentSearch({
       type: "AUTOSUGGEST_RESULT_TAPPED",
@@ -34,6 +40,7 @@ export const SearchResult: React.FC<SearchResultsItemProps> = ({ result, categor
     navigate(result.href)
     addArtworkToRecentSearches()
 
+    trackResultPress?.(result)
     searchInsights("clickedObjectIDsAfterSearch", {
       index: indexName,
       eventName: "Search item clicked",

@@ -17,7 +17,7 @@ import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
 import { AutosuggestResultsPlaceholder } from "./AutosuggestResultsPlaceholder"
-import { AutosuggestSearchResult, OnResultPress } from "./AutosuggestSearchResult"
+import { AutosuggestSearchResult, OnResultPress, TrackResultPress } from "./AutosuggestSearchResult"
 
 export type AutosuggestResult = NonNullable<
   NonNullable<NonNullable<NonNullable<AutosuggestResults_results["results"]>["edges"]>[0]>["node"]
@@ -34,7 +34,16 @@ const AutosuggestResultsFlatList: React.FC<{
   showResultType?: boolean
   showQuickNavigationButtons?: boolean
   onResultPress?: OnResultPress
-}> = ({ query, results: latestResults, relay, showResultType = false, showQuickNavigationButtons, onResultPress }) => {
+  trackResultPress?: TrackResultPress
+}> = ({
+  query,
+  results: latestResults,
+  relay,
+  showResultType = false,
+  showQuickNavigationButtons,
+  onResultPress,
+  trackResultPress,
+}) => {
   const space = useSpace()
   const [shouldShowLoadingPlaceholder, setShouldShowLoadingPlaceholder] = useState(true)
   const loadMore = useCallback(() => relay.loadMore(SUBSEQUENT_BATCH_SIZE), [])
@@ -137,7 +146,7 @@ const AutosuggestResultsFlatList: React.FC<{
             }
           : null
       }
-      renderItem={({ item }) => {
+      renderItem={({ item, index }) => {
         return (
           <Flex mb={2}>
             <AutosuggestSearchResult
@@ -146,6 +155,8 @@ const AutosuggestResultsFlatList: React.FC<{
               showResultType={showResultType}
               onResultPress={onResultPress}
               showQuickNavigationButtons={showQuickNavigationButtons}
+              trackResultPress={trackResultPress}
+              itemIndex={index}
             />
           </Flex>
         )
@@ -221,8 +232,17 @@ export const AutosuggestResults: React.FC<{
   showQuickNavigationButtons?: boolean
   showOnRetryErrorMessage?: boolean
   onResultPress?: OnResultPress
+  trackResultPress?: TrackResultPress
 }> = React.memo(
-  ({ query, entities, showResultType, showQuickNavigationButtons, showOnRetryErrorMessage, onResultPress }) => {
+  ({
+    query,
+    entities,
+    showResultType,
+    showQuickNavigationButtons,
+    showOnRetryErrorMessage,
+    onResultPress,
+    trackResultPress,
+  }) => {
     return (
       <QueryRenderer<AutosuggestResultsQuery>
         render={({ props, error, retry }) => {
@@ -254,6 +274,7 @@ export const AutosuggestResults: React.FC<{
               showResultType={showResultType}
               showQuickNavigationButtons={showQuickNavigationButtons}
               onResultPress={onResultPress}
+              trackResultPress={trackResultPress}
             />
           )
         }}

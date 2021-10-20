@@ -107,6 +107,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
                     options: ["Delete", "Cancel"],
                     destructiveButtonIndex: 0,
                     cancelButtonIndex: 1,
+                    useModal: true,
                   },
                   (buttonIndex) => {
                     if (buttonIndex === 0) {

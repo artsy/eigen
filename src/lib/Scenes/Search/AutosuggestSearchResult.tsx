@@ -10,6 +10,7 @@ import { ResultWithHighlight } from "./ResultWithHighlight"
 import { SearchContext } from "./SearchContext"
 
 export type OnResultPress = (result: AutosuggestResult) => void
+export type TrackResultPress = (result: AutosuggestResult, itemIndex?: number) => void
 
 type ArtistTabs = "Insights" | "Artworks"
 
@@ -32,12 +33,16 @@ export const AutosuggestSearchResult: React.FC<{
   displayingRecentResult?: boolean
   showResultType?: boolean
   showQuickNavigationButtons?: boolean
+  itemIndex?: number
+  trackResultPress?: TrackResultPress
   onResultPress?: OnResultPress
   onDelete?(): void
 }> = ({
   result,
   highlight,
   showResultType,
+  itemIndex,
+  trackResultPress,
   onDelete,
   onResultPress,
   displayingRecentResult,
@@ -62,6 +67,13 @@ export const AutosuggestSearchResult: React.FC<{
           GlobalStore.actions.search.addRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
         }
       }, 20)
+
+      if (trackResultPress) {
+        trackResultPress(result, itemIndex)
+
+        return
+      }
+
       trackEvent({
         action_type: displayingRecentResult
           ? Schema.ActionNames.ARAnalyticsSearchRecentItemSelected
