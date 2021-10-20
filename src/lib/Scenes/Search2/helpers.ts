@@ -14,3 +14,7 @@ const contextModuleByPillName: Record<string, ContextModule> = {
 export const getContextModuleByPillName = (pillName: string) => {
   return contextModuleByPillName[pillName]
 }
+
+export const isTokenExpiredError = (error: Error) => {
+  return error?.message?.includes("parameter expired")
+}

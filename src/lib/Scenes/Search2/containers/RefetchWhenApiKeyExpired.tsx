@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import { connectStateResults, StateResultsProvided } from "react-instantsearch-core"
 import { RelayRefetchProp } from "react-relay"
+import { isTokenExpiredError } from "../helpers"
 import { AlgoliaSearchResult } from "../types"
 
 interface ContainerProps extends StateResultsProvided<AlgoliaSearchResult> {
@@ -25,7 +26,7 @@ const Container: React.FC<ContainerProps> = (props) => {
   }
 
   useEffect(() => {
-    if (error?.message?.includes("parameter expired")) {
+    if (isTokenExpiredError(error)) {
       refetch()
     }
   }, [error?.message])

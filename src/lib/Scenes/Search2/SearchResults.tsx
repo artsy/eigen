@@ -8,6 +8,7 @@ import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-
 import { FlatList } from "react-native"
 import { AlgoliaSearchPlaceholder } from "./components/AlgoliaSearchPlaceholder"
 import { SearchResult } from "./components/SearchResult"
+import { isTokenExpiredError } from "./helpers"
 import { AlgoliaSearchResult } from "./types"
 
 interface SearchResultsProps
@@ -61,7 +62,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     }
   }
 
-  if (hits.length === 0 && error && !loading) {
+  if (hits.length === 0 && error && !isTokenExpiredError(error) && !loading) {
     return <LoadFailureView onRetry={onRetry} />
   }
 
