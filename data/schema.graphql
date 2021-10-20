@@ -10858,7 +10858,8 @@ type SaleArtwork implements ArtworkEdgeInterface & Node {
   # Is the user the highest bidder on the sale artwork. (Currently only being used via me.myBids.)
   isHighestBidder: Boolean
 
-  # Is this sale artwork being watched by a user. (Currently only used on me.myBids and me.watchedLotsConnection.)
+  # True if this sale artwork is being watched by a user and they have not bid on
+  # it. (Currently only used on me.myBids and me.watchedLotsConnection.)
   isWatching: Boolean
   isWithReserve: Boolean
   lotLabel: String
