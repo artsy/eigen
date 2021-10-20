@@ -26,6 +26,7 @@ export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ key
           renderPlaceholder: () => <SearchArtworksGridSkeleton />,
           initialProps: { keyword },
           renderFallback: ({ retry }) => <LoadFailureView onRetry={retry!} />,
+          initialProps: { keyword },
         })}
         variables={{ count: 20, keyword }}
         cacheConfig={{ force: true }}

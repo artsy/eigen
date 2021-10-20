@@ -3,9 +3,11 @@ import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkF
 import { useArtworkFilters, useSelectedFiltersCount } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 
+import { OwnerType } from "@artsy/cohesion"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader2"
+import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import { Box, Separator, useTheme } from "palette"
 import React, { useEffect, useState } from "react"
@@ -64,6 +66,9 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
           loadMore={relay.loadMore}
           hasMore={relay.hasMore}
           updateRecentSearchesOnTap
+          contextScreenOwnerType={OwnerType.search}
+          contextScreenQuery={keyword}
+          contextScreen={Schema.PageNames.Search}
         />
       ),
     },
