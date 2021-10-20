@@ -63,6 +63,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
           connection={viewer.artworks!}
           loadMore={relay.loadMore}
           hasMore={relay.hasMore}
+          updateRecentSearchesOnTap
         />
       ),
     },

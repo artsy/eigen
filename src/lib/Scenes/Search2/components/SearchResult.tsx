@@ -1,4 +1,5 @@
 import { navigate } from "lib/navigation/navigate"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { searchInsights } from "lib/utils/useSearchInsightsConfig"
 import { Flex, Spacer, Touchable } from "palette"
 import React from "react"
@@ -21,8 +22,23 @@ export const SearchResult: React.FC<SearchResultsItemProps> = ({
   indexName,
   trackResultPress,
 }) => {
+  const addArtworkToRecentSearches = () => {
+    GlobalStore.actions.search.addRecentSearch({
+      type: "AUTOSUGGEST_RESULT_TAPPED",
+      props: {
+        imageUrl: result.image_url,
+        href: result.href,
+        slug: result.slug,
+        displayLabel: result.name,
+        __typename: categoryName,
+        displayType: categoryName,
+      },
+    })
+  }
+
   const onPress = (): void => {
     navigate(result.href)
+    addArtworkToRecentSearches()
 
     trackResultPress?.(result)
     searchInsights("clickedObjectIDsAfterSearch", {
