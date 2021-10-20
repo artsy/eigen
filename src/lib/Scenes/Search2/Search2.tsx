@@ -25,7 +25,7 @@ import { Keyboard, Platform, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components"
-import { AutosuggestResults } from "../Search/AutosuggestResults"
+import { AutosuggestResult, AutosuggestResults } from "../Search/AutosuggestResults"
 import { CityGuideCTA } from "../Search/CityGuideCTA"
 import { RecentSearches } from "../Search/RecentSearches"
 import { SearchContext, useSearchProviderValues } from "../Search/SearchContext"
@@ -35,13 +35,22 @@ import { RefetchWhenApiKeyExpiredContainer } from "./containers/RefetchWhenApiKe
 import { SearchArtworksQueryRenderer } from "./containers/SearchArtworksContainer"
 import { getContextModuleByPillName } from "./helpers"
 import { SearchResults } from "./SearchResults"
-import { PillType } from "./types"
+import { AlgoliaSearchResult, PillType } from "./types"
 
 interface SearchInputProps {
   placeholder: string
   currentRefinement: string
   refine: (value: string) => any
   onReset: () => void
+}
+
+interface TappedSearchResultData {
+  query: string
+  type: string
+  position: number
+  contextModule: ContextModule
+  slug: string
+  objectTab?: string
 }
 
 const SEARCH_THROTTLE_INTERVAL = 500
@@ -121,6 +130,11 @@ const ARTWORKS_PILL: PillType = {
 }
 const pills: PillType[] = [TOP_PILL, ARTWORKS_PILL]
 
+const objectTabByContextModule: Partial<Record<ContextModule, string>> = {
+  [ContextModule.auctionTab]: "Auction Results",
+  [ContextModule.artistsTab]: "Artworks",
+}
+
 interface Search2Props {
   relay: RelayRefetchProp
   system: Search2_system | null
@@ -170,6 +184,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
           indexName={selectedPill.name}
           categoryDisplayName={selectedPill.displayName}
           onRetry={handleRetry}
+          trackResultPress={handleTrackAlgoliaResultPress}
         />
       )
     }
@@ -180,6 +195,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
           showResultType
           showQuickNavigationButtons
           showOnRetryErrorMessage
+          trackResultPress={handleTrackAutosuggestResultPress}
         />
       )
     }
@@ -204,6 +220,36 @@ export const Search2: React.FC<Search2Props> = (props) => {
   const handleResetSearchInput = () => {
     searchPillsRef?.current?.scrollTo({ x: 0, y: 0, animated: true })
     setSelectedPill(TOP_PILL)
+  }
+
+  const handleTrackAutosuggestResultPress = (result: AutosuggestResult, itemIndex?: number) => {
+    trackEvent(
+      tracks.tappedSearchResult({
+        type: result.displayType || result.__typename,
+        slug: result.slug!,
+        position: itemIndex!,
+        query: searchState.query!,
+        contextModule: ContextModule.topTab,
+      })
+    )
+  }
+
+  const handleTrackAlgoliaResultPress = (result: AlgoliaSearchResult) => {
+    const contextModule = getContextModuleByPillName(selectedPill.displayName)
+
+    const data: TappedSearchResultData = {
+      type: selectedPill.displayName,
+      slug: result.slug,
+      position: result.__position,
+      query: searchState.query!,
+      contextModule: contextModule!,
+    }
+
+    if (contextModule && objectTabByContextModule[contextModule]) {
+      data.objectTab = objectTabByContextModule[contextModule]
+    }
+
+    trackEvent(tracks.tappedSearchResult(data))
   }
 
   return (
@@ -320,5 +366,15 @@ export const tracks = {
     context_module: contextModule,
     subject,
     query,
+  }),
+  tappedSearchResult: (data: TappedSearchResultData) => ({
+    context_screen_owner_type: Schema.OwnerEntityTypes.Search,
+    context_screen: Schema.PageNames.Search,
+    query: data.query,
+    position: data.position,
+    selected_object_type: data.type,
+    selected_object_slug: data.slug,
+    selected_object_tab: data.objectTab,
+    context_module: data.contextModule,
   }),
 }
