@@ -336,7 +336,7 @@ describe("Search2 Screen", () => {
           "context_module": "topTab",
           "context_screen": "Search",
           "context_screen_owner_type": "Search",
-          "position": 1,
+          "position": 0,
           "query": "text",
           "selected_object_slug": "slug-1",
           "selected_object_tab": undefined,
