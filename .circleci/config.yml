@@ -5,6 +5,8 @@ orbs:
   queue: eddiewebb/queue@1.0.110
   horizon: artsy/release@0.0.1
 
+
+####################
 commands:
   await-previous-builds:
     parameters:
@@ -16,6 +18,7 @@ commands:
           time: "30" # how long a queue will wait until the job exits
           only-on-branch: <<parameters.branch>> # restrict queueing to a specific branch (default *)
           consider-job: false # block whole workflow if any job still running
+
   install-node:
     steps:
       - run:
@@ -31,6 +34,7 @@ commands:
             echo 'nvm alias default v14.17.1' >> $BASH_ENV
             sudo mkdir ~/.config
             sudo chown -R $USER:$GROUP ~/.config
+
   generate-checksums:
     steps:
       - run:
@@ -45,11 +49,13 @@ commands:
             scripts/generate-manifest.js .manifests/cocoapods '^Podfile' '^Gemfile' '^\.manifests/emission_pod_file_list'
             scripts/generate-manifest.js .manifests/native_code '^\.manifests/node_modules' '^Podfile' '^Gemfile' '^emission/' '^Artsy' '^patches/react-native' '^\.env\.example'
             scripts/generate-manifest.js .manifests/android_native '^\.manifests/node_modules' '^android/' '^patches/react-native' '^\.env\.example'
+
   setup-env-file:
     steps:
       - run:
           name: "Set up .env file"
           command: touch .env.shared && scripts/generate-env.js
+
   install-node-modules:
     steps:
       - restore_cache:
@@ -62,16 +68,19 @@ commands:
           key: v6-node_modules-{{ checksum ".manifests/node_modules" }}-{{ arch }}
           paths:
             - node_modules
+
   update-echo:
     steps:
       - run:
           name: Update echo
           command: ./scripts/update-echo
+
   generate-query-map:
     steps:
       - run:
           name: Compile query map
           command: yarn relay
+
   test-js:
     steps:
       - restore_cache:
@@ -97,6 +106,7 @@ commands:
           key: v6-jest-{{ .Branch }}
           paths:
             - .jest
+
   bundle-js:
     steps:
       - restore_cache:
@@ -118,6 +128,7 @@ commands:
             - emission/Pod/Assets/Emission.js
             - emission/Pod/Assets/Emission.js.map
             - emission/Pod/Assets/assets
+
   install-gems:
     steps:
       - restore_cache:
@@ -133,6 +144,7 @@ commands:
           key: v4-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
           paths:
             - vendor/bundle
+
   install-cocoapods:
     steps:
       - restore_cache:
@@ -151,6 +163,7 @@ commands:
             # this changes after pod install because we don't instal dev tools on CI
             # so we save it to the cache to avoid comparison errors with Pods/Manifest.lock
             - Podfile.lock
+
   build-app-ios:
     steps:
       - restore_cache:
@@ -164,6 +177,7 @@ commands:
           paths:
             - derived_data
             - node_modules/react-native-config
+
   prep-android-env:
     steps:
       - attach_workspace:
@@ -190,6 +204,7 @@ commands:
       - install-node-modules
       - update-echo
       - install-gems
+
   build-app-android:
     steps:
       - restore_cache:
@@ -209,6 +224,7 @@ commands:
             - android/app/build
             - node_modules/react-native-config
 
+####################
 jobs:
   detect-secrets:
     docker:
@@ -320,6 +336,22 @@ jobs:
             - .manifests
             - emission/Pod/Assets
 
+  maybe-skip-ci:
+    docker:
+      - image: alpine:3.13
+    steps:
+      - run: apk add --no-cache bash curl jq
+      - run:
+          name: Check skippable PR
+          command: |
+            if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/eigen/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
+            then
+              # circleci step halt
+              echo "would skip"
+            else
+              echo "would not skip"
+            fi
+
   build-test-app-ios:
     environment:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
@@ -339,13 +371,6 @@ jobs:
           name: Quit early if possible
           command: |
             if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
-            then
-              circleci step halt
-            fi
-      - run:
-          name: Quit early if Draft PR
-          command: |
-            if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/eigen/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
             then
               circleci step halt
             fi
@@ -461,6 +486,9 @@ jobs:
           command: node scripts/changelog/commitChangelog.js
       - store_artifacts:
           path: .manifests
+
+
+####################
 workflows:
   version: 2
   nightly:
@@ -492,6 +520,7 @@ workflows:
             branches:
               only:
                 - master
+
   promote:
     jobs:
       - promote-beta-to-app-store:
@@ -512,8 +541,6 @@ workflows:
             branches:
               ignore:
                 - master
-                - release
-                - staging
       - check-pr:
           filters:
             branches:
@@ -539,6 +566,11 @@ workflows:
               only:
                 - beta-ios
                 - beta-android
+      - maybe-skip-ci:
+          filters:
+            branches:
+              ignore:
+                - master
       - build-test-app-ios:
           filters:
             branches:
