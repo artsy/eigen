@@ -255,4 +255,15 @@ describe(AutosuggestSearchResult, () => {
     await new Promise((r) => setTimeout(r, 50))
     expect(navigate).toHaveBeenCalledWith("/artist/anto-carte", { passProps: { initialTab: "Insights" } })
   })
+
+  it("should call custom event track handler when search result is pressed", () => {
+    const trackResultPressMock = jest.fn()
+    const { getAllByText } = renderWithWrappersTL(
+      <TestWrapper result={result} itemIndex={1} trackResultPress={trackResultPressMock} />
+    )
+
+    fireEvent.press(getAllByText("Banksy")[0])
+
+    expect(trackResultPressMock).toBeCalledWith(result, 1)
+  })
 })
