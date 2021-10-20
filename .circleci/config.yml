@@ -345,6 +345,8 @@ jobs:
           name: Check if we can skip CI steps in this PR
           shell: /bin/bash
           command: |
+            set -euxo pipefail
+
             jobs_that_could_be_cancelled=(
               # add more here if we need to cancel early for draft PRs
               "build-test-app-ios"
