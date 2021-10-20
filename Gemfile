@@ -11,7 +11,7 @@ gem 'down'
 gem 'dotenv'
 gem 'json'
 
-group :development do
+group :development dodfsdfsdf
   gem 'lowdown' # For handling notifications + certs
 end
 
