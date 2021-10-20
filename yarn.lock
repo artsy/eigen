@@ -106,10 +106,10 @@
     "@algolia/logger-common" "4.10.4"
     "@algolia/requester-common" "4.10.4"
 
-"@artsy/cohesion@4.17.0":
-  version "4.17.0"
-  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.17.0.tgz#b90d2648297fd4936278e24c8ffd34bfbbcad06b"
-  integrity sha512-58b/2lFYoMZyTkIAxRut1zMEDFIEMddapchEhnDfYAzzlwr6HPeNdnTiuhQkOx/+9lovsjF9Bhnof1moRfxNcA==
+"@artsy/cohesion@4.17.1":
+  version "4.17.1"
+  resolved "https://registry.yarnpkg.com/@artsy/cohesion/-/cohesion-4.17.1.tgz#776fb10a0e9e155f32ff7679e48c125003c95746"
+  integrity sha512-fIWTcfN6qYrr07LnTHEpMIHUbPQEnPYmt/O/rJ/fQaGgf9WzMKDkJCUWIJvJ5RsgEtGYetC/7hys0ogplmNOnw==
   dependencies:
     core-js "3"
 
