@@ -19,16 +19,6 @@ const ArtworkWithProviders = (props: any) => {
 }
 
 describe("tracking", () => {
-  const trackEvent = jest.fn()
-
-  beforeEach(() => {
-    ;(useTracking as any).mockImplementation(() => {
-      return {
-        trackEvent,
-      }
-    })
-  })
-
   afterEach(() => {
     jest.clearAllMocks()
     __globalStoreTestUtils__?.reset()
