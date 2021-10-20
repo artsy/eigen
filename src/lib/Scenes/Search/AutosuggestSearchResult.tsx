@@ -10,7 +10,7 @@ import { ResultWithHighlight } from "./ResultWithHighlight"
 import { SearchContext } from "./SearchContext"
 
 export type OnResultPress = (result: AutosuggestResult) => void
-export type TrackResultPress = (result: AutosuggestResult, position?: number) => void
+export type TrackResultPress = (result: AutosuggestResult, itemIndex?: number) => void
 
 type ArtistTabs = "Insights" | "Artworks"
 
@@ -33,7 +33,7 @@ export const AutosuggestSearchResult: React.FC<{
   displayingRecentResult?: boolean
   showResultType?: boolean
   showQuickNavigationButtons?: boolean
-  position?: number
+  itemIndex?: number
   trackResultPress?: TrackResultPress
   onResultPress?: OnResultPress
   onDelete?(): void
@@ -41,7 +41,7 @@ export const AutosuggestSearchResult: React.FC<{
   result,
   highlight,
   showResultType,
-  position,
+  itemIndex,
   trackResultPress,
   onDelete,
   onResultPress,
@@ -69,7 +69,7 @@ export const AutosuggestSearchResult: React.FC<{
       }, 20)
 
       if (trackResultPress) {
-        trackResultPress(result, position)
+        trackResultPress(result, itemIndex)
 
         return
       }

@@ -222,12 +222,12 @@ export const Search2: React.FC<Search2Props> = (props) => {
     setSelectedPill(TOP_PILL)
   }
 
-  const handleTrackAutosuggestResultPress = (result: AutosuggestResult, position?: number) => {
+  const handleTrackAutosuggestResultPress = (result: AutosuggestResult, itemIndex?: number) => {
     trackEvent(
       tracks.tappedSearchResult({
         type: result.displayType || result.__typename,
         slug: result.slug!,
-        position: position!,
+        position: itemIndex!,
         query: searchState.query!,
         contextModule: ContextModule.topTab,
       })

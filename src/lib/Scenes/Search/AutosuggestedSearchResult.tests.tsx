@@ -259,7 +259,7 @@ describe(AutosuggestSearchResult, () => {
   it("should call custom event track handler when search result is pressed", () => {
     const trackResultPressMock = jest.fn()
     const { getAllByText } = renderWithWrappersTL(
-      <TestWrapper result={result} position={1} trackResultPress={trackResultPressMock} />
+      <TestWrapper result={result} itemIndex={1} trackResultPress={trackResultPressMock} />
     )
 
     fireEvent.press(getAllByText("Banksy")[0])
