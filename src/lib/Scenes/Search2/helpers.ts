@@ -15,6 +15,6 @@ export const getContextModuleByPillName = (pillName: string) => {
   return contextModuleByPillName[pillName]
 }
 
-export const isTokenExpiredError = (error: Error) => {
+export const isAlgoliaApiKeyExpiredError = (error: Error) => {
   return error?.message?.includes("parameter expired")
 }
