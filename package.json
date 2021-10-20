@@ -195,7 +195,7 @@
     "@storybook/react-native-server": "5.3.23",
     "@testing-library/jest-native": "4.0.1",
     "@testing-library/react-hooks": "7.0.1",
-    "@testing-library/react-native": "7.2.0",
+    "@testing-library/react-native": "8.0.0",
     "@types/argparse": "^2.0.8",
     "@types/autosuggest-highlight": "^3.1.1",
     "@types/chalk": "2.2.0",
