@@ -346,6 +346,7 @@ export const Search2QueryRenderer: React.FC<{}> = ({}) => {
         return <Search2RefetchContainer system={props?.system ?? null} />
       }}
       variables={{}}
+      cacheConfig={{ force: true }}
     />
   )
 }
