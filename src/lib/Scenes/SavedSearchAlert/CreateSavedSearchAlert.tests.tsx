@@ -78,4 +78,37 @@ describe("CreateSavedSearchAlert", () => {
       id: "internalID",
     })
   })
+
+  describe("When AREnableSavedSearchToggles is enabled", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
+    })
+
+    it("the push notification is enabled by default when push permissions are enabled", async () => {
+      notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
+
+      const { findAllByA11yState } = renderWithWrappersTL(<CreateSavedSearchAlert {...defaultProps} />)
+      const toggles = await findAllByA11yState({ selected: true })
+
+      expect(toggles).toHaveLength(2)
+    })
+
+    it("the push notification is disabled by default when push permissions are denied", async () => {
+      notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Denied))
+
+      const { findAllByA11yState } = renderWithWrappersTL(<CreateSavedSearchAlert {...defaultProps} />)
+      const toggles = await findAllByA11yState({ selected: false })
+
+      expect(toggles).toHaveLength(1)
+    })
+
+    it("the push notification is disabled by default when push permissions are not determined", async () => {
+      notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.NotDetermined))
+
+      const { findAllByA11yState } = renderWithWrappersTL(<CreateSavedSearchAlert {...defaultProps} />)
+      const toggles = await findAllByA11yState({ selected: false })
+
+      expect(toggles).toHaveLength(1)
+    })
+  })
 })
