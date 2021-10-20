@@ -132,7 +132,7 @@ const pills: PillType[] = [TOP_PILL, ARTWORKS_PILL]
 
 const objectTabByContextModule: Partial<Record<ContextModule, string>> = {
   [ContextModule.auctionTab]: "Auction Results",
-  [ContextModule.artworksTab]: "Artworks",
+  [ContextModule.artistsTab]: "Artworks",
 }
 
 interface Search2Props {
