@@ -1,5 +1,6 @@
 import { SearchArtworksContainerQuery } from "__generated__/SearchArtworksContainerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { LoadFailureView } from "lib/Components/LoadFailureView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderButton, PlaceholderGrid } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -24,6 +25,7 @@ export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ key
           Container: SearchArtworksGridPaginationContainer,
           renderPlaceholder: () => <SearchArtworksGridSkeleton />,
           initialProps: { keyword },
+          renderFallback: ({ retry }) => <LoadFailureView onRetry={retry!} />,
         })}
         variables={{ count: 20, keyword }}
         cacheConfig={{ force: true }}
@@ -33,7 +35,7 @@ export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ key
 }
 
 const SearchArtworksGridSkeleton: React.FC = () => (
-  <Flex>
+  <Flex accessibilityLabel="Artwork results are loading">
     <Flex height={28} my={1} px={2} justifyContent="space-between">
       <Flex flex={1} flexDirection="row">
         <PlaceholderButton width={20} height={20} />

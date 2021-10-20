@@ -1,3 +1,4 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import { Search2_system } from "__generated__/Search2_system.graphql"
@@ -32,6 +33,7 @@ import { SearchPills } from "./components/SearchPills"
 import { SearchPlaceholder } from "./components/SearchPlaceholder"
 import { RefetchWhenApiKeyExpiredContainer } from "./containers/RefetchWhenApiKeyExpired"
 import { SearchArtworksQueryRenderer } from "./containers/SearchArtworksContainer"
+import { getContextModuleByPillName } from "./helpers"
 import { SearchResults } from "./SearchResults"
 import { PillType } from "./types"
 
@@ -132,6 +134,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
   const searchInsightsConfigured = useSearchInsightsConfig(system?.algolia?.appID, system?.algolia?.apiKey)
+  const { trackEvent } = useTracking()
 
   const pillsArray = useMemo<PillType[]>(() => {
     const indices = system?.algolia?.indices
@@ -156,12 +159,29 @@ export const Search2: React.FC<Search2Props> = (props) => {
     )
   }
 
+  const handleRetry = () => {
+    setSearchState((prevState) => ({ ...prevState }))
+  }
+
   const renderResults = () => {
     if (selectedPill.type === "algolia") {
-      return <SearchResultsContainer indexName={selectedPill.name} categoryDisplayName={selectedPill.displayName} />
+      return (
+        <SearchResultsContainer
+          indexName={selectedPill.name}
+          categoryDisplayName={selectedPill.displayName}
+          onRetry={handleRetry}
+        />
+      )
     }
     if (selectedPill.name === TOP_PILL.name) {
-      return <AutosuggestResults query={searchState.query!} showResultType showQuickNavigationButtons />
+      return (
+        <AutosuggestResults
+          query={searchState.query!}
+          showResultType
+          showQuickNavigationButtons
+          showOnRetryErrorMessage
+        />
+      )
     }
     return <SearchArtworksQueryRenderer keyword={searchState.query!} />
   }
@@ -169,9 +189,12 @@ export const Search2: React.FC<Search2Props> = (props) => {
   const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 2
 
   const handlePillPress = (pill: PillType) => {
+    const contextModule = getContextModuleByPillName(selectedPill.displayName)
+
     setSearchState((prevState) => ({ ...prevState, page: 1 }))
     setSelectedPill(pill)
     Keyboard.dismiss()
+    trackEvent(tracks.tappedPill(contextModule, pill.displayName, searchState.query!))
   }
 
   const isSelected = (pill: PillType) => {
@@ -289,3 +312,13 @@ const Scrollable = styled(ScrollView).attrs(() => ({
   padding: 0 20px;
   padding-top: 20px;
 `
+
+export const tracks = {
+  tappedPill: (contextModule: ContextModule, subject: string, query: string) => ({
+    context_screen_owner_type: OwnerType.search,
+    context_screen: Schema.PageNames.Search,
+    context_module: contextModule,
+    subject,
+    query,
+  }),
+}
