@@ -74,14 +74,17 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   }
 
   if (searchResults?.nbHits === 0) {
+    const namesWithAnArticle = ["Artist", "Auction", "Artist Series"]
+    const article = namesWithAnArticle.includes(categoryDisplayName) ? "an" : "a"
+
     return (
       <Box px={2} py={1}>
         <Spacer mt={4} />
-        <Text variant="md">
-          No {categoryDisplayName} found for “{searchState.query}.”
+        <Text variant="md" textAlign="center">
+          Sorry, we couldn’t find {article} {categoryDisplayName} for ”{searchState.query}.”
         </Text>
-        <Text variant="md" color="black60">
-          Look at a different category or try another search term.
+        <Text variant="md" color="black60" textAlign="center">
+          Please try searching again with a different spelling.
         </Text>
       </Box>
     )
