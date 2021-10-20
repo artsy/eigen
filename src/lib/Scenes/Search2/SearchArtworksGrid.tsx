@@ -3,11 +3,12 @@ import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkF
 import { useArtworkFilters, useSelectedFiltersCount } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 
+import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader2"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import { Box, Separator, useTheme } from "palette"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -27,6 +28,8 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
   const { space } = useTheme()
   const { trackEvent } = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((state) => state.setFiltersCountAction)
+
   const handleCloseFilterArtworksModal = () => {
     trackEvent(tracks.closeFilterModal())
     setFilterArtworkModalVisible(false)
@@ -41,9 +44,15 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
 
   useArtworkFilters({
     relay,
-    aggregations: viewer.aggregations?.aggregations,
+    aggregations: viewer.artworks?.aggregations,
     componentPath: "Search2/SearchArtworksGrid",
   })
+
+  useEffect(() => {
+    if (viewer.artworks?.counts) {
+      setFiltersCountAction({ followedArtists: viewer.artworks.counts.followedArtists, total: null })
+    }
+  }, [setFiltersCountAction])
 
   const content: ArtworkSection[] = [
     {
@@ -98,8 +107,10 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
         keyword: { type: "String" }
         input: { type: "FilterArtworksInput" }
       ) {
-        aggregations: artworksConnection(
-          first: 0
+        artworks: artworksConnection(
+          first: $count
+          after: $cursor
+          keyword: $keyword
           aggregations: [
             ARTIST
             MEDIUM
@@ -111,8 +122,10 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
             MAJOR_PERIOD
             COLOR
             PARTNER
+            FOLLOWED_ARTISTS
           ]
-        ) {
+          input: $input
+        ) @connection(key: "SearchArtworksGrid_artworks") {
           aggregations {
             slice
             counts {
@@ -121,9 +134,9 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
               value
             }
           }
-        }
-        artworks: artworksConnection(first: $count, after: $cursor, keyword: $keyword, input: $input)
-          @connection(key: "SearchArtworksGrid_artworks") {
+          counts {
+            followedArtists
+          }
           edges {
             node {
               id

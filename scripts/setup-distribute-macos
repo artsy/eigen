@@ -11,6 +11,7 @@ if ! which aws;
 then
   echo "installing aws"
   # install awscli
+  brew install six || brew link --overwrite six
   brew install awscli
 
   # configure awscli
