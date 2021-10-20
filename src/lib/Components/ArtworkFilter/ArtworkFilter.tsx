@@ -1,4 +1,4 @@
-import { ActionType, ContextModule } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import {
@@ -47,6 +47,7 @@ interface ArtworkFilterProps extends ViewProps {
   mode: ArtworkFilterMode
   slug: string | null
   title?: string
+  query?: string
 }
 
 interface ArtworkFilterOptionsScreenParams {
@@ -91,7 +92,7 @@ const Stack = createStackNavigator<ArtworkFilterNavigationStack>()
 
 export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const tracking = useTracking()
-  const { exitModal, id, mode, slug, closeModal } = props
+  const { exitModal, id, mode, slug, closeModal, query } = props
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
@@ -118,13 +119,15 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
     currentParams,
     ownerEntity,
     screenName,
+    artworkQuery,
   }: {
     actionType: ActionType
     changedParams: any
     contextModule?: ContextModule
     currentParams: FilterParams
-    ownerEntity: OwnerEntityTypes
+    ownerEntity: OwnerEntityTypes | OwnerType
     screenName: PageNames
+    artworkQuery?: string
   }) => {
     tracking.trackEvent({
       context_module: contextModule,
@@ -135,6 +138,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
       current: JSON.stringify(currentParams),
       changed: JSON.stringify(changedParams),
       action_type: actionType,
+      ...(artworkQuery && { query: artworkQuery }),
     })
   }
 
@@ -283,7 +287,8 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
                     trackChangeFilters({
                       actionType: ActionType.commercialFilterParamsChanged,
                       screenName: PageNames.Search,
-                      ownerEntity: OwnerEntityTypes.Search,
+                      ownerEntity: OwnerType.search,
+                      artworkQuery: query,
                       currentParams: appliedFiltersParams,
                       changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
                     })
