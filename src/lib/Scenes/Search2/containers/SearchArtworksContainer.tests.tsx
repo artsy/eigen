@@ -1,4 +1,6 @@
+import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { __renderWithPlaceholderTestUtils__ } from "lib/utils/renderWithPlaceholder"
@@ -47,5 +49,39 @@ describe("SearchArtworks", () => {
     mockEnvironment.mock.rejectMostRecentOperation(new Error("Bad connection"))
 
     expect(getByText("Unable to load")).toBeTruthy()
+  })
+
+  it("should track event when an artwork is tapped", () => {
+    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Artwork: () => ({
+        internalID: "internalID",
+        slug: "artworkSlug",
+        artistNames: "Artist Name",
+      }),
+    })
+
+    fireEvent.press(getByText("Artist Name"))
+
+    expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "action": "tappedMainArtworkGrid",
+          "context_module": "artworkGrid",
+          "context_screen": "Search",
+          "context_screen_owner_id": undefined,
+          "context_screen_owner_slug": undefined,
+          "context_screen_owner_type": "search",
+          "destination_screen_owner_id": "internalID",
+          "destination_screen_owner_slug": "artworkSlug",
+          "destination_screen_owner_type": "artwork",
+          "position": 0,
+          "query": "keyword",
+          "sort": "-decayed_merch",
+          "type": "thumbnail",
+        },
+      ]
+    `)
   })
 })
