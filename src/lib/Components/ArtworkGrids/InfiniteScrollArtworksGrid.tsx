@@ -77,6 +77,12 @@ export interface Props {
   /** Slug of the parent screen's entity where the grid is located. For analytics purposes. */
   contextScreenOwnerSlug?: string
 
+  /** Search query of the parent screen's entity where the grid is located. For analytics purposes. */
+  contextScreenQuery?: string
+
+  /** Name of the parent screen's entity where the grid is located. For analytics purposes. */
+  contextScreen?: string
+
   /** An array of child indices determining which children get docked to the top of the screen when scrolling.  */
   stickyHeaderIndices?: number[]
 
@@ -294,6 +300,8 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             contextScreenOwnerType={this.props.contextScreenOwnerType}
             contextScreenOwnerId={this.props.contextScreenOwnerId}
             contextScreenOwnerSlug={this.props.contextScreenOwnerSlug}
+            contextScreenQuery={this.props.contextScreenQuery}
+            contextScreen={this.props.contextScreen}
             artwork={artwork}
             key={"artwork-" + itemIndex + "-" + artwork.id}
             hideUrgencyTags={this.props.hideUrgencyTags}
