@@ -45,6 +45,10 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     })
   }, [indexName])
 
+  useEffect(() => {
+    setShowLoadingPlaceholder(true)
+  }, [categoryDisplayName])
+
   // When we get the first search results, we hide the loading placeholder
   useEffect(() => {
     // Skips the initial mount
@@ -61,16 +65,16 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     }
   }
 
-  if (hits.length === 0 && error && !loading) {
-    return <LoadFailureView onRetry={onRetry} />
-  }
-
-  if (showLoadingPlaceholder || loading) {
+  if (showLoadingPlaceholder) {
     return (
       <ProvidePlaceholderContext>
         <AlgoliaSearchPlaceholder hasRoundedImages={categoryDisplayName === "Artist"} />
       </ProvidePlaceholderContext>
     )
+  }
+
+  if (error && hits.length === 0 && !loading) {
+    return <LoadFailureView onRetry={onRetry} />
   }
 
   if (searchResults?.nbHits === 0) {
