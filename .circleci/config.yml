@@ -342,15 +342,40 @@ jobs:
     steps:
       - run: apk add --no-cache bash curl jq
       - run:
-          name: Check skippable PR
+          name: Check if we can skip CI steps in this PR
           command: |
+            jobs_that_could_be_cancelled=(
+              # add more here if we need to cancel early for draft PRs
+              "build-test-js"
+              "build-test-app-ios"
+              "build-test-app-android"
+            )
+
+            will_cancel_some_jobs=0
+
+            # check if PR is draft
             if $(curl -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/artsy/eigen/pulls/${CIRCLE_PULL_REQUEST##*/} | jq ".draft")
             then
-              # circleci step halt
-              echo "would skip"
-            else
-              echo "would not skip"
+              will_cancel_some_jobs=1
+              echo "We will cancel some jobs"
             fi
+
+            if [[ "${will_cancel_some_jobs}" == 0 ]]; then
+              # nothing to be done. we just continue with the rest of the workflow.
+              circleci step halt
+            fi
+
+            # we will cancel the following jobs
+            jobs = $(curl \
+              -X POST \
+              --url https://circleci.com/api/v2/workflow/${CIRCLE_WORKFLOW_ID}/job \
+              --header "Circle-Token: ${{ secrets.CircleToken }}")
+
+            to_be_cancelled=()
+            for cancellable_job in $jobs_that_could_be_cancelled; do
+              to_be_cancelled+=$(echo $jobs | jq ".items[] | select(.name == \"$cancellable_job\") | .id")
+              echo $to_be_cancelled
+            done
 
   build-test-app-ios:
     environment:
