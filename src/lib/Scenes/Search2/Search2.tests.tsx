@@ -30,8 +30,6 @@ jest.mock("lib/utils/useSearchInsightsConfig", () => ({
   useSearchInsightsConfig: () => true,
 }))
 
-jest.mock("../Search/AutosuggestResults.tsx", () => ({ AutosuggestResults: () => null }))
-
 describe("Search2 Screen", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
@@ -301,5 +299,50 @@ describe("Search2 Screen", () => {
 
       expect(queryByA11yState({ selected: true })).toHaveTextContent("Top")
     })
+  })
+
+  it("should track event when a search result is pressed", async () => {
+    const { getByPlaceholderText, findAllByText } = renderWithWrappersTL(<TestRenderer />)
+    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Algolia: () => ({
+        appID: "",
+        apiKey: "",
+        indices: [{ name: "Artist_staging", displayName: "Artist" }],
+      }),
+    })
+
+    fireEvent(searchInput, "changeText", "text")
+
+    mockEnvironmentPayload(mockEnvironment, {
+      SearchableConnection: () => ({
+        edges: [
+          {
+            node: {
+              displayLabel: "Banksy",
+            },
+          },
+        ],
+      }),
+    })
+
+    const elements = await findAllByText("Banksy")
+    fireEvent.press(elements[0])
+
+    expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "context_module": "topTab",
+          "context_screen": "Search",
+          "context_screen_owner_type": "Search",
+          "position": 0,
+          "query": "text",
+          "selected_object_slug": "slug-1",
+          "selected_object_tab": undefined,
+          "selected_object_type": "displayType-1",
+        },
+      ]
+    `)
   })
 })
