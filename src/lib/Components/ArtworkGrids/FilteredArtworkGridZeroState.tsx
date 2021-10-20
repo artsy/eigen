@@ -4,7 +4,7 @@ import { Button, Flex, Sans } from "palette"
 import React from "react"
 import styled from "styled-components/native"
 
-interface ZeroStateProps {
+export interface ZeroStateProps {
   id?: string
   slug?: string
   trackClear?: (id: string, slug: string) => void
