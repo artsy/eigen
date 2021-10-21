@@ -1,6 +1,5 @@
-#!/usr/bin/env yarn ts-node --transpile-only
-
 import got from "got"
+import _ from "lodash"
 import { exec } from "./helpers"
 
 const main = async () => {
@@ -15,7 +14,7 @@ const main = async () => {
   const isPrDraft = ((await got
     .get(
       `https://api.github.com/repos/artsy/eigen/pulls/${
-        process.env.CI ? process.env.CIRCLE_PULL_REQUEST.split("/").lastItem : "a-gh-pr-number-for-debugging"
+        process.env.CI ? _.last(process.env.CIRCLE_PULL_REQUEST.split("/")) : "a-gh-pr-number-for-debugging"
       }`,
       {
         headers: { Accept: "application/vnd.github.v3+json" },

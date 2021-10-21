@@ -343,9 +343,11 @@ jobs:
       - image: cimg/node:14.17.1
     steps:
       - checkout
+      - node/install-packages:
+          pkg-manager: yarn
       - run:
           name: Check if we can skip CI steps in this PR
-          command: ./scripts/maybe-skip-ci.ts
+          command: yarn ts-node --transpile-only ./scripts/maybe-skip-ci.ts
 
   build-test-app-ios:
     environment:
