@@ -67,7 +67,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
           data-test-id="PhotosButton"
           onPress={() => {
             if (isEmpty(artworkState.sessionState.formValues.photos)) {
-              showPhotoActionSheet(showActionSheetWithOptions).then((photos) => {
+              showPhotoActionSheet(showActionSheetWithOptions, true).then((photos) => {
                 artworkActions.addPhotos(photos)
               })
             } else {
