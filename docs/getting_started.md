@@ -44,15 +44,11 @@ cd eigen
 </details>
 
 ```sh
-gem install bundler
 
-bundle install
+yarn setup:artsy # or `yarn setup:oss` if you're not working at Artsy
 
-yarn setup:oss # or `yarn setup:artsy` if working at Artsy
+yarn install all 
 
-yarn install
-
-bundle exec pod install --repo-update
 ```
 
 **Note**: `bundle exec pod install` may fail the first time you run it (due to a [bug](https://github.com/orta/cocoapods-keys/issues/127) in a dependency of ours). Re-running the command should work.
@@ -66,6 +62,8 @@ yarn start
 ```
 
 ### Run the iOS app
+
+Ask for your apple developer account to be added on the project and login with your apple id under settings/accounts/apple Id
 
 Open the app in Xcode:
 
