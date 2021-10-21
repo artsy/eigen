@@ -30,13 +30,14 @@ static NSString *SaveFailedErrorMessage = @"Failed to save photos locally.";
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(requestPhotos:(RCTPromiseResolveBlock)resolve
+RCT_EXPORT_METHOD(requestPhotos:(BOOL)allowMultiple
+                  resolve:(RCTPromiseResolveBlock)resolve
                   reject:(RCTPromiseRejectBlock)reject)
 {
     self.resolve = resolve;
     self.reject = reject;
     if (@available(iOS 14.0, *)) {
-        [self presentPhotoPicker];
+        [self presentPhotoPickerAllowMultiple:allowMultiple];
     } else {
         // We should be checking OS version and using a react-native
         // photo picker on typescript side, this should never happen.
@@ -46,10 +47,10 @@ RCT_EXPORT_METHOD(requestPhotos:(RCTPromiseResolveBlock)resolve
     }
 }
 
-- (void)presentPhotoPicker API_AVAILABLE(ios(14)) {
+- (void)presentPhotoPickerAllowMultiple:(BOOL)allowMultiple API_AVAILABLE(ios(14)) {
     dispatch_async(dispatch_get_main_queue(), ^{
         PHPickerConfiguration *config = [[PHPickerConfiguration alloc] init];
-        config.selectionLimit = 10;
+        config.selectionLimit = allowMultiple ? 10 : 1;
         config.filter = [PHPickerFilter imagesFilter];
         PHPickerViewController *picker = [[PHPickerViewController alloc] initWithConfiguration:config];
         picker.delegate = self;
