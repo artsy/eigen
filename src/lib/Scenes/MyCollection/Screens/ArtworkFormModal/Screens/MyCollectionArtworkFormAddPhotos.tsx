@@ -64,7 +64,7 @@ const AddPhotosButton: React.FC<{ imageSize: number }> = ({ imageSize }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        showPhotoActionSheet(showActionSheetWithOptions).then((images) => {
+        showPhotoActionSheet(showActionSheetWithOptions, true).then((images) => {
           artworkActions.addPhotos(images)
         })
       }}

@@ -16,13 +16,15 @@ export async function requestPhotos(): Promise<Image[]> {
 }
 
 export async function showPhotoActionSheet(
-  showActionSheet: (options: ActionSheetOptions, callback: (i: number) => void) => void
+  showActionSheet: (options: ActionSheetOptions, callback: (i: number) => void) => void,
+  useModal: boolean = false
 ): Promise<Image[]> {
   return new Promise<Image[]>((resolve, reject) => {
     showActionSheet(
       {
         options: ["Photo Library", "Take Photo", "Cancel"],
         cancelButtonIndex: 2,
+        useModal,
       },
       async (buttonIndex) => {
         let photos = null
