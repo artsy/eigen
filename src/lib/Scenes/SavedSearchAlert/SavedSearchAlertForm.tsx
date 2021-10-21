@@ -167,9 +167,13 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   }
 
   const handleSubmit = async () => {
-    const granted = await checkOrRequestPushPermissions()
+    let canSubmit = true
 
-    if (granted) {
+    if (!enableSavedSearchToggles) {
+      canSubmit = await checkOrRequestPushPermissions()
+    }
+
+    if (canSubmit) {
       formik.handleSubmit()
     }
   }
