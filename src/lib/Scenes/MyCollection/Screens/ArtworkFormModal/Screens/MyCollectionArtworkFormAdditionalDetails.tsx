@@ -1,7 +1,7 @@
 import { NavigationProp } from "@react-navigation/native"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { TextArea } from "lib/Components/TextArea"
-import { Flex, Input, Join, Sans, Spacer, useSpace } from "palette"
+import { Flex, Input, Join, Sans, Spacer } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import { Select } from "palette/elements/Select"
 import React, { useRef, useState } from "react"
@@ -12,7 +12,6 @@ import { ArtworkFormModalScreen } from "../MyCollectionArtworkFormModal"
 export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: NavigationProp<ArtworkFormModalScreen> }> = ({
   navigation,
 }) => {
-  const space = useSpace()
   const { formik } = useArtworkForm()
   const formikValues = formik?.values
   const [isEdition, setIsEdition] = useState(formikValues?.isEdition)
@@ -60,23 +59,24 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
 
             {!!isEdition && (
               <Flex flexDirection="row">
-                <Input
-                  placeholder="Edition number"
-                  keyboardType="number-pad"
-                  onChangeText={formik.handleChange("editionNumber")}
-                  onBlur={formik.handleBlur("editionNumber")}
-                  defaultValue={formikValues.editionNumber!}
-                  style={{ marginRight: space(1) }}
-                  data-test-id="EditionNumberInput"
-                />
-                <Input
-                  placeholder="Edition size"
-                  keyboardType="number-pad"
-                  onChangeText={formik.handleChange("editionSize")}
-                  onBlur={formik.handleBlur("editionSize")}
-                  data-test-id="EditionSizeInput"
-                  defaultValue={formikValues.editionSize}
-                />
+                <Join separator={<Spacer mx={0.5} />}>
+                  <Input
+                    placeholder="Edition number"
+                    keyboardType="number-pad"
+                    onChangeText={formik.handleChange("editionNumber")}
+                    onBlur={formik.handleBlur("editionNumber")}
+                    defaultValue={formikValues.editionNumber!}
+                    data-test-id="EditionNumberInput"
+                  />
+                  <Input
+                    placeholder="Edition size"
+                    keyboardType="number-pad"
+                    onChangeText={formik.handleChange("editionSize")}
+                    onBlur={formik.handleBlur("editionSize")}
+                    data-test-id="EditionSizeInput"
+                    defaultValue={formikValues.editionSize}
+                  />
+                </Join>
               </Flex>
             )}
 
