@@ -2,6 +2,7 @@ import { useActionSheet } from "@expo/react-native-action-sheet"
 import { Image } from "lib/Components/Bidding/Elements/Image"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { TextArea } from "lib/Components/TextArea"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { Box, Button, Flex, Input, Join, Spacer, Text, Touchable, useColor } from "palette"
 import React from "react"
@@ -51,7 +52,7 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
           <Flex mx={2}>
             <Input title="Name" required />
             <Spacer py={2} />
-            <Input title="About" />
+            <TextArea title="ABOUT" />
             <Spacer py={2} />
             <Button
               flex={1}
