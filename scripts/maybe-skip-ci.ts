@@ -38,15 +38,14 @@ const main = async () => {
       `https://circleci.com/api/v2/workflow/${
         process.env.CI ? process.env.CIRCLE_WORKFLOW_ID : "a-workflow-id-for-debugging"
       }/job`
-      // { headers: { "Circle-Token": process.env.CI ? process.env.CIRCLE_TOKEN : "a-personal-token-for-debugging" } }
+      // { headers: { "Circle-Token": "a-personal-token-for-debugging" } }
     )
-    .json()) as any).items.map((i) => ({ name: i.name, id: i.id }))
-  console.log(jobs)
+    .json()) as any).items.map((i) => ({ name: i.name, job_number: i.job_number }))
 
   // we will cancel the following jobs
   const jobsToBeCancelled = jobs.filter((i) => jobsThatCouldBeCancelled.includes(i.name))
   jobsToBeCancelled.forEach(async (i) => {
-    await got.post(`https://circleci.com/api/v2/project/gh/artsy/eigen/job/${i.id}/cancel`)
+    await got.post(`https://circleci.com/api/v2/project/gh/artsy/eigen/job/${i.job_number}/cancel`)
   })
 }
 
