@@ -171,7 +171,7 @@
     "simple-markdown": "0.7.2",
     "styled-components": "4.2.1",
     "styled-system": "5.1.5",
-    "supercluster": "6.0.1",
+    "supercluster": "6.0.2",
     "tipsi-stripe": "https://github.com/artsy/tipsi-stripe.git#fix-infinite-loop",
     "url": "^0.11.0",
     "yup": "0.29.1",
