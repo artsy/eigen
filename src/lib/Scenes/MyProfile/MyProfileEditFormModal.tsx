@@ -3,9 +3,9 @@ import { Image } from "lib/Components/Bidding/Elements/Image"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
-import { Box, Flex, Join, Spacer, Touchable, useColor } from "palette"
+import { Box, Button, Flex, Input, Join, Spacer, Text, Touchable, useColor } from "palette"
 import React from "react"
-import { ScrollView, Text } from "react-native"
+import { ScrollView } from "react-native"
 
 interface MyProfileEditFormModalProps {
   visible: boolean
@@ -16,6 +16,13 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
   const { visible, onDismiss } = props
   const color = useColor()
   const { showActionSheetWithOptions } = useActionSheet()
+
+  const chooseImageHandler = () => {
+    showPhotoActionSheet(showActionSheetWithOptions).then((images) => {
+      console.log("Images :: ", images)
+    })
+  }
+
   return (
     <FancyModal visible={visible} onBackgroundPressed={onDismiss}>
       <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => onDismiss()}>
@@ -23,17 +30,12 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
       </FancyModalHeader>
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
         <Join separator={<Spacer py={1} />}>
-          <Flex flexDirection="row" alignItems="center" px={2}>
-            <Touchable
-              onPress={() => {
-                showPhotoActionSheet(showActionSheetWithOptions).then((images) => {
-                  console.log("Images :: ", images)
-                })
-              }}
-            >
+          <Flex flexDirection="row" alignItems="center" px={2} mt={2}>
+            <Touchable onPress={chooseImageHandler}>
               <Box
-                height="100"
-                width="100"
+                height="99"
+                width="99"
+                mr={2}
                 borderRadius="50"
                 backgroundColor={color("black10")}
                 justifyContent="center"
@@ -42,7 +44,23 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
                 <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
               </Box>
             </Touchable>
-            <Text>Choose an Image</Text>
+            <Touchable haptic onPress={chooseImageHandler}>
+              <Text style={{ textDecorationLine: "underline" }}>Choose an Image</Text>
+            </Touchable>
+          </Flex>
+          <Flex mx={2}>
+            <Input title="Name" required />
+            <Spacer py={2} />
+            <Input title="About" />
+            <Spacer py={2} />
+            <Button
+              flex={1}
+              onPress={() => {
+                console.log("Save")
+              }}
+            >
+              Save
+            </Button>
           </Flex>
         </Join>
       </ScrollView>
