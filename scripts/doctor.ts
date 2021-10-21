@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+#!/usr/bin/env yarn ts-node --transpile-only
 
 /**
  * This script runs some trivial checks to identify possible
@@ -8,22 +8,16 @@
  * - Verify if there is a version mismath in node modules
  */
 
-const { spawnSync } = require("child_process")
-const chalk = require("chalk")
-const checkDependencies = require("check-dependencies")
-const fs = require("fs")
-
-const exec = (command, cwd) => {
-  const task = spawnSync(command, { shell: true, cwd })
-  if (task.status != 0) {
-    throw new Error(task.stderr.toString())
-  }
-  return task.stdout.toString()
-}
+import chalk from "chalk"
+import checkDependencies from "check-dependencies"
+import fs from "fs"
+import { exec } from "./helpers"
 
 const NO = (message, suggestion) => {
   console.log(`🔴 ${message}`)
-  if (suggestion) console.log(`└──> ${suggestion}`)
+  if (suggestion) {
+    console.log(`└──> ${suggestion}`)
+  }
 }
 const YES = (message) => console.log(`🟢 ${message}`)
 const g = (text) => chalk.bold.green(text)

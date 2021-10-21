@@ -12,6 +12,7 @@ jobs:
         run: |
           curl \
             -X POST \
+            --url https://circleci.com/api/v2/project/gh/artsy/eigen/pipeline \
+            --header "Circle-Token: ${{ secrets.CircleToken }}" \
             --header "Content-Type: application/json" \
-            -d '{"branch": "beta-android"}' \
-            https://circleci.com/api/v1.1/project/github/artsy/eigen/build?circle-token=${{ secrets.CircleToken }}
+            --data '{"branch": "beta-android"}'
