@@ -233,6 +233,9 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
         filterOptionToDisplayConfigMap.organizations,
       ]
 
+    case FilterModalMode.Search:
+      return [filterOptionToDisplayConfigMap.waysToBuy, filterOptionToDisplayConfigMap.attributionClass]
+
     default:
       return [
         filterOptionToDisplayConfigMap.sort,
