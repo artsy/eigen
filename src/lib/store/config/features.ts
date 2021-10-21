@@ -169,6 +169,12 @@ export const features = defineFeatures({
     description: "Enable Saved Search toggles",
     showInAdminMenu: true,
   },
+  AREnableWebPImages: {
+    readyForRelease: true,
+    description: "Enable WebP Images",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableWebPImages",
+  },
 })
 
 export interface DevToggleDescriptor {
