@@ -41,6 +41,8 @@ export const SavedSearchAlertQueryRenderer: React.FC<SearchCriteriaAlertBaseProp
               priceRange
               userAlertSettings {
                 name
+                email
+                push
               }
               width
             }
