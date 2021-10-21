@@ -22,7 +22,7 @@ export const consignmentSetupToMutationInput = (submission: ConsignmentSetup) =>
       edition: !!submission.editionInfo,
       editionNumber: submission.editionInfo && submission.editionInfo.number,
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      editionSize: submission.editionInfo && (parseInt(submission.editionInfo.size, 10) || null), // parseInt(undefined) returns NaN, which errors on MP.
+      editionSize: submission.editionInfo && submission.editionInfo.size,
       height: submission.metadata && submission.metadata.height,
       locationCity: submission.location && submission.location.city,
       locationCountry: submission.location && submission.location.country,
