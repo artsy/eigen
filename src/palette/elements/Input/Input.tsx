@@ -1,4 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
+import { EventEmitter } from "events"
 import { MeasuredView } from "lib/utils/MeasuredView"
 import _ from "lodash"
 import { Color, EyeOpenedIcon, Flex, Spinner, Text, useTheme, XCircleIcon } from "palette"
@@ -18,6 +19,12 @@ import { EyeClosedIcon } from "../../svgs/EyeClosedIcon"
 import { InputTitle } from "./InputTitle"
 
 export const INPUT_HEIGHT = 50
+
+export const inputEvents = new EventEmitter()
+
+export const emitInputClearEvent = () => {
+  inputEvents.emit("clear")
+}
 
 export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   containerStyle?: React.ComponentProps<typeof Flex>["style"]
@@ -97,6 +104,13 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     useImperativeHandle(ref, () => input.current!)
 
     const fontFamily = theme.fonts.sans.regular
+
+    useEffect(() => {
+      inputEvents.addListener("clear", localClear)
+      return () => {
+        inputEvents.removeListener("clear", localClear)
+      }
+    }, [])
 
     useEffect(() => {
       /* to make the font work for secure text inputs,
