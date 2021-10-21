@@ -1,9 +1,12 @@
 import { fireEvent } from "@testing-library/react-native"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import * as input from "palette/elements/Input/Input"
 import React from "react"
 import { TextInput } from "react-native"
 import Animated, { Easing } from "react-native-reanimated"
 import { SearchInput, SearchInputProps } from "./SearchInput"
+
+const emitInputClearEventSpy = jest.spyOn(input, "emitInputClearEvent")
 
 describe("SearchInput", () => {
   const onCancelPressMock = jest.fn()
@@ -60,9 +63,21 @@ describe("SearchInput", () => {
     expect(getAllByText("Cancel")[0]).toBeDefined()
   })
 
-  it(`calls passed "onCancelPress" callback when pressing on "Cancel" button`, () => {
+  it(`calls passed "onCancelPress" callback and emits "clear" event when pressing on "Cancel" button`, () => {
     const { getAllByText } = renderWithWrappersTL(<TestWrapper enableCancelButton />)
     fireEvent.press(getAllByText("Cancel")[0])
     expect(onCancelPressMock).toHaveBeenCalled()
+    expect(emitInputClearEventSpy).toHaveBeenCalled()
+  })
+
+  it(`hides "x" button when pressing "Cancel"`, () => {
+    const { getAllByText, getByA11yLabel, queryAllByA11yLabel, getByPlaceholderText } = renderWithWrappersTL(
+      <TestWrapper enableCancelButton />
+    )
+    const searchInput = getByPlaceholderText("Type something...")
+    fireEvent(searchInput, "changeText", "text")
+    expect(getByA11yLabel("Clear input button")).toBeTruthy()
+    fireEvent.press(getAllByText("Cancel")[0])
+    expect(queryAllByA11yLabel("Clear input button")).toHaveLength(0)
   })
 })

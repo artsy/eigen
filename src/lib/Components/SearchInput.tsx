@@ -1,5 +1,5 @@
 import SearchIcon from "lib/Icons/SearchIcon"
-import { Flex, Input, InputProps, Sans, SpacingUnitV2, SpacingUnitV3, useSpace } from "palette"
+import { emitInputClearEvent, Flex, Input, InputProps, Sans, SpacingUnitV2, SpacingUnitV3, useSpace } from "palette"
 import React, { RefObject } from "react"
 import { TextInput, TouchableOpacity, useWindowDimensions } from "react-native"
 import Animated, { Easing } from "react-native-reanimated"
@@ -74,6 +74,7 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
                 ;(ref as RefObject<TextInput>).current?.blur()
                 ;(ref as RefObject<TextInput>).current?.clear()
                 onCancelPress?.()
+                emitInputClearEvent()
               }}
               hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
             >
