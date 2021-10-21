@@ -307,7 +307,7 @@ const useStyleForVariantAndState = (
       switch (state) {
         case DisplayState.Enabled:
           retval.backgroundColor = color("white100")
-          retval.borderColor = color("black100")
+          retval.borderColor = color("black60")
           retval.textColor = color("black100")
           break
         case DisplayState.Disabled:
