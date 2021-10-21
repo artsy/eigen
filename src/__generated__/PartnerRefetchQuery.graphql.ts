@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2fd12b93d463b0f2166fd8777824848a */
+/* @relayHash 560dc87cba908fe69321894c7f19d923 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -287,10 +287,17 @@ fragment PartnerShows_partner on Partner {
   ...PartnerShowsRail_partner
 }
 
+fragment PartnerSubscriberBanner_partner on Partner {
+  name
+  hasFairPartnership
+}
+
 fragment Partner_partner on Partner {
   id
   internalID
   slug
+  partnerType
+  displayFullPartnerPage
   profile {
     id
     isFollowed
@@ -300,6 +307,7 @@ fragment Partner_partner on Partner {
   ...PartnerOverview_partner
   ...PartnerShows_partner
   ...PartnerHeader_partner
+  ...PartnerSubscriberBanner_partner
 }
 */
 
@@ -574,6 +582,20 @@ return {
             "selections": [
               (v4/*: any*/),
               (v5/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "partnerType",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "displayFullPartnerPage",
+                "storageKey": null
+              },
               {
                 "alias": null,
                 "args": null,
@@ -1275,6 +1297,13 @@ return {
                   }
                 ],
                 "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "hasFairPartnership",
+                "storageKey": null
               }
             ],
             "type": "Partner",
@@ -1286,7 +1315,7 @@ return {
     ]
   },
   "params": {
-    "id": "2fd12b93d463b0f2166fd8777824848a",
+    "id": "560dc87cba908fe69321894c7f19d923",
     "metadata": {},
     "name": "PartnerRefetchQuery",
     "operationKind": "query",
