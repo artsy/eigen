@@ -229,6 +229,11 @@ dependencies {
         exclude group:'com.facebook.flipper'
     }
 
+    // For WebP support, including animated WebP
+    implementation 'com.facebook.fresco:animated-webp:2.1.0'
+    implementation 'com.facebook.fresco:webpsupport:2.0.0'
+
+
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")
