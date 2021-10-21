@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native"
+import { BackButton } from "lib/navigation/BackButton"
 import { GlobalStore, useEnvironment } from "lib/store/GlobalStore"
 import { Button, Flex, Join, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
@@ -72,6 +73,11 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
 
   return (
     <Flex justifyContent="center" flex={1} backgroundColor="white">
+      <BackButton
+        onPress={() => {
+          navigation.goBack()
+        }}
+      />
       <Flex px={1.5}>
         <Join separator={<Spacer height={60} />}>
           <Text variant="xxl">{mode === "login" ? "Log in" : "Sign Up"}</Text>
