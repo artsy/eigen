@@ -9,6 +9,8 @@ export const endash = "–"
 export const emdash = "—"
 export const bullet = "•"
 export const nbsp = String.fromCharCode(160)
+export const quoteLeft = "“"
+export const quoteRight = "”"
 
 /**
  * A helper func to create a range string out of two strings, by putting an endash between them.
