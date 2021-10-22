@@ -8,7 +8,7 @@ import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilter
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader2"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
-import { Box, Separator, Text, useTheme } from "palette"
+import { Box, quoteLeft, quoteRight, Separator, Text, useTheme } from "palette"
 import React, { useEffect, useState } from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -89,7 +89,8 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
         <Box mb="80px" pt={6}>
           <Box px={2}>
             <Text variant="md" textAlign="center">
-              Sorry, we couldn’t find any Artworks for “{keyword}.”
+              Sorry, we couldn’t find any Artworks for {quoteLeft}
+              {keyword}.{quoteRight}
             </Text>
             <Text variant="md" color="black60" textAlign="center">
               Please try searching again with a different spelling.
