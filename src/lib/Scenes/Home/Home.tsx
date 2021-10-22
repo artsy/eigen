@@ -121,11 +121,11 @@ const Home = (props: Props) => {
               case "articles":
                 return <ArticlesRailFragmentContainer articlesConnection={item.data} />
               case "artist":
-                return <ArtistRailFragmentContainer rail={item.data as any} scrollRef={scrollRefs.current[index]} />
+                return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
               case "artwork":
                 return (
                   <ArtworkRailFragmentContainer
-                    rail={item.data}
+                    rail={item.data || null}
                     scrollRef={scrollRefs.current[index]}
                     onShow={() => separators.updateProps("leading", { hideSeparator: false })}
                     onHide={() => separators.updateProps("leading", { hideSeparator: true })}
@@ -134,7 +134,7 @@ const Home = (props: Props) => {
               case "auction-results":
                 return (
                   <AuctionResultsRailFragmentContainer
-                    me={item.data as Home_meBelow}
+                    me={item.data}
                     onShow={() => separators.updateProps("leading", { hideSeparator: false })}
                     onHide={() => separators.updateProps("leading", { hideSeparator: true })}
                   />
@@ -142,31 +142,27 @@ const Home = (props: Props) => {
               case "collections":
                 return (
                   <CollectionsRailFragmentContainer
-                    collectionsModule={item.data as any}
+                    collectionsModule={item.data}
                     scrollRef={scrollRefs.current[index]}
                     onShow={() => separators.updateProps("leading", { hideSeparator: false })}
                   />
                 )
               case "fairs":
-                return (
-                  <FairsRailFragmentContainer fairsModule={item.data as any} scrollRef={scrollRefs.current[index]} />
-                )
+                return <FairsRailFragmentContainer fairsModule={item.data} scrollRef={scrollRefs.current[index]} />
               case "lotsByFollowedArtists":
                 return (
                   <SaleArtworksHomeRailContainer
-                    me={item.data as Home_meAbove}
+                    me={item.data}
                     onShow={() => separators.updateProps("leading", { hideSeparator: false })}
                     onHide={() => separators.updateProps("leading", { hideSeparator: true })}
                   />
                 )
               case "newWorksForYou":
-                return (
-                  <NewWorksForYouRailContainer me={item.data as Home_meAbove} scrollRef={scrollRefs.current[index]} />
-                )
+                return <NewWorksForYouRailContainer me={item.data} scrollRef={scrollRefs.current[index]} />
               case "sales":
                 return (
                   <SalesRailFragmentContainer
-                    salesModule={item.data as any}
+                    salesModule={item.data}
                     scrollRef={scrollRefs.current[index]}
                     onShow={() => separators.updateProps("leading", { hideSeparator: false })}
                     onHide={() => separators.updateProps("leading", { hideSeparator: true })}
@@ -184,13 +180,13 @@ const Home = (props: Props) => {
               case "trove":
                 return (
                   <TroveFragmentContainer
-                    trove={item.data as Home_homePageBelow}
+                    trove={item.data}
                     onShow={() => separators.updateProps("trailing", { hideSeparator: false })}
                     onHide={() => separators.updateProps("trailing", { hideSeparator: true })}
                   />
                 )
               case "viewing-rooms":
-                return <ViewingRoomsHomeRail featured={item.data as Home_featured} />
+                return <ViewingRoomsHomeRail featured={item.data} />
               default:
                 return null
             }
