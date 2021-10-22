@@ -30,6 +30,7 @@ export const ArtistAutosuggest: React.FC = () => {
               onChangeText={formik.handleChange("artist")}
               onBlur={formik.handleBlur("artist")}
               value={formik.values.artist}
+              enableClearButton
             />
 
             {artistQuery.length > 2 ? (
