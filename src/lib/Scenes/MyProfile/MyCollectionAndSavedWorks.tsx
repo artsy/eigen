@@ -61,7 +61,7 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
             src="https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F2qiqRkUQYxTnUaib3yIgpA%2Funtouched-jpg.jpg&width=1820&height=1214&quality=75"
             size="md"
           />
-          <Box px={2}>
+          <Box px={2} flexShrink={1}>
             <Sans size="10" color={color("black100")}>
               {me?.name}
             </Sans>
