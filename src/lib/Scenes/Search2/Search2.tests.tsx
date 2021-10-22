@@ -180,6 +180,7 @@ describe("Search2 Screen", () => {
       expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
         Array [
           Object {
+            "action": "tappedNavigationTab",
             "context_module": "topTab",
             "context_screen": "Search",
             "context_screen_owner_type": "search",
@@ -208,6 +209,7 @@ describe("Search2 Screen", () => {
       expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
         Array [
           Object {
+            "action": "tappedNavigationTab",
             "context_module": "topTab",
             "context_screen": "Search",
             "context_screen_owner_type": "search",
@@ -221,6 +223,7 @@ describe("Search2 Screen", () => {
       expect(mockTrackEvent.mock.calls[2]).toMatchInlineSnapshot(`
         Array [
           Object {
+            "action": "tappedNavigationTab",
             "context_module": "artistsTab",
             "context_screen": "Search",
             "context_screen_owner_type": "search",
@@ -333,6 +336,7 @@ describe("Search2 Screen", () => {
     expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
       Array [
         Object {
+          "action": "selectedResultFromSearchScreen",
           "context_module": "topTab",
           "context_screen": "Search",
           "context_screen_owner_type": "Search",

@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import { Search2_system } from "__generated__/Search2_system.graphql"
@@ -234,7 +234,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
     const data: TappedSearchResultData = {
       type: selectedPill.displayName,
       slug: result.slug,
-      position: result.__position,
+      position: result.__position - 1,
       query: searchState.query!,
       contextModule: contextModule!,
     }
@@ -361,6 +361,7 @@ export const tracks = {
     context_module: contextModule,
     subject,
     query,
+    action: ActionType.tappedNavigationTab,
   }),
   tappedSearchResult: (data: TappedSearchResultData) => ({
     context_screen_owner_type: Schema.OwnerEntityTypes.Search,
@@ -371,5 +372,6 @@ export const tracks = {
     selected_object_slug: data.slug,
     selected_object_tab: data.objectTab,
     context_module: data.contextModule,
+    action: Schema.ActionNames.SelectedREsultFromSearchScreen,
   }),
 }
