@@ -1,5 +1,6 @@
 import { GenericGridPlaceholder } from "lib/Components/ArtworkGrids/GenericGrid"
-import { Flex, useColor } from "palette"
+import { times } from "lodash"
+import { Box, Flex, Join, Spacer, useColor } from "palette"
 import React, { useContext, useEffect, useMemo, useRef } from "react"
 import { View, ViewStyle } from "react-native"
 import Animated from "react-native-reanimated"
@@ -150,5 +151,27 @@ export const PlaceholderGrid: React.FC = () => {
     <Flex mx={2} flexDirection="row">
       <GenericGridPlaceholder width={useScreenDimensions().width - 40} />
     </Flex>
+  )
+}
+
+export const SmallTileRailPlaceholder: React.FC<{}> = () => {
+  return (
+    <ProvidePlaceholderContext>
+      <Box ml={2} mr={2}>
+        <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
+        <Flex flexDirection="row" mt={1}>
+          <Join separator={<Spacer width={15} />}>
+            {times(3 + useMemoizedRandom() * 10).map((index) => (
+              <Flex key={index}>
+                <PlaceholderBox height={120} width={120} />
+                <Spacer mb={2} />
+                <PlaceholderText width={120} />
+                <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
+              </Flex>
+            ))}
+          </Join>
+        </Flex>
+      </Box>
+    </ProvidePlaceholderContext>
   )
 }

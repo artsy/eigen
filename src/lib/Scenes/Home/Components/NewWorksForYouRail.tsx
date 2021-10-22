@@ -1,13 +1,17 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { NewWorksForYouRail_me } from "__generated__/NewWorksForYouRail_me.graphql"
+import { NewWorksForYouRailQuery } from "__generated__/NewWorksForYouRailQuery.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
+import { SmallTileRailPlaceholder } from "lib/utils/placeholders"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Flex, Spinner, Theme } from "palette"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import { FlatList, View } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { SmallTileRailContainer } from "./SmallTileRail"
 import { RailScrollProps } from "./types"
 
@@ -102,6 +106,14 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
   )
 }
 
+const NewWorksForYouRailQueryDefinition = graphql`
+  query NewWorksForYouRailQuery($cursor: String, $count: Int!) {
+    me {
+      ...NewWorksForYouRail_me @arguments(cursor: $cursor, count: $count)
+    }
+  }
+`
+
 export const NewWorksForYouRailContainer = createPaginationContainer(
   NewWorksForYouRail,
   {
@@ -141,15 +153,25 @@ export const NewWorksForYouRailContainer = createPaginationContainer(
         count,
       }
     },
-    query: graphql`
-      query NewWorksForYouRailQuery($cursor: String, $count: Int!) {
-        me {
-          ...NewWorksForYouRail_me @arguments(cursor: $cursor, count: $count)
-        }
-      }
-    `,
+    query: NewWorksForYouRailQueryDefinition,
   }
 )
+
+export const NewWorksForYouRailQueryRenderer: React.FC<{ environment: RelayModernEnvironment }> = ({ environment }) => {
+  return (
+    <QueryRenderer<NewWorksForYouRailQuery>
+      environment={environment}
+      /* tslint:disable relay-operation-generics */
+      query={NewWorksForYouRailQueryDefinition}
+      variables={{ count: 10 }}
+      render={renderWithPlaceholder({
+        Container: NewWorksForYouRailContainer,
+        renderPlaceholder: () => <SmallTileRailPlaceholder />,
+        renderFallback: () => null,
+      })}
+    />
+  )
+}
 
 const tracks = {
   tappedHeader: () => ({

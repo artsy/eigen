@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e1811457434667d266735eace41f43b1 */
+/* @relayHash 684c29d5c0f0b0f8ac64c131d68eff08 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -302,7 +302,7 @@ fragment Home_featured on ViewingRoomConnection {
 }
 
 fragment Home_homePageBelow_1IwJ0h on HomePage {
-  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [POPULAR_ARTISTS, RECENTLY_VIEWED_WORKS, SIMILAR_TO_RECENTLY_VIEWED], include: [POPULAR_ARTISTS, RECENTLY_VIEWED_WORKS, SIMILAR_TO_RECENTLY_VIEWED]) {
+  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [POPULAR_ARTISTS, SIMILAR_TO_RECENTLY_VIEWED], include: [POPULAR_ARTISTS, SIMILAR_TO_RECENTLY_VIEWED]) {
     id
     ...ArtworkRail_rail
   }
@@ -457,7 +457,6 @@ v2 = [
 ],
 v3 = [
   "POPULAR_ARTISTS",
-  "RECENTLY_VIEWED_WORKS",
   "SIMILAR_TO_RECENTLY_VIEWED"
 ],
 v4 = {
@@ -1021,7 +1020,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "artworkModules(include:[\"POPULAR_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SIMILAR_TO_RECENTLY_VIEWED\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"POPULAR_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SIMILAR_TO_RECENTLY_VIEWED\"])"
+            "storageKey": "artworkModules(include:[\"POPULAR_ARTISTS\",\"SIMILAR_TO_RECENTLY_VIEWED\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"POPULAR_ARTISTS\",\"SIMILAR_TO_RECENTLY_VIEWED\"])"
           },
           {
             "alias": null,
@@ -1727,7 +1726,7 @@ return {
     ]
   },
   "params": {
-    "id": "e1811457434667d266735eace41f43b1",
+    "id": "684c29d5c0f0b0f8ac64c131d68eff08",
     "metadata": {},
     "name": "HomeBelowTheFoldQuery",
     "operationKind": "query",

@@ -33,7 +33,6 @@ export type Home_homePageBelow$key = {
 const node: ReaderFragment = (function(){
 var v0 = [
   "POPULAR_ARTISTS",
-  "RECENTLY_VIEWED_WORKS",
   "SIMILAR_TO_RECENTLY_VIEWED"
 ],
 v1 = {
@@ -98,7 +97,7 @@ return {
           "name": "ArtworkRail_rail"
         }
       ],
-      "storageKey": "artworkModules(include:[\"POPULAR_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SIMILAR_TO_RECENTLY_VIEWED\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"POPULAR_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SIMILAR_TO_RECENTLY_VIEWED\"])"
+      "storageKey": "artworkModules(include:[\"POPULAR_ARTISTS\",\"SIMILAR_TO_RECENTLY_VIEWED\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"POPULAR_ARTISTS\",\"SIMILAR_TO_RECENTLY_VIEWED\"])"
     },
     {
       "alias": null,
@@ -164,5 +163,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '682dd4cb91dc9cfd158cc397cb3ee42e';
+(node as any).hash = '7756433207465c6f24fd3b641b91341d';
 export default node;

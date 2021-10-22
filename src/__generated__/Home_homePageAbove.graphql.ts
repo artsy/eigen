@@ -25,8 +25,7 @@ export type Home_homePageAbove$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = [
-  "FOLLOWED_ARTISTS",
-  "ACTIVE_BIDS"
+  "FOLLOWED_ARTISTS"
 ];
 return {
   "argumentDefinitions": [
@@ -82,7 +81,7 @@ return {
           "name": "ArtworkRail_rail"
         }
       ],
-      "storageKey": "artworkModules(include:[\"FOLLOWED_ARTISTS\",\"ACTIVE_BIDS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"FOLLOWED_ARTISTS\",\"ACTIVE_BIDS\"])"
+      "storageKey": "artworkModules(include:[\"FOLLOWED_ARTISTS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"FOLLOWED_ARTISTS\"])"
     },
     {
       "alias": null,
@@ -116,5 +115,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '18818b5a427406f0eb6a969a5363a1c5';
+(node as any).hash = 'd7d4e5cf2f7a691950b9b65707068202';
 export default node;

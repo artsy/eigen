@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 209377a48dd2fda890cbd6e4adbdcd4f */
+/* @relayHash 56542d8802a70aa4235129c078907cf8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -356,7 +356,7 @@ fragment Home_featured on ViewingRoomConnection {
 }
 
 fragment Home_homePageAbove_1IwJ0h on HomePage {
-  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [FOLLOWED_ARTISTS, ACTIVE_BIDS], include: [FOLLOWED_ARTISTS, ACTIVE_BIDS]) {
+  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [FOLLOWED_ARTISTS], include: [FOLLOWED_ARTISTS]) {
     id
     ...ArtworkRail_rail
   }
@@ -367,7 +367,7 @@ fragment Home_homePageAbove_1IwJ0h on HomePage {
 }
 
 fragment Home_homePageBelow_1IwJ0h on HomePage {
-  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [POPULAR_ARTISTS, RECENTLY_VIEWED_WORKS, SIMILAR_TO_RECENTLY_VIEWED], include: [POPULAR_ARTISTS, RECENTLY_VIEWED_WORKS, SIMILAR_TO_RECENTLY_VIEWED]) {
+  artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [POPULAR_ARTISTS, SIMILAR_TO_RECENTLY_VIEWED], include: [POPULAR_ARTISTS, SIMILAR_TO_RECENTLY_VIEWED]) {
     id
     ...ArtworkRail_rail
   }
@@ -645,8 +645,7 @@ v5 = [
   }
 ],
 v6 = [
-  "FOLLOWED_ARTISTS",
-  "ACTIVE_BIDS"
+  "FOLLOWED_ARTISTS"
 ],
 v7 = {
   "kind": "Literal",
@@ -1100,7 +1099,6 @@ v41 = {
 },
 v42 = [
   "POPULAR_ARTISTS",
-  "RECENTLY_VIEWED_WORKS",
   "SIMILAR_TO_RECENTLY_VIEWED"
 ],
 v43 = [
@@ -1612,7 +1610,7 @@ return {
             "name": "artworkModules",
             "plural": true,
             "selections": (v36/*: any*/),
-            "storageKey": "artworkModules(include:[\"FOLLOWED_ARTISTS\",\"ACTIVE_BIDS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"FOLLOWED_ARTISTS\",\"ACTIVE_BIDS\"])"
+            "storageKey": "artworkModules(include:[\"FOLLOWED_ARTISTS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"FOLLOWED_ARTISTS\"])"
           },
           {
             "alias": null,
@@ -1733,7 +1731,7 @@ return {
             "name": "artworkModules",
             "plural": true,
             "selections": (v36/*: any*/),
-            "storageKey": "artworkModules(include:[\"POPULAR_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SIMILAR_TO_RECENTLY_VIEWED\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"POPULAR_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SIMILAR_TO_RECENTLY_VIEWED\"])"
+            "storageKey": "artworkModules(include:[\"POPULAR_ARTISTS\",\"SIMILAR_TO_RECENTLY_VIEWED\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"POPULAR_ARTISTS\",\"SIMILAR_TO_RECENTLY_VIEWED\"])"
           },
           {
             "alias": null,
@@ -2456,7 +2454,7 @@ return {
     ]
   },
   "params": {
-    "id": "209377a48dd2fda890cbd6e4adbdcd4f",
+    "id": "56542d8802a70aa4235129c078907cf8",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",

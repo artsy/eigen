@@ -20,13 +20,7 @@ import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail
 import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { isPad } from "lib/utils/hardware"
-import {
-  PlaceholderBox,
-  PlaceholderText,
-  ProvidePlaceholderContext,
-  RandomWidthPlaceholderText,
-  useMemoizedRandom,
-} from "lib/utils/placeholders"
+import { PlaceholderBox, ProvidePlaceholderContext, RandomWidthPlaceholderText } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { compact, drop, times } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
@@ -34,9 +28,11 @@ import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { _FragmentRefs, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
+import { ActiveBidsRailQueryRenderer } from "./Components/ActiveBidsRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
-import { NewWorksForYouRailContainer } from "./Components/NewWorksForYouRail"
+import { NewWorksForYouRailQueryRenderer } from "./Components/NewWorksForYouRail"
+import { RecentlyViewedWorksRailQueryRenderer } from "./Components/RecentlyViewedWorksRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
@@ -47,7 +43,7 @@ interface Props extends ViewProps {
   featured: Home_featured | null
   homePageAbove: Home_homePageAbove | null
   homePageBelow: Home_homePageBelow | null
-  loading: boolean
+  loading?: boolean
   meAbove: Home_meAbove | null
   meBelow: Home_meBelow | null
   relay: RelayRefetchProp
@@ -102,6 +98,8 @@ const Home = (props: Props) => {
   const rowData = compact([
     // Above-the-fold modules (make sure to include enough modules in the above-the-fold query to cover the whole screen.)
     !!showNewNewWorksForYouRail && ({ type: "newWorksForYou" } as const),
+    { type: "recentlyViewedWorks" } as const,
+    { type: "activeBids" } as const,
     artworkRails[0],
     { type: "lotsByFollowedArtists" } as const,
     artworkRails[1],
@@ -237,12 +235,11 @@ const Home = (props: Props) => {
                   <></>
                 )
               case "newWorksForYou":
-                return meAbove ? (
-                  <NewWorksForYouRailContainer me={meAbove} scrollRef={scrollRefs.current[index]} />
-                ) : (
-                  <></>
-                )
-
+                return <NewWorksForYouRailQueryRenderer environment={defaultEnvironment} />
+              case "recentlyViewedWorks":
+                return <RecentlyViewedWorksRailQueryRenderer environment={defaultEnvironment} />
+              case "activeBids":
+                return <ActiveBidsRailQueryRenderer environment={defaultEnvironment} />
               case "lotsByFollowedArtists":
                 return meAbove ? (
                   <SaleArtworksHomeRailContainer
@@ -282,12 +279,7 @@ export const HomeFragmentContainer = createRefetchContainer(
     homePageAbove: graphql`
       fragment Home_homePageAbove on HomePage
       @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
-        artworkModules(
-          maxRails: -1
-          maxFollowedGeneRails: -1
-          order: [FOLLOWED_ARTISTS, ACTIVE_BIDS]
-          include: [FOLLOWED_ARTISTS, ACTIVE_BIDS]
-        ) {
+        artworkModules(maxRails: -1, maxFollowedGeneRails: -1, order: [FOLLOWED_ARTISTS], include: [FOLLOWED_ARTISTS]) {
           id
           ...ArtworkRail_rail
         }
@@ -304,8 +296,8 @@ export const HomeFragmentContainer = createRefetchContainer(
         artworkModules(
           maxRails: -1
           maxFollowedGeneRails: -1
-          order: [POPULAR_ARTISTS, RECENTLY_VIEWED_WORKS, SIMILAR_TO_RECENTLY_VIEWED]
-          include: [POPULAR_ARTISTS, RECENTLY_VIEWED_WORKS, SIMILAR_TO_RECENTLY_VIEWED]
+          order: [POPULAR_ARTISTS, SIMILAR_TO_RECENTLY_VIEWED]
+          include: [POPULAR_ARTISTS, SIMILAR_TO_RECENTLY_VIEWED]
         ) {
           id
           ...ArtworkRail_rail
@@ -420,67 +412,6 @@ const BelowTheFoldPlaceholder: React.FC<{}> = () => {
   )
 }
 
-const HomePlaceholder: React.FC<{}> = () => {
-  const viewingRoomsEchoFlag = useFeatureFlag("AREnableViewingRooms")
-
-  return (
-    <Flex>
-      <Box mb={1} mt={2}>
-        <Flex alignItems="center">
-          <ArtsyLogoIcon scale={0.75} />
-        </Flex>
-      </Box>
-      <Spacer mb={4} />
-
-      {
-        // Small tiles to mimic the artwork rails
-        times(2).map((r) => (
-          <Box key={r} ml={2} mr={2}>
-            <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-            <Flex flexDirection="row" mt={1}>
-              <Join separator={<Spacer width={15} />}>
-                {times(3 + useMemoizedRandom() * 10).map((index) => (
-                  <Flex key={index}>
-                    <PlaceholderBox height={120} width={120} />
-                    <Spacer mb={2} />
-                    <PlaceholderText width={120} />
-                    <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
-                    <ModuleSeparator />
-                  </Flex>
-                ))}
-              </Join>
-            </Flex>
-          </Box>
-        ))
-      }
-
-      {/* Larger tiles to mimic the fairs, sales, and collections rails */}
-      <Box ml={2} mr={2}>
-        <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-        <Flex flexDirection="row" mt={1}>
-          <Join separator={<Spacer width={15} />}>
-            {times(10).map((index) => (
-              <PlaceholderBox key={index} height={270} width={270} />
-            ))}
-          </Join>
-          <ModuleSeparator />
-        </Flex>
-      </Box>
-
-      {!!viewingRoomsEchoFlag && (
-        <Flex ml="2" mt="3">
-          <RandomWidthPlaceholderText minWidth={100} maxWidth={200} marginBottom={20} />
-          <Flex flexDirection="row">
-            {times(4).map((i) => (
-              <PlaceholderBox key={i} width={280} height={370} marginRight={15} />
-            ))}
-          </Flex>
-        </Flex>
-      )}
-    </Flex>
-  )
-}
-
 const messages = {
   confirmed: {
     title: "Email Confirmed",
@@ -565,26 +496,21 @@ export const HomeQueryRenderer: React.FC = () => {
         `,
         variables: { heroImageVersion: isPad() ? "WIDE" : "NARROW" },
       }}
-      render={{
-        renderComponent: ({ above, below }) => {
-          if (!above) {
-            throw new Error("no data")
-          }
+      render={({ props }) => {
+        const { above, below } = props || {}
 
-          return (
-            <HomeFragmentContainer
-              articlesConnection={above?.articlesConnection ?? null}
-              showsByFollowedArtists={below?.me?.showsByFollowedArtists ?? null}
-              featured={below ? below.featured : null}
-              homePageAbove={above.homePage}
-              homePageBelow={below ? below.homePage : null}
-              meAbove={above.me}
-              meBelow={below ? below.me : null}
-              loading={!below}
-            />
-          )
-        },
-        renderPlaceholder: () => <HomePlaceholder />,
+        return (
+          <HomeFragmentContainer
+            articlesConnection={above?.articlesConnection ?? null}
+            showsByFollowedArtists={below?.me?.showsByFollowedArtists ?? null}
+            featured={below ? below.featured : null}
+            homePageAbove={above ? above?.homePage : null}
+            homePageBelow={below ? below.homePage : null}
+            meAbove={above ? above.me : null}
+            meBelow={below ? below.me : null}
+            loading={!below}
+          />
+        )
       }}
       cacheConfig={{ force: true }}
       belowTheFoldTimeout={100}
