@@ -9,7 +9,7 @@ interface PartnerSubscriberBannerProps {
   partner: PartnerSubscriberBanner_partner
 }
 
-const PartnerSubscriberBanner: React.FC<PartnerSubscriberBannerProps> = ({ partner }) => {
+export const PartnerSubscriberBanner: React.FC<PartnerSubscriberBannerProps> = ({ partner }) => {
   const { name, hasFairPartnership } = partner
   const fairPartner = `${name} participated in Artsy’s art fair coverage but does not have a full profile.`
   const churnedPartner = `${name} is not currently an Artsy partner and does not have a full profile.`
