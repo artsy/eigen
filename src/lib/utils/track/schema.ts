@@ -346,7 +346,7 @@ export enum ActionNames {
   ARAnalyticsSearchStartedQuery = "Searched",
   ARAnalyticsSearchItemSelected = "Selected result from search screen",
   ARAnalyticsSearchRecentItemSelected = "selected_recent_item_from_search",
-  SelectedREsultFromSearchScreen = "selectedResultFromSearchScreen",
+  SelectedResultFromSearchScreen = "selectedResultFromSearchScreen",
 
   /**
    * Collection page events
