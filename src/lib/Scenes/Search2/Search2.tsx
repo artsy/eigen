@@ -90,11 +90,6 @@ const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholde
       enableCancelButton
       placeholder={placeholder}
       onChangeText={(text) => {
-        if (text.length === 0) {
-          handleReset()
-          return
-        }
-
         trackEvent({
           action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
           query: text,
@@ -104,7 +99,6 @@ const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholde
         onReset()
       }}
       onClear={handleReset}
-      onCancelPress={handleReset}
     />
   )
 }
