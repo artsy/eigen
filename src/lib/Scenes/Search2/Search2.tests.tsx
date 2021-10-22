@@ -333,6 +333,7 @@ describe("Search2 Screen", () => {
     expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
       Array [
         Object {
+          "action": "selectedResultFromSearchScreen",
           "context_module": "topTab",
           "context_screen": "Search",
           "context_screen_owner_type": "Search",

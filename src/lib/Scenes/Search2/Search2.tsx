@@ -371,5 +371,6 @@ export const tracks = {
     selected_object_slug: data.slug,
     selected_object_tab: data.objectTab,
     context_module: data.contextModule,
+    action: Schema.ActionNames.SelectedREsultFromSearchScreen,
   }),
 }
