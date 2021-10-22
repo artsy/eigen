@@ -234,7 +234,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
     const data: TappedSearchResultData = {
       type: selectedPill.displayName,
       slug: result.slug,
-      position: result.__position,
+      position: result.__position - 1,
       query: searchState.query!,
       contextModule: contextModule!,
     }
