@@ -85,7 +85,6 @@ const Home = (props: Props) => {
     { type: "artwork", data: homePageAbove?.activeBidsArtworkModule }, // Your Active Bids
     { type: "lotsByFollowedArtists", data: meAbove }, // Auction Lots for You Ending Soon
     { type: "sales", data: homePageAbove?.salesModule }, // Auctions
-    // Below-The-Fold Modules
     enableAuctionResultsByFollowedArtists && { type: "auction-results", data: meBelow }, // Auction Results by Artists You Follow
     articlesConnection && { type: "articles", data: articlesConnection }, // Market News
     enableShowsForYouRail && { type: "shows", data: showsByFollowedArtists }, // Shows for You
@@ -142,7 +141,7 @@ const Home = (props: Props) => {
               case "collections":
                 return (
                   <CollectionsRailFragmentContainer
-                    collectionsModule={item.data}
+                    collectionsModule={item.data as any}
                     scrollRef={scrollRefs.current[index]}
                     onShow={() => separators.updateProps("leading", { hideSeparator: false })}
                   />
@@ -265,6 +264,10 @@ export const HomeFragmentContainer = createRefetchContainer(
     homePageBelow: graphql`
       fragment Home_homePageBelow on HomePage
       @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
+        popularArtistsArtworkModule: artworkModule(key: POPULAR_ARTISTS) {
+          id
+          ...ArtworkRail_rail
+        }
         recentlyViewedWorksArtworkModule: artworkModule(key: RECENTLY_VIEWED_WORKS) {
           id
           ...ArtworkRail_rail
