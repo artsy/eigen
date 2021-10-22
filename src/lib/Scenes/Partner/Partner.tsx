@@ -7,12 +7,14 @@ import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Schema, screenTrack } from "lib/utils/track"
+import { Separator } from "palette"
 import React from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { PartnerArtworkFragmentContainer as PartnerArtwork } from "./Components/PartnerArtwork"
 import { PartnerHeaderContainer as PartnerHeader } from "./Components/PartnerHeader"
 import { PartnerOverviewFragmentContainer as PartnerOverview } from "./Components/PartnerOverview"
 import { PartnerShowsFragmentContainer as PartnerShows } from "./Components/PartnerShows"
+import { PartnerSubscriberBannerFragmentContainer as PartnerSubscriberBanner } from "./Components/PartnerSubscriberBanner"
 
 interface Props {
   partner: Partner_partner
@@ -28,6 +30,18 @@ interface Props {
 class Partner extends React.Component<Props> {
   render() {
     const { partner } = this.props
+    const { partnerType, displayFullPartnerPage } = partner
+
+    if (!displayFullPartnerPage && partnerType !== "Brand") {
+      return (
+        <>
+          <PartnerHeader partner={partner} />
+          <Separator my={2} />
+          <PartnerSubscriberBanner partner={partner} />
+        </>
+      )
+    }
+
     return (
       <StickyTabPage
         staticHeaderContent={<PartnerHeader partner={partner} />}
@@ -63,6 +77,8 @@ export const PartnerContainer = createRefetchContainer(
         id
         internalID
         slug
+        partnerType
+        displayFullPartnerPage
         profile {
           id
           isFollowed
@@ -73,6 +89,7 @@ export const PartnerContainer = createRefetchContainer(
         ...PartnerOverview_partner
         ...PartnerShows_partner
         ...PartnerHeader_partner
+        ...PartnerSubscriberBanner_partner
       }
     `,
   },
