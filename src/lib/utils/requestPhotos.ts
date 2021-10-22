@@ -1,21 +1,22 @@
 import { ActionSheetOptions } from "@expo/react-native-action-sheet"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { isArray } from "lodash"
 import { Platform } from "react-native"
 import ImagePicker, { Image } from "react-native-image-crop-picker"
 import { osMajorVersion } from "./platformUtil"
 
-export async function requestPhotos<T extends boolean>(multiple: T): Promise<T extends true ? Image[] : Image>
-
-export async function requestPhotos(multiple: undefined): Promise<Image[]>
-
-export async function requestPhotos(multiple?: boolean | undefined): Promise<Image | Image[]> {
+export async function requestPhotos(allowMultiple: boolean = true): Promise<Image[]> {
   if (Platform.OS === "ios" && osMajorVersion() >= 14) {
     return LegacyNativeModules.ARPHPhotoPickerModule.requestPhotos()
   } else {
-    return ImagePicker.openPicker({
+    const images = await ImagePicker.openPicker({
       mediaType: "photo",
-      multiple: multiple ?? true,
+      multiple: allowMultiple,
     })
+    if (isArray(images)) {
+      return images
+    }
+    return [images]
   }
 }
 
