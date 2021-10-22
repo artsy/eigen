@@ -30,7 +30,9 @@ describe("SaleArtworksHomeRail", () => {
       variables={{}}
       render={({ props }) => {
         if (props?.me) {
-          return <SaleArtworksHomeRailContainer me={props.me} onShow={onShowMock} onHide={onHideMock} />
+          return (
+            <SaleArtworksHomeRailContainer title="Auctions" me={props.me} onShow={onShowMock} onHide={onHideMock} />
+          )
         }
         return null
       }}

@@ -15,6 +15,7 @@ const PAGE_SIZE = 10
 const MAX_ARTWORKS = 30
 
 interface NewWorksForYouRailProps {
+  title: string
   me: NewWorksForYouRail_me
   relay: RelayPaginationProp
   onHide?: () => void
@@ -22,6 +23,7 @@ interface NewWorksForYouRailProps {
 }
 
 const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = ({
+  title,
   me,
   relay,
   scrollRef,
@@ -79,7 +81,7 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
     <Theme>
       <View ref={railRef}>
         <Flex pl="2" pr="2">
-          <SectionTitle title="New Works for You" onPress={navigateToNewWorksForYou} />
+          <SectionTitle title={title} onPress={navigateToNewWorksForYou} />
         </Flex>
         {
           <SmallTileRailContainer

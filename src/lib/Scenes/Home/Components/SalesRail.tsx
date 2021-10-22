@@ -22,6 +22,7 @@ import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"
 
 interface Props {
+  title: string
   salesModule: SalesRail_salesModule
   onHide?: () => void
   onShow?: () => void
@@ -30,7 +31,7 @@ interface Props {
 type Sale = SalesRail_salesModule["results"][0]
 
 const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
-  const { scrollRef, salesModule, onHide, onShow } = props
+  const { title, scrollRef, salesModule, onHide, onShow } = props
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
 
@@ -62,7 +63,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
     <View>
       <Flex pl="2" pr="2">
         <SectionTitle
-          title="Auctions"
+          title={title}
           subtitle="Discover and bid on works for you"
           onPress={() => {
             tracking.trackEvent(HomeAnalytics.auctionHeaderTapEvent())

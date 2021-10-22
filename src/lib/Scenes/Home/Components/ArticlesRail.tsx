@@ -12,10 +12,11 @@ import { ArticleCardContainer } from "../../../Components/ArticleCard"
 import HomeAnalytics from "../homeAnalytics"
 
 interface ArticlesRailProps {
+  title: string
   articlesConnection: ArticlesRail_articlesConnection
 }
 
-export const ArticlesRail: React.FC<ArticlesRailProps> = ({ articlesConnection }) => {
+export const ArticlesRail: React.FC<ArticlesRailProps> = ({ title, articlesConnection }) => {
   const articles = extractNodes(articlesConnection)
 
   if (!articles.length) {
@@ -28,7 +29,7 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ articlesConnection }
     <Flex>
       <Flex mx={2}>
         <SectionTitle
-          title="Market News"
+          title={title}
           onPress={() => {
             tracking.trackEvent(HomeAnalytics.articlesHeaderTapEvent())
             navigate("/articles")

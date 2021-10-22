@@ -13,13 +13,14 @@ import { createPaginationContainer, graphql, RelayPaginationProp } from "react-r
 export const PAGE_SIZE = 6
 
 interface Props {
+  title: string
   me: SaleArtworksHomeRail_me
   relay: RelayPaginationProp
   onHide?: () => void
   onShow?: () => void
 }
 
-export const SaleArtworksHomeRail: React.FC<Props> = ({ me, relay, onShow, onHide }) => {
+export const SaleArtworksHomeRail: React.FC<Props> = ({ title, me, relay, onShow, onHide }) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
@@ -53,10 +54,7 @@ export const SaleArtworksHomeRail: React.FC<Props> = ({ me, relay, onShow, onHid
   return (
     <Flex>
       <Flex mx={2}>
-        <SectionTitle
-          title="Auction Lots for You Ending Soon"
-          onPress={() => navigate("/lots-by-artists-you-follow")}
-        />
+        <SectionTitle title={title} onPress={() => navigate("/lots-by-artists-you-follow")} />
       </Flex>
       <CardRailFlatList
         data={artworks}
