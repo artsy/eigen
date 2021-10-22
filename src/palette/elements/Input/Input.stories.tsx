@@ -20,7 +20,9 @@ storiesOf("Input", module)
       <Input title="Disabled" disabled />
       <Input placeholder="I'm a placeholder" />
       <Input title="full text" value="Wow this is a long text, I wonder if I can read the whole thing!" />
+      <Input title="Text with limit" maxLength={100} />
       <Input title="Text area" multiline />
+      <Input title="Text area with limit" multiline maxLength={150} />
     </List>
   ))
   .add("Multiple placeholders", () => {

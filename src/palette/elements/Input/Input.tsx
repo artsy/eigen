@@ -37,6 +37,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   required?: boolean
   title?: string
   multiline?: boolean
+  maxLength?: number
   /**
    * The placeholder can be an array of string, specifically for android, because of a bug.
    * On ios, the longest string will always be picked, as ios can add ellipsis.
@@ -88,6 +89,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       inputTextStyle,
       placeholder,
       multiline,
+      maxLength,
       ...rest
     },
     ref
@@ -209,7 +211,14 @@ export const Input = React.forwardRef<TextInput, InputProps>(
 
     return (
       <Flex flexGrow={1} style={containerStyle}>
-        <InputTitle required={required}>{title}</InputTitle>
+        <Flex flexDirection="row" alignItems="center">
+          <InputTitle required={required}>{title}</InputTitle>
+          {!!maxLength && (
+            <Text color="black60" variant="xs" marginLeft="auto" mr={0.5}>
+              {maxLength - value.length}
+            </Text>
+          )}
+        </Flex>
 
         {!!description && (
           <Text color="black60" variant="xs" mb={0.5}>
@@ -238,6 +247,8 @@ export const Input = React.forwardRef<TextInput, InputProps>(
             <Flex flex={1}>
               {placeholderMeasuringHack}
               <StyledInput
+                multiline={multiline}
+                maxLength={maxLength}
                 editable={!disabled}
                 onLayout={(event) => {
                   const newWidth = event.nativeEvent.layout.width
@@ -250,7 +261,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 ref={input}
                 placeholderTextColor={color("black60")}
                 style={{ flex: 1, fontSize: 16, ...inputTextStyle }}
-                // numberOfLines={1}
+                numberOfLines={1}
                 secureTextEntry={!showPassword}
                 textAlignVertical={multiline ? "top" : "center"}
                 placeholder={actualPlaceholder()}
@@ -334,7 +345,7 @@ export const computeBorderColor = (inputStatus: InputStatus): Color => {
 
 const StyledInput = styled(TextInput)`
   padding: 0;
-  margin: 0 ${themeGet("space.1")}px;
+  margin: ${themeGet("space.1")}px;
   font-family: ${themeGet("fonts.sans.regular")};
 `
 StyledInput.displayName = "StyledInput"
