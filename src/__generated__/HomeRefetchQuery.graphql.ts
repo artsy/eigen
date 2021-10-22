@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c4c5f7e90527b211efa88b237cb269b7 */
+/* @relayHash 630c649defb5e2f77128e14c588d8a64 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -371,10 +371,6 @@ fragment Home_homePageAbove_1IwJ0h on HomePage {
 }
 
 fragment Home_homePageBelow_1IwJ0h on HomePage {
-  popularArtistsArtworkModule: artworkModule(key: POPULAR_ARTISTS) {
-    id
-    ...ArtworkRail_rail
-  }
   recentlyViewedWorksArtworkModule: artworkModule(key: RECENTLY_VIEWED_WORKS) {
     id
     ...ArtworkRail_rail
@@ -1715,22 +1711,6 @@ return {
         "plural": false,
         "selections": [
           {
-            "alias": "popularArtistsArtworkModule",
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "key",
-                "value": "POPULAR_ARTISTS"
-              }
-            ],
-            "concreteType": "HomePageArtworkModule",
-            "kind": "LinkedField",
-            "name": "artworkModule",
-            "plural": false,
-            "selections": (v33/*: any*/),
-            "storageKey": "artworkModule(key:\"POPULAR_ARTISTS\")"
-          },
-          {
             "alias": "recentlyViewedWorksArtworkModule",
             "args": [
               {
@@ -2489,7 +2469,7 @@ return {
     ]
   },
   "params": {
-    "id": "c4c5f7e90527b211efa88b237cb269b7",
+    "id": "630c649defb5e2f77128e14c588d8a64",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",

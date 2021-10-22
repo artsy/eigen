@@ -45,6 +45,7 @@ interface HomeModule {
   type: string
   data: any
 }
+
 interface Props extends ViewProps {
   articlesConnection: Home_articlesConnection | null
   showsByFollowedArtists: Home_showsByFollowedArtists | null
@@ -69,21 +70,22 @@ const Home = (props: Props) => {
     loading,
     relay,
   } = props
+
   const enableAuctionResultsByFollowedArtists = useFeatureFlag("ARHomeAuctionResultsByFollowedArtists")
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
   const enableTrove = useFeatureFlag("AREnableTrove")
   const enableNewNewWorksForYouRail = useFeatureFlag("AREnableNewNewWorksForYou")
   const enableShowsForYouRail = useFeatureFlag("AREnableShowsRail")
 
+  // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   const modules: HomeModule[] = compact([
-    // Above-the-fold modules (make sure to include enough modules in the above-the-fold query to cover the whole screen.)
+    // Above-The-Fold Modules
     enableNewNewWorksForYouRail && { type: "newWorksForYou", data: meAbove }, // New Works for You
     !enableNewNewWorksForYouRail && { type: "artwork", data: homePageAbove?.followedArtistsArtworkModule }, //  New Works by Artists You Follow
     { type: "artwork", data: homePageAbove?.activeBidsArtworkModule }, // Your Active Bids
     { type: "lotsByFollowedArtists", data: meAbove }, // Auction Lots for You Ending Soon
     { type: "sales", data: homePageAbove?.salesModule }, // Auctions
-
-    // Below-the-fold modules
+    // Below-The-Fold Modules
     enableAuctionResultsByFollowedArtists && { type: "auction-results", data: meBelow }, // Auction Results by Artists You Follow
     articlesConnection && { type: "articles", data: articlesConnection }, // Market News
     enableShowsForYouRail && { type: "shows", data: showsByFollowedArtists }, // Shows for You
@@ -267,10 +269,6 @@ export const HomeFragmentContainer = createRefetchContainer(
     homePageBelow: graphql`
       fragment Home_homePageBelow on HomePage
       @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
-        popularArtistsArtworkModule: artworkModule(key: POPULAR_ARTISTS) {
-          id
-          ...ArtworkRail_rail
-        }
         recentlyViewedWorksArtworkModule: artworkModule(key: RECENTLY_VIEWED_WORKS) {
           id
           ...ArtworkRail_rail

@@ -5,10 +5,6 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Home_homePageBelow = {
-    readonly popularArtistsArtworkModule: {
-        readonly id: string;
-        readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_rail">;
-    } | null;
     readonly recentlyViewedWorksArtworkModule: {
         readonly id: string;
         readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_rail">;
@@ -73,22 +69,6 @@ return {
   "metadata": null,
   "name": "Home_homePageBelow",
   "selections": [
-    {
-      "alias": "popularArtistsArtworkModule",
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "key",
-          "value": "POPULAR_ARTISTS"
-        }
-      ],
-      "concreteType": "HomePageArtworkModule",
-      "kind": "LinkedField",
-      "name": "artworkModule",
-      "plural": false,
-      "selections": (v1/*: any*/),
-      "storageKey": "artworkModule(key:\"POPULAR_ARTISTS\")"
-    },
     {
       "alias": "recentlyViewedWorksArtworkModule",
       "args": [
@@ -191,5 +171,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '6b7655dc5cc0bc7e88a76c0f1205503a';
+(node as any).hash = '918150a193ba8e9682046443df9ab291';
 export default node;
