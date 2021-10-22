@@ -80,4 +80,16 @@ describe("SearchInput", () => {
     fireEvent.press(getAllByText("Cancel")[0])
     expect(queryAllByA11yLabel("Clear input button")).toHaveLength(0)
   })
+
+  it('should hide "Cancel" when it is pressed', () => {
+    const { queryAllByA11yLabel, getAllByText, findAllByA11yLabel, getByPlaceholderText } = renderWithWrappersTL(
+      <TestWrapper enableCancelButton />
+    )
+
+    fireEvent.changeText(getByPlaceholderText("Type something..."), "text")
+    expect(findAllByA11yLabel("Cancel")).toBeTruthy()
+
+    fireEvent.press(getAllByText("Cancel")[0])
+    expect(queryAllByA11yLabel("Cancel")).toHaveLength(0)
+  })
 })
