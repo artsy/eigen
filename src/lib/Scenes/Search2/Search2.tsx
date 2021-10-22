@@ -1,4 +1,4 @@
-import { ContextModule, OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import { Search2_system } from "__generated__/Search2_system.graphql"
@@ -361,6 +361,7 @@ export const tracks = {
     context_module: contextModule,
     subject,
     query,
+    action: ActionType.tappedNavigationTab,
   }),
   tappedSearchResult: (data: TappedSearchResultData) => ({
     context_screen_owner_type: Schema.OwnerEntityTypes.Search,
