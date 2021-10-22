@@ -1,8 +1,10 @@
 import { Aggregations, FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
+import useAppState from "lib/utils/useAppState"
 import { Sans, Text, useTheme } from "palette"
-import React from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { ScrollView } from "react-native"
 import { SavedSearchAlertForm } from "./SavedSearchAlertForm"
 import { SavedSearchAlertFormPropsBase, SavedSearchAlertMutationResult } from "./SavedSearchAlertModel"
@@ -18,6 +20,22 @@ export interface CreateSavedSearchAlertProps extends SavedSearchAlertFormPropsBa
 export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (props) => {
   const { visible, filters, aggregations, onClosePress, onComplete, ...other } = props
   const { space } = useTheme()
+  const [enablePushNotifications, setEnablePushNotifications] = useState(true)
+
+  const getPermissionStatus = async () => {
+    const status = await getNotificationPermissionsStatus()
+    setEnablePushNotifications(status === PushAuthorizationStatus.Authorized)
+  }
+
+  const onForeground = useCallback(() => {
+    getPermissionStatus()
+  }, [])
+
+  useAppState({ onForeground })
+
+  useEffect(() => {
+    getPermissionStatus()
+  }, [])
 
   const handleComplete = async (result: SavedSearchAlertMutationResult) => {
     onComplete(result)
@@ -38,7 +56,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
           Receive alerts as Push Notifications directly to your device.
         </Sans>
         <SavedSearchAlertForm
-          initialValues={{ name: "", email: true, push: true }}
+          initialValues={{ name: "", email: true, push: enablePushNotifications }}
           aggregations={aggregations}
           filters={filters}
           onComplete={handleComplete}
