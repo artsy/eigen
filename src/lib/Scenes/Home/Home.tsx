@@ -141,7 +141,7 @@ const Home = (props: Props) => {
               case "collections":
                 return (
                   <CollectionsRailFragmentContainer
-                    collectionsModule={item.data as any}
+                    collectionsModule={item.data}
                     scrollRef={scrollRefs.current[index]}
                     onShow={() => separators.updateProps("leading", { hideSeparator: false })}
                   />
