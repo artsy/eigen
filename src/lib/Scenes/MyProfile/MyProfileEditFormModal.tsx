@@ -1,8 +1,8 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
+import { FormikProvider, useFormik } from "formik"
 import { Image } from "lib/Components/Bidding/Elements/Image"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { TextArea } from "lib/Components/TextArea"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { isArray } from "lodash"
 import { Avatar, Box, Button, Flex, Input, Join, Spacer, Text, Touchable, useColor } from "palette"
@@ -85,18 +85,44 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
       <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => onDismiss()}>
         Edit Profile
       </FancyModalHeader>
-      <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
-        <Join separator={<Spacer py={1} />}>
-          <Flex flexDirection="row" alignItems="center" px={2} mt={2}>
-            <Touchable onPress={chooseImageHandler}>
-              <Box
-                height="99"
-                width="99"
-                mr={2}
-                borderRadius="50"
-                backgroundColor={color("black10")}
-                justifyContent="center"
-                alignItems="center"
+      <FormikProvider value={formik}>
+        <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
+          <Join separator={<Spacer py={1} />}>
+            <Flex flexDirection="row" alignItems="center" px={2} mt={2}>
+              <Touchable onPress={chooseImageHandler}>
+                <Box
+                  height="99"
+                  width="99"
+                  mr={2}
+                  borderRadius="50"
+                  backgroundColor={color("black10")}
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
+                </Box>
+              </Touchable>
+              <Touchable haptic onPress={chooseImageHandler}>
+                <Text style={{ textDecorationLine: "underline" }}>Choose an Image</Text>
+              </Touchable>
+            </Flex>
+            <Flex mx={2}>
+              <Input
+                ref={nameInputRef}
+                title="Name"
+                required
+                // onChangeText={(text) => {
+                //   handleChange("email")(text.trim())
+                // }}
+              />
+              <Spacer py={2} />
+              {/* <TextArea ref={aboutInputRef} title="ABOUT" /> */}
+              <Spacer py={2} />
+              <Button
+                flex={1}
+                onPress={() => {
+                  console.log("Save")
+                }}
               >
                 <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
               </Box>
