@@ -74,10 +74,9 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
           >
             <TouchableOpacity
               onPress={() => {
-                ;(ref as RefObject<TextInput>).current?.blur()
-                ;(ref as RefObject<TextInput>).current?.clear()
-                onCancelPress?.()
                 emitInputClearEvent()
+                ;(ref as RefObject<TextInput>).current?.blur()
+                onCancelPress?.()
               }}
               hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
             >
