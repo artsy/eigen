@@ -1,9 +1,9 @@
+import { ActionType, OwnerType, TappedContactGallery } from "@artsy/cohesion"
 import { InquiryButtons_artwork } from "__generated__/InquiryButtons_artwork.graphql"
 import { InquirySuccessNotification } from "lib/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
 import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryTypes } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
-import { Schema } from "lib/utils/track"
 import { Button, ButtonProps } from "palette"
 import React, { useContext, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -22,7 +22,7 @@ export interface InquiryButtonsState {
 
 const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork }) => {
   const [modalVisibility, setModalVisibility] = useState(false)
-  const tracking = useTracking()
+  const { trackEvent } = useTracking()
   const [notificationVisibility, setNotificationVisibility] = useState(false)
   const { dispatch } = useContext(ArtworkInquiryContext)
   const dispatchAction = (buttonText: string) => {
@@ -42,14 +42,7 @@ const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork }) => {
       />
       <Button
         onPress={() => {
-          tracking.trackEvent({
-            action_name: Schema.ActionNames.ContactGallery,
-            action_type: Schema.ActionTypes.Tap,
-            context_module: Schema.ContextModules.CommercialButtons,
-            context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
-            context_screen_owner_slug: artwork.slug,
-            context_screen_owner_id: artwork.internalID,
-          })
+          trackEvent(tracks.trackTappedContactGallery(artwork.slug, artwork.internalID))
           dispatchAction(InquiryOptions.ContactGallery)
         }}
         size="large"
@@ -104,3 +97,12 @@ export const InquiryButtonsFragmentContainer = createFragmentContainer(InquiryBu
     }
   `,
 })
+
+const tracks = {
+  trackTappedContactGallery: (slug: string, internalID: string): TappedContactGallery => ({
+    action: ActionType.tappedContactGallery,
+    context_owner_type: OwnerType.artwork,
+    context_owner_slug: slug,
+    context_owner_id: internalID,
+  }),
+}

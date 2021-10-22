@@ -1,7 +1,8 @@
+import { ActionType, OwnerType, TappedBuyNow } from "@artsy/cohesion"
 import { BuyNowButton_artwork } from "__generated__/BuyNowButton_artwork.graphql"
 import { BuyNowButtonOrderMutation } from "__generated__/BuyNowButtonOrderMutation.graphql"
 import { navigate } from "lib/navigation/navigate"
-import { Schema, Track, track as _track } from "lib/utils/track"
+import { Track, track as _track } from "lib/utils/track"
 import { Button, ButtonProps } from "palette"
 import React from "react"
 import { Alert } from "react-native"
@@ -20,7 +21,7 @@ export interface State {
 }
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const track: Track<BuyNowButtonProps, State> = _track
+const track: Track<BuyNowButtonProps, State, TappedBuyNow> = _track
 
 @track()
 export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
@@ -45,11 +46,11 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
     console.log("src/lib/Scenes/Artwork/Components/BuyNowButton.tsx", error)
   }
 
-  @track({
-    action_name: Schema.ActionNames.BuyNow,
-    action_type: Schema.ActionTypes.Tap,
-    context_module: Schema.ContextModules.CommercialButtons,
-  })
+  @track((props) => ({
+    action: ActionType.tappedBuyNow,
+    context_owner_type: OwnerType.artwork,
+    context_owner_id: props.artwork.internalID,
+  }))
   handleCreateOrder() {
     const { relay, artwork, editionSetID } = this.props
     const { isCommittingCreateOrderMutation } = this.state

@@ -1,4 +1,4 @@
-import { tappedMakeOffer } from "@artsy/cohesion"
+import { ActionType, OwnerType, TappedMakeOffer } from "@artsy/cohesion"
 import { navigate } from "lib/navigation/navigate"
 import { Button, CheckCircleIcon, Flex, Text } from "palette"
 import React from "react"
@@ -38,7 +38,7 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ 
         </Flex>
         <Button
           onPress={() => {
-            trackEvent(tappedMakeOffer(conversationID as string))
+            trackEvent(tracks.trackTappedMakeOffer(conversationID))
             navigate(`make-offer/${artworkID}`, {
               modal: true,
               passProps: { conversationID },
@@ -54,4 +54,12 @@ export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ 
       </Flex>
     </>
   )
+}
+
+const tracks = {
+  trackTappedMakeOffer: (id: string): TappedMakeOffer => ({
+    action: ActionType.tappedMakeOffer,
+    context_owner_type: OwnerType.conversation,
+    impulse_conversation_id: id,
+  }),
 }
