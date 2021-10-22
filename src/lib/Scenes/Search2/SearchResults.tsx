@@ -86,7 +86,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
       <Box px={2} py={1}>
         <Spacer mt={4} />
         <Text variant="md" textAlign="center">
-          Sorry, we couldn’t find {article} {categoryDisplayName} for ”{searchState.query}.”
+          Sorry, we couldn’t find {article} {categoryDisplayName} for “{searchState.query}.”
         </Text>
         <Text variant="md" color="black60" textAlign="center">
           Please try searching again with a different spelling.

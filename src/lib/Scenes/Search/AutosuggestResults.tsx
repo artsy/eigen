@@ -10,7 +10,7 @@ import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
-import { Flex, Spacer, Text, useSpace } from "palette"
+import { Flex, quoteLeft, quoteRight, Spacer, Text, useSpace } from "palette"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import React from "react"
 import { FlatList } from "react-native"
@@ -147,7 +147,8 @@ const AutosuggestResultsFlatList: React.FC<{
                   <Spacer mt={1} />
                   <Spacer mt={2} />
                   <Text variant="md" textAlign="center">
-                    Sorry, we couldn’t find anything for “{query}.”
+                    Sorry, we couldn’t find anything for {quoteLeft}
+                    {query}.{quoteRight}
                   </Text>
                   <Text variant="md" color="black60" textAlign="center">
                     Please try searching again with a different spelling.
