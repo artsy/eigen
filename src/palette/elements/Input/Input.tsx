@@ -19,6 +19,7 @@ import { EyeClosedIcon } from "../../svgs/EyeClosedIcon"
 import { InputTitle } from "./InputTitle"
 
 export const INPUT_HEIGHT = 50
+export const MULTILINE_INPUT_HEIGHT = 100
 
 export const inputEvents = new EventEmitter()
 
@@ -35,6 +36,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   disabled?: boolean
   required?: boolean
   title?: string
+  multiline?: boolean
   /**
    * The placeholder can be an array of string, specifically for android, because of a bug.
    * On ios, the longest string will always be picked, as ios can add ellipsis.
@@ -85,6 +87,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       canHidePassword,
       inputTextStyle,
       placeholder,
+      multiline,
       ...rest
     },
     ref
@@ -221,7 +224,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 flexDirection: "row",
                 borderWidth: 1,
                 borderColor: color(computeBorderColor({ disabled, error: !!error, focused })),
-                height: INPUT_HEIGHT,
+                height: multiline ? MULTILINE_INPUT_HEIGHT : INPUT_HEIGHT,
                 backgroundColor: disabled ? color("black5") : color("white100"),
               },
             ]}
@@ -247,9 +250,9 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 ref={input}
                 placeholderTextColor={color("black60")}
                 style={{ flex: 1, fontSize: 16, ...inputTextStyle }}
-                numberOfLines={1}
+                // numberOfLines={1}
                 secureTextEntry={!showPassword}
-                textAlignVertical="center"
+                textAlignVertical={multiline ? "top" : "center"}
                 placeholder={actualPlaceholder()}
                 value={value}
                 {...(rest as any)}
