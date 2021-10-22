@@ -53,6 +53,10 @@ yarn install:all
 
 **Note**: `bundle exec pod install` may fail the first time you run it (due to a [bug](https://github.com/orta/cocoapods-keys/issues/127) in a dependency of ours). Re-running the command should work.
 
+## Find a ticket 
+If you're just starting you can find a ticket on the [CX backlog](https://artsyproduct.atlassian.net/jira/software/c/projects/CX/boards/77/backlog?issueLimit=100)
+and look for a **#good-first-issue** 
+
 ## Run the app
 
 Start the react-native bundler:
