@@ -10,14 +10,18 @@ import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { bullet } from "palette"
 import React from "react"
+import { Alert } from "react-native"
 import { createMockEnvironment } from "relay-test-utils"
 import { SavedSearchAlertForm, SavedSearchAlertFormProps, tracks } from "./SavedSearchAlertForm"
+
+const spyAlert = jest.spyOn(Alert, "alert")
 
 describe("Saved search alert form", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
   const notificationPermissions = mockFetchNotificationPermissions(false)
 
   beforeEach(() => {
+    spyAlert.mockClear()
     mockEnvironment.mockClear()
     notificationPermissions.mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Authorized))
   })
@@ -296,6 +300,54 @@ describe("Saved search alert form", () => {
           },
         })
       })
+    })
+
+    it("the push notification toggle keeps in the same state when push permissions are denied", async () => {
+      notificationPermissions.mockReset()
+      notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Denied))
+
+      const { getByA11yLabel, queryAllByA11yState } = renderWithWrappersTL(
+        <SavedSearchAlertForm
+          {...baseProps}
+          initialValues={{ ...baseProps.initialValues, push: false, email: false }}
+        />
+      )
+
+      await fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", true)
+
+      expect(spyAlert).toBeCalled()
+      expect(queryAllByA11yState({ selected: true })).toHaveLength(0)
+    })
+
+    it("the push notification toggle keeps in the same state when push permissions are not not determined", async () => {
+      notificationPermissions.mockReset()
+      notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.NotDetermined))
+
+      const { getByA11yLabel, queryAllByA11yState } = renderWithWrappersTL(
+        <SavedSearchAlertForm
+          {...baseProps}
+          initialValues={{ ...baseProps.initialValues, push: false, email: false }}
+        />
+      )
+
+      await fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", true)
+
+      expect(spyAlert).toBeCalled()
+      expect(queryAllByA11yState({ selected: true })).toHaveLength(0)
+    })
+
+    it("the push notification toggle turns on when push permissions are enabled", async () => {
+      const { getByA11yLabel, queryAllByA11yState } = renderWithWrappersTL(
+        <SavedSearchAlertForm
+          {...baseProps}
+          initialValues={{ ...baseProps.initialValues, push: false, email: false }}
+        />
+      )
+
+      await fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", true)
+
+      expect(spyAlert).not.toBeCalled()
+      expect(queryAllByA11yState({ selected: true })).toHaveLength(1)
     })
   })
 })
