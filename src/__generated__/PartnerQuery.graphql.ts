@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1b7a37c63ae5c351815cd4182182e21f */
+/* @relayHash cf0bed7e799287f0e0880f4a1b83c064 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -286,10 +286,17 @@ fragment PartnerShows_partner on Partner {
   ...PartnerShowsRail_partner
 }
 
+fragment PartnerSubscriberBanner_partner on Partner {
+  name
+  hasFairPartnership
+}
+
 fragment Partner_partner on Partner {
   id
   internalID
   slug
+  partnerType
+  displayFullPartnerPage
   profile {
     id
     isFollowed
@@ -299,6 +306,7 @@ fragment Partner_partner on Partner {
   ...PartnerOverview_partner
   ...PartnerShows_partner
   ...PartnerHeader_partner
+  ...PartnerSubscriberBanner_partner
 }
 */
 
@@ -569,6 +577,20 @@ return {
           (v2/*: any*/),
           (v3/*: any*/),
           (v4/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "partnerType",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "displayFullPartnerPage",
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": null,
@@ -1270,6 +1292,13 @@ return {
               }
             ],
             "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "hasFairPartnership",
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -1277,7 +1306,7 @@ return {
     ]
   },
   "params": {
-    "id": "1b7a37c63ae5c351815cd4182182e21f",
+    "id": "cf0bed7e799287f0e0880f4a1b83c064",
     "metadata": {},
     "name": "PartnerQuery",
     "operationKind": "query",

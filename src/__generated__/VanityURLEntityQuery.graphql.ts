@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6b31efc916ff6cb21bee70ed84e27cd3 */
+/* @relayHash 3fa9674a70b5ace4db1bcbbd4157cbe1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -572,10 +572,17 @@ fragment PartnerShows_partner on Partner {
   ...PartnerShowsRail_partner
 }
 
+fragment PartnerSubscriberBanner_partner on Partner {
+  name
+  hasFairPartnership
+}
+
 fragment Partner_partner on Partner {
   id
   internalID
   slug
+  partnerType
+  displayFullPartnerPage
   profile {
     id
     isFollowed
@@ -585,6 +592,7 @@ fragment Partner_partner on Partner {
   ...PartnerOverview_partner
   ...PartnerShows_partner
   ...PartnerHeader_partner
+  ...PartnerSubscriberBanner_partner
 }
 
 fragment VanityURLEntity_fairOrPartner on VanityURLEntityType {
@@ -1977,6 +1985,20 @@ return {
               {
                 "alias": null,
                 "args": null,
+                "kind": "ScalarField",
+                "name": "partnerType",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "displayFullPartnerPage",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
                 "concreteType": "Profile",
                 "kind": "LinkedField",
                 "name": "profile",
@@ -2377,6 +2399,13 @@ return {
                   }
                 ],
                 "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "hasFairPartnership",
+                "storageKey": null
               }
             ],
             "type": "Partner",
@@ -2389,7 +2418,7 @@ return {
     ]
   },
   "params": {
-    "id": "6b31efc916ff6cb21bee70ed84e27cd3",
+    "id": "3fa9674a70b5ace4db1bcbbd4157cbe1",
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",
