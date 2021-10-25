@@ -645,6 +645,8 @@ PODS:
     - Sentry (= 7.3.0)
   - RNShare (5.1.0):
     - React-Core
+  - RNSplit (0.0.1):
+    - React
   - RNSVG (9.13.3):
     - React
   - SDWebImage (5.8.3):
@@ -807,6 +809,7 @@ DEPENDENCIES:
   - RNScreens (from `node_modules/react-native-screens`)
   - "RNSentry (from `node_modules/@sentry/react-native`)"
   - RNShare (from `node_modules/react-native-share`)
+  - "RNSplit (from `node_modules/@splitsoftware/splitio-react-native`)"
   - RNSVG (from `node_modules/react-native-svg`)
   - SDWebImage (= 5.8.3)
   - Segment-Adjust
@@ -1041,6 +1044,8 @@ EXTERNAL SOURCES:
     :path: "node_modules/@sentry/react-native"
   RNShare:
     :path: node_modules/react-native-share
+  RNSplit:
+    :path: "node_modules/@splitsoftware/splitio-react-native"
   RNSVG:
     :path: node_modules/react-native-svg
   tipsi-stripe:
@@ -1202,6 +1207,7 @@ SPEC CHECKSUMS:
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
   RNSentry: 49abc89b0190b4c8afe0fa5d065f98e36cb53233
   RNShare: fed99fd743f80ca255903c1da46fc9a6430efab6
+  RNSplit: 5c78d865a08e56dd125968ba1b529358f0b9f537
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   SDWebImage: 112503ec94a5a2a41869503844a15e8d8f1ead5c
   Segment-Adjust: 7646c502b087a153d89a42059dd53e6d1d143737

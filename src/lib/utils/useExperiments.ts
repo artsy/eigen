@@ -31,10 +31,7 @@ export const useTreatment = (treatment: EXPERIMENT_NAME) => {
   const isReady = GlobalStore.useAppState((store) => store.config.experiments.isReady)
 
   if (isReady) {
-    if (!client) {
-      return experiments[treatment].defaultTreatment
-    }
-    return client.getTreatment(treatment)
+    return client?.getTreatment(treatment) ?? experiments[treatment].defaultTreatment
   }
   return undefined
 }

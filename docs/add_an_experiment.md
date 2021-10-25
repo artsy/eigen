@@ -1,16 +1,16 @@
 # Adding a New Experiment
 
-We are using Split.IO to run AB Testing experiments in Artsy. In order to create an experiment, we will need to first add it to the Split.IO dashboard then make code adjustments to use it.
+We are using Split.io to run AB Testing experiments in Artsy. In order to create an experiment, we will need to first add it to the Split.io dashboard then make code adjustments to use it.
 
-## Adding an experiment (aka Split) to Split.IO dashboard
+## Adding an experiment (aka Split) to Split.io dashboard
 
-1. Log into your Split.IO using your personal Artsy account
+1. Log into your Split.io using your personal Artsy account
    `https://app.split.io/login`
 2. Choose the **Splits** tab from the left menu
 3. Tap on **Create split** and fill in required details as described in screenshot
    ![create-split](./screenshots/create-split.png)
-4. Tap on Add rule and define your treatments
-   _treatment_ refer to possible values for your experiment. the values are of `string` type
+4. Tap on **Add rules** and define your treatments.
+   A _treatment_ refers to possible values for your experiment. The values are of `string` type.
    ![split-rules](./screenshots/split-rules.png)
 5. Tap on **Save** and confirm while using **Pre-production** as a Status.
 
@@ -29,11 +29,11 @@ We are using Split.IO to run AB Testing experiments in Artsy. In order to create
 +  },
 ```
 
-_the `defeaultTreatment` refers to the value we would like to return in case something goes wrong with the client sdk_
+_The `defaultTreatment` refers to the value we would like to return in case something goes wrong with the client sdk_
 
 ## Using an experiment
 
-In order to use an experiment, we have to custom hooks that we created that support querying for a single experiment or multiple ones.
+In order to use an experiment, we have two custom hooks that we created that support querying for a single experiment (`useTreatment`) or multiple ones (`useTreatments`).
 
 ### Querying for a single treatment
 
@@ -53,11 +53,11 @@ You can access the treatment value in a functional react component using `useTre
 
 Once an experiment is done, usually we have a winner treatment. In order to roll out that treatment for everyone targeted by it, we will need to set it as a default treatment before "killing" it.
 
-For example, in the previous experiment, we were testing if `worksForYou` is performing better than `worksByArtistsYouFolow`. Assuming that it turned that it actually did, we then set `worksForYou` as a default treatment, **Save changes**, then kill treatment by tapping on **Kill**
+For example, in the previous experiment, we were testing if `worksForYou` is performing better than `worksByArtistsYouFolow`. Assuming that it actually did, we then set `worksForYou` as a default treatment, **Save changes**, then kill treatment by tapping on **Kill**
 ![kill-treatment](./screenshots/kill-treatment.png)
 
-Then, all we need to do is making the code adjustments to remove all code that is relying on this experiment in Eigen.
+Then, all we need to do is remove any code that is relying on this experiment in Eigen.
 
-## Still Need Help?
+## Still need help?
 
 Ask for help in the #practice-mobile slack channel, we will be happy to assist!
