@@ -1,7 +1,9 @@
+import { ActionType, OwnerType, TappedMakeOffer } from "@artsy/cohesion"
 import { MakeOfferButton_artwork } from "__generated__/MakeOfferButton_artwork.graphql"
 import { MakeOfferButtonOrderMutation } from "__generated__/MakeOfferButtonOrderMutation.graphql"
 import { navigate } from "lib/navigation/navigate"
-import { Schema, Track, track as _track } from "lib/utils/track"
+import { Track, track as _track } from "lib/utils/track"
+
 import { Button, ButtonProps } from "palette"
 import React from "react"
 import { Alert } from "react-native"
@@ -23,7 +25,7 @@ export interface State {
 }
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const track: Track<MakeOfferButtonProps, State> = _track
+const track: Track<MakeOfferButtonProps, State, TappedMakeOffer> = _track
 
 @track()
 export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State> {
@@ -50,11 +52,11 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
     console.log("src/lib/Scenes/Artwork/Components/MakeOfferButton.tsx", error)
   }
 
-  @track({
-    action_name: Schema.ActionNames.MakeOffer,
-    action_type: Schema.ActionTypes.Tap,
-    context_module: Schema.ContextModules.CommercialButtons,
-  })
+  @track((props) => ({
+    action: ActionType.tappedMakeOffer,
+    context_owner_type: OwnerType.artwork,
+    context_owner_id: props.artwork.internalID,
+  }))
   handleCreateOfferOrder() {
     const { relay, artwork, editionSetID } = this.props
     const { isCommittingCreateOfferOrderMutation } = this.state
