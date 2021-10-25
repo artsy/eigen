@@ -11,14 +11,14 @@ import { createFragmentContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
-import { MyProfileEditFormModal } from "./MyProfileEditFormModal"
+import { MyProfileEditFormModalFragmentContainer } from "./MyProfileEditFormModal"
 
 export enum Tab {
   collection = "My Collection",
   savedWorks = "Saved Works",
 }
 
-export const MyCollectionAndSavedWorks: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({ me }) => {
+export const MyCollectionAndSavedWorks: React.FC<{ me: NonNullable<MyCollectionAndSavedWorks_me> }> = ({ me }) => {
   return (
     <StickyTabPage
       disableBackButtonUpdate
@@ -39,15 +39,14 @@ export const MyCollectionAndSavedWorks: React.FC<{ me?: MyCollectionAndSavedWork
   )
 }
 
-export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({ me }) => {
+export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWorks_me> }> = ({ me }) => {
   const space = useSpace()
   const color = useColor()
 
   const [showModal, setShowModal] = useState(false)
   return (
     <>
-      <MyProfileEditFormModal visible={showModal} onDismiss={() => setShowModal(false)} />
-
+      <MyProfileEditFormModalFragmentContainer me={me} visible={showModal} onDismiss={() => setShowModal(false)} />
       <FancyModalHeader
         rightButtonText="Settings"
         hideBottomDivider
@@ -96,6 +95,7 @@ const MyCollectionAndSavedWorksFragmentContainer = createFragmentContainer(MyCol
     fragment MyCollectionAndSavedWorks_me on Me {
       name
       createdAt
+      ...MyProfileEditFormModal_me
     }
   `,
 })

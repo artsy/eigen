@@ -7,6 +7,7 @@ import { FragmentRefs } from "relay-runtime";
 export type MyCollectionAndSavedWorks_me = {
     readonly name: string | null;
     readonly createdAt: string | null;
+    readonly " $fragmentRefs": FragmentRefs<"MyProfileEditFormModal_me">;
     readonly " $refType": "MyCollectionAndSavedWorks_me";
 };
 export type MyCollectionAndSavedWorks_me$data = MyCollectionAndSavedWorks_me;
@@ -36,10 +37,15 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "name": "createdAt",
       "storageKey": null
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "MyProfileEditFormModal_me"
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'd1878ad954966f69bd1fcaaafe704683';
+(node as any).hash = 'fe765d786232c7ff6ee29ed401338661';
 export default node;

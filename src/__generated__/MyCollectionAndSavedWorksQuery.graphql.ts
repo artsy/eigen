@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ccfb597f7b828563e39131626d86ba42 */
+/* @relayHash e0844eedb8670255cf9b098545f846d3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,6 +29,11 @@ query MyCollectionAndSavedWorksQuery {
 fragment MyCollectionAndSavedWorks_me on Me {
   name
   createdAt
+  ...MyProfileEditFormModal_me
+}
+
+fragment MyProfileEditFormModal_me on Me {
+  name
 }
 */
 
@@ -100,7 +105,7 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "id": "ccfb597f7b828563e39131626d86ba42",
+    "id": "e0844eedb8670255cf9b098545f846d3",
     "metadata": {},
     "name": "MyCollectionAndSavedWorksQuery",
     "operationKind": "query",

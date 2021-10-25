@@ -1,4 +1,5 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
+import { MyProfileEditFormModal_me } from "__generated__/MyProfileEditFormModal_me.graphql"
 import { useFormik } from "formik"
 import { Image } from "lib/Components/Bidding/Elements/Image"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
@@ -20,9 +21,7 @@ import { myProfileUpdateProfile } from "./myProfileUpdateProfile"
 
 interface MyProfileEditFormModalProps {
   visible: boolean
-  name: string
-  about?: string
-  photo?: string
+  me: MyProfileEditFormModal_me
   onDismiss(): void
 }
 
@@ -48,7 +47,7 @@ export async function uploadPhoto(photo: EditMyProfileValuesSchema["photo"]) {
 }
 
 export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (props) => {
-  const { visible, onDismiss, photo, name, about } = props
+  const { visible, onDismiss, me } = props
   const color = useColor()
   const { showActionSheetWithOptions } = useActionSheet()
   const nameInputRef = useRef<Input>(null)
@@ -81,12 +80,11 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
   const chooseImageHandler = () => {
     showPhotoActionSheet(showActionSheetWithOptions, false)
       .then((images) => {
-        console.log("Images :: ", images)
         if (isArray(images) && images.length >= 1) {
           ;(handleChange("photo") as (value: string) => void)(images[0].path)
         }
       })
-      .then((e) => console.error("Error when uploading an image from the device", JSON.stringify(e)))
+      .catch((e) => console.error("Error when uploading an image from the device", JSON.stringify(e)))
   }
 
   return (
@@ -108,13 +106,11 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
                 justifyContent="center"
                 alignItems="center"
               >
-                <Image
-                  source={
-                    values.photo !== ""
-                      ? { uri: values.photo }
-                      : require("../../../../images/profile_placeholder_avatar.webp")
-                  }
-                />
+                {!!values.photo ? (
+                  <Avatar src={values.photo} size="md" />
+                ) : (
+                  <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
+                )}
               </Box>
             </Touchable>
             <Touchable haptic onPress={chooseImageHandler}>
@@ -126,13 +122,7 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
             <Spacer py={2} />
             <TextArea ref={bioInputRef} title="ABOUT" onChangeText={handleChange("bio") as (value: string) => void} />
             <Spacer py={2} />
-            <Button
-              flex={1}
-              disabled={!dirty}
-              onPress={() => {
-                console.log("Save")
-              }}
-            >
+            <Button flex={1} disabled={!dirty} onPress={handleSubmit}>
               Save
             </Button>
           </Flex>
