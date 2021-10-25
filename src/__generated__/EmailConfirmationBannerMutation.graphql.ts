@@ -11,7 +11,7 @@ export type EmailConfirmationBannerMutationResponse = {
             readonly unconfirmedEmail?: string | null;
             readonly mutationError?: {
                 readonly error: string | null;
-                readonly message: string | null;
+                readonly message: string;
             } | null;
         } | null;
     } | null;
