@@ -39,6 +39,24 @@ export const Form: React.FC<FormProps> = (props) => {
   } = useFormikContext<SavedSearchAlertFormValues>()
   const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const namePlaceholder = getNamePlaceholder(artistName, pills)
+  let isSaveAlertButtonDisabled = false
+
+  // Сhanges have been made by the user
+  if (!!savedSearchAlertId && !dirty) {
+    isSaveAlertButtonDisabled = true
+  }
+
+  // If the saved search alert doesn't have a name, a user can click the save button without any changes.
+  // This situation is possible if a user created an alert in Saved Search V1,
+  // since we didn't have the opportunity to specify custom name for the alert
+  if (!!savedSearchAlertId && !dirty && values.name.length === 0) {
+    isSaveAlertButtonDisabled = false
+  }
+
+  // Enable "save alert" button if selected at least one of the notification toggle options
+  if (enableSavedSearchToggles && !values.push && !values.email) {
+    isSaveAlertButtonDisabled = true
+  }
 
   return (
     <Box>
@@ -95,7 +113,7 @@ export const Form: React.FC<FormProps> = (props) => {
       <Spacer mt={4} />
       <Button
         testID="save-alert-button"
-        disabled={!!savedSearchAlertId && !(dirty || values.name.length === 0)}
+        disabled={isSaveAlertButtonDisabled}
         loading={isSubmitting}
         size="large"
         block

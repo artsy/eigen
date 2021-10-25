@@ -350,6 +350,20 @@ describe("Saved search alert form", () => {
       expect(queryAllByA11yState({ selected: true })).toHaveLength(1)
     })
   })
+
+  describe("Save alert button", () => {
+    it("should be disabled if none of the notification toggle options has been selected", async () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
+      const { getByTestId } = renderWithWrappersTL(
+        <SavedSearchAlertForm
+          {...baseProps}
+          initialValues={{ ...baseProps, name: "name", push: false, email: false }}
+        />
+      )
+
+      expect(getByTestId("save-alert-button")).toBeDisabled()
+    })
+  })
 })
 
 const filters: FilterData[] = [
