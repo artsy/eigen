@@ -37,7 +37,7 @@ export type myCollectionEditArtworkMutationResponse = {
                 readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtwork_sharedProps">;
             } | null;
             readonly mutationError?: {
-                readonly message: string | null;
+                readonly message: string;
             } | null;
         } | null;
     } | null;
