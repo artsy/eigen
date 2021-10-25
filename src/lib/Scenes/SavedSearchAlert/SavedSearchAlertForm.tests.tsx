@@ -352,16 +352,69 @@ describe("Saved search alert form", () => {
   })
 
   describe("Save alert button", () => {
-    it("should be disabled if none of the notification toggle options has been selected", async () => {
+    it("should be disabled if none of the notification toggle options has been selected", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
+      const { getByTestId, getByA11yLabel } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+      fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", false)
+      fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
+
+      expect(getByTestId("save-alert-button")).toBeDisabled()
+    })
+
+    it("should be disabled if no changes have been made by the user in update mode", () => {
       const { getByTestId } = renderWithWrappersTL(
         <SavedSearchAlertForm
           {...baseProps}
-          initialValues={{ ...baseProps, name: "name", push: false, email: false }}
+          savedSearchAlertId="savedSearchAlertId"
+          initialValues={{ ...baseProps.initialValues, name: "name" }}
         />
       )
 
       expect(getByTestId("save-alert-button")).toBeDisabled()
+    })
+
+    it("should be enabled if the saved search alert doesn't have a name in update mode", () => {
+      const { getByTestId } = renderWithWrappersTL(
+        <SavedSearchAlertForm {...baseProps} savedSearchAlertId="savedSearchAlertId" />
+      )
+
+      expect(getByTestId("save-alert-button")).toBeEnabled()
+    })
+
+    it("should be enabled if changes have been made by the user in update mode", () => {
+      const { getByTestId } = renderWithWrappersTL(
+        <SavedSearchAlertForm
+          {...baseProps}
+          savedSearchAlertId="savedSearchAlertId"
+          initialValues={{ ...baseProps.initialValues, name: "name" }}
+        />
+      )
+
+      fireEvent.changeText(getByTestId("alert-input-name"), "updated name")
+
+      expect(getByTestId("save-alert-button")).toBeEnabled()
+    })
+
+    it("should be enabled if selected at least one of the notification toggle options", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
+      const { getByTestId, getByA11yLabel } = renderWithWrappersTL(
+        <SavedSearchAlertForm
+          {...baseProps}
+          savedSearchAlertId="savedSearchAlertId"
+          initialValues={{ ...baseProps.initialValues, name: "name", push: false, email: false }}
+        />
+      )
+
+      fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+
+      expect(getByTestId("save-alert-button")).toBeEnabled()
+    })
+
+    it("should be enabled by default in create mode", () => {
+      const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+      expect(getByTestId("save-alert-button")).toBeEnabled()
     })
   })
 })
