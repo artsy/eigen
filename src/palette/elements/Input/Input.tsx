@@ -344,7 +344,7 @@ export const computeBorderColor = (inputStatus: InputStatus): Color => {
 }
 
 const StyledInput = styled(TextInput)`
-  padding: 0;
+  padding: 0 ${themeGet("space.1")}px 0 0;
   margin: ${themeGet("space.1")}px;
   font-family: ${themeGet("fonts.sans.regular")};
 `
