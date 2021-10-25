@@ -17,7 +17,7 @@ export type deleteArtworkImageMutationResponse = {
         readonly artworkOrError: {
             readonly success?: boolean | null;
             readonly mutationError?: {
-                readonly message: string | null;
+                readonly message: string;
             } | null;
         } | null;
     } | null;

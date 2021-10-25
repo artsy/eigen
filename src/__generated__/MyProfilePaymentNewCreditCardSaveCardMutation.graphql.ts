@@ -21,7 +21,7 @@ export type MyProfilePaymentNewCreditCardSaveCardMutationResponse = {
             readonly mutationError?: {
                 readonly detail: string | null;
                 readonly error: string | null;
-                readonly message: string | null;
+                readonly message: string;
             } | null;
         } | null;
     } | null;

@@ -39,7 +39,7 @@ export type myCollectionAddArtworkMutationResponse = {
                 } | null;
             } | null;
             readonly mutationError?: {
-                readonly message: string | null;
+                readonly message: string;
             } | null;
         } | null;
     } | null;
