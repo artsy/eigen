@@ -1788,6 +1788,9 @@ type AuctionResult implements Node {
   artistID: String!
   boughtIn: Boolean
   categoryText: String
+
+  # Comparable auction results
+  comparableAuctionResults(after: String, before: String, first: Int, last: Int): AuctionResultConnection
   currency: String
   date(
     format: String
