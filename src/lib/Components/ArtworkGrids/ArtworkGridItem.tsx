@@ -151,28 +151,38 @@ export const Artwork: React.FC<ArtworkProps> = ({
         )}
         <Box mt={1}>
           {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
-            <Text color="black60" numberOfLines={1} {...lotLabelTextStyle}>
+            <Text variant="xs" color="black100" numberOfLines={1} caps {...lotLabelTextStyle}>
               Lot {artwork.saleArtwork.lotLabel}
             </Text>
           )}
           {!!artwork.artistNames && (
-            <Text lineHeight="20" weight="medium" numberOfLines={1} {...artistNamesTextStyle}>
+            <Text lineHeight="20" weight="regular" variant="xs" numberOfLines={1} {...artistNamesTextStyle}>
               {artwork.artistNames}
             </Text>
           )}
           {!!artwork.title && (
-            <Text lineHeight="20" color="black60" numberOfLines={1} {...titleTextStyle}>
-              {artwork.title}
-              {!!artwork.date && `, ${artwork.date}`}
+            <Text lineHeight="20" variant="xs" weight="regular" color="black60" numberOfLines={1} {...titleTextStyle}>
+              <Text lineHeight="20" variant="xs" weight="regular" italic>
+                {artwork.title}
+                {!!artwork.date ? ", " : ""}
+              </Text>
+              {artwork.date}
             </Text>
           )}
           {!hidePartner && !!artwork.partner?.name && (
-            <Text lineHeight="20" color="black60" numberOfLines={1} {...partnerNameTextStyle}>
+            <Text variant="xs" lineHeight="20" color="black60" numberOfLines={1} {...partnerNameTextStyle}>
               {artwork.partner.name}
             </Text>
           )}
           {!!saleInfo && (
-            <Text weight="regular" lineHeight="20" numberOfLines={1} color="black60" {...saleInfoTextStyle}>
+            <Text
+              lineHeight="20"
+              variant="xs"
+              weight="medium"
+              color="black100"
+              numberOfLines={1}
+              {...saleInfoTextStyle}
+            >
               {saleInfo}
             </Text>
           )}
