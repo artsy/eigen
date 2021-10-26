@@ -619,7 +619,7 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       atAuction: true,
       attributionClass: null,
       colors: null,
-      dimensionRange: "16.0-40.0",
+      sizes: ["MEDIUM"],
       inquireableOnly: null,
       locationCities: ["New York, NY, USA"],
       majorPeriods: ["2000"],

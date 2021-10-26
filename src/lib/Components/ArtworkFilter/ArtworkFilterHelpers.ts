@@ -313,7 +313,7 @@ export const aggregationNameFromFilter: Record<string, AggregationName | undefin
   artistNationalities: "ARTIST_NATIONALITY",
   artistsIFollow: "FOLLOWED_ARTISTS",
   colors: "COLOR",
-  dimensionRange: "DIMENSION_RANGE",
+  sizes: "DIMENSION_RANGE",
   earliestCreatedYear: "earliestCreatedYear",
   latestCreatedYear: "latestCreatedYear",
   locationCities: "LOCATION_CITY",
