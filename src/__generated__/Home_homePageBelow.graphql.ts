@@ -5,14 +5,18 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Home_homePageBelow = {
-    readonly artworkModules: ReadonlyArray<{
+    readonly recentlyViewedWorksArtworkModule: {
         readonly id: string;
         readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_rail">;
-    } | null> | null;
-    readonly artistModules: ReadonlyArray<{
+    } | null;
+    readonly similarToRecentlyViewedArtworkModule: {
+        readonly id: string;
+        readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_rail">;
+    } | null;
+    readonly popularArtistsArtistModule: {
         readonly id: string;
         readonly " $fragmentRefs": FragmentRefs<"ArtistRail_rail">;
-    } | null> | null;
+    } | null;
     readonly fairsModule: {
         readonly " $fragmentRefs": FragmentRefs<"FairsRail_fairsModule">;
     } | null;
@@ -31,18 +35,21 @@ export type Home_homePageBelow$key = {
 
 
 const node: ReaderFragment = (function(){
-var v0 = [
-  "POPULAR_ARTISTS",
-  "RECENTLY_VIEWED_WORKS",
-  "SIMILAR_TO_RECENTLY_VIEWED"
-],
-v1 = {
+var v0 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
+v1 = [
+  (v0/*: any*/),
+  {
+    "args": null,
+    "kind": "FragmentSpread",
+    "name": "ArtworkRail_rail"
+  }
+],
 v2 = [
   {
     "kind": "Variable",
@@ -63,59 +70,59 @@ return {
   "name": "Home_homePageBelow",
   "selections": [
     {
-      "alias": null,
+      "alias": "recentlyViewedWorksArtworkModule",
       "args": [
         {
           "kind": "Literal",
-          "name": "include",
-          "value": (v0/*: any*/)
-        },
-        {
-          "kind": "Literal",
-          "name": "maxFollowedGeneRails",
-          "value": -1
-        },
-        {
-          "kind": "Literal",
-          "name": "maxRails",
-          "value": -1
-        },
-        {
-          "kind": "Literal",
-          "name": "order",
-          "value": (v0/*: any*/)
+          "name": "key",
+          "value": "RECENTLY_VIEWED_WORKS"
         }
       ],
       "concreteType": "HomePageArtworkModule",
       "kind": "LinkedField",
-      "name": "artworkModules",
-      "plural": true,
-      "selections": [
-        (v1/*: any*/),
-        {
-          "args": null,
-          "kind": "FragmentSpread",
-          "name": "ArtworkRail_rail"
-        }
-      ],
-      "storageKey": "artworkModules(include:[\"POPULAR_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SIMILAR_TO_RECENTLY_VIEWED\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"POPULAR_ARTISTS\",\"RECENTLY_VIEWED_WORKS\",\"SIMILAR_TO_RECENTLY_VIEWED\"])"
+      "name": "artworkModule",
+      "plural": false,
+      "selections": (v1/*: any*/),
+      "storageKey": "artworkModule(key:\"RECENTLY_VIEWED_WORKS\")"
     },
     {
-      "alias": null,
-      "args": null,
+      "alias": "similarToRecentlyViewedArtworkModule",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "key",
+          "value": "SIMILAR_TO_RECENTLY_VIEWED"
+        }
+      ],
+      "concreteType": "HomePageArtworkModule",
+      "kind": "LinkedField",
+      "name": "artworkModule",
+      "plural": false,
+      "selections": (v1/*: any*/),
+      "storageKey": "artworkModule(key:\"SIMILAR_TO_RECENTLY_VIEWED\")"
+    },
+    {
+      "alias": "popularArtistsArtistModule",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "key",
+          "value": "POPULAR"
+        }
+      ],
       "concreteType": "HomePageArtistModule",
       "kind": "LinkedField",
-      "name": "artistModules",
-      "plural": true,
+      "name": "artistModule",
+      "plural": false,
       "selections": [
-        (v1/*: any*/),
+        (v0/*: any*/),
         {
           "args": null,
           "kind": "FragmentSpread",
           "name": "ArtistRail_rail"
         }
       ],
-      "storageKey": null
+      "storageKey": "artistModule(key:\"POPULAR\")"
     },
     {
       "alias": null,
@@ -164,5 +171,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '682dd4cb91dc9cfd158cc397cb3ee42e';
+(node as any).hash = '918150a193ba8e9682046443df9ab291';
 export default node;
