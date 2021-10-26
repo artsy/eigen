@@ -1,8 +1,8 @@
 export interface ExperimentDescriptor {
   /**
-   * Provide a treatment key to allow this feature to be toggled via split.io.
+   * Provide a split name to allow this feature to be toggled via split.io.
    */
-  readonly treatmentKey?: string
+  readonly splitName?: string
   /**
    * This refers to the value we show to the user in case something goes wrong with the client
    * initiation or when we no longer use split.io
@@ -17,7 +17,7 @@ function defineExperiments<T extends string>(expirmentMap: { readonly [experimen
 
 export const experiments = defineExperiments({
   HomeScreenWorksForYouVsWorksByArtistsYouFollow: {
-    treatmentKey: "HomeScreenWorksForYouVsWorksByArtistsYouFollow",
+    splitName: "HomeScreenWorksForYouVsWorksByArtistsYouFollow",
     defaultTreatment: "worksByArtistsYouFolow",
   },
 })

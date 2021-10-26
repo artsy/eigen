@@ -4,6 +4,8 @@ import Config from "react-native-config"
 import { GlobalStore } from "../store/GlobalStore"
 import { EXPERIMENT_NAME, experiments } from "./experiments"
 
+let client: SplitIO.IClient
+
 export const useExperiments = () => {
   // Instantiate the SDK
   const factory: SplitIO.ISDK = SplitFactory({
@@ -14,11 +16,11 @@ export const useExperiments = () => {
   })
 
   // And get the client instance you'll use
-  const client: SplitIO.IClient = factory.client()
+  client = factory.client()
 
   useEffect(() => {
     client.on(client.Event.SDK_READY, () => {
-      GlobalStore.actions.config.experiments.setState({ isReady: true, client })
+      GlobalStore.actions.config.experiments.setState({ isReady: true })
     })
 
     // TODO: Discuss client.destroy()
@@ -27,24 +29,10 @@ export const useExperiments = () => {
 }
 
 export const useTreatment = (treatment: EXPERIMENT_NAME) => {
-  const client = GlobalStore.useAppState((store) => store.config.experiments.client)
   const isReady = GlobalStore.useAppState((store) => store.config.experiments.isReady)
 
   if (isReady) {
     return client?.getTreatment(treatment) ?? experiments[treatment].defaultTreatment
-  }
-  return undefined
-}
-
-export const useTreatments = (treatments: EXPERIMENT_NAME[]) => {
-  const client = GlobalStore.useAppState((store) => store.config.experiments.client)
-  const isReady = GlobalStore.useAppState((store) => store.config.experiments.isReady)
-
-  if (isReady) {
-    if (!client) {
-      return treatments.map((treatment) => experiments[treatment].defaultTreatment)
-    }
-    return client.getTreatments(treatments)
   }
   return undefined
 }
