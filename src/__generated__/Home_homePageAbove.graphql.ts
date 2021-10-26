@@ -5,10 +5,14 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Home_homePageAbove = {
-    readonly artworkModules: ReadonlyArray<{
+    readonly followedArtistsArtworkModule: {
         readonly id: string;
         readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_rail">;
-    } | null> | null;
+    } | null;
+    readonly activeBidsArtworkModule: {
+        readonly id: string;
+        readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_rail">;
+    } | null;
     readonly salesModule: {
         readonly " $fragmentRefs": FragmentRefs<"SalesRail_salesModule">;
     } | null;
@@ -25,8 +29,18 @@ export type Home_homePageAbove$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = [
-  "FOLLOWED_ARTISTS",
-  "ACTIVE_BIDS"
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "id",
+    "storageKey": null
+  },
+  {
+    "args": null,
+    "kind": "FragmentSpread",
+    "name": "ArtworkRail_rail"
+  }
 ];
 return {
   "argumentDefinitions": [
@@ -41,48 +55,36 @@ return {
   "name": "Home_homePageAbove",
   "selections": [
     {
-      "alias": null,
+      "alias": "followedArtistsArtworkModule",
       "args": [
         {
           "kind": "Literal",
-          "name": "include",
-          "value": (v0/*: any*/)
-        },
-        {
-          "kind": "Literal",
-          "name": "maxFollowedGeneRails",
-          "value": -1
-        },
-        {
-          "kind": "Literal",
-          "name": "maxRails",
-          "value": -1
-        },
-        {
-          "kind": "Literal",
-          "name": "order",
-          "value": (v0/*: any*/)
+          "name": "key",
+          "value": "FOLLOWED_ARTISTS"
         }
       ],
       "concreteType": "HomePageArtworkModule",
       "kind": "LinkedField",
-      "name": "artworkModules",
-      "plural": true,
-      "selections": [
+      "name": "artworkModule",
+      "plural": false,
+      "selections": (v0/*: any*/),
+      "storageKey": "artworkModule(key:\"FOLLOWED_ARTISTS\")"
+    },
+    {
+      "alias": "activeBidsArtworkModule",
+      "args": [
         {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "id",
-          "storageKey": null
-        },
-        {
-          "args": null,
-          "kind": "FragmentSpread",
-          "name": "ArtworkRail_rail"
+          "kind": "Literal",
+          "name": "key",
+          "value": "ACTIVE_BIDS"
         }
       ],
-      "storageKey": "artworkModules(include:[\"FOLLOWED_ARTISTS\",\"ACTIVE_BIDS\"],maxFollowedGeneRails:-1,maxRails:-1,order:[\"FOLLOWED_ARTISTS\",\"ACTIVE_BIDS\"])"
+      "concreteType": "HomePageArtworkModule",
+      "kind": "LinkedField",
+      "name": "artworkModule",
+      "plural": false,
+      "selections": (v0/*: any*/),
+      "storageKey": "artworkModule(key:\"ACTIVE_BIDS\")"
     },
     {
       "alias": null,
@@ -116,5 +118,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '18818b5a427406f0eb6a969a5363a1c5';
+(node as any).hash = 'a0678d231be4029852f0a6690d182107';
 export default node;
