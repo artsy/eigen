@@ -20,11 +20,15 @@ export type UpdateSubmissionMutationInput = {
     edition?: boolean | null;
     editionNumber?: string | null;
 <<<<<<< HEAD
+<<<<<<< HEAD
     editionSize?: number | null;
     editionSizeFormatted?: string | null;
 =======
     editionSize?: string | null;
 >>>>>>> 1beb668ae ([SwA-43] Migrate the edition size field in Convection to a string)
+=======
+    editionSize?: number | null;
+>>>>>>> def1417d3 (rename and delete generated schema updates)
     height?: string | null;
     id: string;
     locationCity?: string | null;

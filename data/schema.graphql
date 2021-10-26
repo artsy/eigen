@@ -4770,7 +4770,7 @@ type ConsignmentSubmission {
   dimensionsMetric: String
   edition: String
   editionNumber: String
-  editionSize: String
+  editionSize: Int
   height: String
 
   # Uniq ID for this submission
@@ -5606,6 +5606,7 @@ input CreateSubmissionMutationInput {
   edition: Boolean
   editionNumber: String
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   # Deprecated: Use edition_size_formatted field instead
   editionSize: Int
@@ -5613,6 +5614,9 @@ input CreateSubmissionMutationInput {
 =======
   editionSize: String
 >>>>>>> 1beb668ae ([SwA-43] Migrate the edition size field in Convection to a string)
+=======
+  editionSize: Int
+>>>>>>> def1417d3 (rename and delete generated schema updates)
   height: String
   locationCity: String
   locationCountry: String
@@ -12313,6 +12317,7 @@ input UpdateSubmissionMutationInput {
   edition: Boolean
   editionNumber: String
 <<<<<<< HEAD
+<<<<<<< HEAD
 
   # Deprecated: Use edition_size_formatted field instead
   editionSize: Int
@@ -12320,6 +12325,9 @@ input UpdateSubmissionMutationInput {
 =======
   editionSize: String
 >>>>>>> 1beb668ae ([SwA-43] Migrate the edition size field in Convection to a string)
+=======
+  editionSize: Int
+>>>>>>> def1417d3 (rename and delete generated schema updates)
   height: String
   id: ID!
   locationCity: String
