@@ -1,4 +1,5 @@
-import { FilterParamName } from "../ArtworkFilterHelpers"
+import { FilterData, FilterParamName } from "../ArtworkFilterHelpers"
+import { IS_USA } from "../Filters/helpers"
 
 export const shouldExtractValueNamesFromAggregation = [
   FilterParamName.locationCities,

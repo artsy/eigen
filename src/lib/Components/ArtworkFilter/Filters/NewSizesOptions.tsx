@@ -5,7 +5,7 @@ import { FilterData, FilterDisplayName, FilterParamName } from "../ArtworkFilter
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
-interface SizeOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "SizeOptionsScreen"> {}
+interface NewSizesOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "SizesOptionsScreen"> {}
 
 export const SIZES_OPTIONS: FilterData[] = [
   {
@@ -25,7 +25,7 @@ export const SIZES_OPTIONS: FilterData[] = [
   },
 ]
 
-export const NewSizesOptionsScreen: React.FC<SizeOptionsScreenProps> = ({ navigation }) => {
+export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ navigation }) => {
   const { handleSelect, isSelected } = useMultiSelect({
     options: SIZES_OPTIONS,
     paramName: FilterParamName.sizes,

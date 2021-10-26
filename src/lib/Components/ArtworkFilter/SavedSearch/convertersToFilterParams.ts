@@ -11,7 +11,7 @@ import { DEFAULT_FILTERS } from "../ArtworkFilterStore"
 import { ATTRIBUTION_CLASS_OPTIONS } from "../Filters/AttributionClassOptions"
 import { COLORS_INDEXED_BY_VALUE } from "../Filters/ColorsOptions"
 import { localizeDimension, parsePriceRangeLabel, parseRange } from "../Filters/helpers"
-import { SIZE_OPTIONS } from "../Filters/SizeOptions"
+// import { SIZE_OPTIONS } from "../Filters/SizeOptions"
 import { WAYS_TO_BUY_FILTER_PARAM_NAMES } from "../Filters/WaysToBuyOptions"
 import { shouldExtractValueNamesFromAggregation } from "./constants"
 import { SearchCriteriaAttributeKeys, SearchCriteriaAttributes } from "./types"
@@ -48,36 +48,36 @@ export const convertCustomSizeToFilterParamByName = (paramName: FilterParamName,
   }
 }
 
-export const convertSizeToFilterParams = (criteria: SearchCriteriaAttributes): FilterData[] | null => {
-  const filterParams: FilterData[] = []
-  const dimensionRangeValue = criteria[FilterParamName.dimensionRange]
-  const widthValue = criteria[FilterParamName.width]
-  const heightValue = criteria[FilterParamName.height]
+// export const convertSizeToFilterParams = (criteria: SearchCriteriaAttributes): FilterData[] | null => {
+//   const filterParams: FilterData[] = []
+//   const dimensionRangeValue = criteria[FilterParamName.dimensionRange]
+//   const widthValue = criteria[FilterParamName.width]
+//   const heightValue = criteria[FilterParamName.height]
 
-  if (!isNil(dimensionRangeValue)) {
-    const sizeOptionItem = SIZE_OPTIONS.find((option) => option.paramValue === dimensionRangeValue)
+//   if (!isNil(dimensionRangeValue)) {
+//     const sizeOptionItem = SIZE_OPTIONS.find((option) => option.paramValue === dimensionRangeValue)
 
-    if (sizeOptionItem) {
-      filterParams.push(sizeOptionItem)
-    }
-  }
+//     if (sizeOptionItem) {
+//       filterParams.push(sizeOptionItem)
+//     }
+//   }
 
-  // Parse custom width size
-  if (!isNil(widthValue)) {
-    filterParams.push(convertCustomSizeToFilterParamByName(FilterParamName.width, widthValue))
-  }
+//   // Parse custom width size
+//   if (!isNil(widthValue)) {
+//     filterParams.push(convertCustomSizeToFilterParamByName(FilterParamName.width, widthValue))
+//   }
 
-  // Parse custom height size
-  if (!isNil(heightValue)) {
-    filterParams.push(convertCustomSizeToFilterParamByName(FilterParamName.height, heightValue))
-  }
+//   // Parse custom height size
+//   if (!isNil(heightValue)) {
+//     filterParams.push(convertCustomSizeToFilterParamByName(FilterParamName.height, heightValue))
+//   }
 
-  if (filterParams.length > 0) {
-    return filterParams
-  }
+//   if (filterParams.length > 0) {
+//     return filterParams
+//   }
 
-  return null
-}
+//   return null
+// }
 
 export const convertColorsToFilterParam = (
   criteria: SearchCriteriaAttributes,
@@ -188,7 +188,7 @@ export const convertSavedSearchCriteriaToFilterParams = (
 
   const converters = [
     convertPriceToFilterParam,
-    convertSizeToFilterParams,
+    // convertSizeToFilterParams,
     convertColorsToFilterParam,
     convertAttributionToFilterParam,
     convertWaysToBuyToFilterParams,
