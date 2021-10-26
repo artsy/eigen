@@ -25,6 +25,7 @@ interface MultiSelectOptionScreenProps extends FancyModalHeaderProps {
   /** Utilize a search input to further filter results */
   searchable?: boolean
   noResultsLabel?: string
+  footerComponent?: React.ComponentType<any> | React.ReactElement | null
 }
 
 export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = ({
@@ -37,6 +38,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   children,
   searchable,
   noResultsLabel = "No results",
+  footerComponent,
   ...rest
 }) => {
   const space = useSpace()
@@ -104,6 +106,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
           style={{ flex: 1 }}
           keyExtractor={(_item, index) => String(index)}
           data={filteredOptions}
+          ListFooterComponent={footerComponent}
           renderItem={({ item }) => {
             const disabled = itemIsDisabled(item)
             const selected = itemIsSelected(item)
