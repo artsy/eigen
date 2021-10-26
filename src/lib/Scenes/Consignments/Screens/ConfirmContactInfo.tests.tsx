@@ -47,7 +47,7 @@ const render = () => {
 }
 
 describe("ConfirmContactInfo", () => {
-  it("shows a pre-populated phone input and submit is enabled", () => {
+  it("shows a pre-populated phone input and submit is enabled", async () => {
     const { getByA11yLabel, getByPlaceholderText } = renderWithWrappersTL(
       <NavigatorIOS
         initialRoute={{
@@ -70,7 +70,7 @@ describe("ConfirmContactInfo", () => {
     const phoneInput = getByPlaceholderText("0000 000000")
     expect(phoneInput).toBeTruthy()
     expect(phoneInput).toHaveProp("value", "7825 577663")
-    waitFor(() => expect(getByA11yLabel("Submit")).not.toBeDisabled())
+    await waitFor(() => expect(getByA11yLabel("Submit")).not.toBeDisabled())
   })
 
   it("shows a submit button", () => {
