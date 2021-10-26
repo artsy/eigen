@@ -19,7 +19,7 @@ export const LotsByArtistsYouFollow: React.FC<LotsByArtistsYouFollowProps> = ({ 
   return (
     <PageWithSimpleHeader title={SCREEN_TITLE}>
       <Box>
-        {!!me.lotsByFollowedArtistsConnection?.edges?.length ? (
+        {!!me?.lotsByFollowedArtistsConnection?.edges?.length ? (
           <InfiniteScrollArtworksGridContainer
             loadMore={relay.loadMore}
             hasMore={relay.hasMore}
