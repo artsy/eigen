@@ -107,7 +107,7 @@ export class ArtistListItem extends React.Component<Props, State> {
     const { artist, withFeedback, containerStyle, disableNavigation } = this.props
     const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
     const imageURl = image && image.url
-    const buttonVariant = is_followed ? "fillDark" : "outline"
+    const buttonVariant = is_followed ? "outline" : "fillDark"
 
     if (!name) {
       return null
