@@ -72,7 +72,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
 
   render() {
     const buttonComponent = (
-      <Box m={4}>
+      <Box m="1">
         <Button
           disabled={!this.state.valid}
           loading={this.state.isLoading}
@@ -98,7 +98,7 @@ export class CreditCardForm extends Component<CreditCardFormProps, CreditCardFor
         <ScrollView scrollEnabled={false}>
           <Container m={0}>
             <View>
-              <Box m={4}>
+              <Box m="1">
                 <Serif size="3t" mb={2}>
                   Card Information
                 </Serif>
