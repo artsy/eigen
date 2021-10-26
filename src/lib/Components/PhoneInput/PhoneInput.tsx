@@ -68,6 +68,9 @@ export const PhoneInput = React.forwardRef<
   const isFirstRun = useRef(true)
   useEffect(() => {
     if (isFirstRun.current) {
+      if (phoneNumber.length > 0) {
+        handleValidation()
+      }
       isFirstRun.current = false
       return
     }

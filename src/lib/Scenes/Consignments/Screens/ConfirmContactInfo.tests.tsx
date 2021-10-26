@@ -1,8 +1,9 @@
+import { waitFor } from "@testing-library/react-native"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { Button } from "palette"
 import React from "react"
@@ -46,8 +47,18 @@ const render = () => {
 }
 
 describe("ConfirmContactInfo", () => {
-  it("shows a phone input", () => {
-    const tree = render()
+  it("shows a pre-populated phone input and submit is enabled", async () => {
+    const { getByA11yLabel, getByPlaceholderText } = renderWithWrappersTL(
+      <NavigatorIOS
+        initialRoute={{
+          component: ConfirmContactInfoQueryRenderer,
+          passProps: {
+            navigator,
+            submissionRequestValidationCheck,
+          },
+        }}
+      />
+    )
     env.mock.resolveMostRecentOperation((op) =>
       MockPayloadGenerator.generate(op, {
         Me() {
@@ -55,8 +66,11 @@ describe("ConfirmContactInfo", () => {
         },
       })
     )
-    expect(tree.root.findAllByType(PhoneInput)).toHaveLength(1)
-    expect(tree.root.findByType(PhoneInput).props.value).toBe("+447825577663")
+
+    const phoneInput = getByPlaceholderText("0000 000000")
+    expect(phoneInput).toBeTruthy()
+    expect(phoneInput).toHaveProp("value", "7825 577663")
+    await waitFor(() => expect(getByA11yLabel("Submit")).not.toBeDisabled())
   })
 
   it("shows a submit button", () => {
