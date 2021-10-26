@@ -16,7 +16,6 @@ export enum FilterDisplayName {
   organizations = "Auction House",
   partnerIDs = "Galleries & Institutions",
   priceRange = "Price",
-  size = "Size", // TODO: Remove it
   sizes = "Size",
   sort = "Sort By",
   timePeriod = "Time Period",
