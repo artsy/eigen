@@ -69,6 +69,6 @@ describe("consignment metadata -> submission", () => {
       editionScreenViewed: true,
     }
     const result = consignmentSetupToMutationInput(setup)
-    expect(result.editionSize).toEqual("")
+    expect(result.editionSizeFormatted).toEqual("")
   })
 })
