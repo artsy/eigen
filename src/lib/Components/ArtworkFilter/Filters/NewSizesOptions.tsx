@@ -119,7 +119,7 @@ const CustomInputs: React.FC<CustomInputsProps> = ({ label, range, onChange }) =
               onChangeText={handleInputChange("min")}
               placeholder={LOCALIZED_UNIT}
               accessibilityLabel={`Minimum ${label} Input`}
-              value={getValue(range.min)}
+              defaultValue={getValue(range.min)}
             />
           </Flex>
           <Flex flex={1}>
@@ -131,7 +131,7 @@ const CustomInputs: React.FC<CustomInputsProps> = ({ label, range, onChange }) =
               onChangeText={handleInputChange("max")}
               placeholder={LOCALIZED_UNIT}
               accessibilityLabel={`Maximum ${label} Input`}
-              value={getValue(range.max)}
+              defaultValue={getValue(range.max)}
             />
           </Flex>
         </Join>
