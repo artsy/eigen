@@ -117,6 +117,7 @@ const CustomInputs: React.FC<CustomInputsProps> = ({ label, range, onChange }) =
             <Input
               keyboardType="number-pad"
               onChangeText={handleInputChange("min")}
+              placeholder={LOCALIZED_UNIT}
               accessibilityLabel={`Minimum ${label} Input`}
               value={getValue(range.min)}
             />
@@ -128,6 +129,7 @@ const CustomInputs: React.FC<CustomInputsProps> = ({ label, range, onChange }) =
             <Input
               keyboardType="number-pad"
               onChangeText={handleInputChange("max")}
+              placeholder={LOCALIZED_UNIT}
               accessibilityLabel={`Maximum ${label} Input`}
               value={getValue(range.max)}
             />
