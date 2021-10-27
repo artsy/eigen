@@ -1,20 +1,15 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { Box, Flex, Input, Join, Spacer, Text } from "palette"
+import { Box, Spacer } from "palette"
 import React from "react"
 import { ArtworkFilterNavigationStack } from ".."
 import { FilterData, FilterDisplayName, FilterParamName } from "../ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "../ArtworkFilterStore"
-import { IS_USA, LOCALIZED_UNIT, localizeDimension, Numeric, parseRange, Range, toIn } from "./helpers"
+import { CustomSizeInputs } from "./CustomSizeInputs"
+import { IS_USA, LOCALIZED_UNIT, localizeDimension, parseRange, Range, toIn } from "./helpers"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
 interface NewSizesOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "SizesOptionsScreen"> {}
-
-interface CustomInputsProps {
-  label: string
-  range: Range
-  onChange: (range: Range) => void
-}
 
 interface CustomSize {
   width: Range
@@ -73,14 +68,6 @@ const DEFAULT_CUSTOM_SIZE: CustomSize = {
 const CUSTOM_SIZE_OPTION_KEYS: Array<keyof CustomSize> = [FilterParamName.width, FilterParamName.height]
 
 // Helpers
-const getValue = (value: Numeric) => {
-  if (value === "*" || value === 0) {
-    return
-  }
-
-  return value.toString()
-}
-
 const getCustomValues = (options: FilterData[]) => {
   return options.reduce((acc, option) => {
     const { min, max } = parseRange(String(option.paramValue))
@@ -93,51 +80,6 @@ const getCustomValues = (options: FilterData[]) => {
       },
     }
   }, DEFAULT_CUSTOM_SIZE)
-}
-
-const CustomInputs: React.FC<CustomInputsProps> = ({ label, range, onChange }) => {
-  const handleInputChange = (field: string) => (text: string) => {
-    const parsed = parseFloat(text)
-    const value = isNaN(parsed) ? "*" : parsed
-
-    onChange({ ...range, [field]: value })
-  }
-
-  return (
-    <Box>
-      <Text variant="xs" caps mb={0.5}>
-        {label}
-      </Text>
-      <Flex flexDirection="row">
-        <Join separator={<Spacer ml={2} />}>
-          <Flex flex={1}>
-            <Text variant="xs" mb={0.5}>
-              Min
-            </Text>
-            <Input
-              keyboardType="number-pad"
-              onChangeText={handleInputChange("min")}
-              placeholder={LOCALIZED_UNIT}
-              accessibilityLabel={`Minimum ${label} Input`}
-              defaultValue={getValue(range.min)}
-            />
-          </Flex>
-          <Flex flex={1}>
-            <Text variant="xs" mb={0.5}>
-              Max
-            </Text>
-            <Input
-              keyboardType="number-pad"
-              onChangeText={handleInputChange("max")}
-              placeholder={LOCALIZED_UNIT}
-              accessibilityLabel={`Maximum ${label} Input`}
-              defaultValue={getValue(range.max)}
-            />
-          </Flex>
-        </Join>
-      </Flex>
-    </Box>
-  )
 }
 
 export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ navigation }) => {
@@ -190,13 +132,13 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
       footerComponent={
         <Box mx={15}>
           <Spacer mt={2} />
-          <CustomInputs
+          <CustomSizeInputs
             label="Width"
             range={customValues.width}
             onChange={handleCustomInputChange(FilterParamName.width)}
           />
           <Spacer mt={2} />
-          <CustomInputs
+          <CustomSizeInputs
             label="Height"
             range={customValues.height}
             onChange={handleCustomInputChange(FilterParamName.height)}
