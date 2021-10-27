@@ -29,6 +29,17 @@ jest.mock("lib/utils/hardware", () => ({
 jest.mock("lib/utils/useSearchInsightsConfig", () => ({
   useSearchInsightsConfig: () => true,
 }))
+jest.mock("lib/utils/useAlgoliaIndices", () => ({
+  useAlgoliaIndices: () => ({
+    indicesInfo: {
+      Artist_staging: { hasResults: true },
+      Sale_staging: { hasResults: false },
+      Fair_staging: { hasResults: false },
+      Gallery_staging: { hasResults: true },
+    },
+    updateIndicesInfo: jest.fn(),
+  }),
+}))
 
 describe("Search2 Screen", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
@@ -127,21 +138,36 @@ describe("Search2 Screen", () => {
   })
 
   describe("search pills", () => {
-    it("are displayed when the user has typed the minimum allowed number of characters", () => {
+    it("are displayed if they have results and when the user has typed the minimum allowed number of characters", () => {
       const { getByPlaceholderText, queryByText } = renderWithWrappersTL(<TestRenderer />)
 
       mockEnvironmentPayload(mockEnvironment, {
         Algolia: () => ({
           appID: "",
           apiKey: "",
-          indices: [{ name: "Artist_staging", displayName: "Artist" }],
+          indices: [
+            { name: "Artist_staging", displayName: "Artist" },
+            { name: "Sale_staging", displayName: "Auction" },
+            { name: "Gallery_staging", displayName: "Gallery" },
+            { name: "Fair_staging", displayName: "Fair" },
+          ],
         }),
       })
 
+      expect(queryByText("Top")).toBeNull()
+      expect(queryByText("Artist")).toBeNull()
+      expect(queryByText("Auction")).toBeNull()
+      expect(queryByText("Gallery")).toBeNull()
+      expect(queryByText("Fair")).toBeNull()
+
       const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
       fireEvent(searchInput, "changeText", "Ba")
-      expect(queryByText("Top")).toBeDefined()
-      expect(queryByText("Artist")).toBeDefined()
+
+      expect(queryByText("Top")).not.toBeNull()
+      expect(queryByText("Artist")).not.toBeNull()
+      expect(queryByText("Auction")).toBeNull()
+      expect(queryByText("Gallery")).not.toBeNull()
+      expect(queryByText("Fair")).toBeNull()
     })
 
     it("hide keyboard when selecting other pill", () => {
