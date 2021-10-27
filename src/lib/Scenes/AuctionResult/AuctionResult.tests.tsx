@@ -71,4 +71,43 @@ describe("AuctionResult", () => {
     })
     expect(extractText(tree.root.findByProps({ testID: "saleDate" }))).toContain("Jan 12, 2021")
   })
+
+  it("shows comparable works", () => {
+    const tree = renderAuctionResult({
+      AuctionResult: () => ({
+        comparableAuctionResults: {
+          totalCount: 7,
+          edges: [
+            {
+              node: {
+                id: "QXVjdGlvblJlc3VsdDo1NjY4MjYw",
+                artist: {
+                  name: "comparable-work-1",
+                },
+              },
+            },
+            {
+              node: {
+                id: "QXVjdGlvblJlc3VsdDo2NDEyODAw",
+                artist: {
+                  name: "comparable-work-2",
+                },
+              },
+            },
+            {
+              node: {
+                id: "QXVjdGlvblJlc3VsdDozNjAxNTQ=",
+                artist: {
+                  name: "comparable-work-3",
+                },
+              },
+            },
+          ],
+        },
+      }),
+    })
+    expect(extractText(tree.root.findByProps({ testID: "comparableWorks" }))).toContain("comparable-work-1")
+    expect(extractText(tree.root.findByProps({ testID: "comparableWorks" }))).toContain("comparable-work-2")
+    expect(extractText(tree.root.findByProps({ testID: "comparableWorks" }))).toContain("comparable-work-3")
+  })
 })

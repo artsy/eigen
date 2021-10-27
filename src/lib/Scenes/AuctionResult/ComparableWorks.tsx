@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { ComparableWorks_comparableAuctionResults } from "__generated__/ComparableWorks_comparableAuctionResults.graphql"
+import { ComparableWorks_auctionResult } from "__generated__/ComparableWorks_auctionResult.graphql"
 import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -7,12 +7,13 @@ import { Flex, Separator, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
+import { useTracking } from "react-tracking"
 
 interface ComparableWorks {
-  auctionResult: any
+  auctionResult: ComparableWorks_auctionResult
 }
 const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
-  // const { trackEvent } = useTracking()
+  const { trackEvent } = useTracking()
 
   const auctionResultsByFollowedArtists = extractNodes(auctionResult.comparableAuctionResults)
 
@@ -23,7 +24,7 @@ const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
   }
 
   return (
-    <Flex>
+    <Flex testID="comparableWorks">
       <Text variant="md" my={2}>
         Comparable Works
       </Text>
@@ -34,11 +35,11 @@ const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
         horizontal={false}
         initialNumToRender={3}
         ItemSeparatorComponent={() => (
-          <Flex px={2} py={2}>
+          <Flex py={2}>
             <Separator borderColor="black10" />
           </Flex>
         )}
-        renderItem={({ item }) => {
+        renderItem={({ item, index }) => {
           if (!item) {
             return <></>
           }
@@ -49,7 +50,7 @@ const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
               withHorizontalPadding={false}
               auctionResult={item}
               onPress={() => {
-                // trackEvent(tracks.tappedThumbnail(item.internalID, index))
+                trackEvent(tracks.tapAuctionResult(item.internalID, index))
                 navigate(`/artist/${item.artistID}/auction-result/${item.internalID}`)
               }}
             />
@@ -61,8 +62,8 @@ const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
 }
 
 export const ComparableWorksFragmentContainer = createFragmentContainer(ComparableWorks, {
-  comparableAuctionResults: graphql`
-    fragment ComparableWorks_comparableAuctionResults on AuctionResult {
+  auctionResult: graphql`
+    fragment ComparableWorks_auctionResult on AuctionResult {
       comparableAuctionResults(first: 3) @optionalField {
         totalCount
         edges {
@@ -78,14 +79,14 @@ export const ComparableWorksFragmentContainer = createFragmentContainer(Comparab
   `,
 })
 
-// TODO: correct tracking
 export const tracks = {
-  tapAuctionGroup: (auctionResultId: string) => ({
+  tapAuctionResult: (auctionResultId: string, index: number) => ({
     action: ActionType.tappedAuctionResultGroup,
-    context_module: ContextModule.auctionResultsForArtistsYouFollow,
-    context_screen_owner_type: OwnerType.auctionResultsForArtistsYouFollow,
+    context_module: ContextModule.auctionResultComparableWorks, // TODO: Add to Cohesion
+    context_screen_owner_type: OwnerType.auctionResult,
     destination_screen_owner_type: OwnerType.auctionResult,
     destination_screen_owner_id: auctionResultId,
+    horizontal_slide_position: index,
     type: "thumbnail",
   }),
 }

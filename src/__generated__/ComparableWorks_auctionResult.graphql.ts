@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ComparableWorks_comparableAuctionResults = {
+export type ComparableWorks_auctionResult = {
     readonly comparableAuctionResults: {
         readonly totalCount: number | null;
         readonly edges: ReadonlyArray<{
@@ -16,12 +16,12 @@ export type ComparableWorks_comparableAuctionResults = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "ComparableWorks_comparableAuctionResults";
+    readonly " $refType": "ComparableWorks_auctionResult";
 };
-export type ComparableWorks_comparableAuctionResults$data = ComparableWorks_comparableAuctionResults;
-export type ComparableWorks_comparableAuctionResults$key = {
-    readonly " $data"?: ComparableWorks_comparableAuctionResults$data;
-    readonly " $fragmentRefs": FragmentRefs<"ComparableWorks_comparableAuctionResults">;
+export type ComparableWorks_auctionResult$data = ComparableWorks_auctionResult;
+export type ComparableWorks_auctionResult$key = {
+    readonly " $data"?: ComparableWorks_auctionResult$data;
+    readonly " $fragmentRefs": FragmentRefs<"ComparableWorks_auctionResult">;
 };
 
 
@@ -30,7 +30,7 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "ComparableWorks_comparableAuctionResults",
+  "name": "ComparableWorks_auctionResult",
   "selections": [
     {
       "alias": null,
@@ -108,5 +108,5 @@ const node: ReaderFragment = {
   "type": "AuctionResult",
   "abstractKey": null
 };
-(node as any).hash = '883b0eae47b3ba9a54230415634c89e8';
+(node as any).hash = '66233de9fd23ea0f810c2f91f705b34e';
 export default node;

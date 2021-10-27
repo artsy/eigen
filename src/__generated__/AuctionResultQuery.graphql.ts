@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c8f80dc0cf6e998fc1ad21648d22d202 */
+/* @relayHash 3ef2595e14033d51f1d5deec72ed320e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -51,7 +51,7 @@ export type AuctionResultQueryResponse = {
         readonly saleDate: string | null;
         readonly saleTitle: string | null;
         readonly title: string | null;
-        readonly " $fragmentRefs": FragmentRefs<"ComparableWorks_comparableAuctionResults">;
+        readonly " $fragmentRefs": FragmentRefs<"ComparableWorks_auctionResult">;
     } | null;
     readonly artist: {
         readonly name: string | null;
@@ -77,7 +77,7 @@ query AuctionResultQuery(
     boughtIn
     currency
     categoryText
-    ...ComparableWorks_comparableAuctionResults
+    ...ComparableWorks_auctionResult
     dateText
     dimensions {
       height
@@ -155,7 +155,7 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
   title
 }
 
-fragment ComparableWorks_comparableAuctionResults on AuctionResult {
+fragment ComparableWorks_auctionResult on AuctionResult {
   comparableAuctionResults(first: 3) @optionalField {
     totalCount
     edges {
@@ -553,7 +553,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "ComparableWorks_comparableAuctionResults"
+            "name": "ComparableWorks_auctionResult"
           }
         ],
         "storageKey": null
@@ -736,7 +736,7 @@ return {
     ]
   },
   "params": {
-    "id": "c8f80dc0cf6e998fc1ad21648d22d202",
+    "id": "3ef2595e14033d51f1d5deec72ed320e",
     "metadata": {},
     "name": "AuctionResultQuery",
     "operationKind": "query",
@@ -744,5 +744,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'bff6813a95486e3788f21b718df85a4c';
+(node as any).hash = '11ec55595af2bcd1f0d57136f9c01bf3';
 export default node;

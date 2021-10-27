@@ -259,7 +259,7 @@ export const AuctionResultQueryRenderer: React.FC<{
             boughtIn
             currency
             categoryText
-            ...ComparableWorks_comparableAuctionResults
+            ...ComparableWorks_auctionResult
             dateText
             dimensions {
               height
