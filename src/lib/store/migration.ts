@@ -107,7 +107,6 @@ export const artsyAppMigrations: Migrations = {
   [Versions.AddExperimentsModel]: (state) => {
     state.config.experiments = {
       isReady: false,
-      client: undefined,
     }
   },
 }

@@ -369,7 +369,7 @@ describe("CopyIOSNativeSessionAuthToTS migration", () => {
   })
 })
 
-describe.only("AddExperimentsModel migration", () => {
+describe("AddExperimentsModel migration", () => {
   const migrationToTest = Versions.AddExperimentsModel
 
   it("adds the ExperimentsModel to the config Model", () => {
@@ -384,6 +384,5 @@ describe.only("AddExperimentsModel migration", () => {
     }) as any
 
     expect(migratedState.config.experiments.isReady).toEqual(false)
-    expect(migratedState.config.experiments.client).toEqual(undefined)
   })
 })
