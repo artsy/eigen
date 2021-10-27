@@ -165,9 +165,24 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
     })
   }
 
+  const clearCustomSizeValues = () => {
+    CUSTOM_SIZE_OPTION_KEYS.forEach((option) => {
+      selectFiltersAction({
+        displayText: "",
+        paramName: FilterParamName[option],
+        paramValue: "*-*",
+      })
+    })
+  }
+
+  const handleSelectPredefinedOption = (option: FilterData, nextValue: boolean) => {
+    clearCustomSizeValues()
+    handleSelect(option, nextValue)
+  }
+
   return (
     <MultiSelectOptionScreen
-      onSelect={handleSelect}
+      onSelect={handleSelectPredefinedOption}
       filterHeaderText={FilterDisplayName.sizes}
       filterOptions={options}
       navigation={navigation}
