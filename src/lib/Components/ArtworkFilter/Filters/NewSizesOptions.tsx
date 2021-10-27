@@ -171,11 +171,21 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
       navigation={navigation}
       useScrollView
       footerComponent={
-        <CustomInputs
-          label="Width"
-          range={customValues.width}
-          onChange={handleCustomInputChange(FilterParamName.width)}
-        />
+        <Box>
+          <Spacer mt={2} />
+          <CustomInputs
+            label="Width"
+            range={customValues.width}
+            onChange={handleCustomInputChange(FilterParamName.width)}
+          />
+          <Spacer mt={2} />
+          <CustomInputs
+            label="Height"
+            range={customValues.height}
+            onChange={handleCustomInputChange(FilterParamName.height)}
+          />
+          <Spacer mt={2} />
+        </Box>
       }
     />
   )
