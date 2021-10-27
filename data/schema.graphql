@@ -8182,6 +8182,7 @@ type Me implements Node {
     aggregations: [SaleArtworkAggregation]
     artistIDs: [String]
     before: String
+    biddableSale: Boolean
     estimateRange: String
     first: Int
     geneIDs: [String]
@@ -10412,6 +10413,7 @@ type Query {
     aggregations: [SaleArtworkAggregation]
     artistIDs: [String]
     before: String
+    biddableSale: Boolean
     estimateRange: String
     first: Int
     geneIDs: [String]
@@ -13042,6 +13044,7 @@ type Viewer {
     aggregations: [SaleArtworkAggregation]
     artistIDs: [String]
     before: String
+    biddableSale: Boolean
     estimateRange: String
     first: Int
     geneIDs: [String]
