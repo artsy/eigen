@@ -127,6 +127,17 @@ describe("NewSizesOptionsScreen", () => {
     })
   })
 
+  it("should clear custom values if a predefined value is selected", () => {
+    const { getByA11yLabel, queryByDisplayValue, getByText } = renderWithWrappersTL(<TestRenderer />)
+
+    fireEvent.changeText(getByA11yLabel("Minimum Width Input"), "5")
+    fireEvent.changeText(getByA11yLabel("Maximum Width Input"), "10")
+    fireEvent.press(getByText("Small (under 16in)"))
+
+    expect(queryByDisplayValue("5")).toBeFalsy()
+    expect(queryByDisplayValue("10")).toBeFalsy()
+  })
+
   describe("Custom Size", () => {
     it("should clear the previously selected option if a custom value is entered", () => {
       const { getByText, getByA11yLabel, queryByA11yState, getByTestId } = renderWithWrappersTL(<TestRenderer />)

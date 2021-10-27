@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { Box, Spacer } from "palette"
-import React from "react"
+import React, { useState } from "react"
 import { ArtworkFilterNavigationStack } from ".."
 import { FilterData, FilterDisplayName, FilterParamName } from "../ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "../ArtworkFilterStore"
@@ -83,6 +83,7 @@ const getCustomValues = (options: FilterData[]) => {
 }
 
 export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ navigation }) => {
+  const [key, setKey] = useState(0)
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
   const { handleSelect, isSelected, handleClear } = useMultiSelect({
     options: SIZES_OPTIONS,
@@ -120,6 +121,7 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
   const handleSelectPredefinedOption = (option: FilterData, nextValue: boolean) => {
     clearCustomSizeValues()
     handleSelect(option, nextValue)
+    setKey((n) => n + 1)
   }
 
   return (
@@ -130,7 +132,7 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
       navigation={navigation}
       useScrollView
       footerComponent={
-        <Box mx={15}>
+        <Box mx={15} key={`footer-container-${key}`}>
           <Spacer mt={2} />
           <CustomSizeInputs
             label="Width"
