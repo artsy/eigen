@@ -254,6 +254,7 @@ const DEFAULT_TAG_ARTWORK_PARAMS = {
 } as FilterParams
 
 const createdYearsFilterNames = [FilterParamName.earliestCreatedYear, FilterParamName.latestCreatedYear]
+const sizesFilterNames = [FilterParamName.width, FilterParamName.height]
 
 const waysToBuyFilterNames = [
   FilterParamName.waysToBuyBuy,
@@ -483,6 +484,10 @@ export const getSelectedFiltersCounts = (selectedFilters: FilterArray) => {
       }
       case createdYearsFilterNames.includes(paramName): {
         counts.year = 1
+        break
+      }
+      case sizesFilterNames.includes(paramName): {
+        counts.sizes = 1
         break
       }
       case paramName === FilterParamName.artistsIFollow: {
