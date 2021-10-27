@@ -14,7 +14,7 @@ export function sanitize(object: unknown, path: Array<string | number> = []): un
   if (isPlainObject(object)) {
     const result = {} as any
     for (const key of Object.keys(object as any)) {
-      // ignore computed properties and sessionState
+      // ignore computed properties, sessionState
       if (key !== SESSION_KEY && !Object.getOwnPropertyDescriptor(object, key)?.get) {
         result[key] = sanitize((object as any)[key], [...path, key])
       }

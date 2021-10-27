@@ -24,9 +24,10 @@ export const Versions = {
   AddToastModel: 12,
   PendingPushNotification: 13,
   CopyIOSNativeSessionAuthToTS: 14,
+  AddExperimentsModel: 15,
 }
 
-export const CURRENT_APP_VERSION = Versions.CopyIOSNativeSessionAuthToTS
+export const CURRENT_APP_VERSION = Versions.AddExperimentsModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -101,6 +102,11 @@ export const artsyAppMigrations: Migrations = {
       state.auth.userAccessToken = nativeState.authenticationToken
       state.auth.onboardingState = nativeState.onboardingState
       state.auth.userID = nativeState.userID
+    }
+  },
+  [Versions.AddExperimentsModel]: (state) => {
+    state.config.experiments = {
+      isReady: false,
     }
   },
 }

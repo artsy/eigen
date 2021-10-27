@@ -13,5 +13,7 @@ declare module "react-native-config" {
     GOOGLE_MAPS_API_KEY: string
     MAPBOX_API_CLIENT_KEY: string
     SAILTHRU_KEY: string
+    SPLIT_IO_STAGING_API_KEY: string
+    SPLIT_IO_PRODUCTION_API_KEY: string
   }
 }
