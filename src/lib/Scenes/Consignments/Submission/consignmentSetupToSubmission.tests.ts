@@ -51,7 +51,7 @@ describe("consignment metadata -> submission", () => {
         name: "Danger McShane",
       },
       editionInfo: {
-        size: "",
+        size: undefined, // This is important, parseInt(undefined) returns NaN
         number: "1",
       },
       metadata: {
@@ -69,6 +69,6 @@ describe("consignment metadata -> submission", () => {
       editionScreenViewed: true,
     }
     const result = consignmentSetupToMutationInput(setup)
-    expect(result.editionSizeFormatted).toEqual("")
+    expect(result.editionSize).not.toBeNaN()
   })
 })
