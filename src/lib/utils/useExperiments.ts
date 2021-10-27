@@ -10,7 +10,7 @@ export const useExperiments = () => {
   // Instantiate the SDK
   const factory: SplitIO.ISDK = SplitFactory({
     core: {
-      authorizationKey: Config.SPLIT_IO_API_KEY,
+      authorizationKey: __DEV__ ? Config.SPLIT_IO_STAGING_API_KEY : Config.SPLIT_IO_PRODUCTION_API_KEY,
       key: GlobalStore.useAppState((store) => store.auth.userID) ?? "not-logged",
     },
   })
@@ -23,7 +23,9 @@ export const useExperiments = () => {
       GlobalStore.actions.config.experiments.setState({ isReady: true })
     })
 
-    // TODO: Discuss client.destroy()
+    client.on(client.Event.SDK_READY_TIMED_OUT, () => {
+      GlobalStore.actions.config.experiments.setState({ isReady: false })
+    })
   }, [])
   return
 }

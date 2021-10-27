@@ -21,19 +21,19 @@ We are using Split.io to run AB Testing experiments in Artsy. In order to create
 ```diff
    Treatment1VsTreatment2: {
      echoFlagKey: "Treatment1VsTreatment2",
-     defaultTreatment: "Treatment1"
+     fallbackTreatment: "Treatment1"
    },
 +  HomeScreenWorksForYouVsWorksByArtistsYouFollow: {
 +    treatmentKey: "HomeScreenWorksForYouVsWorksByArtistsYouFollow",
-+    defaultTreatment: "worksByArtistsYouFolow",
++    fallbackTreatment: "worksByArtistsYouFolow",
 +  },
 ```
 
-_The `defaultTreatment` refers to the value we would like to return in case something goes wrong with the client sdk_
+_The `fallbackTreatment` refers to the value we would like to return in case something goes wrong with the client sdk_
 
 ## Using an experiment
 
-In order to use an experiment, we have two custom hooks that we created that support querying for a single experiment (`useTreatment`) or multiple ones (`useTreatments`).
+In order to use an experiment, we have two custom hooks that we created that support querying for a single experiment (`useTreatment`).
 
 ### Querying for a single treatment
 
