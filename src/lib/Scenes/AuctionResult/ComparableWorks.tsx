@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-// import { ComparableWorks_auctionResult } from "__generated__/ComparableWorks_auctionResult.graphql"
+import { ComparableWorks_comparableAuctionResults } from "__generated__/ComparableWorks_comparableAuctionResults.graphql"
 import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -9,12 +9,12 @@ import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface ComparableWorks {
-  auctionResult: any // ComparableWorks_auctionResult
+  auctionResult: any
 }
 const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
   // const { trackEvent } = useTracking()
 
-  const auctionResultsByFollowedArtists = extractNodes(auctionResult?.comparableWorks)
+  const auctionResultsByFollowedArtists = extractNodes(auctionResult.comparableAuctionResults)
 
   const hasAuctionResults = auctionResultsByFollowedArtists?.length
 
@@ -63,7 +63,7 @@ const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
 export const ComparableWorksFragmentContainer = createFragmentContainer(ComparableWorks, {
   comparableAuctionResults: graphql`
     fragment ComparableWorks_comparableAuctionResults on AuctionResult {
-      comparableAuctionResults(first: 3) {
+      comparableAuctionResults(first: 3) @optionalField {
         totalCount
         edges {
           cursor

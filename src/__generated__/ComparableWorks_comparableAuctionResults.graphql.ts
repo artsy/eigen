@@ -4,8 +4,8 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ComparableWorks_me = {
-    readonly auctionResultsByFollowedArtists: {
+export type ComparableWorks_comparableAuctionResults = {
+    readonly comparableAuctionResults: {
         readonly totalCount: number | null;
         readonly edges: ReadonlyArray<{
             readonly cursor: string;
@@ -16,12 +16,12 @@ export type ComparableWorks_me = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "ComparableWorks_me";
+    readonly " $refType": "ComparableWorks_comparableAuctionResults";
 };
-export type ComparableWorks_me$data = ComparableWorks_me;
-export type ComparableWorks_me$key = {
-    readonly " $data"?: ComparableWorks_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"ComparableWorks_me">;
+export type ComparableWorks_comparableAuctionResults$data = ComparableWorks_comparableAuctionResults;
+export type ComparableWorks_comparableAuctionResults$key = {
+    readonly " $data"?: ComparableWorks_comparableAuctionResults$data;
+    readonly " $fragmentRefs": FragmentRefs<"ComparableWorks_comparableAuctionResults">;
 };
 
 
@@ -30,7 +30,7 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "ComparableWorks_me",
+  "name": "ComparableWorks_comparableAuctionResults",
   "selections": [
     {
       "alias": null,
@@ -43,7 +43,7 @@ const node: ReaderFragment = {
       ],
       "concreteType": "AuctionResultConnection",
       "kind": "LinkedField",
-      "name": "auctionResultsByFollowedArtists",
+      "name": "comparableAuctionResults",
       "plural": false,
       "selections": [
         {
@@ -102,11 +102,11 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
-      "storageKey": "auctionResultsByFollowedArtists(first:3)"
+      "storageKey": "comparableAuctionResults(first:3)"
     }
   ],
-  "type": "Me",
+  "type": "AuctionResult",
   "abstractKey": null
 };
-(node as any).hash = '12edee2eb38b14e47a0c2180d2fde5fd';
+(node as any).hash = '883b0eae47b3ba9a54230415634c89e8';
 export default node;
