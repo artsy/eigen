@@ -1,3 +1,4 @@
+import { ActionType } from "@artsy/cohesion"
 import { BidButton_artwork } from "__generated__/BidButton_artwork.graphql"
 import { BidButton_me } from "__generated__/BidButton_me.graphql"
 import { AuctionTimerState } from "lib/Components/Bidding/Components/Timer"
@@ -70,13 +71,19 @@ export class BidButton extends React.Component<BidButtonProps> {
     navigate(liveUrl)
   }
 
-  @track((props) => {
+  @track((props): any => {
     const { artwork } = props
     const myLotStanding = getMyLotStanding(artwork)
     const hasBid = getHasBid(myLotStanding)
+    if (hasBid) {
+      return {
+        action_name: Schema.ActionNames.IncreaseMaxBid,
+        action_type: Schema.ActionTypes.Tap,
+      }
+    }
+
     return {
-      action_name: hasBid ? Schema.ActionNames.IncreaseMaxBid : Schema.ActionNames.Bid,
-      action_type: Schema.ActionTypes.Tap,
+      action: ActionType.tappedBid,
     }
   })
   redirectToBid(firstIncrement: number) {

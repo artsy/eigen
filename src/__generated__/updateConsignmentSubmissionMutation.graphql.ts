@@ -20,6 +20,7 @@ export type UpdateSubmissionMutationInput = {
     edition?: boolean | null;
     editionNumber?: string | null;
     editionSize?: number | null;
+    editionSizeFormatted?: string | null;
     height?: string | null;
     id: string;
     locationCity?: string | null;
@@ -31,6 +32,9 @@ export type UpdateSubmissionMutationInput = {
     signature?: boolean | null;
     state?: ConsignmentSubmissionStateAggregation | null;
     title?: string | null;
+    userEmail?: string | null;
+    userName?: string | null;
+    userPhone?: string | null;
     utmMedium?: string | null;
     utmSource?: string | null;
     utmTerm?: string | null;
