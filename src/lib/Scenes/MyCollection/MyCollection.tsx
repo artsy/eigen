@@ -14,7 +14,7 @@ import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
-import { Button, Flex, Separator, Spacer, useSpace } from "palette"
+import { Banner, Button, Flex, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
 import { Platform, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -72,22 +72,34 @@ const MyCollection: React.FC<{
 
   const space = useSpace()
 
+  const showNewWorksBanner = true
+
   useEffect(() => {
     if (artworks.length) {
       setJSX(
-        <Flex flexDirection="row" alignSelf="flex-end" px={2} py={1}>
-          <Button
-            data-test-id="add-artwork-button-non-zero-state"
-            size="small"
-            variant="fillDark"
-            onPress={() => {
-              setShowModal(true)
-              trackEvent(tracks.addCollectedArtwork())
-            }}
-            haptic
-          >
-            Add Works
-          </Button>
+        <Flex>
+          {!!showNewWorksBanner && (
+            <Banner
+              title="You have some artworks"
+              text="To help add your current artworks to your collection, we automatically added your purchases from your order history."
+              showCloseButton
+            />
+          )}
+
+          <Flex flexDirection="row" alignSelf="flex-end" px={2} py={1}>
+            <Button
+              data-test-id="add-artwork-button-non-zero-state"
+              size="small"
+              variant="fillDark"
+              onPress={() => {
+                setShowModal(true)
+                trackEvent(tracks.addCollectedArtwork())
+              }}
+              haptic
+            >
+              Add Works
+            </Button>
+          </Flex>
         </Flex>
       )
     } else {
