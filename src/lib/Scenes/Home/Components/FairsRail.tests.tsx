@@ -75,7 +75,7 @@ it("renders without throwing an error", () => {
 
 it("renders results when there are fairs returned", () => {
   const tree = renderWithWrappers(
-    <FairsRailFragmentContainer title="Fairs" fairsModule={fairsModule as any} scrollRef={mockScrollRef} />
+    <FairsRailFragmentContainer title="Featured Fairs" fairsModule={fairsModule as any} scrollRef={mockScrollRef} />
   )
   expect(tree.root.findAllByType(Text)[0].props.children).toMatch("Featured Fairs")
 })
