@@ -42,12 +42,13 @@ Recently Saved
 const smallTileKeys: Array<string | null> = ["active_bids", "followed_artists", "recently_viewed_works", "saved_works"]
 
 interface ArtworkRailProps {
+  title: string
   rail: ArtworkRail_rail
   onHide?: () => void
   onShow?: () => void
 }
 
-const ArtworkRail: React.FC<ArtworkRailProps & RailScrollProps> = ({ rail, scrollRef, onHide, onShow }) => {
+const ArtworkRail: React.FC<ArtworkRailProps & RailScrollProps> = ({ title, rail, scrollRef, onHide, onShow }) => {
   const tracking = useTracking()
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)
@@ -86,7 +87,7 @@ const ArtworkRail: React.FC<ArtworkRailProps & RailScrollProps> = ({ rail, scrol
     <View ref={railRef}>
       <Flex pl="2" pr="2">
         <SectionTitle
-          title={rail.title}
+          title={title}
           subtitle={subtitle}
           onPress={
             viewAllUrl

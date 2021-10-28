@@ -37,6 +37,7 @@ describe("CollectionsRailFragmentContainer", () => {
         if (props) {
           return (
             <CollectionsRailFragmentContainer
+              title="Collections"
               collectionsModule={props.homePage?.marketingCollectionsModule!}
               scrollRef={mockScrollRef}
             />

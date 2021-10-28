@@ -29,7 +29,7 @@ describe("AuctionResultsRailFragmentContainer", () => {
       variables={{}}
       render={({ props, error }) => {
         if (props) {
-          return <AuctionResultsRailFragmentContainer me={props.me!} />
+          return <AuctionResultsRailFragmentContainer title="Auction Results" me={props.me!} />
         } else if (error) {
           console.log(error)
         }

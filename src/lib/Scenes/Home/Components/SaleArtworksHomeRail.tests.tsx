@@ -30,7 +30,9 @@ describe("SaleArtworksHomeRail", () => {
       variables={{}}
       render={({ props }) => {
         if (props?.me) {
-          return <SaleArtworksHomeRailContainer me={props.me} onShow={onShowMock} onHide={onHideMock} />
+          return (
+            <SaleArtworksHomeRailContainer title="Auctions" me={props.me} onShow={onShowMock} onHide={onHideMock} />
+          )
         }
         return null
       }}
@@ -48,7 +50,7 @@ describe("SaleArtworksHomeRail", () => {
     await flushPromiseQueue()
     expect(onShowMock).toHaveBeenCalled()
 
-    expect(tree.root.findAllByType(SectionTitle)[0].props.title).toEqual("Auction Lots for You Ending Soon")
+    expect(tree.root.findAllByType(SectionTitle)[0].props.title).toEqual("Auctions")
     expect(tree.root.findAllByType(SaleArtworkTileRailCardContainer)).toHaveLength(PAGE_SIZE)
   })
 

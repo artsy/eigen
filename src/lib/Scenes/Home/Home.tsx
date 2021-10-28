@@ -43,8 +43,11 @@ import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
 
 interface HomeModule {
+  title: string
+  subtitle?: string
   type: string
   data: any
+  hidden?: boolean
 }
 
 interface Props extends ViewProps {
@@ -82,30 +85,72 @@ const Home = (props: Props) => {
   const treatment = useTreatment("HomeScreenWorksForYouVsWorksByArtistsYouFollow")
   const newWorks =
     treatment === "worksForYou"
-      ? { type: "newWorksForYou", data: meAbove }
-      : { type: "artwork", data: homePageAbove?.followedArtistsArtworkModule }
+      ? {
+          title: "New Works for You",
+          type: "newWorksForYou",
+          data: meAbove,
+          // hidden: !enableNewNewWorksForYouRail,
+        }
+      : {
+          title: "New Works by Artists You Follow",
+          type: "artwork",
+          data: homePageAbove?.followedArtistsArtworkModule,
+          // hidden: enableNewNewWorksForYouRail,
+        }
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   const modules: HomeModule[] = compact([
     // Above-The-Fold Modules
-    // enableNewNewWorksForYouRail && { type: "newWorksForYou", data: meAbove }, // New Works for You
-    // !enableNewNewWorksForYouRail && { type: "artwork", data: homePageAbove?.followedArtistsArtworkModule }, //  New Works by Artists You Follow
     newWorks,
-    { type: "artwork", data: homePageAbove?.activeBidsArtworkModule }, // Your Active Bids
-    { type: "lotsByFollowedArtists", data: meAbove }, // Auction Lots for You Ending Soon
-    { type: "sales", data: homePageAbove?.salesModule }, // Auctions
+    { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
+    { title: "Auction Lots for You Ending Soon", type: "lotsByFollowedArtists", data: meAbove },
+    {
+      title: "Auctions",
+      subtitle: "Discover and bid on works for you",
+      type: "sales",
+      data: homePageAbove?.salesModule,
+    },
     // Below-The-Fold Modules
-    enableAuctionResultsByFollowedArtists && { type: "auction-results", data: meBelow }, // Auction Results by Artists You Follow
-    articlesConnection && { type: "articles", data: articlesConnection }, // Market News
-    enableShowsForYouRail && { type: "shows", data: showsByFollowedArtists }, // Shows for You
-    enableTrove && { type: "trove", data: homePageBelow }, // Trove
-    enableViewingRooms && { type: "viewing-rooms", data: featured }, // Viewing Rooms
-    { type: "collections", data: homePageBelow?.marketingCollectionsModule }, // Collections
-    { type: "fairs", data: homePageBelow?.fairsModule }, // Featured Fairs
-    { type: "artist", data: homePageBelow?.popularArtistsArtistModule }, // Popular Artists
-    { type: "artwork", data: homePageBelow?.recentlyViewedWorksArtworkModule }, // Recently Viewed
-    { type: "artwork", data: homePageBelow?.similarToRecentlyViewedArtworkModule }, // Similar to Works You've Viewed
-  ]).filter((module) => module.data)
+    {
+      title: "Auction Results for Artists You Follow",
+      type: "auction-results",
+      data: meBelow,
+      hidden: !enableAuctionResultsByFollowedArtists,
+    },
+    {
+      title: "Market News",
+      type: "articles",
+      data: articlesConnection,
+      hidden: !articlesConnection,
+    },
+    {
+      title: "Shows for You",
+      type: "shows",
+      data: showsByFollowedArtists,
+      hidden: !enableShowsForYouRail,
+    },
+    { title: "Trove", type: "trove", data: homePageBelow, hidden: !enableTrove },
+    { title: "Viewing Rooms", type: "viewing-rooms", data: featured, hidden: !enableViewingRooms },
+    {
+      title: "Collections",
+      subtitle: "The newest works curated by Artsy",
+      type: "collections",
+      data: homePageBelow?.marketingCollectionsModule,
+    },
+    {
+      title: "Featured Fairs",
+      subtitle: "See works in top art fairs",
+      type: "fairs",
+      data: homePageBelow?.fairsModule,
+    },
+    { title: "Popular Artists", type: "artist", data: homePageBelow?.popularArtistsArtistModule },
+    { title: "Recently Viewed", type: "artwork", data: homePageBelow?.recentlyViewedWorksArtworkModule },
+    {
+      title: "Similar to Works You've Viewed",
+      type: "artwork",
+      data: homePageBelow?.similarToRecentlyViewedArtworkModule,
+    },
+  ]).filter((module) => !module.hidden && module.data)
 
   const { isRefreshing, handleRefresh, scrollRefs } = useHandleRefresh(relay, modules)
 
@@ -128,12 +173,19 @@ const Home = (props: Props) => {
 
             switch (item.type) {
               case "articles":
-                return <ArticlesRailFragmentContainer articlesConnection={item.data} />
+                return <ArticlesRailFragmentContainer title={item.title} articlesConnection={item.data} />
               case "artist":
-                return <ArtistRailFragmentContainer rail={item.data} scrollRef={scrollRefs.current[index]} />
+                return (
+                  <ArtistRailFragmentContainer
+                    title={item.title}
+                    rail={item.data}
+                    scrollRef={scrollRefs.current[index]}
+                  />
+                )
               case "artwork":
                 return (
                   <ArtworkRailFragmentContainer
+                    title={item.title}
                     rail={item.data || null}
                     scrollRef={scrollRefs.current[index]}
                     onShow={() => separators.updateProps("leading", { hideSeparator: false })}
@@ -143,6 +195,7 @@ const Home = (props: Props) => {
               case "auction-results":
                 return (
                   <AuctionResultsRailFragmentContainer
+                    title={item.title}
                     me={item.data}
                     onShow={() => separators.updateProps("leading", { hideSeparator: false })}
                     onHide={() => separators.updateProps("leading", { hideSeparator: true })}
@@ -151,26 +204,42 @@ const Home = (props: Props) => {
               case "collections":
                 return (
                   <CollectionsRailFragmentContainer
+                    title={item.title}
                     collectionsModule={item.data}
                     scrollRef={scrollRefs.current[index]}
                     onShow={() => separators.updateProps("leading", { hideSeparator: false })}
                   />
                 )
               case "fairs":
-                return <FairsRailFragmentContainer fairsModule={item.data} scrollRef={scrollRefs.current[index]} />
+                return (
+                  <FairsRailFragmentContainer
+                    title={item.title}
+                    subtitle={item.subtitle}
+                    fairsModule={item.data}
+                    scrollRef={scrollRefs.current[index]}
+                  />
+                )
               case "lotsByFollowedArtists":
                 return (
                   <SaleArtworksHomeRailContainer
+                    title={item.title}
                     me={item.data}
                     onShow={() => separators.updateProps("leading", { hideSeparator: false })}
                     onHide={() => separators.updateProps("leading", { hideSeparator: true })}
                   />
                 )
               case "newWorksForYou":
-                return <NewWorksForYouRailContainer me={item.data} scrollRef={scrollRefs.current[index]} />
+                return (
+                  <NewWorksForYouRailContainer
+                    title={item.title}
+                    me={item.data}
+                    scrollRef={scrollRefs.current[index]}
+                  />
+                )
               case "sales":
                 return (
                   <SalesRailFragmentContainer
+                    title={item.title}
                     salesModule={item.data}
                     scrollRef={scrollRefs.current[index]}
                     onShow={() => separators.updateProps("leading", { hideSeparator: false })}
@@ -180,6 +249,7 @@ const Home = (props: Props) => {
               case "shows":
                 return (
                   <ShowsRailFragmentContainer
+                    title={item.title}
                     showsConnection={item.data}
                     onShow={() => separators.updateProps("trailing", { hideSeparator: false })}
                     onHide={() => separators.updateProps("trailing", { hideSeparator: true })}
@@ -195,7 +265,7 @@ const Home = (props: Props) => {
                   />
                 )
               case "viewing-rooms":
-                return <ViewingRoomsHomeRail featured={item.data} />
+                return <ViewingRoomsHomeRail title={item.title} featured={item.data} />
               default:
                 return null
             }

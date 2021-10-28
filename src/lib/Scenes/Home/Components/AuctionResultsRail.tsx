@@ -12,12 +12,13 @@ import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface Props {
+  title: string
   onHide?: () => void
   onShow?: () => void
 }
 
 const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & Props> = (props) => {
-  const { me, onHide, onShow } = props
+  const { title, me, onHide, onShow } = props
   const { trackEvent } = useTracking()
   const auctionResultsByFollowedArtists = extractNodes(me?.auctionResultsByFollowedArtists)
   const navigateToAuctionResultsForArtistsYouFollow = () => {
@@ -38,10 +39,7 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & Props> = (pro
   return (
     <View>
       <Flex pl="2" pr="2">
-        <SectionTitle
-          title="Auction Results for Artists You Follow"
-          onPress={navigateToAuctionResultsForArtistsYouFollow}
-        />
+        <SectionTitle title={title} onPress={navigateToAuctionResultsForArtistsYouFollow} />
       </Flex>
 
       <CardRailFlatList

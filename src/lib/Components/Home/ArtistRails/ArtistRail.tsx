@@ -29,6 +29,8 @@ interface SuggestedArtist extends Pick<ArtistCard_artist, Exclude<keyof ArtistCa
 }
 
 interface Props extends ViewProps {
+  title: string
+  subtitle?: string
   relay: RelayProp
   rail: ArtistRail_rail
 }
@@ -175,37 +177,10 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
     setArtists((_artists) => _artists.filter((a) => a.internalID !== artist.internalID))
   }
 
-  const title = (): string => {
-    switch (props.rail.key) {
-      case "TRENDING":
-        return "Trending Artists on Artsy"
-      case "SUGGESTED":
-        return "Recommended Artists"
-      case "POPULAR":
-        return "Popular Artists on Artsy"
-      default:
-        console.error("Unrecognized artist rail key", props.rail.key)
-        return "Recommended Artists"
-    }
-  }
-
-  const subtitle = (): string | null => {
-    switch (props.rail.key) {
-      case "TRENDING":
-        return null
-      case "SUGGESTED":
-        return "Based on artists you follow"
-      case "POPULAR":
-        return null
-      default:
-        return null
-    }
-  }
-
   return artists.length ? (
     <View>
       <Flex pl="2" pr="2">
-        <SectionTitle title={title()} subtitle={subtitle()} />
+        <SectionTitle title={props.title} subtitle={props.subtitle} />
       </Flex>
       <CardRailFlatList<SuggestedArtist>
         listRef={listRef}

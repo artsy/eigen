@@ -18,6 +18,7 @@ import { tagForStatus } from "./ViewingRoomsListItem"
 
 interface ViewingRoomsHomeRailProps {
   featured: ViewingRoomsListFeatured_featured$key
+  title: string
 }
 
 export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = (props) => {
@@ -30,7 +31,7 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = (props)
     <View>
       <Flex mx="2">
         <SectionTitle
-          title="Viewing Rooms"
+          title={props.title}
           onPress={() => {
             trackEvent(tracks.tappedViewingRoomsHeader())
             navigate("/viewing-rooms")

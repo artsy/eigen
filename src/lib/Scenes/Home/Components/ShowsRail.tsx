@@ -11,12 +11,13 @@ import { useTracking } from "react-tracking"
 import { graphql } from "relay-hooks"
 
 interface ShowsRailProps {
+  title: string
   showsConnection: ShowsRail_showsConnection
   onHide?: () => void
   onShow?: () => void
 }
 
-export const ShowsRail: React.FC<ShowsRailProps> = ({ showsConnection, onHide, onShow }) => {
+export const ShowsRail: React.FC<ShowsRailProps> = ({ title, showsConnection, onHide, onShow }) => {
   const tracking = useTracking()
 
   const shows = extractNodes(showsConnection)
@@ -34,7 +35,7 @@ export const ShowsRail: React.FC<ShowsRailProps> = ({ showsConnection, onHide, o
   return (
     <>
       <Flex mx={2}>
-        <SectionTitle title="Shows for You" />
+        <SectionTitle title={title} />
       </Flex>
       <Flex>
         <FlatList
