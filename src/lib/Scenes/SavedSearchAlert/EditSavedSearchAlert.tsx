@@ -1,6 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { EditSavedSearchAlert_artist } from "__generated__/EditSavedSearchAlert_artist.graphql"
 import { EditSavedSearchAlert_artworksConnection } from "__generated__/EditSavedSearchAlert_artworksConnection.graphql"
+import { EditSavedSearchAlert_user } from "__generated__/EditSavedSearchAlert_user.graphql"
 import { EditSavedSearchAlertQuery } from "__generated__/EditSavedSearchAlertQuery.graphql"
 import { SavedSearchAlertQueryResponse } from "__generated__/SavedSearchAlertQuery.graphql"
 import { emitSavedSearchRefetchEvent } from "lib/Components/Artist/ArtistArtworks/SavedSearchButton"
@@ -27,13 +28,14 @@ interface EditSavedSearchAlertBaseProps {
 
 interface EditSavedSearchAlertProps {
   me: SavedSearchAlertQueryResponse["me"]
+  user: EditSavedSearchAlert_user
   artist: EditSavedSearchAlert_artist
   savedSearchAlertId: string
   artworksConnection: EditSavedSearchAlert_artworksConnection
 }
 
 export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props) => {
-  const { me, artist, artworksConnection, savedSearchAlertId } = props
+  const { me, artist, artworksConnection, savedSearchAlertId, user } = props
   const { space } = useTheme()
   const aggregations = (artworksConnection.aggregations ?? []) as Aggregations
   const { userAlertSettings, ...savedSearchCriteria } = me?.savedSearch ?? {}
@@ -73,6 +75,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
               filters={filters}
               aggregations={aggregations}
               savedSearchAlertId={savedSearchAlertId}
+              userAllowEmails={user.emailFrequency !== "none"}
               onComplete={onComplete}
               onDeleteComplete={onComplete}
             />
@@ -102,6 +105,11 @@ export const EditSavedSearchAlertFragmentContainer = createFragmentContainer(Edi
       }
     }
   `,
+  user: graphql`
+    fragment EditSavedSearchAlert_user on Me {
+      emailFrequency
+    }
+  `,
 })
 
 export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBaseProps> = (props) => {
@@ -125,6 +133,9 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
                   aggregations: [ARTIST, LOCATION_CITY, MATERIALS_TERMS, MEDIUM, PARTNER, COLOR]
                 ) {
                   ...EditSavedSearchAlert_artworksConnection
+                }
+                user: me {
+                  ...EditSavedSearchAlert_user
                 }
               }
             `}
