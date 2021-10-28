@@ -25,6 +25,7 @@ const defaultProps: CreateSavedSearchAlertProps = {
   aggregations: [],
   artistId: "artistID",
   artistName: "artistName",
+  userAllowEmails: true,
   onComplete: jest.fn(),
   onClosePress: jest.fn(),
 }
@@ -121,6 +122,17 @@ describe("CreateSavedSearchAlert", () => {
       notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.NotDetermined))
 
       const { findAllByA11yState } = renderWithWrappersTL(<CreateSavedSearchAlert {...defaultProps} />)
+      const toggles = await findAllByA11yState({ selected: false })
+
+      expect(toggles).toHaveLength(1)
+    })
+
+    it("the email notification is disabled by default if a user has not allowed email notifications", async () => {
+      notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
+
+      const { findAllByA11yState } = renderWithWrappersTL(
+        <CreateSavedSearchAlert {...defaultProps} userAllowEmails={false} />
+      )
       const toggles = await findAllByA11yState({ selected: false })
 
       expect(toggles).toHaveLength(1)

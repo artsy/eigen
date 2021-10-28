@@ -23,6 +23,7 @@ import {
 export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase {
   initialValues: SavedSearchAlertFormValues
   savedSearchAlertId?: string
+  userAllowEmails: boolean
   onComplete?: (result: SavedSearchAlertMutationResult) => void
   onDeleteComplete?: () => void
 }
@@ -35,6 +36,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     savedSearchAlertId,
     artistId,
     artistName,
+    userAllowEmails,
     onComplete,
     onDeleteComplete,
     ...other
@@ -96,6 +98,10 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   useEffect(() => {
     formik.setFieldValue("push", initialValues.push)
   }, [initialValues.push])
+
+  useEffect(() => {
+    formik.setFieldValue("email", initialValues.email)
+  }, [initialValues.email])
 
   const requestNotificationPermissions = () => {
     // permissions not determined: Android should never need this
@@ -192,6 +198,19 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   }
 
   const handleToggleEmailNotification = (enabled: boolean) => {
+    if (!userAllowEmails && enabled) {
+      Alert.alert("Title", "Description", [
+        { text: "Cancel" },
+        {
+          text: "Ok",
+          onPress: () => {
+            formik.setFieldValue("email", enabled)
+          },
+        },
+      ])
+      return
+    }
+
     formik.setFieldValue("email", enabled)
   }
 

@@ -5,6 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SavedSearchButton_me = {
+    readonly emailFrequency: string | null;
     readonly savedSearch: {
         readonly internalID: string;
     } | null;
@@ -30,6 +31,13 @@ const node: ReaderFragment = {
   "metadata": null,
   "name": "SavedSearchButton_me",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "emailFrequency",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": [
@@ -58,5 +66,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '47929e285b919e81f21a8625678edd09';
+(node as any).hash = '363a20ebbd1cde9877929cbdf07203e0';
 export default node;

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 12121ce84504f77f46b0c4522e5bab66 */
+/* @relayHash 84e5e8e39c313b093d4b14e50e6c5ae1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -49,6 +49,7 @@ query SavedSearchButtonTestsQuery(
 }
 
 fragment SavedSearchButton_me_1ff8oJ on Me {
+  emailFrequency
   savedSearch(criteria: $criteria) {
     internalID
   }
@@ -119,6 +120,13 @@ return {
         "selections": [
           {
             "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "emailFrequency",
+            "storageKey": null
+          },
+          {
+            "alias": null,
             "args": (v1/*: any*/),
             "concreteType": "SearchCriteria",
             "kind": "LinkedField",
@@ -148,7 +156,7 @@ return {
     ]
   },
   "params": {
-    "id": "12121ce84504f77f46b0c4522e5bab66",
+    "id": "84e5e8e39c313b093d4b14e50e6c5ae1",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -156,6 +164,12 @@ return {
           "nullable": true,
           "plural": false,
           "type": "Me"
+        },
+        "me.emailFrequency": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "String"
         },
         "me.id": (v2/*: any*/),
         "me.savedSearch": {
