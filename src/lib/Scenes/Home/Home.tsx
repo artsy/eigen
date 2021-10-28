@@ -78,7 +78,7 @@ const Home = (props: Props) => {
   const enableAuctionResultsByFollowedArtists = useFeatureFlag("ARHomeAuctionResultsByFollowedArtists")
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
   const enableTrove = useFeatureFlag("AREnableTrove")
-  // const enableNewNewWorksForYouRail = useFeatureFlag("AREnableNewNewWorksForYou")
+  const enableNewNewWorksForYouRail = useFeatureFlag("AREnableNewNewWorksForYou")
   const enableShowsForYouRail = useFeatureFlag("AREnableShowsRail")
 
   // A/B Testing
@@ -89,13 +89,13 @@ const Home = (props: Props) => {
           title: "New Works for You",
           type: "newWorksForYou",
           data: meAbove,
-          // hidden: !enableNewNewWorksForYouRail,
+          hidden: !enableNewNewWorksForYouRail,
         }
       : {
           title: "New Works by Artists You Follow",
           type: "artwork",
           data: homePageAbove?.followedArtistsArtworkModule,
-          // hidden: enableNewNewWorksForYouRail,
+          hidden: enableNewNewWorksForYouRail,
         }
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
