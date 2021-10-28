@@ -23,6 +23,7 @@ import { RailScrollProps } from "./types"
 
 interface Props {
   title: string
+  subtitle?: string
   salesModule: SalesRail_salesModule
   onHide?: () => void
   onShow?: () => void
@@ -31,17 +32,17 @@ interface Props {
 type Sale = SalesRail_salesModule["results"][0]
 
 const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
-  const { title, scrollRef, salesModule, onHide, onShow } = props
+  const { title, subtitle, scrollRef, salesModule, onHide, onShow } = props
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
 
   const getSaleSubtitle = (liveStartAt: string | undefined | null, displayTimelyAt: string | undefined | null) => {
-    const subtitle = !!liveStartAt ? "Live Auction" : "Timed Auction"
+    const saleSubtitle = !!liveStartAt ? "Live Auction" : "Timed Auction"
     const dateAt = formatDisplayTimelyAt(displayTimelyAt !== undefined ? displayTimelyAt : null)
     if (dateAt) {
-      return `${subtitle} ${bullet} ${dateAt}`
+      return `${saleSubtitle} ${bullet} ${dateAt}`
     } else {
-      return `${subtitle}`
+      return `${saleSubtitle}`
     }
   }
 
@@ -64,7 +65,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
       <Flex pl="2" pr="2">
         <SectionTitle
           title={title}
-          subtitle="Discover and bid on works for you"
+          subtitle={subtitle}
           onPress={() => {
             tracking.trackEvent(HomeAnalytics.auctionHeaderTapEvent())
             navigate("/auctions")

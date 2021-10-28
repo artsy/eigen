@@ -18,12 +18,12 @@ import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { concat, take } from "lodash"
-import { title } from "process"
 import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"
 
 interface Props {
   title: string
+  subtitle?: string
   fairsModule: FairsRail_fairsModule
 }
 
@@ -39,7 +39,7 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
 
   const FairHeader = () => (
     <Flex pl="2" pr="2">
-      <SectionTitle title={title} subtitle="See works in top art fairs" />
+      <SectionTitle title={props.title} subtitle={props.subtitle} />
     </Flex>
   )
 

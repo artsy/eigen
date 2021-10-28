@@ -43,6 +43,7 @@ import { RailScrollRef } from "./Components/types"
 
 interface HomeModule {
   title: string
+  subtitle?: string
   type: string
   data: any
 }
@@ -95,7 +96,12 @@ const Home = (props: Props) => {
     },
     { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
     { title: "Auction Lots for You Ending Soon", type: "lotsByFollowedArtists", data: meAbove },
-    { title: "Auctions", type: "sales", data: homePageAbove?.salesModule },
+    {
+      title: "Auctions",
+      subtitle: "Discover and bid on works for you",
+      type: "sales",
+      data: homePageAbove?.salesModule,
+    },
     // Below-The-Fold Modules
     {
       title: "Auction Results for Artists You Follow",
@@ -117,8 +123,18 @@ const Home = (props: Props) => {
     },
     { title: "Trove", type: "trove", data: homePageBelow, enabled: enableTrove },
     { title: "Viewing Rooms", type: "viewing-rooms", data: featured, enabled: enableViewingRooms },
-    { title: "Collections", type: "collections", data: homePageBelow?.marketingCollectionsModule },
-    { title: "Featured Fairs", type: "fairs", data: homePageBelow?.fairsModule },
+    {
+      title: "Collections",
+      subtitle: "The newest works curated by Artsy",
+      type: "collections",
+      data: homePageBelow?.marketingCollectionsModule,
+    },
+    {
+      title: "Featured Fairs",
+      subtitle: "See works in top art fairs",
+      type: "fairs",
+      data: homePageBelow?.fairsModule,
+    },
     { title: "Popular Artists", type: "artist", data: homePageBelow?.popularArtistsArtistModule },
     { title: "Recently Viewed", type: "artwork", data: homePageBelow?.recentlyViewedWorksArtworkModule },
     {
@@ -190,6 +206,7 @@ const Home = (props: Props) => {
                 return (
                   <FairsRailFragmentContainer
                     title={item.title}
+                    subtitle={item.subtitle}
                     fairsModule={item.data}
                     scrollRef={scrollRefs.current[index]}
                   />

@@ -24,6 +24,7 @@ import { RailScrollProps } from "./types"
 
 interface Props {
   title: string
+  subtitle?: string
   collectionsModule: CollectionsRail_collectionsModule
   onShow?: () => void
 }
@@ -50,7 +51,7 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
   return (
     <View>
       <Flex pl="2" pr="2">
-        <SectionTitle title={props.title} subtitle="The newest works curated by Artsy" />
+        <SectionTitle title={props.title} subtitle={props.subtitle} />
       </Flex>
 
       <CardRailFlatList<NonNullable<Collection>>
