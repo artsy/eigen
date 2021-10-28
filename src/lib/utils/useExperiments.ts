@@ -34,7 +34,10 @@ export const useTreatment = (treatment: EXPERIMENT_NAME) => {
   const isReady = GlobalStore.useAppState((store) => store.config.experiments.isReady)
 
   if (isReady) {
-    return client?.getTreatment(treatment) ?? experiments[treatment].fallbackTreatment
+    if (!client) {
+      return experiments[treatment].fallbackTreatment
+    }
+    return client.getTreatment(treatment)
   }
   return undefined
 }
