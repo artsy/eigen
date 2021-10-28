@@ -46,6 +46,7 @@ interface HomeModule {
   subtitle?: string
   type: string
   data: any
+  hidden?: boolean
 }
 
 interface Props extends ViewProps {
@@ -86,13 +87,13 @@ const Home = (props: Props) => {
       title: "New Works for You",
       type: "newWorksForYou",
       data: meAbove,
-      enabled: enableNewNewWorksForYouRail,
+      hidden: !enableNewNewWorksForYouRail,
     },
     {
       title: "New Works by Artists You Follow",
       type: "artwork",
       data: homePageAbove?.followedArtistsArtworkModule,
-      enabled: !enableNewNewWorksForYouRail,
+      hidden: enableNewNewWorksForYouRail,
     },
     { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
     { title: "Auction Lots for You Ending Soon", type: "lotsByFollowedArtists", data: meAbove },
@@ -107,22 +108,22 @@ const Home = (props: Props) => {
       title: "Auction Results for Artists You Follow",
       type: "auction-results",
       data: meBelow,
-      enabled: enableAuctionResultsByFollowedArtists,
+      hidden: !enableAuctionResultsByFollowedArtists,
     },
     {
       title: "Market News",
       type: "articles",
       data: articlesConnection,
-      enabled: articlesConnection,
+      hidden: !articlesConnection,
     },
     {
       title: "Shows for You",
       type: "shows",
       data: showsByFollowedArtists,
-      enabled: enableShowsForYouRail,
+      hidden: !enableShowsForYouRail,
     },
-    { title: "Trove", type: "trove", data: homePageBelow, enabled: enableTrove },
-    { title: "Viewing Rooms", type: "viewing-rooms", data: featured, enabled: enableViewingRooms },
+    { title: "Trove", type: "trove", data: homePageBelow, hidden: !enableTrove },
+    { title: "Viewing Rooms", type: "viewing-rooms", data: featured, hidden: !enableViewingRooms },
     {
       title: "Collections",
       subtitle: "The newest works curated by Artsy",
@@ -142,7 +143,7 @@ const Home = (props: Props) => {
       type: "artwork",
       data: homePageBelow?.similarToRecentlyViewedArtworkModule,
     },
-  ]).filter((module) => (module.enabled || module.enabled === undefined) && module.data)
+  ]).filter((module) => !module.hidden && module.data)
 
   const { isRefreshing, handleRefresh, scrollRefs } = useHandleRefresh(relay, modules)
 
