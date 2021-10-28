@@ -55,7 +55,9 @@ const salesModule: Omit<SalesRail_salesModule, " $refType"> = {
 
 it("doesn't throw when rendered", () => {
   expect(() =>
-    renderWithWrappers(<SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />)
+    renderWithWrappers(
+      <SalesRailFragmentContainer title="Auctions" salesModule={salesModule as any} scrollRef={mockScrollRef} />
+    )
   ).not.toThrow()
 })
 
@@ -66,7 +68,9 @@ it("looks correct when rendered with sales missing artworks", () => {
     result.saleArtworksConnection.edges = []
   })
   expect(() =>
-    renderWithWrappers(<SalesRailFragmentContainer salesModule={salesCopy as any} scrollRef={mockScrollRef} />)
+    renderWithWrappers(
+      <SalesRailFragmentContainer title="Auctions" salesModule={salesCopy as any} scrollRef={mockScrollRef} />
+    )
   ).not.toThrow()
 })
 
@@ -77,7 +81,7 @@ describe("image handling", () => {
     // @ts-ignore
     sale!.saleArtworksConnection!.edges = edges
     return renderWithWrappers(
-      <SalesRailFragmentContainer salesModule={{ results: [sale] } as any} scrollRef={mockScrollRef} />
+      <SalesRailFragmentContainer title="Auctions" salesModule={{ results: [sale] } as any} scrollRef={mockScrollRef} />
     )
   }
 
@@ -118,7 +122,7 @@ describe("image handling", () => {
 
 it("renders the correct subtitle based on auction type", async () => {
   const tree = renderWithWrappers(
-    <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
+    <SalesRailFragmentContainer title="Auctions" salesModule={salesModule as any} scrollRef={mockScrollRef} />
   )
   const subtitles = tree.root.findAllByProps({ "data-test-id": "sale-subtitle" })
   // Timed sale
@@ -131,7 +135,7 @@ it("renders the correct subtitle based on auction type", async () => {
 
 it("routes to live URL if present, otherwise href", () => {
   const tree = renderWithWrappers(
-    <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
+    <SalesRailFragmentContainer title="Auctions" salesModule={salesModule as any} scrollRef={mockScrollRef} />
   )
   // Timed sale
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -146,7 +150,7 @@ it("routes to live URL if present, otherwise href", () => {
 describe("analytics", () => {
   it("tracks auction header taps", () => {
     const tree = renderWithWrappers(
-      <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
+      <SalesRailFragmentContainer title="Auctions" salesModule={salesModule as any} scrollRef={mockScrollRef} />
     )
     tree.root.findByType(SectionTitle as any).props.onPress()
     expect(mockTrackEvent).toHaveBeenCalledWith(HomeAnalytics.auctionHeaderTapEvent())
@@ -154,7 +158,7 @@ describe("analytics", () => {
 
   it("tracks auction thumbnail taps", () => {
     const tree = renderWithWrappers(
-      <SalesRailFragmentContainer salesModule={salesModule as any} scrollRef={mockScrollRef} />
+      <SalesRailFragmentContainer title="Auctions" salesModule={salesModule as any} scrollRef={mockScrollRef} />
     )
     const cards = tree.root.findAllByType(CardRailCard)
     cards[0].props.onPress()
