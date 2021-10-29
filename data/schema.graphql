@@ -2704,7 +2704,7 @@ type CommerceBuyOrder implements CommerceOrder {
   creditCardId: String
   currencyCode: String!
   displayCommissionRate: String
-  displayState: String
+  displayState: CommerceOrderDisplayStateEnum!
   id: ID!
   internalID: ID!
   itemsTotal(
@@ -3347,7 +3347,7 @@ type CommerceOfferOrder implements CommerceOrder {
   creditCardId: String
   currencyCode: String!
   displayCommissionRate: String
-  displayState: String
+  displayState: CommerceOrderDisplayStateEnum!
   id: ID!
   impulseConversationId: String
   internalID: ID!
@@ -3557,7 +3557,7 @@ interface CommerceOrder {
   creditCardId: String
   currencyCode: String!
   displayCommissionRate: String
-  displayState: String
+  displayState: CommerceOrderDisplayStateEnum!
   id: ID!
   internalID: ID!
   itemsTotal(
@@ -3724,6 +3724,35 @@ type CommerceOrderConnectionWithTotalCount {
   pageInfo: CommercePageInfo!
   totalCount: Int
   totalPages: Int
+}
+
+enum CommerceOrderDisplayStateEnum {
+  # order is abandoned by buyer and never submitted
+  ABANDONED
+
+  # order is approved by seller
+  APPROVED
+
+  # order is canceled
+  CANCELED
+
+  # order is fulfilled by seller
+  FULFILLED
+
+  # order has been collected and is with shipper
+  IN_TRANSIT
+
+  # order is still pending submission by buyer
+  PENDING
+
+  # order is approved but not yet sent out
+  PROCESSING
+
+  # order is refunded after being approved or fulfilled
+  REFUNDED
+
+  # order is submitted by buyer
+  SUBMITTED
 }
 
 # An edge in a connection.
@@ -9039,6 +9068,7 @@ type Partner implements Node {
   displayFullPartnerPage: Boolean
   displayWorksSection: Boolean
   distinguishRepresentedArtists: Boolean
+  featuredShow: Show
 
   # Artworks Elastic Search results
   filterArtworksConnection(
