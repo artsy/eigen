@@ -513,4 +513,5 @@ const baseProps: SavedSearchAlertFormProps = {
   aggregations,
   artistId: "artistID",
   artistName: "artistName",
+  userAllowEmails: true,
 }
