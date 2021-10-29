@@ -138,9 +138,43 @@ describe("Search2 Screen", () => {
   })
 
   describe("search pills", () => {
-    it("are displayed if they have results and when the user has typed the minimum allowed number of characters", () => {
-      const { getByPlaceholderText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+    describe("with AREnableImprovedSearchPills enabled", () => {
+      it("are displayed if they have results and when the user has typed the minimum allowed number of characters", () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedSearchPills: true })
+        const { getByPlaceholderText, queryByText } = renderWithWrappersTL(<TestRenderer />)
 
+        mockEnvironmentPayload(mockEnvironment, {
+          Algolia: () => ({
+            appID: "",
+            apiKey: "",
+            indices: [
+              { name: "Artist_staging", displayName: "Artist" },
+              { name: "Sale_staging", displayName: "Auction" },
+              { name: "Gallery_staging", displayName: "Gallery" },
+              { name: "Fair_staging", displayName: "Fair" },
+            ],
+          }),
+        })
+
+        expect(queryByText("Top")).toBeFalsy()
+        expect(queryByText("Artist")).toBeFalsy()
+        expect(queryByText("Auction")).toBeFalsy()
+        expect(queryByText("Gallery")).toBeFalsy()
+        expect(queryByText("Fair")).toBeFalsy()
+
+        const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+        fireEvent(searchInput, "changeText", "Ba")
+
+        expect(queryByText("Top")).toBeTruthy()
+        expect(queryByText("Artist")).toBeTruthy()
+        expect(queryByText("Auction")).toBeFalsy()
+        expect(queryByText("Gallery")).toBeTruthy()
+        expect(queryByText("Fair")).toBeFalsy()
+      })
+    })
+
+    it("are displayed when the user has typed the minimum allowed number of characters", () => {
+      const { getByPlaceholderText, queryByText } = renderWithWrappersTL(<TestRenderer />)
       mockEnvironmentPayload(mockEnvironment, {
         Algolia: () => ({
           appID: "",
@@ -153,21 +187,21 @@ describe("Search2 Screen", () => {
           ],
         }),
       })
-
-      expect(queryByText("Top")).toBeNull()
-      expect(queryByText("Artist")).toBeNull()
-      expect(queryByText("Auction")).toBeNull()
-      expect(queryByText("Gallery")).toBeNull()
-      expect(queryByText("Fair")).toBeNull()
-
       const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+      expect(queryByText("Top")).toBeFalsy()
+      expect(queryByText("Artist")).toBeFalsy()
+      expect(queryByText("Auction")).toBeFalsy()
+      expect(queryByText("Gallery")).toBeFalsy()
+      expect(queryByText("Fair")).toBeFalsy()
+
       fireEvent(searchInput, "changeText", "Ba")
 
-      expect(queryByText("Top")).not.toBeNull()
-      expect(queryByText("Artist")).not.toBeNull()
-      expect(queryByText("Auction")).toBeNull()
-      expect(queryByText("Gallery")).not.toBeNull()
-      expect(queryByText("Fair")).toBeNull()
+      expect(queryByText("Top")).toBeTruthy()
+      expect(queryByText("Artist")).toBeTruthy()
+      expect(queryByText("Auction")).toBeTruthy()
+      expect(queryByText("Gallery")).toBeTruthy()
+      expect(queryByText("Fair")).toBeTruthy()
     })
 
     it("hide keyboard when selecting other pill", () => {
