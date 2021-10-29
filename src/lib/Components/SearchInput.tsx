@@ -1,6 +1,6 @@
 import SearchIcon from "lib/Icons/SearchIcon"
 import { emitInputClearEvent, Flex, Input, InputProps, Sans, SpacingUnitV2, SpacingUnitV3, useSpace } from "palette"
-import React, { RefObject } from "react"
+import React, { useImperativeHandle, useRef } from "react"
 import { TextInput, TouchableOpacity, useWindowDimensions } from "react-native"
 import Animated, { Easing } from "react-native-reanimated"
 import { useAnimatedValue } from "./StickyTabPage/reanimatedHelpers"
@@ -14,12 +14,16 @@ export interface SearchInputProps extends InputProps {
 }
 
 export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
-  ({ enableCancelButton, onChangeText, onClear, onCancelPress, mx = MX, ...props }, ref) => {
+  (
+    { enableCancelButton, onChangeText, onClear, onCancelPress, mx = MX, ...props },
+    ref: React.Ref<Partial<TextInput>>
+  ) => {
     const cancelWidth = useAnimatedValue(0)
     const animationValue = useAnimatedValue(0)
     const space = useSpace()
     const width = useWindowDimensions().width - space(mx) * 2
     const inputWidth = Animated.sub(width, cancelWidth)
+    const inputRef = useRef<TextInput>(null)
 
     const animateTo = (toValue: 1 | 0) => {
       Animated.timing(animationValue, {
@@ -28,6 +32,8 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
         duration: 180,
       }).start()
     }
+
+    useImperativeHandle(ref, () => inputRef?.current ?? {})
 
     return (
       <Flex flexDirection="row">
@@ -42,14 +48,14 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
           }}
         >
           <Input
-            ref={ref}
+            ref={inputRef}
             icon={<SearchIcon width={18} height={18} />}
             autoCorrect={false}
             enableClearButton
             returnKeyType="search"
             onClear={() => {
               onClear?.()
-              ;(ref as RefObject<TextInput>).current?.focus()
+              inputRef?.current?.focus()
             }}
             onChangeText={onChangeText}
             {...props}
@@ -75,7 +81,7 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
             <TouchableOpacity
               onPress={() => {
                 emitInputClearEvent()
-                ;(ref as RefObject<TextInput>).current?.blur()
+                inputRef?.current?.blur()
                 onCancelPress?.()
               }}
               hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
