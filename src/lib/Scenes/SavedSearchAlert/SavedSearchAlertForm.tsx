@@ -12,6 +12,7 @@ import { Form } from "./Components/Form"
 import { extractPills, getNamePlaceholder } from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
 import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
+import { updateEmailFrequency } from "./mutations/updateEmailFrequency"
 import { updateSavedSearchAlert } from "./mutations/updateSavedSearchAlert"
 import {
   SavedSearchAlertFormPropsBase,
@@ -68,6 +69,10 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
       try {
         let result: SavedSearchAlertMutationResult
+
+        if (enableSavedSearchToggles && !userAllowEmails && canSendEmails && values.email) {
+          await updateEmailFrequency("alerts_only")
+        }
 
         if (isUpdateForm) {
           const response = await updateSavedSearchAlert(userAlertSettings, savedSearchAlertId!)

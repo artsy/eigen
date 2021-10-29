@@ -227,6 +227,7 @@ describe("Saved search alert form", () => {
     const notificationPermissionsMock = mockFetchNotificationPermissions(false)
 
     beforeEach(() => {
+      spyAlert.mockClear()
       notificationPermissionsMock.mockImplementationOnce((cb) => {
         cb(null, PushAuthorizationStatus.Authorized)
       })
@@ -348,6 +349,46 @@ describe("Saved search alert form", () => {
 
       expect(spyAlert).not.toBeCalled()
       expect(queryAllByA11yState({ selected: true })).toHaveLength(1)
+    })
+
+    it("should see a popup notifying me that I will receive emails", async () => {
+      const { getByA11yLabel } = renderWithWrappersTL(
+        <SavedSearchAlertForm
+          {...baseProps}
+          initialValues={{ ...baseProps.initialValues, push: false, email: false }}
+          userAllowEmails={false}
+        />
+      )
+
+      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+
+      expect(spyAlert).toBeCalled()
+    })
+
+    it("should call updateEmailFrequency mutation when if a user has opted out of email newsletter", async () => {
+      // callbackOrButtons[1] - Ok button
+      // @ts-ignore
+      spyAlert.mockImplementation((_title, _message, callbackOrButtons) => callbackOrButtons[1].onPress())
+      const { getByA11yLabel, getByTestId } = renderWithWrappersTL(
+        <SavedSearchAlertForm
+          {...baseProps}
+          initialValues={{ ...baseProps.initialValues, push: false, email: false }}
+          userAllowEmails={false}
+        />
+      )
+
+      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+      await fireEvent.press(getByTestId("save-alert-button"))
+
+      await waitFor(() => {
+        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        expect(mutation.request.node.operation.name).toEqual("updateEmailFrequencyMutation")
+        expect(mutation.request.variables).toEqual({
+          input: {
+            emailFrequency: "alerts_only",
+          },
+        })
+      })
     })
   })
 
