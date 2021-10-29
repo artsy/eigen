@@ -84,9 +84,8 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
             <Text lineHeight="20" variant="xs" weight="regular" numberOfLines={1} color="black60">
               <Text lineHeight="20" variant="xs" weight="regular" italic>
                 {title}
-                {!!date ? ", " : ""}
               </Text>
-              {null}
+              {date ? `, ${date}` : ""}
             </Text>
           ) : null}
         </Box>

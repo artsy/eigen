@@ -164,9 +164,8 @@ export const Artwork: React.FC<ArtworkProps> = ({
             <Text lineHeight="20" variant="xs" weight="regular" color="black60" numberOfLines={1} {...titleTextStyle}>
               <Text lineHeight="20" variant="xs" weight="regular" italic>
                 {artwork.title}
-                {!!artwork.date ? ", " : ""}
               </Text>
-              {artwork.date}
+              {artwork.date ? `, ${artwork.date}` : ""}
             </Text>
           )}
           {!hidePartner && !!artwork.partner?.name && (
