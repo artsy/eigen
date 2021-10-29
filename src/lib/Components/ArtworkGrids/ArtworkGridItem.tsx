@@ -156,26 +156,26 @@ export const Artwork: React.FC<ArtworkProps> = ({
             </Text>
           )}
           {!!artwork.artistNames && (
-            <Text lineHeight="20" weight="regular" variant="xs" numberOfLines={1} {...artistNamesTextStyle}>
+            <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={1} {...artistNamesTextStyle}>
               {artwork.artistNames}
             </Text>
           )}
           {!!artwork.title && (
-            <Text lineHeight="20" variant="xs" weight="regular" color="black60" numberOfLines={1} {...titleTextStyle}>
-              <Text lineHeight="20" variant="xs" weight="regular" italic>
+            <Text lineHeight="18" variant="xs" weight="regular" color="black60" numberOfLines={1} {...titleTextStyle}>
+              <Text lineHeight="18" variant="xs" weight="regular" italic>
                 {artwork.title}
               </Text>
               {artwork.date ? `, ${artwork.date}` : ""}
             </Text>
           )}
           {!hidePartner && !!artwork.partner?.name && (
-            <Text variant="xs" lineHeight="20" color="black60" numberOfLines={1} {...partnerNameTextStyle}>
+            <Text variant="xs" lineHeight="18" color="black60" numberOfLines={1} {...partnerNameTextStyle}>
               {artwork.partner.name}
             </Text>
           )}
           {!!saleInfo && (
             <Text
-              lineHeight="20"
+              lineHeight="18"
               variant="xs"
               weight="medium"
               color="black100"

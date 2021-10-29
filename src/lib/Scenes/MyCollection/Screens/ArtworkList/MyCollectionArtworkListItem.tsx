@@ -77,12 +77,12 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
       <View>
         {renderImage()}
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
-          <Text lineHeight="20" weight="regular" variant="xs" numberOfLines={1}>
+          <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={1}>
             {artistNames}
           </Text>
           {!!title ? (
-            <Text lineHeight="20" variant="xs" weight="regular" numberOfLines={1} color="black60">
-              <Text lineHeight="20" variant="xs" weight="regular" italic>
+            <Text lineHeight="18" variant="xs" weight="regular" numberOfLines={1} color="black60">
+              <Text lineHeight="18" variant="xs" weight="regular" italic>
                 {title}
               </Text>
               {date ? `, ${date}` : ""}
