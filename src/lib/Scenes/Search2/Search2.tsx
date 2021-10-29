@@ -6,6 +6,7 @@ import { Search2Query } from "__generated__/Search2Query.graphql"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { SearchInput as SearchBox } from "lib/Components/SearchInput"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { isPad } from "lib/utils/hardware"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
@@ -154,11 +155,12 @@ export const Search2: React.FC<Search2Props> = (props) => {
   const indices = system?.algolia?.indices
   const { indicesInfo, updateIndicesInfo } = useAlgoliaIndices(searchClient, indices)
   const { trackEvent } = useTracking()
+  const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
 
   const pillsArray = useMemo<PillType[]>(() => {
     if (Array.isArray(indices) && indices.length > 0) {
       const formattedIndices: PillType[] = indices.reduce((acc, index) => {
-        if (indicesInfo[index.name]?.hasResults) {
+        if (!enableImprovedPills || indicesInfo[index.name]?.hasResults) {
           acc.push({ ...index, type: "algolia" })
         }
         return acc
@@ -273,7 +275,7 @@ export const Search2: React.FC<Search2Props> = (props) => {
               placeholder="Search artists, artworks, galleries, etc"
               onReset={handleResetSearchInput}
               onTextChange={(value) => {
-                if (value.length >= 2) {
+                if (enableImprovedPills && value.length >= 2) {
                   updateIndicesInfo(value)
                 }
               }}

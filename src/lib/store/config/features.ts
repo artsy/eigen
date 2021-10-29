@@ -129,6 +129,12 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableImprovedSearch",
   },
+  AREnableImprovedSearchPills: {
+    readyForRelease: false,
+    description: "Enable improved search pills",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableImprovedSearchPills",
+  },
   AREnableTrove: {
     readyForRelease: true,
     description: "Enable Trove in homepage",
