@@ -209,15 +209,20 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
   const handleToggleEmailNotification = (enabled: boolean) => {
     if (!canSendEmails && enabled) {
-      Alert.alert("Title", "Description", [
-        { text: "Cancel" },
+      const title = "Artsy would like to send you notifications"
+      const description =
+        'After clicking "Save Alert", you are opting in to receive alert notifications via email. You can update your email preferences at any time'
+
+      Alert.alert(title, description, [
         {
-          text: "Ok",
+          text: "OK",
           onPress: () => {
             setCanSendEmails(true)
             formik.setFieldValue("email", enabled)
           },
         },
+        { text: "Cancel" },
+        { text: "Go to preferences" },
       ])
       return
     }

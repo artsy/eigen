@@ -368,7 +368,7 @@ describe("Saved search alert form", () => {
     it("should call updateEmailFrequency mutation when if a user has opted out of email newsletter", async () => {
       // callbackOrButtons[1] - Ok button
       // @ts-ignore
-      spyAlert.mockImplementation((_title, _message, callbackOrButtons) => callbackOrButtons[1].onPress())
+      spyAlert.mockImplementation((_title, _message, callbackOrButtons) => callbackOrButtons[0].onPress())
       const { getByA11yLabel, getByTestId } = renderWithWrappersTL(
         <SavedSearchAlertForm
           {...baseProps}
