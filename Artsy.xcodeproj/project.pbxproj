@@ -11,6 +11,11 @@
 		0CAC95391BA9E1D0008E9848 /* ARUserActivityAndSpotlightTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAC95371BA9E18B008E9848 /* ARUserActivityAndSpotlightTests.m */; };
 		0CE3C4361B8BB3630092A24F /* EXPMatcher+UINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */; };
 		1A248BDB265C282400E41409 /* ARTArtsyNativeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A248BDA265C282400E41409 /* ARTArtsyNativeModule.m */; };
+		1A9E5362272C483E008BB749 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A9E5348272C41B3008BB749 /* WidgetKit.framework */; };
+		1A9E5363272C483E008BB749 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A9E534A272C41B3008BB749 /* SwiftUI.framework */; };
+		1A9E5366272C483E008BB749 /* Artsy_Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E5365272C483E008BB749 /* Artsy_Widget.swift */; };
+		1A9E5368272C4846008BB749 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A9E5367272C4846008BB749 /* Assets.xcassets */; };
+		1A9E536C272C4846008BB749 /* Artsy WidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1A9E5361272C483E008BB749 /* Artsy WidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1AC79210251A42D000F50228 /* EchoNew.json in Resources */ = {isa = PBXBuildFile; fileRef = 1AC7920F251A42CF00F50228 /* EchoNew.json */; };
 		1AD4F89E25FBBA89007FDB71 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AD4F89D25FBBA89007FDB71 /* Stickers.xcassets */; };
 		1AD4F8A225FBBA89007FDB71 /* Artsy Stickers.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1AD4F89B25FBBA85007FDB71 /* Artsy Stickers.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -474,6 +479,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1A9E536A272C4846008BB749 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49BA7DF61655ABE600C06572 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1A9E5360272C483E008BB749;
+			remoteInfo = "Artsy WidgetExtension";
+		};
 		1AD4F8A025FBBA89007FDB71 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49BA7DF61655ABE600C06572 /* Project object */;
@@ -498,6 +510,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				1AD4F8A225FBBA89007FDB71 /* Artsy Stickers.appex in Embed App Extensions */,
+				1A9E536C272C4846008BB749 /* Artsy WidgetExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -513,6 +526,12 @@
 		0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatcher+UINavigationController.m"; sourceTree = "<group>"; };
 		1A248BD9265C282400E41409 /* ARTArtsyNativeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTArtsyNativeModule.h; sourceTree = "<group>"; };
 		1A248BDA265C282400E41409 /* ARTArtsyNativeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTArtsyNativeModule.m; sourceTree = "<group>"; };
+		1A9E5348272C41B3008BB749 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		1A9E534A272C41B3008BB749 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		1A9E5361272C483E008BB749 /* Artsy WidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Artsy WidgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A9E5365272C483E008BB749 /* Artsy_Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artsy_Widget.swift; sourceTree = "<group>"; };
+		1A9E5367272C4846008BB749 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1A9E5369272C4846008BB749 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1AC7920F251A42CF00F50228 /* EchoNew.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EchoNew.json; sourceTree = "<group>"; };
 		1AD4F89B25FBBA85007FDB71 /* Artsy Stickers.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Artsy Stickers.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AD4F89D25FBBA89007FDB71 /* Stickers.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Stickers.xcassets; sourceTree = "<group>"; };
@@ -1208,6 +1227,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1A9E535E272C483E008BB749 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A9E5363272C483E008BB749 /* SwiftUI.framework in Frameworks */,
+				1A9E5362272C483E008BB749 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		27C58CCF38FF0D3E62C41E10 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1267,6 +1295,16 @@
 				3CE0DA3118A13604000E537A /* OHHTTPStubs+Artsy.m */,
 			);
 			path = Stubs;
+			sourceTree = "<group>";
+		};
+		1A9E5364272C483E008BB749 /* Artsy Widget */ = {
+			isa = PBXGroup;
+			children = (
+				1A9E5365272C483E008BB749 /* Artsy_Widget.swift */,
+				1A9E5367272C4846008BB749 /* Assets.xcassets */,
+				1A9E5369272C4846008BB749 /* Info.plist */,
+			);
+			path = "Artsy Widget";
 			sourceTree = "<group>";
 		};
 		1AD4F89C25FBBA85007FDB71 /* Artsy Stickers */ = {
@@ -1691,6 +1729,7 @@
 				49BA7E091655ABE600C06572 /* Artsy */,
 				B3ECE82B1819D1E6009F5C5B /* Artsy Tests */,
 				1AD4F89C25FBBA85007FDB71 /* Artsy Stickers */,
+				1A9E5364272C483E008BB749 /* Artsy Widget */,
 				49BA7E021655ABE600C06572 /* Frameworks */,
 				49BA7E001655ABE600C06572 /* Products */,
 				33C6886033769A61A3E99B18 /* Pods */,
@@ -1703,6 +1742,7 @@
 				49BA7DFF1655ABE600C06572 /* Artsy.app */,
 				B3ECE8261819D1E6009F5C5B /* Artsy Tests.xctest */,
 				1AD4F89B25FBBA85007FDB71 /* Artsy Stickers.appex */,
+				1A9E5361272C483E008BB749 /* Artsy WidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1749,6 +1789,8 @@
 				9434A9843098609F9F092F0D /* Pods.framework */,
 				DA8D5507586C1A8D7D25B02D /* libPods-Artsy.a */,
 				482115D14BD4E126B81B3A2B /* libPods-Artsy Tests.a */,
+				1A9E5348272C41B3008BB749 /* WidgetKit.framework */,
+				1A9E534A272C41B3008BB749 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2957,6 +2999,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1A9E5360272C483E008BB749 /* Artsy WidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A9E536D272C4846008BB749 /* Build configuration list for PBXNativeTarget "Artsy WidgetExtension" */;
+			buildPhases = (
+				1A9E535D272C483E008BB749 /* Sources */,
+				1A9E535E272C483E008BB749 /* Frameworks */,
+				1A9E535F272C483E008BB749 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Artsy WidgetExtension";
+			productName = "Artsy WidgetExtension";
+			productReference = 1A9E5361272C483E008BB749 /* Artsy WidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		1AD4F89A25FBBA85007FDB71 /* Artsy Stickers */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1AD4F8A725FBBA89007FDB71 /* Build configuration list for PBXNativeTarget "Artsy Stickers" */;
@@ -2990,6 +3049,7 @@
 			);
 			dependencies = (
 				1AD4F8A125FBBA89007FDB71 /* PBXTargetDependency */,
+				1A9E536B272C4846008BB749 /* PBXTargetDependency */,
 			);
 			name = Artsy;
 			productName = Artsy;
@@ -3022,10 +3082,15 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = AR;
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 1300;
 				LastUpgradeCheck = 1210;
 				ORGANIZATIONNAME = Artsy;
 				TargetAttributes = {
+					1A9E5360272C483E008BB749 = {
+						CreatedOnToolsVersion = 13.0;
+						DevelopmentTeam = 23KMWZ572J;
+						ProvisioningStyle = Automatic;
+					};
 					1AD4F89A25FBBA85007FDB71 = {
 						CreatedOnToolsVersion = 12.4;
 						DevelopmentTeam = 23KMWZ572J;
@@ -3079,11 +3144,20 @@
 				49BA7DFE1655ABE600C06572 /* Artsy */,
 				B3ECE8251819D1E6009F5C5B /* Artsy Tests */,
 				1AD4F89A25FBBA85007FDB71 /* Artsy Stickers */,
+				1A9E5360272C483E008BB749 /* Artsy WidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1A9E535F272C483E008BB749 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A9E5368272C4846008BB749 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1AD4F89925FBBA85007FDB71 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3384,6 +3458,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1A9E535D272C483E008BB749 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A9E5366272C483E008BB749 /* Artsy_Widget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		49BA7DFB1655ABE600C06572 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3729,6 +3811,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1A9E536B272C4846008BB749 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1A9E5360272C483E008BB749 /* Artsy WidgetExtension */;
+			targetProxy = 1A9E536A272C4846008BB749 /* PBXContainerItemProxy */;
+		};
 		1AD4F8A125FBBA89007FDB71 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 1AD4F89A25FBBA85007FDB71 /* Artsy Stickers */;
@@ -3763,6 +3850,192 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		1A9E536E272C4846008BB749 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Artsy Widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Artsy Widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Artsy. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1A9E536F272C4846008BB749 /* Store */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Artsy Widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Artsy Widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Artsy. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Store;
+		};
+		1A9E5370272C4846008BB749 /* Demo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Artsy Widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Artsy Widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Artsy. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Demo;
+		};
 		1AD4F8A425FBBA89007FDB71 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3981,6 +4254,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 97983D93644ACC6409190A08 /* Pods-Artsy.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_WARNINGS = NO;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
@@ -4085,6 +4359,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C1D5D316AD887B0D764B2DFF /* Pods-Artsy.demo.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_WARNINGS = NO;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
@@ -4233,6 +4508,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E46CDB9EB7EB81BF77D63EF5 /* Pods-Artsy.store.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_WARNINGS = NO;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
@@ -4372,6 +4648,16 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1A9E536D272C4846008BB749 /* Build configuration list for PBXNativeTarget "Artsy WidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A9E536E272C4846008BB749 /* Debug */,
+				1A9E536F272C4846008BB749 /* Store */,
+				1A9E5370272C4846008BB749 /* Demo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		1AD4F8A725FBBA89007FDB71 /* Build configuration list for PBXNativeTarget "Artsy Stickers" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
