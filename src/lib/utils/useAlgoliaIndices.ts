@@ -1,3 +1,4 @@
+import { SearchResponse } from "@algolia/client-search"
 import { SearchClient } from "algoliasearch"
 import { useCallback, useState } from "react"
 
@@ -20,12 +21,15 @@ export const useAlgoliaIndices = (client: SearchClient | null, indices?: Readonl
           query,
           params: {
             hitsPerPage: 0,
+            analytics: false,
           },
         }))
         if (!!client) {
-          const indicesResponse = await client.multipleQueries(queries)
-          const newIndicesInfo = indicesResponse.results.reduce((acc: any, { index, nbHits }: any) => {
-            acc[index] = { hasResults: !!nbHits }
+          const indicesResponse = await client.multipleQueries<SearchResponse>(queries)
+          const newIndicesInfo = indicesResponse.results.reduce((acc: IndicesInfo, { index, nbHits }) => {
+            if (!!index) {
+              acc[index] = { hasResults: !!nbHits }
+            }
             return acc
           }, {})
           setIndicesInfo(newIndicesInfo)
