@@ -272,7 +272,11 @@ export const Search2: React.FC<Search2Props> = (props) => {
             <SearchInputContainer
               placeholder="Search artists, artworks, galleries, etc"
               onReset={handleResetSearchInput}
-              onTextChange={updateIndicesInfo}
+              onTextChange={(value) => {
+                if (value.length >= 2) {
+                  updateIndicesInfo(value)
+                }
+              }}
             />
           </Flex>
           <Flex flex={1} collapsable={false}>
