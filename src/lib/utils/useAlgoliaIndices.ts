@@ -1,6 +1,6 @@
 import { SearchResponse } from "@algolia/client-search"
 import { SearchClient } from "algoliasearch"
-import { useCallback, useState } from "react"
+import { useCallback, useRef, useState } from "react"
 
 interface IndexInfo {
   hasResults: boolean
@@ -12,9 +12,12 @@ interface IndicesInfo {
 
 export const useAlgoliaIndices = (client: SearchClient | null, indices?: ReadonlyArray<{ name: string }>) => {
   const [indicesInfo, setIndicesInfo] = useState<IndicesInfo>({})
+  const lastQuery = useRef<string | null>(null)
 
   const updateIndicesInfo = useCallback(
     async (query: string) => {
+      lastQuery.current = query
+
       if (Array.isArray(indices) && indices.length > 0) {
         const queries = indices.map((index) => ({
           indexName: index.name,
@@ -24,15 +27,18 @@ export const useAlgoliaIndices = (client: SearchClient | null, indices?: Readonl
             analytics: false,
           },
         }))
+
         if (!!client) {
           const indicesResponse = await client.multipleQueries<SearchResponse>(queries)
-          const newIndicesInfo = indicesResponse.results.reduce((acc: IndicesInfo, { index, nbHits }) => {
-            if (!!index) {
-              acc[index] = { hasResults: !!nbHits }
-            }
-            return acc
-          }, {})
-          setIndicesInfo(newIndicesInfo)
+          if (query === lastQuery.current) {
+            const newIndicesInfo = indicesResponse.results.reduce((acc: IndicesInfo, { index, nbHits }) => {
+              if (!!index) {
+                acc[index] = { hasResults: !!nbHits }
+              }
+              return acc
+            }, {})
+            setIndicesInfo(newIndicesInfo)
+          }
         }
       }
     },
