@@ -7,7 +7,7 @@ import { navigate } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Sans, useColor } from "palette"
+import { Box, Sans, Text, useColor } from "palette"
 import React from "react"
 import { Image as RNImage, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -77,12 +77,17 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
       <View>
         {renderImage()}
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
-          <Sans size="4">{artistNames}</Sans>
+          <Text lineHeight="20" weight="regular" variant="xs" numberOfLines={1}>
+            {artistNames}
+          </Text>
           {!!title ? (
-            <Sans size="3t" color="black60" numberOfLines={2} style={{ flex: 1 }}>
-              {title}
-              {date ? `, ${date}` : null}
-            </Sans>
+            <Text lineHeight="20" variant="xs" weight="regular" numberOfLines={1} color="black60">
+              <Text lineHeight="20" variant="xs" weight="regular" italic>
+                {title}
+                {!!date ? ", " : ""}
+              </Text>
+              {null}
+            </Text>
           ) : null}
         </Box>
       </View>
