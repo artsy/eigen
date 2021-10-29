@@ -80,6 +80,7 @@ const Home = (props: Props) => {
   const enableTrove = useFeatureFlag("AREnableTrove")
   const enableNewNewWorksForYouRail = useFeatureFlag("AREnableNewNewWorksForYou")
   const enableShowsForYouRail = useFeatureFlag("AREnableShowsRail")
+  const enableSplitIOABTesting = useFeatureFlag("AREnableSplitIOABTesting")
 
   // A/B Testing
   const treatment = useTreatment("HomeScreenWorksForYouVsWorksByArtistsYouFollow")
@@ -101,7 +102,19 @@ const Home = (props: Props) => {
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   const modules: HomeModule[] = compact([
     // Above-The-Fold Modules
-    newWorks,
+    enableSplitIOABTesting && newWorks,
+    !enableSplitIOABTesting && {
+      title: "New Works for You",
+      type: "newWorksForYou",
+      data: meAbove,
+      hidden: !enableNewNewWorksForYouRail,
+    },
+    !enableSplitIOABTesting && {
+      title: "New Works by Artists You Follow",
+      type: "artwork",
+      data: homePageAbove?.followedArtistsArtworkModule,
+      hidden: enableNewNewWorksForYouRail,
+    },
     { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
     { title: "Auction Lots for You Ending Soon", type: "lotsByFollowedArtists", data: meAbove },
     {

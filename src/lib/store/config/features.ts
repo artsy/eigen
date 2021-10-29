@@ -175,6 +175,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableWebPImages",
   },
+  AREnableSplitIOABTesting: {
+    readyForRelease: true,
+    description: "Enable Split.io A/B testing",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
