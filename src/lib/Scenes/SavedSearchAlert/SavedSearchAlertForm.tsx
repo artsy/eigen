@@ -45,6 +45,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const pills = extractPills(filters, aggregations)
   const tracking = useTracking()
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
+  const [canSendEmails, setCanSendEmails] = useState(userAllowEmails)
   const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const formik = useFormik<SavedSearchAlertFormValues>({
     initialValues,
@@ -102,6 +103,10 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   useEffect(() => {
     formik.setFieldValue("email", initialValues.email)
   }, [initialValues.email])
+
+  useEffect(() => {
+    setCanSendEmails(userAllowEmails)
+  }, [userAllowEmails])
 
   const requestNotificationPermissions = () => {
     // permissions not determined: Android should never need this
@@ -198,12 +203,13 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   }
 
   const handleToggleEmailNotification = (enabled: boolean) => {
-    if (!userAllowEmails && enabled) {
+    if (!canSendEmails && enabled) {
       Alert.alert("Title", "Description", [
         { text: "Cancel" },
         {
           text: "Ok",
           onPress: () => {
+            setCanSendEmails(true)
             formik.setFieldValue("email", enabled)
           },
         },
