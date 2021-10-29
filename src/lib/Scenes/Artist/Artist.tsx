@@ -128,14 +128,15 @@ interface ArtistQueryRendererProps extends ArtistAboveTheFoldQueryVariables, Art
   environment?: RelayModernEnvironment
   initialTab?: string
   searchCriteriaID?: string
+  search_criteria_id?: string
 }
 
 export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) => {
-  const { artistID, environment, initialTab, searchCriteriaID } = props
+  const { artistID, environment, initialTab, searchCriteriaID, search_criteria_id } = props
 
   return (
     <SearchCriteriaQueryRenderer
-      searchCriteriaId={searchCriteriaID}
+      searchCriteriaId={searchCriteriaID ?? search_criteria_id}
       environment={environment}
       render={{
         renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
