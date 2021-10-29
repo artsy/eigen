@@ -1,9 +1,8 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { Separator, Text } from "palette"
 import React from "react"
-import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
+import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
 interface SizesOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "SizesOptionsScreen"> {}
@@ -27,7 +26,7 @@ export const SIZES_OPTIONS: FilterData[] = [
 ]
 
 export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigation }) => {
-  const { handleSelect, isSelected } = useMultiSelect({
+  const { handleSelect, isSelected, handleClear, isActive } = useMultiSelect({
     options: SIZES_OPTIONS,
     paramName: FilterParamName.sizes,
   })
@@ -35,19 +34,12 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
   const filterOptions = SIZES_OPTIONS.map((option) => ({ ...option, paramValue: isSelected(option) }))
 
   return (
-    <MultiSelectCheckOptionScreen
+    <MultiSelectOptionScreen
       onSelect={handleSelect}
-      ListHeaderComponent={
-        <>
-          <Text variant="xs" color="black60" textAlign="center" my={15}>
-            Based on the artwork’s average dimension
-          </Text>
-          <Separator />
-        </>
-      }
       filterHeaderText={FilterDisplayName.sizes}
       filterOptions={filterOptions}
       navigation={navigation}
+      {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
     />
   )
 }
