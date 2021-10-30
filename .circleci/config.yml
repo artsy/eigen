@@ -260,6 +260,24 @@ jobs:
           name: Prevent Strictness Regressions
           command: node scripts/strictness-migration.js check-pr
 
+  check-flags:
+    environment:
+      BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
+
+    macos:
+      xcode: 13.0.0
+
+    steps:
+      - checkout
+      - generate-checksums
+      - install-node
+      - install-gems
+      - install-node-modules
+      - run:
+          name: Check flags
+          command: bundle exec fastlane check_flags
+
+
   check-metaphysics-freshness:
     executor:
       name: node/default
@@ -473,6 +491,17 @@ workflows:
                 - master
     jobs:
       - deploy-nightly-beta
+
+  flag-check:
+    triggers:
+      - schedule:
+          cron: "0 6 * * 4"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - check-flags
 
   # metaphysics-check:
   #   triggers:
