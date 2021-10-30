@@ -25,14 +25,15 @@ const checkFlags = () => {
       }
       if (result.groups['readyForRelease']) {
         const readyForRelease = result.groups['readyForRelease']
-        flags[lastFlag]["readyForRelease"] = (readyForRelease === 'true')
+        flags[lastFlag]['readyForRelease'] = (readyForRelease === 'true')
       }
     }
     var releasedFlags = []
     var hiddenFlags = []
+    // TODO: we need to also check for any flags that have not specified readyForRelease
     for (const key in flags) {
       const flag = flags[key]
-      if (flag["readyForRelease"]) {
+      if (flag['readyForRelease']) {
         releasedFlags.push(key)
       } else {
         hiddenFlags.push(key)
@@ -44,5 +45,6 @@ const checkFlags = () => {
   }
 }
 
-// output to stdout so we can retrieve return value in fastlane
-console.log(checkFlags())
+// write output to a file so we can retrieve in fastlane
+const flags = checkFlags()
+fs.writeFileSync('./fastlane/flags.json', JSON.stringify(flags))
