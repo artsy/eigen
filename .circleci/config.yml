@@ -275,7 +275,7 @@ jobs:
       - install-node-modules
       - run:
           name: Check flags
-          command: bundle exec fastlane check_flags
+          command: ./scripts/biweekly-flag-check.sh
 
 
   check-metaphysics-freshness:
