@@ -343,7 +343,6 @@ describe("Search2 Screen", () => {
           "position": 0,
           "query": "text",
           "selected_object_slug": "slug-1",
-          "selected_object_tab": undefined,
           "selected_object_type": "displayType-1",
         },
       ]
