@@ -421,6 +421,7 @@ const Main: React.FC<{}> = track()(({}) => {
     }
   }, [])
   const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
+  const enableSplitIOABTesting = useFeatureFlag("AREnableSplitIOABTesting")
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken)
 
@@ -430,7 +431,10 @@ const Main: React.FC<{}> = track()(({}) => {
   useSentryConfig()
   useStripeConfig()
   useWebViewCookies()
-  useExperiments()
+
+  if (enableSplitIOABTesting) {
+    useExperiments()
+  }
 
   if (!isHydrated) {
     return <View />
