@@ -9,7 +9,7 @@ import { IS_USA, LOCALIZED_UNIT, localizeDimension, parseRange, Range, toIn } fr
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
-interface CustomSize {
+export interface CustomSize {
   width: Range
   height: Range
 }
@@ -72,7 +72,7 @@ const DEFAULT_CUSTOM_SIZE: CustomSize = {
 const CUSTOM_SIZE_OPTION_KEYS: Array<keyof CustomSize> = [FilterParamName.width, FilterParamName.height]
 
 // Helpers
-const getCustomValues = (options: FilterData[]) => {
+export const getCustomValues = (options: FilterData[]) => {
   return options.reduce((acc, option) => {
     const { min, max } = parseRange(String(option.paramValue))
 
@@ -86,7 +86,7 @@ const getCustomValues = (options: FilterData[]) => {
   }, DEFAULT_CUSTOM_SIZE)
 }
 
-const checkIsEmptyCustomValues = (values: CustomSize) => {
+export const checkIsEmptyCustomValues = (values: CustomSize) => {
   return CUSTOM_SIZE_OPTION_KEYS.every((key) => {
     const paramValue = values[key]
     return paramValue.min === "*" && paramValue.max === "*"
@@ -116,6 +116,7 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
     paramName: FilterParamName.sizes,
   })
   const selectedOptions = useSelectedOptionsDisplay()
+  // console.log("[debug]", selectedOptions)
   const selectedCustomOptions = selectedOptions.filter((option) =>
     CUSTOM_SIZE_OPTION_KEYS.includes(option.paramName as keyof CustomSize)
   )

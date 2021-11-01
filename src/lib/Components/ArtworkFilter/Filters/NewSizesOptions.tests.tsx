@@ -4,10 +4,10 @@ import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Text } from "react-native"
 import { ReactTestInstance } from "react-test-renderer"
-import { FilterArray, FilterParamName } from "../ArtworkFilterHelpers"
+import { FilterArray, FilterData, FilterParamName } from "../ArtworkFilterHelpers"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider, useSelectedOptionsDisplay } from "../ArtworkFilterStore"
 import { getEssentialProps } from "./helper"
-import { NewSizesOptionsScreen } from "./NewSizesOptions"
+import { checkIsEmptyCustomValues, CustomSize, getCustomValues, NewSizesOptionsScreen } from "./NewSizesOptions"
 
 // Helpers
 const getFilters = (element: ReactTestInstance) => {
@@ -302,6 +302,122 @@ describe("NewSizesOptionsScreen", () => {
 
       expect(widthFilter?.paramValue).toBe("5-*")
       expect(heightFilter?.paramValue).toBe("*-10")
+    })
+  })
+})
+
+describe("checkIsEmptyCustomValues", () => {
+  it("should return true when all values are empty", () => {
+    const customValues: CustomSize = {
+      width: {
+        min: "*",
+        max: "*",
+      },
+      height: {
+        min: "*",
+        max: "*",
+      },
+    }
+
+    expect(checkIsEmptyCustomValues(customValues)).toBeTrue()
+  })
+
+  it("should return false when only height values are empty", () => {
+    const customValues: CustomSize = {
+      width: {
+        min: 5,
+        max: 10,
+      },
+      height: {
+        min: "*",
+        max: "*",
+      },
+    }
+
+    expect(checkIsEmptyCustomValues(customValues)).toBeFalse()
+  })
+
+  it("should return false when only width values are empty", () => {
+    const customValues: CustomSize = {
+      width: {
+        min: "*",
+        max: "*",
+      },
+      height: {
+        min: 15,
+        max: 20,
+      },
+    }
+
+    expect(checkIsEmptyCustomValues(customValues)).toBeFalse()
+  })
+
+  it("should return false when all values are filled", () => {
+    const customValues: CustomSize = {
+      width: {
+        min: 5,
+        max: 10,
+      },
+      height: {
+        min: 15,
+        max: 20,
+      },
+    }
+
+    expect(checkIsEmptyCustomValues(customValues)).toBeFalse()
+  })
+})
+
+describe("getCustomValues", () => {
+  it("should correctly convert custom size filters", () => {
+    const filters: FilterData[] = [
+      {
+        displayText: "5-10",
+        paramName: FilterParamName.width,
+        paramValue: "5-10",
+      },
+      {
+        displayText: "15-20",
+        paramName: FilterParamName.height,
+        paramValue: "15-20",
+      },
+    ]
+
+    expect(getCustomValues(filters)).toEqual({
+      width: {
+        min: 5,
+        max: 10,
+      },
+      height: {
+        min: 15,
+        max: 20,
+      },
+    })
+  })
+
+  it("should return default value if incorrect value is passed in custom size filter", () => {
+    const filters: FilterData[] = [
+      {
+        displayText: "hello-10",
+        paramName: FilterParamName.width,
+        paramValue: "hello-10",
+      },
+      {
+        displayText: "15-world",
+        paramName: FilterParamName.height,
+        paramValue: "15-world",
+      },
+    ]
+
+    expect(getCustomValues(filters)).toEqual({
+      width: {
+        min: "*",
+        max: 10,
+      },
+      height: {
+        min: 15,
+        max: "*",
+      },
     })
   })
 })
