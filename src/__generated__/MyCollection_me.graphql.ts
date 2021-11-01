@@ -43,6 +43,11 @@ return {
       "defaultValue": null,
       "kind": "LocalArgument",
       "name": "cursor"
+    },
+    {
+      "defaultValue": true,
+      "kind": "LocalArgument",
+      "name": "excludePurchasedArtworks"
     }
   ],
   "kind": "Fragment",
@@ -150,5 +155,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'f5a944150e87a8853d9b269b93484bbc';
+(node as any).hash = 'abfe4961636d93be2d487e003344d469';
 export default node;

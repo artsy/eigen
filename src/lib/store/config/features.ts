@@ -186,6 +186,12 @@ export const features = defineFeatures({
     description: "Enable Split.io A/B testing",
     showInAdminMenu: true,
   },
+  AREnableMyCollectionOrderImport: {
+    readyForRelease: false,
+    description: "Enable My Collection order import",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableMyCollectionOrderImport",
+  },
 })
 
 export interface DevToggleDescriptor {

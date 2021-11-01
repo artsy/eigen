@@ -149,10 +149,18 @@ export const MyCollectionContainer = createPaginationContainer(
   {
     me: graphql`
       fragment MyCollection_me on Me
-      @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String" }) {
+      @argumentDefinitions(
+        excludePurchasedArtworks: { type: "Boolean", defaultValue: true }
+        count: { type: "Int", defaultValue: 20 }
+        cursor: { type: "String" }
+      ) {
         id
-        myCollectionConnection(first: $count, after: $cursor, sort: CREATED_AT_DESC)
-          @connection(key: "MyCollection_myCollectionConnection", filters: []) {
+        myCollectionConnection(
+          excludePurchasedArtworks: $excludePurchasedArtworks
+          first: $count
+          after: $cursor
+          sort: CREATED_AT_DESC
+        ) @connection(key: "MyCollection_myCollectionConnection", filters: []) {
           edges {
             node {
               id
@@ -172,9 +180,10 @@ export const MyCollectionContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query MyCollectionPaginationQuery($count: Int!, $cursor: String) {
+      query MyCollectionPaginationQuery($excludePurchasedArtworks: Boolean, $count: Int!, $cursor: String) {
         me {
-          ...MyCollection_me @arguments(count: $count, cursor: $cursor)
+          ...MyCollection_me
+            @arguments(excludePurchasedArtworks: $excludePurchasedArtworks, count: $count, cursor: $cursor)
         }
       }
     `,
@@ -182,17 +191,20 @@ export const MyCollectionContainer = createPaginationContainer(
 )
 
 export const MyCollectionQueryRenderer: React.FC = () => {
+  const enableMyCollectionOrderImport = useFeatureFlag("AREnableMyCollectionOrderImport")
+  const excludePurchasedArtworks = !enableMyCollectionOrderImport
+
   return (
     <QueryRenderer<MyCollectionQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query MyCollectionQuery {
+        query MyCollectionQuery($excludePurchasedArtworks: Boolean) {
           me {
-            ...MyCollection_me
+            ...MyCollection_me @arguments(excludePurchasedArtworks: $excludePurchasedArtworks)
           }
         }
       `}
-      variables={{}}
+      variables={{ excludePurchasedArtworks }}
       cacheConfig={{ force: true }}
       render={renderWithPlaceholder({
         Container: MyCollectionContainer,

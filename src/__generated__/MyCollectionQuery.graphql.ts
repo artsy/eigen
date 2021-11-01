@@ -1,11 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 40bc3e8a27e3c367aabbcec5f5d3d5bb */
+/* @relayHash ca4df8d1eefe65050c349aeb7d80d6a7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionQueryVariables = {};
+export type MyCollectionQueryVariables = {
+    excludePurchasedArtworks?: boolean | null;
+};
 export type MyCollectionQueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"MyCollection_me">;
@@ -19,9 +21,11 @@ export type MyCollectionQuery = {
 
 
 /*
-query MyCollectionQuery {
+query MyCollectionQuery(
+  $excludePurchasedArtworks: Boolean
+) {
   me {
-    ...MyCollection_me
+    ...MyCollection_me_4o4pu4
     id
   }
 }
@@ -64,9 +68,9 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
   date
 }
 
-fragment MyCollection_me on Me {
+fragment MyCollection_me_4o4pu4 on Me {
   id
-  myCollectionConnection(first: 20, sort: CREATED_AT_DESC) {
+  myCollectionConnection(excludePurchasedArtworks: $excludePurchasedArtworks, first: 20, sort: CREATED_AT_DESC) {
     edges {
       node {
         id
@@ -84,14 +88,27 @@ fragment MyCollection_me on Me {
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
+var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "excludePurchasedArtworks"
+  }
+],
+v1 = {
+  "kind": "Variable",
+  "name": "excludePurchasedArtworks",
+  "variableName": "excludePurchasedArtworks"
+},
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v1 = [
+v3 = [
+  (v1/*: any*/),
   {
     "kind": "Literal",
     "name": "first",
@@ -103,7 +120,7 @@ v1 = [
     "value": "CREATED_AT_DESC"
   }
 ],
-v2 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -112,7 +129,7 @@ v2 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "MyCollectionQuery",
@@ -126,7 +143,9 @@ return {
         "plural": false,
         "selections": [
           {
-            "args": null,
+            "args": [
+              (v1/*: any*/)
+            ],
             "kind": "FragmentSpread",
             "name": "MyCollection_me"
           }
@@ -139,7 +158,7 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "MyCollectionQuery",
     "selections": [
@@ -151,10 +170,10 @@ return {
         "name": "me",
         "plural": false,
         "selections": [
-          (v0/*: any*/),
+          (v2/*: any*/),
           {
             "alias": null,
-            "args": (v1/*: any*/),
+            "args": (v3/*: any*/),
             "concreteType": "MyCollectionConnection",
             "kind": "LinkedField",
             "name": "myCollectionConnection",
@@ -176,7 +195,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v0/*: any*/),
+                      (v2/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -209,7 +228,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v2/*: any*/),
+                      (v4/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -218,8 +237,8 @@ return {
                         "name": "artist",
                         "plural": false,
                         "selections": [
-                          (v2/*: any*/),
-                          (v0/*: any*/)
+                          (v4/*: any*/),
+                          (v2/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -322,11 +341,11 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "myCollectionConnection(first:20,sort:\"CREATED_AT_DESC\")"
+            "storageKey": null
           },
           {
             "alias": null,
-            "args": (v1/*: any*/),
+            "args": (v3/*: any*/),
             "filters": [],
             "handle": "connection",
             "key": "MyCollection_myCollectionConnection",
@@ -339,7 +358,7 @@ return {
     ]
   },
   "params": {
-    "id": "40bc3e8a27e3c367aabbcec5f5d3d5bb",
+    "id": "ca4df8d1eefe65050c349aeb7d80d6a7",
     "metadata": {},
     "name": "MyCollectionQuery",
     "operationKind": "query",
@@ -347,5 +366,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'ff4a5c1033c709b79470e46a6aac4d8c';
+(node as any).hash = '60e696e77e94f09fd0c72bfa946aff0e';
 export default node;
