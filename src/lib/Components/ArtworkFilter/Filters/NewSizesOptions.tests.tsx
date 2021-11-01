@@ -127,20 +127,28 @@ describe("NewSizesOptionsScreen", () => {
     })
   })
 
-  it("should clear custom values if a predefined value is selected", () => {
-    const { getByA11yLabel, queryByDisplayValue, getByText } = renderWithWrappersTL(<TestRenderer />)
-
-    fireEvent.changeText(getByA11yLabel("Minimum Width Input"), "5")
-    fireEvent.changeText(getByA11yLabel("Maximum Width Input"), "10")
-    fireEvent.press(getByText("Small (under 16in)"))
-
-    expect(queryByDisplayValue("5")).toBeFalsy()
-    expect(queryByDisplayValue("10")).toBeFalsy()
-  })
-
   describe("Custom Size", () => {
-    it("should clear the previously selected option if a custom value is entered", () => {
-      const { getByText, getByA11yLabel, queryByA11yState, getByTestId } = renderWithWrappersTL(<TestRenderer />)
+    it("should select the custom size option when a custom value is specified", () => {
+      const { getByA11yLabel, getByA11yState } = renderWithWrappersTL(<TestRenderer />)
+
+      fireEvent.changeText(getByA11yLabel("Minimum Width Input"), "5")
+
+      expect(getByA11yState({ checked: true })).toHaveTextContent("Custom Size")
+    })
+
+    it("should keep custom values if a predefined value is selected", () => {
+      const { getByA11yLabel, getByDisplayValue, getByText } = renderWithWrappersTL(<TestRenderer />)
+
+      fireEvent.changeText(getByA11yLabel("Minimum Width Input"), "5")
+      fireEvent.changeText(getByA11yLabel("Maximum Width Input"), "10")
+      fireEvent.press(getByText("Small (under 16in)"))
+
+      expect(getByDisplayValue("5")).toBeTruthy()
+      expect(getByDisplayValue("10")).toBeTruthy()
+    })
+
+    it("should keep the previously selected option if a custom value is entered", () => {
+      const { getByText, getByA11yLabel, getAllByA11yState, getByTestId } = renderWithWrappersTL(<TestRenderer />)
 
       fireEvent.press(getByText("Small (under 16in)"))
       fireEvent.changeText(getByA11yLabel("Minimum Width Input"), "5")
@@ -149,11 +157,11 @@ describe("NewSizesOptionsScreen", () => {
       const sizesFilter = getSizesFilterOption(filters)
       const widthFilter = getWidthFilterOption(filters)
 
-      expect(queryByA11yState({ checked: true })).toBeFalsy()
+      expect(getAllByA11yState({ checked: true })).toHaveLength(2)
       expect(sizesFilter).toEqual({
         paramName: "sizes",
-        displayText: "All",
-        paramValue: [],
+        displayText: "Small (under 16in)",
+        paramValue: ["SMALL"],
       })
       expect(widthFilter).toEqual({
         paramName: "width",
