@@ -204,6 +204,13 @@ android {
 }
 
 dependencies {
+    // This is required to fix an issue that causes the app to crash on startup
+    // This can be removed as soon as we get to a react-native version above 0.66
+    // See https://github.com/facebook/react-native/issues/31725#issuecomment-901682370
+    api(platform("com.squareup.okhttp3:okhttp-bom:4.9.1"))
+    api("com.squareup.okhttp3:okhttp")
+    api("com.squareup.okhttp3:logging-interceptor")
+
     implementation 'com.segment.analytics.android:analytics:4.+'
     implementation 'com.segment.analytics.android.integrations:adjust:+'
     implementation platform('com.google.firebase:firebase-bom:28.1.0')
@@ -215,6 +222,7 @@ dependencies {
 
     implementation "com.google.firebase:firebase-analytics:19.0.0" // so we can see push notification reports on firebase
     implementation 'com.google.firebase:firebase-messaging:21.1.0'
+
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
