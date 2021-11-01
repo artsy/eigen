@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { Box, Spacer } from "palette"
-import React, { useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { ArtworkFilterNavigationStack } from ".."
 import { FilterData, FilterDisplayName, FilterParamName } from "../ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "../ArtworkFilterStore"
@@ -83,30 +83,51 @@ const getCustomValues = (options: FilterData[]) => {
 }
 
 export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ navigation }) => {
-  const [key, setKey] = useState(0)
+  const isMounted = useRef(false)
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
-  const { handleSelect, isSelected, handleClear } = useMultiSelect({
+  const { handleSelect, isSelected } = useMultiSelect({
     options: SIZES_OPTIONS,
     paramName: FilterParamName.sizes,
   })
   const selectedOptions = useSelectedOptionsDisplay()
+  console.log("[debug] selectedOptions", selectedOptions)
   const selectedCustomOptions = selectedOptions.filter((option) =>
     CUSTOM_SIZE_OPTION_KEYS.includes(option.paramName as keyof CustomSize)
   )
-  const customValues = getCustomValues(selectedCustomOptions)
-  const options = SIZES_OPTIONS.map((option) => ({
+  const [customSizeSelected, setCustomSizeSelected] = useState(selectedCustomOptions.length > 0)
+  const [customValues, setCustomValues] = useState(getCustomValues(selectedCustomOptions))
+
+  useEffect(() => {
+    // Ignore initial mount
+    if (!isMounted.current) {
+      isMounted.current = true
+      return
+    }
+
+    CUSTOM_SIZE_OPTION_KEYS.forEach((paramName) => {
+      const range = customValues[paramName]
+
+      selectFiltersAction({
+        displayText: `${range.min}-${range.max}`,
+        paramName: paramName as FilterParamName,
+        paramValue: `${toIn(range.min, LOCALIZED_UNIT)}-${toIn(range.max, LOCALIZED_UNIT)}`,
+      })
+    })
+  }, [customValues])
+
+  // Options
+  const predefinedOptions = SIZES_OPTIONS.map((option) => ({
     ...option,
     paramValue: isSelected(option),
   }))
-
-  const handleCustomInputChange = (paramName: FilterParamName) => (range: Range) => {
-    handleClear()
-    selectFiltersAction({
-      displayText: `${range.min}-${range.max}`,
-      paramName,
-      paramValue: `${toIn(range.min, LOCALIZED_UNIT)}-${toIn(range.max, LOCALIZED_UNIT)}`,
-    })
-  }
+  const options: FilterData[] = [
+    ...predefinedOptions,
+    {
+      displayText: "Custom Size",
+      paramValue: customSizeSelected,
+      paramName: FilterParamName.sizes,
+    },
+  ]
 
   const clearCustomSizeValues = () => {
     CUSTOM_SIZE_OPTION_KEYS.forEach((option) => {
@@ -118,10 +139,26 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
     })
   }
 
+  const handleCustomInputChange = (paramName: FilterParamName) => (range: Range) => {
+    setCustomSizeSelected(true)
+    setCustomValues((prevState) => ({
+      ...prevState,
+      [paramName]: range,
+    }))
+  }
+
   const handleSelectPredefinedOption = (option: FilterData, nextValue: boolean) => {
-    clearCustomSizeValues()
+    if (option.displayText === "Custom Size") {
+      setCustomSizeSelected(nextValue)
+
+      if (!nextValue) {
+        clearCustomSizeValues()
+      }
+
+      return
+    }
+
     handleSelect(option, nextValue)
-    setKey((n) => n + 1)
   }
 
   return (
@@ -132,7 +169,7 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
       navigation={navigation}
       useScrollView
       footerComponent={
-        <Box mx={15} key={`footer-container-${key}`}>
+        <Box mx={15}>
           <Spacer mt={2} />
           <CustomSizeInputs
             label="Width"
