@@ -61,9 +61,11 @@ describe("availableTabs", () => {
       Artist() {
         return {
           has_metadata: false,
-          counts: { articles: 0, related_artists: 0, artworks: 0, partner_shows: 0 },
-          auctionResultsConnection: {
-            totalCount: 0,
+          counts: { related_artists: 0, partner_shows: 0 },
+          statuses: {
+            artworks: false,
+            auctionLots: false,
+            articles: false,
           },
         }
       },
@@ -80,7 +82,12 @@ describe("availableTabs", () => {
       Artist() {
         return {
           has_metadata: true,
-          counts: { articles: 0, related_artists: 0, artworks: 0, partner_shows: 0 },
+          counts: { related_artists: 0, partner_shows: 0 },
+          statuses: {
+            artworks: false,
+            auctionLots: false,
+            articles: false,
+          },
           auctionResultsConnection: {
             totalCount: 0,
           },
@@ -100,7 +107,12 @@ describe("availableTabs", () => {
       Artist() {
         return {
           has_metadata: false,
-          counts: { articles: 1, related_artists: 0, artworks: 0, partner_shows: 0 },
+          counts: { related_artists: 0, partner_shows: 0 },
+          statuses: {
+            artworks: false,
+            auctionLots: false,
+            articles: true,
+          },
           auctionResultsConnection: {
             totalCount: 0,
           },
@@ -136,7 +148,10 @@ describe("availableTabs", () => {
       Artist() {
         return {
           has_metadata: true,
-          counts: { articles: 1, related_artists: 0, artworks: 1, partner_shows: 1 },
+          statuses: {
+            artworks: true,
+            auctionLots: false,
+          },
           auctionResultsConnection: {
             totalCount: 0,
           },
