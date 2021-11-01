@@ -151,7 +151,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
         )}
         <Box mt={1}>
           {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
-            <Text variant="xs" color="black100" numberOfLines={1} caps {...lotLabelTextStyle}>
+            <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>
               Lot {artwork.saleArtwork.lotLabel}
             </Text>
           )}
@@ -174,14 +174,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
             </Text>
           )}
           {!!saleInfo && (
-            <Text
-              lineHeight="18"
-              variant="xs"
-              weight="medium"
-              color="black100"
-              numberOfLines={1}
-              {...saleInfoTextStyle}
-            >
+            <Text lineHeight="18" variant="xs" weight="medium" numberOfLines={1} {...saleInfoTextStyle}>
               {saleInfo}
             </Text>
           )}
