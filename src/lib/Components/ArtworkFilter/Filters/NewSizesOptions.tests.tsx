@@ -136,6 +136,28 @@ describe("NewSizesOptionsScreen", () => {
       expect(getByA11yState({ checked: true })).toHaveTextContent("Custom Size")
     })
 
+    it("should clear custom values in filters when the custom size option is unselected", () => {
+      const { getByA11yLabel, getByA11yState, getByTestId } = renderWithWrappersTL(<TestRenderer />)
+
+      fireEvent.changeText(getByA11yLabel("Minimum Width Input"), "5")
+      fireEvent.press(getByA11yState({ checked: true }))
+
+      const filters = getFilters(getByTestId("debug"))
+      const widthFilter = getWidthFilterOption(filters)
+
+      expect(widthFilter?.paramValue).toBeUndefined()
+    })
+
+    it("should unselect the custom size optiom when custom inputs are empty", () => {
+      const { getByA11yLabel, queryByA11yState } = renderWithWrappersTL(<TestRenderer />)
+
+      fireEvent.changeText(getByA11yLabel("Minimum Width Input"), "5")
+      expect(queryByA11yState({ checked: true })).toBeTruthy()
+
+      fireEvent.changeText(getByA11yLabel("Minimum Width Input"), "")
+      expect(queryByA11yState({ checked: true })).toBeFalsy()
+    })
+
     it("should keep custom values if a predefined value is selected", () => {
       const { getByA11yLabel, getByDisplayValue, getByText } = renderWithWrappersTL(<TestRenderer />)
 

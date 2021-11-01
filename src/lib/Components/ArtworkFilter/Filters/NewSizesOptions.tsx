@@ -160,8 +160,12 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
   }
 
   const handleCustomInputsChange = (values: CustomSize) => {
-    setCustomSizeSelected(true)
+    const isEmptyCustomValues = CUSTOM_SIZE_OPTION_KEYS.every((key) => {
+      const paramValue = values[key]
+      return paramValue.min === "*" && paramValue.max === "*"
+    })
 
+    setCustomSizeSelected(!isEmptyCustomValues)
     CUSTOM_SIZE_OPTION_KEYS.forEach((paramName) => {
       const value = values[paramName]
       const localizedMinValue = toIn(value.min, LOCALIZED_UNIT)
