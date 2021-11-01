@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ff31f0121075d7bc66bb3f13532c55e2 */
+/* @relayHash ac37396f958f1961b6f4c24f0538d5b5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,9 +37,9 @@ export type AutosuggestResultsPaginationQueryRawResponse = {
                 readonly id: string;
                 readonly internalID: string;
                 readonly slug: string;
-                readonly counts: ({
-                    readonly artworks: number | null;
-                    readonly auctionResults: number | null;
+                readonly statuses: ({
+                    readonly artworks: boolean | null;
+                    readonly auctionLots: boolean | null;
                 }) | null;
             } | {
                 readonly imageUrl: string | null;
@@ -91,9 +91,9 @@ fragment AutosuggestResults_results_1qwknJ on Query {
         ... on Artist {
           internalID
           slug
-          counts {
+          statuses {
             artworks
-            auctionResults
+            auctionLots
           }
         }
         ... on Node {
@@ -296,9 +296,9 @@ return {
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "ArtistCounts",
+                        "concreteType": "ArtistStatuses",
                         "kind": "LinkedField",
-                        "name": "counts",
+                        "name": "statuses",
                         "plural": false,
                         "selections": [
                           {
@@ -312,7 +312,7 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
-                            "name": "auctionResults",
+                            "name": "auctionLots",
                             "storageKey": null
                           }
                         ],
@@ -393,7 +393,7 @@ return {
     ]
   },
   "params": {
-    "id": "ff31f0121075d7bc66bb3f13532c55e2",
+    "id": "ac37396f958f1961b6f4c24f0538d5b5",
     "metadata": {},
     "name": "AutosuggestResultsPaginationQuery",
     "operationKind": "query",

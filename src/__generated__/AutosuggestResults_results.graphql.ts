@@ -15,9 +15,9 @@ export type AutosuggestResults_results = {
                 readonly internalID?: string;
                 readonly displayType?: string | null;
                 readonly slug?: string;
-                readonly counts?: {
-                    readonly artworks: number | null;
-                    readonly auctionResults: number | null;
+                readonly statuses?: {
+                    readonly artworks: boolean | null;
+                    readonly auctionLots: boolean | null;
                 } | null;
             } | null;
         } | null> | null;
@@ -185,9 +185,9 @@ return {
                     {
                       "alias": null,
                       "args": null,
-                      "concreteType": "ArtistCounts",
+                      "concreteType": "ArtistStatuses",
                       "kind": "LinkedField",
-                      "name": "counts",
+                      "name": "statuses",
                       "plural": false,
                       "selections": [
                         {
@@ -201,7 +201,7 @@ return {
                           "alias": null,
                           "args": null,
                           "kind": "ScalarField",
-                          "name": "auctionResults",
+                          "name": "auctionLots",
                           "storageKey": null
                         }
                       ],
@@ -257,5 +257,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'e9155b8891618f6bcae79f330dad3306';
+(node as any).hash = '3c398ab0f80655f30ce589fbd67dffd9';
 export default node;
