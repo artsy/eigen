@@ -79,7 +79,7 @@ describe("check flags script", () => {
   })
   describe("hidden flags parsing", () => {
     it("defaults to returning all flags", () => {
-      const releasedFlags = []
+      const releasedFlags: string[] = []
       const flagContent = `
         AROptionsArtistSeries: {
           echoFlagKey: "AROptionsArtistSeries",
