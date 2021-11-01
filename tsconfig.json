@@ -5,9 +5,7 @@
     "baseUrl": "src",
     "experimentalDecorators": true,
     "incremental": true,
-    "lib": [
-      "es2015"
-    ],
+    "lib": ["es2015"],
     "jsx": "react",
     "module": "commonjs",
     "moduleResolution": "node",
@@ -27,11 +25,7 @@
     "noFallthroughCasesInSwitch": true,
     "strictFunctionTypes": true,
     "target": "es6",
-    "types": [
-      "jest",
-      "react",
-      "react-native"
-    ],
+    "types": ["jest", "react", "react-native"],
     "noEmit": true
   },
   "include": [
@@ -39,7 +33,8 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "scripts/changelog/**/*.ts",
-    "dangerfile.ts",
+    "scripts/check-flags/**/*.ts",
+    "dangerfile.ts"
   ],
   "exclude": [
     "node_modules",

@@ -13,7 +13,7 @@
     "bundle-for-native-ci:ios": "node --expose-gc --max_old_space_size=8192 ./node_modules/react-native/local-cli/cli.js bundle --platform=ios --dev=false --entry-file=index.tests.ios.js --bundle-output emission/Pod/Assets/Emission.js --sourcemap-output emission/Pod/Assets/Emission.js.map --assets-dest emission/Pod/Assets",
     "bundle:ios": "react-native bundle --platform=ios --dev=false --entry-file=index.ios.js --bundle-output emission/Pod/Assets/Emission.js --sourcemap-output emission/Pod/Assets/Emission.js.map --assets-dest emission/Pod/Assets",
     "bundle:android": "NODE_OPTIONS=--max_old_space_size=8192 react-native bundle --platform android --dev false --entry-file index.android.js --bundle-output android/app/src/main/assets/index.android.bundle --sourcemap-output android/app/src/main/assets/index.android.bundle.map --assets-dest android/app/src/main/res",
-    "check-flags": "./scripts/check-flags.js",
+    "check-flags": "./scripts/check-flags/check-flags.js",
     "ci:lint": "yarn lint --format json --out tslint-errors.json ",
     "ci:skip-native-if-possible": "node scripts/ci-skip-native-if-possible.js",
     "ci:test": "jest --outputFile test-results.json --json --ci --forceExit",
