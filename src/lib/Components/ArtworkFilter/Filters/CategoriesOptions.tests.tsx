@@ -1,12 +1,9 @@
+import { fireEvent } from "@testing-library/react-native"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { CheckIcon } from "palette"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { TouchableOpacity } from "react-native"
-import { act } from "react-test-renderer"
-import { CATEGORIES_OPTIONS, CategoriesOptionsScreen } from "./CategoriesOptions"
+import { CategoriesOptionsScreen } from "./CategoriesOptions"
 import { getEssentialProps } from "./helper"
-import { CheckMarkOptionListItem } from "./MultiSelectCheckOption"
 
 describe("Categories options screen", () => {
   const MockCategoryScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
@@ -31,28 +28,27 @@ describe("Categories options screen", () => {
   }
 
   it("selects only the option that is selected", () => {
-    const tree = renderWithWrappers(<MockCategoryScreen {...getEssentialProps()} initialData={initialState} />)
+    const { getByText, getAllByA11yState } = renderWithWrappersTL(
+      <MockCategoryScreen {...getEssentialProps()} initialData={initialState} />
+    )
+    fireEvent.press(getByText("Painting"))
 
-    const selectedCategoryIndex = Math.floor(Math.random() * Math.floor(CATEGORIES_OPTIONS.length)) // selected category index
-
-    const selectedCategory = tree.root.findAllByType(CheckMarkOptionListItem)[selectedCategoryIndex]
-    act(() => selectedCategory.findAllByType(TouchableOpacity)[0].props.onPress())
-    expect(selectedCategory.findAllByType(CheckIcon)).toHaveLength(1)
+    const selectedOptions = getAllByA11yState({ checked: true })
+    expect(selectedOptions).toHaveLength(1)
+    expect(selectedOptions[0]).toHaveTextContent("Painting")
+    expect(getByText("Clear")).toBeTruthy()
   })
 
   it("allows multiple categories to be selected", () => {
-    const tree = renderWithWrappers(<MockCategoryScreen {...getEssentialProps()} initialData={initialState} />)
+    const { getByText, getAllByA11yState } = renderWithWrappersTL(
+      <MockCategoryScreen {...getEssentialProps()} initialData={initialState} />
+    )
+    fireEvent.press(getByText("Painting"))
+    fireEvent.press(getByText("Work on Paper"))
 
-    const firstCategoryInstance = tree.root.findAllByType(CheckMarkOptionListItem)[0].findAllByType(TouchableOpacity)[0]
-    const secondCategoryInstance = tree.root
-      .findAllByType(CheckMarkOptionListItem)[1]
-      .findAllByType(TouchableOpacity)[0]
-    const thirdCategoryInstance = tree.root.findAllByType(CheckMarkOptionListItem)[2].findAllByType(TouchableOpacity)[0]
-
-    act(() => firstCategoryInstance.props.onPress())
-    act(() => secondCategoryInstance.props.onPress())
-    act(() => thirdCategoryInstance.props.onPress())
-
-    expect(tree.root.findAllByType(CheckIcon)).toHaveLength(3)
+    const selectedOptions = getAllByA11yState({ checked: true })
+    expect(selectedOptions).toHaveLength(2)
+    expect(selectedOptions[0]).toHaveTextContent("Painting")
+    expect(selectedOptions[1]).toHaveTextContent("Work on Paper")
   })
 })

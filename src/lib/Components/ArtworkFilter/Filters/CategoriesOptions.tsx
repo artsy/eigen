@@ -2,7 +2,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import React from "react"
-import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
+import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
 interface ArtistIDsArtworksOptionsScreenProps
@@ -42,7 +42,7 @@ export const CATEGORIES_OPTIONS: FilterData[] = [
 ]
 
 export const CategoriesOptionsScreen: React.FC<ArtistIDsArtworksOptionsScreenProps> = ({ navigation }) => {
-  const { handleSelect, isSelected } = useMultiSelect({
+  const { handleSelect, isSelected, handleClear, isActive } = useMultiSelect({
     options: CATEGORIES_OPTIONS,
     paramName: FilterParamName.categories,
   })
@@ -50,11 +50,12 @@ export const CategoriesOptionsScreen: React.FC<ArtistIDsArtworksOptionsScreenPro
   const filterOptions = CATEGORIES_OPTIONS.map((option) => ({ ...option, paramValue: isSelected(option) }))
 
   return (
-    <MultiSelectCheckOptionScreen
+    <MultiSelectOptionScreen
       onSelect={handleSelect}
       filterHeaderText={FilterDisplayName.categories}
       filterOptions={filterOptions}
       navigation={navigation}
+      {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
     />
   )
 }

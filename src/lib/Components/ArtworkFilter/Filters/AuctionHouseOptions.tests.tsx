@@ -1,12 +1,9 @@
+import { fireEvent } from "@testing-library/react-native"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { CheckIcon } from "palette"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { TouchableOpacity } from "react-native"
-import { act } from "react-test-renderer"
-import { AUCTION_HOUSE_OPTIONS, AuctionHouseOptionsScreen } from "./AuctionHouseOptions"
+import { AuctionHouseOptionsScreen } from "./AuctionHouseOptions"
 import { getEssentialProps } from "./helper"
-import { CheckMarkOptionListItem } from "./MultiSelectCheckOption"
 
 describe("AuctionHouse options screen", () => {
   const MockAuctionHouseScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
@@ -31,33 +28,27 @@ describe("AuctionHouse options screen", () => {
   }
 
   it("selects only the option that is selected", () => {
-    const tree = renderWithWrappers(<MockAuctionHouseScreen {...getEssentialProps()} initialData={initialState} />)
+    const { getByText, getAllByA11yState } = renderWithWrappersTL(
+      <MockAuctionHouseScreen {...getEssentialProps()} initialData={initialState} />
+    )
+    fireEvent.press(getByText("Sotheby's"))
 
-    // selected auction house index
-    const selectedAuctionHouseIndex = Math.floor(Math.random() * Math.floor(AUCTION_HOUSE_OPTIONS.length))
-    const selectedAuctionHouse = tree.root.findAllByType(CheckMarkOptionListItem)[selectedAuctionHouseIndex]
-
-    act(() => selectedAuctionHouse.findAllByType(TouchableOpacity)[0].props.onPress())
-    expect(selectedAuctionHouse.findAllByType(CheckIcon)).toHaveLength(1)
+    const selectedOptions = getAllByA11yState({ checked: true })
+    expect(selectedOptions).toHaveLength(1)
+    expect(selectedOptions[0]).toHaveTextContent("Sotheby's")
+    expect(getByText("Clear")).toBeTruthy()
   })
 
   it("allows multiple auction houses to be selected", () => {
-    const tree = renderWithWrappers(<MockAuctionHouseScreen {...getEssentialProps()} initialData={initialState} />)
+    const { getByText, getAllByA11yState } = renderWithWrappersTL(
+      <MockAuctionHouseScreen {...getEssentialProps()} initialData={initialState} />
+    )
+    fireEvent.press(getByText("Sotheby's"))
+    fireEvent.press(getByText("Christie's"))
 
-    const firstAuctionHouseInstance = tree.root
-      .findAllByType(CheckMarkOptionListItem)[0]
-      .findAllByType(TouchableOpacity)[0]
-    const secondAuctionHouseInstance = tree.root
-      .findAllByType(CheckMarkOptionListItem)[1]
-      .findAllByType(TouchableOpacity)[0]
-    const thirdAuctionHouseInstance = tree.root
-      .findAllByType(CheckMarkOptionListItem)[2]
-      .findAllByType(TouchableOpacity)[0]
-
-    act(() => firstAuctionHouseInstance.props.onPress())
-    act(() => secondAuctionHouseInstance.props.onPress())
-    act(() => thirdAuctionHouseInstance.props.onPress())
-
-    expect(tree.root.findAllByType(CheckIcon)).toHaveLength(3)
+    const selectedOptions = getAllByA11yState({ checked: true })
+    expect(selectedOptions).toHaveLength(2)
+    expect(selectedOptions[0]).toHaveTextContent("Sotheby's")
+    expect(selectedOptions[1]).toHaveTextContent("Christie's")
   })
 })
