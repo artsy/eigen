@@ -5,12 +5,14 @@ interface FilterHeaderProps {
   children?: React.ReactNode
   onFilterPress: () => void
   selectedFiltersCount: number
+  title?: string
 }
 
 export const ArtworksFilterHeader: React.FC<FilterHeaderProps> = ({
   children,
   onFilterPress,
   selectedFiltersCount,
+  title,
 }) => {
   return (
     <Flex flexDirection="row" height={28} my={1} px={2} justifyContent="space-between" alignItems="center">
@@ -21,7 +23,7 @@ export const ArtworksFilterHeader: React.FC<FilterHeaderProps> = ({
           <Flex flex={1} flexDirection="row" alignItems="center">
             <FilterIcon fill={color} width="20px" height="20px" />
             <Text variant="xs" numberOfLines={1} color={color} ml={0.5}>
-              Sort & Filter
+              {title ?? "Sort & Filter"}
             </Text>
             {selectedFiltersCount > 0 && (
               <Text variant="xs" color="blue100">
