@@ -1,6 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { Box, Spacer } from "palette"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useState } from "react"
 import { ArtworkFilterNavigationStack } from ".."
 import { FilterData, FilterDisplayName, FilterParamName } from "../ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "../ArtworkFilterStore"
@@ -16,7 +16,7 @@ interface CustomSize {
 
 interface NewSizesOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "SizesOptionsScreen"> {}
 interface CustomSizeInputsContainerProps {
-  initialValues: CustomSize
+  values: CustomSize
   onChange: (values: CustomSize) => void
 }
 
@@ -86,37 +86,17 @@ const getCustomValues = (options: FilterData[]) => {
   }, DEFAULT_CUSTOM_SIZE)
 }
 
-const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({ initialValues, onChange }) => {
-  const [values, setValues] = useState(initialValues)
-  const isMounted = useRef(false)
-
-  useEffect(() => {
-    // Ignore initial mount
-    if (!isMounted.current) {
-      isMounted.current = true
-      return
-    }
-
-    onChange(values)
-  }, [values])
-
-  const handleCustomInputChange = (paramName: FilterParamName) => (range: Range) => {
-    setValues((prevState) => ({
-      ...prevState,
-      [paramName]: range,
-    }))
+const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({ values, onChange }) => {
+  const handleChange = (paramName: FilterParamName) => (range: Range) => {
+    onChange({ ...values, [paramName]: range })
   }
 
   return (
     <Box mx={15}>
       <Spacer mt={2} />
-      <CustomSizeInputs label="Width" range={values.width} onChange={handleCustomInputChange(FilterParamName.width)} />
+      <CustomSizeInputs label="Width" range={values.width} onChange={handleChange(FilterParamName.width)} />
       <Spacer mt={2} />
-      <CustomSizeInputs
-        label="Height"
-        range={values.height}
-        onChange={handleCustomInputChange(FilterParamName.height)}
-      />
+      <CustomSizeInputs label="Height" range={values.height} onChange={handleChange(FilterParamName.height)} />
       <Spacer mt={2} />
     </Box>
   )
@@ -133,7 +113,7 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
     CUSTOM_SIZE_OPTION_KEYS.includes(option.paramName as keyof CustomSize)
   )
   const [customSizeSelected, setCustomSizeSelected] = useState(selectedCustomOptions.length > 0)
-  const customValues = getCustomValues(selectedCustomOptions)
+  const [customValues, setCustomValues] = useState(getCustomValues(selectedCustomOptions))
 
   // Options
   const predefinedOptions = SIZES_OPTIONS.map((option) => ({
@@ -159,13 +139,7 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
     })
   }
 
-  const handleCustomInputsChange = (values: CustomSize) => {
-    const isEmptyCustomValues = CUSTOM_SIZE_OPTION_KEYS.every((key) => {
-      const paramValue = values[key]
-      return paramValue.min === "*" && paramValue.max === "*"
-    })
-
-    setCustomSizeSelected(!isEmptyCustomValues)
+  const selectCustomFiltersAction = (values: CustomSize) => {
     CUSTOM_SIZE_OPTION_KEYS.forEach((paramName) => {
       const value = values[paramName]
       const localizedMinValue = toIn(value.min, LOCALIZED_UNIT)
@@ -179,11 +153,24 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
     })
   }
 
+  const handleCustomInputsChange = (values: CustomSize) => {
+    const isEmptyCustomValues = CUSTOM_SIZE_OPTION_KEYS.every((key) => {
+      const paramValue = values[key]
+      return paramValue.min === "*" && paramValue.max === "*"
+    })
+
+    setCustomValues(values)
+    setCustomSizeSelected(!isEmptyCustomValues)
+    selectCustomFiltersAction(values)
+  }
+
   const handleSelectOption = (option: FilterData, nextValue: boolean) => {
     if (option.displayText === "Custom Size") {
       setCustomSizeSelected(nextValue)
 
-      if (!nextValue) {
+      if (nextValue) {
+        selectCustomFiltersAction(customValues)
+      } else {
         clearCustomSizeValues()
       }
 
@@ -200,7 +187,7 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
       filterOptions={options}
       navigation={navigation}
       useScrollView
-      footerComponent={<CustomSizeInputsContainer initialValues={customValues} onChange={handleCustomInputsChange} />}
+      footerComponent={<CustomSizeInputsContainer values={customValues} onChange={handleCustomInputsChange} />}
     />
   )
 }

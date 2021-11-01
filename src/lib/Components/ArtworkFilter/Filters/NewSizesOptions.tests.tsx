@@ -148,6 +148,24 @@ describe("NewSizesOptionsScreen", () => {
       expect(widthFilter?.paramValue).toBeUndefined()
     })
 
+    it("should restore the previous custom values when the custom size options is selected again", () => {
+      const { getByA11yLabel, getByText, getByTestId } = renderWithWrappersTL(<TestRenderer />)
+      let filters
+      let widthFilter
+
+      fireEvent.changeText(getByA11yLabel("Minimum Width Input"), "5")
+
+      fireEvent.press(getByText("Custom Size"))
+      filters = getFilters(getByTestId("debug"))
+      widthFilter = getWidthFilterOption(filters)
+      expect(widthFilter?.paramValue).toBeUndefined()
+
+      fireEvent.press(getByText("Custom Size"))
+      filters = getFilters(getByTestId("debug"))
+      widthFilter = getWidthFilterOption(filters)
+      expect(widthFilter?.paramValue).toBe("5-*")
+    })
+
     it("should unselect the custom size optiom when custom inputs are empty", () => {
       const { getByA11yLabel, queryByA11yState } = renderWithWrappersTL(<TestRenderer />)
 
