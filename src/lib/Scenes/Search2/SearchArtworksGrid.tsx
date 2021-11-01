@@ -31,8 +31,10 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((state) => state.setFiltersCountAction)
 
-  const handleCloseFilterArtworksModal = () => {
-    trackEvent(tracks.closeFilterModal())
+  const handleCloseFilterArtworksModal = (withFiltersApplying: boolean = false) => {
+    if (!withFiltersApplying) {
+      trackEvent(tracks.closeFilterModal())
+    }
     setFilterArtworkModalVisible(false)
   }
   const handleOpenFilterArtworksModal = () => {
@@ -79,7 +81,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
         slug={null}
         query={keyword}
         isFilterArtworksModalVisible={isFilterArtworksModalVisible}
-        exitModal={handleCloseFilterArtworksModal}
+        exitModal={() => handleCloseFilterArtworksModal(true)}
         closeModal={handleCloseFilterArtworksModal}
         mode={FilterModalMode.Search}
       />
@@ -183,17 +185,19 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
 
 const tracks = {
   openFilterModal: () => ({
-    action: "openFilterModal",
+    action_name: "filter",
     context_screen_owner_type: OwnerEntityTypes.Search,
     context_screen: PageNames.Search,
     context_screen_owner_id: null,
     context_screen_owner_slug: null,
+    action_type: Schema.ActionTypes.Tap,
   }),
   closeFilterModal: () => ({
-    action: "closeFilterModal",
+    action_name: "closeFilterWindow",
     context_screen_owner_type: OwnerEntityTypes.Search,
     context_screen: PageNames.Search,
     context_screen_owner_id: null,
     context_screen_owner_slug: null,
+    action_type: Schema.ActionTypes.Tap,
   }),
 }
