@@ -80,7 +80,7 @@ const MyCollection: React.FC<{
         <Flex>
           {!!showNewWorksBanner && (
             <Banner
-              title="You have some artworks"
+              title="You have some artworks."
               text="To help add your current artworks to your collection, we automatically added your purchases from your order history."
               showCloseButton
             />

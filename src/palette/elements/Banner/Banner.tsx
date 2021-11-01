@@ -36,7 +36,7 @@ export const Banner: React.FC<BannerProps> = ({ title, text, onClose, showCloseB
         </Flex>
 
         {!!showCloseButton && (
-          <Flex>
+          <Flex style={{ marginTop: 2 }}>
             <TouchableWithoutFeedback onPress={handleClose}>
               <Image source={require("../../../../images/close-x.webp")} />
             </TouchableWithoutFeedback>
