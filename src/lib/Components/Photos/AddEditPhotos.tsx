@@ -7,11 +7,10 @@ import { isPad } from "lib/utils/hardware"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { chunk } from "lodash"
-import { AddIcon, BorderBox, Box, Button, Flex, Spacer, useColor, XCircleIcon } from "palette"
+import { AddIcon, BorderBox, Box, Button, Flex, Separator, Spacer, useColor, XCircleIcon } from "palette"
 import React, { useState } from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
 import { Image as RNCImage } from "react-native-image-crop-picker"
-import { Separator } from "../Separator"
 
 const MARGIN = 20
 
