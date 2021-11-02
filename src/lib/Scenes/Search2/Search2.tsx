@@ -388,7 +388,6 @@ export const tracks = {
     position: data.position,
     selected_object_type: data.type,
     selected_object_slug: data.slug,
-    selected_object_tab: data.objectTab,
     context_module: data.contextModule,
     action: Schema.ActionNames.SelectedResultFromSearchScreen,
   }),
