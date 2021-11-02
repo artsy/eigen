@@ -22,6 +22,7 @@ export interface PillProps extends FlexProps {
   disabled?: boolean
   selected?: boolean
   imageUrl?: string
+  disabledStylesEnabled?: boolean
   highlightEnabled?: boolean
 }
 
@@ -64,6 +65,7 @@ export const Pill: React.FC<PillProps> = ({
   children,
   disabled,
   rounded,
+  disabledStylesEnabled = false,
   highlightEnabled = false,
   ...rest
 }) => {
@@ -71,6 +73,7 @@ export const Pill: React.FC<PillProps> = ({
   const initialDisplayState = selected ? DisplayState.Selected : DisplayState.Enabled
   const [innerDisplayState, setInnerDisplayState] = useState(initialDisplayState)
   const { height, paddingLeft, paddingRight } = getSize(size)
+  const color = useColor()
 
   const handlePress = (event: GestureResponderEvent) => {
     onPress?.(event)
@@ -85,7 +88,7 @@ export const Pill: React.FC<PillProps> = ({
   const to = useStyleForState(innerDisplayState)
   return (
     <Spring native to={to} config={config.stiff}>
-      {(springProps: typeof to) => (
+      {() => (
         <Pressable
           disabled={disabled || !onPress}
           onPress={handlePress}
@@ -109,7 +112,7 @@ export const Pill: React.FC<PillProps> = ({
             paddingLeft={paddingLeft}
             paddingRight={paddingRight}
             style={{
-              borderColor: springProps.borderColor,
+              borderColor: disabledStylesEnabled ? color("black30") : color("black60"),
             }}
             {...rest}
           >
@@ -120,7 +123,10 @@ export const Pill: React.FC<PillProps> = ({
               </>
             )}
             {!!imageUrl && <OpaqueImageViewContainer imageURL={imageUrl} />}
-            <AnimatedText numberOfLines={1} style={[textStyle, { color: springProps.textColor }]}>
+            <AnimatedText
+              numberOfLines={1}
+              style={[textStyle, { color: disabledStylesEnabled ? color("black30") : color("black100") }]}
+            >
               {children}
             </AnimatedText>
             {iconPosition === "right" && !!Icon && (

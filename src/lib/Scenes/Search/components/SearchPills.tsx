@@ -36,7 +36,8 @@ export const SearchPills = React.forwardRef<ScrollView, SearchPillsProps>((props
             }}
             rounded
             selected={selected}
-            disabled={selected}
+            disabled={pill.disabled || selected}
+            disabledStylesEnabled={pill.disabled}
             onPress={() => onPillPress(pill)}
           >
             {displayName}

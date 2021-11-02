@@ -92,12 +92,9 @@ export const Search: React.FC<SearchProps> = (props) => {
 
   const pillsArray = useMemo<PillType[]>(() => {
     if (Array.isArray(indices) && indices.length > 0) {
-      const formattedIndices: PillType[] = indices.reduce((acc, index) => {
-        if (!enableImprovedPills || indicesInfo[index.name]?.hasResults) {
-          acc.push({ ...index, type: "algolia" })
-        }
-        return acc
-      }, [])
+      const formattedIndices: PillType[] = indices.map((index) => {
+        return { ...index, type: "algolia", disabled: !indicesInfo[index.name]?.hasResults }
+      })
 
       return [...pills, ...formattedIndices]
     }
