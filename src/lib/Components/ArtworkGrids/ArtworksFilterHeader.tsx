@@ -8,6 +8,8 @@ interface FilterHeaderProps {
   title?: string
 }
 
+const HEADER_HEIGHT = 50
+
 export const ArtworksFilterHeader: React.FC<FilterHeaderProps> = ({
   children,
   onFilterPress,
@@ -15,8 +17,8 @@ export const ArtworksFilterHeader: React.FC<FilterHeaderProps> = ({
   title,
 }) => {
   return (
-    <Flex>
-      <Flex flexDirection="row" height={28} my={1} px={2} justifyContent="space-between" alignItems="center">
+    <Flex my={1}>
+      <Flex flexDirection="row" height={HEADER_HEIGHT} px={2} justifyContent="space-between" alignItems="center">
         <TouchableHighlightColor
           haptic
           onPress={onFilterPress}

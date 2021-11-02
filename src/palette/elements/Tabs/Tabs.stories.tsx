@@ -36,19 +36,22 @@ storiesOf("Navigational Tabs", module)
     return <Wrapper tabs={tabs} component={NavigationalTabs} />
   })
 
-storiesOf("Content Tabs", module).add("ContentTabs", () => {
-  const tabs: TabsType = [
-    { label: "Artist" },
-    { label: "Artworks" },
-    { label: "Insights" },
-    { label: "Artist Two" },
-    { label: "Long Artworks Artworks" },
-    { label: "An Insight" },
-  ]
-  return <Wrapper tabs={tabs} component={ContentTabs} />
-})
+storiesOf("Content Tabs", module)
+  .addDecorator(withTheme)
+  .add("ContentTabs", () => {
+    const tabs: TabsType = [
+      { label: "Artist" },
+      { label: "Artworks" },
+      { label: "Insights" },
+      { label: "Artist Two" },
+      { label: "Long Artworks Artworks" },
+      { label: "An Insight" },
+    ]
+    return <Wrapper tabs={tabs} component={ContentTabs} />
+  })
 
 storiesOf("Step Tabs", module)
+  .addDecorator(withTheme)
   .add("Step Tabs with step 1 completed", () => {
     const tabs: TabsType = [{ label: "Step 1", completed: true }, { label: "Step 2" }, { label: "Step 3" }]
     return <Wrapper tabs={tabs} component={StepTabs} />
