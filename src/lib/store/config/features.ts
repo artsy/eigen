@@ -188,7 +188,7 @@ export const features = defineFeatures({
   },
   AREnableMyCollectionOrderImport: {
     readyForRelease: false,
-    description: "Enable My Collection order import",
+    description: "Enable My Collection Order Import",
     showInAdminMenu: true,
     echoFlagKey: "AREnableMyCollectionOrderImport",
   },
