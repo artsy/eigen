@@ -17,7 +17,7 @@ export const ArtworksFilterHeader: React.FC<FilterHeaderProps> = ({
   title,
 }) => {
   return (
-    <Flex my={1}>
+    <Flex mb={1}>
       <Flex flexDirection="row" height={HEADER_HEIGHT} px={2} justifyContent="space-between" alignItems="center">
         <TouchableHighlightColor
           haptic

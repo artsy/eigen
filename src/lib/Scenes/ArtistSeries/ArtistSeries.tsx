@@ -80,7 +80,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
               <Spacer mt={2} mb={1} />
               <ArtistSeriesMetaFragmentContainer artistSeries={artistSeries} />
             </Flex>
-            <Separator mt={2} mb={1} />
+            <Separator mt={2} />
           </>
         }
         footerContent={

@@ -3,7 +3,7 @@ import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/ArtworksFilter
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { Schema } from "lib/utils/track"
-import { Box, Message, Spacer, Text } from "palette"
+import { Box, Message, Separator, Spacer, Text } from "palette"
 import React, { useContext, useRef, useState } from "react"
 import { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -46,6 +46,7 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
     setJSX(
       <Box backgroundColor="white">
         <Spacer mb={1} />
+        <Separator />
         <ArtworksFilterHeader selectedFiltersCount={selectedFiltersCount} onFilterPress={openFilterModal} />
       </Box>
     )
