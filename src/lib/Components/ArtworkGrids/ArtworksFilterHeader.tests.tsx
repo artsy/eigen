@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { ArtworksFilterHeader } from "./FilterHeader2"
+import { ArtworksFilterHeader } from "./ArtworksFilterHeader"
 
 describe("ArtistSeriesFilterHeader", () => {
   const onPress = jest.fn()

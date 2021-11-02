@@ -1,7 +1,7 @@
 import { GeneArtworksTestsQuery } from "__generated__/GeneArtworksTestsQuery.graphql"
 import { ApplyButton } from "lib/Components/ArtworkFilter"
+import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/ArtworksFilterHeader"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { TouchableRow } from "lib/Components/TouchableRow"

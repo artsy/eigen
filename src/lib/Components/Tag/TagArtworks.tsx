@@ -1,9 +1,9 @@
 import { TagArtworks_tag } from "__generated__/TagArtworks_tag.graphql"
+import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/ArtworksFilterHeader"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { Schema } from "lib/utils/track"
-import { Box, Message, Separator, Spacer } from "palette"
+import { Box, Message, Spacer, Text } from "palette"
 import React, { useContext, useRef, useState } from "react"
 import { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
@@ -11,7 +11,7 @@ import { useTracking } from "react-tracking"
 import { ArtworkFilterNavigator } from "../ArtworkFilter/ArtworkFilter"
 import { FilterModalMode } from "../ArtworkFilter/ArtworkFilterOptionsScreen"
 import { ArtworkFiltersStoreProvider } from "../ArtworkFilter/ArtworkFilterStore"
-import { useArtworkFilters } from "../ArtworkFilter/useArtworkFilters"
+import { useArtworkFilters, useSelectedFiltersCount } from "../ArtworkFilter/useArtworkFilters"
 import { StickyTabPageFlatListContext } from "../StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "../StickyTabPage/StickyTabPageScrollView"
 
@@ -28,6 +28,7 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
   const tracking = useTracking()
   const artworksTotal = tag.artworks?.counts?.total ?? 0
   const initialArtworksTotal = useRef(artworksTotal)
+  const selectedFiltersCount = useSelectedFiltersCount()
 
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
@@ -44,8 +45,8 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
   useEffect(() => {
     setJSX(
       <Box backgroundColor="white">
-        <ArtworksFilterHeader count={artworksTotal} onFilterPress={openFilterModal} />
-        <Separator />
+        <Spacer mb={1} />
+        <ArtworksFilterHeader selectedFiltersCount={selectedFiltersCount} onFilterPress={openFilterModal} />
       </Box>
     )
   }, [artworksTotal, openFilterModal])
@@ -69,6 +70,9 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
   return (
     <>
       <Spacer mb={1} />
+      <Text variant="md" color="black60" mb={2}>
+        Showing {artworksTotal} works
+      </Text>
       <InfiniteScrollArtworksGridContainer
         connection={tag.artworks!}
         hasMore={relay.hasMore}

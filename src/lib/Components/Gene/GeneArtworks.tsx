@@ -1,20 +1,19 @@
 import { GeneArtworks_gene } from "__generated__/GeneArtworks_gene.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/ArtworksFilterHeader"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import { Separator } from "lib/Components/Separator"
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { Schema } from "lib/utils/track"
-import { Box, Message } from "palette"
+import { Box, Message, Text } from "palette"
 import React, { useContext, useState } from "react"
 import { useEffect } from "react"
 import { useRef } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { useArtworkFilters } from "../ArtworkFilter/useArtworkFilters"
+import { useArtworkFilters, useSelectedFiltersCount } from "../ArtworkFilter/useArtworkFilters"
 
 interface GeneArtworksContainerProps {
   gene: GeneArtworks_gene
@@ -29,6 +28,7 @@ export const GeneArtworks: React.FC<GeneArtworksProps> = ({ gene, relay, openFil
   const tracking = useTracking()
   const artworksTotal = gene.artworks?.counts?.total ?? 0
   const initialArtworksTotal = useRef(artworksTotal)
+  const selectedFiltersCount = useSelectedFiltersCount()
 
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
@@ -41,8 +41,7 @@ export const GeneArtworks: React.FC<GeneArtworksProps> = ({ gene, relay, openFil
   useEffect(() => {
     setJSX(
       <Box backgroundColor="white">
-        <ArtworksFilterHeader count={artworksTotal} onFilterPress={openFilterModal} />
-        <Separator />
+        <ArtworksFilterHeader selectedFiltersCount={selectedFiltersCount} onFilterPress={openFilterModal} />
       </Box>
     )
   }, [artworksTotal, openFilterModal])
@@ -69,6 +68,9 @@ export const GeneArtworks: React.FC<GeneArtworksProps> = ({ gene, relay, openFil
 
   return (
     <Box mt={1}>
+      <Text variant="md" color="black60" mb={2}>
+        Showing {artworksTotal} works
+      </Text>
       <InfiniteScrollArtworksGrid connection={gene.artworks!} hasMore={relay.hasMore} loadMore={relay.loadMore} />
     </Box>
   )
