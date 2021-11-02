@@ -50,7 +50,7 @@ describe("SearchArtworksGrid", () => {
   it("tracks filter modal opening", () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(environment)
-    fireEvent.press(getByText("Sort & Filter"))
+    fireEvent.press(getByText("Filter"))
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
         Array [
           Object {
