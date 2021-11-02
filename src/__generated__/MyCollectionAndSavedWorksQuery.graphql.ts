@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e0844eedb8670255cf9b098545f846d3 */
+/* @relayHash a029dc4eaa7a70cb9227bb670b794fb9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,6 +34,11 @@ fragment MyCollectionAndSavedWorks_me on Me {
 
 fragment MyProfileEditFormModal_me on Me {
   name
+  bio
+  icon {
+    internalID
+    imageURL
+  }
 }
 */
 
@@ -96,6 +101,38 @@ const node: ConcreteRequest = {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "bio",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "icon",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "internalID",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "imageURL",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "id",
             "storageKey": null
           }
@@ -105,7 +142,7 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "id": "e0844eedb8670255cf9b098545f846d3",
+    "id": "a029dc4eaa7a70cb9227bb670b794fb9",
     "metadata": {},
     "name": "MyCollectionAndSavedWorksQuery",
     "operationKind": "query",

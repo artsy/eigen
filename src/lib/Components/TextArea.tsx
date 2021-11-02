@@ -43,31 +43,3 @@ export const TextArea = forwardRef<TextInput, TextAreaProps>(({ title, ...props 
     </>
   )
 })
-// export const TextArea: React.FC<TextAreaProps> = ({ title, ...props }) => {
-//   const color = useColor()
-//   const [borderColor, setBorderColor] = useState(color("black10"))
-
-//   return (
-//     <>
-//       {!!title && (
-//         <Text mb={1} variant="xs">
-//           {title}
-//         </Text>
-//       )}
-//       <StyledTextArea
-//         {...props}
-//         onFocus={(e) => {
-//           props.onFocus?.(e)
-//           setBorderColor(color("blue100"))
-//         }}
-//         onBlur={(e) => {
-//           props.onBlur?.(e)
-//           setBorderColor(color("black10"))
-//         }}
-//         style={{ borderColor }}
-//         multiline
-//         textAlignVertical="top"
-//       />
-//     </>
-//   )
-// }

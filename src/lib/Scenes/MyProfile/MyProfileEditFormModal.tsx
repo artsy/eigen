@@ -17,7 +17,7 @@ import {
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
 } from "../Consignments/Submission/geminiUploadToS3"
-import { myProfileUpdateProfile } from "./myProfileUpdateProfile"
+import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 
 interface MyProfileEditFormModalProps {
   visible: boolean
@@ -51,7 +51,7 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
   const color = useColor()
   const { showActionSheetWithOptions } = useActionSheet()
   const nameInputRef = useRef<Input>(null)
-  const bioInputRef = useRef<TextInput>(null)
+  const aboutInputRef = useRef<TextInput>(null)
 
   const { handleSubmit, handleChange, dirty, values, errors, validateForm } = useFormik<EditMyProfileValuesSchema>({
     enableReinitialize: true,
@@ -64,11 +64,9 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
     },
     initialErrors: {},
     onSubmit: async ({ name, bio, photo }) => {
-      console.log("Submitting....", name, bio, photo)
       try {
-        const externalPhotoUrl = await uploadPhoto(photo)
-        console.log("Check :: ", externalPhotoUrl)
-        await myProfileUpdateProfile({ name, bio, photo })
+        const iconUrl = await uploadPhoto(photo)
+        await updateMyUserProfile({ name, bio, iconUrl })
       } catch (e) {
         console.log("Catch error ", e)
       }
@@ -118,9 +116,22 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
             </Touchable>
           </Flex>
           <Flex mx={2}>
-            <Input title="Name" required />
+            <Input
+              ref={nameInputRef}
+              title="Name"
+              required
+              onChangeText={handleChange("name") as (value: string) => void}
+              onBlur={() => validateForm()}
+              error={errors.name}
+              returnKeyType="next"
+              defaultValue={values.name}
+            />
             <Spacer py={2} />
-            <TextArea ref={bioInputRef} title="ABOUT" onChangeText={handleChange("bio") as (value: string) => void} />
+            <TextArea
+              ref={aboutInputRef}
+              title="ABOUT"
+              onChangeText={handleChange("about") as (value: string) => void}
+            />
             <Spacer py={2} />
             <Button flex={1} disabled={!dirty} onPress={handleSubmit}>
               Save
@@ -137,6 +148,10 @@ export const MyProfileEditFormModalFragmentContainer = createFragmentContainer(M
     fragment MyProfileEditFormModal_me on Me {
       name
       bio
+      icon {
+        internalID
+        imageURL
+      }
     }
   `,
 })

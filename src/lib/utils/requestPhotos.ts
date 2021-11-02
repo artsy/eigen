@@ -7,7 +7,7 @@ import { osMajorVersion } from "./platformUtil"
 
 export async function requestPhotos(allowMultiple: boolean = true): Promise<Image[]> {
   if (Platform.OS === "ios" && osMajorVersion() >= 14) {
-    return LegacyNativeModules.ARPHPhotoPickerModule.requestPhotos()
+    return LegacyNativeModules.ARPHPhotoPickerModule.requestPhotos(false)
   } else {
     const images = await ImagePicker.openPicker({
       mediaType: "photo",
@@ -20,35 +20,21 @@ export async function requestPhotos(allowMultiple: boolean = true): Promise<Imag
   }
 }
 
-type ShowActionSheet = (options: ActionSheetOptions, callback: (i: number) => void) => void
-
-export async function showPhotoActionSheet<T extends boolean>(
-  showActionSheet: ShowActionSheet,
-  allowMultipleSelection?: T
-): Promise<T extends true ? Image[] : Image>
-
-export async function showPhotoActionSheet(
-  showActionSheet: ShowActionSheet,
-  allowMultipleSelection: undefined
-): Promise<Image[]>
-
 export async function showPhotoActionSheet(
   showActionSheet: (options: ActionSheetOptions, callback: (i: number) => void) => void,
-  useModal: boolean = false,
-  allowMultipleSelection?: boolean
+  allowMultiple: boolean = true
 ): Promise<Image[]> {
-  return new Promise<Image[]>((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     showActionSheet(
       {
         options: ["Photo Library", "Take Photo", "Cancel"],
         cancelButtonIndex: 2,
-        useModal,
       },
       async (buttonIndex) => {
         let photos = null
         try {
           if (buttonIndex === 0) {
-            photos = await requestPhotos(allowMultipleSelection !== undefined ? allowMultipleSelection : true)
+            photos = await requestPhotos(allowMultiple)
             resolve(photos)
           }
           if (buttonIndex === 1) {
