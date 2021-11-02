@@ -187,9 +187,10 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableSortFilterForArtworksPill: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable sort filter for artworks pill",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableSortFilterForArtworksPill",
   },
 })
 
