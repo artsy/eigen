@@ -29,6 +29,17 @@ jest.mock("lib/utils/hardware", () => ({
 jest.mock("lib/utils/useSearchInsightsConfig", () => ({
   useSearchInsightsConfig: () => true,
 }))
+jest.mock("lib/utils/useAlgoliaIndices", () => ({
+  useAlgoliaIndices: () => ({
+    indicesInfo: {
+      Artist_staging: { hasResults: true },
+      Sale_staging: { hasResults: false },
+      Fair_staging: { hasResults: false },
+      Gallery_staging: { hasResults: true },
+    },
+    updateIndicesInfo: jest.fn(),
+  }),
+}))
 
 describe("Search2 Screen", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
@@ -127,21 +138,70 @@ describe("Search2 Screen", () => {
   })
 
   describe("search pills", () => {
+    describe("with AREnableImprovedSearchPills enabled", () => {
+      it("are displayed if they have results and when the user has typed the minimum allowed number of characters", () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedSearchPills: true })
+        const { getByPlaceholderText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+
+        mockEnvironmentPayload(mockEnvironment, {
+          Algolia: () => ({
+            appID: "",
+            apiKey: "",
+            indices: [
+              { name: "Artist_staging", displayName: "Artist" },
+              { name: "Sale_staging", displayName: "Auction" },
+              { name: "Gallery_staging", displayName: "Gallery" },
+              { name: "Fair_staging", displayName: "Fair" },
+            ],
+          }),
+        })
+
+        expect(queryByText("Top")).toBeFalsy()
+        expect(queryByText("Artist")).toBeFalsy()
+        expect(queryByText("Auction")).toBeFalsy()
+        expect(queryByText("Gallery")).toBeFalsy()
+        expect(queryByText("Fair")).toBeFalsy()
+
+        const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+        fireEvent(searchInput, "changeText", "Ba")
+
+        expect(queryByText("Top")).toBeTruthy()
+        expect(queryByText("Artist")).toBeTruthy()
+        expect(queryByText("Auction")).toBeFalsy()
+        expect(queryByText("Gallery")).toBeTruthy()
+        expect(queryByText("Fair")).toBeFalsy()
+      })
+    })
+
     it("are displayed when the user has typed the minimum allowed number of characters", () => {
       const { getByPlaceholderText, queryByText } = renderWithWrappersTL(<TestRenderer />)
-
       mockEnvironmentPayload(mockEnvironment, {
         Algolia: () => ({
           appID: "",
           apiKey: "",
-          indices: [{ name: "Artist_staging", displayName: "Artist" }],
+          indices: [
+            { name: "Artist_staging", displayName: "Artist" },
+            { name: "Sale_staging", displayName: "Auction" },
+            { name: "Gallery_staging", displayName: "Gallery" },
+            { name: "Fair_staging", displayName: "Fair" },
+          ],
         }),
       })
-
       const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+      expect(queryByText("Top")).toBeFalsy()
+      expect(queryByText("Artist")).toBeFalsy()
+      expect(queryByText("Auction")).toBeFalsy()
+      expect(queryByText("Gallery")).toBeFalsy()
+      expect(queryByText("Fair")).toBeFalsy()
+
       fireEvent(searchInput, "changeText", "Ba")
-      expect(queryByText("Top")).toBeDefined()
-      expect(queryByText("Artist")).toBeDefined()
+
+      expect(queryByText("Top")).toBeTruthy()
+      expect(queryByText("Artist")).toBeTruthy()
+      expect(queryByText("Auction")).toBeTruthy()
+      expect(queryByText("Gallery")).toBeTruthy()
+      expect(queryByText("Fair")).toBeTruthy()
     })
 
     it("hide keyboard when selecting other pill", () => {

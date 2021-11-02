@@ -6,10 +6,12 @@ import { Search2Query } from "__generated__/Search2Query.graphql"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { SearchInput as SearchBox } from "lib/Components/SearchInput"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { isPad } from "lib/utils/hardware"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
+import { useAlgoliaIndices } from "lib/utils/useAlgoliaIndices"
 import { useSearchInsightsConfig } from "lib/utils/useSearchInsightsConfig"
 import { throttle } from "lodash"
 import { Box, Flex, Spacer } from "palette"
@@ -42,6 +44,7 @@ interface SearchInputProps {
   currentRefinement: string
   refine: (value: string) => any
   onReset: () => void
+  onTextChange: (value: string) => void
 }
 
 interface TappedSearchResultData {
@@ -55,12 +58,19 @@ interface TappedSearchResultData {
 
 const SEARCH_THROTTLE_INTERVAL = 500
 
-const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholder, refine, onReset }) => {
+const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholder, refine, onTextChange, onReset }) => {
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(currentRefinement)
   const isAndroid = Platform.OS === "android"
   const navigation = isAndroid ? useNavigation() : null
-  const handleChangeText = useMemo(() => throttle(refine, SEARCH_THROTTLE_INTERVAL), [])
+  const handleChangeText = useMemo(
+    () =>
+      throttle((value) => {
+        refine(value)
+        onTextChange(value)
+      }, SEARCH_THROTTLE_INTERVAL),
+    []
+  )
 
   const handleReset = () => {
     trackEvent({
@@ -142,22 +152,25 @@ export const Search2: React.FC<Search2Props> = (props) => {
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
   const searchInsightsConfigured = useSearchInsightsConfig(system?.algolia?.appID, system?.algolia?.apiKey)
+  const indices = system?.algolia?.indices
+  const { indicesInfo, updateIndicesInfo } = useAlgoliaIndices(searchClient, indices)
   const { trackEvent } = useTracking()
+  const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
 
   const pillsArray = useMemo<PillType[]>(() => {
-    const indices = system?.algolia?.indices
-
     if (Array.isArray(indices) && indices.length > 0) {
-      const formattedIndices: PillType[] = indices.map((indice) => ({
-        ...indice,
-        type: "algolia",
-      }))
+      const formattedIndices: PillType[] = indices.reduce((acc, index) => {
+        if (!enableImprovedPills || indicesInfo[index.name]?.hasResults) {
+          acc.push({ ...index, type: "algolia" })
+        }
+        return acc
+      }, [])
 
       return [...pills, ...formattedIndices]
     }
 
     return pills
-  }, [system?.algolia?.indices])
+  }, [indices, indicesInfo])
 
   if (!searchClient || !searchInsightsConfigured) {
     return (
@@ -261,6 +274,11 @@ export const Search2: React.FC<Search2Props> = (props) => {
             <SearchInputContainer
               placeholder="Search artists, artworks, galleries, etc"
               onReset={handleResetSearchInput}
+              onTextChange={(value) => {
+                if (enableImprovedPills && value.length >= 2) {
+                  updateIndicesInfo(value)
+                }
+              }}
             />
           </Flex>
           <Flex flex={1} collapsable={false}>
