@@ -45,7 +45,6 @@ const Main: React.FC<{}> = track()(({}) => {
   useWebViewCookies()
   useDeepLinks()
   useInitialNotification()
-
   useExperiments()
 
   useEffect(() => {
