@@ -186,6 +186,12 @@ export const features = defineFeatures({
     description: "Enable Split.io A/B testing",
     showInAdminMenu: true,
   },
+  AREnableSortFilterForArtworksPill: {
+    readyForRelease: true,
+    description: "Enable sort filter for artworks pill",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableSortFilterForArtworksPill",
+  },
 })
 
 export interface DevToggleDescriptor {
