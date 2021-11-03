@@ -1,4 +1,5 @@
 import { ArtistSeriesTestsQuery } from "__generated__/ArtistSeriesTestsQuery.graphql"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtistSeries, ArtistSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesArtworks } from "lib/Scenes/ArtistSeries/ArtistSeriesArtworks"
 import { ArtistSeriesHeader } from "lib/Scenes/ArtistSeries/ArtistSeriesHeader"
@@ -25,24 +26,26 @@ describe("Artist Series Rail", () => {
   })
 
   const TestRenderer = () => (
-    <QueryRenderer<ArtistSeriesTestsQuery>
-      environment={env}
-      query={graphql`
-        query ArtistSeriesTestsQuery @relay_test_operation {
-          artistSeries(id: "pumpkins") {
-            ...ArtistSeries_artistSeries
+    <ArtworkFiltersStoreProvider>
+      <QueryRenderer<ArtistSeriesTestsQuery>
+        environment={env}
+        query={graphql`
+          query ArtistSeriesTestsQuery @relay_test_operation {
+            artistSeries(id: "pumpkins") {
+              ...ArtistSeries_artistSeries
+            }
           }
-        }
-      `}
-      variables={{ artistSeriesID: "pumpkins" }}
-      render={({ props, error }) => {
-        if (props?.artistSeries) {
-          return <ArtistSeriesFragmentContainer artistSeries={props.artistSeries} />
-        } else if (error) {
-          console.log(error)
-        }
-      }}
-    />
+        `}
+        variables={{ artistSeriesID: "pumpkins" }}
+        render={({ props, error }) => {
+          if (props?.artistSeries) {
+            return <ArtistSeriesFragmentContainer artistSeries={props.artistSeries} />
+          } else if (error) {
+            console.log(error)
+          }
+        }}
+      />
+    </ArtworkFiltersStoreProvider>
   )
 
   const getWrapper = (mockResolvers = {}) => {
