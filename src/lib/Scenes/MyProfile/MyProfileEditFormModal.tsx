@@ -8,7 +8,7 @@ import { LoadingIndicator } from "lib/Components/LoadingIndicator"
 import { TextArea } from "lib/Components/TextArea"
 import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
-import { isArray } from "lodash"
+import { compact, isArray } from "lodash"
 import { Avatar, Box, Button, Flex, Input, Join, Spacer, Text, Touchable, useColor } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
@@ -31,7 +31,7 @@ export interface EditMyProfileValuesSchema {
 
 export const editMyProfileSchema = Yup.object().shape({
   photo: Yup.string(),
-  name: Yup.string().required("Name is required").min(1, "Name is required"),
+  name: Yup.string().required("Name is required"),
   bio: Yup.string(),
 })
 
@@ -42,6 +42,25 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
   const nameInputRef = useRef<Input>(null)
   const bioInputRef = useRef<TextInput>(null)
   const [loading, setLoading] = useState<boolean>(false)
+
+  const uploadProfilePhoto = async (photo: string) => {
+    // We want to show the local image initially for better UX since Gemini takes a while to process
+    setProfileIconLocally(photo)
+    try {
+      const iconUrl = await getConvertedImageUrlFromS3(photo)
+      await updateMyUserProfile({ iconUrl })
+    } catch (error) {
+      console.log("Failed to upload profile picture ", error)
+    }
+  }
+
+  const updateUserInfo = async ({ name, bio }: { name: string; bio: string }) => {
+    try {
+      await updateMyUserProfile({ name, bio })
+    } catch (error) {
+      console.log("Failed to update user name and bio ", error)
+    }
+  }
 
   const { handleSubmit, handleChange, dirty, values, errors, validateForm } = useFormik<EditMyProfileValuesSchema>({
     enableReinitialize: true,
@@ -54,13 +73,11 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
     },
     initialErrors: {},
     onSubmit: async ({ name, bio, photo }) => {
-      setLoading(true)
-      setProfileIconLocally(photo)
       try {
-        const iconUrl = await getConvertedImageUrlFromS3(photo)
-        await updateMyUserProfile({ name, bio, iconUrl })
-      } catch (e) {
-        console.log("Catch error ", e)
+        setLoading(true)
+        await Promise.all(compact([await updateUserInfo({ name, bio }), photo && (await uploadProfilePhoto(photo))]))
+      } catch (error) {
+        console.log("Failed to update user profile ", error)
       } finally {
         setLoading(false)
       }
