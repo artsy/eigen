@@ -4,13 +4,14 @@ import { ScrollView } from "react-native"
 import { PillType } from "../types"
 
 export interface SearchPillsProps {
+  loading: boolean
   pills: PillType[]
   onPillPress: (pill: PillType) => void
   isSelected: (pill: PillType) => boolean
 }
 
 export const SearchPills = React.forwardRef<ScrollView, SearchPillsProps>((props, ref) => {
-  const { pills, onPillPress, isSelected } = props
+  const { loading, pills, onPillPress, isSelected } = props
   const space = useSpace()
 
   return (
@@ -26,6 +27,7 @@ export const SearchPills = React.forwardRef<ScrollView, SearchPillsProps>((props
       {pills.map((pill) => {
         const { name, displayName } = pill
         const selected = isSelected(pill)
+        const disabledWithStyles = (!!pill.disabled || !!loading) && pill.name !== "TOP"
 
         return (
           <Pill
@@ -36,8 +38,8 @@ export const SearchPills = React.forwardRef<ScrollView, SearchPillsProps>((props
             }}
             rounded
             selected={selected}
-            disabled={pill.disabled || selected}
-            disabledStylesEnabled={pill.disabled}
+            disabled={disabledWithStyles || selected}
+            disabledStylesEnabled={disabledWithStyles}
             onPress={() => onPillPress(pill)}
           >
             {displayName}

@@ -86,7 +86,7 @@ export const Search: React.FC<SearchProps> = (props) => {
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
   const searchInsightsConfigured = useSearchInsightsConfig(system?.algolia?.appID, system?.algolia?.apiKey)
   const indices = system?.algolia?.indices
-  const { indicesInfo, updateIndicesInfo } = useAlgoliaIndices(searchClient, indices)
+  const { loading: indicesInfoLoading, indicesInfo, updateIndicesInfo } = useAlgoliaIndices(searchClient, indices)
   const { trackEvent } = useTracking()
   const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
 
@@ -218,6 +218,7 @@ export const Search: React.FC<SearchProps> = (props) => {
                 <Box pt={2} pb={1}>
                   <SearchPills
                     ref={searchPillsRef}
+                    loading={indicesInfoLoading}
                     pills={pillsArray}
                     onPillPress={handlePillPress}
                     isSelected={isSelected}
