@@ -1,5 +1,6 @@
 import { MyCollectionAndSavedWorks_me } from "__generated__/MyCollectionAndSavedWorks_me.graphql"
 import { MyCollectionAndSavedWorksQuery } from "__generated__/MyCollectionAndSavedWorksQuery.graphql"
+import { Image } from "lib/Components/Bidding/Elements/Image"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "lib/navigation/navigate"
@@ -68,7 +69,20 @@ export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWor
       />
       <Join separator={<Spacer py={space(1)} />}>
         <Flex flexDirection="row" alignItems="center" px={2}>
-          <Avatar src={profileIcon} size="md" />
+          <Box
+            height="99"
+            width="99"
+            borderRadius="50"
+            backgroundColor={color("black10")}
+            justifyContent="center"
+            alignItems="center"
+          >
+            {!!profileIcon ? (
+              <Avatar src={profileIcon} size="md" />
+            ) : (
+              <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
+            )}
+          </Box>
           <Box px={2} flexShrink={1}>
             <Sans size="10" color={color("black100")}>
               {me?.name}
@@ -98,7 +112,7 @@ export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWor
   )
 }
 
-const MyCollectionAndSavedWorksFragmentContainer = createFragmentContainer(MyCollectionAndSavedWorks, {
+export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContainer(MyCollectionAndSavedWorks, {
   me: graphql`
     fragment MyCollectionAndSavedWorks_me on Me {
       name
