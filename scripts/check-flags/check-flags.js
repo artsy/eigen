@@ -4,11 +4,11 @@
 "use strict"
 
 const fs = require('fs');
-function checkFlags() {
+module.exports.checkFlags = () => {
   try {
     const fileContent = fs.readFileSync('./src/lib/store/config/features.ts', 'utf8');
-    const releasedFlags = parseReleasedFlags(fileContent) ?? []
-    const hiddenFlags = parseHiddenFlags(fileContent, releasedFlags)
+    const releasedFlags = this.parseReleasedFlags(fileContent) ?? []
+    const hiddenFlags = this.parseHiddenFlags(fileContent, releasedFlags)
     return { hiddenFlags, releasedFlags }
   } catch (err) {
     return err
@@ -49,7 +49,7 @@ function matchAllFlags(content) {
 /**
  * @param {string} content
  */
-export function parseReleasedFlags(content) {
+module.exports.parseReleasedFlags = (content) => {
   const readyForReleaseFlagResults = matchReadyForReleaseFlags(content)
   var lastFlag
   var releasedFlags = []
@@ -75,7 +75,8 @@ export function parseReleasedFlags(content) {
  * @param {string} content
  * @param {string[]} releasedFlags
  */
-export function parseHiddenFlags(content, releasedFlags) {
+
+module.exports.parseHiddenFlags = (content, releasedFlags) => {
   const allFlagResults = matchAllFlags(content)
   var allFlags = []
   for (const result of allFlagResults) {
@@ -91,6 +92,10 @@ export function parseHiddenFlags(content, releasedFlags) {
 }
 
 
-// write output to a file so we can retrieve in fastlane
-const flags = checkFlags()
-fs.writeFileSync('./fastlane/flags.json', JSON.stringify(flags))
+// @ts-ignore
+if (require.main === module) {
+  const flags = this.checkFlags()
+  // write output to a file so we can retrieve in fastlane
+  fs.writeFileSync('./fastlane/flags.json', JSON.stringify(flags))
+}
+
