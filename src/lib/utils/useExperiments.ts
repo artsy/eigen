@@ -11,10 +11,12 @@ export const useExperiments = () => {
   const enableSplitIOABTesting = useFeatureFlag("AREnableSplitIOABTesting")
 
   if (enableSplitIOABTesting) {
+    const environment = GlobalStore.useAppState((store) => store.config.environment.env)
     // Instantiate the SDK
     const factory: SplitIO.ISDK = SplitFactory({
       core: {
-        authorizationKey: __DEV__ ? Config.SPLIT_IO_STAGING_API_KEY : Config.SPLIT_IO_PRODUCTION_API_KEY,
+        authorizationKey:
+          environment === "staging" ? Config.SPLIT_IO_STAGING_API_KEY : Config.SPLIT_IO_PRODUCTION_API_KEY,
         key: GlobalStore.useAppState((store) => store.auth.userID) ?? "not-logged",
       },
     })
