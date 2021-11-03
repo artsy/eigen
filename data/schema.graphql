@@ -8280,7 +8280,7 @@ type Me implements Node {
     before: String
 
     # Exclude artworks that have been purchased on Artsy and automatically added to the collection.
-    excludePurchasedArtworks: Boolean
+    excludePurchasedArtworks: Boolean = false
     first: Int
     last: Int
     sort: MyCollectionArtworkSorts
