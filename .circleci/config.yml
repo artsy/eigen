@@ -272,7 +272,6 @@ jobs:
       - generate-checksums
       - install-node
       - install-gems
-      - install-node-modules
       - run:
           name: Check flags
           command: ./scripts/biweekly-flag-check.sh
