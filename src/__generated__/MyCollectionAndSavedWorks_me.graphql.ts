@@ -6,6 +6,11 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionAndSavedWorks_me = {
     readonly name: string | null;
+    readonly bio: string | null;
+    readonly icon: {
+        readonly internalID: string | null;
+        readonly imageURL: string | null;
+    } | null;
     readonly createdAt: string | null;
     readonly " $fragmentRefs": FragmentRefs<"MyProfileEditFormModal_me">;
     readonly " $refType": "MyCollectionAndSavedWorks_me";
@@ -35,6 +40,38 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "bio",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "Image",
+      "kind": "LinkedField",
+      "name": "icon",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "internalID",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "imageURL",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "createdAt",
       "storageKey": null
     },
@@ -47,5 +84,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'fe765d786232c7ff6ee29ed401338661';
+(node as any).hash = 'ab7acfe912be8bcb8cc40ceece4dd12f';
 export default node;

@@ -4,24 +4,22 @@ import { useFormik } from "formik"
 import { Image } from "lib/Components/Bidding/Elements/Image"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { LoadingIndicator } from "lib/Components/LoadingIndicator"
 import { TextArea } from "lib/Components/TextArea"
+import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { isArray } from "lodash"
 import { Avatar, Box, Button, Flex, Input, Join, Spacer, Text, Touchable, useColor } from "palette"
-import React, { useRef } from "react"
+import React, { useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import * as Yup from "yup"
-import {
-  getConvectionGeminiKey,
-  getGeminiCredentialsForEnvironment,
-  uploadFileToS3,
-} from "../Consignments/Submission/geminiUploadToS3"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 
 interface MyProfileEditFormModalProps {
   visible: boolean
   me: MyProfileEditFormModal_me
+  setProfileIconLocally: (path: string) => void
   onDismiss(): void
 }
 
@@ -37,21 +35,13 @@ export const editMyProfileSchema = Yup.object().shape({
   bio: Yup.string(),
 })
 
-export async function uploadPhoto(photo: EditMyProfileValuesSchema["photo"]) {
-  const convectionKey = await getConvectionGeminiKey()
-  const acl = "private"
-  const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
-  const bucket = assetCredentials.policyDocument.conditions.bucket
-  const s3 = await uploadFileToS3(photo, acl, assetCredentials)
-  return `https://${bucket}.s3.amazonaws.com/${s3.key}`
-}
-
 export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (props) => {
-  const { visible, onDismiss, me } = props
+  const { visible, onDismiss, me, setProfileIconLocally } = props
   const color = useColor()
   const { showActionSheetWithOptions } = useActionSheet()
   const nameInputRef = useRef<Input>(null)
-  const aboutInputRef = useRef<TextInput>(null)
+  const bioInputRef = useRef<TextInput>(null)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const { handleSubmit, handleChange, dirty, values, errors, validateForm } = useFormik<EditMyProfileValuesSchema>({
     enableReinitialize: true,
@@ -59,16 +49,20 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
     validateOnBlur: true,
     initialValues: {
       name: me?.name ?? "",
-      bio: "",
-      photo: "",
+      bio: me?.bio ?? "",
+      photo: me?.icon?.imageURL ?? "",
     },
     initialErrors: {},
     onSubmit: async ({ name, bio, photo }) => {
+      setLoading(true)
+      setProfileIconLocally(photo)
       try {
-        const iconUrl = await uploadPhoto(photo)
+        const iconUrl = await getConvertedImageUrlFromS3(photo)
         await updateMyUserProfile({ name, bio, iconUrl })
       } catch (e) {
         console.log("Catch error ", e)
+      } finally {
+        setLoading(false)
       }
       onDismiss()
     },
@@ -128,9 +122,10 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
             />
             <Spacer py={2} />
             <TextArea
-              ref={aboutInputRef}
+              ref={bioInputRef}
               title="ABOUT"
-              onChangeText={handleChange("about") as (value: string) => void}
+              defaultValue={values.bio}
+              onChangeText={handleChange("bio") as (value: string) => void}
             />
             <Spacer py={2} />
             <Button flex={1} disabled={!dirty} onPress={handleSubmit}>
@@ -139,6 +134,7 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
           </Flex>
         </Join>
       </ScrollView>
+      {!!loading && <LoadingIndicator />}
     </FancyModal>
   )
 }

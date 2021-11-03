@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a029dc4eaa7a70cb9227bb670b794fb9 */
+/* @relayHash 8b5d76126e6958224390b278bf0ec24d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -28,6 +28,11 @@ query MyCollectionAndSavedWorksQuery {
 
 fragment MyCollectionAndSavedWorks_me on Me {
   name
+  bio
+  icon {
+    internalID
+    imageURL
+  }
   createdAt
   ...MyProfileEditFormModal_me
 }
@@ -94,13 +99,6 @@ const node: ConcreteRequest = {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "createdAt",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
             "name": "bio",
             "storageKey": null
           },
@@ -133,6 +131,13 @@ const node: ConcreteRequest = {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "createdAt",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "id",
             "storageKey": null
           }
@@ -142,7 +147,7 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "id": "a029dc4eaa7a70cb9227bb670b794fb9",
+    "id": "8b5d76126e6958224390b278bf0ec24d",
     "metadata": {},
     "name": "MyCollectionAndSavedWorksQuery",
     "operationKind": "query",

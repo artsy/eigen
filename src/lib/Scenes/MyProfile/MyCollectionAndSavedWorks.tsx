@@ -44,9 +44,21 @@ export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWor
   const color = useColor()
 
   const [showModal, setShowModal] = useState(false)
+  const [profileIcon, setProfileIcon] = useState<string>()
+
+  const setProfileIconHandler = (profileIconPath: string) => {
+    const profileIconUrl = me?.icon?.imageURL || profileIconPath
+    setProfileIcon(profileIconUrl)
+  }
+
   return (
     <>
-      <MyProfileEditFormModalFragmentContainer me={me} visible={showModal} onDismiss={() => setShowModal(false)} />
+      <MyProfileEditFormModalFragmentContainer
+        me={me}
+        visible={showModal}
+        onDismiss={() => setShowModal(false)}
+        setProfileIconLocally={setProfileIconHandler}
+      />
       <FancyModalHeader
         rightButtonText="Settings"
         hideBottomDivider
@@ -56,10 +68,7 @@ export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWor
       />
       <Join separator={<Spacer py={space(1)} />}>
         <Flex flexDirection="row" alignItems="center" px={2}>
-          <Avatar
-            src="https://d7hftxdivxxvm.cloudfront.net/?resize_to=fill&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F2qiqRkUQYxTnUaib3yIgpA%2Funtouched-jpg.jpg&width=1820&height=1214&quality=75"
-            size="md"
-          />
+          <Avatar src={profileIcon} size="md" />
           <Box px={2} flexShrink={1}>
             <Sans size="10" color={color("black100")}>
               {me?.name}
@@ -70,8 +79,7 @@ export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWor
           </Box>
         </Flex>
         <Sans size="2" color={color("black100")} px={2}>
-          Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum
-          sociis natoque penatibus et magnis dis p
+          {me?.bio}
         </Sans>
         <Flex px={2} pb={2}>
           <Button
@@ -94,6 +102,11 @@ const MyCollectionAndSavedWorksFragmentContainer = createFragmentContainer(MyCol
   me: graphql`
     fragment MyCollectionAndSavedWorks_me on Me {
       name
+      bio
+      icon {
+        internalID
+        imageURL
+      }
       createdAt
       ...MyProfileEditFormModal_me
     }
