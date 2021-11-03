@@ -14,7 +14,7 @@ export async function userHadMeaningfulInteraction() {
   // We choose to ask the user on their second session, as well as their 22nd, 42nd, etc.
   // Apple will only ever ask the user to rate the app 3 times in a year, and we want to
   // space out how often we ask for a rating so users have gotten a sense of the app's value.
-  if (launchCount % 20 === 2) {
+  if (launchCount % 20 === 2 && launchCount !== 2) {
     if (!hasRequested) {
       hasRequested = true
       try {
