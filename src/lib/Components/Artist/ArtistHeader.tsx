@@ -1,7 +1,8 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtistHeader_artist } from "__generated__/ArtistHeader_artist.graphql"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
-import { userHadMeaningfulInteraction } from "lib/NativeModules/Events"
 import { formatLargeNumberOfItems } from "lib/utils/formatLargeNumberOfItems"
+import { userHadMeaningfulInteraction } from "lib/utils/userHadMeaningfulInteraction"
 import { Box, bullet, Button, Flex, Sans, Spacer } from "palette"
 import React, { useState } from "react"
 import { Text } from "react-native"
@@ -94,7 +95,12 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
     })
 
     // callback for analytics purposes
-    userHadMeaningfulInteraction()
+    userHadMeaningfulInteraction({
+      contextModule: ContextModule.artistHeader,
+      contextOwnerType: OwnerType.artist,
+      contextOwnerId: artist.internalID,
+      contextOwnerSlug: artist.slug,
+    })
     setIsFollowedChanging(false)
   }
 

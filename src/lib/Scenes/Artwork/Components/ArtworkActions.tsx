@@ -1,10 +1,11 @@
+import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtworkActions_artwork } from "__generated__/ArtworkActions_artwork.graphql"
 import { ArtworkActionsSaveMutation } from "__generated__/ArtworkActionsSaveMutation.graphql"
-import { userHadMeaningfulInteraction } from "lib/NativeModules/Events"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { unsafe__getEnvironment } from "lib/store/GlobalStore"
 import { cm2in } from "lib/utils/conversions"
 import { Schema, track } from "lib/utils/track"
+import { userHadMeaningfulInteraction } from "lib/utils/userHadMeaningfulInteraction"
 import { take } from "lodash"
 import {
   BellFillIcon,
@@ -74,7 +75,13 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
       `,
       variables: { input: { artworkID: artwork.internalID, remove: artwork.is_saved } },
       optimisticResponse: { saveArtwork: { artwork: { id: artwork.id, is_saved: !artwork.is_saved } } },
-      onCompleted: () => userHadMeaningfulInteraction(),
+      onCompleted: () =>
+        userHadMeaningfulInteraction({
+          contextModule: ContextModule.artworkMetadata,
+          contextOwnerType: OwnerType.artwork,
+          contextOwnerId: artwork.internalID,
+          contextOwnerSlug: artwork.slug,
+        }),
     })
   }
 
