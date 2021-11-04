@@ -192,6 +192,12 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableMyCollectionOrderImport",
   },
+  AREnableSortFilterForArtworksPill: {
+    readyForRelease: true,
+    description: "Enable sort filter for artworks pill",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableSortFilterForArtworksPill",
+  },
 })
 
 export interface DevToggleDescriptor {

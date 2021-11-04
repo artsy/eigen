@@ -38,6 +38,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   title?: string
   multiline?: boolean
   maxLength?: number
+  showLimit?: boolean
   /**
    * The placeholder can be an array of string, specifically for android, because of a bug.
    * On ios, the longest string will always be picked, as ios can add ellipsis.
@@ -90,6 +91,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       placeholder,
       multiline,
       maxLength,
+      showLimit,
       ...rest
     },
     ref
@@ -213,7 +215,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       <Flex flexGrow={1} style={containerStyle}>
         <Flex flexDirection="row" alignItems="center">
           <InputTitle required={required}>{title}</InputTitle>
-          {!!maxLength && (
+          {!!maxLength && !!showLimit && (
             <Text color="black60" variant="xs" marginLeft="auto" mr={0.5}>
               {maxLength - value.length}
             </Text>

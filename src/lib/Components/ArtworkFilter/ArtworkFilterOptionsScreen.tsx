@@ -9,6 +9,7 @@ import {
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { TouchableRow } from "lib/Components/TouchableRow"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
@@ -216,6 +217,8 @@ export const ArtworkFilterOptionsScreen: React.FC<
 }
 
 export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
+  const enableSortFilter = useFeatureFlag("AREnableSortFilterForArtworksPill")
+
   switch (mode) {
     case FilterModalMode.SaleArtworks:
       return [
@@ -233,7 +236,16 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
         filterOptionToDisplayConfigMap.organizations,
       ]
 
+    // TODO: Remove the entire case block when AREnableSortFilterForArtworksPill flag is released
     case FilterModalMode.Search:
+      if (enableSortFilter) {
+        return [
+          filterOptionToDisplayConfigMap.sort,
+          filterOptionToDisplayConfigMap.waysToBuy,
+          filterOptionToDisplayConfigMap.attributionClass,
+        ]
+      }
+
       return [filterOptionToDisplayConfigMap.waysToBuy, filterOptionToDisplayConfigMap.attributionClass]
 
     default:

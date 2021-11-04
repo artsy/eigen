@@ -6,6 +6,7 @@ import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids
 import { OwnerType } from "@artsy/cohesion"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/FilterHeader2"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import { Box, quoteLeft, quoteRight, Separator, Text, useTheme } from "palette"
@@ -30,6 +31,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
   const { trackEvent } = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((state) => state.setFiltersCountAction)
+  const enableSortFilter = useFeatureFlag("AREnableSortFilterForArtworksPill")
 
   const handleCloseFilterArtworksModal = (withFiltersApplying: boolean = false) => {
     if (!withFiltersApplying) {
@@ -86,7 +88,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
         mode={FilterModalMode.Search}
       />
       <ArtworksFilterHeader
-        title="Filter"
+        {...(!enableSortFilter && { title: "Filter" })}
         selectedFiltersCount={appliedFiltersCount}
         onFilterPress={handleOpenFilterArtworksModal}
       />

@@ -1,5 +1,5 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import { getCurrentEmissionState, GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
+import { getCurrentEmissionState, GlobalStore } from "lib/store/GlobalStore"
 import { AdminMenuWrapper } from "lib/utils/AdminMenuWrapper"
 import { addTrackingProvider, track } from "lib/utils/track"
 import { SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
@@ -10,7 +10,6 @@ import { Appearance, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
 import { AppProviders } from "./AppProviders"
 import { useWebViewCookies } from "./Components/ArtsyReactWebView"
-import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
 import { useSentryConfig } from "./ErrorReporting"
 import { ArtsyNativeModule } from "./NativeModules/ArtsyNativeModule"
 import { ModalStack } from "./navigation/ModalStack"
@@ -41,17 +40,12 @@ const Main: React.FC<{}> = track()(({}) => {
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
   const forceUpdateMessage = GlobalStore.useAppState((state) => state.config.echo.forceUpdateMessage)
 
-  const enableSplitIOABTesting = useFeatureFlag("AREnableSplitIOABTesting")
-
   useSentryConfig()
   useStripeConfig()
   useWebViewCookies()
   useDeepLinks()
   useInitialNotification()
-
-  if (enableSplitIOABTesting) {
-    useExperiments()
-  }
+  useExperiments()
 
   useEffect(() => {
     createAllChannels()

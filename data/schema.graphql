@@ -10440,7 +10440,14 @@ type Query {
 
     # Coordinates to find partners closest to
     near: String
+
+    #
+    #         Only return partners of the specified partner categories.
+    #         Accepts list of slugs.
+    #
+    partnerCategories: [String]
     sort: PartnersSortType
+    type: [PartnerClassification]
   ): PartnerConnection
 
   # Get all price insights for an artist.
@@ -13107,7 +13114,14 @@ type Viewer {
 
     # Coordinates to find partners closest to
     near: String
+
+    #
+    #         Only return partners of the specified partner categories.
+    #         Accepts list of slugs.
+    #
+    partnerCategories: [String]
     sort: PartnersSortType
+    type: [PartnerClassification]
   ): PartnerConnection
 
   # A requested location
