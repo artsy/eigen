@@ -2,7 +2,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Flex, FlexProps } from "../Flex"
 import { Text, useTextStyleForPalette } from "../Text"
 
-import { Color, IconProps, Spacer, useColor } from "palette"
+import { IconProps, Spacer, useColor } from "palette"
 import React, { ReactNode, useEffect, useState } from "react"
 import { GestureResponderEvent, Pressable, PressableProps } from "react-native"
 import { config } from "react-spring"
@@ -22,7 +22,7 @@ export interface PillProps extends FlexProps {
   disabled?: boolean
   selected?: boolean
   imageUrl?: string
-  disabledStylesEnabled?: boolean
+  applyDisabledStyles?: boolean
   highlightEnabled?: boolean
 }
 
@@ -30,6 +30,7 @@ enum DisplayState {
   Enabled = "enabled",
   Pressed = "pressed",
   Selected = "selected",
+  Disabled = "disabled",
 }
 
 const getSize = (size: PillSize): { height: number; paddingRight: number; paddingLeft: number } => {
@@ -65,7 +66,7 @@ export const Pill: React.FC<PillProps> = ({
   children,
   disabled,
   rounded,
-  disabledStylesEnabled = false,
+  applyDisabledStyles = false,
   highlightEnabled = false,
   ...rest
 }) => {
@@ -73,7 +74,6 @@ export const Pill: React.FC<PillProps> = ({
   const initialDisplayState = selected ? DisplayState.Selected : DisplayState.Enabled
   const [innerDisplayState, setInnerDisplayState] = useState(initialDisplayState)
   const { height, paddingLeft, paddingRight } = getSize(size)
-  const color = useColor()
 
   const handlePress = (event: GestureResponderEvent) => {
     onPress?.(event)
@@ -83,12 +83,16 @@ export const Pill: React.FC<PillProps> = ({
     setInnerDisplayState(initialDisplayState)
   }, [selected])
 
+  useEffect(() => {
+    setInnerDisplayState(applyDisabledStyles ? DisplayState.Disabled : initialDisplayState)
+  }, [applyDisabledStyles])
+
   const iconSpacerMargin = size === "xxs" ? 0.5 : 1
   const iconColor = innerDisplayState === "pressed" ? "blue100" : "black100"
   const to = useStyleForState(innerDisplayState)
   return (
     <Spring native to={to} config={config.stiff}>
-      {() => (
+      {(springProps: typeof to) => (
         <Pressable
           disabled={disabled || !onPress}
           onPress={handlePress}
@@ -112,7 +116,8 @@ export const Pill: React.FC<PillProps> = ({
             paddingLeft={paddingLeft}
             paddingRight={paddingRight}
             style={{
-              borderColor: disabledStylesEnabled ? color("black30") : color("black60"),
+              borderColor: springProps.borderColor,
+              backgroundColor: springProps.backgroundColor,
             }}
             {...rest}
           >
@@ -123,10 +128,7 @@ export const Pill: React.FC<PillProps> = ({
               </>
             )}
             {!!imageUrl && <OpaqueImageViewContainer imageURL={imageUrl} />}
-            <AnimatedText
-              numberOfLines={1}
-              style={[textStyle, { color: disabledStylesEnabled ? color("black30") : color("black100") }]}
-            >
+            <AnimatedText numberOfLines={1} style={[textStyle, { color: springProps.textColor }]}>
               {children}
             </AnimatedText>
             {iconPosition === "right" && !!Icon && (
@@ -142,23 +144,31 @@ export const Pill: React.FC<PillProps> = ({
   )
 }
 
-const useStyleForState = (state: DisplayState): { textColor: Color; borderColor: string } => {
+const useStyleForState = (state: DisplayState): { textColor: string; borderColor: string; backgroundColor: string } => {
   const color = useColor()
 
   const retval = {} as ReturnType<typeof useStyleForState>
 
   switch (state) {
     case DisplayState.Pressed:
-      retval.textColor = "blue100"
+      retval.textColor = color("blue100")
       retval.borderColor = color("blue100")
+      retval.backgroundColor = color("white100")
       break
     case DisplayState.Selected:
-      retval.textColor = "black100"
-      retval.borderColor = color("black60")
+      retval.textColor = color("white100")
+      retval.borderColor = color("white100")
+      retval.backgroundColor = color("blue100")
       break
     case DisplayState.Enabled:
-      retval.textColor = "black100"
-      retval.borderColor = color("black15")
+      retval.textColor = color("black100")
+      retval.borderColor = color("black60")
+      retval.backgroundColor = color("white100")
+      break
+    case DisplayState.Disabled:
+      retval.textColor = color("black30")
+      retval.borderColor = color("black30")
+      retval.backgroundColor = color("white100")
       break
     default:
       assertNever(state)
