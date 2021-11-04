@@ -216,7 +216,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
         <Flex flexDirection="row" alignItems="center">
           <InputTitle required={required}>{title}</InputTitle>
           {!!maxLength && !!showLimit && (
-            <Text color="black60" variant="xs" marginLeft="auto" mr={0.5}>
+            <Text color="black60" variant="xs" marginLeft="auto">
               {maxLength - value.length}
             </Text>
           )}
