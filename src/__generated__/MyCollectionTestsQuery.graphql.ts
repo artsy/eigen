@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3c4c1b7ffe312dbe8cfcb9e6a5dc2f27 */
+/* @relayHash a4582d1ad04a2b5dfeece3dcf033c533 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -66,7 +66,7 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
 
 fragment MyCollection_me on Me {
   id
-  myCollectionConnection(first: 20, sort: CREATED_AT_DESC) {
+  myCollectionConnection(excludePurchasedArtworks: true, first: 20, sort: CREATED_AT_DESC) {
     edges {
       node {
         id
@@ -92,6 +92,11 @@ var v0 = {
   "storageKey": null
 },
 v1 = [
+  {
+    "kind": "Literal",
+    "name": "excludePurchasedArtworks",
+    "value": true
+  },
   {
     "kind": "Literal",
     "name": "first",
@@ -340,7 +345,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "myCollectionConnection(first:20,sort:\"CREATED_AT_DESC\")"
+            "storageKey": "myCollectionConnection(excludePurchasedArtworks:true,first:20,sort:\"CREATED_AT_DESC\")"
           },
           {
             "alias": null,
@@ -357,7 +362,7 @@ return {
     ]
   },
   "params": {
-    "id": "3c4c1b7ffe312dbe8cfcb9e6a5dc2f27",
+    "id": "a4582d1ad04a2b5dfeece3dcf033c533",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {

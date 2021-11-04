@@ -186,6 +186,12 @@ export const features = defineFeatures({
     description: "Enable Split.io A/B testing",
     showInAdminMenu: true,
   },
+  AREnableMyCollectionOrderImport: {
+    readyForRelease: false,
+    description: "Enable My Collection Order Import",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableMyCollectionOrderImport",
+  },
   AREnableSortFilterForArtworksPill: {
     readyForRelease: true,
     description: "Enable sort filter for artworks pill",

@@ -88,7 +88,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
         mode={FilterModalMode.Search}
       />
       <ArtworksFilterHeader
-        {...!enableSortFilter && { title: "Filter" }}
+        {...(!enableSortFilter && { title: "Filter" })}
         selectedFiltersCount={appliedFiltersCount}
         onFilterPress={handleOpenFilterArtworksModal}
       />
