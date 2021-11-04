@@ -1,4 +1,5 @@
 import { addCollectedArtwork, OwnerType } from "@artsy/cohesion"
+import AsyncStorage from "@react-native-community/async-storage"
 import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { EventEmitter } from "events"
@@ -41,6 +42,13 @@ export function unsafe_getEnableMyCollection() {
   return unsafe_getFeatureFlag(featureFlagKey)
 }
 
+export const HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER = "HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER"
+
+const hasBeenShownBanner = async () => {
+  const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
+  return hasSeen === "true"
+}
+
 const MyCollection: React.FC<{
   relay: RelayPaginationProp
   me: MyCollection_me
@@ -72,36 +80,38 @@ const MyCollection: React.FC<{
 
   const space = useSpace()
 
-  const showNewWorksBanner = true
-
   useEffect(() => {
     if (artworks.length) {
-      setJSX(
-        <Flex>
-          {!!showNewWorksBanner && (
-            <Banner
-              title="You have some artworks."
-              text="To help add your current artworks to your collection, we automatically added your purchases from your order history."
-              showCloseButton
-            />
-          )}
-
-          <Flex flexDirection="row" alignSelf="flex-end" px={2} py={1}>
-            <Button
-              data-test-id="add-artwork-button-non-zero-state"
-              size="small"
-              variant="fillDark"
-              onPress={() => {
-                setShowModal(true)
-                trackEvent(tracks.addCollectedArtwork())
-              }}
-              haptic
-            >
-              Add Works
-            </Button>
+      hasBeenShownBanner().then((hasSeenBanner) => {
+        const showNewWorksBanner = me?.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
+        setJSX(
+          <Flex>
+            <Flex flexDirection="row" alignSelf="flex-end" px={2} py={1}>
+              <Button
+                data-test-id="add-artwork-button-non-zero-state"
+                size="small"
+                variant="fillDark"
+                onPress={() => {
+                  setShowModal(true)
+                  trackEvent(tracks.addCollectedArtwork())
+                }}
+                haptic
+              >
+                Add Works
+              </Button>
+            </Flex>
+            {!!showNewWorksBanner && (
+              <Banner
+                title="You have some artworks."
+                text="To help add your current artworks to your collection, we automatically added your purchases from your order history."
+                showCloseButton
+                containerStyle={{ mb: 2 }}
+                onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
+              />
+            )}
           </Flex>
-        </Flex>
-      )
+        )
+      })
     } else {
       // remove already set JSX
       setJSX(<></>)
@@ -167,6 +177,9 @@ export const MyCollectionContainer = createPaginationContainer(
         cursor: { type: "String" }
       ) {
         id
+        myCollectionInfo {
+          includesPurchasedArtworks
+        }
         myCollectionConnection(
           excludePurchasedArtworks: $excludePurchasedArtworks
           first: $count
