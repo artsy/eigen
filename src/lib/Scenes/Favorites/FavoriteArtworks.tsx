@@ -76,7 +76,6 @@ export class SavedWorks extends Component<Props, State> {
       return (
         <StickyTabPageScrollView
           refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
-          contentContainerStyle={{ flex: 1 }}
         >
           <ZeroState
             title="You haven’t saved any works yet"
