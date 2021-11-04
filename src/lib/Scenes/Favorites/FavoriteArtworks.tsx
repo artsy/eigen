@@ -74,26 +74,32 @@ export class SavedWorks extends Component<Props, State> {
 
     if (artworks.length === 0) {
       return (
-        <StickyTabPageScrollView
-          refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
-          contentContainerStyle={{ flex: 1 }}
-        >
-          <ZeroState
-            title="You haven’t saved any works yet"
-            subtitle="Tap the heart on an artwork to save for later."
-            callToAction={
-              <Button
-                size="large"
-                onPress={() => {
-                  navigate("/")
-                }}
-                block
-              >
-                Browse works for you
-              </Button>
-            }
-          />
-        </StickyTabPageScrollView>
+        <ClassTheme>
+          {({ space }) => (
+            <StickyTabPageScrollView
+              refreshControl={
+                <RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />
+              }
+              contentContainerStyle={{ paddingBottom: space(2) }}
+            >
+              <ZeroState
+                title="You haven’t saved any works yet"
+                subtitle="Tap the heart on an artwork to save for later."
+                callToAction={
+                  <Button
+                    size="large"
+                    onPress={() => {
+                      navigate("/")
+                    }}
+                    block
+                  >
+                    Browse works for you
+                  </Button>
+                }
+              />
+            </StickyTabPageScrollView>
+          )}
+        </ClassTheme>
       )
     }
 
