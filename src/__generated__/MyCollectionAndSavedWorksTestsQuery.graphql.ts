@@ -1,25 +1,25 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0b7a60c41163ceed3735a692cbc77fef */
+/* @relayHash 3fbdf4898d34f038e5b8c560728a5443 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionAndSavedWorksQueryVariables = {};
-export type MyCollectionAndSavedWorksQueryResponse = {
+export type MyCollectionAndSavedWorksTestsQueryVariables = {};
+export type MyCollectionAndSavedWorksTestsQueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"MyCollectionAndSavedWorks_me">;
     } | null;
 };
-export type MyCollectionAndSavedWorksQuery = {
-    readonly response: MyCollectionAndSavedWorksQueryResponse;
-    readonly variables: MyCollectionAndSavedWorksQueryVariables;
+export type MyCollectionAndSavedWorksTestsQuery = {
+    readonly response: MyCollectionAndSavedWorksTestsQueryResponse;
+    readonly variables: MyCollectionAndSavedWorksTestsQueryVariables;
 };
 
 
 
 /*
-query MyCollectionAndSavedWorksQuery {
+query MyCollectionAndSavedWorksTestsQuery {
   me @optionalField {
     ...MyCollectionAndSavedWorks_me
     id
@@ -45,12 +45,19 @@ fragment MyProfileEditFormModal_me on Me {
 }
 */
 
-const node: ConcreteRequest = {
+const node: ConcreteRequest = (function(){
+var v0 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
+};
+return {
   "fragment": {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "MyCollectionAndSavedWorksQuery",
+    "name": "MyCollectionAndSavedWorksTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -76,7 +83,7 @@ const node: ConcreteRequest = {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "MyCollectionAndSavedWorksQuery",
+    "name": "MyCollectionAndSavedWorksTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -144,12 +151,38 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "id": "0b7a60c41163ceed3735a692cbc77fef",
-    "metadata": {},
-    "name": "MyCollectionAndSavedWorksQuery",
+    "id": "3fbdf4898d34f038e5b8c560728a5443",
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "me": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Me"
+        },
+        "me.bio": (v0/*: any*/),
+        "me.createdAt": (v0/*: any*/),
+        "me.icon": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Image"
+        },
+        "me.icon.url": (v0/*: any*/),
+        "me.id": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "ID"
+        },
+        "me.name": (v0/*: any*/)
+      }
+    },
+    "name": "MyCollectionAndSavedWorksTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
-(node as any).hash = 'e2528a0edab35bb34cd3e89a63547d21';
+})();
+(node as any).hash = '6510b5ab5aadfb3040f84106f4be7a50';
 export default node;

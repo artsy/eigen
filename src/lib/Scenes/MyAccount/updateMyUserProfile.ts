@@ -13,6 +13,11 @@ export const updateMyUserProfile = async (input: updateMyUserProfileMutation["va
               email
               name
               phone
+              bio
+              icon {
+                internalID
+                imageURL
+              }
               receiveLotOpeningSoonNotification
               receiveNewSalesNotification
               receiveNewWorksNotification

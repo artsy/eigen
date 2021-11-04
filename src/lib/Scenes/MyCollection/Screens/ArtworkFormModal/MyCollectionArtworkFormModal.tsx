@@ -5,16 +5,10 @@ import { captureException } from "@sentry/react-native"
 import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { FormikProvider, useFormik } from "formik"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
-import {
-  getConvectionGeminiKey,
-  getGeminiCredentialsForEnvironment,
-  uploadFileToS3,
-} from "lib/Scenes/Consignments/Submission/geminiUploadToS3"
 import { cleanArtworkPayload, explicitlyClearedFields } from "lib/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { GlobalStore } from "lib/store/GlobalStore"
-import { Box, Flex } from "palette"
 import React, { useRef, useState } from "react"
-import { ActivityIndicator, Alert } from "react-native"
+import { Alert } from "react-native"
 import { useTracking } from "react-tracking"
 import { myCollectionAddArtwork } from "../../mutations/myCollectionAddArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
@@ -23,6 +17,8 @@ import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
 
 import { useActionSheet } from "@expo/react-native-action-sheet"
+import { LoadingIndicator } from "lib/Components/LoadingIndicator"
+import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
 import { isEqual } from "lodash"
 import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { refreshMyCollection } from "../../MyCollection"
@@ -221,23 +217,6 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
 
 const Stack = createStackNavigator<ArtworkFormModalScreen>()
 
-const LoadingIndicator = () => {
-  return (
-    <Box
-      style={{
-        height: "100%",
-        width: "100%",
-        position: "absolute",
-        backgroundColor: "rgba(0, 0, 0, 0.15)",
-      }}
-    >
-      <Flex flex={1} alignItems="center" justifyContent="center">
-        <ActivityIndicator size="large" />
-      </Flex>
-    </Box>
-  )
-}
-
 export async function uploadPhotos(photos: ArtworkFormValues["photos"]) {
   GlobalStore.actions.myCollection.artwork.setLastUploadedPhoto(photos[0])
   // only recently added photos have a path
@@ -245,12 +224,7 @@ export async function uploadPhotos(photos: ArtworkFormValues["photos"]) {
   const externalImageUrls: string[] = []
 
   for (const path of imagePaths) {
-    const convectionKey = await getConvectionGeminiKey()
-    const acl = "private"
-    const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
-    const bucket = assetCredentials.policyDocument.conditions.bucket
-    const s3 = await uploadFileToS3(path, acl, assetCredentials)
-    const url = `https://${bucket}.s3.amazonaws.com/${s3.key}`
+    const url = await getConvertedImageUrlFromS3(path)
     externalImageUrls.push(url)
   }
 

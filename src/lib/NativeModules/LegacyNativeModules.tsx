@@ -46,7 +46,7 @@ interface LegacyNativeModules {
     }): void
   }
   ARPHPhotoPickerModule: {
-    requestPhotos(): Promise<RNCImage[]>
+    requestPhotos(allowMultiple: boolean): Promise<RNCImage[]>
   }
   ARCocoaConstantsModule: {
     AREnabled: boolean

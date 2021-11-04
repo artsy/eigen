@@ -4,20 +4,18 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionAndSavedWorks_me = {
+export type MyProfileEditFormModal_me = {
     readonly name: string | null;
     readonly bio: string | null;
     readonly icon: {
         readonly url: string | null;
     } | null;
-    readonly createdAt: string | null;
-    readonly " $fragmentRefs": FragmentRefs<"MyProfileEditFormModal_me">;
-    readonly " $refType": "MyCollectionAndSavedWorks_me";
+    readonly " $refType": "MyProfileEditFormModal_me";
 };
-export type MyCollectionAndSavedWorks_me$data = MyCollectionAndSavedWorks_me;
-export type MyCollectionAndSavedWorks_me$key = {
-    readonly " $data"?: MyCollectionAndSavedWorks_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"MyCollectionAndSavedWorks_me">;
+export type MyProfileEditFormModal_me$data = MyProfileEditFormModal_me;
+export type MyProfileEditFormModal_me$key = {
+    readonly " $data"?: MyProfileEditFormModal_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"MyProfileEditFormModal_me">;
 };
 
 
@@ -26,7 +24,7 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "MyCollectionAndSavedWorks_me",
+  "name": "MyProfileEditFormModal_me",
   "selections": [
     {
       "alias": null,
@@ -65,22 +63,10 @@ const node: ReaderFragment = {
         }
       ],
       "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "createdAt",
-      "storageKey": null
-    },
-    {
-      "args": null,
-      "kind": "FragmentSpread",
-      "name": "MyProfileEditFormModal_me"
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'd53caa423bcd68a0251cfe7a1e29b9d3';
+(node as any).hash = '2a2999c02d81e82b1ab351a36d90b806';
 export default node;
