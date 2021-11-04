@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash dd9387eb84bce0710c058d42c932369b */
+/* @relayHash 3fbdf4898d34f038e5b8c560728a5443 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,8 +30,7 @@ fragment MyCollectionAndSavedWorks_me on Me {
   name
   bio
   icon {
-    internalID
-    imageURL
+    url(version: "thumbnail")
   }
   createdAt
   ...MyProfileEditFormModal_me
@@ -41,8 +40,7 @@ fragment MyProfileEditFormModal_me on Me {
   name
   bio
   icon {
-    internalID
-    imageURL
+    url(version: "thumbnail")
   }
 }
 */
@@ -119,17 +117,16 @@ return {
             "selections": [
               {
                 "alias": null,
-                "args": null,
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "version",
+                    "value": "thumbnail"
+                  }
+                ],
                 "kind": "ScalarField",
-                "name": "internalID",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "imageURL",
-                "storageKey": null
+                "name": "url",
+                "storageKey": "url(version:\"thumbnail\")"
               }
             ],
             "storageKey": null
@@ -154,7 +151,7 @@ return {
     ]
   },
   "params": {
-    "id": "dd9387eb84bce0710c058d42c932369b",
+    "id": "3fbdf4898d34f038e5b8c560728a5443",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -171,13 +168,7 @@ return {
           "plural": false,
           "type": "Image"
         },
-        "me.icon.imageURL": (v0/*: any*/),
-        "me.icon.internalID": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "ID"
-        },
+        "me.icon.url": (v0/*: any*/),
         "me.id": {
           "enumValues": null,
           "nullable": false,

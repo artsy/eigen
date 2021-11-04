@@ -7,7 +7,7 @@ import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Avatar, Box, Button, Flex, Join, Sans, Spacer, useColor, useSpace } from "palette"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { createFragmentContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
@@ -45,16 +45,13 @@ export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWor
   const color = useColor()
 
   const [showModal, setShowModal] = useState(false)
-  const [profileIcon, setProfileIcon] = useState<string | null>()
+  const [localImagePath, setLocalImagePath] = useState<string>("")
 
   const setProfileIconHandler = (profileIconPath: string) => {
-    const profileIconUrl = me?.icon?.imageURL || profileIconPath
-    setProfileIcon(profileIconUrl)
+    setLocalImagePath(profileIconPath)
   }
 
-  useEffect(() => {
-    setProfileIcon(me?.icon?.imageURL)
-  }, [me?.icon?.imageURL])
+  const userProfileImage = localImagePath || me.icon?.url
 
   return (
     <>
@@ -81,8 +78,8 @@ export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWor
             justifyContent="center"
             alignItems="center"
           >
-            {!!profileIcon ? (
-              <Avatar src={profileIcon} size="md" />
+            {!!userProfileImage ? (
+              <Avatar src={userProfileImage} size="md" />
             ) : (
               <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
             )}
@@ -122,8 +119,7 @@ export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContaine
       name
       bio
       icon {
-        internalID
-        imageURL
+        url(version: "thumbnail")
       }
       createdAt
       ...MyProfileEditFormModal_me

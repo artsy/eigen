@@ -22,6 +22,7 @@ export async function requestPhotos(allowMultiple: boolean = true): Promise<Imag
 
 export async function showPhotoActionSheet(
   showActionSheet: (options: ActionSheetOptions, callback: (i: number) => void) => void,
+  useModal: boolean = false,
   allowMultiple: boolean = true
 ): Promise<Image[]> {
   return new Promise((resolve, reject) => {
@@ -29,6 +30,7 @@ export async function showPhotoActionSheet(
       {
         options: ["Photo Library", "Take Photo", "Cancel"],
         cancelButtonIndex: 2,
+        useModal,
       },
       async (buttonIndex) => {
         let photos = null

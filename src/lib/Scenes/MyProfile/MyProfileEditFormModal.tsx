@@ -42,13 +42,14 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
   const nameInputRef = useRef<Input>(null)
   const bioInputRef = useRef<TextInput>(null)
   const [loading, setLoading] = useState<boolean>(false)
+  const [didUpdatePhoto, setDidUpdatePhoto] = useState(false)
 
   const uploadProfilePhoto = async (photo: string) => {
-    // We want to show the local image initially for better UX since Gemini takes a while to process
-    setProfileIconLocally(photo)
     try {
       const iconUrl = await getConvertedImageUrlFromS3(photo)
       await updateMyUserProfile({ iconUrl })
+      // We want to show the local image initially for better UX since Gemini takes a while to process
+      setProfileIconLocally(photo)
     } catch (error) {
       console.log("Failed to upload profile picture ", error)
     }
@@ -69,13 +70,15 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
     initialValues: {
       name: me?.name ?? "",
       bio: me?.bio ?? "",
-      photo: me?.icon?.imageURL ?? "",
+      photo: me?.icon?.url ?? "",
     },
     initialErrors: {},
     onSubmit: async ({ name, bio, photo }) => {
       try {
         setLoading(true)
-        await Promise.all(compact([await updateUserInfo({ name, bio }), photo && (await uploadProfilePhoto(photo))]))
+        await Promise.all(
+          compact([await updateUserInfo({ name, bio }), didUpdatePhoto && (await uploadProfilePhoto(photo))])
+        )
       } catch (error) {
         console.log("Failed to update user profile ", error)
       } finally {
@@ -87,18 +90,29 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
   })
 
   const chooseImageHandler = () => {
-    showPhotoActionSheet(showActionSheetWithOptions, false)
+    showPhotoActionSheet(showActionSheetWithOptions, false, false)
       .then((images) => {
         if (isArray(images) && images.length >= 1) {
+          setDidUpdatePhoto(true)
           ;(handleChange("photo") as (value: string) => void)(images[0].path)
         }
       })
       .catch((e) => console.error("Error when uploading an image from the device", JSON.stringify(e)))
   }
 
+  const hideModal = () => {
+    onDismiss()
+    // @ts-ignore
+    handleChange("photo")(me?.icon?.url ?? "")
+    // @ts-ignore
+    handleChange("name")(me?.name ?? "")
+    // @ts-ignore
+    handleChange("bio")(me?.bio ?? "")
+  }
+
   return (
-    <FancyModal visible={visible} onBackgroundPressed={onDismiss}>
-      <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => onDismiss()}>
+    <FancyModal visible={visible} onBackgroundPressed={hideModal}>
+      <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={hideModal}>
         Edit Profile
       </FancyModalHeader>
 
@@ -162,8 +176,7 @@ export const MyProfileEditFormModalFragmentContainer = createFragmentContainer(M
       name
       bio
       icon {
-        internalID
-        imageURL
+        url(version: "thumbnail")
       }
     }
   `,
