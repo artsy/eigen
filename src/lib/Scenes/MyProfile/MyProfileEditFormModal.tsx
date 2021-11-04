@@ -90,7 +90,7 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
   })
 
   const chooseImageHandler = () => {
-    showPhotoActionSheet(showActionSheetWithOptions, false, false)
+    showPhotoActionSheet(showActionSheetWithOptions, true, false)
       .then((images) => {
         if (isArray(images) && images.length >= 1) {
           setDidUpdatePhoto(true)
