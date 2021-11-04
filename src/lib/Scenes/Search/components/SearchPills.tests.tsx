@@ -9,23 +9,35 @@ const pills: PillType[] = [
     name: "first",
     displayName: "First",
     type: "algolia",
+    disabled: false,
   },
   {
     name: "second",
     displayName: "Second",
     type: "algolia",
+    disabled: false,
   },
   {
     name: "third",
     displayName: "Third",
     type: "algolia",
+    disabled: false,
   },
 ]
 
 describe("SearchPills", () => {
   const mockRef = jest.fn()
   const TestRenderer = (props: Partial<SearchPillsProps>) => {
-    return <SearchPills ref={mockRef} pills={pills} onPillPress={jest.fn} isSelected={() => false} {...props} />
+    return (
+      <SearchPills
+        ref={mockRef}
+        loading={false}
+        pills={pills}
+        onPillPress={jest.fn}
+        isSelected={() => false}
+        {...props}
+      />
+    )
   }
 
   it("renders without throwing an error", () => {
@@ -46,6 +58,7 @@ describe("SearchPills", () => {
       type: "algolia",
       name: "second",
       displayName: "Second",
+      disabled: false,
     })
   })
 

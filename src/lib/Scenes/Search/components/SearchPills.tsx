@@ -33,9 +33,7 @@ export const SearchPills = React.forwardRef<ScrollView, SearchPillsProps>((props
           <Pill
             mr={1}
             key={name}
-            accessibilityState={{
-              selected,
-            }}
+            accessibilityState={{ selected, disabled: disabledWithStyles || selected }}
             rounded
             selected={selected}
             disabled={disabledWithStyles || selected}
