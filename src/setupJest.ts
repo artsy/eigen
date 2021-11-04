@@ -58,7 +58,7 @@ jest.mock("./lib/NativeModules/NotificationsManager.tsx", () => ({
   NotificationsManager: new (require("events").EventEmitter)(),
 }))
 
-jest.mock("./lib/NativeModules/Events.tsx", () => ({
+jest.mock("./lib/utils/userHadMeaningfulInteraction.tsx", () => ({
   userHadMeaningfulInteraction: jest.fn(),
 }))
 
