@@ -101,6 +101,7 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
   }
 
   const hideModal = () => {
+    setDidUpdatePhoto(false)
     onDismiss()
     // @ts-ignore
     handleChange("photo")(me?.icon?.url ?? "")
