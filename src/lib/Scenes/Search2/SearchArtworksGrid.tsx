@@ -86,6 +86,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
         exitModal={() => handleCloseFilterArtworksModal(true)}
         closeModal={handleCloseFilterArtworksModal}
         mode={FilterModalMode.Search}
+        {...(!enableSortFilter && { title: "Filter" })}
       />
       <ArtworksFilterHeader
         {...(!enableSortFilter && { title: "Filter" })}
