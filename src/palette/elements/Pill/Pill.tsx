@@ -76,7 +76,8 @@ export const Pill: React.FC<PillProps> = ({
   const textStyle = useTextStyleForPalette(size === "xxs" ? "xs" : "sm")
   const enabledDisplayState = enableImprovedPills ? DisplayState.Enabled2 : DisplayState.Enabled
   const selectedDisplayState = enableImprovedPills ? DisplayState.Selected2 : DisplayState.Selected
-  const initialDisplayState = selected ? selectedDisplayState : enabledDisplayState
+  const standartDisplayState = disabled ? DisplayState.Disabled : enabledDisplayState
+  const initialDisplayState = selected ? selectedDisplayState : standartDisplayState
   const [innerDisplayState, setInnerDisplayState] = useState(initialDisplayState)
   const { height, paddingLeft, paddingRight } = getSize(size)
 
@@ -86,11 +87,7 @@ export const Pill: React.FC<PillProps> = ({
 
   useEffect(() => {
     setInnerDisplayState(initialDisplayState)
-  }, [selected])
-
-  useEffect(() => {
-    setInnerDisplayState(disabled && !selected ? DisplayState.Disabled : initialDisplayState)
-  }, [disabled])
+  }, [disabled, selected])
 
   const iconSpacerMargin = size === "xxs" ? 0.5 : 1
   const iconColor = innerDisplayState === "pressed" ? "blue100" : "black100"

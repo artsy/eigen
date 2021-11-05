@@ -27,7 +27,7 @@ export const SearchPills = React.forwardRef<ScrollView, SearchPillsProps>((props
       {pills.map((pill) => {
         const { name, displayName } = pill
         const selected = isSelected(pill)
-        const disabled = (!!pill.disabled || !!loading || !!selected) && pill.name !== "TOP"
+        const disabled = !!pill.disabled || !!loading || !!selected
 
         return (
           <Pill
