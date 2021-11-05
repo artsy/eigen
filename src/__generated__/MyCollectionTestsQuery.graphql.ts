@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a4582d1ad04a2b5dfeece3dcf033c533 */
+/* @relayHash caf096133211001be284a5f918e0d107 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -66,6 +66,9 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
 
 fragment MyCollection_me on Me {
   id
+  myCollectionInfo {
+    includesPurchasedArtworks
+  }
   myCollectionConnection(excludePurchasedArtworks: true, first: 20, sort: CREATED_AT_DESC) {
     edges {
       node {
@@ -132,6 +135,12 @@ v5 = {
   "nullable": true,
   "plural": false,
   "type": "String"
+},
+v6 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "Boolean"
 };
 return {
   "fragment": {
@@ -175,6 +184,24 @@ return {
         "plural": false,
         "selections": [
           (v0/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "MyCollectionInfo",
+            "kind": "LinkedField",
+            "name": "myCollectionInfo",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "includesPurchasedArtworks",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": (v1/*: any*/),
@@ -362,7 +389,7 @@ return {
     ]
   },
   "params": {
-    "id": "a4582d1ad04a2b5dfeece3dcf033c533",
+    "id": "caf096133211001be284a5f918e0d107",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -439,13 +466,15 @@ return {
           "type": "PageInfo"
         },
         "me.myCollectionConnection.pageInfo.endCursor": (v5/*: any*/),
-        "me.myCollectionConnection.pageInfo.hasNextPage": {
+        "me.myCollectionConnection.pageInfo.hasNextPage": (v6/*: any*/),
+        "me.myCollectionConnection.pageInfo.startCursor": (v5/*: any*/),
+        "me.myCollectionInfo": {
           "enumValues": null,
-          "nullable": false,
+          "nullable": true,
           "plural": false,
-          "type": "Boolean"
+          "type": "MyCollectionInfo"
         },
-        "me.myCollectionConnection.pageInfo.startCursor": (v5/*: any*/)
+        "me.myCollectionInfo.includesPurchasedArtworks": (v6/*: any*/)
       }
     },
     "name": "MyCollectionTestsQuery",

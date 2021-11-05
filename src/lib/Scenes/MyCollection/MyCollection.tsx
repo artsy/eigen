@@ -1,4 +1,5 @@
 import { addCollectedArtwork, OwnerType } from "@artsy/cohesion"
+import AsyncStorage from "@react-native-community/async-storage"
 import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { EventEmitter } from "events"
@@ -14,7 +15,7 @@ import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
-import { Button, Flex, Separator, Spacer, useSpace } from "palette"
+import { Banner, Button, Flex, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
 import { Platform, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
@@ -39,6 +40,13 @@ export const useEnableMyCollection = () => {
 
 export function unsafe_getEnableMyCollection() {
   return unsafe_getFeatureFlag(featureFlagKey)
+}
+
+export const HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER = "HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER"
+
+const hasBeenShownBanner = async () => {
+  const hasSeen = await AsyncStorage.getItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER)
+  return hasSeen === "true"
 }
 
 const MyCollection: React.FC<{
@@ -72,24 +80,40 @@ const MyCollection: React.FC<{
 
   const space = useSpace()
 
+  const allowOrderImports = useFeatureFlag("AREnableMyCollectionOrderImport")
+
   useEffect(() => {
     if (artworks.length) {
-      setJSX(
-        <Flex flexDirection="row" alignSelf="flex-end" px={2} py={1}>
-          <Button
-            data-test-id="add-artwork-button-non-zero-state"
-            size="small"
-            variant="fillDark"
-            onPress={() => {
-              setShowModal(true)
-              trackEvent(tracks.addCollectedArtwork())
-            }}
-            haptic
-          >
-            Add Works
-          </Button>
-        </Flex>
-      )
+      hasBeenShownBanner().then((hasSeenBanner) => {
+        const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && allowOrderImports && !hasSeenBanner
+        setJSX(
+          <Flex>
+            <Flex flexDirection="row" alignSelf="flex-end" px={2} py={1}>
+              <Button
+                data-test-id="add-artwork-button-non-zero-state"
+                size="small"
+                variant="fillDark"
+                onPress={() => {
+                  setShowModal(true)
+                  trackEvent(tracks.addCollectedArtwork())
+                }}
+                haptic
+              >
+                Add Works
+              </Button>
+            </Flex>
+            {!!showNewWorksBanner && (
+              <Banner
+                title="You have some artworks."
+                text="To help add your current artworks to your collection, we automatically added your purchases from your order history."
+                showCloseButton
+                containerStyle={{ mb: 2 }}
+                onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
+              />
+            )}
+          </Flex>
+        )
+      })
     } else {
       // remove already set JSX
       setJSX(<></>)
@@ -155,6 +179,9 @@ export const MyCollectionContainer = createPaginationContainer(
         cursor: { type: "String" }
       ) {
         id
+        myCollectionInfo {
+          includesPurchasedArtworks
+        }
         myCollectionConnection(
           excludePurchasedArtworks: $excludePurchasedArtworks
           first: $count
