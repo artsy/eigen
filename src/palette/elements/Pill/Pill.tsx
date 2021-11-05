@@ -2,6 +2,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Flex, FlexProps } from "../Flex"
 import { Text, useTextStyleForPalette } from "../Text"
 
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { IconProps, Spacer, useColor } from "palette"
 import React, { ReactNode, useEffect, useState } from "react"
 import { GestureResponderEvent, Pressable, PressableProps } from "react-native"
@@ -28,8 +29,10 @@ export interface PillProps extends FlexProps {
 
 enum DisplayState {
   Enabled = "enabled",
+  Enabled2 = "enabled2",
   Pressed = "pressed",
   Selected = "selected",
+  Selected2 = "selected2",
   Disabled = "disabled",
 }
 
@@ -70,8 +73,12 @@ export const Pill: React.FC<PillProps> = ({
   highlightEnabled = false,
   ...rest
 }) => {
+  const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
+
   const textStyle = useTextStyleForPalette(size === "xxs" ? "xs" : "sm")
-  const initialDisplayState = selected ? DisplayState.Selected : DisplayState.Enabled
+  const enabledDisplayState = enableImprovedPills ? DisplayState.Enabled2 : DisplayState.Enabled
+  const selectedDisplayState = enableImprovedPills ? DisplayState.Selected2 : DisplayState.Selected
+  const initialDisplayState = selected ? selectedDisplayState : enabledDisplayState
   const [innerDisplayState, setInnerDisplayState] = useState(initialDisplayState)
   const { height, paddingLeft, paddingRight } = getSize(size)
 
@@ -156,11 +163,21 @@ const useStyleForState = (state: DisplayState): { textColor: string; borderColor
       retval.backgroundColor = color("white100")
       break
     case DisplayState.Selected:
+      retval.textColor = color("black100")
+      retval.borderColor = color("black60")
+      retval.backgroundColor = color("white100")
+      break
+    case DisplayState.Selected2:
       retval.textColor = color("white100")
       retval.borderColor = color("white100")
       retval.backgroundColor = color("blue100")
       break
     case DisplayState.Enabled:
+      retval.textColor = color("black100")
+      retval.borderColor = color("black15")
+      retval.backgroundColor = color("white100")
+      break
+    case DisplayState.Enabled2:
       retval.textColor = color("black100")
       retval.borderColor = color("black60")
       retval.backgroundColor = color("white100")
