@@ -8,7 +8,7 @@ import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquirySt
 import { InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { LocationWithDetails } from "lib/utils/googleMaps"
 import { Schema } from "lib/utils/track"
-import { Box, Flex, Separator, Text, useTheme } from "palette"
+import { Box, Flex, Join, Separator, Spacer, Text, useTheme } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
@@ -89,8 +89,10 @@ const InquiryQuestionOption: React.FC<{
         >
           <Flex flexDirection="row" justifyContent="space-between">
             <Flex flexDirection="row">
-              <Checkbox data-test-id={`checkbox-${id}`} checked={questionSelected} onPress={setSelection} />
-              <Text variant="sm">{question}</Text>
+              <Join separator={<Spacer ml={3} />}>
+                <Checkbox data-test-id={`checkbox-${id}`} checked={questionSelected} onPress={setSelection} />
+                <Text variant="sm">{question}</Text>
+              </Join>
             </Flex>
           </Flex>
 
