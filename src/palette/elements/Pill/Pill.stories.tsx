@@ -31,10 +31,14 @@ storiesOf("Pill", module)
   .add("Text", () => (
     <List>
       <Pill>Not Selected</Pill>
-      <Pill selected>[NEW]Selected</Pill>
+      <Pill selected>Selected</Pill>
+      <Pill applyDisabledStyles>Disabled</Pill>
       <Pill rounded>Not Selected</Pill>
       <Pill rounded selected>
         Selected
+      </Pill>
+      <Pill applyDisabledStyles rounded>
+        Disabled
       </Pill>
     </List>
   ))
