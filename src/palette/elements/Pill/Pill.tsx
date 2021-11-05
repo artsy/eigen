@@ -23,7 +23,6 @@ export interface PillProps extends FlexProps {
   disabled?: boolean
   selected?: boolean
   imageUrl?: string
-  applyDisabledStyles?: boolean
   highlightEnabled?: boolean
 }
 
@@ -69,7 +68,6 @@ export const Pill: React.FC<PillProps> = ({
   children,
   disabled,
   rounded,
-  applyDisabledStyles = false,
   highlightEnabled = false,
   ...rest
 }) => {
@@ -91,8 +89,8 @@ export const Pill: React.FC<PillProps> = ({
   }, [selected])
 
   useEffect(() => {
-    setInnerDisplayState(applyDisabledStyles ? DisplayState.Disabled : initialDisplayState)
-  }, [applyDisabledStyles])
+    setInnerDisplayState(disabled && !selected ? DisplayState.Disabled : initialDisplayState)
+  }, [disabled])
 
   const iconSpacerMargin = size === "xxs" ? 0.5 : 1
   const iconColor = innerDisplayState === "pressed" ? "blue100" : "black100"

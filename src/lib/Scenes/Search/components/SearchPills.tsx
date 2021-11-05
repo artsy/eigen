@@ -27,17 +27,16 @@ export const SearchPills = React.forwardRef<ScrollView, SearchPillsProps>((props
       {pills.map((pill) => {
         const { name, displayName } = pill
         const selected = isSelected(pill)
-        const disabledWithStyles = (!!pill.disabled || !!loading) && pill.name !== "TOP"
+        const disabled = (!!pill.disabled || !!loading || !!selected) && pill.name !== "TOP"
 
         return (
           <Pill
             mr={1}
             key={name}
-            accessibilityState={{ selected, disabled: disabledWithStyles || selected }}
+            accessibilityState={{ selected, disabled }}
             rounded
             selected={selected}
-            disabled={disabledWithStyles || selected}
-            applyDisabledStyles={disabledWithStyles}
+            disabled={disabled}
             onPress={() => onPillPress(pill)}
           >
             {displayName}

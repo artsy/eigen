@@ -32,12 +32,12 @@ storiesOf("Pill", module)
     <List>
       <Pill>Not Selected</Pill>
       <Pill selected>Selected</Pill>
-      <Pill applyDisabledStyles>Disabled</Pill>
+      <Pill disabled>Disabled</Pill>
       <Pill rounded>Not Selected</Pill>
       <Pill rounded selected>
         Selected
       </Pill>
-      <Pill applyDisabledStyles rounded>
+      <Pill disabled rounded>
         Disabled
       </Pill>
     </List>
