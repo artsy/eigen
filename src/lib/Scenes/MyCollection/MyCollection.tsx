@@ -80,10 +80,12 @@ const MyCollection: React.FC<{
 
   const space = useSpace()
 
+  const allowOrderImports = useFeatureFlag("AREnableMyCollectionOrderImport")
+
   useEffect(() => {
     if (artworks.length) {
       hasBeenShownBanner().then((hasSeenBanner) => {
-        const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
+        const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && allowOrderImports && !hasSeenBanner
         setJSX(
           <Flex>
             <Flex flexDirection="row" alignSelf="flex-end" px={2} py={1}>
