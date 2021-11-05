@@ -164,7 +164,7 @@ const useStyleForState = (state: DisplayState): { textColor: string; borderColor
       break
     case DisplayState.Selected2:
       retval.textColor = color("white100")
-      retval.borderColor = color("white100")
+      retval.borderColor = color("blue100")
       retval.backgroundColor = color("blue100")
       break
     case DisplayState.Enabled:
