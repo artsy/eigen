@@ -10,7 +10,7 @@ export interface BannerProps {
   showCloseButton?: boolean
   containerStyle?: FlexProps
   titleStyle?: TextProps
-  subTitleStyle?: TextProps
+  bodyTextStyle?: TextProps
 }
 
 export const Banner: React.FC<BannerProps> = ({
@@ -20,7 +20,7 @@ export const Banner: React.FC<BannerProps> = ({
   showCloseButton = false,
   containerStyle,
   titleStyle,
-  subTitleStyle,
+  bodyTextStyle,
 }) => {
   const color = useColor()
 
@@ -61,14 +61,18 @@ export const Banner: React.FC<BannerProps> = ({
             <Text fontSize="13px" color={color("blue100")} {...titleStyle}>
               {title}
             </Text>
-            <Text fontSize="13px" color={color("black100")} {...subTitleStyle}>
+            <Text fontSize="13px" color={color("black100")} {...bodyTextStyle}>
               {text}
             </Text>
           </Flex>
 
           {!!showCloseButton && (
             <Flex style={{ marginTop: 2 }}>
-              <TouchableOpacity onPress={handleClose} hitSlop={{ bottom: 40, right: 40, left: 40, top: 40 }}>
+              <TouchableOpacity
+                testID="banner-close-button"
+                onPress={handleClose}
+                hitSlop={{ bottom: 40, right: 40, left: 40, top: 40 }}
+              >
                 <Image source={require("../../../../images/close-x.webp")} style={{ tintColor: color("black100") }} />
               </TouchableOpacity>
             </Flex>

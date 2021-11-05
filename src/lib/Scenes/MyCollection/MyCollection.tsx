@@ -83,7 +83,7 @@ const MyCollection: React.FC<{
   useEffect(() => {
     if (artworks.length) {
       hasBeenShownBanner().then((hasSeenBanner) => {
-        const showNewWorksBanner = me?.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
+        const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
         setJSX(
           <Flex>
             <Flex flexDirection="row" alignSelf="flex-end" px={2} py={1}>
