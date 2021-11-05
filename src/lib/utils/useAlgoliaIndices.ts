@@ -12,7 +12,7 @@ interface IndicesInfo {
 
 export const useAlgoliaIndices = (client: SearchClient | null, indices?: ReadonlyArray<{ name: string }>) => {
   const [indicesInfo, setIndicesInfo] = useState<IndicesInfo>({})
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState(false)
   const lastQuery = useRef<string | null>(null)
 
   const updateIndicesInfo = useCallback(
