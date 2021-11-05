@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0ddb2071115a82abceefe6c1097a9eb4 */
+/* @relayHash 5f9967ad1cd02320df24c001cba4860e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -74,6 +74,9 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
 
 fragment MyCollection_me_19sDyO on Me {
   id
+  myCollectionInfo {
+    includesPurchasedArtworks
+  }
   myCollectionConnection(excludePurchasedArtworks: $excludePurchasedArtworks, first: $count, after: $cursor, sort: CREATED_AT_DESC) {
     edges {
       node {
@@ -206,6 +209,24 @@ return {
         "plural": false,
         "selections": [
           (v4/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "MyCollectionInfo",
+            "kind": "LinkedField",
+            "name": "myCollectionInfo",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "includesPurchasedArtworks",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": (v5/*: any*/),
@@ -393,7 +414,7 @@ return {
     ]
   },
   "params": {
-    "id": "0ddb2071115a82abceefe6c1097a9eb4",
+    "id": "5f9967ad1cd02320df24c001cba4860e",
     "metadata": {},
     "name": "MyCollectionPaginationQuery",
     "operationKind": "query",

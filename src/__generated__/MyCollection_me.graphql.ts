@@ -6,6 +6,9 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollection_me = {
     readonly id: string;
+    readonly myCollectionInfo: {
+        readonly includesPurchasedArtworks: boolean;
+    } | null;
     readonly myCollectionConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -66,6 +69,24 @@ return {
   "name": "MyCollection_me",
   "selections": [
     (v0/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "MyCollectionInfo",
+      "kind": "LinkedField",
+      "name": "myCollectionInfo",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "includesPurchasedArtworks",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
     {
       "alias": "myCollectionConnection",
       "args": null,
@@ -155,5 +176,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'abfe4961636d93be2d487e003344d469';
+(node as any).hash = '89e97213740334ce633e990039517fd5';
 export default node;
