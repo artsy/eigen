@@ -5,7 +5,6 @@ import { Image } from "lib/Components/Bidding/Elements/Image"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { LoadingIndicator } from "lib/Components/LoadingIndicator"
-import { TextArea } from "lib/Components/TextArea"
 import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { compact, isArray } from "lodash"
@@ -153,11 +152,16 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
               defaultValue={values.name}
             />
             <Spacer py={2} />
-            <TextArea
+            <Input
               ref={bioInputRef}
-              title="ABOUT"
-              defaultValue={values.bio}
+              title="About"
               onChangeText={handleChange("bio") as (value: string) => void}
+              onBlur={() => validateForm()}
+              error={errors.bio}
+              maxLength={150}
+              multiline
+              showLimit
+              defaultValue={values.bio}
             />
             <Spacer py={2} />
             <Button flex={1} disabled={!dirty} onPress={handleSubmit}>
