@@ -5,6 +5,7 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import * as RelayCache from "lib/relay/RelayCache"
 import { BottomTabsModel, getBottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
 import { getMyCollectionModel, MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
+import { getMyProfileModal, MyProfileModal } from "lib/Scenes/MyProfile/MyProfileModal"
 import { getSearchModel, SearchModel } from "lib/Scenes/Search/SearchModel"
 import { Platform } from "react-native"
 import { AuthModel, getAuthModel } from "./AuthModel"
@@ -26,6 +27,7 @@ interface GlobalStoreStateModel {
   bottomTabs: BottomTabsModel
   search: SearchModel
   myCollection: MyCollectionModel
+  myProfile: MyProfileModal
   config: ConfigModel
   auth: AuthModel
   toast: ToastModel
@@ -103,6 +105,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   bottomTabs: getBottomTabsModel(),
   search: getSearchModel(),
   myCollection: getMyCollectionModel(),
+  myProfile: getMyProfileModal(),
   config: getConfigModel(),
   auth: getAuthModel(),
   toast: getToastModel(),

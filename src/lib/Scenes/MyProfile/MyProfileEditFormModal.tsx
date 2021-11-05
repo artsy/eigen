@@ -5,6 +5,7 @@ import { Image } from "lib/Components/Bidding/Elements/Image"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { LoadingIndicator } from "lib/Components/LoadingIndicator"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { compact, isArray } from "lodash"
@@ -18,7 +19,6 @@ import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 interface MyProfileEditFormModalProps {
   visible: boolean
   me: MyProfileEditFormModal_me
-  setProfileIconLocally: (path: string) => void
   onDismiss(): void
 }
 
@@ -35,20 +35,21 @@ export const editMyProfileSchema = Yup.object().shape({
 })
 
 export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (props) => {
-  const { visible, onDismiss, me, setProfileIconLocally } = props
+  const { visible, onDismiss, me } = props
   const color = useColor()
   const { showActionSheetWithOptions } = useActionSheet()
   const nameInputRef = useRef<Input>(null)
   const bioInputRef = useRef<TextInput>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [didUpdatePhoto, setDidUpdatePhoto] = useState(false)
+  const localProfileIconPath = GlobalStore.useAppState((state) => state.myProfile.profileIconPath)
 
   const uploadProfilePhoto = async (photo: string) => {
+    // We want to show the local image initially for better UX since Gemini takes a while to process
+    GlobalStore.actions.myProfile.setProfileIconPath(photo)
     try {
       const iconUrl = await getConvertedImageUrlFromS3(photo)
       await updateMyUserProfile({ iconUrl })
-      // We want to show the local image initially for better UX since Gemini takes a while to process
-      setProfileIconLocally(photo)
     } catch (error) {
       console.log("Failed to upload profile picture ", error)
     }
@@ -129,8 +130,8 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
                 justifyContent="center"
                 alignItems="center"
               >
-                {!!values.photo ? (
-                  <Avatar src={values.photo} size="md" />
+                {!!values.photo || !!localProfileIconPath ? (
+                  <Avatar src={values.photo || localProfileIconPath} size="md" />
                 ) : (
                   <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
                 )}

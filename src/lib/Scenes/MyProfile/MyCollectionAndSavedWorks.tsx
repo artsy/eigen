@@ -5,6 +5,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { GlobalStore } from "lib/store/GlobalStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Avatar, Box, Button, Flex, Sans, useColor } from "palette"
 import React, { useState } from "react"
@@ -44,22 +45,12 @@ export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWor
   const color = useColor()
 
   const [showModal, setShowModal] = useState(false)
-  const [localImagePath, setLocalImagePath] = useState<string>("")
-
-  const setProfileIconHandler = (profileIconPath: string) => {
-    setLocalImagePath(profileIconPath)
-  }
-
-  const userProfileImage = localImagePath || me.icon?.url
+  const localProfileIconPath = GlobalStore.useAppState((state) => state.myProfile.profileIconPath)
+  const userProfileImage = localProfileIconPath || me.icon?.url
 
   return (
     <>
-      <MyProfileEditFormModalFragmentContainer
-        me={me}
-        visible={showModal}
-        onDismiss={() => setShowModal(false)}
-        setProfileIconLocally={setProfileIconHandler}
-      />
+      <MyProfileEditFormModalFragmentContainer me={me} visible={showModal} onDismiss={() => setShowModal(false)} />
       <FancyModalHeader
         rightButtonText="Settings"
         hideBottomDivider
