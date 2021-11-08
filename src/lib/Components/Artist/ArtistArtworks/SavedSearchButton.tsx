@@ -196,6 +196,7 @@ export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRend
       variables={{
         criteria,
       }}
+      cacheConfig={{ force: true }}
     />
   )
 }

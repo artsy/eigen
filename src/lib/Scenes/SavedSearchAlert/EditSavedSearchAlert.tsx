@@ -145,6 +145,7 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
               renderPlaceholder: () => <EditSavedSearchFormPlaceholder />,
               initialProps: { savedSearchAlertId, ...relayProps },
             })}
+            cacheConfig={{ force: true }}
           />
         ),
         renderPlaceholder: () => <EditSavedSearchFormPlaceholder />,
