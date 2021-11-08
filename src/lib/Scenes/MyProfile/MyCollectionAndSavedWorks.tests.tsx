@@ -13,7 +13,7 @@ import { DateTime } from "luxon"
 import { Avatar } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { act, ReactTestRenderer } from "react-test-renderer"
+import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
@@ -58,12 +58,8 @@ describe("MyCollectionAndSavedWorks", () => {
   })
 
   describe("Components of MyCollectionAndSavedWorks ", () => {
-    let tree: ReactTestRenderer
-    beforeEach(() => {
-      tree = getWrapper()
-    })
-
     it("renders the right tabs", () => {
+      const tree = getWrapper()
       expect(tree.root.findByType(StickyTabPage)).toBeDefined()
       expect(tree.root.findByType(MyCollectionQueryRenderer)).toBeDefined()
       expect(tree.root.findByType(FavoriteArtworksQueryRenderer)).toBeDefined()
@@ -71,12 +67,16 @@ describe("MyCollectionAndSavedWorks", () => {
 
     // Header tests
     it("Header Settings onPress navigates to MyProfileSettings", () => {
+      const tree = getWrapper()
       tree.root.findByType(FancyModalHeader).props.onRightButtonPress()
       expect(navigate).toHaveBeenCalledTimes(1)
       expect(navigate).toHaveBeenCalledWith("/my-profile/settings")
     })
 
     describe("With Bio and Icon Feature flags off", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableVisualProfileIconAndBio: false })
+      })
       it("Header shows the right text", async () => {
         const wrapper = getWrapper({
           Me: () => ({
@@ -114,8 +114,6 @@ describe("MyCollectionAndSavedWorks", () => {
             },
           }),
         })
-
-        await flushPromiseQueue()
         // No avatar
         expect(wrapper.root.findAllByType(Avatar)).toEqual([])
       })
