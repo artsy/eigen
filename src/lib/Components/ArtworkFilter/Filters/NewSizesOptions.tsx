@@ -99,12 +99,10 @@ const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({ v
   }
 
   return (
-    <Box mx={15}>
-      <Spacer mt={2} />
+    <Box mx={15} my={2}>
       <CustomSizeInputs label="Width" range={values.width} onChange={handleChange(FilterParamName.width)} />
       <Spacer mt={2} />
       <CustomSizeInputs label="Height" range={values.height} onChange={handleChange(FilterParamName.height)} />
-      <Spacer mt={2} />
     </Box>
   )
 }
