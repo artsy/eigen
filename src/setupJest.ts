@@ -421,8 +421,22 @@ jest.mock("@react-native-community/async-storage", () => {
     mergeItem() {
       throw new Error("mock version of mergeItem not yet implemented")
     },
-    multiGet() {
-      throw new Error("mock version of multiGet not yet implemented")
+    multiGet(
+      keys: string[],
+      callback?: (
+        errors?: string[] | undefined,
+        result?: Array<[string, string | null]> | undefined
+      ) => void | undefined
+    ) {
+      return new Promise((resolve) => {
+        const res = []
+        for (const key of keys) {
+          const val = [key, state[key]]
+          res.push(val)
+        }
+        callback?.(undefined, undefined) // TODO: Do a proper callback
+        resolve(res)
+      })
     },
     multiMerge() {
       throw new Error("mock version of multiMerge not yet implemented")
@@ -432,8 +446,14 @@ jest.mock("@react-native-community/async-storage", () => {
         delete state[k]
       })
     },
-    multiSet() {
-      throw new Error("mock version of multiSet not yet implemented")
+    multiSet(keyValuePairs: string[][], callback?: ((errors?: string[] | undefined) => void) | undefined) {
+      return new Promise((resolve) => {
+        for (const keyValue of keyValuePairs) {
+          state[keyValue[0]] = keyValue[1]
+        }
+        callback?.()
+        resolve(true)
+      })
     },
   }
 })
