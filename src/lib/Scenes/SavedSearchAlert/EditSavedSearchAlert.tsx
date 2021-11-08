@@ -75,7 +75,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
               filters={filters}
               aggregations={aggregations}
               savedSearchAlertId={savedSearchAlertId}
-              userAllowEmails={user.emailFrequency !== "none"}
+              userAllowsEmails={user.emailFrequency !== "none"}
               onComplete={onComplete}
               onDeleteComplete={onComplete}
             />

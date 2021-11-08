@@ -24,7 +24,7 @@ import {
 export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase {
   initialValues: SavedSearchAlertFormValues
   savedSearchAlertId?: string
-  userAllowEmails: boolean
+  userAllowsEmails: boolean
   onComplete?: (result: SavedSearchAlertMutationResult) => void
   onDeleteComplete?: () => void
 }
@@ -37,7 +37,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     savedSearchAlertId,
     artistId,
     artistName,
-    userAllowEmails,
+    userAllowsEmails,
     onComplete,
     onDeleteComplete,
     ...other
@@ -46,7 +46,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const pills = extractPills(filters, aggregations)
   const tracking = useTracking()
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
-  const [canSendEmails, setCanSendEmails] = useState(userAllowEmails)
+  const [canSendEmails, setCanSendEmails] = useState(userAllowsEmails)
   const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const formik = useFormik<SavedSearchAlertFormValues>({
     initialValues,
@@ -70,7 +70,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       try {
         let result: SavedSearchAlertMutationResult
 
-        if (enableSavedSearchToggles && !userAllowEmails && canSendEmails && values.email) {
+        if (enableSavedSearchToggles && !userAllowsEmails && canSendEmails && values.email) {
           await updateEmailFrequency("alerts_only")
         }
 
@@ -110,8 +110,8 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   }, [initialValues.email])
 
   useEffect(() => {
-    setCanSendEmails(userAllowEmails)
-  }, [userAllowEmails])
+    setCanSendEmails(userAllowsEmails)
+  }, [userAllowsEmails])
 
   const requestNotificationPermissions = () => {
     // permissions not determined: Android should never need this

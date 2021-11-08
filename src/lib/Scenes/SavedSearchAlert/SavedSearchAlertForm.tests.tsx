@@ -356,7 +356,7 @@ describe("Saved search alert form", () => {
         <SavedSearchAlertForm
           {...baseProps}
           initialValues={{ ...baseProps.initialValues, push: false, email: false }}
-          userAllowEmails={false}
+          userAllowsEmails={false}
         />
       )
 
@@ -373,7 +373,7 @@ describe("Saved search alert form", () => {
         <SavedSearchAlertForm
           {...baseProps}
           initialValues={{ ...baseProps.initialValues, push: false, email: false }}
-          userAllowEmails={false}
+          userAllowsEmails={false}
         />
       )
 
@@ -554,5 +554,5 @@ const baseProps: SavedSearchAlertFormProps = {
   aggregations,
   artistId: "artistID",
   artistName: "artistName",
-  userAllowEmails: true,
+  userAllowsEmails: true,
 }

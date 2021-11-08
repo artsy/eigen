@@ -133,7 +133,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
         onComplete={handleComplete}
         filters={filters}
         aggregations={aggregations}
-        userAllowEmails={me?.emailFrequency !== "none"}
+        userAllowsEmails={me?.emailFrequency !== "none"}
       />
     </Box>
   )
