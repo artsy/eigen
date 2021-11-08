@@ -46,7 +46,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const pills = extractPills(filters, aggregations)
   const tracking = useTracking()
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
-  const [canSendEmails, setCanSendEmails] = useState(userAllowsEmails)
+  const [shouldShowEmailWarning, setShouldShowEmailWarning] = useState(!userAllowsEmails)
   const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const formik = useFormik<SavedSearchAlertFormValues>({
     initialValues,
@@ -70,7 +70,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       try {
         let result: SavedSearchAlertMutationResult
 
-        if (enableSavedSearchToggles && !userAllowsEmails && canSendEmails && values.email) {
+        if (enableSavedSearchToggles && !userAllowsEmails && values.email) {
           await updateEmailFrequency("alerts_only")
         }
 
@@ -110,7 +110,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   }, [initialValues.email])
 
   useEffect(() => {
-    setCanSendEmails(userAllowsEmails)
+    setShouldShowEmailWarning(!userAllowsEmails)
   }, [userAllowsEmails])
 
   const requestNotificationPermissions = () => {
@@ -208,7 +208,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   }
 
   const handleToggleEmailNotification = (enabled: boolean) => {
-    if (!canSendEmails && enabled) {
+    if (shouldShowEmailWarning && enabled) {
       const title = "Artsy would like to send you notifications"
       const description =
         'After clicking "Save Alert", you are opting in to receive alert notifications via email. You can update your email preferences at any time'
@@ -217,7 +217,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         {
           text: "OK",
           onPress: () => {
-            setCanSendEmails(true)
+            setShouldShowEmailWarning(false)
             formik.setFieldValue("email", enabled)
           },
         },
