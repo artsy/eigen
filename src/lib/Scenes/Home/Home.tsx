@@ -78,7 +78,7 @@ const Home = (props: Props) => {
   const enableAuctionResultsByFollowedArtists = useFeatureFlag("ARHomeAuctionResultsByFollowedArtists")
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
   const enableTrove = useFeatureFlag("AREnableTrove")
-  const enableNewNewWorksForYouRail = useFeatureFlag("AREnableNewNewWorksForYou")
+  const enableNewNewWorksForYouRail = useFeatureFlag("AREnableNewWorksForYou")
   const enableShowsForYouRail = useFeatureFlag("AREnableShowsRail")
   const enableSplitIOABTesting = useFeatureFlag("AREnableSplitIOABTesting")
 
