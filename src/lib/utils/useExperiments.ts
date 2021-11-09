@@ -44,8 +44,11 @@ export const useTreatment = (treatment: EXPERIMENT_NAME) => {
   const enableSplitIOABTesting = useFeatureFlag("AREnableSplitIOABTesting")
   const isReady = GlobalStore.useAppState((store) => store.config.experiments.sessionState.isReady)
 
-  // This next one, we don't really use, but we need it inside this hook, to make the hook re-render the components it is used it.
-  // When the `SDK_UPDATE` event comes, the `lastUpdate` updates, and that means that `client.getTreatment(treatment)` will return a new value.
+  // `_lastUpdate` needs to be here, even though it is not actually used in this hook.
+  // The reason this is needed here is this:
+  // When the `SDK_UPDATE` event comes (look a few lines up), the `lastUpdate` updates.
+  // That means that when `client.getTreatment(treatment)` runs, it will return a new value.
+  // So we "read" this value, in order to make the hook re-render the components it is used it.
   // @ts-ignore
   const _lastUpdate = GlobalStore.useAppState((store) => store.config.experiments.sessionState.lastUpdate)
 
