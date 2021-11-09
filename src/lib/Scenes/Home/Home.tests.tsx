@@ -62,7 +62,7 @@ describe(HomeQueryRenderer, () => {
     })
 
     expect(tree.root.findAllByType(SalesRailFragmentContainer)).toHaveLength(1)
-    expect(tree.root.findAllByType(FairsRailFragmentContainer)).toHaveLength(1)
+    expect(tree.root.findAllByType(FairsRailFragmentContainer)).toHaveLength(0)
   })
 
   it("renders an email confirmation banner", () => {
