@@ -12,6 +12,7 @@ let client: SplitIO.IClient | null = null
 export const useExperiments = () => {
   const enableSplitIOABTesting = useFeatureFlag("AREnableSplitIOABTesting")
   const environment = GlobalStore.useAppState((store) => store.config.environment.env)
+  const userIdOrDeviceId = GlobalStore.useAppState((store) => store.auth.userID ?? `not-logged-in_${getUniqueId()}`)
 
   useEffect(() => {
     if (enableSplitIOABTesting) {
@@ -19,7 +20,7 @@ export const useExperiments = () => {
         core: {
           authorizationKey:
             environment === "staging" ? Config.SPLIT_IO_STAGING_API_KEY : Config.SPLIT_IO_PRODUCTION_API_KEY,
-          key: getUniqueId(),
+          key: userIdOrDeviceId,
         },
         // debug: true,
         streamingEnabled: true,
