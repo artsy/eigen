@@ -44,13 +44,15 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
   const [didUpdatePhoto, setDidUpdatePhoto] = useState(false)
 
   const uploadProfilePhoto = async (photo: string) => {
+    const existingProfileImage = me.icon?.url ?? ""
     try {
-      const iconUrl = await getConvertedImageUrlFromS3(photo)
-      await updateMyUserProfile({ iconUrl })
       // We want to show the local image initially for better UX since Gemini takes a while to process
       setProfileIconLocally(photo)
+      const iconUrl = await getConvertedImageUrlFromS3(photo)
+      await updateMyUserProfile({ iconUrl })
     } catch (error) {
-      console.log("Failed to upload profile picture ", error)
+      setProfileIconLocally(existingProfileImage)
+      console.error("Failed to upload profile picture ", error)
     }
   }
 
@@ -58,7 +60,7 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
     try {
       await updateMyUserProfile({ name, bio })
     } catch (error) {
-      console.log("Failed to update user name and bio ", error)
+      console.error("Failed to update user name and bio ", error)
     }
   }
 
@@ -79,7 +81,7 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
           compact([await updateUserInfo({ name, bio }), didUpdatePhoto && (await uploadProfilePhoto(photo))])
         )
       } catch (error) {
-        console.log("Failed to update user profile ", error)
+        console.error("Failed to update user profile ", error)
       } finally {
         setLoading(false)
       }
