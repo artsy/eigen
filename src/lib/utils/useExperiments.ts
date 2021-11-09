@@ -48,7 +48,7 @@ export const useTreatment = (treatment: EXPERIMENT_NAME) => {
   // The reason this is needed here is this:
   // When the `SDK_UPDATE` event comes (look a few lines up), the `lastUpdate` updates.
   // That means that when `client.getTreatment(treatment)` runs, it will return a new value.
-  // So we "read" this value, in order to make the hook re-render the components it is used it.
+  // So we "read" this value, in order to make the hook re-render the components it is used in.
   // @ts-ignore
   const _lastUpdate = GlobalStore.useAppState((store) => store.config.experiments.sessionState.lastUpdate)
 
