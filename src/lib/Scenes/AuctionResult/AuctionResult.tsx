@@ -126,9 +126,6 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   if (auctionResult.location) {
     details.push(makeRow("Sale location", auctionResult.location))
   }
-  if (auctionResult.description) {
-    details.push(makeRow("Description", auctionResult.description, { fullWidth: true }))
-  }
 
   const hasSalePrice = auctionResultHasPrice(auctionResult as AuctionResultHelperData)
   const salePriceMessage = auctionResultText(auctionResult as AuctionResultHelperData)
@@ -261,7 +258,6 @@ export const AuctionResultQueryRenderer: React.FC<{
             currency
             categoryText
             dateText
-            description
             dimensions {
               height
               width

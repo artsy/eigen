@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6c5fa6d298f99359641d3ddef5e6efc9 */
+/* @relayHash c8f80dc0cf6e998fc1ad21648d22d202 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type AuctionResultQueryVariables = {
@@ -17,7 +17,6 @@ export type AuctionResultQueryResponse = {
         readonly currency: string | null;
         readonly categoryText: string | null;
         readonly dateText: string | null;
-        readonly description: string | null;
         readonly dimensions: {
             readonly height: number | null;
             readonly width: number | null;
@@ -77,7 +76,6 @@ query AuctionResultQuery(
     currency
     categoryText
     dateText
-    description
     dimensions {
       height
       width
@@ -214,13 +212,6 @@ v6 = {
       "args": null,
       "kind": "ScalarField",
       "name": "dateText",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "description",
       "storageKey": null
     },
     {
@@ -485,7 +476,7 @@ return {
     ]
   },
   "params": {
-    "id": "6c5fa6d298f99359641d3ddef5e6efc9",
+    "id": "c8f80dc0cf6e998fc1ad21648d22d202",
     "metadata": {},
     "name": "AuctionResultQuery",
     "operationKind": "query",
@@ -493,5 +484,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'aab128c077bb4f181703946649f7f444';
+(node as any).hash = 'bff6813a95486e3788f21b718df85a4c';
 export default node;
