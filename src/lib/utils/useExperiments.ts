@@ -16,7 +16,7 @@ export const ExperimentsInitialiser = () => {
         environment === "staging" ? Config.SPLIT_IO_STAGING_API_KEY : Config.SPLIT_IO_PRODUCTION_API_KEY,
       key: GlobalStore.useAppState((store) => store.auth.userID) ?? "not-logged",
     },
-    debug: true,
+    debug: false,
   })
 
   // And get the client instance you'll use
