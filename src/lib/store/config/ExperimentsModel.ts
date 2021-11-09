@@ -4,15 +4,17 @@ import { assignDeep } from "../persistence"
 export interface ExperimentsModel {
   sessionState: {
     isReady: boolean
+    lastUpdate: string | null
   }
-  setState: Action<ExperimentsModel, { sessionState: { isReady: boolean } }>
+  setSessionState: Action<this, Partial<this["sessionState"]>>
 }
 
 export const getExperimentsModel = (): ExperimentsModel => ({
   sessionState: {
     isReady: false,
+    lastUpdate: null,
   },
-  setState: action((state, payload) => {
-    assignDeep(state, payload)
+  setSessionState: action((state, payload) => {
+    assignDeep(state, { sessionState: payload })
   }),
 })

@@ -101,6 +101,7 @@ import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { AnalyticsConstants } from "./utils/track/constants"
 import { SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider } from "./utils/track/SegmentTrackingProvider"
+import { useExperiments } from "./utils/useExperiments"
 import { useScreenDimensions } from "./utils/useScreenDimensions"
 import { useStripeConfig } from "./utils/useStripeConfig"
 
@@ -423,6 +424,7 @@ const Main: React.FC<{}> = track()(({}) => {
   useSentryConfig()
   useStripeConfig()
   useWebViewCookies()
+  useExperiments()
 
   if (!isHydrated) {
     return <View />
