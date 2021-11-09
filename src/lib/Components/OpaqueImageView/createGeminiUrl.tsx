@@ -18,7 +18,7 @@ export function createGeminiUrl({
 }) {
   const enableWebPImages = unsafe_getFeatureFlag("AREnableWebPImages") && Platform.OS === "android"
   const src = encodeURIComponent(imageURL)
-  
+
   const params = [
     `height=${height}`,
     `quality=${imageQuality}`,
@@ -26,10 +26,10 @@ export function createGeminiUrl({
     `src=${src}`,
     `width=${width}`,
   ]
-  
+
   if (enableWebPImages) {
     params.push("convert_to=webp")
   }
-  
+
   return `https://${geminiHost}/?${params.join("&")}`
 }

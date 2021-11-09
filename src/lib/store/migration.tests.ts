@@ -383,6 +383,6 @@ describe("AddExperimentsModel migration", () => {
       toVersion: migrationToTest,
     }) as any
 
-    expect(migratedState.config.experiments.isReady).toEqual(false)
+    expect(migratedState.config.experiments).toEqual({})
   })
 })

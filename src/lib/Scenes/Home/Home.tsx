@@ -84,6 +84,7 @@ const Home = (props: Props) => {
 
   // A/B Testing
   const treatment = useTreatment("HomeScreenWorksForYouVsWorksByArtistsYouFollow")
+
   const newWorks =
     treatment === "worksForYou"
       ? {

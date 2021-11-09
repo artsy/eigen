@@ -24,7 +24,7 @@ import {
   TouchableOpacity,
 } from "react-native"
 import Config from "react-native-config"
-import { getBuildNumber, getVersion } from "react-native-device-info"
+import { getBuildNumber, getUniqueId, getVersion } from "react-native-device-info"
 import { useScreenDimensions } from "./useScreenDimensions"
 
 const configurableFeatureFlagKeys = sortBy(
@@ -177,6 +177,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           }}
           chevron={null}
         />
+        <MenuItem title="Device ID" value={getUniqueId()} />
       </ScrollView>
     </Flex>
   )

@@ -2,13 +2,19 @@ import { action, Action } from "easy-peasy"
 import { assignDeep } from "../persistence"
 
 export interface ExperimentsModel {
-  isReady: boolean
-  setState: Action<ExperimentsModel, Partial<{ isReady: boolean }>>
+  sessionState: {
+    isReady: boolean
+    lastUpdate: string | null
+  }
+  setSessionState: Action<this, Partial<this["sessionState"]>>
 }
 
 export const getExperimentsModel = (): ExperimentsModel => ({
-  isReady: false,
-  setState: action((state, payload) => {
-    assignDeep(state, payload)
+  sessionState: {
+    isReady: false,
+    lastUpdate: null,
+  },
+  setSessionState: action((state, payload) => {
+    assignDeep(state, { sessionState: payload })
   }),
 })
