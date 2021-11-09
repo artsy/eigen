@@ -27,10 +27,10 @@ export const useExperiments = () => {
       const factory: SplitIO.ISDK = SplitFactory(config)
       client = client ?? factory.client()
 
-      client?.once(client.Event.SDK_READY, () => {
+      client?.on(client.Event.SDK_READY, () => {
         GlobalStore.actions.config.experiments.setSessionState({ isReady: true, lastUpdate: DateTime.utc().toISO() })
       })
-      client?.once(client.Event.SDK_READY_TIMED_OUT, () => {
+      client?.on(client.Event.SDK_READY_TIMED_OUT, () => {
         GlobalStore.actions.config.experiments.setSessionState({ isReady: false })
       })
       client?.on(client.Event.SDK_UPDATE, () => {
