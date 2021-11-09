@@ -36,8 +36,6 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   disabled?: boolean
   required?: boolean
   title?: string
-  multiline?: boolean
-  maxLength?: number
   showLimit?: boolean
   /**
    * The placeholder can be an array of string, specifically for android, because of a bug.
@@ -346,8 +344,7 @@ export const computeBorderColor = (inputStatus: InputStatus): Color => {
 }
 
 const StyledInput = styled(TextInput)`
-  padding: 0 ${themeGet("space.1")}px 0 0;
-  margin: ${themeGet("space.1")}px;
+  padding: ${themeGet("space.1")}px;
   font-family: ${themeGet("fonts.sans.regular")};
 `
 StyledInput.displayName = "StyledInput"
