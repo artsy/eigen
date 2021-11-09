@@ -22,7 +22,6 @@ export const useExperiments = () => {
             environment === "staging" ? Config.SPLIT_IO_STAGING_API_KEY : Config.SPLIT_IO_PRODUCTION_API_KEY,
           key: userIdOrDeviceId,
         },
-        // debug: true,
         streamingEnabled: true,
       }
       const factory: SplitIO.ISDK = SplitFactory(config)
