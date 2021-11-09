@@ -19,7 +19,6 @@ import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { createAllChannels, savePendingToken } from "./utils/PushNotification"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { AnalyticsConstants } from "./utils/track/constants"
-import { useExperiments } from "./utils/useExperiments"
 import { useInitialNotification } from "./utils/useInitialNotification"
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
@@ -45,7 +44,6 @@ const Main: React.FC<{}> = track()(({}) => {
   useWebViewCookies()
   useDeepLinks()
   useInitialNotification()
-  useExperiments()
 
   useEffect(() => {
     createAllChannels()

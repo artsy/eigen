@@ -7,29 +7,35 @@ import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContex
 import { PopoverMessageProvider } from "./Components/PopoverMessage/PopoverMessageProvider"
 import { ToastProvider } from "./Components/Toast/toastHook"
 import { defaultEnvironment } from "./relay/createEnvironment"
-import { GlobalStoreProvider } from "./store/GlobalStore"
+import { GlobalStoreProvider, unsafe_getFeatureFlag } from "./store/GlobalStore"
+import { ExperimentsInitialiser } from "./utils/useExperiments"
 import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
 
-export const AppProviders = ({ children }: { children: ReactNode }) => (
-  <SafeAreaProvider>
-    <ProvideScreenDimensions>
-      <GlobalStoreProvider>
-        <RelayEnvironmentProvider environment={defaultEnvironment}>
-          <Theme>
-            <ActionSheetProvider>
-              <PopoverMessageProvider>
-                <_FancyModalPageWrapper>
-                  <ToastProvider>
-                    {/*  */}
-                    {children}
-                    {/*  */}
-                  </ToastProvider>
-                </_FancyModalPageWrapper>
-              </PopoverMessageProvider>
-            </ActionSheetProvider>
-          </Theme>
-        </RelayEnvironmentProvider>
-      </GlobalStoreProvider>
-    </ProvideScreenDimensions>
-  </SafeAreaProvider>
-)
+export const AppProviders = ({ children }: { children: ReactNode }) => {
+  const enableSplitIOABTesting = unsafe_getFeatureFlag("AREnableSplitIOABTesting")
+
+  return (
+    <SafeAreaProvider>
+      <ProvideScreenDimensions>
+        <GlobalStoreProvider>
+          <RelayEnvironmentProvider environment={defaultEnvironment}>
+            <Theme>
+              <ActionSheetProvider>
+                <PopoverMessageProvider>
+                  <_FancyModalPageWrapper>
+                    <ToastProvider>
+                      {/*  */}
+                      {children}
+                      {/*  */}
+                      {!!enableSplitIOABTesting && <ExperimentsInitialiser />}
+                    </ToastProvider>
+                  </_FancyModalPageWrapper>
+                </PopoverMessageProvider>
+              </ActionSheetProvider>
+            </Theme>
+          </RelayEnvironmentProvider>
+        </GlobalStoreProvider>
+      </ProvideScreenDimensions>
+    </SafeAreaProvider>
+  )
+}
