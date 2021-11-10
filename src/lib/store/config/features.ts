@@ -183,7 +183,7 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableWebPImages",
   },
   AREnableSplitIOABTesting: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Split.io A/B testing",
     showInAdminMenu: true,
     echoFlagKey: "AREnableSplitIOABTesting",
