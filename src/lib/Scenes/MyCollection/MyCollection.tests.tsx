@@ -76,7 +76,7 @@ describe("MyCollection", () => {
     })
 
     it("shows form modal when Add Artwork is pressed", () => {
-      const addArtworkButton = tree.root.findByProps({ "data-test-id": "add-artwork-button-zero-state" })
+      const addArtworkButton = tree.root.findByProps({ testID: "add-artwork-button-zero-state" })
       addArtworkButton.props.onPress()
 
       const artworkModal = tree.root.findByType(MyCollectionArtworkFormModal)
@@ -85,7 +85,7 @@ describe("MyCollection", () => {
     })
 
     it("tracks analytics event when Add Artwork is pressed", () => {
-      const addArtworkButton = tree.root.findByProps({ "data-test-id": "add-artwork-button-zero-state" })
+      const addArtworkButton = tree.root.findByProps({ testID: "add-artwork-button-zero-state" })
       addArtworkButton.props.onPress()
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)

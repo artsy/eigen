@@ -15,9 +15,7 @@ const completeStatuses = ["sold", "passed"]
 
 const LotStatusListItem: React.FC<Props> = ({ saleArtwork, saleIsClosed }) => {
   if (saleIsClosed) {
-    return (
-      <ClosedLotStandingFragmentContainer withTimelyInfo data-test-id="closed-sale-lot" saleArtwork={saleArtwork} />
-    )
+    return <ClosedLotStandingFragmentContainer withTimelyInfo testID="closed-sale-lot" saleArtwork={saleArtwork} />
   }
 
   if (saleArtwork.isWatching) {

@@ -10,14 +10,14 @@ describe("SectionTitle", () => {
 
     expect(extractText(tree.root)).toContain("hello")
     expect(tree.root.findAllByType(ArrowRightIcon)).toHaveLength(0)
-    expect(tree.root.findAllByProps({ "data-test-id": "subtitle" })).toHaveLength(0)
+    expect(tree.root.findAllByProps({ testID: "subtitle" })).toHaveLength(0)
   })
 
   it(`renders a subtitle when specified`, async () => {
     const tree = renderWithWrappers(<SectionTitle title="hello" subtitle="welcome to test" />)
 
-    expect(extractText(tree.root.findByProps({ "data-test-id": "title" }))).toContain("hello")
-    expect(extractText(tree.root.findByProps({ "data-test-id": "subtitle" }))).toBe("welcome to test")
+    expect(extractText(tree.root.findByProps({ testID: "title" }))).toContain("hello")
+    expect(extractText(tree.root.findByProps({ testID: "subtitle" }))).toBe("welcome to test")
     expect(tree.root.findAllByType(ArrowRightIcon)).toHaveLength(0)
   })
 
@@ -25,10 +25,10 @@ describe("SectionTitle", () => {
     const onPress = jest.fn()
     const tree = renderWithWrappers(<SectionTitle title="hello" subtitle="welcome to test" onPress={onPress} />)
 
-    expect(extractText(tree.root.findByProps({ "data-test-id": "title" }))).toContain("hello")
-    expect(extractText(tree.root.findByProps({ "data-test-id": "subtitle" }))).toBe("welcome to test")
+    expect(extractText(tree.root.findByProps({ testID: "title" }))).toContain("hello")
+    expect(extractText(tree.root.findByProps({ testID: "subtitle" }))).toBe("welcome to test")
     expect(tree.root.findAllByType(ArrowRightIcon)).toHaveLength(1)
-    tree.root.findByProps({ "data-test-id": "touchable-wrapper" }).props.onPress()
+    tree.root.findByProps({ testID: "touchable-wrapper" }).props.onPress()
     expect(onPress).toHaveBeenCalled()
   })
 })

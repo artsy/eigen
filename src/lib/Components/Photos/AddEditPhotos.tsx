@@ -92,7 +92,7 @@ const AddPhotosButton: React.FC<{ imageSize: number; addPhotos: (addedImages: RN
 
   return (
     <TouchableOpacity
-      data-test-id="add-photos-button"
+      testID="add-photos-button"
       onPress={() => {
         showPhotoActionSheet(showActionSheetWithOptions).then((addedImages) => {
           addPhotos(addedImages)
@@ -115,7 +115,7 @@ const DeletePhotoButton: React.FC<{ photo: Photo; deletePhoto: (deletedPhoto: Ph
   return (
     <Box position="absolute" right={-4} top={-5}>
       <TouchableOpacity
-        data-test-id={"delete-photo-button-" + photo.image.path}
+        testID={"delete-photo-button-" + photo.image.path}
         hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }}
         onPress={() => deletePhoto(photo)}
       >

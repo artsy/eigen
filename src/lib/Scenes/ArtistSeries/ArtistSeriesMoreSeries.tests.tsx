@@ -81,7 +81,7 @@ describe("ArtistSeriesMoreSeries", () => {
 
   it("renders the correct header text", () => {
     const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
-    expect(wrapper.root.findByProps({ "data-test-id": "header" }).props.children).toBe("This is a header")
+    expect(wrapper.root.findByProps({ testID: "header" }).props.children).toBe("This is a header")
   })
 
   describe("with at least one other series related to the artist to show", () => {
@@ -122,14 +122,14 @@ describe("ArtistSeriesMoreSeries", () => {
   describe("with greater than four series associated with an artist", () => {
     it("renders a view all button with a total count for all the series associated with the artist", () => {
       const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
-      expect(wrapper.root.findByProps({ "data-test-id": "viewAll" }).props.children).toBe("View All (6)")
+      expect(wrapper.root.findByProps({ testID: "viewAll" }).props.children).toBe("View All (6)")
     })
   })
 
   describe("with fewer than four series associated with an artist", () => {
     it("does not render a view all button", () => {
       const wrapper = getWrapper(ArtistSeriesMoreSeriesBelowViewAllThresholdFixture)
-      expect(wrapper.root.findAllByProps({ "data-test-id": "viewAll" })).toHaveLength(0)
+      expect(wrapper.root.findAllByProps({ testID: "viewAll" })).toHaveLength(0)
     })
   })
 })

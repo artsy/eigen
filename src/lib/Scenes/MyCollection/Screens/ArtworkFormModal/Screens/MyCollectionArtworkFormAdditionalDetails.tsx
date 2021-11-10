@@ -33,7 +33,7 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
               placeholder="Title"
               onChangeText={formik.handleChange("title")}
               onBlur={formik.handleBlur("title")}
-              data-test-id="TitleInput"
+              testID="TitleInput"
               defaultValue={formikValues.title}
             />
             <Input
@@ -42,13 +42,13 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
               placeholder="Year created"
               onChangeText={formik.handleChange("date")}
               onBlur={formik.handleBlur("date")}
-              data-test-id="DateInput"
+              testID="DateInput"
               defaultValue={formikValues.date}
             />
 
             <Checkbox
               onPress={() => handleEditionChange(!isEdition)}
-              data-test-id="EditionCheckbox"
+              testID="EditionCheckbox"
               checked={isEdition}
               // disabled={isLoading}
             >
@@ -66,14 +66,14 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
                     onChangeText={formik.handleChange("editionNumber")}
                     onBlur={formik.handleBlur("editionNumber")}
                     defaultValue={formikValues.editionNumber!}
-                    data-test-id="EditionNumberInput"
+                    testID="EditionNumberInput"
                   />
                   <Input
                     placeholder="Edition size"
                     keyboardType="number-pad"
                     onChangeText={formik.handleChange("editionSize")}
                     onBlur={formik.handleBlur("editionSize")}
-                    data-test-id="EditionSizeInput"
+                    testID="EditionSizeInput"
                     defaultValue={formikValues.editionSize}
                   />
                 </Join>
@@ -85,7 +85,7 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
               placeholder="Materials"
               onChangeText={formik.handleChange("category")}
               onBlur={formik.handleBlur("category")}
-              data-test-id="MaterialsInput"
+              testID="MaterialsInput"
               defaultValue={formikValues.category}
             />
 
@@ -94,7 +94,7 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
               placeholder="Provenance"
               value={formikValues.provenance}
               onChangeText={formik.handleChange("provenance")}
-              data-test-id="ProvenanceInput"
+              testID="ProvenanceInput"
             />
 
             <Input
@@ -103,7 +103,7 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
               keyboardType="decimal-pad"
               onChangeText={formik.handleChange("pricePaidDollars")}
               onBlur={formik.handleBlur("pricePaidDollars")}
-              data-test-id="PricePaidInput"
+              testID="PricePaidInput"
               defaultValue={formikValues.pricePaidDollars}
             />
 
@@ -118,7 +118,7 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
               onSelectValue={(value) => {
                 formik.handleChange("pricePaidCurrency")(value)
               }}
-              data-test-id="CurrencyInput"
+              testID="CurrencyInput"
             />
           </Join>
         </Flex>

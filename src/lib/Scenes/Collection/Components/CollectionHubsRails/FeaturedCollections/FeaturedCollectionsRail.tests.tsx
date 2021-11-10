@@ -112,15 +112,15 @@ describe("Featured Collections Rail", () => {
 
     it("renders the collection hub rail title", () => {
       const tree = renderWithWrappers(<FeaturedCollectionsRail {...props} />).root
-      expect(tree.findByProps({ "data-test-id": "group" }).props.children).toBe("Curated Highlights")
+      expect(tree.findByProps({ testID: "group" }).props.children).toBe("Curated Highlights")
     })
 
     it("renders each Featured Collection's title", () => {
       const tree = renderWithWrappers(<FeaturedCollectionsRail {...props} />).root
 
-      const title1 = tree.findByProps({ "data-test-id": "title-0" })
-      const title2 = tree.findByProps({ "data-test-id": "title-1" })
-      const title3 = tree.findByProps({ "data-test-id": "title-2" })
+      const title1 = tree.findByProps({ testID: "title-0" })
+      const title2 = tree.findByProps({ testID: "title-1" })
+      const title3 = tree.findByProps({ testID: "title-2" })
 
       expect(title1.props.children).toBe("First Featured Collection")
       expect(title2.props.children).toBe("Second Featured Collection")
@@ -130,9 +130,9 @@ describe("Featured Collections Rail", () => {
     it("renders each Featured Collection's price guidance metadata", () => {
       const tree = renderWithWrappers(<FeaturedCollectionsRail {...props} />).root
 
-      const price1 = tree.findByProps({ "data-test-id": "price-0" })
-      const price2 = tree.findByProps({ "data-test-id": "price-1" })
-      const price3 = tree.findByProps({ "data-test-id": "price-2" })
+      const price1 = tree.findByProps({ testID: "price-0" })
+      const price2 = tree.findByProps({ testID: "price-1" })
+      const price3 = tree.findByProps({ testID: "price-2" })
 
       expect(price1.props.children).toBe("From $15,000")
       expect(price2.props.children).toBe("From $25,000")

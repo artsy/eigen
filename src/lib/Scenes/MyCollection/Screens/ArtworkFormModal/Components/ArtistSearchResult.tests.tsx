@@ -17,7 +17,7 @@ describe("ArtistSearchResult", () => {
     const wrapper = renderWithWrappers(<ArtistSearchResult result={result as AutosuggestResult} />)
     expect(wrapper.root.findByType(OpaqueImageView)).toBeDefined()
     expect(wrapper.root.findByType(Button)).toBeDefined()
-    expect(wrapper.root.findByProps({ "data-test-id": "displayLabel" }).props.children).toEqual("some display label")
+    expect(wrapper.root.findByProps({ testID: "displayLabel" }).props.children).toEqual("some display label")
   })
 
   it("sets the search results to null on remove button click", () => {

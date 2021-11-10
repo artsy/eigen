@@ -94,7 +94,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
     <View>
       <Box style={{ height: imageHeight, width: screenWidth, position: "relative" }}>
         <BackgroundImage
-          data-test-id="background-image"
+          testID="background-image"
           imageURL={heroImage?.imageURLs?.normalized ?? ""}
           height={imageHeight}
           width={screenWidth}
@@ -109,7 +109,7 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
           mb={0.5}
         >
           <Flex alignItems="center" flexDirection="column" flexGrow={1}>
-            <Text data-test-id="title" variant="lg" textAlign="center" color="white100">
+            <Text testID="title" variant="lg" textAlign="center" color="white100">
               {title}
             </Text>
           </Flex>
@@ -121,11 +121,11 @@ export const ViewingRoomHeader: React.FC<ViewingRoomHeaderProps> = (props) => {
                 <Box mr={0.5}>
                   <PartnerIconImage
                     source={{ uri: partnerIconImageURL, width: 20, height: 20 }}
-                    data-test-id="partner-icon"
+                    testID="partner-icon"
                   />
                 </Box>
               )}
-              <Text variant="xs" fontWeight={500} color="white100" data-test-id="partner-name">
+              <Text variant="xs" fontWeight={500} color="white100" testID="partner-name">
                 {partner!.name}
               </Text>
             </Flex>

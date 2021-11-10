@@ -64,7 +64,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
         <Spacer my={2} />
 
         <PhotosButton
-          data-test-id="PhotosButton"
+          testID="PhotosButton"
           onPress={() => {
             if (isEmpty(artworkState.sessionState.formValues.photos)) {
               showPhotoActionSheet(showActionSheetWithOptions, true).then((photos) => {
@@ -76,7 +76,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
           }}
         />
         <AdditionalDetailsButton
-          data-test-id="AdditionalDetailsButton"
+          testID="AdditionalDetailsButton"
           onPress={() => {
             navigation.navigate("AdditionalDetails")
           }}
@@ -89,7 +89,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
             disabled={!formik.isValid || !isFormDirty()}
             block
             onPress={formik.handleSubmit}
-            data-test-id="CompleteButton"
+            testID="CompleteButton"
             haptic
           >
             {modalType === "edit" ? "Save changes" : "Complete"}
@@ -116,7 +116,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
                   }
                 )
               }}
-              data-test-id="DeleteButton"
+              testID="DeleteButton"
             >
               Delete artwork
             </Button>
@@ -154,11 +154,11 @@ const PhotosButton: React.FC<{ onPress: () => void }> = ({ onPress }) => {
             {photos.length > 0 && (
               <>
                 {photos.length === 1 ? (
-                  <Text variant="xs" data-test-id="onePhoto">
+                  <Text variant="xs" testID="onePhoto">
                     1 photo added
                   </Text>
                 ) : (
-                  <Text variant="xs" data-test-id="multiplePhotos">
+                  <Text variant="xs" testID="multiplePhotos">
                     {photos.length} photos added
                   </Text>
                 )}

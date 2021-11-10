@@ -21,7 +21,7 @@ describe("InfoButton", () => {
 
   it("only shows the modal when the button is pressed", () => {
     const wrapper = renderWithWrappers(
-      <InfoButton title="title" subTitle="subTitle" modalContent={<Text data-test-id="hello">Hello</Text>} />
+      <InfoButton title="title" subTitle="subTitle" modalContent={<Text testID="hello">Hello</Text>} />
     )
     expect(wrapper.root.findByType(FancyModal).props.visible).toBe(false)
     wrapper.root.findByType(TouchableOpacity).props.onPress()

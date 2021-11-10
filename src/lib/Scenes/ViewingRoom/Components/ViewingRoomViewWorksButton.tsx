@@ -38,7 +38,7 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
           navigate(`/viewing-room/${viewingRoom.slug}/artworks`)
         }}
       >
-        <ViewWorksButton data-test-id="view-works" px="2">
+        <ViewWorksButton testID="view-works" px="2">
           <Sans size="3t" py="1" color="white100" weight="medium">
             View {pluralizedArtworksCount} ({artworksCount})
           </Sans>

@@ -125,7 +125,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
                     lineHeight="20"
                     color="black60"
                     variant="sm"
-                    data-test-id="sale-subtitle"
+                    testID="sale-subtitle"
                     ellipsizeMode="middle"
                   >
                     {getSaleSubtitle(result?.liveStartAt, result?.displayTimelyAt).trim()}

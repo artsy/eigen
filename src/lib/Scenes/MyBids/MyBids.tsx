@@ -77,7 +77,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
         {!somethingToShow && <NoBids headerText="Discover works for you at auction." />}
         {!!hasActiveSales && <BidTitle>Active Bids</BidTitle>}
         {!!hasActiveSales && (
-          <Flex data-test-id="active-section">
+          <Flex testID="active-section">
             <Join separator={<Spacer my={1} />}>
               {active.map((activeSale) => {
                 if (!activeSale) {
@@ -121,7 +121,7 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
         )}
         {!!hasClosedBids && <BidTitle>Closed Bids</BidTitle>}
         {!!hasClosedBids && (
-          <Flex data-test-id="closed-section">
+          <Flex testID="closed-section">
             <Flex mt={2} px={1.5}>
               <Join separator={<Separator my={2} />}>
                 {closed

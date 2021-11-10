@@ -40,7 +40,7 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
     if (!!imageURL) {
       return (
         <OpaqueImageView
-          data-test-id="Image"
+          testID="Image"
           imageURL={imageURL.replace(":version", "square")}
           aspectRatio={image?.aspectRatio ?? 1}
         />
@@ -48,13 +48,13 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
     } else if (lastUploadedPhoto) {
       return (
         <RNImage
-          data-test-id="Image"
+          testID="Image"
           style={{ width: imageWidth, height: 120, resizeMode: "cover" }}
           source={{ uri: lastUploadedPhoto.path }}
         />
       )
     } else {
-      return <Box data-test-id="Image" bg={color("black30")} width={imageWidth} height={120} />
+      return <Box testID="Image" bg={color("black30")} width={imageWidth} height={120} />
     }
   }
 

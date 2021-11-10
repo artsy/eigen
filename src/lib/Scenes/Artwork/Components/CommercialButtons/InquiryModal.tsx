@@ -90,7 +90,7 @@ const InquiryQuestionOption: React.FC<{
           <Flex flexDirection="row" justifyContent="space-between">
             <Flex flexDirection="row">
               <Join separator={<Spacer ml={3} />}>
-                <Checkbox data-test-id={`checkbox-${id}`} checked={questionSelected} onPress={setSelection} />
+                <Checkbox testID={`checkbox-${id}`} checked={questionSelected} onPress={setSelection} />
                 <Text variant="sm">{question}</Text>
               </Join>
             </Flex>
@@ -101,7 +101,7 @@ const InquiryQuestionOption: React.FC<{
               <Separator my={2} />
 
               <TouchableOpacity
-                data-test-id="toggle-shipping-modal"
+                testID="toggle-shipping-modal"
                 onPress={() => {
                   if (typeof setShippingModalVisibility === "function") {
                     setShippingModalVisibility(true)

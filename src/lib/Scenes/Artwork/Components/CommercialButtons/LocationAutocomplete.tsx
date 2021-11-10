@@ -111,7 +111,7 @@ export const LocationPredictions = ({
       <TouchableWithoutFeedback onPress={onOutsidePress}>
         <Backdrop style={{ height }} onLayout={() => setHeight(Dimensions.get("window").height)} />
       </TouchableWithoutFeedback>
-      <Dropdown data-test-id="dropdown">
+      <Dropdown testID="dropdown">
         {predictions.map((p) => (
           <Touchable
             key={p.id}

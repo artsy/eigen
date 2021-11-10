@@ -39,8 +39,8 @@ describe("MyCollectionArtworkFormAdditionalDetails", () => {
 
     const wrapper = renderWithWrappers(mockAdditionalDetailsForm)
     expect(wrapper.root.findByType(Checkbox).props.checked).toBe(true)
-    expect(wrapper.root.findByProps({ "data-test-id": "EditionSizeInput" }).props.defaultValue).toBe("10x30x10")
-    expect(wrapper.root.findByProps({ "data-test-id": "EditionNumberInput" }).props.defaultValue).toBe("1")
+    expect(wrapper.root.findByProps({ testID: "EditionSizeInput" }).props.defaultValue).toBe("10x30x10")
+    expect(wrapper.root.findByProps({ testID: "EditionNumberInput" }).props.defaultValue).toBe("1")
   })
 
   it("checks the the edition checkbox when checked by user", () => {
@@ -77,7 +77,7 @@ describe("MyCollectionArtworkFormAdditionalDetails", () => {
 
     // FIXME: This will change once edition fields are wired up and we show / hide
     // based on overall form state. For now, press and show everything.
-    wrapper.root.findByProps({ "data-test-id": "EditionCheckbox" }).props.onPress()
+    wrapper.root.findByProps({ testID: "EditionCheckbox" }).props.onPress()
 
     const fields = [
       "TitleInput",
@@ -90,7 +90,7 @@ describe("MyCollectionArtworkFormAdditionalDetails", () => {
       "CurrencyInput",
     ]
     fields.forEach((field) => {
-      expect(wrapper.root.findByProps({ "data-test-id": field })).toBeDefined()
+      expect(wrapper.root.findByProps({ testID: field })).toBeDefined()
     })
   })
 })

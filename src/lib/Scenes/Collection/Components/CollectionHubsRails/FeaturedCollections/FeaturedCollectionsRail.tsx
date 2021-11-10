@@ -50,7 +50,7 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
   return collections.length > 0 ? (
     <>
       <Flex ml="-20px">
-        <Sans size="4" my={2} ml={4} data-test-id="group">
+        <Sans size="4" my={2} ml={4} testID="group">
           {collectionGroup.name}
         </Sans>
       </Flex>
@@ -90,11 +90,11 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
                   height={190}
                   imageURL={result?.featuredCollectionArtworks?.edges?.[0]?.node?.image?.url ?? ""}
                 />
-                <Sans size="3t" weight="medium" mt="15px" data-test-id={"title-" + index}>
+                <Sans size="3t" weight="medium" mt="15px" testID={"title-" + index}>
                   {result.title}
                 </Sans>
                 {!!result.priceGuidance && (
-                  <Sans color={color("black60")} size="3t" mb={1} data-test-id={"price-" + index}>
+                  <Sans color={color("black60")} size="3t" mb={1} testID={"price-" + index}>
                     {"From $" + `${result.priceGuidance!.toLocaleString()}`}
                   </Sans>
                 )}

@@ -50,7 +50,7 @@ const AuctionSupport = () => {
 }
 
 const AuctionIsLive = () => (
-  <Flex px={2} data-test-id="live-auction">
+  <Flex px={2} testID="live-auction">
     <Sans size="5t" mb={2} mt={1}>
       This is a live auction
     </Sans>

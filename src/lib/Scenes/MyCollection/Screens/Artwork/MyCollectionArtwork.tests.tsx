@@ -52,7 +52,7 @@ describe("MyCollectionArtworkDetail", () => {
     it("navigates to sales page when learn more button is pressed", () => {
       const artworkProps = { artwork: { internalID: "someInternalId" } }
       const wrapper = getWrapper(artworkProps)
-      wrapper.root.findByProps({ "data-test-id": "LearnMoreButton" }).props.onPress()
+      wrapper.root.findByProps({ testID: "LearnMoreButton" }).props.onPress()
       expect(navigate).toHaveBeenCalledWith("/sales")
     })
 
@@ -76,7 +76,7 @@ describe("MyCollectionArtworkDetail", () => {
       GlobalStore.actions.myCollection.artwork.startEditingArtwork = jest.fn() as any
 
       const wrapper = getWrapper(artworkProps)
-      wrapper.root.findByProps({ "data-test-id": "LearnMoreButton" }).props.onPress()
+      wrapper.root.findByProps({ testID: "LearnMoreButton" }).props.onPress()
 
       expect(mockTrackEvent).toHaveBeenCalledTimes(1)
       expect(mockTrackEvent).toHaveBeenCalledWith({

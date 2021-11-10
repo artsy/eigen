@@ -14,12 +14,12 @@ import { MyBidsContainer, MyBidsQueryRenderer } from "./MyBids"
 jest.unmock("react-relay")
 
 const closedSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
-  const closedSection = root.findByProps({ "data-test-id": "closed-section" })
+  const closedSection = root.findByProps({ testID: "closed-section" })
   return closedSection.findAllByType(ClosedLotStanding)
 }
 
 const activeSectionLots = (root: ReactTestInstance): ReactTestInstance[] => {
-  const activeSection = root.findByProps({ "data-test-id": "active-section" })
+  const activeSection = root.findByProps({ testID: "active-section" })
   const ActiveLotStandings = activeSection.findAll((instance: ReactTestInstance) => {
     return [ActiveLotStanding, ClosedLotStanding, WatchedLot].includes((instance as any).type)
   })

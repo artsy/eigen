@@ -104,7 +104,7 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
                     lineHeight="20"
                     color="black60"
                     variant="sm"
-                    data-test-id="card-subtitle"
+                    testID="card-subtitle"
                     ellipsizeMode="middle"
                   >
                     {result?.exhibitionPeriod}

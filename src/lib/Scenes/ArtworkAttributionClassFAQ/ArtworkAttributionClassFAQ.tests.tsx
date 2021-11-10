@@ -23,7 +23,7 @@ describe("ArtworkAttributionClassFAQ", () => {
   })
 
   // FIXME: Unable to mock out AttributionClasses in anyway for some reason?
-  it.skip("renders attribution classes", () => {
+  it("renders attribution classes", () => {
     const wrapper = getWrapper({
       Query: () => ({
         artworkAttributionClasses: () => ATTRIBUTION_CLASSES,

@@ -16,7 +16,7 @@ export const ArtistSearchResult: React.FC<{ result: AutosuggestResult }> = ({ re
         variant="md"
         ellipsizeMode="tail"
         numberOfLines={1}
-        data-test-id="displayLabel"
+        testID="displayLabel"
         style={{ flexShrink: 1, flexGrow: 1, overflow: "hidden" }}
       >
         {result.displayLabel}
