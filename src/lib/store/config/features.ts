@@ -148,9 +148,10 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableShowsRail",
   },
   AREnableMyCollectionAndroid: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable My Collection (Android)",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableMyCollectionAndroid",
   },
   AREnableMyCollectionIOS: {
     readyForRelease: true,
@@ -187,7 +188,7 @@ export const features = defineFeatures({
     showInAdminMenu: true,
   },
   AREnableMyCollectionOrderImport: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable My Collection Order Import",
     showInAdminMenu: true,
     echoFlagKey: "AREnableMyCollectionOrderImport",
