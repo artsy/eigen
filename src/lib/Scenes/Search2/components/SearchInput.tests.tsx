@@ -43,12 +43,26 @@ describe("SearchInput", () => {
       ]
     `)
   })
+
+  it("track event when the text is cleared", () => {
+    const { getByPlaceholderText, getByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+
+    fireEvent.changeText(getByPlaceholderText("Placeholder"), "text")
+    fireEvent.press(getByA11yLabel("Clear input button"))
+
+    expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "action_type": "Cleared input in search screen",
+        },
+      ]
+    `)
+  })
 })
 
 const defaultProps: SearchInputProps = {
   placeholder: "Placeholder",
   currentRefinement: "refinement",
   refine: jest.fn(),
-  onReset: jest.fn(),
   onTextChange: jest.fn(),
 }

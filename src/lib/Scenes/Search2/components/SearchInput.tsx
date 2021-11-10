@@ -11,19 +11,12 @@ export interface SearchInputProps {
   placeholder: string
   currentRefinement: string
   refine: (value: string) => any
-  onReset: () => void
   onTextChange: (value: string) => void
 }
 
 const SEARCH_THROTTLE_INTERVAL = 500
 
-export const SearchInput: React.FC<SearchInputProps> = ({
-  currentRefinement,
-  placeholder,
-  refine,
-  onTextChange,
-  onReset,
-}) => {
+export const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholder, refine, onTextChange }) => {
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(currentRefinement)
   const isAndroid = Platform.OS === "android"
@@ -36,16 +29,6 @@ export const SearchInput: React.FC<SearchInputProps> = ({
       }, SEARCH_THROTTLE_INTERVAL),
     []
   )
-
-  const handleReset = () => {
-    trackEvent({
-      action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
-    })
-
-    refine("")
-    handleChangeText.cancel()
-    onReset()
-  }
 
   useEffect(() => {
     if (searchProviderValues.inputRef?.current && isAndroid) {
@@ -65,15 +48,22 @@ export const SearchInput: React.FC<SearchInputProps> = ({
       enableCancelButton
       placeholder={placeholder}
       onChangeText={(text) => {
+        handleChangeText(text)
+
+        if (text.length === 0) {
+          trackEvent({
+            action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
+          })
+
+          handleChangeText.flush()
+          return
+        }
+
         trackEvent({
           action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
           query: text,
         })
-
-        handleChangeText(text)
-        onReset()
       }}
-      onClear={handleReset}
     />
   )
 }

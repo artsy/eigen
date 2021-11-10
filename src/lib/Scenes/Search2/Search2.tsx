@@ -206,8 +206,9 @@ export const Search2: React.FC<Search2Props> = (props) => {
           <Flex p={2} pb={1}>
             <SearchInputContainer
               placeholder="Search artists, artworks, galleries, etc"
-              onReset={handleResetSearchInput}
               onTextChange={(value) => {
+                handleResetSearchInput()
+
                 if (enableImprovedPills && value.length >= 2) {
                   updateIndicesInfo(value)
                 }
