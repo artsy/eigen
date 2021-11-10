@@ -86,8 +86,7 @@ import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAd
 import { EditSavedSearchAlertQueryRenderer } from "./Scenes/SavedSearchAlert/EditSavedSearchAlert"
 import { SavedSearchAlertsListQueryRenderer } from "./Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
 import { Search } from "./Scenes/Search"
-import { Search2 } from "./Scenes/Search2/Search2"
-import { SearchSwitchContainer } from "./Scenes/SearchSwitchContainer"
+import { Search2QueryRenderer } from "./Scenes/Search2/Search2"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { TagQueryRenderer } from "./Scenes/Tag/Tag"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
@@ -358,9 +357,8 @@ export const modules = defineModules({
   PrivacyRequest: reactModule(PrivacyRequest),
   Sales: reactModule(Consignments, { isRootViewForTabName: "sell" }),
   SalesNotRootTabView: reactModule(Consignments),
-  SearchSwitchContainer: reactModule(SearchSwitchContainer, { isRootViewForTabName: "search" }),
   Search: reactModule(SearchWithTracking),
-  Search2: reactModule(Search2),
+  Search2: reactModule(Search2QueryRenderer, { isRootViewForTabName: "search" }),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SavedAddresses: reactModule(SavedAddressesQueryRenderer),

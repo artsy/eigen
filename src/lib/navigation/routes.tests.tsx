@@ -29,7 +29,7 @@ describe("artsy.net routes", () => {
   it("routes to Search", () => {
     expect(matchRoute("/search")).toMatchInlineSnapshot(`
       Object {
-        "module": "SearchSwitchContainer",
+        "module": "Search2",
         "params": Object {},
         "type": "match",
       }
