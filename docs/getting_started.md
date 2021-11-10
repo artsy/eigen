@@ -47,7 +47,7 @@ cd eigen
 
 ```sh
 
-yarn setup:artsy # or `yarn setup:oss` if you're not working at Artsy
+yarn setup:oss # or `yarn setup:artsy` if you're working at Artsy
 
 yarn install:all
 
