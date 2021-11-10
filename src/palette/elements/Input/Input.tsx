@@ -19,7 +19,7 @@ import { EyeClosedIcon } from "../../svgs/EyeClosedIcon"
 import { InputTitle } from "./InputTitle"
 
 export const INPUT_HEIGHT = 50
-export const MULTILINE_INPUT_HEIGHT = 100
+export const INPUT_HEIGHT_MULTILINE = 100
 
 export const inputEvents = new EventEmitter()
 
@@ -233,7 +233,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 flexDirection: "row",
                 borderWidth: 1,
                 borderColor: color(computeBorderColor({ disabled, error: !!error, focused })),
-                height: multiline ? MULTILINE_INPUT_HEIGHT : INPUT_HEIGHT,
+                minHeight: multiline ? INPUT_HEIGHT_MULTILINE : INPUT_HEIGHT,
                 backgroundColor: disabled ? color("black5") : color("white100"),
               },
             ]}
@@ -248,6 +248,8 @@ export const Input = React.forwardRef<TextInput, InputProps>(
               {placeholderMeasuringHack}
               <StyledInput
                 multiline={multiline}
+                // we need this one to make RN focus on the input with the keyboard. https://github.com/facebook/react-native/issues/16826#issuecomment-940126791
+                scrollEnabled={multiline ? false : undefined}
                 maxLength={maxLength}
                 editable={!disabled}
                 onLayout={(event) => {
