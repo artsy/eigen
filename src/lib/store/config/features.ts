@@ -148,9 +148,10 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableShowsRail",
   },
   AREnableMyCollectionAndroid: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable My Collection (Android)",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableMyCollectionAndroid",
   },
   AREnableMyCollectionIOS: {
     readyForRelease: true,
@@ -182,12 +183,13 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableWebPImages",
   },
   AREnableSplitIOABTesting: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Split.io A/B testing",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableSplitIOABTesting",
   },
   AREnableMyCollectionOrderImport: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable My Collection Order Import",
     showInAdminMenu: true,
     echoFlagKey: "AREnableMyCollectionOrderImport",
