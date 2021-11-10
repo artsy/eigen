@@ -186,6 +186,7 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Enable Split.io A/B testing",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableSplitIOABTesting",
   },
   AREnableMyCollectionOrderImport: {
     readyForRelease: true,
