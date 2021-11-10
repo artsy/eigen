@@ -1,31 +1,31 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c4d0fc386f01dd4003c84d2e66df9c49 */
+/* @relayHash 2f5335fa67c3ab5fa649932b4dd6ff63 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Search2QueryVariables = {};
-export type Search2QueryResponse = {
+export type SearchQueryVariables = {};
+export type SearchQueryResponse = {
     readonly system: {
-        readonly " $fragmentRefs": FragmentRefs<"Search2_system">;
+        readonly " $fragmentRefs": FragmentRefs<"Search_system">;
     } | null;
 };
-export type Search2Query = {
-    readonly response: Search2QueryResponse;
-    readonly variables: Search2QueryVariables;
+export type SearchQuery = {
+    readonly response: SearchQueryResponse;
+    readonly variables: SearchQueryVariables;
 };
 
 
 
 /*
-query Search2Query {
+query SearchQuery {
   system {
-    ...Search2_system
+    ...Search_system
   }
 }
 
-fragment Search2_system on System {
+fragment Search_system on System {
   __typename
   algolia {
     appID
@@ -43,7 +43,7 @@ const node: ConcreteRequest = {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "Search2Query",
+    "name": "SearchQuery",
     "selections": [
       {
         "alias": null,
@@ -56,7 +56,7 @@ const node: ConcreteRequest = {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "Search2_system"
+            "name": "Search_system"
           }
         ],
         "storageKey": null
@@ -69,7 +69,7 @@ const node: ConcreteRequest = {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "Search2Query",
+    "name": "SearchQuery",
     "selections": [
       {
         "alias": null,
@@ -142,12 +142,12 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "id": "c4d0fc386f01dd4003c84d2e66df9c49",
+    "id": "2f5335fa67c3ab5fa649932b4dd6ff63",
     "metadata": {},
-    "name": "Search2Query",
+    "name": "SearchQuery",
     "operationKind": "query",
     "text": null
   }
 };
-(node as any).hash = '22980005b6452d9524844982c3dbe540';
+(node as any).hash = 'ff5e864e3d59274af782f1f94b559b70';
 export default node;

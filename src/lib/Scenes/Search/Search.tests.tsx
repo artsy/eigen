@@ -1,15 +1,15 @@
+import { fireEvent, RenderAPI, waitFor } from "@testing-library/react-native"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { RecentSearch } from "lib/Scenes/Search/SearchModel"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { extractText } from "lib/tests/extractText"
-import { CatchErrors } from "lib/utils/CatchErrors"
+import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { isPad } from "lib/utils/hardware"
 import React from "react"
-import { TextInput } from "react-native"
-import { act } from "react-test-renderer"
-import { AutosuggestResults } from "./AutosuggestResults"
-import { CityGuideCTA } from "./CityGuideCTA"
-import { RecentSearches } from "./RecentSearches"
-import { Search } from "./Search"
-import { RecentSearch } from "./SearchModel"
+import { Keyboard } from "react-native"
+import { createMockEnvironment } from "relay-test-utils"
+import { SearchQueryRenderer } from "./Search"
 
 const banksy: RecentSearch = {
   type: "AUTOSUGGEST_RESULT_TAPPED",
@@ -22,45 +22,81 @@ const banksy: RecentSearch = {
   },
 }
 
+jest.unmock("react-relay")
 jest.mock("lib/utils/hardware", () => ({
   isPad: jest.fn(),
 }))
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+jest.mock("lib/utils/useSearchInsightsConfig", () => ({
+  useSearchInsightsConfig: () => true,
+}))
+jest.mock("lib/utils/useAlgoliaIndices", () => ({
+  useAlgoliaIndices: () => ({
+    indicesInfo: {
+      Artist_staging: { hasResults: true },
+      Sale_staging: { hasResults: false },
+      Fair_staging: { hasResults: false },
+      Gallery_staging: { hasResults: true },
+    },
+    updateIndicesInfo: jest.fn(),
+  }),
+}))
+jest.mock("lodash", () => ({
+  ...jest.requireActual("lodash"),
+  throttle: (fn: any) => {
+    fn.flush = jest.fn()
 
-jest.mock("./AutosuggestResults", () => ({ AutosuggestResults: () => null }))
-jest.mock("./RecentSearches", () => ({
-  RecentSearches: () => null,
-  ProvideRecentSearches: ({ children }: any) => children,
-  RecentSearchContext: {
-    useStoreState: () => [],
+    return fn
   },
-  getRecentSearches: jest.fn(() => []),
 }))
 
-const TestWrapper: typeof Search = (props) => {
-  return (
-    <CatchErrors>
-      <Search {...props} />
-    </CatchErrors>
-  )
-}
+describe("Search Screen", () => {
+  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
-describe("The Search page", () => {
-  it(`has an empty state`, async () => {
-    const tree = renderWithWrappers(<TestWrapper />)
-    expect(tree.root.findAllByType(RecentSearches)).toHaveLength(1)
-    expect(tree.root.findAllByType(AutosuggestResults)).toHaveLength(0)
-    expect(extractText(tree.root.findByType(CityGuideCTA))).toContain("Explore art on view")
+  beforeEach(() => {
+    mockEnvironment.mockClear()
   })
 
-  it(`does not show city guide entrance when on iPad`, async () => {
+  const TestRenderer = () => {
+    return <SearchQueryRenderer />
+  }
+
+  it("should render a text input with placeholder", async () => {
+    const { getByPlaceholderText, getByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Algolia: () => ({
+        appID: "",
+        apiKey: "",
+        indices: [{ name: "Artist_staging", displayName: "Artists" }],
+      }),
+    })
+
+    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+    // Pill should not be visible
+    expect(queryByText("Artists")).toBeFalsy()
+
+    // should show City Guide
+    expect(getByText("City Guide")).toBeTruthy()
+    expect(getByText("Recent Searches")).toBeTruthy()
+
+    fireEvent.changeText(searchInput, "Ba")
+
+    // Pills should be visible
+    await waitFor(() => {
+      getByText("Artworks")
+      getByText("Artists")
+    })
+  })
+
+  it("does not show city guide entrance when on iPad", () => {
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => true)
-    const tree = renderWithWrappers(<TestWrapper />)
-    expect(tree.root.findAllByType(CityGuideCTA)).toHaveLength(0)
+    const { queryByText } = renderWithWrappersTL(<TestRenderer />)
+    expect(queryByText("City Guide")).toBeFalsy()
   })
 
-  it(`shows city guide entrance when there are recent searches`, async () => {
+  it("shows city guide entrance when there are recent searches", () => {
     __globalStoreTestUtils__?.injectState({
       search: {
         recentSearches: [banksy],
@@ -68,43 +104,315 @@ describe("The Search page", () => {
     })
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => false)
-    const tree = renderWithWrappers(<TestWrapper />)
-    expect(extractText(tree.root.findByType(CityGuideCTA))).toContain("Explore art on view")
+    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    expect(getByText("Explore art on view")).toBeTruthy()
   })
 
-  it(`shows recent searches when there are recent searches`, () => {
-    __globalStoreTestUtils__?.injectState({
-      search: {
-        recentSearches: [banksy],
-      },
-    })
+  it('the "Top" pill should be selected by default', () => {
+    const { getByA11yState, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
-    const tree = renderWithWrappers(<TestWrapper />)
-    expect(tree.root.findAllByType(RecentSearches)).toHaveLength(1)
-    expect(tree.root.findAllByType(AutosuggestResults)).toHaveLength(0)
+    fireEvent.changeText(searchInput, "text")
+
+    expect(getByA11yState({ selected: true })).toHaveTextContent("Top")
   })
 
-  it(`passes the query to the AutosuggestResults when the query.length is >= 2`, async () => {
-    const tree = renderWithWrappers(<TestWrapper />)
+  it("should not be able to untoggle the same pill", () => {
+    const { getByPlaceholderText, getByText, getByA11yState } = renderWithWrappersTL(<TestRenderer />)
+    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
-    act(() => {
-      tree.root.findByType(TextInput).props.onChangeText("m")
+    mockEnvironmentPayload(mockEnvironment, {
+      Algolia: () => ({
+        appID: "",
+        apiKey: "",
+        indices: [
+          {
+            name: "Artist_staging",
+            displayName: "Artists",
+          },
+          {
+            name: "Gallery_staging",
+            displayName: "Gallery",
+          },
+        ],
+      }),
     })
 
-    expect(tree.root.findAllByType(AutosuggestResults)).toHaveLength(0)
+    fireEvent(searchInput, "changeText", "prev value")
+    fireEvent(getByText("Artists"), "press")
 
-    act(() => {
-      tree.root.findByType(TextInput).props.onChangeText("mi")
+    expect(getByA11yState({ selected: true })).toHaveTextContent("Artists")
+  })
+
+  describe("search pills", () => {
+    describe("with AREnableImprovedSearchPills enabled", () => {
+      it("are displayed if they have results and when the user has typed the minimum allowed number of characters", () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedSearchPills: true })
+        const { getByPlaceholderText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+
+        mockEnvironmentPayload(mockEnvironment, {
+          Algolia: () => ({
+            appID: "",
+            apiKey: "",
+            indices: [
+              { name: "Artist_staging", displayName: "Artist" },
+              { name: "Sale_staging", displayName: "Auction" },
+              { name: "Gallery_staging", displayName: "Gallery" },
+              { name: "Fair_staging", displayName: "Fair" },
+            ],
+          }),
+        })
+
+        expect(queryByText("Top")).toBeFalsy()
+        expect(queryByText("Artist")).toBeFalsy()
+        expect(queryByText("Auction")).toBeFalsy()
+        expect(queryByText("Gallery")).toBeFalsy()
+        expect(queryByText("Fair")).toBeFalsy()
+
+        const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+        fireEvent(searchInput, "changeText", "Ba")
+
+        expect(queryByText("Top")).toBeTruthy()
+        expect(queryByText("Artist")).toBeTruthy()
+        expect(queryByText("Auction")).toBeFalsy()
+        expect(queryByText("Gallery")).toBeTruthy()
+        expect(queryByText("Fair")).toBeFalsy()
+      })
     })
 
-    expect(tree.root.findAllByType(AutosuggestResults)).toHaveLength(1)
+    it("are displayed when the user has typed the minimum allowed number of characters", () => {
+      const { getByPlaceholderText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+      mockEnvironmentPayload(mockEnvironment, {
+        Algolia: () => ({
+          appID: "",
+          apiKey: "",
+          indices: [
+            { name: "Artist_staging", displayName: "Artist" },
+            { name: "Sale_staging", displayName: "Auction" },
+            { name: "Gallery_staging", displayName: "Gallery" },
+            { name: "Fair_staging", displayName: "Fair" },
+          ],
+        }),
+      })
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
-    act(() => {
-      tree.root.findByType(TextInput).props.onChangeText("michael")
+      expect(queryByText("Top")).toBeFalsy()
+      expect(queryByText("Artist")).toBeFalsy()
+      expect(queryByText("Auction")).toBeFalsy()
+      expect(queryByText("Gallery")).toBeFalsy()
+      expect(queryByText("Fair")).toBeFalsy()
+
+      fireEvent(searchInput, "changeText", "Ba")
+
+      expect(queryByText("Top")).toBeTruthy()
+      expect(queryByText("Artist")).toBeTruthy()
+      expect(queryByText("Auction")).toBeTruthy()
+      expect(queryByText("Gallery")).toBeTruthy()
+      expect(queryByText("Fair")).toBeTruthy()
     })
 
-    expect(tree.root.findAllByType(RecentSearches)).toHaveLength(0)
-    expect(tree.root.findAllByType(AutosuggestResults)).toHaveLength(1)
-    expect(tree.root.findByType(AutosuggestResults).props.query).toBe("michael")
+    it("hide keyboard when selecting other pill", () => {
+      const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        Algolia: () => ({
+          appID: "",
+          apiKey: "",
+          indices: [{ name: "Artist_staging", displayName: "Artist" }],
+        }),
+      })
+
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      const keyboardDismissSpy = jest.spyOn(Keyboard, "dismiss")
+      fireEvent(searchInput, "changeText", "Ba")
+      fireEvent(getByText("Artist"), "press")
+      expect(keyboardDismissSpy).toHaveBeenCalled()
+    })
+
+    it("should track event when a pill is tapped", () => {
+      const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        Algolia: () => ({
+          appID: "",
+          apiKey: "",
+          indices: [{ name: "Artist_staging", displayName: "Artist" }],
+        }),
+      })
+
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      fireEvent(searchInput, "changeText", "text")
+
+      fireEvent(getByText("Artist"), "press")
+      expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "action": "tappedNavigationTab",
+            "context_module": "topTab",
+            "context_screen": "Search",
+            "context_screen_owner_type": "search",
+            "query": "text",
+            "subject": "Artist",
+          },
+        ]
+      `)
+    })
+
+    it("should correctly track the previusly applied pill context module", () => {
+      const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        Algolia: () => ({
+          appID: "",
+          apiKey: "",
+          indices: [{ name: "Artist_staging", displayName: "Artist" }],
+        }),
+      })
+
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+      fireEvent(searchInput, "changeText", "text")
+
+      fireEvent(getByText("Artist"), "press")
+      expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "action": "tappedNavigationTab",
+            "context_module": "topTab",
+            "context_screen": "Search",
+            "context_screen_owner_type": "search",
+            "query": "text",
+            "subject": "Artist",
+          },
+        ]
+      `)
+
+      fireEvent(getByText("Artworks"), "press")
+      expect(mockTrackEvent.mock.calls[2]).toMatchInlineSnapshot(`
+        Array [
+          Object {
+            "action": "tappedNavigationTab",
+            "context_module": "artistsTab",
+            "context_screen": "Search",
+            "context_screen_owner_type": "search",
+            "query": "text",
+            "subject": "Artworks",
+          },
+        ]
+      `)
+    })
+  })
+
+  describe("the top pill is selected by default", () => {
+    let tree: RenderAPI
+
+    beforeEach(() => {
+      tree = renderWithWrappersTL(<TestRenderer />)
+
+      mockEnvironmentPayload(mockEnvironment, {
+        Algolia: () => ({
+          appID: "",
+          apiKey: "",
+          indices: [
+            {
+              name: "Artist_staging",
+              displayName: "Artists",
+            },
+          ],
+        }),
+      })
+    })
+
+    it("when search query is empty", () => {
+      const { queryByA11yState, getByPlaceholderText, getByText } = tree
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+      fireEvent(searchInput, "changeText", "prev value")
+      fireEvent(getByText("Artists"), "press")
+      fireEvent(searchInput, "changeText", "")
+      fireEvent(searchInput, "changeText", "new value")
+
+      expect(queryByA11yState({ selected: true })).toHaveTextContent("Top")
+    })
+
+    it("when the query is changed", () => {
+      const { queryByA11yState, getByPlaceholderText, getByText } = tree
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+      fireEvent(searchInput, "changeText", "12")
+      fireEvent(getByText("Artists"), "press")
+      fireEvent(searchInput, "changeText", "123")
+
+      expect(queryByA11yState({ selected: true })).toHaveTextContent("Top")
+    })
+
+    it("when clear button is pressed", () => {
+      const { queryByA11yState, getByPlaceholderText, getByText, getByA11yLabel } = tree
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+      fireEvent(searchInput, "changeText", "prev value")
+      fireEvent(getByText("Artists"), "press")
+      fireEvent(getByA11yLabel("Clear input button"), "press")
+      fireEvent(searchInput, "changeText", "new value")
+
+      expect(queryByA11yState({ selected: true })).toHaveTextContent("Top")
+    })
+
+    it("when cancel button is pressed", () => {
+      const { queryByA11yState, getByPlaceholderText, getByText, getAllByText } = tree
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+      fireEvent(searchInput, "changeText", "prev value")
+      fireEvent(getByText("Artists"), "press")
+      fireEvent(searchInput, "focus")
+      fireEvent(getAllByText("Cancel")[0], "press")
+      fireEvent(searchInput, "changeText", "new value")
+
+      expect(queryByA11yState({ selected: true })).toHaveTextContent("Top")
+    })
+  })
+
+  it("should track event when a search result is pressed", async () => {
+    const { getByPlaceholderText, findAllByText } = renderWithWrappersTL(<TestRenderer />)
+    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Algolia: () => ({
+        appID: "",
+        apiKey: "",
+        indices: [{ name: "Artist_staging", displayName: "Artist" }],
+      }),
+    })
+
+    fireEvent(searchInput, "changeText", "text")
+
+    mockEnvironmentPayload(mockEnvironment, {
+      SearchableConnection: () => ({
+        edges: [
+          {
+            node: {
+              displayLabel: "Banksy",
+            },
+          },
+        ],
+      }),
+    })
+
+    const elements = await findAllByText("Banksy")
+    fireEvent.press(elements[0])
+
+    expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "action": "selectedResultFromSearchScreen",
+          "context_module": "topTab",
+          "context_screen": "Search",
+          "context_screen_owner_type": "Search",
+          "position": 0,
+          "query": "text",
+          "selected_object_slug": "slug-1",
+          "selected_object_type": "displayType-1",
+        },
+      ]
+    `)
   })
 })

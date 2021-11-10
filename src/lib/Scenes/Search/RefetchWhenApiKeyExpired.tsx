@@ -1,8 +1,8 @@
 import { useEffect } from "react"
 import { connectStateResults, StateResultsProvided } from "react-instantsearch-core"
 import { RelayRefetchProp } from "react-relay"
-import { isAlgoliaApiKeyExpiredError } from "../helpers"
-import { AlgoliaSearchResult } from "../types"
+import { isAlgoliaApiKeyExpiredError } from "./helpers"
+import { AlgoliaSearchResult } from "./types"
 
 interface ContainerProps extends StateResultsProvided<AlgoliaSearchResult> {
   relay: RelayRefetchProp

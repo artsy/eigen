@@ -113,7 +113,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
   const artsyDotNet: RouteMatcher[] = compact([
     new RouteMatcher("/", "Home"),
     new RouteMatcher("/sales", "Sales"),
-    new RouteMatcher("/search", "Search2"),
+    new RouteMatcher("/search", "Search"),
     new RouteMatcher("/inbox", "Inbox"),
     new RouteMatcher("/my-profile", "MyProfile"),
     new RouteMatcher("/articles", "Articles"),

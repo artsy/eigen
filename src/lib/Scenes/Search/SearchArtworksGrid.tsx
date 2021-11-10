@@ -50,7 +50,7 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
   useArtworkFilters({
     relay,
     aggregations: viewer.artworks?.aggregations,
-    componentPath: "Search2/SearchArtworksGrid",
+    componentPath: "Search/SearchArtworksGrid",
   })
 
   useEffect(() => {

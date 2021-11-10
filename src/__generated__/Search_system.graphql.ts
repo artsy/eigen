@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Search2_system = {
+export type Search_system = {
     readonly algolia: {
         readonly appID: string;
         readonly apiKey: string;
@@ -14,12 +14,12 @@ export type Search2_system = {
         }>;
     } | null;
     readonly __typename: "System";
-    readonly " $refType": "Search2_system";
+    readonly " $refType": "Search_system";
 };
-export type Search2_system$data = Search2_system;
-export type Search2_system$key = {
-    readonly " $data"?: Search2_system$data;
-    readonly " $fragmentRefs": FragmentRefs<"Search2_system">;
+export type Search_system$data = Search_system;
+export type Search_system$key = {
+    readonly " $data"?: Search_system$data;
+    readonly " $fragmentRefs": FragmentRefs<"Search_system">;
 };
 
 
@@ -28,7 +28,7 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "Search2_system",
+  "name": "Search_system",
   "selections": [
     {
       "alias": null,
@@ -91,5 +91,5 @@ const node: ReaderFragment = {
   "type": "System",
   "abstractKey": null
 };
-(node as any).hash = 'e5023a1d80b933d275d3762dbadf2533';
+(node as any).hash = '67588aa7b61cd324b890201211f9107f';
 export default node;

@@ -85,8 +85,7 @@ import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddres
 import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAddressesForm"
 import { EditSavedSearchAlertQueryRenderer } from "./Scenes/SavedSearchAlert/EditSavedSearchAlert"
 import { SavedSearchAlertsListQueryRenderer } from "./Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
-import { Search } from "./Scenes/Search"
-import { Search2QueryRenderer } from "./Scenes/Search2/Search2"
+import { SearchQueryRenderer } from "./Scenes/Search/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { TagQueryRenderer } from "./Scenes/Tag/Tag"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
@@ -157,18 +156,6 @@ const Conversation: React.FC<ConversationProps> = screenTrack<ConversationProps>
     context_screen_owner_type: Schema.OwnerEntityTypes.Conversation,
   }
 })(ConversationNavigator)
-
-interface SearchWithTrackingProps {
-  safeAreaInsets: SafeAreaInsets
-}
-const SearchWithTracking: React.FC<SearchWithTrackingProps> = screenTrack<SearchWithTrackingProps>(() => {
-  return {
-    context_screen: Schema.PageNames.Search,
-    context_screen_owner_type: Schema.OwnerEntityTypes.Search,
-  }
-})((props) => {
-  return <Search {...props} />
-})
 
 interface PageWrapperProps {
   fullBleed?: boolean
@@ -357,8 +344,7 @@ export const modules = defineModules({
   PrivacyRequest: reactModule(PrivacyRequest),
   Sales: reactModule(Consignments, { isRootViewForTabName: "sell" }),
   SalesNotRootTabView: reactModule(Consignments),
-  Search: reactModule(SearchWithTracking),
-  Search2: reactModule(Search2QueryRenderer, { isRootViewForTabName: "search" }),
+  Search: reactModule(SearchQueryRenderer, { isRootViewForTabName: "search" }),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SavedAddresses: reactModule(SavedAddressesQueryRenderer),

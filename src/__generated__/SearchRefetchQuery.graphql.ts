@@ -1,31 +1,31 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0f90c59e1dd1064179bd7039812752f4 */
+/* @relayHash 4790c048b70391aac1377ad21f87d3d5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type Search2RefetchQueryVariables = {};
-export type Search2RefetchQueryResponse = {
+export type SearchRefetchQueryVariables = {};
+export type SearchRefetchQueryResponse = {
     readonly system: {
-        readonly " $fragmentRefs": FragmentRefs<"Search2_system">;
+        readonly " $fragmentRefs": FragmentRefs<"Search_system">;
     } | null;
 };
-export type Search2RefetchQuery = {
-    readonly response: Search2RefetchQueryResponse;
-    readonly variables: Search2RefetchQueryVariables;
+export type SearchRefetchQuery = {
+    readonly response: SearchRefetchQueryResponse;
+    readonly variables: SearchRefetchQueryVariables;
 };
 
 
 
 /*
-query Search2RefetchQuery {
+query SearchRefetchQuery {
   system {
-    ...Search2_system
+    ...Search_system
   }
 }
 
-fragment Search2_system on System {
+fragment Search_system on System {
   __typename
   algolia {
     appID
@@ -43,7 +43,7 @@ const node: ConcreteRequest = {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "Search2RefetchQuery",
+    "name": "SearchRefetchQuery",
     "selections": [
       {
         "alias": null,
@@ -56,7 +56,7 @@ const node: ConcreteRequest = {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "Search2_system"
+            "name": "Search_system"
           }
         ],
         "storageKey": null
@@ -69,7 +69,7 @@ const node: ConcreteRequest = {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "Search2RefetchQuery",
+    "name": "SearchRefetchQuery",
     "selections": [
       {
         "alias": null,
@@ -142,12 +142,12 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "id": "0f90c59e1dd1064179bd7039812752f4",
+    "id": "4790c048b70391aac1377ad21f87d3d5",
     "metadata": {},
-    "name": "Search2RefetchQuery",
+    "name": "SearchRefetchQuery",
     "operationKind": "query",
     "text": null
   }
 };
-(node as any).hash = '8be4fc61c5d5d631fba2b529b6633d45';
+(node as any).hash = '7fa3e400793a251791a4c627ceff3950';
 export default node;

@@ -2,12 +2,11 @@ import { SearchArtworksContainerQuery } from "__generated__/SearchArtworksContai
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { LoadFailureView } from "lib/Components/LoadFailureView"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { PlaceholderButton, PlaceholderGrid } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
-import { Flex, Separator } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { SearchArtworksGridPaginationContainer } from "../SearchArtworksGrid"
+import { SearchArtworksGridPlaceholder } from "./components/placeholders/SearchArtworksGridPlaceholder"
+import { SearchArtworksGridPaginationContainer } from "./SearchArtworksGrid"
 
 export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ keyword }) => {
   return (
@@ -23,7 +22,7 @@ export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ key
         `}
         render={renderWithPlaceholder({
           Container: SearchArtworksGridPaginationContainer,
-          renderPlaceholder: () => <SearchArtworksGridSkeleton />,
+          renderPlaceholder: () => <SearchArtworksGridPlaceholder />,
           initialProps: { keyword },
           renderFallback: ({ retry }) => <LoadFailureView onRetry={retry!} />,
         })}
@@ -33,16 +32,3 @@ export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ key
     </ArtworkFiltersStoreProvider>
   )
 }
-
-const SearchArtworksGridSkeleton: React.FC = () => (
-  <Flex accessibilityLabel="Artwork results are loading">
-    <Flex height={28} my={1} px={2} justifyContent="space-between">
-      <Flex flex={1} flexDirection="row">
-        <PlaceholderButton width={20} height={20} />
-        <PlaceholderButton marginLeft={5} width={70} height={20} />
-      </Flex>
-    </Flex>
-    <Separator mb={2} />
-    <PlaceholderGrid />
-  </Flex>
-)

@@ -2,7 +2,7 @@ import { PlaceholderBox, RandomWidthPlaceholderText } from "lib/utils/placeholde
 import { times } from "lodash"
 import { Box, Flex } from "palette"
 import React from "react"
-import { IMAGE_SIZE } from "./SearchResultImage"
+import { IMAGE_SIZE } from "../SearchResultImage"
 
 interface AlgoliaSearchPlaceholderProps {
   hasRoundedImages: boolean
