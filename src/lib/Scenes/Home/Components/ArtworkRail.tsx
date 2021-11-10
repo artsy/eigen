@@ -56,7 +56,7 @@ const ArtworkRail: React.FC<ArtworkRailProps & RailScrollProps> = ({ title, rail
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
-  const showNewNewWorksForYouRail = useFeatureFlag("AREnableNewNewWorksForYou")
+  const showNewNewWorksForYouRail = useFeatureFlag("AREnableNewWorksForYou")
 
   const viewAllUrl = getViewAllUrl(rail)
   const useSmallTile = smallTileKeys.includes(rail.key)
