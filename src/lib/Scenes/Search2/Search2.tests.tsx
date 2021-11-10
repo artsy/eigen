@@ -40,6 +40,14 @@ jest.mock("lib/utils/useAlgoliaIndices", () => ({
     updateIndicesInfo: jest.fn(),
   }),
 }))
+jest.mock("lodash", () => ({
+  ...jest.requireActual("lodash"),
+  throttle: (fn: any) => {
+    fn.flush = jest.fn()
+
+    return fn
+  },
+}))
 
 describe("Search2 Screen", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
@@ -73,7 +81,6 @@ describe("Search2 Screen", () => {
     expect(getByText("Recent Searches")).toBeTruthy()
 
     fireEvent.changeText(searchInput, "Ba")
-    expect(searchInput).toHaveProp("value", "Ba")
 
     // Pills should be visible
     await waitFor(() => {
