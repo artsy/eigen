@@ -1,10 +1,8 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { useNavigation } from "@react-navigation/native"
 import { captureMessage } from "@sentry/react-native"
 import { Search2_system } from "__generated__/Search2_system.graphql"
 import { Search2Query } from "__generated__/Search2Query.graphql"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
-import { SearchInput as SearchBox } from "lib/Components/SearchInput"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { isPad } from "lib/utils/hardware"
@@ -13,9 +11,8 @@ import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
 import { useAlgoliaIndices } from "lib/utils/useAlgoliaIndices"
 import { useSearchInsightsConfig } from "lib/utils/useSearchInsightsConfig"
-import { throttle } from "lodash"
 import { Box, Flex, Spacer } from "palette"
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, { useMemo, useRef, useState } from "react"
 import {
   Configure,
   connectInfiniteHits,
@@ -31,6 +28,7 @@ import { AutosuggestResult, AutosuggestResults } from "../Search/AutosuggestResu
 import { CityGuideCTA } from "../Search/CityGuideCTA"
 import { RecentSearches } from "../Search/RecentSearches"
 import { SearchContext, useSearchProviderValues } from "../Search/SearchContext"
+import { SearchInput } from "./components/SearchInput"
 import { SearchPills } from "./components/SearchPills"
 import { SearchPlaceholder } from "./components/SearchPlaceholder"
 import { RefetchWhenApiKeyExpiredContainer } from "./containers/RefetchWhenApiKeyExpired"
@@ -39,14 +37,6 @@ import { getContextModuleByPillName } from "./helpers"
 import { SearchResults } from "./SearchResults"
 import { AlgoliaSearchResult, PillType } from "./types"
 
-interface SearchInputProps {
-  placeholder: string
-  currentRefinement: string
-  refine: (value: string) => any
-  onReset: () => void
-  onTextChange: (value: string) => void
-}
-
 interface TappedSearchResultData {
   query: string
   type: string
@@ -54,63 +44,6 @@ interface TappedSearchResultData {
   contextModule: ContextModule
   slug: string
   objectTab?: string
-}
-
-const SEARCH_THROTTLE_INTERVAL = 500
-
-const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholder, refine, onTextChange, onReset }) => {
-  const { trackEvent } = useTracking()
-  const searchProviderValues = useSearchProviderValues(currentRefinement)
-  const isAndroid = Platform.OS === "android"
-  const navigation = isAndroid ? useNavigation() : null
-  const handleChangeText = useMemo(
-    () =>
-      throttle((value) => {
-        refine(value)
-        onTextChange(value)
-      }, SEARCH_THROTTLE_INTERVAL),
-    []
-  )
-
-  const handleReset = () => {
-    trackEvent({
-      action_type: Schema.ActionNames.ARAnalyticsSearchCleared,
-    })
-
-    refine("")
-    handleChangeText.cancel()
-    onReset()
-  }
-
-  useEffect(() => {
-    if (searchProviderValues.inputRef?.current && isAndroid) {
-      const unsubscribe = navigation?.addListener("focus", () => {
-        // setTimeout here is to make sure that the search screen is focused in order to focus on text input
-        // without that the searchInput is not focused
-        setTimeout(() => searchProviderValues.inputRef.current?.focus(), 200)
-      })
-
-      return unsubscribe
-    }
-  }, [navigation, searchProviderValues.inputRef.current])
-
-  return (
-    <SearchBox
-      ref={searchProviderValues.inputRef}
-      enableCancelButton
-      placeholder={placeholder}
-      onChangeText={(text) => {
-        trackEvent({
-          action_type: Schema.ActionNames.ARAnalyticsSearchStartedQuery,
-          query: text,
-        })
-
-        handleChangeText(text)
-        onReset()
-      }}
-      onClear={handleReset}
-    />
-  )
 }
 
 const SearchInputContainer = connectSearchBox(SearchInput)
