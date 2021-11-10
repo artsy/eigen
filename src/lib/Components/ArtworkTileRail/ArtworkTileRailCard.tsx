@@ -31,6 +31,7 @@ export interface ArtworkTileRailCardProps {
   useSquareAspectRatio?: boolean | null
   urgencyTag?: string | null
   lotLabel?: string | null
+  testID?: string
 }
 
 export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
@@ -46,6 +47,7 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
   urgencyTag = null,
   useSquareAspectRatio = false,
   lotLabel,
+  testID,
 }) => {
   const color = useColor()
   if (!!imageURL && !imageAspectRatio && !useSquareAspectRatio) {
@@ -123,7 +125,7 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
   ) : null
 
   return (
-    <ArtworkCard onPress={onPress || undefined}>
+    <ArtworkCard onPress={onPress || undefined} testID={testID}>
       <Flex>
         {imageDisplay}
         <Box mt={1} width={imageWidth}>

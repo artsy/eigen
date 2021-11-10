@@ -137,14 +137,14 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
   )
 }
 
-const PhotosButton: React.FC<{ onPress: () => void }> = ({ onPress }) => {
+const PhotosButton: React.FC<{ onPress: () => void; testID?: string }> = ({ onPress, testID }) => {
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
   const photos = artworkState.sessionState.formValues.photos
 
   return (
     <>
       <Separator />
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity onPress={onPress} testID={testID}>
         <Spacer mt={2} />
         <ScreenMargin>
           <ArrowDetails>
@@ -173,10 +173,10 @@ const PhotosButton: React.FC<{ onPress: () => void }> = ({ onPress }) => {
   )
 }
 
-const AdditionalDetailsButton: React.FC<{ onPress: () => void }> = ({ onPress }) => {
+const AdditionalDetailsButton: React.FC<{ onPress: () => void; testID?: string }> = ({ onPress, testID }) => {
   return (
     <>
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity onPress={onPress} testID={testID}>
         <Spacer mt={2} />
         <ScreenMargin>
           <ArrowDetails>

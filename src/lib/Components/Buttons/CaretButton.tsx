@@ -7,11 +7,12 @@ interface Props {
   onPress?: (ev: GestureResponderEvent) => void
   text: string
   textColor?: string
+  testID?: string
 }
 
-export const CaretButton: React.FC<Props> = ({ text, onPress, textColor }) => {
+export const CaretButton: React.FC<Props> = ({ text, onPress, textColor, testID }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} testID={testID}>
       <Flex flexDirection="row" align-items="base-line">
         <Sans size="3t" weight="medium" color={textColor}>
           {text}
