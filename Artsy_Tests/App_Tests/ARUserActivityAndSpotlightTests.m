@@ -84,7 +84,7 @@
 //                expect(attributeSet.title).to.equal(@"Artwork Title");
 //            });
 //
-//            xit(@"includes a thumbnail", ^{
+//            it(@"includes a thumbnail", ^{
 //                expect(attributeSet.thumbnailData).to.equal(UIImagePNGRepresentation([UIImage imageNamed:@"AttentionIcon"]));
 //            });
 //
@@ -164,7 +164,7 @@
 //                expect(attributeSet.title).to.equal(@"Artist Name");
 //            });
 //
-//            xit(@"includes a thumbnail", ^{
+//            it(@"includes a thumbnail", ^{
 //                expect(attributeSet.thumbnailData).to.equal(UIImagePNGRepresentation([UIImage imageNamed:@"AttentionIcon"]));
 //            });
 //
@@ -239,7 +239,7 @@
 //                expect(attributeSet.title).to.equal(@"Painting");
 //            });
 //
-//            xit(@"includes a thumbnail", ^{
+//            it(@"includes a thumbnail", ^{
 //                expect(attributeSet.thumbnailData).to.equal(UIImagePNGRepresentation([UIImage imageNamed:@"AttentionIcon"]));
 //            });
 //
@@ -323,11 +323,11 @@
 //                expect(attributeSet.endDate).to.equal([model endDate]);
 //            });
 //
-//            xit(@"does not include a thumbnail without a profile", ^{
+//            it(@"does not include a thumbnail without a profile", ^{
 //                expect(attributeSet.thumbnailData).to.beNil();
 //            });
 //
-//            xit(@"includes a thumbnail, if a profile is specified", ^{
+//            it(@"includes a thumbnail, if a profile is specified", ^{
 //                Profile *fairProfile = [Profile modelWithJSON:@{
 //                    @"icon": @{
 //                        @"image_urls": @{
@@ -440,7 +440,7 @@
 //                expect(attributeSet.title).to.equal(@"Some Show");
 //            });
 //
-//            xit(@"includes a thumbnail", ^{
+//            it(@"includes a thumbnail", ^{
 //                expect(attributeSet.thumbnailData).to.equal(UIImagePNGRepresentation([UIImage imageNamed:@"AttentionIcon"]));
 //            });
 //
@@ -532,7 +532,7 @@
 //                expect(attributeSet.title).to.equal(@"That Auction");
 //            });
 //
-//            xit(@"includes a thumbnail", ^{
+//            it(@"includes a thumbnail", ^{
 //                expect(attributeSet.thumbnailData).to.equal(UIImagePNGRepresentation([UIImage imageNamed:@"AttentionIcon"]));
 //            });
 //
@@ -665,7 +665,7 @@
 //                [spotlightClassMock verifyWithDelay:5];
 //            });
 //
-//            xit(@"kicks-off the indexer", ^{
+//            it(@"kicks-off the indexer", ^{
 //                id previouslyIndexedMock = [OCMockObject mockForClass:NSMutableSet.class];
 //                [[[spotlightClassMock stub] andReturn:previouslyIndexedMock] indexedEntities];
 //                [[[previouslyIndexedMock stub] andReturn:previouslyIndexedMock] mutableCopy];

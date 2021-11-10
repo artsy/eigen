@@ -159,7 +159,7 @@ describe("ArtworkActions", () => {
       })
     }
 
-    xit("correctly displays when the work is already saved, and allows unsaving", async () => {
+    it("correctly displays when the work is already saved, and allows unsaving", async () => {
       const artworkActionsArtworkSaved = {
         ...artworkActionsArtwork,
         is_saved: true,
@@ -179,7 +179,7 @@ describe("ArtworkActions", () => {
 
       const saveButton = artworkActions.find(Sans).at(0)
       expect(saveButton.text()).toMatchInlineSnapshot(`"Saved"`)
-      expect(saveButton.props().color).toMatchInlineSnapshot(`"#6E1EFF"`)
+      expect(saveButton.props().color).toMatchInlineSnapshot(`"#1023D7"`)
 
       await artworkActions.find(TouchableWithoutFeedback).at(0).props().onPress()
 
@@ -188,10 +188,10 @@ describe("ArtworkActions", () => {
 
       const updatedSaveButton = artworkActions.find(Sans).at(0)
       expect(updatedSaveButton.text()).toMatchInlineSnapshot(`"Saved"`)
-      expect(updatedSaveButton.props().color).toMatchInlineSnapshot(`"#6E1EFF"`)
+      expect(updatedSaveButton.props().color).toMatchInlineSnapshot(`"#1023D7"`)
     })
 
-    xit("correctly displays when the work is not saved, and allows saving", async () => {
+    it("correctly displays when the work is not saved, and allows saving", async () => {
       const saveResponse = { artwork: { id: artworkActionsArtwork.id, is_saved: true } }
 
       const artworkActions = await getWrapper({
@@ -201,7 +201,7 @@ describe("ArtworkActions", () => {
 
       const saveButton = artworkActions.find(Sans).at(0)
       expect(saveButton.text()).toMatchInlineSnapshot(`"Save"`)
-      expect(saveButton.props().color).toMatchInlineSnapshot(`"#000"`)
+      expect(saveButton.props().color).toMatchInlineSnapshot(`"#000000"`)
 
       await artworkActions.find(TouchableWithoutFeedback).at(0).props().onPress()
 
@@ -210,7 +210,7 @@ describe("ArtworkActions", () => {
 
       const updatedSaveButton = artworkActions.find(Sans).at(0)
       expect(updatedSaveButton.text()).toMatchInlineSnapshot(`"Save"`)
-      expect(updatedSaveButton.props().color).toMatchInlineSnapshot(`"#000"`)
+      expect(updatedSaveButton.props().color).toMatchInlineSnapshot(`"#000000"`)
     })
 
     // TODO: Update once we can use relay's new facilities for testing
