@@ -38,9 +38,6 @@ const configurableDevToggleKeys = sortBy(Object.entries(devToggles), ([k, { desc
 
 export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModal }) => {
   const migrationVersion = GlobalStore.useAppState((s) => s.version)
-  const isReady = GlobalStore.useAppState((store) => store.config.experiments.sessionState.isReady)
-  const currentEnv = GlobalStore.useAppState((store) => store.config.environment.env)
-  const splitAPIkey = currentEnv === "staging" ? Config.SPLIT_IO_STAGING_API_KEY : Config.SPLIT_IO_PRODUCTION_API_KEY
 
   useEffect(
     React.useCallback(() => {
@@ -181,8 +178,6 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           chevron={null}
         />
         <MenuItem title="Device ID" value={getUniqueId()} />
-        <MenuItem title="Split Client Ready?" value={isReady ? "YES" : "NO"} />
-        <MenuItem title="Split API Key" value={splitAPIkey} />
       </ScrollView>
     </Flex>
   )
