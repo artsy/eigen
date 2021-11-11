@@ -1,14 +1,13 @@
 import { InquiryModal_artwork } from "__generated__/InquiryModal_artwork.graphql"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { TextArea } from "lib/Components/TextArea"
 import ChevronIcon from "lib/Icons/ChevronIcon"
 import NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
 import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryQuestionIDs } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { LocationWithDetails } from "lib/utils/googleMaps"
 import { Schema } from "lib/utils/track"
-import { Box, Flex, Join, Separator, Spacer, Text, useTheme } from "palette"
+import { Box, Flex, Input, Join, Separator, Spacer, Text, useTheme } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import React, { useCallback, useContext, useEffect, useRef, useState } from "react"
 import { LayoutAnimation, ScrollView, TouchableOpacity } from "react-native"
@@ -267,7 +266,8 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({ artwork, ...props })
             setAddMessageYCoordinate(nativeEvent.layout.y)
           }}
         >
-          <TextArea
+          <Input
+            multiline
             placeholder="Add a custom note..."
             title="Add message"
             value={state.message ? state.message : ""}

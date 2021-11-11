@@ -8,6 +8,7 @@ function loadStories() {
   require("../lib/Components/ReadMore.stories")
   require("../palette/colors.stories")
   require("../palette/elements/Avatar/Avatar.stories")
+  require("../palette/elements/Banner/Banner.stories")
   require("../palette/elements/Button/Button.stories")
   require("../palette/elements/Checkbox/Checkbox.stories")
   require("../palette/elements/Dialog/Dialog.stories")
@@ -17,7 +18,6 @@ function loadStories() {
   require("../palette/elements/Select/Select.stories")
   require("../palette/elements/Tabs/Tabs.stories")
   require("../palette/elements/Text/Text.stories")
-  require("../palette/elements/Banner/Banner.stories")
   require("../palette/space.stories")
 }
 
@@ -26,6 +26,7 @@ const stories = [
   "../lib/Components/ReadMore.stories",
   "../palette/colors.stories",
   "../palette/elements/Avatar/Avatar.stories",
+  "../palette/elements/Banner/Banner.stories",
   "../palette/elements/Button/Button.stories",
   "../palette/elements/Checkbox/Checkbox.stories",
   "../palette/elements/Dialog/Dialog.stories",
@@ -35,7 +36,6 @@ const stories = [
   "../palette/elements/Select/Select.stories",
   "../palette/elements/Tabs/Tabs.stories",
   "../palette/elements/Text/Text.stories",
-  "../palette/elements/Banner/Banner.stories",
   "../palette/space.stories",
 ]
 
