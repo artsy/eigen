@@ -84,6 +84,7 @@ export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWor
         visible={showModal}
         onDismiss={() => setShowModal(false)}
         setProfileIconLocally={setProfileIconHandler}
+        localImagePath={localImagePath}
       />
       <FancyModalHeader
         rightButtonText="Settings"

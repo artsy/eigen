@@ -19,6 +19,7 @@ interface MyProfileEditFormModalProps {
   visible: boolean
   me: MyProfileEditFormModal_me
   setProfileIconLocally: (path: string) => void
+  localImagePath: string
   onDismiss(): void
 }
 
@@ -71,7 +72,7 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
     initialValues: {
       name: me?.name ?? "",
       bio: me?.bio ?? "",
-      photo: me?.icon?.url ?? "",
+      photo: me?.icon?.url ?? props.localImagePath ?? "",
     },
     initialErrors: {},
     onSubmit: async ({ name, bio, photo }) => {
@@ -105,7 +106,7 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
     setDidUpdatePhoto(false)
     onDismiss()
     // @ts-ignore
-    handleChange("photo")(me?.icon?.url ?? "")
+    handleChange("photo")(me?.icon?.url ?? props.localImagePath ?? "")
     // @ts-ignore
     handleChange("name")(me?.name ?? "")
     // @ts-ignore
