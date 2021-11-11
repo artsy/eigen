@@ -62,7 +62,7 @@ class SaleOnHoldOverlayViewTests: QuickSpec {
                 subject.align(toView: containerView!)
             }
 
-            it("handles subsequent message updates") {
+            xit("handles subsequent message updates") {
                 setNimbleTolerance(0.1)
                 expect(containerView).to(haveValidSnapshot(named: "initial message"))
 
