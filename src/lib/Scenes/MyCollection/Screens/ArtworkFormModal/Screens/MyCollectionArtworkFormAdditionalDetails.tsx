@@ -1,6 +1,5 @@
 import { NavigationProp } from "@react-navigation/native"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { TextArea } from "lib/Components/TextArea"
 import { Flex, Input, Join, Sans, Spacer } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import { Select } from "palette/elements/Select"
@@ -89,7 +88,8 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
               defaultValue={formikValues.category}
             />
 
-            <TextArea
+            <Input
+              multiline
               title="PROVENANCE"
               placeholder="Provenance"
               value={formikValues.provenance}

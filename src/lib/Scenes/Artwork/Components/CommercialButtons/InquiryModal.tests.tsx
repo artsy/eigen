@@ -9,15 +9,12 @@ import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
-import { getLocationDetails, getLocationPredictions } from "lib/utils/googleMaps"
-import { Input, Touchable } from "palette"
 import React from "react"
-// TODO: replace with Palette's TextArea when available
 import { TextInput } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { press, typeInInput } from "./helpers"
+import { press } from "./helpers"
 import { InquiryModalFragmentContainer } from "./InquiryModal"
 import { ShippingModal } from "./ShippingModal"
 
@@ -207,51 +204,6 @@ describe("<InquiryModal />", () => {
       expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeTruthy()
       const header = wrapper.root.findByType(ShippingModal).findByType(FancyModalHeader)
       expect(extractText(header)).toContain("Add Location")
-    })
-
-    it("User adds a location from the shipping modal", async () => {
-      ;(getLocationPredictions as jest.Mock).mockResolvedValue([
-        { id: "a", name: "Coxsackie, NY, USA" },
-        { id: "b", name: "Coxs Creek, KY, USA" },
-      ])
-      ;(getLocationDetails as jest.Mock).mockResolvedValue({
-        city: "Coxsackie",
-        country: "USA",
-        state: "New York",
-        stateCode: "NY",
-        id: "a",
-        name: "Coxsackie, NY, USA",
-      })
-      const wrapper = getWrapper()
-      wrapper.root.findByProps({ testID: "checkbox-shipping_quote" }).props.onPress()
-      await press(wrapper.root, { text: /^Add your location/ })
-
-      await typeInInput(wrapper.root, "Cox")
-
-      expect(wrapper.root.findAllByProps({ testID: "dropdown" }).length).not.toEqual(0)
-      expect(extractText(wrapper.root)).toContain("Coxsackie, NY, USA")
-
-      await press(wrapper.root, { text: "Coxsackie, NY, USA", componentType: Touchable })
-      expect(wrapper.root.findByType(Input).props.value).toEqual("Coxsackie, NY, USA")
-      expect(wrapper.root.findAllByProps({ testID: "dropdown" }).length).toEqual(0)
-
-      await press(wrapper.root, { text: "Apply" })
-      expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeFalsy()
-
-      expect(extractText(wrapper.root)).toContain("Coxsackie, NY, USA")
-    })
-
-    // TODO: I couldn't get this one to work. It is pretty basic. maybe we don't need it.
-    it.skip("user can only exit the shipping modal by pressing cancel if they have not selected a location", async () => {
-      const wrapper = getWrapper()
-      wrapper.root.findByProps({ testID: "checkbox-shipping_quote" }).props.onPress()
-      await press(wrapper.root, { text: /^Add your location/ })
-      await press(wrapper.root, { text: "Apply" })
-
-      expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeTruthy()
-
-      await press(wrapper.root, { text: "Cancel" })
-      expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeFalsy()
     })
   })
 

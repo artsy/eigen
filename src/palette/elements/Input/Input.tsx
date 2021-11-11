@@ -19,7 +19,7 @@ import { EyeClosedIcon } from "../../svgs/EyeClosedIcon"
 import { InputTitle } from "./InputTitle"
 
 export const INPUT_HEIGHT = 50
-export const MULTILINE_INPUT_HEIGHT = 100
+export const INPUT_HEIGHT_MULTILINE = 100
 
 export const inputEvents = new EventEmitter()
 
@@ -36,8 +36,6 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   disabled?: boolean
   required?: boolean
   title?: string
-  multiline?: boolean
-  maxLength?: number
   showLimit?: boolean
   /**
    * The placeholder can be an array of string, specifically for android, because of a bug.
@@ -235,7 +233,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 flexDirection: "row",
                 borderWidth: 1,
                 borderColor: color(computeBorderColor({ disabled, error: !!error, focused })),
-                height: multiline ? MULTILINE_INPUT_HEIGHT : INPUT_HEIGHT,
+                minHeight: multiline ? INPUT_HEIGHT_MULTILINE : INPUT_HEIGHT,
                 backgroundColor: disabled ? color("black5") : color("white100"),
               },
             ]}
@@ -250,6 +248,8 @@ export const Input = React.forwardRef<TextInput, InputProps>(
               {placeholderMeasuringHack}
               <StyledInput
                 multiline={multiline}
+                // we need this one to make RN focus on the input with the keyboard. https://github.com/facebook/react-native/issues/16826#issuecomment-940126791
+                scrollEnabled={multiline ? false : undefined}
                 maxLength={maxLength}
                 editable={!disabled}
                 onLayout={(event) => {
@@ -263,7 +263,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 ref={input}
                 placeholderTextColor={color("black60")}
                 style={{ flex: 1, fontSize: 16, ...inputTextStyle }}
-                numberOfLines={1}
+                numberOfLines={multiline ? undefined : 1}
                 secureTextEntry={!showPassword}
                 textAlignVertical={multiline ? "top" : "center"}
                 placeholder={actualPlaceholder()}
@@ -346,8 +346,7 @@ export const computeBorderColor = (inputStatus: InputStatus): Color => {
 }
 
 const StyledInput = styled(TextInput)`
-  padding: 0 ${themeGet("space.1")}px 0 0;
-  margin: ${themeGet("space.1")}px;
+  padding: ${themeGet("space.1")}px;
   font-family: ${themeGet("fonts.sans.regular")};
 `
 StyledInput.displayName = "StyledInput"

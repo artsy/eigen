@@ -6027,6 +6027,26 @@ type Delivery {
   ): String
 }
 
+type Device {
+  # E.g., net.artsy.artsy
+  appId: String!
+
+  # Unique ID for this device
+  id: ID!
+
+  # Name of the device
+  name: String!
+
+  # Either android or ios
+  platform: String!
+
+  # If device is beta/dev or prod.
+  production: Boolean!
+
+  # The device token
+  token: String!
+}
+
 type dimensions {
   cm: String
   in: String
@@ -8211,6 +8231,7 @@ type Me implements Node {
   ): IdentityVerification
   identityVerified: Boolean
   initials(length: Int = 3): String
+  inquiryIntroduction: String
 
   # A type-specific ID.
   internalID: ID!
@@ -8307,6 +8328,9 @@ type Me implements Node {
   # The user's most current pending identity verification, if it exists
   pendingIdentityVerification: IdentityVerification
   phone: String
+  priceRange: String
+  priceRangeMax: Float
+  priceRangeMin: Float
   profession: String
 
   # This user should receive lot opening notifications
@@ -9810,6 +9834,7 @@ type Query {
 
   # Get Algolia configuration
   _unused_gravity_algolia: Algolia!
+  _unused_gravity_devices(userId: ID!): [Device!]!
 
   # Autocomplete resolvers.
   _unused_gravity_match_partners(
@@ -10437,6 +10462,12 @@ type Query {
     internal: Boolean = false
     size: Int
   ): [PartnerCategory]
+
+  # A PartnerCategory
+  partnerCategory(
+    # The slug or ID of the PartnerCategory
+    id: String!
+  ): PartnerCategory
 
   # A list of Partners
   partnersConnection(
@@ -12521,6 +12552,7 @@ type UpdateViewingRoomSubsectionsPayload {
 type User {
   analytics: AnalyticsUserStats
   cached: Int
+  devices: [Device!]!
 
   # The given email of the user.
   email: String!
@@ -13111,6 +13143,12 @@ type Viewer {
     internal: Boolean = false
     size: Int
   ): [PartnerCategory]
+
+  # A PartnerCategory
+  partnerCategory(
+    # The slug or ID of the PartnerCategory
+    id: String!
+  ): PartnerCategory
 
   # A list of Partners
   partnersConnection(

@@ -6,7 +6,6 @@ import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
 import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { compact } from "lodash"
 import { FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
@@ -56,8 +55,6 @@ const ArtworkRail: React.FC<ArtworkRailProps & RailScrollProps> = ({ title, rail
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
-  const showNewNewWorksForYouRail = useFeatureFlag("AREnableNewWorksForYou")
-
   const viewAllUrl = getViewAllUrl(rail)
   const useSmallTile = smallTileKeys.includes(rail.key)
 
@@ -72,8 +69,7 @@ const ArtworkRail: React.FC<ArtworkRailProps & RailScrollProps> = ({ title, rail
   // This is to satisfy the TypeScript compiler based on Metaphysics types.
   const artworks = compact(rail.results ?? [])
 
-  const isHiddenFollowedArtistsRail = rail.key === "followed_artists" && showNewNewWorksForYouRail
-  const showRail = artworks.length && !isHiddenFollowedArtistsRail
+  const showRail = artworks.length
 
   useEffect(() => {
     showRail ? onShow?.() : onHide?.()
