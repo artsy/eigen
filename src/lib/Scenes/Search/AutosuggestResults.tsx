@@ -16,8 +16,8 @@ import React from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
-import { AutosuggestResultsPlaceholder } from "./AutosuggestResultsPlaceholder"
-import { AutosuggestSearchResult, OnResultPress, TrackResultPress } from "./AutosuggestSearchResult"
+import { AutosuggestSearchResult, OnResultPress, TrackResultPress } from "./components/AutosuggestSearchResult"
+import { AutosuggestResultsPlaceholder } from "./components/placeholders/AutosuggestResultsPlaceholder"
 
 export type AutosuggestResult = NonNullable<
   NonNullable<NonNullable<NonNullable<AutosuggestResults_results["results"]>["edges"]>[0]>["node"]

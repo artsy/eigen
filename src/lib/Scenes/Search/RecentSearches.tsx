@@ -3,9 +3,9 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { Message } from "palette"
 import React from "react"
 import { LayoutAnimation } from "react-native"
-import { AutosuggestSearchResult } from "./AutosuggestSearchResult"
+import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
+import { SearchResultList } from "./components/SearchResultList"
 import { MAX_SHOWN_RECENT_SEARCHES, useRecentSearches } from "./SearchModel"
-import { SearchResultList } from "./SearchResultList"
 
 export const RecentSearches: React.FC = () => {
   const recentSearches = useRecentSearches(MAX_SHOWN_RECENT_SEARCHES)

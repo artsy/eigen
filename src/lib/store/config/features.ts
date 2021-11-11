@@ -124,12 +124,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableAuctionResultsKeywordFilter",
   },
-  AREnableImprovedSearch: {
-    readyForRelease: true,
-    description: "Enable improved search experience",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableImprovedSearch",
-  },
   AREnableImprovedSearchPills: {
     readyForRelease: false,
     description: "Enable improved search pills",

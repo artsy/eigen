@@ -1,13 +1,13 @@
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
+import { BMWSponsorship } from "lib/Scenes/City/CityBMWSponsorship"
 import { ClassTheme, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { Image, TouchableOpacity } from "react-native"
-import { BMWSponsorship } from "../City/CityBMWSponsorship"
 
 export class CityGuideCTA extends React.Component {
   render() {
-    const cityGuideMapImage = require("../../../../images/city-guide-bg.webp")
+    const cityGuideMapImage = require("../../../../../images/city-guide-bg.webp")
     return (
       <ClassTheme>
         {({ color }) => (

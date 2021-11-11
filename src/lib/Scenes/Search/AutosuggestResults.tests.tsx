@@ -11,7 +11,7 @@ import { FlatList } from "react-native"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { AutosuggestResults } from "./AutosuggestResults"
-import { AutosuggestSearchResult } from "./AutosuggestSearchResult"
+import { AutosuggestSearchResult } from "./components/AutosuggestSearchResult"
 import { SearchContext } from "./SearchContext"
 
 const FixturePage1: AutosuggestResultsQueryRawResponse = {

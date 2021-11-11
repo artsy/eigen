@@ -4,10 +4,10 @@ import { Schema } from "lib/utils/track"
 import { ArtworkIcon, AuctionIcon, CloseIcon, Flex, Pill, Spacer, Text, Touchable } from "palette"
 import React, { useContext } from "react"
 import { useTracking } from "react-tracking"
-import { IMAGE_SIZE, SearchResultImage } from "../Search2/components/SearchResultImage"
-import { AutosuggestResult } from "./AutosuggestResults"
+import { AutosuggestResult } from "../AutosuggestResults"
+import { SearchContext } from "../SearchContext"
 import { ResultWithHighlight } from "./ResultWithHighlight"
-import { SearchContext } from "./SearchContext"
+import { IMAGE_SIZE, SearchResultImage } from "./SearchResultImage"
 
 export type OnResultPress = (result: AutosuggestResult) => void
 export type TrackResultPress = (result: AutosuggestResult, itemIndex?: number) => void

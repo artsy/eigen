@@ -8,8 +8,8 @@ import { Touchable } from "palette"
 import React from "react"
 import { Pressable } from "react-native"
 import { act } from "react-test-renderer"
+import { SearchContext } from "../SearchContext"
 import { AutosuggestSearchResult } from "./AutosuggestSearchResult"
-import { SearchContext } from "./SearchContext"
 
 const inputBlurMock = jest.fn()
 const onDeleteMock = jest.fn()

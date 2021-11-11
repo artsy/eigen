@@ -29,10 +29,7 @@ export const BottomTabsNavigator = () => {
         <FadeBetween
           views={[
             <TabContent key="home" route={{ params: { tabName: "home", rootModuleName: "Home" } }} />,
-            <TabContent
-              key="search"
-              route={{ params: { tabName: "search", rootModuleName: "SearchSwitchContainer" } }}
-            />,
+            <TabContent key="search" route={{ params: { tabName: "search", rootModuleName: "Search" } }} />,
             <TabContent key="inbox" route={{ params: { tabName: "inbox", rootModuleName: "Inbox" } }} />,
             <TabContent key="sell" route={{ params: { tabName: "sell", rootModuleName: "Sales" } }} />,
             <TabContent key="profile" route={{ params: { tabName: "profile", rootModuleName: "MyProfile" } }} />,
@@ -50,7 +47,7 @@ export const BottomTabsNavigator = () => {
       <Tab.Screen
         name="search"
         component={TabContent}
-        initialParams={{ tabName: "search", rootModuleName: "SearchSwitchContainer" }}
+        initialParams={{ tabName: "search", rootModuleName: "Search" }}
       />
       <Tab.Screen name="inbox" component={TabContent} initialParams={{ tabName: "inbox", rootModuleName: "Inbox" }} />
       <Tab.Screen name="sell" component={TabContent} initialParams={{ tabName: "sell", rootModuleName: "Sales" }} />
