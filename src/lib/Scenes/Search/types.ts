@@ -13,6 +13,6 @@ export type PillEntityType = "algolia" | "elastic"
 export interface PillType {
   name: string
   displayName: string
-  disabled: boolean
+  disabled?: boolean
   type: PillEntityType
 }

@@ -4,14 +4,14 @@ import { ScrollView } from "react-native"
 import { PillType } from "../types"
 
 export interface SearchPillsProps {
-  loading: boolean
+  loading?: boolean
   pills: PillType[]
   onPillPress: (pill: PillType) => void
   isSelected: (pill: PillType) => boolean
 }
 
 export const SearchPills = React.forwardRef<ScrollView, SearchPillsProps>((props, ref) => {
-  const { loading, pills, onPillPress, isSelected } = props
+  const { loading = false, pills, onPillPress, isSelected } = props
   const space = useSpace()
 
   return (

@@ -28,10 +28,10 @@ export interface PillProps extends FlexProps {
 
 enum DisplayState {
   Enabled = "enabled",
-  Enabled2 = "enabled2",
+  EnabledImprovedFlag = "enabled2",
   Pressed = "pressed",
   Selected = "selected",
-  Selected2 = "selected2",
+  SelectedImprovedFlag = "selected2",
   Disabled = "disabled",
 }
 
@@ -74,8 +74,8 @@ export const Pill: React.FC<PillProps> = ({
   const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
 
   const textStyle = useTextStyleForPalette(size === "xxs" ? "xs" : "sm")
-  const enabledDisplayState = enableImprovedPills ? DisplayState.Enabled2 : DisplayState.Enabled
-  const selectedDisplayState = enableImprovedPills ? DisplayState.Selected2 : DisplayState.Selected
+  const enabledDisplayState = enableImprovedPills ? DisplayState.EnabledImprovedFlag : DisplayState.Enabled
+  const selectedDisplayState = enableImprovedPills ? DisplayState.SelectedImprovedFlag : DisplayState.Selected
   const standartDisplayState = disabled ? DisplayState.Disabled : enabledDisplayState
   const initialDisplayState = selected ? selectedDisplayState : standartDisplayState
   const [innerDisplayState, setInnerDisplayState] = useState(initialDisplayState)
@@ -162,7 +162,7 @@ const useStyleForState = (state: DisplayState): { textColor: string; borderColor
       retval.borderColor = color("black60")
       retval.backgroundColor = color("white100")
       break
-    case DisplayState.Selected2:
+    case DisplayState.SelectedImprovedFlag:
       retval.textColor = color("white100")
       retval.borderColor = color("blue100")
       retval.backgroundColor = color("blue100")
@@ -172,7 +172,7 @@ const useStyleForState = (state: DisplayState): { textColor: string; borderColor
       retval.borderColor = color("black15")
       retval.backgroundColor = color("white100")
       break
-    case DisplayState.Enabled2:
+    case DisplayState.EnabledImprovedFlag:
       retval.textColor = color("black100")
       retval.borderColor = color("black60")
       retval.backgroundColor = color("white100")
