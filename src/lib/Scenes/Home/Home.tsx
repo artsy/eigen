@@ -91,13 +91,11 @@ const Home = (props: Props) => {
           title: "New Works for You",
           type: "newWorksForYou",
           data: meAbove,
-          hidden: !enableNewNewWorksForYouRail,
         }
       : {
           title: "New Works by Artists You Follow",
           type: "artwork",
           data: homePageAbove?.followedArtistsArtworkModule,
-          hidden: enableNewNewWorksForYouRail,
         }
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
