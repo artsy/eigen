@@ -1,9 +1,10 @@
 import { Aggregations, FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
 import useAppState from "lib/utils/useAppState"
-import { Sans, Text, useTheme } from "palette"
+import { Sans, Spacer, Text, useTheme } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
 import { ScrollView } from "react-native"
 import { SavedSearchAlertForm } from "./SavedSearchAlertForm"
@@ -21,6 +22,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
   const { visible, filters, aggregations, onClosePress, onComplete, ...other } = props
   const { space } = useTheme()
   const [enablePushNotifications, setEnablePushNotifications] = useState(true)
+  const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
 
   const getPermissionStatus = async () => {
     const status = await getNotificationPermissionsStatus()
@@ -49,12 +51,13 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ paddingHorizontal: space(2) }}
       >
-        <Sans size="8" mb={1}>
-          Create an Alert
-        </Sans>
-        <Sans size="3t" mb={4}>
-          Receive alerts as Push Notifications directly to your device.
-        </Sans>
+        <Sans size="8">Create an Alert</Sans>
+        {!enableSavedSearchToggles && (
+          <Sans size="3t" mt={1}>
+            Receive alerts as Push Notifications directly to your device.
+          </Sans>
+        )}
+        <Spacer mt={4} />
         <SavedSearchAlertForm
           initialValues={{ name: "", email: true, push: enablePushNotifications }}
           aggregations={aggregations}
