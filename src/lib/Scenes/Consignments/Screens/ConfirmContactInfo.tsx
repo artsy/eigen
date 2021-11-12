@@ -111,6 +111,7 @@ const ConfirmContactInfo: React.FC<{
             <Spacer mb={3} />
             {me ? (
               <PhoneInput
+                style={{ flex: 1 }}
                 ref={inputRef}
                 title="Phone number"
                 value={phoneNumber ?? ""}
