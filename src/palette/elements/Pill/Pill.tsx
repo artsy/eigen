@@ -2,7 +2,8 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Flex, FlexProps } from "../Flex"
 import { Text, useTextStyleForPalette } from "../Text"
 
-import { Color, IconProps, Spacer, useColor } from "palette"
+import { useFeatureFlag } from "lib/store/GlobalStore"
+import { IconProps, Spacer, useColor } from "palette"
 import React, { ReactNode, useEffect, useState } from "react"
 import { GestureResponderEvent, Pressable, PressableProps } from "react-native"
 import { config } from "react-spring"
@@ -27,8 +28,11 @@ export interface PillProps extends FlexProps {
 
 enum DisplayState {
   Enabled = "enabled",
+  EnabledImprovedFlag = "enabled2",
   Pressed = "pressed",
   Selected = "selected",
+  SelectedImprovedFlag = "selected2",
+  Disabled = "disabled",
 }
 
 const getSize = (size: PillSize): { height: number; paddingRight: number; paddingLeft: number } => {
@@ -67,8 +71,13 @@ export const Pill: React.FC<PillProps> = ({
   highlightEnabled = false,
   ...rest
 }) => {
+  const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
+
   const textStyle = useTextStyleForPalette(size === "xxs" ? "xs" : "sm")
-  const initialDisplayState = selected ? DisplayState.Selected : DisplayState.Enabled
+  const enabledDisplayState = enableImprovedPills ? DisplayState.EnabledImprovedFlag : DisplayState.Enabled
+  const selectedDisplayState = enableImprovedPills ? DisplayState.SelectedImprovedFlag : DisplayState.Selected
+  const standartDisplayState = disabled ? DisplayState.Disabled : enabledDisplayState
+  const initialDisplayState = selected ? selectedDisplayState : standartDisplayState
   const [innerDisplayState, setInnerDisplayState] = useState(initialDisplayState)
   const { height, paddingLeft, paddingRight } = getSize(size)
 
@@ -78,7 +87,7 @@ export const Pill: React.FC<PillProps> = ({
 
   useEffect(() => {
     setInnerDisplayState(initialDisplayState)
-  }, [selected])
+  }, [disabled, selected])
 
   const iconSpacerMargin = size === "xxs" ? 0.5 : 1
   const iconColor = innerDisplayState === "pressed" ? "blue100" : "black100"
@@ -110,6 +119,7 @@ export const Pill: React.FC<PillProps> = ({
             paddingRight={paddingRight}
             style={{
               borderColor: springProps.borderColor,
+              backgroundColor: springProps.backgroundColor,
             }}
             {...rest}
           >
@@ -136,23 +146,41 @@ export const Pill: React.FC<PillProps> = ({
   )
 }
 
-const useStyleForState = (state: DisplayState): { textColor: Color; borderColor: string } => {
+const useStyleForState = (state: DisplayState): { textColor: string; borderColor: string; backgroundColor: string } => {
   const color = useColor()
 
   const retval = {} as ReturnType<typeof useStyleForState>
 
   switch (state) {
     case DisplayState.Pressed:
-      retval.textColor = "blue100"
+      retval.textColor = color("blue100")
       retval.borderColor = color("blue100")
+      retval.backgroundColor = color("white100")
       break
     case DisplayState.Selected:
-      retval.textColor = "black100"
+      retval.textColor = color("black100")
       retval.borderColor = color("black60")
+      retval.backgroundColor = color("white100")
+      break
+    case DisplayState.SelectedImprovedFlag:
+      retval.textColor = color("white100")
+      retval.borderColor = color("blue100")
+      retval.backgroundColor = color("blue100")
       break
     case DisplayState.Enabled:
-      retval.textColor = "black100"
+      retval.textColor = color("black100")
       retval.borderColor = color("black15")
+      retval.backgroundColor = color("white100")
+      break
+    case DisplayState.EnabledImprovedFlag:
+      retval.textColor = color("black100")
+      retval.borderColor = color("black60")
+      retval.backgroundColor = color("white100")
+      break
+    case DisplayState.Disabled:
+      retval.textColor = color("black30")
+      retval.borderColor = color("black30")
+      retval.backgroundColor = color("white100")
       break
     default:
       assertNever(state)

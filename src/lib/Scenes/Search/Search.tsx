@@ -86,18 +86,15 @@ export const Search: React.FC<SearchProps> = (props) => {
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
   const searchInsightsConfigured = useSearchInsightsConfig(system?.algolia?.appID, system?.algolia?.apiKey)
   const indices = system?.algolia?.indices
-  const { indicesInfo, updateIndicesInfo } = useAlgoliaIndices(searchClient, indices)
+  const { loading: indicesInfoLoading, indicesInfo, updateIndicesInfo } = useAlgoliaIndices(searchClient, indices)
   const { trackEvent } = useTracking()
   const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
 
   const pillsArray = useMemo<PillType[]>(() => {
     if (Array.isArray(indices) && indices.length > 0) {
-      const formattedIndices: PillType[] = indices.reduce((acc, index) => {
-        if (!enableImprovedPills || indicesInfo[index.name]?.hasResults) {
-          acc.push({ ...index, type: "algolia" })
-        }
-        return acc
-      }, [])
+      const formattedIndices: PillType[] = indices.map((index) => {
+        return { ...index, type: "algolia", disabled: enableImprovedPills && !indicesInfo[index.name]?.hasResults }
+      })
 
       return [...pills, ...formattedIndices]
     }
@@ -221,6 +218,7 @@ export const Search: React.FC<SearchProps> = (props) => {
                 <Box pt={2} pb={1}>
                   <SearchPills
                     ref={searchPillsRef}
+                    loading={indicesInfoLoading}
                     pills={pillsArray}
                     onPillPress={handlePillPress}
                     isSelected={isSelected}

@@ -12,6 +12,7 @@ interface IndicesInfo {
 
 export const useAlgoliaIndices = (client: SearchClient | null, indices?: ReadonlyArray<{ name: string }>) => {
   const [indicesInfo, setIndicesInfo] = useState<IndicesInfo>({})
+  const [loading, setLoading] = useState(false)
   const lastQuery = useRef<string | null>(null)
 
   const updateIndicesInfo = useCallback(
@@ -29,6 +30,7 @@ export const useAlgoliaIndices = (client: SearchClient | null, indices?: Readonl
         }))
 
         if (!!client) {
+          setLoading(true)
           const indicesResponse = await client.multipleQueries<SearchResponse>(queries)
           if (query === lastQuery.current) {
             const newIndicesInfo = indicesResponse.results.reduce((acc: IndicesInfo, { index, nbHits }) => {
@@ -38,6 +40,7 @@ export const useAlgoliaIndices = (client: SearchClient | null, indices?: Readonl
               return acc
             }, {})
             setIndicesInfo(newIndicesInfo)
+            setLoading(false)
           }
         }
       }
@@ -45,5 +48,5 @@ export const useAlgoliaIndices = (client: SearchClient | null, indices?: Readonl
     [client, indices]
   )
 
-  return { indicesInfo, updateIndicesInfo }
+  return { loading, indicesInfo, updateIndicesInfo }
 }
