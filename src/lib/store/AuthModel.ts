@@ -323,7 +323,7 @@ export const getAuthModel = (): AuthModel => ({
           })
         }
 
-        if (onboardingState === "complete" || onboardingState === "none") {
+        if (!onboardingState || onboardingState === "complete" || onboardingState === "none") {
           actions.requestPushNotifPermission()
         }
 
