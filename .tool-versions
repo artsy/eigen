@@ -1,3 +1,21 @@
 nodejs 14.17.1
 ruby 2.7.2
 python 3.7.12
+
+
+
+
+add asdf plugin-add python and asdf plugin add ruby https://github.com/asdf-vm/asdf-ruby.git in readme
+
+asdf install
+
+
+
+
+add doctor check for aws.
+
+add doctor check for asdf?
+
+make sure podfile has a cleanup step to remove netrc shit/file
+
+aws should be set up
