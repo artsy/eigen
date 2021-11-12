@@ -7,8 +7,9 @@ const fs = require('fs');
 module.exports.checkFlags = () => {
   try {
     const fileContent = fs.readFileSync('./src/lib/store/config/features.ts', 'utf8');
-    const releasedFlags = this.parseReleasedFlags(fileContent) ?? []
-    const hiddenFlags = this.parseHiddenFlags(fileContent, releasedFlags)
+    const allFlags = this.parseAllFlags(fileContent) ?? [[], []]
+    const hiddenFlags = allFlags[0]
+    const releasedFlags = allFlags[1]
     return { hiddenFlags, releasedFlags }
   } catch (err) {
     return err
@@ -18,9 +19,9 @@ module.exports.checkFlags = () => {
 /**
  * @param {string} content
  */
-function matchReadyForReleaseFlags(content) {
-  const readyForReleaseFlagsRE = /(?<flag>AR\w+):\s*{\s*|.*readyForRelease:\s+(?<readyForRelease>true|false)/g
-  const results = matchAll(readyForReleaseFlagsRE, content);
+function matchFlags(content) {
+  const flagsRE = /(?<flag>AR\w+):\s*{\s*|.*readyForRelease:\s+(?<readyForRelease>true|false)/g
+  const results = matchAll(flagsRE, content);
   return results
 }
 
@@ -37,23 +38,16 @@ function matchAll(regex, content) {
   return results
 }
 
-/**
- * @param {string} content
- */
-function matchAllFlags(content) {
-  const allFlagsRE = /(?<flag>AR\w+):/g
-  const results = matchAll(allFlagsRE, content);
-  return results
-}
 
 /**
  * @param {string} content
  */
-module.exports.parseReleasedFlags = (content) => {
-  const readyForReleaseFlagResults = matchReadyForReleaseFlags(content)
+module.exports.parseAllFlags = (content) => {
+  const allFlagResults = matchFlags(content)
   var lastFlag
   var releasedFlags = []
-  for (const result of readyForReleaseFlagResults) {
+  var hiddenFlags = []
+  for (const result of allFlagResults) {
     if (!result.groups) {
       break
     }
@@ -65,32 +59,13 @@ module.exports.parseReleasedFlags = (content) => {
       const readyForRelease = result.groups['readyForRelease']
       if (readyForRelease === 'true' && lastFlag) {
         releasedFlags.push(lastFlag)
+      } else if (readyForRelease === 'false' && lastFlag) {
+        hiddenFlags.push(lastFlag)
       }
     }
   }
-  return releasedFlags
+  return [hiddenFlags, releasedFlags]
 }
-
-/**
- * @param {string} content
- * @param {string[]} releasedFlags
- */
-
-module.exports.parseHiddenFlags = (content, releasedFlags) => {
-  const allFlagResults = matchAllFlags(content)
-  var allFlags = []
-  for (const result of allFlagResults) {
-    if (!result.groups) {
-      break
-    }
-    if (result.groups['flag']) {
-      const currentFlag = result.groups['flag']
-      allFlags.push(currentFlag)
-    }
-  }
-  return allFlags.filter(flag => !releasedFlags.includes(flag));
-}
-
 
 // @ts-ignore
 if (require.main === module) {
