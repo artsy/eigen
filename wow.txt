@@ -1,0 +1,288 @@
+
+
+
+
+
+in the last 300 commits we had:
+- 20 chore
+- 7 enhancement
+- 50 feat
+- 85 fix
+- 1 format
+- 9 refactor
+
+
+
+
+
+
+
+
+
+
+    HOTFIX: If an urgent fix is required
+    feat: A new feature
+    fix: A bug fix
+    docs: Documentation only changes
+    perf: A code change that improves performance
+    test: Adding missing tests or correcting existing tests
+    format: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc, linting)
+    revert: Revert something
+    update or upgrade: Update dependencies or pods or other related things
+    refactor: A code change that keeps functionality mostly the same
+    build: Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)
+    uxui: changes that affect how something looks or how the user experiences it
+    cleanup: When the main change is removing code, old or unused
+    other: catch-all, and once we have had a bunch of those, we can possibly make a new category
+
+
+(keep chore in peril)
+    chore: if what you did is actually a tedious thing that you dont like to do, use chore.
+
+
+
+
+
+
+
+
+
+
+
+
+
+bugfix(CX-1977): sync MyCollection and old MyProfile loading skeletons (#5528)
+chore(CX-1790): Add skeleton loader on Auction results by artists you follow (#5366)
+chore(FX-3322): split search pills into separated component (#5466)
+chore(FX-3414): Update tests for pills (#5567)
+chore(deps): update dep @artsy/cohesion from 2.21.0 to v2.22.0
+chore(deps): update dep @artsy/cohesion from 3.1.0 to v4 (#5500)
+chore(deps): update dep @artsy/cohesion from 4.1.0 to v4.4.0
+chore(deps): update dep @artsy/cohesion from 4.4.0 to v4.4.1
+chore(deps): update dep typescript from 4.3.5 to v4.4.3 (#5339)
+chore: adjust when shouldStartQuerying to 2 chars (#5546)
+chore: android distinguish beta (#5338)
+chore: change debounce to throttle when searching (#5481)
+chore: code freeze docs (#5364)
+chore: extend no output timeout for android betas #trivial (#5430)
+chore: firebase app distribution (#5355)
+chore: hide network unavailable modal behind feature flag (#5505)
+chore: my collection design tweaks (#5486)
+chore: prepare for development, 7.0.1 #trivial (#5380)
+chore: remove Artwork Location from gallery show filters (#5337)
+chore: remove extra info from description #trivial (#5353)
+chore: remove price estimate section + demand index subtitle (#5482)
+chore: remove superscript from my collection (#5534)
+chore: retire Makefile in favor of yarn (#5393)
+chore: update check for render empty message (#5536)
+chore: update saved search tests (#5461)
+chore: update search loading placeholder (#5462)
+chore: use better naming for push notifications channel (#5333)
+cleanup(palette v3): button v2 👋 (#5512)
+cleanup(palette v3): remove palette flag (#5511)
+enhancement(CX-1606): export isbetaordev from native to react native on iOS (#5295)
+enhancement(CX-1641): remove push notification asyncstorage flag (#5363)
+enhancement(CX-1850): update production params for token android (#5341)
+enhancement(CX-1967): Replace my collection lab feature with Echo Flag (#5515)
+enhancement: [CX-1938] Patch react-native-credit-card-input (#5559)
+enhancement: disable form when submitting invalid phone number (#5329)
+feat(CX-1813): add trove to homepage (#5497)
+feat(CX-1892): Introduce new "New Works for You" rail (#5441)
+feat(CX-2001): Add new works for you screen (#5551)
+feat(FX-3146): Filter menu displays number of active filters per facet (#5308)
+feat(FX-3147): total number of applied filters (#5370)
+feat(FX-3198): title case filter facets (#5326)
+feat(FX-3226): add dynamic rendering of indices (#5362)
+feat(FX-3227): Add analytics for searchartworksgrid filters (#5533)
+feat(FX-3228): global combined search results by default (#5350)
+feat(FX-3239): Pill component enhancement and stories (#5360)
+feat(FX-3256): pull to refresh for saved search list (#5389)
+feat(FX-3265): Setup Algolia analytics (#5405)
+feat(FX-3266): Gracefully respond when Algolia API key expires (#5448)
+feat(FX-3267): Support infinitely scrolling search results from Algolia (#5401)
+feat(FX-3274): fallback name for saved search alert without name (#5379)
+feat(FX-3292): add filters to searchable artwork grid (#5457)
+feat(FX-3295): Added no results state when Algolia query comes back empty (#5440)
+feat(FX-3302): Move custom price filter to top and default expand (#5443)
+feat(FX-3316): Created common search item component for Algolia results (#5490)
+feat(FX-3321): add debounce to onchangetext requests in improved search (#5467)
+feat(FX-3325): Update the display of size filter labels for saved search M2 (#5484)
+feat(FX-3326): select artworks pill when search button is clicked (#5491)
+feat(FX-3327, FX-3330): Keep selected pill as one entity, Reset the state of the search pills (#5493)
+feat(FX-3331): make recent searches title case (#5516)
+feat(FX-3332): add placeholder to Algolia results when loading (#5508)
+feat(FX-3335): prevent pill untoggle (#5538)
+feat(palette v3): Text v3 📝 (#5285)
+feat: Add price in USD to auction results list item (#5319)
+feat: Artist's Articles in My Collection (#5544)
+feat: Collector can see new status about their shipment in the app [PX-4401] (#5407)
+feat: Enable Palette V3 for all users (#5387)
+feat: Home feed reordering (#5447)
+feat: Order History: rename button "View Order" if order is made as "Make offer" [PX-4577] (#5503)
+feat: Order detail: User can see more shipping info for their order [PX-4210] (#5480)
+feat: Use optimistic response for all follow buttons
+feat: add artwork filtering with keyword functionallity (#5436)
+feat: add artwork pill and show artwork grid when selected (#5404)
+feat: add improved search pinned to Artists and algolia dependencies (#5254)
+feat: add popover message to storybook (#5349)
+feat: add saved addresses notifs using toast hook  (#5320)
+feat: add saved addy notifs using toast hook
+feat: change improved search shouldStartQuering threshold (#5476)
+feat: implement in app review in ts (#5468)
+feat: notify users when they are not connected (#5458)
+feat: prepare saved search flags to release (#5344)
+feat: show SS only when applied filters (#5318)
+feat: track OwnerType.savedSearches (#5324)
+feat: update shipping label [PX-4452] (#5371)
+feat: update toast message to v3 design system (#5265)
+feat: use href attribute in Algolia to navigate to result screen (#5411)
+feat: use trackingUrl and trackingNumber to generate tracking url [PX-4402] (#5369)
+feat:navigate back in BNMO [PURCHASE-840] (#5348)
+feature: Avatar V3 (#5242)
+feature: Pill V3 (#5374)
+feature: RadioButton V3 (#5343)
+fix copy issues on new onboarding (#5455)
+fix cropped c in onboarding welcome
+fix font size on forgot password screen
+fix on refresh error in homepage (#5532)
+fix tappable areas in my collection form (#5537)
+fix test
+fix(1986): unable to share articles (#5541)
+fix(CX-1663): created_account missing analytics event (#5488)
+fix(CX-1929): home page spacing fix (#5454)
+fix(CX-1945): issue with network error message (#5494)
+fix(CX-1959): Artist follow button (#5496)
+fix(CX-1976): Fix broken padding in my collection (#5524)
+fix(CX-1991): new onboarding UI changes  (#5545)
+fix(FX-3218): update copies saved search (#5323)
+fix(FX-3220): Previously selected artists are not reset (#5351)
+fix(FX-3223): correct logic for displaying the selected insight filters (#5354)
+fix(FX-3253): Set aggregations on mount only on partner page (#5406)
+fix(FX-3254): Artists filter displays wrong selections on the auction page (#5394)
+fix(FX-3255): disabled options cannot clicked (#5388)
+fix(FX-3257): Enable "Create Alert" button after deleting an alert (#5444)
+fix(FX-3278): Artworks Size filters custom size doesn't behave as expected (#5479)
+fix(FX-3408): set collapsable to false for parent container (#5573)
+fix(PURCHASE-2833): overlapping text on lot statuses (#5523)
+fix(PX-4402): use small buttons (#5504)
+fix(PX-4561): Order History: Order Details: "null" is displayed in "Ships to" section for ARTA orders
+fix(PX-4579): show last offer on offer orders page (#5495)
+fix(naming): fix prop name (#5502)
+fix(small buttons): fix a text layout problem on small buttons (#5553)
+fix: Add horizontal padding to auciton confirmation step bottom text (#5419)
+fix: Adjust home screen placeholder size (#5426)
+fix: Align Palette V3 text and other details with Figma design (#5417)
+fix: Align context grid CTA text with icon
+fix: Center checkbox V3 text (#5423)
+fix: Dont restrict number of artwork rails in home screen above-the-fold query (#5327)
+fix: Enable storybook admin menu link for Android
+fix: Make viewing room more details button bigger (#5418)
+fix: Multiple edition works with Radiobutton V3 (#5425)
+fix: My collection bug fixes (#5529)
+fix: Order History: Order Details: "null" is displayed in "Ships to" section for ARTA orders [PX-4561] (#5453)
+fix: Remove onClose from storybook admin menu entry (#5376)
+fix: Scrollview in make offer modal (#5352)
+fix: Set Palette V3 toggle title correctly (#5356)
+fix: Stop onboarding checkboxes fromm overflowing (#5435)
+fix: Uppercase input labels on billing address screen
+fix: Use correct name of auction event GRO-363 (#5422)
+fix: add spacing above android createsavedsearch modal header (#5342)
+fix: allow click pills when search input is focused (#5520)
+fix: broken tests on master (#5531)
+fix: correct scroll to top for android (#5549)
+fix: don’t send empty algolia request (#5451)
+fix: explicitly pass aab path #trivial (#5403)
+fix: failed saved search tests (#5460)
+fix: fix palette type error #trivial (#5509)
+fix: fix tab screen tracking only on first tap (#5558)
+fix: give my collection auction results some space #trivial (#5522)
+fix: hide right arrow in webviews where not needed  (#5539)
+fix: increase button offset in Dialog component (#5390)
+fix: move tracking into bootstrap callback, fix warnings (#5336)
+fix: multiselect and year options font to correct variant
+fix: onboarding fixes (#5409)
+fix: place saved alerts under my collection (#5322)
+fix: reduce space between auction lot buttons (#5416)
+fix: refetch only when applying new filters (#5445)
+fix: remove blocking "no results" text if search term has been cleared (#5576)
+fix: remove full width (#5413)
+fix: remove search quick links (#5483)
+fix: remove unused resourceClass in circle, pass flags to android beta builds #trivial (#5437)
+fix: remove update state during transition warning (#5543)
+fix: rename prop for button animated text (#5521)
+fix: render Algolia result titles in one line (#5507)
+fix: request color aggregation (#5424)
+fix: routing for new-style partner urls
+fix: saved search m2 (#5328)
+fix: separate android beta distributions to fix memory issues in CI (#5485)
+fix: showResultType on autosuggestResults that broke after rebase (#5560)
+fix: specify group in fastfile, skip apk upload #trivial (#5410)
+fix: track toggle saved search event (#5345)
+fix: update behaviour for search button (#5570)
+fix: update react-native netinfo to fix linking issue (#5383)
+fix: upgrade to latest react-navigation packages versions (#5475)
+fix: wrong font style in input fields of Billing Address screen (#5433)
+fix:[CX-1968] Hide clear filters button if no filter set in artworks  (#5501)
+fix:refetch data after deleting [PURCHASE-2899] (#5359)
+fix[CX-1953]: RadioButton alignments + fix checkbox text issue (#5556)
+format(tslint): adding some rules (#5513)
+refactor(FX-3246, FX-3275): keep `artistIDs` in one filter entity (#5373)
+refactor(FX-3288): Refactor useArtworkFilters and use it on artwork pages (#5421)
+refactor(palette v2): more cleanup (#5547)
+refactor(palette): removing more v2 things (#5519)
+refactor(palette): removing text v2 (#5518)
+refactor(tests): deprecate test-renderer in favor of testing-library (#5552)
+refactor: button v3 (#5415)
+refactor: remove ARGraphQLQueryCache native module (#5571)
+rename(text props): rename `size` to `variant` for text v3 (#5498)
+spec: add more tests for improved search (#5465)
+
+
+
+
+
+
+
+feat?(CX-1790): Add skeleton loader on Auction results by artists you follow (#5366)
+refactor(FX-3322): split search pills into separated component (#5466)
+test(FX-3414): Update tests for pills (#5567)
+update(deps): update dep @artsy/cohesion from 2.21.0 to v2.22.0
+update(deps): update dep @artsy/cohesion from 3.1.0 to v4 (#5500)
+update(deps): update dep @artsy/cohesion from 4.1.0 to v4.4.0
+update(deps): update dep @artsy/cohesion from 4.4.0 to v4.4.1
+update(deps): update dep typescript from 4.3.5 to v4.4.3 (#5339)
+uxui: adjust when shouldStartQuerying to 2 chars (#5546)
+build: android distinguish beta (#5338)
+refactor?: change debounce to throttle when searching (#5481)
+docs: code freeze docs (#5364)
+ci: extend no output timeout for android betas #trivial (#5430)
+build: firebase app distribution (#5355)
+feat?: hide network unavailable modal behind feature flag (#5505)
+uxui: my collection design tweaks (#5486)
+build?: prepare for development, 7.0.1 #trivial (#5380)
+uxui: remove Artwork Location from gallery show filters (#5337)
+uxui: remove extra info from description #trivial (#5353)
+uxui: remove price estimate section + demand index subtitle (#5482)
+uxui: remove superscript from my collection (#5534)
+build: retire Makefile in favor of yarn (#5393)
+fix: update check for render empty message (#5536)
+test: update saved search tests (#5461)
+uxui: update search loading placeholder (#5462)
+other: use better naming for push notifications channel (#5333)
+refactor(palette v3): button v2 👋 (#5512)
+cleanup(palette v3): remove palette flag (#5511)
+refactor?(CX-1606): export isbetaordev from native to react native on iOS (#5295)
+cleanup(CX-1641): remove push notification asyncstorage flag (#5363)
+build(CX-1850): update production params for token android (#5341)
+refactor(CX-1967): Replace my collection lab feature with Echo Flag (#5515)
+uxui: [CX-1938] Patch react-native-credit-card-input (#5559)
+uxui: disable form when submitting invalid phone number (#5329)
+other?(FX-3246, FX-3275): keep `artistIDs` in one filter entity (#5373)
+refactor(FX-3288): Refactor useArtworkFilters and use it on artwork pages (#5421)
+cleanup(palette v2): more cleanup (#5547)
+cleanup(palette): removing more v2 things (#5519)
+cleanup(palette): removing text v2 (#5518)
+test(tests): deprecate test-renderer in favor of testing-library (#5552)
+refactor: button v3 (#5415)
+refactor: remove ARGraphQLQueryCache native module (#5571)
+other(text props): rename `size` to `variant` for text v3 (#5498)
