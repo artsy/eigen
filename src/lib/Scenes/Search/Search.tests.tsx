@@ -146,7 +146,7 @@ describe("Search Screen", () => {
 
   describe("search pills", () => {
     describe("with AREnableImprovedSearchPills enabled", () => {
-      it("are displayed if they have results and when the user has typed the minimum allowed number of characters", () => {
+      it("are displayed when the user has typed the minimum allowed number of characters", () => {
         __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedSearchPills: true })
         const { getByPlaceholderText, queryByText } = renderWithWrappersTL(<TestRenderer />)
 
@@ -174,9 +174,54 @@ describe("Search Screen", () => {
 
         expect(queryByText("Top")).toBeTruthy()
         expect(queryByText("Artist")).toBeTruthy()
-        expect(queryByText("Auction")).toBeFalsy()
+        expect(queryByText("Auction")).toBeTruthy()
         expect(queryByText("Gallery")).toBeTruthy()
-        expect(queryByText("Fair")).toBeFalsy()
+        expect(queryByText("Fair")).toBeTruthy()
+      })
+
+      it("have top pill selected and disabled at the same time", () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedSearchPills: true })
+        const { getByPlaceholderText, getByA11yState } = renderWithWrappersTL(<TestRenderer />)
+        mockEnvironmentPayload(mockEnvironment, {
+          Algolia: () => ({
+            appID: "",
+            apiKey: "",
+            indices: [
+              { name: "Artist_staging", displayName: "Artist" },
+              { name: "Sale_staging", displayName: "Auction" },
+              { name: "Gallery_staging", displayName: "Gallery" },
+              { name: "Fair_staging", displayName: "Fair" },
+            ],
+          }),
+        })
+        const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+        fireEvent(searchInput, "changeText", "Ba")
+        const topPill = getByA11yState({ selected: true, disabled: true })
+        expect(topPill).toHaveTextContent("Top")
+      })
+
+      it("are enabled when they have results", () => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedSearchPills: true })
+        const { getByPlaceholderText, getAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+        mockEnvironmentPayload(mockEnvironment, {
+          Algolia: () => ({
+            appID: "",
+            apiKey: "",
+            indices: [
+              { name: "Artist_staging", displayName: "Artist" },
+              { name: "Sale_staging", displayName: "Auction" },
+              { name: "Gallery_staging", displayName: "Gallery" },
+              { name: "Fair_staging", displayName: "Fair" },
+            ],
+          }),
+        })
+        const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+        fireEvent(searchInput, "changeText", "Ba")
+        const enabledPills = getAllByA11yState({ disabled: false })
+        expect(enabledPills).toHaveLength(3)
+        expect(enabledPills[0]).toHaveTextContent("Artworks")
+        expect(enabledPills[1]).toHaveTextContent("Artist")
+        expect(enabledPills[2]).toHaveTextContent("Gallery")
       })
     })
 
