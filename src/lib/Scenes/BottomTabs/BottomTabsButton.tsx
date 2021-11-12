@@ -53,6 +53,8 @@ export const BottomTabsButton: React.FC<{
 
   return (
     <TouchableWithoutFeedback
+      accessibilityRole="button"
+      accessibilityLabel={`${tab} bottom tab`}
       onPressIn={() => {
         clearTimeout(timeout.current!)
         setIsBeingPressed(true)
