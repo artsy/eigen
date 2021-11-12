@@ -3,11 +3,12 @@ import { appleAuth } from "@invertase/react-native-apple-authentication"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import { isArtsyEmail } from "lib/utils/general"
+import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { postEventToProviders } from "lib/utils/track/providers"
 import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { capitalize } from "lodash"
 import { stringify } from "qs"
-import { Platform } from "react-native"
+import { Alert, Linking, Platform } from "react-native"
 import Config from "react-native-config"
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from "react-native-fbsdk-next"
 import { LegacyNativeModules } from "../NativeModules/LegacyNativeModules"
@@ -153,6 +154,7 @@ export interface AuthModel {
   >
 
   notifyTracking: Thunk<this, { userId: string | null }>
+  requestPushNotifPermission: Thunk<this>
   didRehydrate: ThunkOn<this, {}, GlobalStoreModel>
 }
 
@@ -319,6 +321,10 @@ export const getAuthModel = (): AuthModel => ({
           requestAnimationFrame(() => {
             LegacyNativeModules.ArtsyNativeModule.updateAuthState(access_token, expires_in, user)
           })
+        }
+
+        if (onboardingState === "complete" || onboardingState === "none") {
+          actions.requestPushNotifPermission()
         }
 
         return true
@@ -643,6 +649,25 @@ export const getAuthModel = (): AuthModel => ({
   }),
   notifyTracking: thunk((_, { userId }) => {
     SegmentTrackingProvider.identify?.(userId, { is_temporary_user: userId === null ? 1 : 0 })
+  }),
+  requestPushNotifPermission: thunk(async () => {
+    const pushNotificationsPermissionsStatus = await getNotificationPermissionsStatus()
+    if (pushNotificationsPermissionsStatus !== PushAuthorizationStatus.Authorized) {
+      setTimeout(() => {
+        if (Platform.OS === "ios") {
+          LegacyNativeModules.ARTemporaryAPIModule.requestPrepromptNotificationPermissions()
+        } else {
+          Alert.alert(
+            "Artsy Would Like to Send You Notifications",
+            "Turn on notifications to get important updates about artists you follow.",
+            [
+              { text: "Dismiss", style: "cancel" },
+              { text: "Settings", onPress: () => Linking.openSettings() },
+            ]
+          )
+        }
+      }, 3000)
+    }
   }),
   didRehydrate: thunkOn(
     (_, storeActions) => storeActions.rehydrate,

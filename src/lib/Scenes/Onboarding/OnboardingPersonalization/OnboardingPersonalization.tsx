@@ -4,15 +4,13 @@ import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPe
 import { OnboardingPersonalizationListQuery } from "__generated__/OnboardingPersonalizationListQuery.graphql"
 import { ArtistListItemContainer as ArtistListItem, ArtistListItemPlaceholder } from "lib/Components/ArtistListItem"
 import SearchIcon from "lib/Icons/SearchIcon"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { GlobalStore } from "lib/store/GlobalStore"
-import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { compact, times } from "lodash"
 import { Box, Button, Flex, Join, Spacer, Text, Touchable, useColor, useSpace } from "palette"
 import { INPUT_HEIGHT } from "palette/elements/Input/Input"
 import React from "react"
-import { Alert, FlatList, Linking, Platform, ScrollView, TouchableWithoutFeedback } from "react-native"
+import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { defaultEnvironment } from "../../../relay/createEnvironment"
@@ -140,30 +138,7 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
 
 const handleFinishOnboardingPersonalization = async () => {
   GlobalStore.actions.auth.setState({ onboardingState: "complete" })
-
-  const pushNotificationsPermissionsStatus = await getNotificationPermissionsStatus()
-  if (pushNotificationsPermissionsStatus !== PushAuthorizationStatus.Authorized) {
-    if (Platform.OS === "ios") {
-      LegacyNativeModules.ARTemporaryAPIModule.requestPrepromptNotificationPermissions()
-    } else {
-      setTimeout(() => {
-        Alert.alert(
-          "Artsy Would Like to Send You Notifications",
-          "Turn on notifications to get important updates about artists you follow.",
-          [
-            {
-              text: "Dismiss",
-              style: "cancel",
-            },
-            {
-              text: "Settings",
-              onPress: () => Linking.openSettings(),
-            },
-          ]
-        )
-      }, 3000)
-    }
-  }
+  GlobalStore.actions.auth.requestPushNotifPermission()
 }
 
 export const OnboardingPersonalizationListRefetchContainer = createFragmentContainer(OnboardingPersonalizationList, {

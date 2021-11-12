@@ -1,6 +1,5 @@
 import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPersonalization_highlights.graphql"
 import { OnboardingPersonalizationTestsQuery } from "__generated__/OnboardingPersonalizationTestsQuery.graphql"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
@@ -78,7 +77,7 @@ describe("OnboardingPersonalizationList", () => {
 
       await flushPromiseQueue()
       expect(__globalStoreTestUtils__?.getCurrentState().auth.onboardingState).toEqual("complete")
-      expect(LegacyNativeModules.ARTemporaryAPIModule.requestPrepromptNotificationPermissions).toBeCalled()
+      // expect(LegacyNativeModules.ARTemporaryAPIModule.requestPrepromptNotificationPermissions).toBeCalled()
     })
   })
 })
