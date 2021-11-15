@@ -52,11 +52,13 @@ export class MakeOfferButton extends React.Component<MakeOfferButtonProps, State
     console.log("src/lib/Scenes/Artwork/Components/MakeOfferButton.tsx", error)
   }
 
-  @track((props) => ({
-    action: ActionType.tappedMakeOffer,
-    context_owner_type: OwnerType.artwork,
-    context_owner_id: props.artwork.internalID,
-  }))
+  @track(
+    (props): TappedMakeOffer => ({
+      action: ActionType.tappedMakeOffer,
+      context_owner_type: OwnerType.artwork,
+      context_owner_id: props.artwork.internalID,
+    })
+  )
   handleCreateOfferOrder() {
     const { relay, artwork, editionSetID } = this.props
     const { isCommittingCreateOfferOrderMutation } = this.state

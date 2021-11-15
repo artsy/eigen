@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 72face3d23df644d8eeaec6db816efeb */
+/* @relayHash 3cd9df153cf9d7844e7a4225ce4cfccd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -474,6 +474,7 @@ fragment BidButton_artwork on Artwork {
 
 fragment BuyNowButton_artwork on Artwork {
   internalID
+  slug
   saleMessage
 }
 
@@ -2365,7 +2366,7 @@ return {
     ]
   },
   "params": {
-    "id": "72face3d23df644d8eeaec6db816efeb",
+    "id": "3cd9df153cf9d7844e7a4225ce4cfccd",
     "metadata": {},
     "name": "ArtworkRefetchQuery",
     "operationKind": "query",
