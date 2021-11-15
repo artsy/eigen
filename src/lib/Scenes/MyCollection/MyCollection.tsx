@@ -222,22 +222,24 @@ export const MyCollectionQueryRenderer: React.FC = () => {
   const excludePurchasedArtworks = !enableMyCollectionOrderImport
 
   return (
-    <QueryRenderer<MyCollectionQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query MyCollectionQuery($excludePurchasedArtworks: Boolean) {
-          me {
-            ...MyCollection_me @arguments(excludePurchasedArtworks: $excludePurchasedArtworks)
+    <ArtworkFiltersStoreProvider>
+      <QueryRenderer<MyCollectionQuery>
+        environment={defaultEnvironment}
+        query={graphql`
+          query MyCollectionQuery($excludePurchasedArtworks: Boolean) {
+            me {
+              ...MyCollection_me @arguments(excludePurchasedArtworks: $excludePurchasedArtworks)
+            }
           }
-        }
-      `}
-      variables={{ excludePurchasedArtworks }}
-      cacheConfig={{ force: true }}
-      render={renderWithPlaceholder({
-        Container: MyCollectionContainer,
-        renderPlaceholder: () => <LoadingSkeleton />,
-      })}
-    />
+        `}
+        variables={{ excludePurchasedArtworks }}
+        cacheConfig={{ force: true }}
+        render={renderWithPlaceholder({
+          Container: MyCollectionContainer,
+          renderPlaceholder: () => <LoadingSkeleton />,
+        })}
+      />
+    </ArtworkFiltersStoreProvider>
   )
 }
 
