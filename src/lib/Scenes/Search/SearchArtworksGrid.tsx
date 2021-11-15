@@ -5,8 +5,8 @@ import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids
 
 import { OwnerType } from "@artsy/cohesion"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/ArtworksFilterHeader"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import { Box, quoteLeft, quoteRight, Text, useTheme } from "palette"
