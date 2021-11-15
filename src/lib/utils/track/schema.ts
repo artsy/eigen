@@ -83,16 +83,12 @@ export interface PageView {
 }
 
 export enum PageNames {
-  AboutTheFairPage = "AboutTheFair",
-  AboutTheShowPage = "AboutTheShow",
   AllArtistSeriesPage = "AllArtistSeries",
   ArtistPage = "Artist",
   ArtistSeriesPage = "ArtistSeries",
-  ArtworkClassificationsPage = "ArtworkClassifications",
   ArtworkPage = "Artwork",
   Auction = "Auction",
   AuctionInfo = "AuctionInfo",
-  AuctionResult = "AuctionResult",
   BidFlowBillingAddressPage = "YourBillingAddress",
   BidFlowConfirmBidPage = "ConfirmYourBid",
   BidFlowMaxBidPage = "YourMaxBid",
@@ -114,12 +110,7 @@ export enum PageNames {
   Collection = "Collection",
   ConsignmentsOverView = "ConsignmentsOverview",
   ConsignmentsSubmission = "ConsignmentsSubmit",
-  ConsignmentsWelcome = "ConsignmentsWelcome",
   ConversationPage = "Conversation",
-  FairAllArtistsPage = "FairAllArtistsPage",
-  FairAllArtworksPage = "FairAllArtworksPage",
-  FairAllExhibitorsPage = "FairAllExhibitorsPage",
-  FairBoothPage = "FairBoothPage",
   GenePage = "Gene",
   TagPage = "Tag",
   Home = "Home",
@@ -127,12 +118,10 @@ export enum PageNames {
   PartnerPage = "PartnerPage",
   SavesAndFollows = "SavesAndFollows",
   Search = "Search",
-  Sell = "Sell",
   ViewingRoom = "ViewingRoom",
   ViewingRoomArtworkPage = "ViewingRoomArtworkPage",
   ViewingRoomArtworks = "ViewingRoomArtworks",
   ViewingRoomsList = "ViewingRoomsList",
-  WorksForYou = "WorksForYou",
   FairPage = "Fair",
   FairMoreInfoPage = "Fair",
   ShowPage = "Show",
@@ -148,12 +137,10 @@ export enum OwnerEntityTypes {
   Artwork = "Artwork",
   AuctionInfo = "AuctionInfo",
   Auction = "Auction",
-  AuctionResult = "AuctionResult",
   CityGuide = "CityGuide",
   Collection = "Collection",
   Consignment = "ConsignmentSubmission",
   Conversation = "Conversation",
-  Gallery = "Gallery",
   Gene = "Gene",
   Tag = "Tag",
   Home = "home",
@@ -177,12 +164,6 @@ export enum ActionTypes {
    */
   Fail = "fail",
   Success = "success",
-  Impression = "impression",
-
-  /**
-   * Parameters changed
-   */
-  ChangeFilterParams = "commercial_filter_params_changed",
 
   /**
    * Taps on specific entities
@@ -197,11 +178,8 @@ export enum ActionNames {
   /**
    * Artist Page Events
    */
-  ArtistAbout = "artistAbout",
   ArtistFollow = "artistFollow",
   ArtistUnfollow = "artistUnfollow",
-  ArtistWorks = "artistWorks",
-  ArtistShows = "artistShows",
   ArtistConsignGetStarted = "Get Started",
 
   /**
@@ -215,19 +193,16 @@ export enum ActionNames {
   AskASpecialist = "askASpecialist",
   AuctionsFAQ = "auctionsFAQ",
   IdentityVerificationFAQ = "identityVerificationFAQ",
-  Bid = "bid",
   ConditionsOfSale = "conditionsOfSale",
   ConsignWithArtsy = "consignWithArtsy",
   EnterLiveBidding = "enterLiveBidding",
   FollowPartner = "followPartner",
-  GridArtwork = "gridArtwork",
   IncreaseMaxBid = "increaseMaxBid",
   LotViewed = "lotViewed",
   ReadMore = "readMore",
   RegisterToBid = "registerToBid",
   RequestConditionReport = "requestConditionReport",
   Share = "share",
-  ShowMoreArtworksDetails = "showMoreArtworksDetails",
   ViewAll = "viewAll",
   ViewInRoom = "viewInRoom",
   WatchLiveBidding = "watchLiveBidding",
@@ -236,21 +211,17 @@ export enum ActionNames {
    * City and Map Page Events
    */
   GetBMWArtGuide = "getBMWArtGuide",
-  CityGuideSessionLength = "cityGuideSessionLength",
 
   /**
    * Gene Page Events
    */
-  GeneAbout = "geneAbout",
   GeneFollow = "geneFollow",
   GeneUnfollow = "geneUnfollow",
-  GeneWorks = "geneWorks",
 
   /**
    * Home page events
    */
   HomeArtistRailFollow = "homeArtistRailFollow",
-  HomeArtistArtworksBlockFollow = "homeArtistArtworksBlockFollow",
 
   /**
    * Conversations / Inbox / Messaging Events
@@ -259,7 +230,6 @@ export enum ActionNames {
   ConversationSendReply = "conversationSendReply",
   ConversationAttachmentShow = "conversationAttachmentShow",
   ConversationAttachmentArtwork = "conversationAttachmentArtwork",
-  ConversationAttachmentInvoice = "conversationAttachmentInvoice",
   ConversationLink = "conversationLinkUsed",
   InquiryCancel = "inquiryCancel",
   InquirySend = "inquirySend",
@@ -271,14 +241,12 @@ export enum ActionNames {
   SavesAndFollowsWorks = "savesAndFollowsWorks",
   SavesAndFollowsArtists = "savesAndFollowsArtists",
   SavesAndFollowsCategories = "savesAndFollowsCategories",
-  SavesAndFollowsFairs = "savesAndFollowsFairs",
   SavesAndFollowsShows = "savesAndFollowsShows",
 
   /**
    *  City guide
    */
   BMWLogo = "bmwLogo",
-  OpenShow = "openShow",
   OpenBMWShow = "openBMWShow",
   UnsaveBMWShow = "unsaveBMWShow",
   SaveBMWShow = "saveBMWShow",
@@ -302,20 +270,14 @@ export enum ActionNames {
   BidFlowAddBillingAddress = "addBillingAddress",
   BidFlowPlaceBid = "placeBid",
   BidFlowSaveBillingAddress = "saveBillingAddress",
-  BuyNow = "buyNow",
   ContactGallery = "contactGallery",
-  MakeOffer = "makeOffer",
 
   /**
    * Show flow
    */
-  SingleShowMap = "singleShowMap",
-  CarouselSwipe = "carouselSwipe",
   SaveShow = "saveShow",
   UnsaveShow = "unsaveShow",
-  ToggleHours = "toggleHours",
   NearbyShow = "nearbyShow",
-  GallerySite = "gallerySite",
 
   /**
    * Fair page events
@@ -373,14 +335,11 @@ export enum ContextModules {
   Auction = "Auction",
   ArtistBiography = "ArtistBiography",
   ArtistConsignment = "ArtistConsignment",
-  ArtistInsights = "ArtistInsights",
   ArtworkActions = "ArtworkActions",
   ArtworkDetails = "ArtworkDetails",
   ArtworkExtraLinks = "ArtworkExtraLinks",
   ArtworkGrid = "ArtworkGrid",
-  ArtworkHistory = "ArtworkHistory",
   ArtworkImage = "ArtworkImage",
-  ArtworkRecentlySoldGrid = "artworkRecentlySoldGrid",
   ArtistSeriesRail = "artistSeriesRail",
   FeaturedCollectionsRail = "curatedHighlightsRail",
   ArtworkTombstone = "ArtworkTombstone",
