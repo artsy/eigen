@@ -29,3 +29,30 @@ describe("features and devToggles", () => {
     expect(common).toStrictEqual([])
   })
 })
+
+describe("feature conventions", () => {
+  /**
+   * These are pretty silly tests:
+   * - enforcing a convention
+   * - a file location
+   * - something that is already enforced with typescript
+   * They are meant to protect this script from breaking:
+   * ./scripts/check-flag.js, if you want to update these conventions
+   * please also update the script!
+   */
+  it("should start with AR prefix", () => {
+    const featureKeys = Object.keys(features)
+    const prefixedKeys = featureKeys.filter((key) => key.startsWith("AR"))
+    expect(featureKeys.length).toEqual(prefixedKeys.length)
+  })
+  it("should contain a key named readyForRelease", () => {
+    Object.entries(features).forEach(([_, val]) => {
+      // tslint:disable-next-line:no-string-literal
+      expect(val["readyForRelease"]).toBeDefined()
+    })
+  })
+  it("should be located in expected directory", () => {
+    expect(__dirname).toContain("src/lib/store/config")
+    expect(__filename).toContain("features.tests.ts")
+  })
+})
