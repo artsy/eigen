@@ -51,6 +51,7 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
       action: ActionType.tappedBuyNow,
       context_owner_type: OwnerType.artwork,
       context_owner_id: props.artwork.internalID,
+      context_owner_slug: props.artwork.slug,
     })
   )
   handleCreateOrder() {
@@ -135,6 +136,7 @@ export const BuyNowButtonFragmentContainer = createFragmentContainer(BuyNowButto
   artwork: graphql`
     fragment BuyNowButton_artwork on Artwork {
       internalID
+      slug
       saleMessage
     }
   `,
