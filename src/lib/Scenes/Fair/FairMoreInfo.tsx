@@ -1,6 +1,6 @@
 import { FairMoreInfo_fair } from "__generated__/FairMoreInfo_fair.graphql"
 import { FairMoreInfoQuery } from "__generated__/FairMoreInfoQuery.graphql"
-import { LocationMapContainer } from "lib/Components/LocationMap"
+import { LocationMapContainer } from "lib/Components/LocationMap/LocationMap"
 import { Markdown } from "lib/Components/Markdown"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { navigate } from "lib/navigation/navigate"

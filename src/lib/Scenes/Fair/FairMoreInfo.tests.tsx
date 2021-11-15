@@ -1,5 +1,5 @@
 import { FairMoreInfoTestsQuery } from "__generated__/FairMoreInfoTestsQuery.graphql"
-import { LocationMapContainer } from "lib/Components/LocationMap"
+import { LocationMapContainer } from "lib/Components/LocationMap/LocationMap"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Text } from "palette"
