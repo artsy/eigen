@@ -1,7 +1,7 @@
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import { LocationMap } from "./index"
+import { LocationMap } from "./LocationMap"
 
 it("renders without throwing an error", () => {
   renderWithWrappers(<LocationMap {...(data as any)} />)
