@@ -71,7 +71,7 @@ export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries
 
   return (
     <View ref={metaRef}>
-      <Sans size="8" data-test-id="title">
+      <Sans size="8" testID="title">
         {artistSeries.title}
       </Sans>
       {!!artist && (
@@ -102,12 +102,7 @@ export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries
           <Spacer my={0.5} />
         </TouchableOpacity>
       )}
-      <ReadMore
-        data-test-id="description"
-        textStyle="new"
-        content={artistSeries?.description ?? ""}
-        maxChars={maxChars}
-      />
+      <ReadMore testID="description" textStyle="new" content={artistSeries?.description ?? ""} maxChars={maxChars} />
     </View>
   )
 }

@@ -87,7 +87,7 @@ describe("MyCollectionArtworkArtistAuctionResults", () => {
         },
       }),
     })
-    wrapper.root.findByProps({ "data-test-id": "AuctionsResultsButton" }).props.onPress()
+    wrapper.root.findByProps({ testID: "AuctionsResultsButton" }).props.onPress()
     expect(navigate).toHaveBeenCalledWith("/artist/artist-slug/auction-results")
   })
 

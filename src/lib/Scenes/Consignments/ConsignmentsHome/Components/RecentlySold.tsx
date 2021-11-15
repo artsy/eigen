@@ -65,7 +65,7 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
                     useSquareAspectRatio
                     imageSize="small"
                     key={item?.internalID}
-                    data-test-id="recently-sold-item"
+                    testID="recently-sold-item"
                     onPress={() => {
                       tracking.trackEvent(
                         tappedEntityGroup({

@@ -36,17 +36,17 @@ describe("<LocationAutocomplete/>", () => {
       await typeInInput(wrapper.root, "h")
 
       expect(getLocationPredictions).not.toHaveBeenCalled()
-      expect(wrapper.root.findAllByProps({ "data-test-id": "dropdown" }).length).toEqual(0)
+      expect(wrapper.root.findAllByProps({ testID: "dropdown" }).length).toEqual(0)
 
       await typeInInput(wrapper.root, "he")
 
       expect(getLocationPredictions).not.toHaveBeenCalled()
-      expect(wrapper.root.findAllByProps({ "data-test-id": "dropdown" }).length).toEqual(0)
+      expect(wrapper.root.findAllByProps({ testID: "dropdown" }).length).toEqual(0)
 
       await typeInInput(wrapper.root, "hel")
 
       expect(getLocationPredictions).toHaveBeenCalled()
-      expect(wrapper.root.findAllByProps({ "data-test-id": "dropdown" }).length).not.toEqual(0)
+      expect(wrapper.root.findAllByProps({ testID: "dropdown" }).length).not.toEqual(0)
       const text = extractText(wrapper.root)
       expect(text).toContain("Busytown, USA")
       expect(text).toContain("Hello, USA")
@@ -59,7 +59,7 @@ describe("<LocationAutocomplete/>", () => {
 
     expect(mockOnChange).toHaveBeenCalledWith({ id: "a", name: "Busytown, USA" })
     expect(wrapper.root.findByType(Input).props.value).toMatch("Busytown, USA")
-    expect(wrapper.root.findAllByProps({ "data-test-id": "dropdown" }).length).toEqual(0)
+    expect(wrapper.root.findAllByProps({ testID: "dropdown" }).length).toEqual(0)
   })
 
   it.skip("restores the selected location when the user selects a location, taps back into the input, then exits it again", async () => {
@@ -72,7 +72,7 @@ describe("<LocationAutocomplete/>", () => {
     wrapper.root.findByType(LocationPredictions).props.onOutsidePress()
     await flushPromiseQueue()
 
-    expect(wrapper.root.findAllByProps({ "data-test-id": "dropdown" }).length).toEqual(0)
+    expect(wrapper.root.findAllByProps({ testID: "dropdown" }).length).toEqual(0)
   })
 
   it("Highlights matched text in the autocomplete", async () => {

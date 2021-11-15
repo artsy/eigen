@@ -46,12 +46,13 @@ describe("ViewingRoom", () => {
       })
 
       expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(0)
-      expect(tree.root.findAllByProps({ "data-test-id": "intro-statement" })).toHaveLength(0)
-      expect(tree.root.findAllByProps({ "data-test-id": "pull-quote" })).toHaveLength(0)
-      expect(tree.root.findAllByProps({ "data-test-id": "body" })).toHaveLength(0)
-      expect(tree.root.findAllByProps({ "data-test-id": "share-button" })).toHaveLength(1)
+      expect(tree.root.findAllByProps({ testID: "intro-statement" })).toHaveLength(0)
+      expect(tree.root.findAllByProps({ testID: "pull-quote" })).toHaveLength(0)
+      expect(tree.root.findAllByProps({ testID: "body" })).toHaveLength(0)
+      expect(tree.root.findByProps({ testID: "share-button" })).toBeTruthy()
       expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(0)
     })
+
     it("renders an 'opening soon' message", () => {
       const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) => {
@@ -85,12 +86,12 @@ describe("ViewingRoom", () => {
           })
           return result
         })
-        expect(extractText(tree.root.findByProps({ "data-test-id": "intro-statement" }))).toEqual("Foo")
+        expect(extractText(tree.root.findByProps({ testID: "intro-statement" }))).toEqual("Foo")
         expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(0)
-        expect(extractText(tree.root.findByProps({ "data-test-id": "pull-quote" }))).toEqual("Bar")
-        expect(extractText(tree.root.findByProps({ "data-test-id": "body" }))).toEqual("Baz")
+        expect(extractText(tree.root.findByProps({ testID: "pull-quote" }))).toEqual("Bar")
+        expect(extractText(tree.root.findByProps({ testID: "body" }))).toEqual("Baz")
         expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(1)
-        expect(tree.root.findAllByProps({ "data-test-id": "share-button" })).toHaveLength(1)
+        expect(tree.root.findByProps({ testID: "share-button" })).toBeTruthy()
       })
     })
     describe("with artworks", () => {
@@ -108,12 +109,12 @@ describe("ViewingRoom", () => {
           })
           return result
         })
-        expect(extractText(tree.root.findByProps({ "data-test-id": "intro-statement" }))).toEqual("Foo")
+        expect(extractText(tree.root.findByProps({ testID: "intro-statement" }))).toEqual("Foo")
         expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(1)
-        expect(extractText(tree.root.findByProps({ "data-test-id": "pull-quote" }))).toEqual("Bar")
-        expect(extractText(tree.root.findByProps({ "data-test-id": "body" }))).toEqual("Baz")
+        expect(extractText(tree.root.findByProps({ testID: "pull-quote" }))).toEqual("Bar")
+        expect(extractText(tree.root.findByProps({ testID: "body" }))).toEqual("Baz")
         expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(1)
-        expect(tree.root.findAllByProps({ "data-test-id": "share-button" })).toHaveLength(1)
+        expect(tree.root.findByProps({ testID: "share-button" })).toBeTruthy()
       })
 
       it("renders a button + calls tracking when body enters viewport", () => {
@@ -156,11 +157,11 @@ describe("ViewingRoom", () => {
       })
 
       expect(tree.root.findAllByType(ViewingRoomArtworkRailContainer)).toHaveLength(0)
-      expect(tree.root.findAllByProps({ "data-test-id": "intro-statement" })).toHaveLength(0)
-      expect(tree.root.findAllByProps({ "data-test-id": "pull-quote" })).toHaveLength(0)
-      expect(tree.root.findAllByProps({ "data-test-id": "body" })).toHaveLength(0)
+      expect(tree.root.findAllByProps({ testID: "intro-statement" })).toHaveLength(0)
+      expect(tree.root.findAllByProps({ testID: "pull-quote" })).toHaveLength(0)
+      expect(tree.root.findAllByProps({ testID: "body" })).toHaveLength(0)
       expect(tree.root.findAllByType(ViewingRoomSubsections)).toHaveLength(0)
-      expect(tree.root.findAllByProps({ "data-test-id": "share-button" })).toHaveLength(1)
+      expect(tree.root.findByProps({ testID: "share-button" })).toBeTruthy()
     })
 
     it("renders a 'closed' message", () => {

@@ -85,9 +85,9 @@ describe("AddEditArtwork", () => {
     })
 
     // not exposed components
-    expect(wrapper.root.findByProps({ "data-test-id": "CompleteButton" })).toBeDefined()
-    expect(wrapper.root.findByProps({ "data-test-id": "PhotosButton" })).toBeDefined()
-    expect(wrapper.root.findByProps({ "data-test-id": "PhotosButton" })).toBeDefined()
+    expect(wrapper.root.findByProps({ testID: "CompleteButton" })).toBeDefined()
+    expect(wrapper.root.findByProps({ testID: "PhotosButton" })).toBeDefined()
+    expect(wrapper.root.findByProps({ testID: "PhotosButton" })).toBeDefined()
   })
 
   it("renders correct components on Edit", () => {
@@ -110,8 +110,8 @@ describe("AddEditArtwork", () => {
     }
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
     const wrapper = renderWithWrappers(artworkForm)
-    const completeButton = wrapper.root.findByProps({ "data-test-id": "CompleteButton" })
-    const deleteButton = wrapper.root.findByProps({ "data-test-id": "DeleteButton" })
+    const completeButton = wrapper.root.findByProps({ testID: "CompleteButton" })
+    const deleteButton = wrapper.root.findByProps({ testID: "DeleteButton" })
     expect(completeButton).toBeDefined()
     expect(deleteButton).toBeDefined()
   })
@@ -168,7 +168,7 @@ describe("AddEditArtwork", () => {
     }
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
     const wrapper = renderWithWrappers(artworkForm)
-    const completeButton = wrapper.root.findByProps({ "data-test-id": "CompleteButton" })
+    const completeButton = wrapper.root.findByProps({ testID: "CompleteButton" })
     completeButton.props.onPress()
     expect(spy).toHaveBeenCalled()
   })
@@ -195,7 +195,7 @@ describe("AddEditArtwork", () => {
 
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
     const wrapper = renderWithWrappers(artworkForm)
-    const deleteButton = wrapper.root.findByProps({ "data-test-id": "DeleteButton" })
+    const deleteButton = wrapper.root.findByProps({ testID: "DeleteButton" })
     deleteButton.props.onPress()
     expect(mockShowActionSheetWithOptions).toHaveBeenCalled()
     const callback = mockShowActionSheetWithOptions.mock.calls[0][1]
@@ -226,7 +226,7 @@ describe("AddEditArtwork", () => {
     }
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
     const wrapper = renderWithWrappers(artworkForm)
-    wrapper.root.findByProps({ "data-test-id": "AdditionalDetailsButton" }).props.onPress()
+    wrapper.root.findByProps({ testID: "AdditionalDetailsButton" }).props.onPress()
     expect(mockNavigate).toHaveBeenCalledWith("AdditionalDetails")
   })
 })

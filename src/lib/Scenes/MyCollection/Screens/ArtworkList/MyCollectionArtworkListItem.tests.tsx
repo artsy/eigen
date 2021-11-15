@@ -62,7 +62,7 @@ describe("MyCollectionArtworkListItem", () => {
     const wrapper = renderWithWrappers(<TestRenderer />)
     resolveData()
     expect(wrapper.root.findByType(tests.TouchElement)).toBeDefined()
-    expect(wrapper.root.findByProps({ "data-test-id": "Image" })).toBeDefined()
+    expect(wrapper.root.findByProps({ testID: "Image" })).toBeDefined()
     const text = extractText(wrapper.root)
     expect(text).toContain("artistNames")
     expect(text).toContain("title")

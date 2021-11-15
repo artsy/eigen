@@ -124,7 +124,7 @@ it("renders the correct subtitle based on auction type", async () => {
   const tree = renderWithWrappers(
     <SalesRailFragmentContainer title="Auctions" salesModule={salesModule as any} scrollRef={mockScrollRef} />
   )
-  const subtitles = tree.root.findAllByProps({ "data-test-id": "sale-subtitle" })
+  const subtitles = tree.root.findAllByProps({ testID: "sale-subtitle" })
   // Timed sale
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   expect(extractText(first(subtitles))).toMatchInlineSnapshot(`"Timed Auction • In 1 day"`)

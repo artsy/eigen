@@ -81,7 +81,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
                 trackEvent(tracks.tappedShowMore(artwork.internalID, artwork.slug, "Learn More"))
                 navigate("/sales")
               }}
-              data-test-id="LearnMoreButton"
+              testID="LearnMoreButton"
             >
               Learn more
             </Button>

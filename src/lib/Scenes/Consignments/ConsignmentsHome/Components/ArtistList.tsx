@@ -109,7 +109,7 @@ const ArtistItem: React.FC<{ artist: any }> = ({ artist }) => {
 
   return (
     <View>
-      <Touchable data-test-id="artist-item" onPress={handlePress}>
+      <Touchable testID="artist-item" onPress={handlePress}>
         <Box width="270">
           <EntityHeader name={artist.name || ""} imageUrl={imageUrl || undefined} />
         </Box>

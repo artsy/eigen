@@ -110,7 +110,7 @@ describe("location", () => {
     const tree = renderWithWrappers(
       <FairsRailFragmentContainer title="Fairs" fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
     )
-    expect(extractText(tree.root.findAllByProps({ "data-test-id": "card-subtitle" })[0])).toMatchInlineSnapshot(
+    expect(extractText(tree.root.findAllByProps({ testID: "card-subtitle" })[0])).toMatchInlineSnapshot(
       `"Monday–Friday  •  New Yawk"`
     )
   })
@@ -122,7 +122,7 @@ describe("location", () => {
     const tree = renderWithWrappers(
       <FairsRailFragmentContainer title="Fairs" fairsModule={fairsCopy as any} scrollRef={mockScrollRef} />
     )
-    expect(extractText(tree.root.findAllByProps({ "data-test-id": "card-subtitle" })[0])).toMatchInlineSnapshot(
+    expect(extractText(tree.root.findAllByProps({ testID: "card-subtitle" })[0])).toMatchInlineSnapshot(
       `"Monday–Friday  •  Canada"`
     )
   })

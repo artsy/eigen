@@ -24,6 +24,7 @@ export interface SelectProps<ValueType> {
   enableSearch?: boolean
   maxModalHeight?: number
   hasError?: boolean
+  testID?: string
   onSelectValue(value: ValueType, index: number): void
   renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): JSX.Element
   renderItemLabel?(value: SelectOption<ValueType>): JSX.Element
@@ -44,6 +45,7 @@ export const Select = <ValueType,>({
   renderButton,
   renderItemLabel,
   onModalFinishedClosing,
+  testID,
 }: SelectProps<ValueType>) => {
   const [showingModal, setShowingModal] = useState(false)
 
@@ -73,6 +75,7 @@ export const Select = <ValueType,>({
     <>
       {renderButton?.({ selectedValue: selectedItem?.value ?? null, onPress: open }) ?? (
         <SelectButton
+          testID={testID}
           title={title}
           showTitleLabel={showTitleLabel}
           subTitle={subTitle}
@@ -105,8 +108,9 @@ const SelectButton: React.FC<{
   subTitle?: string
   placeholder?: string
   hasError?: boolean
+  testID?: string
   onPress(): void
-}> = ({ value, placeholder, onPress, title, showTitleLabel, subTitle, hasError }) => {
+}> = ({ value, placeholder, onPress, title, showTitleLabel, subTitle, hasError, testID }) => {
   const color = useColor()
   const textStyle = useTextStyleForPalette("sm")
 
@@ -121,7 +125,7 @@ const SelectButton: React.FC<{
       ) : (
         <Spacer mb={0.5} />
       )}
-      <TouchableOpacity accessible accessibilityRole="button" onPress={onPress}>
+      <TouchableOpacity accessible accessibilityRole="button" onPress={onPress} testID={testID}>
         <Flex
           px="1"
           flexDirection="row"

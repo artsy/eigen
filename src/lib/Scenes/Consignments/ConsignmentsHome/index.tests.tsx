@@ -33,7 +33,7 @@ describe("ConsignmentsHome index", () => {
     const tree = renderWithWrappers(<TestWrapper />)
     mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate)
 
-    tree.root.findByProps({ "data-test-id": "header-cta" }).props.onPress()
+    tree.root.findByProps({ testID: "header-cta" }).props.onPress()
 
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenLastCalledWith(
@@ -49,7 +49,7 @@ describe("ConsignmentsHome index", () => {
     const tree = renderWithWrappers(<TestWrapper />)
     mockEnvironment.mock.resolveMostRecentOperation(MockPayloadGenerator.generate)
 
-    tree.root.findByProps({ "data-test-id": "footer-cta" }).props.onPress()
+    tree.root.findByProps({ testID: "footer-cta" }).props.onPress()
 
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenLastCalledWith(

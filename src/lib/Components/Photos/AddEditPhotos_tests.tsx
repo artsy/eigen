@@ -55,7 +55,7 @@ describe("AddEditPhotos", () => {
     expect(path2Images).toHaveLength(1)
     expect(images.length).toEqual(3)
 
-    const deleteButton = tree.root.findByProps({ "data-test-id": "delete-photo-button-path2" })
+    const deleteButton = tree.root.findByProps({ testID: "delete-photo-button-path2" })
     deleteButton.props.onPress()
 
     const afterDeleteImages = tree.root.findAllByType(Image)
@@ -79,7 +79,7 @@ describe("AddEditPhotos", () => {
 
     showPhotoActionSheetMock.mockReturnValueOnce(photosPromise)
 
-    const addButton = tree.root.findByProps({ "data-test-id": "add-photos-button" })
+    const addButton = tree.root.findByProps({ testID: "add-photos-button" })
     addButton.props.onPress()
 
     await photosPromise

@@ -52,7 +52,7 @@ describe("ViewingRoom", () => {
       }),
     })
 
-    expect(extractText(tree.root.findByProps({ "data-test-id": "artwork-additional-information" }))).toEqual(
+    expect(extractText(tree.root.findByProps({ testID: "artwork-additional-information" }))).toEqual(
       "additionalInformation-1"
     )
   })

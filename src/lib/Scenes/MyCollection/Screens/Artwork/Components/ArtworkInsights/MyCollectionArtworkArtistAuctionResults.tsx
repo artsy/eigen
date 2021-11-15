@@ -79,7 +79,7 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
         <Separator />
         <Box pt={3}>
           <CaretButton
-            data-test-id="AuctionsResultsButton"
+            testID="AuctionsResultsButton"
             onPress={() => {
               trackEvent(
                 tracks.tappedShowMore(props.artwork?.internalID, props.artwork?.slug, "Explore auction results")

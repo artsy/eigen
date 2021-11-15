@@ -74,7 +74,7 @@ describe("ArtistList", () => {
       return result
     })
 
-    tree.root.findByProps({ "data-test-id": "artist-item" }).props.onPress()
+    tree.root.findByProps({ testID: "artist-item" }).props.onPress()
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenLastCalledWith(
       expect.objectContaining({

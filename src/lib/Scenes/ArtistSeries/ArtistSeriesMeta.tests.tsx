@@ -67,12 +67,12 @@ describe("Artist Series Meta", () => {
 
   it("renders the Artist Series title", () => {
     const wrapper = getWrapper()
-    expect(wrapper.root.findByProps({ "data-test-id": "title" }).props.children).toBe("These are the Pumpkins")
+    expect(wrapper.root.findByProps({ testID: "title" }).props.children).toBe("These are the Pumpkins")
   })
 
   it("renders the Artist Series description", () => {
     const wrapper = getWrapper()
-    expect(wrapper.root.findByProps({ "data-test-id": "description" }).props.content).toBe(
+    expect(wrapper.root.findByProps({ testID: "description" }).props.content).toBe(
       "A deliciously artistic variety of painted pumpkins."
     )
   })

@@ -90,7 +90,7 @@ const MyCollection: React.FC<{
           <Flex>
             <Flex flexDirection="row" alignSelf="flex-end" px={2} py={1}>
               <Button
-                data-test-id="add-artwork-button-non-zero-state"
+                testID="add-artwork-button-non-zero-state"
                 size="small"
                 variant="fillDark"
                 onPress={() => {
@@ -145,7 +145,7 @@ const MyCollection: React.FC<{
             subtitle="Keep track of your collection all in one place and get market insights"
             callToAction={
               <Button
-                data-test-id="add-artwork-button-zero-state"
+                testID="add-artwork-button-zero-state"
                 onPress={() => {
                   setShowModal(true)
                   trackEvent(tracks.addCollectedArtwork())

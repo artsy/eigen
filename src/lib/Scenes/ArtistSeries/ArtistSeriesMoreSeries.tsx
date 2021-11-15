@@ -52,7 +52,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
   return (
     <Flex {...rest}>
       <Flex mb="15px" flexDirection="row" justifyContent="space-between">
-        <Sans size="4t" data-test-id="header">
+        <Sans size="4t" testID="header">
           {artistSeriesHeader}
         </Sans>
         {totalCount > 4 && (
@@ -62,7 +62,7 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
               navigate(`/artist/${artist?.internalID!}/artist-series`)
             }}
           >
-            <Sans data-test-id="viewAll" size="4t">{`View All (${totalCount})`}</Sans>
+            <Sans testID="viewAll" size="4t">{`View All (${totalCount})`}</Sans>
           </TouchableOpacity>
         )}
       </Flex>

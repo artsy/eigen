@@ -137,12 +137,12 @@ describe("<InquiryModal />", () => {
   it("state resets when exiting and re-entering the modal", async () => {
     const wrapper = getWrapper(mockResolver, renderComponent)
     expect(wrapper.root.findByType(InquiryModalFragmentContainer).props.modalIsVisible).toBeTruthy()
-    const checkBox = wrapper.root.findByProps({ "data-test-id": "checkbox-shipping_quote" })
+    const checkBox = wrapper.root.findByProps({ testID: "checkbox-shipping_quote" })
     const input = wrapper.root.findByType(TextInput)
     checkBox.props.onPress()
     await flushPromiseQueue()
     expect(checkBox.props.checked).toBeTruthy()
-    wrapper.root.findByProps({ "data-test-id": "checkbox-shipping_quote" }).props.onPress()
+    wrapper.root.findByProps({ testID: "checkbox-shipping_quote" }).props.onPress()
     const testMessage = "Test Message"
     input.props.onChangeText(testMessage)
     expect(input.props.value).toBe(testMessage)
@@ -160,7 +160,7 @@ describe("<InquiryModal />", () => {
   describe("user can select 'Condition & Provenance'", () => {
     it("user taps checkbox and option is selected", () => {
       const wrapper = getWrapper(mockResolver, renderComponentWithMockDispatch)
-      wrapper.root.findByProps({ "data-test-id": "checkbox-condition_and_provenance" }).props.onPress()
+      wrapper.root.findByProps({ testID: "checkbox-condition_and_provenance" }).props.onPress()
 
       expect(mockDispatch).toBeCalledWith({
         payload: {
@@ -176,7 +176,7 @@ describe("<InquiryModal />", () => {
   describe("when submiting an inquiry", () => {
     it("it shows error message on failed inquiry", async () => {
       const wrapper = getWrapper()
-      wrapper.root.findByProps({ "data-test-id": "checkbox-shipping_quote" }).props.onPress()
+      wrapper.root.findByProps({ testID: "checkbox-shipping_quote" }).props.onPress()
       press(wrapper.root, { text: "Send" })
       env.mock.rejectMostRecentOperation(new Error())
       await flushPromiseQueue()
@@ -187,14 +187,14 @@ describe("<InquiryModal />", () => {
   describe("user can select Shipping", () => {
     it("user selecting shipping exposes the 'Add your location' CTA", () => {
       const wrapper = getWrapper()
-      wrapper.root.findByProps({ "data-test-id": "checkbox-shipping_quote" }).props.onPress()
+      wrapper.root.findByProps({ testID: "checkbox-shipping_quote" }).props.onPress()
 
       expect(extractText(wrapper.root)).toContain("Add your location")
     })
 
     it("user can visit shipping modal", async () => {
       const wrapper = getWrapper()
-      wrapper.root.findByProps({ "data-test-id": "checkbox-shipping_quote" }).props.onPress()
+      wrapper.root.findByProps({ testID: "checkbox-shipping_quote" }).props.onPress()
 
       expect(extractText(wrapper.root)).toContain("Add your location")
       expect(wrapper.root.findByType(ShippingModal).props.modalIsVisible).toBeFalsy()
@@ -220,3 +220,5 @@ describe("<InquiryModal />", () => {
     })
   })
 })
+
+// replace testID with testID

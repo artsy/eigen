@@ -71,7 +71,7 @@ export const ViewingRoomArtworks: React.FC<ViewingRoomArtworksProps> = (props) =
                   content={artwork.additionalInformation}
                   maxChars={300}
                   textStyle="new"
-                  data-test-id="artwork-additional-information"
+                  testID="artwork-additional-information"
                 />
               </Flex>
             )}

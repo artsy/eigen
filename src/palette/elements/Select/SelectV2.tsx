@@ -26,6 +26,7 @@ export interface SelectProps<ValueType> {
   enableSearch?: boolean
   maxModalHeight?: number
   hasError?: boolean
+  testID?: string
   onSelectValue(value: ValueType, index: number): void
   renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): JSX.Element
   renderItemLabel?(value: SelectOption<ValueType>): JSX.Element
@@ -75,6 +76,7 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
       <>
         {this.props.renderButton?.({ selectedValue: selectedItem?.value ?? null, onPress: this.open.bind(this) }) ?? (
           <SelectButton
+            testID={this.props.testID}
             title={title}
             showTitleLabel={showTitleLabel}
             subTitle={subTitle}
@@ -108,8 +110,9 @@ const SelectButton: React.FC<{
   subTitle?: string
   placeholder?: string
   hasError?: boolean
+  testID?: string
   onPress(): void
-}> = ({ value, placeholder, onPress, title, showTitleLabel, subTitle, hasError }) => {
+}> = ({ value, placeholder, onPress, title, showTitleLabel, subTitle, hasError, testID }) => {
   const color = useColor()
   return (
     <Flex>
@@ -122,7 +125,7 @@ const SelectButton: React.FC<{
       ) : (
         <Spacer mb={0.5} />
       )}
-      <TouchableOpacity accessible accessibilityRole="button" onPress={onPress}>
+      <TouchableOpacity accessible accessibilityRole="button" onPress={onPress} testID={testID}>
         <Flex
           px="1"
           flexDirection="row"

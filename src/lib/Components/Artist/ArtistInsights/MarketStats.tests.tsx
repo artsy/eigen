@@ -45,13 +45,13 @@ describe("MarketStats", () => {
     })
 
     it("shows data for first medium", () => {
-      expect(extractText(tree.findByProps({ "data-test-id": "annualLotsSold" }))).toEqual("123")
+      expect(extractText(tree.findByProps({ testID: "annualLotsSold" }))).toEqual("123")
     })
 
     it("shows data for other mediums when selected", () => {
       tree.findByProps({ title: "Select medium" }).props.onSelectValue("fingerpaint")
 
-      expect(extractText(tree.findByProps({ "data-test-id": "annualLotsSold" }))).toEqual("456")
+      expect(extractText(tree.findByProps({ testID: "annualLotsSold" }))).toEqual("456")
     })
   })
 

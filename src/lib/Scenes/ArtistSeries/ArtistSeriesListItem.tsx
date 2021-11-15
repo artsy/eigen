@@ -71,11 +71,11 @@ export const ArtistSeriesListItem: React.FC<ArtistSeriesListItemProps> = ({
               style={{ borderRadius: 2, overflow: "hidden" }}
             />
             <Flex ml={1} justifyContent="center">
-              <Sans size="3t" data-test-id="title">
+              <Sans size="3t" testID="title">
                 {listItem?.node?.title}
               </Sans>
               {!!artworksCountMessage && (
-                <Sans size="3" color="black60" data-test-id="count">
+                <Sans size="3" color="black60" testID="count">
                   {artworksCountMessage}
                 </Sans>
               )}

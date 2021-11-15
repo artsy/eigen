@@ -131,7 +131,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
       {/* Market Stats Values */}
       <Flex flexDirection="row" flexWrap="wrap" mt={15}>
         <Flex width="50%">
-          <Text variant="lg" data-test-id="annualLotsSold">
+          <Text variant="lg" testID="annualLotsSold">
             {selectedPriceInsight.annualLotsSold}
           </Text>
           <Text variant="sm">Yearly lots sold</Text>

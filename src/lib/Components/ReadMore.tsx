@@ -17,10 +17,20 @@ interface Props {
   trackingFlow?: string
   color?: ResponsiveValue<Color>
   textStyle?: "sans" | "new"
+  testID?: string
 }
 
 export const ReadMore = React.memo(
-  ({ content, maxChars, presentLinksModally, color, trackingFlow, contextModule, textStyle = "sans" }: Props) => {
+  ({
+    content,
+    maxChars,
+    presentLinksModally,
+    color,
+    trackingFlow,
+    contextModule,
+    textStyle = "sans",
+    testID,
+  }: Props) => {
     const [isExpanded, setIsExpanded] = useState(false)
     const tracking = useTracking()
     const useNewTextStyles = textStyle === "new"
@@ -59,7 +69,7 @@ export const ReadMore = React.memo(
     return isAlreadyExpanded ? (
       root
     ) : (
-      <Flex>
+      <Flex testID={testID}>
         {truncate({
           root,
           maxChars,

@@ -22,33 +22,29 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
   const isViewOffer = orderStatus === "pending" && order?.mode === "OFFER"
 
   return (
-    <Flex width="100%" data-test-id="order-container">
+    <Flex width="100%" testID="order-container">
       <Flex mb={1}>
         <Flex flexDirection="row" justifyContent="space-between">
-          <Flex justifyContent="center" data-test-id="image-container" mr={2}>
+          <Flex justifyContent="center" testID="image-container" mr={2}>
             {!!artwork?.image ? (
-              <Image
-                source={{ uri: artwork?.image?.resized?.url }}
-                style={{ height: 50, width: 50 }}
-                data-test-id="image"
-              />
+              <Image source={{ uri: artwork?.image?.resized?.url }} style={{ height: 50, width: 50 }} testID="image" />
             ) : (
-              <Box width={50} height={50} backgroundColor="black10" data-test-id="image-box" />
+              <Box width={50} height={50} backgroundColor="black10" testID="image-box" />
             )}
           </Flex>
           <Flex width="40%" flexGrow={1} mr={2}>
-            <Text variant="sm" data-test-id="artist-names" ellipsizeMode="tail" numberOfLines={1}>
+            <Text variant="sm" testID="artist-names" ellipsizeMode="tail" numberOfLines={1}>
               {artwork?.artistNames}
             </Text>
-            <Text variant="xs" color="black60" data-test-id="partner-name" ellipsizeMode="tail" numberOfLines={1}>
+            <Text variant="xs" color="black60" testID="partner-name" ellipsizeMode="tail" numberOfLines={1}>
               {artwork?.partner?.name}
             </Text>
-            <Text variant="xs" color="black60" data-test-id="date">
+            <Text variant="xs" color="black60" testID="date">
               {moment(order.createdAt).format("l")}
             </Text>
           </Flex>
           <Flex>
-            <Text textAlign="right" variant="sm" data-test-id="price">
+            <Text textAlign="right" variant="sm" testID="price">
               {order.buyerTotal}
             </Text>
             <Text
@@ -56,21 +52,21 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
               variant="xs"
               color={orderStatus === "canceled" ? "red100" : "black60"}
               style={{ textTransform: "capitalize" }}
-              data-test-id="order-status"
+              testID="order-status"
             >
               {orderStatus}
             </Text>
           </Flex>
         </Flex>
       </Flex>
-      <Box mb={1} data-test-id="view-order-button-box">
+      <Box mb={1} testID="view-order-button-box">
         {!!trackingUrl && (
           <Button
             mb={1}
             block
             variant="fillDark"
             onPress={() => Linking.openURL(trackingUrl)}
-            data-test-id="track-package-button"
+            testID="track-package-button"
           >
             Track Package
           </Button>
@@ -88,7 +84,7 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
                     })
                 : () => navigate(`/user/purchases/${order.internalID}`)
             }
-            data-test-id="view-order-button"
+            testID="view-order-button"
           >
             {isViewOffer ? "View Offer" : "View Order"}
           </Button>

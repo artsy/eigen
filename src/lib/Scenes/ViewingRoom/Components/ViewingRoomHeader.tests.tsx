@@ -38,7 +38,7 @@ describe("ViewingRoomHeader", () => {
 
       return result
     })
-    expect(tree.root.findByProps({ "data-test-id": "background-image" }).props.imageURL).toBe("Foo")
+    expect(tree.root.findByProps({ testID: "background-image" }).props.imageURL).toBe("Foo")
   })
   it("renders a title", () => {
     const tree = renderWithWrappers(<TestRenderer />)
@@ -48,7 +48,7 @@ describe("ViewingRoomHeader", () => {
       })
       return result
     })
-    expect(extractText(tree.root.findByProps({ "data-test-id": "title" }))).toBe("Foo")
+    expect(extractText(tree.root.findByProps({ testID: "title" }))).toBe("Foo")
   })
 
   it("renders a countdown timer for scheduled", () => {
@@ -89,7 +89,7 @@ describe("ViewingRoomHeader", () => {
       })
       return result
     })
-    expect(extractText(tree.root.findByProps({ "data-test-id": "partner-name" }))).toBe("Foo")
+    expect(extractText(tree.root.findByProps({ testID: "partner-name" }))).toBe("Foo")
   })
   it("renders partner logo", () => {
     const tree = renderWithWrappers(<TestRenderer />)
@@ -103,9 +103,7 @@ describe("ViewingRoomHeader", () => {
       })
       return result
     })
-    expect(tree.root.findByProps({ "data-test-id": "partner-icon" }).props.source.uri).toBe(
-      "https://example.com/image.jpg"
-    )
+    expect(tree.root.findByProps({ testID: "partner-icon" }).props.source.uri).toBe("https://example.com/image.jpg")
   })
 
   it("doesn't render logo (and doesn't crash) if partner profile is null", () => {

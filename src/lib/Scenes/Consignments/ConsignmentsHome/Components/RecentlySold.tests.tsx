@@ -121,7 +121,7 @@ describe("RecentlySold", () => {
       return result
     })
 
-    tree.root.findByProps({ "data-test-id": "recently-sold-item" }).props.onPress()
+    tree.root.findByProps({ testID: "recently-sold-item" }).props.onPress()
     expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenLastCalledWith(
       expect.objectContaining({

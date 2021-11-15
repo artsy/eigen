@@ -41,8 +41,8 @@ describe("ArtistSeriesListItem", () => {
     expect(instance.findByType(OpaqueImageView).props.imageURL).toBe(
       "https://d32dm0rphc51dk.cloudfront.net/dL3hz4h6f_tMHQjVHsdO4w/medium.jpg"
     )
-    expect(instance.findByProps({ "data-test-id": "count" }).props.children).toBe("25 available")
-    expect(instance.findByProps({ "data-test-id": "title" }).props.children).toBe("Pumpkins")
+    expect(instance.findByProps({ testID: "count" }).props.children).toBe("25 available")
+    expect(instance.findByProps({ testID: "title" }).props.children).toBe("Pumpkins")
   })
 })
 
