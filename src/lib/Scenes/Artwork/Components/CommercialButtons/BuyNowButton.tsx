@@ -46,11 +46,13 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
     console.log("src/lib/Scenes/Artwork/Components/BuyNowButton.tsx", error)
   }
 
-  @track((props) => ({
-    action: ActionType.tappedBuyNow,
-    context_owner_type: OwnerType.artwork,
-    context_owner_id: props.artwork.internalID,
-  }))
+  @track(
+    (props): TappedBuyNow => ({
+      action: ActionType.tappedBuyNow,
+      context_owner_type: OwnerType.artwork,
+      context_owner_id: props.artwork.internalID,
+    })
+  )
   handleCreateOrder() {
     const { relay, artwork, editionSetID } = this.props
     const { isCommittingCreateOrderMutation } = this.state
