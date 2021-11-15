@@ -30,7 +30,7 @@ export const ShowArtworksWithNavigation = (props: ArtworkProps) => {
     <Box px={2}>
       <ShowArtworksPaginationContainer show={show} />
       <ArtworkFilterNavigator
-        isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+        visible={isFilterArtworksModalVisible}
         id={show.internalID}
         slug={show.slug}
         mode={FilterModalMode.Show}

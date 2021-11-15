@@ -19,7 +19,7 @@ import { FlatList, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
-import { ArtworkFilterNavigationStack } from "./ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
 
 export type FilterScreen =
   | "additionalGeneIDs"

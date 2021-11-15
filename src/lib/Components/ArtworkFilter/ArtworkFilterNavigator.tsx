@@ -41,11 +41,11 @@ import { LocationCitiesOptionsScreen } from "./Filters/LocationCitiesOptions"
 interface ArtworkFilterProps extends ViewProps {
   closeModal?: () => void
   exitModal?: () => void
-  id: string | null
+  id?: string
   initiallyAppliedFilters?: FilterArray
-  isFilterArtworksModalVisible: boolean
+  visible: boolean
   mode: ArtworkFilterMode
-  slug: string | null
+  slug?: string
   title?: string
   query?: string
 }
@@ -53,10 +53,10 @@ interface ArtworkFilterProps extends ViewProps {
 interface ArtworkFilterOptionsScreenParams {
   closeModal: () => void
   exitModal: () => void
-  id: string | null
+  id?: string
   initiallyAppliedFilters?: FilterArray
   mode: ArtworkFilterMode
-  slug: string | null
+  slug?: string
   title?: string
 }
 
@@ -147,7 +147,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
 
   return (
     <NavigationContainer independent>
-      <FancyModal visible={props.isFilterArtworksModalVisible} onBackgroundPressed={handleClosingModal}>
+      <FancyModal visible={props.visible} onBackgroundPressed={handleClosingModal}>
         <View style={{ flex: 1 }}>
           <Stack.Navigator
             // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason

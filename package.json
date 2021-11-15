@@ -205,7 +205,7 @@
     "@types/dedent": "0.7.0",
     "@types/google-libphonenumber": "^7.4.21",
     "@types/jest": "25.1.5",
-    "@types/lodash": "4.14.172",
+    "@types/lodash": "4.14.176",
     "@types/luxon": "2.0.0",
     "@types/moment-timezone": "0.5.4",
     "@types/node": "12.7.5",

@@ -79,10 +79,8 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
   return (
     <>
       <ArtworkFilterNavigator
-        id={null}
-        slug={null}
         query={keyword}
-        isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+        visible={isFilterArtworksModalVisible}
         exitModal={() => handleCloseFilterArtworksModal(true)}
         closeModal={handleCloseFilterArtworksModal}
         mode={FilterModalMode.Search}

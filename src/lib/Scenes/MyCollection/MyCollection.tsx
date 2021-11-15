@@ -76,7 +76,7 @@ const MyCollection: React.FC<{
     })
   }
 
-  const setJSX = __TEST__ ? jest.fn() : useContext(StickyTabPageFlatListContext).setJSX
+  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
   const space = useSpace()
 
@@ -116,7 +116,7 @@ const MyCollection: React.FC<{
       })
     } else {
       // remove already set JSX
-      setJSX(<></>)
+      setJSX(null)
     }
   }, [artworks.length])
 

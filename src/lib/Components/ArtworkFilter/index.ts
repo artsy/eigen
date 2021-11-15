@@ -1,2 +1,2 @@
 export * from "./ArtworkFilterOptionsScreen"
-export * from "./ArtworkFilter"
+export * from "./ArtworkFilterNavigator"
