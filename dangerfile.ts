@@ -100,7 +100,7 @@ const verifyRemainingDevWork = () => {
   const editedFiles = modified.concat(danger.git.created_files)
   const testFiles = editedFiles.filter((f) => f?.includes("Tests") && f.match(/\.(swift|m)$/))
 
-  const testingShortcuts = ["fdescribe", "fit(@", "fit("]
+  const testingShortcuts = ["fdescribe(", "describe.only(", "fit(", "fit(", "it.only("]
   for (const file of testFiles) {
     const content = fs.readFileSync(file).toString()
     for (const shortcut of testingShortcuts) {

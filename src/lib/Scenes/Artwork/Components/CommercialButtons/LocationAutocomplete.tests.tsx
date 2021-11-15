@@ -62,11 +62,6 @@ describe("<LocationAutocomplete/>", () => {
     expect(wrapper.root.findAllByProps({ testID: "dropdown" }).length).toEqual(0)
   })
 
-  it.skip("restores the selected location when the user selects a location, taps back into the input, then exits it again", async () => {
-    // not sure this is actually a product requirement
-    expect(false).toBeTruthy()
-  })
-
   it("hides the predictions when the user un-focuses the input", async () => {
     await typeInInput(wrapper.root, "Hel")
     wrapper.root.findByType(LocationPredictions).props.onOutsidePress()

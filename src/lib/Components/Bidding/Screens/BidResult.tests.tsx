@@ -56,7 +56,7 @@ describe("BidResult component", () => {
 
   describe("high bidder", () => {
     // marking this as pending since this component depends on the Timer component that depends on local timezone
-    xit("renders winning screen properly", () => {
+    it("renders winning screen properly", () => {
       renderWithWrappers(
         <BidResult
           refreshBidderInfo={refreshBidderInfoMock}
@@ -103,7 +103,7 @@ describe("BidResult component", () => {
 
   describe("low bidder", () => {
     // marking this as pending since this component depends on the Timer component that depends on local timezone
-    xit("renders without throwing an error", () => {
+    it("renders without throwing an error", () => {
       renderWithWrappers(
         <BidResult
           refreshBidderInfo={refreshBidderInfoMock}
@@ -150,7 +150,7 @@ describe("BidResult component", () => {
 
   describe("live bidding has started", () => {
     // marking this as pending since this component depends on the Timer component that depends on local timezone
-    xit("renders without throwing an error", () => {
+    it("renders without throwing an error", () => {
       renderWithWrappers(
         <BidResult
           refreshBidderInfo={refreshBidderInfoMock}

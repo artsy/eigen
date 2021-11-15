@@ -35,7 +35,7 @@ describe("ReadMore", () => {
     expect(queryByText("Small text.")).toBeTruthy()
   })
 
-  fit("Renders an em dash if the text has line breaks when not expanded", () => {
+  it("Renders an em dash if the text has line breaks when not expanded", () => {
     const { UNSAFE_queryAllByType } = renderWithWrappersTL(
       // tslint:disable-next-line: jsx-curly-brace-presence
       <ReadMore maxChars={30} content={`Line break\n\nWhich should render an emdash`} />
