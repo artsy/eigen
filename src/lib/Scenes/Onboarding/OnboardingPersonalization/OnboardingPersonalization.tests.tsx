@@ -1,7 +1,7 @@
 import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPersonalization_highlights.graphql"
 import { OnboardingPersonalizationTestsQuery } from "__generated__/OnboardingPersonalizationTestsQuery.graphql"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -65,6 +65,8 @@ describe("OnboardingPersonalizationList", () => {
 
   describe("Button", () => {
     it("Sets the onboarding state to complete and requests for push notifications permission when it's not yet determined", async () => {
+      jest.useFakeTimers()
+
       mockFetchNotificationPermissions(false).mockImplementationOnce((cb) =>
         cb(null, PushAuthorizationStatus.NotDetermined)
       )
@@ -75,9 +77,10 @@ describe("OnboardingPersonalizationList", () => {
       const doneButton = tree.root.findByProps({ testID: "doneButton" })
       doneButton.props.onPress()
 
-      await flushPromiseQueue()
+      jest.runAllTimers()
+
       expect(__globalStoreTestUtils__?.getCurrentState().auth.onboardingState).toEqual("complete")
-      // expect(LegacyNativeModules.ARTemporaryAPIModule.requestPrepromptNotificationPermissions).toBeCalled()
+      expect(LegacyNativeModules.ARTemporaryAPIModule.requestPrepromptNotificationPermissions).toBeCalled()
     })
   })
 })
