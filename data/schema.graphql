@@ -7093,7 +7093,9 @@ type FollowsAndSaves {
     before: String
     first: Int
     last: Int
+    page: Int
     private: Boolean = false
+    size: Int
     sort: CollectionSorts
   ): SavedArtworksConnection
 
