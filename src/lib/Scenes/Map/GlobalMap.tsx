@@ -1,4 +1,4 @@
-import MapboxGL, { OnPressEvent } from "@react-native-mapbox-gl/maps"
+import MapboxGL, { MapViewProps, OnPressEvent } from "@react-native-mapbox-gl/maps"
 import { themeGet } from "@styled-system/theme-get"
 import { GlobalMap_viewer } from "__generated__/GlobalMap_viewer.graphql"
 import { Pin } from "lib/Icons/Pin"
@@ -560,14 +560,10 @@ export class GlobalMap extends React.Component<Props, State> {
     const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || get(city, "coordinates")
     const { mapLoaded, activeShows, activePin } = this.state
 
-    const mapProps = {
-      showUserLocation: true,
+    const mapProps: MapViewProps = {
+      // showUserLocation: true,
       styleURL: ArtsyMapStyleURL,
       userTrackingMode: MapboxGL.UserTrackingModes.Follow,
-      centerCoordinate: [centerLng, centerLat],
-      zoomLevel: DefaultZoomLevel,
-      minZoomLevel: MinZoomLevel,
-      maxZoomLevel: MaxZoomLevel,
       logoEnabled: !!city,
       attributionEnabled: false,
       compassEnabled: false,
@@ -636,6 +632,7 @@ export class GlobalMap extends React.Component<Props, State> {
                     <MapboxGL.Camera
                       ref={this.camera}
                       animationMode="flyTo"
+                      zoomLevel={DefaultZoomLevel}
                       minZoomLevel={MinZoomLevel}
                       maxZoomLevel={MaxZoomLevel}
                       centerCoordinate={[centerLng, centerLat]}
