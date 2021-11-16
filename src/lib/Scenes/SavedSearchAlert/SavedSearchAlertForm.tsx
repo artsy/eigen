@@ -4,7 +4,7 @@ import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/Saved
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
-import { Dialog } from "palette"
+import { Dialog, quoteLeft, quoteRight } from "palette"
 import React, { useEffect, useState } from "react"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
 import { useTracking } from "react-tracking"
@@ -209,20 +209,18 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
   const handleToggleEmailNotification = (enabled: boolean) => {
     if (shouldShowEmailWarning && enabled) {
-      const title = "Artsy would like to send you notifications"
-      const description =
-        'After clicking "Save Alert", you are opting in to receive alert notifications via email. You can update your email preferences at any time'
+      const title = "Artsy would like to send you email notifications"
+      const description = `After clicking ${quoteLeft}Save Alert${quoteRight}, you are opting in to receive alert notifications via email. You can update your email preferences by clicking into any alert listed in your profile tab and clicking "Update email preferences" underneath the "Email Alerts" toggle`
 
       Alert.alert(title, description, [
         {
-          text: "OK",
+          text: "Accept",
           onPress: () => {
             setShouldShowEmailWarning(false)
             formik.setFieldValue("email", enabled)
           },
         },
         { text: "Cancel" },
-        { text: "Go to preferences" },
       ])
       return
     }
