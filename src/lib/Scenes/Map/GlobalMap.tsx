@@ -561,7 +561,6 @@ export class GlobalMap extends React.Component<Props, State> {
     const { mapLoaded, activeShows, activePin } = this.state
 
     const mapProps: MapViewProps = {
-      // showUserLocation: true,
       styleURL: ArtsyMapStyleURL,
       userTrackingMode: MapboxGL.UserTrackingModes.Follow,
       logoEnabled: !!city,
