@@ -351,61 +351,63 @@ describe("Saved search alert form", () => {
       expect(queryAllByA11yState({ selected: true })).toHaveLength(1)
     })
 
-    it("should be displayed modal about receiving email messages", async () => {
-      const { getByA11yLabel } = renderWithWrappersTL(
-        <SavedSearchAlertForm
-          {...baseProps}
-          initialValues={{ ...baseProps.initialValues, push: false, email: false }}
-          userAllowsEmails={false}
-        />
-      )
+    describe("Allow to send emails modal", () => {
+      it("should display modal when the user enables email alerts", async () => {
+        const { getByA11yLabel } = renderWithWrappersTL(
+          <SavedSearchAlertForm
+            {...baseProps}
+            initialValues={{ ...baseProps.initialValues, push: false, email: false }}
+            userAllowsEmails={false}
+          />
+        )
 
-      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+        await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
 
-      expect(spyAlert).toBeCalled()
-    })
+        expect(spyAlert).toBeCalled()
+      })
 
-    it("should be displayed modal about receiving email messages only once", async () => {
-      // @ts-ignore
-      spyAlert.mockImplementation((_title, _message, buttons) => buttons[0].onPress()) // Click "Accept" button
+      it("should display modal only once", async () => {
+        // @ts-ignore
+        spyAlert.mockImplementation((_title, _message, buttons) => buttons[1].onPress()) // Click "Accept" button
 
-      const { getByA11yLabel } = renderWithWrappersTL(
-        <SavedSearchAlertForm
-          {...baseProps}
-          initialValues={{ ...baseProps.initialValues, push: false, email: false }}
-          userAllowsEmails={false}
-        />
-      )
+        const { getByA11yLabel } = renderWithWrappersTL(
+          <SavedSearchAlertForm
+            {...baseProps}
+            initialValues={{ ...baseProps.initialValues, push: false, email: false }}
+            userAllowsEmails={false}
+          />
+        )
 
-      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
-      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
-      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+        await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+        await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
+        await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
 
-      expect(spyAlert).toBeCalledTimes(1)
-    })
+        expect(spyAlert).toBeCalledTimes(1)
+      })
 
-    it("should call updateEmailFrequency mutation if the user is allowed to receive email messages ", async () => {
-      // @ts-ignore
-      spyAlert.mockImplementation((_title, _message, buttons) => buttons[0].onPress()) // Click "Accept" button
+      it('should call update mutation if the user is tapped "Accept" button', async () => {
+        // @ts-ignore
+        spyAlert.mockImplementation((_title, _message, buttons) => buttons[1].onPress()) // Click "Accept" button
 
-      const { getByA11yLabel, getByTestId } = renderWithWrappersTL(
-        <SavedSearchAlertForm
-          {...baseProps}
-          initialValues={{ ...baseProps.initialValues, push: false, email: false }}
-          userAllowsEmails={false}
-        />
-      )
+        const { getByA11yLabel, getByTestId } = renderWithWrappersTL(
+          <SavedSearchAlertForm
+            {...baseProps}
+            initialValues={{ ...baseProps.initialValues, push: false, email: false }}
+            userAllowsEmails={false}
+          />
+        )
 
-      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
-      await fireEvent.press(getByTestId("save-alert-button"))
+        await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+        await fireEvent.press(getByTestId("save-alert-button"))
 
-      await waitFor(() => {
-        const mutation = mockEnvironment.mock.getMostRecentOperation()
-        expect(mutation.request.node.operation.name).toEqual("updateEmailFrequencyMutation")
-        expect(mutation.request.variables).toEqual({
-          input: {
-            emailFrequency: "alerts_only",
-          },
+        await waitFor(() => {
+          const mutation = mockEnvironment.mock.getMostRecentOperation()
+          expect(mutation.request.node.operation.name).toEqual("updateEmailFrequencyMutation")
+          expect(mutation.request.variables).toEqual({
+            input: {
+              emailFrequency: "alerts_only",
+            },
+          })
         })
       })
     })

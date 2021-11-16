@@ -210,9 +210,10 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const handleToggleEmailNotification = (enabled: boolean) => {
     if (shouldShowEmailWarning && enabled) {
       const title = "Artsy would like to send you email notifications"
-      const description = `After clicking ${quoteLeft}Save Alert${quoteRight}, you are opting in to receive alert notifications via email. You can update your email preferences by clicking into any alert listed in your profile tab and clicking "Update email preferences" underneath the "Email Alerts" toggle`
+      const description = `After clicking ${quoteLeft}Save Alert${quoteRight}, you are opting in to receive alert notifications via email. You can update your email preferences by clicking into any alert listed in your profile tab and clicking ${quoteLeft}Update email preferences${quoteRight} underneath the ${quoteLeft}Email Alerts${quoteRight} toggle`
 
       Alert.alert(title, description, [
+        { text: "Cancel" },
         {
           text: "Accept",
           onPress: () => {
@@ -220,7 +221,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
             formik.setFieldValue("email", enabled)
           },
         },
-        { text: "Cancel" },
       ])
       return
     }
