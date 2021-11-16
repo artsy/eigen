@@ -351,7 +351,7 @@ describe("Saved search alert form", () => {
       expect(queryAllByA11yState({ selected: true })).toHaveLength(1)
     })
 
-    it("should see a popup notifying me that I will receive emails", async () => {
+    it("should be displayed modal about receiving email messages", async () => {
       const { getByA11yLabel } = renderWithWrappersTL(
         <SavedSearchAlertForm
           {...baseProps}
@@ -365,10 +365,29 @@ describe("Saved search alert form", () => {
       expect(spyAlert).toBeCalled()
     })
 
-    it("should call updateEmailFrequency mutation when if a user has opted out of email newsletter", async () => {
-      // callbackOrButtons[1] - Ok button
+    it("should be displayed modal about receiving email messages only once", async () => {
       // @ts-ignore
-      spyAlert.mockImplementation((_title, _message, callbackOrButtons) => callbackOrButtons[0].onPress())
+      spyAlert.mockImplementation((_title, _message, buttons) => buttons[0].onPress()) // Click "Accept" button
+
+      const { getByA11yLabel } = renderWithWrappersTL(
+        <SavedSearchAlertForm
+          {...baseProps}
+          initialValues={{ ...baseProps.initialValues, push: false, email: false }}
+          userAllowsEmails={false}
+        />
+      )
+
+      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
+      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+
+      expect(spyAlert).toBeCalledTimes(1)
+    })
+
+    it("should call updateEmailFrequency mutation if the user is allowed to receive email messages ", async () => {
+      // @ts-ignore
+      spyAlert.mockImplementation((_title, _message, buttons) => buttons[0].onPress()) // Click "Accept" button
+
       const { getByA11yLabel, getByTestId } = renderWithWrappersTL(
         <SavedSearchAlertForm
           {...baseProps}
