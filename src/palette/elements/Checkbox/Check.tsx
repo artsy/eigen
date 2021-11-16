@@ -4,6 +4,8 @@ import styled, { css } from "styled-components/native"
 import { CheckIcon } from "../../svgs/CheckIcon"
 import { Box } from "../Box"
 
+export const CHECK_SIZE = 22
+
 const CHECK_MODES = {
   default: {
     resting: css`
@@ -54,8 +56,8 @@ export const Check: React.FC<CheckProps> = ({ disabled, selected, ...rest }) => 
 }
 
 const Container = styled(Box)<CheckProps>`
-  width: 22px;
-  height: 22px;
+  width: ${CHECK_SIZE}px;
+  height: ${CHECK_SIZE}px;
   display: flex;
   align-items: center;
   justify-content: center;
