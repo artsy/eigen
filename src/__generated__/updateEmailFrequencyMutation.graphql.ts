@@ -6,12 +6,14 @@
 import { ConcreteRequest } from "relay-runtime";
 export type UpdateMyProfileInput = {
     artworksPerYear?: string | null;
+    bio?: string | null;
     clientMutationId?: string | null;
     collectorLevel?: number | null;
     completedOnboarding?: boolean | null;
     email?: string | null;
     emailFrequency?: string | null;
     gender?: string | null;
+    iconUrl?: string | null;
     industry?: string | null;
     isCollector?: boolean | null;
     location?: EditableLocation | null;

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b9240856b1dc6eaa4f63b5c27ee429e8 */
+/* @relayHash 79caa0c330d4c63b9272ec4f52ac8cf6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -14,9 +14,6 @@ export type EditSavedSearchAlertQueryResponse = {
     } | null;
     readonly artworksConnection: {
         readonly " $fragmentRefs": FragmentRefs<"EditSavedSearchAlert_artworksConnection">;
-    } | null;
-    readonly user: {
-        readonly " $fragmentRefs": FragmentRefs<"EditSavedSearchAlert_user">;
     } | null;
 };
 export type EditSavedSearchAlertQuery = {
@@ -38,10 +35,6 @@ query EditSavedSearchAlertQuery(
     ...EditSavedSearchAlert_artworksConnection
     id
   }
-  user: me {
-    ...EditSavedSearchAlert_user
-    id
-  }
 }
 
 fragment EditSavedSearchAlert_artist on Artist {
@@ -58,10 +51,6 @@ fragment EditSavedSearchAlert_artworksConnection on FilterArtworksConnection {
       value
     }
   }
-}
-
-fragment EditSavedSearchAlert_user on Me {
-  emailFrequency
 }
 */
 
@@ -156,22 +145,6 @@ return {
           }
         ],
         "storageKey": null
-      },
-      {
-        "alias": "user",
-        "args": null,
-        "concreteType": "Me",
-        "kind": "LinkedField",
-        "name": "me",
-        "plural": false,
-        "selections": [
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "EditSavedSearchAlert_user"
-          }
-        ],
-        "storageKey": null
       }
     ],
     "type": "Query",
@@ -258,30 +231,11 @@ return {
           (v4/*: any*/)
         ],
         "storageKey": null
-      },
-      {
-        "alias": "user",
-        "args": null,
-        "concreteType": "Me",
-        "kind": "LinkedField",
-        "name": "me",
-        "plural": false,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "emailFrequency",
-            "storageKey": null
-          },
-          (v4/*: any*/)
-        ],
-        "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "b9240856b1dc6eaa4f63b5c27ee429e8",
+    "id": "79caa0c330d4c63b9272ec4f52ac8cf6",
     "metadata": {},
     "name": "EditSavedSearchAlertQuery",
     "operationKind": "query",
@@ -289,5 +243,5 @@ return {
   }
 };
 })();
-(node as any).hash = '4578dde3cbfd5491a7e3646dc3114a2b';
+(node as any).hash = 'b7ba8ea3f6d77b3e8cb1436877763543';
 export default node;
