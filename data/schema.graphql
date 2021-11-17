@@ -6893,9 +6893,11 @@ type FollowArtist {
 type FollowArtistConnection {
   # A list of edges.
   edges: [FollowArtistEdge]
+  pageCursors: PageCursors!
 
   # Information to aid in pagination.
   pageInfo: PageInfo!
+  totalCount: Int
 }
 
 type FollowArtistCounts {
@@ -7087,7 +7089,15 @@ type FollowProfilePayload {
 
 type FollowsAndSaves {
   # A Connection of followed artists by current user
-  artistsConnection(after: String, before: String, fairID: String, first: Int, last: Int): FollowArtistConnection
+  artistsConnection(
+    after: String
+    before: String
+    fairID: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): FollowArtistConnection
   artworksConnection(
     after: String
     before: String
