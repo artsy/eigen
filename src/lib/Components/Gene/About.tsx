@@ -1,13 +1,11 @@
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { StyleSheet, ViewStyle } from "react-native"
-
 import RelatedArtists from "../RelatedArtists/RelatedArtists"
-import { Separator } from "../Separator"
 import Biography from "./Biography"
 
 import { About_gene } from "__generated__/About_gene.graphql"
+import { Separator } from "palette"
 import { StickyTabPageScrollView } from "../StickyTabPage/StickyTabPageScrollView"
 
 interface Props {
@@ -22,21 +20,11 @@ const About: React.FC<Props> = ({ gene }) => {
   return (
     <StickyTabPageScrollView contentContainerStyle={{ paddingTop: 15 }}>
       <Biography gene={gene as any} />
-      <Separator style={styles.sectionSeparator} />
+      <Separator mb={2} />
       {relatedArtists()}
     </StickyTabPageScrollView>
   )
 }
-
-interface Styles {
-  sectionSeparator: ViewStyle
-}
-
-const styles = StyleSheet.create<Styles>({
-  sectionSeparator: {
-    marginBottom: 20,
-  },
-})
 
 export default createFragmentContainer(About, {
   gene: graphql`

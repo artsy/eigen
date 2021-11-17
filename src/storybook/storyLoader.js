@@ -4,6 +4,7 @@
 // https://github.com/elderfo/react-native-storybook-loader.git
 
 function loadStories() {
+  require("../lib/Components/ArtworkGrids/ArtworksFilterHeader.stories")
   require("../lib/Components/PopoverMessage/PopoverMessage.stories")
   require("../lib/Components/ReadMore.stories")
   require("../palette/colors.stories")
@@ -22,6 +23,7 @@ function loadStories() {
 }
 
 const stories = [
+  "../lib/Components/ArtworkGrids/ArtworksFilterHeader.stories",
   "../lib/Components/PopoverMessage/PopoverMessage.stories",
   "../lib/Components/ReadMore.stories",
   "../palette/colors.stories",
