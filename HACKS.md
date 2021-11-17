@@ -74,7 +74,7 @@ When this is merged: https://github.com/facebook/react-native/pull/30345.
 
 For some reason CircleCI kept giving an error when running tests `TypeError: stacktraceParser.parse is not a function`. Once I moved the require higher up, things started working again.
 
-## Mapbox patches:
+# Mapbox patches:
 
 We have a few mapbox related hacks + patches. Grouping here for convenience.
 
