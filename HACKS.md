@@ -74,6 +74,10 @@ When this is merged: https://github.com/facebook/react-native/pull/30345.
 
 For some reason CircleCI kept giving an error when running tests `TypeError: stacktraceParser.parse is not a function`. Once I moved the require higher up, things started working again.
 
+## Mapbox patches:
+
+We have a few mapbox related hacks + patches. Grouping here for convenience.
+
 ## hardcode mapbox version to at least 6.3.0 using $ReactNativeMapboxGLIOSVersion
 
 #### When can we remove this:
@@ -87,6 +91,39 @@ Version 6.3 added support for Xcode 12 and iOS 14. Without this hardcoding we ge
 To check which version comes with, either remove `$ReactNativeMapboxGLIOSVersion` and after `pod install` check the `Podfile.lock` for version, or look on github https://github.com/react-native-mapbox-gl/maps/blob/master/CHANGELOG.md for versions bundle with an npm version.
 
 Update tried again with mapbox 8.4.0 and getting 5.9 and still need the hard coded requirement, try again next time we update mapbox.
+
+## react-native-mapbox-gl/maps - postinstall script
+
+#### When can we remove this:
+
+When react-native-mapbox adds the events framework as dependency, tried removed in 8.4.0 and was getting a crash on startup do to missing framework.
+
+#### Explanation/Context:
+
+We had issues with our archive becoming invalid and failing to export when we updated mapbox and cocoapods
+
+- mapbox released a beta version that fixed the issue for our setup
+- See issues here: https://github.com/CocoaPods/CocoaPods/issues/10385, https://github.com/react-native-mapbox-gl/maps/issues/1097
+
+## react-native-mapbox-gl/maps - generic types patch
+
+#### When can we remove this:
+
+When react-native-mapbox/maps fixes the type issue here.
+
+#### Explanation/Context:
+
+Typescript complains about some invalid type definitions for generic values. Next time we update mapbox we should try removing the patch, run yarn type-check and if it succeeds you can get rid of the patch.
+
+## react-native-mapbox-gl/maps - MGLGlyphsRasterizationMode
+
+#### When can we remove this:
+
+We should try removing it next time we update our mapbox dependencies (at time of writing 8.4.0). If you remove the plist value and open a map (City guide) and don't see a warning about falling back to a local rasterization you should be good to go.
+
+#### Explanation/Context:
+
+There is an issue here that explains the issue and suggests setting explicity in plist: https://github.com/mapbox/mapbox-gl-native-ios/issues/589
 
 ## exporting MockResolverContext (@types/relay-test-utils patch-package)
 
@@ -173,19 +210,6 @@ These are fairly superficial styling hacks for
 - aligning inner inputs nicely
 - icon animation to work properly on android
 - palette v3 colors
-
-## react-native-mapbox-gl/maps - postinstall script
-
-#### When can we remove this:
-
-When react-native-mapbox adds the events framework as dependency, tried removed in 8.4.0 and was getting a crash on startup do to missing framework.
-
-#### Explanation/Context:
-
-We had issues with our archive becoming invalid and failing to export when we updated mapbox and cocoapods
-
-- mapbox released a beta version that fixed the issue for our setup
-- See issues here: https://github.com/CocoaPods/CocoaPods/issues/10385, https://github.com/react-native-mapbox-gl/maps/issues/1097
 
 # android Input placeholder measuring hack
 
