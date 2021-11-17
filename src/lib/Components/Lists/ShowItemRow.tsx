@@ -148,7 +148,7 @@ export class ShowItemRow extends React.Component<Props, State> {
                 </Sans>
               )}
               {!!(show.exhibition_period && show.status) && (
-                <Sans size="3t" color={color("black60")} ml={15}>
+                <Sans size="3t" color={color("black60")} ml={15} numberOfLines={1}>
                   {show.status.includes("closed")
                     ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
                     : exhibitionDates(
