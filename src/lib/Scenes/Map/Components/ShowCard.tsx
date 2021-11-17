@@ -3,7 +3,7 @@ import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import { navigate } from "lib/navigation/navigate"
 import { TabFairItemRow } from "lib/Scenes/City/Components/TabFairItemRow"
 import { isEqual } from "lodash"
-import { Box, ClassTheme, Sans } from "palette"
+import { Box, ClassTheme, Text } from "palette"
 import React, { Component } from "react"
 import { Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent, TouchableOpacity } from "react-native"
 import { RelayProp } from "react-relay"
@@ -151,8 +151,8 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
       <ClassTheme>
         {({ space }) => (
           <>
-            <PageIndicator style={shadowDetails} mx={1} py={0.3} px={0.5} my={0.5}>
-              <Sans size="1" weight="medium" px={0.5}>{`${currentPage} of ${shows.length}`}</Sans>
+            <PageIndicator style={shadowDetails} mx={1} px={0.5} my={0.5}>
+              <Text variant="xs" weight="medium" px={0.5}>{`${currentPage} of ${shows.length}`}</Text>
             </PageIndicator>
             <FlatList
               ref={(c) => (this.list = c as any)}
