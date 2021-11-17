@@ -19,7 +19,7 @@ const shadowDetails: any = {
 
 const Background = styled(Box)`
   background: ${themeGet("colors.white100")};
-  height: 82;
+  height: 104;
   border-radius: 2px;
 `
 

@@ -467,7 +467,7 @@ export class GlobalMap extends React.Component<Props, State> {
               right: 0,
               opacity,
               position: "absolute",
-              height: 150,
+              height: 180,
             }}
           >
             {!!hasShows && (

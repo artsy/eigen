@@ -126,14 +126,14 @@ export class ShowItemRow extends React.Component<Props, State> {
     return (
       <ClassTheme>
         {({ color }) => (
-          <Flex flexDirection="row" alignItems="center">
+          <Flex flexDirection="row" alignItems="center" m={0.5}>
             {!imageURL ? (
               <DefaultImageContainer p={15}>
                 <Pin color={color("white100")} pinHeight={30} pinWidth={30} />
               </DefaultImageContainer>
             ) : (
               <DefaultImageContainer>
-                <OpaqueImageView width={58} height={58} imageURL={imageURL} />
+                <OpaqueImageView width={60} height={60} imageURL={imageURL} />
               </DefaultImageContainer>
             )}
             <Flex flexDirection="column" flexGrow={1} width={165} mr={10}>
