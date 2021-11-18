@@ -226,7 +226,6 @@
                                                        ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
 
     ARActionLog(@"Got device notification token: %@", deviceToken);
-    NSString *previousToken = [[NSUserDefaults standardUserDefaults] stringForKey:ARAPNSDeviceTokenKey];
 
     // Save device token purely for the admin settings view.
     [[NSUserDefaults standardUserDefaults] setValue:deviceToken forKey:ARAPNSDeviceTokenKey];

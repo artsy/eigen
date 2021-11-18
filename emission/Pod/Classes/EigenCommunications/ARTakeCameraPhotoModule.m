@@ -1,7 +1,7 @@
 #import "ARTakeCameraPhotoModule.h"
 
 #import <AVFoundation/AVFoundation.h>
-#import <MobileCoreServices/MobileCoreServices.h>
+#import <CoreServices/CoreServices.h>
 
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>

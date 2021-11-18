@@ -40,14 +40,6 @@ extern NSString *const ARAnalyticsPushNotificationApple;
 extern NSString *const ARAnalyticsAccountCreated;
 extern NSString *const ARAnalyticsAuthError;
 
-// Onboarding Account actions
-
-extern NSString *const ARAnalyticsOnboardingConnectWithApple;
-extern NSString *const ARAnalyticsOnboardingConnectWithFacebook;
-extern NSString *const ARAnalyticsOnboardingForgotPassword;
-extern NSString *const ARAnalyticsOnboardingForgotPasswordSent;
-extern NSString *const ARAnalyticsOnboardingAlreadyAccountBack;
-
 // Inquiring
 
 extern NSString *const ARAnalyticsStartedGalleryInquiry;

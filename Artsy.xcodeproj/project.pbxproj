@@ -10,6 +10,8 @@
 		0C93322A1BA1FA6B00F3CE95 /* ARUserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */; };
 		0CAC95391BA9E1D0008E9848 /* ARUserActivityAndSpotlightTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CAC95371BA9E18B008E9848 /* ARUserActivityAndSpotlightTests.m */; };
 		0CE3C4361B8BB3630092A24F /* EXPMatcher+UINavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */; };
+		1A0517C42746D93000248353 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A0517C32746D93000248353 /* CoreServices.framework */; };
+		1A0517C72746DC9100248353 /* ARNativeTabsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A0517C62746DC9100248353 /* ARNativeTabsManager.m */; };
 		1A248BDB265C282400E41409 /* ARTArtsyNativeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A248BDA265C282400E41409 /* ARTArtsyNativeModule.m */; };
 		1AC79210251A42D000F50228 /* EchoNew.json in Resources */ = {isa = PBXBuildFile; fileRef = 1AC7920F251A42CF00F50228 /* EchoNew.json */; };
 		1AD4F89E25FBBA89007FDB71 /* Stickers.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AD4F89D25FBBA89007FDB71 /* Stickers.xcassets */; };
@@ -304,7 +306,6 @@
 		60903CD2175CF095002AB800 /* ARAnimatedTickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 60903CD1175CF095002AB800 /* ARAnimatedTickView.m */; };
 		60903CD5175CF23F002AB800 /* ARTickedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60903CD4175CF23F002AB800 /* ARTickedTableViewCell.m */; };
 		60903CD8175CF27D002AB800 /* ARAdminTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 60903CD7175CF27D002AB800 /* ARAdminTableViewCell.m */; };
-		60935A441A69CFE700129CE1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 601C3183165838590013E061 /* MobileCoreServices.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		60935A461A69CFEE00129CE1 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60935A451A69CFEE00129CE1 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		609624C91CEF3304002F3F33 /* ARTextViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 609624C81CEF3304002F3F33 /* ARTextViewTests.m */; };
 		6099F907178F24750004EF04 /* ARDefaultNavigationTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 6099F906178F24750004EF04 /* ARDefaultNavigationTransition.m */; };
@@ -532,6 +533,9 @@
 		0CAC95371BA9E18B008E9848 /* ARUserActivityAndSpotlightTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivityAndSpotlightTests.m; sourceTree = "<group>"; };
 		0CE3C4331B8BB35C0092A24F /* EXPMatcher+UINavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EXPMatcher+UINavigationController.h"; sourceTree = "<group>"; };
 		0CE3C4341B8BB35C0092A24F /* EXPMatcher+UINavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EXPMatcher+UINavigationController.m"; sourceTree = "<group>"; };
+		1A0517C32746D93000248353 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		1A0517C52746DC9100248353 /* ARNativeTabsManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARNativeTabsManager.h; sourceTree = "<group>"; };
+		1A0517C62746DC9100248353 /* ARNativeTabsManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARNativeTabsManager.m; sourceTree = "<group>"; };
 		1A248BD9265C282400E41409 /* ARTArtsyNativeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTArtsyNativeModule.h; sourceTree = "<group>"; };
 		1A248BDA265C282400E41409 /* ARTArtsyNativeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTArtsyNativeModule.m; sourceTree = "<group>"; };
 		1AC7920F251A42CF00F50228 /* EchoNew.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = EchoNew.json; sourceTree = "<group>"; };
@@ -1233,7 +1237,7 @@
 				512AB35C1BD7C82F00F92B9A /* MessageUI.framework in Frameworks */,
 				512AB35B1BD7C7A100F92B9A /* CoreSpotlight.framework in Frameworks */,
 				60935A461A69CFEE00129CE1 /* WebKit.framework in Frameworks */,
-				60935A441A69CFE700129CE1 /* MobileCoreServices.framework in Frameworks */,
+				1A0517C42746D93000248353 /* CoreServices.framework in Frameworks */,
 				A18CE1A9E25D2EE10D482D6C /* libPods-Artsy.a in Frameworks */,
 				CB8FF7C926C45D3400022DA3 /* AppTrackingTransparency.framework in Frameworks */,
 				CB8FF7C426C45CFC00022DA3 /* AdServices.framework in Frameworks */,
@@ -1717,6 +1721,7 @@
 		49BA7E021655ABE600C06572 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1A0517C32746D93000248353 /* CoreServices.framework */,
 				CB8FF7C826C45D3400022DA3 /* AppTrackingTransparency.framework */,
 				CB8FF7C626C45D2100022DA3 /* StoreKit.framework */,
 				CB8FF7C326C45CFC00022DA3 /* AdServices.framework */,
@@ -2229,6 +2234,8 @@
 				60B9D00F17834A35006E498A /* Web Browsing */,
 				600249F0166CFCCE007E6E9A /* Core */,
 				5E4386171D0764ED0034E671 /* SerifModalWebNavigationController.swift */,
+				1A0517C52746DC9100248353 /* ARNativeTabsManager.h */,
+				1A0517C62746DC9100248353 /* ARNativeTabsManager.m */,
 			);
 			name = "View Controllers";
 			path = View_Controllers;
@@ -3367,6 +3374,7 @@
 				51F2C5F41CEE8A7700B881BE /* ARAppDelegate+Emission.m in Sources */,
 				B3EFC6391815B41C00F23540 /* BidderPosition.m in Sources */,
 				49BA7E141655ABE600C06572 /* ARAppDelegate.m in Sources */,
+				1A0517C72746DC9100248353 /* ARNativeTabsManager.m in Sources */,
 				B375E5F418121EEA005FC680 /* Sale.m in Sources */,
 				608B2F5E1657D0500046956C /* main.m in Sources */,
 				608AABDC1B3884C600855A1C /* ARKeychainable.m in Sources */,

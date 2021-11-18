@@ -105,7 +105,6 @@ SOFTWARE.
     NSString *authenticationToken = [[ARUserManager sharedManager] userAuthenticationToken];
 
     NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
-    AROnboardingUserProgressStage onboardingState = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage];
 
     AREmission *emission = [[AREmission alloc] initWithState:@{
                                                                  [ARStateKey userID] : (userID ?: [NSNull null]),
