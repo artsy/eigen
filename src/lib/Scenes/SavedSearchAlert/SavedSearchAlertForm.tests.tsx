@@ -422,6 +422,25 @@ describe("Saved search alert form", () => {
           })
         })
       })
+
+      it("should not call update email frequency mutation if the user previously opted out of emails and toggle was on by default", async () => {
+        const { getByTestId } = renderWithWrappersTL(
+          <SavedSearchAlertForm
+            {...baseProps}
+            savedSearchAlertId="savedSearchAlertId"
+            initialValues={{ ...baseProps.initialValues, email: true }}
+            userAllowsEmails={false}
+          />
+        )
+
+        await fireEvent.changeText(getByTestId("alert-input-name"), "updated name")
+        await fireEvent.press(getByTestId("save-alert-button"))
+
+        await waitFor(() => {
+          const mutation = mockEnvironment.mock.getMostRecentOperation()
+          expect(mutation.request.node.operation.name).toEqual("updateSavedSearchAlertMutation")
+        })
+      })
     })
   })
 

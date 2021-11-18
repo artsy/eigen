@@ -70,7 +70,12 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       try {
         let result: SavedSearchAlertMutationResult
 
-        if (enableSavedSearchToggles && !userAllowsEmails && values.email) {
+        /**
+         * We perform the mutation only if
+         *  - the "Email Alerts" toggle was initially disabled and the user turned it on
+         *  - the user previously opted out of all marketing emails
+         */
+        if (enableSavedSearchToggles && !userAllowsEmails && !initialValues.email && values.email) {
           await updateEmailFrequency("alerts_only")
         }
 
