@@ -14,6 +14,7 @@ function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
       autoSessionTracking: true,
       // Sentry will be re-initialised with a proper environment as soon as the main app component mounts
       environment: "bootstrap",
+      enableOutOfMemoryTracking: false,
       ...props,
     })
   }
