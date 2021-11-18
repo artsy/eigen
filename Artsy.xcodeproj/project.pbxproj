@@ -476,6 +476,16 @@
 		FCB45B292746EF3700232337 /* ArtsyWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B282746EF3700232337 /* ArtsyWidgets.swift */; };
 		FCB45B2B2746EF3900232337 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCB45B2A2746EF3900232337 /* Assets.xcassets */; };
 		FCB45B2F2746EF3900232337 /* ArtsyWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FCB45B222746EF3700232337 /* ArtsyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FCB45B372746F0A500232337 /* FullBleed+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B362746F0A500232337 /* FullBleed+View.swift */; };
+		FCB45B392746F0B800232337 /* FullBleed+Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B382746F0B800232337 /* FullBleed+Provider.swift */; };
+		FCB45B3B2746F0CC00232337 /* FullBleed+Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B3A2746F0CC00232337 /* FullBleed+Entry.swift */; };
+		FCB45B3D2746F0F100232337 /* FullBleed.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B3C2746F0F100232337 /* FullBleed.swift */; };
+		FCB45B402746F26E00232337 /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B3F2746F26E00232337 /* Artwork.swift */; };
+		FCB45B422746F28700232337 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B412746F28700232337 /* Artist.swift */; };
+		FCB45B442746F42800232337 /* FullBleed+Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B432746F42800232337 /* FullBleed+Widget.swift */; };
+		FCB45B472746F6FD00232337 /* PrimaryText.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B462746F6FD00232337 /* PrimaryText.swift */; };
+		FCB45B492746F72800232337 /* SecondaryText.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B482746F72800232337 /* SecondaryText.swift */; };
+		FCB45B4B2746F81F00232337 /* ArtworkUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B4A2746F81F00232337 /* ArtworkUrl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1224,6 +1234,16 @@
 		FCB45B282746EF3700232337 /* ArtsyWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtsyWidgets.swift; sourceTree = "<group>"; };
 		FCB45B2A2746EF3900232337 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FCB45B2C2746EF3900232337 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FCB45B362746F0A500232337 /* FullBleed+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FullBleed+View.swift"; sourceTree = "<group>"; };
+		FCB45B382746F0B800232337 /* FullBleed+Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FullBleed+Provider.swift"; sourceTree = "<group>"; };
+		FCB45B3A2746F0CC00232337 /* FullBleed+Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FullBleed+Entry.swift"; sourceTree = "<group>"; };
+		FCB45B3C2746F0F100232337 /* FullBleed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullBleed.swift; sourceTree = "<group>"; };
+		FCB45B3F2746F26E00232337 /* Artwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artwork.swift; sourceTree = "<group>"; };
+		FCB45B412746F28700232337 /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
+		FCB45B432746F42800232337 /* FullBleed+Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FullBleed+Widget.swift"; sourceTree = "<group>"; };
+		FCB45B462746F6FD00232337 /* PrimaryText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryText.swift; sourceTree = "<group>"; };
+		FCB45B482746F72800232337 /* SecondaryText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryText.swift; sourceTree = "<group>"; };
+		FCB45B4A2746F81F00232337 /* ArtworkUrl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkUrl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2991,9 +3011,43 @@
 			children = (
 				FCB45B282746EF3700232337 /* ArtsyWidgets.swift */,
 				FCB45B2A2746EF3900232337 /* Assets.xcassets */,
+				FCB45B352746F02C00232337 /* FullBleed */,
 				FCB45B2C2746EF3900232337 /* Info.plist */,
+				FCB45B3E2746F25C00232337 /* Models */,
+				FCB45B452746F6ED00232337 /* Shared */,
 			);
 			path = ArtsyWidget;
+			sourceTree = "<group>";
+		};
+		FCB45B352746F02C00232337 /* FullBleed */ = {
+			isa = PBXGroup;
+			children = (
+				FCB45B3C2746F0F100232337 /* FullBleed.swift */,
+				FCB45B3A2746F0CC00232337 /* FullBleed+Entry.swift */,
+				FCB45B382746F0B800232337 /* FullBleed+Provider.swift */,
+				FCB45B362746F0A500232337 /* FullBleed+View.swift */,
+				FCB45B432746F42800232337 /* FullBleed+Widget.swift */,
+			);
+			path = FullBleed;
+			sourceTree = "<group>";
+		};
+		FCB45B3E2746F25C00232337 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FCB45B412746F28700232337 /* Artist.swift */,
+				FCB45B3F2746F26E00232337 /* Artwork.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		FCB45B452746F6ED00232337 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				FCB45B4A2746F81F00232337 /* ArtworkUrl.swift */,
+				FCB45B462746F6FD00232337 /* PrimaryText.swift */,
+				FCB45B482746F72800232337 /* SecondaryText.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3804,7 +3858,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCB45B372746F0A500232337 /* FullBleed+View.swift in Sources */,
 				FCB45B292746EF3700232337 /* ArtsyWidgets.swift in Sources */,
+				FCB45B4B2746F81F00232337 /* ArtworkUrl.swift in Sources */,
+				FCB45B3D2746F0F100232337 /* FullBleed.swift in Sources */,
+				FCB45B442746F42800232337 /* FullBleed+Widget.swift in Sources */,
+				FCB45B3B2746F0CC00232337 /* FullBleed+Entry.swift in Sources */,
+				FCB45B472746F6FD00232337 /* PrimaryText.swift in Sources */,
+				FCB45B402746F26E00232337 /* Artwork.swift in Sources */,
+				FCB45B392746F0B800232337 /* FullBleed+Provider.swift in Sources */,
+				FCB45B422746F28700232337 /* Artist.swift in Sources */,
+				FCB45B492746F72800232337 /* SecondaryText.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
