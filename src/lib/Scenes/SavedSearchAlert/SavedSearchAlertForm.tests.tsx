@@ -352,7 +352,7 @@ describe("Saved search alert form", () => {
     })
 
     describe("Allow to send emails modal", () => {
-      it("should display modal when the user enables email alerts", async () => {
+      it("should display the modal when the user enables email alerts", async () => {
         const { getByA11yLabel } = renderWithWrappersTL(
           <SavedSearchAlertForm
             {...baseProps}
@@ -366,7 +366,7 @@ describe("Saved search alert form", () => {
         expect(spyAlert).toBeCalled()
       })
 
-      it("should display modal only once", async () => {
+      it("should display the modal only once", async () => {
         // @ts-ignore
         spyAlert.mockImplementation((_title, _message, buttons) => buttons[1].onPress()) // Click "Accept" button
 
@@ -383,6 +383,18 @@ describe("Saved search alert form", () => {
         await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
 
         expect(spyAlert).toBeCalledTimes(1)
+      })
+
+      it('should not display the modal if the "Email Alerts" toggle off and then back on', async () => {
+        const { getByA11yLabel } = renderWithWrappersTL(
+          <SavedSearchAlertForm {...baseProps} userAllowsEmails={false} />
+        )
+
+        await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+        await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
+        await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+
+        expect(spyAlert).toBeCalledTimes(0)
       })
 
       it('should call update mutation if the user is tapped "Accept" button', async () => {

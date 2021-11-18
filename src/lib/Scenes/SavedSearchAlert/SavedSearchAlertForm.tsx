@@ -208,7 +208,8 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   }
 
   const handleToggleEmailNotification = (enabled: boolean) => {
-    if (shouldShowEmailWarning && enabled) {
+    // Show the modal only when the user is opted out of email and changes the "email alerts" toggle from off to on state
+    if (shouldShowEmailWarning && !initialValues.email && enabled) {
       const title = "Artsy would like to send you email notifications"
       const description = `After clicking ${quoteLeft}Save Alert${quoteRight}, you are opting in to receive alert notifications via email. You can update your email preferences by clicking into any alert listed in your profile tab and clicking ${quoteLeft}Update email preferences${quoteRight} underneath the ${quoteLeft}Email Alerts${quoteRight} toggle`
 
