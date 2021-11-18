@@ -26,9 +26,10 @@ export const Versions = {
   CopyIOSNativeSessionAuthToTS: 14,
   AddExperimentsModel: 15,
   AddPreviousSessionUserID: 16,
+  RemoveNativeOnboardingState: 17,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddPreviousSessionUserID
+export const CURRENT_APP_VERSION = Versions.RemoveNativeOnboardingState
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -101,7 +102,7 @@ export const artsyAppMigrations: Migrations = {
     if (Platform.OS === "ios") {
       const nativeState = LegacyNativeModules.ARNotificationsManager.nativeState
       state.auth.userAccessToken = nativeState.authenticationToken
-      state.auth.onboardingState = (nativeState as any).onboardingState
+      state.auth.onboardingState = (nativeState as any).onboardingState ?? "none"
       state.auth.userID = nativeState.userID
     }
   },
@@ -110,6 +111,9 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddPreviousSessionUserID]: (state) => {
     state.auth.previousSessionUserID = null
+  },
+  [Versions.RemoveNativeOnboardingState]: (state) => {
+    delete state.native.onboardingState
   },
 }
 
