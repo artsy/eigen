@@ -1,11 +1,3 @@
-//
-//  ArtsyWidget.swift
-//  ArtsyWidget
-//
-//  Created by Jonathan Allured on 11/18/21.
-//  Copyright © 2021 Artsy. All rights reserved.
-//
-
 import WidgetKit
 import SwiftUI
 
@@ -47,7 +39,6 @@ struct ArtsyWidgetEntryView : View {
     }
 }
 
-@main
 struct ArtsyWidget: Widget {
     let kind: String = "ArtsyWidget"
 
@@ -60,9 +51,9 @@ struct ArtsyWidget: Widget {
     }
 }
 
-struct ArtsyWidget_Previews: PreviewProvider {
-    static var previews: some View {
-        ArtsyWidgetEntryView(entry: SimpleEntry(date: Date()))
-            .previewContext(WidgetPreviewContext(family: .systemSmall))
+@main
+struct ArtsyWidgets: WidgetBundle {
+    var body: some Widget {
+        ArtsyWidget()
     }
 }
