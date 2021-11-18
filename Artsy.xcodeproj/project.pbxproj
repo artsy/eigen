@@ -475,6 +475,9 @@
 		FC6118A02747001B00612581 /* ArtworkImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC61189F2747001B00612581 /* ArtworkImage.swift */; };
 		FC6118A2274704FA00612581 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6118A1274704FA00612581 /* Schedule.swift */; };
 		FC6118A42747068300612581 /* FullBleed+Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6118A32747068300612581 /* FullBleed+Timeline.swift */; };
+		FC6118A82747091500612581 /* VolleyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6118A52747091400612581 /* VolleyClient.swift */; };
+		FC6118A92747091500612581 /* VolleyPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6118A62747091400612581 /* VolleyPayload.swift */; };
+		FC6118AA2747091500612581 /* VolleyMetric.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6118A72747091500612581 /* VolleyMetric.swift */; };
 		FCB45B242746EF3700232337 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCB45B232746EF3700232337 /* WidgetKit.framework */; };
 		FCB45B262746EF3700232337 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCB45B252746EF3700232337 /* SwiftUI.framework */; };
 		FCB45B292746EF3700232337 /* ArtsyWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B282746EF3700232337 /* ArtsyWidgets.swift */; };
@@ -1236,6 +1239,9 @@
 		FC61189F2747001B00612581 /* ArtworkImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkImage.swift; sourceTree = "<group>"; };
 		FC6118A1274704FA00612581 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
 		FC6118A32747068300612581 /* FullBleed+Timeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FullBleed+Timeline.swift"; sourceTree = "<group>"; };
+		FC6118A52747091400612581 /* VolleyClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VolleyClient.swift; sourceTree = "<group>"; };
+		FC6118A62747091400612581 /* VolleyPayload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VolleyPayload.swift; sourceTree = "<group>"; };
+		FC6118A72747091500612581 /* VolleyMetric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VolleyMetric.swift; sourceTree = "<group>"; };
 		FCB45B222746EF3700232337 /* ArtsyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArtsyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCB45B232746EF3700232337 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		FCB45B252746EF3700232337 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -3047,6 +3053,9 @@
 				FCB45B3F2746F26E00232337 /* Artwork.swift */,
 				FC61189F2747001B00612581 /* ArtworkImage.swift */,
 				FC61189D2746FE2300612581 /* ArtworkStore.swift */,
+				FC6118A52747091400612581 /* VolleyClient.swift */,
+				FC6118A72747091500612581 /* VolleyMetric.swift */,
+				FC6118A62747091400612581 /* VolleyPayload.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3874,12 +3883,15 @@
 				FCB45B372746F0A500232337 /* FullBleed+View.swift in Sources */,
 				FCB45B292746EF3700232337 /* ArtsyWidgets.swift in Sources */,
 				FCB45B4B2746F81F00232337 /* ArtworkUrl.swift in Sources */,
+				FC6118A92747091500612581 /* VolleyPayload.swift in Sources */,
 				FCB45B3D2746F0F100232337 /* FullBleed.swift in Sources */,
 				FCB45B442746F42800232337 /* FullBleed+Widget.swift in Sources */,
 				FC6118A02747001B00612581 /* ArtworkImage.swift in Sources */,
+				FC6118A82747091500612581 /* VolleyClient.swift in Sources */,
 				FCB45B3B2746F0CC00232337 /* FullBleed+Entry.swift in Sources */,
 				FCB45B472746F6FD00232337 /* PrimaryText.swift in Sources */,
 				FC6118A42747068300612581 /* FullBleed+Timeline.swift in Sources */,
+				FC6118AA2747091500612581 /* VolleyMetric.swift in Sources */,
 				FCB45B402746F26E00232337 /* Artwork.swift in Sources */,
 				FCB45B392746F0B800232337 /* FullBleed+Provider.swift in Sources */,
 				FCB45B422746F28700232337 /* Artist.swift in Sources */,

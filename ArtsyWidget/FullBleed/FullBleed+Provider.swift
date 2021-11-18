@@ -13,6 +13,7 @@ extension FullBleed {
         }
         
         func getTimeline(in context: Context, completion: @escaping (WidgetKit.Timeline<Entry>) -> ()) {
+            VolleyClient.reportGetTimeline(kind: FullBleed.Widget.kind, family: context.family)
             Timeline.generate(completion: completion)
         }
     }
