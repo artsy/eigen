@@ -8,7 +8,6 @@ import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { FadeIn } from "./Components/FadeIn"
-import { NativeViewController } from "./Components/NativeViewController"
 import { BidFlow } from "./Containers/BidFlow"
 import { InboxWrapper } from "./Containers/Inbox"
 import { InboxScreenQuery } from "./Containers/Inbox/Inbox"
@@ -410,7 +409,6 @@ const Main: React.FC<{}> = track()(({}) => {
     })
   }, [])
 
-  const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken)
 
@@ -432,7 +430,7 @@ const Main: React.FC<{}> = track()(({}) => {
   }
 
   if (!isLoggedIn || onboardingState === "incomplete") {
-    return showNewOnboarding ? <Onboarding /> : <NativeViewController viewName="Onboarding" />
+    return <Onboarding />
   }
 
   return <BottomTabsNavigator />

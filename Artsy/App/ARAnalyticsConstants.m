@@ -16,15 +16,6 @@ NSString *const ARAnalyticsAuthError = @"Authentication error";
 
 NSString *const ARAnalyticsSlideshowStarted = @"Slideshow started";
 
-NSString *const ARAnalyticsOnboardingGetStarted = @"Tapped get started";
-NSString *const ARAnalyticsOnboardingConnectWithApple = @"Tapped connect with apple";
-NSString *const ARAnalyticsOnboardingConnectWithFacebook = @"Tapped connect with facebook";
-NSString *const ARAnalyticsOnboardingForgotPassword = @"Tapped forgot password";
-NSString *const ARAnalyticsOnboardingForgotPasswordSent = @"Successfully sent password reset link";
-NSString *const ARAnalyticsOnboardingAlreadyAccountBack = @"Tapped already have an account go back";
-NSString *const ARAnalyticsOnboardingTappedSearch = @"Tapped onboarding search";
-NSString *const ARAnalyticsOnboardingBudgetSelected = @"Budget selected";
-
 NSString *const ARAnalyticsStartedGalleryInquiry = @"Contact gallery";
 NSString *const ARAnalyticsStartedSpecialistInquiry = @"Ask a specialist";
 NSString *const ARAnalyticsSubmittedInquiry = @"Sent artwork inquiry";

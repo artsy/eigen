@@ -4,7 +4,7 @@ import { NotificationsManager } from "lib/NativeModules/NotificationsManager"
 import { navigate, navigationEvents } from "lib/navigation/navigate"
 import { InfoType } from "lib/utils/track/providers"
 import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
-import { getCurrentEmissionState, GlobalStore, unsafe_getFeatureFlag } from "./GlobalStore"
+import { GlobalStore } from "./GlobalStore"
 
 // These should match the values in emission/Pod/Classes/EigenCommunications/ARNotificationsManager.m
 export type NativeEvent =
@@ -37,7 +37,6 @@ export interface NativeState {
   userEmail: string
   authenticationToken: string
   launchCount: number
-  onboardingState: "none" | "incomplete" | "complete"
   userAgent: string
   deviceId: string
 }
@@ -72,34 +71,13 @@ listenToNativeEvents((event: NativeEvent) => {
       SegmentTrackingProvider.postEvent(event.payload)
       return
     case "STATE_CHANGED":
-      const newOnboardingFlow = unsafe_getFeatureFlag("AREnableNewOnboardingFlow")
-      if (!newOnboardingFlow) {
-        const prevState = getCurrentEmissionState()
-        const onboardingChanged =
-          prevState.onboardingState !== "complete" && event.payload.onboardingState === "complete"
-        const userIdChanged = !prevState.userID && event.payload.userID
-        if (onboardingChanged || userIdChanged) {
-          // weird ts-lint no-unused-expressions lint
-          SegmentTrackingProvider.identify
-            ? SegmentTrackingProvider.identify(event.payload.userID, {
-                is_temporary_user: !event.payload.userID ? 1 : 0,
-              })
-            : (() => undefined)()
-        }
-      }
       // We need to set the values we get from the native state on iOS to the global store
       // to have parity between the auth on native and react-native
-      if (
-        event.payload.userEmail &&
-        event.payload.onboardingState &&
-        event.payload.userID &&
-        event.payload.authenticationToken
-      ) {
+      if (event.payload.userEmail && event.payload.userID && event.payload.authenticationToken) {
         GlobalStore.actions.auth.setState({
           userEmail: event.payload.userEmail,
           userAccessToken: event.payload.authenticationToken,
           userID: event.payload.userID,
-          onboardingState: event.payload.onboardingState,
         })
       }
 

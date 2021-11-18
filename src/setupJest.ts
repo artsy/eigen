@@ -216,7 +216,6 @@ function getNativeModules(): OurNativeModules {
       nativeState: {
         userAgent: "Jest Unit Tests",
         authenticationToken: "authenticationToken",
-        onboardingState: "complete",
         launchCount: 1,
         deviceId: "testDevice",
         userID: "userID",

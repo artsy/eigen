@@ -112,7 +112,6 @@ SOFTWARE.
                                                                  [ARStateKey userEmail] : (userEmail ?: [NSNull null]),
                                                                  [ARStateKey authenticationToken] : (authenticationToken ?: [NSNull null]),
                                                                  [ARStateKey launchCount] : @(launchCount),
-                                                                 [ARStateKey onboardingState] : onboardingState == AROnboardingStageDefault ? @"none" : onboardingState == AROnboardingStageOnboarded ? @"complete" : @"incomplete",
                                                                  [ARStateKey userAgent] : ARRouter.userAgent,
                                                                  [ARStateKey deviceId] : self.deviceId,
     } packagerURL:packagerURL];

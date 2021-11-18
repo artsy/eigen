@@ -13,18 +13,6 @@ extern NSString *const ARXAppTokenKeychainKey;
 extern NSString *const ARXAppTokenExpiryDateDefault;
 
 #pragma mark -
-#pragma mark onboarding
-
-extern NSString *const AROnboardingUserProgressionStage;
-
-typedef NS_ENUM(NSInteger, AROnboardingUserProgressStage) {
-    AROnboardingStageDefault,
-    AROnboardingStageOnboarding,
-    AROnboardingStageOnboarded
-};
-
-
-#pragma mark -
 #pragma mark push notifications
 
 extern NSString *const ARPushNotificationsAppleDialogueSeen;
@@ -51,6 +39,5 @@ extern NSString *const ARAugmentedRealityHasSeenSetup;
 extern NSString *const ARAugmentedRealityHasTriedToSetup;
 
 @interface ARDefaults : NSObject
-+ (void)setup;
 + (void)resetDefaults;
 @end

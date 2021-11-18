@@ -101,7 +101,7 @@ export const artsyAppMigrations: Migrations = {
     if (Platform.OS === "ios") {
       const nativeState = LegacyNativeModules.ARNotificationsManager.nativeState
       state.auth.userAccessToken = nativeState.authenticationToken
-      state.auth.onboardingState = nativeState.onboardingState
+      state.auth.onboardingState = (nativeState as any).onboardingState
       state.auth.userID = nativeState.userID
     }
   },
