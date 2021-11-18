@@ -13,11 +13,11 @@ extension FullBleed {
         }
         
         var body: some SwiftUI.View {
-            let artworkImage = artwork.image
+            let artworkImage = artwork.image!
             let artistName = artwork.artist.name
             let artworkTitle = artwork.title
-            let artworkUrl = ArtworkUrl.from(slug: artwork.slug)
-                    
+            let artworkUrl = ArtworkUrl.from(slug: artwork.id)
+            
             GeometryReader { geo in
                 ZStack() {
                     Image(uiImage: artworkImage)

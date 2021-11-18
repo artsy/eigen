@@ -1,5 +1,5 @@
 import Foundation
 
-struct Artist {
+struct Artist: Codable {
     let name: String
 }
