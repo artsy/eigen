@@ -128,10 +128,6 @@ static NSString *hostFromString(NSString *string)
         NSString *xapp = [UICKeyChainStore stringForKey:ARXAppTokenKeychainKey];
         [ARRouter setXappToken:xapp];
     }
-
-    if ([User isLocalTemporaryUser]) {
-        [self setHTTPHeader:AREigenLocalTemporaryUserIDHeader value:user.localTemporaryUserUUID];
-    }
 }
 
 + (void)setupUserAgent
@@ -199,7 +195,6 @@ static NSString *hostFromString(NSString *string)
     if (![ARRouter isInternalURL:url]) {
         [request setValue:nil forHTTPHeaderField:ARAuthHeader];
         [request setValue:nil forHTTPHeaderField:ARXappHeader];
-        [request setValue:nil forHTTPHeaderField:AREigenLocalTemporaryUserIDHeader];
     }
 
     return request;

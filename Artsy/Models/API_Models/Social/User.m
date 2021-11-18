@@ -13,12 +13,6 @@
     return [[ARUserManager sharedManager] currentUser];
 }
 
-+ (BOOL)isLocalTemporaryUser
-{
-    ARUserManager *userManager = [ARUserManager sharedManager];
-    return userManager.currentUser == nil;
-}
-
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{

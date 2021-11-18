@@ -5,12 +5,6 @@
 
 NSString *const ARUserIdentifierDefault = @"ARUserIdentifier";
 
-
-NSString *const ARAppleDisplayNameKeychainKey = @"ARAppleDisplayNameKeychainKey";
-NSString *const ARAppleEmailKeyChainKey = @"ARAppleEmailKeyChainKey";
-
-NSString *const ARUsernameKeychainKey = @"ARUsernameKeychainKey";
-NSString *const ARPasswordKeychainKey = @"ARPasswordKeychainKey";
 NSString *const AROAuthTokenDefault = @"AROAuthToken";
 NSString *const AROAuthTokenExpiryDateDefault = @"AROAuthTokenExpiryDate";
 

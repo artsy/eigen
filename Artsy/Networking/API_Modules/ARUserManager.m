@@ -29,17 +29,12 @@
 
 NSString *const ARUserSessionStartedNotification = @"ARUserSessionStarted";
 
-NSString *ARLocalTemporaryUserNameKey = @"ARLocalTemporaryUserName";
-NSString *ARLocalTemporaryUserEmailKey = @"ARLocalTemporaryUserEmail";
-NSString *ARLocalTemporaryUserUUID = @"ARLocalTemporaryUserUUID";
-
 static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
 
 @interface ARUserManager ()
 @property (nonatomic, strong) NSObject<ARKeychainable> *keychain;
 @property (nonatomic, strong) User *currentUser;
-@property (nonatomic, assign) BOOL didCreateAccountThisSession;
 @end
 
 
@@ -55,10 +50,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     return _sharedManager;
 }
 
-+ (BOOL)didCreateAccountThisSession
-{
-    return self.sharedManager.didCreateAccountThisSession;
-}
 
 - (instancetype)init
 {
@@ -165,14 +156,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     }
 }
 
-+ (void)logoutWithCompletion:(RCTResponseSenderBlock)completion
-{
-    [ArtsyAPI deleteAPNTokenForCurrentDeviceWithCompletion:^ {
-        [[self class] clearUserData];
-        completion(nil);
-    }];
-}
-
 + (void)clearUserData
 {
     [self clearUserData:[self sharedManager]];
@@ -195,8 +178,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 
     [manager.keychain removeKeychainStringForKey:AROAuthTokenDefault];
     [manager.keychain removeKeychainStringForKey:ARXAppTokenKeychainKey];
-    [manager.keychain removeKeychainStringForKey:ARUsernameKeychainKey];
-    [manager.keychain removeKeychainStringForKey:ARPasswordKeychainKey];
 
     [manager deleteHTTPCookies];
     [ARRouter setAuthToken:nil];
@@ -247,93 +228,11 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     return [documentsPath stringByAppendingPathComponent:userID];
 }
 
-#pragma mark -
-#pragma mark Trial User
-
-- (void)setLocalTemporaryUserName:(NSString *)localTemporaryUserName
-{
-    if (localTemporaryUserName) {
-        [self.keychain setKeychainStringForKey:ARLocalTemporaryUserNameKey value:localTemporaryUserName];
-    } else {
-        [self.keychain removeKeychainStringForKey:ARLocalTemporaryUserNameKey];
-    }
-}
-
-- (void)setLocalTemporaryUserEmail:(NSString *)localTemporaryUserEmail
-{
-    if (localTemporaryUserEmail) {
-        [self.keychain setKeychainStringForKey:ARLocalTemporaryUserEmailKey value:localTemporaryUserEmail];
-    } else {
-        [self.keychain removeKeychainStringForKey:ARLocalTemporaryUserEmailKey];
-    }
-}
-
-- (NSString *)localTemporaryUserName
-{
-    return [self.keychain keychainStringForKey:ARLocalTemporaryUserNameKey];
-}
-
-- (NSString *)localTemporaryUserEmail
-{
-    return [self.keychain keychainStringForKey:ARLocalTemporaryUserEmailKey];
-}
-
-- (NSString *)localTemporaryUserUUID
-{
-    NSString *uuid = [self.keychain keychainStringForKey:ARLocalTemporaryUserUUID];
-    if (!uuid) {
-        uuid = [[NSUUID UUID] UUIDString];
-        [self.keychain setKeychainStringForKey:ARLocalTemporaryUserUUID value:uuid];
-    }
-    return uuid;
-}
-
-- (void)resetLocalTemporaryUserUUID
-{
-    [self.keychain removeKeychainStringForKey:ARLocalTemporaryUserUUID];
-}
-
-#pragma mark - Sign in With Apple
-- (NSString *)appleDisplayName
-{
-    return [self.keychain keychainStringForKey:ARAppleDisplayNameKeychainKey];
-}
-
-- (NSString *)appleEmail
-{
-    return [self.keychain keychainStringForKey:ARAppleEmailKeyChainKey];
-}
-
-- (void)storeAppleDisplayName:(NSString *)displayName email:(NSString *)email
-{
-    [self.keychain setKeychainStringForKey:ARAppleDisplayNameKeychainKey value:displayName];
-    [self.keychain setKeychainStringForKey:ARAppleEmailKeyChainKey value:email];
-}
-
-- (void)resetAppleStoredCredentials
-{
-    [self.keychain removeKeychainStringForKey:ARAppleDisplayNameKeychainKey];
-    [self.keychain removeKeychainStringForKey:ARAppleEmailKeyChainKey];
-}
-
 #pragma mark - Shared Web Credentials
 
 - (void)disableSharedWebCredentials;
 {
     ARUserManagerDisableSharedWebCredentials = YES;
-}
-
-- (void)tryStoreSavedCredentialsToWebKeychain
-{
-    NSString *email = [self.keychain keychainStringForKey:ARUsernameKeychainKey];
-    NSString *password = [self.keychain keychainStringForKey:ARPasswordKeychainKey];
-
-    if (!email || !password) {
-        NSLog(@"Skipping saving credentials to safari keychain because username or password is missing");
-        return;
-    }
-
-    [self saveSharedWebCredentialsWithEmail:email password:password];
 }
 
 - (void)saveSharedWebCredentialsWithEmail:(NSString *)email
@@ -353,12 +252,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 #endif
         }
     });
-}
-
-- (void)storeUsername:(NSString *)username password:(NSString *)password
-{
-    [self.keychain setKeychainStringForKey:ARUsernameKeychainKey value:username];
-    [self.keychain setKeychainStringForKey:ARPasswordKeychainKey value:password];
 }
 
 @end

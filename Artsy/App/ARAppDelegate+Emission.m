@@ -117,10 +117,6 @@ SOFTWARE.
 
     [emission.notificationsManagerModule afterBootstrap:^{
         [ARRouter setup];
-
-        if (launchCount == 3) {
-            [[ARUserManager sharedManager] tryStoreSavedCredentialsToWebKeychain];
-        }
     }];
 
     // Disable default React Native dev menu shake motion handler
@@ -151,11 +147,6 @@ SOFTWARE.
         } failure:^(NSError *error) {
             block(@[ RCTJSErrorFromNSError(error)]);
         }];
-    };
-#pragma mark - Log out
-
-    emission.APIModule.userDataClearer = ^(RCTPromiseResolveBlock completion) {
-        [ARUserManager logoutWithCompletion:completion];
     };
 
 #pragma mark - Native Module: Events/Analytics

@@ -1,9 +1,3 @@
-extern NSString *const ARAppleDisplayNameKeychainKey;
-extern NSString *const ARAppleEmailKeyChainKey;
-
-extern NSString *const ARUsernameKeychainKey;
-extern NSString *const ARPasswordKeychainKey;
-
 extern NSString *const ARUserIdentifierDefault;
 
 extern NSString *const AROAuthTokenDefault;

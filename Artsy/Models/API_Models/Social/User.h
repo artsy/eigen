@@ -30,7 +30,6 @@ typedef NS_ENUM(NSInteger, ARCollectorLevel) {
 
 
 + (User *)currentUser;
-+ (BOOL)isLocalTemporaryUser;
 
 - (void)userFollowsProfile:(Profile *)profile success:(void (^)(BOOL doesFollow))success failure:(void (^)(NSError *error))failure;
 
