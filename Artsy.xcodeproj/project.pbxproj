@@ -474,6 +474,7 @@
 		FC61189E2746FE2300612581 /* ArtworkStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC61189D2746FE2300612581 /* ArtworkStore.swift */; };
 		FC6118A02747001B00612581 /* ArtworkImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC61189F2747001B00612581 /* ArtworkImage.swift */; };
 		FC6118A2274704FA00612581 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6118A1274704FA00612581 /* Schedule.swift */; };
+		FC6118A42747068300612581 /* FullBleed+Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6118A32747068300612581 /* FullBleed+Timeline.swift */; };
 		FCB45B242746EF3700232337 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCB45B232746EF3700232337 /* WidgetKit.framework */; };
 		FCB45B262746EF3700232337 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCB45B252746EF3700232337 /* SwiftUI.framework */; };
 		FCB45B292746EF3700232337 /* ArtsyWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B282746EF3700232337 /* ArtsyWidgets.swift */; };
@@ -1234,6 +1235,7 @@
 		FC61189D2746FE2300612581 /* ArtworkStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtworkStore.swift; sourceTree = "<group>"; };
 		FC61189F2747001B00612581 /* ArtworkImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkImage.swift; sourceTree = "<group>"; };
 		FC6118A1274704FA00612581 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
+		FC6118A32747068300612581 /* FullBleed+Timeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FullBleed+Timeline.swift"; sourceTree = "<group>"; };
 		FCB45B222746EF3700232337 /* ArtsyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArtsyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCB45B232746EF3700232337 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		FCB45B252746EF3700232337 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -3031,6 +3033,7 @@
 				FCB45B3C2746F0F100232337 /* FullBleed.swift */,
 				FCB45B3A2746F0CC00232337 /* FullBleed+Entry.swift */,
 				FCB45B382746F0B800232337 /* FullBleed+Provider.swift */,
+				FC6118A32747068300612581 /* FullBleed+Timeline.swift */,
 				FCB45B362746F0A500232337 /* FullBleed+View.swift */,
 				FCB45B432746F42800232337 /* FullBleed+Widget.swift */,
 			);
@@ -3876,6 +3879,7 @@
 				FC6118A02747001B00612581 /* ArtworkImage.swift in Sources */,
 				FCB45B3B2746F0CC00232337 /* FullBleed+Entry.swift in Sources */,
 				FCB45B472746F6FD00232337 /* PrimaryText.swift in Sources */,
+				FC6118A42747068300612581 /* FullBleed+Timeline.swift in Sources */,
 				FCB45B402746F26E00232337 /* Artwork.swift in Sources */,
 				FCB45B392746F0B800232337 /* FullBleed+Provider.swift in Sources */,
 				FCB45B422746F28700232337 /* Artist.swift in Sources */,

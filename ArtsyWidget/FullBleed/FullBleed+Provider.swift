@@ -12,14 +12,8 @@ extension FullBleed {
             completion(entry)
         }
         
-        func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-            ArtworkStore.fetch() { artworks in
-                let schedule = Schedule()
-                let updateTimesToArtworks = Array(zip(schedule.updateTimes, artworks))
-                let entries = updateTimesToArtworks.map() { (date, artwork) in Entry(artwork: artwork, date: date) }
-                let timeline = Timeline(entries: entries, policy: .after(schedule.nextUpdate))
-                completion(timeline)
-            }
+        func getTimeline(in context: Context, completion: @escaping (WidgetKit.Timeline<Entry>) -> ()) {
+            Timeline.generate(completion: completion)
         }
     }
 }
