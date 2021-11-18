@@ -82,7 +82,7 @@ export const ComparableWorksFragmentContainer = createFragmentContainer(Comparab
 export const tracks = {
   tapAuctionResult: (auctionResultId: string, index: number) => ({
     action: ActionType.tappedAuctionResultGroup,
-    context_module: ContextModule.auctionResultComparableWorks, // TODO: Add to Cohesion
+    context_module: ContextModule.auctionResultComparableWorks,
     context_screen_owner_type: OwnerType.auctionResult,
     destination_screen_owner_type: OwnerType.auctionResult,
     destination_screen_owner_id: auctionResultId,
