@@ -2,7 +2,6 @@
 
 #import "ArtsyAPI+Notifications.h"
 #import "ArtsyAPI+DeviceTokens.h"
-#import "ArtsyAPI+CurrentUserFunctions.h"
 #import <Analytics/SEGAnalytics.h>
 #import <Segment-Appboy/SEGAppboyIntegrationFactory.h>
 

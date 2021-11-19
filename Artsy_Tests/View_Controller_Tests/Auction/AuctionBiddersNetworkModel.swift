@@ -6,6 +6,7 @@ import Interstellar
 @testable
 import Artsy
 
+
 class AuctionBiddersNetworkModelSpec: QuickSpec {
     override func spec() {
         let bidderJSON: NSArray = [["id": "bidder", "sale": ["id": "sale"]]]
@@ -30,7 +31,7 @@ class AuctionBiddersNetworkModelSpec: QuickSpec {
                 }
             }
 
-            expect(bidders).to( haveCount(1) )
+            expect(bidders).to(haveCount(1))
         }
 
 

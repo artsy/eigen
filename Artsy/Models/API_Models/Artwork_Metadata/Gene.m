@@ -94,16 +94,6 @@
     }];
 }
 
-- (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure
-{
-    __weak typeof(self) wself = self;
-    [ArtsyAPI checkFavoriteStatusForGene:self success:^(BOOL result) {
-        __strong typeof (wself) sself = wself;
-        sself.followed = result;
-        success(result ? ARHeartStatusYes : ARHeartStatusNo);
-    } failure:failure];
-}
-
 - (BOOL)isEqual:(id)object
 {
     if ([object isKindOfClass:[self class]]) {
@@ -129,23 +119,6 @@
 - (NSString *)publicArtsyPath
 {
     return [NSString stringWithFormat:@"/gene/%@", self.geneID];
-}
-
-#pragma mark - ARSpotlightMetadataProvider
-
-- (NSString *)spotlightDescription;
-{
-    return self.geneDescription.length > 0 ? nil : @"Category on Artsy";
-}
-
-- (NSString *)spotlightMarkdownDescription;
-{
-    return self.geneDescription;
-}
-
-- (NSURL *)spotlightThumbnailURL;
-{
-    return self.smallImageURL;
 }
 
 @end

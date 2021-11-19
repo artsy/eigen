@@ -31,7 +31,6 @@ it(@"migrates model from version 0 to 1", ^{
     User *deserializedUser = [NSKeyedUnarchiver unarchiveObjectWithFile:userData_v0];
     expect(deserializedUser.userID).to.equal(@"4dc805b18101da0001000489");
     expect(deserializedUser.defaultProfileID).to.equal(@"dblockdotorg");
-    expect(deserializedUser.name).to.equal(@"dB.");
     expect(deserializedUser.email).to.equal(@"dblock@dblock.org");
 });
 
@@ -40,7 +39,6 @@ it(@"loads model version 1", ^{
     User *deserializedUser = [NSKeyedUnarchiver unarchiveObjectWithFile:userData_v1];
     expect(deserializedUser.userID).to.equal(@"4dc805b18101da0001000489");
     expect(deserializedUser.defaultProfileID).to.equal(@"dblockdotorg");
-    expect(deserializedUser.name).to.equal(@"dB.");
     expect(deserializedUser.email).to.equal(@"dblock@dblock.org");
 });
 

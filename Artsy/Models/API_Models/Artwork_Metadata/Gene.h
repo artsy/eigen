@@ -26,8 +26,6 @@
 
 - (instancetype)initWithGeneID:(NSString *)geneID;
 
-- (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure;
-
 - (NSURL *)smallImageURL;
 - (NSURL *)largeImageURL;
 @end

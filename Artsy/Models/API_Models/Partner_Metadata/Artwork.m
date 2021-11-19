@@ -422,25 +422,4 @@
     return self.title;
 }
 
-#pragma mark - ARSpotlightMetadataProvider
-
-- (NSString *)spotlightDescription;
-{
-    if (self.date.length > 0) {
-        return [NSString stringWithFormat:@"%@, %@\n%@", self.artist.name, self.date, self.medium];
-    } else {
-        return [NSString stringWithFormat:@"%@\n%@", self.artist.name, self.medium];
-    }
-}
-
-- (NSURL *)spotlightThumbnailURL;
-{
-    return self.urlForThumbnail;
-}
-
-- (NSString *)availablityString
-{
-    return [[self.class availabilityJSONTransformer] reverseTransformedValue:@(self.availability)];
-}
-
 @end

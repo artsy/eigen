@@ -21,18 +21,6 @@
                          gotUser:(void (^)(User *currentUser))success
            authenticationFailure:(void (^)(NSError *error))authFail
                   networkFailure:(void (^)(NSError *error))networkFailure;
-+ (void)stubAndLoginWithFacebookToken;
-+ (void)stubbedLoginWithFacebookToken:(NSString *)token
-               successWithCredentials:(void (^)(NSString *, NSDate *))credentials
-                              gotUser:(void (^)(User *))success
-                authenticationFailure:(void (^)(NSError *error))authFail
-                       networkFailure:(void (^)(NSError *))networkFailure;
-+ (void)stubAndLoginWithAppleUID;
-+ (void)stubbedLoginWithAppleUID:(NSString *)appleUID
-          successWithCredentials:(void (^)(NSString *, NSDate *))credentials
-                         gotUser:(void (^)(User *))success
-           authenticationFailure:(void (^)(NSError *error))authFail
-                  networkFailure:(void (^)(NSError *))networkFailure;
 + (NSString *)userDataPath;
 
 @end

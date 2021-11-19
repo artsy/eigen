@@ -21,7 +21,5 @@
 
 - (instancetype)initWithArtistID:(NSString *)artistID;
 
-- (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure;
-
 - (NSURL *)squareImageURL;
 @end
