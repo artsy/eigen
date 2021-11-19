@@ -16,6 +16,7 @@ import {
 } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { Box, Spacer } from "palette"
 import React, { useContext, useEffect, useMemo, useState } from "react"
@@ -89,6 +90,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   ...props
 }) => {
   const tracking = useTracking()
+  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
@@ -103,6 +105,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const artworks = artist.artworks
   const artworksCount = artworks?.edges?.length
   const artworksTotal = artworks?.counts?.total ?? 0
+  const shouldShowSavedSearchButton = allowedFiltersForSavedSearch.length > 0 || isEnabledImprovedAlertsFlow
 
   useArtworkFilters({
     relay,
@@ -139,8 +142,12 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   useEffect(() => {
     setJSX(
       <Box backgroundColor="white">
-        <ArtworksFilterHeader onFilterPress={openFilterModal} selectedFiltersCount={appliedFiltersCount}>
-          {allowedFiltersForSavedSearch.length > 0 ? (
+        <ArtworksFilterHeader
+          onFilterPress={openFilterModal}
+          selectedFiltersCount={appliedFiltersCount}
+          childrenPosition={isEnabledImprovedAlertsFlow ? "left" : "right"}
+        >
+          {shouldShowSavedSearchButton ? (
             <SavedSearchButtonQueryRenderer
               filters={allowedFiltersForSavedSearch}
               artistId={artist.internalID}
@@ -152,7 +159,14 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
         </ArtworksFilterHeader>
       </Box>
     )
-  }, [artworksTotal, filterParams, aggregations, allowedFiltersForSavedSearch, appliedFiltersCount])
+  }, [
+    artworksTotal,
+    filterParams,
+    aggregations,
+    allowedFiltersForSavedSearch,
+    appliedFiltersCount,
+    shouldShowSavedSearchButton,
+  ])
 
   const filteredArtworks = () => {
     if (artworksCount === 0) {
