@@ -199,6 +199,44 @@ describe("AuthModel", () => {
       })
       expect(result).toBe(false)
     })
+
+    it("does not clear recent searches if user id has not changed after the previous session", async () => {
+      const clearRecentSearchesSpy = jest.spyOn(GlobalStore.actions.search, "clearRecentSearches")
+      __globalStoreTestUtils__?.injectState({
+        auth: {
+          userID: null,
+          previousSessionUserID: "my-user-id",
+        },
+      })
+      mockFetchJsonOnce({ access_token: "my-access-token" }, 201)
+      mockFetchJsonOnce({
+        id: "my-user-id",
+      })
+      await GlobalStore.actions.auth.signIn({
+        email: "user@example.com",
+        password: "hunter2",
+      })
+      expect(clearRecentSearchesSpy).not.toHaveBeenCalled()
+    })
+
+    it("clears recent searches if user id has changed after the previous session", async () => {
+      const clearRecentSearchesSpy = jest.spyOn(GlobalStore.actions.search, "clearRecentSearches")
+      __globalStoreTestUtils__?.injectState({
+        auth: {
+          userID: null,
+          previousSessionUserID: "prev-user-id",
+        },
+      })
+      mockFetchJsonOnce({ access_token: "my-access-token" }, 201)
+      mockFetchJsonOnce({
+        id: "my-user-id",
+      })
+      await GlobalStore.actions.auth.signIn({
+        email: "user@example.com",
+        password: "hunter2",
+      })
+      expect(clearRecentSearchesSpy).toHaveBeenCalled()
+    })
   })
 
   describe("signUp", () => {
