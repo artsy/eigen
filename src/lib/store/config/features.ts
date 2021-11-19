@@ -166,6 +166,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableSavedSearchToggles",
   },
+  AREnableImprovedAlertsFlow: {
+    readyForRelease: false,
+    description: "Enable Improved Alerts flow",
+    showInAdminMenu: true,
+  },
   AREnableWebPImages: {
     readyForRelease: true,
     description: "Enable WebP Images",
