@@ -34,6 +34,7 @@ describe("EditSavedSearchAlert", () => {
 
     mockEnvironmentPayload(mockEnvironment, {
       SearchCriteria: () => searchCriteria,
+      Me: () => meMocked,
     })
     mockEnvironmentPayload(mockEnvironment, {
       FilterArtworksConnection: () => filterArtworks,
@@ -48,6 +49,7 @@ describe("EditSavedSearchAlert", () => {
 
     mockEnvironmentPayload(mockEnvironment, {
       SearchCriteria: () => searchCriteria,
+      Me: () => meMocked,
     })
     mockEnvironmentPayload(mockEnvironment, {
       FilterArtworksConnection: () => filterArtworks,
@@ -75,6 +77,7 @@ describe("EditSavedSearchAlert", () => {
 
     mockEnvironmentPayload(mockEnvironment, {
       SearchCriteria: () => searchCriteria,
+      Me: () => meMocked,
     })
     mockEnvironmentPayload(mockEnvironment, {
       Artist: () => ({
@@ -102,6 +105,7 @@ describe("EditSavedSearchAlert", () => {
 
       mockEnvironmentPayload(mockEnvironment, {
         SearchCriteria: () => searchCriteria,
+        Me: () => meMocked,
       })
       mockEnvironmentPayload(mockEnvironment, {
         FilterArtworksConnection: () => filterArtworks,
@@ -122,6 +126,7 @@ describe("EditSavedSearchAlert", () => {
             push: false,
           },
         }),
+        Me: () => meMocked,
       })
       mockEnvironmentPayload(mockEnvironment, {
         FilterArtworksConnection: () => filterArtworks,
@@ -141,6 +146,7 @@ describe("EditSavedSearchAlert", () => {
             push: false,
           },
         }),
+        Me: () => meMocked,
       })
       mockEnvironmentPayload(mockEnvironment, {
         FilterArtworksConnection: () => filterArtworks,
@@ -160,6 +166,7 @@ describe("EditSavedSearchAlert", () => {
             email: false,
           },
         }),
+        Me: () => meMocked,
       })
       mockEnvironmentPayload(mockEnvironment, {
         FilterArtworksConnection: () => filterArtworks,
@@ -212,4 +219,8 @@ const filterArtworks = {
       ],
     },
   ],
+}
+
+const meMocked = {
+  emailFrequency: "none",
 }

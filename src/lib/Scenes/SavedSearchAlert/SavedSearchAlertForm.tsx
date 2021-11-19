@@ -4,7 +4,7 @@ import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/Saved
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
-import { Dialog } from "palette"
+import { Dialog, quoteLeft, quoteRight } from "palette"
 import React, { useEffect, useState } from "react"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
 import { useTracking } from "react-tracking"
@@ -12,6 +12,7 @@ import { Form } from "./Components/Form"
 import { extractPills, getNamePlaceholder } from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
 import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
+import { updateEmailFrequency } from "./mutations/updateEmailFrequency"
 import { updateSavedSearchAlert } from "./mutations/updateSavedSearchAlert"
 import {
   SavedSearchAlertFormPropsBase,
@@ -23,6 +24,7 @@ import {
 export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase {
   initialValues: SavedSearchAlertFormValues
   savedSearchAlertId?: string
+  userAllowsEmails: boolean
   onComplete?: (result: SavedSearchAlertMutationResult) => void
   onDeleteComplete?: () => void
 }
@@ -35,6 +37,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     savedSearchAlertId,
     artistId,
     artistName,
+    userAllowsEmails,
     onComplete,
     onDeleteComplete,
     ...other
@@ -43,6 +46,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const pills = extractPills(filters, aggregations)
   const tracking = useTracking()
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
+  const [shouldShowEmailWarning, setShouldShowEmailWarning] = useState(!userAllowsEmails)
   const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const formik = useFormik<SavedSearchAlertFormValues>({
     initialValues,
@@ -65,6 +69,15 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
       try {
         let result: SavedSearchAlertMutationResult
+
+        /**
+         * We perform the mutation only if
+         *  - the "Email Alerts" toggle was initially disabled and the user turned it on
+         *  - the user previously opted out of all marketing emails
+         */
+        if (enableSavedSearchToggles && !userAllowsEmails && !initialValues.email && values.email) {
+          await updateEmailFrequency("alerts_only")
+        }
 
         if (isUpdateForm) {
           const response = await updateSavedSearchAlert(userAlertSettings, savedSearchAlertId!)
@@ -96,6 +109,14 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   useEffect(() => {
     formik.setFieldValue("push", initialValues.push)
   }, [initialValues.push])
+
+  useEffect(() => {
+    formik.setFieldValue("email", initialValues.email)
+  }, [initialValues.email])
+
+  useEffect(() => {
+    setShouldShowEmailWarning(!userAllowsEmails)
+  }, [userAllowsEmails])
 
   const requestNotificationPermissions = () => {
     // permissions not determined: Android should never need this
@@ -192,6 +213,24 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   }
 
   const handleToggleEmailNotification = (enabled: boolean) => {
+    // Show the modal only when the user is opted out of email and changes the "email alerts" toggle from off to on state
+    if (shouldShowEmailWarning && !initialValues.email && enabled) {
+      const title = "Artsy would like to send you email notifications"
+      const description = `After clicking ${quoteLeft}Save Alert${quoteRight}, you are opting in to receive alert notifications via email. You can update your email preferences by clicking into any alert listed in your profile tab and clicking ${quoteLeft}Update email preferences${quoteRight} underneath the ${quoteLeft}Email Alerts${quoteRight} toggle`
+
+      Alert.alert(title, description, [
+        { text: "Cancel" },
+        {
+          text: "Accept",
+          onPress: () => {
+            setShouldShowEmailWarning(false)
+            formik.setFieldValue("email", enabled)
+          },
+        },
+      ])
+      return
+    }
+
     formik.setFieldValue("email", enabled)
   }
 
