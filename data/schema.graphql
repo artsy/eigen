@@ -5663,7 +5663,7 @@ input CreateSubmissionMutationInput {
   medium: String
   minimumPriceDollars: Int
   provenance: String
-  sessionId: String
+  sessionID: String
   signature: Boolean
 
   # If this artwork exists in Gravity, its ID
@@ -12489,7 +12489,7 @@ input UpdateSubmissionMutationInput {
   medium: String
   minimumPriceDollars: Int
   provenance: String
-  sessionId: String
+  sessionID: String
   signature: Boolean
   state: ConsignmentSubmissionStateAggregation
   title: String
