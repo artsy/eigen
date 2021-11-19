@@ -25,9 +25,10 @@ export const Versions = {
   PendingPushNotification: 13,
   CopyIOSNativeSessionAuthToTS: 14,
   AddExperimentsModel: 15,
+  AddPreviousSessionUserID: 16,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddExperimentsModel
+export const CURRENT_APP_VERSION = Versions.AddPreviousSessionUserID
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -106,6 +107,9 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddExperimentsModel]: (state) => {
     state.config.experiments = {}
+  },
+  [Versions.AddPreviousSessionUserID]: (state) => {
+    state.auth.previousSessionUserID = null
   },
 }
 
