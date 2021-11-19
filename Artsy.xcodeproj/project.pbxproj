@@ -493,6 +493,12 @@
 		FCB45B472746F6FD00232337 /* PrimaryText.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B462746F6FD00232337 /* PrimaryText.swift */; };
 		FCB45B492746F72800232337 /* SecondaryText.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B482746F72800232337 /* SecondaryText.swift */; };
 		FCB45B4B2746F81F00232337 /* ArtworkUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B4A2746F81F00232337 /* ArtworkUrl.swift */; };
+		FCD47BD8274833EF003F27B8 /* ScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD47BD6274833EF003F27B8 /* ScheduleTests.swift */; };
+		FCD47BD9274833EF003F27B8 /* ArtworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD47BD7274833EF003F27B8 /* ArtworkTests.swift */; };
+		FCD47BDA274833FF003F27B8 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6118A1274704FA00612581 /* Schedule.swift */; };
+		FCD47BDB27483407003F27B8 /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B3F2746F26E00232337 /* Artwork.swift */; };
+		FCD47BDC2748347F003F27B8 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B412746F28700232337 /* Artist.swift */; };
+		FCD47BDD27483482003F27B8 /* ArtworkImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC61189F2747001B00612581 /* ArtworkImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1258,6 +1264,8 @@
 		FCB45B462746F6FD00232337 /* PrimaryText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryText.swift; sourceTree = "<group>"; };
 		FCB45B482746F72800232337 /* SecondaryText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryText.swift; sourceTree = "<group>"; };
 		FCB45B4A2746F81F00232337 /* ArtworkUrl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkUrl.swift; sourceTree = "<group>"; };
+		FCD47BD6274833EF003F27B8 /* ScheduleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleTests.swift; sourceTree = "<group>"; };
+		FCD47BD7274833EF003F27B8 /* ArtworkTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtworkTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2921,13 +2929,14 @@
 		B3ECE82B1819D1E6009F5C5B /* Artsy Tests */ = {
 			isa = PBXGroup;
 			children = (
-				B3ECE82C1819D1E6009F5C5B /* Supporting Files */,
 				60E738721C64AC7C00AC381B /* Analytics Tests */,
 				3C205B5718900091004280E0 /* App Tests */,
-				0CE0FE251B8E29CC00A921FD /* Stubs */,
+				FCD47BD5274833CB003F27B8 /* ArtsyWidget */,
 				3C3FEA8B188433CB00E1A16F /* Extensions */,
 				B31BBE10181EFA08001C623C /* Model Tests */,
 				3CAED1791880268E00840608 /* Networking Tests */,
+				0CE0FE251B8E29CC00A921FD /* Stubs */,
+				B3ECE82C1819D1E6009F5C5B /* Supporting Files */,
 				3C5C7E3D18970E73003823BB /* Util Tests */,
 				3CB97D8D18870979008C44FE /* View Controller Tests */,
 				B31BBE0F181EF9F7001C623C /* View Tests */,
@@ -3069,6 +3078,15 @@
 				FC6118A1274704FA00612581 /* Schedule.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		FCD47BD5274833CB003F27B8 /* ArtsyWidget */ = {
+			isa = PBXGroup;
+			children = (
+				FCD47BD7274833EF003F27B8 /* ArtworkTests.swift */,
+				FCD47BD6274833EF003F27B8 /* ScheduleTests.swift */,
+			);
+			path = ArtsyWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3791,7 +3809,9 @@
 				B30FEF5A181EEA47009E4EAD /* ARBidButtonTests.m in Sources */,
 				60D70DE41D01F420008888D1 /* LiveAuctionLotViewModelSpecs.swift in Sources */,
 				5E86A6171F73183B00D00302 /* AFHTTPRequestOperationJSONTests.m in Sources */,
+				FCD47BD8274833EF003F27B8 /* ScheduleTests.swift in Sources */,
 				609624C91CEF3304002F3F33 /* ARTextViewTests.m in Sources */,
+				FCD47BDD27483482003F27B8 /* ArtworkImage.swift in Sources */,
 				6019A90D1C7F9EF600E292FA /* LiveAuctionLotSetViewControllerTests.swift in Sources */,
 				60B8D1241CBB7C1D006C3E42 /* TextStackTests.swift in Sources */,
 				5E174F5C1CADB35800657743 /* LiveAuctionStateReconcilerSpec.swift in Sources */,
@@ -3810,6 +3830,7 @@
 				E6718316194A595F001A5566 /* ARTestContext.m in Sources */,
 				3CE0DA3218A13604000E537A /* OHHTTPStubs+Artsy.m in Sources */,
 				5EACFACB1C752771004112FF /* SaleArtworkViewModelTests.swift in Sources */,
+				FCD47BDB27483407003F27B8 /* Artwork.swift in Sources */,
 				3CEE0B6A18A18CDA00FEA6E6 /* ProfileTests.m in Sources */,
 				60A309AA1AC99B47000783C1 /* ARInternalShareValidatorTests.m in Sources */,
 				51D141B71AF0F14B000091CF /* ARTestHelper.m in Sources */,
@@ -3844,6 +3865,7 @@
 				D35D9D5C1ACB4FF800E67A1D /* ARCustomEigenLabelTests.m in Sources */,
 				5EBDC94E19792C3A0082C514 /* ARNavigationControllerTests.m in Sources */,
 				5EC27DCC1F6AFBC000D2A794 /* ArtsyAPI+GraphQLTests.m in Sources */,
+				FCD47BDA274833FF003F27B8 /* Schedule.swift in Sources */,
 				60ED311F1C8F73450071DD89 /* LiveAuctionLotViewControllerTests.swift in Sources */,
 				5E3817011CC1572100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayoutTests.swift in Sources */,
 				60107F161CC7DC1D002F772E /* ARTestImageCachingFunctions.swift in Sources */,
@@ -3855,6 +3877,7 @@
 				5E7598061D9D92F60084AAEC /* LiveAuctionLotBidHistoryGestureControllerTests.swift in Sources */,
 				3C7A7FA718C6EDAB00E8D336 /* ArtworkTests.m in Sources */,
 				5EE9A3E11D1211230014A3C9 /* BiddingIncrementSpecs.swift in Sources */,
+				FCD47BD9274833EF003F27B8 /* ArtworkTests.swift in Sources */,
 				E67E1DB219475642004252E0 /* ARAnimatedTickViewTest.m in Sources */,
 				604151E51A7998E300D5F9CA /* NSDate+RangeTests.m in Sources */,
 				5108A7BC1BA1AB2C0011CD72 /* ARAppActivityContinuationDelegateTests.m in Sources */,
@@ -3871,6 +3894,7 @@
 				608EE3DB19954CEB001F4FE0 /* UIViewController+Testing.m in Sources */,
 				342F9E0892E99A2F66657964 /* Artwork+Extensions.m in Sources */,
 				60DCDAD71C6533DF00BB61D7 /* ARSerifNavigationViewControllerSpec.m in Sources */,
+				FCD47BDC2748347F003F27B8 /* Artist.swift in Sources */,
 				342F9715E899AC7D24E70734 /* ORStackViewArtsyCategoriesTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
