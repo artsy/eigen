@@ -18,7 +18,7 @@
 // user defaults, and so is ran at the end.
 // FIXME: Migrate to using DI for defaults.
 
-SpecBegin(ZARUserManager);
+SpecBegin(ARUserManager);
 
 beforeEach(^{
     [ARUserManager clearUserData];
@@ -63,46 +63,6 @@ describe(@"login", ^{
             expect([request valueForHTTPHeaderField:ARAuthHeader]).toNot.beNil();
         });
     });
-
-
-    it(@"fails with a missing client id", ^{
-        [OHHTTPStubs stubJSONResponseAtPath:@"/oauth2/access_token" withResponse:@{ @"error": @"invalid_client", @"error_description": @"missing client_id" } andStatusCode:401];
-
-        [ARUserManager stubbedLoginWithUsername:[ARUserManager stubUserEmail] password:[ARUserManager stubUserPassword]
-            successWithCredentials:^(NSString *accessToken, NSDate *tokenExpiryDate) {
-                XCTFail(@"Expected API failure.");
-            } gotUser:^(User *currentUser) {
-                XCTFail(@"Expected API failure.");
-            } authenticationFailure:^(NSError *error) {
-
-                NSHTTPURLResponse *response = (NSHTTPURLResponse *) error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey];
-                expect(response.statusCode).to.equal(401);
-
-                NSData *data = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
-                NSDictionary *recoverySuggestion = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                expect(recoverySuggestion).to.equal(@{ @"error_description" : @"missing client_id", @"error" : @"invalid_client" });
-            } networkFailure:^(NSError *error){
-                XCTFail(@"Expected API failure.");
-            }];
-    });
-
-    it(@"fails with an expired token", ^{
-        NSDate *yesterday = [NSDate dateWithTimeIntervalSinceNow: -(60.0f*60.0f*24.0f)];
-        ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
-        NSString *expiryDate = [dateFormatter stringFromDate:yesterday];
-
-        [ARUserManager stubAccessToken:[ARUserManager stubAccessToken] expiresIn:expiryDate];
-        [ARUserManager stubMe:[ARUserManager stubUserID] email:[ARUserManager stubUserEmail] name:[ARUserManager stubUserName]];
-
-        [ARUserManager stubbedLoginWithUsername:[ARUserManager stubUserEmail]
-                                       password:[ARUserManager stubUserPassword]
-                         successWithCredentials:nil
-                                        gotUser:nil
-                          authenticationFailure:nil
-                                 networkFailure:nil];
-
-        expect([[ARUserManager sharedManager] hasValidAuthenticationToken]).to.beFalsy();
-    });
 });
 
 describe(@"clearUserData", ^{
@@ -111,7 +71,7 @@ describe(@"clearUserData", ^{
         __block NSString * _userDataPath;
         
         beforeEach(^{
-            [ARUserManager stubAndLoginWithUsername];
+            [ARUserManager stubAndSetupUser];
             _userDataPath = [ARUserManager userDataPath];
             [ARUserManager clearUserData];
         });

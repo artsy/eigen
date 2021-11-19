@@ -213,6 +213,29 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     }
 }
 
+- (void)testOnly_setupUser:(NSString *)username
+{
+    NSString *token = @"123";
+    NSString *expiryDateString = @"2023-04-23T18:25:43.511Z";
+
+    [ARRouter setAuthToken:token];
+
+    ISO8601DateFormatter *dateFormatter = [[ISO8601DateFormatter alloc] init];
+    NSDate *expiryDate = [dateFormatter dateFromString:expiryDateString];
+
+
+    User *user = [User modelWithJSON:@{@"id": @"someuser",
+                                       @"email": @"some@email.com",
+                                       @"default_profile_id": @"123",
+                                       @"identity_verified": @YES,
+                                     }];
+
+    self.currentUser = user;
+    [self storeUserData];
+
+    [self saveUserOAuthToken:token expiryDate:expiryDate];
+}
+
 #pragma mark -
 #pragma mark Utilities
 
@@ -233,25 +256,6 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 - (void)disableSharedWebCredentials;
 {
     ARUserManagerDisableSharedWebCredentials = YES;
-}
-
-- (void)saveSharedWebCredentialsWithEmail:(NSString *)email
-                                 password:(NSString *)password;
-{
-    if (ARUserManagerDisableSharedWebCredentials) {
-        return;
-    }
-
-    NSString *host = ARRouter.baseWebURL.host;
-    SecAddSharedWebCredential((CFStringRef)host, (CFStringRef)email, (CFStringRef)password, ^(CFErrorRef error) {
-        if (error) {
-            ARErrorLog(@"Failed to save Shared Web Credentials: %@", (__bridge NSError *)error);
-        } else {
-#ifdef DEBUG
-            ARActionLog(@"Saved Shared Web Credentials for `%@' with `%@:%@'", host, email, password);
-#endif
-        }
-    });
 }
 
 @end

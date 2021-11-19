@@ -33,57 +33,20 @@
                                                                       @"name" : name }];
 }
 
-+ (void)stubAndLoginWithUsername
++ (void)stubAndSetupUser
 {
     [self stubAccessToken:[ARUserManager stubAccessToken] expiresIn:[ARUserManager stubAccessTokenExpiresIn]];
     [self stubMe:[ARUserManager stubUserID] email:[ARUserManager stubUserEmail] name:[ARUserManager stubUserName]];
 
-    [self stubbedLoginWithUsername:[ARUserManager stubUserEmail]
-            successWithCredentials:nil
-                           gotUser:nil
-             authenticationFailure:nil
-                    networkFailure:nil];
+    [self stubbedSetupUser:[ARUserManager stubUserEmail]];
 }
 
-+ (void)stubbedLoginWithUsername:(NSString *)username
-          successWithCredentials:(void (^)(NSString *accessToken, NSDate *expirationDate))credentials
-                         gotUser:(void (^)(User *currentUser))success
-           authenticationFailure:(void (^)(NSError *error))authFail
-                  networkFailure:(void (^)(NSError *error))networkFailure
++ (void)stubbedSetupUser:(NSString *)username
 {
     [[SDWebImageManager sharedManager] cancelAll];
-
-    __block BOOL done = NO;
-    [[ARUserManager sharedManager]
-        loginWithUsername:[ARUserManager stubUserEmail]
-        successWithCredentials:^(NSString *accessToken, NSDate *tokenExpiryDate) {
-         if (credentials) {
-             credentials(accessToken, tokenExpiryDate);
-         }
-        }
-        gotUser:^(User *currentUser) {
-         if (success) {
-             success(currentUser);
-         }
-             done = YES;
-        }
-        authenticationFailure:^(NSError *error) {
-         if (authFail) {
-             authFail(error);
-         }
-         done = YES;
-        }
-        networkFailure:^(NSError *error) {
-         if (networkFailure) {
-             networkFailure(error);
-         }
-         done = YES;
-        }];
-
-    while (!done) {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-    }
+    [[ARUserManager sharedManager] testOnly_setupUser:[ARUserManager stubUserEmail]];
 }
+
 
 #pragma mark -
 #pragma mark Utilities

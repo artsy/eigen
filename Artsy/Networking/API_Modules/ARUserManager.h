@@ -25,4 +25,7 @@ extern NSString *const ARUserSessionStartedNotification;
 - (void)handleAuthState:(NSString *)token
        expiryDateString:(NSString *)expiryDateString
                    JSON: (id) JSON;
+
+- (void)testOnly_setupUser:(NSString *)username;
+
 @end
