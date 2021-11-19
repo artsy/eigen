@@ -63,7 +63,7 @@ touched it for a while. In this case, it may be a good idea to just remove the e
 dependencies from scratch:
 
 ```
-rm -rf Pods/ && bundle exec pod install
+rm -rf Pods/ && yarn pod-install
 ```
 
 ### Working with local media assets
@@ -87,7 +87,6 @@ console.log(source) // => { uri: "pods/Assets/.../some-video.mp4" }
 ```
 
 See [Video.tsx](https://github.com/artsy/emission/tree/master/src/lib/Components/Video.tsx) for an example implementation and [here](https://facebook.github.io/react-native/docs/images#static-non-image-resources) for a list of supported file formats.
-
 
 ### Update native snapshots
 

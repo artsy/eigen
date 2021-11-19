@@ -13,7 +13,7 @@ tar -xvzf fonts.tar.gz -C ./fonts
 cp ./fonts/android/* android/app/src/main/assets/fonts
 
 # iOS
-# for now, ios is handled in the UIFonts pod. we should change that to be somewhere in our project dir.
+cp ./fonts/ios/* Pods/Artsy+UIFonts/Pod/Assets
 
 # Cleanup
 rm -rf ./fonts.tar.gz

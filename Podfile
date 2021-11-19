@@ -3,7 +3,7 @@
 using_bundler = defined? Bundler
 unless using_bundler
   puts "\nPlease re-run using:".red
-  puts "  bundle exec pod install\n\n"
+  puts "  yarn pod-install\n\n"
   exit(1)
 end
 
@@ -29,12 +29,20 @@ require 'fileutils'
 
 $ReactNativeMapboxGLIOSVersion = '~> 6.4'
 
-if !ENV['MAPBOX_DOWNLOAD_TOKEN']
-  raise "You need a MAPBOX_DOWNLOAD_TOKEN in your .env.shared file.\nIf you work at artsy, check 1password.\nOtherwise create your own in the mapbox dashboard. https://docs.mapbox.com/ios/maps/guides/install"
+def check_for_existing_netrc_file
+  if !ENV['MAPBOX_DOWNLOAD_TOKEN']
+    raise "You need a MAPBOX_DOWNLOAD_TOKEN in your .env.shared file.\nIf you work at artsy, check 1password.\nOtherwise create your own in the mapbox dashboard. https://docs.mapbox.com/ios/maps/guides/install"
+  end
+  # mapbox needs credentials in `~/.netrc`, so we put them there and then remove them in post-pod-install.rb
+  $netrc_path = File.expand_path('~/.netrc')
+  user_already_had_a_netrc_file = File.exists?($netrc_path)
+  if user_already_had_a_netrc_file
+    system("touch .i-had-a-netrc-file")
+  else
+    system("rm -rf .i-had-a-netrc-file")
+  end
 end
-# mapbox needs credentials in `~/.netrc`, so we put them there and then remove them in post_install
-$netrc_path = File.expand_path('~/.netrc')
-$user_already_had_netrc_file = File.exists?($netrc_path)
+
 def add_mapbox_creds
   File.open($netrc_path, 'a+', 0600) { |f|
     f.write("""machine api.mapbox.com
@@ -44,19 +52,9 @@ password #{ENV['MAPBOX_DOWNLOAD_TOKEN']}
   }
 end
 
-def remove_mapbox_creds
-  if $user_already_had_netrc_file
-    contents = File.read($netrc_path)
-    cleaned = contents.gsub(/machine api\.mapbox\.com\nlogin mapbox\npassword #{ENV['MAPBOX_DOWNLOAD_TOKEN']}\n/, "")
-    File.open($netrc_path, 'w') { |f|
-      f.write(cleaned)
-    }
-  else
-    File.delete($netrc_path)
-  end
-end
-
+check_for_existing_netrc_file
 add_mapbox_creds
+
 
 pre_install do |installer|
    $RNMBGL.pre_install(installer)
@@ -164,8 +162,6 @@ post_install do |installer|
   flipper_post_install(installer)
 
   $RNMBGL.post_install(installer)
-
-  remove_mapbox_creds
 
   # So we can show some of this stuff in the Admin panel
   emission_podspec_json = installer.pod_targets.find { |f| f.name == 'Emission' }.specs[0].to_json

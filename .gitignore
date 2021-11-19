@@ -101,7 +101,11 @@ test-results.json
 # metro cache
 .metro
 
+# user-managed "state" files
 .i-am-helping-out-with-the-strictness-migration
+
+# auto-managed "state" files
+.i-had-a-netrc-file
 
 # Ignore env files
 **/.env*
