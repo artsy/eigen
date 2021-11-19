@@ -3,9 +3,9 @@ import { ShowItemRow } from "lib/Components/Lists/ShowItemRow"
 import { navigate } from "lib/navigation/navigate"
 import { TabFairItemRow } from "lib/Scenes/City/Components/TabFairItemRow"
 import { isEqual } from "lodash"
-import { Box, ClassTheme, Sans } from "palette"
+import { Box, ClassTheme, Text } from "palette"
 import React, { Component } from "react"
-import { Dimensions, FlatList, TouchableOpacity } from "react-native"
+import { Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent, TouchableOpacity } from "react-native"
 import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { Fair, Show } from "../types"
@@ -68,12 +68,13 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     }
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  handleTap(item) {
-    if (item.type === "Show") {
+  handleTap(item: Fair | Show) {
+    if ("href" in item && item.href) {
+      // Show
       navigate(item.href)
     } else {
-      navigate(`/fair/${item.node.id}`)
+      // Fair
+      navigate(`/fair/${item.slug}`)
     }
   }
 
@@ -100,8 +101,7 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
     )
   }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  onScroll = (e) => {
+  onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const newPageNum = Math.round(e.nativeEvent.contentOffset.x / this.cardWidth + 1)
 
     if (newPageNum !== this.state.currentPage) {
@@ -151,8 +151,8 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
       <ClassTheme>
         {({ space }) => (
           <>
-            <PageIndicator style={shadowDetails} mx={1} py={0.3} px={0.5} my={0.5}>
-              <Sans size="1" weight="medium" px={0.5}>{`${currentPage} of ${shows.length}`}</Sans>
+            <PageIndicator style={shadowDetails} mx={1} px={0.5} my={0.5}>
+              <Text variant="xs" weight="medium" px={0.5}>{`${currentPage} of ${shows.length}`}</Text>
             </PageIndicator>
             <FlatList
               ref={(c) => (this.list = c as any)}

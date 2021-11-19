@@ -27,7 +27,7 @@ require 'json'
 require 'fileutils'
 
 
-$ReactNativeMapboxGLIOSVersion = '~> 6.3'
+$ReactNativeMapboxGLIOSVersion = '~> 6.4'
 
 if !ENV['MAPBOX_DOWNLOAD_TOKEN']
   raise "You need a MAPBOX_DOWNLOAD_TOKEN in your .env.shared file.\nIf you work at artsy, check 1password.\nOtherwise create your own in the mapbox dashboard. https://docs.mapbox.com/ios/maps/guides/install"

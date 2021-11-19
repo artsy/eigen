@@ -83,7 +83,7 @@ PODS:
     - React-cxxreact (= 0.63.3)
     - react-native-cameraroll (= 1.3.0)
     - react-native-geolocation (= 2.0.2)
-    - react-native-mapbox-gl (= 8.2.0-beta2)
+    - react-native-mapbox-gl (= 8.4.0)
     - react-native-netinfo (= 6.0.1)
     - React-RCTActionSheet (= 0.63.3)
     - React-RCTAnimation (= 0.63.3)
@@ -281,9 +281,9 @@ PODS:
   - Mantle (1.5.6):
     - Mantle/extobjc (= 1.5.6)
   - Mantle/extobjc (1.5.6)
-  - Mapbox-iOS-SDK (6.3.0):
-    - MapboxMobileEvents (~> 0.10.4)
-  - MapboxMobileEvents (0.10.7)
+  - Mapbox-iOS-SDK (6.4.1):
+    - MapboxMobileEvents (~> 0.10.12)
+  - MapboxMobileEvents (0.10.13)
   - MARKRangeSlider (1.0.1)
   - MMMarkdown (0.4)
   - MultiDelegate (0.0.2)
@@ -506,18 +506,18 @@ PODS:
     - React
   - react-native-in-app-review (3.2.2):
     - React
-  - react-native-mapbox-gl (8.2.0-beta2):
-    - Mapbox-iOS-SDK (~> 6.3)
+  - react-native-mapbox-gl (8.4.0):
+    - Mapbox-iOS-SDK (~> 6.4)
     - React
     - React-Core
-    - react-native-mapbox-gl/DynamicLibrary (= 8.2.0-beta2)
-    - react-native-mapbox-gl/StaticLibraryFixer (= 8.2.0-beta2)
-  - react-native-mapbox-gl/DynamicLibrary (8.2.0-beta2):
-    - Mapbox-iOS-SDK (~> 6.3)
+    - react-native-mapbox-gl/DynamicLibrary (= 8.4.0)
+    - react-native-mapbox-gl/StaticLibraryFixer (= 8.4.0)
+  - react-native-mapbox-gl/DynamicLibrary (8.4.0):
+    - Mapbox-iOS-SDK (~> 6.4)
     - React
     - React-Core
-  - react-native-mapbox-gl/StaticLibraryFixer (8.2.0-beta2):
-    - Mapbox-iOS-SDK (~> 6.3)
+  - react-native-mapbox-gl/StaticLibraryFixer (8.4.0):
+    - Mapbox-iOS-SDK (~> 6.4)
     - React
     - React-Core
   - react-native-netinfo (6.0.1):
@@ -1097,7 +1097,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 75715579a21a67f2d302b8b4c6f8b405843bc067
+  Emission: 3befbbf9a24aa4a1efcc129e5b61d7fd43af149f
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": dcff217eef506dabd6dfdc7864ea2da321fafbb8
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
@@ -1136,8 +1136,8 @@ SPEC CHECKSUMS:
   JWTDecode: 178e47e5d28d3abcff778bacced8342858cd6cb5
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   Mantle: a197db93e0f1e36194b1fdbc078219a8492eaef2
-  Mapbox-iOS-SDK: 2563ed87ead6ec08f1c2090873977b8a7be335a8
-  MapboxMobileEvents: d0a581dedd8f47411cc65ea520b965e83914316e
+  Mapbox-iOS-SDK: f870f83cbdc7aa4a74afcee143aafb0dae390c82
+  MapboxMobileEvents: e78db24b348f48e41e5895be7dc16e5b1bb43562
   MARKRangeSlider: dbf0878b03e921b52e4ef1e7766c1a8affb0c577
   MMMarkdown: 44f1c5216cfcd70bc0e076b0f91876d6323a73b8
   MultiDelegate: d224a4af1c098e1de280c3eaee2f16ebf8b046f4
@@ -1172,7 +1172,7 @@ SPEC CHECKSUMS:
   react-native-flipper: e3da3457a7cb984b4beaddecb587674a8545b71d
   react-native-geolocation: c956aeb136625c23e0dce0467664af2c437888c9
   react-native-in-app-review: 00a66a085c61dbd4474041dc14e7bfee81a86130
-  react-native-mapbox-gl: 28350f5f43df85fdb6b85398821a96db1fab0c76
+  react-native-mapbox-gl: c533564b89e89cf7538d00b6fb24ec47978686c9
   react-native-netinfo: 7cb7877ff31ebeb3d03ce0b4fbb616f121ddd859
   react-native-safe-area-context: 61c8c484a3a9e7d1fda19f7b1794b35bbfd2262a
   react-native-view-shot: 4475fde003fe8a210053d1f98fb9e06c1d834e1c
@@ -1226,6 +1226,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: a6e8befee500e6dd2bf5dbde8a2204a8dc46bc87
+PODFILE CHECKSUM: f866f3fedada5351fa376945f598632e46dc5291
 
 COCOAPODS: 1.11.2

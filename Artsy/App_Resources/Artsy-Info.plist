@@ -113,6 +113,8 @@
 	<true/>
 	<key>MGLMapboxMetricsEnabledSettingShownInApp</key>
 	<string>YES</string>
+	<key>MGLGlyphsRasterizationMode</key>
+	<string>MGLIdeographsRasterizedLocally</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
