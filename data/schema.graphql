@@ -5663,6 +5663,7 @@ input CreateSubmissionMutationInput {
   medium: String
   minimumPriceDollars: Int
   provenance: String
+  sessionId: String
   signature: Boolean
 
   # If this artwork exists in Gravity, its ID
@@ -6517,6 +6518,9 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   name: String
   organizer: FairOrganizer
   profile: Profile
+
+  # A formatted description of the start to end dates with abbreviated months
+  shortExhibitionPeriod: String
 
   # This connection only supports forward pagination. We're replacing Relay's default cursor with one from Gravity.
   showsConnection(
@@ -11820,6 +11824,9 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   # Link to the press release for this show
   pressReleaseUrl: String
 
+  # A formatted description of the start to end dates with abbreviated months
+  shortExhibitionPeriod: String
+
   # A slug ID.
   slug: ID!
 
@@ -11904,6 +11911,9 @@ type ShowEventType {
 
   # A formatted description of the start to end dates
   exhibitionPeriod: String
+
+  # A formatted description of the start to end dates with abbreviated months
+  shortExhibitionPeriod: String
   startAt(
     format: String
 
@@ -12479,6 +12489,7 @@ input UpdateSubmissionMutationInput {
   medium: String
   minimumPriceDollars: Int
   provenance: String
+  sessionId: String
   signature: Boolean
   state: ConsignmentSubmissionStateAggregation
   title: String
