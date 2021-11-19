@@ -70,7 +70,6 @@ export class Categories extends React.Component<Props, State> {
       return (
         <StickyTabPageScrollView
           refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
-          contentContainerStyle={{ flex: 1 }}
         >
           <ZeroState
             title="You’re not following any categories yet"
