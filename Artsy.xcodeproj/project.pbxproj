@@ -493,6 +493,7 @@
 		FCB45B472746F6FD00232337 /* PrimaryText.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B462746F6FD00232337 /* PrimaryText.swift */; };
 		FCB45B492746F72800232337 /* SecondaryText.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B482746F72800232337 /* SecondaryText.swift */; };
 		FCB45B4B2746F81F00232337 /* ArtworkUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B4A2746F81F00232337 /* ArtworkUrl.swift */; };
+		FCD1340B27483ED90065074D /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD1340A27483ED90065074D /* Fixtures.swift */; };
 		FCD47BD8274833EF003F27B8 /* ScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD47BD6274833EF003F27B8 /* ScheduleTests.swift */; };
 		FCD47BD9274833EF003F27B8 /* ArtworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD47BD7274833EF003F27B8 /* ArtworkTests.swift */; };
 		FCD47BDA274833FF003F27B8 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6118A1274704FA00612581 /* Schedule.swift */; };
@@ -1264,6 +1265,7 @@
 		FCB45B462746F6FD00232337 /* PrimaryText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryText.swift; sourceTree = "<group>"; };
 		FCB45B482746F72800232337 /* SecondaryText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryText.swift; sourceTree = "<group>"; };
 		FCB45B4A2746F81F00232337 /* ArtworkUrl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkUrl.swift; sourceTree = "<group>"; };
+		FCD1340A27483ED90065074D /* Fixtures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
 		FCD47BD6274833EF003F27B8 /* ScheduleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleTests.swift; sourceTree = "<group>"; };
 		FCD47BD7274833EF003F27B8 /* ArtworkTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtworkTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -3034,6 +3036,7 @@
 			children = (
 				FCB45B282746EF3700232337 /* ArtsyWidgets.swift */,
 				FCB45B2A2746EF3900232337 /* Assets.xcassets */,
+				FCD1340A27483ED90065074D /* Fixtures.swift */,
 				FCB45B352746F02C00232337 /* FullBleed */,
 				FCB45B2C2746EF3900232337 /* Info.plist */,
 				FCB45B3E2746F25C00232337 /* Models */,
@@ -3904,6 +3907,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC61189E2746FE2300612581 /* ArtworkStore.swift in Sources */,
+				FCD1340B27483ED90065074D /* Fixtures.swift in Sources */,
 				FCB45B372746F0A500232337 /* FullBleed+View.swift in Sources */,
 				FCB45B292746EF3700232337 /* ArtsyWidgets.swift in Sources */,
 				FCB45B4B2746F81F00232337 /* ArtworkUrl.swift in Sources */,

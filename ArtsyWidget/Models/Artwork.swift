@@ -3,18 +3,7 @@ import UIKit
 
 struct Artwork: Codable {
     static func fallback() -> Artwork {
-        let artist = Artist(name: "Chloe Wise")
-        let artworkImage = ArtworkImage(imageUrl: "")
-        let image = UIImage(named: "PrimaryArtworkImage")!
-        let artwork = Artwork(
-            artist: artist,
-            artworkImages: [artworkImage],
-            id: "chloe-wise-never-stop-thinking-about-that-nude-spa-in-berlin-brooke-at-sundown",
-            title: "Never stop thinking about that nude spa in Berlin (Brooke at sundown)",
-            image: image
-        )
-        
-        return artwork
+        return Fixtures.primaryArtwork
     }
     
     let artist: Artist
@@ -26,7 +15,7 @@ struct Artwork: Codable {
     
     var firstImageUrl: URL {
         let firstImage = artworkImages.first ?? ArtworkImage.fallback()
-        let imageUrl = firstImage.imageUrl.replacingOccurrences(of: ":version", with: "square")
+        let imageUrl = firstImage.imageUrl.replacingOccurrences(of: ":version", with: "larger")
         let url = URL(string: imageUrl)!
         
         return url
