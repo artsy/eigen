@@ -29,6 +29,7 @@ export type UpdateSubmissionMutationInput = {
     medium?: string | null;
     minimumPriceDollars?: number | null;
     provenance?: string | null;
+    sessionId?: string | null;
     signature?: boolean | null;
     state?: ConsignmentSubmissionStateAggregation | null;
     title?: string | null;
