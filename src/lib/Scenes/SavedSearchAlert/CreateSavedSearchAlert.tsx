@@ -14,6 +14,7 @@ export interface CreateSavedSearchAlertProps extends SavedSearchAlertFormPropsBa
   visible: boolean
   filters: FilterData[]
   aggregations: Aggregations
+  userAllowsEmails: boolean
   onClosePress: () => void
   onComplete: (response: SavedSearchAlertMutationResult) => void
 }
@@ -59,7 +60,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
         )}
         <Spacer mt={4} />
         <SavedSearchAlertForm
-          initialValues={{ name: "", email: true, push: enablePushNotifications }}
+          initialValues={{ name: "", email: props.userAllowsEmails, push: enablePushNotifications }}
           aggregations={aggregations}
           filters={filters}
           onComplete={handleComplete}

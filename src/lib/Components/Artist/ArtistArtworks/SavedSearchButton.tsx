@@ -133,6 +133,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
         onComplete={handleComplete}
         filters={filters}
         aggregations={aggregations}
+        userAllowsEmails={me?.emailFrequency !== "none"}
       />
     </Box>
   )
@@ -143,6 +144,7 @@ export const SavedSearchButtonRefetchContainer = createRefetchContainer(
   {
     me: graphql`
       fragment SavedSearchButton_me on Me @argumentDefinitions(criteria: { type: "SearchCriteriaAttributes" }) {
+        emailFrequency
         savedSearch(criteria: $criteria) {
           internalID
         }
@@ -194,6 +196,7 @@ export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRend
       variables={{
         criteria,
       }}
+      cacheConfig={{ force: true }}
     />
   )
 }

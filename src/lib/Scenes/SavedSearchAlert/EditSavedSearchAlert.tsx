@@ -73,6 +73,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
               filters={filters}
               aggregations={aggregations}
               savedSearchAlertId={savedSearchAlertId}
+              userAllowsEmails={me?.emailFrequency !== "none"}
               onComplete={onComplete}
               onDeleteComplete={onComplete}
             />
@@ -134,6 +135,7 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
               renderPlaceholder: () => <EditSavedSearchFormPlaceholder />,
               initialProps: { savedSearchAlertId, ...relayProps },
             })}
+            cacheConfig={{ force: true }}
           />
         ),
         renderPlaceholder: () => <EditSavedSearchFormPlaceholder />,

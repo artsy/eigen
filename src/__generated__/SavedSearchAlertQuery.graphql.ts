@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 05eb8e2e23339f454dfd7de5ff955054 */
+/* @relayHash b657a856c5757aff704c352caacaa1be */
 
 import { ConcreteRequest } from "relay-runtime";
 export type SavedSearchAlertQueryVariables = {
@@ -9,6 +9,7 @@ export type SavedSearchAlertQueryVariables = {
 };
 export type SavedSearchAlertQueryResponse = {
     readonly me: {
+        readonly emailFrequency: string | null;
         readonly savedSearch: {
             readonly internalID: string;
             readonly acquireable: boolean | null;
@@ -47,6 +48,7 @@ query SavedSearchAlertQuery(
   $savedSearchAlertId: ID!
 ) {
   me {
+    emailFrequency
     savedSearch(id: $savedSearchAlertId) {
       internalID
       acquireable
@@ -85,6 +87,13 @@ var v0 = [
   }
 ],
 v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "emailFrequency",
+  "storageKey": null
+},
+v2 = {
   "alias": null,
   "args": [
     {
@@ -267,7 +276,8 @@ return {
         "name": "me",
         "plural": false,
         "selections": [
-          (v1/*: any*/)
+          (v1/*: any*/),
+          (v2/*: any*/)
         ],
         "storageKey": null
       }
@@ -290,6 +300,7 @@ return {
         "plural": false,
         "selections": [
           (v1/*: any*/),
+          (v2/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -303,7 +314,7 @@ return {
     ]
   },
   "params": {
-    "id": "05eb8e2e23339f454dfd7de5ff955054",
+    "id": "b657a856c5757aff704c352caacaa1be",
     "metadata": {},
     "name": "SavedSearchAlertQuery",
     "operationKind": "query",
@@ -311,5 +322,5 @@ return {
   }
 };
 })();
-(node as any).hash = '454a8920df824a5f25c488c90faac491';
+(node as any).hash = 'f2a2d35898b827a8ff371f02051c86da';
 export default node;
