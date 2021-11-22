@@ -7055,9 +7055,11 @@ type FollowGene {
 type FollowGeneConnection {
   # A list of edges.
   edges: [FollowGeneEdge]
+  pageCursors: PageCursors!
 
   # Information to aid in pagination.
   pageInfo: PageInfo!
+  totalCount: Int
 }
 
 # An edge in a connection.
@@ -7130,7 +7132,7 @@ type FollowsAndSaves {
   galleriesConnection(after: String, before: String, first: Int, last: Int): FollowedGalleryConnection
 
   # A list of the current user’s inquiry requests
-  genesConnection(after: String, before: String, first: Int, last: Int): FollowGeneConnection
+  genesConnection(after: String, before: String, first: Int, last: Int, page: Int, size: Int): FollowGeneConnection
 
   # A list of the current user’s currently followed shows
   showsConnection(
