@@ -471,6 +471,34 @@
 		E6FFEABB19C7925600A0D7DE /* splash_4@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6FFEAAB19C7925600A0D7DE /* splash_4@2x~ipad.jpg */; };
 		E6FFEABC19C7925600A0D7DE /* splash_4@2x~iphone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6FFEAAC19C7925600A0D7DE /* splash_4@2x~iphone.jpg */; };
 		E6FFEABD19C7925600A0D7DE /* splash_5@2x~ipad.jpg in Resources */ = {isa = PBXBuildFile; fileRef = E6FFEAAD19C7925600A0D7DE /* splash_5@2x~ipad.jpg */; };
+		FC61189E2746FE2300612581 /* ArtworkStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC61189D2746FE2300612581 /* ArtworkStore.swift */; };
+		FC6118A02747001B00612581 /* ArtworkImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC61189F2747001B00612581 /* ArtworkImage.swift */; };
+		FC6118A2274704FA00612581 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6118A1274704FA00612581 /* Schedule.swift */; };
+		FC6118A42747068300612581 /* FullBleed+Timeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6118A32747068300612581 /* FullBleed+Timeline.swift */; };
+		FC6118A82747091500612581 /* VolleyClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6118A52747091400612581 /* VolleyClient.swift */; };
+		FC6118A92747091500612581 /* VolleyPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6118A62747091400612581 /* VolleyPayload.swift */; };
+		FC6118AA2747091500612581 /* VolleyMetric.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6118A72747091500612581 /* VolleyMetric.swift */; };
+		FCB45B242746EF3700232337 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCB45B232746EF3700232337 /* WidgetKit.framework */; };
+		FCB45B262746EF3700232337 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCB45B252746EF3700232337 /* SwiftUI.framework */; };
+		FCB45B292746EF3700232337 /* ArtsyWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B282746EF3700232337 /* ArtsyWidgets.swift */; };
+		FCB45B2B2746EF3900232337 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCB45B2A2746EF3900232337 /* Assets.xcassets */; };
+		FCB45B2F2746EF3900232337 /* ArtsyWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FCB45B222746EF3700232337 /* ArtsyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FCB45B372746F0A500232337 /* FullBleed+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B362746F0A500232337 /* FullBleed+View.swift */; };
+		FCB45B392746F0B800232337 /* FullBleed+Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B382746F0B800232337 /* FullBleed+Provider.swift */; };
+		FCB45B3B2746F0CC00232337 /* FullBleed+Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B3A2746F0CC00232337 /* FullBleed+Entry.swift */; };
+		FCB45B3D2746F0F100232337 /* FullBleed.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B3C2746F0F100232337 /* FullBleed.swift */; };
+		FCB45B402746F26E00232337 /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B3F2746F26E00232337 /* Artwork.swift */; };
+		FCB45B422746F28700232337 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B412746F28700232337 /* Artist.swift */; };
+		FCB45B442746F42800232337 /* FullBleed+Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B432746F42800232337 /* FullBleed+Widget.swift */; };
+		FCB45B472746F6FD00232337 /* PrimaryText.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B462746F6FD00232337 /* PrimaryText.swift */; };
+		FCB45B492746F72800232337 /* SecondaryText.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B482746F72800232337 /* SecondaryText.swift */; };
+		FCB45B4B2746F81F00232337 /* ArtworkUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B4A2746F81F00232337 /* ArtworkUrl.swift */; };
+		FCD47BD8274833EF003F27B8 /* ScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD47BD6274833EF003F27B8 /* ScheduleTests.swift */; };
+		FCD47BD9274833EF003F27B8 /* ArtworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD47BD7274833EF003F27B8 /* ArtworkTests.swift */; };
+		FCD47BDA274833FF003F27B8 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6118A1274704FA00612581 /* Schedule.swift */; };
+		FCD47BDB27483407003F27B8 /* Artwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B3F2746F26E00232337 /* Artwork.swift */; };
+		FCD47BDC2748347F003F27B8 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B412746F28700232337 /* Artist.swift */; };
+		FCD47BDD27483482003F27B8 /* ArtworkImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC61189F2747001B00612581 /* ArtworkImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -488,6 +516,13 @@
 			remoteGlobalIDString = 49BA7DFE1655ABE600C06572;
 			remoteInfo = Artsy;
 		};
+		FCB45B2D2746EF3900232337 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49BA7DF61655ABE600C06572 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FCB45B212746EF3700232337;
+			remoteInfo = ArtsyWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -497,6 +532,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				FCB45B2F2746EF3900232337 /* ArtsyWidgetExtension.appex in Embed App Extensions */,
 				1AD4F8A225FBBA89007FDB71 /* Artsy Stickers.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
@@ -1205,6 +1241,31 @@
 		E6FFEAAC19C7925600A0D7DE /* splash_4@2x~iphone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_4@2x~iphone.jpg"; sourceTree = "<group>"; };
 		E6FFEAAD19C7925600A0D7DE /* splash_5@2x~ipad.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "splash_5@2x~ipad.jpg"; sourceTree = "<group>"; };
 		F5228136EBA7C3D968C3D845 /* Pods-Artsy Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		FC61189D2746FE2300612581 /* ArtworkStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtworkStore.swift; sourceTree = "<group>"; };
+		FC61189F2747001B00612581 /* ArtworkImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkImage.swift; sourceTree = "<group>"; };
+		FC6118A1274704FA00612581 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
+		FC6118A32747068300612581 /* FullBleed+Timeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FullBleed+Timeline.swift"; sourceTree = "<group>"; };
+		FC6118A52747091400612581 /* VolleyClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VolleyClient.swift; sourceTree = "<group>"; };
+		FC6118A62747091400612581 /* VolleyPayload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VolleyPayload.swift; sourceTree = "<group>"; };
+		FC6118A72747091500612581 /* VolleyMetric.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VolleyMetric.swift; sourceTree = "<group>"; };
+		FCB45B222746EF3700232337 /* ArtsyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArtsyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FCB45B232746EF3700232337 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		FCB45B252746EF3700232337 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		FCB45B282746EF3700232337 /* ArtsyWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtsyWidgets.swift; sourceTree = "<group>"; };
+		FCB45B2A2746EF3900232337 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FCB45B2C2746EF3900232337 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FCB45B362746F0A500232337 /* FullBleed+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FullBleed+View.swift"; sourceTree = "<group>"; };
+		FCB45B382746F0B800232337 /* FullBleed+Provider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FullBleed+Provider.swift"; sourceTree = "<group>"; };
+		FCB45B3A2746F0CC00232337 /* FullBleed+Entry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FullBleed+Entry.swift"; sourceTree = "<group>"; };
+		FCB45B3C2746F0F100232337 /* FullBleed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullBleed.swift; sourceTree = "<group>"; };
+		FCB45B3F2746F26E00232337 /* Artwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artwork.swift; sourceTree = "<group>"; };
+		FCB45B412746F28700232337 /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
+		FCB45B432746F42800232337 /* FullBleed+Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FullBleed+Widget.swift"; sourceTree = "<group>"; };
+		FCB45B462746F6FD00232337 /* PrimaryText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryText.swift; sourceTree = "<group>"; };
+		FCB45B482746F72800232337 /* SecondaryText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryText.swift; sourceTree = "<group>"; };
+		FCB45B4A2746F81F00232337 /* ArtworkUrl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkUrl.swift; sourceTree = "<group>"; };
+		FCD47BD6274833EF003F27B8 /* ScheduleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleTests.swift; sourceTree = "<group>"; };
+		FCD47BD7274833EF003F27B8 /* ArtworkTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtworkTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1241,6 +1302,15 @@
 				60476F4C1AD87DB200670502 /* UIKit.framework in Frameworks */,
 				B3ECE8291819D1E6009F5C5B /* Foundation.framework in Frameworks */,
 				68AE3912711D80B0018CCC9D /* libPods-Artsy Tests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FCB45B1F2746EF3700232337 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FCB45B262746EF3700232337 /* SwiftUI.framework in Frameworks */,
+				FCB45B242746EF3700232337 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1691,6 +1761,7 @@
 				49BA7E091655ABE600C06572 /* Artsy */,
 				B3ECE82B1819D1E6009F5C5B /* Artsy Tests */,
 				1AD4F89C25FBBA85007FDB71 /* Artsy Stickers */,
+				FCB45B272746EF3700232337 /* ArtsyWidget */,
 				49BA7E021655ABE600C06572 /* Frameworks */,
 				49BA7E001655ABE600C06572 /* Products */,
 				33C6886033769A61A3E99B18 /* Pods */,
@@ -1703,6 +1774,7 @@
 				49BA7DFF1655ABE600C06572 /* Artsy.app */,
 				B3ECE8261819D1E6009F5C5B /* Artsy Tests.xctest */,
 				1AD4F89B25FBBA85007FDB71 /* Artsy Stickers.appex */,
+				FCB45B222746EF3700232337 /* ArtsyWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1749,6 +1821,8 @@
 				9434A9843098609F9F092F0D /* Pods.framework */,
 				DA8D5507586C1A8D7D25B02D /* libPods-Artsy.a */,
 				482115D14BD4E126B81B3A2B /* libPods-Artsy Tests.a */,
+				FCB45B232746EF3700232337 /* WidgetKit.framework */,
+				FCB45B252746EF3700232337 /* SwiftUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2855,13 +2929,14 @@
 		B3ECE82B1819D1E6009F5C5B /* Artsy Tests */ = {
 			isa = PBXGroup;
 			children = (
-				B3ECE82C1819D1E6009F5C5B /* Supporting Files */,
 				60E738721C64AC7C00AC381B /* Analytics Tests */,
 				3C205B5718900091004280E0 /* App Tests */,
-				0CE0FE251B8E29CC00A921FD /* Stubs */,
+				FCD47BD5274833CB003F27B8 /* ArtsyWidget */,
 				3C3FEA8B188433CB00E1A16F /* Extensions */,
 				B31BBE10181EFA08001C623C /* Model Tests */,
 				3CAED1791880268E00840608 /* Networking Tests */,
+				0CE0FE251B8E29CC00A921FD /* Stubs */,
+				B3ECE82C1819D1E6009F5C5B /* Supporting Files */,
 				3C5C7E3D18970E73003823BB /* Util Tests */,
 				3CB97D8D18870979008C44FE /* View Controller Tests */,
 				B31BBE0F181EF9F7001C623C /* View Tests */,
@@ -2954,6 +3029,66 @@
 			path = Buttons;
 			sourceTree = "<group>";
 		};
+		FCB45B272746EF3700232337 /* ArtsyWidget */ = {
+			isa = PBXGroup;
+			children = (
+				FCB45B282746EF3700232337 /* ArtsyWidgets.swift */,
+				FCB45B2A2746EF3900232337 /* Assets.xcassets */,
+				FCB45B352746F02C00232337 /* FullBleed */,
+				FCB45B2C2746EF3900232337 /* Info.plist */,
+				FCB45B3E2746F25C00232337 /* Models */,
+				FCB45B452746F6ED00232337 /* Shared */,
+			);
+			path = ArtsyWidget;
+			sourceTree = "<group>";
+		};
+		FCB45B352746F02C00232337 /* FullBleed */ = {
+			isa = PBXGroup;
+			children = (
+				FCB45B3C2746F0F100232337 /* FullBleed.swift */,
+				FCB45B3A2746F0CC00232337 /* FullBleed+Entry.swift */,
+				FCB45B382746F0B800232337 /* FullBleed+Provider.swift */,
+				FC6118A32747068300612581 /* FullBleed+Timeline.swift */,
+				FCB45B362746F0A500232337 /* FullBleed+View.swift */,
+				FCB45B432746F42800232337 /* FullBleed+Widget.swift */,
+			);
+			path = FullBleed;
+			sourceTree = "<group>";
+		};
+		FCB45B3E2746F25C00232337 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				FCB45B412746F28700232337 /* Artist.swift */,
+				FCB45B3F2746F26E00232337 /* Artwork.swift */,
+				FC61189F2747001B00612581 /* ArtworkImage.swift */,
+				FC61189D2746FE2300612581 /* ArtworkStore.swift */,
+				FC6118A52747091400612581 /* VolleyClient.swift */,
+				FC6118A72747091500612581 /* VolleyMetric.swift */,
+				FC6118A62747091400612581 /* VolleyPayload.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		FCB45B452746F6ED00232337 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				FCB45B4A2746F81F00232337 /* ArtworkUrl.swift */,
+				FCB45B462746F6FD00232337 /* PrimaryText.swift */,
+				FCB45B482746F72800232337 /* SecondaryText.swift */,
+				FC6118A1274704FA00612581 /* Schedule.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		FCD47BD5274833CB003F27B8 /* ArtsyWidget */ = {
+			isa = PBXGroup;
+			children = (
+				FCD47BD7274833EF003F27B8 /* ArtworkTests.swift */,
+				FCD47BD6274833EF003F27B8 /* ScheduleTests.swift */,
+			);
+			path = ArtsyWidget;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2990,6 +3125,7 @@
 			);
 			dependencies = (
 				1AD4F8A125FBBA89007FDB71 /* PBXTargetDependency */,
+				FCB45B2E2746EF3900232337 /* PBXTargetDependency */,
 			);
 			name = Artsy;
 			productName = Artsy;
@@ -3015,6 +3151,23 @@
 			productReference = B3ECE8261819D1E6009F5C5B /* Artsy Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		FCB45B212746EF3700232337 /* ArtsyWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FCB45B332746EF3A00232337 /* Build configuration list for PBXNativeTarget "ArtsyWidgetExtension" */;
+			buildPhases = (
+				FCB45B1E2746EF3700232337 /* Sources */,
+				FCB45B1F2746EF3700232337 /* Frameworks */,
+				FCB45B202746EF3700232337 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ArtsyWidgetExtension;
+			productName = ArtsyWidgetExtension;
+			productReference = FCB45B222746EF3700232337 /* ArtsyWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -3022,7 +3175,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = AR;
-				LastSwiftUpdateCheck = 0710;
+				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1210;
 				ORGANIZATIONNAME = Artsy;
 				TargetAttributes = {
@@ -3061,6 +3214,11 @@
 						LastSwiftMigration = 1100;
 						TestTargetID = 49BA7DFE1655ABE600C06572;
 					};
+					FCB45B212746EF3700232337 = {
+						CreatedOnToolsVersion = 13.1;
+						DevelopmentTeam = 23KMWZ572J;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 49BA7DF91655ABE600C06572 /* Build configuration list for PBXProject "Artsy" */;
@@ -3079,6 +3237,7 @@
 				49BA7DFE1655ABE600C06572 /* Artsy */,
 				B3ECE8251819D1E6009F5C5B /* Artsy Tests */,
 				1AD4F89A25FBBA85007FDB71 /* Artsy Stickers */,
+				FCB45B212746EF3700232337 /* ArtsyWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -3222,6 +3381,14 @@
 				E6B9FA7B18A97C0A00E961F9 /* stub.jpg in Resources */,
 				E6F466E818EF52A800A09AFA /* Artwork_v1.data in Resources */,
 				6082B2051B46ADDE00953BC8 /* stubbed_image.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FCB45B202746EF3700232337 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FCB45B2B2746EF3900232337 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3642,7 +3809,9 @@
 				B30FEF5A181EEA47009E4EAD /* ARBidButtonTests.m in Sources */,
 				60D70DE41D01F420008888D1 /* LiveAuctionLotViewModelSpecs.swift in Sources */,
 				5E86A6171F73183B00D00302 /* AFHTTPRequestOperationJSONTests.m in Sources */,
+				FCD47BD8274833EF003F27B8 /* ScheduleTests.swift in Sources */,
 				609624C91CEF3304002F3F33 /* ARTextViewTests.m in Sources */,
+				FCD47BDD27483482003F27B8 /* ArtworkImage.swift in Sources */,
 				6019A90D1C7F9EF600E292FA /* LiveAuctionLotSetViewControllerTests.swift in Sources */,
 				60B8D1241CBB7C1D006C3E42 /* TextStackTests.swift in Sources */,
 				5E174F5C1CADB35800657743 /* LiveAuctionStateReconcilerSpec.swift in Sources */,
@@ -3661,6 +3830,7 @@
 				E6718316194A595F001A5566 /* ARTestContext.m in Sources */,
 				3CE0DA3218A13604000E537A /* OHHTTPStubs+Artsy.m in Sources */,
 				5EACFACB1C752771004112FF /* SaleArtworkViewModelTests.swift in Sources */,
+				FCD47BDB27483407003F27B8 /* Artwork.swift in Sources */,
 				3CEE0B6A18A18CDA00FEA6E6 /* ProfileTests.m in Sources */,
 				60A309AA1AC99B47000783C1 /* ARInternalShareValidatorTests.m in Sources */,
 				51D141B71AF0F14B000091CF /* ARTestHelper.m in Sources */,
@@ -3695,6 +3865,7 @@
 				D35D9D5C1ACB4FF800E67A1D /* ARCustomEigenLabelTests.m in Sources */,
 				5EBDC94E19792C3A0082C514 /* ARNavigationControllerTests.m in Sources */,
 				5EC27DCC1F6AFBC000D2A794 /* ArtsyAPI+GraphQLTests.m in Sources */,
+				FCD47BDA274833FF003F27B8 /* Schedule.swift in Sources */,
 				60ED311F1C8F73450071DD89 /* LiveAuctionLotViewControllerTests.swift in Sources */,
 				5E3817011CC1572100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayoutTests.swift in Sources */,
 				60107F161CC7DC1D002F772E /* ARTestImageCachingFunctions.swift in Sources */,
@@ -3706,6 +3877,7 @@
 				5E7598061D9D92F60084AAEC /* LiveAuctionLotBidHistoryGestureControllerTests.swift in Sources */,
 				3C7A7FA718C6EDAB00E8D336 /* ArtworkTests.m in Sources */,
 				5EE9A3E11D1211230014A3C9 /* BiddingIncrementSpecs.swift in Sources */,
+				FCD47BD9274833EF003F27B8 /* ArtworkTests.swift in Sources */,
 				E67E1DB219475642004252E0 /* ARAnimatedTickViewTest.m in Sources */,
 				604151E51A7998E300D5F9CA /* NSDate+RangeTests.m in Sources */,
 				5108A7BC1BA1AB2C0011CD72 /* ARAppActivityContinuationDelegateTests.m in Sources */,
@@ -3722,7 +3894,33 @@
 				608EE3DB19954CEB001F4FE0 /* UIViewController+Testing.m in Sources */,
 				342F9E0892E99A2F66657964 /* Artwork+Extensions.m in Sources */,
 				60DCDAD71C6533DF00BB61D7 /* ARSerifNavigationViewControllerSpec.m in Sources */,
+				FCD47BDC2748347F003F27B8 /* Artist.swift in Sources */,
 				342F9715E899AC7D24E70734 /* ORStackViewArtsyCategoriesTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FCB45B1E2746EF3700232337 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FC61189E2746FE2300612581 /* ArtworkStore.swift in Sources */,
+				FCB45B372746F0A500232337 /* FullBleed+View.swift in Sources */,
+				FCB45B292746EF3700232337 /* ArtsyWidgets.swift in Sources */,
+				FCB45B4B2746F81F00232337 /* ArtworkUrl.swift in Sources */,
+				FC6118A92747091500612581 /* VolleyPayload.swift in Sources */,
+				FCB45B3D2746F0F100232337 /* FullBleed.swift in Sources */,
+				FCB45B442746F42800232337 /* FullBleed+Widget.swift in Sources */,
+				FC6118A02747001B00612581 /* ArtworkImage.swift in Sources */,
+				FC6118A82747091500612581 /* VolleyClient.swift in Sources */,
+				FCB45B3B2746F0CC00232337 /* FullBleed+Entry.swift in Sources */,
+				FCB45B472746F6FD00232337 /* PrimaryText.swift in Sources */,
+				FC6118A42747068300612581 /* FullBleed+Timeline.swift in Sources */,
+				FC6118AA2747091500612581 /* VolleyMetric.swift in Sources */,
+				FCB45B402746F26E00232337 /* Artwork.swift in Sources */,
+				FCB45B392746F0B800232337 /* FullBleed+Provider.swift in Sources */,
+				FCB45B422746F28700232337 /* Artist.swift in Sources */,
+				FC6118A2274704FA00612581 /* Schedule.swift in Sources */,
+				FCB45B492746F72800232337 /* SecondaryText.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3738,6 +3936,11 @@
 			isa = PBXTargetDependency;
 			target = 49BA7DFE1655ABE600C06572 /* Artsy */;
 			targetProxy = B3ECE8341819D1E7009F5C5B /* PBXContainerItemProxy */;
+		};
+		FCB45B2E2746EF3900232337 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FCB45B212746EF3700232337 /* ArtsyWidgetExtension */;
+			targetProxy = FCB45B2D2746EF3900232337 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -3981,6 +4184,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 97983D93644ACC6409190A08 /* Pods-Artsy.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_WARNINGS = NO;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
@@ -4085,6 +4289,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = C1D5D316AD887B0D764B2DFF /* Pods-Artsy.demo.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_WARNINGS = NO;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
@@ -4233,6 +4438,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E46CDB9EB7EB81BF77D63EF5 /* Pods-Artsy.store.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_WARNINGS = NO;
 				CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND = YES;
@@ -4369,6 +4575,192 @@
 			};
 			name = Store;
 		};
+		FCB45B302746EF3A00232337 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ArtsyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ArtsyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Artsy. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.ArtsyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FCB45B312746EF3A00232337 /* Store */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ArtsyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ArtsyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Artsy. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.ArtsyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Store;
+		};
+		FCB45B322746EF3A00232337 /* Demo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ArtsyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ArtsyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2021 Artsy. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.ArtsyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Demo;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -4408,6 +4800,16 @@
 				B3ECE8371819D1E7009F5C5B /* Debug */,
 				B3ECE83A1819D1E7009F5C5B /* Store */,
 				60AF3D0418D33C80008F3CC0 /* Demo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FCB45B332746EF3A00232337 /* Build configuration list for PBXNativeTarget "ArtsyWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FCB45B302746EF3A00232337 /* Debug */,
+				FCB45B312746EF3A00232337 /* Store */,
+				FCB45B322746EF3A00232337 /* Demo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
