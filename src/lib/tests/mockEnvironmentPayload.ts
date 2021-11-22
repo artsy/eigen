@@ -1,4 +1,4 @@
-import { takeRight } from "lodash"
+import { capitalize, isFunction, takeRight, without } from "lodash"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolverContext, MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 
@@ -42,17 +42,61 @@ const goodMockResolver = (ctx: MockResolverContext) => {
 
   return `${prefix}-${generateID(ctx.path)}`
 }
-export const DefaultMockResolvers: MockResolvers = {
+
+const DefaultMockResolvers: MockResolvers = {
   ID: (ctx) => goodMockResolver(ctx),
   String: (ctx) => goodMockResolver(ctx),
 }
 
+/**
+ * Relay expects the resolver argument in the form of:
+ * {
+ *   Me: () => ({
+ *     lotStandings: []
+ *   })
+ * }
+ * but as a developer, I want to write it as:
+ * {
+ *   me: {
+ *     lotStandings: []
+ *   }
+ * }
+ * so that it makes sense, and it's the same as the actual graphql query.
+ * Basically, relay should be doing this, but 🤷‍♂️.
+ */
+const massageForRelay = (resolvers: Record<string, any>): MockResolvers => {
+  const massagedResolvers: MockResolvers = {}
+
+  Object.keys(DefaultMockResolvers).forEach((key) => {
+    if (resolvers[key] !== undefined) {
+      massagedResolvers[key] = resolvers[key]
+    }
+  })
+
+  const restKeys = without(Object.keys(resolvers), ...Object.keys(DefaultMockResolvers))
+  restKeys.forEach((key) => {
+    // keep the function tests working. we might use the args at some point, for some tests.
+    if (isFunction(resolvers[key])) {
+      massagedResolvers[key] = resolvers[key]
+    } else {
+      massagedResolvers[capitalize(key)] = () => resolvers[key]
+    }
+  })
+
+  return massagedResolvers
+}
+
 export const mockEnvironmentPayload = (
   mockEnvironment: ReturnType<typeof createMockEnvironment>,
-  mockResolvers?: MockResolvers
+  mockResolvers?: MockResolvers | Record<string, any>
 ) => {
   reset()
   mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-    MockPayloadGenerator.generate(operation, { ...DefaultMockResolvers, ...mockResolvers })
+    MockPayloadGenerator.generate(operation, massageForRelay({ ...DefaultMockResolvers, ...mockResolvers }))
   )
 }
+
+// tslint:disable-next-line: variable-name
+export const _test_massageForRelay = massageForRelay
+// tslint:disable-next-line: variable-name
+export const _test_DefaultMockResolvers = DefaultMockResolvers
