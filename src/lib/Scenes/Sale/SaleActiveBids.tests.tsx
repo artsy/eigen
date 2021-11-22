@@ -40,12 +40,11 @@ describe("SaleActiveBids", () => {
   it("renders no items if the user has no active lots standing", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    const mockProps = {
-      Me: () => ({
+    mockEnvironmentPayload(mockEnvironment, {
+      me: {
         lotStandings: [],
-      }),
-    }
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+      },
+    })
 
     expect(tree.root.findAllByType(FlatList)).toHaveLength(0)
   })
@@ -53,12 +52,11 @@ describe("SaleActiveBids", () => {
   it("renders list of lots if the user has active lots standing", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    const mockProps = {
-      Me: () => ({
+    mockEnvironmentPayload(mockEnvironment, {
+      me: {
         lotStandings,
-      }),
-    }
-    mockEnvironmentPayload(mockEnvironment, mockProps)
+      },
+    })
 
     expect(tree.root.findAllByType(FlatList)).toHaveLength(1)
     expect(tree.root.findAllByType(SaleActiveBidItemContainer)).toHaveLength(10)

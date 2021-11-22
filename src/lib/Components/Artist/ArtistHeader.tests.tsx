@@ -41,9 +41,7 @@ describe("ArtistHeader", () => {
   it("renders properly", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
-      Artist: () => mockArtist,
-    })
+    mockEnvironmentPayload(mockEnvironment, mockArtist)
 
     expect(tree.root.findAllByType(Sans)[0].props.children).toMatch("Marcel Duchamp")
   })
@@ -51,21 +49,17 @@ describe("ArtistHeader", () => {
   it("displays follow button for artist", () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
-      Artist: () => mockArtist,
-    })
+    mockEnvironmentPayload(mockEnvironment, mockArtist)
 
     expect(tree.root.findAllByType(Button)[0].props.children).toMatch("Follow")
   })
 
   it("does not show followers count when it is < 2", () => {
-    mockArtist.counts.follows = 1
+    mockArtist.artist.counts.follows = 1
 
     const tree = renderWithWrappers(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
-      Artist: () => mockArtist,
-    })
+    mockEnvironmentPayload(mockEnvironment, mockArtist)
 
     const text = extractText(tree.root)
 
@@ -74,12 +68,14 @@ describe("ArtistHeader", () => {
 })
 
 const mockArtist = {
-  internalID: "some-id",
-  id: "marcel-duchamp",
-  name: "Marcel Duchamp",
-  nationality: "French",
-  birthday: "11/17/1992",
-  counts: {
-    follows: 22,
+  artist: {
+    internalID: "some-id",
+    id: "marcel-duchamp",
+    name: "Marcel Duchamp",
+    nationality: "French",
+    birthday: "11/17/1992",
+    counts: {
+      follows: 22,
+    },
   },
 }

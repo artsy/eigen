@@ -46,7 +46,7 @@ describe("AuctionResults", () => {
   it("renders auction result when auction results are available", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
     mockEnvironmentPayload(mockEnvironment, {
-      Artist: () => ({
+      artist: {
         auctionResultsConnection: {
           edges: [
             {
@@ -65,7 +65,7 @@ describe("AuctionResults", () => {
             },
           ],
         },
-      }),
+      },
     })
 
     expect(tree.findByProps({ testID: "price" }).props.children).toBe("$one gazillion")
@@ -75,7 +75,7 @@ describe("AuctionResults", () => {
   it("renders price in USD when currency is not USD", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
     mockEnvironmentPayload(mockEnvironment, {
-      Artist: () => ({
+      artist: {
         auctionResultsConnection: {
           edges: [
             {
@@ -94,7 +94,7 @@ describe("AuctionResults", () => {
             },
           ],
         },
-      }),
+      },
     })
 
     expect(tree.findByProps({ testID: "price" }).props.children).toBe("€one gazillion")
@@ -104,7 +104,7 @@ describe("AuctionResults", () => {
   it("renders auction result when auction results are not available yet", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
     mockEnvironmentPayload(mockEnvironment, {
-      Artist: () => ({
+      artist: {
         auctionResultsConnection: {
           edges: [
             {
@@ -119,7 +119,7 @@ describe("AuctionResults", () => {
             },
           ],
         },
-      }),
+      },
     })
 
     expect(tree.findByProps({ testID: "price" }).props.children).toBe("Awaiting results")
@@ -129,7 +129,7 @@ describe("AuctionResults", () => {
   it("renders auction result when auction result is `bought in`", () => {
     const tree = renderWithWrappers(<TestRenderer />).root
     mockEnvironmentPayload(mockEnvironment, {
-      Artist: () => ({
+      artist: {
         auctionResultsConnection: {
           edges: [
             {
@@ -145,7 +145,7 @@ describe("AuctionResults", () => {
             },
           ],
         },
-      }),
+      },
     })
 
     expect(tree.findByProps({ testID: "price" }).props.children).toBe("Bought in")
@@ -155,7 +155,7 @@ describe("AuctionResults", () => {
   it("renders sale date correctly", () => {
     const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironmentPayload(mockEnvironment, {
-      Artist: () => ({
+      artist: {
         auctionResultsConnection: {
           edges: [
             {
@@ -166,7 +166,7 @@ describe("AuctionResults", () => {
             },
           ],
         },
-      }),
+      },
     })
 
     expect(tree.root.findByProps({ testID: "saleInfo" }).props.children).toContain("Jan 12, 2021")
