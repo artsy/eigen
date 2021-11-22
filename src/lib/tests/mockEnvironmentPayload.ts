@@ -63,6 +63,9 @@ const DefaultMockResolvers: MockResolvers = {
  * }
  * so that it makes sense, and it's the same as the actual graphql query.
  * Basically, relay should be doing this, but 🤷‍♂️.
+ *
+ * Still there are some places where we need the args like `ctx`, and we in these cases we keep the capitalization and the function.
+ * Mostly this is needed in special keys like `ID` and `String` and `Boolean`, but if we ever need it for other cases, it is supported.
  */
 const massageForRelay = (resolvers: Record<string, any>): MockResolvers => {
   const massagedResolvers: MockResolvers = {}
