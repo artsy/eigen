@@ -11,6 +11,7 @@ export const SearchResultImage: React.FC<{ imageURL: string | null; resultType: 
 
   return (
     <OpaqueImageView
+      useRawURL={resultType === "Article"}
       imageURL={imageURL}
       style={{
         width: IMAGE_SIZE,
