@@ -351,6 +351,15 @@ describe("Saved search alert form", () => {
       expect(queryAllByA11yState({ selected: true })).toHaveLength(1)
     })
 
+    it("should display email update preferences link only when email alerts toggle is enabled", async () => {
+      const { queryByText, getByA11yLabel } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+      expect(queryByText("Update email preferences")).toBeTruthy()
+
+      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
+      expect(queryByText("Update email preferences")).toBeFalsy()
+    })
+
     describe("Allow to send emails modal", () => {
       it("should display the modal when the user enables email alerts", async () => {
         const { getByA11yLabel } = renderWithWrappersTL(

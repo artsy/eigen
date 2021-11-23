@@ -3,6 +3,7 @@ import { navigate } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Box, Button, Flex, Input, InputTitle, Pill, Spacer, Text, Touchable } from "palette"
 import React from "react"
+import { LayoutAnimation, Linking } from "react-native"
 import { getNamePlaceholder } from "../helpers"
 import { SavedSearchAlertFormValues } from "../SavedSearchAlertModel"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
@@ -58,6 +59,15 @@ export const Form: React.FC<FormProps> = (props) => {
     isSaveAlertButtonDisabled = true
   }
 
+  const handleToggleEmailNotification = (value: boolean) => {
+    LayoutAnimation.configureNext({
+      ...LayoutAnimation.Presets.easeInEaseOut,
+      duration: 300,
+    })
+
+    onToggleEmailNotification(value)
+  }
+
   return (
     <Box>
       <Box mb={2}>
@@ -104,13 +114,23 @@ export const Form: React.FC<FormProps> = (props) => {
       </Box>
       {!!enableSavedSearchToggles && (
         <>
-          <SavedSearchAlertSwitch label="Email Alerts" onChange={onToggleEmailNotification} active={values.email} />
-          <Spacer mt={2} />
           <SavedSearchAlertSwitch label="Mobile Alerts" onChange={onTogglePushNotification} active={values.push} />
           <Spacer mt={2} />
+          <SavedSearchAlertSwitch label="Email Alerts" onChange={handleToggleEmailNotification} active={values.email} />
+          {!!values.email && (
+            <Text
+              onPress={() => Linking.openURL("https://staging.artsy.net/unsubscribe")}
+              variant="xs"
+              color="black60"
+              style={{ textDecorationLine: "underline" }}
+              mt={1}
+            >
+              Update email preferences
+            </Text>
+          )}
         </>
       )}
-      <Spacer mt={4} />
+      <Spacer mt={5} />
       <Button
         testID="save-alert-button"
         disabled={isSaveAlertButtonDisabled}
