@@ -56,28 +56,26 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
               </Sans>
             </Checkbox>
 
-            {!!isEdition && (
-              <Flex flexDirection="row">
-                <Join separator={<Spacer mx={0.5} />}>
-                  <Input
-                    placeholder="Edition number"
-                    keyboardType="number-pad"
-                    onChangeText={formik.handleChange("editionNumber")}
-                    onBlur={formik.handleBlur("editionNumber")}
-                    defaultValue={formikValues.editionNumber!}
-                    testID="EditionNumberInput"
-                  />
-                  <Input
-                    placeholder="Edition size"
-                    keyboardType="number-pad"
-                    onChangeText={formik.handleChange("editionSize")}
-                    onBlur={formik.handleBlur("editionSize")}
-                    testID="EditionSizeInput"
-                    defaultValue={formikValues.editionSize}
-                  />
-                </Join>
-              </Flex>
-            )}
+            <Flex flexDirection="row" display={isEdition ? "flex" : "none"}>
+              <Join separator={<Spacer mx={0.5} />}>
+                <Input
+                  placeholder="Edition number"
+                  keyboardType="number-pad"
+                  onChangeText={formik.handleChange("editionNumber")}
+                  onBlur={formik.handleBlur("editionNumber")}
+                  defaultValue={formikValues.editionNumber!}
+                  testID="EditionNumberInput"
+                />
+                <Input
+                  placeholder="Edition size"
+                  keyboardType="number-pad"
+                  onChangeText={formik.handleChange("editionSize")}
+                  onBlur={formik.handleBlur("editionSize")}
+                  testID="EditionSizeInput"
+                  defaultValue={formikValues.editionSize}
+                />
+              </Join>
+            </Flex>
 
             <Input
               title="MATERIALS"
