@@ -4,9 +4,9 @@ import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/Saved
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
-import { Dialog, quoteLeft, quoteRight } from "palette"
+import { Dialog, quoteLeft, quoteRight, useTheme } from "palette"
 import React, { useEffect, useState } from "react"
-import { Alert, AlertButton, Linking, Platform } from "react-native"
+import { Alert, AlertButton, Linking, Platform, ScrollView } from "react-native"
 import { useTracking } from "react-tracking"
 import { Form } from "./Components/Form"
 import { extractPills, getNamePlaceholder } from "./helpers"
@@ -45,6 +45,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const isUpdateForm = !!savedSearchAlertId
   const pills = extractPills(filters, aggregations)
   const tracking = useTracking()
+  const { space } = useTheme()
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
   const [shouldShowEmailWarning, setShouldShowEmailWarning] = useState(!userAllowsEmails)
   const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
@@ -250,17 +251,23 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
   return (
     <FormikProvider value={formik}>
-      <Form
-        pills={pills}
-        savedSearchAlertId={savedSearchAlertId}
-        artistId={artistId}
-        artistName={artistName}
-        onDeletePress={handleDeletePress}
-        onSubmitPress={handleSubmit}
-        onTogglePushNotification={handleTogglePushNotification}
-        onToggleEmailNotification={handleToggleEmailNotification}
-        {...other}
-      />
+      <ScrollView
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
+        contentContainerStyle={{ padding: space(2), paddingTop: 0 }}
+      >
+        <Form
+          pills={pills}
+          savedSearchAlertId={savedSearchAlertId}
+          artistId={artistId}
+          artistName={artistName}
+          onDeletePress={handleDeletePress}
+          onSubmitPress={handleSubmit}
+          onTogglePushNotification={handleTogglePushNotification}
+          onToggleEmailNotification={handleToggleEmailNotification}
+          {...other}
+        />
+      </ScrollView>
       {!!savedSearchAlertId && (
         <Dialog
           isVisible={visibleDeleteDialog}

@@ -1,12 +1,9 @@
 import { Aggregations, FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
 import useAppState from "lib/utils/useAppState"
-import { Sans, Spacer, Text, useTheme } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
-import { ScrollView } from "react-native"
 import { SavedSearchAlertForm } from "./SavedSearchAlertForm"
 import { SavedSearchAlertFormPropsBase, SavedSearchAlertMutationResult } from "./SavedSearchAlertModel"
 
@@ -21,9 +18,7 @@ export interface CreateSavedSearchAlertProps extends SavedSearchAlertFormPropsBa
 
 export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (props) => {
   const { visible, filters, aggregations, onClosePress, onComplete, ...other } = props
-  const { space } = useTheme()
   const [enablePushNotifications, setEnablePushNotifications] = useState(true)
-  const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
 
   const getPermissionStatus = async () => {
     const status = await getNotificationPermissionsStatus()
@@ -47,29 +42,13 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
   return (
     <FancyModal visible={visible} fullScreen>
       <FancyModalHeader useXButton hideBottomDivider onLeftButtonPress={onClosePress} />
-      <ScrollView
-        keyboardDismissMode="on-drag"
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingHorizontal: space(2) }}
-      >
-        <Sans size="8">Create an Alert</Sans>
-        {!enableSavedSearchToggles && (
-          <Sans size="3t" mt={1}>
-            Receive alerts as Push Notifications directly to your device.
-          </Sans>
-        )}
-        <Spacer mt={4} />
-        <SavedSearchAlertForm
-          initialValues={{ name: "", email: props.userAllowsEmails, push: enablePushNotifications }}
-          aggregations={aggregations}
-          filters={filters}
-          onComplete={handleComplete}
-          {...other}
-        />
-        <Text variant="sm" color="black60" textAlign="center" my={2}>
-          You will be able to access all your Saved Alerts in your Profile.
-        </Text>
-      </ScrollView>
+      <SavedSearchAlertForm
+        initialValues={{ name: "", email: props.userAllowsEmails, push: enablePushNotifications }}
+        aggregations={aggregations}
+        filters={filters}
+        onComplete={handleComplete}
+        {...other}
+      />
     </FancyModal>
   )
 }

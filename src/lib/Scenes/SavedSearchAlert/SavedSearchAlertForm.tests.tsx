@@ -215,6 +215,21 @@ describe("Saved search alert form", () => {
     })
   })
 
+  it("should display description by default", () => {
+    const { getByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+    const description = getByText("Receive alerts as Push Notifications directly to your device.")
+
+    expect(description).toBeTruthy()
+  })
+
+  it("should hide description when AREnableSavedSearchToggles is enabled", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
+    const { queryByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+    const description = queryByText("Receive alerts as Push Notifications directly to your device.")
+
+    expect(description).toBeFalsy()
+  })
+
   it("should hide notification toggles if AREnableSavedSearchToggles is disabled", async () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: false })
     const { queryByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)

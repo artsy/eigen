@@ -1,7 +1,7 @@
 import { useFormikContext } from "formik"
 import { navigate } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import { Box, Button, Flex, Input, InputTitle, Pill, Spacer, Text, Touchable } from "palette"
+import { Box, Button, Flex, Input, InputTitle, Pill, Sans, Spacer, Text, Touchable } from "palette"
 import React from "react"
 import { LayoutAnimation } from "react-native"
 import { getNamePlaceholder } from "../helpers"
@@ -40,17 +40,18 @@ export const Form: React.FC<FormProps> = (props) => {
   } = useFormikContext<SavedSearchAlertFormValues>()
   const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const namePlaceholder = getNamePlaceholder(artistName, pills)
+  const isEditMode = !!savedSearchAlertId
   let isSaveAlertButtonDisabled = false
 
   // Сhanges have been made by the user
-  if (!!savedSearchAlertId && !dirty) {
+  if (isEditMode && !dirty) {
     isSaveAlertButtonDisabled = true
   }
 
   // If the saved search alert doesn't have a name, a user can click the save button without any changes.
   // This situation is possible if a user created an alert in Saved Search V1,
   // since we didn't have the opportunity to specify custom name for the alert
-  if (!!savedSearchAlertId && !dirty && values.name.length === 0) {
+  if (isEditMode && !dirty && values.name.length === 0) {
     isSaveAlertButtonDisabled = false
   }
 
@@ -70,6 +71,17 @@ export const Form: React.FC<FormProps> = (props) => {
 
   return (
     <Box>
+      {!isEditMode && (
+        <Box mb={4}>
+          <Sans size="8">Create an Alert</Sans>
+          {!enableSavedSearchToggles && (
+            <Sans size="3t" mt={1}>
+              Receive alerts as Push Notifications directly to your device.
+            </Sans>
+          )}
+        </Box>
+      )}
+
       <Box mb={2}>
         <Input
           title="Name"
@@ -82,7 +94,7 @@ export const Form: React.FC<FormProps> = (props) => {
           maxLength={75}
         />
       </Box>
-      {!!savedSearchAlertId && (
+      {!!isEditMode && (
         <Box mb={2} height={40} justifyContent="center" alignItems="center">
           <Touchable
             haptic
@@ -130,25 +142,31 @@ export const Form: React.FC<FormProps> = (props) => {
           )}
         </>
       )}
-      <Spacer mt={5} />
-      <Button
-        testID="save-alert-button"
-        disabled={isSaveAlertButtonDisabled}
-        loading={isSubmitting}
-        size="large"
-        block
-        onPress={onSubmitPress}
-      >
-        Save Alert
-      </Button>
-      {!!savedSearchAlertId && (
-        <>
-          <Spacer mt={2} />
-          <Button testID="delete-alert-button" variant="outline" size="large" block onPress={onDeletePress}>
-            Delete Alert
-          </Button>
-        </>
-      )}
+      <Box mt={5}>
+        <Button
+          testID="save-alert-button"
+          disabled={isSaveAlertButtonDisabled}
+          loading={isSubmitting}
+          size="large"
+          block
+          onPress={onSubmitPress}
+        >
+          Save Alert
+        </Button>
+        {!!isEditMode && (
+          <>
+            <Spacer mt={2} />
+            <Button testID="delete-alert-button" variant="outline" size="large" block onPress={onDeletePress}>
+              Delete Alert
+            </Button>
+          </>
+        )}
+        {!isEditMode && (
+          <Text variant="sm" color="black60" textAlign="center" my={2}>
+            You will be able to access all your Saved Alerts in your Profile.
+          </Text>
+        )}
+      </Box>
     </Box>
   )
 }

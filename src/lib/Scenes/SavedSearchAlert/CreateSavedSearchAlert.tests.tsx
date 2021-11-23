@@ -45,21 +45,6 @@ describe("CreateSavedSearchAlert", () => {
     expect(getAllByTestId("alert-pill").map(extractText)).toEqual(["Bid"])
   })
 
-  it("should display description by default", () => {
-    const { getByText } = renderWithWrappersTL(<CreateSavedSearchAlert {...defaultProps} />)
-    const description = getByText("Receive alerts as Push Notifications directly to your device.")
-
-    expect(description).toBeTruthy()
-  })
-
-  it("should hide description when AREnableSavedSearchToggles is enabled", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
-    const { queryByText } = renderWithWrappersTL(<CreateSavedSearchAlert {...defaultProps} />)
-    const description = queryByText("Receive alerts as Push Notifications directly to your device.")
-
-    expect(description).toBeFalsy()
-  })
-
   it("should call onClosePress handler when the close button is pressed", () => {
     const onCloseMock = jest.fn()
     const { getByTestId } = renderWithWrappersTL(
