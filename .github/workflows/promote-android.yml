@@ -1,9 +1,11 @@
 # CircleCI doesn't automatically run builds on the play_store_submission branch (only master and PRs)
 # so this is a github action to force it to do so.
-name: Trigger promotion to play store
+name: Cross-CI Trigger promotion to play store
+
 on:
   push:
     branches: [play_store_submission]
+
 jobs:
   trigger:
     runs-on: ubuntu-latest

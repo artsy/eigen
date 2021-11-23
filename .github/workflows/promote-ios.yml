@@ -1,9 +1,11 @@
 # CircleCI doesn't automatically run builds on the app_store_submission branch (only master and PRs)
 # so this is a github action to force it to do so.
-name: Trigger promotion to app store
+name: Cross-CI Trigger promotion to app store
+
 on:
   push:
     branches: [app_store_submission]
+
 jobs:
   trigger:
     runs-on: ubuntu-latest
