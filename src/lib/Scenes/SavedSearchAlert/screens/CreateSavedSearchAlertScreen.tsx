@@ -12,7 +12,7 @@ type Props = StackScreenProps<CreateSavedSearchAlertNavigationStack, "CreateSave
 
 export const CreateSavedSearchAlertScreen: React.FC<Props> = (props) => {
   const { navigation, route } = props
-  const { filters, aggregations, onComplete, onClosePress, ...other } = route.params
+  const { filters, aggregations, onComplete, onClosePress, refetch, ...other } = route.params
   const [enablePushNotifications, setEnablePushNotifications] = useState(true)
 
   const getPermissionStatus = async () => {

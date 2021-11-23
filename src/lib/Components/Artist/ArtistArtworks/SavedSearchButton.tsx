@@ -129,11 +129,12 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
         artistId={artistId}
         artistName={artistName}
         visible={visibleForm}
-        onClosePress={handleCloseForm}
-        onComplete={handleComplete}
         filters={filters}
         aggregations={aggregations}
         userAllowsEmails={me?.emailFrequency !== "none"}
+        refetch={refetch}
+        onClosePress={handleCloseForm}
+        onComplete={handleComplete}
       />
     </Box>
   )

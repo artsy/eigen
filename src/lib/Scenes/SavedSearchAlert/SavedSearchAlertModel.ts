@@ -29,6 +29,7 @@ export interface CreateSavedSearchAlertScreenProps extends SavedSearchAlertFormP
   filters: FilterData[]
   aggregations: Aggregations
   userAllowsEmails: boolean
+  refetch: () => void
   onClosePress: () => void
   onComplete: (response: SavedSearchAlertMutationResult) => void
 }
