@@ -7023,6 +7023,35 @@ type FollowedGalleryEdge {
   node: Partner
 }
 
+type FollowedProfile {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  profile: Profile!
+}
+
+# A connection to a list of items.
+type FollowedProfileConnection {
+  # A list of edges.
+  edges: [FollowedProfileEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type FollowedProfileEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: FollowedProfile
+}
+
 # A connection to a list of items.
 type FollowedShowConnection {
   # A list of edges.
@@ -7133,6 +7162,16 @@ type FollowsAndSaves {
 
   # A list of the current user’s inquiry requests
   genesConnection(after: String, before: String, first: Int, last: Int, page: Int, size: Int): FollowGeneConnection
+
+  # A list of the current user’s currently followed partner profiles
+  profilesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): FollowedProfileConnection
 
   # A list of the current user’s currently followed shows
   showsConnection(
