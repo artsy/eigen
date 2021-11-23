@@ -11,6 +11,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useEnableMyCollection } from "lib/Scenes/MyCollection/MyCollection"
 import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import {
+  CreateSavedSearchAlertParams,
   SavedSearchAlertFormPropsBase,
   SavedSearchAlertMutationResult,
 } from "lib/Scenes/SavedSearchAlert/SavedSearchAlertModel"
@@ -111,6 +112,16 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
     }
   }, [refetch])
 
+  const params: CreateSavedSearchAlertParams = {
+    artistId,
+    artistName,
+    filters,
+    aggregations,
+    me,
+    onClosePress: handleCloseForm,
+    onComplete: handleComplete,
+  }
+
   return (
     <Box>
       <Button
@@ -125,18 +136,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
       >
         Create Alert
       </Button>
-      <CreateSavedSearchAlert
-        artistId={artistId}
-        artistName={artistName}
-        visible={visibleForm}
-        filters={filters}
-        aggregations={aggregations}
-        userAllowsEmails={me?.emailFrequency !== "none"}
-        refetch={refetch}
-        isLoading={loading || refetching}
-        onClosePress={handleCloseForm}
-        onComplete={handleComplete}
-      />
+      <CreateSavedSearchAlert visible={visibleForm} params={params} />
     </Box>
   )
 }
@@ -146,7 +146,7 @@ export const SavedSearchButtonRefetchContainer = createRefetchContainer(
   {
     me: graphql`
       fragment SavedSearchButton_me on Me @argumentDefinitions(criteria: { type: "SearchCriteriaAttributes" }) {
-        emailFrequency
+        ...CreateSavedSearchAlertScreen_me
         savedSearch(criteria: $criteria) {
           internalID
         }

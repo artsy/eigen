@@ -1,3 +1,4 @@
+import { SavedSearchButton_me } from "__generated__/SavedSearchButton_me.graphql"
 import { Aggregations, FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 
 export interface SavedSearchAlertFormValues {
@@ -26,22 +27,22 @@ export interface SavedSearchAlertUserAlertSettings {
 }
 
 // Navigation
-export interface CreateSavedSearchAlertScreenProps extends SavedSearchAlertFormPropsBase {
+export interface CreateSavedSearchAlertParams extends SavedSearchAlertFormPropsBase {
+  me?: SavedSearchButton_me | null
   filters: FilterData[]
   aggregations: Aggregations
-  userAllowsEmails: boolean
-  refetch: () => void
   onClosePress: () => void
   onComplete: (response: SavedSearchAlertMutationResult) => void
 }
 
-export interface CreateSavedSearchAlertProps extends CreateSavedSearchAlertScreenProps {
+export interface CreateSavedSearchAlertProps {
   visible: boolean
+  params: CreateSavedSearchAlertParams
 }
 
 // This needs to be a `type` rather than an `interface`
 // tslint:disable-next-line:interface-over-type-literal
 export type CreateSavedSearchAlertNavigationStack = {
-  CreateSavedSearchAlert: CreateSavedSearchAlertProps
+  CreateSavedSearchAlert: CreateSavedSearchAlertParams
   EmailPreferences: undefined
 }

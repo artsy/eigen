@@ -10,7 +10,7 @@ import { EmailPreferencesScreen } from "./screens/EmailPreferencesScreen"
 const Stack = createStackNavigator<CreateSavedSearchAlertNavigationStack>()
 
 export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (props) => {
-  const { visible, ...screenParams } = props
+  const { visible, params } = props
 
   return (
     <NavigationContainer independent>
@@ -29,7 +29,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
             <Stack.Screen
               name="CreateSavedSearchAlert"
               component={CreateSavedSearchAlertScreen}
-              initialParams={screenParams}
+              initialParams={params}
             />
             <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
           </Stack.Navigator>

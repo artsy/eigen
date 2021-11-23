@@ -1,4 +1,5 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
+import { CreateSavedSearchAlertTestsQuery } from "__generated__/CreateSavedSearchAlertTestsQuery.graphql"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
@@ -8,14 +9,14 @@ import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificatio
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import React from "react"
+import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { CreateSavedSearchAlert } from "./CreateSavedSearchAlert"
 import { CreateSavedSearchAlertProps } from "./SavedSearchAlertModel"
 
 jest.unmock("react-relay")
 
-const defaultProps: CreateSavedSearchAlertProps = {
-  visible: true,
+const defaultParams: CreateSavedSearchAlertProps["params"] = {
   filters: [
     {
       displayText: "Bid",
@@ -26,7 +27,6 @@ const defaultProps: CreateSavedSearchAlertProps = {
   aggregations: [],
   artistId: "artistID",
   artistName: "artistName",
-  userAllowsEmails: true,
   onComplete: jest.fn(),
   onClosePress: jest.fn(),
 }
@@ -40,17 +40,55 @@ describe("CreateSavedSearchAlert", () => {
     notificationPermissions.mockClear()
   })
 
+  const TestRenderer = (props: Partial<CreateSavedSearchAlertProps>) => {
+    return (
+      <QueryRenderer<CreateSavedSearchAlertTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query CreateSavedSearchAlertTestsQuery @relay_test_operation {
+            me {
+              ...CreateSavedSearchAlertScreen_me
+            }
+          }
+        `}
+        render={({ props: relayProps }) => (
+          <CreateSavedSearchAlert
+            visible
+            params={{
+              ...defaultParams,
+              // @ts-ignore
+              me: relayProps?.me,
+            }}
+            {...props}
+          />
+        )}
+        variables={{}}
+      />
+    )
+  }
+
+  const renderAndExecuteQuery = (props?: Partial<CreateSavedSearchAlertProps>) => {
+    const render = renderWithWrappersTL(<TestRenderer {...props} />)
+
+    mockEnvironmentPayload(mockEnvironment)
+
+    return render
+  }
+
   it("renders without throwing an error", () => {
-    const { getAllByTestId } = renderWithWrappersTL(<CreateSavedSearchAlert {...defaultProps} />)
+    const { getAllByTestId } = renderAndExecuteQuery()
 
     expect(getAllByTestId("alert-pill").map(extractText)).toEqual(["Bid"])
   })
 
   it("should call onClosePress handler when the close button is pressed", () => {
     const onCloseMock = jest.fn()
-    const { getByTestId } = renderWithWrappersTL(
-      <CreateSavedSearchAlert {...defaultProps} onClosePress={onCloseMock} />
-    )
+    const { getByTestId } = renderAndExecuteQuery({
+      params: {
+        ...defaultParams,
+        onClosePress: onCloseMock,
+      },
+    })
 
     fireEvent.press(getByTestId("fancy-modal-header-left-button"))
 
@@ -61,14 +99,20 @@ describe("CreateSavedSearchAlert", () => {
     notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
     const onCompleteMock = jest.fn()
 
-    const { getByTestId } = renderWithWrappersTL(
-      <CreateSavedSearchAlert {...defaultProps} onComplete={onCompleteMock} />
-    )
+    const { getByTestId } = renderAndExecuteQuery({
+      params: {
+        ...defaultParams,
+        onComplete: onCompleteMock,
+      },
+    })
 
     fireEvent.changeText(getByTestId("alert-input-name"), "something new")
     fireEvent.press(getByTestId("save-alert-button"))
 
     await waitFor(() => {
+      const operation = mockEnvironment.mock.getMostRecentOperation()
+
+      expect(operation.request.node.operation.name).toBe("createSavedSearchAlertMutation")
       mockEnvironmentPayload(mockEnvironment, {
         SearchCriteria: () => ({
           internalID: "internalID",
@@ -89,7 +133,7 @@ describe("CreateSavedSearchAlert", () => {
     it("the push notification is enabled by default when push permissions are enabled", async () => {
       notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
 
-      const { findAllByA11yState } = renderWithWrappersTL(<CreateSavedSearchAlert {...defaultProps} />)
+      const { findAllByA11yState } = renderAndExecuteQuery()
       const toggles = await findAllByA11yState({ selected: true })
 
       expect(toggles).toHaveLength(2)
@@ -98,7 +142,7 @@ describe("CreateSavedSearchAlert", () => {
     it("the push notification is disabled by default when push permissions are denied", async () => {
       notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Denied))
 
-      const { findAllByA11yState } = renderWithWrappersTL(<CreateSavedSearchAlert {...defaultProps} />)
+      const { findAllByA11yState } = renderAndExecuteQuery()
       const toggles = await findAllByA11yState({ selected: false })
 
       expect(toggles).toHaveLength(1)
@@ -107,18 +151,7 @@ describe("CreateSavedSearchAlert", () => {
     it("the push notification is disabled by default when push permissions are not determined", async () => {
       notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.NotDetermined))
 
-      const { findAllByA11yState } = renderWithWrappersTL(<CreateSavedSearchAlert {...defaultProps} />)
-      const toggles = await findAllByA11yState({ selected: false })
-
-      expect(toggles).toHaveLength(1)
-    })
-
-    it("the email notification is disabled by default if a user has not allowed email notifications", async () => {
-      notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
-
-      const { findAllByA11yState } = renderWithWrappersTL(
-        <CreateSavedSearchAlert {...defaultProps} userAllowsEmails={false} />
-      )
+      const { findAllByA11yState } = renderAndExecuteQuery()
       const toggles = await findAllByA11yState({ selected: false })
 
       expect(toggles).toHaveLength(1)
