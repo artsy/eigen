@@ -1,6 +1,9 @@
 name: Trigger beta iOS release
 
-on: workflow_dispatch
+on:
+  push:
+    branches: [allow-manual-trigger] # lol just for testing in this PR
+  workflow_dispatch:
 
 jobs:
   build:
