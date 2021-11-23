@@ -1,27 +1,27 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7a585c8d7a5bb6a510a5b51ebb6f243b */
+/* @relayHash acaa3a358b7edc683b0cdf54d9050d7d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ConversationDetailsQueryVariables = {
+export type ConversationDetails_Test_QueryVariables = {
     conversationID: string;
 };
-export type ConversationDetailsQueryResponse = {
+export type ConversationDetails_Test_QueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"ConversationDetails_me">;
     } | null;
 };
-export type ConversationDetailsQuery = {
-    readonly response: ConversationDetailsQueryResponse;
-    readonly variables: ConversationDetailsQueryVariables;
+export type ConversationDetails_Test_Query = {
+    readonly response: ConversationDetails_Test_QueryResponse;
+    readonly variables: ConversationDetails_Test_QueryVariables;
 };
 
 
 
 /*
-query ConversationDetailsQuery(
+query ConversationDetails_Test_Query(
   $conversationID: String!
 ) {
   me {
@@ -350,7 +350,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "ConversationDetailsQuery",
+    "name": "ConversationDetails_Test_Query",
     "selections": [
       {
         "alias": null,
@@ -376,7 +376,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "ConversationDetailsQuery",
+    "name": "ConversationDetails_Test_Query",
     "selections": [
       {
         "alias": null,
@@ -953,13 +953,13 @@ return {
     ]
   },
   "params": {
-    "id": "7a585c8d7a5bb6a510a5b51ebb6f243b",
+    "id": "acaa3a358b7edc683b0cdf54d9050d7d",
     "metadata": {},
-    "name": "ConversationDetailsQuery",
+    "name": "ConversationDetails_Test_Query",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '464d6ba7c5353c651e81dc601cfa0b42';
+(node as any).hash = 'e108776ddbc6e6defc8387d9287dad66';
 export default node;
