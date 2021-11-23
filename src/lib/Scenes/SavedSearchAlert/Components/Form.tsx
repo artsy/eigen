@@ -15,6 +15,7 @@ interface FormProps {
   artistName: string
   onDeletePress?: () => void
   onSubmitPress?: () => void
+  onUpdateEmailPreferencesPress: () => void
   onTogglePushNotification: (enabled: boolean) => void
   onToggleEmailNotification: (enabled: boolean) => void
 }
@@ -27,6 +28,7 @@ export const Form: React.FC<FormProps> = (props) => {
     savedSearchAlertId,
     onDeletePress,
     onSubmitPress,
+    onUpdateEmailPreferencesPress,
     onTogglePushNotification,
     onToggleEmailNotification,
   } = props
@@ -131,7 +133,7 @@ export const Form: React.FC<FormProps> = (props) => {
           <SavedSearchAlertSwitch label="Email Alerts" onChange={handleToggleEmailNotification} active={values.email} />
           {!!values.email && (
             <Text
-              onPress={() => navigate("/unsubscribe")}
+              onPress={onUpdateEmailPreferencesPress}
               variant="xs"
               color="black60"
               style={{ textDecorationLine: "underline" }}

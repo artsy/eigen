@@ -26,6 +26,7 @@ export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase
   savedSearchAlertId?: string
   userAllowsEmails: boolean
   contentContainerStyle?: StyleProp<ViewStyle>
+  onUpdateEmailPreferencesPress: () => void
   onComplete?: (result: SavedSearchAlertMutationResult) => void
   onDeleteComplete?: () => void
 }

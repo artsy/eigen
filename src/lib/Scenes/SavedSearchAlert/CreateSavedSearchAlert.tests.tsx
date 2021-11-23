@@ -9,7 +9,8 @@ import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import React from "react"
 import { createMockEnvironment } from "relay-test-utils"
-import { CreateSavedSearchAlert, CreateSavedSearchAlertProps } from "./CreateSavedSearchAlert"
+import { CreateSavedSearchAlert } from "./CreateSavedSearchAlert"
+import { CreateSavedSearchAlertProps } from "./SavedSearchAlertModel"
 
 jest.unmock("react-relay")
 

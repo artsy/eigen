@@ -23,3 +23,23 @@ export interface SavedSearchAlertUserAlertSettings {
   email?: boolean
   push?: boolean
 }
+
+// Navigation
+export interface CreateSavedSearchAlertScreenProps extends SavedSearchAlertFormPropsBase {
+  filters: FilterData[]
+  aggregations: Aggregations
+  userAllowsEmails: boolean
+  onClosePress: () => void
+  onComplete: (response: SavedSearchAlertMutationResult) => void
+}
+
+export interface CreateSavedSearchAlertProps extends CreateSavedSearchAlertScreenProps {
+  visible: boolean
+}
+
+// This needs to be a `type` rather than an `interface`
+// tslint:disable-next-line:interface-over-type-literal
+export type CreateSavedSearchAlertNavigationStack = {
+  CreateSavedSearchAlert: CreateSavedSearchAlertProps
+  EmailPreferences: undefined
+}
