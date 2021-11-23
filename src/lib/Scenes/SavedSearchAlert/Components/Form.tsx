@@ -13,6 +13,7 @@ interface FormProps {
   savedSearchAlertId?: string
   artistId: string
   artistName: string
+  isLoading?: boolean
   onDeletePress?: () => void
   onSubmitPress?: () => void
   onUpdateEmailPreferencesPress: () => void
@@ -26,6 +27,7 @@ export const Form: React.FC<FormProps> = (props) => {
     artistId,
     artistName,
     savedSearchAlertId,
+    isLoading,
     onDeletePress,
     onSubmitPress,
     onUpdateEmailPreferencesPress,
@@ -148,7 +150,7 @@ export const Form: React.FC<FormProps> = (props) => {
         <Button
           testID="save-alert-button"
           disabled={isSaveAlertButtonDisabled}
-          loading={isSubmitting}
+          loading={isSubmitting || isLoading}
           size="large"
           block
           onPress={onSubmitPress}

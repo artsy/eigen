@@ -133,6 +133,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
         aggregations={aggregations}
         userAllowsEmails={me?.emailFrequency !== "none"}
         refetch={refetch}
+        isLoading={loading || refetching}
         onClosePress={handleCloseForm}
         onComplete={handleComplete}
       />

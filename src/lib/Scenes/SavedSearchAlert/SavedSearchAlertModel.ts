@@ -11,6 +11,7 @@ export interface SavedSearchAlertFormPropsBase {
   aggregations: Aggregations
   artistId: string
   artistName: string
+  isLoading?: boolean
 }
 
 export interface SavedSearchAlertMutationResult {
