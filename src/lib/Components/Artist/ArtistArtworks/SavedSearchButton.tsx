@@ -15,7 +15,7 @@ import {
   SavedSearchAlertMutationResult,
 } from "lib/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { BellIcon, Box, Button } from "palette"
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -55,7 +55,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   const popover = usePopoverMessage()
   const isSavedSearch = !!me?.savedSearch?.internalID
 
-  const refetch = () => {
+  const refetch = useCallback(() => {
     setRefetching(true)
     relay.refetch(
       { criteria },
@@ -65,7 +65,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
       },
       { force: true }
     )
-  }
+  }, [criteria])
 
   const handleOpenForm = () => setVisibleForm(true)
   const handleCloseForm = () => setVisibleForm(false)
@@ -109,7 +109,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
     return () => {
       savedSearchEvents.removeListener("refetch", refetch)
     }
-  }, [])
+  }, [refetch])
 
   return (
     <Box>
@@ -162,7 +162,7 @@ export const SavedSearchButtonRefetchContainer = createRefetchContainer(
 
 export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRendererProps> = (props) => {
   const { filters, artistId } = props
-  const criteria = getSearchCriteriaFromFilters(artistId, filters)
+  const criteria = useMemo(() => getSearchCriteriaFromFilters(artistId, filters), [artistId, filters])
 
   return (
     <QueryRenderer<SavedSearchButtonQuery>
