@@ -1,6 +1,6 @@
 import { useFormikContext } from "formik"
 import { navigate } from "lib/navigation/navigate"
-import { useFeatureFlag } from "lib/store/GlobalStore"
+import { useFeatureFlag, useIsStaging } from "lib/store/GlobalStore"
 import { Box, Button, Flex, Input, InputTitle, Pill, Spacer, Text, Touchable } from "palette"
 import React from "react"
 import { LayoutAnimation, Linking } from "react-native"
@@ -39,7 +39,9 @@ export const Form: React.FC<FormProps> = (props) => {
     handleChange,
   } = useFormikContext<SavedSearchAlertFormValues>()
   const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
+  const isStaging = useIsStaging()
   const namePlaceholder = getNamePlaceholder(artistName, pills)
+  const emailPreferencesLink = isStaging ? "https://staging.artsy.net/unsubscribe" : "https://artsy.net/unsubscribe"
   let isSaveAlertButtonDisabled = false
 
   // Сhanges have been made by the user
@@ -119,7 +121,7 @@ export const Form: React.FC<FormProps> = (props) => {
           <SavedSearchAlertSwitch label="Email Alerts" onChange={handleToggleEmailNotification} active={values.email} />
           {!!values.email && (
             <Text
-              onPress={() => Linking.openURL("https://staging.artsy.net/unsubscribe")}
+              onPress={() => Linking.openURL(emailPreferencesLink)}
               variant="xs"
               color="black60"
               style={{ textDecorationLine: "underline" }}
