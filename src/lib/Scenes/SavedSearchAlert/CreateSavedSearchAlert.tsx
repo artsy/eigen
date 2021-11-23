@@ -47,6 +47,7 @@ export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (pr
         aggregations={aggregations}
         filters={filters}
         onComplete={handleComplete}
+        contentContainerStyle={{ paddingTop: 0 }}
         {...other}
       />
     </FancyModal>

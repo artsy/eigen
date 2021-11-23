@@ -6,7 +6,7 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { Dialog, quoteLeft, quoteRight, useTheme } from "palette"
 import React, { useEffect, useState } from "react"
-import { Alert, AlertButton, Linking, Platform, ScrollView } from "react-native"
+import { Alert, AlertButton, Linking, Platform, ScrollView, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
 import { Form } from "./Components/Form"
 import { extractPills, getNamePlaceholder } from "./helpers"
@@ -25,6 +25,7 @@ export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase
   initialValues: SavedSearchAlertFormValues
   savedSearchAlertId?: string
   userAllowsEmails: boolean
+  contentContainerStyle?: StyleProp<ViewStyle>
   onComplete?: (result: SavedSearchAlertMutationResult) => void
   onDeleteComplete?: () => void
 }
@@ -38,6 +39,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     artistId,
     artistName,
     userAllowsEmails,
+    contentContainerStyle,
     onComplete,
     onDeleteComplete,
     ...other
@@ -254,7 +256,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       <ScrollView
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ padding: space(2), paddingTop: 0 }}
+        contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}
       >
         <Form
           pills={pills}
