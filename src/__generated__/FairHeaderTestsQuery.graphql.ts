@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9931aa780ea32280e47e73d2aafd07f4 */
+/* @relayHash ecd3644bdbba1e6bfccde92409f48ad6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -67,7 +67,7 @@ fragment FairHeader_fair on Fair {
 }
 
 fragment FairTiming_fair on Fair {
-  exhibitionPeriod
+  exhibitionPeriod(format: SHORT)
   startAt
   endAt
 }
@@ -370,10 +370,16 @@ return {
           },
           {
             "alias": null,
-            "args": null,
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "format",
+                "value": "SHORT"
+              }
+            ],
             "kind": "ScalarField",
             "name": "exhibitionPeriod",
-            "storageKey": null
+            "storageKey": "exhibitionPeriod(format:\"SHORT\")"
           },
           {
             "alias": null,
@@ -396,7 +402,7 @@ return {
     ]
   },
   "params": {
-    "id": "9931aa780ea32280e47e73d2aafd07f4",
+    "id": "ecd3644bdbba1e6bfccde92409f48ad6",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": {

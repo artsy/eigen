@@ -78,7 +78,7 @@ export const ItemInfoFragmentContainer = createFragmentContainer(ItemInfo, {
       ... on Show {
         name
         href
-        exhibitionPeriod
+        exhibitionPeriod(format: SHORT)
         partner {
           ... on Partner {
             name

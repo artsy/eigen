@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ef3dd0ca64f47eb9d8eb89d5101e42bf */
+/* @relayHash 8dbd4a27ea99bc2f6b67097df53170c5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -120,7 +120,7 @@ fragment ItemInfo_item on ConversationItemType {
   ... on Show {
     name
     href
-    exhibitionPeriod
+    exhibitionPeriod(format: SHORT)
     partner {
       __typename
       ... on Partner {
@@ -532,10 +532,16 @@ return {
                           (v3/*: any*/),
                           {
                             "alias": null,
-                            "args": null,
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "format",
+                                "value": "SHORT"
+                              }
+                            ],
                             "kind": "ScalarField",
                             "name": "exhibitionPeriod",
-                            "storageKey": null
+                            "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                           },
                           {
                             "alias": null,
@@ -595,7 +601,7 @@ return {
     ]
   },
   "params": {
-    "id": "ef3dd0ca64f47eb9d8eb89d5101e42bf",
+    "id": "8dbd4a27ea99bc2f6b67097df53170c5",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {

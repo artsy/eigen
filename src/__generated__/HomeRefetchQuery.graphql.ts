@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash afe14bc43c4ee2d0d2d7ae320f3520d1 */
+/* @relayHash 4cef0d435a33cae33ff6d177b6ef7ec0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -293,7 +293,7 @@ fragment FairsRail_fairsModule on HomePageFairsModule {
       id
     }
     name
-    exhibitionPeriod
+    exhibitionPeriod(format: SHORT)
     image {
       url(version: "large")
     }
@@ -1858,10 +1858,16 @@ return {
                   (v22/*: any*/),
                   {
                     "alias": null,
-                    "args": null,
+                    "args": [
+                      {
+                        "kind": "Literal",
+                        "name": "format",
+                        "value": "SHORT"
+                      }
+                    ],
                     "kind": "ScalarField",
                     "name": "exhibitionPeriod",
-                    "storageKey": null
+                    "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                   },
                   (v36/*: any*/),
                   {
@@ -2469,7 +2475,7 @@ return {
     ]
   },
   "params": {
-    "id": "afe14bc43c4ee2d0d2d7ae320f3520d1",
+    "id": "4cef0d435a33cae33ff6d177b6ef7ec0",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",

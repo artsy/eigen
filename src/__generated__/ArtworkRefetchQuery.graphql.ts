@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3cd9df153cf9d7844e7a4225ce4cfccd */
+/* @relayHash e95a24ce53fb4b24f9e362a0ac0554a2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -619,7 +619,7 @@ fragment ContextCard_artwork on Artwork {
       id
       name
       href
-      exhibitionPeriod
+      exhibitionPeriod(format: SHORT)
       image {
         url
       }
@@ -630,7 +630,7 @@ fragment ContextCard_artwork on Artwork {
       slug
       name
       href
-      exhibitionPeriod
+      exhibitionPeriod(format: SHORT)
       isFollowed
       coverImage {
         url
@@ -1066,10 +1066,16 @@ v34 = {
 },
 v35 = {
   "alias": null,
-  "args": null,
+  "args": [
+    {
+      "kind": "Literal",
+      "name": "format",
+      "value": "SHORT"
+    }
+  ],
   "kind": "ScalarField",
   "name": "exhibitionPeriod",
-  "storageKey": null
+  "storageKey": "exhibitionPeriod(format:\"SHORT\")"
 },
 v36 = {
   "alias": null,
@@ -2366,7 +2372,7 @@ return {
     ]
   },
   "params": {
-    "id": "3cd9df153cf9d7844e7a4225ce4cfccd",
+    "id": "e95a24ce53fb4b24f9e362a0ac0554a2",
     "metadata": {},
     "name": "ArtworkRefetchQuery",
     "operationKind": "query",

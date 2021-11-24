@@ -131,7 +131,7 @@ export const FairsRailFragmentContainer = createFragmentContainer(FairsRail, {
           slug
         }
         name
-        exhibitionPeriod
+        exhibitionPeriod(format: SHORT)
         image {
           url(version: "large")
         }
