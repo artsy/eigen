@@ -12,7 +12,7 @@ import { screen } from "lib/utils/track/helpers"
 import React from "react"
 import { RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-import { SaleArtworksHomeRailContainer } from "../Home/Components/SaleArtworksHomeRail"
+import { LotsByFollowedArtistsRailContainer } from "../LotsByArtistsYouFollow/LotsByFollowedArtistsRail"
 import { SaleList } from "./Components/SaleList"
 import { ZeroState } from "./Components/ZeroState"
 
@@ -63,7 +63,7 @@ class Sales extends React.Component<Props, State> {
             refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
           >
             <Stack py={2} spacing={3}>
-              <SaleArtworksHomeRailContainer title="Lots by Artists You Follow" me={this.props.me} />
+              <LotsByFollowedArtistsRailContainer title="Lots by Artists You Follow" me={this.props.me} />
               <SaleList title="Current Live Auctions" sales={liveAuctions} />
               <SaleList title="Current Timed Auctions" sales={timedAuctions} />
             </Stack>
@@ -89,7 +89,7 @@ export const SalesFragmentContainer = createRefetchContainer(
     `,
     me: graphql`
       fragment Sales_me on Me {
-        ...SaleArtworksHomeRail_me
+        ...LotsByFollowedArtistsRail_me
       }
     `,
   },

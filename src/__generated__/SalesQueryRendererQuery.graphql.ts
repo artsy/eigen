@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 98e786df84521062b1e5a5c05ba0e707 */
+/* @relayHash 3b80fbf399edf37a9c06ca2f0b89efd9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,6 +29,29 @@ query SalesQueryRendererQuery {
   me {
     ...Sales_me
     id
+  }
+}
+
+fragment LotsByFollowedArtistsRail_me on Me {
+  lotsByFollowedArtistsConnection(first: 6, includeArtworksByFollowedArtists: true, isAuction: true, liveSale: true) {
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    edges {
+      node {
+        id
+        href
+        saleArtwork {
+          ...SaleArtworkTileRailCard_saleArtwork
+          id
+        }
+        __typename
+      }
+      cursor
+      id
+    }
   }
 }
 
@@ -62,29 +85,6 @@ fragment SaleArtworkTileRailCard_saleArtwork on SaleArtwork {
   }
 }
 
-fragment SaleArtworksHomeRail_me on Me {
-  lotsByFollowedArtistsConnection(first: 6, includeArtworksByFollowedArtists: true, isAuction: true, liveSale: true) {
-    pageInfo {
-      hasNextPage
-      startCursor
-      endCursor
-    }
-    edges {
-      node {
-        id
-        href
-        saleArtwork {
-          ...SaleArtworkTileRailCard_saleArtwork
-          id
-        }
-        __typename
-      }
-      cursor
-      id
-    }
-  }
-}
-
 fragment SaleListItem_sale on Sale {
   name
   href
@@ -97,7 +97,7 @@ fragment SaleListItem_sale on Sale {
 }
 
 fragment Sales_me on Me {
-  ...SaleArtworksHomeRail_me
+  ...LotsByFollowedArtistsRail_me
 }
 
 fragment Sales_sales on SaleConnection {
@@ -578,7 +578,7 @@ return {
               "liveSale"
             ],
             "handle": "connection",
-            "key": "SaleArtworksHomeRail_lotsByFollowedArtistsConnection",
+            "key": "LotsByFollowedArtistsRail_lotsByFollowedArtistsConnection",
             "kind": "LinkedHandle",
             "name": "lotsByFollowedArtistsConnection"
           },
@@ -589,7 +589,7 @@ return {
     ]
   },
   "params": {
-    "id": "98e786df84521062b1e5a5c05ba0e707",
+    "id": "3b80fbf399edf37a9c06ca2f0b89efd9",
     "metadata": {},
     "name": "SalesQueryRendererQuery",
     "operationKind": "query",

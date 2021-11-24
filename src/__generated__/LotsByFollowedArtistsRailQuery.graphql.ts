@@ -1,34 +1,57 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f98e533ff678a50ddfbf38d6133470b1 */
+/* @relayHash c0a2509ac6b1490d87fce893d0861df2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SaleArtworksHomeRailQueryVariables = {
+export type LotsByFollowedArtistsRailQueryVariables = {
     cursor?: string | null;
     count: number;
 };
-export type SaleArtworksHomeRailQueryResponse = {
+export type LotsByFollowedArtistsRailQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"SaleArtworksHomeRail_me">;
+        readonly " $fragmentRefs": FragmentRefs<"LotsByFollowedArtistsRail_me">;
     } | null;
 };
-export type SaleArtworksHomeRailQuery = {
-    readonly response: SaleArtworksHomeRailQueryResponse;
-    readonly variables: SaleArtworksHomeRailQueryVariables;
+export type LotsByFollowedArtistsRailQuery = {
+    readonly response: LotsByFollowedArtistsRailQueryResponse;
+    readonly variables: LotsByFollowedArtistsRailQueryVariables;
 };
 
 
 
 /*
-query SaleArtworksHomeRailQuery(
+query LotsByFollowedArtistsRailQuery(
   $cursor: String
   $count: Int!
 ) {
   me {
-    ...SaleArtworksHomeRail_me_1G22uz
+    ...LotsByFollowedArtistsRail_me_1G22uz
     id
+  }
+}
+
+fragment LotsByFollowedArtistsRail_me_1G22uz on Me {
+  lotsByFollowedArtistsConnection(first: $count, after: $cursor, includeArtworksByFollowedArtists: true, isAuction: true, liveSale: true) {
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    edges {
+      node {
+        id
+        href
+        saleArtwork {
+          ...SaleArtworkTileRailCard_saleArtwork
+          id
+        }
+        __typename
+      }
+      cursor
+      id
+    }
   }
 }
 
@@ -59,29 +82,6 @@ fragment SaleArtworkTileRailCard_saleArtwork on SaleArtwork {
     isClosed
     displayTimelyAt
     id
-  }
-}
-
-fragment SaleArtworksHomeRail_me_1G22uz on Me {
-  lotsByFollowedArtistsConnection(first: $count, after: $cursor, includeArtworksByFollowedArtists: true, isAuction: true, liveSale: true) {
-    pageInfo {
-      hasNextPage
-      startCursor
-      endCursor
-    }
-    edges {
-      node {
-        id
-        href
-        saleArtwork {
-          ...SaleArtworkTileRailCard_saleArtwork
-          id
-        }
-        __typename
-      }
-      cursor
-      id
-    }
   }
 }
 */
@@ -146,7 +146,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "SaleArtworksHomeRailQuery",
+    "name": "LotsByFollowedArtistsRailQuery",
     "selections": [
       {
         "alias": null,
@@ -170,7 +170,7 @@ return {
               }
             ],
             "kind": "FragmentSpread",
-            "name": "SaleArtworksHomeRail_me"
+            "name": "LotsByFollowedArtistsRail_me"
           }
         ],
         "storageKey": null
@@ -186,7 +186,7 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "SaleArtworksHomeRailQuery",
+    "name": "LotsByFollowedArtistsRailQuery",
     "selections": [
       {
         "alias": null,
@@ -461,7 +461,7 @@ return {
               "liveSale"
             ],
             "handle": "connection",
-            "key": "SaleArtworksHomeRail_lotsByFollowedArtistsConnection",
+            "key": "LotsByFollowedArtistsRail_lotsByFollowedArtistsConnection",
             "kind": "LinkedHandle",
             "name": "lotsByFollowedArtistsConnection"
           },
@@ -472,13 +472,13 @@ return {
     ]
   },
   "params": {
-    "id": "f98e533ff678a50ddfbf38d6133470b1",
+    "id": "c0a2509ac6b1490d87fce893d0861df2",
     "metadata": {},
-    "name": "SaleArtworksHomeRailQuery",
+    "name": "LotsByFollowedArtistsRailQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'a2c734fa4f4c7d5c12f15678357ddbd5';
+(node as any).hash = '66cf094f87feae653dd1427abbcc7d45';
 export default node;

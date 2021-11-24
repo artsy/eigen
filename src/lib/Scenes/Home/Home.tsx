@@ -15,7 +15,6 @@ import { AuctionResultsRailFragmentContainer } from "lib/Scenes/Home/Components/
 import { CollectionsRailFragmentContainer } from "lib/Scenes/Home/Components/CollectionsRail"
 import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
-import { SaleArtworksHomeRailContainer } from "lib/Scenes/Home/Components/SaleArtworksHomeRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
@@ -34,6 +33,7 @@ import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { _FragmentRefs, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { LotsByFollowedArtistsRailContainer } from "../LotsByArtistsYouFollow/LotsByFollowedArtistsRail"
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
@@ -235,7 +235,7 @@ const Home = (props: Props) => {
                 )
               case "lotsByFollowedArtists":
                 return (
-                  <SaleArtworksHomeRailContainer
+                  <LotsByFollowedArtistsRailContainer
                     title={item.title}
                     me={item.data}
                     onShow={() => separators.updateProps("leading", { hideSeparator: false })}
@@ -383,7 +383,7 @@ export const HomeFragmentContainer = createRefetchContainer(
     meAbove: graphql`
       fragment Home_meAbove on Me {
         ...EmailConfirmationBanner_me
-        ...SaleArtworksHomeRail_me
+        ...LotsByFollowedArtistsRail_me
         ...NewWorksForYouRail_me
       }
     `,

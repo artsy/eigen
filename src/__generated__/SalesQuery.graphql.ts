@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c13d5cf64aeaad0675eb3a6f0ff1cc2b */
+/* @relayHash 97f6c38e6b92780be08b182562b63f50 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,6 +29,29 @@ query SalesQuery {
   me {
     ...Sales_me
     id
+  }
+}
+
+fragment LotsByFollowedArtistsRail_me on Me {
+  lotsByFollowedArtistsConnection(first: 6, includeArtworksByFollowedArtists: true, isAuction: true, liveSale: true) {
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    edges {
+      node {
+        id
+        href
+        saleArtwork {
+          ...SaleArtworkTileRailCard_saleArtwork
+          id
+        }
+        __typename
+      }
+      cursor
+      id
+    }
   }
 }
 
@@ -62,29 +85,6 @@ fragment SaleArtworkTileRailCard_saleArtwork on SaleArtwork {
   }
 }
 
-fragment SaleArtworksHomeRail_me on Me {
-  lotsByFollowedArtistsConnection(first: 6, includeArtworksByFollowedArtists: true, isAuction: true, liveSale: true) {
-    pageInfo {
-      hasNextPage
-      startCursor
-      endCursor
-    }
-    edges {
-      node {
-        id
-        href
-        saleArtwork {
-          ...SaleArtworkTileRailCard_saleArtwork
-          id
-        }
-        __typename
-      }
-      cursor
-      id
-    }
-  }
-}
-
 fragment SaleListItem_sale on Sale {
   name
   href
@@ -97,7 +97,7 @@ fragment SaleListItem_sale on Sale {
 }
 
 fragment Sales_me on Me {
-  ...SaleArtworksHomeRail_me
+  ...LotsByFollowedArtistsRail_me
 }
 
 fragment Sales_sales on SaleConnection {
@@ -578,7 +578,7 @@ return {
               "liveSale"
             ],
             "handle": "connection",
-            "key": "SaleArtworksHomeRail_lotsByFollowedArtistsConnection",
+            "key": "LotsByFollowedArtistsRail_lotsByFollowedArtistsConnection",
             "kind": "LinkedHandle",
             "name": "lotsByFollowedArtistsConnection"
           },
@@ -589,7 +589,7 @@ return {
     ]
   },
   "params": {
-    "id": "c13d5cf64aeaad0675eb3a6f0ff1cc2b",
+    "id": "97f6c38e6b92780be08b182562b63f50",
     "metadata": {},
     "name": "SalesQuery",
     "operationKind": "query",

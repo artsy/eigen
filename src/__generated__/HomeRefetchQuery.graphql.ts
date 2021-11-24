@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 630c649defb5e2f77128e14c588d8a64 */
+/* @relayHash afe14bc43c4ee2d0d2d7ae320f3520d1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -395,7 +395,7 @@ fragment Home_homePageBelow_1IwJ0h on HomePage {
 
 fragment Home_meAbove on Me {
   ...EmailConfirmationBanner_me
-  ...SaleArtworksHomeRail_me
+  ...LotsByFollowedArtistsRail_me
   ...NewWorksForYouRail_me
 }
 
@@ -405,6 +405,29 @@ fragment Home_meBelow on Me {
 
 fragment Home_showsByFollowedArtists on ShowConnection {
   ...ShowsRail_showsConnection
+}
+
+fragment LotsByFollowedArtistsRail_me on Me {
+  lotsByFollowedArtistsConnection(first: 6, includeArtworksByFollowedArtists: true, isAuction: true, liveSale: true) {
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    edges {
+      node {
+        id
+        href
+        saleArtwork {
+          ...SaleArtworkTileRailCard_saleArtwork
+          id
+        }
+        __typename
+      }
+      cursor
+      id
+    }
+  }
 }
 
 fragment NewWorksForYouRail_me on Me {
@@ -452,29 +475,6 @@ fragment SaleArtworkTileRailCard_saleArtwork on SaleArtwork {
     isClosed
     displayTimelyAt
     id
-  }
-}
-
-fragment SaleArtworksHomeRail_me on Me {
-  lotsByFollowedArtistsConnection(first: 6, includeArtworksByFollowedArtists: true, isAuction: true, liveSale: true) {
-    pageInfo {
-      hasNextPage
-      startCursor
-      endCursor
-    }
-    edges {
-      node {
-        id
-        href
-        saleArtwork {
-          ...SaleArtworkTileRailCard_saleArtwork
-          id
-        }
-        __typename
-      }
-      cursor
-      id
-    }
   }
 }
 
@@ -2118,7 +2118,7 @@ return {
               "liveSale"
             ],
             "handle": "connection",
-            "key": "SaleArtworksHomeRail_lotsByFollowedArtistsConnection",
+            "key": "LotsByFollowedArtistsRail_lotsByFollowedArtistsConnection",
             "kind": "LinkedHandle",
             "name": "lotsByFollowedArtistsConnection"
           },
@@ -2469,7 +2469,7 @@ return {
     ]
   },
   "params": {
-    "id": "630c649defb5e2f77128e14c588d8a64",
+    "id": "afe14bc43c4ee2d0d2d7ae320f3520d1",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",

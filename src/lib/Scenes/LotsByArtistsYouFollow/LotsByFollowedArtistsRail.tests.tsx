@@ -1,4 +1,4 @@
-import { SaleArtworksHomeRailTestsQuery } from "__generated__/SaleArtworksHomeRailTestsQuery.graphql"
+import { LotsByFollowedArtistsRailTestsQuery } from "__generated__/LotsByFollowedArtistsRailTestsQuery.graphql"
 import { SaleArtworkTileRailCardContainer } from "lib/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
@@ -7,23 +7,23 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { PAGE_SIZE, SaleArtworksHomeRailContainer } from "./SaleArtworksHomeRail"
+import { LotsByFollowedArtistsRailContainer, PAGE_SIZE } from "./LotsByFollowedArtistsRail"
 
 jest.unmock("react-relay")
 
 const onShowMock = jest.fn()
 const onHideMock = jest.fn()
 
-describe("SaleArtworksHomeRail", () => {
+describe("LotsByFollowedArtistsRail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (
-    <QueryRenderer<SaleArtworksHomeRailTestsQuery>
+    <QueryRenderer<LotsByFollowedArtistsRailTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query SaleArtworksHomeRailTestsQuery @relay_test_operation {
+        query LotsByFollowedArtistsRailTestsQuery @relay_test_operation {
           me {
-            ...SaleArtworksHomeRail_me
+            ...LotsByFollowedArtistsRail_me
           }
         }
       `}
@@ -31,7 +31,12 @@ describe("SaleArtworksHomeRail", () => {
       render={({ props }) => {
         if (props?.me) {
           return (
-            <SaleArtworksHomeRailContainer title="Auctions" me={props.me} onShow={onShowMock} onHide={onHideMock} />
+            <LotsByFollowedArtistsRailContainer
+              title="Auctions"
+              me={props.me}
+              onShow={onShowMock}
+              onHide={onHideMock}
+            />
           )
         }
         return null
