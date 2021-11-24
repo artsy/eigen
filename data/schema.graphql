@@ -6307,6 +6307,14 @@ enum EventStatus {
   UPCOMING
 }
 
+enum ExhibitionPeriodFormat {
+  # Long formatted period e.g. February 25 – May 24, 2015
+  LONG
+
+  # Short formatted period e.g. Feb 25 - May 24, 2015
+  SHORT
+}
+
 type External {
   auctionHouses(size: Int, term: String): [ExternalAuctionHouse!]!
   fairs(size: Int, term: String): [ExternalFair!]!
@@ -6425,7 +6433,10 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   ): String
 
   # A formatted description of the start to end dates
-  exhibitionPeriod: String
+  exhibitionPeriod(
+    # Formatting option to apply to exhibition period
+    format: ExhibitionPeriodFormat
+  ): String
 
   # The exhibitors with booths in this fair with letter.
   exhibitorsGroupedByName: [FairExhibitorsGroup]
@@ -6518,9 +6529,6 @@ type Fair implements EntityWithFilterArtworksConnectionInterface & Node {
   name: String
   organizer: FairOrganizer
   profile: Profile
-
-  # A formatted description of the start to end dates with abbreviated months
-  shortExhibitionPeriod: String
 
   # This connection only supports forward pagination. We're replacing Relay's default cursor with one from Gravity.
   showsConnection(
@@ -11714,7 +11722,10 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   events: [ShowEventType]
 
   # A formatted description of the start to end dates
-  exhibitionPeriod: String
+  exhibitionPeriod(
+    # Formatting option to apply to exhibition period
+    format: ExhibitionPeriodFormat
+  ): String
 
   # If the show is in a Fair, then that fair
   fair: Fair
@@ -11865,9 +11876,6 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   # Link to the press release for this show
   pressReleaseUrl: String
 
-  # A formatted description of the start to end dates with abbreviated months
-  shortExhibitionPeriod: String
-
   # A slug ID.
   slug: ID!
 
@@ -11951,10 +11959,10 @@ type ShowEventType {
   eventType: String
 
   # A formatted description of the start to end dates
-  exhibitionPeriod: String
-
-  # A formatted description of the start to end dates with abbreviated months
-  shortExhibitionPeriod: String
+  exhibitionPeriod(
+    # Formatting option to apply to exhibition period
+    format: ExhibitionPeriodFormat
+  ): String
   startAt(
     format: String
 
