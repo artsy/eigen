@@ -11,12 +11,13 @@ import { PushAuthorizationStatus } from "lib/utils/PushNotification"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
+import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
 import { CreateSavedSearchAlert } from "./CreateSavedSearchAlert"
-import { CreateSavedSearchAlertProps } from "./SavedSearchAlertModel"
+import { CreateSavedSearchAlertParams, CreateSavedSearchAlertProps } from "./SavedSearchAlertModel"
 
 jest.unmock("react-relay")
 
-const defaultParams: CreateSavedSearchAlertProps["params"] = {
+const defaultParams: CreateSavedSearchAlertParams = {
   filters: [
     {
       displayText: "Bid",
@@ -51,26 +52,34 @@ describe("CreateSavedSearchAlert", () => {
             }
           }
         `}
-        render={({ props: relayProps }) => (
-          <CreateSavedSearchAlert
-            visible
-            params={{
-              ...defaultParams,
-              // @ts-ignore
-              me: relayProps?.me,
-            }}
-            {...props}
-          />
-        )}
+        render={({ props: relayProps }) => {
+          if (relayProps?.me) {
+            return (
+              <CreateSavedSearchAlert
+                visible
+                params={{
+                  ...defaultParams,
+                  // @ts-ignore
+                  me: relayProps?.me,
+                }}
+                {...props}
+              />
+            )
+          }
+        }}
         variables={{}}
       />
     )
   }
 
-  const renderAndExecuteQuery = (props?: Partial<CreateSavedSearchAlertProps>) => {
+  const renderAndExecuteQuery = (props?: Partial<CreateSavedSearchAlertProps>, mockResolvers?: MockResolvers) => {
     const render = renderWithWrappersTL(<TestRenderer {...props} />)
 
-    mockEnvironmentPayload(mockEnvironment)
+    // CreateSavedSearchAlertTestsQuery
+    mockEnvironmentPayload(mockEnvironment, mockResolvers)
+
+    // Refetch query
+    mockEnvironmentPayload(mockEnvironment, mockResolvers)
 
     return render
   }
@@ -152,6 +161,23 @@ describe("CreateSavedSearchAlert", () => {
       notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.NotDetermined))
 
       const { findAllByA11yState } = renderAndExecuteQuery()
+      const toggles = await findAllByA11yState({ selected: false })
+
+      expect(toggles).toHaveLength(1)
+    })
+
+    it("the email notification is disabled by default if a user has not allowed email notifications", async () => {
+      notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
+
+      const { findAllByA11yState } = renderAndExecuteQuery(
+        {},
+        {
+          Me: () => ({
+            emailFrequency: "none",
+          }),
+        }
+      )
+
       const toggles = await findAllByA11yState({ selected: false })
 
       expect(toggles).toHaveLength(1)
