@@ -386,3 +386,23 @@ describe("AddExperimentsModel migration", () => {
     expect(migratedState.config.experiments).toEqual({})
   })
 })
+
+describe("App version Versions.AddPreviousSessionUserID", () => {
+  const migrationToTest = Versions.AddPreviousSessionUserID
+  it("adds previousSessionUserID", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    expect("previousSessionUserID" in previousState.auth).toBe(false)
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect("previousSessionUserID" in migratedState.auth).toBe(true)
+    expect(migratedState.auth.previousSessionUserID).toEqual(null)
+  })
+})

@@ -14,6 +14,7 @@ import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from "re
 import { LegacyNativeModules } from "../NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
+
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
 
 const afterSocialAuthLogin = (res: any, reject: (reason?: any) => void, provider: "facebook" | "apple" | "google") => {
@@ -39,6 +40,7 @@ export interface AuthModel {
   xApptokenExpiresIn: string | null
   onboardingState: OnboardingState
   userEmail: string | null
+  previousSessionUserID: string | null
 
   userHasArtsyEmail: Computed<this, boolean, GlobalStoreModel>
 
@@ -166,6 +168,7 @@ export const getAuthModel = (): AuthModel => ({
   xApptokenExpiresIn: null,
   onboardingState: "none",
   userEmail: null,
+  previousSessionUserID: null,
   userHasArtsyEmail: computed((state) => isArtsyEmail(state.userEmail ?? "")),
 
   setState: action((state, payload) => Object.assign(state, payload)),
@@ -246,7 +249,7 @@ export const getAuthModel = (): AuthModel => ({
     return false
   }),
   signIn: thunk(
-    async (actions, { email, password, accessToken, oauthProvider, idToken, appleUID, onboardingState }) => {
+    async (actions, { email, password, accessToken, oauthProvider, idToken, appleUID, onboardingState }, store) => {
       let body
       switch (oauthProvider) {
         case "facebook":
@@ -312,6 +315,10 @@ export const getAuthModel = (): AuthModel => ({
           userEmail: email,
           onboardingState: onboardingState ?? "complete",
         })
+
+        if (user.id !== store.getState().previousSessionUserID) {
+          store.getStoreActions().search.clearRecentSearches()
+        }
 
         actions.notifyTracking({ userId: user.id })
         postEventToProviders(tracks.loggedIn(oauthProvider ?? "email"))

@@ -14,6 +14,7 @@ export interface SearchModel {
   recentSearches: RecentSearch[]
   addRecentSearch: Action<SearchModel, RecentSearch>
   deleteRecentSearch: Action<SearchModel, AutosuggestResult>
+  clearRecentSearches: Action<SearchModel>
 }
 
 export const getSearchModel = (): SearchModel => ({
@@ -32,6 +33,9 @@ export const getSearchModel = (): SearchModel => ({
     state.recentSearches = state.recentSearches.filter(
       (recentSearch: RecentSearch) => recentSearch.props.href !== payload.href
     )
+  }),
+  clearRecentSearches: action((state) => {
+    state.recentSearches = []
   }),
 })
 

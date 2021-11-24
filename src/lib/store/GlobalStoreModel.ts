@@ -63,9 +63,15 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
     return result
   }),
   signOut: thunk(async (actions, _, store) => {
+    const {
+      config: existingConfig,
+      search,
+      auth: { userID },
+    } = store.getState()
+
     // keep existing config state
-    const existingConfig = store.getState().config
     const config = sanitize(existingConfig) as typeof existingConfig
+
     const signOutGoogle = async () => {
       try {
         await GoogleSignin.revokeAccess()
@@ -81,7 +87,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
       await signOutGoogle(),
       CookieManager.clearAll(),
       RelayCache.clearAll(),
-      actions.reset({ config }),
+      actions.reset({ config, search, auth: { previousSessionUserID: userID } }),
     ])
   }),
   didRehydrate: thunkOn(
