@@ -2,6 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { Sales_me } from "__generated__/Sales_me.graphql"
 import { Sales_sales } from "__generated__/Sales_sales.graphql"
 import { SalesQueryRendererQuery } from "__generated__/SalesQueryRendererQuery.graphql"
+import { LotsByFollowedArtistsRailContainer } from "lib/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { Stack } from "lib/Components/Stack"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -12,7 +13,6 @@ import { screen } from "lib/utils/track/helpers"
 import React from "react"
 import { RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-import LotsByFollowedArtists from "./Components/LotsByFollowedArtists"
 import { SaleList } from "./Components/SaleList"
 import { ZeroState } from "./Components/ZeroState"
 
@@ -63,7 +63,7 @@ class Sales extends React.Component<Props, State> {
             refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
           >
             <Stack py={2} spacing={3}>
-              <LotsByFollowedArtists title="Lots by Artists You Follow" me={this.props.me} />
+              <LotsByFollowedArtistsRailContainer title="Lots by Artists You Follow" me={this.props.me} />
               <SaleList title="Current Live Auctions" sales={liveAuctions} />
               <SaleList title="Current Timed Auctions" sales={timedAuctions} />
             </Stack>
@@ -89,8 +89,7 @@ export const SalesFragmentContainer = createRefetchContainer(
     `,
     me: graphql`
       fragment Sales_me on Me {
-        ...LotsByFollowedArtists_me
-        email
+        ...LotsByFollowedArtistsRail_me
       }
     `,
   },

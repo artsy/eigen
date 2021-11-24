@@ -1,28 +1,51 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7569edef990e0b513753989e3028725e */
+/* @relayHash a9b1d72f48ccad94bf3300d3188175b6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SaleArtworksHomeRailTestsQueryVariables = {};
-export type SaleArtworksHomeRailTestsQueryResponse = {
+export type LotsByFollowedArtistsRailTestsQueryVariables = {};
+export type LotsByFollowedArtistsRailTestsQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"SaleArtworksHomeRail_me">;
+        readonly " $fragmentRefs": FragmentRefs<"LotsByFollowedArtistsRail_me">;
     } | null;
 };
-export type SaleArtworksHomeRailTestsQuery = {
-    readonly response: SaleArtworksHomeRailTestsQueryResponse;
-    readonly variables: SaleArtworksHomeRailTestsQueryVariables;
+export type LotsByFollowedArtistsRailTestsQuery = {
+    readonly response: LotsByFollowedArtistsRailTestsQueryResponse;
+    readonly variables: LotsByFollowedArtistsRailTestsQueryVariables;
 };
 
 
 
 /*
-query SaleArtworksHomeRailTestsQuery {
+query LotsByFollowedArtistsRailTestsQuery {
   me {
-    ...SaleArtworksHomeRail_me
+    ...LotsByFollowedArtistsRail_me
     id
+  }
+}
+
+fragment LotsByFollowedArtistsRail_me on Me {
+  lotsByFollowedArtistsConnection(first: 6, includeArtworksByFollowedArtists: true, isAuction: true, liveSale: true) {
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    edges {
+      node {
+        id
+        href
+        saleArtwork {
+          ...SaleArtworkTileRailCard_saleArtwork
+          id
+        }
+        __typename
+      }
+      cursor
+      id
+    }
   }
 }
 
@@ -53,29 +76,6 @@ fragment SaleArtworkTileRailCard_saleArtwork on SaleArtwork {
     isClosed
     displayTimelyAt
     id
-  }
-}
-
-fragment SaleArtworksHomeRail_me on Me {
-  lotsByFollowedArtistsConnection(first: 6, includeArtworksByFollowedArtists: true, isAuction: true, liveSale: true) {
-    pageInfo {
-      hasNextPage
-      startCursor
-      endCursor
-    }
-    edges {
-      node {
-        id
-        href
-        saleArtwork {
-          ...SaleArtworkTileRailCard_saleArtwork
-          id
-        }
-        __typename
-      }
-      cursor
-      id
-    }
   }
 }
 */
@@ -146,7 +146,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "SaleArtworksHomeRailTestsQuery",
+    "name": "LotsByFollowedArtistsRailTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -159,7 +159,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "SaleArtworksHomeRail_me"
+            "name": "LotsByFollowedArtistsRail_me"
           }
         ],
         "storageKey": null
@@ -172,7 +172,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "SaleArtworksHomeRailTestsQuery",
+    "name": "LotsByFollowedArtistsRailTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -447,7 +447,7 @@ return {
               "liveSale"
             ],
             "handle": "connection",
-            "key": "SaleArtworksHomeRail_lotsByFollowedArtistsConnection",
+            "key": "LotsByFollowedArtistsRail_lotsByFollowedArtistsConnection",
             "kind": "LinkedHandle",
             "name": "lotsByFollowedArtistsConnection"
           },
@@ -458,7 +458,7 @@ return {
     ]
   },
   "params": {
-    "id": "7569edef990e0b513753989e3028725e",
+    "id": "a9b1d72f48ccad94bf3300d3188175b6",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -566,11 +566,11 @@ return {
         "me.lotsByFollowedArtistsConnection.pageInfo.startCursor": (v4/*: any*/)
       }
     },
-    "name": "SaleArtworksHomeRailTestsQuery",
+    "name": "LotsByFollowedArtistsRailTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '141d108b0d42e2fc9b0f7b3413697d4d';
+(node as any).hash = '81507c561f2c49560208610652710dee';
 export default node;

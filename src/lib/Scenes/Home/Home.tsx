@@ -9,13 +9,13 @@ import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graph
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
+import { LotsByFollowedArtistsRailContainer } from "lib/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkRail"
 import { AuctionResultsRailFragmentContainer } from "lib/Scenes/Home/Components/AuctionResultsRail"
 import { CollectionsRailFragmentContainer } from "lib/Scenes/Home/Components/CollectionsRail"
 import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
 import { FairsRailFragmentContainer } from "lib/Scenes/Home/Components/FairsRail"
-import { SaleArtworksHomeRailContainer } from "lib/Scenes/Home/Components/SaleArtworksHomeRail"
 import { SalesRailFragmentContainer } from "lib/Scenes/Home/Components/SalesRail"
 import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
@@ -235,7 +235,7 @@ const Home = (props: Props) => {
                 )
               case "lotsByFollowedArtists":
                 return (
-                  <SaleArtworksHomeRailContainer
+                  <LotsByFollowedArtistsRailContainer
                     title={item.title}
                     me={item.data}
                     onShow={() => separators.updateProps("leading", { hideSeparator: false })}
@@ -383,7 +383,7 @@ export const HomeFragmentContainer = createRefetchContainer(
     meAbove: graphql`
       fragment Home_meAbove on Me {
         ...EmailConfirmationBanner_me
-        ...SaleArtworksHomeRail_me
+        ...LotsByFollowedArtistsRail_me
         ...NewWorksForYouRail_me
       }
     `,

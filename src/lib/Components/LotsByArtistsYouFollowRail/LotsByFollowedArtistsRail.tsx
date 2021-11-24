@@ -1,5 +1,5 @@
 import { OwnerType } from "@artsy/cohesion"
-import { SaleArtworksHomeRail_me } from "__generated__/SaleArtworksHomeRail_me.graphql"
+import { LotsByFollowedArtistsRail_me } from "__generated__/LotsByFollowedArtistsRail_me.graphql"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
 import { SaleArtworkTileRailCardContainer } from "lib/Components/SaleArtworkTileRailCard"
 import { SectionTitle } from "lib/Components/SectionTitle"
@@ -14,13 +14,13 @@ export const PAGE_SIZE = 6
 
 interface Props {
   title: string
-  me: SaleArtworksHomeRail_me
+  me: LotsByFollowedArtistsRail_me
   relay: RelayPaginationProp
   onHide?: () => void
   onShow?: () => void
 }
 
-export const SaleArtworksHomeRail: React.FC<Props> = ({ title, me, relay, onShow, onHide }) => {
+export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay, onShow, onHide }) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
@@ -46,7 +46,7 @@ export const SaleArtworksHomeRail: React.FC<Props> = ({ title, me, relay, onShow
 
       if (error) {
         // FIXME: Handle error
-        console.error("SaleArtworksHomeRail.tsx", error.message)
+        console.error("LotsByFollowedArtistsRail.tsx", error.message)
       }
     })
   }
@@ -78,11 +78,11 @@ export const SaleArtworksHomeRail: React.FC<Props> = ({ title, me, relay, onShow
   )
 }
 
-export const SaleArtworksHomeRailContainer = createPaginationContainer(
-  SaleArtworksHomeRail,
+export const LotsByFollowedArtistsRailContainer = createPaginationContainer(
+  LotsByFollowedArtistsRail,
   {
     me: graphql`
-      fragment SaleArtworksHomeRail_me on Me
+      fragment LotsByFollowedArtistsRail_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 6 }, cursor: { type: "String" }) {
         lotsByFollowedArtistsConnection(
           first: $count
@@ -90,7 +90,7 @@ export const SaleArtworksHomeRailContainer = createPaginationContainer(
           includeArtworksByFollowedArtists: true
           isAuction: true
           liveSale: true
-        ) @connection(key: "SaleArtworksHomeRail_lotsByFollowedArtistsConnection") {
+        ) @connection(key: "LotsByFollowedArtistsRail_lotsByFollowedArtistsConnection") {
           pageInfo {
             hasNextPage
             startCursor
@@ -127,9 +127,9 @@ export const SaleArtworksHomeRailContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query SaleArtworksHomeRailQuery($cursor: String, $count: Int!) {
+      query LotsByFollowedArtistsRailQuery($cursor: String, $count: Int!) {
         me {
-          ...SaleArtworksHomeRail_me @arguments(cursor: $cursor, count: $count)
+          ...LotsByFollowedArtistsRail_me @arguments(cursor: $cursor, count: $count)
         }
       }
     `,

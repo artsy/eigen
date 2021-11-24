@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a9bcd200633693415a9eb774abcd53a9 */
+/* @relayHash 2de25403be6e3905e7ae419a725ceeea */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -195,8 +195,31 @@ fragment Home_homePageAbove_1IwJ0h on HomePage {
 
 fragment Home_meAbove on Me {
   ...EmailConfirmationBanner_me
-  ...SaleArtworksHomeRail_me
+  ...LotsByFollowedArtistsRail_me
   ...NewWorksForYouRail_me
+}
+
+fragment LotsByFollowedArtistsRail_me on Me {
+  lotsByFollowedArtistsConnection(first: 6, includeArtworksByFollowedArtists: true, isAuction: true, liveSale: true) {
+    pageInfo {
+      hasNextPage
+      startCursor
+      endCursor
+    }
+    edges {
+      node {
+        id
+        href
+        saleArtwork {
+          ...SaleArtworkTileRailCard_saleArtwork
+          id
+        }
+        __typename
+      }
+      cursor
+      id
+    }
+  }
 }
 
 fragment NewWorksForYouRail_me on Me {
@@ -244,29 +267,6 @@ fragment SaleArtworkTileRailCard_saleArtwork on SaleArtwork {
     isClosed
     displayTimelyAt
     id
-  }
-}
-
-fragment SaleArtworksHomeRail_me on Me {
-  lotsByFollowedArtistsConnection(first: 6, includeArtworksByFollowedArtists: true, isAuction: true, liveSale: true) {
-    pageInfo {
-      hasNextPage
-      startCursor
-      endCursor
-    }
-    edges {
-      node {
-        id
-        href
-        saleArtwork {
-          ...SaleArtworkTileRailCard_saleArtwork
-          id
-        }
-        __typename
-      }
-      cursor
-      id
-    }
   }
 }
 
@@ -1193,7 +1193,7 @@ return {
               "liveSale"
             ],
             "handle": "connection",
-            "key": "SaleArtworksHomeRail_lotsByFollowedArtistsConnection",
+            "key": "LotsByFollowedArtistsRail_lotsByFollowedArtistsConnection",
             "kind": "LinkedHandle",
             "name": "lotsByFollowedArtistsConnection"
           },
@@ -1354,7 +1354,7 @@ return {
     ]
   },
   "params": {
-    "id": "a9bcd200633693415a9eb774abcd53a9",
+    "id": "2de25403be6e3905e7ae419a725ceeea",
     "metadata": {},
     "name": "HomeAboveTheFoldQuery",
     "operationKind": "query",

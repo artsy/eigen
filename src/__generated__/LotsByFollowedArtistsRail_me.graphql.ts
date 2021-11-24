@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SaleArtworksHomeRail_me = {
+export type LotsByFollowedArtistsRail_me = {
     readonly lotsByFollowedArtistsConnection: {
         readonly pageInfo: {
             readonly hasNextPage: boolean;
@@ -21,12 +21,12 @@ export type SaleArtworksHomeRail_me = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "SaleArtworksHomeRail_me";
+    readonly " $refType": "LotsByFollowedArtistsRail_me";
 };
-export type SaleArtworksHomeRail_me$data = SaleArtworksHomeRail_me;
-export type SaleArtworksHomeRail_me$key = {
-    readonly " $data"?: SaleArtworksHomeRail_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"SaleArtworksHomeRail_me">;
+export type LotsByFollowedArtistsRail_me$data = LotsByFollowedArtistsRail_me;
+export type LotsByFollowedArtistsRail_me$key = {
+    readonly " $data"?: LotsByFollowedArtistsRail_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"LotsByFollowedArtistsRail_me">;
 };
 
 
@@ -57,7 +57,7 @@ const node: ReaderFragment = {
       }
     ]
   },
-  "name": "SaleArtworksHomeRail_me",
+  "name": "LotsByFollowedArtistsRail_me",
   "selections": [
     {
       "alias": "lotsByFollowedArtistsConnection",
@@ -80,7 +80,7 @@ const node: ReaderFragment = {
       ],
       "concreteType": "SaleArtworksConnection",
       "kind": "LinkedField",
-      "name": "__SaleArtworksHomeRail_lotsByFollowedArtistsConnection_connection",
+      "name": "__LotsByFollowedArtistsRail_lotsByFollowedArtistsConnection_connection",
       "plural": false,
       "selections": [
         {
@@ -182,11 +182,11 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
-      "storageKey": "__SaleArtworksHomeRail_lotsByFollowedArtistsConnection_connection(includeArtworksByFollowedArtists:true,isAuction:true,liveSale:true)"
+      "storageKey": "__LotsByFollowedArtistsRail_lotsByFollowedArtistsConnection_connection(includeArtworksByFollowedArtists:true,isAuction:true,liveSale:true)"
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '7b5ac6dd05d1bf2f6f8acbfd70926016';
+(node as any).hash = '636c1645a54f360182abe3773fee73de';
 export default node;
