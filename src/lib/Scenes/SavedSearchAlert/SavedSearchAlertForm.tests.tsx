@@ -1,5 +1,6 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { Aggregations, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
@@ -373,6 +374,25 @@ describe("Saved search alert form", () => {
 
       await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
       expect(queryByText("Update email preferences")).toBeFalsy()
+    })
+
+    it("should call navigate handler when update preferences is pressed", async () => {
+      const { getByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+      fireEvent.press(getByText("Update email preferences"))
+
+      expect(navigate).toBeCalledWith("/unsubscribe")
+    })
+
+    it("should call custom update email preferences handler when it is passed", async () => {
+      const onUpdateEmailPreferencesMock = jest.fn()
+      const { getByText } = renderWithWrappersTL(
+        <SavedSearchAlertForm {...baseProps} onUpdateEmailPreferencesPress={onUpdateEmailPreferencesMock} />
+      )
+
+      fireEvent.press(getByText("Update email preferences"))
+
+      expect(onUpdateEmailPreferencesMock).toBeCalled()
     })
 
     describe("Allow to send emails modal", () => {
