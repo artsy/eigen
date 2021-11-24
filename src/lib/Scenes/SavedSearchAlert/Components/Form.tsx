@@ -16,7 +16,7 @@ interface FormProps {
   isLoading?: boolean
   onDeletePress?: () => void
   onSubmitPress?: () => void
-  onUpdateEmailPreferencesPress: () => void
+  onUpdateEmailPreferencesPress?: () => void
   onTogglePushNotification: (enabled: boolean) => void
   onToggleEmailNotification: (enabled: boolean) => void
 }
@@ -71,6 +71,14 @@ export const Form: React.FC<FormProps> = (props) => {
     })
 
     onToggleEmailNotification(value)
+  }
+
+  const handleUpdateEmailPreferencesPress = () => {
+    if (onUpdateEmailPreferencesPress) {
+      return onUpdateEmailPreferencesPress()
+    }
+
+    return navigate("/unsubscribe")
   }
 
   return (
@@ -135,7 +143,7 @@ export const Form: React.FC<FormProps> = (props) => {
           <SavedSearchAlertSwitch label="Email Alerts" onChange={handleToggleEmailNotification} active={values.email} />
           {!!values.email && (
             <Text
-              onPress={onUpdateEmailPreferencesPress}
+              onPress={handleUpdateEmailPreferencesPress}
               variant="xs"
               color="black60"
               style={{ textDecorationLine: "underline" }}
