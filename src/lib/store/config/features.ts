@@ -213,11 +213,16 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "ARMyCollectionLocalSortAndFilter",
   },
-  ARPrefetching: {
+  AREnableArtistRecommendations: {
+    readyForRelease: false,
+    description: "Enable new artist recommendations",
+    showInAdminMenu: true,
+  },
+  AREnableQueriesPrefetching: {
     readyForRelease: false,
     description: "Enable query prefetching",
     showInAdminMenu: true,
-    echoFlagKey: "ARPrefetching",
+    echoFlagKey: "AREnableQueriesPrefetching",
   },
 })
 

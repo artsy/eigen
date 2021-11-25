@@ -16,6 +16,7 @@ import { ArtistRailNewSuggestionQuery } from "__generated__/ArtistRailNewSuggest
 import { Disappearable } from "lib/Components/Disappearable"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { defaultArtworksInput } from "lib/Scenes/Artist/Artist"
 import { RailScrollProps } from "lib/Scenes/Home/Components/types"
 import { Schema } from "lib/utils/track"
 import { sample, uniq } from "lodash"
@@ -193,12 +194,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
       </Flex>
       <CardRailFlatList<SuggestedArtist>
         prefetchUrlExtractor={(item) => item?.href!}
-        prefetchVariablesExtractor={() => ({
-          input: {
-            dimensionRange: "*-*",
-            sort: "-decayed_merch",
-          },
-        })}
+        prefetchVariablesExtractor={defaultArtworksInput}
         listRef={listRef}
         data={artists}
         keyExtractor={(artist) => artist.id}
