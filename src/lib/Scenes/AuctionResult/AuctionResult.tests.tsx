@@ -113,7 +113,7 @@ describe("AuctionResult", () => {
     })
   })
 
-  describe.only("Auction Result is not empty", () => {
+  describe("Auction Result is not empty", () => {
     it("show the mid-estimate", () => {
       const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
