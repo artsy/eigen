@@ -1,7 +1,7 @@
 import { AuctionResultTestsQuery } from "__generated__/AuctionResultTestsQuery.graphql"
 import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { AuctionResultListItem } from "lib/Components/Lists/AuctionResultListItem"
+import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -113,7 +113,7 @@ describe("AuctionResult", () => {
     })
   })
 
-  describe("Auction Result is not empty", () => {
+  describe.only("Auction Result is not empty", () => {
     it("show the mid-estimate", () => {
       const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -143,7 +143,7 @@ describe("AuctionResult", () => {
         })
       )
 
-      expect(tree.root.findAllByType(AuctionResultListItem)).toHaveLength(3)
+      expect(tree.root.findAllByType(AuctionResultFragmentContainer)).toHaveLength(3)
     })
   })
 
