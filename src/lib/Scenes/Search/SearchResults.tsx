@@ -1,4 +1,5 @@
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
+import { Artwork } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import { LoadFailureView } from "lib/Components/LoadFailureView"
 import { isPad } from "lib/utils/hardware"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
@@ -92,6 +93,22 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
           Please try searching again with a different spelling.
         </Text>
       </Box>
+    )
+  }
+
+  if (true) {
+    return (
+      <FlatList
+        numColumns={2}
+        data={hits}
+        keyExtractor={(item) => item.objectID}
+        onEndReached={loadMore}
+        renderItem={({ item }) => (
+          <Flex flex={1}>
+            <Artwork artwork={item} />
+          </Flex>
+        )}
+      />
     )
   }
 
