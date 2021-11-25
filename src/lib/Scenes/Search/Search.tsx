@@ -65,12 +65,8 @@ const ARTWORKS_PILL: PillType = {
   displayName: "Artworks",
   type: "elastic",
 }
-const ALGOLIA_ARTWORKS_PILL: PillType = {
-  name: "Artwork_staging",
-  displayName: "Artworks Algolia",
-  type: "algolia",
-}
-const pills: PillType[] = []
+
+const pills: PillType[] = [TOP_PILL, ARTWORKS_PILL]
 
 const objectTabByContextModule: Partial<Record<ContextModule, string>> = {
   [ContextModule.auctionTab]: "Auction Results",
@@ -86,7 +82,7 @@ export const Search: React.FC<SearchProps> = (props) => {
   const { system, relay } = props
   const searchPillsRef = useRef<ScrollView>(null)
   const [searchState, setSearchState] = useState<SearchState>({})
-  const [selectedPill, setSelectedPill] = useState<PillType>(ALGOLIA_ARTWORKS_PILL)
+  const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
   const searchInsightsConfigured = useSearchInsightsConfig(system?.algolia?.appID, system?.algolia?.apiKey)
@@ -94,7 +90,7 @@ export const Search: React.FC<SearchProps> = (props) => {
   const { loading: indicesInfoLoading, indicesInfo, updateIndicesInfo } = useAlgoliaIndices(searchClient, indices)
   const { trackEvent } = useTracking()
   const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
-  // const enableAlgoliaArtworksGrid = useFeatureFlag("AREnableAlgoliaArtworksGrid")
+  const enableAlgoliaArtworksGrid = useFeatureFlag("AREnableAlgoliaArtworksGrid")
 
   const pillsArray = useMemo<PillType[]>(() => {
     if (Array.isArray(indices) && indices.length > 0) {
@@ -102,12 +98,11 @@ export const Search: React.FC<SearchProps> = (props) => {
         return { ...index, type: "algolia", disabled: enableImprovedPills && !indicesInfo[index.name]?.hasResults }
       })
 
-      // const formattedPillsArray =
-      return [...pills, ...formattedIndices]
+      const formattedPillsArray = [...pills, ...formattedIndices]
 
-      // return enableAlgoliaArtworksGrid
-      //   ? formattedPillsArray.filter((pill) => pill.type === "elastic" && pill.name === "ARTWORK")
-      //   : formattedPillsArray.filter((pill) => pill.name.includes("Artwork_"))
+      return enableAlgoliaArtworksGrid
+        ? formattedPillsArray.filter((pill) => pill.type === "elastic" && pill.name === "ARTWORK")
+        : formattedPillsArray.filter((pill) => pill.name.includes("Artwork_"))
     }
 
     return pills
@@ -136,18 +131,18 @@ export const Search: React.FC<SearchProps> = (props) => {
         />
       )
     }
-    // if (selectedPill.name === TOP_PILL.name) {
-    //   return (
-    //     <AutosuggestResults
-    //       query={searchState.query!}
-    //       showResultType
-    //       showQuickNavigationButtons
-    //       showOnRetryErrorMessage
-    //       trackResultPress={handleTrackAutosuggestResultPress}
-    //     />
-    //   )
-    // }
-    // return <SearchArtworksQueryRenderer keyword={searchState.query!} />
+    if (selectedPill.name === TOP_PILL.name) {
+      return (
+        <AutosuggestResults
+          query={searchState.query!}
+          showResultType
+          showQuickNavigationButtons
+          showOnRetryErrorMessage
+          trackResultPress={handleTrackAutosuggestResultPress}
+        />
+      )
+    }
+    return <SearchArtworksQueryRenderer keyword={searchState.query!} />
   }
 
   const shouldStartQuering = !!searchState?.query?.length && searchState?.query.length >= 2
@@ -167,7 +162,7 @@ export const Search: React.FC<SearchProps> = (props) => {
 
   const handleResetSearchInput = () => {
     searchPillsRef?.current?.scrollTo({ x: 0, y: 0, animated: true })
-    // setSelectedPill(TOP_PILL)
+    setSelectedPill(TOP_PILL)
   }
 
   const handleTrackAutosuggestResultPress = (result: AutosuggestResult, itemIndex?: number) => {
