@@ -2,6 +2,7 @@ import { useFocusEffect } from "@react-navigation/core"
 import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
 import { CreateSavedSearchAlertScreen_me } from "__generated__/CreateSavedSearchAlertScreen_me.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
 import useAppState from "lib/utils/useAppState"
 import { Box } from "palette"
@@ -23,6 +24,7 @@ const Content: React.FC<ContentProps> = (props) => {
   const { navigation, relay, me, filters, aggregations, onComplete, ...other } = props
   const [enablePushNotifications, setEnablePushNotifications] = useState(true)
   const [refetching, setRefetching] = useState(false)
+  const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const userAllowsEmails = me?.emailFrequency !== "none"
 
   const getPermissionStatus = async () => {
@@ -60,10 +62,13 @@ const Content: React.FC<ContentProps> = (props) => {
     getPermissionStatus()
   }, [])
 
+  // make refetch only when toggles are displayed
   useFocusEffect(
     useCallback(() => {
-      refetch()
-    }, [])
+      if (enableSavedSearchToggles) {
+        refetch()
+      }
+    }, [enableSavedSearchToggles])
   )
 
   return (

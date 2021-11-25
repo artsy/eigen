@@ -78,9 +78,6 @@ describe("CreateSavedSearchAlert", () => {
     // CreateSavedSearchAlertTestsQuery
     mockEnvironmentPayload(mockEnvironment, mockResolvers)
 
-    // Refetch query
-    mockEnvironmentPayload(mockEnvironment, mockResolvers)
-
     return render
   }
 
@@ -143,6 +140,10 @@ describe("CreateSavedSearchAlert", () => {
       notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
 
       const { findAllByA11yState } = renderAndExecuteQuery()
+
+      // Refetch query
+      mockEnvironmentPayload(mockEnvironment)
+
       const toggles = await findAllByA11yState({ selected: true })
 
       expect(toggles).toHaveLength(2)
@@ -152,6 +153,10 @@ describe("CreateSavedSearchAlert", () => {
       notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Denied))
 
       const { findAllByA11yState } = renderAndExecuteQuery()
+
+      // Refetch query
+      mockEnvironmentPayload(mockEnvironment)
+
       const toggles = await findAllByA11yState({ selected: false })
 
       expect(toggles).toHaveLength(1)
@@ -168,15 +173,16 @@ describe("CreateSavedSearchAlert", () => {
 
     it("the email notification is disabled by default if a user has not allowed email notifications", async () => {
       notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
+      const mockResolver = {
+        Me: () => ({
+          emailFrequency: "none",
+        }),
+      }
 
-      const { findAllByA11yState } = renderAndExecuteQuery(
-        {},
-        {
-          Me: () => ({
-            emailFrequency: "none",
-          }),
-        }
-      )
+      const { findAllByA11yState } = renderAndExecuteQuery({}, mockResolver)
+
+      // Refetch query
+      mockEnvironmentPayload(mockEnvironment, mockResolver)
 
       const toggles = await findAllByA11yState({ selected: false })
 
