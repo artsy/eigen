@@ -2,6 +2,8 @@ import { usePrefetch } from "lib/utils/queryPrefetching"
 import React, { Ref, useCallback, useReducer, useRef } from "react"
 import { FlatList, FlatListProps, ViewToken } from "react-native"
 
+const MINIMUM_VIEW_TIME = 500
+
 export type PrefetchFlatListProps<ItemType> = {
   prefetchUrlExtractor?: (item?: ItemType) => string | undefined
   prefetchVariablesExtractor?: (item?: ItemType) => object
@@ -31,7 +33,7 @@ export function PrefetchFlatList<ItemType>({
   const viewabilityConfigRef = useRef({
     waitForInteraction: true,
     viewAreaCoveragePercentThreshold: 0,
-    minimumViewTime: 1000,
+    minimumViewTime: MINIMUM_VIEW_TIME,
     ...viewabilityConfig,
   })
 
