@@ -32,6 +32,7 @@ input AddAssetsToConsignmentSubmissionInput {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
   geminiTokens: [String!]!
+  sessionID: String
   submissionID: ID!
 }
 
@@ -50,6 +51,7 @@ input AddAssetToConsignmentSubmissionInput {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
   geminiToken: String!
+  sessionID: String
   submissionID: ID!
 }
 
