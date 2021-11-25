@@ -16,7 +16,7 @@ interface Props {
   withHorizontalPadding?: boolean
 }
 
-const AuctionResultListItem: React.FC<Props> = ({
+export const AuctionResultListItem: React.FC<Props> = ({
   auctionResult,
   onPress,
   showArtistName,

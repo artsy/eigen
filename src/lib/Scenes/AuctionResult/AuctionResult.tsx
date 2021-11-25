@@ -31,7 +31,7 @@ interface Props {
   auctionResult: AuctionResultQueryResponse["auctionResult"]
 }
 
-const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
+export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   const { theme } = useTheme()
   const [imageHeight, setImageHeight] = useState<number>(0)
   const [imageWidth, setImageWidth] = useState<number>(0)
