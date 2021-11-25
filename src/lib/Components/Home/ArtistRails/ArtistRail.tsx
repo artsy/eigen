@@ -192,6 +192,13 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
         <SectionTitle title={props.title} subtitle={props.subtitle} />
       </Flex>
       <CardRailFlatList<SuggestedArtist>
+        prefetchUrlExtractor={(item) => item?.href!}
+        prefetchVariablesExtractor={() => ({
+          input: {
+            dimensionRange: "*-*",
+            sort: "-decayed_merch",
+          },
+        })}
         listRef={listRef}
         data={artists}
         keyExtractor={(artist) => artist.id}

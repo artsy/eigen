@@ -213,6 +213,12 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "ARMyCollectionLocalSortAndFilter",
   },
+  ARPrefetching: {
+    readyForRelease: false,
+    description: "Enable query prefetching",
+    showInAdminMenu: true,
+    echoFlagKey: "ARPrefetching",
+  },
 })
 
 export interface DevToggleDescriptor {

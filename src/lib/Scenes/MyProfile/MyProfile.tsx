@@ -146,16 +146,19 @@ export const OldMyProfileContainer = createRefetchContainer(
   `
 )
 
+export const MyProfileScreenQuery = graphql`
+  query MyProfileQuery {
+    me @optionalField {
+      ...MyProfile_me
+    }
+  }
+`
+
 export const OldMyProfileQueryRenderer = () => (
   <QueryRenderer<MyProfileQuery>
     environment={defaultEnvironment}
-    query={graphql`
-      query MyProfileQuery {
-        me @optionalField {
-          ...MyProfile_me
-        }
-      }
-    `}
+    /* tslint:disable relay-operation-generics */
+    query={MyProfileScreenQuery}
     render={renderWithPlaceholder({
       Container: OldMyProfileContainer,
       renderPlaceholder: () => <MyProfilePlaceholder />,

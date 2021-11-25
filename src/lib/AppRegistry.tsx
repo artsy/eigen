@@ -2,6 +2,7 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import React, { useEffect } from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
+import { GraphQLTaggedNode } from "relay-runtime"
 import { StorybookUIRoot } from "../storybook/storybook-ui"
 import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
@@ -10,18 +11,19 @@ import { FadeIn } from "./Components/FadeIn"
 import { NativeViewController } from "./Components/NativeViewController"
 import { BidFlow } from "./Containers/BidFlow"
 import { InboxWrapper } from "./Containers/Inbox"
+import { InboxScreenQuery } from "./Containers/Inbox/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
-import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
+import { WorksForYouQueryRenderer, WorksForYouScreenQuery } from "./Containers/WorksForYou"
 import { useSentryConfig } from "./ErrorReporting"
 import { About } from "./Scenes/About/About"
 import { ArticlesQueryRenderer } from "./Scenes/Articles/Articles"
-import { ArtistQueryRenderer } from "./Scenes/Artist/Artist"
+import { ArtistQueryRenderer, ArtistScreenQuery } from "./Scenes/Artist/Artist"
 import { ArtistArticlesQueryRenderer } from "./Scenes/ArtistArticles/ArtistArticles"
 import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtistShows2QueryRenderer } from "./Scenes/ArtistShows/ArtistShows2"
-import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
+import { ArtworkQueryRenderer, ArtworkScreenQuery } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { ArtworkMediumQueryRenderer } from "./Scenes/ArtworkMedium"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
@@ -37,7 +39,6 @@ import { CitySavedListQueryRenderer } from "./Scenes/City/CitySavedList"
 import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
-// Consignments / My Collection
 import { Consignments } from "./Scenes/Consignments"
 import { ConsignmentsSubmissionForm } from "./Scenes/Consignments/ConsignmentsHome/ConsignmentsSubmissionForm"
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
@@ -66,7 +67,7 @@ import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
 import { MyCollectionArtworkImagesQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkImages/MyCollectionArtworkImages"
-import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
+import { MyProfileQueryRenderer, MyProfileScreenQuery } from "./Scenes/MyProfile/MyProfile"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { MyProfilePushNotificationsQueryRenderer } from "./Scenes/MyProfile/MyProfilePushNotifications"
@@ -78,7 +79,7 @@ import { OrderHistoryQueryRender } from "./Scenes/OrderHistory/OrderHistory"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
-import { SaleQueryRenderer } from "./Scenes/Sale"
+import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale"
 import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
 import { SalesQueryRenderer } from "./Scenes/Sales"
@@ -238,6 +239,7 @@ type ModuleDescriptor =
   | {
       type: "react"
       Component: React.ComponentType<any>
+      Query?: GraphQLTaggedNode
       options: ViewOptions
     }
   | {
@@ -245,8 +247,12 @@ type ModuleDescriptor =
       options: ViewOptions
     }
 
-function reactModule(Component: React.ComponentType<any>, options: ViewOptions = {}): ModuleDescriptor {
-  return { type: "react", options, Component }
+function reactModule(
+  Component: React.ComponentType<any>,
+  options: ViewOptions = {},
+  Query?: GraphQLTaggedNode
+): ModuleDescriptor {
+  return { type: "react", options, Component, Query }
 }
 
 function nativeModule(options: ViewOptions = {}): ModuleDescriptor {
@@ -266,15 +272,15 @@ export const modules = defineModules({
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
   Articles: reactModule(ArticlesQueryRenderer),
-  Artist: reactModule(ArtistQueryRenderer),
+  Artist: reactModule(ArtistQueryRenderer, {}, ArtistScreenQuery),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
-  Artwork: reactModule(Artwork),
+  Artwork: reactModule(Artwork, {}, ArtworkScreenQuery),
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   Auction: nativeModule(),
-  Auction2: reactModule(SaleQueryRenderer, { fullBleed: true }),
+  Auction2: reactModule(SaleQueryRenderer, { fullBleed: true }, SaleScreenQuery),
   Auctions: reactModule(SalesQueryRenderer),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
@@ -315,7 +321,7 @@ export const modules = defineModules({
   Gene: reactModule(GeneQueryRenderer),
   Tag: reactModule(TagQueryRenderer),
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
-  Inbox: reactModule(InboxWrapper, { isRootViewForTabName: "inbox" }),
+  Inbox: reactModule(InboxWrapper, { isRootViewForTabName: "inbox" }, InboxScreenQuery),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   LiveAuction: nativeModule({
     alwaysPresentModally: true,
@@ -343,7 +349,7 @@ export const modules = defineModules({
   MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer),
   MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
   MyCollectionArtworkImages: reactModule(MyCollectionArtworkImagesQueryRenderer),
-  MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }),
+  MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }, MyProfileScreenQuery),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfileSettings: reactModule(MyProfileSettings),
   OrderHistory: reactModule(OrderHistoryQueryRender),
@@ -372,7 +378,7 @@ export const modules = defineModules({
   Checkout: reactModule(Checkout, {
     hasOwnModalCloseButton: true,
   }),
-  WorksForYou: reactModule(WorksForYouQueryRenderer),
+  WorksForYou: reactModule(WorksForYouQueryRenderer, {}, WorksForYouScreenQuery),
   NewWorksForYou: reactModule(NewWorksForYouQueryRenderer),
   LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer),
   Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
