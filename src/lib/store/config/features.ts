@@ -224,6 +224,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableQueriesPrefetching",
   },
+  AREnableAlgoliaArtworksGrid: {
+    readyForRelease: false,
+    description: "Enable Algolia Artworks Grid",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
