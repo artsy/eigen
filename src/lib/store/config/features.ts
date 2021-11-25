@@ -202,7 +202,7 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableVisualProfileIconAndBio",
   },
   AREnableAuctionResultComparableWorks: {
-    readyForRelease: true,
+    readyForRelease: false,
     description: "Comparable works in Auction Result",
     showInAdminMenu: true,
     echoFlagKey: "AREnableAuctionResultComparableWorks",
