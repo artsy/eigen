@@ -202,10 +202,10 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableVisualProfileIconAndBio",
   },
   AREnableAuctionResultComparableWorks: {
-    readyForRelease: true,
+    readyForRelease: false,
     description: "Enable Comparable works",
     showInAdminMenu: true,
-    echoFlagKey: "AREnableAuctionResultComparableWorks",
+    // echoFlagKey: "AREnableAuctionResultComparableWorks", // TODO : Need to merge this https://github.com/artsy/echo/pull/173
   },
 })
 
