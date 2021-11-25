@@ -1,7 +1,8 @@
 import { AuctionResultTestsQuery } from "__generated__/AuctionResultTestsQuery.graphql"
 import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
+import { AuctionResultListItemFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -9,7 +10,7 @@ import { Image, ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { AuctionResult } from "./AuctionResult"
+import { AuctionResultFragmentContainer } from "./AuctionResult"
 
 jest.unmock("react-relay")
 
@@ -21,59 +22,17 @@ describe("AuctionResult", () => {
       query={graphql`
         query AuctionResultTestsQuery($auctionResultInternalID: String!, $artistID: String!) @relay_test_operation {
           auctionResult(id: $auctionResultInternalID) {
-            id
-            internalID
-            artistID
-            boughtIn
-            currency
-            categoryText
-            ...ComparableWorks_auctionResult
-            dateText
-            dimensions {
-              height
-              width
-            }
-            dimensionText
-            estimate {
-              display
-              high
-              low
-            }
-            images {
-              thumbnail {
-                url(version: "square140")
-                height
-                width
-                aspectRatio
-              }
-            }
-            location
-            mediumText
-            organization
-            performance {
-              mid
-            }
-            currency
-            priceRealized {
-              cents
-              centsUSD
-              display
-              displayUSD
-            }
-            saleDate
-            saleTitle
-            title
+            ...AuctionResult_auctionResult
           }
           artist(id: $artistID) {
-            name
-            href
+            ...AuctionResult_artist
           }
         }
       `}
       variables={{ artistID: "artist-id", auctionResultInternalID: "auction-result-id" }}
       render={({ props }) => {
-        if (props?.auctionResult && props?.artist) {
-          return <AuctionResult auctionResult={props.auctionResult} artist={props.artist} />
+        if (props?.artist && props?.auctionResult) {
+          return <AuctionResultFragmentContainer artist={props.artist} auctionResult={props.auctionResult} />
         }
         return null
       }}
@@ -136,14 +95,14 @@ describe("AuctionResult", () => {
     })
 
     it("have comparable works", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionResultComparableWorks: true })
       const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {
           AuctionResult: () => mockAuctionResult,
         })
       )
-
-      expect(tree.root.findAllByType(AuctionResultFragmentContainer)).toHaveLength(3)
+      expect(tree.root.findAllByType(AuctionResultListItemFragmentContainer)).toHaveLength(3)
     })
   })
 

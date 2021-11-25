@@ -123,7 +123,7 @@ const AuctionResultListItem: React.FC<Props> = ({
   )
 }
 
-export const AuctionResultFragmentContainer = createFragmentContainer(AuctionResultListItem, {
+export const AuctionResultListItemFragmentContainer = createFragmentContainer(AuctionResultListItem, {
   auctionResult: graphql`
     fragment AuctionResultListItem_auctionResult on AuctionResult {
       currency

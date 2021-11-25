@@ -6,7 +6,6 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ComparableWorks_auctionResult = {
     readonly comparableAuctionResults: {
-        readonly totalCount: number | null;
         readonly edges: ReadonlyArray<{
             readonly cursor: string;
             readonly node: {
@@ -46,13 +45,6 @@ const node: ReaderFragment = {
       "name": "comparableAuctionResults",
       "plural": false,
       "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "totalCount",
-          "storageKey": null
-        },
         {
           "alias": null,
           "args": null,
@@ -108,5 +100,5 @@ const node: ReaderFragment = {
   "type": "AuctionResult",
   "abstractKey": null
 };
-(node as any).hash = '66233de9fd23ea0f810c2f91f705b34e';
+(node as any).hash = '728d224b9ccbe709da270787ffa81726';
 export default node;

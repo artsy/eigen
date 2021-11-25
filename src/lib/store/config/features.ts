@@ -203,9 +203,9 @@ export const features = defineFeatures({
   },
   AREnableAuctionResultComparableWorks: {
     readyForRelease: true,
-    description: "Enable Comparable works",
+    description: "Comparable works in Auction Result",
     showInAdminMenu: true,
-    // echoFlagKey: "AREnableAuctionResultComparableWorks", // TODO : Need to merge this https://github.com/artsy/echo/pull/173
+    echoFlagKey: "AREnableAuctionResultComparableWorks",
   },
 })
 

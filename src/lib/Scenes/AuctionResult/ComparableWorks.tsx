@@ -1,8 +1,9 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { ComparableWorks_auctionResult } from "__generated__/ComparableWorks_auctionResult.graphql"
-import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
+import { AuctionResultListItemFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
+import { compact } from "lodash"
 import { Flex, Separator, Text } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
@@ -17,35 +18,23 @@ const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
 
   const auctionResultsByFollowedArtists = extractNodes(auctionResult.comparableAuctionResults)
 
-  const hasAuctionResults = auctionResultsByFollowedArtists?.length
-
-  if (!hasAuctionResults) {
-    return null
-  }
+  const auctionResults = compact(auctionResultsByFollowedArtists)
 
   return (
     <Flex testID="comparableWorks">
-      <Text variant="md" my={2}>
-        Comparable Works
-      </Text>
-
       <FlatList
-        data={auctionResultsByFollowedArtists}
-        keyExtractor={(_, index) => String(index)}
-        horizontal={false}
+        data={auctionResults}
+        keyExtractor={(item, index) => String(item?.internalID || index)}
         initialNumToRender={3}
-        ItemSeparatorComponent={() => (
-          <Flex py={2}>
-            <Separator borderColor="black10" />
-          </Flex>
-        )}
+        ListHeaderComponent={
+          <Text variant="md" my={2}>
+            Comparable Works
+          </Text>
+        }
+        ItemSeparatorComponent={() => <Separator my={2} borderColor="black10" />}
         renderItem={({ item, index }) => {
-          if (!item) {
-            return <></>
-          }
-
           return (
-            <AuctionResultFragmentContainer
+            <AuctionResultListItemFragmentContainer
               showArtistName
               withHorizontalPadding={false}
               auctionResult={item}
@@ -56,6 +45,7 @@ const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
             />
           )
         }}
+        ListEmptyComponent={<Text color="black60">No comparable works</Text>}
       />
     </Flex>
   )
@@ -65,7 +55,6 @@ export const ComparableWorksFragmentContainer = createFragmentContainer(Comparab
   auctionResult: graphql`
     fragment ComparableWorks_auctionResult on AuctionResult {
       comparableAuctionResults(first: 3) @optionalField {
-        totalCount
         edges {
           cursor
           node {

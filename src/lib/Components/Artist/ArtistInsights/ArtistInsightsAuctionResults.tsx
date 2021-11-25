@@ -20,7 +20,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { useScreenDimensions } from "../../../utils/useScreenDimensions"
 import { DEBOUNCE_DELAY, KeywordFilter } from "../../ArtworkFilter/Filters/KeywordFilter"
-import { AuctionResultFragmentContainer } from "../../Lists/AuctionResultListItem"
+import { AuctionResultListItemFragmentContainer } from "../../Lists/AuctionResultListItem"
 
 interface Props {
   artist: ArtistInsightsAuctionResults_artist
@@ -169,7 +169,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
             data={auctionResults}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <AuctionResultFragmentContainer
+              <AuctionResultListItemFragmentContainer
                 auctionResult={item}
                 onPress={() => {
                   tracking.trackEvent(tracks.tapAuctionGroup(item.internalID, artist.internalID))

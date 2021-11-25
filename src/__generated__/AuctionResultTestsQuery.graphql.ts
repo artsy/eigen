@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 23670ebe2b8c937c531e86f17d0f56e9 */
+/* @relayHash 947483109386ad8ff7057bbd29f7da2b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -11,51 +11,10 @@ export type AuctionResultTestsQueryVariables = {
 };
 export type AuctionResultTestsQueryResponse = {
     readonly auctionResult: {
-        readonly id: string;
-        readonly internalID: string;
-        readonly artistID: string;
-        readonly boughtIn: boolean | null;
-        readonly currency: string | null;
-        readonly categoryText: string | null;
-        readonly dateText: string | null;
-        readonly dimensions: {
-            readonly height: number | null;
-            readonly width: number | null;
-        } | null;
-        readonly dimensionText: string | null;
-        readonly estimate: {
-            readonly display: string | null;
-            readonly high: number | null;
-            readonly low: number | null;
-        } | null;
-        readonly images: {
-            readonly thumbnail: {
-                readonly url: string | null;
-                readonly height: number | null;
-                readonly width: number | null;
-                readonly aspectRatio: number;
-            } | null;
-        } | null;
-        readonly location: string | null;
-        readonly mediumText: string | null;
-        readonly organization: string | null;
-        readonly performance: {
-            readonly mid: string | null;
-        } | null;
-        readonly priceRealized: {
-            readonly cents: number | null;
-            readonly centsUSD: number | null;
-            readonly display: string | null;
-            readonly displayUSD: string | null;
-        } | null;
-        readonly saleDate: string | null;
-        readonly saleTitle: string | null;
-        readonly title: string | null;
-        readonly " $fragmentRefs": FragmentRefs<"ComparableWorks_auctionResult">;
+        readonly " $fragmentRefs": FragmentRefs<"AuctionResult_auctionResult">;
     } | null;
     readonly artist: {
-        readonly name: string | null;
-        readonly href: string | null;
+        readonly " $fragmentRefs": FragmentRefs<"AuctionResult_artist">;
     } | null;
 };
 export type AuctionResultTestsQuery = {
@@ -71,51 +30,11 @@ query AuctionResultTestsQuery(
   $artistID: String!
 ) {
   auctionResult(id: $auctionResultInternalID) {
+    ...AuctionResult_auctionResult
     id
-    internalID
-    artistID
-    boughtIn
-    currency
-    categoryText
-    ...ComparableWorks_auctionResult
-    dateText
-    dimensions {
-      height
-      width
-    }
-    dimensionText
-    estimate {
-      display
-      high
-      low
-    }
-    images {
-      thumbnail {
-        url(version: "square140")
-        height
-        width
-        aspectRatio
-      }
-    }
-    location
-    mediumText
-    organization
-    performance {
-      mid
-    }
-    priceRealized {
-      cents
-      centsUSD
-      display
-      displayUSD
-    }
-    saleDate
-    saleTitle
-    title
   }
   artist(id: $artistID) {
-    name
-    href
+    ...AuctionResult_artist
     id
   }
 }
@@ -155,9 +74,57 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
   title
 }
 
+fragment AuctionResult_artist on Artist {
+  name
+  href
+}
+
+fragment AuctionResult_auctionResult on AuctionResult {
+  id
+  internalID
+  artistID
+  boughtIn
+  currency
+  categoryText
+  dateText
+  dimensions {
+    height
+    width
+  }
+  dimensionText
+  estimate {
+    display
+    high
+    low
+  }
+  images {
+    thumbnail {
+      url(version: "square140")
+      height
+      width
+      aspectRatio
+    }
+  }
+  location
+  mediumText
+  organization
+  performance {
+    mid
+  }
+  priceRealized {
+    cents
+    centsUSD
+    display
+    displayUSD
+  }
+  saleDate
+  saleTitle
+  title
+  ...ComparableWorks_auctionResult
+}
+
 fragment ComparableWorks_auctionResult on AuctionResult {
   comparableAuctionResults(first: 3) @optionalField {
-    totalCount
     edges {
       cursor
       node {
@@ -189,46 +156,46 @@ v2 = [
     "variableName": "auctionResultInternalID"
   }
 ],
-v3 = {
+v3 = [
+  {
+    "kind": "Variable",
+    "name": "id",
+    "variableName": "artistID"
+  }
+],
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v4 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "internalID",
   "storageKey": null
 },
-v5 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "artistID",
   "storageKey": null
 },
-v6 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "boughtIn",
   "storageKey": null
 },
-v7 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "currency",
-  "storageKey": null
-},
 v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "categoryText",
+  "name": "currency",
   "storageKey": null
 },
 v9 = {
@@ -255,58 +222,18 @@ v11 = {
 v12 = {
   "alias": null,
   "args": null,
-  "concreteType": "AuctionLotDimensions",
-  "kind": "LinkedField",
-  "name": "dimensions",
-  "plural": false,
-  "selections": [
-    (v10/*: any*/),
-    (v11/*: any*/)
-  ],
+  "kind": "ScalarField",
+  "name": "display",
   "storageKey": null
 },
 v13 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "dimensionText",
-  "storageKey": null
-},
-v14 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "display",
-  "storageKey": null
-},
-v15 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "low",
   "storageKey": null
 },
-v16 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "AuctionLotEstimate",
-  "kind": "LinkedField",
-  "name": "estimate",
-  "plural": false,
-  "selections": [
-    (v14/*: any*/),
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "high",
-      "storageKey": null
-    },
-    (v15/*: any*/)
-  ],
-  "storageKey": null
-},
-v17 = {
+v14 = {
   "alias": null,
   "args": null,
   "concreteType": "AuctionLotImages",
@@ -350,28 +277,21 @@ v17 = {
   ],
   "storageKey": null
 },
-v18 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "location",
-  "storageKey": null
-},
-v19 = {
+v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "mediumText",
   "storageKey": null
 },
-v20 = {
+v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "organization",
   "storageKey": null
 },
-v21 = {
+v17 = {
   "alias": null,
   "args": null,
   "concreteType": "AuctionLotPerformance",
@@ -389,162 +309,120 @@ v21 = {
   ],
   "storageKey": null
 },
-v22 = {
+v18 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "cents",
   "storageKey": null
 },
-v23 = {
+v19 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "displayUSD",
   "storageKey": null
 },
-v24 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "AuctionResultPriceRealized",
-  "kind": "LinkedField",
-  "name": "priceRealized",
-  "plural": false,
-  "selections": [
-    (v22/*: any*/),
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "centsUSD",
-      "storageKey": null
-    },
-    (v14/*: any*/),
-    (v23/*: any*/)
-  ],
-  "storageKey": null
-},
-v25 = {
+v20 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "saleDate",
   "storageKey": null
 },
-v26 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "saleTitle",
-  "storageKey": null
-},
-v27 = {
+v21 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "title",
   "storageKey": null
 },
-v28 = [
-  {
-    "kind": "Variable",
-    "name": "id",
-    "variableName": "artistID"
-  }
-],
-v29 = {
+v22 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v30 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "href",
-  "storageKey": null
-},
-v31 = {
+v23 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Artist"
 },
-v32 = {
+v24 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v33 = {
+v25 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v34 = {
+v26 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "AuctionResult"
 },
-v35 = {
+v27 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "String"
 },
-v36 = {
+v28 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Boolean"
 },
-v37 = {
+v29 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "AuctionLotEstimate"
 },
-v38 = {
+v30 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Float"
 },
-v39 = {
+v31 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "AuctionLotImages"
 },
-v40 = {
+v32 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Image"
 },
-v41 = {
+v33 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "Float"
 },
-v42 = {
+v34 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Int"
 },
-v43 = {
+v35 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "AuctionLotPerformance"
 },
-v44 = {
+v36 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -568,43 +446,27 @@ return {
         "name": "auctionResult",
         "plural": false,
         "selections": [
-          (v3/*: any*/),
-          (v4/*: any*/),
-          (v5/*: any*/),
-          (v6/*: any*/),
-          (v7/*: any*/),
-          (v8/*: any*/),
-          (v9/*: any*/),
-          (v12/*: any*/),
-          (v13/*: any*/),
-          (v16/*: any*/),
-          (v17/*: any*/),
-          (v18/*: any*/),
-          (v19/*: any*/),
-          (v20/*: any*/),
-          (v21/*: any*/),
-          (v24/*: any*/),
-          (v25/*: any*/),
-          (v26/*: any*/),
-          (v27/*: any*/),
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "ComparableWorks_auctionResult"
+            "name": "AuctionResult_auctionResult"
           }
         ],
         "storageKey": null
       },
       {
         "alias": null,
-        "args": (v28/*: any*/),
+        "args": (v3/*: any*/),
         "concreteType": "Artist",
         "kind": "LinkedField",
         "name": "artist",
         "plural": false,
         "selections": [
-          (v29/*: any*/),
-          (v30/*: any*/)
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "AuctionResult_artist"
+          }
         ],
         "storageKey": null
       }
@@ -629,12 +491,100 @@ return {
         "name": "auctionResult",
         "plural": false,
         "selections": [
-          (v3/*: any*/),
           (v4/*: any*/),
           (v5/*: any*/),
           (v6/*: any*/),
           (v7/*: any*/),
           (v8/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "categoryText",
+            "storageKey": null
+          },
+          (v9/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "AuctionLotDimensions",
+            "kind": "LinkedField",
+            "name": "dimensions",
+            "plural": false,
+            "selections": [
+              (v10/*: any*/),
+              (v11/*: any*/)
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "dimensionText",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "AuctionLotEstimate",
+            "kind": "LinkedField",
+            "name": "estimate",
+            "plural": false,
+            "selections": [
+              (v12/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "high",
+                "storageKey": null
+              },
+              (v13/*: any*/)
+            ],
+            "storageKey": null
+          },
+          (v14/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "location",
+            "storageKey": null
+          },
+          (v15/*: any*/),
+          (v16/*: any*/),
+          (v17/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "AuctionResultPriceRealized",
+            "kind": "LinkedField",
+            "name": "priceRealized",
+            "plural": false,
+            "selections": [
+              (v18/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "centsUSD",
+                "storageKey": null
+              },
+              (v12/*: any*/),
+              (v19/*: any*/)
+            ],
+            "storageKey": null
+          },
+          (v20/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "saleTitle",
+            "storageKey": null
+          },
+          (v21/*: any*/),
           {
             "alias": null,
             "args": [
@@ -649,13 +599,6 @@ return {
             "name": "comparableAuctionResults",
             "plural": false,
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "totalCount",
-                "storageKey": null
-              },
               {
                 "alias": null,
                 "args": null,
@@ -679,10 +622,10 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v7/*: any*/),
+                      (v8/*: any*/),
                       (v9/*: any*/),
-                      (v3/*: any*/),
                       (v4/*: any*/),
+                      (v5/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -691,12 +634,12 @@ return {
                         "name": "artist",
                         "plural": false,
                         "selections": [
-                          (v29/*: any*/),
-                          (v3/*: any*/)
+                          (v22/*: any*/),
+                          (v4/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v17/*: any*/),
+                      (v14/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -705,14 +648,14 @@ return {
                         "name": "estimate",
                         "plural": false,
                         "selections": [
-                          (v15/*: any*/)
+                          (v13/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v19/*: any*/),
-                      (v20/*: any*/),
-                      (v6/*: any*/),
-                      (v21/*: any*/),
+                      (v15/*: any*/),
+                      (v16/*: any*/),
+                      (v7/*: any*/),
+                      (v17/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -721,15 +664,15 @@ return {
                         "name": "priceRealized",
                         "plural": false,
                         "selections": [
-                          (v22/*: any*/),
-                          (v14/*: any*/),
-                          (v23/*: any*/)
+                          (v18/*: any*/),
+                          (v12/*: any*/),
+                          (v19/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v25/*: any*/),
-                      (v27/*: any*/),
-                      (v5/*: any*/)
+                      (v20/*: any*/),
+                      (v21/*: any*/),
+                      (v6/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -738,51 +681,44 @@ return {
               }
             ],
             "storageKey": "comparableAuctionResults(first:3)"
-          },
-          (v9/*: any*/),
-          (v12/*: any*/),
-          (v13/*: any*/),
-          (v16/*: any*/),
-          (v17/*: any*/),
-          (v18/*: any*/),
-          (v19/*: any*/),
-          (v20/*: any*/),
-          (v21/*: any*/),
-          (v24/*: any*/),
-          (v25/*: any*/),
-          (v26/*: any*/),
-          (v27/*: any*/)
+          }
         ],
         "storageKey": null
       },
       {
         "alias": null,
-        "args": (v28/*: any*/),
+        "args": (v3/*: any*/),
         "concreteType": "Artist",
         "kind": "LinkedField",
         "name": "artist",
         "plural": false,
         "selections": [
-          (v29/*: any*/),
-          (v30/*: any*/),
-          (v3/*: any*/)
+          (v22/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "href",
+            "storageKey": null
+          },
+          (v4/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "23670ebe2b8c937c531e86f17d0f56e9",
+    "id": "947483109386ad8ff7057bbd29f7da2b",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
-        "artist": (v31/*: any*/),
-        "artist.href": (v32/*: any*/),
-        "artist.id": (v33/*: any*/),
-        "artist.name": (v32/*: any*/),
-        "auctionResult": (v34/*: any*/),
-        "auctionResult.artistID": (v35/*: any*/),
-        "auctionResult.boughtIn": (v36/*: any*/),
-        "auctionResult.categoryText": (v32/*: any*/),
+        "artist": (v23/*: any*/),
+        "artist.href": (v24/*: any*/),
+        "artist.id": (v25/*: any*/),
+        "artist.name": (v24/*: any*/),
+        "auctionResult": (v26/*: any*/),
+        "auctionResult.artistID": (v27/*: any*/),
+        "auctionResult.boughtIn": (v28/*: any*/),
+        "auctionResult.categoryText": (v24/*: any*/),
         "auctionResult.comparableAuctionResults": {
           "enumValues": null,
           "nullable": true,
@@ -795,72 +731,71 @@ return {
           "plural": true,
           "type": "AuctionResultEdge"
         },
-        "auctionResult.comparableAuctionResults.edges.cursor": (v35/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node": (v34/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.artist": (v31/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.artist.id": (v33/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.artist.name": (v32/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.artistID": (v35/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.boughtIn": (v36/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.currency": (v32/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.dateText": (v32/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.estimate": (v37/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.estimate.low": (v38/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.id": (v33/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.images": (v39/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.images.thumbnail": (v40/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.images.thumbnail.aspectRatio": (v41/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.images.thumbnail.height": (v42/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.images.thumbnail.url": (v32/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.images.thumbnail.width": (v42/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.internalID": (v33/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.mediumText": (v32/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.organization": (v32/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.performance": (v43/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.performance.mid": (v32/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.priceRealized": (v44/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.priceRealized.cents": (v38/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.priceRealized.display": (v32/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.priceRealized.displayUSD": (v32/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.saleDate": (v32/*: any*/),
-        "auctionResult.comparableAuctionResults.edges.node.title": (v32/*: any*/),
-        "auctionResult.comparableAuctionResults.totalCount": (v42/*: any*/),
-        "auctionResult.currency": (v32/*: any*/),
-        "auctionResult.dateText": (v32/*: any*/),
-        "auctionResult.dimensionText": (v32/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.cursor": (v27/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node": (v26/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.artist": (v23/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.artist.id": (v25/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.artist.name": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.artistID": (v27/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.boughtIn": (v28/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.currency": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.dateText": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.estimate": (v29/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.estimate.low": (v30/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.id": (v25/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.images": (v31/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.images.thumbnail": (v32/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.images.thumbnail.aspectRatio": (v33/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.images.thumbnail.height": (v34/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.images.thumbnail.url": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.images.thumbnail.width": (v34/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.internalID": (v25/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.mediumText": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.organization": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.performance": (v35/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.performance.mid": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.priceRealized": (v36/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.priceRealized.cents": (v30/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.priceRealized.display": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.priceRealized.displayUSD": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.saleDate": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.title": (v24/*: any*/),
+        "auctionResult.currency": (v24/*: any*/),
+        "auctionResult.dateText": (v24/*: any*/),
+        "auctionResult.dimensionText": (v24/*: any*/),
         "auctionResult.dimensions": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "AuctionLotDimensions"
         },
-        "auctionResult.dimensions.height": (v38/*: any*/),
-        "auctionResult.dimensions.width": (v38/*: any*/),
-        "auctionResult.estimate": (v37/*: any*/),
-        "auctionResult.estimate.display": (v32/*: any*/),
-        "auctionResult.estimate.high": (v38/*: any*/),
-        "auctionResult.estimate.low": (v38/*: any*/),
-        "auctionResult.id": (v33/*: any*/),
-        "auctionResult.images": (v39/*: any*/),
-        "auctionResult.images.thumbnail": (v40/*: any*/),
-        "auctionResult.images.thumbnail.aspectRatio": (v41/*: any*/),
-        "auctionResult.images.thumbnail.height": (v42/*: any*/),
-        "auctionResult.images.thumbnail.url": (v32/*: any*/),
-        "auctionResult.images.thumbnail.width": (v42/*: any*/),
-        "auctionResult.internalID": (v33/*: any*/),
-        "auctionResult.location": (v32/*: any*/),
-        "auctionResult.mediumText": (v32/*: any*/),
-        "auctionResult.organization": (v32/*: any*/),
-        "auctionResult.performance": (v43/*: any*/),
-        "auctionResult.performance.mid": (v32/*: any*/),
-        "auctionResult.priceRealized": (v44/*: any*/),
-        "auctionResult.priceRealized.cents": (v38/*: any*/),
-        "auctionResult.priceRealized.centsUSD": (v38/*: any*/),
-        "auctionResult.priceRealized.display": (v32/*: any*/),
-        "auctionResult.priceRealized.displayUSD": (v32/*: any*/),
-        "auctionResult.saleDate": (v32/*: any*/),
-        "auctionResult.saleTitle": (v32/*: any*/),
-        "auctionResult.title": (v32/*: any*/)
+        "auctionResult.dimensions.height": (v30/*: any*/),
+        "auctionResult.dimensions.width": (v30/*: any*/),
+        "auctionResult.estimate": (v29/*: any*/),
+        "auctionResult.estimate.display": (v24/*: any*/),
+        "auctionResult.estimate.high": (v30/*: any*/),
+        "auctionResult.estimate.low": (v30/*: any*/),
+        "auctionResult.id": (v25/*: any*/),
+        "auctionResult.images": (v31/*: any*/),
+        "auctionResult.images.thumbnail": (v32/*: any*/),
+        "auctionResult.images.thumbnail.aspectRatio": (v33/*: any*/),
+        "auctionResult.images.thumbnail.height": (v34/*: any*/),
+        "auctionResult.images.thumbnail.url": (v24/*: any*/),
+        "auctionResult.images.thumbnail.width": (v34/*: any*/),
+        "auctionResult.internalID": (v25/*: any*/),
+        "auctionResult.location": (v24/*: any*/),
+        "auctionResult.mediumText": (v24/*: any*/),
+        "auctionResult.organization": (v24/*: any*/),
+        "auctionResult.performance": (v35/*: any*/),
+        "auctionResult.performance.mid": (v24/*: any*/),
+        "auctionResult.priceRealized": (v36/*: any*/),
+        "auctionResult.priceRealized.cents": (v30/*: any*/),
+        "auctionResult.priceRealized.centsUSD": (v30/*: any*/),
+        "auctionResult.priceRealized.display": (v24/*: any*/),
+        "auctionResult.priceRealized.displayUSD": (v24/*: any*/),
+        "auctionResult.saleDate": (v24/*: any*/),
+        "auctionResult.saleTitle": (v24/*: any*/),
+        "auctionResult.title": (v24/*: any*/)
       }
     },
     "name": "AuctionResultTestsQuery",
@@ -869,5 +804,5 @@ return {
   }
 };
 })();
-(node as any).hash = '58320247214928c47d8945d320bd079b';
+(node as any).hash = '42d83eb35492ee598c741c20dc1235c5';
 export default node;
