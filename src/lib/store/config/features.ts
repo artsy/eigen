@@ -205,7 +205,7 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Comparable works in Auction Result",
     showInAdminMenu: true,
-    echoFlagKey: "AREnableAuctionResultComparableWorks",
+    // echoFlagKey: "AREnableAuctionResultComparableWorks",
   },
 })
 
