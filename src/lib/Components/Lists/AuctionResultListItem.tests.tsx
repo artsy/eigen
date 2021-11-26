@@ -7,7 +7,7 @@ import moment from "moment"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { AuctionResultFragmentContainer } from "./AuctionResultListItem"
+import { AuctionResultListItemFragmentContainer } from "./AuctionResultListItem"
 
 jest.unmock("react-relay")
 
@@ -36,7 +36,7 @@ describe("AuctionResults", () => {
       render={({ props }) => {
         if (props?.artist) {
           const results = extractNodes(props.artist.auctionResultsConnection)
-          return <AuctionResultFragmentContainer auctionResult={results[0]} onPress={() => null} />
+          return <AuctionResultListItemFragmentContainer auctionResult={results[0]} onPress={() => null} />
         }
         return null
       }}

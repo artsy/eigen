@@ -201,6 +201,12 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableVisualProfileIconAndBio",
   },
+  AREnableAuctionResultComparableWorks: {
+    readyForRelease: false,
+    description: "Comparable works in Auction Result",
+    showInAdminMenu: true,
+    // echoFlagKey: "AREnableAuctionResultComparableWorks",
+  },
 })
 
 export interface DevToggleDescriptor {

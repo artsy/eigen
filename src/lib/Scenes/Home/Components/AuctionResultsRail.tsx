@@ -1,7 +1,7 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { AuctionResultsRail_me } from "__generated__/AuctionResultsRail_me.graphql"
 import { CardRailFlatList } from "lib/Components/Home/CardRailFlatList"
-import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
+import { AuctionResultListItemFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -58,7 +58,7 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & Props> = (pro
           }
 
           return (
-            <AuctionResultFragmentContainer
+            <AuctionResultListItemFragmentContainer
               showArtistName
               auctionResult={item}
               onPress={() => {

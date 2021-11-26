@@ -1,10 +1,13 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
-import { AuctionResultQuery, AuctionResultQueryResponse } from "__generated__/AuctionResultQuery.graphql"
+import { AuctionResult_artist } from "__generated__/AuctionResult_artist.graphql"
+import { AuctionResult_auctionResult } from "__generated__/AuctionResult_auctionResult.graphql"
+import { AuctionResultQuery } from "__generated__/AuctionResultQuery.graphql"
 import { AuctionResultsMidEstimate } from "lib/Components/AuctionResult/AuctionResultMidEstimate"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { QAInfoPanel } from "lib/utils/QAInfo"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -16,25 +19,27 @@ import moment from "moment"
 import { Box, Flex, NoArtworkIcon, Separator, Spacer, Text, useTheme } from "palette"
 import React, { useEffect, useState } from "react"
 import { Animated, Image, TextInput, TouchableWithoutFeedback } from "react-native"
-import { graphql, QueryRenderer } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
 import { getImageDimensions } from "../Sale/Components/SaleArtworkListItem"
+import { ComparableWorksFragmentContainer } from "./ComparableWorks"
 import { auctionResultHasPrice, AuctionResultHelperData, auctionResultText } from "./helpers"
 
 const CONTAINER_HEIGHT = 80
 
 interface Props {
-  artist: AuctionResultQueryResponse["artist"]
-  auctionResult: AuctionResultQueryResponse["auctionResult"]
+  artist: AuctionResult_artist
+  auctionResult: AuctionResult_auctionResult
 }
 
-const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
+export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   const { theme } = useTheme()
   const [imageHeight, setImageHeight] = useState<number>(0)
   const [imageWidth, setImageWidth] = useState<number>(0)
 
   const tracking = useTracking()
+
+  const enableAuctionResultComparableWorks = useFeatureFlag("AREnableAuctionResultComparableWorks")
 
   if (!auctionResult) {
     // The only chance someone would land on this case is using a deep link for an auction result
@@ -229,9 +234,10 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
           )}
 
           <Text variant="md" mt={4} mb={1}>
-            Details
+            Stats
           </Text>
           {details}
+          {!!enableAuctionResultComparableWorks && <ComparableWorksFragmentContainer auctionResult={auctionResult} />}
         </Box>
         <QAInfo />
       </Animated.ScrollView>
@@ -240,62 +246,80 @@ const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   )
 }
 
-export const AuctionResultQueryRenderer: React.FC<{
+export const AuctionResultFragmentContainer = createFragmentContainer(AuctionResult, {
+  auctionResult: graphql`
+    fragment AuctionResult_auctionResult on AuctionResult {
+      id
+      internalID
+      artistID
+      boughtIn
+      currency
+      categoryText
+      dateText
+      dimensions {
+        height
+        width
+      }
+      dimensionText
+      estimate {
+        display
+        high
+        low
+      }
+      images {
+        thumbnail {
+          url(version: "square140")
+          height
+          width
+          aspectRatio
+        }
+      }
+      location
+      mediumText
+      organization
+      performance {
+        mid
+      }
+      currency
+      priceRealized {
+        cents
+        centsUSD
+        display
+        displayUSD
+      }
+      saleDate
+      saleTitle
+      title
+      ...ComparableWorks_auctionResult
+    }
+  `,
+  artist: graphql`
+    fragment AuctionResult_artist on Artist {
+      name
+      href
+    }
+  `,
+})
+
+interface AuctionResultQueryRendererProps {
   auctionResultInternalID: string
   artistID: string
-  environment: RelayModernEnvironment
-}> = ({ auctionResultInternalID, artistID, environment }) => {
+}
+
+export const AuctionResultQueryRenderer: React.FC<AuctionResultQueryRendererProps> = ({
+  auctionResultInternalID,
+  artistID,
+}) => {
   return (
     <QueryRenderer<AuctionResultQuery>
-      environment={environment || defaultEnvironment}
+      environment={defaultEnvironment}
       query={graphql`
         query AuctionResultQuery($auctionResultInternalID: String!, $artistID: String!) {
-          auctionResult(id: $auctionResultInternalID) {
-            id
-            internalID
-            artistID
-            boughtIn
-            currency
-            categoryText
-            dateText
-            dimensions {
-              height
-              width
-            }
-            dimensionText
-            estimate {
-              display
-              high
-              low
-            }
-            images {
-              thumbnail {
-                url(version: "square140")
-                height
-                width
-                aspectRatio
-              }
-            }
-            location
-            mediumText
-            organization
-            performance {
-              mid
-            }
-            currency
-            priceRealized {
-              cents
-              centsUSD
-              display
-              displayUSD
-            }
-            saleDate
-            saleTitle
-            title
+          auctionResult: auctionResult(id: $auctionResultInternalID) {
+            ...AuctionResult_auctionResult
           }
-          artist(id: $artistID) {
-            name
-            href
+          artist: artist(id: $artistID) {
+            ...AuctionResult_artist
           }
         }
       `}
@@ -304,7 +328,7 @@ export const AuctionResultQueryRenderer: React.FC<{
         artistID,
       }}
       render={renderWithPlaceholder({
-        Container: AuctionResult,
+        Container: AuctionResultFragmentContainer,
         renderPlaceholder: LoadingSkeleton,
       })}
     />

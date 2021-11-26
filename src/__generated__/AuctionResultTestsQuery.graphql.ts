@@ -1,15 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6081b6aed78fe56e5cf0a7dbedd02a21 */
+/* @relayHash 947483109386ad8ff7057bbd29f7da2b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type AuctionResultQueryVariables = {
+export type AuctionResultTestsQueryVariables = {
     auctionResultInternalID: string;
     artistID: string;
 };
-export type AuctionResultQueryResponse = {
+export type AuctionResultTestsQueryResponse = {
     readonly auctionResult: {
         readonly " $fragmentRefs": FragmentRefs<"AuctionResult_auctionResult">;
     } | null;
@@ -17,15 +17,15 @@ export type AuctionResultQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"AuctionResult_artist">;
     } | null;
 };
-export type AuctionResultQuery = {
-    readonly response: AuctionResultQueryResponse;
-    readonly variables: AuctionResultQueryVariables;
+export type AuctionResultTestsQuery = {
+    readonly response: AuctionResultTestsQueryResponse;
+    readonly variables: AuctionResultTestsQueryVariables;
 };
 
 
 
 /*
-query AuctionResultQuery(
+query AuctionResultTestsQuery(
   $auctionResultInternalID: String!
   $artistID: String!
 ) {
@@ -343,6 +343,90 @@ v22 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
+},
+v23 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Artist"
+},
+v24 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "String"
+},
+v25 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+},
+v26 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "AuctionResult"
+},
+v27 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "String"
+},
+v28 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Boolean"
+},
+v29 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "AuctionLotEstimate"
+},
+v30 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Float"
+},
+v31 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "AuctionLotImages"
+},
+v32 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Image"
+},
+v33 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "Float"
+},
+v34 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "Int"
+},
+v35 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "AuctionLotPerformance"
+},
+v36 = {
+  "enumValues": null,
+  "nullable": true,
+  "plural": false,
+  "type": "AuctionResultPriceRealized"
 };
 return {
   "fragment": {
@@ -352,7 +436,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "AuctionResultQuery",
+    "name": "AuctionResultTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -397,7 +481,7 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "AuctionResultQuery",
+    "name": "AuctionResultTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -624,13 +708,101 @@ return {
     ]
   },
   "params": {
-    "id": "6081b6aed78fe56e5cf0a7dbedd02a21",
-    "metadata": {},
-    "name": "AuctionResultQuery",
+    "id": "947483109386ad8ff7057bbd29f7da2b",
+    "metadata": {
+      "relayTestingSelectionTypeInfo": {
+        "artist": (v23/*: any*/),
+        "artist.href": (v24/*: any*/),
+        "artist.id": (v25/*: any*/),
+        "artist.name": (v24/*: any*/),
+        "auctionResult": (v26/*: any*/),
+        "auctionResult.artistID": (v27/*: any*/),
+        "auctionResult.boughtIn": (v28/*: any*/),
+        "auctionResult.categoryText": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "AuctionResultConnection"
+        },
+        "auctionResult.comparableAuctionResults.edges": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": true,
+          "type": "AuctionResultEdge"
+        },
+        "auctionResult.comparableAuctionResults.edges.cursor": (v27/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node": (v26/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.artist": (v23/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.artist.id": (v25/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.artist.name": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.artistID": (v27/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.boughtIn": (v28/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.currency": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.dateText": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.estimate": (v29/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.estimate.low": (v30/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.id": (v25/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.images": (v31/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.images.thumbnail": (v32/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.images.thumbnail.aspectRatio": (v33/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.images.thumbnail.height": (v34/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.images.thumbnail.url": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.images.thumbnail.width": (v34/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.internalID": (v25/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.mediumText": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.organization": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.performance": (v35/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.performance.mid": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.priceRealized": (v36/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.priceRealized.cents": (v30/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.priceRealized.display": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.priceRealized.displayUSD": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.saleDate": (v24/*: any*/),
+        "auctionResult.comparableAuctionResults.edges.node.title": (v24/*: any*/),
+        "auctionResult.currency": (v24/*: any*/),
+        "auctionResult.dateText": (v24/*: any*/),
+        "auctionResult.dimensionText": (v24/*: any*/),
+        "auctionResult.dimensions": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "AuctionLotDimensions"
+        },
+        "auctionResult.dimensions.height": (v30/*: any*/),
+        "auctionResult.dimensions.width": (v30/*: any*/),
+        "auctionResult.estimate": (v29/*: any*/),
+        "auctionResult.estimate.display": (v24/*: any*/),
+        "auctionResult.estimate.high": (v30/*: any*/),
+        "auctionResult.estimate.low": (v30/*: any*/),
+        "auctionResult.id": (v25/*: any*/),
+        "auctionResult.images": (v31/*: any*/),
+        "auctionResult.images.thumbnail": (v32/*: any*/),
+        "auctionResult.images.thumbnail.aspectRatio": (v33/*: any*/),
+        "auctionResult.images.thumbnail.height": (v34/*: any*/),
+        "auctionResult.images.thumbnail.url": (v24/*: any*/),
+        "auctionResult.images.thumbnail.width": (v34/*: any*/),
+        "auctionResult.internalID": (v25/*: any*/),
+        "auctionResult.location": (v24/*: any*/),
+        "auctionResult.mediumText": (v24/*: any*/),
+        "auctionResult.organization": (v24/*: any*/),
+        "auctionResult.performance": (v35/*: any*/),
+        "auctionResult.performance.mid": (v24/*: any*/),
+        "auctionResult.priceRealized": (v36/*: any*/),
+        "auctionResult.priceRealized.cents": (v30/*: any*/),
+        "auctionResult.priceRealized.centsUSD": (v30/*: any*/),
+        "auctionResult.priceRealized.display": (v24/*: any*/),
+        "auctionResult.priceRealized.displayUSD": (v24/*: any*/),
+        "auctionResult.saleDate": (v24/*: any*/),
+        "auctionResult.saleTitle": (v24/*: any*/),
+        "auctionResult.title": (v24/*: any*/)
+      }
+    },
+    "name": "AuctionResultTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'bc5ee899b66c353cefd0c2034c7fa600';
+(node as any).hash = '42d83eb35492ee598c741c20dc1235c5';
 export default node;
