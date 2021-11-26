@@ -6,7 +6,7 @@ import { SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider } from "lib/utils/tr
 import { useDeepLinks } from "lib/utils/useDeepLinks"
 import { useStripeConfig } from "lib/utils/useStripeConfig"
 import React, { useEffect } from "react"
-import { Appearance, UIManager, View } from "react-native"
+import { UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
 import { AppProviders } from "./AppProviders"
 import { useWebViewCookies } from "./Components/ArtsyReactWebView"
@@ -21,6 +21,8 @@ import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { AnalyticsConstants } from "./utils/track/constants"
 import { useExperiments } from "./utils/useExperiments"
 import { useInitialNotification } from "./utils/useInitialNotification"
+import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
+import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
@@ -49,20 +51,9 @@ const Main: React.FC<{}> = track()(({}) => {
 
   useEffect(() => {
     createAllChannels()
-    const scheme = Appearance.getColorScheme()
-    // null id means keep whatever id was there before. we only update the user interface info here.
-    SegmentTrackingProvider.identify?.(null, {
-      [AnalyticsConstants.UserInterfaceStyle.key]: (() => {
-        switch (scheme) {
-          case "light":
-            return AnalyticsConstants.UserInterfaceStyle.value.Light
-          case "dark":
-            return AnalyticsConstants.UserInterfaceStyle.value.Dark
-        }
-        return AnalyticsConstants.UserInterfaceStyle.value.Unspecified
-      })(),
-    })
   }, [])
+  usePreferredThemeTracking()
+  useScreenReaderTracking()
 
   useEffect(() => {
     const launchCount = getCurrentEmissionState().launchCount
