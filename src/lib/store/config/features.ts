@@ -222,7 +222,6 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Enable query prefetching",
     showInAdminMenu: true,
-    echoFlagKey: "AREnableQueriesPrefetching",
   },
 })
 

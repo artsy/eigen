@@ -72,7 +72,7 @@ import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayme
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { MyProfilePushNotificationsQueryRenderer } from "./Scenes/MyProfile/MyProfilePushNotifications"
 import { MyProfileSettings } from "./Scenes/MyProfile/MyProfileSettings"
-import { NewWorksForYouQueryRenderer } from "./Scenes/NewWorksForYou/NewWorksForYou"
+import { NewWorksForYouQueryRenderer, NewWorksForYouScreenQuery } from "./Scenes/NewWorksForYou/NewWorksForYou"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { OrderDetailsQueryRender } from "./Scenes/OrderHistory/OrderDetails/Components/OrderDetails"
 import { OrderHistoryQueryRender } from "./Scenes/OrderHistory/OrderHistory"
@@ -379,7 +379,7 @@ export const modules = defineModules({
     hasOwnModalCloseButton: true,
   }),
   WorksForYou: reactModule(WorksForYouQueryRenderer, {}, WorksForYouScreenQuery),
-  NewWorksForYou: reactModule(NewWorksForYouQueryRenderer),
+  NewWorksForYou: reactModule(NewWorksForYouQueryRenderer, {}, NewWorksForYouScreenQuery),
   LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer),
   Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
   SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer),

@@ -93,17 +93,20 @@ export const NewWorksForYouFragmentContainer = createPaginationContainer(
   }
 )
 
+export const NewWorksForYouScreenQuery = graphql`
+  query NewWorksForYouQuery {
+    me {
+      ...NewWorksForYou_me
+    }
+  }
+`
+
 export const NewWorksForYouQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<NewWorksForYouQuery>
       environment={defaultEnvironment}
-      query={graphql`
-        query NewWorksForYouQuery {
-          me {
-            ...NewWorksForYou_me
-          }
-        }
-      `}
+      /* tslint:disable relay-operation-generics */
+      query={NewWorksForYouScreenQuery}
       variables={{}}
       render={renderWithPlaceholder({
         Container: NewWorksForYouFragmentContainer,

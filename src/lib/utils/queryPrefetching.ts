@@ -59,14 +59,13 @@ const prefetchUrl = async (environment: Environment, url: string, variables: Var
   const query = module.Query
 
   if (!query) {
-    console.error(`Failed to prefetch ${url} (couldn't find query).`)
+    console.error(`Failed to prefetch "${url}" (couldn't find query).`)
     return
   }
 
   const options = { ...result.params, ...variables }
 
-  console.log("Prefetching", url)
-  console.count("Prefetched URLs")
+  console.log(`Prefetching "${url}"`)
 
   prefetchQuery(environment, query, options)
 }

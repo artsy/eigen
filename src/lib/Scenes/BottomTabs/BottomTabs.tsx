@@ -13,7 +13,9 @@ export const BottomTabs: React.FC = () => {
 
   useEffect(() => {
     prefetchUrl("inbox")
+    prefetchUrl("my-profile")
   }, [])
+
   const unreadConversationCount = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.unreadConversationCount
   )

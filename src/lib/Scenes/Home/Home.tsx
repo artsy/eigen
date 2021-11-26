@@ -184,6 +184,12 @@ const Home = (props: Props) => {
           data={modules}
           initialNumToRender={5}
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+          prefetchUrlExtractor={(item) => {
+            switch (item?.type) {
+              case "newWorksForYou":
+                return "/new-works-for-you"
+            }
+          }}
           renderItem={({ item, index }) => {
             if (!item.data) {
               return <></>

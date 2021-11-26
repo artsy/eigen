@@ -2,8 +2,6 @@ import { usePrefetch } from "lib/utils/queryPrefetching"
 import React, { Ref, useCallback, useReducer, useRef } from "react"
 import { FlatList, FlatListProps, ViewToken } from "react-native"
 
-const MINIMUM_VIEW_TIME = 500
-
 export type PrefetchFlatListProps<ItemType> = {
   prefetchUrlExtractor?: (item?: ItemType) => string | undefined
   prefetchVariablesExtractor?: (item?: ItemType) => object
@@ -12,7 +10,8 @@ export type PrefetchFlatListProps<ItemType> = {
 
 /**
  * Wraps `FlatList` and prefetches items when they are about to be rendered if `prefetchUrlExtractor` is provided.
- * @param prefetchUrlExtractor - A function that extracts the URL to prefetch from an item.
+ * An item will be prefetched as soon as the item is visible to the user and the user has interacted with the FlatList.
+ * @param prefetchUrlExtractor - A function that extracts the prefetch URL from an item.
  * @param prefetchVariablesExtractor - A function that extracts the variables to pass to the prefetch query.
  */
 export function PrefetchFlatList<ItemType>({
@@ -33,7 +32,6 @@ export function PrefetchFlatList<ItemType>({
   const viewabilityConfigRef = useRef({
     waitForInteraction: true,
     viewAreaCoveragePercentThreshold: 0,
-    minimumViewTime: MINIMUM_VIEW_TIME,
     ...viewabilityConfig,
   })
 
@@ -45,7 +43,7 @@ export function PrefetchFlatList<ItemType>({
         return
       }
 
-      // Prefetch all changed items that are not already prefetched
+      // Prefetch all changed items that have not yet been prefetched
       changed.forEach((item) => {
         const url = prefetchUrlExtractor?.(item.item)
         const variables = prefetchVariablesExtractor?.(item.item)
