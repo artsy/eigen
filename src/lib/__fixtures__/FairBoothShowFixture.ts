@@ -442,8 +442,7 @@ export const FairBoothShowFixture = {
         ],
       },
     ],
-    id:
-      "RmlsdGVyQXJ0d29ya3M6eyJhZ2dyZWdhdGlvbnMiOlsibWVkaXVtIiwicHJpY2VfcmFuZ2UiLCJ0b3RhbCJdLCJwcmljZV9yYW5nZSI6IiotKiIsInNpemUiOjAsInNob3dfaWQiOiJ0d28tcGFsbXMtdHdvLXBhbG1zLWF0LWFydC1iYXNlbC1taWFtaS1iZWFjaC0yMDE4IiwicGFydG5lcl9pZCI6InR3by1wYWxtcyJ9",
+    id: "RmlsdGVyQXJ0d29ya3M6eyJhZ2dyZWdhdGlvbnMiOlsibWVkaXVtIiwicHJpY2VfcmFuZ2UiLCJ0b3RhbCJdLCJwcmljZV9yYW5nZSI6IiotKiIsInNpemUiOjAsInNob3dfaWQiOiJ0d28tcGFsbXMtdHdvLXBhbG1zLWF0LWFydC1iYXNlbC1taWFtaS1iZWFjaC0yMDE4IiwicGFydG5lcl9pZCI6InR3by1wYWxtcyJ9",
     artworks: {
       pageInfo: {
         hasNextPage: true,
