@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1caf1c026c609830ec447da1322aeb57 */
+/* @relayHash e25cd4a3bead2fc97cd90b4c9c7c91f4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,37 +23,33 @@ export type SearchCriteriaAttributes = {
     priceRange?: string | null;
     width?: string | null;
 };
-export type SavedSearchButtonTestsQueryVariables = {
+export type CreateSavedSearchAlertContentQueryVariables = {
     criteria: SearchCriteriaAttributes;
 };
-export type SavedSearchButtonTestsQueryResponse = {
+export type CreateSavedSearchAlertContentQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"SavedSearchButton_me">;
+        readonly " $fragmentRefs": FragmentRefs<"CreateSavedSearchAlertContent_me">;
     } | null;
 };
-export type SavedSearchButtonTestsQuery = {
-    readonly response: SavedSearchButtonTestsQueryResponse;
-    readonly variables: SavedSearchButtonTestsQueryVariables;
+export type CreateSavedSearchAlertContentQuery = {
+    readonly response: CreateSavedSearchAlertContentQueryResponse;
+    readonly variables: CreateSavedSearchAlertContentQueryVariables;
 };
 
 
 
 /*
-query SavedSearchButtonTestsQuery(
+query CreateSavedSearchAlertContentQuery(
   $criteria: SearchCriteriaAttributes!
 ) {
   me {
-    ...SavedSearchButton_me_1ff8oJ
+    ...CreateSavedSearchAlertContent_me_1ff8oJ
     id
   }
 }
 
-fragment ContentRefetchContainer_me on Me {
+fragment CreateSavedSearchAlertContent_me_1ff8oJ on Me {
   emailFrequency
-}
-
-fragment SavedSearchButton_me_1ff8oJ on Me {
-  ...ContentRefetchContainer_me
   savedSearch(criteria: $criteria) {
     internalID
   }
@@ -74,19 +70,13 @@ v1 = [
     "name": "criteria",
     "variableName": "criteria"
   }
-],
-v2 = {
-  "enumValues": null,
-  "nullable": false,
-  "plural": false,
-  "type": "ID"
-};
+];
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "SavedSearchButtonTestsQuery",
+    "name": "CreateSavedSearchAlertContentQuery",
     "selections": [
       {
         "alias": null,
@@ -99,7 +89,7 @@ return {
           {
             "args": (v1/*: any*/),
             "kind": "FragmentSpread",
-            "name": "SavedSearchButton_me"
+            "name": "CreateSavedSearchAlertContent_me"
           }
         ],
         "storageKey": null
@@ -112,7 +102,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "SavedSearchButtonTestsQuery",
+    "name": "CreateSavedSearchAlertContentQuery",
     "selections": [
       {
         "alias": null,
@@ -160,36 +150,13 @@ return {
     ]
   },
   "params": {
-    "id": "1caf1c026c609830ec447da1322aeb57",
-    "metadata": {
-      "relayTestingSelectionTypeInfo": {
-        "me": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Me"
-        },
-        "me.emailFrequency": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "String"
-        },
-        "me.id": (v2/*: any*/),
-        "me.savedSearch": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "SearchCriteria"
-        },
-        "me.savedSearch.internalID": (v2/*: any*/)
-      }
-    },
-    "name": "SavedSearchButtonTestsQuery",
+    "id": "e25cd4a3bead2fc97cd90b4c9c7c91f4",
+    "metadata": {},
+    "name": "CreateSavedSearchAlertContentQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'd369f95a141fe0bd2f24bf5249e083ba';
+(node as any).hash = 'f9f08a47e0514f079ea60262013c4460';
 export default node;

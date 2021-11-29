@@ -1,14 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 952339cebec96492825e0beb0857324d */
+/* @relayHash c9f82fd4266d2f528cfec2bcdc589d02 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type CreateSavedSearchAlertTestsQueryVariables = {};
 export type CreateSavedSearchAlertTestsQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"CreateSavedSearchAlertScreen_me">;
+        readonly " $fragmentRefs": FragmentRefs<"ContentRefetchContainer_me">;
     } | null;
 };
 export type CreateSavedSearchAlertTestsQuery = {
@@ -21,12 +21,12 @@ export type CreateSavedSearchAlertTestsQuery = {
 /*
 query CreateSavedSearchAlertTestsQuery {
   me {
-    ...CreateSavedSearchAlertScreen_me
+    ...ContentRefetchContainer_me
     id
   }
 }
 
-fragment CreateSavedSearchAlertScreen_me on Me {
+fragment ContentRefetchContainer_me on Me {
   emailFrequency
 }
 */
@@ -49,7 +49,7 @@ const node: ConcreteRequest = {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "CreateSavedSearchAlertScreen_me"
+            "name": "ContentRefetchContainer_me"
           }
         ],
         "storageKey": null
@@ -92,7 +92,7 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "id": "952339cebec96492825e0beb0857324d",
+    "id": "c9f82fd4266d2f528cfec2bcdc589d02",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -120,5 +120,5 @@ const node: ConcreteRequest = {
     "text": null
   }
 };
-(node as any).hash = '5cec524a39eb01adf1ff1221a283af08';
+(node as any).hash = '6b2e5c8447e00a139d681cecaa720fba';
 export default node;

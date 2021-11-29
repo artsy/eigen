@@ -40,6 +40,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
 
   const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
   const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
+  const handleOpenCreateAlertModal = () => setIsCreateAlertModalVisible(true)
   const handleCloseCreateAlertModal = () => setIsCreateAlertModalVisible(false)
 
   const openFilterArtworksModal = () => {
@@ -69,7 +70,13 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   return (
     <ArtworkFiltersStoreProvider>
       <StickyTabPageScrollView>
-        <ArtistArtworksContainer {...props} artist={artist} relay={relay} openFilterModal={openFilterArtworksModal} />
+        <ArtistArtworksContainer
+          {...props}
+          artist={artist}
+          relay={relay}
+          openFilterModal={openFilterArtworksModal}
+          openCreateAlertModal={handleOpenCreateAlertModal}
+        />
         <ArtworkFilterNavigator
           {...props}
           id={artist.internalID}
@@ -101,6 +108,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   relay,
   searchCriteria,
   openFilterModal,
+  openCreateAlertModal,
   ...props
 }) => {
   const tracking = useTracking()
@@ -162,7 +170,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
           childrenPosition={isEnabledImprovedAlertsFlow ? "left" : "right"}
         >
           {isEnabledImprovedAlertsFlow ? (
-            <SavedSearchButtonV2 onPress={openFilterModal} />
+            <SavedSearchButtonV2 onPress={openCreateAlertModal} />
           ) : (
             !!shouldShowSavedSearchButton && (
               <SavedSearchButtonQueryRenderer
