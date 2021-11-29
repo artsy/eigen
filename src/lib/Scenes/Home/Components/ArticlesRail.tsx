@@ -14,9 +14,10 @@ import HomeAnalytics from "../homeAnalytics"
 interface ArticlesRailProps {
   title: string
   articlesConnection: ArticlesRail_articlesConnection
+  mb?: number
 }
 
-export const ArticlesRail: React.FC<ArticlesRailProps> = ({ title, articlesConnection }) => {
+export const ArticlesRail: React.FC<ArticlesRailProps> = ({ title, articlesConnection, mb }) => {
   const articles = extractNodes(articlesConnection)
 
   if (!articles.length) {
@@ -26,7 +27,7 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ title, articlesConne
   const tracking = useTracking()
 
   return (
-    <Flex>
+    <Flex mb={mb}>
       <Flex mx={2}>
         <SectionTitle
           title={title}

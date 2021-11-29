@@ -14,7 +14,7 @@ import { formatDisplayTimelyAt } from "lib/Scenes/Sale/helpers"
 import { extractNodes } from "lib/utils/extractNodes"
 import { compact } from "lodash"
 import { bullet, Flex, Text } from "palette"
-import React, { useEffect, useImperativeHandle, useRef } from "react"
+import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -25,14 +25,12 @@ interface Props {
   title: string
   subtitle?: string
   salesModule: SalesRail_salesModule
-  onHide?: () => void
-  onShow?: () => void
+  mb?: number
 }
 
 type Sale = SalesRail_salesModule["results"][0]
 
-const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
-  const { title, subtitle, scrollRef, salesModule, onHide, onShow } = props
+const SalesRail: React.FC<Props & RailScrollProps> = ({ title, subtitle, scrollRef, salesModule, mb }) => {
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
 
@@ -52,16 +50,12 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
 
   const hasSales = salesModule.results?.length
 
-  useEffect(() => {
-    hasSales ? onShow?.() : onHide?.()
-  }, [hasSales])
-
   if (!hasSales) {
     return null
   }
 
   return (
-    <View>
+    <Flex mb={mb}>
       <Flex pl="2" pr="2">
         <SectionTitle
           title={title}
@@ -136,7 +130,7 @@ const SalesRail: React.FC<Props & RailScrollProps> = (props) => {
           )
         }}
       />
-    </View>
+    </Flex>
   )
 }
 

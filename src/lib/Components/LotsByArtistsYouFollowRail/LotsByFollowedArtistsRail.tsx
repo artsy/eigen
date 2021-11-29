@@ -7,7 +7,7 @@ import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToEdge } from "lib/utils/isCloseToEdge"
 import { Flex } from "palette"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 export const PAGE_SIZE = 6
@@ -16,19 +16,14 @@ interface Props {
   title: string
   me: LotsByFollowedArtistsRail_me
   relay: RelayPaginationProp
-  onHide?: () => void
-  onShow?: () => void
+  mb?: number
 }
 
-export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay, onShow, onHide }) => {
+export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay, mb }) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const artworks = extractNodes(me?.lotsByFollowedArtistsConnection)
   const hasArtworks = artworks?.length
-
-  useEffect(() => {
-    hasArtworks ? onShow?.() : onHide?.()
-  }, [hasArtworks])
 
   if (!hasArtworks) {
     return null
@@ -52,7 +47,7 @@ export const LotsByFollowedArtistsRail: React.FC<Props> = ({ title, me, relay, o
   }
 
   return (
-    <Flex>
+    <Flex mb={mb}>
       <Flex mx={2}>
         <SectionTitle title={title} onPress={() => navigate("/lots-by-artists-you-follow")} />
       </Flex>

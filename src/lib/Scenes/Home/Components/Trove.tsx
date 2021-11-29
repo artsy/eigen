@@ -1,23 +1,19 @@
 import { Trove_trove } from "__generated__/Trove_trove.graphql"
 import { HeroUnit } from "lib/Components/Home/HeroUnit"
 import { navigate } from "lib/navigation/navigate"
-import React, { useEffect } from "react"
+import { Flex } from "palette"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 interface TroveProps {
   trove: Trove_trove
-  onHide?: () => void
-  onShow?: () => void
+  mb?: number
 }
 
-const Trove: React.FC<TroveProps> = ({ trove, onHide, onShow }) => {
+const Trove: React.FC<TroveProps> = ({ trove, mb }) => {
   const troveUnit = trove?.heroUnits?.find((itm) => itm?.title === "Trove")
 
   const showTrove = !!troveUnit && !!troveUnit.backgroundImageURL && !!troveUnit.href
-
-  useEffect(() => {
-    showTrove ? onShow?.() : onHide?.()
-  }, [showTrove])
 
   if (!showTrove) {
     return null
@@ -28,7 +24,11 @@ const Trove: React.FC<TroveProps> = ({ trove, onHide, onShow }) => {
     navigate(path)
   }
 
-  return <HeroUnit unit={troveUnit!} onPress={handleOnPress} isTrove />
+  return (
+    <Flex mb={mb}>
+      <HeroUnit unit={troveUnit!} onPress={handleOnPress} isTrove />
+    </Flex>
+  )
 }
 
 export const TroveFragmentContainer = createFragmentContainer(Trove, {
