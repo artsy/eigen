@@ -23,6 +23,7 @@ import React, { useContext, useEffect, useMemo, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { SavedSearchButtonQueryRenderer } from "./SavedSearchButton"
+import { SavedSearchButtonV2 } from "./SavedSearchButtonV2"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
@@ -147,15 +148,19 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
           selectedFiltersCount={appliedFiltersCount}
           childrenPosition={isEnabledImprovedAlertsFlow ? "left" : "right"}
         >
-          {shouldShowSavedSearchButton ? (
-            <SavedSearchButtonQueryRenderer
-              filters={allowedFiltersForSavedSearch}
-              artistId={artist.internalID}
-              artistName={artist.name!}
-              artistSlug={artist.slug}
-              aggregations={aggregations}
-            />
-          ) : null}
+          {isEnabledImprovedAlertsFlow ? (
+            <SavedSearchButtonV2 onPress={openFilterModal} />
+          ) : (
+            !!shouldShowSavedSearchButton && (
+              <SavedSearchButtonQueryRenderer
+                filters={allowedFiltersForSavedSearch}
+                artistId={artist.internalID}
+                artistName={artist.name!}
+                artistSlug={artist.slug}
+                aggregations={aggregations}
+              />
+            )
+          )}
         </ArtworksFilterHeader>
       </Box>
     )
