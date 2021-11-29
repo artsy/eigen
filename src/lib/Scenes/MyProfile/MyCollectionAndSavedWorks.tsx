@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-community/async-storage"
 import { MyCollectionAndSavedWorks_me } from "__generated__/MyCollectionAndSavedWorks_me.graphql"
 import { MyCollectionAndSavedWorksQuery } from "__generated__/MyCollectionAndSavedWorksQuery.graphql"
 import { Image } from "lib/Components/Bidding/Elements/Image"
@@ -7,8 +6,8 @@ import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
+import { retrieveLocalImage, storeLocalImage } from "lib/utils/LocalImageStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { DateTime } from "luxon"
 import { Avatar, Box, Button, Flex, Sans, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, QueryRenderer } from "react-relay"
@@ -44,7 +43,6 @@ export const MyCollectionAndSavedWorks: React.FC<{ me: NonNullable<MyCollectionA
 }
 
 export const LOCAL_PROFILE_ICON_PATH_KEY = "LOCAL_PROFILE_ICON_PATH_KEY"
-export const LOCAL_PROFILE_ICON_EXPIRE_AT_KEY = "LOCAL_PROFILE_ICON_EXPIRE_AT_KEY"
 
 export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWorks_me> }> = ({ me }) => {
   const color = useColor()
@@ -54,23 +52,15 @@ export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWor
 
   const setProfileIconHandler = (profileIconPath: string) => {
     setLocalImagePath(profileIconPath)
-    const dateToExpire = DateTime.fromISO(new Date().toISOString()).plus({ minutes: 2 }).toISO()
-    AsyncStorage.multiSet([
-      [LOCAL_PROFILE_ICON_PATH_KEY, profileIconPath],
-      [LOCAL_PROFILE_ICON_EXPIRE_AT_KEY, dateToExpire],
-    ])
+    storeLocalImage(profileIconPath, LOCAL_PROFILE_ICON_PATH_KEY)
   }
 
   useEffect(() => {
-    AsyncStorage.multiGet([LOCAL_PROFILE_ICON_PATH_KEY, LOCAL_PROFILE_ICON_EXPIRE_AT_KEY]).then(
-      ([localProfileImagePath, addedAt]) => {
-        const now = DateTime.fromISO(new Date().toISOString()).toISO()
-        const expired = addedAt[1] ? now > addedAt[1] : true
-        if (!expired && localProfileImagePath[1]) {
-          setLocalImagePath(localProfileImagePath[1])
-        }
+    retrieveLocalImage(LOCAL_PROFILE_ICON_PATH_KEY).then((imagePath) => {
+      if (imagePath) {
+        setLocalImagePath(imagePath)
       }
-    )
+    })
   }, [])
 
   const userProfileImage = localImagePath || me.icon?.url
