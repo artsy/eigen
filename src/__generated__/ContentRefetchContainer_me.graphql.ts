@@ -4,14 +4,14 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type CreateSavedSearchAlertScreen_me = {
+export type ContentRefetchContainer_me = {
     readonly emailFrequency: string | null;
-    readonly " $refType": "CreateSavedSearchAlertScreen_me";
+    readonly " $refType": "ContentRefetchContainer_me";
 };
-export type CreateSavedSearchAlertScreen_me$data = CreateSavedSearchAlertScreen_me;
-export type CreateSavedSearchAlertScreen_me$key = {
-    readonly " $data"?: CreateSavedSearchAlertScreen_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"CreateSavedSearchAlertScreen_me">;
+export type ContentRefetchContainer_me$data = ContentRefetchContainer_me;
+export type ContentRefetchContainer_me$key = {
+    readonly " $data"?: ContentRefetchContainer_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"ContentRefetchContainer_me">;
 };
 
 
@@ -20,7 +20,7 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "CreateSavedSearchAlertScreen_me",
+  "name": "ContentRefetchContainer_me",
   "selections": [
     {
       "alias": null,
@@ -33,5 +33,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'ae0ddf16ad30d3c62fecdb063de9bc62';
+(node as any).hash = 'f132a59cba60eb93d4c181bafa54d0ec';
 export default node;

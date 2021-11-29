@@ -4,17 +4,17 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SavedSearchButton_me = {
+export type CreateSavedSearchAlertContent_me = {
+    readonly emailFrequency: string | null;
     readonly savedSearch: {
         readonly internalID: string;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"ContentRefetchContainer_me">;
-    readonly " $refType": "SavedSearchButton_me";
+    readonly " $refType": "CreateSavedSearchAlertContent_me";
 };
-export type SavedSearchButton_me$data = SavedSearchButton_me;
-export type SavedSearchButton_me$key = {
-    readonly " $data"?: SavedSearchButton_me$data;
-    readonly " $fragmentRefs": FragmentRefs<"SavedSearchButton_me">;
+export type CreateSavedSearchAlertContent_me$data = CreateSavedSearchAlertContent_me;
+export type CreateSavedSearchAlertContent_me$key = {
+    readonly " $data"?: CreateSavedSearchAlertContent_me$data;
+    readonly " $fragmentRefs": FragmentRefs<"CreateSavedSearchAlertContent_me">;
 };
 
 
@@ -29,8 +29,15 @@ const node: ReaderFragment = {
   ],
   "kind": "Fragment",
   "metadata": null,
-  "name": "SavedSearchButton_me",
+  "name": "CreateSavedSearchAlertContent_me",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "emailFrequency",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": [
@@ -54,15 +61,10 @@ const node: ReaderFragment = {
         }
       ],
       "storageKey": null
-    },
-    {
-      "args": null,
-      "kind": "FragmentSpread",
-      "name": "ContentRefetchContainer_me"
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'ce8ceb250107eaa44583e0f20e8a297a';
+(node as any).hash = '98f22ba77ecdf3e20a42783c60e14b63';
 export default node;
