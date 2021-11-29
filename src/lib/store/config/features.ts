@@ -118,12 +118,6 @@ export const features = defineFeatures({
     description: "Enable Saved Addresses",
     showInAdminMenu: true,
   },
-  AREnableAuctionResultsKeywordFilter: {
-    readyForRelease: true,
-    description: "Enable auction results keyword filter",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableAuctionResultsKeywordFilter",
-  },
   AREnableImprovedSearchPills: {
     readyForRelease: false,
     description: "Enable improved search pills",

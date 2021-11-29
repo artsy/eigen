@@ -9,7 +9,6 @@ import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { PAGE_SIZE } from "lib/Components/constants"
 import Spinner from "lib/Components/Spinner"
 import { navigate } from "lib/navigation/navigate"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { debounce } from "lodash"
 import { Box, bullet, Flex, Separator, Spacer, Text, useColor } from "palette"
@@ -31,8 +30,6 @@ interface Props {
 const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollToTop }) => {
   const color = useColor()
   const tracking = useTracking()
-
-  const showKeywordFilter = useFeatureFlag("AREnableAuctionResultsKeywordFilter")
 
   const auctionResults = extractNodes(artist.auctionResultsConnection)
 
@@ -153,15 +150,13 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
           {resultsString} {bullet} Sorted by {getSortDescription()?.toLowerCase()}
         </SortMode>
         <Separator mt="2" />
-        {!!showKeywordFilter && (
-          <KeywordFilter
-            artistId={artist.internalID}
-            artistSlug={artist.slug}
-            loading={keywordFilterRefetching}
-            onFocus={scrollToTop}
-            onTypingStart={() => setKeywordFilterRefetching(true)}
-          />
-        )}
+        <KeywordFilter
+          artistId={artist.internalID}
+          artistSlug={artist.slug}
+          loading={keywordFilterRefetching}
+          onFocus={scrollToTop}
+          onTypingStart={() => setKeywordFilterRefetching(true)}
+        />
       </Flex>
       {auctionResults.length ? (
         <Flex py={2}>
