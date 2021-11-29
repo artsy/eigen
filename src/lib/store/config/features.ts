@@ -161,9 +161,10 @@ export const features = defineFeatures({
     echoFlagKey: "ARGoogleAuth",
   },
   AREnableSavedSearchToggles: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Saved Search toggles",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableSavedSearchToggles",
   },
   AREnableWebPImages: {
     readyForRelease: true,
