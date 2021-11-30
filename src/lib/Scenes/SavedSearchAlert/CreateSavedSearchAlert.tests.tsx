@@ -163,4 +163,19 @@ describe("CreateSavedSearchAlertV2", () => {
 
     expect(toggles).toHaveLength(1)
   })
+
+  it('should disable "Save Alert" button if there is already a saved search with the same criteria', async () => {
+    const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Me: () => ({
+        emailFrequency: "none",
+        savedSearch: {
+          internalID: "internalID",
+        },
+      }),
+    })
+
+    expect(getAllByText("Save Alert")[0]).toBeDisabled()
+  })
 })
