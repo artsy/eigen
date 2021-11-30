@@ -229,7 +229,7 @@ function storeLocalPhotos(response: myCollectionAddArtworkMutationResponse, phot
     photos.forEach((photo, index) => {
       if (photo.path) {
         const key = myCollectionLocalPhotoKey(slug, index)
-        storeLocalImage(key, photo.path)
+        storeLocalImage(photo.path, key)
       }
     })
   }

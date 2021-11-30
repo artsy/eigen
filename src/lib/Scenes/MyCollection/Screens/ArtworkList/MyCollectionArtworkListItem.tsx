@@ -5,13 +5,15 @@ import { DEFAULT_SECTION_MARGIN } from "lib/Components/ArtworkGrids/InfiniteScro
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { isPad } from "lib/utils/hardware"
+import { retrieveLocalImage } from "lib/utils/LocalImageStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Text, useColor } from "palette"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Image as RNImage, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
+import { myCollectionLocalPhotoKey } from "../ArtworkFormModal/MyCollectionArtworkFormModal"
 
 interface MyCollectionArtworkListItemProps {
   artwork: MyCollectionArtworkListItem_artwork
@@ -25,9 +27,18 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
 
   const { artist, artistNames, internalID, medium, slug, title, image, date } = artwork
 
-  const lastUploadedPhoto = {
-    path: "some-photo",
-  }
+  const [localImagePath, setLocalImagePath] = useState<string>("")
+
+  useEffect(() => {
+    const localImageKey = myCollectionLocalPhotoKey(slug, 0)
+    console.log(`ImageRender: attempting to retrieve local image path ${localImageKey}`)
+    retrieveLocalImage(localImageKey).then((imagePath) => {
+      console.log(`ImageRender: Retrieved local image path ${imagePath}`)
+      if (imagePath) {
+        setLocalImagePath(imagePath)
+      }
+    })
+  }, [])
 
   // consistent with how sections are derived in InfiniteScrollArtworksGrid
   const screen = useScreenDimensions()
@@ -44,12 +55,13 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
           aspectRatio={image?.aspectRatio ?? 1}
         />
       )
-    } else if (lastUploadedPhoto) {
+    } else if (localImagePath) {
+      console.log(`ImageRender: Got local image path ${localImagePath}`)
       return (
         <RNImage
           testID="Image"
           style={{ width: imageWidth, height: 120, resizeMode: "cover" }}
-          source={{ uri: lastUploadedPhoto.path }}
+          source={{ uri: localImagePath }}
         />
       )
     } else {
