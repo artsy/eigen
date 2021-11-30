@@ -1,5 +1,4 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Box } from "palette"
 import React from "react"
@@ -11,14 +10,19 @@ type Props = StackScreenProps<CreateSavedSearchAlertNavigationStack, "CreateSave
 
 export const CreateSavedSearchAlertScreen: React.FC<Props> = (props) => {
   const { route, navigation } = props
-  const { me, onClosePress, ...other } = route.params
+  const { me, ...other } = route.params
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
   return (
     <Box flex={1}>
-      <FancyModalHeader useXButton hideBottomDivider onLeftButtonPress={onClosePress} />
       {isEnabledImprovedAlertsFlow ? (
-        <CreateSavedSearchAlertContentQueryRenderer navigation={navigation} {...other} />
+        <CreateSavedSearchAlertContentQueryRenderer
+          navigation={navigation}
+          artistId={route.params.artistId}
+          artistName={route.params.artistName}
+          onClosePress={route.params.onClosePress}
+          onComplete={route.params.onComplete}
+        />
       ) : (
         <CreateSavedSearchContentContainerV1 navigation={navigation} me={me} {...other} />
       )}

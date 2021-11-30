@@ -1,9 +1,8 @@
-import { fireEvent, waitFor } from "@testing-library/react-native"
 import { CreateSavedSearchAlertTestsQuery } from "__generated__/CreateSavedSearchAlertTestsQuery.graphql"
-import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
@@ -17,14 +16,29 @@ import { CreateSavedSearchAlertParams, CreateSavedSearchAlertProps } from "./Sav
 
 jest.unmock("react-relay")
 
+const filters: FilterData[] = [
+  {
+    displayText: "Bid",
+    paramName: FilterParamName.waysToBuyBid,
+    paramValue: true,
+  },
+]
+
+const initialData: ArtworkFiltersState = {
+  selectedFilters: [],
+  appliedFilters: filters,
+  previouslyAppliedFilters: filters,
+  applyFilters: false,
+  aggregations: [],
+  filterType: "auctionResult",
+  counts: {
+    total: null,
+    followedArtists: null,
+  },
+}
+
 const defaultParams: CreateSavedSearchAlertParams = {
-  filters: [
-    {
-      displayText: "Bid",
-      paramName: FilterParamName.waysToBuyBid,
-      paramValue: true,
-    },
-  ],
+  filters,
   aggregations: [],
   artistId: "artistID",
   artistName: "artistName",
@@ -82,111 +96,71 @@ describe("CreateSavedSearchAlert", () => {
   }
 
   it("renders without throwing an error", () => {
-    const { getAllByTestId } = renderAndExecuteQuery()
+    const { getByText } = renderAndExecuteQuery({})
 
-    expect(getAllByTestId("alert-pill").map(extractText)).toEqual(["Bid"])
+    expect(getByText("Bid")).toBeTruthy()
   })
 
-  it("should call onClosePress handler when the close button is pressed", () => {
-    const onCloseMock = jest.fn()
-    const { getByTestId } = renderAndExecuteQuery({
-      params: {
-        ...defaultParams,
-        onClosePress: onCloseMock,
-      },
-    })
-
-    fireEvent.press(getByTestId("fancy-modal-header-left-button"))
-
-    expect(onCloseMock).toBeCalled()
-  })
-
-  it("calls onComplete when the mutation is completed", async () => {
+  it('"Email alerts" toggle is disabled by default if a user has not allowed email notifications', async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
     notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
-    const onCompleteMock = jest.fn()
+    const mockResolver = {
+      Me: () => ({
+        emailFrequency: "none",
+      }),
+    }
 
-    const { getByTestId } = renderAndExecuteQuery({
-      params: {
-        ...defaultParams,
-        onComplete: onCompleteMock,
-      },
-    })
+    const { findAllByA11yState } = renderAndExecuteQuery({}, mockResolver)
 
-    fireEvent.changeText(getByTestId("alert-input-name"), "something new")
-    fireEvent.press(getByTestId("save-alert-button"))
+    // Refetch query
+    mockEnvironmentPayload(mockEnvironment, mockResolver)
 
-    await waitFor(() => {
-      const operation = mockEnvironment.mock.getMostRecentOperation()
+    const toggles = await findAllByA11yState({ selected: false })
 
-      expect(operation.request.node.operation.name).toBe("createSavedSearchAlertMutation")
-      mockEnvironmentPayload(mockEnvironment, {
-        SearchCriteria: () => ({
-          internalID: "internalID",
-        }),
-      })
-    })
+    expect(toggles).toHaveLength(1)
+  })
+})
 
-    expect(onCompleteMock).toHaveBeenCalledWith({
-      id: "internalID",
-    })
+describe("CreateSavedSearchAlertV2", () => {
+  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
+  const notificationPermissions = mockFetchNotificationPermissions(false)
+
+  beforeEach(() => {
+    mockEnvironment.mockClear()
+    notificationPermissions.mockClear()
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
   })
 
-  describe("When AREnableSavedSearchToggles is enabled", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
+  const TestRenderer = (params: Partial<CreateSavedSearchAlertParams>) => {
+    return (
+      <ArtworkFiltersStoreProvider initialData={initialData}>
+        <CreateSavedSearchAlert visible params={{ ...defaultParams, ...params }} />
+      </ArtworkFiltersStoreProvider>
+    )
+  }
+
+  it("renders without throwing an error", async () => {
+    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+
+    mockEnvironmentPayload(mockEnvironment)
+
+    expect(getByText("Bid")).toBeTruthy()
+  })
+
+  it('"Email alerts" toggle is disabled by default if a user has not allowed email notifications', async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
+    notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
+
+    const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Me: () => ({
+        emailFrequency: "none",
+      }),
     })
 
-    it("the push notification is enabled by default when push permissions are enabled", async () => {
-      notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
+    const toggles = await findAllByA11yState({ selected: false })
 
-      const { findAllByA11yState } = renderAndExecuteQuery()
-
-      // Refetch query
-      mockEnvironmentPayload(mockEnvironment)
-
-      const toggles = await findAllByA11yState({ selected: true })
-
-      expect(toggles).toHaveLength(2)
-    })
-
-    it("the push notification is disabled by default when push permissions are denied", async () => {
-      notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Denied))
-
-      const { findAllByA11yState } = renderAndExecuteQuery()
-
-      // Refetch query
-      mockEnvironmentPayload(mockEnvironment)
-
-      const toggles = await findAllByA11yState({ selected: false })
-
-      expect(toggles).toHaveLength(1)
-    })
-
-    it("the push notification is disabled by default when push permissions are not determined", async () => {
-      notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.NotDetermined))
-
-      const { findAllByA11yState } = renderAndExecuteQuery()
-      const toggles = await findAllByA11yState({ selected: false })
-
-      expect(toggles).toHaveLength(1)
-    })
-
-    it("the email notification is disabled by default if a user has not allowed email notifications", async () => {
-      notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
-      const mockResolver = {
-        Me: () => ({
-          emailFrequency: "none",
-        }),
-      }
-
-      const { findAllByA11yState } = renderAndExecuteQuery({}, mockResolver)
-
-      // Refetch query
-      mockEnvironmentPayload(mockEnvironment, mockResolver)
-
-      const toggles = await findAllByA11yState({ selected: false })
-
-      expect(toggles).toHaveLength(1)
-    })
+    expect(toggles).toHaveLength(1)
   })
 })
