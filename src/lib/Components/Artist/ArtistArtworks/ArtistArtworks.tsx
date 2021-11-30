@@ -101,6 +101,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
 }
 interface ArtistArtworksContainerProps {
   openFilterModal: () => void
+  openCreateAlertModal: () => void
 }
 
 const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContainerProps> = ({
