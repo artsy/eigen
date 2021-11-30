@@ -8,6 +8,7 @@ import { CreateSavedSearchAlertParams } from "../SavedSearchAlertModel"
 
 export type CreateSavedSearchContentProps = Omit<CreateSavedSearchAlertParams, "me"> & {
   userAllowsEmails: boolean
+  isPreviouslySaved?: boolean
   onUpdateEmailPreferencesPress: () => void
 }
 

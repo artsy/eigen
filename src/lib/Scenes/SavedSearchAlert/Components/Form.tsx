@@ -14,6 +14,7 @@ interface FormProps {
   artistId: string
   artistName: string
   isLoading?: boolean
+  isPreviouslySaved?: boolean
   onDeletePress?: () => void
   onSubmitPress?: () => void
   onUpdateEmailPreferencesPress?: () => void
@@ -28,6 +29,7 @@ export const Form: React.FC<FormProps> = (props) => {
     artistName,
     savedSearchAlertId,
     isLoading,
+    isPreviouslySaved,
     onDeletePress,
     onSubmitPress,
     onUpdateEmailPreferencesPress,
@@ -61,6 +63,10 @@ export const Form: React.FC<FormProps> = (props) => {
 
   // Enable "save alert" button if selected at least one of the notification toggle options
   if (enableSavedSearchToggles && !values.push && !values.email) {
+    isSaveAlertButtonDisabled = true
+  }
+
+  if (isPreviouslySaved) {
     isSaveAlertButtonDisabled = true
   }
 
