@@ -13,12 +13,14 @@ import { useTracking } from "react-tracking"
 import { myCollectionAddArtwork } from "../../mutations/myCollectionAddArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
 import { myCollectionEditArtwork } from "../../mutations/myCollectionEditArtwork"
-import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
+import { ArtworkFormValues, Image } from "../../State/MyCollectionArtworkModel"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
 
 import { useActionSheet } from "@expo/react-native-action-sheet"
+import { myCollectionAddArtworkMutationResponse } from "__generated__/myCollectionAddArtworkMutation.graphql"
 import { LoadingIndicator } from "lib/Components/LoadingIndicator"
 import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
+import { storeLocalImage } from "lib/utils/LocalImageStore"
 import { isEqual } from "lodash"
 import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { refreshMyCollection } from "../../MyCollection"
@@ -94,13 +96,14 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
         }
 
         if (props.mode === "add") {
-          await myCollectionAddArtwork({
+          const response = await myCollectionAddArtwork({
             artistIds: [artistSearchResult!.internalID as string],
             externalImageUrls,
             pricePaidCents,
             pricePaidCurrency,
             ...cleanArtworkPayload(others),
           })
+          storeLocalPhotos(response, photos)
         } else {
           await myCollectionEditArtwork({
             artistIds: [artistSearchResult!.internalID as string],
@@ -117,6 +120,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
             await deleteArtworkImage(props.artwork.internalID, deletedID)
           }
         }
+
         refreshMyCollection()
         props.onSuccess()
         setTimeout(() => {
@@ -215,10 +219,25 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
   )
 }
 
+export function myCollectionLocalPhotoKey(slug: string, index: number) {
+  return slug + "_" + index
+}
+
+function storeLocalPhotos(response: myCollectionAddArtworkMutationResponse, photos: Image[]) {
+  const slug = response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.slug
+  if (slug) {
+    photos.forEach((photo, index) => {
+      if (photo.path) {
+        const key = myCollectionLocalPhotoKey(slug, index)
+        storeLocalImage(key, photo.path)
+      }
+    })
+  }
+}
+
 const Stack = createStackNavigator<ArtworkFormModalScreen>()
 
 export async function uploadPhotos(photos: ArtworkFormValues["photos"]) {
-  GlobalStore.actions.myCollection.artwork.setLastUploadedPhoto(photos[0])
   // only recently added photos have a path
   const imagePaths: string[] = photos.map((photo) => photo.path).filter((path): path is string => path !== undefined)
   const externalImageUrls: string[] = []

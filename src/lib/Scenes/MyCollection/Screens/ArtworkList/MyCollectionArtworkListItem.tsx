@@ -4,7 +4,6 @@ import { MyCollectionArtworkListItem_artwork } from "__generated__/MyCollectionA
 import { DEFAULT_SECTION_MARGIN } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
-import { GlobalStore } from "lib/store/GlobalStore"
 import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Text, useColor } from "palette"
@@ -26,9 +25,9 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
 
   const { artist, artistNames, internalID, medium, slug, title, image, date } = artwork
 
-  const lastUploadedPhoto = GlobalStore.useAppState(
-    (state) => state.myCollection.artwork.sessionState.lastUploadedPhoto
-  )
+  const lastUploadedPhoto = {
+    path: "some-photo",
+  }
 
   // consistent with how sections are derived in InfiniteScrollArtworksGrid
   const screen = useScreenDimensions()
