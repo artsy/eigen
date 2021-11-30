@@ -14,16 +14,23 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import React, { useCallback, useMemo, useRef, useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { CreateSavedSearchContent } from "../Components/CreateSavedSearchContent"
-import { CreateSavedSearchAlertNavigationStack, CreateSavedSearchAlertParams } from "../SavedSearchAlertModel"
+import {
+  CreateSavedSearchAlertNavigationStack,
+  SavedSearchAlertFormPropsBase,
+  SavedSearchAlertMutationResult,
+} from "../SavedSearchAlertModel"
 
-interface CreateSavedSearchAlertContentQueryRendererProps
-  extends Omit<CreateSavedSearchAlertParams, "me" | "onClosePress"> {
+interface CreateSavedSearchAlertContentQueryRendererProps {
   navigation: StackNavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">
   artistId: string
   artistName: string
+  onClosePress: () => void
+  onComplete: (response: SavedSearchAlertMutationResult) => void
 }
 
-interface CreateSavedSearchAlertContentProps extends CreateSavedSearchAlertContentQueryRendererProps {
+interface CreateSavedSearchAlertContentProps
+  extends CreateSavedSearchAlertContentQueryRendererProps,
+    SavedSearchAlertFormPropsBase {
   relay: RelayRefetchProp
   me?: CreateSavedSearchContentContainerV2_me | null
   loading: boolean

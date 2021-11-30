@@ -7,7 +7,7 @@ import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { CreateSavedSearchContent } from "../Components/CreateSavedSearchContent"
 import { CreateSavedSearchAlertNavigationStack, CreateSavedSearchAlertParams } from "../SavedSearchAlertModel"
 
-interface ContainerProps extends Omit<CreateSavedSearchAlertParams, "me" | "onClosePress"> {
+interface ContainerProps extends Omit<CreateSavedSearchAlertParams, "me"> {
   navigation: StackNavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">
   relay: RelayRefetchProp
   me?: CreateSavedSearchContentContainerV1_me | null
