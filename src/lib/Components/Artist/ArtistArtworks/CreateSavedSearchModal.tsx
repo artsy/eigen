@@ -12,7 +12,7 @@ import {
 import React, { useMemo } from "react"
 import { useTracking } from "react-tracking"
 
-interface CreateSavedSearchModalProps {
+export interface CreateSavedSearchModalProps {
   visible: boolean
   artistId: string
   artistName: string
