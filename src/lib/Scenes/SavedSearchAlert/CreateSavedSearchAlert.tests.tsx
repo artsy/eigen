@@ -30,7 +30,7 @@ const initialData: ArtworkFiltersState = {
   previouslyAppliedFilters: filters,
   applyFilters: false,
   aggregations: [],
-  filterType: "auctionResult",
+  filterType: "artwork",
   counts: {
     total: null,
     followedArtists: null,
