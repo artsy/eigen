@@ -3,7 +3,7 @@ import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { SavedSearchButtonV2, SavedSearchButtonV2Props } from "./SavedSearchButtonV2"
 
-describe("CustomPriceInput", () => {
+describe("SavedSearchButtonV2", () => {
   const TestWrapper = (props: Partial<SavedSearchButtonV2Props>) => {
     return <SavedSearchButtonV2 onPress={jest.fn} {...props} />
   }
