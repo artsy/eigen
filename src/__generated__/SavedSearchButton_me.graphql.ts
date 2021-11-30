@@ -8,7 +8,7 @@ export type SavedSearchButton_me = {
     readonly savedSearch: {
         readonly internalID: string;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"ContentRefetchContainer_me">;
+    readonly " $fragmentRefs": FragmentRefs<"CreateSavedSearchContentContainerV1_me">;
     readonly " $refType": "SavedSearchButton_me";
 };
 export type SavedSearchButton_me$data = SavedSearchButton_me;
@@ -58,11 +58,11 @@ const node: ReaderFragment = {
     {
       "args": null,
       "kind": "FragmentSpread",
-      "name": "ContentRefetchContainer_me"
+      "name": "CreateSavedSearchContentContainerV1_me"
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'ce8ceb250107eaa44583e0f20e8a297a';
+(node as any).hash = '1730d25ffdafc2d4489ecd29bc3f4d3d';
 export default node;

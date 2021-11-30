@@ -146,7 +146,7 @@ export const SavedSearchButtonRefetchContainer = createRefetchContainer(
   {
     me: graphql`
       fragment SavedSearchButton_me on Me @argumentDefinitions(criteria: { type: "SearchCriteriaAttributes" }) {
-        ...ContentRefetchContainer_me
+        ...CreateSavedSearchContentContainerV1_me
         savedSearch(criteria: $criteria) {
           internalID
         }
