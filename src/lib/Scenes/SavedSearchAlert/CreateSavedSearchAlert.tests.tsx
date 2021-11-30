@@ -48,7 +48,7 @@ describe("CreateSavedSearchAlert", () => {
         query={graphql`
           query CreateSavedSearchAlertTestsQuery @relay_test_operation {
             me {
-              ...ContentRefetchContainer_me
+              ...CreateSavedSearchContentContainerV1_me
             }
           }
         `}

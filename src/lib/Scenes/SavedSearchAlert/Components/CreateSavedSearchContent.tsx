@@ -10,14 +10,14 @@ import { RelayRefetchProp } from "react-relay"
 import { SavedSearchAlertForm } from "../SavedSearchAlertForm"
 import { CreateSavedSearchAlertNavigationStack, CreateSavedSearchAlertParams } from "../SavedSearchAlertModel"
 
-type ContentProps = Omit<CreateSavedSearchAlertParams, "me" | "onClosePress"> & {
+type CreateSavedSearchContentProps = Omit<CreateSavedSearchAlertParams, "me" | "onClosePress"> & {
   navigation: StackNavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">
   relay: RelayRefetchProp
   userAllowsEmails: boolean
   criteria?: SearchCriteriaAttributes
 }
 
-export const Content: React.FC<ContentProps> = (props) => {
+export const CreateSavedSearchContent: React.FC<CreateSavedSearchContentProps> = (props) => {
   const {
     navigation,
     relay,

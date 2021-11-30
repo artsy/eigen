@@ -1,32 +1,32 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 27dce02377153de6ad3746194f00c637 */
+/* @relayHash d06dc54f6a74d2e2e329fb236dcaa9e3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ContentRefetchContainerQueryVariables = {};
-export type ContentRefetchContainerQueryResponse = {
+export type CreateSavedSearchContentContainerV1RefetchQueryVariables = {};
+export type CreateSavedSearchContentContainerV1RefetchQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"ContentRefetchContainer_me">;
+        readonly " $fragmentRefs": FragmentRefs<"CreateSavedSearchContentContainerV1_me">;
     } | null;
 };
-export type ContentRefetchContainerQuery = {
-    readonly response: ContentRefetchContainerQueryResponse;
-    readonly variables: ContentRefetchContainerQueryVariables;
+export type CreateSavedSearchContentContainerV1RefetchQuery = {
+    readonly response: CreateSavedSearchContentContainerV1RefetchQueryResponse;
+    readonly variables: CreateSavedSearchContentContainerV1RefetchQueryVariables;
 };
 
 
 
 /*
-query ContentRefetchContainerQuery {
+query CreateSavedSearchContentContainerV1RefetchQuery {
   me {
-    ...ContentRefetchContainer_me
+    ...CreateSavedSearchContentContainerV1_me
     id
   }
 }
 
-fragment ContentRefetchContainer_me on Me {
+fragment CreateSavedSearchContentContainerV1_me on Me {
   emailFrequency
 }
 */
@@ -36,7 +36,7 @@ const node: ConcreteRequest = {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "ContentRefetchContainerQuery",
+    "name": "CreateSavedSearchContentContainerV1RefetchQuery",
     "selections": [
       {
         "alias": null,
@@ -49,7 +49,7 @@ const node: ConcreteRequest = {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "ContentRefetchContainer_me"
+            "name": "CreateSavedSearchContentContainerV1_me"
           }
         ],
         "storageKey": null
@@ -62,7 +62,7 @@ const node: ConcreteRequest = {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "ContentRefetchContainerQuery",
+    "name": "CreateSavedSearchContentContainerV1RefetchQuery",
     "selections": [
       {
         "alias": null,
@@ -92,12 +92,12 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "id": "27dce02377153de6ad3746194f00c637",
+    "id": "d06dc54f6a74d2e2e329fb236dcaa9e3",
     "metadata": {},
-    "name": "ContentRefetchContainerQuery",
+    "name": "CreateSavedSearchContentContainerV1RefetchQuery",
     "operationKind": "query",
     "text": null
   }
 };
-(node as any).hash = 'b608bc1a6f602eab23511199f5cc98e4';
+(node as any).hash = 'e3b8e7edc2c119f43f688f12d2c5dce7';
 export default node;

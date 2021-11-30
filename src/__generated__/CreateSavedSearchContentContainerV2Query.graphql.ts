@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a33bd26513c55b702b0e9a4696aca6e5 */
+/* @relayHash b635ab06273d929c97ba4b6d2e68a80f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,32 +23,32 @@ export type SearchCriteriaAttributes = {
     priceRange?: string | null;
     width?: string | null;
 };
-export type CreateSavedSearchAlertContentRefetchQueryVariables = {
-    criteria?: SearchCriteriaAttributes | null;
+export type CreateSavedSearchContentContainerV2QueryVariables = {
+    criteria: SearchCriteriaAttributes;
 };
-export type CreateSavedSearchAlertContentRefetchQueryResponse = {
+export type CreateSavedSearchContentContainerV2QueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"CreateSavedSearchAlertContent_me">;
+        readonly " $fragmentRefs": FragmentRefs<"CreateSavedSearchContentContainerV2_me">;
     } | null;
 };
-export type CreateSavedSearchAlertContentRefetchQuery = {
-    readonly response: CreateSavedSearchAlertContentRefetchQueryResponse;
-    readonly variables: CreateSavedSearchAlertContentRefetchQueryVariables;
+export type CreateSavedSearchContentContainerV2Query = {
+    readonly response: CreateSavedSearchContentContainerV2QueryResponse;
+    readonly variables: CreateSavedSearchContentContainerV2QueryVariables;
 };
 
 
 
 /*
-query CreateSavedSearchAlertContentRefetchQuery(
-  $criteria: SearchCriteriaAttributes
+query CreateSavedSearchContentContainerV2Query(
+  $criteria: SearchCriteriaAttributes!
 ) {
   me {
-    ...CreateSavedSearchAlertContent_me_1ff8oJ
+    ...CreateSavedSearchContentContainerV2_me_1ff8oJ
     id
   }
 }
 
-fragment CreateSavedSearchAlertContent_me_1ff8oJ on Me {
+fragment CreateSavedSearchContentContainerV2_me_1ff8oJ on Me {
   emailFrequency
   savedSearch(criteria: $criteria) {
     internalID
@@ -76,7 +76,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "CreateSavedSearchAlertContentRefetchQuery",
+    "name": "CreateSavedSearchContentContainerV2Query",
     "selections": [
       {
         "alias": null,
@@ -89,7 +89,7 @@ return {
           {
             "args": (v1/*: any*/),
             "kind": "FragmentSpread",
-            "name": "CreateSavedSearchAlertContent_me"
+            "name": "CreateSavedSearchContentContainerV2_me"
           }
         ],
         "storageKey": null
@@ -102,7 +102,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "CreateSavedSearchAlertContentRefetchQuery",
+    "name": "CreateSavedSearchContentContainerV2Query",
     "selections": [
       {
         "alias": null,
@@ -150,13 +150,13 @@ return {
     ]
   },
   "params": {
-    "id": "a33bd26513c55b702b0e9a4696aca6e5",
+    "id": "b635ab06273d929c97ba4b6d2e68a80f",
     "metadata": {},
-    "name": "CreateSavedSearchAlertContentRefetchQuery",
+    "name": "CreateSavedSearchContentContainerV2Query",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '0a1319e9fe8702debe79423131da77f6';
+(node as any).hash = '83e19f35cf81a2faacf7ed1828cf614f';
 export default node;

@@ -3,8 +3,8 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Box } from "palette"
 import React from "react"
-import { ContentRefetchContainer } from "../containers/ContentRefetchContainer"
-import { CreateSavedSearchAlertContentQueryRenderer } from "../containers/CreateSavedSearchAlertContent"
+import { CreateSavedSearchContentContainerV1 } from "../containers/CreateSavedSearchContentContainerV1"
+import { CreateSavedSearchAlertContentQueryRenderer } from "../containers/CreateSavedSearchContentContainerV2"
 import { CreateSavedSearchAlertNavigationStack } from "../SavedSearchAlertModel"
 
 type Props = StackScreenProps<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">
@@ -20,7 +20,7 @@ export const CreateSavedSearchAlertScreen: React.FC<Props> = (props) => {
       {isEnabledImprovedAlertsFlow ? (
         <CreateSavedSearchAlertContentQueryRenderer navigation={navigation} {...other} />
       ) : (
-        <ContentRefetchContainer navigation={navigation} me={me} {...other} />
+        <CreateSavedSearchContentContainerV1 navigation={navigation} me={me} {...other} />
       )}
     </Box>
   )

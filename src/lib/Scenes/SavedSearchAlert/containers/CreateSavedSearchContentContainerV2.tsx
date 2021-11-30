@@ -1,7 +1,7 @@
 import { StackNavigationProp } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
-import { CreateSavedSearchAlertContent_me } from "__generated__/CreateSavedSearchAlertContent_me.graphql"
-import { CreateSavedSearchAlertContentQuery } from "__generated__/CreateSavedSearchAlertContentQuery.graphql"
+import { CreateSavedSearchContentContainerV2_me } from "__generated__/CreateSavedSearchContentContainerV2_me.graphql"
+import { CreateSavedSearchContentContainerV2Query } from "__generated__/CreateSavedSearchContentContainerV2Query.graphql"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import {
   getAllowedFiltersForSavedSearchInput,
@@ -11,7 +11,7 @@ import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSear
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React, { useMemo } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-import { Content } from "../Components/Content"
+import { CreateSavedSearchContent } from "../Components/CreateSavedSearchContent"
 import { CreateSavedSearchAlertNavigationStack, CreateSavedSearchAlertParams } from "../SavedSearchAlertModel"
 
 interface CreateSavedSearchAlertContentQueryRendererProps
@@ -23,7 +23,7 @@ interface CreateSavedSearchAlertContentQueryRendererProps
 
 interface CreateSavedSearchAlertContentProps extends CreateSavedSearchAlertContentQueryRendererProps {
   relay: RelayRefetchProp
-  me?: CreateSavedSearchAlertContent_me | null
+  me?: CreateSavedSearchContentContainerV2_me | null
   loading: boolean
   criteria: SearchCriteriaAttributes
 }
@@ -31,14 +31,14 @@ interface CreateSavedSearchAlertContentProps extends CreateSavedSearchAlertConte
 const Container: React.FC<CreateSavedSearchAlertContentProps> = (props) => {
   const { me, loading, ...other } = props
 
-  return <Content userAllowsEmails={me?.emailFrequency !== "none"} isLoading={loading} {...other} />
+  return <CreateSavedSearchContent userAllowsEmails={me?.emailFrequency !== "none"} isLoading={loading} {...other} />
 }
 
-const CreateSavedSearchAlertContentRefetchContainer = createRefetchContainer(
+const CreateSavedSearchContentContainerV2 = createRefetchContainer(
   Container,
   {
     me: graphql`
-      fragment CreateSavedSearchAlertContent_me on Me
+      fragment CreateSavedSearchContentContainerV2_me on Me
       @argumentDefinitions(criteria: { type: "SearchCriteriaAttributes" }) {
         emailFrequency
         savedSearch(criteria: $criteria) {
@@ -48,9 +48,9 @@ const CreateSavedSearchAlertContentRefetchContainer = createRefetchContainer(
     `,
   },
   graphql`
-    query CreateSavedSearchAlertContentRefetchQuery($criteria: SearchCriteriaAttributes) {
+    query CreateSavedSearchContentContainerV2RefetchQuery($criteria: SearchCriteriaAttributes) {
       me {
-        ...CreateSavedSearchAlertContent_me @arguments(criteria: $criteria)
+        ...CreateSavedSearchContentContainerV2_me @arguments(criteria: $criteria)
       }
     }
   `
@@ -66,12 +66,12 @@ export const CreateSavedSearchAlertContentQueryRenderer: React.FC<CreateSavedSea
   const criteria = useMemo(() => getSearchCriteriaFromFilters(artistId, filters), [artistId, filters])
 
   return (
-    <QueryRenderer<CreateSavedSearchAlertContentQuery>
+    <QueryRenderer<CreateSavedSearchContentContainerV2Query>
       environment={defaultEnvironment}
       query={graphql`
-        query CreateSavedSearchAlertContentQuery($criteria: SearchCriteriaAttributes!) {
+        query CreateSavedSearchContentContainerV2Query($criteria: SearchCriteriaAttributes!) {
           me {
-            ...CreateSavedSearchAlertContent_me @arguments(criteria: $criteria)
+            ...CreateSavedSearchContentContainerV2_me @arguments(criteria: $criteria)
           }
         }
       `}
@@ -85,7 +85,7 @@ export const CreateSavedSearchAlertContentQueryRenderer: React.FC<CreateSavedSea
         }
 
         return (
-          <CreateSavedSearchAlertContentRefetchContainer
+          <CreateSavedSearchContentContainerV2
             {...props}
             me={relayProps?.me ?? null}
             loading={relayProps === null && error === null}
