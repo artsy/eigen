@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react-native"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { SavedSearchAlertSwitch, SavedSearchAlertSwitchProps } from "./Components/SavedSearchAlertSwitch"
+import { SavedSearchAlertSwitch, SavedSearchAlertSwitchProps } from "./SavedSearchAlertSwitch"
 
 describe("SavedSearchAlertSwitch", () => {
   const onChangeMock = jest.fn()
