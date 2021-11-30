@@ -1,3 +1,4 @@
+import { useFocusEffect } from "@react-navigation/core"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
 import { CreateSavedSearchContentContainerV2_me } from "__generated__/CreateSavedSearchContentContainerV2_me.graphql"
@@ -9,7 +10,8 @@ import {
 } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import React, { useMemo } from "react"
+import { useFeatureFlag } from "lib/store/GlobalStore"
+import React, { useCallback, useMemo, useRef, useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { CreateSavedSearchContent } from "../Components/CreateSavedSearchContent"
 import { CreateSavedSearchAlertNavigationStack, CreateSavedSearchAlertParams } from "../SavedSearchAlertModel"
@@ -29,9 +31,46 @@ interface CreateSavedSearchAlertContentProps extends CreateSavedSearchAlertConte
 }
 
 const Container: React.FC<CreateSavedSearchAlertContentProps> = (props) => {
-  const { me, loading, ...other } = props
+  const { me, loading, relay, criteria, navigation, ...other } = props
+  const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
+  const isPreviouslyFocused = useRef(false)
+  const [refetching, setRefetching] = useState(false)
 
-  return <CreateSavedSearchContent userAllowsEmails={me?.emailFrequency !== "none"} isLoading={loading} {...other} />
+  const handleUpdateEmailPreferencesPress = () => {
+    navigation.navigate("EmailPreferences")
+  }
+
+  const refetch = () => {
+    setRefetching(true)
+    relay.refetch(
+      criteria,
+      null,
+      () => {
+        setRefetching(false)
+      },
+      { force: true }
+    )
+  }
+
+  // make refetch only when toggles are displayed
+  useFocusEffect(
+    useCallback(() => {
+      if (enableSavedSearchToggles && isPreviouslyFocused.current) {
+        refetch()
+      }
+
+      isPreviouslyFocused.current = true
+    }, [enableSavedSearchToggles])
+  )
+
+  return (
+    <CreateSavedSearchContent
+      userAllowsEmails={me?.emailFrequency !== "none"}
+      isLoading={loading || refetching}
+      onUpdateEmailPreferencesPress={handleUpdateEmailPreferencesPress}
+      {...other}
+    />
+  )
 }
 
 const CreateSavedSearchContentContainerV2 = createRefetchContainer(
