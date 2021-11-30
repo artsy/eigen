@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 463b1fbf7d68e7e303caf9e2c8db9f7f */
+/* @relayHash b7bcaeb8d504648efd11bc1a8721ff27 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -48,8 +48,12 @@ query SavedSearchButtonRefetchQuery(
   }
 }
 
-fragment SavedSearchButton_me_1ff8oJ on Me {
+fragment CreateSavedSearchAlertScreen_me on Me {
   emailFrequency
+}
+
+fragment SavedSearchButton_me_1ff8oJ on Me {
+  ...CreateSavedSearchAlertScreen_me
   savedSearch(criteria: $criteria) {
     internalID
   }
@@ -150,7 +154,7 @@ return {
     ]
   },
   "params": {
-    "id": "463b1fbf7d68e7e303caf9e2c8db9f7f",
+    "id": "b7bcaeb8d504648efd11bc1a8721ff27",
     "metadata": {},
     "name": "SavedSearchButtonRefetchQuery",
     "operationKind": "query",

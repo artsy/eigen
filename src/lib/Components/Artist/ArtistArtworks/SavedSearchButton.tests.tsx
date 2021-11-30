@@ -134,7 +134,7 @@ describe("SavedSearchButton", () => {
   it("should navigate to the saved search alerts list when popover is pressed", async () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    act(() => tree.root.findByType(CreateSavedSearchAlert).props.onComplete(mockedMutationResult))
+    act(() => tree.root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult))
     act(() => tree.root.findByType(PopoverMessage).props.onPress())
 
     expect(navigate).toHaveBeenCalledWith("/my-profile/settings", {
@@ -144,13 +144,14 @@ describe("SavedSearchButton", () => {
   })
 
   it('should call navigate twice when "My Collection" is enabled', async () => {
+    jest.useFakeTimers()
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionIOS: true })
     const tree = renderWithWrappers(<TestRenderer />)
 
-    act(() => tree.root.findByType(CreateSavedSearchAlert).props.onComplete(mockedMutationResult))
+    act(() => tree.root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult))
     act(() => tree.root.findByType(PopoverMessage).props.onPress())
 
-    await new Promise((r) => setTimeout(r, 100))
+    jest.runAllTimers()
 
     expect(navigate).toHaveBeenCalledWith("/my-profile/settings", {
       popToRootTabView: true,
@@ -162,7 +163,7 @@ describe("SavedSearchButton", () => {
   it("tracks clicks when the create alert button is pressed", async () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    act(() => tree.root.findByType(CreateSavedSearchAlert).props.onComplete(mockedMutationResult))
+    act(() => tree.root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult))
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       tracks.toggleSavedSearch(true, "artistID", "artistSlug", "savedSearchAlertId")

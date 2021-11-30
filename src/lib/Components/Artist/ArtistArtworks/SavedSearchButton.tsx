@@ -11,11 +11,12 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useEnableMyCollection } from "lib/Scenes/MyCollection/MyCollection"
 import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import {
+  CreateSavedSearchAlertParams,
   SavedSearchAlertFormPropsBase,
   SavedSearchAlertMutationResult,
 } from "lib/Scenes/SavedSearchAlert/SavedSearchAlertModel"
 import { BellIcon, Box, Button } from "palette"
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -55,7 +56,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   const popover = usePopoverMessage()
   const isSavedSearch = !!me?.savedSearch?.internalID
 
-  const refetch = () => {
+  const refetch = useCallback(() => {
     setRefetching(true)
     relay.refetch(
       { criteria },
@@ -65,7 +66,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
       },
       { force: true }
     )
-  }
+  }, [criteria])
 
   const handleOpenForm = () => setVisibleForm(true)
   const handleCloseForm = () => setVisibleForm(false)
@@ -109,7 +110,17 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
     return () => {
       savedSearchEvents.removeListener("refetch", refetch)
     }
-  }, [])
+  }, [refetch])
+
+  const params: CreateSavedSearchAlertParams = {
+    artistId,
+    artistName,
+    filters,
+    aggregations,
+    me,
+    onClosePress: handleCloseForm,
+    onComplete: handleComplete,
+  }
 
   return (
     <Box>
@@ -125,16 +136,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
       >
         Create Alert
       </Button>
-      <CreateSavedSearchAlert
-        artistId={artistId}
-        artistName={artistName}
-        visible={visibleForm}
-        onClosePress={handleCloseForm}
-        onComplete={handleComplete}
-        filters={filters}
-        aggregations={aggregations}
-        userAllowsEmails={me?.emailFrequency !== "none"}
-      />
+      <CreateSavedSearchAlert visible={visibleForm} params={params} />
     </Box>
   )
 }
@@ -144,7 +146,7 @@ export const SavedSearchButtonRefetchContainer = createRefetchContainer(
   {
     me: graphql`
       fragment SavedSearchButton_me on Me @argumentDefinitions(criteria: { type: "SearchCriteriaAttributes" }) {
-        emailFrequency
+        ...CreateSavedSearchAlertScreen_me
         savedSearch(criteria: $criteria) {
           internalID
         }
@@ -162,7 +164,7 @@ export const SavedSearchButtonRefetchContainer = createRefetchContainer(
 
 export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRendererProps> = (props) => {
   const { filters, artistId } = props
-  const criteria = getSearchCriteriaFromFilters(artistId, filters)
+  const criteria = useMemo(() => getSearchCriteriaFromFilters(artistId, filters), [artistId, filters])
 
   return (
     <QueryRenderer<SavedSearchButtonQuery>
