@@ -131,6 +131,7 @@ export const ORDERED_AUCTION_RESULTS_SORTS: FilterData[] = [
 
 export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigation }) => {
   const filterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
+  const localSortOptions = ArtworksFiltersStore.useStoreState((state) => state.sortOptions)
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
 
   const selectedOptions = useSelectedOptionsDisplay()
@@ -143,15 +144,10 @@ export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigation
     auctionResult: ORDERED_AUCTION_RESULTS_SORTS,
     geneArtwork: [DEFAULT_GENE_SORT, ...ORDERED_ARTWORK_SORTS],
     tagArtwork: [DEFAULT_TAG_SORT, ...ORDERED_ARTWORK_SORTS],
+    local: localSortOptions ?? [],
   }[filterType]
 
-  const selectOption = (option: FilterData) => {
-    selectFiltersAction({
-      displayText: option.displayText,
-      paramName: FilterParamName.sort,
-      paramValue: option.paramValue,
-    })
-  }
+  const selectOption = (option: FilterData) => selectFiltersAction(option)
 
   return (
     <SingleSelectOptionScreen

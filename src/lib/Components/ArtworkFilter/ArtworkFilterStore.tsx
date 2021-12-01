@@ -1,6 +1,7 @@
 import { Action, action, createContextStore, State } from "easy-peasy"
 import { assignDeep } from "lib/store/persistence"
 import { filter, find, isEqual, unionBy } from "lodash"
+import { FilterDisplayConfig } from "."
 import {
   Aggregations,
   defaultCommonFilterOptions,
@@ -21,21 +22,26 @@ export interface ArtworkFiltersModel {
   aggregations: Aggregations
   filterType: FilterType
   counts: FilterCounts
-  applyFiltersAction: Action<ArtworkFiltersModel>
-  selectFiltersAction: Action<ArtworkFiltersModel, FilterData>
-  resetFiltersAction: Action<ArtworkFiltersModel>
-  clearFiltersZeroStateAction: Action<ArtworkFiltersModel>
-  setAggregationsAction: Action<ArtworkFiltersModel, any>
-  setFiltersCountAction: Action<ArtworkFiltersModel, FilterCounts>
-  setFilterTypeAction: Action<ArtworkFiltersModel, FilterType>
-  setInitialFilterStateAction: Action<ArtworkFiltersModel, FilterArray>
-  setSelectedFiltersAction: Action<ArtworkFiltersModel, FilterArray>
+  sortOptions?: FilterData[]
+  filterOptions?: FilterDisplayConfig[]
+
+  applyFiltersAction: Action<this>
+  selectFiltersAction: Action<this, FilterData>
+  resetFiltersAction: Action<this>
+  clearFiltersZeroStateAction: Action<this>
+  setAggregationsAction: Action<this, any>
+  setFiltersCountAction: Action<this, FilterCounts>
+  setFilterTypeAction: Action<this, FilterType>
+  setInitialFilterStateAction: Action<this, FilterArray>
+  setSelectedFiltersAction: Action<this, FilterArray>
+  setSortOptions: Action<this, this["sortOptions"]>
+  setFilterOptions: Action<this, this["filterOptions"]>
 }
 
 export type ArtworkFiltersState = State<ArtworkFiltersModel>
 export type ArtworkFiltersAction = Action<ArtworkFiltersModel>
 
-export const ArtworkFiltersModel: ArtworkFiltersModel = {
+export const getArtworkFiltersModel = (): ArtworkFiltersModel => ({
   /**
    * Store state
    */

@@ -4,6 +4,7 @@ import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import React from "react"
+import { ArtworksFiltersStore } from "../ArtworkFilterStore"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
@@ -11,13 +12,21 @@ interface AdditionalGeneIDsOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "AdditionalGeneIDsOptionsScreen"> {}
 
 export const AdditionalGeneIDsOptionsScreen: React.FC<AdditionalGeneIDsOptionsScreenProps> = ({ navigation }) => {
+  const filterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
+  const customFilterOptions = ArtworksFiltersStore.useStoreState((state) => state.filterOptions)
+
   // Uses the medium aggregations
   const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.medium })
 
-  // Convert aggregations to filter options
-  const options: FilterData[] = (aggregation?.counts ?? []).map(({ name: displayText, value: paramValue }) => {
-    return { paramName: FilterParamName.additionalGeneIDs, displayText: toTitleCase(displayText), paramValue }
-  })
+  let options: FilterData[] = []
+  if (filterType === "custom") {
+    options = customFilterOptions!.find((o) => o.filterType === "additionalGeneIDs")!.values!
+  } else {
+    // Convert aggregations to filter options
+    options = (aggregation?.counts ?? []).map(({ name: displayText, value: paramValue }) => {
+      return { paramName: FilterParamName.additionalGeneIDs, displayText: toTitleCase(displayText), paramValue }
+    })
+  }
 
   const { isSelected, handleClear, handleSelect, isActive } = useMultiSelect({
     options,

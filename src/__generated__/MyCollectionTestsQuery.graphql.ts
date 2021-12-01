@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash caf096133211001be284a5f918e0d107 */
+/* @relayHash 482e2a066bba7f4319390675cced5542 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -39,6 +39,9 @@ fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectio
       image {
         aspectRatio
       }
+      artistNames
+      medium
+      date
       ...MyCollectionArtworkListItem_artwork
     }
   }
@@ -73,6 +76,7 @@ fragment MyCollection_me on Me {
     edges {
       node {
         id
+        medium
         __typename
       }
       cursor
@@ -231,6 +235,13 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "medium",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "__typename",
                         "storageKey": null
                       },
@@ -257,6 +268,20 @@ return {
                             "storageKey": null
                           }
                         ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "artistNames",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "date",
                         "storageKey": null
                       },
                       (v2/*: any*/),
@@ -302,28 +327,7 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "artistNames",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "medium",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
                         "name": "title",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "date",
                         "storageKey": null
                       }
                     ],
@@ -389,7 +393,7 @@ return {
     ]
   },
   "params": {
-    "id": "caf096133211001be284a5f918e0d107",
+    "id": "482e2a066bba7f4319390675cced5542",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {

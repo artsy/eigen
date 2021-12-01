@@ -1,8 +1,14 @@
 import { addCollectedArtwork, OwnerType } from "@artsy/cohesion"
 import AsyncStorage from "@react-native-community/async-storage"
 import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
+import { MyCollectionArtworkListItem_artwork } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { EventEmitter } from "events"
+import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
+import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { useSelectedFiltersCount } from "lib/Components/ArtworkFilter/useArtworkFilters"
+import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/ArtworksFilterHeader"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PAGE_SIZE } from "lib/Components/constants"
 import { ZeroState } from "lib/Components/States/ZeroState"
@@ -15,12 +21,14 @@ import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
+import _, { filter, forEach, orderBy, uniq, uniqBy } from "lodash"
 import { Banner, Button, Flex, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
 import { Platform, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkFormModal } from "./Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
+import { DateTime } from "luxon"
 
 const RefreshEvents = new EventEmitter()
 const REFRESH_KEY = "refresh"
@@ -55,9 +63,92 @@ const MyCollection: React.FC<{
 }> = ({ relay, me }) => {
   const { trackEvent } = useTracking()
   const [showModal, setShowModal] = useState(false)
+  const [filterModalVisible, setFilterModalVisible] = useState(false)
+  const filtersCount = useSelectedFiltersCount()
+
+  const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
   const artworks = extractNodes(me?.myCollectionConnection)
   const [isRefreshing, setIsRefreshing] = useState(false)
+
+  const setFilterType = ArtworksFiltersStore.useStoreActions((s) => s.setFilterTypeAction)
+  const setSortOptions = ArtworksFiltersStore.useStoreActions((s) => s.setSortOptions)
+  const setFilterOptions = ArtworksFiltersStore.useStoreActions((s) => s.setFilterOptions)
+  const filterOptions = ArtworksFiltersStore.useStoreState((s) => s.filterOptions)
+
+  useEffect(() => {
+    setFilterType("local")
+    setSortOptions([
+      {
+        paramName: FilterParamName.sort,
+        displayText: "Alphabetical Artist Name (A-Z)",
+        paramValue: "local-alpha-a-z",
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks) => orderBy(artworks, (a) => a.artistNames, "asc"),
+      },
+      {
+        paramName: FilterParamName.sort,
+        displayText: "Alphabetical Artist Name (Z-A)",
+        paramValue: "local-alpha-z-a",
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks) => orderBy(artworks, (a) => a.artistNames, "desc"),
+      },
+      {
+        paramName: FilterParamName.sort,
+        displayText: "Artwork Year (Old-New)",
+        paramValue: "local-year-old-new",
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks) =>
+          orderBy(
+            artworks,
+            (a) => {
+              const date = DateTime.fromISO(a.date)
+              return date.isValid ? date.toMillis() : Number.POSITIVE_INFINITY
+            },
+            "asc"
+          ),
+      },
+      {
+        paramName: FilterParamName.sort,
+        displayText: "Artwork Year (New-Old)",
+        paramValue: "local-year-new-old",
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks) =>
+          orderBy(
+            artworks,
+            (a) => {
+              const date = DateTime.fromISO(a.date)
+              return date.isValid ? date.toMillis() : 0
+            },
+            "desc"
+          ),
+      },
+    ])
+    setFilterOptions([
+      {
+        displayText: FilterDisplayName.sort,
+        filterType: "sort",
+        ScreenComponent: "SortOptionsScreen",
+      },
+      {
+        displayText: FilterDisplayName.additionalGeneIDs,
+        filterType: "additionalGeneIDs",
+        ScreenComponent: "AdditionalGeneIDsOptionsScreen",
+        values: uniq(
+          artworks.map(
+            (a): FilterData => ({
+              displayText: a.medium ?? "N/A",
+              paramName: FilterParamName.additionalGeneIDs,
+              paramValue: a.medium ?? undefined,
+            })
+          )
+        ),
+        localSortAndFilter: (artworks, mediums: string[]) => {
+          return filter(artworks, (a) => mediums.includes(a.medium))
+        },
+      },
+    ])
+  }, [])
 
   useEffect(() => {
     RefreshEvents.addListener(REFRESH_KEY, refetch)
@@ -88,7 +179,7 @@ const MyCollection: React.FC<{
         const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && allowOrderImports && !hasSeenBanner
         setJSX(
           <Flex>
-            <Flex flexDirection="row" alignSelf="flex-end" px={2} py={1}>
+            <ArtworksFilterHeader selectedFiltersCount={filtersCount} onFilterPress={() => setFilterModalVisible(true)}>
               <Button
                 testID="add-artwork-button-non-zero-state"
                 size="small"
@@ -101,7 +192,7 @@ const MyCollection: React.FC<{
               >
                 Add Works
               </Button>
-            </Flex>
+            </ArtworksFilterHeader>
             {!!showNewWorksBanner && (
               <Banner
                 title="You have some artworks."
@@ -118,7 +209,7 @@ const MyCollection: React.FC<{
       // remove already set JSX
       setJSX(null)
     }
-  }, [artworks.length])
+  }, [artworks.length, filtersCount])
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -134,6 +225,12 @@ const MyCollection: React.FC<{
           setShowModal(false)
           refreshMyCollection()
         }}
+      />
+      <ArtworkFilterNavigator
+        visible={filterModalVisible}
+        mode={FilterModalMode.Custom}
+        closeModal={() => setFilterModalVisible(false)}
+        exitModal={() => setFilterModalVisible(false)}
       />
       <StickyTabPageScrollView
         contentContainerStyle={{ paddingBottom: space(2) }}
@@ -161,6 +258,27 @@ const MyCollection: React.FC<{
             myCollectionConnection={me.myCollectionConnection!}
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
+            // tslint:disable-next-line: no-shadowed-variable
+            localSortAndFilterArtworks={(artworks: MyCollectionArtworkListItem_artwork[]) => {
+              let processedArtworks = artworks
+
+              const sorting = appliedFiltersState.filter((x) => x.paramName === FilterParamName.sort)
+              if (sorting.length > 0) {
+                const sortStep = sorting[0].localSortAndFilter!
+                processedArtworks = sortStep(artworks)
+              }
+
+              const filtering = uniqBy(
+                appliedFiltersState.filter((x) => x.paramName !== FilterParamName.sort),
+                (f) => f.paramName
+              )
+              filtering.forEach((filter) => {
+                const filterStep = filterOptions!.find((f) => f.filterType === filter.paramName)!.localSortAndFilter!
+
+                processedArtworks = filterStep(artworks, filter.paramValue)
+              })
+              return processedArtworks
+            }}
           />
         )}
       </StickyTabPageScrollView>
@@ -191,6 +309,7 @@ export const MyCollectionContainer = createPaginationContainer(
           edges {
             node {
               id
+              medium
             }
           }
           ...InfiniteScrollArtworksGrid_myCollectionConnection @arguments(skipArtworkGridItem: true)

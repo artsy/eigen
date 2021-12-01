@@ -13,6 +13,7 @@ export type MyCollection_me = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
+                readonly medium: string | null;
             } | null;
         } | null> | null;
         readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_myCollectionConnection">;
@@ -116,6 +117,13 @@ return {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
+                  "name": "medium",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
                 }
@@ -176,5 +184,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '89e97213740334ce633e990039517fd5';
+(node as any).hash = 'f87cd7d53ee64d34214ebfe9823f6a97';
 export default node;

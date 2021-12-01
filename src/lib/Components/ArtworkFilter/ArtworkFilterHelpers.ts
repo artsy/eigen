@@ -79,6 +79,7 @@ export const getSortDefaultValueByFilterType = (filterType: FilterType) => {
     auctionResult: "DATE_DESC",
     geneArtwork: "-partner_updated_at",
     tagArtwork: "-partner_updated_at",
+    custom: "",
   }[filterType]
 }
 
@@ -182,10 +183,18 @@ export interface FilterData {
   paramValue?: string | number | boolean | string[]
   filterKey?: string // gallery and institution share a paramName so need to distinguish
   count?: number | null // aggregations count
+  localSortAndFilter?: (items: any[], value?: any | null) => any[]
 }
 export type FilterArray = ReadonlyArray<FilterData>
 
-export type FilterType = "artwork" | "saleArtwork" | "showArtwork" | "auctionResult" | "geneArtwork" | "tagArtwork"
+export type FilterType =
+  | "artwork"
+  | "saleArtwork"
+  | "showArtwork"
+  | "auctionResult"
+  | "geneArtwork"
+  | "tagArtwork"
+  | "local"
 
 export interface FilterCounts {
   total: number | null
@@ -270,6 +279,7 @@ const getDefaultParamsByType = (filterType: FilterType) => {
     auctionResult: DEFAULT_AUCTION_RESULT_PARAMS,
     geneArtwork: DEFAULT_GENE_ARTWORK_PARAMS,
     tagArtwork: DEFAULT_TAG_ARTWORK_PARAMS,
+    local: DEFAULT_ARTWORKS_PARAMS,
   }[filterType]
 }
 

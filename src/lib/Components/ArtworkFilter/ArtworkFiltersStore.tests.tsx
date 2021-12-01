@@ -1,12 +1,12 @@
 import { createStore } from "easy-peasy"
 import { FilterArray, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { selectedOptionsUnion } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { getArtworkFiltersModel, selectedOptionsUnion } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkFiltersModel, ArtworkFiltersState } from "./ArtworkFilterStore"
 
 let filterState: ArtworkFiltersState
 
 const getFilterArtworksStore = (state: ArtworkFiltersState) =>
-  createStore<ArtworkFiltersModel>({ ...ArtworkFiltersModel, ...state })
+  createStore<ArtworkFiltersModel>({ ...getArtworkFiltersModel(), ...state })
 
 describe("Reset Filters", () => {
   it("returns empty arrays/default state values ", () => {
