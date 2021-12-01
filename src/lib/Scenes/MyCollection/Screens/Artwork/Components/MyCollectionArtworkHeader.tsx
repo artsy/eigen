@@ -4,7 +4,6 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { getMeasurements, Size } from "lib/Scenes/Artwork/Components/ImageCarousel/geometry"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
-import { Image } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { ArtworkIcon, Flex, Spacer, Text, useColor } from "palette"
 import React from "react"
@@ -12,6 +11,7 @@ import { TouchableOpacity } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import useInterval from "react-use/lib/useInterval"
+import { hasImagesStillProcessing, imageIsProcessing, isImage } from "../../ArtworkFormModal/MyCollectionImageUtil"
 
 interface MyCollectionArtworkHeaderProps {
   artwork: MyCollectionArtworkHeader_artwork
@@ -43,31 +43,6 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
       )
     }
   }, 1000)
-
-  const isImage = (toCheck: any): toCheck is Image => !!toCheck
-
-  const imageIsProcessing = (image: Image | null, soughtVersion: string) => {
-    if (!image) {
-      return false
-    }
-
-    const isProcessing = !image.imageVersions?.includes(soughtVersion)
-    return isProcessing
-  }
-
-  const hasImagesStillProcessing = (mainImage: any, imagesToCheck: MyCollectionArtworkHeader_artwork["images"]) => {
-    if (!isImage(mainImage) || imageIsProcessing(mainImage, "normalized")) {
-      return true
-    }
-
-    if (!imagesToCheck) {
-      return false
-    }
-
-    const concreteImages = imagesToCheck as Image[]
-    const stillProcessing = concreteImages.some((image) => imageIsProcessing(image, "normalized"))
-    return stillProcessing
-  }
 
   const renderMainImageView = () => {
     if (!isImage(defaultImage) || imageIsProcessing(defaultImage, "normalized")) {

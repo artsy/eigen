@@ -13,7 +13,7 @@ import { Image as RNImage, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { myCollectionLocalPhotoKey } from "../ArtworkFormModal/MyCollectionPhotoUtil"
+import { myCollectionLocalPhotoKey } from "../ArtworkFormModal/MyCollectionImageUtil"
 
 interface MyCollectionArtworkListItemProps {
   artwork: MyCollectionArtworkListItem_artwork

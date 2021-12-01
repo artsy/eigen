@@ -27,7 +27,7 @@ import {
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import * as artworkMutations from "../../mutations/myCollectionAddArtwork"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
-import * as photoUtil from "./MyCollectionPhotoUtil"
+import * as photoUtil from "./MyCollectionImageUtil"
 
 const getConvectionGeminiKeyMock = getConvectionGeminiKey as jest.Mock<any>
 const getGeminiCredentialsForEnvironmentMock = getGeminiCredentialsForEnvironment as jest.Mock<any>
