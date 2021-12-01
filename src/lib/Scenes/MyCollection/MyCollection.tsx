@@ -65,6 +65,7 @@ const MyCollection: React.FC<{
   const [showModal, setShowModal] = useState(false)
   const [filterModalVisible, setFilterModalVisible] = useState(false)
   const filtersCount = useSelectedFiltersCount()
+  const enabledSortAndFilter = useFeatureFlag("ARMyCollectionLocalSortAndFilter")
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
@@ -179,20 +180,40 @@ const MyCollection: React.FC<{
         const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && allowOrderImports && !hasSeenBanner
         setJSX(
           <Flex>
-            <ArtworksFilterHeader selectedFiltersCount={filtersCount} onFilterPress={() => setFilterModalVisible(true)}>
-              <Button
-                testID="add-artwork-button-non-zero-state"
-                size="small"
-                variant="fillDark"
-                onPress={() => {
-                  setShowModal(true)
-                  trackEvent(tracks.addCollectedArtwork())
-                }}
-                haptic
+            {enabledSortAndFilter ? (
+              <ArtworksFilterHeader
+                selectedFiltersCount={filtersCount}
+                onFilterPress={() => setFilterModalVisible(true)}
               >
-                Add Works
-              </Button>
-            </ArtworksFilterHeader>
+                <Button
+                  data-test-id="add-artwork-button-non-zero-state"
+                  size="small"
+                  variant="fillDark"
+                  onPress={() => {
+                    setShowModal(true)
+                    trackEvent(tracks.addCollectedArtwork())
+                  }}
+                  haptic
+                >
+                  Add Works
+                </Button>
+              </ArtworksFilterHeader>
+            ) : (
+              <Flex flexDirection="row" alignSelf="flex-end" px={2} py={1}>
+                <Button
+                  testID="add-artwork-button-non-zero-state"
+                  size="small"
+                  variant="fillDark"
+                  onPress={() => {
+                    setShowModal(true)
+                    trackEvent(tracks.addCollectedArtwork())
+                  }}
+                  haptic
+                >
+                  Add Works
+                </Button>
+              </Flex>
+            )}
             {!!showNewWorksBanner && (
               <Banner
                 title="You have some artworks."
@@ -209,7 +230,7 @@ const MyCollection: React.FC<{
       // remove already set JSX
       setJSX(null)
     }
-  }, [artworks.length, filtersCount])
+  }, [artworks.length, filtersCount, enabledSortAndFilter])
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -226,12 +247,14 @@ const MyCollection: React.FC<{
           refreshMyCollection()
         }}
       />
+
       <ArtworkFilterNavigator
         visible={filterModalVisible}
         mode={FilterModalMode.Custom}
         closeModal={() => setFilterModalVisible(false)}
         exitModal={() => setFilterModalVisible(false)}
       />
+
       <StickyTabPageScrollView
         contentContainerStyle={{ paddingBottom: space(2) }}
         refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={refetch} />}

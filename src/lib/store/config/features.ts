@@ -207,6 +207,12 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableAuctionResultComparableWorks",
   },
+  ARMyCollectionLocalSortAndFilter: {
+    readyForRelease: false,
+    description: "My Collection Sort & Filter",
+    showInAdminMenu: true,
+    echoFlagKey: "ARMyCollectionLocalSortAndFilter",
+  },
 })
 
 export interface DevToggleDescriptor {
