@@ -8,49 +8,20 @@ import {
   getUnitedSelectedAndAppliedFilters,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { TouchableRow } from "lib/Components/TouchableRow"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
-import { ArrowRightIcon, bullet, FilterIcon, Flex, Sans, Separator, Text } from "palette"
+import { FilterIcon, Flex, Sans, Separator } from "palette"
 import React, { useMemo } from "react"
 import { FlatList } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
 import { ArtworkFilterNavigationStack } from "./ArtworkFilter"
+import { ArtworkFilterOptionItem } from "./components/ArtworkFilterOptionItem"
 import { ArtworkFilterOptionsHeader } from "./components/ArtworkFilterOptionsHeader"
-
-export type FilterScreen =
-  | "additionalGeneIDs"
-  | "artistIDs"
-  | "artistNationalities"
-  | "artistsIFollow"
-  | "attributionClass"
-  | "categories"
-  | "color"
-  | "colors"
-  | "dimensionRange"
-  | "estimateRange"
-  | "locationCities"
-  | "majorPeriods"
-  | "materialsTerms"
-  | "medium"
-  | "partnerIDs"
-  | "priceRange"
-  | "organizations"
-  | "sizes"
-  | "sort"
-  | "viewAs"
-  | "waysToBuy"
-  | "year"
-
-export interface FilterDisplayConfig {
-  filterType: FilterScreen
-  displayText: string
-  ScreenComponent: keyof ArtworkFilterNavigationStack
-}
+import { FilterDisplayConfig, FilterScreen } from "./types"
 
 export enum FilterModalMode {
   ArtistArtworks = "ArtistArtworks",
@@ -177,24 +148,11 @@ export const ArtworkFilterOptionsScreen: React.FC<
           const selectedFiltersCount = selectedFiltersCounts[item.filterType as FilterParamName]
 
           return (
-            <TouchableRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
-              <OptionListItem p={2} pr={1.5}>
-                <Flex minWidth="45%">
-                  <Text variant="xs">
-                    {item.displayText}
-                    {!!selectedFiltersCount && (
-                      <Text variant="xs" color="blue100" ml={4}>
-                        {` ${bullet} ${selectedFiltersCount}`}
-                      </Text>
-                    )}
-                  </Text>
-                </Flex>
-
-                <Flex flex={1} flexDirection="row" alignItems="center" justifyContent="flex-end">
-                  <ArrowRightIcon fill="black30" ml={1} />
-                </Flex>
-              </OptionListItem>
-            </TouchableRow>
+            <ArtworkFilterOptionItem
+              item={item}
+              count={selectedFiltersCount}
+              onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}
+            />
           )
         }}
       />
@@ -373,11 +331,6 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
     </AnimatedBottomButton>
   )
 }
-
-export const OptionListItem = styled(Flex)`
-  flex-direction: row;
-  justify-content: space-between;
-`
 
 export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
   additionalGeneIDs: {
