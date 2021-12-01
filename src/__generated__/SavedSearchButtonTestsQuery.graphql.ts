@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 33418cc4ff4324fe9b73521bb2b40f29 */
+/* @relayHash bbb84de5652d6027075d8bd9d0a504db */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -48,12 +48,12 @@ query SavedSearchButtonTestsQuery(
   }
 }
 
-fragment CreateSavedSearchAlertScreen_me on Me {
+fragment CreateSavedSearchContentContainerV1_me on Me {
   emailFrequency
 }
 
 fragment SavedSearchButton_me_1ff8oJ on Me {
-  ...CreateSavedSearchAlertScreen_me
+  ...CreateSavedSearchContentContainerV1_me
   savedSearch(criteria: $criteria) {
     internalID
   }
@@ -160,7 +160,7 @@ return {
     ]
   },
   "params": {
-    "id": "33418cc4ff4324fe9b73521bb2b40f29",
+    "id": "bbb84de5652d6027075d8bd9d0a504db",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {

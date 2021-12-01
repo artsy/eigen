@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 429b06dfa859af8ff473ada5ecec3794 */
+/* @relayHash 1ab7d09a51c2c1dc85e672dab4783d1f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,37 +23,33 @@ export type SearchCriteriaAttributes = {
     priceRange?: string | null;
     width?: string | null;
 };
-export type SavedSearchButtonQueryVariables = {
-    criteria: SearchCriteriaAttributes;
+export type CreateSavedSearchContentContainerV2RefetchQueryVariables = {
+    criteria?: SearchCriteriaAttributes | null;
 };
-export type SavedSearchButtonQueryResponse = {
+export type CreateSavedSearchContentContainerV2RefetchQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"SavedSearchButton_me">;
+        readonly " $fragmentRefs": FragmentRefs<"CreateSavedSearchContentContainerV2_me">;
     } | null;
 };
-export type SavedSearchButtonQuery = {
-    readonly response: SavedSearchButtonQueryResponse;
-    readonly variables: SavedSearchButtonQueryVariables;
+export type CreateSavedSearchContentContainerV2RefetchQuery = {
+    readonly response: CreateSavedSearchContentContainerV2RefetchQueryResponse;
+    readonly variables: CreateSavedSearchContentContainerV2RefetchQueryVariables;
 };
 
 
 
 /*
-query SavedSearchButtonQuery(
-  $criteria: SearchCriteriaAttributes!
+query CreateSavedSearchContentContainerV2RefetchQuery(
+  $criteria: SearchCriteriaAttributes
 ) {
   me {
-    ...SavedSearchButton_me_1ff8oJ
+    ...CreateSavedSearchContentContainerV2_me_1ff8oJ
     id
   }
 }
 
-fragment CreateSavedSearchContentContainerV1_me on Me {
+fragment CreateSavedSearchContentContainerV2_me_1ff8oJ on Me {
   emailFrequency
-}
-
-fragment SavedSearchButton_me_1ff8oJ on Me {
-  ...CreateSavedSearchContentContainerV1_me
   savedSearch(criteria: $criteria) {
     internalID
   }
@@ -80,7 +76,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "SavedSearchButtonQuery",
+    "name": "CreateSavedSearchContentContainerV2RefetchQuery",
     "selections": [
       {
         "alias": null,
@@ -93,7 +89,7 @@ return {
           {
             "args": (v1/*: any*/),
             "kind": "FragmentSpread",
-            "name": "SavedSearchButton_me"
+            "name": "CreateSavedSearchContentContainerV2_me"
           }
         ],
         "storageKey": null
@@ -106,7 +102,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "SavedSearchButtonQuery",
+    "name": "CreateSavedSearchContentContainerV2RefetchQuery",
     "selections": [
       {
         "alias": null,
@@ -154,13 +150,13 @@ return {
     ]
   },
   "params": {
-    "id": "429b06dfa859af8ff473ada5ecec3794",
+    "id": "1ab7d09a51c2c1dc85e672dab4783d1f",
     "metadata": {},
-    "name": "SavedSearchButtonQuery",
+    "name": "CreateSavedSearchContentContainerV2RefetchQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '449e4412d84929d7c547ad86d3657c1b';
+(node as any).hash = 'f0c000e35ef49f83f05a8e83f042b9fa';
 export default node;
