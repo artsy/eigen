@@ -5,9 +5,11 @@ import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import * as LocalImageStore from "lib/utils/LocalImageStore"
 import React from "react"
 import { Image as RNImage } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
+import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionArtworkListItemFragmentContainer, tests } from "./MyCollectionArtworkListItem"
 
@@ -94,33 +96,29 @@ describe("MyCollectionArtworkListItem", () => {
     )
   })
 
-  it("uses last uploaded image as a fallback when no url is present", () => {
-    const wrapper = renderWithWrappers(<TestRenderer />)
-    __globalStoreTestUtils__?.injectState({
-      myCollection: {
-        artwork: {
-          sessionState: {
-            lastUploadedPhoto: {
-              path: "some-local-path",
-              width: 90,
-              height: 90,
-            },
-          },
-        },
-      },
+  it("uses last uploaded image as a fallback when no url is present", async () => {
+    const localImageStoreMock = jest.spyOn(LocalImageStore, "retrieveLocalImage")
+    const retrievalPromise = new Promise<string>((resolve) => {
+      resolve("some-local-path")
     })
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Artwork: () => ({
-          images: [
-            {
-              url: null,
-            },
-          ],
-        }),
-      })
-    )
-    const image = wrapper.root.findByType(RNImage)
-    expect(image.props.source).toEqual({ uri: "some-local-path" })
+    localImageStoreMock.mockImplementation(() => retrievalPromise)
+
+    act(async () => {
+      const wrapper = renderWithWrappers(<TestRenderer />)
+      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, {
+          Artwork: () => ({
+            images: [
+              {
+                url: null,
+              },
+            ],
+          }),
+        })
+      )
+      await retrievalPromise
+      const image = wrapper.root.findByType(RNImage)
+      expect(image.props.source).toEqual({ uri: "some-local-path" })
+    })
   })
 })

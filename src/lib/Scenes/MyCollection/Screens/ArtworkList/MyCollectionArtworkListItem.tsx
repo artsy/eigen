@@ -13,7 +13,7 @@ import { Image as RNImage, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { myCollectionLocalPhotoKey } from "../ArtworkFormModal/MyCollectionArtworkFormModal"
+import { myCollectionLocalPhotoKey } from "../ArtworkFormModal/MyCollectionPhotoUtil"
 
 interface MyCollectionArtworkListItemProps {
   artwork: MyCollectionArtworkListItem_artwork
@@ -31,9 +31,7 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
 
   useEffect(() => {
     const localImageKey = myCollectionLocalPhotoKey(slug, 0)
-    console.log(`ImageRender: attempting to retrieve local image path ${localImageKey}`)
     retrieveLocalImage(localImageKey).then((imagePath) => {
-      console.log(`ImageRender: Retrieved local image path ${imagePath}`)
       if (imagePath) {
         setLocalImagePath(imagePath)
       }
@@ -56,7 +54,6 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
         />
       )
     } else if (localImagePath) {
-      console.log(`ImageRender: Got local image path ${localImagePath}`)
       return (
         <RNImage
           testID="Image"
