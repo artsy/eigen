@@ -19,7 +19,7 @@ export const AdditionalGeneIDsOptionsScreen: React.FC<AdditionalGeneIDsOptionsSc
   const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.medium })
 
   let options: FilterData[] = []
-  if (filterType === "custom") {
+  if (filterType === "local") {
     options = customFilterOptions!.find((o) => o.filterType === "additionalGeneIDs")!.values!
   } else {
     // Convert aggregations to filter options

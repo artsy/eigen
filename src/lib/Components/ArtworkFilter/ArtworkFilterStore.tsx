@@ -148,7 +148,15 @@ export const getArtworkFiltersModel = (): ArtworkFiltersModel => ({
     state.selectedFilters = payload
     state.applyFilters = false
   }),
-}
+
+  setSortOptions: action((state, payload) => {
+    state.sortOptions = payload
+  }),
+
+  setFilterOptions: action((state, payload) => {
+    state.filterOptions = payload
+  }),
+})
 
 // Return the list of selected options (union of selected and applied)
 export const useSelectedOptionsDisplay = (): FilterArray => {
@@ -225,6 +233,11 @@ export const selectedOptionsUnion = ({
       paramValue: "-partner_updated_at",
       displayText: "Default",
     },
+    local: {
+      paramName: FilterParamName.sort,
+      paramValue: "",
+      displayText: "Default",
+    },
   }[filterType]
 
   const defaultFilters: FilterArray = [defaultSortFilter, ...DEFAULT_FILTERS]
@@ -236,12 +249,12 @@ export const selectedOptionsUnion = ({
 
 export function createArtworkFiltersStore() {
   if (__TEST__) {
-    ;(ArtworkFiltersModel as any).__injectState = action((state, injectedState) => {
+    ;(getArtworkFiltersModel() as any).__injectState = action((state, injectedState) => {
       assignDeep(state, injectedState)
     })
   }
   const store = createContextStore<ArtworkFiltersModel>((initialData: ArtworkFiltersState) => ({
-    ...ArtworkFiltersModel,
+    ...getArtworkFiltersModel(),
     ...initialData,
   }))
   return store

@@ -79,7 +79,7 @@ export const getSortDefaultValueByFilterType = (filterType: FilterType) => {
     auctionResult: "DATE_DESC",
     geneArtwork: "-partner_updated_at",
     tagArtwork: "-partner_updated_at",
-    custom: "",
+    local: "",
   }[filterType]
 }
 

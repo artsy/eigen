@@ -21,7 +21,7 @@ import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
-import _, { filter, forEach, orderBy, uniq, uniqBy } from "lodash"
+import _, { filter, orderBy, uniq, uniqBy } from "lodash"
 import { Banner, Button, Flex, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
 import { Platform, RefreshControl } from "react-native"
@@ -262,21 +262,21 @@ const MyCollection: React.FC<{
             localSortAndFilterArtworks={(artworks: MyCollectionArtworkListItem_artwork[]) => {
               let processedArtworks = artworks
 
-              const sorting = appliedFiltersState.filter((x) => x.paramName === FilterParamName.sort)
-              if (sorting.length > 0) {
-                const sortStep = sorting[0].localSortAndFilter!
-                processedArtworks = sortStep(artworks)
-              }
-
               const filtering = uniqBy(
                 appliedFiltersState.filter((x) => x.paramName !== FilterParamName.sort),
                 (f) => f.paramName
               )
               filtering.forEach((filter) => {
                 const filterStep = filterOptions!.find((f) => f.filterType === filter.paramName)!.localSortAndFilter!
-
-                processedArtworks = filterStep(artworks, filter.paramValue)
+                processedArtworks = filterStep(processedArtworks, filter.paramValue)
               })
+
+              const sorting = appliedFiltersState.filter((x) => x.paramName === FilterParamName.sort)
+              if (sorting.length > 0) {
+                const sortStep = sorting[0].localSortAndFilter!
+                processedArtworks = sortStep(processedArtworks)
+              }
+
               return processedArtworks
             }}
           />
