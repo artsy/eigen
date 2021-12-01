@@ -25,6 +25,7 @@ interface Props {
   title: string
   subtitle?: string
   fairsModule: FairsRail_fairsModule
+  mb?: number
 }
 
 type FairItem = FairsRail_fairsModule["results"][0]
@@ -48,7 +49,7 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
   }
 
   return (
-    <View>
+    <Flex mb={props.mb}>
       {props.fairsModule.results.length ? <FairHeader /> : null}
       <CardRailFlatList<FairItem>
         listRef={listRef}
@@ -116,7 +117,7 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
           )
         }}
       />
-    </View>
+    </Flex>
   )
 }
 

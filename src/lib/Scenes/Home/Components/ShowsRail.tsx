@@ -4,7 +4,7 @@ import { SectionTitle } from "lib/Components/SectionTitle"
 import { ShowCardContainer } from "lib/Components/ShowCard"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Spacer } from "palette"
-import React, { useEffect } from "react"
+import React from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -13,27 +13,22 @@ import { graphql } from "relay-hooks"
 interface ShowsRailProps {
   title: string
   showsConnection: ShowsRail_showsConnection
-  onHide?: () => void
-  onShow?: () => void
+  mb?: number
 }
 
-export const ShowsRail: React.FC<ShowsRailProps> = ({ title, showsConnection, onHide, onShow }) => {
+export const ShowsRail: React.FC<ShowsRailProps> = ({ title, showsConnection, mb }) => {
   const tracking = useTracking()
 
   const shows = extractNodes(showsConnection)
 
   const hasShows = shows?.length
 
-  useEffect(() => {
-    hasShows ? onShow?.() : onHide?.()
-  }, [hasShows])
-
   if (!hasShows) {
     return null
   }
 
   return (
-    <>
+    <Flex mb={mb}>
       <Flex mx={2}>
         <SectionTitle title={title} />
       </Flex>
@@ -57,7 +52,7 @@ export const ShowsRail: React.FC<ShowsRailProps> = ({ title, showsConnection, on
           )}
         />
       </Flex>
-    </>
+    </Flex>
   )
 }
 
