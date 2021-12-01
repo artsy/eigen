@@ -7,6 +7,7 @@ import {
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { LOCALIZED_UNIT, parseRange } from "lib/Components/ArtworkFilter/Filters/helpers"
 import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
+import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import { compact, flatten, keyBy } from "lodash"
 import { bullet } from "palette"
 
@@ -74,5 +75,7 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations) =
 
 export const getNamePlaceholder = (artistName: string, pills: string[]) => {
   const filtersCountLabel = pills.length > 1 ? "filters" : "filter"
-  return `${artistName} ${bullet} ${pills.length} ${filtersCountLabel}`
+  const isEnabledImprovedAlertsFlow = unsafe_getFeatureFlag("AREnableImprovedAlertsFlow")
+  const filtersCount = isEnabledImprovedAlertsFlow ? pills.length - 1 : pills.length
+  return `${artistName} ${bullet} ${filtersCount} ${filtersCountLabel}`
 }
