@@ -24,7 +24,7 @@ export interface PillProps extends FlexProps {
   selected?: boolean
   imageUrl?: string
   highlightEnabled?: boolean
-  onRemove: () => void
+  onRemove?: () => void
 }
 
 enum DisplayState {
