@@ -26,6 +26,7 @@ import { TimePeriodOptionsScreen } from "lib/Components/ArtworkFilter/Filters/Ti
 import { ViewAsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ViewAsOptions"
 import { WaysToBuyOptionsScreen } from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { YearOptionsScreen } from "lib/Components/ArtworkFilter/Filters/YearOptions"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
 import { Box, Button, Separator } from "palette"
@@ -101,6 +102,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
 
   const applyFiltersAction = ArtworksFiltersStore.useStoreActions((action) => action.applyFiltersAction)
   const resetFiltersAction = ArtworksFiltersStore.useStoreActions((action) => action.resetFiltersAction)
+  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
   const handleClosingModal = () => {
     resetFiltersAction()
@@ -147,7 +149,11 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
 
   return (
     <NavigationContainer independent>
-      <FancyModal visible={props.isFilterArtworksModalVisible} onBackgroundPressed={handleClosingModal}>
+      <FancyModal
+        visible={props.isFilterArtworksModalVisible}
+        onBackgroundPressed={handleClosingModal}
+        fullScreen={isEnabledImprovedAlertsFlow}
+      >
         <View style={{ flex: 1 }}>
           <Stack.Navigator
             // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
