@@ -83,7 +83,7 @@ const Home = (props: Props) => {
   const enableTrove = useFeatureFlag("AREnableTrove")
   const enableNewNewWorksForYouRail = useFeatureFlag("AREnableNewWorksForYou")
   const enableShowsForYouRail = useFeatureFlag("AREnableShowsRail")
-  const enableNewArtistRecommendations = useFeatureFlag("AREnableNewArtistRecommendations")
+  const enableNewArtistRecommendations = useFeatureFlag("AREnableArtistRecommendations")
 
   const newWorksTreatment = useTreatment("HomeScreenWorksForYouVsWorksByArtistsYouFollow")
   const artistRecommendationsTreatment = useTreatment("HomeScreenArtistRecommendations")
@@ -104,7 +104,7 @@ const Home = (props: Props) => {
         }
 
   const artistRecommendations =
-    enableNewArtistRecommendations && artistRecommendationsTreatment === "newArtistRecommendations"
+    artistRecommendationsTreatment === "newArtistRecommendations"
       ? {
           title: "Recommended Artists",
           type: "recommended-artists",
@@ -123,7 +123,7 @@ const Home = (props: Props) => {
     // Above-The-Fold Modules
     newWorks,
     { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
-    artistRecommendations,
+    enableNewArtistRecommendations && artistRecommendations,
     { title: "Auction Lots for You Ending Soon", type: "lotsByFollowedArtists", data: meAbove },
     {
       title: "Auctions",
