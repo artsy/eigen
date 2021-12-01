@@ -2,69 +2,33 @@ import { tappedCollectedArtwork } from "@artsy/cohesion"
 import { themeGet } from "@styled-system/theme-get"
 import { MyCollectionArtworkListItem_artwork } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
 import { DEFAULT_SECTION_MARGIN } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { isPad } from "lib/utils/hardware"
-import { retrieveLocalImage } from "lib/utils/LocalImageStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Text, useColor } from "palette"
-import React, { useEffect, useState } from "react"
-import { Image as RNImage, View } from "react-native"
+import { Box, Text } from "palette"
+import React from "react"
+import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
-import { myCollectionLocalPhotoKey } from "../ArtworkFormModal/MyCollectionImageUtil"
+import { MyCollectionImageView } from "../../Components/MyCollectionImageView"
 
 interface MyCollectionArtworkListItemProps {
   artwork: MyCollectionArtworkListItem_artwork
 }
 
 const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = ({ artwork }) => {
-  const color = useColor()
   const { trackEvent } = useTracking()
   const imageURL = artwork.images?.find((i: any) => i?.isDefault)?.url || (artwork.images && artwork.images[0]?.url)
   const { width } = useScreenDimensions()
 
   const { artist, artistNames, internalID, medium, slug, title, image, date } = artwork
 
-  const [localImagePath, setLocalImagePath] = useState<string>("")
-
-  useEffect(() => {
-    const localImageKey = myCollectionLocalPhotoKey(slug, 0)
-    retrieveLocalImage(localImageKey).then((imagePath) => {
-      if (imagePath) {
-        setLocalImagePath(imagePath)
-      }
-    })
-  }, [])
-
   // consistent with how sections are derived in InfiniteScrollArtworksGrid
   const screen = useScreenDimensions()
   const isPadHorizontal = isPad() && screen.width > screen.height
   const sectionCount = isPad() ? (isPadHorizontal ? 4 : 3) : 2
   const imageWidth = (screen.width - DEFAULT_SECTION_MARGIN * (sectionCount + 1)) / sectionCount
-
-  const renderImage = () => {
-    if (!!imageURL) {
-      return (
-        <OpaqueImageView
-          testID="Image"
-          imageURL={imageURL.replace(":version", "square")}
-          aspectRatio={image?.aspectRatio ?? 1}
-        />
-      )
-    } else if (localImagePath) {
-      return (
-        <RNImage
-          testID="Image"
-          style={{ width: imageWidth, height: 120, resizeMode: "cover" }}
-          source={{ uri: localImagePath }}
-        />
-      )
-    } else {
-      return <Box testID="Image" bg={color("black30")} width={imageWidth} height={120} />
-    }
-  }
 
   return (
     <TouchElement
@@ -83,7 +47,12 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
       }}
     >
       <View>
-        {renderImage()}
+        <MyCollectionImageView
+          imageWidth={imageWidth}
+          imageURL={imageURL ?? undefined}
+          aspectRatio={image?.aspectRatio}
+          artworkSlug={slug}
+        />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
           <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={1}>
             {artistNames}
