@@ -1,15 +1,11 @@
-import { OptionListItem as FilterModalOptionListItem } from "lib/Components/ArtworkFilter"
+import { fireEvent } from "@testing-library/react-native"
 import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "lib/Components/ArtworkFilter/FilterTestHelper"
-import { RightButtonContainer } from "lib/Components/FancyModal/FancyModalHeader"
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Check } from "palette"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { AdditionalGeneIDsOptionsScreen } from "./AdditionalGeneIDsOptions"
 import { getEssentialProps } from "./helper"
-import { OptionListItem } from "./MultiSelectOption"
 
 const MOCK_AGGREGATIONS: Aggregations = [
   {
@@ -54,27 +50,16 @@ describe("AdditionalGeneIDsOptions Screen", () => {
   }
 
   it("renders the options", () => {
-    const tree = renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={initialState} />)
+    const { getByText } = renderWithWrappersTL(<MockAdditionalGeneIDsOptionsScreen initialData={initialState} />)
 
-    expect(tree.root.findAllByType(OptionListItem)).toHaveLength(8)
-
-    const items = tree.root.findAllByType(OptionListItem)
-    expect(items.map(extractText)).toEqual([
-      "Prints",
-      "Design",
-      "Sculpture",
-      "Work on Paper",
-      "Painting",
-      "Drawing",
-      "Jewelry",
-      "Photography",
-    ])
-  })
-
-  it("does not display the default text when no filter selected on the filter modal screen", () => {
-    const tree = renderWithWrappers(<MockFilterScreen initialState={initialState} />)
-    const items = tree.root.findAllByType(FilterModalOptionListItem)
-    expect(extractText(items[items.length - 1])).not.toContain("All")
+    expect(getByText("Prints")).toBeTruthy()
+    expect(getByText("Design")).toBeTruthy()
+    expect(getByText("Sculpture")).toBeTruthy()
+    expect(getByText("Work on Paper")).toBeTruthy()
+    expect(getByText("Painting")).toBeTruthy()
+    expect(getByText("Drawing")).toBeTruthy()
+    expect(getByText("Jewelry")).toBeTruthy()
+    expect(getByText("Photography")).toBeTruthy()
   })
 
   it("displays the number of the selected filters on the filter modal screen", () => {
@@ -97,10 +82,9 @@ describe("AdditionalGeneIDsOptions Screen", () => {
       },
     }
 
-    const tree = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
-    const items = tree.root.findAllByType(FilterModalOptionListItem)
+    const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
 
-    expect(extractText(items[2])).toContain("• 2")
+    expect(getByText("Medium • 2")).toBeTruthy()
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
@@ -123,12 +107,14 @@ describe("AdditionalGeneIDsOptions Screen", () => {
       },
     }
 
-    const tree = renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={injectedState} />)
-    const options = tree.root.findAllByType(Check)
+    const { getAllByA11yState } = renderWithWrappersTL(
+      <MockAdditionalGeneIDsOptionsScreen initialData={injectedState} />
+    )
+    const options = getAllByA11yState({ checked: true })
 
-    expect(options[0].props.selected).toBe(true)
-    expect(options[1].props.selected).toBe(false)
-    expect(options[2].props.selected).toBe(true)
+    expect(options).toHaveLength(2)
+    expect(options[0]).toHaveTextContent("Prints")
+    expect(options[1]).toHaveTextContent("Sculpture")
   })
 
   it("clears all when clear button is tapped", () => {
@@ -151,18 +137,14 @@ describe("AdditionalGeneIDsOptions Screen", () => {
       },
     }
 
-    const tree = renderWithWrappers(<MockAdditionalGeneIDsOptionsScreen initialData={injectedState} />)
-    const options = tree.root.findAllByType(Check)
-    const clear = tree.root.findByType(RightButtonContainer)
+    const { getByText, queryAllByA11yState } = renderWithWrappersTL(
+      <MockAdditionalGeneIDsOptionsScreen initialData={injectedState} />
+    )
 
-    expect(options[0].props.selected).toBe(true)
-    expect(options[1].props.selected).toBe(false)
-    expect(options[2].props.selected).toBe(true)
+    expect(queryAllByA11yState({ checked: true })).toHaveLength(2)
 
-    clear.props.onPress()
+    fireEvent.press(getByText("Clear"))
 
-    expect(options[0].props.selected).toBe(false)
-    expect(options[1].props.selected).toBe(false)
-    expect(options[2].props.selected).toBe(false)
+    expect(queryAllByA11yState({ checked: true })).toHaveLength(0)
   })
 })

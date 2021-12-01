@@ -47,6 +47,7 @@ export const ArtworkFilterOptionsHeader: React.FC<ArtworkFilterOptionsHeaderProp
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           style={{ padding: space(2) }}
           onPress={onClosePress}
+          accessibilityLabel="Close filter menu"
         >
           <CloseIcon fill="black100" />
         </TouchableOpacity>
