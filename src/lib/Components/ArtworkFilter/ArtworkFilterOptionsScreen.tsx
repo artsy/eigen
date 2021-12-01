@@ -133,6 +133,31 @@ export const ArtworkFilterOptionsScreen: React.FC<
     closeModal()
   }
 
+  const handleClearAllPress = () => {
+    switch (mode) {
+      case FilterModalMode.Collection:
+        trackClear(PageNames.Collection, OwnerEntityTypes.Collection)
+        break
+      case FilterModalMode.ArtistArtworks:
+        trackClear(PageNames.ArtistPage, OwnerEntityTypes.Artist)
+        break
+      case FilterModalMode.ArtistSeries:
+        trackClear(PageNames.ArtistSeriesPage, OwnerEntityTypes.ArtistSeries)
+        break
+      case "Fair":
+        trackClear(PageNames.FairPage, OwnerEntityTypes.Fair)
+        break
+      case FilterModalMode.Gene:
+        trackClear(PageNames.GenePage, OwnerEntityTypes.Gene)
+        break
+      case FilterModalMode.Search:
+        trackClear(PageNames.Search, OwnerEntityTypes.Search)
+        break
+    }
+
+    clearAllFilters()
+  }
+
   return (
     <Flex style={{ flex: 1 }}>
       <Flex flexGrow={0} flexDirection="row" justifyContent="space-between" alignItems="center" height={space(6)}>
@@ -147,33 +172,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
         </Flex>
 
         <Flex position="absolute" right={0} alignItems="flex-end">
-          <ClearAllButton
-            disabled={!isClearAllButtonEnabled}
-            onPress={() => {
-              switch (mode) {
-                case FilterModalMode.Collection:
-                  trackClear(PageNames.Collection, OwnerEntityTypes.Collection)
-                  break
-                case FilterModalMode.ArtistArtworks:
-                  trackClear(PageNames.ArtistPage, OwnerEntityTypes.Artist)
-                  break
-                case FilterModalMode.ArtistSeries:
-                  trackClear(PageNames.ArtistSeriesPage, OwnerEntityTypes.ArtistSeries)
-                  break
-                case "Fair":
-                  trackClear(PageNames.FairPage, OwnerEntityTypes.Fair)
-                  break
-                case FilterModalMode.Gene:
-                  trackClear(PageNames.GenePage, OwnerEntityTypes.Gene)
-                  break
-                case FilterModalMode.Search:
-                  trackClear(PageNames.Search, OwnerEntityTypes.Search)
-                  break
-              }
-
-              clearAllFilters()
-            }}
-          >
+          <ClearAllButton disabled={!isClearAllButtonEnabled} onPress={handleClearAllPress}>
             <Text variant="sm" color={isClearAllButtonEnabled ? "black100" : "black30"}>
               Clear all
             </Text>
