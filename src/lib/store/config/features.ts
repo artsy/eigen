@@ -206,9 +206,9 @@ export const features = defineFeatures({
     description: "Comparable works in Auction Result",
     showInAdminMenu: true,
   },
-  AREnableNewArtistRecommendations: {
+  AREnableArtistRecommendations: {
     readyForRelease: false,
-    description: "New artist recommendations",
+    description: "Enable homefeed artist recommendations",
     showInAdminMenu: true,
   },
 })
