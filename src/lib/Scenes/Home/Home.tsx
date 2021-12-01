@@ -9,6 +9,7 @@ import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graph
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
+import { RecommendedArtistsRailFragmentContainer } from "lib/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { LotsByFollowedArtistsRailContainer } from "lib/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkRail"
@@ -82,13 +83,13 @@ const Home = (props: Props) => {
   const enableTrove = useFeatureFlag("AREnableTrove")
   const enableNewNewWorksForYouRail = useFeatureFlag("AREnableNewWorksForYou")
   const enableShowsForYouRail = useFeatureFlag("AREnableShowsRail")
-  const enableSplitIOABTesting = useFeatureFlag("AREnableSplitIOABTesting")
+  const enableNewArtistRecommendations = useFeatureFlag("AREnableNewArtistRecommendations")
 
-  // A/B Testing
-  const treatment = useTreatment("HomeScreenWorksForYouVsWorksByArtistsYouFollow")
+  const newWorksTreatment = useTreatment("HomeScreenWorksForYouVsWorksByArtistsYouFollow")
+  const artistRecommendationsTreatment = useTreatment("HomeScreenArtistRecommendations")
 
   const newWorks =
-    treatment === "worksForYou"
+    enableNewNewWorksForYouRail && newWorksTreatment === "worksForYou"
       ? {
           title: "New Works for You",
           type: "newWorksForYou",
@@ -102,23 +103,27 @@ const Home = (props: Props) => {
           hidden: false,
         }
 
+  const artistRecommendations =
+    enableNewArtistRecommendations && artistRecommendationsTreatment === "newArtistRecommendations"
+      ? {
+          title: "Recommended Artists",
+          type: "recommended-artists",
+          data: meAbove,
+          hidden: false,
+        }
+      : {
+          title: "Recommended Artists",
+          type: "artist",
+          data: homePageAbove?.recommendedArtistsArtistModule,
+          hidden: false,
+        }
+
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   const modules: HomeModule[] = compact([
     // Above-The-Fold Modules
-    enableSplitIOABTesting && newWorks,
-    !enableSplitIOABTesting && {
-      title: "New Works for You",
-      type: "newWorksForYou",
-      data: meAbove,
-      hidden: !enableNewNewWorksForYouRail,
-    },
-    !enableSplitIOABTesting && {
-      title: "New Works by Artists You Follow",
-      type: "artwork",
-      data: homePageAbove?.followedArtistsArtworkModule,
-      hidden: enableNewNewWorksForYouRail,
-    },
+    newWorks,
     { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
+    artistRecommendations,
     { title: "Auction Lots for You Ending Soon", type: "lotsByFollowedArtists", data: meAbove },
     {
       title: "Auctions",
@@ -250,6 +255,15 @@ const Home = (props: Props) => {
                     mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
+              case "recommended-artists":
+                return (
+                  <RecommendedArtistsRailFragmentContainer
+                    title={item.title}
+                    me={item.data}
+                    scrollRef={scrollRefs.current[index]}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
+                )
               case "sales":
                 return (
                   <SalesRailFragmentContainer
@@ -342,6 +356,10 @@ export const HomeFragmentContainer = createRefetchContainer(
         salesModule {
           ...SalesRail_salesModule
         }
+        recommendedArtistsArtistModule: artistModule(key: SUGGESTED) {
+          id
+          ...ArtistRail_rail
+        }
         ...HomeHero_homePage @arguments(heroImageVersion: $heroImageVersion)
       }
     `,
@@ -376,6 +394,7 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...EmailConfirmationBanner_me
         ...LotsByFollowedArtistsRail_me
         ...NewWorksForYouRail_me
+        ...RecommendedArtistsRail_me
       }
     `,
     meBelow: graphql`
@@ -410,6 +429,7 @@ export const HomeFragmentContainer = createRefetchContainer(
       me @optionalField {
         ...Home_meAbove
         ...AuctionResultsRail_me
+        ...RecommendedArtistsRail_me
         ...NewWorksForYouRail_me
         showsByFollowedArtists(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
           ...Home_showsByFollowedArtists
@@ -603,6 +623,7 @@ export const HomeQueryRenderer: React.FC = () => {
             }
             me @optionalField {
               ...Home_meBelow
+              ...RecommendedArtistsRail_me
               ...AuctionResultsRail_me
               showsByFollowedArtists(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
                 ...Home_showsByFollowedArtists

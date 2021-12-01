@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash eed586db0857ad78b2ab6475e80bc8e2 */
+/* @relayHash bdd2999cc0413235112e4002ff56307c */
 
 import { ConcreteRequest } from "relay-runtime";
 export type ArtistRailNewSuggestionQueryVariables = {
@@ -20,22 +20,13 @@ export type ArtistRailNewSuggestionQueryResponse = {
                         readonly href: string | null;
                         readonly name: string | null;
                         readonly formattedNationalityAndBirthday: string | null;
-                        readonly avatar: {
+                        readonly image: {
                             readonly url: string | null;
                         } | null;
                         readonly basedOn: {
                             readonly name: string | null;
                         } | null;
                         readonly isFollowed: boolean | null;
-                        readonly artworksConnection: {
-                            readonly edges: ReadonlyArray<{
-                                readonly node: {
-                                    readonly image: {
-                                        readonly url: string | null;
-                                    } | null;
-                                } | null;
-                            } | null> | null;
-                        } | null;
                     } | null;
                 } | null> | null;
             } | null;
@@ -65,24 +56,14 @@ query ArtistRailNewSuggestionQuery(
             href
             name
             formattedNationalityAndBirthday
-            avatar: image {
-              url(version: "small")
+            image {
+              url
             }
             basedOn {
               name
               id
             }
             isFollowed
-            artworksConnection(first: 3) {
-              edges {
-                node {
-                  image {
-                    url(version: "large")
-                  }
-                  id
-                }
-              }
-            }
           }
         }
       }
@@ -177,7 +158,7 @@ v8 = {
   "storageKey": null
 },
 v9 = {
-  "alias": "avatar",
+  "alias": null,
   "args": null,
   "concreteType": "Image",
   "kind": "LinkedField",
@@ -186,16 +167,10 @@ v9 = {
   "selections": [
     {
       "alias": null,
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "version",
-          "value": "small"
-        }
-      ],
+      "args": null,
       "kind": "ScalarField",
       "name": "url",
-      "storageKey": "url(version:\"small\")"
+      "storageKey": null
     }
   ],
   "storageKey": null
@@ -205,37 +180,6 @@ v10 = {
   "args": null,
   "kind": "ScalarField",
   "name": "isFollowed",
-  "storageKey": null
-},
-v11 = [
-  {
-    "kind": "Literal",
-    "name": "first",
-    "value": 3
-  }
-],
-v12 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "Image",
-  "kind": "LinkedField",
-  "name": "image",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "version",
-          "value": "large"
-        }
-      ],
-      "kind": "ScalarField",
-      "name": "url",
-      "storageKey": "url(version:\"large\")"
-    }
-  ],
   "storageKey": null
 };
 return {
@@ -304,41 +248,7 @@ return {
                             ],
                             "storageKey": null
                           },
-                          (v10/*: any*/),
-                          {
-                            "alias": null,
-                            "args": (v11/*: any*/),
-                            "concreteType": "ArtworkConnection",
-                            "kind": "LinkedField",
-                            "name": "artworksConnection",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "concreteType": "ArtworkEdge",
-                                "kind": "LinkedField",
-                                "name": "edges",
-                                "plural": true,
-                                "selections": [
-                                  {
-                                    "alias": null,
-                                    "args": null,
-                                    "concreteType": "Artwork",
-                                    "kind": "LinkedField",
-                                    "name": "node",
-                                    "plural": false,
-                                    "selections": [
-                                      (v12/*: any*/)
-                                    ],
-                                    "storageKey": null
-                                  }
-                                ],
-                                "storageKey": null
-                              }
-                            ],
-                            "storageKey": "artworksConnection(first:3)"
-                          }
+                          (v10/*: any*/)
                         ],
                         "storageKey": null
                       }
@@ -424,42 +334,7 @@ return {
                             ],
                             "storageKey": null
                           },
-                          (v10/*: any*/),
-                          {
-                            "alias": null,
-                            "args": (v11/*: any*/),
-                            "concreteType": "ArtworkConnection",
-                            "kind": "LinkedField",
-                            "name": "artworksConnection",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "concreteType": "ArtworkEdge",
-                                "kind": "LinkedField",
-                                "name": "edges",
-                                "plural": true,
-                                "selections": [
-                                  {
-                                    "alias": null,
-                                    "args": null,
-                                    "concreteType": "Artwork",
-                                    "kind": "LinkedField",
-                                    "name": "node",
-                                    "plural": false,
-                                    "selections": [
-                                      (v12/*: any*/),
-                                      (v3/*: any*/)
-                                    ],
-                                    "storageKey": null
-                                  }
-                                ],
-                                "storageKey": null
-                              }
-                            ],
-                            "storageKey": "artworksConnection(first:3)"
-                          }
+                          (v10/*: any*/)
                         ],
                         "storageKey": null
                       }
@@ -479,7 +354,7 @@ return {
     ]
   },
   "params": {
-    "id": "eed586db0857ad78b2ab6475e80bc8e2",
+    "id": "bdd2999cc0413235112e4002ff56307c",
     "metadata": {},
     "name": "ArtistRailNewSuggestionQuery",
     "operationKind": "query",
