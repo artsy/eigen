@@ -1,9 +1,10 @@
 import { TouchableRow } from "lib/Components/TouchableRow"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { ArrowRightIcon, bullet, Flex, Text } from "palette"
 import React from "react"
 import { FilterDisplayConfig } from "../types"
 
-interface ArtworkFilterOptionItemProps {
+export interface ArtworkFilterOptionItemProps {
   item: FilterDisplayConfig
   count?: number
   onPress: () => void
@@ -11,6 +12,24 @@ interface ArtworkFilterOptionItemProps {
 
 export const ArtworkFilterOptionItem: React.FC<ArtworkFilterOptionItemProps> = (props) => {
   const { item, count, onPress } = props
+  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
+
+  if (isEnabledImprovedAlertsFlow) {
+    return (
+      <TouchableRow onPress={onPress}>
+        <Flex flexDirection="row" alignItems="center" justifyContent="space-between" p={2}>
+          <Flex flex={1}>
+            <Text variant="md">
+              {item.displayText}
+              {!!count && <Text color="blue100">{` ${bullet} ${count}`}</Text>}
+            </Text>
+          </Flex>
+
+          <ArrowRightIcon fill="black100" ml={1} />
+        </Flex>
+      </TouchableRow>
+    )
+  }
 
   return (
     <TouchableRow onPress={onPress}>
