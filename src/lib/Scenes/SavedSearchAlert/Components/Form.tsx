@@ -1,8 +1,8 @@
 import { useFormikContext } from "formik"
 import { navigate } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import { Box, Button, Flex, Input, InputTitle, Pill, Spacer, Text, Touchable } from "palette"
-import React from "react"
+import { Box, Button, CloseIcon as RemoveIcon, Flex, Input, InputTitle, Pill, Spacer, Text, Touchable } from "palette"
+import React, { useState } from "react"
 import { LayoutAnimation } from "react-native"
 import { getNamePlaceholder } from "../helpers"
 import { SavedSearchAlertFormValues } from "../SavedSearchAlertModel"
@@ -36,8 +36,15 @@ export const Form: React.FC<FormProps> = (props) => {
     onTogglePushNotification,
     onToggleEmailNotification,
   } = props
-  const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
-    useFormikContext<SavedSearchAlertFormValues>()
+  const {
+    isSubmitting,
+    values,
+    errors,
+    dirty,
+    handleBlur,
+    handleChange,
+  } = useFormikContext<SavedSearchAlertFormValues>()
+  const [pillsState, setPillsState] = useState(pills)
   const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const namePlaceholder = getNamePlaceholder(artistName, pills)
   const isEditMode = !!savedSearchAlertId
@@ -79,6 +86,11 @@ export const Form: React.FC<FormProps> = (props) => {
     }
 
     return navigate("/unsubscribe")
+  }
+
+  const handleRemove = (index: number) => {
+    pillsState.splice(index, 1)
+    setPillsState([...pillsState])
   }
 
   return (
@@ -127,8 +139,15 @@ export const Form: React.FC<FormProps> = (props) => {
       <Box mb={2}>
         <InputTitle>Filters</InputTitle>
         <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
-          {pills.map((pill, index) => (
-            <Pill testID="alert-pill" m={0.5} key={`filter-label-${index}`}>
+          {pillsState.map((pill, index) => (
+            <Pill
+              testID="alert-pill"
+              m={0.5}
+              key={`filter-label-${index}`}
+              iconPosition="right"
+              Icon={RemoveIcon}
+              onRemove={() => handleRemove(index)}
+            >
               {pill}
             </Pill>
           ))}

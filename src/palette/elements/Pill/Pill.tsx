@@ -5,7 +5,7 @@ import { Text, useTextStyleForPalette } from "../Text"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { IconProps, Spacer, useColor } from "palette"
 import React, { ReactNode, useEffect, useState } from "react"
-import { GestureResponderEvent, Pressable, PressableProps } from "react-native"
+import { GestureResponderEvent, Pressable, PressableProps, TouchableOpacity } from "react-native"
 import { config } from "react-spring"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native"
@@ -24,6 +24,7 @@ export interface PillProps extends FlexProps {
   selected?: boolean
   imageUrl?: string
   highlightEnabled?: boolean
+  onRemove: () => void
 }
 
 enum DisplayState {
@@ -69,6 +70,7 @@ export const Pill: React.FC<PillProps> = ({
   disabled,
   rounded,
   highlightEnabled = false,
+  onRemove,
   ...rest
 }) => {
   const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
@@ -136,7 +138,9 @@ export const Pill: React.FC<PillProps> = ({
             {iconPosition === "right" && !!Icon && (
               <>
                 <Spacer mr={iconSpacerMargin} />
-                {<Icon fill={iconColor} />}
+                <TouchableOpacity onPress={onRemove}>
+                  <Icon fill={iconColor} />
+                </TouchableOpacity>
               </>
             )}
           </AnimatedContainer>
