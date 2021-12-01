@@ -13,13 +13,14 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
-import { ArrowRightIcon, bullet, CloseIcon, FilterIcon, Flex, Sans, Separator, Text, useSpace } from "palette"
+import { ArrowRightIcon, bullet, FilterIcon, Flex, Sans, Separator, Text } from "palette"
 import React, { useMemo } from "react"
-import { FlatList, TouchableOpacity } from "react-native"
+import { FlatList } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
 import { ArtworkFilterNavigationStack } from "./ArtworkFilter"
+import { ArtworkFilterOptionsHeader } from "./components/ArtworkFilterOptionsHeader"
 
 export type FilterScreen =
   | "additionalGeneIDs"
@@ -69,7 +70,6 @@ export enum FilterModalMode {
 export const ArtworkFilterOptionsScreen: React.FC<
   StackScreenProps<ArtworkFilterNavigationStack, "FilterOptionsScreen">
 > = ({ navigation, route }) => {
-  const space = useSpace()
   const tracking = useTracking()
   const { closeModal, id, mode, slug, title = "Sort & Filter" } = route.params
 
@@ -159,26 +159,13 @@ export const ArtworkFilterOptionsScreen: React.FC<
   }
 
   return (
-    <Flex style={{ flex: 1 }}>
-      <Flex flexGrow={0} flexDirection="row" justifyContent="space-between" alignItems="center" height={space(6)}>
-        <Flex flex={1} alignItems="center">
-          <Text variant="sm">{title}</Text>
-        </Flex>
-
-        <Flex position="absolute" alignItems="flex-start">
-          <CloseIconContainer hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={handleTappingCloseIcon}>
-            <CloseIcon fill="black100" />
-          </CloseIconContainer>
-        </Flex>
-
-        <Flex position="absolute" right={0} alignItems="flex-end">
-          <ClearAllButton disabled={!isClearAllButtonEnabled} onPress={handleClearAllPress}>
-            <Text variant="sm" color={isClearAllButtonEnabled ? "black100" : "black30"}>
-              Clear all
-            </Text>
-          </ClearAllButton>
-        </Flex>
-      </Flex>
+    <Flex flex={1}>
+      <ArtworkFilterOptionsHeader
+        title={title}
+        isClearAllButtonEnabled={isClearAllButtonEnabled}
+        onClosePress={handleTappingCloseIcon}
+        onClearAllPress={handleClearAllPress}
+      />
 
       <Separator />
 
@@ -386,14 +373,6 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
     </AnimatedBottomButton>
   )
 }
-
-export const CloseIconContainer = styled(TouchableOpacity)`
-  padding: ${themeGet("space.2")}px;
-`
-
-export const ClearAllButton = styled(TouchableOpacity)`
-  padding: ${themeGet("space.2")}px;
-`
 
 export const OptionListItem = styled(Flex)`
   flex-direction: row;
