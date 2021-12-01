@@ -145,10 +145,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
     })
   }
 
-  const handleFollowChange = async (
-    followArtist: SuggestedArtist,
-    completionHandler: (followStatus: boolean) => void
-  ) => {
+  const handleFollowChange = async (followArtist: SuggestedArtist) => {
     trackEvent({
       action_name: Schema.ActionNames.HomeArtistRailFollow,
       action_type: Schema.ActionTypes.Tap,
@@ -158,10 +155,8 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
     })
     try {
       await followOrUnfollowArtist(followArtist)
-      completionHandler(!followArtist.isFollowed)
     } catch (error) {
       console.warn(error)
-      completionHandler(!!followArtist.isFollowed)
     }
   }
 
@@ -201,14 +196,13 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
               <View style={{ flexDirection: "row" }}>
                 <ArtistCard
                   artist={artist as any}
-                  onTap={() =>
+                  onPress={() =>
                     trackEvent(
                       HomeAnalytics.artistThumbnailTapEvent(props.rail.key, artist.internalID, artist.slug, index)
                     )
                   }
-                  onFollow={(completionHandler) => handleFollowChange(artist, completionHandler)}
-                  onDismiss={() => handleDismiss(artist)}
-                  showBasedOn={props.rail.key === "SUGGESTED"}
+                  onFollow={() => handleFollowChange(artist)}
+                  onDismiss={props.rail.key === "SUGGESTED" ? undefined : () => handleDismiss(artist)}
                 />
                 {index === artists.length - 1 ? null : <View style={{ width: INTER_CARD_PADDING }} />}
               </View>

@@ -207,6 +207,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableAuctionResultComparableWorks",
   },
+  AREnableNewArtistRecommendations: {
+    readyForRelease: false,
+    description: "New artist recommendations",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

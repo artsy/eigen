@@ -14,22 +14,13 @@ export type ArtistRail_rail = {
         readonly href: string | null;
         readonly name: string | null;
         readonly formattedNationalityAndBirthday: string | null;
-        readonly avatar: {
+        readonly image: {
             readonly url: string | null;
         } | null;
         readonly basedOn: {
             readonly name: string | null;
         } | null;
         readonly isFollowed: boolean | null;
-        readonly artworksConnection: {
-            readonly edges: ReadonlyArray<{
-                readonly node: {
-                    readonly image: {
-                        readonly url: string | null;
-                    } | null;
-                } | null;
-            } | null> | null;
-        } | null;
     } | null> | null;
     readonly " $refType": "ArtistRail_rail";
 };
@@ -109,7 +100,7 @@ return {
           "storageKey": null
         },
         {
-          "alias": "avatar",
+          "alias": null,
           "args": null,
           "concreteType": "Image",
           "kind": "LinkedField",
@@ -118,16 +109,10 @@ return {
           "selections": [
             {
               "alias": null,
-              "args": [
-                {
-                  "kind": "Literal",
-                  "name": "version",
-                  "value": "small"
-                }
-              ],
+              "args": null,
               "kind": "ScalarField",
               "name": "url",
-              "storageKey": "url(version:\"small\")"
+              "storageKey": null
             }
           ],
           "storageKey": null
@@ -150,69 +135,6 @@ return {
           "kind": "ScalarField",
           "name": "isFollowed",
           "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": [
-            {
-              "kind": "Literal",
-              "name": "first",
-              "value": 3
-            }
-          ],
-          "concreteType": "ArtworkConnection",
-          "kind": "LinkedField",
-          "name": "artworksConnection",
-          "plural": false,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "ArtworkEdge",
-              "kind": "LinkedField",
-              "name": "edges",
-              "plural": true,
-              "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "Artwork",
-                  "kind": "LinkedField",
-                  "name": "node",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "concreteType": "Image",
-                      "kind": "LinkedField",
-                      "name": "image",
-                      "plural": false,
-                      "selections": [
-                        {
-                          "alias": null,
-                          "args": [
-                            {
-                              "kind": "Literal",
-                              "name": "version",
-                              "value": "large"
-                            }
-                          ],
-                          "kind": "ScalarField",
-                          "name": "url",
-                          "storageKey": "url(version:\"large\")"
-                        }
-                      ],
-                      "storageKey": null
-                    }
-                  ],
-                  "storageKey": null
-                }
-              ],
-              "storageKey": null
-            }
-          ],
-          "storageKey": "artworksConnection(first:3)"
         }
       ],
       "storageKey": null

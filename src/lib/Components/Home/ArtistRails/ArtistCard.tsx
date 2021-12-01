@@ -1,196 +1,87 @@
-import React from "react"
-import { ActivityIndicator, View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
-
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
+import React from "react"
+import { createFragmentContainer, graphql } from "react-relay"
+import styled from "styled-components/native"
+
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
-import { extractNodes } from "lib/utils/extractNodes"
-import { compact, floor } from "lodash"
-import { Button, ClassTheme, CloseIcon, Flex, Join, Sans, Touchable } from "palette"
-import styled from "styled-components/native"
-import { CARD_WIDTH, CardRailCard } from "../CardRailCard"
+import { Button, CloseIcon, Flex, Text, Touchable, useColor } from "palette"
 
-interface Props {
+const ARTIST_CARD_WIDTH = 295
+
+interface ArtistCardProps {
   artist: ArtistCard_artist
-  onFollow?: (completion: (followStatus: boolean) => void) => void
-  onTap?: () => void
-  onDismiss?: () => Promise<void>
-  showBasedOn?: boolean
+  onDismiss?: () => void
+  onFollow?: () => void
+  onPress?: () => void
 }
 
-interface State {
-  processingChange: boolean
-  following: boolean | null
-  isDismissing: boolean
-}
+export const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onDismiss, onFollow, onPress }) => {
+  const color = useColor()
 
-export class ArtistCard extends React.Component<Props, State> {
-  state: State = {
-    processingChange: false,
-    following: this.props.artist.isFollowed,
-    isDismissing: false,
-  }
+  const handlePress = () => {
+    onPress?.()
 
-  didUnmount = false
-
-  handleTap() {
-    this.props.onTap?.()
-    if (this.props.artist.href) {
-      navigate(this.props.artist.href)
+    if (artist.href) {
+      navigate(artist.href)
     }
   }
 
-  handleFollowChange = () => {
-    this.setState({ processingChange: true })
-    this.props.onFollow?.((followStatus: boolean) => {
-      this.setState({ processingChange: false, following: followStatus })
-    })
-  }
-
-  componentWillUnmount() {
-    this.didUnmount = true
-  }
-
-  handleDismiss = async () => {
-    const p = this.props.onDismiss?.()
-    if (p) {
-      this.setState({ isDismissing: true })
-      await p
-      if (!this.didUnmount) {
-        this.setState({ isDismissing: false })
-      }
-    }
-  }
-
-  render() {
-    const artist = this.props.artist
-    const avatarImageURL = artist.avatar && artist.avatar.url
-    const artworkImages = compact(extractNodes(artist.artworksConnection, (artwork) => artwork.image?.url))
-    // Subtract the number of artwork images (less one) to provide a 1px separation between each image.
-    // We need to floor this because the RN layout doesn't handle fractional pixels well. To get
-    // consistent spacing between the images, we'll also use a Spacer component. Any extra pixels get
-    // pushed off to the right.
-    const artworkImageWidth = floor((CARD_WIDTH - artworkImages.length + 1) / artworkImages.length)
-
-    return (
-      <View
-        style={{ opacity: this.state.isDismissing ? 0.6 : 1 }}
-        pointerEvents={this.state.isDismissing ? "none" : "auto"}
-      >
-        <CardRailCard onPress={this.handleTap.bind(this)}>
-          <View>
-            <ArtworkImageContainer>
-              {artworkImages.length ? (
-                <Join separator={<Division />}>
-                  {artworkImages.map((url, index) => (
-                    <ImageView key={index} imageURL={url} width={artworkImageWidth} height={130} />
-                  ))}
-                </Join>
-              ) : (
-                /* Show an empty image block if there are no images for this artist */
-                <ImageView imageURL={null} width={CARD_WIDTH} height={130} />
-              )}
-            </ArtworkImageContainer>
-            <MetadataContainer>
-              <ArtistAvatar>
-                <ImageView imageURL={avatarImageURL} width={40} height={40} />
-              </ArtistAvatar>
-              <Flex flexDirection="column" ml={10} mr={2} justifyContent="center">
-                <Sans size="3t" weight="medium" numberOfLines={1}>
-                  {artist.name}
-                </Sans>
-                {Boolean(artist.formattedNationalityAndBirthday) && (
-                  <Sans size="3t" numberOfLines={1} color="black60">
-                    {artist.formattedNationalityAndBirthday}
-                  </Sans>
-                )}
-              </Flex>
-            </MetadataContainer>
-            <FollowButtonContainer>
-              <Button
-                variant={this.state.following ? "outline" : "fillGray"}
-                onPress={this.handleFollowChange}
-                size="small"
-                block
-                haptic
-              >
-                {this.state.following ? "Following" : "Follow"}
-              </Button>
-            </FollowButtonContainer>
-          </View>
-        </CardRailCard>
-        {this.props.showBasedOn && artist.basedOn?.name ? (
-          <Flex mt={1} flexDirection="row">
-            <Sans size="2" color="black60">
-              Based on{" "}
-            </Sans>
-            <Sans size="2" color="black60" weight="medium">
-              {artist.basedOn.name}
-            </Sans>
-          </Flex>
-        ) : null}
-        {!!this.props.onDismiss && (
-          <ClassTheme>
-            {({ color }) => (
-              <Touchable
-                hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-                activeOpacity={0.2}
-                style={{
-                  backgroundColor: color("white100"),
-                  position: "absolute",
-                  top: 6,
-                  right: 6,
-                  overflow: "hidden",
-                  borderRadius: 12,
-                  width: 24,
-                  height: 24,
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-                onPress={this.handleDismiss}
-              >
-                {this.state.isDismissing ? (
-                  <ActivityIndicator style={{ transform: [{ scale: 0.8 }] }} />
-                ) : (
-                  <CloseIcon fill="black60" width={16} height={16} />
-                )}
-              </Touchable>
+  return (
+    <ArtistCardWrapper onPress={handlePress}>
+      <Flex>
+        <Flex>
+          <ImageView imageURL={artist?.image?.url} width={ARTIST_CARD_WIDTH} height={180} />
+        </Flex>
+        <Flex flexDirection="row" mt={1}>
+          <Flex flex={1} flexDirection="column" justifyContent="center">
+            <Text numberOfLines={1}>{artist.name}</Text>
+            {!!artist.formattedNationalityAndBirthday && (
+              <Text numberOfLines={1} color="black60">
+                {artist.formattedNationalityAndBirthday}
+              </Text>
             )}
-          </ClassTheme>
+          </Flex>
+          <Flex>
+            <Button
+              variant={artist.isFollowed ? "outline" : "fillGray"}
+              size="small"
+              longestText="Following"
+              onPress={onFollow}
+            >
+              {artist.isFollowed ? "Following" : "Follow"}
+            </Button>
+          </Flex>
+        </Flex>
+        {!!onDismiss && (
+          <Touchable
+            hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+            activeOpacity={0.2}
+            style={{
+              backgroundColor: color("white100"),
+              position: "absolute",
+              top: 6,
+              right: 6,
+              overflow: "hidden",
+              borderRadius: 12,
+              width: 24,
+              height: 24,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onPress={onDismiss}
+          >
+            <CloseIcon fill="black60" width={16} height={16} />
+          </Touchable>
         )}
-      </View>
-    )
-  }
+      </Flex>
+    </ArtistCardWrapper>
+  )
 }
 
-const ArtworkImageContainer = styled.View`
-  width: 100%;
-  height: 130px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-`
-
-const ArtistAvatar = styled.View`
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
+export const ArtistCardWrapper = styled.TouchableHighlight.attrs(() => ({ underlayColor: "transparent" }))`
+  width: ${ARTIST_CARD_WIDTH}px;
   overflow: hidden;
-`
-
-const MetadataContainer = styled.View`
-  margin: 15px 16px 0;
-  flex-direction: row;
-`
-
-const FollowButtonContainer = styled.View`
-  margin: 12px 16px;
-`
-
-export const Division = styled.View`
-  border: 1px solid white;
-  width: 1px;
 `
 
 export const ArtistCardContainer = createFragmentContainer(ArtistCard, {
@@ -202,22 +93,13 @@ export const ArtistCardContainer = createFragmentContainer(ArtistCard, {
       href
       name
       formattedNationalityAndBirthday
-      avatar: image {
-        url(version: "small")
+      image {
+        url
       }
       basedOn {
         name
       }
       isFollowed
-      artworksConnection(first: 3) {
-        edges {
-          node {
-            image {
-              url(version: "large")
-            }
-          }
-        }
-      }
     }
   `,
 })
