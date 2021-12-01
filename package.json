@@ -289,7 +289,7 @@
     "tslint-react": "^5.0.0",
     "typescript": "4.4.4",
     "typescript-styled-plugin": "0.18.0",
-    "vscode-apollo-relay": "1.5.1"
+    "vscode-apollo-relay": "1.5.2"
   },
   "config": {
     "react-native-storybook-loader": {
