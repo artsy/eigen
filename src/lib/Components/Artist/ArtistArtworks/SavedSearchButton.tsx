@@ -131,7 +131,6 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
         disabled={isSavedSearch || filters.length === 0}
         loading={loading || refetching}
         onPress={handleCreateAlertPress}
-        testID="create-saved-search-button"
         haptic
       >
         Create Alert

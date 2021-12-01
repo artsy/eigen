@@ -13,7 +13,6 @@ export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) =
       <TouchableHighlightColor
         haptic
         onPress={onPress}
-        testID="create-saved-search-button"
         render={({ color }) => (
           <Flex flexDirection="row" alignItems="center">
             <Box backgroundColor="white">
