@@ -2,7 +2,13 @@ import { OwnerType } from "@artsy/cohesion"
 import { addBreadcrumb } from "@sentry/react-native"
 import { dismissModal, goBack, navigate } from "lib/navigation/navigate"
 import { matchRoute } from "lib/navigation/routes"
-import { getCurrentEmissionState, GlobalStore, useEnvironment, useFeatureFlag } from "lib/store/GlobalStore"
+import {
+  getCurrentEmissionState,
+  GlobalStore,
+  useDevToggle,
+  useEnvironment,
+  useFeatureFlag,
+} from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Text } from "palette"
@@ -140,6 +146,7 @@ export const ArtsyReactWebView = React.forwardRef<
   const userAgent = getCurrentEmissionState().userAgent
 
   const [loadProgress, setLoadProgress] = useState<number | null>(null)
+  const showIndicator = useDevToggle("DTShowWebviewIndicator")
 
   const webURL = useEnvironment().webURL
   const uri = url.startsWith("/") ? webURL + url : url
@@ -195,7 +202,7 @@ export const ArtsyReactWebView = React.forwardRef<
         onNavigationStateChange={onNavigationStateChange}
       />
       <ProgressBar loadProgress={loadProgress} />
-      {__DEV__ ? (
+      {showIndicator ? (
         <Flex position="absolute" top={50} left={-25} style={{ transform: [{ rotate: "90deg" }] }}>
           <Text color="red">webview</Text>
         </Flex>
