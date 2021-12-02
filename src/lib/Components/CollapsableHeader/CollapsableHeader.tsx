@@ -1,0 +1,80 @@
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { Box, Flex, Separator, Text, useTheme } from "palette"
+import React from "react"
+import { TouchableOpacity } from "react-native"
+import Animated, { Extrapolate } from "react-native-reanimated"
+import { useCollapsableHeaderContext } from "./CollapsableHeaderContext"
+
+const AnimatedText: typeof Text = Animated.createAnimatedComponent(Text)
+
+export interface CollapsableHeaderProps {
+  title: string
+  rightButtonDisabled?: boolean
+  rightButtonText?: string
+  onLeftButtonPress: () => void
+  onRightButtonPress?: () => void
+}
+
+export const CollapsableHeader: React.FC<CollapsableHeaderProps> = (props) => {
+  const { title, rightButtonDisabled, rightButtonText, onLeftButtonPress, onRightButtonPress } = props
+  const { space } = useTheme()
+  const { scrollOffsetY } = useCollapsableHeaderContext()
+  const headerContainerHeight = space(6)
+  const headerIsFullyUp = Animated.greaterThan(scrollOffsetY, headerContainerHeight)
+  const offset = Animated.cond(headerIsFullyUp, headerContainerHeight, Animated.max(scrollOffsetY, 0))
+  const translateY = Animated.multiply(offset, -1)
+
+  // Animation for fontSize happens with jerks on android. For this reason, scale is used to reduce the size of the text
+  const scale = Animated.interpolate(scrollOffsetY, {
+    inputRange: [0, headerContainerHeight],
+    outputRange: [1, 0.77],
+    extrapolate: Extrapolate.CLAMP,
+  })
+
+  return (
+    <Box>
+      <FancyModalHeader hideBottomDivider onLeftButtonPress={onLeftButtonPress} />
+      <Animated.View
+        pointerEvents="box-none"
+        style={{
+          position: "absolute",
+          left: 0,
+          right: 0,
+          zIndex: 1,
+          transform: [{ translateY }],
+        }}
+      >
+        <Box height={headerContainerHeight} pointerEvents="none" />
+        <Flex
+          height={headerContainerHeight}
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mx={2}
+          pointerEvents="box-none"
+        >
+          <AnimatedText
+            variant="lg"
+            // @ts-ignore
+            style={{ flex: 1, transform: [{ scale }], marginRight: space(1) }}
+            numberOfLines={2}
+          >
+            {title}
+          </AnimatedText>
+          {!!(onRightButtonPress && rightButtonText) && (
+            <TouchableOpacity disabled={rightButtonDisabled} onPress={onRightButtonPress}>
+              <Text
+                variant="sm"
+                style={{ textDecorationLine: "underline" }}
+                color={rightButtonDisabled ? "black30" : "black100"}
+              >
+                {rightButtonText}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </Flex>
+        <Separator />
+      </Animated.View>
+    </Box>
+  )
+}
