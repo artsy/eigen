@@ -18,15 +18,14 @@ export interface CollapsableHeaderProps {
 export const CollapsableHeader: React.FC<CollapsableHeaderProps> = (props) => {
   const { title, rightButtonDisabled, rightButtonText, onLeftButtonPress, onRightButtonPress } = props
   const { space } = useTheme()
-  const { scrollOffsetY, stickyHeaderContent } = useCollapsableHeaderContext()
-  const headerContainerHeight = space(6)
-  const headerIsFullyUp = Animated.greaterThan(scrollOffsetY, headerContainerHeight)
-  const offset = Animated.cond(headerIsFullyUp, headerContainerHeight, Animated.max(scrollOffsetY, 0))
+  const { scrollOffsetY, stickyHeaderContent, headerHeight } = useCollapsableHeaderContext()
+  const headerIsFullyUp = Animated.greaterThan(scrollOffsetY, headerHeight)
+  const offset = Animated.cond(headerIsFullyUp, headerHeight, Animated.max(scrollOffsetY, 0))
   const translateY = Animated.multiply(offset, -1)
 
   // Animation for fontSize happens with jerks on android. For this reason, scale is used to reduce the size of the text
   const scale = Animated.interpolate(scrollOffsetY, {
-    inputRange: [0, headerContainerHeight],
+    inputRange: [0, headerHeight],
     outputRange: [1, 0.77],
     extrapolate: Extrapolate.CLAMP,
   })
@@ -44,9 +43,9 @@ export const CollapsableHeader: React.FC<CollapsableHeaderProps> = (props) => {
           transform: [{ translateY }],
         }}
       >
-        <Box height={headerContainerHeight} pointerEvents="none" />
+        <Box height={headerHeight} pointerEvents="none" />
         <Flex
-          height={headerContainerHeight}
+          height={headerHeight}
           flexDirection="row"
           alignItems="center"
           justifyContent="space-between"

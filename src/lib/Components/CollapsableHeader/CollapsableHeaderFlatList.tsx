@@ -1,5 +1,4 @@
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import { useTheme } from "palette"
 import React, { PropsWithChildren } from "react"
 import { FlatListProps } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
@@ -13,10 +12,8 @@ export interface CollapsableHeaderFlatListProps<T> extends FlatListProps<T> {}
 
 export function CollapsableHeaderFlatList<T extends any>(props: PropsWithChildren<CollapsableHeaderFlatListProps<T>>) {
   const { ListHeaderComponent, scrollIndicatorInsets, ...other } = props
-  const { space } = useTheme()
-  const { scrollOffsetY } = useCollapsableHeaderContext()
+  const { scrollOffsetY, headerHeight } = useCollapsableHeaderContext()
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
-  const headerContainerHeight = space(6)
 
   return (
     <AnimatedFlatList
@@ -30,7 +27,7 @@ export function CollapsableHeaderFlatList<T extends any>(props: PropsWithChildre
       scrollEventThrottle={0.0000000001}
       scrollIndicatorInsets={{
         ...scrollIndicatorInsets,
-        top: isEnabledImprovedAlertsFlow ? headerContainerHeight * 2 : scrollIndicatorInsets?.top,
+        top: isEnabledImprovedAlertsFlow ? headerHeight * 2 : scrollIndicatorInsets?.top,
       }}
       onScroll={Animated.event([
         {
