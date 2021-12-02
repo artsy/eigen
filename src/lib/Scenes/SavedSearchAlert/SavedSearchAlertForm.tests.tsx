@@ -49,6 +49,20 @@ describe("Saved search alert form", () => {
     ])
   })
 
+  it("should display the artist name as a pill if AREnableImprovedAlertsFlow is enabled", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
+    const { getAllByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+    expect(getAllByTestId("alert-pill").map(extractText)).toEqual([
+      "artistName",
+      "Limited Edition",
+      "Tate Ward Auctions",
+      "New York, NY, USA",
+      "Photography",
+      "Prints",
+    ])
+  })
+
   it(`should render "Delete Alert" button when the savedSearchAlertId is passed`, () => {
     const { getAllByTestId } = renderWithWrappersTL(
       <SavedSearchAlertForm {...baseProps} savedSearchAlertId="savedSearchAlertId" />
