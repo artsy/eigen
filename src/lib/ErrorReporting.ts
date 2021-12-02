@@ -6,7 +6,7 @@ import { sentryReleaseName } from "../../app.json"
 import { GlobalStore, useFeatureFlag } from "./store/GlobalStore"
 
 function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
-  if (Config.SENTRY_DSN) {
+  if (!__DEV__ && Config.SENTRY_DSN) {
     Sentry.init({
       dsn: Config.SENTRY_DSN,
       release: sentryReleaseName,
