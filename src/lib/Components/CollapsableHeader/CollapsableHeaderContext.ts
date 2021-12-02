@@ -3,9 +3,9 @@ import Animated from "react-native-reanimated"
 
 export interface CollapsableHeaderContextType {
   scrollOffsetY: Animated.Node<number>
-  stickyHeaderContent: JSX.Element
+  stickyHeaderContent: React.ReactNode
   stickyHeaderContentHeight: Animated.Node<number>
-  setJSX: (jsx: JSX.Element) => void
+  setJSX: (jsx: React.ReactNode) => void
 }
 
 export const CollapsableHeaderContext = React.createContext<CollapsableHeaderContextType>({
