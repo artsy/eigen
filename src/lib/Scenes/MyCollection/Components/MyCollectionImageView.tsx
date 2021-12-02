@@ -36,7 +36,7 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
     if (!!imageURL) {
       return (
         <OpaqueImageView
-          testID="Image"
+          testID="Image-Remote"
           imageURL={imageURL.replace(":version", "square")}
           aspectRatio={aspectRatio ?? 1}
         />
@@ -44,13 +44,13 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
     } else if (localImagePath) {
       return (
         <RNImage
-          testID="Image"
+          testID="Image-Local"
           style={{ width: imageWidth, height: 120, resizeMode: "cover" }}
           source={{ uri: localImagePath }}
         />
       )
     } else {
-      return <Box testID="Image" bg={color("black30")} width={imageWidth} height={120} />
+      return <Box testID="Fallback" bg={color("black30")} width={imageWidth} height={120} />
     }
   }
 
