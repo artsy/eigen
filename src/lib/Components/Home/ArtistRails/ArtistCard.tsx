@@ -54,25 +54,19 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onDismiss, onFol
           </Flex>
         </Flex>
         {!!onDismiss && (
-          <Touchable
-            hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
-            activeOpacity={0.2}
-            style={{
-              backgroundColor: color("white100"),
-              position: "absolute",
-              top: 6,
-              right: 6,
-              overflow: "hidden",
-              borderRadius: 12,
-              width: 24,
-              height: 24,
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            onPress={onDismiss}
+          <Flex
+            position="absolute"
+            overflow="hidden"
+            backgroundColor={color("white100")}
+            alignItems="center"
+            justifyContent="center"
+            borderRadius={12}
+            style={{ top: 6, right: 6, width: 24, height: 24 }}
           >
-            <CloseIcon fill="black60" width={16} height={16} />
-          </Touchable>
+            <Touchable hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }} activeOpacity={0.2} onPress={onDismiss}>
+              <CloseIcon fill="black60" width={16} height={16} />
+            </Touchable>
+          </Flex>
         )}
       </Flex>
     </ArtistCardWrapper>

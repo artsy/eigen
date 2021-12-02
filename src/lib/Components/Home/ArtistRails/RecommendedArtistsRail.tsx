@@ -2,21 +2,21 @@ import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import { RecommendedArtistsRail_me } from "__generated__/RecommendedArtistsRail_me.graphql"
 import { RecommendedArtistsRailFollowMutation } from "__generated__/RecommendedArtistsRailFollowMutation.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { RailScrollProps } from "lib/Scenes/Home/Components/types"
 import HomeAnalytics from "lib/Scenes/Home/homeAnalytics"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
 import { Flex, Spacer, Spinner } from "palette"
 import React, { useImperativeHandle, useRef, useState } from "react"
-import { FlatList, View, ViewProps } from "react-native"
+import { FlatList, ViewProps } from "react-native"
 import { commitMutation, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { CARD_WIDTH } from "../CardRailCard"
-import { CardRailFlatList, INTER_CARD_PADDING } from "../CardRailFlatList"
+import { CardRailFlatList } from "../CardRailFlatList"
 import { ArtistCard } from "./ArtistCard"
 
 const MAX_ARTISTS = 20
-const PAGE_SIZE = 3
+const PAGE_SIZE = 6
 
 interface RecommendedArtistsRailProps extends ViewProps {
   title: string
@@ -41,10 +41,10 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
+  const artists = extractNodes(me.artistRecommendations)
+
   const { hasMore, isLoading, loadMore } = relay
   const [loadingMoreData, setLoadingMoreData] = useState(false)
-
-  const artists = extractNodes(me.artistRecommendations)
 
   const loadMoreArtists = () => {
     if (!hasMore() || isLoading() || artists.length >= MAX_ARTISTS) {
@@ -66,64 +66,10 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
     return null
   }
 
-  const followOrUnfollowArtist = (followArtist: ArtistCard_artist) => {
-    return new Promise<void>((resolve, reject) => {
-      commitMutation<RecommendedArtistsRailFollowMutation>(relay.environment, {
-        mutation: graphql`
-          mutation RecommendedArtistsRailFollowMutation($input: FollowArtistInput!) {
-            followArtist(input: $input) {
-              artist {
-                id
-                isFollowed
-              }
-            }
-          }
-        `,
-        variables: {
-          input: { artistID: followArtist.internalID, unfollow: followArtist.isFollowed },
-        },
-        onError: reject,
-        optimisticResponse: {
-          followArtist: {
-            artist: {
-              id: followArtist.id,
-              isFollowed: !followArtist.isFollowed,
-            },
-          },
-        },
-        onCompleted: (_response, errors) => {
-          if (errors && errors.length > 0) {
-            reject(new Error(JSON.stringify(errors)))
-          } else {
-            console.log({ _response }, followArtist.id)
-            trackEvent({
-              name: "Follow artist",
-              artist_id: followArtist.internalID,
-              artist_slug: followArtist.slug,
-              source_screen: "home page",
-              context_module: "artist rail",
-            })
+  const handleFollowChange = (artist: ArtistCard_artist) => {
+    trackEvent(tracks.tapFollowOrUnfollowArtist(!!artist.isFollowed, artist.internalID, artist.slug))
 
-            resolve()
-          }
-        },
-      })
-    })
-  }
-
-  const handleFollowChange = async (followArtist: ArtistCard_artist) => {
-    trackEvent({
-      action_name: Schema.ActionNames.HomeArtistRailFollow,
-      action_type: Schema.ActionTypes.Tap,
-      owner_id: followArtist.internalID,
-      owner_slug: followArtist.id,
-      owner_type: Schema.OwnerEntityTypes.Artist,
-    })
-    try {
-      await followOrUnfollowArtist(followArtist)
-    } catch (error) {
-      console.warn(error)
-    }
+    followOrUnfollowArtist(artist)
   }
 
   return (
@@ -136,25 +82,17 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
         data={artists as any}
         keyExtractor={(artist) => artist.id}
         onEndReached={loadMoreArtists}
-        onEndReachedThreshold={0.1}
-        // I noticed that sometimes FlatList seemed to get confused about where cards should be
-        // and making this explicit fixes that.
-        getItemLayout={(_data, index) => ({
-          index,
-          offset: index * (CARD_WIDTH + INTER_CARD_PADDING),
-          length: CARD_WIDTH + INTER_CARD_PADDING,
-        })}
         renderItem={({ item: artist, index }) => {
           return (
-            <View style={{ flexDirection: "row" }}>
-              <ArtistCard
-                artist={artist as any}
-                onPress={() =>
-                  trackEvent(HomeAnalytics.artistThumbnailTapEvent("SUGGESTED", artist.internalID, artist.slug, index))
-                }
-                onFollow={() => handleFollowChange(artist)}
-              />
-            </View>
+            <ArtistCard
+              artist={artist as any}
+              onPress={() => {
+                trackEvent(tracks.tapArtistCard(artist.internalID, artist.slug, index))
+              }}
+              onFollow={() => {
+                handleFollowChange(artist)
+              }}
+            />
           )
         }}
         ItemSeparatorComponent={() => <Spacer width={15} />}
@@ -222,3 +160,52 @@ export const RecommendedArtistsRailFragmentContainer = createPaginationContainer
     `,
   }
 )
+
+// TODO: Adjust tracking
+export const tracks = {
+  tapArtistCard: (artistID: string, artistSlug: string, index: number) =>
+    HomeAnalytics.artistThumbnailTapEvent("RECOMMENDATIONS", artistID, artistSlug, index),
+  tapFollowOrUnfollowArtist: (isFollowed: boolean, artistID: string, artistSlug: string) => ({
+    action_name: isFollowed ? Schema.ActionNames.HomeArtistRailFollow : Schema.ActionNames.HomeArtistRailFollow,
+    action_type: Schema.ActionTypes.Tap,
+    owner_id: artistID,
+    owner_slug: artistSlug,
+    owner_type: Schema.OwnerEntityTypes.Artist,
+  }),
+}
+
+const followOrUnfollowArtist = (followArtist: ArtistCard_artist) => {
+  return new Promise<void>((resolve, reject) => {
+    commitMutation<RecommendedArtistsRailFollowMutation>(defaultEnvironment, {
+      mutation: graphql`
+        mutation RecommendedArtistsRailFollowMutation($input: FollowArtistInput!) {
+          followArtist(input: $input) {
+            artist {
+              id
+              isFollowed
+            }
+          }
+        }
+      `,
+      variables: {
+        input: { artistID: followArtist.internalID, unfollow: followArtist.isFollowed },
+      },
+      onError: reject,
+      optimisticResponse: {
+        followArtist: {
+          artist: {
+            id: followArtist.id,
+            isFollowed: !followArtist.isFollowed,
+          },
+        },
+      },
+      onCompleted: (_response, errors) => {
+        if (errors && errors.length > 0) {
+          reject(new Error(JSON.stringify(errors)))
+        } else {
+          resolve()
+        }
+      },
+    })
+  })
+}
