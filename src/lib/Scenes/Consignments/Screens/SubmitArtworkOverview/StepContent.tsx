@@ -8,7 +8,10 @@ interface Props {
   content: string | React.FC | any
   setStepCompleted: any
 }
-export const StepContent: React.FC<Props> = ({ content = "content content content", setStepCompleted }) => {
+export const StepContent: React.FC<Props> = ({
+  content = "content content content",
+  // setStepCompleted
+}) => {
   // const [isFormComplete, setIsFormComplete] = useState(false)
 
   // const checkIfFormIsCompleted = () => {
