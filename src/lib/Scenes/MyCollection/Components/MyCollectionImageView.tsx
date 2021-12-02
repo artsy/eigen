@@ -5,9 +5,10 @@ import React, { useEffect, useState } from "react"
 import { Image as RNImage } from "react-native"
 import { myCollectionLocalPhotoKey } from "../Screens/ArtworkFormModal/MyCollectionImageUtil"
 
-interface MyCollectionImageViewProps {
+export interface MyCollectionImageViewProps {
   imageURL?: string
   imageWidth: number
+  imageHeight?: number
   aspectRatio?: number
   artworkSlug: string
 }
