@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 96ab53b0b252661342a213e4cac9ad21 */
+/* @relayHash ce469f061fa82f28d7fcfa32e11b969a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -76,7 +76,7 @@ fragment MyCollection_me_4o4pu4 on Me {
   myCollectionInfo {
     includesPurchasedArtworks
   }
-  myCollectionConnection(excludePurchasedArtworks: $excludePurchasedArtworks, first: 20, sort: CREATED_AT_DESC) {
+  myCollectionConnection(excludePurchasedArtworks: $excludePurchasedArtworks, first: 100, sort: CREATED_AT_DESC) {
     edges {
       node {
         id
@@ -119,7 +119,7 @@ v3 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 20
+    "value": 100
   },
   {
     "kind": "Literal",
@@ -383,7 +383,7 @@ return {
     ]
   },
   "params": {
-    "id": "96ab53b0b252661342a213e4cac9ad21",
+    "id": "ce469f061fa82f28d7fcfa32e11b969a",
     "metadata": {},
     "name": "MyCollectionQuery",
     "operationKind": "query",

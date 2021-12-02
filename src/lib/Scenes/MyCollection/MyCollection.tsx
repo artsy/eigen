@@ -22,13 +22,13 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import _, { filter, orderBy, uniq, uniqBy } from "lodash"
+import { DateTime } from "luxon"
 import { Banner, Button, Flex, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
 import { Platform, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkFormModal } from "./Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
-import { DateTime } from "luxon"
 
 const RefreshEvents = new EventEmitter()
 const REFRESH_KEY = "refresh"
@@ -144,6 +144,7 @@ const MyCollection: React.FC<{
             })
           )
         ),
+        // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks, mediums: string[]) => {
           return filter(artworks, (a) => mediums.includes(a.medium))
         },
@@ -289,6 +290,7 @@ const MyCollection: React.FC<{
                 appliedFiltersState.filter((x) => x.paramName !== FilterParamName.sort),
                 (f) => f.paramName
               )
+              // tslint:disable-next-line: no-shadowed-variable
               filtering.forEach((filter) => {
                 const filterStep = filterOptions!.find((f) => f.filterType === filter.paramName)!.localSortAndFilter!
                 processedArtworks = filterStep(processedArtworks, filter.paramValue)
@@ -316,7 +318,7 @@ export const MyCollectionContainer = createPaginationContainer(
       fragment MyCollection_me on Me
       @argumentDefinitions(
         excludePurchasedArtworks: { type: "Boolean", defaultValue: true }
-        count: { type: "Int", defaultValue: 20 }
+        count: { type: "Int", defaultValue: 100 }
         cursor: { type: "String" }
       ) {
         id
