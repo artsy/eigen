@@ -47,9 +47,8 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   } = props
   const isUpdateForm = !!savedSearchAlertId
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
-  const pills = isEnabledImprovedAlertsFlow
-    ? [artistName, ...extractPills(filters, aggregations)]
-    : extractPills(filters, aggregations)
+  const pillsFromFilters = extractPills(filters, aggregations)
+  const pills = isEnabledImprovedAlertsFlow ? [artistName, ...pillsFromFilters] : pillsFromFilters
   const tracking = useTracking()
   const { space } = useTheme()
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
