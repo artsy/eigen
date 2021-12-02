@@ -1,3 +1,4 @@
+import { ActionType, OwnerType } from "@artsy/cohesion"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import { RecommendedArtistsRail_me } from "__generated__/RecommendedArtistsRail_me.graphql"
 import { RecommendedArtistsRailFollowMutation } from "__generated__/RecommendedArtistsRailFollowMutation.graphql"
@@ -6,7 +7,6 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { RailScrollProps } from "lib/Scenes/Home/Components/types"
 import HomeAnalytics from "lib/Scenes/Home/homeAnalytics"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Schema } from "lib/utils/track"
 import { Flex, Spacer, Spinner } from "palette"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import { FlatList, ViewProps } from "react-native"
@@ -161,16 +161,16 @@ export const RecommendedArtistsRailFragmentContainer = createPaginationContainer
   }
 )
 
-// TODO: Adjust tracking
 export const tracks = {
   tapArtistCard: (artistID: string, artistSlug: string, index: number) =>
-    HomeAnalytics.artistThumbnailTapEvent("RECOMMENDATIONS", artistID, artistSlug, index),
+    HomeAnalytics.artistThumbnailTapEvent("SUGGESTIONS", artistID, artistSlug, index),
   tapFollowOrUnfollowArtist: (isFollowed: boolean, artistID: string, artistSlug: string) => ({
-    action_name: isFollowed ? Schema.ActionNames.HomeArtistRailFollow : Schema.ActionNames.HomeArtistRailFollow,
-    action_type: Schema.ActionTypes.Tap,
-    owner_id: artistID,
-    owner_slug: artistSlug,
-    owner_type: Schema.OwnerEntityTypes.Artist,
+    action: isFollowed ? ActionType.unfollowedArtist : ActionType.followedArtist,
+    contextModule: HomeAnalytics.artistRailContextModule("SUGGESTIONS"),
+    contextScreenOwnerType: OwnerType.home,
+    destinationScreenOwnerType: OwnerType.artist,
+    destinationScreenOwnerId: artistID,
+    destinationScreenOwnerSlug: artistSlug,
   }),
 }
 
