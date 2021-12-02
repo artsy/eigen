@@ -5,16 +5,17 @@ import { withTheme } from "storybook/decorators"
 import { List } from "storybook/helpers"
 import { Text } from "./elements/Text"
 
-import * as Icons from "./svgs"
+import * as IconsObject from "./svgs"
 
 storiesOf("Icons", module)
   .addDecorator(withTheme)
   .add("icons", () => {
-    const icons = Object.keys(Icons)
+    const iconKeys = Object.keys(IconsObject)
     return (
       <List contentContainerStyle={{ alignItems: "flex-start" }} style={{ paddingLeft: 30 }}>
-        {icons.map((icon) => {
-          const Component: React.FC = Icons[icon]
+        {iconKeys.map((icon) => {
+          // @ts-ignore
+          const IconComponent: React.FC = IconsObject[icon]
           return (
             <View
               style={{
@@ -23,7 +24,7 @@ storiesOf("Icons", module)
               }}
               key={icon}
             >
-              <Component />
+              <IconComponent />
               <Text
                 style={{
                   marginLeft: 5,
