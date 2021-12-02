@@ -18,7 +18,7 @@ export interface CollapsableHeaderProps {
 export const CollapsableHeader: React.FC<CollapsableHeaderProps> = (props) => {
   const { title, rightButtonDisabled, rightButtonText, onLeftButtonPress, onRightButtonPress } = props
   const { space } = useTheme()
-  const { scrollOffsetY } = useCollapsableHeaderContext()
+  const { scrollOffsetY, stickyHeaderContent } = useCollapsableHeaderContext()
   const headerContainerHeight = space(6)
   const headerIsFullyUp = Animated.greaterThan(scrollOffsetY, headerContainerHeight)
   const offset = Animated.cond(headerIsFullyUp, headerContainerHeight, Animated.max(scrollOffsetY, 0))
@@ -74,6 +74,7 @@ export const CollapsableHeader: React.FC<CollapsableHeaderProps> = (props) => {
           )}
         </Flex>
         <Separator />
+        {stickyHeaderContent}
       </Animated.View>
     </Box>
   )

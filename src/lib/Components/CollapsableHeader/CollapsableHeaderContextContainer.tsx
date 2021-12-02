@@ -1,15 +1,30 @@
-import React, { useMemo } from "react"
+import { useAutoCollapsingMeasuredView } from "lib/utils/useAutoCollapsingMeasuredView"
+import React, { useEffect, useMemo, useState } from "react"
 import Animated from "react-native-reanimated"
 import { CollapsableHeaderContext } from "./CollapsableHeaderContext"
 
 export const CollapsableHeaderContextContainer: React.FC<{}> = (props) => {
   const { children } = props
-  const value = useMemo(
-    () => ({
-      scrollOffsetY: new Animated.Value(0),
-    }),
-    []
+  const [jsx, setJSX] = useState<JSX.Element>()
+  const scrollOffsetY = useMemo(() => new Animated.Value(0), [])
+  const { jsx: stickyHeaderContent, nativeHeight: stickyHeaderContentHeight } = useAutoCollapsingMeasuredView(
+    jsx as React.ReactChild
   )
 
-  return <CollapsableHeaderContext.Provider value={value}>{children}</CollapsableHeaderContext.Provider>
+  useEffect(() => {
+    console.log("[debug] stickyHeaderContent")
+  }, [stickyHeaderContent])
+
+  return (
+    <CollapsableHeaderContext.Provider
+      value={{
+        scrollOffsetY,
+        stickyHeaderContent,
+        stickyHeaderContentHeight,
+        setJSX,
+      }}
+    >
+      {children}
+    </CollapsableHeaderContext.Provider>
+  )
 }

@@ -1,5 +1,5 @@
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import { Box, useTheme } from "palette"
+import { useTheme } from "palette"
 import React, { PropsWithChildren } from "react"
 import { FlatListProps } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
@@ -13,16 +13,17 @@ export interface CollapsableHeaderFlatListProps<T> extends FlatListProps<T> {}
 export function CollapsableHeaderFlatList<T extends any>(props: PropsWithChildren<CollapsableHeaderFlatListProps<T>>) {
   const { ListHeaderComponent, scrollIndicatorInsets, ...other } = props
   const { space } = useTheme()
-  const { scrollOffsetY } = useCollapsableHeaderContext()
+  const { scrollOffsetY, stickyHeaderContentHeight } = useCollapsableHeaderContext()
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const headerContainerHeight = space(6)
+  const totalStickyHeaderHeight = Animated.add(headerContainerHeight * 2, stickyHeaderContentHeight)
 
   return (
     <AnimatedFlatList
       {...other}
       ListHeaderComponent={() => (
         <>
-          {isEnabledImprovedAlertsFlow && <Box height={headerContainerHeight * 2} />}
+          {isEnabledImprovedAlertsFlow && <Animated.View style={{ height: totalStickyHeaderHeight }} />}
           {ListHeaderComponent}
         </>
       )}
