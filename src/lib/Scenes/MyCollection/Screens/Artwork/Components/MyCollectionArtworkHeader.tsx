@@ -11,7 +11,7 @@ import { TouchableOpacity } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import useInterval from "react-use/lib/useInterval"
-import { hasImagesStillProcessing, isImage } from "../../ArtworkFormModal/MyCollectionImageUtil"
+import { hasImagesStillProcessing, imageIsProcessing, isImage } from "../../ArtworkFormModal/MyCollectionImageUtil"
 
 interface MyCollectionArtworkHeaderProps {
   artwork: MyCollectionArtworkHeader_artwork
@@ -48,8 +48,9 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     maxImageHeight: number,
     screenDimensions: ScreenDimensionsWithSafeAreas
   ): Size => {
+    const imageHeight = image?.height ?? 0
     return {
-      height: image.height ?? 0 < maxImageHeight ? image.height : maxImageHeight,
+      height: imageHeight < maxImageHeight ? imageHeight : maxImageHeight,
       width: screenDimensions.width,
     }
   }
@@ -58,8 +59,8 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     const measurements = getMeasurements({
       images: [
         {
-          height: image.height,
-          width: image.width,
+          height: image?.height,
+          width: image?.width,
         },
       ],
       boundingBox,
@@ -74,11 +75,15 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
 
     // remove all vertical margins for pics taken in landscape mode
     boundingBox.height = boundingBox.height - (styles.marginBottom + styles.marginTop)
+
+    const imageURL = !imageIsProcessing(defaultImage as any, "normalized") ? defaultImage?.imageURL : undefined
+    const normalizedURL = imageURL?.replace(":version", "normalized")
+
     return (
-      <Flex style={boundingBox} bg="black5" alignItems="center">
+      <Flex bg="black5" alignItems="center">
         <MyCollectionDetailsImageView
           artworkSlug={slug}
-          imageURL={defaultImage?.imageURL?.replace(":version", "normalized")}
+          imageURL={normalizedURL}
           imageHeight={styles.height}
           imageWidth={styles.width}
           aspectRatio={styles.width / styles.height}
