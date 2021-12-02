@@ -1,13 +1,12 @@
 import { deleteCollectedArtwork } from "@artsy/cohesion"
-import { NavigationContainer } from "@react-navigation/native"
+import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
 import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { FormikProvider, useFormik } from "formik"
-import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { cleanArtworkPayload, explicitlyClearedFields } from "lib/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { GlobalStore } from "lib/store/GlobalStore"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { useTracking } from "react-tracking"
 import { myCollectionAddArtwork } from "../../mutations/myCollectionAddArtwork"
@@ -18,7 +17,10 @@ import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
 
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { LoadingIndicator } from "lib/Components/LoadingIndicator"
+import { BackButton } from "lib/navigation/BackButton"
+import { goBack } from "lib/navigation/navigate"
 import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
+import { useUpdadeShouldHideBackButton } from "lib/utils/hideBackButtonOnScroll"
 import { isEqual } from "lodash"
 import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { refreshMyCollection } from "../../MyCollection"
@@ -38,14 +40,14 @@ export type ArtworkFormMode = "add" | "edit"
 export type ArtworkFormModalScreen = {
   ArtworkForm: {
     mode: ArtworkFormMode
-    onDismiss(): void
+    clearForm(): void
     onDelete?(): void
   }
   AdditionalDetails: undefined
   AddPhotos: undefined
 }
 
-type MyCollectionArtworkFormModalProps = { visible: boolean; onDismiss: () => void; onSuccess: () => void } & (
+type MyCollectionArtworkFormModalProps = { onSuccess: () => void } & (
   | {
       mode: "add"
     }
@@ -145,6 +147,10 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
             await myCollectionDeleteArtwork(props.artwork.internalID)
             refreshMyCollection()
             props.onDelete()
+            setTimeout(() => {
+              // reset form values incase user deleted after editing
+              GlobalStore.actions.myCollection.artwork.resetForm()
+            }, 500)
           } catch (e) {
             if (__DEV__) {
               console.error(e)
@@ -158,7 +164,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
         }
       : undefined
 
-  const onDismiss = async () => {
+  const clearForm = async () => {
     const formIsDirty = !isEqual(formValuesRef.current, dirtyFormCheckValues)
 
     if (formIsDirty) {
@@ -184,33 +190,49 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
     }
 
     GlobalStore.actions.myCollection.artwork.resetForm()
-    props.onDismiss?.()
   }
 
+  const onBackButtonPress = () => {
+    const currentRoute = navContainerRef.current?.getCurrentRoute()
+    if (currentRoute?.name === "ArtworkForm") {
+      GlobalStore.actions.myCollection.artwork.resetForm()
+      goBack()
+      return
+    }
+    navContainerRef.current?.goBack()
+  }
+
+  const hideBackButton = useUpdadeShouldHideBackButton()
+
+  useEffect(() => {
+    // hide the original back button.
+    // We will add a backbutton to this stack directly in order to modify onPress
+    hideBackButton(true)
+  }, [])
+
+  const navContainerRef = { current: null as NavigationContainerRef | null }
+
   return (
-    <NavigationContainer independent>
+    <NavigationContainer independent ref={navContainerRef}>
       <FormikProvider value={formik}>
-        <FancyModal visible={props.visible} onBackgroundPressed={onDismiss}>
-          <Stack.Navigator
-            // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
-            detachInactiveScreens={false}
-            screenOptions={{
-              headerShown: false,
-              safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
-              cardStyle: { backgroundColor: "white" },
-            }}
-          >
-            <Stack.Screen
-              name="ArtworkForm"
-              component={MyCollectionArtworkFormMain}
-              initialParams={{ onDelete, onDismiss, mode: props.mode }}
-            />
-            <Stack.Screen name="AdditionalDetails" component={MyCollectionAdditionalDetailsForm} />
-            <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />
-          </Stack.Navigator>
-          {!!loading && <LoadingIndicator />}
-        </FancyModal>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+            safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
+            cardStyle: { backgroundColor: "white" },
+          }}
+        >
+          <Stack.Screen
+            name="ArtworkForm"
+            component={MyCollectionArtworkFormMain}
+            initialParams={{ onDelete, clearForm, mode: props.mode }}
+          />
+          <Stack.Screen name="AdditionalDetails" component={MyCollectionAdditionalDetailsForm} />
+          <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />
+        </Stack.Navigator>
+        {!!loading && <LoadingIndicator />}
       </FormikProvider>
+      <BackButton show onPress={onBackButtonPress} />
     </NavigationContainer>
   )
 }

@@ -65,7 +65,7 @@ describe("AddEditArtwork", () => {
       "ArtworkForm",
       {
         mode: ArtworkFormMode
-        onDismiss(): void
+        clearForm(): void
         onDelete?(): void
       }
     > = {
@@ -73,7 +73,7 @@ describe("AddEditArtwork", () => {
       name: "ArtworkForm",
       params: {
         mode: "add",
-        onDismiss: jest.fn(),
+        clearForm: jest.fn(),
         onDelete: jest.fn(),
       },
     }
@@ -96,7 +96,7 @@ describe("AddEditArtwork", () => {
       "ArtworkForm",
       {
         mode: ArtworkFormMode
-        onDismiss(): void
+        clearForm(): void
         onDelete?(): void
       }
     > = {
@@ -104,7 +104,7 @@ describe("AddEditArtwork", () => {
       name: "ArtworkForm",
       params: {
         mode: "edit",
-        onDismiss: jest.fn(),
+        clearForm: jest.fn(),
         onDelete: jest.fn(),
       },
     }
@@ -116,14 +116,14 @@ describe("AddEditArtwork", () => {
     expect(deleteButton).toBeDefined()
   })
 
-  it("fires dismiss on header cancel button click", () => {
+  it("fires clear form on header Clear button click", () => {
     const mockNav = jest.fn()
-    const mockDismiss = jest.fn()
+    const mockClearForm = jest.fn()
     const mockRoute: Route<
       "ArtworkForm",
       {
         mode: ArtworkFormMode
-        onDismiss(): void
+        clearForm(): void
         onDelete?(): void
       }
     > = {
@@ -131,14 +131,14 @@ describe("AddEditArtwork", () => {
       name: "ArtworkForm",
       params: {
         mode: "edit",
-        onDismiss: mockDismiss,
+        clearForm: mockClearForm,
         onDelete: jest.fn(),
       },
     }
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
     const wrapper = renderWithWrappers(artworkForm)
-    wrapper.root.findByType(FancyModalHeader).props.onLeftButtonPress()
-    expect(mockDismiss).toHaveBeenCalled()
+    wrapper.root.findByType(FancyModalHeader).props.onRightButtonPress()
+    expect(mockClearForm).toHaveBeenCalled()
   })
 
   it("fires formik's handleSubmit on complete button click", () => {
@@ -154,7 +154,7 @@ describe("AddEditArtwork", () => {
       "ArtworkForm",
       {
         mode: ArtworkFormMode
-        onDismiss(): void
+        clearForm(): void
         onDelete?(): void
       }
     > = {
@@ -162,7 +162,7 @@ describe("AddEditArtwork", () => {
       name: "ArtworkForm",
       params: {
         mode: "edit",
-        onDismiss: jest.fn(),
+        clearForm: jest.fn(),
         onDelete: jest.fn(),
       },
     }
@@ -180,7 +180,7 @@ describe("AddEditArtwork", () => {
       "ArtworkForm",
       {
         mode: ArtworkFormMode
-        onDismiss(): void
+        clearForm(): void
         onDelete?(): void
       }
     > = {
@@ -188,7 +188,7 @@ describe("AddEditArtwork", () => {
       name: "ArtworkForm",
       params: {
         mode: "edit",
-        onDismiss: jest.fn(),
+        clearForm: jest.fn(),
         onDelete: mockDelete,
       },
     }
@@ -212,7 +212,7 @@ describe("AddEditArtwork", () => {
       "ArtworkForm",
       {
         mode: ArtworkFormMode
-        onDismiss(): void
+        clearForm(): void
         onDelete?(): void
       }
     > = {
@@ -220,7 +220,7 @@ describe("AddEditArtwork", () => {
       name: "ArtworkForm",
       params: {
         mode: "edit",
-        onDismiss: jest.fn(),
+        clearForm: jest.fn(),
         onDelete: jest.fn(),
       },
     }

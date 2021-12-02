@@ -160,6 +160,10 @@ export function popParentViewController() {
   LegacyNativeModules.ARScreenPresenterModule.popStack(unsafe__getSelectedTab())
 }
 
+export function popToRoot() {
+  LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(unsafe__getSelectedTab())
+}
+
 export enum EntityType {
   Partner = "partner",
   Fair = "fair",

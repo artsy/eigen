@@ -43,7 +43,10 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
 
   return (
     <>
-      <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => route.params.onDismiss()}>
+      <FancyModalHeader
+        rightButtonText={isFormDirty() ? "Clear" : undefined}
+        onRightButtonPress={isFormDirty() || __TEST__ ? () => route.params.clearForm() : undefined}
+      >
         {addOrEditLabel} Artwork
       </FancyModalHeader>
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
