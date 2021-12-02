@@ -5011,6 +5011,12 @@ enum ConsignmentSubmissionSort {
   # sort by created_at in descending order
   CREATED_AT_DESC
 
+  # sort by created_by in ascending order
+  CREATED_BY_ASC
+
+  # sort by created_by in descending order
+  CREATED_BY_DESC
+
   # sort by currency in ascending order
   CURRENCY_ASC
 
@@ -8412,6 +8418,7 @@ type Me implements Node {
   # The user's most current pending identity verification, if it exists
   pendingIdentityVerification: IdentityVerification
   phone: String
+  phoneNumber: PhoneNumberType
   priceRange: String
   priceRangeMax: Float
   priceRangeMin: Float
@@ -9657,6 +9664,29 @@ enum PartnersSortType {
 
 union PartnerTypes = ExternalPartner | Partner
 
+enum PhoneNumberErrors {
+  INVALID_COUNTRY_CODE
+  INVALID_NUMBER
+  TOO_LONG
+  TOO_SHORT
+}
+
+enum PhoneNumberFormats {
+  E164
+  INTERNATIONAL
+  NATIONAL
+  RFC3966
+}
+
+type PhoneNumberType {
+  countryCode: String
+  display(format: PhoneNumberFormats): String
+  error: PhoneNumberErrors
+  isValid: Boolean
+  originalNumber: String
+  regionCode: String
+}
+
 # The connection type for MarketPriceInsights.
 type PriceInsightConnection {
   # A list of edges.
@@ -10579,6 +10609,9 @@ type Query {
     sort: PartnersSortType
     type: [PartnerClassification]
   ): PartnerConnection
+
+  # Phone number information
+  phoneNumber(phoneNumber: String!, regionCode: String): PhoneNumberType
 
   # Get all price insights for an artist.
   priceInsights(
@@ -13267,6 +13300,9 @@ type Viewer {
     sort: PartnersSortType
     type: [PartnerClassification]
   ): PartnerConnection
+
+  # Phone number information
+  phoneNumber(phoneNumber: String!, regionCode: String): PhoneNumberType
 
   # A requested location
   requestLocation(ip: String!): RequestLocation
