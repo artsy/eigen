@@ -7,7 +7,6 @@ import {
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { LOCALIZED_UNIT, parseRange } from "lib/Components/ArtworkFilter/Filters/helpers"
 import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
-import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import { compact, flatten, keyBy } from "lodash"
 import { bullet } from "palette"
 
