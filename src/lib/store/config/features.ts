@@ -208,7 +208,7 @@ export const features = defineFeatures({
   },
   AREnableArtistRecommendations: {
     readyForRelease: false,
-    description: "Enable homefeed artist recommendations",
+    description: "Enable new artist recommendations",
     showInAdminMenu: true,
   },
 })
