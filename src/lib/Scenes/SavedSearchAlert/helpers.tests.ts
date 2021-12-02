@@ -138,6 +138,6 @@ describe("getNamePlaceholder", () => {
 
   it("returns the correct number of filters when artist pill is shown", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-    expect(getNamePlaceholder("artistName", ["artistName", "one", "two"])).toBe("artistName • 2 filters")
+    expect(getNamePlaceholder("artistName", ["artistName", "one", "two"])).toBe("artistName • 3 filters")
   })
 })

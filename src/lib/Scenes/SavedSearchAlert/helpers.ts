@@ -75,7 +75,5 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations) =
 
 export const getNamePlaceholder = (artistName: string, pills: string[]) => {
   const filtersCountLabel = pills.length > 1 ? "filters" : "filter"
-  const isEnabledImprovedAlertsFlow = unsafe_getFeatureFlag("AREnableImprovedAlertsFlow")
-  const filtersCount = isEnabledImprovedAlertsFlow ? pills.length - 1 : pills.length
-  return `${artistName} ${bullet} ${filtersCount} ${filtersCountLabel}`
+  return `${artistName} ${bullet} ${pills.length} ${filtersCountLabel}`
 }
