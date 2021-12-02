@@ -12,7 +12,7 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
-import { FilterIcon, Flex, Sans, Separator } from "palette"
+import { FilterIcon, Flex, Sans } from "palette"
 import React, { useMemo } from "react"
 import { FlatList } from "react-native"
 import { useTracking } from "react-tracking"
@@ -133,12 +133,12 @@ export const ArtworkFilterOptionsScreen: React.FC<
     <Flex flex={1}>
       <ArtworkFilterOptionsHeader
         title={title}
-        isClearAllButtonEnabled={isClearAllButtonEnabled}
-        onClosePress={handleTappingCloseIcon}
-        onClearAllPress={handleClearAllPress}
+        rightButtonDisabled={!isClearAllButtonEnabled}
+        onLeftButtonPress={handleTappingCloseIcon}
+        onRightButtonPress={handleClearAllPress}
+        rightButtonText="Clear All"
+        useXButton
       />
-
-      <Separator />
 
       <FlatList<FilterDisplayConfig>
         keyExtractor={(_item, index) => String(index)}

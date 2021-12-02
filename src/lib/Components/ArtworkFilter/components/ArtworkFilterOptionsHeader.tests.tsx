@@ -6,9 +6,9 @@ import { ArtworkFilterOptionsHeader, ArtworkFilterOptionsHeaderProps } from "./A
 
 const defaultProps: ArtworkFilterOptionsHeaderProps = {
   title: "Title",
-  isClearAllButtonEnabled: true,
-  onClosePress: jest.fn,
-  onClearAllPress: jest.fn,
+  rightButtonDisabled: false,
+  onLeftButtonPress: jest.fn,
+  onRightButtonPress: jest.fn,
 }
 
 describe("ArtworkFilterOptionsHeader", () => {
@@ -26,27 +26,41 @@ describe("ArtworkFilterOptionsHeader", () => {
     expect(getByText("Custom Title")).toBeTruthy()
   })
 
-  it('should disable "Clear All" button when isClearAllButtonEnabled prop is false', () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper isClearAllButtonEnabled={false} />)
+  it("should render passed rightButtonText prop", () => {
+    const { getByText } = renderWithWrappersTL(<TestWrapper rightButtonText="Custom Right Button Text" />)
 
-    expect(getByText("Clear All")).toBeDisabled()
+    expect(getByText("Custom Right Button Text")).toBeTruthy()
   })
 
-  it('should call "onClosePress" handler when back button is pressed', () => {
-    const onClosePressMock = jest.fn()
-    const { getByTestId } = renderWithWrappersTL(<TestWrapper onClosePress={onClosePressMock} />)
+  it('should hide right button if "onRightButtonPress" is not passed', () => {
+    const { queryByText } = renderWithWrappersTL(
+      <TestWrapper onRightButtonPress={undefined} rightButtonText="Right Button" />
+    )
+
+    expect(queryByText("Right Button")).toBeFalsy()
+  })
+
+  it("should disable right button when rightButtonDisabled prop is true", () => {
+    const { getByText } = renderWithWrappersTL(<TestWrapper rightButtonDisabled />)
+
+    expect(getByText("Clear")).toBeDisabled()
+  })
+
+  it('should call "onLeftButtonPress" handler when back button is pressed', () => {
+    const onLeftButtonPressMock = jest.fn()
+    const { getByTestId } = renderWithWrappersTL(<TestWrapper onLeftButtonPress={onLeftButtonPressMock} />)
 
     fireEvent.press(getByTestId("fancy-modal-header-left-button"))
 
-    expect(onClosePressMock).toBeCalled()
+    expect(onLeftButtonPressMock).toBeCalled()
   })
 
-  it('should call "onClearAllPress" handler when clear all is pressed', () => {
-    const onClearAllPressMock = jest.fn()
-    const { getByText } = renderWithWrappersTL(<TestWrapper onClearAllPress={onClearAllPressMock} />)
+  it('should call "onRightButtonPress" handler when clear all is pressed', () => {
+    const onRightButtonPressMock = jest.fn()
+    const { getByText } = renderWithWrappersTL(<TestWrapper onRightButtonPress={onRightButtonPressMock} />)
 
-    fireEvent.press(getByText("Clear All"))
+    fireEvent.press(getByText("Clear"))
 
-    expect(onClearAllPressMock).toBeCalled()
+    expect(onRightButtonPressMock).toBeCalled()
   })
 })

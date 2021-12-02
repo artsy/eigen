@@ -204,9 +204,9 @@ describe("Filter modal navigation flow", () => {
   })
 
   it("allows users to exit filter modal screen when selecting close icon", () => {
-    const { getByA11yLabel } = renderWithWrappersTL(<MockFilterModalNavigator />)
+    const { getByTestId } = renderWithWrappersTL(<MockFilterModalNavigator />)
 
-    fireEvent.press(getByA11yLabel("Close filter menu"))
+    fireEvent.press(getByTestId("fancy-modal-header-left-button"))
 
     expect(closeModalMock).toHaveBeenCalled()
   })
