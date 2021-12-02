@@ -4,6 +4,7 @@ import React, { PropsWithChildren } from "react"
 import { FlatListProps } from "react-native"
 import { FlatList } from "react-native-gesture-handler"
 import Animated from "react-native-reanimated"
+import { CollapsableContentOffset } from "./CollapsableHeaderContentOffset"
 import { useCollapsableHeaderContext } from "./CollapsableHeaderContext"
 
 const AnimatedFlatList: typeof FlatList = Animated.createAnimatedComponent(FlatList)
@@ -13,17 +14,16 @@ export interface CollapsableHeaderFlatListProps<T> extends FlatListProps<T> {}
 export function CollapsableHeaderFlatList<T extends any>(props: PropsWithChildren<CollapsableHeaderFlatListProps<T>>) {
   const { ListHeaderComponent, scrollIndicatorInsets, ...other } = props
   const { space } = useTheme()
-  const { scrollOffsetY, stickyHeaderContentHeight } = useCollapsableHeaderContext()
+  const { scrollOffsetY } = useCollapsableHeaderContext()
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const headerContainerHeight = space(6)
-  const totalStickyHeaderHeight = Animated.add(headerContainerHeight * 2, stickyHeaderContentHeight)
 
   return (
     <AnimatedFlatList
       {...other}
       ListHeaderComponent={() => (
         <>
-          {isEnabledImprovedAlertsFlow && <Animated.View style={{ height: totalStickyHeaderHeight }} />}
+          {isEnabledImprovedAlertsFlow && <CollapsableContentOffset />}
           {ListHeaderComponent}
         </>
       )}
