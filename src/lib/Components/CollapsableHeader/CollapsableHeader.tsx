@@ -32,7 +32,7 @@ export const CollapsableHeader: React.FC<CollapsableHeaderProps> = (props) => {
   })
 
   return (
-    <Box>
+    <Box position="absolute" top={0} left={0} right={0} backgroundColor="white">
       <FancyModalHeader hideBottomDivider onLeftButtonPress={onLeftButtonPress} />
       <Animated.View
         pointerEvents="box-none"

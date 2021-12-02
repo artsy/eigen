@@ -46,6 +46,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const tracking = useTracking()
   const { closeModal, id, mode, slug, title = "Sort & Filter" } = route.params
 
+  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const previouslyAppliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.previouslyAppliedFilters)
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
@@ -134,18 +135,21 @@ export const ArtworkFilterOptionsScreen: React.FC<
     clearAllFilters()
   }
 
+  const headerComponent = (
+    <ArtworkFilterOptionsHeader
+      title={title}
+      rightButtonDisabled={!isClearAllButtonEnabled}
+      onLeftButtonPress={handleTappingCloseIcon}
+      onRightButtonPress={handleClearAllPress}
+      rightButtonText="Clear All"
+      useXButton
+    />
+  )
+
   return (
     <CollapsableHeaderContextContainer>
       <Flex flex={1}>
-        <ArtworkFilterOptionsHeader
-          title={title}
-          rightButtonDisabled={!isClearAllButtonEnabled}
-          onLeftButtonPress={handleTappingCloseIcon}
-          onRightButtonPress={handleClearAllPress}
-          rightButtonText="Clear All"
-          useXButton
-        />
-
+        {!isEnabledImprovedAlertsFlow && headerComponent}
         <CollapsableHeaderFlatList<FilterDisplayConfig>
           keyExtractor={(_item, index) => String(index)}
           data={sortedFilterOptions}
@@ -162,6 +166,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
             )
           }}
         />
+        {!!isEnabledImprovedAlertsFlow && headerComponent}
       </Flex>
     </CollapsableHeaderContextContainer>
   )

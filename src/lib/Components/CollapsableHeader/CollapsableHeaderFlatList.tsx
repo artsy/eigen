@@ -22,14 +22,14 @@ export function CollapsableHeaderFlatList<T extends any>(props: PropsWithChildre
       {...other}
       ListHeaderComponent={() => (
         <>
-          {isEnabledImprovedAlertsFlow && <Box height={headerContainerHeight} />}
+          {isEnabledImprovedAlertsFlow && <Box height={headerContainerHeight * 2} />}
           {ListHeaderComponent}
         </>
       )}
       scrollEventThrottle={0.0000000001}
       scrollIndicatorInsets={{
         ...scrollIndicatorInsets,
-        top: isEnabledImprovedAlertsFlow ? headerContainerHeight : scrollIndicatorInsets?.top,
+        top: isEnabledImprovedAlertsFlow ? headerContainerHeight * 2 : scrollIndicatorInsets?.top,
       }}
       onScroll={Animated.event([
         {
