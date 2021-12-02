@@ -40,6 +40,7 @@ import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collecti
 // Consignments / My Collection
 import { Consignments } from "./Scenes/Consignments"
 import { ConsignmentsSubmissionForm } from "./Scenes/Consignments/ConsignmentsHome/ConsignmentsSubmissionForm"
+import { SubmitArtworkOverview } from "./Scenes/Consignments/Screens/SubmitArtworkOverview/SubmitArtworkOverview"
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
 import { FairAllFollowedArtistsQueryRenderer } from "./Scenes/Fair/FairAllFollowedArtists"
 import { FairArticlesQueryRenderer } from "./Scenes/Fair/FairArticles"
@@ -264,6 +265,8 @@ export const modules = defineModules({
   Auction: nativeModule(),
   Auction2: reactModule(SaleQueryRenderer, { fullBleed: true }),
   Auctions: reactModule(SalesQueryRenderer),
+  // Auctions: reactModule(SubmitArtworkOverview),
+  SubmitArtworkOverview: reactModule(SubmitArtworkOverview),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
   AuctionResult: reactModule(AuctionResultQueryRenderer),

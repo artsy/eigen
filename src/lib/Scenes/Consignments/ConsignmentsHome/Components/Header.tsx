@@ -1,4 +1,5 @@
 import { ContextModule, OwnerType, TappedConsignArgs } from "@artsy/cohesion"
+import { navigate } from "lib/navigation/navigate"
 import { Box, Button, Sans, Spacer } from "palette"
 import React from "react"
 
@@ -14,7 +15,9 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ onConsignPress }) => {
   const handlePress = () => {
-    onConsignPress(consignArgs)
+    // navigate(`/auctions`)
+    navigate(`/submit-artwork-overview`)
+    // onConsignPress(consignArgs)
   }
 
   return (
