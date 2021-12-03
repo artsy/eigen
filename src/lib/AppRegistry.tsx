@@ -14,7 +14,6 @@ import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
 import { useSentryConfig } from "./ErrorReporting"
-import { propsStore } from "./PropsStore"
 import { About } from "./Scenes/About/About"
 import { ArticlesQueryRenderer } from "./Scenes/Articles/Articles"
 import { ArtistQueryRenderer } from "./Scenes/Artist/Artist"
@@ -96,6 +95,7 @@ import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoo
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
 import { GlobalStore, useFeatureFlag, useSelectedTab } from "./store/GlobalStore"
+import { propsStore } from "./store/PropsStore"
 import { AdminMenu } from "./utils/AdminMenu"
 import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
@@ -168,7 +168,6 @@ interface PageWrapperProps {
 }
 
 const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, ViewComponent, viewProps }) => {
-  console.log("INNERWRAPPER VIEWPROPS", viewProps)
   const safeAreaInsets = useScreenDimensions().safeAreaInsets
   const paddingTop = fullBleed ? 0 : safeAreaInsets.top
   const paddingBottom = isMainView ? 0 : safeAreaInsets.bottom
