@@ -99,6 +99,7 @@ import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider } from "./utils/track/SegmentTrackingProvider"
 import { useExperiments } from "./utils/useExperiments"
+import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenDimensions } from "./utils/useScreenDimensions"
 import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
@@ -382,6 +383,7 @@ for (const moduleName of Object.keys(modules)) {
 const Main: React.FC<{}> = track()(({}) => {
   usePreferredThemeTracking()
   useScreenReaderTracking()
+  useFreshInstallTracking()
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",

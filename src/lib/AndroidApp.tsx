@@ -1,5 +1,5 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import { getCurrentEmissionState, GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { AdminMenuWrapper } from "lib/utils/AdminMenuWrapper"
 import { addTrackingProvider, track } from "lib/utils/track"
 import { SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
@@ -18,8 +18,8 @@ import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { createAllChannels, savePendingToken } from "./utils/PushNotification"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
-import { AnalyticsConstants } from "./utils/track/constants"
 import { useExperiments } from "./utils/useExperiments"
+import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { useInitialNotification } from "./utils/useInitialNotification"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
@@ -54,14 +54,7 @@ const Main: React.FC<{}> = track()(({}) => {
   }, [])
   usePreferredThemeTracking()
   useScreenReaderTracking()
-
-  useEffect(() => {
-    const launchCount = getCurrentEmissionState().launchCount
-    if (launchCount > 1) {
-      return
-    }
-    SegmentTrackingProvider.postEvent({ name: AnalyticsConstants.FreshInstall })
-  }, [])
+  useFreshInstallTracking()
 
   useEffect(() => {
     if (isHydrated) {

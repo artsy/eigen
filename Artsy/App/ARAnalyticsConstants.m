@@ -9,8 +9,6 @@ NSString *const ARAnalyticsNotificationReceived = @"notification received";
 NSString *const ARAnalyticsNotificationTapped = @"notification tapped";
 NSString *const ARAnalyticsPushNotificationsRequested = @"push notifications requested";
 
-NSString *const ARAnalyticsFreshInstall = @"first user install";
-
 NSString *const ARAnalyticsDeepLinkOpened = @"Deep link opened";
 
 NSString *const ARAnalyticsAccountCreated = @"Created account";
