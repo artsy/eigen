@@ -54,7 +54,7 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
 
           <TouchableOpacity
             onPress={onPress}
-            style={[buttonContainerStyle, disabled && { opacity: 0.6 }]}
+            style={[buttonContainerStyle, disabled && { opacity: 0.4 }]}
             disabled={disabled}
           >
             <Box style={buttonStyle}>
