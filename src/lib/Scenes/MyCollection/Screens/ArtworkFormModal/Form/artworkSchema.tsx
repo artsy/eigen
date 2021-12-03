@@ -13,6 +13,10 @@ export const artworkSchema = Yup.object().shape({
       return true
     }
 
+    if (value === null || value === undefined) {
+      return false
+    }
+
     return value.length > 0
   }),
 })

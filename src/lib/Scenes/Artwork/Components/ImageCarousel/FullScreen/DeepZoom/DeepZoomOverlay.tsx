@@ -52,15 +52,14 @@ export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
   // setup geometry
   const levels = useMemo(() => calculateDeepZoomLevels(fullImageSize), [fullImageSize])
   const imageFittedWithinScreen = useMemo(() => fitInside(screenDimensions, { width, height }), [width, height])
-  const zoomScaleBoundaries = useMemo(() => getZoomScaleBoundaries({ imageFittedWithinScreen, levels }), [
-    levels,
-    imageFittedWithinScreen,
-  ])
-  const { minLevel, maxLevel } = useMemo(() => calculateMinMaxDeepZoomLevels({ width, height }, levels), [
-    width,
-    height,
-    levels,
-  ])
+  const zoomScaleBoundaries = useMemo(
+    () => getZoomScaleBoundaries({ imageFittedWithinScreen, levels }),
+    [levels, imageFittedWithinScreen]
+  )
+  const { minLevel, maxLevel } = useMemo(
+    () => calculateMinMaxDeepZoomLevels({ width, height }, levels),
+    [width, height, levels]
+  )
 
   // At the moment we just render all of the levels and let them decide whether or not to show any tiles
   // this lets us avoid this component needing to update.

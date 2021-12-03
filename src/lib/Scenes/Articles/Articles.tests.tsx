@@ -36,8 +36,7 @@ describe("Articles", () => {
                   },
                   href: "/article/artsy-editorial-galleries-championing-artists-caribbean-region",
                   thumbnailImage: {
-                    url:
-                      "https://artsy-media-uploads.s3.amazonaws.com/Tt17h9bjYlw1kzlkJD4BGw%2FMAG+THUMB_rodell-warner-family-and-friends-no-3-2017.jpg",
+                    url: "https://artsy-media-uploads.s3.amazonaws.com/Tt17h9bjYlw1kzlkJD4BGw%2FMAG+THUMB_rodell-warner-family-and-friends-no-3-2017.jpg",
                   },
                   thumbnailTitle: "The Galleries Championing Artists from the Caribbean Region",
                   vertical: "Art Market",
@@ -52,8 +51,7 @@ describe("Articles", () => {
                   },
                   href: "/article/artsy-editorial-5-artists-radar-june-06-01-21",
                   thumbnailImage: {
-                    url:
-                      "https://artsy-media-uploads.s3.amazonaws.com/UfoSI68zesruq3yf6MKsqw%2FMAG+THUMB+1_melanie-daniel-swimmer-2021.jpg",
+                    url: "https://artsy-media-uploads.s3.amazonaws.com/UfoSI68zesruq3yf6MKsqw%2FMAG+THUMB+1_melanie-daniel-swimmer-2021.jpg",
                   },
                   thumbnailTitle: "5 Artists on Our Radar This June",
                   vertical: "Art",

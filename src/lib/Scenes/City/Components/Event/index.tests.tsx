@@ -7,7 +7,7 @@ import React from "react"
 import { RelayProp } from "react-relay"
 import { Event } from "./index"
 
-const eventData = ({
+const eventData = {
   name: "PALAY, Trapunto Murals by Pacita Abad",
   id: "U2hvdzpwYWNpdGEtYWJhZC1hcnQtZXN0YXRlLXBhbGF5LXRyYXB1bnRvLW11cmFscy1ieS1wYWNpdGEtYWJhZA==",
   internalID: "1234567",
@@ -22,7 +22,7 @@ const eventData = ({
   partner: {
     name: "Pacita Abad Art Estate",
   },
-} as any) as Show
+} as any as Show
 
 describe("CityEvent", () => {
   it("renders properly", () => {
