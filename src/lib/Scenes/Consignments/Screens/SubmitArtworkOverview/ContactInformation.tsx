@@ -6,15 +6,13 @@ import { CollapsibleMenuItem } from "./CollapsibleMenuItem"
 
 export const ContactInformation = ({ activeStep, setActiveStep, step, totalSteps }: CollapsibleMenuItemProps) => {
   return (
-    <View>
-      <CollapsibleMenuItem
-        title="Contact information"
-        content="Contact information content"
-        step={step}
-        totalSteps={totalSteps}
-        activeStep={activeStep}
-        setActiveStep={setActiveStep}
-      />
-    </View>
+    <CollapsibleMenuItem
+      title="Contact information"
+      content="Contact information content"
+      step={step}
+      totalSteps={totalSteps}
+      activeStep={activeStep}
+      setActiveStep={setActiveStep}
+    />
   )
 }

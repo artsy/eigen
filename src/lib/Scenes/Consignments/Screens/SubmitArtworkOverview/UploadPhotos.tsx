@@ -9,15 +9,13 @@ export const UploadPhotos = ({ activeStep, setActiveStep, step, totalSteps }: Co
     // console.log("\n\n ----------------------------- \n\n ")
   }, [activeStep])
   return (
-    <View>
-      <CollapsibleMenuItem
-        title="UploadPhotos"
-        content="UploadPhotos content"
-        step={step}
-        totalSteps={totalSteps}
-        activeStep={activeStep}
-        setActiveStep={setActiveStep}
-      />
-    </View>
+    <CollapsibleMenuItem
+      title="UploadPhotos"
+      content="UploadPhotos content"
+      step={step}
+      totalSteps={totalSteps}
+      activeStep={activeStep}
+      setActiveStep={setActiveStep}
+    />
   )
 }

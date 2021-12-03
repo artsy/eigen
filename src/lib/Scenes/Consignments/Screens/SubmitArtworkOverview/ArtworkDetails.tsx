@@ -17,22 +17,15 @@ const ArtworkDetailsContent = () => {
     </View>
   )
 }
-export const ArtworkDetails: React.FC<CollapsibleMenuItemProps> = ({
-  activeStep,
-  setActiveStep,
-  step,
-  totalSteps,
-}) => {
+export const ArtworkDetails: React.FC<CollapsibleMenuItemProps> = ({ activeStep, setActiveStep, step, totalSteps }) => {
   return (
-    <ScrollView>
-      <CollapsibleMenuItem
-        title="Artwork Details"
-        activeStep={activeStep}
-        setActiveStep={setActiveStep}
-        content={<ArtworkDetailsContent />}
-        step={step}
-        totalSteps={totalSteps}
-      />
-    </ScrollView>
+    <CollapsibleMenuItem
+      title="Artwork Details"
+      activeStep={activeStep}
+      setActiveStep={setActiveStep}
+      content={<ArtworkDetailsContent />}
+      step={step}
+      totalSteps={totalSteps}
+    />
   )
 }
