@@ -100,9 +100,12 @@ export const Search: React.FC<SearchProps> = (props) => {
 
       const formattedPillsArray = [...pills, ...formattedIndices]
 
-      return enableAlgoliaArtworksGrid
-        ? formattedPillsArray.filter((pill) => pill.type === "elastic" && pill.name === "ARTWORK")
-        : formattedPillsArray.filter((pill) => pill.name.includes("Artwork_"))
+      const pillsWithAlgoliaArtworks = formattedPillsArray.filter(
+        (pill) => !(pill.type === "elastic" && pill.name === "ARTWORK")
+      )
+      const pillsWithEsArtworks = formattedPillsArray.filter((pill) => !pill.name.includes("Artwork_"))
+
+      return enableAlgoliaArtworksGrid ? pillsWithAlgoliaArtworks : pillsWithEsArtworks
     }
 
     return pills
