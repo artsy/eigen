@@ -2,6 +2,7 @@ import { OwnerType } from "@artsy/cohesion"
 import { addBreadcrumb } from "@sentry/react-native"
 import { dismissModal, goBack, navigate } from "lib/navigation/navigate"
 import { matchRoute } from "lib/navigation/routes"
+import { BottomTabRoutes } from "lib/Scenes/BottomTabs/bottomTabsConfig"
 import { getCurrentEmissionState, GlobalStore, useEnvironment, useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -116,6 +117,7 @@ export const ArtsyReactWebViewPage: React.FC<
           url={url}
           ref={ref}
           allowWebViewInnerNavigation={allowWebViewInnerNavigation}
+          isPresentedModally={isPresentedModally}
           onNavigationStateChange={
             mimicBrowserBackButton
               ? (ev) => {
@@ -135,8 +137,9 @@ export const ArtsyReactWebView = React.forwardRef<
     url: string
     allowWebViewInnerNavigation?: boolean
     onNavigationStateChange?: WebViewProps["onNavigationStateChange"]
+    isPresentedModally?: boolean
   }
->(({ url, allowWebViewInnerNavigation = true, onNavigationStateChange }, ref) => {
+>(({ url, allowWebViewInnerNavigation = true, onNavigationStateChange, isPresentedModally = false }, ref) => {
   const userAgent = getCurrentEmissionState().userAgent
 
   const [loadProgress, setLoadProgress] = useState<number | null>(null)
@@ -187,6 +190,17 @@ export const ArtsyReactWebView = React.forwardRef<
             return true
           }
 
+          // In case of a webview presentaed modally, if the targetURL is a tab View,
+          // we need to dismiss the modal first to avoid having a tab rendered within the modal
+          const modulePathName = parseURL(targetURL).pathname?.split(/\/+/).filter(Boolean) ?? []
+          if (
+            isPresentedModally &&
+            result.type === "match" &&
+            modulePathName.length > 0 &&
+            BottomTabRoutes.includes("/" + modulePathName[0])
+          ) {
+            dismissModal()
+          }
           // Otherwise use `navigate` to handle it like any other link in the app
           navigate(targetURL)
           setLoadProgress(null)
