@@ -22,21 +22,22 @@ export const UploadPhotos = ({ activeStep, setActiveStep, step, totalSteps }: Co
     </View>
   )
 }
-// export const ContactInformation = () => {
-//   return (
-//     <View>
-//       <CollapsibleMenuItem
-//         title="Contact information"
-//         content="Contact information content"
-//         step={3}
-//         totalSteps={3}
-//         // isCompleted={step1Completed}
-//       />
-//     </View>
-//   )
-// }
+export const ContactInformation = ({ activeStep, setActiveStep, step, totalSteps }: CollapsibleMenuItemProps) => {
+  return (
+    <View>
+      <CollapsibleMenuItem
+        title="Contact information"
+        content="Contact information content"
+        step={step}
+        totalSteps={totalSteps}
+        activeStep={activeStep}
+        setActiveStep={setActiveStep}
+      />
+    </View>
+  )
+}
 export const SubmitArtworkOverview = () => {
-  const totalSteps = 2
+  const totalSteps = 3
   const [activeStep, setActiveStep] = useState(1)
   useEffect(() => {
     // console.log("\n\n ----------------------------- \n\n ")
@@ -53,10 +54,7 @@ export const SubmitArtworkOverview = () => {
       <Spacer mb={3} />
       <ArtworkDetails activeStep={activeStep} setActiveStep={setActiveStep} step={1} totalSteps={totalSteps} />
       <UploadPhotos activeStep={activeStep} setActiveStep={setActiveStep} step={2} totalSteps={totalSteps} />
+      <ContactInformation activeStep={activeStep} setActiveStep={setActiveStep} step={3} totalSteps={totalSteps} />
     </ScrollView>
   )
-}
-
-{
-  /*  <ContactInformation /> */
 }
