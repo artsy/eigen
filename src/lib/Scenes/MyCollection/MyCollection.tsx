@@ -292,7 +292,8 @@ const MyCollection: React.FC<{
               )
               // tslint:disable-next-line: no-shadowed-variable
               filtering.forEach((filter) => {
-                const filterStep = filterOptions!.find((f) => f.filterType === filter.paramName)!.localSortAndFilter!
+                const filterStep = (filterOptions ?? []).find((f) => f.filterType === filter.paramName)!
+                  .localSortAndFilter!
                 processedArtworks = filterStep(processedArtworks, filter.paramValue)
               })
 

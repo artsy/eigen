@@ -50,7 +50,7 @@ export interface FilterDisplayConfig {
   displayText: string
   ScreenComponent: keyof ArtworkFilterNavigationStack
 
-  // for `custom` filtering
+  // for `local` filtering
   values?: any[]
   localSortAndFilter?: (items: any[], value?: any) => any[]
 }
@@ -83,7 +83,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
   const aggregationsState = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
-  const customFilterOptions = ArtworksFiltersStore.useStoreState((s) => s.filterOptions)
+  const localFilterOptions = ArtworksFiltersStore.useStoreState((s) => s.filterOptions)
 
   const clearFiltersZeroStateAction = ArtworksFiltersStore.useStoreActions(
     (action) => action.clearFiltersZeroStateAction
@@ -114,12 +114,12 @@ export const ArtworkFilterOptionsScreen: React.FC<
     })
   )
 
-  const filterOptions: FilterDisplayConfig[] = getStaticFilterOptionsByMode(mode, customFilterOptions).concat(
+  const filterOptions: FilterDisplayConfig[] = getStaticFilterOptionsByMode(mode, localFilterOptions).concat(
     aggregateFilterOptions
   )
 
   const sortedFilterOptions = filterOptions
-    .sort(getFilterScreenSortByMode(mode, customFilterOptions))
+    .sort(getFilterScreenSortByMode(mode, localFilterOptions))
     .filter((filterOption) => filterOption.filterType)
 
   const clearAllFilters = () => {
@@ -273,7 +273,7 @@ export const getStaticFilterOptionsByMode = (
 
 export const getFilterScreenSortByMode = (
   mode: FilterModalMode,
-  customFilterOptions: ArtworkFiltersModel["filterOptions"]
+  localFilterOptions: ArtworkFiltersModel["filterOptions"]
 ) => (left: FilterDisplayConfig, right: FilterDisplayConfig): number => {
   let sortOrder: FilterScreen[] = []
 
@@ -316,7 +316,7 @@ export const getFilterScreenSortByMode = (
       sortOrder = TagAndGeneFiltersSorted
       break
     case FilterModalMode.Custom:
-      sortOrder = customFilterOptions!.map((f) => f.filterType)
+      sortOrder = (localFilterOptions ?? []).map((f) => f.filterType)
       break
     default:
       assertNever(mode)

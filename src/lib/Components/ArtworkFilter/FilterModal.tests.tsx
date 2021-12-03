@@ -20,7 +20,7 @@ import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Sans, Theme } from "palette"
+import { bullet, Sans, Theme } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
@@ -156,26 +156,24 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
-const MockFilterModalNavigator = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
-  return (
-    <GlobalStoreProvider>
-      <Theme>
-        <ArtworkFiltersStoreProvider initialData={initialData}>
-          <ArtworkFilterNavigator
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            collection={CollectionFixture}
-            exitModal={exitModalMock}
-            closeModal={closeModalMock}
-            mode={FilterModalMode.ArtistArtworks}
-            id="abc123"
-            slug="some-artist"
-            isFilterArtworksModalVisible
-          />
-        </ArtworkFiltersStoreProvider>
-      </Theme>
-    </GlobalStoreProvider>
-  )
-}
+const MockFilterModalNavigator = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => (
+  <GlobalStoreProvider>
+    <Theme>
+      <ArtworkFiltersStoreProvider initialData={initialData}>
+        <ArtworkFilterNavigator
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          collection={CollectionFixture}
+          exitModal={exitModalMock}
+          closeModal={closeModalMock}
+          mode={FilterModalMode.ArtistArtworks}
+          id="abc123"
+          slug="some-artist"
+          visible
+        />
+      </ArtworkFiltersStoreProvider>
+    </Theme>
+  </GlobalStoreProvider>
+)
 
 describe("Filter modal navigation flow", () => {
   it("allows users to navigate forward to sort screen from filter screen", () => {
@@ -385,8 +383,8 @@ describe("Clearing filters", () => {
 
     filterModal.update()
 
-    expect(filterModal.find(OptionListItem).at(0).text()).not.toContain("•")
-    expect(filterModal.find(OptionListItem).at(1).text()).not.toContain("•")
+    expect(filterModal.find(OptionListItem).at(0).text()).not.toContain(bullet)
+    expect(filterModal.find(OptionListItem).at(1).text()).not.toContain(bullet)
   })
 })
 

@@ -13,14 +13,14 @@ interface AdditionalGeneIDsOptionsScreenProps
 
 export const AdditionalGeneIDsOptionsScreen: React.FC<AdditionalGeneIDsOptionsScreenProps> = ({ navigation }) => {
   const filterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
-  const customFilterOptions = ArtworksFiltersStore.useStoreState((state) => state.filterOptions)
+  const localFilterOptions = ArtworksFiltersStore.useStoreState((state) => state.filterOptions)
 
   // Uses the medium aggregations
   const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.medium })
 
   let options: FilterData[] = []
   if (filterType === "local") {
-    options = customFilterOptions!.find((o) => o.filterType === "additionalGeneIDs")!.values!
+    options = (localFilterOptions ?? []).find((o) => o.filterType === "additionalGeneIDs")!.values!
   } else {
     // Convert aggregations to filter options
     options = (aggregation?.counts ?? []).map(({ name: displayText, value: paramValue }) => {
