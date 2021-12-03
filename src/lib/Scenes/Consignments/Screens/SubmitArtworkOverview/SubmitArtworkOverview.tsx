@@ -1,41 +1,11 @@
 import { track as _track } from "lib/utils/track"
 import { Spacer } from "palette"
 import React, { useEffect, useState } from "react"
-import { ScrollView, View } from "react-native"
-import { ArtworkDetails, CollapsibleMenuItemProps } from "./ArtworkDetails"
-import { CollapsibleMenuItem } from "./CollapsibleMenuItem"
+import { ScrollView } from "react-native"
+import { ArtworkDetails } from "./ArtworkDetails"
+import { ContactInformation } from "./ContactInformation"
+import { UploadPhotos } from "./UploadPhotos"
 
-export const UploadPhotos = ({ activeStep, setActiveStep, step, totalSteps }: CollapsibleMenuItemProps) => {
-  useEffect(() => {
-    // console.log("\n\n ----------------------------- \n\n ")
-  }, [activeStep])
-  return (
-    <View>
-      <CollapsibleMenuItem
-        title="UploadPhotos"
-        content="UploadPhotos content"
-        step={step}
-        totalSteps={totalSteps}
-        activeStep={activeStep}
-        setActiveStep={setActiveStep}
-      />
-    </View>
-  )
-}
-export const ContactInformation = ({ activeStep, setActiveStep, step, totalSteps }: CollapsibleMenuItemProps) => {
-  return (
-    <View>
-      <CollapsibleMenuItem
-        title="Contact information"
-        content="Contact information content"
-        step={step}
-        totalSteps={totalSteps}
-        activeStep={activeStep}
-        setActiveStep={setActiveStep}
-      />
-    </View>
-  )
-}
 export const SubmitArtworkOverview = () => {
   const totalSteps = 3
   const [activeStep, setActiveStep] = useState(1)
