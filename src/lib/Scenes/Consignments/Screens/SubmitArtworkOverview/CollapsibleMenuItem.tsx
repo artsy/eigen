@@ -1,6 +1,6 @@
 import { track as _track } from "lib/utils/track"
-import { Sans, Spacer } from "palette"
-import { ArrowDownIcon, ArrowRightIcon, CheckCircleIcon, Separator } from "palette"
+import { Sans } from "palette"
+import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, Separator } from "palette"
 import React, { useState } from "react"
 import { StyleSheet, TouchableOpacity, View } from "react-native"
 import { SaveAndContinue } from "./SaveAndContinue"
@@ -35,28 +35,29 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
       }}
     >
       <View>
-        <Sans size="1" mx="2" mt="1">
+        <Sans size="1" mx="2">
           Step {step} of {totalSteps}
         </Sans>
-        <Spacer mb={0.1} />
         <View style={styles.titleAndIcon}>
           <Sans size="8" mx="2">
             {title}
           </Sans>
           <View style={styles.icons}>
             {!!isCompleted && <CheckCircleIcon fill="green100" height={24} width={24} style={styles.circle} />}
-            {!!isContentVisible ? <ArrowDownIcon /> : <ArrowRightIcon />}
+            {!!isContentVisible ? <ArrowUpIcon /> : <ArrowDownIcon />}
           </View>
         </View>
       </View>
       {!!isContentVisible && (
-        <Sans size="1" mx="2" mt="1">
-          {content}
-        </Sans>
+        <>
+          <Sans size="1" mx="2" mt="1">
+            {content}
+          </Sans>
+          <SaveAndContinue setIsContentVisible={setIsContentVisible} />
+        </>
       )}
-      <SaveAndContinue />
       {/* doesnot add margin to the right... */}
-      <Separator my="3" mx="2" />
+      <Separator marginTop="40" marginBottom="20" mx="2" />
     </TouchableOpacity>
   )
 }

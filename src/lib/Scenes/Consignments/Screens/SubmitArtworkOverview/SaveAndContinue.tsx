@@ -4,14 +4,13 @@ import React from "react"
 import { View } from "react-native"
 
 interface Props {
-  content?: string | React.FC | any
+  setIsContentVisible?: string | React.FC | any
 }
-export const SaveAndContinue: React.FC<Props> = (
-  {
-    // content = "Which component's things should we save and continue....",
-    // setStepCompleted
-  }
-) => {
+export const SaveAndContinue: React.FC<Props> = ({
+  setIsContentVisible,
+  // content = "Which component's things should we save and continue....",
+  // setStepCompleted
+}) => {
   // const [isFormComplete, setIsFormComplete] = useState(false)
 
   // const checkIfFormIsCompleted = () => {
@@ -27,6 +26,7 @@ export const SaveAndContinue: React.FC<Props> = (
           maxWidth={540}
           block
           onPress={() => {
+            setIsContentVisible(false)
             // setStepCompleted(!isFormComplete)
             // setIsFormComplete(!isFormComplete)
           }}

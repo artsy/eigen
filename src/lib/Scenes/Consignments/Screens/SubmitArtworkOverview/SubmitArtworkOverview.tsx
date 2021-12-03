@@ -11,13 +11,10 @@ export const UploadPhotos = () => {
       <CollapsibleMenuItem
         title="UploadPhotos"
         content="UploadPhotos content"
-        step={1}
+        step={2}
         totalSteps={3}
         // isCompleted={step1Completed}
       />
-      <Sans size="1" mx="2" mt="1">
-        UploadPhotos
-      </Sans>
     </View>
   )
 }
@@ -27,7 +24,7 @@ export const ContactInformation = () => {
       <CollapsibleMenuItem
         title="Contact information"
         content="Contact information content"
-        step={1}
+        step={3}
         totalSteps={3}
         // isCompleted={step1Completed}
       />
