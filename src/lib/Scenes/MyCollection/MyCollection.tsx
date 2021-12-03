@@ -169,7 +169,7 @@ const MyCollection: React.FC<{
     })
   }
 
-  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
+  const setJSX = __TEST__ ? jest.fn() : useContext(StickyTabPageFlatListContext).setJSX
 
   const space = useSpace()
 
