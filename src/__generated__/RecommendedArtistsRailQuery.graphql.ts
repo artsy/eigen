@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e7bf49f0e64d93199aa4e5ef78873450 */
+/* @relayHash 5b2ba08834f800209f11e87aa82c18d5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,11 +34,6 @@ query RecommendedArtistsRailQuery(
 
 fragment RecommendedArtistsRail_me_1G22uz on Me {
   artistRecommendations(first: $count, after: $cursor) {
-    pageInfo {
-      hasNextPage
-      startCursor
-      endCursor
-    }
     edges {
       node {
         name
@@ -48,7 +43,7 @@ fragment RecommendedArtistsRail_me_1G22uz on Me {
         href
         formattedNationalityAndBirthday
         image {
-          url
+          url(version: "small")
         }
         basedOn {
           name
@@ -58,6 +53,10 @@ fragment RecommendedArtistsRail_me_1G22uz on Me {
         __typename
       }
       cursor
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
     }
   }
 }
@@ -169,38 +168,6 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "PageInfo",
-                "kind": "LinkedField",
-                "name": "pageInfo",
-                "plural": false,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "hasNextPage",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "startCursor",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "endCursor",
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
                 "concreteType": "ArtistEdge",
                 "kind": "LinkedField",
                 "name": "edges",
@@ -254,10 +221,16 @@ return {
                         "selections": [
                           {
                             "alias": null,
-                            "args": null,
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "version",
+                                "value": "small"
+                              }
+                            ],
                             "kind": "ScalarField",
                             "name": "url",
-                            "storageKey": null
+                            "storageKey": "url(version:\"small\")"
                           }
                         ],
                         "storageKey": null
@@ -301,6 +274,31 @@ return {
                   }
                 ],
                 "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "PageInfo",
+                "kind": "LinkedField",
+                "name": "pageInfo",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "endCursor",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "hasNextPage",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
               }
             ],
             "storageKey": null
@@ -321,7 +319,7 @@ return {
     ]
   },
   "params": {
-    "id": "e7bf49f0e64d93199aa4e5ef78873450",
+    "id": "5b2ba08834f800209f11e87aa82c18d5",
     "metadata": {},
     "name": "RecommendedArtistsRailQuery",
     "operationKind": "query",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash bdd2999cc0413235112e4002ff56307c */
+/* @relayHash 7749c795df094d55dfc792aa432939e7 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type ArtistRailNewSuggestionQueryVariables = {
@@ -57,7 +57,7 @@ query ArtistRailNewSuggestionQuery(
             name
             formattedNationalityAndBirthday
             image {
-              url
+              url(version: "small")
             }
             basedOn {
               name
@@ -167,10 +167,16 @@ v9 = {
   "selections": [
     {
       "alias": null,
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "version",
+          "value": "small"
+        }
+      ],
       "kind": "ScalarField",
       "name": "url",
-      "storageKey": null
+      "storageKey": "url(version:\"small\")"
     }
   ],
   "storageKey": null
@@ -354,7 +360,7 @@ return {
     ]
   },
   "params": {
-    "id": "bdd2999cc0413235112e4002ff56307c",
+    "id": "7749c795df094d55dfc792aa432939e7",
     "metadata": {},
     "name": "ArtistRailNewSuggestionQuery",
     "operationKind": "query",

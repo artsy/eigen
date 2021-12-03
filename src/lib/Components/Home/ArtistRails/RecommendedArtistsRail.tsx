@@ -85,7 +85,7 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
         renderItem={({ item: artist, index }) => {
           return (
             <ArtistCard
-              artist={artist as any}
+              artist={artist}
               onPress={() => {
                 trackEvent(tracks.tapArtistCard(artist.internalID, artist.slug, index))
               }}
@@ -118,11 +118,6 @@ export const RecommendedArtistsRailFragmentContainer = createPaginationContainer
       @argumentDefinitions(count: { type: "Int", defaultValue: 6 }, cursor: { type: "String" }) {
         artistRecommendations(first: $count, after: $cursor)
           @connection(key: "RecommendedArtistsRail_artistRecommendations") {
-          pageInfo {
-            hasNextPage
-            startCursor
-            endCursor
-          }
           edges {
             node {
               name

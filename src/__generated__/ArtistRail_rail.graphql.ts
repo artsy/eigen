@@ -109,10 +109,16 @@ return {
           "selections": [
             {
               "alias": null,
-              "args": null,
+              "args": [
+                {
+                  "kind": "Literal",
+                  "name": "version",
+                  "value": "small"
+                }
+              ],
               "kind": "ScalarField",
               "name": "url",
-              "storageKey": null
+              "storageKey": "url(version:\"small\")"
             }
           ],
           "storageKey": null

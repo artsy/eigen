@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ded192f43c97ea3a64dbec18c81956a2 */
+/* @relayHash 5fbfb1de4814040975e5ac3f82152443 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -62,7 +62,7 @@ fragment ArtistRail_rail on HomePageArtistModule {
     name
     formattedNationalityAndBirthday
     image {
-      url
+      url(version: "small")
     }
     basedOn {
       name
@@ -325,11 +325,6 @@ fragment Home_showsByFollowedArtists on ShowConnection {
 
 fragment RecommendedArtistsRail_me on Me {
   artistRecommendations(first: 6) {
-    pageInfo {
-      hasNextPage
-      startCursor
-      endCursor
-    }
     edges {
       node {
         name
@@ -339,7 +334,7 @@ fragment RecommendedArtistsRail_me on Me {
         href
         formattedNationalityAndBirthday
         image {
-          url
+          url(version: "small")
         }
         basedOn {
           name
@@ -349,6 +344,10 @@ fragment RecommendedArtistsRail_me on Me {
         __typename
       }
       cursor
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
     }
   }
 }
@@ -838,32 +837,39 @@ v20 = {
   "name": "formattedNationalityAndBirthday",
   "storageKey": null
 },
-v21 = {
+v21 = [
+  {
+    "alias": null,
+    "args": [
+      {
+        "kind": "Literal",
+        "name": "version",
+        "value": "small"
+      }
+    ],
+    "kind": "ScalarField",
+    "name": "url",
+    "storageKey": "url(version:\"small\")"
+  }
+],
+v22 = {
   "alias": null,
   "args": null,
   "concreteType": "Image",
   "kind": "LinkedField",
   "name": "image",
   "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "url",
-      "storageKey": null
-    }
-  ],
+  "selections": (v21/*: any*/),
   "storageKey": null
 },
-v22 = {
+v23 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "isFollowed",
   "storageKey": null
 },
-v23 = {
+v24 = {
   "alias": null,
   "args": null,
   "concreteType": "Image",
@@ -875,12 +881,12 @@ v23 = {
   ],
   "storageKey": null
 },
-v24 = {
+v25 = {
   "kind": "Literal",
   "name": "first",
   "value": 2
 },
-v25 = {
+v26 = {
   "alias": null,
   "args": null,
   "concreteType": "FilterArtworksEdge",
@@ -896,7 +902,7 @@ v25 = {
       "name": "node",
       "plural": false,
       "selections": [
-        (v23/*: any*/),
+        (v24/*: any*/),
         (v3/*: any*/)
       ],
       "storageKey": null
@@ -904,39 +910,39 @@ v25 = {
   ],
   "storageKey": null
 },
-v26 = [
-  (v25/*: any*/),
+v27 = [
+  (v26/*: any*/),
   (v3/*: any*/)
 ],
-v27 = [
+v28 = [
   {
     "kind": "Literal",
     "name": "first",
     "value": 3
   }
 ],
-v28 = [
+v29 = [
   {
     "kind": "Literal",
     "name": "short",
     "value": true
   }
 ],
-v29 = {
+v30 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "cursor",
   "storageKey": null
 },
-v30 = [
+v31 = [
   {
     "kind": "Literal",
     "name": "first",
     "value": 6
   }
 ],
-v31 = [
+v32 = [
   {
     "kind": "Literal",
     "name": "format",
@@ -1110,9 +1116,9 @@ return {
                   (v6/*: any*/),
                   (v10/*: any*/),
                   (v20/*: any*/),
-                  (v21/*: any*/),
+                  (v22/*: any*/),
                   (v16/*: any*/),
-                  (v22/*: any*/)
+                  (v23/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -1165,7 +1171,7 @@ return {
                     "name": "exhibitionPeriod",
                     "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                   },
-                  (v23/*: any*/),
+                  (v24/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -1195,7 +1201,7 @@ return {
                   {
                     "alias": "followedArtistArtworks",
                     "args": [
-                      (v24/*: any*/),
+                      (v25/*: any*/),
                       {
                         "kind": "Literal",
                         "name": "input",
@@ -1208,19 +1214,19 @@ return {
                     "kind": "LinkedField",
                     "name": "filterArtworksConnection",
                     "plural": false,
-                    "selections": (v26/*: any*/),
+                    "selections": (v27/*: any*/),
                     "storageKey": "filterArtworksConnection(first:2,input:{\"includeArtworksByFollowedArtists\":true})"
                   },
                   {
                     "alias": "otherArtworks",
                     "args": [
-                      (v24/*: any*/)
+                      (v25/*: any*/)
                     ],
                     "concreteType": "FilterArtworksConnection",
                     "kind": "LinkedField",
                     "name": "filterArtworksConnection",
                     "plural": false,
-                    "selections": (v26/*: any*/),
+                    "selections": (v27/*: any*/),
                     "storageKey": "filterArtworksConnection(first:2)"
                   }
                 ],
@@ -1249,7 +1255,7 @@ return {
                   (v7/*: any*/),
                   {
                     "alias": null,
-                    "args": (v27/*: any*/),
+                    "args": (v28/*: any*/),
                     "concreteType": "FilterArtworksConnection",
                     "kind": "LinkedField",
                     "name": "artworksConnection",
@@ -1273,7 +1279,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v25/*: any*/),
+                      (v26/*: any*/),
                       (v3/*: any*/)
                     ],
                     "storageKey": "artworksConnection(first:3)"
@@ -1407,14 +1413,14 @@ return {
                   },
                   {
                     "alias": null,
-                    "args": (v28/*: any*/),
+                    "args": (v29/*: any*/),
                     "kind": "ScalarField",
                     "name": "distanceToOpen",
                     "storageKey": "distanceToOpen(short:true)"
                   },
                   {
                     "alias": null,
-                    "args": (v28/*: any*/),
+                    "args": (v29/*: any*/),
                     "kind": "ScalarField",
                     "name": "distanceToClose",
                     "storageKey": "distanceToClose(short:true)"
@@ -1439,7 +1445,7 @@ return {
         "selections": [
           {
             "alias": null,
-            "args": (v27/*: any*/),
+            "args": (v28/*: any*/),
             "concreteType": "AuctionResultConnection",
             "kind": "LinkedField",
             "name": "auctionResultsByFollowedArtists",
@@ -1460,7 +1466,7 @@ return {
                 "name": "edges",
                 "plural": true,
                 "selections": [
-                  (v29/*: any*/),
+                  (v30/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -1654,44 +1660,12 @@ return {
           },
           {
             "alias": null,
-            "args": (v30/*: any*/),
+            "args": (v31/*: any*/),
             "concreteType": "ArtistConnection",
             "kind": "LinkedField",
             "name": "artistRecommendations",
             "plural": false,
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "PageInfo",
-                "kind": "LinkedField",
-                "name": "pageInfo",
-                "plural": false,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "hasNextPage",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "startCursor",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "endCursor",
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              },
               {
                 "alias": null,
                 "args": null,
@@ -1714,14 +1688,39 @@ return {
                       (v8/*: any*/),
                       (v6/*: any*/),
                       (v20/*: any*/),
-                      (v21/*: any*/),
-                      (v16/*: any*/),
                       (v22/*: any*/),
+                      (v16/*: any*/),
+                      (v23/*: any*/),
                       (v15/*: any*/)
                     ],
                     "storageKey": null
                   },
-                  (v29/*: any*/)
+                  (v30/*: any*/)
+                ],
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "PageInfo",
+                "kind": "LinkedField",
+                "name": "pageInfo",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "endCursor",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "hasNextPage",
+                    "storageKey": null
+                  }
                 ],
                 "storageKey": null
               }
@@ -1730,7 +1729,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v30/*: any*/),
+            "args": (v31/*: any*/),
             "filters": null,
             "handle": "connection",
             "key": "RecommendedArtistsRail_artistRecommendations",
@@ -1766,14 +1765,14 @@ return {
                       (v10/*: any*/),
                       {
                         "alias": "formattedStartAt",
-                        "args": (v31/*: any*/),
+                        "args": (v32/*: any*/),
                         "kind": "ScalarField",
                         "name": "startAt",
                         "storageKey": "startAt(format:\"MMM D\")"
                       },
                       {
                         "alias": "formattedEndAt",
-                        "args": (v31/*: any*/),
+                        "args": (v32/*: any*/),
                         "kind": "ScalarField",
                         "name": "endAt",
                         "storageKey": "endAt(format:\"MMM D\")"
@@ -1786,21 +1785,7 @@ return {
                         "kind": "LinkedField",
                         "name": "metaImage",
                         "plural": false,
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": [
-                              {
-                                "kind": "Literal",
-                                "name": "version",
-                                "value": "small"
-                              }
-                            ],
-                            "kind": "ScalarField",
-                            "name": "url",
-                            "storageKey": "url(version:\"small\")"
-                          }
-                        ],
+                        "selections": (v21/*: any*/),
                         "storageKey": null
                       },
                       {
@@ -1847,7 +1832,7 @@ return {
     ]
   },
   "params": {
-    "id": "ded192f43c97ea3a64dbec18c81956a2",
+    "id": "5fbfb1de4814040975e5ac3f82152443",
     "metadata": {},
     "name": "HomeBelowTheFoldQuery",
     "operationKind": "query",

@@ -88,7 +88,7 @@ export const ArtistCardContainer = createFragmentContainer(ArtistCard, {
       name
       formattedNationalityAndBirthday
       image {
-        url
+        url(version: "small")
       }
       basedOn {
         name

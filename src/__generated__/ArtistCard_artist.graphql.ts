@@ -88,10 +88,16 @@ return {
       "selections": [
         {
           "alias": null,
-          "args": null,
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "version",
+              "value": "small"
+            }
+          ],
           "kind": "ScalarField",
           "name": "url",
-          "storageKey": null
+          "storageKey": "url(version:\"small\")"
         }
       ],
       "storageKey": null
@@ -120,5 +126,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'cf053112435eabee6fc052c558acdc5e';
+(node as any).hash = '33690bbcdf6f492c0b06a5e3de7785a6';
 export default node;

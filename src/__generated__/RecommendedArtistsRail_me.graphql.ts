@@ -6,11 +6,6 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type RecommendedArtistsRail_me = {
     readonly artistRecommendations: {
-        readonly pageInfo: {
-            readonly hasNextPage: boolean;
-            readonly startCursor: string | null;
-            readonly endCursor: string | null;
-        };
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly name: string | null;
@@ -86,38 +81,6 @@ return {
         {
           "alias": null,
           "args": null,
-          "concreteType": "PageInfo",
-          "kind": "LinkedField",
-          "name": "pageInfo",
-          "plural": false,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "hasNextPage",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "startCursor",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "endCursor",
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
           "concreteType": "ArtistEdge",
           "kind": "LinkedField",
           "name": "edges",
@@ -177,10 +140,16 @@ return {
                   "selections": [
                     {
                       "alias": null,
-                      "args": null,
+                      "args": [
+                        {
+                          "kind": "Literal",
+                          "name": "version",
+                          "value": "small"
+                        }
+                      ],
                       "kind": "ScalarField",
                       "name": "url",
-                      "storageKey": null
+                      "storageKey": "url(version:\"small\")"
                     }
                   ],
                   "storageKey": null
@@ -223,6 +192,31 @@ return {
             }
           ],
           "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "PageInfo",
+          "kind": "LinkedField",
+          "name": "pageInfo",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "endCursor",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "hasNextPage",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
         }
       ],
       "storageKey": null
@@ -232,5 +226,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '2393ed18ed46de32808dadaaa87836a4';
+(node as any).hash = 'b7779059ad40a7860438491bb46de40b';
 export default node;
