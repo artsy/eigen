@@ -40,6 +40,7 @@ import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collecti
 // Consignments / My Collection
 import { Consignments } from "./Scenes/Consignments"
 import { ConsignmentsSubmissionForm } from "./Scenes/Consignments/ConsignmentsHome/ConsignmentsSubmissionForm"
+import { ArtworkSubmitted } from "./Scenes/Consignments/Screens/SubmitArtworkOverview/ArtworkSubmitted"
 import { SubmitArtworkOverview } from "./Scenes/Consignments/Screens/SubmitArtworkOverview/SubmitArtworkOverview"
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
 import { FairAllFollowedArtistsQueryRenderer } from "./Scenes/Fair/FairAllFollowedArtists"
@@ -252,7 +253,10 @@ export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
   Admin: nativeModule({ alwaysPresentModally: true }),
-  Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
+  Admin2: reactModule(AdminMenu, {
+    alwaysPresentModally: true,
+    hasOwnModalCloseButton: true,
+  }),
   About: reactModule(About),
   Articles: reactModule(ArticlesQueryRenderer),
   Artist: reactModule(ArtistQueryRenderer),
@@ -266,6 +270,7 @@ export const modules = defineModules({
   Auction2: reactModule(SaleQueryRenderer, { fullBleed: true }),
   Auctions: reactModule(SalesQueryRenderer),
   // Auctions: reactModule(SubmitArtworkOverview),
+  ArtworkSubmitted: reactModule(ArtworkSubmitted),
   SubmitArtworkOverview: reactModule(SubmitArtworkOverview),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
@@ -298,7 +303,9 @@ export const modules = defineModules({
   FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
   FairArticles: reactModule(FairArticlesQueryRenderer),
   FairAllFollowedArtists: reactModule(FairAllFollowedArtistsQueryRenderer),
-  FairBMWArtActivation: reactModule(FairBMWArtActivationQueryRenderer, { fullBleed: true }),
+  FairBMWArtActivation: reactModule(FairBMWArtActivationQueryRenderer, {
+    fullBleed: true,
+  }),
   Favorites: reactModule(Favorites),
   Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),
   FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),
@@ -307,7 +314,10 @@ export const modules = defineModules({
   Tag: reactModule(TagQueryRenderer),
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
   Inbox: reactModule(InboxWrapper, { isRootViewForTabName: "inbox" }),
-  Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
+  Inquiry: reactModule(Inquiry, {
+    alwaysPresentModally: true,
+    hasOwnModalCloseButton: true,
+  }),
   LiveAuction: nativeModule({
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
@@ -325,21 +335,33 @@ export const modules = defineModules({
   }),
   Map: reactModule(MapContainer, { fullBleed: true }),
   MyAccount: reactModule(MyAccountQueryRenderer),
-  MyAccountEditEmail: reactModule(MyAccountEditEmailQueryRenderer, { hidesBackButton: true }),
-  MyAccountEditName: reactModule(MyAccountEditNameQueryRenderer, { hidesBackButton: true }),
-  MyAccountEditPassword: reactModule(MyAccountEditPassword, { hidesBackButton: true }),
-  MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, { hidesBackButton: true }),
+  MyAccountEditEmail: reactModule(MyAccountEditEmailQueryRenderer, {
+    hidesBackButton: true,
+  }),
+  MyAccountEditName: reactModule(MyAccountEditNameQueryRenderer, {
+    hidesBackButton: true,
+  }),
+  MyAccountEditPassword: reactModule(MyAccountEditPassword, {
+    hidesBackButton: true,
+  }),
+  MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, {
+    hidesBackButton: true,
+  }),
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
   MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer),
   MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
   MyCollectionArtworkImages: reactModule(MyCollectionArtworkImagesQueryRenderer),
-  MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }),
+  MyProfile: reactModule(MyProfileQueryRenderer, {
+    isRootViewForTabName: "profile",
+  }),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfileSettings: reactModule(MyProfileSettings),
   OrderHistory: reactModule(OrderHistoryQueryRender),
   OrderDetails: reactModule(OrderDetailsQueryRender),
-  MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, { hidesBackButton: true }),
+  MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, {
+    hidesBackButton: true,
+  }),
   MyProfilePushNotifications: reactModule(MyProfilePushNotificationsQueryRenderer),
   MySellingProfile: reactModule(View),
   Partner: reactModule(PartnerQueryRenderer),
@@ -366,7 +388,10 @@ export const modules = defineModules({
   WorksForYou: reactModule(WorksForYouQueryRenderer),
   NewWorksForYou: reactModule(NewWorksForYouQueryRenderer),
   LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer),
-  Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
+  Storybook: reactModule(StorybookUIRoot, {
+    fullBleed: true,
+    hidesBackButton: true,
+  }),
   SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer),
 })
@@ -376,7 +401,9 @@ for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]
   if ("Component" in descriptor) {
     if (Platform.OS === "ios") {
-      register(moduleName, descriptor.Component, { fullBleed: descriptor.options.fullBleed })
+      register(moduleName, descriptor.Component, {
+        fullBleed: descriptor.options.fullBleed,
+      })
     }
   }
 }
