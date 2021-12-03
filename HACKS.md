@@ -279,3 +279,17 @@ Once sentry adds `enableOutOfMemoryTracking` to their `ReactNativeOptions` type.
 #### Explanation/Context:
 
 `enableOutOfMemoryTracking` seems to be missing from the `ReactNativeOptions` typing although it's working properly (see https://github.com/getsentry/sentry-react-native/issues/1633). We need to add it so that we can stop receiving Sentry errors related to out of memory.
+
+# `PropsStore` pass functions as props inside navigate() on iOS
+
+#### When can we remove this:
+
+Once we no longer use our native implementation of pushView on iOS
+
+#### Explanation/Context:
+
+We cannot pass functions as props because `navigate.ts` on ios uses the native obj-c definition of pushView in `ARScreenPresenterModule.m`.
+React native is not able to convert js functions so this is passed as null to the underlying native method
+See what can be converted: https://github.com/facebook/react-native/blob/main/React/Base/RCTConvert.h
+
+PropsStore allows us to temporarily hold on the props and reinject them back into the destination view or module.
