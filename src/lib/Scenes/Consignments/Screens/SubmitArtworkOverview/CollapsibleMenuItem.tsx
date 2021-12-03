@@ -31,7 +31,7 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
 
   return (
     <TouchableOpacity
-      style={{ padding: 20 }}
+      style={styles.container}
       onPress={() => {
         setIsContentVisible(!isContentVisible)
       }}
@@ -43,14 +43,7 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
         <View style={styles.titleAndIcon}>
           <Sans size="8">{title}</Sans>
           <View style={styles.icons}>
-            {!!isCompleted && (
-              <CheckCircleIcon
-                fill="green100"
-                height={24}
-                width={24}
-                style={styles.circle}
-              />
-            )}
+            {!!isCompleted && <CheckCircleIcon fill="green100" height={24} width={24} style={styles.circle} />}
             {!!isContentVisible ? <ArrowUpIcon /> : <ArrowDownIcon />}
           </View>
         </View>
@@ -75,6 +68,7 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
 }
 
 const styles = StyleSheet.create({
+  container: { paddingLeft: 20, paddingRight: 20 },
   titleAndIcon: {
     flexDirection: "row",
     justifyContent: "space-between",

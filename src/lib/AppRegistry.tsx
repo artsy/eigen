@@ -270,7 +270,7 @@ export const modules = defineModules({
   Auction2: reactModule(SaleQueryRenderer, { fullBleed: true }),
   Auctions: reactModule(SalesQueryRenderer),
   // Auctions: reactModule(SubmitArtworkOverview),
-  ArtworkSubmitted: reactModule(ArtworkSubmitted),
+  ArtworkSubmitted: reactModule(ArtworkSubmitted, { hidesBackButton: true }),
   SubmitArtworkOverview: reactModule(SubmitArtworkOverview),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),

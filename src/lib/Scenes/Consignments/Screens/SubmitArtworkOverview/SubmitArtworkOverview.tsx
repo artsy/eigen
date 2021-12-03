@@ -5,12 +5,7 @@ import { ScrollView, View } from "react-native"
 import { ArtworkDetails, CollapsibleMenuItemProps } from "./ArtworkDetails"
 import { CollapsibleMenuItem } from "./CollapsibleMenuItem"
 
-export const UploadPhotos = ({
-  activeStep,
-  setActiveStep,
-  step,
-  totalSteps,
-}: CollapsibleMenuItemProps) => {
+export const UploadPhotos = ({ activeStep, setActiveStep, step, totalSteps }: CollapsibleMenuItemProps) => {
   useEffect(() => {
     // console.log("\n\n ----------------------------- \n\n ")
   }, [activeStep])
@@ -49,23 +44,15 @@ export const SubmitArtworkOverview = () => {
 
   return (
     <ScrollView
-      style={{ flex: 1 }}
       alwaysBounceVertical={false}
-      contentContainerStyle={{ paddingVertical: 20, justifyContent: "center" }}
+      contentContainerStyle={{
+        paddingVertical: 20,
+        justifyContent: "center",
+      }}
     >
       <Spacer mb={3} />
-      <ArtworkDetails
-        activeStep={activeStep}
-        setActiveStep={setActiveStep}
-        step={1}
-        totalSteps={totalSteps}
-      />
-      <UploadPhotos
-        activeStep={activeStep}
-        setActiveStep={setActiveStep}
-        step={2}
-        totalSteps={totalSteps}
-      />
+      <ArtworkDetails activeStep={activeStep} setActiveStep={setActiveStep} step={1} totalSteps={totalSteps} />
+      <UploadPhotos activeStep={activeStep} setActiveStep={setActiveStep} step={2} totalSteps={totalSteps} />
     </ScrollView>
   )
 }
