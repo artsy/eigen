@@ -42,9 +42,14 @@ export type ArtworkFormModalScreen = {
     mode: ArtworkFormMode
     clearForm(): void
     onDelete?(): void
+    onHeaderBackButtonPress(): void
   }
-  AdditionalDetails: undefined
-  AddPhotos: undefined
+  AdditionalDetails: {
+    onHeaderBackButtonPress(): void
+  }
+  AddPhotos: {
+    onHeaderBackButtonPress(): void
+  }
 }
 
 type MyCollectionArtworkFormModalProps = { onSuccess: () => void } & (
@@ -59,6 +64,7 @@ type MyCollectionArtworkFormModalProps = { onSuccess: () => void } & (
 )
 
 export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModalProps> = (props) => {
+  console.log("props called with", props)
   const { trackEvent } = useTracking()
   const { formValues, dirtyFormCheckValues } = GlobalStore.useAppState(
     (state) => state.myCollection.artwork.sessionState
@@ -192,9 +198,9 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
     GlobalStore.actions.myCollection.artwork.resetForm()
   }
 
-  const onBackButtonPress = () => {
+  const onHeaderBackButtonPress = () => {
     const currentRoute = navContainerRef.current?.getCurrentRoute()
-    if (currentRoute?.name === "ArtworkForm") {
+    if (!currentRoute?.name || currentRoute?.name === "ArtworkForm") {
       GlobalStore.actions.myCollection.artwork.resetForm()
       goBack()
       return
@@ -202,20 +208,14 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
     navContainerRef.current?.goBack()
   }
 
-  const hideBackButton = useUpdadeShouldHideBackButton()
-
-  useEffect(() => {
-    // hide the original back button.
-    // We will add a backbutton to this stack directly in order to modify onPress
-    hideBackButton(true)
-  }, [])
-
   const navContainerRef = { current: null as NavigationContainerRef | null }
 
   return (
     <NavigationContainer independent ref={navContainerRef}>
       <FormikProvider value={formik}>
         <Stack.Navigator
+          // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
+          detachInactiveScreens={false}
           screenOptions={{
             headerShown: false,
             safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
@@ -225,14 +225,21 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
           <Stack.Screen
             name="ArtworkForm"
             component={MyCollectionArtworkFormMain}
-            initialParams={{ onDelete, clearForm, mode: props.mode }}
+            initialParams={{ onDelete, clearForm, mode: props.mode, onHeaderBackButtonPress }}
           />
-          <Stack.Screen name="AdditionalDetails" component={MyCollectionAdditionalDetailsForm} />
-          <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />
+          <Stack.Screen
+            name="AdditionalDetails"
+            component={MyCollectionAdditionalDetailsForm}
+            initialParams={{ onHeaderBackButtonPress }}
+          />
+          <Stack.Screen
+            name="AddPhotos"
+            component={MyCollectionAddPhotos}
+            initialParams={{ onHeaderBackButtonPress }}
+          />
         </Stack.Navigator>
         {!!loading && <LoadingIndicator />}
       </FormikProvider>
-      <BackButton show onPress={onBackButtonPress} />
     </NavigationContainer>
   )
 }

@@ -15,9 +15,7 @@ import { ArtworkFormModalScreen } from "../MyCollectionArtworkFormModal"
 
 const MARGIN = 20
 
-export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormModalScreen, "AddPhotos">> = ({
-  navigation,
-}) => {
+export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormModalScreen, "AddPhotos">> = ({ route }) => {
   const formValues = GlobalStore.useAppState((state) => state.myCollection.artwork.sessionState.formValues)
   const { photos } = formValues
   const { width: screenWidth } = useScreenDimensions()
@@ -40,7 +38,7 @@ export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormModalSc
 
   return (
     <>
-      <FancyModalHeader onLeftButtonPress={() => navigation.goBack()}>
+      <FancyModalHeader onLeftButtonPress={() => route.params.onHeaderBackButtonPress()}>
         Photos {!!photos.length && `(${photos.length})`}
       </FancyModalHeader>
       <ScrollView>
