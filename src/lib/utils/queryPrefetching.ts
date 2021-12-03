@@ -79,3 +79,5 @@ export const usePrefetch = () => {
 
   return prefetchUrl.bind(this, defaultEnvironment as RelayModernEnvironment)
 }
+
+export const ˆ = (attribute: string) => (item?: any) => item && item[attribute]

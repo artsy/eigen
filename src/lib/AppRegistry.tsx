@@ -54,7 +54,10 @@ import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/MakeOfferModal"
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 import { Checkout } from "./Scenes/Inbox/Screens/Checkout"
-import { LotsByArtistsYouFollowQueryRenderer } from "./Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
+import {
+  LoteByArtistsYouFollowScreenQuery,
+  LotsByArtistsYouFollowQueryRenderer,
+} from "./Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { MapContainer } from "./Scenes/Map"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
@@ -82,7 +85,7 @@ import { PrivacyRequest } from "./Scenes/PrivacyRequest"
 import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale"
 import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
-import { SalesQueryRenderer } from "./Scenes/Sales"
+import { SalesQueryRenderer, SalesScreenQuery } from "./Scenes/Sales"
 import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddresses"
 import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAddressesForm"
 import { EditSavedSearchAlertQueryRenderer } from "./Scenes/SavedSearchAlert/EditSavedSearchAlert"
@@ -281,7 +284,7 @@ export const modules = defineModules({
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   Auction: nativeModule(),
   Auction2: reactModule(SaleQueryRenderer, { fullBleed: true }, SaleScreenQuery),
-  Auctions: reactModule(SalesQueryRenderer),
+  Auctions: reactModule(SalesQueryRenderer, {}, SalesScreenQuery),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
   AuctionResult: reactModule(AuctionResultQueryRenderer),
@@ -380,7 +383,7 @@ export const modules = defineModules({
   }),
   WorksForYou: reactModule(WorksForYouQueryRenderer, {}, WorksForYouScreenQuery),
   NewWorksForYou: reactModule(NewWorksForYouQueryRenderer, {}, NewWorksForYouScreenQuery),
-  LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer),
+  LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer, {}, LoteByArtistsYouFollowScreenQuery),
   Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
   SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer),

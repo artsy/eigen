@@ -188,6 +188,10 @@ const Home = (props: Props) => {
             switch (item?.type) {
               case "newWorksForYou":
                 return "/new-works-for-you"
+              case "lotsByFollowedArtists":
+                return "/lots-by-artists-you-follow"
+              case "sales":
+                return "/auctions"
             }
           }}
           renderItem={({ item, index }) => {
