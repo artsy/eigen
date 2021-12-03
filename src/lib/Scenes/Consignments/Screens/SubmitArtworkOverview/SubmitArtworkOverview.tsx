@@ -31,9 +31,6 @@ export const ContactInformation = () => {
         totalSteps={3}
         // isCompleted={step1Completed}
       />
-      <Sans size="1" mx="2" mt="1">
-        Contact information
-      </Sans>
     </View>
   )
 }
