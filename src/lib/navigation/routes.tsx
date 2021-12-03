@@ -211,7 +211,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/city/:citySlug/:section", "CitySectionList"),
     new RouteMatcher("/city-fair/:citySlug", "CityFairList"),
     new RouteMatcher("/city-save/:citySlug", "CitySavedList"),
-    new RouteMatcher("/submit-artwork-overview", "SubmitArtworkOverview"),
+    new RouteMatcher("/submit-artwork", "SubmitArtworkOverview"),
     new RouteMatcher("/artwork-submitted", "ArtworkSubmitted"),
     new RouteMatcher("/auctions", "Auctions"),
     new RouteMatcher("/lots-by-artists-you-follow", "LotsByArtistsYouFollow"),

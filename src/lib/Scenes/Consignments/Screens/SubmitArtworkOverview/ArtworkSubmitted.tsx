@@ -1,3 +1,4 @@
+import { navigate } from "lib/navigation/navigate"
 import { track as _track } from "lib/utils/track"
 import { Button, Sans, Spacer } from "palette"
 import { ArtsyLogoHeader } from "palette/elements/headers/ArtsyLogoHeader"
@@ -38,7 +39,7 @@ export const ArtworkSubmitted: React.FC<Props> = () => {
           haptic
           maxWidth={540}
           onPress={() => {
-            // add functionality
+            navigate(`/submit-artwork`)
           }}
         >
           Submit another Artwork
@@ -50,7 +51,7 @@ export const ArtworkSubmitted: React.FC<Props> = () => {
           maxWidth={540}
           variant="outline"
           onPress={() => {
-            // add functionality
+            navigate(`/my-profile`)
           }}
         >
           View Artwork in My Collection
