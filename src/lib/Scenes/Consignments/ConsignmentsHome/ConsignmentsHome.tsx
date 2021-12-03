@@ -33,7 +33,7 @@ export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading }) =
     <>
       <ScrollView>
         <Join separator={<Separator my={3} />}>
-          <Header onConsignPress={handleConsignPress} />
+          <Header />
           <RecentlySold targetSupply={targetSupply} isLoading={isLoading} />
           <HowItWorks />
           <ArtistList targetSupply={targetSupply} isLoading={isLoading} />
