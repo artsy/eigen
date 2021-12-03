@@ -9,7 +9,7 @@ import {
 import { LOCALIZED_UNIT, parseRange } from "lib/Components/ArtworkFilter/Filters/helpers"
 import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
-import { compact, flatten, groupBy, isNil, isNull, keyBy } from "lodash"
+import { compact, flatten, groupBy, isUndefined, keyBy } from "lodash"
 import { bullet } from "palette"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 
@@ -21,11 +21,13 @@ export const extractPillFromAggregation = (filter: FilterData, aggregations: Agg
     const aggregationByValue = keyBy(aggregation.counts, "value")
 
     return (paramValue as string[]).map((value) => {
-      return {
-        label: aggregationByValue[value]?.name,
-        value,
-        paramName,
-      } as SavedSearchPill
+      if (!isUndefined(aggregationByValue[value])) {
+        return {
+          label: aggregationByValue[value]?.name,
+          value,
+          paramName,
+        } as SavedSearchPill
+      }
     })
   }
 
@@ -51,24 +53,24 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations): 
   const pills = filters.map((filter) => {
     const { paramName, paramValue, displayText } = filter
 
-    if (paramName === FilterParamName.dimensionRange && displayText === "Custom Size") {
+    if ((paramName === FilterParamName.dimensionRange && displayText === "Custom Size") || isUndefined(paramValue)) {
       return null
     }
 
     if (paramName === FilterParamName.width) {
       return {
         label: extractSizeLabel("w", displayText),
-        value: paramValue,
+        value: paramValue as string,
         paramName: FilterParamName.width,
-      } as SavedSearchPill
+      }
     }
 
     if (paramName === FilterParamName.height) {
       return {
         label: extractSizeLabel("h", displayText),
-        value: paramValue,
+        value: paramValue as string,
         paramName: FilterParamName.height,
-      } as SavedSearchPill
+      }
     }
 
     // Extract label from aggregations
@@ -83,7 +85,7 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations): 
           label,
           value: paramValue[index],
           paramName,
-        } as SavedSearchPill
+        }
       })
     }
 
@@ -91,7 +93,7 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations): 
       label: displayText,
       value: paramValue,
       paramName,
-    } as SavedSearchPill
+    }
   })
 
   return compact(flatten(pills))
