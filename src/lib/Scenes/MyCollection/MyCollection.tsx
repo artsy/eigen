@@ -21,7 +21,7 @@ import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
-import _, { filter, orderBy, uniq, uniqBy } from "lodash"
+import _, { filter, orderBy, uniqBy } from "lodash"
 import { DateTime } from "luxon"
 import { Banner, Button, Flex, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
@@ -135,19 +135,18 @@ const MyCollection: React.FC<{
         displayText: FilterDisplayName.additionalGeneIDs,
         filterType: "additionalGeneIDs",
         ScreenComponent: "AdditionalGeneIDsOptionsScreen",
-        values: uniq(
+        values: uniqBy(
           artworks.map(
             (a): FilterData => ({
               displayText: a.medium ?? "N/A",
               paramName: FilterParamName.additionalGeneIDs,
               paramValue: a.medium ?? undefined,
             })
-          )
+          ),
+          (m) => m.paramName
         ),
         // tslint:disable-next-line: no-shadowed-variable
-        localSortAndFilter: (artworks, mediums: string[]) => {
-          return filter(artworks, (a) => mediums.includes(a.medium))
-        },
+        localSortAndFilter: (artworks, mediums: string[]) => filter(artworks, (a) => mediums.includes(a.medium)),
       },
     ])
   }, [])
