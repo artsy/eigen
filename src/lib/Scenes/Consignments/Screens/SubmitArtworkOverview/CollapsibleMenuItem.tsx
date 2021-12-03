@@ -1,32 +1,33 @@
 import { track as _track } from "lib/utils/track"
 import { Sans } from "palette"
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, Separator } from "palette"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { StyleSheet, TouchableOpacity, View } from "react-native"
 import { SaveAndContinue } from "./SaveAndContinue"
 interface Props {
   title: string
   content?: string | React.FC | any
+  isCompleted?: boolean
   step: number
   totalSteps: number
-  isCompleted?: boolean
+  activeStep: number
+  setActiveStep: any
 }
 
 export const CollapsibleMenuItem: React.FC<Props> = ({
   title = "Title",
   content = "Content",
-  step = 1,
-  totalSteps = 3,
+  step,
+  totalSteps,
   isCompleted,
+  activeStep,
+  setActiveStep,
 }) => {
   const [isContentVisible, setIsContentVisible] = useState(true)
 
-  // useEffect(() => {
-  //   console.log("\n\nInside useEffect: isCompleted", isCompleted)
-  //   // this is causing strange behaviour
-  //   // setIsContentVisible(!isContentVisible)
-  // }, [isCompleted])
-  // setIsContentVisible(!isContentVisible)
+  useEffect(() => {
+    setIsContentVisible(activeStep === step)
+  }, [activeStep])
 
   return (
     <TouchableOpacity
@@ -43,7 +44,14 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
             {title}
           </Sans>
           <View style={styles.icons}>
-            {!!isCompleted && <CheckCircleIcon fill="green100" height={24} width={24} style={styles.circle} />}
+            {!!isCompleted && (
+              <CheckCircleIcon
+                fill="green100"
+                height={24}
+                width={24}
+                style={styles.circle}
+              />
+            )}
             {!!isContentVisible ? <ArrowUpIcon /> : <ArrowDownIcon />}
           </View>
         </View>
@@ -53,7 +61,13 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
           <Sans size="1" mx="2" mt="1">
             {content}
           </Sans>
-          <SaveAndContinue setIsContentVisible={setIsContentVisible} />
+          <SaveAndContinue
+            setIsContentVisible={setIsContentVisible}
+            setActiveStep={setActiveStep}
+            step={step}
+            totalSteps={totalSteps}
+            activeStep={activeStep}
+          />
         </>
       )}
       {/* doesnot add margin to the right... */}

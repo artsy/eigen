@@ -1,59 +1,51 @@
 import { track as _track } from "lib/utils/track"
-import { Sans, Spacer } from "palette"
-import React, { useState } from "react"
+import { Spacer } from "palette"
+import React, { useEffect, useState } from "react"
 import { ScrollView, View } from "react-native"
-import { ArtworkDetails } from "./ArtworkDetails"
+import { ArtworkDetails, CollapsibleMenuItemProps } from "./ArtworkDetails"
 import { CollapsibleMenuItem } from "./CollapsibleMenuItem"
 
-export const UploadPhotos = () => {
+export const UploadPhotos = ({
+  activeStep,
+  setActiveStep,
+  step,
+  totalSteps,
+}: CollapsibleMenuItemProps) => {
+  useEffect(() => {
+    // console.log("\n\n ----------------------------- \n\n ")
+  }, [activeStep])
   return (
     <View>
       <CollapsibleMenuItem
         title="UploadPhotos"
         content="UploadPhotos content"
-        step={2}
-        totalSteps={3}
-        // isCompleted={step1Completed}
+        step={step}
+        totalSteps={totalSteps}
+        activeStep={activeStep}
+        setActiveStep={setActiveStep}
       />
     </View>
   )
 }
-export const ContactInformation = () => {
-  return (
-    <View>
-      <CollapsibleMenuItem
-        title="Contact information"
-        content="Contact information content"
-        step={3}
-        totalSteps={3}
-        // isCompleted={step1Completed}
-      />
-    </View>
-  )
-}
+// export const ContactInformation = () => {
+//   return (
+//     <View>
+//       <CollapsibleMenuItem
+//         title="Contact information"
+//         content="Contact information content"
+//         step={3}
+//         totalSteps={3}
+//         // isCompleted={step1Completed}
+//       />
+//     </View>
+//   )
+// }
 export const SubmitArtworkOverview = () => {
-  const [
-    ,
-    // step1Completed
-    setStep1Completed,
-  ] = useState(false)
-  // const [step2Completed, setStep2Completed] = useState(false)
-  // const [step3Completed, setStep3Completed] = useState(false)
-
-  // const content2 = (
-  //   <StepContent
-  //     title="Artwork Details"
-  //     content="We will only use these details to contact you regarding your submission"
-  //     setStepCompleted={setStep2Completed}
-  //   />
-  // )
-  // const content3 = (
-  //   <StepContent
-  //     title="Artwork Details"
-  //     content="We will only use these details to contact you regarding your submission"
-  //     setStepCompleted={setStep3Completed}
-  //   />
-  // )
+  const totalSteps = 2
+  const [activeStep, setActiveStep] = useState(1)
+  useEffect(() => {
+    // console.log("\n\n ----------------------------- \n\n ")
+  }, [activeStep])
 
   return (
     <ScrollView
@@ -62,18 +54,22 @@ export const SubmitArtworkOverview = () => {
       contentContainerStyle={{ paddingVertical: 20, justifyContent: "center" }}
     >
       <Spacer mb={3} />
-      <ArtworkDetails setStep1Completed={setStep1Completed} />
-      <UploadPhotos />
-      <ContactInformation />
-      {/* <CollapsibleMenuItem
-        title="Artwork Details"
-        content={<ArtworkDetails setStep1Completed={setStep1Completed} />}
+      <ArtworkDetails
+        activeStep={activeStep}
+        setActiveStep={setActiveStep}
         step={1}
-        totalSteps={3}
-        isCompleted={step1Completed}
+        totalSteps={totalSteps}
       />
-      <CollapsibleMenuItem title="Title 2" content={content2} step={2} totalSteps={3} isCompleted={step2Completed} />
-      <CollapsibleMenuItem title="Title 3" content={content3} step={3} totalSteps={3} isCompleted={step3Completed} /> */}
+      <UploadPhotos
+        activeStep={activeStep}
+        setActiveStep={setActiveStep}
+        step={2}
+        totalSteps={totalSteps}
+      />
     </ScrollView>
   )
+}
+
+{
+  /*  <ContactInformation /> */
 }

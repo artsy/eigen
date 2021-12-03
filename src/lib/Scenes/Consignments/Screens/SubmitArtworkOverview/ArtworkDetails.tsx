@@ -2,8 +2,12 @@ import { track as _track } from "lib/utils/track"
 import React from "react"
 import { ScrollView, Text, View } from "react-native"
 import { CollapsibleMenuItem } from "./CollapsibleMenuItem"
-interface Props {
-  setStep1Completed: any
+
+export interface CollapsibleMenuItemProps {
+  activeStep: number
+  setActiveStep: any
+  step: number
+  totalSteps: number
 }
 
 const ArtworkDetailsContent = () => {
@@ -13,24 +17,21 @@ const ArtworkDetailsContent = () => {
     </View>
   )
 }
-export const ArtworkDetails: React.FC<Props> = (
-  {
-    // setStep1Completed
-  }
-) => {
-  // const checkIfFormIsCompleted = () => {
-  //   // Check conditions
-  //   // setIsFormComplete()
-  // }
-
+export const ArtworkDetails: React.FC<CollapsibleMenuItemProps> = ({
+  activeStep,
+  setActiveStep,
+  step,
+  totalSteps,
+}) => {
   return (
     <ScrollView>
       <CollapsibleMenuItem
         title="Artwork Details"
+        activeStep={activeStep}
+        setActiveStep={setActiveStep}
         content={<ArtworkDetailsContent />}
-        step={1}
-        totalSteps={3}
-        // isCompleted={step1Completed}
+        step={step}
+        totalSteps={totalSteps}
       />
     </ScrollView>
   )
