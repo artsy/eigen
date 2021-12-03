@@ -297,7 +297,11 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             <Stack.Screen name="LocationCitiesOptionsScreen" component={LocationCitiesOptionsScreen} />
           </Stack.Navigator>
 
-          <ArtworkFilterApplyButton disabled={!isApplyButtonEnabled} onPress={handleApplyPress} />
+          <ArtworkFilterApplyButton
+            disabled={!isApplyButtonEnabled}
+            onPress={handleApplyPress}
+            onCreateAlertPress={handleApplyPress}
+          />
         </View>
       </FancyModal>
     </NavigationContainer>
