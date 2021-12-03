@@ -2,7 +2,7 @@ import { navigate } from "lib/navigation/navigate"
 import { track as _track } from "lib/utils/track"
 import { Button, Flex, Spacer } from "palette"
 import React, { useEffect, useState } from "react"
-import { Text, View } from "react-native"
+import { View } from "react-native"
 
 interface Props {
   setIsContentVisible?: string | React.FC | any
