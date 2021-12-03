@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f74e751f1133e0bae82eada52ee7a7f8 */
+/* @relayHash 88418599ac9beda12124a76e60e95d1c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -241,7 +241,7 @@ fragment GlobalMap_viewer_3La17j on Query {
         isStubShow
         href
         is_followed: isFollowed
-        exhibition_period: exhibitionPeriod
+        exhibition_period: exhibitionPeriod(format: SHORT)
         cover_image: coverImage {
           url
         }
@@ -285,7 +285,7 @@ fragment GlobalMap_viewer_3La17j on Query {
           status
           href
           is_followed: isFollowed
-          exhibition_period: exhibitionPeriod
+          exhibition_period: exhibitionPeriod(format: SHORT)
           cover_image: coverImage {
             url
           }
@@ -333,7 +333,7 @@ fragment GlobalMap_viewer_3La17j on Query {
           status
           href
           is_followed: isFollowed
-          exhibition_period: exhibitionPeriod
+          exhibition_period: exhibitionPeriod(format: SHORT)
           cover_image: coverImage {
             url
           }
@@ -376,7 +376,7 @@ fragment GlobalMap_viewer_3La17j on Query {
           id
           slug
           name
-          exhibition_period: exhibitionPeriod
+          exhibition_period: exhibitionPeriod(format: SHORT)
           counts {
             partners
           }
@@ -509,10 +509,16 @@ v9 = {
 },
 v10 = {
   "alias": "exhibition_period",
-  "args": null,
+  "args": [
+    {
+      "kind": "Literal",
+      "name": "format",
+      "value": "SHORT"
+    }
+  ],
   "kind": "ScalarField",
   "name": "exhibitionPeriod",
-  "storageKey": null
+  "storageKey": "exhibitionPeriod(format:\"SHORT\")"
 },
 v11 = {
   "alias": null,
@@ -1048,7 +1054,7 @@ return {
     ]
   },
   "params": {
-    "id": "f74e751f1133e0bae82eada52ee7a7f8",
+    "id": "88418599ac9beda12124a76e60e95d1c",
     "metadata": {},
     "name": "GlobalMapTestsQuery",
     "operationKind": "query",

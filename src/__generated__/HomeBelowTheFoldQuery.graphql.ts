@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d3a1e62bda518eed211e3314dbc5b586 */
+/* @relayHash 6520cfd6ef7841b067733ef412d02089 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -243,7 +243,7 @@ fragment FairsRail_fairsModule on HomePageFairsModule {
       id
     }
     name
-    exhibitionPeriod
+    exhibitionPeriod(format: SHORT)
     image {
       url(version: "large")
     }
@@ -1140,10 +1140,16 @@ return {
                   (v10/*: any*/),
                   {
                     "alias": null,
-                    "args": null,
+                    "args": [
+                      {
+                        "kind": "Literal",
+                        "name": "format",
+                        "value": "SHORT"
+                      }
+                    ],
                     "kind": "ScalarField",
                     "name": "exhibitionPeriod",
-                    "storageKey": null
+                    "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                   },
                   (v22/*: any*/),
                   {
@@ -1734,7 +1740,7 @@ return {
     ]
   },
   "params": {
-    "id": "d3a1e62bda518eed211e3314dbc5b586",
+    "id": "6520cfd6ef7841b067733ef412d02089",
     "metadata": {},
     "name": "HomeBelowTheFoldQuery",
     "operationKind": "query",

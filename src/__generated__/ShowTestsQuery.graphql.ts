@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0a0588fbf3795f5ca0a8ed33c97a3796 */
+/* @relayHash 5bd29f9ee2a7b4d4f20581ec6fbc4d06 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -133,7 +133,7 @@ fragment ShowContextCard_show on Show {
     internalID
     slug
     name
-    exhibitionPeriod
+    exhibitionPeriod(format: SHORT)
     profile {
       icon {
         imageUrl: url(version: "untouched-png")
@@ -833,10 +833,16 @@ return {
               (v4/*: any*/),
               {
                 "alias": null,
-                "args": null,
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "format",
+                    "value": "SHORT"
+                  }
+                ],
                 "kind": "ScalarField",
                 "name": "exhibitionPeriod",
-                "storageKey": null
+                "storageKey": "exhibitionPeriod(format:\"SHORT\")"
               },
               {
                 "alias": null,
@@ -1281,7 +1287,7 @@ return {
     ]
   },
   "params": {
-    "id": "0a0588fbf3795f5ca0a8ed33c97a3796",
+    "id": "5bd29f9ee2a7b4d4f20581ec6fbc4d06",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {
