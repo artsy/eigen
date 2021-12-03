@@ -3,7 +3,7 @@ import { Sans, Spacer } from "palette"
 import { ArrowDownIcon, ArrowRightIcon, CheckCircleIcon, Separator } from "palette"
 import React, { useState } from "react"
 import { StyleSheet, TouchableOpacity, View } from "react-native"
-
+import { SaveAndContinue } from "./SaveAndContinue"
 interface Props {
   title: string
   content?: string | React.FC | any
@@ -27,6 +27,7 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
   //   // setIsContentVisible(!isContentVisible)
   // }, [isCompleted])
   // setIsContentVisible(!isContentVisible)
+
   return (
     <TouchableOpacity
       onPress={() => {
@@ -43,12 +44,17 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
             {title}
           </Sans>
           <View style={styles.icons}>
-            {!!isCompleted && <CheckCircleIcon fill="green100" height={24} width={24} style={{ marginRight: 5 }} />}
+            {!!isCompleted && <CheckCircleIcon fill="green100" height={24} width={24} style={styles.circle} />}
             {!!isContentVisible ? <ArrowDownIcon /> : <ArrowRightIcon />}
           </View>
         </View>
       </View>
-      {!!isContentVisible && content}
+      {!!isContentVisible && (
+        <Sans size="1" mx="2" mt="1">
+          {content}
+        </Sans>
+      )}
+      <SaveAndContinue />
       {/* doesnot add margin to the right... */}
       <Separator my="3" mx="2" />
     </TouchableOpacity>
@@ -62,4 +68,5 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   icons: { flexDirection: "row", alignItems: "center" },
+  circle: { marginRight: 5 },
 })

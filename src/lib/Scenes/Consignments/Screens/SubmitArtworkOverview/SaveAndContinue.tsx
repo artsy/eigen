@@ -1,17 +1,17 @@
 import { track as _track } from "lib/utils/track"
-import { Button, Flex, Sans, Spacer } from "palette"
+import { Button, Flex, Spacer } from "palette"
 import React from "react"
 import { View } from "react-native"
 
 interface Props {
-  title: string | null
-  content: string | React.FC | any
-  setStepCompleted: any
+  content?: string | React.FC | any
 }
-export const StepContent: React.FC<Props> = ({
-  content = "content content content",
-  // setStepCompleted
-}) => {
+export const SaveAndContinue: React.FC<Props> = (
+  {
+    // content = "Which component's things should we save and continue....",
+    // setStepCompleted
+  }
+) => {
   // const [isFormComplete, setIsFormComplete] = useState(false)
 
   // const checkIfFormIsCompleted = () => {
@@ -21,11 +21,7 @@ export const StepContent: React.FC<Props> = ({
 
   return (
     <View>
-      <Sans size="4" mx="2" mt="2" color="gray">
-        {content}
-      </Sans>
       <Spacer mb={2} />
-
       <Flex px="2" width="100%" alignItems="center">
         <Button
           maxWidth={540}
