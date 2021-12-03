@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react"
 import { Alert, AlertButton, Linking, Platform, ScrollView, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
 import { Form } from "./Components/Form"
-import { extractPills, getNamePlaceholder } from "./helpers"
+import { extractPills, getNamePlaceholder, getSearchCriteriaFromPills } from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
 import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
 import { updateEmailFrequency } from "./mutations/updateEmailFrequency"
@@ -19,6 +19,7 @@ import {
   SavedSearchAlertFormValues,
   SavedSearchAlertMutationResult,
   SavedSearchAlertUserAlertSettings,
+  SavedSearchPill,
 } from "./SavedSearchAlertModel"
 
 export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase {
@@ -46,9 +47,11 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     ...other
   } = props
   const isUpdateForm = !!savedSearchAlertId
-  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
-  const pillsFromFilters = extractPills(filters, aggregations)
-  const pills = isEnabledImprovedAlertsFlow ? [artistName, ...pillsFromFilters] : pillsFromFilters
+  // const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
+  // const pillsFromFilters = extractPills(filters, aggregations)
+  // const pills = isEnabledImprovedAlertsFlow ? [artistName, ...pillsFromFilters] : pillsFromFilters
+  const [pills, setPills] = useState(extractPills(filters, aggregations))
+
   const tracking = useTracking()
   const { space } = useTheme()
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
@@ -93,15 +96,17 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
             id: response.updateSavedSearch?.savedSearchOrErrors.internalID!,
           }
         } else {
-          const criteria = getSearchCriteriaFromFilters(artistId, filters)
-          const response = await createSavedSearchAlert(userAlertSettings, criteria)
+          console.log("[debug] save", getSearchCriteriaFromPills(pills))
 
-          result = {
-            id: response.createSavedSearch?.savedSearchOrErrors.internalID!,
-          }
+          // const criteria = getSearchCriteriaFromFilters(artistId, filters)
+          // const response = await createSavedSearchAlert(userAlertSettings, criteria)
+
+          // result = {
+          //   id: response.createSavedSearch?.savedSearchOrErrors.internalID!,
+          // }
         }
 
-        onComplete?.(result)
+        // onComplete?.(result)
       } catch (error) {
         console.error(error)
       }
@@ -254,6 +259,14 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     setVisibleDeleteDialog(true)
   }
 
+  const handleDeletePillPress = (deletePill: SavedSearchPill) => {
+    const updatedPills = pills.filter((pill) => {
+      return !(pill.value === deletePill.value && pill.paramName === deletePill.paramName)
+    })
+
+    setPills(updatedPills)
+  }
+
   return (
     <FormikProvider value={formik}>
       <ScrollView
@@ -270,6 +283,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
           onSubmitPress={handleSubmit}
           onTogglePushNotification={handleTogglePushNotification}
           onToggleEmailNotification={handleToggleEmailNotification}
+          onDeletePillPress={handleDeletePillPress}
           {...other}
         />
       </ScrollView>

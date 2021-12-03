@@ -1,14 +1,17 @@
 import {
   aggregationForFilter,
   Aggregations,
+  defaultCommonFilterOptions,
   FilterArray,
   FilterData,
   FilterParamName,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { LOCALIZED_UNIT, parseRange } from "lib/Components/ArtworkFilter/Filters/helpers"
 import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
-import { compact, flatten, keyBy } from "lodash"
+import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { compact, flatten, groupBy, isNil, isNull, keyBy } from "lodash"
 import { bullet } from "palette"
+import { SavedSearchPill } from "./SavedSearchAlertModel"
 
 export const extractPillFromAggregation = (filter: FilterData, aggregations: Aggregations) => {
   const { paramName, paramValue } = filter
@@ -18,7 +21,11 @@ export const extractPillFromAggregation = (filter: FilterData, aggregations: Agg
     const aggregationByValue = keyBy(aggregation.counts, "value")
 
     return (paramValue as string[]).map((value) => {
-      return aggregationByValue[value]?.name
+      return {
+        label: aggregationByValue[value]?.name,
+        value,
+        paramName,
+      } as SavedSearchPill
     })
   }
 
@@ -40,7 +47,7 @@ export const extractSizeLabel = (prefix: string, value: string) => {
   return `${prefix}: ${label} ${LOCALIZED_UNIT}`
 }
 
-export const extractPills = (filters: FilterArray, aggregations: Aggregations) => {
+export const extractPills = (filters: FilterArray, aggregations: Aggregations): SavedSearchPill[] => {
   const pills = filters.map((filter) => {
     const { paramName, paramValue, displayText } = filter
 
@@ -49,11 +56,19 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations) =
     }
 
     if (paramName === FilterParamName.width) {
-      return extractSizeLabel("w", displayText)
+      return {
+        label: extractSizeLabel("w", displayText),
+        value: paramValue,
+        paramName: FilterParamName.width,
+      } as SavedSearchPill
     }
 
     if (paramName === FilterParamName.height) {
-      return extractSizeLabel("h", displayText)
+      return {
+        label: extractSizeLabel("h", displayText),
+        value: paramValue,
+        paramName: FilterParamName.height,
+      } as SavedSearchPill
     }
 
     // Extract label from aggregations
@@ -63,16 +78,48 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations) =
 
     // If the filter value is an array, then we extract the label from the displayed text
     if (Array.isArray(paramValue)) {
-      return displayText.split(", ")
+      return displayText.split(", ").map((label, index) => {
+        return {
+          label,
+          value: paramValue[index],
+          paramName,
+        } as SavedSearchPill
+      })
     }
 
-    return displayText
+    return {
+      label: displayText,
+      value: paramValue,
+      paramName,
+    } as SavedSearchPill
   })
 
   return compact(flatten(pills))
 }
 
-export const getNamePlaceholder = (artistName: string, pills: string[]) => {
+export const getNamePlaceholder = (artistName: string, pills: SavedSearchPill[]) => {
   const filtersCountLabel = pills.length > 1 ? "filters" : "filter"
   return `${artistName} ${bullet} ${pills.length} ${filtersCountLabel}`
+}
+
+export const extractPillValue = (pills: SavedSearchPill[]) => {
+  return pills.map((pill) => pill.value)
+}
+
+export const getSearchCriteriaFromPills = (pills: SavedSearchPill[]) => {
+  const pillsByParamName = groupBy(pills, "paramName")
+  const input: SearchCriteriaAttributes = {}
+
+  Object.entries(pillsByParamName).forEach((entry) => {
+    const [paramName, values] = entry
+
+    if (Array.isArray(defaultCommonFilterOptions[paramName as FilterParamName])) {
+      input[paramName as keyof SearchCriteriaAttributes] = extractPillValue(values) as any
+    } else {
+      input[paramName as keyof SearchCriteriaAttributes] = extractPillValue(values)[0] as any
+    }
+  })
+
+  console.log("[debug] pillsByParamName", pillsByParamName)
+  console.log("[debug] input", input)
 }

@@ -5,11 +5,11 @@ import { Box, Button, Flex, Input, InputTitle, Pill, Spacer, Text, Touchable } f
 import React from "react"
 import { LayoutAnimation } from "react-native"
 import { getNamePlaceholder } from "../helpers"
-import { SavedSearchAlertFormValues } from "../SavedSearchAlertModel"
+import { SavedSearchAlertFormValues, SavedSearchPill } from "../SavedSearchAlertModel"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
 interface FormProps {
-  pills: string[]
+  pills: SavedSearchPill[]
   savedSearchAlertId?: string
   artistId: string
   artistName: string
@@ -20,6 +20,7 @@ interface FormProps {
   onUpdateEmailPreferencesPress?: () => void
   onTogglePushNotification: (enabled: boolean) => void
   onToggleEmailNotification: (enabled: boolean) => void
+  onDeletePillPress: (pill: SavedSearchPill) => void
 }
 
 export const Form: React.FC<FormProps> = (props) => {
@@ -35,6 +36,7 @@ export const Form: React.FC<FormProps> = (props) => {
     onUpdateEmailPreferencesPress,
     onTogglePushNotification,
     onToggleEmailNotification,
+    onDeletePillPress,
   } = props
   const {
     isSubmitting,
@@ -134,8 +136,8 @@ export const Form: React.FC<FormProps> = (props) => {
         <InputTitle>Filters</InputTitle>
         <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
           {pills.map((pill, index) => (
-            <Pill testID="alert-pill" m={0.5} key={`filter-label-${index}`}>
-              {pill}
+            <Pill testID="alert-pill" m={0.5} key={`filter-label-${index}`} onPress={() => onDeletePillPress(pill)}>
+              {pill.label}
             </Pill>
           ))}
         </Flex>
