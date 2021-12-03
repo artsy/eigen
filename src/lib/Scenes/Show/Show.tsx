@@ -68,7 +68,10 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
     {
       key: "filter",
       element: (
-        <HeaderArtworksFilter animationValue={filterComponentAnimationValue} onPress={toggleFilterArtworksModal} />
+        <Flex backgroundColor="white">
+          <Spacer mt={1} mb={0.5} />
+          <HeaderArtworksFilter animationValue={filterComponentAnimationValue} onPress={toggleFilterArtworksModal} />
+        </Flex>
       ),
     },
 
