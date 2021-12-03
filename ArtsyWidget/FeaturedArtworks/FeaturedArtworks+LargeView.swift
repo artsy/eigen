@@ -90,7 +90,7 @@ extension FeaturedArtworks {
             GeometryReader { geo in
                 VStack(spacing: 0) {
                     TopArtwork(artwork: primaryArtwork)
-                        .frame(height: geo.size.height * topFactor)
+                        .frame(height: geo.size.height * CGFloat(topFactor))
                     HStack(alignment: .bottom) {
                         BottomArtwork(artwork: secondaryArtwork)
                         BottomArtwork(artwork: tertiaryArtwork)
@@ -98,7 +98,7 @@ extension FeaturedArtworks {
                     }
                     .padding(10)
                     .background(Color(white: 0.96))
-                    .frame(height: geo.size.height * bottomFactor)
+                    .frame(height: geo.size.height * CGFloat(bottomFactor))
                 }
             }
         }
