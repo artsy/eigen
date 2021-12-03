@@ -5,7 +5,6 @@ import {
 } from "__generated__/MyCollectionArtworkQuery.graphql"
 import { Divider } from "lib/Components/Bidding/Components/Divider"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { Toast } from "lib/Components/Toast/Toast"
 import { navigate, popToRoot } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
@@ -51,12 +50,10 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
                 artwork,
                 onSuccess: () => {
                   popToRoot()
-                  Toast.show("Updated Successfully", "bottom")
                 },
                 onDelete: () => {
                   setTimeout(() => {
                     popToRoot()
-                    Toast.show("Deleted Successfully", "bottom")
                   }, 50)
                 },
               },

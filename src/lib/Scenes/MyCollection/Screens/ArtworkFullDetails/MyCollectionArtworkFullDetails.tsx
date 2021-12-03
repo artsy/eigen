@@ -2,7 +2,6 @@ import { editCollectedArtwork } from "@artsy/cohesion"
 import { MyCollectionArtworkFullDetails_artwork } from "__generated__/MyCollectionArtworkFullDetails_artwork.graphql"
 import { MyCollectionArtworkFullDetailsQuery } from "__generated__/MyCollectionArtworkFullDetailsQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { Toast } from "lib/Components/Toast/Toast"
 import { navigate, popParentViewController, popToRoot } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { GlobalStore } from "lib/store/GlobalStore"
@@ -29,12 +28,10 @@ const MyCollectionArtworkFullDetails: React.FC<{ artwork: MyCollectionArtworkFul
               artwork: props.artwork,
               onSuccess: () => {
                 popParentViewController()
-                Toast.show("Updated Successfully", "bottom")
               },
               onDelete: () => {
                 setTimeout(() => {
                   popToRoot()
-                  Toast.show("Deleted Successfully", "bottom")
                 }, 50)
               },
             },
