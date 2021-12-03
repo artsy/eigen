@@ -169,6 +169,7 @@ const MyCollection: React.FC<{
     })
   }
 
+  // hack for tests. we should fix that.
   const setJSX = __TEST__ ? jest.fn() : useContext(StickyTabPageFlatListContext).setJSX
 
   const space = useSpace()
