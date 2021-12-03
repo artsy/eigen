@@ -132,6 +132,21 @@ const MyCollection: React.FC<{
         ScreenComponent: "SortOptionsScreen",
       },
       {
+        displayText: FilterDisplayName.artistIDs,
+        filterType: "artistIDs",
+        ScreenComponent: "ArtistIDsOptionsScreen",
+        values: uniqBy(
+          artworks.map((a) => ({
+            displayText: a.artistNames,
+            paramName: FilterParamName.artistIDs,
+            paramValue: a.artistNames,
+          })),
+          (m) => m.paramValue
+        ),
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks, artists: string[]) => filter(artworks, (a) => artists.includes(a.artistNames)),
+      },
+      {
         displayText: FilterDisplayName.additionalGeneIDs,
         filterType: "additionalGeneIDs",
         ScreenComponent: "AdditionalGeneIDsOptionsScreen",
@@ -337,6 +352,7 @@ export const MyCollectionContainer = createPaginationContainer(
             node {
               id
               medium
+              artistNames
             }
           }
           ...InfiniteScrollArtworksGrid_myCollectionConnection @arguments(skipArtworkGridItem: true)

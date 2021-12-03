@@ -22,21 +22,28 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
   const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
+  const filterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
+  const filterOptions = ArtworksFiltersStore.useStoreState((state) => state.filterOptions)
 
   const selectedArtistIFollowOption = selectedOptions.find((value) => {
     return value.paramName === FilterParamName.artistsIFollow
   })
 
-  const aggregation = aggregationForFilter(FilterParamName.artistIDs, aggregations)
-  const artistDisplayOptions =
-    aggregation?.counts.map((aggCount) => {
-      return {
-        displayText: aggCount.name,
-        paramName: FilterParamName.artistIDs,
-        paramValue: aggCount.value,
-        filterKey: "artist",
-      }
-    }) ?? []
+  let artistDisplayOptions
+  if (filterType === "local") {
+    artistDisplayOptions = filterOptions!.find((o) => o.filterType === "artistIDs")?.values!
+  } else {
+    const aggregation = aggregationForFilter(FilterParamName.artistIDs, aggregations)
+    artistDisplayOptions =
+      aggregation?.counts.map((aggCount) => {
+        return {
+          displayText: aggCount.name,
+          paramName: FilterParamName.artistIDs,
+          paramValue: aggCount.value,
+          filterKey: "artist",
+        }
+      }) ?? []
+  }
 
   const { handleSelect, isSelected } = useMultiSelect({
     options: artistDisplayOptions,

@@ -14,6 +14,7 @@ export type MyCollection_me = {
             readonly node: {
                 readonly id: string;
                 readonly medium: string | null;
+                readonly artistNames: string | null;
             } | null;
         } | null> | null;
         readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_myCollectionConnection">;
@@ -124,6 +125,13 @@ return {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
+                  "name": "artistNames",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
                 }
@@ -184,5 +192,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'ac1e2fcd818dca8effc8f4c7c4e56cd2';
+(node as any).hash = '06b30520f6d29ab750ce2d2fbdcad105';
 export default node;

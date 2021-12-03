@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e093744afff9353d220eb501f760c043 */
+/* @relayHash 3401d5de7e9e4fc0666787e0f1b2a695 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -39,8 +39,8 @@ fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectio
       image {
         aspectRatio
       }
-      artistNames
       medium
+      artistNames
       date
       ...MyCollectionArtworkListItem_artwork
     }
@@ -77,6 +77,7 @@ fragment MyCollection_me on Me {
       node {
         id
         medium
+        artistNames
         __typename
       }
       cursor
@@ -242,6 +243,13 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "artistNames",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "__typename",
                         "storageKey": null
                       },
@@ -268,13 +276,6 @@ return {
                             "storageKey": null
                           }
                         ],
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "artistNames",
                         "storageKey": null
                       },
                       {
@@ -393,7 +394,7 @@ return {
     ]
   },
   "params": {
-    "id": "e093744afff9353d220eb501f760c043",
+    "id": "3401d5de7e9e4fc0666787e0f1b2a695",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {

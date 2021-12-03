@@ -467,8 +467,8 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
             image {
               aspectRatio
             }
-            artistNames
             medium
+            artistNames
             date
             ...ArtworkGridItem_artwork @skip(if: $skipArtworkGridItem)
             ...MyCollectionArtworkListItem_artwork
