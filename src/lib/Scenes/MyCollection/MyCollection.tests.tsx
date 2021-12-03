@@ -2,6 +2,7 @@ import { addCollectedArtwork } from "@artsy/cohesion"
 import { MyCollectionTestsQuery } from "__generated__/MyCollectionTestsQuery.graphql"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
@@ -79,9 +80,10 @@ describe("MyCollection", () => {
       const addArtworkButton = tree.root.findByProps({ testID: "add-artwork-button-zero-state" })
       addArtworkButton.props.onPress()
 
-      expect(navigate).toHaveBeenCalledWith("my-collection/add-my-collection-artwork", {
-        passProps: { mode: "add", onSuccess: undefined },
-      })
+      expect(navigate).toHaveBeenCalledWith(
+        "my-collection/add-my-collection-artwork",
+        expect.objectContaining({ passProps: { mode: "add" } })
+      )
     })
 
     it("tracks analytics event when Add Artwork is pressed", () => {
