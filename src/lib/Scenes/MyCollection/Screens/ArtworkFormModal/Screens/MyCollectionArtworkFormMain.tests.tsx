@@ -214,6 +214,7 @@ describe("AddEditArtwork", () => {
   })
 
   it("navigates to additional details on click", () => {
+    const onHeaderBackButtonPressMock = jest.fn()
     const mockNavigate = jest.fn()
     const mockNav = {
       navigate: mockNavigate,
@@ -233,12 +234,14 @@ describe("AddEditArtwork", () => {
         mode: "edit",
         clearForm: jest.fn(),
         onDelete: jest.fn(),
-        onHeaderBackButtonPress: jest.fn(),
+        onHeaderBackButtonPress: onHeaderBackButtonPressMock,
       },
     }
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
     const wrapper = renderWithWrappers(artworkForm)
     wrapper.root.findByProps({ testID: "AdditionalDetailsButton" }).props.onPress()
-    expect(mockNavigate).toHaveBeenCalledWith("AdditionalDetails")
+    expect(mockNavigate).toHaveBeenCalledWith("AdditionalDetails", {
+      onHeaderBackButtonPress: onHeaderBackButtonPressMock,
+    })
   })
 })
