@@ -2,14 +2,14 @@ import { useFormikContext } from "formik"
 import { navigate } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Box, Button, CloseIcon as RemoveIcon, Flex, Input, InputTitle, Pill, Spacer, Text, Touchable } from "palette"
-import React, { useState } from "react"
+import React from "react"
 import { LayoutAnimation } from "react-native"
 import { getNamePlaceholder } from "../helpers"
-import { SavedSearchAlertFormValues } from "../SavedSearchAlertModel"
+import { SavedSearchAlertFormValues, SavedSearchPill } from "../SavedSearchAlertModel"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
 interface FormProps {
-  pills: string[]
+  pills: SavedSearchPill[]
   savedSearchAlertId?: string
   artistId: string
   artistName: string
@@ -20,7 +20,7 @@ interface FormProps {
   onUpdateEmailPreferencesPress?: () => void
   onTogglePushNotification: (enabled: boolean) => void
   onToggleEmailNotification: (enabled: boolean) => void
-  onRemovePill: (index: number) => void
+  onRemovePill: (pill: SavedSearchPill) => void
 }
 
 export const Form: React.FC<FormProps> = (props) => {
@@ -142,9 +142,9 @@ export const Form: React.FC<FormProps> = (props) => {
               key={`filter-label-${index}`}
               iconPosition="right"
               Icon={RemoveIcon}
-              onRemovePill={() => onRemovePill(index)}
+              onRemovePill={() => onRemovePill(pill)}
             >
-              {pill}
+              {pill.label}
             </Pill>
           ))}
         </Flex>

@@ -1,6 +1,6 @@
 import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
 import { FormikProvider, useFormik } from "formik"
-import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
+import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react"
 import { Alert, AlertButton, Linking, Platform, ScrollView, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
 import { Form } from "./Components/Form"
-import { extractPills, getNamePlaceholder } from "./helpers"
+import { extractPills, getNamePlaceholder, getSearchCriteriaFromPills } from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
 import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
 import { updateEmailFrequency } from "./mutations/updateEmailFrequency"
@@ -19,6 +19,7 @@ import {
   SavedSearchAlertFormValues,
   SavedSearchAlertMutationResult,
   SavedSearchAlertUserAlertSettings,
+  SavedSearchPill,
 } from "./SavedSearchAlertModel"
 
 export interface SavedSearchAlertFormProps extends SavedSearchAlertFormPropsBase {
@@ -48,11 +49,19 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const isUpdateForm = !!savedSearchAlertId
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const pillsFromFilters = extractPills(filters, aggregations)
-  const pills = isEnabledImprovedAlertsFlow ? [artistName, ...pillsFromFilters] : pillsFromFilters
+
+  const artistPill: SavedSearchPill = {
+    label: artistName,
+    value: artistId,
+    paramName: FilterParamName.artistIDs,
+  }
+  const [pillsState, setPillsState] = useState(
+    isEnabledImprovedAlertsFlow ? [artistPill, ...pillsFromFilters] : pillsFromFilters
+  )
+
   const tracking = useTracking()
   const { space } = useTheme()
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
-  const [pillsState, setPillsState] = useState(pills)
   const [shouldShowEmailWarning, setShouldShowEmailWarning] = useState(!userAllowsEmails)
   const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const formik = useFormik<SavedSearchAlertFormValues>({
@@ -62,7 +71,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       let alertName = values.name
 
       if (alertName.length === 0) {
-        alertName = getNamePlaceholder(artistName, pills)
+        alertName = getNamePlaceholder(artistName, pillsState)
       }
 
       const userAlertSettings: SavedSearchAlertUserAlertSettings = {
@@ -94,7 +103,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
             id: response.updateSavedSearch?.savedSearchOrErrors.internalID!,
           }
         } else {
-          const criteria = getSearchCriteriaFromFilters(artistId, filters)
+          const criteria = getSearchCriteriaFromPills(pillsState)
           const response = await createSavedSearchAlert(userAlertSettings, criteria)
 
           result = {
@@ -255,10 +264,12 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     setVisibleDeleteDialog(true)
   }
 
-  const handleRemovePill = (index: number) => {
-    console.log("[debug] lalalala", index)
-    pillsState.splice(index, 1)
-    setPillsState([...pillsState])
+  const handleRemovePill = (deletePill: SavedSearchPill) => {
+    const updatedPills = pillsState.filter((pill) => {
+      return !(pill.value === deletePill.value && pill.paramName === deletePill.paramName)
+    })
+
+    setPillsState(updatedPills)
   }
 
   return (
@@ -277,7 +288,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
           onSubmitPress={handleSubmit}
           onTogglePushNotification={handleTogglePushNotification}
           onToggleEmailNotification={handleToggleEmailNotification}
-          onRemovePill={(index) => handleRemovePill(index)}
+          onRemovePill={handleRemovePill}
           {...other}
         />
       </ScrollView>
