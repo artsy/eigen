@@ -314,6 +314,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
               artistName={name!}
               artistSlug={slug!}
               closeModal={() => setIsCreateAlertModalVisible(false)}
+              onComplete={exitModal}
             />
           )}
         </View>
