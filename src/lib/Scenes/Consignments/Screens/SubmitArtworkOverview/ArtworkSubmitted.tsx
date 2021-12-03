@@ -1,5 +1,6 @@
 import { track as _track } from "lib/utils/track"
 import { Button, Sans, Spacer } from "palette"
+import { ArtsyLogoHeader } from "palette/elements/headers/ArtsyLogoHeader"
 import React from "react"
 import { StyleSheet, View } from "react-native"
 
@@ -17,7 +18,7 @@ export const ArtworkSubmitted: React.FC<Props> = () => {
   return (
     <View>
       {/* Container with logo here */}
-      <Spacer mb={6} />
+      <ArtsyLogoHeader />
       <Sans size="6" mx="2">
         Your Artwork has been submitted
       </Sans>
