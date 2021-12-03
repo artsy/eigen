@@ -1,3 +1,4 @@
+import { Route } from "@react-navigation/native"
 import { useFormikContext } from "formik"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Checkbox } from "palette/elements/Checkbox"
@@ -22,7 +23,21 @@ describe("MyCollectionArtworkFormAdditionalDetails", () => {
     }))
 
     const mockNav = jest.fn()
-    mockAdditionalDetailsForm = <MyCollectionAdditionalDetailsForm navigation={mockNav as any} />
+    const mockRoute: Route<
+      "AdditionalDetails",
+      {
+        onHeaderBackButtonPress(): void
+      }
+    > = {
+      key: "AdditionalDetails",
+      name: "AdditionalDetails",
+      params: {
+        onHeaderBackButtonPress: jest.fn(),
+      },
+    }
+    mockAdditionalDetailsForm = (
+      <MyCollectionAdditionalDetailsForm navigation={mockNav as any} route={mockRoute as any} />
+    )
   })
 
   it("renders edition form data by default if present", () => {

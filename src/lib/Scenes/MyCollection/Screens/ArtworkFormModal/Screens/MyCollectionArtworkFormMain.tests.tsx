@@ -67,6 +67,7 @@ describe("AddEditArtwork", () => {
         mode: ArtworkFormMode
         clearForm(): void
         onDelete?(): void
+        onHeaderBackButtonPress(): void
       }
     > = {
       key: "ArtworkForm",
@@ -75,6 +76,7 @@ describe("AddEditArtwork", () => {
         mode: "add",
         clearForm: jest.fn(),
         onDelete: jest.fn(),
+        onHeaderBackButtonPress: jest.fn(),
       },
     }
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
@@ -98,6 +100,7 @@ describe("AddEditArtwork", () => {
         mode: ArtworkFormMode
         clearForm(): void
         onDelete?(): void
+        onHeaderBackButtonPress(): void
       }
     > = {
       key: "ArtworkForm",
@@ -106,6 +109,7 @@ describe("AddEditArtwork", () => {
         mode: "edit",
         clearForm: jest.fn(),
         onDelete: jest.fn(),
+        onHeaderBackButtonPress: jest.fn(),
       },
     }
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
@@ -125,6 +129,7 @@ describe("AddEditArtwork", () => {
         mode: ArtworkFormMode
         clearForm(): void
         onDelete?(): void
+        onHeaderBackButtonPress(): void
       }
     > = {
       key: "ArtworkForm",
@@ -133,6 +138,7 @@ describe("AddEditArtwork", () => {
         mode: "edit",
         clearForm: mockClearForm,
         onDelete: jest.fn(),
+        onHeaderBackButtonPress: jest.fn(),
       },
     }
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
@@ -156,6 +162,7 @@ describe("AddEditArtwork", () => {
         mode: ArtworkFormMode
         clearForm(): void
         onDelete?(): void
+        onHeaderBackButtonPress(): void
       }
     > = {
       key: "ArtworkForm",
@@ -164,6 +171,7 @@ describe("AddEditArtwork", () => {
         mode: "edit",
         clearForm: jest.fn(),
         onDelete: jest.fn(),
+        onHeaderBackButtonPress: jest.fn(),
       },
     }
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
@@ -182,6 +190,7 @@ describe("AddEditArtwork", () => {
         mode: ArtworkFormMode
         clearForm(): void
         onDelete?(): void
+        onHeaderBackButtonPress(): void
       }
     > = {
       key: "ArtworkForm",
@@ -190,6 +199,7 @@ describe("AddEditArtwork", () => {
         mode: "edit",
         clearForm: jest.fn(),
         onDelete: mockDelete,
+        onHeaderBackButtonPress: jest.fn(),
       },
     }
 
@@ -214,6 +224,7 @@ describe("AddEditArtwork", () => {
         mode: ArtworkFormMode
         clearForm(): void
         onDelete?(): void
+        onHeaderBackButtonPress(): void
       }
     > = {
       key: "ArtworkForm",
@@ -222,6 +233,7 @@ describe("AddEditArtwork", () => {
         mode: "edit",
         clearForm: jest.fn(),
         onDelete: jest.fn(),
+        onHeaderBackButtonPress: jest.fn(),
       },
     }
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
