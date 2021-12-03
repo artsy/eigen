@@ -24,7 +24,7 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
   const { artwork, conversationID } = props
   const { editionSets } = artwork
 
-  const knownEditionSets = (editionSets as unknown) as Array<{ internalID: string }>
+  const knownEditionSets = editionSets as unknown as Array<{ internalID: string }>
   const [selectedEdition, setSelectedEdition] = useState<string | null>(
     editionSets?.length === 1 ? knownEditionSets[0].internalID : null
   )

@@ -628,9 +628,8 @@ describe("ConfirmBid for unqualified user", () => {
   }
 
   it("shows the billing address that the user typed in the billing address form", () => {
-    const billingAddressRow = mountConfirmBidComponent(initialPropsForUnqualifiedUser).root.findAllByType(
-      TouchableWithoutFeedback
-    )[2]
+    const billingAddressRow =
+      mountConfirmBidComponent(initialPropsForUnqualifiedUser).root.findAllByType(TouchableWithoutFeedback)[2]
 
     billingAddressRow.instance.props.onPress()
 
@@ -644,9 +643,8 @@ describe("ConfirmBid for unqualified user", () => {
   })
 
   it("shows the credit card form when the user tap the edit text in the credit card row", () => {
-    const creditcardRow = mountConfirmBidComponent(initialPropsForUnqualifiedUser).root.findAllByType(
-      TouchableWithoutFeedback
-    )[1]
+    const creditcardRow =
+      mountConfirmBidComponent(initialPropsForUnqualifiedUser).root.findAllByType(TouchableWithoutFeedback)[1]
 
     creditcardRow.instance.props.onPress()
 

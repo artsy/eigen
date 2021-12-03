@@ -320,16 +320,16 @@ export const getFilterScreenSortByMode = (
       break
     default:
       assertNever(mode)
+    }
+          
+    const leftParam = left.filterType
+    const rightParam = right.filterType
+    if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {
+      return -1
+    } else {
+      return 1
+    }
   }
-
-  const leftParam = left.filterType
-  const rightParam = right.filterType
-  if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {
-    return -1
-  } else {
-    return 1
-  }
-}
 
 export const FilterArtworkButton = styled(Flex)`
   background-color: ${themeGet("colors.black100")};

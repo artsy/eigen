@@ -102,9 +102,8 @@ export const ImageZoomView =
   // need to do this ref forwarding to expose the `resetZoom` method to consumers
   React.forwardRef<ImageZoomView, ImageZoomViewProps>(({ image, index }, ref) => {
     const screenDimensions = useScreenDimensions()
-    const { embeddedImageRefs, dispatch, imageIndex, fullScreenState, lastImageIndex } = useContext(
-      ImageCarouselContext
-    )
+    const { embeddedImageRefs, dispatch, imageIndex, fullScreenState, lastImageIndex } =
+      useContext(ImageCarouselContext)
 
     imageIndex.useUpdates()
     fullScreenState.useUpdates()

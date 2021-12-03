@@ -17,11 +17,11 @@ import { SelectMaxBid } from "./SelectMaxBid"
 
 jest.mock("tipsi-stripe", () => ({ setOptions: jest.fn() }))
 
-const Me = ({
+const Me = {
   has_qualified_credit_cards: true,
-} as any) as SelectMaxBid_me
+} as any as SelectMaxBid_me
 
-const SaleArtwork = ({
+const SaleArtwork = {
   id: "sale-artwork-id",
   artwork: {
     id: "meteor shower",
@@ -58,7 +58,7 @@ const SaleArtwork = ({
       cents: 5500000,
     },
   ],
-} as any) as SelectMaxBid_sale_artwork
+} as any as SelectMaxBid_sale_artwork
 
 let fakeNavigator: FakeNavigator
 let fakeRelay: {

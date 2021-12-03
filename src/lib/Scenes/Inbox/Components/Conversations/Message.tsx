@@ -6,7 +6,6 @@ import { compact } from "lodash"
 import { BoxProps, ClassTheme, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { View } from "react-native"
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Hyperlink from "react-native-hyperlink"
 import { createFragmentContainer } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -97,10 +96,6 @@ export class Message extends React.Component<Props> {
       <ClassTheme>
         {({ color }) => {
           const backgroundColor = color(isFromUser ? "black100" : "black10")
-          const linkStyle = {
-            color: color("blue100"),
-            textDecorationLine: "underline",
-          }
           return (
             <>
               <Flex maxWidth="66.67%" alignItems={alignAttachments} flexDirection="column" style={{ alignSelf }}>
@@ -109,7 +104,13 @@ export class Message extends React.Component<Props> {
                     backgroundColor: color(isFromUser ? "black100" : "black10"),
                   }}
                 >
-                  <Hyperlink onPress={this.onLinkPress.bind(this)} linkStyle={linkStyle}>
+                  <Hyperlink
+                    onPress={this.onLinkPress.bind(this)}
+                    linkStyle={{
+                      color: color("blue100"),
+                      textDecorationLine: "underline",
+                    }}
+                  >
                     <Text variant="sm" color={textColor}>
                       {body}
                     </Text>

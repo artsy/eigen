@@ -123,9 +123,10 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 
   const filterParams = useMemo(() => filterArtworksParams(appliedFilters), [appliedFilters])
   const appliedFiltersCount = useSelectedFiltersCount()
-  const allowedFiltersForSavedSearch = useMemo(() => getAllowedFiltersForSavedSearchInput(appliedFilters), [
-    appliedFilters,
-  ])
+  const allowedFiltersForSavedSearch = useMemo(
+    () => getAllowedFiltersForSavedSearchInput(appliedFilters),
+    [appliedFilters]
+  )
   const artworks = artist.artworks
   const artworksCount = artworks?.edges?.length
   const artworksTotal = artworks?.counts?.total ?? 0

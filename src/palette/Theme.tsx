@@ -113,11 +113,13 @@ const fixTextTreatments = (
 ): Record<TextVariantV3, TextTreatment> => {
   const textTreatments = _.mapValues(variantsWithUnits, (treatmentWithUnits) => {
     const newTreatment = {} as TextTreatment
-    ;([
-      ["fontSize", "px"],
-      ["lineHeight", "px"],
-      ["letterSpacing", "em"],
-    ] as Array<[keyof TextTreatment, string]>).forEach(([property, unit]) => {
+    ;(
+      [
+        ["fontSize", "px"],
+        ["lineHeight", "px"],
+        ["letterSpacing", "em"],
+      ] as Array<[keyof TextTreatment, string]>
+    ).forEach(([property, unit]) => {
       const originalValue = treatmentWithUnits[property]
       if (originalValue === undefined) {
         return undefined
@@ -207,15 +209,19 @@ interface ColorFuncOverload {
   (colorNumber: Color): string
   (colorNumber: Color | undefined): string | undefined
 }
-const color = (theme: ThemeType): ColorFuncOverload => (colorName: any): any => {
-  if (colorName === undefined) {
-    return undefined
+const color =
+  (theme: ThemeType): ColorFuncOverload =>
+  (colorName: any): any => {
+    if (colorName === undefined) {
+      return undefined
+    }
+    return (theme.colors as { [key: string]: string })[colorName as Color]
   }
-  return (theme.colors as { [key: string]: string })[colorName as Color]
-}
 
-const space = (theme: ThemeType) => (spaceName: SpacingUnitV2 | SpacingUnitV3): number =>
-  theme.space[spaceName as SpacingUnitV3]
+const space =
+  (theme: ThemeType) =>
+  (spaceName: SpacingUnitV2 | SpacingUnitV3): number =>
+    theme.space[spaceName as SpacingUnitV3]
 
 export const useTheme = () => {
   const theme: ThemeType = useContext(ThemeContext)
