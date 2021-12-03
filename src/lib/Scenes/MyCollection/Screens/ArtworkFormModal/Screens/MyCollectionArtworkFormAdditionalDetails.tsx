@@ -1,4 +1,4 @@
-import { NavigationProp } from "@react-navigation/native"
+import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Flex, Input, Join, Sans, Spacer } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
@@ -8,9 +8,9 @@ import { ScrollView } from "react-native-gesture-handler"
 import { useArtworkForm } from "../Form/useArtworkForm"
 import { ArtworkFormModalScreen } from "../MyCollectionArtworkFormModal"
 
-export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: NavigationProp<ArtworkFormModalScreen> }> = ({
-  navigation,
-}) => {
+export const MyCollectionAdditionalDetailsForm: React.FC<
+  StackScreenProps<ArtworkFormModalScreen, "AdditionalDetails">
+> = ({ route }) => {
   const { formik } = useArtworkForm()
   const formikValues = formik?.values
   const [isEdition, setIsEdition] = useState(formikValues?.isEdition)
@@ -23,7 +23,9 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
 
   return (
     <Flex style={{ flex: 1 }}>
-      <FancyModalHeader onLeftButtonPress={() => navigation.goBack()}>Additional Details</FancyModalHeader>
+      <FancyModalHeader onLeftButtonPress={() => route.params.onHeaderBackButtonPress()}>
+        Additional Details
+      </FancyModalHeader>
       <ScrollView style={{ flex: 1 }}>
         <Flex p={2}>
           <Join separator={<Spacer my={1} />}>
