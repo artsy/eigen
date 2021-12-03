@@ -75,14 +75,14 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
                 artworkActions.addPhotos(photos)
               })
             } else {
-              navigation.navigate("AddPhotos")
+              navigation.navigate("AddPhotos", { onHeaderBackButtonPress: route.params.onHeaderBackButtonPress })
             }
           }}
         />
         <AdditionalDetailsButton
           testID="AdditionalDetailsButton"
           onPress={() => {
-            navigation.navigate("AdditionalDetails")
+            navigation.navigate("AdditionalDetails", { onHeaderBackButtonPress: route.params.onHeaderBackButtonPress })
           }}
         />
 
