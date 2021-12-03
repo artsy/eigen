@@ -66,17 +66,11 @@ describe(ArtsyReactWebViewPage, () => {
     const tree = render()
     const getProgressBar = () => tree.root.findByType(__webViewTestUtils__?.ProgressBar!)
     expect(getProgressBar().children).toHaveLength(0)
-    act(() => {
-      tree.root.findByType(WebView).props.onLoadStart()
-    })
+    act(() => tree.root.findByType(WebView).props.onLoadStart())
     expect(getProgressBar().children).toHaveLength(1)
-    act(() => {
-      tree.root.findByType(WebView).props.onLoadProgress({ nativeEvent: { progress: 0.5 } })
-    })
-    expect(getProgressBar().findByProps({ testID: "progress-bar" }).props.style.width).toBe("50%")
-    act(() => {
-      tree.root.findByType(WebView).props.onLoadEnd()
-    })
+    act(() => tree.root.findByType(WebView).props.onLoadProgress({ nativeEvent: { progress: 0.5 } }))
+    expect(getProgressBar().findByProps({ testID: "progress-bar" }).props.width).toBe("50%")
+    act(() => tree.root.findByType(WebView).props.onLoadEnd())
     expect(getProgressBar().children).toHaveLength(0)
   })
   it("sets the user agent correctly", () => {
