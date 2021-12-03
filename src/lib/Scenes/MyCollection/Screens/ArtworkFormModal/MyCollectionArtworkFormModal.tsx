@@ -63,8 +63,9 @@ type MyCollectionArtworkFormModalProps = { onSuccess: () => void } & (
     }
 )
 
+const navContainerRef = { current: null as NavigationContainerRef | null }
+
 export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModalProps> = (props) => {
-  console.log("props called with", props)
   const { trackEvent } = useTracking()
   const { formValues, dirtyFormCheckValues } = GlobalStore.useAppState(
     (state) => state.myCollection.artwork.sessionState
@@ -207,8 +208,6 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
     }
     navContainerRef.current?.goBack()
   }
-
-  const navContainerRef = { current: null as NavigationContainerRef | null }
 
   return (
     <NavigationContainer independent ref={navContainerRef}>
