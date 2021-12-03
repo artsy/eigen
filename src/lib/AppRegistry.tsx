@@ -269,7 +269,6 @@ export const modules = defineModules({
   Auction: nativeModule(),
   Auction2: reactModule(SaleQueryRenderer, { fullBleed: true }),
   Auctions: reactModule(SalesQueryRenderer),
-  // Auctions: reactModule(SubmitArtworkOverview),
   ArtworkSubmitted: reactModule(ArtworkSubmitted, { hidesBackButton: true }),
   SubmitArtworkOverview: reactModule(SubmitArtworkOverview),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
