@@ -24,7 +24,7 @@ export interface PillProps extends FlexProps {
   selected?: boolean
   imageUrl?: string
   highlightEnabled?: boolean
-  onRemove?: () => void
+  onRemovePill?: () => void
 }
 
 enum DisplayState {
@@ -70,7 +70,7 @@ export const Pill: React.FC<PillProps> = ({
   disabled,
   rounded,
   highlightEnabled = false,
-  onRemove,
+  onRemovePill,
   ...rest
 }) => {
   const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
@@ -138,7 +138,7 @@ export const Pill: React.FC<PillProps> = ({
             {iconPosition === "right" && !!Icon && (
               <>
                 <Spacer mr={iconSpacerMargin} />
-                <TouchableOpacity onPress={onRemove}>
+                <TouchableOpacity onPress={onRemovePill}>
                   <Icon fill={iconColor} />
                 </TouchableOpacity>
               </>

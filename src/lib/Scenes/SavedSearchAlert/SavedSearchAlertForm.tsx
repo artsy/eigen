@@ -52,6 +52,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const tracking = useTracking()
   const { space } = useTheme()
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
+  const [pillsState, setPillsState] = useState(pills)
   const [shouldShowEmailWarning, setShouldShowEmailWarning] = useState(!userAllowsEmails)
   const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const formik = useFormik<SavedSearchAlertFormValues>({
@@ -254,6 +255,12 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     setVisibleDeleteDialog(true)
   }
 
+  const handleRemovePill = (index: number) => {
+    console.log("[debug] lalalala", index)
+    pillsState.splice(index, 1)
+    setPillsState([...pillsState])
+  }
+
   return (
     <FormikProvider value={formik}>
       <ScrollView
@@ -262,7 +269,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}
       >
         <Form
-          pills={pills}
+          pills={pillsState}
           savedSearchAlertId={savedSearchAlertId}
           artistId={artistId}
           artistName={artistName}
@@ -270,6 +277,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
           onSubmitPress={handleSubmit}
           onTogglePushNotification={handleTogglePushNotification}
           onToggleEmailNotification={handleToggleEmailNotification}
+          onRemovePill={(index) => handleRemovePill(index)}
           {...other}
         />
       </ScrollView>

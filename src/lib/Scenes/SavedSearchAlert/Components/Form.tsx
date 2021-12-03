@@ -20,6 +20,7 @@ interface FormProps {
   onUpdateEmailPreferencesPress?: () => void
   onTogglePushNotification: (enabled: boolean) => void
   onToggleEmailNotification: (enabled: boolean) => void
+  onRemovePill: (index: number) => void
 }
 
 export const Form: React.FC<FormProps> = (props) => {
@@ -35,6 +36,7 @@ export const Form: React.FC<FormProps> = (props) => {
     onUpdateEmailPreferencesPress,
     onTogglePushNotification,
     onToggleEmailNotification,
+    onRemovePill,
   } = props
   const {
     isSubmitting,
@@ -44,7 +46,6 @@ export const Form: React.FC<FormProps> = (props) => {
     handleBlur,
     handleChange,
   } = useFormikContext<SavedSearchAlertFormValues>()
-  const [pillsState, setPillsState] = useState(pills)
   const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const namePlaceholder = getNamePlaceholder(artistName, pills)
   const isEditMode = !!savedSearchAlertId
@@ -86,11 +87,6 @@ export const Form: React.FC<FormProps> = (props) => {
     }
 
     return navigate("/unsubscribe")
-  }
-
-  const handleRemove = (index: number) => {
-    pillsState.splice(index, 1)
-    setPillsState([...pillsState])
   }
 
   return (
@@ -139,14 +135,14 @@ export const Form: React.FC<FormProps> = (props) => {
       <Box mb={2}>
         <InputTitle>Filters</InputTitle>
         <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
-          {pillsState.map((pill, index) => (
+          {pills.map((pill, index) => (
             <Pill
               testID="alert-pill"
               m={0.5}
               key={`filter-label-${index}`}
               iconPosition="right"
               Icon={RemoveIcon}
-              onRemove={() => handleRemove(index)}
+              onRemovePill={() => onRemovePill(index)}
             >
               {pill}
             </Pill>
