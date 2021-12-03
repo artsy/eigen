@@ -31,18 +31,17 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
 
   return (
     <TouchableOpacity
+      style={{ padding: 20 }}
       onPress={() => {
         setIsContentVisible(!isContentVisible)
       }}
     >
       <View>
-        <Sans size="1" mx="2">
+        <Sans size="1">
           Step {step} of {totalSteps}
         </Sans>
         <View style={styles.titleAndIcon}>
-          <Sans size="8" mx="2">
-            {title}
-          </Sans>
+          <Sans size="8">{title}</Sans>
           <View style={styles.icons}>
             {!!isCompleted && (
               <CheckCircleIcon
@@ -58,7 +57,7 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
       </View>
       {!!isContentVisible && (
         <>
-          <Sans size="1" mx="2" mt="1">
+          <Sans size="1" mt="1">
             {content}
           </Sans>
           <SaveAndContinue
@@ -70,8 +69,7 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
           />
         </>
       )}
-      {/* doesnot add margin to the right... */}
-      <Separator marginTop="40" marginBottom="20" mx="2" />
+      <Separator marginTop="40" marginBottom="20" />
     </TouchableOpacity>
   )
 }
