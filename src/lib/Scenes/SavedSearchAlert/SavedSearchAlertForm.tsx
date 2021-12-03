@@ -1,5 +1,6 @@
 import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
 import { FormikProvider, useFormik } from "formik"
+import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { useFeatureFlag } from "lib/store/GlobalStore"
@@ -47,10 +48,14 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     ...other
   } = props
   const isUpdateForm = !!savedSearchAlertId
-  // const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
-  // const pillsFromFilters = extractPills(filters, aggregations)
-  // const pills = isEnabledImprovedAlertsFlow ? [artistName, ...pillsFromFilters] : pillsFromFilters
-  const [pills, setPills] = useState(extractPills(filters, aggregations))
+  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
+  const pillsFromFilters = extractPills(filters, aggregations)
+  const artistPill: SavedSearchPill = {
+    label: artistName,
+    value: artistId,
+    paramName: FilterParamName.artistIDs,
+  }
+  const [pills, setPills] = useState(isEnabledImprovedAlertsFlow ? [artistPill, ...pillsFromFilters] : pillsFromFilters)
 
   const tracking = useTracking()
   const { space } = useTheme()
@@ -96,17 +101,15 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
             id: response.updateSavedSearch?.savedSearchOrErrors.internalID!,
           }
         } else {
-          console.log("[debug] save", getSearchCriteriaFromPills(pills))
+          const criteria = getSearchCriteriaFromPills(pills)
+          const response = await createSavedSearchAlert(userAlertSettings, criteria)
 
-          // const criteria = getSearchCriteriaFromFilters(artistId, filters)
-          // const response = await createSavedSearchAlert(userAlertSettings, criteria)
-
-          // result = {
-          //   id: response.createSavedSearch?.savedSearchOrErrors.internalID!,
-          // }
+          result = {
+            id: response.createSavedSearch?.savedSearchOrErrors.internalID!,
+          }
         }
 
-        // onComplete?.(result)
+        onComplete?.(result)
       } catch (error) {
         console.error(error)
       }

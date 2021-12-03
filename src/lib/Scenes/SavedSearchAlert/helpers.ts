@@ -108,18 +108,23 @@ export const extractPillValue = (pills: SavedSearchPill[]) => {
 
 export const getSearchCriteriaFromPills = (pills: SavedSearchPill[]) => {
   const pillsByParamName = groupBy(pills, "paramName")
-  const input: SearchCriteriaAttributes = {}
+  const criteria: SearchCriteriaAttributes = {}
 
   Object.entries(pillsByParamName).forEach((entry) => {
     const [paramName, values] = entry
 
-    if (Array.isArray(defaultCommonFilterOptions[paramName as FilterParamName])) {
-      input[paramName as keyof SearchCriteriaAttributes] = extractPillValue(values) as any
-    } else {
-      input[paramName as keyof SearchCriteriaAttributes] = extractPillValue(values)[0] as any
+    if (paramName === FilterParamName.artistIDs) {
+      criteria.artistID = extractPillValue(values)[0] as string
+      return
     }
+
+    if (Array.isArray(defaultCommonFilterOptions[paramName as FilterParamName])) {
+      criteria[paramName as keyof SearchCriteriaAttributes] = extractPillValue(values) as any
+      return
+    }
+
+    criteria[paramName as keyof SearchCriteriaAttributes] = extractPillValue(values)[0] as any
   })
 
-  console.log("[debug] pillsByParamName", pillsByParamName)
-  console.log("[debug] input", input)
+  return criteria
 }
