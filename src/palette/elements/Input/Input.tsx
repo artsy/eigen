@@ -111,7 +111,11 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     const fontFamily = theme.fonts.sans.regular
 
     useEffect(() => {
-      inputEvents.addListener("clear", localClear)
+      if (!inputEvents.listeners("clear").length) {
+        // in a long form with so many Inputs, we will easily exceed maxLimit for
+        // listeners for clear. So add it only if not already added.
+        inputEvents.addListener("clear", localClear)
+      }
       return () => {
         inputEvents.removeListener("clear", localClear)
       }

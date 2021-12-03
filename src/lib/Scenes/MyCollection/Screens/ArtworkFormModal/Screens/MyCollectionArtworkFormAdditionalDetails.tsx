@@ -3,7 +3,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Flex, Input, Join, Sans, Spacer } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import { Select } from "palette/elements/Select"
-import React, { useRef, useState } from "react"
+import React, { useState } from "react"
 import { ScrollView } from "react-native-gesture-handler"
 import { useArtworkForm } from "../Form/useArtworkForm"
 import { ArtworkFormModalScreen } from "../MyCollectionArtworkFormModal"
@@ -14,7 +14,6 @@ export const MyCollectionAdditionalDetailsForm: React.FC<
   const { formik } = useArtworkForm()
   const formikValues = formik?.values
   const [isEdition, setIsEdition] = useState(formikValues?.isEdition)
-  const pricePaidCurrencyInputRef = useRef<typeof Select>(null)
 
   const handleEditionChange = (editionStatus: boolean) => {
     setIsEdition(editionStatus)
@@ -114,7 +113,6 @@ export const MyCollectionAdditionalDetailsForm: React.FC<
               value={formikValues.pricePaidCurrency}
               enableSearch={false}
               showTitleLabel={false}
-              ref={pricePaidCurrencyInputRef}
               onSelectValue={(value) => {
                 formik.handleChange("pricePaidCurrency")(value)
               }}
