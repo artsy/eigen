@@ -4,6 +4,7 @@ import { EventEmitter } from "events"
 import { AppModule, modules, ViewOptions } from "lib/AppRegistry"
 import { __unsafe_switchTab } from "lib/NativeModules/ARScreenPresenterModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { propsStore } from "lib/PropsStore"
 import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import { GlobalStore, unsafe__getSelectedTab } from "lib/store/GlobalStore"
 import { postEventToProviders } from "lib/utils/track/providers"
@@ -63,6 +64,9 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     },
     ...module.options,
   }
+
+  // Set props which we will reinject later. See HACKS.md
+  propsStore.setPendingProps(screenDescriptor.moduleName, screenDescriptor.props)
 
   if (presentModally) {
     LegacyNativeModules.ARScreenPresenterModule.presentModal(screenDescriptor)

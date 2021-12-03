@@ -14,6 +14,7 @@ import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
 import { useSentryConfig } from "./ErrorReporting"
+import { propsStore } from "./PropsStore"
 import { About } from "./Scenes/About/About"
 import { ArticlesQueryRenderer } from "./Scenes/Articles/Articles"
 import { ArtistQueryRenderer } from "./Scenes/Artist/Artist"
@@ -163,9 +164,11 @@ interface PageWrapperProps {
   isMainView?: boolean
   ViewComponent: React.ComponentType<any>
   viewProps: any
+  moduleName: string
 }
 
 const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, ViewComponent, viewProps }) => {
+  console.log("INNERWRAPPER VIEWPROPS", viewProps)
   const safeAreaInsets = useScreenDimensions().safeAreaInsets
   const paddingTop = fullBleed ? 0 : safeAreaInsets.top
   const paddingBottom = isMainView ? 0 : safeAreaInsets.bottom
@@ -195,9 +198,13 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, V
 @track()
 class PageWrapper extends React.Component<PageWrapperProps> {
   render() {
+    const props = {
+      ...this.props,
+      viewProps: { ...this.props.viewProps, ...propsStore.getPropsForModule(this.props.moduleName) },
+    }
     return (
       <AppProviders>
-        <InnerPageWrapper {...this.props} />
+        <InnerPageWrapper {...props} />
       </AppProviders>
     )
   }
@@ -208,7 +215,9 @@ function register(
   Component: React.ComponentType<any>,
   options?: Omit<PageWrapperProps, "ViewComponent" | "viewProps">
 ) {
-  const WrappedComponent = (props: any) => <PageWrapper {...options} ViewComponent={Component} viewProps={props} />
+  const WrappedComponent = (props: any) => (
+    <PageWrapper {...options} moduleName={screenName} ViewComponent={Component} viewProps={props} />
+  )
   AppRegistry.registerComponent(screenName, () => WrappedComponent)
 }
 
@@ -375,7 +384,7 @@ for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]
   if ("Component" in descriptor) {
     if (Platform.OS === "ios") {
-      register(moduleName, descriptor.Component, { fullBleed: descriptor.options.fullBleed })
+      register(moduleName, descriptor.Component, { fullBleed: descriptor.options.fullBleed, moduleName })
     }
   }
 }
@@ -428,5 +437,5 @@ const Main: React.FC<{}> = track()(({}) => {
 })
 
 if (Platform.OS === "ios") {
-  register("Artsy", Main, { fullBleed: true, isMainView: true })
+  register("Artsy", Main, { fullBleed: true, isMainView: true, moduleName: "Artsy" })
 }
