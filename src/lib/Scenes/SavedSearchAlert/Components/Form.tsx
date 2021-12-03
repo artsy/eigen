@@ -36,14 +36,8 @@ export const Form: React.FC<FormProps> = (props) => {
     onTogglePushNotification,
     onToggleEmailNotification,
   } = props
-  const {
-    isSubmitting,
-    values,
-    errors,
-    dirty,
-    handleBlur,
-    handleChange,
-  } = useFormikContext<SavedSearchAlertFormValues>()
+  const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
+    useFormikContext<SavedSearchAlertFormValues>()
   const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const namePlaceholder = getNamePlaceholder(artistName, pills)
   const isEditMode = !!savedSearchAlertId

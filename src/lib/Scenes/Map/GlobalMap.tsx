@@ -271,7 +271,7 @@ export class GlobalMap extends React.Component<Props, State> {
       const fairs = tab.getFairs(this.state.bucketResults)
       const showData = showsToGeoCityShow(shows)
       const fairData = fairToGeoCityFairs(fairs)
-      const data = showData.concat((fairData as any) as Show[])
+      const data = showData.concat(fairData as any as Show[])
       const geoJSONFeature = convertCityToGeoJSON(data)
 
       const clusterEngine = new Supercluster({

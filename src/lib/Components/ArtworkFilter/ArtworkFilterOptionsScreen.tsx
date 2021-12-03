@@ -257,60 +257,59 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
   }
 }
 
-export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
-  left: FilterDisplayConfig,
-  right: FilterDisplayConfig
-): number => {
-  let sortOrder: FilterScreen[] = []
+export const getFilterScreenSortByMode =
+  (mode: FilterModalMode) =>
+  (left: FilterDisplayConfig, right: FilterDisplayConfig): number => {
+    let sortOrder: FilterScreen[] = []
 
-  // Filter order is based on frequency of use for a given page
-  switch (mode) {
-    case FilterModalMode.Collection:
-      sortOrder = CollectionFiltersSorted
-      break
-    case FilterModalMode.ArtistArtworks:
-      sortOrder = ArtistArtworksFiltersSorted
-      break
-    case FilterModalMode.ArtistSeries:
-      sortOrder = ArtistSeriesFiltersSorted
-      break
-    case FilterModalMode.Artworks:
-      sortOrder = ArtworksFiltersSorted
-      break
-    case FilterModalMode.Search:
-      sortOrder = ArtworksFiltersSorted
-      break
-    case FilterModalMode.Show:
-      sortOrder = ShowFiltersSorted
-      break
-    case FilterModalMode.Fair:
-      sortOrder = FairFiltersSorted
-      break
-    case FilterModalMode.SaleArtworks:
-      sortOrder = SaleArtworksFiltersSorted
-      break
-    case FilterModalMode.AuctionResults:
-      sortOrder = AuctionResultsFiltersSorted
-      break
-    case FilterModalMode.Partner:
-      sortOrder = PartnerFiltersSorted
-      break
-    case FilterModalMode.Gene:
-      sortOrder = TagAndGeneFiltersSorted
-      break
-    case FilterModalMode.Tag:
-      sortOrder = TagAndGeneFiltersSorted
-      break
-  }
+    // Filter order is based on frequency of use for a given page
+    switch (mode) {
+      case FilterModalMode.Collection:
+        sortOrder = CollectionFiltersSorted
+        break
+      case FilterModalMode.ArtistArtworks:
+        sortOrder = ArtistArtworksFiltersSorted
+        break
+      case FilterModalMode.ArtistSeries:
+        sortOrder = ArtistSeriesFiltersSorted
+        break
+      case FilterModalMode.Artworks:
+        sortOrder = ArtworksFiltersSorted
+        break
+      case FilterModalMode.Search:
+        sortOrder = ArtworksFiltersSorted
+        break
+      case FilterModalMode.Show:
+        sortOrder = ShowFiltersSorted
+        break
+      case FilterModalMode.Fair:
+        sortOrder = FairFiltersSorted
+        break
+      case FilterModalMode.SaleArtworks:
+        sortOrder = SaleArtworksFiltersSorted
+        break
+      case FilterModalMode.AuctionResults:
+        sortOrder = AuctionResultsFiltersSorted
+        break
+      case FilterModalMode.Partner:
+        sortOrder = PartnerFiltersSorted
+        break
+      case FilterModalMode.Gene:
+        sortOrder = TagAndGeneFiltersSorted
+        break
+      case FilterModalMode.Tag:
+        sortOrder = TagAndGeneFiltersSorted
+        break
+    }
 
-  const leftParam = left.filterType
-  const rightParam = right.filterType
-  if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {
-    return -1
-  } else {
-    return 1
+    const leftParam = left.filterType
+    const rightParam = right.filterType
+    if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {
+      return -1
+    } else {
+      return 1
+    }
   }
-}
 
 export const FilterArtworkButton = styled(Flex)`
   background-color: ${themeGet("colors.black100")};

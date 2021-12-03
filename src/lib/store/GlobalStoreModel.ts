@@ -129,7 +129,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
       }),
   __manipulate: __TEST__
     ? action((state, theEdits) => {
-        theEdits((state as unknown) as GlobalStoreModel)
+        theEdits(state as unknown as GlobalStoreModel)
       })
     : action(() => {
         console.error("Do not use this function outside of tests!!")
