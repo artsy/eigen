@@ -1,6 +1,5 @@
 import { track as _track } from "lib/utils/track"
 import React, { useEffect } from "react"
-import { View } from "react-native"
 import { CollapsibleMenuItemProps } from "./ArtworkDetails"
 import { CollapsibleMenuItem } from "./CollapsibleMenuItem"
 

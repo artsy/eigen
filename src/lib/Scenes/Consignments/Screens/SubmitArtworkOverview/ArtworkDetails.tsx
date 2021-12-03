@@ -1,6 +1,6 @@
 import { track as _track } from "lib/utils/track"
 import React from "react"
-import { ScrollView, Text, View } from "react-native"
+import { Text, View } from "react-native"
 import { CollapsibleMenuItem } from "./CollapsibleMenuItem"
 
 export interface CollapsibleMenuItemProps {
