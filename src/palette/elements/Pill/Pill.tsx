@@ -112,7 +112,7 @@ export const Pill: React.FC<PillProps> = ({
           }}
         >
           <AnimatedContainer
-            borderRadius={!!Icon || rounded ? 50 : 0}
+            borderRadius={!!Icon && !rounded ? 0 : 50}
             flexDirection="row"
             justifyContent="center"
             alignItems="center"
