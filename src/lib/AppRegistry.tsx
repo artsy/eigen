@@ -63,7 +63,7 @@ import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEdi
 import { MyBidsQueryRenderer } from "./Scenes/MyBids"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
-import { MyCollectionArtworkFormModal } from "./Scenes/MyCollection/Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
+import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
 import { MyCollectionArtworkImagesQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkImages/MyCollectionArtworkImages"
 import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
@@ -262,7 +262,7 @@ export const modules = defineModules({
   Admin: nativeModule({ alwaysPresentModally: true }),
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
-  AddMyCollectionArtwork: reactModule(MyCollectionArtworkFormModal, { hidesBackButton: true }),
+  AddMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
   Articles: reactModule(ArticlesQueryRenderer),
   Artist: reactModule(ArtistQueryRenderer),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),

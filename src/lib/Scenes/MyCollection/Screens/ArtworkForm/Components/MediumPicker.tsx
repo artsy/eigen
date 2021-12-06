@@ -1,5 +1,5 @@
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
-import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkFormModal/Form/useArtworkForm"
+import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { artworkMediumCategories } from "lib/utils/artworkMediumCategories"
 import { Select } from "palette/elements/Select"
 import React from "react"

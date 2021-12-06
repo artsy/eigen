@@ -2,7 +2,7 @@ import { propsStore } from "./PropsStore"
 
 describe("propsStore", () => {
   describe(propsStore.setPendingProps, () => {
-    it("sets pendingProps", () => {
+    it("stores and retrieves props for a module", () => {
       const pendingProps = {
         str: "a string",
         afunc: () => null,
@@ -10,7 +10,7 @@ describe("propsStore", () => {
       propsStore.setPendingProps("myModule", pendingProps)
       expect(propsStore.getPropsForModule("myModule")).toEqual(pendingProps)
     })
-    it("overwrites whatever pending props", () => {
+    it("overwrites whatever already exists for a module", () => {
       const initialProps = {
         str: "a string",
         afunc: () => null,
@@ -44,7 +44,7 @@ describe("propsStore", () => {
   })
 
   describe(propsStore.updateProps, () => {
-    it("callback with updated props", () => {
+    it("calls callback with latest updated props", () => {
       const callback = jest.fn()
       const first = { str: "a string" }
       const second = { str: "a diff string", deezFunc: () => null }

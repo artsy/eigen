@@ -1,9 +1,9 @@
 import { NavigationContainer } from "@react-navigation/native"
-import { MyCollectionArtworkFormMain } from "lib/Scenes/MyCollection/Screens/ArtworkFormModal/Screens/MyCollectionArtworkFormMain"
+import { MyCollectionArtworkFormMain } from "lib/Scenes/MyCollection/Screens/ArtworkForm/Screens/MyCollectionArtworkFormMain"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Image } from "react-native-image-crop-picker"
-import { MyCollectionArtworkFormModal, uploadPhotos } from "./MyCollectionArtworkFormModal"
+import { MyCollectionArtworkForm, uploadPhotos } from "./MyCollectionArtworkForm"
 import { MyCollectionAdditionalDetailsForm } from "./Screens/MyCollectionArtworkFormAdditionalDetails"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
 
@@ -24,9 +24,9 @@ const getConvectionGeminiKeyMock = getConvectionGeminiKey as jest.Mock<any>
 const getGeminiCredentialsForEnvironmentMock = getGeminiCredentialsForEnvironment as jest.Mock<any>
 const uploadFileToS3Mock = uploadFileToS3 as jest.Mock<any>
 
-describe("MyCollectionArtworkFormModal", () => {
+describe("MyCollectionArtworkForm", () => {
   it("creates a navigation stack containing expected components", () => {
-    const wrapper = renderWithWrappers(<MyCollectionArtworkFormModal mode="add" onSuccess={jest.fn()} />)
+    const wrapper = renderWithWrappers(<MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} />)
     expect(wrapper.root.findAllByType(NavigationContainer)).toBeDefined()
     expect(wrapper.root.findAllByType(MyCollectionArtworkFormMain)).toBeDefined()
     expect(wrapper.root.findAllByType(MyCollectionAdditionalDetailsForm)).toBeDefined()

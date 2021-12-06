@@ -1,6 +1,6 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { FancyModalHeader as NavHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Stack } from "lib/Components/Stack"
 import { Image as ImageProps } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { GlobalStore } from "lib/store/GlobalStore"
@@ -11,11 +11,11 @@ import { chunk } from "lodash"
 import { AddIcon, BorderBox, Box, Flex, useColor, XCircleIcon } from "palette"
 import React from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
-import { ArtworkFormModalScreen } from "../MyCollectionArtworkFormModal"
+import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
 const MARGIN = 20
 
-export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormModalScreen, "AddPhotos">> = ({ route }) => {
+export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormScreen, "AddPhotos">> = ({ route }) => {
   const formValues = GlobalStore.useAppState((state) => state.myCollection.artwork.sessionState.formValues)
   const { photos } = formValues
   const { width: screenWidth } = useScreenDimensions()
@@ -38,9 +38,9 @@ export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormModalSc
 
   return (
     <>
-      <FancyModalHeader onLeftButtonPress={() => route.params.onHeaderBackButtonPress()}>
+      <NavHeader onLeftButtonPress={() => route.params.onHeaderBackButtonPress()}>
         Photos {!!photos.length && `(${photos.length})`}
-      </FancyModalHeader>
+      </NavHeader>
       <ScrollView>
         <Flex flexDirection="row" flexWrap="wrap" my="2">
           {rows.map((row, i) => (

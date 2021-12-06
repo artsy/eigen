@@ -35,7 +35,7 @@ export type ArtworkFormMode = "add" | "edit"
 // https://github.com/microsoft/TypeScript/issues/15300
 // The react-navigation folks have written code that relies on the more permissive `type` behaviour.
 // tslint:disable-next-line:interface-over-type-literal
-export type ArtworkFormModalScreen = {
+export type ArtworkFormScreen = {
   ArtworkForm: {
     mode: ArtworkFormMode
     clearForm(): void
@@ -50,7 +50,7 @@ export type ArtworkFormModalScreen = {
   }
 }
 
-type MyCollectionArtworkFormModalProps = { onSuccess: () => void } & (
+type MyCollectionArtworkFormProps = { onSuccess: () => void } & (
   | {
       mode: "add"
     }
@@ -63,7 +63,7 @@ type MyCollectionArtworkFormModalProps = { onSuccess: () => void } & (
 
 const navContainerRef = { current: null as NavigationContainerRef | null }
 
-export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModalProps> = (props) => {
+export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (props) => {
   const { trackEvent } = useTracking()
   const { formValues, dirtyFormCheckValues } = GlobalStore.useAppState(
     (state) => state.myCollection.artwork.sessionState
@@ -241,7 +241,7 @@ export const MyCollectionArtworkFormModal: React.FC<MyCollectionArtworkFormModal
   )
 }
 
-const Stack = createStackNavigator<ArtworkFormModalScreen>()
+const Stack = createStackNavigator<ArtworkFormScreen>()
 
 export async function uploadPhotos(photos: ArtworkFormValues["photos"]) {
   GlobalStore.actions.myCollection.artwork.setLastUploadedPhoto(photos[0])
