@@ -516,7 +516,7 @@
 		FCB45B442746F42800232337 /* FullBleed+Widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B432746F42800232337 /* FullBleed+Widget.swift */; };
 		FCB45B472746F6FD00232337 /* PrimaryText.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B462746F6FD00232337 /* PrimaryText.swift */; };
 		FCB45B492746F72800232337 /* SecondaryText.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B482746F72800232337 /* SecondaryText.swift */; };
-		FCB45B4B2746F81F00232337 /* ArtworkUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B4A2746F81F00232337 /* ArtworkUrl.swift */; };
+		FCB45B4B2746F81F00232337 /* WidgetUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B4A2746F81F00232337 /* WidgetUrl.swift */; };
 		FCD1340B27483ED90065074D /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD1340A27483ED90065074D /* Fixtures.swift */; };
 		FCD47BD8274833EF003F27B8 /* ScheduleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD47BD6274833EF003F27B8 /* ScheduleTests.swift */; };
 		FCD47BD9274833EF003F27B8 /* ArtworkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD47BD7274833EF003F27B8 /* ArtworkTests.swift */; };
@@ -1309,7 +1309,7 @@
 		FCB45B432746F42800232337 /* FullBleed+Widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FullBleed+Widget.swift"; sourceTree = "<group>"; };
 		FCB45B462746F6FD00232337 /* PrimaryText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryText.swift; sourceTree = "<group>"; };
 		FCB45B482746F72800232337 /* SecondaryText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondaryText.swift; sourceTree = "<group>"; };
-		FCB45B4A2746F81F00232337 /* ArtworkUrl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkUrl.swift; sourceTree = "<group>"; };
+		FCB45B4A2746F81F00232337 /* WidgetUrl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetUrl.swift; sourceTree = "<group>"; };
 		FCD1340A27483ED90065074D /* Fixtures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
 		FCD47BD6274833EF003F27B8 /* ScheduleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleTests.swift; sourceTree = "<group>"; };
 		FCD47BD7274833EF003F27B8 /* ArtworkTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtworkTests.swift; sourceTree = "<group>"; };
@@ -3157,10 +3157,10 @@
 		FCB45B452746F6ED00232337 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				FCB45B4A2746F81F00232337 /* ArtworkUrl.swift */,
 				FCB45B462746F6FD00232337 /* PrimaryText.swift */,
-				FCB45B482746F72800232337 /* SecondaryText.swift */,
 				FC6118A1274704FA00612581 /* Schedule.swift */,
+				FCB45B482746F72800232337 /* SecondaryText.swift */,
+				FCB45B4A2746F81F00232337 /* WidgetUrl.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -4002,7 +4002,7 @@
 				FCB45B372746F0A500232337 /* FullBleed+View.swift in Sources */,
 				FCB45B292746EF3700232337 /* ArtsyWidgets.swift in Sources */,
 				FC9DDB0B274D8FA1005DEE85 /* LatestArticles+View.swift in Sources */,
-				FCB45B4B2746F81F00232337 /* ArtworkUrl.swift in Sources */,
+				FCB45B4B2746F81F00232337 /* WidgetUrl.swift in Sources */,
 				FC6118A92747091500612581 /* VolleyPayload.swift in Sources */,
 				FCB45B3D2746F0F100232337 /* FullBleed.swift in Sources */,
 				FCB45B442746F42800232337 /* FullBleed+Widget.swift in Sources */,
