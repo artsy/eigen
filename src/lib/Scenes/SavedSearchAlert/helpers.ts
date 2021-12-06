@@ -96,7 +96,6 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations): 
     }
   })
 
-  console.log("PILLS = ", pills)
   return compact(flatten(pills))
 }
 
