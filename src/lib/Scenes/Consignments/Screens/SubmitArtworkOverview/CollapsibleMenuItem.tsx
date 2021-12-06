@@ -1,12 +1,13 @@
+import { navigate } from "lib/navigation/navigate"
 import { track as _track } from "lib/utils/track"
-import { Sans } from "palette"
+import { Button, Flex, Sans, Spacer } from "palette"
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, Separator } from "palette"
 import React, { useEffect, useState } from "react"
 import { StyleSheet, TouchableOpacity, View } from "react-native"
-import { SaveAndContinue } from "./SaveAndContinue"
+
 interface Props {
   title: string
-  content?: string | React.FC | any
+  Content: string | React.FC | any
   isCompleted?: boolean
   step: number
   totalSteps: number
@@ -16,7 +17,7 @@ interface Props {
 
 export const CollapsibleMenuItem: React.FC<Props> = ({
   title = "Title",
-  content = "Content",
+  Content = "Content",
   step,
   totalSteps,
   isCompleted,
@@ -24,10 +25,15 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
   setActiveStep,
 }) => {
   const [isContentVisible, setIsContentVisible] = useState(true)
+  const [isLastStep, setLastStep] = useState(false)
 
   useEffect(() => {
     setIsContentVisible(activeStep === step)
   }, [activeStep])
+
+  useEffect(() => {
+    setLastStep(step === totalSteps)
+  }, [isLastStep])
 
   return (
     <TouchableOpacity
@@ -50,16 +56,27 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
       </View>
       {!!isContentVisible && (
         <>
-          <Sans size="1" mt="1">
-            {content}
-          </Sans>
-          <SaveAndContinue
-            setIsContentVisible={setIsContentVisible}
-            setActiveStep={setActiveStep}
-            step={step}
-            totalSteps={totalSteps}
-            activeStep={activeStep}
-          />
+          <Content />
+          <View>
+            <Spacer mb={2} />
+            <Flex px="2" width="100%" alignItems="center">
+              <Button
+                block
+                haptic
+                maxWidth={540}
+                onPress={() => {
+                  setIsContentVisible(false)
+                  setActiveStep(step + 1)
+                  if (isLastStep) {
+                    console.log("Navigate to success page")
+                    navigate(`/artwork-submitted`)
+                  }
+                }}
+              >
+                Save & Continue
+              </Button>
+            </Flex>
+          </View>
         </>
       )}
       <Separator marginTop="40" marginBottom="20" />
