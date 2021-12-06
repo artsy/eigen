@@ -10,6 +10,7 @@ import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
 interface FormProps {
   pills: SavedSearchPill[]
+  initialPills: SavedSearchPill[]
   savedSearchAlertId?: string
   artistId: string
   artistName: string
@@ -26,6 +27,7 @@ interface FormProps {
 export const Form: React.FC<FormProps> = (props) => {
   const {
     pills,
+    initialPills,
     artistId,
     artistName,
     savedSearchAlertId,
@@ -60,6 +62,10 @@ export const Form: React.FC<FormProps> = (props) => {
   // This situation is possible if a user created an alert in Saved Search V1,
   // since we didn't have the opportunity to specify custom name for the alert
   if (isEditMode && !dirty && values.name.length === 0) {
+    isSaveAlertButtonDisabled = false
+  }
+
+  if (isEditMode && !dirty && initialPills.length > pills.length) {
     isSaveAlertButtonDisabled = false
   }
 

@@ -48,16 +48,15 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   } = props
   const isUpdateForm = !!savedSearchAlertId
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
-  const pillsFromFilters = extractPills(filters, aggregations)
 
+  const pillsFromFilters = extractPills(filters, aggregations)
   const artistPill: SavedSearchPill = {
     label: artistName,
     value: artistId,
     paramName: FilterParamName.artistIDs,
   }
-  const [pillsState, setPillsState] = useState(
-    isEnabledImprovedAlertsFlow ? [artistPill, ...pillsFromFilters] : pillsFromFilters
-  )
+  const initialPills = isEnabledImprovedAlertsFlow ? [artistPill, ...pillsFromFilters] : pillsFromFilters
+  const [pillsState, setPillsState] = useState(initialPills)
 
   const tracking = useTracking()
   const { space } = useTheme()
@@ -96,6 +95,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         }
 
         if (isUpdateForm) {
+          // TODO: add pills to mutation
           const response = await updateSavedSearchAlert(userAlertSettings, savedSearchAlertId!)
           tracking.trackEvent(tracks.editedSavedSearch(savedSearchAlertId!, initialValues, values))
 
@@ -281,6 +281,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       >
         <Form
           pills={pillsState}
+          initialPills={initialPills}
           savedSearchAlertId={savedSearchAlertId}
           artistId={artistId}
           artistName={artistName}
