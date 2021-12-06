@@ -18,7 +18,7 @@ interface Props {
 export const ArtworkSubmitted: React.FC<Props> = () => {
   return (
     <View>
-      <ArtsyLogoHeader />
+      <ArtsyLogoHeader shadow />
       <Sans size="6" mx="2">
         Your Artwork has been submitted
       </Sans>
