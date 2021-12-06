@@ -32,6 +32,62 @@ import UIKit
 enum Fixtures {}
 
 extension Fixtures {
+    static var primaryArticle: Article {
+        let image = UIImage(named: "PrimaryArticleImage")!
+        let url = URL(string: "https://www.artsy.net/article/artsy-editorial-5-things-collecting-figurative-paintings")!
+        
+        let article = Article(
+            image: image,
+            pubDate: "Sep 8",
+            title: "5 Things to Know about Collecting Figurative Paintings",
+            url: url
+        )
+        
+        return article
+    }
+    
+    static var secondaryArticle: Article {
+        let image = UIImage(named: "SecondaryArticleImage")!
+        let url = URL(string: "https://www.artsy.net/article/artsy-editorial-new-collectors-guide-understanding-art-pricing")!
+        
+        let article = Article(
+            image: image,
+            pubDate: "Apr 3",
+            title: "The New Collector’s Guide to Understanding Art Pricing",
+            url: url
+        )
+        
+        return article
+    }
+    
+    static var tertiaryArticle: Article {
+        let image = UIImage(named: "TertiaryArticleImage")!
+        let url = URL(string: "https://www.artsy.net/article/artsy-editorial-9-artsy-vanguard-alumni-leading-contemporary-artists")!
+        
+        let article = Article(
+            image: image,
+            pubDate: "Nov 15",
+            title: "How 9 Artsy Vanguard Alumni Have Become Leading Contemporary Artists",
+            url: url
+        )
+        
+        return article
+    }
+    
+    static var quaternaryArticle: Article {
+        let image = UIImage(named: "QuaternaryArticleImage")!
+        let url = URL(string: "https://www.artsy.net/article/artsy-editorial-artsy-insider-frieze-weeks-breakout-artists")!
+        
+        let article = Article(
+            image: image,
+            pubDate: "Oct 24",
+            title: "Artsy Insider: Frieze Week’s Breakout Artists",
+            url: url
+        )
+        
+        return article
+    }
+    
     static var primaryArtwork: Artwork {
         let artist = Artist(name: "Alex Katz")
         let artworkImage = ArtworkImage(imageUrl: "https://d32dm0rphc51dk.cloudfront.net/pd7rW3I1mXhW0vbAJDVm3Q/:version.jpg")
