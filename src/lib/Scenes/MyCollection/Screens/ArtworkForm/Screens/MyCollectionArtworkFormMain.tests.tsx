@@ -7,7 +7,7 @@ import React from "react"
 import { ArtistAutosuggest } from "../Components/ArtistAutosuggest"
 import { Dimensions } from "../Components/Dimensions"
 import { MediumPicker } from "../Components/MediumPicker"
-import { ArtworkFormMode } from "../MyCollectionArtworkFormModal"
+import { ArtworkFormMode } from "../MyCollectionArtworkForm"
 import { MyCollectionArtworkFormMain } from "./MyCollectionArtworkFormMain"
 
 jest.mock("formik")

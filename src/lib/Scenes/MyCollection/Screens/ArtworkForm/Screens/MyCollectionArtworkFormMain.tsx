@@ -13,11 +13,11 @@ import { ArtistAutosuggest } from "../Components/ArtistAutosuggest"
 import { Dimensions } from "../Components/Dimensions"
 import { MediumPicker } from "../Components/MediumPicker"
 import { useArtworkForm } from "../Form/useArtworkForm"
-import { ArtworkFormModalScreen } from "../MyCollectionArtworkFormModal"
+import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 
-export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormModalScreen, "ArtworkForm">> = ({
+export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormScreen, "ArtworkForm">> = ({
   navigation,
   route,
 }) => {

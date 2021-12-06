@@ -75,7 +75,7 @@ describe("MyCollection", () => {
       expect(extractText(tree.root)).toContain("Keep track of your collection all in one place and get market insights")
     })
 
-    it("navigates to MyCollectionArtworkFormModal when Add Artwork is pressed", () => {
+    it("navigates to MyCollectionArtworkForm when Add Artwork is pressed", () => {
       const addArtworkButton = tree.root.findByProps({ testID: "add-artwork-button-zero-state" })
       addArtworkButton.props.onPress()
 
