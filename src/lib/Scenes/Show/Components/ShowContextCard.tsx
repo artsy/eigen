@@ -152,7 +152,7 @@ export const ShowContextCardFragmentContainer = createFragmentContainer(ShowCont
         internalID
         slug
         name
-        exhibitionPeriod
+        exhibitionPeriod(format: SHORT)
         profile {
           icon {
             imageUrl: url(version: "untouched-png")

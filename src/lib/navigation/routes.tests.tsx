@@ -693,6 +693,18 @@ describe("artsy.net routes", () => {
     `)
   })
 
+  it("routes to Email Preferences", () => {
+    expect(matchRoute("/unsubscribe")).toMatchInlineSnapshot(`
+      Object {
+        "module": "ReactWebView",
+        "params": Object {
+          "url": "/unsubscribe",
+        },
+        "type": "match",
+      }
+    `)
+  })
+
   it("routes to Favorites", () => {
     expect(matchRoute("/favorites")).toMatchInlineSnapshot(`
       Object {

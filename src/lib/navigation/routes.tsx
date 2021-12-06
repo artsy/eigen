@@ -222,6 +222,7 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     webViewRoute("/terms"),
     webViewRoute("/buy-now-feature-faq"),
     webViewRoute("/buyer-guarantee"),
+    webViewRoute("/unsubscribe"),
 
     new RouteMatcher("/city-bmw-list/:citySlug", "CityBMWList"),
     new RouteMatcher("/make-offer/:artworkID", "MakeOfferModal"),

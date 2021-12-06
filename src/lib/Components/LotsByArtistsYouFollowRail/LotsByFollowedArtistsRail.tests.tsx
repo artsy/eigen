@@ -11,9 +11,6 @@ import { LotsByFollowedArtistsRailContainer, PAGE_SIZE } from "./LotsByFollowedA
 
 jest.unmock("react-relay")
 
-const onShowMock = jest.fn()
-const onHideMock = jest.fn()
-
 describe("LotsByFollowedArtistsRail", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
@@ -30,14 +27,7 @@ describe("LotsByFollowedArtistsRail", () => {
       variables={{}}
       render={({ props }) => {
         if (props?.me) {
-          return (
-            <LotsByFollowedArtistsRailContainer
-              title="Auctions"
-              me={props.me}
-              onShow={onShowMock}
-              onHide={onHideMock}
-            />
-          )
+          return <LotsByFollowedArtistsRailContainer title="Auctions" me={props.me} />
         }
         return null
       }}
@@ -53,7 +43,6 @@ describe("LotsByFollowedArtistsRail", () => {
 
     mockEnvironmentPayload(mockEnvironment, mockProps)
     await flushPromiseQueue()
-    expect(onShowMock).toHaveBeenCalled()
 
     expect(tree.root.findAllByType(SectionTitle)[0].props.title).toEqual("Auctions")
     expect(tree.root.findAllByType(SaleArtworkTileRailCardContainer)).toHaveLength(PAGE_SIZE)
@@ -74,7 +63,6 @@ describe("LotsByFollowedArtistsRail", () => {
     // React-test-renderer has no isEmptyComponent or isNullComponent therefore I am testing for the container
     // expect(tree.root.findAllByType(Flex)).toHaveLength(0)
     expect(tree.toJSON()).toBeNull()
-    expect(onHideMock).toHaveBeenCalled()
   })
 })
 

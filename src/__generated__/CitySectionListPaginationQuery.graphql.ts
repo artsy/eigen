@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 330753953417071e40b328cd9a6a7f33 */
+/* @relayHash 144c98b1716d9f2a55c972ba6cbffe48 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -67,7 +67,7 @@ fragment CitySectionList_city_3BpxDU on City {
         cover_image: coverImage {
           url
         }
-        exhibition_period: exhibitionPeriod
+        exhibition_period: exhibitionPeriod(format: SHORT)
         partner {
           __typename
           ... on Partner {
@@ -412,10 +412,16 @@ return {
                       },
                       {
                         "alias": "exhibition_period",
-                        "args": null,
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "format",
+                            "value": "SHORT"
+                          }
+                        ],
                         "kind": "ScalarField",
                         "name": "exhibitionPeriod",
-                        "storageKey": null
+                        "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                       },
                       {
                         "alias": null,
@@ -524,7 +530,7 @@ return {
     ]
   },
   "params": {
-    "id": "330753953417071e40b328cd9a6a7f33",
+    "id": "144c98b1716d9f2a55c972ba6cbffe48",
     "metadata": {},
     "name": "CitySectionListPaginationQuery",
     "operationKind": "query",

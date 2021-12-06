@@ -42,6 +42,8 @@ import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
 
+const MODULE_SEPARATOR_HEIGHT = 6
+
 interface HomeModule {
   title: string
   subtitle?: string
@@ -180,20 +182,27 @@ const Home = (props: Props) => {
           data={modules}
           initialNumToRender={5}
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-          renderItem={({ item, index, separators }) => {
+          renderItem={({ item, index }) => {
             if (!item.data) {
               return <></>
             }
 
             switch (item.type) {
               case "articles":
-                return <ArticlesRailFragmentContainer title={item.title} articlesConnection={item.data} />
+                return (
+                  <ArticlesRailFragmentContainer
+                    title={item.title}
+                    articlesConnection={item.data}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
+                )
               case "artist":
                 return (
                   <ArtistRailFragmentContainer
                     title={item.title}
                     rail={item.data}
                     scrollRef={scrollRefs.current[index]}
+                    mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
               case "artwork":
@@ -202,18 +211,12 @@ const Home = (props: Props) => {
                     title={item.title}
                     rail={item.data || null}
                     scrollRef={scrollRefs.current[index]}
-                    onShow={() => separators.updateProps("leading", { hideSeparator: false })}
-                    onHide={() => separators.updateProps("leading", { hideSeparator: true })}
+                    mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
               case "auction-results":
                 return (
-                  <AuctionResultsRailFragmentContainer
-                    title={item.title}
-                    me={item.data}
-                    onShow={() => separators.updateProps("leading", { hideSeparator: false })}
-                    onHide={() => separators.updateProps("leading", { hideSeparator: true })}
-                  />
+                  <AuctionResultsRailFragmentContainer title={item.title} me={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
                 )
               case "collections":
                 return (
@@ -221,7 +224,7 @@ const Home = (props: Props) => {
                     title={item.title}
                     collectionsModule={item.data}
                     scrollRef={scrollRefs.current[index]}
-                    onShow={() => separators.updateProps("leading", { hideSeparator: false })}
+                    mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
               case "fairs":
@@ -231,16 +234,12 @@ const Home = (props: Props) => {
                     subtitle={item.subtitle}
                     fairsModule={item.data}
                     scrollRef={scrollRefs.current[index]}
+                    mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
               case "lotsByFollowedArtists":
                 return (
-                  <LotsByFollowedArtistsRailContainer
-                    title={item.title}
-                    me={item.data}
-                    onShow={() => separators.updateProps("leading", { hideSeparator: false })}
-                    onHide={() => separators.updateProps("leading", { hideSeparator: true })}
-                  />
+                  <LotsByFollowedArtistsRailContainer title={item.title} me={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
                 )
               case "newWorksForYou":
                 return (
@@ -248,6 +247,7 @@ const Home = (props: Props) => {
                     title={item.title}
                     me={item.data}
                     scrollRef={scrollRefs.current[index]}
+                    mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
               case "sales":
@@ -256,8 +256,7 @@ const Home = (props: Props) => {
                     title={item.title}
                     salesModule={item.data}
                     scrollRef={scrollRefs.current[index]}
-                    onShow={() => separators.updateProps("leading", { hideSeparator: false })}
-                    onHide={() => separators.updateProps("leading", { hideSeparator: true })}
+                    mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
               case "shows":
@@ -265,27 +264,19 @@ const Home = (props: Props) => {
                   <ShowsRailFragmentContainer
                     title={item.title}
                     showsConnection={item.data}
-                    onShow={() => separators.updateProps("trailing", { hideSeparator: false })}
-                    onHide={() => separators.updateProps("trailing", { hideSeparator: true })}
+                    mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
 
               case "trove":
-                return (
-                  <TroveFragmentContainer
-                    trove={item.data}
-                    onShow={() => separators.updateProps("trailing", { hideSeparator: false })}
-                    onHide={() => separators.updateProps("trailing", { hideSeparator: true })}
-                  />
-                )
+                return <TroveFragmentContainer trove={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
               case "viewing-rooms":
-                return <ViewingRoomsHomeRail title={item.title} featured={item.data} />
+                return <ViewingRoomsHomeRail title={item.title} featured={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
               default:
                 return null
             }
           }}
           ListHeaderComponent={HomeHeader}
-          ItemSeparatorComponent={({ hideSeparator }) => (!hideSeparator ? <ModuleSeparator /> : null)}
           ListFooterComponent={() => <Flex mb={3}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
           keyExtractor={(_item, index) => String(index)}
         />
@@ -437,7 +428,7 @@ export const HomeFragmentContainer = createRefetchContainer(
   `
 )
 
-const ModuleSeparator = () => <Spacer mb={6} />
+const ModuleSeparator = () => <Spacer mb={MODULE_SEPARATOR_HEIGHT} />
 
 const BelowTheFoldPlaceholder: React.FC = () => {
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")

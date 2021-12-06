@@ -26,10 +26,16 @@ const node: ReaderFragment = {
   "selections": [
     {
       "alias": null,
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "format",
+          "value": "SHORT"
+        }
+      ],
       "kind": "ScalarField",
       "name": "exhibitionPeriod",
-      "storageKey": null
+      "storageKey": "exhibitionPeriod(format:\"SHORT\")"
     },
     {
       "alias": null,
@@ -49,5 +55,5 @@ const node: ReaderFragment = {
   "type": "Fair",
   "abstractKey": null
 };
-(node as any).hash = '69ccf3ea7b14916f83f88714796d542f';
+(node as any).hash = '67896022576593e321a241a927fe81e6';
 export default node;

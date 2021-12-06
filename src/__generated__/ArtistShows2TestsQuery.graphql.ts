@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0830c66cbfb8a52a2d77c54fe9ca03c6 */
+/* @relayHash 18bb60404d56e6713bdedfc9c7726ea6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -64,7 +64,7 @@ fragment ArtistShows2_artist_2RVLr2 on Artist {
 fragment Metadata_show on Show {
   kind
   name
-  exhibition_period: exhibitionPeriod
+  exhibition_period: exhibitionPeriod(format: SHORT)
   status_update: statusUpdate
   status
   partner {
@@ -285,10 +285,16 @@ return {
                       (v3/*: any*/),
                       {
                         "alias": "exhibition_period",
-                        "args": null,
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "format",
+                            "value": "SHORT"
+                          }
+                        ],
                         "kind": "ScalarField",
                         "name": "exhibitionPeriod",
-                        "storageKey": null
+                        "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                       },
                       {
                         "alias": "status_update",
@@ -420,7 +426,7 @@ return {
     ]
   },
   "params": {
-    "id": "0830c66cbfb8a52a2d77c54fe9ca03c6",
+    "id": "18bb60404d56e6713bdedfc9c7726ea6",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {

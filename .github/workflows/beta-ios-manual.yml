@@ -8,3 +8,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: ./scripts/deploy-ios
+
+      - name: Trigger release
+        # CircleCI doesn't automatically run builds on the beta branch (only master and PRs)
+        # so this is a github action to force it to do so.
+        run: |
+          curl \
+            -X POST \
+            --header "Content-Type: application/json" \
+            -d '{"branch": "beta-ios"}' \
+            https://circleci.com/api/v1.1/project/github/artsy/eigen/build?circle-token=${{ secrets.CircleToken }}

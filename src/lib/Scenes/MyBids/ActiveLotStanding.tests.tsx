@@ -29,7 +29,7 @@ const defaultSaleArtwork = {
 }
 
 const saleArtworkFixture = (overrides = {}) => {
-  return (merge({}, defaultSaleArtwork, overrides) as unknown) as ActiveLotStanding_saleArtwork
+  return merge({}, defaultSaleArtwork, overrides) as unknown as ActiveLotStanding_saleArtwork
 }
 
 describe(ActiveLotStanding, () => {

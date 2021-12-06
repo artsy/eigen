@@ -1,12 +1,11 @@
 import { CollectionsRail_collectionsModule } from "__generated__/CollectionsRail_collectionsModule.graphql"
-import { Flex, Sans } from "palette"
-import React, { useEffect, useImperativeHandle, useRef } from "react"
-import { FlatList, View } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
-
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
+import { Flex, Sans } from "palette"
+import React, { useImperativeHandle, useRef } from "react"
+import { FlatList, View } from "react-native"
+import { createFragmentContainer, graphql } from "react-relay"
 
 import {
   CARD_RAIL_ARTWORKS_HEIGHT as ARTWORKS_HEIGHT,
@@ -26,7 +25,7 @@ interface Props {
   title: string
   subtitle?: string
   collectionsModule: CollectionsRail_collectionsModule
-  onShow?: () => void
+  mb?: number
 }
 
 type Collection = CollectionsRail_collectionsModule["results"][0]
@@ -34,11 +33,6 @@ type Collection = CollectionsRail_collectionsModule["results"][0]
 const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
-
-  // This is required for the home screen for proper spacing
-  useEffect(() => {
-    props.onShow?.()
-  }, [])
 
   useImperativeHandle(props.scrollRef, () => ({
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
@@ -49,7 +43,7 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
   }
 
   return (
-    <View>
+    <Flex mb={props.mb}>
       <Flex pl="2" pr="2">
         <SectionTitle title={props.title} subtitle={props.subtitle} />
       </Flex>
@@ -108,7 +102,7 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
           )
         }}
       />
-    </View>
+    </Flex>
   )
 }
 

@@ -6,19 +6,16 @@ import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Separator } from "palette"
-import React, { useEffect } from "react"
-import { View } from "react-native"
+import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface Props {
   title: string
-  onHide?: () => void
-  onShow?: () => void
+  mb?: number
 }
 
-const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & Props> = (props) => {
-  const { title, me, onHide, onShow } = props
+const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & Props> = ({ title, me, mb }) => {
   const { trackEvent } = useTracking()
   const auctionResultsByFollowedArtists = extractNodes(me?.auctionResultsByFollowedArtists)
   const navigateToAuctionResultsForArtistsYouFollow = () => {
@@ -26,18 +23,12 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & Props> = (pro
     navigate(`/auction-results-for-artists-you-follow`)
   }
 
-  const hasAuctionResults = auctionResultsByFollowedArtists?.length
-
-  useEffect(() => {
-    hasAuctionResults ? onShow?.() : onHide?.()
-  }, [auctionResultsByFollowedArtists])
-
-  if (!hasAuctionResults) {
+  if (!auctionResultsByFollowedArtists?.length) {
     return null
   }
 
   return (
-    <View>
+    <Flex mb={mb}>
       <Flex pl="2" pr="2">
         <SectionTitle title={title} onPress={navigateToAuctionResultsForArtistsYouFollow} />
       </Flex>
@@ -69,7 +60,7 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & Props> = (pro
           )
         }}
       />
-    </View>
+    </Flex>
   )
 }
 

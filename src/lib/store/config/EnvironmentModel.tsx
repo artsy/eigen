@@ -13,9 +13,9 @@ interface EnvironmentOptionDescriptor {
 }
 
 // helper to get good typings and intellisense
-function defineEnvironmentOptions<EnvOptionName extends string>(
-  options: { readonly [k in EnvOptionName]: EnvironmentOptionDescriptor }
-) {
+function defineEnvironmentOptions<EnvOptionName extends string>(options: {
+  readonly [k in EnvOptionName]: EnvironmentOptionDescriptor
+}) {
   return options
 }
 

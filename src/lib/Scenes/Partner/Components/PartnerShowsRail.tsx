@@ -73,7 +73,7 @@ export const PartnerShowsRailContainer = createPaginationContainer(
               internalID
               slug
               name
-              exhibitionPeriod
+              exhibitionPeriod(format: SHORT)
               endAt
               images {
                 url

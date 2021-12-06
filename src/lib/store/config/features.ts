@@ -166,6 +166,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableSavedSearchToggles",
   },
+  AREnableImprovedAlertsFlow: {
+    readyForRelease: false,
+    description: "Enable Improved Alerts flow",
+    showInAdminMenu: true,
+  },
   AREnableWebPImages: {
     readyForRelease: true,
     description: "Enable WebP Images",
@@ -197,10 +202,10 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableVisualProfileIconAndBio",
   },
   AREnableAuctionResultComparableWorks: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Comparable works in Auction Result",
     showInAdminMenu: true,
-    // echoFlagKey: "AREnableAuctionResultComparableWorks",
+    echoFlagKey: "AREnableAuctionResultComparableWorks",
   },
 })
 
@@ -239,6 +244,9 @@ export const devToggles = defineDevToggles({
   },
   DTShowAnalyticsVisualiser: {
     description: "Show analytics visualiser",
+  },
+  DTShowWebviewIndicator: {
+    description: "Show webview indicator",
   },
 })
 

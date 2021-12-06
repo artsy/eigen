@@ -33,6 +33,7 @@ interface Props extends ViewProps {
   subtitle?: string
   relay: RelayProp
   rail: ArtistRail_rail
+  mb?: number
 }
 
 const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
@@ -178,7 +179,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
   }
 
   return artists.length ? (
-    <View>
+    <Flex mb={props.mb}>
       <Flex pl="2" pr="2">
         <SectionTitle title={props.title} subtitle={props.subtitle} />
       </Flex>
@@ -215,7 +216,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
           )
         }}
       />
-    </View>
+    </Flex>
   ) : null
 }
 

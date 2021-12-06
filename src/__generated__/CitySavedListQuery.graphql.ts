@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7bb5d6069851593e3b22c4147f057589 */
+/* @relayHash de179e26938ff28fc41824207971c043 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -53,7 +53,7 @@ fragment CitySavedList_me on Me {
           status
           href
           is_followed: isFollowed
-          exhibition_period: exhibitionPeriod
+          exhibition_period: exhibitionPeriod(format: SHORT)
           cover_image: coverImage {
             url
           }
@@ -303,10 +303,16 @@ return {
                           },
                           {
                             "alias": "exhibition_period",
-                            "args": null,
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "format",
+                                "value": "SHORT"
+                              }
+                            ],
                             "kind": "ScalarField",
                             "name": "exhibitionPeriod",
-                            "storageKey": null
+                            "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                           },
                           {
                             "alias": "cover_image",
@@ -523,7 +529,7 @@ return {
     ]
   },
   "params": {
-    "id": "7bb5d6069851593e3b22c4147f057589",
+    "id": "de179e26938ff28fc41824207971c043",
     "metadata": {},
     "name": "CitySavedListQuery",
     "operationKind": "query",

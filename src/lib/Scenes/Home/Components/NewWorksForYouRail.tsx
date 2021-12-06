@@ -3,8 +3,8 @@ import { NewWorksForYouRail_me } from "__generated__/NewWorksForYouRail_me.graph
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Flex, Spinner, Theme } from "palette"
-import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
+import { Flex, Spinner } from "palette"
+import React, { useImperativeHandle, useRef, useState } from "react"
 import { FlatList, View } from "react-native"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -18,8 +18,7 @@ interface NewWorksForYouRailProps {
   title: string
   me: NewWorksForYouRail_me
   relay: RelayPaginationProp
-  onHide?: () => void
-  onShow?: () => void
+  mb?: number
 }
 
 const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = ({
@@ -27,8 +26,7 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
   me,
   relay,
   scrollRef,
-  onHide,
-  onShow,
+  mb,
 }) => {
   const { trackEvent } = useTracking()
 
@@ -62,13 +60,7 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
     })
   }
 
-  const hasArtworks = artworks.length
-
-  useEffect(() => {
-    hasArtworks ? onShow?.() : onHide?.()
-  }, [hasArtworks])
-
-  if (!hasArtworks) {
+  if (!artworks.length) {
     return null
   }
 
@@ -78,7 +70,7 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
   }
 
   return (
-    <Theme>
+    <Flex mb={mb}>
       <View ref={railRef}>
         <Flex pl="2" pr="2">
           <SectionTitle title={title} onPress={navigateToNewWorksForYou} />
@@ -100,7 +92,7 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
           />
         }
       </View>
-    </Theme>
+    </Flex>
   )
 }
 

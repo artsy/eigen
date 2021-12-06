@@ -77,12 +77,12 @@ describe("Saved search banner on artist screen", () => {
   })
 
   it("should render saved search component", async () => {
-    const { queryByTestId } = getTree("search-criteria-id")
+    const { getAllByText } = getTree("search-criteria-id")
 
     mockMostRecentOperation("SearchCriteriaQuery", MockSearchCriteriaQuery)
     mockMostRecentOperation("ArtistAboveTheFoldQuery", MockArtistAboveTheFoldQuery)
 
-    expect(queryByTestId("create-saved-search-button")).toBeTruthy()
+    expect(getAllByText("Create Alert")).not.toHaveLength(0)
   })
 })
 
