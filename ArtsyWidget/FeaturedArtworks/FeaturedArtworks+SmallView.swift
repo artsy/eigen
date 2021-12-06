@@ -13,11 +13,9 @@ extension FeaturedArtworks {
         
         var body: some SwiftUI.View {
             let artsyLogo = UIImage(named: "BlackArtsyLogo")!
-            
             let artworkImage = artwork.image!
             let artistName = artwork.artist.name
-            
-            let artworkUrl = ArtworkUrl.from(slug: artwork.id)
+            let artworkUrl = artwork.url
             
             VStack() {
                 HStack(alignment: .top) {
