@@ -2,7 +2,6 @@ import { fireEvent } from "@testing-library/react-native"
 import { SearchArtworksGridTestsQuery } from "__generated__/SearchArtworksGridTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
@@ -51,7 +50,7 @@ describe("SearchArtworksGrid", () => {
   it("tracks filter modal opening", () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(environment)
-    fireEvent.press(getByText("Filter"))
+    fireEvent.press(getByText("Sort & Filter"))
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
         Array [
           Object {
@@ -84,16 +83,7 @@ describe("SearchArtworksGrid", () => {
       `)
   })
 
-  it('should display "Filter" label by default', () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer />)
-
-    mockEnvironmentPayload(environment)
-
-    expect(getByText("Filter")).toBeTruthy()
-  })
-
-  it('should display "Sort & Filter" label when AREnableSortFilterForArtworksPill flag is enabled', () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSortFilterForArtworksPill: true })
+  it('should display "Sort & Filter" label by default', () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
     mockEnvironmentPayload(environment)
