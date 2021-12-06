@@ -1,6 +1,6 @@
 import { track as _track } from "lib/utils/track"
-import { Sans, Spacer, Text } from "palette"
-import React, { useEffect, useState } from "react"
+import { Join, Sans, Separator, Spacer } from "palette"
+import React, { useState } from "react"
 import { ScrollView } from "react-native"
 import { ArtworkDetailsContent } from "./ArtworkDetails"
 import { CollapsibleMenuItem } from "./CollapsibleMenuItem"
@@ -8,10 +8,6 @@ import { CollapsibleMenuItem } from "./CollapsibleMenuItem"
 export const SubmitArtworkOverview = () => {
   const totalSteps = 3
   const [activeStep, setActiveStep] = useState(1)
-
-  useEffect(() => {
-    // console.log("\n\n ----------------------------- \n\n ")
-  }, [activeStep])
 
   return (
     <ScrollView
@@ -22,38 +18,40 @@ export const SubmitArtworkOverview = () => {
       }}
     >
       <Spacer mb={3} />
-      <CollapsibleMenuItem
-        title="Artwork Details"
-        activeStep={activeStep}
-        setActiveStep={setActiveStep}
-        Content={() => <ArtworkDetailsContent />}
-        step={1}
-        totalSteps={totalSteps}
-      />
-      <CollapsibleMenuItem
-        title="Upload Photos"
-        activeStep={activeStep}
-        setActiveStep={setActiveStep}
-        Content={() => (
-          <Sans size="1" mt="1">
-            Upload Photos Content
-          </Sans>
-        )}
-        step={2}
-        totalSteps={totalSteps}
-      />
-      <CollapsibleMenuItem
-        title="Contact Information"
-        activeStep={activeStep}
-        setActiveStep={setActiveStep}
-        Content={() => (
-          <Sans size="1" mt="1">
-            Contact Information Content
-          </Sans>
-        )}
-        step={3}
-        totalSteps={totalSteps}
-      />
+      <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
+        <CollapsibleMenuItem
+          title="Artwork Details"
+          activeStep={activeStep}
+          step={1}
+          setActiveStep={setActiveStep}
+          Content={() => <ArtworkDetailsContent />}
+          totalSteps={totalSteps}
+        />
+        <CollapsibleMenuItem
+          title="Upload Photos"
+          activeStep={activeStep}
+          step={2}
+          setActiveStep={setActiveStep}
+          Content={() => (
+            <Sans size="1" mt="1">
+              Upload Photos Content
+            </Sans>
+          )}
+          totalSteps={totalSteps}
+        />
+        <CollapsibleMenuItem
+          title="Contact Information"
+          activeStep={activeStep}
+          step={3}
+          setActiveStep={setActiveStep}
+          Content={() => (
+            <Sans size="1" mt="1">
+              Contact Information Content
+            </Sans>
+          )}
+          totalSteps={totalSteps}
+        />
+      </Join>
     </ScrollView>
   )
 }

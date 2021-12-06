@@ -1,9 +1,9 @@
 import { navigate } from "lib/navigation/navigate"
 import { track as _track } from "lib/utils/track"
 import { Button, Flex, Sans, Spacer } from "palette"
-import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon, Separator } from "palette"
+import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon } from "palette"
 import React, { useEffect, useState } from "react"
-import { StyleSheet, TouchableOpacity, View } from "react-native"
+import { LayoutAnimation, StyleSheet, TouchableOpacity, View } from "react-native"
 
 interface Props {
   title: string
@@ -36,23 +36,24 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
   }, [isLastStep])
 
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() => {
-        setIsContentVisible(!isContentVisible)
-      }}
-    >
+    <View style={styles.container}>
       <View>
         <Sans size="1">
           Step {step} of {totalSteps}
         </Sans>
-        <View style={styles.titleAndIcon}>
+        <TouchableOpacity
+          style={styles.titleAndIcon}
+          onPress={() => {
+            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+            setIsContentVisible(!isContentVisible)
+          }}
+        >
           <Sans size="8">{title}</Sans>
           <View style={styles.icons}>
             {!!isCompleted && <CheckCircleIcon fill="green100" height={24} width={24} style={styles.circle} />}
             {!!isContentVisible ? <ArrowUpIcon /> : <ArrowDownIcon />}
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
       {!!isContentVisible && (
         <>
@@ -66,6 +67,7 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
                 maxWidth={540}
                 onPress={() => {
                   setIsContentVisible(false)
+                  LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
                   setActiveStep(step + 1)
                   if (isLastStep) {
                     console.log("Navigate to success page")
@@ -79,8 +81,7 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
           </View>
         </>
       )}
-      <Separator marginTop="40" marginBottom="20" />
-    </TouchableOpacity>
+    </View>
   )
 }
 
