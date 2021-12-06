@@ -194,7 +194,6 @@ export const FairArticlesQueryRenderer: React.FC<FairArticlesQueryRendererProps>
   return (
     <QueryRenderer<FairArticlesQuery>
       environment={defaultEnvironment}
-      // tslint:disable-next-line: relay-operation-generics
       query={FAIR2_ARTICLES_QUERY}
       variables={{ id: fairID, first: FAIR2_ARTICLES_PAGE_SIZE }}
       render={renderWithLoadProgress(FairArticlesPaginationContainer)}

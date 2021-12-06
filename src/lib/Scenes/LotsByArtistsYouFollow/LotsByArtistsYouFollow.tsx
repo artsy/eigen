@@ -72,7 +72,6 @@ export const LotsByArtistsYouFollowQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<LotsByArtistsYouFollowQuery>
       environment={defaultEnvironment}
-      // tslint:disable-next-line:relay-operation-generics
       query={LoteByArtistsYouFollowScreenQuery}
       variables={{
         count: 10,

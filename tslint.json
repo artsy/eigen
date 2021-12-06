@@ -14,7 +14,6 @@
     "no-console": [true, ["error", ["warn", "error"]]],
     "object-literal-sort-keys": false,
     "ordered-imports": true,
-    "relay-operation-generics": [true, { "artifactDirectory": "__generated__", "makeRelative": false }],
     "switch-default": false,
     "use-wrapped-components": true,
     "variable-name": [true, "allow-pascal-case", "allow-leading-underscore"],
