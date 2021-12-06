@@ -9,7 +9,7 @@ private struct TopArtwork: SwiftUI.View {
         let artworkImage = artwork.image!
         let artistName = artwork.artist.name
         let artworkTitle = artwork.title
-        let artworkUrl = ArtworkUrl.from(slug: artwork.id)
+        let artworkUrl = artwork.url
         
         HStack(alignment: .top) {
             Image(uiImage: artworkImage)
@@ -42,7 +42,7 @@ private struct BottomArtwork: SwiftUI.View {
         let artworkImage = artwork.image!
         let artistName = artwork.artist.name
         let artworkTitle = artwork.title
-        let artworkUrl = ArtworkUrl.from(slug: artwork.id)
+        let artworkUrl = artwork.url
         
         Link(destination: artworkUrl) {
             VStack() {
