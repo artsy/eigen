@@ -23,12 +23,12 @@ export const ArtworkSubmitted: React.FC<Props> = () => {
         Your Artwork has been submitted
       </Sans>
       <Spacer mb={2} />
-      <Sans size="1" mx="2" color="gray">
+      <Sans size="1" mx="2" color="black60">
         We will email you within 1-3 days to confirm if your artwork has been accepted or not. In the meantime your
         submission will appear in the feature, My Collection.
       </Sans>
       <Spacer mb={2} />
-      <Sans size="1" mx="2" color="gray">
+      <Sans size="1" mx="2" color="black60">
         With low fees, informed pricing, and multiple sales options, why not submit another piece with Artsy.
       </Sans>
       <Spacer mb={4} />
