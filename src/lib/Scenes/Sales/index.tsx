@@ -120,6 +120,7 @@ export const SalesQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<SalesQueryRendererQuery>
       environment={defaultEnvironment}
+      /* tslint:disable relay-operation-generics */
       query={SalesScreenQuery}
       variables={{}}
       render={renderWithLoadProgress(SalesFragmentContainer)}

@@ -191,6 +191,7 @@ export const WorksForYouQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<WorksForYouQuery>
       environment={defaultEnvironment}
+      /* tslint:disable relay-operation-generics */
       query={WorksForYouScreenQuery}
       variables={{}}
       render={renderWithLoadProgress(WorksForYouContainer)}
