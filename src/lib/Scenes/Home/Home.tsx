@@ -113,7 +113,7 @@ const Home = (props: Props) => {
       }
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
-  const modules: HomeModule[] = compact([
+  let modules: HomeModule[] = compact([
     // Above-The-Fold Modules
     newWorks,
     { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
@@ -165,7 +165,9 @@ const Home = (props: Props) => {
       type: "artwork",
       data: homePageBelow?.similarToRecentlyViewedArtworkModule,
     },
-  ] as HomeModule[]).filter((module) => !module.hidden && module.data)
+  ])
+
+  modules = modules.filter((module) => !module.hidden && module.data)
 
   const { isRefreshing, handleRefresh, scrollRefs } = useHandleRefresh(relay, modules)
 
