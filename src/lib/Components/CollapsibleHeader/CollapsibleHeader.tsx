@@ -3,11 +3,11 @@ import { Box, Flex, Separator, Text, useTheme } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import Animated, { Extrapolate } from "react-native-reanimated"
-import { useCollapsableHeaderContext } from "./CollapsableHeaderContext"
+import { useCollapsibleHeaderContext } from "./CollapsibleHeaderContext"
 
 const AnimatedText: typeof Text = Animated.createAnimatedComponent(Text)
 
-export interface CollapsableHeaderProps {
+export interface CollapsibleHeaderProps {
   title: string
   rightButtonDisabled?: boolean
   rightButtonText?: string
@@ -15,10 +15,10 @@ export interface CollapsableHeaderProps {
   onRightButtonPress?: () => void
 }
 
-export const CollapsableHeader: React.FC<CollapsableHeaderProps> = (props) => {
+export const CollapsibleHeader: React.FC<CollapsibleHeaderProps> = (props) => {
   const { title, rightButtonDisabled, rightButtonText, onLeftButtonPress, onRightButtonPress } = props
   const { space } = useTheme()
-  const { scrollOffsetY, stickyHeaderContent, headerHeight } = useCollapsableHeaderContext()
+  const { scrollOffsetY, stickyHeaderContent, headerHeight } = useCollapsibleHeaderContext()
   const headerIsFullyUp = Animated.greaterThan(scrollOffsetY, headerHeight)
   const offset = Animated.cond(headerIsFullyUp, headerHeight, Animated.max(scrollOffsetY, 0))
   const translateY = Animated.multiply(offset, -1)

@@ -2,9 +2,9 @@ import { useMeasuredView } from "lib/utils/useMeasuredView"
 import { useSpace } from "palette"
 import React, { useEffect, useMemo, useState } from "react"
 import Animated from "react-native-reanimated"
-import { CollapsableHeaderContext } from "./CollapsableHeaderContext"
+import { CollapsibleHeaderContext } from "./CollapsibleHeaderContext"
 
-export const CollapsableHeaderContextContainer: React.FC<{}> = (props) => {
+export const CollapsibleHeaderContextContainer: React.FC<{}> = (props) => {
   const { children } = props
   const space = useSpace()
   const headerHeight = space(6)
@@ -18,7 +18,7 @@ export const CollapsableHeaderContextContainer: React.FC<{}> = (props) => {
   }, [stickyHeaderContent])
 
   return (
-    <CollapsableHeaderContext.Provider
+    <CollapsibleHeaderContext.Provider
       value={{
         scrollOffsetY,
         stickyHeaderContent,
@@ -29,6 +29,6 @@ export const CollapsableHeaderContextContainer: React.FC<{}> = (props) => {
       }}
     >
       {children}
-    </CollapsableHeaderContext.Provider>
+    </CollapsibleHeaderContext.Provider>
   )
 }

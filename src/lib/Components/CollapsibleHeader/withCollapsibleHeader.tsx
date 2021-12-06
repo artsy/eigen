@@ -2,16 +2,16 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import React from "react"
 import { ScrollViewProps } from "react-native"
 import Animated from "react-native-reanimated"
-import { useCollapsableHeaderContext } from "./CollapsableHeaderContext"
+import { useCollapsibleHeaderContext } from "./CollapsibleHeaderContext"
 
-export type CollapsableHeaderViewProps<T extends ScrollViewProps> = T & {}
+export type CollapsibleHeaderViewProps<T extends ScrollViewProps> = T & {}
 
-export const withCollapsableHeader = <P extends ScrollViewProps>(Component: React.ComponentType<P>) => {
+export const withCollapsibleHeader = <P extends ScrollViewProps>(Component: React.ComponentType<P>) => {
   const AnimatedComponent = Animated.createAnimatedComponent(Component) as React.ComponentType<ScrollViewProps>
 
-  return (props: React.PropsWithChildren<CollapsableHeaderViewProps<P>>) => {
+  return (props: React.PropsWithChildren<CollapsibleHeaderViewProps<P>>) => {
     const { scrollIndicatorInsets, contentContainerStyle, ...other } = props
-    const { scrollOffsetY, headerHeight } = useCollapsableHeaderContext()
+    const { scrollOffsetY, headerHeight } = useCollapsibleHeaderContext()
     const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
     return (
