@@ -157,7 +157,6 @@ export const MyProfileScreenQuery = graphql`
 export const OldMyProfileQueryRenderer = () => (
   <QueryRenderer<MyProfileQuery>
     environment={defaultEnvironment}
-    /* tslint:disable relay-operation-generics */
     query={MyProfileScreenQuery}
     render={renderWithPlaceholder({
       Container: OldMyProfileContainer,

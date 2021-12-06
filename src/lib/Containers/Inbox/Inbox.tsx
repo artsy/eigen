@@ -172,7 +172,6 @@ export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
   return (
     <QueryRenderer<InboxQuery>
       environment={defaultEnvironment}
-      /* tslint:disable relay-operation-generics */
       query={InboxScreenQuery}
       cacheConfig={{ force: true }}
       variables={{}}

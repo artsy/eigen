@@ -105,7 +105,6 @@ export const NewWorksForYouQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<NewWorksForYouQuery>
       environment={defaultEnvironment}
-      /* tslint:disable relay-operation-generics */
       query={NewWorksForYouScreenQuery}
       variables={{}}
       render={renderWithPlaceholder({
