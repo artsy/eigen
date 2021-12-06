@@ -51,7 +51,7 @@ describe("SearchArtworksGrid", () => {
   it("tracks filter modal opening", () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(environment)
-    fireEvent.press(getByText("Filter"))
+    fireEvent.press(getByText("Sort & Filter"))
     expect(mockTrackEvent.mock.calls[0]).toMatchInlineSnapshot(`
         Array [
           Object {
@@ -84,7 +84,8 @@ describe("SearchArtworksGrid", () => {
       `)
   })
 
-  it('should display "Filter" label by default', () => {
+  it('should display "Filter" label when AREnableSortFilterForArtworksPill flag is disabled', () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSortFilterForArtworksPill: false })
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
     mockEnvironmentPayload(environment)
