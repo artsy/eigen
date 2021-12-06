@@ -1,7 +1,7 @@
 import { navigate } from "lib/navigation/navigate"
 import { track as _track } from "lib/utils/track"
 import { Button, Sans, Spacer } from "palette"
-import { ArtsyLogoHeader } from "palette/elements/headers/ArtsyLogoHeader"
+import { ArtsyLogoHeader } from "palette/elements/Header/ArtsyLogoHeader"
 import React from "react"
 import { StyleSheet, View } from "react-native"
 
