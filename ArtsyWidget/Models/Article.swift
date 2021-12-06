@@ -72,6 +72,6 @@ struct Article {
     mutating func finalizeUrl() {
         guard url == nil else { return }
         
-        self.url = URL(string: link)
+        self.url = WidgetUrl.from(link: link)
     }
 }
