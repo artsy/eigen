@@ -142,6 +142,21 @@ describe("AddEditArtwork", () => {
       },
     }
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    // make form dirty
+    __globalStoreTestUtils__?.injectState({
+      myCollection: {
+        artwork: {
+          sessionState: {
+            formValues: {
+              width: "30",
+            },
+            dirtyFormCheckValues: {
+              width: "40",
+            },
+          },
+        },
+      },
+    })
     const wrapper = renderWithWrappers(artworkForm)
     wrapper.root.findByType(FancyModalHeader).props.onRightButtonPress()
     expect(mockClearForm).toHaveBeenCalled()

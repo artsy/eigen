@@ -44,18 +44,12 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
           onRightButtonPress={() => {
             trackEvent(tracks.editCollectedArtwork(artwork.internalID, artwork.slug))
             GlobalStore.actions.myCollection.artwork.startEditingArtwork(artwork as any)
-            navigate("my-collection/add-my-collection-artwork", {
+            navigate(`my-collection/artworks/${artwork.internalID}/edit`, {
               passProps: {
                 mode: "edit",
                 artwork,
-                onSuccess: () => {
-                  popToRoot()
-                },
-                onDelete: () => {
-                  setTimeout(() => {
-                    popToRoot()
-                  }, 50)
-                },
+                onSuccess: popToRoot,
+                onDelete: popToRoot,
               },
             })
           }}

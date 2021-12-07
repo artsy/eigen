@@ -190,7 +190,7 @@ const MyCollection: React.FC<{
                   size="small"
                   variant="fillDark"
                   onPress={() => {
-                    navigate("my-collection/add-my-collection-artwork", {
+                    navigate("my-collection/artworks/new", {
                       passProps: {
                         mode: "add",
                         onSuccess: popToRoot,
@@ -268,7 +268,7 @@ const MyCollection: React.FC<{
                 testID="add-artwork-button-zero-state"
                 onPress={() => {
                   trackEvent(tracks.addCollectedArtwork())
-                  navigate("my-collection/add-my-collection-artwork", {
+                  navigate("my-collection/artworks/new", {
                     passProps: {
                       mode: "add",
                       onSuccess: popToRoot,

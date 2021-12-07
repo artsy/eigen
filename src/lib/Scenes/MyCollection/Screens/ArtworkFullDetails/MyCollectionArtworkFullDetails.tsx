@@ -22,18 +22,12 @@ const MyCollectionArtworkFullDetails: React.FC<{ artwork: MyCollectionArtworkFul
         onRightButtonPress={() => {
           trackEvent(tracks.editCollectedArtwork(props.artwork.internalID, props.artwork.slug))
           GlobalStore.actions.myCollection.artwork.startEditingArtwork(props.artwork as any)
-          navigate("my-collection/add-my-collection-artwork", {
+          navigate(`my-collection/artworks/${props.artwork.internalID}/edit`, {
             passProps: {
               mode: "edit",
               artwork: props.artwork,
-              onSuccess: () => {
-                popParentViewController()
-              },
-              onDelete: () => {
-                setTimeout(() => {
-                  popToRoot()
-                }, 50)
-              },
+              onSuccess: popParentViewController,
+              onDelete: popToRoot,
             },
           })
         }}

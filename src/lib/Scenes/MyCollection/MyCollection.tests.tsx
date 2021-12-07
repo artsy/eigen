@@ -85,7 +85,7 @@ describe("MyCollection", () => {
       addArtworkButton.props.onPress()
 
       expect(navigate).toHaveBeenCalledWith(
-        "my-collection/add-my-collection-artwork",
+        "my-collection/artworks/new",
         expect.objectContaining({ passProps: { mode: "add" } })
       )
     })
