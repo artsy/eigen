@@ -7,6 +7,7 @@ export interface ArtworkFilterApplyButtonProps {
   disabled: boolean
   onCreateAlertPress?: () => void
   onPress: () => void
+  shouldShowCreateAlertButton?: boolean
 }
 
 interface Button {
@@ -44,7 +45,7 @@ const InnerButton: React.FC<Button> = (props) => {
 }
 
 export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> = (props) => {
-  const { disabled, onCreateAlertPress, onPress } = props
+  const { disabled, shouldShowCreateAlertButton, onCreateAlertPress, onPress } = props
   const color = useColor()
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
@@ -65,12 +66,16 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
         }}
       >
         <Box height={50} borderRadius={50} px={1} backgroundColor="black100" flexDirection="row" alignItems="center">
-          <InnerButton
-            label="Create Alert"
-            icon={<BellIcon fill="white100" width="15px" height="15px" mr={1} />}
-            onPress={onCreateAlertPress}
-          />
-          <Box width="1" height={20} backgroundColor="white100" mx={1} />
+          {!!shouldShowCreateAlertButton && (
+            <>
+              <InnerButton
+                label="Create Alert"
+                icon={<BellIcon fill="white100" width="15px" height="15px" mr={1} />}
+                onPress={onCreateAlertPress}
+              />
+              <Box width="1" height={20} backgroundColor="white100" mx={1} />
+            </>
+          )}
           <InnerButton disabled={disabled} label="Apply Filters" onPress={onPress} />
         </Box>
       </Box>

@@ -51,6 +51,7 @@ interface ArtworkFilterProps extends ViewProps {
   name?: string
   title?: string
   query?: string
+  shouldShowCreateAlertButton?: boolean
 }
 
 interface ArtworkFilterOptionsScreenParams {
@@ -95,7 +96,7 @@ const Stack = createStackNavigator<ArtworkFilterNavigationStack>()
 
 export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const tracking = useTracking()
-  const { id, mode, slug, name, query, closeModal, exitModal } = props
+  const { id, mode, slug, name, query, shouldShowCreateAlertButton, closeModal, exitModal } = props
   const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
@@ -305,6 +306,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             disabled={!isApplyButtonEnabled}
             onPress={handleApplyPress}
             onCreateAlertPress={() => setIsCreateAlertModalVisible(true)}
+            shouldShowCreateAlertButton={shouldShowCreateAlertButton}
           />
 
           {!!isEnabledImprovedAlertsFlow && (

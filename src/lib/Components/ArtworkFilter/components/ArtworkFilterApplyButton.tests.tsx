@@ -6,7 +6,7 @@ import { ArtworkFilterApplyButton, ArtworkFilterApplyButtonProps } from "./Artwo
 
 const defaultProps: ArtworkFilterApplyButtonProps = {
   disabled: false,
-  onCreateAlertPress: jest.fn(),
+  onCreateAlertPress: jest.fn,
   onPress: jest.fn,
 }
 
@@ -39,9 +39,17 @@ describe("ArtworkFilterApplyButton", () => {
     expect(onPressMock).toBeCalled()
   })
 
+  it('should show "Create Alert" button only when shouldShowCreateAlertButton prop is specified', () => {
+    const { getByText } = renderWithWrappersTL(<TestWrapper shouldShowCreateAlertButton />)
+
+    expect(getByText("Create Alert")).toBeTruthy()
+  })
+
   it('should call "onCreateAlertPress" handler when "Create Alert" is pressed', () => {
     const onCreateAlertPressMock = jest.fn()
-    const { getByText } = renderWithWrappersTL(<TestWrapper onCreateAlertPress={onCreateAlertPressMock} />)
+    const { getByText } = renderWithWrappersTL(
+      <TestWrapper shouldShowCreateAlertButton onCreateAlertPress={onCreateAlertPressMock} />
+    )
 
     fireEvent.press(getByText("Create Alert"))
 
