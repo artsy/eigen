@@ -202,6 +202,12 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     // echoFlagKey: "AREnableAuctionResultComparableWorks",
   },
+  AREnableAccordeonNavigationOnSubmitArtwork: {
+    readyForRelease: false,
+    description: "Accordeon Navigation on Submit Artwork",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableAccordeonNavigationOnSubmitArtwork",
+  },
 })
 
 export interface DevToggleDescriptor {
