@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f2a76e9664b932e0ece8e2815656f66e */
+/* @relayHash 80d7119123ff0ea818f0cd5794ec7384 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowArtistInput = {
@@ -15,6 +15,7 @@ export type ArtistRailFollowMutationVariables = {
 export type ArtistRailFollowMutationResponse = {
     readonly followArtist: {
         readonly artist: {
+            readonly id: string;
             readonly isFollowed: boolean | null;
         } | null;
     } | null;
@@ -32,8 +33,8 @@ mutation ArtistRailFollowMutation(
 ) {
   followArtist(input: $input) {
     artist {
-      isFollowed
       id
+      isFollowed
     }
   }
 }
@@ -49,49 +50,55 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "Variable",
-    "name": "input",
-    "variableName": "input"
-  }
-],
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "isFollowed",
-  "storageKey": null
-};
-return {
-  "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
-    "kind": "Fragment",
-    "metadata": null,
-    "name": "ArtistRailFollowMutation",
+    "alias": null,
+    "args": [
+      {
+        "kind": "Variable",
+        "name": "input",
+        "variableName": "input"
+      }
+    ],
+    "concreteType": "FollowArtistPayload",
+    "kind": "LinkedField",
+    "name": "followArtist",
+    "plural": false,
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "FollowArtistPayload",
+        "args": null,
+        "concreteType": "Artist",
         "kind": "LinkedField",
-        "name": "followArtist",
+        "name": "artist",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "Artist",
-            "kind": "LinkedField",
-            "name": "artist",
-            "plural": false,
-            "selections": [
-              (v2/*: any*/)
-            ],
+            "kind": "ScalarField",
+            "name": "id",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "isFollowed",
             "storageKey": null
           }
         ],
         "storageKey": null
       }
     ],
+    "storageKey": null
+  }
+];
+return {
+  "fragment": {
+    "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "ArtistRailFollowMutation",
+    "selections": (v1/*: any*/),
     "type": "Mutation",
     "abstractKey": null
   },
@@ -100,41 +107,10 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "ArtistRailFollowMutation",
-    "selections": [
-      {
-        "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "FollowArtistPayload",
-        "kind": "LinkedField",
-        "name": "followArtist",
-        "plural": false,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Artist",
-            "kind": "LinkedField",
-            "name": "artist",
-            "plural": false,
-            "selections": [
-              (v2/*: any*/),
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "id",
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      }
-    ]
+    "selections": (v1/*: any*/)
   },
   "params": {
-    "id": "f2a76e9664b932e0ece8e2815656f66e",
+    "id": "80d7119123ff0ea818f0cd5794ec7384",
     "metadata": {},
     "name": "ArtistRailFollowMutation",
     "operationKind": "mutation",
@@ -142,5 +118,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'c5a0ce2df50e88db1066d6406b7d7a08';
+(node as any).hash = '1ad05743d14a15b2d3cb4e01b44414c7';
 export default node;

@@ -107,6 +107,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
           mutation ArtistRailFollowMutation($input: FollowArtistInput!) {
             followArtist(input: $input) {
               artist {
+                id
                 isFollowed
               }
             }
@@ -116,6 +117,14 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
           input: { artistID: followArtist.internalID, unfollow: followArtist.isFollowed },
         },
         onError: reject,
+        optimisticResponse: {
+          followArtist: {
+            artist: {
+              id: followArtist.id,
+              isFollowed: !followArtist.isFollowed,
+            },
+          },
+        },
         onCompleted: (_response, errors) => {
           if (errors && errors.length > 0) {
             reject(new Error(JSON.stringify(errors)))
@@ -162,6 +171,10 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
 
   const handleDismiss = async (artist: SuggestedArtist) => {
     dismissedArtistIds.current = uniq([artist.internalID].concat(dismissedArtistIds.current)).slice(0, 100)
+
+    await artist._disappearable?.disappear()
+    setArtists((_artists) => _artists.filter((a) => a.internalID !== artist.internalID))
+
     const suggestion = await fetchNewSuggestion()
     if (suggestion) {
       // make sure we add suggestion in there before making the card disappear, so the suggestion slides in from the
@@ -169,7 +182,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
       setArtists((_artists) => _artists.concat([suggestion]))
       await nextTick()
     }
-    await artist._disappearable?.disappear()
+
     setArtists((_artists) => _artists.filter((a) => a.internalID !== artist.internalID))
   }
 
