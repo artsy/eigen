@@ -128,31 +128,30 @@ export const Artwork: React.FC<ArtworkProps> = ({
   return (
     <Touchable onPress={() => handleTap()}>
       <View ref={itemRef}>
-        {!!artwork.image ||
-          (!!artwork.image_url && (
-            <View>
-              <OpaqueImageView
-                aspectRatio={artwork.image?.aspectRatio ?? 1}
-                imageURL={artwork.image?.url ?? artwork.image_url}
-              />
-              {Boolean(!hideUrgencyTags && urgencyTag && artwork?.sale?.isAuction && !artwork?.sale?.isClosed) && (
-                <Flex
-                  position="absolute"
-                  bottom="5px"
-                  left="5px"
-                  backgroundColor="white"
-                  px="5px"
-                  py="3px"
-                  borderRadius={2}
-                  alignSelf="flex-start"
-                >
-                  <Sans size="2" color="black100" numberOfLines={1} {...urgencyTagTextStyle}>
-                    {urgencyTag}
-                  </Sans>
-                </Flex>
-              )}
-            </View>
-          ))}
+        {(!!artwork.image || !!artwork.image_url) && (
+          <View>
+            <OpaqueImageView
+              aspectRatio={artwork.image?.aspectRatio ?? 1}
+              imageURL={artwork.image?.url ?? artwork.image_url}
+            />
+            {Boolean(!hideUrgencyTags && urgencyTag && artwork?.sale?.isAuction && !artwork?.sale?.isClosed) && (
+              <Flex
+                position="absolute"
+                bottom="5px"
+                left="5px"
+                backgroundColor="white"
+                px="5px"
+                py="3px"
+                borderRadius={2}
+                alignSelf="flex-start"
+              >
+                <Sans size="2" color="black100" numberOfLines={1} {...urgencyTagTextStyle}>
+                  {urgencyTag}
+                </Sans>
+              </Flex>
+            )}
+          </View>
+        )}
         <Box mt={1}>
           {!!showLotLabel && !!artwork.saleArtwork?.lotLabel && (
             <Text variant="xs" numberOfLines={1} caps {...lotLabelTextStyle}>

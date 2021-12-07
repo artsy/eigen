@@ -96,9 +96,10 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     )
   }
 
-  if (true) {
+  if (indexName.includes("Artwork_")) {
     return (
       <FlatList
+        accessibilityLabel="Artworks Grid Results"
         numColumns={2}
         data={hits}
         keyExtractor={(item) => item.objectID}
