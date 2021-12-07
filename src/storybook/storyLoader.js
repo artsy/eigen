@@ -8,6 +8,7 @@ function loadStories() {
   require("../lib/Components/PopoverMessage/PopoverMessage.stories")
   require("../lib/Components/ReadMore.stories")
   require("../palette/colors.stories")
+  require("../palette/icons.stories")
   require("../palette/elements/Avatar/Avatar.stories")
   require("../palette/elements/Banner/Banner.stories")
   require("../palette/elements/Button/Button.stories")
@@ -27,6 +28,7 @@ const stories = [
   "../lib/Components/PopoverMessage/PopoverMessage.stories",
   "../lib/Components/ReadMore.stories",
   "../palette/colors.stories",
+  "../palette/icons.stories",
   "../palette/elements/Avatar/Avatar.stories",
   "../palette/elements/Banner/Banner.stories",
   "../palette/elements/Button/Button.stories",
