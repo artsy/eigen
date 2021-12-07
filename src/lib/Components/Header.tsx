@@ -1,0 +1,56 @@
+import { ArrowLeftIcon, Box, Separator, Text, useTheme } from "palette"
+import React from "react"
+import { TouchableOpacity } from "react-native"
+
+export interface HeaderProps {
+  title?: string
+  rightButtonText?: string
+  rightButtonAccessibilityLabel?: string
+  onLeftButtonPress: () => void
+  onRightButtonPress?: () => void
+}
+
+export const Header: React.FC<HeaderProps> = (props) => {
+  const {
+    title,
+    rightButtonText,
+    rightButtonAccessibilityLabel = "Header right button",
+    onLeftButtonPress,
+    onRightButtonPress,
+  } = props
+  const { space } = useTheme()
+
+  return (
+    <>
+      <Box flexDirection="row" alignItems="center" justifyContent="space-between" height={space(6)} px={2}>
+        <TouchableOpacity
+          onPress={onLeftButtonPress}
+          hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+          accessibilityLabel="Header back button"
+          style={{ paddingRight: space(0.5) }}
+        >
+          <ArrowLeftIcon fill="black100" />
+        </TouchableOpacity>
+        {!!title && (
+          <Box flex={1} ml={1} mr={2}>
+            <Text variant="md" numberOfLines={2} lineHeight={18}>
+              {title}
+            </Text>
+          </Box>
+        )}
+        {!!onRightButtonPress && !!rightButtonText && (
+          <TouchableOpacity
+            onPress={onRightButtonPress}
+            hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+            accessibilityLabel={rightButtonAccessibilityLabel}
+          >
+            <Text variant="sm" style={{ textDecorationLine: "underline" }}>
+              {rightButtonText}
+            </Text>
+          </TouchableOpacity>
+        )}
+      </Box>
+      <Separator />
+    </>
+  )
+}
