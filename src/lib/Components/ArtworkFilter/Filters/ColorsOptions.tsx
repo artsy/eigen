@@ -3,6 +3,8 @@ import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { Header } from "lib/Components/Header"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { useLayout } from "lib/utils/useLayout"
 import { sortBy } from "lodash"
 import { Flex, useSpace } from "palette"
@@ -40,6 +42,7 @@ interface ColorsOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigat
 export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ navigation }) => {
   const space = useSpace()
   const { layout, handleLayout } = useLayout()
+  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
   const { aggregation } = useArtworkFiltersAggregation({
     paramName: FilterParamName.colors,
@@ -67,12 +70,20 @@ export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ naviga
 
   return (
     <Flex onLayout={handleLayout} flexGrow={1}>
-      <FancyModalHeader
-        onLeftButtonPress={() => navigation.goBack()}
-        {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
-      >
-        {FilterDisplayName.colors}
-      </FancyModalHeader>
+      {isEnabledImprovedAlertsFlow ? (
+        <Header
+          title={FilterDisplayName.colors}
+          onLeftButtonPress={() => navigation.goBack()}
+          {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
+        />
+      ) : (
+        <FancyModalHeader
+          onLeftButtonPress={() => navigation.goBack()}
+          {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
+        >
+          {FilterDisplayName.colors}
+        </FancyModalHeader>
+      )}
 
       <Flex p={1} flexWrap="wrap" flexDirection="row" justifyContent="flex-start">
         {sortedOptions.map((option, i) => {
