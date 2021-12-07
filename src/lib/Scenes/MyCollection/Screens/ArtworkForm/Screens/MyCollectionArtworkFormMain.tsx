@@ -46,7 +46,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
       <FancyModalHeader
         onLeftButtonPress={route.params.onHeaderBackButtonPress}
         rightButtonText={isFormDirty() ? "Clear" : undefined}
-        onRightButtonPress={isFormDirty() || __TEST__ ? () => route.params.clearForm() : undefined}
+        onRightButtonPress={isFormDirty() ? () => route.params.clearForm() : undefined}
       >
         {addOrEditLabel} Artwork
       </FancyModalHeader>

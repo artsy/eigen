@@ -6,7 +6,7 @@ import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwo
 import { FormikProvider, useFormik } from "formik"
 import { cleanArtworkPayload, explicitlyClearedFields } from "lib/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { GlobalStore } from "lib/store/GlobalStore"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { useTracking } from "react-tracking"
 import { myCollectionAddArtwork } from "../../mutations/myCollectionAddArtwork"
@@ -78,6 +78,12 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
 
   const { showActionSheetWithOptions } = useActionSheet()
 
+  useEffect(() => {
+    return () => {
+      GlobalStore.actions.myCollection.artwork.resetForm()
+    }
+  }, [])
+
   const formik = useFormik<ArtworkFormValues>({
     enableReinitialize: true,
     initialValues: formValues,
@@ -126,9 +132,6 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
         }
         refreshMyCollection()
         props.onSuccess()
-        setTimeout(() => {
-          GlobalStore.actions.myCollection.artwork.resetForm()
-        }, 500)
       } catch (e) {
         if (__DEV__) {
           console.error(e)
@@ -152,10 +155,6 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
             await myCollectionDeleteArtwork(props.artwork.internalID)
             refreshMyCollection()
             props.onDelete()
-            setTimeout(() => {
-              // reset form values incase user deleted after editing
-              GlobalStore.actions.myCollection.artwork.resetForm()
-            }, 500)
           } catch (e) {
             if (__DEV__) {
               console.error(e)
