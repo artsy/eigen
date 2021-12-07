@@ -6,7 +6,7 @@ import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import { retrieveLocalImage, storeLocalImage } from "lib/utils/LocalImageStore"
+import { LocalImage, retrieveLocalImage, storeLocalImage } from "lib/utils/LocalImageStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Avatar, Box, Button, Flex, Sans, useColor } from "palette"
 import React, { useEffect, useState } from "react"
@@ -48,22 +48,27 @@ export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWor
   const color = useColor()
 
   const [showModal, setShowModal] = useState(false)
-  const [localImagePath, setLocalImagePath] = useState<string>("")
+  const [localImage, setLocalImage] = useState<LocalImage | null>(null)
 
-  const setProfileIconHandler = (profileIconPath: string) => {
-    setLocalImagePath(profileIconPath)
-    storeLocalImage(profileIconPath, LOCAL_PROFILE_ICON_PATH_KEY)
+  const setProfileIconHandler = (path: string) => {
+    const profileIcon: LocalImage = {
+      path,
+      width: 100, // don't care about aspect ratio for profile images
+      height: 100,
+    }
+    setLocalImage(profileIcon)
+    storeLocalImage(profileIcon, LOCAL_PROFILE_ICON_PATH_KEY)
   }
 
   useEffect(() => {
-    retrieveLocalImage(LOCAL_PROFILE_ICON_PATH_KEY).then((imagePath) => {
-      if (imagePath) {
-        setLocalImagePath(imagePath)
+    retrieveLocalImage(LOCAL_PROFILE_ICON_PATH_KEY).then((image) => {
+      if (image) {
+        setLocalImage(image)
       }
     })
   }, [])
 
-  const userProfileImage = localImagePath || me.icon?.url
+  const userProfileImagePath = localImage?.path || me.icon?.url
 
   const showIconAndBio = useFeatureFlag("AREnableVisualProfileIconAndBio")
 
@@ -74,7 +79,7 @@ export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWor
         visible={showModal}
         onDismiss={() => setShowModal(false)}
         setProfileIconLocally={setProfileIconHandler}
-        localImagePath={localImagePath}
+        localImage={localImage}
       />
       <FancyModalHeader
         rightButtonText="Settings"
@@ -93,8 +98,8 @@ export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWor
             justifyContent="center"
             alignItems="center"
           >
-            {!!userProfileImage ? (
-              <Avatar src={userProfileImage} size="md" />
+            {!!userProfileImagePath ? (
+              <Avatar src={userProfileImagePath} size="md" />
             ) : (
               <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
             )}

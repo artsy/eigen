@@ -1,5 +1,5 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { retrieveLocalImage } from "lib/utils/LocalImageStore"
+import { LocalImage, retrieveLocalImage } from "lib/utils/LocalImageStore"
 import { Box, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Image as RNImage } from "react-native"
@@ -21,13 +21,13 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
 }) => {
   const color = useColor()
 
-  const [localImagePath, setLocalImagePath] = useState<string>("")
+  const [localImage, setLocalImage] = useState<LocalImage | null>(null)
 
   useEffect(() => {
     const localImageKey = myCollectionLocalPhotoKey(artworkSlug, 0)
-    retrieveLocalImage(localImageKey).then((imagePath) => {
-      if (imagePath) {
-        setLocalImagePath(imagePath)
+    retrieveLocalImage(localImageKey).then((image) => {
+      if (image) {
+        setLocalImage(image)
       }
     })
   }, [])
@@ -41,12 +41,12 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
           aspectRatio={aspectRatio ?? 1}
         />
       )
-    } else if (localImagePath) {
+    } else if (localImage) {
       return (
         <RNImage
           testID="Image-Local"
           style={{ width: imageWidth, height: 120, resizeMode: "cover" }}
-          source={{ uri: localImagePath }}
+          source={{ uri: localImage.path }}
         />
       )
     } else {

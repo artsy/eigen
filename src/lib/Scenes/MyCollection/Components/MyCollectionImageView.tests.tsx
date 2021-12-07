@@ -1,5 +1,6 @@
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import * as LocalImageStore from "lib/utils/LocalImageStore"
+import { LocalImage } from "lib/utils/LocalImageStore"
 import React from "react"
 import { act } from "react-test-renderer"
 import { MyCollectionImageView, MyCollectionImageViewProps } from "./MyCollectionImageView"
@@ -25,8 +26,13 @@ describe("MyCollectionImageView", () => {
       artworkSlug: "some-slug",
     }
     const localImageStoreMock = jest.spyOn(LocalImageStore, "retrieveLocalImage")
-    const retrievalPromise = new Promise<string>((resolve) => {
-      resolve("some-local-path")
+    const localImage: LocalImage = {
+      path: "some-local-path",
+      width: 10,
+      height: 10,
+    }
+    const retrievalPromise = new Promise<LocalImage>((resolve) => {
+      resolve(localImage)
     })
     localImageStoreMock.mockImplementation(() => retrievalPromise)
 
@@ -47,7 +53,7 @@ describe("MyCollectionImageView", () => {
       artworkSlug: "some-slug",
     }
     const localImageStoreMock = jest.spyOn(LocalImageStore, "retrieveLocalImage")
-    const retrievalPromise = new Promise<string | null>((resolve) => {
+    const retrievalPromise = new Promise<LocalImage | null>((resolve) => {
       resolve(null)
     })
     localImageStoreMock.mockImplementation(() => retrievalPromise)

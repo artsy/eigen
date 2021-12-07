@@ -1,7 +1,7 @@
 import { myCollectionAddArtworkMutationResponse } from "__generated__/myCollectionAddArtworkMutation.graphql"
 import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
-import { storeLocalImage } from "lib/utils/LocalImageStore"
+import { LocalImage, storeLocalImage } from "lib/utils/LocalImageStore"
 import { ArtworkFormValues, Image } from "../../State/MyCollectionArtworkModel"
 
 export const myCollectionLocalPhotoKey = (slug: string, index: number) => {
@@ -12,9 +12,14 @@ export const storeLocalPhotos = (response: myCollectionAddArtworkMutationRespons
   const slug = response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.slug
   if (slug) {
     photos.forEach((photo, index) => {
-      if (photo.path) {
+      if (photo.path && photo.height && photo.width) {
         const key = myCollectionLocalPhotoKey(slug, index)
-        storeLocalImage(photo.path, key)
+        const image: LocalImage = {
+          path: photo.path,
+          width: photo.width,
+          height: photo.height,
+        }
+        storeLocalImage(image, key)
       }
     })
   }

@@ -7,7 +7,7 @@ import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { storeLocalImage } from "lib/utils/LocalImageStore"
+import { LocalImage, storeLocalImage } from "lib/utils/LocalImageStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Avatar } from "palette"
 import React from "react"
@@ -92,8 +92,13 @@ describe("MyCollectionAndSavedWorks", () => {
       })
 
       it("does not render Icon", async () => {
+        const localImage: LocalImage = {
+          path: "some/my/profile/path",
+          width: 10,
+          height: 10,
+        }
         await act(async () => {
-          await storeLocalImage("some/my/profile/path", LOCAL_PROFILE_ICON_PATH_KEY)
+          await storeLocalImage(localImage, LOCAL_PROFILE_ICON_PATH_KEY)
         })
 
         const wrapper = getWrapper({
@@ -135,8 +140,13 @@ describe("MyCollectionAndSavedWorks", () => {
       })
 
       it("Renders Icon", async () => {
+        const localImage: LocalImage = {
+          path: "some/my/profile/path",
+          width: 10,
+          height: 10,
+        }
         await act(async () => {
-          await storeLocalImage("some/my/profile/path", LOCAL_PROFILE_ICON_PATH_KEY)
+          await storeLocalImage(localImage, LOCAL_PROFILE_ICON_PATH_KEY)
         })
 
         const wrapper = getWrapper({
