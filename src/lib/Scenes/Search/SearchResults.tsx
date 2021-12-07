@@ -115,6 +115,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
 
   return (
     <AboveTheFoldFlatList<AlgoliaSearchResult>
+      accessibilityLabel="Search Results List"
       listRef={flatListRef}
       initialNumToRender={isPad() ? 24 : 12}
       contentContainerStyle={{ paddingVertical: space(1), paddingHorizontal: space(2) }}
