@@ -37,7 +37,7 @@ export const SaveAndContinueButton: React.FC<SaveButtonProps> = ({
             setIsContentVisible(false)
             LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
             setActiveStep(step + 1)
-            if (isLastStep) {
+            if (isLastStep && navigateToLink) {
               navigate(navigateToLink)
             }
           }}
