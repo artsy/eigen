@@ -42,7 +42,7 @@ export const SaveAndContinueButton: React.FC<SaveButtonProps> = ({
             }
           }}
         >
-          Save & Continue
+          {isLastStep ? "Submit Artwork" : "Save & Continue"}
         </Button>
       </Flex>
     </View>
