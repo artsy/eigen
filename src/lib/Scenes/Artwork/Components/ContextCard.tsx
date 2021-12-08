@@ -200,7 +200,7 @@ export const ContextCardFragmentContainer = createFragmentContainer(ContextCard,
           id
           name
           href
-          exhibitionPeriod
+          exhibitionPeriod(format: SHORT)
           image {
             url
           }
@@ -211,7 +211,7 @@ export const ContextCardFragmentContainer = createFragmentContainer(ContextCard,
           slug
           name
           href
-          exhibitionPeriod
+          exhibitionPeriod(format: SHORT)
           isFollowed
           coverImage {
             url

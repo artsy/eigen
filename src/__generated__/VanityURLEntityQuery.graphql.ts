@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3fa9674a70b5ace4db1bcbbd4157cbe1 */
+/* @relayHash 4fe111602165eac71fe678e5b9ca2b3b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -330,7 +330,7 @@ fragment FairHeader_fair on Fair {
 }
 
 fragment FairTiming_fair on Fair {
-  exhibitionPeriod
+  exhibitionPeriod(format: SHORT)
   startAt
   endAt
 }
@@ -484,7 +484,7 @@ fragment PartnerShowRailItem_show on Show {
   internalID
   slug
   name
-  exhibitionPeriod
+  exhibitionPeriod(format: SHORT)
   endAt
   coverImage {
     url
@@ -509,7 +509,7 @@ fragment PartnerShowsRail_partner on Partner {
         internalID
         slug
         name
-        exhibitionPeriod
+        exhibitionPeriod(format: SHORT)
         endAt
         images {
           url
@@ -558,7 +558,7 @@ fragment PartnerShows_partner on Partner {
         id
         name
         slug
-        exhibitionPeriod
+        exhibitionPeriod(format: SHORT)
         coverImage {
           url
           aspectRatio
@@ -735,10 +735,16 @@ v17 = [
 ],
 v18 = {
   "alias": null,
-  "args": null,
+  "args": [
+    {
+      "kind": "Literal",
+      "name": "format",
+      "value": "SHORT"
+    }
+  ],
   "kind": "ScalarField",
   "name": "exhibitionPeriod",
-  "storageKey": null
+  "storageKey": "exhibitionPeriod(format:\"SHORT\")"
 },
 v19 = {
   "alias": null,
@@ -2418,7 +2424,7 @@ return {
     ]
   },
   "params": {
-    "id": "3fa9674a70b5ace4db1bcbbd4157cbe1",
+    "id": "4fe111602165eac71fe678e5b9ca2b3b",
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",

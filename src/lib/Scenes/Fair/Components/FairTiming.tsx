@@ -34,7 +34,7 @@ export const FairTiming: React.FC<FairTimingProps> = ({ fair: { exhibitionPeriod
 export const FairTimingFragmentContainer = createFragmentContainer(FairTiming, {
   fair: graphql`
     fragment FairTiming_fair on Fair {
-      exhibitionPeriod
+      exhibitionPeriod(format: SHORT)
       startAt
       endAt
     }

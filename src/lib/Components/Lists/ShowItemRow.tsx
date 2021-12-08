@@ -222,7 +222,7 @@ export const ShowItemRowContainer = createFragmentContainer(ShowItemRow, {
         }
       }
       href
-      exhibition_period: exhibitionPeriod
+      exhibition_period: exhibitionPeriod(format: SHORT)
       status
       cover_image: coverImage {
         url

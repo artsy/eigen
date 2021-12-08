@@ -4,6 +4,7 @@
 /* @relayHash 8da0f987b20732772166f198dbc586b0 */
 
 import { ConcreteRequest } from "relay-runtime";
+export type ArtworkSizes = "LARGE" | "MEDIUM" | "SMALL" | "%future added value";
 export type CreateSavedSearchInput = {
     attributes: SearchCriteriaAttributes;
     clientMutationId?: string | null;
@@ -25,6 +26,7 @@ export type SearchCriteriaAttributes = {
     offerable?: boolean | null;
     partnerIDs?: Array<string> | null;
     priceRange?: string | null;
+    sizes?: Array<ArtworkSizes | null> | null;
     width?: string | null;
 };
 export type UserAlertSettingsInput = {

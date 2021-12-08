@@ -230,10 +230,16 @@ return {
                 (v0/*: any*/),
                 {
                   "alias": null,
-                  "args": null,
+                  "args": [
+                    {
+                      "kind": "Literal",
+                      "name": "format",
+                      "value": "SHORT"
+                    }
+                  ],
                   "kind": "ScalarField",
                   "name": "exhibitionPeriod",
-                  "storageKey": null
+                  "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                 },
                 {
                   "alias": null,
@@ -300,5 +306,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '79c707a8c555c2f97a4ee4c5b099f545';
+(node as any).hash = '06f9de030c3a4ca2d11b9ab18b28bf30';
 export default node;
