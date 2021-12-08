@@ -1,7 +1,9 @@
 import { myCollectionAddArtworkMutationResponse } from "__generated__/myCollectionAddArtworkMutation.graphql"
 import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
+import { getMeasurements, Size } from "lib/Scenes/Artwork/Components/ImageCarousel/geometry"
 import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
 import { LocalImage, storeLocalImage } from "lib/utils/LocalImageStore"
+import { ScreenDimensionsWithSafeAreas } from "lib/utils/useScreenDimensions"
 import { ArtworkFormValues, Image } from "../../State/MyCollectionArtworkModel"
 
 export const myCollectionLocalPhotoKey = (slug: string, index: number) => {
@@ -77,4 +79,29 @@ export const hasImagesStillProcessing = (
   const concreteImages = imagesToCheck as Image[]
   const stillProcessing = concreteImages.some((image) => imageIsProcessing(image, "normalized"))
   return stillProcessing
+}
+
+export const getBoundingBox = (
+  imageSize: Size,
+  maxImageHeight: number,
+  screenDimensions: ScreenDimensionsWithSafeAreas
+): Size => {
+  const imageHeight = imageSize.height ?? 0
+  return {
+    height: imageHeight < maxImageHeight ? imageHeight : maxImageHeight,
+    width: screenDimensions.width,
+  }
+}
+
+export const getImageMeasurements = (imageSize: Size, boundingBox: Size) => {
+  const measurements = getMeasurements({
+    images: [
+      {
+        height: imageSize.height,
+        width: imageSize.width,
+      },
+    ],
+    boundingBox,
+  })[0]
+  return measurements
 }

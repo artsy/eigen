@@ -1,9 +1,11 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
+import { Size } from "lib/Scenes/Artwork/Components/ImageCarousel/geometry"
 import { LocalImage, retrieveLocalImage } from "lib/utils/LocalImageStore"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Image as RNImage } from "react-native"
-import { myCollectionLocalPhotoKey } from "../Screens/ArtworkFormModal/MyCollectionImageUtil"
+import { getBoundingBox, myCollectionLocalPhotoKey } from "../Screens/ArtworkFormModal/MyCollectionImageUtil"
 import { MyCollectionImageViewProps } from "./MyCollectionImageView"
 
 export const MyCollectionDetailsImageView: React.FC<MyCollectionImageViewProps> = ({
@@ -14,6 +16,7 @@ export const MyCollectionDetailsImageView: React.FC<MyCollectionImageViewProps> 
   artworkSlug,
 }) => {
   const color = useColor()
+  const dimensions = useScreenDimensions()
   const [localImage, setLocalImage] = useState<LocalImage | null>(null)
 
   useEffect(() => {
@@ -26,6 +29,7 @@ export const MyCollectionDetailsImageView: React.FC<MyCollectionImageViewProps> 
   }, [])
 
   const renderImage = () => {
+    const maxImageHeight = dimensions.height / 2.5
     if (!!imageURL) {
       return (
         <OpaqueImageView
@@ -38,15 +42,20 @@ export const MyCollectionDetailsImageView: React.FC<MyCollectionImageViewProps> 
         />
       )
     } else if (localImage) {
+      const localImageSize: Size = {
+        width: localImage.width,
+        height: localImage.height,
+      }
+      const imageSize = getBoundingBox(localImageSize, maxImageHeight, dimensions)
       return (
         <RNImage
           testID="Image"
-          style={{ width: imageWidth, height: 120, resizeMode: "cover" }}
+          style={{ width: imageSize.width, height: imageSize.height, resizeMode: "cover" }}
           source={{ uri: localImage.path }}
         />
       )
     } else {
-      return <Box testID="Image" bg={color("black30")} width={imageWidth} height={120} />
+      return <Box testID="Fallback" bg={color("black30")} width={dimensions.width} height={maxImageHeight} />
     }
   }
 

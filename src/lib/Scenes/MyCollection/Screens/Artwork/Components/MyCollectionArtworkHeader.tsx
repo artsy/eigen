@@ -1,17 +1,23 @@
 import { tappedCollectedArtworkImages } from "@artsy/cohesion"
 import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import { navigate } from "lib/navigation/navigate"
-import { getMeasurements, Size } from "lib/Scenes/Artwork/Components/ImageCarousel/geometry"
+import { Size } from "lib/Scenes/Artwork/Components/ImageCarousel/geometry"
 import { MyCollectionDetailsImageView } from "lib/Scenes/MyCollection/Components/MyCollectionDetailsImageView"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
-import { ScreenDimensionsWithSafeAreas, useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import useInterval from "react-use/lib/useInterval"
-import { hasImagesStillProcessing, imageIsProcessing, isImage } from "../../ArtworkFormModal/MyCollectionImageUtil"
+import {
+  getBoundingBox,
+  getImageMeasurements,
+  hasImagesStillProcessing,
+  imageIsProcessing,
+  isImage,
+} from "../../ArtworkFormModal/MyCollectionImageUtil"
 
 interface MyCollectionArtworkHeaderProps {
   artwork: MyCollectionArtworkHeader_artwork
@@ -43,35 +49,14 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     }
   }, 1000)
 
-  const getBoundingBox = (
-    image: any,
-    maxImageHeight: number,
-    screenDimensions: ScreenDimensionsWithSafeAreas
-  ): Size => {
-    const imageHeight = image?.height ?? 0
-    return {
-      height: imageHeight < maxImageHeight ? imageHeight : maxImageHeight,
-      width: screenDimensions.width,
-    }
-  }
-
-  const getImageMeasurements = (image: any, boundingBox: Size) => {
-    const measurements = getMeasurements({
-      images: [
-        {
-          height: image?.height,
-          width: image?.width,
-        },
-      ],
-      boundingBox,
-    })[0]
-    return measurements
-  }
-
   const renderMainImageView = () => {
     const maxImageHeight = dimensions.height / 2.5
-    const boundingBox = getBoundingBox(defaultImage, maxImageHeight, dimensions)
-    const { cumulativeScrollOffset, ...styles } = getImageMeasurements(defaultImage, boundingBox)
+    const imageSize: Size = {
+      height: defaultImage?.height ?? maxImageHeight,
+      width: defaultImage?.width ?? dimensions.width,
+    }
+    const boundingBox = getBoundingBox(imageSize, maxImageHeight, dimensions)
+    const { cumulativeScrollOffset, ...styles } = getImageMeasurements(imageSize, boundingBox)
 
     // remove all vertical margins for pics taken in landscape mode
     boundingBox.height = boundingBox.height - (styles.marginBottom + styles.marginTop)

@@ -7,7 +7,7 @@ import { myCollectionLocalPhotoKey } from "../Screens/ArtworkFormModal/MyCollect
 
 export interface MyCollectionImageViewProps {
   imageURL?: string
-  imageWidth: number
+  imageWidth?: number
   imageHeight?: number
   aspectRatio?: number
   artworkSlug: string
@@ -45,12 +45,12 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
       return (
         <RNImage
           testID="Image-Local"
-          style={{ width: imageWidth, height: 120, resizeMode: "cover" }}
+          style={{ width: imageWidth ?? 120, height: 120, resizeMode: "cover" }}
           source={{ uri: localImage.path }}
         />
       )
     } else {
-      return <Box testID="Fallback" bg={color("black30")} width={imageWidth} height={120} />
+      return <Box testID="Fallback" bg={color("black30")} width={imageWidth ?? 120} height={120} />
     }
   }
 
