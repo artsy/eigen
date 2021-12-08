@@ -8,12 +8,9 @@ export type MyCollectionArtworkHeader_artwork = {
     readonly artistNames: string | null;
     readonly date: string | null;
     readonly images: ReadonlyArray<{
-        readonly height: number | null;
-        readonly isDefault: boolean | null;
-        readonly imageURL: string | null;
-        readonly width: number | null;
-        readonly internalID: string | null;
+        readonly url: string | null;
         readonly imageVersions: ReadonlyArray<string | null> | null;
+        readonly " $fragmentRefs": FragmentRefs<"ImageCarousel_images">;
     } | null> | null;
     readonly internalID: string;
     readonly slug: string;
@@ -28,15 +25,7 @@ export type MyCollectionArtworkHeader_artwork$key = {
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -65,21 +54,7 @@ return {
       "plural": true,
       "selections": [
         {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "height",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "isDefault",
-          "storageKey": null
-        },
-        {
-          "alias": null,
+          "alias": "url",
           "args": null,
           "kind": "ScalarField",
           "name": "imageURL",
@@ -89,21 +64,24 @@ return {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
-          "name": "width",
-          "storageKey": null
-        },
-        (v0/*: any*/),
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
           "name": "imageVersions",
           "storageKey": null
+        },
+        {
+          "args": null,
+          "kind": "FragmentSpread",
+          "name": "ImageCarousel_images"
         }
       ],
       "storageKey": null
     },
-    (v0/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": null,
@@ -122,6 +100,5 @@ return {
   "type": "Artwork",
   "abstractKey": null
 };
-})();
-(node as any).hash = '7732ce0098d72225f6a606addfe9f967';
+(node as any).hash = '381e3e1bb2e0db0d96e93a507c35684d';
 export default node;

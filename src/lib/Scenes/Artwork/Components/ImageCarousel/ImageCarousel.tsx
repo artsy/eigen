@@ -11,6 +11,7 @@ import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
 import { fitInside } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor, useNewImageCarouselContext } from "./ImageCarouselContext"
 import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
+import { PaginationIndicator } from "./ImageCarouselPaginationIndicator"
 import { useSpringValue } from "./useSpringValue"
 
 export interface ImageCarouselProps {
@@ -82,43 +83,10 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
     <ImageCarouselContext.Provider value={context}>
       <Flex>
         <ImageCarouselEmbedded cardHeight={cardHeight} />
-        {images.length > 1 && <PaginationDots />}
+        {images.length > 1 && <PaginationIndicator />}
         {context.fullScreenState.current !== "none" && <ImageCarouselFullScreen />}
       </Flex>
     </ImageCarouselContext.Provider>
-  )
-}
-
-function PaginationDots() {
-  const { images } = useContext(ImageCarouselContext)
-  return (
-    <>
-      <Spacer mb={2} />
-      <Flex flexDirection="row" justifyContent="center">
-        {images.map((_, index) => (
-          <PaginationDot key={index} diameter={5} index={index} />
-        ))}
-      </Flex>
-    </>
-  )
-}
-
-export const PaginationDot = ({ diameter, index }: { diameter: number; index: number }) => {
-  const { imageIndex } = useContext(ImageCarouselContext)
-  imageIndex.useUpdates()
-  const opacity = useSpringValue(imageIndex.current === index ? 1 : 0.1)
-
-  return (
-    <Animated.View
-      style={{
-        marginHorizontal: diameter * 0.8,
-        borderRadius: diameter / 2,
-        width: diameter,
-        height: diameter,
-        backgroundColor: "black",
-        opacity,
-      }}
-    />
   )
 }
 

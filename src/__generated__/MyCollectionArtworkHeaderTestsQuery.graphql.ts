@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2d511ab900be1af2e9ebb13cb6adfb16 */
+/* @relayHash 7f507c91840fa6e800c087cb2d898604 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,15 +26,30 @@ query MyCollectionArtworkHeaderTestsQuery {
   }
 }
 
+fragment ImageCarousel_images on Image {
+  url: imageURL
+  width
+  height
+  imageVersions
+  deepZoom {
+    image: Image {
+      tileSize: TileSize
+      url: Url
+      format: Format
+      size: Size {
+        width: Width
+        height: Height
+      }
+    }
+  }
+}
+
 fragment MyCollectionArtworkHeader_artwork on Artwork {
   artistNames
   date
   images {
-    height
-    isDefault
-    imageURL
-    width
-    internalID
+    ...ImageCarousel_images
+    url: imageURL
     imageVersions
   }
   internalID
@@ -52,25 +67,18 @@ var v0 = [
   }
 ],
 v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-},
-v2 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v3 = {
+v2 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v4 = {
+v3 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -140,21 +148,7 @@ return {
             "plural": true,
             "selections": [
               {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "height",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "isDefault",
-                "storageKey": null
-              },
-              {
-                "alias": null,
+                "alias": "url",
                 "args": null,
                 "kind": "ScalarField",
                 "name": "imageURL",
@@ -167,18 +161,98 @@ return {
                 "name": "width",
                 "storageKey": null
               },
-              (v1/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "height",
+                "storageKey": null
+              },
               {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
                 "name": "imageVersions",
                 "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "DeepZoom",
+                "kind": "LinkedField",
+                "name": "deepZoom",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": "image",
+                    "args": null,
+                    "concreteType": "DeepZoomImage",
+                    "kind": "LinkedField",
+                    "name": "Image",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": "tileSize",
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "TileSize",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": "url",
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "Url",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": "format",
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "Format",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": "size",
+                        "args": null,
+                        "concreteType": "DeepZoomImageSize",
+                        "kind": "LinkedField",
+                        "name": "Size",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": "width",
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "Width",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": "height",
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "Height",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
               }
             ],
             "storageKey": null
           },
-          (v1/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "internalID",
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": null,
@@ -206,7 +280,7 @@ return {
     ]
   },
   "params": {
-    "id": "2d511ab900be1af2e9ebb13cb6adfb16",
+    "id": "7f507c91840fa6e800c087cb2d898604",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -215,39 +289,50 @@ return {
           "plural": false,
           "type": "Artwork"
         },
-        "artwork.artistNames": (v2/*: any*/),
-        "artwork.date": (v2/*: any*/),
-        "artwork.id": (v3/*: any*/),
+        "artwork.artistNames": (v1/*: any*/),
+        "artwork.date": (v1/*: any*/),
+        "artwork.id": (v2/*: any*/),
         "artwork.images": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "Image"
         },
-        "artwork.images.height": (v4/*: any*/),
-        "artwork.images.imageURL": (v2/*: any*/),
+        "artwork.images.deepZoom": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "DeepZoom"
+        },
+        "artwork.images.deepZoom.image": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "DeepZoomImage"
+        },
+        "artwork.images.deepZoom.image.format": (v1/*: any*/),
+        "artwork.images.deepZoom.image.size": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "DeepZoomImageSize"
+        },
+        "artwork.images.deepZoom.image.size.height": (v3/*: any*/),
+        "artwork.images.deepZoom.image.size.width": (v3/*: any*/),
+        "artwork.images.deepZoom.image.tileSize": (v3/*: any*/),
+        "artwork.images.deepZoom.image.url": (v1/*: any*/),
+        "artwork.images.height": (v3/*: any*/),
         "artwork.images.imageVersions": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "String"
         },
-        "artwork.images.internalID": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "ID"
-        },
-        "artwork.images.isDefault": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Boolean"
-        },
-        "artwork.images.width": (v4/*: any*/),
-        "artwork.internalID": (v3/*: any*/),
-        "artwork.slug": (v3/*: any*/),
-        "artwork.title": (v2/*: any*/)
+        "artwork.images.url": (v1/*: any*/),
+        "artwork.images.width": (v3/*: any*/),
+        "artwork.internalID": (v2/*: any*/),
+        "artwork.slug": (v2/*: any*/),
+        "artwork.title": (v1/*: any*/)
       }
     },
     "name": "MyCollectionArtworkHeaderTestsQuery",
