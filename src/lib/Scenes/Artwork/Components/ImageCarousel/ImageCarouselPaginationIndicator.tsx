@@ -1,16 +1,18 @@
+import { spring } from "lib/Components/FancyModal/FancyModalCard"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Spacer, useColor } from "palette"
-import React, { useContext } from "react"
-import { Animated } from "react-native"
+import React, { useContext, useEffect, useRef } from "react"
+import { Animated, View } from "react-native"
 import { ImageCarouselContext } from "./ImageCarouselContext"
 import { useSpringValue } from "./useSpringValue"
 
-export const PaginationIndicator: React.FC<{ indicatorStyle?: "dots" | "bar" }> = ({ indicatorStyle = "dots" }) => {
-  if (indicatorStyle === "dots") {
-    return <PaginationDots />
-  } else if (indicatorStyle === "bar") {
-    return null
+export type IndicatorType = "dots" | "scrollBar" | undefined
+
+export const PaginationIndicator: React.FC<{ indicatorType: IndicatorType }> = ({ indicatorType }) => {
+  if (indicatorType === "scrollBar") {
+    return <ScrollBar />
   }
-  return null
+  return <PaginationDots />
 }
 
 function PaginationDots() {
@@ -46,53 +48,52 @@ export const PaginationDot = ({ diameter, index }: { diameter: number; index: nu
   )
 }
 
-const ScrollBar: React.FC<{ numberOfImages?: number }> = ({ numberOfImages }) => {
-  if (!numberOfImages) {
+const ScrollBar: React.FC = () => {
+  const color = useColor()
+  const { images, imageIndex } = useContext(ImageCarouselContext)
+  if (images.length < 2) {
     return null
   }
 
-  useContext(ImageCarouselContext)
-  const color = useColor()
-  // We resize this border using the `scaleX` transform property rather than the `width` property, to avoid running
-  // animations on the JS thread, so we need to set an initial, pre-transform span for the border.
-  const preTransformSpan = 100
+  const { width } = useScreenDimensions()
+  const barWidth = width / images.length
 
-  const span = tabLayouts[activeTabIndex].width
+  imageIndex.useUpdates()
 
-  let left = 0
-  for (let i = 0; i < activeTabIndex; i++) {
-    left += tabLayouts[i].width
-  }
-
-  const translateX = useRef(new Animated.Value(left)).current
-  const scaleX = useRef(new Animated.Value(span / preTransformSpan)).current
+  const translateX = useRef(new Animated.Value(imageIndex.current)).current
 
   useEffect(() => {
-    Animated.parallel([spring(translateX, left), spring(scaleX, span / preTransformSpan)]).start()
-  }, [left, span])
-
-  const scaleXOffset = Animated.divide(
-    Animated.subtract(preTransformSpan, Animated.multiply(scaleX, preTransformSpan)),
-    2
-  )
+    const nextValue = imageIndex.current * barWidth
+    Animated.spring(translateX, { toValue: nextValue, useNativeDriver: true, speed: 10, bounciness: -3 }).start()
+  }, [imageIndex.current])
 
   return (
-    <Animated.View
-      style={{
-        height: 1,
-        width: preTransformSpan,
-        backgroundColor: color("black100"),
-        position: "absolute",
-        bottom: 0,
-        transform: [
-          {
-            translateX: Animated.subtract(translateX, scaleXOffset),
-          },
-          {
-            scaleX,
-          },
-        ],
-      }}
-    />
+    <>
+      <View
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          borderBottomWidth: 1,
+          borderBottomColor: color("black30"),
+        }}
+      />
+      <Spacer mb={2} />
+      <Animated.View
+        style={{
+          height: 1,
+          width: barWidth,
+          backgroundColor: color("black100"),
+          position: "absolute",
+          bottom: 0,
+          transform: [
+            {
+              translateX,
+            },
+          ],
+        }}
+      />
+    </>
   )
 }

@@ -133,7 +133,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
         }}
       > */}
       {/* {renderMainImageView()} */}
-      <ImageCarouselFragmentContainer images={images as any} cardHeight={300} />
+      <ImageCarouselFragmentContainer images={images as any} cardHeight={300} paginationIndicatorType="scrollBar" />
       {/* {!!images && !hasImagesStillProcessing(defaultImage, images) && (
           <Flex
             mr={2}

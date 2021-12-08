@@ -11,13 +11,13 @@ import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
 import { fitInside } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor, useNewImageCarouselContext } from "./ImageCarouselContext"
 import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
-import { PaginationIndicator } from "./ImageCarouselPaginationIndicator"
-import { useSpringValue } from "./useSpringValue"
+import { IndicatorType, PaginationIndicator } from "./ImageCarouselPaginationIndicator"
 
 export interface ImageCarouselProps {
   images: ImageCarousel_images
   cardHeight: number
   onImageIndexChange?: (imageIndex: number) => void
+  paginationIndicatorType?: IndicatorType
 }
 
 /**
@@ -83,7 +83,7 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
     <ImageCarouselContext.Provider value={context}>
       <Flex>
         <ImageCarouselEmbedded cardHeight={cardHeight} />
-        {images.length > 1 && <PaginationIndicator />}
+        {images.length > 1 && <PaginationIndicator indicatorType={props.paginationIndicatorType} />}
         {context.fullScreenState.current !== "none" && <ImageCarouselFullScreen />}
       </Flex>
     </ImageCarouselContext.Provider>
