@@ -5,7 +5,7 @@ import { Text, useTextStyleForPalette } from "../Text"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { IconProps, Spacer, useColor } from "palette"
 import React, { ReactNode, useEffect, useState } from "react"
-import { GestureResponderEvent, Pressable, PressableProps, TouchableOpacity } from "react-native"
+import { GestureResponderEvent, Pressable, PressableProps } from "react-native"
 import { config } from "react-spring"
 // @ts-ignore
 import { animated, Spring } from "react-spring/renderprops-native"
@@ -18,6 +18,7 @@ export interface PillProps extends FlexProps {
   size?: PillSize
   onPress?: PressableProps["onPress"]
   rounded?: boolean
+  sharp?: boolean
   Icon?: React.FC<IconProps>
   iconPosition?: "left" | "right"
   disabled?: boolean
@@ -69,6 +70,7 @@ export const Pill: React.FC<PillProps> = ({
   children,
   disabled,
   rounded,
+  sharp,
   highlightEnabled = false,
   onRemovePill,
   ...rest
@@ -112,7 +114,7 @@ export const Pill: React.FC<PillProps> = ({
           }}
         >
           <AnimatedContainer
-            borderRadius={!!Icon && !rounded ? 0 : 50}
+            borderRadius={sharp ? 0 : !!Icon || rounded ? 50 : 0}
             flexDirection="row"
             justifyContent="center"
             alignItems="center"

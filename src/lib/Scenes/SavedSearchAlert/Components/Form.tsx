@@ -147,7 +147,7 @@ export const Form: React.FC<FormProps> = (props) => {
               m={0.5}
               key={`filter-label-${index}`}
               iconPosition="right"
-              Icon={RemoveIcon}
+              sharp
               onPress={() => onRemovePill(pill)}
             >
               {pill.label}
