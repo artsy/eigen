@@ -3,9 +3,11 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { aggregationForFilter, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkFilterBackHeader } from "lib/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { CircleWithBorder } from "lib/Components/CircleWithBorder/CircleWithBorder"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { TouchableRow } from "lib/Components/TouchableRow"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, CheckIcon, Flex, Separator, Text, useColor } from "palette"
 import React, { useState } from "react"
@@ -23,6 +25,7 @@ export const ALLOW_EMPTY_CREATED_DATES_FILTER: FilterData = {
 export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation }) => {
   const color = useColor()
   const screenWidth = useScreenDimensions().width
+  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const selectedFilters = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
@@ -91,7 +94,11 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
 
   return (
     <Flex flexGrow={1}>
-      <FancyModalHeader onLeftButtonPress={navigation.goBack}>Year created</FancyModalHeader>
+      {isEnabledImprovedAlertsFlow ? (
+        <ArtworkFilterBackHeader title="Year created" onLeftButtonPress={navigation.goBack} />
+      ) : (
+        <FancyModalHeader onLeftButtonPress={navigation.goBack}>Year created</FancyModalHeader>
+      )}
       <Flex flexGrow={1} py={2}>
         <YearText variant="xs" mb={15} mx={2}>
           {sliderValues[0]} – {sliderValues[1]}

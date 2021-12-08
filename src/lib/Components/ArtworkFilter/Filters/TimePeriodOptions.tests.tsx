@@ -1,15 +1,11 @@
-import { OptionListItem as FilterModalOptionListItem } from "lib/Components/ArtworkFilter"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkFiltersState } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "lib/Components/ArtworkFilter/FilterTestHelper"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Check } from "palette"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { getEssentialProps } from "./helper"
-import { OptionListItem as MultiSelectOptionListItem } from "./MultiSelectOption"
 import { TimePeriodOptionsScreen } from "./TimePeriodOptions"
 
 describe("TimePeriodOptions Screen", () => {
@@ -56,26 +52,18 @@ describe("TimePeriodOptions Screen", () => {
   }
 
   describe("before any filters are selected", () => {
-    it("does not display 'All' in the filter modal screen", () => {
-      const tree = renderWithWrappers(<MockFilterScreen initialState={initialState} />)
+    it("should render name without count label", () => {
+      const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={initialState} />)
 
-      const items = tree.root.findAllByType(FilterModalOptionListItem)
-      const item = items.find((i) => extractText(i).startsWith("Time Period"))
-
-      expect(item).not.toBeUndefined()
-
-      if (item) {
-        expect(extractText(item)).not.toContain("All")
-      }
+      expect(getByText("Time Period")).toBeTruthy()
     })
 
     it("renders all options present in the aggregation", () => {
-      const tree = renderWithWrappers(<MockTimePeriodOptionsScreen initialData={initialState} />)
+      const { getByText } = renderWithWrappersTL(<MockTimePeriodOptionsScreen initialData={initialState} />)
 
-      expect(tree.root.findAllByType(MultiSelectOptionListItem)).toHaveLength(3)
-
-      const items = tree.root.findAllByType(MultiSelectOptionListItem)
-      expect(items.map(extractText)).toEqual(["2020–Today", "2010–2019", "In the Year 2000!"])
+      expect(getByText("2020–Today")).toBeTruthy()
+      expect(getByText("2010–2019")).toBeTruthy()
+      expect(getByText("In the Year 2000!")).toBeTruthy()
     })
   })
 
@@ -92,25 +80,17 @@ describe("TimePeriodOptions Screen", () => {
     }
 
     it("displays the number of the selected filters on the filter modal screen", () => {
-      const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
+      const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={state} />)
 
-      const items = tree.root.findAllByType(FilterModalOptionListItem)
-      const item = items.find((i) => extractText(i).startsWith("Time Period"))
-
-      expect(item).not.toBeUndefined()
-      if (item) {
-        expect(extractText(item)).toContain("• 1")
-      }
+      expect(getByText("Time Period • 1")).toBeTruthy()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      const tree = renderWithWrappers(<MockTimePeriodOptionsScreen initialData={state} />)
+      const { getAllByA11yState } = renderWithWrappersTL(<MockTimePeriodOptionsScreen initialData={state} />)
+      const options = getAllByA11yState({ checked: true })
 
-      const options = tree.root.findAllByType(Check)
-
-      expect(options[0].props.selected).toBe(true)
-      expect(options[1].props.selected).toBe(false)
-      expect(options[2].props.selected).toBe(false)
+      expect(options).toHaveLength(1)
+      expect(options[0]).toHaveTextContent("2020–Today")
     })
   })
 })
