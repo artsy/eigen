@@ -19,7 +19,7 @@ export const withCollapsibleHeader = <P extends ScrollViewProps>(Component: Reac
         {...other}
         contentContainerStyle={[
           {
-            paddingTop: headerHeight * 2,
+            paddingTop: isEnabledImprovedAlertsFlow ? headerHeight * 2 : 0,
           },
           contentContainerStyle,
         ]}
