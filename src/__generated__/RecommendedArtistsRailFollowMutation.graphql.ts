@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 80d7119123ff0ea818f0cd5794ec7384 */
+/* @relayHash 4977eb4752d7fcf8cf11ce5fa90f5cb3 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowArtistInput = {
@@ -9,10 +9,10 @@ export type FollowArtistInput = {
     clientMutationId?: string | null;
     unfollow?: boolean | null;
 };
-export type ArtistRailFollowMutationVariables = {
+export type RecommendedArtistsRailFollowMutationVariables = {
     input: FollowArtistInput;
 };
-export type ArtistRailFollowMutationResponse = {
+export type RecommendedArtistsRailFollowMutationResponse = {
     readonly followArtist: {
         readonly artist: {
             readonly id: string;
@@ -20,15 +20,15 @@ export type ArtistRailFollowMutationResponse = {
         } | null;
     } | null;
 };
-export type ArtistRailFollowMutation = {
-    readonly response: ArtistRailFollowMutationResponse;
-    readonly variables: ArtistRailFollowMutationVariables;
+export type RecommendedArtistsRailFollowMutation = {
+    readonly response: RecommendedArtistsRailFollowMutationResponse;
+    readonly variables: RecommendedArtistsRailFollowMutationVariables;
 };
 
 
 
 /*
-mutation ArtistRailFollowMutation(
+mutation RecommendedArtistsRailFollowMutation(
   $input: FollowArtistInput!
 ) {
   followArtist(input: $input) {
@@ -97,7 +97,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "ArtistRailFollowMutation",
+    "name": "RecommendedArtistsRailFollowMutation",
     "selections": (v1/*: any*/),
     "type": "Mutation",
     "abstractKey": null
@@ -106,17 +106,17 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "ArtistRailFollowMutation",
+    "name": "RecommendedArtistsRailFollowMutation",
     "selections": (v1/*: any*/)
   },
   "params": {
-    "id": "80d7119123ff0ea818f0cd5794ec7384",
+    "id": "4977eb4752d7fcf8cf11ce5fa90f5cb3",
     "metadata": {},
-    "name": "ArtistRailFollowMutation",
+    "name": "RecommendedArtistsRailFollowMutation",
     "operationKind": "mutation",
     "text": null
   }
 };
 })();
-(node as any).hash = '1ad05743d14a15b2d3cb4e01b44414c7';
+(node as any).hash = '054a8b1ef7f810861f694bb25111efc8';
 export default node;

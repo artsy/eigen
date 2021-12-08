@@ -11509,6 +11509,7 @@ type SearchCriteria {
   offerable: Boolean
   partnerIDs: [String!]!
   priceRange: String
+  sizes: [ArtworkSizes]
   userAlertSettings: SavedSearchUserAlertSettings!
   width: String
 }
@@ -11530,6 +11531,7 @@ input SearchCriteriaAttributes {
   offerable: Boolean = null
   partnerIDs: [String!] = []
   priceRange: String = null
+  sizes: [ArtworkSizes] = []
   width: String = null
 }
 

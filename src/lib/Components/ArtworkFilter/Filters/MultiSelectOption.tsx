@@ -1,9 +1,11 @@
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworkFilterBackHeader } from "lib/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { FancyModalHeader, FancyModalHeaderProps } from "lib/Components/FancyModal/FancyModalHeader"
 import { SearchInput } from "lib/Components/SearchInput"
 import { TouchableRow } from "lib/Components/TouchableRow"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Check, CHECK_SIZE, Flex, Text, useSpace } from "palette"
 import React, { useState } from "react"
@@ -39,6 +41,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
 }) => {
   const space = useSpace()
   const { width } = useScreenDimensions()
+  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const optionTextMaxWidth = width - OPTION_PADDING * 3 - space(OPTIONS_MARGIN_LEFT) - CHECK_SIZE
 
   const handleBackNavigation = () => {
@@ -69,9 +72,18 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
 
   return (
     <Flex flexGrow={1}>
-      <FancyModalHeader onLeftButtonPress={handleBackNavigation} {...rest}>
-        {filterHeaderText}
-      </FancyModalHeader>
+      {isEnabledImprovedAlertsFlow ? (
+        <ArtworkFilterBackHeader
+          title={filterHeaderText}
+          onLeftButtonPress={handleBackNavigation}
+          onRightButtonPress={rest.onRightButtonPress}
+          rightButtonText={rest.rightButtonText}
+        />
+      ) : (
+        <FancyModalHeader onLeftButtonPress={handleBackNavigation} {...rest}>
+          {filterHeaderText}
+        </FancyModalHeader>
+      )}
 
       {!!searchable && (
         <>

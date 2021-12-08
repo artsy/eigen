@@ -1,14 +1,10 @@
-import { OptionListItem as FilterModalOptionListItem } from "lib/Components/ArtworkFilter"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "lib/Components/ArtworkFilter/FilterTestHelper"
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Check } from "palette"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { AttributionClassOptionsScreen } from "./AttributionClassOptions"
 import { getEssentialProps } from "./helper"
-import { OptionListItem } from "./MultiSelectOption"
 
 describe("AttributionClassOptions Screen", () => {
   const MockAttributionClassOptionsScreen = ({ initialData }: { initialData?: ArtworkFiltersState }) => {
@@ -20,29 +16,12 @@ describe("AttributionClassOptions Screen", () => {
   }
 
   it("renders the options", () => {
-    const tree = renderWithWrappers(<MockAttributionClassOptionsScreen />)
-    expect(tree.root.findAllByType(OptionListItem)).toHaveLength(4)
-    const items = tree.root.findAllByType(OptionListItem)
-    expect(items.map(extractText)).toEqual(["Unique", "Limited Edition", "Open Edition", "Unknown Edition"])
-  })
+    const { getByText } = renderWithWrappersTL(<MockAttributionClassOptionsScreen />)
 
-  it("does not display the default text when no filter selected on the filter modal screen", () => {
-    const injectedState: ArtworkFiltersState = {
-      selectedFilters: [],
-      appliedFilters: [],
-      previouslyAppliedFilters: [],
-      applyFilters: false,
-      aggregations: [],
-      filterType: "artwork",
-      counts: {
-        total: null,
-        followedArtists: null,
-      },
-    }
-
-    const tree = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
-    const items = tree.root.findAllByType(FilterModalOptionListItem)
-    expect(extractText(items[items.length - 1])).not.toContain("All")
+    expect(getByText("Unique")).toBeTruthy()
+    expect(getByText("Limited Edition")).toBeTruthy()
+    expect(getByText("Open Edition")).toBeTruthy()
+    expect(getByText("Unknown Edition")).toBeTruthy()
   })
 
   it("displays all the selected filters on the filter modal screen", () => {
@@ -65,10 +44,9 @@ describe("AttributionClassOptions Screen", () => {
       },
     }
 
-    const tree = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
-    const items = tree.root.findAllByType(FilterModalOptionListItem)
+    const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
 
-    expect(extractText(items[1])).toContain("• 2")
+    expect(getByText("Rarity • 2")).toBeTruthy()
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
@@ -91,13 +69,13 @@ describe("AttributionClassOptions Screen", () => {
       },
     }
 
-    // TODO: Fix this test
-    const tree = renderWithWrappers(<MockAttributionClassOptionsScreen initialData={injectedState} />)
-    const options = tree.root.findAllByType(Check)
+    const { getAllByA11yState } = renderWithWrappersTL(
+      <MockAttributionClassOptionsScreen initialData={injectedState} />
+    )
+    const options = getAllByA11yState({ checked: true })
 
-    expect(options[0].props.selected).toBe(true)
-    expect(options[1].props.selected).toBe(false)
-    expect(options[2].props.selected).toBe(false)
-    expect(options[3].props.selected).toBe(true)
+    expect(options).toHaveLength(2)
+    expect(options[0]).toHaveTextContent("Unique")
+    expect(options[1]).toHaveTextContent("Unknown Edition")
   })
 })

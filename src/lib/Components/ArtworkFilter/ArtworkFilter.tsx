@@ -26,15 +26,15 @@ import { TimePeriodOptionsScreen } from "lib/Components/ArtworkFilter/Filters/Ti
 import { ViewAsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/ViewAsOptions"
 import { WaysToBuyOptionsScreen } from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { YearOptionsScreen } from "lib/Components/ArtworkFilter/Filters/YearOptions"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
-import { Box, Button, Separator } from "palette"
 import React from "react"
 import { View, ViewProps } from "react-native"
 import { useTracking } from "react-tracking"
-import styled from "styled-components/native"
 import { FancyModal } from "../FancyModal/FancyModal"
 import { ArtworkFilterOptionsScreen, FilterModalMode as ArtworkFilterMode } from "./ArtworkFilterOptionsScreen"
+import { ArtworkFilterApplyButton } from "./components/ArtworkFilterApplyButton"
 import { AuctionHouseOptionsScreen } from "./Filters/AuctionHouseOptions"
 import { LocationCitiesOptionsScreen } from "./Filters/LocationCitiesOptions"
 
@@ -101,6 +101,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
 
   const applyFiltersAction = ArtworksFiltersStore.useStoreActions((action) => action.applyFiltersAction)
   const resetFiltersAction = ArtworksFiltersStore.useStoreActions((action) => action.resetFiltersAction)
+  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
   const handleClosingModal = () => {
     resetFiltersAction()
@@ -145,9 +146,113 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const isApplyButtonEnabled =
     selectedFiltersState.length > 0 || (previouslyAppliedFiltersState.length === 0 && appliedFiltersState.length > 0)
 
+  const handleApplyPress = () => {
+    const appliedFiltersParams = filterArtworksParams(appliedFiltersState, filterTypeState)
+    // TODO: Update to use cohesion
+    switch (mode) {
+      case ArtworkFilterMode.Collection:
+        trackChangeFilters({
+          actionType: ActionType.commercialFilterParamsChanged,
+          screenName: PageNames.Collection,
+          ownerEntity: OwnerEntityTypes.Collection,
+          currentParams: appliedFiltersParams,
+          changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
+        })
+        break
+      case ArtworkFilterMode.ArtistArtworks:
+        trackChangeFilters({
+          actionType: ActionType.commercialFilterParamsChanged,
+          screenName: PageNames.ArtistPage,
+          ownerEntity: OwnerEntityTypes.Artist,
+          currentParams: appliedFiltersParams,
+          changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
+        })
+        break
+      case ArtworkFilterMode.Fair:
+        trackChangeFilters({
+          actionType: ActionType.commercialFilterParamsChanged,
+          screenName: PageNames.FairPage,
+          ownerEntity: OwnerEntityTypes.Fair,
+          currentParams: appliedFiltersParams,
+          changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
+        })
+        break
+      case ArtworkFilterMode.SaleArtworks:
+        trackChangeFilters({
+          actionType: ActionType.commercialFilterParamsChanged,
+          screenName: PageNames.Auction,
+          ownerEntity: OwnerEntityTypes.Auction,
+          currentParams: appliedFiltersParams,
+          changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
+        })
+        break
+      case ArtworkFilterMode.Show:
+        trackChangeFilters({
+          actionType: ActionType.commercialFilterParamsChanged,
+          screenName: PageNames.ShowPage,
+          ownerEntity: OwnerEntityTypes.Show,
+          currentParams: appliedFiltersParams,
+          changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
+        })
+        break
+      case ArtworkFilterMode.AuctionResults:
+        trackChangeFilters({
+          actionType: ActionType.auctionResultsFilterParamsChanged,
+          screenName: PageNames.ArtistPage,
+          ownerEntity: OwnerEntityTypes.Artist,
+          currentParams: appliedFiltersParams,
+          changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
+          contextModule: ContextModule.auctionResults,
+        })
+        break
+      case ArtworkFilterMode.Partner:
+        trackChangeFilters({
+          actionType: ActionType.commercialFilterParamsChanged,
+          screenName: PageNames.PartnerPage,
+          ownerEntity: OwnerEntityTypes.Partner,
+          currentParams: appliedFiltersParams,
+          changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
+        })
+        break
+      case ArtworkFilterMode.ArtistSeries:
+        trackChangeFilters({
+          actionType: ActionType.commercialFilterParamsChanged,
+          screenName: PageNames.ArtistSeriesPage,
+          ownerEntity: OwnerEntityTypes.ArtistSeries,
+          currentParams: appliedFiltersParams,
+          changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
+        })
+        break
+      case ArtworkFilterMode.Gene:
+        trackChangeFilters({
+          actionType: ActionType.commercialFilterParamsChanged,
+          screenName: PageNames.GenePage,
+          ownerEntity: OwnerEntityTypes.Gene,
+          currentParams: appliedFiltersParams,
+          changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
+        })
+        break
+      case ArtworkFilterMode.Search:
+        trackChangeFilters({
+          actionType: ActionType.commercialFilterParamsChanged,
+          screenName: PageNames.Search,
+          ownerEntity: OwnerType.search,
+          artworkQuery: query,
+          currentParams: appliedFiltersParams,
+          changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
+        })
+        break
+    }
+    applyFilters()
+  }
+
   return (
     <NavigationContainer independent>
-      <FancyModal visible={props.isFilterArtworksModalVisible} onBackgroundPressed={handleClosingModal}>
+      <FancyModal
+        visible={props.isFilterArtworksModalVisible}
+        onBackgroundPressed={handleClosingModal}
+        fullScreen={isEnabledImprovedAlertsFlow}
+      >
         <View style={{ flex: 1 }}>
           <Stack.Navigator
             // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
@@ -192,126 +297,9 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             <Stack.Screen name="LocationCitiesOptionsScreen" component={LocationCitiesOptionsScreen} />
           </Stack.Navigator>
 
-          <Separator my={0} />
-
-          <ApplyButtonContainer>
-            <ApplyButton
-              disabled={!isApplyButtonEnabled}
-              onPress={() => {
-                const appliedFiltersParams = filterArtworksParams(appliedFiltersState, filterTypeState)
-                // TODO: Update to use cohesion
-                switch (mode) {
-                  case ArtworkFilterMode.Collection:
-                    trackChangeFilters({
-                      actionType: ActionType.commercialFilterParamsChanged,
-                      screenName: PageNames.Collection,
-                      ownerEntity: OwnerEntityTypes.Collection,
-                      currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
-                    })
-                    break
-                  case ArtworkFilterMode.ArtistArtworks:
-                    trackChangeFilters({
-                      actionType: ActionType.commercialFilterParamsChanged,
-                      screenName: PageNames.ArtistPage,
-                      ownerEntity: OwnerEntityTypes.Artist,
-                      currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
-                    })
-                    break
-                  case ArtworkFilterMode.Fair:
-                    trackChangeFilters({
-                      actionType: ActionType.commercialFilterParamsChanged,
-                      screenName: PageNames.FairPage,
-                      ownerEntity: OwnerEntityTypes.Fair,
-                      currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
-                    })
-                    break
-                  case ArtworkFilterMode.SaleArtworks:
-                    trackChangeFilters({
-                      actionType: ActionType.commercialFilterParamsChanged,
-                      screenName: PageNames.Auction,
-                      ownerEntity: OwnerEntityTypes.Auction,
-                      currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
-                    })
-                    break
-                  case ArtworkFilterMode.Show:
-                    trackChangeFilters({
-                      actionType: ActionType.commercialFilterParamsChanged,
-                      screenName: PageNames.ShowPage,
-                      ownerEntity: OwnerEntityTypes.Show,
-                      currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
-                    })
-                    break
-                  case ArtworkFilterMode.AuctionResults:
-                    trackChangeFilters({
-                      actionType: ActionType.auctionResultsFilterParamsChanged,
-                      screenName: PageNames.ArtistPage,
-                      ownerEntity: OwnerEntityTypes.Artist,
-                      currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
-                      contextModule: ContextModule.auctionResults,
-                    })
-                    break
-                  case ArtworkFilterMode.Partner:
-                    trackChangeFilters({
-                      actionType: ActionType.commercialFilterParamsChanged,
-                      screenName: PageNames.PartnerPage,
-                      ownerEntity: OwnerEntityTypes.Partner,
-                      currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
-                    })
-                    break
-                  case ArtworkFilterMode.ArtistSeries:
-                    trackChangeFilters({
-                      actionType: ActionType.commercialFilterParamsChanged,
-                      screenName: PageNames.ArtistSeriesPage,
-                      ownerEntity: OwnerEntityTypes.ArtistSeries,
-                      currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
-                    })
-                    break
-                  case ArtworkFilterMode.Gene:
-                    trackChangeFilters({
-                      actionType: ActionType.commercialFilterParamsChanged,
-                      screenName: PageNames.GenePage,
-                      ownerEntity: OwnerEntityTypes.Gene,
-                      currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
-                    })
-                    break
-                  case ArtworkFilterMode.Search:
-                    trackChangeFilters({
-                      actionType: ActionType.commercialFilterParamsChanged,
-                      screenName: PageNames.Search,
-                      ownerEntity: OwnerType.search,
-                      artworkQuery: query,
-                      currentParams: appliedFiltersParams,
-                      changedParams: changedFiltersParams(appliedFiltersParams, selectedFiltersState),
-                    })
-                    break
-                }
-                applyFilters()
-              }}
-              block
-              width={100}
-              variant="fillDark"
-              size="large"
-            >
-              Show results
-            </ApplyButton>
-          </ApplyButtonContainer>
+          <ArtworkFilterApplyButton disabled={!isApplyButtonEnabled} onPress={handleApplyPress} />
         </View>
       </FancyModal>
     </NavigationContainer>
   )
 }
-
-export const ApplyButton = styled(Button)``
-export const ApplyButtonContainer = styled(Box)`
-  padding: 20px;
-  padding-bottom: 30px;
-`
