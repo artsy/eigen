@@ -56,7 +56,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   )
   const activeTabIndexNative = useAnimatedValue(initialTabIndex)
   const [activeTabIndex, setActiveTabIndex] = useGlobalState(initialTabIndex)
-  const [tabSpecificStickyHeaderContent, setTabSpecificStickyHeaderContent] = useState<JSX.Element[]>([])
+  const [tabSpecificStickyHeaderContent, setTabSpecificStickyHeaderContent] = useState<Array<JSX.Element | null>>([])
   const { jsx: staticHeader, nativeHeight: staticHeaderHeight } = useAutoCollapsingMeasuredView(staticHeaderContent)
 
   const stickyRailRef = useRef<SnappyHorizontalRail>(null)

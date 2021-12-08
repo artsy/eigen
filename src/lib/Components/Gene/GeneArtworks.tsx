@@ -102,7 +102,7 @@ const GeneArtworksContainer: React.FC<GeneArtworksContainerProps> = (props) => {
           {...props}
           id={gene.internalID}
           slug={gene.slug}
-          isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+          visible={isFilterArtworksModalVisible}
           exitModal={handleCloseFilterArtworksModal}
           closeModal={closeFilterArtworksModal}
           mode={FilterModalMode.Gene}

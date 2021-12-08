@@ -221,7 +221,7 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
           scrollEventThrottle={16}
         />
         <ArtworkFilterNavigator
-          isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+          visible={isFilterArtworksModalVisible}
           id={sale.internalID}
           slug={sale.slug}
           mode={FilterModalMode.SaleArtworks}

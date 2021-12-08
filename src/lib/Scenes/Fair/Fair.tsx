@@ -240,7 +240,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                     <Box px={2}>
                       <FairArtworksFragmentContainer fair={fair} />
                       <ArtworkFilterNavigator
-                        isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+                        visible={isFilterArtworksModalVisible}
                         id={fair.internalID}
                         slug={fair.slug}
                         mode={FilterModalMode.Fair}

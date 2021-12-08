@@ -46,17 +46,17 @@ interface ViewToken {
 }
 
 export const Show: React.FC<ShowProps> = ({ show }) => {
-  const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
+  const [visible, setVisible] = useState(false)
 
   const filterComponentAnimationValue = new Animated.Value(0)
 
   const viewConfigRef = useRef({ viewAreaCoveragePercentThreshold: 30 })
 
   const toggleFilterArtworksModal = () => {
-    setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
+    setVisible(!visible)
   }
 
-  const artworkProps = { show, isFilterArtworksModalVisible, toggleFilterArtworksModal }
+  const artworkProps = { show, visible, toggleFilterArtworksModal }
 
   const sections: Section[] = [
     { key: "header", element: <ShowHeader show={show} mx={2} /> },
