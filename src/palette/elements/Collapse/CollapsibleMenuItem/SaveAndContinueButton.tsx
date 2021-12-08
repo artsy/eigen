@@ -10,6 +10,7 @@ interface SaveButtonProps {
   setActiveStep: any
   hasSaveButton?: boolean
   setIsContentVisible: Dispatch<SetStateAction<boolean>>
+  setIsCompleted: Dispatch<SetStateAction<boolean>>
   navigateToLink?: string
 }
 
@@ -19,6 +20,7 @@ export const SaveAndContinueButton: React.FC<SaveButtonProps> = ({
   setIsContentVisible,
   setActiveStep,
   navigateToLink,
+  setIsCompleted,
 }) => {
   const [isLastStep, setLastStep] = useState(false)
 
@@ -36,10 +38,11 @@ export const SaveAndContinueButton: React.FC<SaveButtonProps> = ({
           onPress={() => {
             setIsContentVisible(false)
             LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-            setActiveStep(step + 1)
             if (isLastStep && navigateToLink) {
               navigate(navigateToLink)
             }
+            setIsCompleted(true) // make checks here
+            setActiveStep(step + 1)
           }}
         >
           {isLastStep ? "Submit Artwork" : "Save & Continue"}

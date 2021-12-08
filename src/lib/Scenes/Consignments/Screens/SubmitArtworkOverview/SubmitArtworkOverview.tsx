@@ -1,14 +1,14 @@
 import { track as _track } from "lib/utils/track"
-import { Join, Sans, Separator, Spacer } from "palette"
-import { CollapsibleMenuItem } from "palette/elements/Collapse/CollapsibleMenuItem/CollapsibleMenuItem"
+import { Join, Separator, Spacer } from "palette"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
-import { ArtworkDetailsContent } from "./ArtworkDetails"
+import { ArtworkDetails } from "./ArtworkDetails"
+import { ContactInformation } from "./ContactInformation"
+import { UploadPhotos } from "./UploadPhotos"
 
 export const SubmitArtworkOverview = () => {
   const totalSteps = 3
   const [activeStep, setActiveStep] = useState(1)
-
   return (
     <ScrollView
       alwaysBounceVertical={false}
@@ -19,38 +19,26 @@ export const SubmitArtworkOverview = () => {
     >
       <Spacer mb={3} />
       <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
-        <CollapsibleMenuItem
+        <ArtworkDetails
           title="Artwork Details"
           activeStep={activeStep}
           step={1}
-          setActiveStep={setActiveStep}
-          Content={() => <ArtworkDetailsContent />}
           totalSteps={totalSteps}
+          setActiveStep={setActiveStep}
         />
-        <CollapsibleMenuItem
-          title="Upload Photos"
+        <UploadPhotos
+          title="Artwork Details"
           activeStep={activeStep}
           step={2}
-          setActiveStep={setActiveStep}
-          Content={() => (
-            <Sans size="1" mt="1">
-              Upload Photos Content
-            </Sans>
-          )}
           totalSteps={totalSteps}
+          setActiveStep={setActiveStep}
         />
-        <CollapsibleMenuItem
+        <ContactInformation
           title="Contact Information"
           activeStep={activeStep}
           step={3}
-          setActiveStep={setActiveStep}
-          Content={() => (
-            <Sans size="1" mt="1">
-              Contact Information Content
-            </Sans>
-          )}
           totalSteps={totalSteps}
-          navigateToLink="artwork-submitted"
+          setActiveStep={setActiveStep}
         />
       </Join>
     </ScrollView>

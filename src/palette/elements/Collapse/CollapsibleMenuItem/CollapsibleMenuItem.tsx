@@ -15,6 +15,7 @@ interface Props {
   setActiveStep: Dispatch<SetStateAction<number>>
   hasSaveButton?: boolean
   navigateToLink?: string
+  setIsCompleted: Dispatch<SetStateAction<boolean>>
 }
 
 export const CollapsibleMenuItem: React.FC<Props> = ({
@@ -27,6 +28,7 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
   setActiveStep,
   hasSaveButton = true,
   navigateToLink,
+  setIsCompleted,
 }) => {
   const [isContentVisible, setIsContentVisible] = useState(true)
   const [isLastStep, setLastStep] = useState(false)
@@ -69,6 +71,7 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
               step={step}
               totalSteps={totalSteps}
               navigateToLink={navigateToLink}
+              setIsCompleted={setIsCompleted}
             />
           )}
         </>
