@@ -18,8 +18,8 @@ interface Props {
 }
 
 export const CollapsibleMenuItem: React.FC<Props> = ({
-  title = "Title",
-  Content = "Content",
+  title,
+  Content,
   step,
   totalSteps,
   isCompleted,
