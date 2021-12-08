@@ -100,7 +100,12 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
     const input = useRef<TextInput>()
 
-    const localClear = () => {
+    // it should be a named function so that the listener will always
+    // reference this function. This is because anonymous functions
+    // will be considered different from each other. Therefore any single listener for
+    // clear should call this function without the need for all new instances
+    // of Input to register a new event listener.
+    function localClear() {
       input.current?.clear()
       localOnChangeText("")
       rest.onClear?.()
