@@ -24,6 +24,8 @@ export interface FancyModalCard {
   getPopAnimations(createAnimation: AnimationCreator): Animated.CompositeAnimation[]
 }
 
+export type FancyModalAnimationPosition = "bottom" | "right"
+
 /**
  * A FancyModalCard is a component which handles displaying the contents of a single layer of fancy modal content.
  *
@@ -37,14 +39,18 @@ export const FancyModalCard = React.forwardRef<
     height: number
     backgroundShouldShrink: boolean
     fullScreen?: boolean
+    animationPosition?: FancyModalAnimationPosition
     onBackgroundPressed(): void
   }>
 >((props, ref) => {
+  const animationPosition = props.animationPosition ?? "bottom"
   const screen = useScreenDimensions()
   const isRootCard = props.level === 0
+  const isRightAnimationPosition = animationPosition === "right"
   const backdropOpacity = useRef(new Animated.Value(0)).current
   const scale = useRef(new Animated.Value(1)).current
-  const translateY = useRef(new Animated.Value(isRootCard ? 0 : props.height)).current
+  const translateY = useRef(new Animated.Value(isRootCard || isRightAnimationPosition ? 0 : props.height)).current
+  const translateX = useRef(new Animated.Value(isRightAnimationPosition ? screen.width : 0)).current
   const borderRadius = useRef(new Animated.Value(isRootCard || props.fullScreen ? 0 : 10)).current
 
   useImperativeHandle(
@@ -54,6 +60,10 @@ export const FancyModalCard = React.forwardRef<
       fullScreen: props.fullScreen,
       backgroundShouldShrink: props.backgroundShouldShrink,
       getPopAnimations(createAnimation) {
+        if (isRightAnimationPosition) {
+          return [createAnimation(translateX, screen.width)]
+        }
+
         if (props.fullScreen) {
           return [createAnimation(translateY, props.height)]
         }
@@ -66,6 +76,10 @@ export const FancyModalCard = React.forwardRef<
         ]
       },
       getStackAnimations(createAnimation, stack) {
+        if (isRightAnimationPosition) {
+          return [createAnimation(translateX, 0)]
+        }
+
         if (props.fullScreen) {
           return [createAnimation(translateY, 0)]
         }
@@ -177,6 +191,9 @@ export const FancyModalCard = React.forwardRef<
           transform: [
             {
               translateY,
+            },
+            {
+              translateX,
             },
             {
               scale,
