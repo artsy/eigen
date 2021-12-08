@@ -1,7 +1,6 @@
 import { Action, action, createContextStore, State } from "easy-peasy"
 import { assignDeep } from "lib/store/persistence"
 import { filter, find, isEqual, unionBy } from "lodash"
-import { FilterDisplayConfig } from "."
 import {
   Aggregations,
   defaultCommonFilterOptions,
@@ -13,6 +12,7 @@ import {
   getSortDefaultValueByFilterType,
   getUnitedSelectedAndAppliedFilters,
 } from "./ArtworkFilterHelpers"
+import { FilterDisplayConfig } from "./types"
 
 export interface ArtworkFiltersModel {
   appliedFilters: FilterArray

@@ -1,4 +1,4 @@
-import { ArtworkFilterNavigationStack } from "./ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
 
 export type FilterScreen =
   | "additionalGeneIDs"
