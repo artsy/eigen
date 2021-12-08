@@ -111,7 +111,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
           <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
           <ArtworkFilterNavigator
             {...props}
-            isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+            visible={isFilterArtworksModalVisible}
             id={artistSeries.internalID}
             slug={artistSeries.slug}
             mode={FilterModalMode.ArtistSeries}

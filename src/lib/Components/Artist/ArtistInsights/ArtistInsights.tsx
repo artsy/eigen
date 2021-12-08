@@ -103,7 +103,7 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
         </View>
       </StickyTabPageScrollView>
       <ArtworkFilterNavigator
-        isFilterArtworksModalVisible={isFilterModalVisible}
+        visible={isFilterModalVisible}
         id={artist.internalID}
         slug={artist.slug}
         mode={FilterModalMode.AuctionResults}

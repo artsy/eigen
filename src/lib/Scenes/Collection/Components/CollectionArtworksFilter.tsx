@@ -51,7 +51,7 @@ export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection, an
       <ArtworkFilterNavigator
         id={collection.id}
         slug={collection.slug}
-        isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+        visible={isFilterArtworksModalVisible}
         exitModal={toggleFilterArtworksModal}
         closeModal={closeFilterArtworksModal}
         mode={FilterModalMode.Collection}

@@ -7,7 +7,7 @@ import {
   getSelectedFiltersCounts,
   getUnitedSelectedAndAppliedFilters,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkFiltersModel, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
@@ -18,7 +18,7 @@ import { FlatList } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
-import { ArtworkFilterNavigationStack } from "./ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
 import { ArtworkFilterOptionItem } from "./components/ArtworkFilterOptionItem"
 import { ArtworkFilterOptionsHeader } from "./components/ArtworkFilterOptionsHeader"
 import { FilterDisplayConfig, FilterScreen } from "./types"
@@ -36,6 +36,7 @@ export enum FilterModalMode {
   Gene = "Gene",
   Tag = "Tag",
   Search = "Search",
+  Custom = "Custom",
 }
 
 export const ArtworkFilterOptionsScreen: React.FC<
@@ -49,6 +50,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
   const aggregationsState = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
+  const localFilterOptions = ArtworksFiltersStore.useStoreState((s) => s.filterOptions)
 
   const clearFiltersZeroStateAction = ArtworksFiltersStore.useStoreActions(
     (action) => action.clearFiltersZeroStateAction
@@ -79,10 +81,12 @@ export const ArtworkFilterOptionsScreen: React.FC<
     })
   )
 
-  const filterOptions: FilterDisplayConfig[] = getStaticFilterOptionsByMode(mode).concat(aggregateFilterOptions)
+  const filterOptions: FilterDisplayConfig[] = getStaticFilterOptionsByMode(mode, localFilterOptions).concat(
+    aggregateFilterOptions
+  )
 
   const sortedFilterOptions = filterOptions
-    .sort(getFilterScreenSortByMode(mode))
+    .sort(getFilterScreenSortByMode(mode, localFilterOptions))
     .filter((filterOption) => filterOption.filterType)
 
   const clearAllFilters = () => {
@@ -160,7 +164,10 @@ export const ArtworkFilterOptionsScreen: React.FC<
   )
 }
 
-export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
+export const getStaticFilterOptionsByMode = (
+  mode: FilterModalMode,
+  customFilterOptions: ArtworkFiltersModel["filterOptions"]
+) => {
   const enableSortFilter = useFeatureFlag("AREnableSortFilterForArtworksPill")
 
   switch (mode) {
@@ -192,6 +199,9 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
 
       return [filterOptionToDisplayConfigMap.waysToBuy, filterOptionToDisplayConfigMap.attributionClass]
 
+    case FilterModalMode.Custom:
+      return customFilterOptions!
+
     default:
       return [
         filterOptionToDisplayConfigMap.sort,
@@ -201,59 +211,65 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
   }
 }
 
-export const getFilterScreenSortByMode =
-  (mode: FilterModalMode) =>
-  (left: FilterDisplayConfig, right: FilterDisplayConfig): number => {
-    let sortOrder: FilterScreen[] = []
+export const getFilterScreenSortByMode = (
+  mode: FilterModalMode,
+  localFilterOptions: ArtworkFiltersModel["filterOptions"]
+) => (left: FilterDisplayConfig, right: FilterDisplayConfig): number => {
+  let sortOrder: FilterScreen[] = []
 
-    // Filter order is based on frequency of use for a given page
-    switch (mode) {
-      case FilterModalMode.Collection:
-        sortOrder = CollectionFiltersSorted
-        break
-      case FilterModalMode.ArtistArtworks:
-        sortOrder = ArtistArtworksFiltersSorted
-        break
-      case FilterModalMode.ArtistSeries:
-        sortOrder = ArtistSeriesFiltersSorted
-        break
-      case FilterModalMode.Artworks:
-        sortOrder = ArtworksFiltersSorted
-        break
-      case FilterModalMode.Search:
-        sortOrder = ArtworksFiltersSorted
-        break
-      case FilterModalMode.Show:
-        sortOrder = ShowFiltersSorted
-        break
-      case FilterModalMode.Fair:
-        sortOrder = FairFiltersSorted
-        break
-      case FilterModalMode.SaleArtworks:
-        sortOrder = SaleArtworksFiltersSorted
-        break
-      case FilterModalMode.AuctionResults:
-        sortOrder = AuctionResultsFiltersSorted
-        break
-      case FilterModalMode.Partner:
-        sortOrder = PartnerFiltersSorted
-        break
-      case FilterModalMode.Gene:
-        sortOrder = TagAndGeneFiltersSorted
-        break
-      case FilterModalMode.Tag:
-        sortOrder = TagAndGeneFiltersSorted
-        break
-    }
-
-    const leftParam = left.filterType
-    const rightParam = right.filterType
-    if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {
-      return -1
-    } else {
-      return 1
-    }
+  // Filter order is based on frequency of use for a given page
+  switch (mode) {
+    case FilterModalMode.Collection:
+      sortOrder = CollectionFiltersSorted
+      break
+    case FilterModalMode.ArtistArtworks:
+      sortOrder = ArtistArtworksFiltersSorted
+      break
+    case FilterModalMode.ArtistSeries:
+      sortOrder = ArtistSeriesFiltersSorted
+      break
+    case FilterModalMode.Artworks:
+      sortOrder = ArtworksFiltersSorted
+      break
+    case FilterModalMode.Search:
+      sortOrder = ArtworksFiltersSorted
+      break
+    case FilterModalMode.Show:
+      sortOrder = ShowFiltersSorted
+      break
+    case FilterModalMode.Fair:
+      sortOrder = FairFiltersSorted
+      break
+    case FilterModalMode.SaleArtworks:
+      sortOrder = SaleArtworksFiltersSorted
+      break
+    case FilterModalMode.AuctionResults:
+      sortOrder = AuctionResultsFiltersSorted
+      break
+    case FilterModalMode.Partner:
+      sortOrder = PartnerFiltersSorted
+      break
+    case FilterModalMode.Gene:
+      sortOrder = TagAndGeneFiltersSorted
+      break
+    case FilterModalMode.Tag:
+      sortOrder = TagAndGeneFiltersSorted
+      break
+    case FilterModalMode.Custom:
+      sortOrder = (localFilterOptions ?? []).map((f) => f.filterType)
+      break
+    default:
+      assertNever(mode)
   }
+
+  const leftParam = left.filterType
+  const rightParam = right.filterType
+  if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {
+    return -1
+  } else {
+    return 1
+  }
+}
 
 export const FilterArtworkButton = styled(Flex)`
   background-color: ${themeGet("colors.black100")};

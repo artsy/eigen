@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react"
 import { View } from "react-native"
 import Animated from "react-native-reanimated"
 
-export function useAutoCollapsingMeasuredView(content: React.ReactChild) {
+export function useAutoCollapsingMeasuredView(content: React.ReactChild | null) {
   const [nativeHeight, setNativeHeight] = useState<Animated.Value<number>>(
     __TEST__ ? new Animated.Value(100) : new Animated.Value(-1)
   )
