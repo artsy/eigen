@@ -1,27 +1,23 @@
 import { fireEvent } from "@testing-library/react-native"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { Header, HeaderProps } from "./Header"
+import { ArtworkFilterBackHeader, ArtworkFilterBackHeaderProps } from "./ArtworkFilterBackHeader"
 
-const defaultProps: HeaderProps = {
+const defaultProps: ArtworkFilterBackHeaderProps = {
+  title: "Title",
   onLeftButtonPress: jest.fn,
 }
 
-describe("Header", () => {
-  const TestRenderer = (props?: Partial<HeaderProps>) => {
-    return <Header {...defaultProps} {...props} />
+describe("ArtworkFilterBackHeader", () => {
+  const TestRenderer = (props?: Partial<ArtworkFilterBackHeaderProps>) => {
+    return <ArtworkFilterBackHeader {...defaultProps} {...props} />
   }
 
   it("renders without throwing an error", () => {
-    const { getByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText, getByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
 
+    expect(getByText("Title")).toBeTruthy()
     expect(getByA11yLabel("Header back button")).toBeTruthy()
-  })
-
-  it("should render passed title", () => {
-    const { getByText } = renderWithWrappersTL(<TestRenderer title="Custom Title" />)
-
-    expect(getByText("Custom Title")).toBeTruthy()
   })
 
   it('should call "onLeftButtonPress" handler when left button is pressed', () => {

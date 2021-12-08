@@ -3,9 +3,9 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { aggregationForFilter, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkFilterBackHeader } from "lib/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { CircleWithBorder } from "lib/Components/CircleWithBorder/CircleWithBorder"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { Header } from "lib/Components/Header"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -95,7 +95,7 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
   return (
     <Flex flexGrow={1}>
       {isEnabledImprovedAlertsFlow ? (
-        <Header title="Year created" onLeftButtonPress={navigation.goBack} />
+        <ArtworkFilterBackHeader title="Year created" onLeftButtonPress={navigation.goBack} />
       ) : (
         <FancyModalHeader onLeftButtonPress={navigation.goBack}>Year created</FancyModalHeader>
       )}

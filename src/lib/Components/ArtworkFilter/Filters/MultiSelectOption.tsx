@@ -1,8 +1,8 @@
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworkFilterBackHeader } from "lib/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { FancyModalHeader, FancyModalHeaderProps } from "lib/Components/FancyModal/FancyModalHeader"
-import { Header } from "lib/Components/Header"
 import { SearchInput } from "lib/Components/SearchInput"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { useFeatureFlag } from "lib/store/GlobalStore"
@@ -73,7 +73,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   return (
     <Flex flexGrow={1}>
       {isEnabledImprovedAlertsFlow ? (
-        <Header
+        <ArtworkFilterBackHeader
           title={filterHeaderText}
           onLeftButtonPress={handleBackNavigation}
           onRightButtonPress={rest.onRightButtonPress}

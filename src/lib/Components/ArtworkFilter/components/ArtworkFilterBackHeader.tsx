@@ -2,15 +2,15 @@ import { ArrowLeftIcon, Box, Separator, Text, useTheme } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 
-export interface HeaderProps {
-  title?: string
+export interface ArtworkFilterBackHeaderProps {
+  title: string
   rightButtonText?: string
   rightButtonAccessibilityLabel?: string
   onLeftButtonPress: () => void
   onRightButtonPress?: () => void
 }
 
-export const Header: React.FC<HeaderProps> = (props) => {
+export const ArtworkFilterBackHeader: React.FC<ArtworkFilterBackHeaderProps> = (props) => {
   const {
     title,
     rightButtonText,
@@ -31,13 +31,11 @@ export const Header: React.FC<HeaderProps> = (props) => {
         >
           <ArrowLeftIcon fill="black100" />
         </TouchableOpacity>
-        {!!title && (
-          <Box flex={1} ml={1} mr={2}>
-            <Text variant="md" numberOfLines={2} lineHeight={18}>
-              {title}
-            </Text>
-          </Box>
-        )}
+        <Box flex={1} ml={1} mr={2}>
+          <Text variant="md" numberOfLines={2} lineHeight={18}>
+            {title}
+          </Text>
+        </Box>
         {!!onRightButtonPress && !!rightButtonText && (
           <TouchableOpacity
             onPress={onRightButtonPress}

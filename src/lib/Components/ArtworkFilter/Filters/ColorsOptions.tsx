@@ -1,9 +1,9 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworkFilterBackHeader } from "lib/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { Header } from "lib/Components/Header"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { useLayout } from "lib/utils/useLayout"
 import { sortBy } from "lodash"
@@ -71,7 +71,7 @@ export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ naviga
   return (
     <Flex onLayout={handleLayout} flexGrow={1}>
       {isEnabledImprovedAlertsFlow ? (
-        <Header
+        <ArtworkFilterBackHeader
           title={FilterDisplayName.colors}
           onLeftButtonPress={() => navigation.goBack()}
           {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
