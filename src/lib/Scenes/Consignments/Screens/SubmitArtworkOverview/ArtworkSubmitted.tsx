@@ -2,20 +2,10 @@ import { navigate } from "lib/navigation/navigate"
 import { track as _track } from "lib/utils/track"
 import { Button, Sans, Spacer } from "palette"
 import { ArtsyLogoHeader } from "palette/elements/Header/ArtsyLogoHeader"
-import React, { Dispatch, SetStateAction } from "react"
+import React from "react"
 import { StyleSheet, View } from "react-native"
 
-interface Props {
-  title: string
-  content?: string | React.FC | any
-  isCompleted?: boolean
-  step: number
-  totalSteps: number
-  activeStep: number
-  setActiveStep: Dispatch<SetStateAction<boolean>>
-}
-
-export const ArtworkSubmitted: React.FC<Props> = () => {
+export const ArtworkSubmitted: React.FC = () => {
   return (
     <View>
       <ArtsyLogoHeader shadow />
