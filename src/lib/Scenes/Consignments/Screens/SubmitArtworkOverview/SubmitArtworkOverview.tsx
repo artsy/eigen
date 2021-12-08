@@ -1,9 +1,9 @@
 import { track as _track } from "lib/utils/track"
 import { Join, Sans, Separator, Spacer } from "palette"
+import { CollapsibleMenuItem } from "palette/elements/Collapse/CollapsibleMenuItem/CollapsibleMenuItem"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
 import { ArtworkDetailsContent } from "./ArtworkDetails"
-import { CollapsibleMenuItem } from "./CollapsibleMenuItem"
 
 export const SubmitArtworkOverview = () => {
   const totalSteps = 3
@@ -50,6 +50,7 @@ export const SubmitArtworkOverview = () => {
             </Sans>
           )}
           totalSteps={totalSteps}
+          navigateToLink="artwork-submitted"
         />
       </Join>
     </ScrollView>

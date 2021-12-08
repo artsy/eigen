@@ -1,9 +1,9 @@
-import { navigate } from "lib/navigation/navigate"
 import { track as _track } from "lib/utils/track"
-import { Button, Flex, Sans, Spacer } from "palette"
+import { Sans } from "palette"
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon } from "palette"
 import React, { useEffect, useState } from "react"
 import { LayoutAnimation, StyleSheet, TouchableOpacity, View } from "react-native"
+import { SaveAndContinueButton } from "./SaveAndContinueButton"
 
 interface Props {
   title: string
@@ -13,6 +13,8 @@ interface Props {
   totalSteps: number
   activeStep: number
   setActiveStep: any
+  hasSaveButton?: boolean
+  navigateToLink?: string
 }
 
 export const CollapsibleMenuItem: React.FC<Props> = ({
@@ -23,6 +25,8 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
   isCompleted,
   activeStep,
   setActiveStep,
+  hasSaveButton = true,
+  navigateToLink,
 }) => {
   const [isContentVisible, setIsContentVisible] = useState(true)
   const [isLastStep, setLastStep] = useState(false)
@@ -58,27 +62,15 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
       {!!isContentVisible && (
         <>
           <Content />
-          <View>
-            <Spacer mb={2} />
-            <Flex px="2" width="100%" alignItems="center">
-              <Button
-                block
-                haptic
-                maxWidth={540}
-                onPress={() => {
-                  setIsContentVisible(false)
-                  LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-                  setActiveStep(step + 1)
-                  if (isLastStep) {
-                    console.log("Navigate to success page")
-                    navigate(`/artwork-submitted`)
-                  }
-                }}
-              >
-                Save & Continue
-              </Button>
-            </Flex>
-          </View>
+          {!!hasSaveButton && (
+            <SaveAndContinueButton
+              setIsContentVisible={setIsContentVisible}
+              setActiveStep={setActiveStep}
+              step={step}
+              totalSteps={totalSteps}
+              navigateToLink={navigateToLink}
+            />
+          )}
         </>
       )}
     </View>

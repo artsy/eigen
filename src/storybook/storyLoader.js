@@ -20,6 +20,7 @@ function loadStories() {
   require("../palette/elements/Select/Select.stories")
   require("../palette/elements/Tabs/Tabs.stories")
   require("../palette/elements/Header/Header.stories")
+  require("../palette/elements/Collapse/Collapse.stories")
   require("../palette/elements/Text/Text.stories")
   require("../palette/space.stories")
 }
@@ -41,6 +42,7 @@ const stories = [
   "../palette/elements/Select/Select.stories",
   "../palette/elements/Tabs/Tabs.stories",
   "../palette/elements/Header/Header.stories",
+  "../palette/elements/Collapse/Collapse.stories",
   "../palette/elements/Text/Text.stories",
   "../palette/space.stories",
 ]
