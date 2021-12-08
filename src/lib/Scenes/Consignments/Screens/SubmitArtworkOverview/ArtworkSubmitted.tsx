@@ -2,7 +2,7 @@ import { navigate } from "lib/navigation/navigate"
 import { track as _track } from "lib/utils/track"
 import { Button, Sans, Spacer } from "palette"
 import { ArtsyLogoHeader } from "palette/elements/Header/ArtsyLogoHeader"
-import React from "react"
+import React, { Dispatch, SetStateAction } from "react"
 import { StyleSheet, View } from "react-native"
 
 interface Props {
@@ -12,7 +12,7 @@ interface Props {
   step: number
   totalSteps: number
   activeStep: number
-  setActiveStep: any
+  setActiveStep: Dispatch<SetStateAction<boolean>>
 }
 
 export const ArtworkSubmitted: React.FC<Props> = () => {

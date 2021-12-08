@@ -1,18 +1,18 @@
 import { track as _track } from "lib/utils/track"
 import { Sans } from "palette"
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon } from "palette"
-import React, { useEffect, useState } from "react"
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { LayoutAnimation, StyleSheet, TouchableOpacity, View } from "react-native"
 import { SaveAndContinueButton } from "./SaveAndContinueButton"
 
 interface Props {
   title: string
-  Content: string | React.FC | any
+  Content: React.FC
   isCompleted?: boolean
   step: number
   totalSteps: number
   activeStep: number
-  setActiveStep: any
+  setActiveStep: Dispatch<SetStateAction<boolean>>
   hasSaveButton?: boolean
   navigateToLink?: string
 }

@@ -1,10 +1,10 @@
 import { track as _track } from "lib/utils/track"
-import React from "react"
+import React, { Dispatch, SetStateAction } from "react"
 import { Text, View } from "react-native"
 
 export interface CollapsibleMenuItemProps {
   activeStep: number
-  setActiveStep: any
+  setActiveStep: Dispatch<SetStateAction<boolean>>
   step: number
   totalSteps: number
 }
