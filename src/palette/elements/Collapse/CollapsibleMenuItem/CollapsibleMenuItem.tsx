@@ -30,7 +30,7 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
   navigateToLink,
   setIsCompleted,
 }) => {
-  const [isContentVisible, setIsContentVisible] = useState(true)
+  const [isContentVisible, setIsContentVisible] = useState(false)
   const [isLastStep, setLastStep] = useState(false)
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export const CollapsibleMenuItem: React.FC<Props> = ({
           style={styles.titleAndIcon}
           onPress={() => {
             LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-            setIsContentVisible(!isContentVisible)
+            setActiveStep(step)
           }}
         >
           <Sans size="8">{title}</Sans>
