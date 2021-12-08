@@ -26,7 +26,7 @@ export const CollapsibleHeader: React.FC<CollapsibleHeaderProps> = (props) => {
   // Animation for fontSize happens with jerks on android. For this reason, scale is used to reduce the size of the text
   const scale = Animated.interpolate(scrollOffsetY, {
     inputRange: [0, headerHeight],
-    outputRange: [1, 0.77],
+    outputRange: [1, 0.67],
     extrapolate: Extrapolate.CLAMP,
   })
 
