@@ -1,4 +1,4 @@
-import { ArtworkFilterNavigationStack } from "./ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
 
 export type FilterScreen =
   | "additionalGeneIDs"
@@ -28,4 +28,8 @@ export interface FilterDisplayConfig {
   filterType: FilterScreen
   displayText: string
   ScreenComponent: keyof ArtworkFilterNavigationStack
+
+  // for `local` filtering
+  values?: any[]
+  localSortAndFilter?: (items: any[], value?: any) => any[]
 }

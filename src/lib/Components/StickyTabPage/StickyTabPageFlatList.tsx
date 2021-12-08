@@ -8,7 +8,7 @@ import { useStickyTabPageContext } from "./SitckyTabPageContext"
 interface FlatListRequiredContext {
   tabIsActive: Animated.Node<number>
   tabSpecificContentHeight: Animated.Node<number> | null
-  setJSX(jsx: JSX.Element): void
+  setJSX(jsx: JSX.Element | null): void
 }
 
 const MOCK_CONTEXT: () => FlatListRequiredContext = () => ({

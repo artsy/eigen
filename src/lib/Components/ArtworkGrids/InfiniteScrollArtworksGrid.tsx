@@ -109,6 +109,8 @@ export interface Props {
 
   /** Whether to add the tapped artwork to recent searches */
   updateRecentSearchesOnTap?: boolean
+
+  localSortAndFilterArtworks?: (artworks: any[]) => any[]
 }
 
 interface PrivateProps {
@@ -248,7 +250,10 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       sectionedArtworks.push([])
       sectionRatioSums.push(0)
     }
-    artworks.forEach((artwork) => {
+
+    const preprocessedArtworks = (this.props.localSortAndFilterArtworks?.(artworks) as typeof artworks) ?? artworks
+
+    preprocessedArtworks.forEach((artwork) => {
       // There are artworks without images and other ‘issues’. Like Force we’re just going to reject those for now.
       // See: https://github.com/artsy/eigen/issues/1667
       //
@@ -462,6 +467,9 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
             image {
               aspectRatio
             }
+            artistNames
+            medium
+            date
             ...ArtworkGridItem_artwork @skip(if: $skipArtworkGridItem)
             ...MyCollectionArtworkListItem_artwork
           }

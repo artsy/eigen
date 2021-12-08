@@ -81,7 +81,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
           {...props}
           id={artist.internalID}
           slug={artist.slug}
-          isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+          visible={isFilterArtworksModalVisible}
           exitModal={handleCloseFilterArtworksModal}
           closeModal={closeFilterArtworksModal}
           mode={FilterModalMode.ArtistArtworks}
@@ -99,6 +99,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
     </ArtworkFiltersStoreProvider>
   )
 }
+
 interface ArtistArtworksContainerProps {
   openFilterModal: () => void
   openCreateAlertModal: () => void

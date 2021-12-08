@@ -4,7 +4,7 @@ import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/A
 import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { orderBy } from "lodash"
 import React from "react"
-import { ArtworkFilterNavigationStack } from "../ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "../ArtworkFilterNavigator"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
 
