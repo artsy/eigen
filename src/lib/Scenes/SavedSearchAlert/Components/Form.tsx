@@ -1,4 +1,5 @@
 import { useFormikContext } from "formik"
+import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { navigate } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Box, Button, CloseIcon as RemoveIcon, Flex, Input, InputTitle, Pill, Spacer, Text, Touchable } from "palette"
@@ -95,6 +96,8 @@ export const Form: React.FC<FormProps> = (props) => {
     return navigate("/unsubscribe")
   }
 
+  const isArtistPill = (pill: SavedSearchPill) => pill.paramName === FilterParamName.artistIDs
+
   return (
     <Box>
       {!isEditMode && (
@@ -148,7 +151,8 @@ export const Form: React.FC<FormProps> = (props) => {
               key={`filter-label-${index}`}
               iconPosition="right"
               sharp
-              onPress={() => onRemovePill(pill)}
+              Icon={isArtistPill(pill) ? undefined : RemoveIcon}
+              onPress={() => (isArtistPill(pill) ? {} : onRemovePill(pill))}
             >
               {pill.label}
             </Pill>
