@@ -138,9 +138,7 @@ export const Pill: React.FC<PillProps> = ({
             {iconPosition === "right" && !!Icon && (
               <>
                 <Spacer mr={iconSpacerMargin} />
-                <TouchableOpacity onPress={onRemovePill}>
-                  <Icon fill={iconColor} />
-                </TouchableOpacity>
+                <Icon fill={iconColor} />
               </>
             )}
           </AnimatedContainer>
