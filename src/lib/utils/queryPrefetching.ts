@@ -25,16 +25,12 @@ const isRateLimited = async () => {
 const prefetchQuery = async (environment: Environment, query: GraphQLTaggedNode, variables: Variables = {}) => {
   const operation = createOperationDescriptor(getRequest(query), variables)
 
-  try {
-    const data = await fetchQuery(environment, query, variables)
+  const data = await fetchQuery(environment, query, variables)
 
-    // this will retain the result in the relay store so it's not garbage collected.
-    environment.retain(operation)
+  // this will retain the result in the relay store so it's not garbage collected.
+  environment.retain(operation)
 
-    return data
-  } catch (error) {
-    console.error("Prefetching failed.", error)
-  }
+  return data
 }
 
 const prefetchUrl = async (environment: Environment, url: string, variables: Variables = {}) => {
@@ -67,7 +63,11 @@ const prefetchUrl = async (environment: Environment, url: string, variables: Var
 
   console.log(`Prefetching "${url}"`)
 
-  prefetchQuery(environment, query, options)
+  try {
+    prefetchQuery(environment, query, options)
+  } catch (error) {
+    console.error(`Prefetching "${url}" failed.`, error)
+  }
 }
 
 export const usePrefetch = () => {

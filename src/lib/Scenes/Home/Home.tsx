@@ -35,6 +35,7 @@ import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
@@ -193,6 +194,14 @@ const Home = (props: Props) => {
               case "sales":
                 return "/auctions"
             }
+          }}
+          prefetchVariablesExtractor={(item) => {
+            switch (item?.type) {
+              case "lotsByFollowedArtists":
+                return lotsByArtistsYouFollowDefaultVariables()
+            }
+
+            return {}
           }}
           renderItem={({ item, index }) => {
             if (!item.data) {

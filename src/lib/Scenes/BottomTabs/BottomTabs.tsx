@@ -12,7 +12,6 @@ export const BottomTabs: React.FC = () => {
   const prefetchUrl = usePrefetch()
 
   useEffect(() => {
-    prefetchUrl("inbox")
     prefetchUrl("my-profile")
   }, [])
 

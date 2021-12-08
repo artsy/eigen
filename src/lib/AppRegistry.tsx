@@ -55,8 +55,8 @@ import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversat
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 import { Checkout } from "./Scenes/Inbox/Screens/Checkout"
 import {
-  LoteByArtistsYouFollowScreenQuery,
   LotsByArtistsYouFollowQueryRenderer,
+  LotsByArtistsYouFollowScreenQuery,
 } from "./Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { MapContainer } from "./Scenes/Map"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
@@ -383,7 +383,7 @@ export const modules = defineModules({
   }),
   WorksForYou: reactModule(WorksForYouQueryRenderer, {}, WorksForYouScreenQuery),
   NewWorksForYou: reactModule(NewWorksForYouQueryRenderer, {}, NewWorksForYouScreenQuery),
-  LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer, {}, LoteByArtistsYouFollowScreenQuery),
+  LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer, {}, LotsByArtistsYouFollowScreenQuery),
   Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
   SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer),
