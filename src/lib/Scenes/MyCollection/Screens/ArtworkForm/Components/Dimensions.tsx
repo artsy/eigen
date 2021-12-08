@@ -26,6 +26,7 @@ export const Dimensions: React.FC = () => {
             onChangeText={formik.handleChange("height")}
             onBlur={formik.handleBlur("height")}
             defaultValue={formik.values.height}
+            shouldAddListenerForClear={false}
           />
         </Flex>
         <Flex mr={1} flex={1}>
@@ -35,6 +36,7 @@ export const Dimensions: React.FC = () => {
             onChangeText={formik.handleChange("width")}
             onBlur={formik.handleBlur("width")}
             defaultValue={formik.values.width}
+            shouldAddListenerForClear={false}
           />
         </Flex>
         <Flex flex={1}>
@@ -44,6 +46,7 @@ export const Dimensions: React.FC = () => {
             onChangeText={formik.handleChange("depth")}
             onBlur={formik.handleBlur("depth")}
             defaultValue={formik.values.depth}
+            shouldAddListenerForClear={false}
           />
         </Flex>
       </Flex>
