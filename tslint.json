@@ -6,7 +6,7 @@
   },
   "rules": {
     "arrow-parens": false,
-    "import-blacklist": [true, { "react-test-renderer": ["create"] }],
+    "import-denylist": [true, { "react-test-renderer": ["create"] }],
     "interface-name": [true, "never-prefix"],
     "jsx-safe-conditionals": true,
     "max-classes-per-file": false,

@@ -1,0 +1,90 @@
+diff --git a/node_modules/tslint/lib/configs/all.js b/node_modules/tslint/lib/configs/all.js
+index 705ac15..3bfd9de 100644
+--- a/node_modules/tslint/lib/configs/all.js
++++ b/node_modules/tslint/lib/configs/all.js
+@@ -278,7 +278,7 @@ exports.rules = {
+ exports.RULES_EXCLUDED_FROM_ALL_CONFIG = [
+     "ban",
+     "fileHeader",
+-    "importBlacklist",
++    "importDenylist",
+     "noInvalidThis",
+     "noSwitchCaseFallThrough",
+     "typeofCompare",
+diff --git a/node_modules/tslint/lib/rules/importBlacklistRule.d.ts b/node_modules/tslint/lib/rules/importDenylistRule.d.ts
+similarity index 62%
+rename from node_modules/tslint/lib/rules/importBlacklistRule.d.ts
+rename to node_modules/tslint/lib/rules/importDenylistRule.d.ts
+index ac7071f..6798b81 100644
+--- a/node_modules/tslint/lib/rules/importBlacklistRule.d.ts
++++ b/node_modules/tslint/lib/rules/importDenylistRule.d.ts
+@@ -14,14 +14,14 @@
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  */
+-import * as ts from "typescript";
+-import * as Lint from "../index";
++import * as ts from "typescript"
++import * as Lint from "tslint"
+ export declare class Rule extends Lint.Rules.AbstractRule {
+-    static metadata: Lint.IRuleMetadata;
+-    static WHOLE_MODULE_FAILURE_STRING: string;
+-    static IMPLICIT_NAMED_IMPORT_FAILURE_STRING: string;
+-    static FAILURE_STRING_REGEX: string;
+-    static MAKE_NAMED_IMPORT_FAILURE_STRING(importName: string): string;
+-    isEnabled(): boolean;
+-    apply(sourceFile: ts.SourceFile): Lint.RuleFailure[];
++  static metadata: Lint.IRuleMetadata
++  static WHOLE_MODULE_FAILURE_STRING: string
++  static IMPLICIT_NAMED_IMPORT_FAILURE_STRING: string
++  static FAILURE_STRING_REGEX: string
++  static MAKE_NAMED_IMPORT_FAILURE_STRING(importName: string): string
++  isEnabled(): boolean
++  apply(sourceFile: ts.SourceFile): Lint.RuleFailure[]
+ }
+diff --git a/node_modules/tslint/lib/rules/importBlacklistRule.js b/node_modules/tslint/lib/rules/importDenylistRule.js
+similarity index 96%
+rename from node_modules/tslint/lib/rules/importBlacklistRule.js
+rename to node_modules/tslint/lib/rules/importDenylistRule.js
+index 0de8295..17ca104 100644
+--- a/node_modules/tslint/lib/rules/importBlacklistRule.js
++++ b/node_modules/tslint/lib/rules/importDenylistRule.js
+@@ -26,8 +26,8 @@ var Rule = /** @class */ (function (_super) {
+     }
+     Rule.MAKE_NAMED_IMPORT_FAILURE_STRING = function (importName) {
+         return importName === "default"
+-            ? "Importing (or re-exporting) the default export is blacklisted."
+-            : "The export \"" + importName + "\" is blacklisted.";
++            ? "Importing (or re-exporting) the default export is denylisted."
++            : "The export \"" + importName + "\" is denylisted.";
+     };
+     Rule.prototype.isEnabled = function () {
+         return _super.prototype.isEnabled.call(this) && this.ruleArguments.length > 0;
+@@ -37,10 +37,10 @@ var Rule = /** @class */ (function (_super) {
+     };
+     /* tslint:disable:object-literal-sort-keys */
+     Rule.metadata = {
+-        ruleName: "import-blacklist",
++        ruleName: "import-denylist",
+         description: Lint.Utils.dedent(templateObject_1 || (templateObject_1 = tslib_1.__makeTemplateObject(["\n            Disallows importing the specified modules via `import` and `require`,\n            or importing specific named exports of the specified modules,\n            or using imports matching specified regular expression patterns."], ["\n            Disallows importing the specified modules via \\`import\\` and \\`require\\`,\n            or importing specific named exports of the specified modules,\n            or using imports matching specified regular expression patterns."]))),
+         rationale: Lint.Utils.dedent(templateObject_2 || (templateObject_2 = tslib_1.__makeTemplateObject(["\n            For some libraries, importing the library directly can cause unused\n            submodules to be loaded, so you may want to block these imports and\n            require that users directly import only the submodules they need.\n            In other cases, you may simply want to ban an import because using\n            it is undesirable or unsafe."], ["\n            For some libraries, importing the library directly can cause unused\n            submodules to be loaded, so you may want to block these imports and\n            require that users directly import only the submodules they need.\n            In other cases, you may simply want to ban an import because using\n            it is undesirable or unsafe."]))),
+-        optionsDescription: "A list of blacklisted modules, named imports, or regular expression patterns.",
++        optionsDescription: "A list of denylisted modules, named imports, or regular expression patterns.",
+         options: {
+             type: "array",
+             items: {
+@@ -79,11 +79,11 @@ var Rule = /** @class */ (function (_super) {
+         type: "functionality",
+         typescriptOnly: false,
+     };
+-    Rule.WHOLE_MODULE_FAILURE_STRING = "Importing this module is blacklisted. Try importing a submodule instead.";
+-    Rule.IMPLICIT_NAMED_IMPORT_FAILURE_STRING = "Some named exports from this module are blacklisted for importing " +
++    Rule.WHOLE_MODULE_FAILURE_STRING = "Importing this module is denylisted. Try importing a submodule instead.";
++    Rule.IMPLICIT_NAMED_IMPORT_FAILURE_STRING = "Some named exports from this module are denylisted for importing " +
+         "(or re-exporting). Import/re-export only the specific values you want, " +
+         "instead of the whole module.";
+-    Rule.FAILURE_STRING_REGEX = "This import is blacklisted by ";
++    Rule.FAILURE_STRING_REGEX = "This import is denylisted by ";
+     return Rule;
+ }(Lint.Rules.AbstractRule));
+ exports.Rule = Rule;
