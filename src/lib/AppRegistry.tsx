@@ -101,6 +101,7 @@ import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRooms
 import { GlobalStore, useFeatureFlag, useSelectedTab } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { AdminMenu } from "./utils/AdminMenu"
+import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider } from "./utils/track/SegmentTrackingProvider"
@@ -408,6 +409,7 @@ const Main: React.FC<{}> = track()(({}) => {
       webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
     })
   }, [])
+
   const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken)
@@ -419,6 +421,7 @@ const Main: React.FC<{}> = track()(({}) => {
   useStripeConfig()
   useWebViewCookies()
   useExperiments()
+  useInitializeQueryPrefetching()
 
   if (!isHydrated) {
     return <View />

@@ -1,8 +1,9 @@
 import { modules } from "lib/AppRegistry"
 import { matchRoute } from "lib/navigation/routes"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { useFeatureFlag } from "lib/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { RateLimiter } from "limiter"
+import { useEffect } from "react"
 import {
   createOperationDescriptor,
   Environment,
@@ -12,8 +13,25 @@ import {
   Variables,
 } from "relay-runtime"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
+import { useTreatment } from "./useExperiments"
 
-const limiter = new RateLimiter({ tokensPerInterval: 60, interval: "minute", fireImmediately: true })
+const DEFAULT_QUERIES_PER_INTERVAL = 60
+
+let limiter: RateLimiter
+
+// Inintializes the rate limiter because we load parameters from Echo.
+export const useInitializeQueryPrefetching = () => {
+  const echoMessages = GlobalStore.useAppState((state) => state.config.echo.state.messages)
+
+  useEffect(() => {
+    const queriesPerInterval = Number(
+      echoMessages.find((message) => message.name === "EigenQueryPrefetchingRateLimit")?.content ||
+        DEFAULT_QUERIES_PER_INTERVAL
+    )
+
+    limiter = new RateLimiter({ tokensPerInterval: queriesPerInterval, interval: "minute", fireImmediately: true })
+  }, [])
+}
 
 // Limit requests and don't execute when rate limit is reached.
 const isRateLimited = async () => {
@@ -72,8 +90,9 @@ const prefetchUrl = async (environment: Environment, url: string, variables: Var
 
 export const usePrefetch = () => {
   const enablePrefetching = useFeatureFlag("AREnableQueriesPrefetching")
+  const queryPrefetchingTreatment = useTreatment("QueryPrefetching")
 
-  if (!enablePrefetching || __TEST__) {
+  if (!enablePrefetching || queryPrefetchingTreatment === "disabled" || __TEST__) {
     return () => null
   }
 
