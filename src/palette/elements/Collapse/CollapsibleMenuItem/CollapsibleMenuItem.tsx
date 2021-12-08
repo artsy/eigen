@@ -12,7 +12,7 @@ interface Props {
   step: number
   totalSteps: number
   activeStep: number
-  setActiveStep: Dispatch<SetStateAction<boolean>>
+  setActiveStep: Dispatch<SetStateAction<number>>
   hasSaveButton?: boolean
   navigateToLink?: string
 }

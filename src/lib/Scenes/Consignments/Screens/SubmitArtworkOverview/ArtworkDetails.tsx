@@ -4,7 +4,7 @@ import { Text, View } from "react-native"
 
 export interface CollapsibleMenuItemProps {
   activeStep: number
-  setActiveStep: Dispatch<SetStateAction<boolean>>
+  setActiveStep: Dispatch<SetStateAction<number>>
   step: number
   totalSteps: number
 }
