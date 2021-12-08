@@ -151,7 +151,7 @@ export const ArtistScreenQuery = graphql`
   }
 `
 
-export const defaultArtworksInput = () => ({
+export const defaultArtworksVariables = () => ({
   input: {
     dimensionRange: "*-*",
     sort: DEFAULT_ARTWORK_SORT.paramValue,
@@ -171,7 +171,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
           const { savedSearchCriteria, fetchCriteriaError } = searchCriteriaProps
           const preparedSavedSearchCriteria = getOnlyFilledSearchCriteriaValues(savedSearchCriteria ?? {})
           const initialArtworksInput = {
-            ...defaultArtworksInput(),
+            ...defaultArtworksVariables().input,
             sort: !!savedSearchCriteria ? "-published_at" : DEFAULT_ARTWORK_SORT.paramValue,
             ...preparedSavedSearchCriteria,
           }
