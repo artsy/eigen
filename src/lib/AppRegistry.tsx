@@ -253,10 +253,7 @@ export type AppModule = keyof typeof modules
 
 export const modules = defineModules({
   Admin: nativeModule({ alwaysPresentModally: true }),
-  Admin2: reactModule(AdminMenu, {
-    alwaysPresentModally: true,
-    hasOwnModalCloseButton: true,
-  }),
+  Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
   Articles: reactModule(ArticlesQueryRenderer),
   Artist: reactModule(ArtistQueryRenderer),
@@ -302,9 +299,7 @@ export const modules = defineModules({
   FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
   FairArticles: reactModule(FairArticlesQueryRenderer),
   FairAllFollowedArtists: reactModule(FairAllFollowedArtistsQueryRenderer),
-  FairBMWArtActivation: reactModule(FairBMWArtActivationQueryRenderer, {
-    fullBleed: true,
-  }),
+  FairBMWArtActivation: reactModule(FairBMWArtActivationQueryRenderer, { fullBleed: true }),
   Favorites: reactModule(Favorites),
   Feature: reactModule(FeatureQueryRenderer, { fullBleed: true }),
   FullArtistSeriesList: reactModule(ArtistSeriesFullArtistSeriesListQueryRenderer),
@@ -313,10 +308,7 @@ export const modules = defineModules({
   Tag: reactModule(TagQueryRenderer),
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
   Inbox: reactModule(InboxWrapper, { isRootViewForTabName: "inbox" }),
-  Inquiry: reactModule(Inquiry, {
-    alwaysPresentModally: true,
-    hasOwnModalCloseButton: true,
-  }),
+  Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   LiveAuction: nativeModule({
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
@@ -334,33 +326,21 @@ export const modules = defineModules({
   }),
   Map: reactModule(MapContainer, { fullBleed: true }),
   MyAccount: reactModule(MyAccountQueryRenderer),
-  MyAccountEditEmail: reactModule(MyAccountEditEmailQueryRenderer, {
-    hidesBackButton: true,
-  }),
-  MyAccountEditName: reactModule(MyAccountEditNameQueryRenderer, {
-    hidesBackButton: true,
-  }),
-  MyAccountEditPassword: reactModule(MyAccountEditPassword, {
-    hidesBackButton: true,
-  }),
-  MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, {
-    hidesBackButton: true,
-  }),
+  MyAccountEditEmail: reactModule(MyAccountEditEmailQueryRenderer, { hidesBackButton: true }),
+  MyAccountEditName: reactModule(MyAccountEditNameQueryRenderer, { hidesBackButton: true }),
+  MyAccountEditPassword: reactModule(MyAccountEditPassword, { hidesBackButton: true }),
+  MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, { hidesBackButton: true }),
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
   MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer),
   MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
   MyCollectionArtworkImages: reactModule(MyCollectionArtworkImagesQueryRenderer),
-  MyProfile: reactModule(MyProfileQueryRenderer, {
-    isRootViewForTabName: "profile",
-  }),
+  MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfileSettings: reactModule(MyProfileSettings),
   OrderHistory: reactModule(OrderHistoryQueryRender),
   OrderDetails: reactModule(OrderDetailsQueryRender),
-  MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, {
-    hidesBackButton: true,
-  }),
+  MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, { hidesBackButton: true }),
   MyProfilePushNotifications: reactModule(MyProfilePushNotificationsQueryRenderer),
   MySellingProfile: reactModule(View),
   Partner: reactModule(PartnerQueryRenderer),
@@ -381,16 +361,11 @@ export const modules = defineModules({
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkQueryRenderer),
   ViewingRoomArtworks: reactModule(ViewingRoomArtworksQueryRenderer),
   ViewingRooms: reactModule(ViewingRoomsListQueryRenderer),
-  Checkout: reactModule(Checkout, {
-    hasOwnModalCloseButton: true,
-  }),
+  Checkout: reactModule(Checkout, { hasOwnModalCloseButton: true }),
   WorksForYou: reactModule(WorksForYouQueryRenderer),
   NewWorksForYou: reactModule(NewWorksForYouQueryRenderer),
   LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer),
-  Storybook: reactModule(StorybookUIRoot, {
-    fullBleed: true,
-    hidesBackButton: true,
-  }),
+  Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
   SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer),
 })
