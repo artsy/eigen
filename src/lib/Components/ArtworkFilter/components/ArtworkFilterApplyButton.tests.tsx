@@ -30,7 +30,7 @@ describe("ArtworkFilterApplyButton", () => {
     expect(onPressMock).not.toBeCalled()
   })
 
-  it('should call "onPress" handle when it is pressed', () => {
+  it('should call "onPress" handler when it is pressed', () => {
     const onPressMock = jest.fn()
     const { getByText } = renderWithWrappersTL(<TestWrapper onPress={onPressMock} />)
 
