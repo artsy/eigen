@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@4.9.0
-  queue: eddiewebb/queue@1.0.110
+  queue: eddiewebb/queue@1.6.4
   horizon: artsy/release@0.0.1
 
 commands:
@@ -15,7 +15,6 @@ commands:
       - queue/until_front_of_line:
           time: "30" # how long a queue will wait until the job exits
           only-on-branch: <<parameters.branch>> # restrict queueing to a specific branch (default *)
-          consider-job: false # block whole workflow if any job still running
   install-node:
     steps:
       - run:
