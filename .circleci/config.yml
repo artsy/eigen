@@ -15,7 +15,6 @@ commands:
       - queue/until_front_of_line:
           time: "30" # how long a queue will wait until the job exits
           only-on-branch: <<parameters.branch>> # restrict queueing to a specific branch (default *)
-          consider-job: false # block whole workflow if any job still running
   install-node:
     steps:
       - run:
@@ -275,7 +274,6 @@ jobs:
       - run:
           name: Check flags
           command: ./scripts/biweekly-flag-check.sh
-
 
   check-metaphysics-freshness:
     executor:
