@@ -1,7 +1,6 @@
-import { spring } from "lib/Components/FancyModal/FancyModalCard"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Spacer, useColor } from "palette"
-import React, { useContext, useEffect, useRef } from "react"
+import React, { useContext } from "react"
 import { Animated, View } from "react-native"
 import { ImageCarouselContext } from "./ImageCarouselContext"
 import { useSpringValue } from "./useSpringValue"
@@ -50,22 +49,15 @@ export const PaginationDot = ({ diameter, index }: { diameter: number; index: nu
 
 const ScrollBar: React.FC = () => {
   const color = useColor()
-  const { images, imageIndex } = useContext(ImageCarouselContext)
+  const { images, imageIndex, xScrollOffsetAnimatedValue } = useContext(ImageCarouselContext)
   if (images.length < 2) {
     return null
   }
 
-  const { width } = useScreenDimensions()
-  const barWidth = width / images.length
+  const { width: screenWidth } = useScreenDimensions()
+  const barWidth = screenWidth / images.length
 
   imageIndex.useUpdates()
-
-  const translateX = useRef(new Animated.Value(imageIndex.current)).current
-
-  useEffect(() => {
-    const nextValue = imageIndex.current * barWidth
-    Animated.spring(translateX, { toValue: nextValue, useNativeDriver: true, speed: 10, bounciness: -3 }).start()
-  }, [imageIndex.current])
 
   return (
     <>
@@ -89,7 +81,12 @@ const ScrollBar: React.FC = () => {
           bottom: 0,
           transform: [
             {
-              translateX,
+              translateX:
+                xScrollOffsetAnimatedValue.current?.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, screenWidth - barWidth],
+                  extrapolate: "clamp",
+                }) ?? 0,
             },
           ],
         }}

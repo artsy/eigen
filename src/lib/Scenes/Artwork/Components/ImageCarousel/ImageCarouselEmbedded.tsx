@@ -2,7 +2,8 @@ import * as Sentry from "@sentry/react-native"
 import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useCallback, useContext } from "react"
-import { FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform } from "react-native"
+import { Animated, FlatList, NativeScrollEvent, NativeSyntheticEvent, Platform } from "react-native"
+
 import { findClosestIndex, getMeasurements } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor } from "./ImageCarouselContext"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
@@ -21,6 +22,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({ ca
     images,
     embeddedFlatListRef: embeddedFlatListRef,
     embeddedImageRefs: embeddedImageRefs,
+    xScrollOffsetAnimatedValue: xScrollOffsetAnimatedValue,
     dispatch,
     imageIndex,
   } = useContext(ImageCarouselContext)
@@ -29,9 +31,19 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({ ca
   const measurements = getMeasurements({ images, boundingBox: embeddedCardBoundingBox })
   const offsets = measurements.map((m) => m.cumulativeScrollOffset)
 
+  const normalise = (value: number, min: number, max: number) => {
+    return (value - min) / (max - min)
+  }
   // update the imageIndex on scroll
   const onScroll = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const max = Math.max(...offsets)
+      const toValue = normalise(e.nativeEvent.contentOffset.x, 0, max)
+      Animated.spring(xScrollOffsetAnimatedValue.current!, {
+        toValue,
+        useNativeDriver: true,
+        speed: 20,
+      }).start()
       // This finds the index of the image which is being given the most
       // screen real estate at any given point in time.
       const nextImageIndex = findClosestIndex(offsets, e.nativeEvent.contentOffset.x)
