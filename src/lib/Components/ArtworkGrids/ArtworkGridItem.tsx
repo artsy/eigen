@@ -131,7 +131,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
         {(!!artwork.image || !!artwork.image_url) && (
           <View>
             <OpaqueImageView
-              aspectRatio={artwork.image?.aspectRatio ?? 1}
+              aspectRatio={artwork.image?.aspectRatio ?? artwork.aspect_ratio ?? 1}
               imageURL={artwork.image?.url ?? artwork.image_url}
             />
             {Boolean(!hideUrgencyTags && urgencyTag && artwork?.sale?.isAuction && !artwork?.sale?.isClosed) && (
