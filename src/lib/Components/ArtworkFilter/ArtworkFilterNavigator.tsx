@@ -41,6 +41,7 @@ import { LocationCitiesOptionsScreen } from "./Filters/LocationCitiesOptions"
 interface ArtworkFilterProps extends ViewProps {
   closeModal?: () => void
   exitModal?: () => void
+  openCreateAlertModal?: () => void
   id?: string
   initiallyAppliedFilters?: FilterArray
   visible: boolean
@@ -92,7 +93,7 @@ const Stack = createStackNavigator<ArtworkFilterNavigationStack>()
 
 export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const tracking = useTracking()
-  const { exitModal, id, mode, slug, closeModal, query } = props
+  const { id, mode, slug, query, closeModal, exitModal, openCreateAlertModal } = props
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
@@ -300,7 +301,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
           <ArtworkFilterApplyButton
             disabled={!isApplyButtonEnabled}
             onPress={handleApplyPress}
-            onCreateAlertPress={handleApplyPress}
+            onCreateAlertPress={openCreateAlertModal}
           />
         </View>
       </FancyModal>

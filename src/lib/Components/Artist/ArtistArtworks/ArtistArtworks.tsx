@@ -70,13 +70,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   return (
     <ArtworkFiltersStoreProvider>
       <StickyTabPageScrollView>
-        <ArtistArtworksContainer
-          {...props}
-          artist={artist}
-          relay={relay}
-          openFilterModal={openFilterArtworksModal}
-          openCreateAlertModal={handleOpenCreateAlertModal}
-        />
+        <ArtistArtworksContainer {...props} artist={artist} relay={relay} openFilterModal={openFilterArtworksModal} />
         <ArtworkFilterNavigator
           {...props}
           id={artist.internalID}
@@ -84,6 +78,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
           visible={isFilterArtworksModalVisible}
           exitModal={handleCloseFilterArtworksModal}
           closeModal={closeFilterArtworksModal}
+          openCreateAlertModal={handleOpenCreateAlertModal}
           mode={FilterModalMode.ArtistArtworks}
         />
         {!!isEnabledImprovedAlertsFlow && (
@@ -102,7 +97,6 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
 
 interface ArtistArtworksContainerProps {
   openFilterModal: () => void
-  openCreateAlertModal: () => void
 }
 
 const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContainerProps> = ({
@@ -110,7 +104,6 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   relay,
   searchCriteria,
   openFilterModal,
-  openCreateAlertModal,
   ...props
 }) => {
   const tracking = useTracking()
@@ -173,7 +166,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
           childrenPosition={isEnabledImprovedAlertsFlow ? "left" : "right"}
         >
           {isEnabledImprovedAlertsFlow ? (
-            <SavedSearchButtonV2 onPress={openCreateAlertModal} />
+            <SavedSearchButtonV2 onPress={openFilterModal} />
           ) : (
             !!shouldShowSavedSearchButton && (
               <SavedSearchButtonQueryRenderer

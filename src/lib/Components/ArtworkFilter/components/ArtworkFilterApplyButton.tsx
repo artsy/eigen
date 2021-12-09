@@ -5,7 +5,7 @@ import { TouchableOpacity, ViewStyle } from "react-native"
 
 export interface ArtworkFilterApplyButtonProps {
   disabled: boolean
-  onCreateAlertPress: () => void
+  onCreateAlertPress?: () => void
   onPress: () => void
 }
 
@@ -14,7 +14,7 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
   const color = useColor()
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
-  if (isEnabledImprovedAlertsFlow) {
+  if (isEnabledImprovedAlertsFlow && onCreateAlertPress) {
     const buttonContainerStyle: ViewStyle = {
       flex: 1,
     }
