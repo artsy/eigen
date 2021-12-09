@@ -1,6 +1,5 @@
 import { PropsWithChildren } from "react"
-import { FlatListProps, ScrollView } from "react-native"
-import { FlatList } from "react-native-gesture-handler"
+import { FlatList, FlatListProps, ScrollView } from "react-native"
 import { withCollapsibleHeader } from "./withCollapsibleHeader"
 
 export const CollapsibleHeaderFlatList = withCollapsibleHeader(FlatList) as <T>(
