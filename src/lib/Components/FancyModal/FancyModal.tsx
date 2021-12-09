@@ -3,16 +3,25 @@ import React, { useContext, useEffect, useRef, useState } from "react"
 import { Modal, Platform } from "react-native"
 import { useSafeAreaFrame } from "react-native-safe-area-context"
 import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "../ArtsyKeyboardAvoidingView"
-import { CARD_STACK_OVERLAY_HEIGHT, CARD_STACK_OVERLAY_Y_OFFSET } from "./FancyModalCard"
+import { CARD_STACK_OVERLAY_HEIGHT, CARD_STACK_OVERLAY_Y_OFFSET, FancyModalAnimationPosition } from "./FancyModalCard"
 import { FancyModalContext } from "./FancyModalContext"
 
 export const FancyModal: React.FC<{
   visible: boolean
   maxHeight?: number
   fullScreen?: boolean
+  animationPosition?: FancyModalAnimationPosition
   onBackgroundPressed?(): void
   onModalFinishedClosing?(): void
-}> = ({ visible, children, onBackgroundPressed = () => null, maxHeight, fullScreen, onModalFinishedClosing }) => {
+}> = ({
+  visible,
+  children,
+  maxHeight,
+  fullScreen,
+  animationPosition,
+  onModalFinishedClosing,
+  onBackgroundPressed = () => null,
+}) => {
   const {
     height: screenHeight,
     safeAreaInsets: { top },
@@ -45,6 +54,7 @@ export const FancyModal: React.FC<{
   const card = context.useCard({
     height,
     fullScreen,
+    animationPosition,
     // background never shrinks on android
     backgroundShouldShrink: Platform.OS === "ios" && !maxHeight && !fullScreen,
     content: showingUnderlyingModal ? (

@@ -257,6 +257,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
         visible={props.visible}
         onBackgroundPressed={handleClosingModal}
         fullScreen={isEnabledImprovedAlertsFlow}
+        animationPosition={isEnabledImprovedAlertsFlow ? "right" : "bottom"}
       >
         <View style={{ flex: 1 }}>
           <Stack.Navigator
