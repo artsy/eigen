@@ -316,7 +316,7 @@ describe("getSearchCriteriaFromFilters", () => {
 })
 
 describe("getSearchCriteriaFromPills", () => {
-  fit("converts pills of type SavedSearchPill into the saved search criteria fromat", () => {
+  it("converts pills of type SavedSearchPill into the saved search criteria fromat", () => {
     const pills = [
       {
         label: "Prints",
