@@ -75,6 +75,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
           exitModal={handleCloseFilterArtworksModal}
           closeModal={closeFilterArtworksModal}
           mode={FilterModalMode.ArtistArtworks}
+          shouldShowCreateAlertButton
         />
       </StickyTabPageScrollView>
     </ArtworkFiltersStoreProvider>
