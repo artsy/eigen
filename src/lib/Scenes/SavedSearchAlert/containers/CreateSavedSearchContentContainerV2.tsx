@@ -3,6 +3,7 @@ import { StackNavigationProp } from "@react-navigation/stack"
 import { captureMessage } from "@sentry/react-native"
 import { CreateSavedSearchContentContainerV2_me } from "__generated__/CreateSavedSearchContentContainerV2_me.graphql"
 import { CreateSavedSearchContentContainerV2Query } from "__generated__/CreateSavedSearchContentContainerV2Query.graphql"
+import { getUnitedSelectedAndAppliedFilters } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import {
   getAllowedFiltersForSavedSearchInput,
@@ -11,7 +12,7 @@ import {
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import React, { useCallback, useMemo, useRef, useState } from "react"
+import React, { useCallback, useRef, useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { CreateSavedSearchContent } from "../Components/CreateSavedSearchContent"
 import {
@@ -108,10 +109,11 @@ export const CreateSavedSearchAlertContentQueryRenderer: React.FC<CreateSavedSea
   props
 ) => {
   const { artistId } = props
-  const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
-  const filters = useMemo(() => getAllowedFiltersForSavedSearchInput(appliedFilters), [appliedFilters])
-  const criteria = useMemo(() => getSearchCriteriaFromFilters(artistId, filters), [artistId, filters])
+  const filterState = ArtworksFiltersStore.useStoreState((state) => state)
+  const unitedFilters = getUnitedSelectedAndAppliedFilters(filterState)
+  const filters = getAllowedFiltersForSavedSearchInput(unitedFilters)
+  const criteria = getSearchCriteriaFromFilters(artistId, filters)
 
   return (
     <QueryRenderer<CreateSavedSearchContentContainerV2Query>
