@@ -10,7 +10,7 @@ import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/Artw
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
+import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { Theme } from "palette"
@@ -148,7 +148,13 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
-const MockFilterModalNavigator = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => (
+const MockFilterModalNavigator = ({
+  initialData = initialState,
+  shouldShowCreateAlertButton,
+}: {
+  initialData?: ArtworkFiltersState
+  shouldShowCreateAlertButton?: boolean
+}) => (
   <GlobalStoreProvider>
     <Theme>
       <ArtworkFiltersStoreProvider initialData={initialData}>
@@ -161,6 +167,7 @@ const MockFilterModalNavigator = ({ initialData = initialState }: { initialData?
           id="abc123"
           slug="some-artist"
           visible
+          shouldShowCreateAlertButton={shouldShowCreateAlertButton}
         />
       </ArtworkFiltersStoreProvider>
     </Theme>
@@ -532,5 +539,23 @@ describe("AnimatedArtworkFilterButton", () => {
     )
 
     expect(getByText("Filter Text")).toBeTruthy()
+  })
+})
+
+describe("Saved Search Flow", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
+  })
+
+  it('should hide "Create Alert" button by default', () => {
+    const { queryByText } = renderWithWrappersTL(<MockFilterModalNavigator />)
+
+    expect(queryByText("Create Alert")).toBeFalsy()
+  })
+
+  it('should show "Create Alert" button when shouldShowCreateAlertButton prop is passed', () => {
+    const { getByText } = renderWithWrappersTL(<MockFilterModalNavigator shouldShowCreateAlertButton />)
+
+    expect(getByText("Create Alert")).toBeTruthy()
   })
 })

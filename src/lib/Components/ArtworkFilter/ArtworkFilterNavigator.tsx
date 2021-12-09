@@ -29,9 +29,10 @@ import { YearOptionsScreen } from "lib/Components/ArtworkFilter/Filters/YearOpti
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
-import React from "react"
+import React, { useState } from "react"
 import { View, ViewProps } from "react-native"
 import { useTracking } from "react-tracking"
+import { CreateSavedSearchModal } from "../Artist/ArtistArtworks/CreateSavedSearchModal"
 import { FancyModal } from "../FancyModal/FancyModal"
 import { ArtworkFilterOptionsScreen, FilterModalMode as ArtworkFilterMode } from "./ArtworkFilterOptionsScreen"
 import { ArtworkFilterApplyButton } from "./components/ArtworkFilterApplyButton"
@@ -41,13 +42,16 @@ import { LocationCitiesOptionsScreen } from "./Filters/LocationCitiesOptions"
 interface ArtworkFilterProps extends ViewProps {
   closeModal?: () => void
   exitModal?: () => void
+  openCreateAlertModal?: () => void
   id?: string
   initiallyAppliedFilters?: FilterArray
   visible: boolean
   mode: ArtworkFilterMode
   slug?: string
+  name?: string
   title?: string
   query?: string
+  shouldShowCreateAlertButton?: boolean
 }
 
 interface ArtworkFilterOptionsScreenParams {
@@ -92,7 +96,8 @@ const Stack = createStackNavigator<ArtworkFilterNavigationStack>()
 
 export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const tracking = useTracking()
-  const { exitModal, id, mode, slug, closeModal, query } = props
+  const { id, mode, slug, name, query, shouldShowCreateAlertButton, closeModal, exitModal } = props
+  const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
@@ -297,7 +302,23 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             <Stack.Screen name="LocationCitiesOptionsScreen" component={LocationCitiesOptionsScreen} />
           </Stack.Navigator>
 
-          <ArtworkFilterApplyButton disabled={!isApplyButtonEnabled} onPress={handleApplyPress} />
+          <ArtworkFilterApplyButton
+            disabled={!isApplyButtonEnabled}
+            onPress={handleApplyPress}
+            onCreateAlertPress={() => setIsCreateAlertModalVisible(true)}
+            shouldShowCreateAlertButton={shouldShowCreateAlertButton}
+          />
+
+          {!!isEnabledImprovedAlertsFlow && (
+            <CreateSavedSearchModal
+              visible={isCreateAlertModalVisible}
+              artistId={id!}
+              artistName={name!}
+              artistSlug={slug!}
+              closeModal={() => setIsCreateAlertModalVisible(false)}
+              onComplete={exitModal}
+            />
+          )}
         </View>
       </FancyModal>
     </NavigationContainer>
