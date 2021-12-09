@@ -1,3 +1,4 @@
+import { getSearchCriteriaFromPills } from "lib/Scenes/SavedSearchAlert/helpers"
 import { FilterParamName } from "../ArtworkFilterHelpers"
 import {
   getAllowedFiltersForSavedSearchInput,
@@ -307,6 +308,29 @@ describe("getSearchCriteriaFromFilters", () => {
     ]
 
     expect(getSearchCriteriaFromFilters("artistID", filters)).toEqual({
+      artistID: "artistID",
+      additionalGeneIDs: ["prints"],
+      majorPeriods: ["1990"],
+    })
+  })
+})
+
+describe("getSearchCriteriaFromPills", () => {
+  fit("converts pills of type SavedSearchPill into the saved search criteria fromat", () => {
+    const pills = [
+      {
+        label: "Prints",
+        value: "prints",
+        paramName: FilterParamName.additionalGeneIDs,
+      },
+      {
+        label: "1990-1999",
+        value: "1990",
+        paramName: FilterParamName.timePeriod,
+      },
+    ]
+
+    expect(getSearchCriteriaFromPills(pills)).toEqual({
       artistID: "artistID",
       additionalGeneIDs: ["prints"],
       majorPeriods: ["1990"],
