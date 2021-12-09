@@ -110,7 +110,7 @@ export const extractPillValue = (pills: SavedSearchPill[]) => {
 
 export const getSearchCriteriaFromPills = (pills: SavedSearchPill[]) => {
   const pillsByParamName = groupBy(pills, "paramName")
-  const criteria: SearchCriteriaAttributes = {}
+  let criteria: SearchCriteriaAttributes = {}
 
   Object.entries(pillsByParamName).forEach((entry) => {
     const [paramName, values] = entry
@@ -127,6 +127,14 @@ export const getSearchCriteriaFromPills = (pills: SavedSearchPill[]) => {
 
     criteria[paramName as keyof SearchCriteriaAttributes] = extractPillValue(values)[0] as any
   })
+
+  if (criteria.artistID === undefined) {
+    // TODO: use defaultValue instead of string for artistID
+
+    // const defaultValue = defaultCommonFilterOptions.artistIDs <- wrong type - what to use instead?s
+    // criteria = { defaultValue, ...criteria }
+    criteria = { artistID: "artistID", ...criteria }
+  }
 
   return criteria
 }

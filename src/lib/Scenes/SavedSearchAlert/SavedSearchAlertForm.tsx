@@ -1,7 +1,6 @@
 import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
 import { FormikProvider, useFormik } from "formik"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
@@ -104,9 +103,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
             id: response.updateSavedSearch?.savedSearchOrErrors.internalID!,
           }
         } else {
-          const criteria = isEnabledImprovedAlertsFlow
-            ? getSearchCriteriaFromPills(pillsState)
-            : getSearchCriteriaFromFilters(artistId, filters)
+          const criteria = getSearchCriteriaFromPills(pillsState)
           const response = await createSavedSearchAlert(userAlertSettings, criteria)
 
           result = {
