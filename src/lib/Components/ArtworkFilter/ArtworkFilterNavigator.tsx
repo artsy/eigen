@@ -29,9 +29,10 @@ import { YearOptionsScreen } from "lib/Components/ArtworkFilter/Filters/YearOpti
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
-import React from "react"
+import React, { useState } from "react"
 import { View, ViewProps } from "react-native"
 import { useTracking } from "react-tracking"
+import { CreateSavedSearchModal } from "../Artist/ArtistArtworks/CreateSavedSearchModal"
 import { FancyModal } from "../FancyModal/FancyModal"
 import { ArtworkFilterOptionsScreen, FilterModalMode as ArtworkFilterMode } from "./ArtworkFilterOptionsScreen"
 import { ArtworkFilterApplyButton } from "./components/ArtworkFilterApplyButton"
@@ -47,6 +48,7 @@ interface ArtworkFilterProps extends ViewProps {
   visible: boolean
   mode: ArtworkFilterMode
   slug?: string
+  name?: string
   title?: string
   query?: string
 }
@@ -93,7 +95,8 @@ const Stack = createStackNavigator<ArtworkFilterNavigationStack>()
 
 export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   const tracking = useTracking()
-  const { id, mode, slug, query, closeModal, exitModal, openCreateAlertModal } = props
+  const { id, mode, slug, name, query, closeModal, exitModal } = props
+  const [isCreateAlertModalVisible, setIsCreateAlertModalVisible] = useState(false)
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
@@ -301,8 +304,18 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
           <ArtworkFilterApplyButton
             disabled={!isApplyButtonEnabled}
             onPress={handleApplyPress}
-            onCreateAlertPress={openCreateAlertModal}
+            onCreateAlertPress={() => setIsCreateAlertModalVisible(true)}
           />
+
+          {!!isEnabledImprovedAlertsFlow && (
+            <CreateSavedSearchModal
+              visible={isCreateAlertModalVisible}
+              artistId={id!}
+              artistName={name!}
+              artistSlug={slug!}
+              closeModal={() => setIsCreateAlertModalVisible(false)}
+            />
+          )}
         </View>
       </FancyModal>
     </NavigationContainer>
