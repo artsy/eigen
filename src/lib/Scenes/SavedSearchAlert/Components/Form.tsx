@@ -50,6 +50,7 @@ export const Form: React.FC<FormProps> = (props) => {
     handleChange,
   } = useFormikContext<SavedSearchAlertFormValues>()
   const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
+  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const namePlaceholder = getNamePlaceholder(artistName, pills)
   const isEditMode = !!savedSearchAlertId
   let isSaveAlertButtonDisabled = false
@@ -144,19 +145,29 @@ export const Form: React.FC<FormProps> = (props) => {
       <Box mb={2}>
         <InputTitle>Filters</InputTitle>
         <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
-          {pills.map((pill, index) => (
-            <Pill
-              testID="alert-pill"
-              m={0.5}
-              key={`filter-label-${index}`}
-              iconPosition="right"
-              sharp
-              Icon={isArtistPill(pill) ? undefined : RemoveIcon}
-              onPress={() => (isArtistPill(pill) ? {} : onRemovePill(pill))}
-            >
-              {pill.label}
-            </Pill>
-          ))}
+          {pills.map((pill, index) =>
+            !isEnabledImprovedAlertsFlow ? (
+              <Pill
+                testID="alert-pill"
+                m={0.5}
+                key={`filter-label-${index}`}
+                iconPosition="right"
+                sharp
+                Icon={isArtistPill(pill) ? undefined : RemoveIcon}
+                onPress={() => {
+                  if (!isArtistPill(pill)) {
+                    onRemovePill(pill)
+                  }
+                }}
+              >
+                {pill.label}
+              </Pill>
+            ) : (
+              <Pill testID="alert-pill" m={0.5} key={`filter-label-${index}`} iconPosition="right" sharp>
+                {pill.label}
+              </Pill>
+            )
+          )}
         </Flex>
       </Box>
       {!!enableSavedSearchToggles && (
