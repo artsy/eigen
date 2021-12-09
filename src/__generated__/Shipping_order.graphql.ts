@@ -5,12 +5,33 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Shipping_order = {
-    readonly requestedFulfillment: {
-        readonly name?: string | null;
-        readonly addressLine1?: string | null;
-        readonly city?: string | null;
-        readonly country?: string | null;
-        readonly postalCode?: string | null;
+    readonly requestedFulfillment: ({
+        readonly __typename: "CommerceShip";
+        readonly name: string | null;
+        readonly addressLine1: string | null;
+        readonly city: string | null;
+        readonly country: string | null;
+        readonly postalCode: string | null;
+    } | {
+        readonly __typename: "CommerceShipArta";
+        readonly name: string | null;
+        readonly addressLine1: string | null;
+        readonly city: string | null;
+        readonly country: string | null;
+        readonly postalCode: string | null;
+    } | {
+        /*This will never be '%other', but we need some
+        value in case none of the concrete values match.*/
+        readonly __typename: "%other";
+    }) | null;
+    readonly lineItems: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly artwork: {
+                    readonly shippingOrigin: string | null;
+                } | null;
+            } | null;
+        } | null> | null;
     } | null;
     readonly " $refType": "Shipping_order";
 };
@@ -75,6 +96,13 @@ return {
       "plural": false,
       "selections": [
         {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "__typename",
+          "storageKey": null
+        },
+        {
           "kind": "InlineFragment",
           "selections": (v0/*: any*/),
           "type": "CommerceShip",
@@ -88,11 +116,62 @@ return {
         }
       ],
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "CommerceLineItemConnection",
+      "kind": "LinkedField",
+      "name": "lineItems",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "CommerceLineItemEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "CommerceLineItem",
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "Artwork",
+                  "kind": "LinkedField",
+                  "name": "artwork",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "shippingOrigin",
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
     }
   ],
   "type": "CommerceOrder",
   "abstractKey": "__isCommerceOrder"
 };
 })();
-(node as any).hash = '50977bc6bebdefbe94d1e5632e51e5ab';
+(node as any).hash = '1d810573da67f3d8378239f5ca555dcf';
 export default node;

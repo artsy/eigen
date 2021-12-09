@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4b68f03e4a84d43a87481e31af848f40 */
+/* @relayHash 50264d8be7e5cd27ec69547e17747930 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -62,6 +62,17 @@ fragment Shipping_order on CommerceOrder {
       city
       country
       postalCode
+    }
+  }
+  lineItems {
+    edges {
+      node {
+        artwork {
+          shippingOrigin
+          id
+        }
+        id
+      }
     }
   }
 }
@@ -279,6 +290,59 @@ return {
                             ],
                             "storageKey": null
                           },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "CommerceLineItemConnection",
+                            "kind": "LinkedField",
+                            "name": "lineItems",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "CommerceLineItemEdge",
+                                "kind": "LinkedField",
+                                "name": "edges",
+                                "plural": true,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "CommerceLineItem",
+                                    "kind": "LinkedField",
+                                    "name": "node",
+                                    "plural": false,
+                                    "selections": [
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "concreteType": "Artwork",
+                                        "kind": "LinkedField",
+                                        "name": "artwork",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "kind": "ScalarField",
+                                            "name": "shippingOrigin",
+                                            "storageKey": null
+                                          },
+                                          (v4/*: any*/)
+                                        ],
+                                        "storageKey": null
+                                      },
+                                      (v4/*: any*/)
+                                    ],
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          },
                           (v4/*: any*/)
                         ],
                         "storageKey": null
@@ -300,7 +364,7 @@ return {
     ]
   },
   "params": {
-    "id": "4b68f03e4a84d43a87481e31af848f40",
+    "id": "50264d8be7e5cd27ec69547e17747930",
     "metadata": {},
     "name": "Shipping_Test_Query",
     "operationKind": "query",

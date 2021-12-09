@@ -83,4 +83,38 @@ describe("ShippingFragmentContainer", () => {
     expect(getByText("Test Street")).toBeDefined()
     expect(getByText("City, Country, 5012")).toBeDefined()
   })
+
+  it("render CommercePickup", () => {
+    const { getByText } = renderWithRelay({
+      CommerceOrderConnectionWithTotalCount: () => ({
+        edges: [
+          {
+            node: {
+              requestedFulfillment: {
+                __typename: "CommercePickup",
+              },
+              lineItems: {
+                edges: [
+                  {
+                    node: {
+                      artwork: {
+                        shippingOrigin: "City, State, Country",
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          },
+        ],
+      }),
+    })
+
+    expect(getByText("Pick up (City, State, Country)")).toBeDefined()
+    expect(
+      getByText(
+        "After your order is confirmed, a specialist will contact you within 2 business days to coordinate pickup."
+      )
+    ).toBeDefined()
+  })
 })

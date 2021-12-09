@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash acaa3a358b7edc683b0cdf54d9050d7d */
+/* @relayHash 87b45d7320c510e7d3f1b8cfeee6453b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -216,6 +216,17 @@ fragment Shipping_order on CommerceOrder {
       city
       country
       postalCode
+    }
+  }
+  lineItems {
+    edges {
+      node {
+        artwork {
+          shippingOrigin
+          id
+        }
+        id
+      }
     }
   }
 }
@@ -821,7 +832,26 @@ return {
                                         ],
                                         "storageKey": null
                                       },
-                                      (v4/*: any*/)
+                                      (v4/*: any*/),
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "concreteType": "Artwork",
+                                        "kind": "LinkedField",
+                                        "name": "artwork",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "kind": "ScalarField",
+                                            "name": "shippingOrigin",
+                                            "storageKey": null
+                                          },
+                                          (v4/*: any*/)
+                                        ],
+                                        "storageKey": null
+                                      }
                                     ],
                                     "storageKey": null
                                   }
@@ -953,7 +983,7 @@ return {
     ]
   },
   "params": {
-    "id": "acaa3a358b7edc683b0cdf54d9050d7d",
+    "id": "87b45d7320c510e7d3f1b8cfeee6453b",
     "metadata": {},
     "name": "ConversationDetails_Test_Query",
     "operationKind": "query",

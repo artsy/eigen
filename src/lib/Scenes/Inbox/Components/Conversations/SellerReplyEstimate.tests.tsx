@@ -73,29 +73,6 @@ describe("SellerReplyEstimateFragmentContainer", () => {
     ).toBeDefined()
   })
 
-  it("render given order state approved and typename CommercePickup", () => {
-    const { getByText } = renderWithRelay({
-      CommerceOrderConnectionWithTotalCount: () => ({
-        edges: [
-          {
-            node: {
-              requestedFulfillment: {
-                __typename: "CommercePickup",
-              },
-              displayState: "APPROVED",
-            },
-          },
-        ],
-      }),
-    })
-
-    expect(
-      getByText(
-        "Thank you for your purchase. A specialist will contact you within 2 business days to coordinate pickup."
-      )
-    ).toBeDefined()
-  })
-
   it("render given order state processing and displayName Rush", () => {
     const { getByText } = renderWithRelay({
       CommerceOrderConnectionWithTotalCount: () => ({

@@ -37,9 +37,7 @@ export const SellerReplyEstimate: React.FC<SellerReplyEstimateProps> = ({ order 
       }
       break
     case "APPROVED":
-      if (order.requestedFulfillment?.__typename === "CommercePickup") {
-        message = `Thank you for your purchase. A specialist will contact you within 2 business days to coordinate pickup.`
-      } else {
+      if (order.requestedFulfillment?.__typename !== "CommercePickup") {
         message = `Thank you for your purchase. You will be notified when the work has shipped, typically within 5–7 business days.`
       }
       break
