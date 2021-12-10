@@ -18,9 +18,9 @@ This PR resolves []
 - [ ] I have included screenshots or videos to illustrate my changes, or I have not changed anything that impacts the UI.
 - [ ] I have tested my changes on **iOS** and **Android**.
 - [ ] I have added tests/stories for my changes, or my changes don't require testing/stories, or I have included a link to a separate Jira ticket covering the tests.
-- [ ] I have added a feature flag, or my changes don't require a feature flag. ([How do I add one?](https://github.com/artsy/eigen/blob/master/docs/developing_a_feature.md))
+- [ ] I have added a feature flag, or my changes don't require a feature flag. ([How do I add one?](https://github.com/artsy/eigen/blob/main/docs/developing_a_feature.md))
 - [ ] I have documented any follow-up work that this PR will require, or it does not require any.
-- [ ] I have added an app state migration, or my changes do not require one. ([What are migrations?](https://github.com/artsy/eigen/blob/master/docs/adding_state_migrations.md))
+- [ ] I have added an app state migration, or my changes do not require one. ([What are migrations?](https://github.com/artsy/eigen/blob/main/docs/adding_state_migrations.md))
 - [ ] I have added a changelog entry below or my changes do not require one.
 
 ### To the reviewers 👀
