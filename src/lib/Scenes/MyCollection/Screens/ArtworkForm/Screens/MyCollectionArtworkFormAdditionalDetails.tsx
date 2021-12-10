@@ -33,7 +33,6 @@ export const MyCollectionAdditionalDetailsForm: React.FC<StackScreenProps<Artwor
               onBlur={formik.handleBlur("title")}
               testID="TitleInput"
               defaultValue={formikValues.title}
-              shouldAddListenerForClear={false}
             />
             <Input
               title="YEAR CREATED"
@@ -43,7 +42,6 @@ export const MyCollectionAdditionalDetailsForm: React.FC<StackScreenProps<Artwor
               onBlur={formik.handleBlur("date")}
               testID="DateInput"
               defaultValue={formikValues.date}
-              shouldAddListenerForClear={false}
             />
 
             <Checkbox
@@ -66,7 +64,6 @@ export const MyCollectionAdditionalDetailsForm: React.FC<StackScreenProps<Artwor
                   onBlur={formik.handleBlur("editionNumber")}
                   defaultValue={formikValues.editionNumber!}
                   testID="EditionNumberInput"
-                  shouldAddListenerForClear={false}
                 />
                 <Input
                   placeholder="Edition size"
@@ -75,7 +72,6 @@ export const MyCollectionAdditionalDetailsForm: React.FC<StackScreenProps<Artwor
                   onBlur={formik.handleBlur("editionSize")}
                   testID="EditionSizeInput"
                   defaultValue={formikValues.editionSize}
-                  shouldAddListenerForClear={false}
                 />
               </Join>
             </Flex>
@@ -87,7 +83,6 @@ export const MyCollectionAdditionalDetailsForm: React.FC<StackScreenProps<Artwor
               onBlur={formik.handleBlur("category")}
               testID="MaterialsInput"
               defaultValue={formikValues.category}
-              shouldAddListenerForClear={false}
             />
 
             <Input
@@ -97,7 +92,6 @@ export const MyCollectionAdditionalDetailsForm: React.FC<StackScreenProps<Artwor
               value={formikValues.provenance}
               onChangeText={formik.handleChange("provenance")}
               testID="ProvenanceInput"
-              shouldAddListenerForClear={false}
             />
 
             <Input
@@ -108,7 +102,6 @@ export const MyCollectionAdditionalDetailsForm: React.FC<StackScreenProps<Artwor
               onBlur={formik.handleBlur("pricePaidDollars")}
               testID="PricePaidInput"
               defaultValue={formikValues.pricePaidDollars}
-              shouldAddListenerForClear={false}
             />
 
             <Select

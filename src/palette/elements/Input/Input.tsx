@@ -61,7 +61,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   enableClearButton?: boolean
   canHidePassword?: boolean
   inputTextStyle?: TextStyle
-  shouldAddListenerForClear?: boolean
+  addClearListener?: boolean
   onClear?(): void
   renderLeftHandSection?(): JSX.Element
 }
@@ -91,7 +91,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       multiline,
       maxLength,
       showLimit,
-      shouldAddListenerForClear = true,
+      addClearListener = false,
       ...rest
     },
     ref
@@ -113,9 +113,12 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     const fontFamily = theme.fonts.sans.regular
 
     useEffect(() => {
-      if (shouldAddListenerForClear) {
-        inputEvents.addListener("clear", localClear)
+      if (!addClearListener) {
+        return
       }
+
+      inputEvents.addListener("clear", localClear)
+
       return () => {
         inputEvents.removeListener("clear", localClear)
       }

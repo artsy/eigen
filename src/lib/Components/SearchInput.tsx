@@ -53,6 +53,7 @@ export const SearchInput = React.forwardRef<TextInput, SearchInputProps>(
             autoCorrect={false}
             enableClearButton
             returnKeyType="search"
+            addClearListener
             onClear={() => {
               onClear?.()
               inputRef?.current?.focus()
