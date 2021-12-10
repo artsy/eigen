@@ -500,7 +500,7 @@ lane :check_flags do
     #{released_flags_message}
     If you see a feature that should be going out this release that isn't
     marked ready please follow the docs here ahead of release QA:
-    https://github.com/artsy/eigen/blob/master/docs/developing_a_feature.md#releasing-a-feature
+    https://github.com/artsy/eigen/blob/main/docs/developing_a_feature.md#releasing-a-feature
   MSG
   slack(message: message, default_payloads: [])
 end

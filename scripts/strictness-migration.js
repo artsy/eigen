@@ -13,12 +13,7 @@ const HERO_HELPER_FILENAME = ".i-am-helping-out-with-the-strictness-migration"
  * @param {string | number | Buffer | import("url").URL} filePath
  */
 function countIssuesInFile(filePath) {
-  return (
-    fs
-      .readFileSync(filePath)
-      .toString()
-      .split("STRICTNESS_MIGRATION").length - 1
-  )
+  return fs.readFileSync(filePath).toString().split("STRICTNESS_MIGRATION").length - 1
 }
 
 function countIssuesInWholeProject() {
@@ -33,7 +28,7 @@ switch (process.argv[2]) {
       console.log(countIssuesInWholeProject().toString())
     } else {
       console.log(
-        _.flatten(process.argv.slice(3).map(f => glob(f, { nodir: true })))
+        _.flatten(process.argv.slice(3).map((f) => glob(f, { nodir: true })))
           .map(countIssuesInFile)
           .reduce((a, b) => a + b, 0)
           .toString()
@@ -46,7 +41,7 @@ switch (process.argv[2]) {
       console.log(`Run 'touch ${HERO_HELPER_FILENAME}' to join in the migration fun`)
       break
     }
-    const files = _.flatten(process.argv.slice(3).map(f => glob(f, { nodir: true }))).map(file =>
+    const files = _.flatten(process.argv.slice(3).map((f) => glob(f, { nodir: true }))).map((file) =>
       path.relative(process.cwd(), path.resolve(file))
     )
     let allClear = true
@@ -76,20 +71,20 @@ switch (process.argv[2]) {
     break
   case "check-pr":
     try {
-      execSync("git merge origin/master", { stdio: "inherit" })
+      execSync("git merge origin/main", { stdio: "inherit" })
     } catch (e) {
-      console.log("Branch has conflicts with master, aborting strictness migration check")
+      console.log("Branch has conflicts with main, aborting strictness migration check")
       process.exit(0)
     }
     const current = countIssuesInWholeProject()
-    execSync("git checkout origin/master", { stdio: "inherit" })
-    const onMaster = countIssuesInWholeProject()
-    if (current > onMaster) {
+    execSync("git checkout origin/main", { stdio: "inherit" })
+    const onMain = countIssuesInWholeProject()
+    if (current > onMain) {
       console.error(
         chalk.yellow.bold("WARNING:"),
         `The number of comments with the substring ${chalk.cyan("STRICTNESS_MIGRATION")} has risen from ${chalk.green(
-          onMaster
-        )} in ${chalk.bold("master")} to ${chalk.red(current)} in this PR.`
+          onMain
+        )} in ${chalk.bold("main")} to ${chalk.red(current)} in this PR.`
       )
       console.error(
         `These comments were added when we switched on TypeScript's strict mode, and their number should only ever go down.\n`
@@ -99,13 +94,13 @@ switch (process.argv[2]) {
         `It is safe to ignore this failure if you are in a hurry, but please consider refactoring to remove these tags.`
       )
       process.exit(1)
-    } else if (current < onMaster) {
+    } else if (current < onMain) {
       console.log(
         `Yay! Thanks for decreasing the number of strictness migration issues from ${chalk.bold(
-          onMaster
+          onMain
         )} to ${chalk.bold(current)} 🌟`
       )
     } else {
-      console.log(`There's still ${chalk.bold(onMaster)} strictness migration issues to fix.`)
+      console.log(`There's still ${chalk.bold(onMain)} strictness migration issues to fix.`)
     }
 }

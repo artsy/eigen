@@ -13,16 +13,16 @@ function sh(command, cwd) {
   return task.stdout.toString()
 }
 
-// Download latest JSON from Metaphysics master.
+// Download latest JSON from Metaphysics main.
 sh(
-  "curl -o data/cityDataSortedByDisplayPreference.json https://raw.githubusercontent.com/artsy/metaphysics/master/src/schema/city/cityDataSortedByDisplayPreference.json"
+  "curl -o data/cityDataSortedByDisplayPreference.json https://raw.githubusercontent.com/artsy/metaphysics/main/src/schema/city/cityDataSortedByDisplayPreference.json"
 )
 
 const cities = require("../data/cityDataSortedByDisplayPreference.json")
 
 const filename = "./Pod/Classes/Data/ARCity.m"
 
-const citiesArray = cities.map(city => {
+const citiesArray = cities.map((city) => {
   const {
     name,
     slug,
