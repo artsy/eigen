@@ -83,9 +83,9 @@ const Home = (props: Props) => {
   const enableTrove = useFeatureFlag("AREnableTrove")
   const enableNewNewWorksForYouRail = useFeatureFlag("AREnableNewWorksForYou")
   const enableShowsForYouRail = useFeatureFlag("AREnableShowsRail")
-  const enableNewArtistRecommendations = useFeatureFlag("AREnableArtistRecommendations")
 
   const newWorksTreatment = useTreatment("HomeScreenWorksForYouVsWorksByArtistsYouFollow")
+  const artistRecommendationsTreatment = useTreatment("HomeScreenArtistRecommendations")
 
   const newWorks =
     enableNewNewWorksForYouRail && newWorksTreatment === "worksForYou"
@@ -100,17 +100,18 @@ const Home = (props: Props) => {
           data: homePageAbove?.followedArtistsArtworkModule,
         }
 
-  const artistRecommendations = enableNewArtistRecommendations
-    ? {
-        title: "Recommended Artists",
-        type: "recommended-artists",
-        data: meAbove,
-      }
-    : {
-        title: "Recommended Artists",
-        type: "artist",
-        data: homePageAbove?.recommendedArtistsArtistModule,
-      }
+  const artistRecommendations =
+    artistRecommendationsTreatment === "newArtistRecommendations"
+      ? {
+          title: "Recommended Artists",
+          type: "recommended-artists",
+          data: meAbove,
+        }
+      : {
+          title: "Recommended Artists",
+          type: "artist",
+          data: homePageAbove?.recommendedArtistsArtistModule,
+        }
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
   let modules: HomeModule[] = compact([
