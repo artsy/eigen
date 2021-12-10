@@ -90,9 +90,21 @@ export const Search: React.FC<SearchProps> = (props) => {
   const { trackEvent } = useTracking()
   const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
 
+  const indexAllowlist = [
+    "artist",
+    "partner_gallery",
+    "partner_show",
+    "fair",
+    "kaws_collection",
+    "sale",
+    "article",
+    "artist_series",
+  ]
+
   const pillsArray = useMemo<PillType[]>(() => {
     if (Array.isArray(indices) && indices.length > 0) {
-      const formattedIndices: PillType[] = indices.map((index) => {
+      const filteredIndices = indices.filter((index) => indexAllowlist.includes(index.key))
+      const formattedIndices: PillType[] = filteredIndices.map((index) => {
         return { ...index, type: "algolia", disabled: enableImprovedPills && !indicesInfo[index.name]?.hasResults }
       })
 
