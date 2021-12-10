@@ -1,12 +1,12 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import { getCurrentEmissionState, GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { AdminMenuWrapper } from "lib/utils/AdminMenuWrapper"
 import { addTrackingProvider, track } from "lib/utils/track"
 import { SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { useDeepLinks } from "lib/utils/useDeepLinks"
 import { useStripeConfig } from "lib/utils/useStripeConfig"
 import React, { useEffect } from "react"
-import { Appearance, UIManager, View } from "react-native"
+import { UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
 import { AppProviders } from "./AppProviders"
 import { useWebViewCookies } from "./Components/ArtsyReactWebView"
@@ -18,9 +18,11 @@ import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { createAllChannels, savePendingToken } from "./utils/PushNotification"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
-import { AnalyticsConstants } from "./utils/track/constants"
 import { useExperiments } from "./utils/useExperiments"
+import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { useInitialNotification } from "./utils/useInitialNotification"
+import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
+import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)
@@ -49,28 +51,10 @@ const Main: React.FC<{}> = track()(({}) => {
 
   useEffect(() => {
     createAllChannels()
-    const scheme = Appearance.getColorScheme()
-    // null id means keep whatever id was there before. we only update the user interface info here.
-    SegmentTrackingProvider.identify?.(null, {
-      [AnalyticsConstants.UserInterfaceStyle.key]: (() => {
-        switch (scheme) {
-          case "light":
-            return AnalyticsConstants.UserInterfaceStyle.value.Light
-          case "dark":
-            return AnalyticsConstants.UserInterfaceStyle.value.Dark
-        }
-        return AnalyticsConstants.UserInterfaceStyle.value.Unspecified
-      })(),
-    })
   }, [])
-
-  useEffect(() => {
-    const launchCount = getCurrentEmissionState().launchCount
-    if (launchCount > 1) {
-      return
-    }
-    SegmentTrackingProvider.postEvent({ name: AnalyticsConstants.FreshInstall })
-  }, [])
+  usePreferredThemeTracking()
+  useScreenReaderTracking()
+  useFreshInstallTracking()
 
   useEffect(() => {
     if (isHydrated) {
