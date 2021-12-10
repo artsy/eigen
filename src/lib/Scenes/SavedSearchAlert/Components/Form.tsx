@@ -152,7 +152,6 @@ export const Form: React.FC<FormProps> = (props) => {
                 m={0.5}
                 key={`filter-label-${index}`}
                 iconPosition="right"
-                sharp
                 Icon={isArtistPill(pill) ? undefined : RemoveIcon}
                 onPress={() => {
                   if (!isArtistPill(pill)) {
@@ -163,7 +162,7 @@ export const Form: React.FC<FormProps> = (props) => {
                 {pill.label}
               </Pill>
             ) : (
-              <Pill testID="alert-pill" m={0.5} key={`filter-label-${index}`} iconPosition="right" sharp>
+              <Pill testID="alert-pill" m={0.5} key={`filter-label-${index}`} iconPosition="right">
                 {pill.label}
               </Pill>
             )
