@@ -1,12 +1,11 @@
 import { ConsignmentSubmissionCategoryAggregation } from "__generated__/createConsignmentSubmissionMutation.graphql"
-import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkFormModal/Form/useArtworkForm"
+import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { artworkMediumCategories } from "lib/utils/artworkMediumCategories"
-import { Select, SelectComponentI } from "palette/elements/Select"
-import React, { useRef } from "react"
+import { Select } from "palette/elements/Select"
+import React from "react"
 
 export const MediumPicker: React.FC = () => {
   const { formik } = useArtworkForm()
-  const mediumInputRef = useRef<SelectComponentI<ConsignmentSubmissionCategoryAggregation>>(null)
 
   const handleValueChange = (value: ConsignmentSubmissionCategoryAggregation) => {
     formik.handleChange("medium")(value)
@@ -14,7 +13,6 @@ export const MediumPicker: React.FC = () => {
 
   return (
     <Select
-      ref={mediumInputRef}
       onSelectValue={handleValueChange}
       value={formik.values.medium}
       enableSearch={false}
