@@ -22,6 +22,8 @@ export const UploadPhotos: React.FC<ComponentWithCollapsibleMenuItemProps> = ({
   setActiveStep,
   totalSteps,
   step,
+  setStepsCompleted,
+  stepsCompleted,
 }) => {
   const [isCompleted, setIsCompleted] = useState(false)
 
@@ -35,6 +37,8 @@ export const UploadPhotos: React.FC<ComponentWithCollapsibleMenuItemProps> = ({
       setIsCompleted={setIsCompleted}
       Content={() => <UploadPhotosContent />}
       totalSteps={totalSteps}
+      setStepsCompleted={setStepsCompleted}
+      stepsCompleted={stepsCompleted}
     />
   )
 }

@@ -9,7 +9,13 @@ export interface CollapsibleMenuItemProps {
 
 export const ContactInformationContent = ({}) => {
   return (
-    <View style={{ backgroundColor: `rgba(255,145,125,.3)`, padding: 20, marginTop: 20 }}>
+    <View
+      style={{
+        backgroundColor: `rgba(255,145,125,.2)`,
+        padding: 20,
+        marginTop: 20,
+      }}
+    >
       <Text>Contact Information Content</Text>
       <Text>Form</Text>
     </View>
@@ -21,6 +27,8 @@ export const ContactInformation: React.FC<ComponentWithCollapsibleMenuItemProps>
   setActiveStep,
   totalSteps,
   step,
+  setStepsCompleted,
+  stepsCompleted,
 }) => {
   // setFormCompleted
   const [isCompleted, setIsCompleted] = useState(false)
@@ -35,6 +43,8 @@ export const ContactInformation: React.FC<ComponentWithCollapsibleMenuItemProps>
       Content={() => <ContactInformationContent />}
       totalSteps={totalSteps}
       navigateToLink="artwork-submitted"
+      setStepsCompleted={setStepsCompleted}
+      stepsCompleted={stepsCompleted}
     />
   )
 }

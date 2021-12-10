@@ -1,11 +1,8 @@
 import { track as _track } from "lib/utils/track"
 import { CollapsibleMenuItem } from "palette/elements/Collapse/CollapsibleMenuItem/CollapsibleMenuItem"
-import React, { Dispatch, SetStateAction, useState } from "react"
+import React, { useState } from "react"
 import { Text, View } from "react-native"
 import { ComponentWithCollapsibleMenuItemProps } from "./types"
-export interface CollapsibleMenuItemProps {
-  setFormCompleted: Dispatch<SetStateAction<number>>
-}
 
 export const ArtworkDetailsContent = ({}) => {
   return (
@@ -21,8 +18,9 @@ export const ArtworkDetails: React.FC<ComponentWithCollapsibleMenuItemProps> = (
   setActiveStep,
   totalSteps,
   step,
+  setStepsCompleted,
+  stepsCompleted,
 }) => {
-  // setFormCompleted
   const [isCompleted, setIsCompleted] = useState(false)
   return (
     <CollapsibleMenuItem
@@ -34,6 +32,8 @@ export const ArtworkDetails: React.FC<ComponentWithCollapsibleMenuItemProps> = (
       setIsCompleted={setIsCompleted}
       Content={() => <ArtworkDetailsContent />}
       totalSteps={totalSteps}
+      setStepsCompleted={setStepsCompleted}
+      stepsCompleted={stepsCompleted}
     />
   )
 }

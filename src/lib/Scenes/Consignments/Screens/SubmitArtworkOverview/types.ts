@@ -9,4 +9,6 @@ export interface ComponentWithCollapsibleMenuItemProps {
   setActiveStep: Dispatch<SetStateAction<number>>
   hasSaveButton?: boolean
   navigateToLink?: string
+  setStepsCompleted: Dispatch<SetStateAction<number[]>>
+  stepsCompleted: number[]
 }

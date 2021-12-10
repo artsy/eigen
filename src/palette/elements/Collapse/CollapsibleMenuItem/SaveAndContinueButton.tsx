@@ -1,6 +1,6 @@
 import { navigate } from "lib/navigation/navigate"
 import { track as _track } from "lib/utils/track"
-import { Button, Flex, Spacer } from "palette"
+import { Button, Spacer } from "palette"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { LayoutAnimation, View } from "react-native"
 
@@ -12,6 +12,8 @@ interface SaveButtonProps {
   setIsContentVisible: Dispatch<SetStateAction<boolean>>
   setIsCompleted: Dispatch<SetStateAction<boolean>>
   navigateToLink?: string
+  setStepsCompleted: Dispatch<SetStateAction<number[]>>
+  stepsCompleted: [number]
 }
 
 export const SaveAndContinueButton: React.FC<SaveButtonProps> = ({
@@ -21,6 +23,8 @@ export const SaveAndContinueButton: React.FC<SaveButtonProps> = ({
   setActiveStep,
   navigateToLink,
   setIsCompleted,
+  setStepsCompleted,
+  stepsCompleted,
 }) => {
   const [isLastStep, setLastStep] = useState(false)
 
@@ -30,24 +34,23 @@ export const SaveAndContinueButton: React.FC<SaveButtonProps> = ({
   return (
     <View>
       <Spacer mb={2} />
-      <Flex px="2" width="100%" alignItems="center">
-        <Button
-          block
-          haptic
-          maxWidth={540}
-          onPress={() => {
-            setIsContentVisible(false)
-            LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-            if (isLastStep && navigateToLink) {
-              navigate(navigateToLink)
-            }
-            setIsCompleted(true) // make checks here
-            setActiveStep(step + 1)
-          }}
-        >
-          {isLastStep ? "Submit Artwork" : "Save & Continue"}
-        </Button>
-      </Flex>
+      <Button
+        block
+        haptic
+        maxWidth={540}
+        onPress={() => {
+          setIsContentVisible(false)
+          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+          if (isLastStep && navigateToLink) {
+            navigate(navigateToLink)
+          }
+          setIsCompleted(true) // make checks here
+          setActiveStep(step + 1)
+          setStepsCompleted([...stepsCompleted, step])
+        }}
+      >
+        {isLastStep ? "Submit Artwork" : "Save & Continue"}
+      </Button>
     </View>
   )
 }
