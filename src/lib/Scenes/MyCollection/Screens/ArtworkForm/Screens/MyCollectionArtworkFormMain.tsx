@@ -69,7 +69,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               onBlur={formik.handleBlur("title")}
               testID="TitleInput"
               required
-              defaultValue={formikValues.title}
+              value={formikValues.title}
             />
             <Input
               title="YEAR"
@@ -79,7 +79,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               onBlur={formik.handleBlur("date")}
               testID="DateInput"
               error={Number(formik.values.date) > new Date().getFullYear() ? "Invalid year" : undefined}
-              defaultValue={formikValues.date}
+              value={formikValues.date}
             />
             <MediumPicker />
             <Input
@@ -88,7 +88,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               onChangeText={formik.handleChange("category")}
               onBlur={formik.handleBlur("category")}
               testID="MaterialsInput"
-              defaultValue={formikValues.category}
+              value={formikValues.category}
             />
             <Dimensions />
             <Input
@@ -98,7 +98,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               onChangeText={formik.handleChange("pricePaidDollars")}
               onBlur={formik.handleBlur("pricePaidDollars")}
               testID="PricePaidInput"
-              defaultValue={formikValues.pricePaidDollars}
+              value={formikValues.pricePaidDollars}
             />
             <Select
               title="Currency"
@@ -118,7 +118,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               onChangeText={formik.handleChange("location")}
               onBlur={formik.handleBlur("location")}
               testID="LocationInput"
-              defaultValue={formikValues.location}
+              value={formikValues.location}
             />
             <Input
               multiline
