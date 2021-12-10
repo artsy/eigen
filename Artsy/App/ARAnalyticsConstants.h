@@ -18,10 +18,6 @@ extern NSString *const ARAnalyticsNotificationReceived;
 extern NSString *const ARAnalyticsNotificationTapped;
 extern NSString *const ARAnalyticsPushNotificationsRequested;
 
-// Keep track of some raw numbers re:total installs
-
-extern NSString *const ARAnalyticsFreshInstall;
-
 // Universal Links
 
 extern NSString *const ARAnalyticsDeepLinkOpened;
