@@ -1,20 +1,19 @@
-import { NavigationProp } from "@react-navigation/native"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { StackScreenProps } from "@react-navigation/stack"
+import { FancyModalHeader as NavHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Flex, Input, Join, Sans, Spacer } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import { Select } from "palette/elements/Select"
-import React, { useRef, useState } from "react"
+import React, { useState } from "react"
 import { ScrollView } from "react-native-gesture-handler"
 import { useArtworkForm } from "../Form/useArtworkForm"
-import { ArtworkFormModalScreen } from "../MyCollectionArtworkFormModal"
+import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
-export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: NavigationProp<ArtworkFormModalScreen> }> = ({
-  navigation,
+export const MyCollectionAdditionalDetailsForm: React.FC<StackScreenProps<ArtworkFormScreen, "AdditionalDetails">> = ({
+  route,
 }) => {
   const { formik } = useArtworkForm()
   const formikValues = formik?.values
   const [isEdition, setIsEdition] = useState(formikValues?.isEdition)
-  const pricePaidCurrencyInputRef = useRef<typeof Select>(null)
 
   const handleEditionChange = (editionStatus: boolean) => {
     setIsEdition(editionStatus)
@@ -23,7 +22,7 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
 
   return (
     <Flex style={{ flex: 1 }}>
-      <FancyModalHeader onLeftButtonPress={() => navigation.goBack()}>Additional Details</FancyModalHeader>
+      <NavHeader onLeftButtonPress={() => route.params.onHeaderBackButtonPress()}>Additional Details</NavHeader>
       <ScrollView style={{ flex: 1 }}>
         <Flex p={2}>
           <Join separator={<Spacer my={1} />}>
@@ -112,7 +111,6 @@ export const MyCollectionAdditionalDetailsForm: React.FC<{ navigation: Navigatio
               value={formikValues.pricePaidCurrency}
               enableSearch={false}
               showTitleLabel={false}
-              ref={pricePaidCurrencyInputRef}
               onSelectValue={(value) => {
                 formik.handleChange("pricePaidCurrency")(value)
               }}

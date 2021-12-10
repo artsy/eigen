@@ -30,10 +30,17 @@ describe("MyCollectionAddPhotos", () => {
     })
 
     const mockNav = jest.fn()
-    const mockRoute: Route<"AddPhotos", undefined> = {
+    const mockRoute: Route<
+      "AddPhotos",
+      {
+        onHeaderBackButtonPress(): void
+      }
+    > = {
       key: "AddPhotos",
       name: "AddPhotos",
-      params: undefined,
+      params: {
+        onHeaderBackButtonPress: jest.fn(),
+      },
     }
     mockAddPhotos = <MyCollectionAddPhotos navigation={mockNav as any} route={mockRoute} />
   })
@@ -62,10 +69,17 @@ describe("MyCollectionAddPhotos", () => {
 
   it("triggers action on add photo button click", () => {
     const mockNav = jest.fn()
-    const mockRoute: Route<"AddPhotos", undefined> = {
+    const mockRoute: Route<
+      "AddPhotos",
+      {
+        onHeaderBackButtonPress(): void
+      }
+    > = {
       key: "AddPhotos",
       name: "AddPhotos",
-      params: undefined,
+      params: {
+        onHeaderBackButtonPress: jest.fn(),
+      },
     }
     const wrapper = renderWithWrappers(<MyCollectionAddPhotos navigation={mockNav as any} route={mockRoute} />)
     wrapper.root.findByType(tests.AddPhotosButton).findByType(TouchableOpacity).props.onPress()
@@ -76,10 +90,17 @@ describe("MyCollectionAddPhotos", () => {
     const spy = jest.fn()
     GlobalStore.actions.myCollection.artwork.removePhoto = spy as any
     const mockNav = jest.fn()
-    const mockRoute: Route<"AddPhotos", undefined> = {
+    const mockRoute: Route<
+      "AddPhotos",
+      {
+        onHeaderBackButtonPress(): void
+      }
+    > = {
       key: "AddPhotos",
       name: "AddPhotos",
-      params: undefined,
+      params: {
+        onHeaderBackButtonPress: jest.fn(),
+      },
     }
     const wrapper = renderWithWrappers(<MyCollectionAddPhotos navigation={mockNav as any} route={mockRoute} />)
     wrapper.root.findAllByType(tests.DeletePhotoButton)[0].findByType(TouchableOpacity).props.onPress()
