@@ -319,6 +319,11 @@ describe("getSearchCriteriaFromPills", () => {
   it("converts pills of type SavedSearchPill into the saved search criteria fromat", () => {
     const pills = [
       {
+        label: "kermit the frog",
+        value: "artistID",
+        paramName: FilterParamName.artistIDs,
+      },
+      {
         label: "Prints",
         value: "prints",
         paramName: FilterParamName.additionalGeneIDs,
