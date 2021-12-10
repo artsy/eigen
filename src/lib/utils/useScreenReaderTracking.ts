@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { AccessibilityInfo } from "react-native"
-import { postEventToProviders } from "./track/providers"
+import { AnalyticsConstants } from "./track/constants"
+import { SegmentTrackingProvider } from "./track/SegmentTrackingProvider"
 
 // the purpose of this hook is to track the screen reader status of the user's device
 export const useScreenReaderTracking = () => {
@@ -12,13 +13,12 @@ export const useScreenReaderTracking = () => {
     }
 
     getScreenReaderStatus()
-    postEventToProviders(tracks.trackScreenReaderStatus(isScreenReaderEnabled))
+    SegmentTrackingProvider.identify?.(null, {
+      [AnalyticsConstants.ScreenReaderStatus.key]: (() => {
+        return isScreenReaderEnabled
+          ? AnalyticsConstants.ScreenReaderStatus.value.Enabled
+          : AnalyticsConstants.ScreenReaderStatus.value.Disabled
+      })(),
+    })
   }, [])
-}
-
-export const tracks = {
-  trackScreenReaderStatus: (isScreenReaderEnabled: boolean) => ({
-    name: "screen_reader_enabled",
-    screen_reader_enabled: isScreenReaderEnabled,
-  }),
 }
