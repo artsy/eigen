@@ -27,7 +27,7 @@ const forceCheckout = () => {
   const logger = ora("force checkout").start()
   try {
     exec(`git checkout ${DEFAULT_CHANGELOG_BRANCH}`)
-    exec(`git reset master --hard`)
+    exec(`git reset main --hard`)
   } catch (_) {
     exec(`git checkout -b ${DEFAULT_CHANGELOG_BRANCH}`)
   } finally {
@@ -79,7 +79,7 @@ const createAndMergePullRequest = async () => {
     repo: "eigen",
     head: DEFAULT_CHANGELOG_BRANCH,
     owner: "artsy",
-    base: "master",
+    base: "main",
     title: "Update Changelog ✍️",
     body: "This is an automatic PR to update the changelog ✍️",
   })

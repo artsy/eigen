@@ -10,7 +10,7 @@ jobs:
       - run: ./scripts/deploy-ios
 
       - name: Trigger release
-        # CircleCI doesn't automatically run builds on the beta branch (only master and PRs)
+        # CircleCI doesn't automatically run builds on the beta branch (only main and PRs)
         # so this is a github action to force it to do so.
         run: |
           curl \

@@ -17,9 +17,9 @@
 + (NSURL *_Nonnull)fileURLForLatestCommitJavaScript;
 + (NSURL *_Nonnull)fileURLForLatestCommitMetadata;
 
-// First passes some metadata back, before downloading the larger JS for emission from master
-- (void)downloadJavaScriptForMasterCommit:(void (^ _Nonnull)(NSString * _Nullable title, NSString * _Nullable subtitle))metadata completion:(void (^_Nonnull)(NSURL * _Nullable downloadedFileURL, NSError * _Nullable error))completionHandler;
+// First passes some metadata back, before downloading the larger JS for emission from main
+- (void)downloadJavaScriptForMainCommit:(void (^ _Nonnull)(NSString * _Nullable title, NSString * _Nullable subtitle))metadata completion:(void (^_Nonnull)(NSURL * _Nullable downloadedFileURL, NSError * _Nullable error))completionHandler;
 
-- (void)downloadMetadataForMasterCommit:(void (^_Nonnull)(NSError * _Nullable error, Metadata * _Nullable metadata))completionHandler;
+- (void)downloadMetadataForMainCommit:(void (^_Nonnull)(NSError * _Nullable error, Metadata * _Nullable metadata))completionHandler;
 
 @end
