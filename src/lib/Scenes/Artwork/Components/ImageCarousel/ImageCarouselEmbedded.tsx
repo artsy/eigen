@@ -10,10 +10,16 @@ import { ImageWithLoadingState } from "./ImageWithLoadingState"
 
 interface ImageCarouselEmbeddedProps {
   cardHeight: number
+  disableFullScreen?: boolean
+  onImagePressed?: () => void
 }
 
 // This is the main image caoursel visible on the root of the artwork page
-export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({ cardHeight }) => {
+export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
+  cardHeight,
+  disableFullScreen = false,
+  onImagePressed,
+}) => {
   const screenDimensions = useScreenDimensions()
 
   const embeddedCardBoundingBox = { width: screenDimensions.width, height: isPad() ? 460 : cardHeight }
@@ -31,19 +37,18 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({ ca
   const measurements = getMeasurements({ images, boundingBox: embeddedCardBoundingBox })
   const offsets = measurements.map((m) => m.cumulativeScrollOffset)
 
-  const normalise = (value: number, min: number, max: number) => {
-    return (value - min) / (max - min)
-  }
+  const scrollEnabled = images.length > 1
+
   // update the imageIndex on scroll
   const onScroll = useCallback(
     (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const max = Math.max(...offsets)
-      const toValue = normalise(e.nativeEvent.contentOffset.x, 0, max)
-      Animated.spring(xScrollOffsetAnimatedValue.current!, {
-        toValue,
-        useNativeDriver: true,
-        speed: 20,
-      }).start()
+      if (scrollEnabled) {
+        Animated.spring(xScrollOffsetAnimatedValue.current!, {
+          toValue: e.nativeEvent.contentOffset.x / Math.max(...offsets),
+          useNativeDriver: true,
+          speed: 20,
+        }).start()
+      }
       // This finds the index of the image which is being given the most
       // screen real estate at any given point in time.
       const nextImageIndex = findClosestIndex(offsets, e.nativeEvent.contentOffset.x)
@@ -58,7 +63,8 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({ ca
   )
 
   const goFullScreen = useCallback(() => {
-    if (Platform.OS === "ios") {
+    onImagePressed?.()
+    if (Platform.OS === "ios" && !disableFullScreen) {
       dispatch({ type: "TAPPED_TO_GO_FULL_SCREEN" })
     }
   }, [dispatch])
@@ -112,7 +118,7 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({ ca
       horizontal
       ref={embeddedFlatListRef}
       showsHorizontalScrollIndicator={false}
-      scrollEnabled={images.length > 1}
+      scrollEnabled={scrollEnabled}
       getItemLayout={(_, index) => ({ index, offset: offsets[index], length: embeddedCardBoundingBox.width })}
       snapToOffsets={offsets}
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

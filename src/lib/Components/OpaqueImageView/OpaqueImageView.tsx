@@ -166,7 +166,7 @@ export default class OpaqueImageView extends React.Component<Props, State> {
       <Image
         style={[style, backgroundColorStyle] as any}
         {...remainderProps}
-        source={{ uri: remainderProps.imageURL! }}
+        source={{ uri: Image.resolveAssetSource({ uri: remainderProps.imageURL! }).uri }}
       />
     )
   }

@@ -1,15 +1,14 @@
 import { tappedCollectedArtworkImages } from "@artsy/cohesion"
 import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "lib/navigation/navigate"
-import { getMeasurements, Size } from "lib/Scenes/Artwork/Components/ImageCarousel/geometry"
-import { ImageCarouselFragmentContainer } from "lib/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
+import {
+  ImageCarousel,
+  ImageCarouselFragmentContainer,
+} from "lib/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { Image } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { ArtworkIcon, Flex, Spacer, Text, useColor } from "palette"
+import { Spacer, Text } from "palette"
 import React from "react"
-import { TouchableOpacity } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import useInterval from "react-use/lib/useInterval"
@@ -20,7 +19,6 @@ interface MyCollectionArtworkHeaderProps {
 }
 
 export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (props) => {
-  const color = useColor()
   const {
     artwork: { artistNames, date, images, internalID, title, slug },
     relay,
@@ -65,56 +63,20 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
       return false
     }
 
-    const concreteImages = imagesToCheck as Image[]
+    const concreteImages = imagesToCheck as unknown as Array<Omit<Image, " $fragmentRefs">> as Image[]
     const stillProcessing = concreteImages.some((image) => imageIsProcessing(image, "normalized"))
     return stillProcessing
   }
 
-  // const renderMainImageView = () => {
-  //   if (!isImage(defaultImage) || imageIsProcessing(defaultImage, "normalized")) {
-  //     return (
-  //       <Flex
-  //         style={{ height: 300, alignItems: "center", justifyContent: "center", backgroundColor: color("black10") }}
-  //       >
-  //         <ArtworkIcon style={{ opacity: 0.6 }} height={100} width={100} />
-  //         <Text style={{ opacity: 0.6 }}>
-  //           {images && images?.length > 0 ? "Processing photos" : "Processing photo"}
-  //         </Text>
-  //       </Flex>
-  //     )
-  //   } else {
-  //     const maxImageHeight = dimensions.height / 2.5
-  //     const boundingBox: Size = {
-  //       height: defaultImage.height < maxImageHeight ? defaultImage.height : maxImageHeight,
-  //       width: dimensions.width,
-  //     }
-  //     const measurements = getMeasurements({
-  //       images: [
-  //         {
-  //           height: defaultImage.height,
-  //           width: defaultImage.width,
-  //         },
-  //       ],
-  //       boundingBox,
-  //     })[0]
+  const imagesToDisplay = images
+  let isDisplayingLocalImages = false
+  if (hasImagesStillProcessing(defaultImage, images)) {
+    // fallback to local images for this collection artwork
+    // TODO:- imagesToDisplay: ImageDescriptor[]
+    isDisplayingLocalImages = true
+  }
 
-  //     const { cumulativeScrollOffset, ...styles } = measurements
-  //     // remove all vertical margins for pics taken in landscape mode
-  //     boundingBox.height = boundingBox.height - (styles.marginBottom + styles.marginTop)
-  //     return (
-  //       <Flex style={boundingBox} bg="black5" alignItems="center">
-  //         <OpaqueImageView
-  //           imageURL={defaultImage.imageURL.replace(":version", "normalized")}
-  //           useRawURL
-  //           retryFailedURLs
-  //           height={styles.height}
-  //           width={styles.width}
-  //           aspectRatio={styles.width / styles.height}
-  //         />
-  //       </Flex>
-  //     )
-  //   }
-  // }
+  const ImagesToDisplayCarousel = isDisplayingLocalImages ? ImageCarousel : ImageCarouselFragmentContainer
 
   return (
     <>
@@ -125,38 +87,18 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
         </Text>
       </ScreenMargin>
       <Spacer my={1} />
-      {/* <TouchableOpacity
-        disabled={hasImagesStillProcessing(defaultImage, images)}
-        onPress={() => {
-          navigate(`/my-collection/artwork-images/${internalID}`)
-          trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))
-        }}
-      > */}
-      {/* {renderMainImageView()} */}
-      <ImageCarouselFragmentContainer images={images as any} cardHeight={300} paginationIndicatorType="scrollBar" />
-      {/* {!!images && !hasImagesStillProcessing(defaultImage, images) && (
-          <Flex
-            mr={2}
-            style={{
-              top: -50,
-              alignItems: "flex-end",
+      {
+        !!imagesToDisplay ? (
+          <ImagesToDisplayCarousel
+            images={imagesToDisplay as any}
+            cardHeight={dimensions.height / 2.5}
+            paginationIndicatorType="scrollBar"
+            onImagePressed={() => {
+              trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))
             }}
-          >
-            <Flex
-              py={0.5}
-              px={2}
-              style={{
-                backgroundColor: "rgba(255, 255, 255, 0.95)",
-                borderRadius: 3,
-              }}
-            >
-              <Text variant="xs">
-                {images.length} photo{images.length > 1 ? "s" : ""}
-              </Text>
-            </Flex>
-          </Flex>
-        )} */}
-      {/* </TouchableOpacity> */}
+          />
+        ) : null // TODO:- Display null image container https://artsyproduct.atlassian.net/browse/CX-2200
+      }
     </>
   )
 }
@@ -170,8 +112,8 @@ export const MyCollectionArtworkHeaderRefetchContainer = createRefetchContainer(
         date
         images {
           ...ImageCarousel_images
-          url: imageURL
           imageVersions
+          isDefault
         }
         internalID
         slug
