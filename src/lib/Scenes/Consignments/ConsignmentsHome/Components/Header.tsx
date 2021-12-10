@@ -4,7 +4,7 @@ import React from "react"
 
 export const Header: React.FC = () => {
   const handlePress = () => {
-    navigate(`/submit-artwork`)
+    navigate("/submit-artwork")
   }
 
   return (

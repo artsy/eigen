@@ -16,19 +16,39 @@ export const DisplayContent = () => {
 export const ComponentWithCollapsibleMenu = () => {
   const totalSteps = 3
   const [activeStep, setActiveStep] = useState(1)
-  const [isCompleted, setIsCompleted] = useState(false)
+  const [enabledSteps, setEnabledSteps] = useState([1])
 
   return (
     <View style={{ margin: 20 }}>
       <CollapsibleMenuItem
+        step={1}
+        enabled={!!enabledSteps.includes(1)}
         title="Press to Collapse"
-        Content={() => <DisplayContent />}
-        setIsCompleted={setIsCompleted}
-        activeStep={activeStep}
-        step={activeStep}
         totalSteps={totalSteps}
-        isCompleted={isCompleted}
+        activeStep={activeStep}
         setActiveStep={setActiveStep}
+        enabledSteps={enabledSteps}
+        setEnabledSteps={setEnabledSteps}
+      />
+      <CollapsibleMenuItem
+        step={2}
+        enabled={!!enabledSteps.includes(2)}
+        title="Press to Collapse"
+        totalSteps={totalSteps}
+        activeStep={activeStep}
+        setActiveStep={setActiveStep}
+        enabledSteps={enabledSteps}
+        setEnabledSteps={setEnabledSteps}
+      />
+      <CollapsibleMenuItem
+        step={3}
+        enabled={!!enabledSteps.includes(3)}
+        title="Press to Collapse"
+        totalSteps={totalSteps}
+        activeStep={activeStep}
+        setActiveStep={setActiveStep}
+        enabledSteps={enabledSteps}
+        setEnabledSteps={setEnabledSteps}
       />
     </View>
   )
