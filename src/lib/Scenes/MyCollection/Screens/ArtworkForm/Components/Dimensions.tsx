@@ -1,4 +1,4 @@
-import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkFormModal/Form/useArtworkForm"
+import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { Flex, Input, RadioButton, Spacer, Text } from "palette"
 import React from "react"
 

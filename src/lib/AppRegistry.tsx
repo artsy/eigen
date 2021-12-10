@@ -63,6 +63,7 @@ import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEdi
 import { MyBidsQueryRenderer } from "./Scenes/MyBids"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
+import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
 import { MyCollectionArtworkImagesQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkImages/MyCollectionArtworkImages"
 import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
@@ -94,6 +95,7 @@ import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoo
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
 import { GlobalStore, useFeatureFlag, useSelectedTab } from "./store/GlobalStore"
+import { propsStore } from "./store/PropsStore"
 import { AdminMenu } from "./utils/AdminMenu"
 import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
@@ -162,6 +164,7 @@ interface PageWrapperProps {
   isMainView?: boolean
   ViewComponent: React.ComponentType<any>
   viewProps: any
+  moduleName: string
 }
 
 const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, ViewComponent, viewProps }) => {
@@ -194,9 +197,13 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, V
 @track()
 class PageWrapper extends React.Component<PageWrapperProps> {
   render() {
+    const props = {
+      ...this.props,
+      viewProps: { ...this.props.viewProps, ...propsStore.getPropsForModule(this.props.moduleName) },
+    }
     return (
       <AppProviders>
-        <InnerPageWrapper {...this.props} />
+        <InnerPageWrapper {...props} />
       </AppProviders>
     )
   }
@@ -207,7 +214,9 @@ function register(
   Component: React.ComponentType<any>,
   options?: Omit<PageWrapperProps, "ViewComponent" | "viewProps">
 ) {
-  const WrappedComponent = (props: any) => <PageWrapper {...options} ViewComponent={Component} viewProps={props} />
+  const WrappedComponent = (props: any) => (
+    <PageWrapper {...options} moduleName={screenName} ViewComponent={Component} viewProps={props} />
+  )
   AppRegistry.registerComponent(screenName, () => WrappedComponent)
 }
 
@@ -253,6 +262,7 @@ export const modules = defineModules({
   Admin: nativeModule({ alwaysPresentModally: true }),
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
+  AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
   Articles: reactModule(ArticlesQueryRenderer),
   Artist: reactModule(ArtistQueryRenderer),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
@@ -373,7 +383,7 @@ for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]
   if ("Component" in descriptor) {
     if (Platform.OS === "ios") {
-      register(moduleName, descriptor.Component, { fullBleed: descriptor.options.fullBleed })
+      register(moduleName, descriptor.Component, { fullBleed: descriptor.options.fullBleed, moduleName })
     }
   }
 }
@@ -426,5 +436,5 @@ const Main: React.FC<{}> = track()(({}) => {
 })
 
 if (Platform.OS === "ios") {
-  register("Artsy", Main, { fullBleed: true, isMainView: true })
+  register("Artsy", Main, { fullBleed: true, isMainView: true, moduleName: "Artsy" })
 }

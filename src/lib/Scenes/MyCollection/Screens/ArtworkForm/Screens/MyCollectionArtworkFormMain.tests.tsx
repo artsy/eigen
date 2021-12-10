@@ -7,7 +7,7 @@ import React from "react"
 import { ArtistAutosuggest } from "../Components/ArtistAutosuggest"
 import { Dimensions } from "../Components/Dimensions"
 import { MediumPicker } from "../Components/MediumPicker"
-import { ArtworkFormMode } from "../MyCollectionArtworkFormModal"
+import { ArtworkFormMode } from "../MyCollectionArtworkForm"
 import { MyCollectionArtworkFormMain } from "./MyCollectionArtworkFormMain"
 
 jest.mock("formik")
@@ -65,16 +65,18 @@ describe("AddEditArtwork", () => {
       "ArtworkForm",
       {
         mode: ArtworkFormMode
-        onDismiss(): void
+        clearForm(): void
         onDelete?(): void
+        onHeaderBackButtonPress(): void
       }
     > = {
       key: "ArtworkForm",
       name: "ArtworkForm",
       params: {
         mode: "add",
-        onDismiss: jest.fn(),
+        clearForm: jest.fn(),
         onDelete: jest.fn(),
+        onHeaderBackButtonPress: jest.fn(),
       },
     }
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
@@ -96,16 +98,18 @@ describe("AddEditArtwork", () => {
       "ArtworkForm",
       {
         mode: ArtworkFormMode
-        onDismiss(): void
+        clearForm(): void
         onDelete?(): void
+        onHeaderBackButtonPress(): void
       }
     > = {
       key: "ArtworkForm",
       name: "ArtworkForm",
       params: {
         mode: "edit",
-        onDismiss: jest.fn(),
+        clearForm: jest.fn(),
         onDelete: jest.fn(),
+        onHeaderBackButtonPress: jest.fn(),
       },
     }
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
@@ -116,29 +120,46 @@ describe("AddEditArtwork", () => {
     expect(deleteButton).toBeDefined()
   })
 
-  it("fires dismiss on header cancel button click", () => {
+  it("fires clear form on header Clear button click", () => {
     const mockNav = jest.fn()
-    const mockDismiss = jest.fn()
+    const mockClearForm = jest.fn()
     const mockRoute: Route<
       "ArtworkForm",
       {
         mode: ArtworkFormMode
-        onDismiss(): void
+        clearForm(): void
         onDelete?(): void
+        onHeaderBackButtonPress(): void
       }
     > = {
       key: "ArtworkForm",
       name: "ArtworkForm",
       params: {
         mode: "edit",
-        onDismiss: mockDismiss,
+        clearForm: mockClearForm,
         onDelete: jest.fn(),
+        onHeaderBackButtonPress: jest.fn(),
       },
     }
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    // make form dirty
+    __globalStoreTestUtils__?.injectState({
+      myCollection: {
+        artwork: {
+          sessionState: {
+            formValues: {
+              width: "30",
+            },
+            dirtyFormCheckValues: {
+              width: "40",
+            },
+          },
+        },
+      },
+    })
     const wrapper = renderWithWrappers(artworkForm)
-    wrapper.root.findByType(FancyModalHeader).props.onLeftButtonPress()
-    expect(mockDismiss).toHaveBeenCalled()
+    wrapper.root.findByType(FancyModalHeader).props.onRightButtonPress()
+    expect(mockClearForm).toHaveBeenCalled()
   })
 
   it("fires formik's handleSubmit on complete button click", () => {
@@ -154,16 +175,18 @@ describe("AddEditArtwork", () => {
       "ArtworkForm",
       {
         mode: ArtworkFormMode
-        onDismiss(): void
+        clearForm(): void
         onDelete?(): void
+        onHeaderBackButtonPress(): void
       }
     > = {
       key: "ArtworkForm",
       name: "ArtworkForm",
       params: {
         mode: "edit",
-        onDismiss: jest.fn(),
+        clearForm: jest.fn(),
         onDelete: jest.fn(),
+        onHeaderBackButtonPress: jest.fn(),
       },
     }
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
@@ -180,16 +203,18 @@ describe("AddEditArtwork", () => {
       "ArtworkForm",
       {
         mode: ArtworkFormMode
-        onDismiss(): void
+        clearForm(): void
         onDelete?(): void
+        onHeaderBackButtonPress(): void
       }
     > = {
       key: "ArtworkForm",
       name: "ArtworkForm",
       params: {
         mode: "edit",
-        onDismiss: jest.fn(),
+        clearForm: jest.fn(),
         onDelete: mockDelete,
+        onHeaderBackButtonPress: jest.fn(),
       },
     }
 
@@ -204,6 +229,7 @@ describe("AddEditArtwork", () => {
   })
 
   it("navigates to additional details on click", () => {
+    const onHeaderBackButtonPressMock = jest.fn()
     const mockNavigate = jest.fn()
     const mockNav = {
       navigate: mockNavigate,
@@ -212,21 +238,25 @@ describe("AddEditArtwork", () => {
       "ArtworkForm",
       {
         mode: ArtworkFormMode
-        onDismiss(): void
+        clearForm(): void
         onDelete?(): void
+        onHeaderBackButtonPress(): void
       }
     > = {
       key: "ArtworkForm",
       name: "ArtworkForm",
       params: {
         mode: "edit",
-        onDismiss: jest.fn(),
+        clearForm: jest.fn(),
         onDelete: jest.fn(),
+        onHeaderBackButtonPress: onHeaderBackButtonPressMock,
       },
     }
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
     const wrapper = renderWithWrappers(artworkForm)
     wrapper.root.findByProps({ testID: "AdditionalDetailsButton" }).props.onPress()
-    expect(mockNavigate).toHaveBeenCalledWith("AdditionalDetails")
+    expect(mockNavigate).toHaveBeenCalledWith("AdditionalDetails", {
+      onHeaderBackButtonPress: onHeaderBackButtonPressMock,
+    })
   })
 })

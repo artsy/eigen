@@ -14,6 +14,7 @@ import { PAGE_SIZE } from "lib/Components/constants"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { navigate, popToRoot } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { unsafe_getFeatureFlag, useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -28,7 +29,6 @@ import React, { useContext, useEffect, useState } from "react"
 import { Platform, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { MyCollectionArtworkFormModal } from "./Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
 
 const RefreshEvents = new EventEmitter()
 const REFRESH_KEY = "refresh"
@@ -62,7 +62,6 @@ const MyCollection: React.FC<{
   me: MyCollection_me
 }> = ({ relay, me }) => {
   const { trackEvent } = useTracking()
-  const [showModal, setShowModal] = useState(false)
   const [filterModalVisible, setFilterModalVisible] = useState(false)
   const filtersCount = useSelectedFiltersCount()
   const enabledSortAndFilter = useFeatureFlag("ARMyCollectionLocalSortAndFilter")
@@ -191,7 +190,12 @@ const MyCollection: React.FC<{
                   size="small"
                   variant="fillDark"
                   onPress={() => {
-                    setShowModal(true)
+                    navigate("my-collection/artworks/new", {
+                      passProps: {
+                        mode: "add",
+                        onSuccess: popToRoot,
+                      },
+                    })
                     trackEvent(tracks.addCollectedArtwork())
                   }}
                   haptic
@@ -206,7 +210,12 @@ const MyCollection: React.FC<{
                   size="small"
                   variant="fillDark"
                   onPress={() => {
-                    setShowModal(true)
+                    navigate("my-collection/artworks/new", {
+                      passProps: {
+                        mode: "add",
+                        onSuccess: popToRoot,
+                      },
+                    })
                     trackEvent(tracks.addCollectedArtwork())
                   }}
                   haptic
@@ -239,16 +248,6 @@ const MyCollection: React.FC<{
         context_screen_owner_type: OwnerType.myCollection,
       })}
     >
-      <MyCollectionArtworkFormModal
-        mode="add"
-        visible={showModal}
-        onDismiss={() => setShowModal(false)}
-        onSuccess={() => {
-          setShowModal(false)
-          refreshMyCollection()
-        }}
-      />
-
       <ArtworkFilterNavigator
         visible={filterModalVisible}
         mode={FilterModalMode.Custom}
@@ -268,8 +267,13 @@ const MyCollection: React.FC<{
               <Button
                 testID="add-artwork-button-zero-state"
                 onPress={() => {
-                  setShowModal(true)
                   trackEvent(tracks.addCollectedArtwork())
+                  navigate("my-collection/artworks/new", {
+                    passProps: {
+                      mode: "add",
+                      onSuccess: popToRoot,
+                    },
+                  })
                 }}
                 block
               >

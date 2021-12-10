@@ -13,11 +13,11 @@ import { ArtistAutosuggest } from "../Components/ArtistAutosuggest"
 import { Dimensions } from "../Components/Dimensions"
 import { MediumPicker } from "../Components/MediumPicker"
 import { useArtworkForm } from "../Form/useArtworkForm"
-import { ArtworkFormModalScreen } from "../MyCollectionArtworkFormModal"
+import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 
-export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormModalScreen, "ArtworkForm">> = ({
+export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormScreen, "ArtworkForm">> = ({
   navigation,
   route,
 }) => {
@@ -43,7 +43,11 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
 
   return (
     <>
-      <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={() => route.params.onDismiss()}>
+      <FancyModalHeader
+        onLeftButtonPress={route.params.onHeaderBackButtonPress}
+        rightButtonText={isFormDirty() ? "Clear" : undefined}
+        onRightButtonPress={isFormDirty() ? () => route.params.clearForm() : undefined}
+      >
         {addOrEditLabel} Artwork
       </FancyModalHeader>
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
@@ -71,14 +75,14 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormM
                 artworkActions.addPhotos(photos)
               })
             } else {
-              navigation.navigate("AddPhotos")
+              navigation.navigate("AddPhotos", { onHeaderBackButtonPress: route.params.onHeaderBackButtonPress })
             }
           }}
         />
         <AdditionalDetailsButton
           testID="AdditionalDetailsButton"
           onPress={() => {
-            navigation.navigate("AdditionalDetails")
+            navigation.navigate("AdditionalDetails", { onHeaderBackButtonPress: route.params.onHeaderBackButtonPress })
           }}
         />
 
