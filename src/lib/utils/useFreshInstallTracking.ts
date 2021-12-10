@@ -1,7 +1,7 @@
 import { getCurrentEmissionState } from "lib/store/GlobalStore"
 import { useEffect } from "react"
 import { AnalyticsConstants } from "./track/constants"
-import { SegmentTrackingProvider } from "./track/SegmentTrackingProvider"
+import { postEventToProviders } from "./track/providers"
 
 export const useFreshInstallTracking = () => {
   useEffect(() => {
@@ -9,6 +9,6 @@ export const useFreshInstallTracking = () => {
     if (launchCount > 1) {
       return
     }
-    SegmentTrackingProvider.postEvent({ name: AnalyticsConstants.FreshInstall })
+    postEventToProviders({ name: AnalyticsConstants.FreshInstall })
   }, [])
 }
