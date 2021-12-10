@@ -1,7 +1,7 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import React, { useEffect } from "react"
-import { Appearance, AppRegistry, LogBox, Platform, View } from "react-native"
+import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { StorybookUIRoot } from "../storybook/storybook-ui"
 import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
@@ -99,10 +99,12 @@ import { propsStore } from "./store/PropsStore"
 import { AdminMenu } from "./utils/AdminMenu"
 import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
-import { AnalyticsConstants } from "./utils/track/constants"
 import { SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider } from "./utils/track/SegmentTrackingProvider"
 import { useExperiments } from "./utils/useExperiments"
+import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
+import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenDimensions } from "./utils/useScreenDimensions"
+import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
 import { useStripeConfig } from "./utils/useStripeConfig"
 
 LogBox.ignoreLogs([
@@ -389,24 +391,13 @@ for (const moduleName of Object.keys(modules)) {
 }
 
 const Main: React.FC<{}> = track()(({}) => {
+  usePreferredThemeTracking()
+  useScreenReaderTracking()
+  useFreshInstallTracking()
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
     })
-    if (Platform.OS === "ios") {
-      const scheme = Appearance.getColorScheme()
-      SegmentTrackingProvider.identify?.(null, {
-        [AnalyticsConstants.UserInterfaceStyle.key]: (() => {
-          switch (scheme) {
-            case "light":
-              return AnalyticsConstants.UserInterfaceStyle.value.Light
-            case "dark":
-              return AnalyticsConstants.UserInterfaceStyle.value.Dark
-          }
-          return AnalyticsConstants.UserInterfaceStyle.value.Unspecified
-        })(),
-      })
-    }
   }, [])
   const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
