@@ -35,6 +35,7 @@ export interface ArtworkFormValues {
   provenance: string
   title: string
   width: string
+  location: string
 }
 
 export const initialFormValues: ArtworkFormValues = {
@@ -56,6 +57,7 @@ export const initialFormValues: ArtworkFormValues = {
   provenance: "",
   title: "",
   width: "",
+  location: "",
 }
 
 export interface MyCollectionArtworkModel {
@@ -101,6 +103,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   },
 
   setFormValues: action((state, input) => {
+    console.log("MYLOG :: ", input)
     state.sessionState.formValues = input
   }),
 
