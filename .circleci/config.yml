@@ -485,7 +485,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
     jobs:
       - deploy-nightly-beta
 
@@ -496,7 +496,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
     jobs:
       - check-flags
 
@@ -507,7 +507,7 @@ workflows:
   #         filters:
   #           branches:
   #             only:
-  #               - master
+  #               - main
   #   jobs:
   #     - check-metaphysics-freshness
 
@@ -517,7 +517,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
   promote:
     jobs:
       - promote-beta-to-app-store:
@@ -537,14 +537,14 @@ workflows:
           filters:
             branches:
               ignore:
-                - master
+                - main
                 - release
                 - staging
       - check-pr:
           filters:
             branches:
               ignore:
-                - master
+                - main
                 - beta-ios
                 - beta-android
                 - app_store_submission

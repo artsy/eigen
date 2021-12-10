@@ -35,13 +35,13 @@ export const ImageCarouselFullScreen = () => {
 
   const zoomViewRefs: ImageZoomView[] = useMemo(() => [], [])
 
-  const masterOpacity = useAnimatedValue(1)
+  const mainOpacity = useAnimatedValue(1)
 
   const [ensureNoFlicker, setEnsureNoFlicker] = useState(false)
 
   useEffect(() => {
     if (fullScreenState.current === "exiting") {
-      Animated.timing(masterOpacity, {
+      Animated.timing(mainOpacity, {
         duration: 200,
         toValue: 0,
         useNativeDriver: true,
@@ -65,7 +65,7 @@ export const ImageCarouselFullScreen = () => {
           right: 0,
           bottom: 0,
           flex: 1,
-          opacity: ensureNoFlicker ? 0 : masterOpacity,
+          opacity: ensureNoFlicker ? 0 : mainOpacity,
         }}
       >
         <WhiteUnderlay />
