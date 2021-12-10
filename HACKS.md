@@ -279,13 +279,3 @@ Once sentry adds `enableOutOfMemoryTracking` to their `ReactNativeOptions` type.
 #### Explanation/Context:
 
 `enableOutOfMemoryTracking` seems to be missing from the `ReactNativeOptions` typing although it's working properly (see https://github.com/getsentry/sentry-react-native/issues/1633). We need to add it so that we can stop receiving Sentry errors related to out of memory.
-
-## Adopt inclusive language in tslint
-
-#### When can we remove this:
-
-Once tslint updates the naming of their `import-blacklist` plugin to be inclusive. But since RIP tslint, this is likely to stay for a while until we adopt eslint
-
-#### Explanation/Context:
-
-This comes as a follow up on the Adopt inclusive language RFC. See https://github.com/artsy/README/issues/427
