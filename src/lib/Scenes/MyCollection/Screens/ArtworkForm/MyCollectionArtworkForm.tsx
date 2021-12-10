@@ -22,8 +22,6 @@ import { refreshMyCollection } from "../../MyCollection"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { deletedPhotoIDs } from "../../utils/deletedPhotoIDs"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
-import { MyCollectionAdditionalDetailsForm } from "./Screens/MyCollectionArtworkFormAdditionalDetails"
-import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
 import { MyCollectionArtworkFormMain } from "./Screens/MyCollectionArtworkFormMain"
 
 export type ArtworkFormMode = "add" | "edit"
@@ -225,16 +223,6 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
             name="ArtworkForm"
             component={MyCollectionArtworkFormMain}
             initialParams={{ onDelete, clearForm, mode: props.mode, onHeaderBackButtonPress }}
-          />
-          <Stack.Screen
-            name="AdditionalDetails"
-            component={MyCollectionAdditionalDetailsForm}
-            initialParams={{ onHeaderBackButtonPress }}
-          />
-          <Stack.Screen
-            name="AddPhotos"
-            component={MyCollectionAddPhotos}
-            initialParams={{ onHeaderBackButtonPress }}
           />
         </Stack.Navigator>
         <LoadingModal isVisible={loading} />
