@@ -1,3 +1,4 @@
+import { isALocalImage } from "lib/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import React from "react"
 import {
   Image,
@@ -107,6 +108,18 @@ export default class OpaqueImageView extends React.Component<Props, State> {
     const { imageURL, useRawURL } = this.props
 
     if (imageURL) {
+      if (isALocalImage(imageURL)) {
+        // we will always useRawURL for local images
+        if (imageURL.startsWith("file://")) {
+          return imageURL
+        }
+        if (imageURL.startsWith("/")) {
+          return "file://" + imageURL
+        }
+        // TODO:- Handling of './' paths
+        // Ignore android's assets:// path
+        return null
+      }
       if (useRawURL) {
         return imageURL
       }

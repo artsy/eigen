@@ -69,11 +69,21 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   }
 
   const imagesToDisplay = images
-  let isDisplayingLocalImages = false
+  const isDisplayingLocalImages = false
   if (hasImagesStillProcessing(defaultImage, images)) {
     // fallback to local images for this collection artwork
     // TODO:- imagesToDisplay: ImageDescriptor[]
-    isDisplayingLocalImages = true
+    // const localCopy = MyCollectionLocalImageStore.get(internalID)
+    // imagesToDisplay =
+    //   localCopy?.images?.map((art) => ({
+    //     url: art.url,
+    //     width: art.width,
+    //     height: art.height,
+    //     deepZoom: null,
+    //   })) ?? null
+    // if (imagesToDisplay) {
+    //   isDisplayingLocalImages = true
+    // }
   }
 
   const ImagesToDisplayCarousel = isDisplayingLocalImages ? ImageCarousel : ImageCarouselFragmentContainer
