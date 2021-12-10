@@ -229,6 +229,11 @@ export const features = defineFeatures({
     description: "Enable Algolia Artworks Grid",
     showInAdminMenu: true,
   },
+  ARShowOnlyAlgoliaArtworks: {
+    readyForRelease: false,
+    description: "Show only Algolia Artworks",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

@@ -1,15 +1,20 @@
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { Artwork } from "lib/Components/ArtworkGrids/ArtworkGridItem"
+import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/ArtworksFilterHeader"
+import { FancyModal } from "lib/Components/FancyModal/FancyModal"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { LoadFailureView } from "lib/Components/LoadFailureView"
 import { isPad } from "lib/utils/hardware"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Box, Flex, Spacer, Spinner, Text, useSpace } from "palette"
-import React, { useEffect, useRef, useState } from "react"
-import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-core"
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react"
+import { InfiniteHitsProvided, InstantSearch, SearchState, StateResultsProvided } from "react-instantsearch-core"
 import { FlatList } from "react-native"
+import { ScrollView } from "react-native-gesture-handler"
 import { AlgoliaSearchPlaceholder } from "./components/placeholders/AlgoliaSearchPlaceholder"
 import { SearchResult } from "./components/SearchResult"
 import { isAlgoliaApiKeyExpiredError } from "./helpers"
+import RefinementList from "./RefinementList"
 import { AlgoliaSearchResult } from "./types"
 
 interface SearchResultsProps
@@ -19,6 +24,8 @@ interface SearchResultsProps
   categoryDisplayName: string
   onRetry?: () => void
   trackResultPress?: (result: AlgoliaSearchResult) => void
+  onSearchStateChange: Dispatch<SetStateAction<SearchState>>
+  searchClient: any
 }
 
 export const SearchResults: React.FC<SearchResultsProps> = ({
@@ -34,13 +41,15 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   onRetry,
   refineNext,
   trackResultPress,
+  onSearchStateChange,
+  searchClient,
 }) => {
   const [showLoadingPlaceholder, setShowLoadingPlaceholder] = useState(true)
   const flatListRef = useRef<FlatList<AlgoliaSearchResult>>(null)
   const didMountRef = useRef(false)
   const loading = searching || isSearchStalled
   const space = useSpace()
-
+  const [isModalVisible, setIsModalVisible] = useState(false)
   useEffect(() => {
     requestAnimationFrame(() => {
       flatListRef.current?.scrollToOffset({ offset: 0, animated: true })
@@ -60,6 +69,9 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
 
     didMountRef.current = true
   }, [searchResults?.hits])
+
+  const openFilterModal = () => setIsModalVisible(true)
+  const closeFilterModal = () => setIsModalVisible(false)
 
   const loadMore = () => {
     if (hasMore && !loading) {
@@ -98,18 +110,38 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
 
   if (indexName.includes("Artwork_")) {
     return (
-      <FlatList
-        accessibilityLabel="Artworks Grid Results"
-        numColumns={2}
-        data={hits}
-        keyExtractor={(item) => item.objectID}
-        onEndReached={loadMore}
-        renderItem={({ item }) => (
+      <>
+        <ArtworksFilterHeader selectedFiltersCount={0} onFilterPress={openFilterModal} childrenPosition="left" />
+        <FlatList
+          accessibilityLabel="Artworks Grid Results"
+          contentContainerStyle={{ padding: space(1) }}
+          numColumns={2}
+          data={hits}
+          keyExtractor={(item) => item.objectID}
+          onEndReached={loadMore}
+          renderItem={({ item }) => (
+            <Flex flex={1} p={space(1)}>
+              <Artwork artwork={item} />
+            </Flex>
+          )}
+        />
+        <FancyModal visible={isModalVisible} onBackgroundPressed={closeFilterModal}>
+          <FancyModalHeader onLeftButtonPress={closeFilterModal} useXButton />
           <Flex flex={1}>
-            <Artwork artwork={item} />
+            <InstantSearch
+              searchClient={searchClient}
+              indexName="Artwork_staging"
+              searchState={searchState}
+              onSearchStateChange={onSearchStateChange}
+            >
+              <ScrollView>
+                <RefinementList attribute="materials_terms" limit={15} />
+                <RefinementList attribute="genes" limit={15} />
+              </ScrollView>
+            </InstantSearch>
           </Flex>
-        )}
-      />
+        </FancyModal>
+      </>
     )
   }
 

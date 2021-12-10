@@ -16,6 +16,7 @@ import React, { useMemo, useRef, useState } from "react"
 import {
   Configure,
   connectInfiniteHits,
+  connectRefinementList,
   connectSearchBox,
   connectStateResults,
   InstantSearch,
@@ -65,6 +66,11 @@ const ARTWORKS_PILL: PillType = {
   displayName: "Artworks",
   type: "elastic",
 }
+const ALGOLIA_ARTWORKS_PILL: PillType = {
+  name: "Artwork_staging",
+  displayName: "Artworks",
+  type: "algolia",
+}
 
 const pills: PillType[] = [TOP_PILL, ARTWORKS_PILL]
 
@@ -78,11 +84,12 @@ interface SearchProps {
   system: Search_system | null
 }
 
+const VirtualRefinementList = connectRefinementList(() => null)
+
 export const Search: React.FC<SearchProps> = (props) => {
   const { system, relay } = props
   const searchPillsRef = useRef<ScrollView>(null)
   const [searchState, setSearchState] = useState<SearchState>({})
-  const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
   const searchInsightsConfigured = useSearchInsightsConfig(system?.algolia?.appID, system?.algolia?.apiKey)
@@ -91,6 +98,8 @@ export const Search: React.FC<SearchProps> = (props) => {
   const { trackEvent } = useTracking()
   const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
   const enableAlgoliaArtworksGrid = useFeatureFlag("AREnableAlgoliaArtworksGrid")
+  const showOnlyAlgoliaArtworks = useFeatureFlag("ARShowOnlyAlgoliaArtworks")
+  const [selectedPill, setSelectedPill] = useState<PillType>(showOnlyAlgoliaArtworks ? ALGOLIA_ARTWORKS_PILL : TOP_PILL)
 
   const pillsArray = useMemo<PillType[]>(() => {
     if (Array.isArray(indices) && indices.length > 0) {
@@ -131,6 +140,8 @@ export const Search: React.FC<SearchProps> = (props) => {
           categoryDisplayName={selectedPill.displayName}
           onRetry={handleRetry}
           trackResultPress={handleTrackAlgoliaResultPress}
+          onSearchStateChange={setSearchState}
+          searchClient={searchClient}
         />
       )
     }
@@ -165,7 +176,9 @@ export const Search: React.FC<SearchProps> = (props) => {
 
   const handleResetSearchInput = () => {
     searchPillsRef?.current?.scrollTo({ x: 0, y: 0, animated: true })
-    setSelectedPill(TOP_PILL)
+    if (!showOnlyAlgoliaArtworks) {
+      setSelectedPill(TOP_PILL)
+    }
   }
 
   const handleTrackAutosuggestResultPress = (result: AutosuggestResult, itemIndex?: number) => {
@@ -203,10 +216,14 @@ export const Search: React.FC<SearchProps> = (props) => {
       <ArtsyKeyboardAvoidingView>
         <InstantSearch
           searchClient={searchClient}
-          indexName={selectedPill.type === "algolia" ? selectedPill.name : ""}
+          indexName={
+            showOnlyAlgoliaArtworks ? "Artwork_staging" : selectedPill.type === "algolia" ? selectedPill.name : ""
+          }
           searchState={searchState}
           onSearchStateChange={setSearchState}
         >
+          <VirtualRefinementList attribute="materials_terms" limit={15} />
+          <VirtualRefinementList attribute="genes" limit={15} />
           <Configure clickAnalytics />
           <RefetchWhenApiKeyExpiredContainer relay={relay} />
           <Flex p={2} pb={1}>
@@ -224,15 +241,17 @@ export const Search: React.FC<SearchProps> = (props) => {
           <Flex flex={1} collapsable={false}>
             {!!shouldStartQuering ? (
               <>
-                <Box pt={2} pb={1}>
-                  <SearchPills
-                    ref={searchPillsRef}
-                    loading={indicesInfoLoading}
-                    pills={pillsArray}
-                    onPillPress={handlePillPress}
-                    isSelected={isSelected}
-                  />
-                </Box>
+                {!showOnlyAlgoliaArtworks && (
+                  <Box pt={2} pb={1}>
+                    <SearchPills
+                      ref={searchPillsRef}
+                      loading={indicesInfoLoading}
+                      pills={pillsArray}
+                      onPillPress={handlePillPress}
+                      isSelected={isSelected}
+                    />
+                  </Box>
+                )}
                 {renderResults()}
               </>
             ) : (
