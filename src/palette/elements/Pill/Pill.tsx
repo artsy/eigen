@@ -25,7 +25,6 @@ export interface PillProps extends FlexProps {
   selected?: boolean
   imageUrl?: string
   highlightEnabled?: boolean
-  onRemovePill?: () => void
 }
 
 enum DisplayState {
@@ -72,7 +71,6 @@ export const Pill: React.FC<PillProps> = ({
   rounded,
   sharp,
   highlightEnabled = false,
-  onRemovePill,
   ...rest
 }) => {
   const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")

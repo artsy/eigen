@@ -57,7 +57,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     paramName: FilterParamName.artistIDs,
   }
   const initialPills = isEnabledImprovedAlertsFlow ? [artistPill, ...pillsFromFilters] : pillsFromFilters
-  const [pillsState, setPillsState] = useState(initialPills)
+  const [pills, setPills] = useState(initialPills)
 
   const tracking = useTracking()
   const { space } = useTheme()
@@ -71,7 +71,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       let alertName = values.name
 
       if (alertName.length === 0) {
-        alertName = getNamePlaceholder(artistName, pillsState)
+        alertName = getNamePlaceholder(artistName, pills)
       }
 
       const userAlertSettings: SavedSearchAlertUserAlertSettings = {
@@ -105,7 +105,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
           }
         } else {
           const criteria = isEnabledImprovedAlertsFlow
-            ? getSearchCriteriaFromPills(pillsState)
+            ? getSearchCriteriaFromPills(pills)
             : getSearchCriteriaFromFilters(artistId, filters)
           const response = await createSavedSearchAlert(userAlertSettings, criteria)
 
@@ -268,11 +268,11 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   }
 
   const handleRemovePill = (deletePill: SavedSearchPill) => {
-    const updatedPills = pillsState.filter((pill) => {
+    const updatedPills = pills.filter((pill) => {
       return !(pill.value === deletePill.value && pill.paramName === deletePill.paramName)
     })
 
-    setPillsState(updatedPills)
+    setPills(updatedPills)
   }
 
   return (
@@ -283,7 +283,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         contentContainerStyle={[{ padding: space(2) }, contentContainerStyle]}
       >
         <Form
-          pills={pillsState}
+          pills={pills}
           initialPills={initialPills}
           savedSearchAlertId={savedSearchAlertId}
           artistId={artistId}
