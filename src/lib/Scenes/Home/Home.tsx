@@ -34,7 +34,8 @@ import { compact, times } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
-import { _FragmentRefs, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
@@ -184,6 +185,24 @@ const Home = (props: Props) => {
           data={modules}
           initialNumToRender={5}
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+          prefetchUrlExtractor={(item) => {
+            switch (item?.type) {
+              case "newWorksForYou":
+                return "/new-works-for-you"
+              case "lotsByFollowedArtists":
+                return "/lots-by-artists-you-follow"
+              case "sales":
+                return "/auctions"
+            }
+          }}
+          prefetchVariablesExtractor={(item) => {
+            switch (item?.type) {
+              case "lotsByFollowedArtists":
+                return lotsByArtistsYouFollowDefaultVariables()
+            }
+
+            return {}
+          }}
           renderItem={({ item, index }) => {
             if (!item.data) {
               return <></>

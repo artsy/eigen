@@ -94,7 +94,6 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
     <>
       <QueryRenderer
         environment={props.environment}
-        // tslint:disable-next-line:relay-operation-generics
         query={props.above.query}
         variables={props.above.variables}
         render={(args) => {
@@ -120,7 +119,6 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
       {(renderBelowTheFold || aboveArgs?.props) && (
         <QueryRenderer
           environment={props.environment}
-          // tslint:disable-next-line:relay-operation-generics
           query={props.below.query}
           variables={props.below.variables}
           render={(args) => {
