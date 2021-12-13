@@ -180,17 +180,18 @@ export const WorksForYouContainer = createPaginationContainer(
   }
 )
 
+export const WorksForYouScreenQuery = graphql`
+  query WorksForYouQuery {
+    me {
+      ...WorksForYou_me
+    }
+  }
+`
 export const WorksForYouQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<WorksForYouQuery>
       environment={defaultEnvironment}
-      query={graphql`
-        query WorksForYouQuery {
-          me {
-            ...WorksForYou_me
-          }
-        }
-      `}
+      query={WorksForYouScreenQuery}
       variables={{}}
       render={renderWithLoadProgress(WorksForYouContainer)}
     />

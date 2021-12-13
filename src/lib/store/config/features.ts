@@ -213,6 +213,17 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "ARMyCollectionLocalSortAndFilter",
   },
+  AREnableArtistRecommendations: {
+    readyForRelease: false,
+    description: "Enable new artist recommendations",
+    showInAdminMenu: true,
+  },
+  AREnableQueriesPrefetching: {
+    readyForRelease: true,
+    description: "Enable query prefetching",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableQueriesPrefetching",
+  },
 })
 
 export interface DevToggleDescriptor {
