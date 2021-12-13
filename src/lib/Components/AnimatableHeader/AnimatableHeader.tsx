@@ -21,7 +21,10 @@ import { useAnimatableHeaderContext } from "./AnimatableHeaderContext"
 
 export interface AnimatableHeaderProps {
   title: string
+  rightButtonDisabled?: boolean
+  rightButtonText?: string
   onLeftButtonPress: () => void
+  onRightButtonPress?: () => void
 }
 
 const runTiming = (clock: Clock, value: Animated.Value<number>) => {
@@ -65,7 +68,7 @@ const SHADOW_SCROLL_OFFSET = 15
 const SMALL_TITLE_LEFT_OFFSET = -15
 
 export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
-  const { title } = props
+  const { title, rightButtonDisabled, rightButtonText, onRightButtonPress } = props
   const { space, color } = useTheme()
   const { scrollOffsetY, headerHeight, largeTitleHeight, largeTitleEndEdge, setTitle } = useAnimatableHeaderContext()
   const clock = useRef(new Animated.Clock()).current
@@ -137,6 +140,17 @@ export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
       >
         <Text numberOfLines={2}>{title}</Text>
       </Animated.View>
+      {!!onRightButtonPress && (
+        <TouchableOpacity
+          hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
+          onPress={onRightButtonPress}
+          disabled={rightButtonDisabled}
+        >
+          <Text variant="sm" color={rightButtonDisabled ? "black30" : "black100"}>
+            {rightButtonText}
+          </Text>
+        </TouchableOpacity>
+      )}
     </Animated.View>
   )
 }

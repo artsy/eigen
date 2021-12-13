@@ -21,7 +21,15 @@ export const ArtworkFilterOptionsHeader: React.FC<ArtworkFilterOptionsHeaderProp
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
   if (isEnabledImprovedAlertsFlow) {
-    return <AnimatableHeader title={title} onLeftButtonPress={onLeftButtonPress} />
+    return (
+      <AnimatableHeader
+        title={title}
+        onLeftButtonPress={onLeftButtonPress}
+        rightButtonDisabled={rightButtonDisabled}
+        rightButtonText={rightButtonText}
+        onRightButtonPress={onRightButtonPress}
+      />
+    )
   }
 
   return (
