@@ -462,6 +462,17 @@ export const ArtworkContainer = createRefetchContainer(
   `
 )
 
+export const ArtworkScreenQuery = graphql`
+  query ArtworkAboveTheFoldQuery($artworkID: String!) {
+    artwork(id: $artworkID) {
+      ...Artwork_artworkAboveTheFold
+    }
+    me {
+      ...Artwork_me
+    }
+  }
+`
+
 export const ArtworkQueryRenderer: React.FC<{
   artworkID: string
   isVisible: boolean
@@ -475,16 +486,7 @@ export const ArtworkQueryRenderer: React.FC<{
           <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
             environment={environment || defaultEnvironment}
             above={{
-              query: graphql`
-                query ArtworkAboveTheFoldQuery($artworkID: String!) {
-                  artwork(id: $artworkID) {
-                    ...Artwork_artworkAboveTheFold
-                  }
-                  me {
-                    ...Artwork_me
-                  }
-                }
-              `,
+              query: ArtworkScreenQuery,
               variables: { artworkID },
             }}
             below={{

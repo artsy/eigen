@@ -337,6 +337,17 @@ export const SaleContainer = createRefetchContainer(
   `
 )
 
+export const SaleScreenQuery = graphql`
+  query SaleAboveTheFoldQuery($saleID: String!, $saleSlug: ID!) {
+    sale(id: $saleID) {
+      ...Sale_sale
+    }
+    me @optionalField {
+      ...Sale_me
+    }
+  }
+`
+
 export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayModernEnvironment }> = ({
   saleID,
   environment,
@@ -354,16 +365,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayMo
           <AboveTheFoldQueryRenderer<SaleAboveTheFoldQuery, SaleBelowTheFoldQuery>
             environment={environment || defaultEnvironment}
             above={{
-              query: graphql`
-                query SaleAboveTheFoldQuery($saleID: String!, $saleSlug: ID!) {
-                  sale(id: $saleID) {
-                    ...Sale_sale
-                  }
-                  me @optionalField {
-                    ...Sale_me
-                  }
-                }
-              `,
+              query: SaleScreenQuery,
               variables: { saleID, saleSlug: saleID },
             }}
             below={{

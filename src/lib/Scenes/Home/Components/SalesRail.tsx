@@ -67,6 +67,8 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({ title, subtitle, scrollR
         />
       </Flex>
       <CardRailFlatList<Sale>
+        prefetchUrlExtractor={(item) => item?.href!}
+        prefetchVariablesExtractor={(item) => ({ saleSlug: item?.slug })}
         listRef={listRef}
         data={salesModule.results}
         renderItem={({ item: result, index }) => {

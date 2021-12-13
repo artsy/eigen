@@ -16,6 +16,7 @@ import { ArtistRailNewSuggestionQuery } from "__generated__/ArtistRailNewSuggest
 import { Disappearable } from "lib/Components/Disappearable"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { defaultArtworksVariables } from "lib/Scenes/Artist/Artist"
 import { RailScrollProps } from "lib/Scenes/Home/Components/types"
 import { Schema } from "lib/utils/track"
 import { sample, uniq } from "lodash"
@@ -192,6 +193,8 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
         <SectionTitle title={props.title} subtitle={props.subtitle} />
       </Flex>
       <CardRailFlatList<SuggestedArtist>
+        prefetchUrlExtractor={(item) => item?.href!}
+        prefetchVariablesExtractor={defaultArtworksVariables}
         listRef={listRef}
         data={artists}
         keyExtractor={(artist) => artist.id}
