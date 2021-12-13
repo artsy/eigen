@@ -6,8 +6,11 @@ import { SavedSearchAlertMutationResult } from "lib/Scenes/SavedSearchAlert/Save
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
+import { delay } from "lib/utils/delay"
 import React from "react"
 import { CreateSavedSearchModal, CreateSavedSearchModalProps, tracks } from "./CreateSavedSearchModal"
+
+jest.unmock("react-relay")
 
 const defaultProps: CreateSavedSearchModalProps = {
   visible: true,
@@ -35,6 +38,10 @@ const mockedMutationResult: SavedSearchAlertMutationResult = {
 }
 
 describe("CreateSavedSearchModal", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
+  })
+
   const TestRenderer = (props?: Partial<CreateSavedSearchModalProps>) => {
     return (
       <ArtworkFiltersStoreProvider initialData={initialData}>
@@ -60,14 +67,13 @@ describe("CreateSavedSearchModal", () => {
   })
 
   it('should call navigate twice when "My Collection" is enabled', async () => {
-    jest.useFakeTimers()
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionIOS: true })
     const { container, getByText } = renderWithWrappersTL(<TestRenderer />)
 
     container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
     fireEvent.press(getByText("Your alert has been created."))
 
-    jest.runAllTimers()
+    await delay(200)
 
     expect(navigate).toHaveBeenCalledWith("/my-profile/settings", {
       popToRootTabView: true,
