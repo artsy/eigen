@@ -33,7 +33,7 @@ const runTiming = (clock: Clock, value: Animated.Value<number>) => {
   }
 
   const config = {
-    duration: 250,
+    duration: 400,
     toValue: new Animated.Value(0),
     easing: Easing.inOut(Easing.ease),
   }
