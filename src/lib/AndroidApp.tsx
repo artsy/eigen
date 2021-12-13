@@ -17,6 +17,7 @@ import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { ForceUpdate } from "./Scenes/ForceUpdate/ForceUpdate"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { createAllChannels, savePendingToken } from "./utils/PushNotification"
+import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import { useExperiments } from "./utils/useExperiments"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
@@ -48,6 +49,7 @@ const Main: React.FC<{}> = track()(({}) => {
   useDeepLinks()
   useInitialNotification()
   useExperiments()
+  useInitializeQueryPrefetching()
 
   useEffect(() => {
     createAllChannels()

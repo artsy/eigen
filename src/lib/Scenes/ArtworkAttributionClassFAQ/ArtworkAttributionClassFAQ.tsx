@@ -72,7 +72,6 @@ export const ArtworkAttributionClassFAQQueryRenderer: React.FC = (props) => {
   return (
     <QueryRenderer<ArtworkAttributionClassFAQQuery>
       environment={defaultEnvironment}
-      // tslint:disable-next-line: relay-operation-generics
       query={ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY}
       variables={{}}
       render={renderWithLoadProgress(ArtworkAttributionClassFAQContainer, props)}

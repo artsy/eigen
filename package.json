@@ -128,6 +128,7 @@
     "grapheme-splitter": "1.0.4",
     "html-entities": "2.3.2",
     "jsc-android": "250230.2.1",
+    "limiter": "^2.1.0",
     "lodash": "4.17.21",
     "luxon": "2.0.1",
     "moment": "2.24.0",

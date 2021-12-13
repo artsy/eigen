@@ -160,17 +160,19 @@ export const InboxContainer = createRefetchContainer(
   `
 )
 
+export const InboxScreenQuery = graphql`
+  query InboxQuery {
+    me {
+      ...Inbox_me
+    }
+  }
+`
+
 export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
   return (
     <QueryRenderer<InboxQuery>
       environment={defaultEnvironment}
-      query={graphql`
-        query InboxQuery {
-          me {
-            ...Inbox_me
-          }
-        }
-      `}
+      query={InboxScreenQuery}
       cacheConfig={{ force: true }}
       variables={{}}
       render={(...args) => renderWithLoadProgress(InboxContainer, props)(...args)}
