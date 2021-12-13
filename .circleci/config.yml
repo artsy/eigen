@@ -421,6 +421,11 @@ jobs:
       - run:
           name: Save success file
           command: echo yes > 'build-success.log'
+
+      - store_artifacts:
+          path: android/app/build/reports
+          prefix: android-build
+
       - save_cache:
           key: v6-test-success-{{ checksum "../workspace/.manifests/android_native" }}
           paths:
