@@ -75,7 +75,7 @@ target 'Artsy' do
 
   # Core
   pod 'ARGenericTableViewController', git: 'https://github.com/artsy/ARGenericTableViewController.git'
-  pod 'CocoaLumberjack', '2.4.0'
+  pod 'CocoaLumberjack', '3.7.2'
   pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
   pod 'FXBlurView'
   pod 'ISO8601DateFormatter', git: 'https://github.com/artsy/iso-8601-date-formatter'
