@@ -96,7 +96,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         }
 
         if (isUpdateForm) {
-          // TODO: add pills to mutation
           const response = await updateSavedSearchAlert(userAlertSettings, savedSearchAlertId!)
           tracking.trackEvent(tracks.editedSavedSearch(savedSearchAlertId!, initialValues, values))
 
@@ -284,7 +283,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       >
         <Form
           pills={pills}
-          initialPills={initialPills}
           savedSearchAlertId={savedSearchAlertId}
           artistId={artistId}
           artistName={artistName}

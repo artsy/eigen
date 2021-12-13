@@ -11,7 +11,6 @@ import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
 interface FormProps {
   pills: SavedSearchPill[]
-  initialPills: SavedSearchPill[]
   savedSearchAlertId?: string
   artistId: string
   artistName: string
@@ -28,7 +27,6 @@ interface FormProps {
 export const Form: React.FC<FormProps> = (props) => {
   const {
     pills,
-    // initialPills,
     artistId,
     artistName,
     savedSearchAlertId,
@@ -66,13 +64,6 @@ export const Form: React.FC<FormProps> = (props) => {
   if (isEditMode && !dirty && values.name.length === 0) {
     isSaveAlertButtonDisabled = false
   }
-
-  // TODO: uncomment or remove after enhancing the update mutation
-  /*
-  if (isEditMode && !dirty && initialPills.length > pills.length) {
-    isSaveAlertButtonDisabled = false
-  }
-  */
 
   // Enable "save alert" button if selected at least one of the notification toggle options
   if (enableSavedSearchToggles && !values.push && !values.email) {
