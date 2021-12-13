@@ -14,7 +14,7 @@ extension LatestArticles {
             VStack() {
                 HStack(alignment: .top) {
                     Text("ARTSY EDITORIAL")
-                        .font(.system(size: 10, weight: .bold))
+                        .font(.system(size: 10, weight: .medium))
                     Spacer()
                     Image(uiImage: artsyLogo)
                         .resizable()
