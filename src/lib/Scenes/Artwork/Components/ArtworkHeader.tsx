@@ -3,7 +3,7 @@ import Clipboard from "@react-native-community/clipboard"
 import { ArtworkHeader_artwork } from "__generated__/ArtworkHeader_artwork.graphql"
 import { CustomShareSheet, CustomShareSheetItem } from "lib/Components/CustomShareSheet"
 import { useToast } from "lib/Components/Toast/toastHook"
-import { unsafe__getEnvironment, useFeatureFlag } from "lib/store/GlobalStore"
+import { unsafe__getEnvironment, useDevToggle, useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useCanOpenURL } from "lib/utils/useCanOpenURL"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -18,8 +18,10 @@ import { useTracking } from "react-tracking"
 import RNFetchBlob from "rn-fetch-blob"
 import { ArtworkActionsFragmentContainer as ArtworkActions, shareContent } from "./ArtworkActions"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./ArtworkTombstone"
-import { IGStoryViewShot } from "./IGStoryViewShot"
+import { InstagramStoryViewShot } from "./InstagramStoryViewShot"
 import { ImageCarouselFragmentContainer } from "./ImageCarousel/ImageCarousel"
+import { Button, Modal } from "react-native"
+import { SafeAreaView } from "react-native-safe-area-context"
 
 interface ArtworkHeaderProps {
   artwork: ArtworkHeader_artwork
@@ -31,6 +33,8 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const { trackEvent } = useTracking()
   const enableCustomShare = useFeatureFlag("AREnableCustomSharesheet")
+  const debugInstagramShot = useDevToggle("DTShowInstagramShot")
+  const [showInstagramShot, setShowInstagramShot] = useState(false)
   const shotRef = useRef<ViewShot>(null)
   const [shareSheetVisible, setShareSheetVisible] = useState(false)
   const toast = useToast()
@@ -116,6 +120,9 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
           cardHeight={screenDimensions.width >= 375 ? 340 : 290}
           onImageIndexChange={(imageIndex) => setCurrentImageIndex(imageIndex)}
         />
+
+        {debugInstagramShot ? <Button title="debug instagram shot" onPress={() => setShowInstagramShot(true)} /> : null}
+
         <Flex alignItems="center" mt={2}>
           <ArtworkActions
             artwork={artwork}
@@ -135,7 +142,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
       </Box>
       <CustomShareSheet visible={shareSheetVisible} setVisible={setShareSheetVisible}>
         <ScrollView>
-          <IGStoryViewShot
+          <InstagramStoryViewShot
             shotRef={shotRef}
             href={currentImageUrl}
             artist={artwork.artists![0]?.name!}
@@ -160,6 +167,23 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
           <CustomShareSheetItem title="More" Icon={<MoreIcon />} onPress={() => shareArtwork()} />
         </ScrollView>
       </CustomShareSheet>
+
+      {debugInstagramShot && showInstagramShot ? (
+        <Modal visible={showInstagramShot} onRequestClose={() => setShowInstagramShot(false)}>
+          <SafeAreaView>
+            <InstagramStoryViewShot
+              // @ts-ignore
+              shotRef={undefined}
+              href={currentImageUrl}
+              artist={artwork.artists![0]?.name!}
+              title={artwork.title!}
+            />
+            <Flex position="absolute" top={100} left={0}>
+              <Button title="close instagram shot" onPress={() => setShowInstagramShot(false)} />
+            </Flex>
+          </SafeAreaView>
+        </Modal>
+      ) : null}
     </>
   )
 }

@@ -265,6 +265,9 @@ export const devToggles = defineDevToggles({
   DTShowWebviewIndicator: {
     description: "Show webview indicator",
   },
+  DTShowInstagramShot: {
+    description: "Show Instagram shot",
+  },
 })
 
 export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {
