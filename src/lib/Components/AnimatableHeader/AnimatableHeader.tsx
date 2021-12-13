@@ -124,6 +124,7 @@ export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
       <TouchableOpacity
         hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
         onPress={props.onLeftButtonPress}
+        accessibilityLabel="Header back button"
       >
         <ArrowLeftIcon fill="black100" />
       </TouchableOpacity>
