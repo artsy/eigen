@@ -3,21 +3,23 @@ import Animated from "react-native-reanimated"
 
 export interface CollapsibleHeaderContextType {
   scrollOffsetY: Animated.Node<number>
-  stickyHeaderContent: React.ReactNode
-  stickyHeaderContentHeight: Animated.Node<number>
-  totalHeaderHeight: Animated.Node<number>
   headerHeight: number
-  setJSX: (jsx: React.ReactNode) => void
+  largeTitleVerticalOffset: number
+  largeTitleHeight: Animated.Value<number>
+  largeTitleEndEdge: Animated.Node<number>
+  title: string
+  setTitle: (title: string) => void
 }
 
 export const CollapsibleHeaderContext = React.createContext<CollapsibleHeaderContextType>({
   scrollOffsetY: new Animated.Value(0),
-  stickyHeaderContent: null,
-  stickyHeaderContentHeight: new Animated.Value(0),
-  totalHeaderHeight: new Animated.Value(0),
   headerHeight: 0,
+  largeTitleVerticalOffset: 0,
+  title: "",
+  largeTitleHeight: new Animated.Value(0),
+  largeTitleEndEdge: new Animated.Value(0),
   // tslint:disable-next-line:no-empty
-  setJSX: () => {},
+  setTitle: () => {},
 })
 
 export function useCollapsibleHeaderContext() {

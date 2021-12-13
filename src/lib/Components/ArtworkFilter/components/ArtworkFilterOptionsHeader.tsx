@@ -21,15 +21,7 @@ export const ArtworkFilterOptionsHeader: React.FC<ArtworkFilterOptionsHeaderProp
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
   if (isEnabledImprovedAlertsFlow) {
-    return (
-      <CollapsibleHeader
-        title={title}
-        rightButtonText={rightButtonText}
-        rightButtonDisabled={rightButtonDisabled}
-        onLeftButtonPress={onLeftButtonPress}
-        onRightButtonPress={onRightButtonPress}
-      />
-    )
+    return <CollapsibleHeader title={title} onLeftButtonPress={onLeftButtonPress} />
   }
 
   return (
