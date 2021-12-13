@@ -29,7 +29,6 @@ export interface AnimatableHeaderProps {
 
 // Constants
 const ANIMATION_DURATION = 400
-const SHADOW_SCROLL_OFFSET = 15
 const SMALL_TITLE_LEFT_OFFSET = -15
 
 const runTiming = (clock: Clock, value: Animated.Value<number>) => {
@@ -71,7 +70,7 @@ const runTiming = (clock: Clock, value: Animated.Value<number>) => {
 
 export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
   const { title, rightButtonDisabled, rightButtonText, onRightButtonPress } = props
-  const { space, color } = useTheme()
+  const { space } = useTheme()
   const { scrollOffsetY, headerHeight, largeTitleHeight, largeTitleEndEdge, setTitle } = useAnimatableHeaderContext()
   const clock = useRef(new Animated.Clock()).current
   const value = useRef(new Animated.Value(0)).current
@@ -79,16 +78,6 @@ export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
   const translateX = Animated.interpolate(opacity, {
     inputRange: [0, 1],
     outputRange: [SMALL_TITLE_LEFT_OFFSET, 0],
-    extrapolate: Extrapolate.CLAMP,
-  })
-  const shadowOpacity = Animated.interpolate(scrollOffsetY, {
-    inputRange: [0, SHADOW_SCROLL_OFFSET],
-    outputRange: [0, 0.1],
-    extrapolate: Extrapolate.CLAMP,
-  })
-  const elevation = Animated.interpolate(scrollOffsetY, {
-    inputRange: [0, SHADOW_SCROLL_OFFSET],
-    outputRange: [0, 3],
     extrapolate: Extrapolate.CLAMP,
   })
 
@@ -113,14 +102,6 @@ export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
         alignItems: "center",
         height: headerHeight,
         backgroundColor: "white",
-        shadowColor: color("black100"),
-        shadowOffset: {
-          width: 0,
-          height: 1,
-        },
-        shadowOpacity,
-        shadowRadius: 3,
-        elevation,
       }}
     >
       <TouchableOpacity
