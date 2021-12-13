@@ -139,7 +139,9 @@ export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
           transform: [{ translateX }],
         }}
       >
-        <Text numberOfLines={2}>{title}</Text>
+        <Text numberOfLines={2} lineHeight={18}>
+          {title}
+        </Text>
       </Animated.View>
       {!!onRightButtonPress && (
         <TouchableOpacity
