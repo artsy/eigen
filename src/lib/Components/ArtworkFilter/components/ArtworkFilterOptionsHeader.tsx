@@ -1,4 +1,4 @@
-import { CollapsibleHeader } from "lib/Components/CollapsibleHeader/CollapsibleHeader"
+import { AnimatableHeader } from "lib/Components/AnimatableHeader/AnimatableHeader"
 import { FancyModalHeader, FancyModalHeaderProps } from "lib/Components/FancyModal/FancyModalHeader"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import React from "react"
@@ -21,7 +21,7 @@ export const ArtworkFilterOptionsHeader: React.FC<ArtworkFilterOptionsHeaderProp
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
   if (isEnabledImprovedAlertsFlow) {
-    return <CollapsibleHeader title={title} onLeftButtonPress={onLeftButtonPress} />
+    return <AnimatableHeader title={title} onLeftButtonPress={onLeftButtonPress} />
   }
 
   return (

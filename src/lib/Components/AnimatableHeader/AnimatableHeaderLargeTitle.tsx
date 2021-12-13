@@ -2,13 +2,13 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Text, useSpace } from "palette"
 import React from "react"
 import Animated, { Extrapolate } from "react-native-reanimated"
-import { useCollapsibleHeaderContext } from "./CollapsibleHeaderContext"
+import { useAnimatableHeaderContext } from "./AnimatableHeaderContext"
 
 export const AnimatableHeaderLargeTitle = () => {
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const space = useSpace()
   const { scrollOffsetY, largeTitleVerticalOffset, largeTitleHeight, largeTitleEndEdge, title } =
-    useCollapsibleHeaderContext()
+    useAnimatableHeaderContext()
 
   if (isEnabledImprovedAlertsFlow) {
     const largeTitleOpacity = Animated.interpolate(scrollOffsetY, {

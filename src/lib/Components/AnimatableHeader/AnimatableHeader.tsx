@@ -17,9 +17,9 @@ import Animated, {
   timing,
   useCode,
 } from "react-native-reanimated"
-import { useCollapsibleHeaderContext } from "./CollapsibleHeaderContext"
+import { useAnimatableHeaderContext } from "./AnimatableHeaderContext"
 
-export interface CollapsibleHeaderProps {
+export interface AnimatableHeaderProps {
   title: string
   onLeftButtonPress: () => void
 }
@@ -64,10 +64,10 @@ const runTiming = (clock: Clock, value: Animated.Value<number>) => {
 const SHADOW_SCROLL_OFFSET = 15
 const SMALL_TITLE_LEFT_OFFSET = -15
 
-export const CollapsibleHeader: React.FC<CollapsibleHeaderProps> = (props) => {
+export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
   const { title } = props
   const { space, color } = useTheme()
-  const { scrollOffsetY, headerHeight, largeTitleHeight, largeTitleEndEdge, setTitle } = useCollapsibleHeaderContext()
+  const { scrollOffsetY, headerHeight, largeTitleHeight, largeTitleEndEdge, setTitle } = useAnimatableHeaderContext()
   const clock = useRef(new Animated.Clock()).current
   const value = useRef(new Animated.Value(0)).current
   const opacity = useRef(runTiming(clock, value)).current

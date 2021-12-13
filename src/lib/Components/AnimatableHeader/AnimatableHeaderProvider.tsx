@@ -1,9 +1,9 @@
 import { useSpace } from "palette"
 import React, { useMemo, useRef, useState } from "react"
 import Animated from "react-native-reanimated"
-import { CollapsibleHeaderContext } from "./CollapsibleHeaderContext"
+import { AnimatableHeaderContext } from "./AnimatableHeaderContext"
 
-export const CollapsibleHeaderContextContainer: React.FC<{}> = (props) => {
+export const AnimatableHeaderProvider: React.FC<{}> = (props) => {
   const { children } = props
   const space = useSpace()
   const headerHeight = space(6)
@@ -14,7 +14,7 @@ export const CollapsibleHeaderContextContainer: React.FC<{}> = (props) => {
   const [title, setTitle] = useState("")
 
   return (
-    <CollapsibleHeaderContext.Provider
+    <AnimatableHeaderContext.Provider
       value={{
         scrollOffsetY,
         headerHeight,
@@ -26,6 +26,6 @@ export const CollapsibleHeaderContextContainer: React.FC<{}> = (props) => {
       }}
     >
       {children}
-    </CollapsibleHeaderContext.Provider>
+    </AnimatableHeaderContext.Provider>
   )
 }

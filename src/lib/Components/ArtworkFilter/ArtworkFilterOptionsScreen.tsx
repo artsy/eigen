@@ -16,9 +16,9 @@ import { FilterIcon, Flex, Sans } from "palette"
 import React, { useMemo } from "react"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
+import { AnimatableHeaderFlatList } from "../AnimatableHeader/AnimatableHeaderFlatList"
+import { AnimatableHeaderProvider } from "../AnimatableHeader/AnimatableHeaderProvider"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
-import { AnimatableHeaderFlatList } from "../CollapsibleHeader/AnimatableHeaderFlatList"
-import { CollapsibleHeaderContextContainer } from "../CollapsibleHeader/CollapsibleHeaderContextContainer"
 import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
 import { ArtworkFilterOptionItem } from "./components/ArtworkFilterOptionItem"
 import { ArtworkFilterOptionsHeader } from "./components/ArtworkFilterOptionsHeader"
@@ -135,7 +135,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
   }
 
   return (
-    <CollapsibleHeaderContextContainer>
+    <AnimatableHeaderProvider>
       <Flex flex={1}>
         <ArtworkFilterOptionsHeader
           title={title}
@@ -162,7 +162,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
           }}
         />
       </Flex>
-    </CollapsibleHeaderContextContainer>
+    </AnimatableHeaderProvider>
   )
 }
 
