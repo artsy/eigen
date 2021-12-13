@@ -28,7 +28,7 @@ interface FormProps {
 export const Form: React.FC<FormProps> = (props) => {
   const {
     pills,
-    initialPills,
+    // initialPills,
     artistId,
     artistName,
     savedSearchAlertId,
