@@ -18,7 +18,6 @@ export interface PillProps extends FlexProps {
   size?: PillSize
   onPress?: PressableProps["onPress"]
   rounded?: boolean
-  sharp?: boolean
   Icon?: React.FC<IconProps>
   iconPosition?: "left" | "right"
   disabled?: boolean
@@ -69,7 +68,6 @@ export const Pill: React.FC<PillProps> = ({
   children,
   disabled,
   rounded,
-  sharp,
   highlightEnabled = false,
   ...rest
 }) => {

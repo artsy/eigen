@@ -67,9 +67,12 @@ export const Form: React.FC<FormProps> = (props) => {
     isSaveAlertButtonDisabled = false
   }
 
+  // TODO: uncomment or remove after enhancing the update mutation
+  /*
   if (isEditMode && !dirty && initialPills.length > pills.length) {
     isSaveAlertButtonDisabled = false
   }
+  */
 
   // Enable "save alert" button if selected at least one of the notification toggle options
   if (enableSavedSearchToggles && !values.push && !values.email) {
