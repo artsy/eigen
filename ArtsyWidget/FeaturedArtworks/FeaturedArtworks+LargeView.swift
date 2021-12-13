@@ -11,7 +11,7 @@ private struct TopArtwork: SwiftUI.View {
         let artworkTitle = artwork.title
         let artworkUrl = artwork.url
         
-        HStack(alignment: .top) {
+        HStack(alignment: .bottom) {
             Image(uiImage: artworkImage)
                 .resizable()
                 .scaledToFit()
@@ -46,16 +46,20 @@ private struct BottomArtwork: SwiftUI.View {
         
         Link(destination: artworkUrl) {
             VStack() {
+                Spacer()
                 Image(uiImage: artworkImage)
                     .resizable()
                     .scaledToFit()
-                Spacer()
-                PrimaryText(name: artistName)
-                    .lineLimit(1)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                SecondaryText(title: artworkTitle)
-                    .lineLimit(2)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                VStack() {
+                    PrimaryText(name: artistName)
+                        .lineLimit(1)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    SecondaryText(title: artworkTitle)
+                        .lineLimit(2)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Spacer(minLength: 0)
+                }
+                .frame(height: 45)
             }
         }
     }
