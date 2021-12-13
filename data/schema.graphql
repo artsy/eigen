@@ -31,8 +31,10 @@ input AddAssetsToConsignmentSubmissionInput {
 
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
+  filename: String
   geminiTokens: [String!]!
   sessionID: String
+  size: String
   submissionID: ID!
 }
 
@@ -50,8 +52,10 @@ input AddAssetToConsignmentSubmissionInput {
 
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
+  filename: String
   geminiToken: String!
   sessionID: String
+  size: String
   submissionID: ID!
 }
 
@@ -4875,6 +4879,9 @@ type ConsignmentSubmissionCategoryAsset {
   # type of this Asset
   assetType: String!
 
+  # original image name
+  filename: String
+
   # gemini token for asset
   geminiToken: String
 
@@ -4883,6 +4890,7 @@ type ConsignmentSubmissionCategoryAsset {
 
   # known image urls
   imageUrls: JSON
+  size: String
   submissionId: ID!
   submissionID: ID
 }
@@ -5190,6 +5198,12 @@ enum ConsignmentSubmissionSort {
 
   # sort by reminders_sent_count in descending order
   REMINDERS_SENT_COUNT_DESC
+
+  # sort by session_id in ascending order
+  SESSION_ID_ASC
+
+  # sort by session_id in descending order
+  SESSION_ID_DESC
 
   # sort by signature in ascending order
   SIGNATURE_ASC
