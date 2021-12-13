@@ -208,7 +208,7 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableAuctionResultComparableWorks",
   },
   ARMyCollectionLocalSortAndFilter: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "My Collection Sort & Filter",
     showInAdminMenu: true,
     echoFlagKey: "ARMyCollectionLocalSortAndFilter",
