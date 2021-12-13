@@ -27,6 +27,11 @@ export interface AnimatableHeaderProps {
   onRightButtonPress?: () => void
 }
 
+// Constants
+const ANIMATION_DURATION = 400
+const SHADOW_SCROLL_OFFSET = 15
+const SMALL_TITLE_LEFT_OFFSET = -15
+
 const runTiming = (clock: Clock, value: Animated.Value<number>) => {
   const state = {
     finished: new Animated.Value(0),
@@ -36,7 +41,7 @@ const runTiming = (clock: Clock, value: Animated.Value<number>) => {
   }
 
   const config = {
-    duration: 400,
+    duration: ANIMATION_DURATION,
     toValue: new Animated.Value(0),
     easing: Easing.inOut(Easing.ease),
   }
@@ -63,9 +68,6 @@ const runTiming = (clock: Clock, value: Animated.Value<number>) => {
     state.position,
   ])
 }
-
-const SHADOW_SCROLL_OFFSET = 15
-const SMALL_TITLE_LEFT_OFFSET = -15
 
 export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
   const { title, rightButtonDisabled, rightButtonText, onRightButtonPress } = props
