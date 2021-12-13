@@ -1,12 +1,12 @@
-import React, { PropsWithChildren } from "react"
-import { FlatListProps, ScrollView } from "react-native"
+import React from "react"
+import { ScrollView, ScrollViewProps } from "react-native"
 import Animated from "react-native-reanimated"
 import { useAnimatableHeaderContext } from "./AnimatableHeaderContext"
 import { AnimatableHeaderLargeTitle } from "./AnimatableHeaderLargeTitle"
 
 const AnimatedComponent: typeof ScrollView = Animated.createAnimatedComponent(ScrollView)
 
-export const AnimatableHeaderScrollView = <T extends any>(props: PropsWithChildren<FlatListProps<T>>) => {
+export const AnimatableHeaderScrollView: React.FC<ScrollViewProps> = (props) => {
   const { children, ...other } = props
   const { scrollOffsetY } = useAnimatableHeaderContext()
 
