@@ -17,8 +17,8 @@ import React, { useMemo } from "react"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
+import { AnimatableHeaderFlatList } from "../CollapsibleHeader/AnimatableHeaderFlatList"
 import { CollapsibleHeaderContextContainer } from "../CollapsibleHeader/CollapsibleHeaderContextContainer"
-import { CollapsibleHeaderFlatList } from "../CollapsibleHeader/CollapsibleHeaderFlatList"
 import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
 import { ArtworkFilterOptionItem } from "./components/ArtworkFilterOptionItem"
 import { ArtworkFilterOptionsHeader } from "./components/ArtworkFilterOptionsHeader"
@@ -145,7 +145,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
           rightButtonText="Clear All"
           useXButton
         />
-        <CollapsibleHeaderFlatList<FilterDisplayConfig>
+        <AnimatableHeaderFlatList<FilterDisplayConfig>
           keyExtractor={(_item, index) => String(index)}
           data={sortedFilterOptions}
           style={{ flexGrow: 1 }}
