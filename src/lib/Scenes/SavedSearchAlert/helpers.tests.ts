@@ -11,7 +11,12 @@ describe("extractPillFromAggregation", () => {
     }
     const result = extractPillFromAggregation(filter, aggregations)
 
-    expect(result).toEqual(["Acrylic", "Canvas"])
+    const pills = [
+      { label: "Acrylic", value: "acrylic", paramName: FilterParamName.materialsTerms },
+      { label: "Canvas", value: "canvas", paramName: FilterParamName.materialsTerms },
+    ]
+
+    expect(result).toEqual(pills)
   })
 
   it("returns undefined for unknown param values", () => {
@@ -22,7 +27,13 @@ describe("extractPillFromAggregation", () => {
     }
     const result = extractPillFromAggregation(filter, aggregations)
 
-    expect(result).toEqual(["Acrylic", "Canvas", undefined])
+    const pills = [
+      { label: "Acrylic", value: "acrylic", paramName: FilterParamName.materialsTerms },
+      { label: "Canvas", value: "canvas", paramName: FilterParamName.materialsTerms },
+      undefined,
+    ]
+
+    expect(result).toEqual(pills)
   })
 
   it("returns empty array when couldn't get aggregation by param name", () => {
@@ -91,16 +102,50 @@ describe("extractPills", () => {
     ]
     const result = extractPills(filters, aggregations)
 
-    expect(result).toEqual([
-      "Acrylic",
-      "Canvas",
-      "$5,000–10,000",
-      "Limited Edition",
-      "Open Edition",
-      "Make Offer",
-      "w: 5-10 in",
-      "h: from 15 in",
-    ])
+    const pills = [
+      {
+        label: "Acrylic",
+        paramName: FilterParamName.materialsTerms,
+        value: "acrylic",
+      },
+      {
+        label: "Canvas",
+        paramName: FilterParamName.materialsTerms,
+        value: "canvas",
+      },
+      {
+        label: "$5,000–10,000",
+        value: "5000-10000",
+        paramName: FilterParamName.priceRange,
+      },
+      {
+        paramName: FilterParamName.attributionClass,
+        label: "Limited Edition",
+        value: "limited edition",
+      },
+      {
+        paramName: FilterParamName.attributionClass,
+        label: "Open Edition",
+        value: "open edition",
+      },
+      {
+        label: "Make Offer",
+        value: true,
+        paramName: FilterParamName.waysToBuyMakeOffer,
+      },
+      {
+        label: "w: 5-10 in",
+        value: "5-10",
+        paramName: FilterParamName.width,
+      },
+      {
+        label: "h: from 15 in",
+        value: "15-*",
+        paramName: FilterParamName.height,
+      },
+    ]
+
+    expect(result).toEqual(pills)
   })
 })
 
@@ -129,15 +174,25 @@ const aggregations: Aggregations = [
 
 describe("getNamePlaceholder", () => {
   it("returns the singular form for the filter label", () => {
-    expect(getNamePlaceholder("artistName", ["one"])).toBe("artistName • 1 filter")
+    const pills = [{ label: "One", paramName: FilterParamName.materialsTerms, value: "one" }]
+    expect(getNamePlaceholder("artistName", pills)).toBe("artistName • 1 filter")
   })
 
   it("returns the plural form for the filter label", () => {
-    expect(getNamePlaceholder("artistName", ["one", "two"])).toBe("artistName • 2 filters")
+    const pills = [
+      { label: "One", paramName: FilterParamName.materialsTerms, value: "one" },
+      { label: "Two", paramName: FilterParamName.materialsTerms, value: "two" },
+    ]
+    expect(getNamePlaceholder("artistName", pills)).toBe("artistName • 2 filters")
   })
 
   it("returns the correct number of filters when artist pill is shown", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-    expect(getNamePlaceholder("artistName", ["artistName", "one", "two"])).toBe("artistName • 3 filters")
+    const pills = [
+      { label: "Artist Name", paramName: FilterParamName.artistIDs, value: "artistName" },
+      { label: "One", paramName: FilterParamName.materialsTerms, value: "one" },
+      { label: "Two", paramName: FilterParamName.materialsTerms, value: "two" },
+    ]
+    expect(getNamePlaceholder("artistName", pills)).toBe("artistName • 3 filters")
   })
 })
