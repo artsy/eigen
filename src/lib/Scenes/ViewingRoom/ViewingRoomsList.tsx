@@ -154,7 +154,7 @@ export const ViewingRoomsListScreenQuery = graphql`
 `
 
 const connectionConfig: ConnectionConfig = {
-  query,
+  query: ViewingRoomsListScreenQuery,
   getVariables: (_props, { count, cursor }, _fragmentVariables) => ({
     count,
     after: cursor,
