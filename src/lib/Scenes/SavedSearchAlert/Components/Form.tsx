@@ -39,14 +39,8 @@ export const Form: React.FC<FormProps> = (props) => {
     onToggleEmailNotification,
     onRemovePill,
   } = props
-  const {
-    isSubmitting,
-    values,
-    errors,
-    dirty,
-    handleBlur,
-    handleChange,
-  } = useFormikContext<SavedSearchAlertFormValues>()
+  const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
+    useFormikContext<SavedSearchAlertFormValues>()
   const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const namePlaceholder = getNamePlaceholder(artistName, pills)
@@ -146,12 +140,17 @@ export const Form: React.FC<FormProps> = (props) => {
                 m={0.5}
                 key={`filter-label-${index}`}
                 iconPosition="right"
-                Icon={isArtistPill(pill) ? undefined : RemoveIcon}
-                onPress={() => {
-                  if (!isArtistPill(pill)) {
-                    onRemovePill(pill)
-                  }
-                }}
+                // this is to make the pills removable only on create alert screen
+                {...(!isEditMode
+                  ? {
+                      onPress: () => {
+                        if (!isArtistPill(pill)) {
+                          onRemovePill(pill)
+                        }
+                      },
+                      Icon: isArtistPill(pill) ? undefined : RemoveIcon,
+                    }
+                  : {})}
               >
                 {pill.label}
               </Pill>
