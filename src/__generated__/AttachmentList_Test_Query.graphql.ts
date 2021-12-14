@@ -1,53 +1,53 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c4f53e092695f765844a139ba6108e92 */
+/* @relayHash 82041191a5bed78a07c5f43a922a3414 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type AttachmentListTestsQueryVariables = {
-    conversationID: string;
-};
-export type AttachmentListTestsQueryResponse = {
+export type AttachmentList_Test_QueryVariables = {};
+export type AttachmentList_Test_QueryResponse = {
     readonly me: {
         readonly conversation: {
-            readonly messagesConnection: {
-                readonly " $fragmentRefs": FragmentRefs<"AttachmentList_messageConnection">;
-            } | null;
+            readonly " $fragmentRefs": FragmentRefs<"AttachmentList_conversation">;
         } | null;
     } | null;
 };
-export type AttachmentListTestsQuery = {
-    readonly response: AttachmentListTestsQueryResponse;
-    readonly variables: AttachmentListTestsQueryVariables;
+export type AttachmentList_Test_Query = {
+    readonly response: AttachmentList_Test_QueryResponse;
+    readonly variables: AttachmentList_Test_QueryVariables;
 };
 
 
 
 /*
-query AttachmentListTestsQuery(
-  $conversationID: String!
-) {
+query AttachmentList_Test_Query {
   me {
-    conversation(id: $conversationID) {
-      messagesConnection {
-        ...AttachmentList_messageConnection
-      }
+    conversation(id: "test-conversation") {
+      ...AttachmentList_conversation
       id
     }
     id
   }
 }
 
-fragment AttachmentList_messageConnection on MessageConnection {
-  edges {
-    node {
-      attachments {
+fragment AttachmentList_conversation on Conversation {
+  messagesConnection(first: 30, sort: DESC) {
+    edges {
+      node {
+        __typename
+        attachments {
+          id
+          contentType
+          ...FileDownload_attachment
+        }
         id
-        contentType
-        ...FileDownload_attachment
       }
-      id
+      cursor
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
     }
   }
 }
@@ -66,16 +66,21 @@ fragment FileDownload_attachment on Attachment {
 const node: ConcreteRequest = (function(){
 var v0 = [
   {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "conversationID"
+    "kind": "Literal",
+    "name": "id",
+    "value": "test-conversation"
   }
 ],
 v1 = [
   {
-    "kind": "Variable",
-    "name": "id",
-    "variableName": "conversationID"
+    "kind": "Literal",
+    "name": "first",
+    "value": 30
+  },
+  {
+    "kind": "Literal",
+    "name": "sort",
+    "value": "DESC"
   }
 ],
 v2 = {
@@ -84,25 +89,13 @@ v2 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
-},
-v3 = {
-  "enumValues": null,
-  "nullable": false,
-  "plural": false,
-  "type": "ID"
-},
-v4 = {
-  "enumValues": null,
-  "nullable": false,
-  "plural": false,
-  "type": "String"
 };
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "AttachmentListTestsQuery",
+    "name": "AttachmentList_Test_Query",
     "selections": [
       {
         "alias": null,
@@ -114,30 +107,19 @@ return {
         "selections": [
           {
             "alias": null,
-            "args": (v1/*: any*/),
+            "args": (v0/*: any*/),
             "concreteType": "Conversation",
             "kind": "LinkedField",
             "name": "conversation",
             "plural": false,
             "selections": [
               {
-                "alias": null,
                 "args": null,
-                "concreteType": "MessageConnection",
-                "kind": "LinkedField",
-                "name": "messagesConnection",
-                "plural": false,
-                "selections": [
-                  {
-                    "args": null,
-                    "kind": "FragmentSpread",
-                    "name": "AttachmentList_messageConnection"
-                  }
-                ],
-                "storageKey": null
+                "kind": "FragmentSpread",
+                "name": "AttachmentList_conversation"
               }
             ],
-            "storageKey": null
+            "storageKey": "conversation(id:\"test-conversation\")"
           }
         ],
         "storageKey": null
@@ -148,9 +130,9 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "AttachmentListTestsQuery",
+    "name": "AttachmentList_Test_Query",
     "selections": [
       {
         "alias": null,
@@ -162,7 +144,7 @@ return {
         "selections": [
           {
             "alias": null,
-            "args": (v1/*: any*/),
+            "args": (v0/*: any*/),
             "concreteType": "Conversation",
             "kind": "LinkedField",
             "name": "conversation",
@@ -170,7 +152,7 @@ return {
             "selections": [
               {
                 "alias": null,
-                "args": null,
+                "args": (v1/*: any*/),
                 "concreteType": "MessageConnection",
                 "kind": "LinkedField",
                 "name": "messagesConnection",
@@ -192,6 +174,13 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "__typename",
+                            "storageKey": null
+                          },
                           {
                             "alias": null,
                             "args": null,
@@ -235,16 +224,57 @@ return {
                           (v2/*: any*/)
                         ],
                         "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "cursor",
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "PageInfo",
+                    "kind": "LinkedField",
+                    "name": "pageInfo",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "endCursor",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "hasNextPage",
+                        "storageKey": null
                       }
                     ],
                     "storageKey": null
                   }
                 ],
-                "storageKey": null
+                "storageKey": "messagesConnection(first:30,sort:\"DESC\")"
+              },
+              {
+                "alias": null,
+                "args": (v1/*: any*/),
+                "filters": [],
+                "handle": "connection",
+                "key": "Details_messagesConnection",
+                "kind": "LinkedHandle",
+                "name": "messagesConnection"
               },
               (v2/*: any*/)
             ],
-            "storageKey": null
+            "storageKey": "conversation(id:\"test-conversation\")"
           },
           (v2/*: any*/)
         ],
@@ -253,60 +283,13 @@ return {
     ]
   },
   "params": {
-    "id": "c4f53e092695f765844a139ba6108e92",
-    "metadata": {
-      "relayTestingSelectionTypeInfo": {
-        "me": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Me"
-        },
-        "me.conversation": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Conversation"
-        },
-        "me.conversation.id": (v3/*: any*/),
-        "me.conversation.messagesConnection": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "MessageConnection"
-        },
-        "me.conversation.messagesConnection.edges": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": true,
-          "type": "MessageEdge"
-        },
-        "me.conversation.messagesConnection.edges.node": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Message"
-        },
-        "me.conversation.messagesConnection.edges.node.attachments": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": true,
-          "type": "Attachment"
-        },
-        "me.conversation.messagesConnection.edges.node.attachments.contentType": (v4/*: any*/),
-        "me.conversation.messagesConnection.edges.node.attachments.downloadURL": (v4/*: any*/),
-        "me.conversation.messagesConnection.edges.node.attachments.fileName": (v4/*: any*/),
-        "me.conversation.messagesConnection.edges.node.attachments.id": (v3/*: any*/),
-        "me.conversation.messagesConnection.edges.node.attachments.internalID": (v3/*: any*/),
-        "me.conversation.messagesConnection.edges.node.id": (v3/*: any*/),
-        "me.id": (v3/*: any*/)
-      }
-    },
-    "name": "AttachmentListTestsQuery",
+    "id": "82041191a5bed78a07c5f43a922a3414",
+    "metadata": {},
+    "name": "AttachmentList_Test_Query",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'df2087084bfde01bc2a587e3e9ae6526';
+(node as any).hash = '93399cbc52b6d4c176abe8e919ae8ded';
 export default node;
