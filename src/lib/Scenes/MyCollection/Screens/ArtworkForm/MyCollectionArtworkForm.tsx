@@ -1,28 +1,27 @@
 import { deleteCollectedArtwork } from "@artsy/cohesion"
+import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
 import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { FormikProvider, useFormik } from "formik"
+import LoadingModal from "lib/Components/Modals/LoadingModal"
+import { goBack } from "lib/navigation/navigate"
 import { cleanArtworkPayload, explicitlyClearedFields } from "lib/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { GlobalStore } from "lib/store/GlobalStore"
+import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
+import { isEqual } from "lodash"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { useTracking } from "react-tracking"
+import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { myCollectionAddArtwork } from "../../mutations/myCollectionAddArtwork"
 import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArtwork"
 import { myCollectionEditArtwork } from "../../mutations/myCollectionEditArtwork"
-import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
-import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
-
-import { useActionSheet } from "@expo/react-native-action-sheet"
-import { LoadingIndicator } from "lib/Components/LoadingIndicator"
-import { goBack } from "lib/navigation/navigate"
-import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
-import { isEqual } from "lodash"
-import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { refreshMyCollection } from "../../MyCollection"
+import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
 import { deletedPhotoIDs } from "../../utils/deletedPhotoIDs"
+import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
 import { MyCollectionAdditionalDetailsForm } from "./Screens/MyCollectionArtworkFormAdditionalDetails"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
 import { MyCollectionArtworkFormMain } from "./Screens/MyCollectionArtworkFormMain"
@@ -138,9 +137,13 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
         } else {
           captureException(e)
         }
-        Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
+        requestAnimationFrame(() => {
+          Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
+        })
       } finally {
-        setLoading(false)
+        requestAnimationFrame(() => {
+          setLoading(false)
+        })
       }
     },
     validationSchema: artworkSchema,
@@ -234,7 +237,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
             initialParams={{ onHeaderBackButtonPress }}
           />
         </Stack.Navigator>
-        {!!loading && <LoadingIndicator />}
+        <LoadingModal isVisible={loading} />
       </FormikProvider>
     </NavigationContainer>
   )
