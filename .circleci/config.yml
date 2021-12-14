@@ -307,6 +307,7 @@ jobs:
     executor:
       name: node/default
       tag: "14.17.1"
+    resource_class: large
     steps:
       - checkout
       - generate-checksums
