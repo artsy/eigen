@@ -11,7 +11,6 @@ import { Box, Flex, InstagramAppIcon, LinkIcon, MoreIcon, ShareIcon, Spacer, Wha
 import React, { useRef, useState } from "react"
 import { Button, Modal } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
-// @ts-ignore
 import Share from "react-native-share"
 import ViewShot from "react-native-view-shot"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -63,11 +62,11 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
 
     try {
       const res = await Share.open({
-        title: details.title,
+        title: details.title ?? "",
         url: base64Data,
         message: details.message + "\n" + details.url,
       })
-      trackEvent(share(tracks.iosShare(res.app, artwork.internalID, artwork.slug)))
+      trackEvent(share(tracks.iosShare(res.message, artwork.internalID, artwork.slug)))
     } catch (err) {
       console.log({ err })
     } finally {
@@ -81,7 +80,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
 
     await Share.shareSingle({
       social: Share.Social.WHATSAPP,
-      message: details.message,
+      message: details.message ?? "",
       url: details.url,
     })
     trackEvent(share(tracks.customShare(CustomService.whatsapp, artwork.internalID, artwork.slug)))
@@ -94,9 +93,6 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
 
     await Share.shareSingle({
       social: Share.Social.INSTAGRAM_STORIES,
-      method: Share.InstagramStories.SHARE_BACKGROUND_IMAGE,
-      backgroundTopColor: "#ffffff",
-      backgroundBottomColor: "#ffffff",
       backgroundImage: base64Data,
     })
     trackEvent(share(tracks.customShare(CustomService.instagram_stories, artwork.internalID, artwork.slug)))

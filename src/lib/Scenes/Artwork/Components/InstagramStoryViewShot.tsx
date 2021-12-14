@@ -37,7 +37,7 @@ export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({ 
 
   return (
     <Flex {...offscreenStyle} alignItems="center">
-      <ViewShot ref={shotRef} options={{ format: "png", result: "base64" }}>
+      <ViewShot ref={shotRef} options={{ format: "png", result: "base64" }} style={{ backgroundColor: "white" }}>
         <Image source={{ uri: href }} style={{ width, height }} resizeMode="contain" />
 
         <Flex

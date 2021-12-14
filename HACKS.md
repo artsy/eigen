@@ -157,16 +157,6 @@ react-native-config loads the `.env` file by default. We wanted to use `.env.sha
 
 We can do this better using https://github.com/luggit/react-native-config#ios-1. Take a look at https://artsyproduct.atlassian.net/browse/CX-949.
 
-## react-native-share patch-package
-
-#### When can we remove this:
-
-When we make a PR and it's merged about this.
-
-#### Explanation/Context:
-
-We need this patch because the lib by itself doesn't set the background colors when we send a backgroundImage, even though Instagram supports it. We add it here as a package because we use it.
-
 ## @react-navigation/core patch-package
 
 #### When can we remove this:
