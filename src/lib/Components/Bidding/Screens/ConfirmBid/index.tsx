@@ -548,6 +548,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
               justifyContent="center"
               onPress={() => this.onConditionsOfSaleCheckboxPressed()}
               disabled={isLoading}
+              flex={undefined}
             >
               <Text color="black60">
                 You agree to{" "}
