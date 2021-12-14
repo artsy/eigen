@@ -1,4 +1,6 @@
+import { useDevToggle } from "lib/store/GlobalStore"
 import { useOffscreenStyle } from "lib/utils/useOffscreenStyle"
+import { useSizeToFitScreen } from "lib/utils/useSizeToFit"
 import { ArtsyLogoBlackIcon, Flex, Text } from "palette"
 import React, { RefObject } from "react"
 import { Image } from "react-native"
@@ -11,9 +13,10 @@ import ViewShot from "react-native-view-shot"
  */
 
 const InstagramStoryBackgroundDimensions = {
-  width: "100%",
-  height: "100%",
+  width: 1080, // in pixels, before we scale it
+  height: 1920, // in pixels, before we scale it
 }
+const BottomLabelHeight = 350 // in pixels, before we scale it
 
 export interface InstagramStoryViewShotProps {
   shotRef: RefObject<ViewShot>
@@ -23,34 +26,37 @@ export interface InstagramStoryViewShotProps {
 }
 
 export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({ shotRef, href, artist, title }) => {
-  const offscreenStyle = useOffscreenStyle(true)
+  const debugInstagramShot = useDevToggle("DTShowInstagramShot")
+  const { width, height } = useSizeToFitScreen({
+    width: InstagramStoryBackgroundDimensions.width,
+    height: InstagramStoryBackgroundDimensions.height - BottomLabelHeight,
+  })
+  const offscreenStyle = useOffscreenStyle(debugInstagramShot)
+
+  const scale = width / InstagramStoryBackgroundDimensions.width
 
   return (
     <Flex {...offscreenStyle} alignItems="center">
       <ViewShot ref={shotRef} options={{ format: "png", result: "base64" }}>
+        <Image source={{ uri: href }} style={{ width, height }} resizeMode="contain" />
+
         <Flex
-          width={InstagramStoryBackgroundDimensions.width}
-          height={InstagramStoryBackgroundDimensions.height}
-          backgroundColor="white100"
+          mt={40 * scale}
+          mb={180 * scale}
+          px={50 * scale}
+          flexDirection="row"
+          alignItems="center"
+          justifyContent="space-between"
         >
           <Flex flex={1}>
-            <Image source={{ uri: href }} style={{ flex: 1 }} resizeMode="contain" />
+            <Text variant="md" weight="medium">
+              {artist}
+            </Text>
+            <Text variant="md" italic opacity={0.6} mt={10 * scale} ellipsizeMode="middle">
+              {title}
+            </Text>
           </Flex>
-          <Flex
-            width="100%"
-            mt={40}
-            mb={180}
-            px={50}
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Flex>
-              <Text variant="xl">{artist}</Text>
-              <Text variant="lg">{title}</Text>
-            </Flex>
-            <ArtsyLogoBlackIcon scale={2} />
-          </Flex>
+          <ArtsyLogoBlackIcon scale={0.8} />
         </Flex>
       </ViewShot>
     </Flex>

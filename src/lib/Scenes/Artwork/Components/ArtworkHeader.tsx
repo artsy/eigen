@@ -9,6 +9,7 @@ import { useCanOpenURL } from "lib/utils/useCanOpenURL"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Flex, InstagramAppIcon, LinkIcon, MoreIcon, ShareIcon, Spacer, WhatsAppAppIcon } from "palette"
 import React, { useRef, useState } from "react"
+import { Button, Modal } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 // @ts-ignore
 import Share from "react-native-share"
@@ -18,10 +19,8 @@ import { useTracking } from "react-tracking"
 import RNFetchBlob from "rn-fetch-blob"
 import { ArtworkActionsFragmentContainer as ArtworkActions, shareContent } from "./ArtworkActions"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./ArtworkTombstone"
-import { InstagramStoryViewShot } from "./InstagramStoryViewShot"
 import { ImageCarouselFragmentContainer } from "./ImageCarousel/ImageCarousel"
-import { Button, Modal } from "react-native"
-import { SafeAreaView } from "react-native-safe-area-context"
+import { InstagramStoryViewShot } from "./InstagramStoryViewShot"
 
 interface ArtworkHeaderProps {
   artwork: ArtworkHeader_artwork
@@ -170,18 +169,16 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
 
       {debugInstagramShot && showInstagramShot ? (
         <Modal visible={showInstagramShot} onRequestClose={() => setShowInstagramShot(false)}>
-          <SafeAreaView>
-            <InstagramStoryViewShot
-              // @ts-ignore
-              shotRef={undefined}
-              href={currentImageUrl}
-              artist={artwork.artists![0]?.name!}
-              title={artwork.title!}
-            />
-            <Flex position="absolute" top={100} left={0}>
-              <Button title="close instagram shot" onPress={() => setShowInstagramShot(false)} />
-            </Flex>
-          </SafeAreaView>
+          <InstagramStoryViewShot
+            // @ts-ignore
+            shotRef={undefined}
+            href={currentImageUrl}
+            artist={artwork.artists![0]?.name!}
+            title={artwork.title!}
+          />
+          <Flex position="absolute" top={100} left={0}>
+            <Button title="close instagram shot" onPress={() => setShowInstagramShot(false)} />
+          </Flex>
         </Modal>
       ) : null}
     </>

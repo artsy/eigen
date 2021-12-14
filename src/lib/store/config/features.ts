@@ -266,7 +266,7 @@ export const devToggles = defineDevToggles({
     description: "Show webview indicator",
   },
   DTShowInstagramShot: {
-    description: "Show Instagram shot",
+    description: "Show Instagram viewshot",
   },
 })
 
