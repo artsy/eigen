@@ -1,5 +1,5 @@
 import { SavedSearchButton_me } from "__generated__/SavedSearchButton_me.graphql"
-import { Aggregations, FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { Aggregations, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 
 export interface SavedSearchAlertFormValues {
   name: string
@@ -46,4 +46,10 @@ export interface CreateSavedSearchAlertProps {
 export type CreateSavedSearchAlertNavigationStack = {
   CreateSavedSearchAlert: CreateSavedSearchAlertParams
   EmailPreferences: undefined
+}
+
+export interface SavedSearchPill {
+  label: string
+  value: string | boolean | number
+  paramName: FilterParamName
 }
