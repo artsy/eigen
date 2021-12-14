@@ -239,6 +239,9 @@ export const devToggles = defineDevToggles({
   DTShowAnalyticsVisualiser: {
     description: "Show analytics visualiser",
   },
+  DTEasyMyCollectionArtworkCreation: {
+    description: "Easily add my collection artworks",
+  },
 })
 
 export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggleName => {

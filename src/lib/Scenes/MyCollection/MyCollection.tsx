@@ -8,8 +8,9 @@ import { PAGE_SIZE } from "lib/Components/constants"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { useToast } from "lib/Components/Toast/toastHook"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { unsafe_getFeatureFlag, useFeatureFlag } from "lib/store/GlobalStore"
+import { unsafe_getFeatureFlag, useDevToggle, useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -21,6 +22,7 @@ import { Platform, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkFormModal } from "./Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
+import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
 
 const RefreshEvents = new EventEmitter()
 const REFRESH_KEY = "refresh"
@@ -79,8 +81,11 @@ const MyCollection: React.FC<{
   const setJSX = __TEST__ ? jest.fn() : useContext(StickyTabPageFlatListContext).setJSX
 
   const space = useSpace()
+  const toast = useToast()
 
   const allowOrderImports = useFeatureFlag("AREnableMyCollectionOrderImport")
+
+  const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
 
   useEffect(() => {
     if (artworks.length) {
@@ -162,6 +167,18 @@ const MyCollection: React.FC<{
             hasMore={relay.hasMore}
             loadMore={relay.loadMore}
           />
+        )}
+        {!!showDevAddButton && (
+          <Button
+            onPress={async () => {
+              toast.show("Adding artwork", "middle")
+              await addRandomMyCollectionArtwork()
+              toast.hideOldest()
+            }}
+            block
+          >
+            Add Random Work
+          </Button>
         )}
       </StickyTabPageScrollView>
     </ProvideScreenTrackingWithCohesionSchema>
