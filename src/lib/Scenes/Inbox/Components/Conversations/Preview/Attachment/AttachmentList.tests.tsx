@@ -1,89 +1,68 @@
-import { AttachmentList_messageConnection } from "__generated__/AttachmentList_messageConnection.graphql"
-import { AttachmentListTestsQuery } from "__generated__/AttachmentListTestsQuery.graphql"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { setupTestWrapperTL } from "lib/tests/setupTestWrapper"
+import { Theme } from "palette"
 import React from "react"
 import "react-native"
-import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
+import { graphql } from "react-relay"
 import { AttachmentListFragmentContainer } from "./AttachmentList"
-import { FileDownload } from "./FileDownload"
 
 jest.unmock("react-relay")
 
 describe("AttachmentListFragmentContainer", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  const TestRenderer = () => (
-    <QueryRenderer<AttachmentListTestsQuery>
-      environment={env}
-      query={graphql`
-        query AttachmentListTestsQuery($conversationID: String!) @relay_test_operation {
-          me {
-            conversation(id: $conversationID) {
-              messagesConnection {
-                ...AttachmentList_messageConnection
-              }
-            }
+  const { renderWithRelay } = setupTestWrapperTL({
+    Component: ({ me }) => (
+      <Theme>
+        <AttachmentListFragmentContainer conversation={me.conversation} />
+      </Theme>
+    ),
+    query: graphql`
+      query AttachmentList_Test_Query {
+        me {
+          conversation(id: "test-conversation") {
+            ...AttachmentList_conversation
           }
         }
-      `}
-      variables={{ conversationID: "1" }}
-      render={({ props, error }) => {
-        if (props) {
-          return <AttachmentListFragmentContainer messageConnection={props.me?.conversation?.messagesConnection!} />
-        } else if (error) {
-          console.log(error)
-        }
-      }}
-    />
-  )
-
-  beforeEach(() => {
-    env = createMockEnvironment()
+      }
+    `,
   })
 
-  it("renders a FileDownload for each non-image ", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: meMock,
-      })
+  it("render attachments", () => {
+    const { getByText } = renderWithRelay({
+      Conversation: () => ({
+        messagesConnection: {
+          edges: [
+            {
+              node: {
+                attachments: [
+                  {
+                    fileName: "testfile1.webp",
+                    contentType: "image",
+                  },
+                  {
+                    fileName: "testfile2.webp",
+                    contentType: "image",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      }),
     })
-    const downloads = tree.root.findAllByType(FileDownload)
-    expect(downloads.length).toBe(2)
-    expect(downloads[0].props.tiny).toBe(true)
-    expect(downloads[0].props.attachment.downloadURL).toBe("http://example.com/happylittleaccident.txt")
+
+    expect(getByText("Attachments")).toBeDefined()
+    expect(getByText("testfile1.webp")).toBeDefined()
+    expect(getByText("testfile2.webp")).toBeDefined()
+  })
+
+  it("does not render given no attachment", () => {
+    const { queryAllByText } = renderWithRelay({
+      Conversation: () => ({
+        messagesConnection: {
+          edges: [{ node: null }],
+        },
+      }),
+    })
+
+    expect(queryAllByText(/./g)).toHaveLength(0)
   })
 })
-
-const messageMock: Omit<
-  NonNullable<NonNullable<NonNullable<AttachmentList_messageConnection["edges"]>[0]>["node"]>["attachments"],
-  " $refType" | " $fragmentRefs"
-> = {
-  attachments: [
-    {
-      id: "1",
-      fileName: "happylittleaccident.txt",
-      downloadURL: "http://example.com/happylittleaccident.txt",
-      contentType: "txt",
-    },
-    {
-      id: "2",
-      fileName: "happybigaccident.webp",
-      downloadURL: "http://example.com/happylittleaccident.webp",
-      contentType: "image",
-    },
-  ],
-}
-
-const meMock = {
-  me: {
-    conversation: {
-      messagesConnection: {
-        edges: [{ node: messageMock }, { node: messageMock }],
-      },
-    },
-  },
-}
