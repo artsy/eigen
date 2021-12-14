@@ -50,7 +50,7 @@ export const Articles: React.FC<ArticlesProps> = (props) => {
 }
 
 export const ArticlesQueryRenderer: React.FC = () => {
-  const { props, error, retry } = useQuery<ArticlesQuery>(query, {
+  const { props, error, retry } = useQuery<ArticlesQuery>(ArticlesScreenQuery, {
     count: PAGE_SIZE,
     inEditorialFeed: true,
     sort: "PUBLISHED_AT_DESC",
@@ -89,7 +89,7 @@ const fragmentSpec = graphql`
   }
 `
 
-const query = graphql`
+export const ArticlesScreenQuery = graphql`
   query ArticlesQuery($count: Int, $after: String, $sort: ArticleSorts, $inEditorialFeed: Boolean) {
     ...Articles_articlesConnection
       @arguments(count: $count, after: $after, sort: $sort, inEditorialFeed: $inEditorialFeed)
@@ -97,7 +97,7 @@ const query = graphql`
 `
 
 const connectionConfig: ConnectionConfig = {
-  query,
+  query: ArticlesScreenQuery,
   getVariables: (_props, { count, cursor }, _fragmentVariables) => ({
     count,
     after: cursor,

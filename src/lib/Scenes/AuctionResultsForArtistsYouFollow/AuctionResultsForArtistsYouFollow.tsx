@@ -190,16 +190,18 @@ export const ListHeader: React.FC = () => {
   )
 }
 
+export const AuctionResultsForArtistsYouFollowScreenQuery = graphql`
+  query AuctionResultsForArtistsYouFollowContainerQuery {
+    me {
+      ...AuctionResultsForArtistsYouFollow_me
+    }
+  }
+`
+
 export const AuctionResultsForArtistsYouFollowQueryRenderer: React.FC = () => (
   <QueryRenderer<AuctionResultsForArtistsYouFollowContainerQuery>
     environment={defaultEnvironment}
-    query={graphql`
-      query AuctionResultsForArtistsYouFollowContainerQuery {
-        me {
-          ...AuctionResultsForArtistsYouFollow_me
-        }
-      }
-    `}
+    query={AuctionResultsForArtistsYouFollowScreenQuery}
     variables={{}}
     cacheConfig={{
       force: true,
