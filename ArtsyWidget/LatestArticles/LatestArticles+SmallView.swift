@@ -15,7 +15,6 @@ extension LatestArticles {
             let artsyLogo = UIImage(named: "WhiteArtsyLogo")!
             let articleImage = article.image!
             let articleTitle = article.title
-            let publishedAt = article.pubDate
             let articleUrl = article.url!
             
             GeometryReader { geo in
@@ -30,9 +29,6 @@ extension LatestArticles {
                             VStack() {
                                 PrimaryText(name: articleTitle, color: .white)
                                     .lineLimit(2)
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                SecondaryText(title: publishedAt, color: .white)
-                                    .lineLimit(1)
                                     .frame(maxWidth: .infinity, alignment: .leading)
                             }
                             Spacer()
