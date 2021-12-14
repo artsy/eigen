@@ -414,6 +414,7 @@ jobs:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
     docker:
       - image: circleci/android:api-29-node
+    resource_class: large
     steps:
       - prep-android-env
       - await-previous-builds:
