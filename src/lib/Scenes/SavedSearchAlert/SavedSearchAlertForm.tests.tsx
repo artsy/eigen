@@ -88,6 +88,8 @@ describe("Saved search alert form", () => {
           searchCriteriaID: "savedSearchAlertId",
           userAlertSettings: {
             name: "something new",
+            email: true,
+            push: true,
           },
         },
       })
@@ -130,6 +132,8 @@ describe("Saved search alert form", () => {
           attributes: createMutationAttributes,
           userAlertSettings: {
             name: "something new",
+            email: true,
+            push: true,
           },
         },
       })
@@ -228,13 +232,6 @@ describe("Saved search alert form", () => {
         },
       })
     })
-  })
-
-  it("should display description by default", () => {
-    const { getByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
-    const description = getByText("Receive alerts as Push Notifications directly to your device.")
-
-    expect(description).toBeTruthy()
   })
 
   it("should hide description when AREnableSavedSearchToggles is enabled", () => {
