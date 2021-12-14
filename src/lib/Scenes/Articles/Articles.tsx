@@ -1,5 +1,5 @@
 import { Articles_articlesConnection$key } from "__generated__/Articles_articlesConnection.graphql"
-import { ArticlesQuery } from "__generated__/ArticlesQuery.graphql"
+import { ArticleSorts, ArticlesQuery } from "__generated__/ArticlesQuery.graphql"
 import { LoadFailureView } from "lib/Components/LoadFailureView"
 import { extractNodes } from "lib/utils/extractNodes"
 import React, { useEffect, useState } from "react"
@@ -49,12 +49,14 @@ export const Articles: React.FC<ArticlesProps> = (props) => {
   )
 }
 
+export const articlesDefaultVariables = {
+  count: PAGE_SIZE,
+  inEditorialFeed: true,
+  sort: "PUBLISHED_AT_DESC" as ArticleSorts,
+}
+
 export const ArticlesQueryRenderer: React.FC = () => {
-  const { props, error, retry } = useQuery<ArticlesQuery>(ArticlesScreenQuery, {
-    count: PAGE_SIZE,
-    inEditorialFeed: true,
-    sort: "PUBLISHED_AT_DESC",
-  })
+  const { props, error, retry } = useQuery<ArticlesQuery>(ArticlesScreenQuery, articlesDefaultVariables)
 
   if (props) {
     return <Articles query={props} />

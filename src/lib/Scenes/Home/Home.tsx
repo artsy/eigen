@@ -35,6 +35,7 @@ import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { articlesDefaultVariables } from "../Articles/Articles"
 import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
@@ -152,6 +153,7 @@ const Home = (props: Props) => {
       data: articlesConnection,
       hidden: !articlesConnection,
       prefetchUrl: "/articles",
+      prefetchVariables: articlesDefaultVariables,
     },
     {
       title: "Shows for You",
