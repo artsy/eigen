@@ -14,7 +14,7 @@ export type RegisterToBidButton_me = {
 };
 export type RegisterToBidButton_me$data = RegisterToBidButton_me;
 export type RegisterToBidButton_me$key = {
-    readonly " $data"?: RegisterToBidButton_me$data;
+    readonly " $data"?: RegisterToBidButton_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"RegisterToBidButton_me">;
 };
 

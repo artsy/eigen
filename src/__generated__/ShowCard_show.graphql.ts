@@ -13,13 +13,13 @@ export type ShowCard_show = {
         readonly url: string | null;
     } | null;
     readonly partner: {
-        readonly name?: string | null;
+        readonly name?: string | null | undefined;
     } | null;
     readonly " $refType": "ShowCard_show";
 };
 export type ShowCard_show$data = ShowCard_show;
 export type ShowCard_show$key = {
-    readonly " $data"?: ShowCard_show$data;
+    readonly " $data"?: ShowCard_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShowCard_show">;
 };
 

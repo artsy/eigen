@@ -50,7 +50,7 @@ export type AuctionResult_auctionResult = {
 };
 export type AuctionResult_auctionResult$data = AuctionResult_auctionResult;
 export type AuctionResult_auctionResult$key = {
-    readonly " $data"?: AuctionResult_auctionResult$data;
+    readonly " $data"?: AuctionResult_auctionResult$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"AuctionResult_auctionResult">;
 };
 

@@ -19,7 +19,7 @@ export type Show_show = {
 };
 export type Show_show$data = Show_show;
 export type Show_show$key = {
-    readonly " $data"?: Show_show$data;
+    readonly " $data"?: Show_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Show_show">;
 };
 

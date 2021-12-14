@@ -11,18 +11,18 @@ export type OnboardingPersonalizationModal_artists = {
                 readonly imageUrl: string | null;
                 readonly href: string | null;
                 readonly displayLabel: string | null;
-                readonly id?: string;
-                readonly internalID?: string;
-                readonly slug?: string;
-                readonly name?: string | null;
-                readonly initials?: string | null;
-                readonly is_followed?: boolean | null;
-                readonly nationality?: string | null;
-                readonly birthday?: string | null;
-                readonly deathday?: string | null;
+                readonly id?: string | undefined;
+                readonly internalID?: string | undefined;
+                readonly slug?: string | undefined;
+                readonly name?: string | null | undefined;
+                readonly initials?: string | null | undefined;
+                readonly is_followed?: boolean | null | undefined;
+                readonly nationality?: string | null | undefined;
+                readonly birthday?: string | null | undefined;
+                readonly deathday?: string | null | undefined;
                 readonly image?: {
                     readonly url: string | null;
-                } | null;
+                } | null | undefined;
             } | null;
         } | null> | null;
     } | null;
@@ -30,7 +30,7 @@ export type OnboardingPersonalizationModal_artists = {
 };
 export type OnboardingPersonalizationModal_artists$data = OnboardingPersonalizationModal_artists;
 export type OnboardingPersonalizationModal_artists$key = {
-    readonly " $data"?: OnboardingPersonalizationModal_artists$data;
+    readonly " $data"?: OnboardingPersonalizationModal_artists$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"OnboardingPersonalizationModal_artists">;
 };
 

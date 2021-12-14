@@ -22,7 +22,7 @@ export type MyCollection_me = {
 };
 export type MyCollection_me$data = MyCollection_me;
 export type MyCollection_me$key = {
-    readonly " $data"?: MyCollection_me$data;
+    readonly " $data"?: MyCollection_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyCollection_me">;
 };
 

@@ -11,7 +11,7 @@ export type Articles_articles = ReadonlyArray<{
 }>;
 export type Articles_articles$data = Articles_articles;
 export type Articles_articles$key = ReadonlyArray<{
-    readonly " $data"?: Articles_articles$data;
+    readonly " $data"?: Articles_articles$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Articles_articles">;
 }>;
 

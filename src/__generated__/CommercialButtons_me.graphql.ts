@@ -10,7 +10,7 @@ export type CommercialButtons_me = {
 };
 export type CommercialButtons_me$data = CommercialButtons_me;
 export type CommercialButtons_me$key = {
-    readonly " $data"?: CommercialButtons_me$data;
+    readonly " $data"?: CommercialButtons_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CommercialButtons_me">;
 };
 

@@ -7,7 +7,7 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type HomePageHeroUnitImageVersion = "NARROW" | "WIDE" | "%future added value";
 export type HomeBelowTheFoldQueryVariables = {
-    heroImageVersion?: HomePageHeroUnitImageVersion | null;
+    heroImageVersion?: HomePageHeroUnitImageVersion | null | undefined;
 };
 export type HomeBelowTheFoldQueryResponse = {
     readonly homePage: {

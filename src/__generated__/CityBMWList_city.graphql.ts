@@ -33,13 +33,13 @@ export type CityBMWList_city = {
                     readonly start_at: string | null;
                     readonly end_at: string | null;
                     readonly partner: {
-                        readonly name?: string | null;
-                        readonly type?: string | null;
+                        readonly name?: string | null | undefined;
+                        readonly type?: string | null | undefined;
                         readonly profile?: {
                             readonly image: {
                                 readonly url: string | null;
                             } | null;
-                        } | null;
+                        } | null | undefined;
                     } | null;
                 } | null;
             } | null> | null;
@@ -49,7 +49,7 @@ export type CityBMWList_city = {
 };
 export type CityBMWList_city$data = CityBMWList_city;
 export type CityBMWList_city$key = {
-    readonly " $data"?: CityBMWList_city$data;
+    readonly " $data"?: CityBMWList_city$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CityBMWList_city">;
 };
 

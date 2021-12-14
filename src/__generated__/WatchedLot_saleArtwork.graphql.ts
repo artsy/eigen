@@ -25,7 +25,7 @@ export type WatchedLot_saleArtwork = {
 };
 export type WatchedLot_saleArtwork$data = WatchedLot_saleArtwork;
 export type WatchedLot_saleArtwork$key = {
-    readonly " $data"?: WatchedLot_saleArtwork$data;
+    readonly " $data"?: WatchedLot_saleArtwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"WatchedLot_saleArtwork">;
 };
 

@@ -7,7 +7,7 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type CollectionQueryVariables = {
     collectionID: string;
-    screenWidth?: number | null;
+    screenWidth?: number | null | undefined;
 };
 export type CollectionQueryResponse = {
     readonly collection: {

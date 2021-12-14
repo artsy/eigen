@@ -16,13 +16,13 @@ export type ShowPreview_show = {
         readonly name: string | null;
     } | null;
     readonly partner: {
-        readonly name?: string | null;
+        readonly name?: string | null | undefined;
     } | null;
     readonly " $refType": "ShowPreview_show";
 };
 export type ShowPreview_show$data = ShowPreview_show;
 export type ShowPreview_show$key = {
-    readonly " $data"?: ShowPreview_show$data;
+    readonly " $data"?: ShowPreview_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShowPreview_show">;
 };
 

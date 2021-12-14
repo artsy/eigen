@@ -18,7 +18,7 @@ export type MyProfilePayment_me = {
 };
 export type MyProfilePayment_me$data = MyProfilePayment_me;
 export type MyProfilePayment_me$key = {
-    readonly " $data"?: MyProfilePayment_me$data;
+    readonly " $data"?: MyProfilePayment_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyProfilePayment_me">;
 };
 

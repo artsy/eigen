@@ -16,7 +16,7 @@ export type ArticlesRail_articlesConnection = {
 };
 export type ArticlesRail_articlesConnection$data = ArticlesRail_articlesConnection;
 export type ArticlesRail_articlesConnection$key = {
-    readonly " $data"?: ArticlesRail_articlesConnection$data;
+    readonly " $data"?: ArticlesRail_articlesConnection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArticlesRail_articlesConnection">;
 };
 

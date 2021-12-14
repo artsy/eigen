@@ -33,7 +33,7 @@ export type OrderDetailsHeader_info = {
 };
 export type OrderDetailsHeader_info$data = OrderDetailsHeader_info;
 export type OrderDetailsHeader_info$key = {
-    readonly " $data"?: OrderDetailsHeader_info$data;
+    readonly " $data"?: OrderDetailsHeader_info$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"OrderDetailsHeader_info">;
 };
 

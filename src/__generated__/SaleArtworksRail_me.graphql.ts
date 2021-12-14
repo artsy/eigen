@@ -20,7 +20,7 @@ export type SaleArtworksRail_me = {
 };
 export type SaleArtworksRail_me$data = SaleArtworksRail_me;
 export type SaleArtworksRail_me$key = {
-    readonly " $data"?: SaleArtworksRail_me$data;
+    readonly " $data"?: SaleArtworksRail_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SaleArtworksRail_me">;
 };
 

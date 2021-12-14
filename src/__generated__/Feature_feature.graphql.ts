@@ -18,8 +18,8 @@ export type Feature_feature = {
                     readonly edges: ReadonlyArray<{
                         readonly node: {
                             readonly __typename: string;
-                            readonly id?: string;
-                            readonly href?: string | null;
+                            readonly id?: string | undefined;
+                            readonly href?: string | null | undefined;
                             readonly " $fragmentRefs": FragmentRefs<"FeatureFeaturedLink_featuredLink" | "GenericGrid_artworks">;
                         } | null;
                     } | null> | null;
@@ -32,7 +32,7 @@ export type Feature_feature = {
 };
 export type Feature_feature$data = Feature_feature;
 export type Feature_feature$key = {
-    readonly " $data"?: Feature_feature$data;
+    readonly " $data"?: Feature_feature$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Feature_feature">;
 };
 

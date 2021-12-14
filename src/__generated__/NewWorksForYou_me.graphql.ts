@@ -17,7 +17,7 @@ export type NewWorksForYou_me = {
 };
 export type NewWorksForYou_me$data = NewWorksForYou_me;
 export type NewWorksForYou_me$key = {
-    readonly " $data"?: NewWorksForYou_me$data;
+    readonly " $data"?: NewWorksForYou_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"NewWorksForYou_me">;
 };
 

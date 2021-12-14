@@ -20,7 +20,7 @@ export type FeaturedArtists_collection = {
 };
 export type FeaturedArtists_collection$data = FeaturedArtists_collection;
 export type FeaturedArtists_collection$key = {
-    readonly " $data"?: FeaturedArtists_collection$data;
+    readonly " $data"?: FeaturedArtists_collection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FeaturedArtists_collection">;
 };
 

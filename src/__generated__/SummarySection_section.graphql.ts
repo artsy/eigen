@@ -24,12 +24,12 @@ export type SummarySection_section = {
     readonly lastOffer?: {
         readonly amount: string | null;
         readonly fromParticipant: CommerceOrderParticipantEnum | null;
-    } | null;
+    } | null | undefined;
     readonly " $refType": "SummarySection_section";
 };
 export type SummarySection_section$data = SummarySection_section;
 export type SummarySection_section$key = {
-    readonly " $data"?: SummarySection_section$data;
+    readonly " $data"?: SummarySection_section$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SummarySection_section">;
 };
 

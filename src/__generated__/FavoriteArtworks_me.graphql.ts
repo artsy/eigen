@@ -25,7 +25,7 @@ export type FavoriteArtworks_me = {
 };
 export type FavoriteArtworks_me$data = FavoriteArtworks_me;
 export type FavoriteArtworks_me$key = {
-    readonly " $data"?: FavoriteArtworks_me$data;
+    readonly " $data"?: FavoriteArtworks_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FavoriteArtworks_me">;
 };
 

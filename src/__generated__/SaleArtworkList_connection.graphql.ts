@@ -15,7 +15,7 @@ export type SaleArtworkList_connection = {
 };
 export type SaleArtworkList_connection$data = SaleArtworkList_connection;
 export type SaleArtworkList_connection$key = {
-    readonly " $data"?: SaleArtworkList_connection$data;
+    readonly " $data"?: SaleArtworkList_connection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SaleArtworkList_connection">;
 };
 

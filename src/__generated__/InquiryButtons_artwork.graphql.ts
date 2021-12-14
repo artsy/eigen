@@ -32,7 +32,7 @@ export type InquiryButtons_artwork = {
 };
 export type InquiryButtons_artwork$data = InquiryButtons_artwork;
 export type InquiryButtons_artwork$key = {
-    readonly " $data"?: InquiryButtons_artwork$data;
+    readonly " $data"?: InquiryButtons_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"InquiryButtons_artwork">;
 };
 

@@ -6,7 +6,7 @@
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionDeleteArtworkInput = {
     artworkId: string;
-    clientMutationId?: string | null;
+    clientMutationId?: string | null | undefined;
 };
 export type myCollectionDeleteArtworkMutationVariables = {
     input: MyCollectionDeleteArtworkInput;
@@ -14,10 +14,10 @@ export type myCollectionDeleteArtworkMutationVariables = {
 export type myCollectionDeleteArtworkMutationResponse = {
     readonly myCollectionDeleteArtwork: {
         readonly artworkOrError: {
-            readonly success?: boolean | null;
+            readonly success?: boolean | null | undefined;
             readonly mutationError?: {
                 readonly message: string;
-            } | null;
+            } | null | undefined;
         } | null;
     } | null;
 };

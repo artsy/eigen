@@ -10,7 +10,7 @@ export type TagHeader_tag = {
 };
 export type TagHeader_tag$data = TagHeader_tag;
 export type TagHeader_tag$key = {
-    readonly " $data"?: TagHeader_tag$data;
+    readonly " $data"?: TagHeader_tag$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"TagHeader_tag">;
 };
 

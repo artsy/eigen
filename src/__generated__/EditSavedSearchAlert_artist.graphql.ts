@@ -11,7 +11,7 @@ export type EditSavedSearchAlert_artist = {
 };
 export type EditSavedSearchAlert_artist$data = EditSavedSearchAlert_artist;
 export type EditSavedSearchAlert_artist$key = {
-    readonly " $data"?: EditSavedSearchAlert_artist$data;
+    readonly " $data"?: EditSavedSearchAlert_artist$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"EditSavedSearchAlert_artist">;
 };
 

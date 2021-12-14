@@ -6,9 +6,9 @@
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionPaginationQueryVariables = {
-    excludePurchasedArtworks?: boolean | null;
+    excludePurchasedArtworks?: boolean | null | undefined;
     count: number;
-    cursor?: string | null;
+    cursor?: string | null | undefined;
 };
 export type MyCollectionPaginationQueryResponse = {
     readonly me: {

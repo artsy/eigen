@@ -7,8 +7,8 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtistArticlesQueryVariables = {
     artistID: string;
-    count?: number | null;
-    cursor?: string | null;
+    count?: number | null | undefined;
+    cursor?: string | null | undefined;
 };
 export type ArtistArticlesQueryResponse = {
     readonly artist: {

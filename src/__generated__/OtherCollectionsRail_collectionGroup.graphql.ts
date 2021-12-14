@@ -17,7 +17,7 @@ export type OtherCollectionsRail_collectionGroup = {
 };
 export type OtherCollectionsRail_collectionGroup$data = OtherCollectionsRail_collectionGroup;
 export type OtherCollectionsRail_collectionGroup$key = {
-    readonly " $data"?: OtherCollectionsRail_collectionGroup$data;
+    readonly " $data"?: OtherCollectionsRail_collectionGroup$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"OtherCollectionsRail_collectionGroup">;
 };
 

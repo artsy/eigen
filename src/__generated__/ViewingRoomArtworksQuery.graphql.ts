@@ -8,7 +8,7 @@ import { FragmentRefs } from "relay-runtime";
 export type ViewingRoomArtworksQueryVariables = {
     viewingRoomID: string;
     count: number;
-    cursor?: string | null;
+    cursor?: string | null | undefined;
 };
 export type ViewingRoomArtworksQueryResponse = {
     readonly viewingRoom: {

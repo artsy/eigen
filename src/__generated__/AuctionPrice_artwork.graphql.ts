@@ -34,7 +34,7 @@ export type AuctionPrice_artwork = {
 };
 export type AuctionPrice_artwork$data = AuctionPrice_artwork;
 export type AuctionPrice_artwork$key = {
-    readonly " $data"?: AuctionPrice_artwork$data;
+    readonly " $data"?: AuctionPrice_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"AuctionPrice_artwork">;
 };
 

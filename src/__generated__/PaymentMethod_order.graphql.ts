@@ -14,7 +14,7 @@ export type PaymentMethod_order = {
 };
 export type PaymentMethod_order$data = PaymentMethod_order;
 export type PaymentMethod_order$key = {
-    readonly " $data"?: PaymentMethod_order$data;
+    readonly " $data"?: PaymentMethod_order$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"PaymentMethod_order">;
 };
 

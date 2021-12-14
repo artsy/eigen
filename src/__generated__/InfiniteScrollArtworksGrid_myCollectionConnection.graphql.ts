@@ -27,7 +27,7 @@ export type InfiniteScrollArtworksGrid_myCollectionConnection = {
 };
 export type InfiniteScrollArtworksGrid_myCollectionConnection$data = InfiniteScrollArtworksGrid_myCollectionConnection;
 export type InfiniteScrollArtworksGrid_myCollectionConnection$key = {
-    readonly " $data"?: InfiniteScrollArtworksGrid_myCollectionConnection$data;
+    readonly " $data"?: InfiniteScrollArtworksGrid_myCollectionConnection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_myCollectionConnection">;
 };
 

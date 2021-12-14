@@ -11,7 +11,7 @@ export type ShowArtworksEmptyState_show = {
 };
 export type ShowArtworksEmptyState_show$data = ShowArtworksEmptyState_show;
 export type ShowArtworksEmptyState_show$key = {
-    readonly " $data"?: ShowArtworksEmptyState_show$data;
+    readonly " $data"?: ShowArtworksEmptyState_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShowArtworksEmptyState_show">;
 };
 

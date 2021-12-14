@@ -17,7 +17,7 @@ export type ViewingRoomsList_query = {
 };
 export type ViewingRoomsList_query$data = ViewingRoomsList_query;
 export type ViewingRoomsList_query$key = {
-    readonly " $data"?: ViewingRoomsList_query$data;
+    readonly " $data"?: ViewingRoomsList_query$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsList_query">;
 };
 

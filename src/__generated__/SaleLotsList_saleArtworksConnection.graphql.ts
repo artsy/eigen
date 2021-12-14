@@ -30,7 +30,7 @@ export type SaleLotsList_saleArtworksConnection = {
 };
 export type SaleLotsList_saleArtworksConnection$data = SaleLotsList_saleArtworksConnection;
 export type SaleLotsList_saleArtworksConnection$key = {
-    readonly " $data"?: SaleLotsList_saleArtworksConnection$data;
+    readonly " $data"?: SaleLotsList_saleArtworksConnection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SaleLotsList_saleArtworksConnection">;
 };
 

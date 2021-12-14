@@ -30,7 +30,7 @@ export type Fair_fair = {
 };
 export type Fair_fair$data = Fair_fair;
 export type Fair_fair$key = {
-    readonly " $data"?: Fair_fair$data;
+    readonly " $data"?: Fair_fair$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Fair_fair">;
 };
 

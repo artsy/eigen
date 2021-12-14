@@ -14,7 +14,7 @@ export type FeatureHeader_feature = {
 };
 export type FeatureHeader_feature$data = FeatureHeader_feature;
 export type FeatureHeader_feature$key = {
-    readonly " $data"?: FeatureHeader_feature$data;
+    readonly " $data"?: FeatureHeader_feature$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FeatureHeader_feature">;
 };
 

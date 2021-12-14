@@ -10,7 +10,7 @@ export type SavedSearchAlertsList_me = {
 };
 export type SavedSearchAlertsList_me$data = SavedSearchAlertsList_me;
 export type SavedSearchAlertsList_me$key = {
-    readonly " $data"?: SavedSearchAlertsList_me$data;
+    readonly " $data"?: SavedSearchAlertsList_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SavedSearchAlertsList_me">;
 };
 

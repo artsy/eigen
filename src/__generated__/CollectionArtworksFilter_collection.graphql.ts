@@ -11,7 +11,7 @@ export type CollectionArtworksFilter_collection = {
 };
 export type CollectionArtworksFilter_collection$data = CollectionArtworksFilter_collection;
 export type CollectionArtworksFilter_collection$key = {
-    readonly " $data"?: CollectionArtworksFilter_collection$data;
+    readonly " $data"?: CollectionArtworksFilter_collection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CollectionArtworksFilter_collection">;
 };
 

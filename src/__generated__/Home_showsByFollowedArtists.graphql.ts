@@ -10,7 +10,7 @@ export type Home_showsByFollowedArtists = {
 };
 export type Home_showsByFollowedArtists$data = Home_showsByFollowedArtists;
 export type Home_showsByFollowedArtists$key = {
-    readonly " $data"?: Home_showsByFollowedArtists$data;
+    readonly " $data"?: Home_showsByFollowedArtists$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Home_showsByFollowedArtists">;
 };
 

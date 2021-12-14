@@ -12,13 +12,13 @@ export type AutosuggestResults_results = {
                 readonly href: string | null;
                 readonly displayLabel: string | null;
                 readonly __typename: string;
-                readonly internalID?: string;
-                readonly displayType?: string | null;
-                readonly slug?: string;
+                readonly internalID?: string | undefined;
+                readonly displayType?: string | null | undefined;
+                readonly slug?: string | undefined;
                 readonly statuses?: {
                     readonly artworks: boolean | null;
                     readonly auctionLots: boolean | null;
-                } | null;
+                } | null | undefined;
             } | null;
         } | null> | null;
     } | null;
@@ -26,7 +26,7 @@ export type AutosuggestResults_results = {
 };
 export type AutosuggestResults_results$data = AutosuggestResults_results;
 export type AutosuggestResults_results$key = {
-    readonly " $data"?: AutosuggestResults_results$data;
+    readonly " $data"?: AutosuggestResults_results$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"AutosuggestResults_results">;
 };
 

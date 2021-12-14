@@ -21,7 +21,7 @@ export type VanityURLEntity_fairOrPartner = {
 };
 export type VanityURLEntity_fairOrPartner$data = VanityURLEntity_fairOrPartner;
 export type VanityURLEntity_fairOrPartner$key = {
-    readonly " $data"?: VanityURLEntity_fairOrPartner$data;
+    readonly " $data"?: VanityURLEntity_fairOrPartner$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"VanityURLEntity_fairOrPartner">;
 };
 

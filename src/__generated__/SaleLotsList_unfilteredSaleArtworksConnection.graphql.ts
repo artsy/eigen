@@ -12,7 +12,7 @@ export type SaleLotsList_unfilteredSaleArtworksConnection = {
 };
 export type SaleLotsList_unfilteredSaleArtworksConnection$data = SaleLotsList_unfilteredSaleArtworksConnection;
 export type SaleLotsList_unfilteredSaleArtworksConnection$key = {
-    readonly " $data"?: SaleLotsList_unfilteredSaleArtworksConnection$data;
+    readonly " $data"?: SaleLotsList_unfilteredSaleArtworksConnection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SaleLotsList_unfilteredSaleArtworksConnection">;
 };
 

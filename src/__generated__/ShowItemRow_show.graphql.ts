@@ -12,12 +12,12 @@ export type ShowItemRow_show = {
     readonly name: string | null;
     readonly isStubShow: boolean | null;
     readonly partner: {
-        readonly name?: string | null;
+        readonly name?: string | null | undefined;
         readonly profile?: {
             readonly image: {
                 readonly url: string | null;
             } | null;
-        } | null;
+        } | null | undefined;
     } | null;
     readonly href: string | null;
     readonly exhibition_period: string | null;
@@ -31,7 +31,7 @@ export type ShowItemRow_show = {
 };
 export type ShowItemRow_show$data = ShowItemRow_show;
 export type ShowItemRow_show$key = {
-    readonly " $data"?: ShowItemRow_show$data;
+    readonly " $data"?: ShowItemRow_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShowItemRow_show">;
 };
 

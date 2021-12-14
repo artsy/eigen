@@ -31,13 +31,13 @@ export type CitySavedList_me = {
                     readonly start_at: string | null;
                     readonly end_at: string | null;
                     readonly partner: {
-                        readonly name?: string | null;
-                        readonly type?: string | null;
+                        readonly name?: string | null | undefined;
+                        readonly type?: string | null | undefined;
                         readonly profile?: {
                             readonly image: {
                                 readonly url: string | null;
                             } | null;
-                        } | null;
+                        } | null | undefined;
                     } | null;
                 } | null;
             } | null> | null;
@@ -47,7 +47,7 @@ export type CitySavedList_me = {
 };
 export type CitySavedList_me$data = CitySavedList_me;
 export type CitySavedList_me$key = {
-    readonly " $data"?: CitySavedList_me$data;
+    readonly " $data"?: CitySavedList_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CitySavedList_me">;
 };
 

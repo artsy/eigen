@@ -12,7 +12,7 @@ export type CollectionHubsRails_linkedCollections = ReadonlyArray<{
 }>;
 export type CollectionHubsRails_linkedCollections$data = CollectionHubsRails_linkedCollections;
 export type CollectionHubsRails_linkedCollections$key = ReadonlyArray<{
-    readonly " $data"?: CollectionHubsRails_linkedCollections$data;
+    readonly " $data"?: CollectionHubsRails_linkedCollections$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CollectionHubsRails_linkedCollections">;
 }>;
 

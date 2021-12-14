@@ -10,7 +10,7 @@ export type AttachmentPreview_attachment = {
 };
 export type AttachmentPreview_attachment$data = AttachmentPreview_attachment;
 export type AttachmentPreview_attachment$key = {
-    readonly " $data"?: AttachmentPreview_attachment$data;
+    readonly " $data"?: AttachmentPreview_attachment$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"AttachmentPreview_attachment">;
 };
 

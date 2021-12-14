@@ -22,7 +22,7 @@ export type OtherWorks_artwork = {
 };
 export type OtherWorks_artwork$data = OtherWorks_artwork;
 export type OtherWorks_artwork$key = {
-    readonly " $data"?: OtherWorks_artwork$data;
+    readonly " $data"?: OtherWorks_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"OtherWorks_artwork">;
 };
 

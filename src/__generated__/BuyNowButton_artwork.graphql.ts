@@ -12,7 +12,7 @@ export type BuyNowButton_artwork = {
 };
 export type BuyNowButton_artwork$data = BuyNowButton_artwork;
 export type BuyNowButton_artwork$key = {
-    readonly " $data"?: BuyNowButton_artwork$data;
+    readonly " $data"?: BuyNowButton_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"BuyNowButton_artwork">;
 };
 

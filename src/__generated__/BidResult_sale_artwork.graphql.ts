@@ -14,7 +14,7 @@ export type BidResult_sale_artwork = {
 };
 export type BidResult_sale_artwork$data = BidResult_sale_artwork;
 export type BidResult_sale_artwork$key = {
-    readonly " $data"?: BidResult_sale_artwork$data;
+    readonly " $data"?: BidResult_sale_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"BidResult_sale_artwork">;
 };
 
