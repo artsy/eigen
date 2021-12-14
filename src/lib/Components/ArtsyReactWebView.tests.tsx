@@ -7,7 +7,6 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { appJson } from "lib/utils/jsonFiles"
 import { stringify } from "query-string"
 import React from "react"
-// @ts-ignore
 import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { act } from "react-test-renderer"
