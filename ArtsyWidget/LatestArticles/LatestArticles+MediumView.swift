@@ -13,7 +13,7 @@ extension LatestArticles {
             
             VStack() {
                 HStack(alignment: .top) {
-                    Text("ARTSY EDITORIAL")
+                    Text("LATEST ARTICLES")
                         .font(.system(size: 10, weight: .medium))
                     Spacer()
                     Image(uiImage: artsyLogo)
