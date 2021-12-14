@@ -19,11 +19,9 @@ export const OrderInformation: React.FC<OrderInformationProps> = ({ artwork, ord
     <>
       <Flex flexDirection="column" p={2} key="support-section">
         <Join separator={<Spacer my={0.5} />}>
-          <>
-            <Text variant="md" weight="medium" mb={0.5}>
-              {`Order No. ${order.code}`}
-            </Text>
-          </>
+          <Text variant="md" weight="medium" mb={0.5}>
+            {`Order No. ${order.code}`}
+          </Text>
 
           <>
             <Flex justifyContent="space-between" flexDirection="row">
@@ -43,26 +41,20 @@ export const OrderInformation: React.FC<OrderInformationProps> = ({ artwork, ord
             </Flex>
           </>
 
-          <>
-            <Flex justifyContent="space-between" flexDirection="row">
-              <Text color="black60">Shipping</Text>
-              <Text color="black60">{order.shippingTotal ?? "—"}</Text>
-            </Flex>
-          </>
+          <Flex justifyContent="space-between" flexDirection="row">
+            <Text color="black60">Shipping</Text>
+            <Text color="black60">{order.shippingTotal ?? "—"}</Text>
+          </Flex>
 
-          <>
-            <Flex justifyContent="space-between" flexDirection="row">
-              <Text color="black60">Tax</Text>
-              <Text color="black60">{order.taxTotal ?? "—"}</Text>
-            </Flex>
-          </>
+          <Flex justifyContent="space-between" flexDirection="row">
+            <Text color="black60">Tax</Text>
+            <Text color="black60">{order.taxTotal ?? "—"}</Text>
+          </Flex>
 
-          <>
-            <Flex justifyContent="space-between" flexDirection="row">
-              <Text weight="medium">Total</Text>
-              <Text weight="medium">{order.buyerTotal ?? ""}</Text>
-            </Flex>
-          </>
+          <Flex justifyContent="space-between" flexDirection="row">
+            <Text weight="medium">Total</Text>
+            <Text weight="medium">{order.buyerTotal ?? ""}</Text>
+          </Flex>
         </Join>
       </Flex>
       <Separator />
