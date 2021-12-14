@@ -14,9 +14,6 @@ export const PaymentMethod: React.FC<PaymentMethodProps> = ({ order }) => {
   }
 
   const { lastDigits, expirationMonth, expirationYear } = order.creditCard
-  const monthString = expirationMonth.toString()
-  const month = monthString.length === 1 ? `0${expirationMonth}` : expirationMonth
-  const year = expirationYear.toString().substring(2, 4)
 
   return (
     <>
@@ -25,7 +22,9 @@ export const PaymentMethod: React.FC<PaymentMethodProps> = ({ order }) => {
           Payment Method
         </Text>
         <Text variant="sm" color="black60">
-          {`•••• ${lastDigits} Exp ${month}/${year}`}
+          {`•••• ${lastDigits} Exp ${expirationMonth.toString().padStart(2, "0")}/${expirationYear
+            .toString()
+            .slice(-2)}`}
         </Text>
       </Flex>
       <Separator />
