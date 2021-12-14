@@ -40,7 +40,7 @@ extension LatestArticles {
                                 .resizable()
                                 .frame(width: 20, height: 20)
                         }
-                        .padding(10)
+                        .padding(16)
                         .background(Color.black)
                     }
                     .widgetURL(articleUrl)

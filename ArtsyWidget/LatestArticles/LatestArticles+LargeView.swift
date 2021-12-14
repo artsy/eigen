@@ -42,7 +42,7 @@ extension LatestArticles {
                     }
                 }
             }
-            .padding(10)
+            .padding(16)
         }
     }
 }

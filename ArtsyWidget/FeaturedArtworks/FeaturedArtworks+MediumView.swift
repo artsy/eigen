@@ -32,7 +32,7 @@ private struct TopArtwork: SwiftUI.View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
-        .padding(10)
+        .padding(16)
         .background(Color.white)
         .widgetURL(artworkUrl)
     }
@@ -95,7 +95,7 @@ extension FeaturedArtworks {
                         BottomArtwork(artwork: secondaryArtwork)
                         BottomArtwork(artwork: tertiaryArtwork)
                     }
-                    .padding(10)
+                    .padding(16)
                     .background(Color(white: 0.96))
                     .frame(height: geo.size.height * CGFloat(bottomFactor))
                 }
