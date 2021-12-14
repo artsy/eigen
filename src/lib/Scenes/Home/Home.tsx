@@ -160,7 +160,13 @@ const Home = (props: Props) => {
       hidden: !enableShowsForYouRail,
     },
     { title: "Trove", type: "trove", data: homePageBelow, hidden: !enableTrove },
-    { title: "Viewing Rooms", type: "viewing-rooms", data: featured, hidden: !enableViewingRooms },
+    {
+      title: "Viewing Rooms",
+      type: "viewing-rooms",
+      data: featured,
+      hidden: !enableViewingRooms,
+      prefetchUrl: "/viewing-rooms",
+    },
     {
       title: "Collections",
       subtitle: "The newest works curated by Artsy",
