@@ -28,11 +28,12 @@ extension LatestArticles {
                                 Image(uiImage: article.image!)
                                     .resizable()
                                     .scaledToFill()
-                                    .frame(width: 48, height: 48, alignment: .top)
+                                    .frame(width: 42, height: 42, alignment: .top)
                                     .clipped()
                                 VStack() {
                                     PrimaryText(name: article.title)
                                         .frame(maxWidth: .infinity, alignment: .leading)
+                                        .lineLimit(2)
                                     SecondaryText(title: article.pubDate)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                 }
