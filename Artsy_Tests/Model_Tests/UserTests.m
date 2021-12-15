@@ -30,7 +30,6 @@ it(@"migrates model from version 0 to 1", ^{
     NSString *userData_v0 = [[NSBundle bundleForClass:[self class]] pathForResource:@"User_v0" ofType:@"data"];
     User *deserializedUser = [NSKeyedUnarchiver unarchiveObjectWithFile:userData_v0];
     expect(deserializedUser.userID).to.equal(@"4dc805b18101da0001000489");
-    expect(deserializedUser.defaultProfileID).to.equal(@"dblockdotorg");
     expect(deserializedUser.email).to.equal(@"dblock@dblock.org");
 });
 
@@ -38,7 +37,6 @@ it(@"loads model version 1", ^{
     NSString *userData_v1 = [[NSBundle bundleForClass:[self class]] pathForResource:@"User_v1" ofType:@"data"];
     User *deserializedUser = [NSKeyedUnarchiver unarchiveObjectWithFile:userData_v1];
     expect(deserializedUser.userID).to.equal(@"4dc805b18101da0001000489");
-    expect(deserializedUser.defaultProfileID).to.equal(@"dblockdotorg");
     expect(deserializedUser.email).to.equal(@"dblock@dblock.org");
 });
 

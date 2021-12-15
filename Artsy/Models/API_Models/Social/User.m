@@ -5,6 +5,12 @@
 #import "ArtsyAPI+Profiles.h"
 #import "Profile.h"
 
+
+@interface User ()
+@property (nonatomic, copy, readonly) NSString *defaultProfileID;
+@end
+
+
 @implementation User
 
 + (User *)currentUser

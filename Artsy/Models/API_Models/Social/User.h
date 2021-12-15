@@ -10,8 +10,6 @@
 @property (nonatomic, copy, readonly) NSString *userID;
 @property (nonatomic, copy, readonly) NSString *email;
 
-@property (nonatomic, copy, readonly) NSString *defaultProfileID;
-
 @property (nonatomic, readonly) BOOL identityVerified;
 
 
