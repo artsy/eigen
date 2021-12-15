@@ -2,7 +2,7 @@ import { storiesOf } from "@storybook/react-native"
 import { Text } from "palette"
 import { CollapsibleMenuItem } from "palette/elements/Collapse/CollapsibleMenuItem/CollapsibleMenuItem"
 import React, { useState } from "react"
-import { View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { withTheme } from "storybook/decorators"
 
 export const Content1: React.FC = ({}) => {
@@ -15,14 +15,14 @@ export const Content1: React.FC = ({}) => {
 
 export const Content2: React.FC = ({}) => {
   return (
-    <View style={{ backgroundColor: `rgba(255,145,125,.3)`, padding: 20, marginTop: 20 }}>
+    <View style={styles.content}>
       <Text>Content 2</Text>
     </View>
   )
 }
 export const Content3: React.FC = ({}) => {
   return (
-    <View style={{ backgroundColor: `rgba(255,145,125,.3)`, padding: 20, marginTop: 20 }}>
+    <View style={styles.content}>
       <Text>Content 3</Text>
     </View>
   )
@@ -30,7 +30,7 @@ export const Content3: React.FC = ({}) => {
 
 export const DisplayContent = () => {
   return (
-    <View style={{ backgroundColor: `rgba(255,145,125,.3)`, padding: 20, marginTop: 20 }}>
+    <View style={styles.content}>
       <Text>This is the collapsible menu content</Text>
     </View>
   )
@@ -47,7 +47,7 @@ export const ComponentWithCollapsibleMenu = () => {
   ]
 
   return (
-    <View style={{ margin: 20 }}>
+    <View style={styles.container}>
       {items.map((item) => {
         const { stepNumber, title, Content } = item
         return (
@@ -76,3 +76,12 @@ storiesOf("Collapsable Menu ", module)
       <ComponentWithCollapsibleMenu />
     </>
   ))
+
+const styles = StyleSheet.create({
+  container: {
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    justifyContent: "center",
+  },
+  content: { backgroundColor: `rgba(255,145,125,.3)`, padding: 20, marginTop: 20 },
+})

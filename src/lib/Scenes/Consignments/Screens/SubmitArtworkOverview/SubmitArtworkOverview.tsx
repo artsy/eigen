@@ -6,21 +6,21 @@ import { ScrollView, StyleSheet, Text, View } from "react-native"
 
 export const ArtworkDetails: React.FC = ({}) => {
   return (
-    <View style={{ backgroundColor: `rgba(255,145,125,.3)`, padding: 20, marginTop: 20 }}>
+    <View style={styles.content}>
       <Text>ArtworkDetails content</Text>
     </View>
   )
 }
 export const ContactInformation: React.FC = ({}) => {
   return (
-    <View style={{ backgroundColor: `rgba(255,145,125,.3)`, padding: 20, marginTop: 20 }}>
+    <View style={styles.content}>
       <Text>ContactInformation content</Text>
     </View>
   )
 }
 export const UploadPhotos: React.FC = ({}) => {
   return (
-    <View style={{ backgroundColor: `rgba(255,145,125,.3)`, padding: 20, marginTop: 20 }}>
+    <View style={styles.content}>
       <Text>UploadPhotos content</Text>
     </View>
   )
@@ -69,4 +69,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     justifyContent: "center",
   },
+  content: { backgroundColor: `rgba(255,145,125,.3)`, padding: 20, marginTop: 20 },
 })
