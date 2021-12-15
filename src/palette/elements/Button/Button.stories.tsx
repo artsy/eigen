@@ -5,7 +5,7 @@ import React, { useState } from "react"
 import { Button as RNButton } from "react-native"
 import { withHooks, withScreenDimensions, withTheme } from "storybook/decorators"
 import { DList, List } from "storybook/helpers"
-import { Button, ButtonProps } from "."
+import { Button, ButtonProps, FollowButton } from "."
 import { _test_DisplayState } from "./Button"
 
 const sizes: Array<ButtonProps["size"]> = ["small", "large"]
@@ -137,5 +137,14 @@ storiesOf("Button", module)
           </Button>
         </List>
       </>
+    )
+  })
+  .add("FollowButton", () => {
+    const [follow, setFollow] = useState(true)
+
+    return (
+      <Flex width={400} height={100} alignItems="center" justifyContent="center">
+        <FollowButton isFollowed={follow} onPress={() => setFollow((v) => !v)} />
+      </Flex>
     )
   })
