@@ -143,7 +143,7 @@ const MyCollection: React.FC<{
               paramValue: a.medium ?? undefined,
             })
           ),
-          (m) => m.paramName
+          (m) => m.paramValue
         ),
         // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks, mediums: string[]) => filter(artworks, (a) => mediums.includes(a.medium)),
