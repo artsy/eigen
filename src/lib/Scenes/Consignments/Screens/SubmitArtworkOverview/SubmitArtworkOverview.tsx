@@ -12,8 +12,6 @@ export const SubmitArtworkOverview = () => {
   const [activeStep, setActiveStep] = useState(1)
   const [enabledSteps, setEnabledSteps] = useState([1])
 
-  // const [stepsCompleted, setStepsCompleted] = useState<number[]>([0])
-
   return (
     <ScrollView alwaysBounceVertical={false} contentContainerStyle={styles.scrollView}>
       <Spacer mb={3} />
