@@ -20,7 +20,7 @@ function loadStories() {
   require("../palette/elements/Select/Select.stories")
   require("../palette/elements/Tabs/Tabs.stories")
   require("../palette/elements/Header/Header.stories")
-  require("../palette/elements/Collapse/Collapse.stories")
+  require("../palette/elements/Collapse/CollapsibleMenuItem/CollapsibleMenuItem.stories")
   require("../palette/elements/Text/Text.stories")
   require("../palette/space.stories")
 }
