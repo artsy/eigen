@@ -18,6 +18,7 @@ import { EstimateRangeOptionsScreen } from "lib/Components/ArtworkFilter/Filters
 import { GalleriesAndInstitutionsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/GalleriesAndInstitutionsOptions"
 import { MaterialsTermsOptionsScreen } from "lib/Components/ArtworkFilter/Filters/MaterialsTermsOptions"
 import { MediumOptionsScreen } from "lib/Components/ArtworkFilter/Filters/MediumOptions"
+import { NewSizesOptionsScreen } from "lib/Components/ArtworkFilter/Filters/NewSizesOptions"
 import { PriceRangeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/PriceRangeOptions"
 import { SizeOptionsScreen } from "lib/Components/ArtworkFilter/Filters/SizeOptions"
 import { SizesOptionsScreen } from "lib/Components/ArtworkFilter/Filters/SizesOptions"
@@ -283,7 +284,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             <Stack.Screen name="AdditionalGeneIDsOptionsScreen" component={AdditionalGeneIDsOptionsScreen} />
             <Stack.Screen name="MediumOptionsScreen" component={MediumOptionsScreen} />
             <Stack.Screen name="PriceRangeOptionsScreen" component={PriceRangeOptionsScreen} />
-            <Stack.Screen name="SizeOptionsScreen" component={SizeOptionsScreen} />
+            <Stack.Screen name="SizeOptionsScreen" component={NewSizesOptionsScreen} />
             <Stack.Screen name="SizesOptionsScreen" component={SizesOptionsScreen} />
             <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
             <Stack.Screen name="TimePeriodOptionsScreen" component={TimePeriodOptionsScreen} />

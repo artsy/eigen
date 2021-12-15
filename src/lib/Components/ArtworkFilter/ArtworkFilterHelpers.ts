@@ -1,5 +1,4 @@
 import { filter, isArray, isEqual, isUndefined, pick, pickBy, unionBy } from "lodash"
-import { LOCALIZED_UNIT } from "./Filters/helpers"
 
 export enum FilterDisplayName {
   // artist = "Artists",
@@ -17,7 +16,7 @@ export enum FilterDisplayName {
   organizations = "Auction House",
   partnerIDs = "Galleries & Institutions",
   priceRange = "Price",
-  size = "Size",
+  size = "Size", // TODO: Remove it
   sizes = "Size",
   sort = "Sort By",
   timePeriod = "Time Period",
@@ -36,7 +35,6 @@ export enum FilterParamName {
   attributionClass = "attributionClass",
   categories = "categories",
   colors = "colors",
-  dimensionRange = "dimensionRange",
   earliestCreatedYear = "earliestCreatedYear",
   estimateRange = "estimateRange",
   height = "height",
@@ -48,8 +46,6 @@ export enum FilterParamName {
   organizations = "organizations",
   partnerIDs = "partnerIDs",
   priceRange = "priceRange",
-  // TODO: Delete `size` once the new size filter is deployed
-  size = "dimensionRange",
   sizes = "sizes",
   sort = "sort",
   timePeriod = "majorPeriods",
@@ -93,7 +89,6 @@ export const ParamDefaultValues = {
   attributionClass: [],
   categories: undefined,
   colors: [],
-  dimensionRange: "*-*",
   earliestCreatedYear: undefined,
   estimateRange: "",
   height: "*-*",
@@ -109,7 +104,7 @@ export const ParamDefaultValues = {
   organizations: undefined,
   partnerIDs: [],
   priceRange: "*-*",
-  sizes: undefined,
+  sizes: [],
   sortArtworks: "-decayed_merch",
   sortSaleArtworks: "position",
   viewAs: ViewAsValues.Grid,
@@ -126,7 +121,6 @@ export const defaultCommonFilterOptions = {
   attributionClass: ParamDefaultValues.attributionClass,
   categories: ParamDefaultValues.categories,
   colors: ParamDefaultValues.colors,
-  dimensionRange: ParamDefaultValues.dimensionRange,
   earliestCreatedYear: ParamDefaultValues.earliestCreatedYear,
   estimateRange: ParamDefaultValues.estimateRange,
   height: ParamDefaultValues.height,
@@ -209,7 +203,7 @@ export const filterKeyFromAggregation: Record<AggregationName, FilterParamName |
   ARTIST_NATIONALITY: FilterParamName.artistNationalities,
   ARTIST: "artistIDs",
   COLOR: FilterParamName.colors,
-  DIMENSION_RANGE: FilterParamName.size,
+  DIMENSION_RANGE: FilterParamName.sizes,
   earliestCreatedYear: "earliestCreatedYear",
   FOLLOWED_ARTISTS: "artistsIFollow",
   latestCreatedYear: "earliestCreatedYear",
@@ -225,7 +219,6 @@ const DEFAULT_ARTWORKS_PARAMS = {
   acquireable: false,
   atAuction: false,
   categories: undefined, // TO check
-  dimensionRange: "*-*",
   estimateRange: "",
   inquireableOnly: false,
   medium: "*",
@@ -247,7 +240,6 @@ const DEFAULT_SHOW_ARTWORKS_PARAMS = {
 
 const DEFAULT_AUCTION_RESULT_PARAMS = {
   sort: "DATE_DESC",
-  sizes: undefined,
   allowEmptyCreatedDates: true,
 } as FilterParams
 
@@ -312,21 +304,6 @@ export const filterArtworksParams = (appliedFilters: FilterArray, filterType: Fi
     ...defaultFilterParams,
     ...appliedFilterParams,
   }
-}
-
-export const extractCustomSizeLabel = (selectedOptions: FilterArray) => {
-  const selectedDimensionRange = selectedOptions.find(({ paramName }) => paramName === FilterParamName.dimensionRange)
-
-  // Handle custom range
-  if (selectedDimensionRange?.displayText === "Custom Size") {
-    const selectedCustomWidth = selectedOptions.find(({ paramName }) => paramName === FilterParamName.width)
-    const selectedCustomHeight = selectedOptions.find(({ paramName }) => paramName === FilterParamName.height)
-    return (
-      [selectedCustomWidth?.displayText, selectedCustomHeight?.displayText].filter(Boolean).join(" × ") + LOCALIZED_UNIT
-    )
-  }
-
-  // Intentionally doesn't return anything
 }
 
 // For most cases filter key can simply be FilterParamName, exception
@@ -417,7 +394,6 @@ export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
     "attributionClass",
     "before",
     "colors",
-    "dimensionRange",
     "excludeArtworkIDs",
     "extraAggregationGeneIDs",
     "first",
@@ -442,6 +418,7 @@ export const prepareFilterArtworksParamsForInput = (filters: FilterParams) => {
     "partnerID",
     "partnerIDs",
     "period",
+    "dimensionRange",
     "periods",
     "priceRange",
     "saleID",

@@ -96,10 +96,10 @@ fragment ArtworkTileRailCard_artwork on Artwork {
   saleMessage
 }
 
-fragment FairArtworks_fair_2T6kBV on Fair {
+fragment FairArtworks_fair_ZORN9 on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, aggregations: [ARTIST, ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, FOLLOWED_ARTISTS, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE], input: {sort: "-decayed_merch", dimensionRange: "*-*"}) {
+  fairArtworks: filterArtworksConnection(first: 30, aggregations: [ARTIST, ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, FOLLOWED_ARTISTS, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE], input: {sort: "-decayed_merch"}) {
     aggregations {
       slice
       counts {
@@ -362,7 +362,7 @@ fragment Fair_fair on Fair {
   ...FairEmptyState_fair
   ...FairEditorial_fair
   ...FairCollections_fair
-  ...FairArtworks_fair_2T6kBV
+  ...FairArtworks_fair_ZORN9
   ...FairExhibitors_fair
   ...FairFollowedArtistsRail_fair
 }
@@ -391,10 +391,10 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
   }
 }
 
-fragment PartnerArtwork_partner_BRGa6 on Partner {
+fragment PartnerArtwork_partner_3XSKY6 on Partner {
   internalID
   slug
-  artworks: filterArtworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, ARTIST, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY], input: {sort: "-partner_updated_at", dimensionRange: "*-*"}) {
+  artworks: filterArtworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, ARTIST, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY], input: {sort: "-partner_updated_at"}) {
     aggregations {
       slice
       counts {
@@ -588,7 +588,7 @@ fragment Partner_partner on Partner {
     isFollowed
     internalID
   }
-  ...PartnerArtwork_partner_BRGa6
+  ...PartnerArtwork_partner_3XSKY6
   ...PartnerOverview_partner
   ...PartnerShows_partner
   ...PartnerHeader_partner
@@ -781,7 +781,6 @@ v21 = [
     "kind": "Literal",
     "name": "input",
     "value": {
-      "dimensionRange": "*-*",
       "sort": "-decayed_merch"
     }
   }
@@ -1140,7 +1139,6 @@ v43 = [
     "kind": "Literal",
     "name": "input",
     "value": {
-      "dimensionRange": "*-*",
       "sort": "-partner_updated_at"
     }
   }
@@ -1765,7 +1763,7 @@ return {
                   (v5/*: any*/),
                   (v36/*: any*/)
                 ],
-                "storageKey": "filterArtworksConnection(aggregations:[\"ARTIST\",\"ARTIST_NATIONALITY\",\"COLOR\",\"DIMENSION_RANGE\",\"FOLLOWED_ARTISTS\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:30,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-decayed_merch\"})"
+                "storageKey": "filterArtworksConnection(aggregations:[\"ARTIST\",\"ARTIST_NATIONALITY\",\"COLOR\",\"DIMENSION_RANGE\",\"FOLLOWED_ARTISTS\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:30,input:{\"sort\":\"-decayed_merch\"})"
               },
               {
                 "alias": "fairArtworks",
@@ -2044,7 +2042,7 @@ return {
                   (v5/*: any*/),
                   (v36/*: any*/)
                 ],
-                "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"ARTIST\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\"],first:10,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-partner_updated_at\"})"
+                "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"ARTIST\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\"],first:10,input:{\"sort\":\"-partner_updated_at\"})"
               },
               {
                 "alias": "artworks",
@@ -2424,7 +2422,11 @@ return {
     ]
   },
   "params": {
+<<<<<<< HEAD
     "id": "4fe111602165eac71fe678e5b9ca2b3b",
+=======
+    "id": "b74f6e78fa1fc3061275d650b005a5c6",
+>>>>>>> ef75ed2a6 (refactor: use sizes instead of size)
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",

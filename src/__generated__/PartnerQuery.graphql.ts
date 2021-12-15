@@ -105,10 +105,10 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
   }
 }
 
-fragment PartnerArtwork_partner_BRGa6 on Partner {
+fragment PartnerArtwork_partner_3XSKY6 on Partner {
   internalID
   slug
-  artworks: filterArtworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, ARTIST, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY], input: {sort: "-partner_updated_at", dimensionRange: "*-*"}) {
+  artworks: filterArtworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, ARTIST, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY], input: {sort: "-partner_updated_at"}) {
     aggregations {
       slice
       counts {
@@ -302,7 +302,7 @@ fragment Partner_partner on Partner {
     isFollowed
     internalID
   }
-  ...PartnerArtwork_partner_BRGa6
+  ...PartnerArtwork_partner_3XSKY6
   ...PartnerOverview_partner
   ...PartnerShows_partner
   ...PartnerHeader_partner
@@ -378,7 +378,6 @@ v7 = [
     "kind": "Literal",
     "name": "input",
     "value": {
-      "dimensionRange": "*-*",
       "sort": "-partner_updated_at"
     }
   }
@@ -918,7 +917,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"ARTIST\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\"],first:10,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-partner_updated_at\"})"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"ARTIST\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\"],first:10,input:{\"sort\":\"-partner_updated_at\"})"
           },
           {
             "alias": "artworks",
@@ -1312,7 +1311,11 @@ return {
     ]
   },
   "params": {
+<<<<<<< HEAD
     "id": "c8322ae180d44845de91f6d12e067d51",
+=======
+    "id": "66bcd61000d76b2955e927d2e4d85d49",
+>>>>>>> ef75ed2a6 (refactor: use sizes instead of size)
     "metadata": {},
     "name": "PartnerQuery",
     "operationKind": "query",
