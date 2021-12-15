@@ -19,7 +19,7 @@ export const SubmitArtworkOverview = () => {
       <Spacer mb={3} />
       <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
         <CollapsibleMenuItem
-          step={1}
+          stepNumber={1}
           enabled={!!enabledSteps.includes(1)}
           totalSteps={totalSteps}
           activeStep={activeStep}
@@ -29,7 +29,7 @@ export const SubmitArtworkOverview = () => {
           title="Artwork Details"
         />
         <CollapsibleMenuItem
-          step={2}
+          stepNumber={2}
           enabled={!!enabledSteps.includes(2)}
           totalSteps={totalSteps}
           activeStep={activeStep}
@@ -39,7 +39,7 @@ export const SubmitArtworkOverview = () => {
           title="Upload Photos"
         />
         <CollapsibleMenuItem
-          step={3}
+          stepNumber={3}
           enabled={!!enabledSteps.includes(3)}
           totalSteps={totalSteps}
           activeStep={activeStep}
