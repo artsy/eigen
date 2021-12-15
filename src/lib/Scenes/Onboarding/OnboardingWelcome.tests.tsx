@@ -12,7 +12,7 @@ const navigationPropsMock = {
 }
 
 describe("OnboardingWelcome", () => {
-  describe("new flow", () => {
+  describe("onboarding flow", () => {
     beforeEach(() => {
       navigateMock.mockReset()
     })
