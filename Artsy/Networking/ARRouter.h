@@ -29,7 +29,6 @@
 #pragma mark - OAuth
 
 + (void)setAuthToken:(NSString *)token;
-+ (NSURLRequest *)newOAuthRequestWithUsername:(NSString *)username;
 
 #pragma mark - XApp
 + (void)setXappToken:(NSString *)token;

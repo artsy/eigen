@@ -263,18 +263,6 @@ static NSString *hostFromString(NSString *string)
 }
 
 
-+ (NSURLRequest *)newOAuthRequestWithUsername:(NSString *)username
-{
-    NSDictionary *params = @{
-        @"email" : username,
-        @"client_id" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_KEY"],
-        @"client_secret" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_SECRET"],
-        @"grant_type" : @"credentials",
-        @"scope" : @"offline_access"
-    };
-    return [self requestWithMethod:@"POST" path:AROAuthURL parameters:params];
-}
-
 #pragma mark -
 #pragma mark XApp
 
