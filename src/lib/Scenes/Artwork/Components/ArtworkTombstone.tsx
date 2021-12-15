@@ -6,7 +6,7 @@ import { Box, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { Text, TouchableWithoutFeedback } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
-import { FollowArtistButtonFragmentContainer as FollowArtistButton } from "./FollowArtistButton"
+import { FollowArtistLinkFragmentContainer as FollowArtistLink } from "./FollowArtistLink"
 
 type Artist = NonNullable<NonNullable<ArtworkTombstone_artwork["artists"]>[0]>
 
@@ -63,7 +63,7 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
         <Sans size="4t" weight="medium">
           {"  "}·{"  "}
         </Sans>
-        <FollowArtistButton artist={artist} contextModule={Schema.ContextModules.ArtworkTombstone} />
+        <FollowArtistLink artist={artist} contextModule={Schema.ContextModules.ArtworkTombstone} />
       </Text>
     )
   }
@@ -222,7 +222,7 @@ export const ArtworkTombstoneFragmentContainer = createFragmentContainer(Artwork
       artists {
         name
         href
-        ...FollowArtistButton_artist
+        ...FollowArtistLink_artist
       }
       dimensions {
         in

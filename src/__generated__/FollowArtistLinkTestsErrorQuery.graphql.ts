@@ -1,17 +1,17 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash fd193e93b0118d71e98014c6426956a7 */
+/* @relayHash 4a7092df43033e624e44a96185a72ddc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type FollowArtistButtonTestsQueryVariables = {};
-export type FollowArtistButtonTestsQueryResponse = {
+export type FollowArtistLinkTestsErrorQueryVariables = {};
+export type FollowArtistLinkTestsErrorQueryResponse = {
     readonly artist: {
-        readonly " $fragmentRefs": FragmentRefs<"FollowArtistButton_artist">;
+        readonly " $fragmentRefs": FragmentRefs<"FollowArtistLink_artist">;
     } | null;
 };
-export type FollowArtistButtonTestsQueryRawResponse = {
+export type FollowArtistLinkTestsErrorQueryRawResponse = {
     readonly artist: ({
         readonly id: string;
         readonly slug: string;
@@ -19,23 +19,23 @@ export type FollowArtistButtonTestsQueryRawResponse = {
         readonly is_followed: boolean | null;
     }) | null;
 };
-export type FollowArtistButtonTestsQuery = {
-    readonly response: FollowArtistButtonTestsQueryResponse;
-    readonly variables: FollowArtistButtonTestsQueryVariables;
-    readonly rawResponse: FollowArtistButtonTestsQueryRawResponse;
+export type FollowArtistLinkTestsErrorQuery = {
+    readonly response: FollowArtistLinkTestsErrorQueryResponse;
+    readonly variables: FollowArtistLinkTestsErrorQueryVariables;
+    readonly rawResponse: FollowArtistLinkTestsErrorQueryRawResponse;
 };
 
 
 
 /*
-query FollowArtistButtonTestsQuery {
+query FollowArtistLinkTestsErrorQuery {
   artist(id: "artistID") {
-    ...FollowArtistButton_artist
+    ...FollowArtistLink_artist
     id
   }
 }
 
-fragment FollowArtistButton_artist on Artist {
+fragment FollowArtistLink_artist on Artist {
   id
   slug
   internalID
@@ -56,7 +56,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "FollowArtistButtonTestsQuery",
+    "name": "FollowArtistLinkTestsErrorQuery",
     "selections": [
       {
         "alias": null,
@@ -69,7 +69,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "FollowArtistButton_artist"
+            "name": "FollowArtistLink_artist"
           }
         ],
         "storageKey": "artist(id:\"artistID\")"
@@ -82,7 +82,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "FollowArtistButtonTestsQuery",
+    "name": "FollowArtistLinkTestsErrorQuery",
     "selections": [
       {
         "alias": null,
@@ -126,13 +126,13 @@ return {
     ]
   },
   "params": {
-    "id": "fd193e93b0118d71e98014c6426956a7",
+    "id": "4a7092df43033e624e44a96185a72ddc",
     "metadata": {},
-    "name": "FollowArtistButtonTestsQuery",
+    "name": "FollowArtistLinkTestsErrorQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'b8a4919d4f5e1e9039e03985edeccbad';
+(node as any).hash = 'dcc02c2ec5e8b1b6bb8faa6665ec4cee';
 export default node;
