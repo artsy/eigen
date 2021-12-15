@@ -1,7 +1,9 @@
 import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
+import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
+import * as RelayCache from "lib/relay/RelayCache"
 import { isArtsyEmail } from "lib/utils/general"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { postEventToProviders } from "lib/utils/track/providers"
@@ -11,8 +13,9 @@ import { stringify } from "qs"
 import { Alert, Linking, Platform } from "react-native"
 import Config from "react-native-config"
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from "react-native-fbsdk-next"
+import Keychain from "react-native-keychain"
 import { LegacyNativeModules } from "../NativeModules/LegacyNativeModules"
-import { getCurrentEmissionState } from "./GlobalStore"
+import { getCurrentEmissionState, GlobalStore } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
@@ -45,103 +48,67 @@ export interface AuthModel {
   userHasArtsyEmail: Computed<this, boolean, GlobalStoreModel>
 
   // Actions
-  setState: Action<AuthModel, Partial<StateMapper<AuthModel, "1">>>
-  getXAppToken: Thunk<AuthModel, void, {}, GlobalStoreModel, Promise<string>>
-  userExists: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel>
+  setState: Action<this, Partial<StateMapper<this, "1">>>
+  getXAppToken: Thunk<this, void, {}, GlobalStoreModel, Promise<string>>
+  userExists: Thunk<this, { email: string }, {}, GlobalStoreModel>
   signIn: Thunk<
-    AuthModel,
-    | {
-        email: string
-        password: string
-
-        accessToken?: never
-        oauthProvider?: never
-        idToken?: never
-        appleUID?: never
-        onboardingState?: OnboardingState
-      }
-    | {
-        email: string
-        oauthProvider: "facebook" | "google"
-        accessToken: string
-
-        password?: never
-        idToken?: never
-        appleUID?: never
-        onboardingState?: OnboardingState
-      }
-    | {
-        email: string
-        oauthProvider: "apple"
-        idToken: string
-        appleUID: string
-
-        password?: never
-        accessToken?: never
-        onboardingState?: OnboardingState
-      },
+    this,
+    { email: string; onboardingState?: OnboardingState } & (
+      | {
+          oauthProvider: "email"
+          password: string
+        }
+      | {
+          oauthProvider: "facebook" | "google"
+          accessToken: string
+        }
+      | {
+          oauthProvider: "apple"
+          idToken: string
+          appleUID: string
+        }
+    ),
     {},
     GlobalStoreModel,
     Promise<boolean>
   >
   signUp: Thunk<
-    AuthModel,
-    | {
-        email: string
-        name: string
-        password: string
-
-        accessToken?: never
-        oauthProvider?: never
-        idToken?: never
-        appleUID?: never
-
-        agreedToReceiveEmails: boolean
-      }
-    | {
-        email: string
-        name: string
-        accessToken: string
-        oauthProvider: "facebook" | "google"
-
-        password?: never
-        idToken?: never
-        appleUID?: never
-
-        agreedToReceiveEmails: boolean
-      }
-    | {
-        email: string
-        name: string
-        oauthProvider: "apple"
-        idToken: string
-        appleUID: string
-
-        password?: never
-        accessToken?: never
-
-        agreedToReceiveEmails: boolean
-      },
+    this,
+    { email: string; name: string; agreedToReceiveEmails: boolean } & (
+      | {
+          oauthProvider: "email"
+          password: string
+        }
+      | {
+          oauthProvider: "facebook" | "google"
+          accessToken: string
+        }
+      | {
+          oauthProvider: "apple"
+          idToken: string
+          appleUID: string
+        }
+    ),
     {},
     GlobalStoreModel,
     Promise<{ success: boolean; message?: string }>
   >
   authFacebook: Thunk<
-    AuthModel,
+    this,
     { signInOrUp: "signIn" } | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
     {},
     GlobalStoreModel,
     Promise<true>
   >
   authGoogle: Thunk<
-    AuthModel,
+    this,
     { signInOrUp: "signIn" } | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
     {},
     GlobalStoreModel,
     Promise<true>
   >
-  authApple: Thunk<AuthModel, { agreedToReceiveEmails?: boolean }, {}, GlobalStoreModel, Promise<true>>
-  forgotPassword: Thunk<AuthModel, { email: string }, {}, GlobalStoreModel, Promise<boolean>>
+  authApple: Thunk<this, { agreedToReceiveEmails?: boolean }, {}, GlobalStoreModel, Promise<true>>
+  forgotPassword: Thunk<this, { email: string }, {}, GlobalStoreModel, Promise<boolean>>
   gravityUnauthenticatedRequest: Thunk<
     this,
     {
@@ -154,6 +121,7 @@ export interface AuthModel {
     GlobalStoreModel,
     ReturnType<typeof fetch>
   >
+  signOut: Thunk<this>
 
   notifyTracking: Thunk<this, { userId: string | null }>
   requestPushNotifPermission: Thunk<this>
@@ -248,183 +216,161 @@ export const getAuthModel = (): AuthModel => ({
     }
     return false
   }),
-  signIn: thunk(
-    async (actions, { email, password, accessToken, oauthProvider, idToken, appleUID, onboardingState }, store) => {
-      let body
+  signIn: thunk(async (actions, args) => {
+    const { oauthProvider, email, onboardingState } = args
+
+    const grantTypeMap = {
+      facebook: "oauth_token",
+      google: "oauth_token",
+      apple: "apple_uid",
+      email: "credentials",
+    }
+
+    const result = await actions.gravityUnauthenticatedRequest({
+      path: `/oauth2/access_token`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        email,
+        oauth_provider: oauthProvider,
+
+        password: oauthProvider === "email" ? args.password : undefined,
+        oauth_token: oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
+        apple_uid: oauthProvider === "apple" ? args.appleUID : undefined,
+        id_token: oauthProvider === "apple" ? args.idToken : undefined,
+        grant_type: grantTypeMap[oauthProvider],
+
+        client_id: Config.ARTSY_API_CLIENT_KEY,
+        client_secret: Config.ARTSY_API_CLIENT_SECRET,
+        scope: "offline_access",
+      },
+    })
+
+    if (result.status === 201) {
+      const { expires_in, access_token } = await result.json()
+      const user = await (
+        await actions.gravityUnauthenticatedRequest({
+          path: `/api/v1/me`,
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "X-ACCESS-TOKEN": access_token,
+          },
+        })
+      ).json()
+
+      actions.setState({
+        userAccessToken: access_token,
+        userAccessTokenExpiresIn: expires_in,
+        userID: user.id,
+        userEmail: email,
+        onboardingState: onboardingState ?? "complete",
+      })
+
+      if (oauthProvider === "email") {
+        Keychain.setGenericPassword(email, args.password)
+      }
+
+      actions.notifyTracking({ userId: user.id })
+      postEventToProviders(tracks.loggedIn(oauthProvider))
+
+      // Keep native iOS in sync with react-native auth state
+      if (Platform.OS === "ios") {
+        requestAnimationFrame(() => {
+          LegacyNativeModules.ArtsyNativeModule.updateAuthState(access_token, expires_in, user)
+        })
+      }
+
+      if (!onboardingState || onboardingState === "complete" || onboardingState === "none") {
+        actions.requestPushNotifPermission()
+      }
+
+      return true
+    }
+
+    return false
+  }),
+  signUp: thunk(async (actions, args) => {
+    const { oauthProvider, email, name, agreedToReceiveEmails } = args
+    const result = await actions.gravityUnauthenticatedRequest({
+      path: `/api/v1/user`,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: {
+        provider: oauthProvider,
+        email,
+        name,
+
+        password: oauthProvider === "email" ? args.password : undefined,
+        oauth_token: oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
+        apple_uid: oauthProvider === "apple" ? args.appleUID : undefined,
+        id_token: oauthProvider === "apple" ? args.idToken : undefined,
+
+        agreed_to_receive_emails: agreedToReceiveEmails,
+        accepted_terms_of_service: true,
+      },
+    })
+
+    // The user account has been successfully created
+    if (result.status === 201) {
+      postEventToProviders(tracks.createdAccount({ signUpMethod: oauthProvider }))
+
       switch (oauthProvider) {
         case "facebook":
         case "google":
-          body = {
-            oauth_provider: oauthProvider,
-            oauth_token: accessToken,
-            client_id: Config.ARTSY_API_CLIENT_KEY,
-            client_secret: Config.ARTSY_API_CLIENT_SECRET,
-            grant_type: "oauth_token",
-            scope: "offline_access",
-          }
+          await actions.signIn({
+            oauthProvider,
+            email,
+            accessToken: args.accessToken,
+            onboardingState: "incomplete",
+          })
           break
         case "apple":
-          body = {
-            oauth_provider: oauthProvider,
-            apple_uid: appleUID,
-            id_token: idToken,
-            client_id: Config.ARTSY_API_CLIENT_KEY,
-            client_secret: Config.ARTSY_API_CLIENT_SECRET,
-            grant_type: "apple_uid",
-            scope: "offline_access",
-          }
+          await actions.signIn({
+            oauthProvider,
+            email,
+            idToken: args.idToken,
+            appleUID: args.appleUID,
+            onboardingState: "incomplete",
+          })
+          break
+        case "email":
+          await actions.signIn({
+            oauthProvider,
+            email,
+            password: args.password,
+            onboardingState: "incomplete",
+          })
           break
         default:
-          body = {
-            email,
-            password,
-            client_id: Config.ARTSY_API_CLIENT_KEY,
-            client_secret: Config.ARTSY_API_CLIENT_SECRET,
-            grant_type: "credentials",
-            scope: "offline_access",
-          }
-          break
+          assertNever(oauthProvider)
       }
 
-      const result = await actions.gravityUnauthenticatedRequest({
-        path: `/oauth2/access_token`,
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body,
-      })
-
-      if (result.status === 201) {
-        const { expires_in, access_token } = await result.json()
-        const user = await (
-          await actions.gravityUnauthenticatedRequest({
-            path: `/api/v1/me`,
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "X-ACCESS-TOKEN": access_token,
-            },
-          })
-        ).json()
-
-        actions.setState({
-          userAccessToken: access_token,
-          userAccessTokenExpiresIn: expires_in,
-          userID: user.id,
-          userEmail: email,
-          onboardingState: onboardingState ?? "complete",
-        })
-
-        if (user.id !== store.getState().previousSessionUserID) {
-          store.getStoreActions().search.clearRecentSearches()
-        }
-
-        actions.notifyTracking({ userId: user.id })
-        postEventToProviders(tracks.loggedIn(oauthProvider ?? "email"))
-
-        // Keep native iOS in sync with react-native auth state
-        if (Platform.OS === "ios") {
-          requestAnimationFrame(() => {
-            LegacyNativeModules.ArtsyNativeModule.updateAuthState(access_token, expires_in, user)
-          })
-        }
-
-        if (!onboardingState || onboardingState === "complete" || onboardingState === "none") {
-          actions.requestPushNotifPermission()
-        }
-
-        return true
-      }
-
-      return false
+      return { success: true }
     }
-  ),
-  signUp: thunk(
-    async (
-      actions,
-      { email, password, name, accessToken, oauthProvider, idToken, appleUID, agreedToReceiveEmails }
-    ) => {
-      let body
-      switch (oauthProvider) {
-        case "facebook":
-        case "google":
-          body = {
-            provider: oauthProvider,
-            oauth_token: accessToken,
-            email,
-            name,
-            agreed_to_receive_emails: agreedToReceiveEmails,
-            accepted_terms_of_service: true,
-          }
-          break
-        case "apple":
-          body = {
-            provider: oauthProvider,
-            apple_uid: appleUID,
-            id_token: idToken,
-            email,
-            name,
-            agreed_to_receive_emails: agreedToReceiveEmails,
-            accepted_terms_of_service: true,
-          }
-          break
-        default:
-          body = {
-            email,
-            password,
-            name,
-            agreed_to_receive_emails: agreedToReceiveEmails,
-            accepted_terms_of_service: true,
-          }
-          break
-      }
 
-      const result = await actions.gravityUnauthenticatedRequest({
-        path: `/api/v1/user`,
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body,
-      })
-
-      // The user account has been successfully created
-      if (result.status === 201) {
-        postEventToProviders(tracks.createdAccount({ signUpMethod: body?.provider || "email" }))
-        // @ts-ignore
-        await actions.signIn({
-          email,
-          password,
-          accessToken,
-          oauthProvider,
-          idToken,
-          appleUID,
-          onboardingState: "incomplete",
-        })
-
-        return { success: true }
-      }
-
-      const resultJson = await result.json()
-      let message = ""
-      const providerName = capitalize(oauthProvider)
-      if (resultJson?.error === "User Already Exists") {
-        message = `Your ${providerName} email account is linked to an Artsy user account please Log in using your email and password instead.`
-      } else if (resultJson?.error === "Another Account Already Linked") {
-        message =
-          `Your ${providerName} account is already linked to another Artsy account. ` +
-          `Try logging out and back in with ${providerName}. Then consider ` +
-          `deleting that user account and re-linking ${providerName}. `
-      } else if (resultJson.message && resultJson.message.match("Unauthorized source IP address")) {
-        message = `You could not create an account because your IP address was blocked by ${providerName}`
-      } else {
-        message = "Failed to sign up"
-      }
-
-      return { success: false, message }
+    const resultJson = await result.json()
+    let message = ""
+    const providerName = capitalize(oauthProvider)
+    if (resultJson?.error === "User Already Exists") {
+      message = `Your ${providerName} email account is linked to an Artsy user account please Log in using your email and password instead.`
+    } else if (resultJson?.error === "Another Account Already Linked") {
+      message =
+        `Your ${providerName} account is already linked to another Artsy account. ` +
+        `Try logging out and back in with ${providerName}. Then consider ` +
+        `deleting that user account and re-linking ${providerName}. `
+    } else if (resultJson.message && resultJson.message.match("Unauthorized source IP address")) {
+      message = `You could not create an account because your IP address was blocked by ${providerName}`
+    } else {
+      message = "Failed to sign up"
     }
-  ),
+
+    return { success: false, message }
+  }),
   authFacebook: thunk(async (actions, options) => {
     return await new Promise<true>(async (resolve, reject) => {
       const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions(["public_profile", "email"])
@@ -489,9 +435,9 @@ export const getAuthModel = (): AuthModel => ({
             })
             const { email } = await resultGravityEmail.json()
             const resultGravitySignIn = await actions.signIn({
+              oauthProvider: "facebook",
               email,
               accessToken: accessToken.accessToken,
-              oauthProvider: "facebook",
             })
 
             resultGravitySignIn ? resolve(true) : reject("Could not log in")
@@ -566,9 +512,9 @@ export const getAuthModel = (): AuthModel => ({
           })
           const { email } = await resultGravityEmail.json()
           const resultGravitySignIn = await actions.signIn({
+            oauthProvider: "google",
             email,
             accessToken,
-            oauthProvider: "google",
           })
 
           resultGravitySignIn ? resolve(true) : reject("Could not log in")
@@ -640,10 +586,10 @@ export const getAuthModel = (): AuthModel => ({
           })
           const { email } = await resultGravityEmail.json()
           const resultGravitySignIn = await actions.signIn({
+            oauthProvider: "apple",
             email,
             appleUID,
             idToken,
-            oauthProvider: "apple",
           })
 
           resultGravitySignIn ? resolve(true) : reject("Could not log in")
@@ -653,6 +599,24 @@ export const getAuthModel = (): AuthModel => ({
         }
       }
     })
+  }),
+  signOut: thunk(async () => {
+    const signOutGoogle = async () => {
+      try {
+        await GoogleSignin.revokeAccess()
+        await GoogleSignin.signOut()
+      } catch (error) {
+        console.log("Failed to signout from Google")
+        console.error(error)
+      }
+    }
+
+    await Promise.all([
+      Platform.OS === "ios" ? await LegacyNativeModules.ArtsyNativeModule.clearUserData() : Promise.resolve(),
+      await signOutGoogle(),
+      CookieManager.clearAll(),
+      RelayCache.clearAll(),
+    ])
   }),
   notifyTracking: thunk((_, { userId }) => {
     SegmentTrackingProvider.identify?.(userId, { is_temporary_user: userId === null ? 1 : 0 })

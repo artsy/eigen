@@ -1,12 +1,8 @@
-import CookieManager from "@react-native-cookies/cookies"
-import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import { Action, action, createStore, State, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
+import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import * as RelayCache from "lib/relay/RelayCache"
 import { BottomTabsModel, getBottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
 import { getMyCollectionModel, MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
 import { getSearchModel, SearchModel } from "lib/Scenes/Search/SearchModel"
-import { Platform } from "react-native"
 import { AuthModel, getAuthModel } from "./AuthModel"
 import { ConfigModel, getConfigModel } from "./ConfigModel"
 import { unsafe__getEnvironment } from "./GlobalStore"
@@ -32,17 +28,17 @@ interface GlobalStoreStateModel {
   pendingPushNotification: PendingPushNotificationModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
-  rehydrate: Action<GlobalStoreModel, DeepPartial<State<GlobalStoreStateModel>>>
-  reset: Action<GlobalStoreModel, DeepPartial<State<GlobalStoreStateModel>>>
-  signOut: Thunk<GlobalStoreModel>
-  didRehydrate: ThunkOn<GlobalStoreModel>
+  rehydrate: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
+  reset: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
+  resetAfterSignOut: ThunkOn<this>
+  didRehydrate: ThunkOn<this>
 
   // for dev only.
-  _setVersion: Action<GlobalStoreModel, number>
+  _setVersion: Action<this, number>
 
   // for testing only. noop otherwise.
-  __inject: Action<GlobalStoreModel, DeepPartial<State<GlobalStoreStateModel>>>
-  __manipulate: Action<GlobalStoreModel, (store: GlobalStoreModel) => void>
+  __inject: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
+  __manipulate: Action<this, (store: this) => void>
 }
 
 export const getGlobalStoreModel = (): GlobalStoreModel => ({
@@ -62,34 +58,15 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
     assignDeep(result, state)
     return result
   }),
-  signOut: thunk(async (actions, _, store) => {
-    const {
-      config: existingConfig,
-      search,
-      auth: { userID },
-    } = store.getState()
-
-    // keep existing config state
-    const config = sanitize(existingConfig) as typeof existingConfig
-
-    const signOutGoogle = async () => {
-      try {
-        await GoogleSignin.revokeAccess()
-        await GoogleSignin.signOut()
-      } catch (error) {
-        console.log("Failed to signout from Google")
-        console.error(error)
-      }
+  resetAfterSignOut: thunkOn(
+    (a) => a.auth.signOut,
+    (actions, _, store) => {
+      // keep existing config state
+      const existingConfig = store.getState().config
+      const config = sanitize(existingConfig) as typeof existingConfig
+      actions.reset({ config })
     }
-
-    await Promise.all([
-      Platform.OS === "ios" ? await LegacyNativeModules.ArtsyNativeModule.clearUserData() : Promise.resolve(),
-      await signOutGoogle(),
-      CookieManager.clearAll(),
-      RelayCache.clearAll(),
-      actions.reset({ config, search, auth: { previousSessionUserID: userID } }),
-    ])
-  }),
+  ),
   didRehydrate: thunkOn(
     (actions) => actions.rehydrate,
     () => {

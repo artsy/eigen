@@ -626,6 +626,8 @@ PODS:
     - React-Core
     - React-RCTImage
     - TOCropViewController
+  - RNKeychain (8.0.0):
+    - React-Core
   - RNLocalize (2.0.1):
     - React-Core
   - RNReactNativeHapticFeedback (1.10.0):
@@ -798,6 +800,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `node_modules/@react-native-google-signin/google-signin`)"
   - RNImageCropPicker (from `node_modules/react-native-image-crop-picker`)
+  - RNKeychain (from `node_modules/react-native-keychain`)
   - RNLocalize (from `node_modules/react-native-localize`)
   - RNReactNativeHapticFeedback (from `node_modules/react-native-haptic-feedback`)
   - RNReanimated (from `node_modules/react-native-reanimated`)
@@ -1027,6 +1030,8 @@ EXTERNAL SOURCES:
     :path: "node_modules/@react-native-google-signin/google-signin"
   RNImageCropPicker:
     :path: node_modules/react-native-image-crop-picker
+  RNKeychain:
+    :path: node_modules/react-native-keychain
   RNLocalize:
     :path: node_modules/react-native-localize
   RNReactNativeHapticFeedback:
@@ -1196,6 +1201,7 @@ SPEC CHECKSUMS:
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNGoogleSignin: 111fd4792913208f338fe3178005f7a22e490ff9
   RNImageCropPicker: 16951bc02411f50c4d197488ed6406a23dc3b5f1
+  RNKeychain: 4f63aada75ebafd26f4bc2c670199461eab85d94
   RNLocalize: 41026b7c14878f1a1b381bc79f668f1fbf841adb
   RNReactNativeHapticFeedback: 22c5ecf474428766c6b148f96f2ff6155cd7225e
   RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
