@@ -58,6 +58,7 @@ interface ActiveProps {
   setActiveStep: Dispatch<SetStateAction<number>>
   setEnabledSteps: Dispatch<SetStateAction<number[]>>
 }
+
 const Active: React.FC<ActiveProps> = ({
   title,
   step,
@@ -103,11 +104,13 @@ const Active: React.FC<ActiveProps> = ({
     </View>
   )
 }
+
 interface InactiveProps {
   title: string
   step: number
   totalSteps: number
 }
+
 const Inactive: React.FC<InactiveProps> = ({ title, step, totalSteps }) => {
   return (
     <View style={styles.container}>
