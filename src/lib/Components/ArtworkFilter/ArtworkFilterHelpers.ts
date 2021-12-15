@@ -487,7 +487,8 @@ export const getSelectedFiltersCounts = (selectedFilters: FilterArray) => {
         break
       }
       case sizesFilterNames.includes(paramName): {
-        counts.sizes = 1
+        const prevCountValue = counts.sizes ?? 0
+        counts.sizes = prevCountValue + 1
         break
       }
       case paramName === FilterParamName.artistsIFollow: {

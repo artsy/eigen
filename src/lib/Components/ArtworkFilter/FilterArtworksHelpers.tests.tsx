@@ -729,6 +729,32 @@ describe("getSelectedFiltersCounts helper", () => {
     expect(result).toEqual(artistsFiltersExpectedResult)
   })
 
+  it("counts custom sizes correctly if only width is specified", () => {
+    const result = getSelectedFiltersCounts([
+      {
+        displayText: "100-199",
+        paramName: FilterParamName.width,
+        paramValue: "78.74015748031496-117.71653543307086",
+      },
+    ])
+    expect(result).toEqual({
+      sizes: 1,
+    })
+  })
+
+  it("counts custom sizes correctly if only height is specified", () => {
+    const result = getSelectedFiltersCounts([
+      {
+        displayText: "200-299",
+        paramName: FilterParamName.height,
+        paramValue: "39.37007874015748-78.34645669291338",
+      },
+    ])
+    expect(result).toEqual({
+      sizes: 1,
+    })
+  })
+
   it("counts custom sizes correctly", () => {
     const result = getSelectedFiltersCounts([
       {
@@ -743,7 +769,7 @@ describe("getSelectedFiltersCounts helper", () => {
       },
     ])
     expect(result).toEqual({
-      sizes: 1,
+      sizes: 2,
     })
   })
 
