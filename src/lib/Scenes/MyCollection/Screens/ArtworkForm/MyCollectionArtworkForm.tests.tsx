@@ -4,8 +4,6 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Image } from "react-native-image-crop-picker"
 import { MyCollectionArtworkForm, uploadPhotos } from "./MyCollectionArtworkForm"
-import { MyCollectionAdditionalDetailsForm } from "./Screens/MyCollectionArtworkFormAdditionalDetails"
-import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
 
 jest.mock("lib/Scenes/Consignments/Submission/geminiUploadToS3", () => ({
   getConvectionGeminiKey: jest.fn(),
@@ -29,8 +27,6 @@ describe("MyCollectionArtworkForm", () => {
     const wrapper = renderWithWrappers(<MyCollectionArtworkForm mode="add" onSuccess={jest.fn()} />)
     expect(wrapper.root.findAllByType(NavigationContainer)).toBeDefined()
     expect(wrapper.root.findAllByType(MyCollectionArtworkFormMain)).toBeDefined()
-    expect(wrapper.root.findAllByType(MyCollectionAdditionalDetailsForm)).toBeDefined()
-    expect(wrapper.root.findAllByType(MyCollectionAddPhotos)).toBeDefined()
   })
 
   describe("uploading images", () => {

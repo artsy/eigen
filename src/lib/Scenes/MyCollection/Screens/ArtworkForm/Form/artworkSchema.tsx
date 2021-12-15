@@ -19,6 +19,7 @@ export const artworkSchema = Yup.object().shape({
 
     return value.length > 0
   }),
+  title: Yup.string().test("title", "Title is required", (value) => value !== ""),
 })
 
 export function validateArtworkSchema(values: ArtworkFormValues) {

@@ -35,6 +35,7 @@ export interface ArtworkFormValues {
   provenance: string
   title: string
   width: string
+  artworkLocation: string
 }
 
 export const initialFormValues: ArtworkFormValues = {
@@ -56,6 +57,7 @@ export const initialFormValues: ArtworkFormValues = {
   provenance: "",
   title: "",
   width: "",
+  artworkLocation: "",
 }
 
 export interface MyCollectionArtworkModel {

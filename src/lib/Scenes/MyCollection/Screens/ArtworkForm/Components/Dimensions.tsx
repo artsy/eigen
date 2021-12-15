@@ -25,7 +25,7 @@ export const Dimensions: React.FC = () => {
             keyboardType="decimal-pad"
             onChangeText={formik.handleChange("height")}
             onBlur={formik.handleBlur("height")}
-            defaultValue={formik.values.height}
+            value={formik.values.height}
           />
         </Flex>
         <Flex mr={1} flex={1}>
@@ -34,7 +34,7 @@ export const Dimensions: React.FC = () => {
             keyboardType="decimal-pad"
             onChangeText={formik.handleChange("width")}
             onBlur={formik.handleBlur("width")}
-            defaultValue={formik.values.width}
+            value={formik.values.width}
           />
         </Flex>
         <Flex flex={1}>
@@ -43,7 +43,7 @@ export const Dimensions: React.FC = () => {
             keyboardType="decimal-pad"
             onChangeText={formik.handleChange("depth")}
             onBlur={formik.handleBlur("depth")}
-            defaultValue={formik.values.depth}
+            value={formik.values.depth}
           />
         </Flex>
       </Flex>
