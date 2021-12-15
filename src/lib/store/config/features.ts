@@ -204,7 +204,7 @@ export const features = defineFeatures({
   },
   AREnableAccordeonNavigationOnSubmitArtwork: {
     readyForRelease: false,
-    description: "Accordeon Navigation on Submit Artwork",
+    description: "Enable New Artwork Submission Flow with Accordion",
     showInAdminMenu: true,
     echoFlagKey: "AREnableAccordeonNavigationOnSubmitArtwork",
   },
