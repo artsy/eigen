@@ -1,11 +1,11 @@
-import * as Sentry from "@sentry/react-native"
+import Sentry from "@sentry/react-native"
 import { useEffect } from "react"
 import { Platform } from "react-native"
 import Config from "react-native-config"
 import { sentryReleaseName } from "../../app.json"
 import { GlobalStore, useFeatureFlag } from "./store/GlobalStore"
 
-function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
+export const setupSentry = (props: Partial<Sentry.ReactNativeOptions> = {}) => {
   if (!__DEV__ && Config.SENTRY_DSN) {
     Sentry.init({
       dsn: Config.SENTRY_DSN,
@@ -19,8 +19,6 @@ function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
     })
   }
 }
-
-setupSentry()
 
 export function useSentryConfig() {
   const environment = GlobalStore.useAppState((store) => store.config.environment.env)
