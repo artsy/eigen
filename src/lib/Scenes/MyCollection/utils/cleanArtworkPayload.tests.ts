@@ -63,7 +63,7 @@ describe("explicitlyClearedFields", () => {
         date: "some-date",
         editionSize: "some-edition-size",
         metric: "in",
-        location: "some-location",
+        artworkLocation: "some-location",
         photos: [],
         provenance: "some-provenance",
       }
