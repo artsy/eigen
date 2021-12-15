@@ -113,6 +113,7 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
     handleSelect,
     isSelected,
     handleClear: clearPredefinedValues,
+    isActive: isActivePredefinedValues,
   } = useMultiSelect({
     options: SIZES_OPTIONS,
     paramName: FilterParamName.sizes,
@@ -123,6 +124,8 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
   )
   const [customValues, setCustomValues] = useState(getCustomValues(selectedCustomOptions))
   const [customSizeSelected, setCustomSizeSelected] = useState(!checkIsEmptyCustomValues(customValues))
+  const [key, setKey] = useState(0)
+  const isActive = isActivePredefinedValues || !checkIsEmptyCustomValues(customValues)
 
   // Options
   const predefinedOptions = SIZES_OPTIONS.map((option) => ({
@@ -137,16 +140,6 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
       paramName: FilterParamName.sizes,
     },
   ]
-
-  const clearCustomSizeValues = () => {
-    CUSTOM_SIZE_OPTION_KEYS.forEach((option) => {
-      selectFiltersAction({
-        displayText: "",
-        paramName: FilterParamName[option],
-        paramValue: "*-*",
-      })
-    })
-  }
 
   const selectCustomFiltersAction = (values: CustomSize) => {
     CUSTOM_SIZE_OPTION_KEYS.forEach((paramName) => {
@@ -171,12 +164,24 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
     clearPredefinedValues()
   }
 
+  const clearCustomSizeValues = () => {
+    setCustomSizeSelected(false)
+
+    CUSTOM_SIZE_OPTION_KEYS.forEach((option) => {
+      selectFiltersAction({
+        displayText: "",
+        paramName: FilterParamName[option],
+        paramValue: "*-*",
+      })
+    })
+  }
+
   const handleSelectOption = (option: FilterData, nextValue: boolean) => {
     if (option.displayText === "Custom Size") {
-      setCustomSizeSelected(nextValue)
       clearPredefinedValues()
 
       if (nextValue) {
+        setCustomSizeSelected(true)
         selectCustomFiltersAction(customValues)
       } else {
         clearCustomSizeValues()
@@ -186,8 +191,14 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
     }
 
     clearCustomSizeValues()
-    setCustomSizeSelected(false)
     handleSelect(option, nextValue)
+  }
+
+  const handleClear = () => {
+    clearPredefinedValues()
+    clearCustomSizeValues()
+    setCustomValues(DEFAULT_CUSTOM_SIZE)
+    setKey((n) => n + 1)
   }
 
   return (
@@ -197,7 +208,14 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
       filterOptions={options}
       navigation={navigation}
       useScrollView
-      footerComponent={<CustomSizeInputsContainer values={customValues} onChange={handleCustomInputsChange} />}
+      footerComponent={
+        <CustomSizeInputsContainer
+          key={`footer-container-${key}`}
+          values={customValues}
+          onChange={handleCustomInputsChange}
+        />
+      }
+      {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
     />
   )
 }

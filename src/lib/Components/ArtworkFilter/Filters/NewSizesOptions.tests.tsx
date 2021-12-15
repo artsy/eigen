@@ -304,6 +304,32 @@ describe("NewSizesOptionsScreen", () => {
       expect(heightFilter?.paramValue).toBe("*-10")
     })
   })
+
+  describe("Clear button", () => {
+    it('should not display "Clear" if nothing is selected', () => {
+      const { queryByText } = renderWithWrappersTL(<TestRenderer />)
+
+      expect(queryByText("Clear")).toBeFalsy()
+    })
+
+    it('should clear selected predefined values if "Clear" button is pressed', () => {
+      const { getByText, queryAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+
+      fireEvent.press(getByText("Small (under 16in)"))
+      fireEvent.press(getByText("Clear"))
+
+      expect(queryAllByA11yState({ checked: true })).toHaveLength(0)
+    })
+
+    it('should clear selected custom values if "Clear" button is pressed', () => {
+      const { getByText, getByA11yLabel, queryAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+
+      fireEvent.changeText(getByA11yLabel("Minimum Width Input"), "5")
+      fireEvent.press(getByText("Clear"))
+
+      expect(queryAllByA11yState({ checked: true })).toHaveLength(0)
+    })
+  })
 })
 
 describe("checkIsEmptyCustomValues", () => {
