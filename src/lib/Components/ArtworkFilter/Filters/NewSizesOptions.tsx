@@ -109,12 +109,15 @@ const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({ v
 
 export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ navigation }) => {
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
-  const { handleSelect, isSelected } = useMultiSelect({
+  const {
+    handleSelect,
+    isSelected,
+    handleClear: clearPredefinedValues,
+  } = useMultiSelect({
     options: SIZES_OPTIONS,
     paramName: FilterParamName.sizes,
   })
   const selectedOptions = useSelectedOptionsDisplay()
-  // console.log("[debug]", selectedOptions)
   const selectedCustomOptions = selectedOptions.filter((option) =>
     CUSTOM_SIZE_OPTION_KEYS.includes(option.paramName as keyof CustomSize)
   )
@@ -165,11 +168,13 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
     setCustomValues(values)
     setCustomSizeSelected(!isEmptyCustomValues)
     selectCustomFiltersAction(values)
+    clearPredefinedValues()
   }
 
   const handleSelectOption = (option: FilterData, nextValue: boolean) => {
     if (option.displayText === "Custom Size") {
       setCustomSizeSelected(nextValue)
+      clearPredefinedValues()
 
       if (nextValue) {
         selectCustomFiltersAction(customValues)
@@ -180,6 +185,8 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
       return
     }
 
+    clearCustomSizeValues()
+    setCustomSizeSelected(false)
     handleSelect(option, nextValue)
   }
 
