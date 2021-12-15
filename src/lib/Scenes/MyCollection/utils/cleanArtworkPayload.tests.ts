@@ -60,6 +60,7 @@ describe("explicitlyClearedFields", () => {
         artistSearchResult: {} as any,
         pricePaidDollars: "100",
         pricePaidCurrency: "USD",
+        attributionClass: "Unique",
         date: "some-date",
         editionSize: "some-edition-size",
         metric: "in",
