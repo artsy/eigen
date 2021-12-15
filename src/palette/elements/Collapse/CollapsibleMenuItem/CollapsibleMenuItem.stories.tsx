@@ -7,12 +7,11 @@ import { withTheme } from "storybook/decorators"
 
 export const Content1: React.FC = ({}) => {
   return (
-    <View style={{ backgroundColor: `rgba(255,145,125,.3)`, padding: 20, marginTop: 20 }}>
+    <View style={styles.content}>
       <Text>Content 1</Text>
     </View>
   )
 }
-
 export const Content2: React.FC = ({}) => {
   return (
     <View style={styles.content}>
@@ -24,14 +23,6 @@ export const Content3: React.FC = ({}) => {
   return (
     <View style={styles.content}>
       <Text>Content 3</Text>
-    </View>
-  )
-}
-
-export const DisplayContent = () => {
-  return (
-    <View style={styles.content}>
-      <Text>This is the collapsible menu content</Text>
     </View>
   )
 }
