@@ -1313,6 +1313,8 @@ type Artwork implements Node & Searchable & Sellable {
     shallow: Boolean
   ): [Artist]
   artistSeriesConnection(after: String, before: String, first: Int, last: Int): ArtistSeriesConnection
+
+  # Represents the location of the artwork for "My Collection" artworks
   artworkLocation: String
 
   # Represents the "**classification**" of an artwork, such as _limited edition_
@@ -1450,6 +1452,8 @@ type Artwork implements Node & Searchable & Sellable {
   layers: [ArtworkLayer]
   listPrice: ListPrice
   literature(format: Format): String
+
+  # Represents partner's location
   location: Location
   manufacturer(format: Format): String
 
