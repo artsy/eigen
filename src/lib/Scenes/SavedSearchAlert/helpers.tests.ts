@@ -147,6 +147,19 @@ describe("extractPills", () => {
 
     expect(result).toEqual(pills)
   })
+
+  it("should correctly extract size pills", () => {
+    const filters: FilterData[] = [
+      {
+        displayText: "Small (under 40cm), Large (over 100cm)",
+        paramName: FilterParamName.sizes,
+        paramValue: ["SMALL", "LARGE"],
+      },
+    ]
+    const result = extractPills(filters, aggregations)
+
+    expect(result).toEqual(["Small (under 40cm)", "Large (over 100cm)"])
+  })
 })
 
 const aggregations: Aggregations = [

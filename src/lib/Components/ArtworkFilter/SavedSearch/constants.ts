@@ -25,4 +25,5 @@ export const allowedSearchCriteriaKeys = [
   "dimensionRange",
   "height",
   "width",
+  "sizes",
 ]
