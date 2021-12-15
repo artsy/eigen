@@ -27,13 +27,12 @@ extension FeaturedArtworks {
                         .resizable()
                         .frame(width: 20, height: 20)
                 }
-                .padding([.top, .leading, .trailing], 10)
                 Spacer()
                 PrimaryText(name: artistName)
                     .lineLimit(1)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding([.bottom, .leading, .trailing], 10)
             }
+            .padding(16)
             .widgetURL(artworkUrl)
             .background(Color.white)
         }
