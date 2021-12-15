@@ -3,7 +3,7 @@ import { ArtistHeader_artist } from "__generated__/ArtistHeader_artist.graphql"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
 import { formatLargeNumberOfItems } from "lib/utils/formatLargeNumberOfItems"
 import { userHadMeaningfulInteraction } from "lib/utils/userHadMeaningfulInteraction"
-import { Box, bullet, Button, CheckIcon, Flex, Sans, Spacer } from "palette"
+import { Box, bullet, Flex, FollowButton, Sans, Spacer } from "palette"
 import React, { useState } from "react"
 import { Text } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -144,16 +144,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
         </Flex>
 
         <Flex>
-          <Button
-            variant="outline"
-            onPress={handleFollowChange}
-            size="small"
-            longestText="Following"
-            haptic
-            icon={artist.isFollowed ? <CheckIcon fill="black60" width="16px" height="16px" /> : ""}
-          >
-            {artist.isFollowed ? "Following" : "Follow"}
-          </Button>
+          <FollowButton haptic isFollowed={!!artist.isFollowed} onPress={handleFollowChange} />
         </Flex>
       </Flex>
     </Box>

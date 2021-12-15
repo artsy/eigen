@@ -4,7 +4,7 @@ import { navigateToPartner } from "lib/navigation/navigate"
 import { get } from "lib/utils/get"
 import { limitWithCount } from "lib/utils/limitWithCount"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import { Button, CheckIcon, EntityHeader, Flex, Sans, Spacer } from "palette"
+import { EntityHeader, Flex, FollowButton, Sans, Spacer } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -115,16 +115,11 @@ export class PartnerCard extends React.Component<Props, State> {
             initials={partner.initials || undefined}
             FollowButton={
               (partner.profile && (
-                <Button
-                  variant="outline"
-                  onPress={this.handleFollowPartner.bind(this)}
-                  size="small"
-                  longestText="Following"
+                <FollowButton
                   haptic
-                  icon={partner!.profile.is_followed ? <CheckIcon fill="black60" width="16px" height="16px" /> : ""}
-                >
-                  {partner!.profile.is_followed ? "Following" : "Follow"}
-                </Button>
+                  isFollowed={!!partner!.profile.is_followed}
+                  onPress={this.handleFollowPartner.bind(this)}
+                />
               )) ||
               undefined
             }

@@ -1,6 +1,6 @@
 import { Header_gene } from "__generated__/Header_gene.graphql"
 import { HeaderFollowGeneMutation } from "__generated__/HeaderFollowGeneMutation.graphql"
-import { Box, Button, CheckIcon, Sans } from "palette"
+import { Box, FollowButton, Sans } from "palette"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { Schema, Track, track as _track } from "../../utils/track"
@@ -130,16 +130,9 @@ class Header extends React.Component<Props, State> {
     const { gene } = this.props
 
     return (
+      // TODO: Add width={100} to FollowButton. Originally, Button doesn't have a 'width' prop
       <Box mt={15}>
-        <Button
-          variant="outline"
-          block
-          width={100}
-          onPress={() => this.handleFollowChange()}
-          icon={gene.isFollowed ? <CheckIcon fill="black60" width="16px" height="16px" /> : ""}
-        >
-          {gene.isFollowed ? "Following" : "Follow"}
-        </Button>
+        <FollowButton block isFollowed={!!gene.isFollowed} onPress={() => this.handleFollowChange()} />
       </Box>
     )
   }
