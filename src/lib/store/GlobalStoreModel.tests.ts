@@ -1,5 +1,3 @@
-import Cookies from "@react-native-cookies/cookies"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { __globalStoreTestUtils__, GlobalStore } from "./GlobalStore"
 import { CURRENT_APP_VERSION } from "./migration"
 
@@ -64,73 +62,5 @@ describe("GlobalStoreModel", () => {
     })
     // @ts-expect-error
     expect(__globalStoreTestUtils__?.getCurrentState().sessionState.testStuff).toStrictEqual([])
-  })
-
-  describe("signOut action", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectState({
-        sessionState: { isHydrated: true },
-        auth: {
-          userAccessToken: "user-access-token",
-          userID: "user-id",
-          previousSessionUserID: null,
-        },
-        search: {
-          recentSearches: [
-            {
-              type: "AUTOSUGGEST_RESULT_TAPPED",
-              props: {
-                href: "/amoako-boafo",
-                displayLabel: "Amoako Boafo",
-              },
-            },
-          ],
-        },
-      })
-    })
-
-    it("clears all cookies", async () => {
-      expect(Cookies.clearAll).not.toHaveBeenCalled()
-      await GlobalStore.actions.signOut()
-      expect(Cookies.clearAll).toHaveBeenCalledTimes(1)
-    })
-
-    it("clears user data", async () => {
-      expect(LegacyNativeModules.ARTemporaryAPIModule.clearUserData).not.toHaveBeenCalled()
-      await GlobalStore.actions.signOut()
-      expect(LegacyNativeModules.ARTemporaryAPIModule.clearUserData).toHaveBeenCalledTimes(1)
-    })
-
-    it("clears user access token", async () => {
-      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe("user-access-token")
-      await GlobalStore.actions.signOut()
-      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe(null)
-    })
-
-    it("saves user id as previousSessionUserID", async () => {
-      await GlobalStore.actions.signOut()
-      expect(__globalStoreTestUtils__?.getCurrentState().auth.previousSessionUserID).toBe("user-id")
-    })
-
-    it("saves recent searches", async () => {
-      await GlobalStore.actions.signOut()
-      expect(__globalStoreTestUtils__?.getCurrentState().search.recentSearches).toHaveLength(1)
-      expect(__globalStoreTestUtils__?.getCurrentState().search.recentSearches[0]).toEqual(
-        expect.objectContaining({
-          type: "AUTOSUGGEST_RESULT_TAPPED",
-          props: {
-            href: "/amoako-boafo",
-            displayLabel: "Amoako Boafo",
-          },
-        })
-      )
-    })
-    expect(Cookies.clearAll).not.toHaveBeenCalled()
-    expect(LegacyNativeModules.ArtsyNativeModule.clearUserData).not.toHaveBeenCalled()
-    expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe("user-access-token")
-    await GlobalStore.actions.auth.signOut()
-    expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe(null)
-    expect(LegacyNativeModules.ArtsyNativeModule.clearUserData).toHaveBeenCalledTimes(1)
-    expect(Cookies.clearAll).toHaveBeenCalledTimes(1)
   })
 })

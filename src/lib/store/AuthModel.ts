@@ -277,6 +277,10 @@ export const getAuthModel = (): AuthModel => ({
         )
       }
 
+      if (user.id !== store.getState().previousSessionUserID) {
+        store.getStoreActions().search.clearRecentSearches()
+      }
+
       actions.notifyTracking({ userId: user.id })
       postEventToProviders(tracks.loggedIn(oauthProvider))
 

@@ -1,7 +1,10 @@
 import { appleAuth } from "@invertase/react-native-apple-authentication"
+import Cookies from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { mockPostEventToProviders } from "lib/tests/globallyMockedStuff"
 import { AccessToken, GraphRequest, LoginManager } from "react-native-fbsdk-next"
+import Keychain from "react-native-keychain"
 import { __globalStoreTestUtils__, GlobalStore } from "./GlobalStore"
 
 const mockFetch = jest.fn()
@@ -148,6 +151,7 @@ describe("AuthModel", () => {
           "client_secret": "artsy_api_client_secret",
           "email": "user@example.com",
           "grant_type": "credentials",
+          "oauth_provider": "email",
           "password": "hunter2",
           "scope": "offline_access",
         }
@@ -216,6 +220,7 @@ describe("AuthModel", () => {
         id: "my-user-id",
       })
       await GlobalStore.actions.auth.signIn({
+        oauthProvider: "email",
         email: "user@example.com",
         password: "hunter2",
       })
@@ -235,10 +240,22 @@ describe("AuthModel", () => {
         id: "my-user-id",
       })
       await GlobalStore.actions.auth.signIn({
+        oauthProvider: "email",
         email: "user@example.com",
         password: "hunter2",
       })
       expect(clearRecentSearchesSpy).toHaveBeenCalled()
+    })
+
+    it("saves credentials to keychain", async () => {
+      mockFetchJsonOnce({ access_token: "my-access-token" }, 201)
+      mockFetchJsonOnce({ id: "my-user-id" })
+      await GlobalStore.actions.auth.signIn({
+        oauthProvider: "email",
+        email: "user@example.com",
+        password: "hunter2",
+      })
+      expect(Keychain.setInternetCredentials).toHaveBeenCalled()
     })
   })
 
@@ -584,6 +601,67 @@ describe("AuthModel", () => {
       const result = await GlobalStore.actions.auth.authApple({}).catch((e) => e)
 
       expect(result).toBe("Login attempt failed")
+    })
+  })
+
+  describe("signOut action", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectState({
+        sessionState: { isHydrated: true },
+        auth: {
+          userAccessToken: "user-access-token",
+          userID: "user-id",
+          previousSessionUserID: null,
+        },
+        search: {
+          recentSearches: [
+            {
+              type: "AUTOSUGGEST_RESULT_TAPPED",
+              props: {
+                href: "/amoako-boafo",
+                displayLabel: "Amoako Boafo",
+              },
+            },
+          ],
+        },
+      })
+    })
+
+    it("clears all cookies", async () => {
+      expect(Cookies.clearAll).not.toHaveBeenCalled()
+      await GlobalStore.actions.auth.signOut()
+      expect(Cookies.clearAll).toHaveBeenCalledTimes(1)
+    })
+
+    it("clears user data", async () => {
+      expect(LegacyNativeModules.ArtsyNativeModule.clearUserData).not.toHaveBeenCalled()
+      await GlobalStore.actions.auth.signOut()
+      expect(LegacyNativeModules.ArtsyNativeModule.clearUserData).toHaveBeenCalledTimes(1)
+    })
+
+    it("clears user access token", async () => {
+      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe("user-access-token")
+      await GlobalStore.actions.auth.signOut()
+      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe(null)
+    })
+
+    it("saves user id as previousSessionUserID", async () => {
+      await GlobalStore.actions.auth.signOut()
+      expect(__globalStoreTestUtils__?.getCurrentState().auth.previousSessionUserID).toBe("user-id")
+    })
+
+    it("saves recent searches", async () => {
+      await GlobalStore.actions.auth.signOut()
+      expect(__globalStoreTestUtils__?.getCurrentState().search.recentSearches).toHaveLength(1)
+      expect(__globalStoreTestUtils__?.getCurrentState().search.recentSearches[0]).toEqual(
+        expect.objectContaining({
+          type: "AUTOSUGGEST_RESULT_TAPPED",
+          props: {
+            href: "/amoako-boafo",
+            displayLabel: "Amoako Boafo",
+          },
+        })
+      )
     })
   })
 })

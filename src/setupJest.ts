@@ -567,3 +567,7 @@ jest.mock("react-native-push-notification", () => ({
   createChannel: jest.fn(),
   localNotification: jest.fn(),
 }))
+
+jest.mock("react-native-keychain", () => ({
+  setInternetCredentials: jest.fn().mockResolvedValue(true),
+}))

@@ -61,10 +61,15 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   resetAfterSignOut: thunkOn(
     (a) => a.auth.signOut,
     (actions, _, store) => {
+      const {
+        config: existingConfig,
+        search,
+        auth: { userID },
+      } = store.getState()
+
       // keep existing config state
-      const existingConfig = store.getState().config
       const config = sanitize(existingConfig) as typeof existingConfig
-      actions.reset({ config })
+      actions.reset({ config, search, auth: { previousSessionUserID: userID } })
     }
   ),
   didRehydrate: thunkOn(
