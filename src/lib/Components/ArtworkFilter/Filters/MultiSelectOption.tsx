@@ -9,7 +9,7 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Check, CHECK_SIZE, Flex, Text, useSpace } from "palette"
 import React, { useState } from "react"
-import { FlatList } from "react-native"
+import { FlatList, ScrollView } from "react-native"
 import styled from "styled-components/native"
 
 const OPTIONS_MARGIN_LEFT = 0.5
@@ -26,6 +26,7 @@ interface MultiSelectOptionScreenProps extends FancyModalHeaderProps {
   searchable?: boolean
   noResultsLabel?: string
   footerComponent?: React.ComponentType<any> | React.ReactElement | null
+  useScrollView?: boolean
 }
 
 export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = ({
@@ -39,6 +40,7 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   searchable,
   noResultsLabel = "No results",
   footerComponent,
+  useScrollView = false,
   ...rest
 }) => {
   const space = useSpace()
@@ -64,6 +66,39 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
     } else {
       return false
     }
+  }
+
+  const keyExtractor = (_item: FilterData, index: number) => {
+    return String(index)
+  }
+
+  const renderItem = (item: FilterData) => {
+    const disabled = itemIsDisabled(item)
+    const selected = itemIsSelected(item)
+
+    return (
+      <Box ml={OPTIONS_MARGIN_LEFT}>
+        <TouchableRow
+          onPress={() => {
+            const currentParamValue = item.paramValue as boolean
+            onSelect(item, !currentParamValue)
+          }}
+          disabled={disabled}
+          testID="multi-select-option-button"
+          accessibilityState={{ checked: selected }}
+        >
+          <OptionListItem>
+            <Box maxWidth={optionTextMaxWidth}>
+              <Text variant="xs" color="black100">
+                {item.displayText}
+              </Text>
+            </Box>
+
+            <Check selected={selected} disabled={disabled} />
+          </OptionListItem>
+        </TouchableRow>
+      </Box>
+    )
   }
 
   const [query, setQuery] = useState("")
@@ -102,40 +137,22 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
       )}
 
       <Flex flexGrow={1}>
-        <FlatList<FilterData>
-          style={{ flex: 1 }}
-          keyExtractor={(_item, index) => String(index)}
-          data={filteredOptions}
-          ListFooterComponent={footerComponent}
-          renderItem={({ item }) => {
-            const disabled = itemIsDisabled(item)
-            const selected = itemIsSelected(item)
-
-            return (
-              <Box ml={OPTIONS_MARGIN_LEFT}>
-                <TouchableRow
-                  onPress={() => {
-                    const currentParamValue = item.paramValue as boolean
-                    onSelect(item, !currentParamValue)
-                  }}
-                  disabled={disabled}
-                  testID="multi-select-option-button"
-                  accessibilityState={{ checked: selected }}
-                >
-                  <OptionListItem>
-                    <Box maxWidth={optionTextMaxWidth}>
-                      <Text variant="xs" color="black100">
-                        {item.displayText}
-                      </Text>
-                    </Box>
-
-                    <Check selected={selected} disabled={disabled} />
-                  </OptionListItem>
-                </TouchableRow>
-              </Box>
-            )
-          }}
-        />
+        {useScrollView ? (
+          <ScrollView style={{ flex: 1 }}>
+            {filteredOptions.map((option, index) => (
+              <React.Fragment key={keyExtractor(option, index)}>{renderItem(option)}</React.Fragment>
+            ))}
+            {footerComponent}
+          </ScrollView>
+        ) : (
+          <FlatList<FilterData>
+            style={{ flex: 1 }}
+            keyExtractor={keyExtractor}
+            data={filteredOptions}
+            ListFooterComponent={footerComponent}
+            renderItem={({ item }) => renderItem(item)}
+          />
+        )}
       </Flex>
     </Flex>
   )

@@ -169,13 +169,14 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
       filterHeaderText={FilterDisplayName.sizes}
       filterOptions={options}
       navigation={navigation}
-      footerComponent={() => (
+      useScrollView
+      footerComponent={
         <CustomInputs
           label="Width"
           range={customValues.width}
           onChange={handleCustomInputChange(FilterParamName.width)}
         />
-      )}
+      }
     />
   )
 }
