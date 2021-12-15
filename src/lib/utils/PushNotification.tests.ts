@@ -60,6 +60,7 @@ describe("Push Notification Tests", () => {
         id: "userid",
       })
       await GlobalStore.actions.auth.signIn({
+        oauthProvider: "email",
         email: "user@example.com",
         password: "mypassword",
       })
@@ -131,6 +132,7 @@ describe("Push Notification Tests", () => {
         id: "userid",
       })
       await GlobalStore.actions.auth.signIn({
+        oauthProvider: "email",
         email: "user@example.com",
         password: "mypassword",
       })

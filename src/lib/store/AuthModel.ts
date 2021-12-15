@@ -15,7 +15,7 @@ import Config from "react-native-config"
 import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
 import { LegacyNativeModules } from "../NativeModules/LegacyNativeModules"
-import { getCurrentEmissionState, GlobalStore } from "./GlobalStore"
+import { getCurrentEmissionState } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
@@ -216,7 +216,7 @@ export const getAuthModel = (): AuthModel => ({
     }
     return false
   }),
-  signIn: thunk(async (actions, args) => {
+  signIn: thunk(async (actions, args, store) => {
     const { oauthProvider, email, onboardingState } = args
 
     const grantTypeMap = {
@@ -270,7 +270,11 @@ export const getAuthModel = (): AuthModel => ({
       })
 
       if (oauthProvider === "email") {
-        Keychain.setGenericPassword(email, args.password)
+        Keychain.setInternetCredentials(
+          store.getStoreState().config.environment.strings.webURL.slice("https://".length),
+          email,
+          args.password
+        )
       }
 
       actions.notifyTracking({ userId: user.id })

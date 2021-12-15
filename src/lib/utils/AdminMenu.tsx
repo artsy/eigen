@@ -25,6 +25,7 @@ import {
 } from "react-native"
 import Config from "react-native-config"
 import { getBuildNumber, getUniqueId, getVersion } from "react-native-device-info"
+import Keychain from "react-native-keychain"
 import { useScreenDimensions } from "./useScreenDimensions"
 
 const configurableFeatureFlagKeys = sortBy(
@@ -38,6 +39,7 @@ const configurableDevToggleKeys = sortBy(Object.entries(devToggles), ([k, { desc
 
 export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModal }) => {
   const migrationVersion = GlobalStore.useAppState((s) => s.version)
+  const server = GlobalStore.useAppState((s) => s.config.environment.strings.webURL).slice("https://".length)
 
   useEffect(
     React.useCallback(() => {
@@ -131,22 +133,13 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           title="Migration name"
           value={(Object.entries(Versions).find(([_, v]) => v === migrationVersion) ?? ["N/A"])[0]}
         />
+        <MenuItem title="Clear AsyncStorage" onPress={() => AsyncStorage.clear()} />
+        <MenuItem title="Clear Relay Cache" onPress={() => RelayCache.clearAll()} />
+        <MenuItem title="Log out" onPress={() => GlobalStore.actions.auth.signOut()} />
         <MenuItem
-          title="Clear AsyncStorage"
+          title="Clear Keychain"
           onPress={() => {
-            AsyncStorage.clear()
-          }}
-        />
-        <MenuItem
-          title="Clear Relay Cache"
-          onPress={() => {
-            RelayCache.clearAll()
-          }}
-        />
-        <MenuItem
-          title="Log out"
-          onPress={() => {
-            GlobalStore.actions.signOut()
+            Keychain.resetInternetCredentials(server)
           }}
         />
         <MenuItem
@@ -324,7 +317,7 @@ function envMenuOption(
       if (env !== currentEnv) {
         GlobalStore.actions.config.environment.setEnv(env)
         onClose()
-        GlobalStore.actions.signOut()
+        GlobalStore.actions.auth.signOut()
       } else {
         setShowCustomURLOptions(!showCustomURLOptions)
       }

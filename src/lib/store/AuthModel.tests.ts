@@ -133,6 +133,7 @@ describe("AuthModel", () => {
       })
 
       const result = await GlobalStore.actions.auth.signIn({
+        oauthProvider: "email",
         email: "user@example.com",
         password: "hunter2",
       })
@@ -165,6 +166,7 @@ describe("AuthModel", () => {
         id: "my-user-id",
       })
       await GlobalStore.actions.auth.signIn({
+        oauthProvider: "email",
         email: "user@example.com",
         password: "hunter2",
       })
@@ -178,7 +180,7 @@ describe("AuthModel", () => {
       mockFetchJsonOnce({ access_token: "my-access-token", expires_in: "a billion years" }, 201)
       mockFetchJsonOnce({ id: "my-user-id" })
 
-      await GlobalStore.actions.auth.signIn({ email: "user@example.com", password: "hunter2" })
+      await GlobalStore.actions.auth.signIn({ oauthProvider: "email", email: "user@example.com", password: "hunter2" })
 
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
       expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
@@ -194,6 +196,7 @@ describe("AuthModel", () => {
     it("returns false if the token creation fails", async () => {
       mockFetchJsonOnce({ error: "bad times" }, 500)
       const result = await GlobalStore.actions.auth.signIn({
+        oauthProvider: "email",
         email: "user@example.com",
         password: "hunter2",
       })
@@ -262,6 +265,7 @@ describe("AuthModel", () => {
         id: "my-user-id",
       })
       const result = await GlobalStore.actions.auth.signUp({
+        oauthProvider: "email",
         email: "user@example.com",
         password: "validpassword",
         name: "full name",
@@ -278,6 +282,7 @@ describe("AuthModel", () => {
     it("returns false if the creating an account fails", async () => {
       mockFetchJsonOnce({ error: "bad times" }, 500)
       const result = await GlobalStore.actions.auth.signUp({
+        oauthProvider: "email",
         email: "user@example.com",
         password: "validpassword",
         name: "full name",
