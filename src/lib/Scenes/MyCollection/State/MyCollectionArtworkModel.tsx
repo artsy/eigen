@@ -25,6 +25,7 @@ export interface ArtworkFormValues {
   pricePaidCurrency: string
   date: string
   depth: string
+  attributionClass: string
   editionSize: string
   editionNumber: string
   height: string
@@ -53,6 +54,7 @@ export const initialFormValues: ArtworkFormValues = {
   isEdition: false,
   medium: "",
   metric: "",
+  attributionClass: "",
   photos: [],
   provenance: "",
   title: "",

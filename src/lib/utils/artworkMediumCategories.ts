@@ -20,3 +20,10 @@ export const artworkMediumCategories: Medium[] = [
   { label: "Textile Arts", value: "Textile Arts" },
   { label: "Other", value: "Other" },
 ]
+
+export const artworkRarityClassifications: Medium[] = [
+  { label: "Unique", value: "Unique" },
+  { label: "Limited Edition", value: "Limited Edition" },
+  { label: "Open Edition", value: "Open Edition" },
+  { label: "Unknown edition", value: "Unknown edition" },
+]
