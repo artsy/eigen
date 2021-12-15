@@ -1,9 +1,9 @@
 import { track as _track } from "lib/utils/track"
-import { Sans } from "palette"
+import { Sans, Spacer } from "palette"
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon } from "palette"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { LayoutAnimation, StyleSheet, TouchableOpacity, View } from "react-native"
-import { Content } from "./Content"
+import { SaveAndContinueButton } from "./SaveAndContinueButton"
 
 interface CollapsibleMenuItemProps {
   stepNumber: number
@@ -15,6 +15,7 @@ interface CollapsibleMenuItemProps {
   setActiveStep: Dispatch<SetStateAction<number>>
   setEnabledSteps: Dispatch<SetStateAction<number[]>>
   navigateToLink?: string
+  Content: React.FC
 }
 
 export const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
@@ -27,10 +28,14 @@ export const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
   enabledSteps,
   setEnabledSteps,
   navigateToLink,
+  Content,
 }) => {
   const [isCompleted, setIsCompleted] = useState(false)
+  const [isLastStep, setIsLastStep] = useState(false)
 
   useEffect(() => {
+    setIsLastStep(stepNumber === totalSteps)
+
     if (isCompleted) {
       setActiveStep(activeStep + 1)
       setEnabledSteps([...enabledSteps, activeStep + 1])
@@ -75,12 +80,16 @@ export const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
         </View>
       </TouchableOpacity>
       {activeStep === stepNumber && (
-        <Content // TODO: this should be passed as a prop
-          activeStep={activeStep}
-          totalSteps={totalSteps}
-          navigateToLink={navigateToLink}
-          setIsCompleted={setIsCompleted}
-        />
+        <>
+          <Content />
+          <Spacer mb={2} />
+          <SaveAndContinueButton
+            setIsCompleted={setIsCompleted}
+            navigateToLink={navigateToLink}
+            isLastStep={isLastStep}
+            textToRender={isLastStep ? "Submit Artwork" : "Save & Continue"}
+          />
+        </>
       )}
     </View>
   )
