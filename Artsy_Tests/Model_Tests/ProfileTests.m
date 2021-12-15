@@ -20,16 +20,12 @@ describe(@"User", ^{
 
     it(@"creates an owner of type User", ^{
         expect(profile.profileID).to.equal(@"profile-id");
-        expect(profile.profileOwner).to.beKindOf([User class]);
-        expect([(User *)profile.profileOwner userID]).to.equal(@"user-id");
     });
 
     it(@"can be serialized", ^{
         NSData *profileData = [NSKeyedArchiver archivedDataWithRootObject:profile];
         Profile *deserializedProfile = [NSKeyedUnarchiver unarchiveObjectWithData:profileData];
         expect(deserializedProfile.profileID).to.equal(profile.profileID);
-        expect(deserializedProfile.profileOwner).to.beKindOf([User class]);
-        expect([(User *)deserializedProfile.profileOwner userID]).to.equal(@"user-id");
     });
 });
 
@@ -47,16 +43,12 @@ describe(@"FairOrganizer", ^{
 
     it(@"creates an owner of type FairOrganizer", ^{
         expect(profile.profileID).to.equal(@"profile-id");
-        expect(profile.profileOwner).to.beKindOf([FairOrganizer class]);
-        expect([(FairOrganizer *)profile.profileOwner fairOrganizerID]).to.equal(@"fair-organizer-id");
     });
 
     it(@"can be serialized", ^{
         NSData *profileData = [NSKeyedArchiver archivedDataWithRootObject:profile];
         Profile *deserializedProfile = [NSKeyedUnarchiver unarchiveObjectWithData:profileData];
         expect(deserializedProfile.profileID).to.equal(profile.profileID);
-        expect(deserializedProfile.profileOwner).to.beKindOf([FairOrganizer class]);
-        expect([(FairOrganizer *)deserializedProfile.profileOwner fairOrganizerID]).to.equal(@"fair-organizer-id");
     });
 });
 
@@ -73,16 +65,12 @@ describe(@"Fair", ^{
 
     it(@"creates an owner of type Fair", ^{
         expect(profile.profileID).to.equal(@"profile-id");
-        expect(profile.profileOwner).to.beKindOf([Fair class]);
-        expect([(Fair *)profile.profileOwner fairID]).to.equal(@"fair-id");
     });
 
     it(@"can be serialized", ^{
         NSData *profileData = [NSKeyedArchiver archivedDataWithRootObject:profile];
         Profile *deserializedProfile = [NSKeyedUnarchiver unarchiveObjectWithData:profileData];
         expect(deserializedProfile.profileID).to.equal(profile.profileID);
-        expect(deserializedProfile.profileOwner).to.beKindOf([Fair class]);
-        expect([(Fair *)deserializedProfile.profileOwner fairID]).to.equal(@"fair-id");
     });
 });
 
@@ -99,16 +87,12 @@ describe(@"Partner", ^{
 
     it(@"creates an owner of type Partner", ^{
         expect(profile.profileID).to.equal(@"profile-id");
-        expect(profile.profileOwner).to.beKindOf([Partner class]);
-        expect([(Partner *)profile.profileOwner partnerID]).to.equal(@"partner-id");
     });
 
     it(@"can be serialized", ^{
         NSData *profileData = [NSKeyedArchiver archivedDataWithRootObject:profile];
         Profile *deserializedProfile = [NSKeyedUnarchiver unarchiveObjectWithData:profileData];
         expect(deserializedProfile.profileID).to.equal(profile.profileID);
-        expect(deserializedProfile.profileOwner).to.beKindOf([Partner class]);
-        expect([(Partner *)deserializedProfile.profileOwner partnerID]).to.equal(@"partner-id");
     });
 });
 

@@ -4,7 +4,6 @@
 #import "Fair.h"
 #import "FairOrganizer.h"
 #import "Partner.h"
-#import "ProfileOwner.h"
 #import "User.h"
 #import "ARMacros.h"
 
@@ -24,7 +23,6 @@
 
 
 @implementation Profile
-@synthesize profileOwner = _profileOwner;
 
 
 // Doing some silly hackery to create the profile's owner from both the `owner_type` keypath and the `owner` keypath
@@ -57,15 +55,6 @@
     } else {
         return nil;
     }
-}
-
-- (NSObject<ProfileOwner> *)profileOwner
-{
-    // Create the owner by combining the information we got from `owner` and `owner_type` JSON.
-    if (!_profileOwner) {
-        _profileOwner = [[self ownerClass] modelWithJSON:self.ownerJSON];
-    }
-    return _profileOwner;
 }
 
 - (void)updateProfile:(void (^)(void))success
