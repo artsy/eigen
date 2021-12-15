@@ -83,7 +83,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
     }
 
     await Promise.all([
-      Platform.OS === "ios" ? await LegacyNativeModules.ARTemporaryAPIModule.clearUserData() : Promise.resolve(),
+      Platform.OS === "ios" ? await LegacyNativeModules.ArtsyNativeModule.clearUserData() : Promise.resolve(),
       await signOutGoogle(),
       CookieManager.clearAll(),
       RelayCache.clearAll(),

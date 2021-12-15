@@ -25,11 +25,11 @@ interface LegacyNativeModules {
     fetchNotificationPermissions(callback: (error: any, result: PushAuthorizationStatus) => void): void
     markNotificationsRead(callback: (error?: Error) => any): void
     setApplicationIconBadgeNumber(n: number): void
-    clearUserData(): Promise<void>
     getUserEmail(): string
   }
   ArtsyNativeModule: {
     updateAuthState(userAccessToken: string, userAccessTokenExpiresIn: string, user: any): void
+    clearUserData(): Promise<void>
   }
   ARNotificationsManager: {
     nativeState: NativeState
@@ -112,6 +112,7 @@ export const LegacyNativeModules: LegacyNativeModules =
 
         ArtsyNativeModule: {
           updateAuthState: noop("updateAuthState"),
+          clearUserData: () => Promise.resolve(),
         },
 
         ARNotificationsManager: {
@@ -129,7 +130,6 @@ export const LegacyNativeModules: LegacyNativeModules =
           setApplicationIconBadgeNumber: () => {
             console.log("TODO: make app icon badge work on android")
           },
-          clearUserData: () => Promise.resolve(),
           getUserEmail: () => "",
         },
         ARPHPhotoPickerModule: {
