@@ -14,9 +14,10 @@ import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
 import { FilterIcon, Flex, Sans } from "palette"
 import React, { useMemo } from "react"
-import { FlatList } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
+import { AnimatableHeaderFlatList } from "../AnimatableHeader/AnimatableHeaderFlatList"
+import { AnimatableHeaderProvider } from "../AnimatableHeader/AnimatableHeaderProvider"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
 import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
 import { ArtworkFilterOptionItem } from "./components/ArtworkFilterOptionItem"
@@ -134,33 +135,34 @@ export const ArtworkFilterOptionsScreen: React.FC<
   }
 
   return (
-    <Flex flex={1}>
-      <ArtworkFilterOptionsHeader
-        title={title}
-        rightButtonDisabled={!isClearAllButtonEnabled}
-        onLeftButtonPress={handleTappingCloseIcon}
-        onRightButtonPress={handleClearAllPress}
-        rightButtonText="Clear All"
-        useXButton
-      />
+    <AnimatableHeaderProvider>
+      <Flex flex={1}>
+        <ArtworkFilterOptionsHeader
+          title={title}
+          rightButtonDisabled={!isClearAllButtonEnabled}
+          onLeftButtonPress={handleTappingCloseIcon}
+          onRightButtonPress={handleClearAllPress}
+          rightButtonText="Clear All"
+          useXButton
+        />
+        <AnimatableHeaderFlatList<FilterDisplayConfig>
+          keyExtractor={(_item, index) => String(index)}
+          data={sortedFilterOptions}
+          style={{ flexGrow: 1 }}
+          renderItem={({ item }) => {
+            const selectedFiltersCount = selectedFiltersCounts[item.filterType as FilterParamName]
 
-      <FlatList<FilterDisplayConfig>
-        keyExtractor={(_item, index) => String(index)}
-        data={sortedFilterOptions}
-        style={{ flexGrow: 1 }}
-        renderItem={({ item }) => {
-          const selectedFiltersCount = selectedFiltersCounts[item.filterType as FilterParamName]
-
-          return (
-            <ArtworkFilterOptionItem
-              item={item}
-              count={selectedFiltersCount}
-              onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}
-            />
-          )
-        }}
-      />
-    </Flex>
+            return (
+              <ArtworkFilterOptionItem
+                item={item}
+                count={selectedFiltersCount}
+                onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}
+              />
+            )
+          }}
+        />
+      </Flex>
+    </AnimatableHeaderProvider>
   )
 }
 

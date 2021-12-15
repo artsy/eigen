@@ -48,9 +48,9 @@ describe("ArtworkFilterOptionsHeader", () => {
 
   it('should call "onLeftButtonPress" handler when back button is pressed', () => {
     const onLeftButtonPressMock = jest.fn()
-    const { getByTestId } = renderWithWrappersTL(<TestWrapper onLeftButtonPress={onLeftButtonPressMock} />)
+    const { getByA11yLabel } = renderWithWrappersTL(<TestWrapper onLeftButtonPress={onLeftButtonPressMock} />)
 
-    fireEvent.press(getByTestId("fancy-modal-header-left-button"))
+    fireEvent.press(getByA11yLabel("Header back button"))
 
     expect(onLeftButtonPressMock).toBeCalled()
   })
