@@ -5,7 +5,7 @@ import styled from "styled-components/native"
 
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
-import { Button, CloseIcon, Flex, Text, Touchable, useColor } from "palette"
+import { Button, CheckIcon, CloseIcon, Flex, Text, Touchable, useColor } from "palette"
 
 const ARTIST_CARD_WIDTH = 295
 
@@ -44,10 +44,11 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onDismiss, onFol
           </Flex>
           <Flex>
             <Button
-              variant={artist.isFollowed ? "outline" : "fillGray"}
+              variant="outline"
               size="small"
               longestText="Following"
               onPress={onFollow}
+              icon={artist.isFollowed ? <CheckIcon fill="black60" width="16px" height="16px" /> : ""}
             >
               {artist.isFollowed ? "Following" : "Follow"}
             </Button>

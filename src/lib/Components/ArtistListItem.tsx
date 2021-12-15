@@ -3,7 +3,7 @@ import { ArtistListItemFollowArtistMutation } from "__generated__/ArtistListItem
 import { navigate } from "lib/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { Schema, track } from "lib/utils/track"
-import { Button, ClassTheme, EntityHeader, Flex, Touchable } from "palette"
+import { Button, CheckIcon, ClassTheme, EntityHeader, Flex, Touchable } from "palette"
 import React from "react"
 import { StyleProp, ViewStyle } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -107,7 +107,6 @@ export class ArtistListItem extends React.Component<Props, State> {
     const { artist, withFeedback, containerStyle, disableNavigation } = this.props
     const { is_followed, initials, image, href, name, nationality, birthday, deathday } = artist
     const imageURl = image && image.url
-    const buttonVariant = is_followed ? "outline" : "fillDark"
 
     if (!name) {
       return null
@@ -138,11 +137,12 @@ export class ArtistListItem extends React.Component<Props, State> {
               </Flex>
               <Flex>
                 <Button
-                  variant={buttonVariant}
+                  variant="outline"
                   onPress={this.handleFollowArtist.bind(this)}
                   size="small"
                   longestText="Following"
                   haptic
+                  icon={is_followed ? <CheckIcon fill="black60" width="16px" height="16px" /> : ""}
                 >
                   {is_followed ? "Following" : "Follow"}
                 </Button>
