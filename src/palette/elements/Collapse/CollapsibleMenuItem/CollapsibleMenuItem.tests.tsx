@@ -1,73 +1,72 @@
-// import { render } from "@testing-library/react-native"
-// import { Theme } from "palette"
-// import React, { useState } from "react"
-// import { Text, View } from "react-native"
-// import { CollapsibleMenuItem } from "./CollapsibleMenuItem"
+import { render } from "@testing-library/react-native"
+import { Theme } from "palette"
+import React, { useState } from "react"
+import { Text, View } from "react-native"
+import { CollapsibleMenuItem } from "./CollapsibleMenuItem"
 
-// export const DisplayContent = () => {
-//   return (
-//     <View style={{ backgroundColor: `rgba(255,145,125,.3)`, padding: 20, marginTop: 20 }}>
-//       <Text>This is the collapsible menu content</Text>
-//     </View>
-//   )
-// }
+export const Content1: React.FC = ({}) => {
+  return (
+    <View>
+      <Text>Content 1</Text>
+    </View>
+  )
+}
+export const Content2: React.FC = ({}) => {
+  return (
+    <View>
+      <Text>Content 2</Text>
+    </View>
+  )
+}
+export const Content3: React.FC = ({}) => {
+  return (
+    <View>
+      <Text>Content 3</Text>
+    </View>
+  )
+}
 
-// // WIP
+export const ComponentWithCollapsibleMenuEnabled = () => {
+  const totalSteps = 3
+  const [activeStep, setActiveStep] = useState(1)
+  const [enabledSteps, setEnabledSteps] = useState([1])
 
-// export const ComponentWithCollapsibleMenuEnabled = () => {
-//   const totalSteps = 3
-//   const [activeStep, setActiveStep] = useState(1)
-//   const [enabledSteps, setEnabledSteps] = useState([1])
+  const items = [
+    { stepNumber: 1, title: "Artwork Details", Content: Content1 },
+    { stepNumber: 2, title: "2nd component", Content: Content2 },
+    { stepNumber: 3, title: "3nd component", Content: Content3 },
+  ]
+  return (
+    <Theme>
+      <View>
+        {items.map((item) => {
+          const { stepNumber, title, Content } = item
+          return (
+            <CollapsibleMenuItem
+              key={title}
+              title={title}
+              stepNumber={stepNumber}
+              enabled={enabledSteps.includes(stepNumber)}
+              totalSteps={totalSteps}
+              activeStep={activeStep}
+              enabledSteps={enabledSteps}
+              setActiveStep={setActiveStep}
+              setEnabledSteps={setEnabledSteps}
+              Content={() => <Content />}
+            />
+          )
+        })}
+      </View>
+    </Theme>
+  )
+}
 
-//   return (
-//     <Theme>
-//       <View style={{ margin: 20 }}>
-//         <CollapsibleMenuItem
-//           step={1}
-//           totalSteps={totalSteps}
-//           title="Press to Collapse"
-//           activeStep={activeStep}
-//           enabledSteps={enabledSteps}
-//           enabled
-//           setEnabledSteps={setEnabledSteps}
-//           setActiveStep={setActiveStep}
-//         />
-//       </View>
-//     </Theme>
-//   )
-// }
-// export const ComponentWithCollapsibleMenuEnabledAndExpanded = () => {
-//   const totalSteps = 3
-//   const [activeStep, setActiveStep] = useState(1)
-//   const [enabledSteps, setEnabledSteps] = useState([1])
-
-//   return (
-//     <Theme>
-//       <View style={{ margin: 20 }}>
-//         <CollapsibleMenuItem
-//           step={1}
-//           totalSteps={totalSteps}
-//           title="Press to Collapse"
-//           activeStep={activeStep}
-//           enabledSteps={enabledSteps}
-//           enabled
-//           setEnabledSteps={setEnabledSteps}
-//           setActiveStep={setActiveStep}
-//         />
-//       </View>
-//     </Theme>
-//   )
-// }
-// describe("Collapsible menu: active state", () => {
-//   it("is visible when isContentVisible is true", () => {
-//     console.log("inside testsssssssssssss")
-//     const { getByText } = render(<ComponentWithCollapsibleMenuEnabled />)
-//     expect(getByText("Press to Collapse")).toBeDefined()
-//   })
-// })
-// describe("Collapsible menu: Inactive state", () => {
-//   it("is visible when isContentVisible is true", () => {
-//     const { getByText } = render(<ComponentWithCollapsibleMenuEnabled />)
-//     expect(getByText("Press to Collapse")).toHaveStyle({ color: 'black30' })
-//   })
-// })
+describe("Collapsible item: active state", () => {
+  it("is renders first modal enabled and active", () => {
+    const { getByText } = render(<ComponentWithCollapsibleMenuEnabled />)
+    expect(getByText("Content 1")).toBeDefined()
+  })
+  // it("renders second item and third item inactive", () => {
+  // // let's add some more tests here :-)
+  // })
+})
