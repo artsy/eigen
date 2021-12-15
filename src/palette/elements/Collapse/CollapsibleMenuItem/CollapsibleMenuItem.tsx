@@ -37,52 +37,52 @@ export const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
     }
   }, [isCompleted])
 
-  return (
-    <>
-      {enabled ? ( //  CLICKABLE
-        <View style={styles.container}>
-          <Sans size="1">
-            Step {stepNumber} of {totalSteps}
+  if (!enabled) {
+    // NOT CLICKABLE
+    return (
+      <View style={styles.container}>
+        <Sans size="1" color="black30">
+          Step {stepNumber} of {totalSteps}
+        </Sans>
+        <View style={styles.titleAndIcon}>
+          <Sans size="8" color="black30">
+            {title}
           </Sans>
-          <TouchableOpacity
-            style={styles.titleAndIcon}
-            onPress={() => {
-              LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-              setActiveStep(stepNumber)
-            }}
-          >
-            <Sans size="8">{title}</Sans>
-            <View style={styles.icons}>
-              {!!isCompleted && <CheckCircleIcon fill="green100" height={24} width={24} style={styles.circle} />}
-              {activeStep === stepNumber ? <ArrowUpIcon /> : <ArrowDownIcon />}
-            </View>
-          </TouchableOpacity>
-          {activeStep === stepNumber && (
-            <Content // TODO: this should be passed as a prop
-              activeStep={activeStep}
-              totalSteps={totalSteps}
-              navigateToLink={navigateToLink}
-              setIsCompleted={setIsCompleted}
-            />
-          )}
-        </View>
-      ) : (
-        // NOT CLICKABLE
-        <View style={styles.container}>
-          <Sans size="1" color="black30">
-            Step {stepNumber} of {totalSteps}
-          </Sans>
-          <View style={styles.titleAndIcon}>
-            <Sans size="8" color="black30">
-              {title}
-            </Sans>
-            <View style={styles.icons}>
-              <ArrowDownIcon fill="black30" />
-            </View>
+          <View style={styles.icons}>
+            <ArrowDownIcon fill="black30" />
           </View>
         </View>
+      </View>
+    )
+  }
+  return (
+    //  CLICKABLE
+    <View style={styles.container}>
+      <Sans size="1">
+        Step {stepNumber} of {totalSteps}
+      </Sans>
+      <TouchableOpacity
+        style={styles.titleAndIcon}
+        onPress={() => {
+          LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
+          setActiveStep(stepNumber)
+        }}
+      >
+        <Sans size="8">{title}</Sans>
+        <View style={styles.icons}>
+          {!!isCompleted && <CheckCircleIcon fill="green100" height={24} width={24} style={styles.circle} />}
+          {activeStep === stepNumber ? <ArrowUpIcon /> : <ArrowDownIcon />}
+        </View>
+      </TouchableOpacity>
+      {activeStep === stepNumber && (
+        <Content // TODO: this should be passed as a prop
+          activeStep={activeStep}
+          totalSteps={totalSteps}
+          navigateToLink={navigateToLink}
+          setIsCompleted={setIsCompleted}
+        />
       )}
-    </>
+    </View>
   )
 }
 
