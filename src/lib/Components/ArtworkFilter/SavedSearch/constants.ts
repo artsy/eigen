@@ -22,7 +22,7 @@ export const allowedSearchCriteriaKeys = [
   "offerable",
   "materialsTerms",
   "priceRange",
-  "dimensionRange",
+  "dimensionRange", // keep for backward compatibility (replaced with sizes)
   "height",
   "width",
   "sizes",

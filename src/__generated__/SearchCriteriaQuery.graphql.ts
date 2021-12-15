@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a3eb4170000398ec622fb320b50feaa3 */
+/* @relayHash ee1a590031e94c57799b4bb2edeedc59 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type SearchCriteriaQueryVariables = {
@@ -27,6 +27,7 @@ export type SearchCriteriaQueryResponse = {
             readonly partnerIDs: ReadonlyArray<string>;
             readonly priceRange: string | null;
             readonly width: string | null;
+            readonly sizes: ReadonlyArray<string>;
         } | null;
     } | null;
 };
@@ -60,6 +61,7 @@ query SearchCriteriaQuery(
       partnerIDs
       priceRange
       width
+      sizes
     }
     id
   }
@@ -206,6 +208,13 @@ v2 = {
       "kind": "ScalarField",
       "name": "width",
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "sizes",
+      "storageKey": null
     }
   ],
   "storageKey": null
@@ -263,7 +272,7 @@ return {
     ]
   },
   "params": {
-    "id": "a3eb4170000398ec622fb320b50feaa3",
+    "id": "ee1a590031e94c57799b4bb2edeedc59",
     "metadata": {},
     "name": "SearchCriteriaQuery",
     "operationKind": "query",
@@ -271,5 +280,5 @@ return {
   }
 };
 })();
-(node as any).hash = '5e0917dccdef96cdc0582a7dbfc9ce13';
+(node as any).hash = '82daec872d3fdb2c57fdcc0de7aa065f';
 export default node;
