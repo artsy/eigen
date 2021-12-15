@@ -202,11 +202,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     // echoFlagKey: "AREnableAuctionResultComparableWorks",
   },
-  AREnableAccordeonNavigationOnSubmitArtwork: {
+  AREnableAccordionNavigationOnSubmitArtwork: {
     readyForRelease: false,
     description: "Enable New Artwork Submission Flow with Accordion",
     showInAdminMenu: true,
-    echoFlagKey: "AREnableAccordeonNavigationOnSubmitArtwork",
+    echoFlagKey: "AREnableAccordionNavigationOnSubmitArtwork",
   },
 })
 
