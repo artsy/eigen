@@ -17,6 +17,7 @@ export interface CustomSize {
 interface SizesOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "SizesOptionsScreen"> {}
 interface CustomSizeInputsContainerProps {
   values: CustomSize
+  active?: boolean
   onChange: (values: CustomSize) => void
 }
 
@@ -93,16 +94,26 @@ export const checkIsEmptyCustomValues = (values: CustomSize) => {
   })
 }
 
-const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({ values, onChange }) => {
+const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({ values, active, onChange }) => {
   const handleChange = (paramName: FilterParamName) => (range: Range) => {
     onChange({ ...values, [paramName]: range })
   }
 
   return (
     <Box mx={15} my={2}>
-      <CustomSizeInputs label="Width" range={values.width} onChange={handleChange(FilterParamName.width)} />
+      <CustomSizeInputs
+        label="Width"
+        range={values.width}
+        active={active}
+        onChange={handleChange(FilterParamName.width)}
+      />
       <Spacer mt={2} />
-      <CustomSizeInputs label="Height" range={values.height} onChange={handleChange(FilterParamName.height)} />
+      <CustomSizeInputs
+        label="Height"
+        range={values.height}
+        active={active}
+        onChange={handleChange(FilterParamName.height)}
+      />
     </Box>
   )
 }
@@ -218,6 +229,7 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
           <CustomSizeInputsContainer
             key={`footer-container-${key}`}
             values={customValues}
+            active={customSizeSelected}
             onChange={handleCustomInputsChange}
           />
         ) : null

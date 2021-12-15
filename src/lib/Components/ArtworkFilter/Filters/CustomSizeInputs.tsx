@@ -1,10 +1,12 @@
-import { Box, Flex, Input, Join, Spacer, Text } from "palette"
+import { Box, Flex, Input, Join, Spacer, Text, useColor } from "palette"
 import React from "react"
+import { TextStyle } from "react-native"
 import { LOCALIZED_UNIT, Numeric, Range } from "./helpers"
 
 export interface CustomSizeInputsProps {
   label: string
   range: Range
+  active?: boolean
   onChange: (range: Range) => void
 }
 
@@ -17,12 +19,16 @@ const getValue = (value: Numeric) => {
   return value.toString()
 }
 
-export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({ label, range, onChange }) => {
+export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({ label, range, active, onChange }) => {
+  const color = useColor()
   const handleInputChange = (field: string) => (text: string) => {
     const parsed = parseFloat(text)
     const value = isNaN(parsed) ? "*" : parsed
 
     onChange({ ...range, [field]: value })
+  }
+  const inputTextStyle: TextStyle = {
+    color: active ? color("black100") : color("black60"),
   }
 
   return (
@@ -42,6 +48,7 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({ label, range
               placeholder={LOCALIZED_UNIT}
               accessibilityLabel={`Minimum ${label} Input`}
               defaultValue={getValue(range.min)}
+              inputTextStyle={inputTextStyle}
             />
           </Flex>
           <Flex flex={1}>
@@ -54,6 +61,7 @@ export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({ label, range
               placeholder={LOCALIZED_UNIT}
               accessibilityLabel={`Maximum ${label} Input`}
               defaultValue={getValue(range.max)}
+              inputTextStyle={inputTextStyle}
             />
           </Flex>
         </Join>
