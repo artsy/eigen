@@ -24,8 +24,8 @@ describe("Dimensions", () => {
   it("displays correct dimensions", () => {
     const wrapper = renderWithWrappers(<Dimensions />)
     const inputs = wrapper.root.findAllByType(Input)
-    expect(inputs[0].props.defaultValue).toBe("20")
-    expect(inputs[1].props.defaultValue).toBe("30")
-    expect(inputs[2].props.defaultValue).toBe("40")
+    expect(inputs[0].props.value).toBe("20")
+    expect(inputs[1].props.value).toBe("30")
+    expect(inputs[2].props.value).toBe("40")
   })
 })
