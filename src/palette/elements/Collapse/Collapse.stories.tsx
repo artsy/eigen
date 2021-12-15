@@ -21,7 +21,7 @@ export const ComponentWithCollapsibleMenu = () => {
   return (
     <View style={{ margin: 20 }}>
       <CollapsibleMenuItem
-        step={1}
+        stepNumber={1}
         enabled={!!enabledSteps.includes(1)}
         title="Press to Collapse"
         totalSteps={totalSteps}
@@ -31,7 +31,7 @@ export const ComponentWithCollapsibleMenu = () => {
         setEnabledSteps={setEnabledSteps}
       />
       <CollapsibleMenuItem
-        step={2}
+        stepNumber={2}
         enabled={!!enabledSteps.includes(2)}
         title="Press to Collapse"
         totalSteps={totalSteps}
@@ -41,7 +41,7 @@ export const ComponentWithCollapsibleMenu = () => {
         setEnabledSteps={setEnabledSteps}
       />
       <CollapsibleMenuItem
-        step={3}
+        stepNumber={3}
         enabled={!!enabledSteps.includes(3)}
         title="Press to Collapse"
         totalSteps={totalSteps}

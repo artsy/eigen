@@ -14,27 +14,60 @@
 
 // // WIP
 
-// export const ComponentWithCollapsibleMenu = () => {
+// export const ComponentWithCollapsibleMenuEnabled = () => {
 //   const totalSteps = 3
 //   const [activeStep, setActiveStep] = useState(1)
+//   const [enabledSteps, setEnabledSteps] = useState([1])
 
 //   return (
 //     <Theme>
 //       <View style={{ margin: 20 }}>
 //         <CollapsibleMenuItem
+//           step={1}
+//           totalSteps={totalSteps}
 //           title="Press to Collapse"
 //           activeStep={activeStep}
-//           step={activeStep}
-//           totalSteps={totalSteps}
+//           enabledSteps={enabledSteps}
+//           enabled
+//           setEnabledSteps={setEnabledSteps}
 //           setActiveStep={setActiveStep}
 //         />
 //       </View>
 //     </Theme>
 //   )
 // }
-// describe("Collapse", () => {
+// export const ComponentWithCollapsibleMenuEnabledAndExpanded = () => {
+//   const totalSteps = 3
+//   const [activeStep, setActiveStep] = useState(1)
+//   const [enabledSteps, setEnabledSteps] = useState([1])
+
+//   return (
+//     <Theme>
+//       <View style={{ margin: 20 }}>
+//         <CollapsibleMenuItem
+//           step={1}
+//           totalSteps={totalSteps}
+//           title="Press to Collapse"
+//           activeStep={activeStep}
+//           enabledSteps={enabledSteps}
+//           enabled
+//           setEnabledSteps={setEnabledSteps}
+//           setActiveStep={setActiveStep}
+//         />
+//       </View>
+//     </Theme>
+//   )
+// }
+// describe("Collapsible menu: active state", () => {
 //   it("is visible when isContentVisible is true", () => {
-//     const { getByText } = render(<ComponentWithCollapsibleMenu />)
+//     console.log("inside testsssssssssssss")
+//     const { getByText } = render(<ComponentWithCollapsibleMenuEnabled />)
 //     expect(getByText("Press to Collapse")).toBeDefined()
+//   })
+// })
+// describe("Collapsible menu: Inactive state", () => {
+//   it("is visible when isContentVisible is true", () => {
+//     const { getByText } = render(<ComponentWithCollapsibleMenuEnabled />)
+//     expect(getByText("Press to Collapse")).toHaveStyle({ color: 'black30' })
 //   })
 // })
