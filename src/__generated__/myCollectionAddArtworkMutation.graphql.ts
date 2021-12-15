@@ -7,6 +7,7 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionCreateArtworkInput = {
     artistIds: Array<string | null>;
+    artworkLocation?: string | null;
     category?: string | null;
     clientMutationId?: string | null;
     costCurrencyCode?: string | null;
