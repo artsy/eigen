@@ -13,8 +13,8 @@ extension LatestArticles {
             
             VStack() {
                 HStack(alignment: .top) {
-                    Text("ARTSY EDITORIAL")
-                        .font(.system(size: 14, weight: .bold))
+                    Text("LATEST ARTICLES")
+                        .font(.system(size: 14, weight: .medium))
                     Spacer()
                     Image(uiImage: artsyLogo)
                         .resizable()
@@ -42,7 +42,7 @@ extension LatestArticles {
                     }
                 }
             }
-            .padding(10)
+            .padding(16)
         }
     }
 }
