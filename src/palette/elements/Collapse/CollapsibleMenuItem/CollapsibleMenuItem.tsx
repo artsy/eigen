@@ -16,7 +16,7 @@ interface CollapsibleMenuItemProps {
   setEnabledSteps: Dispatch<SetStateAction<number[]>>
   navigateToLink?: string
 }
-// user must complete one step before being able to go to another. This is why we have "enabled" state
+
 export const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
   enabled,
   title,
