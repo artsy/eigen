@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-community/async-storage"
 import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionArtworkListItem_artwork } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
+import { $ } from "arrow-magic"
 import { EventEmitter } from "events"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -146,6 +147,24 @@ const MyCollection: React.FC<{
         ),
         // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks, mediums: string[]) => filter(artworks, (a) => mediums.includes(a.medium)),
+      },
+      {
+        displayText: FilterDisplayName.artistIDs,
+        filterType: "artistIDs",
+        ScreenComponent: "ArtistIDsOptionsScreen",
+        values: uniqBy(
+          artworks.map(
+            (a): FilterData => ({
+              displayText: a.artist.name,
+              paramName: FilterParamName.artistIDs,
+              paramValue: a.artist?.internalID ?? "",
+            })
+          ),
+          (m) => m.paramValue
+        ),
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks, artistIDs: string[]) =>
+          filter(artworks, (a) => artistIDs.includes(a.artist.internalID)),
       },
     ])
   }, [])
@@ -340,6 +359,10 @@ export const MyCollectionContainer = createPaginationContainer(
             node {
               id
               medium
+              artist {
+                internalID
+                name
+              }
             }
           }
           ...InfiniteScrollArtworksGrid_myCollectionConnection @arguments(skipArtworkGridItem: true)
