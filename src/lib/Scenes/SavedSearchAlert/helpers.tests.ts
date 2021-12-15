@@ -158,7 +158,18 @@ describe("extractPills", () => {
     ]
     const result = extractPills(filters, aggregations)
 
-    expect(result).toEqual(["Small (under 40cm)", "Large (over 100cm)"])
+    expect(result).toEqual([
+      {
+        label: "Small (under 40cm)",
+        paramName: FilterParamName.sizes,
+        value: "SMALL",
+      },
+      {
+        label: "Large (over 100cm)",
+        paramName: FilterParamName.sizes,
+        value: "LARGE",
+      },
+    ])
   })
 })
 
