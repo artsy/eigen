@@ -154,7 +154,7 @@ const MyCollection: React.FC<{
         values: uniqBy(
           artworks.map(
             (a): FilterData => ({
-              displayText: a.artist.name,
+              displayText: a.artist?.name ?? "N/A",
               paramName: FilterParamName.artistIDs,
               paramValue: a.artist?.internalID ?? "",
             })
