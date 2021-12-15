@@ -24,10 +24,10 @@ export const SaveAndContinueButton: React.FC<SaveButtonProps> = ({
   setIsCompleted,
   // navigateToLink,
 }) => {
-  const [isLastStep, setLastStep] = useState(false)
+  const [isLastStep, setIsLastStep] = useState(false)
 
   useEffect(() => {
-    setLastStep(step === totalSteps)
+    setIsLastStep(step === totalSteps)
   }, [])
   return (
     <View>
@@ -38,7 +38,6 @@ export const SaveAndContinueButton: React.FC<SaveButtonProps> = ({
         maxWidth={540}
         onPress={() => {
           LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-          // TS is complaining here, WHY?
           // navigate(navigateToLink)
           setIsCompleted(true) // make checks here
           setActiveStep(step + 1)
