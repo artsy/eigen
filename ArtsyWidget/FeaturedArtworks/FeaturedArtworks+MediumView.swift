@@ -11,11 +11,19 @@ private struct TopArtwork: SwiftUI.View {
         let artworkTitle = artwork.title
         let artworkUrl = artwork.url
         
-        HStack(alignment: .top) {
+        HStack(alignment: .bottom) {
             Image(uiImage: artworkImage)
                 .resizable()
                 .scaledToFit()
+                .padding(.trailing, 10)
             VStack() {
+                HStack() {
+                    Spacer()
+                    Image(uiImage: artsyLogo)
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                }
+                Spacer()
                 PrimaryText(name: artistName)
                     .lineLimit(1)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -23,11 +31,8 @@ private struct TopArtwork: SwiftUI.View {
                     .lineLimit(3)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
-            Image(uiImage: artsyLogo)
-                .resizable()
-                .frame(width: 20, height: 20)
         }
-        .padding(10)
+        .padding(16)
         .background(Color.white)
         .widgetURL(artworkUrl)
     }
@@ -90,7 +95,7 @@ extension FeaturedArtworks {
                         BottomArtwork(artwork: secondaryArtwork)
                         BottomArtwork(artwork: tertiaryArtwork)
                     }
-                    .padding(10)
+                    .padding(16)
                     .background(Color(white: 0.96))
                     .frame(height: geo.size.height * CGFloat(bottomFactor))
                 }
