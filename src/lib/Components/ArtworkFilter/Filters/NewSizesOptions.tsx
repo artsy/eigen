@@ -119,12 +119,14 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
     paramName: FilterParamName.sizes,
   })
   const selectedOptions = useSelectedOptionsDisplay()
+  const filterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
   const selectedCustomOptions = selectedOptions.filter((option) =>
     CUSTOM_SIZE_OPTION_KEYS.includes(option.paramName as keyof CustomSize)
   )
   const [customValues, setCustomValues] = useState(getCustomValues(selectedCustomOptions))
   const [customSizeSelected, setCustomSizeSelected] = useState(!checkIsEmptyCustomValues(customValues))
   const [key, setKey] = useState(0)
+  const shouldShowCustomInputs = filterType !== "auctionResult"
   const isActive = isActivePredefinedValues || !checkIsEmptyCustomValues(customValues)
 
   // Options
@@ -132,14 +134,18 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
     ...option,
     paramValue: isSelected(option),
   }))
-  const options: FilterData[] = [
-    ...predefinedOptions,
-    {
-      displayText: "Custom Size",
-      paramValue: customSizeSelected,
-      paramName: FilterParamName.sizes,
-    },
-  ]
+  let options: FilterData[] = predefinedOptions
+
+  if (shouldShowCustomInputs) {
+    options = [
+      ...options,
+      {
+        displayText: "Custom Size",
+        paramValue: customSizeSelected,
+        paramName: FilterParamName.sizes,
+      },
+    ]
+  }
 
   const selectCustomFiltersAction = (values: CustomSize) => {
     CUSTOM_SIZE_OPTION_KEYS.forEach((paramName) => {
@@ -209,11 +215,13 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
       navigation={navigation}
       useScrollView
       footerComponent={
-        <CustomSizeInputsContainer
-          key={`footer-container-${key}`}
-          values={customValues}
-          onChange={handleCustomInputsChange}
-        />
+        shouldShowCustomInputs ? (
+          <CustomSizeInputsContainer
+            key={`footer-container-${key}`}
+            values={customValues}
+            onChange={handleCustomInputsChange}
+          />
+        ) : null
       }
       {...(isActive ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
     />
