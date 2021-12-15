@@ -4,7 +4,7 @@ import { Button, Spacer } from "palette"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { LayoutAnimation, View } from "react-native"
 
-interface SaveButtonProps {
+interface SaveAndContinueButtonProps {
   step: number
   totalSteps: number
   enabledSteps: number[]
@@ -15,7 +15,7 @@ interface SaveButtonProps {
   navigateToLink?: string
 }
 
-export const SaveAndContinueButton: React.FC<SaveButtonProps> = ({
+export const SaveAndContinueButton: React.FC<SaveAndContinueButtonProps> = ({
   step,
   totalSteps,
   setActiveStep,
