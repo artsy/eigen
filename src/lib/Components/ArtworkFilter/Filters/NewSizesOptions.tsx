@@ -171,7 +171,7 @@ export const NewSizesOptionsScreen: React.FC<NewSizesOptionsScreenProps> = ({ na
       navigation={navigation}
       useScrollView
       footerComponent={
-        <Box>
+        <Box mx={15}>
           <Spacer mt={2} />
           <CustomInputs
             label="Width"

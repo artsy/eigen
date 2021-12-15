@@ -46,7 +46,12 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
   const space = useSpace()
   const { width } = useScreenDimensions()
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
+  const [query, setQuery] = useState("")
   const optionTextMaxWidth = width - OPTION_PADDING * 3 - space(OPTIONS_MARGIN_LEFT) - CHECK_SIZE
+
+  const filteredOptions = filterOptions.filter((option) =>
+    option.displayText.toLowerCase().includes(query.toLowerCase())
+  )
 
   const handleBackNavigation = () => {
     navigation.goBack()
@@ -100,12 +105,6 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
       </Box>
     )
   }
-
-  const [query, setQuery] = useState("")
-
-  const filteredOptions = filterOptions.filter((option) =>
-    option.displayText.toLowerCase().includes(query.toLowerCase())
-  )
 
   return (
     <Flex flexGrow={1}>
