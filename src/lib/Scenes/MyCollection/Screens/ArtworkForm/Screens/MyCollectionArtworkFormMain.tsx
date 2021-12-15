@@ -115,10 +115,10 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
             <Input
               title="LOCATION"
               placeholder="Enter City Where Artwork is Located"
-              onChangeText={formik.handleChange("location")}
-              onBlur={formik.handleBlur("location")}
+              onChangeText={formik.handleChange("artworkLocation")}
+              onBlur={formik.handleBlur("artworkLocation")}
               testID="LocationInput"
-              value={formikValues.location}
+              value={formikValues.artworkLocation}
             />
             <Input
               multiline
