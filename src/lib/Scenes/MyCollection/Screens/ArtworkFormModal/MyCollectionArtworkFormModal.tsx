@@ -21,8 +21,8 @@ import { LoadingIndicator } from "lib/Components/LoadingIndicator"
 import { isEqual } from "lodash"
 import { deleteArtworkImage } from "../../mutations/deleteArtworkImage"
 import { refreshMyCollection } from "../../MyCollection"
-import { deletedPhotoIDs } from "../../utils/deletedPhotoIDs"
-import { storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
+import { deletedPhotos } from "../../utils/deletedPhotos"
+import { removeLocalPhotos, storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
 import { MyCollectionAdditionalDetailsForm } from "./Screens/MyCollectionArtworkFormAdditionalDetails"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
 import { MyCollectionArtworkFormMain } from "./Screens/MyCollectionArtworkFormMain"
@@ -197,9 +197,13 @@ export const updateArtwork = async (
       pricePaidCurrency,
       ...cleanArtworkPayload(others),
     })
-    storeLocalPhotos(response, photos)
+
+    const slug = response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.slug
+    if (slug) {
+      storeLocalPhotos(slug, photos)
+    }
   } else {
-    await myCollectionEditArtwork({
+    const response = await myCollectionEditArtwork({
       artistIds: [artistSearchResult!.internalID as string],
       artworkId: props.artwork.internalID,
       externalImageUrls,
@@ -209,9 +213,14 @@ export const updateArtwork = async (
       ...explicitlyClearedFields(others, dirtyFormCheckValues),
     })
 
-    const deletedIDs = deletedPhotoIDs(dirtyFormCheckValues.photos, photos)
-    for (const deletedID of deletedIDs) {
-      await deleteArtworkImage(props.artwork.internalID, deletedID)
+    const deletedImages = deletedPhotos(dirtyFormCheckValues.photos, photos)
+    for (const photo of deletedImages) {
+      await deleteArtworkImage(props.artwork.internalID, photo.id)
+    }
+    const slug = response.myCollectionUpdateArtwork?.artworkOrError?.artwork?.slug
+    const indices = deletedImages.map((image) => image.index)
+    if (slug) {
+      removeLocalPhotos(slug, indices)
     }
   }
 

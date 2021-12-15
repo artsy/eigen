@@ -1,8 +1,7 @@
-import { myCollectionAddArtworkMutationResponse } from "__generated__/myCollectionAddArtworkMutation.graphql"
 import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import { getMeasurements, Size } from "lib/Scenes/Artwork/Components/ImageCarousel/geometry"
 import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
-import { LocalImage, storeLocalImage } from "lib/utils/LocalImageStore"
+import { deleteLocalImage, LocalImage, storeLocalImage } from "lib/utils/LocalImageStore"
 import { ScreenDimensionsWithSafeAreas } from "lib/utils/useScreenDimensions"
 import { ArtworkFormValues, Image } from "../../State/MyCollectionArtworkModel"
 
@@ -10,20 +9,24 @@ export const myCollectionLocalPhotoKey = (slug: string, index: number) => {
   return slug + "_" + index
 }
 
-export const storeLocalPhotos = (response: myCollectionAddArtworkMutationResponse, photos: Image[]) => {
-  const slug = response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.slug
-  if (slug) {
-    photos.forEach((photo, index) => {
-      if (photo.path && photo.height && photo.width) {
-        const key = myCollectionLocalPhotoKey(slug, index)
-        const image: LocalImage = {
-          path: photo.path,
-          width: photo.width,
-          height: photo.height,
-        }
-        storeLocalImage(image, key)
+export const storeLocalPhotos = (slug: string, photos: Image[]) => {
+  photos.forEach((photo, index) => {
+    if (photo.path && photo.height && photo.width) {
+      const key = myCollectionLocalPhotoKey(slug, index)
+      const image: LocalImage = {
+        path: photo.path,
+        width: photo.width,
+        height: photo.height,
       }
-    })
+      storeLocalImage(image, key)
+    }
+  })
+}
+
+export const removeLocalPhotos = (slug: string, indices: number[]) => {
+  for (const index of indices) {
+    const key = myCollectionLocalPhotoKey(slug, index)
+    deleteLocalImage(key)
   }
 }
 

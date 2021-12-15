@@ -20,6 +20,15 @@ export const storeLocalImage = (image: LocalImage, key: string): Promise<void> =
   ])
 }
 
+export const deleteLocalImage = (key: string): Promise<void> => {
+  return AsyncStorage.multiRemove([
+    key,
+    metadataKey(key, expirationKeyPostfix),
+    metadataKey(key, heightKeyPostfix),
+    metadataKey(key, widthKeyPostfix),
+  ])
+}
+
 export const metadataKey = (key: string, postfix: string) => {
   return key + "_" + postfix
 }

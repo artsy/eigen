@@ -33,6 +33,10 @@ export const addRandomMyCollectionArtwork = async () => {
     title: randomValue(["An apple", "Very Small Rocks", "A Bit of Gravy", "Lead", "A Duck"]),
   }
   const response = await myCollectionAddArtwork(input)
-  storeLocalPhotos(response, photos)
+
+  const slug = response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.slug
+  if (slug) {
+    storeLocalPhotos(slug, photos)
+  }
   return response
 }
