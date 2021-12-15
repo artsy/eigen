@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4fe111602165eac71fe678e5b9ca2b3b */
+/* @relayHash 6da9b595260763274f1ef490bd3ba11d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -2422,11 +2422,7 @@ return {
     ]
   },
   "params": {
-<<<<<<< HEAD
-    "id": "4fe111602165eac71fe678e5b9ca2b3b",
-=======
-    "id": "b74f6e78fa1fc3061275d650b005a5c6",
->>>>>>> ef75ed2a6 (refactor: use sizes instead of size)
+    "id": "6da9b595260763274f1ef490bd3ba11d",
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c8322ae180d44845de91f6d12e067d51 */
+/* @relayHash 463043654e9459aad246b30d125b9171 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -1311,11 +1311,7 @@ return {
     ]
   },
   "params": {
-<<<<<<< HEAD
-    "id": "c8322ae180d44845de91f6d12e067d51",
-=======
-    "id": "66bcd61000d76b2955e927d2e4d85d49",
->>>>>>> ef75ed2a6 (refactor: use sizes instead of size)
+    "id": "463043654e9459aad246b30d125b9171",
     "metadata": {},
     "name": "PartnerQuery",
     "operationKind": "query",

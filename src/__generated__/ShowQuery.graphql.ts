@@ -1,11 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-<<<<<<< HEAD
-/* @relayHash af206575f907d05ed075f2b73c33be7a */
-=======
-/* @relayHash 00f8b351789f295ce8a9abdbea32e428 */
->>>>>>> ef75ed2a6 (refactor: use sizes instead of size)
+/* @relayHash 5f94d19fd5e30abd022cfa5ff2d5778b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -1236,11 +1232,7 @@ return {
     ]
   },
   "params": {
-<<<<<<< HEAD
-    "id": "af206575f907d05ed075f2b73c33be7a",
-=======
-    "id": "00f8b351789f295ce8a9abdbea32e428",
->>>>>>> ef75ed2a6 (refactor: use sizes instead of size)
+    "id": "5f94d19fd5e30abd022cfa5ff2d5778b",
     "metadata": {},
     "name": "ShowQuery",
     "operationKind": "query",
