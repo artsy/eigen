@@ -7,7 +7,7 @@ import { ReactTestInstance } from "react-test-renderer"
 import { FilterArray, FilterData, FilterParamName } from "../ArtworkFilterHelpers"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider, useSelectedOptionsDisplay } from "../ArtworkFilterStore"
 import { getEssentialProps } from "./helper"
-import { checkIsEmptyCustomValues, CustomSize, getCustomValues, NewSizesOptionsScreen } from "./NewSizesOptions"
+import { checkIsEmptyCustomValues, CustomSize, getCustomValues, SizesOptionsScreen } from "./SizesOptionsScreen"
 
 // Helpers
 const getFilters = (element: ReactTestInstance) => {
@@ -30,7 +30,7 @@ const getHeightFilterOption = (filters: FilterArray) => {
   return getFilterOptionByName(filters, FilterParamName.height)
 }
 
-describe("NewSizesOptionsScreen", () => {
+describe("SizesOptionsScreen", () => {
   const INITIAL_DATA: ArtworkFiltersState = {
     selectedFilters: [],
     appliedFilters: [],
@@ -49,7 +49,7 @@ describe("NewSizesOptionsScreen", () => {
     return (
       <>
         <Text testID="debug">{JSON.stringify(selected)}</Text>
-        <NewSizesOptionsScreen {...getEssentialProps()} />
+        <SizesOptionsScreen {...getEssentialProps()} />
       </>
     )
   }
