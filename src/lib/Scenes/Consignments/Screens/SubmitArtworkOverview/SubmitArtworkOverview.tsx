@@ -11,7 +11,6 @@ export const ArtworkDetails: React.FC = ({}) => {
     </View>
   )
 }
-
 export const ContactInformation: React.FC = ({}) => {
   return (
     <View style={{ backgroundColor: `rgba(255,145,125,.3)`, padding: 20, marginTop: 20 }}>
