@@ -63,7 +63,7 @@ export const PartnerShowRailItemContainer = createFragmentContainer(PartnerShowR
       internalID
       slug
       name
-      exhibitionPeriod
+      exhibitionPeriod(format: SHORT)
       endAt
       coverImage {
         url

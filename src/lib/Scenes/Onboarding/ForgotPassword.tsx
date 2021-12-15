@@ -27,15 +27,8 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   requestedPasswordReset,
   inputRef,
 }) => {
-  const {
-    values,
-    handleSubmit,
-    handleChange,
-    validateForm,
-    isValid,
-    dirty,
-    isSubmitting,
-  } = useFormikContext<ForgotPasswordValuesSchema>()
+  const { values, handleSubmit, handleChange, validateForm, isValid, dirty, isSubmitting } =
+    useFormikContext<ForgotPasswordValuesSchema>()
   const color = useColor()
 
   return (

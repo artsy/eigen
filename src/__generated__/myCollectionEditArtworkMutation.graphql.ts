@@ -8,6 +8,7 @@ import { FragmentRefs } from "relay-runtime";
 export type MyCollectionUpdateArtworkInput = {
     artistIds?: Array<string | null> | null;
     artworkId: string;
+    artworkLocation?: string | null;
     category?: string | null;
     clientMutationId?: string | null;
     costCurrencyCode?: string | null;

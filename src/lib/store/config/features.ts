@@ -166,6 +166,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableSavedSearchToggles",
   },
+  AREnableImprovedAlertsFlow: {
+    readyForRelease: false,
+    description: "Enable Improved Alerts flow",
+    showInAdminMenu: true,
+  },
   AREnableWebPImages: {
     readyForRelease: true,
     description: "Enable WebP Images",
@@ -197,10 +202,27 @@ export const features = defineFeatures({
     echoFlagKey: "AREnableVisualProfileIconAndBio",
   },
   AREnableAuctionResultComparableWorks: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Comparable works in Auction Result",
     showInAdminMenu: true,
-    // echoFlagKey: "AREnableAuctionResultComparableWorks",
+    echoFlagKey: "AREnableAuctionResultComparableWorks",
+  },
+  ARMyCollectionLocalSortAndFilter: {
+    readyForRelease: true,
+    description: "My Collection Sort & Filter",
+    showInAdminMenu: true,
+    echoFlagKey: "ARMyCollectionLocalSortAndFilter",
+  },
+  AREnableArtistRecommendations: {
+    readyForRelease: false,
+    description: "Enable new artist recommendations",
+    showInAdminMenu: true,
+  },
+  AREnableQueriesPrefetching: {
+    readyForRelease: true,
+    description: "Enable query prefetching",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableQueriesPrefetching",
   },
   AREnableAccordionNavigationOnSubmitArtwork: {
     readyForRelease: false,
@@ -245,6 +267,12 @@ export const devToggles = defineDevToggles({
   },
   DTShowAnalyticsVisualiser: {
     description: "Show analytics visualiser",
+  },
+  DTShowWebviewIndicator: {
+    description: "Show webview indicator",
+  },
+  DTShowInstagramShot: {
+    description: "Show Instagram viewshot",
   },
 })
 

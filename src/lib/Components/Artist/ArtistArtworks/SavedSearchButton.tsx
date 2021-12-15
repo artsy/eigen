@@ -131,7 +131,6 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
         disabled={isSavedSearch || filters.length === 0}
         loading={loading || refetching}
         onPress={handleCreateAlertPress}
-        testID="create-saved-search-button"
         haptic
       >
         Create Alert
@@ -146,7 +145,7 @@ export const SavedSearchButtonRefetchContainer = createRefetchContainer(
   {
     me: graphql`
       fragment SavedSearchButton_me on Me @argumentDefinitions(criteria: { type: "SearchCriteriaAttributes" }) {
-        ...CreateSavedSearchAlertScreen_me
+        ...CreateSavedSearchContentContainerV1_me
         savedSearch(criteria: $criteria) {
           internalID
         }

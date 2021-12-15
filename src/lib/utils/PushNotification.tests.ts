@@ -90,7 +90,7 @@ describe("Push Notification Tests", () => {
       badge: 0,
       alert: {},
       foreground: true,
-      id: 411091002,
+      id: "411091002",
       message: "New Works by Artists you love!",
       priority: "high",
       smallIcon: "ic_notification",
@@ -171,7 +171,7 @@ describe("Push Notification Tests", () => {
         badge: 0,
         message: "A test push",
         alert: {},
-        id: 22,
+        id: "22",
         sound: "default",
         // tslint:disable-next-line:no-empty
         finish: () => {},

@@ -22,7 +22,7 @@ jest.mock("lib/relay/createEnvironment", () => ({
 
 jest.unmock("react-relay")
 
-const env = (defaultEnvironment as any) as ReturnType<typeof createMockEnvironment>
+const env = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
 
 describe(SwitchMenu, () => {
   it("title is set to black100 when enabled", () => {

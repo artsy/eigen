@@ -110,7 +110,7 @@ export const Pill: React.FC<PillProps> = ({
           }}
         >
           <AnimatedContainer
-            borderRadius={!!Icon || rounded ? 50 : 0}
+            borderRadius={rounded ? 50 : 0}
             flexDirection="row"
             justifyContent="center"
             alignItems="center"
@@ -136,7 +136,7 @@ export const Pill: React.FC<PillProps> = ({
             {iconPosition === "right" && !!Icon && (
               <>
                 <Spacer mr={iconSpacerMargin} />
-                {<Icon fill={iconColor} />}
+                <Icon fill={iconColor} />
               </>
             )}
           </AnimatedContainer>

@@ -30,10 +30,12 @@ const SmallTileRail: React.FC<Props> = ({
   ListFooterComponent = ListEndComponent,
 }) => {
   const tracking = useTracking()
+
   return (
     <AboveTheFoldFlatList
       onEndReached={onEndReached}
       onEndReachedThreshold={onEndReachedThreshold}
+      prefetchUrlExtractor={(item) => item?.href!}
       listRef={listRef}
       horizontal
       ListHeaderComponent={ListEndComponent}

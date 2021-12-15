@@ -154,7 +154,7 @@ export const CitySectionListContainer = createPaginationContainer(
               cover_image: coverImage {
                 url
               }
-              exhibition_period: exhibitionPeriod
+              exhibition_period: exhibitionPeriod(format: SHORT)
               partner {
                 ... on Partner {
                   name

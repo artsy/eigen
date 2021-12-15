@@ -6,7 +6,6 @@ import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids
 import { OwnerType } from "@artsy/cohesion"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/ArtworksFilterHeader"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import { Box, quoteLeft, quoteRight, Text, useTheme } from "palette"
@@ -31,7 +30,6 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
   const { trackEvent } = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((state) => state.setFiltersCountAction)
-  const enableSortFilter = useFeatureFlag("AREnableSortFilterForArtworksPill")
 
   const handleCloseFilterArtworksModal = (withFiltersApplying: boolean = false) => {
     if (!withFiltersApplying) {
@@ -79,20 +77,13 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
   return (
     <>
       <ArtworkFilterNavigator
-        id={null}
-        slug={null}
         query={keyword}
-        isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+        visible={isFilterArtworksModalVisible}
         exitModal={() => handleCloseFilterArtworksModal(true)}
         closeModal={handleCloseFilterArtworksModal}
         mode={FilterModalMode.Search}
-        {...(!enableSortFilter && { title: "Filter" })}
       />
-      <ArtworksFilterHeader
-        {...(!enableSortFilter && { title: "Filter" })}
-        selectedFiltersCount={appliedFiltersCount}
-        onFilterPress={handleOpenFilterArtworksModal}
-      />
+      <ArtworksFilterHeader selectedFiltersCount={appliedFiltersCount} onFilterPress={handleOpenFilterArtworksModal} />
       {artworksCount === 0 ? (
         <Box mb="80px" pt={6}>
           <Box px={2}>

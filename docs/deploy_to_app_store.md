@@ -8,11 +8,11 @@ Eigen's beta pre-submission checklist has [moved into Notion](https://www.notion
 
 ## Preparing to Ship a Final Version
 
-1. Start a branch from master.
-1. Update [`release_notes.txt`](https://github.com/artsy/eigen/blob/master/fastlane/metadata/en-US/release_notes.txt) with the **user-facing** release notes for this version.
-   - See [previous examples](https://github.com/artsy/eigen/commits/master/fastlane/metadata/en-US/release_notes.txt) of release notes.
+1. Start a branch from main.
+1. Update [`release_notes.txt`](https://github.com/artsy/eigen/blob/main/fastlane/metadata/en-US/release_notes.txt) with the **user-facing** release notes for this version.
+   - See [previous examples](https://github.com/artsy/eigen/commits/main/fastlane/metadata/en-US/release_notes.txt) of release notes.
    - Share the notes with the #practice-mobile channel in Slack for feedback.
-   - Commit, push the changes, make a PR from your branch to master.
+   - Commit, push the changes, make a PR from your branch to main.
 1. Run `./scripts/promote-beta-to-submission-ios`. This will submit the **most recent beta** for App Store review
 
 ### What about IDFA?
@@ -37,4 +37,4 @@ Our App Store releases are done manually, instead of automatically once Apple ap
 1. Run `./scripts/next`. This prompts for the next version number. **Use the same version as the previous step**.
 1. Add and commit the changed files, typically with `-m "Preparing for development, version X.Y.Z."`.
 1. Run `./scripts/deploy-ios` to trigger a new beta. (When we add a new version, the first beta goes through additional TestFlight review by Apple. By trigger the beta now, we go through that review early, and avoid delaying future QA sessions.)
-1. PR your changes back into the `master` branch.
+1. PR your changes back into the `main` branch.

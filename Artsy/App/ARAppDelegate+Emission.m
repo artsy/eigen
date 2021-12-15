@@ -120,10 +120,6 @@ SOFTWARE.
     [emission.notificationsManagerModule afterBootstrap:^{
         [ARRouter setup];
 
-        if (launchCount == 1) {
-            [[AREmission sharedInstance] sendEvent:ARAnalyticsFreshInstall traits:@{}];
-        }
-
         if (launchCount == 3) {
             [[ARUserManager sharedManager] tryStoreSavedCredentialsToWebKeychain];
         }

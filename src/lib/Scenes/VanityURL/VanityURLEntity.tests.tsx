@@ -29,7 +29,7 @@ const TestRenderer: React.FC<{
 }
 
 describe("VanityURLEntity", () => {
-  const env = (defaultEnvironment as any) as ReturnType<typeof createMockEnvironment>
+  const env = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
 
   afterEach(() => {
     env.mockClear()

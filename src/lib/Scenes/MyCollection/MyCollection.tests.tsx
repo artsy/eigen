@@ -1,7 +1,9 @@
 import { addCollectedArtwork } from "@artsy/cohesion"
 import { MyCollectionTestsQuery } from "__generated__/MyCollectionTestsQuery.graphql"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -10,7 +12,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MyCollectionContainer } from "./MyCollection"
-import { MyCollectionArtworkFormModal } from "./Screens/ArtworkFormModal/MyCollectionArtworkFormModal"
 
 jest.unmock("react-relay")
 
@@ -45,7 +46,11 @@ describe("MyCollection", () => {
   })
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappers(
+      <ArtworkFiltersStoreProvider>
+        <TestRenderer />
+      </ArtworkFiltersStoreProvider>
+    )
     act(() => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
@@ -75,13 +80,14 @@ describe("MyCollection", () => {
       expect(extractText(tree.root)).toContain("Keep track of your collection all in one place and get market insights")
     })
 
-    it("shows form modal when Add Artwork is pressed", () => {
+    it("navigates to MyCollectionArtworkForm when Add Artwork is pressed", () => {
       const addArtworkButton = tree.root.findByProps({ testID: "add-artwork-button-zero-state" })
       addArtworkButton.props.onPress()
 
-      const artworkModal = tree.root.findByType(MyCollectionArtworkFormModal)
-      expect(artworkModal).toBeDefined()
-      expect(artworkModal.props.visible).toBeTruthy()
+      expect(navigate).toHaveBeenCalledWith(
+        "my-collection/artworks/new",
+        expect.objectContaining({ passProps: { mode: "add" } })
+      )
     })
 
     it("tracks analytics event when Add Artwork is pressed", () => {

@@ -7,7 +7,7 @@ class ArtworkTests: XCTestCase {
         let artist = Artist(name: "Sally Something")
         let artwork = Artwork(artist: artist, artworkImages: [artworkImage], id: "abc123", title: "Super Sculpture")
         
-        let expected = URL(string: "https://www.artsy.net/images/abc123/square.png")!
+        let expected = URL(string: "https://www.artsy.net/images/abc123/larger.png")!
         
         XCTAssertEqual(artwork.firstImageUrl, expected)
     }
@@ -17,7 +17,7 @@ class ArtworkTests: XCTestCase {
         let artist = Artist(name: "Sally Something")
         let artwork = Artwork(artist: artist, artworkImages: [], id: "abc123", title: "Super Sculpture")
         
-        let expectedUrl = ArtworkImage.fallback().imageUrl.replacingOccurrences(of: ":version", with: "square")
+        let expectedUrl = ArtworkImage.fallback().imageUrl.replacingOccurrences(of: ":version", with: "larger")
         let expected = URL(string: expectedUrl)!
         
         XCTAssertEqual(artwork.firstImageUrl, expected)

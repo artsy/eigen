@@ -8,7 +8,7 @@ import React, { useContext, useRef, useState } from "react"
 import { useEffect } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ArtworkFilterNavigator } from "../ArtworkFilter/ArtworkFilter"
+import { ArtworkFilterNavigator } from "../ArtworkFilter"
 import { FilterModalMode } from "../ArtworkFilter/ArtworkFilterOptionsScreen"
 import { ArtworkFiltersStoreProvider } from "../ArtworkFilter/ArtworkFilterStore"
 import { useArtworkFilters, useSelectedFiltersCount } from "../ArtworkFilter/useArtworkFilters"
@@ -109,7 +109,7 @@ const TagArtworksContainer: React.FC<TagArtworksContainerProps> = (props) => {
           {...props}
           id={tag.internalID}
           slug={tag.slug}
-          isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+          visible={isFilterArtworksModalVisible}
           exitModal={handleCloseFilterArtworksModal}
           closeModal={closeFilterArtworksModal}
           mode={FilterModalMode.Tag}

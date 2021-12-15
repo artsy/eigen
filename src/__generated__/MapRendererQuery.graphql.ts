@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 153e5515c104da020e608545f5f65941 */
+/* @relayHash 14e5942e37bbffb54c9a5101b51b8369 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -47,7 +47,7 @@ fragment GlobalMap_viewer_3La17j on Query {
         isStubShow
         href
         is_followed: isFollowed
-        exhibition_period: exhibitionPeriod
+        exhibition_period: exhibitionPeriod(format: SHORT)
         cover_image: coverImage {
           url
         }
@@ -91,7 +91,7 @@ fragment GlobalMap_viewer_3La17j on Query {
           status
           href
           is_followed: isFollowed
-          exhibition_period: exhibitionPeriod
+          exhibition_period: exhibitionPeriod(format: SHORT)
           cover_image: coverImage {
             url
           }
@@ -139,7 +139,7 @@ fragment GlobalMap_viewer_3La17j on Query {
           status
           href
           is_followed: isFollowed
-          exhibition_period: exhibitionPeriod
+          exhibition_period: exhibitionPeriod(format: SHORT)
           cover_image: coverImage {
             url
           }
@@ -182,7 +182,7 @@ fragment GlobalMap_viewer_3La17j on Query {
           id
           slug
           name
-          exhibition_period: exhibitionPeriod
+          exhibition_period: exhibitionPeriod(format: SHORT)
           counts {
             partners
           }
@@ -315,10 +315,16 @@ v9 = {
 },
 v10 = {
   "alias": "exhibition_period",
-  "args": null,
+  "args": [
+    {
+      "kind": "Literal",
+      "name": "format",
+      "value": "SHORT"
+    }
+  ],
   "kind": "ScalarField",
   "name": "exhibitionPeriod",
-  "storageKey": null
+  "storageKey": "exhibitionPeriod(format:\"SHORT\")"
 },
 v11 = {
   "alias": null,
@@ -854,7 +860,7 @@ return {
     ]
   },
   "params": {
-    "id": "153e5515c104da020e608545f5f65941",
+    "id": "14e5942e37bbffb54c9a5101b51b8369",
     "metadata": {},
     "name": "MapRendererQuery",
     "operationKind": "query",

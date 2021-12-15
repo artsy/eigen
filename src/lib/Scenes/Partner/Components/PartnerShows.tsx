@@ -182,13 +182,12 @@ export const PartnerShowsFragmentContainer = createPaginationContainer(
               id
               name
               slug
-              exhibitionPeriod
+              exhibitionPeriod(format: SHORT)
               coverImage {
                 url
                 aspectRatio
               }
               href
-              exhibitionPeriod
             }
           }
         }

@@ -1,7 +1,9 @@
 import { ParamListBase } from "@react-navigation/native"
 import { StackNavigationProp } from "@react-navigation/stack"
 import { FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ArtworkFilterBackHeader } from "lib/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Box, CheckIcon, Flex, Separator, Text } from "palette"
 import React from "react"
 import { FlatList, TouchableOpacity } from "react-native"
@@ -26,6 +28,7 @@ export const MultiSelectCheckOptionScreen: React.FC<MultiSelectOptionScreenProps
   selectedOptions,
   shouldAddIndent,
 }) => {
+  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const handleBackNavigation = () => {
     navigation.goBack()
   }
@@ -44,7 +47,11 @@ export const MultiSelectCheckOptionScreen: React.FC<MultiSelectOptionScreenProps
 
   return (
     <Flex flexGrow={1}>
-      <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
+      {isEnabledImprovedAlertsFlow ? (
+        <ArtworkFilterBackHeader title={filterHeaderText} onLeftButtonPress={handleBackNavigation} />
+      ) : (
+        <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
+      )}
       <Flex mb={120}>
         <FlatList
           initialNumToRender={10}

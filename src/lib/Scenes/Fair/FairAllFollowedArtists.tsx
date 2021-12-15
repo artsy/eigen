@@ -48,7 +48,7 @@ export const FairAllFollowedArtists: React.FC<FairAllFollowedArtistsProps> = ({ 
             followedArtistCount={fairForFilters.filterArtworksConnection?.counts?.followedArtists}
           />
           <ArtworkFilterNavigator
-            isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+            visible={isFilterArtworksModalVisible}
             id={fair.internalID}
             slug={fair.slug}
             mode={FilterModalMode.Fair}

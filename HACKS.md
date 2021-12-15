@@ -88,7 +88,7 @@ When @react-native-mapbox-gl/maps uses mapbox-ios at least 6.3.0
 
 Version 6.3 added support for Xcode 12 and iOS 14. Without this hardcoding we get version 5.7. Let's keep the hardcode, at least until they give us at least that version with the npm package.
 
-To check which version comes with, either remove `$ReactNativeMapboxGLIOSVersion` and after `pod install` check the `Podfile.lock` for version, or look on github https://github.com/react-native-mapbox-gl/maps/blob/master/CHANGELOG.md for versions bundle with an npm version.
+To check which version comes with, either remove `$ReactNativeMapboxGLIOSVersion` and after `pod install` check the `Podfile.lock` for version, or look on github https://github.com/react-native-mapbox-gl/maps/blob/main/CHANGELOG.md for versions bundle with an npm version.
 
 Update tried again with mapbox 8.4.0 and getting 5.9 and still need the hard coded requirement, try again next time we update mapbox.
 
@@ -156,16 +156,6 @@ Now.
 react-native-config loads the `.env` file by default. We wanted to use `.env.shared` and `.env.ci` instead. We did that by using a patch-package patch, to add our customization.
 
 We can do this better using https://github.com/luggit/react-native-config#ios-1. Take a look at https://artsyproduct.atlassian.net/browse/CX-949.
-
-## react-native-share patch-package
-
-#### When can we remove this:
-
-When we make a PR and it's merged about this.
-
-#### Explanation/Context:
-
-We need this patch because the lib by itself doesn't set the background colors when we send a backgroundImage, even though Instagram supports it. We add it here as a package because we use it.
 
 ## @react-navigation/core patch-package
 
@@ -279,3 +269,17 @@ Once sentry adds `enableOutOfMemoryTracking` to their `ReactNativeOptions` type.
 #### Explanation/Context:
 
 `enableOutOfMemoryTracking` seems to be missing from the `ReactNativeOptions` typing although it's working properly (see https://github.com/getsentry/sentry-react-native/issues/1633). We need to add it so that we can stop receiving Sentry errors related to out of memory.
+
+# `PropsStore` pass functions as props inside navigate() on iOS
+
+#### When can we remove this:
+
+Once we no longer use our native implementation of pushView on iOS
+
+#### Explanation/Context:
+
+We cannot pass functions as props because `navigate.ts` on ios uses the native obj-c definition of pushView in `ARScreenPresenterModule.m`.
+React native is not able to convert js functions so this is passed as null to the underlying native method
+See what can be converted: https://github.com/facebook/react-native/blob/main/React/Base/RCTConvert.h
+
+PropsStore allows us to temporarily hold on the props and reinject them back into the destination view or module.
