@@ -6,7 +6,7 @@ import { LayoutAnimation, StyleSheet, TouchableOpacity, View } from "react-nativ
 import { Content } from "./Content"
 
 interface CollapsibleMenuItemProps {
-  step: number
+  stepNumber: number
   totalSteps: number
   title: string
   activeStep: number
@@ -20,7 +20,7 @@ interface CollapsibleMenuItemProps {
 export const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
   enabled,
   title,
-  step,
+  stepNumber,
   totalSteps,
   activeStep,
   setActiveStep,
@@ -32,7 +32,7 @@ export const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
     <>
       {enabled ? (
         <Active
-          step={step}
+          stepNumber={stepNumber}
           totalSteps={totalSteps}
           title={title}
           activeStep={activeStep}
@@ -42,14 +42,14 @@ export const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
           navigateToLink={navigateToLink}
         />
       ) : (
-        <Inactive step={step} totalSteps={totalSteps} title={title} />
+        <Inactive stepNumber={stepNumber} totalSteps={totalSteps} title={title} />
       )}
     </>
   )
 }
 
 interface ActiveProps {
-  step: number
+  stepNumber: number
   totalSteps: number
   activeStep: number
   title: string
@@ -61,7 +61,7 @@ interface ActiveProps {
 
 const Active: React.FC<ActiveProps> = ({
   title,
-  step,
+  stepNumber,
   totalSteps,
   activeStep,
   setActiveStep,
@@ -73,22 +73,22 @@ const Active: React.FC<ActiveProps> = ({
   return (
     <View style={styles.container}>
       <Sans size="1">
-        Step {step} of {totalSteps}
+        Step {stepNumber} of {totalSteps}
       </Sans>
       <TouchableOpacity
         style={styles.titleAndIcon}
         onPress={() => {
           LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-          setActiveStep(step)
+          setActiveStep(stepNumber)
         }}
       >
         <Sans size="8">{title}</Sans>
         <View style={styles.icons}>
           {!!isCompleted && <CheckCircleIcon fill="green100" height={24} width={24} style={styles.circle} />}
-          {activeStep === step ? <ArrowUpIcon /> : <ArrowDownIcon />}
+          {activeStep === stepNumber ? <ArrowUpIcon /> : <ArrowDownIcon />}
         </View>
       </TouchableOpacity>
-      {activeStep === step && (
+      {activeStep === stepNumber && (
         // these props should be passed directly to the save & continue button
         // implement easy peasy here
         <Content
@@ -107,15 +107,15 @@ const Active: React.FC<ActiveProps> = ({
 
 interface InactiveProps {
   title: string
-  step: number
+  stepNumber: number
   totalSteps: number
 }
 
-const Inactive: React.FC<InactiveProps> = ({ title, step, totalSteps }) => {
+const Inactive: React.FC<InactiveProps> = ({ title, stepNumber, totalSteps }) => {
   return (
     <View style={styles.container}>
       <Sans size="1" color="black30">
-        Step {step} of {totalSteps}
+        Step {stepNumber} of {totalSteps}
       </Sans>
       <View style={styles.titleAndIcon}>
         <Sans size="8" color="black30">
