@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e093744afff9353d220eb501f760c043 */
+/* @relayHash 4f0d98abef0e713477639766ecc69434 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -41,6 +41,11 @@ fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectio
       }
       artistNames
       medium
+      artist {
+        internalID
+        name
+        id
+      }
       date
       ...MyCollectionArtworkListItem_artwork
     }
@@ -77,6 +82,11 @@ fragment MyCollection_me on Me {
       node {
         id
         medium
+        artist {
+          internalID
+          name
+          id
+        }
         __typename
       }
       cursor
@@ -241,6 +251,26 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "artist",
+                        "plural": false,
+                        "selections": [
+                          (v2/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "name",
+                            "storageKey": null
+                          },
+                          (v0/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "kind": "ScalarField",
                         "name": "__typename",
                         "storageKey": null
@@ -285,19 +315,6 @@ return {
                         "storageKey": null
                       },
                       (v2/*: any*/),
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "Artist",
-                        "kind": "LinkedField",
-                        "name": "artist",
-                        "plural": false,
-                        "selections": [
-                          (v2/*: any*/),
-                          (v0/*: any*/)
-                        ],
-                        "storageKey": null
-                      },
                       {
                         "alias": null,
                         "args": null,
@@ -393,7 +410,7 @@ return {
     ]
   },
   "params": {
-    "id": "e093744afff9353d220eb501f760c043",
+    "id": "4f0d98abef0e713477639766ecc69434",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -431,6 +448,7 @@ return {
         },
         "me.myCollectionConnection.edges.node.artist.id": (v3/*: any*/),
         "me.myCollectionConnection.edges.node.artist.internalID": (v3/*: any*/),
+        "me.myCollectionConnection.edges.node.artist.name": (v5/*: any*/),
         "me.myCollectionConnection.edges.node.artistNames": (v5/*: any*/),
         "me.myCollectionConnection.edges.node.date": (v5/*: any*/),
         "me.myCollectionConnection.edges.node.id": (v3/*: any*/),
