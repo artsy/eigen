@@ -96,7 +96,6 @@ return {
           "kind": "Literal",
           "name": "input",
           "value": {
-            "dimensionRange": "*-*",
             "sort": "-partner_updated_at"
           }
         }
@@ -129,5 +128,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'e5e9c69ebb368e05baef4c0b8b0d7467';
+(node as any).hash = 'aec821fc7c1d8d589f98fb35e3f25dc7';
 export default node;

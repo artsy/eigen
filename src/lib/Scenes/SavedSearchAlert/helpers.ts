@@ -53,7 +53,7 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations): 
   const pills = filters.map((filter) => {
     const { paramName, paramValue, displayText } = filter
 
-    if ((paramName === FilterParamName.dimensionRange && displayText === "Custom Size") || isUndefined(paramValue)) {
+    if (isUndefined(paramValue)) {
       return null
     }
 
