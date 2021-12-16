@@ -1,4 +1,4 @@
-import Sentry from "@sentry/react-native"
+import * as Sentry from "@sentry/react-native"
 import { useEffect } from "react"
 import { Platform } from "react-native"
 import Config from "react-native-config"
