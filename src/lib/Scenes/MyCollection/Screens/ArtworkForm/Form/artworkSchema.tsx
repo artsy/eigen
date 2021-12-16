@@ -20,7 +20,6 @@ export const artworkSchema = Yup.object().shape({
     return value.length > 0
   }),
   title: Yup.string().test("title", "Title is required", (value) => value !== ""),
-  date: Yup.number().max(new Date().getFullYear(), "Invalid year"),
 })
 
 export function validateArtworkSchema(values: ArtworkFormValues) {
