@@ -6,7 +6,7 @@
 import { ConcreteRequest } from "relay-runtime";
 export type BidderPositionInput = {
     artworkID: string;
-    clientMutationId?: string | null;
+    clientMutationId?: string | null | undefined;
     maxBidAmountCents: number;
     saleID: string;
 };

@@ -21,7 +21,7 @@ export type MyProfile_me = {
 };
 export type MyProfile_me$data = MyProfile_me;
 export type MyProfile_me$key = {
-    readonly " $data"?: MyProfile_me$data;
+    readonly " $data"?: MyProfile_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyProfile_me">;
 };
 

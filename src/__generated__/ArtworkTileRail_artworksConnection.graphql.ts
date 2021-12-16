@@ -21,7 +21,7 @@ export type ArtworkTileRail_artworksConnection = {
 };
 export type ArtworkTileRail_artworksConnection$data = ArtworkTileRail_artworksConnection;
 export type ArtworkTileRail_artworksConnection$key = {
-    readonly " $data"?: ArtworkTileRail_artworksConnection$data;
+    readonly " $data"?: ArtworkTileRail_artworksConnection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkTileRail_artworksConnection">;
 };
 

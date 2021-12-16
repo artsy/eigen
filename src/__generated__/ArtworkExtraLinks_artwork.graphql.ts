@@ -28,7 +28,7 @@ export type ArtworkExtraLinks_artwork = {
 };
 export type ArtworkExtraLinks_artwork$data = ArtworkExtraLinks_artwork;
 export type ArtworkExtraLinks_artwork$key = {
-    readonly " $data"?: ArtworkExtraLinks_artwork$data;
+    readonly " $data"?: ArtworkExtraLinks_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkExtraLinks_artwork">;
 };
 

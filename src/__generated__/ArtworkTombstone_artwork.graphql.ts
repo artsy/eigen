@@ -37,7 +37,7 @@ export type ArtworkTombstone_artwork = {
 };
 export type ArtworkTombstone_artwork$data = ArtworkTombstone_artwork;
 export type ArtworkTombstone_artwork$key = {
-    readonly " $data"?: ArtworkTombstone_artwork$data;
+    readonly " $data"?: ArtworkTombstone_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkTombstone_artwork">;
 };
 

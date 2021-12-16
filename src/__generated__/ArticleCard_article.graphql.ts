@@ -20,7 +20,7 @@ export type ArticleCard_article = {
 };
 export type ArticleCard_article$data = ArticleCard_article;
 export type ArticleCard_article$key = {
-    readonly " $data"?: ArticleCard_article$data;
+    readonly " $data"?: ArticleCard_article$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArticleCard_article">;
 };
 

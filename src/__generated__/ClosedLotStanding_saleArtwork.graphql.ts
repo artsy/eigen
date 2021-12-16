@@ -27,7 +27,7 @@ export type ClosedLotStanding_saleArtwork = {
 };
 export type ClosedLotStanding_saleArtwork$data = ClosedLotStanding_saleArtwork;
 export type ClosedLotStanding_saleArtwork$key = {
-    readonly " $data"?: ClosedLotStanding_saleArtwork$data;
+    readonly " $data"?: ClosedLotStanding_saleArtwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ClosedLotStanding_saleArtwork">;
 };
 

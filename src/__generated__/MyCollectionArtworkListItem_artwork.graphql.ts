@@ -25,7 +25,7 @@ export type MyCollectionArtworkListItem_artwork = {
 };
 export type MyCollectionArtworkListItem_artwork$data = MyCollectionArtworkListItem_artwork;
 export type MyCollectionArtworkListItem_artwork$key = {
-    readonly " $data"?: MyCollectionArtworkListItem_artwork$data;
+    readonly " $data"?: MyCollectionArtworkListItem_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkListItem_artwork">;
 };
 

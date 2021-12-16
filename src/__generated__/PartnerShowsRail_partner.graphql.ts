@@ -25,7 +25,7 @@ export type PartnerShowsRail_partner = {
                     readonly url: string | null;
                 } | null> | null;
                 readonly partner: {
-                    readonly name?: string | null;
+                    readonly name?: string | null | undefined;
                 } | null;
                 readonly " $fragmentRefs": FragmentRefs<"PartnerShowRailItem_show">;
             } | null;
@@ -35,7 +35,7 @@ export type PartnerShowsRail_partner = {
 };
 export type PartnerShowsRail_partner$data = PartnerShowsRail_partner;
 export type PartnerShowsRail_partner$key = {
-    readonly " $data"?: PartnerShowsRail_partner$data;
+    readonly " $data"?: PartnerShowsRail_partner$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"PartnerShowsRail_partner">;
 };
 

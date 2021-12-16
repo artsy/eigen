@@ -9,14 +9,14 @@ export type HoursCollapsible_location = {
         readonly schedules?: ReadonlyArray<{
             readonly days: string | null;
             readonly hours: string | null;
-        } | null> | null;
-        readonly text?: string | null;
+        } | null> | null | undefined;
+        readonly text?: string | null | undefined;
     } | null;
     readonly " $refType": "HoursCollapsible_location";
 };
 export type HoursCollapsible_location$data = HoursCollapsible_location;
 export type HoursCollapsible_location$key = {
-    readonly " $data"?: HoursCollapsible_location$data;
+    readonly " $data"?: HoursCollapsible_location$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"HoursCollapsible_location">;
 };
 

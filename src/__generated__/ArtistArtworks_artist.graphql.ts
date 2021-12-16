@@ -35,7 +35,7 @@ export type ArtistArtworks_artist = {
 };
 export type ArtistArtworks_artist$data = ArtistArtworks_artist;
 export type ArtistArtworks_artist$key = {
-    readonly " $data"?: ArtistArtworks_artist$data;
+    readonly " $data"?: ArtistArtworks_artist$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtistArtworks_artist">;
 };
 

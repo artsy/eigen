@@ -22,7 +22,7 @@ export type InboxOld_me = {
 };
 export type InboxOld_me$data = InboxOld_me;
 export type InboxOld_me$key = {
-    readonly " $data"?: InboxOld_me$data;
+    readonly " $data"?: InboxOld_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"InboxOld_me">;
 };
 

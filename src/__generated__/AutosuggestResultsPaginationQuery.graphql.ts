@@ -9,8 +9,8 @@ export type SearchEntity = "ARTICLE" | "ARTIST" | "ARTIST_SERIES" | "ARTWORK" | 
 export type AutosuggestResultsPaginationQueryVariables = {
     query: string;
     count: number;
-    cursor?: string | null;
-    entities?: Array<SearchEntity | null> | null;
+    cursor?: string | null | undefined;
+    entities?: Array<SearchEntity | null> | null | undefined;
 };
 export type AutosuggestResultsPaginationQueryResponse = {
     readonly " $fragmentRefs": FragmentRefs<"AutosuggestResults_results">;

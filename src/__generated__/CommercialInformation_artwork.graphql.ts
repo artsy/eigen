@@ -36,7 +36,7 @@ export type CommercialInformation_artwork = {
 };
 export type CommercialInformation_artwork$data = CommercialInformation_artwork;
 export type CommercialInformation_artwork$key = {
-    readonly " $data"?: CommercialInformation_artwork$data;
+    readonly " $data"?: CommercialInformation_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CommercialInformation_artwork">;
 };
 

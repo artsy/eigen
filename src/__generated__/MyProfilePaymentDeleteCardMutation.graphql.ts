@@ -12,7 +12,7 @@ export type MyProfilePaymentDeleteCardMutationResponse = {
         readonly creditCardOrError: {
             readonly mutationError?: {
                 readonly error: string | null;
-            } | null;
+            } | null | undefined;
         } | null;
     } | null;
 };

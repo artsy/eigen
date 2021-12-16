@@ -13,12 +13,12 @@ export type OrderInformation_order = {
     readonly lastOffer?: {
         readonly amount: string | null;
         readonly fromParticipant: CommerceOrderParticipantEnum | null;
-    } | null;
+    } | null | undefined;
     readonly " $refType": "OrderInformation_order";
 };
 export type OrderInformation_order$data = OrderInformation_order;
 export type OrderInformation_order$key = {
-    readonly " $data"?: OrderInformation_order$data;
+    readonly " $data"?: OrderInformation_order$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"OrderInformation_order">;
 };
 

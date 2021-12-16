@@ -29,24 +29,24 @@ export type PartnerArtworkTestsQueryRawResponse = {
                 readonly node: ({
                     readonly id: string;
                     readonly __typename: "Artwork";
-                    readonly slug?: string;
+                    readonly slug?: string | undefined;
                     readonly image?: ({
                         readonly aspectRatio: number;
                         readonly url: string | null;
-                    }) | null;
-                    readonly title?: string | null;
-                    readonly date?: string | null;
-                    readonly saleMessage?: string | null;
-                    readonly internalID?: string;
-                    readonly artistNames?: string | null;
-                    readonly href?: string | null;
+                    }) | null | undefined;
+                    readonly title?: string | null | undefined;
+                    readonly date?: string | null | undefined;
+                    readonly saleMessage?: string | null | undefined;
+                    readonly internalID?: string | undefined;
+                    readonly artistNames?: string | null | undefined;
+                    readonly href?: string | null | undefined;
                     readonly sale?: ({
                         readonly isAuction: boolean | null;
                         readonly isClosed: boolean | null;
                         readonly displayTimelyAt: string | null;
                         readonly endAt: string | null;
                         readonly id: string;
-                    }) | null;
+                    }) | null | undefined;
                     readonly saleArtwork?: ({
                         readonly counts: ({
                             readonly bidderPositions: number | null;
@@ -56,21 +56,21 @@ export type PartnerArtworkTestsQueryRawResponse = {
                         }) | null;
                         readonly lotLabel: string | null;
                         readonly id: string;
-                    }) | null;
+                    }) | null | undefined;
                     readonly partner?: ({
                         readonly name: string | null;
                         readonly id: string;
-                    }) | null;
+                    }) | null | undefined;
                 }) | null;
                 readonly cursor: string;
-                readonly __typename?: string;
-                readonly __isNode?: string;
-                readonly id?: string;
+                readonly __typename?: string | undefined;
+                readonly __isNode?: string | undefined;
+                readonly id?: string | undefined;
             }) | null> | null;
             readonly pageInfo: {
                 readonly endCursor: string | null;
                 readonly hasNextPage: boolean;
-                readonly startCursor?: string | null;
+                readonly startCursor?: string | null | undefined;
             };
             readonly id: string;
             readonly __isArtworkConnectionInterface: "FilterArtworksConnection";

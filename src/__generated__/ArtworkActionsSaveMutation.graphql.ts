@@ -5,9 +5,9 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type SaveArtworkInput = {
-    artworkID?: string | null;
-    clientMutationId?: string | null;
-    remove?: boolean | null;
+    artworkID?: string | null | undefined;
+    clientMutationId?: string | null | undefined;
+    remove?: boolean | null | undefined;
 };
 export type ArtworkActionsSaveMutationVariables = {
     input: SaveArtworkInput;

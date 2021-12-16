@@ -14,7 +14,7 @@ export type Header_gene = {
 };
 export type Header_gene$data = Header_gene;
 export type Header_gene$key = {
-    readonly " $data"?: Header_gene$data;
+    readonly " $data"?: Header_gene$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Header_gene">;
 };
 

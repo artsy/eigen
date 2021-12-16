@@ -20,7 +20,7 @@ export type Partner_partner = {
 };
 export type Partner_partner$data = Partner_partner;
 export type Partner_partner$key = {
-    readonly " $data"?: Partner_partner$data;
+    readonly " $data"?: Partner_partner$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Partner_partner">;
 };
 

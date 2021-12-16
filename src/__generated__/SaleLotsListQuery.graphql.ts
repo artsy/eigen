@@ -7,14 +7,14 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SaleArtworkAggregation = "ARTIST" | "FOLLOWED_ARTISTS" | "MEDIUM" | "TOTAL" | "%future added value";
 export type SaleLotsListQueryVariables = {
-    geneIDs?: Array<string | null> | null;
-    artistIDs?: Array<string | null> | null;
+    geneIDs?: Array<string | null> | null | undefined;
+    artistIDs?: Array<string | null> | null | undefined;
     count: number;
-    cursor?: string | null;
-    estimateRange?: string | null;
-    saleID?: string | null;
-    sort?: string | null;
-    includeArtworksByFollowedArtists?: boolean | null;
+    cursor?: string | null | undefined;
+    estimateRange?: string | null | undefined;
+    saleID?: string | null | undefined;
+    sort?: string | null | undefined;
+    includeArtworksByFollowedArtists?: boolean | null | undefined;
 };
 export type SaleLotsListQueryResponse = {
     readonly " $fragmentRefs": FragmentRefs<"SaleLotsList_saleArtworksConnection">;
@@ -37,27 +37,27 @@ export type SaleLotsListQueryRawResponse = {
             readonly node: ({
                 readonly id: string;
                 readonly __typename: "Artwork";
-                readonly artistNames?: string | null;
-                readonly date?: string | null;
-                readonly href?: string | null;
+                readonly artistNames?: string | null | undefined;
+                readonly date?: string | null | undefined;
+                readonly href?: string | null | undefined;
                 readonly image?: ({
                     readonly small: string | null;
                     readonly aspectRatio: number;
                     readonly height: number | null;
                     readonly width: number | null;
                     readonly url: string | null;
-                }) | null;
-                readonly saleMessage?: string | null;
-                readonly slug?: string;
-                readonly title?: string | null;
-                readonly internalID?: string;
+                }) | null | undefined;
+                readonly saleMessage?: string | null | undefined;
+                readonly slug?: string | undefined;
+                readonly title?: string | null | undefined;
+                readonly internalID?: string | undefined;
                 readonly sale?: ({
                     readonly isAuction: boolean | null;
                     readonly isClosed: boolean | null;
                     readonly displayTimelyAt: string | null;
                     readonly endAt: string | null;
                     readonly id: string;
-                }) | null;
+                }) | null | undefined;
                 readonly saleArtwork?: ({
                     readonly counts: ({
                         readonly bidderPositions: number | null;
@@ -67,21 +67,21 @@ export type SaleLotsListQueryRawResponse = {
                     }) | null;
                     readonly lotLabel: string | null;
                     readonly id: string;
-                }) | null;
+                }) | null | undefined;
                 readonly partner?: ({
                     readonly name: string | null;
                     readonly id: string;
-                }) | null;
+                }) | null | undefined;
             }) | null;
             readonly cursor: string | null;
             readonly id: string;
-            readonly __typename?: string;
-            readonly __isNode?: string;
+            readonly __typename?: string | undefined;
+            readonly __isNode?: string | undefined;
         }) | null> | null;
         readonly pageInfo: {
             readonly endCursor: string | null;
             readonly hasNextPage: boolean;
-            readonly startCursor?: string | null;
+            readonly startCursor?: string | null | undefined;
         };
         readonly __isArtworkConnectionInterface: "SaleArtworksConnection";
     }) | null;

@@ -31,7 +31,7 @@ export type PartnerCard_artwork = {
 };
 export type PartnerCard_artwork$data = PartnerCard_artwork;
 export type PartnerCard_artwork$key = {
-    readonly " $data"?: PartnerCard_artwork$data;
+    readonly " $data"?: PartnerCard_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"PartnerCard_artwork">;
 };
 

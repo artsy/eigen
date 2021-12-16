@@ -16,7 +16,7 @@ export type Lot_saleArtwork = {
 };
 export type Lot_saleArtwork$data = Lot_saleArtwork;
 export type Lot_saleArtwork$key = {
-    readonly " $data"?: Lot_saleArtwork$data;
+    readonly " $data"?: Lot_saleArtwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Lot_saleArtwork">;
 };
 

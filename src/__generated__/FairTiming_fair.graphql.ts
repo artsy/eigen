@@ -12,7 +12,7 @@ export type FairTiming_fair = {
 };
 export type FairTiming_fair$data = FairTiming_fair;
 export type FairTiming_fair$key = {
-    readonly " $data"?: FairTiming_fair$data;
+    readonly " $data"?: FairTiming_fair$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FairTiming_fair">;
 };
 

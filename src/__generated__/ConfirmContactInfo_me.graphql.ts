@@ -10,7 +10,7 @@ export type ConfirmContactInfo_me = {
 };
 export type ConfirmContactInfo_me$data = ConfirmContactInfo_me;
 export type ConfirmContactInfo_me$key = {
-    readonly " $data"?: ConfirmContactInfo_me$data;
+    readonly " $data"?: ConfirmContactInfo_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ConfirmContactInfo_me">;
 };
 

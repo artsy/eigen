@@ -6,7 +6,7 @@
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionQueryVariables = {
-    excludePurchasedArtworks?: boolean | null;
+    excludePurchasedArtworks?: boolean | null | undefined;
 };
 export type MyCollectionQueryResponse = {
     readonly me: {

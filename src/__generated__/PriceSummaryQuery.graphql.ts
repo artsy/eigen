@@ -13,7 +13,7 @@ export type PriceSummaryQueryResponse = {
     readonly node: {
         readonly calculatedCost?: {
             readonly " $fragmentRefs": FragmentRefs<"PriceSummary_calculatedCost">;
-        } | null;
+        } | null | undefined;
     } | null;
 };
 export type PriceSummaryQuery = {

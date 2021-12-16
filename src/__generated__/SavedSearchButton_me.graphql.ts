@@ -13,7 +13,7 @@ export type SavedSearchButton_me = {
 };
 export type SavedSearchButton_me$data = SavedSearchButton_me;
 export type SavedSearchButton_me$key = {
-    readonly " $data"?: SavedSearchButton_me$data;
+    readonly " $data"?: SavedSearchButton_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SavedSearchButton_me">;
 };
 

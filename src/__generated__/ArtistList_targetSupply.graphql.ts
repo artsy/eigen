@@ -24,7 +24,7 @@ export type ArtistList_targetSupply = {
 };
 export type ArtistList_targetSupply$data = ArtistList_targetSupply;
 export type ArtistList_targetSupply$key = {
-    readonly " $data"?: ArtistList_targetSupply$data;
+    readonly " $data"?: ArtistList_targetSupply$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtistList_targetSupply">;
 };
 

@@ -11,7 +11,7 @@ export type ItemInfo_item = {
 };
 export type ItemInfo_item$data = ItemInfo_item;
 export type ItemInfo_item$key = {
-    readonly " $data"?: ItemInfo_item$data;
+    readonly " $data"?: ItemInfo_item$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ItemInfo_item">;
 };
 

@@ -27,7 +27,7 @@ export type Message_message = {
 };
 export type Message_message$data = Message_message;
 export type Message_message$key = {
-    readonly " $data"?: Message_message$data;
+    readonly " $data"?: Message_message$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Message_message">;
 };
 

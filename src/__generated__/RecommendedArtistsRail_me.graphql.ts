@@ -28,7 +28,7 @@ export type RecommendedArtistsRail_me = {
 };
 export type RecommendedArtistsRail_me$data = RecommendedArtistsRail_me;
 export type RecommendedArtistsRail_me$key = {
-    readonly " $data"?: RecommendedArtistsRail_me$data;
+    readonly " $data"?: RecommendedArtistsRail_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"RecommendedArtistsRail_me">;
 };
 

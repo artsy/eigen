@@ -22,9 +22,9 @@ export type Messages_conversation = {
             readonly node: {
                 readonly orderHistory: ReadonlyArray<{
                     readonly __typename: string;
-                    readonly createdAt?: string;
-                    readonly state?: CommerceOrderStateEnum;
-                    readonly stateReason?: string | null;
+                    readonly createdAt?: string | undefined;
+                    readonly state?: CommerceOrderStateEnum | undefined;
+                    readonly stateReason?: string | null | undefined;
                     readonly " $fragmentRefs": FragmentRefs<"OrderUpdate_event">;
                 }>;
             } | null;
@@ -78,7 +78,7 @@ export type Messages_conversation = {
 };
 export type Messages_conversation$data = Messages_conversation;
 export type Messages_conversation$key = {
-    readonly " $data"?: Messages_conversation$data;
+    readonly " $data"?: Messages_conversation$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Messages_conversation">;
 };
 

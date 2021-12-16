@@ -16,7 +16,7 @@ export type ShowsRail_showsConnection = {
 };
 export type ShowsRail_showsConnection$data = ShowsRail_showsConnection;
 export type ShowsRail_showsConnection$key = {
-    readonly " $data"?: ShowsRail_showsConnection$data;
+    readonly " $data"?: ShowsRail_showsConnection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShowsRail_showsConnection">;
 };
 

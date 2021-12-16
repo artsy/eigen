@@ -10,7 +10,7 @@ export type BidButton_me = {
 };
 export type BidButton_me$data = BidButton_me;
 export type BidButton_me$key = {
-    readonly " $data"?: BidButton_me$data;
+    readonly " $data"?: BidButton_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"BidButton_me">;
 };
 

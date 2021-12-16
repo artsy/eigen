@@ -25,7 +25,7 @@ export type SavedSearchesList_me = {
 };
 export type SavedSearchesList_me$data = SavedSearchesList_me;
 export type SavedSearchesList_me$key = {
-    readonly " $data"?: SavedSearchesList_me$data;
+    readonly " $data"?: SavedSearchesList_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SavedSearchesList_me">;
 };
 

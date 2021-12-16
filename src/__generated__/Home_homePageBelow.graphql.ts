@@ -28,7 +28,7 @@ export type Home_homePageBelow = {
 };
 export type Home_homePageBelow$data = Home_homePageBelow;
 export type Home_homePageBelow$key = {
-    readonly " $data"?: Home_homePageBelow$data;
+    readonly " $data"?: Home_homePageBelow$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Home_homePageBelow">;
 };
 

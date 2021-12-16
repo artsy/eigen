@@ -26,7 +26,7 @@ export type FeaturedCollectionsRail_collectionGroup = {
 };
 export type FeaturedCollectionsRail_collectionGroup$data = FeaturedCollectionsRail_collectionGroup;
 export type FeaturedCollectionsRail_collectionGroup$key = {
-    readonly " $data"?: FeaturedCollectionsRail_collectionGroup$data;
+    readonly " $data"?: FeaturedCollectionsRail_collectionGroup$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FeaturedCollectionsRail_collectionGroup">;
 };
 

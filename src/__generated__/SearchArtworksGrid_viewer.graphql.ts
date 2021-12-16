@@ -29,7 +29,7 @@ export type SearchArtworksGrid_viewer = {
 };
 export type SearchArtworksGrid_viewer$data = SearchArtworksGrid_viewer;
 export type SearchArtworksGrid_viewer$key = {
-    readonly " $data"?: SearchArtworksGrid_viewer$data;
+    readonly " $data"?: SearchArtworksGrid_viewer$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SearchArtworksGrid_viewer">;
 };
 

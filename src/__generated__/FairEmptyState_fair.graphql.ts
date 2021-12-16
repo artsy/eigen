@@ -11,7 +11,7 @@ export type FairEmptyState_fair = {
 };
 export type FairEmptyState_fair$data = FairEmptyState_fair;
 export type FairEmptyState_fair$key = {
-    readonly " $data"?: FairEmptyState_fair$data;
+    readonly " $data"?: FairEmptyState_fair$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FairEmptyState_fair">;
 };
 

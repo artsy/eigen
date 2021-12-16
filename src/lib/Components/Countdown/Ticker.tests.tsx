@@ -20,7 +20,6 @@ describe("SimpleTicker", () => {
   })
 
   it("renders properly when duration is over", () => {
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const zeroDuration = moment.duration(null)
     const comp = render(
       <Theme>

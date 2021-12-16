@@ -16,7 +16,7 @@ export type Trove_trove = {
 };
 export type Trove_trove$data = Trove_trove;
 export type Trove_trove$key = {
-    readonly " $data"?: Trove_trove$data;
+    readonly " $data"?: Trove_trove$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Trove_trove">;
 };
 
