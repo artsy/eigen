@@ -157,7 +157,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         <FeatureFlagMenuItem
           title="Log out"
           onPress={() => {
-            GlobalStore.actions.signOut()
+            GlobalStore.actions.auth.signOut()
           }}
         />
         <FeatureFlagMenuItem
