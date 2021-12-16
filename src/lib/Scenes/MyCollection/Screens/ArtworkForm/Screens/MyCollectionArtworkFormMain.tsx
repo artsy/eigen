@@ -117,7 +117,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               onSelectValue={(value) => {
                 formik.handleChange("pricePaidCurrency")(value)
               }}
-              testID="CurrencyInput"
+              testID="CurrencyPicker"
             />
             <Input
               title="LOCATION"
