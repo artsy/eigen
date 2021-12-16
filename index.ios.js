@@ -17,8 +17,6 @@ if (startStorybook) {
 } else {
   require("react-native-gesture-handler")
   require("react-native-screens").enableScreens()
-  require("./src/lib/ErrorReporting")
+  require("./src/lib/ErrorReporting").setupSentry()
   require("./src/lib/AppRegistry")
 }
-
-// you can safely delete this comment. its only here to test a build trigger.
