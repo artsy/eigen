@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 90e5b68f4950577d20b244cc0a0793b0 */
+/* @relayHash b29d4fda233dedafb4288a803fd1372f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -310,7 +310,7 @@ fragment ContextCard_artwork on Artwork {
       id
       name
       href
-      exhibitionPeriod
+      exhibitionPeriod(format: SHORT)
       image {
         url
       }
@@ -321,7 +321,7 @@ fragment ContextCard_artwork on Artwork {
       slug
       name
       href
-      exhibitionPeriod
+      exhibitionPeriod(format: SHORT)
       isFollowed
       coverImage {
         url
@@ -536,10 +536,16 @@ v16 = {
 },
 v17 = {
   "alias": null,
-  "args": null,
+  "args": [
+    {
+      "kind": "Literal",
+      "name": "format",
+      "value": "SHORT"
+    }
+  ],
   "kind": "ScalarField",
   "name": "exhibitionPeriod",
-  "storageKey": null
+  "storageKey": "exhibitionPeriod(format:\"SHORT\")"
 },
 v18 = {
   "alias": null,
@@ -1420,7 +1426,7 @@ return {
     ]
   },
   "params": {
-    "id": "90e5b68f4950577d20b244cc0a0793b0",
+    "id": "b29d4fda233dedafb4288a803fd1372f",
     "metadata": {},
     "name": "ArtworkBelowTheFoldQuery",
     "operationKind": "query",

@@ -1,5 +1,5 @@
 import { Box, Flex } from "palette"
-import React, { useEffect, useImperativeHandle, useRef } from "react"
+import React, { useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
@@ -13,7 +13,7 @@ import HomeAnalytics from "../homeAnalytics"
 import { SmallTileRailContainer } from "./SmallTileRail"
 import { RailScrollProps } from "./types"
 
-function getViewAllUrl(rail: ArtworkRail_rail) {
+export function getViewAllUrl(rail: ArtworkRail_rail) {
   const context = rail.context
   const key = rail.key
 
@@ -43,11 +43,10 @@ const smallTileKeys: Array<string | null> = ["active_bids", "followed_artists", 
 interface ArtworkRailProps {
   title: string
   rail: ArtworkRail_rail
-  onHide?: () => void
-  onShow?: () => void
+  mb?: number
 }
 
-const ArtworkRail: React.FC<ArtworkRailProps & RailScrollProps> = ({ title, rail, scrollRef, onHide, onShow }) => {
+const ArtworkRail: React.FC<ArtworkRailProps & RailScrollProps> = ({ title, rail, scrollRef, mb }) => {
   const tracking = useTracking()
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)
@@ -71,16 +70,12 @@ const ArtworkRail: React.FC<ArtworkRailProps & RailScrollProps> = ({ title, rail
 
   const showRail = artworks.length
 
-  useEffect(() => {
-    showRail ? onShow?.() : onHide?.()
-  }, [showRail])
-
   if (!showRail) {
     return null
   }
 
   return artworks.length ? (
-    <View ref={railRef}>
+    <Flex ref={railRef} mb={mb}>
       <Flex pl="2" pr="2">
         <SectionTitle
           title={title}
@@ -117,7 +112,7 @@ const ArtworkRail: React.FC<ArtworkRailProps & RailScrollProps> = ({ title, rail
           />
         </Box>
       )}
-    </View>
+    </Flex>
   ) : null
 }
 

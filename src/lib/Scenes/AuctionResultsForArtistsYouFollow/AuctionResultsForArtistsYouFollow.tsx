@@ -3,7 +3,7 @@ import { AuctionResultsForArtistsYouFollow_me } from "__generated__/AuctionResul
 import { AuctionResultsForArtistsYouFollowContainerQuery } from "__generated__/AuctionResultsForArtistsYouFollowContainerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { PAGE_SIZE } from "lib/Components/constants"
-import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
+import { AuctionResultListItemFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { navigate } from "lib/navigation/navigate"
@@ -100,7 +100,7 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
             renderItem={({ item }) =>
               item ? (
                 <Flex px={1} py={2}>
-                  <AuctionResultFragmentContainer
+                  <AuctionResultListItemFragmentContainer
                     auctionResult={item}
                     showArtistName
                     onPress={() => {
@@ -190,16 +190,18 @@ export const ListHeader: React.FC = () => {
   )
 }
 
+export const AuctionResultsForArtistsYouFollowScreenQuery = graphql`
+  query AuctionResultsForArtistsYouFollowContainerQuery {
+    me {
+      ...AuctionResultsForArtistsYouFollow_me
+    }
+  }
+`
+
 export const AuctionResultsForArtistsYouFollowQueryRenderer: React.FC = () => (
   <QueryRenderer<AuctionResultsForArtistsYouFollowContainerQuery>
     environment={defaultEnvironment}
-    query={graphql`
-      query AuctionResultsForArtistsYouFollowContainerQuery {
-        me {
-          ...AuctionResultsForArtistsYouFollow_me
-        }
-      }
-    `}
+    query={AuctionResultsForArtistsYouFollowScreenQuery}
     variables={{}}
     cacheConfig={{
       force: true,

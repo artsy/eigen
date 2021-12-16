@@ -1,14 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5f9967ad1cd02320df24c001cba4860e */
+/* @relayHash 6bb04d578c675fff1ee48d75f358695f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionPaginationQueryVariables = {
-    excludePurchasedArtworks?: boolean | null;
+    excludePurchasedArtworks?: boolean | null | undefined;
     count: number;
-    cursor?: string | null;
+    cursor?: string | null | undefined;
 };
 export type MyCollectionPaginationQueryResponse = {
     readonly me: {
@@ -47,6 +47,14 @@ fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectio
       image {
         aspectRatio
       }
+      artistNames
+      medium
+      artist {
+        internalID
+        name
+        id
+      }
+      date
       ...MyCollectionArtworkListItem_artwork
     }
   }
@@ -81,6 +89,12 @@ fragment MyCollection_me_19sDyO on Me {
     edges {
       node {
         id
+        medium
+        artist {
+          internalID
+          name
+          id
+        }
         __typename
       }
       cursor
@@ -256,6 +270,33 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "medium",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "artist",
+                        "plural": false,
+                        "selections": [
+                          (v6/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "name",
+                            "storageKey": null
+                          },
+                          (v4/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "__typename",
                         "storageKey": null
                       },
@@ -284,20 +325,21 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v6/*: any*/),
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "Artist",
-                        "kind": "LinkedField",
-                        "name": "artist",
-                        "plural": false,
-                        "selections": [
-                          (v6/*: any*/),
-                          (v4/*: any*/)
-                        ],
+                        "kind": "ScalarField",
+                        "name": "artistNames",
                         "storageKey": null
                       },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "date",
+                        "storageKey": null
+                      },
+                      (v6/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -327,28 +369,7 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "artistNames",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "medium",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
                         "name": "title",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "date",
                         "storageKey": null
                       }
                     ],
@@ -414,7 +435,7 @@ return {
     ]
   },
   "params": {
-    "id": "5f9967ad1cd02320df24c001cba4860e",
+    "id": "6bb04d578c675fff1ee48d75f358695f",
     "metadata": {},
     "name": "MyCollectionPaginationQuery",
     "operationKind": "query",

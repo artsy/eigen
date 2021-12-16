@@ -11,7 +11,7 @@ export type VariableSizeShowsList_shows = ReadonlyArray<{
 }>;
 export type VariableSizeShowsList_shows$data = VariableSizeShowsList_shows;
 export type VariableSizeShowsList_shows$key = ReadonlyArray<{
-    readonly " $data"?: VariableSizeShowsList_shows$data;
+    readonly " $data"?: VariableSizeShowsList_shows$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"VariableSizeShowsList_shows">;
 }>;
 

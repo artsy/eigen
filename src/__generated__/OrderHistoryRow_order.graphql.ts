@@ -47,7 +47,7 @@ export type OrderHistoryRow_order = {
 };
 export type OrderHistoryRow_order$data = OrderHistoryRow_order;
 export type OrderHistoryRow_order$key = {
-    readonly " $data"?: OrderHistoryRow_order$data;
+    readonly " $data"?: OrderHistoryRow_order$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"OrderHistoryRow_order">;
 };
 

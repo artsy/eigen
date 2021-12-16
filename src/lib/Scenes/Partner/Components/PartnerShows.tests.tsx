@@ -1,47 +1,59 @@
-import { PartnerShows_partner } from "__generated__/PartnerShows_partner.graphql"
-import { PartnerShowsTestsQueryRawResponse } from "__generated__/PartnerShowsTestsQuery.graphql"
-import { GlobalStoreProvider } from "lib/store/GlobalStore"
-import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { PartnerShowsTestsQuery, PartnerShowsTestsQueryRawResponse } from "__generated__/PartnerShowsTestsQuery.graphql"
+import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"
-import { Theme } from "palette"
 import React from "react"
-import { graphql } from "react-relay"
-import { PartnerShowRailItem as RailItem } from "./PartnerShowRailItem"
+import { graphql, QueryRenderer } from "react-relay"
+import { createMockEnvironment } from "relay-test-utils"
 import { PartnerShowsFragmentContainer as PartnerShows } from "./PartnerShows"
 
 jest.unmock("react-relay")
 
 describe("PartnerShows", () => {
-  const getWrapper = async (partner: Omit<PartnerShows_partner, " $fragmentRefs">) =>
-    await renderRelayTree({
-      Component: (props: any) => {
-        return (
-          <GlobalStoreProvider>
-            <Theme>
-              <PartnerShows {...props} />
-            </Theme>
-          </GlobalStoreProvider>
-        )
-      },
-      query: graphql`
-        query PartnerShowsTestsQuery @raw_response_type {
-          partner(id: "gagosian") {
-            ...PartnerShows_partner
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
+  beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
+  })
+
+  const TestWrapper = () => {
+    return (
+      <QueryRenderer<PartnerShowsTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query PartnerShowsTestsQuery @raw_response_type {
+            partner(id: "gagosian") {
+              ...PartnerShows_partner
+            }
           }
-        }
-      `,
-      mockData: {
-        partner,
-      },
-    })
+        `}
+        render={({ props }) => {
+          if (props?.partner) {
+            return <PartnerShows partner={props.partner} />
+          }
+        }}
+        variables={{}}
+      />
+    )
+  }
 
   it("renders the shows correctly", async () => {
-    const wrapper = await getWrapper(PartnerShowsFixture as any)
-    const railItems = wrapper.find(RailItem)
-    const gridItems = wrapper.find("GridItem")
+    const { getByText } = await renderWithWrappersTL(<TestWrapper />)
 
-    expect(railItems.length).toBe(3)
-    expect(gridItems.length).toBe(4)
+    mockEnvironmentPayload(mockEnvironment, {
+      Partner: () => PartnerShowsFixture,
+    })
+
+    // Current and upcoming shows
+    expect(getByText("Richard Serra: Triptychs and Diptychs")).toBeTruthy()
+    expect(getByText("Giuseppe Penone: Foglie di bronzo / Leaves of Bronze")).toBeTruthy()
+    expect(getByText("Albert Oehlen: New Paintings")).toBeTruthy()
+
+    // Past shows
+    expect(getByText("Zao Wou-Ki")).toBeTruthy()
+    expect(getByText("Domestic Horror")).toBeTruthy()
+    expect(getByText("Nathaniel Mary Quinn: Hollow and Cut")).toBeTruthy()
+    expect(getByText("Frieze London 2019: Sterling Ruby Online Viewing Room")).toBeTruthy()
   })
 
   it("doesn't show non-displayable", async () => {
@@ -50,12 +62,23 @@ describe("PartnerShows", () => {
     fixture.pastShows.edges[0].node.isDisplayable = false
     // @ts-ignore
     fixture.currentAndUpcomingShows.edges[0].node.isDisplayable = false
-    const wrapper = await getWrapper(fixture as any)
-    const railItems = wrapper.find(RailItem)
-    const gridItems = wrapper.find("GridItem")
 
-    expect(railItems.length).toBe(2)
-    expect(gridItems.length).toBe(3)
+    const { queryByText } = renderWithWrappersTL(<TestWrapper />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Partner: () => fixture,
+    })
+
+    // Current and upcoming shows
+    expect(queryByText("Richard Serra: Triptychs and Diptychs")).toBeFalsy()
+    expect(queryByText("Giuseppe Penone: Foglie di bronzo / Leaves of Bronze")).toBeTruthy()
+    expect(queryByText("Albert Oehlen: New Paintings")).toBeTruthy()
+
+    // Past shows
+    expect(queryByText("Zao Wou-Ki")).toBeFalsy()
+    expect(queryByText("Domestic Horror")).toBeTruthy()
+    expect(queryByText("Nathaniel Mary Quinn: Hollow and Cut")).toBeTruthy()
+    expect(queryByText("Frieze London 2019: Sterling Ruby Online Viewing Room")).toBeTruthy()
   })
 })
 

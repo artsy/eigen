@@ -20,7 +20,7 @@ export type PartnerMap_location = {
 };
 export type PartnerMap_location$data = PartnerMap_location;
 export type PartnerMap_location$key = {
-    readonly " $data"?: PartnerMap_location$data;
+    readonly " $data"?: PartnerMap_location$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"PartnerMap_location">;
 };
 

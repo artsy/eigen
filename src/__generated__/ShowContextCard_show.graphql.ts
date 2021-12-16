@@ -23,13 +23,13 @@ export type ShowContextCard_show = {
         } | null;
     } | null;
     readonly partner: {
-        readonly internalID?: string;
-        readonly slug?: string;
-        readonly name?: string | null;
+        readonly internalID?: string | undefined;
+        readonly slug?: string | undefined;
+        readonly name?: string | null | undefined;
         readonly profile?: {
             readonly slug: string;
-        } | null;
-        readonly cities?: ReadonlyArray<string | null> | null;
+        } | null | undefined;
+        readonly cities?: ReadonlyArray<string | null> | null | undefined;
         readonly artworksConnection?: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
@@ -38,13 +38,13 @@ export type ShowContextCard_show = {
                     } | null;
                 } | null;
             } | null> | null;
-        } | null;
+        } | null | undefined;
     } | null;
     readonly " $refType": "ShowContextCard_show";
 };
 export type ShowContextCard_show$data = ShowContextCard_show;
 export type ShowContextCard_show$key = {
-    readonly " $data"?: ShowContextCard_show$data;
+    readonly " $data"?: ShowContextCard_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShowContextCard_show">;
 };
 
@@ -100,10 +100,16 @@ return {
         (v2/*: any*/),
         {
           "alias": null,
-          "args": null,
+          "args": [
+            {
+              "kind": "Literal",
+              "name": "format",
+              "value": "SHORT"
+            }
+          ],
           "kind": "ScalarField",
           "name": "exhibitionPeriod",
-          "storageKey": null
+          "storageKey": "exhibitionPeriod(format:\"SHORT\")"
         },
         {
           "alias": null,
@@ -280,5 +286,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '0d2a32e97a0fcfae37eff2392ab6fd10';
+(node as any).hash = '052dd60a0e3f6fdc5de6569f512bd1b7';
 export default node;

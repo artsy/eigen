@@ -24,7 +24,7 @@ export type SaleInfo_sale = {
 };
 export type SaleInfo_sale$data = SaleInfo_sale;
 export type SaleInfo_sale$key = {
-    readonly " $data"?: SaleInfo_sale$data;
+    readonly " $data"?: SaleInfo_sale$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SaleInfo_sale">;
 };
 

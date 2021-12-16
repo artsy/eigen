@@ -12,12 +12,12 @@ export type ShowItemRow_show = {
     readonly name: string | null;
     readonly isStubShow: boolean | null;
     readonly partner: {
-        readonly name?: string | null;
+        readonly name?: string | null | undefined;
         readonly profile?: {
             readonly image: {
                 readonly url: string | null;
             } | null;
-        } | null;
+        } | null | undefined;
     } | null;
     readonly href: string | null;
     readonly exhibition_period: string | null;
@@ -31,7 +31,7 @@ export type ShowItemRow_show = {
 };
 export type ShowItemRow_show$data = ShowItemRow_show;
 export type ShowItemRow_show$key = {
-    readonly " $data"?: ShowItemRow_show$data;
+    readonly " $data"?: ShowItemRow_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShowItemRow_show">;
 };
 
@@ -150,10 +150,16 @@ return {
     },
     {
       "alias": "exhibition_period",
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "format",
+          "value": "SHORT"
+        }
+      ],
       "kind": "ScalarField",
       "name": "exhibitionPeriod",
-      "storageKey": null
+      "storageKey": "exhibitionPeriod(format:\"SHORT\")"
     },
     {
       "alias": null,
@@ -199,5 +205,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '0bff9a002bbda9d71d8c4230f7c7b710';
+(node as any).hash = '60c7d84133014dd4c4653061ac37ab3d';
 export default node;

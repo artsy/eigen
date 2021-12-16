@@ -20,7 +20,7 @@ export type CommercialEditionSetInformation_artwork = {
 };
 export type CommercialEditionSetInformation_artwork$data = CommercialEditionSetInformation_artwork;
 export type CommercialEditionSetInformation_artwork$key = {
-    readonly " $data"?: CommercialEditionSetInformation_artwork$data;
+    readonly " $data"?: CommercialEditionSetInformation_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CommercialEditionSetInformation_artwork">;
 };
 

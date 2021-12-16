@@ -10,7 +10,7 @@ export type Biography_gene = {
 };
 export type Biography_gene$data = Biography_gene;
 export type Biography_gene$key = {
-    readonly " $data"?: Biography_gene$data;
+    readonly " $data"?: Biography_gene$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Biography_gene">;
 };
 

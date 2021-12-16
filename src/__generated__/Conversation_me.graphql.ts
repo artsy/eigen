@@ -22,7 +22,7 @@ export type Conversation_me = {
 };
 export type Conversation_me$data = Conversation_me;
 export type Conversation_me$key = {
-    readonly " $data"?: Conversation_me$data;
+    readonly " $data"?: Conversation_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Conversation_me">;
 };
 

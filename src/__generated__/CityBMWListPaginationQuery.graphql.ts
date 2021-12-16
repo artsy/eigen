@@ -1,13 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ccd6fbb80cfb6750069b2c0535f21538 */
+/* @relayHash a0bd5af40e0e377a499e90bbf24c2a18 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type CityBMWListPaginationQueryVariables = {
     count: number;
-    cursor?: string | null;
+    cursor?: string | null | undefined;
     citySlug: string;
 };
 export type CityBMWListPaginationQueryResponse = {
@@ -48,7 +48,7 @@ fragment CityBMWList_city_1G22uz on City {
           href
           is_followed: isFollowed
           isStubShow
-          exhibition_period: exhibitionPeriod
+          exhibition_period: exhibitionPeriod(format: SHORT)
           cover_image: coverImage {
             url
           }
@@ -312,10 +312,16 @@ return {
                           },
                           {
                             "alias": "exhibition_period",
-                            "args": null,
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "format",
+                                "value": "SHORT"
+                              }
+                            ],
                             "kind": "ScalarField",
                             "name": "exhibitionPeriod",
-                            "storageKey": null
+                            "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                           },
                           {
                             "alias": "cover_image",
@@ -519,7 +525,7 @@ return {
     ]
   },
   "params": {
-    "id": "ccd6fbb80cfb6750069b2c0535f21538",
+    "id": "a0bd5af40e0e377a499e90bbf24c2a18",
     "metadata": {},
     "name": "CityBMWListPaginationQuery",
     "operationKind": "query",

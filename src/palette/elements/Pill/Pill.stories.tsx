@@ -20,11 +20,19 @@ storiesOf("Pill", module)
       <Pill size="xs" rounded>
         Filter Rounded
       </Pill>
-      <Pill size="xs" Icon={CheckIcon} iconPosition="left">
+      <Pill size="xs" Icon={CheckIcon} rounded iconPosition="left">
         Checked
       </Pill>
-      <Pill size="xs" Icon={CloseIcon} iconPosition="right">
+      <Pill size="xs" Icon={CloseIcon} rounded iconPosition="right">
         Crossed
+      </Pill>
+    </List>
+  ))
+  .add("Saved search Alert", () => (
+    <List>
+      <Pill>Artist Pill</Pill>
+      <Pill Icon={CloseIcon} iconPosition="right">
+        Editable Pills
       </Pill>
     </List>
   ))
@@ -44,10 +52,10 @@ storiesOf("Pill", module)
   ))
   .add("Navigation Button", () => (
     <List>
-      <Pill highlightEnabled Icon={ArtworkIcon} onPress={() => action("pill tapped")}>
+      <Pill highlightEnabled Icon={ArtworkIcon} rounded onPress={() => action("pill tapped")}>
         Artworks
       </Pill>
-      <Pill highlightEnabled Icon={AuctionIcon} onPress={() => action("pill tapped")}>
+      <Pill highlightEnabled Icon={AuctionIcon} rounded onPress={() => action("pill tapped")}>
         Auctions
       </Pill>
     </List>

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 910bf946214c349eef3acdd70ed8d3e2 */
+/* @relayHash 3b68c7082b25465b8c1af678fd1288f2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -76,10 +76,10 @@ fragment ArtworkTileRailCard_artwork on Artwork {
   saleMessage
 }
 
-fragment FairArtworks_fair_2T6kBV on Fair {
+fragment FairArtworks_fair_ZORN9 on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, aggregations: [ARTIST, ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, FOLLOWED_ARTISTS, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE], input: {sort: "-decayed_merch", dimensionRange: "*-*"}) {
+  fairArtworks: filterArtworksConnection(first: 30, aggregations: [ARTIST, ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, FOLLOWED_ARTISTS, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE], input: {sort: "-decayed_merch"}) {
     aggregations {
       slice
       counts {
@@ -310,7 +310,7 @@ fragment FairHeader_fair on Fair {
 }
 
 fragment FairTiming_fair on Fair {
-  exhibitionPeriod
+  exhibitionPeriod(format: SHORT)
   startAt
   endAt
 }
@@ -342,7 +342,7 @@ fragment Fair_fair on Fair {
   ...FairEmptyState_fair
   ...FairEditorial_fair
   ...FairCollections_fair
-  ...FairArtworks_fair_2T6kBV
+  ...FairArtworks_fair_ZORN9
   ...FairExhibitors_fair
   ...FairFollowedArtistsRail_fair
 }
@@ -525,7 +525,6 @@ v19 = [
     "kind": "Literal",
     "name": "input",
     "value": {
-      "dimensionRange": "*-*",
       "sort": "-decayed_merch"
     }
   }
@@ -1127,10 +1126,16 @@ return {
           },
           {
             "alias": null,
-            "args": null,
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "format",
+                "value": "SHORT"
+              }
+            ],
             "kind": "ScalarField",
             "name": "exhibitionPeriod",
-            "storageKey": null
+            "storageKey": "exhibitionPeriod(format:\"SHORT\")"
           },
           {
             "alias": null,
@@ -1388,7 +1393,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"ARTIST\",\"ARTIST_NATIONALITY\",\"COLOR\",\"DIMENSION_RANGE\",\"FOLLOWED_ARTISTS\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:30,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-decayed_merch\"})"
+            "storageKey": "filterArtworksConnection(aggregations:[\"ARTIST\",\"ARTIST_NATIONALITY\",\"COLOR\",\"DIMENSION_RANGE\",\"FOLLOWED_ARTISTS\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:30,input:{\"sort\":\"-decayed_merch\"})"
           },
           {
             "alias": "fairArtworks",
@@ -1615,7 +1620,7 @@ return {
     ]
   },
   "params": {
-    "id": "910bf946214c349eef3acdd70ed8d3e2",
+    "id": "3b68c7082b25465b8c1af678fd1288f2",
     "metadata": {},
     "name": "FairQuery",
     "operationKind": "query",

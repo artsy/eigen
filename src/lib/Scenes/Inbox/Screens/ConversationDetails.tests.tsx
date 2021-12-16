@@ -1,143 +1,53 @@
-import { ConversationDetailsTestsQuery } from "__generated__/ConversationDetailsTestsQuery.graphql"
-import { navigate } from "lib/navigation/navigate"
-import { ItemInfo } from "lib/Scenes/Inbox/Components/Conversations/ItemInfo"
-import { FileDownload } from "lib/Scenes/Inbox/Components/Conversations/Preview/Attachment/FileDownload"
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Touchable } from "palette"
+import { setupTestWrapperTL } from "lib/tests/setupTestWrapper"
+import { Theme } from "palette"
 import React from "react"
 import "react-native"
-import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
-import { createMockEnvironment } from "relay-test-utils"
+import { graphql } from "react-relay"
 import { ConversationDetailsFragmentContainer } from "./ConversationDetails"
 
 jest.unmock("react-relay")
 
 describe("ConversationDetailsFragmentContainer", () => {
-  let env: ReturnType<typeof createMockEnvironment>
-
-  const TestRenderer = () => (
-    <QueryRenderer<ConversationDetailsTestsQuery>
-      environment={env}
-      query={graphql`
-        query ConversationDetailsTestsQuery($conversationID: String!) @relay_test_operation {
-          me {
-            ...ConversationDetails_me
-          }
+  const { renderWithRelay } = setupTestWrapperTL({
+    Component: ({ me }: any) => (
+      <Theme>
+        <ConversationDetailsFragmentContainer me={me} />
+      </Theme>
+    ),
+    query: graphql`
+      query ConversationDetails_Test_Query($conversationID: String!) {
+        me {
+          ...ConversationDetails_me
         }
-      `}
-      variables={{ conversationID: "1" }}
-      render={({ props, error }) => {
-        if (props) {
-          return <ConversationDetailsFragmentContainer me={props.me!} />
-        } else if (error) {
-          console.log(error)
-        }
-      }}
-    />
-  )
-
-  beforeEach(() => {
-    env = createMockEnvironment()
+      }
+    `,
+    variables: {
+      conversationID: "test-conversation",
+    },
   })
 
-  it("doesn't throw when rendered", () => {
-    renderWithWrappers(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: meMock,
-      })
-    })
+  it("render all elements", () => {
+    const { getByText } = renderWithRelay()
+
+    expect(getByText(/Order No/)).toBeDefined()
+    expect(getByText("Ship to")).toBeDefined()
+    expect(getByText("Payment Method")).toBeDefined()
+    expect(getByText("Attachments")).toBeDefined()
+    expect(getByText("Support")).toBeDefined()
+    expect(getByText("Inquiries FAQ")).toBeDefined()
   })
 
-  it("has clickable artwork info", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: meMock,
-      })
-    })
-    const artworkInfo = tree.root.findByType(ItemInfo)
-    expect(extractText(artworkInfo)).toContain("happy little accident")
-
-    tree.root.findAllByType(Touchable)[0].props.onPress()
-
-    expect(navigate).toHaveBeenCalledWith("/artwork/happy-little-accident")
-  })
-
-  it("renders non-image attachments", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: meMock,
-      })
-    })
-    const attachments = tree.root.findAllByType(FileDownload)
-    expect(attachments.length).toBe(2)
-  })
-
-  it("renders support FAQ", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
-    act(() => {
-      env.mock.resolveMostRecentOperation({
-        errors: [],
-        data: meMock,
-      })
+  it("does not render order information given no order/offer present", () => {
+    const { queryByText } = renderWithRelay({
+      Conversation: () => ({
+        orderConnection: {
+          edges: [{ node: null }],
+        },
+      }),
     })
 
-    tree.root.findAllByType(Touchable)[3].props.onPress()
-
-    expect(navigate).toHaveBeenCalledWith(
-      "https://support.artsy.net/hc/en-us/sections/360008203054-Contact-a-gallery",
-      { modal: true }
-    )
+    expect(queryByText(/Order No/)).toBeNull()
+    expect(queryByText("Ship to")).toBeNull()
+    expect(queryByText("Payment Method")).toBeNull()
   })
 })
-
-const messageMock = {
-  attachments: [
-    {
-      id: "1",
-      fileName: "happylittleaccident.txt",
-      contentType: "txt",
-    },
-    {
-      id: "2",
-      fileName: "happybigaccident.txt",
-      contentType: "image",
-    },
-  ],
-}
-
-const meMock = {
-  me: {
-    conversation: {
-      internalID: "111",
-      to: {
-        name: "partner",
-      },
-      from: {
-        email: "collector@example.com",
-      },
-      messagesConnection: {
-        edges: [{ node: messageMock }, { node: messageMock }],
-      },
-      items: [
-        {
-          item: {
-            __typename: "Artwork",
-            title: "happy little accident",
-            href: "/artwork/happy-little-accident",
-            image: {
-              thumbnailUrl: "http://example.com/image.webp",
-            },
-          },
-        },
-      ],
-    },
-  },
-}

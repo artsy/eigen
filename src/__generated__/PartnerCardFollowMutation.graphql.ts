@@ -5,9 +5,9 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowProfileInput = {
-    clientMutationId?: string | null;
-    profileID?: string | null;
-    unfollow?: boolean | null;
+    clientMutationId?: string | null | undefined;
+    profileID?: string | null | undefined;
+    unfollow?: boolean | null | undefined;
 };
 export type PartnerCardFollowMutationVariables = {
     input: FollowProfileInput;

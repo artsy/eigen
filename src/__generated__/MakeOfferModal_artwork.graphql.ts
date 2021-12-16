@@ -12,7 +12,7 @@ export type MakeOfferModal_artwork = {
         readonly editionOf: string | null;
         readonly isOfferableFromInquiry: boolean | null;
         readonly listPrice: {
-            readonly display?: string | null;
+            readonly display?: string | null | undefined;
         } | null;
         readonly dimensions: {
             readonly cm: string | null;
@@ -24,7 +24,7 @@ export type MakeOfferModal_artwork = {
 };
 export type MakeOfferModal_artwork$data = MakeOfferModal_artwork;
 export type MakeOfferModal_artwork$key = {
-    readonly " $data"?: MakeOfferModal_artwork$data;
+    readonly " $data"?: MakeOfferModal_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MakeOfferModal_artwork">;
 };
 

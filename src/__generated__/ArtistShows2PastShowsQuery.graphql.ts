@@ -1,13 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8c6c20960c664e5bc0e346b81c9ace02 */
+/* @relayHash 6170190b6be2198d890bc9c756ab699a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtistShows2PastShowsQueryVariables = {
     count: number;
-    cursor?: string | null;
+    cursor?: string | null | undefined;
     artistID: string;
     status: string;
 };
@@ -68,7 +68,7 @@ fragment ArtistShows2_artist_1K4JGB on Artist {
 fragment Metadata_show on Show {
   kind
   name
-  exhibition_period: exhibitionPeriod
+  exhibition_period: exhibitionPeriod(format: SHORT)
   status_update: statusUpdate
   status
   partner {
@@ -310,10 +310,16 @@ return {
                       (v7/*: any*/),
                       {
                         "alias": "exhibition_period",
-                        "args": null,
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "format",
+                            "value": "SHORT"
+                          }
+                        ],
                         "kind": "ScalarField",
                         "name": "exhibitionPeriod",
-                        "storageKey": null
+                        "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                       },
                       {
                         "alias": "status_update",
@@ -445,7 +451,7 @@ return {
     ]
   },
   "params": {
-    "id": "8c6c20960c664e5bc0e346b81c9ace02",
+    "id": "6170190b6be2198d890bc9c756ab699a",
     "metadata": {},
     "name": "ArtistShows2PastShowsQuery",
     "operationKind": "query",

@@ -38,7 +38,7 @@ export type MyBids_me = {
 };
 export type MyBids_me$data = MyBids_me;
 export type MyBids_me$key = {
-    readonly " $data"?: MyBids_me$data;
+    readonly " $data"?: MyBids_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyBids_me">;
 };
 

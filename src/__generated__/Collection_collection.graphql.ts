@@ -16,7 +16,7 @@ export type Collection_collection = {
 };
 export type Collection_collection$data = Collection_collection;
 export type Collection_collection$key = {
-    readonly " $data"?: Collection_collection$data;
+    readonly " $data"?: Collection_collection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Collection_collection">;
 };
 
@@ -82,7 +82,6 @@ const node: ReaderFragment = {
           "kind": "Literal",
           "name": "input",
           "value": {
-            "dimensionRange": "*-*",
             "sort": "-decayed_merch"
           }
         }
@@ -109,5 +108,5 @@ const node: ReaderFragment = {
   "type": "MarketingCollection",
   "abstractKey": null
 };
-(node as any).hash = 'ea7eef65be396a8c8d10cd921c3cfe12';
+(node as any).hash = 'a37d67496c123830affee844c0087d13';
 export default node;

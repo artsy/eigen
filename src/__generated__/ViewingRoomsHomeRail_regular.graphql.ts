@@ -39,7 +39,7 @@ export type ViewingRoomsHomeRail_regular = {
 };
 export type ViewingRoomsHomeRail_regular$data = ViewingRoomsHomeRail_regular;
 export type ViewingRoomsHomeRail_regular$key = {
-    readonly " $data"?: ViewingRoomsHomeRail_regular$data;
+    readonly " $data"?: ViewingRoomsHomeRail_regular$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsHomeRail_regular">;
 };
 

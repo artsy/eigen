@@ -1,5 +1,6 @@
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, waitFor, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { Aggregations, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
@@ -48,6 +49,20 @@ describe("Saved search alert form", () => {
     ])
   })
 
+  it("should display the artist name as a pill if AREnableImprovedAlertsFlow is enabled", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
+    const { getAllByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+    expect(getAllByTestId("alert-pill").map(extractText)).toEqual([
+      "artistName",
+      "Limited Edition",
+      "Tate Ward Auctions",
+      "New York, NY, USA",
+      "Photography",
+      "Prints",
+    ])
+  })
+
   it(`should render "Delete Alert" button when the savedSearchAlertId is passed`, () => {
     const { getAllByTestId } = renderWithWrappersTL(
       <SavedSearchAlertForm {...baseProps} savedSearchAlertId="savedSearchAlertId" />
@@ -73,6 +88,8 @@ describe("Saved search alert form", () => {
           searchCriteriaID: "savedSearchAlertId",
           userAlertSettings: {
             name: "something new",
+            email: true,
+            push: true,
           },
         },
       })
@@ -115,6 +132,8 @@ describe("Saved search alert form", () => {
           attributes: createMutationAttributes,
           userAlertSettings: {
             name: "something new",
+            email: true,
+            push: true,
           },
         },
       })
@@ -213,6 +232,14 @@ describe("Saved search alert form", () => {
         },
       })
     })
+  })
+
+  it("should hide description when AREnableSavedSearchToggles is enabled", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
+    const { queryByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+    const description = queryByText("Receive alerts as Push Notifications directly to your device.")
+
+    expect(description).toBeFalsy()
   })
 
   it("should hide notification toggles if AREnableSavedSearchToggles is disabled", async () => {
@@ -349,6 +376,34 @@ describe("Saved search alert form", () => {
 
       expect(spyAlert).not.toBeCalled()
       expect(queryAllByA11yState({ selected: true })).toHaveLength(1)
+    })
+
+    it("should display email update preferences link only when email alerts toggle is enabled", async () => {
+      const { queryByText, getByA11yLabel } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+      expect(queryByText("Update email preferences")).toBeTruthy()
+
+      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
+      expect(queryByText("Update email preferences")).toBeFalsy()
+    })
+
+    it("should call navigate handler when update preferences is pressed", async () => {
+      const { getByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+      fireEvent.press(getByText("Update email preferences"))
+
+      expect(navigate).toBeCalledWith("/unsubscribe")
+    })
+
+    it("should call custom update email preferences handler when it is passed", async () => {
+      const onUpdateEmailPreferencesMock = jest.fn()
+      const { getByText } = renderWithWrappersTL(
+        <SavedSearchAlertForm {...baseProps} onUpdateEmailPreferencesPress={onUpdateEmailPreferencesMock} />
+      )
+
+      fireEvent.press(getByText("Update email preferences"))
+
+      expect(onUpdateEmailPreferencesMock).toBeCalled()
     })
 
     describe("Allow to send emails modal", () => {
@@ -508,6 +563,33 @@ describe("Saved search alert form", () => {
       const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
 
       expect(getByTestId("save-alert-button")).toBeEnabled()
+    })
+  })
+
+  describe("Create Alert Form", () => {
+    it("should have removable filter pills when in create mode and AREnableImprovedAlertsFlow enabled", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
+      const { getByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+      // artist pill should appear and not be removable
+      expect(getByText("artistName")).toBeTruthy()
+      expect(getByText("artistName")).not.toHaveProp("onPress")
+
+      fireEvent.press(getByText("Prints"))
+      fireEvent.press(getByText("Photography"))
+
+      waitForElementToBeRemoved(() => getByText("Prints"))
+      waitForElementToBeRemoved(() => getByText("Photography"))
+    })
+
+    it("should not have removable filter pills when in create mode and AREnableImprovedAlertsFlow disabled", async () => {
+      const { getByText, queryByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+      // artist pill should appear and not be removable
+      expect(queryByText("artistName")).toBeNull()
+
+      expect(getByText("Prints")).not.toHaveProp("onPress")
+      expect(getByText("Photography")).not.toHaveProp("onPress")
     })
   })
 })

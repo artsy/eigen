@@ -15,7 +15,7 @@ export type PartnerLocationSection_partner = {
 };
 export type PartnerLocationSection_partner$data = PartnerLocationSection_partner;
 export type PartnerLocationSection_partner$key = {
-    readonly " $data"?: PartnerLocationSection_partner$data;
+    readonly " $data"?: PartnerLocationSection_partner$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"PartnerLocationSection_partner">;
 };
 

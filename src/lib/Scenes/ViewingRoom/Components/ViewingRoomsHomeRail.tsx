@@ -10,7 +10,7 @@ import _ from "lodash"
 import { Flex, Sans, Spacer } from "palette"
 import { MediumCard, Touchable } from "palette"
 import React from "react"
-import { FlatList, View } from "react-native"
+import { FlatList } from "react-native"
 import { useTracking } from "react-tracking"
 import { graphql, useFragment, useQuery } from "relay-hooks"
 import { featuredFragment, FeaturedRail, tracks as featuredTracks } from "./ViewingRoomsListFeatured"
@@ -19,19 +19,20 @@ import { tagForStatus } from "./ViewingRoomsListItem"
 interface ViewingRoomsHomeRailProps {
   featured: ViewingRoomsListFeatured_featured$key
   title: string
+  mb?: number
 }
 
-export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = (props) => {
+export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({ featured, title, mb }) => {
   const { trackEvent } = useTracking()
 
-  const featuredData = useFragment(featuredFragment, props.featured)
+  const featuredData = useFragment(featuredFragment, featured)
   const featuredLength = extractNodes(featuredData).length
 
   return (
-    <View>
+    <Flex mb={mb}>
       <Flex mx="2">
         <SectionTitle
-          title={props.title}
+          title={title}
           onPress={() => {
             trackEvent(tracks.tappedViewingRoomsHeader())
             navigate("/viewing-rooms")
@@ -45,7 +46,7 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = (props)
       </Flex>
       {featuredLength > 0 ? (
         <FeaturedRail
-          featured={props.featured}
+          featured={featured}
           trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
         />
       ) : (
@@ -53,7 +54,7 @@ export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = (props)
           trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
         />
       )}
-    </View>
+    </Flex>
   )
 }
 

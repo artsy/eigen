@@ -32,7 +32,7 @@ export type GeneArtworks_gene = {
 };
 export type GeneArtworks_gene$data = GeneArtworks_gene;
 export type GeneArtworks_gene$key = {
-    readonly " $data"?: GeneArtworks_gene$data;
+    readonly " $data"?: GeneArtworks_gene$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"GeneArtworks_gene">;
 };
 

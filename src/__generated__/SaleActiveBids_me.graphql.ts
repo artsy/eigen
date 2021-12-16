@@ -15,7 +15,7 @@ export type SaleActiveBids_me = {
 };
 export type SaleActiveBids_me$data = SaleActiveBids_me;
 export type SaleActiveBids_me$key = {
-    readonly " $data"?: SaleActiveBids_me$data;
+    readonly " $data"?: SaleActiveBids_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SaleActiveBids_me">;
 };
 

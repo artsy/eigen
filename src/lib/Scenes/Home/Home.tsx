@@ -9,6 +9,7 @@ import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graph
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
+import { RecommendedArtistsRailFragmentContainer } from "lib/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { LotsByFollowedArtistsRailContainer } from "lib/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkRail"
@@ -33,7 +34,9 @@ import { compact, times } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
-import { _FragmentRefs, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { articlesDefaultVariables } from "../Articles/Articles"
+import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
@@ -42,12 +45,16 @@ import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
 
+const MODULE_SEPARATOR_HEIGHT = 6
+
 interface HomeModule {
   title: string
   subtitle?: string
   type: string
   data: any
   hidden?: boolean
+  prefetchUrl?: string
+  prefetchVariables?: object
 }
 
 interface Props extends ViewProps {
@@ -80,49 +87,57 @@ const Home = (props: Props) => {
   const enableTrove = useFeatureFlag("AREnableTrove")
   const enableNewNewWorksForYouRail = useFeatureFlag("AREnableNewWorksForYou")
   const enableShowsForYouRail = useFeatureFlag("AREnableShowsRail")
-  const enableSplitIOABTesting = useFeatureFlag("AREnableSplitIOABTesting")
 
-  // A/B Testing
-  const treatment = useTreatment("HomeScreenWorksForYouVsWorksByArtistsYouFollow")
+  const newWorksTreatment = useTreatment("HomeScreenWorksForYouVsWorksByArtistsYouFollow")
+  const artistRecommendationsTreatment = useTreatment("HomeScreenArtistRecommendations")
 
   const newWorks =
-    treatment === "worksForYou"
+    enableNewNewWorksForYouRail && newWorksTreatment === "worksForYou"
       ? {
           title: "New Works for You",
           type: "newWorksForYou",
           data: meAbove,
-          hidden: false,
+          prefetchUrl: "/new-works-for-you",
         }
       : {
           title: "New Works by Artists You Follow",
           type: "artwork",
           data: homePageAbove?.followedArtistsArtworkModule,
-          hidden: false,
+          prefetchUrl: "/works-for-you",
+        }
+
+  const artistRecommendations =
+    artistRecommendationsTreatment === "newArtistRecommendations"
+      ? {
+          title: "Recommended Artists",
+          type: "recommended-artists",
+          data: meAbove,
+        }
+      : {
+          title: "Recommended Artists",
+          type: "artist",
+          data: homePageAbove?.recommendedArtistsArtistModule,
         }
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
-  const modules: HomeModule[] = compact([
+  let modules: HomeModule[] = compact([
     // Above-The-Fold Modules
-    enableSplitIOABTesting && newWorks,
-    !enableSplitIOABTesting && {
-      title: "New Works for You",
-      type: "newWorksForYou",
-      data: meAbove,
-      hidden: !enableNewNewWorksForYouRail,
-    },
-    !enableSplitIOABTesting && {
-      title: "New Works by Artists You Follow",
-      type: "artwork",
-      data: homePageAbove?.followedArtistsArtworkModule,
-      hidden: enableNewNewWorksForYouRail,
-    },
+    newWorks,
     { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
-    { title: "Auction Lots for You Ending Soon", type: "lotsByFollowedArtists", data: meAbove },
+    artistRecommendations,
+    {
+      title: "Auction Lots for You Ending Soon",
+      type: "lotsByFollowedArtists",
+      data: meAbove,
+      prefetchUrl: "/lots-by-artists-you-follow",
+      prefetchVariables: lotsByArtistsYouFollowDefaultVariables(),
+    },
     {
       title: "Auctions",
       subtitle: "Discover and bid on works for you",
       type: "sales",
       data: homePageAbove?.salesModule,
+      prefetchUrl: "/auctions",
     },
     // Below-The-Fold Modules
     {
@@ -130,12 +145,15 @@ const Home = (props: Props) => {
       type: "auction-results",
       data: meBelow,
       hidden: !enableAuctionResultsByFollowedArtists,
+      prefetchUrl: "/auction-results-for-artists-you-follow",
     },
     {
       title: "Market News",
       type: "articles",
       data: articlesConnection,
       hidden: !articlesConnection,
+      prefetchUrl: "/articles",
+      prefetchVariables: articlesDefaultVariables,
     },
     {
       title: "Shows for You",
@@ -144,7 +162,13 @@ const Home = (props: Props) => {
       hidden: !enableShowsForYouRail,
     },
     { title: "Trove", type: "trove", data: homePageBelow, hidden: !enableTrove },
-    { title: "Viewing Rooms", type: "viewing-rooms", data: featured, hidden: !enableViewingRooms },
+    {
+      title: "Viewing Rooms",
+      type: "viewing-rooms",
+      data: featured,
+      hidden: !enableViewingRooms,
+      prefetchUrl: "/viewing-rooms",
+    },
     {
       title: "Collections",
       subtitle: "The newest works curated by Artsy",
@@ -164,7 +188,9 @@ const Home = (props: Props) => {
       type: "artwork",
       data: homePageBelow?.similarToRecentlyViewedArtworkModule,
     },
-  ]).filter((module) => !module.hidden && module.data)
+  ])
+
+  modules = modules.filter((module) => !module.hidden && module.data)
 
   const { isRefreshing, handleRefresh, scrollRefs } = useHandleRefresh(relay, modules)
 
@@ -180,20 +206,29 @@ const Home = (props: Props) => {
           data={modules}
           initialNumToRender={5}
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-          renderItem={({ item, index, separators }) => {
+          prefetchUrlExtractor={(item) => item?.prefetchUrl}
+          prefetchVariablesExtractor={(item) => item?.prefetchVariables}
+          renderItem={({ item, index }) => {
             if (!item.data) {
               return <></>
             }
 
             switch (item.type) {
               case "articles":
-                return <ArticlesRailFragmentContainer title={item.title} articlesConnection={item.data} />
+                return (
+                  <ArticlesRailFragmentContainer
+                    title={item.title}
+                    articlesConnection={item.data}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
+                )
               case "artist":
                 return (
                   <ArtistRailFragmentContainer
                     title={item.title}
                     rail={item.data}
                     scrollRef={scrollRefs.current[index]}
+                    mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
               case "artwork":
@@ -202,18 +237,12 @@ const Home = (props: Props) => {
                     title={item.title}
                     rail={item.data || null}
                     scrollRef={scrollRefs.current[index]}
-                    onShow={() => separators.updateProps("leading", { hideSeparator: false })}
-                    onHide={() => separators.updateProps("leading", { hideSeparator: true })}
+                    mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
               case "auction-results":
                 return (
-                  <AuctionResultsRailFragmentContainer
-                    title={item.title}
-                    me={item.data}
-                    onShow={() => separators.updateProps("leading", { hideSeparator: false })}
-                    onHide={() => separators.updateProps("leading", { hideSeparator: true })}
-                  />
+                  <AuctionResultsRailFragmentContainer title={item.title} me={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
                 )
               case "collections":
                 return (
@@ -221,7 +250,7 @@ const Home = (props: Props) => {
                     title={item.title}
                     collectionsModule={item.data}
                     scrollRef={scrollRefs.current[index]}
-                    onShow={() => separators.updateProps("leading", { hideSeparator: false })}
+                    mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
               case "fairs":
@@ -231,16 +260,12 @@ const Home = (props: Props) => {
                     subtitle={item.subtitle}
                     fairsModule={item.data}
                     scrollRef={scrollRefs.current[index]}
+                    mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
               case "lotsByFollowedArtists":
                 return (
-                  <LotsByFollowedArtistsRailContainer
-                    title={item.title}
-                    me={item.data}
-                    onShow={() => separators.updateProps("leading", { hideSeparator: false })}
-                    onHide={() => separators.updateProps("leading", { hideSeparator: true })}
-                  />
+                  <LotsByFollowedArtistsRailContainer title={item.title} me={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
                 )
               case "newWorksForYou":
                 return (
@@ -248,6 +273,16 @@ const Home = (props: Props) => {
                     title={item.title}
                     me={item.data}
                     scrollRef={scrollRefs.current[index]}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
+                )
+              case "recommended-artists":
+                return (
+                  <RecommendedArtistsRailFragmentContainer
+                    title={item.title}
+                    me={item.data}
+                    scrollRef={scrollRefs.current[index]}
+                    mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
               case "sales":
@@ -256,8 +291,7 @@ const Home = (props: Props) => {
                     title={item.title}
                     salesModule={item.data}
                     scrollRef={scrollRefs.current[index]}
-                    onShow={() => separators.updateProps("leading", { hideSeparator: false })}
-                    onHide={() => separators.updateProps("leading", { hideSeparator: true })}
+                    mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
               case "shows":
@@ -265,27 +299,19 @@ const Home = (props: Props) => {
                   <ShowsRailFragmentContainer
                     title={item.title}
                     showsConnection={item.data}
-                    onShow={() => separators.updateProps("trailing", { hideSeparator: false })}
-                    onHide={() => separators.updateProps("trailing", { hideSeparator: true })}
+                    mb={MODULE_SEPARATOR_HEIGHT}
                   />
                 )
 
               case "trove":
-                return (
-                  <TroveFragmentContainer
-                    trove={item.data}
-                    onShow={() => separators.updateProps("trailing", { hideSeparator: false })}
-                    onHide={() => separators.updateProps("trailing", { hideSeparator: true })}
-                  />
-                )
+                return <TroveFragmentContainer trove={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
               case "viewing-rooms":
-                return <ViewingRoomsHomeRail title={item.title} featured={item.data} />
+                return <ViewingRoomsHomeRail title={item.title} featured={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
               default:
                 return null
             }
           }}
           ListHeaderComponent={HomeHeader}
-          ItemSeparatorComponent={({ hideSeparator }) => (!hideSeparator ? <ModuleSeparator /> : null)}
           ListFooterComponent={() => <Flex mb={3}>{!!loading && <BelowTheFoldPlaceholder />}</Flex>}
           keyExtractor={(_item, index) => String(index)}
         />
@@ -351,6 +377,10 @@ export const HomeFragmentContainer = createRefetchContainer(
         salesModule {
           ...SalesRail_salesModule
         }
+        recommendedArtistsArtistModule: artistModule(key: SUGGESTED) {
+          id
+          ...ArtistRail_rail
+        }
         ...HomeHero_homePage @arguments(heroImageVersion: $heroImageVersion)
       }
     `,
@@ -385,6 +415,7 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...EmailConfirmationBanner_me
         ...LotsByFollowedArtistsRail_me
         ...NewWorksForYouRail_me
+        ...RecommendedArtistsRail_me
       }
     `,
     meBelow: graphql`
@@ -419,6 +450,7 @@ export const HomeFragmentContainer = createRefetchContainer(
       me @optionalField {
         ...Home_meAbove
         ...AuctionResultsRail_me
+        ...RecommendedArtistsRail_me
         ...NewWorksForYouRail_me
         showsByFollowedArtists(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
           ...Home_showsByFollowedArtists
@@ -437,7 +469,7 @@ export const HomeFragmentContainer = createRefetchContainer(
   `
 )
 
-const ModuleSeparator = () => <Spacer mb={6} />
+const ModuleSeparator = () => <Spacer mb={MODULE_SEPARATOR_HEIGHT} />
 
 const BelowTheFoldPlaceholder: React.FC = () => {
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
@@ -612,6 +644,7 @@ export const HomeQueryRenderer: React.FC = () => {
             }
             me @optionalField {
               ...Home_meBelow
+              ...RecommendedArtistsRail_me
               ...AuctionResultsRail_me
               showsByFollowedArtists(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
                 ...Home_showsByFollowedArtists

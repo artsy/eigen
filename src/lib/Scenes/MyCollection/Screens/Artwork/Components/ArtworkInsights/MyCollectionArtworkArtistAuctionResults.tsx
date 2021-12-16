@@ -2,7 +2,7 @@ import { ActionType, ContextModule, OwnerType, TappedInfoBubble, TappedShowMore 
 import { MyCollectionArtworkArtistAuctionResults_artwork } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
-import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
+import { AuctionResultListItemFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import { navigate } from "lib/navigation/navigate"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -53,7 +53,7 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
           renderItem={({ item }) => (
             <>
               <Spacer mt="1" />
-              <AuctionResultFragmentContainer
+              <AuctionResultListItemFragmentContainer
                 auctionResult={item}
                 onPress={() => navigate(`/artist/${props?.artwork?.artist?.slug!}/auction-result/${item.internalID}`)}
               />

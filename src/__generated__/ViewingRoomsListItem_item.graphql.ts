@@ -33,7 +33,7 @@ export type ViewingRoomsListItem_item = {
 };
 export type ViewingRoomsListItem_item$data = ViewingRoomsListItem_item;
 export type ViewingRoomsListItem_item$key = {
-    readonly " $data"?: ViewingRoomsListItem_item$data;
+    readonly " $data"?: ViewingRoomsListItem_item$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsListItem_item">;
 };
 

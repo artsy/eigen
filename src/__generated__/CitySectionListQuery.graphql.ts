@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6952195fb642c135bfa48e2067d8a038 */
+/* @relayHash 3a8fd1996af8856f696d6679b59b8736 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -10,10 +10,10 @@ export type PartnerShowPartnerType = "GALLERY" | "MUSEUM" | "%future added value
 export type ShowSorts = "END_AT_ASC" | "END_AT_DESC" | "FEATURED_ASC" | "FEATURED_DESC" | "FEATURED_DESC_END_AT_DESC" | "NAME_ASC" | "NAME_DESC" | "PARTNER_ASC" | "SORTABLE_NAME_ASC" | "SORTABLE_NAME_DESC" | "START_AT_ASC" | "START_AT_DESC" | "UPDATED_AT_ASC" | "UPDATED_AT_DESC" | "%future added value";
 export type CitySectionListQueryVariables = {
     citySlug: string;
-    partnerType?: PartnerShowPartnerType | null;
-    status?: EventStatus | null;
-    dayThreshold?: number | null;
-    sort?: ShowSorts | null;
+    partnerType?: PartnerShowPartnerType | null | undefined;
+    status?: EventStatus | null | undefined;
+    dayThreshold?: number | null | undefined;
+    sort?: ShowSorts | null | undefined;
 };
 export type CitySectionListQueryResponse = {
     readonly city: {
@@ -63,7 +63,7 @@ fragment CitySectionList_city_2xWq6T on City {
         cover_image: coverImage {
           url
         }
-        exhibition_period: exhibitionPeriod
+        exhibition_period: exhibitionPeriod(format: SHORT)
         partner {
           __typename
           ... on Partner {
@@ -384,10 +384,16 @@ return {
                       },
                       {
                         "alias": "exhibition_period",
-                        "args": null,
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "format",
+                            "value": "SHORT"
+                          }
+                        ],
                         "kind": "ScalarField",
                         "name": "exhibitionPeriod",
-                        "storageKey": null
+                        "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                       },
                       {
                         "alias": null,
@@ -496,7 +502,7 @@ return {
     ]
   },
   "params": {
-    "id": "6952195fb642c135bfa48e2067d8a038",
+    "id": "3a8fd1996af8856f696d6679b59b8736",
     "metadata": {},
     "name": "CitySectionListQuery",
     "operationKind": "query",

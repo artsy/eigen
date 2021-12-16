@@ -86,7 +86,6 @@ export class ConversationSnippet extends React.Component<Props> {
     const partnerName = conversation.to.name
 
     const conversationText = conversation.lastMessage && conversation.lastMessage.replace(/\n/g, " ")
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const date = moment(conversation.lastMessageAt).fromNow(true) + " ago"
     return (
       <ClassTheme>

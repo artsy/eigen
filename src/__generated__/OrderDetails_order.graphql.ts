@@ -34,7 +34,7 @@ export type OrderDetails_order = {
 };
 export type OrderDetails_order$data = OrderDetails_order;
 export type OrderDetails_order$key = {
-    readonly " $data"?: OrderDetails_order$data;
+    readonly " $data"?: OrderDetails_order$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"OrderDetails_order">;
 };
 

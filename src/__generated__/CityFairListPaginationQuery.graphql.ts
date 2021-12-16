@@ -1,13 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b2ec75f9ace3de0f54ce7426ae7eb6e5 */
+/* @relayHash 182f0911e90bcba8da5e207338b7d4ef */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type CityFairListPaginationQueryVariables = {
     count: number;
-    cursor?: string | null;
+    cursor?: string | null | undefined;
     citySlug: string;
 };
 export type CityFairListPaginationQueryResponse = {
@@ -40,7 +40,7 @@ fragment CityFairList_city_1G22uz on City {
       node {
         internalID
         name
-        exhibition_period: exhibitionPeriod
+        exhibition_period: exhibitionPeriod(format: SHORT)
         counts {
           partners
         }
@@ -245,10 +245,16 @@ return {
                       (v7/*: any*/),
                       {
                         "alias": "exhibition_period",
-                        "args": null,
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "format",
+                            "value": "SHORT"
+                          }
+                        ],
                         "kind": "ScalarField",
                         "name": "exhibitionPeriod",
-                        "storageKey": null
+                        "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                       },
                       {
                         "alias": null,
@@ -478,7 +484,7 @@ return {
     ]
   },
   "params": {
-    "id": "b2ec75f9ace3de0f54ce7426ae7eb6e5",
+    "id": "182f0911e90bcba8da5e207338b7d4ef",
     "metadata": {},
     "name": "CityFairListPaginationQuery",
     "operationKind": "query",

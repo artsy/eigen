@@ -18,7 +18,7 @@ export type MarketStats_priceInsightsConnection = {
 };
 export type MarketStats_priceInsightsConnection$data = MarketStats_priceInsightsConnection;
 export type MarketStats_priceInsightsConnection$key = {
-    readonly " $data"?: MarketStats_priceInsightsConnection$data;
+    readonly " $data"?: MarketStats_priceInsightsConnection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MarketStats_priceInsightsConnection">;
 };
 

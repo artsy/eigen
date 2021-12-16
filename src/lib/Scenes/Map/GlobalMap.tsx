@@ -271,7 +271,7 @@ export class GlobalMap extends React.Component<Props, State> {
       const fairs = tab.getFairs(this.state.bucketResults)
       const showData = showsToGeoCityShow(shows)
       const fairData = fairToGeoCityFairs(fairs)
-      const data = showData.concat((fairData as any) as Show[])
+      const data = showData.concat(fairData as any as Show[])
       const geoJSONFeature = convertCityToGeoJSON(data)
 
       const clusterEngine = new Supercluster({
@@ -804,7 +804,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
             isStubShow
             href
             is_followed: isFollowed
-            exhibition_period: exhibitionPeriod
+            exhibition_period: exhibitionPeriod(format: SHORT)
             cover_image: coverImage {
               url
             }
@@ -845,7 +845,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
               status
               href
               is_followed: isFollowed
-              exhibition_period: exhibitionPeriod
+              exhibition_period: exhibitionPeriod(format: SHORT)
               cover_image: coverImage {
                 url
               }
@@ -883,7 +883,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
               status
               href
               is_followed: isFollowed
-              exhibition_period: exhibitionPeriod
+              exhibition_period: exhibitionPeriod(format: SHORT)
               cover_image: coverImage {
                 url
               }
@@ -916,7 +916,7 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
               id
               slug
               name
-              exhibition_period: exhibitionPeriod
+              exhibition_period: exhibitionPeriod(format: SHORT)
               counts {
                 partners
               }

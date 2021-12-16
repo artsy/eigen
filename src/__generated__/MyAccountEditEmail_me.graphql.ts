@@ -10,7 +10,7 @@ export type MyAccountEditEmail_me = {
 };
 export type MyAccountEditEmail_me$data = MyAccountEditEmail_me;
 export type MyAccountEditEmail_me$key = {
-    readonly " $data"?: MyAccountEditEmail_me$data;
+    readonly " $data"?: MyAccountEditEmail_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyAccountEditEmail_me">;
 };
 

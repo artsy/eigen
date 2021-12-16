@@ -32,7 +32,7 @@ export type TagArtworks_tag = {
 };
 export type TagArtworks_tag$data = TagArtworks_tag;
 export type TagArtworks_tag$key = {
-    readonly " $data"?: TagArtworks_tag$data;
+    readonly " $data"?: TagArtworks_tag$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"TagArtworks_tag">;
 };
 

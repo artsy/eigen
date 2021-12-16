@@ -30,7 +30,7 @@ export type Fair_fair = {
 };
 export type Fair_fair$data = Fair_fair;
 export type Fair_fair$key = {
-    readonly " $data"?: Fair_fair$data;
+    readonly " $data"?: Fair_fair$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Fair_fair">;
 };
 
@@ -211,7 +211,6 @@ return {
           "kind": "Literal",
           "name": "input",
           "value": {
-            "dimensionRange": "*-*",
             "sort": "-decayed_merch"
           }
         }
@@ -234,5 +233,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '727444e516cba760bf7d87ed5e868d2d';
+(node as any).hash = '8bc12c903fa6594f74eaa105543fcf86';
 export default node;

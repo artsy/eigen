@@ -2,14 +2,20 @@ import { OwnerType } from "@artsy/cohesion"
 import { addBreadcrumb } from "@sentry/react-native"
 import { dismissModal, goBack, navigate } from "lib/navigation/navigate"
 import { matchRoute } from "lib/navigation/routes"
-import { getCurrentEmissionState, GlobalStore, useEnvironment, useFeatureFlag } from "lib/store/GlobalStore"
+import { BottomTabRoutes } from "lib/Scenes/BottomTabs/bottomTabsConfig"
+import {
+  getCurrentEmissionState,
+  GlobalStore,
+  useDevToggle,
+  useEnvironment,
+  useFeatureFlag,
+} from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { useColor } from "palette/hooks"
+import { Flex, Text } from "palette"
 import { parse as parseQueryString } from "query-string"
 import React, { useEffect, useRef, useState } from "react"
-import { Platform, View } from "react-native"
-// @ts-ignore
+import { Platform } from "react-native"
 import Share from "react-native-share"
 import WebView, { WebViewProps } from "react-native-webview"
 import { useTracking } from "react-tracking"
@@ -89,7 +95,7 @@ export const ArtsyReactWebViewPage: React.FC<
   }
 
   return (
-    <View style={{ flex: 1, paddingTop }}>
+    <Flex flex={1} pt={paddingTop}>
       <ArtsyKeyboardAvoidingView>
         <FancyModalHeader
           rightCloseButton={useRightCloseButton}
@@ -116,6 +122,7 @@ export const ArtsyReactWebViewPage: React.FC<
           url={url}
           ref={ref}
           allowWebViewInnerNavigation={allowWebViewInnerNavigation}
+          isPresentedModally={isPresentedModally}
           onNavigationStateChange={
             mimicBrowserBackButton
               ? (ev) => {
@@ -125,7 +132,7 @@ export const ArtsyReactWebViewPage: React.FC<
           }
         />
       </ArtsyKeyboardAvoidingView>
-    </View>
+    </Flex>
   )
 }
 
@@ -135,17 +142,19 @@ export const ArtsyReactWebView = React.forwardRef<
     url: string
     allowWebViewInnerNavigation?: boolean
     onNavigationStateChange?: WebViewProps["onNavigationStateChange"]
+    isPresentedModally?: boolean
   }
->(({ url, allowWebViewInnerNavigation = true, onNavigationStateChange }, ref) => {
+>(({ url, allowWebViewInnerNavigation = true, onNavigationStateChange, isPresentedModally = false }, ref) => {
   const userAgent = getCurrentEmissionState().userAgent
 
   const [loadProgress, setLoadProgress] = useState<number | null>(null)
+  const showIndicator = useDevToggle("DTShowWebviewIndicator")
 
   const webURL = useEnvironment().webURL
   const uri = url.startsWith("/") ? webURL + url : url
 
   return (
-    <View style={{ flex: 1 }}>
+    <Flex flex={1}>
       <WebView
         ref={ref}
         // sharedCookiesEnabled is required on iOS for the user to be implicitly logged into force/prediction
@@ -187,6 +196,17 @@ export const ArtsyReactWebView = React.forwardRef<
             return true
           }
 
+          // In case of a webview presentaed modally, if the targetURL is a tab View,
+          // we need to dismiss the modal first to avoid having a tab rendered within the modal
+          const modulePathName = parseURL(targetURL).pathname?.split(/\/+/).filter(Boolean) ?? []
+          if (
+            isPresentedModally &&
+            result.type === "match" &&
+            modulePathName.length > 0 &&
+            BottomTabRoutes.includes("/" + modulePathName[0])
+          ) {
+            dismissModal()
+          }
           // Otherwise use `navigate` to handle it like any other link in the app
           navigate(targetURL)
           setLoadProgress(null)
@@ -195,29 +215,30 @@ export const ArtsyReactWebView = React.forwardRef<
         onNavigationStateChange={onNavigationStateChange}
       />
       <ProgressBar loadProgress={loadProgress} />
-    </View>
+      {showIndicator ? (
+        <Flex position="absolute" top={50} left={-25} style={{ transform: [{ rotate: "90deg" }] }}>
+          <Text color="red">webview</Text>
+        </Flex>
+      ) : null}
+    </Flex>
   )
 })
 
 const ProgressBar: React.FC<{ loadProgress: number | null }> = ({ loadProgress }) => {
-  const color = useColor()
-
   if (loadProgress === null) {
     return null
   }
 
   const progressPercent = Math.max(loadProgress * 100, 2)
   return (
-    <View
+    <Flex
       testID="progress-bar"
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: progressPercent + "%",
-        height: 2,
-        backgroundColor: color("blue100"),
-      }}
+      position="absolute"
+      top={0}
+      left={0}
+      width={progressPercent + "%"}
+      height={2}
+      backgroundColor="blue100"
     />
   )
 }

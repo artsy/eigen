@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1eaf5c45048a095b6a8ced93c6d03f6d */
+/* @relayHash 591f77d7e189532aa6036ef699aad942 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -44,7 +44,7 @@ fragment CityBMWList_city on City {
           href
           is_followed: isFollowed
           isStubShow
-          exhibition_period: exhibitionPeriod
+          exhibition_period: exhibitionPeriod(format: SHORT)
           cover_image: coverImage {
             url
           }
@@ -281,10 +281,16 @@ return {
                           },
                           {
                             "alias": "exhibition_period",
-                            "args": null,
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "format",
+                                "value": "SHORT"
+                              }
+                            ],
                             "kind": "ScalarField",
                             "name": "exhibitionPeriod",
-                            "storageKey": null
+                            "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                           },
                           {
                             "alias": "cover_image",
@@ -488,7 +494,7 @@ return {
     ]
   },
   "params": {
-    "id": "1eaf5c45048a095b6a8ced93c6d03f6d",
+    "id": "591f77d7e189532aa6036ef699aad942",
     "metadata": {},
     "name": "CityBMWListQuery",
     "operationKind": "query",

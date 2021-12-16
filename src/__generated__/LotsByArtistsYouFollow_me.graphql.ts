@@ -15,7 +15,7 @@ export type LotsByArtistsYouFollow_me = {
 };
 export type LotsByArtistsYouFollow_me$data = LotsByArtistsYouFollow_me;
 export type LotsByArtistsYouFollow_me$key = {
-    readonly " $data"?: LotsByArtistsYouFollow_me$data;
+    readonly " $data"?: LotsByArtistsYouFollow_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"LotsByArtistsYouFollow_me">;
 };
 

@@ -13,7 +13,7 @@ export type OrderDetailsPayment_order = {
 };
 export type OrderDetailsPayment_order$data = OrderDetailsPayment_order;
 export type OrderDetailsPayment_order$key = {
-    readonly " $data"?: OrderDetailsPayment_order$data;
+    readonly " $data"?: OrderDetailsPayment_order$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"OrderDetailsPayment_order">;
 };
 

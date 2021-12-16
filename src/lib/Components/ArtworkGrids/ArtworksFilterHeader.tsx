@@ -6,6 +6,7 @@ interface FilterHeaderProps {
   onFilterPress: () => void
   selectedFiltersCount: number
   title?: string
+  childrenPosition?: "left" | "right"
 }
 
 const HEADER_HEIGHT = 50
@@ -15,15 +16,17 @@ export const ArtworksFilterHeader: React.FC<FilterHeaderProps> = ({
   onFilterPress,
   selectedFiltersCount,
   title,
+  childrenPosition = "right",
 }) => {
   return (
     <Flex mb={1}>
       <Flex flexDirection="row" height={HEADER_HEIGHT} px={2} justifyContent="space-between" alignItems="center">
+        {childrenPosition === "left" && children}
         <TouchableHighlightColor
           haptic
           onPress={onFilterPress}
           render={({ color }) => (
-            <Flex flex={1} flexDirection="row" alignItems="center">
+            <Flex flexDirection="row" alignItems="center">
               <FilterIcon fill={color} width="20px" height="20px" />
               <Text variant="xs" numberOfLines={1} color={color} ml={0.5}>
                 {title ?? "Sort & Filter"}
@@ -36,7 +39,7 @@ export const ArtworksFilterHeader: React.FC<FilterHeaderProps> = ({
             </Flex>
           )}
         />
-        {children}
+        {childrenPosition === "right" && children}
       </Flex>
       <Separator />
     </Flex>

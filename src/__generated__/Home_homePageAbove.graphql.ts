@@ -16,26 +16,31 @@ export type Home_homePageAbove = {
     readonly salesModule: {
         readonly " $fragmentRefs": FragmentRefs<"SalesRail_salesModule">;
     } | null;
+    readonly recommendedArtistsArtistModule: {
+        readonly id: string;
+        readonly " $fragmentRefs": FragmentRefs<"ArtistRail_rail">;
+    } | null;
     readonly " $fragmentRefs": FragmentRefs<"HomeHero_homePage">;
     readonly " $refType": "Home_homePageAbove";
 };
 export type Home_homePageAbove$data = Home_homePageAbove;
 export type Home_homePageAbove$key = {
-    readonly " $data"?: Home_homePageAbove$data;
+    readonly " $data"?: Home_homePageAbove$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Home_homePageAbove">;
 };
 
 
 
 const node: ReaderFragment = (function(){
-var v0 = [
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "id",
-    "storageKey": null
-  },
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v1 = [
+  (v0/*: any*/),
   {
     "args": null,
     "kind": "FragmentSpread",
@@ -67,7 +72,7 @@ return {
       "kind": "LinkedField",
       "name": "artworkModule",
       "plural": false,
-      "selections": (v0/*: any*/),
+      "selections": (v1/*: any*/),
       "storageKey": "artworkModule(key:\"FOLLOWED_ARTISTS\")"
     },
     {
@@ -83,7 +88,7 @@ return {
       "kind": "LinkedField",
       "name": "artworkModule",
       "plural": false,
-      "selections": (v0/*: any*/),
+      "selections": (v1/*: any*/),
       "storageKey": "artworkModule(key:\"ACTIVE_BIDS\")"
     },
     {
@@ -103,6 +108,29 @@ return {
       "storageKey": null
     },
     {
+      "alias": "recommendedArtistsArtistModule",
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "key",
+          "value": "SUGGESTED"
+        }
+      ],
+      "concreteType": "HomePageArtistModule",
+      "kind": "LinkedField",
+      "name": "artistModule",
+      "plural": false,
+      "selections": [
+        (v0/*: any*/),
+        {
+          "args": null,
+          "kind": "FragmentSpread",
+          "name": "ArtistRail_rail"
+        }
+      ],
+      "storageKey": "artistModule(key:\"SUGGESTED\")"
+    },
+    {
       "args": [
         {
           "kind": "Variable",
@@ -118,5 +146,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'a0678d231be4029852f0a6690d182107';
+(node as any).hash = 'b6644ded9b5e028ed28662fa2d2512f3';
 export default node;

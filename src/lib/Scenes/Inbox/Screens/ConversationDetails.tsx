@@ -1,73 +1,56 @@
 import { ConversationDetails_me } from "__generated__/ConversationDetails_me.graphql"
 import { ConversationDetailsQuery } from "__generated__/ConversationDetailsQuery.graphql"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
-import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { ItemInfoFragmentContainer as ItemInfo } from "lib/Scenes/Inbox/Components/Conversations/ItemInfo"
-import { AttachmentListFragmentContainer as AttachmentList } from "lib/Scenes/Inbox/Components/Conversations/Preview/Attachment/AttachmentList"
+import { ItemInfoFragmentContainer } from "lib/Scenes/Inbox/Components/Conversations/ItemInfo"
+import { AttachmentListFragmentContainer } from "lib/Scenes/Inbox/Components/Conversations/Preview/Attachment/AttachmentList"
+import { extractNodes } from "lib/utils/extractNodes"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { track as _track } from "lib/utils/track"
-import { Box, Flex, Join, QuestionCircleIcon, Separator, Text, Touchable } from "palette"
+import { Flex } from "palette"
 import React from "react"
+import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { OrderInformationFragmentContainer } from "../Components/Conversations/OrderInformation"
+import { PaymentMethodFragmentContainer } from "../Components/Conversations/PaymentMethod"
+import { SellerReplyEstimateFragmentContainer } from "../Components/Conversations/SellerReplyEstimate"
+import { ShippingFragmentContainer } from "../Components/Conversations/Shipping"
+import { Support } from "../Components/Conversations/Support"
 
 interface Props {
   me: ConversationDetails_me
   relay: RelayProp
 }
-
-export const ConversationDetails: React.FC<Props> = (props) => {
-  const conversation = props.me?.conversation
+export const ConversationDetails: React.FC<Props> = ({ me }) => {
+  const conversation = me.conversation
   const partnerName = conversation?.to.name
-
   const item = conversation?.items?.[0]?.item
-  const itemInfoSection = !!item && item.__typename !== "%other" && (
-    <Box key="iteminfo-section">
-      <Flex flexDirection="column" p={2}>
-        <Text mb={2} variant="sm">
-          {item.__typename}
-        </Text>
 
-        <Touchable
-          onPress={() => {
-            navigate(item.href!)
-          }}
-        >
-          <ItemInfo item={item} />
-        </Touchable>
-      </Flex>
-    </Box>
-  )
-
-  const attachmentsSection = !!conversation?.messagesConnection && (
-    <AttachmentList key="attachment-section" messageConnection={conversation?.messagesConnection} />
-  )
-
-  const supportSection = (
-    <Flex flexDirection="column" p={2} key="support-section">
-      <Text variant="sm" mb={2}>
-        Support
-      </Text>
-      <Touchable
-        onPress={() => {
-          navigate("https://support.artsy.net/hc/en-us/sections/360008203054-Contact-a-gallery", { modal: true })
-        }}
-      >
-        <Flex mb={1} alignItems="center" flexDirection="row">
-          <QuestionCircleIcon mr={1} />
-          <Text variant="sm">Inquiries FAQ</Text>
-        </Flex>
-      </Touchable>
-    </Flex>
-  )
-
-  const sections = [itemInfoSection, attachmentsSection, supportSection]
+  const order = extractNodes(conversation?.orderConnection)
+  const orderItem = order[0]
 
   return (
-    <PageWithSimpleHeader title={partnerName!}>
-      <Flex>
-        <Join separator={<Separator my={1} />}>{sections}</Join>
-      </Flex>
+    <PageWithSimpleHeader title={partnerName ?? ""}>
+      <ScrollView>
+        <Flex>
+          {!!orderItem && <SellerReplyEstimateFragmentContainer order={orderItem} />}
+
+          {!!item && <ItemInfoFragmentContainer item={item} />}
+
+          {!!item && !!orderItem && <OrderInformationFragmentContainer artwork={item} order={orderItem} />}
+
+          {!!orderItem && (
+            <>
+              <ShippingFragmentContainer order={orderItem} />
+              <PaymentMethodFragmentContainer order={orderItem} />
+            </>
+          )}
+
+          {!!conversation && <AttachmentListFragmentContainer conversation={conversation} />}
+
+          <Support />
+        </Flex>
+      </ScrollView>
     </PageWithSimpleHeader>
   )
 }
@@ -76,31 +59,24 @@ export const ConversationDetailsFragmentContainer = createFragmentContainer(Conv
   me: graphql`
     fragment ConversationDetails_me on Me {
       conversation(id: $conversationID) {
-        internalID
-        id
+        ...AttachmentList_conversation
         to {
           name
-          initials
-        }
-        from {
-          email
-        }
-        messagesConnection(first: 30, sort: DESC) @connection(key: "Details_messagesConnection", filters: []) {
-          edges {
-            __typename
-          }
-          ...AttachmentList_messageConnection
         }
         items {
           item {
-            __typename
-            ... on Artwork {
-              href
-            }
-            ... on Show {
-              href
-            }
             ...ItemInfo_item
+            ...OrderInformation_artwork
+          }
+        }
+        orderConnection(first: 30, states: [APPROVED, PENDING, SUBMITTED, FULFILLED]) {
+          edges {
+            node {
+              ...SellerReplyEstimate_order
+              ...OrderInformation_order
+              ...Shipping_order
+              ...PaymentMethod_order
+            }
           }
         }
       }

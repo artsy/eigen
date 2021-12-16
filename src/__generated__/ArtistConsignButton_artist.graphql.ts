@@ -21,7 +21,7 @@ export type ArtistConsignButton_artist = {
 };
 export type ArtistConsignButton_artist$data = ArtistConsignButton_artist;
 export type ArtistConsignButton_artist$key = {
-    readonly " $data"?: ArtistConsignButton_artist$data;
+    readonly " $data"?: ArtistConsignButton_artist$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtistConsignButton_artist">;
 };
 

@@ -44,7 +44,7 @@ export const PartnerArtwork: React.FC<{
       />
 
       <ArtworkFilterNavigator
-        isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+        visible={isFilterArtworksModalVisible}
         id={partner.internalID}
         slug={partner.slug}
         mode={FilterModalMode.Partner}

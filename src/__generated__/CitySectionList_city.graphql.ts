@@ -29,13 +29,13 @@ export type CitySectionList_city = {
                 } | null;
                 readonly exhibition_period: string | null;
                 readonly partner: {
-                    readonly name?: string | null;
-                    readonly type?: string | null;
+                    readonly name?: string | null | undefined;
+                    readonly type?: string | null | undefined;
                     readonly profile?: {
                         readonly image: {
                             readonly url: string | null;
                         } | null;
-                    } | null;
+                    } | null | undefined;
                 } | null;
             } | null;
         } | null> | null;
@@ -44,7 +44,7 @@ export type CitySectionList_city = {
 };
 export type CitySectionList_city$data = CitySectionList_city;
 export type CitySectionList_city$key = {
-    readonly " $data"?: CitySectionList_city$data;
+    readonly " $data"?: CitySectionList_city$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CitySectionList_city">;
 };
 
@@ -274,10 +274,16 @@ return {
                 },
                 {
                   "alias": "exhibition_period",
-                  "args": null,
+                  "args": [
+                    {
+                      "kind": "Literal",
+                      "name": "format",
+                      "value": "SHORT"
+                    }
+                  ],
                   "kind": "ScalarField",
                   "name": "exhibitionPeriod",
-                  "storageKey": null
+                  "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                 },
                 {
                   "alias": null,
@@ -362,5 +368,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'a01105e702fac08d027d63615d4d59ec';
+(node as any).hash = 'cd214fe6da1406073edc632f82a5894c';
 export default node;

@@ -29,7 +29,7 @@ export type ArtworkInfoSection_artwork = {
 };
 export type ArtworkInfoSection_artwork$data = ArtworkInfoSection_artwork;
 export type ArtworkInfoSection_artwork$key = {
-    readonly " $data"?: ArtworkInfoSection_artwork$data;
+    readonly " $data"?: ArtworkInfoSection_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkInfoSection_artwork">;
 };
 

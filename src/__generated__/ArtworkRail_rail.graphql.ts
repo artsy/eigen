@@ -16,17 +16,17 @@ export type ArtworkRail_rail = {
             readonly slug: string;
             readonly internalID: string;
             readonly href: string | null;
-        } | null;
+        } | null | undefined;
         readonly basedOn?: {
             readonly name: string | null;
-        } | null;
-        readonly href?: string | null;
+        } | null | undefined;
+        readonly href?: string | null | undefined;
     } | null;
     readonly " $refType": "ArtworkRail_rail";
 };
 export type ArtworkRail_rail$data = ArtworkRail_rail;
 export type ArtworkRail_rail$key = {
-    readonly " $data"?: ArtworkRail_rail$data;
+    readonly " $data"?: ArtworkRail_rail$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_rail">;
 };
 

@@ -71,7 +71,6 @@ export const ArtworkMediumQueryRenderer: React.FC<{
   return (
     <QueryRenderer<ArtworkMediumQuery>
       environment={defaultEnvironment}
-      // tslint:disable-next-line: relay-operation-generics
       query={ARTWORK_MEDIUM_QUERY}
       variables={{ id: props.artworkID }}
       render={renderWithLoadProgress(ArtworkMediumFragmentContainer, props)}

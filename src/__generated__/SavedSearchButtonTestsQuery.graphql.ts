@@ -1,27 +1,28 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 84e5e8e39c313b093d4b14e50e6c5ae1 */
+/* @relayHash bbb84de5652d6027075d8bd9d0a504db */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SearchCriteriaAttributes = {
-    acquireable?: boolean | null;
-    additionalGeneIDs?: Array<string> | null;
-    artistID?: string | null;
-    atAuction?: boolean | null;
-    attributionClass?: Array<string> | null;
-    colors?: Array<string> | null;
-    dimensionRange?: string | null;
-    height?: string | null;
-    inquireableOnly?: boolean | null;
-    locationCities?: Array<string> | null;
-    majorPeriods?: Array<string> | null;
-    materialsTerms?: Array<string> | null;
-    offerable?: boolean | null;
-    partnerIDs?: Array<string> | null;
-    priceRange?: string | null;
-    width?: string | null;
+    acquireable?: boolean | null | undefined;
+    additionalGeneIDs?: Array<string> | null | undefined;
+    artistID?: string | null | undefined;
+    atAuction?: boolean | null | undefined;
+    attributionClass?: Array<string> | null | undefined;
+    colors?: Array<string> | null | undefined;
+    dimensionRange?: string | null | undefined;
+    height?: string | null | undefined;
+    inquireableOnly?: boolean | null | undefined;
+    locationCities?: Array<string> | null | undefined;
+    majorPeriods?: Array<string> | null | undefined;
+    materialsTerms?: Array<string> | null | undefined;
+    offerable?: boolean | null | undefined;
+    partnerIDs?: Array<string> | null | undefined;
+    priceRange?: string | null | undefined;
+    sizes?: Array<string> | null | undefined;
+    width?: string | null | undefined;
 };
 export type SavedSearchButtonTestsQueryVariables = {
     criteria: SearchCriteriaAttributes;
@@ -48,8 +49,12 @@ query SavedSearchButtonTestsQuery(
   }
 }
 
-fragment SavedSearchButton_me_1ff8oJ on Me {
+fragment CreateSavedSearchContentContainerV1_me on Me {
   emailFrequency
+}
+
+fragment SavedSearchButton_me_1ff8oJ on Me {
+  ...CreateSavedSearchContentContainerV1_me
   savedSearch(criteria: $criteria) {
     internalID
   }
@@ -156,7 +161,7 @@ return {
     ]
   },
   "params": {
-    "id": "84e5e8e39c313b093d4b14e50e6c5ae1",
+    "id": "bbb84de5652d6027075d8bd9d0a504db",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {

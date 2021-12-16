@@ -1,0 +1,13 @@
+diff --git a/node_modules/@types/relay-test-utils/lib/RelayMockPayloadGenerator.d.ts b/node_modules/@types/relay-test-utils/lib/RelayMockPayloadGenerator.d.ts
+index 3dfa8f1..3295579 100755
+--- a/node_modules/@types/relay-test-utils/lib/RelayMockPayloadGenerator.d.ts
++++ b/node_modules/@types/relay-test-utils/lib/RelayMockPayloadGenerator.d.ts
+@@ -10,7 +10,7 @@ import {
+     NormalizationSplitOperation,
+ } from 'relay-runtime';
+ 
+-interface MockResolverContext {
++export interface MockResolverContext {
+     parentType?: string | undefined;
+     name?: string | undefined;
+     alias?: string | undefined;

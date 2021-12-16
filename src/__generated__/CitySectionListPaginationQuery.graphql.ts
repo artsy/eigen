@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 330753953417071e40b328cd9a6a7f33 */
+/* @relayHash 144c98b1716d9f2a55c972ba6cbffe48 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -10,12 +10,12 @@ export type PartnerShowPartnerType = "GALLERY" | "MUSEUM" | "%future added value
 export type ShowSorts = "END_AT_ASC" | "END_AT_DESC" | "FEATURED_ASC" | "FEATURED_DESC" | "FEATURED_DESC_END_AT_DESC" | "NAME_ASC" | "NAME_DESC" | "PARTNER_ASC" | "SORTABLE_NAME_ASC" | "SORTABLE_NAME_DESC" | "START_AT_ASC" | "START_AT_DESC" | "UPDATED_AT_ASC" | "UPDATED_AT_DESC" | "%future added value";
 export type CitySectionListPaginationQueryVariables = {
     count: number;
-    cursor?: string | null;
+    cursor?: string | null | undefined;
     citySlug: string;
-    partnerType?: PartnerShowPartnerType | null;
-    status?: EventStatus | null;
-    dayThreshold?: number | null;
-    sort?: ShowSorts | null;
+    partnerType?: PartnerShowPartnerType | null | undefined;
+    status?: EventStatus | null | undefined;
+    dayThreshold?: number | null | undefined;
+    sort?: ShowSorts | null | undefined;
 };
 export type CitySectionListPaginationQueryResponse = {
     readonly city: {
@@ -67,7 +67,7 @@ fragment CitySectionList_city_3BpxDU on City {
         cover_image: coverImage {
           url
         }
-        exhibition_period: exhibitionPeriod
+        exhibition_period: exhibitionPeriod(format: SHORT)
         partner {
           __typename
           ... on Partner {
@@ -412,10 +412,16 @@ return {
                       },
                       {
                         "alias": "exhibition_period",
-                        "args": null,
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "format",
+                            "value": "SHORT"
+                          }
+                        ],
                         "kind": "ScalarField",
                         "name": "exhibitionPeriod",
-                        "storageKey": null
+                        "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                       },
                       {
                         "alias": null,
@@ -524,7 +530,7 @@ return {
     ]
   },
   "params": {
-    "id": "330753953417071e40b328cd9a6a7f33",
+    "id": "144c98b1716d9f2a55c972ba6cbffe48",
     "metadata": {},
     "name": "CitySectionListPaginationQuery",
     "operationKind": "query",

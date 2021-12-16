@@ -5,9 +5,12 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type AddAssetToConsignmentSubmissionInput = {
-    assetType?: string | null;
-    clientMutationId?: string | null;
+    assetType?: string | null | undefined;
+    clientMutationId?: string | null | undefined;
+    filename?: string | null | undefined;
     geminiToken: string;
+    sessionID?: string | null | undefined;
+    size?: string | null | undefined;
     submissionID: string;
 };
 export type addAssetToConsignmentMutationVariables = {

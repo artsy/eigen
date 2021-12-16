@@ -118,12 +118,6 @@ export const features = defineFeatures({
     description: "Enable Saved Addresses",
     showInAdminMenu: true,
   },
-  AREnableAuctionResultsKeywordFilter: {
-    readyForRelease: true,
-    description: "Enable auction results keyword filter",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableAuctionResultsKeywordFilter",
-  },
   AREnableImprovedSearchPills: {
     readyForRelease: false,
     description: "Enable improved search pills",
@@ -167,8 +161,14 @@ export const features = defineFeatures({
     echoFlagKey: "ARGoogleAuth",
   },
   AREnableSavedSearchToggles: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Saved Search toggles",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableSavedSearchToggles",
+  },
+  AREnableImprovedAlertsFlow: {
+    readyForRelease: false,
+    description: "Enable Improved Alerts flow",
     showInAdminMenu: true,
   },
   AREnableWebPImages: {
@@ -200,6 +200,29 @@ export const features = defineFeatures({
     description: "Enable Visual Profile Icon and Bio",
     showInAdminMenu: true,
     echoFlagKey: "AREnableVisualProfileIconAndBio",
+  },
+  AREnableAuctionResultComparableWorks: {
+    readyForRelease: true,
+    description: "Comparable works in Auction Result",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableAuctionResultComparableWorks",
+  },
+  ARMyCollectionLocalSortAndFilter: {
+    readyForRelease: true,
+    description: "My Collection Sort & Filter",
+    showInAdminMenu: true,
+    echoFlagKey: "ARMyCollectionLocalSortAndFilter",
+  },
+  AREnableArtistRecommendations: {
+    readyForRelease: false,
+    description: "Enable new artist recommendations",
+    showInAdminMenu: true,
+  },
+  AREnableQueriesPrefetching: {
+    readyForRelease: true,
+    description: "Enable query prefetching",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableQueriesPrefetching",
   },
 })
 
@@ -241,6 +264,12 @@ export const devToggles = defineDevToggles({
   },
   DTEasyMyCollectionArtworkCreation: {
     description: "Easily add my collection artworks",
+  },
+  DTShowWebviewIndicator: {
+    description: "Show webview indicator",
+  },
+  DTShowInstagramShot: {
+    description: "Show Instagram viewshot",
   },
 })
 

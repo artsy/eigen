@@ -31,7 +31,7 @@ export type ShowArtworks_show = {
 };
 export type ShowArtworks_show$data = ShowArtworks_show;
 export type ShowArtworks_show$key = {
-    readonly " $data"?: ShowArtworks_show$data;
+    readonly " $data"?: ShowArtworks_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShowArtworks_show">;
 };
 

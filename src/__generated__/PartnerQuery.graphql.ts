@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash cf0bed7e799287f0e0880f4a1b83c064 */
+/* @relayHash 463043654e9459aad246b30d125b9171 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -105,10 +105,10 @@ fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
   }
 }
 
-fragment PartnerArtwork_partner_BRGa6 on Partner {
+fragment PartnerArtwork_partner_3XSKY6 on Partner {
   internalID
   slug
-  artworks: filterArtworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, ARTIST, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY], input: {sort: "-partner_updated_at", dimensionRange: "*-*"}) {
+  artworks: filterArtworksConnection(first: 10, aggregations: [COLOR, DIMENSION_RANGE, ARTIST, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, MATERIALS_TERMS, ARTIST_NATIONALITY], input: {sort: "-partner_updated_at"}) {
     aggregations {
       slice
       counts {
@@ -198,7 +198,7 @@ fragment PartnerShowRailItem_show on Show {
   internalID
   slug
   name
-  exhibitionPeriod
+  exhibitionPeriod(format: SHORT)
   endAt
   coverImage {
     url
@@ -223,7 +223,7 @@ fragment PartnerShowsRail_partner on Partner {
         internalID
         slug
         name
-        exhibitionPeriod
+        exhibitionPeriod(format: SHORT)
         endAt
         images {
           url
@@ -272,7 +272,7 @@ fragment PartnerShows_partner on Partner {
         id
         name
         slug
-        exhibitionPeriod
+        exhibitionPeriod(format: SHORT)
         coverImage {
           url
           aspectRatio
@@ -302,7 +302,7 @@ fragment Partner_partner on Partner {
     isFollowed
     internalID
   }
-  ...PartnerArtwork_partner_BRGa6
+  ...PartnerArtwork_partner_3XSKY6
   ...PartnerOverview_partner
   ...PartnerShows_partner
   ...PartnerHeader_partner
@@ -378,7 +378,6 @@ v7 = [
     "kind": "Literal",
     "name": "input",
     "value": {
-      "dimensionRange": "*-*",
       "sort": "-partner_updated_at"
     }
   }
@@ -511,10 +510,16 @@ v24 = [
 ],
 v25 = {
   "alias": null,
-  "args": null,
+  "args": [
+    {
+      "kind": "Literal",
+      "name": "format",
+      "value": "SHORT"
+    }
+  ],
   "kind": "ScalarField",
   "name": "exhibitionPeriod",
-  "storageKey": null
+  "storageKey": "exhibitionPeriod(format:\"SHORT\")"
 },
 v26 = [
   "status",
@@ -912,7 +917,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"ARTIST\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\"],first:10,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-partner_updated_at\"})"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"ARTIST\",\"MAJOR_PERIOD\",\"MEDIUM\",\"PRICE_RANGE\",\"MATERIALS_TERMS\",\"ARTIST_NATIONALITY\"],first:10,input:{\"sort\":\"-partner_updated_at\"})"
           },
           {
             "alias": "artworks",
@@ -1306,7 +1311,7 @@ return {
     ]
   },
   "params": {
-    "id": "cf0bed7e799287f0e0880f4a1b83c064",
+    "id": "463043654e9459aad246b30d125b9171",
     "metadata": {},
     "name": "PartnerQuery",
     "operationKind": "query",

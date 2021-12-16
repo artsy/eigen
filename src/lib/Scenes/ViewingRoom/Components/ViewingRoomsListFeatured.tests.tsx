@@ -43,8 +43,7 @@ describe(FeaturedRail, () => {
               {
                 node: {
                   title: "ok",
-                  href:
-                    "/viewing-room/zero-dot-dot-dot-alessandro-pessoli/alessandro-pessoli-ardente-primavera-number-1",
+                  href: "/viewing-room/zero-dot-dot-dot-alessandro-pessoli/alessandro-pessoli-ardente-primavera-number-1",
                   slug: "alessandro-pessoli-ardente-primavera-number-1",
                   internalID: "one",
                 },
@@ -52,8 +51,7 @@ describe(FeaturedRail, () => {
               {
                 node: {
                   title: "oak",
-                  href:
-                    "/viewing-room/zero-dot-dot-dot-alessandro-pessoli/alessandro-pessoli-ardente-primavera-number-1",
+                  href: "/viewing-room/zero-dot-dot-dot-alessandro-pessoli/alessandro-pessoli-ardente-primavera-number-1",
                   slug: "alessand-pessoli-ardente-primavera-number-1",
                   internalID: "two",
                 },

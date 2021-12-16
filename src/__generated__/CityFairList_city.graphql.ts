@@ -47,7 +47,7 @@ export type CityFairList_city = {
 };
 export type CityFairList_city$data = CityFairList_city;
 export type CityFairList_city$key = {
-    readonly " $data"?: CityFairList_city$data;
+    readonly " $data"?: CityFairList_city$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CityFairList_city">;
 };
 
@@ -143,10 +143,16 @@ return {
                 (v2/*: any*/),
                 {
                   "alias": "exhibition_period",
-                  "args": null,
+                  "args": [
+                    {
+                      "kind": "Literal",
+                      "name": "format",
+                      "value": "SHORT"
+                    }
+                  ],
                   "kind": "ScalarField",
                   "name": "exhibitionPeriod",
-                  "storageKey": null
+                  "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                 },
                 {
                   "alias": null,
@@ -367,5 +373,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '83639852917dd29eafe384c09fa9eb84';
+(node as any).hash = '4d534fc0a2d179b15e977afd9315bcae';
 export default node;

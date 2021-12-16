@@ -33,13 +33,13 @@ export type CityBMWList_city = {
                     readonly start_at: string | null;
                     readonly end_at: string | null;
                     readonly partner: {
-                        readonly name?: string | null;
-                        readonly type?: string | null;
+                        readonly name?: string | null | undefined;
+                        readonly type?: string | null | undefined;
                         readonly profile?: {
                             readonly image: {
                                 readonly url: string | null;
                             } | null;
-                        } | null;
+                        } | null | undefined;
                     } | null;
                 } | null;
             } | null> | null;
@@ -49,7 +49,7 @@ export type CityBMWList_city = {
 };
 export type CityBMWList_city$data = CityBMWList_city;
 export type CityBMWList_city$key = {
-    readonly " $data"?: CityBMWList_city$data;
+    readonly " $data"?: CityBMWList_city$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CityBMWList_city">;
 };
 
@@ -197,10 +197,16 @@ return {
                     },
                     {
                       "alias": "exhibition_period",
-                      "args": null,
+                      "args": [
+                        {
+                          "kind": "Literal",
+                          "name": "format",
+                          "value": "SHORT"
+                        }
+                      ],
                       "kind": "ScalarField",
                       "name": "exhibitionPeriod",
-                      "storageKey": null
+                      "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                     },
                     {
                       "alias": "cover_image",
@@ -382,5 +388,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '4bf328a3e1adca0f4cab04b42e83e613';
+(node as any).hash = '5fb7807f2a6a29c54fedd27413e42b44';
 export default node;

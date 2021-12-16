@@ -10,7 +10,7 @@ export type MyAccountEditPhone_me = {
 };
 export type MyAccountEditPhone_me$data = MyAccountEditPhone_me;
 export type MyAccountEditPhone_me$key = {
-    readonly " $data"?: MyAccountEditPhone_me$data;
+    readonly " $data"?: MyAccountEditPhone_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyAccountEditPhone_me">;
 };
 

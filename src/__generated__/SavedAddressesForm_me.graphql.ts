@@ -28,7 +28,7 @@ export type SavedAddressesForm_me = {
 };
 export type SavedAddressesForm_me$data = SavedAddressesForm_me;
 export type SavedAddressesForm_me$key = {
-    readonly " $data"?: SavedAddressesForm_me$data;
+    readonly " $data"?: SavedAddressesForm_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SavedAddressesForm_me">;
 };
 

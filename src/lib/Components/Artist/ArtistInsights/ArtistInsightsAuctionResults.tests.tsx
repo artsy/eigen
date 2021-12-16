@@ -1,7 +1,7 @@
 import { ArtistInsightsAuctionResultsTestsQuery } from "__generated__/ArtistInsightsAuctionResultsTestsQuery.graphql"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { AuctionResultFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
+import { AuctionResultListItemFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import { extractText } from "lib/tests/extractText"
 import { mockEdges } from "lib/tests/mockEnvironmentPayload"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
@@ -75,7 +75,7 @@ describe("ArtistInsightsAuctionResults", () => {
     })
 
     expect(tree.root.findAllByType(FlatList).length).toEqual(1)
-    expect(tree.root.findAllByType(AuctionResultFragmentContainer).length).toEqual(5)
+    expect(tree.root.findAllByType(AuctionResultListItemFragmentContainer).length).toEqual(5)
   })
 
   it("renders FilteredArtworkGridZeroState when no auction results are available", () => {

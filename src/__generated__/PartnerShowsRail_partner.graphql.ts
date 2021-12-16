@@ -25,7 +25,7 @@ export type PartnerShowsRail_partner = {
                     readonly url: string | null;
                 } | null> | null;
                 readonly partner: {
-                    readonly name?: string | null;
+                    readonly name?: string | null | undefined;
                 } | null;
                 readonly " $fragmentRefs": FragmentRefs<"PartnerShowRailItem_show">;
             } | null;
@@ -35,7 +35,7 @@ export type PartnerShowsRail_partner = {
 };
 export type PartnerShowsRail_partner$data = PartnerShowsRail_partner;
 export type PartnerShowsRail_partner$key = {
-    readonly " $data"?: PartnerShowsRail_partner$data;
+    readonly " $data"?: PartnerShowsRail_partner$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"PartnerShowsRail_partner">;
 };
 
@@ -177,10 +177,16 @@ return {
                 (v1/*: any*/),
                 {
                   "alias": null,
-                  "args": null,
+                  "args": [
+                    {
+                      "kind": "Literal",
+                      "name": "format",
+                      "value": "SHORT"
+                    }
+                  ],
                   "kind": "ScalarField",
                   "name": "exhibitionPeriod",
-                  "storageKey": null
+                  "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                 },
                 {
                   "alias": null,
@@ -259,5 +265,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'b007865b35c523c7198f2de659074860';
+(node as any).hash = '7d64df3ac5e29f210abc818a1205dbec';
 export default node;

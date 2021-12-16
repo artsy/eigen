@@ -13,7 +13,7 @@ export type OnboardingPersonalization_highlights = {
 };
 export type OnboardingPersonalization_highlights$data = OnboardingPersonalization_highlights;
 export type OnboardingPersonalization_highlights$key = {
-    readonly " $data"?: OnboardingPersonalization_highlights$data;
+    readonly " $data"?: OnboardingPersonalization_highlights$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"OnboardingPersonalization_highlights">;
 };
 

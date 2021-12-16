@@ -13,9 +13,7 @@ import { goBack } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { useTheme } from "palette"
 import React from "react"
-import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { EditSavedSearchFormPlaceholder } from "./Components/EditSavedSearchAlertPlaceholder"
 import { SavedSearchAlertQueryRenderer } from "./SavedSearchAlert"
@@ -34,7 +32,6 @@ interface EditSavedSearchAlertProps {
 
 export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props) => {
   const { me, artist, artworksConnection, savedSearchAlertId } = props
-  const { space } = useTheme()
   const aggregations = (artworksConnection.aggregations ?? []) as Aggregations
   const { userAlertSettings, ...savedSearchCriteria } = me?.savedSearch ?? {}
   const filters = convertSavedSearchCriteriaToFilterParams(
@@ -57,27 +54,21 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
     >
       <ArtsyKeyboardAvoidingView>
         <PageWithSimpleHeader title="Edit your Alert">
-          <ScrollView
-            keyboardDismissMode="on-drag"
-            keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{ padding: space(2) }}
-          >
-            <SavedSearchAlertForm
-              initialValues={{
-                name: userAlertSettings?.name ?? "",
-                email: userAlertSettings?.email ?? false,
-                push: userAlertSettings?.push ?? false,
-              }}
-              artistId={artist.internalID}
-              artistName={artist.name!}
-              filters={filters}
-              aggregations={aggregations}
-              savedSearchAlertId={savedSearchAlertId}
-              userAllowsEmails={me?.emailFrequency !== "none"}
-              onComplete={onComplete}
-              onDeleteComplete={onComplete}
-            />
-          </ScrollView>
+          <SavedSearchAlertForm
+            initialValues={{
+              name: userAlertSettings?.name ?? "",
+              email: userAlertSettings?.email ?? false,
+              push: userAlertSettings?.push ?? false,
+            }}
+            artistId={artist.internalID}
+            artistName={artist.name!}
+            filters={filters}
+            aggregations={aggregations}
+            savedSearchAlertId={savedSearchAlertId}
+            userAllowsEmails={me?.emailFrequency !== "none"}
+            onComplete={onComplete}
+            onDeleteComplete={onComplete}
+          />
         </PageWithSimpleHeader>
       </ArtsyKeyboardAvoidingView>
     </ProvideScreenTracking>

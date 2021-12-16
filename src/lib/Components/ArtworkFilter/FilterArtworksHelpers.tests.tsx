@@ -211,7 +211,6 @@ describe("filterArtworksParams helper", () => {
       medium: "*",
       priceRange: "*-*",
       estimateRange: "",
-      dimensionRange: "*-*",
       includeArtworksByFollowedArtists: false,
       inquireableOnly: false,
       atAuction: false,
@@ -227,7 +226,6 @@ describe("filterArtworksParams helper", () => {
       medium: "*",
       estimateRange: "",
       priceRange: "*-*",
-      dimensionRange: "*-*",
       includeArtworksByFollowedArtists: false,
       inquireableOnly: false,
       atAuction: false,
@@ -249,7 +247,6 @@ describe("filterArtworksParams helper", () => {
       medium: "*",
       estimateRange: "",
       priceRange: "*-*",
-      dimensionRange: "*-*",
       includeArtworksByFollowedArtists: false,
       inquireableOnly: false,
       atAuction: false,
@@ -311,7 +308,6 @@ describe("filterArtworksParams helper", () => {
       medium: "work-on-paper",
       estimateRange: "",
       priceRange: "5000-10000",
-      dimensionRange: "*-*",
       inquireableOnly: true,
       atAuction: false,
       acquireable: true,
@@ -339,7 +335,6 @@ describe("filterArtworksParams helper", () => {
       medium: "*",
       priceRange: "*-*",
       estimateRange: "",
-      dimensionRange: "*-*",
       inquireableOnly: false,
       atAuction: false,
       acquireable: false,
@@ -362,7 +357,6 @@ describe("filterArtworksParams helper", () => {
       medium: "*",
       estimateRange: "",
       priceRange: "*-*",
-      dimensionRange: "*-*",
       inquireableOnly: false,
       atAuction: false,
       acquireable: false,
@@ -412,7 +406,6 @@ describe("filterArtworksParams helper", () => {
         medium: "*",
         priceRange: "*-*",
         estimateRange: "",
-        dimensionRange: "*-*",
         includeArtworksByFollowedArtists: false,
         inquireableOnly: false,
         atAuction: false,
@@ -515,7 +508,6 @@ describe("prepareFilterArtworksParamsForInput", () => {
     const filters = {
       acquireable: false,
       atAuction: false,
-      dimensionRange: "*-*",
       includeArtworksByFollowedArtists: false,
       inquireableOnly: false,
       medium: "*",
@@ -527,7 +519,6 @@ describe("prepareFilterArtworksParamsForInput", () => {
     expect(prepareFilterArtworksParamsForInput(filters)).toEqual({
       acquireable: false,
       atAuction: false,
-      dimensionRange: "*-*",
       includeArtworksByFollowedArtists: false,
       inquireableOnly: false,
       medium: "*",
@@ -548,7 +539,6 @@ describe("prepareFilterArtworksParamsForInput", () => {
       acquireable: false,
       atAuction: false,
       categories: undefined, // TO check
-      dimensionRange: "*-*",
       estimateRange: "",
       inquireableOnly: false,
       medium: "*",
@@ -561,7 +551,6 @@ describe("prepareFilterArtworksParamsForInput", () => {
     expect(prepareFilterArtworksParamsForInput(filters)).toEqual({
       acquireable: false,
       atAuction: false,
-      dimensionRange: "*-*",
       includeArtworksByFollowedArtists: false,
       inquireableOnly: false,
       medium: "*",
@@ -644,6 +633,11 @@ describe("getSelectedFiltersCounts helper", () => {
       paramName: FilterParamName.colors,
       paramValue: ["yellow", "orange", "red"],
     },
+    {
+      displayText: "Size",
+      paramName: FilterParamName.sizes,
+      paramValue: ["MEDIUM", "LARGE"],
+    },
   ]
 
   const multiSelectFiltersExpectedResult = {
@@ -655,6 +649,7 @@ describe("getSelectedFiltersCounts helper", () => {
     artistNationalities: 2,
     locationCities: 5,
     colors: 3,
+    sizes: 2,
   }
 
   const singleOptionFilters = [
@@ -668,17 +663,11 @@ describe("getSelectedFiltersCounts helper", () => {
       paramName: FilterParamName.priceRange,
       paramValue: "10000-50000",
     },
-    {
-      displayText: "Size",
-      paramName: FilterParamName.dimensionRange,
-      paramValue: "large",
-    },
   ]
 
   const singleOptionFiltersExpectedResult = {
     sort: 1,
     priceRange: 1,
-    dimensionRange: 1,
   }
 
   const waysToBuyFilters = [
@@ -738,6 +727,50 @@ describe("getSelectedFiltersCounts helper", () => {
   it("counts artists options correctly", () => {
     const result = getSelectedFiltersCounts(artistsFilters)
     expect(result).toEqual(artistsFiltersExpectedResult)
+  })
+
+  it("counts custom sizes correctly if only width is specified", () => {
+    const result = getSelectedFiltersCounts([
+      {
+        displayText: "100-199",
+        paramName: FilterParamName.width,
+        paramValue: "78.74015748031496-117.71653543307086",
+      },
+    ])
+    expect(result).toEqual({
+      sizes: 1,
+    })
+  })
+
+  it("counts custom sizes correctly if only height is specified", () => {
+    const result = getSelectedFiltersCounts([
+      {
+        displayText: "200-299",
+        paramName: FilterParamName.height,
+        paramValue: "39.37007874015748-78.34645669291338",
+      },
+    ])
+    expect(result).toEqual({
+      sizes: 1,
+    })
+  })
+
+  it("counts custom sizes correctly", () => {
+    const result = getSelectedFiltersCounts([
+      {
+        displayText: "100-199",
+        paramName: FilterParamName.width,
+        paramValue: "78.74015748031496-117.71653543307086",
+      },
+      {
+        displayText: "200-299",
+        paramName: FilterParamName.height,
+        paramValue: "39.37007874015748-78.34645669291338",
+      },
+    ])
+    expect(result).toEqual({
+      sizes: 2,
+    })
   })
 
   it("counts all filters correctly", () => {
@@ -851,25 +884,23 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
       previouslyAppliedFilters,
     })
 
-    expect(result).toEqual(
-      expect.arrayContaining([
-        {
-          displayText: "Rarity",
-          paramName: FilterParamName.attributionClass,
-          paramValue: ["open-edition"],
-        },
-        {
-          displayText: "Price",
-          paramName: FilterParamName.priceRange,
-          paramValue: "50000-*",
-        },
-        {
-          displayText: "Material",
-          paramName: FilterParamName.materialsTerms,
-          paramValue: ["paper", "oil"],
-        },
-      ])
-    )
+    expect(result).toEqual([
+      {
+        displayText: "Price",
+        paramName: FilterParamName.priceRange,
+        paramValue: "50000-*",
+      },
+      {
+        displayText: "Material",
+        paramName: FilterParamName.materialsTerms,
+        paramValue: ["paper", "oil"],
+      },
+      {
+        displayText: "Rarity",
+        paramName: FilterParamName.attributionClass,
+        paramValue: ["open-edition"],
+      },
+    ])
   })
 
   it("returns only ways to buy filter options that weren't unselected", () => {
@@ -915,20 +946,28 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
       previouslyAppliedFilters,
     })
 
-    expect(result).toEqual(
-      expect.arrayContaining([
-        {
-          displayText: "Ways to Buy",
-          paramName: FilterParamName.waysToBuyMakeOffer,
-          paramValue: true,
-        },
-        {
-          displayText: "Ways to Buy",
-          paramName: FilterParamName.waysToBuyInquire,
-          paramValue: true,
-        },
-      ])
-    )
+    expect(result).toEqual([
+      {
+        displayText: "Ways to Buy",
+        paramName: FilterParamName.waysToBuyBuy,
+        paramValue: true,
+      },
+      {
+        displayText: "Ways to Buy",
+        paramName: FilterParamName.waysToBuyBid,
+        paramValue: true,
+      },
+      {
+        displayText: "Ways to Buy",
+        paramName: FilterParamName.waysToBuyInquire,
+        paramValue: true,
+      },
+      {
+        displayText: "Ways to Buy",
+        paramName: FilterParamName.waysToBuyMakeOffer,
+        paramValue: true,
+      },
+    ])
   })
 
   it("returns only artists options that weren't unselected", () => {
@@ -954,15 +993,13 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
       previouslyAppliedFilters,
     })
 
-    expect(result).toEqual(
-      expect.arrayContaining([
-        {
-          displayText: "Artists",
-          paramName: FilterParamName.artistIDs,
-          paramValue: ["anne-siems", "brian-rutenberg", "ceravolo"],
-        },
-      ])
-    )
+    expect(result).toEqual([
+      {
+        displayText: "Artists",
+        paramName: FilterParamName.artistIDs,
+        paramValue: ["anne-siems", "brian-rutenberg", "ceravolo"],
+      },
+    ])
   })
 
   it("omits filters with default values", () => {
@@ -974,8 +1011,8 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
       },
       {
         displayText: "Size",
-        paramName: FilterParamName.dimensionRange,
-        paramValue: "small",
+        paramName: FilterParamName.sizes,
+        paramValue: ["SMALL"],
       },
     ]
 
@@ -992,8 +1029,8 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
       },
       {
         displayText: "Size",
-        paramName: FilterParamName.dimensionRange,
-        paramValue: "*-*",
+        paramName: FilterParamName.sizes,
+        paramValue: [],
       },
       {
         displayText: "Color",
@@ -1008,19 +1045,17 @@ describe("getUnitedSelectedAndAppliedFilters helper", () => {
       previouslyAppliedFilters,
     })
 
-    expect(result).toEqual(
-      expect.arrayContaining([
-        {
-          displayText: "Medium",
-          paramName: FilterParamName.additionalGeneIDs,
-          paramValue: ["prints"],
-        },
-        {
-          displayText: "Color",
-          paramName: FilterParamName.colors,
-          paramValue: ["blue", "brown"],
-        },
-      ])
-    )
+    expect(result).toEqual([
+      {
+        displayText: "Medium",
+        paramName: FilterParamName.additionalGeneIDs,
+        paramValue: ["prints"],
+      },
+      {
+        displayText: "Color",
+        paramName: FilterParamName.colors,
+        paramValue: ["blue", "brown"],
+      },
+    ])
   })
 })

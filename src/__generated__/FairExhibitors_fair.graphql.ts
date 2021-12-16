@@ -15,7 +15,7 @@ export type FairExhibitors_fair = {
                     readonly artworks: number | null;
                 } | null;
                 readonly partner: {
-                    readonly id?: string;
+                    readonly id?: string | undefined;
                 } | null;
                 readonly " $fragmentRefs": FragmentRefs<"FairExhibitorRail_show">;
             } | null;
@@ -25,7 +25,7 @@ export type FairExhibitors_fair = {
 };
 export type FairExhibitors_fair$data = FairExhibitors_fair;
 export type FairExhibitors_fair$key = {
-    readonly " $data"?: FairExhibitors_fair$data;
+    readonly " $data"?: FairExhibitors_fair$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FairExhibitors_fair">;
 };
 

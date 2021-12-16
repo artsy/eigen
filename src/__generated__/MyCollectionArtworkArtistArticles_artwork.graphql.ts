@@ -33,7 +33,7 @@ export type MyCollectionArtworkArtistArticles_artwork = {
 };
 export type MyCollectionArtworkArtistArticles_artwork$data = MyCollectionArtworkArtistArticles_artwork;
 export type MyCollectionArtworkArtistArticles_artwork$key = {
-    readonly " $data"?: MyCollectionArtworkArtistArticles_artwork$data;
+    readonly " $data"?: MyCollectionArtworkArtistArticles_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkArtistArticles_artwork">;
 };
 

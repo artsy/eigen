@@ -6,8 +6,9 @@ import {
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-export type AssetCredentials = getGeminiCredentialsForEnvironmentMutationResponse["requestCredentialsForAssetUpload"]["asset"]
+export type AssetCredentials =
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+  getGeminiCredentialsForEnvironmentMutationResponse["requestCredentialsForAssetUpload"]["asset"]
 
 export const getGeminiCredentialsForEnvironment = (input: RequestCredentialsForAssetUploadInput) => {
   return new Promise<AssetCredentials>((resolve, reject) => {

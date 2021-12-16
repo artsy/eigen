@@ -18,7 +18,7 @@ export type Search_system = {
 };
 export type Search_system$data = Search_system;
 export type Search_system$key = {
-    readonly " $data"?: Search_system$data;
+    readonly " $data"?: Search_system$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Search_system">;
 };
 

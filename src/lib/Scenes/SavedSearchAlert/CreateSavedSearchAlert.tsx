@@ -1,75 +1,40 @@
-import { Aggregations, FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { NavigationContainer } from "@react-navigation/native"
+import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
-import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { useFeatureFlag } from "lib/store/GlobalStore"
-import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
-import useAppState from "lib/utils/useAppState"
-import { Sans, Spacer, Text, useTheme } from "palette"
-import React, { useCallback, useEffect, useState } from "react"
-import { ScrollView } from "react-native"
-import { SavedSearchAlertForm } from "./SavedSearchAlertForm"
-import { SavedSearchAlertFormPropsBase, SavedSearchAlertMutationResult } from "./SavedSearchAlertModel"
+import { Box } from "palette"
+import React from "react"
+import { CreateSavedSearchAlertNavigationStack, CreateSavedSearchAlertProps } from "./SavedSearchAlertModel"
+import { CreateSavedSearchAlertScreen } from "./screens/CreateSavedSearchAlertScreen"
+import { EmailPreferencesScreen } from "./screens/EmailPreferencesScreen"
 
-export interface CreateSavedSearchAlertProps extends SavedSearchAlertFormPropsBase {
-  visible: boolean
-  filters: FilterData[]
-  aggregations: Aggregations
-  userAllowsEmails: boolean
-  onClosePress: () => void
-  onComplete: (response: SavedSearchAlertMutationResult) => void
-}
+const Stack = createStackNavigator<CreateSavedSearchAlertNavigationStack>()
 
 export const CreateSavedSearchAlert: React.FC<CreateSavedSearchAlertProps> = (props) => {
-  const { visible, filters, aggregations, onClosePress, onComplete, ...other } = props
-  const { space } = useTheme()
-  const [enablePushNotifications, setEnablePushNotifications] = useState(true)
-  const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
-
-  const getPermissionStatus = async () => {
-    const status = await getNotificationPermissionsStatus()
-    setEnablePushNotifications(status === PushAuthorizationStatus.Authorized)
-  }
-
-  const onForeground = useCallback(() => {
-    getPermissionStatus()
-  }, [])
-
-  useAppState({ onForeground })
-
-  useEffect(() => {
-    getPermissionStatus()
-  }, [])
-
-  const handleComplete = async (result: SavedSearchAlertMutationResult) => {
-    onComplete(result)
-  }
+  const { visible, params } = props
 
   return (
-    <FancyModal visible={visible} fullScreen>
-      <FancyModalHeader useXButton hideBottomDivider onLeftButtonPress={onClosePress} />
-      <ScrollView
-        keyboardDismissMode="on-drag"
-        keyboardShouldPersistTaps="handled"
-        contentContainerStyle={{ paddingHorizontal: space(2) }}
-      >
-        <Sans size="8">Create an Alert</Sans>
-        {!enableSavedSearchToggles && (
-          <Sans size="3t" mt={1}>
-            Receive alerts as Push Notifications directly to your device.
-          </Sans>
-        )}
-        <Spacer mt={4} />
-        <SavedSearchAlertForm
-          initialValues={{ name: "", email: props.userAllowsEmails, push: enablePushNotifications }}
-          aggregations={aggregations}
-          filters={filters}
-          onComplete={handleComplete}
-          {...other}
-        />
-        <Text variant="sm" color="black60" textAlign="center" my={2}>
-          You will be able to access all your Saved Alerts in your Profile.
-        </Text>
-      </ScrollView>
-    </FancyModal>
+    <NavigationContainer independent>
+      <FancyModal visible={visible} fullScreen>
+        <Box flex={1}>
+          <Stack.Navigator
+            // force it to not use react-native-screens, which is broken inside a react-native Modal for some reason
+            detachInactiveScreens={false}
+            screenOptions={{
+              ...TransitionPresets.SlideFromRightIOS,
+              headerShown: false,
+              safeAreaInsets: { top: 0, bottom: 0, left: 0, right: 0 },
+              cardStyle: { backgroundColor: "white" },
+            }}
+          >
+            <Stack.Screen
+              name="CreateSavedSearchAlert"
+              component={CreateSavedSearchAlertScreen}
+              initialParams={params}
+            />
+            <Stack.Screen name="EmailPreferences" component={EmailPreferencesScreen} />
+          </Stack.Navigator>
+        </Box>
+      </FancyModal>
+    </NavigationContainer>
   )
 }

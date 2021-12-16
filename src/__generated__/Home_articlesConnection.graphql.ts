@@ -10,7 +10,7 @@ export type Home_articlesConnection = {
 };
 export type Home_articlesConnection$data = Home_articlesConnection;
 export type Home_articlesConnection$key = {
-    readonly " $data"?: Home_articlesConnection$data;
+    readonly " $data"?: Home_articlesConnection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Home_articlesConnection">;
 };
 

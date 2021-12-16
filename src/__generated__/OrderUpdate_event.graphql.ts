@@ -33,7 +33,7 @@ export type OrderUpdate_event = {
 };
 export type OrderUpdate_event$data = OrderUpdate_event;
 export type OrderUpdate_event$key = {
-    readonly " $data"?: OrderUpdate_event$data;
+    readonly " $data"?: OrderUpdate_event$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"OrderUpdate_event">;
 };
 

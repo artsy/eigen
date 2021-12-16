@@ -16,12 +16,14 @@ import {
 } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { Box, Spacer } from "palette"
 import React, { useContext, useEffect, useMemo, useState } from "react"
 import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { SavedSearchButtonQueryRenderer } from "./SavedSearchButton"
+import { SavedSearchButtonV2 } from "./SavedSearchButtonV2"
 
 interface ArtworksGridProps extends InfiniteScrollGridProps {
   artist: ArtistArtworks_artist
@@ -68,15 +70,18 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
           {...props}
           id={artist.internalID}
           slug={artist.slug}
-          isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+          visible={isFilterArtworksModalVisible}
+          name={artist.name ?? ""}
           exitModal={handleCloseFilterArtworksModal}
           closeModal={closeFilterArtworksModal}
           mode={FilterModalMode.ArtistArtworks}
+          shouldShowCreateAlertButton
         />
       </StickyTabPageScrollView>
     </ArtworkFiltersStoreProvider>
   )
 }
+
 interface ArtistArtworksContainerProps {
   openFilterModal: () => void
 }
@@ -89,6 +94,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   ...props
 }) => {
   const tracking = useTracking()
+  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
   const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
@@ -97,12 +103,14 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
 
   const filterParams = useMemo(() => filterArtworksParams(appliedFilters), [appliedFilters])
   const appliedFiltersCount = useSelectedFiltersCount()
-  const allowedFiltersForSavedSearch = useMemo(() => getAllowedFiltersForSavedSearchInput(appliedFilters), [
-    appliedFilters,
-  ])
+  const allowedFiltersForSavedSearch = useMemo(
+    () => getAllowedFiltersForSavedSearchInput(appliedFilters),
+    [appliedFilters]
+  )
   const artworks = artist.artworks
   const artworksCount = artworks?.edges?.length
   const artworksTotal = artworks?.counts?.total ?? 0
+  const shouldShowSavedSearchButton = allowedFiltersForSavedSearch.length > 0 || isEnabledImprovedAlertsFlow
 
   useArtworkFilters({
     relay,
@@ -139,20 +147,35 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   useEffect(() => {
     setJSX(
       <Box backgroundColor="white">
-        <ArtworksFilterHeader onFilterPress={openFilterModal} selectedFiltersCount={appliedFiltersCount}>
-          {allowedFiltersForSavedSearch.length > 0 ? (
-            <SavedSearchButtonQueryRenderer
-              filters={allowedFiltersForSavedSearch}
-              artistId={artist.internalID}
-              artistName={artist.name!}
-              artistSlug={artist.slug}
-              aggregations={aggregations}
-            />
-          ) : null}
+        <ArtworksFilterHeader
+          onFilterPress={openFilterModal}
+          selectedFiltersCount={appliedFiltersCount}
+          childrenPosition={isEnabledImprovedAlertsFlow ? "left" : "right"}
+        >
+          {isEnabledImprovedAlertsFlow ? (
+            <SavedSearchButtonV2 onPress={openFilterModal} />
+          ) : (
+            !!shouldShowSavedSearchButton && (
+              <SavedSearchButtonQueryRenderer
+                filters={allowedFiltersForSavedSearch}
+                artistId={artist.internalID}
+                artistName={artist.name!}
+                artistSlug={artist.slug}
+                aggregations={aggregations}
+              />
+            )
+          )}
         </ArtworksFilterHeader>
       </Box>
     )
-  }, [artworksTotal, filterParams, aggregations, allowedFiltersForSavedSearch, appliedFiltersCount])
+  }, [
+    artworksTotal,
+    filterParams,
+    aggregations,
+    allowedFiltersForSavedSearch,
+    appliedFiltersCount,
+    shouldShowSavedSearchButton,
+  ])
 
   const filteredArtworks = () => {
     if (artworksCount === 0) {

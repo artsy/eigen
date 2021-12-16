@@ -35,7 +35,7 @@ export type FairMoreInfo_fair = {
 };
 export type FairMoreInfo_fair$data = FairMoreInfo_fair;
 export type FairMoreInfo_fair$key = {
-    readonly " $data"?: FairMoreInfo_fair$data;
+    readonly " $data"?: FairMoreInfo_fair$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FairMoreInfo_fair">;
 };
 

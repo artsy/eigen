@@ -1,30 +1,31 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 463b1fbf7d68e7e303caf9e2c8db9f7f */
+/* @relayHash edbad9ba004d96f1de808620c042d1ba */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SearchCriteriaAttributes = {
-    acquireable?: boolean | null;
-    additionalGeneIDs?: Array<string> | null;
-    artistID?: string | null;
-    atAuction?: boolean | null;
-    attributionClass?: Array<string> | null;
-    colors?: Array<string> | null;
-    dimensionRange?: string | null;
-    height?: string | null;
-    inquireableOnly?: boolean | null;
-    locationCities?: Array<string> | null;
-    majorPeriods?: Array<string> | null;
-    materialsTerms?: Array<string> | null;
-    offerable?: boolean | null;
-    partnerIDs?: Array<string> | null;
-    priceRange?: string | null;
-    width?: string | null;
+    acquireable?: boolean | null | undefined;
+    additionalGeneIDs?: Array<string> | null | undefined;
+    artistID?: string | null | undefined;
+    atAuction?: boolean | null | undefined;
+    attributionClass?: Array<string> | null | undefined;
+    colors?: Array<string> | null | undefined;
+    dimensionRange?: string | null | undefined;
+    height?: string | null | undefined;
+    inquireableOnly?: boolean | null | undefined;
+    locationCities?: Array<string> | null | undefined;
+    majorPeriods?: Array<string> | null | undefined;
+    materialsTerms?: Array<string> | null | undefined;
+    offerable?: boolean | null | undefined;
+    partnerIDs?: Array<string> | null | undefined;
+    priceRange?: string | null | undefined;
+    sizes?: Array<string> | null | undefined;
+    width?: string | null | undefined;
 };
 export type SavedSearchButtonRefetchQueryVariables = {
-    criteria?: SearchCriteriaAttributes | null;
+    criteria?: SearchCriteriaAttributes | null | undefined;
 };
 export type SavedSearchButtonRefetchQueryResponse = {
     readonly me: {
@@ -48,8 +49,12 @@ query SavedSearchButtonRefetchQuery(
   }
 }
 
-fragment SavedSearchButton_me_1ff8oJ on Me {
+fragment CreateSavedSearchContentContainerV1_me on Me {
   emailFrequency
+}
+
+fragment SavedSearchButton_me_1ff8oJ on Me {
+  ...CreateSavedSearchContentContainerV1_me
   savedSearch(criteria: $criteria) {
     internalID
   }
@@ -150,7 +155,7 @@ return {
     ]
   },
   "params": {
-    "id": "463b1fbf7d68e7e303caf9e2c8db9f7f",
+    "id": "edbad9ba004d96f1de808620c042d1ba",
     "metadata": {},
     "name": "SavedSearchButtonRefetchQuery",
     "operationKind": "query",

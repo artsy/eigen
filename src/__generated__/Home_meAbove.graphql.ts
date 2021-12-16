@@ -5,12 +5,12 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Home_meAbove = {
-    readonly " $fragmentRefs": FragmentRefs<"EmailConfirmationBanner_me" | "LotsByFollowedArtistsRail_me" | "NewWorksForYouRail_me">;
+    readonly " $fragmentRefs": FragmentRefs<"EmailConfirmationBanner_me" | "LotsByFollowedArtistsRail_me" | "NewWorksForYouRail_me" | "RecommendedArtistsRail_me">;
     readonly " $refType": "Home_meAbove";
 };
 export type Home_meAbove$data = Home_meAbove;
 export type Home_meAbove$key = {
-    readonly " $data"?: Home_meAbove$data;
+    readonly " $data"?: Home_meAbove$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Home_meAbove">;
 };
 
@@ -36,10 +36,15 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "FragmentSpread",
       "name": "NewWorksForYouRail_me"
+    },
+    {
+      "args": null,
+      "kind": "FragmentSpread",
+      "name": "RecommendedArtistsRail_me"
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'f6c14bf793c54aeb638a3dc4e1c18528';
+(node as any).hash = '2d6c8b21c4beb1e520c7e9b9508a3524';
 export default node;

@@ -34,7 +34,7 @@ export type ActiveBid_bid = {
 };
 export type ActiveBid_bid$data = ActiveBid_bid;
 export type ActiveBid_bid$key = {
-    readonly " $data"?: ActiveBid_bid$data;
+    readonly " $data"?: ActiveBid_bid$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ActiveBid_bid">;
 };
 

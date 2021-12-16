@@ -23,7 +23,7 @@ export type CommercialButtons_artwork = {
 };
 export type CommercialButtons_artwork$data = CommercialButtons_artwork;
 export type CommercialButtons_artwork$key = {
-    readonly " $data"?: CommercialButtons_artwork$data;
+    readonly " $data"?: CommercialButtons_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CommercialButtons_artwork">;
 };
 

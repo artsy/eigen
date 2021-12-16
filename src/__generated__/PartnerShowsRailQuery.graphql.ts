@@ -1,13 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a1e909450a8a0a0c5ecf4d6af03af663 */
+/* @relayHash c602a45bb328c081d62db940c6bc4ca6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type PartnerShowsRailQueryVariables = {
     id: string;
-    cursor?: string | null;
+    cursor?: string | null | undefined;
     count: number;
 };
 export type PartnerShowsRailQueryResponse = {
@@ -38,7 +38,7 @@ fragment PartnerShowRailItem_show on Show {
   internalID
   slug
   name
-  exhibitionPeriod
+  exhibitionPeriod(format: SHORT)
   endAt
   coverImage {
     url
@@ -63,7 +63,7 @@ fragment PartnerShowsRail_partner_1G22uz on Partner {
         internalID
         slug
         name
-        exhibitionPeriod
+        exhibitionPeriod(format: SHORT)
         endAt
         images {
           url
@@ -311,10 +311,16 @@ return {
                       (v7/*: any*/),
                       {
                         "alias": null,
-                        "args": null,
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "format",
+                            "value": "SHORT"
+                          }
+                        ],
                         "kind": "ScalarField",
                         "name": "exhibitionPeriod",
-                        "storageKey": null
+                        "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                       },
                       {
                         "alias": null,
@@ -411,7 +417,7 @@ return {
     ]
   },
   "params": {
-    "id": "a1e909450a8a0a0c5ecf4d6af03af663",
+    "id": "c602a45bb328c081d62db940c6bc4ca6",
     "metadata": {},
     "name": "PartnerShowsRailQuery",
     "operationKind": "query",

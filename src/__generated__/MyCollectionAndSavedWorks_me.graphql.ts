@@ -16,7 +16,7 @@ export type MyCollectionAndSavedWorks_me = {
 };
 export type MyCollectionAndSavedWorks_me$data = MyCollectionAndSavedWorks_me;
 export type MyCollectionAndSavedWorks_me$key = {
-    readonly " $data"?: MyCollectionAndSavedWorks_me$data;
+    readonly " $data"?: MyCollectionAndSavedWorks_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyCollectionAndSavedWorks_me">;
 };
 

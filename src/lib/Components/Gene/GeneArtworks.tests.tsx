@@ -1,17 +1,10 @@
+import { fireEvent } from "@testing-library/react-native"
 import { GeneArtworksTestsQuery } from "__generated__/GeneArtworksTestsQuery.graphql"
-import { ApplyButton } from "lib/Components/ArtworkFilter"
-import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/ArtworksFilterHeader"
-import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
-import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
-import { TouchableRow } from "lib/Components/TouchableRow"
-import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Message, TouchableHighlightColor } from "palette"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { GeneArtworksPaginationContainer } from "./GeneArtworks"
 
@@ -65,19 +58,19 @@ describe("GeneArtworks", () => {
   }
 
   it("renders without throwing an error", () => {
-    renderWithWrappers(<TestRenderer />)
+    renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(environment)
   })
 
   it("renders filter header", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const { getByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(environment)
 
-    expect(tree.root.findAllByType(ArtworksFilterHeader)).toHaveLength(1)
+    expect(getByText("Sort & Filter")).toBeTruthy()
   })
 
   it("renders artworks grid", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const { getByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(environment, {
       FilterArtworksConnection() {
         return {
@@ -88,11 +81,12 @@ describe("GeneArtworks", () => {
       },
     })
 
-    expect(tree.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(1)
+    // Find by artwork title
+    expect(getByText("title-1")).toBeTruthy()
   })
 
   it("renders empty artworks grid view", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const { getByText, getAllByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(environment, {
       FilterArtworksConnection() {
         return {
@@ -104,11 +98,10 @@ describe("GeneArtworks", () => {
     })
 
     // Change sort filter
-    act(() => tree.root.findByType(TouchableHighlightColor).props.onPress())
-    act(() => tree.root.findAllByType(TouchableRow)[0].props.onPress())
-    act(() => tree.root.findAllByType(TouchableRow)[1].props.onPress())
-    act(() => tree.root.findAllByType(TouchableRow)[1].props.onPress())
-    act(() => tree.root.findByType(ApplyButton).props.onPress())
+    fireEvent.press(getByText("Sort & Filter"))
+    fireEvent.press(getByText("Sort By"))
+    fireEvent.press(getByText("Recently Added"))
+    fireEvent.press(getAllByText("Show results")[0])
 
     mockEnvironmentPayload(environment, {
       FilterArtworksConnection() {
@@ -120,11 +113,11 @@ describe("GeneArtworks", () => {
       },
     })
 
-    expect(tree.root.findAllByType(FilteredArtworkGridZeroState)).toHaveLength(1)
+    expect(getByText(/No results found/)).toBeTruthy()
   })
 
   it("renders empty message when artworks is empty", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const { getByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(environment, {
       Gene() {
         return {
@@ -136,10 +129,8 @@ describe("GeneArtworks", () => {
         }
       },
     })
+    const emptyMessage = "There aren’t any works available in the category at this time."
 
-    expect(tree.root.findAllByType(Message)).toHaveLength(1)
-    expect(extractText(tree.root.findByType(Message))).toEqual(
-      "There aren’t any works available in the category at this time."
-    )
+    expect(getByText(emptyMessage)).toBeTruthy()
   })
 })

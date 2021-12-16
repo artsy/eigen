@@ -1,13 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 308aff04b58a4ef509974984b8e42460 */
+/* @relayHash 12404ff0ab5d28cda0400f1ffecdf5f1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type FavoriteShowsPaginationQueryVariables = {
     count: number;
-    cursor?: string | null;
+    cursor?: string | null | undefined;
 };
 export type FavoriteShowsPaginationQueryResponse = {
     readonly me: {
@@ -80,7 +80,7 @@ fragment ShowItemRow_show on Show {
     }
   }
   href
-  exhibition_period: exhibitionPeriod
+  exhibition_period: exhibitionPeriod(format: SHORT)
   status
   cover_image: coverImage {
     url
@@ -369,10 +369,16 @@ return {
                           },
                           {
                             "alias": "exhibition_period",
-                            "args": null,
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "format",
+                                "value": "SHORT"
+                              }
+                            ],
                             "kind": "ScalarField",
                             "name": "exhibitionPeriod",
-                            "storageKey": null
+                            "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                           },
                           {
                             "alias": null,
@@ -449,7 +455,7 @@ return {
     ]
   },
   "params": {
-    "id": "308aff04b58a4ef509974984b8e42460",
+    "id": "12404ff0ab5d28cda0400f1ffecdf5f1",
     "metadata": {},
     "name": "FavoriteShowsPaginationQuery",
     "operationKind": "query",

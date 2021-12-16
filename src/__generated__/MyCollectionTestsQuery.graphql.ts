@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash caf096133211001be284a5f918e0d107 */
+/* @relayHash 4f0d98abef0e713477639766ecc69434 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -39,6 +39,14 @@ fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectio
       image {
         aspectRatio
       }
+      artistNames
+      medium
+      artist {
+        internalID
+        name
+        id
+      }
+      date
       ...MyCollectionArtworkListItem_artwork
     }
   }
@@ -69,10 +77,16 @@ fragment MyCollection_me on Me {
   myCollectionInfo {
     includesPurchasedArtworks
   }
-  myCollectionConnection(excludePurchasedArtworks: true, first: 20, sort: CREATED_AT_DESC) {
+  myCollectionConnection(excludePurchasedArtworks: true, first: 100, sort: CREATED_AT_DESC) {
     edges {
       node {
         id
+        medium
+        artist {
+          internalID
+          name
+          id
+        }
         __typename
       }
       cursor
@@ -103,7 +117,7 @@ v1 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 20
+    "value": 100
   },
   {
     "kind": "Literal",
@@ -231,6 +245,33 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "medium",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "artist",
+                        "plural": false,
+                        "selections": [
+                          (v2/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "name",
+                            "storageKey": null
+                          },
+                          (v0/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "__typename",
                         "storageKey": null
                       },
@@ -259,20 +300,21 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v2/*: any*/),
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "Artist",
-                        "kind": "LinkedField",
-                        "name": "artist",
-                        "plural": false,
-                        "selections": [
-                          (v2/*: any*/),
-                          (v0/*: any*/)
-                        ],
+                        "kind": "ScalarField",
+                        "name": "artistNames",
                         "storageKey": null
                       },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "date",
+                        "storageKey": null
+                      },
+                      (v2/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -302,28 +344,7 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "artistNames",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "medium",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
                         "name": "title",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "date",
                         "storageKey": null
                       }
                     ],
@@ -372,7 +393,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "myCollectionConnection(excludePurchasedArtworks:true,first:20,sort:\"CREATED_AT_DESC\")"
+            "storageKey": "myCollectionConnection(excludePurchasedArtworks:true,first:100,sort:\"CREATED_AT_DESC\")"
           },
           {
             "alias": null,
@@ -389,7 +410,7 @@ return {
     ]
   },
   "params": {
-    "id": "caf096133211001be284a5f918e0d107",
+    "id": "4f0d98abef0e713477639766ecc69434",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -427,6 +448,7 @@ return {
         },
         "me.myCollectionConnection.edges.node.artist.id": (v3/*: any*/),
         "me.myCollectionConnection.edges.node.artist.internalID": (v3/*: any*/),
+        "me.myCollectionConnection.edges.node.artist.name": (v5/*: any*/),
         "me.myCollectionConnection.edges.node.artistNames": (v5/*: any*/),
         "me.myCollectionConnection.edges.node.date": (v5/*: any*/),
         "me.myCollectionConnection.edges.node.id": (v3/*: any*/),
