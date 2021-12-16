@@ -1071,8 +1071,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "dimensionRange",
-          paramValue: "*-*",
+          paramName: "sizes",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1189,8 +1189,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "dimensionRange",
-          paramValue: "*-*",
+          paramName: "sizes",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1302,8 +1302,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "dimensionRange",
-          paramValue: "*-*",
+          paramName: "sizes",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1421,8 +1421,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "dimensionRange",
-          paramValue: "*-*",
+          paramName: "sizes",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1540,8 +1540,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "dimensionRange",
-          paramValue: "*-*",
+          paramName: "sizes",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1674,8 +1674,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "dimensionRange",
-          paramValue: "*-*",
+          paramName: "sizes",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1764,8 +1764,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "dimensionRange",
-          paramValue: "*-*",
+          paramName: "sizes",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -1882,8 +1882,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "dimensionRange",
-          paramValue: "*-*",
+          paramName: "sizes",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -2001,8 +2001,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "dimensionRange",
-          paramValue: "*-*",
+          paramName: "sizes",
+          paramValue: [],
         },
         {
           displayText: "All",
@@ -2101,8 +2101,8 @@ describe("selectedOptionsUnion", () => {
         },
         {
           displayText: "All",
-          paramName: "dimensionRange",
-          paramValue: "*-*",
+          paramName: "sizes",
+          paramValue: [],
         },
         {
           displayText: "All",

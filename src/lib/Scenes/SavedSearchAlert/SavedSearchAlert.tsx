@@ -31,6 +31,7 @@ export const SavedSearchAlertQueryRenderer: React.FC<SearchCriteriaAlertBaseProp
               attributionClass
               colors
               dimensionRange
+              sizes
               height
               inquireableOnly
               internalID
