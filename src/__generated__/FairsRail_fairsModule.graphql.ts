@@ -44,7 +44,7 @@ export type FairsRail_fairsModule = {
 };
 export type FairsRail_fairsModule$data = FairsRail_fairsModule;
 export type FairsRail_fairsModule$key = {
-    readonly " $data"?: FairsRail_fairsModule$data;
+    readonly " $data"?: FairsRail_fairsModule$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FairsRail_fairsModule">;
 };
 

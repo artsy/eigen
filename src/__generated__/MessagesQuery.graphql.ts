@@ -6,8 +6,8 @@
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MessagesQueryVariables = {
-    count?: number | null;
-    after?: string | null;
+    count?: number | null | undefined;
+    after?: string | null | undefined;
     conversationID: string;
 };
 export type MessagesQueryResponse = {

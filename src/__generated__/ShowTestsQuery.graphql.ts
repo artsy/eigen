@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5bd29f9ee2a7b4d4f20581ec6fbc4d06 */
+/* @relayHash 27856e34cc439060191ae665aafb665b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -94,10 +94,10 @@ fragment ShowArtworksEmptyState_show on Show {
   status
 }
 
-fragment ShowArtworks_show_1lt5O6 on Show {
+fragment ShowArtworks_show_1NSlNd on Show {
   slug
   internalID
-  showArtworks: filterArtworksConnection(first: 30, aggregations: [ARTIST, ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, FOLLOWED_ARTISTS, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PRICE_RANGE], input: {sort: "partner_show_position", dimensionRange: "*-*"}) {
+  showArtworks: filterArtworksConnection(first: 30, aggregations: [ARTIST, ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, FOLLOWED_ARTISTS, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PRICE_RANGE], input: {sort: "partner_show_position"}) {
     aggregations {
       slice
       counts {
@@ -262,7 +262,7 @@ fragment Show_show on Show {
   ...ShowInfo_show
   ...ShowViewingRoom_show
   ...ShowContextCard_show
-  ...ShowArtworks_show_1lt5O6
+  ...ShowArtworks_show_1NSlNd
   ...ShowArtworksEmptyState_show
   viewingRoomIDs
   images(default: false) {
@@ -396,7 +396,6 @@ v14 = [
     "kind": "Literal",
     "name": "input",
     "value": {
-      "dimensionRange": "*-*",
       "sort": "partner_show_position"
     }
   }
@@ -1240,7 +1239,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"ARTIST\",\"ARTIST_NATIONALITY\",\"COLOR\",\"DIMENSION_RANGE\",\"FOLLOWED_ARTISTS\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PRICE_RANGE\"],first:30,input:{\"dimensionRange\":\"*-*\",\"sort\":\"partner_show_position\"})"
+            "storageKey": "filterArtworksConnection(aggregations:[\"ARTIST\",\"ARTIST_NATIONALITY\",\"COLOR\",\"DIMENSION_RANGE\",\"FOLLOWED_ARTISTS\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PRICE_RANGE\"],first:30,input:{\"sort\":\"partner_show_position\"})"
           },
           {
             "alias": "showArtworks",
@@ -1287,7 +1286,7 @@ return {
     ]
   },
   "params": {
-    "id": "5bd29f9ee2a7b4d4f20581ec6fbc4d06",
+    "id": "27856e34cc439060191ae665aafb665b",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "show": {

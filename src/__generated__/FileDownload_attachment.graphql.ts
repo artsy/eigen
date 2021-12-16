@@ -12,7 +12,7 @@ export type FileDownload_attachment = {
 };
 export type FileDownload_attachment$data = FileDownload_attachment;
 export type FileDownload_attachment$key = {
-    readonly " $data"?: FileDownload_attachment$data;
+    readonly " $data"?: FileDownload_attachment$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FileDownload_attachment">;
 };
 

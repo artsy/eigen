@@ -21,7 +21,7 @@ export type AttachmentList_conversation = {
 };
 export type AttachmentList_conversation$data = AttachmentList_conversation;
 export type AttachmentList_conversation$key = {
-    readonly " $data"?: AttachmentList_conversation$data;
+    readonly " $data"?: AttachmentList_conversation$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"AttachmentList_conversation">;
 };
 

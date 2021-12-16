@@ -14,7 +14,7 @@ export type RequestConditionReport_artwork = {
 };
 export type RequestConditionReport_artwork$data = RequestConditionReport_artwork;
 export type RequestConditionReport_artwork$key = {
-    readonly " $data"?: RequestConditionReport_artwork$data;
+    readonly " $data"?: RequestConditionReport_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"RequestConditionReport_artwork">;
 };
 

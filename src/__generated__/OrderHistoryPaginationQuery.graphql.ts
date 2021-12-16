@@ -8,8 +8,8 @@ import { FragmentRefs } from "relay-runtime";
 export type CommerceOrderStateEnum = "ABANDONED" | "APPROVED" | "CANCELED" | "FULFILLED" | "PENDING" | "REFUNDED" | "SUBMITTED" | "%future added value";
 export type OrderHistoryPaginationQueryVariables = {
     count: number;
-    cursor?: string | null;
-    states?: Array<CommerceOrderStateEnum> | null;
+    cursor?: string | null | undefined;
+    states?: Array<CommerceOrderStateEnum> | null | undefined;
 };
 export type OrderHistoryPaginationQueryResponse = {
     readonly me: {

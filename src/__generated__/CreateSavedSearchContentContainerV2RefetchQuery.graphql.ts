@@ -6,26 +6,26 @@
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SearchCriteriaAttributes = {
-    acquireable?: boolean | null;
-    additionalGeneIDs?: Array<string> | null;
-    artistID?: string | null;
-    atAuction?: boolean | null;
-    attributionClass?: Array<string> | null;
-    colors?: Array<string> | null;
-    dimensionRange?: string | null;
-    height?: string | null;
-    inquireableOnly?: boolean | null;
-    locationCities?: Array<string> | null;
-    majorPeriods?: Array<string> | null;
-    materialsTerms?: Array<string> | null;
-    offerable?: boolean | null;
-    partnerIDs?: Array<string> | null;
-    priceRange?: string | null;
-    sizes?: Array<string> | null;
-    width?: string | null;
+    acquireable?: boolean | null | undefined;
+    additionalGeneIDs?: Array<string> | null | undefined;
+    artistID?: string | null | undefined;
+    atAuction?: boolean | null | undefined;
+    attributionClass?: Array<string> | null | undefined;
+    colors?: Array<string> | null | undefined;
+    dimensionRange?: string | null | undefined;
+    height?: string | null | undefined;
+    inquireableOnly?: boolean | null | undefined;
+    locationCities?: Array<string> | null | undefined;
+    majorPeriods?: Array<string> | null | undefined;
+    materialsTerms?: Array<string> | null | undefined;
+    offerable?: boolean | null | undefined;
+    partnerIDs?: Array<string> | null | undefined;
+    priceRange?: string | null | undefined;
+    sizes?: Array<string> | null | undefined;
+    width?: string | null | undefined;
 };
 export type CreateSavedSearchContentContainerV2RefetchQueryVariables = {
-    criteria?: SearchCriteriaAttributes | null;
+    criteria?: SearchCriteriaAttributes | null | undefined;
 };
 export type CreateSavedSearchContentContainerV2RefetchQueryResponse = {
     readonly me: {

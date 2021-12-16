@@ -25,7 +25,7 @@ export type ShowArtistsPreview_show = {
 };
 export type ShowArtistsPreview_show$data = ShowArtistsPreview_show;
 export type ShowArtistsPreview_show$key = {
-    readonly " $data"?: ShowArtistsPreview_show$data;
+    readonly " $data"?: ShowArtistsPreview_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShowArtistsPreview_show">;
 };
 

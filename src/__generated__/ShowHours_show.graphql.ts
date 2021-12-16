@@ -18,7 +18,7 @@ export type ShowHours_show = {
 };
 export type ShowHours_show$data = ShowHours_show;
 export type ShowHours_show$key = {
-    readonly " $data"?: ShowHours_show$data;
+    readonly " $data"?: ShowHours_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShowHours_show">;
 };
 

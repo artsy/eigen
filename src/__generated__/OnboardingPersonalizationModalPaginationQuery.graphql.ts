@@ -8,7 +8,7 @@ import { FragmentRefs } from "relay-runtime";
 export type OnboardingPersonalizationModalPaginationQueryVariables = {
     query: string;
     count: number;
-    cursor?: string | null;
+    cursor?: string | null | undefined;
 };
 export type OnboardingPersonalizationModalPaginationQueryResponse = {
     readonly " $fragmentRefs": FragmentRefs<"OnboardingPersonalizationModal_artists">;

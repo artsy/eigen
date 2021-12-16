@@ -97,4 +97,5 @@ const mockResponse = {
   partnerIDs: "partnerIDs-1",
   priceRange: "priceRange-1",
   width: "width-1",
+  sizes: "sizes-1",
 }

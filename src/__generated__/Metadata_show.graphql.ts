@@ -11,7 +11,7 @@ export type Metadata_show = {
     readonly status_update: string | null;
     readonly status: string | null;
     readonly partner: {
-        readonly name?: string | null;
+        readonly name?: string | null | undefined;
     } | null;
     readonly location: {
         readonly city: string | null;
@@ -20,7 +20,7 @@ export type Metadata_show = {
 };
 export type Metadata_show$data = Metadata_show;
 export type Metadata_show$key = {
-    readonly " $data"?: Metadata_show$data;
+    readonly " $data"?: Metadata_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Metadata_show">;
 };
 

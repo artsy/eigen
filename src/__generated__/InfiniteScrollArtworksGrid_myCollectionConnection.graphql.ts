@@ -19,6 +19,10 @@ export type InfiniteScrollArtworksGrid_myCollectionConnection = {
             } | null;
             readonly artistNames: string | null;
             readonly medium: string | null;
+            readonly artist: {
+                readonly internalID: string;
+                readonly name: string | null;
+            } | null;
             readonly date: string | null;
             readonly " $fragmentRefs": FragmentRefs<"ArtworkGridItem_artwork" | "MyCollectionArtworkListItem_artwork">;
         } | null;
@@ -27,7 +31,7 @@ export type InfiniteScrollArtworksGrid_myCollectionConnection = {
 };
 export type InfiniteScrollArtworksGrid_myCollectionConnection$data = InfiniteScrollArtworksGrid_myCollectionConnection;
 export type InfiniteScrollArtworksGrid_myCollectionConnection$key = {
-    readonly " $data"?: InfiniteScrollArtworksGrid_myCollectionConnection$data;
+    readonly " $data"?: InfiniteScrollArtworksGrid_myCollectionConnection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_myCollectionConnection">;
 };
 
@@ -142,6 +146,31 @@ const node: ReaderFragment = {
             {
               "alias": null,
               "args": null,
+              "concreteType": "Artist",
+              "kind": "LinkedField",
+              "name": "artist",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "internalID",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "name",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
               "kind": "ScalarField",
               "name": "date",
               "storageKey": null
@@ -173,5 +202,5 @@ const node: ReaderFragment = {
   "type": "MyCollectionConnection",
   "abstractKey": null
 };
-(node as any).hash = 'a215bf329265174dc62ab53941fa0353';
+(node as any).hash = '084064e1bd6cb0169414d3e90df9b1f1';
 export default node;

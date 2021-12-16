@@ -5,8 +5,8 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type CreditCardInput = {
-    clientMutationId?: string | null;
-    oneTimeUse?: boolean | null;
+    clientMutationId?: string | null | undefined;
+    oneTimeUse?: boolean | null | undefined;
     token: string;
 };
 export type MyProfilePaymentNewCreditCardSaveCardMutationVariables = {
@@ -17,12 +17,12 @@ export type MyProfilePaymentNewCreditCardSaveCardMutationResponse = {
         readonly creditCardOrError: {
             readonly creditCard?: {
                 readonly internalID: string;
-            } | null;
+            } | null | undefined;
             readonly mutationError?: {
                 readonly detail: string | null;
                 readonly error: string | null;
                 readonly message: string;
-            } | null;
+            } | null | undefined;
         } | null;
     } | null;
 };

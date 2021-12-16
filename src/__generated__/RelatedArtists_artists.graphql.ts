@@ -11,7 +11,7 @@ export type RelatedArtists_artists = ReadonlyArray<{
 }>;
 export type RelatedArtists_artists$data = RelatedArtists_artists;
 export type RelatedArtists_artists$key = ReadonlyArray<{
-    readonly " $data"?: RelatedArtists_artists$data;
+    readonly " $data"?: RelatedArtists_artists$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"RelatedArtists_artists">;
 }>;
 

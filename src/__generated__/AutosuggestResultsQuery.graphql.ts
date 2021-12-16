@@ -9,7 +9,7 @@ export type SearchEntity = "ARTICLE" | "ARTIST" | "ARTIST_SERIES" | "ARTWORK" | 
 export type AutosuggestResultsQueryVariables = {
     query: string;
     count: number;
-    entities?: Array<SearchEntity | null> | null;
+    entities?: Array<SearchEntity | null> | null | undefined;
 };
 export type AutosuggestResultsQueryResponse = {
     readonly " $fragmentRefs": FragmentRefs<"AutosuggestResults_results">;

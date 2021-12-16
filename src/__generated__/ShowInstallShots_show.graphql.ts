@@ -19,7 +19,7 @@ export type ShowInstallShots_show = {
 };
 export type ShowInstallShots_show$data = ShowInstallShots_show;
 export type ShowInstallShots_show$key = {
-    readonly " $data"?: ShowInstallShots_show$data;
+    readonly " $data"?: ShowInstallShots_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShowInstallShots_show">;
 };
 

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 669c7f7550f0820d1fcd7497fe8e5501 */
+/* @relayHash a3e753c735173c3977459f118df6eeff */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -25,10 +25,10 @@ query ArtistSeriesTestsQuery {
   }
 }
 
-fragment ArtistSeriesArtworks_artistSeries_2T6kBV on ArtistSeries {
+fragment ArtistSeriesArtworks_artistSeries_ZORN9 on ArtistSeries {
   slug
   internalID
-  artistSeriesArtworks: filterArtworksConnection(first: 20, aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE], input: {sort: "-decayed_merch", dimensionRange: "*-*"}) {
+  artistSeriesArtworks: filterArtworksConnection(first: 20, aggregations: [COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE], input: {sort: "-decayed_merch"}) {
     aggregations {
       slice
       counts {
@@ -105,7 +105,7 @@ fragment ArtistSeries_artistSeries on ArtistSeries {
   artistIDs
   ...ArtistSeriesHeader_artistSeries
   ...ArtistSeriesMeta_artistSeries
-  ...ArtistSeriesArtworks_artistSeries_2T6kBV
+  ...ArtistSeriesArtworks_artistSeries_ZORN9
   artist: artists(size: 1) {
     ...ArtistSeriesMoreSeries_artist
     artistSeriesConnection(first: 4) {
@@ -267,7 +267,6 @@ v8 = [
     "kind": "Literal",
     "name": "input",
     "value": {
-      "dimensionRange": "*-*",
       "sort": "-decayed_merch"
     }
   }
@@ -775,7 +774,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:20,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-decayed_merch\"})"
+            "storageKey": "filterArtworksConnection(aggregations:[\"COLOR\",\"DIMENSION_RANGE\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:20,input:{\"sort\":\"-decayed_merch\"})"
           },
           {
             "alias": "artistSeriesArtworks",
@@ -873,7 +872,7 @@ return {
     ]
   },
   "params": {
-    "id": "669c7f7550f0820d1fcd7497fe8e5501",
+    "id": "a3e753c735173c3977459f118df6eeff",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artistSeries": (v10/*: any*/),

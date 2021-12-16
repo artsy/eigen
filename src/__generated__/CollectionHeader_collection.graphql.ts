@@ -21,7 +21,7 @@ export type CollectionHeader_collection = {
 };
 export type CollectionHeader_collection$data = CollectionHeader_collection;
 export type CollectionHeader_collection$key = {
-    readonly " $data"?: CollectionHeader_collection$data;
+    readonly " $data"?: CollectionHeader_collection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CollectionHeader_collection">;
 };
 

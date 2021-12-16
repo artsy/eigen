@@ -19,7 +19,7 @@ export type CommercialPartnerInformation_artwork = {
 };
 export type CommercialPartnerInformation_artwork$data = CommercialPartnerInformation_artwork;
 export type CommercialPartnerInformation_artwork$key = {
-    readonly " $data"?: CommercialPartnerInformation_artwork$data;
+    readonly " $data"?: CommercialPartnerInformation_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CommercialPartnerInformation_artwork">;
 };
 

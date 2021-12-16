@@ -10,7 +10,7 @@ export type About_tag = {
 };
 export type About_tag$data = About_tag;
 export type About_tag$key = {
-    readonly " $data"?: About_tag$data;
+    readonly " $data"?: About_tag$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"About_tag">;
 };
 

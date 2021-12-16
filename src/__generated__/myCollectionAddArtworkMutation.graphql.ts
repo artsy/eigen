@@ -7,24 +7,25 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionCreateArtworkInput = {
     artistIds: Array<string | null>;
-    category?: string | null;
-    clientMutationId?: string | null;
-    costCurrencyCode?: string | null;
-    costMinor?: number | null;
-    date?: string | null;
-    depth?: string | null;
-    editionNumber?: string | null;
-    editionSize?: string | null;
-    externalImageUrls?: Array<string | null> | null;
-    height?: string | null;
-    isEdition?: boolean | null;
+    artworkLocation?: string | null | undefined;
+    category?: string | null | undefined;
+    clientMutationId?: string | null | undefined;
+    costCurrencyCode?: string | null | undefined;
+    costMinor?: number | null | undefined;
+    date?: string | null | undefined;
+    depth?: string | null | undefined;
+    editionNumber?: string | null | undefined;
+    editionSize?: string | null | undefined;
+    externalImageUrls?: Array<string | null> | null | undefined;
+    height?: string | null | undefined;
+    isEdition?: boolean | null | undefined;
     medium: string;
-    metric?: string | null;
-    pricePaidCents?: number | null;
-    pricePaidCurrency?: string | null;
-    provenance?: string | null;
-    title?: string | null;
-    width?: string | null;
+    metric?: string | null | undefined;
+    pricePaidCents?: number | null | undefined;
+    pricePaidCurrency?: string | null | undefined;
+    provenance?: string | null | undefined;
+    title?: string | null | undefined;
+    width?: string | null | undefined;
 };
 export type myCollectionAddArtworkMutationVariables = {
     input: MyCollectionCreateArtworkInput;
@@ -37,10 +38,10 @@ export type myCollectionAddArtworkMutationResponse = {
                 readonly node: {
                     readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtwork_sharedProps">;
                 } | null;
-            } | null;
+            } | null | undefined;
             readonly mutationError?: {
                 readonly message: string;
-            } | null;
+            } | null | undefined;
         } | null;
     } | null;
 };

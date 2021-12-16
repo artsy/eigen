@@ -20,7 +20,7 @@ export type AuctionResultsForArtistsYouFollow_me = {
 };
 export type AuctionResultsForArtistsYouFollow_me$data = AuctionResultsForArtistsYouFollow_me;
 export type AuctionResultsForArtistsYouFollow_me$key = {
-    readonly " $data"?: AuctionResultsForArtistsYouFollow_me$data;
+    readonly " $data"?: AuctionResultsForArtistsYouFollow_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"AuctionResultsForArtistsYouFollow_me">;
 };
 

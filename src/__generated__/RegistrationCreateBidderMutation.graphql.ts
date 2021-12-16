@@ -5,7 +5,7 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type CreateBidderInput = {
-    clientMutationId?: string | null;
+    clientMutationId?: string | null | undefined;
     saleID: string;
 };
 export type RegistrationCreateBidderMutationVariables = {

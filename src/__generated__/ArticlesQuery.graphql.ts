@@ -7,10 +7,10 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArticleSorts = "PUBLISHED_AT_ASC" | "PUBLISHED_AT_DESC" | "%future added value";
 export type ArticlesQueryVariables = {
-    count?: number | null;
-    after?: string | null;
-    sort?: ArticleSorts | null;
-    inEditorialFeed?: boolean | null;
+    count?: number | null | undefined;
+    after?: string | null | undefined;
+    sort?: ArticleSorts | null | undefined;
+    inEditorialFeed?: boolean | null | undefined;
 };
 export type ArticlesQueryResponse = {
     readonly " $fragmentRefs": FragmentRefs<"Articles_articlesConnection">;

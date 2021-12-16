@@ -1,13 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ba99ad264f966cb55a51e473f66b3e4b */
+/* @relayHash 8cf7fcf39c2d256436b36b47dd16a65c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type CollectionQueryVariables = {
     collectionID: string;
-    screenWidth?: number | null;
+    screenWidth?: number | null | undefined;
 };
 export type CollectionQueryResponse = {
     readonly collection: {
@@ -114,11 +114,11 @@ fragment CollectionArtworksFilter_collection on MarketingCollection {
   id
 }
 
-fragment CollectionArtworks_collection_2T6kBV on MarketingCollection {
+fragment CollectionArtworks_collection_ZORN9 on MarketingCollection {
   isDepartment
   slug
   id
-  collectionArtworks: artworksConnection(first: 10, aggregations: [ARTIST, ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE], input: {sort: "-decayed_merch", dimensionRange: "*-*"}) {
+  collectionArtworks: artworksConnection(first: 10, aggregations: [ARTIST, ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE], input: {sort: "-decayed_merch"}) {
     aggregations {
       slice
       counts {
@@ -180,7 +180,7 @@ fragment Collection_collection_2qE49v on MarketingCollection {
   slug
   isDepartment
   ...CollectionHeader_collection
-  ...CollectionArtworks_collection_2T6kBV
+  ...CollectionArtworks_collection_ZORN9
   ...CollectionArtworksFilter_collection
   ...FeaturedArtists_collection
   ...CollectionHubsRails_collection
@@ -352,7 +352,6 @@ v8 = [
     "kind": "Literal",
     "name": "input",
     "value": {
-      "dimensionRange": "*-*",
       "sort": "-decayed_merch"
     }
   }
@@ -885,7 +884,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "artworksConnection(aggregations:[\"ARTIST\",\"ARTIST_NATIONALITY\",\"COLOR\",\"DIMENSION_RANGE\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:10,input:{\"dimensionRange\":\"*-*\",\"sort\":\"-decayed_merch\"})"
+            "storageKey": "artworksConnection(aggregations:[\"ARTIST\",\"ARTIST_NATIONALITY\",\"COLOR\",\"DIMENSION_RANGE\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:10,input:{\"sort\":\"-decayed_merch\"})"
           },
           {
             "alias": "collectionArtworks",
@@ -1141,7 +1140,7 @@ return {
     ]
   },
   "params": {
-    "id": "ba99ad264f966cb55a51e473f66b3e4b",
+    "id": "8cf7fcf39c2d256436b36b47dd16a65c",
     "metadata": {},
     "name": "CollectionQuery",
     "operationKind": "query",

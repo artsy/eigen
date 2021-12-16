@@ -286,7 +286,7 @@ export const FairFragmentContainer = createFragmentContainer(Fair, {
       ...FairEmptyState_fair
       ...FairEditorial_fair
       ...FairCollections_fair
-      ...FairArtworks_fair @arguments(input: { sort: "-decayed_merch", dimensionRange: "*-*" })
+      ...FairArtworks_fair @arguments(input: { sort: "-decayed_merch" })
       ...FairExhibitors_fair
       ...FairFollowedArtistsRail_fair
     }

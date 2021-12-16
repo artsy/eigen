@@ -9,7 +9,6 @@ export type FilterScreen =
   | "categories"
   | "color"
   | "colors"
-  | "dimensionRange"
   | "estimateRange"
   | "locationCities"
   | "majorPeriods"

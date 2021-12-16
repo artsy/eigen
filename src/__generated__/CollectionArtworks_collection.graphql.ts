@@ -32,7 +32,7 @@ export type CollectionArtworks_collection = {
 };
 export type CollectionArtworks_collection$data = CollectionArtworks_collection;
 export type CollectionArtworks_collection$key = {
-    readonly " $data"?: CollectionArtworks_collection$data;
+    readonly " $data"?: CollectionArtworks_collection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CollectionArtworks_collection">;
 };
 

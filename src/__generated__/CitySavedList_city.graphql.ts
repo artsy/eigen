@@ -10,7 +10,7 @@ export type CitySavedList_city = {
 };
 export type CitySavedList_city$data = CitySavedList_city;
 export type CitySavedList_city$key = {
-    readonly " $data"?: CitySavedList_city$data;
+    readonly " $data"?: CitySavedList_city$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CitySavedList_city">;
 };
 

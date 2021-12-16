@@ -20,7 +20,7 @@ export type ItemArtwork_artwork = {
 };
 export type ItemArtwork_artwork$data = ItemArtwork_artwork;
 export type ItemArtwork_artwork$key = {
-    readonly " $data"?: ItemArtwork_artwork$data;
+    readonly " $data"?: ItemArtwork_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ItemArtwork_artwork">;
 };
 

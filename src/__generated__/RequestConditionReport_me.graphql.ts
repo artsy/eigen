@@ -11,7 +11,7 @@ export type RequestConditionReport_me = {
 };
 export type RequestConditionReport_me$data = RequestConditionReport_me;
 export type RequestConditionReport_me$key = {
-    readonly " $data"?: RequestConditionReport_me$data;
+    readonly " $data"?: RequestConditionReport_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"RequestConditionReport_me">;
 };
 

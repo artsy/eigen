@@ -143,7 +143,9 @@ const tracks = {
   }),
 }
 
-const query = graphql`
+export const viewingRoomsDefaultVariables = { count: PAGE_SIZE, after: null }
+
+export const ViewingRoomsListScreenQuery = graphql`
   query ViewingRoomsListQuery($count: Int!, $after: String) {
     ...ViewingRoomsList_query @arguments(count: $count, after: $after)
 
@@ -154,7 +156,7 @@ const query = graphql`
 `
 
 const connectionConfig: ConnectionConfig = {
-  query,
+  query: ViewingRoomsListScreenQuery,
   getVariables: (_props, { count, cursor }, _fragmentVariables) => ({
     count,
     after: cursor,
@@ -203,7 +205,10 @@ const LoadingMorePlaceholder = () => (
 )
 
 export const ViewingRoomsListQueryRenderer: React.FC = () => {
-  const { props, error, retry } = useQuery<ViewingRoomsListQuery>(query, { count: PAGE_SIZE })
+  const { props, error, retry } = useQuery<ViewingRoomsListQuery>(
+    ViewingRoomsListScreenQuery,
+    viewingRoomsDefaultVariables
+  )
 
   if (props) {
     return <ViewingRoomsListContainer query={props} featured={props.featured!} />

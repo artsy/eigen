@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3ebc9b39d0811e3c5b0341f1c373d160 */
+/* @relayHash c68978f33c405c74b0cb111fc9828983 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -75,7 +75,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment FairAllFollowedArtists_fair on Fair {
   internalID
   slug
-  ...FairArtworks_fair_6zGp3
+  ...FairArtworks_fair_26N2Rt
 }
 
 fragment FairAllFollowedArtists_fairForFilters on Fair {
@@ -95,10 +95,10 @@ fragment FairAllFollowedArtists_fairForFilters on Fair {
   }
 }
 
-fragment FairArtworks_fair_6zGp3 on Fair {
+fragment FairArtworks_fair_26N2Rt on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, aggregations: [ARTIST, ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, FOLLOWED_ARTISTS, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE], input: {includeArtworksByFollowedArtists: true, sort: "-decayed_merch", dimensionRange: "*-*"}) {
+  fairArtworks: filterArtworksConnection(first: 30, aggregations: [ARTIST, ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, FOLLOWED_ARTISTS, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE], input: {includeArtworksByFollowedArtists: true, sort: "-decayed_merch"}) {
     aggregations {
       slice
       counts {
@@ -208,7 +208,6 @@ v4 = [
     "kind": "Literal",
     "name": "input",
     "value": {
-      "dimensionRange": "*-*",
       "includeArtworksByFollowedArtists": true,
       "sort": "-decayed_merch"
     }
@@ -754,7 +753,7 @@ return {
                 "abstractKey": "__isArtworkConnectionInterface"
               }
             ],
-            "storageKey": "filterArtworksConnection(aggregations:[\"ARTIST\",\"ARTIST_NATIONALITY\",\"COLOR\",\"DIMENSION_RANGE\",\"FOLLOWED_ARTISTS\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:30,input:{\"dimensionRange\":\"*-*\",\"includeArtworksByFollowedArtists\":true,\"sort\":\"-decayed_merch\"})"
+            "storageKey": "filterArtworksConnection(aggregations:[\"ARTIST\",\"ARTIST_NATIONALITY\",\"COLOR\",\"DIMENSION_RANGE\",\"FOLLOWED_ARTISTS\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:30,input:{\"includeArtworksByFollowedArtists\":true,\"sort\":\"-decayed_merch\"})"
           },
           {
             "alias": "fairArtworks",
@@ -832,7 +831,7 @@ return {
     ]
   },
   "params": {
-    "id": "3ebc9b39d0811e3c5b0341f1c373d160",
+    "id": "c68978f33c405c74b0cb111fc9828983",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": (v10/*: any*/),

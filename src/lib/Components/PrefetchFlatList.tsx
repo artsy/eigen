@@ -4,7 +4,7 @@ import { FlatList, FlatListProps, ViewToken } from "react-native"
 
 export type PrefetchFlatListProps<ItemType> = {
   prefetchUrlExtractor?: (item?: ItemType) => string | undefined
-  prefetchVariablesExtractor?: (item?: ItemType) => object
+  prefetchVariablesExtractor?: (item?: ItemType) => object | undefined
   listRef?: Ref<FlatList<ItemType | any> | any>
 } & FlatListProps<ItemType>
 

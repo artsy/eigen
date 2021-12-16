@@ -7,7 +7,7 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type AuctionResultsForArtistsYouFollowContainerPaginationQueryVariables = {
     first: number;
-    after?: string | null;
+    after?: string | null | undefined;
 };
 export type AuctionResultsForArtistsYouFollowContainerPaginationQueryResponse = {
     readonly me: {

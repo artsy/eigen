@@ -35,6 +35,7 @@ import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { articlesDefaultVariables } from "../Articles/Articles"
 import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
@@ -52,6 +53,8 @@ interface HomeModule {
   type: string
   data: any
   hidden?: boolean
+  prefetchUrl?: string
+  prefetchVariables?: object
 }
 
 interface Props extends ViewProps {
@@ -94,11 +97,13 @@ const Home = (props: Props) => {
           title: "New Works for You",
           type: "newWorksForYou",
           data: meAbove,
+          prefetchUrl: "/new-works-for-you",
         }
       : {
           title: "New Works by Artists You Follow",
           type: "artwork",
           data: homePageAbove?.followedArtistsArtworkModule,
+          prefetchUrl: "/works-for-you",
         }
 
   const artistRecommendations =
@@ -120,12 +125,19 @@ const Home = (props: Props) => {
     newWorks,
     { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
     artistRecommendations,
-    { title: "Auction Lots for You Ending Soon", type: "lotsByFollowedArtists", data: meAbove },
+    {
+      title: "Auction Lots for You Ending Soon",
+      type: "lotsByFollowedArtists",
+      data: meAbove,
+      prefetchUrl: "/lots-by-artists-you-follow",
+      prefetchVariables: lotsByArtistsYouFollowDefaultVariables(),
+    },
     {
       title: "Auctions",
       subtitle: "Discover and bid on works for you",
       type: "sales",
       data: homePageAbove?.salesModule,
+      prefetchUrl: "/auctions",
     },
     // Below-The-Fold Modules
     {
@@ -133,12 +145,15 @@ const Home = (props: Props) => {
       type: "auction-results",
       data: meBelow,
       hidden: !enableAuctionResultsByFollowedArtists,
+      prefetchUrl: "/auction-results-for-artists-you-follow",
     },
     {
       title: "Market News",
       type: "articles",
       data: articlesConnection,
       hidden: !articlesConnection,
+      prefetchUrl: "/articles",
+      prefetchVariables: articlesDefaultVariables,
     },
     {
       title: "Shows for You",
@@ -147,7 +162,13 @@ const Home = (props: Props) => {
       hidden: !enableShowsForYouRail,
     },
     { title: "Trove", type: "trove", data: homePageBelow, hidden: !enableTrove },
-    { title: "Viewing Rooms", type: "viewing-rooms", data: featured, hidden: !enableViewingRooms },
+    {
+      title: "Viewing Rooms",
+      type: "viewing-rooms",
+      data: featured,
+      hidden: !enableViewingRooms,
+      prefetchUrl: "/viewing-rooms",
+    },
     {
       title: "Collections",
       subtitle: "The newest works curated by Artsy",
@@ -185,24 +206,8 @@ const Home = (props: Props) => {
           data={modules}
           initialNumToRender={5}
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
-          prefetchUrlExtractor={(item) => {
-            switch (item?.type) {
-              case "newWorksForYou":
-                return "/new-works-for-you"
-              case "lotsByFollowedArtists":
-                return "/lots-by-artists-you-follow"
-              case "sales":
-                return "/auctions"
-            }
-          }}
-          prefetchVariablesExtractor={(item) => {
-            switch (item?.type) {
-              case "lotsByFollowedArtists":
-                return lotsByArtistsYouFollowDefaultVariables()
-            }
-
-            return {}
-          }}
+          prefetchUrlExtractor={(item) => item?.prefetchUrl}
+          prefetchVariablesExtractor={(item) => item?.prefetchVariables}
           renderItem={({ item, index }) => {
             if (!item.data) {
               return <></>

@@ -15,7 +15,6 @@ extension LatestArticles {
             let artsyLogo = UIImage(named: "WhiteArtsyLogo")!
             let articleImage = article.image!
             let articleTitle = article.title
-            let publishedAt = article.pubDate
             let articleUrl = article.url!
             
             GeometryReader { geo in
@@ -25,23 +24,20 @@ extension LatestArticles {
                         .scaledToFill()
                         .frame(width: geo.size.width, height: geo.size.height, alignment: .top)
                     VStack() {
-                        HStack() {
+                        Spacer()
+                        HStack(alignment: .top) {
+                            VStack() {
+                                PrimaryText(name: articleTitle, color: .white)
+                                    .lineLimit(2)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                            Spacer()
                             Image(uiImage: artsyLogo)
                                 .resizable()
                                 .frame(width: 20, height: 20)
-                                .padding([.leading, .top], 10)
-                            Spacer()
                         }
-                        Spacer()
-                        VStack() {
-                            PrimaryText(name: articleTitle, color: .white)
-                                .lineLimit(2)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            SecondaryText(title: publishedAt, color: .white)
-                                .lineLimit(1)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                        .padding([.leading, .trailing, .bottom], 10)
+                        .padding(16)
+                        .background(Color.black)
                     }
                     .widgetURL(articleUrl)
                 }

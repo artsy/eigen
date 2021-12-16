@@ -48,9 +48,10 @@ describe("AddEditArtwork", () => {
   beforeEach(() => {
     useFormikContextMock.mockImplementation(() => ({
       handleSubmit: jest.fn(),
-      values: {
-        photos: [],
-      },
+      handleBlur: jest.fn(),
+      handleChange: jest.fn(),
+      setFieldValue: jest.fn(),
+      values: {},
     }))
   })
 
@@ -88,8 +89,6 @@ describe("AddEditArtwork", () => {
 
     // not exposed components
     expect(wrapper.root.findByProps({ testID: "CompleteButton" })).toBeDefined()
-    expect(wrapper.root.findByProps({ testID: "PhotosButton" })).toBeDefined()
-    expect(wrapper.root.findByProps({ testID: "PhotosButton" })).toBeDefined()
   })
 
   it("renders correct components on Edit", () => {
@@ -166,6 +165,9 @@ describe("AddEditArtwork", () => {
     const spy = jest.fn()
     useFormikContextMock.mockImplementation(() => ({
       handleSubmit: spy,
+      handleBlur: jest.fn(),
+      handleChange: jest.fn(),
+      setFieldValue: jest.fn(),
       values: {
         photos: [],
       },
@@ -226,37 +228,5 @@ describe("AddEditArtwork", () => {
     const callback = mockShowActionSheetWithOptions.mock.calls[0][1]
     callback(0) // confirm deletion
     expect(mockDelete).toHaveBeenCalledWith()
-  })
-
-  it("navigates to additional details on click", () => {
-    const onHeaderBackButtonPressMock = jest.fn()
-    const mockNavigate = jest.fn()
-    const mockNav = {
-      navigate: mockNavigate,
-    }
-    const mockRoute: Route<
-      "ArtworkForm",
-      {
-        mode: ArtworkFormMode
-        clearForm(): void
-        onDelete?(): void
-        onHeaderBackButtonPress(): void
-      }
-    > = {
-      key: "ArtworkForm",
-      name: "ArtworkForm",
-      params: {
-        mode: "edit",
-        clearForm: jest.fn(),
-        onDelete: jest.fn(),
-        onHeaderBackButtonPress: onHeaderBackButtonPressMock,
-      },
-    }
-    const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
-    const wrapper = renderWithWrappers(artworkForm)
-    wrapper.root.findByProps({ testID: "AdditionalDetailsButton" }).props.onPress()
-    expect(mockNavigate).toHaveBeenCalledWith("AdditionalDetails", {
-      onHeaderBackButtonPress: onHeaderBackButtonPressMock,
-    })
   })
 })

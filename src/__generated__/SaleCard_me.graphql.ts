@@ -13,7 +13,7 @@ export type SaleCard_me = {
 };
 export type SaleCard_me$data = SaleCard_me;
 export type SaleCard_me$key = {
-    readonly " $data"?: SaleCard_me$data;
+    readonly " $data"?: SaleCard_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SaleCard_me">;
 };
 

@@ -12,7 +12,7 @@ export type ArtworkHistory_artwork = {
 };
 export type ArtworkHistory_artwork$data = ArtworkHistory_artwork;
 export type ArtworkHistory_artwork$key = {
-    readonly " $data"?: ArtworkHistory_artwork$data;
+    readonly " $data"?: ArtworkHistory_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkHistory_artwork">;
 };
 

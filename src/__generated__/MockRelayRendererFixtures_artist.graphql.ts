@@ -10,7 +10,7 @@ export type MockRelayRendererFixtures_artist = {
 };
 export type MockRelayRendererFixtures_artist$data = MockRelayRendererFixtures_artist;
 export type MockRelayRendererFixtures_artist$key = {
-    readonly " $data"?: MockRelayRendererFixtures_artist$data;
+    readonly " $data"?: MockRelayRendererFixtures_artist$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MockRelayRendererFixtures_artist">;
 };
 

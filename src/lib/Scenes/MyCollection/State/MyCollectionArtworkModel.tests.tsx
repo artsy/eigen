@@ -55,6 +55,7 @@ describe("MyCollectionArtworkModel", () => {
     const expectedInitialFormValues = {
       artist: "",
       artistIds: [],
+      artworkLocation: "",
       artistSearchResult: null,
       category: "",
       pricePaidDollars: "",

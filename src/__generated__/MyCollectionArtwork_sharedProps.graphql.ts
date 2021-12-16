@@ -40,7 +40,7 @@ export type MyCollectionArtwork_sharedProps = {
 };
 export type MyCollectionArtwork_sharedProps$data = MyCollectionArtwork_sharedProps;
 export type MyCollectionArtwork_sharedProps$key = {
-    readonly " $data"?: MyCollectionArtwork_sharedProps$data;
+    readonly " $data"?: MyCollectionArtwork_sharedProps$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtwork_sharedProps">;
 };
 

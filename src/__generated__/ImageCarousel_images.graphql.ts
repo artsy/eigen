@@ -24,7 +24,7 @@ export type ImageCarousel_images = ReadonlyArray<{
 }>;
 export type ImageCarousel_images$data = ImageCarousel_images;
 export type ImageCarousel_images$key = ReadonlyArray<{
-    readonly " $data"?: ImageCarousel_images$data;
+    readonly " $data"?: ImageCarousel_images$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ImageCarousel_images">;
 }>;
 

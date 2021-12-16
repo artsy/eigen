@@ -13,8 +13,8 @@ extension LatestArticles {
             
             VStack() {
                 HStack(alignment: .top) {
-                    Text("ARTSY EDITORIAL")
-                        .font(.system(size: 10, weight: .bold))
+                    Text("LATEST ARTICLES")
+                        .font(.system(size: 10, weight: .medium))
                     Spacer()
                     Image(uiImage: artsyLogo)
                         .resizable()
@@ -28,11 +28,12 @@ extension LatestArticles {
                                 Image(uiImage: article.image!)
                                     .resizable()
                                     .scaledToFill()
-                                    .frame(width: 48, height: 48, alignment: .top)
+                                    .frame(width: 42, height: 42, alignment: .top)
                                     .clipped()
                                 VStack() {
                                     PrimaryText(name: article.title)
                                         .frame(maxWidth: .infinity, alignment: .leading)
+                                        .lineLimit(2)
                                     SecondaryText(title: article.pubDate)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                 }
@@ -41,7 +42,7 @@ extension LatestArticles {
                     }
                 }
             }
-            .padding(10)
+            .padding(16)
         }
     }
 }

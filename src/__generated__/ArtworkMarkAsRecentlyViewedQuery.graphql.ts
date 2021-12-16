@@ -6,7 +6,7 @@
 import { ConcreteRequest } from "relay-runtime";
 export type RecordArtworkViewInput = {
     artwork_id: string;
-    clientMutationId?: string | null;
+    clientMutationId?: string | null | undefined;
 };
 export type ArtworkMarkAsRecentlyViewedQueryVariables = {
     input: RecordArtworkViewInput;

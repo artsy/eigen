@@ -32,7 +32,7 @@ export type PartnerOverview_partner = {
 };
 export type PartnerOverview_partner$data = PartnerOverview_partner;
 export type PartnerOverview_partner$key = {
-    readonly " $data"?: PartnerOverview_partner$data;
+    readonly " $data"?: PartnerOverview_partner$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"PartnerOverview_partner">;
 };
 

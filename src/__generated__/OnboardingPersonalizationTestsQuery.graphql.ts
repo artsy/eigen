@@ -6,7 +6,7 @@
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type OnboardingPersonalizationTestsQueryVariables = {
-    excludeArtistIDs?: Array<string | null> | null;
+    excludeArtistIDs?: Array<string | null> | null | undefined;
 };
 export type OnboardingPersonalizationTestsQueryResponse = {
     readonly highlights: {

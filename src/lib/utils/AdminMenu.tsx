@@ -12,7 +12,7 @@ import { Versions } from "lib/store/migration"
 import { capitalize, compact, sortBy } from "lodash"
 import { ChevronIcon, CloseIcon, Flex, ReloadIcon, Separator, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useState } from "react"
-import { Button as RNButton } from "react-native"
+import { Button as RNButton, NativeModules } from "react-native"
 import {
   Alert,
   AlertButton,
@@ -142,6 +142,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
             Keychain.resetInternetCredentials(server)
           }}
         />
+        <MenuItem title="Open RN Dev Menu" onPress={() => NativeModules.DevMenu.show()} />
         <MenuItem
           title="Throw Sentry Error"
           onPress={() => {

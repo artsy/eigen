@@ -19,7 +19,7 @@ export type Show_show = {
 };
 export type Show_show$data = Show_show;
 export type Show_show$key = {
-    readonly " $data"?: Show_show$data;
+    readonly " $data"?: Show_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Show_show">;
 };
 
@@ -125,7 +125,6 @@ const node: ReaderFragment = {
           "kind": "Literal",
           "name": "input",
           "value": {
-            "dimensionRange": "*-*",
             "sort": "partner_show_position"
           }
         }
@@ -142,5 +141,5 @@ const node: ReaderFragment = {
   "type": "Show",
   "abstractKey": null
 };
-(node as any).hash = '447380f516cb2f55083c2ad2c9153b61';
+(node as any).hash = 'c57f0298f151c94b8ebf6f52a87c043d';
 export default node;

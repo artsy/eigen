@@ -457,7 +457,6 @@ describe("Applying filters on Artworks", () => {
         "colors": null,
         "count": 10,
         "cursor": null,
-        "dimensionRange": "*-*",
         "id": "street-art-now",
         "inquireableOnly": false,
         "majorPeriods": null,
@@ -507,7 +506,6 @@ describe("Applying filters on Artworks", () => {
       current: JSON.stringify({
         acquireable: false,
         atAuction: false,
-        dimensionRange: "*-*",
         estimateRange: "",
         includeArtworksByFollowedArtists: false,
         inquireableOnly: false,

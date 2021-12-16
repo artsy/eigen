@@ -11,7 +11,7 @@ export type AuctionResult_artist = {
 };
 export type AuctionResult_artist$data = AuctionResult_artist;
 export type AuctionResult_artist$key = {
-    readonly " $data"?: AuctionResult_artist$data;
+    readonly " $data"?: AuctionResult_artist$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"AuctionResult_artist">;
 };
 
