@@ -10,7 +10,7 @@ import { DevToggleName, devToggles, FeatureName, features } from "lib/store/conf
 import { GlobalStore } from "lib/store/GlobalStore"
 import { Versions } from "lib/store/migration"
 import { capitalize, compact, sortBy } from "lodash"
-import { ChevronIcon, CloseIcon, Flex, ReloadIcon, Separator, Spacer, Text, useColor } from "palette"
+import { ChevronIcon, CloseIcon, Flex, ReloadIcon, Sans, Separator, Spacer, Text, Touchable, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Button as RNButton, NativeModules } from "react-native"
 import {
@@ -81,14 +81,14 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           eigen v{getVersion()}, build {getBuildNumber()} ({ArtsyNativeModule.gitCommitShortHash})
         </Text>
         {Platform.OS === "ios" && (
-          <MenuItem
+          <FeatureFlagMenuItem
             title="Go to old Admin menu"
             onPress={() => {
               navigate("/admin", { modal: true })
             }}
           />
         )}
-        <MenuItem
+        <FeatureFlagMenuItem
           title="Go to Storybook"
           onPress={() => {
             navigate("/storybook")
@@ -129,21 +129,38 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
             </Flex>
           }
         />
-        <MenuItem
-          title="Migration name"
-          value={(Object.entries(Versions).find(([_, v]) => v === migrationVersion) ?? ["N/A"])[0]}
+        <FeatureFlagMenuItem
+          title={`Migration name: "${
+            (Object.entries(Versions).find(([_, v]) => v === migrationVersion) ?? ["N/A"])[0]
+          }"`}
+          disabled
         />
-        <MenuItem title="Clear AsyncStorage" onPress={() => AsyncStorage.clear()} />
-        <MenuItem title="Clear Relay Cache" onPress={() => RelayCache.clearAll()} />
-        <MenuItem title="Log out" onPress={() => GlobalStore.actions.auth.signOut()} />
-        <MenuItem
+        <FeatureFlagMenuItem
           title="Clear Keychain"
           onPress={() => {
             Keychain.resetInternetCredentials(server)
           }}
         />
-        <MenuItem title="Open RN Dev Menu" onPress={() => NativeModules.DevMenu.show()} />
-        <MenuItem
+        <FeatureFlagMenuItem title="Open RN Dev Menu" onPress={() => NativeModules.DevMenu.show()} />
+        <FeatureFlagMenuItem
+          title="Clear AsyncStorage"
+          onPress={() => {
+            AsyncStorage.clear()
+          }}
+        />
+        <FeatureFlagMenuItem
+          title="Clear Relay Cache"
+          onPress={() => {
+            RelayCache.clearAll()
+          }}
+        />
+        <FeatureFlagMenuItem
+          title="Log out"
+          onPress={() => {
+            GlobalStore.actions.signOut()
+          }}
+        />
+        <FeatureFlagMenuItem
           title="Throw Sentry Error"
           onPress={() => {
             if (!Config.SENTRY_DSN) {
@@ -155,9 +172,8 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
             }
             throw Error("Sentry test error")
           }}
-          chevron={null}
         />
-        <MenuItem
+        <FeatureFlagMenuItem
           title="Trigger Sentry Native Crash"
           onPress={() => {
             if (!Config.SENTRY_DSN) {
@@ -169,9 +185,8 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
             }
             Sentry.nativeCrash()
           }}
-          chevron={null}
         />
-        <MenuItem title="Device ID" value={getUniqueId()} />
+        <FeatureFlagMenuItem title={`Device ID: "${getUniqueId()}"`} />
       </ScrollView>
     </Flex>
   )
@@ -210,7 +225,7 @@ const FeatureFlagItem: React.FC<{ flagKey: FeatureName }> = ({ flagKey }) => {
   const description = features[flagKey].description ?? flagKey
 
   return (
-    <MenuItem
+    <FeatureFlagMenuItem
       title={description}
       onPress={() => {
         Alert.alert(description, undefined, [
@@ -258,7 +273,7 @@ const DevToggleItem: React.FC<{ toggleKey: DevToggleName }> = ({ toggleKey }) =>
   const toast = useToast()
 
   return (
-    <MenuItem
+    <FeatureFlagMenuItem
       title={description}
       onPress={() => {
         Alert.alert(description, undefined, [
@@ -334,7 +349,7 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [showCustomURLOptions, setShowCustomURLOptions] = useState(Object.keys(adminOverrides).length > 0)
   return (
     <>
-      <MenuItem
+      <FeatureFlagMenuItem
         title="Environment"
         value={showCustomURLOptions ? `Custom (${capitalize(env)})` : capitalize(env)}
         onPress={() => {
@@ -387,5 +402,35 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           )
         })}
     </>
+  )
+}
+
+export const FeatureFlagMenuItem: React.FC<{
+  disabled?: boolean
+  onPress?: () => void
+  title: React.ReactNode
+  value?: React.ReactNode
+}> = ({ disabled = false, onPress, title, value }) => {
+  const color = useColor()
+  return (
+    <Touchable onPress={onPress} underlayColor={color("black5")} disabled={disabled}>
+      <Flex flexDirection="row" alignItems="center" justifyContent="space-between" py={7.5} px="2" pr="15px">
+        <Flex flexDirection="row" mr="2" flex={5}>
+          <Sans size="5">{title}</Sans>
+        </Flex>
+        {!!value && (
+          <Flex flex={2} flexDirection="row" alignItems="center">
+            <Flex flex={3}>
+              <Sans size="5" color="black60" numberOfLines={1} textAlign="right">
+                {value}
+              </Sans>
+            </Flex>
+            <Flex ml="1" flex={1}>
+              <ChevronIcon direction="right" fill="black60" />
+            </Flex>
+          </Flex>
+        )}
+      </Flex>
+    </Touchable>
   )
 }

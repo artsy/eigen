@@ -2,10 +2,13 @@ import * as Sentry from "@sentry/react-native"
 import { useEffect } from "react"
 import Config from "react-native-config"
 import { sentryReleaseName } from "../../app.json"
-import { GlobalStore } from "./store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "./store/GlobalStore"
 
-export const setupSentry = (props: Partial<Sentry.ReactNativeOptions> = {}) => {
-  if (!__DEV__ && Config.SENTRY_DSN) {
+export const setupSentry = (
+  props: Partial<Sentry.ReactNativeOptions> = {},
+  captureExceptionsInSentryOnDev = !__DEV__
+) => {
+  if (!captureExceptionsInSentryOnDev && Config.SENTRY_DSN) {
     Sentry.init({
       dsn: Config.SENTRY_DSN,
       release: sentryReleaseName,
@@ -21,9 +24,11 @@ export const setupSentry = (props: Partial<Sentry.ReactNativeOptions> = {}) => {
 
 export function useSentryConfig() {
   const environment = GlobalStore.useAppState((store) => store.config.environment.env)
+  const captureExceptionsInSentryOnDev = useFeatureFlag("ARCaptureExceptionsInSentryOnDev")
+
   useEffect(() => {
-    setupSentry({ environment })
-  }, [environment])
+    setupSentry({ environment }, captureExceptionsInSentryOnDev)
+  }, [environment, captureExceptionsInSentryOnDev])
 
   const userID = GlobalStore.useAppState((store) => store.auth.userID) ?? "none"
   useEffect(() => {
