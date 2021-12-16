@@ -142,10 +142,28 @@ const MyCollection: React.FC<{
               paramValue: a.medium ?? undefined,
             })
           ),
-          (m) => m.paramName
+          (m) => m.paramValue
         ),
         // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks, mediums: string[]) => filter(artworks, (a) => mediums.includes(a.medium)),
+      },
+      {
+        displayText: FilterDisplayName.artistIDs,
+        filterType: "artistIDs",
+        ScreenComponent: "ArtistIDsOptionsScreen",
+        values: uniqBy(
+          artworks.map(
+            (a): FilterData => ({
+              displayText: a.artist?.name ?? "N/A",
+              paramName: FilterParamName.artistIDs,
+              paramValue: a.artist?.internalID ?? "",
+            })
+          ),
+          (m) => m.paramValue
+        ),
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks, artistIDs: string[]) =>
+          filter(artworks, (a) => artistIDs.includes(a.artist.internalID)),
       },
     ])
   }, [])
@@ -340,6 +358,10 @@ export const MyCollectionContainer = createPaginationContainer(
             node {
               id
               medium
+              artist {
+                internalID
+                name
+              }
             }
           }
           ...InfiniteScrollArtworksGrid_myCollectionConnection @arguments(skipArtworkGridItem: true)
