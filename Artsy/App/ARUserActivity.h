@@ -8,10 +8,7 @@ extern NSString *const ARUserActivityTypeFair;
 extern NSString *const ARUserActivityTypeShow;
 
 @protocol ARContinuityMetadataProvider <ARShareableObject>
-- (NSURL *)spotlightThumbnailURL;
-- (NSString *)spotlightDescription;
 @optional
-- (NSString *)spotlightMarkdownDescription;
 - (NSDate *)startDate;
 - (NSDate *)endDate;
 @end

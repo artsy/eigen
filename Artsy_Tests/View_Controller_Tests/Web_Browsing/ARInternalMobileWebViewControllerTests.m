@@ -28,12 +28,12 @@ SpecBegin(ARInternalMobileViewController);
 
 describe(@"initWithURL", ^{
     describe(@"in production", ^{
-        
+
         beforeAll(^{
             [[[AREmission sharedInstance] notificationsManagerModule] updateReactState:@{@"webURL": @"https://www.artsy.net"}];
             [ARRouter setup];
         });
-        
+
         afterAll(^{
             [[[AREmission sharedInstance] notificationsManagerModule] updateReactState:@{@"webURL": @"https://staging.artsy.net"}];
             [ARRouter setup];
@@ -68,7 +68,7 @@ describe(@"initWithURL", ^{
             ARInternalMobileWebViewController *controller = [[ARInternalMobileWebViewController alloc] initWithURL:[NSURL URLWithString:@"http://example.com/foo/bar"]];
             expect([controller currentURL].absoluteString).to.equal(@"http://example.com/foo/bar");
         });
-        
+
         describe(@"on ipad", ^{
             beforeEach(^{
                 [ARTestContext stubDevice:ARDeviceTypePad];
@@ -121,7 +121,7 @@ describe(@"initWithURL", ^{
 
 describe(@"authenticated", ^{
     beforeEach(^{
-        [ARUserManager stubAndLoginWithUsername];
+        [ARUserManager stubAndSetupUser];
     });
 
     afterEach(^{

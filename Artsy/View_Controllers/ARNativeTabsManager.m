@@ -1,10 +1,9 @@
-#import "ARNativeViewControllerManager.h"
-#import "AROnboardingViewController.h"
-#import "ARSlideshowViewController.h"
+#import "ARNativeTabsManager.h"
 #import "UIDevice-Hardware.h"
 #import <Emission/ARComponentViewController.h>
 #import <React/RCTRootView.h>
 #import "ARScreenPresenterModule.h"
+
 
 @interface ARNativeViewControllerWrapperView : UIView
 
@@ -12,10 +11,10 @@
 
 - (UIViewController *)myParentViewController;
 
-@property (nonatomic, readwrite) NSString* viewName;
 @property (nonatomic, readwrite) NSDictionary* viewProps;
 
 @end
+
 
 @implementation ARNativeViewControllerWrapperView
 
@@ -37,19 +36,13 @@
 }
 
 - (UIViewController *)getWrappedViewController {
-    if ([self.viewName isEqualToString:@"Onboarding"]) {
-        return [[AROnboardingViewController alloc] init];
-    } else if ([self.viewName isEqualToString:@"TabNavigationStack"]) {
-        NSString *tabName = self.viewProps[@"tabName"];
-        NSString *moduleName = self.viewProps[@"rootModuleName"];
-        if (!moduleName || !tabName) {
-            NSAssert(NO, @"ARNativeViewControllerManager->TabNavigationStack requires both tabName and moduleName");
-            return nil;
-        }
-        return [self getOrCreateNavStackForModule:tabName module:moduleName withProps:@{}];
-    } else {
+    NSString *tabName = self.viewProps[@"tabName"];
+    NSString *moduleName = self.viewProps[@"rootModuleName"];
+    if (!moduleName || !tabName) {
+        NSAssert(NO, @"ARNativeViewControllerManager->TabNavigationStack requires both tabName and moduleName");
         return nil;
     }
+    return [self getOrCreateNavStackForModule:tabName module:moduleName withProps:@{}];
 }
 
 - (ARNavigationController *)getOrCreateNavStackForModule:(NSString *)tabName module:(NSString *)moduleName withProps:(NSDictionary *)props
@@ -71,11 +64,11 @@
 
 @end
 
-@implementation ARNativeViewControllerManager
+
+@implementation ARNativeTabsManager
 
 RCT_EXPORT_MODULE()
 
-RCT_EXPORT_VIEW_PROPERTY(viewName, NSString*)
 RCT_EXPORT_VIEW_PROPERTY(viewProps, NSDictionary*)
 
 - (UIView *)view

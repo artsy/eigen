@@ -109,8 +109,6 @@ static ARAppDelegate *_sharedInstance = nil;
     self.echo = [[ArtsyEcho alloc] init];
     [self setupEcho];
 
-    [ARDefaults setup];
-
     self.initialLaunchOptions = launchOptions;
     return YES;
 }
@@ -246,30 +244,6 @@ static ARAppDelegate *_sharedInstance = nil;
     font = [UIFont serifItalicFontWithSize:12];
     font = [UIFont sansSerifFontWithSize:12];
     font = [UIFont smallCapsSerifFontWithSize:12];
-}
-
-- (void)finishOnboarding:(AROnboardingViewController *)viewController animated:(BOOL)animated
-{
-    // And update emission's auth state
-    [[AREmission sharedInstance] updateState:@{
-        [ARStateKey userID]: [[[ARUserManager sharedManager] currentUser] userID],
-        [ARStateKey userEmail]: [[[ARUserManager sharedManager] currentUser] email],
-        [ARStateKey authenticationToken]: [[ARUserManager sharedManager] userAuthenticationToken],
-    }];
-
-    NSString *currentUserId = [[[ARUserManager sharedManager] currentUser] userID];
-    [[Appboy sharedInstance] changeUser: currentUserId];
-
-    ar_dispatch_main_queue(^{
-        if ([User currentUser]) {
-            [self setupAdminTools];
-        }
-
-        if (!([[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage] == AROnboardingStageOnboarding)) {
-            ARAppNotificationsDelegate *remoteNotificationsDelegate = [self remoteNotificationsDelegate];
-            [remoteNotificationsDelegate registerForDeviceNotificationsWithContext:ARAppNotificationsRequestContextOnboarding];
-        }
-    });
 }
 
 - (void)setupAdminTools

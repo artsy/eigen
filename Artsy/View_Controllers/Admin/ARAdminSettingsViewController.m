@@ -1,4 +1,4 @@
-#import <MobileCoreServices/MobileCoreServices.h>
+#import <CoreServices/CoreServices.h>
 #import <ReplayKit/ReplayKit.h>
 
 #import "ARAdminSettingsViewController.h"

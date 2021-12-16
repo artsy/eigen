@@ -3,13 +3,7 @@ import { addBreadcrumb } from "@sentry/react-native"
 import { dismissModal, goBack, navigate } from "lib/navigation/navigate"
 import { matchRoute } from "lib/navigation/routes"
 import { BottomTabRoutes } from "lib/Scenes/BottomTabs/bottomTabsConfig"
-import {
-  getCurrentEmissionState,
-  GlobalStore,
-  useDevToggle,
-  useEnvironment,
-  useFeatureFlag,
-} from "lib/store/GlobalStore"
+import { getCurrentEmissionState, GlobalStore, useDevToggle, useEnvironment } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Text } from "palette"
@@ -244,15 +238,8 @@ const ProgressBar: React.FC<{ loadProgress: number | null }> = ({ loadProgress }
 }
 
 export function useWebViewCookies() {
-  const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
-  const accesstoken = GlobalStore.useAppState((store) =>
-    Platform.OS === "ios" && !showNewOnboarding
-      ? store.native.sessionState.authenticationToken
-      : store.auth.userAccessToken
-  )
-  const isLoggedIn = GlobalStore.useAppState((state) =>
-    showNewOnboarding ? !!state.auth.userID : !!state.native.sessionState.userID
-  )
+  const accesstoken = GlobalStore.useAppState((store) => store.auth.userAccessToken)
+  const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userID)
   const { webURL, predictionURL } = useEnvironment()
   useUrlCookies(webURL, accesstoken, isLoggedIn)
   useUrlCookies(predictionURL + "/login", accesstoken, isLoggedIn)

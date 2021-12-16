@@ -161,7 +161,6 @@ describe("artsy app store migrations", () => {
     LegacyNativeModules.ARNotificationsManager.nativeState = {
       userAgent: "Jest Unit Tests",
       authenticationToken: null as any,
-      onboardingState: "none",
       launchCount: 1,
       deviceId: "testDevice",
       userID: null as any,
@@ -404,5 +403,23 @@ describe("App version Versions.AddPreviousSessionUserID", () => {
 
     expect("previousSessionUserID" in migratedState.auth).toBe(true)
     expect(migratedState.auth.previousSessionUserID).toEqual(null)
+  })
+})
+
+describe("App version Versions.RemoveNativeOnboardingState", () => {
+  const migrationToTest = Versions.RemoveNativeOnboardingState
+
+  it("is not there afterwards", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.native.onboardingState).toEqual(undefined)
   })
 })
