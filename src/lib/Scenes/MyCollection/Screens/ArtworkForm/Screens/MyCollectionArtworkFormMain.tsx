@@ -2,11 +2,14 @@ import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { GlobalStore } from "lib/store/GlobalStore"
-import { Box, Button, Flex, Input, Join, Sans, Spacer, Text } from "palette"
+import { showPhotoActionSheet } from "lib/utils/requestPhotos"
+import { isEmpty } from "lodash"
+import { Box, Button, Flex, Input, Join, Sans, Separator, Spacer, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import React from "react"
-import { ScrollView } from "react-native"
+import { ScrollView, TouchableOpacity } from "react-native"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
+import { ArrowDetails } from "../Components/ArrowDetails"
 import { ArtistAutosuggest } from "../Components/ArtistAutosuggest"
 import { Dimensions } from "../Components/Dimensions"
 import { MediumPicker } from "../Components/MediumPicker"
@@ -16,8 +19,10 @@ import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 
 export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormScreen, "ArtworkForm">> = ({
+  navigation,
   route,
 }) => {
+  const artworkActions = GlobalStore.actions.myCollection.artwork
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
   const { formik } = useArtworkForm()
   const { showActionSheetWithOptions } = useActionSheet()
@@ -59,9 +64,20 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
             <ArtistAutosuggest />
           </Join>
         </ScreenMargin>
-
         <Flex p={2}>
           <Join separator={<Spacer my={1} />}>
+            <PhotosButton
+              testID="PhotosButton"
+              onPress={() => {
+                if (isEmpty(artworkState.sessionState.formValues.photos)) {
+                  showPhotoActionSheet(showActionSheetWithOptions, true).then((photos) => {
+                    artworkActions.addPhotos(photos)
+                  })
+                } else {
+                  navigation.navigate("AddPhotos", { onHeaderBackButtonPress: route.params.onHeaderBackButtonPress })
+                }
+              }}
+            />
             <Input
               title="TITLE"
               placeholder="Title"
@@ -69,6 +85,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               onBlur={formik.handleBlur("title")}
               testID="TitleInput"
               required
+              accessibilityLabel="Title"
               value={formikValues.title}
             />
             <Input
@@ -78,7 +95,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               onChangeText={formik.handleChange("date")}
               onBlur={formik.handleBlur("date")}
               testID="DateInput"
-              error={Number(formik.values.date) > new Date().getFullYear() ? "Invalid year" : undefined}
+              accessibilityLabel="Year"
               value={formikValues.date}
             />
             <MediumPicker />
@@ -88,6 +105,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               onChangeText={formik.handleChange("category")}
               onBlur={formik.handleBlur("category")}
               testID="MaterialsInput"
+              accessibilityLabel="Materials"
               value={formikValues.category}
             />
             <Dimensions />
@@ -95,6 +113,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               title="PRICE PAID"
               placeholder="Price paid"
               keyboardType="decimal-pad"
+              accessibilityLabel="Price paid"
               onChangeText={formik.handleChange("pricePaidDollars")}
               onBlur={formik.handleBlur("pricePaidDollars")}
               testID="PricePaidInput"
@@ -118,6 +137,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               onChangeText={formik.handleChange("artworkLocation")}
               onBlur={formik.handleBlur("artworkLocation")}
               testID="LocationInput"
+              accessibilityLabel="Enter City Where the Artwork is Located"
               value={formikValues.artworkLocation}
             />
             <Input
@@ -125,6 +145,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               title="PROVENANCE"
               placeholder="Describe How You Acquired the Artwork"
               value={formikValues.provenance}
+              accessibilityLabel="Describe How You Acquired the Artwork"
               onChangeText={formik.handleChange("provenance")}
               testID="ProvenanceInput"
             />
@@ -232,3 +253,39 @@ const pricePaidCurrencySelectOptions: Array<{
   // { label: "WST", value: "WST" },
   // { label: "ZAR", value: "ZAR" },
 ]
+
+const PhotosButton: React.FC<{ onPress: () => void; testID?: string }> = ({ onPress, testID }) => {
+  const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
+  const photos = artworkState.sessionState.formValues.photos
+
+  return (
+    <>
+      <Separator />
+      <TouchableOpacity onPress={onPress} testID={testID}>
+        <Spacer mt={2} />
+        <ScreenMargin>
+          <ArrowDetails>
+            <Flex flexDirection="row">
+              <Text variant="xs">PHOTOS</Text>
+            </Flex>
+            {photos.length > 0 && (
+              <>
+                {photos.length === 1 ? (
+                  <Text variant="xs" testID="onePhoto">
+                    1 photo added
+                  </Text>
+                ) : (
+                  <Text variant="xs" testID="multiplePhotos">
+                    {photos.length} photos added
+                  </Text>
+                )}
+              </>
+            )}
+          </ArrowDetails>
+        </ScreenMargin>
+        <Spacer mb={2} />
+      </TouchableOpacity>
+      <Separator />
+    </>
+  )
+}
