@@ -20,7 +20,7 @@ export type PartnerEntityHeader_partner = {
 };
 export type PartnerEntityHeader_partner$data = PartnerEntityHeader_partner;
 export type PartnerEntityHeader_partner$key = {
-    readonly " $data"?: PartnerEntityHeader_partner$data;
+    readonly " $data"?: PartnerEntityHeader_partner$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"PartnerEntityHeader_partner">;
 };
 

@@ -34,7 +34,7 @@ export type SmallTileRail_artworks = ReadonlyArray<{
 }>;
 export type SmallTileRail_artworks$data = SmallTileRail_artworks;
 export type SmallTileRail_artworks$key = ReadonlyArray<{
-    readonly " $data"?: SmallTileRail_artworks$data;
+    readonly " $data"?: SmallTileRail_artworks$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SmallTileRail_artworks">;
 }>;
 

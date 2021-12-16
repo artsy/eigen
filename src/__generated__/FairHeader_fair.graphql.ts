@@ -40,7 +40,7 @@ export type FairHeader_fair = {
 };
 export type FairHeader_fair$data = FairHeader_fair;
 export type FairHeader_fair$key = {
-    readonly " $data"?: FairHeader_fair$data;
+    readonly " $data"?: FairHeader_fair$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FairHeader_fair">;
 };
 

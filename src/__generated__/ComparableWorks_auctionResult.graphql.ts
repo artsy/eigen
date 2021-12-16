@@ -19,7 +19,7 @@ export type ComparableWorks_auctionResult = {
 };
 export type ComparableWorks_auctionResult$data = ComparableWorks_auctionResult;
 export type ComparableWorks_auctionResult$key = {
-    readonly " $data"?: ComparableWorks_auctionResult$data;
+    readonly " $data"?: ComparableWorks_auctionResult$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ComparableWorks_auctionResult">;
 };
 

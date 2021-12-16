@@ -36,7 +36,7 @@ export type Conversations_me = {
 };
 export type Conversations_me$data = Conversations_me;
 export type Conversations_me$key = {
-    readonly " $data"?: Conversations_me$data;
+    readonly " $data"?: Conversations_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Conversations_me">;
 };
 

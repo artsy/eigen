@@ -6,13 +6,13 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type OrderInformation_artwork = {
     readonly listPrice: {
-        readonly display?: string | null;
+        readonly display?: string | null | undefined;
     } | null;
     readonly " $refType": "OrderInformation_artwork";
 };
 export type OrderInformation_artwork$data = OrderInformation_artwork;
 export type OrderInformation_artwork$key = {
-    readonly " $data"?: OrderInformation_artwork$data;
+    readonly " $data"?: OrderInformation_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"OrderInformation_artwork">;
 };
 

@@ -15,7 +15,7 @@ export type SelectMaxBid_sale_artwork = {
 };
 export type SelectMaxBid_sale_artwork$data = SelectMaxBid_sale_artwork;
 export type SelectMaxBid_sale_artwork$key = {
-    readonly " $data"?: SelectMaxBid_sale_artwork$data;
+    readonly " $data"?: SelectMaxBid_sale_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SelectMaxBid_sale_artwork">;
 };
 

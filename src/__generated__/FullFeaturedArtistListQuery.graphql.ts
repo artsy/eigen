@@ -7,7 +7,7 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type FullFeaturedArtistListQueryVariables = {
     collectionID: string;
-    screenWidth?: number | null;
+    screenWidth?: number | null | undefined;
 };
 export type FullFeaturedArtistListQueryResponse = {
     readonly collection: {

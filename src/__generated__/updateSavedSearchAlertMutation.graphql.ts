@@ -5,14 +5,14 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type UpdateSavedSearchInput = {
-    clientMutationId?: string | null;
+    clientMutationId?: string | null | undefined;
     searchCriteriaID: string;
-    userAlertSettings?: UserAlertSettingsInput | null;
+    userAlertSettings?: UserAlertSettingsInput | null | undefined;
 };
 export type UserAlertSettingsInput = {
-    email?: boolean | null;
-    name?: string | null;
-    push?: boolean | null;
+    email?: boolean | null | undefined;
+    name?: string | null | undefined;
+    push?: boolean | null | undefined;
 };
 export type updateSavedSearchAlertMutationVariables = {
     input: UpdateSavedSearchInput;
@@ -20,10 +20,10 @@ export type updateSavedSearchAlertMutationVariables = {
 export type updateSavedSearchAlertMutationResponse = {
     readonly updateSavedSearch: {
         readonly savedSearchOrErrors: {
-            readonly internalID?: string;
+            readonly internalID?: string | undefined;
             readonly userAlertSettings?: {
                 readonly name: string | null;
-            };
+            } | undefined;
         };
     } | null;
 };

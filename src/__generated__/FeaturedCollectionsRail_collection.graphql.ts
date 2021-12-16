@@ -11,7 +11,7 @@ export type FeaturedCollectionsRail_collection = {
 };
 export type FeaturedCollectionsRail_collection$data = FeaturedCollectionsRail_collection;
 export type FeaturedCollectionsRail_collection$key = {
-    readonly " $data"?: FeaturedCollectionsRail_collection$data;
+    readonly " $data"?: FeaturedCollectionsRail_collection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FeaturedCollectionsRail_collection">;
 };
 

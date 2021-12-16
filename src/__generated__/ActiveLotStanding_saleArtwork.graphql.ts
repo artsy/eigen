@@ -33,7 +33,7 @@ export type ActiveLotStanding_saleArtwork = {
 };
 export type ActiveLotStanding_saleArtwork$data = ActiveLotStanding_saleArtwork;
 export type ActiveLotStanding_saleArtwork$key = {
-    readonly " $data"?: ActiveLotStanding_saleArtwork$data;
+    readonly " $data"?: ActiveLotStanding_saleArtwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ActiveLotStanding_saleArtwork">;
 };
 

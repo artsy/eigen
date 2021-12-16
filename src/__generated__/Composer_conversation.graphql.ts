@@ -24,7 +24,7 @@ export type Composer_conversation = {
 };
 export type Composer_conversation$data = Composer_conversation;
 export type Composer_conversation$key = {
-    readonly " $data"?: Composer_conversation$data;
+    readonly " $data"?: Composer_conversation$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Composer_conversation">;
 };
 

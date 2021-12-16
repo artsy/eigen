@@ -7,8 +7,8 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SearchArtworksContainerQueryVariables = {
     count: number;
-    cursor?: string | null;
-    keyword?: string | null;
+    cursor?: string | null | undefined;
+    keyword?: string | null | undefined;
 };
 export type SearchArtworksContainerQueryResponse = {
     readonly viewer: {

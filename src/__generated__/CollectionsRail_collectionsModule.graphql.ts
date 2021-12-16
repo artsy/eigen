@@ -25,7 +25,7 @@ export type CollectionsRail_collectionsModule = {
 };
 export type CollectionsRail_collectionsModule$data = CollectionsRail_collectionsModule;
 export type CollectionsRail_collectionsModule$key = {
-    readonly " $data"?: CollectionsRail_collectionsModule$data;
+    readonly " $data"?: CollectionsRail_collectionsModule$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CollectionsRail_collectionsModule">;
 };
 

@@ -33,7 +33,7 @@ export type SaleActiveBidItem_lotStanding = {
 };
 export type SaleActiveBidItem_lotStanding$data = SaleActiveBidItem_lotStanding;
 export type SaleActiveBidItem_lotStanding$key = {
-    readonly " $data"?: SaleActiveBidItem_lotStanding$data;
+    readonly " $data"?: SaleActiveBidItem_lotStanding$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SaleActiveBidItem_lotStanding">;
 };
 

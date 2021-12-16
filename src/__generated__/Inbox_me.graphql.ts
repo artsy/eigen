@@ -10,7 +10,7 @@ export type Inbox_me = {
 };
 export type Inbox_me$data = Inbox_me;
 export type Inbox_me$key = {
-    readonly " $data"?: Inbox_me$data;
+    readonly " $data"?: Inbox_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Inbox_me">;
 };
 

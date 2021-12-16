@@ -52,7 +52,7 @@ export type ArtworksInSeriesRail_artwork = {
 };
 export type ArtworksInSeriesRail_artwork$data = ArtworksInSeriesRail_artwork;
 export type ArtworksInSeriesRail_artwork$key = {
-    readonly " $data"?: ArtworksInSeriesRail_artwork$data;
+    readonly " $data"?: ArtworksInSeriesRail_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtworksInSeriesRail_artwork">;
 };
 

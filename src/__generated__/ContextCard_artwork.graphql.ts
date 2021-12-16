@@ -47,7 +47,7 @@ export type ContextCard_artwork = {
 };
 export type ContextCard_artwork$data = ContextCard_artwork;
 export type ContextCard_artwork$key = {
-    readonly " $data"?: ContextCard_artwork$data;
+    readonly " $data"?: ContextCard_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ContextCard_artwork">;
 };
 

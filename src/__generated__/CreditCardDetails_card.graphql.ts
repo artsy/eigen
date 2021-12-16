@@ -13,7 +13,7 @@ export type CreditCardDetails_card = {
 };
 export type CreditCardDetails_card$data = CreditCardDetails_card;
 export type CreditCardDetails_card$key = {
-    readonly " $data"?: CreditCardDetails_card$data;
+    readonly " $data"?: CreditCardDetails_card$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CreditCardDetails_card">;
 };
 

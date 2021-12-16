@@ -7,7 +7,7 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SendConversationMessageMutationInput = {
     bodyText: string;
-    clientMutationId?: string | null;
+    clientMutationId?: string | null | undefined;
     from: string;
     id: string;
     replyToMessageID: string;

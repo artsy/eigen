@@ -42,7 +42,7 @@ export type CollapsibleArtworkDetails_artwork = {
 };
 export type CollapsibleArtworkDetails_artwork$data = CollapsibleArtworkDetails_artwork;
 export type CollapsibleArtworkDetails_artwork$key = {
-    readonly " $data"?: CollapsibleArtworkDetails_artwork$data;
+    readonly " $data"?: CollapsibleArtworkDetails_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CollapsibleArtworkDetails_artwork">;
 };
 

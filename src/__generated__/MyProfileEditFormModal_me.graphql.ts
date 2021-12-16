@@ -14,7 +14,7 @@ export type MyProfileEditFormModal_me = {
 };
 export type MyProfileEditFormModal_me$data = MyProfileEditFormModal_me;
 export type MyProfileEditFormModal_me$key = {
-    readonly " $data"?: MyProfileEditFormModal_me$data;
+    readonly " $data"?: MyProfileEditFormModal_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyProfileEditFormModal_me">;
 };
 

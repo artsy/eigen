@@ -15,7 +15,7 @@ export type ViewingRoomArtworkRail_viewingRoom = {
 };
 export type ViewingRoomArtworkRail_viewingRoom$data = ViewingRoomArtworkRail_viewingRoom;
 export type ViewingRoomArtworkRail_viewingRoom$key = {
-    readonly " $data"?: ViewingRoomArtworkRail_viewingRoom$data;
+    readonly " $data"?: ViewingRoomArtworkRail_viewingRoom$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ViewingRoomArtworkRail_viewingRoom">;
 };
 

@@ -11,7 +11,7 @@ export type ShowInfo_show = {
 };
 export type ShowInfo_show$data = ShowInfo_show;
 export type ShowInfo_show$key = {
-    readonly " $data"?: ShowInfo_show$data;
+    readonly " $data"?: ShowInfo_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShowInfo_show">;
 };
 

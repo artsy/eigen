@@ -10,7 +10,7 @@ export type Home_meAbove = {
 };
 export type Home_meAbove$data = Home_meAbove;
 export type Home_meAbove$key = {
-    readonly " $data"?: Home_meAbove$data;
+    readonly " $data"?: Home_meAbove$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Home_meAbove">;
 };
 

@@ -21,12 +21,12 @@ export type SellerReplyEstimate_order = {
             } | null;
         } | null> | null;
     } | null;
-    readonly buyerAction?: CommerceBuyerOfferActionEnum | null;
+    readonly buyerAction?: CommerceBuyerOfferActionEnum | null | undefined;
     readonly " $refType": "SellerReplyEstimate_order";
 };
 export type SellerReplyEstimate_order$data = SellerReplyEstimate_order;
 export type SellerReplyEstimate_order$key = {
-    readonly " $data"?: SellerReplyEstimate_order$data;
+    readonly " $data"?: SellerReplyEstimate_order$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SellerReplyEstimate_order">;
 };
 

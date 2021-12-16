@@ -22,7 +22,7 @@ export type ArtistCard_artist = {
 };
 export type ArtistCard_artist$data = ArtistCard_artist;
 export type ArtistCard_artist$key = {
-    readonly " $data"?: ArtistCard_artist$data;
+    readonly " $data"?: ArtistCard_artist$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtistCard_artist">;
 };
 

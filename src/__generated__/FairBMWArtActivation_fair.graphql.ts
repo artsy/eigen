@@ -15,7 +15,7 @@ export type FairBMWArtActivation_fair = {
 };
 export type FairBMWArtActivation_fair$data = FairBMWArtActivation_fair;
 export type FairBMWArtActivation_fair$key = {
-    readonly " $data"?: FairBMWArtActivation_fair$data;
+    readonly " $data"?: FairBMWArtActivation_fair$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FairBMWArtActivation_fair">;
 };
 

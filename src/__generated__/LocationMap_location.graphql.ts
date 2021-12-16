@@ -20,7 +20,7 @@ export type LocationMap_location = {
 };
 export type LocationMap_location$data = LocationMap_location;
 export type LocationMap_location$key = {
-    readonly " $data"?: LocationMap_location$data;
+    readonly " $data"?: LocationMap_location$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"LocationMap_location">;
 };
 

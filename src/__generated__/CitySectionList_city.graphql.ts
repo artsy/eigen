@@ -29,13 +29,13 @@ export type CitySectionList_city = {
                 } | null;
                 readonly exhibition_period: string | null;
                 readonly partner: {
-                    readonly name?: string | null;
-                    readonly type?: string | null;
+                    readonly name?: string | null | undefined;
+                    readonly type?: string | null | undefined;
                     readonly profile?: {
                         readonly image: {
                             readonly url: string | null;
                         } | null;
-                    } | null;
+                    } | null | undefined;
                 } | null;
             } | null;
         } | null> | null;
@@ -44,7 +44,7 @@ export type CitySectionList_city = {
 };
 export type CitySectionList_city$data = CitySectionList_city;
 export type CitySectionList_city$key = {
-    readonly " $data"?: CitySectionList_city$data;
+    readonly " $data"?: CitySectionList_city$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CitySectionList_city">;
 };
 

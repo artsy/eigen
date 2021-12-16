@@ -12,7 +12,7 @@ export type ArtistSeriesHeader_artistSeries = {
 };
 export type ArtistSeriesHeader_artistSeries$data = ArtistSeriesHeader_artistSeries;
 export type ArtistSeriesHeader_artistSeries$key = {
-    readonly " $data"?: ArtistSeriesHeader_artistSeries$data;
+    readonly " $data"?: ArtistSeriesHeader_artistSeries$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtistSeriesHeader_artistSeries">;
 };
 

@@ -25,7 +25,7 @@ export type SaleCard_sale = {
 };
 export type SaleCard_sale$data = SaleCard_sale;
 export type SaleCard_sale$key = {
-    readonly " $data"?: SaleCard_sale$data;
+    readonly " $data"?: SaleCard_sale$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SaleCard_sale">;
 };
 

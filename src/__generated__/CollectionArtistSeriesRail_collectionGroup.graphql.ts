@@ -26,7 +26,7 @@ export type CollectionArtistSeriesRail_collectionGroup = {
 };
 export type CollectionArtistSeriesRail_collectionGroup$data = CollectionArtistSeriesRail_collectionGroup;
 export type CollectionArtistSeriesRail_collectionGroup$key = {
-    readonly " $data"?: CollectionArtistSeriesRail_collectionGroup$data;
+    readonly " $data"?: CollectionArtistSeriesRail_collectionGroup$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CollectionArtistSeriesRail_collectionGroup">;
 };
 

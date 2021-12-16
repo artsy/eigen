@@ -604,8 +604,8 @@ PODS:
     - React-Core
   - RNBootSplash (3.2.0):
     - React-Core
-  - RNCAsyncStorage (1.6.3):
-    - React
+  - RNCAsyncStorage (1.12.1):
+    - React-Core
   - RNCClipboard (1.5.1):
     - React-Core
   - RNCMaskedView (0.1.11):
@@ -1189,7 +1189,7 @@ SPEC CHECKSUMS:
   RNAnalyticsIntegration-Appboy: 6940f54ff28e6be80f1e3b78c996b1f0945b4113
   RNAppleAuthentication: 63c2127ace11985b94f852fc480eb84145653712
   RNBootSplash: 24175aa28fe203b10c48dc34e78d946fd33c77af
-  RNCAsyncStorage: 3c304d1adfaea02ec732ac218801cb13897aa8c0
+  RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCClipboard: 41d8d918092ae8e676f18adada19104fa3e68495
   RNCMaskedView: 0e1bc4bfa8365eba5fbbb71e07fbdc0555249489
   RNDeviceInfo: 3266783bcb6aa4b0c785d6080a407f8a5fc68326

@@ -6,7 +6,7 @@
 import { ConcreteRequest } from "relay-runtime";
 export type RequestCredentialsForAssetUploadInput = {
     acl: string;
-    clientMutationId?: string | null;
+    clientMutationId?: string | null | undefined;
     name: string;
 };
 export type getGeminiCredentialsForEnvironmentMutationVariables = {

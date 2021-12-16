@@ -7,10 +7,10 @@ import { ConcreteRequest } from "relay-runtime";
 export type CommerceOrderModeEnum = "BUY" | "OFFER" | "%future added value";
 export type CommerceCreateOfferOrderWithArtworkInput = {
     artworkId: string;
-    clientMutationId?: string | null;
-    editionSetId?: string | null;
-    findActiveOrCreate?: boolean | null;
-    quantity?: number | null;
+    clientMutationId?: string | null | undefined;
+    editionSetId?: string | null | undefined;
+    findActiveOrCreate?: boolean | null | undefined;
+    quantity?: number | null | undefined;
 };
 export type MakeOfferButtonOrderMutationVariables = {
     input: CommerceCreateOfferOrderWithArtworkInput;

@@ -11,7 +11,7 @@ export type PDFPreview_attachment = {
 };
 export type PDFPreview_attachment$data = PDFPreview_attachment;
 export type PDFPreview_attachment$key = {
-    readonly " $data"?: PDFPreview_attachment$data;
+    readonly " $data"?: PDFPreview_attachment$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"PDFPreview_attachment">;
 };
 

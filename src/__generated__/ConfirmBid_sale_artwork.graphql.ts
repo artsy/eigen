@@ -31,7 +31,7 @@ export type ConfirmBid_sale_artwork = {
 };
 export type ConfirmBid_sale_artwork$data = ConfirmBid_sale_artwork;
 export type ConfirmBid_sale_artwork$key = {
-    readonly " $data"?: ConfirmBid_sale_artwork$data;
+    readonly " $data"?: ConfirmBid_sale_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ConfirmBid_sale_artwork">;
 };
 

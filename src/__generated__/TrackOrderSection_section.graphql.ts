@@ -34,7 +34,7 @@ export type TrackOrderSection_section = {
 };
 export type TrackOrderSection_section$data = TrackOrderSection_section;
 export type TrackOrderSection_section$key = {
-    readonly " $data"?: TrackOrderSection_section$data;
+    readonly " $data"?: TrackOrderSection_section$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"TrackOrderSection_section">;
 };
 

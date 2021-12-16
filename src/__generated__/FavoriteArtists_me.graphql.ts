@@ -22,7 +22,7 @@ export type FavoriteArtists_me = {
 };
 export type FavoriteArtists_me$data = FavoriteArtists_me;
 export type FavoriteArtists_me$key = {
-    readonly " $data"?: FavoriteArtists_me$data;
+    readonly " $data"?: FavoriteArtists_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FavoriteArtists_me">;
 };
 

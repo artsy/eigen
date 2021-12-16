@@ -19,7 +19,7 @@ export type Articles_articlesConnection = {
 };
 export type Articles_articlesConnection$data = Articles_articlesConnection;
 export type Articles_articlesConnection$key = {
-    readonly " $data"?: Articles_articlesConnection$data;
+    readonly " $data"?: Articles_articlesConnection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Articles_articlesConnection">;
 };
 
