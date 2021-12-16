@@ -64,8 +64,8 @@ export const environment = defineEnvironmentOptions({
 })
 
 export interface EnvironmentModel {
-  env: Environment // 'staging' | 'production'
-  setEnv: Action<EnvironmentModel, Environment>
+  env: Environment
+  setEnv: Action<this, this["env"]>
 
   adminOverrides: { [k in EnvironmentKey]?: string }
   setAdminOverride: Action<EnvironmentModel, { key: EnvironmentKey; value: string | null }>

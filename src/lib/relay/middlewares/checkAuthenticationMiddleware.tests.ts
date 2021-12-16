@@ -1,5 +1,4 @@
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { last } from "lodash"
 import { GraphQLResponseErrors, MiddlewareNextFn, RelayNetworkLayerResponse } from "react-relay-network-modern/node8"
 import { checkAuthenticationMiddleware } from "./checkAuthenticationMiddleware"
 import { GraphQLRequest } from "./types"
@@ -30,7 +29,8 @@ describe(checkAuthenticationMiddleware, () => {
     expect(fetchMock).toHaveBeenCalledTimes(0)
     await middleware(next)(request)
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(last(__globalStoreTestUtils__?.dispatchedActions)?.type).toMatchInlineSnapshot(`"@thunk.signOut"`)
+    expect(__globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)).toContain("@thunk.auth.signOut")
+    expect(__globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)).toContain("@thunkOn.resetAfterSignOut")
   })
 
   it("passes through if there is no errors", async () => {

@@ -90,16 +90,6 @@
     }];
 }
 
-- (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure
-{
-    __weak typeof(self) wself = self;
-    [ArtsyAPI checkFavoriteStatusForArtist:self success:^(BOOL result) {
-        __strong typeof (wself) sself = wself;
-        sself.followed = result;
-        success(result ? ARHeartStatusYes : ARHeartStatusNo);
-    } failure:failure];
-}
-
 - (BOOL)isEqual:(id)object
 {
     if (![object isKindOfClass:[Artist class]]) {
@@ -124,23 +114,6 @@
 - (NSString *)publicArtsyPath
 {
     return [NSString stringWithFormat:@"/artist/%@", self.artistID];
-}
-
-#pragma mark - ARSpotlightMetadataProvider
-
-- (NSString *)spotlightDescription;
-{
-    return self.blurb.length > 0 ? nil : self.birthday;
-}
-
-- (NSString *)spotlightMarkdownDescription;
-{
-    return self.blurb;
-}
-
-- (NSURL *)spotlightThumbnailURL;
-{
-    return self.squareImageURL;
 }
 
 @end

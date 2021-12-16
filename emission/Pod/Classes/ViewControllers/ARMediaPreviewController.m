@@ -6,7 +6,7 @@
 @import Artsy_UIColors;
 #endif
 
-@import MobileCoreServices;
+@import CoreServices;
 @import QuickLook;
 @import ObjectiveC;
 

@@ -11,7 +11,6 @@ NSString *const ARTwitterCallbackPath = @"artsy://twitter-callback";
 
 NSString *const ARAuthHeader = @"X-Access-Token";
 NSString *const ARXappHeader = @"X-Xapp-Token";
-NSString *const AREigenLocalTemporaryUserIDHeader = @"X-Eigen-Trial-ID";
 
 NSString *const AROAuthURL = @"/oauth2/access_token";
 NSString *const ARXappURL = @"/api/v1/xapp_token";
