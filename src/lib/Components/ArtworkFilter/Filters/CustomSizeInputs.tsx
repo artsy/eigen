@@ -21,7 +21,7 @@ const getValue = (value: Numeric) => {
 
 export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({ label, range, active, onChange }) => {
   const color = useColor()
-  const handleInputChange = (field: string) => (text: string) => {
+  const handleInputChange = (field: keyof Range) => (text: string) => {
     const parsed = parseFloat(text)
     const value = isNaN(parsed) ? "*" : parsed
 
