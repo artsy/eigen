@@ -9040,6 +9040,7 @@ type MyCollectionConnection {
 input MyCollectionCreateArtworkInput {
   artistIds: [String]!
   artworkLocation: String
+  attributionClass: String
   category: String
   clientMutationId: String
   costCurrencyCode: String
