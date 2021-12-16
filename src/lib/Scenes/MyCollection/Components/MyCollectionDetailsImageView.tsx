@@ -5,7 +5,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Image as RNImage } from "react-native"
-import { getBoundingBox, myCollectionLocalPhotoKey } from "../Screens/ArtworkFormModal/MyCollectionImageUtil"
+import { getBoundingBox, myCollectionLocalPhotoKey } from "../Screens/ArtworkForm/MyCollectionImageUtil"
 import { MyCollectionImageViewProps } from "./MyCollectionImageView"
 
 export const MyCollectionDetailsImageView: React.FC<MyCollectionImageViewProps> = ({

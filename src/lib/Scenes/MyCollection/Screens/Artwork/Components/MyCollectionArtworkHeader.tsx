@@ -17,7 +17,7 @@ import {
   hasImagesStillProcessing,
   imageIsProcessing,
   isImage,
-} from "../../ArtworkFormModal/MyCollectionImageUtil"
+} from "../../ArtworkForm/MyCollectionImageUtil"
 
 interface MyCollectionArtworkHeaderProps {
   artwork: MyCollectionArtworkHeader_artwork

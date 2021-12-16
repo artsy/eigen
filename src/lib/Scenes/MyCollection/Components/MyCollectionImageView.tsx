@@ -3,7 +3,7 @@ import { LocalImage, retrieveLocalImage } from "lib/utils/LocalImageStore"
 import { Box, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Image as RNImage } from "react-native"
-import { myCollectionLocalPhotoKey } from "../Screens/ArtworkFormModal/MyCollectionImageUtil"
+import { myCollectionLocalPhotoKey } from "../Screens/ArtworkForm/MyCollectionImageUtil"
 
 export interface MyCollectionImageViewProps {
   imageURL?: string
