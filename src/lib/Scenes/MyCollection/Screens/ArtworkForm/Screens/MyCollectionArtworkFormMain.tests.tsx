@@ -51,7 +51,9 @@ describe("AddEditArtwork", () => {
       handleBlur: jest.fn(),
       handleChange: jest.fn(),
       setFieldValue: jest.fn(),
-      values: {},
+      values: {
+        photos: [],
+      },
     }))
   })
 
@@ -89,6 +91,7 @@ describe("AddEditArtwork", () => {
 
     // not exposed components
     expect(wrapper.root.findByProps({ testID: "CompleteButton" })).toBeDefined()
+    expect(wrapper.root.findByProps({ testID: "PhotosButton" })).toBeDefined()
   })
 
   it("renders correct components on Edit", () => {
