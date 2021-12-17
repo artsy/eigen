@@ -71,7 +71,7 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
       <Spacer mb={2} />
       <Text fontWeight="bold">Sale price over estimate</Text>
       <Spacer mb={1} />
-      <Text lineHeight={50}>
+      <Text>
         The average percentage difference of the sale price over the mid-estimate (the midpoint of the low and high
         estimates set by the auction house before the auction takes place) for lots sold at auction over the past 36
         months.
