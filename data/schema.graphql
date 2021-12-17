@@ -10898,7 +10898,7 @@ type Query {
   ): StaticContent
 
   # Get a Submission
-  submission(id: ID): ConsignmentSubmission
+  submission(id: ID!, sessionID: String): ConsignmentSubmission
 
   # Filter all submission
   submissions(
