@@ -98,9 +98,14 @@ describe("ArtistConsignButton", () => {
     it("guards against missing imageURL", async () => {
       const tree = renderWithWrappers(<TestRenderer />)
       act(() => {
-        const responseWithoutImage = cloneDeep(response)
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        responseWithoutImage.artist.image = null
+        const responseWithImage = cloneDeep(response)
+
+        const responseWithoutImage = {
+          ...responseWithImage,
+          artist: {
+            image: null,
+          },
+        }
         env.mock.resolveMostRecentOperation({
           errors: [],
           data: responseWithoutImage,
