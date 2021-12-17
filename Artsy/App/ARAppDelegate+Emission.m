@@ -105,24 +105,18 @@ SOFTWARE.
     NSString *authenticationToken = [[ARUserManager sharedManager] userAuthenticationToken];
 
     NSInteger launchCount = [[NSUserDefaults standardUserDefaults] integerForKey:ARAnalyticsAppUsageCountProperty];
-    AROnboardingUserProgressStage onboardingState = [[NSUserDefaults standardUserDefaults] integerForKey:AROnboardingUserProgressionStage];
 
     AREmission *emission = [[AREmission alloc] initWithState:@{
                                                                  [ARStateKey userID] : (userID ?: [NSNull null]),
                                                                  [ARStateKey userEmail] : (userEmail ?: [NSNull null]),
                                                                  [ARStateKey authenticationToken] : (authenticationToken ?: [NSNull null]),
                                                                  [ARStateKey launchCount] : @(launchCount),
-                                                                 [ARStateKey onboardingState] : onboardingState == AROnboardingStageDefault ? @"none" : onboardingState == AROnboardingStageOnboarded ? @"complete" : @"incomplete",
                                                                  [ARStateKey userAgent] : ARRouter.userAgent,
                                                                  [ARStateKey deviceId] : self.deviceId,
     } packagerURL:packagerURL];
 
     [emission.notificationsManagerModule afterBootstrap:^{
         [ARRouter setup];
-
-        if (launchCount == 3) {
-            [[ARUserManager sharedManager] tryStoreSavedCredentialsToWebKeychain];
-        }
     }];
 
     // Disable default React Native dev menu shake motion handler
@@ -153,11 +147,6 @@ SOFTWARE.
         } failure:^(NSError *error) {
             block(@[ RCTJSErrorFromNSError(error)]);
         }];
-    };
-#pragma mark - Log out
-
-    emission.APIModule.userDataClearer = ^(RCTPromiseResolveBlock completion) {
-        [ARUserManager logoutWithCompletion:completion];
     };
 
 #pragma mark - Native Module: Events/Analytics

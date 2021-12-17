@@ -188,17 +188,6 @@
     return [ARStandardDateFormatter sharedFormatter].stringTransformer;
 }
 
-+ (NSValueTransformer *)availabilityJSONTransformer
-{
-    NSDictionary *types = @{
-        @"not for sale" : @(ARArtworkAvailabilityNotForSale),
-        @"for sale" : @(ARArtworkAvailabilityForSale),
-        @"sold" : @(ARArtworkAvailabilitySold),
-        @"on hold" : @(ARArtworkAvailabilityOnHold)
-    };
-    return [ARValueTransformer enumValueTransformerWithMap:types];
-}
-
 + (NSValueTransformer *)metricJSONTransformer
 {
     NSDictionary *metrics = @{ @"in" : @(ARDimensionMetricInches),
@@ -334,11 +323,6 @@
     }];
 }
 
-- (NSNumber *)forSale
-{
-    return @(self.availability == ARArtworkAvailabilityForSale);
-}
-
 - (BOOL)isEqual:(id)object
 {
     if ([object isKindOfClass:self.class]) {
@@ -387,8 +371,6 @@
 {
     if ([key isEqualToString:@"metric"]) {
         [self setValue:@(ARDimensionMetricNoMetric) forKey:key];
-    } else if ([key isEqualToString:@"availability"]) {
-        [self setValue:@(ARArtworkAvailabilityNotForSale) forKey:key];
     } else {
         [super setNilValueForKey:key];
     }
@@ -420,27 +402,6 @@
 - (NSString *)name
 {
     return self.title;
-}
-
-#pragma mark - ARSpotlightMetadataProvider
-
-- (NSString *)spotlightDescription;
-{
-    if (self.date.length > 0) {
-        return [NSString stringWithFormat:@"%@, %@\n%@", self.artist.name, self.date, self.medium];
-    } else {
-        return [NSString stringWithFormat:@"%@\n%@", self.artist.name, self.medium];
-    }
-}
-
-- (NSURL *)spotlightThumbnailURL;
-{
-    return self.urlForThumbnail;
-}
-
-- (NSString *)availablityString
-{
-    return [[self.class availabilityJSONTransformer] reverseTransformedValue:@(self.availability)];
 }
 
 @end

@@ -8,7 +8,6 @@ import { Dimensions, Image, Platform } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import Animated, { Easing } from "react-native-reanimated"
 import backgoundImage from "../../../../images/WelcomeImage.webp"
-import { useFeatureFlag } from "../../store/GlobalStore"
 import { OnboardingNavigationStack } from "./Onboarding"
 
 interface OnboardingWelcomeProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingWelcome"> {}
@@ -18,7 +17,6 @@ const imgProps = Image.resolveAssetSource(backgoundImage)
 export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation }) => {
   const { space } = useTheme()
   const { width: screenWidth } = useScreenDimensions()
-  const AREnableNewOnboardingFlow = useFeatureFlag("AREnableNewOnboardingFlow")
   // useScreenDimensions() returns the window height instead of the screen
   // We need the entire screen height here because the background image should fill
   // the entire screen including drawing below the navigation bar
@@ -132,11 +130,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
               variant="fillLight"
               block
               haptic="impactMedium"
-              onPress={() =>
-                AREnableNewOnboardingFlow
-                  ? navigation.navigate("OnboardingCreateAccount")
-                  : navigation.navigate("OnboardingCreateAccountWithEmail")
-              }
+              onPress={() => navigation.navigate("OnboardingCreateAccount")}
               testID="button-create"
             >
               Sign up
@@ -145,11 +139,7 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
 
           <Flex flex={1} px={1}>
             <Button
-              onPress={() =>
-                AREnableNewOnboardingFlow
-                  ? navigation.navigate("OnboardingLogin")
-                  : navigation.navigate("OnboardingLoginWithEmail")
-              }
+              onPress={() => navigation.navigate("OnboardingLogin")}
               block
               testID="button-login"
               variant="outlineLight"

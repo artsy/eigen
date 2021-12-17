@@ -5,12 +5,6 @@
 
 NSString *const ARUserIdentifierDefault = @"ARUserIdentifier";
 
-
-NSString *const ARAppleDisplayNameKeychainKey = @"ARAppleDisplayNameKeychainKey";
-NSString *const ARAppleEmailKeyChainKey = @"ARAppleEmailKeyChainKey";
-
-NSString *const ARUsernameKeychainKey = @"ARUsernameKeychainKey";
-NSString *const ARPasswordKeychainKey = @"ARPasswordKeychainKey";
 NSString *const AROAuthTokenDefault = @"AROAuthToken";
 NSString *const AROAuthTokenExpiryDateDefault = @"AROAuthTokenExpiryDate";
 
@@ -18,8 +12,6 @@ NSString *const AROAuthTokenExpiryDateDefault = @"AROAuthTokenExpiryDate";
 // to keep backwards compatability.
 NSString *const ARXAppTokenKeychainKey = @"ARXAppTokenDefault";
 NSString *const ARXAppTokenExpiryDateDefault = @"ARXAppTokenExpiryDateDefault";
-
-NSString *const AROnboardingUserProgressionStage = @"eigen-onboard-user-progression-stage";
 
 NSString *const ARPushNotificationsAppleDialogueSeen = @"eigen-push-seen-dialogue";
 NSString *const ARPushNotificationsAppleDialogueRejected = @"eigen-push-reject-dialogue";
@@ -36,13 +28,6 @@ NSString *const ARAugmentedRealityHasSuccessfullyRan = @"ARAugmentedRealityHasSu
 
 
 @implementation ARDefaults
-
-+ (void)setup
-{
-    [[NSUserDefaults standardUserDefaults] registerDefaults:@{
-        AROnboardingUserProgressionStage : @(0),
-    }];
-}
 
 + (void)resetDefaults
 {

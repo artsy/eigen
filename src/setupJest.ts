@@ -216,7 +216,6 @@ function getNativeModules(): OurNativeModules {
       nativeState: {
         userAgent: "Jest Unit Tests",
         authenticationToken: "authenticationToken",
-        onboardingState: "complete",
         launchCount: 1,
         deviceId: "testDevice",
         userID: "userID",
@@ -233,7 +232,6 @@ function getNativeModules(): OurNativeModules {
       fetchNotificationPermissions: jest.fn(),
       markNotificationsRead: jest.fn(),
       setApplicationIconBadgeNumber: jest.fn(),
-      clearUserData: jest.fn(),
       getUserEmail: jest.fn(),
     },
     ARPHPhotoPickerModule: {
@@ -266,6 +264,7 @@ function getNativeModules(): OurNativeModules {
       gitCommitShortHash: "de4dc0de",
       isBetaOrDev: true,
       updateAuthState: jest.fn(),
+      clearUserData: jest.fn(),
     },
   }
 }
@@ -567,4 +566,8 @@ jest.mock("react-native-push-notification", () => ({
   checkPermissions: jest.fn(),
   createChannel: jest.fn(),
   localNotification: jest.fn(),
+}))
+
+jest.mock("react-native-keychain", () => ({
+  setInternetCredentials: jest.fn().mockResolvedValue(true),
 }))

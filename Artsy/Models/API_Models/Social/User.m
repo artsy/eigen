@@ -2,9 +2,14 @@
 
 #import "ARMacros.h"
 #import "ARUserManager.h"
-#import "ArtsyAPI+CurrentUserFunctions.h"
 #import "ArtsyAPI+Profiles.h"
 #import "Profile.h"
+
+
+@interface User ()
+@property (nonatomic, copy, readonly) NSString *defaultProfileID;
+@end
+
 
 @implementation User
 
@@ -13,25 +18,12 @@
     return [[ARUserManager sharedManager] currentUser];
 }
 
-+ (BOOL)isLocalTemporaryUser
-{
-    ARUserManager *userManager = [ARUserManager sharedManager];
-    return userManager.currentUser == nil;
-}
-
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
         ar_keypath(User.new, userID) : @"id",
         ar_keypath(User.new, email) : @"email",
-        ar_keypath(User.new, name) : @"name",
-        ar_keypath(User.new, phone) : @"phone",
         ar_keypath(User.new, defaultProfileID) : @"default_profile_id",
-        ar_keypath(User.new, receiveWeeklyEmail) : @"receive_weekly_email",
-        ar_keypath(User.new, receiveFollowArtistsEmail) : @"receive_follow_artists_email",
-        ar_keypath(User.new, receiveFollowArtistsEmailAll) : @"receive_follow_artists_email_all",
-        ar_keypath(User.new, receiveFollowUsersEmail) : @"receive_follow_users_email",
-        ar_keypath(User.new, priceRange) : @"price_range",
         ar_keypath(User.new, identityVerified) : @"identity_verified",
     };
 }
@@ -66,11 +58,6 @@
     return [NSValueTransformer valueTransformerForName:MTLBooleanValueTransformerName];
 }
 
-- (void)userFollowsProfile:(Profile *)profile success:(void (^)(BOOL doesFollow))success failure:(void (^)(NSError *error))failure
-{
-    [ArtsyAPI checkFollowProfile:profile success:success failure:failure];
-}
-
 - (void)updateProfile:(void (^)(void))success
 {
     if (!_profile) _profile = [[Profile alloc] initWithProfileID:_defaultProfileID];
@@ -80,23 +67,6 @@
     }];
 }
 
-// Not the greatest APIs but eh
-
-- (void)setRemoteUpdateCollectorLevel:(enum ARCollectorLevel)collectorLevel success:(void (^)(User *user))success failure:(void (^)(NSError *error))failure
-{
-    [ArtsyAPI updateCurrentUserProperty:@"collector_level" toValue:@(collectorLevel) success:success failure:failure];
-}
-
-- (void)setRemoteUpdatePriceRange:(NSInteger)maximumRange success:(void (^)(User *user))success failure:(void (^)(NSError *error))failure
-{
-    BOOL wasMaxMax = maximumRange == 1000000;
-    NSString *min = wasMaxMax ? @"1000000" : @"-1";
-    NSString *max = wasMaxMax ? @"1000000000000" : [NSString stringWithFormat:@"%@", @(maximumRange)];
-
-    [ArtsyAPI updateCurrentUserProperty:@"price_range_min" toValue:min success:success failure:failure];
-    [ArtsyAPI updateCurrentUserProperty:@"price_range_max" toValue:max success:success failure:failure];
-}
-
 - (void)setNilValueForKey:(NSString *)key
 {
     if ([key isEqualToString:@"priceRange"]) {
@@ -104,11 +74,6 @@
     } else {
         [super setNilValueForKey:key];
     }
-}
-
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"User %@ - (%@)", self.name, self.userID];
 }
 
 - (BOOL)isEqual:(id)object

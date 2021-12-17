@@ -128,10 +128,6 @@ static NSString *hostFromString(NSString *string)
         NSString *xapp = [UICKeyChainStore stringForKey:ARXAppTokenKeychainKey];
         [ARRouter setXappToken:xapp];
     }
-
-    if ([User isLocalTemporaryUser]) {
-        [self setHTTPHeader:AREigenLocalTemporaryUserIDHeader value:user.localTemporaryUserUUID];
-    }
 }
 
 + (void)setupUserAgent
@@ -199,7 +195,6 @@ static NSString *hostFromString(NSString *string)
     if (![ARRouter isInternalURL:url]) {
         [request setValue:nil forHTTPHeaderField:ARAuthHeader];
         [request setValue:nil forHTTPHeaderField:ARXappHeader];
-        [request setValue:nil forHTTPHeaderField:AREigenLocalTemporaryUserIDHeader];
     }
 
     return request;
@@ -268,47 +263,6 @@ static NSString *hostFromString(NSString *string)
 }
 
 
-+ (NSURLRequest *)newOAuthRequestWithUsername:(NSString *)username password:(NSString *)password
-{
-    NSDictionary *params = @{
-        @"email" : username,
-        @"password" : password,
-        @"client_id" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_KEY"],
-        @"client_secret" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_SECRET"],
-        @"grant_type" : @"credentials",
-        @"scope" : @"offline_access"
-    };
-    return [self requestWithMethod:@"POST" path:AROAuthURL parameters:params];
-}
-
-+ (NSURLRequest *)newAppleOAuthRequestWithUID:(NSString *)appleUID idToken:(NSString *)idToken
-{
-    NSDictionary *params = @{
-        @"oauth_provider" : @"apple",
-        @"apple_uid": appleUID,
-        @"id_token": idToken,
-        @"client_id" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_KEY"],
-        @"client_secret" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_SECRET"],
-        @"grant_type" : @"apple_uid",
-        @"scope" : @"offline_access"
-    };
-    return [self requestWithMethod:@"POST" path:AROAuthURL parameters:params];
-}
-
-+ (NSURLRequest *)newFacebookOAuthRequestWithToken:(NSString *)token
-{
-    NSDictionary *params = @{
-        @"oauth_provider" : @"facebook",
-        @"oauth_token" : token,
-        @"client_id" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_KEY"],
-        @"client_secret" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_SECRET"],
-        @"grant_type" : @"oauth_token",
-        @"scope" : @"offline_access"
-    };
-    return [self requestWithMethod:@"POST" path:AROAuthURL parameters:params];
-}
-
-
 #pragma mark -
 #pragma mark XApp
 
@@ -327,59 +281,8 @@ static NSString *hostFromString(NSString *string)
 }
 
 #pragma mark -
-#pragma mark User creation
-
-+ (NSURLRequest *)newCreateUserRequestWithName:(NSString *)name
-                                         email:(NSString *)email
-                                      password:(NSString *)password
-{
-    NSDictionary *params = @{
-        @"email" : email,
-        @"password" : password,
-        @"name" : name,
-        @"agreed_to_receive_emails": @YES,
-        @"accepted_terms_of_service": @YES
-    };
-    return [self requestWithMethod:@"POST" path:ARCreateUserURL parameters:params];
-}
-
-+ (NSURLRequest *)newCreateUserViaAppleRequestWithUID:(NSString * _Nonnull)appleUID email:(NSString * _Nonnull)email name:(NSString * _Nullable)name idToken:(NSString * _Nonnull)idToken
-{
-    NSMutableDictionary *params = [@{
-        @"provider" : @"apple",
-        @"apple_uid" : appleUID,
-        @"id_token": idToken,
-        @"email" : email,
-        @"agreed_to_receive_emails": @YES,
-        @"accepted_terms_of_service": @YES
-    } mutableCopy];
-    if (name != nil) {
-        params[@"name"] = name;
-    }
-    return [self requestWithMethod:@"POST" path:ARCreateUserURL parameters:params];
-}
-
-+ (NSURLRequest *)newCreateUserViaFacebookRequestWithToken:(NSString *)token email:(NSString *)email name:(NSString *)name
-{
-    NSDictionary *params = @{
-        @"provider" : @"facebook",
-        @"oauth_token" : token,
-        @"email" : email,
-        @"name" : name,
-        @"agreed_to_receive_emails": @YES,
-        @"accepted_terms_of_service": @YES
-    };
-
-    return [self requestWithMethod:@"POST" path:ARCreateUserURL parameters:params];
-}
-
-#pragma mark -
 #pragma mark User
 
-+ (NSURLRequest *)checkExistingUserWithEmail:(NSString *)email
-{
-    return [self requestWithMethod:@"GET" path:ARCreateUserURL parameters:@{ @"email" : email }];
-}
 
 + (NSURLRequest *)newUserInfoRequest
 {

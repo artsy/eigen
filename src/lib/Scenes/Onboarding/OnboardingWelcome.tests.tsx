@@ -12,31 +12,8 @@ const navigationPropsMock = {
 }
 
 describe("OnboardingWelcome", () => {
-  describe("old flow", () => {
+  describe("onboarding flow", () => {
     beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewOnboardingFlow: false })
-      navigateMock.mockReset()
-    })
-    it("navigates to create account screen when the user taps on create account", () => {
-      const { getByTestId } = renderWithWrappersTL(
-        <OnboardingWelcome navigation={navigationPropsMock as any} route={null as any} />
-      )
-      fireEvent.press(getByTestId("button-create"))
-      expect(navigateMock).toHaveBeenCalledWith("OnboardingCreateAccountWithEmail")
-    })
-
-    it("navigates to log in screen when the user taps on log in", () => {
-      const { getByTestId } = renderWithWrappersTL(
-        <OnboardingWelcome navigation={navigationPropsMock as any} route={null as any} />
-      )
-      fireEvent.press(getByTestId("button-login"))
-      expect(navigateMock).toHaveBeenCalledWith("OnboardingLoginWithEmail")
-    })
-  })
-
-  describe("new flow", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableNewOnboardingFlow: true })
       navigateMock.mockReset()
     })
 

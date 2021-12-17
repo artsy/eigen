@@ -9,7 +9,6 @@ extern NSString *const ARTwitterCallbackPath;
 
 extern NSString *const ARAuthHeader;
 extern NSString *const ARXappHeader;
-extern NSString *const AREigenLocalTemporaryUserIDHeader;
 
 extern NSString *const AROAuthURL;
 extern NSString *const ARXappURL;

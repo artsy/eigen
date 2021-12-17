@@ -159,19 +159,4 @@
     return [NSString stringWithFormat:@"/auction/%@", self.saleID];
 }
 
-
-#pragma mark - ARSpotlightMetadataProvider
-
-
-- (NSString *)spotlightDescription;
-{
-    return [NSString stringWithFormat:@"%@\n%@\n", self.name, self.saleDescription];
-}
-
-- (NSURL *)spotlightThumbnailURL;
-{
-    return [NSURL URLWithString:self.profile.iconURL];
-}
-
-
 @end

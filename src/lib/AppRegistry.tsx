@@ -3,12 +3,10 @@ import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import React, { useEffect } from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
-import { StorybookUIRoot } from "../storybook/storybook-ui"
 import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { FadeIn } from "./Components/FadeIn"
-import { NativeViewController } from "./Components/NativeViewController"
 import { BidFlow } from "./Containers/BidFlow"
 import { InboxWrapper } from "./Containers/Inbox"
 import { InboxScreenQuery } from "./Containers/Inbox/Inbox"
@@ -101,7 +99,7 @@ import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { ViewingRoomsListQueryRenderer, ViewingRoomsListScreenQuery } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, useFeatureFlag, useSelectedTab } from "./store/GlobalStore"
+import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { AdminMenu } from "./utils/AdminMenu"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
@@ -114,6 +112,9 @@ import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenDimensions } from "./utils/useScreenDimensions"
 import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
 import { useStripeConfig } from "./utils/useStripeConfig"
+
+// keep this import of storybook last, otherwise it produces an error when debugging
+import { StorybookUIRoot } from "../storybook/storybook-ui"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -417,7 +418,6 @@ const Main: React.FC<{}> = track()(({}) => {
     })
   }, [])
 
-  const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken)
 
@@ -439,7 +439,7 @@ const Main: React.FC<{}> = track()(({}) => {
   }
 
   if (!isLoggedIn || onboardingState === "incomplete") {
-    return showNewOnboarding ? <Onboarding /> : <NativeViewController viewName="Onboarding" />
+    return <Onboarding />
   }
 
   return <BottomTabsNavigator />
