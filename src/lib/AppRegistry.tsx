@@ -3,7 +3,6 @@ import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import React, { useEffect } from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
-import { StorybookUIRoot } from "../storybook/storybook-ui"
 import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
@@ -113,6 +112,9 @@ import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenDimensions } from "./utils/useScreenDimensions"
 import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
 import { useStripeConfig } from "./utils/useStripeConfig"
+
+// keep this import of storybook last, otherwise it produces an error when debugging
+import { StorybookUIRoot } from "../storybook/storybook-ui"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
