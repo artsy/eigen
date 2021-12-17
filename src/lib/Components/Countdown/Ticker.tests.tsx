@@ -1,5 +1,4 @@
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-import { render } from "enzyme"
+import { render } from "@testing-library/react-native"
 import moment from "moment"
 import { Theme } from "palette"
 import React from "react"
@@ -11,44 +10,50 @@ const duration = moment.duration(1000)
 
 describe("SimpleTicker", () => {
   it("renders properly", () => {
-    const comp = render(
+    const { getByText } = render(
       <Theme>
         <SimpleTicker duration={duration} separator="  " size="5" />
       </Theme>
     )
-    expect(comp.text()).toEqual("00d  00h  00m  01s")
+
+    expect(getByText("00d  00h  00m  01s")).toBeTruthy()
   })
 
   it("renders properly when duration is over", () => {
-    const zeroDuration = moment.duration(null)
-    const comp = render(
+    const zeroDuration = moment.duration()
+    const { getByText } = render(
       <Theme>
         <SimpleTicker duration={zeroDuration} separator="  " size="5" />
       </Theme>
     )
-    expect(comp.text()).toEqual("00d  00h  00m  00s")
+
+    expect(getByText("00d  00h  00m  00s")).toBeTruthy()
   })
 
   it("renders properly with days overflowing a single month", () => {
     // 2 years
     const farOutDuration = moment.duration(63113904000)
-    const comp = render(
+    const { getByText } = render(
       <Theme>
         <SimpleTicker duration={farOutDuration} separator="  " size="5" />
       </Theme>
     )
 
-    expect(comp.text()).toContain("730d")
+    expect(getByText("730d  11h  38m  24s")).toBeTruthy()
   })
 })
 
 describe("LabeledTicker", () => {
   it("renders properly", () => {
-    const comp = render(
+    const { queryByText, queryAllByText } = render(
       <Theme>
         <LabeledTicker duration={duration} renderSeparator={() => <Text>:</Text>} />
       </Theme>
     )
-    expect(comp.text()).toEqual("00d:00h:00m:01s")
+    expect(queryByText("00d")).toBeTruthy()
+    expect(queryByText("00h")).toBeTruthy()
+    expect(queryByText("00m")).toBeTruthy()
+    expect(queryByText("01s")).toBeTruthy()
+    expect(queryAllByText(":")).toHaveLength(3)
   })
 })
