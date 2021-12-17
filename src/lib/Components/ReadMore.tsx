@@ -33,7 +33,6 @@ export const ReadMore = React.memo(
     testID,
     type,
   }: Props) => {
-    console.warn(content)
     const [isExpanded, setIsExpanded] = useState(false)
     const tracking = useTracking()
     const useNewTextStyles = textStyle === "new"
