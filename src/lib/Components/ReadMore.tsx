@@ -46,8 +46,11 @@ export const ReadMore = React.memo(
       ...(type === "show" && {
         list: {
           ...basicRules.paragraph,
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          react: (node, output, state) => {
+          react: (
+            node: SimpleMarkdown.SingleASTNode,
+            output: SimpleMarkdown.Output<React.ReactNode>,
+            state: SimpleMarkdown.State
+          ) => {
             return (
               <TextComponent {...textProps} color={color || "black100"} key={state.key}>
                 {!isExpanded && Number(state.key) > 0 ? ` ${emdash} ` : null}
@@ -59,8 +62,11 @@ export const ReadMore = React.memo(
       }),
       paragraph: {
         ...basicRules.paragraph,
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        react: (node, output, state) => {
+        react: (
+          node: SimpleMarkdown.SingleASTNode,
+          output: SimpleMarkdown.Output<React.ReactNode>,
+          state: SimpleMarkdown.State
+        ) => {
           return (
             <TextComponent {...textProps} color={color || "black100"} key={state.key}>
               {!isExpanded && Number(state.key) > 0 ? ` ${emdash} ` : null}
