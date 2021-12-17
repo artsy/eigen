@@ -139,17 +139,12 @@ export const Form: React.FC<FormProps> = (props) => {
                 m={0.5}
                 key={`filter-label-${index}`}
                 iconPosition="right"
-                // this is to make the pills removable only on create alert screen
-                {...(!isEditMode
-                  ? {
-                      onPress: () => {
-                        if (!isArtistPill(pill)) {
-                          onRemovePill(pill)
-                        }
-                      },
-                      Icon: isArtistPill(pill) ? undefined : RemoveIcon,
-                    }
-                  : {})}
+                onPress={() => {
+                  if (!isArtistPill(pill)) {
+                    onRemovePill(pill)
+                  }
+                }}
+                Icon={isArtistPill(pill) ? undefined : RemoveIcon}
               >
                 {pill.label}
               </Pill>
