@@ -1,8 +1,8 @@
 import { navigate } from "lib/navigation/navigate"
-import { Button, Sans, Spacer } from "palette"
+import { Button, Flex, Sans, Spacer } from "palette"
 import { ArtsyLogoHeader } from "palette/elements/Header/ArtsyLogoHeader"
 import React from "react"
-import { StyleSheet, View } from "react-native"
+import { View } from "react-native"
 
 export const ArtworkSubmitted: React.FC = () => {
   return (
@@ -21,7 +21,7 @@ export const ArtworkSubmitted: React.FC = () => {
         With low fees, informed pricing, and multiple sales options, why not submit another piece with Artsy.
       </Sans>
       <Spacer mb={4} />
-      <View style={styles.buttonsContainer}>
+      <Flex justifyContent="space-between" mx={2}>
         <Button
           block
           haptic
@@ -44,18 +44,7 @@ export const ArtworkSubmitted: React.FC = () => {
         >
           View Artwork in My Collection
         </Button>
-      </View>
+      </Flex>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  titleAndIcon: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginRight: 20,
-  },
-  buttonsContainer: { padding: 20 },
-  icons: { flexDirection: "row", alignItems: "center" },
-  circle: { marginRight: 5 },
-})
