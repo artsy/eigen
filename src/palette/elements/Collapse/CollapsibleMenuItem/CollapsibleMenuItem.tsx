@@ -1,8 +1,8 @@
-import { track as _track } from "lib/utils/track"
-import { Sans, Spacer } from "palette"
+import { Box, Flex, Sans, Spacer } from "palette"
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon } from "palette"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
-import { LayoutAnimation, StyleSheet, TouchableOpacity, View } from "react-native"
+import { LayoutAnimation } from "react-native"
+import styled from "styled-components/native"
 import { SaveAndContinueButton } from "./SaveAndContinueButton"
 
 interface CollapsibleMenuItemProps {
@@ -45,40 +45,39 @@ export const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
   if (!enabled) {
     // NOT CLICKABLE
     return (
-      <View style={styles.container}>
+      <Box>
         <Sans size="1" color="black30">
           Step {stepNumber} of {totalSteps}
         </Sans>
-        <View style={styles.titleAndIcon}>
+        <Flex flexDirection="row" justifyContent="space-between">
           <Sans size="8" color="black30">
             {title}
           </Sans>
-          <View style={styles.icons}>
+          <Flex flexDirection="row" alignItems="center">
             <ArrowDownIcon fill="black30" />
-          </View>
-        </View>
-      </View>
+          </Flex>
+        </Flex>
+      </Box>
     )
   }
   return (
     //  CLICKABLE
-    <View style={styles.container}>
+    <Box>
       <Sans size="1">
         Step {stepNumber} of {totalSteps}
       </Sans>
-      <TouchableOpacity
-        style={styles.titleAndIcon}
+      <TitleAndIconTouchableOpacity
         onPress={() => {
           LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
           setActiveStep(stepNumber)
         }}
       >
         <Sans size="8">{title}</Sans>
-        <View style={styles.icons}>
-          {!!isCompleted && <CheckCircleIcon fill="green100" height={24} width={24} style={styles.circle} />}
+        <Flex flexDirection="row" alignItems="center">
+          {!!isCompleted && <CheckCircleIcon fill="green100" height={24} width={24} style={{ marginRight: 5 }} />}
           {activeStep === stepNumber ? <ArrowUpIcon /> : <ArrowDownIcon />}
-        </View>
-      </TouchableOpacity>
+        </Flex>
+      </TitleAndIconTouchableOpacity>
       {activeStep === stepNumber && (
         <>
           <Content />
@@ -91,17 +90,11 @@ export const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
           />
         </>
       )}
-    </View>
+    </Box>
   )
 }
 
-const styles = StyleSheet.create({
-  container: { paddingLeft: 20, paddingRight: 20 },
-  titleAndIcon: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginRight: 20,
-  },
-  icons: { flexDirection: "row", alignItems: "center" },
-  circle: { marginRight: 5 },
-})
+const TitleAndIconTouchableOpacity = styled.TouchableOpacity`
+  flex-direction: row;
+  justify-content: space-between;
+`

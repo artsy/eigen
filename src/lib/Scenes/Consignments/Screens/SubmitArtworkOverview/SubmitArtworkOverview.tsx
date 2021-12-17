@@ -38,7 +38,14 @@ export const SubmitArtworkOverview = () => {
     { stepNumber: 3, title: "3nd component", Content: UploadPhotos },
   ]
   return (
-    <ScrollView alwaysBounceVertical={false} contentContainerStyle={styles.scrollView}>
+    <ScrollView
+      alwaysBounceVertical={false}
+      contentContainerStyle={{
+        paddingVertical: 20,
+        paddingHorizontal: 20,
+        justifyContent: "center",
+      }}
+    >
       <Spacer mb={3} />
       <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
         {items.map((item) => {
@@ -64,10 +71,5 @@ export const SubmitArtworkOverview = () => {
 }
 
 const styles = StyleSheet.create({
-  scrollView: {
-    paddingVertical: 20,
-    paddingHorizontal: 20,
-    justifyContent: "center",
-  },
   content: { backgroundColor: `rgba(255,145,125,.3)`, padding: 20, marginTop: 20 },
 })
