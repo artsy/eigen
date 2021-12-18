@@ -156,6 +156,7 @@
     "react-native-appboy-sdk": "1.35.1",
     "react-native-bootsplash": "3.2.0",
     "react-native-config": "https://github.com/artsy/react-native-config.git#v1.4.11-artsy",
+    "react-native-context-menu-view": "1.9.0",
     "react-native-credit-card-input": "0.4.1",
     "react-native-device-info": "10.3.0",
     "react-native-fast-image": "8.5.11",

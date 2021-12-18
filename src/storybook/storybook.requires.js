@@ -48,6 +48,7 @@ const getStories = () => {
     require("../palette/elements/SimpleMessage/SimpleMessage.stories.tsx"),
     require("../palette/elements/Tabs/Tabs.stories.tsx"),
     require("../palette/elements/Text/Text.stories.tsx"),
+    require("../palette/elements/Touchable/Touchable.stories.tsx"),
     require("../palette/elements/VisualClue/VisualClue.stories.tsx"),
     require("../palette/icons.stories.tsx"),
     require("../palette/organisms/screenStructure/Screen.stories.tsx"),

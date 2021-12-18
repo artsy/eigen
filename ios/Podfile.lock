@@ -455,6 +455,8 @@ PODS:
     - react-native-config/App (= 1.4.11)
   - react-native-config/App (1.4.11):
     - React-Core
+  - react-native-context-menu-view (1.9.0):
+    - React
   - react-native-cookies (6.0.11):
     - React-Core
   - react-native-fbsdk-next (11.0.0):
@@ -785,6 +787,7 @@ DEPENDENCIES:
   - react-native-appboy-sdk (from `../node_modules/react-native-appboy-sdk`)
   - "react-native-cameraroll (from `../node_modules/@react-native-community/cameraroll`)"
   - react-native-config (from `../node_modules/react-native-config`)
+  - react-native-context-menu-view (from `../node_modules/react-native-context-menu-view`)
   - "react-native-cookies (from `../node_modules/@react-native-cookies/cookies`)"
   - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - react-native-flipper (from `../node_modules/react-native-flipper`)
@@ -988,6 +991,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/cameraroll"
   react-native-config:
     :path: "../node_modules/react-native-config"
+  react-native-context-menu-view:
+    :path: "../node_modules/react-native-context-menu-view"
   react-native-cookies:
     :path: "../node_modules/@react-native-cookies/cookies"
   react-native-fbsdk-next:
@@ -1203,6 +1208,7 @@ SPEC CHECKSUMS:
   react-native-appboy-sdk: e4e36787766637d5c60da264b66f4389ed479867
   react-native-cameraroll: 463aff54e37cff27ea76eb792e6f1fa43b876320
   react-native-config: bcafda5b4c51491ee1b0e1d0c4e3905bc7b56c1b
+  react-native-context-menu-view: 1797ce85b52d810301268330704272b8cdb7a6e7
   react-native-cookies: cd92f3824ed1e32a20802e8185101e14bb5b76da
   react-native-fbsdk-next: e5ea39f1b0f1e76deeb2538275559706f3b79e82
   react-native-flipper: 8d0ada062fbc2c7460cc0d343aded6fc3f9c90dc
