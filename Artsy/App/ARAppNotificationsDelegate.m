@@ -13,6 +13,7 @@
 #import "ARSerifNavigationViewController.h"
 #import "ARLogger.h"
 #import "ARDefaults.h"
+#import "User.h"
 #import "AROptions.h"
 #import "ARDispatchManager.h"
 
