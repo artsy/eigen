@@ -67,7 +67,7 @@ describe("Search Screen", () => {
       Algolia: () => ({
         appID: "",
         apiKey: "",
-        indices: [{ name: "Artist_staging", displayName: "Artists" }],
+        indices: [{ name: "Artist_staging", displayName: "Artists", key: "artist" }],
       }),
     })
 
@@ -129,10 +129,12 @@ describe("Search Screen", () => {
           {
             name: "Artist_staging",
             displayName: "Artists",
+            key: "artist",
           },
           {
             name: "Gallery_staging",
             displayName: "Gallery",
+            key: "partner_gallery",
           },
         ],
       }),
@@ -155,10 +157,10 @@ describe("Search Screen", () => {
             appID: "",
             apiKey: "",
             indices: [
-              { name: "Artist_staging", displayName: "Artist" },
-              { name: "Sale_staging", displayName: "Auction" },
-              { name: "Gallery_staging", displayName: "Gallery" },
-              { name: "Fair_staging", displayName: "Fair" },
+              { name: "Artist_staging", displayName: "Artist", key: "artist" },
+              { name: "Sale_staging", displayName: "Auction", key: "sale" },
+              { name: "Gallery_staging", displayName: "Gallery", key: "partner_gallery" },
+              { name: "Fair_staging", displayName: "Fair", key: "fair" },
             ],
           }),
         })
@@ -187,10 +189,10 @@ describe("Search Screen", () => {
             appID: "",
             apiKey: "",
             indices: [
-              { name: "Artist_staging", displayName: "Artist" },
-              { name: "Sale_staging", displayName: "Auction" },
-              { name: "Gallery_staging", displayName: "Gallery" },
-              { name: "Fair_staging", displayName: "Fair" },
+              { name: "Artist_staging", displayName: "Artist", key: "artist" },
+              { name: "Sale_staging", displayName: "Auction", key: "sale" },
+              { name: "Gallery_staging", displayName: "Gallery", key: "partner_gallery" },
+              { name: "Fair_staging", displayName: "Fair", key: "fair" },
             ],
           }),
         })
@@ -208,10 +210,10 @@ describe("Search Screen", () => {
             appID: "",
             apiKey: "",
             indices: [
-              { name: "Artist_staging", displayName: "Artist" },
-              { name: "Sale_staging", displayName: "Auction" },
-              { name: "Gallery_staging", displayName: "Gallery" },
-              { name: "Fair_staging", displayName: "Fair" },
+              { name: "Artist_staging", displayName: "Artist", key: "artist" },
+              { name: "Sale_staging", displayName: "Auction", key: "sale" },
+              { name: "Gallery_staging", displayName: "Gallery", key: "partner_gallery" },
+              { name: "Fair_staging", displayName: "Fair", key: "fair" },
             ],
           }),
         })
@@ -232,10 +234,10 @@ describe("Search Screen", () => {
           appID: "",
           apiKey: "",
           indices: [
-            { name: "Artist_staging", displayName: "Artist" },
-            { name: "Sale_staging", displayName: "Auction" },
-            { name: "Gallery_staging", displayName: "Gallery" },
-            { name: "Fair_staging", displayName: "Fair" },
+            { name: "Artist_staging", displayName: "Artist", key: "artist" },
+            { name: "Sale_staging", displayName: "Auction", key: "sale" },
+            { name: "Gallery_staging", displayName: "Gallery", key: "partner_gallery" },
+            { name: "Fair_staging", displayName: "Fair", key: "fair" },
           ],
         }),
       })
@@ -263,7 +265,7 @@ describe("Search Screen", () => {
         Algolia: () => ({
           appID: "",
           apiKey: "",
-          indices: [{ name: "Artist_staging", displayName: "Artist" }],
+          indices: [{ name: "Artist_staging", displayName: "Artist", key: "artist" }],
         }),
       })
 
@@ -281,7 +283,7 @@ describe("Search Screen", () => {
         Algolia: () => ({
           appID: "",
           apiKey: "",
-          indices: [{ name: "Artist_staging", displayName: "Artist" }],
+          indices: [{ name: "Artist_staging", displayName: "Artist", key: "artist" }],
         }),
       })
 
@@ -310,7 +312,7 @@ describe("Search Screen", () => {
         Algolia: () => ({
           appID: "",
           apiKey: "",
-          indices: [{ name: "Artist_staging", displayName: "Artist" }],
+          indices: [{ name: "Artist_staging", displayName: "Artist", key: "artist" }],
         }),
       })
 
@@ -361,6 +363,7 @@ describe("Search Screen", () => {
             {
               name: "Artist_staging",
               displayName: "Artists",
+              key: "artist",
             },
           ],
         }),
@@ -424,7 +427,7 @@ describe("Search Screen", () => {
       Algolia: () => ({
         appID: "",
         apiKey: "",
-        indices: [{ name: "Artist_staging", displayName: "Artist" }],
+        indices: [{ name: "Artist_staging", displayName: "Artist", key: "artist" }],
       }),
     })
 
