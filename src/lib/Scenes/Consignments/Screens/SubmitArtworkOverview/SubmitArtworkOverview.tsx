@@ -1,43 +1,104 @@
-import { Join, Separator, Spacer } from "palette"
-import { CollapsibleMenuItem } from "palette/elements/Collapse/CollapsibleMenuItem/CollapsibleMenuItem"
-import React, { useState } from "react"
-import { ScrollView, StyleSheet, Text, View } from "react-native"
+import { Box, Button, Flex, Join, Separator, Spacer, Text } from "palette"
+import { CollapsableMenuItem } from "palette"
+import React, { useRef } from "react"
+import { ScrollView } from "react-native"
 
-export const ArtworkDetails: React.FC = ({}) => {
+const CTAButton = ({ onPress, text }: { onPress: () => void; text: string }) => (
+  <Button block haptic maxWidth={540} onPress={onPress}>
+    {text}
+  </Button>
+)
+export const ArtworkDetails = ({ handlePress }: { handlePress: () => void }) => {
   return (
-    <View style={styles.content}>
+    <Flex backgroundColor="darkorange" p={1} mt={1}>
       <Text>ArtworkDetails content</Text>
-    </View>
+      <Spacer mt={1} />
+      <CTAButton text="Save & Continue" onPress={handlePress} />
+    </Flex>
   )
 }
-export const ContactInformation: React.FC = ({}) => {
+
+export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
   return (
-    <View style={styles.content}>
+    <Flex backgroundColor="darkorange" p={1} mt={1}>
+      <Text>Upload Photos content</Text>
+      <Spacer mt={1} />
+      <CTAButton text="Save & Continue" onPress={handlePress} />
+    </Flex>
+  )
+}
+
+export const ContactInformation = ({ handlePress }: { handlePress: () => void }) => {
+  return (
+    <Flex backgroundColor="darkorange" p={1} mt={1}>
       <Text>ContactInformation content</Text>
-    </View>
+      <Spacer mt={1} />
+      <CTAButton text="Submit Artwork" onPress={handlePress} />
+    </Flex>
   )
 }
-export const UploadPhotos: React.FC = ({}) => {
-  return (
-    <View style={styles.content}>
-      <Text>UploadPhotos content</Text>
-    </View>
-  )
-}
+
+const StepTitle = ({
+  stepNumber,
+  totalSteps,
+  title,
+  disabled,
+}: {
+  stepNumber: number
+  totalSteps: number
+  title: string
+  disabled?: boolean
+}) => (
+  <Box>
+    <Text variant="sm" color={disabled ? "black30" : "black100"}>
+      Step {stepNumber} of {totalSteps}
+    </Text>
+    <Text variant="lg" color={disabled ? "black30" : "black100"}>
+      {title}
+    </Text>
+  </Box>
+)
 
 export const SubmitArtworkOverview = () => {
-  const [activeStep, setActiveStep] = useState(1)
-  const [enabledSteps, setEnabledSteps] = useState([1])
-  // user must complete one step before being able to go to another. This is why we have "enabled" state
+  const stepsRefs = useRef<CollapsableMenuItem[]>(new Array(3).fill(null)).current
 
   const items = [
-    { stepNumber: 1, title: "Artwork Details", Content: ArtworkDetails, navigateToLink: "" },
-    { stepNumber: 2, title: "2nd component", Content: ContactInformation, navigateToLink: "" },
-    { stepNumber: 3, title: "3nd component", Content: UploadPhotos, navigateToLink: "artwork-submitted" },
+    {
+      title: "Artwork Details",
+      Content: (
+        <ArtworkDetails
+          handlePress={() => {
+            stepsRefs[0].collapse()
+            stepsRefs[1].expand()
+          }}
+        />
+      ),
+    },
+    {
+      title: "Upload Photos",
+      Content: (
+        <UploadPhotos
+          handlePress={() => {
+            stepsRefs[1].collapse()
+            stepsRefs[2].expand()
+          }}
+        />
+      ),
+    },
+    {
+      title: "Contact Information",
+      Content: (
+        <ContactInformation
+          handlePress={() => {
+            // do nothing
+          }}
+        />
+      ),
+    },
   ]
+
   return (
     <ScrollView
-      alwaysBounceVertical={false}
       contentContainerStyle={{
         paddingVertical: 20,
         paddingHorizontal: 20,
@@ -46,29 +107,20 @@ export const SubmitArtworkOverview = () => {
     >
       <Spacer mb={3} />
       <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
-        {items.map((item) => {
-          const { stepNumber, title, Content, navigateToLink } = item
+        {items.map(({ title, Content }, index) => {
           return (
-            <CollapsibleMenuItem
-              key={title}
-              title={title}
-              stepNumber={stepNumber}
-              enabled={enabledSteps.includes(stepNumber)}
-              totalSteps={items.length}
-              activeStep={activeStep}
-              enabledSteps={enabledSteps}
-              setActiveStep={setActiveStep}
-              setEnabledSteps={setEnabledSteps}
-              Content={() => <Content />}
-              navigateToLink={navigateToLink}
-            />
+            <CollapsableMenuItem
+              key={index}
+              Header={<StepTitle stepNumber={index + 1} totalSteps={items.length} title={title} />}
+              isExpanded={index === 0}
+              // isExpanded
+              ref={(ref) => (stepsRefs[index] = ref)}
+            >
+              {Content}
+            </CollapsableMenuItem>
           )
         })}
       </Join>
     </ScrollView>
   )
 }
-
-const styles = StyleSheet.create({
-  content: { backgroundColor: `rgba(255,145,125,.3)`, padding: 20, marginTop: 20 },
-})
