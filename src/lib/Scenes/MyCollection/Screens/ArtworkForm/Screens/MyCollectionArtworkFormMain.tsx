@@ -66,18 +66,6 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
         </ScreenMargin>
         <Flex p={2}>
           <Join separator={<Spacer my={1} />}>
-            <PhotosButton
-              testID="PhotosButton"
-              onPress={() => {
-                if (isEmpty(artworkState.sessionState.formValues.photos)) {
-                  showPhotoActionSheet(showActionSheetWithOptions, true).then((photos) => {
-                    artworkActions.addPhotos(photos)
-                  })
-                } else {
-                  navigation.navigate("AddPhotos", { onHeaderBackButtonPress: route.params.onHeaderBackButtonPress })
-                }
-              }}
-            />
             <Input
               title="TITLE"
               placeholder="Title"
