@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 25dcc9f596a1ab2752001efe1aee8296 */
+/* @relayHash d45abe77c683fcbaf59ed81204dc4c64 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -53,6 +53,9 @@ fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectio
       pricePaid {
         minor
       }
+      sizeBucket
+      width
+      height
       date
       ...MyCollectionArtworkListItem_artwork
     }
@@ -92,6 +95,9 @@ fragment MyCollection_me_4o4pu4 on Me {
         pricePaid {
           minor
         }
+        sizeBucket
+        width
+        height
         artist {
           internalID
           name
@@ -265,6 +271,27 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "kind": "ScalarField",
+                        "name": "sizeBucket",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "width",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "height",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "concreteType": "Artist",
                         "kind": "LinkedField",
                         "name": "artist",
@@ -424,7 +451,7 @@ return {
     ]
   },
   "params": {
-    "id": "25dcc9f596a1ab2752001efe1aee8296",
+    "id": "d45abe77c683fcbaf59ed81204dc4c64",
     "metadata": {},
     "name": "MyCollectionQuery",
     "operationKind": "query",

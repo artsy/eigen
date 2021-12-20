@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8c646c0031a34ef783d8aaaff652e39c */
+/* @relayHash bacc6cc91bbc9a17942fe645ce028598 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -49,6 +49,9 @@ fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectio
       pricePaid {
         minor
       }
+      sizeBucket
+      width
+      height
       date
       ...MyCollectionArtworkListItem_artwork
     }
@@ -88,6 +91,9 @@ fragment MyCollection_me on Me {
         pricePaid {
           minor
         }
+        sizeBucket
+        width
+        height
         artist {
           internalID
           name
@@ -275,6 +281,27 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "kind": "ScalarField",
+                        "name": "sizeBucket",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "width",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "height",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "concreteType": "Artist",
                         "kind": "LinkedField",
                         "name": "artist",
@@ -434,7 +461,7 @@ return {
     ]
   },
   "params": {
-    "id": "8c646c0031a34ef783d8aaaff652e39c",
+    "id": "bacc6cc91bbc9a17942fe645ce028598",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -475,6 +502,7 @@ return {
         "me.myCollectionConnection.edges.node.artist.name": (v5/*: any*/),
         "me.myCollectionConnection.edges.node.artistNames": (v5/*: any*/),
         "me.myCollectionConnection.edges.node.date": (v5/*: any*/),
+        "me.myCollectionConnection.edges.node.height": (v5/*: any*/),
         "me.myCollectionConnection.edges.node.id": (v3/*: any*/),
         "me.myCollectionConnection.edges.node.image": {
           "enumValues": null,
@@ -515,8 +543,10 @@ return {
           "plural": false,
           "type": "Int"
         },
+        "me.myCollectionConnection.edges.node.sizeBucket": (v5/*: any*/),
         "me.myCollectionConnection.edges.node.slug": (v3/*: any*/),
         "me.myCollectionConnection.edges.node.title": (v5/*: any*/),
+        "me.myCollectionConnection.edges.node.width": (v5/*: any*/),
         "me.myCollectionConnection.pageInfo": {
           "enumValues": null,
           "nullable": false,

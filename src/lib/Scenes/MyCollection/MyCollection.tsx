@@ -227,6 +227,52 @@ const MyCollection: React.FC<{
           })
         },
       },
+      {
+        displayText: FilterDisplayName.sizes,
+        filterType: "sizes",
+        ScreenComponent: "SizesOptionsScreen",
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (
+          artworks,
+          sizeParams: {
+            paramName: FilterParamName.width | FilterParamName.height | FilterParamName.sizes
+            paramValue: string
+          }
+        ) => {
+          if (sizeParams.paramName === "sizes") {
+            return filter(artworks, (a) => {
+              const size: string = a.sizeBucket
+              return sizeParams.paramValue.includes(size.toUpperCase())
+            })
+          } else {
+            const splitRange = sizeParams.paramValue.split("-")
+            const lowerBoundStr = splitRange[0]
+            const upperBoundStr = splitRange[1]
+
+            let lowerBound = 0
+            let upperBound = Number.POSITIVE_INFINITY
+
+            const parsedLower = parseInt(lowerBoundStr, 10)
+            const parsedUpper = parseInt(upperBoundStr, 10)
+
+            if (!isNaN(parsedLower)) {
+              lowerBound = parsedLower
+            }
+
+            if (!isNaN(parsedUpper)) {
+              upperBound = parsedUpper
+            }
+
+            return filter(artworks, (a) => {
+              const targetMetric = sizeParams.paramName === "width" ? a.width : a.height
+              if (isNaN(targetMetric)) {
+                return false
+              }
+              return targetMetric >= lowerBound && targetMetric <= upperBound
+            })
+          }
+        },
+      },
     ])
   }, [])
 
@@ -374,11 +420,32 @@ const MyCollection: React.FC<{
                 appliedFiltersState.filter((x) => x.paramName !== FilterParamName.sort),
                 (f) => f.paramName
               )
+
+              // custom size filters come back with a different type, consolidate to one
+              const sizeFilterTypes = [FilterParamName.width, FilterParamName.height, FilterParamName.sizes]
+
               // tslint:disable-next-line: no-shadowed-variable
               filtering.forEach((filter) => {
-                const filterStep = (filterOptions ?? []).find((f) => f.filterType === filter.paramName)!
-                  .localSortAndFilter!
-                processedArtworks = filterStep(processedArtworks, filter.paramValue)
+                if (sizeFilterTypes.includes(filter.paramName)) {
+                  /*
+                   * Custom handling for size filter
+                   * 2 flavors:
+                   * a sizeRange representing either a width or height restriction OR
+                   * 1 or more size bucket names which should be matched against artwork values
+                   * pass the paramName so we can distinguish how to handle in the step
+                   */
+                  const sizeFilterParamName = FilterParamName.sizes
+                  const sizeFilterStep = (filterOptions ?? []).find((f) => f.filterType === sizeFilterParamName)!
+                    .localSortAndFilter!
+                  processedArtworks = sizeFilterStep(processedArtworks, {
+                    paramValue: filter.paramValue,
+                    paramName: filter.paramName,
+                  })
+                } else {
+                  const filterStep = (filterOptions ?? []).find((f) => f.filterType === filter.paramName)!
+                    .localSortAndFilter!
+                  processedArtworks = filterStep(processedArtworks, filter.paramValue)
+                }
               })
 
               const sorting = appliedFiltersState.filter((x) => x.paramName === FilterParamName.sort)
@@ -423,6 +490,9 @@ export const MyCollectionContainer = createPaginationContainer(
               pricePaid {
                 minor
               }
+              sizeBucket
+              width
+              height
               artist {
                 internalID
                 name

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f3a0d356ac14ff1b84f2b02557a2322a */
+/* @relayHash a37683621ab800ffb17e7be683083d62 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -57,6 +57,9 @@ fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectio
       pricePaid {
         minor
       }
+      sizeBucket
+      width
+      height
       date
       ...MyCollectionArtworkListItem_artwork
     }
@@ -96,6 +99,9 @@ fragment MyCollection_me_19sDyO on Me {
         pricePaid {
           minor
         }
+        sizeBucket
+        width
+        height
         artist {
           internalID
           name
@@ -300,6 +306,27 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "kind": "ScalarField",
+                        "name": "sizeBucket",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "width",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "height",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "concreteType": "Artist",
                         "kind": "LinkedField",
                         "name": "artist",
@@ -459,7 +486,7 @@ return {
     ]
   },
   "params": {
-    "id": "f3a0d356ac14ff1b84f2b02557a2322a",
+    "id": "a37683621ab800ffb17e7be683083d62",
     "metadata": {},
     "name": "MyCollectionPaginationQuery",
     "operationKind": "query",

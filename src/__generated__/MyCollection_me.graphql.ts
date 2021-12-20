@@ -17,6 +17,9 @@ export type MyCollection_me = {
                 readonly pricePaid: {
                     readonly minor: number;
                 } | null;
+                readonly sizeBucket: string | null;
+                readonly width: string | null;
+                readonly height: string | null;
                 readonly artist: {
                     readonly internalID: string;
                     readonly name: string | null;
@@ -148,6 +151,27 @@ return {
                 {
                   "alias": null,
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "sizeBucket",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "width",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "height",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
                   "concreteType": "Artist",
                   "kind": "LinkedField",
                   "name": "artist",
@@ -234,5 +258,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '43f0063f0f17f9ec907f89d48b1cacf1';
+(node as any).hash = '5bb8b603b23d286e009552844b608d8f';
 export default node;
