@@ -1,20 +1,17 @@
-import { navigate } from "lib/navigation/navigate"
 import { Button } from "palette"
 import React, { Dispatch, SetStateAction } from "react"
 import { LayoutAnimation, View } from "react-native"
 
 interface SaveAndContinueButtonProps {
-  navigateToLink?: string
   setIsCompleted: Dispatch<SetStateAction<boolean>>
-  isLastStep: boolean
-  textToRender: string
+  buttonText: string
+  handleClick: () => void
 }
 
 export const SaveAndContinueButton: React.FC<SaveAndContinueButtonProps> = ({
-  navigateToLink = "",
   setIsCompleted,
-  isLastStep,
-  textToRender,
+  buttonText,
+  handleClick,
 }) => {
   return (
     <View>
@@ -24,13 +21,14 @@ export const SaveAndContinueButton: React.FC<SaveAndContinueButtonProps> = ({
         maxWidth={540}
         onPress={() => {
           LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
-          if (isLastStep) {
-            navigate(navigateToLink)
-          }
-          setIsCompleted(true) // make checks here
+          handleClick()
+          // Check if the forms are correctly completed here.
+          // If they are, continue to set setIsCompleted(true)
+          // if not display an error message "information on field ___ is missing"
+          setIsCompleted(true)
         }}
       >
-        {textToRender}
+        {buttonText}
       </Button>
     </View>
   )

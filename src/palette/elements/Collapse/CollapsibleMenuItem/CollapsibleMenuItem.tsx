@@ -1,3 +1,4 @@
+import { navigate } from "lib/navigation/navigate"
 import { Box, Flex, Sans, Spacer } from "palette"
 import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon } from "palette"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
@@ -27,11 +28,17 @@ export const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
   setActiveStep,
   enabledSteps,
   setEnabledSteps,
-  navigateToLink,
+  navigateToLink = "",
   Content,
 }) => {
   const [isCompleted, setIsCompleted] = useState(false)
   const [isLastStep, setIsLastStep] = useState(false)
+
+  const handleClick = () => {
+    if (isLastStep) {
+      navigate(navigateToLink)
+    }
+  }
 
   useEffect(() => {
     setIsLastStep(stepNumber === totalSteps)
@@ -84,9 +91,8 @@ export const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
           <Spacer mb={2} />
           <SaveAndContinueButton
             setIsCompleted={setIsCompleted}
-            navigateToLink={navigateToLink}
-            isLastStep={isLastStep}
-            textToRender={isLastStep ? "Submit Artwork" : "Save & Continue"}
+            buttonText={isLastStep ? "Submit Artwork" : "Save & Continue"}
+            handleClick={handleClick}
           />
         </>
       )}
