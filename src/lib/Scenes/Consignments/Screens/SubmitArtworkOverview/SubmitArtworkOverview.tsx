@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Join, Separator, Spacer, Text } from "palette"
 import { CollapsableMenuItem } from "palette"
-import React, { useRef } from "react"
+import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 
 const CTAButton = ({ onPress, text }: { onPress: () => void; text: string }) => (
@@ -59,8 +59,20 @@ const StepTitle = ({
   </Box>
 )
 
+const TOTAL_STEPS = 3
+
 export const SubmitArtworkOverview = () => {
-  const stepsRefs = useRef<CollapsableMenuItem[]>(new Array(3).fill(null)).current
+  // This is a temporary logic that will be removed later
+  const [validSteps, setValidSteps] = useState([true, ...new Array(TOTAL_STEPS - 1).fill(false)])
+
+  const stepsRefs = useRef<CollapsableMenuItem[]>(new Array(TOTAL_STEPS).fill(null)).current
+
+  // This will also be removed, it's temporary for the boilerplate
+  const enableStep = (stepIndex: number) => {
+    const newValidSteps = [...validSteps]
+    newValidSteps[stepIndex] = true
+    setValidSteps(newValidSteps)
+  }
 
   const items = [
     {
@@ -68,8 +80,8 @@ export const SubmitArtworkOverview = () => {
       Content: (
         <ArtworkDetails
           handlePress={() => {
-            stepsRefs[0].collapse()
-            stepsRefs[1].expand()
+            expandCollapsibleMenuContent(1)
+            enableStep(1)
           }}
         />
       ),
@@ -79,8 +91,8 @@ export const SubmitArtworkOverview = () => {
       Content: (
         <UploadPhotos
           handlePress={() => {
-            stepsRefs[1].collapse()
-            stepsRefs[2].expand()
+            expandCollapsibleMenuContent(2)
+            enableStep(2)
           }}
         />
       ),
@@ -97,6 +109,16 @@ export const SubmitArtworkOverview = () => {
     },
   ]
 
+  const expandCollapsibleMenuContent = (indexToExpand: number) => {
+    items.forEach((_, index) => {
+      if (indexToExpand !== index) {
+        stepsRefs[index].collapse()
+      } else {
+        stepsRefs[index].expand()
+      }
+    })
+  }
+
   return (
     <ScrollView
       contentContainerStyle={{
@@ -108,13 +130,19 @@ export const SubmitArtworkOverview = () => {
       <Spacer mb={3} />
       <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
         {items.map(({ title, Content }, index) => {
+          const disabled = !validSteps[index]
           return (
             <CollapsableMenuItem
               key={index}
-              Header={<StepTitle stepNumber={index + 1} totalSteps={items.length} title={title} />}
+              Header={<StepTitle stepNumber={index + 1} totalSteps={items.length} title={title} disabled={disabled} />}
+              onExpand={() => expandCollapsibleMenuContent(index)}
               isExpanded={index === 0}
-              // isExpanded
-              ref={(ref) => (stepsRefs[index] = ref)}
+              disabled={disabled}
+              ref={(ref) => {
+                if (ref) {
+                  stepsRefs[index] = ref
+                }
+              }}
             >
               {Content}
             </CollapsableMenuItem>

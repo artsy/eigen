@@ -5,6 +5,7 @@ interface CollapsableMenuItemProps {
   Header: JSX.Element
   isExpanded?: boolean
   disabled?: boolean
+  onExpand?: () => void
 }
 
 export interface CollapsableMenuItem {
@@ -12,11 +13,9 @@ export interface CollapsableMenuItem {
   expand: () => void
 }
 export const CollapsableMenuItem = forwardRef<CollapsableMenuItem, React.PropsWithChildren<CollapsableMenuItemProps>>(
-  ({ children, Header, isExpanded = false, disabled = false }, ref) => {
+  ({ children, Header, isExpanded = false, disabled = false, onExpand }, ref) => {
     const [isOpen, setIsOpen] = useState(false)
 
-    // We would like to show the artwork details open initially with a nice animation
-    // when the screen first loads
     useEffect(() => {
       setIsOpen(isExpanded)
     }, [])
@@ -39,6 +38,9 @@ export const CollapsableMenuItem = forwardRef<CollapsableMenuItem, React.PropsWi
         <Touchable
           onPress={() => {
             setIsOpen(!isOpen)
+            if (!isOpen) {
+              onExpand?.()
+            }
           }}
           disabled={disabled}
         >
