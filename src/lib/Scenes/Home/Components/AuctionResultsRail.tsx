@@ -39,7 +39,7 @@ const AuctionResultsRail: React.FC<{ me: AuctionResultsRail_me } & Props> = ({ t
         horizontal={false}
         initialNumToRender={3}
         ItemSeparatorComponent={() => (
-          <Flex px={2} py={2}>
+          <Flex px={2}>
             <Separator borderColor="black10" />
           </Flex>
         )}
