@@ -4,11 +4,8 @@ import Config from "react-native-config"
 import { sentryReleaseName } from "../../app.json"
 import { GlobalStore, useFeatureFlag } from "./store/GlobalStore"
 
-export const setupSentry = (
-  props: Partial<Sentry.ReactNativeOptions> = {},
-  captureExceptionsInSentryOnDev = !__DEV__
-) => {
-  if (!captureExceptionsInSentryOnDev && Config.SENTRY_DSN) {
+export const setupSentry = (props: Partial<Sentry.ReactNativeOptions> = {}, captureExceptions = !__DEV__) => {
+  if (!captureExceptions && Config.SENTRY_DSN) {
     Sentry.init({
       dsn: Config.SENTRY_DSN,
       release: sentryReleaseName,
