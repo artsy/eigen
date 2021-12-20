@@ -234,23 +234,7 @@ describe("Saved search alert form", () => {
     })
   })
 
-  it("should hide description when AREnableSavedSearchToggles is enabled", () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
-    const { queryByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
-    const description = queryByText("Receive alerts as Push Notifications directly to your device.")
-
-    expect(description).toBeFalsy()
-  })
-
-  it("should hide notification toggles if AREnableSavedSearchToggles is disabled", async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: false })
-    const { queryByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
-
-    expect(queryByText("Email Alerts")).toBeFalsy()
-    expect(queryByText("Mobile Alerts")).toBeFalsy()
-  })
-
-  describe("When AREnableSavedSearchToggles is enabled", () => {
+  describe("Notification toggles", () => {
     const notificationPermissionsMock = mockFetchNotificationPermissions(false)
 
     beforeEach(() => {
@@ -258,7 +242,6 @@ describe("Saved search alert form", () => {
       notificationPermissionsMock.mockImplementationOnce((cb) => {
         cb(null, PushAuthorizationStatus.Authorized)
       })
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
     })
 
     it("the notification toggles should be displayed", async () => {
@@ -405,103 +388,104 @@ describe("Saved search alert form", () => {
 
       expect(onUpdateEmailPreferencesMock).toBeCalled()
     })
+  })
 
-    describe("Allow to send emails modal", () => {
-      it("should display the modal when the user enables email alerts", async () => {
-        const { getByA11yLabel } = renderWithWrappersTL(
-          <SavedSearchAlertForm
-            {...baseProps}
-            initialValues={{ ...baseProps.initialValues, push: false, email: false }}
-            userAllowsEmails={false}
-          />
-        )
+  describe("Allow to send emails modal", () => {
+    beforeEach(() => {
+      spyAlert.mockClear()
+    })
 
-        await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+    it("should display the modal when the user enables email alerts", async () => {
+      const { getByA11yLabel } = renderWithWrappersTL(
+        <SavedSearchAlertForm
+          {...baseProps}
+          initialValues={{ ...baseProps.initialValues, push: false, email: false }}
+          userAllowsEmails={false}
+        />
+      )
 
-        expect(spyAlert).toBeCalled()
-      })
+      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
 
-      it("should display the modal only once", async () => {
-        // @ts-ignore
-        spyAlert.mockImplementation((_title, _message, buttons) => buttons[1].onPress()) // Click "Accept" button
+      expect(spyAlert).toBeCalled()
+    })
 
-        const { getByA11yLabel } = renderWithWrappersTL(
-          <SavedSearchAlertForm
-            {...baseProps}
-            initialValues={{ ...baseProps.initialValues, push: false, email: false }}
-            userAllowsEmails={false}
-          />
-        )
+    it("should display the modal only once", async () => {
+      // @ts-ignore
+      spyAlert.mockImplementation((_title, _message, buttons) => buttons[1].onPress()) // Click "Accept" button
 
-        await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
-        await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
-        await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+      const { getByA11yLabel } = renderWithWrappersTL(
+        <SavedSearchAlertForm
+          {...baseProps}
+          initialValues={{ ...baseProps.initialValues, push: false, email: false }}
+          userAllowsEmails={false}
+        />
+      )
 
-        expect(spyAlert).toBeCalledTimes(1)
-      })
+      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
+      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
 
-      it('should not display the modal if the "Email Alerts" toggle off and then back on', async () => {
-        const { getByA11yLabel } = renderWithWrappersTL(
-          <SavedSearchAlertForm {...baseProps} userAllowsEmails={false} />
-        )
+      expect(spyAlert).toBeCalledTimes(1)
+    })
 
-        await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
-        await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
-        await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+    it('should not display the modal if the "Email Alerts" toggle off and then back on', async () => {
+      const { getByA11yLabel } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} userAllowsEmails={false} />)
 
-        expect(spyAlert).toBeCalledTimes(0)
-      })
+      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
+      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
 
-      it('should call update mutation if the user is tapped "Accept" button', async () => {
-        // @ts-ignore
-        spyAlert.mockImplementation((_title, _message, buttons) => buttons[1].onPress()) // Click "Accept" button
+      expect(spyAlert).toBeCalledTimes(0)
+    })
 
-        const { getByA11yLabel, getByTestId } = renderWithWrappersTL(
-          <SavedSearchAlertForm
-            {...baseProps}
-            initialValues={{ ...baseProps.initialValues, push: false, email: false }}
-            userAllowsEmails={false}
-          />
-        )
+    it('should call update mutation if the user is tapped "Accept" button', async () => {
+      // @ts-ignore
+      spyAlert.mockImplementation((_title, _message, buttons) => buttons[1].onPress()) // Click "Accept" button
 
-        await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
-        await fireEvent.press(getByTestId("save-alert-button"))
+      const { getByA11yLabel, getByTestId } = renderWithWrappersTL(
+        <SavedSearchAlertForm
+          {...baseProps}
+          initialValues={{ ...baseProps.initialValues, push: false, email: false }}
+          userAllowsEmails={false}
+        />
+      )
 
-        await waitFor(() => {
-          const mutation = mockEnvironment.mock.getMostRecentOperation()
-          expect(mutation.request.node.operation.name).toEqual("updateEmailFrequencyMutation")
-          expect(mutation.request.variables).toEqual({
-            input: {
-              emailFrequency: "alerts_only",
-            },
-          })
+      await fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
+      await fireEvent.press(getByTestId("save-alert-button"))
+
+      await waitFor(() => {
+        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        expect(mutation.request.node.operation.name).toEqual("updateEmailFrequencyMutation")
+        expect(mutation.request.variables).toEqual({
+          input: {
+            emailFrequency: "alerts_only",
+          },
         })
       })
+    })
 
-      it("should not call update email frequency mutation if the user previously opted out of emails and toggle was on by default", async () => {
-        const { getByTestId } = renderWithWrappersTL(
-          <SavedSearchAlertForm
-            {...baseProps}
-            savedSearchAlertId="savedSearchAlertId"
-            initialValues={{ ...baseProps.initialValues, email: true }}
-            userAllowsEmails={false}
-          />
-        )
+    it("should not call update email frequency mutation if the user previously opted out of emails and toggle was on by default", async () => {
+      const { getByTestId } = renderWithWrappersTL(
+        <SavedSearchAlertForm
+          {...baseProps}
+          savedSearchAlertId="savedSearchAlertId"
+          initialValues={{ ...baseProps.initialValues, email: true }}
+          userAllowsEmails={false}
+        />
+      )
 
-        await fireEvent.changeText(getByTestId("alert-input-name"), "updated name")
-        await fireEvent.press(getByTestId("save-alert-button"))
+      await fireEvent.changeText(getByTestId("alert-input-name"), "updated name")
+      await fireEvent.press(getByTestId("save-alert-button"))
 
-        await waitFor(() => {
-          const mutation = mockEnvironment.mock.getMostRecentOperation()
-          expect(mutation.request.node.operation.name).toEqual("updateSavedSearchAlertMutation")
-        })
+      await waitFor(() => {
+        const mutation = mockEnvironment.mock.getMostRecentOperation()
+        expect(mutation.request.node.operation.name).toEqual("updateSavedSearchAlertMutation")
       })
     })
   })
 
   describe("Save alert button", () => {
     it("should be disabled if none of the notification toggle options has been selected", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
       const { getByTestId, getByA11yLabel } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
 
       fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", false)
@@ -545,7 +529,6 @@ describe("Saved search alert form", () => {
     })
 
     it("should be enabled if selected at least one of the notification toggle options", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
       const { getByTestId, getByA11yLabel } = renderWithWrappersTL(
         <SavedSearchAlertForm
           {...baseProps}

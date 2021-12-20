@@ -19,7 +19,6 @@ import {
   SavedSearchAlertFormPropsBase,
   SavedSearchAlertFormValues,
   SavedSearchAlertMutationResult,
-  SavedSearchAlertUserAlertSettings,
   SavedSearchPill,
 } from "./SavedSearchAlertModel"
 
@@ -63,7 +62,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const { space } = useTheme()
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
   const [shouldShowEmailWarning, setShouldShowEmailWarning] = useState(!userAllowsEmails)
-  const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const formik = useFormik<SavedSearchAlertFormValues>({
     initialValues,
     initialErrors: {},
@@ -74,13 +72,10 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         alertName = getNamePlaceholder(artistName, pills)
       }
 
-      const userAlertSettings: SavedSearchAlertUserAlertSettings = {
+      const userAlertSettings: SavedSearchAlertFormValues = {
         name: alertName,
-      }
-
-      if (enableSavedSearchToggles) {
-        userAlertSettings.push = values.push
-        userAlertSettings.email = values.email
+        email: values.email,
+        push: values.push,
       }
 
       try {
@@ -91,7 +86,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
          *  - the "Email Alerts" toggle was initially disabled and the user turned it on
          *  - the user previously opted out of all marketing emails
          */
-        if (enableSavedSearchToggles && !userAllowsEmails && !initialValues.email && values.email) {
+        if (!userAllowsEmails && !initialValues.email && values.email) {
           await updateEmailFrequency("alerts_only")
         }
 
@@ -205,18 +200,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     return notificationStatus === PushAuthorizationStatus.Authorized
   }
 
-  const handleSubmit = async () => {
-    let canSubmit = true
-
-    if (!enableSavedSearchToggles) {
-      canSubmit = await checkOrRequestPushPermissions()
-    }
-
-    if (canSubmit) {
-      formik.handleSubmit()
-    }
-  }
-
   const handleTogglePushNotification = async (enabled: boolean) => {
     // If mobile alerts is enabled, then we check the permissions for push notifications
     if (enabled) {
@@ -287,7 +270,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
           artistId={artistId}
           artistName={artistName}
           onDeletePress={handleDeletePress}
-          onSubmitPress={handleSubmit}
+          onSubmitPress={formik.handleSubmit}
           onTogglePushNotification={handleTogglePushNotification}
           onToggleEmailNotification={handleToggleEmailNotification}
           onRemovePill={handleRemovePill}
