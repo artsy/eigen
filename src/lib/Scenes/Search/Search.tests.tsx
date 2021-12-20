@@ -347,6 +347,106 @@ describe("Search Screen", () => {
         ]
       `)
     })
+
+    it("should render all allowed algolia indices", () => {
+      const { getByPlaceholderText, getByText } = renderWithWrappersTL(<TestRenderer />)
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+      mockEnvironmentPayload(mockEnvironment, {
+        Algolia: () => ({
+          appID: "",
+          apiKey: "",
+          indices: [
+            {
+              displayName: "Artist",
+              key: "artist",
+              name: "Artist_staging",
+            },
+            {
+              displayName: "Article",
+              key: "article",
+              name: "Article_staging",
+            },
+            {
+              displayName: "Auction",
+              key: "sale",
+              name: "Sale_staging",
+            },
+            {
+              displayName: "Artist Series",
+              key: "artist_series",
+              name: "ArtistSeries_staging",
+            },
+            {
+              displayName: "Collection",
+              key: "kaws_collection",
+              name: "KawsCollection_staging",
+            },
+            {
+              displayName: "Fair",
+              key: "fair",
+              name: "Fair_staging",
+            },
+            {
+              displayName: "Show",
+              key: "partner_show",
+              name: "PartnerShow_staging",
+            },
+            {
+              displayName: "Gallery",
+              key: "partner_gallery",
+              name: "PartnerGallery_staging",
+            },
+          ],
+        }),
+      })
+
+      fireEvent(searchInput, "changeText", "value")
+
+      expect(getByText("Artist")).toBeTruthy()
+      expect(getByText("Article")).toBeTruthy()
+      expect(getByText("Auction")).toBeTruthy()
+      expect(getByText("Artist Series")).toBeTruthy()
+      expect(getByText("Collection")).toBeTruthy()
+      expect(getByText("Fair")).toBeTruthy()
+      expect(getByText("Show")).toBeTruthy()
+      expect(getByText("Gallery")).toBeTruthy()
+    })
+
+    it("should render only allowed algolia indices", () => {
+      const { getByPlaceholderText, getByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+      const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+
+      mockEnvironmentPayload(mockEnvironment, {
+        Algolia: () => ({
+          appID: "",
+          apiKey: "",
+          indices: [
+            {
+              name: "Artist_staging",
+              displayName: "Artist",
+              key: "artist",
+            },
+            {
+              name: "Gallery_staging",
+              displayName: "Gallery",
+              key: "partner_gallery",
+            },
+            {
+              name: "Denied_staging",
+              displayName: "Denied",
+              key: "denied",
+            },
+          ],
+        }),
+      })
+
+      fireEvent(searchInput, "changeText", "value")
+
+      expect(getByText("Artist")).toBeTruthy()
+      expect(getByText("Gallery")).toBeTruthy()
+      expect(queryByText("Denied")).toBeFalsy()
+    })
   })
 
   describe("the top pill is selected by default", () => {
