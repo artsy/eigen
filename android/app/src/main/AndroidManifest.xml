@@ -90,7 +90,6 @@
                 <data android:pathPrefix="/sales" />
                 <data android:pathPrefix="/search" />
                 <data android:pathPrefix="/show" />
-                <data android:pathPrefix="/submit-artwork" />
                 <data android:pathPrefix="/terms" />
                 <data android:pathPrefix="/user/conversations" />
                 <data android:pathPrefix="/user/purchases" />
