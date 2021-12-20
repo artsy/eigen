@@ -15,7 +15,6 @@ const isErrorStatus = (status: number | undefined) => {
 }
 
 const throwError = (req: GraphQLRequest, res: RelayNetworkLayerResponse) => {
-  const resJson = res?.json as GraphQLResponse
   Sentry.withScope((scope) => {
     scope.setExtra("kind", req.operation.operationKind)
     scope.setExtra("query-name", req.operation.name)
@@ -24,8 +23,14 @@ const throwError = (req: GraphQLRequest, res: RelayNetworkLayerResponse) => {
     if (req.variables) {
       scope.setExtra("variables", req.variables as any)
     }
-    console.log(createRequestError(req, res))
-    Sentry.captureException(resJson.errors && resJson.errors[0]?.message)
+
+    const sentryFormattedError = createRequestError(req, res)
+
+    // All errors returned by createRequestError are ttled "RRNLRequestError", this makes it hard to identify which
+    // issues we should pay attention to in the issues list until we open the issue page separately
+    // We want to fix that by changing that title into a properly formatted error
+    sentryFormattedError.name = formatGraphQLErrors(req, res.errors!)
+    Sentry.captureException(sentryFormattedError)
   })
   throw createRequestError(req, res)
 }
