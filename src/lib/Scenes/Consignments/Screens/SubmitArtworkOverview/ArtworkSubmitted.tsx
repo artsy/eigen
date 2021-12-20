@@ -1,9 +1,14 @@
+import { StackScreenProps } from "@react-navigation/stack"
 import { navigate } from "lib/navigation/navigate"
 import { Box, Button, Flex, Spacer, Text } from "palette"
 import { ArtsyLogoHeader } from "palette/elements/Header/ArtsyLogoHeader"
 import React from "react"
+import { SubmitArtworkOverviewNavigationStack } from "./SubmitArtworkOverview"
 
-export const ArtworkSubmitted: React.FC = () => {
+interface ArtworkSubmittedScreenNavigationProps
+  extends StackScreenProps<SubmitArtworkOverviewNavigationStack, "ArtworkSubmittedScreen"> {}
+
+export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationProps> = ({ navigation }) => {
   return (
     <Box>
       <ArtsyLogoHeader shadow />
@@ -26,7 +31,7 @@ export const ArtworkSubmitted: React.FC = () => {
           haptic
           maxWidth={540}
           onPress={() => {
-            navigate(`/submit-artwork`)
+            navigation.replace("SubmitArtworkScreen")
           }}
         >
           Submit another Artwork

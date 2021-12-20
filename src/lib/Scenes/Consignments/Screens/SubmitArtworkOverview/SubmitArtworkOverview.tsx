@@ -1,8 +1,10 @@
-import { navigate } from "lib/navigation/navigate"
-import { Box, Button, Flex, Join, Separator, Spacer, Text } from "palette"
-import { CollapsableMenuItem } from "palette"
+import { NavigationContainer } from "@react-navigation/native"
+import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
+import { BackButton } from "lib/navigation/BackButton"
+import { Box, Button, CollapsableMenuItem, Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
+import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
 
 const CTAButton = ({ onPress, text }: { onPress: () => void; text: string }) => (
   <Button block haptic maxWidth={540} onPress={onPress}>
@@ -62,7 +64,10 @@ const StepTitle = ({
 
 const TOTAL_STEPS = 3
 
-export const SubmitArtworkOverview = () => {
+interface SubmitArtworkScreenNavigationProps
+  extends StackScreenProps<SubmitArtworkOverviewNavigationStack, "SubmitArtworkScreen"> {}
+
+export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> = ({ navigation }) => {
   // This is a temporary logic that will be removed later
   const [validSteps, setValidSteps] = useState([true, ...new Array(TOTAL_STEPS - 1).fill(false)])
 
@@ -103,7 +108,7 @@ export const SubmitArtworkOverview = () => {
       Content: (
         <ContactInformation
           handlePress={() => {
-            navigate(`/artwork-submitted`)
+            navigation.navigate("ArtworkSubmittedScreen")
             // do nothing
           }}
         />
@@ -122,35 +127,72 @@ export const SubmitArtworkOverview = () => {
   }
 
   return (
-    <ScrollView
-      contentContainerStyle={{
-        paddingVertical: 20,
-        paddingHorizontal: 20,
-        justifyContent: "center",
-      }}
-    >
-      <Spacer mb={3} />
-      <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
-        {items.map(({ title, Content }, index) => {
-          const disabled = !validSteps[index]
-          return (
-            <CollapsableMenuItem
-              key={index}
-              Header={<StepTitle stepNumber={index + 1} totalSteps={items.length} title={title} disabled={disabled} />}
-              onExpand={() => expandCollapsibleMenuContent(index)}
-              isExpanded={index === 0}
-              disabled={disabled}
-              ref={(ref) => {
-                if (ref) {
-                  stepsRefs[index] = ref
+    <Flex>
+      <ScrollView
+        contentContainerStyle={{
+          paddingVertical: 20,
+          paddingHorizontal: 20,
+          justifyContent: "center",
+        }}
+      >
+        <Spacer mb={3} />
+        <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
+          {items.map(({ title, Content }, index) => {
+            const disabled = !validSteps[index]
+            return (
+              <CollapsableMenuItem
+                key={index}
+                Header={
+                  <StepTitle stepNumber={index + 1} totalSteps={items.length} title={title} disabled={disabled} />
                 }
-              }}
-            >
-              {Content}
-            </CollapsableMenuItem>
-          )
-        })}
-      </Join>
-    </ScrollView>
+                onExpand={() => expandCollapsibleMenuContent(index)}
+                isExpanded={index === 0}
+                disabled={disabled}
+                ref={(ref) => {
+                  if (ref) {
+                    stepsRefs[index] = ref
+                  }
+                }}
+              >
+                {Content}
+              </CollapsableMenuItem>
+            )
+          })}
+        </Join>
+      </ScrollView>
+      <Flex position="absolute" top={-50} left={0}>
+        <BackButton />
+      </Flex>
+    </Flex>
+  )
+}
+
+// tslint:disable-next-line:interface-over-type-literal
+export type SubmitArtworkOverviewNavigationStack = {
+  SubmitArtworkScreen: undefined
+  ArtworkSubmittedScreen: undefined
+}
+
+const StackNavigator = createStackNavigator<SubmitArtworkOverviewNavigationStack>()
+
+export const SubmitArtworkOverview = () => {
+  return (
+    <NavigationContainer independent>
+      <StackNavigator.Navigator
+        headerMode="screen"
+        detachInactiveScreens={false}
+        screenOptions={{
+          headerShown: false,
+          cardStyle: { backgroundColor: "white" },
+        }}
+      >
+        <StackNavigator.Screen name="SubmitArtworkScreen" component={SubmitArtworkScreen} />
+        <StackNavigator.Screen
+          name="ArtworkSubmittedScreen"
+          component={ArtworkSubmittedScreen}
+          options={{ gestureEnabled: false, headerLeft: () => <></> }}
+        />
+      </StackNavigator.Navigator>
+    </NavigationContainer>
   )
 }
