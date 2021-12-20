@@ -26,7 +26,6 @@ export const UploadPhotos: React.FC = ({}) => {
 }
 
 export const SubmitArtworkOverview = () => {
-  const totalSteps = 3
   const [activeStep, setActiveStep] = useState(1)
   const [enabledSteps, setEnabledSteps] = useState([1])
   // user must complete one step before being able to go to another. This is why we have "enabled" state
@@ -55,7 +54,7 @@ export const SubmitArtworkOverview = () => {
               title={title}
               stepNumber={stepNumber}
               enabled={enabledSteps.includes(stepNumber)}
-              totalSteps={totalSteps}
+              totalSteps={items.length}
               activeStep={activeStep}
               enabledSteps={enabledSteps}
               setActiveStep={setActiveStep}
