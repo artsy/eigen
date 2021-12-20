@@ -12,7 +12,7 @@ import { Versions } from "lib/store/migration"
 import { capitalize, compact, sortBy } from "lodash"
 import { ChevronIcon, CloseIcon, Flex, ReloadIcon, Separator, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useState } from "react"
-import { Button as RNButton } from "react-native"
+import { Button as RNButton, NativeModules } from "react-native"
 import {
   Alert,
   AlertButton,
@@ -25,6 +25,7 @@ import {
 } from "react-native"
 import Config from "react-native-config"
 import { getBuildNumber, getUniqueId, getVersion } from "react-native-device-info"
+import Keychain from "react-native-keychain"
 import { useScreenDimensions } from "./useScreenDimensions"
 
 const configurableFeatureFlagKeys = sortBy(
@@ -38,6 +39,7 @@ const configurableDevToggleKeys = sortBy(Object.entries(devToggles), ([k, { desc
 
 export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModal }) => {
   const migrationVersion = GlobalStore.useAppState((s) => s.version)
+  const server = GlobalStore.useAppState((s) => s.config.environment.strings.webURL).slice("https://".length)
 
   useEffect(
     React.useCallback(() => {
@@ -131,24 +133,16 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           title="Migration name"
           value={(Object.entries(Versions).find(([_, v]) => v === migrationVersion) ?? ["N/A"])[0]}
         />
+        <MenuItem title="Clear AsyncStorage" onPress={() => AsyncStorage.clear()} />
+        <MenuItem title="Clear Relay Cache" onPress={() => RelayCache.clearAll()} />
+        <MenuItem title="Log out" onPress={() => GlobalStore.actions.auth.signOut()} />
         <MenuItem
-          title="Clear AsyncStorage"
+          title="Clear Keychain"
           onPress={() => {
-            AsyncStorage.clear()
+            Keychain.resetInternetCredentials(server)
           }}
         />
-        <MenuItem
-          title="Clear Relay Cache"
-          onPress={() => {
-            RelayCache.clearAll()
-          }}
-        />
-        <MenuItem
-          title="Log out"
-          onPress={() => {
-            GlobalStore.actions.signOut()
-          }}
-        />
+        <MenuItem title="Open RN Dev Menu" onPress={() => NativeModules.DevMenu.show()} />
         <MenuItem
           title="Throw Sentry Error"
           onPress={() => {
@@ -324,7 +318,7 @@ function envMenuOption(
       if (env !== currentEnv) {
         GlobalStore.actions.config.environment.setEnv(env)
         onClose()
-        GlobalStore.actions.signOut()
+        GlobalStore.actions.auth.signOut()
       } else {
         setShowCustomURLOptions(!showCustomURLOptions)
       }

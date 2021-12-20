@@ -67,8 +67,7 @@ export const FairAllFollowedArtistsFragmentContainer = createFragmentContainer(F
     fragment FairAllFollowedArtists_fair on Fair {
       internalID
       slug
-      ...FairArtworks_fair
-        @arguments(input: { includeArtworksByFollowedArtists: true, sort: "-decayed_merch", dimensionRange: "*-*" })
+      ...FairArtworks_fair @arguments(input: { includeArtworksByFollowedArtists: true, sort: "-decayed_merch" })
     }
   `,
   /**

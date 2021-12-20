@@ -184,7 +184,6 @@ export function getCurrentEmissionState() {
     authenticationToken: state?.auth.userAccessToken || "",
     deviceId: `${Platform.OS} ${getModel()}`,
     launchCount: ArtsyNativeModule.launchCount,
-    onboardingState: "none", // not used on android
     userAgent,
     userID: state?.auth.userID!,
     userEmail: "user@example.com", // not used on android

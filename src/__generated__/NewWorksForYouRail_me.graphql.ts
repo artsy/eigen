@@ -21,7 +21,7 @@ export type NewWorksForYouRail_me = {
 };
 export type NewWorksForYouRail_me$data = NewWorksForYouRail_me;
 export type NewWorksForYouRail_me$key = {
-    readonly " $data"?: NewWorksForYouRail_me$data;
+    readonly " $data"?: NewWorksForYouRail_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"NewWorksForYouRail_me">;
 };
 

@@ -11,14 +11,14 @@ export type ConsignmentsArtistQueryResponse = {
     readonly searchConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly internalID?: string;
-                readonly name?: string | null;
+                readonly internalID?: string | undefined;
+                readonly name?: string | null | undefined;
                 readonly image?: {
                     readonly url: string | null;
-                } | null;
+                } | null | undefined;
                 readonly targetSupply?: {
                     readonly isTargetSupply: boolean | null;
-                } | null;
+                } | null | undefined;
             } | null;
         } | null> | null;
     } | null;

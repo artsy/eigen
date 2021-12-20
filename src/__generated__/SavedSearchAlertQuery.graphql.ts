@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b657a856c5757aff704c352caacaa1be */
+/* @relayHash 001b65e4542f3c0b892b9011ad9cc803 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type SavedSearchAlertQueryVariables = {
@@ -19,6 +19,7 @@ export type SavedSearchAlertQueryResponse = {
             readonly attributionClass: ReadonlyArray<string>;
             readonly colors: ReadonlyArray<string>;
             readonly dimensionRange: string | null;
+            readonly sizes: ReadonlyArray<string>;
             readonly height: string | null;
             readonly inquireableOnly: boolean | null;
             readonly locationCities: ReadonlyArray<string>;
@@ -58,6 +59,7 @@ query SavedSearchAlertQuery(
       attributionClass
       colors
       dimensionRange
+      sizes
       height
       inquireableOnly
       locationCities
@@ -161,6 +163,13 @@ v2 = {
       "args": null,
       "kind": "ScalarField",
       "name": "dimensionRange",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "sizes",
       "storageKey": null
     },
     {
@@ -314,7 +323,7 @@ return {
     ]
   },
   "params": {
-    "id": "b657a856c5757aff704c352caacaa1be",
+    "id": "001b65e4542f3c0b892b9011ad9cc803",
     "metadata": {},
     "name": "SavedSearchAlertQuery",
     "operationKind": "query",
@@ -322,5 +331,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'f2a2d35898b827a8ff371f02051c86da';
+(node as any).hash = 'f9113a2201aa52e9c5c28056815ad9d0';
 export default node;

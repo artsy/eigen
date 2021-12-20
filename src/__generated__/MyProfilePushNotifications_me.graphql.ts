@@ -16,7 +16,7 @@ export type MyProfilePushNotifications_me = {
 };
 export type MyProfilePushNotifications_me$data = MyProfilePushNotifications_me;
 export type MyProfilePushNotifications_me$key = {
-    readonly " $data"?: MyProfilePushNotifications_me$data;
+    readonly " $data"?: MyProfilePushNotifications_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyProfilePushNotifications_me">;
 };
 

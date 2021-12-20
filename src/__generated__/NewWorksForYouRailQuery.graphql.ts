@@ -6,7 +6,7 @@
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type NewWorksForYouRailQueryVariables = {
-    cursor?: string | null;
+    cursor?: string | null | undefined;
     count: number;
 };
 export type NewWorksForYouRailQueryResponse = {

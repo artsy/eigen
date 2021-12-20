@@ -11,7 +11,7 @@ export type MyCollectionArtworkArtistMarket_artwork = {
 };
 export type MyCollectionArtworkArtistMarket_artwork$data = MyCollectionArtworkArtistMarket_artwork;
 export type MyCollectionArtworkArtistMarket_artwork$key = {
-    readonly " $data"?: MyCollectionArtworkArtistMarket_artwork$data;
+    readonly " $data"?: MyCollectionArtworkArtistMarket_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkArtistMarket_artwork">;
 };
 

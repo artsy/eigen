@@ -11,7 +11,7 @@ import { TimeOffsetProvider } from "lib/Components/Bidding/Context/TimeOffsetPro
 import { StateManager as CountdownStateManager } from "lib/Components/Countdown"
 import { Schema, track } from "lib/utils/track"
 import { capitalize } from "lodash"
-import moment from "moment"
+import { Duration } from "moment"
 import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -28,7 +28,7 @@ interface CommercialInformationProps {
   me: CommercialInformation_me
   timerState?: AuctionTimerState
   label?: string
-  duration?: moment.Duration
+  duration?: Duration
   tracking?: TrackingProp
 }
 

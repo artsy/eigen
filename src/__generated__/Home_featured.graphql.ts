@@ -10,7 +10,7 @@ export type Home_featured = {
 };
 export type Home_featured$data = Home_featured;
 export type Home_featured$key = {
-    readonly " $data"?: Home_featured$data;
+    readonly " $data"?: Home_featured$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Home_featured">;
 };
 

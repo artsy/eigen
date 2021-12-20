@@ -13,7 +13,7 @@ export type About_gene = {
 };
 export type About_gene$data = About_gene;
 export type About_gene$key = {
-    readonly " $data"?: About_gene$data;
+    readonly " $data"?: About_gene$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"About_gene">;
 };
 

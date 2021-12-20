@@ -17,7 +17,7 @@ export type HomeHero_homePage = {
 };
 export type HomeHero_homePage$data = HomeHero_homePage;
 export type HomeHero_homePage$key = {
-    readonly " $data"?: HomeHero_homePage$data;
+    readonly " $data"?: HomeHero_homePage$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"HomeHero_homePage">;
 };
 

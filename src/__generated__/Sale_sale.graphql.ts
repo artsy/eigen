@@ -16,7 +16,7 @@ export type Sale_sale = {
 };
 export type Sale_sale$data = Sale_sale;
 export type Sale_sale$key = {
-    readonly " $data"?: Sale_sale$data;
+    readonly " $data"?: Sale_sale$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Sale_sale">;
 };
 

@@ -9,7 +9,7 @@ export type ItemShow_show = {
     readonly href: string | null;
     readonly exhibitionPeriod: string | null;
     readonly partner: {
-        readonly name?: string | null;
+        readonly name?: string | null | undefined;
     } | null;
     readonly image: {
         readonly thumbnailUrl: string | null;
@@ -18,7 +18,7 @@ export type ItemShow_show = {
 };
 export type ItemShow_show$data = ItemShow_show;
 export type ItemShow_show$key = {
-    readonly " $data"?: ItemShow_show$data;
+    readonly " $data"?: ItemShow_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ItemShow_show">;
 };
 

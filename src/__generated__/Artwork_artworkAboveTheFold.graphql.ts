@@ -18,7 +18,7 @@ export type Artwork_artworkAboveTheFold = {
 };
 export type Artwork_artworkAboveTheFold$data = Artwork_artworkAboveTheFold;
 export type Artwork_artworkAboveTheFold$key = {
-    readonly " $data"?: Artwork_artworkAboveTheFold$data;
+    readonly " $data"?: Artwork_artworkAboveTheFold$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Artwork_artworkAboveTheFold">;
 };
 

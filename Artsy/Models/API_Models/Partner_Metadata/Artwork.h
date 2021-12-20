@@ -12,13 +12,6 @@
 
 @class Artist, Partner, Profile, Sale, SaleArtwork, Fair, PartnerShow;
 
-typedef NS_ENUM(NSInteger, ARArtworkAvailability) {
-    ARArtworkAvailabilityNotForSale,
-    ARArtworkAvailabilityForSale,
-    ARArtworkAvailabilityOnHold,
-    ARArtworkAvailabilitySold
-};
-
 typedef NS_ENUM(NSInteger, ARDimensionMetric) {
     ARDimensionMetricInches,
     ARDimensionMetricCentimeters,
@@ -59,8 +52,6 @@ NS_ASSUME_NONNULL_BEGIN
 // I think?
 @property (nonatomic, copy) NSArray *editionSets;
 @property (nonatomic, copy, readonly) NSString *_Nullable editionOf;
-
-@property (nonatomic, assign) enum ARArtworkAvailability availability;
 
 @property (nonatomic, copy) NSString *date;
 @property (nonatomic, copy) NSString *_Nullable title;
@@ -128,8 +119,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (CGFloat)widthInches;
 - (CGFloat)heightInches;
 - (CGFloat)diameterInches;
-
-- (NSString *)availablityString;
 
 - (instancetype)initWithArtworkID:(NSString *)artworkID;
 

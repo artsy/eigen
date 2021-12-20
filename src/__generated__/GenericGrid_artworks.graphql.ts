@@ -14,7 +14,7 @@ export type GenericGrid_artworks = ReadonlyArray<{
 }>;
 export type GenericGrid_artworks$data = GenericGrid_artworks;
 export type GenericGrid_artworks$key = ReadonlyArray<{
-    readonly " $data"?: GenericGrid_artworks$data;
+    readonly " $data"?: GenericGrid_artworks$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"GenericGrid_artworks">;
 }>;
 

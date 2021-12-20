@@ -37,7 +37,7 @@ export type Shipping_order = {
 };
 export type Shipping_order$data = Shipping_order;
 export type Shipping_order$key = {
-    readonly " $data"?: Shipping_order$data;
+    readonly " $data"?: Shipping_order$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Shipping_order">;
 };
 

@@ -13,7 +13,7 @@ export type CreateSavedSearchContentContainerV2_me = {
 };
 export type CreateSavedSearchContentContainerV2_me$data = CreateSavedSearchContentContainerV2_me;
 export type CreateSavedSearchContentContainerV2_me$key = {
-    readonly " $data"?: CreateSavedSearchContentContainerV2_me$data;
+    readonly " $data"?: CreateSavedSearchContentContainerV2_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CreateSavedSearchContentContainerV2_me">;
 };
 

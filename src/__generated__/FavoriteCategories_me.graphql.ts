@@ -29,7 +29,7 @@ export type FavoriteCategories_me = {
 };
 export type FavoriteCategories_me$data = FavoriteCategories_me;
 export type FavoriteCategories_me$key = {
-    readonly " $data"?: FavoriteCategories_me$data;
+    readonly " $data"?: FavoriteCategories_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FavoriteCategories_me">;
 };
 

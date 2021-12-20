@@ -1,4 +1,4 @@
-import { Dictionary, isNil, keyBy, mapValues } from "lodash"
+import { compact, Dictionary, isNil, keyBy, mapValues } from "lodash"
 import {
   Aggregation,
   Aggregations,
@@ -11,9 +11,9 @@ import { DEFAULT_FILTERS } from "../ArtworkFilterStore"
 import { ATTRIBUTION_CLASS_OPTIONS } from "../Filters/AttributionClassOptions"
 import { COLORS_INDEXED_BY_VALUE } from "../Filters/ColorsOptions"
 import { localizeDimension, parsePriceRangeLabel, parseRange } from "../Filters/helpers"
-import { SIZE_OPTIONS } from "../Filters/SizeOptions"
+import { SIZES_OPTIONS } from "../Filters/SizesOptionsScreen"
 import { WAYS_TO_BUY_FILTER_PARAM_NAMES } from "../Filters/WaysToBuyOptions"
-import { shouldExtractValueNamesFromAggregation } from "./constants"
+import { FALLBACK_SIZE_OPTIONS, shouldExtractValueNamesFromAggregation } from "./constants"
 import { SearchCriteriaAttributeKeys, SearchCriteriaAttributes } from "./types"
 
 export type AggregationByFilterParamName = Dictionary<Aggregation[]>
@@ -50,15 +50,36 @@ export const convertCustomSizeToFilterParamByName = (paramName: FilterParamName,
 
 export const convertSizeToFilterParams = (criteria: SearchCriteriaAttributes): FilterData[] | null => {
   const filterParams: FilterData[] = []
-  const dimensionRangeValue = criteria[FilterParamName.dimensionRange]
+  const dimensionRangeValue = criteria.dimensionRange
   const widthValue = criteria[FilterParamName.width]
   const heightValue = criteria[FilterParamName.height]
+  const sizesValues = criteria[FilterParamName.sizes]
 
-  if (!isNil(dimensionRangeValue)) {
-    const sizeOptionItem = SIZE_OPTIONS.find((option) => option.paramValue === dimensionRangeValue)
+  // Convert old size filter format to new
+  if (!isNil(dimensionRangeValue) && dimensionRangeValue !== "0-*") {
+    const sizeOptionItem = FALLBACK_SIZE_OPTIONS.find((option) => option.oldParamValue === dimensionRangeValue)
 
     if (sizeOptionItem) {
-      filterParams.push(sizeOptionItem)
+      filterParams.push({
+        displayText: sizeOptionItem.displayText,
+        paramValue: [sizeOptionItem.newParamValue],
+        paramName: FilterParamName.sizes,
+      })
+    }
+  }
+
+  if (Array.isArray(sizesValues)) {
+    const sizeOptions = sizesValues.map((sizeValue) => {
+      return SIZES_OPTIONS.find((sizeOption) => sizeOption.paramValue === sizeValue)
+    })
+    const filledSizeOptions = compact(sizeOptions)
+
+    if (filledSizeOptions.length > 0) {
+      filterParams.push({
+        displayText: filledSizeOptions.map((sizeOption) => sizeOption.displayText).join(", "),
+        paramValue: filledSizeOptions.map((sizeOption) => sizeOption.paramValue) as string[],
+        paramName: FilterParamName.sizes,
+      })
     }
   }
 

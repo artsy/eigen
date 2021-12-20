@@ -153,7 +153,6 @@ export const ArtistScreenQuery = graphql`
 
 export const defaultArtworksVariables = () => ({
   input: {
-    dimensionRange: "*-*",
     sort: DEFAULT_ARTWORK_SORT.paramValue,
   },
 })

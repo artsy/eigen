@@ -11,6 +11,7 @@ export interface SearchCriteriaAttributes {
   inquireableOnly?: boolean | null
   offerable?: boolean | null
   dimensionRange?: string | null
+  sizes?: string[] | null
   height?: string | null
   width?: string | null
   materialsTerms?: string[] | null

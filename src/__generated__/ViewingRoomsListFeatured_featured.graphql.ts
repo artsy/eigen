@@ -27,7 +27,7 @@ export type ViewingRoomsListFeatured_featured = {
 };
 export type ViewingRoomsListFeatured_featured$data = ViewingRoomsListFeatured_featured;
 export type ViewingRoomsListFeatured_featured$key = {
-    readonly " $data"?: ViewingRoomsListFeatured_featured$data;
+    readonly " $data"?: ViewingRoomsListFeatured_featured$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsListFeatured_featured">;
 };
 

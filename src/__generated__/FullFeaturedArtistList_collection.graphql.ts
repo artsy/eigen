@@ -19,7 +19,7 @@ export type FullFeaturedArtistList_collection = {
 };
 export type FullFeaturedArtistList_collection$data = FullFeaturedArtistList_collection;
 export type FullFeaturedArtistList_collection$key = {
-    readonly " $data"?: FullFeaturedArtistList_collection$data;
+    readonly " $data"?: FullFeaturedArtistList_collection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FullFeaturedArtistList_collection">;
 };
 

@@ -103,12 +103,6 @@ describe(@"defaultImage", ^{
         expect(deserializedArtwork.additionalInfo).to.equal(@"In the collection of European Painting and Sculpture at LACMA.\n\nPaul Rodman Mabury Collection (39.12.3)");
     });
 
-
-    it(@"availablityString returns the string version of availablilty", ^{
-       Artwork *artwork = [Artwork modelWithJSON:@{ @"id" : @"artwork-id", @"availability" : @"on hold" }];
-       expect(artwork.availablityString).to.equal(@"on hold");
-    });
-
     it(@"isBuyNowable returns NO for BuyNowable artworks that have mutliple editions", ^{
         Artwork *artwork = [Artwork modelWithJSON:
                             @{ @"id" : @"artwork-id",

@@ -10,7 +10,7 @@ export type CollectionHubsRails_collection = {
 };
 export type CollectionHubsRails_collection$data = CollectionHubsRails_collection;
 export type CollectionHubsRails_collection$key = {
-    readonly " $data"?: CollectionHubsRails_collection$data;
+    readonly " $data"?: CollectionHubsRails_collection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CollectionHubsRails_collection">;
 };
 

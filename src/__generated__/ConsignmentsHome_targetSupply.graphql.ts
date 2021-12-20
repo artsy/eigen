@@ -10,7 +10,7 @@ export type ConsignmentsHome_targetSupply = {
 };
 export type ConsignmentsHome_targetSupply$data = ConsignmentsHome_targetSupply;
 export type ConsignmentsHome_targetSupply$key = {
-    readonly " $data"?: ConsignmentsHome_targetSupply$data;
+    readonly " $data"?: ConsignmentsHome_targetSupply$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ConsignmentsHome_targetSupply">;
 };
 

@@ -7,7 +7,7 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ViewingRoomsListQueryVariables = {
     count: number;
-    after?: string | null;
+    after?: string | null | undefined;
 };
 export type ViewingRoomsListQueryResponse = {
     readonly featured: {

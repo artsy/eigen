@@ -10,7 +10,7 @@ export type CommercialInformation_me = {
 };
 export type CommercialInformation_me$data = CommercialInformation_me;
 export type CommercialInformation_me$key = {
-    readonly " $data"?: CommercialInformation_me$data;
+    readonly " $data"?: CommercialInformation_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CommercialInformation_me">;
 };
 

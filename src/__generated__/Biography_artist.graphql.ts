@@ -11,7 +11,7 @@ export type Biography_artist = {
 };
 export type Biography_artist$data = Biography_artist;
 export type Biography_artist$key = {
-    readonly " $data"?: Biography_artist$data;
+    readonly " $data"?: Biography_artist$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Biography_artist">;
 };
 

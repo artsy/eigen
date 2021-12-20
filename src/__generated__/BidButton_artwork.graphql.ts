@@ -33,7 +33,7 @@ export type BidButton_artwork = {
 };
 export type BidButton_artwork$data = BidButton_artwork;
 export type BidButton_artwork$key = {
-    readonly " $data"?: BidButton_artwork$data;
+    readonly " $data"?: BidButton_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"BidButton_artwork">;
 };
 

@@ -36,7 +36,7 @@ describe(@"logged out user documents folder", ^{
 
 describe(@"logged in user documents folder", ^{
     beforeEach(^{
-        [ARUserManager stubAndLoginWithUsername];
+        [ARUserManager stubAndSetupUser];
         XCTAssert([User currentUser] != nil, @"Current user is nil even after stubbing. ");
     });
 

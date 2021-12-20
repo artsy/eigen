@@ -15,7 +15,7 @@ export type PriceSummary_calculatedCost = {
 };
 export type PriceSummary_calculatedCost$data = PriceSummary_calculatedCost;
 export type PriceSummary_calculatedCost$key = {
-    readonly " $data"?: PriceSummary_calculatedCost$data;
+    readonly " $data"?: PriceSummary_calculatedCost$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"PriceSummary_calculatedCost">;
 };
 

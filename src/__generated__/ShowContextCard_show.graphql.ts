@@ -23,13 +23,13 @@ export type ShowContextCard_show = {
         } | null;
     } | null;
     readonly partner: {
-        readonly internalID?: string;
-        readonly slug?: string;
-        readonly name?: string | null;
+        readonly internalID?: string | undefined;
+        readonly slug?: string | undefined;
+        readonly name?: string | null | undefined;
         readonly profile?: {
             readonly slug: string;
-        } | null;
-        readonly cities?: ReadonlyArray<string | null> | null;
+        } | null | undefined;
+        readonly cities?: ReadonlyArray<string | null> | null | undefined;
         readonly artworksConnection?: {
             readonly edges: ReadonlyArray<{
                 readonly node: {
@@ -38,13 +38,13 @@ export type ShowContextCard_show = {
                     } | null;
                 } | null;
             } | null> | null;
-        } | null;
+        } | null | undefined;
     } | null;
     readonly " $refType": "ShowContextCard_show";
 };
 export type ShowContextCard_show$data = ShowContextCard_show;
 export type ShowContextCard_show$key = {
-    readonly " $data"?: ShowContextCard_show$data;
+    readonly " $data"?: ShowContextCard_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShowContextCard_show">;
 };
 

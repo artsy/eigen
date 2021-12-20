@@ -97,7 +97,7 @@ export function confirmLogout() {
     {
       text: "Log out",
       style: "destructive",
-      onPress: () => GlobalStore.actions.signOut(),
+      onPress: () => GlobalStore.actions.auth.signOut(),
     },
   ])
 }

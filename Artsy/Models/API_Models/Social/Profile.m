@@ -4,7 +4,6 @@
 #import "Fair.h"
 #import "FairOrganizer.h"
 #import "Partner.h"
-#import "ProfileOwner.h"
 #import "User.h"
 #import "ARMacros.h"
 
@@ -24,7 +23,6 @@
 
 
 @implementation Profile
-@synthesize profileOwner = _profileOwner;
 
 
 // Doing some silly hackery to create the profile's owner from both the `owner_type` keypath and the `owner` keypath
@@ -35,7 +33,6 @@
         ar_keypath(Profile.new, profileID) : @"id",
         ar_keypath(Profile.new, ownerJSON) : @"owner",
         ar_keypath(Profile.new, ownerClassString) : @"owner_type",
-        ar_keypath(Profile.new, followCount) : @"follow_count",
         ar_keypath(Profile.new, iconVersion) : @"default_icon_version",
         ar_keypath(Profile.new, iconURLs) : @"icon.image_urls",
     };
@@ -60,15 +57,6 @@
     }
 }
 
-- (NSObject<ProfileOwner> *)profileOwner
-{
-    // Create the owner by combining the information we got from `owner` and `owner_type` JSON.
-    if (!_profileOwner) {
-        _profileOwner = [[self ownerClass] modelWithJSON:self.ownerJSON];
-    }
-    return _profileOwner;
-}
-
 - (void)updateProfile:(void (^)(void))success
 {
     __weak typeof(self) wself = self;
@@ -88,30 +76,12 @@
     }
 }
 
-- (NSString *)iconURL
-{
-    if (self.iconURLs.count > 0) {
-        if (self.iconVersion && [self.iconURLs objectForKey:self.iconVersion]) {
-            return [self.iconURLs objectForKey:self.iconVersion];
-        } else {
-            NSArray *values = [self.iconURLs allValues];
-            return [values objectAtIndex:0];
-        }
-    }
-    return nil;
-}
-
 - (NSString *)avatarURLString
 {
     NSArray *desiredVersions = @[ @"square", @"square140", @"large" ];
     NSArray *possibleVersions = [desiredVersions intersectionWithArray:[self.iconURLs allKeys]];
     // If we can't find one of our desired values, default to the first available icon URL.
     return [self.iconURLs objectForKey:possibleVersions.firstObject] ?: [[self.iconURLs allValues] firstObject];
-}
-
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"Profile %@ - (%@)", _profileID, self.profileName];
 }
 
 - (BOOL)isEqual:(id)object
@@ -141,11 +111,6 @@
     return self;
 }
 
-- (NSString *)profileName
-{
-    return [_profileOwner name];
-}
-
 - (void)setFollowed:(BOOL)followed
 {
     _followed = followed;
@@ -173,13 +138,6 @@
     } else {
         [self unfollowWithSuccess:success failure:failure];
     }
-}
-
-- (void)getFollowState:(void (^)(ARHeartStatus status))success failure:(void (^)(NSError *error))failure
-{
-    [ArtsyAPI checkFollowProfile:self success:^(BOOL status) {
-        success(status);
-    } failure:failure];
 }
 
 @end

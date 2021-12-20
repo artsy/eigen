@@ -6,6 +6,7 @@ import Interstellar
 @testable
 import Artsy
 
+
 class AuctionBiddersNetworkModelSpec: QuickSpec {
     override func spec() {
         let bidderJSON: NSArray = [["id": "bidder", "sale": ["id": "sale"]]]
@@ -15,7 +16,7 @@ class AuctionBiddersNetworkModelSpec: QuickSpec {
         }
 
         it("returns registered when bidders endpoint returns >=1 bidders") {
-            ARUserManager.stubAndLoginWithUsername()
+            ARUserManager.stubAndSetupUser()
             OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/me/bidders", withResponse: bidderJSON)
 
             let subject = AuctionBiddersNetworkModel()
@@ -30,7 +31,7 @@ class AuctionBiddersNetworkModelSpec: QuickSpec {
                 }
             }
 
-            expect(bidders).to( haveCount(1) )
+            expect(bidders).to(haveCount(1))
         }
 
 
@@ -53,7 +54,7 @@ class AuctionBiddersNetworkModelSpec: QuickSpec {
 
 
         it("caches the fetched result") {
-            ARUserManager.stubAndLoginWithUsername()
+            ARUserManager.stubAndSetupUser()
             OHHTTPStubs.stubJSONResponse(atPath: "/api/v1/me/bidders", withResponse: bidderJSON)
 
             let subject = AuctionBiddersNetworkModel()

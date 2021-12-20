@@ -12,8 +12,9 @@ extension LatestArticles {
             let articles = entry.articles[0...1]
             
             VStack() {
-                HStack(alignment: .top) {
+                HStack(alignment: .center) {
                     Text("LATEST ARTICLES")
+                        .foregroundColor(.black)
                         .font(.system(size: 10, weight: .medium))
                     Spacer()
                     Image(uiImage: artsyLogo)
@@ -24,7 +25,7 @@ extension LatestArticles {
                 VStack() {
                     ForEach(articles, id: \.url) { article in
                         Link(destination: article.url!) {
-                            HStack(alignment: .top) {
+                            HStack(alignment: .center) {
                                 Image(uiImage: article.image!)
                                     .resizable()
                                     .scaledToFill()
@@ -43,6 +44,7 @@ extension LatestArticles {
                 }
             }
             .padding(16)
+            .background(Color.white)
         }
     }
 }

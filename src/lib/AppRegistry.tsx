@@ -3,12 +3,10 @@ import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import React, { useEffect } from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
-import { StorybookUIRoot } from "../storybook/storybook-ui"
 import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { FadeIn } from "./Components/FadeIn"
-import { NativeViewController } from "./Components/NativeViewController"
 import { BidFlow } from "./Containers/BidFlow"
 import { InboxWrapper } from "./Containers/Inbox"
 import { InboxScreenQuery } from "./Containers/Inbox/Inbox"
@@ -17,7 +15,7 @@ import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer, WorksForYouScreenQuery } from "./Containers/WorksForYou"
 import { useSentryConfig } from "./ErrorReporting"
 import { About } from "./Scenes/About/About"
-import { ArticlesQueryRenderer } from "./Scenes/Articles/Articles"
+import { ArticlesQueryRenderer, ArticlesScreenQuery } from "./Scenes/Articles/Articles"
 import { ArtistQueryRenderer, ArtistScreenQuery } from "./Scenes/Artist/Artist"
 import { ArtistArticlesQueryRenderer } from "./Scenes/ArtistArticles/ArtistArticles"
 import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
@@ -27,7 +25,10 @@ import { ArtworkQueryRenderer, ArtworkScreenQuery } from "./Scenes/Artwork/Artwo
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { ArtworkMediumQueryRenderer } from "./Scenes/ArtworkMedium"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
-import { AuctionResultsForArtistsYouFollowQueryRenderer } from "./Scenes/AuctionResultsForArtistsYouFollow/AuctionResultsForArtistsYouFollow"
+import {
+  AuctionResultsForArtistsYouFollowQueryRenderer,
+  AuctionResultsForArtistsYouFollowScreenQuery,
+} from "./Scenes/AuctionResultsForArtistsYouFollow/AuctionResultsForArtistsYouFollow"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
@@ -99,8 +100,8 @@ import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
-import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, useFeatureFlag, useSelectedTab } from "./store/GlobalStore"
+import { ViewingRoomsListQueryRenderer, ViewingRoomsListScreenQuery } from "./Scenes/ViewingRoom/ViewingRoomsList"
+import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { AdminMenu } from "./utils/AdminMenu"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
@@ -113,6 +114,9 @@ import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenDimensions } from "./utils/useScreenDimensions"
 import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
 import { useStripeConfig } from "./utils/useStripeConfig"
+
+// keep this import of storybook last, otherwise it produces an error when debugging
+import { StorybookUIRoot } from "../storybook/storybook-ui"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -277,7 +281,7 @@ export const modules = defineModules({
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
-  Articles: reactModule(ArticlesQueryRenderer),
+  Articles: reactModule(ArticlesQueryRenderer, {}, ArticlesScreenQuery),
   Artist: reactModule(ArtistQueryRenderer, {}, ArtistScreenQuery),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
@@ -293,7 +297,11 @@ export const modules = defineModules({
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
   AuctionResult: reactModule(AuctionResultQueryRenderer),
-  AuctionResultsForArtistsYouFollow: reactModule(AuctionResultsForArtistsYouFollowQueryRenderer),
+  AuctionResultsForArtistsYouFollow: reactModule(
+    AuctionResultsForArtistsYouFollowQueryRenderer,
+    {},
+    AuctionResultsForArtistsYouFollowScreenQuery
+  ),
   AuctionRegistration: reactModule(RegistrationFlow, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
@@ -382,7 +390,7 @@ export const modules = defineModules({
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkQueryRenderer),
   ViewingRoomArtworks: reactModule(ViewingRoomArtworksQueryRenderer),
-  ViewingRooms: reactModule(ViewingRoomsListQueryRenderer),
+  ViewingRooms: reactModule(ViewingRoomsListQueryRenderer, {}, ViewingRoomsListScreenQuery),
   Checkout: reactModule(Checkout, {
     hasOwnModalCloseButton: true,
   }),
@@ -414,7 +422,6 @@ const Main: React.FC<{}> = track()(({}) => {
     })
   }, [])
 
-  const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken)
 
@@ -436,7 +443,7 @@ const Main: React.FC<{}> = track()(({}) => {
   }
 
   if (!isLoggedIn || onboardingState === "incomplete") {
-    return showNewOnboarding ? <Onboarding /> : <NativeViewController viewName="Onboarding" />
+    return <Onboarding />
   }
 
   return <BottomTabsNavigator />

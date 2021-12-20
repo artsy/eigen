@@ -10,7 +10,7 @@ export type SelectMaxBid_me = {
 };
 export type SelectMaxBid_me$data = SelectMaxBid_me;
 export type SelectMaxBid_me$key = {
-    readonly " $data"?: SelectMaxBid_me$data;
+    readonly " $data"?: SelectMaxBid_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SelectMaxBid_me">;
 };
 

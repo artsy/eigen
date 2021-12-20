@@ -5,7 +5,7 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type UpdateUserDefaultAddressInput = {
-    clientMutationId?: string | null;
+    clientMutationId?: string | null | undefined;
     userAddressID: string;
 };
 export type setAsDefaultAddressMutationVariables = {
@@ -14,12 +14,12 @@ export type setAsDefaultAddressMutationVariables = {
 export type setAsDefaultAddressMutationResponse = {
     readonly updateUserDefaultAddress: {
         readonly userAddressOrErrors: {
-            readonly id?: string;
-            readonly internalID?: string;
-            readonly isDefault?: boolean;
+            readonly id?: string | undefined;
+            readonly internalID?: string | undefined;
+            readonly isDefault?: boolean | undefined;
             readonly errors?: ReadonlyArray<{
                 readonly message: string;
-            }>;
+            }> | undefined;
         };
     } | null;
 };

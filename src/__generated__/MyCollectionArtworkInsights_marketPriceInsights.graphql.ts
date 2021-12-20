@@ -10,7 +10,7 @@ export type MyCollectionArtworkInsights_marketPriceInsights = {
 };
 export type MyCollectionArtworkInsights_marketPriceInsights$data = MyCollectionArtworkInsights_marketPriceInsights;
 export type MyCollectionArtworkInsights_marketPriceInsights$key = {
-    readonly " $data"?: MyCollectionArtworkInsights_marketPriceInsights$data;
+    readonly " $data"?: MyCollectionArtworkInsights_marketPriceInsights$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkInsights_marketPriceInsights">;
 };
 

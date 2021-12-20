@@ -30,7 +30,7 @@ export type SalesRail_salesModule = {
 };
 export type SalesRail_salesModule$data = SalesRail_salesModule;
 export type SalesRail_salesModule$key = {
-    readonly " $data"?: SalesRail_salesModule$data;
+    readonly " $data"?: SalesRail_salesModule$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SalesRail_salesModule">;
 };
 

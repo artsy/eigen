@@ -11,7 +11,7 @@ export type Registration_me = {
 };
 export type Registration_me$data = Registration_me;
 export type Registration_me$key = {
-    readonly " $data"?: Registration_me$data;
+    readonly " $data"?: Registration_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Registration_me">;
 };
 

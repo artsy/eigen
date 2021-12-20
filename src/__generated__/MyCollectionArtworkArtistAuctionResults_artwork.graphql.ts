@@ -24,7 +24,7 @@ export type MyCollectionArtworkArtistAuctionResults_artwork = {
 };
 export type MyCollectionArtworkArtistAuctionResults_artwork$data = MyCollectionArtworkArtistAuctionResults_artwork;
 export type MyCollectionArtworkArtistAuctionResults_artwork$key = {
-    readonly " $data"?: MyCollectionArtworkArtistAuctionResults_artwork$data;
+    readonly " $data"?: MyCollectionArtworkArtistAuctionResults_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkArtistAuctionResults_artwork">;
 };
 

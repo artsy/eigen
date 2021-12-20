@@ -14,7 +14,7 @@ export type MyAccount_me = {
 };
 export type MyAccount_me$data = MyAccount_me;
 export type MyAccount_me$key = {
-    readonly " $data"?: MyAccount_me$data;
+    readonly " $data"?: MyAccount_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyAccount_me">;
 };
 

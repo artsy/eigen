@@ -16,7 +16,7 @@ export type ArtistShow_show = {
 };
 export type ArtistShow_show$data = ArtistShow_show;
 export type ArtistShow_show$key = {
-    readonly " $data"?: ArtistShow_show$data;
+    readonly " $data"?: ArtistShow_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtistShow_show">;
 };
 

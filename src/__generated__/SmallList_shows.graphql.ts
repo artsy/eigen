@@ -11,7 +11,7 @@ export type SmallList_shows = ReadonlyArray<{
 }>;
 export type SmallList_shows$data = SmallList_shows;
 export type SmallList_shows$key = ReadonlyArray<{
-    readonly " $data"?: SmallList_shows$data;
+    readonly " $data"?: SmallList_shows$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SmallList_shows">;
 }>;
 

@@ -185,6 +185,7 @@ const searchCriteria = {
   attributionClass: [],
   colors: [],
   dimensionRange: null,
+  sizes: [],
   height: null,
   inquireableOnly: null,
   locationCities: [],

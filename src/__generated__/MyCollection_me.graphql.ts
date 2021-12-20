@@ -14,6 +14,10 @@ export type MyCollection_me = {
             readonly node: {
                 readonly id: string;
                 readonly medium: string | null;
+                readonly artist: {
+                    readonly internalID: string;
+                    readonly name: string | null;
+                } | null;
             } | null;
         } | null> | null;
         readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_myCollectionConnection">;
@@ -22,7 +26,7 @@ export type MyCollection_me = {
 };
 export type MyCollection_me$data = MyCollection_me;
 export type MyCollection_me$key = {
-    readonly " $data"?: MyCollection_me$data;
+    readonly " $data"?: MyCollection_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyCollection_me">;
 };
 
@@ -123,6 +127,31 @@ return {
                 {
                   "alias": null,
                   "args": null,
+                  "concreteType": "Artist",
+                  "kind": "LinkedField",
+                  "name": "artist",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "internalID",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "name",
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
                   "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
@@ -184,5 +213,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'ac1e2fcd818dca8effc8f4c7c4e56cd2';
+(node as any).hash = '4c94cd7f0dc4711d88ea5b42a02973b3';
 export default node;

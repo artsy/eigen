@@ -1,5 +1,4 @@
 #import <JSDecoupledAppDelegate/JSDecoupledAppDelegate.h>
-#import "AROnboardingViewController.h"
 #import <UserNotifications/UNUserNotificationCenter.h>
 
 @class ARWindow, ArtsyEcho;
@@ -24,7 +23,6 @@
 /// The Artsy echo instance for feature flags, and url routing etc
 @property (nonatomic, readwrite, strong) ArtsyEcho *echo;
 
-- (void)finishOnboarding:(AROnboardingViewController *)viewController animated:(BOOL)animated;
 @end
 
 /// Here because it's intrinsically related to using the ARAppDelegate shared instance.

@@ -23,7 +23,7 @@ export type ViewingRoomArtwork_viewingRoomInfo = {
 };
 export type ViewingRoomArtwork_viewingRoomInfo$data = ViewingRoomArtwork_viewingRoomInfo;
 export type ViewingRoomArtwork_viewingRoomInfo$key = {
-    readonly " $data"?: ViewingRoomArtwork_viewingRoomInfo$data;
+    readonly " $data"?: ViewingRoomArtwork_viewingRoomInfo$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ViewingRoomArtwork_viewingRoomInfo">;
 };
 

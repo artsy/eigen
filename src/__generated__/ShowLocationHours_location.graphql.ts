@@ -9,14 +9,14 @@ export type ShowLocationHours_location = {
         readonly schedules?: ReadonlyArray<{
             readonly days: string | null;
             readonly hours: string | null;
-        } | null> | null;
-        readonly text?: string | null;
+        } | null> | null | undefined;
+        readonly text?: string | null | undefined;
     } | null;
     readonly " $refType": "ShowLocationHours_location";
 };
 export type ShowLocationHours_location$data = ShowLocationHours_location;
 export type ShowLocationHours_location$key = {
-    readonly " $data"?: ShowLocationHours_location$data;
+    readonly " $data"?: ShowLocationHours_location$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShowLocationHours_location">;
 };
 

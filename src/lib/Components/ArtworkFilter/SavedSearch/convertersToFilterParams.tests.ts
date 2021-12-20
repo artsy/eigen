@@ -63,33 +63,48 @@ describe("convertSizeToFilterParams", () => {
     expect(convertSizeToFilterParams({})).toEqual(null)
   })
 
-  it("returns the small size filter value", () => {
+  it("returns the small size filter value for the old size filter format", () => {
     expect(convertSizeToFilterParams({ dimensionRange: "*-16.0" })).toEqual([
       {
         displayText: "Small (under 16in)",
-        paramValue: "*-16.0",
-        paramName: FilterParamName.dimensionRange,
+        paramValue: ["SMALL"],
+        paramName: FilterParamName.sizes,
       },
     ])
   })
 
-  it("returns the medium size filter value", () => {
+  it("returns the medium size filter value for the old size filter format", () => {
     expect(convertSizeToFilterParams({ dimensionRange: "16.0-40.0" })).toEqual([
       {
         displayText: "Medium (16in – 40in)",
-        paramValue: "16.0-40.0",
-        paramName: FilterParamName.dimensionRange,
+        paramValue: ["MEDIUM"],
+        paramName: FilterParamName.sizes,
+      },
+    ])
+  })
+
+  it("returns only small size filter value", () => {
+    expect(convertSizeToFilterParams({ sizes: ["SMALL"] })).toEqual([
+      {
+        displayText: "Small (under 16in)",
+        paramValue: ["SMALL"],
+        paramName: FilterParamName.sizes,
+      },
+    ])
+  })
+
+  it("returns small and large size filter values", () => {
+    expect(convertSizeToFilterParams({ sizes: ["SMALL", "LARGE"] })).toEqual([
+      {
+        displayText: "Small (under 16in), Large (over 40in)",
+        paramValue: ["SMALL", "LARGE"],
+        paramName: FilterParamName.sizes,
       },
     ])
   })
 
   it("returns only the minimum width for the size filter", () => {
-    expect(convertSizeToFilterParams({ dimensionRange: "0-*", width: "100-*" })).toEqual([
-      {
-        displayText: "Custom Size",
-        paramValue: "0-*",
-        paramName: FilterParamName.dimensionRange,
-      },
+    expect(convertSizeToFilterParams({ width: "100-*" })).toEqual([
       {
         displayText: "100-*",
         paramValue: "100-*",
@@ -99,12 +114,7 @@ describe("convertSizeToFilterParams", () => {
   })
 
   it("returns only the maximum width for the size filter", () => {
-    expect(convertSizeToFilterParams({ dimensionRange: "0-*", width: "*-150" })).toEqual([
-      {
-        displayText: "Custom Size",
-        paramValue: "0-*",
-        paramName: FilterParamName.dimensionRange,
-      },
+    expect(convertSizeToFilterParams({ width: "*-150" })).toEqual([
       {
         displayText: "*-150",
         paramValue: "*-150",
@@ -114,12 +124,7 @@ describe("convertSizeToFilterParams", () => {
   })
 
   it("returns the minimum and maximum width for the size filter", () => {
-    expect(convertSizeToFilterParams({ dimensionRange: "0-*", width: "100-150" })).toEqual([
-      {
-        displayText: "Custom Size",
-        paramValue: "0-*",
-        paramName: FilterParamName.dimensionRange,
-      },
+    expect(convertSizeToFilterParams({ width: "100-150" })).toEqual([
       {
         displayText: "100-150",
         paramValue: "100-150",
@@ -129,12 +134,7 @@ describe("convertSizeToFilterParams", () => {
   })
 
   it("returns only the minimum height for the size filter", () => {
-    expect(convertSizeToFilterParams({ dimensionRange: "0-*", height: "200-*" })).toEqual([
-      {
-        displayText: "Custom Size",
-        paramValue: "0-*",
-        paramName: FilterParamName.dimensionRange,
-      },
+    expect(convertSizeToFilterParams({ height: "200-*" })).toEqual([
       {
         displayText: "200-*",
         paramValue: "200-*",
@@ -144,12 +144,7 @@ describe("convertSizeToFilterParams", () => {
   })
 
   it("returns only the maximum height for the size filter", () => {
-    expect(convertSizeToFilterParams({ dimensionRange: "0-*", height: "*-250" })).toEqual([
-      {
-        displayText: "Custom Size",
-        paramValue: "0-*",
-        paramName: FilterParamName.dimensionRange,
-      },
+    expect(convertSizeToFilterParams({ height: "*-250" })).toEqual([
       {
         displayText: "*-250",
         paramValue: "*-250",
@@ -159,12 +154,7 @@ describe("convertSizeToFilterParams", () => {
   })
 
   it("returns the minimum and maximum height for the size filter", () => {
-    expect(convertSizeToFilterParams({ dimensionRange: "0-*", height: "200-250" })).toEqual([
-      {
-        displayText: "Custom Size",
-        paramValue: "0-*",
-        paramName: FilterParamName.dimensionRange,
-      },
+    expect(convertSizeToFilterParams({ height: "200-250" })).toEqual([
       {
         displayText: "200-250",
         paramValue: "200-250",
@@ -174,12 +164,7 @@ describe("convertSizeToFilterParams", () => {
   })
 
   it("returns the width and height for the size filter", () => {
-    expect(convertSizeToFilterParams({ dimensionRange: "0-*", width: "100-150", height: "200-250" })).toEqual([
-      {
-        displayText: "Custom Size",
-        paramValue: "0-*",
-        paramName: FilterParamName.dimensionRange,
-      },
+    expect(convertSizeToFilterParams({ width: "100-150", height: "200-250" })).toEqual([
       {
         displayText: "100-150",
         paramValue: "100-150",
@@ -507,7 +492,7 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       atAuction: true,
       attributionClass: ["unknown edition", "open edition"],
       colors: ["gold", "red"],
-      dimensionRange: "16.0-40.0",
+      sizes: ["MEDIUM"],
       inquireableOnly: null,
       locationCities: ["New York, NY, USA"],
       majorPeriods: ["2000"],
@@ -525,8 +510,8 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
     })
     expect(result).toContainEqual({
       displayText: `Medium (16in – 40in)`,
-      paramValue: "16.0-40.0",
-      paramName: FilterParamName.dimensionRange,
+      paramValue: ["MEDIUM"],
+      paramName: FilterParamName.sizes,
     })
     expect(result).toContainEqual({
       displayText: "Gold, Red",
@@ -634,7 +619,7 @@ describe("convertSavedSearchCriteriaToFilterParams", () => {
       atAuction: true,
       attributionClass: null,
       colors: null,
-      dimensionRange: "16.0-40.0",
+      sizes: ["MEDIUM"],
       inquireableOnly: null,
       locationCities: ["New York, NY, USA"],
       majorPeriods: ["2000"],

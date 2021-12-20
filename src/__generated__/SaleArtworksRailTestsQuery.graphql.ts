@@ -6,7 +6,7 @@
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SaleArtworksRailTestsQueryVariables = {
-    saleID?: string | null;
+    saleID?: string | null | undefined;
 };
 export type SaleArtworksRailTestsQueryResponse = {
     readonly me: {

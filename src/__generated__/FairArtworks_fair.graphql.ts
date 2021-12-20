@@ -32,7 +32,7 @@ export type FairArtworks_fair = {
 };
 export type FairArtworks_fair$data = FairArtworks_fair;
 export type FairArtworks_fair$key = {
-    readonly " $data"?: FairArtworks_fair$data;
+    readonly " $data"?: FairArtworks_fair$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FairArtworks_fair">;
 };
 

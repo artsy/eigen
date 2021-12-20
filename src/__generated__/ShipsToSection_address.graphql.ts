@@ -34,7 +34,7 @@ export type ShipsToSection_address = {
 };
 export type ShipsToSection_address$data = ShipsToSection_address;
 export type ShipsToSection_address$key = {
-    readonly " $data"?: ShipsToSection_address$data;
+    readonly " $data"?: ShipsToSection_address$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShipsToSection_address">;
 };
 

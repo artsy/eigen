@@ -47,7 +47,7 @@ export type CityFairList_city = {
 };
 export type CityFairList_city$data = CityFairList_city;
 export type CityFairList_city$key = {
-    readonly " $data"?: CityFairList_city$data;
+    readonly " $data"?: CityFairList_city$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"CityFairList_city">;
 };
 

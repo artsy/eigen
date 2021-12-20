@@ -15,24 +15,9 @@
 + (void)stubAccessToken:(NSString *)accessToken expiresIn:(NSString *)expiresIn;
 + (void)stubXappToken:(NSString *)xappToken expiresIn:(NSString *)expiresIn;
 + (void)stubMe:(NSString *)userID email:(NSString *)email name:(NSString *)name;
-+ (void)stubAndLoginWithUsername;
-+ (void)stubbedLoginWithUsername:(NSString *)username password:(NSString *)password
-          successWithCredentials:(void (^)(NSString *accessToken, NSDate *expirationDate))credentials
-                         gotUser:(void (^)(User *currentUser))success
-           authenticationFailure:(void (^)(NSError *error))authFail
-                  networkFailure:(void (^)(NSError *error))networkFailure;
-+ (void)stubAndLoginWithFacebookToken;
-+ (void)stubbedLoginWithFacebookToken:(NSString *)token
-               successWithCredentials:(void (^)(NSString *, NSDate *))credentials
-                              gotUser:(void (^)(User *))success
-                authenticationFailure:(void (^)(NSError *error))authFail
-                       networkFailure:(void (^)(NSError *))networkFailure;
-+ (void)stubAndLoginWithAppleUID;
-+ (void)stubbedLoginWithAppleUID:(NSString *)appleUID
-          successWithCredentials:(void (^)(NSString *, NSDate *))credentials
-                         gotUser:(void (^)(User *))success
-           authenticationFailure:(void (^)(NSError *error))authFail
-                  networkFailure:(void (^)(NSError *))networkFailure;
+
++ (void)stubAndSetupUser;
+
 + (NSString *)userDataPath;
 
 @end

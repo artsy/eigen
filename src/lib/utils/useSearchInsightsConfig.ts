@@ -1,6 +1,5 @@
-import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { useEffect, useState } from "react"
-import { Platform } from "react-native"
 import { createInsightsClient } from "search-insights"
 import { RequestFnType } from "search-insights/dist/utils/request"
 
@@ -24,10 +23,7 @@ export const searchInsights = createInsightsClient(requestFn)
 
 export const useSearchInsightsConfig = (appId?: string, apiKey?: string) => {
   const [configured, setConfigured] = useState(false)
-  const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
-  const userIDFromStore = GlobalStore.useAppState((store) =>
-    Platform.OS === "ios" && !showNewOnboarding ? store.native.sessionState.userID : store.auth.userID
-  )
+  const userIDFromStore = GlobalStore.useAppState((store) => store.auth.userID)
   const userID = userIDFromStore ?? "none"
 
   useEffect(() => {

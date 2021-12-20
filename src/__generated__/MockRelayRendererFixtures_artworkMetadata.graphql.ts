@@ -10,7 +10,7 @@ export type MockRelayRendererFixtures_artworkMetadata = {
 };
 export type MockRelayRendererFixtures_artworkMetadata$data = MockRelayRendererFixtures_artworkMetadata;
 export type MockRelayRendererFixtures_artworkMetadata$key = {
-    readonly " $data"?: MockRelayRendererFixtures_artworkMetadata$data;
+    readonly " $data"?: MockRelayRendererFixtures_artworkMetadata$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MockRelayRendererFixtures_artworkMetadata">;
 };
 
