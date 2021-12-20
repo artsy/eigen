@@ -34,12 +34,18 @@ export const localizeDimension = (value: Numeric, unit: Unit): { value: Numeric;
   return { value, unit: "cm" }
 }
 
-export const cmToIn = (centimeters: Numeric) => {
+export const cmToIn = (centimeters: Numeric, shouldRound: boolean = true) => {
   if (centimeters === "*") {
     return centimeters
   }
 
-  return round(centimeters / ONE_IN_TO_CM)
+  const inches = centimeters / ONE_IN_TO_CM
+
+  if (shouldRound) {
+    return round(inches)
+  }
+
+  return inches
 }
 
 export const inToCm = (inches: Numeric, shouldRound: boolean = true) => {

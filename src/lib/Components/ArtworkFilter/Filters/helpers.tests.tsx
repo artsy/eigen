@@ -39,6 +39,12 @@ describe("cmToIn", () => {
     expect(cmToIn(199)).toBe(78.35)
   })
 
+  it("should correctly convert from centimeters to inches when the shouldRound param is set to false", () => {
+    expect(cmToIn(1, false)).toBe(0.39370078740157477)
+    expect(cmToIn(100, false)).toBe(39.37007874015748)
+    expect(cmToIn(199, false)).toBe(78.34645669291338)
+  })
+
   it('should return "*" if it is passed', () => {
     expect(cmToIn("*")).toBe("*")
   })
