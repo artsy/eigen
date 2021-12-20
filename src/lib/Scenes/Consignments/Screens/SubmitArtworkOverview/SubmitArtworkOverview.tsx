@@ -1,3 +1,4 @@
+import { navigate } from "lib/navigation/navigate"
 import { Box, Button, Flex, Join, Separator, Spacer, Text } from "palette"
 import { CollapsableMenuItem } from "palette"
 import React, { useRef, useState } from "react"
@@ -102,6 +103,7 @@ export const SubmitArtworkOverview = () => {
       Content: (
         <ContactInformation
           handlePress={() => {
+            navigate(`/artwork-submitted`)
             // do nothing
           }}
         />
