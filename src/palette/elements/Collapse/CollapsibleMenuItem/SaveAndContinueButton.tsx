@@ -1,5 +1,4 @@
 import { navigate } from "lib/navigation/navigate"
-import { track as _track } from "lib/utils/track"
 import { Button } from "palette"
 import React, { Dispatch, SetStateAction } from "react"
 import { LayoutAnimation, View } from "react-native"
