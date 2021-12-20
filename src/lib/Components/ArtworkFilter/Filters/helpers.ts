@@ -39,7 +39,7 @@ export const cmToIn = (centimeters: Numeric) => {
     return centimeters
   }
 
-  return centimeters / ONE_IN_TO_CM
+  return round(centimeters / ONE_IN_TO_CM)
 }
 
 export const inToCm = (inches: Numeric, shouldRound: boolean = true) => {
