@@ -133,7 +133,6 @@ const MyCollection: React.FC<{
           orderBy(
             artworks,
             (a) => {
-              console.log("SORTLOG artwork", a)
               return a.pricePaid.minor
             },
             "asc"
@@ -194,6 +193,36 @@ const MyCollection: React.FC<{
         // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks, artistIDs: string[]) =>
           filter(artworks, (a) => artistIDs.includes(a.artist.internalID)),
+      },
+      {
+        displayText: FilterDisplayName.priceRange,
+        filterType: "priceRange",
+        ScreenComponent: "PriceRangeOptionsScreen",
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks, priceRange: string) => {
+          const splitRange = priceRange.split("-")
+          const lowerBoundStr = splitRange[0]
+          const upperBoundStr = splitRange[1]
+
+          let lowerBound = 0
+          let upperBound = Number.POSITIVE_INFINITY
+
+          const parsedLower = parseInt(lowerBoundStr, 10)
+          const parsedUpper = parseInt(upperBoundStr, 10)
+
+          if (!isNaN(parsedLower)) {
+            lowerBound = parsedLower
+          }
+
+          if (!isNaN(parsedUpper)) {
+            upperBound = parsedUpper
+          }
+
+          return filter(artworks, (a) => {
+            const pricePaid = a.pricePaid.minor / 100
+            return pricePaid >= lowerBound && pricePaid <= upperBound
+          })
+        },
       },
     ])
   }, [])
