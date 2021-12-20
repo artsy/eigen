@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 676eb6c4045e8049731eb5c5f0f51a0e */
+/* @relayHash 25dcc9f596a1ab2752001efe1aee8296 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -50,6 +50,9 @@ fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectio
         name
         id
       }
+      pricePaid {
+        minor
+      }
       date
       ...MyCollectionArtworkListItem_artwork
     }
@@ -86,6 +89,9 @@ fragment MyCollection_me_4o4pu4 on Me {
       node {
         id
         medium
+        pricePaid {
+          minor
+        }
         artist {
           internalID
           name
@@ -236,6 +242,24 @@ return {
                         "args": null,
                         "kind": "ScalarField",
                         "name": "medium",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Money",
+                        "kind": "LinkedField",
+                        "name": "pricePaid",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "minor",
+                            "storageKey": null
+                          }
+                        ],
                         "storageKey": null
                       },
                       {
@@ -400,7 +424,7 @@ return {
     ]
   },
   "params": {
-    "id": "676eb6c4045e8049731eb5c5f0f51a0e",
+    "id": "25dcc9f596a1ab2752001efe1aee8296",
     "metadata": {},
     "name": "MyCollectionQuery",
     "operationKind": "query",

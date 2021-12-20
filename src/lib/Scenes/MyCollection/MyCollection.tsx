@@ -123,6 +123,36 @@ const MyCollection: React.FC<{
             "desc"
           ),
       },
+      // TODO: Check specs and update copy
+      {
+        paramName: FilterParamName.sort,
+        displayText: "Price paid (High-Low)",
+        paramValue: "local-price-paid-high-low",
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks) =>
+          orderBy(
+            artworks,
+            (a) => {
+              console.log("SORTLOG artwork", a)
+              return a.pricePaid.minor
+            },
+            "asc"
+          ),
+      },
+      {
+        paramName: FilterParamName.sort,
+        displayText: "Price paid (Low-High)",
+        paramValue: "local-price-paid-low-high",
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks) =>
+          orderBy(
+            artworks,
+            (a) => {
+              return a.pricePaid.minor
+            },
+            "desc"
+          ),
+      },
     ])
     setFilterOptions([
       {
@@ -358,6 +388,9 @@ export const MyCollectionContainer = createPaginationContainer(
             node {
               id
               medium
+              pricePaid {
+                minor
+              }
               artist {
                 internalID
                 name

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4f0d98abef0e713477639766ecc69434 */
+/* @relayHash 8c646c0031a34ef783d8aaaff652e39c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -46,6 +46,9 @@ fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectio
         name
         id
       }
+      pricePaid {
+        minor
+      }
       date
       ...MyCollectionArtworkListItem_artwork
     }
@@ -82,6 +85,9 @@ fragment MyCollection_me on Me {
       node {
         id
         medium
+        pricePaid {
+          minor
+        }
         artist {
           internalID
           name
@@ -251,6 +257,24 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "concreteType": "Money",
+                        "kind": "LinkedField",
+                        "name": "pricePaid",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "minor",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "concreteType": "Artist",
                         "kind": "LinkedField",
                         "name": "artist",
@@ -410,7 +434,7 @@ return {
     ]
   },
   "params": {
-    "id": "4f0d98abef0e713477639766ecc69434",
+    "id": "8c646c0031a34ef783d8aaaff652e39c",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -479,6 +503,18 @@ return {
         "me.myCollectionConnection.edges.node.images.url": (v5/*: any*/),
         "me.myCollectionConnection.edges.node.internalID": (v3/*: any*/),
         "me.myCollectionConnection.edges.node.medium": (v5/*: any*/),
+        "me.myCollectionConnection.edges.node.pricePaid": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Money"
+        },
+        "me.myCollectionConnection.edges.node.pricePaid.minor": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "Int"
+        },
         "me.myCollectionConnection.edges.node.slug": (v3/*: any*/),
         "me.myCollectionConnection.edges.node.title": (v5/*: any*/),
         "me.myCollectionConnection.pageInfo": {

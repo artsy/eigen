@@ -473,6 +473,9 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
               internalID
               name
             }
+            pricePaid {
+              minor
+            }
             date
             ...ArtworkGridItem_artwork @skip(if: $skipArtworkGridItem)
             ...MyCollectionArtworkListItem_artwork
