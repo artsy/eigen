@@ -7,7 +7,7 @@ interface Props {
 }
 export const ArtsyLogoHeader: React.FC<Props> = ({ shadow = false }) => (
   <>
-    <Box mt={2} mb={1} style={shadow && styles.boxShadowStyle}>
+    <Box mt={2} mb={1} style={shadow ? styles.boxShadowStyle : {}}>
       <Flex alignItems="center">
         <ArtsyLogoIcon scale={0.75} />
       </Flex>
