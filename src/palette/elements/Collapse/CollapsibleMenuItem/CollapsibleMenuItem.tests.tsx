@@ -62,11 +62,8 @@ export const ComponentWithCollapsibleMenuEnabled = () => {
 }
 
 describe("Collapsible item: active state", () => {
-  it("is renders first modal enabled and active", () => {
+  it("is renders collapsible menu item enabled and active", () => {
     const { getByText } = render(<ComponentWithCollapsibleMenuEnabled />)
     expect(getByText("Content 1")).toBeDefined()
   })
-  // it("renders second item and third item inactive", () => {
-  // // let's add some more tests here :-)
-  // })
 })
