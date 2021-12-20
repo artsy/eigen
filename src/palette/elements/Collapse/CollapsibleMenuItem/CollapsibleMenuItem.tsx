@@ -1,6 +1,6 @@
 import { navigate } from "lib/navigation/navigate"
-import { Box, Flex, Sans, Spacer } from "palette"
-import { ArrowDownIcon, ArrowUpIcon, CheckCircleIcon } from "palette"
+import { Box, ChevronIcon, Flex, Sans, Spacer } from "palette"
+import { CheckCircleIcon } from "palette"
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { LayoutAnimation } from "react-native"
 import styled from "styled-components/native"
@@ -61,7 +61,7 @@ export const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
             {title}
           </Sans>
           <Flex flexDirection="row" alignItems="center">
-            <ArrowDownIcon fill="black30" />
+            <ChevronIcon direction="down" fill="black30" />
           </Flex>
         </Flex>
       </Box>
@@ -82,7 +82,7 @@ export const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
         <Sans size="8">{title}</Sans>
         <Flex flexDirection="row" alignItems="center">
           {!!isCompleted && <CheckCircleIcon fill="green100" height={24} width={24} style={{ marginRight: 5 }} />}
-          {activeStep === stepNumber ? <ArrowUpIcon /> : <ArrowDownIcon />}
+          <ChevronIcon direction={activeStep === stepNumber ? "up" : "down"} />
         </Flex>
       </TitleAndIconTouchableOpacity>
       {activeStep === stepNumber && (
