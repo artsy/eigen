@@ -503,8 +503,7 @@ export const CollectionFixture = {
         },
         {
           node: {
-            id:
-              "QXJ0d29yazpwYWJsby1waWNhc3NvLW1vZGVsLWNvbnRlbXBsYXRpbmctYS1ncm91cC1vZi1zY3VscHR1cmVzLW1vZGVsZS1jb250ZW1wbGFudC11bi1ncm91cGUtc2N1bHB0ZQ==",
+            id: "QXJ0d29yazpwYWJsby1waWNhc3NvLW1vZGVsLWNvbnRlbXBsYXRpbmctYS1ncm91cC1vZi1zY3VscHR1cmVzLW1vZGVsZS1jb250ZW1wbGFudC11bi1ncm91cGUtc2N1bHB0ZQ==",
             slug: "pablo-picasso-model-contemplating-a-group-of-sculptures-modele-contemplant-un-groupe-sculpte",
             title: "Model Contemplating a Group of Sculptures (Modele Contemplant Un Groupe Sculpte)",
             partner: {
@@ -521,8 +520,7 @@ export const CollectionFixture = {
               aspect_ratio: 1.21,
               url: "https://d32dm0rphc51dk.cloudfront.net/leU66mGhe0D2OvMQmGRt4Q/large_rectangle.jpg",
             },
-            href:
-              "/artwork/pablo-picasso-model-contemplating-a-group-of-sculptures-modele-contemplant-un-groupe-sculpte",
+            href: "/artwork/pablo-picasso-model-contemplating-a-group-of-sculptures-modele-contemplant-un-groupe-sculpte",
             sale: null,
             sale_message: "Sold",
             sale_artwork: null,

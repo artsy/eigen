@@ -18,9 +18,9 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
   const enableGoogleAuth = useFeatureFlag("ARGoogleAuth")
 
   /**
-   * When we land on OnboardingSocialPick coming from OnboardingCreatAccount or OnboardingLogin
+   * When we land on OnboardingSocialPick coming from OnboardingCreateAccount or OnboardingLogin
    * withFadeAnimation is set to true which overrwites the default horizontal slide animation when
-   * navigating back,  To avoid that we need to reset withFadeAnimation to false
+   * navigating back. To avoid that we need to reset withFadeAnimation to false
    */
   useEffect(() => {
     const timeout = setTimeout(() => {

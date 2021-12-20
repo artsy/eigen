@@ -102,7 +102,7 @@ export const CityFairListContainer = createPaginationContainer(
             node {
               internalID
               name
-              exhibition_period: exhibitionPeriod
+              exhibition_period: exhibitionPeriod(format: SHORT)
               counts {
                 partners
               }

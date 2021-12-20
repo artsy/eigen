@@ -25,7 +25,7 @@ import { FairsRailFragmentContainer } from "./Components/FairsRail"
 import { HomeQueryRenderer } from "./Home"
 
 jest.unmock("react-relay")
-const env = (defaultEnvironment as any) as ReturnType<typeof createMockEnvironment>
+const env = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
 
 const TestRenderer: React.FC = () => {
   return (

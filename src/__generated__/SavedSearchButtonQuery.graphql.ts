@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e552a44d1b7a5e472daa646e5135e5ed */
+/* @relayHash 429b06dfa859af8ff473ada5ecec3794 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -21,6 +21,7 @@ export type SearchCriteriaAttributes = {
     offerable?: boolean | null;
     partnerIDs?: Array<string> | null;
     priceRange?: string | null;
+    sizes?: Array<string> | null;
     width?: string | null;
 };
 export type SavedSearchButtonQueryVariables = {
@@ -48,12 +49,12 @@ query SavedSearchButtonQuery(
   }
 }
 
-fragment CreateSavedSearchAlertScreen_me on Me {
+fragment CreateSavedSearchContentContainerV1_me on Me {
   emailFrequency
 }
 
 fragment SavedSearchButton_me_1ff8oJ on Me {
-  ...CreateSavedSearchAlertScreen_me
+  ...CreateSavedSearchContentContainerV1_me
   savedSearch(criteria: $criteria) {
     internalID
   }
@@ -154,7 +155,7 @@ return {
     ]
   },
   "params": {
-    "id": "e552a44d1b7a5e472daa646e5135e5ed",
+    "id": "429b06dfa859af8ff473ada5ecec3794",
     "metadata": {},
     "name": "SavedSearchButtonQuery",
     "operationKind": "query",

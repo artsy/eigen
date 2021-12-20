@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 910bf946214c349eef3acdd70ed8d3e2 */
+/* @relayHash a1e24bc51121662e6dc6443a613f4e25 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -310,7 +310,7 @@ fragment FairHeader_fair on Fair {
 }
 
 fragment FairTiming_fair on Fair {
-  exhibitionPeriod
+  exhibitionPeriod(format: SHORT)
   startAt
   endAt
 }
@@ -1127,10 +1127,16 @@ return {
           },
           {
             "alias": null,
-            "args": null,
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "format",
+                "value": "SHORT"
+              }
+            ],
             "kind": "ScalarField",
             "name": "exhibitionPeriod",
-            "storageKey": null
+            "storageKey": "exhibitionPeriod(format:\"SHORT\")"
           },
           {
             "alias": null,
@@ -1615,7 +1621,7 @@ return {
     ]
   },
   "params": {
-    "id": "910bf946214c349eef3acdd70ed8d3e2",
+    "id": "a1e24bc51121662e6dc6443a613f4e25",
     "metadata": {},
     "name": "FairQuery",
     "operationKind": "query",

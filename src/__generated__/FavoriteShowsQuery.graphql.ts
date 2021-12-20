@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 560a777fc1ee1c5278f60cc8087b85c2 */
+/* @relayHash 684df0b997f2f786638721c52080dccd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -74,7 +74,7 @@ fragment ShowItemRow_show on Show {
     }
   }
   href
-  exhibition_period: exhibitionPeriod
+  exhibition_period: exhibitionPeriod(format: SHORT)
   status
   cover_image: coverImage {
     url
@@ -335,10 +335,16 @@ return {
                           },
                           {
                             "alias": "exhibition_period",
-                            "args": null,
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "format",
+                                "value": "SHORT"
+                              }
+                            ],
                             "kind": "ScalarField",
                             "name": "exhibitionPeriod",
-                            "storageKey": null
+                            "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                           },
                           {
                             "alias": null,
@@ -415,7 +421,7 @@ return {
     ]
   },
   "params": {
-    "id": "560a777fc1ee1c5278f60cc8087b85c2",
+    "id": "684df0b997f2f786638721c52080dccd",
     "metadata": {},
     "name": "FavoriteShowsQuery",
     "operationKind": "query",

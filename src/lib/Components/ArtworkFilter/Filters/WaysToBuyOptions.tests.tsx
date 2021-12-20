@@ -1,13 +1,9 @@
-import { OptionListItem as FilterModalOptionListItem } from "lib/Components/ArtworkFilter"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "lib/Components/ArtworkFilter/FilterTestHelper"
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Check } from "palette"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { getEssentialProps } from "./helper"
-import { OptionListItem } from "./MultiSelectOption"
 import { WaysToBuyOptionsScreen } from "./WaysToBuyOptions"
 
 describe("Ways to Buy Options Screen", () => {
@@ -31,22 +27,12 @@ describe("Ways to Buy Options Screen", () => {
   )
 
   it("renders the correct ways to buy options", () => {
-    const tree = renderWithWrappers(<MockWaysToBuyScreen initialData={initialState} />)
+    const { getByText } = renderWithWrappersTL(<MockWaysToBuyScreen initialData={initialState} />)
 
-    expect(tree.root.findAllByType(OptionListItem)).toHaveLength(4)
-
-    const listItems = tree.root.findAllByType(OptionListItem)
-    const firstListItem = listItems[0]
-    expect(extractText(firstListItem)).toBe("Buy Now")
-
-    const secondListItem = listItems[1]
-    expect(extractText(secondListItem)).toBe("Make Offer")
-
-    const thirdListItem = listItems[2]
-    expect(extractText(thirdListItem)).toBe("Bid")
-
-    const fourthListItem = listItems[3]
-    expect(extractText(fourthListItem)).toBe("Inquire")
+    expect(getByText("Buy Now")).toBeTruthy()
+    expect(getByText("Make Offer")).toBeTruthy()
+    expect(getByText("Bid")).toBeTruthy()
+    expect(getByText("Inquire")).toBeTruthy()
   })
 
   it("does not display the default text when no filter selected on the filter modal screen", () => {
@@ -63,11 +49,9 @@ describe("Ways to Buy Options Screen", () => {
       },
     }
 
-    const tree = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
+    const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
 
-    const waysToBuyListItem = tree.root.findAllByType(FilterModalOptionListItem)[1]
-
-    expect(extractText(waysToBuyListItem)).not.toContain("All")
+    expect(getByText("Ways to Buy")).toBeTruthy()
   })
 
   it("displays the number of the selected filters on the filter modal screen", () => {
@@ -100,9 +84,9 @@ describe("Ways to Buy Options Screen", () => {
       },
     }
 
-    const tree = renderWithWrappers(<MockFilterScreen initialState={injectedState} />)
+    const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
 
-    expect(extractText(tree.root)).toContain("• 3")
+    expect(getByText("Ways to Buy • 3")).toBeTruthy()
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {
@@ -125,16 +109,11 @@ describe("Ways to Buy Options Screen", () => {
       },
     }
 
-    const tree = renderWithWrappers(<MockWaysToBuyScreen initialData={injectedState} />)
-    const options = tree.root.findAllByType(Check)
+    const { getAllByA11yState } = renderWithWrappersTL(<MockWaysToBuyScreen initialData={injectedState} />)
+    const options = getAllByA11yState({ checked: true })
 
-    expect(options[0].props.selected).toBe(true)
-
-    expect(options[1].props.selected).toBe(false)
-
-    expect(options[2].props.selected).toBe(false)
-
-    expect(options[3].props.selected).toBe(false)
+    expect(options).toHaveLength(1)
+    expect(options[0]).toHaveTextContent("Buy Now")
   })
 
   it("it toggles applied filters 'ON' and unapplied filters 'OFF", () => {
@@ -163,15 +142,10 @@ describe("Ways to Buy Options Screen", () => {
       },
     }
 
-    const tree = renderWithWrappers(<MockWaysToBuyScreen initialData={injectedState} />)
-    const options = tree.root.findAllByType(Check)
+    const { getAllByA11yState } = renderWithWrappersTL(<MockWaysToBuyScreen initialData={injectedState} />)
+    const options = getAllByA11yState({ checked: true })
 
-    expect(options[0].props.selected).toBe(false)
-
-    expect(options[1].props.selected).toBe(false)
-
-    expect(options[2].props.selected).toBe(false)
-
-    expect(options[3].props.selected).toBe(true)
+    expect(options).toHaveLength(1)
+    expect(options[0]).toHaveTextContent("Inquire")
   })
 })

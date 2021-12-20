@@ -9,6 +9,7 @@ import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graph
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
+import { RecommendedArtistsRailFragmentContainer } from "lib/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { LotsByFollowedArtistsRailContainer } from "lib/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkRail"
@@ -33,7 +34,8 @@ import { compact, times } from "lodash"
 import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
-import { _FragmentRefs, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
@@ -82,43 +84,42 @@ const Home = (props: Props) => {
   const enableTrove = useFeatureFlag("AREnableTrove")
   const enableNewNewWorksForYouRail = useFeatureFlag("AREnableNewWorksForYou")
   const enableShowsForYouRail = useFeatureFlag("AREnableShowsRail")
-  const enableSplitIOABTesting = useFeatureFlag("AREnableSplitIOABTesting")
 
-  // A/B Testing
-  const treatment = useTreatment("HomeScreenWorksForYouVsWorksByArtistsYouFollow")
+  const newWorksTreatment = useTreatment("HomeScreenWorksForYouVsWorksByArtistsYouFollow")
+  const artistRecommendationsTreatment = useTreatment("HomeScreenArtistRecommendations")
 
   const newWorks =
-    treatment === "worksForYou"
+    enableNewNewWorksForYouRail && newWorksTreatment === "worksForYou"
       ? {
           title: "New Works for You",
           type: "newWorksForYou",
           data: meAbove,
-          hidden: false,
         }
       : {
           title: "New Works by Artists You Follow",
           type: "artwork",
           data: homePageAbove?.followedArtistsArtworkModule,
-          hidden: false,
+        }
+
+  const artistRecommendations =
+    artistRecommendationsTreatment === "newArtistRecommendations"
+      ? {
+          title: "Recommended Artists",
+          type: "recommended-artists",
+          data: meAbove,
+        }
+      : {
+          title: "Recommended Artists",
+          type: "artist",
+          data: homePageAbove?.recommendedArtistsArtistModule,
         }
 
   // Make sure to include enough modules in the above-the-fold query to cover the whole screen!.
-  const modules: HomeModule[] = compact([
+  let modules: HomeModule[] = compact([
     // Above-The-Fold Modules
-    enableSplitIOABTesting && newWorks,
-    !enableSplitIOABTesting && {
-      title: "New Works for You",
-      type: "newWorksForYou",
-      data: meAbove,
-      hidden: !enableNewNewWorksForYouRail,
-    },
-    !enableSplitIOABTesting && {
-      title: "New Works by Artists You Follow",
-      type: "artwork",
-      data: homePageAbove?.followedArtistsArtworkModule,
-      hidden: enableNewNewWorksForYouRail,
-    },
+    newWorks,
     { title: "Your Active Bids", type: "artwork", data: homePageAbove?.activeBidsArtworkModule },
+    artistRecommendations,
     { title: "Auction Lots for You Ending Soon", type: "lotsByFollowedArtists", data: meAbove },
     {
       title: "Auctions",
@@ -166,7 +167,9 @@ const Home = (props: Props) => {
       type: "artwork",
       data: homePageBelow?.similarToRecentlyViewedArtworkModule,
     },
-  ]).filter((module) => !module.hidden && module.data)
+  ])
+
+  modules = modules.filter((module) => !module.hidden && module.data)
 
   const { isRefreshing, handleRefresh, scrollRefs } = useHandleRefresh(relay, modules)
 
@@ -182,6 +185,24 @@ const Home = (props: Props) => {
           data={modules}
           initialNumToRender={5}
           refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} />}
+          prefetchUrlExtractor={(item) => {
+            switch (item?.type) {
+              case "newWorksForYou":
+                return "/new-works-for-you"
+              case "lotsByFollowedArtists":
+                return "/lots-by-artists-you-follow"
+              case "sales":
+                return "/auctions"
+            }
+          }}
+          prefetchVariablesExtractor={(item) => {
+            switch (item?.type) {
+              case "lotsByFollowedArtists":
+                return lotsByArtistsYouFollowDefaultVariables()
+            }
+
+            return {}
+          }}
           renderItem={({ item, index }) => {
             if (!item.data) {
               return <></>
@@ -244,6 +265,15 @@ const Home = (props: Props) => {
               case "newWorksForYou":
                 return (
                   <NewWorksForYouRailContainer
+                    title={item.title}
+                    me={item.data}
+                    scrollRef={scrollRefs.current[index]}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
+                )
+              case "recommended-artists":
+                return (
+                  <RecommendedArtistsRailFragmentContainer
                     title={item.title}
                     me={item.data}
                     scrollRef={scrollRefs.current[index]}
@@ -342,6 +372,10 @@ export const HomeFragmentContainer = createRefetchContainer(
         salesModule {
           ...SalesRail_salesModule
         }
+        recommendedArtistsArtistModule: artistModule(key: SUGGESTED) {
+          id
+          ...ArtistRail_rail
+        }
         ...HomeHero_homePage @arguments(heroImageVersion: $heroImageVersion)
       }
     `,
@@ -376,6 +410,7 @@ export const HomeFragmentContainer = createRefetchContainer(
         ...EmailConfirmationBanner_me
         ...LotsByFollowedArtistsRail_me
         ...NewWorksForYouRail_me
+        ...RecommendedArtistsRail_me
       }
     `,
     meBelow: graphql`
@@ -410,6 +445,7 @@ export const HomeFragmentContainer = createRefetchContainer(
       me @optionalField {
         ...Home_meAbove
         ...AuctionResultsRail_me
+        ...RecommendedArtistsRail_me
         ...NewWorksForYouRail_me
         showsByFollowedArtists(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
           ...Home_showsByFollowedArtists
@@ -603,6 +639,7 @@ export const HomeQueryRenderer: React.FC = () => {
             }
             me @optionalField {
               ...Home_meBelow
+              ...RecommendedArtistsRail_me
               ...AuctionResultsRail_me
               showsByFollowedArtists(first: 10, status: RUNNING_AND_UPCOMING) @optionalField {
                 ...Home_showsByFollowedArtists

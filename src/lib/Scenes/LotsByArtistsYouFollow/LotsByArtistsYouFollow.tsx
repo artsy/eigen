@@ -37,7 +37,11 @@ export const LotsByArtistsYouFollow: React.FC<LotsByArtistsYouFollowProps> = ({ 
   )
 }
 
-const LOTS_BY_ARTISTS_YOU_FOLLOW_QUERY = graphql`
+export const lotsByArtistsYouFollowDefaultVariables = () => ({
+  count: 10,
+})
+
+export const LotsByArtistsYouFollowScreenQuery = graphql`
   query LotsByArtistsYouFollowQuery($count: Int!, $cursor: String) {
     me {
       ...LotsByArtistsYouFollow_me @arguments(count: $count, cursor: $cursor)
@@ -64,7 +68,7 @@ export const LotsByArtistsYouFollowFragmentContainer = createPaginationContainer
   {
     getConnectionFromProps: ({ me }) => me && me.lotsByFollowedArtistsConnection,
     getVariables: (_props, { count, cursor }) => ({ count, cursor }),
-    query: LOTS_BY_ARTISTS_YOU_FOLLOW_QUERY,
+    query: LotsByArtistsYouFollowScreenQuery,
   }
 )
 
@@ -72,11 +76,8 @@ export const LotsByArtistsYouFollowQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<LotsByArtistsYouFollowQuery>
       environment={defaultEnvironment}
-      // tslint:disable-next-line:relay-operation-generics
-      query={LOTS_BY_ARTISTS_YOU_FOLLOW_QUERY}
-      variables={{
-        count: 10,
-      }}
+      query={LotsByArtistsYouFollowScreenQuery}
+      variables={lotsByArtistsYouFollowDefaultVariables()}
       render={renderWithPlaceholder({
         Container: LotsByArtistsYouFollowFragmentContainer,
         renderPlaceholder: Placeholder,

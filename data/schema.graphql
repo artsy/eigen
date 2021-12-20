@@ -31,8 +31,10 @@ input AddAssetsToConsignmentSubmissionInput {
 
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
+  filename: String
   geminiTokens: [String!]!
   sessionID: String
+  size: String
   submissionID: ID!
 }
 
@@ -50,8 +52,10 @@ input AddAssetToConsignmentSubmissionInput {
 
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
+  filename: String
   geminiToken: String!
   sessionID: String
+  size: String
   submissionID: ID!
 }
 
@@ -102,6 +106,7 @@ type Algolia {
 
 type AlgoliaIndex {
   displayName: String!
+  key: String!
   name: String!
 }
 
@@ -1308,6 +1313,7 @@ type Artwork implements Node & Searchable & Sellable {
     shallow: Boolean
   ): [Artist]
   artistSeriesConnection(after: String, before: String, first: Int, last: Int): ArtistSeriesConnection
+  artworkLocation: String
 
   # Represents the "**classification**" of an artwork, such as _limited edition_
   attributionClass: AttributionClass
@@ -2242,6 +2248,22 @@ type AuctionsUser implements AuctionsNode {
 
   # The user's id
   userId: ID!
+}
+
+enum AuthenticationProvider {
+  APPLE
+  FACEBOOK
+  GOOGLE
+}
+
+type AuthenticationType {
+  # A globally unique ID.
+  id: ID!
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  provider: AuthenticationProvider!
+  uid: String!
 }
 
 type Author {
@@ -4875,6 +4897,9 @@ type ConsignmentSubmissionCategoryAsset {
   # type of this Asset
   assetType: String!
 
+  # original image name
+  filename: String
+
   # gemini token for asset
   geminiToken: String
 
@@ -4883,6 +4908,7 @@ type ConsignmentSubmissionCategoryAsset {
 
   # known image urls
   imageUrls: JSON
+  size: String
   submissionId: ID!
   submissionID: ID
 }
@@ -5010,6 +5036,12 @@ enum ConsignmentSubmissionSort {
 
   # sort by created_at in descending order
   CREATED_AT_DESC
+
+  # sort by created_by in ascending order
+  CREATED_BY_ASC
+
+  # sort by created_by in descending order
+  CREATED_BY_DESC
 
   # sort by currency in ascending order
   CURRENCY_ASC
@@ -5185,6 +5217,12 @@ enum ConsignmentSubmissionSort {
   # sort by reminders_sent_count in descending order
   REMINDERS_SENT_COUNT_DESC
 
+  # sort by session_id in ascending order
+  SESSION_ID_ASC
+
+  # sort by session_id in descending order
+  SESSION_ID_DESC
+
   # sort by signature in ascending order
   SIGNATURE_ASC
 
@@ -5306,6 +5344,9 @@ type Conversation implements Node {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+
+  # Messages and other events in a conversation.
+  conversationEventConnection(after: String, before: String, first: Int, last: Int): ConversationEventConnection
   createdAt(
     format: String
 
@@ -5397,6 +5438,28 @@ type ConversationEdge {
   node: Conversation
 }
 
+union ConversationEvent = ConversationOfferSubmitted | ConversationOrderStateChanged | Message
+
+# A connection to a list of items.
+type ConversationEventConnection {
+  # A list of edges.
+  edges: [ConversationEventEdge]
+  pageCursors: PageCursors!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+# An edge in a connection.
+type ConversationEventEdge {
+  # A cursor for use in pagination
+  cursor: String!
+
+  # The item at the end of the edge
+  node: ConversationEvent
+}
+
 # The participant who started the conversation, currently always a User
 type ConversationInitiator {
   email: String!
@@ -5423,6 +5486,53 @@ type ConversationItem {
 }
 
 union ConversationItemType = Artwork | Show
+
+enum ConversationOfferPartyType {
+  BUYER
+  SELLER
+}
+
+# An offer submitted in a conversation
+type ConversationOfferSubmitted implements Node {
+  # A formatted price with various currency formatting options.
+  amount(
+    decimal: String = "."
+
+    # Allows control of symbol position (%v = value, %s = symbol)
+    format: String = "%s%v"
+    precision: Int = 0
+    symbol: String
+    thousand: String = ","
+  ): String
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  fromParticipant: ConversationOfferPartyType
+  id: ID!
+  isCounter: Boolean
+  offerAmountChanged: Boolean
+  respondsTo: ConversationOfferSubmitted
+}
+
+# A conversation order state change
+type ConversationOrderStateChanged implements Node {
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  id: ID!
+  state: String!
+  stateReason: String
+}
 
 # The participant responding to the conversation, currently always a Partner
 type ConversationResponder {
@@ -7878,6 +7988,32 @@ type LatLng {
   lng: Float
 }
 
+input LinkAuthenticationMutationInput {
+  # Unique Apple user id. **Required** for Apple authentication.
+  applieUid: String
+  clientMutationId: String
+
+  # User email, only used for Apple authentication.
+  email: String
+
+  # JWT used for Apple authentication.
+  idToken: String
+
+  # User name, only used for Apple authentication.
+  name: String
+
+  # An OAuth token.
+  oauthToken: String!
+
+  # A 3rd party account provider, such as facebook or apple.
+  provider: AuthenticationProvider!
+}
+
+type LinkAuthenticationMutationPayload {
+  clientMutationId: String
+  me: Me!
+}
+
 union ListPrice = Money | PriceRange
 
 type Location {
@@ -8240,6 +8376,9 @@ type Me implements Node {
   ): AuctionResultConnection
   auctionsLotStandingConnection(after: String, before: String, first: Int, last: Int): AuctionsLotStandingConnection!
 
+  # A list of authenticated external services
+  authentications: [AuthenticationType!]!
+
   # Returns a single bidder position
   bidderPosition(id: String!): BidderPositionResult
 
@@ -8412,6 +8551,7 @@ type Me implements Node {
   # The user's most current pending identity verification, if it exists
   pendingIdentityVerification: IdentityVerification
   phone: String
+  phoneNumber: PhoneNumberType
   priceRange: String
   priceRangeMax: Float
   priceRangeMin: Float
@@ -8774,6 +8914,9 @@ type Mutation {
   followShow(input: FollowShowInput!): FollowShowPayload
   holdInventory(input: HoldInventoryInput!): HoldInventoryPayload
 
+  # Links a 3rd party account
+  linkAuthentication(input: LinkAuthenticationMutationInput!): LinkAuthenticationMutationPayload
+
   # Create an artwork in my collection
   myCollectionCreateArtwork(input: MyCollectionCreateArtworkInput!): MyCollectionCreateArtworkPayload
 
@@ -8808,6 +8951,9 @@ type Mutation {
 
   # Create an artwork inquiry request
   submitInquiryRequestMutation(input: SubmitInquiryRequestMutationInput!): SubmitInquiryRequestMutationPayload
+
+  # Unlinks a 3rd party account
+  unlinkAuthentication(input: UnlinkAuthenticationMutationInput!): UnlinkAuthenticationMutationPayload
   unpublishViewingRoom(input: UnpublishViewingRoomInput!): UnpublishViewingRoomPayload
   updateAppSecondFactor(input: UpdateAppSecondFactorInput!): UpdateAppSecondFactorPayload
 
@@ -8820,6 +8966,9 @@ type Mutation {
 
   # Update a conversation.
   updateConversation(input: UpdateConversationMutationInput!): UpdateConversationMutationPayload
+
+  # Updates the logged in user's password
+  updateMyPassword(input: UpdateMyPasswordMutationInput!): UpdateMyPasswordMutationPayload
 
   # Update the current logged in user.
   updateMyUserProfile(input: UpdateMyProfileInput!): UpdateMyProfilePayload
@@ -8886,6 +9035,7 @@ type MyCollectionConnection {
 
 input MyCollectionCreateArtworkInput {
   artistIds: [String]!
+  artworkLocation: String
   category: String
   clientMutationId: String
   costCurrencyCode: String
@@ -8941,6 +9091,7 @@ type MyCollectionInfo {
 input MyCollectionUpdateArtworkInput {
   artistIds: [String]
   artworkId: String!
+  artworkLocation: String
   category: String
   clientMutationId: String
   costCurrencyCode: String
@@ -9657,6 +9808,29 @@ enum PartnersSortType {
 
 union PartnerTypes = ExternalPartner | Partner
 
+enum PhoneNumberErrors {
+  INVALID_COUNTRY_CODE
+  INVALID_NUMBER
+  TOO_LONG
+  TOO_SHORT
+}
+
+enum PhoneNumberFormats {
+  E164
+  INTERNATIONAL
+  NATIONAL
+  RFC3966
+}
+
+type PhoneNumberType {
+  countryCode: String
+  display(format: PhoneNumberFormats): String
+  error: PhoneNumberErrors
+  isValid: Boolean
+  originalNumber: String
+  regionCode: String
+}
+
 # The connection type for MarketPriceInsights.
 type PriceInsightConnection {
   # A list of edges.
@@ -9922,6 +10096,9 @@ type Query {
   # Get Algolia configuration
   _unused_gravity_algolia: Algolia!
   _unused_gravity_devices(userId: ID!): [Device!]!
+
+  # Find a marketing collection by ID or slug
+  _unused_gravity_marketingCollection(id: ID!): MarketingCollection
 
   # Autocomplete resolvers.
   _unused_gravity_match_partners(
@@ -10579,6 +10756,9 @@ type Query {
     sort: PartnersSortType
     type: [PartnerClassification]
   ): PartnerConnection
+
+  # Phone number information
+  phoneNumber(phoneNumber: String!, regionCode: String): PhoneNumberType
 
   # Get all price insights for an artist.
   priceInsights(
@@ -11473,6 +11653,7 @@ type SearchCriteria {
   offerable: Boolean
   partnerIDs: [String!]!
   priceRange: String
+  sizes: [String!]!
   userAlertSettings: SavedSearchUserAlertSettings!
   width: String
 }
@@ -11494,6 +11675,7 @@ input SearchCriteriaAttributes {
   offerable: Boolean = null
   partnerIDs: [String!] = []
   priceRange: String = null
+  sizes: [String!] = []
   width: String = null
 }
 
@@ -12274,6 +12456,16 @@ type TrendingArtists {
 
 union UnderlyingCurrentEvent = Sale | Show
 
+input UnlinkAuthenticationMutationInput {
+  clientMutationId: String
+  provider: AuthenticationProvider!
+}
+
+type UnlinkAuthenticationMutationPayload {
+  clientMutationId: String
+  me: Me!
+}
+
 # Autogenerated input type of UnpublishViewingRoom
 input UnpublishViewingRoomInput {
   # A unique identifier for the client performing the mutation.
@@ -12385,6 +12577,18 @@ input UpdateConversationMutationInput {
 type UpdateConversationMutationPayload {
   clientMutationId: String
   conversation: Conversation
+}
+
+input UpdateMyPasswordMutationInput {
+  clientMutationId: String
+  currentPassword: String!
+  newPassword: String!
+  passwordConfirmation: String!
+}
+
+type UpdateMyPasswordMutationPayload {
+  clientMutationId: String
+  me: Me!
 }
 
 input UpdateMyProfileInput {
@@ -13267,6 +13471,9 @@ type Viewer {
     sort: PartnersSortType
     type: [PartnerClassification]
   ): PartnerConnection
+
+  # Phone number information
+  phoneNumber(phoneNumber: String!, regionCode: String): PhoneNumberType
 
   # A requested location
   requestLocation(ip: String!): RequestLocation

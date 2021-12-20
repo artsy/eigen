@@ -25,6 +25,7 @@ export type SearchCriteriaAttributes = {
     offerable?: boolean | null;
     partnerIDs?: Array<string> | null;
     priceRange?: string | null;
+    sizes?: Array<string> | null;
     width?: string | null;
 };
 export type UserAlertSettingsInput = {

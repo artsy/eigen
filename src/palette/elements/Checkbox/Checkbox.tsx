@@ -82,7 +82,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         onPress?.(event)
       }}
     >
-      <Flex {...restProps} flex={1}>
+      <Flex flex={1} {...restProps}>
         <Flex flexDirection="row">
           <Flex mt="2px">
             <CssTransition

@@ -7,49 +7,22 @@ import {
   getSelectedFiltersCounts,
   getUnitedSelectedAndAppliedFilters,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { TouchableRow } from "lib/Components/TouchableRow"
+import { ArtworkFiltersModel, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
 import _ from "lodash"
-import { ArrowRightIcon, bullet, CloseIcon, FilterIcon, Flex, Sans, Separator, Text, useSpace } from "palette"
+import { FilterIcon, Flex, Sans } from "palette"
 import React, { useMemo } from "react"
-import { FlatList, TouchableOpacity } from "react-native"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
+import { AnimatableHeaderFlatList } from "../AnimatableHeader/AnimatableHeaderFlatList"
+import { AnimatableHeaderProvider } from "../AnimatableHeader/AnimatableHeaderProvider"
 import { AnimatedBottomButton } from "../AnimatedBottomButton"
-import { ArtworkFilterNavigationStack } from "./ArtworkFilter"
-
-export type FilterScreen =
-  | "additionalGeneIDs"
-  | "artistIDs"
-  | "artistNationalities"
-  | "artistsIFollow"
-  | "attributionClass"
-  | "categories"
-  | "color"
-  | "colors"
-  | "dimensionRange"
-  | "estimateRange"
-  | "locationCities"
-  | "majorPeriods"
-  | "materialsTerms"
-  | "medium"
-  | "partnerIDs"
-  | "priceRange"
-  | "organizations"
-  | "sizes"
-  | "sort"
-  | "viewAs"
-  | "waysToBuy"
-  | "year"
-
-export interface FilterDisplayConfig {
-  filterType: FilterScreen
-  displayText: string
-  ScreenComponent: keyof ArtworkFilterNavigationStack
-}
+import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
+import { ArtworkFilterOptionItem } from "./components/ArtworkFilterOptionItem"
+import { ArtworkFilterOptionsHeader } from "./components/ArtworkFilterOptionsHeader"
+import { FilterDisplayConfig, FilterScreen } from "./types"
 
 export enum FilterModalMode {
   ArtistArtworks = "ArtistArtworks",
@@ -64,12 +37,12 @@ export enum FilterModalMode {
   Gene = "Gene",
   Tag = "Tag",
   Search = "Search",
+  Custom = "Custom",
 }
 
 export const ArtworkFilterOptionsScreen: React.FC<
   StackScreenProps<ArtworkFilterNavigationStack, "FilterOptionsScreen">
 > = ({ navigation, route }) => {
-  const space = useSpace()
   const tracking = useTracking()
   const { closeModal, id, mode, slug, title = "Sort & Filter" } = route.params
 
@@ -78,6 +51,7 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
   const aggregationsState = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
+  const localFilterOptions = ArtworksFiltersStore.useStoreState((s) => s.filterOptions)
 
   const clearFiltersZeroStateAction = ArtworksFiltersStore.useStoreActions(
     (action) => action.clearFiltersZeroStateAction
@@ -108,10 +82,12 @@ export const ArtworkFilterOptionsScreen: React.FC<
     })
   )
 
-  const filterOptions: FilterDisplayConfig[] = getStaticFilterOptionsByMode(mode).concat(aggregateFilterOptions)
+  const filterOptions: FilterDisplayConfig[] = getStaticFilterOptionsByMode(mode, localFilterOptions).concat(
+    aggregateFilterOptions
+  )
 
   const sortedFilterOptions = filterOptions
-    .sort(getFilterScreenSortByMode(mode))
+    .sort(getFilterScreenSortByMode(mode, localFilterOptions))
     .filter((filterOption) => filterOption.filterType)
 
   const clearAllFilters = () => {
@@ -133,90 +109,67 @@ export const ArtworkFilterOptionsScreen: React.FC<
     closeModal()
   }
 
+  const handleClearAllPress = () => {
+    switch (mode) {
+      case FilterModalMode.Collection:
+        trackClear(PageNames.Collection, OwnerEntityTypes.Collection)
+        break
+      case FilterModalMode.ArtistArtworks:
+        trackClear(PageNames.ArtistPage, OwnerEntityTypes.Artist)
+        break
+      case FilterModalMode.ArtistSeries:
+        trackClear(PageNames.ArtistSeriesPage, OwnerEntityTypes.ArtistSeries)
+        break
+      case "Fair":
+        trackClear(PageNames.FairPage, OwnerEntityTypes.Fair)
+        break
+      case FilterModalMode.Gene:
+        trackClear(PageNames.GenePage, OwnerEntityTypes.Gene)
+        break
+      case FilterModalMode.Search:
+        trackClear(PageNames.Search, OwnerEntityTypes.Search)
+        break
+    }
+
+    clearAllFilters()
+  }
+
   return (
-    <Flex style={{ flex: 1 }}>
-      <Flex flexGrow={0} flexDirection="row" justifyContent="space-between" alignItems="center" height={space(6)}>
-        <Flex flex={1} alignItems="center">
-          <Text variant="sm">{title}</Text>
-        </Flex>
+    <AnimatableHeaderProvider>
+      <Flex flex={1}>
+        <ArtworkFilterOptionsHeader
+          title={title}
+          rightButtonDisabled={!isClearAllButtonEnabled}
+          onLeftButtonPress={handleTappingCloseIcon}
+          onRightButtonPress={handleClearAllPress}
+          rightButtonText="Clear All"
+          useXButton
+        />
+        <AnimatableHeaderFlatList<FilterDisplayConfig>
+          keyExtractor={(_item, index) => String(index)}
+          data={sortedFilterOptions}
+          style={{ flexGrow: 1 }}
+          renderItem={({ item }) => {
+            const selectedFiltersCount = selectedFiltersCounts[item.filterType as FilterParamName]
 
-        <Flex position="absolute" alignItems="flex-start">
-          <CloseIconContainer hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }} onPress={handleTappingCloseIcon}>
-            <CloseIcon fill="black100" />
-          </CloseIconContainer>
-        </Flex>
-
-        <Flex position="absolute" right={0} alignItems="flex-end">
-          <ClearAllButton
-            disabled={!isClearAllButtonEnabled}
-            onPress={() => {
-              switch (mode) {
-                case FilterModalMode.Collection:
-                  trackClear(PageNames.Collection, OwnerEntityTypes.Collection)
-                  break
-                case FilterModalMode.ArtistArtworks:
-                  trackClear(PageNames.ArtistPage, OwnerEntityTypes.Artist)
-                  break
-                case FilterModalMode.ArtistSeries:
-                  trackClear(PageNames.ArtistSeriesPage, OwnerEntityTypes.ArtistSeries)
-                  break
-                case "Fair":
-                  trackClear(PageNames.FairPage, OwnerEntityTypes.Fair)
-                  break
-                case FilterModalMode.Gene:
-                  trackClear(PageNames.GenePage, OwnerEntityTypes.Gene)
-                  break
-                case FilterModalMode.Search:
-                  trackClear(PageNames.Search, OwnerEntityTypes.Search)
-                  break
-              }
-
-              clearAllFilters()
-            }}
-          >
-            <Text variant="sm" color={isClearAllButtonEnabled ? "black100" : "black30"}>
-              Clear all
-            </Text>
-          </ClearAllButton>
-        </Flex>
+            return (
+              <ArtworkFilterOptionItem
+                item={item}
+                count={selectedFiltersCount}
+                onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}
+              />
+            )
+          }}
+        />
       </Flex>
-
-      <Separator />
-
-      <FlatList<FilterDisplayConfig>
-        keyExtractor={(_item, index) => String(index)}
-        data={sortedFilterOptions}
-        style={{ flexGrow: 1 }}
-        renderItem={({ item }) => {
-          const selectedFiltersCount = selectedFiltersCounts[item.filterType as FilterParamName]
-
-          return (
-            <TouchableRow onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}>
-              <OptionListItem p={2} pr={1.5}>
-                <Flex minWidth="45%">
-                  <Text variant="xs">
-                    {item.displayText}
-                    {!!selectedFiltersCount && (
-                      <Text variant="xs" color="blue100" ml={4}>
-                        {` ${bullet} ${selectedFiltersCount}`}
-                      </Text>
-                    )}
-                  </Text>
-                </Flex>
-
-                <Flex flex={1} flexDirection="row" alignItems="center" justifyContent="flex-end">
-                  <ArrowRightIcon fill="black30" ml={1} />
-                </Flex>
-              </OptionListItem>
-            </TouchableRow>
-          )
-        }}
-      />
-    </Flex>
+    </AnimatableHeaderProvider>
   )
 }
 
-export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
+export const getStaticFilterOptionsByMode = (
+  mode: FilterModalMode,
+  customFilterOptions: ArtworkFiltersModel["filterOptions"]
+) => {
   const enableSortFilter = useFeatureFlag("AREnableSortFilterForArtworksPill")
 
   switch (mode) {
@@ -248,6 +201,9 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
 
       return [filterOptionToDisplayConfigMap.waysToBuy, filterOptionToDisplayConfigMap.attributionClass]
 
+    case FilterModalMode.Custom:
+      return customFilterOptions!
+
     default:
       return [
         filterOptionToDisplayConfigMap.sort,
@@ -257,60 +213,64 @@ export const getStaticFilterOptionsByMode = (mode: FilterModalMode) => {
   }
 }
 
-export const getFilterScreenSortByMode = (mode: FilterModalMode) => (
-  left: FilterDisplayConfig,
-  right: FilterDisplayConfig
-): number => {
-  let sortOrder: FilterScreen[] = []
+export const getFilterScreenSortByMode =
+  (mode: FilterModalMode, localFilterOptions: ArtworkFiltersModel["filterOptions"]) =>
+  (left: FilterDisplayConfig, right: FilterDisplayConfig): number => {
+    let sortOrder: FilterScreen[] = []
 
-  // Filter order is based on frequency of use for a given page
-  switch (mode) {
-    case FilterModalMode.Collection:
-      sortOrder = CollectionFiltersSorted
-      break
-    case FilterModalMode.ArtistArtworks:
-      sortOrder = ArtistArtworksFiltersSorted
-      break
-    case FilterModalMode.ArtistSeries:
-      sortOrder = ArtistSeriesFiltersSorted
-      break
-    case FilterModalMode.Artworks:
-      sortOrder = ArtworksFiltersSorted
-      break
-    case FilterModalMode.Search:
-      sortOrder = ArtworksFiltersSorted
-      break
-    case FilterModalMode.Show:
-      sortOrder = ShowFiltersSorted
-      break
-    case FilterModalMode.Fair:
-      sortOrder = FairFiltersSorted
-      break
-    case FilterModalMode.SaleArtworks:
-      sortOrder = SaleArtworksFiltersSorted
-      break
-    case FilterModalMode.AuctionResults:
-      sortOrder = AuctionResultsFiltersSorted
-      break
-    case FilterModalMode.Partner:
-      sortOrder = PartnerFiltersSorted
-      break
-    case FilterModalMode.Gene:
-      sortOrder = TagAndGeneFiltersSorted
-      break
-    case FilterModalMode.Tag:
-      sortOrder = TagAndGeneFiltersSorted
-      break
-  }
+    // Filter order is based on frequency of use for a given page
+    switch (mode) {
+      case FilterModalMode.Collection:
+        sortOrder = CollectionFiltersSorted
+        break
+      case FilterModalMode.ArtistArtworks:
+        sortOrder = ArtistArtworksFiltersSorted
+        break
+      case FilterModalMode.ArtistSeries:
+        sortOrder = ArtistSeriesFiltersSorted
+        break
+      case FilterModalMode.Artworks:
+        sortOrder = ArtworksFiltersSorted
+        break
+      case FilterModalMode.Search:
+        sortOrder = ArtworksFiltersSorted
+        break
+      case FilterModalMode.Show:
+        sortOrder = ShowFiltersSorted
+        break
+      case FilterModalMode.Fair:
+        sortOrder = FairFiltersSorted
+        break
+      case FilterModalMode.SaleArtworks:
+        sortOrder = SaleArtworksFiltersSorted
+        break
+      case FilterModalMode.AuctionResults:
+        sortOrder = AuctionResultsFiltersSorted
+        break
+      case FilterModalMode.Partner:
+        sortOrder = PartnerFiltersSorted
+        break
+      case FilterModalMode.Gene:
+        sortOrder = TagAndGeneFiltersSorted
+        break
+      case FilterModalMode.Tag:
+        sortOrder = TagAndGeneFiltersSorted
+        break
+      case FilterModalMode.Custom:
+        sortOrder = (localFilterOptions ?? []).map((f) => f.filterType)
+        break
+      default:
+        assertNever(mode)
+    }
 
-  const leftParam = left.filterType
-  const rightParam = right.filterType
-  if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {
-    return -1
-  } else {
-    return 1
+    const leftParam = left.filterType
+    const rightParam = right.filterType
+    if (sortOrder.indexOf(leftParam) < sortOrder.indexOf(rightParam)) {
+      return -1
+    } else {
+      return 1
+    }
   }
-}
 
 export const FilterArtworkButton = styled(Flex)`
   background-color: ${themeGet("colors.black100")};
@@ -388,19 +348,6 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
     </AnimatedBottomButton>
   )
 }
-
-export const CloseIconContainer = styled(TouchableOpacity)`
-  padding: ${themeGet("space.2")}px;
-`
-
-export const ClearAllButton = styled(TouchableOpacity)`
-  padding: ${themeGet("space.2")}px;
-`
-
-export const OptionListItem = styled(Flex)`
-  flex-direction: row;
-  justify-content: space-between;
-`
 
 export const filterOptionToDisplayConfigMap: Record<string, FilterDisplayConfig> = {
   additionalGeneIDs: {

@@ -1,24 +1,27 @@
 import { useFormikContext } from "formik"
+import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { navigate } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import { Box, Button, Flex, Input, InputTitle, Pill, Spacer, Text, Touchable } from "palette"
+import { Box, Button, CloseIcon as RemoveIcon, Flex, Input, InputTitle, Pill, Spacer, Text, Touchable } from "palette"
 import React from "react"
 import { LayoutAnimation } from "react-native"
 import { getNamePlaceholder } from "../helpers"
-import { SavedSearchAlertFormValues } from "../SavedSearchAlertModel"
+import { SavedSearchAlertFormValues, SavedSearchPill } from "../SavedSearchAlertModel"
 import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 
 interface FormProps {
-  pills: string[]
+  pills: SavedSearchPill[]
   savedSearchAlertId?: string
   artistId: string
   artistName: string
   isLoading?: boolean
+  isPreviouslySaved?: boolean
   onDeletePress?: () => void
   onSubmitPress?: () => void
   onUpdateEmailPreferencesPress?: () => void
   onTogglePushNotification: (enabled: boolean) => void
   onToggleEmailNotification: (enabled: boolean) => void
+  onRemovePill: (pill: SavedSearchPill) => void
 }
 
 export const Form: React.FC<FormProps> = (props) => {
@@ -28,21 +31,18 @@ export const Form: React.FC<FormProps> = (props) => {
     artistName,
     savedSearchAlertId,
     isLoading,
+    isPreviouslySaved,
     onDeletePress,
     onSubmitPress,
     onUpdateEmailPreferencesPress,
     onTogglePushNotification,
     onToggleEmailNotification,
+    onRemovePill,
   } = props
-  const {
-    isSubmitting,
-    values,
-    errors,
-    dirty,
-    handleBlur,
-    handleChange,
-  } = useFormikContext<SavedSearchAlertFormValues>()
+  const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
+    useFormikContext<SavedSearchAlertFormValues>()
   const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
+  const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const namePlaceholder = getNamePlaceholder(artistName, pills)
   const isEditMode = !!savedSearchAlertId
   let isSaveAlertButtonDisabled = false
@@ -64,6 +64,10 @@ export const Form: React.FC<FormProps> = (props) => {
     isSaveAlertButtonDisabled = true
   }
 
+  if (isPreviouslySaved) {
+    isSaveAlertButtonDisabled = true
+  }
+
   const handleToggleEmailNotification = (value: boolean) => {
     LayoutAnimation.configureNext({
       ...LayoutAnimation.Presets.easeInEaseOut,
@@ -80,6 +84,8 @@ export const Form: React.FC<FormProps> = (props) => {
 
     return navigate("/unsubscribe")
   }
+
+  const isArtistPill = (pill: SavedSearchPill) => pill.paramName === FilterParamName.artistIDs
 
   return (
     <Box>
@@ -127,11 +133,33 @@ export const Form: React.FC<FormProps> = (props) => {
       <Box mb={2}>
         <InputTitle>Filters</InputTitle>
         <Flex flexDirection="row" flexWrap="wrap" mt={1} mx={-0.5}>
-          {pills.map((pill, index) => (
-            <Pill testID="alert-pill" m={0.5} key={`filter-label-${index}`}>
-              {pill}
-            </Pill>
-          ))}
+          {pills.map((pill, index) =>
+            isEnabledImprovedAlertsFlow ? (
+              <Pill
+                testID="alert-pill"
+                m={0.5}
+                key={`filter-label-${index}`}
+                iconPosition="right"
+                // this is to make the pills removable only on create alert screen
+                {...(!isEditMode
+                  ? {
+                      onPress: () => {
+                        if (!isArtistPill(pill)) {
+                          onRemovePill(pill)
+                        }
+                      },
+                      Icon: isArtistPill(pill) ? undefined : RemoveIcon,
+                    }
+                  : {})}
+              >
+                {pill.label}
+              </Pill>
+            ) : (
+              <Pill testID="alert-pill" m={0.5} key={`filter-label-${index}`} iconPosition="right">
+                {pill.label}
+              </Pill>
+            )
+          )}
         </Flex>
       </Box>
       {!!enableSavedSearchToggles && (

@@ -116,7 +116,7 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
             ],
           }}
         >
-          <Box backgroundColor="white" mt={3} px={2} mb={3}>
+          <Flex backgroundColor="white" height={50} px={2} justifyContent="center">
             <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
               <Animated.View
                 style={{
@@ -149,7 +149,7 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
                 )}
               />
             </Flex>
-          </Box>
+          </Flex>
         </Animated.View>
       )}
     </Box>

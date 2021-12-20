@@ -35,9 +35,9 @@ export const ReadMore = React.memo(
     const tracking = useTracking()
     const useNewTextStyles = textStyle === "new"
     const basicRules = defaultRules({ modal: presentLinksModally, useNewTextStyles })
-    const TextComponent: React.ComponentType<SansProps | PaletteTextProps> = (textStyle === "new"
-      ? PaletteText
-      : Sans) as any
+    const TextComponent: React.ComponentType<SansProps | PaletteTextProps> = (
+      textStyle === "new" ? PaletteText : Sans
+    ) as any
     const textProps: SansProps | PaletteTextProps = textStyle === "new" ? { variant: "xs" } : { size: "3" }
     const rules = {
       ...basicRules,

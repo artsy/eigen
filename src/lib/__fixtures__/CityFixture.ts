@@ -380,8 +380,7 @@ export const CityFixture = {
           exhibition_period: "Mar 21 – May 25",
           href: "https://wwww.show.com",
           gravityID: "galerie-perrotin-gianni-motti-cadeaux-diplomatiques-at-kunstmuseum-thun-thun",
-          id:
-            "U2hvdzpnYWxlcmllLXBlcnJvdGluLWdpYW5uaS1tb3R0aS1jYWRlYXV4LWRpcGxvbWF0aXF1ZXMtYXQta3Vuc3RtdXNldW0tdGh1bi10aHVu",
+          id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLWdpYW5uaS1tb3R0aS1jYWRlYXV4LWRpcGxvbWF0aXF1ZXMtYXQta3Vuc3RtdXNldW0tdGh1bi10aHVu",
           is_followed: true,
           isStubShow: false,
           location: {
@@ -418,8 +417,7 @@ export const CityFixture = {
           exhibition_period: "Mar 21 – May 25",
           href: "https://wwww.show.com",
           gravityID: "galerie-perrotin-gianni-motti-plausible-deniability-at-migros-museum-fur-gegenwartskunst-zurich",
-          id:
-            "U2hvdzpnYWxlcmllLXBlcnJvdGluLWdpYW5uaS1tb3R0aS1wbGF1c2libGUtZGVuaWFiaWxpdHktYXQtbWlncm9zLW11c2V1bS1mdXItZ2VnZW53YXJ0c2t1bnN0LXp1cmljaA==",
+          id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLWdpYW5uaS1tb3R0aS1wbGF1c2libGUtZGVuaWFiaWxpdHktYXQtbWlncm9zLW11c2V1bS1mdXItZ2VnZW53YXJ0c2t1bnN0LXp1cmljaA==",
           is_followed: true,
           isStubShow: false,
           location: {
@@ -456,8 +454,7 @@ export const CityFixture = {
           exhibition_period: "Mar 21 – May 25",
           href: "https://wwww.show.com",
           gravityID: "galerie-perrotin-gelitin-chinese-synthese-leberkase-at-kunshaus-bregenz",
-          id:
-            "U2hvdzpnYWxlcmllLXBlcnJvdGluLWdlbGl0aW4tY2hpbmVzZS1zeW50aGVzZS1sZWJlcmthc2UtYXQta3Vuc2hhdXMtYnJlZ2Vueg==",
+          id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLWdlbGl0aW4tY2hpbmVzZS1zeW50aGVzZS1sZWJlcmthc2UtYXQta3Vuc2hhdXMtYnJlZ2Vueg==",
           is_followed: true,
           isStubShow: false,
           location: {
@@ -606,8 +603,7 @@ export const CityFixture = {
           href: "https://wwww.show.com",
           gravityID:
             "galerie-perrotin-aya-takano-wild-dogs-hawks-owls-cats-a-landfill-the-size-of-44-and-a-half-tokyo-domes-the-stratosphere",
-          id:
-            "U2hvdzpnYWxlcmllLXBlcnJvdGluLWF5YS10YWthbm8td2lsZC1kb2dzLWhhd2tzLW93bHMtY2F0cy1hLWxhbmRmaWxsLXRoZS1zaXplLW9mLTQ0LWFuZC1hLWhhbGYtdG9reW8tZG9tZXMtdGhlLXN0cmF0b3NwaGVyZQ==",
+          id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLWF5YS10YWthbm8td2lsZC1kb2dzLWhhd2tzLW93bHMtY2F0cy1hLWxhbmRmaWxsLXRoZS1zaXplLW9mLTQ0LWFuZC1hLWhhbGYtdG9reW8tZG9tZXMtdGhlLXN0cmF0b3NwaGVyZQ==",
           is_followed: true,
           isStubShow: false,
           location: {
@@ -617,8 +613,7 @@ export const CityFixture = {
             },
             id: "TG9jYXRpb246NGUzYzcyNGNkZTUyYzgwMDA1MDA1NmFl",
           },
-          name:
-            'Aya Takano: "Wild dogs, hawks, owls, cats, a landfill the size of 44 and a half Tokyo Domes, the stratosphere"',
+          name: 'Aya Takano: "Wild dogs, hawks, owls, cats, a landfill the size of 44 and a half Tokyo Domes, the stratosphere"',
           partner: {
             id: "UGFydG5lcjpwZXJyb3Rpbg==",
             name: "Gallerie RR",
@@ -682,8 +677,7 @@ export const CityFixture = {
           exhibition_period: "Mar 21 – May 25",
           href: "https://wwww.show.com",
           gravityID: "galerie-perrotin-aya-takano-tradition-and-modernity-at-fondation-joan-miro-barcelona",
-          id:
-            "U2hvdzpnYWxlcmllLXBlcnJvdGluLWF5YS10YWthbm8tdHJhZGl0aW9uLWFuZC1tb2Rlcm5pdHktYXQtZm9uZGF0aW9uLWpvYW4tbWlyby1iYXJjZWxvbmE=",
+          id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLWF5YS10YWthbm8tdHJhZGl0aW9uLWFuZC1tb2Rlcm5pdHktYXQtZm9uZGF0aW9uLWpvYW4tbWlyby1iYXJjZWxvbmE=",
           is_followed: true,
           isStubShow: false,
           location: {
@@ -757,8 +751,7 @@ export const CityFixture = {
           exhibition_period: "Mar 21 – May 25",
           href: "https://wwww.show.com",
           gravityID: "galerie-perrotin-gelitin-la-louvre-paris-at-musee-dart-moderne-de-la-ville-de-paris",
-          id:
-            "U2hvdzpnYWxlcmllLXBlcnJvdGluLWdlbGl0aW4tbGEtbG91dnJlLXBhcmlzLWF0LW11c2VlLWRhcnQtbW9kZXJuZS1kZS1sYS12aWxsZS1kZS1wYXJpcw==",
+          id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLWdlbGl0aW4tbGEtbG91dnJlLXBhcmlzLWF0LW11c2VlLWRhcnQtbW9kZXJuZS1kZS1sYS12aWxsZS1kZS1wYXJpcw==",
           is_followed: true,
           isStubShow: false,
           location: {
@@ -906,8 +899,7 @@ export const CityFixture = {
           exhibition_period: "Mar 21 – May 25",
           href: "https://wwww.show.com",
           gravityID: "galerie-jacob-paulett-hotel-normandy-deauville-for-international-asian-film-festival",
-          id:
-            "U2hvdzpnYWxlcmllLWphY29iLXBhdWxldHQtaG90ZWwtbm9ybWFuZHktZGVhdXZpbGxlLWZvci1pbnRlcm5hdGlvbmFsLWFzaWFuLWZpbG0tZmVzdGl2YWw=",
+          id: "U2hvdzpnYWxlcmllLWphY29iLXBhdWxldHQtaG90ZWwtbm9ybWFuZHktZGVhdXZpbGxlLWZvci1pbnRlcm5hdGlvbmFsLWFzaWFuLWZpbG0tZmVzdGl2YWw=",
           is_followed: true,
           isStubShow: false,
           location: {
@@ -944,8 +936,7 @@ export const CityFixture = {
           exhibition_period: "Mar 21 – May 25",
           href: "https://wwww.show.com",
           gravityID: "galerie-perrotin-sophie-calle-talking-to-strangers-at-louisiana-museum-copenhagen",
-          id:
-            "U2hvdzpnYWxlcmllLXBlcnJvdGluLXNvcGhpZS1jYWxsZS10YWxraW5nLXRvLXN0cmFuZ2Vycy1hdC1sb3Vpc2lhbmEtbXVzZXVtLWNvcGVuaGFnZW4=",
+          id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLXNvcGhpZS1jYWxsZS10YWxraW5nLXRvLXN0cmFuZ2Vycy1hdC1sb3Vpc2lhbmEtbXVzZXVtLWNvcGVuaGFnZW4=",
           is_followed: true,
           isStubShow: false,
           location: {
@@ -1094,8 +1085,7 @@ export const CityFixture = {
           href: "https://wwww.show.com",
           gravityID:
             "fondation-dentreprise-galeries-lafayette-anticipation-5-compagnie-mua-sous-la-direction-demmanuelle-huynh-emanticipation-un-laboratoire",
-          id:
-            "U2hvdzpmb25kYXRpb24tZGVudHJlcHJpc2UtZ2FsZXJpZXMtbGFmYXlldHRlLWFudGljaXBhdGlvbi01LWNvbXBhZ25pZS1tdWEtc291cy1sYS1kaXJlY3Rpb24tZGVtbWFudWVsbGUtaHV5bmgtZW1hbnRpY2lwYXRpb24tdW4tbGFib3JhdG9pcmU=",
+          id: "U2hvdzpmb25kYXRpb24tZGVudHJlcHJpc2UtZ2FsZXJpZXMtbGFmYXlldHRlLWFudGljaXBhdGlvbi01LWNvbXBhZ25pZS1tdWEtc291cy1sYS1kaXJlY3Rpb24tZGVtbWFudWVsbGUtaHV5bmgtZW1hbnRpY2lwYXRpb24tdW4tbGFib3JhdG9pcmU=",
           is_followed: true,
           isStubShow: false,
           location: {
@@ -1281,8 +1271,7 @@ export const CityFixture = {
           href: "https://wwww.show.com",
           gravityID:
             "galerie-perrotin-john-henderson-the-man-i-wanted-to-marry-before-i-found-out-about-sex-at-t293-naples",
-          id:
-            "U2hvdzpnYWxlcmllLXBlcnJvdGluLWpvaG4taGVuZGVyc29uLXRoZS1tYW4taS13YW50ZWQtdG8tbWFycnktYmVmb3JlLWktZm91bmQtb3V0LWFib3V0LXNleC1hdC10MjkzLW5hcGxlcw==",
+          id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLWpvaG4taGVuZGVyc29uLXRoZS1tYW4taS13YW50ZWQtdG8tbWFycnktYmVmb3JlLWktZm91bmQtb3V0LWFib3V0LXNleC1hdC10MjkzLW5hcGxlcw==",
           is_followed: true,
           isStubShow: false,
           location: {
@@ -1504,8 +1493,7 @@ export const CityFixture = {
           exhibition_period: "Mar 21 – May 25",
           href: "https://wwww.show.com",
           gravityID: "galerie-perrotin-klara-kristalova-at-bonniers-konsthall-stockholm-sweden",
-          id:
-            "U2hvdzpnYWxlcmllLXBlcnJvdGluLWtsYXJhLWtyaXN0YWxvdmEtYXQtYm9ubmllcnMta29uc3RoYWxsLXN0b2NraG9sbS1zd2VkZW4=",
+          id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLWtsYXJhLWtyaXN0YWxvdmEtYXQtYm9ubmllcnMta29uc3RoYWxsLXN0b2NraG9sbS1zd2VkZW4=",
           is_followed: true,
           isStubShow: false,
           location: {
@@ -1579,8 +1567,7 @@ export const CityFixture = {
           exhibition_period: "Mar 21 – May 25",
           href: "https://wwww.show.com",
           gravityID: "wide-painting-in-symbols-we-trust-by-julien-grudzinski-at-parc-de-bagatelle",
-          id:
-            "U2hvdzp3aWRlLXBhaW50aW5nLWluLXN5bWJvbHMtd2UtdHJ1c3QtYnktanVsaWVuLWdydWR6aW5za2ktYXQtcGFyYy1kZS1iYWdhdGVsbGU=",
+          id: "U2hvdzp3aWRlLXBhaW50aW5nLWluLXN5bWJvbHMtd2UtdHJ1c3QtYnktanVsaWVuLWdydWR6aW5za2ktYXQtcGFyYy1kZS1iYWdhdGVsbGU=",
           is_followed: true,
           isStubShow: false,
           location: {
@@ -1765,8 +1752,7 @@ export const CityFixture = {
           exhibition_period: "Mar 21 – May 25",
           href: "https://wwww.show.com",
           gravityID: "galerie-perrotin-paola-pivi-how-i-roll-at-doris-c-freedman-plaza-central-park-new-york",
-          id:
-            "U2hvdzpnYWxlcmllLXBlcnJvdGluLXBhb2xhLXBpdmktaG93LWktcm9sbC1hdC1kb3Jpcy1jLWZyZWVkbWFuLXBsYXphLWNlbnRyYWwtcGFyay1uZXcteW9yaw==",
+          id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLXBhb2xhLXBpdmktaG93LWktcm9sbC1hdC1kb3Jpcy1jLWZyZWVkbWFuLXBsYXphLWNlbnRyYWwtcGFyay1uZXcteW9yaw==",
           is_followed: true,
           isStubShow: false,
           location: {
@@ -1840,8 +1826,7 @@ export const CityFixture = {
           exhibition_period: "Mar 21 – May 25",
           href: "https://wwww.show.com",
           gravityID: "galerie-perrotin-sophie-calle-rachel-monique-at-eglise-des-celestins-avignon",
-          id:
-            "U2hvdzpnYWxlcmllLXBlcnJvdGluLXNvcGhpZS1jYWxsZS1yYWNoZWwtbW9uaXF1ZS1hdC1lZ2xpc2UtZGVzLWNlbGVzdGlucy1hdmlnbm9u",
+          id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLXNvcGhpZS1jYWxsZS1yYWNoZWwtbW9uaXF1ZS1hdC1lZ2xpc2UtZGVzLWNlbGVzdGlucy1hdmlnbm9u",
           is_followed: true,
           isStubShow: false,
           location: {
@@ -1916,8 +1901,7 @@ export const CityFixture = {
           href: "https://wwww.show.com",
           gravityID:
             "galerie-perrotin-sophie-calle-pour-la-derniere-et-la-premiere-fois-at-chapelle-saint-martin-du-mejan-arles",
-          id:
-            "U2hvdzpnYWxlcmllLXBlcnJvdGluLXNvcGhpZS1jYWxsZS1wb3VyLWxhLWRlcm5pZXJlLWV0LWxhLXByZW1pZXJlLWZvaXMtYXQtY2hhcGVsbGUtc2FpbnQtbWFydGluLWR1LW1lamFuLWFybGVz",
+          id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLXNvcGhpZS1jYWxsZS1wb3VyLWxhLWRlcm5pZXJlLWV0LWxhLXByZW1pZXJlLWZvaXMtYXQtY2hhcGVsbGUtc2FpbnQtbWFydGluLWR1LW1lamFuLWFybGVz",
           is_followed: true,
           isStubShow: false,
           location: {
@@ -2260,8 +2244,7 @@ export const CityFixture = {
             exhibition_period: "Mar 21 – May 25",
             href: "https://wwww.show.com",
             gravityID: "galerie-perrotin-gianni-motti-cadeaux-diplomatiques-at-kunstmuseum-thun-thun",
-            id:
-              "U2hvdzpnYWxlcmllLXBlcnJvdGluLWdpYW5uaS1tb3R0aS1jYWRlYXV4LWRpcGxvbWF0aXF1ZXMtYXQta3Vuc3RtdXNldW0tdGh1bi10aHVu",
+            id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLWdpYW5uaS1tb3R0aS1jYWRlYXV4LWRpcGxvbWF0aXF1ZXMtYXQta3Vuc3RtdXNldW0tdGh1bi10aHVu",
             is_followed: true,
             isStubShow: false,
             location: {
@@ -2303,8 +2286,7 @@ export const CityFixture = {
           end_at: "2002-03-31T22:00:00+00:00",
           exhibition_period: "Mar 21 – May 25",
           href: "https://wwww.show.com",
-          id:
-            "U2hvdzpnYWxlcmllLXBlcnJvdGluLWdpYW5uaS1tb3R0aS1jYWRlYXV4LWRpcGxvbWF0aXF1ZXMtYXQta3Vuc3RtdXNldW0tdGh1bi10aHVu",
+          id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLWdpYW5uaS1tb3R0aS1jYWRlYXV4LWRpcGxvbWF0aXF1ZXMtYXQta3Vuc3RtdXNldW0tdGh1bi10aHVu",
           gravityID: "galerie-perrotin-gianni-motti-cadeaux-diplomatiques-at-kunstmuseum-thun-thun",
           is_followed: true,
           is_local_discovery: false,

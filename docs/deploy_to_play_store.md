@@ -8,11 +8,11 @@ Eigen's beta pre-submission checklist has [moved into Notion](https://www.notion
 
 ## Preparing to Ship a Final Version
 
-1. Start a branch from master.
-1. Update [`changelogs/default.txt`](https://github.com/artsy/eigen/blob/master/fastlane/metadata/android/en-US/changelogs/default.txt) with the **user-facing** release notes for this version.
-   - See [previous examples](https://github.com/artsy/eigen/commits/master/fastlane/metadata/android/en-US/changelogs/default.txt) of release notes.
+1. Start a branch from main.
+1. Update [`changelogs/default.txt`](https://github.com/artsy/eigen/blob/main/fastlane/metadata/android/en-US/changelogs/default.txt) with the **user-facing** release notes for this version.
+   - See [previous examples](https://github.com/artsy/eigen/commits/main/fastlane/metadata/android/en-US/changelogs/default.txt) of release notes.
    - Share the notes with the #practice-mobile channel in Slack for feedback.
-   - Commit, push the changes, make a PR from your branch to master.
+   - Commit, push the changes, make a PR from your branch to main.
 1. Run `./scripts/promote-beta-to-submission-android`. This will submit the **most recent beta** for Playstore Store review
 
 ## Release to Play Store
@@ -29,4 +29,4 @@ Our Play Store releases are done manually and are available to users **immediate
 
 1. Run `./scripts/next`. This prompts for the next version number.
 1. Add and commit the changed files, typically with `-m "Preparing for development, version X.Y.Z."`.
-1. PR your changes back into the `master` branch.
+1. PR your changes back into the `main` branch.

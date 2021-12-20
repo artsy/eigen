@@ -2,7 +2,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import React, { useState } from "react"
-import { ArtworkFilterNavigationStack } from "../ArtworkFilter"
+import { ArtworkFilterNavigationStack } from "../ArtworkFilterNavigator"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
 interface WaysToBuyOptionsScreenProps

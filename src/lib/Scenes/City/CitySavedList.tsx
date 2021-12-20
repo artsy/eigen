@@ -91,7 +91,7 @@ export const CitySavedListContainer = createPaginationContainer(
                 href
                 is_followed: isFollowed
                 isStubShow
-                exhibition_period: exhibitionPeriod
+                exhibition_period: exhibitionPeriod(format: SHORT)
                 cover_image: coverImage {
                   url
                 }

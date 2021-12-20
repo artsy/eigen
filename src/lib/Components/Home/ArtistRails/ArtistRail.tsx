@@ -16,6 +16,7 @@ import { ArtistRailNewSuggestionQuery } from "__generated__/ArtistRailNewSuggest
 import { Disappearable } from "lib/Components/Disappearable"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { defaultArtworksVariables } from "lib/Scenes/Artist/Artist"
 import { RailScrollProps } from "lib/Scenes/Home/Components/types"
 import { Schema } from "lib/utils/track"
 import { sample, uniq } from "lodash"
@@ -107,6 +108,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
           mutation ArtistRailFollowMutation($input: FollowArtistInput!) {
             followArtist(input: $input) {
               artist {
+                id
                 isFollowed
               }
             }
@@ -116,6 +118,14 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
           input: { artistID: followArtist.internalID, unfollow: followArtist.isFollowed },
         },
         onError: reject,
+        optimisticResponse: {
+          followArtist: {
+            artist: {
+              id: followArtist.id,
+              isFollowed: !followArtist.isFollowed,
+            },
+          },
+        },
         onCompleted: (_response, errors) => {
           if (errors && errors.length > 0) {
             reject(new Error(JSON.stringify(errors)))
@@ -145,10 +155,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
     })
   }
 
-  const handleFollowChange = async (
-    followArtist: SuggestedArtist,
-    completionHandler: (followStatus: boolean) => void
-  ) => {
+  const handleFollowChange = async (followArtist: SuggestedArtist) => {
     trackEvent({
       action_name: Schema.ActionNames.HomeArtistRailFollow,
       action_type: Schema.ActionTypes.Tap,
@@ -158,15 +165,17 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
     })
     try {
       await followOrUnfollowArtist(followArtist)
-      completionHandler(!followArtist.isFollowed)
     } catch (error) {
       console.warn(error)
-      completionHandler(!!followArtist.isFollowed)
     }
   }
 
   const handleDismiss = async (artist: SuggestedArtist) => {
     dismissedArtistIds.current = uniq([artist.internalID].concat(dismissedArtistIds.current)).slice(0, 100)
+
+    await artist._disappearable?.disappear()
+    setArtists((_artists) => _artists.filter((a) => a.internalID !== artist.internalID))
+
     const suggestion = await fetchNewSuggestion()
     if (suggestion) {
       // make sure we add suggestion in there before making the card disappear, so the suggestion slides in from the
@@ -174,7 +183,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
       setArtists((_artists) => _artists.concat([suggestion]))
       await nextTick()
     }
-    await artist._disappearable?.disappear()
+
     setArtists((_artists) => _artists.filter((a) => a.internalID !== artist.internalID))
   }
 
@@ -184,6 +193,8 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
         <SectionTitle title={props.title} subtitle={props.subtitle} />
       </Flex>
       <CardRailFlatList<SuggestedArtist>
+        prefetchUrlExtractor={(item) => item?.href!}
+        prefetchVariablesExtractor={defaultArtworksVariables}
         listRef={listRef}
         data={artists}
         keyExtractor={(artist) => artist.id}
@@ -201,14 +212,13 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
               <View style={{ flexDirection: "row" }}>
                 <ArtistCard
                   artist={artist as any}
-                  onTap={() =>
+                  onPress={() =>
                     trackEvent(
                       HomeAnalytics.artistThumbnailTapEvent(props.rail.key, artist.internalID, artist.slug, index)
                     )
                   }
-                  onFollow={(completionHandler) => handleFollowChange(artist, completionHandler)}
-                  onDismiss={() => handleDismiss(artist)}
-                  showBasedOn={props.rail.key === "SUGGESTED"}
+                  onFollow={() => handleFollowChange(artist)}
+                  onDismiss={props.rail.key === "SUGGESTED" ? undefined : () => handleDismiss(artist)}
                 />
                 {index === artists.length - 1 ? null : <View style={{ width: INTER_CARD_PADDING }} />}
               </View>

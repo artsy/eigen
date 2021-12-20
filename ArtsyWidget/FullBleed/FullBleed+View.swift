@@ -13,10 +13,11 @@ extension FullBleed {
         }
         
         var body: some SwiftUI.View {
+            let artsyLogo = UIImage(named: "WhiteArtsyLogo")!
             let artworkImage = artwork.image!
             let artistName = artwork.artist.name
             let artworkTitle = artwork.title
-            let artworkUrl = ArtworkUrl.from(slug: artwork.id)
+            let artworkUrl = artwork.url
             
             GeometryReader { geo in
                 ZStack() {
@@ -26,15 +27,22 @@ extension FullBleed {
                         .frame(width: geo.size.width, height: geo.size.height, alignment: .top)
                     VStack() {
                         Spacer()
-                        VStack() {
-                            PrimaryText(name: artistName, color: .white)
-                                .lineLimit(1)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                            SecondaryText(title: artworkTitle, color: .white)
-                                .lineLimit(1)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                        HStack() {
+                            VStack() {
+                                PrimaryText(name: artistName, color: .white)
+                                    .lineLimit(1)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                SecondaryText(title: artworkTitle, color: .white)
+                                    .lineLimit(1)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                            Spacer()
+                            Image(uiImage: artsyLogo)
+                                .resizable()
+                                .frame(width: 20, height: 20)
                         }
-                        .padding([.leading, .trailing, .bottom], 10)
+                        .padding(16)
+                        .background(Color.black)
                     }
                     .widgetURL(artworkUrl)
                 }

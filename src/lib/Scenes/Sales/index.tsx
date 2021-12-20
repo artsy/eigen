@@ -105,20 +105,22 @@ export const SalesFragmentContainer = createRefetchContainer(
   `
 )
 
+export const SalesScreenQuery = graphql`
+  query SalesQueryRendererQuery {
+    sales: salesConnection(live: true, isAuction: true, first: 100, sort: TIMELY_AT_NAME_ASC) {
+      ...Sales_sales
+    }
+    me {
+      ...Sales_me
+    }
+  }
+`
+
 export const SalesQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<SalesQueryRendererQuery>
       environment={defaultEnvironment}
-      query={graphql`
-        query SalesQueryRendererQuery {
-          sales: salesConnection(live: true, isAuction: true, first: 100, sort: TIMELY_AT_NAME_ASC) {
-            ...Sales_sales
-          }
-          me {
-            ...Sales_me
-          }
-        }
-      `}
+      query={SalesScreenQuery}
       variables={{}}
       render={renderWithLoadProgress(SalesFragmentContainer)}
     />

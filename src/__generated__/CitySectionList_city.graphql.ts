@@ -274,10 +274,16 @@ return {
                 },
                 {
                   "alias": "exhibition_period",
-                  "args": null,
+                  "args": [
+                    {
+                      "kind": "Literal",
+                      "name": "format",
+                      "value": "SHORT"
+                    }
+                  ],
                   "kind": "ScalarField",
                   "name": "exhibitionPeriod",
-                  "storageKey": null
+                  "storageKey": "exhibitionPeriod(format:\"SHORT\")"
                 },
                 {
                   "alias": null,
@@ -362,5 +368,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'a01105e702fac08d027d63615d4d59ec';
+(node as any).hash = 'cd214fe6da1406073edc632f82a5894c';
 export default node;

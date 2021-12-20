@@ -7,7 +7,7 @@ extension FullBleed {
         let date: Date
         
         static func fallback() -> Entry {
-            let artwork = Artwork.fallback()
+            let artwork = Fixtures.primaryArtwork
             let date = Date()
             let entry = Entry(artwork: artwork, date: date)
             

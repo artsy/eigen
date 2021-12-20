@@ -1,10 +1,5 @@
-import { OptionListItem as FilterModalOptionListItem } from "lib/Components/ArtworkFilter"
-import { OptionListItem as MultiSelectOptionListItem } from "./MultiSelectOption"
-
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Check } from "palette"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "../ArtworkFilterStore"
 import { MockFilterScreen } from "../FilterTestHelper"
@@ -56,12 +51,11 @@ describe("Materials Options Screen", () => {
 
   describe("before any filters are selected", () => {
     it("renders all options present in the aggregation", () => {
-      const tree = renderWithWrappers(<MockMaterialsTermsOptionsScreen initialData={initialState} />)
+      const { getByText } = renderWithWrappersTL(<MockMaterialsTermsOptionsScreen initialData={initialState} />)
 
-      expect(tree.root.findAllByType(MultiSelectOptionListItem)).toHaveLength(3)
-
-      const items = tree.root.findAllByType(MultiSelectOptionListItem)
-      expect(items.map(extractText)).toEqual(["Acrylic", "Canvas", "Metal"])
+      expect(getByText("Acrylic")).toBeTruthy()
+      expect(getByText("Canvas")).toBeTruthy()
+      expect(getByText("Metal")).toBeTruthy()
     })
   })
 
@@ -78,25 +72,17 @@ describe("Materials Options Screen", () => {
     }
 
     it("displays the number of the selected filters on the filter modal screen", () => {
-      const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
+      const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={state} />)
 
-      const items = tree.root.findAllByType(FilterModalOptionListItem)
-      const item = items.find((i) => extractText(i).startsWith("Material"))
-
-      expect(item).not.toBeUndefined()
-      if (item) {
-        expect(extractText(item)).toContain("• 1")
-      }
+      expect(getByText("Material • 1")).toBeTruthy()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      const tree = renderWithWrappers(<MockMaterialsTermsOptionsScreen initialData={state} />)
+      const { getAllByA11yState } = renderWithWrappersTL(<MockMaterialsTermsOptionsScreen initialData={state} />)
+      const options = getAllByA11yState({ checked: true })
 
-      const options = tree.root.findAllByType(Check)
-
-      expect(options[0].props.selected).toBe(true)
-      expect(options[1].props.selected).toBe(false)
-      expect(options[2].props.selected).toBe(false)
+      expect(options).toHaveLength(1)
+      expect(options[0]).toHaveTextContent("Acrylic")
     })
   })
 })

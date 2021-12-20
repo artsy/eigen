@@ -20,5 +20,13 @@ export const experiments = defineExperiments({
     splitName: "HomeScreenWorksForYouVsWorksByArtistsYouFollow",
     fallbackTreatment: "worksByArtistsYouFolow",
   },
+  HomeScreenArtistRecommendations: {
+    splitName: "HomeScreenArtistRecommendations",
+    fallbackTreatment: "oldArtistRecommendations",
+  },
+  QueryPrefetching: {
+    splitName: "QueryPrefetching",
+    fallbackTreatment: "disabled",
+  },
 })
 export type EXPERIMENT_NAME = keyof typeof experiments
