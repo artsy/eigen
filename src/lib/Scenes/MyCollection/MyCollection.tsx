@@ -219,6 +219,9 @@ const MyCollection: React.FC<{
           }
 
           return filter(artworks, (a) => {
+            if (isNaN(a.pricePaid.minor)) {
+              return false
+            }
             const pricePaid = a.pricePaid.minor / 100
             return pricePaid >= lowerBound && pricePaid <= upperBound
           })
