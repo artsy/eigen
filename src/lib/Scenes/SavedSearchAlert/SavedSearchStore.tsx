@@ -1,6 +1,8 @@
-import { action, Action, computed, createContextStore, State } from "easy-peasy"
+import { action, Action, computed, Computed, createContextStore, State } from "easy-peasy"
 import { Aggregations } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { extractPills } from "./pillExtractors"
+import { SavedSearchPill } from "./SavedSearchAlertModel"
 
 interface SavedSearchModel {
   attributes: SearchCriteriaAttributes
@@ -14,6 +16,8 @@ interface SavedSearchModel {
       value: string
     }
   >
+
+  pills: Computed<this, SavedSearchPill[]>
 }
 
 export type SavedSearchState = State<SavedSearchModel>
@@ -34,9 +38,11 @@ const savedSearchModel: SavedSearchModel = {
     state.attributes[payload.key] = newValue
     state.dirty = true
   }),
+
+  pills: computed((state) => extractPills(state.attributes, state.aggregations)),
 }
 
-export const SavedSearchStore = createContextStore<SavedSearchModel>((initialData: SavedSearchState) => ({
+export const SavedSearchStore = createContextStore<SavedSearchModel>((initialData: SavedSearchModel) => ({
   ...savedSearchModel,
   ...initialData,
 }))

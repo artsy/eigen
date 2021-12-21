@@ -1,8 +1,6 @@
 import {
   aggregationForFilter,
   Aggregations,
-  FilterArray,
-  FilterData,
   FilterParamName,
   getDisplayNameForTimePeriod,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
@@ -17,17 +15,21 @@ import {
 import { SIZES_OPTIONS } from "lib/Components/ArtworkFilter/Filters/SizesOptionsScreen"
 import { WAYS_TO_BUY_OPTIONS, WAYS_TO_BUY_PARAM_NAMES } from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
-import { compact, flatten, isUndefined, keyBy } from "lodash"
+import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { compact, flatten, isNil, isUndefined, keyBy } from "lodash"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 
-export const extractPillFromAggregation = (filter: FilterData, aggregations: Aggregations) => {
-  const { paramName, paramValue } = filter
+export const extractPillFromAggregation = (
+  paramName: FilterParamName,
+  values: string[],
+  aggregations: Aggregations
+) => {
   const aggregation = aggregationForFilter(paramName, aggregations)
 
   if (aggregation) {
     const aggregationByValue = keyBy(aggregation.counts, "value")
 
-    return (paramValue as string[]).map((value) => {
+    return values.map((value) => {
       if (!isUndefined(aggregationByValue[value])) {
         return {
           label: aggregationByValue[value]?.name,
@@ -58,20 +60,20 @@ export const extractSizeLabel = (prefix: string, value: string) => {
   return `${prefix}: ${label} ${LOCALIZED_UNIT}`
 }
 
-export const extractSizesPill = (filter: FilterData): SavedSearchPill[] => {
-  return (filter.paramValue as string[]).map((value) => {
+export const extractSizesPill = (values: string[]): SavedSearchPill[] => {
+  return values.map((value) => {
     const sizeOption = SIZES_OPTIONS.find((option) => option.paramValue === value)
 
     return {
       label: sizeOption?.displayText ?? "",
       value,
-      paramName: filter.paramName,
+      paramName: FilterParamName.sizes,
     }
   })
 }
 
-export const extractTimePeriodPills = (filter: FilterData): SavedSearchPill[] => {
-  return (filter.paramValue as string[]).map((value) => {
+export const extractTimePeriodPills = (values: string[]): SavedSearchPill[] => {
+  return values.map((value) => {
     return {
       label: getDisplayNameForTimePeriod(value),
       value,
@@ -80,8 +82,8 @@ export const extractTimePeriodPills = (filter: FilterData): SavedSearchPill[] =>
   })
 }
 
-export const extractColorPills = (filter: FilterData): SavedSearchPill[] => {
-  return (filter.paramValue as string[]).map((value) => {
+export const extractColorPills = (values: string[]): SavedSearchPill[] => {
+  return values.map((value) => {
     const colorOption = COLORS_INDEXED_BY_VALUE[value]
 
     return {
@@ -92,8 +94,8 @@ export const extractColorPills = (filter: FilterData): SavedSearchPill[] => {
   })
 }
 
-export const extractAttributionPills = (filter: FilterData): SavedSearchPill[] => {
-  return (filter.paramValue as string[]).map((value) => {
+export const extractAttributionPills = (values: string[]): SavedSearchPill[] => {
+  return values.map((value) => {
     const colorOption = ATTRIBUTION_CLASS_OPTIONS.find((option) => option.paramValue === value)
 
     return {
@@ -104,77 +106,77 @@ export const extractAttributionPills = (filter: FilterData): SavedSearchPill[] =
   })
 }
 
-export const extractPriceRangePill = (filter: FilterData): SavedSearchPill => {
-  const { min, max } = parseRange(filter.paramValue as string)
+export const extractPriceRangePill = (value: string): SavedSearchPill => {
+  const { min, max } = parseRange(value)
 
   return {
     label: parsePriceRangeLabel(min, max),
-    value: filter.paramValue as string,
+    value,
     paramName: FilterParamName.priceRange,
   }
 }
 
-export const extractWaysToBuyPill = (filter: FilterData): SavedSearchPill => {
-  const waysToBuyOption = WAYS_TO_BUY_OPTIONS.find((option) => option.paramName === filter.paramName)
+export const extractWaysToBuyPill = (paramName: FilterParamName): SavedSearchPill => {
+  const waysToBuyOption = WAYS_TO_BUY_OPTIONS.find((option) => option.paramName === paramName)
 
   return {
     label: waysToBuyOption?.displayText ?? "",
     value: true,
-    paramName: filter.paramName,
+    paramName,
   }
 }
 
-export const extractPills = (filters: FilterArray, aggregations: Aggregations): SavedSearchPill[] => {
-  const pills = filters.map((filter) => {
-    const { paramName, paramValue } = filter
+export const extractPills = (attributes: SearchCriteriaAttributes, aggregations: Aggregations): SavedSearchPill[] => {
+  const pills = Object.entries(attributes).map((entry) => {
+    const [paramName, paramValue] = entry
 
-    if (isUndefined(paramValue)) {
+    if (isNil(paramValue)) {
       return null
     }
 
     if (paramName === FilterParamName.width) {
       return {
-        label: extractSizeLabel("w", paramValue as string),
-        value: paramValue as string,
+        label: extractSizeLabel("w", paramValue),
+        value: paramValue,
         paramName: FilterParamName.width,
       }
     }
 
     if (paramName === FilterParamName.height) {
       return {
-        label: extractSizeLabel("h", paramValue as string),
-        value: paramValue as string,
+        label: extractSizeLabel("h", paramValue),
+        value: paramValue,
         paramName: FilterParamName.height,
       }
     }
 
     if (paramName === FilterParamName.sizes) {
-      return extractSizesPill(filter)
+      return extractSizesPill(paramValue)
     }
 
     if (paramName === FilterParamName.timePeriod) {
-      return extractTimePeriodPills(filter)
+      return extractTimePeriodPills(paramValue)
     }
 
     if (paramName === FilterParamName.colors) {
-      return extractColorPills(filter)
+      return extractColorPills(paramValue)
     }
 
     if (paramName === FilterParamName.attributionClass) {
-      return extractAttributionPills(filter)
+      return extractAttributionPills(paramValue)
     }
 
     if (paramName === FilterParamName.priceRange) {
-      return extractPriceRangePill(filter)
+      return extractPriceRangePill(paramValue)
     }
 
     // Extract label from aggregations
-    if (shouldExtractValueNamesFromAggregation.includes(paramName)) {
-      return extractPillFromAggregation(filter, aggregations)
+    if (shouldExtractValueNamesFromAggregation.includes(paramName as FilterParamName)) {
+      return extractPillFromAggregation(paramName as FilterParamName, paramValue, aggregations)
     }
 
-    if (WAYS_TO_BUY_PARAM_NAMES.includes(paramName)) {
-      return extractWaysToBuyPill(filter)
+    if (WAYS_TO_BUY_PARAM_NAMES.includes(paramName as FilterParamName)) {
+      return extractWaysToBuyPill(paramName as FilterParamName)
     }
 
     return null
