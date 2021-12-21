@@ -1,5 +1,4 @@
 import { useFormikContext } from "formik"
-import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { navigate } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Box, Button, CloseIcon as RemoveIcon, Flex, Input, InputTitle, Pill, Spacer, Text, Touchable } from "palette"
@@ -87,7 +86,7 @@ export const Form: React.FC<FormProps> = (props) => {
     return navigate("/unsubscribe")
   }
 
-  const isArtistPill = (pill: SavedSearchPill) => pill.paramName === FilterParamName.artistIDs
+  const isArtistPill = (pill: SavedSearchPill) => pill.paramName === "artistID"
 
   return (
     <Box>

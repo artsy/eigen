@@ -1,27 +1,27 @@
-import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { getNamePlaceholder } from "./helpers"
+import { SavedSearchPill } from "./SavedSearchAlertModel"
 
 describe("getNamePlaceholder", () => {
   it("returns the singular form for the filter label", () => {
-    const pills = [{ label: "One", paramName: FilterParamName.materialsTerms, value: "one" }]
+    const pills: SavedSearchPill[] = [{ label: "One", paramName: "materialsTerms", value: "one" }]
     expect(getNamePlaceholder("artistName", pills)).toBe("artistName • 1 filter")
   })
 
   it("returns the plural form for the filter label", () => {
-    const pills = [
-      { label: "One", paramName: FilterParamName.materialsTerms, value: "one" },
-      { label: "Two", paramName: FilterParamName.materialsTerms, value: "two" },
+    const pills: SavedSearchPill[] = [
+      { label: "One", paramName: "materialsTerms", value: "one" },
+      { label: "Two", paramName: "materialsTerms", value: "two" },
     ]
     expect(getNamePlaceholder("artistName", pills)).toBe("artistName • 2 filters")
   })
 
   it("returns the correct number of filters when artist pill is shown", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-    const pills = [
-      { label: "Artist Name", paramName: FilterParamName.artistIDs, value: "artistName" },
-      { label: "One", paramName: FilterParamName.materialsTerms, value: "one" },
-      { label: "Two", paramName: FilterParamName.materialsTerms, value: "two" },
+    const pills: SavedSearchPill[] = [
+      { label: "Artist Name", paramName: "artistID", value: "artistName" },
+      { label: "One", paramName: "materialsTerms", value: "one" },
+      { label: "Two", paramName: "materialsTerms", value: "two" },
     ]
     expect(getNamePlaceholder("artistName", pills)).toBe("artistName • 2 filters")
   })

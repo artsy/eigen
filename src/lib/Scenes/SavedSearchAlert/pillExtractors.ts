@@ -15,12 +15,12 @@ import {
 import { SIZES_OPTIONS } from "lib/Components/ArtworkFilter/Filters/SizesOptionsScreen"
 import { WAYS_TO_BUY_OPTIONS, WAYS_TO_BUY_PARAM_NAMES } from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
-import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { SearchCriteriaAttributeKeys, SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { compact, flatten, isNil, isUndefined, keyBy } from "lodash"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 
 export const extractPillFromAggregation = (
-  paramName: FilterParamName,
+  paramName: SearchCriteriaAttributeKeys,
   values: string[],
   aggregations: Aggregations
 ) => {
@@ -67,7 +67,7 @@ export const extractSizesPill = (values: string[]): SavedSearchPill[] => {
     return {
       label: sizeOption?.displayText ?? "",
       value,
-      paramName: FilterParamName.sizes,
+      paramName: "sizes",
     }
   })
 }
@@ -77,7 +77,7 @@ export const extractTimePeriodPills = (values: string[]): SavedSearchPill[] => {
     return {
       label: getDisplayNameForTimePeriod(value),
       value,
-      paramName: FilterParamName.timePeriod,
+      paramName: "majorPeriods",
     }
   })
 }
@@ -89,7 +89,7 @@ export const extractColorPills = (values: string[]): SavedSearchPill[] => {
     return {
       label: colorOption?.name ?? "",
       value,
-      paramName: FilterParamName.colors,
+      paramName: "colors",
     }
   })
 }
@@ -101,7 +101,7 @@ export const extractAttributionPills = (values: string[]): SavedSearchPill[] => 
     return {
       label: colorOption?.displayText ?? "",
       value,
-      paramName: FilterParamName.attributionClass,
+      paramName: "attributionClass",
     }
   })
 }
@@ -112,11 +112,11 @@ export const extractPriceRangePill = (value: string): SavedSearchPill => {
   return {
     label: parsePriceRangeLabel(min, max),
     value,
-    paramName: FilterParamName.priceRange,
+    paramName: "priceRange",
   }
 }
 
-export const extractWaysToBuyPill = (paramName: FilterParamName): SavedSearchPill => {
+export const extractWaysToBuyPill = (paramName: SearchCriteriaAttributeKeys): SavedSearchPill => {
   const waysToBuyOption = WAYS_TO_BUY_OPTIONS.find((option) => option.paramName === paramName)
 
   return {
@@ -128,55 +128,55 @@ export const extractWaysToBuyPill = (paramName: FilterParamName): SavedSearchPil
 
 export const extractPills = (attributes: SearchCriteriaAttributes, aggregations: Aggregations): SavedSearchPill[] => {
   const pills = Object.entries(attributes).map((entry) => {
-    const [paramName, paramValue] = entry
+    const [paramName, paramValue] = entry as [SearchCriteriaAttributeKeys, any]
 
     if (isNil(paramValue)) {
       return null
     }
 
-    if (paramName === FilterParamName.width) {
+    if (paramName === "width") {
       return {
         label: extractSizeLabel("w", paramValue),
         value: paramValue,
-        paramName: FilterParamName.width,
-      }
+        paramName: "width",
+      } as SavedSearchPill
     }
 
-    if (paramName === FilterParamName.height) {
+    if (paramName === "height") {
       return {
         label: extractSizeLabel("h", paramValue),
         value: paramValue,
-        paramName: FilterParamName.height,
-      }
+        paramName: "height",
+      } as SavedSearchPill
     }
 
-    if (paramName === FilterParamName.sizes) {
+    if (paramName === "sizes") {
       return extractSizesPill(paramValue)
     }
 
-    if (paramName === FilterParamName.timePeriod) {
+    if (paramName === "majorPeriods") {
       return extractTimePeriodPills(paramValue)
     }
 
-    if (paramName === FilterParamName.colors) {
+    if (paramName === "colors") {
       return extractColorPills(paramValue)
     }
 
-    if (paramName === FilterParamName.attributionClass) {
+    if (paramName === "attributionClass") {
       return extractAttributionPills(paramValue)
     }
 
-    if (paramName === FilterParamName.priceRange) {
+    if (paramName === "priceRange") {
       return extractPriceRangePill(paramValue)
     }
 
     // Extract label from aggregations
     if (shouldExtractValueNamesFromAggregation.includes(paramName as FilterParamName)) {
-      return extractPillFromAggregation(paramName as FilterParamName, paramValue, aggregations)
+      return extractPillFromAggregation(paramName, paramValue, aggregations)
     }
 
     if (WAYS_TO_BUY_PARAM_NAMES.includes(paramName as FilterParamName)) {
-      return extractWaysToBuyPill(paramName as FilterParamName)
+      return extractWaysToBuyPill(paramName)
     }
 
     return null
