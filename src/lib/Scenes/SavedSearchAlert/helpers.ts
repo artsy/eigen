@@ -7,6 +7,7 @@ import {
   FilterParamName,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { LOCALIZED_UNIT, parseRange } from "lib/Components/ArtworkFilter/Filters/helpers"
+import { WAYS_TO_BUY_OPTIONS } from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { compact, flatten, groupBy, isUndefined, keyBy } from "lodash"
@@ -76,6 +77,16 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations): 
     // Extract label from aggregations
     if (shouldExtractValueNamesFromAggregation.includes(paramName)) {
       return extractPillFromAggregation(filter, aggregations)
+    }
+
+    const waysToBuyOption = WAYS_TO_BUY_OPTIONS.find((option) => option.paramName === paramName)
+
+    if (waysToBuyOption) {
+      return {
+        label: waysToBuyOption.displayText,
+        value: true,
+        paramName,
+      }
     }
 
     // If the filter value is an array, then we extract the label from the displayed text

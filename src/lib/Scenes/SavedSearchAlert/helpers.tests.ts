@@ -148,6 +148,37 @@ describe("extractPills", () => {
     expect(result).toEqual(pills)
   })
 
+  it("should correctly extract ways to buy pills", () => {
+    const filters: FilterData[] = [
+      {
+        displayText: "Make Offer",
+        paramValue: true,
+        paramName: FilterParamName.waysToBuyMakeOffer,
+      },
+      {
+        displayText: "Bid",
+        paramValue: true,
+        paramName: FilterParamName.waysToBuyBid,
+      },
+    ]
+    const result = extractPills(filters, aggregations)
+
+    const pills = [
+      {
+        label: "Make Offer",
+        value: true,
+        paramName: FilterParamName.waysToBuyMakeOffer,
+      },
+      {
+        label: "Bid",
+        value: true,
+        paramName: FilterParamName.waysToBuyBid,
+      },
+    ]
+
+    expect(result).toEqual(pills)
+  })
+
   it("should correctly extract size pills", () => {
     const filters: FilterData[] = [
       {

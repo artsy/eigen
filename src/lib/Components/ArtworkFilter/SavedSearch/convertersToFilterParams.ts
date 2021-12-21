@@ -12,7 +12,7 @@ import { ATTRIBUTION_CLASS_OPTIONS } from "../Filters/AttributionClassOptions"
 import { COLORS_INDEXED_BY_VALUE } from "../Filters/ColorsOptions"
 import { localizeDimension, parsePriceRangeLabel, parseRange } from "../Filters/helpers"
 import { SIZES_OPTIONS } from "../Filters/SizesOptionsScreen"
-import { WAYS_TO_BUY_FILTER_PARAM_NAMES } from "../Filters/WaysToBuyOptions"
+import { WAYS_TO_BUY_FILTER_PARAM_NAMES, WAYS_TO_BUY_OPTIONS } from "../Filters/WaysToBuyOptions"
 import { FALLBACK_SIZE_OPTIONS, shouldExtractValueNamesFromAggregation } from "./constants"
 import { SearchCriteriaAttributeKeys, SearchCriteriaAttributes } from "./types"
 
@@ -164,16 +164,14 @@ export const convertAttributionToFilterParam = (criteria: SearchCriteriaAttribut
 }
 
 export const convertWaysToBuyToFilterParams = (criteria: SearchCriteriaAttributes): FilterData[] | null => {
-  const defautFilterParamByName = keyBy(DEFAULT_FILTERS, "paramName")
-  const availableWaysToBuyFilterParamNames = WAYS_TO_BUY_FILTER_PARAM_NAMES.filter(
-    (filterParamName) => !isNil(criteria[filterParamName as SearchCriteriaAttributeKeys])
-  )
+  const options = WAYS_TO_BUY_OPTIONS.filter((option) => {
+    return !isNil(criteria[option.paramName as SearchCriteriaAttributeKeys])
+  })
 
-  if (availableWaysToBuyFilterParamNames.length > 0) {
-    return availableWaysToBuyFilterParamNames.map((filterParamName) => ({
-      displayText: defautFilterParamByName[filterParamName].displayText,
-      paramValue: criteria[filterParamName as SearchCriteriaAttributeKeys]!,
-      paramName: filterParamName,
+  if (options.length > 0) {
+    return options.map((option) => ({
+      ...option,
+      paramValue: !!criteria[option.paramName as SearchCriteriaAttributeKeys],
     }))
   }
 
