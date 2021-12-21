@@ -226,6 +226,35 @@ describe("extractPills", () => {
       },
     ])
   })
+
+  it("should correctly extract color pills", () => {
+    const filters: FilterData[] = [
+      {
+        displayText: "Pink, Orange, Dark Orange",
+        paramName: FilterParamName.colors,
+        paramValue: ["pink", "orange", "darkorange"],
+      },
+    ]
+    const result = extractPills(filters, aggregations)
+
+    expect(result).toEqual([
+      {
+        label: "Pink",
+        paramName: FilterParamName.colors,
+        value: "pink",
+      },
+      {
+        label: "Orange",
+        paramName: FilterParamName.colors,
+        value: "orange",
+      },
+      {
+        label: "Dark Orange",
+        paramName: FilterParamName.colors,
+        value: "darkorange",
+      },
+    ])
+  })
 })
 
 const aggregations: Aggregations = [
