@@ -32,7 +32,7 @@ interface EditSavedSearchAlertProps {
 export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props) => {
   const { me, artist, artworksConnection, savedSearchAlertId } = props
   const aggregations = (artworksConnection.aggregations ?? []) as Aggregations
-  const { userAlertSettings } = me?.savedSearch ?? {}
+  const { userAlertSettings, internalID, ...attributes } = me?.savedSearch ?? {}
 
   const onComplete = () => {
     goBack()
@@ -49,7 +49,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
     >
       <ArtsyKeyboardAvoidingView>
         <PageWithSimpleHeader title="Edit your Alert">
-          <SavedSearchStoreProvider initialData={{ attributes: me?.savedSearch ?? {}, aggregations }}>
+          <SavedSearchStoreProvider initialData={{ attributes, aggregations }}>
             <SavedSearchAlertForm
               initialValues={{
                 name: userAlertSettings?.name ?? "",
