@@ -1,6 +1,6 @@
 import { action, Action, computed, Computed, createContextStore, State } from "easy-peasy"
 import { Aggregations } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { SearchCriteriaAttributeKeys, SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { extractPills } from "./pillExtractors"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 
@@ -9,11 +9,11 @@ interface SavedSearchModel {
   aggregations: Aggregations
   dirty: boolean
 
-  removeValueFromAttributesByKey: Action<
+  removeValueFromAttributesByKeyAction: Action<
     this,
     {
-      key: keyof SearchCriteriaAttributes
-      value: string
+      key: SearchCriteriaAttributeKeys
+      value: string | number | boolean
     }
   >
 
@@ -27,7 +27,7 @@ const savedSearchModel: SavedSearchModel = {
   aggregations: [],
   dirty: false,
 
-  removeValueFromAttributesByKey: action((state, payload) => {
+  removeValueFromAttributesByKeyAction: action((state, payload) => {
     const prevValue = state.attributes[payload.key]
     let newValue = null
 
@@ -35,15 +35,18 @@ const savedSearchModel: SavedSearchModel = {
       newValue = prevValue.filter((value) => value !== payload.value)
     }
 
-    state.attributes[payload.key] = newValue
+    ;(state.attributes[payload.key] as string[] | null) = newValue
     state.dirty = true
   }),
 
   pills: computed((state) => extractPills(state.attributes, state.aggregations)),
 }
 
-export const SavedSearchStore = createContextStore<SavedSearchModel>((initialData: SavedSearchModel) => ({
-  ...savedSearchModel,
-  ...initialData,
-}))
+export const SavedSearchStore = createContextStore<SavedSearchModel>(
+  (initialData: SavedSearchModel) => ({
+    ...savedSearchModel,
+    ...initialData,
+  }),
+  { name: "SavedSearchStore" }
+)
 export const SavedSearchStoreProvider = SavedSearchStore.Provider
