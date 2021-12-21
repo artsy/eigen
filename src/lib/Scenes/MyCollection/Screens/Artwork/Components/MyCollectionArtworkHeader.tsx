@@ -2,7 +2,7 @@ import { tappedCollectedArtworkImages } from "@artsy/cohesion"
 import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { Size } from "lib/Scenes/Artwork/Components/ImageCarousel/geometry"
-import { MyCollectionDetailsImageView } from "lib/Scenes/MyCollection/Components/MyCollectionDetailsImageView"
+import { MyCollectionImageView } from "lib/Scenes/MyCollection/Components/MyCollectionImageView"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, Spacer, Text } from "palette"
@@ -66,12 +66,13 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
 
     return (
       <Flex bg="black5" alignItems="center">
-        <MyCollectionDetailsImageView
+        <MyCollectionImageView
           artworkSlug={slug}
           imageURL={normalizedURL}
           imageHeight={styles.height}
           imageWidth={styles.width}
           aspectRatio={styles.width / styles.height}
+          mode="details"
         />
       </Flex>
     )
