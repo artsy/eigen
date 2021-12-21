@@ -1360,6 +1360,7 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Domestic shipping fee.
   domesticShippingFee: Money
+  downloadableImageUrl: String
   editionNumber: String
   editionOf: String
   editionSet(id: String!): EditionSet
