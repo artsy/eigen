@@ -13,7 +13,7 @@ const CTAButton = ({ onPress, text }: { onPress: () => void; text: string }) => 
 )
 export const ArtworkDetails = ({ handlePress }: { handlePress: () => void }) => {
   return (
-    <Flex backgroundColor="darkorange" p={1} mt={1}>
+    <Flex backgroundColor="peachpuff" p={1} mt={1}>
       <Text>ArtworkDetails content</Text>
       <Spacer mt={1} />
       <CTAButton text="Save & Continue" onPress={handlePress} />
@@ -23,7 +23,7 @@ export const ArtworkDetails = ({ handlePress }: { handlePress: () => void }) => 
 
 export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
   return (
-    <Flex backgroundColor="darkorange" p={1} mt={1}>
+    <Flex backgroundColor="peachpuff" p={1} mt={1}>
       <Text>Upload Photos content</Text>
       <Spacer mt={1} />
       <CTAButton text="Save & Continue" onPress={handlePress} />
@@ -33,7 +33,7 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
 
 export const ContactInformation = ({ handlePress }: { handlePress: () => void }) => {
   return (
-    <Flex backgroundColor="darkorange" p={1} mt={1}>
+    <Flex backgroundColor="peachpuff" p={1} mt={1}>
       <Text>ContactInformation content</Text>
       <Spacer mt={1} />
       <CTAButton text="Submit Artwork" onPress={handlePress} />
