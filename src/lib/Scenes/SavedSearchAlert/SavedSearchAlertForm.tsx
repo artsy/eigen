@@ -1,6 +1,7 @@
 import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
 import { FormikProvider, useFormik } from "formik"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { SearchCriteriaAttributeKeys } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
@@ -250,7 +251,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
   const handleRemovePill = (deletePill: SavedSearchPill) => {
     removeValueFromAttributesByKeyAction({
-      key: deletePill.paramName,
+      key: deletePill.paramName as SearchCriteriaAttributeKeys,
       value: deletePill.value,
     })
   }
