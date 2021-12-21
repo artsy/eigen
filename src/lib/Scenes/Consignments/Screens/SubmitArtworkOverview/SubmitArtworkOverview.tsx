@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
 import { BackButton } from "lib/navigation/BackButton"
-import { Box, Button, CollapsableMenuItem, Flex, Join, Separator, Spacer, Text } from "palette"
+import { Box, Button, CollapsibleMenuItem, Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
@@ -71,7 +71,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
   // This is a temporary logic that will be removed later
   const [validSteps, setValidSteps] = useState([true, ...new Array(TOTAL_STEPS - 1).fill(false)])
 
-  const stepsRefs = useRef<CollapsableMenuItem[]>(new Array(TOTAL_STEPS).fill(null)).current
+  const stepsRefs = useRef<CollapsibleMenuItem[]>(new Array(TOTAL_STEPS).fill(null)).current
 
   // This will also be removed, it's temporary for the boilerplate
   const enableStep = (stepIndex: number) => {
@@ -140,7 +140,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
           {items.map(({ title, Content }, index) => {
             const disabled = !validSteps[index]
             return (
-              <CollapsableMenuItem
+              <CollapsibleMenuItem
                 key={index}
                 Header={
                   <StepTitle stepNumber={index + 1} totalSteps={items.length} title={title} disabled={disabled} />
@@ -155,7 +155,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
                 }}
               >
                 {Content}
-              </CollapsableMenuItem>
+              </CollapsibleMenuItem>
             )
           })}
         </Join>

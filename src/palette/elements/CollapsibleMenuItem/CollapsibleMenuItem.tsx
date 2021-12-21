@@ -8,11 +8,12 @@ interface CollapsableMenuItemProps {
   onExpand?: () => void
 }
 
-export interface CollapsableMenuItem {
+export interface CollapsibleMenuItem {
   collapse: () => void
   expand: () => void
 }
-export const CollapsableMenuItem = forwardRef<CollapsableMenuItem, React.PropsWithChildren<CollapsableMenuItemProps>>(
+
+export const CollapsibleMenuItem = forwardRef<CollapsibleMenuItem, React.PropsWithChildren<CollapsableMenuItemProps>>(
   ({ children, Header, isExpanded = false, disabled = false, onExpand }, ref) => {
     const [isOpen, setIsOpen] = useState(false)
 
