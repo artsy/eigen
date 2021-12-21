@@ -9,7 +9,12 @@ import {
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ATTRIBUTION_CLASS_OPTIONS } from "lib/Components/ArtworkFilter/Filters/AttributionClassOptions"
 import { COLORS_INDEXED_BY_VALUE } from "lib/Components/ArtworkFilter/Filters/ColorsOptions"
-import { LOCALIZED_UNIT, parsePriceRangeLabel, parseRange } from "lib/Components/ArtworkFilter/Filters/helpers"
+import {
+  LOCALIZED_UNIT,
+  localizeDimension,
+  parsePriceRangeLabel,
+  parseRange,
+} from "lib/Components/ArtworkFilter/Filters/helpers"
 import { SIZES_OPTIONS } from "lib/Components/ArtworkFilter/Filters/SizesOptionsScreen"
 import { WAYS_TO_BUY_OPTIONS } from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
@@ -40,7 +45,9 @@ export const extractPillFromAggregation = (filter: FilterData, aggregations: Agg
 }
 
 export const extractSizeLabel = (prefix: string, value: string) => {
-  const { min, max } = parseRange(value)
+  const range = parseRange(value)
+  const min = localizeDimension(range.min, "in").value
+  const max = localizeDimension(range.max, "in").value
   let label
 
   if (max === "*") {
@@ -112,7 +119,7 @@ export const extractPriceRangePill = (filter: FilterData): SavedSearchPill => {
 
 export const extractPills = (filters: FilterArray, aggregations: Aggregations): SavedSearchPill[] => {
   const pills = filters.map((filter) => {
-    const { paramName, paramValue, displayText } = filter
+    const { paramName, paramValue } = filter
 
     if (isUndefined(paramValue)) {
       return null
@@ -120,7 +127,7 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations): 
 
     if (paramName === FilterParamName.width) {
       return {
-        label: extractSizeLabel("w", displayText),
+        label: extractSizeLabel("w", paramValue as string),
         value: paramValue as string,
         paramName: FilterParamName.width,
       }
@@ -128,7 +135,7 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations): 
 
     if (paramName === FilterParamName.height) {
       return {
-        label: extractSizeLabel("h", displayText),
+        label: extractSizeLabel("h", paramValue as string),
         value: paramValue as string,
         paramName: FilterParamName.height,
       }
