@@ -5,6 +5,7 @@ import {
   FilterArray,
   FilterData,
   FilterParamName,
+  getDisplayNameForTimePeriod,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { LOCALIZED_UNIT, parseRange } from "lib/Components/ArtworkFilter/Filters/helpers"
 import { SIZES_OPTIONS } from "lib/Components/ArtworkFilter/Filters/SizesOptionsScreen"
@@ -63,6 +64,16 @@ export const extractSizesPill = (filter: FilterData): SavedSearchPill[] => {
   })
 }
 
+export const extractTimePeriodPills = (filter: FilterData): SavedSearchPill[] => {
+  return (filter.paramValue as string[]).map((value) => {
+    return {
+      label: getDisplayNameForTimePeriod(value),
+      value,
+      paramName: FilterParamName.timePeriod,
+    }
+  })
+}
+
 export const extractPills = (filters: FilterArray, aggregations: Aggregations): SavedSearchPill[] => {
   const pills = filters.map((filter) => {
     const { paramName, paramValue, displayText } = filter
@@ -94,6 +105,10 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations): 
 
     if (paramName === FilterParamName.sizes) {
       return extractSizesPill(filter)
+    }
+
+    if (paramName === FilterParamName.timePeriod) {
+      return extractTimePeriodPills(filter)
     }
 
     const waysToBuyOption = WAYS_TO_BUY_OPTIONS.find((option) => option.paramName === paramName)

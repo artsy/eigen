@@ -202,6 +202,30 @@ describe("extractPills", () => {
       },
     ])
   })
+
+  it("should correctly extract time period pills", () => {
+    const filters: FilterData[] = [
+      {
+        displayText: "2020–Today, 2010–2019",
+        paramName: FilterParamName.timePeriod,
+        paramValue: ["2020", "2010"],
+      },
+    ]
+    const result = extractPills(filters, aggregations)
+
+    expect(result).toEqual([
+      {
+        label: "2020–Today",
+        paramName: FilterParamName.timePeriod,
+        value: "2020",
+      },
+      {
+        label: "2010–2019",
+        paramName: FilterParamName.timePeriod,
+        value: "2010",
+      },
+    ])
+  })
 })
 
 const aggregations: Aggregations = [
