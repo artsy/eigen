@@ -231,8 +231,9 @@ const MyCollection: React.FC<{
         displayText: FilterDisplayName.sizes,
         filterType: "sizes",
         ScreenComponent: "SizesOptionsScreen",
-        // tslint:disable-next-line: no-shadowed-variable
+
         localSortAndFilter: (
+          // tslint:disable-next-line: no-shadowed-variable
           artworks,
           sizeParams: {
             paramName: FilterParamName.width | FilterParamName.height | FilterParamName.sizes
@@ -271,6 +272,20 @@ const MyCollection: React.FC<{
               return targetMetric >= lowerBound && targetMetric <= upperBound
             })
           }
+        },
+      },
+      {
+        displayText: FilterDisplayName.attributionClass,
+        filterType: "attributionClass",
+        ScreenComponent: "AttributionClassOptionsScreen",
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks, attributionClasses: string[]) => {
+          return filter(artworks, (a) => {
+            if (a.attributionClass && a.attributionClass.name) {
+              return attributionClasses.includes(a.attributionClass.name)
+            }
+            return false
+          })
         },
       },
     ])
@@ -489,6 +504,9 @@ export const MyCollectionContainer = createPaginationContainer(
               medium
               pricePaid {
                 minor
+              }
+              attributionClass {
+                name
               }
               sizeBucket
               width

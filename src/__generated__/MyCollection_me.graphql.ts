@@ -17,6 +17,9 @@ export type MyCollection_me = {
                 readonly pricePaid: {
                     readonly minor: number;
                 } | null;
+                readonly attributionClass: {
+                    readonly name: string | null;
+                } | null;
                 readonly sizeBucket: string | null;
                 readonly width: string | null;
                 readonly height: string | null;
@@ -44,6 +47,13 @@ var v0 = {
   "args": null,
   "kind": "ScalarField",
   "name": "id",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
   "storageKey": null
 };
 return {
@@ -151,6 +161,18 @@ return {
                 {
                   "alias": null,
                   "args": null,
+                  "concreteType": "AttributionClass",
+                  "kind": "LinkedField",
+                  "name": "attributionClass",
+                  "plural": false,
+                  "selections": [
+                    (v1/*: any*/)
+                  ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
                   "kind": "ScalarField",
                   "name": "sizeBucket",
                   "storageKey": null
@@ -184,13 +206,7 @@ return {
                       "name": "internalID",
                       "storageKey": null
                     },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "name",
-                      "storageKey": null
-                    }
+                    (v1/*: any*/)
                   ],
                   "storageKey": null
                 },
@@ -258,5 +274,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '5bb8b603b23d286e009552844b608d8f';
+(node as any).hash = 'b7ddcdf1ae59ca9d96c75203ce0b333f';
 export default node;

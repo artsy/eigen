@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a37683621ab800ffb17e7be683083d62 */
+/* @relayHash 62d2a34246216b28717722b374fdcbe7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -99,6 +99,10 @@ fragment MyCollection_me_19sDyO on Me {
         pricePaid {
           minor
         }
+        attributionClass {
+          name
+          id
+        }
         sizeBucket
         width
         height
@@ -167,6 +171,13 @@ v5 = [
   }
 ],
 v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -306,6 +317,19 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "concreteType": "AttributionClass",
+                        "kind": "LinkedField",
+                        "name": "attributionClass",
+                        "plural": false,
+                        "selections": [
+                          (v6/*: any*/),
+                          (v4/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "kind": "ScalarField",
                         "name": "sizeBucket",
                         "storageKey": null
@@ -332,14 +356,8 @@ return {
                         "name": "artist",
                         "plural": false,
                         "selections": [
+                          (v7/*: any*/),
                           (v6/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "name",
-                            "storageKey": null
-                          },
                           (v4/*: any*/)
                         ],
                         "storageKey": null
@@ -390,7 +408,7 @@ return {
                         "name": "date",
                         "storageKey": null
                       },
-                      (v6/*: any*/),
+                      (v7/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -486,7 +504,7 @@ return {
     ]
   },
   "params": {
-    "id": "a37683621ab800ffb17e7be683083d62",
+    "id": "62d2a34246216b28717722b374fdcbe7",
     "metadata": {},
     "name": "MyCollectionPaginationQuery",
     "operationKind": "query",
