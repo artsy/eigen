@@ -9,7 +9,7 @@ import {
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ATTRIBUTION_CLASS_OPTIONS } from "lib/Components/ArtworkFilter/Filters/AttributionClassOptions"
 import { COLORS_INDEXED_BY_VALUE } from "lib/Components/ArtworkFilter/Filters/ColorsOptions"
-import { LOCALIZED_UNIT, parseRange } from "lib/Components/ArtworkFilter/Filters/helpers"
+import { LOCALIZED_UNIT, parsePriceRangeLabel, parseRange } from "lib/Components/ArtworkFilter/Filters/helpers"
 import { SIZES_OPTIONS } from "lib/Components/ArtworkFilter/Filters/SizesOptionsScreen"
 import { WAYS_TO_BUY_OPTIONS } from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
@@ -100,6 +100,16 @@ export const extractAttributionPills = (filter: FilterData): SavedSearchPill[] =
   })
 }
 
+export const extractPriceRangePill = (filter: FilterData): SavedSearchPill => {
+  const { min, max } = parseRange(filter.paramValue as string)
+
+  return {
+    label: parsePriceRangeLabel(min, max),
+    value: filter.paramValue as string,
+    paramName: FilterParamName.priceRange,
+  }
+}
+
 export const extractPills = (filters: FilterArray, aggregations: Aggregations): SavedSearchPill[] => {
   const pills = filters.map((filter) => {
     const { paramName, paramValue, displayText } = filter
@@ -143,6 +153,10 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations): 
 
     if (paramName === FilterParamName.attributionClass) {
       return extractAttributionPills(filter)
+    }
+
+    if (paramName === FilterParamName.priceRange) {
+      return extractPriceRangePill(filter)
     }
 
     const waysToBuyOption = WAYS_TO_BUY_OPTIONS.find((option) => option.paramName === paramName)

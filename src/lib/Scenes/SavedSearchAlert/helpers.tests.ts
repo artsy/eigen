@@ -279,6 +279,25 @@ describe("extractPills", () => {
       },
     ])
   })
+
+  it("should correctly extract custom price range pill", () => {
+    const filters: FilterData[] = [
+      {
+        displayText: "$1,000–1,500",
+        paramName: FilterParamName.priceRange,
+        paramValue: "1000-1500",
+      },
+    ]
+    const result = extractPills(filters, aggregations)
+
+    expect(result).toEqual([
+      {
+        label: "$1,000–1,500",
+        paramName: FilterParamName.priceRange,
+        value: "1000-1500",
+      },
+    ])
+  })
 })
 
 const aggregations: Aggregations = [
