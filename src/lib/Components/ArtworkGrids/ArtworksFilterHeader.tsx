@@ -19,7 +19,7 @@ export const ArtworksFilterHeader: React.FC<FilterHeaderProps> = ({
   childrenPosition = "right",
 }) => {
   return (
-    <Flex mb={1}>
+    <Flex>
       <Flex flexDirection="row" height={HEADER_HEIGHT} px={2} justifyContent="space-between" alignItems="center">
         {childrenPosition === "left" && children}
         <TouchableHighlightColor
