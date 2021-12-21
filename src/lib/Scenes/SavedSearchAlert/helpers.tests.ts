@@ -255,6 +255,30 @@ describe("extractPills", () => {
       },
     ])
   })
+
+  it("should correctly extract attribution pills", () => {
+    const filters: FilterData[] = [
+      {
+        displayText: "Unique, Unknown Edition",
+        paramName: FilterParamName.attributionClass,
+        paramValue: ["unique", "unknown edition"],
+      },
+    ]
+    const result = extractPills(filters, aggregations)
+
+    expect(result).toEqual([
+      {
+        label: "Unique",
+        paramName: FilterParamName.attributionClass,
+        value: "unique",
+      },
+      {
+        label: "Unknown Edition",
+        paramName: FilterParamName.attributionClass,
+        value: "unknown edition",
+      },
+    ])
+  })
 })
 
 const aggregations: Aggregations = [

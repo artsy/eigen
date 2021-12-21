@@ -7,6 +7,7 @@ import {
   FilterParamName,
   getDisplayNameForTimePeriod,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { ATTRIBUTION_CLASS_OPTIONS } from "lib/Components/ArtworkFilter/Filters/AttributionClassOptions"
 import { COLORS_INDEXED_BY_VALUE } from "lib/Components/ArtworkFilter/Filters/ColorsOptions"
 import { LOCALIZED_UNIT, parseRange } from "lib/Components/ArtworkFilter/Filters/helpers"
 import { SIZES_OPTIONS } from "lib/Components/ArtworkFilter/Filters/SizesOptionsScreen"
@@ -87,6 +88,18 @@ export const extractColorPills = (filter: FilterData): SavedSearchPill[] => {
   })
 }
 
+export const extractAttributionPills = (filter: FilterData): SavedSearchPill[] => {
+  return (filter.paramValue as string[]).map((value) => {
+    const colorOption = ATTRIBUTION_CLASS_OPTIONS.find((option) => option.paramValue === value)
+
+    return {
+      label: colorOption?.displayText ?? "",
+      value,
+      paramName: FilterParamName.attributionClass,
+    }
+  })
+}
+
 export const extractPills = (filters: FilterArray, aggregations: Aggregations): SavedSearchPill[] => {
   const pills = filters.map((filter) => {
     const { paramName, paramValue, displayText } = filter
@@ -126,6 +139,10 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations): 
 
     if (paramName === FilterParamName.colors) {
       return extractColorPills(filter)
+    }
+
+    if (paramName === FilterParamName.attributionClass) {
+      return extractAttributionPills(filter)
     }
 
     const waysToBuyOption = WAYS_TO_BUY_OPTIONS.find((option) => option.paramName === paramName)
