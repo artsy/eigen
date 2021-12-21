@@ -182,7 +182,7 @@ describe("extractPills", () => {
   it("should correctly extract size pills", () => {
     const filters: FilterData[] = [
       {
-        displayText: "Small (under 40cm), Large (over 100cm)",
+        displayText: "Small (under 16in), Large (over 40in)",
         paramName: FilterParamName.sizes,
         paramValue: ["SMALL", "LARGE"],
       },
@@ -191,12 +191,12 @@ describe("extractPills", () => {
 
     expect(result).toEqual([
       {
-        label: "Small (under 40cm)",
+        label: "Small (under 16in)",
         paramName: FilterParamName.sizes,
         value: "SMALL",
       },
       {
-        label: "Large (over 100cm)",
+        label: "Large (over 40in)",
         paramName: FilterParamName.sizes,
         value: "LARGE",
       },

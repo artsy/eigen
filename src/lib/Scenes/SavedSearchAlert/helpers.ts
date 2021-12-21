@@ -7,6 +7,7 @@ import {
   FilterParamName,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { LOCALIZED_UNIT, parseRange } from "lib/Components/ArtworkFilter/Filters/helpers"
+import { SIZES_OPTIONS } from "lib/Components/ArtworkFilter/Filters/SizesOptionsScreen"
 import { WAYS_TO_BUY_OPTIONS } from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
@@ -50,6 +51,18 @@ export const extractSizeLabel = (prefix: string, value: string) => {
   return `${prefix}: ${label} ${LOCALIZED_UNIT}`
 }
 
+export const extractSizesPill = (filter: FilterData): SavedSearchPill[] => {
+  return (filter.paramValue as string[]).map((value) => {
+    const sizeOption = SIZES_OPTIONS.find((option) => option.paramValue === value)
+
+    return {
+      label: sizeOption?.displayText ?? "",
+      value,
+      paramName: filter.paramName,
+    }
+  })
+}
+
 export const extractPills = (filters: FilterArray, aggregations: Aggregations): SavedSearchPill[] => {
   const pills = filters.map((filter) => {
     const { paramName, paramValue, displayText } = filter
@@ -77,6 +90,10 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations): 
     // Extract label from aggregations
     if (shouldExtractValueNamesFromAggregation.includes(paramName)) {
       return extractPillFromAggregation(filter, aggregations)
+    }
+
+    if (paramName === FilterParamName.sizes) {
+      return extractSizesPill(filter)
     }
 
     const waysToBuyOption = WAYS_TO_BUY_OPTIONS.find((option) => option.paramName === paramName)
