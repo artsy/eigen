@@ -2,15 +2,13 @@ import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@a
 import { FormikProvider, useFormik } from "formik"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { SearchCriteriaAttributeKeys } from "lib/Components/ArtworkFilter/SavedSearch/types"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { Dialog, quoteLeft, quoteRight, useTheme } from "palette"
 import React, { useEffect, useState } from "react"
-import { Alert, AlertButton, Linking, Platform, ScrollView, StyleProp, ViewStyle } from "react-native"
+import { Alert, ScrollView, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
 import { Form } from "./Components/Form"
-import { getNamePlaceholder } from "./helpers"
+import { checkOrRequestPushPermissions, getNamePlaceholder } from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
 import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
 import { updateEmailFrequency } from "./mutations/updateEmailFrequency"
@@ -130,75 +128,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   useEffect(() => {
     setShouldShowEmailWarning(!userAllowsEmails)
   }, [userAllowsEmails])
-
-  const requestNotificationPermissions = () => {
-    // permissions not determined: Android should never need this
-    if (Platform.OS === "ios") {
-      Alert.alert(
-        "Artsy would like to send you notifications",
-        "We need your permission to send notifications on alerts you have created.",
-        [
-          {
-            text: "Proceed",
-            onPress: () => LegacyNativeModules.ARTemporaryAPIModule.requestDirectNotificationPermissions(),
-          },
-          {
-            text: "Cancel",
-            style: "cancel",
-          },
-        ]
-      )
-    }
-  }
-
-  const showHowToEnableNotificationInstructionAlert = () => {
-    const deviceText = Platform.select({
-      ios: "iOS",
-      android: "android",
-      default: "device",
-    })
-    const instruction = Platform.select({
-      ios: `Tap 'Artsy' and enable "Allow Notifications" for Artsy.`,
-      default: "",
-    })
-
-    const buttons: AlertButton[] = [
-      {
-        text: "Settings",
-        onPress: () => {
-          if (Platform.OS === "android") {
-            Linking.openSettings()
-          } else {
-            Linking.openURL("App-prefs:NOTIFICATIONS_ID")
-          }
-        },
-      },
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-    ]
-
-    Alert.alert(
-      "Artsy would like to send you notifications",
-      `To receive notifications for your alerts, you will need to enable them in your ${deviceText} Settings. ${instruction}`,
-      Platform.OS === "ios" ? buttons : buttons.reverse()
-    )
-  }
-
-  const checkOrRequestPushPermissions = async () => {
-    const notificationStatus = await getNotificationPermissionsStatus()
-
-    if (notificationStatus === PushAuthorizationStatus.Denied) {
-      showHowToEnableNotificationInstructionAlert()
-    }
-
-    if (notificationStatus === PushAuthorizationStatus.NotDetermined) {
-      requestNotificationPermissions()
-    }
-
-    return notificationStatus === PushAuthorizationStatus.Authorized
-  }
 
   const handleTogglePushNotification = async (enabled: boolean) => {
     // If mobile alerts is enabled, then we check the permissions for push notifications
