@@ -1,7 +1,6 @@
 import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
 import { FormikProvider, useFormik } from "formik"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
@@ -10,7 +9,7 @@ import React, { useEffect, useState } from "react"
 import { Alert, AlertButton, Linking, Platform, ScrollView, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
 import { Form } from "./Components/Form"
-import { getNamePlaceholder, getSearchCriteriaFromPills } from "./helpers"
+import { getNamePlaceholder } from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
 import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
 import { updateEmailFrequency } from "./mutations/updateEmailFrequency"
@@ -100,6 +99,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
             id: response.updateSavedSearch?.savedSearchOrErrors.internalID!,
           }
         } else {
+          // TODO: Clear default values
           const response = await createSavedSearchAlert(userAlertSettings, attributes)
 
           result = {

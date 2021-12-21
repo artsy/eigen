@@ -3,6 +3,7 @@ import { captureMessage } from "@sentry/react-native"
 import { SavedSearchButton_me } from "__generated__/SavedSearchButton_me.graphql"
 import { SavedSearchButtonQuery } from "__generated__/SavedSearchButtonQuery.graphql"
 import { EventEmitter } from "events"
+import { Aggregations, FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
@@ -25,11 +26,15 @@ interface SavedSearchButtonProps extends SavedSearchAlertFormPropsBase {
   loading?: boolean
   relay: RelayRefetchProp
   criteria: SearchCriteriaAttributes
+  filters: FilterData[]
+  aggregations: Aggregations
   artistSlug: string
 }
 
 interface SavedSearchButtonQueryRendererProps extends SavedSearchAlertFormPropsBase {
   artistSlug: string
+  filters: FilterData[]
+  aggregations: Aggregations
 }
 
 export const savedSearchEvents = new EventEmitter()
