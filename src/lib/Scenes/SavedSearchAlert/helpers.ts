@@ -134,11 +134,6 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations): 
       }
     }
 
-    // Extract label from aggregations
-    if (shouldExtractValueNamesFromAggregation.includes(paramName)) {
-      return extractPillFromAggregation(filter, aggregations)
-    }
-
     if (paramName === FilterParamName.sizes) {
       return extractSizesPill(filter)
     }
@@ -159,6 +154,11 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations): 
       return extractPriceRangePill(filter)
     }
 
+    // Extract label from aggregations
+    if (shouldExtractValueNamesFromAggregation.includes(paramName)) {
+      return extractPillFromAggregation(filter, aggregations)
+    }
+
     const waysToBuyOption = WAYS_TO_BUY_OPTIONS.find((option) => option.paramName === paramName)
 
     if (waysToBuyOption) {
@@ -169,22 +169,7 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations): 
       }
     }
 
-    // If the filter value is an array, then we extract the label from the displayed text
-    if (Array.isArray(paramValue)) {
-      return displayText.split(", ").map((label, index) => {
-        return {
-          label,
-          value: paramValue[index],
-          paramName,
-        }
-      })
-    }
-
-    return {
-      label: displayText,
-      value: paramValue,
-      paramName,
-    }
+    return null
   })
 
   return compact(flatten(pills))
