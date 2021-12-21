@@ -1,4 +1,9 @@
-import { Aggregations, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  Aggregations,
+  FilterArray,
+  FilterData,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractPillFromAggregation, extractPills, extractSizeLabel, getNamePlaceholder } from "./helpers"
 
@@ -68,7 +73,7 @@ describe("extractSizeLabel", () => {
 
 describe("extractPills", () => {
   it("should correctly extract pills", () => {
-    const filters: FilterData[] = [
+    const filters = [
       {
         displayText: "Acrylic, Canvas",
         paramName: FilterParamName.materialsTerms,
@@ -99,7 +104,18 @@ describe("extractPills", () => {
         paramValue: "15-*",
         paramName: FilterParamName.height,
       },
-    ]
+      {
+        displayText: "",
+        paramValue: ["unknown-color"],
+        paramName: FilterParamName.colors,
+      },
+      {
+        displayText: "Pill without value",
+        paramValue: undefined,
+        paramName: FilterParamName.waysToBuyInquire,
+      },
+    ] as FilterArray
+
     const result = extractPills(filters, aggregations)
 
     const pills = [

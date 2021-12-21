@@ -27,6 +27,8 @@ export const WAYS_TO_BUY_OPTIONS: FilterData[] = [
   },
 ]
 
+export const WAYS_TO_BUY_PARAM_NAMES = WAYS_TO_BUY_OPTIONS.map((option) => option.paramName)
+
 export const WaysToBuyOptionsScreen: React.FC<WaysToBuyOptionsScreenProps> = ({ navigation }) => {
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
 

@@ -16,7 +16,7 @@ import {
   parseRange,
 } from "lib/Components/ArtworkFilter/Filters/helpers"
 import { SIZES_OPTIONS } from "lib/Components/ArtworkFilter/Filters/SizesOptionsScreen"
-import { WAYS_TO_BUY_OPTIONS } from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
+import { WAYS_TO_BUY_OPTIONS, WAYS_TO_BUY_PARAM_NAMES } from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { compact, flatten, groupBy, isUndefined, keyBy } from "lodash"
@@ -88,7 +88,7 @@ export const extractColorPills = (filter: FilterData): SavedSearchPill[] => {
     const colorOption = COLORS_INDEXED_BY_VALUE[value]
 
     return {
-      label: colorOption.name ?? "",
+      label: colorOption?.name ?? "",
       value,
       paramName: FilterParamName.colors,
     }
@@ -114,6 +114,16 @@ export const extractPriceRangePill = (filter: FilterData): SavedSearchPill => {
     label: parsePriceRangeLabel(min, max),
     value: filter.paramValue as string,
     paramName: FilterParamName.priceRange,
+  }
+}
+
+export const extractWaysToBuyPill = (filter: FilterData): SavedSearchPill => {
+  const waysToBuyOption = WAYS_TO_BUY_OPTIONS.find((option) => option.paramName === filter.paramName)
+
+  return {
+    label: waysToBuyOption?.displayText ?? "",
+    value: true,
+    paramName: filter.paramName,
   }
 }
 
@@ -166,20 +176,20 @@ export const extractPills = (filters: FilterArray, aggregations: Aggregations): 
       return extractPillFromAggregation(filter, aggregations)
     }
 
-    const waysToBuyOption = WAYS_TO_BUY_OPTIONS.find((option) => option.paramName === paramName)
-
-    if (waysToBuyOption) {
-      return {
-        label: waysToBuyOption.displayText,
-        value: true,
-        paramName,
-      }
+    if (WAYS_TO_BUY_PARAM_NAMES.includes(paramName)) {
+      return extractWaysToBuyPill(filter)
     }
 
     return null
   })
 
-  return compact(flatten(pills))
+  const flattenedPills = flatten(pills)
+  const compactedPills = compact(flattenedPills)
+  const preparedPills = compactedPills.filter((pill) => {
+    return pill.label !== "" && !isUndefined(pill.value)
+  })
+
+  return preparedPills
 }
 
 export const getNamePlaceholder = (artistName: string, pills: SavedSearchPill[]) => {
