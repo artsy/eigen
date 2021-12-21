@@ -422,56 +422,45 @@ const MyCollection: React.FC<{
             }
           />
         ) : (
-         <Flex pt={1}>
-          <InfiniteScrollMyCollectionArtworksGridContainer
-            myCollectionConnection={me.myCollectionConnection!}
-            hasMore={relay.hasMore}
-            loadMore={relay.loadMore}
-            // tslint:disable-next-line: no-shadowed-variable
-            localSortAndFilterArtworks={(artworks: MyCollectionArtworkListItem_artwork[]) => {
-              let processedArtworks = artworks
-
-              const filtering = uniqBy(
-                appliedFiltersState.filter((x) => x.paramName !== FilterParamName.sort),
-                (f) => f.paramName
-              )
-
-              // custom size filters come back with a different type, consolidate to one
-              const sizeFilterTypes = [FilterParamName.width, FilterParamName.height, FilterParamName.sizes]
-
+          <Flex pt={1}>
+            <InfiniteScrollMyCollectionArtworksGridContainer
+              myCollectionConnection={me.myCollectionConnection!}
+              hasMore={relay.hasMore}
+              loadMore={relay.loadMore}
               // tslint:disable-next-line: no-shadowed-variable
-              filtering.forEach((filter) => {
-                if (sizeFilterTypes.includes(filter.paramName)) {
-                  /*
-                   * Custom handling for size filter
-                   * 2 flavors:
-                   * a sizeRange representing either a width or height restriction OR
-                   * 1 or more size bucket names which should be matched against artwork values
-                   * pass the paramName so we can distinguish how to handle in the step
-                   */
-                  const sizeFilterParamName = FilterParamName.sizes
-                  const sizeFilterStep = (filterOptions ?? []).find((f) => f.filterType === sizeFilterParamName)!
-                    .localSortAndFilter!
-                  processedArtworks = sizeFilterStep(processedArtworks, {
-                    paramValue: filter.paramValue,
-                    paramName: filter.paramName,
-                  })
-                } else {
-                  const filterStep = (filterOptions ?? []).find((f) => f.filterType === filter.paramName)!
-                    .localSortAndFilter!
-                  processedArtworks = filterStep(processedArtworks, filter.paramValue)
-                }
-              })
-                
+              localSortAndFilterArtworks={(artworks: MyCollectionArtworkListItem_artwork[]) => {
+                let processedArtworks = artworks
+
                 const filtering = uniqBy(
                   appliedFiltersState.filter((x) => x.paramName !== FilterParamName.sort),
                   (f) => f.paramName
                 )
+
+                // custom size filters come back with a different type, consolidate to one
+                const sizeFilterTypes = [FilterParamName.width, FilterParamName.height, FilterParamName.sizes]
+
                 // tslint:disable-next-line: no-shadowed-variable
                 filtering.forEach((filter) => {
-                  const filterStep = (filterOptions ?? []).find((f) => f.filterType === filter.paramName)!
-                    .localSortAndFilter!
-                  processedArtworks = filterStep(processedArtworks, filter.paramValue)
+                  if (sizeFilterTypes.includes(filter.paramName)) {
+                    /*
+                     * Custom handling for size filter
+                     * 2 flavors:
+                     * a sizeRange representing either a width or height restriction OR
+                     * 1 or more size bucket names which should be matched against artwork values
+                     * pass the paramName so we can distinguish how to handle in the step
+                     */
+                    const sizeFilterParamName = FilterParamName.sizes
+                    const sizeFilterStep = (filterOptions ?? []).find((f) => f.filterType === sizeFilterParamName)!
+                      .localSortAndFilter!
+                    processedArtworks = sizeFilterStep(processedArtworks, {
+                      paramValue: filter.paramValue,
+                      paramName: filter.paramName,
+                    })
+                  } else {
+                    const filterStep = (filterOptions ?? []).find((f) => f.filterType === filter.paramName)!
+                      .localSortAndFilter!
+                    processedArtworks = filterStep(processedArtworks, filter.paramValue)
+                  }
                 })
 
                 const sorting = appliedFiltersState.filter((x) => x.paramName === FilterParamName.sort)
