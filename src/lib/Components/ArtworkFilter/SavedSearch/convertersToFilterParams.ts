@@ -7,12 +7,11 @@ import {
   FilterParamName,
   getDisplayNameForTimePeriod,
 } from "../ArtworkFilterHelpers"
-import { DEFAULT_FILTERS } from "../ArtworkFilterStore"
 import { ATTRIBUTION_CLASS_OPTIONS } from "../Filters/AttributionClassOptions"
 import { COLORS_INDEXED_BY_VALUE } from "../Filters/ColorsOptions"
 import { localizeDimension, parsePriceRangeLabel, parseRange } from "../Filters/helpers"
 import { SIZES_OPTIONS } from "../Filters/SizesOptionsScreen"
-import { WAYS_TO_BUY_FILTER_PARAM_NAMES, WAYS_TO_BUY_OPTIONS } from "../Filters/WaysToBuyOptions"
+import { WAYS_TO_BUY_OPTIONS } from "../Filters/WaysToBuyOptions"
 import { FALLBACK_SIZE_OPTIONS, shouldExtractValueNamesFromAggregation } from "./constants"
 import { SearchCriteriaAttributeKeys, SearchCriteriaAttributes } from "./types"
 
