@@ -81,21 +81,35 @@ const MyCollection: React.FC<{
     setSortOptions([
       {
         paramName: FilterParamName.sort,
-        displayText: "Alphabetical Artist Name (A-Z)",
-        paramValue: "local-alpha-a-z",
+        displayText: "Price Paid (High to Low)",
+        paramValue: "local-price-paid-high-low",
         // tslint:disable-next-line: no-shadowed-variable
-        localSortAndFilter: (artworks) => orderBy(artworks, (a) => a.artistNames, "asc"),
+        localSortAndFilter: (artworks) =>
+          orderBy(
+            artworks,
+            (a) => {
+              return a.pricePaid.minor
+            },
+            "asc"
+          ),
       },
       {
         paramName: FilterParamName.sort,
-        displayText: "Alphabetical Artist Name (Z-A)",
-        paramValue: "local-alpha-z-a",
+        displayText: "Price Paid (Low to High)",
+        paramValue: "local-price-paid-low-high",
         // tslint:disable-next-line: no-shadowed-variable
-        localSortAndFilter: (artworks) => orderBy(artworks, (a) => a.artistNames, "desc"),
+        localSortAndFilter: (artworks) =>
+          orderBy(
+            artworks,
+            (a) => {
+              return a.pricePaid.minor
+            },
+            "desc"
+          ),
       },
       {
         paramName: FilterParamName.sort,
-        displayText: "Artwork Year (Old-New)",
+        displayText: "Artwork Year (Ascending)",
         paramValue: "local-year-old-new",
         // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks) =>
@@ -110,7 +124,7 @@ const MyCollection: React.FC<{
       },
       {
         paramName: FilterParamName.sort,
-        displayText: "Artwork Year (New-Old)",
+        displayText: "Artwork Year (Descending)",
         paramValue: "local-year-new-old",
         // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks) =>
@@ -123,34 +137,19 @@ const MyCollection: React.FC<{
             "desc"
           ),
       },
-      // TODO: Check specs and update copy
       {
         paramName: FilterParamName.sort,
-        displayText: "Price paid (High-Low)",
-        paramValue: "local-price-paid-high-low",
+        displayText: "Alphabetical by Artist (A to Z)",
+        paramValue: "local-alpha-a-z",
         // tslint:disable-next-line: no-shadowed-variable
-        localSortAndFilter: (artworks) =>
-          orderBy(
-            artworks,
-            (a) => {
-              return a.pricePaid.minor
-            },
-            "asc"
-          ),
+        localSortAndFilter: (artworks) => orderBy(artworks, (a) => a.artistNames, "asc"),
       },
       {
         paramName: FilterParamName.sort,
-        displayText: "Price paid (Low-High)",
-        paramValue: "local-price-paid-low-high",
+        displayText: "Alphabetical by Artist (Z to A)",
+        paramValue: "local-alpha-z-a",
         // tslint:disable-next-line: no-shadowed-variable
-        localSortAndFilter: (artworks) =>
-          orderBy(
-            artworks,
-            (a) => {
-              return a.pricePaid.minor
-            },
-            "desc"
-          ),
+        localSortAndFilter: (artworks) => orderBy(artworks, (a) => a.artistNames, "desc"),
       },
     ])
     setFilterOptions([
@@ -158,23 +157,6 @@ const MyCollection: React.FC<{
         displayText: FilterDisplayName.sort,
         filterType: "sort",
         ScreenComponent: "SortOptionsScreen",
-      },
-      {
-        displayText: FilterDisplayName.additionalGeneIDs,
-        filterType: "additionalGeneIDs",
-        ScreenComponent: "AdditionalGeneIDsOptionsScreen",
-        values: uniqBy(
-          artworks.map(
-            (a): FilterData => ({
-              displayText: a.medium ?? "N/A",
-              paramName: FilterParamName.additionalGeneIDs,
-              paramValue: a.medium ?? undefined,
-            })
-          ),
-          (m) => m.paramValue
-        ),
-        // tslint:disable-next-line: no-shadowed-variable
-        localSortAndFilter: (artworks, mediums: string[]) => filter(artworks, (a) => mediums.includes(a.medium)),
       },
       {
         displayText: FilterDisplayName.artistIDs,
@@ -193,6 +175,37 @@ const MyCollection: React.FC<{
         // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks, artistIDs: string[]) =>
           filter(artworks, (a) => artistIDs.includes(a.artist.internalID)),
+      },
+      {
+        displayText: FilterDisplayName.attributionClass,
+        filterType: "attributionClass",
+        ScreenComponent: "AttributionClassOptionsScreen",
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks, attributionClasses: string[]) => {
+          return filter(artworks, (a) => {
+            if (a.attributionClass && a.attributionClass.name) {
+              return attributionClasses.includes(a.attributionClass.name)
+            }
+            return false
+          })
+        },
+      },
+      {
+        displayText: FilterDisplayName.additionalGeneIDs,
+        filterType: "additionalGeneIDs",
+        ScreenComponent: "AdditionalGeneIDsOptionsScreen",
+        values: uniqBy(
+          artworks.map(
+            (a): FilterData => ({
+              displayText: a.medium ?? "N/A",
+              paramName: FilterParamName.additionalGeneIDs,
+              paramValue: a.medium ?? undefined,
+            })
+          ),
+          (m) => m.paramValue
+        ),
+        // tslint:disable-next-line: no-shadowed-variable
+        localSortAndFilter: (artworks, mediums: string[]) => filter(artworks, (a) => mediums.includes(a.medium)),
       },
       {
         displayText: FilterDisplayName.priceRange,
@@ -272,20 +285,6 @@ const MyCollection: React.FC<{
               return targetMetric >= lowerBound && targetMetric <= upperBound
             })
           }
-        },
-      },
-      {
-        displayText: FilterDisplayName.attributionClass,
-        filterType: "attributionClass",
-        ScreenComponent: "AttributionClassOptionsScreen",
-        // tslint:disable-next-line: no-shadowed-variable
-        localSortAndFilter: (artworks, attributionClasses: string[]) => {
-          return filter(artworks, (a) => {
-            if (a.attributionClass && a.attributionClass.name) {
-              return attributionClasses.includes(a.attributionClass.name)
-            }
-            return false
-          })
         },
       },
     ])
