@@ -195,7 +195,6 @@ export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRend
             me={relayProps?.me ?? null}
             loading={relayProps === null && error === null}
             criteria={criteria}
-            filters={filters}
           />
         )
       }}
