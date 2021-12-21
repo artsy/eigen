@@ -318,6 +318,7 @@ const MyCollection: React.FC<{
     if (artworks.length) {
       hasBeenShownBanner().then((hasSeenBanner) => {
         const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && allowOrderImports && !hasSeenBanner
+
         setJSX(
           <Flex>
             {enabledSortAndFilter ? (
@@ -369,7 +370,6 @@ const MyCollection: React.FC<{
                 title="You have some artworks."
                 text="To help add your current artworks to your collection, we automatically added your purchases from your order history."
                 showCloseButton
-                containerStyle={{ mb: 2 }}
                 onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
               />
             )}
@@ -422,6 +422,7 @@ const MyCollection: React.FC<{
             }
           />
         ) : (
+         <Flex pt={1}>
           <InfiniteScrollMyCollectionArtworksGridContainer
             myCollectionConnection={me.myCollectionConnection!}
             hasMore={relay.hasMore}
@@ -461,16 +462,28 @@ const MyCollection: React.FC<{
                   processedArtworks = filterStep(processedArtworks, filter.paramValue)
                 }
               })
+                
+                const filtering = uniqBy(
+                  appliedFiltersState.filter((x) => x.paramName !== FilterParamName.sort),
+                  (f) => f.paramName
+                )
+                // tslint:disable-next-line: no-shadowed-variable
+                filtering.forEach((filter) => {
+                  const filterStep = (filterOptions ?? []).find((f) => f.filterType === filter.paramName)!
+                    .localSortAndFilter!
+                  processedArtworks = filterStep(processedArtworks, filter.paramValue)
+                })
 
-              const sorting = appliedFiltersState.filter((x) => x.paramName === FilterParamName.sort)
-              if (sorting.length > 0) {
-                const sortStep = sorting[0].localSortAndFilter!
-                processedArtworks = sortStep(processedArtworks)
-              }
+                const sorting = appliedFiltersState.filter((x) => x.paramName === FilterParamName.sort)
+                if (sorting.length > 0) {
+                  const sortStep = sorting[0].localSortAndFilter!
+                  processedArtworks = sortStep(processedArtworks)
+                }
 
-              return processedArtworks
-            }}
-          />
+                return processedArtworks
+              }}
+            />
+          </Flex>
         )}
       </StickyTabPageScrollView>
     </ProvideScreenTrackingWithCohesionSchema>
