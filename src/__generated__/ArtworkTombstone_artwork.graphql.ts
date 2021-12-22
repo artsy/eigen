@@ -23,7 +23,7 @@ export type ArtworkTombstone_artwork = {
     readonly artists: ReadonlyArray<{
         readonly name: string | null;
         readonly href: string | null;
-        readonly " $fragmentRefs": FragmentRefs<"FollowArtistButton_artist">;
+        readonly " $fragmentRefs": FragmentRefs<"FollowArtistLink_artist">;
     } | null> | null;
     readonly dimensions: {
         readonly in: string | null;
@@ -166,7 +166,7 @@ return {
         {
           "args": null,
           "kind": "FragmentSpread",
-          "name": "FollowArtistButton_artist"
+          "name": "FollowArtistLink_artist"
         }
       ],
       "storageKey": null
@@ -226,5 +226,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '12c6ef0636ca72af76ba1dcff04d8838';
+(node as any).hash = 'd6f73638f6e87a1d99ef77641cd4f0a9';
 export default node;

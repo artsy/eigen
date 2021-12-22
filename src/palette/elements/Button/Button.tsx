@@ -18,7 +18,7 @@ export interface ButtonProps extends BoxProps {
   children: ReactNode
 
   size?: "small" | "large"
-  variant?: "fillDark" | "fillLight" | "fillGray" | "outline" | "outlineLight" | "text"
+  variant?: "fillDark" | "fillLight" | "fillGray" | "outline" | "outlineGray" | "outlineLight" | "text"
   onPress?: PressableProps["onPress"]
 
   icon?: ReactNode
@@ -308,6 +308,29 @@ const useStyleForVariantAndState = (
         case DisplayState.Enabled:
           retval.backgroundColor = color("white100")
           retval.borderColor = color("black60")
+          retval.textColor = color("black100")
+          break
+        case DisplayState.Disabled:
+          retval.backgroundColor = color("white100")
+          retval.borderColor = color("black30")
+          retval.textColor = color("black30")
+          break
+        case DisplayState.Pressed:
+          retval.backgroundColor = color("blue100")
+          retval.borderColor = color("blue100")
+          retval.textColor = color("white100")
+          retval.textDecorationLine = "underline"
+          break
+        default:
+          assertNever(state)
+      }
+      break
+
+    case "outlineGray":
+      switch (state) {
+        case DisplayState.Enabled:
+          retval.backgroundColor = color("white100")
+          retval.borderColor = color("black30")
           retval.textColor = color("black100")
           break
         case DisplayState.Disabled:
