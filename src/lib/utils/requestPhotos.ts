@@ -7,7 +7,7 @@ import { osMajorVersion } from "./platformUtil"
 
 export async function requestPhotos(allowMultiple: boolean = true): Promise<Image[]> {
   if (Platform.OS === "ios" && osMajorVersion() >= 14) {
-    return LegacyNativeModules.ARPHPhotoPickerModule.requestPhotos(false)
+    return LegacyNativeModules.ARPHPhotoPickerModule.requestPhotos(allowMultiple)
   } else {
     const images = await ImagePicker.openPicker({
       mediaType: "photo",

@@ -58,11 +58,12 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   const renderImage = () => {
     if (!!imageURL) {
       const targetURL = mode === "list" ? imageURL.replace(":version", "square") : imageURL
+      const useRawURL = mode !== "list"
       return (
         <OpaqueImageView
           testID="Image-Remote"
           imageURL={targetURL}
-          useRawURL
+          useRawURL={useRawURL}
           retryFailedURLs
           height={imageHeight}
           width={imageWidth}
