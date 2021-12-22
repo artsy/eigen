@@ -1,3 +1,4 @@
+import { SearchCriteriaAttributeKeys, SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { bullet } from "palette"
@@ -82,4 +83,20 @@ export const checkOrRequestPushPermissions = async () => {
   }
 
   return notificationStatus === PushAuthorizationStatus.Authorized
+}
+
+export const clearDefaultAttributes = (attributes: SearchCriteriaAttributes) => {
+  const clearedAttributes: SearchCriteriaAttributes = {}
+
+  Object.entries(attributes).forEach((entry) => {
+    const [key, values] = entry
+    const isEmptyArray = Array.isArray(values) && values.length === 0
+    const isNull = values === null
+
+    if (!isEmptyArray && !isNull) {
+      clearedAttributes[key as SearchCriteriaAttributeKeys] = values
+    }
+  })
+
+  return clearedAttributes
 }
