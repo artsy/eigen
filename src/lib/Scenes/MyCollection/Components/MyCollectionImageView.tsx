@@ -19,6 +19,7 @@ export interface MyCollectionImageViewProps {
 export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   imageURL,
   imageWidth,
+  imageHeight,
   aspectRatio,
   artworkSlug,
   mode,
@@ -43,22 +44,29 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
         width: image.width,
         height: image.height,
       }
-      return getBoundingBox(localImageSize, maxImageHeight, dimensions)
+      const size = getBoundingBox(localImageSize, maxImageHeight, dimensions)
+      return size
     } else {
-      return {
+      const size = {
         width: width ?? 120,
         height: 120,
       }
+      return size
     }
   }
 
   const renderImage = () => {
     if (!!imageURL) {
+      const targetURL = mode === "list" ? imageURL.replace(":version", "square") : imageURL
       return (
         <OpaqueImageView
           testID="Image-Remote"
-          imageURL={imageURL.replace(":version", "square")}
-          aspectRatio={aspectRatio ?? 1}
+          imageURL={targetURL}
+          useRawURL
+          retryFailedURLs
+          height={imageHeight}
+          width={imageWidth}
+          aspectRatio={aspectRatio}
         />
       )
     } else if (localImage) {
