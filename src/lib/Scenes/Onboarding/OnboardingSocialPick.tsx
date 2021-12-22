@@ -33,13 +33,9 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
     return clearTimeout(timeout)
   }, [])
 
-  const useFacebook = async () => {
+  const continueWithFacebook = async () => {
     try {
-      if (mode === "login") {
-        await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" })
-      } else {
-        await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
-      }
+      await GlobalStore.actions.auth.authFacebook()
     } catch (error) {
       if (typeof error === "string") {
         Alert.alert("Try again", error)
@@ -133,7 +129,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             )}
 
             <Button
-              onPress={useFacebook}
+              onPress={continueWithFacebook}
               block
               haptic="impactMedium"
               mb={1}
@@ -142,7 +138,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               icon={
                 <Image source={require("@images/facebook.webp")} resizeMode="contain" style={{ marginRight: 10 }} />
               }
-              testID="useFacebook"
+              testID="continueWithFacebook"
             >
               Continue with Facebook
             </Button>
