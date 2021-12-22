@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 676eb6c4045e8049731eb5c5f0f51a0e */
+/* @relayHash 8f39abd835a1fd5cb90434ae8f0b9945 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -50,6 +50,12 @@ fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectio
         name
         id
       }
+      pricePaid {
+        minor
+      }
+      sizeBucket
+      width
+      height
       date
       ...MyCollectionArtworkListItem_artwork
     }
@@ -86,6 +92,16 @@ fragment MyCollection_me_4o4pu4 on Me {
       node {
         id
         medium
+        pricePaid {
+          minor
+        }
+        attributionClass {
+          name
+          id
+        }
+        sizeBucket
+        width
+        height
         artist {
           internalID
           name
@@ -138,6 +154,13 @@ v3 = [
   }
 ],
 v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -241,19 +264,65 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "concreteType": "Money",
+                        "kind": "LinkedField",
+                        "name": "pricePaid",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "minor",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "AttributionClass",
+                        "kind": "LinkedField",
+                        "name": "attributionClass",
+                        "plural": false,
+                        "selections": [
+                          (v4/*: any*/),
+                          (v2/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "sizeBucket",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "width",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "height",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "concreteType": "Artist",
                         "kind": "LinkedField",
                         "name": "artist",
                         "plural": false,
                         "selections": [
+                          (v5/*: any*/),
                           (v4/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "name",
-                            "storageKey": null
-                          },
                           (v2/*: any*/)
                         ],
                         "storageKey": null
@@ -304,7 +373,7 @@ return {
                         "name": "date",
                         "storageKey": null
                       },
-                      (v4/*: any*/),
+                      (v5/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -400,7 +469,7 @@ return {
     ]
   },
   "params": {
-    "id": "676eb6c4045e8049731eb5c5f0f51a0e",
+    "id": "8f39abd835a1fd5cb90434ae8f0b9945",
     "metadata": {},
     "name": "MyCollectionQuery",
     "operationKind": "query",
