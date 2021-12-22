@@ -52,7 +52,7 @@ export const CollapsibleMenuItem = forwardRef<CollapsibleMenuItem, React.PropsWi
             </Text>
           )}
           <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
-            <Text variant="lg" color={disabled ? "black30" : "black100"}>
+            <Text variant="lg" color={disabled ? "black30" : "black100"} style={{ maxWidth: "90%" }}>
               {title}
             </Text>
             <ChevronIcon direction={isOpen ? "up" : "down"} fill={disabled ? "black30" : "black60"} />
