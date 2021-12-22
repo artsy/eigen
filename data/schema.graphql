@@ -5228,6 +5228,12 @@ enum ConsignmentSubmissionSort {
   # sort by reminders_sent_count in descending order
   REMINDERS_SENT_COUNT_DESC
 
+  # sort by session_id in ascending order
+  SESSION_ID_ASC
+
+  # sort by session_id in descending order
+  SESSION_ID_DESC
+
   # sort by signature in ascending order
   SIGNATURE_ASC
 
