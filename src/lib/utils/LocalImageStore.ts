@@ -12,54 +12,75 @@ interface Expirable {
 
 type StoredImage = LocalImage & Expirable
 
-export const storeLocalImage = (image: LocalImage, key: string): Promise<void> => {
+export const storeLocalImages = (images: LocalImage[], rootKey: string): Promise<void> => {
   const expirationDate = DateTime.fromMillis(Date.now()).plus({ minutes: 2 }).toISO()
-  const imageToStore: StoredImage = {
-    expirationDate,
-    path: image.path,
-    height: image.height,
-    width: image.width,
+  const imagesToStore: StoredImage[] = []
+  for (const image of images) {
+    const imageToStore: StoredImage = {
+      expirationDate,
+      path: image.path,
+      height: image.height,
+      width: image.width,
+    }
+    imagesToStore.push(imageToStore)
   }
-  const serializedImage = JSON.stringify(imageToStore)
-  return AsyncStorage.setItem(key, serializedImage)
+  const serializedImages = JSON.stringify(imagesToStore)
+  return AsyncStorage.setItem(rootKey, serializedImages)
 }
 
-export const deleteLocalImage = (key: string): Promise<void> => {
+export const deleteLocalImages = (key: string): Promise<void> => {
   return AsyncStorage.removeItem(key)
 }
 
-export const retrieveLocalImage = async (key: string, currentTime: number = Date.now()): Promise<LocalImage | null> => {
+export const retrieveLocalImages = async (
+  key: string,
+  currentTime: number = Date.now()
+): Promise<LocalImage[] | null> => {
   return new Promise(async (resolve) => {
-    const imageJSON = await AsyncStorage.getItem(key)
+    const imagesJSON = await AsyncStorage.getItem(key)
 
-    if (!imageJSON) {
+    if (!imagesJSON) {
       resolve(null)
       return
     }
 
-    const image = JSON.parse(imageJSON)
-    if (!image) {
+    const images = JSON.parse(imagesJSON)
+
+    if (!images) {
       resolve(null)
       return
     }
 
-    if ("expirationDate" in image && "path" in image && "height" in image && "width" in image) {
-      const expirationDate = DateTime.fromISO(image.expirationDate).toMillis()
-      const currentDate = currentTime ? currentTime : Date.now()
-      if (currentDate > expirationDate) {
-        resolve(null)
+    if (!Array.isArray(images)) {
+      resolve(null)
+      return
+    }
+
+    const resolvedImages: LocalImage[] = []
+    for (const image of images) {
+      if ("expirationDate" in image && "path" in image && "height" in image && "width" in image) {
+        const expirationDate = DateTime.fromISO(image.expirationDate).toMillis()
+        const currentDate = currentTime ? currentTime : Date.now()
+        if (currentDate > expirationDate) {
+          break
+        }
+        const width = parseInt(image.width, 10)
+        const height = parseInt(image.height, 10)
+
+        resolvedImages.push({
+          path: image.path,
+          width,
+          height,
+        })
+      } else {
+        break
       }
+    }
 
-      const width = parseInt(image.width, 10)
-      const height = parseInt(image.height, 10)
-
-      resolve({
-        path: image.path,
-        width,
-        height,
-      })
-    } else {
+    if (resolvedImages.length === 0) {
       resolve(null)
     }
+
+    resolve(resolvedImages)
   })
 }
