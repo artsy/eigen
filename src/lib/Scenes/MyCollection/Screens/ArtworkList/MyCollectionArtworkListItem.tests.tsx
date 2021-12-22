@@ -98,14 +98,14 @@ describe("MyCollectionArtworkListItem", () => {
   })
 
   it("uses last uploaded image as a fallback when no url is present", async () => {
-    const localImageStoreMock = jest.spyOn(LocalImageStore, "retrieveLocalImage")
+    const localImageStoreMock = jest.spyOn(LocalImageStore, "retrieveLocalImages")
     const localImage: LocalImage = {
       path: "some-local-path",
       width: 10,
       height: 10,
     }
-    const retrievalPromise = new Promise<LocalImage>((resolve) => {
-      resolve(localImage)
+    const retrievalPromise = new Promise<LocalImage[]>((resolve) => {
+      resolve([localImage])
     })
     localImageStoreMock.mockImplementation(() => retrievalPromise)
 

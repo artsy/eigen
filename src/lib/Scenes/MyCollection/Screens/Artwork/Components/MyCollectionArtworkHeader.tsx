@@ -5,7 +5,7 @@ import { Size } from "lib/Scenes/Artwork/Components/ImageCarousel/geometry"
 import { MyCollectionImageView } from "lib/Scenes/MyCollection/Components/MyCollectionImageView"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { useDevToggle } from "lib/store/GlobalStore"
-import { LocalImage, retrieveLocalImage } from "lib/utils/LocalImageStore"
+import { retrieveLocalImages } from "lib/utils/LocalImageStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Button, Flex, Spacer, Text } from "palette"
 import React from "react"
@@ -19,7 +19,6 @@ import {
   hasImagesStillProcessing,
   imageIsProcessing,
   isImage,
-  myCollectionLocalPhotoKey,
 } from "../../ArtworkForm/MyCollectionImageUtil"
 
 interface MyCollectionArtworkHeaderProps {
@@ -126,11 +125,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
       {!!showLocalImages && (
         <Button
           onPress={async () => {
-            const localImage = await retrieveLocalImage(myCollectionLocalPhotoKey(slug, 0))
-            let localImages: LocalImage[] = []
-            if (localImage) {
-              localImages = [localImage]
-            }
+            const localImages = await retrieveLocalImages(slug)
             navigate("/my-collection/local-images", {
               passProps: {
                 images: localImages,

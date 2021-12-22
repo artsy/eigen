@@ -7,7 +7,7 @@ import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { LocalImage, storeLocalImage } from "lib/utils/LocalImageStore"
+import { LocalImage, storeLocalImages } from "lib/utils/LocalImageStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Avatar } from "palette"
 import React from "react"
@@ -98,7 +98,7 @@ describe("MyCollectionAndSavedWorks", () => {
           height: 10,
         }
         await act(async () => {
-          await storeLocalImage(localImage, LOCAL_PROFILE_ICON_PATH_KEY)
+          await storeLocalImages([localImage], LOCAL_PROFILE_ICON_PATH_KEY)
         })
 
         const wrapper = getWrapper({
@@ -146,7 +146,7 @@ describe("MyCollectionAndSavedWorks", () => {
           height: 10,
         }
         await act(async () => {
-          await storeLocalImage(localImage, LOCAL_PROFILE_ICON_PATH_KEY)
+          await storeLocalImages([localImage], LOCAL_PROFILE_ICON_PATH_KEY)
         })
 
         const wrapper = getWrapper({

@@ -1,11 +1,11 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Size } from "lib/Scenes/Artwork/Components/ImageCarousel/geometry"
-import { LocalImage, retrieveLocalImage } from "lib/utils/LocalImageStore"
+import { LocalImage, retrieveLocalImages } from "lib/utils/LocalImageStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Image as RNImage } from "react-native"
-import { getBoundingBox, myCollectionLocalPhotoKey } from "../Screens/ArtworkForm/MyCollectionImageUtil"
+import { getBoundingBox } from "../Screens/ArtworkForm/MyCollectionImageUtil"
 
 export interface MyCollectionImageViewProps {
   imageURL?: string
@@ -29,10 +29,9 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   const [localImage, setLocalImage] = useState<LocalImage | null>(null)
 
   useEffect(() => {
-    const localImageKey = myCollectionLocalPhotoKey(artworkSlug, 0)
-    retrieveLocalImage(localImageKey).then((image) => {
-      if (image) {
-        setLocalImage(image)
+    retrieveLocalImages(artworkSlug).then((images) => {
+      if (images && images.length > 0) {
+        setLocalImage(images[0])
       }
     })
   }, [])

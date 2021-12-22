@@ -6,7 +6,7 @@ import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import { LocalImage, retrieveLocalImage, storeLocalImage } from "lib/utils/LocalImageStore"
+import { LocalImage, retrieveLocalImages, storeLocalImages } from "lib/utils/LocalImageStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Avatar, Box, Button, Flex, Sans, useColor } from "palette"
 import React, { useEffect, useState } from "react"
@@ -57,13 +57,13 @@ export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWor
       height: 100,
     }
     setLocalImage(profileIcon)
-    storeLocalImage(profileIcon, LOCAL_PROFILE_ICON_PATH_KEY)
+    storeLocalImages([profileIcon], LOCAL_PROFILE_ICON_PATH_KEY)
   }
 
   useEffect(() => {
-    retrieveLocalImage(LOCAL_PROFILE_ICON_PATH_KEY).then((image) => {
-      if (image) {
-        setLocalImage(image)
+    retrieveLocalImages(LOCAL_PROFILE_ICON_PATH_KEY).then((images) => {
+      if (images && images.length > 0) {
+        setLocalImage(images[0])
       }
     })
   }, [])

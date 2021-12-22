@@ -239,9 +239,8 @@ export const updateArtwork = async (
       await deleteArtworkImage(props.artwork.internalID, photo.id)
     }
     const slug = response.myCollectionUpdateArtwork?.artworkOrError?.artwork?.slug
-    const indices = deletedImages.map((image) => image.index)
     if (slug) {
-      removeLocalPhotos(slug, indices)
+      removeLocalPhotos(slug)
     }
   }
 
