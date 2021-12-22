@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash be7455457aae7fbec5f5a9d0cdcf9edb */
+/* @relayHash 5e0b12779d4069f94529b33fce9f1832 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -47,6 +47,10 @@ fragment MyCollectionArtworkFullDetails_artwork on Artwork {
   editionSize
   editionNumber
   height
+  attributionClass {
+    name
+    id
+  }
   id
   images {
     isDefault
@@ -258,6 +262,25 @@ return {
             "storageKey": null
           },
           (v4/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "AttributionClass",
+            "kind": "LinkedField",
+            "name": "attributionClass",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "name",
+                "storageKey": null
+              },
+              (v3/*: any*/)
+            ],
+            "storageKey": null
+          },
           (v3/*: any*/),
           {
             "alias": null,
@@ -337,7 +360,7 @@ return {
     ]
   },
   "params": {
-    "id": "be7455457aae7fbec5f5a9d0cdcf9edb",
+    "id": "5e0b12779d4069f94529b33fce9f1832",
     "metadata": {},
     "name": "MyCollectionArtworkFullDetailsQuery",
     "operationKind": "query",

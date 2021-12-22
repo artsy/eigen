@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3a6001bf3015f018521a31d410b7c714 */
+/* @relayHash 6da7983f43e2d9682bc9ae6162d69194 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -93,6 +93,10 @@ fragment MyCollectionArtwork_sharedProps on Artwork {
   editionSize
   editionNumber
   height
+  attributionClass {
+    name
+    id
+  }
   id
   images {
     isDefault
@@ -397,6 +401,25 @@ return {
                             "storageKey": null
                           },
                           (v6/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "AttributionClass",
+                            "kind": "LinkedField",
+                            "name": "attributionClass",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "name",
+                                "storageKey": null
+                              },
+                              (v5/*: any*/)
+                            ],
+                            "storageKey": null
+                          },
                           (v5/*: any*/),
                           {
                             "alias": null,
@@ -491,7 +514,7 @@ return {
     ]
   },
   "params": {
-    "id": "3a6001bf3015f018521a31d410b7c714",
+    "id": "6da7983f43e2d9682bc9ae6162d69194",
     "metadata": {},
     "name": "myCollectionAddArtworkMutation",
     "operationKind": "mutation",
