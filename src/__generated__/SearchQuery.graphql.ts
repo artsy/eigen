@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2f5335fa67c3ab5fa649932b4dd6ff63 */
+/* @relayHash 4c37bcd310f45ac21e1461d1a58eb832 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,6 +33,7 @@ fragment Search_system on System {
     indices {
       name
       displayName
+      key
     }
   }
 }
@@ -129,6 +130,13 @@ const node: ConcreteRequest = {
                     "kind": "ScalarField",
                     "name": "displayName",
                     "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "key",
+                    "storageKey": null
                   }
                 ],
                 "storageKey": null
@@ -142,7 +150,7 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "id": "2f5335fa67c3ab5fa649932b4dd6ff63",
+    "id": "4c37bcd310f45ac21e1461d1a58eb832",
     "metadata": {},
     "name": "SearchQuery",
     "operationKind": "query",
