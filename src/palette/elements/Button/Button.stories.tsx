@@ -170,8 +170,8 @@ storiesOf("Button", module)
     const [follow, setFollow] = useState(true)
 
     return (
-      <Flex width={400} height={100} alignItems="center" justifyContent="center">
+      <List>
         <FollowButton isFollowed={follow} onPress={() => setFollow((v) => !v)} />
-      </Flex>
+      </List>
     )
   })
