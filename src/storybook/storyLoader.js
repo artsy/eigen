@@ -21,6 +21,7 @@ function loadStories() {
   require("../palette/elements/Tabs/Tabs.stories")
   require("../palette/elements/Header/Header.stories")
   require("../palette/elements/Text/Text.stories")
+  require("../palette/elements/CollapsibleMenuItem/CollapsibleMenuItem.stories")
   require("../palette/space.stories")
 }
 
@@ -43,6 +44,7 @@ const stories = [
   "../palette/elements/Header/Header.stories",
   "../palette/elements/Collapse/Collapse.stories",
   "../palette/elements/Text/Text.stories",
+  "../palette/elements/CollapsibleMenuItem/CollapsibleMenuItem.stories",
   "../palette/space.stories",
 ]
 
