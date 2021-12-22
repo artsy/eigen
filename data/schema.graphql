@@ -1569,6 +1569,13 @@ enum ArtworkAggregation {
   TOTAL
 }
 
+enum ArtworkAttributionClassType {
+  LIMITED_EDITION
+  OPEN_EDITION
+  UNIQUE
+  UNKNOWN_EDITION
+}
+
 # A connection to a list of items.
 type ArtworkConnection implements ArtworkConnectionInterface {
   # A list of edges.
@@ -9051,6 +9058,7 @@ type MyCollectionConnection {
 input MyCollectionCreateArtworkInput {
   artistIds: [String]!
   artworkLocation: String
+  attributionClass: ArtworkAttributionClassType
   category: String
   clientMutationId: String
   costCurrencyCode: String
@@ -9107,6 +9115,7 @@ input MyCollectionUpdateArtworkInput {
   artistIds: [String]
   artworkId: String!
   artworkLocation: String
+  attributionClass: ArtworkAttributionClassType
   category: String
   clientMutationId: String
   costCurrencyCode: String
