@@ -130,7 +130,6 @@ class Header extends React.Component<Props, State> {
     const { gene } = this.props
 
     return (
-      // TODO: Add width={100} to FollowButton. Originally, Button doesn't have a 'width' prop
       <Box mt={15}>
         <FollowButton block isFollowed={!!gene.isFollowed} onPress={() => this.handleFollowChange()} />
       </Box>
