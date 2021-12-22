@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { DateTime } from "luxon"
-import { expirationKeyPostfix, LocalImage, metadataKey, retrieveLocalImage, storeLocalImage } from "./LocalImageStore"
+import { LocalImage, retrieveLocalImage, storeLocalImage } from "./LocalImageStore"
 
 describe("LocalImageStore", () => {
   const dateNow = Date.now
@@ -40,9 +40,12 @@ describe("LocalImageStore", () => {
       height: 10,
     }
     storeLocalImage(image, imageKey)
-    const expirationTime = await AsyncStorage.getItem(metadataKey(imageKey, expirationKeyPostfix))
+    const imageJSON = await AsyncStorage.getItem(imageKey)
+    const parsedImage = JSON.parse(imageJSON!)
+
     const in2mins = DateTime.fromMillis(Date.now()).plus({ minutes: 2 }).toISO()
-    expect(expirationTime).toEqual(in2mins)
+    // tslint:disable-next-line:no-string-literal
+    expect(parsedImage["expirationDate"]).toEqual(in2mins)
   })
 
   it("does not return expired images", async () => {

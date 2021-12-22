@@ -1,81 +1,65 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { DateTime } from "luxon"
-
-export const expirationKeyPostfix = "EXPIRATION_TIME"
-export const widthKeyPostfix = "WIDTH"
-export const heightKeyPostfix = "HEIGHT"
 export interface LocalImage {
   path: string
   width: number
   height: number
 }
 
+interface Expirable {
+  expirationDate: string
+}
+
+type StoredImage = LocalImage & Expirable
+
 export const storeLocalImage = (image: LocalImage, key: string): Promise<void> => {
   const expirationDate = DateTime.fromMillis(Date.now()).plus({ minutes: 2 }).toISO()
-  return AsyncStorage.multiSet([
-    [key, image.path],
-    [metadataKey(key, expirationKeyPostfix), expirationDate],
-    [metadataKey(key, heightKeyPostfix), image.height.toString()],
-    [metadataKey(key, widthKeyPostfix), image.width.toString()],
-  ])
+  const imageToStore: StoredImage = {
+    expirationDate,
+    path: image.path,
+    height: image.height,
+    width: image.width,
+  }
+  const serializedImage = JSON.stringify(imageToStore)
+  return AsyncStorage.setItem(key, serializedImage)
 }
 
 export const deleteLocalImage = (key: string): Promise<void> => {
-  return AsyncStorage.multiRemove([
-    key,
-    metadataKey(key, expirationKeyPostfix),
-    metadataKey(key, heightKeyPostfix),
-    metadataKey(key, widthKeyPostfix),
-  ])
-}
-
-export const metadataKey = (key: string, postfix: string) => {
-  return key + "_" + postfix
+  return AsyncStorage.removeItem(key)
 }
 
 export const retrieveLocalImage = async (key: string, currentTime: number = Date.now()): Promise<LocalImage | null> => {
   return new Promise(async (resolve) => {
-    const [imagePathArr, expirationTimeArr, heightArr, widthArr] = await AsyncStorage.multiGet([
-      key,
-      metadataKey(key, expirationKeyPostfix),
-      metadataKey(key, heightKeyPostfix),
-      metadataKey(key, widthKeyPostfix),
-    ])
-    if (
-      !imagePathArr ||
-      !expirationTimeArr ||
-      !heightArr ||
-      !widthArr ||
-      imagePathArr.length < 1 ||
-      expirationTimeArr.length < 1 ||
-      heightArr.length < 1 ||
-      widthArr.length < 1
-    ) {
-      resolve(null)
-    }
-    const path = imagePathArr[1]
-    const expirationTime = expirationTimeArr[1]
-    const widthStr = widthArr[1]
-    const heightStr = heightArr[1]
+    const imageJSON = await AsyncStorage.getItem(key)
 
-    if (!path || !expirationTime || !widthStr || !heightStr) {
+    if (!imageJSON) {
       resolve(null)
+      return
     }
 
-    const expirationDate = DateTime.fromISO(expirationTime!).toMillis()
-    const currentDate = currentTime ? currentTime : Date.now()
-
-    if (currentDate > expirationDate) {
+    const image = JSON.parse(imageJSON)
+    if (!image) {
       resolve(null)
+      return
     }
 
-    const width = parseInt(widthStr!, 10)
-    const height = parseInt(heightStr!, 10)
+    if ("expirationDate" in image && "path" in image && "height" in image && "width" in image) {
+      const expirationDate = DateTime.fromISO(image.expirationDate).toMillis()
+      const currentDate = currentTime ? currentTime : Date.now()
+      if (currentDate > expirationDate) {
+        resolve(null)
+      }
 
-    resolve({
-      path: path!,
-      width,
-      height,
-    })
+      const width = parseInt(image.width, 10)
+      const height = parseInt(image.height, 10)
+
+      resolve({
+        path: image.path,
+        width,
+        height,
+      })
+    } else {
+      resolve(null)
+    }
   })
 }
