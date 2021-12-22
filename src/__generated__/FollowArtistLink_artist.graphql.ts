@@ -4,17 +4,17 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type FollowArtistButton_artist = {
+export type FollowArtistLink_artist = {
     readonly id: string;
     readonly slug: string;
     readonly internalID: string;
     readonly is_followed: boolean | null;
-    readonly " $refType": "FollowArtistButton_artist";
+    readonly " $refType": "FollowArtistLink_artist";
 };
-export type FollowArtistButton_artist$data = FollowArtistButton_artist;
-export type FollowArtistButton_artist$key = {
-    readonly " $data"?: FollowArtistButton_artist$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"FollowArtistButton_artist">;
+export type FollowArtistLink_artist$data = FollowArtistLink_artist;
+export type FollowArtistLink_artist$key = {
+    readonly " $data"?: FollowArtistLink_artist$data | undefined;
+    readonly " $fragmentRefs": FragmentRefs<"FollowArtistLink_artist">;
 };
 
 
@@ -23,7 +23,7 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "FollowArtistButton_artist",
+  "name": "FollowArtistLink_artist",
   "selections": [
     {
       "alias": null,
@@ -57,5 +57,5 @@ const node: ReaderFragment = {
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = '6a89e893f21a7504ee59138e10dcdc8e';
+(node as any).hash = 'e51b02160c9ff7c9c0b7563b09d3cf54';
 export default node;

@@ -2,7 +2,7 @@ import { ContextCard_artwork } from "__generated__/ContextCard_artwork.graphql"
 import { ContextCardFollowMutation } from "__generated__/ContextCardFollowMutation.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import { Box, Button, EntityHeader, Flex, Sans } from "palette"
+import { Box, EntityHeader, Flex, FollowButton, Sans } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -103,17 +103,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
   followButton = (show: Show) => {
     const { isFollowed } = show
 
-    return (
-      <Button
-        variant={isFollowed ? "outline" : "fillDark"}
-        onPress={() => this.handleFollowShow(show)}
-        size="small"
-        longestText="Following"
-        haptic
-      >
-        {isFollowed ? "Following" : "Follow"}
-      </Button>
-    )
+    return <FollowButton haptic isFollowed={!!isFollowed} onPress={() => this.handleFollowShow(show)} />
   }
 
   render() {
