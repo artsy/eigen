@@ -102,7 +102,7 @@ export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries
           <Spacer my={0.5} />
         </TouchableOpacity>
       )}
-      <ReadMore testID="description" textStyle="new" content={artistSeries?.description ?? ""} maxChars={maxChars} />
+      <ReadMore testID="description" content={artistSeries?.description ?? ""} maxChars={maxChars} />
     </View>
   )
 }
