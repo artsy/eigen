@@ -113,6 +113,9 @@ export const ArtworkMetaProps = graphql`
     editionSize
     editionNumber
     height
+    attributionClass {
+      name
+    }
     id
     images {
       isDefault

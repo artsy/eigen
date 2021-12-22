@@ -20,6 +20,9 @@ export type MyCollectionArtworkFullDetails_artwork = {
     readonly editionSize: string | null;
     readonly editionNumber: string | null;
     readonly height: string | null;
+    readonly attributionClass: {
+        readonly name: string | null;
+    } | null;
     readonly id: string;
     readonly images: ReadonlyArray<{
         readonly isDefault: boolean | null;
@@ -162,6 +165,24 @@ return {
       "storageKey": null
     },
     (v1/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "AttributionClass",
+      "kind": "LinkedField",
+      "name": "attributionClass",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "name",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": null,
