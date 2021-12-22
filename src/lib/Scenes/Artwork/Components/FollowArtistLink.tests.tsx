@@ -1,5 +1,5 @@
-import { FollowArtistButtonTestsErrorQueryRawResponse } from "__generated__/FollowArtistButtonTestsErrorQuery.graphql"
-import { FollowArtistButtonTestsQueryRawResponse } from "__generated__/FollowArtistButtonTestsQuery.graphql"
+import { FollowArtistLinkTestsErrorQueryRawResponse } from "__generated__/FollowArtistLinkTestsErrorQuery.graphql"
+import { FollowArtistLinkTestsQueryRawResponse } from "__generated__/FollowArtistLinkTestsQuery.graphql"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
@@ -9,19 +9,19 @@ import { Theme } from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { graphql, RelayProp } from "react-relay"
-import { FollowArtistButton, FollowArtistButtonFragmentContainer } from "./FollowArtistButton"
+import { FollowArtistLink, FollowArtistLinkFragmentContainer } from "./FollowArtistLink"
 
 jest.unmock("react-relay")
 
-describe("FollowArtistButton", () => {
+describe("FollowArtistLink", () => {
   it("renders button text correctly", () => {
     const component = mount(
       <GlobalStoreProvider>
         <Theme>
-          <FollowArtistButton
+          <FollowArtistLink
             relay={{ environment: {} } as RelayProp}
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            artist={followArtistButtonArtist}
+            artist={followArtistLinkArtist}
           />
         </Theme>
       </GlobalStoreProvider>
@@ -38,106 +38,106 @@ describe("FollowArtistButton", () => {
         Component: (props: any) => (
           <GlobalStoreProvider>
             <Theme>
-              <FollowArtistButtonFragmentContainer {...props} />
+              <FollowArtistLinkFragmentContainer {...props} />
             </Theme>
           </GlobalStoreProvider>
         ),
         query: graphql`
-          query FollowArtistButtonTestsQuery @raw_response_type {
+          query FollowArtistLinkTestsQuery @raw_response_type {
             artist(id: "artistID") {
-              ...FollowArtistButton_artist
+              ...FollowArtistLink_artist
             }
           }
         `,
-        mockData: { artist: mockArtistData } as FollowArtistButtonTestsQueryRawResponse,
+        mockData: { artist: mockArtistData } as FollowArtistLinkTestsQueryRawResponse,
         mockMutationResults: { followArtist: mockFollowResults },
       })
     }
 
     it("correctly displays when the artist is already followed, and allows unfollowing", async () => {
-      const followArtistButtonArtistFollowed = {
-        ...followArtistButtonArtist,
+      const followArtistLinkArtistFollowed = {
+        ...followArtistLinkArtist,
         is_followed: true,
       }
 
       const unfollowResponse = {
         artist: {
-          id: followArtistButtonArtist.id,
+          id: followArtistLinkArtist.id,
           is_followed: false,
         },
       }
 
-      const followArtistButton = await getWrapper({
-        mockArtistData: followArtistButtonArtistFollowed,
+      const followArtistLink = await getWrapper({
+        mockArtistData: followArtistLinkArtistFollowed,
         mockFollowResults: unfollowResponse,
       })
 
-      const followButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
+      const followButton = followArtistLink.find(TouchableWithoutFeedback).at(0)
       expect(followButton.text()).toMatchInlineSnapshot(`"Following"`)
 
-      await followArtistButton.find(TouchableWithoutFeedback).at(0).props().onPress()
+      await followArtistLink.find(TouchableWithoutFeedback).at(0).props().onPress()
 
       await flushPromiseQueue()
-      followArtistButton.update()
+      followArtistLink.update()
 
-      const updatedFollowButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
+      const updatedFollowButton = followArtistLink.find(TouchableWithoutFeedback).at(0)
       expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Follow"`)
     })
 
     it("correctly displays when the work is not followed, and allows following", async () => {
-      const followResponse = { artist: { id: followArtistButtonArtist.id, is_followed: true } }
+      const followResponse = { artist: { id: followArtistLinkArtist.id, is_followed: true } }
 
-      const followArtistButton = await getWrapper({
-        mockArtistData: followArtistButtonArtist,
+      const followArtistLink = await getWrapper({
+        mockArtistData: followArtistLinkArtist,
         mockFollowResults: followResponse,
       })
 
-      const followButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
+      const followButton = followArtistLink.find(TouchableWithoutFeedback).at(0)
       expect(followButton.text()).toMatchInlineSnapshot(`"Follow"`)
 
-      await followArtistButton.find(TouchableWithoutFeedback).at(0).props().onPress()
+      await followArtistLink.find(TouchableWithoutFeedback).at(0).props().onPress()
 
       await flushPromiseQueue()
-      followArtistButton.update()
+      followArtistLink.update()
 
-      const updatedFollowButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
+      const updatedFollowButton = followArtistLink.find(TouchableWithoutFeedback).at(0)
       expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Following"`)
     })
 
     // TODO Update once we can use relay's new facilities for testing
     xit("handles errors in saving gracefully", async () => {
-      const followArtistButton = await renderRelayTree({
-        Component: FollowArtistButtonFragmentContainer,
+      const followArtistLink = await renderRelayTree({
+        Component: FollowArtistLinkFragmentContainer,
         query: graphql`
-          query FollowArtistButtonTestsErrorQuery @raw_response_type {
+          query FollowArtistLinkTestsErrorQuery @raw_response_type {
             artist(id: "artistID") {
-              ...FollowArtistButton_artist
+              ...FollowArtistLink_artist
             }
           }
         `,
-        mockData: { artist: followArtistButtonArtist } as FollowArtistButtonTestsErrorQueryRawResponse,
+        mockData: { artist: followArtistLinkArtist } as FollowArtistLinkTestsErrorQueryRawResponse,
         mockMutationResults: {
-          FollowArtistButtonFragmentContainer: () => {
+          FollowArtistLinkFragmentContainer: () => {
             return Promise.reject(new Error("failed to fetch"))
           },
         },
       })
 
-      const followButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
+      const followButton = followArtistLink.find(TouchableWithoutFeedback).at(0)
       expect(followButton.text()).toMatchInlineSnapshot(`"Follow"`)
 
-      await followArtistButton.find(TouchableWithoutFeedback).at(0).props().onPress()
+      await followArtistLink.find(TouchableWithoutFeedback).at(0).props().onPress()
 
       await flushPromiseQueue()
-      followArtistButton.update()
+      followArtistLink.update()
 
-      const updatedFollowButton = followArtistButton.find(TouchableWithoutFeedback).at(0)
+      const updatedFollowButton = followArtistLink.find(TouchableWithoutFeedback).at(0)
       expect(updatedFollowButton.text()).toMatchInlineSnapshot(`"Follow"`)
     })
   })
 })
 
-const followArtistButtonArtist = {
+const followArtistLinkArtist = {
   id: "12345",
   slug: "andy-warhol",
   internalID: "12345",
