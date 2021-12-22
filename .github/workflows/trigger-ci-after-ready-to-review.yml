@@ -1,6 +1,6 @@
 # CircleCI doesn't automatically run builds after a draft PR is marked "ready for review"
 # so this is a github action to force it to do so.
-name: Cross-CI Trigger CI after "Draft" -> "Ready for Review"
+name: ZZ-Cross-CI Trigger CI after "Draft" -> "Ready for Review"
 
 on:
   pull_request:
