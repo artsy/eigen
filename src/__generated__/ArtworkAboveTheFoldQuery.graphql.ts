@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c3b5c62489fd4054b8b286bc2feaaadc */
+/* @relayHash fd6f62aaa081631708ba9be39dbccedd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -127,7 +127,7 @@ fragment ArtworkTombstone_artwork on Artwork {
   artists {
     name
     href
-    ...FollowArtistButton_artist
+    ...FollowArtistLink_artist
     id
   }
   dimensions {
@@ -361,7 +361,7 @@ fragment CommercialPartnerInformation_artwork on Artwork {
   }
 }
 
-fragment FollowArtistButton_artist on Artist {
+fragment FollowArtistLink_artist on Artist {
   id
   slug
   internalID
@@ -1362,7 +1362,7 @@ return {
     ]
   },
   "params": {
-    "id": "c3b5c62489fd4054b8b286bc2feaaadc",
+    "id": "fd6f62aaa081631708ba9be39dbccedd",
     "metadata": {},
     "name": "ArtworkAboveTheFoldQuery",
     "operationKind": "query",

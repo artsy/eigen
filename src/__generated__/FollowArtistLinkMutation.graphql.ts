@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7e259ce40d6cc7ef866f7905023fb82f */
+/* @relayHash 2429a78fffc06f3861cfecb20d89ee35 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowArtistInput = {
@@ -9,10 +9,10 @@ export type FollowArtistInput = {
     clientMutationId?: string | null | undefined;
     unfollow?: boolean | null | undefined;
 };
-export type FollowArtistButtonMutationVariables = {
+export type FollowArtistLinkMutationVariables = {
     input: FollowArtistInput;
 };
-export type FollowArtistButtonMutationResponse = {
+export type FollowArtistLinkMutationResponse = {
     readonly followArtist: {
         readonly artist: {
             readonly id: string;
@@ -20,15 +20,15 @@ export type FollowArtistButtonMutationResponse = {
         } | null;
     } | null;
 };
-export type FollowArtistButtonMutation = {
-    readonly response: FollowArtistButtonMutationResponse;
-    readonly variables: FollowArtistButtonMutationVariables;
+export type FollowArtistLinkMutation = {
+    readonly response: FollowArtistLinkMutationResponse;
+    readonly variables: FollowArtistLinkMutationVariables;
 };
 
 
 
 /*
-mutation FollowArtistButtonMutation(
+mutation FollowArtistLinkMutation(
   $input: FollowArtistInput!
 ) {
   followArtist(input: $input) {
@@ -97,7 +97,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "FollowArtistButtonMutation",
+    "name": "FollowArtistLinkMutation",
     "selections": (v1/*: any*/),
     "type": "Mutation",
     "abstractKey": null
@@ -106,17 +106,17 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "FollowArtistButtonMutation",
+    "name": "FollowArtistLinkMutation",
     "selections": (v1/*: any*/)
   },
   "params": {
-    "id": "7e259ce40d6cc7ef866f7905023fb82f",
+    "id": "2429a78fffc06f3861cfecb20d89ee35",
     "metadata": {},
-    "name": "FollowArtistButtonMutation",
+    "name": "FollowArtistLinkMutation",
     "operationKind": "mutation",
     "text": null
   }
 };
 })();
-(node as any).hash = '7250e3e343b7c9d57f8828ce57754a7c';
+(node as any).hash = 'a6ba5891075f491cd96bb83dfff07883';
 export default node;
