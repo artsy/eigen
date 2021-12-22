@@ -1,8 +1,9 @@
-import { ChevronIcon, Collapse, Flex, Touchable } from "palette"
+import { ChevronIcon, Collapse, Flex, Text, Touchable } from "palette"
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from "react"
 
 interface CollapsableMenuItemProps {
-  Header: JSX.Element
+  overtitle?: string
+  title: string
   isExpanded?: boolean
   disabled?: boolean
   onExpand?: () => void
@@ -14,7 +15,7 @@ export interface CollapsibleMenuItem {
 }
 
 export const CollapsibleMenuItem = forwardRef<CollapsibleMenuItem, React.PropsWithChildren<CollapsableMenuItemProps>>(
-  ({ children, Header, isExpanded = false, disabled = false, onExpand }, ref) => {
+  ({ children, overtitle, title, isExpanded = false, disabled = false, onExpand }, ref) => {
     const [isOpen, setIsOpen] = useState(false)
 
     useEffect(() => {
@@ -45,11 +46,16 @@ export const CollapsibleMenuItem = forwardRef<CollapsibleMenuItem, React.PropsWi
           }}
           disabled={disabled}
         >
-          <Flex flexDirection="row" justifyContent="space-between" alignItems="flex-start">
-            <Flex maxWidth="90%">{Header}</Flex>
-            <Flex justifyContent="center" pt="25">
-              <ChevronIcon direction={isOpen ? "up" : "down"} fill={disabled ? "black30" : "black60"} />
-            </Flex>
+          {!!overtitle && (
+            <Text variant="sm" color={disabled ? "black30" : "black100"}>
+              {overtitle}
+            </Text>
+          )}
+          <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
+            <Text variant="lg" color={disabled ? "black30" : "black100"}>
+              {title}
+            </Text>
+            <ChevronIcon direction={isOpen ? "up" : "down"} fill={disabled ? "black30" : "black60"} />
           </Flex>
         </Touchable>
         <Collapse open={isOpen}>{children}</Collapse>

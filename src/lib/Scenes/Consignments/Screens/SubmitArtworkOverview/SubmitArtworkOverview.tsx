@@ -1,16 +1,11 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
 import { BackButton } from "lib/navigation/BackButton"
-import { Box, Button, CollapsibleMenuItem, Flex, Join, Separator, Spacer, Text } from "palette"
+import { Button, CollapsibleMenuItem, Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
 
-const CTAButton = ({ onPress, text }: { onPress: () => void; text: string }) => (
-  <Button block haptic maxWidth={540} onPress={onPress}>
-    {text}
-  </Button>
-)
 export const ArtworkDetails = ({ handlePress }: { handlePress: () => void }) => {
   return (
     <Flex backgroundColor="peachpuff" p={1} mt={1}>
@@ -41,47 +36,19 @@ export const ContactInformation = ({ handlePress }: { handlePress: () => void })
   )
 }
 
-const StepTitle = ({
-  stepNumber,
-  totalSteps,
-  title,
-  disabled,
-}: {
-  stepNumber: number
-  totalSteps: number
-  title: string
-  disabled?: boolean
-}) => (
-  <Box>
-    <Text variant="sm" color={disabled ? "black30" : "black100"}>
-      Step {stepNumber} of {totalSteps}
-    </Text>
-    <Text variant="lg" color={disabled ? "black30" : "black100"}>
-      {title}
-    </Text>
-  </Box>
+const CTAButton = ({ onPress, text }: { onPress: () => void; text: string }) => (
+  <Button block haptic maxWidth={540} onPress={onPress}>
+    {text}
+  </Button>
 )
-
-const TOTAL_STEPS = 3
 
 interface SubmitArtworkScreenNavigationProps
   extends StackScreenProps<SubmitArtworkOverviewNavigationStack, "SubmitArtworkScreen"> {}
 
 export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> = ({ navigation }) => {
-  // This is a temporary logic that will be removed later
-  const [validSteps, setValidSteps] = useState([true, ...new Array(TOTAL_STEPS - 1).fill(false)])
-
-  const stepsRefs = useRef<CollapsibleMenuItem[]>(new Array(TOTAL_STEPS).fill(null)).current
-
-  // This will also be removed, it's temporary for the boilerplate
-  const enableStep = (stepIndex: number) => {
-    const newValidSteps = [...validSteps]
-    newValidSteps[stepIndex] = true
-    setValidSteps(newValidSteps)
-  }
-
   const items = [
     {
+      overtitle: "Step 1 of 3",
       title: "Artwork Details",
       Content: (
         <ArtworkDetails
@@ -93,6 +60,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
       ),
     },
     {
+      overtitle: "Step 2 of 3",
       title: "Upload Photos",
       Content: (
         <UploadPhotos
@@ -104,6 +72,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
       ),
     },
     {
+      overtitle: "Step 3 of 3",
       title: "Contact Information",
       Content: (
         <ContactInformation
@@ -115,6 +84,20 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
       ),
     },
   ]
+
+  const TOTAL_STEPS = items.length
+
+  // This is a temporary logic that will be removed later
+  const [validSteps, setValidSteps] = useState([true, ...new Array(TOTAL_STEPS - 1).fill(false)])
+
+  const stepsRefs = useRef<CollapsibleMenuItem[]>(new Array(TOTAL_STEPS).fill(null)).current
+
+  // This will also be removed, it's temporary for the boilerplate
+  const enableStep = (stepIndex: number) => {
+    const newValidSteps = [...validSteps]
+    newValidSteps[stepIndex] = true
+    setValidSteps(newValidSteps)
+  }
 
   const expandCollapsibleMenuContent = (indexToExpand: number) => {
     items.forEach((_, index) => {
@@ -137,14 +120,13 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
       >
         <Spacer mb={3} />
         <Join separator={<Separator my={2} marginTop="40" marginBottom="20" />}>
-          {items.map(({ title, Content }, index) => {
+          {items.map(({ overtitle, title, Content }, index) => {
             const disabled = !validSteps[index]
             return (
               <CollapsibleMenuItem
                 key={index}
-                Header={
-                  <StepTitle stepNumber={index + 1} totalSteps={items.length} title={title} disabled={disabled} />
-                }
+                overtitle={overtitle}
+                title={title}
                 onExpand={() => expandCollapsibleMenuContent(index)}
                 isExpanded={index === 0}
                 disabled={disabled}
