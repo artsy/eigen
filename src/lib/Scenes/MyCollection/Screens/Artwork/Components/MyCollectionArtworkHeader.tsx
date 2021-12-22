@@ -4,8 +4,10 @@ import { navigate } from "lib/navigation/navigate"
 import { Size } from "lib/Scenes/Artwork/Components/ImageCarousel/geometry"
 import { MyCollectionImageView } from "lib/Scenes/MyCollection/Components/MyCollectionImageView"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
+import { useDevToggle } from "lib/store/GlobalStore"
+import { LocalImage, retrieveLocalImage } from "lib/utils/LocalImageStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, Spacer, Text } from "palette"
+import { Button, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
@@ -17,6 +19,7 @@ import {
   hasImagesStillProcessing,
   imageIsProcessing,
   isImage,
+  myCollectionLocalPhotoKey,
 } from "../../ArtworkForm/MyCollectionImageUtil"
 
 interface MyCollectionArtworkHeaderProps {
@@ -33,6 +36,8 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   const formattedTitleAndYear = [title, date].filter(Boolean).join(", ")
 
   const defaultImage = images?.find((i) => i?.isDefault) || (images && images[0])
+
+  const showLocalImages = useDevToggle("DTMyCollectionShowLocalImages")
 
   const { trackEvent } = useTracking()
 
@@ -118,6 +123,25 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
           </Flex>
         )}
       </TouchableOpacity>
+      {!!showLocalImages && (
+        <Button
+          onPress={async () => {
+            const localImage = await retrieveLocalImage(myCollectionLocalPhotoKey(slug, 0))
+            let localImages: LocalImage[] = []
+            if (localImage) {
+              localImages = [localImage]
+            }
+            navigate("/my-collection/local-images", {
+              passProps: {
+                images: localImages,
+              },
+            })
+          }}
+          block
+        >
+          Show Local Images
+        </Button>
+      )}
     </>
   )
 }
