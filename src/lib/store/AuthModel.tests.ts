@@ -335,7 +335,7 @@ describe("AuthModel", () => {
       expect(result).toBe("Please allow the use of email to continue.")
     })
 
-    it("throws an error if user don't have an email", async () => {
+    it("throws an error if user doesn't have an email", async () => {
       ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
         callback(undefined, { name: "name from facebook" })
       })
