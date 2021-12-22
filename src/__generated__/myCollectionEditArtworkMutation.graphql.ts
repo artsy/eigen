@@ -1,14 +1,16 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4f84ee957d3f3ec49580d93b569c57e8 */
+/* @relayHash a8fc53424c8776cc2034168974afe11a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type ArtworkAttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION" | "%future added value";
 export type MyCollectionUpdateArtworkInput = {
     artistIds?: Array<string | null> | null | undefined;
     artworkId: string;
     artworkLocation?: string | null | undefined;
+    attributionClass?: ArtworkAttributionClassType | null | undefined;
     category?: string | null | undefined;
     clientMutationId?: string | null | undefined;
     costCurrencyCode?: string | null | undefined;
@@ -89,6 +91,10 @@ fragment MyCollectionArtwork_sharedProps on Artwork {
   editionSize
   editionNumber
   height
+  attributionClass {
+    name
+    id
+  }
   id
   images {
     isDefault
@@ -361,6 +367,25 @@ return {
                         "storageKey": null
                       },
                       (v5/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "AttributionClass",
+                        "kind": "LinkedField",
+                        "name": "attributionClass",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "name",
+                            "storageKey": null
+                          },
+                          (v4/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
                       (v4/*: any*/),
                       {
                         "alias": null,
@@ -451,7 +476,7 @@ return {
     ]
   },
   "params": {
-    "id": "4f84ee957d3f3ec49580d93b569c57e8",
+    "id": "a8fc53424c8776cc2034168974afe11a",
     "metadata": {},
     "name": "myCollectionEditArtworkMutation",
     "operationKind": "mutation",

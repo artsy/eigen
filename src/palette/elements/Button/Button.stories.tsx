@@ -1,15 +1,24 @@
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
+import { Wrap } from "lib/utils/Wrap"
 import { BellIcon, Box, Flex, LinkIcon, Spacer } from "palette"
 import React, { useState } from "react"
 import { Button as RNButton } from "react-native"
 import { withHooks, withScreenDimensions, withTheme } from "storybook/decorators"
 import { DList, List } from "storybook/helpers"
-import { Button, ButtonProps } from "."
+import { Button, ButtonProps, FollowButton } from "."
 import { _test_DisplayState } from "./Button"
 
 const sizes: Array<ButtonProps["size"]> = ["small", "large"]
-const variants: Array<ButtonProps["variant"]> = ["fillDark", "fillLight", "fillGray", "outline", "text"]
+const variants: Array<ButtonProps["variant"]> = [
+  "fillDark",
+  "fillLight",
+  "fillGray",
+  "outline",
+  "outlineGray",
+  "outlineLight",
+  "text",
+]
 const states: Array<_test_DisplayState | undefined> = [
   undefined,
   _test_DisplayState.Enabled,
@@ -46,9 +55,18 @@ storiesOf("Button", module)
     <DList
       data={variants}
       renderItem={({ item: variant }) => (
-        <Button variant={variant} onPress={() => action(`tapped ${variant}`)}>
-          {variant}
-        </Button>
+        <Wrap
+          if={variant === "outlineLight"}
+          with={(c) => (
+            <Flex backgroundColor="black100" p={10}>
+              {c}
+            </Flex>
+          )}
+        >
+          <Button variant={variant} onPress={() => action(`tapped ${variant}`)}>
+            {variant}
+          </Button>
+        </Wrap>
       )}
     />
   ))
@@ -66,9 +84,18 @@ storiesOf("Button", module)
     <DList
       data={variants}
       renderItem={({ item: variant }) => (
-        <Button variant={variant} disabled onPress={() => action(`tapped ${variant}`)}>
-          {variant}
-        </Button>
+        <Wrap
+          if={variant === "outlineLight"}
+          with={(c) => (
+            <Flex backgroundColor="black100" p={10}>
+              {c}
+            </Flex>
+          )}
+        >
+          <Button variant={variant} disabled onPress={() => action(`tapped ${variant}`)}>
+            {variant}
+          </Button>
+        </Wrap>
       )}
     />
   ))
@@ -137,5 +164,14 @@ storiesOf("Button", module)
           </Button>
         </List>
       </>
+    )
+  })
+  .add("FollowButton", () => {
+    const [follow, setFollow] = useState(true)
+
+    return (
+      <List>
+        <FollowButton isFollowed={follow} onPress={() => setFollow((v) => !v)} />
+      </List>
     )
   })
