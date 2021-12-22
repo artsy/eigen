@@ -93,11 +93,13 @@ export const ComponentWithCollapsibleMenu = () => {
   const [validSteps, setValidSteps] = useState([true, ...new Array(TOTAL_STEPS - 1).fill(false)])
 
   const stepsRefs = useRef<CollapsibleMenuItem[]>(new Array(TOTAL_STEPS).fill(null)).current
+
   const enableStep = (stepIndex: number) => {
     const newValidSteps = [...validSteps]
     newValidSteps[stepIndex] = true
     setValidSteps(newValidSteps)
   }
+
   const expandCollapsibleMenuContent = (indexToExpand: number) => {
     items.forEach((_, index) => {
       if (indexToExpand !== index) {
