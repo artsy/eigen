@@ -13,7 +13,7 @@ export type FollowArtistLink_artist = {
 };
 export type FollowArtistLink_artist$data = FollowArtistLink_artist;
 export type FollowArtistLink_artist$key = {
-    readonly " $data"?: FollowArtistLink_artist$data;
+    readonly " $data"?: FollowArtistLink_artist$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FollowArtistLink_artist">;
 };
 
