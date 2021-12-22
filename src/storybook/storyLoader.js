@@ -42,7 +42,6 @@ const stories = [
   "../palette/elements/Select/Select.stories",
   "../palette/elements/Tabs/Tabs.stories",
   "../palette/elements/Header/Header.stories",
-  "../palette/elements/Collapse/Collapse.stories",
   "../palette/elements/Text/Text.stories",
   "../palette/elements/CollapsibleMenuItem/CollapsibleMenuItem.stories",
   "../palette/space.stories",
