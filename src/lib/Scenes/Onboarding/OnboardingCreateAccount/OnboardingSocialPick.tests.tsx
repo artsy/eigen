@@ -30,7 +30,7 @@ describe("OnboardingSocialPick", () => {
       GlobalStore.actions.auth.authFacebook = jest.fn() as any
 
       const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
-      tree.root.findByProps({ testID: "useFacebook" }).props.onPress()
+      tree.root.findByProps({ testID: "continueWithFacebook" }).props.onPress()
       expect(GlobalStore.actions.auth.authFacebook).toHaveBeenCalledWith({ signInOrUp: "signIn" })
     })
 
@@ -54,7 +54,7 @@ describe("OnboardingSocialPick", () => {
       GlobalStore.actions.auth.authFacebook = jest.fn() as any
 
       const tree = renderWithWrappers(<OnboardingSocialPick mode="signup" />)
-      tree.root.findByProps({ testID: "useFacebook" }).props.onPress()
+      tree.root.findByProps({ testID: "continueWithFacebook" }).props.onPress()
       expect(GlobalStore.actions.auth.authFacebook).toHaveBeenCalledWith({
         agreedToReceiveEmails: true,
         signInOrUp: "signUp",
