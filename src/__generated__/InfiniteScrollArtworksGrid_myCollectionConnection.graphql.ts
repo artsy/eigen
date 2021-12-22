@@ -23,6 +23,12 @@ export type InfiniteScrollArtworksGrid_myCollectionConnection = {
                 readonly internalID: string;
                 readonly name: string | null;
             } | null;
+            readonly pricePaid: {
+                readonly minor: number;
+            } | null;
+            readonly sizeBucket: string | null;
+            readonly width: string | null;
+            readonly height: string | null;
             readonly date: string | null;
             readonly " $fragmentRefs": FragmentRefs<"ArtworkGridItem_artwork" | "MyCollectionArtworkListItem_artwork">;
         } | null;
@@ -171,6 +177,45 @@ const node: ReaderFragment = {
             {
               "alias": null,
               "args": null,
+              "concreteType": "Money",
+              "kind": "LinkedField",
+              "name": "pricePaid",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "minor",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "sizeBucket",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "width",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "height",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
               "kind": "ScalarField",
               "name": "date",
               "storageKey": null
@@ -202,5 +247,5 @@ const node: ReaderFragment = {
   "type": "MyCollectionConnection",
   "abstractKey": null
 };
-(node as any).hash = '084064e1bd6cb0169414d3e90df9b1f1';
+(node as any).hash = '84cd227c4b6e3878aaf95088b2698ee8';
 export default node;

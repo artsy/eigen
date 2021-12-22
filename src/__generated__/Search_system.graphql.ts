@@ -11,6 +11,7 @@ export type Search_system = {
         readonly indices: ReadonlyArray<{
             readonly name: string;
             readonly displayName: string;
+            readonly key: string;
         }>;
     } | null;
     readonly __typename: "System";
@@ -80,6 +81,13 @@ const node: ReaderFragment = {
               "kind": "ScalarField",
               "name": "displayName",
               "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "key",
+              "storageKey": null
             }
           ],
           "storageKey": null
@@ -91,5 +99,5 @@ const node: ReaderFragment = {
   "type": "System",
   "abstractKey": null
 };
-(node as any).hash = '67588aa7b61cd324b890201211f9107f';
+(node as any).hash = '4b9c8adf82c5924e26b3f838a410f4b4';
 export default node;

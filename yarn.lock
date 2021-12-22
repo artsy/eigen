@@ -5921,9 +5921,9 @@ argparse@2.0.1:
   integrity sha512-8+9WqebbFzpX9OR+Wa6O29asIogeRMzcGtAINdpMHHyAg10f05aSFVBbcEqGf/PXw1EjAZ+q2/bEBg3DvurK3Q==
 
 argparse@^1.0.7:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/argparse/-/argparse-1.0.9.tgz#73d83bc263f86e97f8cc4f6bae1b0e90a7d22c86"
-  integrity sha1-c9g7wmP4bpf4zE9rrhsOkKfSLIY=
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/argparse/-/argparse-1.0.10.tgz#bcd6791ea5ae09725e17e5ad988134cd40b3d911"
+  integrity sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==
   dependencies:
     sprintf-js "~1.0.2"
 
@@ -9341,12 +9341,7 @@ eslint-scope@^4.0.3:
     esrecurse "^4.1.0"
     estraverse "^4.1.1"
 
-esprima@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.0.tgz#4499eddcd1110e0b218bacf2fa7f7f59f55ca804"
-  integrity sha512-oftTcaMu/EGrEIu904mWteKIv8vMuOgGYo7EhVJJN00R/EED9DCua/xxHRdYnKtcECzVg7xOWhflvJMnqcFZjw==
-
-esprima@^4.0.1:
+esprima@^4.0.0, esprima@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/esprima/-/esprima-4.0.1.tgz#13b04cdb3e6c5d19df91ab6987a8695619b0aa71"
   integrity sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==
@@ -10862,9 +10857,9 @@ homedir-polyfill@^1.0.0, homedir-polyfill@^1.0.1:
     parse-passwd "^1.0.0"
 
 hosted-git-info@^2.1.4:
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.7.1.tgz#97f236977bd6e125408930ff6de3eec6281ec047"
-  integrity sha512-7T/BxH19zbcCTa8XkMlbK5lTo1WtgkFi3GvdWEyNuc4Vex7/9Dqbnpsf4JMydcfj9HCg4zUWFTL3Za6lapg5/w==
+  version "2.8.9"
+  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.8.9.tgz#dffc0bf9a21c02209090f2aa69429e1414daf3f9"
+  integrity sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==
 
 html-element-map@^1.0.0:
   version "1.0.0"
@@ -12593,18 +12588,10 @@ js-tokens@^3.0.0, js-tokens@^3.0.2:
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
   integrity sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==
 
-js-yaml@^3.13.1:
-  version "3.13.1"
-  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.13.1.tgz#aff151b30bfdfa8e49e05da22e7415e9dfa37847"
-  integrity sha512-YfbcO7jXDdyj0DGxYVSlSeQNHbD7XPWvrVWeVUujrQEoZzWJIRrCPoyk6kL6IAjAG2IolMK4T0hNUe0HOUs5Jw==
-  dependencies:
-    argparse "^1.0.7"
-    esprima "^4.0.0"
-
-js-yaml@^3.7.0, js-yaml@^3.9.0:
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.10.0.tgz#2e78441646bd4682e963f22b6e92823c309c62dc"
-  integrity sha512-O2v52ffjLa9VeM43J4XocZE//WT9N0IiwDa3KSHH7Tu8CtH+1qM8SIZvnsTh6v+4yFy5KUY3BHUVwjpfAWsjIA==
+js-yaml@^3.13.1, js-yaml@^3.7.0, js-yaml@^3.9.0:
+  version "3.14.1"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.14.1.tgz#dae812fdb3825fa306609a8717383c50c36a0537"
+  integrity sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g==
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
@@ -20103,9 +20090,9 @@ xtend@~4.0.0, xtend@~4.0.1:
   integrity sha1-pcbVMr5lbiPbgg77lDofBJmNY68=
 
 y18n@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/y18n/-/y18n-4.0.0.tgz#95ef94f85ecc81d007c264e190a120f0a3c8566b"
-  integrity sha512-r9S/ZyXu/Xu9q1tYlpsLIsa3EeLXXk0VwlxqTcFRfg9EhMW+17kbt9G0NrgCmhGb5vT2hyhJZLfDGx+7+5Uj/w==
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/y18n/-/y18n-4.0.3.tgz#b5f259c82cd6e336921efd7bfd8bf560de9eeedf"
+  integrity sha512-JKhqTOwSrqNA1NY5lSztJ1GrBiUodLMmIZuLiDaMRJ+itFd+ABVE8XBjOvIWL+rSqNDC74LCSFmlb/U4UZ4hJQ==
 
 yallist@^2.1.2:
   version "2.1.2"
