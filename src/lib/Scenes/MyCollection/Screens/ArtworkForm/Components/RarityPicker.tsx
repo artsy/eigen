@@ -22,7 +22,7 @@ export const RarityPicker: React.FC = () => {
         placeholder="Select"
         options={artworkRarityClassifications}
       />
-      {formik.values.attributionClass === "Limited Edition" ? (
+      {formik.values.attributionClass === "LIMITED_EDITION" ? (
         <Flex flexDirection="row" mt={2}>
           <Flex flex={1}>
             <Input

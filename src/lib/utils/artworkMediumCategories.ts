@@ -22,8 +22,8 @@ export const artworkMediumCategories: Medium[] = [
 ]
 
 export const artworkRarityClassifications: Medium[] = [
-  { label: "Unique", value: "Unique" },
-  { label: "Limited Edition", value: "Limited Edition" },
-  { label: "Open Edition", value: "Open Edition" },
-  { label: "Unknown edition", value: "Unknown edition" },
+  { label: "Unique", value: "UNIQUE" },
+  { label: "Limited Edition", value: "LIMITED_EDITION" },
+  { label: "Open Edition", value: "OPEN_EDITION" },
+  { label: "Unknown edition", value: "UNKNOWN_EDITION" },
 ]
