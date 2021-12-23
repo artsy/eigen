@@ -33,158 +33,20 @@
                                                                       @"name" : name }];
 }
 
-+ (void)stubAndLoginWithUsername
++ (void)stubAndSetupUser
 {
     [self stubAccessToken:[ARUserManager stubAccessToken] expiresIn:[ARUserManager stubAccessTokenExpiresIn]];
     [self stubMe:[ARUserManager stubUserID] email:[ARUserManager stubUserEmail] name:[ARUserManager stubUserName]];
 
-    [self stubbedLoginWithUsername:[ARUserManager stubUserEmail]
-                          password:[ARUserManager stubUserPassword]
-            successWithCredentials:nil
-                           gotUser:nil
-             authenticationFailure:nil
-                    networkFailure:nil];
+    [self stubbedSetupUser:[ARUserManager stubUserEmail]];
 }
 
-+ (void)stubbedLoginWithUsername:(NSString *)username password:(NSString *)password
-          successWithCredentials:(void (^)(NSString *accessToken, NSDate *expirationDate))credentials
-                         gotUser:(void (^)(User *currentUser))success
-           authenticationFailure:(void (^)(NSError *error))authFail
-                  networkFailure:(void (^)(NSError *error))networkFailure
++ (void)stubbedSetupUser:(NSString *)username
 {
     [[SDWebImageManager sharedManager] cancelAll];
-
-    __block BOOL done = NO;
-    [[ARUserManager sharedManager]
-        loginWithUsername:[ARUserManager stubUserEmail]
-        password:[ARUserManager stubUserPassword]
-        successWithCredentials:^(NSString *accessToken, NSDate *tokenExpiryDate) {
-         if (credentials) {
-             credentials(accessToken, tokenExpiryDate);
-         }
-        }
-        gotUser:^(User *currentUser) {
-         if (success) {
-             success(currentUser);
-         }
-             done = YES;
-        }
-        authenticationFailure:^(NSError *error) {
-         if (authFail) {
-             authFail(error);
-         }
-         done = YES;
-        }
-        networkFailure:^(NSError *error) {
-         if (networkFailure) {
-             networkFailure(error);
-         }
-         done = YES;
-        }];
-
-    while (!done) {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-    }
+    [[ARUserManager sharedManager] testOnly_setupUser:[ARUserManager stubUserEmail]];
 }
 
-+ (void)stubAndLoginWithFacebookToken
-{
-    [self stubAccessToken:[ARUserManager stubAccessToken] expiresIn:[ARUserManager stubAccessTokenExpiresIn]];
-    [self stubMe:[ARUserManager stubUserID] email:[ARUserManager stubUserEmail] name:[ARUserManager stubUserName]];
-
-    [self stubbedLoginWithFacebookToken:@"facebok token"
-                 successWithCredentials:nil
-                                gotUser:nil
-                  authenticationFailure:nil
-                         networkFailure:nil];
-}
-
-+ (void)stubbedLoginWithFacebookToken:(NSString *)token
-               successWithCredentials:(void (^)(NSString *, NSDate *))credentials
-                              gotUser:(void (^)(User *))success
-                authenticationFailure:(void (^)(NSError *error))authFail
-                       networkFailure:(void (^)(NSError *))networkFailure
-{
-    __block BOOL done = NO;
-    [[ARUserManager sharedManager]
-        loginWithFacebookToken:token
-        successWithCredentials:^(NSString *accessToken, NSDate *tokenExpiryDate) {
-        if (credentials) {
-            credentials(accessToken, tokenExpiryDate);
-        }
-        }
-        gotUser:^(User *currentUser) {
-         if (success) {
-             success(currentUser);
-         }
-         done = YES;
-        }
-        authenticationFailure:^(NSError *error) {
-        if (authFail) {
-            authFail(error);
-        }
-        done = YES;
-        }
-        networkFailure:^(NSError *error) {
-         if (networkFailure) {
-             networkFailure(error);
-         }
-         done = YES;
-        }];
-
-    while (!done) {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-    }
-}
-
-+ (void)stubAndLoginWithAppleUID {
-    [self stubAccessToken:[ARUserManager stubAccessToken] expiresIn:[ARUserManager stubAccessTokenExpiresIn]];
-    [self stubMe:[ARUserManager stubUserID] email:[ARUserManager stubUserEmail] name:[ARUserManager stubUserName]];
-    [self stubbedLoginWithAppleUID:@"apple.uid"
-            successWithCredentials:nil
-                           gotUser:nil
-             authenticationFailure:nil
-                    networkFailure:nil];
-}
-
-+ (void)stubbedLoginWithAppleUID:(NSString *)appleUID
-               successWithCredentials:(void (^)(NSString *, NSDate *))credentials
-                              gotUser:(void (^)(User *))success
-                authenticationFailure:(void (^)(NSError *error))authFail
-                       networkFailure:(void (^)(NSError *))networkFailure
-{
-    __block BOOL done = NO;
-    [[ARUserManager sharedManager]
-        loginWithAppleUID:appleUID
-                  idToken:@"some-token"
-        successWithCredentials:^(NSString *accessToken, NSDate *tokenExpiryDate) {
-        if (credentials) {
-            credentials(accessToken, tokenExpiryDate);
-        }
-        }
-        gotUser:^(User *currentUser) {
-         if (success) {
-             success(currentUser);
-         }
-         done = YES;
-        }
-        authenticationFailure:^(NSError *error) {
-        if (authFail) {
-            authFail(error);
-        }
-        done = YES;
-        }
-        networkFailure:^(NSError *error) {
-         if (networkFailure) {
-             networkFailure(error);
-         }
-         done = YES;
-        }];
-
-    while (!done) {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-    }
-}
 
 #pragma mark -
 #pragma mark Utilities

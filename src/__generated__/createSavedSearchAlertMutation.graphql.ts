@@ -4,35 +4,34 @@
 /* @relayHash 8da0f987b20732772166f198dbc586b0 */
 
 import { ConcreteRequest } from "relay-runtime";
-export type ArtworkSizes = "LARGE" | "MEDIUM" | "SMALL" | "%future added value";
 export type CreateSavedSearchInput = {
     attributes: SearchCriteriaAttributes;
-    clientMutationId?: string | null;
-    userAlertSettings?: UserAlertSettingsInput | null;
+    clientMutationId?: string | null | undefined;
+    userAlertSettings?: UserAlertSettingsInput | null | undefined;
 };
 export type SearchCriteriaAttributes = {
-    acquireable?: boolean | null;
-    additionalGeneIDs?: Array<string> | null;
-    artistID?: string | null;
-    atAuction?: boolean | null;
-    attributionClass?: Array<string> | null;
-    colors?: Array<string> | null;
-    dimensionRange?: string | null;
-    height?: string | null;
-    inquireableOnly?: boolean | null;
-    locationCities?: Array<string> | null;
-    majorPeriods?: Array<string> | null;
-    materialsTerms?: Array<string> | null;
-    offerable?: boolean | null;
-    partnerIDs?: Array<string> | null;
-    priceRange?: string | null;
-    sizes?: Array<ArtworkSizes | null> | null;
-    width?: string | null;
+    acquireable?: boolean | null | undefined;
+    additionalGeneIDs?: Array<string> | null | undefined;
+    artistID?: string | null | undefined;
+    atAuction?: boolean | null | undefined;
+    attributionClass?: Array<string> | null | undefined;
+    colors?: Array<string> | null | undefined;
+    dimensionRange?: string | null | undefined;
+    height?: string | null | undefined;
+    inquireableOnly?: boolean | null | undefined;
+    locationCities?: Array<string> | null | undefined;
+    majorPeriods?: Array<string> | null | undefined;
+    materialsTerms?: Array<string> | null | undefined;
+    offerable?: boolean | null | undefined;
+    partnerIDs?: Array<string> | null | undefined;
+    priceRange?: string | null | undefined;
+    sizes?: Array<string> | null | undefined;
+    width?: string | null | undefined;
 };
 export type UserAlertSettingsInput = {
-    email?: boolean | null;
-    name?: string | null;
-    push?: boolean | null;
+    email?: boolean | null | undefined;
+    name?: string | null | undefined;
+    push?: boolean | null | undefined;
 };
 export type createSavedSearchAlertMutationVariables = {
     input: CreateSavedSearchInput;
@@ -40,7 +39,7 @@ export type createSavedSearchAlertMutationVariables = {
 export type createSavedSearchAlertMutationResponse = {
     readonly createSavedSearch: {
         readonly savedSearchOrErrors: {
-            readonly internalID?: string;
+            readonly internalID?: string | undefined;
         };
     } | null;
 };

@@ -5,9 +5,9 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type FollowGeneInput = {
-    clientMutationId?: string | null;
-    geneID?: string | null;
-    unfollow?: boolean | null;
+    clientMutationId?: string | null | undefined;
+    geneID?: string | null | undefined;
+    unfollow?: boolean | null | undefined;
 };
 export type HeaderFollowGeneMutationVariables = {
     input: FollowGeneInput;

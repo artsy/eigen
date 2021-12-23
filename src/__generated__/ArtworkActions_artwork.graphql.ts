@@ -28,7 +28,7 @@ export type ArtworkActions_artwork = {
 };
 export type ArtworkActions_artwork$data = ArtworkActions_artwork;
 export type ArtworkActions_artwork$key = {
-    readonly " $data"?: ArtworkActions_artwork$data;
+    readonly " $data"?: ArtworkActions_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkActions_artwork">;
 };
 

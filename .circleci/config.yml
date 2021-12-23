@@ -1,8 +1,8 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@4.9.0
-  queue: eddiewebb/queue@1.0.110
+  node: circleci/node@5.0.0
+  queue: eddiewebb/queue@1.6.4
   horizon: artsy/release@0.0.1
 
 commands:
@@ -15,7 +15,6 @@ commands:
       - queue/until_front_of_line:
           time: "30" # how long a queue will wait until the job exits
           only-on-branch: <<parameters.branch>> # restrict queueing to a specific branch (default *)
-          consider-job: false # block whole workflow if any job still running
   install-node:
     steps:
       - run:
@@ -276,7 +275,6 @@ jobs:
           name: Check flags
           command: ./scripts/biweekly-flag-check.sh
 
-
   check-metaphysics-freshness:
     executor:
       name: node/default
@@ -309,6 +307,7 @@ jobs:
     executor:
       name: node/default
       tag: "14.17.1"
+    resource_class: large
     steps:
       - checkout
       - generate-checksums
@@ -415,6 +414,7 @@ jobs:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
     docker:
       - image: circleci/android:api-29-node
+    resource_class: large
     steps:
       - prep-android-env
       - await-previous-builds:
@@ -423,6 +423,11 @@ jobs:
       - run:
           name: Save success file
           command: echo yes > 'build-success.log'
+
+      - store_artifacts:
+          path: android/app/build/reports
+          prefix: android-build
+
       - save_cache:
           key: v6-test-success-{{ checksum "../workspace/.manifests/android_native" }}
           paths:
@@ -487,7 +492,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
     jobs:
       - deploy-nightly-beta
 
@@ -498,7 +503,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
     jobs:
       - check-flags
 
@@ -509,7 +514,7 @@ workflows:
   #         filters:
   #           branches:
   #             only:
-  #               - master
+  #               - main
   #   jobs:
   #     - check-metaphysics-freshness
 
@@ -519,7 +524,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
   promote:
     jobs:
       - promote-beta-to-app-store:
@@ -539,14 +544,14 @@ workflows:
           filters:
             branches:
               ignore:
-                - master
+                - main
                 - release
                 - staging
       - check-pr:
           filters:
             branches:
               ignore:
-                - master
+                - main
                 - beta-ios
                 - beta-android
                 - app_store_submission

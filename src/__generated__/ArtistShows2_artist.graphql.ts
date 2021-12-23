@@ -19,7 +19,7 @@ export type ArtistShows2_artist = {
 };
 export type ArtistShows2_artist$data = ArtistShows2_artist;
 export type ArtistShows2_artist$key = {
-    readonly " $data"?: ArtistShows2_artist$data;
+    readonly " $data"?: ArtistShows2_artist$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtistShows2_artist">;
 };
 

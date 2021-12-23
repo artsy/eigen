@@ -32,7 +32,7 @@ export type BuyNowArtworksRail_sale = {
 };
 export type BuyNowArtworksRail_sale$data = BuyNowArtworksRail_sale;
 export type BuyNowArtworksRail_sale$key = {
-    readonly " $data"?: BuyNowArtworksRail_sale$data;
+    readonly " $data"?: BuyNowArtworksRail_sale$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"BuyNowArtworksRail_sale">;
 };
 

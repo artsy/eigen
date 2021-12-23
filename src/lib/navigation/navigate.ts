@@ -6,6 +6,7 @@ import { __unsafe_switchTab } from "lib/NativeModules/ARScreenPresenterModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import { GlobalStore, unsafe__getSelectedTab } from "lib/store/GlobalStore"
+import { propsStore } from "lib/store/PropsStore"
 import { postEventToProviders } from "lib/utils/track/providers"
 import { Linking, Platform } from "react-native"
 import { matchRoute } from "./routes"
@@ -63,6 +64,9 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     },
     ...module.options,
   }
+
+  // Set props which we will reinject later. See HACKS.md
+  propsStore.setPendingProps(screenDescriptor.moduleName, screenDescriptor.props)
 
   if (presentModally) {
     LegacyNativeModules.ARScreenPresenterModule.presentModal(screenDescriptor)
@@ -158,6 +162,10 @@ export function goBack() {
 
 export function popParentViewController() {
   LegacyNativeModules.ARScreenPresenterModule.popStack(unsafe__getSelectedTab())
+}
+
+export function popToRoot() {
+  LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(unsafe__getSelectedTab())
 }
 
 export enum EntityType {

@@ -17,7 +17,7 @@ export type OrderHistory_me = {
 };
 export type OrderHistory_me$data = OrderHistory_me;
 export type OrderHistory_me$key = {
-    readonly " $data"?: OrderHistory_me$data;
+    readonly " $data"?: OrderHistory_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"OrderHistory_me">;
 };
 

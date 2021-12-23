@@ -6,8 +6,8 @@
 import { ConcreteRequest } from "relay-runtime";
 export type FollowArtistInput = {
     artistID: string;
-    clientMutationId?: string | null;
-    unfollow?: boolean | null;
+    clientMutationId?: string | null | undefined;
+    unfollow?: boolean | null | undefined;
 };
 export type ArtistRailFollowMutationVariables = {
     input: FollowArtistInput;

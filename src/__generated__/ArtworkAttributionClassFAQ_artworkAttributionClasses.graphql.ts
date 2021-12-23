@@ -11,7 +11,7 @@ export type ArtworkAttributionClassFAQ_artworkAttributionClasses = ReadonlyArray
 }>;
 export type ArtworkAttributionClassFAQ_artworkAttributionClasses$data = ArtworkAttributionClassFAQ_artworkAttributionClasses;
 export type ArtworkAttributionClassFAQ_artworkAttributionClasses$key = ReadonlyArray<{
-    readonly " $data"?: ArtworkAttributionClassFAQ_artworkAttributionClasses$data;
+    readonly " $data"?: ArtworkAttributionClassFAQ_artworkAttributionClasses$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkAttributionClassFAQ_artworkAttributionClasses">;
 }>;
 

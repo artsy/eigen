@@ -38,7 +38,7 @@ export type ArtworkGridItem_artwork = {
 };
 export type ArtworkGridItem_artwork$data = ArtworkGridItem_artwork;
 export type ArtworkGridItem_artwork$key = {
-    readonly " $data"?: ArtworkGridItem_artwork$data;
+    readonly " $data"?: ArtworkGridItem_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkGridItem_artwork">;
 };
 

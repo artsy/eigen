@@ -32,7 +32,7 @@ export type SoldBySection_soldBy = {
 };
 export type SoldBySection_soldBy$data = SoldBySection_soldBy;
 export type SoldBySection_soldBy$key = {
-    readonly " $data"?: SoldBySection_soldBy$data;
+    readonly " $data"?: SoldBySection_soldBy$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SoldBySection_soldBy">;
 };
 

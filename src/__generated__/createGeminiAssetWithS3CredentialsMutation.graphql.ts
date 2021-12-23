@@ -5,7 +5,7 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type CreateGeminiEntryForAssetInput = {
-    clientMutationId?: string | null;
+    clientMutationId?: string | null | undefined;
     metadata: unknown;
     sourceBucket: string;
     sourceKey: string;

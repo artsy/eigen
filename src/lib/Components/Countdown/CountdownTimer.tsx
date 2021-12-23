@@ -1,5 +1,5 @@
 import { StateManager as CountdownStateManager } from "lib/Components/Countdown"
-import moment from "moment-timezone"
+import { Duration } from "moment"
 import React from "react"
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export interface CountdownProps {
-  duration: moment.Duration
+  duration: Duration
   label?: string
 }
 

@@ -14,11 +14,10 @@ extension FullBleed {
         
         var body: some SwiftUI.View {
             let artsyLogo = UIImage(named: "WhiteArtsyLogo")!
-            
             let artworkImage = artwork.image!
             let artistName = artwork.artist.name
             let artworkTitle = artwork.title
-            let artworkUrl = ArtworkUrl.from(slug: artwork.id)
+            let artworkUrl = artwork.url
             
             GeometryReader { geo in
                 ZStack() {
@@ -42,7 +41,7 @@ extension FullBleed {
                                 .resizable()
                                 .frame(width: 20, height: 20)
                         }
-                        .padding(10)
+                        .padding(16)
                         .background(Color.black)
                     }
                     .widgetURL(artworkUrl)

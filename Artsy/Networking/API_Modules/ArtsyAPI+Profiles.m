@@ -13,24 +13,6 @@
     [self getRequest:[ARRouter newProfileInfoRequestWithID:profileID] parseIntoAClass:[Profile class] success:success failure:failure];
 }
 
-+ (void)checkFollowProfile:(Profile *)profile success:(void (^)(BOOL doesFollow))success failure:(void (^)(NSError *error))failure
-{
-    NSParameterAssert(success);
-    NSURLRequest *headRequest = [ARRouter newCheckFollowingProfileHeadRequest:profile.profileID];
-
-    [self performRequest:headRequest success:^(NSArray *response) {
-        if (success) {
-            success([response count] > 0);
-        }
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        if (response.statusCode == 404) {
-            if (success) {
-                success(NO);
-            }
-        } else failure(error);
-    }];
-}
-
 + (void)followProfile:(Profile *)profile success:(void (^)(Profile *returnedProfile))success failure:(void (^)(NSError *error))failure
 {
     NSURLRequest *request = [ARRouter newMyFollowProfileRequest:profile.profileID];

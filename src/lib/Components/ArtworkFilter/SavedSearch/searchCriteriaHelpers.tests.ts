@@ -1,3 +1,4 @@
+import { getSearchCriteriaFromPills } from "lib/Scenes/SavedSearchAlert/helpers"
 import { FilterParamName } from "../ArtworkFilterHelpers"
 import {
   getAllowedFiltersForSavedSearchInput,
@@ -20,7 +21,7 @@ describe("getOnlyFilledSearchCriteriaValues", () => {
       atAuction: true,
       attributionClass: [],
       colors: [],
-      dimensionRange: null,
+      sizes: null,
       height: null,
       inquireableOnly: null,
       locationCities: [],
@@ -45,8 +46,8 @@ describe("prepareFilterDataForSaveSearchInput", () => {
     const filters = [
       {
         displayText: "Large (over 100cm)",
-        paramName: FilterParamName.dimensionRange,
-        paramValue: "40.0-*",
+        paramName: FilterParamName.sizes,
+        paramValue: ["LARGE"],
       },
       {
         displayText: "Limited Edition",
@@ -104,7 +105,7 @@ describe("prepareFilterDataForSaveSearchInput", () => {
       colors: ["yellow", "red"],
       locationCities: ["London, United Kingdom"],
       materialsTerms: ["paper"],
-      dimensionRange: "40.0-*",
+      sizes: ["LARGE"],
       partnerIDs: ["cypress-test-partner-for-automated-testing-purposes", "tate-ward-auctions"],
     })
   })
@@ -181,15 +182,9 @@ describe("prepareFilterDataForSaveSearchInput", () => {
         paramName: FilterParamName.width,
         paramValue: "39.37007874015748-59.05511811023622",
       },
-      {
-        displayText: "Custom Size",
-        paramName: FilterParamName.dimensionRange,
-        paramValue: "0-*",
-      },
     ]
 
     expect(prepareFilterDataForSaveSearchInput(filters)).toEqual({
-      dimensionRange: "0-*",
       width: "39.37007874015748-59.05511811023622",
       height: "78.74015748031496-98.4251968503937",
     })
@@ -202,15 +197,9 @@ describe("prepareFilterDataForSaveSearchInput", () => {
         paramName: FilterParamName.width,
         paramValue: "12.5-34.6",
       },
-      {
-        displayText: "Custom Size",
-        paramName: FilterParamName.dimensionRange,
-        paramValue: "0-*",
-      },
     ]
 
     expect(prepareFilterDataForSaveSearchInput(filters)).toEqual({
-      dimensionRange: "0-*",
       width: "12.5-34.6",
     })
   })
@@ -222,15 +211,9 @@ describe("prepareFilterDataForSaveSearchInput", () => {
         paramName: FilterParamName.width,
         paramValue: "*-196.8503937007874",
       },
-      {
-        displayText: "Custom Size",
-        paramName: FilterParamName.dimensionRange,
-        paramValue: "0-*",
-      },
     ]
 
     expect(prepareFilterDataForSaveSearchInput(filters)).toEqual({
-      dimensionRange: "0-*",
       width: "*-196.8503937007874",
     })
   })
@@ -242,15 +225,9 @@ describe("prepareFilterDataForSaveSearchInput", () => {
         paramName: FilterParamName.width,
         paramValue: "10-*",
       },
-      {
-        displayText: "Custom Size",
-        paramName: FilterParamName.dimensionRange,
-        paramValue: "0-*",
-      },
     ]
 
     expect(prepareFilterDataForSaveSearchInput(filters)).toEqual({
-      dimensionRange: "0-*",
       width: "10-*",
     })
   })
@@ -265,11 +242,6 @@ describe("getAllowedFiltersForSavedSearchInput", () => {
         paramValue: "10-*",
       },
       {
-        displayText: "Custom Size",
-        paramName: FilterParamName.dimensionRange,
-        paramValue: "0-*",
-      },
-      {
         displayText: "Recently Updated",
         paramName: FilterParamName.sort,
         paramValue: "-partner_updated_at",
@@ -281,11 +253,6 @@ describe("getAllowedFiltersForSavedSearchInput", () => {
         displayText: "100-150",
         paramName: FilterParamName.width,
         paramValue: "10-*",
-      },
-      {
-        displayText: "Custom Size",
-        paramName: FilterParamName.dimensionRange,
-        paramValue: "0-*",
       },
     ])
   })
@@ -307,6 +274,34 @@ describe("getSearchCriteriaFromFilters", () => {
     ]
 
     expect(getSearchCriteriaFromFilters("artistID", filters)).toEqual({
+      artistID: "artistID",
+      additionalGeneIDs: ["prints"],
+      majorPeriods: ["1990"],
+    })
+  })
+})
+
+describe("getSearchCriteriaFromPills", () => {
+  it("converts pills of type SavedSearchPill into the saved search criteria fromat", () => {
+    const pills = [
+      {
+        label: "kermit the frog",
+        value: "artistID",
+        paramName: FilterParamName.artistIDs,
+      },
+      {
+        label: "Prints",
+        value: "prints",
+        paramName: FilterParamName.additionalGeneIDs,
+      },
+      {
+        label: "1990-1999",
+        value: "1990",
+        paramName: FilterParamName.timePeriod,
+      },
+    ]
+
+    expect(getSearchCriteriaFromPills(pills)).toEqual({
       artistID: "artistID",
       additionalGeneIDs: ["prints"],
       majorPeriods: ["1990"],

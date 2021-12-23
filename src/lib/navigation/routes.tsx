@@ -4,12 +4,15 @@ import { unsafe__getEnvironment, unsafe_getFeatureFlag } from "lib/store/GlobalS
 import { compact } from "lodash"
 import { parse as parseQueryString } from "query-string"
 import { Platform } from "react-native"
+import { GraphQLTaggedNode } from "relay-runtime"
 import { parse } from "url"
 import { RouteMatcher } from "./RouteMatcher"
 
 export function matchRoute(
   url: string
-): { type: "match"; module: AppModule; params: object } | { type: "external_url"; url: string } {
+):
+  | { type: "match"; module: AppModule; query?: GraphQLTaggedNode; params: object }
+  | { type: "external_url"; url: string } {
   if (isProtocolEncoded(url)) {
     // if entire url is encoded, decode!
     // Else user will land on VanityUrlEntity for url that otherwise would have been valid
@@ -185,6 +188,9 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-collection/artwork/:artworkSlug", "MyCollectionArtwork"),
     new RouteMatcher("/my-collection/artwork-details/:artworkSlug", "MyCollectionArtworkFullDetails"),
     new RouteMatcher("/my-collection/artwork-images/:artworkSlug", "MyCollectionArtworkImages"),
+    new RouteMatcher("/my-collection/local-images", "MyCollectionLocalArtworkImages"),
+    new RouteMatcher("/my-collection/artworks/new", "AddOrEditMyCollectionArtwork"),
+    new RouteMatcher("/my-collection/artworks/:artworkID/edit", "AddOrEditMyCollectionArtwork"),
 
     // TODO: Follow-up about below route names
     new RouteMatcher("/collections/my-collection/artworks/new/submissions/new", "ConsignmentsSubmissionForm"),

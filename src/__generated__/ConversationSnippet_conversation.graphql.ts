@@ -40,7 +40,7 @@ export type ConversationSnippet_conversation = {
 };
 export type ConversationSnippet_conversation$data = ConversationSnippet_conversation;
 export type ConversationSnippet_conversation$key = {
-    readonly " $data"?: ConversationSnippet_conversation$data;
+    readonly " $data"?: ConversationSnippet_conversation$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ConversationSnippet_conversation">;
 };
 

@@ -16,7 +16,7 @@ export type PartnerFollowButton_partner = {
 };
 export type PartnerFollowButton_partner$data = PartnerFollowButton_partner;
 export type PartnerFollowButton_partner$key = {
-    readonly " $data"?: PartnerFollowButton_partner$data;
+    readonly " $data"?: PartnerFollowButton_partner$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"PartnerFollowButton_partner">;
 };
 

@@ -7,7 +7,7 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtistShows2PastShowsQueryVariables = {
     count: number;
-    cursor?: string | null;
+    cursor?: string | null | undefined;
     artistID: string;
     status: string;
 };

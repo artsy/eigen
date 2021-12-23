@@ -18,7 +18,7 @@ export type EditSavedSearchAlert_artworksConnection = {
 };
 export type EditSavedSearchAlert_artworksConnection$data = EditSavedSearchAlert_artworksConnection;
 export type EditSavedSearchAlert_artworksConnection$key = {
-    readonly " $data"?: EditSavedSearchAlert_artworksConnection$data;
+    readonly " $data"?: EditSavedSearchAlert_artworksConnection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"EditSavedSearchAlert_artworksConnection">;
 };
 

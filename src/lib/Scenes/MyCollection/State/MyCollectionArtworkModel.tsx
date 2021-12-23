@@ -4,7 +4,7 @@ import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
 import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
 import { uniqBy } from "lodash"
 
-import { Metric } from "../Screens/ArtworkFormModal/Components/Dimensions"
+import { Metric } from "../Screens/ArtworkForm/Components/Dimensions"
 
 export interface Image {
   height?: number
@@ -35,6 +35,7 @@ export interface ArtworkFormValues {
   provenance: string
   title: string
   width: string
+  artworkLocation: string
 }
 
 export const initialFormValues: ArtworkFormValues = {
@@ -56,6 +57,7 @@ export const initialFormValues: ArtworkFormValues = {
   provenance: "",
   title: "",
   width: "",
+  artworkLocation: "",
 }
 
 export interface MyCollectionArtworkModel {
@@ -63,7 +65,6 @@ export interface MyCollectionArtworkModel {
     artworkId: string
     dirtyFormCheckValues: ArtworkFormValues
     formValues: ArtworkFormValues
-    lastUploadedPhoto?: Image
     artworkErrorOccurred: boolean
   }
   setFormValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
@@ -72,7 +73,6 @@ export interface MyCollectionArtworkModel {
   setArtistSearchResult: Action<MyCollectionArtworkModel, AutosuggestResult | null>
   setArtworkId: Action<MyCollectionArtworkModel, { artworkId: string }>
   setArtworkErrorOccurred: Action<MyCollectionArtworkModel, boolean>
-  setLastUploadedPhoto: Action<MyCollectionArtworkModel, Image>
 
   addPhotos: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"]>
   removePhoto: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"][0]>
@@ -144,10 +144,6 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     state.sessionState.formValues.photos = state.sessionState.formValues.photos.filter(
       (photo) => photo.path !== photoToRemove.path || photo.imageURL !== photoToRemove.imageURL
     )
-  }),
-
-  setLastUploadedPhoto: action((state, photo) => {
-    state.sessionState.lastUploadedPhoto = photo
   }),
 
   /**

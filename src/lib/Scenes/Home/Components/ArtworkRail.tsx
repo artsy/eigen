@@ -13,7 +13,7 @@ import HomeAnalytics from "../homeAnalytics"
 import { SmallTileRailContainer } from "./SmallTileRail"
 import { RailScrollProps } from "./types"
 
-function getViewAllUrl(rail: ArtworkRail_rail) {
+export function getViewAllUrl(rail: ArtworkRail_rail) {
   const context = rail.context
   const key = rail.key
 

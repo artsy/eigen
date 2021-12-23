@@ -22,8 +22,7 @@ import { SearchCriteriaQueryRenderer } from "lib/Scenes/Artist/SearchCriteria"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { Flex, Message } from "palette"
-import React from "react"
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
@@ -131,6 +130,33 @@ interface ArtistQueryRendererProps extends ArtistAboveTheFoldQueryVariables, Art
   search_criteria_id?: string
 }
 
+export const ArtistScreenQuery = graphql`
+  query ArtistAboveTheFoldQuery($artistID: String!, $input: FilterArtworksInput) {
+    artist(id: $artistID) {
+      internalID
+      slug
+      has_metadata: hasMetadata
+      counts {
+        partner_shows: partnerShows
+        related_artists: relatedArtists
+      }
+      ...ArtistHeader_artist
+      ...ArtistArtworks_artist @arguments(input: $input)
+      statuses {
+        artworks
+        auctionLots
+        articles
+      }
+    }
+  }
+`
+
+export const defaultArtworksVariables = () => ({
+  input: {
+    sort: DEFAULT_ARTWORK_SORT.paramValue,
+  },
+})
+
 export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) => {
   const { artistID, environment, initialTab, searchCriteriaID, search_criteria_id } = props
 
@@ -144,7 +170,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
           const { savedSearchCriteria, fetchCriteriaError } = searchCriteriaProps
           const preparedSavedSearchCriteria = getOnlyFilledSearchCriteriaValues(savedSearchCriteria ?? {})
           const initialArtworksInput = {
-            dimensionRange: "*-*",
+            ...defaultArtworksVariables().input,
             sort: !!savedSearchCriteria ? "-published_at" : DEFAULT_ARTWORK_SORT.paramValue,
             ...preparedSavedSearchCriteria,
           }
@@ -153,26 +179,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
             <AboveTheFoldQueryRenderer<ArtistAboveTheFoldQuery, ArtistBelowTheFoldQuery>
               environment={environment || defaultEnvironment}
               above={{
-                query: graphql`
-                  query ArtistAboveTheFoldQuery($artistID: String!, $input: FilterArtworksInput) {
-                    artist(id: $artistID) {
-                      internalID
-                      slug
-                      has_metadata: hasMetadata
-                      counts {
-                        partner_shows: partnerShows
-                        related_artists: relatedArtists
-                      }
-                      ...ArtistHeader_artist
-                      ...ArtistArtworks_artist @arguments(input: $input)
-                      statuses {
-                        artworks
-                        auctionLots
-                        articles
-                      }
-                    }
-                  }
-                `,
+                query: ArtistScreenQuery,
                 variables: { artistID, input: initialArtworksInput },
               }}
               below={{

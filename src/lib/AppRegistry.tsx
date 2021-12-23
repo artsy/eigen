@@ -1,31 +1,34 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import React, { useEffect } from "react"
-import { Appearance, AppRegistry, LogBox, Platform, View } from "react-native"
-import { StorybookUIRoot } from "../storybook/storybook-ui"
+import { AppRegistry, LogBox, Platform, View } from "react-native"
+import { GraphQLTaggedNode } from "relay-runtime"
 import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { FadeIn } from "./Components/FadeIn"
-import { NativeViewController } from "./Components/NativeViewController"
 import { BidFlow } from "./Containers/BidFlow"
 import { InboxWrapper } from "./Containers/Inbox"
+import { InboxScreenQuery } from "./Containers/Inbox/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
-import { WorksForYouQueryRenderer } from "./Containers/WorksForYou"
+import { WorksForYouQueryRenderer, WorksForYouScreenQuery } from "./Containers/WorksForYou"
 import { useSentryConfig } from "./ErrorReporting"
 import { About } from "./Scenes/About/About"
-import { ArticlesQueryRenderer } from "./Scenes/Articles/Articles"
-import { ArtistQueryRenderer } from "./Scenes/Artist/Artist"
+import { ArticlesQueryRenderer, ArticlesScreenQuery } from "./Scenes/Articles/Articles"
+import { ArtistQueryRenderer, ArtistScreenQuery } from "./Scenes/Artist/Artist"
 import { ArtistArticlesQueryRenderer } from "./Scenes/ArtistArticles/ArtistArticles"
 import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
 import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeriesFullArtistSeriesList"
 import { ArtistShows2QueryRenderer } from "./Scenes/ArtistShows/ArtistShows2"
-import { ArtworkQueryRenderer } from "./Scenes/Artwork/Artwork"
+import { ArtworkQueryRenderer, ArtworkScreenQuery } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
 import { ArtworkMediumQueryRenderer } from "./Scenes/ArtworkMedium"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
-import { AuctionResultsForArtistsYouFollowQueryRenderer } from "./Scenes/AuctionResultsForArtistsYouFollow/AuctionResultsForArtistsYouFollow"
+import {
+  AuctionResultsForArtistsYouFollowQueryRenderer,
+  AuctionResultsForArtistsYouFollowScreenQuery,
+} from "./Scenes/AuctionResultsForArtistsYouFollow/AuctionResultsForArtistsYouFollow"
 import { BottomTabs } from "./Scenes/BottomTabs/BottomTabs"
 import { BottomTabsNavigator } from "./Scenes/BottomTabs/BottomTabsNavigator"
 import { BottomTabOption, BottomTabType } from "./Scenes/BottomTabs/BottomTabType"
@@ -37,7 +40,6 @@ import { CitySavedListQueryRenderer } from "./Scenes/City/CitySavedList"
 import { CitySectionListQueryRenderer } from "./Scenes/City/CitySectionList"
 import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
-// Consignments / My Collection
 import { Consignments } from "./Scenes/Consignments"
 import { ConsignmentsSubmissionForm } from "./Scenes/Consignments/ConsignmentsHome/ConsignmentsSubmissionForm"
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
@@ -53,7 +55,10 @@ import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/MakeOfferModal"
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 import { Checkout } from "./Scenes/Inbox/Screens/Checkout"
-import { LotsByArtistsYouFollowQueryRenderer } from "./Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
+import {
+  LotsByArtistsYouFollowQueryRenderer,
+  LotsByArtistsYouFollowScreenQuery,
+} from "./Scenes/LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { MapContainer } from "./Scenes/Map"
 import { MyAccountQueryRenderer } from "./Scenes/MyAccount/MyAccount"
 import { MyAccountEditEmailQueryRenderer } from "./Scenes/MyAccount/MyAccountEditEmail"
@@ -63,24 +68,26 @@ import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEdi
 import { MyBidsQueryRenderer } from "./Scenes/MyBids"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
+import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
 import { MyCollectionArtworkImagesQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkImages/MyCollectionArtworkImages"
-import { MyProfileQueryRenderer } from "./Scenes/MyProfile/MyProfile"
+import { MyCollectionLocalArtworkImages } from "./Scenes/MyCollection/Screens/ArtworkImages/MyCollectionLocalArtworkImages"
+import { MyProfileQueryRenderer, MyProfileScreenQuery } from "./Scenes/MyProfile/MyProfile"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { MyProfilePushNotificationsQueryRenderer } from "./Scenes/MyProfile/MyProfilePushNotifications"
 import { MyProfileSettings } from "./Scenes/MyProfile/MyProfileSettings"
-import { NewWorksForYouQueryRenderer } from "./Scenes/NewWorksForYou/NewWorksForYou"
+import { NewWorksForYouQueryRenderer, NewWorksForYouScreenQuery } from "./Scenes/NewWorksForYou/NewWorksForYou"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { OrderDetailsQueryRender } from "./Scenes/OrderHistory/OrderDetails/Components/OrderDetails"
 import { OrderHistoryQueryRender } from "./Scenes/OrderHistory/OrderHistory"
 import { PartnerQueryRenderer } from "./Scenes/Partner"
 import { PartnerLocationsQueryRenderer } from "./Scenes/Partner/Screens/PartnerLocations"
 import { PrivacyRequest } from "./Scenes/PrivacyRequest"
-import { SaleQueryRenderer } from "./Scenes/Sale"
+import { SaleQueryRenderer, SaleScreenQuery } from "./Scenes/Sale"
 import { SaleFAQ } from "./Scenes/SaleFAQ/SaleFAQ"
 import { SaleInfoQueryRenderer } from "./Scenes/SaleInfo"
-import { SalesQueryRenderer } from "./Scenes/Sales"
+import { SalesQueryRenderer, SalesScreenQuery } from "./Scenes/Sales"
 import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddresses"
 import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAddressesForm"
 import { EditSavedSearchAlertQueryRenderer } from "./Scenes/SavedSearchAlert/EditSavedSearchAlert"
@@ -92,16 +99,23 @@ import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
-import { ViewingRoomsListQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, useFeatureFlag, useSelectedTab } from "./store/GlobalStore"
+import { ViewingRoomsListQueryRenderer, ViewingRoomsListScreenQuery } from "./Scenes/ViewingRoom/ViewingRoomsList"
+import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
+import { propsStore } from "./store/PropsStore"
 import { AdminMenu } from "./utils/AdminMenu"
+import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
-import { AnalyticsConstants } from "./utils/track/constants"
 import { SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider } from "./utils/track/SegmentTrackingProvider"
 import { useExperiments } from "./utils/useExperiments"
+import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
+import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
 import { useScreenDimensions } from "./utils/useScreenDimensions"
+import { useScreenReaderTracking } from "./utils/useScreenReaderTracking"
 import { useStripeConfig } from "./utils/useStripeConfig"
+
+// keep this import of storybook last, otherwise it produces an error when debugging
+import { StorybookUIRoot } from "../storybook/storybook-ui"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -162,6 +176,7 @@ interface PageWrapperProps {
   isMainView?: boolean
   ViewComponent: React.ComponentType<any>
   viewProps: any
+  moduleName: string
 }
 
 const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, ViewComponent, viewProps }) => {
@@ -194,9 +209,13 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, V
 @track()
 class PageWrapper extends React.Component<PageWrapperProps> {
   render() {
+    const props = {
+      ...this.props,
+      viewProps: { ...this.props.viewProps, ...propsStore.getPropsForModule(this.props.moduleName) },
+    }
     return (
       <AppProviders>
-        <InnerPageWrapper {...this.props} />
+        <InnerPageWrapper {...props} />
       </AppProviders>
     )
   }
@@ -207,7 +226,9 @@ function register(
   Component: React.ComponentType<any>,
   options?: Omit<PageWrapperProps, "ViewComponent" | "viewProps">
 ) {
-  const WrappedComponent = (props: any) => <PageWrapper {...options} ViewComponent={Component} viewProps={props} />
+  const WrappedComponent = (props: any) => (
+    <PageWrapper {...options} moduleName={screenName} ViewComponent={Component} viewProps={props} />
+  )
   AppRegistry.registerComponent(screenName, () => WrappedComponent)
 }
 
@@ -227,6 +248,7 @@ type ModuleDescriptor =
   | {
       type: "react"
       Component: React.ComponentType<any>
+      Query?: GraphQLTaggedNode
       options: ViewOptions
     }
   | {
@@ -234,8 +256,12 @@ type ModuleDescriptor =
       options: ViewOptions
     }
 
-function reactModule(Component: React.ComponentType<any>, options: ViewOptions = {}): ModuleDescriptor {
-  return { type: "react", options, Component }
+function reactModule(
+  Component: React.ComponentType<any>,
+  options: ViewOptions = {},
+  Query?: GraphQLTaggedNode
+): ModuleDescriptor {
+  return { type: "react", options, Component, Query }
 }
 
 function nativeModule(options: ViewOptions = {}): ModuleDescriptor {
@@ -253,21 +279,26 @@ export const modules = defineModules({
   Admin: nativeModule({ alwaysPresentModally: true }),
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
-  Articles: reactModule(ArticlesQueryRenderer),
-  Artist: reactModule(ArtistQueryRenderer),
+  AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
+  Articles: reactModule(ArticlesQueryRenderer, {}, ArticlesScreenQuery),
+  Artist: reactModule(ArtistQueryRenderer, {}, ArtistScreenQuery),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
-  Artwork: reactModule(Artwork),
+  Artwork: reactModule(Artwork, {}, ArtworkScreenQuery),
   ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   Auction: nativeModule(),
-  Auction2: reactModule(SaleQueryRenderer, { fullBleed: true }),
-  Auctions: reactModule(SalesQueryRenderer),
+  Auction2: reactModule(SaleQueryRenderer, { fullBleed: true }, SaleScreenQuery),
+  Auctions: reactModule(SalesQueryRenderer, {}, SalesScreenQuery),
   AuctionInfo: reactModule(SaleInfoQueryRenderer),
   AuctionFAQ: reactModule(SaleFAQ),
   AuctionResult: reactModule(AuctionResultQueryRenderer),
-  AuctionResultsForArtistsYouFollow: reactModule(AuctionResultsForArtistsYouFollowQueryRenderer),
+  AuctionResultsForArtistsYouFollow: reactModule(
+    AuctionResultsForArtistsYouFollowQueryRenderer,
+    {},
+    AuctionResultsForArtistsYouFollowScreenQuery
+  ),
   AuctionRegistration: reactModule(RegistrationFlow, {
     alwaysPresentModally: true,
     hasOwnModalCloseButton: true,
@@ -303,7 +334,7 @@ export const modules = defineModules({
   Gene: reactModule(GeneQueryRenderer),
   Tag: reactModule(TagQueryRenderer),
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
-  Inbox: reactModule(InboxWrapper, { isRootViewForTabName: "inbox" }),
+  Inbox: reactModule(InboxWrapper, { isRootViewForTabName: "inbox" }, InboxScreenQuery),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   LiveAuction: nativeModule({
     alwaysPresentModally: true,
@@ -331,7 +362,8 @@ export const modules = defineModules({
   MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer),
   MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
   MyCollectionArtworkImages: reactModule(MyCollectionArtworkImagesQueryRenderer),
-  MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }),
+  MyCollectionLocalArtworkImages: reactModule(MyCollectionLocalArtworkImages),
+  MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }, MyProfileScreenQuery),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfileSettings: reactModule(MyProfileSettings),
   OrderHistory: reactModule(OrderHistoryQueryRender),
@@ -356,13 +388,13 @@ export const modules = defineModules({
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkQueryRenderer),
   ViewingRoomArtworks: reactModule(ViewingRoomArtworksQueryRenderer),
-  ViewingRooms: reactModule(ViewingRoomsListQueryRenderer),
+  ViewingRooms: reactModule(ViewingRoomsListQueryRenderer, {}, ViewingRoomsListScreenQuery),
   Checkout: reactModule(Checkout, {
     hasOwnModalCloseButton: true,
   }),
-  WorksForYou: reactModule(WorksForYouQueryRenderer),
-  NewWorksForYou: reactModule(NewWorksForYouQueryRenderer),
-  LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer),
+  WorksForYou: reactModule(WorksForYouQueryRenderer, {}, WorksForYouScreenQuery),
+  NewWorksForYou: reactModule(NewWorksForYouQueryRenderer, {}, NewWorksForYouScreenQuery),
+  LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer, {}, LotsByArtistsYouFollowScreenQuery),
   Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
   SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer),
@@ -373,32 +405,21 @@ for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]
   if ("Component" in descriptor) {
     if (Platform.OS === "ios") {
-      register(moduleName, descriptor.Component, { fullBleed: descriptor.options.fullBleed })
+      register(moduleName, descriptor.Component, { fullBleed: descriptor.options.fullBleed, moduleName })
     }
   }
 }
 
 const Main: React.FC<{}> = track()(({}) => {
+  usePreferredThemeTracking()
+  useScreenReaderTracking()
+  useFreshInstallTracking()
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
     })
-    if (Platform.OS === "ios") {
-      const scheme = Appearance.getColorScheme()
-      SegmentTrackingProvider.identify?.(null, {
-        [AnalyticsConstants.UserInterfaceStyle.key]: (() => {
-          switch (scheme) {
-            case "light":
-              return AnalyticsConstants.UserInterfaceStyle.value.Light
-            case "dark":
-              return AnalyticsConstants.UserInterfaceStyle.value.Dark
-          }
-          return AnalyticsConstants.UserInterfaceStyle.value.Unspecified
-        })(),
-      })
-    }
   }, [])
-  const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
+
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken)
 
@@ -409,6 +430,7 @@ const Main: React.FC<{}> = track()(({}) => {
   useStripeConfig()
   useWebViewCookies()
   useExperiments()
+  useInitializeQueryPrefetching()
 
   if (!isHydrated) {
     return <View />
@@ -419,12 +441,12 @@ const Main: React.FC<{}> = track()(({}) => {
   }
 
   if (!isLoggedIn || onboardingState === "incomplete") {
-    return showNewOnboarding ? <Onboarding /> : <NativeViewController viewName="Onboarding" />
+    return <Onboarding />
   }
 
   return <BottomTabsNavigator />
 })
 
 if (Platform.OS === "ios") {
-  register("Artsy", Main, { fullBleed: true, isMainView: true })
+  register("Artsy", Main, { fullBleed: true, isMainView: true, moduleName: "Artsy" })
 }

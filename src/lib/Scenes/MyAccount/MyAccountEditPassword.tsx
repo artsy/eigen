@@ -71,7 +71,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
         [
           {
             text: "OK",
-            onPress: () => GlobalStore.actions.signOut(),
+            onPress: () => GlobalStore.actions.auth.signOut(),
           },
         ],
         { cancelable: false }

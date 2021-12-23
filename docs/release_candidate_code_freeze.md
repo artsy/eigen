@@ -41,17 +41,19 @@ Communicate with other devs that a release candidate will be deployed and they s
 
 ## Do bug fix QA and some smoketests and release to the app store
 
-Follow the instructions for [deploying to app store](https://github.com/artsy/eigen/blob/master/docs/deploy_to_app_store.md) and [deploying to play store](https://github.com/artsy/eigen/blob/master/docs/deploy_to_play_store.md).
+Follow the instructions for [deploying to app store](https://github.com/artsy/eigen/blob/main/docs/deploy_to_app_store.md) and [deploying to play store](https://github.com/artsy/eigen/blob/main/docs/deploy_to_play_store.md).
 
 Make sure to QA the bug fix changes and test any code paths that may have been affected.
 
-## Possibly bring back the fixes to master
+## Possibly bring back the fixes to main
 
-The changes on the release-candidate branch might be cherry-picks only, or it might be new code. Considering the release notes files are probably changed in that branch as well, it makes sense to make a PR from that release-candidate branch to master, in order to get all the changes back to master.
+The changes on the release-candidate branch might be cherry-picks only, or it might be new code. Considering the release notes files are probably changed in that branch as well, it makes sense to make a PR from that release-candidate branch to main, in order to get all the changes back to main.
 
 ## Slack thread for reference
+
 Here is a thread from a previous time we did this:
 https://artsy.slack.com/archives/C01B2P6LJUU/p1627916686040500
 
 ## Example PR
+
 https://github.com/artsy/eigen/pull/5365

@@ -16,7 +16,7 @@ export type FeatureFeaturedLink_featuredLink = {
 };
 export type FeatureFeaturedLink_featuredLink$data = FeatureFeaturedLink_featuredLink;
 export type FeatureFeaturedLink_featuredLink$key = {
-    readonly " $data"?: FeatureFeaturedLink_featuredLink$data;
+    readonly " $data"?: FeatureFeaturedLink_featuredLink$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FeatureFeaturedLink_featuredLink">;
 };
 

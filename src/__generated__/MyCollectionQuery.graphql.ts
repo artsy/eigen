@@ -1,12 +1,12 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9ac753fddb01b84aaba47eee1729ba99 */
+/* @relayHash 8f39abd835a1fd5cb90434ae8f0b9945 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionQueryVariables = {
-    excludePurchasedArtworks?: boolean | null;
+    excludePurchasedArtworks?: boolean | null | undefined;
 };
 export type MyCollectionQueryResponse = {
     readonly me: {
@@ -43,6 +43,20 @@ fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectio
       image {
         aspectRatio
       }
+      artistNames
+      medium
+      artist {
+        internalID
+        name
+        id
+      }
+      pricePaid {
+        minor
+      }
+      sizeBucket
+      width
+      height
+      date
       ...MyCollectionArtworkListItem_artwork
     }
   }
@@ -73,10 +87,26 @@ fragment MyCollection_me_4o4pu4 on Me {
   myCollectionInfo {
     includesPurchasedArtworks
   }
-  myCollectionConnection(excludePurchasedArtworks: $excludePurchasedArtworks, first: 20, sort: CREATED_AT_DESC) {
+  myCollectionConnection(excludePurchasedArtworks: $excludePurchasedArtworks, first: 100, sort: CREATED_AT_DESC) {
     edges {
       node {
         id
+        medium
+        pricePaid {
+          minor
+        }
+        attributionClass {
+          name
+          id
+        }
+        sizeBucket
+        width
+        height
+        artist {
+          internalID
+          name
+          id
+        }
         __typename
       }
       cursor
@@ -115,7 +145,7 @@ v3 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 20
+    "value": 100
   },
   {
     "kind": "Literal",
@@ -124,6 +154,13 @@ v3 = [
   }
 ],
 v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -221,6 +258,79 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "medium",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Money",
+                        "kind": "LinkedField",
+                        "name": "pricePaid",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "minor",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "AttributionClass",
+                        "kind": "LinkedField",
+                        "name": "attributionClass",
+                        "plural": false,
+                        "selections": [
+                          (v4/*: any*/),
+                          (v2/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "sizeBucket",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "width",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "height",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "artist",
+                        "plural": false,
+                        "selections": [
+                          (v5/*: any*/),
+                          (v4/*: any*/),
+                          (v2/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "__typename",
                         "storageKey": null
                       },
@@ -249,20 +359,21 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v4/*: any*/),
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "Artist",
-                        "kind": "LinkedField",
-                        "name": "artist",
-                        "plural": false,
-                        "selections": [
-                          (v4/*: any*/),
-                          (v2/*: any*/)
-                        ],
+                        "kind": "ScalarField",
+                        "name": "artistNames",
                         "storageKey": null
                       },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "date",
+                        "storageKey": null
+                      },
+                      (v5/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -292,28 +403,7 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "artistNames",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "medium",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
                         "name": "title",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "date",
                         "storageKey": null
                       }
                     ],
@@ -379,7 +469,7 @@ return {
     ]
   },
   "params": {
-    "id": "9ac753fddb01b84aaba47eee1729ba99",
+    "id": "8f39abd835a1fd5cb90434ae8f0b9945",
     "metadata": {},
     "name": "MyCollectionQuery",
     "operationKind": "query",

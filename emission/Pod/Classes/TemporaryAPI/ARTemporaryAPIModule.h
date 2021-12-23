@@ -5,8 +5,6 @@ typedef void(^ARNotificationReadStatusAssigner)(RCTResponseSenderBlock block);
 
 typedef void(^ARNotificationPermissionsPrompter)();
 
-typedef void(^ARUserDataClearer)(RCTPromiseResolveBlock completion);
-
 typedef void(^ARAugmentedRealityVIRPresenter)(NSString *imgUrl, CGFloat widthIn, CGFloat heightIn, NSString *artworkSlug, NSString *artworkId);
 
 typedef void(^ARRelativeURLResolver)(NSString *path, RCTPromiseResolveBlock resolve, RCTPromiseRejectBlock reject);
@@ -15,8 +13,6 @@ typedef void(^ARRelativeURLResolver)(NSString *path, RCTPromiseResolveBlock reso
 /// v1 API access to get/set these bits of information.
 
 @interface ARTemporaryAPIModule : NSObject <RCTBridgeModule>
-
-
 
 
 // Just shows the apple dialog, used for explicitly asking permission in settings
@@ -28,8 +24,6 @@ typedef void(^ARRelativeURLResolver)(NSString *path, RCTPromiseResolveBlock reso
 @property (nonatomic, copy, readwrite) ARNotificationReadStatusAssigner notificationReadStatusAssigner;
 
 @property (nonatomic, copy, readwrite) ARAugmentedRealityVIRPresenter augmentedRealityVIRPresenter;
-
-@property (nonatomic, copy, readwrite) ARUserDataClearer userDataClearer;
 
 @property (nonatomic, copy, readwrite) ARRelativeURLResolver urlResolver;
 

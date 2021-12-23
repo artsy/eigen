@@ -1,6 +1,6 @@
-# CircleCI doesn't automatically run builds on the beta branch (only master and PRs)
+# CircleCI doesn't automatically run builds on the beta branch (only main and PRs)
 # so this is a github action to force it to do so.
-name: Cross-CI Trigger beta iOS release
+name: ZZ-Cross-CI Trigger beta iOS release
 
 on:
   push:

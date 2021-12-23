@@ -11,13 +11,13 @@ export type ShowHeader_show = {
     readonly formattedStartAt: string | null;
     readonly formattedEndAt: string | null;
     readonly partner: {
-        readonly name?: string | null;
+        readonly name?: string | null | undefined;
     } | null;
     readonly " $refType": "ShowHeader_show";
 };
 export type ShowHeader_show$data = ShowHeader_show;
 export type ShowHeader_show$key = {
-    readonly " $data"?: ShowHeader_show$data;
+    readonly " $data"?: ShowHeader_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShowHeader_show">;
 };
 

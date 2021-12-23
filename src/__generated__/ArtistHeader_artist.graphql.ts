@@ -20,7 +20,7 @@ export type ArtistHeader_artist = {
 };
 export type ArtistHeader_artist$data = ArtistHeader_artist;
 export type ArtistHeader_artist$key = {
-    readonly " $data"?: ArtistHeader_artist$data;
+    readonly " $data"?: ArtistHeader_artist$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtistHeader_artist">;
 };
 

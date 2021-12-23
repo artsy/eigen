@@ -11,7 +11,7 @@ export type PartnerSubscriberBanner_partner = {
 };
 export type PartnerSubscriberBanner_partner$data = PartnerSubscriberBanner_partner;
 export type PartnerSubscriberBanner_partner$key = {
-    readonly " $data"?: PartnerSubscriberBanner_partner$data;
+    readonly " $data"?: PartnerSubscriberBanner_partner$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"PartnerSubscriberBanner_partner">;
 };
 

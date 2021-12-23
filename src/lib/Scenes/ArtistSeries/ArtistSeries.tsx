@@ -111,7 +111,7 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
           <ArtistSeriesArtworksFragmentContainer artistSeries={artistSeries} />
           <ArtworkFilterNavigator
             {...props}
-            isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+            visible={isFilterArtworksModalVisible}
             id={artistSeries.internalID}
             slug={artistSeries.slug}
             mode={FilterModalMode.ArtistSeries}
@@ -134,7 +134,7 @@ export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSerie
 
       ...ArtistSeriesHeader_artistSeries
       ...ArtistSeriesMeta_artistSeries
-      ...ArtistSeriesArtworks_artistSeries @arguments(input: { sort: "-decayed_merch", dimensionRange: "*-*" })
+      ...ArtistSeriesArtworks_artistSeries @arguments(input: { sort: "-decayed_merch" })
 
       artist: artists(size: 1) {
         ...ArtistSeriesMoreSeries_artist

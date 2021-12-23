@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 97d72a0af2c078d7721246141082205b */
+/* @relayHash a77152f8549cded62f383666a1e0a092 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -43,6 +43,10 @@ fragment MyCollectionArtworkFullDetails_artwork on Artwork {
   editionSize
   editionNumber
   height
+  attributionClass {
+    name
+    id
+  }
   id
   images {
     isDefault
@@ -271,6 +275,25 @@ return {
             "storageKey": null
           },
           (v3/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "AttributionClass",
+            "kind": "LinkedField",
+            "name": "attributionClass",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "name",
+                "storageKey": null
+              },
+              (v2/*: any*/)
+            ],
+            "storageKey": null
+          },
           (v2/*: any*/),
           {
             "alias": null,
@@ -350,7 +373,7 @@ return {
     ]
   },
   "params": {
-    "id": "97d72a0af2c078d7721246141082205b",
+    "id": "a77152f8549cded62f383666a1e0a092",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -368,6 +391,14 @@ return {
         "artwork.artist.id": (v5/*: any*/),
         "artwork.artist.internalID": (v5/*: any*/),
         "artwork.artistNames": (v6/*: any*/),
+        "artwork.attributionClass": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "AttributionClass"
+        },
+        "artwork.attributionClass.id": (v5/*: any*/),
+        "artwork.attributionClass.name": (v6/*: any*/),
         "artwork.category": (v6/*: any*/),
         "artwork.date": (v6/*: any*/),
         "artwork.depth": (v6/*: any*/),

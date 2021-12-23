@@ -25,7 +25,7 @@ export type RecentlySold_targetSupply = {
 };
 export type RecentlySold_targetSupply$data = RecentlySold_targetSupply;
 export type RecentlySold_targetSupply$key = {
-    readonly " $data"?: RecentlySold_targetSupply$data;
+    readonly " $data"?: RecentlySold_targetSupply$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"RecentlySold_targetSupply">;
 };
 

@@ -4,7 +4,7 @@
 
 You'll need [Node](https://nodejs.org/en/), [Yarn](https://yarnpkg.com/en/) and Watchman installed (`brew install watchman`).
 
-> The Node version should match [the `engine` version here](https://github.com/artsy/eigen/blob/master/package.json).
+> The Node version should match [the `engine` version here](https://github.com/artsy/eigen/blob/main/package.json).
 
 ### Setting up iOS
 
@@ -128,7 +128,7 @@ You can run tests via the CLI using:
 We use Xcode's auto-codesigning. It should magically "just work" if you log in to Xcode with an iTunes account
 which is on the Artsy team.
 
-We have [cert troubleshooting here](https://github.com/artsy/eigen/blob/master/docs/certs.md)
+We have [cert troubleshooting here](https://github.com/artsy/eigen/blob/main/docs/certs.md)
 
 ## Connect a device
 
@@ -146,4 +146,4 @@ When you connect an iPhone to your machine, Xcode will prompt you to join a team
 
 ## Read more
 
-Learn about what things are architecturally [here](https://github.com/artsy/eigen/blob/master/docs/overview.md), then move [to the blog.](http://artsy.github.io/blog/categories/eigen/) for more in-depth discussions on Eigen.
+Learn about what things are architecturally [here](https://github.com/artsy/eigen/blob/main/docs/overview.md), then move [to the blog.](http://artsy.github.io/blog/categories/eigen/) for more in-depth discussions on Eigen.

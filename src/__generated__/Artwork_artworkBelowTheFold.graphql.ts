@@ -82,7 +82,7 @@ export type Artwork_artworkBelowTheFold = {
 };
 export type Artwork_artworkBelowTheFold$data = Artwork_artworkBelowTheFold;
 export type Artwork_artworkBelowTheFold$key = {
-    readonly " $data"?: Artwork_artworkBelowTheFold$data;
+    readonly " $data"?: Artwork_artworkBelowTheFold$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Artwork_artworkBelowTheFold">;
 };
 

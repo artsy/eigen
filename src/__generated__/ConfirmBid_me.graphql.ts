@@ -13,7 +13,7 @@ export type ConfirmBid_me = {
 };
 export type ConfirmBid_me$data = ConfirmBid_me;
 export type ConfirmBid_me$key = {
-    readonly " $data"?: ConfirmBid_me$data;
+    readonly " $data"?: ConfirmBid_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ConfirmBid_me">;
 };
 

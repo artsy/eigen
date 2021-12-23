@@ -19,7 +19,7 @@ export type MyCollectionArtworkHeader_artwork = {
 };
 export type MyCollectionArtworkHeader_artwork$data = MyCollectionArtworkHeader_artwork;
 export type MyCollectionArtworkHeader_artwork$key = {
-    readonly " $data"?: MyCollectionArtworkHeader_artwork$data;
+    readonly " $data"?: MyCollectionArtworkHeader_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkHeader_artwork">;
 };
 

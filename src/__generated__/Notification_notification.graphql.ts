@@ -26,7 +26,7 @@ export type Notification_notification = {
 };
 export type Notification_notification$data = Notification_notification;
 export type Notification_notification$key = {
-    readonly " $data"?: Notification_notification$data;
+    readonly " $data"?: Notification_notification$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"Notification_notification">;
 };
 

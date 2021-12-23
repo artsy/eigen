@@ -6,7 +6,7 @@
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type RecommendedArtistsRailQueryVariables = {
-    cursor?: string | null;
+    cursor?: string | null | undefined;
     count: number;
 };
 export type RecommendedArtistsRailQueryResponse = {

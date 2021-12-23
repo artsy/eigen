@@ -107,12 +107,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableNewWorksForYou",
   },
-  AREnableNewOnboardingFlow: {
-    readyForRelease: true,
-    description: "Enable new onboarding flow",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableNewOnboardingFlow",
-  },
   AREnableSavedAddresses: {
     readyForRelease: false,
     description: "Enable Saved Addresses",
@@ -207,9 +201,26 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableAuctionResultComparableWorks",
   },
+  ARMyCollectionLocalSortAndFilter: {
+    readyForRelease: true,
+    description: "My Collection Sort & Filter",
+    showInAdminMenu: true,
+    echoFlagKey: "ARMyCollectionLocalSortAndFilter",
+  },
   AREnableArtistRecommendations: {
     readyForRelease: false,
     description: "Enable new artist recommendations",
+    showInAdminMenu: true,
+  },
+  AREnableQueriesPrefetching: {
+    readyForRelease: true,
+    description: "Enable query prefetching",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableQueriesPrefetching",
+  },
+  ARCaptureExceptionsInSentryOnDev: {
+    readyForRelease: false,
+    description: "Enable capturing exceptions in Sentry on DEV",
     showInAdminMenu: true,
   },
 })
@@ -250,8 +261,17 @@ export const devToggles = defineDevToggles({
   DTShowAnalyticsVisualiser: {
     description: "Show analytics visualiser",
   },
+  DTEasyMyCollectionArtworkCreation: {
+    description: "Easily add my collection artworks",
+  },
+  DTMyCollectionShowLocalImages: {
+    description: "Local images in my collection",
+  },
   DTShowWebviewIndicator: {
     description: "Show webview indicator",
+  },
+  DTShowInstagramShot: {
+    description: "Show Instagram viewshot",
   },
 })
 

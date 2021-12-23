@@ -5,7 +5,7 @@ import {
 } from "__generated__/MyCollectionArtworkQuery.graphql"
 import { Divider } from "lib/Components/Bidding/Components/Divider"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { navigate, popParentViewController } from "lib/navigation/navigate"
+import { navigate, popToRoot } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { MyCollectionArtworkInsightsFragmentContainer } from "lib/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/MyCollectionArtworkInsights"
@@ -15,11 +15,10 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import { Button, Flex, Join, Spacer, Text } from "palette"
-import React, { useState } from "react"
+import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { MyCollectionArtworkFormModal } from "../ArtworkFormModal/MyCollectionArtworkFormModal"
 import { MyCollectionArtworkHeaderRefetchContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
 import { WhySell } from "./Components/WhySell"
@@ -31,7 +30,6 @@ export interface MyCollectionArtworkProps {
 
 export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwork, marketPriceInsights }) => {
   const { trackEvent } = useTracking()
-  const [showModal, setShowModal] = useState(false)
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -42,22 +40,18 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
       })}
     >
       <ScrollView>
-        <MyCollectionArtworkFormModal
-          mode="edit"
-          visible={showModal}
-          onDismiss={() => setShowModal(false)}
-          onSuccess={() => setShowModal(false)}
-          onDelete={() => {
-            setShowModal(false)
-            setTimeout(popParentViewController, 50)
-          }}
-          artwork={artwork}
-        />
         <FancyModalHeader
           onRightButtonPress={() => {
             trackEvent(tracks.editCollectedArtwork(artwork.internalID, artwork.slug))
             GlobalStore.actions.myCollection.artwork.startEditingArtwork(artwork as any)
-            setShowModal(true)
+            navigate(`my-collection/artworks/${artwork.internalID}/edit`, {
+              passProps: {
+                mode: "edit",
+                artwork,
+                onSuccess: popToRoot,
+                onDelete: popToRoot,
+              },
+            })
           }}
           hideBottomDivider
           renderRightButton={() => (
@@ -119,6 +113,9 @@ export const ArtworkMetaProps = graphql`
     editionSize
     editionNumber
     height
+    attributionClass {
+      name
+    }
     id
     images {
       isDefault

@@ -34,6 +34,7 @@ import { RecentSearches } from "./RecentSearches"
 import { RefetchWhenApiKeyExpiredContainer } from "./RefetchWhenApiKeyExpired"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 import { SearchContext, useSearchProviderValues } from "./SearchContext"
+import { AlgoliaIndiceKey } from "./SearchModel"
 import { SearchResults } from "./SearchResults"
 import { AlgoliaSearchResult, PillType } from "./types"
 
@@ -66,6 +67,16 @@ const ARTWORKS_PILL: PillType = {
   type: "elastic",
 }
 const pills: PillType[] = [TOP_PILL, ARTWORKS_PILL]
+const ALLOWED_ALGOLIA_KEYS = [
+  AlgoliaIndiceKey.Artist,
+  AlgoliaIndiceKey.Article,
+  AlgoliaIndiceKey.Auction,
+  AlgoliaIndiceKey.ArtistSeries,
+  AlgoliaIndiceKey.Collection,
+  AlgoliaIndiceKey.Fair,
+  AlgoliaIndiceKey.Show,
+  AlgoliaIndiceKey.Gallery,
+]
 
 const objectTabByContextModule: Partial<Record<ContextModule, string>> = {
   [ContextModule.auctionTab]: "Auction Results",
@@ -92,7 +103,10 @@ export const Search: React.FC<SearchProps> = (props) => {
 
   const pillsArray = useMemo<PillType[]>(() => {
     if (Array.isArray(indices) && indices.length > 0) {
-      const formattedIndices: PillType[] = indices.map((index) => {
+      const allowedIndices = (indices as NonNullable<Search_system["algolia"]>["indices"]).filter((indice) =>
+        ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndiceKey)
+      )
+      const formattedIndices: PillType[] = allowedIndices.map((index) => {
         return { ...index, type: "algolia", disabled: enableImprovedPills && !indicesInfo[index.name]?.hasResults }
       })
 
@@ -253,6 +267,7 @@ const SearchRefetchContainer = createRefetchContainer(
           indices {
             name
             displayName
+            key
           }
         }
       }

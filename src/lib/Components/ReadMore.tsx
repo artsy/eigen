@@ -18,6 +18,7 @@ interface Props {
   color?: ResponsiveValue<Color>
   textStyle?: "sans" | "new"
   testID?: string
+  type?: "show"
 }
 
 export const ReadMore = React.memo(
@@ -30,6 +31,7 @@ export const ReadMore = React.memo(
     contextModule,
     textStyle = "sans",
     testID,
+    type,
   }: Props) => {
     const [isExpanded, setIsExpanded] = useState(false)
     const tracking = useTracking()
@@ -41,10 +43,30 @@ export const ReadMore = React.memo(
     const textProps: SansProps | PaletteTextProps = textStyle === "new" ? { variant: "xs" } : { size: "3" }
     const rules = {
       ...basicRules,
+      ...(type === "show" && {
+        list: {
+          ...basicRules.paragraph,
+          react: (
+            node: SimpleMarkdown.SingleASTNode,
+            output: SimpleMarkdown.Output<React.ReactNode>,
+            state: SimpleMarkdown.State
+          ) => {
+            return (
+              <TextComponent {...textProps} color={color || "black100"} key={state.key}>
+                {!isExpanded && Number(state.key) > 0 ? ` ${emdash} ` : null}
+                {output(node.content, state)}
+              </TextComponent>
+            )
+          },
+        },
+      }),
       paragraph: {
         ...basicRules.paragraph,
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        react: (node, output, state) => {
+        react: (
+          node: SimpleMarkdown.SingleASTNode,
+          output: SimpleMarkdown.Output<React.ReactNode>,
+          state: SimpleMarkdown.State
+        ) => {
           return (
             <TextComponent {...textProps} color={color || "black100"} key={state.key}>
               {!isExpanded && Number(state.key) > 0 ? ` ${emdash} ` : null}

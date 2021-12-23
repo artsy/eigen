@@ -9,9 +9,9 @@ private struct TopArtwork: SwiftUI.View {
         let artworkImage = artwork.image!
         let artistName = artwork.artist.name
         let artworkTitle = artwork.title
-        let artworkUrl = ArtworkUrl.from(slug: artwork.id)
+        let artworkUrl = artwork.url
         
-        HStack(alignment: .top) {
+        HStack(alignment: .bottom) {
             Image(uiImage: artworkImage)
                 .resizable()
                 .scaledToFit()
@@ -29,7 +29,7 @@ private struct TopArtwork: SwiftUI.View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
-        .padding(10)
+        .padding(16)
         .background(Color.white)
         .widgetURL(artworkUrl)
     }
@@ -42,20 +42,24 @@ private struct BottomArtwork: SwiftUI.View {
         let artworkImage = artwork.image!
         let artistName = artwork.artist.name
         let artworkTitle = artwork.title
-        let artworkUrl = ArtworkUrl.from(slug: artwork.id)
+        let artworkUrl = artwork.url
         
         Link(destination: artworkUrl) {
             VStack() {
+                Spacer()
                 Image(uiImage: artworkImage)
                     .resizable()
                     .scaledToFit()
-                Spacer()
-                PrimaryText(name: artistName)
-                    .lineLimit(1)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                SecondaryText(title: artworkTitle)
-                    .lineLimit(2)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                VStack() {
+                    PrimaryText(name: artistName)
+                        .lineLimit(1)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    SecondaryText(title: artworkTitle)
+                        .lineLimit(2)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Spacer(minLength: 0)
+                }
+                .frame(height: 45)
             }
         }
     }
@@ -96,7 +100,7 @@ extension FeaturedArtworks {
                         BottomArtwork(artwork: tertiaryArtwork)
                         BottomArtwork(artwork: quaternaryArtwork)
                     }
-                    .padding(10)
+                    .padding(16)
                     .background(Color(white: 0.96))
                     .frame(height: geo.size.height * CGFloat(bottomFactor))
                 }

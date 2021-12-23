@@ -1,3 +1,4 @@
+import { delay } from "lib/utils/delay"
 import React, { useCallback, useState } from "react"
 import { useEffect } from "react"
 import { useRef } from "react"
@@ -12,8 +13,6 @@ interface PopoverMessageContextContextValue {
 const SHOW_ANIMATION_VELOCITY = 450
 const HIDE_ANIMATION_VELOCITY = 400
 const REPLACE_ANIMATION_VELOCITY = 350
-
-const delay = (time: number) => new Promise((resolve) => setTimeout(resolve, time))
 
 export const PopoverMessageContext = React.createContext<PopoverMessageContextContextValue>({
   // tslint:disable-next-line:no-empty

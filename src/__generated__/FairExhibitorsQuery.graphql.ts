@@ -8,7 +8,7 @@ import { FragmentRefs } from "relay-runtime";
 export type FairExhibitorsQueryVariables = {
     id: string;
     first: number;
-    after?: string | null;
+    after?: string | null | undefined;
 };
 export type FairExhibitorsQueryResponse = {
     readonly fair: {

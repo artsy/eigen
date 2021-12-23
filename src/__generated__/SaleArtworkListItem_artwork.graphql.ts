@@ -37,7 +37,7 @@ export type SaleArtworkListItem_artwork = {
 };
 export type SaleArtworkListItem_artwork$data = SaleArtworkListItem_artwork;
 export type SaleArtworkListItem_artwork$key = {
-    readonly " $data"?: SaleArtworkListItem_artwork$data;
+    readonly " $data"?: SaleArtworkListItem_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"SaleArtworkListItem_artwork">;
 };
 

@@ -19,7 +19,7 @@ export type ArtistSeries_artistSeries = {
 };
 export type ArtistSeries_artistSeries$data = ArtistSeries_artistSeries;
 export type ArtistSeries_artistSeries$key = {
-    readonly " $data"?: ArtistSeries_artistSeries$data;
+    readonly " $data"?: ArtistSeries_artistSeries$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtistSeries_artistSeries">;
 };
 
@@ -114,7 +114,6 @@ const node: ReaderFragment = {
           "kind": "Literal",
           "name": "input",
           "value": {
-            "dimensionRange": "*-*",
             "sort": "-decayed_merch"
           }
         }
@@ -126,5 +125,5 @@ const node: ReaderFragment = {
   "type": "ArtistSeries",
   "abstractKey": null
 };
-(node as any).hash = 'd7cdaecd1174f42cc89c096d346c2311';
+(node as any).hash = '0822690bade2f2381f36c59407be5d40';
 export default node;

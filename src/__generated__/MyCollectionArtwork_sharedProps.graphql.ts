@@ -20,6 +20,9 @@ export type MyCollectionArtwork_sharedProps = {
     readonly editionSize: string | null;
     readonly editionNumber: string | null;
     readonly height: string | null;
+    readonly attributionClass: {
+        readonly name: string | null;
+    } | null;
     readonly id: string;
     readonly images: ReadonlyArray<{
         readonly isDefault: boolean | null;
@@ -40,7 +43,7 @@ export type MyCollectionArtwork_sharedProps = {
 };
 export type MyCollectionArtwork_sharedProps$data = MyCollectionArtwork_sharedProps;
 export type MyCollectionArtwork_sharedProps$key = {
-    readonly " $data"?: MyCollectionArtwork_sharedProps$data;
+    readonly " $data"?: MyCollectionArtwork_sharedProps$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtwork_sharedProps">;
 };
 
@@ -164,6 +167,24 @@ return {
     {
       "alias": null,
       "args": null,
+      "concreteType": "AttributionClass",
+      "kind": "LinkedField",
+      "name": "attributionClass",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "name",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
       "kind": "ScalarField",
       "name": "id",
       "storageKey": null
@@ -245,5 +266,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '4f3e66cf3dd0c8bc3ce19ba48d5eba14';
+(node as any).hash = '049a9420eb48b4f7af6b814fbd25b255';
 export default node;

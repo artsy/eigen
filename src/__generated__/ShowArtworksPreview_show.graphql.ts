@@ -20,7 +20,7 @@ export type ShowArtworksPreview_show = {
 };
 export type ShowArtworksPreview_show$data = ShowArtworksPreview_show;
 export type ShowArtworksPreview_show$key = {
-    readonly " $data"?: ShowArtworksPreview_show$data;
+    readonly " $data"?: ShowArtworksPreview_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShowArtworksPreview_show">;
 };
 

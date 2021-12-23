@@ -6,7 +6,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ShowLocation_show = {
     readonly partner: {
-        readonly name?: string | null;
+        readonly name?: string | null | undefined;
     } | null;
     readonly fair: {
         readonly name: string | null;
@@ -21,7 +21,7 @@ export type ShowLocation_show = {
 };
 export type ShowLocation_show$data = ShowLocation_show;
 export type ShowLocation_show$key = {
-    readonly " $data"?: ShowLocation_show$data;
+    readonly " $data"?: ShowLocation_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShowLocation_show">;
 };
 

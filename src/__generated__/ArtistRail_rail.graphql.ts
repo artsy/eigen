@@ -26,7 +26,7 @@ export type ArtistRail_rail = {
 };
 export type ArtistRail_rail$data = ArtistRail_rail;
 export type ArtistRail_rail$key = {
-    readonly " $data"?: ArtistRail_rail$data;
+    readonly " $data"?: ArtistRail_rail$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtistRail_rail">;
 };
 

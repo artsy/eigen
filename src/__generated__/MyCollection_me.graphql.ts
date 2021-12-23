@@ -13,6 +13,20 @@ export type MyCollection_me = {
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly id: string;
+                readonly medium: string | null;
+                readonly pricePaid: {
+                    readonly minor: number;
+                } | null;
+                readonly attributionClass: {
+                    readonly name: string | null;
+                } | null;
+                readonly sizeBucket: string | null;
+                readonly width: string | null;
+                readonly height: string | null;
+                readonly artist: {
+                    readonly internalID: string;
+                    readonly name: string | null;
+                } | null;
             } | null;
         } | null> | null;
         readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_myCollectionConnection">;
@@ -21,7 +35,7 @@ export type MyCollection_me = {
 };
 export type MyCollection_me$data = MyCollection_me;
 export type MyCollection_me$key = {
-    readonly " $data"?: MyCollection_me$data;
+    readonly " $data"?: MyCollection_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"MyCollection_me">;
 };
 
@@ -34,11 +48,18 @@ var v0 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
 };
 return {
   "argumentDefinitions": [
     {
-      "defaultValue": 20,
+      "defaultValue": 100,
       "kind": "LocalArgument",
       "name": "count"
     },
@@ -116,6 +137,83 @@ return {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
+                  "name": "medium",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "Money",
+                  "kind": "LinkedField",
+                  "name": "pricePaid",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "minor",
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "AttributionClass",
+                  "kind": "LinkedField",
+                  "name": "attributionClass",
+                  "plural": false,
+                  "selections": [
+                    (v1/*: any*/)
+                  ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "sizeBucket",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "width",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "height",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "Artist",
+                  "kind": "LinkedField",
+                  "name": "artist",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "internalID",
+                      "storageKey": null
+                    },
+                    (v1/*: any*/)
+                  ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
                 }
@@ -176,5 +274,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '89e97213740334ce633e990039517fd5';
+(node as any).hash = 'b7ddcdf1ae59ca9d96c75203ce0b333f';
 export default node;

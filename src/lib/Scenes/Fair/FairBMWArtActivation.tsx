@@ -124,7 +124,6 @@ export const FAIR_BMW_ART_ACTIVATION_QUERY = graphql`
 export const FairBMWArtActivationQueryRenderer: React.FC<{ fairID: string }> = ({ fairID }) => (
   <QueryRenderer<FairBMWArtActivationQuery>
     environment={defaultEnvironment}
-    // tslint:disable-next-line: relay-operation-generics
     query={FAIR_BMW_ART_ACTIVATION_QUERY}
     variables={{ fairID }}
     render={renderWithLoadProgress(FairBMWArtActivationFragmentContainer)}

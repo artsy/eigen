@@ -23,7 +23,7 @@ export type WorksForYou_me = {
 };
 export type WorksForYou_me$data = WorksForYou_me;
 export type WorksForYou_me$key = {
-    readonly " $data"?: WorksForYou_me$data;
+    readonly " $data"?: WorksForYou_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"WorksForYou_me">;
 };
 

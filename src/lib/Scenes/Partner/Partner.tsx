@@ -85,7 +85,7 @@ export const PartnerContainer = createRefetchContainer(
           internalID
         }
 
-        ...PartnerArtwork_partner @arguments(input: { sort: "-partner_updated_at", dimensionRange: "*-*" })
+        ...PartnerArtwork_partner @arguments(input: { sort: "-partner_updated_at" })
         ...PartnerOverview_partner
         ...PartnerShows_partner
         ...PartnerHeader_partner

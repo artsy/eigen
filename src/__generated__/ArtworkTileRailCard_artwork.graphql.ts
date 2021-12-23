@@ -17,7 +17,7 @@ export type ArtworkTileRailCard_artwork = {
 };
 export type ArtworkTileRailCard_artwork$data = ArtworkTileRailCard_artwork;
 export type ArtworkTileRailCard_artwork$key = {
-    readonly " $data"?: ArtworkTileRailCard_artwork$data;
+    readonly " $data"?: ArtworkTileRailCard_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkTileRailCard_artwork">;
 };
 

@@ -5,14 +5,34 @@
 
 import { ConcreteRequest } from "relay-runtime";
 export type UpdateSavedSearchInput = {
-    clientMutationId?: string | null;
+    attributes?: SearchCriteriaAttributes | null | undefined;
+    clientMutationId?: string | null | undefined;
     searchCriteriaID: string;
-    userAlertSettings?: UserAlertSettingsInput | null;
+    userAlertSettings?: UserAlertSettingsInput | null | undefined;
+};
+export type SearchCriteriaAttributes = {
+    acquireable?: boolean | null | undefined;
+    additionalGeneIDs?: Array<string> | null | undefined;
+    artistID?: string | null | undefined;
+    atAuction?: boolean | null | undefined;
+    attributionClass?: Array<string> | null | undefined;
+    colors?: Array<string> | null | undefined;
+    dimensionRange?: string | null | undefined;
+    height?: string | null | undefined;
+    inquireableOnly?: boolean | null | undefined;
+    locationCities?: Array<string> | null | undefined;
+    majorPeriods?: Array<string> | null | undefined;
+    materialsTerms?: Array<string> | null | undefined;
+    offerable?: boolean | null | undefined;
+    partnerIDs?: Array<string> | null | undefined;
+    priceRange?: string | null | undefined;
+    sizes?: Array<string> | null | undefined;
+    width?: string | null | undefined;
 };
 export type UserAlertSettingsInput = {
-    email?: boolean | null;
-    name?: string | null;
-    push?: boolean | null;
+    email?: boolean | null | undefined;
+    name?: string | null | undefined;
+    push?: boolean | null | undefined;
 };
 export type updateSavedSearchAlertMutationVariables = {
     input: UpdateSavedSearchInput;
@@ -20,10 +40,10 @@ export type updateSavedSearchAlertMutationVariables = {
 export type updateSavedSearchAlertMutationResponse = {
     readonly updateSavedSearch: {
         readonly savedSearchOrErrors: {
-            readonly internalID?: string;
+            readonly internalID?: string | undefined;
             readonly userAlertSettings?: {
                 readonly name: string | null;
-            };
+            } | undefined;
         };
     } | null;
 };

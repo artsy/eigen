@@ -95,7 +95,13 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
           break
         case "OnboardingCreateAccountName":
           if (acceptedTerms) {
-            const res = await GlobalStore.actions.auth.signUp({ email, password, name, agreedToReceiveEmails })
+            const res = await GlobalStore.actions.auth.signUp({
+              oauthProvider: "email",
+              email,
+              password,
+              name,
+              agreedToReceiveEmails,
+            })
             if (!res.success) {
               Alert.alert("Try again", res.message)
             }

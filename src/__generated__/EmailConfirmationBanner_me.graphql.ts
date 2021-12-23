@@ -10,7 +10,7 @@ export type EmailConfirmationBanner_me = {
 };
 export type EmailConfirmationBanner_me$data = EmailConfirmationBanner_me;
 export type EmailConfirmationBanner_me$key = {
-    readonly " $data"?: EmailConfirmationBanner_me$data;
+    readonly " $data"?: EmailConfirmationBanner_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"EmailConfirmationBanner_me">;
 };
 

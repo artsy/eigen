@@ -23,7 +23,7 @@ export type ArtistCollectionsRail_collections = ReadonlyArray<{
 }>;
 export type ArtistCollectionsRail_collections$data = ArtistCollectionsRail_collections;
 export type ArtistCollectionsRail_collections$key = ReadonlyArray<{
-    readonly " $data"?: ArtistCollectionsRail_collections$data;
+    readonly " $data"?: ArtistCollectionsRail_collections$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ArtistCollectionsRail_collections">;
 }>;
 

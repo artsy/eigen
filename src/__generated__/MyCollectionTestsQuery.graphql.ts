@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash caf096133211001be284a5f918e0d107 */
+/* @relayHash e7ea8923933123ed88d9c97c0716d2ad */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -39,6 +39,20 @@ fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectio
       image {
         aspectRatio
       }
+      artistNames
+      medium
+      artist {
+        internalID
+        name
+        id
+      }
+      pricePaid {
+        minor
+      }
+      sizeBucket
+      width
+      height
+      date
       ...MyCollectionArtworkListItem_artwork
     }
   }
@@ -69,10 +83,26 @@ fragment MyCollection_me on Me {
   myCollectionInfo {
     includesPurchasedArtworks
   }
-  myCollectionConnection(excludePurchasedArtworks: true, first: 20, sort: CREATED_AT_DESC) {
+  myCollectionConnection(excludePurchasedArtworks: true, first: 100, sort: CREATED_AT_DESC) {
     edges {
       node {
         id
+        medium
+        pricePaid {
+          minor
+        }
+        attributionClass {
+          name
+          id
+        }
+        sizeBucket
+        width
+        height
+        artist {
+          internalID
+          name
+          id
+        }
         __typename
       }
       cursor
@@ -103,7 +133,7 @@ v1 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 20
+    "value": 100
   },
   {
     "kind": "Literal",
@@ -115,28 +145,35 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "internalID",
+  "name": "name",
   "storageKey": null
 },
 v3 = {
-  "enumValues": null,
-  "nullable": false,
-  "plural": false,
-  "type": "ID"
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
 },
 v4 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
-  "type": "String"
+  "type": "ID"
 },
 v5 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "String"
+},
+v6 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v6 = {
+v7 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
@@ -231,6 +268,79 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "medium",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Money",
+                        "kind": "LinkedField",
+                        "name": "pricePaid",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "minor",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "AttributionClass",
+                        "kind": "LinkedField",
+                        "name": "attributionClass",
+                        "plural": false,
+                        "selections": [
+                          (v2/*: any*/),
+                          (v0/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "sizeBucket",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "width",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "height",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Artist",
+                        "kind": "LinkedField",
+                        "name": "artist",
+                        "plural": false,
+                        "selections": [
+                          (v3/*: any*/),
+                          (v2/*: any*/),
+                          (v0/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "__typename",
                         "storageKey": null
                       },
@@ -259,20 +369,21 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v2/*: any*/),
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "Artist",
-                        "kind": "LinkedField",
-                        "name": "artist",
-                        "plural": false,
-                        "selections": [
-                          (v2/*: any*/),
-                          (v0/*: any*/)
-                        ],
+                        "kind": "ScalarField",
+                        "name": "artistNames",
                         "storageKey": null
                       },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "date",
+                        "storageKey": null
+                      },
+                      (v3/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -302,28 +413,7 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "artistNames",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "medium",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
                         "name": "title",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "date",
                         "storageKey": null
                       }
                     ],
@@ -372,7 +462,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "myCollectionConnection(excludePurchasedArtworks:true,first:20,sort:\"CREATED_AT_DESC\")"
+            "storageKey": "myCollectionConnection(excludePurchasedArtworks:true,first:100,sort:\"CREATED_AT_DESC\")"
           },
           {
             "alias": null,
@@ -389,7 +479,7 @@ return {
     ]
   },
   "params": {
-    "id": "caf096133211001be284a5f918e0d107",
+    "id": "e7ea8923933123ed88d9c97c0716d2ad",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -398,7 +488,7 @@ return {
           "plural": false,
           "type": "Me"
         },
-        "me.id": (v3/*: any*/),
+        "me.id": (v4/*: any*/),
         "me.myCollectionConnection": {
           "enumValues": null,
           "nullable": true,
@@ -411,25 +501,35 @@ return {
           "plural": true,
           "type": "MyCollectionEdge"
         },
-        "me.myCollectionConnection.edges.cursor": (v4/*: any*/),
+        "me.myCollectionConnection.edges.cursor": (v5/*: any*/),
         "me.myCollectionConnection.edges.node": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Artwork"
         },
-        "me.myCollectionConnection.edges.node.__typename": (v4/*: any*/),
+        "me.myCollectionConnection.edges.node.__typename": (v5/*: any*/),
         "me.myCollectionConnection.edges.node.artist": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Artist"
         },
-        "me.myCollectionConnection.edges.node.artist.id": (v3/*: any*/),
-        "me.myCollectionConnection.edges.node.artist.internalID": (v3/*: any*/),
-        "me.myCollectionConnection.edges.node.artistNames": (v5/*: any*/),
-        "me.myCollectionConnection.edges.node.date": (v5/*: any*/),
-        "me.myCollectionConnection.edges.node.id": (v3/*: any*/),
+        "me.myCollectionConnection.edges.node.artist.id": (v4/*: any*/),
+        "me.myCollectionConnection.edges.node.artist.internalID": (v4/*: any*/),
+        "me.myCollectionConnection.edges.node.artist.name": (v6/*: any*/),
+        "me.myCollectionConnection.edges.node.artistNames": (v6/*: any*/),
+        "me.myCollectionConnection.edges.node.attributionClass": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "AttributionClass"
+        },
+        "me.myCollectionConnection.edges.node.attributionClass.id": (v4/*: any*/),
+        "me.myCollectionConnection.edges.node.attributionClass.name": (v6/*: any*/),
+        "me.myCollectionConnection.edges.node.date": (v6/*: any*/),
+        "me.myCollectionConnection.edges.node.height": (v6/*: any*/),
+        "me.myCollectionConnection.edges.node.id": (v4/*: any*/),
         "me.myCollectionConnection.edges.node.image": {
           "enumValues": null,
           "nullable": true,
@@ -454,27 +554,41 @@ return {
           "plural": false,
           "type": "Boolean"
         },
-        "me.myCollectionConnection.edges.node.images.url": (v5/*: any*/),
-        "me.myCollectionConnection.edges.node.internalID": (v3/*: any*/),
-        "me.myCollectionConnection.edges.node.medium": (v5/*: any*/),
-        "me.myCollectionConnection.edges.node.slug": (v3/*: any*/),
-        "me.myCollectionConnection.edges.node.title": (v5/*: any*/),
+        "me.myCollectionConnection.edges.node.images.url": (v6/*: any*/),
+        "me.myCollectionConnection.edges.node.internalID": (v4/*: any*/),
+        "me.myCollectionConnection.edges.node.medium": (v6/*: any*/),
+        "me.myCollectionConnection.edges.node.pricePaid": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Money"
+        },
+        "me.myCollectionConnection.edges.node.pricePaid.minor": {
+          "enumValues": null,
+          "nullable": false,
+          "plural": false,
+          "type": "Int"
+        },
+        "me.myCollectionConnection.edges.node.sizeBucket": (v6/*: any*/),
+        "me.myCollectionConnection.edges.node.slug": (v4/*: any*/),
+        "me.myCollectionConnection.edges.node.title": (v6/*: any*/),
+        "me.myCollectionConnection.edges.node.width": (v6/*: any*/),
         "me.myCollectionConnection.pageInfo": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "PageInfo"
         },
-        "me.myCollectionConnection.pageInfo.endCursor": (v5/*: any*/),
-        "me.myCollectionConnection.pageInfo.hasNextPage": (v6/*: any*/),
-        "me.myCollectionConnection.pageInfo.startCursor": (v5/*: any*/),
+        "me.myCollectionConnection.pageInfo.endCursor": (v6/*: any*/),
+        "me.myCollectionConnection.pageInfo.hasNextPage": (v7/*: any*/),
+        "me.myCollectionConnection.pageInfo.startCursor": (v6/*: any*/),
         "me.myCollectionInfo": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "MyCollectionInfo"
         },
-        "me.myCollectionInfo.includesPurchasedArtworks": (v6/*: any*/)
+        "me.myCollectionInfo.includesPurchasedArtworks": (v7/*: any*/)
       }
     },
     "name": "MyCollectionTestsQuery",

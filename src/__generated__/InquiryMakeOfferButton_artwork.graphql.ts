@@ -10,7 +10,7 @@ export type InquiryMakeOfferButton_artwork = {
 };
 export type InquiryMakeOfferButton_artwork$data = InquiryMakeOfferButton_artwork;
 export type InquiryMakeOfferButton_artwork$key = {
-    readonly " $data"?: InquiryMakeOfferButton_artwork$data;
+    readonly " $data"?: InquiryMakeOfferButton_artwork$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"InquiryMakeOfferButton_artwork">;
 };
 

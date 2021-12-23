@@ -240,7 +240,7 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                     <Box px={2}>
                       <FairArtworksFragmentContainer fair={fair} />
                       <ArtworkFilterNavigator
-                        isFilterArtworksModalVisible={isFilterArtworksModalVisible}
+                        visible={isFilterArtworksModalVisible}
                         id={fair.internalID}
                         slug={fair.slug}
                         mode={FilterModalMode.Fair}
@@ -286,7 +286,7 @@ export const FairFragmentContainer = createFragmentContainer(Fair, {
       ...FairEmptyState_fair
       ...FairEditorial_fair
       ...FairCollections_fair
-      ...FairArtworks_fair @arguments(input: { sort: "-decayed_merch", dimensionRange: "*-*" })
+      ...FairArtworks_fair @arguments(input: { sort: "-decayed_merch" })
       ...FairExhibitors_fair
       ...FairFollowedArtistsRail_fair
     }

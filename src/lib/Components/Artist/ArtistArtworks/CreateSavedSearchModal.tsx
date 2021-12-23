@@ -18,10 +18,11 @@ export interface CreateSavedSearchModalProps {
   artistName: string
   artistSlug: string
   closeModal: () => void
+  onComplete?: () => void
 }
 
 export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (props) => {
-  const { visible, artistId, artistName, artistSlug, closeModal } = props
+  const { visible, artistId, artistName, artistSlug, closeModal, onComplete } = props
   const tracking = useTracking()
   const popover = usePopoverMessage()
   const shouldDisplayMyCollection = useEnableMyCollection()
@@ -32,6 +33,7 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
   const handleComplete = (result: SavedSearchAlertMutationResult) => {
     tracking.trackEvent(tracks.toggleSavedSearch(true, artistId, artistSlug, result.id))
     closeModal()
+    onComplete?.()
 
     popover.show({
       title: "Your alert has been created.",

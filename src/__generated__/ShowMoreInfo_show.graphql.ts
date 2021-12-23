@@ -12,7 +12,7 @@ export type ShowMoreInfo_show = {
     readonly pressRelease: string | null;
     readonly partner: {
         readonly __typename: string;
-        readonly type?: string | null;
+        readonly type?: string | null | undefined;
         readonly " $fragmentRefs": FragmentRefs<"PartnerEntityHeader_partner">;
     } | null;
     readonly fair: {
@@ -62,7 +62,7 @@ export type ShowMoreInfo_show = {
 };
 export type ShowMoreInfo_show$data = ShowMoreInfo_show;
 export type ShowMoreInfo_show$key = {
-    readonly " $data"?: ShowMoreInfo_show$data;
+    readonly " $data"?: ShowMoreInfo_show$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"ShowMoreInfo_show">;
 };
 

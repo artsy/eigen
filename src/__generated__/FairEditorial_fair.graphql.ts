@@ -27,7 +27,7 @@ export type FairEditorial_fair = {
 };
 export type FairEditorial_fair$data = FairEditorial_fair;
 export type FairEditorial_fair$key = {
-    readonly " $data"?: FairEditorial_fair$data;
+    readonly " $data"?: FairEditorial_fair$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"FairEditorial_fair">;
 };
 

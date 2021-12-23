@@ -13,7 +13,6 @@
 + (NSString *)userID { return @"userID"; }
 + (NSString *)authenticationToken { return @"authenticationToken"; }
 + (NSString *)launchCount { return @"launchCount"; }
-+ (NSString *)onboardingState { return @"onboardingState"; }
 + (NSString *)userEmail { return @"userEmail"; }
 
 + (NSString *)userAgent { return @"userAgent"; }

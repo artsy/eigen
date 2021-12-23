@@ -1,12 +1,11 @@
 import * as Sentry from "@sentry/react-native"
 import { useEffect } from "react"
-import { Platform } from "react-native"
 import Config from "react-native-config"
 import { sentryReleaseName } from "../../app.json"
 import { GlobalStore, useFeatureFlag } from "./store/GlobalStore"
 
-function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
-  if (!__DEV__ && Config.SENTRY_DSN) {
+export const setupSentry = (props: Partial<Sentry.ReactNativeOptions> = {}, captureExceptions = !__DEV__) => {
+  if (!captureExceptions && Config.SENTRY_DSN) {
     Sentry.init({
       dsn: Config.SENTRY_DSN,
       release: sentryReleaseName,
@@ -20,23 +19,16 @@ function setupSentry(props: Partial<Sentry.ReactNativeOptions> = {}) {
   }
 }
 
-setupSentry()
-
 export function useSentryConfig() {
   const environment = GlobalStore.useAppState((store) => store.config.environment.env)
-  useEffect(() => {
-    setupSentry({ environment })
-  }, [environment])
+  const captureExceptionsInSentryOnDev = useFeatureFlag("ARCaptureExceptionsInSentryOnDev")
 
-  const showNewOnboarding = useFeatureFlag("AREnableNewOnboardingFlow")
-
-  const userID =
-    GlobalStore.useAppState((store) =>
-      Platform.OS === "ios" && !showNewOnboarding ? store.native.sessionState.userID : store.auth.userID
-    ) ?? "none"
   useEffect(() => {
-    Sentry.setUser({
-      id: userID,
-    })
+    setupSentry({ environment }, captureExceptionsInSentryOnDev)
+  }, [environment, captureExceptionsInSentryOnDev])
+
+  const userID = GlobalStore.useAppState((store) => store.auth.userID) ?? "none"
+  useEffect(() => {
+    Sentry.setUser({ id: userID })
   }, [userID])
 }

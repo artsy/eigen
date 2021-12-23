@@ -3,7 +3,7 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { compact, flatten } from "lodash"
 import React, { RefObject, useEffect, useRef, useState } from "react"
 import { Animated, View } from "react-native"
-import { AnimationCreator, ease, FancyModalCard, spring } from "./FancyModalCard"
+import { AnimationCreator, ease, FancyModalAnimationPosition, FancyModalCard, spring } from "./FancyModalCard"
 
 /**
  * This is responsible for managing a stack of FancyModalCard instances, and making sure they are positioned correctly.
@@ -57,6 +57,7 @@ class FancyModalCardStack {
     height: number
     fullScreen?: boolean
     backgroundShouldShrink: boolean
+    animationPosition?: FancyModalAnimationPosition
     onBackgroundPressed(): void
   }): {
     jsx: JSX.Element
@@ -64,16 +65,10 @@ class FancyModalCardStack {
     hide(): Promise<void>
   } {
     const ref = useRef<FancyModalCard>(null)
+    const { content, ...other } = config
     const jsx = (
-      <FancyModalCard
-        level={this.level}
-        ref={ref}
-        onBackgroundPressed={config.onBackgroundPressed}
-        height={config.height}
-        fullScreen={config.fullScreen}
-        backgroundShouldShrink={config.backgroundShouldShrink}
-      >
-        {config.content}
+      <FancyModalCard level={this.level} ref={ref} {...other}>
+        {content}
       </FancyModalCard>
     )
 

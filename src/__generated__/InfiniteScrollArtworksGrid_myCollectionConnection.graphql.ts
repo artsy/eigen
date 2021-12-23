@@ -17,6 +17,19 @@ export type InfiniteScrollArtworksGrid_myCollectionConnection = {
             readonly image: {
                 readonly aspectRatio: number;
             } | null;
+            readonly artistNames: string | null;
+            readonly medium: string | null;
+            readonly artist: {
+                readonly internalID: string;
+                readonly name: string | null;
+            } | null;
+            readonly pricePaid: {
+                readonly minor: number;
+            } | null;
+            readonly sizeBucket: string | null;
+            readonly width: string | null;
+            readonly height: string | null;
+            readonly date: string | null;
             readonly " $fragmentRefs": FragmentRefs<"ArtworkGridItem_artwork" | "MyCollectionArtworkListItem_artwork">;
         } | null;
     } | null> | null;
@@ -24,7 +37,7 @@ export type InfiniteScrollArtworksGrid_myCollectionConnection = {
 };
 export type InfiniteScrollArtworksGrid_myCollectionConnection$data = InfiniteScrollArtworksGrid_myCollectionConnection;
 export type InfiniteScrollArtworksGrid_myCollectionConnection$key = {
-    readonly " $data"?: InfiniteScrollArtworksGrid_myCollectionConnection$data;
+    readonly " $data"?: InfiniteScrollArtworksGrid_myCollectionConnection$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_myCollectionConnection">;
 };
 
@@ -123,6 +136,91 @@ const node: ReaderFragment = {
               "storageKey": null
             },
             {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "artistNames",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "medium",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "Artist",
+              "kind": "LinkedField",
+              "name": "artist",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "internalID",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "name",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "Money",
+              "kind": "LinkedField",
+              "name": "pricePaid",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "minor",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "sizeBucket",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "width",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "height",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "date",
+              "storageKey": null
+            },
+            {
               "condition": "skipArtworkGridItem",
               "kind": "Condition",
               "passingValue": false,
@@ -149,5 +247,5 @@ const node: ReaderFragment = {
   "type": "MyCollectionConnection",
   "abstractKey": null
 };
-(node as any).hash = 'e789684cec31a79f9a3a9a7548b781a4';
+(node as any).hash = '84cd227c4b6e3878aaf95088b2698ee8';
 export default node;

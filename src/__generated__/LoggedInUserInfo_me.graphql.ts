@@ -11,7 +11,7 @@ export type LoggedInUserInfo_me = {
 };
 export type LoggedInUserInfo_me$data = LoggedInUserInfo_me;
 export type LoggedInUserInfo_me$key = {
-    readonly " $data"?: LoggedInUserInfo_me$data;
+    readonly " $data"?: LoggedInUserInfo_me$data | undefined;
     readonly " $fragmentRefs": FragmentRefs<"LoggedInUserInfo_me">;
 };
 

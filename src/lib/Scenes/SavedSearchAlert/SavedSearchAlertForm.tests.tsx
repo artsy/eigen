@@ -1,4 +1,4 @@
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent, waitFor, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { Aggregations, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -88,6 +88,8 @@ describe("Saved search alert form", () => {
           searchCriteriaID: "savedSearchAlertId",
           userAlertSettings: {
             name: "something new",
+            email: true,
+            push: true,
           },
         },
       })
@@ -130,6 +132,8 @@ describe("Saved search alert form", () => {
           attributes: createMutationAttributes,
           userAlertSettings: {
             name: "something new",
+            email: true,
+            push: true,
           },
         },
       })
@@ -228,13 +232,6 @@ describe("Saved search alert form", () => {
         },
       })
     })
-  })
-
-  it("should display description by default", () => {
-    const { getByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
-    const description = getByText("Receive alerts as Push Notifications directly to your device.")
-
-    expect(description).toBeTruthy()
   })
 
   it("should hide description when AREnableSavedSearchToggles is enabled", () => {
@@ -566,6 +563,33 @@ describe("Saved search alert form", () => {
       const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
 
       expect(getByTestId("save-alert-button")).toBeEnabled()
+    })
+  })
+
+  describe("Create Alert Form", () => {
+    it("should have removable filter pills when in create mode and AREnableImprovedAlertsFlow enabled", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
+      const { getByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+      // artist pill should appear and not be removable
+      expect(getByText("artistName")).toBeTruthy()
+      expect(getByText("artistName")).not.toHaveProp("onPress")
+
+      fireEvent.press(getByText("Prints"))
+      fireEvent.press(getByText("Photography"))
+
+      waitForElementToBeRemoved(() => getByText("Prints"))
+      waitForElementToBeRemoved(() => getByText("Photography"))
+    })
+
+    it("should not have removable filter pills when in create mode and AREnableImprovedAlertsFlow disabled", async () => {
+      const { getByText, queryByText } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+
+      // artist pill should appear and not be removable
+      expect(queryByText("artistName")).toBeNull()
+
+      expect(getByText("Prints")).not.toHaveProp("onPress")
+      expect(getByText("Photography")).not.toHaveProp("onPress")
     })
   })
 })

@@ -1,10 +1,5 @@
-import { OptionListItem as FilterModalOptionListItem } from "lib/Components/ArtworkFilter"
-import { OptionListItem as MultiSelectOptionListItem } from "./MultiSelectOption"
-
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { extractText } from "lib/tests/extractText"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Check } from "palette"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "../ArtworkFilterStore"
 import { MockFilterScreen } from "../FilterTestHelper"
@@ -56,12 +51,11 @@ describe(LocationCitiesOptionsScreen, () => {
 
   describe("no filters are selected", () => {
     it("renders all options present in the aggregation", () => {
-      const tree = renderWithWrappers(<MockLocationCitiesOptionsScreen initialData={initialState} />)
+      const { getByText } = renderWithWrappersTL(<MockLocationCitiesOptionsScreen initialData={initialState} />)
 
-      expect(tree.root.findAllByType(MultiSelectOptionListItem)).toHaveLength(3)
-
-      const items = tree.root.findAllByType(MultiSelectOptionListItem)
-      expect(items.map(extractText)).toEqual(["Paris, France", "London, United Kingdom", "Milan, Italy"])
+      expect(getByText("Paris, France")).toBeTruthy()
+      expect(getByText("London, United Kingdom")).toBeTruthy()
+      expect(getByText("Milan, Italy")).toBeTruthy()
     })
   })
 
@@ -78,25 +72,19 @@ describe(LocationCitiesOptionsScreen, () => {
     }
 
     it("displays the number of the selected filters on the filter modal screen", () => {
-      const tree = renderWithWrappers(<MockFilterScreen initialState={state} />)
+      const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={state} />)
 
-      const items = tree.root.findAllByType(FilterModalOptionListItem)
-      const item = items.find((i) => extractText(i).startsWith("Artwork Location"))
-
-      expect(item).not.toBeUndefined()
-      if (item) {
-        expect(extractText(item)).toContain("• 2")
-      }
+      expect(getByText("Artwork Location • 2")).toBeTruthy()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      const tree = renderWithWrappers(<MockLocationCitiesOptionsScreen initialData={state} />)
+      const { getAllByA11yState } = renderWithWrappersTL(<MockLocationCitiesOptionsScreen initialData={state} />)
 
-      const options = tree.root.findAllByType(Check)
+      const options = getAllByA11yState({ checked: true })
 
-      expect(options[0].props.selected).toBe(true)
-      expect(options[1].props.selected).toBe(false)
-      expect(options[2].props.selected).toBe(true)
+      expect(options).toHaveLength(2)
+      expect(options[0]).toHaveTextContent("Paris, France")
+      expect(options[1]).toHaveTextContent("Milan, Italy")
     })
   })
 })

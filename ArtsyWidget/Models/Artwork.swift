@@ -21,6 +21,11 @@ struct Artwork: Codable {
         return url
     }
     
+    var url: URL {
+        let link = ["https://www.artsy.net/artwork/", id].joined()
+        return WidgetUrl.from(link: link)!
+    }
+    
     enum CodingKeys: String, CodingKey {
         case artworkImages = "images"
         

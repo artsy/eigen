@@ -13,7 +13,6 @@
     return @{
         @"id" : @"stubbed",
         @"title" : @"Artwork Title",
-        @"availability" : @"sold",
         @"sold" : @YES,
         @"price" : @"$5,000",
         @"acquireable" : @NO,
