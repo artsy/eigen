@@ -246,9 +246,6 @@ export const updateArtwork = async (
 
   refreshMyCollection()
   props.onSuccess()
-  setTimeout(() => {
-    GlobalStore.actions.myCollection.artwork.resetForm()
-  }, 500)
 }
 
 const tracks = {
