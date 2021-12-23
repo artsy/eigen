@@ -4,12 +4,16 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
+export type AuthenticationProvider = "APPLE" | "FACEBOOK" | "GOOGLE" | "%future added value";
 export type MyAccount_me = {
     readonly name: string | null;
     readonly email: string | null;
     readonly phone: string | null;
     readonly paddleNumber: string | null;
     readonly hasPassword: boolean;
+    readonly authentications: ReadonlyArray<{
+        readonly provider: AuthenticationProvider;
+    }>;
     readonly " $refType": "MyAccount_me";
 };
 export type MyAccount_me$data = MyAccount_me;
@@ -60,10 +64,28 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "name": "hasPassword",
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "AuthenticationType",
+      "kind": "LinkedField",
+      "name": "authentications",
+      "plural": true,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "provider",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '7e030bd5a669b805cf6701e42c6e3bf2';
+(node as any).hash = 'c2446e55b9e00454b5af58790f36bd88';
 export default node;

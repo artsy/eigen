@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 933f2ffd7161fb11839b1981bfc64433 */
+/* @relayHash 3689e40acb6f6871f58bb136b9d1b0cd */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -32,10 +32,22 @@ fragment MyAccount_me on Me {
   phone
   paddleNumber
   hasPassword
+  authentications {
+    provider
+    id
+  }
 }
 */
 
-const node: ConcreteRequest = {
+const node: ConcreteRequest = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
+return {
   "fragment": {
     "argumentDefinitions": [],
     "kind": "Fragment",
@@ -114,22 +126,36 @@ const node: ConcreteRequest = {
           {
             "alias": null,
             "args": null,
-            "kind": "ScalarField",
-            "name": "id",
+            "concreteType": "AuthenticationType",
+            "kind": "LinkedField",
+            "name": "authentications",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "provider",
+                "storageKey": null
+              },
+              (v0/*: any*/)
+            ],
             "storageKey": null
-          }
+          },
+          (v0/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "933f2ffd7161fb11839b1981bfc64433",
+    "id": "3689e40acb6f6871f58bb136b9d1b0cd",
     "metadata": {},
     "name": "MyAccountTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
+})();
 (node as any).hash = '83eb6b625a42186d1ea3c14b60d7b6cb';
 export default node;

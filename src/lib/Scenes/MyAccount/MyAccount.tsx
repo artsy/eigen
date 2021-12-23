@@ -4,15 +4,18 @@ import { MenuItem } from "lib/Components/MenuItem"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Flex } from "palette"
+import { Flex, Separator, Text } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
+  const showLinkedAccounts = useFeatureFlag("ARShowLinkedAccounts")
+
   return (
     <PageWithSimpleHeader title="Account">
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
@@ -48,6 +51,14 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
           />
         )}
         {!!me.paddleNumber && <MenuItem title="Paddle Number" value={me.paddleNumber} />}
+        {!!showLinkedAccounts && (
+          <>
+            <Separator />
+            <MenuItem title="Linked Accounts" />
+            <MenuItem title="Facebook" value="wow" />
+            <MenuItem title="Apple" value=" wo" />
+          </>
+        )}
       </ScrollView>
     </PageWithSimpleHeader>
   )
@@ -75,6 +86,9 @@ export const MyAccountContainer = createFragmentContainer(MyAccount, {
       phone
       paddleNumber
       hasPassword
+      authentications {
+        provider
+      }
     }
   `,
 })
