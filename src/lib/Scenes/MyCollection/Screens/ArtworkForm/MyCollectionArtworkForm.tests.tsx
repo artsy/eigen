@@ -152,6 +152,7 @@ describe("MyCollectionArtworkForm", () => {
                 provenance: null,
                 width: null,
                 title: null,
+                attributionClass: null,
               },
             },
           },
