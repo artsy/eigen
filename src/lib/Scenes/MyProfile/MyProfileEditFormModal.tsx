@@ -6,6 +6,7 @@ import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { LoadingIndicator } from "lib/Components/LoadingIndicator"
 import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
+import { LocalImage } from "lib/utils/LocalImageStore"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { compact, isArray } from "lodash"
 import { Avatar, Box, Button, Flex, Input, Join, Spacer, Text, Touchable, useColor } from "palette"
@@ -19,7 +20,7 @@ interface MyProfileEditFormModalProps {
   visible: boolean
   me: MyProfileEditFormModal_me
   setProfileIconLocally: (path: string) => void
-  localImagePath: string
+  localImage: LocalImage | null
   onDismiss(): void
 }
 
@@ -72,7 +73,7 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
     initialValues: {
       name: me?.name ?? "",
       bio: me?.bio ?? "",
-      photo: me?.icon?.url ?? props.localImagePath ?? "",
+      photo: me?.icon?.url ?? props.localImage?.path ?? "",
     },
     initialErrors: {},
     onSubmit: async ({ name, bio, photo }) => {

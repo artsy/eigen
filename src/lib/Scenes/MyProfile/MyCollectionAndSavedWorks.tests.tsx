@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-community/async-storage"
 import { MyCollectionAndSavedWorksTestsQuery } from "__generated__/MyCollectionAndSavedWorksTestsQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
@@ -8,8 +7,8 @@ import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { LocalImage, storeLocalImages } from "lib/utils/LocalImageStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { DateTime } from "luxon"
 import { Avatar } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -17,11 +16,7 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
-import {
-  LOCAL_PROFILE_ICON_EXPIRE_AT_KEY,
-  LOCAL_PROFILE_ICON_PATH_KEY,
-  MyCollectionAndSavedWorksFragmentContainer,
-} from "./MyCollectionAndSavedWorks"
+import { LOCAL_PROFILE_ICON_PATH_KEY, MyCollectionAndSavedWorksFragmentContainer } from "./MyCollectionAndSavedWorks"
 
 jest.mock("./LoggedInUserInfo")
 jest.unmock("react-relay")
@@ -97,13 +92,15 @@ describe("MyCollectionAndSavedWorks", () => {
       })
 
       it("does not render Icon", async () => {
+        const localImage: LocalImage = {
+          path: "some/my/profile/path",
+          width: 10,
+          height: 10,
+        }
         await act(async () => {
-          const dateToExpire = DateTime.fromISO(new Date().toISOString()).plus({ minutes: 5 }).toISO()
-          await AsyncStorage.multiSet([
-            [LOCAL_PROFILE_ICON_PATH_KEY, "some/my/profile/path"],
-            [LOCAL_PROFILE_ICON_EXPIRE_AT_KEY, dateToExpire],
-          ])
+          await storeLocalImages([localImage], LOCAL_PROFILE_ICON_PATH_KEY)
         })
+
         const wrapper = getWrapper({
           Me: () => ({
             name: "My Name",
@@ -143,12 +140,13 @@ describe("MyCollectionAndSavedWorks", () => {
       })
 
       it("Renders Icon", async () => {
+        const localImage: LocalImage = {
+          path: "some/my/profile/path",
+          width: 10,
+          height: 10,
+        }
         await act(async () => {
-          const dateToExpire = DateTime.fromISO(new Date().toISOString()).plus({ minutes: 5 }).toISO()
-          await AsyncStorage.multiSet([
-            [LOCAL_PROFILE_ICON_PATH_KEY, "some/my/profile/path"],
-            [LOCAL_PROFILE_ICON_EXPIRE_AT_KEY, dateToExpire],
-          ])
+          await storeLocalImages([localImage], LOCAL_PROFILE_ICON_PATH_KEY)
         })
 
         const wrapper = getWrapper({
