@@ -6,7 +6,7 @@ import { OnboardingPersonalizationModal_artists } from "__generated__/Onboarding
 import { followArtistMutation } from "lib/Components/ArtistListItem"
 import { navigate } from "lib/navigation/navigate"
 import { Schema, track } from "lib/utils/track"
-import { Button, ClassTheme, EntityHeader, Flex, Touchable } from "palette"
+import { ClassTheme, EntityHeader, Flex, FollowButton, Touchable } from "palette"
 import React from "react"
 import { StyleProp, TouchableWithoutFeedback, ViewStyle } from "react-native"
 import { RelayPaginationProp } from "react-relay"
@@ -147,16 +147,12 @@ export class OnboardingPersonalizationArtistListItem extends React.Component<Pro
                 />
               </Flex>
               <Flex>
-                <Button
-                  variant={is_followed ? "outline" : "fillGray"}
-                  onPress={this.handleFollowArtist.bind(this)}
-                  size="small"
-                  loading={isFollowedChanging}
-                  longestText="Following"
+                <FollowButton
                   haptic
-                >
-                  {is_followed ? "Following" : "Follow"}
-                </Button>
+                  isFollowed={!!is_followed}
+                  onPress={this.handleFollowArtist.bind(this)}
+                  loading={isFollowedChanging}
+                />
               </Flex>
             </Flex>
           </TouchableComponent>

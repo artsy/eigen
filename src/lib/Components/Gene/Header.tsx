@@ -1,6 +1,6 @@
 import { Header_gene } from "__generated__/Header_gene.graphql"
 import { HeaderFollowGeneMutation } from "__generated__/HeaderFollowGeneMutation.graphql"
-import { Box, Button, Sans } from "palette"
+import { Box, FollowButton, Sans } from "palette"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { Schema, Track, track as _track } from "../../utils/track"
@@ -131,14 +131,7 @@ class Header extends React.Component<Props, State> {
 
     return (
       <Box mt={15}>
-        <Button
-          variant={gene.isFollowed ? "outline" : "fillDark"}
-          block
-          width={100}
-          onPress={() => this.handleFollowChange()}
-        >
-          {gene.isFollowed ? "Following" : "Follow"}
-        </Button>
+        <FollowButton block isFollowed={!!gene.isFollowed} onPress={() => this.handleFollowChange()} />
       </Box>
     )
   }

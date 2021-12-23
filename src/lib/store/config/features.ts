@@ -218,6 +218,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableQueriesPrefetching",
   },
+  ARCaptureExceptionsInSentryOnDev: {
+    readyForRelease: false,
+    description: "Enable capturing exceptions in Sentry on DEV",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

@@ -1,7 +1,7 @@
 import { PartnerFollowButton_partner } from "__generated__/PartnerFollowButton_partner.graphql"
 import { PartnerFollowButtonFollowMutation } from "__generated__/PartnerFollowButtonFollowMutation.graphql"
 import { Schema, Track, track as _track } from "lib/utils/track"
-import { Button, ButtonProps } from "palette"
+import { ButtonProps, FollowButton } from "palette"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
@@ -85,15 +85,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
     const { partner } = this.props
 
     return (
-      <Button
-        variant={partner.profile?.isFollowed ? "outline" : "fillDark"}
-        onPress={this.handleFollowPartner.bind(this)}
-        longestText="Following"
-        size="small"
-        haptic
-      >
-        {partner.profile?.isFollowed ? "Following" : "Follow"}
-      </Button>
+      <FollowButton haptic isFollowed={!!partner.profile?.isFollowed} onPress={this.handleFollowPartner.bind(this)} />
     )
   }
 }

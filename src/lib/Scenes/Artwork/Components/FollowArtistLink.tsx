@@ -1,18 +1,18 @@
-import { FollowArtistButton_artist } from "__generated__/FollowArtistButton_artist.graphql"
-import { FollowArtistButtonMutation } from "__generated__/FollowArtistButtonMutation.graphql"
+import { FollowArtistLink_artist } from "__generated__/FollowArtistLink_artist.graphql"
+import { FollowArtistLinkMutation } from "__generated__/FollowArtistLinkMutation.graphql"
 import { Schema, track } from "lib/utils/track"
 import { Sans, Touchable } from "palette"
 import React from "react"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 interface Props {
-  artist: FollowArtistButton_artist
+  artist: FollowArtistLink_artist
   relay: RelayProp
   contextModule?: string
 }
 
 @track()
-export class FollowArtistButton extends React.Component<Props> {
+export class FollowArtistLink extends React.Component<Props> {
   @track((props: Props) => {
     return {
       action_name: props.artist.is_followed ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
@@ -25,9 +25,9 @@ export class FollowArtistButton extends React.Component<Props> {
   })
   handleFollowArtist() {
     const { artist, relay } = this.props
-    commitMutation<FollowArtistButtonMutation>(relay.environment, {
+    commitMutation<FollowArtistLinkMutation>(relay.environment, {
       mutation: graphql`
-        mutation FollowArtistButtonMutation($input: FollowArtistInput!) {
+        mutation FollowArtistLinkMutation($input: FollowArtistInput!) {
           followArtist(input: $input) {
             artist {
               id
@@ -66,9 +66,9 @@ export class FollowArtistButton extends React.Component<Props> {
   }
 }
 
-export const FollowArtistButtonFragmentContainer = createFragmentContainer(FollowArtistButton, {
+export const FollowArtistLinkFragmentContainer = createFragmentContainer(FollowArtistLink, {
   artist: graphql`
-    fragment FollowArtistButton_artist on Artist {
+    fragment FollowArtistLink_artist on Artist {
       id
       slug
       internalID
