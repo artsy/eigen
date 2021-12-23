@@ -9,7 +9,6 @@ import LoadingModal from "lib/Components/Modals/LoadingModal"
 import { goBack } from "lib/navigation/navigate"
 import { cleanArtworkPayload, explicitlyClearedFields } from "lib/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { GlobalStore } from "lib/store/GlobalStore"
-import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
 import { isEqual } from "lodash"
 import React, { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
@@ -20,8 +19,9 @@ import { myCollectionDeleteArtwork } from "../../mutations/myCollectionDeleteArt
 import { myCollectionEditArtwork } from "../../mutations/myCollectionEditArtwork"
 import { refreshMyCollection } from "../../MyCollection"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
-import { deletedPhotoIDs } from "../../utils/deletedPhotoIDs"
+import { deletedPhotos } from "../../utils/deletedPhotos"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
+import { removeLocalPhotos, storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
 import { MyCollectionArtworkFormMain } from "./Screens/MyCollectionArtworkFormMain"
 
@@ -48,7 +48,7 @@ export type ArtworkFormScreen = {
   }
 }
 
-type MyCollectionArtworkFormProps = { onSuccess: () => void } & (
+export type MyCollectionArtworkFormProps = { onSuccess: () => void } & (
   | {
       mode: "add"
     }
@@ -76,6 +76,22 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
 
   const { showActionSheetWithOptions } = useActionSheet()
 
+  const handleSubmit = async (values: ArtworkFormValues) => {
+    setLoading(true)
+    try {
+      await updateArtwork(values, dirtyFormCheckValues, props)
+    } catch (e) {
+      if (__DEV__) {
+        console.error(e)
+      } else {
+        captureException(e)
+      }
+      Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   useEffect(() => {
     return () => {
       GlobalStore.actions.myCollection.artwork.resetForm()
@@ -86,65 +102,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
     enableReinitialize: true,
     initialValues: formValues,
     initialErrors: validateArtworkSchema(formValues),
-    onSubmit: async ({
-      photos,
-      artistSearchResult,
-      pricePaidDollars,
-      pricePaidCurrency,
-      artist,
-      artistIds,
-      ...others
-    }) => {
-      setLoading(true)
-      try {
-        const externalImageUrls = await uploadPhotos(photos)
-
-        let pricePaidCents
-        if (pricePaidDollars && !isNaN(Number(pricePaidDollars))) {
-          pricePaidCents = Number(pricePaidDollars) * 100
-        }
-
-        if (props.mode === "add") {
-          await myCollectionAddArtwork({
-            artistIds: [artistSearchResult!.internalID as string],
-            externalImageUrls,
-            pricePaidCents,
-            pricePaidCurrency,
-            ...cleanArtworkPayload(others),
-          })
-        } else {
-          await myCollectionEditArtwork({
-            artistIds: [artistSearchResult!.internalID as string],
-            artworkId: props.artwork.internalID,
-            externalImageUrls,
-            pricePaidCents: pricePaidCents ?? null,
-            pricePaidCurrency,
-            ...cleanArtworkPayload(others),
-            ...explicitlyClearedFields(others, dirtyFormCheckValues),
-          })
-
-          const deletedIDs = deletedPhotoIDs(dirtyFormCheckValues.photos, photos)
-          for (const deletedID of deletedIDs) {
-            await deleteArtworkImage(props.artwork.internalID, deletedID)
-          }
-        }
-        refreshMyCollection()
-        props.onSuccess()
-      } catch (e) {
-        if (__DEV__) {
-          console.error(e)
-        } else {
-          captureException(e)
-        }
-        requestAnimationFrame(() => {
-          Alert.alert("An error ocurred", typeof e === "string" ? e : undefined)
-        })
-      } finally {
-        requestAnimationFrame(() => {
-          setLoading(false)
-        })
-      }
-    },
+    onSubmit: handleSubmit,
     validationSchema: artworkSchema,
   })
 
@@ -239,18 +197,55 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
 
 const Stack = createStackNavigator<ArtworkFormScreen>()
 
-export async function uploadPhotos(photos: ArtworkFormValues["photos"]) {
-  GlobalStore.actions.myCollection.artwork.setLastUploadedPhoto(photos[0])
-  // only recently added photos have a path
-  const imagePaths: string[] = photos.map((photo) => photo.path).filter((path): path is string => path !== undefined)
-  const externalImageUrls: string[] = []
+export const updateArtwork = async (
+  values: ArtworkFormValues,
+  dirtyFormCheckValues: ArtworkFormValues,
+  props: MyCollectionArtworkFormProps
+) => {
+  const { photos, artistSearchResult, pricePaidDollars, pricePaidCurrency, artist, artistIds, ...others } = values
+  const externalImageUrls = await uploadPhotos(photos)
 
-  for (const path of imagePaths) {
-    const url = await getConvertedImageUrlFromS3(path)
-    externalImageUrls.push(url)
+  let pricePaidCents
+  if (pricePaidDollars && !isNaN(Number(pricePaidDollars))) {
+    pricePaidCents = Number(pricePaidDollars) * 100
   }
 
-  return externalImageUrls
+  if (props.mode === "add") {
+    const response = await myCollectionAddArtwork({
+      artistIds: [artistSearchResult!.internalID as string],
+      externalImageUrls,
+      pricePaidCents,
+      pricePaidCurrency,
+      ...cleanArtworkPayload(others),
+    })
+
+    const slug = response.myCollectionCreateArtwork?.artworkOrError?.artworkEdge?.node?.slug
+    if (slug) {
+      storeLocalPhotos(slug, photos)
+    }
+  } else {
+    const response = await myCollectionEditArtwork({
+      artistIds: [artistSearchResult!.internalID as string],
+      artworkId: props.artwork.internalID,
+      externalImageUrls,
+      pricePaidCents: pricePaidCents ?? null,
+      pricePaidCurrency,
+      ...cleanArtworkPayload(others),
+      ...explicitlyClearedFields(others, dirtyFormCheckValues),
+    })
+
+    const deletedImages = deletedPhotos(dirtyFormCheckValues.photos, photos)
+    for (const photo of deletedImages) {
+      await deleteArtworkImage(props.artwork.internalID, photo.id)
+    }
+    const slug = response.myCollectionUpdateArtwork?.artworkOrError?.artwork?.slug
+    if (slug) {
+      removeLocalPhotos(slug)
+    }
+  }
+
+  refreshMyCollection()
+  props.onSuccess()
 }
 
 const tracks = {

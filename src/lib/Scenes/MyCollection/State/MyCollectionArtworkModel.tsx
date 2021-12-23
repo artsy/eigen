@@ -65,7 +65,6 @@ export interface MyCollectionArtworkModel {
     artworkId: string
     dirtyFormCheckValues: ArtworkFormValues
     formValues: ArtworkFormValues
-    lastUploadedPhoto?: Image
     artworkErrorOccurred: boolean
   }
   setFormValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
@@ -74,7 +73,6 @@ export interface MyCollectionArtworkModel {
   setArtistSearchResult: Action<MyCollectionArtworkModel, AutosuggestResult | null>
   setArtworkId: Action<MyCollectionArtworkModel, { artworkId: string }>
   setArtworkErrorOccurred: Action<MyCollectionArtworkModel, boolean>
-  setLastUploadedPhoto: Action<MyCollectionArtworkModel, Image>
 
   addPhotos: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"]>
   removePhoto: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"][0]>
@@ -146,10 +144,6 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     state.sessionState.formValues.photos = state.sessionState.formValues.photos.filter(
       (photo) => photo.path !== photoToRemove.path || photo.imageURL !== photoToRemove.imageURL
     )
-  }),
-
-  setLastUploadedPhoto: action((state, photo) => {
-    state.sessionState.lastUploadedPhoto = photo
   }),
 
   /**

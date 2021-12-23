@@ -1,17 +1,25 @@
 import { tappedCollectedArtworkImages } from "@artsy/cohesion"
 import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
-import { getMeasurements, Size } from "lib/Scenes/Artwork/Components/ImageCarousel/geometry"
+import { Size } from "lib/Scenes/Artwork/Components/ImageCarousel/geometry"
+import { MyCollectionImageView } from "lib/Scenes/MyCollection/Components/MyCollectionImageView"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
-import { Image } from "lib/Scenes/MyCollection/State/MyCollectionArtworkModel"
+import { useDevToggle } from "lib/store/GlobalStore"
+import { retrieveLocalImages } from "lib/utils/LocalImageStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { ArtworkIcon, Flex, Spacer, Text, useColor } from "palette"
+import { Button, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import useInterval from "react-use/lib/useInterval"
+import {
+  getBoundingBox,
+  getImageMeasurements,
+  hasImagesStillProcessing,
+  imageIsProcessing,
+  isImage,
+} from "../../ArtworkForm/MyCollectionImageUtil"
 
 interface MyCollectionArtworkHeaderProps {
   artwork: MyCollectionArtworkHeader_artwork
@@ -19,7 +27,6 @@ interface MyCollectionArtworkHeaderProps {
 }
 
 export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (props) => {
-  const color = useColor()
   const {
     artwork: { artistNames, date, images, internalID, title, slug },
     relay,
@@ -28,6 +35,8 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   const formattedTitleAndYear = [title, date].filter(Boolean).join(", ")
 
   const defaultImage = images?.find((i) => i?.isDefault) || (images && images[0])
+
+  const showLocalImages = useDevToggle("DTMyCollectionShowLocalImages")
 
   const { trackEvent } = useTracking()
 
@@ -44,75 +53,33 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     }
   }, 1000)
 
-  const isImage = (toCheck: any): toCheck is Image => !!toCheck
-
-  const imageIsProcessing = (image: Image | null, soughtVersion: string) => {
-    if (!image) {
-      return false
-    }
-
-    const isProcessing = !image.imageVersions?.includes(soughtVersion)
-    return isProcessing
-  }
-
-  const hasImagesStillProcessing = (mainImage: any, imagesToCheck: MyCollectionArtworkHeader_artwork["images"]) => {
-    if (!isImage(mainImage) || imageIsProcessing(mainImage, "normalized")) {
-      return true
-    }
-
-    if (!imagesToCheck) {
-      return false
-    }
-
-    const concreteImages = imagesToCheck as Image[]
-    const stillProcessing = concreteImages.some((image) => imageIsProcessing(image, "normalized"))
-    return stillProcessing
-  }
-
   const renderMainImageView = () => {
-    if (!isImage(defaultImage) || imageIsProcessing(defaultImage, "normalized")) {
-      return (
-        <Flex
-          style={{ height: 300, alignItems: "center", justifyContent: "center", backgroundColor: color("black10") }}
-        >
-          <ArtworkIcon style={{ opacity: 0.6 }} height={100} width={100} />
-          <Text style={{ opacity: 0.6 }}>
-            {images && images?.length > 0 ? "Processing photos" : "Processing photo"}
-          </Text>
-        </Flex>
-      )
-    } else {
-      const maxImageHeight = dimensions.height / 2.5
-      const boundingBox: Size = {
-        height: defaultImage.height < maxImageHeight ? defaultImage.height : maxImageHeight,
-        width: dimensions.width,
-      }
-      const measurements = getMeasurements({
-        images: [
-          {
-            height: defaultImage.height,
-            width: defaultImage.width,
-          },
-        ],
-        boundingBox,
-      })[0]
-
-      const { cumulativeScrollOffset, ...styles } = measurements
-      // remove all vertical margins for pics taken in landscape mode
-      boundingBox.height = boundingBox.height - (styles.marginBottom + styles.marginTop)
-      return (
-        <Flex style={boundingBox} bg="black5" alignItems="center">
-          <OpaqueImageView
-            imageURL={defaultImage.imageURL.replace(":version", "normalized")}
-            useRawURL
-            retryFailedURLs
-            height={styles.height}
-            width={styles.width}
-            aspectRatio={styles.width / styles.height}
-          />
-        </Flex>
-      )
+    const maxImageHeight = dimensions.height / 2.5
+    const imageSize: Size = {
+      height: defaultImage?.height ?? maxImageHeight,
+      width: defaultImage?.width ?? dimensions.width,
     }
+    const boundingBox = getBoundingBox(imageSize, maxImageHeight, dimensions)
+    const { cumulativeScrollOffset, ...styles } = getImageMeasurements(imageSize, boundingBox)
+
+    // remove all vertical margins for pics taken in landscape mode
+    boundingBox.height = boundingBox.height - (styles.marginBottom + styles.marginTop)
+
+    const imageURL = !imageIsProcessing(defaultImage as any, "normalized") ? defaultImage?.imageURL : undefined
+    const normalizedURL = imageURL?.replace(":version", "normalized")
+
+    return (
+      <Flex bg="black5" alignItems="center">
+        <MyCollectionImageView
+          artworkSlug={slug}
+          imageURL={normalizedURL}
+          imageHeight={styles.height}
+          imageWidth={styles.width}
+          aspectRatio={styles.width / styles.height}
+          mode="details"
+        />
+      </Flex>
+    )
   }
 
   return (
@@ -155,6 +122,21 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
           </Flex>
         )}
       </TouchableOpacity>
+      {!!showLocalImages && (
+        <Button
+          onPress={async () => {
+            const localImages = await retrieveLocalImages(slug)
+            navigate("/my-collection/local-images", {
+              passProps: {
+                images: localImages,
+              },
+            })
+          }}
+          block
+        >
+          Show Local Images
+        </Button>
+      )}
     </>
   )
 }

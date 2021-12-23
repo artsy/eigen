@@ -7,7 +7,6 @@ import { extractText } from "lib/tests/extractText"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { ArtworkIcon } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -104,26 +103,6 @@ describe("MyCollectionArtworkHeader", () => {
     )
   })
 
-  it("shows a processing state when image data is incomplete", () => {
-    const wrapper = getWrapper({
-      Artwork: () => ({
-        artistNames: "some artist name",
-        date: "Jan 20th",
-        images: [
-          {
-            url: "some/url",
-            height: null,
-            isDefault: true,
-          },
-        ],
-        title: "some title",
-      }),
-    })
-    expect(wrapper.root.findAllByType(OpaqueImageView)).toHaveLength(0)
-    expect(wrapper.root.findByType(ArtworkIcon)).toBeDefined()
-    expect(extractText(wrapper.root)).toContain("Processing photo")
-  })
-
   it("polls for updated images when image data is incomplete", () => {
     const processingArtwork: MyCollectionArtworkHeader_artwork = {
       " $refType": "MyCollectionArtworkHeader_artwork",
@@ -143,10 +122,7 @@ describe("MyCollectionArtworkHeader", () => {
       ],
       title: "some title",
     }
-    const tree = renderWithWrappers(<MyCollectionArtworkHeader artwork={processingArtwork} relay={fakeRelay as any} />)
-    expect(tree.root.findAllByType(OpaqueImageView)).toHaveLength(0)
-    expect(tree.root.findByType(ArtworkIcon)).toBeDefined()
-    expect(extractText(tree.root)).toContain("Processing photo")
+    renderWithWrappers(<MyCollectionArtworkHeader artwork={processingArtwork} relay={fakeRelay as any} />)
 
     jest.advanceTimersByTime(1000)
 
