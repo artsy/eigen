@@ -222,6 +222,11 @@ export const features = defineFeatures({
     description: "Enable capturing exceptions in Sentry on DEV",
     showInAdminMenu: true,
   },
+  ARShowLinkedAccounts: {
+    readyForRelease: false,
+    description: "Show linked social accounts",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
