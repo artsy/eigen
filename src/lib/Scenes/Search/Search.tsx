@@ -29,6 +29,7 @@ import { CityGuideCTA } from "./components/CityGuideCTA"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
 import { SearchInput } from "./components/SearchInput"
 import { SearchPills } from "./components/SearchPills"
+import { ALLOWED_ALGOLIA_KEYS } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
 import { RecentSearches } from "./RecentSearches"
 import { RefetchWhenApiKeyExpiredContainer } from "./RefetchWhenApiKeyExpired"
@@ -67,16 +68,6 @@ const ARTWORKS_PILL: PillType = {
   type: "elastic",
 }
 const pills: PillType[] = [TOP_PILL, ARTWORKS_PILL]
-const ALLOWED_ALGOLIA_KEYS = [
-  AlgoliaIndiceKey.Artist,
-  AlgoliaIndiceKey.Article,
-  AlgoliaIndiceKey.Auction,
-  AlgoliaIndiceKey.ArtistSeries,
-  AlgoliaIndiceKey.Collection,
-  AlgoliaIndiceKey.Fair,
-  AlgoliaIndiceKey.Show,
-  AlgoliaIndiceKey.Gallery,
-]
 
 const objectTabByContextModule: Partial<Record<ContextModule, string>> = {
   [ContextModule.auctionTab]: "Auction Results",
