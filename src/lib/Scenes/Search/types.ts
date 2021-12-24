@@ -16,3 +16,14 @@ export interface PillType {
   disabled?: boolean
   type: PillEntityType
 }
+
+export enum AlgoliaIndiceKey {
+  Artist = "artist",
+  Article = "article",
+  Auction = "sale",
+  ArtistSeries = "artist_series",
+  Collection = "kaws_collection",
+  Fair = "fair",
+  Show = "partner_show",
+  Gallery = "partner_gallery",
+}

@@ -1,4 +1,4 @@
-import { AlgoliaIndiceKey } from "./SearchModel"
+import { AlgoliaIndiceKey } from "./types"
 
 export const INDEXES_WITH_AN_ARTICLE = ["Artist", "Auction", "Artist Series", "Article"]
 export const ALLOWED_ALGOLIA_KEYS = [

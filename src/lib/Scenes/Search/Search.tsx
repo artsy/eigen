@@ -35,8 +35,8 @@ import { RecentSearches } from "./RecentSearches"
 import { RefetchWhenApiKeyExpiredContainer } from "./RefetchWhenApiKeyExpired"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 import { SearchContext, useSearchProviderValues } from "./SearchContext"
-import { AlgoliaIndiceKey } from "./SearchModel"
 import { SearchResults } from "./SearchResults"
+import { AlgoliaIndiceKey } from "./types"
 import { AlgoliaSearchResult, PillType } from "./types"
 
 interface TappedSearchResultData {
