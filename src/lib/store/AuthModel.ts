@@ -52,6 +52,7 @@ export interface AuthModel {
   setState: Action<this, Partial<StateMapper<this, "1">>>
   getXAppToken: Thunk<this, void, {}, GlobalStoreModel, Promise<string>>
   userExists: Thunk<this, { email: string }, {}, GlobalStoreModel>
+  verifyPassword: Thunk<this, { email: string; password: string }, {}, GlobalStoreModel, Promise<boolean>>
   signIn: Thunk<
     this,
     { email: string; onboardingState?: OnboardingState } & (
@@ -210,6 +211,25 @@ export const getAuthModel = (): AuthModel => ({
       return true
     }
     return false
+  }),
+  verifyPassword: thunk(async (actions, { email, password }) => {
+    const result = await actions.gravityUnauthenticatedRequest({
+      path: `/oauth2/access_token`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: {
+        email,
+        oauth_provider: "email",
+
+        password,
+        grant_type: "credentials",
+
+        client_id: Config.ARTSY_API_CLIENT_KEY,
+        client_secret: Config.ARTSY_API_CLIENT_SECRET,
+        scope: "offline_access",
+      },
+    })
+    return result.status === 201
   }),
   signIn: thunk(async (actions, args, store) => {
     const { oauthProvider, email, onboardingState } = args
@@ -473,7 +493,7 @@ export const getAuthModel = (): AuthModel => ({
 
             resultGravitySignIn ? resolve(true) : reject("Could not log in")
           } else {
-            navigation.navigate("OnboardingSocialLink")
+            navigation.navigate("OnboardingSocialLink", { email })
           }
         }
       })

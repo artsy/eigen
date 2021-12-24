@@ -23,8 +23,8 @@ export type OnboardingNavigationStack = {
   OnboardingLoginWithEmail: { withFadeAnimation: boolean; email: string } | undefined
   OnboardingCreateAccount: { withFadeAnimation: boolean } | undefined
   OnboardingCreateAccountWithEmail: undefined
-  OnboardingSocialLink: undefined
-  ForgotPassword: undefined
+  OnboardingSocialLink: { email: string }
+  ForgotPassword: { email?: string }
 }
 
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()

@@ -16,7 +16,7 @@ export interface ForgotPasswordValuesSchema {
   email: string
 }
 
-export interface ForgotPasswordProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingLogin"> {}
+export interface ForgotPasswordProps extends StackScreenProps<OnboardingNavigationStack, "ForgotPassword"> {}
 export interface ForgotPasswordFormProps extends ForgotPasswordProps {
   requestedPasswordReset: boolean
   inputRef?: React.Ref<Input>
@@ -116,9 +116,8 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   )
 }
 
-const initialValues: ForgotPasswordValuesSchema = { email: "" }
-
 export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ navigation, route }) => {
+  const { email: passedEmail } = route.params
   const [requestedPasswordReset, setRequestedPasswordReset] = useState(false)
 
   const inputRef = useRef<Input>(null)
@@ -127,13 +126,11 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ navigation, rout
     enableReinitialize: true,
     validateOnChange: true,
     validateOnBlur: true,
-    initialValues,
+    initialValues: { email: passedEmail ?? "" },
     initialErrors: {},
     onSubmit: async ({ email }, { setErrors, validateForm }) => {
       await validateForm()
-      const res = await GlobalStore.actions.auth.forgotPassword({
-        email,
-      })
+      const res = await GlobalStore.actions.auth.forgotPassword({ email })
       if (!res) {
         // For security purposes, we are returning a generic error message
         setErrors({ email: "Couldn’t send reset password link. Please try again, or contact support@artsy.net" })
