@@ -217,7 +217,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     }
 
     return (
-      <Flex flexGrow={1} style={containerStyle}>
+      <Flex style={containerStyle}>
         <Flex flexDirection="row" alignItems="center">
           <InputTitle required={required}>{title}</InputTitle>
           {!!maxLength && !!showLimit && (

@@ -5,6 +5,5 @@ interface WrapProps {
   with: (children: React.ReactNode) => JSX.Element
 }
 
-export const Wrap: FC<WrapProps> = ({ if: condition, with: wrapper, children }) => {
-  return condition ? wrapper(children) : <>children</>
-}
+export const Wrap: FC<WrapProps> = ({ if: condition, with: wrapper, children }) =>
+  condition ? wrapper(children) : <>{children}</>

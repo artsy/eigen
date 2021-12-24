@@ -28,13 +28,16 @@ const EmptyHeader = () => {
 }
 
 interface ScreenBodyProps {
+  scroll?: boolean
   safe?: boolean
 }
-const ScreenBody: FC<ScreenBodyProps> = ({ safe = false, children }) => {
+const ScreenBody: FC<ScreenBodyProps> = ({ scroll = false, safe = false, children }) => {
   const insets = useSafeAreaInsets()
   return (
     <Flex flex={1} px={2} mb={safe ? insets.bottom : undefined}>
-      {children}
+      <Wrap if={scroll} with={(c) => <ScrollView>{c}</ScrollView>}>
+        {children}
+      </Wrap>
     </Flex>
   )
 }
@@ -53,14 +56,14 @@ export const OnboardingSocialLink: React.FC = () => {
   return (
     <Screen>
       <EmptyHeader />
-      <ScreenBody safe>
+      <ScreenBody scroll>
         <Text variant="lg">Link Accounts</Text>
-        <Spacer y="0.5" />
+        <Spacer mt={0.5} />
         <Text variant="xs">{`You already have an account ${"wow"}`}.</Text>
         <Text variant="xs">
           Please enter your artsy.net password to link your account. You will need to do this once.
         </Text>
-        <Flex mt="2" />
+        <Spacer mt={2} />
         <Input
           title="Artsy Password"
           secureTextEntry
@@ -79,7 +82,7 @@ export const OnboardingSocialLink: React.FC = () => {
             Forgot password?
           </Text>
         </Touchable>
-        <Spacer y="4" />
+        <Spacer y={4} />
 
         <Button
           block

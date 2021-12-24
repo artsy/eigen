@@ -43,7 +43,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
     }
   }
 
-  const useGoogle = async () => {
+  const continueWithGoogle = async () => {
     try {
       if (mode === "login") {
         await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signIn" })
@@ -57,7 +57,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
     }
   }
 
-  const useApple = async () => {
+  const continueWithApple = async () => {
     try {
       await GlobalStore.actions.auth.authApple({ agreedToReceiveEmails: true })
     } catch (error) {
@@ -95,21 +95,21 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             </Button>
             {Platform.OS === "ios" && (
               <Button
-                onPress={useApple}
+                onPress={continueWithApple}
                 block
                 haptic="impactMedium"
                 mb={1}
                 variant="fillDark"
                 iconPosition="left-start"
                 icon={<Image source={require("@images/apple.webp")} resizeMode="contain" style={{ marginRight: 10 }} />}
-                testID="useApple"
+                testID="continueWithApple"
               >
                 Continue with Apple
               </Button>
             )}
             {!!enableGoogleAuth && (
               <Button
-                onPress={useGoogle}
+                onPress={continueWithGoogle}
                 block
                 haptic="impactMedium"
                 mb={1}
@@ -118,7 +118,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                 icon={
                   <Image source={require("@images/google.webp")} resizeMode="contain" style={{ marginRight: 10 }} />
                 }
-                testID="useGoogle"
+                testID="continueWithGoogle"
               >
                 Continue with Google
               </Button>
