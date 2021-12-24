@@ -11,10 +11,11 @@ export interface AlgoliaSearchResult {
 export type PillEntityType = "algolia" | "elastic"
 
 export interface PillType {
-  name: string
+  indexName?: string
   displayName: string
   disabled?: boolean
   type: PillEntityType
+  key: AlgoliaIndiceKey | string
 }
 
 export enum AlgoliaIndiceKey {

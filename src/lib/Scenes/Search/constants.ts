@@ -1,6 +1,11 @@
 import { AlgoliaIndiceKey } from "./types"
 
-export const INDEXES_WITH_AN_ARTICLE = ["Artist", "Auction", "Artist Series", "Article"]
+export const ALGOLIA_INDICES_WITH_AN_ARTICLE = [
+  AlgoliaIndiceKey.Artist,
+  AlgoliaIndiceKey.Auction,
+  AlgoliaIndiceKey.ArtistSeries,
+  AlgoliaIndiceKey.Article,
+]
 export const ALLOWED_ALGOLIA_KEYS = [
   AlgoliaIndiceKey.Artist,
   AlgoliaIndiceKey.Article,

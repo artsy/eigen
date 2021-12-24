@@ -58,14 +58,14 @@ interface SearchState {
 }
 
 const TOP_PILL: PillType = {
-  name: "TOP",
   displayName: "Top",
   type: "elastic",
+  key: "top",
 }
 const ARTWORKS_PILL: PillType = {
-  name: "ARTWORK",
   displayName: "Artworks",
   type: "elastic",
+  key: "artworks",
 }
 const pills: PillType[] = [TOP_PILL, ARTWORKS_PILL]
 
@@ -98,7 +98,14 @@ export const Search: React.FC<SearchProps> = (props) => {
         ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndiceKey)
       )
       const formattedIndices: PillType[] = allowedIndices.map((index) => {
-        return { ...index, type: "algolia", disabled: enableImprovedPills && !indicesInfo[index.name]?.hasResults }
+        const { name, ...other } = index
+
+        return {
+          ...other,
+          type: "algolia",
+          disabled: enableImprovedPills && !indicesInfo[name]?.hasResults,
+          indexName: name,
+        }
       })
 
       return [...pills, ...formattedIndices]
@@ -123,14 +130,13 @@ export const Search: React.FC<SearchProps> = (props) => {
     if (selectedPill.type === "algolia") {
       return (
         <SearchResultsContainer
-          indexName={selectedPill.name}
-          categoryDisplayName={selectedPill.displayName}
+          selectedPill={selectedPill}
           onRetry={handleRetry}
           trackResultPress={handleTrackAlgoliaResultPress}
         />
       )
     }
-    if (selectedPill.name === TOP_PILL.name) {
+    if (selectedPill.key === TOP_PILL.key) {
       return (
         <AutosuggestResults
           query={searchState.query!}
@@ -156,7 +162,7 @@ export const Search: React.FC<SearchProps> = (props) => {
   }
 
   const isSelected = (pill: PillType) => {
-    return selectedPill.name === pill.name
+    return selectedPill.key === pill.key
   }
 
   const handleResetSearchInput = () => {
@@ -199,7 +205,7 @@ export const Search: React.FC<SearchProps> = (props) => {
       <ArtsyKeyboardAvoidingView>
         <InstantSearch
           searchClient={searchClient}
-          indexName={selectedPill.type === "algolia" ? selectedPill.name : ""}
+          indexName={selectedPill.type === "algolia" ? selectedPill.indexName! : ""}
           searchState={searchState}
           onSearchStateChange={setSearchState}
         >
