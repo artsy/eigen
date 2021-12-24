@@ -8,6 +8,7 @@ import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-
 import { FlatList } from "react-native"
 import { AlgoliaSearchPlaceholder } from "./components/placeholders/AlgoliaSearchPlaceholder"
 import { SearchResult } from "./components/SearchResult"
+import { INDEXES_WITH_AN_ARTICLE } from "./constants"
 import { isAlgoliaApiKeyExpiredError } from "./helpers"
 import { AlgoliaSearchResult } from "./types"
 
@@ -79,8 +80,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   }
 
   if (searchResults?.nbHits === 0) {
-    const namesWithAnArticle = ["Artist", "Auction", "Artist Series"]
-    const article = namesWithAnArticle.includes(categoryDisplayName) ? "an" : "a"
+    const article = INDEXES_WITH_AN_ARTICLE.includes(categoryDisplayName) ? "an" : "a"
 
     return (
       <Box px={2} py={1}>
