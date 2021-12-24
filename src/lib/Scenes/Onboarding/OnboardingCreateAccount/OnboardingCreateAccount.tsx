@@ -14,9 +14,7 @@ import { OnboardingCreateAccountEmail, OnboardingCreateAccountEmailParams } from
 import { OnboardingCreateAccountName } from "./OnboardingCreateAccountName"
 import { OnboardingCreateAccountPassword } from "./OnboardingCreateAccountPassword"
 
-export const OnboardingCreateAccount: React.FC = () => {
-  return <OnboardingSocialPick mode="signup" />
-}
+export const OnboardingCreateAccount: React.FC = () => <OnboardingSocialPick mode="signup" />
 
 export interface OnboardingCreateAccountProps
   extends StackScreenProps<OnboardingNavigationStack, "OnboardingCreateAccount"> {}

@@ -11,9 +11,7 @@ import { Touchable } from "../../../palette/elements/Touchable/Touchable"
 import { OnboardingNavigationStack } from "./Onboarding"
 import { OnboardingSocialPick } from "./OnboardingSocialPick"
 
-export const OnboardingLogin: React.FC = () => {
-  return <OnboardingSocialPick mode="login" />
-}
+export const OnboardingLogin: React.FC = () => <OnboardingSocialPick mode="login" />
 
 export interface OnboardingLoginProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWithEmail"> {}
 
@@ -106,9 +104,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
             onChangeText={(text) => {
               // Hide error when the user starts to type again
               if (errors.password) {
-                setErrors({
-                  password: undefined,
-                })
+                setErrors({ password: undefined })
                 validateForm()
               }
               handleChange("password")(text)
@@ -129,11 +125,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
           />
         </Box>
         <Spacer mt={4} />
-        <Touchable
-          onPress={() => {
-            navigation.navigate("ForgotPassword")
-          }}
-        >
+        <Touchable onPress={() => navigation.navigate("ForgotPassword")}>
           <Text variant="sm" color="black60" style={{ textDecorationLine: "underline" }}>
             Forgot password?
           </Text>

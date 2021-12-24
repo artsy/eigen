@@ -2,6 +2,7 @@ import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import { useNavigation } from "@react-navigation/native"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import * as RelayCache from "lib/relay/RelayCache"
 import { isArtsyEmail } from "lib/utils/general"
@@ -93,7 +94,7 @@ export interface AuthModel {
     GlobalStoreModel,
     Promise<{ success: boolean; message?: string }>
   >
-  authFacebook: Thunk<this, void, {}, GlobalStoreModel, Promise<true>>
+  authFacebook: Thunk<this, { navigation: ReturnType<typeof useNavigation> }, {}, GlobalStoreModel, Promise<true>>
   authGoogle: Thunk<
     this,
     { signInOrUp: "signIn" } | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
@@ -369,99 +370,114 @@ export const getAuthModel = (): AuthModel => ({
 
     return { success: false, message }
   }),
-  authFacebook: thunk(async (actions) => {
-    return await new Promise<true>(async (resolve, reject) => {
-      const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions(["public_profile", "email"])
-      if (declinedPermissions?.includes("email")) {
-        reject("Please allow the use of email to continue.")
-      }
-      const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
-      if (!accessToken) {
-        return
-      }
-
-      const responseFacebookInfoCallback = async (
-        error: { message: string },
-        facebookInfo: { email?: string; name: string }
-      ) => {
-        if (error) {
-          reject(`Error fetching facebook data: ${error.message}`)
-          return
+  authFacebook: thunk(
+    (actions, { navigation }) =>
+      new Promise<true>(async (resolve, reject) => {
+        const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions([
+          "public_profile",
+          "email",
+        ])
+        if (declinedPermissions?.includes("email")) {
+          reject("Please allow the use of email to continue.")
         }
 
-        if (!facebookInfo.email) {
-          reject(
-            "There is no email associated with your Facebook account. Please log in using your email and password instead."
-          )
-          return
-        }
+        const infoRequest = () =>
+          new Promise<{ email: string; name: string }>((res, rej) => {
+            const innerRequest = new GraphRequest(
+              "/me",
+              {
+                parameters: {
+                  fields: {
+                    string: "email,name",
+                  },
+                },
+              },
+              (error, facebookInfo) => {
+                if (error) {
+                  rej(`Error fetching Facebook data: ${error.message}`)
+                  return
+                }
 
-        // we need to get X-ACCESS-TOKEN before actual sign in
-        const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
-          path: `/oauth2/access_token`,
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: {
-            oauth_provider: "facebook",
-            oauth_token: accessToken.accessToken,
-            client_id: Config.ARTSY_API_CLIENT_KEY,
-            client_secret: Config.ARTSY_API_CLIENT_SECRET,
-            grant_type: "oauth_token",
-            scope: "offline_access",
-          },
-        })
+                if (!facebookInfo.email) {
+                  rej(
+                    "There is no email associated with your Facebook account. Please log in using your email and password instead."
+                  )
+                  return
+                }
 
-        const accountExists = resultGravityAccessToken.status === 201
-        if (accountExists) {
-          const { access_token: xAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
-          const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
-            path: `/api/v1/me`,
-            headers: { "X-ACCESS-TOKEN": xAccessToken },
+                res({ email: facebookInfo.email, name: facebookInfo.name })
+              }
+            )
+            new GraphRequestManager().addRequest(innerRequest).start()
           })
-          const { email } = await resultGravityEmail.json()
-          const resultGravitySignIn = await actions.signIn({
-            oauthProvider: "facebook",
+        const { email, name } = await infoRequest()
+        const fbAccessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
+        if (!fbAccessToken) {
+          return
+        }
+
+        /**
+         * General way of how we determine account existance and link state:
+         *
+         * First we ask FB for the email, name, and access token.
+         *
+         * - If the email does not exist in gravity, then we know it's a first-time login.
+         *     In that case we go ahead and create the account using FB.
+         *
+         * - If the email exists, then either this is an existing FB account, or it's an existing email account.
+         *   - If gravity is ok with our access token, then we know it's a FB account.
+         *       In that case we can continue with the login.
+         *   - If gravity is *not* ok with our access token, then we know it's an email account.
+         *       In that case, we take the user to the link screen.
+         *       There, they can choose to either link FB to their email account, or use separate accounts, one FB and one email.
+         */
+
+        const userExists = await actions.userExists({ email })
+        if (!userExists) {
+          // thats a new email, continue with FB
+
+          const resultGravitySignUp = await actions.signUp({
             email,
-            accessToken: accessToken.accessToken,
+            name,
+            accessToken: fbAccessToken.accessToken,
+            oauthProvider: "facebook",
+            agreedToReceiveEmails: true,
           })
 
-          resultGravitySignIn ? resolve(true) : reject("Could not log in")
+          resultGravitySignUp.success ? resolve(true) : reject(resultGravitySignUp.message)
+          console.warn("resultGravitySignUp", resultGravitySignUp)
         } else {
-          const res = await resultGravityAccessToken.json()
+          // that email exists. either as a FB account, or as an email account
 
-          const accountShouldBeCreated = res.error_description.includes("no account linked to oauth token")
-          if (accountShouldBeCreated) {
-            const resultGravitySignUp = await actions.signUp({
-              email: facebookInfo.email,
-              name: facebookInfo.name,
-              accessToken: accessToken.accessToken,
+          const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
+            path: `/oauth2/access_token`,
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: {
+              oauth_provider: "facebook",
+              oauth_token: fbAccessToken.accessToken,
+              client_id: Config.ARTSY_API_CLIENT_KEY,
+              client_secret: Config.ARTSY_API_CLIENT_SECRET,
+              grant_type: "oauth_token",
+              scope: "offline_access",
+            },
+          })
+
+          const accountIsFB = resultGravityAccessToken.status === 201
+          if (accountIsFB) {
+            const resultGravitySignIn = await actions.signIn({
               oauthProvider: "facebook",
-              agreedToReceiveEmails: true,
+              email,
+              accessToken: fbAccessToken.accessToken,
             })
 
-            resultGravitySignUp.success ? resolve(true) : reject(resultGravitySignUp.message)
+            resultGravitySignIn ? resolve(true) : reject("Could not log in")
           } else {
-            showError(res, reject, "facebook")
+            navigation.navigate("OnboardingSocialLink")
           }
         }
-      }
-
-      // get info from facebook
-      const infoRequest = new GraphRequest(
-        "/me",
-        {
-          accessToken: accessToken.accessToken,
-          parameters: {
-            fields: {
-              string: "email,name",
-            },
-          },
-        },
-        responseFacebookInfoCallback
-      )
-      new GraphRequestManager().addRequest(infoRequest).start()
-    })
-  }),
+      })
+  ),
   authGoogle: thunk(async (actions, options) => {
     return await new Promise<true>(async (resolve, reject) => {
       if (!(await GoogleSignin.hasPlayServices())) {

@@ -35,7 +35,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
 
   const continueWithFacebook = async () => {
     try {
-      await GlobalStore.actions.auth.authFacebook()
+      await GlobalStore.actions.auth.authFacebook({ navigation })
     } catch (error) {
       if (typeof error === "string") {
         Alert.alert("Try again", error)
@@ -69,11 +69,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
 
   return (
     <Flex justifyContent="center" flex={1} backgroundColor="white">
-      <BackButton
-        onPress={() => {
-          navigation.goBack()
-        }}
-      />
+      <BackButton onPress={() => navigation.goBack()} />
       <Flex px={1.5}>
         <Join separator={<Spacer height={60} />}>
           <Text variant="xxl">{mode === "login" ? "Log in" : "Sign Up"}</Text>

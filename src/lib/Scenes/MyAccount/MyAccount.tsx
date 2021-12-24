@@ -8,24 +8,21 @@ import { useFeatureFlag } from "lib/store/GlobalStore"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Flex, Separator, Text } from "palette"
+import { FacebookIcon, Flex, Separator, Text } from "palette"
 import React from "react"
 import { ScrollView } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { useFacebookLink } from "lib/utils/LinkedAccounts/facebook"
 
-const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
+const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay }) => {
   const showLinkedAccounts = useFeatureFlag("ARShowLinkedAccounts")
+  const { link: linkFB, unlink: unlinkFB } = useFacebookLink(relay.environment)
+  const facebookLinked = me.authentications.map((a) => a.provider).includes("FACEBOOK")
 
   return (
     <PageWithSimpleHeader title="Account">
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
-        <MenuItem
-          title="Full Name"
-          value={me.name}
-          onPress={() => {
-            navigate("my-account/edit-name")
-          }}
-        />
+        <MenuItem title="Full Name" value={me.name} onPress={() => navigate("my-account/edit-name")} />
         <MenuItem
           title="Email"
           value={me.email}
@@ -34,29 +31,28 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
             navigate("my-account/edit-email")
           }}
         />
-        <MenuItem
-          title="Phone"
-          value={me.phone || "Add phone"}
-          onPress={() => {
-            navigate("my-account/edit-phone")
-          }}
-        />
+        <MenuItem title="Phone" value={me.phone || "Add phone"} onPress={() => navigate("my-account/edit-phone")} />
         {!!me.hasPassword && (
-          <MenuItem
-            title="Password"
-            value="Change password"
-            onPress={() => {
-              navigate("my-account/edit-password")
-            }}
-          />
+          <MenuItem title="Password" value="Change password" onPress={() => navigate("my-account/edit-password")} />
         )}
         {!!me.paddleNumber && <MenuItem title="Paddle Number" value={me.paddleNumber} />}
         {!!showLinkedAccounts && (
           <>
             <Separator />
             <MenuItem title="Linked Accounts" />
-            <MenuItem title="Facebook" value="wow" />
-            <MenuItem title="Apple" value=" wo" />
+            <MenuItem
+              title="Facebook"
+              rightView={
+                <Flex flexDirection="row" alignItems="center">
+                  <FacebookIcon />
+                  <Text variant="md" color="black60" lineHeight={18}>
+                    {facebookLinked ? "Disconnect" : "Connect"}
+                  </Text>
+                </Flex>
+              }
+              onPress={() => (facebookLinked ? unlinkFB() : linkFB())}
+            />
+            <MenuItem title="Apple" value=" wow" />
           </>
         )}
       </ScrollView>
