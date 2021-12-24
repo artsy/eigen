@@ -5,7 +5,6 @@ import {
   ImageCarouselFragmentContainer,
 } from "lib/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
-import { useDevToggle } from "lib/store/GlobalStore"
 import { retrieveLocalImages } from "lib/utils/LocalImageStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Spacer, Text, useColor } from "palette"

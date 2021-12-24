@@ -1,5 +1,4 @@
 import { tappedCollectedArtworkImages } from "@artsy/cohesion"
-import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import { MyCollectionArtworkHeaderTestsQuery } from "__generated__/MyCollectionArtworkHeaderTestsQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
@@ -11,14 +10,9 @@ import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { MyCollectionArtworkHeader, MyCollectionArtworkHeaderRefetchContainer } from "./MyCollectionArtworkHeader"
+import { MyCollectionArtworkHeaderRefetchContainer } from "./MyCollectionArtworkHeader"
 
 jest.unmock("react-relay")
-
-let fakeRelay: {
-  refetch: jest.Mock
-  push: jest.Mock
-}
 
 describe("MyCollectionArtworkHeader", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -44,15 +38,10 @@ describe("MyCollectionArtworkHeader", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    fakeRelay = {
-      refetch: jest.fn(),
-    } as any
-    jest.useFakeTimers()
   })
 
   afterAll(() => {
     jest.clearAllMocks()
-    jest.useRealTimers()
   })
 
   const getWrapper = (mockResolvers = {}) => {
@@ -101,31 +90,5 @@ describe("MyCollectionArtworkHeader", () => {
     expect(mockTrackEvent).toHaveBeenCalledWith(
       tappedCollectedArtworkImages({ contextOwnerId: "someInternalId", contextOwnerSlug: "someSlug" })
     )
-  })
-
-  it("polls for updated images when image data is incomplete", () => {
-    const processingArtwork: MyCollectionArtworkHeader_artwork = {
-      " $refType": "MyCollectionArtworkHeader_artwork",
-      internalID: "some-id",
-      slug: "some-slug",
-      artistNames: "some artist name",
-      date: "Jan 20th",
-      images: [
-        {
-          imageURL: "some/url",
-          height: null,
-          width: null,
-          isDefault: true,
-          internalID: "some-id",
-          imageVersions: null,
-        },
-      ],
-      title: "some title",
-    }
-    renderWithWrappers(<MyCollectionArtworkHeader artwork={processingArtwork} relay={fakeRelay as any} />)
-
-    jest.advanceTimersByTime(1000)
-
-    expect(fakeRelay.refetch).toHaveBeenCalled()
   })
 })

@@ -4,7 +4,8 @@ import React from "react"
 import { Animated, FlatList } from "react-native"
 import { graphql } from "react-relay"
 import { getMeasurements } from "./geometry"
-import { ImageCarouselFragmentContainer, PaginationDot } from "./ImageCarousel"
+import { ImageCarouselFragmentContainer } from "./ImageCarousel"
+import { PaginationDot } from "./ImageCarouselPaginationIndicator"
 
 jest.unmock("react-relay")
 
