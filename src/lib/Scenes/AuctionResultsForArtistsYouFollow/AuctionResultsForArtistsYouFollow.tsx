@@ -99,7 +99,7 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
             )}
             renderItem={({ item }) =>
               item ? (
-                <Flex px={1} py={2}>
+                <Flex px={1}>
                   <AuctionResultListItemFragmentContainer
                     auctionResult={item}
                     showArtistName
