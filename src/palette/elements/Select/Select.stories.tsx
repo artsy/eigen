@@ -33,6 +33,8 @@ storiesOf("Select", module)
         value={null}
         onSelectValue={() => null}
       />
+      <Select title="Title" options={options} required value={null} onSelectValue={() => null} />
+      <Select title="Title" subTitle="Subtitle" options={options} optional value={null} onSelectValue={() => null} />
       <Select title="With Search" enableSearch options={options} value="option-1" onSelectValue={() => null} />
       <Select
         title="With Max Modal Height"

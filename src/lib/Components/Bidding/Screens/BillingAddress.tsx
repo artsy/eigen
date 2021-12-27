@@ -130,7 +130,6 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({ onSubmit, naviga
           <Input
             ref={addressLine1Ref}
             title="Address line 1"
-            required
             placeholder="Add your street address"
             textContentType="streetAddressLine1"
             returnKeyType="next"
@@ -143,7 +142,8 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({ onSubmit, naviga
 
           <Input
             ref={addressLine2Ref}
-            title="Address line 2 (optional)"
+            title="Address line 2"
+            optional
             placeholder="Add your apt, floor, suite, etc."
             textContentType="streetAddressLine2"
             returnKeyType="next"

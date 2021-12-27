@@ -1,11 +1,11 @@
 import { TriangleDown } from "lib/Icons/TriangleDown"
 import { Autocomplete } from "lib/utils/Autocomplete"
-import { CloseIcon, Flex, Separator, Spacer, Text, Touchable, useColor, useTextStyleForPalette } from "palette"
+import { CloseIcon, Flex, Separator, Text, Touchable, useColor, useTextStyleForPalette } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
 import { FancyModal } from "../../../lib/Components/FancyModal/FancyModal"
 import { SearchInput } from "../../../lib/Components/SearchInput"
-import { INPUT_HEIGHT } from "../Input"
+import { INPUT_HEIGHT, InputTitle } from "../Input"
 
 export interface SelectOption<ValueType> {
   value: ValueType
@@ -20,6 +20,8 @@ export interface SelectProps<ValueType> {
   placeholder?: string
   title: string
   showTitleLabel?: boolean
+  optional?: boolean
+  required?: boolean
   subTitle?: string
   enableSearch?: boolean
   maxModalHeight?: number
@@ -37,6 +39,8 @@ export const Select = <ValueType,>({
   placeholder,
   title,
   showTitleLabel = true,
+  optional,
+  required,
   subTitle,
   enableSearch,
   maxModalHeight,
@@ -82,6 +86,8 @@ export const Select = <ValueType,>({
           placeholder={placeholder}
           value={selectedItem?.label}
           onPress={open}
+          optional={optional}
+          required={required}
           hasError={hasError}
         />
       )}
@@ -106,24 +112,28 @@ const SelectButton: React.FC<{
   title?: string
   showTitleLabel?: boolean
   subTitle?: string
+  optional?: boolean
+  required?: boolean
   placeholder?: string
   hasError?: boolean
   testID?: string
   onPress(): void
-}> = ({ value, placeholder, onPress, title, showTitleLabel, subTitle, hasError, testID }) => {
+}> = ({ value, placeholder, onPress, title, showTitleLabel, optional, required, subTitle, hasError, testID }) => {
   const color = useColor()
   const textStyle = useTextStyleForPalette("sm")
 
   return (
     <Flex>
-      {showTitleLabel ? <Text variant="xs">{title?.toUpperCase()}</Text> : null}
+      {!!showTitleLabel && (
+        <InputTitle optional={optional} required={required}>
+          {title}
+        </InputTitle>
+      )}
 
-      {subTitle ? (
+      {!!subTitle && (
         <Text variant="xs" color="black60" mb={0.5}>
           {subTitle}
         </Text>
-      ) : (
-        <Spacer mb={0.5} />
       )}
       <TouchableOpacity accessible accessibilityRole="button" onPress={onPress} testID={testID}>
         <Flex
