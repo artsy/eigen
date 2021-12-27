@@ -1,14 +1,19 @@
-import { ConsignmentAttributionClass } from "__generated__/updateConsignmentSubmissionMutation.graphql"
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
-import { artworkRarityClassifications } from "lib/utils/artworkMediumCategories"
+import { artworkRarityClassifications } from "lib/utils/artworkRarityClassifications"
 import { Flex, Input, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import React from "react"
 
-export const RarityPicker: React.FC = () => {
+export type AttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION"
+
+export const Rarity: React.FC = () => {
   const { formik } = useArtworkForm()
 
-  const handleValueChange = (value: ConsignmentAttributionClass) => {
+  const handleValueChange = (value: AttributionClassType) => {
+    if (value !== "LIMITED_EDITION") {
+      formik.handleChange("editionSize")("")
+      formik.handleChange("editionNumber")("")
+    }
     formik.handleChange("attributionClass")(value)
   }
 
@@ -21,12 +26,13 @@ export const RarityPicker: React.FC = () => {
         title="Rarity"
         placeholder="Select"
         options={artworkRarityClassifications}
+        testID="rarity-select"
       />
       {formik.values.attributionClass === "LIMITED_EDITION" ? (
         <Flex flexDirection="row" mt={2}>
           <Flex flex={1}>
             <Input
-              title="EDITION NUMBER"
+              title="Edition number"
               keyboardType="decimal-pad"
               onChangeText={formik.handleChange("editionNumber")}
               onBlur={formik.handleBlur("editionNumber")}
@@ -38,7 +44,7 @@ export const RarityPicker: React.FC = () => {
           </Flex>
           <Flex flex={1}>
             <Input
-              title="EDIION SIZE"
+              title="Edition size"
               keyboardType="decimal-pad"
               onChangeText={formik.handleChange("editionSize")}
               onBlur={formik.handleBlur("editionSize")}

@@ -13,7 +13,7 @@ import { ArrowDetails } from "../Components/ArrowDetails"
 import { ArtistAutosuggest } from "../Components/ArtistAutosuggest"
 import { Dimensions } from "../Components/Dimensions"
 import { MediumPicker } from "../Components/MediumPicker"
-import { RarityPicker } from "../Components/RarityPicker"
+import { Rarity } from "../Components/Rarity"
 import { useArtworkForm } from "../Form/useArtworkForm"
 import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
@@ -97,7 +97,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               accessibilityLabel="Materials"
               value={formikValues.category}
             />
-            <RarityPicker />
+            <Rarity />
             <Dimensions />
             <Input
               title="PRICE PAID"
