@@ -47,7 +47,7 @@ export const PaginationDot = ({ diameter, index }: { diameter: number; index: nu
   )
 }
 
-const ScrollBar: React.FC = () => {
+export const ScrollBar: React.FC = () => {
   const color = useColor()
   const { images, xScrollOffsetAnimatedValue } = useContext(ImageCarouselContext)
   if (images.length < 2) {

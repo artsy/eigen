@@ -46,7 +46,7 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
 
   const embeddedCardBoundingBox = { width: screenDimensions.width, height: isPad() ? 460 : cardHeight }
 
-  // TODO:- implement deepzoom for local images
+  // TODO:- Deepzoom for local images?
   const disableDeepZoom = props.images.some((image) => isALocalImage(image.url))
 
   const images: ImageDescriptor[] = useMemo(() => {
