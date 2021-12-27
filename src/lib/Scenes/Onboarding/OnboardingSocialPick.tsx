@@ -1,9 +1,10 @@
 import { useNavigation } from "@react-navigation/native"
 import { BackButton } from "lib/navigation/BackButton"
-import { GlobalStore, useEnvironment } from "lib/store/GlobalStore"
+import { navigate } from "lib/navigation/navigate"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { Button, Flex, Join, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
-import { Alert, Image, Linking, Platform } from "react-native"
+import { Alert, Image, Platform } from "react-native"
 import { EnvelopeIcon } from "../../../palette/svgs/EnvelopeIcon"
 import { useFeatureFlag } from "../../store/GlobalStore"
 
@@ -12,7 +13,6 @@ interface OnboardingSocialPickProps {
 }
 
 export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode }) => {
-  const webURL = useEnvironment().webURL
   const navigation = useNavigation()
 
   const enableGoogleAuth = useFeatureFlag("ARGoogleAuth")
@@ -153,9 +153,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             {!!enableGoogleAuth ? ", Google" : ""}
             {Platform.OS === "ios" ? " or Apple" : ""}, you agree to Artsy's{" "}
             <Text
-              onPress={() => {
-                Linking.openURL(`${webURL}/terms`)
-              }}
+              onPress={() => navigate("/terms", { modal: true })}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
@@ -163,9 +161,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             </Text>{" "}
             and{" "}
             <Text
-              onPress={() => {
-                Linking.openURL(`${webURL}/privacy`)
-              }}
+              onPress={() => navigate("/privacy", { modal: true })}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
