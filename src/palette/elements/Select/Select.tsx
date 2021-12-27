@@ -1,6 +1,6 @@
 import { TriangleDown } from "lib/Icons/TriangleDown"
 import { Autocomplete } from "lib/utils/Autocomplete"
-import { CloseIcon, Flex, Separator, Spacer, Text, Touchable, useColor, useTextStyleForPalette } from "palette"
+import { CloseIcon, Flex, Separator, Text, Touchable, useColor, useTextStyleForPalette } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
 import { FancyModal } from "../../../lib/Components/FancyModal/FancyModal"
