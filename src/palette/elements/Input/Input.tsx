@@ -34,6 +34,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   icon?: JSX.Element
   loading?: boolean
   disabled?: boolean
+  optional?: boolean
   required?: boolean
   title?: string
   showLimit?: boolean
@@ -79,6 +80,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       error,
       icon,
       loading,
+      optional,
       required,
       enableClearButton,
       title,
@@ -219,7 +221,9 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     return (
       <Flex flexGrow={1} style={containerStyle}>
         <Flex flexDirection="row" alignItems="center">
-          <InputTitle required={required}>{title}</InputTitle>
+          <InputTitle optional={optional} required={required}>
+            {title}
+          </InputTitle>
           {!!maxLength && !!showLimit && (
             <Text color="black60" variant="xs" marginLeft="auto">
               {maxLength - value.length}
