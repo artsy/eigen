@@ -1,8 +1,7 @@
-import { useEnvironment } from "lib/store/GlobalStore"
+import { navigate } from "lib/navigation/navigate"
 import { Flex, Text, Touchable } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
-import { Linking } from "react-native"
 
 interface TermsOfServiceCheckboxProps {
   checked: boolean
@@ -11,8 +10,6 @@ interface TermsOfServiceCheckboxProps {
 }
 
 export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({ setChecked, checked, error }) => {
-  const webURL = useEnvironment().webURL
-
   return (
     <Touchable haptic onPress={() => setChecked(!checked)}>
       <Flex flexDirection="row" alignItems="flex-start">
@@ -20,9 +17,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({ 
           <Text variant="xs">
             By checking this box, you consent to our{" "}
             <Text
-              onPress={() => {
-                Linking.openURL(`${webURL}/terms`)
-              }}
+              onPress={() => navigate("/terms", { modal: true })}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
@@ -30,9 +25,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({ 
             </Text>
             ,{" "}
             <Text
-              onPress={() => {
-                Linking.openURL(`${webURL}/privacy`)
-              }}
+              onPress={() => navigate("/privacy", { modal: true })}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
@@ -40,9 +33,7 @@ export const TermsOfServiceCheckbox: React.FC<TermsOfServiceCheckboxProps> = ({ 
             </Text>
             , and{" "}
             <Text
-              onPress={() => {
-                Linking.openURL(`${webURL}/conditions-of-sale`)
-              }}
+              onPress={() => navigate("/conditions-of-sale", { modal: true })}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
