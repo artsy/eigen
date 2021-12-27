@@ -1,16 +1,15 @@
 import { tappedCollectedArtworkImages } from "@artsy/cohesion"
 import { MyCollectionArtworkHeaderTestsQuery } from "__generated__/MyCollectionArtworkHeaderTestsQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { navigate } from "lib/navigation/navigate"
+import { ImageWithLoadingState } from "lib/Scenes/Artwork/Components/ImageCarousel/ImageWithLoadingState"
 import { extractText } from "lib/tests/extractText"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { MyCollectionArtworkHeaderRefetchContainer } from "./MyCollectionArtworkHeader"
+import { MyCollectionArtworkHeaderFragmentContainer } from "./MyCollectionArtworkHeader"
 
 jest.unmock("react-relay")
 
@@ -29,7 +28,7 @@ describe("MyCollectionArtworkHeader", () => {
       variables={{}}
       render={({ props }) => {
         if (props?.artwork) {
-          return <MyCollectionArtworkHeaderRefetchContainer artwork={props.artwork} />
+          return <MyCollectionArtworkHeaderFragmentContainer artwork={props.artwork} />
         }
         return null
       }}
@@ -68,16 +67,6 @@ describe("MyCollectionArtworkHeader", () => {
     expect(wrapper.root.findAllByType(OpaqueImageView)).toBeDefined()
   })
 
-  it("navigates to images page when image is pressed", () => {
-    const wrapper = getWrapper({
-      Artwork: () => ({
-        internalID: "1234",
-      }),
-    })
-    wrapper.root.findAllByType(TouchableOpacity)[0].props.onPress()
-    expect(navigate).toHaveBeenCalledWith("/my-collection/artwork-images/1234")
-  })
-
   it("fires the analytics tracking event when image is pressed", () => {
     const wrapper = getWrapper({
       Artwork: () => ({
@@ -85,8 +74,9 @@ describe("MyCollectionArtworkHeader", () => {
         slug: "someSlug",
       }),
     })
-    wrapper.root.findAllByType(TouchableOpacity)[0].props.onPress()
-    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+    wrapper.root.findAllByType(ImageWithLoadingState)[0].props.onPress()
+    // expect 2 calls: 1 for our custom tracking, 2 for tracking deep zoom taps
+    expect(mockTrackEvent).toHaveBeenCalledTimes(2)
     expect(mockTrackEvent).toHaveBeenCalledWith(
       tappedCollectedArtworkImages({ contextOwnerId: "someInternalId", contextOwnerSlug: "someSlug" })
     )

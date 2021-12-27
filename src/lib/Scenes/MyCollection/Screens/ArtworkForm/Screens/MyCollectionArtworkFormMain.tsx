@@ -261,7 +261,6 @@ const PhotosButton: React.FC<{ onPress: () => void; testID?: string }> = ({ onPr
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
   const photos = artworkState.sessionState.formValues.photos
 
-  console.log("PHOTOS", photos)
   return (
     <>
       <Separator />

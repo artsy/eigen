@@ -9,14 +9,13 @@ import { retrieveLocalImages } from "lib/utils/LocalImageStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useState } from "react"
-import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 import { ImageDescriptor } from "../../../../../Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
 import { hasImagesStillProcessing } from "../../ArtworkForm/MyCollectionImageUtil"
 
 interface MyCollectionArtworkHeaderProps {
   artwork: MyCollectionArtworkHeader_artwork
-  relay: RelayRefetchProp
 }
 
 export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps> = (props) => {
@@ -68,9 +67,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
           images={imagesToDisplay as any}
           cardHeight={dimensions.height / 2.5}
           paginationIndicatorType="scrollBar"
-          onImagePressed={() => {
-            trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))
-          }}
+          onImagePressed={trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))}
         />
       ) : (
         // TODO:- Display null image container https://artsyproduct.atlassian.net/browse/CX-2200
@@ -80,32 +77,22 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   )
 }
 
-export const MyCollectionArtworkHeaderRefetchContainer = createRefetchContainer(
-  MyCollectionArtworkHeader,
-  {
-    artwork: graphql`
-      fragment MyCollectionArtworkHeader_artwork on Artwork {
-        artistNames
-        date
-        images {
-          ...ImageCarousel_images
-          imageVersions
-          isDefault
-        }
-        internalID
-        slug
-        title
+export const MyCollectionArtworkHeaderFragmentContainer = createFragmentContainer(MyCollectionArtworkHeader, {
+  artwork: graphql`
+    fragment MyCollectionArtworkHeader_artwork on Artwork {
+      artistNames
+      date
+      images {
+        ...ImageCarousel_images
+        imageVersions
+        isDefault
       }
-    `,
-  },
-  graphql`
-    query MyCollectionArtworkHeaderRefetchQuery($artworkID: String!) {
-      artwork(id: $artworkID) {
-        ...MyCollectionArtworkHeader_artwork
-      }
+      internalID
+      slug
+      title
     }
-  `
-)
+  `,
+})
 
 const tracks = {
   tappedCollectedArtworkImages: (internalID: string, slug: string) => {
