@@ -28,7 +28,7 @@ const ArtworkAutosuggestResults: React.FC<ArtworkAutosuggestResultsProps> = ({
   onSkipPress,
 }) => {
   const handlePress = (artworkId: string) => {
-    // TODO: Trakcing
+    // TODO: Tracking
     onPress?.(artworkId)
   }
 

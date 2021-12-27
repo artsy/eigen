@@ -72,7 +72,7 @@ export interface MyCollectionArtworkModel {
   updateFormValues: Action<MyCollectionArtworkModel, Partial<ArtworkFormValues>>
   setDirtyFormCheckValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
   resetForm: Action<MyCollectionArtworkModel>
-  ResetFormAndKeepArtist: Action<MyCollectionArtworkModel>
+  ResetFormButKeepArtist: Action<MyCollectionArtworkModel>
   setArtistSearchResult: Action<MyCollectionArtworkModel, AutosuggestResult | null>
   setArtworkId: Action<MyCollectionArtworkModel, { artworkId: string }>
   setArtworkErrorOccurred: Action<MyCollectionArtworkModel, boolean>
@@ -120,7 +120,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     state.sessionState.dirtyFormCheckValues = initialFormValues
   }),
 
-  ResetFormAndKeepArtist: action((state) => {
+  ResetFormButKeepArtist: action((state) => {
     const artistValues = pick(state.sessionState.formValues, ["artist", "artistIds", "artistSearchResult"])
 
     state.sessionState.formValues = { ...initialFormValues, ...artistValues }

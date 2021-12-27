@@ -17,6 +17,8 @@ export const MyCollectionArtworkFormArtist: React.FC<StackScreenProps<ArtworkFor
   const addOrEditLabel = modalType === "edit" ? "Edit" : "Add"
 
   const handleResultPress = async (result: AutosuggestResult) => {
+    // TODO: Add tracking
+
     await GlobalStore.actions.myCollection.artwork.setArtistSearchResult(result)
 
     navigation.navigate("ArtworkFormArtwork", { ...route.params })

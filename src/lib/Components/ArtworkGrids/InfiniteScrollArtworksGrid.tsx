@@ -309,7 +309,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             contextScreenOwnerSlug={this.props.contextScreenOwnerSlug}
             contextScreenQuery={this.props.contextScreenQuery}
             contextScreen={this.props.contextScreen}
-            artwork={artwork as any}
+            artwork={artwork as any} // FIXME: Types are messed up here
             key={"artwork-" + itemIndex + "-" + artwork.id}
             hideUrgencyTags={this.props.hideUrgencyTags}
             hidePartner={this.props.hidePartner}

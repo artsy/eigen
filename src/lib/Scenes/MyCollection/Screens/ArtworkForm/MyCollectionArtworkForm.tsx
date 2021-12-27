@@ -164,7 +164,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       }
     }
 
-    GlobalStore.actions.myCollection.artwork.ResetFormAndKeepArtist()
+    GlobalStore.actions.myCollection.artwork.ResetFormButKeepArtist()
   }
 
   const onHeaderBackButtonPress = () => {
