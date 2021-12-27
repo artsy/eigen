@@ -4,12 +4,10 @@
 /* @relayHash 49f756e2a6c0009c96657f0ca5cb2ba2 */
 
 import { ConcreteRequest } from "relay-runtime";
-export type ArtworkAttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION" | "%future added value";
 export type MyCollectionUpdateArtworkInput = {
     artistIds?: Array<string | null> | null | undefined;
     artworkId: string;
     artworkLocation?: string | null | undefined;
-    attributionClass?: ArtworkAttributionClassType | null | undefined;
     category?: string | null | undefined;
     clientMutationId?: string | null | undefined;
     costCurrencyCode?: string | null | undefined;
