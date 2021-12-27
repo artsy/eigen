@@ -1,15 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 49f756e2a6c0009c96657f0ca5cb2ba2 */
+/* @relayHash ef4391c250c6b92de4c38ac52db54c25 */
 
 import { ConcreteRequest } from "relay-runtime";
-export type ArtworkAttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION" | "%future added value";
 export type MyCollectionUpdateArtworkInput = {
     artistIds?: Array<string | null> | null | undefined;
     artworkId: string;
     artworkLocation?: string | null | undefined;
-    attributionClass?: ArtworkAttributionClassType | null | undefined;
     category?: string | null | undefined;
     clientMutationId?: string | null | undefined;
     costCurrencyCode?: string | null | undefined;
@@ -38,6 +36,7 @@ export type myCollectionEditArtworkMutationResponse = {
             readonly artwork?: {
                 readonly artist: {
                     readonly internalID: string;
+                    readonly formattedNationalityAndBirthday: string | null;
                 } | null;
                 readonly artistNames: string | null;
                 readonly category: string | null;
@@ -95,6 +94,7 @@ mutation myCollectionEditArtworkMutation(
         artwork {
           artist {
             internalID
+            formattedNationalityAndBirthday
             id
           }
           artistNames
@@ -167,17 +167,24 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "artistNames",
+  "name": "formattedNationalityAndBirthday",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "category",
+  "name": "artistNames",
   "storageKey": null
 },
 v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "category",
+  "storageKey": null
+},
+v6 = {
   "alias": null,
   "args": null,
   "concreteType": "Money",
@@ -209,63 +216,63 @@ v5 = {
   ],
   "storageKey": null
 },
-v6 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "date",
   "storageKey": null
 },
-v7 = {
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "depth",
   "storageKey": null
 },
-v8 = {
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "editionSize",
   "storageKey": null
 },
-v9 = {
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "editionNumber",
   "storageKey": null
 },
-v10 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "height",
   "storageKey": null
 },
-v11 = {
+v12 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v12 = {
+v13 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v13 = {
+v14 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "width",
   "storageKey": null
 },
-v14 = {
+v15 = {
   "alias": null,
   "args": null,
   "concreteType": "Image",
@@ -287,55 +294,55 @@ v14 = {
       "name": "imageURL",
       "storageKey": null
     },
-    (v13/*: any*/),
-    (v10/*: any*/),
+    (v14/*: any*/),
+    (v11/*: any*/),
     (v2/*: any*/)
   ],
-  "storageKey": null
-},
-v15 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "isEdition",
   "storageKey": null
 },
 v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "medium",
+  "name": "isEdition",
   "storageKey": null
 },
 v17 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "metric",
+  "name": "medium",
   "storageKey": null
 },
 v18 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "provenance",
+  "name": "metric",
   "storageKey": null
 },
 v19 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "slug",
+  "name": "provenance",
   "storageKey": null
 },
 v20 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "title",
+  "name": "slug",
   "storageKey": null
 },
 v21 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
+  "storageKey": null
+},
+v22 = {
   "kind": "InlineFragment",
   "selections": [
     {
@@ -402,11 +409,11 @@ return {
                         "name": "artist",
                         "plural": false,
                         "selections": [
-                          (v2/*: any*/)
+                          (v2/*: any*/),
+                          (v3/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v3/*: any*/),
                       (v4/*: any*/),
                       (v5/*: any*/),
                       (v6/*: any*/),
@@ -414,6 +421,7 @@ return {
                       (v8/*: any*/),
                       (v9/*: any*/),
                       (v10/*: any*/),
+                      (v11/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -422,20 +430,20 @@ return {
                         "name": "attributionClass",
                         "plural": false,
                         "selections": [
-                          (v11/*: any*/)
+                          (v12/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v12/*: any*/),
-                      (v14/*: any*/),
-                      (v2/*: any*/),
+                      (v13/*: any*/),
                       (v15/*: any*/),
+                      (v2/*: any*/),
                       (v16/*: any*/),
                       (v17/*: any*/),
                       (v18/*: any*/),
                       (v19/*: any*/),
                       (v20/*: any*/),
-                      (v13/*: any*/)
+                      (v21/*: any*/),
+                      (v14/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -443,7 +451,7 @@ return {
                 "type": "MyCollectionArtworkMutationSuccess",
                 "abstractKey": null
               },
-              (v21/*: any*/)
+              (v22/*: any*/)
             ],
             "storageKey": null
           }
@@ -503,11 +511,11 @@ return {
                         "plural": false,
                         "selections": [
                           (v2/*: any*/),
-                          (v12/*: any*/)
+                          (v3/*: any*/),
+                          (v13/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v3/*: any*/),
                       (v4/*: any*/),
                       (v5/*: any*/),
                       (v6/*: any*/),
@@ -515,6 +523,7 @@ return {
                       (v8/*: any*/),
                       (v9/*: any*/),
                       (v10/*: any*/),
+                      (v11/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -523,21 +532,21 @@ return {
                         "name": "attributionClass",
                         "plural": false,
                         "selections": [
-                          (v11/*: any*/),
-                          (v12/*: any*/)
+                          (v12/*: any*/),
+                          (v13/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v12/*: any*/),
-                      (v14/*: any*/),
-                      (v2/*: any*/),
+                      (v13/*: any*/),
                       (v15/*: any*/),
+                      (v2/*: any*/),
                       (v16/*: any*/),
                       (v17/*: any*/),
                       (v18/*: any*/),
                       (v19/*: any*/),
                       (v20/*: any*/),
-                      (v13/*: any*/)
+                      (v21/*: any*/),
+                      (v14/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -545,7 +554,7 @@ return {
                 "type": "MyCollectionArtworkMutationSuccess",
                 "abstractKey": null
               },
-              (v21/*: any*/)
+              (v22/*: any*/)
             ],
             "storageKey": null
           }
@@ -555,7 +564,7 @@ return {
     ]
   },
   "params": {
-    "id": "49f756e2a6c0009c96657f0ca5cb2ba2",
+    "id": "ef4391c250c6b92de4c38ac52db54c25",
     "metadata": {},
     "name": "myCollectionEditArtworkMutation",
     "operationKind": "mutation",

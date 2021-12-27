@@ -13,7 +13,7 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { MyCollectionImageView } from "../../Components/MyCollectionImageView"
 
-interface MyCollectionArtworkListItemProps {
+export interface MyCollectionArtworkListItemProps {
   artwork: MyCollectionArtworkListItem_artwork
 }
 

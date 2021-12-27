@@ -23,6 +23,8 @@ import { deletedPhotos } from "../../utils/deletedPhotos"
 import { artworkSchema, validateArtworkSchema } from "./Form/artworkSchema"
 import { removeLocalPhotos, storeLocalPhotos, uploadPhotos } from "./MyCollectionImageUtil"
 import { MyCollectionAddPhotos } from "./Screens/MyCollectionArtworkFormAddPhotos"
+import { MyCollectionArtworkFormArtist } from "./Screens/MyCollectionArtworkFormArtist"
+import { MyCollectionArtworkFormArtwork } from "./Screens/MyCollectionArtworkFormArtwork"
 import { MyCollectionArtworkFormMain } from "./Screens/MyCollectionArtworkFormMain"
 
 export type ArtworkFormMode = "add" | "edit"
@@ -34,13 +36,22 @@ export type ArtworkFormMode = "add" | "edit"
 // The react-navigation folks have written code that relies on the more permissive `type` behaviour.
 // tslint:disable-next-line:interface-over-type-literal
 export type ArtworkFormScreen = {
-  ArtworkForm: {
+  ArtworkFormArtist: {
     mode: ArtworkFormMode
     clearForm(): void
-    onDelete?(): void
+    onDelete(): void
     onHeaderBackButtonPress(): void
   }
-  AdditionalDetails: {
+  ArtworkFormArtwork: {
+    mode: ArtworkFormMode
+    clearForm(): void
+    onDelete(): void
+    onHeaderBackButtonPress(): void
+  }
+  ArtworkFormMain: {
+    mode: ArtworkFormMode
+    clearForm(): void
+    onDelete(): void
     onHeaderBackButtonPress(): void
   }
   AddPhotos: {
@@ -153,16 +164,20 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       }
     }
 
-    GlobalStore.actions.myCollection.artwork.resetForm()
+    GlobalStore.actions.myCollection.artwork.ResetFormAndKeepArtist()
   }
 
   const onHeaderBackButtonPress = () => {
     const currentRoute = navContainerRef.current?.getCurrentRoute()
-    if (!currentRoute?.name || currentRoute?.name === "ArtworkForm") {
+    const isFirstScreen = props.mode === "edit" || !currentRoute?.name || currentRoute?.name === "ArtworkFormArtist"
+
+    // clear and exit the form if we're on the first screen
+    if (isFirstScreen) {
       GlobalStore.actions.myCollection.artwork.resetForm()
       goBack()
       return
     }
+
     navContainerRef.current?.goBack()
   }
 
@@ -178,8 +193,22 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
             cardStyle: { backgroundColor: "white" },
           }}
         >
+          {props.mode === "add" && (
+            <Stack.Screen
+              name="ArtworkFormArtist"
+              component={MyCollectionArtworkFormArtist}
+              initialParams={{ onDelete, clearForm, mode: props.mode, onHeaderBackButtonPress }}
+            />
+          )}
+          {props.mode === "add" && (
+            <Stack.Screen
+              name="ArtworkFormArtwork"
+              component={MyCollectionArtworkFormArtwork}
+              initialParams={{ onDelete, clearForm, mode: props.mode, onHeaderBackButtonPress }}
+            />
+          )}
           <Stack.Screen
-            name="ArtworkForm"
+            name="ArtworkFormMain"
             component={MyCollectionArtworkFormMain}
             initialParams={{ onDelete, clearForm, mode: props.mode, onHeaderBackButtonPress }}
           />

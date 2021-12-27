@@ -6,6 +6,14 @@
 //    - leting the artwork component do a layout pass and calculate its own height based on the column width.
 // 4. Update height of grid to encompass all items.
 
+import { ScreenOwnerType } from "@artsy/cohesion"
+import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
+import { InfiniteScrollArtworksGrid_myCollectionConnection } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
+import { PAGE_SIZE } from "lib/Components/constants"
+import { MyCollectionArtworkListItemFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
+import { extractNodes } from "lib/utils/extractNodes"
+import { isCloseToBottom } from "lib/utils/isCloseToBottom"
+import { Box, Button, Flex, Spinner } from "palette"
 import React from "react"
 import {
   ActivityIndicator,
@@ -18,21 +26,9 @@ import {
   ViewStyle,
 } from "react-native"
 import { createFragmentContainer, RelayPaginationProp } from "react-relay"
-
-import Artwork from "./ArtworkGridItem"
-
-import { isCloseToBottom } from "lib/utils/isCloseToBottom"
-
-import { PAGE_SIZE } from "lib/Components/constants"
-
-import { ScreenOwnerType } from "@artsy/cohesion"
-import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
-import { InfiniteScrollArtworksGrid_myCollectionConnection } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
-import { MyCollectionArtworkListItemFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
-import { extractNodes } from "lib/utils/extractNodes"
-import { Box, Button, Flex, Spinner } from "palette"
 import { graphql } from "relay-runtime"
 import ParentAwareScrollView from "../ParentAwareScrollView"
+import Artwork, { ArtworkProps } from "./ArtworkGridItem"
 
 /**
  * TODO:
@@ -58,6 +54,9 @@ export interface Props {
 
   /** A component to render at the top of all items */
   HeaderComponent?: React.ComponentType<any> | React.ReactElement<any>
+
+  /** A component to render at the bottom of all items */
+  FooterComponent?: React.ComponentType<any> | React.ReactElement<any>
 
   /** Pass true if artworks should have a Box wrapper with gutter padding */
   shouldAddPadding?: boolean
@@ -91,6 +90,8 @@ export interface Props {
 
   // Hide Partner name
   hidePartner?: boolean
+
+  itemComponentProps?: Partial<ArtworkProps>
 
   /** Show Lot Label  */
   showLotLabel?: boolean
@@ -300,6 +301,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
         const artwork = sectionedArtworks[column][row]
         const itemIndex = row * columnCount + column
         const ItemComponent = this.props.isMyCollection ? MyCollectionArtworkListItemFragmentContainer : Artwork
+
         artworkComponents.push(
           <ItemComponent
             contextScreenOwnerType={this.props.contextScreenOwnerType}
@@ -307,13 +309,14 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             contextScreenOwnerSlug={this.props.contextScreenOwnerSlug}
             contextScreenQuery={this.props.contextScreenQuery}
             contextScreen={this.props.contextScreen}
-            artwork={artwork}
+            artwork={artwork as any}
             key={"artwork-" + itemIndex + "-" + artwork.id}
             hideUrgencyTags={this.props.hideUrgencyTags}
             hidePartner={this.props.hidePartner}
             showLotLabel={this.props.showLotLabel}
             itemIndex={itemIndex}
             updateRecentSearchesOnTap={this.props.updateRecentSearchesOnTap}
+            {...this.props.itemComponentProps}
           />
         )
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
@@ -347,6 +350,15 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     return React.isValidElement(HeaderComponent) ? HeaderComponent : <HeaderComponent />
   }
 
+  renderFooter() {
+    const FooterComponent = this.props.FooterComponent
+    if (!FooterComponent) {
+      return null
+    }
+
+    return React.isValidElement(FooterComponent) ? FooterComponent : <FooterComponent />
+  }
+
   render() {
     const artworks = this.state.sectionDimension ? this.renderSections() : null
     const { shouldAddPadding, hasMore, stickyHeaderIndices, useParentAwareScrollView } = this.props
@@ -367,6 +379,8 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
           scrollsToTop={false}
           accessibilityLabel="Artworks ScrollView"
           stickyHeaderIndices={stickyHeaderIndices}
+          keyboardDismissMode="on-drag"
+          keyboardShouldPersistTaps="handled"
         >
           {this.renderHeader()}
           <Box px={boxPadding}>
@@ -395,15 +409,19 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
           )}
         </ScrollViewWrapper>
 
-        <Flex
-          alignItems="center"
-          justifyContent="center"
-          p="3"
-          pb="9"
-          style={{ opacity: this.state.isLoading && hasMore() ? 1 : 0 }}
-        >
-          {!!this.props.autoFetch && <ActivityIndicator color={Platform.OS === "android" ? "black" : undefined} />}
-        </Flex>
+        {this.state.isLoading && hasMore() && (
+          <Flex
+            alignItems="center"
+            justifyContent="center"
+            p="3"
+            pb="9"
+            style={{ opacity: this.state.isLoading && hasMore() ? 1 : 0 }}
+          >
+            {!!this.props.autoFetch && <ActivityIndicator color={Platform.OS === "android" ? "black" : undefined} />}
+          </Flex>
+        )}
+
+        {this.renderFooter()}
       </>
     )
   }

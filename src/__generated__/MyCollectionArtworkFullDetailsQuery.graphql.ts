@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5e0b12779d4069f94529b33fce9f1832 */
+/* @relayHash eed57fcf2a7d986e20a7b00bc432b9e1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,6 +33,7 @@ query MyCollectionArtworkFullDetailsQuery(
 fragment MyCollectionArtworkFullDetails_artwork on Artwork {
   artist {
     internalID
+    formattedNationalityAndBirthday
     id
   }
   artistNames
@@ -183,6 +184,13 @@ return {
             "plural": false,
             "selections": [
               (v2/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "formattedNationalityAndBirthday",
+                "storageKey": null
+              },
               (v3/*: any*/)
             ],
             "storageKey": null
@@ -360,7 +368,7 @@ return {
     ]
   },
   "params": {
-    "id": "5e0b12779d4069f94529b33fce9f1832",
+    "id": "eed57fcf2a7d986e20a7b00bc432b9e1",
     "metadata": {},
     "name": "MyCollectionArtworkFullDetailsQuery",
     "operationKind": "query",

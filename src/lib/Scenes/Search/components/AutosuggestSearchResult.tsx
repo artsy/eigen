@@ -89,7 +89,7 @@ export const AutosuggestSearchResult: React.FC<{
 
   return (
     <>
-      <Touchable onPress={() => onPress()}>
+      <Touchable onPress={() => onPress()} testID={`autosuggest-search-result-${result.displayLabel}`}>
         <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
           <SearchResultImage imageURL={result.imageUrl} resultType={resultType} />
 
