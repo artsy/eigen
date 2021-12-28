@@ -117,7 +117,7 @@ export default class OpaqueImageView extends React.Component<Props, State> {
           return "file://" + imageURL
         }
         // TODO:- Handling of './' paths
-        // Ignore android's assets:// path
+        // Ignore android's assets:// path (This is because using assets:// in OpaqueImageView is not a use case for us now.)
         return null
       }
       if (useRawURL) {
