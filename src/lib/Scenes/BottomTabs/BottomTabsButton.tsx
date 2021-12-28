@@ -4,7 +4,8 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { switchTab } from "lib/navigation/navigate"
 import { VisualClueName } from "lib/store/config/visualClues"
 import { unsafe__getSelectedTab, useSelectedTab, useVisualClue } from "lib/store/GlobalStore"
-import { Flex, Sans, useColor } from "palette"
+import { Sans, useColor } from "palette"
+import { VisualClueDot } from "palette/elements/VisualClue"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Easing, TouchableWithoutFeedback, View } from "react-native"
 import { useTracking } from "react-tracking"
@@ -117,7 +118,7 @@ export const BottomTabsButton: React.FC<{
                 }}
               >
                 <PopIn>
-                  <VisualClue />
+                  <VisualClueDot />
                 </PopIn>
               </View>
             </View>
@@ -159,70 +160,6 @@ const Badge: React.FC<{ count: number }> = ({ count }) => {
         </Sans>
       </View>
     </View>
-  )
-}
-
-const VisualClue: React.FC = () => {
-  const size = 6
-  const duration = 1600
-
-  const scaleAnimation = useRef(new Animated.Value(1))
-  const opacityAnimation = useRef(new Animated.Value(1))
-
-  const color = useColor()
-
-  useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(scaleAnimation.current, {
-          toValue: 3,
-          duration,
-          useNativeDriver: true,
-        }),
-        Animated.timing(scaleAnimation.current, {
-          toValue: 1,
-          duration: 0,
-          useNativeDriver: true,
-        }),
-      ])
-    ).start()
-
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(opacityAnimation.current, {
-          toValue: 0.14,
-          duration: duration / 2,
-          useNativeDriver: true,
-        }),
-        Animated.timing(opacityAnimation.current, {
-          toValue: 0,
-          duration: duration / 2,
-          useNativeDriver: true,
-        }),
-      ])
-    ).start()
-  }, [])
-
-  return (
-    <Flex
-      style={{
-        height: size,
-        minWidth: size,
-        borderRadius: size / 2,
-        backgroundColor: color("blue100"),
-      }}
-    >
-      <Animated.View
-        style={{
-          height: size,
-          minWidth: size,
-          borderRadius: size / 2,
-          backgroundColor: color("blue100"),
-          transform: [{ scale: scaleAnimation.current }],
-          opacity: opacityAnimation.current,
-        }}
-      />
-    </Flex>
   )
 }
 
