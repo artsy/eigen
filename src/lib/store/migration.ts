@@ -28,6 +28,7 @@ export const Versions = {
   AddPreviousSessionUserID: 16,
   RemoveNativeOnboardingState: 17,
   AddUserPreferences: 18,
+  AddVisualClueModel: 19,
 }
 
 export const CURRENT_APP_VERSION = Versions.AddUserPreferences
@@ -118,6 +119,9 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddUserPreferences]: (state) => {
     state.userPreferences = { currency: "USD", metric: "" }
+  },
+  [Versions.AddVisualClueModel]: (state) => {
+    state.config.visualClue = {}
   },
 }
 
