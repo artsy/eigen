@@ -14,7 +14,8 @@ import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
 import { IndicatorType, PaginationIndicator } from "./ImageCarouselPaginationIndicator"
 
 export interface ImageCarouselProps {
-  images: ImageCarousel_images | ImageDescriptor[] // ImageDescriptor for when you want to display local images
+  /** ImageDescriptor for when you want to display local images */
+  images: ImageCarousel_images | ImageDescriptor[]
   cardHeight: number
   onImageIndexChange?: (imageIndex: number) => void
   paginationIndicatorType?: IndicatorType

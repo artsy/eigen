@@ -14,7 +14,7 @@ export const PaginationIndicator: React.FC<{ indicatorType: IndicatorType }> = (
   return <PaginationDots />
 }
 
-function PaginationDots() {
+const PaginationDots: React.FC = () => {
   const { images } = useContext(ImageCarouselContext)
   return (
     <>
@@ -28,7 +28,7 @@ function PaginationDots() {
   )
 }
 
-export const PaginationDot = ({ diameter, index }: { diameter: number; index: number }) => {
+export const PaginationDot: React.FC<{ diameter: number; index: number }> = ({ diameter, index }) => {
   const { imageIndex } = useContext(ImageCarouselContext)
   imageIndex.useUpdates()
   const opacity = useSpringValue(imageIndex.current === index ? 1 : 0.1)
