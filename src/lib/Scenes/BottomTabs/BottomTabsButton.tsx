@@ -2,8 +2,9 @@ import { tappedTabBar } from "@artsy/cohesion"
 import { PopIn } from "lib/Components/PopIn"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { switchTab } from "lib/navigation/navigate"
-import { unsafe__getSelectedTab, useSelectedTab } from "lib/store/GlobalStore"
-import { Sans, useColor } from "palette"
+import { VisualClueName } from "lib/store/config/visualClues"
+import { unsafe__getSelectedTab, useSelectedTab, useVisualClue } from "lib/store/GlobalStore"
+import { Flex, Sans, useColor } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Animated, Easing, TouchableWithoutFeedback, View } from "react-native"
 import { useTracking } from "react-tracking"
@@ -15,7 +16,8 @@ import { BottomTabOption, BottomTabType } from "./BottomTabType"
 export const BottomTabsButton: React.FC<{
   tab: BottomTabType
   badgeCount?: number
-}> = ({ tab, badgeCount = 0 }) => {
+  visualClue?: VisualClueName
+}> = ({ tab, badgeCount = 0, visualClue }) => {
   const selectedTab = useSelectedTab()
   const isActive = selectedTab === tab
   const timeout = useRef<ReturnType<typeof setTimeout>>()
@@ -24,6 +26,8 @@ export const BottomTabsButton: React.FC<{
   const showActiveState = isActive || isBeingPressed
 
   const activeProgress = useRef(new Animated.Value(showActiveState ? 1 : 0)).current
+
+  const { showVisualClue } = useVisualClue()
 
   useEffect(() => {
     Animated.timing(activeProgress, {
@@ -102,6 +106,23 @@ export const BottomTabsButton: React.FC<{
             </View>
           </IconWrapper>
         )}
+        {!!showVisualClue(visualClue) && (
+          <IconWrapper>
+            <View style={{ width: ICON_WIDTH, height: ICON_HEIGHT }}>
+              <View
+                style={{
+                  position: "absolute",
+                  top: 8,
+                  right: 12,
+                }}
+              >
+                <PopIn>
+                  <VisualClue />
+                </PopIn>
+              </View>
+            </View>
+          </IconWrapper>
+        )}
       </View>
     </TouchableWithoutFeedback>
   )
@@ -138,6 +159,70 @@ const Badge: React.FC<{ count: number }> = ({ count }) => {
         </Sans>
       </View>
     </View>
+  )
+}
+
+const VisualClue: React.FC = () => {
+  const size = 6
+  const duration = 1600
+
+  const scaleAnimation = useRef(new Animated.Value(1))
+  const opacityAnimation = useRef(new Animated.Value(1))
+
+  const color = useColor()
+
+  useEffect(() => {
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(scaleAnimation.current, {
+          toValue: 3,
+          duration,
+          useNativeDriver: true,
+        }),
+        Animated.timing(scaleAnimation.current, {
+          toValue: 1,
+          duration: 0,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start()
+
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(opacityAnimation.current, {
+          toValue: 0.14,
+          duration: duration / 2,
+          useNativeDriver: true,
+        }),
+        Animated.timing(opacityAnimation.current, {
+          toValue: 0,
+          duration: duration / 2,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start()
+  }, [])
+
+  return (
+    <Flex
+      style={{
+        height: size,
+        minWidth: size,
+        borderRadius: size / 2,
+        backgroundColor: color("blue100"),
+      }}
+    >
+      <Animated.View
+        style={{
+          height: size,
+          minWidth: size,
+          borderRadius: size / 2,
+          backgroundColor: color("blue100"),
+          transform: [{ scale: scaleAnimation.current }],
+          opacity: opacityAnimation.current,
+        }}
+      />
+    </Flex>
   )
 }
 

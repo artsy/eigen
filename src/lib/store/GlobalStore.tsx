@@ -12,6 +12,7 @@ import { Action, Middleware } from "redux"
 import { version } from "./../../../app.json"
 import { DevToggleName, FeatureName, features } from "./config/features"
 import { FeatureMap } from "./config/FeaturesModel"
+import { VisualClueName, visualClues } from "./config/visualClues"
 import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { persistenceMiddleware, unpersist } from "./persistence"
 
@@ -160,6 +161,22 @@ export function unsafe_getDevToggle(key: DevToggleName) {
   }
   return false
 }
+
+export const useVisualClue = () => {
+  const lastSeenVisualClue = GlobalStore.useAppState((state) => state.visualClue.lastSeenOrderNumber)
+
+  const showVisualClue = (clueName?: VisualClueName): boolean => {
+    if (!clueName) {
+      return false
+    }
+
+    return visualClues[clueName].orderNumber > lastSeenVisualClue
+  }
+
+  return { lastSeenVisualClue, showVisualClue }
+}
+
+export const setVisualClueAsSeen = GlobalStore.actions.visualClue.setVisualClueAsSeen
 
 export function unsafe_getUserAccessToken() {
   const state = globalStoreInstance().getState() ?? null
