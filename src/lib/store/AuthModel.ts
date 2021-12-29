@@ -33,6 +33,27 @@ const showError = (res: any, reject: (reason?: any) => void, provider: "facebook
   }
 }
 
+interface EmailOAuthParams {
+  oauthProvider: "email"
+  email: string
+  password: string
+}
+interface FacebookOAuthParams {
+  oauthProvider: "facebook"
+  accessToken: string
+}
+interface GoogleOAuthParams {
+  oauthProvider: "google"
+  accessToken: string
+}
+interface AppleOAuthParams {
+  oauthProvider: "apple"
+  idToken: string
+  appleUID: string
+}
+
+type OAuthParams = EmailOAuthParams | FacebookOAuthParams | GoogleOAuthParams | AppleOAuthParams
+
 type OnboardingState = "none" | "incomplete" | "complete"
 export interface AuthModel {
   // State
@@ -50,58 +71,35 @@ export interface AuthModel {
   // Actions
   setState: Action<this, Partial<StateMapper<this, "1">>>
   getXAppToken: Thunk<this, void, {}, GlobalStoreModel, Promise<string>>
+  accountExists: Thunk<
+    this,
+    OAuthParams,
+    {},
+    GlobalStoreModel,
+    Promise<
+      ({ accountExists: false; xAccessToken: undefined } | { accountExists: true; xAccessToken: string }) & {
+        response: any
+      }
+    >
+  >
   userExists: Thunk<this, { email: string }, {}, GlobalStoreModel>
   signIn: Thunk<
     this,
-    { email: string; onboardingState?: OnboardingState } & (
-      | {
-          oauthProvider: "email"
-          password: string
-        }
-      | {
-          oauthProvider: "facebook" | "google"
-          accessToken: string
-        }
-      | {
-          oauthProvider: "apple"
-          idToken: string
-          appleUID: string
-        }
-    ),
+    { email: string; onboardingState?: OnboardingState } & OAuthParams,
     {},
     GlobalStoreModel,
     Promise<boolean>
   >
   signUp: Thunk<
     this,
-    { email: string; name: string; agreedToReceiveEmails: boolean } & (
-      | {
-          oauthProvider: "email"
-          password: string
-        }
-      | {
-          oauthProvider: "facebook" | "google"
-          accessToken: string
-        }
-      | {
-          oauthProvider: "apple"
-          idToken: string
-          appleUID: string
-        }
-    ),
+    { email: string; name: string; agreedToReceiveEmails: boolean } & OAuthParams,
     {},
     GlobalStoreModel,
     Promise<{ success: boolean; message?: string }>
   >
   authFacebook: Thunk<this, void, {}, GlobalStoreModel, Promise<true>>
-  authGoogle: Thunk<
-    this,
-    { signInOrUp: "signIn" } | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
-    {},
-    GlobalStoreModel,
-    Promise<true>
-  >
-  authApple: Thunk<this, { agreedToReceiveEmails?: boolean }, {}, GlobalStoreModel, Promise<true>>
+  authGoogle: Thunk<this, void, {}, GlobalStoreModel, Promise<true>>
+  authApple: Thunk<this, void, {}, GlobalStoreModel, Promise<true>>
   forgotPassword: Thunk<this, { email: string }, {}, GlobalStoreModel, Promise<boolean>>
   gravityUnauthenticatedRequest: Thunk<
     this,
@@ -178,6 +176,45 @@ export const getAuthModel = (): AuthModel => ({
       },
       body: payload.body ? JSON.stringify(payload.body) : undefined,
     })
+  }),
+  accountExists: thunk(async (actions, args) => {
+    const { oauthProvider } = args
+
+    const grantTypeMap = {
+      facebook: "oauth_token",
+      google: "oauth_token",
+      apple: "apple_uid",
+      email: "credentials",
+    }
+
+    const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
+      path: `/oauth2/access_token`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: {
+        oauth_provider: oauthProvider,
+
+        email: oauthProvider === "email" ? args.email : undefined,
+        password: oauthProvider === "email" ? args.password : undefined,
+        oauth_token: oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
+        apple_uid: oauthProvider === "apple" ? args.appleUID : undefined,
+        id_token: oauthProvider === "apple" ? args.idToken : undefined,
+        grant_type: grantTypeMap[oauthProvider],
+
+        client_id: Config.ARTSY_API_CLIENT_KEY,
+        client_secret: Config.ARTSY_API_CLIENT_SECRET,
+        scope: "offline_access",
+      },
+    })
+    const accountExists = resultGravityAccessToken.status === 201
+    const response = await resultGravityAccessToken.json()
+
+    if (!accountExists) {
+      return { accountExists, response }
+    }
+
+    const { access_token: xAccessToken } = response
+    return { accountExists, xAccessToken, response }
   }),
   userExists: thunk(async (actions, { email }) => {
     const result = await actions.gravityUnauthenticatedRequest({
@@ -375,6 +412,7 @@ export const getAuthModel = (): AuthModel => ({
       if (declinedPermissions?.includes("email")) {
         reject("Please allow the use of email to continue.")
       }
+
       const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
       if (!accessToken) {
         return
@@ -411,12 +449,10 @@ export const getAuthModel = (): AuthModel => ({
           },
         })
 
-        const accountExists = resultGravityAccessToken.status === 201
         if (accountExists) {
-          const { access_token: xAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
           const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
             path: `/api/v1/me`,
-            headers: { "X-ACCESS-TOKEN": xAccessToken },
+            headers: { "X-ACCESS-TOKEN": xAccessToken! },
           })
           const { email } = await resultGravityEmail.json()
           const resultGravitySignIn = await actions.signIn({
@@ -427,9 +463,8 @@ export const getAuthModel = (): AuthModel => ({
 
           resultGravitySignIn ? resolve(true) : reject("Could not log in")
         } else {
-          const res = await resultGravityAccessToken.json()
+          const accountShouldBeCreated = response.error_description.includes("no account linked to oauth token")
 
-          const accountShouldBeCreated = res.error_description.includes("no account linked to oauth token")
           if (accountShouldBeCreated) {
             const resultGravitySignUp = await actions.signUp({
               email: facebookInfo.email,
@@ -441,7 +476,7 @@ export const getAuthModel = (): AuthModel => ({
 
             resultGravitySignUp.success ? resolve(true) : reject(resultGravitySignUp.message)
           } else {
-            showError(res, reject, "facebook")
+            showError(response, reject, "facebook")
           }
         }
       }
@@ -462,73 +497,56 @@ export const getAuthModel = (): AuthModel => ({
       new GraphRequestManager().addRequest(infoRequest).start()
     })
   }),
-  authGoogle: thunk(async (actions, options) => {
+  authGoogle: thunk(async (actions) => {
     return await new Promise<true>(async (resolve, reject) => {
       if (!(await GoogleSignin.hasPlayServices())) {
         reject("Play services are not available.")
       }
+
       const userInfo = await GoogleSignin.signIn()
       const accessToken = (await GoogleSignin.getTokens()).accessToken
 
-      if (options.signInOrUp === "signUp") {
-        const resultGravitySignUp = userInfo.user.name
-          ? await actions.signUp({
-              email: userInfo.user.email,
-              name: userInfo.user.name,
-              accessToken,
-              oauthProvider: "google",
-              agreedToReceiveEmails: options.agreedToReceiveEmails,
-            })
-          : { success: false }
+      const { accountExists, xAccessToken, response } = await actions.accountExists({
+        oauthProvider: "google",
+        accessToken,
+      })
 
-        resultGravitySignUp.success ? resolve(true) : reject(resultGravitySignUp.message)
-      }
-
-      if (options.signInOrUp === "signIn") {
-        // we need to get X-ACCESS-TOKEN before actual sign in
-        const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
-          path: `/oauth2/access_token`,
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: {
-            oauth_provider: "google",
-            oauth_token: accessToken,
-            client_id: Config.ARTSY_API_CLIENT_KEY,
-            client_secret: Config.ARTSY_API_CLIENT_SECRET,
-            grant_type: "oauth_token",
-            scope: "offline_access",
-          },
+      if (accountExists) {
+        const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
+          path: `/api/v1/me`,
+          headers: { "X-ACCESS-TOKEN": xAccessToken! },
+        })
+        const { email } = await resultGravityEmail.json()
+        const resultGravitySignIn = await actions.signIn({
+          oauthProvider: "google",
+          email,
+          accessToken,
         })
 
-        if (resultGravityAccessToken.status === 201) {
-          const { access_token: xAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
-          const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
-            path: `/api/v1/me`,
-            headers: { "X-ACCESS-TOKEN": xAccessToken },
-          })
-          const { email } = await resultGravityEmail.json()
-          const resultGravitySignIn = await actions.signIn({
-            oauthProvider: "google",
-            email,
-            accessToken,
-          })
+        resultGravitySignIn ? resolve(true) : reject("Could not log in")
+      } else {
+        const accountShouldBeCreated = response.error_description.includes("no account linked to oauth token")
 
-          resultGravitySignIn ? resolve(true) : reject("Could not log in")
+        if (accountShouldBeCreated) {
+          const resultGravitySignUp = userInfo.user.name
+            ? await actions.signUp({
+                email: userInfo.user.email,
+                name: userInfo.user.name,
+                accessToken,
+                oauthProvider: "google",
+                agreedToReceiveEmails: true,
+              })
+            : { success: false }
+
+          resultGravitySignUp.success ? resolve(true) : reject(resultGravitySignUp.message)
         } else {
-          const res = await resultGravityAccessToken.json()
-          showError(res, reject, "google")
+          showError(response, reject, "google")
         }
       }
     })
   }),
-  authApple: thunk(async (actions, { agreedToReceiveEmails }) => {
-    return await new Promise<true>(async (resolve, reject) => {
-      // we cannot have separated logic for sign in and sign up with apple, as with google or facebook,
-      // because apple returns email only on the FIRST auth attempt, so we run sign up and sign in one by one
-      let signInOrUp: "signIn" | "signUp" = "signUp"
-
+  authApple: thunk(async (actions) => {
+    return await new Promise(async (resolve, reject) => {
       const userInfo = await appleAuth.performRequest({
         requestedOperation: appleAuth.Operation.LOGIN,
         requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
@@ -536,7 +554,8 @@ export const getAuthModel = (): AuthModel => ({
 
       const idToken = userInfo.identityToken
       if (!idToken) {
-        return reject("Failed to authenticate using apple sign in")
+        reject("Failed to authenticate using apple sign in")
+        return
       }
       const appleUID = userInfo.user
 
