@@ -223,6 +223,11 @@ export const features = defineFeatures({
     description: "Enable capturing exceptions in Sentry on DEV",
     showInAdminMenu: true,
   },
+  AREnableUnauthenticatedAccess: {
+    readyForRelease: false,
+    description: "Allow unauthenticated users to access the app",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

@@ -100,7 +100,7 @@ import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
 import { ViewingRoomsListQueryRenderer, ViewingRoomsListScreenQuery } from "./Scenes/ViewingRoom/ViewingRoomsList"
-import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
+import { GlobalStore, useFeatureFlag, useSelectedTab } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { AdminMenu } from "./utils/AdminMenu"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
@@ -422,6 +422,7 @@ const Main: React.FC<{}> = track()(({}) => {
 
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken)
+  const supportUnauthenticatedAccess = useFeatureFlag("AREnableUnauthenticatedAccess")
 
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
   const forceUpdateMessage = GlobalStore.useAppState((state) => state.config.echo.forceUpdateMessage)
@@ -440,7 +441,7 @@ const Main: React.FC<{}> = track()(({}) => {
     return <ForceUpdate forceUpdateMessage={forceUpdateMessage} />
   }
 
-  if (!isLoggedIn || onboardingState === "incomplete") {
+  if ((!isLoggedIn || onboardingState === "incomplete") && !supportUnauthenticatedAccess) {
     return <Onboarding />
   }
 

@@ -1,5 +1,5 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import { GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { AdminMenuWrapper } from "lib/utils/AdminMenuWrapper"
 import { addTrackingProvider, track } from "lib/utils/track"
 import { SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
@@ -40,6 +40,7 @@ const Main: React.FC<{}> = track()(({}) => {
   }, [])
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
+  const supportUnauthenticatedAccess = useFeatureFlag("AREnableUnauthenticatedAccess")
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
   const forceUpdateMessage = GlobalStore.useAppState((state) => state.config.echo.forceUpdateMessage)
 
@@ -68,7 +69,7 @@ const Main: React.FC<{}> = track()(({}) => {
           })
         })
         ArtsyNativeModule.setAppStyling()
-        if (isLoggedIn) {
+        if (isLoggedIn || supportUnauthenticatedAccess) {
           ArtsyNativeModule.setNavigationBarColor("#FFFFFF")
           ArtsyNativeModule.setAppLightContrast(false)
         }
@@ -90,7 +91,7 @@ const Main: React.FC<{}> = track()(({}) => {
     return <ForceUpdate forceUpdateMessage={forceUpdateMessage} />
   }
 
-  if (!isLoggedIn || onboardingState === "incomplete") {
+  if ((!isLoggedIn || onboardingState === "incomplete") && !supportUnauthenticatedAccess) {
     return <Onboarding />
   }
 

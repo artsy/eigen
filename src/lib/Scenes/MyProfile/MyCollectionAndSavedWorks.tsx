@@ -68,7 +68,7 @@ export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWor
     })
   }, [])
 
-  const userProfileImagePath = localImage?.path || me.icon?.url
+  const userProfileImagePath = localImage?.path || me?.icon?.url
 
   const showIconAndBio = useFeatureFlag("AREnableVisualProfileIconAndBio")
 
