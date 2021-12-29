@@ -71,6 +71,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
     }
   }
 
+  const isiOS = Platform.OS === "ios"
   return (
     <Flex justifyContent="center" flex={1} backgroundColor="white">
       <BackButton
@@ -151,9 +152,9 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
           <Text variant="xs" color="black60" textAlign="center">
             By tapping Continue with Facebook
             {!!enableGoogleAuth ? ", Google" : ""}
-            {Platform.OS === "ios" ? " or Apple" : ""}, you agree to Artsy's{" "}
+            {isiOS ? " or Apple" : ""}, you agree to Artsy's{" "}
             <Text
-              onPress={() => navigate("/terms", { modal: true })}
+              onPress={() => (isiOS ? navigate("/terms", { modal: true }) : navigation.navigate("TermsWebView"))}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
@@ -161,7 +162,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             </Text>{" "}
             and{" "}
             <Text
-              onPress={() => navigate("/privacy", { modal: true })}
+              onPress={() => (isiOS ? navigate("/privacy", { modal: true }) : navigation.navigate("PrivacyWebView"))}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
