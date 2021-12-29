@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0b8e0df5cb911dd7c692f60d2948dbff */
+/* @relayHash 4ac4c99a0ab82b9532e512da02a2c882 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -263,25 +263,25 @@ fragment Artwork_artworkAboveTheFold on Artwork {
   slug
   internalID
   id
-  is_acquireable: isAcquireable
-  is_offerable: isOfferable
-  is_biddable: isBiddable
-  is_inquireable: isInquireable
+  isAcquireable
+  isOfferable
+  isBiddable
+  isInquireable
   availability
 }
 
 fragment Artwork_artworkBelowTheFold on Artwork {
-  additional_information: additionalInformation
+  additionalInformation
   description
   provenance
-  exhibition_history: exhibitionHistory
+  exhibitionHistory
   literature
   partner {
     type
     id
   }
   artist {
-    biography_blurb: biographyBlurb {
+    biographyBlurb {
       text
     }
     artistSeriesConnection(first: 4) {
@@ -313,7 +313,7 @@ fragment Artwork_artworkBelowTheFold on Artwork {
   series
   publisher
   manufacturer
-  image_rights: imageRights
+  imageRights
   context {
     __typename
     ... on Sale {
@@ -826,24 +826,15 @@ v8 = {
   "name": "isFollowed",
   "storageKey": null
 },
-v9 = {
-  "alias": "biography_blurb",
-  "args": null,
-  "concreteType": "ArtistBlurb",
-  "kind": "LinkedField",
-  "name": "biographyBlurb",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "text",
-      "storageKey": null
-    }
-  ],
-  "storageKey": null
-},
+v9 = [
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "text",
+    "storageKey": null
+  }
+],
 v10 = {
   "alias": null,
   "args": null,
@@ -1177,7 +1168,16 @@ return {
                 "name": "isConsignable",
                 "storageKey": null
               },
-              (v9/*: any*/),
+              {
+                "alias": "biography_blurb",
+                "args": null,
+                "concreteType": "ArtistBlurb",
+                "kind": "LinkedField",
+                "name": "biographyBlurb",
+                "plural": false,
+                "selections": (v9/*: any*/),
+                "storageKey": null
+              },
               (v10/*: any*/),
               {
                 "alias": null,
@@ -1734,7 +1734,16 @@ return {
             "selections": [
               (v7/*: any*/),
               (v2/*: any*/),
-              (v9/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "ArtistBlurb",
+                "kind": "LinkedField",
+                "name": "biographyBlurb",
+                "plural": false,
+                "selections": (v9/*: any*/),
+                "storageKey": null
+              },
               {
                 "alias": null,
                 "args": [
@@ -1908,35 +1917,14 @@ return {
             "storageKey": null
           },
           {
-            "alias": "is_acquireable",
-            "args": null,
-            "kind": "ScalarField",
-            "name": "isAcquireable",
-            "storageKey": null
-          },
-          {
-            "alias": "is_offerable",
-            "args": null,
-            "kind": "ScalarField",
-            "name": "isOfferable",
-            "storageKey": null
-          },
-          {
-            "alias": "is_biddable",
+            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "isBiddable",
             "storageKey": null
           },
           {
-            "alias": "is_inquireable",
-            "args": null,
-            "kind": "ScalarField",
-            "name": "isInquireable",
-            "storageKey": null
-          },
-          {
-            "alias": "additional_information",
+            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "additionalInformation",
@@ -1957,7 +1945,7 @@ return {
             "storageKey": null
           },
           {
-            "alias": "exhibition_history",
+            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "exhibitionHistory",
@@ -1992,7 +1980,7 @@ return {
             "storageKey": null
           },
           {
-            "alias": "image_rights",
+            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "imageRights",
@@ -2355,6 +2343,20 @@ return {
             "storageKey": "artistSeriesConnection(first:1)"
           },
           {
+            "alias": "additional_information",
+            "args": null,
+            "kind": "ScalarField",
+            "name": "additionalInformation",
+            "storageKey": null
+          },
+          {
+            "alias": "image_rights",
+            "args": null,
+            "kind": "ScalarField",
+            "name": "imageRights",
+            "storageKey": null
+          },
+          {
             "alias": null,
             "args": null,
             "concreteType": "ArtworkMedium",
@@ -2365,6 +2367,13 @@ return {
               (v33/*: any*/)
             ],
             "storageKey": null
+          },
+          {
+            "alias": "exhibition_history",
+            "args": null,
+            "kind": "ScalarField",
+            "name": "exhibitionHistory",
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -2372,7 +2381,7 @@ return {
     ]
   },
   "params": {
-    "id": "0b8e0df5cb911dd7c692f60d2948dbff",
+    "id": "4ac4c99a0ab82b9532e512da02a2c882",
     "metadata": {},
     "name": "ArtworkRefetchQuery",
     "operationKind": "query",

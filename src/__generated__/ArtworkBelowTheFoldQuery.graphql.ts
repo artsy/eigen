@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b29d4fda233dedafb4288a803fd1372f */
+/* @relayHash 929718335a3d46715d2db7b407a32e10 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -153,17 +153,17 @@ fragment ArtworkHistory_artwork on Artwork {
 }
 
 fragment Artwork_artworkBelowTheFold on Artwork {
-  additional_information: additionalInformation
+  additionalInformation
   description
   provenance
-  exhibition_history: exhibitionHistory
+  exhibitionHistory
   literature
   partner {
     type
     id
   }
   artist {
-    biography_blurb: biographyBlurb {
+    biographyBlurb {
       text
     }
     artistSeriesConnection(first: 4) {
@@ -195,7 +195,7 @@ fragment Artwork_artworkBelowTheFold on Artwork {
   series
   publisher
   manufacturer
-  image_rights: imageRights
+  imageRights
   context {
     __typename
     ... on Sale {
@@ -450,24 +450,15 @@ v8 = {
   "name": "isFollowed",
   "storageKey": null
 },
-v9 = {
-  "alias": "biography_blurb",
-  "args": null,
-  "concreteType": "ArtistBlurb",
-  "kind": "LinkedField",
-  "name": "biographyBlurb",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "text",
-      "storageKey": null
-    }
-  ],
-  "storageKey": null
-},
+v9 = [
+  {
+    "alias": null,
+    "args": null,
+    "kind": "ScalarField",
+    "name": "text",
+    "storageKey": null
+  }
+],
 v10 = {
   "alias": null,
   "args": null,
@@ -680,7 +671,7 @@ return {
         "plural": false,
         "selections": [
           {
-            "alias": "additional_information",
+            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "additionalInformation",
@@ -701,7 +692,7 @@ return {
             "storageKey": null
           },
           {
-            "alias": "exhibition_history",
+            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "exhibitionHistory",
@@ -797,7 +788,16 @@ return {
             "name": "artist",
             "plural": false,
             "selections": [
-              (v9/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "ArtistBlurb",
+                "kind": "LinkedField",
+                "name": "biographyBlurb",
+                "plural": false,
+                "selections": (v9/*: any*/),
+                "storageKey": null
+              },
               {
                 "alias": null,
                 "args": [
@@ -977,7 +977,7 @@ return {
             "storageKey": null
           },
           {
-            "alias": "image_rights",
+            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "imageRights",
@@ -1358,6 +1358,13 @@ return {
             "storageKey": "artistSeriesConnection(first:1)"
           },
           {
+            "alias": "additional_information",
+            "args": null,
+            "kind": "ScalarField",
+            "name": "additionalInformation",
+            "storageKey": null
+          },
+          {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
@@ -1373,7 +1380,16 @@ return {
             "plural": true,
             "selections": [
               (v2/*: any*/),
-              (v9/*: any*/),
+              {
+                "alias": "biography_blurb",
+                "args": null,
+                "concreteType": "ArtistBlurb",
+                "kind": "LinkedField",
+                "name": "biographyBlurb",
+                "plural": false,
+                "selections": (v9/*: any*/),
+                "storageKey": null
+              },
               (v7/*: any*/),
               (v4/*: any*/),
               (v3/*: any*/),
@@ -1407,6 +1423,13 @@ return {
           },
           (v4/*: any*/),
           {
+            "alias": "image_rights",
+            "args": null,
+            "kind": "ScalarField",
+            "name": "imageRights",
+            "storageKey": null
+          },
+          {
             "alias": null,
             "args": null,
             "concreteType": "ArtworkMedium",
@@ -1419,6 +1442,13 @@ return {
             "storageKey": null
           },
           (v2/*: any*/),
+          {
+            "alias": "exhibition_history",
+            "args": null,
+            "kind": "ScalarField",
+            "name": "exhibitionHistory",
+            "storageKey": null
+          },
           (v7/*: any*/)
         ],
         "storageKey": null
@@ -1426,7 +1456,7 @@ return {
     ]
   },
   "params": {
-    "id": "b29d4fda233dedafb4288a803fd1372f",
+    "id": "929718335a3d46715d2db7b407a32e10",
     "metadata": {},
     "name": "ArtworkBelowTheFoldQuery",
     "operationKind": "query",

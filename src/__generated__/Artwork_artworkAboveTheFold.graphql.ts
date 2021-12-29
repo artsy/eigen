@@ -8,10 +8,10 @@ export type Artwork_artworkAboveTheFold = {
     readonly slug: string;
     readonly internalID: string;
     readonly id: string;
-    readonly is_acquireable: boolean | null;
-    readonly is_offerable: boolean | null;
-    readonly is_biddable: boolean | null;
-    readonly is_inquireable: boolean | null;
+    readonly isAcquireable: boolean | null;
+    readonly isOfferable: boolean | null;
+    readonly isBiddable: boolean | null;
+    readonly isInquireable: boolean | null;
     readonly availability: string | null;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkHeader_artwork" | "CommercialInformation_artwork">;
     readonly " $refType": "Artwork_artworkAboveTheFold";
@@ -52,28 +52,28 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
-      "alias": "is_acquireable",
+      "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "isAcquireable",
       "storageKey": null
     },
     {
-      "alias": "is_offerable",
+      "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "isOfferable",
       "storageKey": null
     },
     {
-      "alias": "is_biddable",
+      "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "isBiddable",
       "storageKey": null
     },
     {
-      "alias": "is_inquireable",
+      "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "isInquireable",
@@ -100,5 +100,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = '09df973254733240758245f8a1ce5857';
+(node as any).hash = 'c7e0471ac09152c03d21e8f069bf80fb';
 export default node;
