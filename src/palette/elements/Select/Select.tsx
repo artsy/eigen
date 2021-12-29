@@ -91,12 +91,9 @@ export const Select = <ValueType,>({
           placeholder={placeholder}
           value={selectedItem?.label}
           onPress={open}
-<<<<<<< HEAD
           onTooltipPress={onTooltipPress}
-=======
           optional={optional}
           required={required}
->>>>>>> 2deb06875 (feat: Update input 'required' indicator (#5951))
           hasError={hasError}
         />
       )}
@@ -128,7 +125,6 @@ const SelectButton: React.FC<{
   tooltipText?: string
   testID?: string
   onPress(): void
-<<<<<<< HEAD
   onTooltipPress?(): void
 }> = ({
   value,
@@ -139,28 +135,28 @@ const SelectButton: React.FC<{
   subTitle,
   hasError,
   tooltipText,
+  optional,
+  required,
   testID,
   onTooltipPress,
 }) => {
-=======
-}> = ({ value, placeholder, onPress, title, showTitleLabel, optional, required, subTitle, hasError, testID }) => {
->>>>>>> 2deb06875 (feat: Update input 'required' indicator (#5951))
   const color = useColor()
   const textStyle = useTextStyleForPalette("sm")
 
   return (
     <Flex>
-<<<<<<< HEAD
       <Flex flexDirection="row">
         <Flex flex={1}>
-          {showTitleLabel ? <Text variant="xs">{title?.toUpperCase()}</Text> : null}
+          {!!showTitleLabel && (
+            <InputTitle optional={optional} required={required}>
+              {title}
+            </InputTitle>
+          )}
 
-          {subTitle ? (
+          {!!subTitle && (
             <Text variant="xs" color="black60" mb={0.5}>
               {subTitle}
             </Text>
-          ) : (
-            <Spacer mb={0.5} />
           )}
         </Flex>
         {!!tooltipText && (
@@ -171,19 +167,6 @@ const SelectButton: React.FC<{
           </Flex>
         )}
       </Flex>
-=======
-      {!!showTitleLabel && (
-        <InputTitle optional={optional} required={required}>
-          {title}
-        </InputTitle>
-      )}
-
-      {!!subTitle && (
-        <Text variant="xs" color="black60" mb={0.5}>
-          {subTitle}
-        </Text>
-      )}
->>>>>>> 2deb06875 (feat: Update input 'required' indicator (#5951))
       <TouchableOpacity accessible accessibilityRole="button" onPress={onPress} testID={testID}>
         <Flex
           px="1"
