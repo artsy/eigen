@@ -22,7 +22,6 @@ export enum Tab {
 }
 
 export const MyCollectionAndSavedWorks: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({ me }) => {
-  console.log({ ItsMeMeMe: me })
   return (
     <StickyTabPage
       disableBackButtonUpdate
