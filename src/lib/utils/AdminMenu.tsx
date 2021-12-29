@@ -158,6 +158,11 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
         <FeatureFlagMenuItem
           title="Soft log out"
           onPress={() => {
+            GlobalStore.actions.auth.setState({
+              userEmail: null,
+              userAccessToken: null,
+              userID: null,
+            })
             LegacyNativeModules.ArtsyNativeModule.softLogOut()
             RelayCache.clearAll()
           }}
