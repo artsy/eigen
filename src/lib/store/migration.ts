@@ -27,6 +27,7 @@ export const Versions = {
   AddExperimentsModel: 15,
   AddPreviousSessionUserID: 16,
   RemoveNativeOnboardingState: 17,
+  AddUserPreferences: 18,
 }
 
 export const CURRENT_APP_VERSION = Versions.RemoveNativeOnboardingState
@@ -114,6 +115,9 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.RemoveNativeOnboardingState]: (state) => {
     delete state.native.onboardingState
+  },
+  [Versions.AddUserPreferences]: (state) => {
+    state.config.userPreferences = {}
   },
 }
 

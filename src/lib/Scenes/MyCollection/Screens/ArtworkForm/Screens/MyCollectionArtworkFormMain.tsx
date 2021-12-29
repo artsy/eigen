@@ -1,12 +1,13 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { Currency } from "lib/Scenes/Search/UserPreferencesModel"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { isEmpty } from "lodash"
 import { Box, Button, Flex, Input, Join, Sans, Separator, Spacer, Text } from "palette"
 import { Select } from "palette/elements/Select"
-import React from "react"
+import React, { useEffect } from "react"
 import { ScrollView, TouchableOpacity } from "react-native"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
 import { ArrowDetails } from "../Components/ArrowDetails"
@@ -42,6 +43,12 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
       false
     )
   }
+
+  const initialCurrency = GlobalStore.useAppState((state) => state.userPreferences.currency)
+
+  useEffect(() => {
+    GlobalStore.actions.myCollection.artwork.setFormValues({ ...formikValues, pricePaidCurrency: initialCurrency })
+  }, [])
 
   return (
     <>
@@ -115,6 +122,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               enableSearch={false}
               showTitleLabel={false}
               onSelectValue={(value) => {
+                GlobalStore.actions.userPreferences.setCurrency(value as Currency)
                 formik.handleChange("pricePaidCurrency")(value)
               }}
               testID="CurrencyPicker"
@@ -212,7 +220,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
 
 const pricePaidCurrencySelectOptions: Array<{
   label: string
-  value: string
+  value: Currency
 }> = [
   { label: "$ USD", value: "USD" },
   { label: "€ EUR", value: "EUR" },
