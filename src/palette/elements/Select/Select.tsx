@@ -26,10 +26,12 @@ export interface SelectProps<ValueType> {
   enableSearch?: boolean
   maxModalHeight?: number
   hasError?: boolean
+  tooltipText?: string
   testID?: string
   onSelectValue(value: ValueType, index: number): void
   renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): JSX.Element
   renderItemLabel?(value: SelectOption<ValueType>): JSX.Element
+  onTooltipPress?(): void
   onModalFinishedClosing?(): void
 }
 
@@ -45,6 +47,8 @@ export const Select = <ValueType,>({
   enableSearch,
   maxModalHeight,
   hasError,
+  tooltipText,
+  onTooltipPress,
   onSelectValue,
   renderButton,
   renderItemLabel,
@@ -83,9 +87,11 @@ export const Select = <ValueType,>({
           title={title}
           showTitleLabel={showTitleLabel}
           subTitle={subTitle}
+          tooltipText={tooltipText}
           placeholder={placeholder}
           value={selectedItem?.label}
           onPress={open}
+          onTooltipPress={onTooltipPress}
           optional={optional}
           required={required}
           hasError={hasError}
@@ -116,25 +122,51 @@ const SelectButton: React.FC<{
   required?: boolean
   placeholder?: string
   hasError?: boolean
+  tooltipText?: string
   testID?: string
   onPress(): void
-}> = ({ value, placeholder, onPress, title, showTitleLabel, optional, required, subTitle, hasError, testID }) => {
+  onTooltipPress?(): void
+}> = ({
+  value,
+  placeholder,
+  onPress,
+  title,
+  showTitleLabel,
+  subTitle,
+  hasError,
+  tooltipText,
+  optional,
+  required,
+  testID,
+  onTooltipPress,
+}) => {
   const color = useColor()
   const textStyle = useTextStyleForPalette("sm")
 
   return (
     <Flex>
-      {!!showTitleLabel && (
-        <InputTitle optional={optional} required={required}>
-          {title}
-        </InputTitle>
-      )}
+      <Flex flexDirection="row">
+        <Flex flex={1}>
+          {!!showTitleLabel && (
+            <InputTitle optional={optional} required={required}>
+              {title}
+            </InputTitle>
+          )}
 
-      {!!subTitle && (
-        <Text variant="xs" color="black60" mb={0.5}>
-          {subTitle}
-        </Text>
-      )}
+          {!!subTitle && (
+            <Text variant="xs" color="black60" mb={0.5}>
+              {subTitle}
+            </Text>
+          )}
+        </Flex>
+        {!!tooltipText && (
+          <Flex justifyContent="flex-end" marginLeft="auto">
+            <Text variant="xs" color="black60" mb={0.5} onPress={onTooltipPress}>
+              {tooltipText}
+            </Text>
+          </Flex>
+        )}
+      </Flex>
       <TouchableOpacity accessible accessibilityRole="button" onPress={onPress} testID={testID}>
         <Flex
           px="1"
