@@ -314,3 +314,15 @@ export const tracks = {
     context_screen_owner_slug: slug,
   }),
 }
+
+export const RenderTerms = () => {
+  return <ArtsyReactWebView url="/terms" />
+}
+
+export const RenderPrivacy = () => {
+  return <ArtsyReactWebView url="/privacy" />
+}
+
+export const RenderConditionsOfSale = () => {
+  return <ArtsyReactWebView url="/conditions-of-sale" />
+}
