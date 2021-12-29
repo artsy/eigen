@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 929718335a3d46715d2db7b407a32e10 */
+/* @relayHash eb5d0890f8f0b1a42e9835cd2bf5c213 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,7 +33,7 @@ query ArtworkBelowTheFoldQuery(
 fragment AboutArtist_artwork on Artwork {
   artists {
     id
-    biography_blurb: biographyBlurb {
+    biographyBlurb {
       text
     }
     ...ArtistListItem_artist
@@ -41,7 +41,7 @@ fragment AboutArtist_artwork on Artwork {
 }
 
 fragment AboutWork_artwork on Artwork {
-  additional_information: additionalInformation
+  additionalInformation
   description
   isInAuction
 }
@@ -148,7 +148,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 
 fragment ArtworkHistory_artwork on Artwork {
   provenance
-  exhibition_history: exhibitionHistory
+  exhibitionHistory
   literature
 }
 
@@ -450,15 +450,24 @@ v8 = {
   "name": "isFollowed",
   "storageKey": null
 },
-v9 = [
-  {
-    "alias": null,
-    "args": null,
-    "kind": "ScalarField",
-    "name": "text",
-    "storageKey": null
-  }
-],
+v9 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "ArtistBlurb",
+  "kind": "LinkedField",
+  "name": "biographyBlurb",
+  "plural": false,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "text",
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
+},
 v10 = {
   "alias": null,
   "args": null,
@@ -788,16 +797,7 @@ return {
             "name": "artist",
             "plural": false,
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "ArtistBlurb",
-                "kind": "LinkedField",
-                "name": "biographyBlurb",
-                "plural": false,
-                "selections": (v9/*: any*/),
-                "storageKey": null
-              },
+              (v9/*: any*/),
               {
                 "alias": null,
                 "args": [
@@ -1358,13 +1358,6 @@ return {
             "storageKey": "artistSeriesConnection(first:1)"
           },
           {
-            "alias": "additional_information",
-            "args": null,
-            "kind": "ScalarField",
-            "name": "additionalInformation",
-            "storageKey": null
-          },
-          {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
@@ -1380,16 +1373,7 @@ return {
             "plural": true,
             "selections": [
               (v2/*: any*/),
-              {
-                "alias": "biography_blurb",
-                "args": null,
-                "concreteType": "ArtistBlurb",
-                "kind": "LinkedField",
-                "name": "biographyBlurb",
-                "plural": false,
-                "selections": (v9/*: any*/),
-                "storageKey": null
-              },
+              (v9/*: any*/),
               (v7/*: any*/),
               (v4/*: any*/),
               (v3/*: any*/),
@@ -1442,13 +1426,6 @@ return {
             "storageKey": null
           },
           (v2/*: any*/),
-          {
-            "alias": "exhibition_history",
-            "args": null,
-            "kind": "ScalarField",
-            "name": "exhibitionHistory",
-            "storageKey": null
-          },
           (v7/*: any*/)
         ],
         "storageKey": null
@@ -1456,7 +1433,7 @@ return {
     ]
   },
   "params": {
-    "id": "929718335a3d46715d2db7b407a32e10",
+    "id": "eb5d0890f8f0b1a42e9835cd2bf5c213",
     "metadata": {},
     "name": "ArtworkBelowTheFoldQuery",
     "operationKind": "query",

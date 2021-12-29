@@ -6,7 +6,7 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtworkHistory_artwork = {
     readonly provenance: string | null;
-    readonly exhibition_history: string | null;
+    readonly exhibitionHistory: string | null;
     readonly literature: string | null;
     readonly " $refType": "ArtworkHistory_artwork";
 };
@@ -32,7 +32,7 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
-      "alias": "exhibition_history",
+      "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "exhibitionHistory",
@@ -49,5 +49,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = 'b561cdd312ffb04041aa29c255b52d2b';
+(node as any).hash = '0cde93b94926cb77be4875a37b911854';
 export default node;
