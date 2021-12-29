@@ -1,6 +1,6 @@
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { artworkRarityClassifications } from "lib/utils/artworkRarityClassifications"
-import { Flex, Input, InputTitle, Spacer, Text } from "palette"
+import { Flex, Input, INPUT_HEIGHT, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import React from "react"
 
@@ -24,33 +24,26 @@ export const Rarity: React.FC = () => {
         options={artworkRarityClassifications}
         testID="rarity-select"
       />
-      {formik.values.attributionClass === "LIMITED_EDITION" ? (
-        <>
-          <Flex flexDirection="row" mt={2}>
-            <Flex flex={1}>
-              <InputTitle>Edition number</InputTitle>
-            </Flex>
+      {formik.values.attributionClass === "LIMITED_EDITION" && (
+        <Flex flexDirection="row" mt="2" alignItems="flex-end">
+          <Flex flex={1}>
             <Flex>
-              <Spacer mx={2} />
-            </Flex>
-            <Flex flex={1} ml={1}>
-              <InputTitle>Edition size</InputTitle>
-            </Flex>
-          </Flex>
-          <Flex flexDirection="row">
-            <Flex flex={1}>
               <Input
+                title="Edition number"
                 keyboardType="decimal-pad"
                 onChangeText={formik.handleChange("editionNumber")}
                 onBlur={formik.handleBlur("editionNumber")}
                 value={formik.values.editionNumber}
               />
             </Flex>
-            <Flex justifyContent="center" mx={2}>
-              <Text>/</Text>
-            </Flex>
-            <Flex flex={1}>
+          </Flex>
+          <Flex justifyContent="center" mx={2} height={INPUT_HEIGHT}>
+            <Text>/</Text>
+          </Flex>
+          <Flex flex={1}>
+            <Flex>
               <Input
+                title="Edition size"
                 keyboardType="decimal-pad"
                 onChangeText={formik.handleChange("editionSize")}
                 onBlur={formik.handleBlur("editionSize")}
@@ -58,8 +51,8 @@ export const Rarity: React.FC = () => {
               />
             </Flex>
           </Flex>
-        </>
-      ) : null}
+        </Flex>
+      )}
     </>
   )
 }
