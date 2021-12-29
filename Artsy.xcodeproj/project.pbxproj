@@ -382,6 +382,7 @@
 		B9A29FE023EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */; };
 		B9A29FE123EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */; };
 		CB42B64F181092480069A801 /* ARCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB42B64E181092480069A801 /* ARCountdownView.m */; };
+		CB6AFEEA277CAC3500D7DC82 /* ARUserTempStore.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6AFEE9277CAC3500D7DC82 /* ARUserTempStore.m */; };
 		CB6CE8E524F424E700ED2843 /* ARInternalWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */; };
 		CB6CE8E624F424E700ED2843 /* ARInternalWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E424F424E700ED2843 /* ARInternalWebView.m */; };
 		CB6CE8EF24F9684400ED2843 /* Thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8EB24F9684400ED2843 /* Thumb@2x.png */; };
@@ -1092,6 +1093,8 @@
 		CB355E8217CAB0B3002A798D /* ARFollowable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFollowable.h; sourceTree = "<group>"; };
 		CB42B64D181092480069A801 /* ARCountdownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCountdownView.h; sourceTree = "<group>"; };
 		CB42B64E181092480069A801 /* ARCountdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCountdownView.m; sourceTree = "<group>"; };
+		CB6AFEE8277CAC3500D7DC82 /* ARUserTempStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARUserTempStore.h; sourceTree = "<group>"; };
+		CB6AFEE9277CAC3500D7DC82 /* ARUserTempStore.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARUserTempStore.m; sourceTree = "<group>"; };
 		CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalWebViewManager.m; sourceTree = "<group>"; };
 		CB6CE8E224F424E700ED2843 /* ARInternalWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalWebViewManager.h; sourceTree = "<group>"; };
 		CB6CE8E324F424E700ED2843 /* ARInternalWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalWebView.h; sourceTree = "<group>"; };
@@ -2482,6 +2485,8 @@
 				3CB37D96192246B500089A1D /* ArtsyAPI+ErrorHandlers.m */,
 				608AABDA1B3884C600855A1C /* ARKeychainable.h */,
 				608AABDB1B3884C600855A1C /* ARKeychainable.m */,
+				CB6AFEE8277CAC3500D7DC82 /* ARUserTempStore.h */,
+				CB6AFEE9277CAC3500D7DC82 /* ARUserTempStore.m */,
 			);
 			name = "API Modules";
 			path = API_Modules;
@@ -3502,6 +3507,7 @@
 				83FF73B41CB87A74002B53FA /* RefinableType.swift in Sources */,
 				602C09BA1B5E5CE6003681D3 /* AFHTTPRequestOperation+JSON.m in Sources */,
 				5E5F495E1D00BC7700E7CD6E /* LiveAuctionLotCollectionViewLayoutType.swift in Sources */,
+				CB6AFEEA277CAC3500D7DC82 /* ARUserTempStore.m in Sources */,
 				5EBD44E21D074A7300C60F9F /* UILabel+Styling.swift in Sources */,
 				6021D1B81CB7C6F800C475C1 /* TextStack.swift in Sources */,
 				60026AF21BDE3EFB0040257C /* ARWebViewCacheHost.m in Sources */,

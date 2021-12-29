@@ -3,6 +3,7 @@ import * as Sentry from "@sentry/react-native"
 import { MenuItem } from "lib/Components/MenuItem"
 import { useToast } from "lib/Components/Toast/toastHook"
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import { RelayCache } from "lib/relay/RelayCache"
 import { environment, EnvironmentKey } from "lib/store/config/EnvironmentModel"
@@ -155,9 +156,16 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           }}
         />
         <FeatureFlagMenuItem
-          title="Log out"
+          title="Soft log out"
           onPress={() => {
-            GlobalStore.actions.auth.signOut()
+            LegacyNativeModules.ArtsyNativeModule.softLogOut()
+            RelayCache.clearAll()
+          }}
+        />
+        <FeatureFlagMenuItem
+          title="Soft log in"
+          onPress={() => {
+            LegacyNativeModules.ArtsyNativeModule.softLogIn()
           }}
         />
         <FeatureFlagMenuItem

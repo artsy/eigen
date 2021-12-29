@@ -7,6 +7,8 @@ extern NSString *const ARUserSessionStartedNotification;
 
 @interface ARUserManager : NSObject
 
+@property (nonatomic, strong) NSString *userAuthenticationToken;
+
 + (ARUserManager *)sharedManager;
 
 + (void)clearUserData;
@@ -14,8 +16,6 @@ extern NSString *const ARUserSessionStartedNotification;
 
 - (User *)currentUser;
 - (void)storeUserData;
-
-@property (nonatomic, strong) NSString *userAuthenticationToken;
 
 - (BOOL)hasExistingAccount;
 - (BOOL)hasValidAuthenticationToken;
@@ -26,6 +26,9 @@ extern NSString *const ARUserSessionStartedNotification;
        expiryDateString:(NSString *)expiryDateString
                    JSON: (id) JSON;
 
+// Dev utilities
 - (void)testOnly_setupUser:(NSString *)username;
++ (void)softClearUserData;
++ (void)softRestoreUserData;
 
 @end

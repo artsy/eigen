@@ -30,6 +30,16 @@ RCT_EXPORT_METHOD(clearUserData:(RCTPromiseResolveBlock)completion reject:(RCTPr
     }];
 }
 
+RCT_EXPORT_METHOD(softLogOut)
+{
+    [ARUserManager softClearUserData];
+}
+
+RCT_EXPORT_METHOD(softLogIn)
+{
+    [ARUserManager softRestoreUserData];
+}
+
 + (BOOL)requiresMainQueueSetup
 {
     return YES;

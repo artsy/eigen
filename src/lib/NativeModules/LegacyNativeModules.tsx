@@ -30,6 +30,8 @@ interface LegacyNativeModules {
   ArtsyNativeModule: {
     updateAuthState(userAccessToken: string, userAccessTokenExpiresIn: string, user: any): void
     clearUserData(): Promise<void>
+    softLogOut(): void
+    softLogIn(): void
   }
   ARNotificationsManager: {
     nativeState: NativeState
@@ -113,6 +115,8 @@ export const LegacyNativeModules: LegacyNativeModules =
         ArtsyNativeModule: {
           updateAuthState: noop("updateAuthState"),
           clearUserData: () => Promise.resolve(),
+          softLogOut: noop("softLogOut"),
+          softLogIn: noop("softLogIn"),
         },
 
         ARNotificationsManager: {

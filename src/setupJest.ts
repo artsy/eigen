@@ -265,6 +265,8 @@ function getNativeModules(): OurNativeModules {
       isBetaOrDev: true,
       updateAuthState: jest.fn(),
       clearUserData: jest.fn(),
+      softLogIn: jest.fn(),
+      softLogOut: jest.fn(),
     },
   }
 }

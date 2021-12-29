@@ -22,6 +22,7 @@
 #import "AFHTTPRequestOperation+JSON.h"
 #import "ARDispatchManager.h"
 #import "ARScreenPresenterModule.h"
+#import "ARUserTempStore.h"
 
 #import <Emission/AREmission.h>
 
@@ -35,6 +36,7 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 @interface ARUserManager ()
 @property (nonatomic, strong) NSObject<ARKeychainable> *keychain;
 @property (nonatomic, strong) User *currentUser;
+@property (nonatomic, strong) ARUserTempStore *userTempStore;
 @end
 
 
@@ -58,26 +60,31 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
         return nil;
     }
 
+    _currentUser = [self retrieveArchivedUser];
+    _keychain = [[ARKeychain alloc] init];
+
+    return self;
+}
+
+- (User *)retrieveArchivedUser {
     NSString *userDataFolderPath = [self userDataPath];
     NSString *userDataPath = [userDataFolderPath stringByAppendingPathComponent:@"User.data"];
 
+    User *retrievedUser;
     if ([[NSFileManager defaultManager] fileExistsAtPath:userDataPath]) {
-        _currentUser = [NSKeyedUnarchiver unarchiveObjectWithFile:userDataPath exceptionBlock:^id(NSException *exception) {
+        retrievedUser = [NSKeyedUnarchiver unarchiveObjectWithFile:userDataPath exceptionBlock:^id(NSException *exception) {
             ARErrorLog(@"%@", exception.reason);
             [[NSFileManager defaultManager] removeItemAtPath:userDataPath error:nil];
             return nil;
         }];
 
         // safeguard
-        if (!_currentUser.userID) {
+        if (!retrievedUser.userID) {
             ARErrorLog(@"Deserialized user %@ does not have an ID.", _currentUser);
-            _currentUser = nil;
+            retrievedUser = nil;
         }
     }
-
-    _keychain = [[ARKeychain alloc] init];
-
-    return self;
+    return retrievedUser;
 }
 
 - (void)setCurrentUser:(User *)user;
@@ -192,12 +199,27 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
     [ARRouter setup];
 }
 
+
 - (void)deleteHTTPCookies
 {
     NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     for (NSHTTPCookie *cookie in cookieStorage.cookies) {
        [cookieStorage deleteCookie:cookie];
     }
+}
+
+- (void)restoreCookies:(NSArray<NSHTTPCookie *> *)cookies
+{
+    NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (NSHTTPCookie *cookie in cookies) {
+        [cookieStorage setCookie:cookie];
+    }
+}
+
+- (NSArray<NSHTTPCookie *> *)allHTTPCookies
+{
+    NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    return cookieStorage.cookies;
 }
 
 - (void)deleteUserData
@@ -256,6 +278,77 @@ static BOOL ARUserManagerDisableSharedWebCredentials = NO;
 - (void)disableSharedWebCredentials;
 {
     ARUserManagerDisableSharedWebCredentials = YES;
+}
+
+# pragma mark - Dev Utilities
+
+
++ (void)softClearUserData:(ARUserManager *)manager
+{
+    // Retrieve data to be restored + store in memory
+    NSString *oAuthToken = [manager.keychain keychainStringForKey:AROAuthTokenDefault];
+    NSString *xAppToken = [manager.keychain keychainStringForKey:ARXAppTokenKeychainKey];
+    User *user = [manager currentUser];
+    NSArray<NSHTTPCookie *> *cookies = [manager allHTTPCookies];
+
+    // store to be able to soft log ins
+    manager.userTempStore = [ARUserTempStore storeWithUser:user
+                                                oAuthToken:oAuthToken
+                                                 xAppToken:xAppToken
+                                                   cookies:cookies];
+    [manager deleteUserData];
+
+    [manager.keychain removeKeychainStringForKey:AROAuthTokenDefault];
+    [manager.keychain removeKeychainStringForKey:ARXAppTokenKeychainKey];
+
+    [manager deleteHTTPCookies];
+    [ARRouter setAuthToken:nil];
+    manager.currentUser = nil;
+
+    [[AREmission sharedInstance] reset];
+    [ARRouter setup];
+}
+
++ (void)softRestoreUserData:(ARUserManager *)manager {
+
+    ARUserTempStore *store = [manager userTempStore];
+
+    // TODO: handle errors, what do I want to do here if store doesn't exist or an expected field doesn't exist?
+    // TODO: Check values are populated and handle errors
+
+    // Set the current user
+    [manager setCurrentUser:store.user];
+
+    // restore user to archive
+    [manager storeUserData];
+
+    // put tokens back in the keychain
+    [manager.keychain setKeychainStringForKey:AROAuthTokenDefault value:store.oAuthToken];
+    [manager.keychain setKeychainStringForKey:ARXAppTokenKeychainKey value:store.xAppToken];
+
+    // restore cookies
+    [manager restoreCookies:store.cookies];
+
+    // Setup the "router", this is a bad name now that we have a nav router
+    // this will also restore auth tokens from keychain values
+    [ARRouter setup];
+
+    // Restore emission user and token state
+    [[AREmission sharedInstance] updateState:@{
+        [ARStateKey userID] : (store.user.userID ?: [NSNull null]),
+        [ARStateKey userEmail] : (store.user.email ?: [NSNull null]),
+        [ARStateKey authenticationToken] : (store.oAuthToken ?: [NSNull null]),
+    }];
+}
+
++ (void)softClearUserData
+{
+    [self softClearUserData:[self sharedManager]];
+}
+
++ (void)softRestoreUserData
+{
+    [self softRestoreUserData:[self sharedManager]];
 }
 
 @end
