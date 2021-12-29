@@ -190,7 +190,7 @@ const SelectButton: React.FC<{
           flexDirection="row"
           height={INPUT_HEIGHT}
           borderWidth={1}
-          borderColor={hasError ? color("red100") : color("black10")}
+          borderColor={hasError ? color("red100") : color("black30")}
           justifyContent="space-between"
           alignItems="center"
         >
