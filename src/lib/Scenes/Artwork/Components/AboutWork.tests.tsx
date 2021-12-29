@@ -29,7 +29,7 @@ describe("AboutWork", () => {
   })
 
   it("renders the AboutWork correctly if only description is present", () => {
-    const artworkNoAdditionalInfo = { ...aboutWorkArtwork, additional_information: null }
+    const artworkNoAdditionalInfo = { ...aboutWorkArtwork, additionalInformation: null }
 
     const { queryByText } = renderWithWrappersTL(<AboutWork artwork={artworkNoAdditionalInfo} />)
     expect(queryByText("About the work")).toBeTruthy()
@@ -37,7 +37,7 @@ describe("AboutWork", () => {
   })
 
   it("renders nothing if no information is present", () => {
-    const artworkNoInfo = { ...aboutWorkArtwork, additional_information: null, description: null }
+    const artworkNoInfo = { ...aboutWorkArtwork, additionalInformation: null, description: null }
 
     const { queryByText } = renderWithWrappersTL(<AboutWork artwork={artworkNoInfo} />)
     expect(queryByText("About the work")).toBeFalsy()
