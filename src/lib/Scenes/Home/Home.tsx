@@ -522,24 +522,22 @@ const HomePlaceholder: React.FC<{}> = () => {
 
       {
         // Small tiles to mimic the artwork rails
-        times(2).map((r) => (
-          <Box key={r} ml={2} mr={2}>
-            <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-            <Flex flexDirection="row" mt={1}>
-              <Join separator={<Spacer width={15} />}>
-                {times(3 + useMemoizedRandom() * 10).map((index) => (
-                  <Flex key={index}>
-                    <PlaceholderBox height={120} width={120} />
-                    <Spacer mb={2} />
-                    <PlaceholderText width={120} />
-                    <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
-                    <ModuleSeparator />
-                  </Flex>
-                ))}
-              </Join>
-            </Flex>
-          </Box>
-        ))
+        <Box ml={2} mr={2}>
+          <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
+          <Flex flexDirection="row" mt={1}>
+            <Join separator={<Spacer width={15} />}>
+              {times(3 + useMemoizedRandom() * 10).map((index) => (
+                <Flex key={index}>
+                  <PlaceholderBox height={120} width={120} />
+                  <Spacer mb={2} />
+                  <PlaceholderText width={120} />
+                  <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
+                  <ModuleSeparator />
+                </Flex>
+              ))}
+            </Join>
+          </Flex>
+        </Box>
       }
 
       {/* Larger tiles to mimic the fairs, sales, and collections rails */}
