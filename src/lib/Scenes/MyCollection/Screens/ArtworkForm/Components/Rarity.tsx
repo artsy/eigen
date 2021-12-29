@@ -10,10 +10,6 @@ export const Rarity: React.FC = () => {
   const { formik } = useArtworkForm()
 
   const handleValueChange = (value: AttributionClassType) => {
-    if (value !== "LIMITED_EDITION") {
-      formik.handleChange("editionSize")("")
-      formik.handleChange("editionNumber")("")
-    }
     formik.handleChange("attributionClass")(value)
   }
 
@@ -50,7 +46,7 @@ export const Rarity: React.FC = () => {
                 value={formik.values.editionNumber}
               />
             </Flex>
-            <Flex justifyContent="center" mx={2} mt={1}>
+            <Flex justifyContent="center" mx={2}>
               <Text>/</Text>
             </Flex>
             <Flex flex={1}>

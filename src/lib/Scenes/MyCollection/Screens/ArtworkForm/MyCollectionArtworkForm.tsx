@@ -210,6 +210,11 @@ export const updateArtwork = async (
     pricePaidCents = Number(pricePaidDollars) * 100
   }
 
+  if (values.attributionClass !== "LIMITED_EDITION") {
+    others.editionNumber = ""
+    others.editionSize = ""
+  }
+
   if (props.mode === "add") {
     const response = await myCollectionAddArtwork({
       artistIds: [artistSearchResult!.internalID as string],
