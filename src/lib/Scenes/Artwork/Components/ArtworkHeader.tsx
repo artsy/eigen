@@ -15,7 +15,6 @@ import Share from "react-native-share"
 import ViewShot from "react-native-view-shot"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import RNFetchBlob from "rn-fetch-blob"
 import { ArtworkActionsFragmentContainer as ArtworkActions, shareContent } from "./ArtworkActions"
 import { ArtworkTombstoneFragmentContainer as ArtworkTombstone } from "./ArtworkTombstone"
 import { ImageCarouselFragmentContainer } from "./ImageCarousel/ImageCarousel"
@@ -41,7 +40,6 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
 
   const currentImage = (artwork.images ?? [])[currentImageIndex]
   const currentImageUrl = (currentImage?.url ?? "").replace(":version", "large")
-  const smallImageURL = (currentImage?.url ?? "").replace(":version", "small")
 
   const shareArtwork = async () => {
     trackEvent({
@@ -53,11 +51,7 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
     const { title, href, artists } = artwork
     const details = shareContent(title!, href!, artists)
 
-    const resp = await RNFetchBlob.config({
-      fileCache: true,
-    }).fetch("GET", smallImageURL)
-
-    const base64RawData = await resp.base64()
+    const base64RawData = await shotRef.current!.capture!()
     const base64Data = `data:image/png;base64,${base64RawData}`
 
     try {
