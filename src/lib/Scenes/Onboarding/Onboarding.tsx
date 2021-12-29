@@ -24,8 +24,8 @@ export type OnboardingNavigationStack = {
   OnboardingCreateAccount: { withFadeAnimation: boolean } | undefined
   OnboardingCreateAccountWithEmail: undefined
   ForgotPassword: undefined
-  TermsWebView: undefined
-  PrivacyWebView: undefined
+  Terms: undefined
+  Privacy: undefined
 }
 
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
@@ -70,8 +70,8 @@ export const OnboardingWelcomeScreens = () => {
         />
         <StackNavigator.Screen name="OnboardingCreateAccountWithEmail" component={OnboardingCreateAccountWithEmail} />
         <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
-        <StackNavigator.Screen name="TermsWebView" component={() => <ArtsyReactWebView url="/terms" />} />
-        <StackNavigator.Screen name="PrivacyWebView" component={() => <ArtsyReactWebView url="/privacy" />} />
+        <StackNavigator.Screen name="Terms" component={() => <ArtsyReactWebView url="/terms" />} />
+        <StackNavigator.Screen name="Privacy" component={() => <ArtsyReactWebView url="/privacy" />} />
       </StackNavigator.Navigator>
     </NavigationContainer>
   )

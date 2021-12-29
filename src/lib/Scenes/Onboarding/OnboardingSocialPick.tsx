@@ -154,7 +154,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             {!!enableGoogleAuth ? ", Google" : ""}
             {isiOS ? " or Apple" : ""}, you agree to Artsy's{" "}
             <Text
-              onPress={() => (isiOS ? navigate("/terms", { modal: true }) : navigation.navigate("TermsWebView"))}
+              onPress={() => (isiOS ? navigate("/terms", { modal: true }) : navigation.navigate("Terms"))}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
@@ -162,7 +162,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             </Text>{" "}
             and{" "}
             <Text
-              onPress={() => (isiOS ? navigate("/privacy", { modal: true }) : navigation.navigate("PrivacyWebView"))}
+              onPress={() => (isiOS ? navigate("/privacy", { modal: true }) : navigation.navigate("Privacy"))}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
             >
