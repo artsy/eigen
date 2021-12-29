@@ -24,12 +24,12 @@ export interface SelectProps<ValueType> {
   enableSearch?: boolean
   maxModalHeight?: number
   hasError?: boolean
-  tooltip?: boolean
+  tooltipText?: string
   testID?: string
   onSelectValue(value: ValueType, index: number): void
   renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): JSX.Element
   renderItemLabel?(value: SelectOption<ValueType>): JSX.Element
-  onPressTooltip?(): void
+  onTooltipPress?(): void
   onModalFinishedClosing?(): void
 }
 
@@ -43,8 +43,8 @@ export const Select = <ValueType,>({
   enableSearch,
   maxModalHeight,
   hasError,
-  tooltip,
-  onPressTooltip,
+  tooltipText,
+  onTooltipPress,
   onSelectValue,
   renderButton,
   renderItemLabel,
@@ -83,11 +83,11 @@ export const Select = <ValueType,>({
           title={title}
           showTitleLabel={showTitleLabel}
           subTitle={subTitle}
-          tooltip={tooltip}
+          tooltipText={tooltipText}
           placeholder={placeholder}
           value={selectedItem?.label}
           onPress={open}
-          onPressTooltip={onPressTooltip}
+          onTooltipPress={onTooltipPress}
           hasError={hasError}
         />
       )}
@@ -114,18 +114,29 @@ const SelectButton: React.FC<{
   subTitle?: string
   placeholder?: string
   hasError?: boolean
-  tooltip?: boolean
+  tooltipText?: string
   testID?: string
   onPress(): void
-  onPressTooltip?(): void
-}> = ({ value, placeholder, onPress, title, showTitleLabel, subTitle, hasError, tooltip, testID, onPressTooltip }) => {
+  onTooltipPress?(): void
+}> = ({
+  value,
+  placeholder,
+  onPress,
+  title,
+  showTitleLabel,
+  subTitle,
+  hasError,
+  tooltipText,
+  testID,
+  onTooltipPress,
+}) => {
   const color = useColor()
   const textStyle = useTextStyleForPalette("sm")
 
   return (
     <Flex>
       <Flex flexDirection="row">
-        <Flex>
+        <Flex flex={1}>
           {showTitleLabel ? <Text variant="xs">{title?.toUpperCase()}</Text> : null}
 
           {subTitle ? (
@@ -136,13 +147,13 @@ const SelectButton: React.FC<{
             <Spacer mb={0.5} />
           )}
         </Flex>
-        {tooltip ? (
+        {!!tooltipText && (
           <Flex justifyContent="flex-end" marginLeft="auto">
-            <Text variant="xs" color="black60" mb={0.5} onPress={onPressTooltip}>
-              What is this?
+            <Text variant="xs" color="black60" mb={0.5} onPress={onTooltipPress}>
+              {tooltipText}
             </Text>
           </Flex>
-        ) : null}
+        )}
       </Flex>
       <TouchableOpacity accessible accessibilityRole="button" onPress={onPress} testID={testID}>
         <Flex

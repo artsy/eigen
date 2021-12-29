@@ -26,12 +26,12 @@ storiesOf("Select", module)
       <Select title="Title" showTitleLabel={false} options={options} value="option-1" onSelectValue={() => null} />
       <Select title="Title" options={options} value={null} onSelectValue={() => null} />
       <Select
-        title="Title"
+        title="Tooltip"
         options={options}
         value={null}
         onSelectValue={() => null}
-        tooltip
-        onPressTooltip={() => null}
+        tooltipText="What is this?"
+        onTooltipPress={() => null}
       />
       <Select
         title="Title"
