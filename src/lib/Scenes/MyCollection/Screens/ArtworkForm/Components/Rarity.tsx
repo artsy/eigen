@@ -58,7 +58,7 @@ export const Rarity: React.FC = () => {
           </Flex>
         </Flex>
       )}
-      <RarityFieldInformationModal
+      <RarityClassifcationTypesModal
         title="Classifications"
         visible={isRarityInfoModalVisible}
         onDismiss={() => setRarityInfoModalVisible(false)}
@@ -67,7 +67,7 @@ export const Rarity: React.FC = () => {
   )
 }
 
-const RarityFieldInformationModal: React.FC<{
+const RarityClassifcationTypesModal: React.FC<{
   title: string
   visible: boolean
   onDismiss(): any
