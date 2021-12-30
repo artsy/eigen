@@ -28,6 +28,7 @@ import {
   RandomWidthPlaceholderText,
   useMemoizedRandom,
 } from "lib/utils/placeholders"
+import { usePrefetch } from "lib/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useTreatment } from "lib/utils/useExperiments"
 import { compact, times } from "lodash"
@@ -70,6 +71,14 @@ interface Props extends ViewProps {
 }
 
 const Home = (props: Props) => {
+  const prefetchUrl = usePrefetch()
+
+  useEffect(() => {
+    prefetchUrl("search")
+    prefetchUrl("my-profile")
+    prefetchUrl("inbox")
+  }, [])
+
   const {
     homePageAbove,
     homePageBelow,
