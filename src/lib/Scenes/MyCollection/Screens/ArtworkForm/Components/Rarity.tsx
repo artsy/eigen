@@ -1,10 +1,10 @@
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { artworkRarityClassifications } from "lib/utils/artworkRarityClassifications"
-import { CloseIcon, Flex, Input, INPUT_HEIGHT, Separator, Text } from "palette"
+import { Flex, Input, INPUT_HEIGHT, InputTitle, Separator, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
-import { TouchableOpacity } from "react-native"
 
 export type AttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION"
 
@@ -74,27 +74,15 @@ const RarityClassifcationTypesModal: React.FC<{
 }> = ({ title, visible, onDismiss }) => {
   return (
     <FancyModal visible={visible} onBackgroundPressed={onDismiss}>
-      <Flex p="2" pb={15} flexDirection="row" alignItems="center" flexGrow={0}>
-        <Flex flex={1} />
-        <Flex flex={2} alignItems="center">
-          <Text>{title}</Text>
-        </Flex>
-        <TouchableOpacity
-          onPress={onDismiss}
-          hitSlop={{ top: 20, right: 20, bottom: 20, left: 20 }}
-          style={{ flex: 1, alignItems: "flex-end" }}
-        >
-          <CloseIcon fill="black60" />
-        </TouchableOpacity>
-      </Flex>
+      <FancyModalHeader onLeftButtonPress={onDismiss} useXButton>
+        {title}
+      </FancyModalHeader>
       <Separator />
       <Flex m={2}>
         {artworkRarityClassifications.map((classification) => (
           <Flex mb={2} key={classification.label}>
-            <Text variant="md" style={{ fontSize: 13, marginBottom: 2, textTransform: "uppercase" }}>
-              {classification.label}
-            </Text>
-            <Text style={{ fontSize: 16, marginBottom: 2 }}>{classification.description}</Text>
+            <InputTitle>{classification.label}</InputTitle>
+            <Text>{classification.description}</Text>
           </Flex>
         ))}
       </Flex>
