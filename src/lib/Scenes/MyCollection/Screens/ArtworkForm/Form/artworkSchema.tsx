@@ -7,18 +7,6 @@ export const artworkSchema = Yup.object().shape({
     .nullable()
     .test("artistSearchResult", "Artist search result required", (value) => value !== null),
   medium: Yup.string().test("medium", "Medium required", (value) => value !== ""),
-  photos: Yup.array().test("photos", "Photos required", (value) => {
-    // Allow us to bypass adding photos in DEV
-    if (__DEV__) {
-      return true
-    }
-
-    if (value === null || value === undefined) {
-      return false
-    }
-
-    return value.length > 0
-  }),
   title: Yup.string().test("title", "Title is required", (value) => value !== ""),
 })
 
