@@ -105,6 +105,9 @@ export const ComponentWithCollapsibleMenu = () => {
       if (indexToExpand !== index) {
         stepsRefs[index].collapse()
       } else {
+        if (index > 0) {
+          stepsRefs[index - 1].completed()
+        }
         stepsRefs[index].expand()
       }
     })

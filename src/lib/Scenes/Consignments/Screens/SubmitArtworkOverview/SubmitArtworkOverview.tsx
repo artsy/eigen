@@ -104,6 +104,9 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
       if (indexToExpand !== index) {
         stepsRefs[index].collapse()
       } else {
+        if (index > 0) {
+          stepsRefs[index - 1].completed()
+        }
         stepsRefs[index].expand()
       }
     })
