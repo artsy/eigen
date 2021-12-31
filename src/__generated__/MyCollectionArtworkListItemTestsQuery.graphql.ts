@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c3b3bdee70cb42261b93ef960c348f11 */
+/* @relayHash 6a6d232bce3246809cbf550a58813e55 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionArtworkListItemTestsQueryVariables = {};
@@ -9,6 +9,7 @@ export type MyCollectionArtworkListItemTestsQueryResponse = {
     readonly artwork: {
         readonly artist: {
             readonly internalID: string;
+            readonly formattedNationalityAndBirthday: string | null;
         } | null;
         readonly artistNames: string | null;
         readonly category: string | null;
@@ -55,6 +56,7 @@ query MyCollectionArtworkListItemTestsQuery {
   artwork(id: "some-slug") {
     artist {
       internalID
+      formattedNationalityAndBirthday
       id
     }
     artistNames
@@ -112,17 +114,24 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "artistNames",
+  "name": "formattedNationalityAndBirthday",
   "storageKey": null
 },
 v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "category",
+  "name": "artistNames",
   "storageKey": null
 },
 v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "category",
+  "storageKey": null
+},
+v5 = {
   "alias": null,
   "args": null,
   "concreteType": "Money",
@@ -154,63 +163,63 @@ v4 = {
   ],
   "storageKey": null
 },
-v5 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "date",
   "storageKey": null
 },
-v6 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "depth",
   "storageKey": null
 },
-v7 = {
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "editionSize",
   "storageKey": null
 },
-v8 = {
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "editionNumber",
   "storageKey": null
 },
-v9 = {
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "height",
   "storageKey": null
 },
-v10 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v11 = {
+v12 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v12 = {
+v13 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "width",
   "storageKey": null
 },
-v13 = {
+v14 = {
   "alias": null,
   "args": null,
   "concreteType": "Image",
@@ -232,59 +241,53 @@ v13 = {
       "name": "imageURL",
       "storageKey": null
     },
-    (v12/*: any*/),
-    (v9/*: any*/),
+    (v13/*: any*/),
+    (v10/*: any*/),
     (v1/*: any*/)
   ],
-  "storageKey": null
-},
-v14 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "isEdition",
   "storageKey": null
 },
 v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "medium",
+  "name": "isEdition",
   "storageKey": null
 },
 v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "metric",
+  "name": "medium",
   "storageKey": null
 },
 v17 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "provenance",
+  "name": "metric",
   "storageKey": null
 },
 v18 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "slug",
+  "name": "provenance",
   "storageKey": null
 },
 v19 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "title",
+  "name": "slug",
   "storageKey": null
 },
 v20 = {
-  "enumValues": null,
-  "nullable": false,
-  "plural": false,
-  "type": "ID"
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
+  "storageKey": null
 },
 v21 = {
   "enumValues": null,
@@ -294,11 +297,17 @@ v21 = {
 },
 v22 = {
   "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
+},
+v23 = {
+  "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Int"
 },
-v23 = {
+v24 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -327,11 +336,11 @@ return {
             "name": "artist",
             "plural": false,
             "selections": [
-              (v1/*: any*/)
+              (v1/*: any*/),
+              (v2/*: any*/)
             ],
             "storageKey": null
           },
-          (v2/*: any*/),
           (v3/*: any*/),
           (v4/*: any*/),
           (v5/*: any*/),
@@ -339,6 +348,7 @@ return {
           (v7/*: any*/),
           (v8/*: any*/),
           (v9/*: any*/),
+          (v10/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -347,20 +357,20 @@ return {
             "name": "attributionClass",
             "plural": false,
             "selections": [
-              (v10/*: any*/)
+              (v11/*: any*/)
             ],
             "storageKey": null
           },
-          (v11/*: any*/),
-          (v13/*: any*/),
-          (v1/*: any*/),
+          (v12/*: any*/),
           (v14/*: any*/),
+          (v1/*: any*/),
           (v15/*: any*/),
           (v16/*: any*/),
           (v17/*: any*/),
           (v18/*: any*/),
           (v19/*: any*/),
-          (v12/*: any*/)
+          (v20/*: any*/),
+          (v13/*: any*/)
         ],
         "storageKey": "artwork(id:\"some-slug\")"
       }
@@ -391,11 +401,11 @@ return {
             "plural": false,
             "selections": [
               (v1/*: any*/),
-              (v11/*: any*/)
+              (v2/*: any*/),
+              (v12/*: any*/)
             ],
             "storageKey": null
           },
-          (v2/*: any*/),
           (v3/*: any*/),
           (v4/*: any*/),
           (v5/*: any*/),
@@ -403,6 +413,7 @@ return {
           (v7/*: any*/),
           (v8/*: any*/),
           (v9/*: any*/),
+          (v10/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -411,28 +422,28 @@ return {
             "name": "attributionClass",
             "plural": false,
             "selections": [
-              (v10/*: any*/),
-              (v11/*: any*/)
+              (v11/*: any*/),
+              (v12/*: any*/)
             ],
             "storageKey": null
           },
-          (v11/*: any*/),
-          (v13/*: any*/),
-          (v1/*: any*/),
+          (v12/*: any*/),
           (v14/*: any*/),
+          (v1/*: any*/),
           (v15/*: any*/),
           (v16/*: any*/),
           (v17/*: any*/),
           (v18/*: any*/),
           (v19/*: any*/),
-          (v12/*: any*/)
+          (v20/*: any*/),
+          (v13/*: any*/)
         ],
         "storageKey": "artwork(id:\"some-slug\")"
       }
     ]
   },
   "params": {
-    "id": "c3b3bdee70cb42261b93ef960c348f11",
+    "id": "6a6d232bce3246809cbf550a58813e55",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -447,8 +458,9 @@ return {
           "plural": false,
           "type": "Artist"
         },
-        "artwork.artist.id": (v20/*: any*/),
-        "artwork.artist.internalID": (v20/*: any*/),
+        "artwork.artist.formattedNationalityAndBirthday": (v21/*: any*/),
+        "artwork.artist.id": (v22/*: any*/),
+        "artwork.artist.internalID": (v22/*: any*/),
         "artwork.artistNames": (v21/*: any*/),
         "artwork.attributionClass": {
           "enumValues": null,
@@ -456,7 +468,7 @@ return {
           "plural": false,
           "type": "AttributionClass"
         },
-        "artwork.attributionClass.id": (v20/*: any*/),
+        "artwork.attributionClass.id": (v22/*: any*/),
         "artwork.attributionClass.name": (v21/*: any*/),
         "artwork.category": (v21/*: any*/),
         "artwork.date": (v21/*: any*/),
@@ -464,14 +476,14 @@ return {
         "artwork.editionNumber": (v21/*: any*/),
         "artwork.editionSize": (v21/*: any*/),
         "artwork.height": (v21/*: any*/),
-        "artwork.id": (v20/*: any*/),
+        "artwork.id": (v22/*: any*/),
         "artwork.images": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "Image"
         },
-        "artwork.images.height": (v22/*: any*/),
+        "artwork.images.height": (v23/*: any*/),
         "artwork.images.imageURL": (v21/*: any*/),
         "artwork.images.internalID": {
           "enumValues": null,
@@ -479,10 +491,10 @@ return {
           "plural": false,
           "type": "ID"
         },
-        "artwork.images.isDefault": (v23/*: any*/),
-        "artwork.images.width": (v22/*: any*/),
-        "artwork.internalID": (v20/*: any*/),
-        "artwork.isEdition": (v23/*: any*/),
+        "artwork.images.isDefault": (v24/*: any*/),
+        "artwork.images.width": (v23/*: any*/),
+        "artwork.internalID": (v22/*: any*/),
+        "artwork.isEdition": (v24/*: any*/),
         "artwork.medium": (v21/*: any*/),
         "artwork.metric": (v21/*: any*/),
         "artwork.pricePaid": {
@@ -505,7 +517,7 @@ return {
           "type": "Int"
         },
         "artwork.provenance": (v21/*: any*/),
-        "artwork.slug": (v20/*: any*/),
+        "artwork.slug": (v22/*: any*/),
         "artwork.title": (v21/*: any*/),
         "artwork.width": (v21/*: any*/)
       }

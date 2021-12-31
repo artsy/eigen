@@ -100,6 +100,7 @@ export const ArtworkMetaProps = graphql`
   fragment MyCollectionArtwork_sharedProps on Artwork {
     artist {
       internalID
+      formattedNationalityAndBirthday
     }
     artistNames
     category
