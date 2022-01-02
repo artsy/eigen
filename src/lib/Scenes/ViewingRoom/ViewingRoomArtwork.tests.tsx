@@ -4,7 +4,7 @@ import { Button } from "palette"
 import React from "react"
 import { RelayEnvironmentProvider } from "relay-hooks"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { ViewingRoomArtworkQueryRenderer } from "./ViewingRoomArtwork"
+import { ViewingRoomArtworkScreen } from "./ViewingRoomArtwork"
 
 jest.unmock("react-relay")
 
@@ -12,7 +12,7 @@ describe("ViewingRoomArtwork", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <ViewingRoomArtworkQueryRenderer
+      <ViewingRoomArtworkScreen
         viewing_room_id="zero-dot-dot-dot-alessandro-pessoli"
         artwork_id="alessandro-pessoli-ardente-primavera-number-1"
       />

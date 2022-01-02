@@ -35,9 +35,9 @@ import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
-import { articlesDefaultVariables } from "../Articles/Articles"
+import { articlesQueryVariables } from "../Articles/Articles"
 import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
-import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
+import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
 import { NewWorksForYouRailContainer } from "./Components/NewWorksForYouRail"
@@ -153,7 +153,7 @@ const Home = (props: Props) => {
       data: articlesConnection,
       hidden: !articlesConnection,
       prefetchUrl: "/articles",
-      prefetchVariables: articlesDefaultVariables,
+      prefetchVariables: articlesQueryVariables,
     },
     {
       title: "Shows for You",
@@ -306,7 +306,7 @@ const Home = (props: Props) => {
               case "trove":
                 return <TroveFragmentContainer trove={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
               case "viewing-rooms":
-                return <ViewingRoomsHomeRail title={item.title} featured={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
+                return <ViewingRoomsHomeMainRail title={item.title} featured={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
               default:
                 return null
             }

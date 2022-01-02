@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ViewingRoomsHomeRail_regular = {
+export type ViewingRoomsHomeRail_viewingRooms = {
     readonly viewingRooms: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -35,12 +35,12 @@ export type ViewingRoomsHomeRail_regular = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "ViewingRoomsHomeRail_regular";
+    readonly " $refType": "ViewingRoomsHomeRail_viewingRooms";
 };
-export type ViewingRoomsHomeRail_regular$data = ViewingRoomsHomeRail_regular;
-export type ViewingRoomsHomeRail_regular$key = {
-    readonly " $data"?: ViewingRoomsHomeRail_regular$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsHomeRail_regular">;
+export type ViewingRoomsHomeRail_viewingRooms$data = ViewingRoomsHomeRail_viewingRooms;
+export type ViewingRoomsHomeRail_viewingRooms$key = {
+    readonly " $data"?: ViewingRoomsHomeRail_viewingRooms$data | undefined;
+    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsHomeRail_viewingRooms">;
 };
 
 
@@ -57,7 +57,7 @@ return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "ViewingRoomsHomeRail_regular",
+  "name": "ViewingRoomsHomeRail_viewingRooms",
   "selections": [
     {
       "alias": null,
@@ -268,5 +268,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'fcdb293ba50bd8b485b8aa45f96e8bb7';
+(node as any).hash = '84937287fae99ba523fca31fab538fb9';
 export default node;

@@ -9,8 +9,8 @@ import { Spacer } from "palette"
 import { MediumCard, Touchable } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import { graphql, useFragment } from "relay-hooks"
 import { tagForStatus } from "./ViewingRoomsListItem"
 
 export const featuredFragment = graphql`
