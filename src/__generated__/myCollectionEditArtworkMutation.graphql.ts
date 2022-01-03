@@ -26,7 +26,7 @@ export type MyCollectionUpdateArtworkInput = {
     pricePaidCents?: number | null | undefined;
     pricePaidCurrency?: string | null | undefined;
     provenance?: string | null | undefined;
-    title?: string | null | undefined;
+    title: string;
     width?: string | null | undefined;
 };
 export type myCollectionEditArtworkMutationVariables = {
