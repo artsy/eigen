@@ -1,6 +1,7 @@
 import { tappedCollectedArtworkImages } from "@artsy/cohesion"
 import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import {
+  CarouselImageDescriptor,
   ImageCarousel,
   ImageCarouselFragmentContainer,
 } from "lib/Scenes/Artwork/Components/ImageCarousel/ImageCarousel"
@@ -11,8 +12,7 @@ import { Box, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ImageDescriptor } from "../../../../../Scenes/Artwork/Components/ImageCarousel/ImageCarouselContext"
-import { hasImagesStillProcessing } from "../../ArtworkForm/MyCollectionImageUtil"
+import { imageIsProcessing, isImage } from "../../ArtworkForm/MyCollectionImageUtil"
 
 interface MyCollectionArtworkHeaderProps {
   artwork: MyCollectionArtworkHeader_artwork
@@ -23,7 +23,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     artwork: { artistNames, date, images, internalID, title, slug },
   } = props
 
-  const [imagesToDisplay, setImagesToDisplay] = useState<typeof images | ImageDescriptor[] | null>(images)
+  const [imagesToDisplay, setImagesToDisplay] = useState<typeof images | CarouselImageDescriptor[] | null>(images)
   const [isDisplayingLocalImages, setIsDisplayingLocalImages] = useState(false)
 
   const dimensions = useScreenDimensions()
@@ -35,7 +35,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
 
   useEffect(() => {
     const defaultImage = images?.find((i) => i?.isDefault) || (images && images[0])
-    if (hasImagesStillProcessing(defaultImage, images)) {
+    if (!isImage(defaultImage) || imageIsProcessing(defaultImage, "normalized")) {
       // fallback to local images for this collection artwork
       retrieveLocalImages(slug).then((localImages) => {
         const mappedLocalImages =

@@ -14,15 +14,18 @@ import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
 import { IndicatorType, PaginationIndicator } from "./ImageCarouselPaginationIndicator"
 
 export interface ImageCarouselProps {
-  /** ImageDescriptor for when you want to display local images */
-  images: ImageCarousel_images | ImageDescriptor[]
+  /** CarouselImageDescriptor for when you want to display local images */
+  images: ImageCarousel_images | CarouselImageDescriptor[]
   cardHeight: number
   onImageIndexChange?: (imageIndex: number) => void
   paginationIndicatorType?: IndicatorType
   onImagePressed?: () => void
 }
 
-interface ProcessedImageDescriptor extends Omit<ImageDescriptor, "width" | "height" | "url"> {
+export interface CarouselImageDescriptor extends ImageDescriptor {
+  imageVersions?: string[]
+}
+interface MappedImageDescriptor extends Pick<ImageDescriptor, "deepZoom"> {
   width: number
   height: number
   url: string
@@ -52,28 +55,31 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
 
   const images: ImageDescriptor[] = useMemo(() => {
     let result = props.images
-      .map((image): ProcessedImageDescriptor | null => {
+      .map((image): MappedImageDescriptor | null => {
         if (!image.height || !image.width || !image.url) {
           // something is very wrong
           return null
         }
-        const { width, height } = fitInside(embeddedCardBoundingBox, image as ProcessedImageDescriptor)
+        const { width, height } = fitInside(embeddedCardBoundingBox, image as MappedImageDescriptor)
         return {
           width,
           height,
-          url: isALocalImage(image.url)
-            ? image.url
-            : createGeminiUrl({
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                imageURL: image.url.replace(":version", getBestImageVersionForThumbnail(image.imageVersions)),
-                // upscale to match screen resolution
-                width: width * PixelRatio.get(),
-                height: height * PixelRatio.get(),
-              }),
+          url:
+            isALocalImage(image.url) || !imageHasVersions(image)
+              ? image.url
+              : createGeminiUrl({
+                  imageURL: image.url.replace(
+                    ":version",
+                    getBestImageVersionForThumbnail(image.imageVersions as string[])
+                  ),
+                  // upscale to match screen resolution
+                  width: width * PixelRatio.get(),
+                  height: height * PixelRatio.get(),
+                }),
           deepZoom: image.deepZoom,
         }
       })
-      .filter((processedImage): processedImage is ProcessedImageDescriptor => Boolean(processedImage))
+      .filter((mappedImage): mappedImage is MappedImageDescriptor => Boolean(mappedImage))
 
     if (!disableDeepZoom) {
       if (result.some((image) => !image.deepZoom)) {
@@ -153,4 +159,8 @@ function getBestImageVersionForThumbnail(imageVersions: readonly string[]) {
   // will fail to load and we'll see a gray square. I haven't come accross an image
   // that this will happen for, but better safe than sorry.
   return "normalized"
+}
+
+const imageHasVersions = (image: CarouselImageDescriptor | ImageCarousel_images[number]) => {
+  return image.imageVersions && image.imageVersions.length
 }

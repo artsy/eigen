@@ -5,8 +5,12 @@ import React from "react"
 import { Animated, FlatList } from "react-native"
 import { graphql } from "react-relay"
 import { getMeasurements } from "./geometry"
-import { ImageCarousel, ImageCarouselFragmentContainer, ImageCarouselProps } from "./ImageCarousel"
-import { ImageDescriptor } from "./ImageCarouselContext"
+import {
+  CarouselImageDescriptor,
+  ImageCarousel,
+  ImageCarouselFragmentContainer,
+  ImageCarouselProps,
+} from "./ImageCarousel"
 import { PaginationDot, ScrollBar } from "./ImageCarouselPaginationIndicator"
 import { ImageWithLoadingState } from "./ImageWithLoadingState"
 
@@ -67,7 +71,7 @@ const artworkFixture: ImageCarouselTestsQueryRawResponse["artwork"] = {
   ],
 }
 
-const localImages: ImageDescriptor[] = [
+const localImages: CarouselImageDescriptor[] = [
   {
     url: "file:///this/is/not/a/real/image.jpg",
     width: 2800,
