@@ -41,7 +41,6 @@ export const Form: React.FC<FormProps> = (props) => {
   } = props
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
-  const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const namePlaceholder = getNamePlaceholder(artistName, pills)
   const isEditMode = !!savedSearchAlertId
@@ -60,7 +59,7 @@ export const Form: React.FC<FormProps> = (props) => {
   }
 
   // Enable "save alert" button if selected at least one of the notification toggle options
-  if (enableSavedSearchToggles && !values.push && !values.email) {
+  if (!values.push && !values.email) {
     isSaveAlertButtonDisabled = true
   }
 
@@ -90,12 +89,9 @@ export const Form: React.FC<FormProps> = (props) => {
   return (
     <Box>
       {!isEditMode && (
-        <Box mb={4}>
-          <Text variant="lg">Create an Alert</Text>
-          {!enableSavedSearchToggles && (
-            <Text mt={1}>Receive alerts as Push Notifications directly to your device.</Text>
-          )}
-        </Box>
+        <Text variant="lg" mb={4}>
+          Create an Alert
+        </Text>
       )}
 
       <Box mb={2}>
@@ -162,23 +158,19 @@ export const Form: React.FC<FormProps> = (props) => {
           )}
         </Flex>
       </Box>
-      {!!enableSavedSearchToggles && (
-        <>
-          <SavedSearchAlertSwitch label="Mobile Alerts" onChange={onTogglePushNotification} active={values.push} />
-          <Spacer mt={2} />
-          <SavedSearchAlertSwitch label="Email Alerts" onChange={handleToggleEmailNotification} active={values.email} />
-          {!!values.email && (
-            <Text
-              onPress={handleUpdateEmailPreferencesPress}
-              variant="xs"
-              color="black60"
-              style={{ textDecorationLine: "underline" }}
-              mt={1}
-            >
-              Update email preferences
-            </Text>
-          )}
-        </>
+      <SavedSearchAlertSwitch label="Mobile Alerts" onChange={onTogglePushNotification} active={values.push} />
+      <Spacer mt={2} />
+      <SavedSearchAlertSwitch label="Email Alerts" onChange={handleToggleEmailNotification} active={values.email} />
+      {!!values.email && (
+        <Text
+          onPress={handleUpdateEmailPreferencesPress}
+          variant="xs"
+          color="black60"
+          style={{ textDecorationLine: "underline" }}
+          mt={1}
+        >
+          Update email preferences
+        </Text>
       )}
       <Box mt={5}>
         <Button

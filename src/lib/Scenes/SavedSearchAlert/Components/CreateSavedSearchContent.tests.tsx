@@ -1,7 +1,6 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
@@ -83,47 +82,41 @@ describe("CreateSavedSearchAlert", () => {
     })
   })
 
-  describe("When AREnableSavedSearchToggles is enabled", () => {
-    beforeEach(() => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
-    })
+  it("the push notification toggle is enabled by default when push permissions are enabled", async () => {
+    notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
 
-    it("the push notification is enabled by default when push permissions are enabled", async () => {
-      notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
+    const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
 
-      const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+    const toggles = await findAllByA11yState({ selected: true })
 
-      const toggles = await findAllByA11yState({ selected: true })
+    expect(toggles).toHaveLength(2)
+  })
 
-      expect(toggles).toHaveLength(2)
-    })
+  it("the push notification toggle is disabled by default when push permissions are denied", async () => {
+    notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Denied))
 
-    it("the push notification is disabled by default when push permissions are denied", async () => {
-      notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Denied))
+    const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
 
-      const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+    const toggles = await findAllByA11yState({ selected: false })
 
-      const toggles = await findAllByA11yState({ selected: false })
+    expect(toggles).toHaveLength(1)
+  })
 
-      expect(toggles).toHaveLength(1)
-    })
+  it("the push notification toggle is disabled by default when push permissions are not determined", async () => {
+    notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.NotDetermined))
 
-    it("the push notification is disabled by default when push permissions are not determined", async () => {
-      notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.NotDetermined))
+    const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+    const toggles = await findAllByA11yState({ selected: false })
 
-      const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
-      const toggles = await findAllByA11yState({ selected: false })
+    expect(toggles).toHaveLength(1)
+  })
 
-      expect(toggles).toHaveLength(1)
-    })
+  it("the email notification toggle is disabled by default if a user has not allowed email notifications", async () => {
+    notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
+    const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer userAllowsEmails={false} />)
 
-    it("the email notification is disabled by default if a user has not allowed email notifications", async () => {
-      notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
-      const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer userAllowsEmails={false} />)
+    const toggles = await findAllByA11yState({ selected: false })
 
-      const toggles = await findAllByA11yState({ selected: false })
-
-      expect(toggles).toHaveLength(1)
-    })
+    expect(toggles).toHaveLength(1)
   })
 })
