@@ -7,7 +7,7 @@ import { Rarity } from "./Rarity"
 
 jest.mock("formik")
 
-describe("RarityPicker", () => {
+describe("Rarity", () => {
   const useFormikContextMock = useFormikContext as jest.Mock
 
   beforeEach(() => {
@@ -27,5 +27,17 @@ describe("RarityPicker", () => {
     act(() => fireEvent.press(getByText("Limited Edition")))
 
     expect(findByText("EDITION NUMBER")).toBeTruthy()
+  })
+
+  it("displays the modal with all classification types", async () => {
+    const { getByText } = renderWithWrappersTL(<Rarity />)
+
+    act(() => fireEvent.press(getByText("What is this?")))
+    await flushPromiseQueue()
+
+    expect(getByText("Unique")).toBeTruthy()
+    expect(getByText("Limited Edition")).toBeTruthy()
+    expect(getByText("Open Edition")).toBeTruthy()
+    expect(getByText("Unknown edition")).toBeTruthy()
   })
 })
