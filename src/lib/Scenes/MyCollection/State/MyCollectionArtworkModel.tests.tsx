@@ -72,6 +72,7 @@ describe("MyCollectionArtworkModel", () => {
       provenance: "",
       title: "",
       width: "",
+      attributionClass: "",
     }
     expect(artworkState?.sessionState.formValues).toEqual(expectedInitialFormValues)
   })

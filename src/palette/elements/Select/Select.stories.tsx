@@ -26,6 +26,14 @@ storiesOf("Select", module)
       <Select title="Title" showTitleLabel={false} options={options} value="option-1" onSelectValue={() => null} />
       <Select title="Title" options={options} value={null} onSelectValue={() => null} />
       <Select
+        title="Tooltip"
+        options={options}
+        value={null}
+        onSelectValue={() => null}
+        tooltipText="What is this?"
+        onTooltipPress={() => null}
+      />
+      <Select
         title="Title"
         subTitle="Subtitle"
         options={options}
@@ -33,6 +41,8 @@ storiesOf("Select", module)
         value={null}
         onSelectValue={() => null}
       />
+      <Select title="Title" options={options} required value={null} onSelectValue={() => null} />
+      <Select title="Title" subTitle="Subtitle" options={options} optional value={null} onSelectValue={() => null} />
       <Select title="With Search" enableSearch options={options} value="option-1" onSelectValue={() => null} />
       <Select
         title="With Max Modal Height"

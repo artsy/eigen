@@ -24,7 +24,7 @@ it("shows title and subtitle within the select", () => {
     <Select title="Title" subTitle="Subtitle" options={options} value="option-1" onSelectValue={() => null} />
   )
 
-  expect(component.root.findAllByType(Text)[0].props.children).toEqual("TITLE")
+  expect(component.root.findAllByType(Text)[0].props.children).toEqual(["Title", false, false])
   expect(component.root.findAllByType(Text)[1].props.children).toEqual("Subtitle")
 })
 

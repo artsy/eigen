@@ -204,7 +204,8 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
           onChangeText={actions.fields.addressLine1.setValue}
         />
         <Input
-          title="Address line 2 (optional)"
+          title="Address line 2"
+          optional
           placeholder="Add address line 2"
           value={state.fields.addressLine2.value ?? ""}
           onChangeText={actions.fields.addressLine2.setValue}

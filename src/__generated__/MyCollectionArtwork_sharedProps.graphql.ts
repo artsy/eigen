@@ -7,6 +7,7 @@ import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtwork_sharedProps = {
     readonly artist: {
         readonly internalID: string;
+        readonly formattedNationalityAndBirthday: string | null;
     } | null;
     readonly artistNames: string | null;
     readonly category: string | null;
@@ -85,7 +86,14 @@ return {
       "name": "artist",
       "plural": false,
       "selections": [
-        (v0/*: any*/)
+        (v0/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "formattedNationalityAndBirthday",
+          "storageKey": null
+        }
       ],
       "storageKey": null
     },
@@ -266,5 +274,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '049a9420eb48b4f7af6b814fbd25b255';
+(node as any).hash = 'b2cbe56c3cd37e9068d528388f96c769';
 export default node;

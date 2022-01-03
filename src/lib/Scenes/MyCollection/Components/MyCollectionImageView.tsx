@@ -1,6 +1,6 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { LocalImage, retrieveLocalImages } from "lib/utils/LocalImageStore"
-import { Box, useColor } from "palette"
+import { Flex, NoImageIcon, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Image as RNImage } from "react-native"
 
@@ -52,7 +52,13 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
         />
       )
     } else {
-      return <Box testID="Fallback" bg={color("black30")} width={imageWidth ?? 120} height={120} />
+      const width = imageWidth ?? 120
+
+      return (
+        <Flex testID="Fallback" bg={color("black10")} width={width} height={120} justifyContent="center">
+          <NoImageIcon fill="black60" mx="auto" />
+        </Flex>
+      )
     }
   }
 
