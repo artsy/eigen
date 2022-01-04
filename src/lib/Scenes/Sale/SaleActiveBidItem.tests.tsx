@@ -4,6 +4,7 @@ import { HighestBid, Outbid, ReserveNotMet } from "lib/Scenes/MyBids/Components/
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { DateTime } from "luxon"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -37,7 +38,7 @@ describe("SaleActiveBidItem", () => {
       },
     },
     sale: {
-      liveStartAt: "2022-01-01T01:03:00+01:00",
+      liveStartAt: DateTime.now().plus({ year: 1 }).toISO(), // just a day in the far future
     },
   }
 
