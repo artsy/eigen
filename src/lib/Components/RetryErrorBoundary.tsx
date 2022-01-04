@@ -1,5 +1,5 @@
 import { captureMessage } from "@sentry/react-native"
-import React, { FC, useState } from "react"
+import React, { FC } from "react"
 import { LoadFailureView } from "./LoadFailureView"
 
 enum ErrorState {

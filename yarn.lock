@@ -5320,7 +5320,7 @@
   dependencies:
     redux "^4.0.0"
 
-"@types/relay-runtime@*", "@types/relay-runtime@8.0.6":
+"@types/relay-runtime@*":
   version "8.0.6"
   resolved "https://registry.yarnpkg.com/@types/relay-runtime/-/relay-runtime-8.0.6.tgz#931c640f9a37b4c328aaa4e5159e0c85e5ffbbfa"
   integrity sha512-05MJfbE/1TAz4ttx9a9x9xjaOe0KAYymWo/FcqGh+wRvz5ZvRdRPEssmIwcNsdJZVWTB3R/VBAYx6IvXMHIPNQ==
@@ -6631,10 +6631,10 @@ babel-plugin-polyfill-regenerator@^0.2.2:
   dependencies:
     "@babel/helper-define-polyfill-provider" "^0.2.2"
 
-babel-plugin-relay@10.1.3:
-  version "10.1.3"
-  resolved "https://registry.yarnpkg.com/babel-plugin-relay/-/babel-plugin-relay-10.1.3.tgz#3c52f06869c2295766f4df63736b9ad887386af3"
-  integrity sha512-2dD9J6lRAT9jOWD6WqMKSdpZ5inoRlyOnEEVGoRVQ9jVR6ktO+KDgigS/+sfbg8GIY+3Xb/meC1cegdI5evrSA==
+babel-plugin-relay@12.0.0:
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-relay/-/babel-plugin-relay-12.0.0.tgz#cdce02494b69e9477a4507f9972f8473081b732d"
+  integrity sha512-fQWmS3YEu1smPx4xrn+7RyzDAlgVDG5q2m5cb+qC/Tr2+gANkxqGtQ+YPiOX6g4rgdbE+7a6RT3lViBExYBVKw==
   dependencies:
     babel-plugin-macros "^2.0.0"
 
@@ -16759,7 +16759,7 @@ react-refresh@^0.4.0:
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.4.2.tgz#54a277a6caaac2803d88f1d6f13c1dcfbd81e334"
   integrity sha512-kv5QlFFSZWo7OlJFNYbxRtY66JImuP2LcrFgyJfQaf85gSP+byzG21UbDQEYjU7f//ny8rwiEkO6py2Y+fEgAQ==
 
-react-relay-network-modern@^6.0.0:
+react-relay-network-modern@6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/react-relay-network-modern/-/react-relay-network-modern-6.0.0.tgz#faa2b6499f3f1d9fdac5af9851b7a851fc36c67b"
   integrity sha512-Glg9iGK9pV+KXC9Oa3X7H2cjd/6Kg4v6fMBkjMdoQRgV/ct5tAtbOs0xB5k1PHJs6cK+mmidTgVhT8VEfa2NFA==
@@ -16767,7 +16767,7 @@ react-relay-network-modern@^6.0.0:
     core-js "^3.0.0"
     extract-files "^9.0.0"
 
-react-relay@^12.0.0:
+react-relay@12.0.0:
   version "12.0.0"
   resolved "https://registry.yarnpkg.com/react-relay/-/react-relay-12.0.0.tgz#1b4d9429253b3d7c4d1dff5de7337a1de8b896e5"
   integrity sha512-nDWJherEDtK35kK+gcDLUT6dhUG7EYQ8ePDJiCKBqCnkCx1272Ll7JcmYRBwyeL+IEp7J+CnUOAhv82VZxUh6g==
