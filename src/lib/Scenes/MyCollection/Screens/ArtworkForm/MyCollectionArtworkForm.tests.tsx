@@ -80,14 +80,13 @@ describe("MyCollectionArtworkForm", () => {
 
         // Select Artist Screen
 
-        expect(getByText("Add Artwork")).toBeTruthy()
+        expect(getByText("Select an Artist")).toBeTruthy()
 
         act(() => fireEvent.changeText(getByPlaceholderText("Search for Artists on Artsy"), "banksy"))
         act(() => mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtistSearchResult }))
         act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
 
         await flushPromiseQueue()
-
         // Select Artwork Screen
 
         expect(getByText("Select an Artwork")).toBeTruthy()
@@ -128,14 +127,13 @@ describe("MyCollectionArtworkForm", () => {
 
         // Select Artist Screen
 
-        expect(getByText("Add Artwork")).toBeTruthy()
+        expect(getByText("Select an Artist")).toBeTruthy()
 
         act(() => fireEvent.changeText(getByPlaceholderText("Search for Artists on Artsy"), "banksy"))
         act(() => mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtistSearchResult }))
         act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
 
         await flushPromiseQueue()
-
         // Select Artwork Screen
 
         expect(getByText("Select an Artwork")).toBeTruthy()
@@ -143,7 +141,6 @@ describe("MyCollectionArtworkForm", () => {
         act(() => fireEvent.press(getByText("Skip")))
 
         await flushPromiseQueue()
-
         // Edit Details Screen
 
         expect(getByText("Add Details")).toBeTruthy()
