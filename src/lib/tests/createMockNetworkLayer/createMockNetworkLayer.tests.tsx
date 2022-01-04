@@ -24,7 +24,8 @@ describe("createMockNetworkLayer", () => {
           }
         `,
       {}
-    )
+      // @ts-ignore
+    ).toPromise()
   }
 
   describe("preserves the upstream behaviour", () => {
