@@ -171,7 +171,7 @@ export const ViewingRoomsHomeRailContainer = createFragmentContainer(ViewingRoom
 export const ViewingRoomsHomeRailQueryRenderer: React.FC<{
   trackInfo?: { screen: string; ownerType: string }
   environment: RelayModernEnvironment
-}> = ({ trackInfo, environment }) => {
+}> = ({ environment }) => {
   return (
     <QueryRenderer<ViewingRoomsHomeRailQuery>
       environment={environment || defaultEnvironment}
