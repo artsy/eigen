@@ -90,7 +90,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               variant="outline"
               iconPosition="left-start"
               icon={<EnvelopeIcon mr={1} />}
-              testID="useEmail"
+              testID="continueWithEmail"
             >
               Continue with Email
             </Button>

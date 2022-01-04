@@ -22,7 +22,7 @@ describe("OnboardingSocialPick", () => {
   describe("login", () => {
     it("navigates to log in with email when the user presses on continue with email", () => {
       const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
-      tree.root.findByProps({ testID: "useEmail" }).props.onPress()
+      tree.root.findByProps({ testID: "continueWithEmail" }).props.onPress()
       expect(navigateMock).toHaveBeenCalledWith("OnboardingLoginWithEmail")
     })
 
@@ -46,7 +46,7 @@ describe("OnboardingSocialPick", () => {
   describe("sign up", () => {
     it("navigates to sign up with email when the user presses on continue with email", () => {
       const tree = renderWithWrappers(<OnboardingSocialPick mode="signup" />)
-      tree.root.findByProps({ testID: "useEmail" }).props.onPress()
+      tree.root.findByProps({ testID: "continueWithEmail" }).props.onPress()
       expect(navigateMock).toHaveBeenCalledWith("OnboardingLoginWithEmail")
     })
 
