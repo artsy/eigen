@@ -269,6 +269,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
           savedSearchAlertId={savedSearchAlertId}
           artistId={artistId}
           artistName={artistName}
+          hasChangedFilters={initialPills.length > pills.length}
           onDeletePress={handleDeletePress}
           onSubmitPress={formik.handleSubmit}
           onTogglePushNotification={handleTogglePushNotification}

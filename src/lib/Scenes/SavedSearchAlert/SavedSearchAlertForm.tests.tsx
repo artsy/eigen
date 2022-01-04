@@ -111,7 +111,7 @@ describe("Saved search alert form", () => {
     expect(mockTrackEvent).toHaveBeenCalledWith(
       tracks.editedSavedSearch(
         "savedSearchAlertId",
-        { name: "", email: true, push: true },
+        { name: "name", email: true, push: true },
         { name: "something new", email: true, push: true }
       )
     )
@@ -196,7 +196,9 @@ describe("Saved search alert form", () => {
   })
 
   it("should auto populate alert name for the create mutation", async () => {
-    const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
+    const { getByTestId } = renderWithWrappersTL(
+      <SavedSearchAlertForm {...baseProps} initialValues={{ ...baseProps.initialValues, name: "" }} />
+    )
 
     fireEvent.press(getByTestId("save-alert-button"))
 
@@ -262,7 +264,7 @@ describe("Saved search alert form", () => {
           input: {
             attributes: createMutationAttributes,
             userAlertSettings: {
-              name: "artistName • 5 filters",
+              name: "name",
               email: true,
               push: true,
             },
@@ -283,7 +285,7 @@ describe("Saved search alert form", () => {
           input: {
             attributes: createMutationAttributes,
             userAlertSettings: {
-              name: "artistName • 5 filters",
+              name: "name",
               email: false,
               push: true,
             },
@@ -304,7 +306,7 @@ describe("Saved search alert form", () => {
           input: {
             attributes: createMutationAttributes,
             userAlertSettings: {
-              name: "artistName • 5 filters",
+              name: "name",
               email: true,
               push: false,
             },
@@ -508,10 +510,14 @@ describe("Saved search alert form", () => {
 
     it("should be enabled if the saved search alert doesn't have a name in update mode", () => {
       const { getByTestId } = renderWithWrappersTL(
-        <SavedSearchAlertForm {...baseProps} savedSearchAlertId="savedSearchAlertId" />
+        <SavedSearchAlertForm
+          {...baseProps}
+          savedSearchAlertId="savedSearchAlertId"
+          initialValues={{ ...baseProps.initialValues, name: "" }}
+        />
       )
 
-      expect(getByTestId("save-alert-button")).toBeEnabled()
+      expect(getByTestId("save-alert-button")).not.toBeDisabled()
     })
 
     it("should be enabled if changes have been made by the user in update mode", () => {
@@ -525,7 +531,7 @@ describe("Saved search alert form", () => {
 
       fireEvent.changeText(getByTestId("alert-input-name"), "updated name")
 
-      expect(getByTestId("save-alert-button")).toBeEnabled()
+      expect(getByTestId("save-alert-button")).not.toBeDisabled()
     })
 
     it("should be enabled if selected at least one of the notification toggle options", () => {
@@ -539,13 +545,46 @@ describe("Saved search alert form", () => {
 
       fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", true)
 
-      expect(getByTestId("save-alert-button")).toBeEnabled()
+      expect(getByTestId("save-alert-button")).not.toBeDisabled()
     })
 
     it("should be enabled by default in create mode", () => {
       const { getByTestId } = renderWithWrappersTL(<SavedSearchAlertForm {...baseProps} />)
 
-      expect(getByTestId("save-alert-button")).toBeEnabled()
+      expect(getByTestId("save-alert-button")).not.toBeDisabled()
+    })
+
+    it("should be enabled if filters are changed and there is a saved alert with the same criteria", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
+      const { getByText, getAllByText } = renderWithWrappersTL(
+        <SavedSearchAlertForm {...baseProps} isPreviouslySaved />
+      )
+
+      expect(getAllByText("Save Alert")[0]).toBeDisabled()
+      fireEvent.press(getByText("Limited Edition"))
+      expect(getAllByText("Save Alert")[0]).not.toBeDisabled()
+    })
+
+    it("should be enabled if name is changed and there is a saved alert with the same criteria", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
+      const { getByPlaceholderText, getAllByText } = renderWithWrappersTL(
+        <SavedSearchAlertForm {...baseProps} isPreviouslySaved />
+      )
+
+      expect(getAllByText("Save Alert")[0]).toBeDisabled()
+      fireEvent.changeText(getByPlaceholderText(`artistName ${bullet} 6 filters`), "new value")
+      expect(getAllByText("Save Alert")[0]).not.toBeDisabled()
+    })
+
+    it("should be enabled if notification toggles are changed and there is a saved alert with the same criteria", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
+      const { getByA11yLabel, getAllByText } = renderWithWrappersTL(
+        <SavedSearchAlertForm {...baseProps} isPreviouslySaved />
+      )
+
+      expect(getAllByText("Save Alert")[0]).toBeDisabled()
+      fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
+      expect(getAllByText("Save Alert")[0]).not.toBeDisabled()
     })
   })
 
@@ -663,7 +702,7 @@ const createMutationAttributes = {
 
 const baseProps: SavedSearchAlertFormProps = {
   initialValues: {
-    name: "",
+    name: "name",
     email: true,
     push: true,
   },
