@@ -16,7 +16,7 @@ interface FormProps {
   artistName: string
   isLoading?: boolean
   isPreviouslySaved?: boolean
-  isChangedFilters?: boolean
+  hasChangedFilters?: boolean
   onDeletePress?: () => void
   onSubmitPress?: () => void
   onUpdateEmailPreferencesPress?: () => void
@@ -33,7 +33,7 @@ export const Form: React.FC<FormProps> = (props) => {
     savedSearchAlertId,
     isLoading,
     isPreviouslySaved,
-    isChangedFilters,
+    hasChangedFilters,
     onDeletePress,
     onSubmitPress,
     onUpdateEmailPreferencesPress,
@@ -61,7 +61,7 @@ export const Form: React.FC<FormProps> = (props) => {
   }
 
   // Enable "Save Alert" button if the user has removed the filters or changed data
-  if (isEnabledImprovedAlertsFlow && !isEditMode && (isChangedFilters || dirty)) {
+  if (isEnabledImprovedAlertsFlow && !isEditMode && (hasChangedFilters || dirty)) {
     isSaveAlertButtonDisabled = false
   }
 
