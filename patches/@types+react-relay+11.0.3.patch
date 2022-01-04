@@ -41,6 +41,23 @@ index 554ba7f..8b621a2 100755
            entryPoints: TPreloadedEntryPoints;
            extraProps: TExtraProps;
            getComponent: () => TEntryPointComponent;
+diff --git a/node_modules/@types/react-relay/relay-hooks/useEntryPointLoader.d.ts b/node_modules/@types/react-relay/relay-hooks/useEntryPointLoader.d.ts
+index 8b6babf..38fe66d 100755
+--- a/node_modules/@types/react-relay/relay-hooks/useEntryPointLoader.d.ts
++++ b/node_modules/@types/react-relay/relay-hooks/useEntryPointLoader.d.ts
+@@ -1,11 +1,10 @@
+-import { DisposeFn } from 'relay-runtime';
+ import { EnvironmentProviderOptions, IEnvironmentProvider, PreloadedEntryPoint } from './EntryPointTypes';
+ import { GetEntryPointComponentFromEntryPoint, GetEntryPointParamsFromEntryPoint } from './helpers';
+ 
+ export type UseEntryPointLoaderHookType<TEntryPoint> = [
+     PreloadedEntryPoint<GetEntryPointComponentFromEntryPoint<TEntryPoint>> | null | undefined,
+     (entryPointParams: GetEntryPointParamsFromEntryPoint<TEntryPoint>) => void,
+-    DisposeFn,
++    any,
+ ];
+ 
+ export function useEntryPointLoader<TEntryPoint>(
 diff --git a/node_modules/@types/react-relay/relay-hooks/useLoadMoreFunction.d.ts b/node_modules/@types/react-relay/relay-hooks/useLoadMoreFunction.d.ts
 index ffe078b..3698004 100755
 --- a/node_modules/@types/react-relay/relay-hooks/useLoadMoreFunction.d.ts

@@ -171,7 +171,7 @@ export const ViewingRoomArtworkScreen: React.FC<{ viewing_room_id: string; artwo
   viewing_room_id: viewingRoomID,
   artwork_id: artworkID,
 }) => {
-  const [queryRef, loadQuery] = useQueryLoader(ViewingRoomArtworkScreenQuery)
+  const [queryRef, loadQuery] = useQueryLoader<ViewingRoomArtworkQuery>(ViewingRoomArtworkScreenQuery)
 
   useEffect(() => {
     if (!queryRef) {

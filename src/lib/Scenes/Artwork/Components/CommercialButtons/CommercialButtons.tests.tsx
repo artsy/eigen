@@ -59,6 +59,7 @@ const wrapper = (mockArtwork: FragmentRef<"CommercialButtons_artwork">): JSX.Ele
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const relayComponent = async ({ artwork }) => {
   return await renderRelayTree({
+    // @ts-ignore
     Component: () => wrapper(artwork),
     query: graphql`
       query CommercialButtonsTestsRenderQuery @raw_response_type {
