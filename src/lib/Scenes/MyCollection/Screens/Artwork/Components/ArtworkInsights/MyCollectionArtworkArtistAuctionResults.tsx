@@ -52,12 +52,10 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <>
-              <Spacer mt="1" />
               <AuctionResultListItemFragmentContainer
                 auctionResult={item}
                 onPress={() => navigate(`/artist/${props?.artwork?.artist?.slug!}/auction-result/${item.internalID}`)}
               />
-              <Spacer mb="1" />
             </>
           )}
           ListHeaderComponent={() => (

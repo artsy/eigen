@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a77152f8549cded62f383666a1e0a092 */
+/* @relayHash fef967a5d0cd0c1aa2e26ea0e271d370 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,6 +29,7 @@ query MyCollectionArtworkFullDetailsTestsQuery {
 fragment MyCollectionArtworkFullDetails_artwork on Artwork {
   artist {
     internalID
+    formattedNationalityAndBirthday
     id
   }
   artistNames
@@ -124,15 +125,15 @@ v4 = {
 },
 v5 = {
   "enumValues": null,
-  "nullable": false,
-  "plural": false,
-  "type": "ID"
-},
-v6 = {
-  "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
+},
+v6 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
 },
 v7 = {
   "enumValues": null,
@@ -196,6 +197,13 @@ return {
             "plural": false,
             "selections": [
               (v1/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "formattedNationalityAndBirthday",
+                "storageKey": null
+              },
               (v2/*: any*/)
             ],
             "storageKey": null
@@ -373,7 +381,7 @@ return {
     ]
   },
   "params": {
-    "id": "a77152f8549cded62f383666a1e0a092",
+    "id": "fef967a5d0cd0c1aa2e26ea0e271d370",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -388,24 +396,25 @@ return {
           "plural": false,
           "type": "Artist"
         },
-        "artwork.artist.id": (v5/*: any*/),
-        "artwork.artist.internalID": (v5/*: any*/),
-        "artwork.artistNames": (v6/*: any*/),
+        "artwork.artist.formattedNationalityAndBirthday": (v5/*: any*/),
+        "artwork.artist.id": (v6/*: any*/),
+        "artwork.artist.internalID": (v6/*: any*/),
+        "artwork.artistNames": (v5/*: any*/),
         "artwork.attributionClass": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "AttributionClass"
         },
-        "artwork.attributionClass.id": (v5/*: any*/),
-        "artwork.attributionClass.name": (v6/*: any*/),
-        "artwork.category": (v6/*: any*/),
-        "artwork.date": (v6/*: any*/),
-        "artwork.depth": (v6/*: any*/),
-        "artwork.editionNumber": (v6/*: any*/),
-        "artwork.editionSize": (v6/*: any*/),
-        "artwork.height": (v6/*: any*/),
-        "artwork.id": (v5/*: any*/),
+        "artwork.attributionClass.id": (v6/*: any*/),
+        "artwork.attributionClass.name": (v5/*: any*/),
+        "artwork.category": (v5/*: any*/),
+        "artwork.date": (v5/*: any*/),
+        "artwork.depth": (v5/*: any*/),
+        "artwork.editionNumber": (v5/*: any*/),
+        "artwork.editionSize": (v5/*: any*/),
+        "artwork.height": (v5/*: any*/),
+        "artwork.id": (v6/*: any*/),
         "artwork.images": {
           "enumValues": null,
           "nullable": true,
@@ -413,7 +422,7 @@ return {
           "type": "Image"
         },
         "artwork.images.height": (v7/*: any*/),
-        "artwork.images.imageURL": (v6/*: any*/),
+        "artwork.images.imageURL": (v5/*: any*/),
         "artwork.images.internalID": {
           "enumValues": null,
           "nullable": true,
@@ -422,10 +431,10 @@ return {
         },
         "artwork.images.isDefault": (v8/*: any*/),
         "artwork.images.width": (v7/*: any*/),
-        "artwork.internalID": (v5/*: any*/),
+        "artwork.internalID": (v6/*: any*/),
         "artwork.isEdition": (v8/*: any*/),
-        "artwork.medium": (v6/*: any*/),
-        "artwork.metric": (v6/*: any*/),
+        "artwork.medium": (v5/*: any*/),
+        "artwork.metric": (v5/*: any*/),
         "artwork.pricePaid": {
           "enumValues": null,
           "nullable": true,
@@ -438,17 +447,17 @@ return {
           "plural": false,
           "type": "String"
         },
-        "artwork.pricePaid.display": (v6/*: any*/),
+        "artwork.pricePaid.display": (v5/*: any*/),
         "artwork.pricePaid.minor": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "Int"
         },
-        "artwork.provenance": (v6/*: any*/),
-        "artwork.slug": (v5/*: any*/),
-        "artwork.title": (v6/*: any*/),
-        "artwork.width": (v6/*: any*/)
+        "artwork.provenance": (v5/*: any*/),
+        "artwork.slug": (v6/*: any*/),
+        "artwork.title": (v5/*: any*/),
+        "artwork.width": (v5/*: any*/)
       }
     },
     "name": "MyCollectionArtworkFullDetailsTestsQuery",

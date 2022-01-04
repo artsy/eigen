@@ -205,6 +205,7 @@ const AutosuggestResultsContainer = createPaginationContainer(
               }
               ... on Artist {
                 internalID
+                formattedNationalityAndBirthday
                 slug
                 statuses {
                   artworks

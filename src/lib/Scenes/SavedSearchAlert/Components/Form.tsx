@@ -16,6 +16,7 @@ interface FormProps {
   artistName: string
   isLoading?: boolean
   isPreviouslySaved?: boolean
+  hasChangedFilters?: boolean
   onDeletePress?: () => void
   onSubmitPress?: () => void
   onUpdateEmailPreferencesPress?: () => void
@@ -32,6 +33,7 @@ export const Form: React.FC<FormProps> = (props) => {
     savedSearchAlertId,
     isLoading,
     isPreviouslySaved,
+    hasChangedFilters,
     onDeletePress,
     onSubmitPress,
     onUpdateEmailPreferencesPress,
@@ -41,14 +43,13 @@ export const Form: React.FC<FormProps> = (props) => {
   } = props
   const { isSubmitting, values, errors, dirty, handleBlur, handleChange } =
     useFormikContext<SavedSearchAlertFormValues>()
-  const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const namePlaceholder = getNamePlaceholder(artistName, pills)
   const isEditMode = !!savedSearchAlertId
   let isSaveAlertButtonDisabled = false
 
-  // Сhanges have been made by the user
-  if (isEditMode && !dirty) {
+  // Data has not changed or has already been saved
+  if ((isEditMode && !dirty) || isPreviouslySaved) {
     isSaveAlertButtonDisabled = true
   }
 
@@ -59,12 +60,13 @@ export const Form: React.FC<FormProps> = (props) => {
     isSaveAlertButtonDisabled = false
   }
 
-  // Enable "save alert" button if selected at least one of the notification toggle options
-  if (enableSavedSearchToggles && !values.push && !values.email) {
-    isSaveAlertButtonDisabled = true
+  // Enable "Save Alert" button if the user has removed the filters or changed data
+  if (isEnabledImprovedAlertsFlow && !isEditMode && (hasChangedFilters || dirty)) {
+    isSaveAlertButtonDisabled = false
   }
 
-  if (isPreviouslySaved) {
+  // Disable button if notification toggles were not enabled
+  if (!values.push && !values.email) {
     isSaveAlertButtonDisabled = true
   }
 
@@ -90,12 +92,9 @@ export const Form: React.FC<FormProps> = (props) => {
   return (
     <Box>
       {!isEditMode && (
-        <Box mb={4}>
-          <Text variant="lg">Create an Alert</Text>
-          {!enableSavedSearchToggles && (
-            <Text mt={1}>Receive alerts as Push Notifications directly to your device.</Text>
-          )}
-        </Box>
+        <Text variant="lg" mb={4}>
+          Create an Alert
+        </Text>
       )}
 
       <Box mb={2}>
@@ -162,23 +161,19 @@ export const Form: React.FC<FormProps> = (props) => {
           )}
         </Flex>
       </Box>
-      {!!enableSavedSearchToggles && (
-        <>
-          <SavedSearchAlertSwitch label="Mobile Alerts" onChange={onTogglePushNotification} active={values.push} />
-          <Spacer mt={2} />
-          <SavedSearchAlertSwitch label="Email Alerts" onChange={handleToggleEmailNotification} active={values.email} />
-          {!!values.email && (
-            <Text
-              onPress={handleUpdateEmailPreferencesPress}
-              variant="xs"
-              color="black60"
-              style={{ textDecorationLine: "underline" }}
-              mt={1}
-            >
-              Update email preferences
-            </Text>
-          )}
-        </>
+      <SavedSearchAlertSwitch label="Mobile Alerts" onChange={onTogglePushNotification} active={values.push} />
+      <Spacer mt={2} />
+      <SavedSearchAlertSwitch label="Email Alerts" onChange={handleToggleEmailNotification} active={values.email} />
+      {!!values.email && (
+        <Text
+          onPress={handleUpdateEmailPreferencesPress}
+          variant="xs"
+          color="black60"
+          style={{ textDecorationLine: "underline" }}
+          mt={1}
+        >
+          Update email preferences
+        </Text>
       )}
       <Box mt={5}>
         <Button

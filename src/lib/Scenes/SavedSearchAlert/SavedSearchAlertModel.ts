@@ -20,13 +20,6 @@ export interface SavedSearchAlertMutationResult {
   id: string
 }
 
-// TODO: When AREnableSavedSearchToggles is released then we can use SavedSearchAlertFormValues instead
-export interface SavedSearchAlertUserAlertSettings {
-  name: string
-  email?: boolean
-  push?: boolean
-}
-
 // Navigation
 export interface CreateSavedSearchAlertParams extends SavedSearchAlertFormPropsBase {
   me?: SavedSearchButton_me | null
