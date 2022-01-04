@@ -197,7 +197,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
             <Stack.Screen
               name="ArtworkFormArtist"
               component={MyCollectionArtworkFormArtist}
-              initialParams={{ onDelete, clearForm, mode: props.mode, onHeaderBackButtonPress }}
+              initialParams={{ onDelete, clearForm, onHeaderBackButtonPress }}
             />
           )}
           {props.mode === "add" && (
