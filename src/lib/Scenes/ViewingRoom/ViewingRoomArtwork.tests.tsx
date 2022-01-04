@@ -1,4 +1,5 @@
 import { navigate } from "lib/navigation/navigate"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
@@ -23,8 +24,10 @@ describe("ViewingRoomArtwork", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  it("links to the artwork screen", () => {
+  it("links to the artwork screen", async () => {
     const tree = renderWithWrappers(<TestRenderer />)
+
+    await flushPromiseQueue()
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {
         Artwork: () => ({
@@ -34,6 +37,7 @@ describe("ViewingRoomArtwork", () => {
       })
       return result
     })
+    await flushPromiseQueue()
 
     tree.root.findByType(Button).props.onPress()
 
