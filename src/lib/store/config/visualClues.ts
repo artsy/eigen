@@ -20,6 +20,10 @@ function defineVisualClues<T extends string>(visualClueMap: { readonly [visualCl
 export const visualClues = defineVisualClues({
   TestClue1: {
     description: "Test Clue 1",
-    orderNumber: 4,
+    orderNumber: 4, // TODO: Change this to a timestamp or try to use the name instead
+  },
+  TestClue2: {
+    description: "Test Clue 1",
+    orderNumber: 5,
   },
 })

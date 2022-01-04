@@ -170,6 +170,8 @@ export const useVisualClue = () => {
       return false
     }
 
+    // TODO: Never show any clue if lastSeenClue's number is 0
+
     return visualClues[clueName].orderNumber > lastSeenVisualClue
   }
 
