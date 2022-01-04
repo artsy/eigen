@@ -74,6 +74,7 @@ describe(BottomTabs, () => {
     await flushPromiseQueue()
 
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
+
     resolveUnreadConversationCountQuery(5)
 
     await flushPromiseQueue()
@@ -113,7 +114,7 @@ describe(BottomTabs, () => {
     await flushPromiseQueue()
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
 
-    resolveUnreadConversationCountQuery(3)
+    // resolveUnreadConversationCountQuery(3)
 
     await flushPromiseQueue()
     const inboxButton = tree.root
