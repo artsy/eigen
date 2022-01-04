@@ -79,7 +79,7 @@ export const ViewingRoomsList: FC = () => {
   const [refreshing, setRefreshing] = useState(false)
   const handleRefresh = () => {
     setRefreshing(true)
-    refetch(PAGE_SIZE)
+    refetch({ count: PAGE_SIZE })
     setRefreshing(false)
     scrollRef.current?.scrollToTop()
   }

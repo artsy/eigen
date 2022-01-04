@@ -1,0 +1,81 @@
+diff --git a/node_modules/@types/react-relay/legacy.d.ts b/node_modules/@types/react-relay/legacy.d.ts
+index afc3fb4..4f5fc66 100755
+--- a/node_modules/@types/react-relay/legacy.d.ts
++++ b/node_modules/@types/react-relay/legacy.d.ts
+@@ -99,8 +99,6 @@ export function createFragmentContainer<Props>(
+     fragmentSpec: Record<string, GraphQLTaggedNode>,
+ ): Container<Props>;
+ 
+-export { fetchQuery_DEPRECATED } from 'relay-runtime';
+-
+ export { graphql } from 'relay-runtime';
+ export { readInlineData } from 'relay-runtime';
+ export { requestSubscription } from 'relay-runtime';
+diff --git a/node_modules/@types/react-relay/relay-hooks/EntryPointTypes.d.ts b/node_modules/@types/react-relay/relay-hooks/EntryPointTypes.d.ts
+index 554ba7f..8b621a2 100755
+--- a/node_modules/@types/react-relay/relay-hooks/EntryPointTypes.d.ts
++++ b/node_modules/@types/react-relay/relay-hooks/EntryPointTypes.d.ts
+@@ -2,7 +2,6 @@ import { ComponentType } from 'react';
+ import {
+     CacheConfig,
+     ConcreteRequest,
+-    DisposeFn,
+     GraphQLResponse,
+     IEnvironment,
+     Observable,
+@@ -60,7 +59,7 @@ export interface PreloadedQuery<
+         name: string;
+         source?: Observable<GraphQLResponse> | null | undefined;
+         variables: VariablesOf<TQuery>;
+-        dispose: DisposeFn;
++        dispose: any;
+         isDisposed: boolean;
+     }> {}
+ 
+@@ -188,7 +187,7 @@ export type PreloadedEntryPoint<TEntryPointComponent> = TEntryPointComponent ext
+     infer TExtraProps
+ >
+     ? Readonly<{
+-          dispose: DisposeFn;
++          dispose: any;
+           entryPoints: TPreloadedEntryPoints;
+           extraProps: TExtraProps;
+           getComponent: () => TEntryPointComponent;
+diff --git a/node_modules/@types/react-relay/relay-hooks/useLoadMoreFunction.d.ts b/node_modules/@types/react-relay/relay-hooks/useLoadMoreFunction.d.ts
+index ffe078b..3698004 100755
+--- a/node_modules/@types/react-relay/relay-hooks/useLoadMoreFunction.d.ts
++++ b/node_modules/@types/react-relay/relay-hooks/useLoadMoreFunction.d.ts
+@@ -1,7 +1,6 @@
+ import {
+     ConcreteRequest,
+     Disposable,
+-    DisposeFn,
+     GraphQLResponse,
+     Observer,
+     OperationType,
+@@ -38,7 +37,7 @@ export interface UseLoadMoreFunctionArgs {
+ export function useLoadMoreFunction<TQuery extends OperationType>(
+     args: UseLoadMoreFunctionArgs,
+ ): // tslint:disable-next-line no-unnecessary-generics
+-[LoadMoreFn<TQuery>, boolean, DisposeFn];
++[LoadMoreFn<TQuery>, boolean, any];
+ 
+ export function getConnectionState(
+     direction: Direction,
+diff --git a/node_modules/@types/react-relay/relay-hooks/useQueryLoader.d.ts b/node_modules/@types/react-relay/relay-hooks/useQueryLoader.d.ts
+index 9e38037..99e8a5d 100755
+--- a/node_modules/@types/react-relay/relay-hooks/useQueryLoader.d.ts
++++ b/node_modules/@types/react-relay/relay-hooks/useQueryLoader.d.ts
+@@ -1,10 +1,10 @@
+-import { DisposeFn, GraphQLTaggedNode, OperationType, VariablesOf, IEnvironment } from 'relay-runtime';
++import { GraphQLTaggedNode, OperationType, VariablesOf, IEnvironment } from 'relay-runtime';
+ import { LoadQueryOptions, PreloadableConcreteRequest, PreloadedQuery } from './EntryPointTypes';
+ 
+ export type useQueryLoaderHookType<TQuery extends OperationType> = [
+     PreloadedQuery<TQuery> | null | undefined,
+     (variables: VariablesOf<TQuery>, options?: UseQueryLoaderLoadQueryOptions) => void,
+-    DisposeFn,
++    any,
+ ];
+ 
+ export type UseQueryLoaderLoadQueryOptions = LoadQueryOptions & Readonly<{

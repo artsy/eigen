@@ -1,6 +1,6 @@
 import { ViewingRoomsHomeRail_viewingRooms } from "__generated__/ViewingRoomsHomeRail_viewingRooms.graphql"
 import { ViewingRoomsHomeRailQuery } from "__generated__/ViewingRoomsHomeRailQuery.graphql"
-import { ViewingRoomsListFeatured_featured } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
+import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -12,14 +12,14 @@ import _ from "lodash"
 import { Flex, MediumCard, Sans, Spacer, Touchable } from "palette"
 import React, { Suspense } from "react"
 import { FlatList } from "react-native"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
-import { FeaturedRail, tracks as featuredTracks } from "./ViewingRoomsListFeatured"
+import { featuredFragment, FeaturedRail, tracks as featuredTracks } from "./ViewingRoomsListFeatured"
 import { tagForStatus } from "./ViewingRoomsListItem"
 
 interface ViewingRoomsHomeMainRailProps {
-  featured: ViewingRoomsListFeatured_featured
+  featured: ViewingRoomsListFeatured_featured$key
   title: string
   mb?: number
 }
@@ -27,8 +27,8 @@ interface ViewingRoomsHomeMainRailProps {
 export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> = ({ featured, title, mb }) => {
   const { trackEvent } = useTracking()
 
-  // const featuredData = useFragment(featuredFragment, featured)
-  const featuredLength = extractNodes(featured).length
+  const featuredData = useFragment(featuredFragment, featured)
+  const featuredLength = extractNodes(featuredData).length
 
   return (
     <Flex mb={mb}>
