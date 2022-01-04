@@ -15,8 +15,6 @@ export const MyCollectionArtworkFormArtist: React.FC<StackScreenProps<ArtworkFor
   route,
   navigation,
 }) => {
-  const modalType = route.params.mode
-  const addOrEditLabel = modalType === "edit" ? "Edit" : "Add"
   const tracking = useTracking()
   const handleResultPress = async (result: AutosuggestResult) => {
     tracking.trackEvent(tracks.tappedArtist({ artistSlug: result.slug, artistId: result.slug }))
@@ -27,7 +25,7 @@ export const MyCollectionArtworkFormArtist: React.FC<StackScreenProps<ArtworkFor
   return (
     <>
       <FancyModalHeader hideBottomDivider onLeftButtonPress={route.params.onHeaderBackButtonPress}>
-        {addOrEditLabel} Artwork{" "}
+        Select an Artist
       </FancyModalHeader>
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
         <ScreenMargin>
