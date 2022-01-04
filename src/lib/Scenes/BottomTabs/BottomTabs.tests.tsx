@@ -4,6 +4,7 @@ import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalS
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
+import { act, ReactTestRenderer } from "react-test-renderer"
 import useInterval from "react-use/lib/useInterval"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { BottomTabs } from "./BottomTabs"
@@ -65,19 +66,25 @@ describe(BottomTabs, () => {
     expect((inboxButton!.props as ButtonProps).badgeCount).toBe(4)
 
     // need to prevent this test's requests from leaking into the next test
-    await flushPromiseQueue()
+    await act(async () => {
+      await flushPromiseQueue()
+    })
   })
 
   it(`fetches the current unread conversation count on mount`, async () => {
     const tree = renderWithWrappers(<TestWrapper />)
 
-    await flushPromiseQueue()
+    await act(async () => {
+      await flushPromiseQueue()
+    })
 
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
 
     resolveUnreadConversationCountQuery(5)
 
-    await flushPromiseQueue()
+    await act(async () => {
+      await flushPromiseQueue()
+    })
 
     const inboxButton = tree.root
       .findAllByType(BottomTabsButton)
@@ -89,36 +96,58 @@ describe(BottomTabs, () => {
   it(`sets the application icon badge count`, async () => {
     renderWithWrappers(<TestWrapper />)
 
-    await flushPromiseQueue()
+    await act(async () => {
+      await flushPromiseQueue()
+    })
 
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
     resolveUnreadConversationCountQuery(9)
 
-    await flushPromiseQueue()
+    await act(async () => {
+      await flushPromiseQueue()
+    })
 
     expect(LegacyNativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber).toHaveBeenCalledWith(9)
   })
 
   it(`fetches the current unread conversation count once in a while`, async () => {
-    const tree = renderWithWrappers(<TestWrapper />)
+    let tree: ReactTestRenderer | null = null
+    act(() => {
+      tree = renderWithWrappers(<TestWrapper />)
+    })
+
     expect(useInterval).toHaveBeenCalledWith(expect.any(Function), expect.any(Number))
-    await flushPromiseQueue()
+
+    await act(async () => {
+      await flushPromiseQueue()
+    })
 
     resolveUnreadConversationCountQuery(1)
 
     const intervalCallback = (useInterval as jest.Mock).mock.calls[0][0]
 
-    await flushPromiseQueue()
+    await act(async () => {
+      await flushPromiseQueue()
+    })
+
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(0)
-    intervalCallback()
-    await flushPromiseQueue()
+    act(() => intervalCallback())
+
+    await act(async () => {
+      await flushPromiseQueue()
+    })
+
     expect(mockRelayEnvironment.mock.getAllOperations()).toHaveLength(1)
 
-    // resolveUnreadConversationCountQuery(3)
+    resolveUnreadConversationCountQuery(3)
 
-    await flushPromiseQueue()
+    await act(async () => {
+      await flushPromiseQueue()
+    })
+    // @ts-ignore
     const inboxButton = tree.root
       .findAllByType(BottomTabsButton)
+      // @ts-ignore
       .find((button) => (button.props as ButtonProps).tab === "inbox")
 
     expect((inboxButton!.props as ButtonProps).badgeCount).toBe(3)

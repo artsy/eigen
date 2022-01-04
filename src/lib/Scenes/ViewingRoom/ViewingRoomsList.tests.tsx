@@ -1,3 +1,4 @@
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { RelayEnvironmentProvider } from "react-relay"
@@ -19,7 +20,7 @@ describe("ViewingRoomsList", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  it("renders viewing rooms", () => {
+  it("renders viewing rooms", async () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -36,6 +37,9 @@ describe("ViewingRoomsList", () => {
         }),
       })
     )
+
+    await flushPromiseQueue()
+
     expect(tree.root.findAllByType(ViewingRoomsListItem).length).toBeGreaterThanOrEqual(2)
   })
 })

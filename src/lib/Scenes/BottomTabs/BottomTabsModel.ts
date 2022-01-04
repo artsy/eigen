@@ -44,7 +44,9 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
         `,
         {},
         { force: true }
-      )
+        // @ts-ignore
+      ).toPromise()
+
       if (result?.me?.unreadConversationCount != null) {
         GlobalStore.actions.bottomTabs.unreadConversationCountChanged(result.me.unreadConversationCount)
         GlobalStore.actions.native.setApplicationIconBadgeNumber(result.me.unreadConversationCount)
