@@ -4249,14 +4249,6 @@
     color "^3.1.3"
     react-native-iphone-x-helper "^1.3.0"
 
-"@restart/hooks@^0.3.1":
-  version "0.3.25"
-  resolved "https://registry.yarnpkg.com/@restart/hooks/-/hooks-0.3.25.tgz#11004139ad1c70d2f5965a8939dcb5aeb96aa652"
-  integrity sha512-m2v3N5pxTsIiSH74/sb1yW8D9RxkJidGW+5Mfwn/lHb2QzhZNlaU1su7abSyT9EGf0xS/0waLjrf7/XxQHUk7w==
-  dependencies:
-    lodash "^4.17.15"
-    lodash-es "^4.17.15"
-
 "@segment/analytics-react-native-adjust@1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@segment/analytics-react-native-adjust/-/analytics-react-native-adjust-1.5.0.tgz#73d721ef9b7462648a8b02d628e798a3f56bf1e4"
@@ -13270,7 +13262,7 @@ locate-path@^6.0.0:
   dependencies:
     p-locate "^5.0.0"
 
-lodash-es@^4.17.11, lodash-es@^4.17.15:
+lodash-es@^4.17.11:
   version "4.17.15"
   resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
   integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
@@ -17232,14 +17224,6 @@ relay-config@12.0.1:
   integrity sha512-vq7GLLsGPpb/tZr9kmfbfe5sLO1cGa67jpCp4Xtk+N98fMInCu9YIH8R/FxxUhKVPnpLQf3ecmz+s+/MjzcnTQ==
   dependencies:
     cosmiconfig "^5.0.5"
-
-relay-hooks@3.5.2:
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/relay-hooks/-/relay-hooks-3.5.2.tgz#98035099988e8f87a3369f3a8a4531068d59bafe"
-  integrity sha512-zqtSajxbNCLRQV9t5mBu1LcLbVjTpdNhhxzCWPVtWYvwiXFgx/8tuC3hFYP8EF7l3ogwlqt5rcswK6xmONC81Q==
-  dependencies:
-    "@restart/hooks" "^0.3.1"
-    fbjs "^1.0.0"
 
 relay-mock-network-layer@3.0.0:
   version "3.0.0"

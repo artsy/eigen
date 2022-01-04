@@ -72,7 +72,7 @@ return {
         "path": (v0/*: any*/)
       },
       "fragmentPathInResult": [],
-      "operation": require('./ArticlesRefetchQuery.graphql')
+      "operation": require('./Articles_articlesConnectionRefetch.graphql')
     }
   },
   "name": "Articles_articlesConnection",
@@ -184,5 +184,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '2ccffcb0b80812d54731bf52175020bd';
+(node as any).hash = '79e854c38e6564d097a61a77537a97e7';
 export default node;

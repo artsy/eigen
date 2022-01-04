@@ -1,29 +1,29 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 59e0b28a7834abb8b8353d3284edc96a */
+/* @relayHash ba91e7e97498794562008484b11500df */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArticleSorts = "PUBLISHED_AT_ASC" | "PUBLISHED_AT_DESC" | "%future added value";
-export type ArticlesRefetchQueryVariables = {
+export type Articles_articlesConnectionRefetchVariables = {
     after?: string | null | undefined;
     count?: number | null | undefined;
     inEditorialFeed?: boolean | null | undefined;
     sort?: ArticleSorts | null | undefined;
 };
-export type ArticlesRefetchQueryResponse = {
+export type Articles_articlesConnectionRefetchResponse = {
     readonly " $fragmentRefs": FragmentRefs<"Articles_articlesConnection">;
 };
-export type ArticlesRefetchQuery = {
-    readonly response: ArticlesRefetchQueryResponse;
-    readonly variables: ArticlesRefetchQueryVariables;
+export type Articles_articlesConnectionRefetch = {
+    readonly response: Articles_articlesConnectionRefetchResponse;
+    readonly variables: Articles_articlesConnectionRefetchVariables;
 };
 
 
 
 /*
-query ArticlesRefetchQuery(
+query Articles_articlesConnectionRefetch(
   $after: String
   $count: Int = 10
   $inEditorialFeed: Boolean
@@ -127,7 +127,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "ArticlesRefetchQuery",
+    "name": "Articles_articlesConnectionRefetch",
     "selections": [
       {
         "args": [
@@ -151,7 +151,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "ArticlesRefetchQuery",
+    "name": "Articles_articlesConnectionRefetch",
     "selections": [
       {
         "alias": null,
@@ -319,13 +319,13 @@ return {
     ]
   },
   "params": {
-    "id": "59e0b28a7834abb8b8353d3284edc96a",
+    "id": "ba91e7e97498794562008484b11500df",
     "metadata": {},
-    "name": "ArticlesRefetchQuery",
+    "name": "Articles_articlesConnectionRefetch",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '2ccffcb0b80812d54731bf52175020bd';
+(node as any).hash = '79e854c38e6564d097a61a77537a97e7';
 export default node;

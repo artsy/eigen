@@ -1,3 +1,4 @@
+import { Articles_articlesConnection$key } from "__generated__/Articles_articlesConnection.graphql"
 import { ArticleSorts, ArticlesQuery } from "__generated__/ArticlesQuery.graphql"
 import { extractNodes } from "lib/utils/extractNodes"
 import React, { Suspense, useState } from "react"
@@ -8,10 +9,10 @@ import { ArticlesList, ArticlesPlaceholder } from "./ArticlesList"
 export const Articles: React.FC = () => {
   const queryData = useLazyLoadQuery<ArticlesQuery>(ArticlesScreenQuery, articlesQueryVariables)
 
-  const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<ArticlesQuery, any>(
-    articlesConnectionFragment,
-    queryData
-  )
+  const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
+    ArticlesQuery,
+    Articles_articlesConnection$key
+  >(articlesConnectionFragment, queryData)
 
   const [refreshing, setRefreshing] = useState(false)
 
@@ -65,7 +66,7 @@ export const articlesQueryVariables = {
 
 const articlesConnectionFragment = graphql`
   fragment Articles_articlesConnection on Query
-  @refetchable(queryName: "ArticlesRefetchQuery")
+  @refetchable(queryName: "Articles_articlesConnectionRefetch")
   @argumentDefinitions(
     count: { type: "Int", defaultValue: 10 }
     after: { type: "String" }

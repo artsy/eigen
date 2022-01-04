@@ -7,7 +7,7 @@ import { SaleBelowTheFoldQuery } from "__generated__/SaleBelowTheFoldQuery.graph
 import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { LoadFailureView } from "lib/Components/LoadFailureView"
-import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
+import { RetryErrorBoundaryLegacy } from "lib/Components/RetryErrorBoundary"
 import Spinner from "lib/Components/Spinner"
 import { navigate, popParentViewController } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -359,7 +359,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayMo
   }, [])
 
   return (
-    <RetryErrorBoundary
+    <RetryErrorBoundaryLegacy
       render={({ isRetry }) => {
         return (
           <AboveTheFoldQueryRenderer<SaleAboveTheFoldQuery, SaleBelowTheFoldQuery>

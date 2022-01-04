@@ -3,7 +3,7 @@ import React from "react"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
-import { ViewingRoomsListQueryRenderer } from "./ViewingRoomsList"
+import { ViewingRoomsListScreen } from "./ViewingRoomsList"
 
 jest.unmock("react-relay")
 
@@ -11,7 +11,7 @@ describe("ViewingRoomsList", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <ViewingRoomsListQueryRenderer />
+      <ViewingRoomsListScreen />
     </RelayEnvironmentProvider>
   )
 

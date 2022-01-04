@@ -99,7 +99,7 @@ import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkScreen } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
-import { ViewingRoomsListQueryRenderer, ViewingRoomsListScreenQuery } from "./Scenes/ViewingRoom/ViewingRoomsList"
+import { ViewingRoomsListScreen, ViewingRoomsListScreenQuery } from "./Scenes/ViewingRoom/ViewingRoomsList"
 import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { AdminMenu } from "./utils/AdminMenu"
@@ -388,7 +388,7 @@ export const modules = defineModules({
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
   ViewingRoomArtwork: reactModule(ViewingRoomArtworkScreen),
   ViewingRoomArtworks: reactModule(ViewingRoomArtworksQueryRenderer),
-  ViewingRooms: reactModule(ViewingRoomsListQueryRenderer, {}, ViewingRoomsListScreenQuery),
+  ViewingRooms: reactModule(ViewingRoomsListScreen, {}, ViewingRoomsListScreenQuery),
   Checkout: reactModule(Checkout, {
     hasOwnModalCloseButton: true,
   }),

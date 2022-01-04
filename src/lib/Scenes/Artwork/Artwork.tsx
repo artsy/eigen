@@ -5,7 +5,7 @@ import { Artwork_me } from "__generated__/Artwork_me.graphql"
 import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery.graphql"
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
-import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
+import { RetryErrorBoundaryLegacy } from "lib/Components/RetryErrorBoundary"
 import { navigationEvents } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
@@ -480,7 +480,7 @@ export const ArtworkQueryRenderer: React.FC<{
   tracking?: TrackingProp
 }> = ({ artworkID, environment, ...others }) => {
   return (
-    <RetryErrorBoundary
+    <RetryErrorBoundaryLegacy
       render={({ isRetry }) => {
         return (
           <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>

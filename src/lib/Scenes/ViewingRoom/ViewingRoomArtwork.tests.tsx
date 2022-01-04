@@ -2,7 +2,7 @@ import { navigate } from "lib/navigation/navigate"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Button } from "palette"
 import React from "react"
-import { RelayEnvironmentProvider } from "relay-hooks"
+import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ViewingRoomArtworkScreen } from "./ViewingRoomArtwork"
 
