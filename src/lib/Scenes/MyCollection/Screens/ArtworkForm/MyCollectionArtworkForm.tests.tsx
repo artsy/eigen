@@ -1,6 +1,7 @@
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Image } from "react-native-image-crop-picker"
+import { RelayEnvironmentProvider } from "react-relay"
 import { MyCollectionArtworkForm, MyCollectionArtworkFormProps, updateArtwork } from "./MyCollectionArtworkForm"
 
 jest.mock("lib/Scenes/Consignments/Submission/geminiUploadToS3", () => ({
@@ -21,7 +22,6 @@ import {
 import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { act } from "react-test-renderer"
-import { RelayEnvironmentProvider } from "relay-hooks"
 import { createMockEnvironment } from "relay-test-utils"
 import * as artworkMutations from "../../mutations/myCollectionAddArtwork"
 import { ArtworkFormValues } from "../../State/MyCollectionArtworkModel"
