@@ -71,7 +71,12 @@ export const ArtworkAutosuggestResultsPaginationContainer = createPaginationCont
           @connection(key: "ArtworkAutosuggestResults_artworks") {
           edges {
             node {
+              title
               id
+              slug
+              image {
+                aspectRatio
+              }
             }
           }
           ...InfiniteScrollArtworksGrid_connection

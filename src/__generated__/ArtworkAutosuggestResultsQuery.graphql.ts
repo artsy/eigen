@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 187a6f6f8aaf5a01d3781c2763bf3657 */
+/* @relayHash fb40ce83891a33a40497b36c4bd5c924 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -90,7 +90,12 @@ fragment ArtworkAutosuggestResults_viewer_wRDQt on Viewer {
   artworks: artworksConnection(first: $count, after: $cursor, keyword: $keyword, input: $input) {
     edges {
       node {
+        title
         id
+        slug
+        image {
+          aspectRatio
+        }
         __typename
       }
       cursor
@@ -311,7 +316,39 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "title",
+                        "storageKey": null
+                      },
                       (v7/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "slug",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Image",
+                        "kind": "LinkedField",
+                        "name": "image",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "aspectRatio",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
                       (v8/*: any*/)
                     ],
                     "storageKey": null
@@ -393,25 +430,11 @@ return {
                           {
                             "alias": null,
                             "args": null,
-                            "kind": "ScalarField",
-                            "name": "slug",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
                             "concreteType": "Image",
                             "kind": "LinkedField",
                             "name": "image",
                             "plural": false,
                             "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "aspectRatio",
-                                "storageKey": null
-                              },
                               {
                                 "alias": null,
                                 "args": [
@@ -426,13 +449,6 @@ return {
                                 "storageKey": "url(version:\"large\")"
                               }
                             ],
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "title",
                             "storageKey": null
                           },
                           {
@@ -623,7 +639,7 @@ return {
     ]
   },
   "params": {
-    "id": "187a6f6f8aaf5a01d3781c2763bf3657",
+    "id": "fb40ce83891a33a40497b36c4bd5c924",
     "metadata": {},
     "name": "ArtworkAutosuggestResultsQuery",
     "operationKind": "query",
