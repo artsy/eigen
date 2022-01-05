@@ -169,7 +169,10 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
 
   const onHeaderBackButtonPress = () => {
     const currentRoute = navContainerRef.current?.getCurrentRoute()
-    const isFirstScreen = props.mode === "edit" || !currentRoute?.name || currentRoute?.name === "ArtworkFormArtist"
+    const isFirstScreen =
+      (props.mode === "edit" && currentRoute?.name !== "AddPhotos") ||
+      !currentRoute?.name ||
+      currentRoute?.name === "ArtworkFormArtist"
 
     // clear and exit the form if we're on the first screen
     if (isFirstScreen) {
