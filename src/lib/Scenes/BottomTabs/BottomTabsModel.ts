@@ -43,8 +43,9 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
           }
         `,
         {},
-        { force: true }
-        // @ts-ignore: This can be removed once we upgrade to the Relay types.
+        {
+          fetchPolicy: "network-only",
+        }
       ).toPromise()
 
       if (result?.me?.unreadConversationCount != null) {

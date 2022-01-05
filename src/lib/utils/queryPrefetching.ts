@@ -43,7 +43,6 @@ const isRateLimited = async () => {
 const prefetchQuery = async (environment: Environment, query: GraphQLTaggedNode, variables: Variables = {}) => {
   const operation = createOperationDescriptor(getRequest(query), variables)
 
-  // @ts-ignore: This can be removed once we upgrade to the Relay types.
   const data = await fetchQuery(environment, query, variables).toPromise()
 
   // this will retain the result in the relay store so it's not garbage collected.

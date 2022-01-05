@@ -18,6 +18,30 @@ index 7af27e4..531ab37 100644
 +
 +export type FetchPolicy = 'store-only' | 'store-or-network' | 'store-and-network' | 'network-only';
 +export type RenderPolicy = 'full' | 'partial';
+diff --git a/node_modules/@types/relay-runtime/lib/query/fetchQuery.d.ts b/node_modules/@types/relay-runtime/lib/query/fetchQuery.d.ts
+index a8e6fc7..2b211d9 100644
+--- a/node_modules/@types/relay-runtime/lib/query/fetchQuery.d.ts
++++ b/node_modules/@types/relay-runtime/lib/query/fetchQuery.d.ts
+@@ -1,10 +1,15 @@
+ import { OperationType, CacheConfig } from '../util/RelayRuntimeTypes';
+ import { Environment } from '../store/RelayStoreTypes';
+ import { GraphQLTaggedNode } from './RelayModernGraphQLTag';
++import { RelayObservable } from 'react-relay-network-modern/node8';
++import { FetchQueryFetchPolicy } from '../../../../../typings/relay-runtime';
+ 
+ export function fetchQuery<T extends OperationType>(
+     environment: Environment,
+     taggedNode: GraphQLTaggedNode,
+-    variables: T['variables'],
+-    cacheConfig?: CacheConfig | null,
+-): Promise<T['response']>;
++    variables: T["variables"],
++    cacheConfig?: {
++      networkCacheConfig?: CacheConfig | null | undefined
++      fetchPolicy?: FetchQueryFetchPolicy | null | undefined
++    } | null
++  ): RelayObservable<T["response"]>
+\ No newline at end of file
 diff --git a/node_modules/@types/relay-runtime/lib/util/RelayRuntimeTypes.d.ts b/node_modules/@types/relay-runtime/lib/util/RelayRuntimeTypes.d.ts
 index 3d68c20..fb46c12 100644
 --- a/node_modules/@types/relay-runtime/lib/util/RelayRuntimeTypes.d.ts

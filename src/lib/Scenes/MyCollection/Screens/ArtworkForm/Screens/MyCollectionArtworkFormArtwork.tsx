@@ -120,8 +120,7 @@ const fetchArtwork = async (artworkID: string): Promise<MyCollectionArtworkFormA
       }
     `,
     { artworkID }
-    // @ts-ignore: This can be removed once we upgrade to the Relay types.
   ).toPromise()
 
-  return result.artwork
+  return (result as MyCollectionArtworkFormArtworkQueryResponse).artwork
 }

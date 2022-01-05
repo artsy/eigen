@@ -21,16 +21,19 @@ const fetchSystemTime = () =>
       }
     `,
     {},
-    { force: true }
-    // @ts-ignore: This can be removed once we upgrade to the Relay types.
+    {
+      fetchPolicy: "network-only",
+    }
   ).toPromise()
 
 const getGravityTimestampInMilliSeconds = async () => {
   const startTime = getLocalTimestampInMilliSeconds()
-  const { system } = await fetchSystemTime()
+  const systemTimeResponse = await fetchSystemTime()
+
+  const system = systemTimeResponse?.system
 
   const possibleNetworkLatencyInMilliSeconds = (getLocalTimestampInMilliSeconds() - startTime) / 2
-  const serverTimestampInMilliSeconds = system.time.unix * 1e3 + possibleNetworkLatencyInMilliSeconds
+  const serverTimestampInMilliSeconds = (system?.time?.unix || 0) * 1e3 + possibleNetworkLatencyInMilliSeconds
 
   if (__DEV__) {
     if (typeof jest === "undefined") {

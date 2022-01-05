@@ -283,3 +283,13 @@ React native is not able to convert js functions so this is passed as null to th
 See what can be converted: https://github.com/facebook/react-native/blob/main/React/Base/RCTConvert.h
 
 PropsStore allows us to temporarily hold on the props and reinject them back into the destination view or module.
+
+## typings/relay-runtime.d.ts & patches/@types+relay-runtime+8.0.6.patch
+
+#### When can we remove this:
+
+When we upgrade the relay-runtime.
+
+#### Explanation/Context:
+
+We still rely on the old relay-runtime types (8.0.6) because of type missmatches when upgrading to relay 12.0.0. These patches add correct typing for Relay's `fetchQuery`.

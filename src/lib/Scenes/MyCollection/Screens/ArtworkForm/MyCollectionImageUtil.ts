@@ -37,6 +37,10 @@ export const uploadPhotos = async (photos: ArtworkFormValues["photos"]) => {
 
   for (const path of imagePaths) {
     const url = await getConvertedImageUrlFromS3(path)
+    if (!url) {
+      console.error(`Could not get converted image url for ${path}`)
+      continue
+    }
     externalImageUrls.push(url)
   }
   return externalImageUrls

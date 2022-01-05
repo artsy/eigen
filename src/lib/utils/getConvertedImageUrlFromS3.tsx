@@ -7,6 +7,12 @@ import {
 export async function getConvertedImageUrlFromS3(imagePath: string) {
   const convectionKey = await getConvectionGeminiKey()
   const acl = "private"
+
+  if (!convectionKey) {
+    console.error("Couldn't get convection key")
+    return
+  }
+
   const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
   const bucket = assetCredentials.policyDocument.conditions.bucket
   const s3 = await uploadFileToS3(imagePath, acl, assetCredentials)

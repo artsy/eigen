@@ -9,6 +9,11 @@ import {
 export const uploadImageAndPassToGemini = async (file: string, acl: string, submissionID: string) => {
   const convectionKey = await getConvectionGeminiKey()
 
+  if (!convectionKey) {
+    console.error("Could not get convection key")
+    return
+  }
+
   // Get S3 Credentials from Gemini
   const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey })
 
