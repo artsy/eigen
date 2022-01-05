@@ -66,6 +66,7 @@ describe("explicitlyClearedFields", () => {
         artworkLocation: "some-location",
         photos: [],
         provenance: "some-provenance",
+        attributionClass: "Unique",
       }
     }
 

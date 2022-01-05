@@ -5,17 +5,17 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Artwork_artworkBelowTheFold = {
-    readonly additional_information: string | null;
+    readonly additionalInformation: string | null;
     readonly description: string | null;
     readonly provenance: string | null;
-    readonly exhibition_history: string | null;
+    readonly exhibitionHistory: string | null;
     readonly literature: string | null;
     readonly partner: {
         readonly type: string | null;
         readonly id: string;
     } | null;
     readonly artist: {
-        readonly biography_blurb: {
+        readonly biographyBlurb: {
             readonly text: string | null;
         } | null;
         readonly artistSeriesConnection: {
@@ -46,7 +46,7 @@ export type Artwork_artworkBelowTheFold = {
     readonly series: string | null;
     readonly publisher: string | null;
     readonly manufacturer: string | null;
-    readonly image_rights: string | null;
+    readonly imageRights: string | null;
     readonly context: ({
         readonly __typename: "Sale";
         readonly isAuction: boolean | null;
@@ -126,7 +126,7 @@ return {
   "name": "Artwork_artworkBelowTheFold",
   "selections": [
     {
-      "alias": "additional_information",
+      "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "additionalInformation",
@@ -147,7 +147,7 @@ return {
       "storageKey": null
     },
     {
-      "alias": "exhibition_history",
+      "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "exhibitionHistory",
@@ -188,7 +188,7 @@ return {
       "plural": false,
       "selections": [
         {
-          "alias": "biography_blurb",
+          "alias": null,
           "args": null,
           "concreteType": "ArtistBlurb",
           "kind": "LinkedField",
@@ -346,7 +346,7 @@ return {
       "storageKey": null
     },
     {
-      "alias": "image_rights",
+      "alias": null,
       "args": null,
       "kind": "ScalarField",
       "name": "imageRights",
@@ -540,5 +540,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '30f25615a303c3c2dde099834bad0a23';
+(node as any).hash = '61acd3e57d83cc3aaa694365dc3d6b77';
 export default node;

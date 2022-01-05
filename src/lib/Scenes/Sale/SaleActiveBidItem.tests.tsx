@@ -15,6 +15,8 @@ jest.unmock("react-relay")
 describe("SaleActiveBidItem", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
+  const futureDate = () => new Date(new Date().getTime() + 1000000000).toISOString()
+
   const lotStanding = {
     activeBid: {
       isWinning: true,
@@ -37,7 +39,7 @@ describe("SaleActiveBidItem", () => {
       },
     },
     sale: {
-      liveStartAt: "2022-01-01T01:03:00+01:00",
+      liveStartAt: futureDate(),
     },
   }
 

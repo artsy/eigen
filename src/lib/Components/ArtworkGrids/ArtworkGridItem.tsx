@@ -15,12 +15,11 @@ import { useTracking } from "react-tracking"
 
 export interface ArtworkProps {
   artwork: ArtworkGridItem_artwork
-  // If it's not provided, then it will push just the one artwork
-  // to the switchboard.
+  /** Overrides onPress and prevents the default behaviour. */
   onPress?: (artworkID: string) => void
   trackingFlow?: string
   contextModule?: string
-  // Pass Tap to override generic ing, used for home tracking in rails
+  /** Pass Tap to override generic ing, used for home tracking in rails */
   trackTap?: (artworkSlug: string, index?: number) => void
   itemIndex?: number
   // By default, we don't track clicks from the grid unless you pass in a contextScreenOwnerType.
@@ -29,20 +28,22 @@ export interface ArtworkProps {
   contextScreenOwnerSlug?: string
   contextScreenQuery?: string
   contextScreen?: string
-  // Hide urgency tags (3 Days left, 1 hour left)
+  /** Hide urgency tags (3 Days left, 1 hour left) */
   hideUrgencyTags?: boolean
-  // Hide partner name
+  /** Hide partner name */
   hidePartner?: boolean
-  // Show the lot number (Lot 213)
+  /** Hide sale info */
+  hideSaleInfo?: boolean
+  /** Show the lot number (Lot 213) */
   showLotLabel?: boolean
-  // styles for each field: allows for customization of each field
+  /** styles for each field: allows for customization of each field */
   urgencyTagTextStyle?: TextProps
   lotLabelTextStyle?: TextProps
   artistNamesTextStyle?: TextProps
   titleTextStyle?: TextProps
   saleInfoTextStyle?: TextProps
   partnerNameTextStyle?: TextProps
-  // allows for artwork to be added to recent searches
+  /** allows for artwork to be added to recent searches */
   updateRecentSearchesOnTap?: boolean
 }
 
@@ -58,6 +59,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   contextScreen,
   hideUrgencyTags = false,
   hidePartner = false,
+  hideSaleInfo = false,
   showLotLabel = false,
   urgencyTagTextStyle,
   lotLabelTextStyle,
@@ -95,9 +97,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
   }
 
   const handleTap = () => {
+    if (onPress) {
+      return onPress(artwork.slug)
+    }
+
     addArtworkToRecentSearches()
     trackArtworkTap()
-    onPress && artwork.slug ? onPress(artwork.slug) : navigate(artwork.href!)
+    navigate(artwork.href!)
   }
 
   const trackArtworkTap = () => {
@@ -126,7 +132,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const urgencyTag = getUrgencyTag(artwork?.sale?.endAt)
 
   return (
-    <Touchable onPress={() => handleTap()}>
+    <Touchable onPress={handleTap}>
       <View ref={itemRef}>
         {!!artwork.image && (
           <View>
@@ -173,7 +179,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
               {artwork.partner.name}
             </Text>
           )}
-          {!!saleInfo && (
+          {!!saleInfo && !hideSaleInfo && (
             <Text lineHeight="18" variant="xs" weight="medium" numberOfLines={1} {...saleInfoTextStyle}>
               {saleInfo}
             </Text>

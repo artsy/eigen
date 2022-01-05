@@ -11,7 +11,6 @@ import {
 } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import React, { useCallback, useRef, useState } from "react"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { CreateSavedSearchContent } from "../Components/CreateSavedSearchContent"
@@ -40,7 +39,6 @@ interface CreateSavedSearchAlertContentProps
 
 const Container: React.FC<CreateSavedSearchAlertContentProps> = (props) => {
   const { me, loading, relay, criteria, navigation, ...other } = props
-  const enableSavedSearchToggles = useFeatureFlag("AREnableSavedSearchToggles")
   const isPreviouslyFocused = useRef(false)
   const [refetching, setRefetching] = useState(false)
   const isPreviouslySaved = !!me?.savedSearch?.internalID
@@ -64,12 +62,12 @@ const Container: React.FC<CreateSavedSearchAlertContentProps> = (props) => {
   // make refetch only when toggles are displayed
   useFocusEffect(
     useCallback(() => {
-      if (enableSavedSearchToggles && isPreviouslyFocused.current) {
+      if (isPreviouslyFocused.current) {
         refetch()
       }
 
       isPreviouslyFocused.current = true
-    }, [enableSavedSearchToggles])
+    }, [])
   )
 
   return (

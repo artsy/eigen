@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 10fc1913caed3340aa7b2f644d32588a */
+/* @relayHash 8dc3e3c3af8522fd2d34df4db9ad239c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -35,6 +35,7 @@ export type AutosuggestResultsQueryRawResponse = {
                 readonly __isNode: "Artist";
                 readonly id: string;
                 readonly internalID: string;
+                readonly formattedNationalityAndBirthday: string | null;
                 readonly slug: string;
                 readonly statuses: ({
                     readonly artworks: boolean | null;
@@ -88,6 +89,7 @@ fragment AutosuggestResults_results_2KyZFR on Query {
         }
         ... on Artist {
           internalID
+          formattedNationalityAndBirthday
           slug
           statuses {
             artworks
@@ -273,6 +275,13 @@ return {
                     "kind": "InlineFragment",
                     "selections": [
                       (v6/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "formattedNationalityAndBirthday",
+                        "storageKey": null
+                      },
                       (v7/*: any*/),
                       {
                         "alias": null,
@@ -374,7 +383,7 @@ return {
     ]
   },
   "params": {
-    "id": "10fc1913caed3340aa7b2f644d32588a",
+    "id": "8dc3e3c3af8522fd2d34df4db9ad239c",
     "metadata": {},
     "name": "AutosuggestResultsQuery",
     "operationKind": "query",

@@ -7,7 +7,7 @@ import { FragmentRefs } from "relay-runtime";
 export type AboutArtist_artwork = {
     readonly artists: ReadonlyArray<{
         readonly id: string;
-        readonly biography_blurb: {
+        readonly biographyBlurb: {
             readonly text: string | null;
         } | null;
         readonly " $fragmentRefs": FragmentRefs<"ArtistListItem_artist">;
@@ -44,7 +44,7 @@ const node: ReaderFragment = {
           "storageKey": null
         },
         {
-          "alias": "biography_blurb",
+          "alias": null,
           "args": null,
           "concreteType": "ArtistBlurb",
           "kind": "LinkedField",
@@ -73,5 +73,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = '7192b5741db2f031a7916f7289488406';
+(node as any).hash = '26f6eabf2f6f784d4f380c4aa0dd2874';
 export default node;

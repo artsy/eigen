@@ -1,36 +1,22 @@
-import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
-import { GlobalStore } from "lib/store/GlobalStore"
-import { Button, Flex, Spacer, Text } from "palette"
+import { Avatar, Flex, Spacer, Text } from "palette"
 import React from "react"
 
 export const ArtistSearchResult: React.FC<{ result: AutosuggestResult }> = ({ result }) => {
   return (
     <Flex flexDirection="row" alignItems="center">
-      <OpaqueImageView
-        imageURL={result.imageUrl}
-        style={{ width: 40, height: 40, borderRadius: 2, overflow: "hidden" }}
-      />
+      <Avatar src={result.imageUrl || undefined} size="xs" />
       <Spacer ml="1" />
-      <Text
-        variant="md"
-        ellipsizeMode="tail"
-        numberOfLines={1}
-        testID="displayLabel"
-        style={{ flexShrink: 1, flexGrow: 1, overflow: "hidden" }}
-      >
-        {result.displayLabel}
-      </Text>
-      <Spacer ml="1" />
-      <Button
-        variant="fillGray"
-        size="small"
-        onPress={() => {
-          GlobalStore.actions.myCollection.artwork.setArtistSearchResult(null)
-        }}
-      >
-        Remove
-      </Button>
+      <Flex flex={1} flexDirection="column" justifyContent="center">
+        <Text variant="md" ellipsizeMode="tail" numberOfLines={1}>
+          {result.displayLabel}
+        </Text>
+        {!!result.formattedNationalityAndBirthday && (
+          <Text numberOfLines={1} color="black60" ellipsizeMode="tail">
+            {result.formattedNationalityAndBirthday}
+          </Text>
+        )}
+      </Flex>
     </Flex>
   )
 }
