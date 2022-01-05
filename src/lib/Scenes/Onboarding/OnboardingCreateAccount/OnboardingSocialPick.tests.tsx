@@ -8,9 +8,9 @@ import { OnboardingSocialPick } from "../OnboardingSocialPick"
 
 jest.mock("@react-navigation/native")
 
-describe("OnboardingSocialPick", () => {
-  const navigateMock = jest.fn()
+const navigateMock = jest.fn()
 
+describe("OnboardingSocialPick", () => {
   beforeEach(() => {
     ;(useNavigation as jest.Mock).mockReturnValue({
       setParams: jest.fn(),
@@ -72,9 +72,24 @@ describe("OnboardingSocialPick", () => {
 })
 
 describe("webView links ", () => {
-  describe("on Android", () => {
+  describe.only("on Android", () => {
     beforeEach(() => {
       Platform.OS = "android"
+      ;(useNavigation as jest.Mock).mockReturnValue({
+        navigate: navigateMock,
+      })
+    })
+
+    it("opens terms webView", () => {
+      const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
+      tree.root.findByProps({ testID: "openTerms" }).props.onPress()
+      expect(navigateMock).toHaveBeenCalledWith("Terms")
+    })
+
+    it("opens privacy webView", () => {
+      const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
+      tree.root.findByProps({ testID: "openPrivacy" }).props.onPress()
+      expect(navigateMock).toHaveBeenCalledWith("Privacy")
     })
   })
 })
@@ -84,13 +99,13 @@ describe("on iOS", () => {
     Platform.OS = "ios"
   })
 
-  it("opens terms webView", () => {
+  it("opens terms webView modaly", () => {
     const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
     tree.root.findByProps({ testID: "openTerms" }).props.onPress()
     expect(navigate).toHaveBeenCalledWith("/terms", { modal: true })
   })
 
-  it("opens privacy webView", () => {
+  it("opens privacy webView modaly", () => {
     const tree = renderWithWrappers(<OnboardingSocialPick mode="login" />)
     tree.root.findByProps({ testID: "openPrivacy" }).props.onPress()
     expect(navigate).toHaveBeenCalledWith("/privacy", { modal: true })
