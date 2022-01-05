@@ -144,7 +144,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
                 artworkActions.addPhotos(photos)
               })
             } else {
-              navigation.navigate("AddPhotos", { onHeaderBackButtonPress: route.params.onHeaderBackButtonPress })
+              navigation.navigate("AddPhotos")
             }
           }}
         />

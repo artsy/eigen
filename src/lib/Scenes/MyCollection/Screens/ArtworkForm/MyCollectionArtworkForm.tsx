@@ -54,9 +54,7 @@ export type ArtworkFormScreen = {
     onDelete(): void
     onHeaderBackButtonPress(): void
   }
-  AddPhotos: {
-    onHeaderBackButtonPress(): void
-  }
+  AddPhotos: undefined
 }
 
 export type MyCollectionArtworkFormProps = { onSuccess: () => void } & (
@@ -169,10 +167,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
 
   const onHeaderBackButtonPress = () => {
     const currentRoute = navContainerRef.current?.getCurrentRoute()
-    const isFirstScreen =
-      (props.mode === "edit" && currentRoute?.name !== "AddPhotos") ||
-      !currentRoute?.name ||
-      currentRoute?.name === "ArtworkFormArtist"
+    const isFirstScreen = props.mode === "edit" || !currentRoute?.name || currentRoute?.name === "ArtworkFormArtist"
 
     // clear and exit the form if we're on the first screen
     if (isFirstScreen) {
@@ -215,11 +210,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
             component={MyCollectionArtworkFormMain}
             initialParams={{ onDelete, clearForm, mode: props.mode, onHeaderBackButtonPress }}
           />
-          <Stack.Screen
-            name="AddPhotos"
-            component={MyCollectionAddPhotos}
-            initialParams={{ onHeaderBackButtonPress }}
-          />
+          <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />
         </Stack.Navigator>
         <LoadingModal isVisible={loading} />
       </FormikProvider>
