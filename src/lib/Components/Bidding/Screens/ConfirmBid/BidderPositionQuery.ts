@@ -1,8 +1,8 @@
-import { BidderPositionQuery } from "__generated__/BidderPositionQuery.graphql"
+import { BidderPositionQuery, BidderPositionQueryResponse } from "__generated__/BidderPositionQuery.graphql"
 import { defaultEnvironment as environment } from "lib/relay/createEnvironment"
 import { fetchQuery, graphql } from "relay-runtime"
 
-export const bidderPositionQuery = (bidderPositionID: string) => {
+export const bidderPositionQuery = (bidderPositionID: string): Promise<BidderPositionQueryResponse> => {
   return fetchQuery<BidderPositionQuery>(
     environment,
     graphql`
@@ -29,5 +29,6 @@ export const bidderPositionQuery = (bidderPositionID: string) => {
     {
       force: true,
     }
-  )
+    // @ts-ignore: This can be removed once we upgrade to the Relay types.
+  ).toPromise()
 }

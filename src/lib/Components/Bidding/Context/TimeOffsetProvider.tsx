@@ -22,14 +22,14 @@ const fetchSystemTime = () =>
     `,
     {},
     { force: true }
-  )
+    // @ts-ignore: This can be removed once we upgrade to the Relay types.
+  ).toPromise()
 
 const getGravityTimestampInMilliSeconds = async () => {
   const startTime = getLocalTimestampInMilliSeconds()
   const { system } = await fetchSystemTime()
 
   const possibleNetworkLatencyInMilliSeconds = (getLocalTimestampInMilliSeconds() - startTime) / 2
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   const serverTimestampInMilliSeconds = system.time.unix * 1e3 + possibleNetworkLatencyInMilliSeconds
 
   if (__DEV__) {

@@ -84,8 +84,11 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
           excludeArtistIDs: uniq(artists.map((a) => a.internalID).concat(dismissedArtistIds.current)),
           basedOnArtistId: basedOnArtist.internalID,
         }
-      )
+        // @ts-ignore: This can be removed once we upgrade to the Relay types.
+      ).toPromise()
+
       const artist = result.artist?.related?.suggestedConnection?.edges?.[0]?.node ?? null
+
       return (
         artist && {
           ...artist,

@@ -72,7 +72,8 @@ export default class Artist extends React.Component<Props, State> {
       `,
       { query },
       { force: true }
-    )
+      // @ts-ignore: This can be removed once we upgrade to the Relay types.
+    ).toPromise()
     const results = extractNodes(data.searchConnection) as ArtistResult[]
     this.setState({ results, searching: false })
   }, 1000)

@@ -18,5 +18,8 @@ export const getConvectionGeminiKey = () =>
     `,
     {},
     { force: true }
+  )
+    // @ts-ignore: This can be removed once we upgrade to the Relay types.
+    .toPromise()
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  ).then((data) => data.system.services.convection.geminiTemplateKey)
+    .then((data) => data.system.services.convection.geminiTemplateKey)
