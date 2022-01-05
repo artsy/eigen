@@ -120,7 +120,6 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
             ARTIST_NATIONALITY
             COLOR
             DIMENSION_RANGE
-            FOLLOWED_ARTISTS
             LOCATION_CITY
             MAJOR_PERIOD
             MATERIALS_TERMS
@@ -145,7 +144,7 @@ export const FairArtworksFragmentContainer = createPaginationContainer(
           }
           counts {
             total
-            followedArtists
+            followedArtists @optionalField
           }
           ...InfiniteScrollArtworksGrid_connection
         }

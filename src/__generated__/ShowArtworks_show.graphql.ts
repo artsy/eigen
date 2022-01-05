@@ -95,7 +95,6 @@ const node: ReaderFragment = {
             "ARTIST_NATIONALITY",
             "COLOR",
             "DIMENSION_RANGE",
-            "FOLLOWED_ARTISTS",
             "MAJOR_PERIOD",
             "MATERIALS_TERMS",
             "MEDIUM",
@@ -261,5 +260,5 @@ const node: ReaderFragment = {
   "type": "Show",
   "abstractKey": null
 };
-(node as any).hash = '4976e98a26383c06d4e494c482533ac1';
+(node as any).hash = '3aa699462d11a99ed4b66a9754dfee82';
 export default node;

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 87af1f3ad4ec50f56cb4f609de8b5a5c */
+/* @relayHash 1c2369b0ccc78f2598b4744d4449cdfc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -125,7 +125,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment FairArtworks_fair_YCAiB on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: $count, after: $cursor, aggregations: [ARTIST, ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, FOLLOWED_ARTISTS, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE], input: $input) {
+  fairArtworks: filterArtworksConnection(first: $count, after: $cursor, aggregations: [ARTIST, ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE], input: $input) {
     aggregations {
       slice
       counts {
@@ -143,7 +143,7 @@ fragment FairArtworks_fair_YCAiB on Fair {
     }
     counts {
       total
-      followedArtists
+      followedArtists @optionalField
     }
     ...InfiniteScrollArtworksGrid_connection
     pageInfo {
@@ -240,7 +240,6 @@ v8 = [
       "ARTIST_NATIONALITY",
       "COLOR",
       "DIMENSION_RANGE",
-      "FOLLOWED_ARTISTS",
       "LOCATION_CITY",
       "MAJOR_PERIOD",
       "MATERIALS_TERMS",
@@ -730,7 +729,7 @@ return {
     ]
   },
   "params": {
-    "id": "87af1f3ad4ec50f56cb4f609de8b5a5c",
+    "id": "1c2369b0ccc78f2598b4744d4449cdfc",
     "metadata": {},
     "name": "FairArtworksInfiniteScrollGridQuery",
     "operationKind": "query",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6da9b595260763274f1ef490bd3ba11d */
+/* @relayHash de67e1ba24710301379f2ad3c111adb3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -99,7 +99,7 @@ fragment ArtworkTileRailCard_artwork on Artwork {
 fragment FairArtworks_fair_ZORN9 on Fair {
   slug
   internalID
-  fairArtworks: filterArtworksConnection(first: 30, aggregations: [ARTIST, ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, FOLLOWED_ARTISTS, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE], input: {sort: "-decayed_merch"}) {
+  fairArtworks: filterArtworksConnection(first: 30, aggregations: [ARTIST, ARTIST_NATIONALITY, COLOR, DIMENSION_RANGE, LOCATION_CITY, MAJOR_PERIOD, MATERIALS_TERMS, MEDIUM, PARTNER, PRICE_RANGE], input: {sort: "-decayed_merch"}) {
     aggregations {
       slice
       counts {
@@ -117,7 +117,7 @@ fragment FairArtworks_fair_ZORN9 on Fair {
     }
     counts {
       total
-      followedArtists
+      followedArtists @optionalField
     }
     ...InfiniteScrollArtworksGrid_connection
     pageInfo {
@@ -767,7 +767,6 @@ v21 = [
       "ARTIST_NATIONALITY",
       "COLOR",
       "DIMENSION_RANGE",
-      "FOLLOWED_ARTISTS",
       "LOCATION_CITY",
       "MAJOR_PERIOD",
       "MATERIALS_TERMS",
@@ -1763,7 +1762,7 @@ return {
                   (v5/*: any*/),
                   (v36/*: any*/)
                 ],
-                "storageKey": "filterArtworksConnection(aggregations:[\"ARTIST\",\"ARTIST_NATIONALITY\",\"COLOR\",\"DIMENSION_RANGE\",\"FOLLOWED_ARTISTS\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:30,input:{\"sort\":\"-decayed_merch\"})"
+                "storageKey": "filterArtworksConnection(aggregations:[\"ARTIST\",\"ARTIST_NATIONALITY\",\"COLOR\",\"DIMENSION_RANGE\",\"LOCATION_CITY\",\"MAJOR_PERIOD\",\"MATERIALS_TERMS\",\"MEDIUM\",\"PARTNER\",\"PRICE_RANGE\"],first:30,input:{\"sort\":\"-decayed_merch\"})"
               },
               {
                 "alias": "fairArtworks",
@@ -2422,7 +2421,7 @@ return {
     ]
   },
   "params": {
-    "id": "6da9b595260763274f1ef490bd3ba11d",
+    "id": "de67e1ba24710301379f2ad3c111adb3",
     "metadata": {},
     "name": "VanityURLEntityQuery",
     "operationKind": "query",

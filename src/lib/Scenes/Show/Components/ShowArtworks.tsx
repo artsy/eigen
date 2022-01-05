@@ -111,7 +111,6 @@ export const ShowArtworksPaginationContainer = createPaginationContainer(
             ARTIST_NATIONALITY
             COLOR
             DIMENSION_RANGE
-            FOLLOWED_ARTISTS
             MAJOR_PERIOD
             MATERIALS_TERMS
             MEDIUM

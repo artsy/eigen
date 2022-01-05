@@ -29,7 +29,7 @@ export const SaleActiveBids: React.FC<SaleActiveBidsProps> = ({ me, relay, saleI
     )
   }, 5000)
 
-  if (!me.lotStandings?.length) {
+  if (!me?.lotStandings?.length) {
     return null
   }
 

@@ -11,7 +11,7 @@ import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
 import Spinner from "lib/Components/Spinner"
 import { navigate, popParentViewController } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { unsafe__getEnvironment } from "lib/store/GlobalStore"
+import { unsafe__getEnvironment, useFeatureFlag } from "lib/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
@@ -353,6 +353,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayMo
   environment,
 }) => {
   const { trackEvent } = useTracking()
+  const supportUnauthenticatedAccess = useFeatureFlag("AREnableUnauthenticatedAccess")
 
   useEffect(() => {
     trackEvent(tracks.pageView(saleID))
@@ -392,7 +393,7 @@ export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayMo
                 }
                 return <LoadFailureView />
               }
-              if (!props?.above.me || !props.above.sale) {
+              if ((!props?.above.me && !supportUnauthenticatedAccess) || !props?.above.sale) {
                 return <SalePlaceholder />
               }
               return <SaleContainer sale={props.above.sale} me={props.above.me} below={props.below} />
