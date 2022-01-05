@@ -1,7 +1,11 @@
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { RenderConditionsOfSale, RenderPrivacy, RenderTerms } from "lib/Components/ArtsyReactWebViewPolicy"
+import {
+  ArtsyWebViewConditionsOfSale,
+  ArtsyWebViewPrivacy,
+  ArtsyWebViewTerms,
+} from "lib/Components/ArtsyReactWebViewPolicy"
 import { BackButton } from "lib/navigation/BackButton"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -148,9 +152,9 @@ export const OnboardingCreateAccountWithEmail: React.FC<OnboardingCreateAccountP
           />
           <StackNavigator.Screen name="OnboardingCreateAccountPassword" component={OnboardingCreateAccountPassword} />
           <StackNavigator.Screen name="OnboardingCreateAccountName" component={OnboardingCreateAccountName} />
-          <StackNavigator.Screen name="Terms" component={RenderTerms} />
-          <StackNavigator.Screen name="Privacy" component={RenderPrivacy} />
-          <StackNavigator.Screen name="ConditionsOfSale" component={RenderConditionsOfSale} />
+          <StackNavigator.Screen name="Terms" component={ArtsyWebViewTerms} />
+          <StackNavigator.Screen name="Privacy" component={ArtsyWebViewPrivacy} />
+          <StackNavigator.Screen name="ConditionsOfSale" component={ArtsyWebViewConditionsOfSale} />
         </StackNavigator.Navigator>
         <OnboardingCreateAccountButton
           navigateToLoginWithEmail={() => {

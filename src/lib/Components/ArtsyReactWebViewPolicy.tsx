@@ -1,14 +1,14 @@
 import React from "react"
 import { ArtsyReactWebView } from "./ArtsyReactWebView"
 
-export const RenderTerms: React.FC = () => {
+export const ArtsyWebViewTerms: React.FC = () => {
   return <ArtsyReactWebView url="/terms" />
 }
 
-export const RenderPrivacy: React.FC = () => {
+export const ArtsyWebViewPrivacy: React.FC = () => {
   return <ArtsyReactWebView url="/privacy" />
 }
 
-export const RenderConditionsOfSale: React.FC = () => {
+export const ArtsyWebViewConditionsOfSale: React.FC = () => {
   return <ArtsyReactWebView url="/conditions-of-sale" />
 }
