@@ -157,6 +157,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               onPress={() => (isiOS ? navigate("/terms", { modal: true }) : navigation.navigate("Terms"))}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
+              testID="openTerms"
             >
               Terms of Use
             </Text>{" "}
@@ -165,6 +166,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               onPress={() => (isiOS ? navigate("/privacy", { modal: true }) : navigation.navigate("Privacy"))}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
+              testID="openPrivacy"
             >
               Privacy Policy
             </Text>
