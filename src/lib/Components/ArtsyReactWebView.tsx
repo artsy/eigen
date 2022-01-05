@@ -315,14 +315,14 @@ export const tracks = {
   }),
 }
 
-export const RenderTerms = () => {
+export const RenderTerms: React.FC = () => {
   return <ArtsyReactWebView url="/terms" />
 }
 
-export const RenderPrivacy = () => {
+export const RenderPrivacy: React.FC = () => {
   return <ArtsyReactWebView url="/privacy" />
 }
 
-export const RenderConditionsOfSale = () => {
+export const RenderConditionsOfSale: React.FC = () => {
   return <ArtsyReactWebView url="/conditions-of-sale" />
 }
