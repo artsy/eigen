@@ -44,7 +44,7 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
         `,
         {},
         { force: true }
-        // @ts-ignore
+        // @ts-ignore: This can be removed once we upgrade to the Relay types.
       ).toPromise()
 
       if (result?.me?.unreadConversationCount != null) {

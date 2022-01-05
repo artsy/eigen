@@ -9,7 +9,7 @@ import { PlaceholderBox, ProvidePlaceholderContext } from "lib/utils/placeholder
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Schema } from "lib/utils/track"
 import _ from "lodash"
-import { Flex, MediumCard, Sans, Spacer, Touchable } from "palette"
+import { Flex, MediumCard, Spacer, Text, Touchable } from "palette"
 import React, { Suspense } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, useFragment } from "react-relay"
@@ -39,11 +39,7 @@ export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> =
             trackEvent(tracks.tappedViewingRoomsHeader())
             navigate("/viewing-rooms")
           }}
-          RightButtonContent={() => (
-            <Sans size="3" color="black60">
-              View all
-            </Sans>
-          )}
+          RightButtonContent={() => <Text color="black60">View all</Text>}
         />
       </Flex>
       {featuredLength > 0 ? (
@@ -52,7 +48,7 @@ export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> =
           trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
         />
       ) : (
-        <Suspense fallback={() => null}>
+        <Suspense fallback={<Placeholder />}>
           <ViewingRoomsHomeRailQueryRenderer
             environment={defaultEnvironment}
             trackInfo={{ screen: Schema.PageNames.Home, ownerType: Schema.OwnerEntityTypes.Home }}
@@ -62,10 +58,6 @@ export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> =
     </Flex>
   )
 }
-
-// export const ViewingRoomsHomeRailContainer = createFragmentContainer(ViewingRoomsHomeRail, {
-//   featured: featuredFragment,
-// })
 
 const Placeholder = () => (
   <ProvidePlaceholderContext>
@@ -87,7 +79,6 @@ interface ViewingRoomsHomeRailProps {
 export const ViewingRoomsHomeRail: React.FC<ViewingRoomsHomeRailProps> = ({ trackInfo, viewingRooms }) => {
   const regular = extractNodes(viewingRooms)
 
-  console.log({ viewingRooms })
   const { trackEvent } = useTracking()
 
   return (
@@ -217,55 +208,6 @@ export const ViewingRoomsHomeRailQueryRenderer: React.FC<{
     />
   )
 }
-
-// export const ViewingRoomsHomeRailQueryRenderer2: React.FC<{
-//   trackInfo?: { screen: string; ownerType: string }
-// }> = ({ trackInfo }) => {
-//   const initialQueryRef = loadQuery<ViewingRoomsHomeRailQuery>(defaultEnvironment, query, {})
-
-//   const data = usePreloadedQuery<ViewingRoomsHomeRailQuery>(query, initialQueryRef)
-
-//   if (data) {
-//     return <ViewingRoomsHomeRail query={data} trackInfo={trackInfo} />
-//   }
-
-//   return <Placeholder />
-// }
-
-// const fragment = graphql`
-//   fragment ViewingRoomsHomeRail_viewingRooms on Query {
-//     viewingRooms(first: 10) {
-//       edges {
-//         node {
-//           internalID
-//           title
-//           slug
-//           heroImage: image {
-//             imageURLs {
-//               normalized
-//             }
-//           }
-//           status
-//           distanceToOpen(short: true)
-//           distanceToClose(short: true)
-//           partner {
-//             name
-//           }
-//           artworksConnection(first: 2) {
-//             edges {
-//               node {
-//                 image {
-//                   square: url(version: "square")
-//                   regular: url(version: "larger")
-//                 }
-//               }
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// `
 
 const tracks = {
   tappedViewingRoomsHeader: () => ({
