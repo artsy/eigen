@@ -1,7 +1,7 @@
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
-import { RenderConditionsOfSale, RenderPrivacy, RenderTerms } from "lib/Components/ArtsyReactWebView"
+import { RenderConditionsOfSale, RenderPrivacy, RenderTerms } from "lib/Components/ArtsyReactWebViewPolicy"
 import { BackButton } from "lib/navigation/BackButton"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"

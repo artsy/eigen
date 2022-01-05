@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { CardStyleInterpolators, createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "lib/Components/ArtsyKeyboardAvoidingView"
-import { RenderPrivacy, RenderTerms } from "lib/Components/ArtsyReactWebView"
+import { RenderPrivacy, RenderTerms } from "lib/Components/ArtsyReactWebViewPolicy"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { NetworkAwareProvider } from "lib/utils/NetworkAwareProvider"
 import React from "react"
