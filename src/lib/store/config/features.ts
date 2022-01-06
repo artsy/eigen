@@ -212,6 +212,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableQueriesPrefetching",
   },
+  AREnableAccordionNavigationOnSubmitArtwork: {
+    readyForRelease: false,
+    description: "Enable New Artwork Submission Flow with Accordion",
+    showInAdminMenu: true,
+   },
   ARCaptureExceptionsInSentryOnDev: {
     readyForRelease: false,
     description: "Enable capturing exceptions in Sentry on DEV",

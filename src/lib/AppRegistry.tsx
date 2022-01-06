@@ -317,10 +317,7 @@ export const modules = defineModules({
   CitySavedList: reactModule(CitySavedListQueryRenderer),
   CitySectionList: reactModule(CitySectionListQueryRenderer),
   Collection: reactModule(CollectionQueryRenderer, { fullBleed: true }),
-  ConsignmentsSubmissionForm: reactModule(ConsignmentsSubmissionForm, {
-    alwaysPresentModally: true,
-    hasOwnModalCloseButton: true,
-  }),
+  ConsignmentsSubmissionForm: reactModule(ConsignmentsSubmissionForm, {}),
   Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
   Fair: reactModule(FairQueryRenderer, { fullBleed: true }),
   FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
