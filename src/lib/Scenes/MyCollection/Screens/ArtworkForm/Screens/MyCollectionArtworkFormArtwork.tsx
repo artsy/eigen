@@ -72,13 +72,10 @@ export const MyCollectionArtworkFormArtwork: React.FC<StackScreenProps<ArtworkFo
   const navigateToNext = () => navigation.navigate("ArtworkFormMain", { ...route.params })
 
   const skip = () => {
-    setLoading(true)
-    GlobalStore.actions.myCollection.artwork.ResetFormButKeepArtist()
-    // setTimeout because we must wait for all actions to resolve before loading the next set of forms
-    setTimeout(() => {
-      setLoading(false)
+    requestAnimationFrame(() => {
+      GlobalStore.actions.myCollection.artwork.ResetFormButKeepArtist()
       navigateToNext()
-    }, 1500)
+    })
   }
 
   return (
