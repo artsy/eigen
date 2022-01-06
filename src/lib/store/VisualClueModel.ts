@@ -1,14 +1,14 @@
 import { action, Action } from "easy-peasy"
-import { VisualClueName, visualClues } from "./config/visualClues"
+import { VisualClueName } from "./config/visualClues"
 
 export interface VisualClueModel {
-  lastSeenOrderNumber: number
+  seenVisualClues: VisualClueName[]
   setVisualClueAsSeen: Action<this, VisualClueName>
 }
 
 export const getVisualClueModel = (): VisualClueModel => ({
-  lastSeenOrderNumber: 0,
+  seenVisualClues: [],
   setVisualClueAsSeen: action((state, clueName) => {
-    state.lastSeenOrderNumber = visualClues[clueName].orderNumber
+    state.seenVisualClues = [...new Set([...state.seenVisualClues, clueName])]
   }),
 })

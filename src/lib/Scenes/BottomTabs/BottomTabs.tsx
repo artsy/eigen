@@ -1,7 +1,6 @@
-import { GlobalStore, useIsStaging, useVisualClue } from "lib/store/GlobalStore"
+import { GlobalStore, useIsStaging } from "lib/store/GlobalStore"
 import { Flex, Separator, useTheme } from "palette"
 import React, { useEffect } from "react"
-import { Text } from "react-native"
 import useInterval from "react-use/lib/useInterval"
 import { BottomTabsButton } from "./BottomTabsButton"
 import { ICON_HEIGHT } from "./BottomTabsIcon"
@@ -23,7 +22,6 @@ export const BottomTabs: React.FC = () => {
   }, 1000 * 60)
 
   const isStaging = useIsStaging()
-  const { lastSeenVisualClue } = useVisualClue()
 
   return (
     <Flex>
@@ -33,12 +31,11 @@ export const BottomTabs: React.FC = () => {
         }}
       />
       <Flex flexDirection="row" height={ICON_HEIGHT} px={1}>
-        <BottomTabsButton tab="home" visualClue="TestClue1" />
-        <BottomTabsButton tab="search" visualClue="TestClue1" />
-        <BottomTabsButton tab="inbox" badgeCount={unreadConversationCount} visualClue="TestClue1" />
-        <BottomTabsButton tab="sell" visualClue="TestClue1" />
-        <BottomTabsButton tab="profile" visualClue="TestClue1" />
-        <Text>{lastSeenVisualClue}</Text>
+        <BottomTabsButton tab="home" />
+        <BottomTabsButton tab="search" />
+        <BottomTabsButton tab="inbox" badgeCount={unreadConversationCount} />
+        <BottomTabsButton tab="sell" />
+        <BottomTabsButton tab="profile" />
       </Flex>
     </Flex>
   )

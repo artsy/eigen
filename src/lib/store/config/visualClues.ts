@@ -5,11 +5,6 @@ export interface VisualClueDescriptor {
    * Provide a short description for the admin menu
    */
   readonly description?: string
-  /**
-   * The order number of the visual clue. If the user has seen a clue all clues
-   * with a lower order number have also be seen.
-   */
-  readonly orderNumber: number
 }
 
 // Helper function to get good typings and intellisense
@@ -18,12 +13,13 @@ function defineVisualClues<T extends string>(visualClueMap: { readonly [visualCl
 }
 
 export const visualClues = defineVisualClues({
+  // ExampleClueName: {
+  //   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  // },
   TestClue1: {
     description: "Test Clue 1",
-    orderNumber: 4, // TODO: Change this to a timestamp or try to use the name instead
   },
   TestClue2: {
     description: "Test Clue 1",
-    orderNumber: 5,
   },
 })

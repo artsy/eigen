@@ -12,7 +12,7 @@ import { Action, Middleware } from "redux"
 import { version } from "./../../../app.json"
 import { DevToggleName, FeatureName, features } from "./config/features"
 import { FeatureMap } from "./config/FeaturesModel"
-import { VisualClueName, visualClues } from "./config/visualClues"
+import { VisualClueName } from "./config/visualClues"
 import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { persistenceMiddleware, unpersist } from "./persistence"
 
@@ -163,19 +163,13 @@ export function unsafe_getDevToggle(key: DevToggleName) {
 }
 
 export const useVisualClue = () => {
-  const lastSeenVisualClue = GlobalStore.useAppState((state) => state.visualClue.lastSeenOrderNumber)
+  const seenVisualClues = GlobalStore.useAppState((state) => state.visualClue.seenVisualClues)
 
   const showVisualClue = (clueName?: VisualClueName): boolean => {
-    if (!clueName) {
-      return false
-    }
-
-    // TODO: Never show any clue if lastSeenClue's number is 0
-
-    return visualClues[clueName].orderNumber > lastSeenVisualClue
+    return !!clueName && !seenVisualClues?.includes(clueName)
   }
 
-  return { lastSeenVisualClue, showVisualClue }
+  return { seenVisualClues, showVisualClue }
 }
 
 export const setVisualClueAsSeen = GlobalStore.actions.visualClue.setVisualClueAsSeen
