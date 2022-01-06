@@ -153,7 +153,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
           childrenPosition={isEnabledImprovedAlertsFlow ? "left" : "right"}
         >
           {isEnabledImprovedAlertsFlow ? (
-            <SavedSearchButtonV2 onPress={openFilterModal} />
+            <SavedSearchButtonV2 artistId={artist.internalID} artistSlug={artist.slug} onPress={openFilterModal} />
           ) : (
             !!shouldShowSavedSearchButton && (
               <SavedSearchButtonQueryRenderer
