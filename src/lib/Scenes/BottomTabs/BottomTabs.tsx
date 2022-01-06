@@ -1,4 +1,5 @@
 import { GlobalStore, useIsStaging } from "lib/store/GlobalStore"
+import { usePrefetch } from "lib/utils/queryPrefetching"
 import { Flex, Separator, useTheme } from "palette"
 import React, { useEffect } from "react"
 import useInterval from "react-use/lib/useInterval"
