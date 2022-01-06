@@ -31,6 +31,8 @@ interface ArtworksGridProps extends InfiniteScrollGridProps {
   relay: RelayPaginationProp
 }
 
+type FilterModalOpenedFrom = "sortAndFilter" | "createAlert"
+
 const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) => {
   const tracking = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
@@ -38,8 +40,8 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
   const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
 
-  const openFilterArtworksModal = (isOpenedFromSortAndFilterButton = true) => {
-    if (isOpenedFromSortAndFilterButton) {
+  const openFilterArtworksModal = (openedFrom: FilterModalOpenedFrom) => {
+    if (openedFrom === "sortAndFilter") {
       tracking.trackEvent({
         action_name: "filter",
         context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
@@ -62,6 +64,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
       context_screen_owner_slug: artist.slug,
       action_type: Schema.ActionTypes.Tap,
     })
+
     handleCloseFilterArtworksModal()
   }
 
@@ -86,7 +89,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
 }
 
 interface ArtistArtworksContainerProps {
-  openFilterModal: (isOpenedFromSortAndFilterButton?: boolean) => void
+  openFilterModal: (openedFrom: FilterModalOpenedFrom) => void
 }
 
 const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContainerProps> = ({
@@ -151,7 +154,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
     setJSX(
       <Box backgroundColor="white">
         <ArtworksFilterHeader
-          onFilterPress={openFilterModal}
+          onFilterPress={() => openFilterModal("sortAndFilter")}
           selectedFiltersCount={appliedFiltersCount}
           childrenPosition={isEnabledImprovedAlertsFlow ? "left" : "right"}
         >
@@ -159,7 +162,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
             <SavedSearchButtonV2
               artistId={artist.internalID}
               artistSlug={artist.slug}
-              onPress={() => openFilterModal(false)}
+              onPress={() => openFilterModal("createAlert")}
             />
           ) : (
             !!shouldShowSavedSearchButton && (
