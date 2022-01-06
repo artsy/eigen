@@ -38,15 +38,18 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   const handleCloseFilterArtworksModal = () => setFilterArtworkModalVisible(false)
   const handleOpenFilterArtworksModal = () => setFilterArtworkModalVisible(true)
 
-  const openFilterArtworksModal = () => {
-    tracking.trackEvent({
-      action_name: "filter",
-      context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
-      context_screen: Schema.PageNames.ArtistPage,
-      context_screen_owner_id: artist.id,
-      context_screen_owner_slug: artist.slug,
-      action_type: Schema.ActionTypes.Tap,
-    })
+  const openFilterArtworksModal = (isOpenedFromSortAndFilterButton = true) => {
+    if (isOpenedFromSortAndFilterButton) {
+      tracking.trackEvent({
+        action_name: "filter",
+        context_screen_owner_type: Schema.OwnerEntityTypes.Artist,
+        context_screen: Schema.PageNames.ArtistPage,
+        context_screen_owner_id: artist.id,
+        context_screen_owner_slug: artist.slug,
+        action_type: Schema.ActionTypes.Tap,
+      })
+    }
+
     handleOpenFilterArtworksModal()
   }
 
@@ -83,7 +86,7 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
 }
 
 interface ArtistArtworksContainerProps {
-  openFilterModal: () => void
+  openFilterModal: (isOpenedFromSortAndFilterButton?: boolean) => void
 }
 
 const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContainerProps> = ({
@@ -153,7 +156,11 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
           childrenPosition={isEnabledImprovedAlertsFlow ? "left" : "right"}
         >
           {isEnabledImprovedAlertsFlow ? (
-            <SavedSearchButtonV2 artistId={artist.internalID} artistSlug={artist.slug} onPress={openFilterModal} />
+            <SavedSearchButtonV2
+              artistId={artist.internalID}
+              artistSlug={artist.slug}
+              onPress={() => openFilterModal(false)}
+            />
           ) : (
             !!shouldShowSavedSearchButton && (
               <SavedSearchButtonQueryRenderer
