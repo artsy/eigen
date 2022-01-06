@@ -274,7 +274,7 @@ Once sentry adds `enableOutOfMemoryTracking` to their `ReactNativeOptions` type.
 
 #### When can we remove this:
 
-Once we no longer use our native implementation of pushView on iOS
+Once we no longer use our native implementation of pushView on iOS.
 
 #### Explanation/Context:
 
