@@ -334,6 +334,6 @@ export const tracks = {
     context_screen_owner_type: OwnerType.artist,
     context_screen_owner_id: artistId,
     context_screen_owner_slug: artistSlug,
-    context_module: "filterScreen", // TODO: Use ContextModule.filterScreen
+    context_module: ContextModule.filterScreen,
   }),
 }
