@@ -1,8 +1,7 @@
-import { ViewingRoomsList_query$key } from "__generated__/ViewingRoomsList_query.graphql"
+import { ViewingRoomsList_viewingRooms$key } from "__generated__/ViewingRoomsList_viewingRooms.graphql"
 import { ViewingRoomsListFeatured_featured$key } from "__generated__/ViewingRoomsListFeatured_featured.graphql"
 import { ViewingRoomsListQuery } from "__generated__/ViewingRoomsListQuery.graphql"
 import { PAGE_SIZE } from "lib/Components/constants"
-import { LoadFailureView } from "lib/Components/LoadFailureView"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -11,10 +10,10 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
 import { Flex, Spacer, useSpace } from "palette"
-import React, { useRef, useState } from "react"
+import React, { FC, Suspense, useRef, useState } from "react"
 import { FlatList, RefreshControl } from "react-native"
-import { ConnectionConfig } from "react-relay"
-import { graphql, useFragment, usePagination, useQuery } from "relay-hooks"
+import { useLazyLoadQuery, usePaginationFragment } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { RailScrollRef } from "../Home/Components/types"
 import { featuredFragment, FeaturedRail } from "./Components/ViewingRoomsListFeatured"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
@@ -22,7 +21,9 @@ import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
 const SCREEN_TITLE = "Viewing Rooms"
 
 const fragmentSpec = graphql`
-  fragment ViewingRoomsList_query on Query @argumentDefinitions(count: { type: "Int" }, after: { type: "String" }) {
+  fragment ViewingRoomsList_viewingRooms on Query
+  @refetchable(queryName: "ViewingRoomsList_viewingRoomsRefetch")
+  @argumentDefinitions(count: { type: "Int" }, after: { type: "String" }) {
     viewingRooms(first: $count, after: $after) @connection(key: "ViewingRoomsList_viewingRooms") {
       edges {
         node {
@@ -30,6 +31,16 @@ const fragmentSpec = graphql`
           ...ViewingRoomsListItem_item
         }
       }
+    }
+  }
+`
+
+export const ViewingRoomsListScreenQuery = graphql`
+  query ViewingRoomsListQuery($count: Int!, $after: String) {
+    ...ViewingRoomsList_viewingRooms @arguments(count: $count, after: $after)
+
+    featured: viewingRooms(featured: true) {
+      ...ViewingRoomsListFeatured_featured
     }
   }
 `
@@ -45,30 +56,30 @@ const useNumColumns = () => {
   return orientation === "portrait" ? 2 : 3
 }
 
-interface ViewingRoomsListProps {
-  query: ViewingRoomsList_query$key
-  featured: ViewingRoomsListFeatured_featured$key
-}
+export const ViewingRoomsList: FC = () => {
+  const queryData = useLazyLoadQuery<ViewingRoomsListQuery>(ViewingRoomsListScreenQuery, viewingRoomsDefaultVariables)
 
-export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = (props) => {
   const space = useSpace()
-  const [queryData, { isLoading, hasMore, loadMore, refetchConnection }] = usePagination(fragmentSpec, props.query)
-  const viewingRooms = extractNodes(queryData.viewingRooms)
+  const { data, isLoadingNext, hasNext, loadNext, refetch } = usePaginationFragment<
+    ViewingRoomsListQuery,
+    ViewingRoomsList_viewingRooms$key
+  >(fragmentSpec, queryData)
+  const viewingRooms = extractNodes(data.viewingRooms)
 
-  const featuredData = useFragment(featuredFragment, props.featured)
+  const featuredData = useFragment<ViewingRoomsListFeatured_featured$key>(featuredFragment, queryData.featured!)
   const featuredLength = extractNodes(featuredData).length
 
   const handleLoadMore = () => {
-    if (!hasMore() || isLoading()) {
+    if (!hasNext || isLoadingNext) {
       return
     }
-    loadMore(connectionConfig, PAGE_SIZE)
+    loadNext(PAGE_SIZE)
   }
 
   const [refreshing, setRefreshing] = useState(false)
   const handleRefresh = () => {
     setRefreshing(true)
-    refetchConnection(connectionConfig, PAGE_SIZE)
+    refetch({ count: PAGE_SIZE })
     setRefreshing(false)
     scrollRef.current?.scrollToTop()
   }
@@ -91,7 +102,7 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = (props
                     <Flex mx="2">
                       <SectionTitle title="Featured" />
                     </Flex>
-                    <FeaturedRail featured={props.featured} scrollRef={scrollRef} />
+                    <FeaturedRail featured={queryData.featured!} scrollRef={scrollRef} />
                     <Spacer mt="4" />
                   </>
                 )}
@@ -127,7 +138,7 @@ export const ViewingRoomsListContainer: React.FC<ViewingRoomsListProps> = (props
             ItemSeparatorComponent={() => <Spacer mt="3" />}
             onEndReached={handleLoadMore}
             onEndReachedThreshold={1}
-            ListFooterComponent={() => (hasMore() ? <LoadingMorePlaceholder /> : <Flex height={space(6)} />)}
+            ListFooterComponent={() => (hasNext ? <LoadingMorePlaceholder /> : <Flex height={space(6)} />)}
           />
         </Flex>
       </PageWithSimpleHeader>
@@ -144,24 +155,6 @@ const tracks = {
 }
 
 export const viewingRoomsDefaultVariables = { count: PAGE_SIZE, after: null }
-
-export const ViewingRoomsListScreenQuery = graphql`
-  query ViewingRoomsListQuery($count: Int!, $after: String) {
-    ...ViewingRoomsList_query @arguments(count: $count, after: $after)
-
-    featured: viewingRooms(featured: true) {
-      ...ViewingRoomsListFeatured_featured
-    }
-  }
-`
-
-const connectionConfig: ConnectionConfig = {
-  query: ViewingRoomsListScreenQuery,
-  getVariables: (_props, { count, cursor }, _fragmentVariables) => ({
-    count,
-    after: cursor,
-  }),
-}
 
 const Placeholder = () => (
   <ProvidePlaceholderContext>
@@ -204,19 +197,8 @@ const LoadingMorePlaceholder = () => (
   </ProvidePlaceholderContext>
 )
 
-export const ViewingRoomsListQueryRenderer: React.FC = () => {
-  const { props, error, retry } = useQuery<ViewingRoomsListQuery>(
-    ViewingRoomsListScreenQuery,
-    viewingRoomsDefaultVariables
-  )
-
-  if (props) {
-    return <ViewingRoomsListContainer query={props} featured={props.featured!} />
-  }
-  if (error) {
-    console.error(error)
-    return <LoadFailureView onRetry={retry} />
-  }
-
-  return <Placeholder />
-}
+export const ViewingRoomsListScreen: React.FC = () => (
+  <Suspense fallback={<Placeholder />}>
+    <ViewingRoomsList />
+  </Suspense>
+)

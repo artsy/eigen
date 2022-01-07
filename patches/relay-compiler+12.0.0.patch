@@ -1,5 +1,5 @@
 diff --git a/node_modules/relay-compiler/bin/relay-compiler b/node_modules/relay-compiler/bin/relay-compiler
-index 404d662..821884f 100755
+index 19536a6..5d1a89b 100755
 --- a/node_modules/relay-compiler/bin/relay-compiler
 +++ b/node_modules/relay-compiler/bin/relay-compiler
 @@ -291,7 +291,7 @@ function highlightSourceAtLocation(source, location) {
@@ -36,7 +36,7 @@ index 404d662..821884f 100755
        this._filesystem.writeFileSync(filePath, content, 'utf8');
      }
    }
-@@ -8415,7 +8424,12 @@ function getRelayFileWriter(baseDir, languagePlugin, noFutureProofEnums, outputD
+@@ -8439,7 +8448,12 @@ function getRelayFileWriter(baseDir, languagePlugin, noFutureProofEnums, outputD
          }
  
          var data = JSON.stringify(object, null, 2);
@@ -50,7 +50,7 @@ index 404d662..821884f 100755
        }
  
        return results;
-@@ -18691,10 +18705,11 @@ module.exports = function (tagFinder, getFileFilter) {
+@@ -18775,10 +18789,11 @@ module.exports = function (tagFinder, getFileFilter) {
  
      var astDefinitions = [];
      var sources = [];
@@ -65,7 +65,7 @@ index 404d662..821884f 100755
        sources.push(source.body);
        astDefinitions.push.apply(astDefinitions, (0, _toConsumableArray2["default"])(ast.definitions));
      });
-@@ -18779,9 +18794,7 @@ function find(tagFinder, text, absPath) {
+@@ -18863,9 +18878,7 @@ function find(tagFinder, text, absPath) {
    tags.forEach(function (tag) {
      return validateTemplate(tag, moduleName, absPath);
    });

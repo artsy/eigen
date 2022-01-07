@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ViewingRoomsList_query = {
+export type ViewingRoomsList_viewingRooms = {
     readonly viewingRooms: {
         readonly edges: ReadonlyArray<{
             readonly node: {
@@ -13,17 +13,21 @@ export type ViewingRoomsList_query = {
             } | null;
         } | null> | null;
     } | null;
-    readonly " $refType": "ViewingRoomsList_query";
+    readonly " $refType": "ViewingRoomsList_viewingRooms";
 };
-export type ViewingRoomsList_query$data = ViewingRoomsList_query;
-export type ViewingRoomsList_query$key = {
-    readonly " $data"?: ViewingRoomsList_query$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsList_query">;
+export type ViewingRoomsList_viewingRooms$data = ViewingRoomsList_viewingRooms;
+export type ViewingRoomsList_viewingRooms$key = {
+    readonly " $data"?: ViewingRoomsList_viewingRooms$data | undefined;
+    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsList_viewingRooms">;
 };
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = [
+  "viewingRooms"
+];
+return {
   "argumentDefinitions": [
     {
       "defaultValue": null,
@@ -43,13 +47,23 @@ const node: ReaderFragment = {
         "count": "count",
         "cursor": "after",
         "direction": "forward",
-        "path": [
-          "viewingRooms"
-        ]
+        "path": (v0/*: any*/)
       }
-    ]
+    ],
+    "refetch": {
+      "connection": {
+        "forward": {
+          "count": "count",
+          "cursor": "after"
+        },
+        "backward": null,
+        "path": (v0/*: any*/)
+      },
+      "fragmentPathInResult": [],
+      "operation": require('./ViewingRoomsList_viewingRoomsRefetch.graphql')
+    }
   },
-  "name": "ViewingRoomsList_query",
+  "name": "ViewingRoomsList_viewingRooms",
   "selections": [
     {
       "alias": "viewingRooms",
@@ -139,5 +153,6 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = '66489213bd7fb7dee0cb76bdc62ffb1d';
+})();
+(node as any).hash = 'a0af5b79c7711894363352535c741db7';
 export default node;

@@ -60,6 +60,7 @@ export class PartnerFollowButton extends React.Component<Props, State> {
               unfollow: partnerFollowed,
             },
           },
+          // @ts-ignore RELAY 12 MIGRATION
           optimisticResponse: {
             followProfile: {
               profile: {

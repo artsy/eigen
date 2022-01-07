@@ -100,7 +100,9 @@ export const MyCollectionArtworkFormArtwork: React.FC<StackScreenProps<ArtworkFo
   )
 }
 
-const fetchArtwork = async (artworkID: string): Promise<MyCollectionArtworkFormArtworkQueryResponse["artwork"]> => {
+const fetchArtwork = async (
+  artworkID: string
+): Promise<MyCollectionArtworkFormArtworkQueryResponse["artwork"] | undefined> => {
   const result = await fetchQuery<MyCollectionArtworkFormArtworkQuery>(
     defaultEnvironment,
     graphql`
@@ -127,7 +129,7 @@ const fetchArtwork = async (artworkID: string): Promise<MyCollectionArtworkFormA
       }
     `,
     { artworkID }
-  )
+  ).toPromise()
 
-  return result.artwork
+  return result?.artwork
 }

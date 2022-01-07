@@ -6,9 +6,8 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Spacer } from "palette"
 import React from "react"
 import { FlatList } from "react-native"
-import { createFragmentContainer } from "react-relay"
+import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { graphql } from "relay-hooks"
 
 interface ShowsRailProps {
   title: string

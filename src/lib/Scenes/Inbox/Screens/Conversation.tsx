@@ -113,7 +113,6 @@ export class Conversation extends React.Component<Props, State> {
     const conversation = this.props.me.conversation
     if (conversation?.unread && !this.state.markedMessageAsRead) {
       updateConversation(
-        this.props.relay.environment,
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         conversation,
         conversation.lastMessageID,

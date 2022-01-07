@@ -186,6 +186,7 @@ const followOrUnfollowArtist = (followArtist: ArtistCard_artist) => {
         input: { artistID: followArtist.internalID, unfollow: followArtist.isFollowed },
       },
       onError: reject,
+      // @ts-ignore RELAY 12 MIGRATION
       optimisticResponse: {
         followArtist: {
           artist: {

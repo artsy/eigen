@@ -43,8 +43,11 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
           }
         `,
         {},
-        { force: true }
-      )
+        {
+          fetchPolicy: "network-only",
+        }
+      ).toPromise()
+
       if (result?.me?.unreadConversationCount != null) {
         GlobalStore.actions.bottomTabs.unreadConversationCountChanged(result.me.unreadConversationCount)
         GlobalStore.actions.native.setApplicationIconBadgeNumber(result.me.unreadConversationCount)

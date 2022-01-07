@@ -1,6 +1,7 @@
 import { UpdateConversationMutation } from "__generated__/UpdateConversationMutation.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { commitMutation, graphql } from "react-relay"
-import { Environment, MutationConfig } from "relay-runtime"
+import { MutationConfig } from "relay-runtime"
 
 interface Conversation {
   id: string
@@ -8,13 +9,12 @@ interface Conversation {
 }
 
 export function updateConversation(
-  environment: Environment,
   conversation: Conversation,
   fromLastViewedMessageId: string,
   onCompleted: MutationConfig<any>["onCompleted"],
   onError: MutationConfig<any>["onError"]
 ) {
-  return commitMutation<UpdateConversationMutation>(environment, {
+  return commitMutation<UpdateConversationMutation>(defaultEnvironment, {
     updater: (store) => {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       store.get(conversation.id).setValue(false, "unread")

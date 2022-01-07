@@ -1,58 +1,30 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9d160e408cf35acf7f4a6c68be3d49d4 */
+/* @relayHash 58781284812075128c26220d93893d2d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ViewingRoomsListQueryVariables = {
-    count: number;
+export type ViewingRoomsList_viewingRoomsRefetchVariables = {
     after?: string | null | undefined;
+    count?: number | null | undefined;
 };
-export type ViewingRoomsListQueryResponse = {
-    readonly featured: {
-        readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsListFeatured_featured">;
-    } | null;
+export type ViewingRoomsList_viewingRoomsRefetchResponse = {
     readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsList_viewingRooms">;
 };
-export type ViewingRoomsListQuery = {
-    readonly response: ViewingRoomsListQueryResponse;
-    readonly variables: ViewingRoomsListQueryVariables;
+export type ViewingRoomsList_viewingRoomsRefetch = {
+    readonly response: ViewingRoomsList_viewingRoomsRefetchResponse;
+    readonly variables: ViewingRoomsList_viewingRoomsRefetchVariables;
 };
 
 
 
 /*
-query ViewingRoomsListQuery(
-  $count: Int!
+query ViewingRoomsList_viewingRoomsRefetch(
   $after: String
+  $count: Int
 ) {
   ...ViewingRoomsList_viewingRooms_2QE1um
-  featured: viewingRooms(featured: true) {
-    ...ViewingRoomsListFeatured_featured
-  }
-}
-
-fragment ViewingRoomsListFeatured_featured on ViewingRoomConnection {
-  edges {
-    node {
-      internalID
-      title
-      slug
-      heroImage: image {
-        imageURLs {
-          normalized
-        }
-      }
-      status
-      distanceToOpen(short: true)
-      distanceToClose(short: true)
-      partner {
-        name
-        id
-      }
-    }
-  }
 }
 
 fragment ViewingRoomsListItem_item on ViewingRoom {
@@ -103,169 +75,55 @@ fragment ViewingRoomsList_viewingRooms_2QE1um on Query {
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "after"
-},
-v1 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "count"
-},
-v2 = [
+var v0 = [
   {
-    "kind": "Literal",
-    "name": "featured",
-    "value": true
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "after"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "count"
   }
 ],
-v3 = {
+v1 = {
   "kind": "Variable",
   "name": "after",
   "variableName": "after"
 },
-v4 = [
-  (v3/*: any*/),
+v2 = [
+  (v1/*: any*/),
   {
     "kind": "Variable",
     "name": "first",
     "variableName": "count"
   }
 ],
-v5 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-},
-v6 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "title",
-  "storageKey": null
-},
-v7 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "slug",
-  "storageKey": null
-},
-v8 = {
-  "alias": "heroImage",
-  "args": null,
-  "concreteType": "ARImage",
-  "kind": "LinkedField",
-  "name": "image",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "ImageURLs",
-      "kind": "LinkedField",
-      "name": "imageURLs",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "normalized",
-          "storageKey": null
-        }
-      ],
-      "storageKey": null
-    }
-  ],
-  "storageKey": null
-},
-v9 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "status",
-  "storageKey": null
-},
-v10 = [
+v3 = [
   {
     "kind": "Literal",
     "name": "short",
     "value": true
   }
 ],
-v11 = {
-  "alias": null,
-  "args": (v10/*: any*/),
-  "kind": "ScalarField",
-  "name": "distanceToOpen",
-  "storageKey": "distanceToOpen(short:true)"
-},
-v12 = {
-  "alias": null,
-  "args": (v10/*: any*/),
-  "kind": "ScalarField",
-  "name": "distanceToClose",
-  "storageKey": "distanceToClose(short:true)"
-},
-v13 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
-},
-v14 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "Partner",
-  "kind": "LinkedField",
-  "name": "partner",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "name",
-      "storageKey": null
-    },
-    (v13/*: any*/)
-  ],
-  "storageKey": null
 };
 return {
   "fragment": {
-    "argumentDefinitions": [
-      (v0/*: any*/),
-      (v1/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "ViewingRoomsListQuery",
+    "name": "ViewingRoomsList_viewingRoomsRefetch",
     "selections": [
       {
-        "alias": "featured",
-        "args": (v2/*: any*/),
-        "concreteType": "ViewingRoomConnection",
-        "kind": "LinkedField",
-        "name": "viewingRooms",
-        "plural": false,
-        "selections": [
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "ViewingRoomsListFeatured_featured"
-          }
-        ],
-        "storageKey": "viewingRooms(featured:true)"
-      },
-      {
         "args": [
-          (v3/*: any*/),
+          (v1/*: any*/),
           {
             "kind": "Variable",
             "name": "count",
@@ -281,16 +139,13 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [
-      (v1/*: any*/),
-      (v0/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "ViewingRoomsListQuery",
+    "name": "ViewingRoomsList_viewingRoomsRefetch",
     "selections": [
       {
         "alias": null,
-        "args": (v4/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "ViewingRoomConnection",
         "kind": "LinkedField",
         "name": "viewingRooms",
@@ -312,14 +167,96 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v5/*: any*/),
-                  (v6/*: any*/),
-                  (v7/*: any*/),
-                  (v8/*: any*/),
-                  (v9/*: any*/),
-                  (v11/*: any*/),
-                  (v12/*: any*/),
-                  (v14/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "internalID",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "title",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "slug",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": "heroImage",
+                    "args": null,
+                    "concreteType": "ARImage",
+                    "kind": "LinkedField",
+                    "name": "image",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "ImageURLs",
+                        "kind": "LinkedField",
+                        "name": "imageURLs",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "normalized",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "status",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": (v3/*: any*/),
+                    "kind": "ScalarField",
+                    "name": "distanceToOpen",
+                    "storageKey": "distanceToOpen(short:true)"
+                  },
+                  {
+                    "alias": null,
+                    "args": (v3/*: any*/),
+                    "kind": "ScalarField",
+                    "name": "distanceToClose",
+                    "storageKey": "distanceToClose(short:true)"
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Partner",
+                    "kind": "LinkedField",
+                    "name": "partner",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "name",
+                        "storageKey": null
+                      },
+                      (v4/*: any*/)
+                    ],
+                    "storageKey": null
+                  },
                   {
                     "alias": null,
                     "args": [
@@ -387,7 +324,7 @@ return {
                                 ],
                                 "storageKey": null
                               },
-                              (v13/*: any*/)
+                              (v4/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -447,64 +384,23 @@ return {
       },
       {
         "alias": null,
-        "args": (v4/*: any*/),
+        "args": (v2/*: any*/),
         "filters": null,
         "handle": "connection",
         "key": "ViewingRoomsList_viewingRooms",
         "kind": "LinkedHandle",
         "name": "viewingRooms"
-      },
-      {
-        "alias": "featured",
-        "args": (v2/*: any*/),
-        "concreteType": "ViewingRoomConnection",
-        "kind": "LinkedField",
-        "name": "viewingRooms",
-        "plural": false,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "ViewingRoomEdge",
-            "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "ViewingRoom",
-                "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
-                "selections": [
-                  (v5/*: any*/),
-                  (v6/*: any*/),
-                  (v7/*: any*/),
-                  (v8/*: any*/),
-                  (v9/*: any*/),
-                  (v11/*: any*/),
-                  (v12/*: any*/),
-                  (v14/*: any*/)
-                ],
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          }
-        ],
-        "storageKey": "viewingRooms(featured:true)"
       }
     ]
   },
   "params": {
-    "id": "9d160e408cf35acf7f4a6c68be3d49d4",
+    "id": "58781284812075128c26220d93893d2d",
     "metadata": {},
-    "name": "ViewingRoomsListQuery",
+    "name": "ViewingRoomsList_viewingRoomsRefetch",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '16b7f164fd6a164870a88abcaa28b387';
+(node as any).hash = 'a0af5b79c7711894363352535c741db7';
 export default node;
