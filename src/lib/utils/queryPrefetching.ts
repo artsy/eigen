@@ -12,7 +12,7 @@ import {
   GraphQLTaggedNode,
   Variables,
 } from "relay-runtime"
-import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { useTreatment } from "./useExperiments"
 
 const DEFAULT_QUERIES_PER_INTERVAL = 60

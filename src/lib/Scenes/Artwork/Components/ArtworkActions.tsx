@@ -74,6 +74,7 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
         }
       `,
       variables: { input: { artworkID: artwork.internalID, remove: artwork.is_saved } },
+      // @ts-ignore RELAY 12 MIGRATION
       optimisticResponse: { saveArtwork: { artwork: { id: artwork.id, is_saved: !artwork.is_saved } } },
       onCompleted: () =>
         userHadMeaningfulInteraction({

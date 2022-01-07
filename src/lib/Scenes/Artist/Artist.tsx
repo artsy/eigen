@@ -25,7 +25,7 @@ import { Flex, Message } from "palette"
 import React, { useEffect } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
-import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 const INITIAL_TAB = "Artworks"
 export interface NotificationPayload {

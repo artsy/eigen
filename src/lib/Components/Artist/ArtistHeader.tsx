@@ -73,6 +73,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
           unfollow: artist.isFollowed,
         },
       },
+      // @ts-ignore RELAY 12 MIGRATION
       optimisticResponse: {
         followArtist: {
           artist: {

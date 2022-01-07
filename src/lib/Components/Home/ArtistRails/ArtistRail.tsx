@@ -124,6 +124,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
           input: { artistID: followArtist.internalID, unfollow: followArtist.isFollowed },
         },
         onError: reject,
+        // @ts-ignore RELAY 12 MIGRATION
         optimisticResponse: {
           followArtist: {
             artist: {

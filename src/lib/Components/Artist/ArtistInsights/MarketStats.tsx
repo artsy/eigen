@@ -11,7 +11,7 @@ import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { MarketStats_priceInsightsConnection } from "../../../../__generated__/MarketStats_priceInsightsConnection.graphql"
 import { extractNodes } from "../../../utils/extractNodes"
 

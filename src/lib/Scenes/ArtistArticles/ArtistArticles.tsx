@@ -7,7 +7,7 @@ import _ from "lodash"
 import React, { useState } from "react"
 import { createPaginationContainer, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { graphql } from "relay-runtime"
-import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { ArticlesList, ArticlesPlaceholder } from "../Articles/ArticlesList"
 
 const PAGE_SIZE = 10

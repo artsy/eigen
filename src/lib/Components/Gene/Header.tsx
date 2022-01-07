@@ -77,6 +77,7 @@ class Header extends React.Component<Props, State> {
               unfollow: isFollowed,
             },
           },
+          // @ts-ignore RELAY 12 MIGRATION
           optimisticResponse: {
             followGene: {
               gene: {
