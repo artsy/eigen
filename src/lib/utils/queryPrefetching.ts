@@ -43,9 +43,7 @@ const isRateLimited = async () => {
 const prefetchQuery = async (environment: Environment, query: GraphQLTaggedNode, variables: Variables = {}) => {
   const operation = createOperationDescriptor(getRequest(query), variables)
 
-  await fetchQuery(environment, query, variables, {
-    fetchPolicy: "store-or-network",
-  })
+  await fetchQuery(environment, query, variables, { networkCacheConfig: { force: false } })
 
   // this will retain the result in the relay store so it's not garbage collected.
   environment.retain(operation)
