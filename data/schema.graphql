@@ -10328,6 +10328,7 @@ type Query {
   articlesConnection(
     after: String
     before: String
+    featured: Boolean
     first: Int
 
     # Articles that are ready to be publicly viewed in the feed by everyone.
@@ -13249,6 +13250,7 @@ type Viewer {
   articlesConnection(
     after: String
     before: String
+    featured: Boolean
     first: Int
 
     # Articles that are ready to be publicly viewed in the feed by everyone.
