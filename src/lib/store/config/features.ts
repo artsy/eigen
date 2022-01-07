@@ -154,12 +154,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "ARGoogleAuth",
   },
-  AREnableSavedSearchToggles: {
-    readyForRelease: true,
-    description: "Enable Saved Search toggles",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableSavedSearchToggles",
-  },
   AREnableImprovedAlertsFlow: {
     readyForRelease: false,
     description: "Enable Improved Alerts flow",
@@ -218,6 +212,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableQueriesPrefetching",
   },
+  AREnableAccordionNavigationOnSubmitArtwork: {
+    readyForRelease: false,
+    description: "Enable New Artwork Submission Flow with Accordion",
+    showInAdminMenu: true,
+   },
   ARCaptureExceptionsInSentryOnDev: {
     readyForRelease: false,
     description: "Enable capturing exceptions in Sentry on DEV",
@@ -260,6 +259,12 @@ export const devToggles = defineDevToggles({
   },
   DTShowAnalyticsVisualiser: {
     description: "Show analytics visualiser",
+  },
+  DTEasyMyCollectionArtworkCreation: {
+    description: "Easily add my collection artworks",
+  },
+  DTMyCollectionShowLocalImages: {
+    description: "Local images in my collection",
   },
   DTShowWebviewIndicator: {
     description: "Show webview indicator",

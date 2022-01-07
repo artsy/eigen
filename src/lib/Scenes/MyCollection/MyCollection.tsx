@@ -14,9 +14,10 @@ import { PAGE_SIZE } from "lib/Components/constants"
 import { ZeroState } from "lib/Components/States/ZeroState"
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { useToast } from "lib/Components/Toast/toastHook"
 import { navigate, popToRoot } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { unsafe_getFeatureFlag, useFeatureFlag } from "lib/store/GlobalStore"
+import { unsafe_getFeatureFlag, useDevToggle, useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -29,6 +30,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { Platform, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
 
 const RefreshEvents = new EventEmitter()
 const REFRESH_KEY = "refresh"
@@ -311,8 +313,11 @@ const MyCollection: React.FC<{
   const setJSX = __TEST__ ? jest.fn() : useContext(StickyTabPageFlatListContext).setJSX
 
   const space = useSpace()
+  const toast = useToast()
 
   const allowOrderImports = useFeatureFlag("AREnableMyCollectionOrderImport")
+
+  const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
 
   useEffect(() => {
     if (artworks.length) {
@@ -367,8 +372,8 @@ const MyCollection: React.FC<{
             )}
             {!!showNewWorksBanner && (
               <Banner
-                title="You have some artworks."
-                text="To help add your current artworks to your collection, we automatically added your purchases from your order history."
+                title="Your collection is growing"
+                text="Based on your purchase history, we’ve added the following works."
                 showCloseButton
                 onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
               />
@@ -473,6 +478,18 @@ const MyCollection: React.FC<{
               }}
             />
           </Flex>
+        )}
+        {!!showDevAddButton && (
+          <Button
+            onPress={async () => {
+              toast.show("Adding artwork", "middle")
+              await addRandomMyCollectionArtwork()
+              toast.hideOldest()
+            }}
+            block
+          >
+            Add Random Work
+          </Button>
         )}
       </StickyTabPageScrollView>
     </ProvideScreenTrackingWithCohesionSchema>

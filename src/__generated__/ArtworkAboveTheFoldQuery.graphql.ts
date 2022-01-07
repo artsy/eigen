@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash fd6f62aaa081631708ba9be39dbccedd */
+/* @relayHash 0e2b6cbdd2a74d06241f4c0303b0b09c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -147,10 +147,10 @@ fragment Artwork_artworkAboveTheFold on Artwork {
   slug
   internalID
   id
-  is_acquireable: isAcquireable
-  is_offerable: isOfferable
-  is_biddable: isBiddable
-  is_inquireable: isInquireable
+  isAcquireable
+  isOfferable
+  isBiddable
+  isInquireable
   availability
 }
 
@@ -1310,31 +1310,10 @@ return {
             "storageKey": null
           },
           {
-            "alias": "is_acquireable",
-            "args": null,
-            "kind": "ScalarField",
-            "name": "isAcquireable",
-            "storageKey": null
-          },
-          {
-            "alias": "is_offerable",
-            "args": null,
-            "kind": "ScalarField",
-            "name": "isOfferable",
-            "storageKey": null
-          },
-          {
-            "alias": "is_biddable",
+            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "isBiddable",
-            "storageKey": null
-          },
-          {
-            "alias": "is_inquireable",
-            "args": null,
-            "kind": "ScalarField",
-            "name": "isInquireable",
             "storageKey": null
           }
         ],
@@ -1362,7 +1341,7 @@ return {
     ]
   },
   "params": {
-    "id": "fd6f62aaa081631708ba9be39dbccedd",
+    "id": "0e2b6cbdd2a74d06241f4c0303b0b09c",
     "metadata": {},
     "name": "ArtworkAboveTheFoldQuery",
     "operationKind": "query",

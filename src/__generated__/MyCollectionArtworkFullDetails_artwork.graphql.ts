@@ -7,6 +7,7 @@ import { FragmentRefs } from "relay-runtime";
 export type MyCollectionArtworkFullDetails_artwork = {
     readonly artist: {
         readonly internalID: string;
+        readonly formattedNationalityAndBirthday: string | null;
     } | null;
     readonly artistNames: string | null;
     readonly category: string | null;
@@ -86,7 +87,14 @@ return {
       "name": "artist",
       "plural": false,
       "selections": [
-        (v0/*: any*/)
+        (v0/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "formattedNationalityAndBirthday",
+          "storageKey": null
+        }
       ],
       "storageKey": null
     },

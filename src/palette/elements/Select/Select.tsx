@@ -1,11 +1,11 @@
 import { TriangleDown } from "lib/Icons/TriangleDown"
 import { Autocomplete } from "lib/utils/Autocomplete"
-import { CloseIcon, Flex, Separator, Spacer, Text, Touchable, useColor, useTextStyleForPalette } from "palette"
+import { CloseIcon, Flex, Separator, Text, Touchable, useColor, useTextStyleForPalette } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
 import { FancyModal } from "../../../lib/Components/FancyModal/FancyModal"
 import { SearchInput } from "../../../lib/Components/SearchInput"
-import { INPUT_HEIGHT } from "../Input"
+import { INPUT_HEIGHT, InputTitle } from "../Input"
 
 export interface SelectOption<ValueType> {
   value: ValueType
@@ -20,14 +20,18 @@ export interface SelectProps<ValueType> {
   placeholder?: string
   title: string
   showTitleLabel?: boolean
+  optional?: boolean
+  required?: boolean
   subTitle?: string
   enableSearch?: boolean
   maxModalHeight?: number
   hasError?: boolean
+  tooltipText?: string
   testID?: string
   onSelectValue(value: ValueType, index: number): void
   renderButton?(args: { selectedValue: ValueType | null; onPress(): void }): JSX.Element
   renderItemLabel?(value: SelectOption<ValueType>): JSX.Element
+  onTooltipPress?(): void
   onModalFinishedClosing?(): void
 }
 
@@ -37,10 +41,14 @@ export const Select = <ValueType,>({
   placeholder,
   title,
   showTitleLabel = true,
+  optional,
+  required,
   subTitle,
   enableSearch,
   maxModalHeight,
   hasError,
+  tooltipText,
+  onTooltipPress,
   onSelectValue,
   renderButton,
   renderItemLabel,
@@ -79,9 +87,13 @@ export const Select = <ValueType,>({
           title={title}
           showTitleLabel={showTitleLabel}
           subTitle={subTitle}
+          tooltipText={tooltipText}
           placeholder={placeholder}
           value={selectedItem?.label}
           onPress={open}
+          onTooltipPress={onTooltipPress}
+          optional={optional}
+          required={required}
           hasError={hasError}
         />
       )}
@@ -106,32 +118,62 @@ const SelectButton: React.FC<{
   title?: string
   showTitleLabel?: boolean
   subTitle?: string
+  optional?: boolean
+  required?: boolean
   placeholder?: string
   hasError?: boolean
+  tooltipText?: string
   testID?: string
   onPress(): void
-}> = ({ value, placeholder, onPress, title, showTitleLabel, subTitle, hasError, testID }) => {
+  onTooltipPress?(): void
+}> = ({
+  value,
+  placeholder,
+  onPress,
+  title,
+  showTitleLabel,
+  subTitle,
+  hasError,
+  tooltipText,
+  optional,
+  required,
+  testID,
+  onTooltipPress,
+}) => {
   const color = useColor()
   const textStyle = useTextStyleForPalette("sm")
 
   return (
     <Flex>
-      {showTitleLabel ? <Text variant="xs">{title?.toUpperCase()}</Text> : null}
+      <Flex flexDirection="row">
+        <Flex flex={1}>
+          {!!showTitleLabel && (
+            <InputTitle optional={optional} required={required}>
+              {title}
+            </InputTitle>
+          )}
 
-      {subTitle ? (
-        <Text variant="xs" color="black60" mb={0.5}>
-          {subTitle}
-        </Text>
-      ) : (
-        <Spacer mb={0.5} />
-      )}
+          {!!subTitle && (
+            <Text variant="xs" color="black60" mb={0.5}>
+              {subTitle}
+            </Text>
+          )}
+        </Flex>
+        {!!tooltipText && (
+          <Flex justifyContent="flex-end" marginLeft="auto">
+            <Text variant="xs" color="black60" mb={0.5} onPress={onTooltipPress}>
+              {tooltipText}
+            </Text>
+          </Flex>
+        )}
+      </Flex>
       <TouchableOpacity accessible accessibilityRole="button" onPress={onPress} testID={testID}>
         <Flex
           px="1"
           flexDirection="row"
           height={INPUT_HEIGHT}
           borderWidth={1}
-          borderColor={hasError ? color("red100") : color("black10")}
+          borderColor={hasError ? color("red100") : color("black30")}
           justifyContent="space-between"
           alignItems="center"
         >

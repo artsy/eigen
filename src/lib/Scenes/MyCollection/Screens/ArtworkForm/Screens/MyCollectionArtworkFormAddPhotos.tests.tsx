@@ -1,4 +1,3 @@
-import { Route } from "@react-navigation/native"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { __globalStoreTestUtils__, GlobalStore } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -30,19 +29,7 @@ describe("MyCollectionAddPhotos", () => {
     })
 
     const mockNav = jest.fn()
-    const mockRoute: Route<
-      "AddPhotos",
-      {
-        onHeaderBackButtonPress(): void
-      }
-    > = {
-      key: "AddPhotos",
-      name: "AddPhotos",
-      params: {
-        onHeaderBackButtonPress: jest.fn(),
-      },
-    }
-    mockAddPhotos = <MyCollectionAddPhotos navigation={mockNav as any} route={mockRoute} />
+    mockAddPhotos = <MyCollectionAddPhotos navigation={mockNav as any} route={{} as any} />
   })
 
   it("updates header with correct label based on number of photos selected", () => {
@@ -69,19 +56,7 @@ describe("MyCollectionAddPhotos", () => {
 
   it("triggers action on add photo button click", () => {
     const mockNav = jest.fn()
-    const mockRoute: Route<
-      "AddPhotos",
-      {
-        onHeaderBackButtonPress(): void
-      }
-    > = {
-      key: "AddPhotos",
-      name: "AddPhotos",
-      params: {
-        onHeaderBackButtonPress: jest.fn(),
-      },
-    }
-    const wrapper = renderWithWrappers(<MyCollectionAddPhotos navigation={mockNav as any} route={mockRoute} />)
+    const wrapper = renderWithWrappers(<MyCollectionAddPhotos navigation={mockNav as any} route={{} as any} />)
     wrapper.root.findByType(tests.AddPhotosButton).findByType(TouchableOpacity).props.onPress()
     expect(showPhotoActionSheet).toHaveBeenCalled()
   })
@@ -90,19 +65,7 @@ describe("MyCollectionAddPhotos", () => {
     const spy = jest.fn()
     GlobalStore.actions.myCollection.artwork.removePhoto = spy as any
     const mockNav = jest.fn()
-    const mockRoute: Route<
-      "AddPhotos",
-      {
-        onHeaderBackButtonPress(): void
-      }
-    > = {
-      key: "AddPhotos",
-      name: "AddPhotos",
-      params: {
-        onHeaderBackButtonPress: jest.fn(),
-      },
-    }
-    const wrapper = renderWithWrappers(<MyCollectionAddPhotos navigation={mockNav as any} route={mockRoute} />)
+    const wrapper = renderWithWrappers(<MyCollectionAddPhotos navigation={mockNav as any} route={{} as any} />)
     wrapper.root.findAllByType(tests.DeletePhotoButton)[0].findByType(TouchableOpacity).props.onPress()
     expect(spy).toHaveBeenCalledWith({ path: "photo/1" })
   })

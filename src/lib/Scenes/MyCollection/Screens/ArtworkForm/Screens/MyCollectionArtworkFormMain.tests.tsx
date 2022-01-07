@@ -4,7 +4,6 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { ArtistAutosuggest } from "../Components/ArtistAutosuggest"
 import { Dimensions } from "../Components/Dimensions"
 import { MediumPicker } from "../Components/MediumPicker"
 import { ArtworkFormMode } from "../MyCollectionArtworkForm"
@@ -65,16 +64,16 @@ describe("AddEditArtwork", () => {
   it("renders correct components on Add", () => {
     const mockNav = jest.fn()
     const mockRoute: Route<
-      "ArtworkForm",
+      "ArtworkFormMain",
       {
         mode: ArtworkFormMode
         clearForm(): void
-        onDelete?(): void
+        onDelete(): void
         onHeaderBackButtonPress(): void
       }
     > = {
-      key: "ArtworkForm",
-      name: "ArtworkForm",
+      key: "ArtworkFormMain",
+      name: "ArtworkFormMain",
       params: {
         mode: "add",
         clearForm: jest.fn(),
@@ -84,7 +83,7 @@ describe("AddEditArtwork", () => {
     }
     const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
     const wrapper = renderWithWrappers(artworkForm)
-    const expected = [FancyModalHeader, ArtistAutosuggest, MediumPicker, Dimensions]
+    const expected = [FancyModalHeader, MediumPicker, Dimensions]
     expected.forEach((Component) => {
       expect(wrapper.root.findByType(Component as React.ComponentType)).toBeDefined()
     })
@@ -97,16 +96,16 @@ describe("AddEditArtwork", () => {
   it("renders correct components on Edit", () => {
     const mockNav = jest.fn()
     const mockRoute: Route<
-      "ArtworkForm",
+      "ArtworkFormMain",
       {
         mode: ArtworkFormMode
         clearForm(): void
-        onDelete?(): void
+        onDelete(): void
         onHeaderBackButtonPress(): void
       }
     > = {
-      key: "ArtworkForm",
-      name: "ArtworkForm",
+      key: "ArtworkFormMain",
+      name: "ArtworkFormMain",
       params: {
         mode: "edit",
         clearForm: jest.fn(),
@@ -126,16 +125,16 @@ describe("AddEditArtwork", () => {
     const mockNav = jest.fn()
     const mockClearForm = jest.fn()
     const mockRoute: Route<
-      "ArtworkForm",
+      "ArtworkFormMain",
       {
         mode: ArtworkFormMode
         clearForm(): void
-        onDelete?(): void
+        onDelete(): void
         onHeaderBackButtonPress(): void
       }
     > = {
-      key: "ArtworkForm",
-      name: "ArtworkForm",
+      key: "ArtworkFormMain",
+      name: "ArtworkFormMain",
       params: {
         mode: "edit",
         clearForm: mockClearForm,
@@ -177,16 +176,16 @@ describe("AddEditArtwork", () => {
     }))
     const mockNav = jest.fn()
     const mockRoute: Route<
-      "ArtworkForm",
+      "ArtworkFormMain",
       {
         mode: ArtworkFormMode
         clearForm(): void
-        onDelete?(): void
+        onDelete(): void
         onHeaderBackButtonPress(): void
       }
     > = {
-      key: "ArtworkForm",
-      name: "ArtworkForm",
+      key: "ArtworkFormMain",
+      name: "ArtworkFormMain",
       params: {
         mode: "edit",
         clearForm: jest.fn(),
@@ -205,16 +204,16 @@ describe("AddEditArtwork", () => {
     const mockDelete = jest.fn()
     const mockNav = jest.fn()
     const mockRoute: Route<
-      "ArtworkForm",
+      "ArtworkFormMain",
       {
         mode: ArtworkFormMode
         clearForm(): void
-        onDelete?(): void
+        onDelete(): void
         onHeaderBackButtonPress(): void
       }
     > = {
-      key: "ArtworkForm",
-      name: "ArtworkForm",
+      key: "ArtworkFormMain",
+      name: "ArtworkFormMain",
       params: {
         mode: "edit",
         clearForm: jest.fn(),

@@ -2,8 +2,7 @@ import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwo
 import { Action, action, thunk, Thunk } from "easy-peasy"
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
 import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
-import { uniqBy } from "lodash"
-
+import { pick, uniqBy } from "lodash"
 import { Metric } from "../Screens/ArtworkForm/Components/Dimensions"
 
 export interface Image {
@@ -36,6 +35,7 @@ export interface ArtworkFormValues {
   title: string
   width: string
   artworkLocation: string
+  attributionClass: string
 }
 
 export const initialFormValues: ArtworkFormValues = {
@@ -58,6 +58,7 @@ export const initialFormValues: ArtworkFormValues = {
   title: "",
   width: "",
   artworkLocation: "",
+  attributionClass: "",
 }
 
 export interface MyCollectionArtworkModel {
@@ -65,16 +66,16 @@ export interface MyCollectionArtworkModel {
     artworkId: string
     dirtyFormCheckValues: ArtworkFormValues
     formValues: ArtworkFormValues
-    lastUploadedPhoto?: Image
     artworkErrorOccurred: boolean
   }
   setFormValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
+  updateFormValues: Action<MyCollectionArtworkModel, Partial<ArtworkFormValues>>
   setDirtyFormCheckValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
   resetForm: Action<MyCollectionArtworkModel>
+  ResetFormButKeepArtist: Action<MyCollectionArtworkModel>
   setArtistSearchResult: Action<MyCollectionArtworkModel, AutosuggestResult | null>
   setArtworkId: Action<MyCollectionArtworkModel, { artworkId: string }>
   setArtworkErrorOccurred: Action<MyCollectionArtworkModel, boolean>
-  setLastUploadedPhoto: Action<MyCollectionArtworkModel, Image>
 
   addPhotos: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"]>
   removePhoto: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"][0]>
@@ -106,6 +107,10 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     state.sessionState.formValues = input
   }),
 
+  updateFormValues: action((state, input) => {
+    state.sessionState.formValues = { ...state.sessionState.formValues, ...input }
+  }),
+
   setDirtyFormCheckValues: action((state, values) => {
     state.sessionState.dirtyFormCheckValues = values
   }),
@@ -113,6 +118,13 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   resetForm: action((state) => {
     state.sessionState.formValues = initialFormValues
     state.sessionState.dirtyFormCheckValues = initialFormValues
+  }),
+
+  ResetFormButKeepArtist: action((state) => {
+    const artistValues = pick(state.sessionState.formValues, ["artist", "artistIds", "artistSearchResult"])
+
+    state.sessionState.formValues = { ...initialFormValues, ...artistValues }
+    state.sessionState.dirtyFormCheckValues = { ...initialFormValues, ...artistValues }
   }),
 
   setArtworkId: action((state, { artworkId }) => {
@@ -148,10 +160,6 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     )
   }),
 
-  setLastUploadedPhoto: action((state, photo) => {
-    state.sessionState.lastUploadedPhoto = photo
-  }),
-
   /**
    * When user clicks the edit artwork button from detail view, we format
    * data the data from the detail into a form the edit form expects.
@@ -168,6 +176,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
         internalID: artwork?.artist?.internalID,
         displayLabel: artwork?.artistNames,
         imageUrl: artwork?.images?.[0]?.imageURL?.replace(":version", "square"),
+        formattedNationalityAndBirthday: artwork?.artist?.formattedNationalityAndBirthday,
       },
       category: artwork.category,
       date: artwork.date,

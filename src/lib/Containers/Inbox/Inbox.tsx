@@ -173,7 +173,6 @@ export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
     <QueryRenderer<InboxQuery>
       environment={defaultEnvironment}
       query={InboxScreenQuery}
-      cacheConfig={{ force: true }}
       variables={{}}
       render={(...args) => renderWithLoadProgress(InboxContainer, props)(...args)}
     />

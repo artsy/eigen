@@ -15,7 +15,7 @@ import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
 const MARGIN = 20
 
-export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormScreen, "AddPhotos">> = ({ route }) => {
+export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormScreen, "AddPhotos">> = ({ navigation }) => {
   const formValues = GlobalStore.useAppState((state) => state.myCollection.artwork.sessionState.formValues)
   const { photos } = formValues
   const { width: screenWidth } = useScreenDimensions()
@@ -38,9 +38,7 @@ export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormScreen,
 
   return (
     <>
-      <NavHeader onLeftButtonPress={() => route.params.onHeaderBackButtonPress()}>
-        Photos {!!photos.length && `(${photos.length})`}
-      </NavHeader>
+      <NavHeader onLeftButtonPress={navigation.goBack}>Photos {!!photos.length && `(${photos.length})`}</NavHeader>
       <ScrollView>
         <Flex flexDirection="row" flexWrap="wrap" my="2">
           {rows.map((row, i) => (

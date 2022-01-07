@@ -71,6 +71,7 @@ import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
 import { MyCollectionArtworkImagesQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkImages/MyCollectionArtworkImages"
+import { MyCollectionLocalArtworkImages } from "./Scenes/MyCollection/Screens/ArtworkImages/MyCollectionLocalArtworkImages"
 import { MyProfileQueryRenderer, MyProfileScreenQuery } from "./Scenes/MyProfile/MyProfile"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
@@ -91,7 +92,7 @@ import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddres
 import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAddressesForm"
 import { EditSavedSearchAlertQueryRenderer } from "./Scenes/SavedSearchAlert/EditSavedSearchAlert"
 import { SavedSearchAlertsListQueryRenderer } from "./Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
-import { SearchQueryRenderer } from "./Scenes/Search/Search"
+import { SearchQueryRenderer, SearchScreenQuery } from "./Scenes/Search/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { TagQueryRenderer } from "./Scenes/Tag/Tag"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
@@ -316,10 +317,7 @@ export const modules = defineModules({
   CitySavedList: reactModule(CitySavedListQueryRenderer),
   CitySectionList: reactModule(CitySectionListQueryRenderer),
   Collection: reactModule(CollectionQueryRenderer, { fullBleed: true }),
-  ConsignmentsSubmissionForm: reactModule(ConsignmentsSubmissionForm, {
-    alwaysPresentModally: true,
-    hasOwnModalCloseButton: true,
-  }),
+  ConsignmentsSubmissionForm: reactModule(ConsignmentsSubmissionForm, {}),
   Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
   Fair: reactModule(FairQueryRenderer, { fullBleed: true }),
   FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
@@ -361,6 +359,7 @@ export const modules = defineModules({
   MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer),
   MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
   MyCollectionArtworkImages: reactModule(MyCollectionArtworkImagesQueryRenderer),
+  MyCollectionLocalArtworkImages: reactModule(MyCollectionLocalArtworkImages),
   MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }, MyProfileScreenQuery),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfileSettings: reactModule(MyProfileSettings),
@@ -374,7 +373,7 @@ export const modules = defineModules({
   PrivacyRequest: reactModule(PrivacyRequest),
   Sales: reactModule(Consignments, { isRootViewForTabName: "sell" }),
   SalesNotRootTabView: reactModule(Consignments),
-  Search: reactModule(SearchQueryRenderer, { isRootViewForTabName: "search" }),
+  Search: reactModule(SearchQueryRenderer, { isRootViewForTabName: "search" }, SearchScreenQuery),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SavedAddresses: reactModule(SavedAddressesQueryRenderer),

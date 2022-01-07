@@ -31,7 +31,7 @@ const ComparableWorks: React.FC<ComparableWorks> = ({ auctionResult }) => {
             Comparable Works
           </Text>
         }
-        ItemSeparatorComponent={() => <Separator my={2} borderColor="black10" />}
+        ItemSeparatorComponent={() => <Separator borderColor="black10" />}
         renderItem={({ item, index }) => {
           return (
             <AuctionResultListItemFragmentContainer

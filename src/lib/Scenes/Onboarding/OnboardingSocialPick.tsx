@@ -1,9 +1,10 @@
 import { useNavigation } from "@react-navigation/native"
 import { BackButton } from "lib/navigation/BackButton"
-import { GlobalStore, useEnvironment } from "lib/store/GlobalStore"
+import { navigate } from "lib/navigation/navigate"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { Button, Flex, Join, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
-import { Alert, Image, Linking, Platform } from "react-native"
+import { Alert, Image, Platform } from "react-native"
 import { EnvelopeIcon } from "../../../palette/svgs/EnvelopeIcon"
 import { useFeatureFlag } from "../../store/GlobalStore"
 
@@ -12,7 +13,6 @@ interface OnboardingSocialPickProps {
 }
 
 export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode }) => {
-  const webURL = useEnvironment().webURL
   const navigation = useNavigation()
 
   const enableGoogleAuth = useFeatureFlag("ARGoogleAuth")
@@ -71,6 +71,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
     }
   }
 
+  const isiOS = Platform.OS === "ios"
   return (
     <Flex justifyContent="center" flex={1} backgroundColor="white">
       <BackButton
@@ -151,23 +152,21 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
           <Text variant="xs" color="black60" textAlign="center">
             By tapping Continue with Facebook
             {!!enableGoogleAuth ? ", Google" : ""}
-            {Platform.OS === "ios" ? " or Apple" : ""}, you agree to Artsy's{" "}
+            {isiOS ? " or Apple" : ""}, you agree to Artsy's{" "}
             <Text
-              onPress={() => {
-                Linking.openURL(`${webURL}/terms`)
-              }}
+              onPress={() => (isiOS ? navigate("/terms", { modal: true }) : navigation.navigate("Terms"))}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
+              testID="openTerms"
             >
               Terms of Use
             </Text>{" "}
             and{" "}
             <Text
-              onPress={() => {
-                Linking.openURL(`${webURL}/privacy`)
-              }}
+              onPress={() => (isiOS ? navigate("/privacy", { modal: true }) : navigation.navigate("Privacy"))}
               variant="xs"
               style={{ textDecorationLine: "underline" }}
+              testID="openPrivacy"
             >
               Privacy Policy
             </Text>

@@ -11,7 +11,9 @@ storiesOf("Input", module)
     <List contentContainerStyle={{ marginHorizontal: 20, alignItems: "stretch" }}>
       <Input />
       <Input title="Title" />
-      <Input title="Title" description="Subtitle" />
+      <Input title="Title" required />
+      <Input title="Title" optional />
+      <Input title="Title" description="Subtitle" optional />
       <Input title="Title" description="With clear button" enableClearButton />
       <Input title="Title" description="With loading" loading />
       <Input title="Title" description="With icon" icon={<SearchIcon />} />

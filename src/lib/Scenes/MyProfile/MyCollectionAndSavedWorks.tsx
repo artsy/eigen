@@ -1,4 +1,3 @@
-import AsyncStorage from "@react-native-community/async-storage"
 import { MyCollectionAndSavedWorks_me } from "__generated__/MyCollectionAndSavedWorks_me.graphql"
 import { MyCollectionAndSavedWorksQuery } from "__generated__/MyCollectionAndSavedWorksQuery.graphql"
 import { Image } from "lib/Components/Bidding/Elements/Image"
@@ -7,8 +6,8 @@ import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
+import { LocalImage, retrieveLocalImages, storeLocalImages } from "lib/utils/LocalImageStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { DateTime } from "luxon"
 import { Avatar, Box, Button, Flex, Sans, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, QueryRenderer } from "react-relay"
@@ -22,7 +21,7 @@ export enum Tab {
   savedWorks = "Saved Works",
 }
 
-export const MyCollectionAndSavedWorks: React.FC<{ me: NonNullable<MyCollectionAndSavedWorks_me> }> = ({ me }) => {
+export const MyCollectionAndSavedWorks: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({ me }) => {
   return (
     <StickyTabPage
       disableBackButtonUpdate
@@ -44,48 +43,46 @@ export const MyCollectionAndSavedWorks: React.FC<{ me: NonNullable<MyCollectionA
 }
 
 export const LOCAL_PROFILE_ICON_PATH_KEY = "LOCAL_PROFILE_ICON_PATH_KEY"
-export const LOCAL_PROFILE_ICON_EXPIRE_AT_KEY = "LOCAL_PROFILE_ICON_EXPIRE_AT_KEY"
 
-export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWorks_me> }> = ({ me }) => {
+export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({ me }) => {
   const color = useColor()
 
   const [showModal, setShowModal] = useState(false)
-  const [localImagePath, setLocalImagePath] = useState<string>("")
+  const [localImage, setLocalImage] = useState<LocalImage | null>(null)
 
-  const setProfileIconHandler = (profileIconPath: string) => {
-    setLocalImagePath(profileIconPath)
-    const dateToExpire = DateTime.fromISO(new Date().toISOString()).plus({ minutes: 2 }).toISO()
-    AsyncStorage.multiSet([
-      [LOCAL_PROFILE_ICON_PATH_KEY, profileIconPath],
-      [LOCAL_PROFILE_ICON_EXPIRE_AT_KEY, dateToExpire],
-    ])
+  const setProfileIconHandler = (path: string) => {
+    const profileIcon: LocalImage = {
+      path,
+      width: 100, // don't care about aspect ratio for profile images
+      height: 100,
+    }
+    setLocalImage(profileIcon)
+    storeLocalImages([profileIcon], LOCAL_PROFILE_ICON_PATH_KEY)
   }
 
   useEffect(() => {
-    AsyncStorage.multiGet([LOCAL_PROFILE_ICON_PATH_KEY, LOCAL_PROFILE_ICON_EXPIRE_AT_KEY]).then(
-      ([localProfileImagePath, addedAt]) => {
-        const now = DateTime.fromISO(new Date().toISOString()).toISO()
-        const expired = addedAt[1] ? now > addedAt[1] : true
-        if (!expired && localProfileImagePath[1]) {
-          setLocalImagePath(localProfileImagePath[1])
-        }
+    retrieveLocalImages(LOCAL_PROFILE_ICON_PATH_KEY).then((images) => {
+      if (images && images.length > 0) {
+        setLocalImage(images[0])
       }
-    )
+    })
   }, [])
 
-  const userProfileImage = localImagePath || me.icon?.url
+  const userProfileImagePath = localImage?.path || me?.icon?.url
 
   const showIconAndBio = useFeatureFlag("AREnableVisualProfileIconAndBio")
 
   return (
     <>
-      <MyProfileEditFormModalFragmentContainer
-        me={me}
-        visible={showModal}
-        onDismiss={() => setShowModal(false)}
-        setProfileIconLocally={setProfileIconHandler}
-        localImagePath={localImagePath}
-      />
+      {!!me && (
+        <MyProfileEditFormModalFragmentContainer
+          me={me}
+          visible={showModal}
+          onDismiss={() => setShowModal(false)}
+          setProfileIconLocally={setProfileIconHandler}
+          localImage={localImage}
+        />
+      )}
       <FancyModalHeader
         rightButtonText="Settings"
         hideBottomDivider
@@ -103,8 +100,8 @@ export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWor
             justifyContent="center"
             alignItems="center"
           >
-            {!!userProfileImage ? (
-              <Avatar src={userProfileImage} size="md" />
+            {!!userProfileImagePath ? (
+              <Avatar src={userProfileImagePath} size="md" />
             ) : (
               <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
             )}

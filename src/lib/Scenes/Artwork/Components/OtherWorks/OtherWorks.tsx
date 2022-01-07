@@ -14,7 +14,7 @@ type OtherWorksGrid = NonNullable<NonNullable<OtherWorks_artwork["contextGrids"]
 type ArtworkGrid = NonNullable<NonNullable<Artwork_artworkBelowTheFold["contextGrids"]>[number]>
 type Grid = OtherWorksGrid | ArtworkGrid
 
-export const populatedGrids = (grids: ReadonlyArray<Grid>) => {
+export const populatedGrids = (grids?: ReadonlyArray<Grid | null> | null) => {
   if (grids && grids.length > 0) {
     return filter(grids, (grid) => {
       return (grid?.artworks?.edges?.length ?? 0) > 0
@@ -25,7 +25,6 @@ export const populatedGrids = (grids: ReadonlyArray<Grid>) => {
 export const OtherWorksFragmentContainer = createFragmentContainer<{ artwork: OtherWorks_artwork }>(
   (props) => {
     const grids = props.artwork.contextGrids
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const gridsToShow = populatedGrids(grids) as ReadonlyArray<OtherWorksGrid>
 
     if (gridsToShow && gridsToShow.length > 0) {

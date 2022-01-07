@@ -282,17 +282,19 @@ const SearchRefetchContainer = createRefetchContainer(
   `
 )
 
+export const SearchScreenQuery = graphql`
+  query SearchQuery {
+    system {
+      ...Search_system
+    }
+  }
+`
+
 export const SearchQueryRenderer: React.FC<{}> = ({}) => {
   return (
     <QueryRenderer<SearchQuery>
       environment={defaultEnvironment}
-      query={graphql`
-        query SearchQuery {
-          system {
-            ...Search_system
-          }
-        }
-      `}
+      query={SearchScreenQuery}
       render={({ props, error }) => {
         if (error) {
           if (__DEV__) {
@@ -305,7 +307,6 @@ export const SearchQueryRenderer: React.FC<{}> = ({}) => {
         return <SearchRefetchContainer system={props?.system ?? null} />
       }}
       variables={{}}
-      cacheConfig={{ force: true }}
     />
   )
 }
