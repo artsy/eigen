@@ -36,8 +36,8 @@ return(
 
 ```diff
   // The component that renders the new feature
-  useEffect(() => {
-     setVisualClueAsSeen("NewVisualClue")
-  }, [])
++ useEffect(() => {
++    setVisualClueAsSeen("NewVisualClue")
++ }, [])
 )
 ```
