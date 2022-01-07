@@ -32,7 +32,7 @@ export const SectionTitle: React.FC<{
           </Text>
           {Boolean(subtitle) && (
             <Text variant="sm" color="black60" lineHeight="20" testID="subtitle">
-              {toTitleCase(String(subtitle))}
+              {subtitle}
             </Text>
           )}
         </View>
