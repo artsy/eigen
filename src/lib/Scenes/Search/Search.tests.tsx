@@ -105,7 +105,7 @@ describe("Search Screen", () => {
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => false)
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
-    expect(getByText("Explore art on view")).toBeTruthy()
+    expect(getByText("Explore Art on View")).toBeTruthy()
   })
 
   it('the "Top" pill should be selected by default', () => {
