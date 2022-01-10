@@ -2,6 +2,7 @@ import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
+import { useNavigation } from "@react-navigation/native"
 import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
 import * as RelayCache from "lib/relay/RelayCache"
 import { isArtsyEmail } from "lib/utils/general"
@@ -83,6 +84,7 @@ export interface AuthModel {
     >
   >
   userExists: Thunk<this, { email: string }, {}, GlobalStoreModel>
+  verifyPassword: Thunk<this, { email: string; password: string }, {}, GlobalStoreModel, Promise<boolean>>
   signIn: Thunk<
     this,
     { email: string; onboardingState?: OnboardingState } & OAuthParams,
@@ -97,7 +99,7 @@ export interface AuthModel {
     GlobalStoreModel,
     Promise<{ success: boolean; message?: string }>
   >
-  authFacebook: Thunk<this, void, {}, GlobalStoreModel, Promise<true>>
+  authFacebook: Thunk<this, { navigation: ReturnType<typeof useNavigation> }, {}, GlobalStoreModel, Promise<true>>
   authGoogle: Thunk<this, void, {}, GlobalStoreModel, Promise<true>>
   authApple: Thunk<this, void, {}, GlobalStoreModel, Promise<true>>
   forgotPassword: Thunk<this, { email: string }, {}, GlobalStoreModel, Promise<boolean>>
@@ -247,6 +249,25 @@ export const getAuthModel = (): AuthModel => ({
     }
     return false
   }),
+  verifyPassword: thunk(async (actions, { email, password }) => {
+    const result = await actions.gravityUnauthenticatedRequest({
+      path: `/oauth2/access_token`,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: {
+        email,
+        oauth_provider: "email",
+
+        password,
+        grant_type: "credentials",
+
+        client_id: Config.ARTSY_API_CLIENT_KEY,
+        client_secret: Config.ARTSY_API_CLIENT_SECRET,
+        scope: "offline_access",
+      },
+    })
+    return result.status === 201
+  }),
   signIn: thunk(async (actions, args, store) => {
     const { oauthProvider, email, onboardingState } = args
 
@@ -381,7 +402,7 @@ export const getAuthModel = (): AuthModel => ({
 
     return { success: false, message }
   }),
-  authFacebook: thunk(async (actions) => {
+  authFacebook: thunk(async (actions, { navigation }) => {
     return await new Promise<true>(async (resolve, reject) => {
       const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions(["public_profile", "email"])
       if (declinedPermissions?.includes("email")) {
@@ -409,39 +430,61 @@ export const getAuthModel = (): AuthModel => ({
           return
         }
 
-        const { accountExists, xAccessToken, response } = await actions.accountExists({
-          oauthProvider: "facebook",
-          accessToken: accessToken.accessToken,
-        })
+        /**
+         * General way of how we determine account existance and link state:
+         *
+         * First we ask FB for the email, name, and access token.
+         *
+         * - If the email does not exist in gravity, then we know it's a first-time login.
+         *     In that case we go ahead and create the account using FB.
+         *
+         * - If the email exists, then either this is an existing FB account, or it's an existing email account.
+         *   - If gravity is ok with our access token, then we know it's a FB account.
+         *       In that case we can continue with the login.
+         *   - If gravity is *not* ok with our access token, then we know it's an email account.
+         *       In that case, we take the user to the link screen.
+         *       There, they can choose to either link FB to their email account, or use separate accounts, one FB and one email.
+         */
 
-        if (accountExists) {
-          const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
-            path: `/api/v1/me`,
-            headers: { "X-ACCESS-TOKEN": xAccessToken! },
-          })
-          const { email } = await resultGravityEmail.json()
-          const resultGravitySignIn = await actions.signIn({
+        const emailExists = await actions.userExists({ email: facebookInfo.email! })
+        if (!emailExists) {
+          // thats a new email, continue with FB.
+
+          const resultGravitySignUp = await actions.signUp({
+            email: facebookInfo.email,
+            name: facebookInfo.name,
+            accessToken: accessToken.accessToken,
             oauthProvider: "facebook",
-            email,
+            agreedToReceiveEmails: true,
+          })
+
+          resultGravitySignUp.success ? resolve(true) : reject(resultGravitySignUp.message)
+        } else {
+          // that email exists. either as a FB account, or as an email account, or any other social.
+
+          const { accountExists: accountIsFB, xAccessToken } = await actions.accountExists({
+            oauthProvider: "facebook",
             accessToken: accessToken.accessToken,
           })
 
-          resultGravitySignIn ? resolve(true) : reject("Could not log in")
-        } else {
-          const accountShouldBeCreated = response.error_description.includes("no account linked to oauth token")
+          if (accountIsFB) {
+            // its a FB account, continue with FB.
 
-          if (accountShouldBeCreated) {
-            const resultGravitySignUp = await actions.signUp({
-              email: facebookInfo.email,
-              name: facebookInfo.name,
-              accessToken: accessToken.accessToken,
+            const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
+              path: `/api/v1/me`,
+              headers: { "X-ACCESS-TOKEN": xAccessToken! },
+            })
+            const { email } = await resultGravityEmail.json()
+            const resultGravitySignIn = await actions.signIn({
               oauthProvider: "facebook",
-              agreedToReceiveEmails: true,
+              email,
+              accessToken: accessToken.accessToken,
             })
 
-            resultGravitySignUp.success ? resolve(true) : reject(resultGravitySignUp.message)
+            resultGravitySignIn ? resolve(true) : reject("Could not log in")
           } else {
-            showError(response, reject, "facebook")
+            // its not a FB account, we need to link or make a separate account.
+            navigation.navigate("OnboardingSocialLink", { email })
           }
         }
       }
