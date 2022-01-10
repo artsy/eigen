@@ -45,6 +45,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const savedSearchPills = SavedSearchStore.useStoreState((state) => state.pills)
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
+  const hasChangedFilters = SavedSearchStore.useStoreState((state) => state.dirty)
   const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
     (state) => state.removeValueFromAttributesByKeyAction
   )
@@ -195,7 +196,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
           savedSearchAlertId={savedSearchAlertId}
           artistId={artistId}
           artistName={artistName}
-          hasChangedFilters={initialPills.length > pills.length}
+          hasChangedFilters={hasChangedFilters}
           onDeletePress={handleDeletePress}
           onSubmitPress={formik.handleSubmit}
           onTogglePushNotification={handleTogglePushNotification}
