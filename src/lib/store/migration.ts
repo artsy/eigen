@@ -31,7 +31,7 @@ export const Versions = {
   AddVisualClueModel: 19,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddUserPreferences
+export const CURRENT_APP_VERSION = Versions.AddVisualClueModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -121,7 +121,9 @@ export const artsyAppMigrations: Migrations = {
     state.userPreferences = { currency: "USD", metric: "" }
   },
   [Versions.AddVisualClueModel]: (state) => {
-    state.config.visualClue = {}
+    state.visualClue = {
+      seenVisualClues: [],
+    }
   },
 }
 
