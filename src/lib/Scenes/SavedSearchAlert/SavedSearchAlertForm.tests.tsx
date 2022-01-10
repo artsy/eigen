@@ -472,7 +472,6 @@ describe("Saved search alert form", () => {
 
   describe("Save alert button", () => {
     it("should be disabled if none of the notification toggle options has been selected", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
       const { getByTestId, getByA11yLabel } = renderWithWrappersTL(<TestRenderer />)
 
       fireEvent(getByA11yLabel("Mobile Alerts Toggler"), "valueChange", false)
