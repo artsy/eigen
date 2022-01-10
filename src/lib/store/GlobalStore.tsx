@@ -166,7 +166,7 @@ export const useVisualClue = () => {
   const seenVisualClues = GlobalStore.useAppState((state) => state.visualClue.seenVisualClues)
 
   const showVisualClue = (clueName?: VisualClueName): boolean => {
-    return !!clueName && !seenVisualClues?.includes(clueName)
+    return !!clueName && !seenVisualClues.includes(clueName)
   }
 
   return { seenVisualClues, showVisualClue }

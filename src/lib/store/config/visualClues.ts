@@ -16,10 +16,4 @@ export const visualClues = defineVisualClues({
   // ExampleClueName: {
   //   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
   // },
-  TestClue1: {
-    description: "Test Clue 1",
-  },
-  TestClue2: {
-    description: "Test Clue 1",
-  },
 })

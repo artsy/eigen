@@ -9,6 +9,10 @@ export interface VisualClueModel {
 export const getVisualClueModel = (): VisualClueModel => ({
   seenVisualClues: [],
   setVisualClueAsSeen: action((state, clueName) => {
-    state.seenVisualClues = [...new Set([...state.seenVisualClues, clueName])]
+    if (state.seenVisualClues.includes(clueName)) {
+      return
+    }
+
+    state.seenVisualClues = [...state.seenVisualClues, clueName]
   }),
 })

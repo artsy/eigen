@@ -13,7 +13,7 @@ storiesOf("Theme/Text", module)
       <VisualClueDot />
       <>
         <Text>A Feature</Text>
-        <VisualClueText style={{ top: 14, right: -36 }} />
+        <VisualClueText style={{ top: 14, right: -24 }} />
       </>
     </List>
   ))
