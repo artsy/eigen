@@ -8,7 +8,7 @@ import {
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { retrieveLocalImages } from "lib/utils/LocalImageStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Spacer, Text, useColor } from "palette"
+import { Flex, NoImageIcon, Spacer, Text, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -70,8 +70,15 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
           onImagePressed={trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))}
         />
       ) : (
-        // TODO:- Display null image container https://artsyproduct.atlassian.net/browse/CX-2200
-        <Box testID="Fallback" bg={color("black30")} width={dimensions.width} height={dimensions.height / 2.5} />
+        <Flex
+          testID="Fallback-image-mycollection-header"
+          bg={color("black5")}
+          height={dimensions.height / 2.5}
+          justifyContent="center"
+          mx={20}
+        >
+          <NoImageIcon fill="black60" mx="auto" />
+        </Flex>
       )}
     </>
   )
