@@ -9,7 +9,7 @@ import { useCanOpenURL } from "lib/utils/useCanOpenURL"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Flex, InstagramAppIcon, LinkIcon, MoreIcon, ShareIcon, Spacer, WhatsAppAppIcon } from "palette"
 import React, { useRef, useState } from "react"
-import { Button, Modal, Platform } from "react-native"
+import { Button, Modal } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 import Share from "react-native-share"
 import ViewShot from "react-native-view-shot"
@@ -36,11 +36,8 @@ export const ArtworkHeader: React.FC<ArtworkHeaderProps> = (props) => {
   const [shareSheetVisible, setShareSheetVisible] = useState(false)
   const toast = useToast()
 
-  const whatsappUrlScheme = Platform.OS === "android" ? "whatsapp://send?phone=+491898" : "whatsapp://test"
-  const showWhatsAppItem = useCanOpenURL(whatsappUrlScheme)
-  const instagramStoryUrlScheme =
-    Platform.OS === "android" ? "instagram://user?username=instagram" : "instagram-stories://test"
-  const showInstagramStoriesItem = useCanOpenURL(instagramStoryUrlScheme)
+  const showWhatsAppItem = useCanOpenURL("whatsapp://send?phone=+491898")
+  const showInstagramStoriesItem = useCanOpenURL("instagram://user?username=instagram")
 
   const currentImage = (artwork.images ?? [])[currentImageIndex]
   const currentImageUrl = (currentImage?.url ?? "").replace(":version", "large")
