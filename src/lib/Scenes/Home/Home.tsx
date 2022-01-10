@@ -554,8 +554,13 @@ const HomePlaceholder: React.FC<{}> = () => {
         <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
         <Flex flexDirection="row" mt={1}>
           <Join separator={<Spacer width={15} />}>
-            {times(10).map((index) => (
-              <PlaceholderBox key={index} height={270} width={270} />
+            {times(3 + useMemoizedRandom() * 10).map((index) => (
+              <Flex key={index}>
+                <PlaceholderBox key={index} height={180} width={295} />
+                <Spacer mb={2} />
+                <PlaceholderText width={120} />
+                <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
+              </Flex>
             ))}
           </Join>
           <ModuleSeparator />
