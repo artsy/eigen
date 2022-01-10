@@ -48,11 +48,10 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
   const initialMetric = GlobalStore.useAppState((state) => state.userPreferences.metric)
 
   useEffect(() => {
-    GlobalStore.actions.myCollection.artwork.setFormValues({
-      ...formikValues,
-      pricePaidCurrency: initialCurrency,
-      metric: initialMetric,
-    })
+    const metric = formikValues.metric || initialMetric
+    const pricePaidCurrency = formikValues.pricePaidCurrency || initialCurrency
+
+    GlobalStore.actions.myCollection.artwork.setFormValues({ ...formikValues, pricePaidCurrency, metric })
   }, [])
 
   return (
