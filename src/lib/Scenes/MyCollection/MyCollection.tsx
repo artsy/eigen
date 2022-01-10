@@ -90,7 +90,7 @@ const MyCollection: React.FC<{
           orderBy(
             artworks,
             (a) => {
-              return a.pricePaid.minor
+              return a.pricePaid?.minor
             },
             "asc"
           ),
@@ -104,7 +104,7 @@ const MyCollection: React.FC<{
           orderBy(
             artworks,
             (a) => {
-              return a.pricePaid.minor
+              return a.pricePaid?.minor
             },
             "desc"
           ),
@@ -234,10 +234,10 @@ const MyCollection: React.FC<{
           }
 
           return filter(artworks, (a) => {
-            if (isNaN(a.pricePaid.minor)) {
+            if (isNaN(a.pricePaid?.minor)) {
               return false
             }
-            const pricePaid = a.pricePaid.minor / 100
+            const pricePaid = a.pricePaid?.minor === 0 ? 0 : a.pricePaid?.minor / 100
             return pricePaid >= lowerBound && pricePaid <= upperBound
           })
         },
