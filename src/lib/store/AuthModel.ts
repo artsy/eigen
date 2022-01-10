@@ -250,48 +250,23 @@ export const getAuthModel = (): AuthModel => ({
   signIn: thunk(async (actions, args, store) => {
     const { oauthProvider, email, onboardingState } = args
 
-    const grantTypeMap = {
-      facebook: "oauth_token",
-      google: "oauth_token",
-      apple: "apple_uid",
-      email: "credentials",
-    }
+    const { accountExists, xAccessToken, response } = await actions.accountExists(args)
 
-    const result = await actions.gravityUnauthenticatedRequest({
-      path: `/oauth2/access_token`,
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: {
-        email,
-        oauth_provider: oauthProvider,
-
-        password: oauthProvider === "email" ? args.password : undefined,
-        oauth_token: oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
-        apple_uid: oauthProvider === "apple" ? args.appleUID : undefined,
-        id_token: oauthProvider === "apple" ? args.idToken : undefined,
-        grant_type: grantTypeMap[oauthProvider],
-
-        client_id: Config.ARTSY_API_CLIENT_KEY,
-        client_secret: Config.ARTSY_API_CLIENT_SECRET,
-        scope: "offline_access",
-      },
-    })
-
-    if (result.status === 201) {
-      const { expires_in, access_token } = await result.json()
+    if (accountExists) {
       const user = await (
         await actions.gravityUnauthenticatedRequest({
           path: `/api/v1/me`,
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "X-ACCESS-TOKEN": access_token,
+            "X-ACCESS-TOKEN": xAccessToken!,
           },
         })
       ).json()
 
+      const { expires_in } = response
       actions.setState({
-        userAccessToken: access_token,
+        userAccessToken: xAccessToken,
         userAccessTokenExpiresIn: expires_in,
         userID: user.id,
         userEmail: email,
@@ -316,7 +291,7 @@ export const getAuthModel = (): AuthModel => ({
       // Keep native iOS in sync with react-native auth state
       if (Platform.OS === "ios") {
         requestAnimationFrame(() => {
-          LegacyNativeModules.ArtsyNativeModule.updateAuthState(access_token, expires_in, user)
+          LegacyNativeModules.ArtsyNativeModule.updateAuthState(xAccessToken!, expires_in, user)
         })
       }
 
@@ -434,19 +409,9 @@ export const getAuthModel = (): AuthModel => ({
           return
         }
 
-        // we need to get X-ACCESS-TOKEN before actual sign in
-        const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
-          path: `/oauth2/access_token`,
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: {
-            oauth_provider: "facebook",
-            oauth_token: accessToken.accessToken,
-            client_id: Config.ARTSY_API_CLIENT_KEY,
-            client_secret: Config.ARTSY_API_CLIENT_SECRET,
-            grant_type: "oauth_token",
-            scope: "offline_access",
-          },
+        const { accountExists, xAccessToken, response } = await actions.accountExists({
+          oauthProvider: "facebook",
+          accessToken: accessToken.accessToken,
         })
 
         if (accountExists) {
@@ -557,62 +522,50 @@ export const getAuthModel = (): AuthModel => ({
         reject("Failed to authenticate using apple sign in")
         return
       }
+
       const appleUID = userInfo.user
 
-      if (signInOrUp === "signUp") {
-        const firstName = userInfo.fullName?.givenName ? userInfo.fullName.givenName : ""
-        const lastName = userInfo.fullName?.familyName ? userInfo.fullName.familyName : ""
+      const { accountExists, xAccessToken, response } = await actions.accountExists({
+        oauthProvider: "apple",
+        appleUID,
+        idToken,
+      })
 
-        const resultGravitySignUp = userInfo.email
-          ? await actions.signUp({
-              email: userInfo.email,
-              name: `${firstName} ${lastName}`.trim(),
-              appleUID,
-              idToken,
-              oauthProvider: "apple",
-              agreedToReceiveEmails: !!agreedToReceiveEmails,
-            })
-          : { success: false }
-
-        resultGravitySignUp.success ? resolve(true) : (signInOrUp = "signIn")
-      }
-
-      if (signInOrUp === "signIn") {
-        // we need to get X-ACCESS-TOKEN before actual sign in
-        const resultGravityAccessToken = await actions.gravityUnauthenticatedRequest({
-          path: `/oauth2/access_token`,
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: {
-            oauth_provider: "apple",
-            apple_uid: appleUID,
-            id_token: idToken,
-            client_id: Config.ARTSY_API_CLIENT_KEY,
-            client_secret: Config.ARTSY_API_CLIENT_SECRET,
-            grant_type: "apple_uid",
-            scope: "offline_access",
-          },
+      if (accountExists) {
+        const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
+          path: `/api/v1/me`,
+          headers: { "X-ACCESS-TOKEN": xAccessToken! },
         })
-        if (resultGravityAccessToken.status === 201) {
-          const { access_token: xAccessToken } = await resultGravityAccessToken.json() // here's the X-ACCESS-TOKEN we needed now we can get user's email and sign in
-          const resultGravityEmail = await actions.gravityUnauthenticatedRequest({
-            path: `/api/v1/me`,
-            headers: { "X-ACCESS-TOKEN": xAccessToken },
-          })
-          const { email } = await resultGravityEmail.json()
-          const resultGravitySignIn = await actions.signIn({
-            oauthProvider: "apple",
-            email,
-            appleUID,
-            idToken,
-          })
+        const { email } = await resultGravityEmail.json()
+        const resultGravitySignIn = await actions.signIn({
+          oauthProvider: "apple",
+          email,
+          appleUID,
+          idToken,
+        })
 
-          resultGravitySignIn ? resolve(true) : reject("Could not log in")
+        resultGravitySignIn ? resolve(true) : reject("Could not log in")
+      } else {
+        const accountShouldBeCreated = response.error_description.includes("no account linked to oauth token")
+
+        if (accountShouldBeCreated) {
+          const firstName = userInfo.fullName?.givenName ? userInfo.fullName.givenName : ""
+          const lastName = userInfo.fullName?.familyName ? userInfo.fullName.familyName : ""
+
+          const resultGravitySignUp = userInfo.email
+            ? await actions.signUp({
+                email: userInfo.email,
+                name: `${firstName} ${lastName}`.trim(),
+                appleUID,
+                idToken,
+                oauthProvider: "apple",
+                agreedToReceiveEmails: true,
+              })
+            : { success: false }
+
+          resultGravitySignUp.success ? resolve(true) : reject(resultGravitySignUp.message)
         } else {
-          const res = await resultGravityAccessToken.json()
-          showError(res, reject, "apple")
+          showError(response, reject, "apple")
         }
       }
     })

@@ -532,8 +532,22 @@ describe("AuthModel", () => {
       ;(appleAuth.performRequest as jest.Mock).mockReturnValue({ identityToken: "apple-id-token", user: "appleUID" })
     })
 
-    it("fetches profile info from apple and signs up", async () => {
-      GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
+    it("fetches profile info from apple and signs in if account exists", async () => {
+      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
+      mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
+      GlobalStore.actions.auth.signIn = jest.fn(() => ({ success: true })) as any
+
+      await GlobalStore.actions.auth.authApple()
+
+      expect(GlobalStore.actions.auth.signIn).toHaveBeenCalledWith({
+        email: "emailFromArtsy@mail.com",
+        appleUID: "appleUID",
+        idToken: "apple-id-token",
+        oauthProvider: "apple",
+      })
+    })
+
+    it("fetches profile info from apple and signs up if account doesn't exist", async () => {
       ;(appleAuth.performRequest as jest.Mock).mockReturnValue({
         identityToken: "apple-id-token",
         user: "appleUID",
@@ -543,6 +557,8 @@ describe("AuthModel", () => {
           familyName: "lastName",
         },
       })
+      mockFetchJsonOnce({ error_description: "no account linked to oauth token" }, 400)
+      GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
 
       await GlobalStore.actions.auth.authApple()
 
@@ -553,21 +569,6 @@ describe("AuthModel", () => {
         idToken: "apple-id-token",
         oauthProvider: "apple",
         agreedToReceiveEmails: true,
-      })
-    })
-
-    it("fetches profile info from apple and signs in", async () => {
-      mockFetchJsonOnce({ access_token: "x-access-token" }, 201)
-      mockFetchJsonOnce({ email: "emailFromArtsy@mail.com" })
-      GlobalStore.actions.auth.signIn = jest.fn(() => true) as any
-
-      await GlobalStore.actions.auth.authApple()
-
-      expect(GlobalStore.actions.auth.signIn).toHaveBeenCalledWith({
-        email: "emailFromArtsy@mail.com",
-        appleUID: "appleUID",
-        idToken: "apple-id-token",
-        oauthProvider: "apple",
       })
     })
 
