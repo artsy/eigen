@@ -1,18 +1,18 @@
-import { AlgoliaIndiceKey } from "./types"
+import { AlgoliaIndexKey } from "./types"
 
 export const ALGOLIA_INDICES_WITH_AN_ARTICLE = [
-  AlgoliaIndiceKey.Artist,
-  AlgoliaIndiceKey.Auction,
-  AlgoliaIndiceKey.ArtistSeries,
-  AlgoliaIndiceKey.Article,
+  AlgoliaIndexKey.Artist,
+  AlgoliaIndexKey.Auction,
+  AlgoliaIndexKey.ArtistSeries,
+  AlgoliaIndexKey.Article,
 ]
 export const ALLOWED_ALGOLIA_KEYS = [
-  AlgoliaIndiceKey.Artist,
-  AlgoliaIndiceKey.Article,
-  AlgoliaIndiceKey.Auction,
-  AlgoliaIndiceKey.ArtistSeries,
-  AlgoliaIndiceKey.Collection,
-  AlgoliaIndiceKey.Fair,
-  AlgoliaIndiceKey.Show,
-  AlgoliaIndiceKey.Gallery,
+  AlgoliaIndexKey.Artist,
+  AlgoliaIndexKey.Article,
+  AlgoliaIndexKey.Auction,
+  AlgoliaIndexKey.ArtistSeries,
+  AlgoliaIndexKey.Collection,
+  AlgoliaIndexKey.Fair,
+  AlgoliaIndexKey.Show,
+  AlgoliaIndexKey.Gallery,
 ]

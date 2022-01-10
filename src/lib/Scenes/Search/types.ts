@@ -15,10 +15,10 @@ export interface PillType {
   displayName: string
   disabled?: boolean
   type: PillEntityType
-  key: AlgoliaIndiceKey | string
+  key: AlgoliaIndexKey | string
 }
 
-export enum AlgoliaIndiceKey {
+export enum AlgoliaIndexKey {
   Artist = "artist",
   Article = "article",
   Auction = "sale",

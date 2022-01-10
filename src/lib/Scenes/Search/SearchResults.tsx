@@ -10,7 +10,7 @@ import { AlgoliaSearchPlaceholder } from "./components/placeholders/AlgoliaSearc
 import { SearchResult } from "./components/SearchResult"
 import { ALGOLIA_INDICES_WITH_AN_ARTICLE } from "./constants"
 import { isAlgoliaApiKeyExpiredError } from "./helpers"
-import { AlgoliaIndiceKey, AlgoliaSearchResult, PillType } from "./types"
+import { AlgoliaIndexKey, AlgoliaSearchResult, PillType } from "./types"
 
 interface SearchResultsProps
   extends StateResultsProvided<AlgoliaSearchResult>,
@@ -72,13 +72,13 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   if (showLoadingPlaceholder) {
     return (
       <ProvidePlaceholderContext>
-        <AlgoliaSearchPlaceholder hasRoundedImages={selectedPill.key === AlgoliaIndiceKey.Artist} />
+        <AlgoliaSearchPlaceholder hasRoundedImages={selectedPill.key === AlgoliaIndexKey.Artist} />
       </ProvidePlaceholderContext>
     )
   }
 
   if (searchResults?.nbHits === 0) {
-    const article = ALGOLIA_INDICES_WITH_AN_ARTICLE.includes(selectedPill.key as AlgoliaIndiceKey) ? "an" : "a"
+    const article = ALGOLIA_INDICES_WITH_AN_ARTICLE.includes(selectedPill.key as AlgoliaIndexKey) ? "an" : "a"
 
     return (
       <Box px={2} py={1}>

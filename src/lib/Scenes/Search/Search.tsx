@@ -36,7 +36,7 @@ import { RefetchWhenApiKeyExpiredContainer } from "./RefetchWhenApiKeyExpired"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 import { SearchContext, useSearchProviderValues } from "./SearchContext"
 import { SearchResults } from "./SearchResults"
-import { AlgoliaIndiceKey } from "./types"
+import { AlgoliaIndexKey } from "./types"
 import { AlgoliaSearchResult, PillType } from "./types"
 
 interface TappedSearchResultData {
@@ -95,7 +95,7 @@ export const Search: React.FC<SearchProps> = (props) => {
   const pillsArray = useMemo<PillType[]>(() => {
     if (Array.isArray(indices) && indices.length > 0) {
       const allowedIndices = (indices as NonNullable<Search_system["algolia"]>["indices"]).filter((indice) =>
-        ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndiceKey)
+        ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndexKey)
       )
       const formattedIndices: PillType[] = allowedIndices.map((index) => {
         const { name, ...other } = index
