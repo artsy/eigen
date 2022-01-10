@@ -1,7 +1,7 @@
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
 import { Wrap } from "lib/utils/Wrap"
-import { BellIcon, Box, Flex, LinkIcon, Spacer } from "palette"
+import { BellIcon, Box, Flex, LinkIcon, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { Button as RNButton } from "react-native"
 import { withHooks, withScreenDimensions, withTheme } from "storybook/decorators"
@@ -51,54 +51,54 @@ storiesOf("Button", module)
       )}
     />
   ))
-  .add("Variants", () => (
-    <DList
-      data={variants}
-      renderItem={({ item: variant }) => (
-        <Wrap
-          if={variant === "outlineLight"}
-          with={(c) => (
-            <Flex backgroundColor="black100" p={10}>
-              {c}
-            </Flex>
-          )}
-        >
-          <Button variant={variant} onPress={() => action(`tapped ${variant}`)}>
-            {variant}
-          </Button>
-        </Wrap>
-      )}
-    />
-  ))
-  .add("Variants (loading)", () => (
-    <DList
-      data={variants}
-      renderItem={({ item: variant }) => (
-        <Button variant={variant} loading onPress={() => action(`tapped ${variant}`)}>
-          {variant}
-        </Button>
-      )}
-    />
-  ))
-  .add("Variants (disabled)", () => (
-    <DList
-      data={variants}
-      renderItem={({ item: variant }) => (
-        <Wrap
-          if={variant === "outlineLight"}
-          with={(c) => (
-            <Flex backgroundColor="black100" p={10}>
-              {c}
-            </Flex>
-          )}
-        >
-          <Button variant={variant} disabled onPress={() => action(`tapped ${variant}`)}>
-            {variant}
-          </Button>
-        </Wrap>
-      )}
-    />
-  ))
+  // .add("Variants", () => ( // this is causing Storybook to crush
+  //   <DList
+  //     data={variants}
+  //     renderItem={({ item: variant }) => (
+  //       <Wrap
+  //         if={variant === "outlineLight"}
+  //         with={(c) => (
+  //           <Flex backgroundColor="black100" p={10}>
+  //             {c}
+  //           </Flex>
+  //         )}
+  //       >
+  //         <Button variant={variant} onPress={() => action(`tapped ${variant}`)}>
+  //           {variant}
+  //         </Button>
+  //       </Wrap>
+  //     )}
+  //   />
+  // ))
+  // .add("Variants (loading)", () => (
+  //   <DList
+  //     data={variants}
+  //     renderItem={({ item: variant }) => (
+  //       <Button variant={variant} loading onPress={() => action(`tapped ${variant}`)}>
+  //         {variant}
+  //       </Button>
+  //     )}
+  //   />
+  // ))
+  // .add("Variants (disabled)", () => ( // this is causing Storybook to crush
+  //   <DList
+  //     data={variants}
+  //     renderItem={({ item: variant }) => (
+  //       <Wrap
+  //         if={variant === "outlineLight"}
+  //         with={(c) => (
+  //           <Flex backgroundColor="black100" p={10}>
+  //             {c}
+  //           </Flex>
+  //         )}
+  //       >
+  //         <Button variant={variant} disabled onPress={() => action(`tapped ${variant}`)}>
+  //           {variant}
+  //         </Button>
+  //       </Wrap>
+  //     )}
+  //   />
+  // ))
   .add("Miscellaneous", () => (
     <List>
       <Button loading disabled>
