@@ -666,6 +666,9 @@ input ARImageInput {
 
 type Article implements Node {
   author: Author
+
+  # The byline for the article. Defaults to "Artsy Editorial" if no authors are present.
+  byline: String
   cached: Int
   channelID: String
   contributingAuthors: [Author]
