@@ -72,7 +72,7 @@ describe("OnboardingSocialPick", () => {
 })
 
 describe("webView links ", () => {
-  describe.only("on Android", () => {
+  describe("on Android", () => {
     beforeEach(() => {
       Platform.OS = "android"
       ;(useNavigation as jest.Mock).mockReturnValue({
