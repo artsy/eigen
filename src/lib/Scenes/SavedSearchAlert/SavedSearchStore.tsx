@@ -29,13 +29,13 @@ const savedSearchModel: SavedSearchModel = {
 
   removeValueFromAttributesByKeyAction: action((state, payload) => {
     const prevValue = state.attributes[payload.key]
-    let newValue = null
 
     if (Array.isArray(prevValue)) {
-      newValue = prevValue.filter((value) => value !== payload.value)
+      ;(state.attributes[payload.key] as string[]) = prevValue.filter((value) => value !== payload.value)
+    } else {
+      state.attributes[payload.key] = null
     }
 
-    ;(state.attributes[payload.key] as string[] | null) = newValue
     state.dirty = true
   }),
 
