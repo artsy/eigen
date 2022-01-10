@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
 import { BackButton } from "lib/navigation/BackButton"
-import { Button, CollapsibleMenuItem, Flex, Join, Separator, Spacer, Text } from "palette"
+import { bullet, Button, CollapsibleMenuItem, Flex, Join, Separator, Spacer, Text } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
@@ -18,9 +18,24 @@ export const ArtworkDetails = ({ handlePress }: { handlePress: () => void }) => 
 
 export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
   return (
-    <Flex backgroundColor="peachpuff" p={1} mt={1}>
-      <Text>Upload Photos content</Text>
-      <Spacer mt={1} />
+    <Flex p={1} mt={1}>
+      <Flex flexDirection="row">
+        <Text variant="sm" color="black60">
+          {bullet}{" "}
+        </Text>
+        <Text variant="sm" color="black60">
+          To evaluate your submission faster, please upload high-quality photos of the work’s front and back.{" "}
+        </Text>
+      </Flex>
+      <Flex flexDirection="row">
+        <Text variant="sm" color="black60">
+          {bullet}{" "}
+        </Text>
+        <Text variant="sm" color="black60">
+          If possible, include photos of any signatures or certificates of authenticity.
+        </Text>
+      </Flex>
+      <Spacer m={1} />
       <CTAButton text="Save & Continue" onPress={handlePress} />
     </Flex>
   )
