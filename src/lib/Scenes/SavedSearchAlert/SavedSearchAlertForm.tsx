@@ -10,11 +10,12 @@ import React, { useEffect, useState } from "react"
 import { Alert, AlertButton, Linking, Platform, ScrollView, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
 import { Form } from "./Components/Form"
-import { extractPills, getNamePlaceholder, getSearchCriteriaFromPills } from "./helpers"
+import { getNamePlaceholder, getSearchCriteriaFromPills } from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
 import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
 import { updateEmailFrequency } from "./mutations/updateEmailFrequency"
 import { updateSavedSearchAlert } from "./mutations/updateSavedSearchAlert"
+import { extractPills } from "./pillExtractors"
 import {
   SavedSearchAlertFormPropsBase,
   SavedSearchAlertFormValues,
