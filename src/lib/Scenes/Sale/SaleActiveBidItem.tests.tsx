@@ -4,6 +4,7 @@ import { HighestBid, Outbid, ReserveNotMet } from "lib/Scenes/MyBids/Components/
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { DateTime } from "luxon"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
@@ -15,7 +16,7 @@ jest.unmock("react-relay")
 describe("SaleActiveBidItem", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
-  const futureDate = () => new Date(new Date().getTime() + 1000000000).toISOString()
+  const futureDate = () => DateTime.now().plus({ year: 1 }).toISO()
 
   const lotStanding = {
     activeBid: {

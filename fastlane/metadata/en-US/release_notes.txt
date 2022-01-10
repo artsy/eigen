@@ -1,8 +1,5 @@
 This update includes a number of improvements and bug fixes including:
 
-- Discover art on your home screen with the new Artsy widget
-- Find artworks you previously purchased on Artsy inside My Collection
-- Get email notifications for your saved searches
-- Discover comparable auction results
+- New optimised flow for adding works to your collection
 
 Have feedback? Email us at support@artsy.net

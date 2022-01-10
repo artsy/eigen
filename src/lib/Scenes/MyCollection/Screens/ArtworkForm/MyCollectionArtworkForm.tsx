@@ -54,9 +54,7 @@ export type ArtworkFormScreen = {
     onDelete(): void
     onHeaderBackButtonPress(): void
   }
-  AddPhotos: {
-    onHeaderBackButtonPress(): void
-  }
+  AddPhotos: undefined
 }
 
 export type MyCollectionArtworkFormProps = { onSuccess: () => void } & (
@@ -197,7 +195,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
             <Stack.Screen
               name="ArtworkFormArtist"
               component={MyCollectionArtworkFormArtist}
-              initialParams={{ onDelete, clearForm, mode: props.mode, onHeaderBackButtonPress }}
+              initialParams={{ onDelete, clearForm, onHeaderBackButtonPress }}
             />
           )}
           {props.mode === "add" && (
@@ -212,11 +210,7 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
             component={MyCollectionArtworkFormMain}
             initialParams={{ onDelete, clearForm, mode: props.mode, onHeaderBackButtonPress }}
           />
-          <Stack.Screen
-            name="AddPhotos"
-            component={MyCollectionAddPhotos}
-            initialParams={{ onHeaderBackButtonPress }}
-          />
+          <Stack.Screen name="AddPhotos" component={MyCollectionAddPhotos} />
         </Stack.Navigator>
         <LoadingModal isVisible={loading} />
       </FormikProvider>

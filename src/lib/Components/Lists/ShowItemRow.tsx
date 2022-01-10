@@ -87,6 +87,7 @@ export class ShowItemRow extends React.Component<Props, State> {
                 unfollow: isShowFollowed,
               },
             },
+            // @ts-ignore RELAY 12 MIGRATION
             optimisticResponse: {
               followShow: {
                 show: {

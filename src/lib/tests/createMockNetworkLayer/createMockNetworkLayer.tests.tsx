@@ -24,7 +24,7 @@ describe("createMockNetworkLayer", () => {
           }
         `,
       {}
-    )
+    ).toPromise()
   }
 
   describe("preserves the upstream behaviour", () => {

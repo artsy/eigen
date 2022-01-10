@@ -27,7 +27,7 @@ export const bidderPositionQuery = (bidderPositionID: string) => {
       bidderPositionID,
     },
     {
-      force: true,
+      fetchPolicy: "network-only",
     }
-  )
+  ).toPromise()
 }

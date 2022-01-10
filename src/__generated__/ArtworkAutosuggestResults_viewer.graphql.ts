@@ -8,7 +8,12 @@ export type ArtworkAutosuggestResults_viewer = {
     readonly artworks: {
         readonly edges: ReadonlyArray<{
             readonly node: {
+                readonly title: string | null;
                 readonly id: string;
+                readonly slug: string;
+                readonly image: {
+                    readonly aspectRatio: number;
+                } | null;
             } | null;
         } | null> | null;
         readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_connection">;
@@ -100,7 +105,39 @@ const node: ReaderFragment = {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
+                  "name": "title",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "id",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "slug",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "Image",
+                  "kind": "LinkedField",
+                  "name": "image",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "aspectRatio",
+                      "storageKey": null
+                    }
+                  ],
                   "storageKey": null
                 },
                 {
@@ -160,5 +197,5 @@ const node: ReaderFragment = {
   "type": "Viewer",
   "abstractKey": null
 };
-(node as any).hash = 'a117a4d884526ab2ebc9b9268b0ab33f';
+(node as any).hash = '51df2629b391746fd712c26193b846c9';
 export default node;

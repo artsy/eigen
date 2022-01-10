@@ -1,46 +1,42 @@
 import { Articles_articlesConnection$key } from "__generated__/Articles_articlesConnection.graphql"
 import { ArticleSorts, ArticlesQuery } from "__generated__/ArticlesQuery.graphql"
-import { LoadFailureView } from "lib/Components/LoadFailureView"
 import { extractNodes } from "lib/utils/extractNodes"
-import React, { useEffect, useState } from "react"
-import { ConnectionConfig } from "react-relay"
-import { usePagination, useQuery } from "relay-hooks"
+import React, { Suspense, useState } from "react"
+import { useLazyLoadQuery, usePaginationFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArticlesList, ArticlesPlaceholder } from "./ArticlesList"
 
-const PAGE_SIZE = 10
+export const Articles: React.FC = () => {
+  const queryData = useLazyLoadQuery<ArticlesQuery>(ArticlesScreenQuery, articlesQueryVariables)
 
-interface ArticlesProps {
-  query: Articles_articlesConnection$key
-}
-
-export const Articles: React.FC<ArticlesProps> = (props) => {
-  const [queryData, { isLoading, hasMore, loadMore, refetchConnection }] = usePagination(fragmentSpec, props.query)
-  const articles = extractNodes(queryData.articlesConnection)
-
-  useEffect(() => {
-    loadMore(connectionConfig, PAGE_SIZE)
-  }, [])
+  const { data, loadNext, hasNext, isLoadingNext, refetch } = usePaginationFragment<
+    ArticlesQuery,
+    Articles_articlesConnection$key
+  >(articlesConnectionFragment, queryData)
 
   const [refreshing, setRefreshing] = useState(false)
 
   const handleLoadMore = () => {
-    if (!hasMore() || isLoading()) {
+    if (!hasNext || isLoadingNext) {
       return
     }
-    loadMore(connectionConfig, PAGE_SIZE)
+
+    loadNext(articlesQueryVariables.count)
   }
+
   const handleRefresh = () => {
     setRefreshing(true)
-    refetchConnection(connectionConfig, PAGE_SIZE)
+    refetch({})
     setRefreshing(false)
   }
+
+  const articles = extractNodes(data.articlesConnection)
 
   return (
     <ArticlesList
       articles={articles as any}
-      isLoading={isLoading}
-      hasMore={hasMore}
+      isLoading={() => isLoadingNext}
+      hasMore={() => hasNext}
       title="Market News"
       refreshing={refreshing}
       handleLoadMore={handleLoadMore}
@@ -49,28 +45,28 @@ export const Articles: React.FC<ArticlesProps> = (props) => {
   )
 }
 
-export const articlesDefaultVariables = {
-  count: PAGE_SIZE,
+export const ArticlesScreen: React.FC = () => (
+  <Suspense fallback={<ArticlesPlaceholder />}>
+    <Articles />
+  </Suspense>
+)
+
+export const ArticlesScreenQuery = graphql`
+  query ArticlesQuery($count: Int, $after: String, $sort: ArticleSorts, $inEditorialFeed: Boolean) {
+    ...Articles_articlesConnection
+      @arguments(count: $count, after: $after, sort: $sort, inEditorialFeed: $inEditorialFeed)
+  }
+`
+
+export const articlesQueryVariables = {
+  count: 10,
   inEditorialFeed: true,
   sort: "PUBLISHED_AT_DESC" as ArticleSorts,
 }
 
-export const ArticlesQueryRenderer: React.FC = () => {
-  const { props, error, retry } = useQuery<ArticlesQuery>(ArticlesScreenQuery, articlesDefaultVariables)
-
-  if (props) {
-    return <Articles query={props} />
-  }
-  if (error) {
-    console.error(error)
-    return <LoadFailureView onRetry={retry} />
-  }
-
-  return <ArticlesPlaceholder />
-}
-
-const fragmentSpec = graphql`
+const articlesConnectionFragment = graphql`
   fragment Articles_articlesConnection on Query
+  @refetchable(queryName: "Articles_articlesConnectionRefetch")
   @argumentDefinitions(
     count: { type: "Int", defaultValue: 10 }
     after: { type: "String" }
@@ -90,20 +86,3 @@ const fragmentSpec = graphql`
     }
   }
 `
-
-export const ArticlesScreenQuery = graphql`
-  query ArticlesQuery($count: Int, $after: String, $sort: ArticleSorts, $inEditorialFeed: Boolean) {
-    ...Articles_articlesConnection
-      @arguments(count: $count, after: $after, sort: $sort, inEditorialFeed: $inEditorialFeed)
-  }
-`
-
-const connectionConfig: ConnectionConfig = {
-  query: ArticlesScreenQuery,
-  getVariables: (_props, { count, cursor }, _fragmentVariables) => ({
-    count,
-    after: cursor,
-    inEditorialFeed: true,
-    sort: "PUBLISHED_AT_DESC",
-  }),
-}

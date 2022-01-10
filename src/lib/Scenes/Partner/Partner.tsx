@@ -2,7 +2,7 @@ import { Partner_partner } from "__generated__/Partner_partner.graphql"
 import { PartnerQuery } from "__generated__/PartnerQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { HeaderTabsGridPlaceholder } from "lib/Components/HeaderTabGridPlaceholder"
-import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
+import { RetryErrorBoundaryLegacy } from "lib/Components/RetryErrorBoundary"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -107,7 +107,7 @@ export const PartnerQueryRenderer: React.FC<{
   isVisible: boolean
 }> = ({ partnerID, ...others }) => {
   return (
-    <RetryErrorBoundary
+    <RetryErrorBoundaryLegacy
       render={({ isRetry }) => {
         return (
           <QueryRenderer<PartnerQuery>

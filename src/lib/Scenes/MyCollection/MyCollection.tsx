@@ -372,8 +372,8 @@ const MyCollection: React.FC<{
             )}
             {!!showNewWorksBanner && (
               <Banner
-                title="You have some artworks."
-                text="To help add your current artworks to your collection, we automatically added your purchases from your order history."
+                title="Your collection is growing"
+                text="Based on your purchase history, we’ve added the following works."
                 showCloseButton
                 onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
               />

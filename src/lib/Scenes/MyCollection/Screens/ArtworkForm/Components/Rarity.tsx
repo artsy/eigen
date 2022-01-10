@@ -1,13 +1,16 @@
+import { FancyModal } from "lib/Components/FancyModal/FancyModal"
+import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
 import { artworkRarityClassifications } from "lib/utils/artworkRarityClassifications"
-import { Flex, Input, INPUT_HEIGHT, Text } from "palette"
+import { Flex, Input, INPUT_HEIGHT, InputTitle, Separator, Text } from "palette"
 import { Select } from "palette/elements/Select"
-import React from "react"
+import React, { useState } from "react"
 
 export type AttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION"
 
 export const Rarity: React.FC = () => {
   const { formik } = useArtworkForm()
+  const [isRarityInfoModalVisible, setRarityInfoModalVisible] = useState(false)
 
   const handleValueChange = (value: AttributionClassType) => {
     formik.handleChange("attributionClass")(value)
@@ -21,6 +24,8 @@ export const Rarity: React.FC = () => {
         enableSearch={false}
         title="Rarity"
         placeholder="Select"
+        tooltipText="What is this?"
+        onTooltipPress={() => setRarityInfoModalVisible(true)}
         options={artworkRarityClassifications}
         testID="rarity-select"
       />
@@ -53,6 +58,34 @@ export const Rarity: React.FC = () => {
           </Flex>
         </Flex>
       )}
+      <RarityInfoModal
+        title="Classifications"
+        visible={isRarityInfoModalVisible}
+        onDismiss={() => setRarityInfoModalVisible(false)}
+      />
     </>
+  )
+}
+
+const RarityInfoModal: React.FC<{
+  title: string
+  visible: boolean
+  onDismiss(): any
+}> = ({ title, visible, onDismiss }) => {
+  return (
+    <FancyModal visible={visible} onBackgroundPressed={onDismiss}>
+      <FancyModalHeader onLeftButtonPress={onDismiss} useXButton>
+        {title}
+      </FancyModalHeader>
+      <Separator />
+      <Flex m={2}>
+        {artworkRarityClassifications.map((classification) => (
+          <Flex mb={2} key={classification.label}>
+            <InputTitle>{classification.label}</InputTitle>
+            <Text>{classification.description}</Text>
+          </Flex>
+        ))}
+      </Flex>
+    </FancyModal>
   )
 }

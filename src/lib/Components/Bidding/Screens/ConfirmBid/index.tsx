@@ -330,7 +330,7 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
       .catch((error) => this.presentErrorResult(error))
   }
 
-  checkBidderPosition(data: BidderPositionQueryResponse) {
+  checkBidderPosition(data: BidderPositionQueryResponse | undefined) {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const { bidder_position } = data.me
 

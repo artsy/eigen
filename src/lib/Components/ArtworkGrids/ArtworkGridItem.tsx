@@ -132,7 +132,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const urgencyTag = getUrgencyTag(artwork?.sale?.endAt)
 
   return (
-    <Touchable onPress={handleTap}>
+    <Touchable onPress={handleTap} testID={`artworkGridItem-${artwork.title}`}>
       <View ref={itemRef}>
         {!!artwork.image && (
           <View>

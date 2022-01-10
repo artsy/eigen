@@ -5,11 +5,11 @@ import { Animated, Easing } from "react-native"
 import { ReloadIcon } from "../../palette/svgs/ReloadIcon"
 
 interface LoadFailureViewProps {
-  // A callback that is called when the user requests a retry.
+  error?: Error
   onRetry?: () => void
 }
 
-export const LoadFailureView: React.FC<LoadFailureViewProps> = (props) => {
+export const LoadFailureView: React.FC<LoadFailureViewProps> = ({ error, onRetry }) => {
   const color = useColor()
   const spinAnimation = useRef(new Animated.Value(0)).current
   const [isAnimating, setIsAnimating] = useState(false)
@@ -37,7 +37,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps> = (props) => {
           if (!isAnimating) {
             playAnimation()
           }
-          props.onRetry?.()
+          onRetry?.()
         })}
         underlayColor={color("black5")}
         haptic
@@ -70,6 +70,7 @@ export const LoadFailureView: React.FC<LoadFailureViewProps> = (props) => {
           <ReloadIcon height={25} width={25} />
         </Animated.View>
       </Touchable>
+      {!!__DEV__ && <Text>Error: {error?.message}</Text>}
     </Flex>
   )
 }

@@ -1,9 +1,10 @@
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { RelayEnvironmentProvider } from "relay-hooks"
+import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { ViewingRoomsListItem } from "./Components/ViewingRoomsListItem"
-import { ViewingRoomsListQueryRenderer } from "./ViewingRoomsList"
+import { ViewingRoomsListScreen } from "./ViewingRoomsList"
 
 jest.unmock("react-relay")
 
@@ -11,7 +12,7 @@ describe("ViewingRoomsList", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <ViewingRoomsListQueryRenderer />
+      <ViewingRoomsListScreen />
     </RelayEnvironmentProvider>
   )
 
@@ -19,7 +20,7 @@ describe("ViewingRoomsList", () => {
     mockEnvironment = createMockEnvironment()
   })
 
-  it("renders viewing rooms", () => {
+  it("renders viewing rooms", async () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
     mockEnvironment.mock.resolveMostRecentOperation((operation) =>
@@ -36,6 +37,9 @@ describe("ViewingRoomsList", () => {
         }),
       })
     )
+
+    await flushPromiseQueue()
+
     expect(tree.root.findAllByType(ViewingRoomsListItem).length).toBeGreaterThanOrEqual(2)
   })
 })

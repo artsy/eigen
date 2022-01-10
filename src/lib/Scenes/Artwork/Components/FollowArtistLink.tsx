@@ -43,6 +43,7 @@ export class FollowArtistLink extends React.Component<Props> {
           unfollow: artist.is_followed,
         },
       },
+      // @ts-ignore RELAY 12 MIGRATION
       optimisticResponse: {
         followArtist: {
           artist: {

@@ -9,13 +9,13 @@ import {
 } from "lib/Components/Bidding/Components/Timer"
 import { TimeOffsetProvider } from "lib/Components/Bidding/Context/TimeOffsetProvider"
 import { StateManager as CountdownStateManager } from "lib/Components/Countdown"
-import { Schema, track } from "lib/utils/track"
+import { Schema } from "lib/utils/track"
 import { capitalize } from "lodash"
 import { Duration } from "moment"
 import { Box, ClassTheme, Flex, Sans, Spacer } from "palette"
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
-import { TrackingProp } from "react-tracking"
+import { TrackingProp, useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { ArtworkExtraLinksFragmentContainer as ArtworkExtraLinks } from "./ArtworkExtraLinks"
 import { AuctionPriceFragmentContainer as AuctionPrice } from "./AuctionPrice"
@@ -32,52 +32,48 @@ interface CommercialInformationProps {
   tracking?: TrackingProp
 }
 
-interface CommercialInformationState {
-  editionSetID: string
-}
+export const CommercialInformationTimerWrapper: React.FC<CommercialInformationProps> = (props) => {
+  if (props.artwork.isInAuction) {
+    const {
+      isPreview,
+      isClosed,
+      liveStartAt: liveStartsAt,
+      startAt: startsAt,
+      endAt: endsAt,
+    } = props.artwork.sale || {}
 
-export class CommercialInformationTimerWrapper extends React.Component<
-  CommercialInformationProps,
-  CommercialInformationState
-> {
-  render() {
-    if (this.props.artwork.isInAuction) {
-      const {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        isPreview,
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        isClosed,
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        liveStartAt: liveStartsAt,
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        startAt: startsAt,
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        endAt: endsAt,
-      } = this.props.artwork.sale
-
-      return (
-        <TimeOffsetProvider>
-          <CountdownStateManager
-            CountdownComponent={CommercialInformation as any}
-            onCurrentTickerState={() => {
-              const state = currentTimerState({ isPreview, isClosed, liveStartsAt })
-              const { label, date } = relevantStateData(state, { liveStartsAt, startsAt, endsAt })
-              return { label, date, state }
-            }}
-            onNextTickerState={({ state }) => {
-              const nextState = nextTimerState(state as AuctionTimerState, { liveStartsAt })
-              const { label, date } = relevantStateData(nextState, { liveStartsAt, startsAt, endsAt })
-              return { state: nextState, date, label }
-            }}
-            {
-              ...(this.props as any) /* STRICTNESS_MIGRATION */
-            }
-          />
-        </TimeOffsetProvider>
-      )
-    } else {
-      return <CommercialInformation {...this.props} />
-    }
+    return (
+      <TimeOffsetProvider>
+        <CountdownStateManager
+          CountdownComponent={CommercialInformation as any}
+          onCurrentTickerState={() => {
+            const state = currentTimerState({
+              isPreview: isPreview || undefined,
+              isClosed: isClosed || undefined,
+              liveStartsAt: liveStartsAt || undefined,
+            })
+            const { label, date } = relevantStateData(state, {
+              liveStartsAt: liveStartsAt || undefined,
+              startsAt: startsAt || undefined,
+              endsAt: endsAt || undefined,
+            })
+            return { label, date, state }
+          }}
+          onNextTickerState={({ state }) => {
+            const nextState = nextTimerState(state as AuctionTimerState, { liveStartsAt: liveStartsAt || undefined })
+            const { label, date } = relevantStateData(nextState, {
+              liveStartsAt: liveStartsAt || undefined,
+              startsAt: startsAt || undefined,
+              endsAt: endsAt || undefined,
+            })
+            return { state: nextState, date, label }
+          }}
+          {...(props as any)}
+        />
+      </TimeOffsetProvider>
+    )
+  } else {
+    return <CommercialInformation {...props} />
   }
 }
 
@@ -103,42 +99,34 @@ export const SaleAvailability: React.FC<{ dotColor?: string; saleMessage: string
   )
 }
 
-@track()
-export class CommercialInformation extends React.Component<CommercialInformationProps, CommercialInformationState> {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  state = {
-    editionSetID: null,
-  }
+export const CommercialInformation: React.FC<CommercialInformationProps> = ({
+  artwork,
+  timerState,
+  me,
+  duration,
+  label,
+}) => {
+  const [editionSetID, setEditionSetID] = useState<string | null>(null)
 
-  interval = null
+  const { trackEvent } = useTracking()
 
-  componentDidMount = () => {
-    const { artwork, timerState } = this.props
+  useEffect(() => {
     const artworkIsInActiveAuction = artwork.isInAuction && timerState !== AuctionTimerState.CLOSED
 
     if (artworkIsInActiveAuction) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      this.props.tracking.trackEvent({
+      trackEvent({
         action_type: Schema.ActionNames.LotViewed,
         artwork_id: artwork.internalID,
         artwork_slug: artwork.slug,
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        sale_id: artwork.sale.internalID,
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        auction_slug: artwork.sale.slug,
+        sale_id: artwork.sale?.internalID,
+        auction_slug: artwork.sale?.slug,
       })
     }
-  }
+  }, [])
 
-  renderSingleEditionArtwork = () => {
-    const { artwork, timerState } = this.props
+  const renderSingleEditionArtwork = () => {
     const artworkIsInClosedAuction = artwork.isInAuction && timerState === AuctionTimerState.CLOSED
-    const saleMessage = artwork.saleMessage
-      ? artwork.saleMessage
-      : capitalize(
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          artwork.availability
-        )
+    const saleMessage = artwork.saleMessage ? artwork.saleMessage : capitalize(artwork.availability || undefined)
 
     return (
       <ClassTheme>
@@ -171,9 +159,7 @@ export class CommercialInformation extends React.Component<CommercialInformation
     )
   }
 
-  renderPriceInformation = () => {
-    const { artwork, timerState } = this.props
-    const { isInAuction, isForSale } = artwork
+  const renderPriceInformation = () => {
     if (isInAuction && isForSale) {
       if (timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING) {
         return null
@@ -181,79 +167,71 @@ export class CommercialInformation extends React.Component<CommercialInformation
         return <AuctionPrice artwork={artwork} auctionState={timerState as AuctionTimerState} />
       }
     } else if (artwork.editionSets && artwork.editionSets.length > 1) {
-      return this.renderEditionSetArtwork()
+      return renderEditionSetArtwork()
     } else {
-      return this.renderSingleEditionArtwork()
+      return renderSingleEditionArtwork()
     }
   }
 
-  renderEditionSetArtwork = () => {
-    const { artwork } = this.props
+  const renderEditionSetArtwork = () => {
     return (
       <CommercialEditionSetInformation
         artwork={artwork}
-        setEditionSetId={(editionSetID) => {
-          this.setState({
-            editionSetID,
-          })
+        setEditionSetId={(newEditionSetID) => {
+          setEditionSetID(newEditionSetID)
         }}
       />
     )
   }
 
-  render() {
-    const { artwork, me, timerState } = this.props
-    const { editionSetID } = this.state
-    const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale } = artwork
+  const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale } = artwork
 
-    const isBiddableInAuction = isInAuction && sale && timerState !== AuctionTimerState.CLOSED && isForSale
-    const isInClosedAuction = isInAuction && sale && timerState === AuctionTimerState.CLOSED
-    const canTakeCommercialAction = isAcquireable || isOfferable || isInquireable || isBiddableInAuction
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const artistIsConsignable = artwork.artists.filter((artist) => artist.isConsignable).length
-    const hidesPriceInformation = isInAuction && isForSale && timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
+  const isBiddableInAuction = isInAuction && sale && timerState !== AuctionTimerState.CLOSED && isForSale
+  const isInClosedAuction = isInAuction && sale && timerState === AuctionTimerState.CLOSED
+  const canTakeCommercialAction = isAcquireable || isOfferable || isInquireable || isBiddableInAuction
+  const artistIsConsignable = artwork?.artists?.filter((artist) => artist?.isConsignable).length
+  const hidesPriceInformation = isInAuction && isForSale && timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
 
-    return (
-      <>
-        {this.renderPriceInformation()}
-        <Box>
-          {!!(canTakeCommercialAction && !isInClosedAuction) && (
-            <>
-              {!hidesPriceInformation && <Spacer mb={2} />}
-              <CommercialButtons
-                artwork={artwork}
-                me={me}
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                auctionState={timerState}
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                editionSetID={editionSetID}
-              />
-            </>
-          )}
-          {!!isBiddableInAuction && (
-            <>
-              <Spacer mb={2} />
-              <Countdown
-                label={this.props.label}
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                duration={this.props.duration}
-              />
-            </>
-          )}
-          {!!(!!artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
-            <>
-              <Spacer mb={2} />
-              <ArtworkExtraLinks
-                artwork={artwork}
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                auctionState={timerState}
-              />
-            </>
-          )}
-        </Box>
-      </>
-    )
-  }
+  return (
+    <>
+      {renderPriceInformation()}
+      <Box>
+        {!!(canTakeCommercialAction && !isInClosedAuction) && (
+          <>
+            {!hidesPriceInformation && <Spacer mb={2} />}
+            <CommercialButtons
+              artwork={artwork}
+              me={me}
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              auctionState={timerState}
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              editionSetID={editionSetID}
+            />
+          </>
+        )}
+        {!!isBiddableInAuction && (
+          <>
+            <Spacer mb={2} />
+            <Countdown
+              label={label}
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              duration={duration}
+            />
+          </>
+        )}
+        {!!(!!artistIsConsignable || isAcquireable || isOfferable || isBiddableInAuction) && (
+          <>
+            <Spacer mb={2} />
+            <ArtworkExtraLinks
+              artwork={artwork}
+              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+              auctionState={timerState}
+            />
+          </>
+        )}
+      </Box>
+    </>
+  )
 }
 
 export const CommercialInformationFragmentContainer = createFragmentContainer(CommercialInformationTimerWrapper, {

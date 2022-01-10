@@ -1,5 +1,6 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
+import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
@@ -45,7 +46,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
   }
 
   return (
-    <>
+    <ArtsyKeyboardAvoidingView>
       <FancyModalHeader
         onLeftButtonPress={route.params.onHeaderBackButtonPress}
         rightButtonText={isFormDirty() ? "Clear" : undefined}
@@ -143,7 +144,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
                 artworkActions.addPhotos(photos)
               })
             } else {
-              navigation.navigate("AddPhotos", { onHeaderBackButtonPress: route.params.onHeaderBackButtonPress })
+              navigation.navigate("AddPhotos")
             }
           }}
         />
@@ -199,7 +200,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
           </ScreenMargin>
         )}
       </ScrollView>
-    </>
+    </ArtsyKeyboardAvoidingView>
   )
 }
 

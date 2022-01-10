@@ -25,7 +25,11 @@ export type Articles_articlesConnection$key = {
 
 
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = [
+  "articlesConnection"
+];
+return {
   "argumentDefinitions": [
     {
       "defaultValue": null,
@@ -55,11 +59,21 @@ const node: ReaderFragment = {
         "count": "count",
         "cursor": "after",
         "direction": "forward",
-        "path": [
-          "articlesConnection"
-        ]
+        "path": (v0/*: any*/)
       }
-    ]
+    ],
+    "refetch": {
+      "connection": {
+        "forward": {
+          "count": "count",
+          "cursor": "after"
+        },
+        "backward": null,
+        "path": (v0/*: any*/)
+      },
+      "fragmentPathInResult": [],
+      "operation": require('./Articles_articlesConnectionRefetch.graphql')
+    }
   },
   "name": "Articles_articlesConnection",
   "selections": [
@@ -169,5 +183,6 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = '283da238e9dea674305619f1308df744';
+})();
+(node as any).hash = '79e854c38e6564d097a61a77537a97e7';
 export default node;

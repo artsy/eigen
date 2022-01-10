@@ -30,15 +30,16 @@ it("injects timeOffsetInMilliSeconds as a context", async () => {
   Date.now = () => dateNow
 
   // Set up a situation where the phone's clock is ahead of Gravity's clock by 10 minutes.
-  RelayRuntime.fetchQuery.mockReturnValueOnce(
-    Promise.resolve({
-      system: {
-        time: {
-          unix: (dateNow - 10 * MINUTES) * 1e-3,
+  RelayRuntime.fetchQuery.mockReturnValueOnce({
+    toPromise: () =>
+      Promise.resolve({
+        system: {
+          time: {
+            unix: (dateNow - 10 * MINUTES) * 1e-3,
+          },
         },
-      },
-    })
-  )
+      }),
+  })
 
   // There’s no explicit assertion made here, because this test would fail with a timeout if it wouldn’t find a match.
   await mount(

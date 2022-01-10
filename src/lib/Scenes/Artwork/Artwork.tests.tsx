@@ -353,7 +353,7 @@ describe("Artwork", () => {
         },
         variables: {
           input: {
-            artwork_id: "completely-different-slug",
+            artwork_id: "my-special-artwork",
           },
         },
       },
