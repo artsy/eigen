@@ -1,7 +1,6 @@
 import * as Analytics from "@artsy/cohesion"
 import { SmallTileRail_artworks } from "__generated__/SmallTileRail_artworks.graphql"
-import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
-import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
+import { ArtworkTileRailCard2 } from "lib/Components/ArtworkTileRail/ArtworkTileRailCard2"
 import { PrefetchFlatList } from "lib/Components/PrefetchFlatList"
 import { navigate } from "lib/navigation/navigate"
 import { Spacer } from "palette"
@@ -9,8 +8,9 @@ import React, { ReactElement } from "react"
 import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { getUrgencyTag } from "../../../utils/getUrgencyTag"
 import HomeAnalytics from "../homeAnalytics"
+
+const MAX_NUMBER_OF_ARTWORKS = 30
 
 interface Props {
   artworks: SmallTileRail_artworks
@@ -33,9 +33,6 @@ const SmallTileRail: React.FC<Props> = ({
 }) => {
   const tracking = useTracking()
 
-  const numberOfArtworksForSmallSizeImage = 30
-  const numberOfArtworksForLargeSizeImage = 12
-
   return (
     <PrefetchFlatList
       onEndReached={onEndReached}
@@ -47,12 +44,12 @@ const SmallTileRail: React.FC<Props> = ({
       ListFooterComponent={ListFooterComponent}
       ItemSeparatorComponent={() => <Spacer width={15} />}
       showsHorizontalScrollIndicator={false}
-      data={artworks}
-      initialNumToRender={4}
-      windowSize={imageSize === "small" ? numberOfArtworksForSmallSizeImage : numberOfArtworksForLargeSizeImage} // Based on number of artworks required in a rail
+      // We need to set the maximum number of artists to not cause layout shifts
+      data={artworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}
+      initialNumToRender={MAX_NUMBER_OF_ARTWORKS}
       contentContainerStyle={{ alignItems: "flex-end" }}
       renderItem={({ item, index }) => (
-        <ArtworkTileRailCard
+        <ArtworkTileRailCard2
           onPress={
             item.href
               ? () => {
@@ -65,15 +62,11 @@ const SmallTileRail: React.FC<Props> = ({
                 }
               : undefined
           }
-          imageURL={item.image?.imageURL ?? ""}
-          imageSize={imageSize ?? "small"}
-          imageAspectRatio={item.image?.aspectRatio}
-          artistNames={item.artistNames}
-          saleMessage={saleMessageOrBidInfo({ artwork: item, isSmallTile: true })}
-          urgencyTag={item?.sale?.isAuction && !item?.sale?.isClosed ? getUrgencyTag(item?.sale?.endAt) : null}
+          artwork={item}
+          size={imageSize ?? "small"}
         />
       )}
-      keyExtractor={(item, index) => String(item.image?.imageURL || index)}
+      keyExtractor={(item, index) => String(item.slug || index)}
     />
   )
 }
@@ -83,32 +76,9 @@ const ListEndComponent = () => <Spacer mr={2} />
 export const SmallTileRailContainer = createFragmentContainer(SmallTileRail, {
   artworks: graphql`
     fragment SmallTileRail_artworks on Artwork @relay(plural: true) {
+      ...ArtworkTileRailCard2_artwork
       href
-      saleMessage
-      artistNames
       slug
-      internalID
-      sale {
-        isAuction
-        isClosed
-        displayTimelyAt
-        endAt
-      }
-      saleArtwork {
-        counts {
-          bidderPositions
-        }
-        currentBid {
-          display
-        }
-      }
-      partner {
-        name
-      }
-      image {
-        imageURL
-        aspectRatio
-      }
     }
   `,
 })

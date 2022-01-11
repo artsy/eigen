@@ -530,9 +530,7 @@ const HomePlaceholder: React.FC<{}> = () => {
     },
   }
   const smallImagePlaceholderWidth = IMAGE_PLACEHOLDER_SIZES.small.width
-  const largeImagePlaceholderWidth = IMAGE_PLACEHOLDER_SIZES.large.width
   const smallImagePlaceholderHeight = IMAGE_PLACEHOLDER_SIZES.small.height
-  const largeImagePlaceholderHeight = IMAGE_PLACEHOLDER_SIZES.large.height
 
   return (
     <Flex>

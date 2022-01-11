@@ -47,7 +47,7 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
         {
           <SmallTileRailContainer
             listRef={listRef}
-            artworks={artworks as any}
+            artworks={artworks}
             contextModule={ContextModule.newWorksForYouRail}
           />
         }
