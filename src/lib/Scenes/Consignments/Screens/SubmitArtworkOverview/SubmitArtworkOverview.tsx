@@ -1,71 +1,15 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
 import { BackButton } from "lib/navigation/BackButton"
-import { bullet, Button, CollapsibleMenuItem, Flex, Join, Separator, Spacer, Text } from "palette"
+import { Button, CollapsibleMenuItem, Flex, Join, Separator, Spacer } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
+import { ArtworkDetails } from "./ArtworkDetails/ArtworkDetails"
 import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
+import { ContactInformation } from "./ContactInformation/ContactInformation"
+import { UploadPhotos } from "./UploadPhotos/UploadPhotos"
 
-export const ArtworkDetails = ({ handlePress }: { handlePress: () => void }) => {
-  return (
-    <Flex backgroundColor="peachpuff" p={1} mt={1}>
-      <Text>ArtworkDetails content</Text>
-      <Spacer mt={1} />
-      <CTAButton text="Save & Continue" onPress={handlePress} />
-    </Flex>
-  )
-}
-
-export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
-  return (
-    <Flex p={1} mt={1}>
-      <Flex flexDirection="row">
-        <Text variant="sm" color="black60">
-          {bullet}{" "}
-        </Text>
-        <Text variant="sm" color="black60">
-          To evaluate your submission faster, please upload high-quality photos of the work’s front and back.{" "}
-        </Text>
-      </Flex>
-      <Flex flexDirection="row">
-        <Text variant="sm" color="black60">
-          {bullet}{" "}
-        </Text>
-        <Text variant="sm" color="black60">
-          If possible, include photos of any signatures or certificates of authenticity.
-        </Text>
-      </Flex>
-      <Flex style={{ borderColor: "lightgray", borderWidth: 1 }} mt={2} mb={2} p={2} pt={3} pb={3}>
-        <Text variant="lg" color="black100" marginBottom={1}>
-          Add Files Here
-        </Text>
-        <Text variant="md" color="black60" marginBottom={1}>
-          Files Supported: JPG, PNG
-        </Text>
-        <Text variant="md" color="black60" marginBottom={3}>
-          Total Maximum Size: 30MB
-        </Text>
-        <Button variant="outline" size="large" block>
-          Add Photo
-        </Button>
-      </Flex>
-      <Spacer m={1} />
-      <CTAButton text="Save & Continue" onPress={handlePress} />
-    </Flex>
-  )
-}
-
-export const ContactInformation = ({ handlePress }: { handlePress: () => void }) => {
-  return (
-    <Flex backgroundColor="peachpuff" p={1} mt={1}>
-      <Text>ContactInformation content</Text>
-      <Spacer mt={1} />
-      <CTAButton text="Submit Artwork" onPress={handlePress} />
-    </Flex>
-  )
-}
-
-const CTAButton = ({ onPress, text }: { onPress: () => void; text: string }) => (
+export const CTAButton = ({ onPress, text }: { onPress: () => void; text: string }) => (
   <Button block haptic maxWidth={540} onPress={onPress}>
     {text}
   </Button>
