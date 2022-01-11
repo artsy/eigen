@@ -47,7 +47,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const hasChangedFilters = SavedSearchStore.useStoreState((state) => state.dirty)
   const removeValueFromAttributesByKeyAction = SavedSearchStore.useStoreActions(
-    (state) => state.removeValueFromAttributesByKeyAction
+    (actions) => actions.removeValueFromAttributesByKeyAction
   )
 
   const artistPill: SavedSearchPill = {
