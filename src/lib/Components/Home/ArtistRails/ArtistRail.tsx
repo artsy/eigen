@@ -12,11 +12,14 @@ import { useTracking } from "react-tracking"
 import { ArtistCard_artist } from "__generated__/ArtistCard_artist.graphql"
 import { ArtistRail_rail } from "__generated__/ArtistRail_rail.graphql"
 import { ArtistRailFollowMutation } from "__generated__/ArtistRailFollowMutation.graphql"
-import { ArtistRailNewSuggestionQuery } from "__generated__/ArtistRailNewSuggestionQuery.graphql"
+import {
+  ArtistRailNewSuggestionQuery,
+  ArtistRailNewSuggestionQueryResponse,
+} from "__generated__/ArtistRailNewSuggestionQuery.graphql"
 import { Disappearable } from "lib/Components/Disappearable"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { defaultArtworksVariables } from "lib/Scenes/Artist/Artist"
+import { defaultArtistVariables } from "lib/Scenes/Artist/Artist"
 import { RailScrollProps } from "lib/Scenes/Home/Components/types"
 import { Schema } from "lib/utils/track"
 import { sample, uniq } from "lodash"
@@ -84,8 +87,11 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
           excludeArtistIDs: uniq(artists.map((a) => a.internalID).concat(dismissedArtistIds.current)),
           basedOnArtistId: basedOnArtist.internalID,
         }
-      )
-      const artist = result.artist?.related?.suggestedConnection?.edges?.[0]?.node ?? null
+      ).toPromise()
+
+      const artist =
+        (result as ArtistRailNewSuggestionQueryResponse).artist?.related?.suggestedConnection?.edges?.[0]?.node ?? null
+
       return (
         artist && {
           ...artist,
@@ -118,6 +124,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
           input: { artistID: followArtist.internalID, unfollow: followArtist.isFollowed },
         },
         onError: reject,
+        // @ts-ignore RELAY 12 MIGRATION
         optimisticResponse: {
           followArtist: {
             artist: {
@@ -194,7 +201,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
       </Flex>
       <CardRailFlatList<SuggestedArtist>
         prefetchUrlExtractor={(item) => item?.href!}
-        prefetchVariablesExtractor={defaultArtworksVariables}
+        prefetchVariablesExtractor={defaultArtistVariables}
         listRef={listRef}
         data={artists}
         keyExtractor={(artist) => artist.id}

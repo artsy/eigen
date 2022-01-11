@@ -54,6 +54,7 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
               unfollow: isFollowed,
             },
           },
+          // @ts-ignore RELAY 12 MIGRATION
           optimisticResponse: {
             followShow: {
               show: {

@@ -1,5 +1,4 @@
 import { GlobalStore, useIsStaging } from "lib/store/GlobalStore"
-import { usePrefetch } from "lib/utils/queryPrefetching"
 import { Flex, Separator, useTheme } from "palette"
 import React, { useEffect } from "react"
 import useInterval from "react-use/lib/useInterval"
@@ -8,12 +7,6 @@ import { ICON_HEIGHT } from "./BottomTabsIcon"
 
 export const BottomTabs: React.FC = () => {
   const { color } = useTheme()
-
-  const prefetchUrl = usePrefetch()
-
-  useEffect(() => {
-    prefetchUrl("my-profile")
-  }, [])
 
   const unreadConversationCount = GlobalStore.useAppState(
     (state) => state.bottomTabs.sessionState.unreadConversationCount

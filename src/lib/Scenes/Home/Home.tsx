@@ -28,6 +28,7 @@ import {
   RandomWidthPlaceholderText,
   useMemoizedRandom,
 } from "lib/utils/placeholders"
+import { usePrefetch } from "lib/utils/queryPrefetching"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useTreatment } from "lib/utils/useExperiments"
 import { compact, times } from "lodash"
@@ -35,9 +36,9 @@ import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
-import { articlesDefaultVariables } from "../Articles/Articles"
+import { articlesQueryVariables } from "../Articles/Articles"
 import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
-import { ViewingRoomsHomeRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
+import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
 import { NewWorksForYouRailContainer } from "./Components/NewWorksForYouRail"
@@ -70,6 +71,14 @@ interface Props extends ViewProps {
 }
 
 const Home = (props: Props) => {
+  const prefetchUrl = usePrefetch()
+
+  useEffect(() => {
+    prefetchUrl("search")
+    prefetchUrl("my-profile")
+    prefetchUrl("inbox")
+  }, [])
+
   const {
     homePageAbove,
     homePageBelow,
@@ -153,7 +162,7 @@ const Home = (props: Props) => {
       data: articlesConnection,
       hidden: !articlesConnection,
       prefetchUrl: "/articles",
-      prefetchVariables: articlesDefaultVariables,
+      prefetchVariables: articlesQueryVariables,
     },
     {
       title: "Shows for You",
@@ -306,7 +315,7 @@ const Home = (props: Props) => {
               case "trove":
                 return <TroveFragmentContainer trove={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
               case "viewing-rooms":
-                return <ViewingRoomsHomeRail title={item.title} featured={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
+                return <ViewingRoomsHomeMainRail title={item.title} featured={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
               default:
                 return null
             }
@@ -522,33 +531,38 @@ const HomePlaceholder: React.FC<{}> = () => {
 
       {
         // Small tiles to mimic the artwork rails
-        times(2).map((r) => (
-          <Box key={r} ml={2} mr={2}>
-            <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-            <Flex flexDirection="row" mt={1}>
-              <Join separator={<Spacer width={15} />}>
-                {times(3 + useMemoizedRandom() * 10).map((index) => (
-                  <Flex key={index}>
-                    <PlaceholderBox height={120} width={120} />
-                    <Spacer mb={2} />
-                    <PlaceholderText width={120} />
-                    <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
-                    <ModuleSeparator />
-                  </Flex>
-                ))}
-              </Join>
-            </Flex>
-          </Box>
-        ))
+        <Box ml={2} mr={2}>
+          <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
+          <Spacer mb={0.3} />
+          <Flex flexDirection="row" mt={1}>
+            <Join separator={<Spacer width={15} />}>
+              {times(3 + useMemoizedRandom() * 10).map((index) => (
+                <Flex key={index}>
+                  <PlaceholderBox height={120} width={120} />
+                  <Spacer mb={1} mt={0.3} />
+                  <PlaceholderText width={120} />
+                  <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
+                  <ModuleSeparator />
+                </Flex>
+              ))}
+            </Join>
+          </Flex>
+        </Box>
       }
 
-      {/* Larger tiles to mimic the fairs, sales, and collections rails */}
+      {/* Larger tiles to mimic the artist rails */}
       <Box ml={2} mr={2}>
         <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-        <Flex flexDirection="row" mt={1}>
+        <Spacer mb={0.3} />
+        <Flex flexDirection="row" mt={0.5}>
           <Join separator={<Spacer width={15} />}>
-            {times(10).map((index) => (
-              <PlaceholderBox key={index} height={270} width={270} />
+            {times(3 + useMemoizedRandom() * 10).map((index) => (
+              <Flex key={index}>
+                <PlaceholderBox key={index} height={180} width={295} />
+                <Spacer mb={1} mt={0.3} />
+                <PlaceholderText width={120} />
+                <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
+              </Flex>
             ))}
           </Join>
           <ModuleSeparator />

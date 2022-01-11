@@ -5,7 +5,7 @@ import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { isNull } from "lodash"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
-import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 export interface SearchCriteriaQueryRendererProps {
   environment?: RelayModernEnvironment

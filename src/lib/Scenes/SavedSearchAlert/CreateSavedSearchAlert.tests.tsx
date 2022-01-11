@@ -102,7 +102,6 @@ describe("CreateSavedSearchAlert", () => {
   })
 
   it('"Email alerts" toggle is disabled by default if a user has not allowed email notifications', async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
     notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
     const mockResolver = {
       Me: () => ({
@@ -148,7 +147,6 @@ describe("CreateSavedSearchAlertV2", () => {
   })
 
   it('"Email alerts" toggle is disabled by default if a user has not allowed email notifications', async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableSavedSearchToggles: true })
     notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.Authorized))
 
     const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)

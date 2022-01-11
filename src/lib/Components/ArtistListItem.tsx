@@ -7,7 +7,7 @@ import { ClassTheme, EntityHeader, Flex, FollowButton, Touchable } from "palette
 import React from "react"
 import { StyleProp, ViewStyle } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
-import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 interface Props {
   artist: ArtistListItem_artist
@@ -177,6 +177,7 @@ export const followArtistMutation = ({
         unfollow: isFollowed,
       },
     },
+    // @ts-ignore RELAY 12 MIGRATION
     optimisticResponse: {
       followArtist: {
         artist: {

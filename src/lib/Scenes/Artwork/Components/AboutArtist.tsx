@@ -11,47 +11,42 @@ interface AboutArtistProps {
   artwork: AboutArtist_artwork
 }
 
-export class AboutArtist extends React.Component<AboutArtistProps> {
-  render() {
-    const {
-      artwork: { artists },
-    } = this.props
-    const hasSingleArtist = artists && artists.length === 1
-    const text =
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      hasSingleArtist && artists[0].biography_blurb && artists[0].biography_blurb.text
-        ? artists! /* STRICTNESS_MIGRATION */[0]! /* STRICTNESS_MIGRATION */.biography_blurb.text
-        : null
-    const textLimit = truncatedTextLimit()
+export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
+  const artists = artwork.artists || []
 
-    return (
-      <>
-        <Flex alignItems="flex-start">
-          <Sans size="4t" mb={2}>
-            {hasSingleArtist ? "About the artist" : "About the artists"}
-          </Sans>
-          <Join separator={<Spacer my={1} />}>
-            {artists! /* STRICTNESS_MIGRATION */
-              .map((artist) => (
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+  const hasSingleArtist = artists && artists.length === 1
+
+  const text = hasSingleArtist && artists[0]?.biographyBlurb?.text ? artists[0]?.biographyBlurb?.text : null
+  const textLimit = truncatedTextLimit()
+
+  return (
+    <>
+      <Flex alignItems="flex-start">
+        <Sans size="4t" mb={2}>
+          {hasSingleArtist ? "About the artist" : "About the artists"}
+        </Sans>
+        <Join separator={<Spacer my={1} />}>
+          {artists.map(
+            (artist) =>
+              !!artist && (
                 <ArtistListItem key={artist.id} artist={artist} contextModule={Schema.ContextModules.AboutTheArtist} />
-              ))}
-          </Join>
-        </Flex>
-        {hasSingleArtist && text && (
-          <Box mt={2}>
-            <ReadMore
-              content={text}
-              contextModule={Schema.ContextModules.ArtistBiography}
-              maxChars={textLimit}
-              textStyle="sans"
-              trackingFlow={Schema.Flow.AboutTheArtist}
-            />
-          </Box>
-        )}
-      </>
-    )
-  }
+              )
+          )}
+        </Join>
+      </Flex>
+      {hasSingleArtist && text && (
+        <Box mt={2}>
+          <ReadMore
+            content={text}
+            contextModule={Schema.ContextModules.ArtistBiography}
+            maxChars={textLimit}
+            textStyle="sans"
+            trackingFlow={Schema.Flow.AboutTheArtist}
+          />
+        </Box>
+      )}
+    </>
+  )
 }
 
 export const AboutArtistFragmentContainer = createFragmentContainer(AboutArtist, {
@@ -59,7 +54,7 @@ export const AboutArtistFragmentContainer = createFragmentContainer(AboutArtist,
     fragment AboutArtist_artwork on Artwork {
       artists {
         id
-        biography_blurb: biographyBlurb {
+        biographyBlurb {
           text
         }
         ...ArtistListItem_artist

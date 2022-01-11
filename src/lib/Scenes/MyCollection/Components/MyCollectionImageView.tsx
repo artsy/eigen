@@ -2,7 +2,7 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { Size } from "lib/Scenes/Artwork/Components/ImageCarousel/geometry"
 import { LocalImage, retrieveLocalImages } from "lib/utils/LocalImageStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, useColor } from "palette"
+import { Flex, NoImageIcon, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Image as RNImage } from "react-native"
 import { getBoundingBox } from "../Screens/ArtworkForm/MyCollectionImageUtil"
@@ -80,7 +80,14 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
         />
       )
     } else {
-      return <Box testID="Fallback" bg={color("black30")} width={imageWidth ?? 120} height={120} />
+      const width = mode === "list" ? imageWidth ?? 120 : imageWidth ?? dimensions.width
+      const height = mode === "list" ? 120 : imageHeight ?? dimensions.width
+
+      return (
+        <Flex testID="Fallback" bg={color("black10")} width={width} height={height} justifyContent="center">
+          <NoImageIcon fill="black60" mx="auto" />
+        </Flex>
+      )
     }
   }
 

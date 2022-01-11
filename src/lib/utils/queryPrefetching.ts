@@ -12,7 +12,7 @@ import {
   GraphQLTaggedNode,
   Variables,
 } from "relay-runtime"
-import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { useTreatment } from "./useExperiments"
 
 const DEFAULT_QUERIES_PER_INTERVAL = 60
@@ -43,12 +43,10 @@ const isRateLimited = async () => {
 const prefetchQuery = async (environment: Environment, query: GraphQLTaggedNode, variables: Variables = {}) => {
   const operation = createOperationDescriptor(getRequest(query), variables)
 
-  const data = await fetchQuery(environment, query, variables)
+  await fetchQuery(environment, query, variables, { networkCacheConfig: { force: false } })
 
   // this will retain the result in the relay store so it's not garbage collected.
   environment.retain(operation)
-
-  return data
 }
 
 const prefetchUrl = async (environment: Environment, url: string, variables: Variables = {}) => {

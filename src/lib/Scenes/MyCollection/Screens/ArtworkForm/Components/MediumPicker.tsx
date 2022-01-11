@@ -18,6 +18,7 @@ export const MediumPicker: React.FC = () => {
       enableSearch={false}
       title="Medium"
       placeholder="Select"
+      testID="MediumSelect"
       options={artworkMediumCategories}
     />
   )

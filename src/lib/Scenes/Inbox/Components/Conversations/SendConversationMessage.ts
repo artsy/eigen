@@ -83,7 +83,7 @@ export function sendConversationMessage(
         ],
       },
     ],
-
+    // @ts-ignore RELAY 12 MIGRATION
     optimisticResponse: {
       sendConversationMessage: {
         messageEdge: {

@@ -58,6 +58,7 @@ export class PartnerCard extends React.Component<Props, State> {
               unfollow: artwork.partner?.profile?.is_followed,
             },
           },
+          // @ts-ignore RELAY 12 MIGRATION
           optimisticResponse: {
             followProfile: {
               profile: {

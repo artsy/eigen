@@ -1,3 +1,4 @@
+import { ArtworkHistory_artwork } from "__generated__/ArtworkHistory_artwork.graphql"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
@@ -11,9 +12,8 @@ describe("Artwork History", () => {
   it("renders everything", () => {
     const artworkHistoryInfo = {
       artwork: {
-        " $refType": null,
         provenance: "vegas",
-        exhibition_history: "this was in shows",
+        exhibitionHistory: "this was in shows",
         literature: "bibliography",
       },
     }
@@ -22,10 +22,7 @@ describe("Artwork History", () => {
       <GlobalStoreProvider>
         <Theme>
           <div>
-            <ArtworkHistory
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              artwork={artworkHistoryInfo.artwork}
-            />
+            <ArtworkHistory artwork={artworkHistoryInfo.artwork as ArtworkHistory_artwork} />
           </div>
         </Theme>
       </GlobalStoreProvider>
@@ -39,9 +36,8 @@ describe("Artwork History", () => {
   it("renders only set keys", () => {
     const artworkHistoryInfo = {
       artwork: {
-        " $refType": null,
         provenance: "vegas",
-        exhibition_history: null,
+        exhibitionHistory: null,
         literature: "bibliography",
       },
     }
@@ -50,10 +46,7 @@ describe("Artwork History", () => {
       <GlobalStoreProvider>
         <Theme>
           <div>
-            <ArtworkHistory
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              artwork={artworkHistoryInfo.artwork}
-            />
+            <ArtworkHistory artwork={artworkHistoryInfo.artwork as ArtworkHistory_artwork} />
           </div>
         </Theme>
       </GlobalStoreProvider>
@@ -66,9 +59,8 @@ describe("Artwork History", () => {
   it("doesn't render without data", () => {
     const artworkHistoryInfo = {
       artwork: {
-        " $refType": null,
         provenance: null,
-        exhibition_history: null,
+        exhibitionHistory: null,
         literature: null,
       },
     }
@@ -77,10 +69,7 @@ describe("Artwork History", () => {
       <GlobalStoreProvider>
         <Theme>
           <div>
-            <ArtworkHistory
-              // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-              artwork={artworkHistoryInfo.artwork}
-            />
+            <ArtworkHistory artwork={artworkHistoryInfo.artwork as ArtworkHistory_artwork} />
           </div>
         </Theme>
       </GlobalStoreProvider>

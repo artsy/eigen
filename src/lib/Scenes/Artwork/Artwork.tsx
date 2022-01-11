@@ -5,12 +5,13 @@ import { Artwork_me } from "__generated__/Artwork_me.graphql"
 import { ArtworkAboveTheFoldQuery } from "__generated__/ArtworkAboveTheFoldQuery.graphql"
 import { ArtworkBelowTheFoldQuery } from "__generated__/ArtworkBelowTheFoldQuery.graphql"
 import { ArtworkMarkAsRecentlyViewedQuery } from "__generated__/ArtworkMarkAsRecentlyViewedQuery.graphql"
-import { RetryErrorBoundary } from "lib/Components/RetryErrorBoundary"
+import { RetryErrorBoundaryLegacy } from "lib/Components/RetryErrorBoundary"
 import { navigationEvents } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
+import { isPad } from "lib/utils/hardware"
 import {
   PlaceholderBox,
   PlaceholderRaggedText,
@@ -18,15 +19,18 @@ import {
   ProvidePlaceholderContext,
 } from "lib/utils/placeholders"
 import { QAInfoPanel } from "lib/utils/QAInfo"
-import { Schema, screenTrack } from "lib/utils/track"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Separator, Spacer, useSpace } from "palette"
-import React from "react"
+import { findRelayRecord, findRelayRecordByDataID } from "lib/utils/relayHelpers"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
+import { ScreenDimensionsWithSafeAreas, useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { Box, Flex, Separator, Spacer, useSpace } from "palette"
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { ActivityIndicator, FlatList, View } from "react-native"
 import { RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { TrackingProp } from "react-tracking"
-import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
+import usePrevious from "react-use/lib/usePrevious"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { Record } from "relay-runtime/lib/store/RelayStoreTypes"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
@@ -35,55 +39,55 @@ import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/
 import { ArtworksInSeriesRailFragmentContainer as ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { ContextCardFragmentContainer as ContextCard } from "./Components/ContextCard"
+import { getMeasurements } from "./Components/ImageCarousel/geometry"
 import { OtherWorksFragmentContainer as OtherWorks, populatedGrids } from "./Components/OtherWorks/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
 
-interface Props {
-  artworkAboveTheFold: Artwork_artworkAboveTheFold
-  artworkBelowTheFold: Artwork_artworkBelowTheFold
-  me: Artwork_me
+interface ArtworkProps {
+  artworkAboveTheFold: Artwork_artworkAboveTheFold | null
+  artworkBelowTheFold: Artwork_artworkBelowTheFold | null
+  me: Artwork_me | null
   isVisible: boolean
   relay: RelayRefetchProp
   tracking?: TrackingProp
 }
 
-interface State {
-  refreshing: boolean
-  fetchingData: boolean
-}
+export const Artwork: React.FC<ArtworkProps> = ({
+  artworkAboveTheFold,
+  artworkBelowTheFold,
+  isVisible,
+  me,
+  relay,
+  tracking,
+}) => {
+  const [refreshing, setRefreshing] = useState(false)
+  const [fetchingData, setFetchingData] = useState(false)
 
-@screenTrack<Props>((props) => ({
-  context_screen: Schema.PageNames.ArtworkPage,
-  context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
-  context_screen_owner_slug: props.artworkAboveTheFold.slug,
-  context_screen_owner_id: props.artworkAboveTheFold.internalID,
-  availability: props.artworkAboveTheFold.availability,
-  acquireable: props.artworkAboveTheFold.is_acquireable,
-  inquireable: props.artworkAboveTheFold.is_inquireable,
-  offerable: props.artworkAboveTheFold.is_offerable,
-  biddable: props.artworkAboveTheFold.is_biddable,
-}))
-export class Artwork extends React.Component<Props, State> {
-  state = {
-    refreshing: false,
-    fetchingData: false,
-  }
+  const artistSerieasEnabled = useFeatureFlag("AROptionsArtistSeries")
+  const artistSeriesEnabled = useFeatureFlag("AROptionsArtistSeries")
 
-  shouldRenderDetails = () => {
-    const {
-      category,
-      canRequestLotConditionsReport,
-      conditionDescription,
-      signature,
-      signatureInfo,
-      certificateOfAuthenticity,
-      framed,
-      series,
-      publisher,
-      manufacturer,
-      image_rights,
-    } = this.props.artworkBelowTheFold
+  const { internalID, slug } = artworkAboveTheFold || {}
+  const {
+    category,
+    canRequestLotConditionsReport,
+    conditionDescription,
+    signature,
+    signatureInfo,
+    certificateOfAuthenticity,
+    framed,
+    series,
+    publisher,
+    manufacturer,
+    imageRights,
+    partner,
+    sale,
+    contextGrids,
+    artistSeriesConnection,
+    artist,
+    context,
+  } = artworkBelowTheFold || {}
 
+  const shouldRenderDetails = () => {
     return !!(
       category ||
       canRequestLotConditionsReport ||
@@ -95,29 +99,11 @@ export class Artwork extends React.Component<Props, State> {
       series ||
       publisher ||
       manufacturer ||
-      image_rights
+      imageRights
     )
   }
 
-  componentDidMount() {
-    this.markArtworkAsRecentlyViewed()
-    navigationEvents.addListener("modalDismissed", this.handleModalDismissed)
-  }
-
-  componentWillUnmount() {
-    navigationEvents.removeListener("modalDismissed", this.handleModalDismissed)
-  }
-
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  componentDidUpdate(prevProps) {
-    // If we are visible, but weren't, then we are re-appearing (not called on first render).
-    if (this.props.isVisible && !prevProps.isVisible) {
-      this.refetch(this.markArtworkAsRecentlyViewed)
-    }
-  }
-
-  shouldRenderPartner = () => {
-    const { partner, sale } = this.props.artworkBelowTheFold
+  const shouldRenderPartner = () => {
     if ((sale && sale.isBenefit) || (sale && sale.isGalleryAuction)) {
       return false
     } else if (partner && partner.type && partner.type !== "Auction House") {
@@ -127,9 +113,7 @@ export class Artwork extends React.Component<Props, State> {
     }
   }
 
-  shouldRenderOtherWorks = () => {
-    const { contextGrids } = this.props.artworkBelowTheFold
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+  const shouldRenderOtherWorks = () => {
     const gridsToShow = populatedGrids(contextGrids)
 
     if (gridsToShow && gridsToShow.length > 0) {
@@ -139,32 +123,54 @@ export class Artwork extends React.Component<Props, State> {
     }
   }
 
-  shouldRenderArtworksInArtistSeries = () => {
-    // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
-    const featureFlagEnabled = unsafe_getFeatureFlag("AROptionsArtistSeries")
-    const { artistSeriesConnection } = this.props.artworkBelowTheFold
+  const shouldRenderArtworksInArtistSeries = () => {
     const artistSeries = artistSeriesConnection?.edges?.[0]
     const numArtistSeriesArtworks = artistSeries?.node?.filterArtworksConnection?.edges?.length ?? 0
-    return featureFlagEnabled && numArtistSeriesArtworks > 0
+    return artistSerieasEnabled && numArtistSeriesArtworks > 0
   }
 
-  shouldRenderArtistSeriesMoreSeries = () => {
-    // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
-    const featureFlagEnabled = unsafe_getFeatureFlag("AROptionsArtistSeries")
-    return featureFlagEnabled && (this.props.artworkBelowTheFold.artist?.artistSeriesConnection?.totalCount ?? 0) > 0
+  const shouldRenderArtistSeriesMoreSeries = () => {
+    return artistSeriesEnabled && (artist?.artistSeriesConnection?.totalCount ?? 0) > 0
   }
 
-  onRefresh = (cb?: () => any) => {
-    if (this.state.refreshing) {
+  useEffect(() => {
+    markArtworkAsRecentlyViewed()
+    navigationEvents.addListener("modalDismissed", handleModalDismissed)
+
+    return () => {
+      navigationEvents.removeListener("modalDismissed", handleModalDismissed)
+    }
+  }, [])
+
+  // This is a hack to make useEffect behave exactly like didComponentUpdate.
+  const firstUpdate = useRef(true)
+  const previousIsVisible = usePrevious(isVisible)
+
+  useLayoutEffect(() => {
+    if (!isVisible || previousIsVisible) {
       return
     }
 
-    this.setState({ refreshing: true })
-    this.props.relay.refetch(
-      { artistID: this.props.artworkAboveTheFold.internalID },
+    if (firstUpdate.current) {
+      firstUpdate.current = false
+      return
+    }
+
+    refetch(markArtworkAsRecentlyViewed)
+  })
+
+  const onRefresh = (cb?: () => any) => {
+    if (refreshing) {
+      return
+    }
+
+    setRefreshing(true)
+
+    relay.refetch(
+      { artistID: internalID },
       null,
       () => {
-        this.setState({ refreshing: false })
+        setRefreshing(false)
         cb?.()
       },
       {
@@ -173,9 +179,9 @@ export class Artwork extends React.Component<Props, State> {
     )
   }
 
-  refetch = (cb?: () => any) => {
-    this.props.relay.refetch(
-      { artistID: this.props.artworkAboveTheFold.internalID },
+  const refetch = (cb?: () => any) => {
+    relay.refetch(
+      { artistID: internalID },
       null,
       () => {
         cb?.()
@@ -184,14 +190,14 @@ export class Artwork extends React.Component<Props, State> {
     )
   }
 
-  handleModalDismissed = () => {
-    this.setState({ fetchingData: true })
-    this.refetch(() => this.setState({ fetchingData: false }))
+  const handleModalDismissed = () => {
+    setFetchingData(true)
+    refetch(() => setFetchingData(false))
     return true
   }
 
-  markArtworkAsRecentlyViewed = () => {
-    commitMutation<ArtworkMarkAsRecentlyViewedQuery>(this.props.relay.environment, {
+  const markArtworkAsRecentlyViewed = () => {
+    commitMutation<ArtworkMarkAsRecentlyViewedQuery>(relay.environment, {
       mutation: graphql`
         mutation ArtworkMarkAsRecentlyViewedQuery($input: RecordArtworkViewInput!) {
           recordArtworkView(input: $input) {
@@ -201,27 +207,27 @@ export class Artwork extends React.Component<Props, State> {
       `,
       variables: {
         input: {
-          artwork_id: this.props.artworkAboveTheFold.slug,
+          artwork_id: slug || "",
         },
       },
     })
   }
 
-  sections(): ArtworkPageSection[] {
-    const { artworkAboveTheFold, artworkBelowTheFold, me, tracking } = this.props
-
+  const sectionsData = (): ArtworkPageSection[] => {
     const sections: ArtworkPageSection[] = []
 
-    sections.push({
-      key: "header",
-      element: <ArtworkHeader artwork={artworkAboveTheFold} />,
-      excludePadding: true,
-    })
+    if (artworkAboveTheFold && me) {
+      sections.push({
+        key: "header",
+        element: <ArtworkHeader artwork={artworkAboveTheFold} />,
+        excludePadding: true,
+      })
 
-    sections.push({
-      key: "commercialInformation",
-      element: <CommercialInformation artwork={artworkAboveTheFold} me={me} tracking={tracking} />,
-    })
+      sections.push({
+        key: "commercialInformation",
+        element: <CommercialInformation artwork={artworkAboveTheFold} me={me} tracking={tracking} />,
+      })
+    }
 
     if (!artworkBelowTheFold) {
       sections.push({
@@ -231,37 +237,35 @@ export class Artwork extends React.Component<Props, State> {
       return sections
     }
 
-    const { artist, context } = artworkBelowTheFold
-
-    if (artworkBelowTheFold.description || artworkBelowTheFold.additional_information) {
+    if (artworkBelowTheFold.description || artworkBelowTheFold.additionalInformation) {
       sections.push({
         key: "aboutWork",
         element: <AboutWork artwork={artworkBelowTheFold} />,
       })
     }
 
-    if (this.shouldRenderDetails()) {
+    if (shouldRenderDetails()) {
       sections.push({
         key: "artworkDetails",
         element: <ArtworkDetails artwork={artworkBelowTheFold} />,
       })
     }
 
-    if (artworkBelowTheFold.provenance || artworkBelowTheFold.exhibition_history || artworkBelowTheFold.literature) {
+    if (artworkBelowTheFold.provenance || artworkBelowTheFold.exhibitionHistory || artworkBelowTheFold.literature) {
       sections.push({
         key: "history",
         element: <ArtworkHistory artwork={artworkBelowTheFold} />,
       })
     }
 
-    if (artist && artist.biography_blurb) {
+    if (artist && artist.biographyBlurb) {
       sections.push({
         key: "aboutArtist",
         element: <AboutArtist artwork={artworkBelowTheFold} />,
       })
     }
 
-    if (this.shouldRenderPartner()) {
+    if (shouldRenderPartner()) {
       sections.push({
         key: "partnerCard",
         element: <PartnerCard artwork={artworkBelowTheFold} />,
@@ -275,14 +279,14 @@ export class Artwork extends React.Component<Props, State> {
       })
     }
 
-    if (this.shouldRenderArtworksInArtistSeries()) {
+    if (shouldRenderArtworksInArtistSeries()) {
       sections.push({
         key: "artworksInSeriesRail",
         element: <ArtworksInSeriesRail artwork={artworkBelowTheFold} />,
       })
     }
 
-    if (this.shouldRenderArtistSeriesMoreSeries()) {
+    if (artworkAboveTheFold && shouldRenderArtistSeriesMoreSeries()) {
       sections.push({
         key: "artistSeriesMoreSeries",
         element: (
@@ -297,7 +301,7 @@ export class Artwork extends React.Component<Props, State> {
       })
     }
 
-    if (this.shouldRenderOtherWorks()) {
+    if (shouldRenderOtherWorks()) {
       sections.push({
         key: "otherWorks",
         element: <OtherWorks artwork={artworkBelowTheFold} />,
@@ -307,38 +311,43 @@ export class Artwork extends React.Component<Props, State> {
     return sections
   }
 
-  render() {
-    const QAInfo = () => (
-      <QAInfoPanel
-        style={{ position: "absolute", top: 200, left: 10, backgroundColor: "grey" }}
-        info={[["id", this.props.artworkAboveTheFold.internalID]]}
-      />
-    )
+  const QAInfo = () => (
+    <QAInfoPanel
+      style={{ position: "absolute", top: 200, left: 10, backgroundColor: "grey" }}
+      info={[["id", internalID || ""]]}
+    />
+  )
 
-    return (
-      <>
-        {this.state.fetchingData ? (
-          <ProvidePlaceholderContext>
-            <AboveTheFoldPlaceholder />
-          </ProvidePlaceholderContext>
-        ) : (
-          <FlatList<ArtworkPageSection>
-            keyboardShouldPersistTaps="handled"
-            data={this.sections()}
-            ItemSeparatorComponent={() => (
-              <Box mx={2} my={3}>
-                <Separator />
-              </Box>
-            )}
-            refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh} />}
-            contentContainerStyle={{ paddingBottom: 40 }}
-            renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
-          />
-        )}
-        <QAInfo />
-      </>
-    )
-  }
+  return (
+    <ProvideScreenTracking
+      info={{
+        context_screen: Schema.PageNames.ArtworkPage,
+        context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
+        context_screen_owner_slug: slug,
+        context_screen_owner_id: internalID,
+      }}
+    >
+      {fetchingData ? (
+        <ProvidePlaceholderContext>
+          <AboveTheFoldPlaceholder />
+        </ProvidePlaceholderContext>
+      ) : (
+        <FlatList<ArtworkPageSection>
+          keyboardShouldPersistTaps="handled"
+          data={sectionsData()}
+          ItemSeparatorComponent={() => (
+            <Box mx={2} my={3}>
+              <Separator />
+            </Box>
+          )}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+          contentContainerStyle={{ paddingBottom: 40 }}
+          renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
+        />
+      )}
+      <QAInfo />
+    </ProvideScreenTracking>
+  )
 }
 
 interface ArtworkPageSection {
@@ -357,26 +366,26 @@ export const ArtworkContainer = createRefetchContainer(
         slug
         internalID
         id
-        is_acquireable: isAcquireable
-        is_offerable: isOfferable
-        is_biddable: isBiddable
-        is_inquireable: isInquireable
+        isAcquireable
+        isOfferable
+        isBiddable
+        isInquireable
         availability
       }
     `,
     artworkBelowTheFold: graphql`
       fragment Artwork_artworkBelowTheFold on Artwork {
-        additional_information: additionalInformation
+        additionalInformation
         description
         provenance
-        exhibition_history: exhibitionHistory
+        exhibitionHistory
         literature
         partner {
           type
           id
         }
         artist {
-          biography_blurb: biographyBlurb {
+          biographyBlurb {
             text
           }
           artistSeriesConnection(first: 4) {
@@ -407,7 +416,7 @@ export const ArtworkContainer = createRefetchContainer(
         series
         publisher
         manufacturer
-        image_rights: imageRights
+        imageRights
         context {
           __typename
           ... on Sale {
@@ -480,7 +489,7 @@ export const ArtworkQueryRenderer: React.FC<{
   tracking?: TrackingProp
 }> = ({ artworkID, environment, ...others }) => {
   return (
-    <RetryErrorBoundary
+    <RetryErrorBoundaryLegacy
       render={({ isRetry }) => {
         return (
           <AboveTheFoldQueryRenderer<ArtworkAboveTheFoldQuery, ArtworkBelowTheFoldQuery>
@@ -500,15 +509,12 @@ export const ArtworkQueryRenderer: React.FC<{
               variables: { artworkID },
             }}
             render={{
-              renderPlaceholder: () => <AboveTheFoldPlaceholder />,
+              renderPlaceholder: () => <AboveTheFoldPlaceholder artworkID={artworkID} />,
               renderComponent: ({ above, below }) => {
                 return (
                   <ArtworkContainer
-                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     artworkAboveTheFold={above.artwork}
-                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     artworkBelowTheFold={below?.artwork ?? null}
-                    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     me={above.me}
                     {...others}
                   />
@@ -526,40 +532,44 @@ export const ArtworkQueryRenderer: React.FC<{
   )
 }
 
-const AboveTheFoldPlaceholder: React.FC<{}> = ({}) => {
+const AboveTheFoldPlaceholder: React.FC<{ artworkID?: string }> = ({ artworkID }) => {
   const space = useSpace()
-  const screenDimensions = useScreenDimensions()
-  // The logic for artworkHeight comes from the zeplin spec https://zpl.io/25JLX0Q
-  const artworkHeight = screenDimensions.width >= 375 ? 340 : 290
+
+  const { width, height } = useImagePlaceholderDimensions(artworkID)
 
   return (
-    <View style={{ flex: 1, padding: space(2) }}>
+    <Flex py={2}>
       {/* Artwork thumbnail */}
-      <PlaceholderBox height={artworkHeight} />
-      <Spacer mb={2} />
-      {/* save/share buttons */}
-      <View style={{ flexDirection: "row", justifyContent: "center" }}>
-        <PlaceholderText width={50} marginHorizontal={space(1)} />
-        <PlaceholderText width={50} marginHorizontal={space(1)} />
-        <PlaceholderText width={50} marginHorizontal={space(1)} />
-      </View>
-      <Spacer mb={2} />
-      {/* Artist name */}
-      <PlaceholderText width={100} />
-      <Spacer mb={2} />
-      {/* Artwork tombstone details */}
-      <View style={{ width: 130 }}>
-        <PlaceholderRaggedText numLines={4} />
-      </View>
-      <Spacer mb={3} />
-      {/* more junk */}
-      <Separator />
-      <Spacer mb={3} />
-      <PlaceholderRaggedText numLines={3} />
-      <Spacer mb={2} />
-      {/* commerce button */}
-      <PlaceholderBox height={60} />
-    </View>
+      <Flex mx="auto">
+        <PlaceholderBox width={width} height={height} />
+      </Flex>
+
+      <Flex px={2} flex={1}>
+        <Spacer mb={2} />
+        {/* save/share buttons */}
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <PlaceholderText width={50} marginHorizontal={space(1)} />
+          <PlaceholderText width={50} marginHorizontal={space(1)} />
+          <PlaceholderText width={50} marginHorizontal={space(1)} />
+        </View>
+        <Spacer mb={2} />
+        {/* Artist name */}
+        <PlaceholderText width={100} />
+        <Spacer mb={2} />
+        {/* Artwork tombstone details */}
+        <View style={{ width: 130 }}>
+          <PlaceholderRaggedText numLines={4} />
+        </View>
+        <Spacer mb={3} />
+        {/* more junk */}
+        <Separator />
+        <Spacer mb={3} />
+        <PlaceholderRaggedText numLines={3} />
+        <Spacer mb={2} />
+        {/* commerce button */}
+        <PlaceholderBox height={60} />
+      </Flex>
+    </Flex>
   )
 }
 
@@ -580,4 +590,53 @@ const BelowTheFoldPlaceholder: React.FC<{}> = ({}) => {
       <Spacer mb={3} />
     </ProvidePlaceholderContext>
   )
+}
+
+const getDefaultImageDimensions = (screenDimensions: ScreenDimensionsWithSafeAreas, space: number) => {
+  // The logic for artworkHeight comes from the zeplin spec https://zpl.io/25JLX0Q
+  return {
+    width: (screenDimensions.width >= 375 ? 340 : 290) - space,
+    height: screenDimensions.width,
+  }
+}
+
+const getImageDimensionsByImage = (
+  screenDimensions: ScreenDimensionsWithSafeAreas,
+  image: { width?: number; height?: number; aspectRatio?: number }
+) => {
+  const boundingBox = {
+    width: screenDimensions.width,
+    height: isPad() ? 460 : screenDimensions.width >= 375 ? 340 : 290,
+  }
+
+  const imageSize = {
+    width: (image.width as number) || 1000 * (image.aspectRatio as number),
+    height: (image.height as number) || 1000,
+  }
+
+  const measurements = getMeasurements({ images: [imageSize], boundingBox })
+
+  return {
+    width: measurements[0].width,
+    height: measurements[0].height,
+  }
+}
+
+const useImagePlaceholderDimensions = (artworkID?: string) => {
+  const space = useSpace()
+  const screenDimensions = useScreenDimensions()
+
+  // Try to find the image for the artwork in the Relay store
+  const artwork = findRelayRecord("slug", artworkID)
+  const imageRef = (artwork?.image as Record)?.__ref as string
+  const image = findRelayRecordByDataID(imageRef)
+
+  const hasImageBeenFound = !!(image?.width && image?.height) || !!image?.aspectRatio
+
+  // Calculate the dimensions of the image
+  const { width, height } = hasImageBeenFound
+    ? getImageDimensionsByImage(screenDimensions, image)
+    : getDefaultImageDimensions(screenDimensions, space(1))
+
+  return { width, height }
 }

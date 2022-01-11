@@ -9,7 +9,7 @@ import { ArtworkInquiryContext } from "lib/utils/ArtworkInquiry/ArtworkInquirySt
 import { ArtworkInquiryContextState } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Button, Theme } from "palette"
 import React from "react"
-import { _FragmentRefs, graphql } from "react-relay"
+import { FragmentRef, graphql } from "react-relay"
 import { CommercialButtonsFragmentContainer } from "./CommercialButtons"
 
 jest.unmock("react-relay")
@@ -40,7 +40,7 @@ const state: ArtworkInquiryContextState = {
   inquiryQuestions: [],
 }
 
-const wrapper = (mockArtwork: _FragmentRefs<"CommercialButtons_artwork">): JSX.Element => (
+const wrapper = (mockArtwork: FragmentRef<"CommercialButtons_artwork">): JSX.Element => (
   <GlobalStoreProvider>
     <Theme>
       <ArtworkInquiryContext.Provider
@@ -59,6 +59,7 @@ const wrapper = (mockArtwork: _FragmentRefs<"CommercialButtons_artwork">): JSX.E
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const relayComponent = async ({ artwork }) => {
   return await renderRelayTree({
+    // @ts-ignore
     Component: () => wrapper(artwork),
     query: graphql`
       query CommercialButtonsTestsRenderQuery @raw_response_type {

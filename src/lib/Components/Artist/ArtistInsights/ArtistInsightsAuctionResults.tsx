@@ -173,7 +173,7 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
               />
             )}
             ItemSeparatorComponent={() => (
-              <Flex px={2} py={2}>
+              <Flex px={2}>
                 <Separator borderColor={color("black10")} />
               </Flex>
             )}

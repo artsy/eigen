@@ -16,6 +16,16 @@ type AcceptPartnerAgreementPayload {
   partnerAgreementOrErrors: PartnerAgreementOrErrorsUnion!
 }
 
+type AccountMutationFailure {
+  mutationError: GravityMutationError
+}
+
+type AccountMutationSuccess {
+  success: Boolean
+}
+
+union AccountMutationType = AccountMutationFailure | AccountMutationSuccess
+
 type AccountRequest {
   # A globally unique ID.
   id: ID!
@@ -656,6 +666,9 @@ input ARImageInput {
 
 type Article implements Node {
   author: Author
+
+  # The byline for the article. Defaults to "Artsy Editorial" if no authors are present.
+  byline: String
   cached: Int
   channelID: String
   contributingAuthors: [Author]
@@ -674,6 +687,7 @@ type Article implements Node {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+  sections: [ArticleSectionsType]
   slug: String
   thumbnailImage: Image
   thumbnailTeaser: String
@@ -709,6 +723,64 @@ type ArticleEdge {
 
   # The item at the end of the edge
   node: Article
+}
+
+type ArticleSectionCallout {
+  article: String
+  hideImage: String
+  text: String
+  thumbnailUrl: String
+  topStories: String
+  type: String
+}
+
+type ArticleSectionEmbed {
+  height: String
+  layout: String
+  mobileHeight: String
+  type: String
+  url: String
+}
+
+type ArticleSectionImageCollection {
+  layout: String
+  type: String
+}
+
+type ArticleSectionImageSet {
+  layout: String
+  title: String
+  type: String
+}
+
+type ArticleSectionSocialEmbed {
+  layout: String
+  type: String
+  url: String
+}
+
+union ArticleSectionsType =
+    ArticleSectionCallout
+  | ArticleSectionEmbed
+  | ArticleSectionImageCollection
+  | ArticleSectionImageSet
+  | ArticleSectionSocialEmbed
+  | ArticleSectionText
+  | ArticleSectionVideo
+
+type ArticleSectionText {
+  body: String
+  layout: String
+  type: String
+}
+
+type ArticleSectionVideo {
+  backgroundColor: String
+  caption: String
+  coverImageUrl: String
+  layout: String
+  type: String
+  url: String
 }
 
 enum ArticleSorts {
@@ -1534,6 +1606,9 @@ type Artwork implements Node & Searchable & Sellable {
 
   # Whether this artwork is unlisted or not
   unlisted: Boolean
+
+  # Based on artwork location and status, verify that partner needs VAT exemption approval from Artsy.
+  vatExemptApprovalRequired: Boolean
 
   # Based on artwork location verify that VAT info for the partner is complete.
   vatRequirementComplete: Boolean
@@ -2585,6 +2660,7 @@ type CollectorProfileType {
     timezone: String
   ): String
   name: String
+  privacy: Int
   professionalBuyerAppliedAt(
     format: String
 
@@ -6042,6 +6118,21 @@ type DeepZoomImageSize {
   Width: Int
 }
 
+input DeleteAccountInput {
+  clientMutationId: String
+
+  # Reason for deleting the account.
+  explanation: String
+
+  # Referrer location
+  url: String
+}
+
+type DeleteAccountPayload {
+  clientMutationId: String
+  userAccountOrError: AccountMutationType
+}
+
 input DeleteArtworkImageInput {
   artworkID: String!
   clientMutationId: String
@@ -8573,6 +8664,7 @@ type Me implements Node {
   priceRange: String
   priceRangeMax: Float
   priceRangeMin: Float
+  privacy: Int
   profession: String
 
   # This user should receive lot opening notifications
@@ -8904,6 +8996,9 @@ type Mutation {
   # Remove a credit card
   deleteCreditCard(input: DeleteCreditCardInput!): DeleteCreditCardPayload
 
+  # Delete User Artsy Account
+  deleteMyAccountMutation(input: DeleteAccountInput!): DeleteAccountPayload
+
   # Remove the user icon
   deleteMyUserProfileIcon(input: DeleteUserIconInput!): DeleteUserIconPayload
   deleteUserAddress(input: DeleteUserAddressInput!): DeleteUserAddressPayload
@@ -9070,12 +9165,12 @@ input MyCollectionCreateArtworkInput {
   externalImageUrls: [String]
   height: String
   isEdition: Boolean
-  medium: String!
+  medium: String
   metric: String
   pricePaidCents: Int
   pricePaidCurrency: String
   provenance: String
-  title: String
+  title: String!
   width: String
 }
 
@@ -9132,7 +9227,7 @@ input MyCollectionUpdateArtworkInput {
   pricePaidCents: Int
   pricePaidCurrency: String
   provenance: String
-  title: String
+  title: String!
   width: String
 }
 
@@ -10236,6 +10331,7 @@ type Query {
   articlesConnection(
     after: String
     before: String
+    featured: Boolean
     first: Int
 
     # Articles that are ready to be publicly viewed in the feed by everyone.
@@ -12592,6 +12688,7 @@ type UpdateCollectorProfilePayload {
     timezone: String
   ): String
   name: String
+  privacy: Int
   professionalBuyerAppliedAt(
     format: String
 
@@ -12691,6 +12788,9 @@ input UpdateMyProfileInput {
 
   # The minimum price collector has selected
   priceRangeMin: Int
+
+  # Wheter or not the collector shares detailed profile information with galleries.
+  privacy: Int
 
   # Profession.
   profession: String
@@ -13153,6 +13253,7 @@ type Viewer {
   articlesConnection(
     after: String
     before: String
+    featured: Boolean
     first: Int
 
     # Articles that are ready to be publicly viewed in the feed by everyone.

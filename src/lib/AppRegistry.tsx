@@ -15,7 +15,7 @@ import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer, WorksForYouScreenQuery } from "./Containers/WorksForYou"
 import { useSentryConfig } from "./ErrorReporting"
 import { About } from "./Scenes/About/About"
-import { ArticlesQueryRenderer, ArticlesScreenQuery } from "./Scenes/Articles/Articles"
+import { ArticlesScreen, ArticlesScreenQuery } from "./Scenes/Articles/Articles"
 import { ArtistQueryRenderer, ArtistScreenQuery } from "./Scenes/Artist/Artist"
 import { ArtistArticlesQueryRenderer } from "./Scenes/ArtistArticles/ArtistArticles"
 import { ArtistSeriesQueryRenderer } from "./Scenes/ArtistSeries/ArtistSeries"
@@ -92,14 +92,14 @@ import { SavedAddressesQueryRenderer } from "./Scenes/SavedAddresses/SavedAddres
 import { SavedAddressesFormQueryRenderer } from "./Scenes/SavedAddresses/SavedAddressesForm"
 import { EditSavedSearchAlertQueryRenderer } from "./Scenes/SavedSearchAlert/EditSavedSearchAlert"
 import { SavedSearchAlertsListQueryRenderer } from "./Scenes/SavedSearchAlertsList/SavedSearchAlertsList"
-import { SearchQueryRenderer } from "./Scenes/Search/Search"
+import { SearchQueryRenderer, SearchScreenQuery } from "./Scenes/Search/Search"
 import { ShowMoreInfoQueryRenderer, ShowQueryRenderer } from "./Scenes/Show"
 import { TagQueryRenderer } from "./Scenes/Tag/Tag"
 import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
-import { ViewingRoomArtworkQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
+import { ViewingRoomArtworkScreen } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
-import { ViewingRoomsListQueryRenderer, ViewingRoomsListScreenQuery } from "./Scenes/ViewingRoom/ViewingRoomsList"
+import { ViewingRoomsListScreen, ViewingRoomsListScreenQuery } from "./Scenes/ViewingRoom/ViewingRoomsList"
 import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { AdminMenu } from "./utils/AdminMenu"
@@ -280,7 +280,7 @@ export const modules = defineModules({
   Admin2: reactModule(AdminMenu, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
-  Articles: reactModule(ArticlesQueryRenderer, {}, ArticlesScreenQuery),
+  Articles: reactModule(ArticlesScreen, {}, ArticlesScreenQuery),
   Artist: reactModule(ArtistQueryRenderer, {}, ArtistScreenQuery),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
@@ -317,10 +317,7 @@ export const modules = defineModules({
   CitySavedList: reactModule(CitySavedListQueryRenderer),
   CitySectionList: reactModule(CitySectionListQueryRenderer),
   Collection: reactModule(CollectionQueryRenderer, { fullBleed: true }),
-  ConsignmentsSubmissionForm: reactModule(ConsignmentsSubmissionForm, {
-    alwaysPresentModally: true,
-    hasOwnModalCloseButton: true,
-  }),
+  ConsignmentsSubmissionForm: reactModule(ConsignmentsSubmissionForm, {}),
   Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
   Fair: reactModule(FairQueryRenderer, { fullBleed: true }),
   FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
@@ -376,7 +373,7 @@ export const modules = defineModules({
   PrivacyRequest: reactModule(PrivacyRequest),
   Sales: reactModule(Consignments, { isRootViewForTabName: "sell" }),
   SalesNotRootTabView: reactModule(Consignments),
-  Search: reactModule(SearchQueryRenderer, { isRootViewForTabName: "search" }),
+  Search: reactModule(SearchQueryRenderer, { isRootViewForTabName: "search" }, SearchScreenQuery),
   Show: reactModule(ShowQueryRenderer, { fullBleed: true }),
   ShowMoreInfo: reactModule(ShowMoreInfoQueryRenderer),
   SavedAddresses: reactModule(SavedAddressesQueryRenderer),
@@ -386,9 +383,9 @@ export const modules = defineModules({
   }),
   VanityURLEntity: reactModule(VanityURLEntityRenderer, { fullBleed: true }),
   ViewingRoom: reactModule(ViewingRoomQueryRenderer, { fullBleed: true }),
-  ViewingRoomArtwork: reactModule(ViewingRoomArtworkQueryRenderer),
+  ViewingRoomArtwork: reactModule(ViewingRoomArtworkScreen),
   ViewingRoomArtworks: reactModule(ViewingRoomArtworksQueryRenderer),
-  ViewingRooms: reactModule(ViewingRoomsListQueryRenderer, {}, ViewingRoomsListScreenQuery),
+  ViewingRooms: reactModule(ViewingRoomsListScreen, {}, ViewingRoomsListScreenQuery),
   Checkout: reactModule(Checkout, {
     hasOwnModalCloseButton: true,
   }),

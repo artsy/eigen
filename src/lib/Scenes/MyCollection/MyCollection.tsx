@@ -90,7 +90,7 @@ const MyCollection: React.FC<{
           orderBy(
             artworks,
             (a) => {
-              return a.pricePaid.minor
+              return a.pricePaid?.minor
             },
             "asc"
           ),
@@ -104,7 +104,7 @@ const MyCollection: React.FC<{
           orderBy(
             artworks,
             (a) => {
-              return a.pricePaid.minor
+              return a.pricePaid?.minor
             },
             "desc"
           ),
@@ -234,10 +234,10 @@ const MyCollection: React.FC<{
           }
 
           return filter(artworks, (a) => {
-            if (isNaN(a.pricePaid.minor)) {
+            if (isNaN(a.pricePaid?.minor)) {
               return false
             }
-            const pricePaid = a.pricePaid.minor / 100
+            const pricePaid = a.pricePaid?.minor / 100
             return pricePaid >= lowerBound && pricePaid <= upperBound
           })
         },
@@ -310,7 +310,7 @@ const MyCollection: React.FC<{
   }
 
   // hack for tests. we should fix that.
-  const setJSX = __TEST__ ? jest.fn() : useContext(StickyTabPageFlatListContext).setJSX
+  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
   const space = useSpace()
   const toast = useToast()
@@ -372,8 +372,8 @@ const MyCollection: React.FC<{
             )}
             {!!showNewWorksBanner && (
               <Banner
-                title="You have some artworks."
-                text="To help add your current artworks to your collection, we automatically added your purchases from your order history."
+                title="Your collection is growing"
+                text="Based on your purchase history, we’ve added the following works."
                 showCloseButton
                 onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
               />

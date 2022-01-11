@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 19e66aaceeae9b4eafa941afcca9e062 */
+/* @relayHash 9d160e408cf35acf7f4a6c68be3d49d4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -13,7 +13,7 @@ export type ViewingRoomsListQueryResponse = {
     readonly featured: {
         readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsListFeatured_featured">;
     } | null;
-    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsList_query">;
+    readonly " $fragmentRefs": FragmentRefs<"ViewingRoomsList_viewingRooms">;
 };
 export type ViewingRoomsListQuery = {
     readonly response: ViewingRoomsListQueryResponse;
@@ -27,7 +27,7 @@ query ViewingRoomsListQuery(
   $count: Int!
   $after: String
 ) {
-  ...ViewingRoomsList_query_2QE1um
+  ...ViewingRoomsList_viewingRooms_2QE1um
   featured: viewingRooms(featured: true) {
     ...ViewingRoomsListFeatured_featured
   }
@@ -84,7 +84,7 @@ fragment ViewingRoomsListItem_item on ViewingRoom {
   }
 }
 
-fragment ViewingRoomsList_query_2QE1um on Query {
+fragment ViewingRoomsList_viewingRooms_2QE1um on Query {
   viewingRooms(first: $count, after: $after) {
     edges {
       node {
@@ -273,7 +273,7 @@ return {
           }
         ],
         "kind": "FragmentSpread",
-        "name": "ViewingRoomsList_query"
+        "name": "ViewingRoomsList_viewingRooms"
       }
     ],
     "type": "Query",
@@ -498,7 +498,7 @@ return {
     ]
   },
   "params": {
-    "id": "19e66aaceeae9b4eafa941afcca9e062",
+    "id": "9d160e408cf35acf7f4a6c68be3d49d4",
     "metadata": {},
     "name": "ViewingRoomsListQuery",
     "operationKind": "query",
@@ -506,5 +506,5 @@ return {
   }
 };
 })();
-(node as any).hash = '3d1c2451ec77b4acaa97260bd41e0f81';
+(node as any).hash = '16b7f164fd6a164870a88abcaa28b387';
 export default node;

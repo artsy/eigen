@@ -1,5 +1,6 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
+import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { Currency } from "lib/Scenes/Search/UserPreferencesModel"
 import { GlobalStore } from "lib/store/GlobalStore"
@@ -11,17 +12,18 @@ import React, { useEffect } from "react"
 import { ScrollView, TouchableOpacity } from "react-native"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
 import { ArrowDetails } from "../Components/ArrowDetails"
-import { ArtistAutosuggest } from "../Components/ArtistAutosuggest"
+import { ArtistSearchResult } from "../Components/ArtistSearchResult"
 import { Dimensions } from "../Components/Dimensions"
 import { MediumPicker } from "../Components/MediumPicker"
+import { Rarity } from "../Components/Rarity"
 import { useArtworkForm } from "../Form/useArtworkForm"
 import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 
-export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormScreen, "ArtworkForm">> = ({
-  navigation,
+export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormScreen, "ArtworkFormMain">> = ({
   route,
+  navigation,
 }) => {
   const artworkActions = GlobalStore.actions.myCollection.artwork
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
@@ -55,28 +57,19 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
   }, [])
 
   return (
-    <>
+    <ArtsyKeyboardAvoidingView>
       <FancyModalHeader
         onLeftButtonPress={route.params.onHeaderBackButtonPress}
         rightButtonText={isFormDirty() ? "Clear" : undefined}
         onRightButtonPress={isFormDirty() ? () => route.params.clearForm() : undefined}
+        hideBottomDivider
       >
-        {addOrEditLabel} Artwork
+        {addOrEditLabel} Details
       </FancyModalHeader>
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
-        <Spacer my={1} />
-        <Text textAlign="center">
-          {addOrEditLabel} details about your artwork to access {"\n"}
-          price and market insights.
-        </Text>
-        <Spacer my="1" />
-        <ScreenMargin>
-          <Join separator={<Spacer my={1} />}>
-            <ArtistAutosuggest />
-          </Join>
-        </ScreenMargin>
         <Flex p={2}>
           <Join separator={<Spacer my={1} />}>
+            {!!formik.values.artistSearchResult && <ArtistSearchResult result={formik.values.artistSearchResult} />}
             <Input
               title="TITLE"
               placeholder="Title"
@@ -107,6 +100,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               accessibilityLabel="Materials"
               value={formikValues.category}
             />
+            <Rarity />
             <Dimensions />
             <Input
               title="PRICE PAID"
@@ -162,7 +156,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
                 artworkActions.addPhotos(photos)
               })
             } else {
-              navigation.navigate("AddPhotos", { onHeaderBackButtonPress: route.params.onHeaderBackButtonPress })
+              navigation.navigate("AddPhotos")
             }
           }}
         />
@@ -218,7 +212,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
           </ScreenMargin>
         )}
       </ScrollView>
-    </>
+    </ArtsyKeyboardAvoidingView>
   )
 }
 

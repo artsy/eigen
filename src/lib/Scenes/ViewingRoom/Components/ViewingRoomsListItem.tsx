@@ -5,8 +5,8 @@ import { Schema } from "lib/utils/track"
 import { CardTagProps, SmallCard, Touchable } from "palette"
 import React from "react"
 import { View } from "react-native"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import { graphql, useFragment } from "relay-hooks"
 
 export const tagForStatus = (
   status: string,

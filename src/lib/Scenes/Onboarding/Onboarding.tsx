@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { CardStyleInterpolators, createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "lib/Components/ArtsyKeyboardAvoidingView"
+import { ArtsyWebViewPrivacy, ArtsyWebViewTerms } from "lib/Components/ArtsyReactWebViewPolicy"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { NetworkAwareProvider } from "lib/utils/NetworkAwareProvider"
 import React from "react"
@@ -23,6 +24,8 @@ export type OnboardingNavigationStack = {
   OnboardingCreateAccount: { withFadeAnimation: boolean } | undefined
   OnboardingCreateAccountWithEmail: undefined
   ForgotPassword: undefined
+  Terms: undefined
+  Privacy: undefined
 }
 
 const StackNavigator = createStackNavigator<OnboardingNavigationStack>()
@@ -67,6 +70,8 @@ export const OnboardingWelcomeScreens = () => {
         />
         <StackNavigator.Screen name="OnboardingCreateAccountWithEmail" component={OnboardingCreateAccountWithEmail} />
         <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
+        <StackNavigator.Screen name="Terms" component={ArtsyWebViewTerms} />
+        <StackNavigator.Screen name="Privacy" component={ArtsyWebViewPrivacy} />
       </StackNavigator.Navigator>
     </NavigationContainer>
   )

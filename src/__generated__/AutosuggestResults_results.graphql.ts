@@ -15,6 +15,7 @@ export type AutosuggestResults_results = {
                 readonly internalID?: string | undefined;
                 readonly displayType?: string | null | undefined;
                 readonly slug?: string | undefined;
+                readonly formattedNationalityAndBirthday?: string | null | undefined;
                 readonly statuses?: {
                     readonly artworks: boolean | null;
                     readonly auctionLots: boolean | null;
@@ -181,6 +182,13 @@ return {
                   "kind": "InlineFragment",
                   "selections": [
                     (v0/*: any*/),
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "formattedNationalityAndBirthday",
+                      "storageKey": null
+                    },
                     (v1/*: any*/),
                     {
                       "alias": null,
@@ -257,5 +265,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '3c398ab0f80655f30ce589fbd67dffd9';
+(node as any).hash = '53e1288618a8607c73682301b4adb2cd';
 export default node;

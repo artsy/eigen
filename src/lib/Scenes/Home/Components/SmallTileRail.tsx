@@ -101,6 +101,7 @@ export const SmallTileRailContainer = createFragmentContainer(SmallTileRail, {
       }
       image {
         imageURL
+        aspectRatio
       }
     }
   `,

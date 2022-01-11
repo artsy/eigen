@@ -19,7 +19,7 @@ export { SerifV1, SerifV1Props, SerifV1Props as SerifProps }
 // V1 handler
 
 /**
- * Deprecated. Use `TextV3` instead.
+ * @deprecated Deprecated. Use `Text` instead.
  * Mapping:
  * 1: xs, 2: xs, 3: sm, 3t: sm, 4: md, 4t: md, 5: md, 5t: md, 6: lg, 8: lg, 10: xl, 12: xxl
  */

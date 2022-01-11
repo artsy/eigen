@@ -25,7 +25,7 @@ import { Flex, Message } from "palette"
 import React, { useEffect } from "react"
 import { ActivityIndicator, View } from "react-native"
 import { graphql } from "react-relay"
-import { RelayModernEnvironment } from "relay-runtime/lib/store/RelayModernEnvironment"
+import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 const INITIAL_TAB = "Artworks"
 export interface NotificationPayload {
@@ -151,7 +151,7 @@ export const ArtistScreenQuery = graphql`
   }
 `
 
-export const defaultArtworksVariables = () => ({
+export const defaultArtistVariables = () => ({
   input: {
     sort: DEFAULT_ARTWORK_SORT.paramValue,
   },
@@ -170,7 +170,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
           const { savedSearchCriteria, fetchCriteriaError } = searchCriteriaProps
           const preparedSavedSearchCriteria = getOnlyFilledSearchCriteriaValues(savedSearchCriteria ?? {})
           const initialArtworksInput = {
-            ...defaultArtworksVariables().input,
+            ...defaultArtistVariables().input,
             sort: !!savedSearchCriteria ? "-published_at" : DEFAULT_ARTWORK_SORT.paramValue,
             ...preparedSavedSearchCriteria,
           }

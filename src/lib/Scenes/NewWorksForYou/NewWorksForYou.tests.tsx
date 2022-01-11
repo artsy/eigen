@@ -2,8 +2,7 @@ import { NewWorksForYouTestsQuery } from "__generated__/NewWorksForYouTestsQuery
 import { Artwork } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { QueryRenderer } from "react-relay"
-import { graphql } from "relay-hooks"
+import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { NewWorksForYouFragmentContainer } from "./NewWorksForYou"
 

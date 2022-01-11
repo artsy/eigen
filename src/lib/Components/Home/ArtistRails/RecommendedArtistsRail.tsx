@@ -4,6 +4,7 @@ import { RecommendedArtistsRail_me } from "__generated__/RecommendedArtistsRail_
 import { RecommendedArtistsRailFollowMutation } from "__generated__/RecommendedArtistsRailFollowMutation.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { defaultArtistVariables } from "lib/Scenes/Artist/Artist"
 import { RailScrollProps } from "lib/Scenes/Home/Components/types"
 import HomeAnalytics from "lib/Scenes/Home/homeAnalytics"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -79,6 +80,8 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
       </Flex>
       <CardRailFlatList<ArtistCard_artist>
         listRef={listRef}
+        prefetchUrlExtractor={(item) => item?.href!}
+        prefetchVariablesExtractor={defaultArtistVariables}
         data={artists as any}
         keyExtractor={(artist) => artist.id}
         onEndReached={loadMoreArtists}
@@ -186,6 +189,7 @@ const followOrUnfollowArtist = (followArtist: ArtistCard_artist) => {
         input: { artistID: followArtist.internalID, unfollow: followArtist.isFollowed },
       },
       onError: reject,
+      // @ts-ignore RELAY 12 MIGRATION
       optimisticResponse: {
         followArtist: {
           artist: {

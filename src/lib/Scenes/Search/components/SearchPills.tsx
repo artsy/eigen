@@ -25,14 +25,14 @@ export const SearchPills = React.forwardRef<ScrollView, SearchPillsProps>((props
       keyboardShouldPersistTaps="handled"
     >
       {pills.map((pill) => {
-        const { name, displayName } = pill
+        const { key, displayName } = pill
         const selected = isSelected(pill)
         const disabled = !!pill.disabled || !!loading || !!selected
 
         return (
           <Pill
             mr={1}
-            key={name}
+            key={key}
             accessibilityState={{ selected, disabled }}
             rounded
             selected={selected}

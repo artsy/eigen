@@ -21,7 +21,7 @@ export enum Tab {
   savedWorks = "Saved Works",
 }
 
-export const MyCollectionAndSavedWorks: React.FC<{ me: NonNullable<MyCollectionAndSavedWorks_me> }> = ({ me }) => {
+export const MyCollectionAndSavedWorks: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({ me }) => {
   return (
     <StickyTabPage
       disableBackButtonUpdate
@@ -44,7 +44,7 @@ export const MyCollectionAndSavedWorks: React.FC<{ me: NonNullable<MyCollectionA
 
 export const LOCAL_PROFILE_ICON_PATH_KEY = "LOCAL_PROFILE_ICON_PATH_KEY"
 
-export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWorks_me> }> = ({ me }) => {
+export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({ me }) => {
   const color = useColor()
 
   const [showModal, setShowModal] = useState(false)
@@ -74,13 +74,15 @@ export const MyProfileHeader: React.FC<{ me: NonNullable<MyCollectionAndSavedWor
 
   return (
     <>
-      <MyProfileEditFormModalFragmentContainer
-        me={me}
-        visible={showModal}
-        onDismiss={() => setShowModal(false)}
-        setProfileIconLocally={setProfileIconHandler}
-        localImage={localImage}
-      />
+      {!!me && (
+        <MyProfileEditFormModalFragmentContainer
+          me={me}
+          visible={showModal}
+          onDismiss={() => setShowModal(false)}
+          setProfileIconLocally={setProfileIconHandler}
+          localImage={localImage}
+        />
+      )}
       <FancyModalHeader
         rightButtonText="Settings"
         hideBottomDivider

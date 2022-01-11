@@ -48,12 +48,14 @@ export const errorMiddleware = () => {
     const res = await next(req)
     const resJson = res?.json as GraphQLResponse
 
+    // @ts-ignore RELAY 12 MIGRATION
     const hasErrors: boolean = Boolean(resJson.errors?.length)
 
     if (!hasErrors) {
       return res
     }
 
+    // @ts-ignore RELAY 12 MIGRATION
     const allErrorsAreOptional = resJson.extensions?.optionalFields?.length === resJson.errors?.length
 
     if (allErrorsAreOptional) {
@@ -74,6 +76,7 @@ export const errorMiddleware = () => {
 
     // This represents whether or not the query experienced an error and that error was thrown while resolving
     // a field marked with the @principalField directive, or any sub-selection of such a field.
+    // @ts-ignore RELAY 12 MIGRATION
     const principalFieldWasInvolvedInError = isErrorStatus(resJson.extensions?.principalField?.httpStatusCode)
 
     if (principalFieldWasInvolvedInError) {

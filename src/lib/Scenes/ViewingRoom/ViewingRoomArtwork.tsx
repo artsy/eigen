@@ -1,4 +1,3 @@
-import { LoadFailureView } from "lib/Components/LoadFailureView"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { cm2in } from "lib/utils/conversions"
@@ -7,14 +6,14 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
 import { Box, Button, EyeOpenedIcon, Flex, LargeCard, Sans, Separator, Spacer, Text, Touchable } from "palette"
-import React from "react"
+import React, { Suspense, useEffect } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
-import { graphql, useFragment, useQuery } from "relay-hooks"
 
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
+import { graphql, PreloadedQuery, useFragment, usePreloadedQuery, useQueryLoader } from "react-relay"
 import { ImageCarousel } from "../Artwork/Components/ImageCarousel/ImageCarousel"
 import { tagForStatus } from "./Components/ViewingRoomsListItem"
 
@@ -23,49 +22,11 @@ interface ViewingRoomArtworkProps {
   viewingRoomInfo: ViewingRoomArtwork_viewingRoomInfo$key
 }
 
-const selectedArtworkFragmentSpec = graphql`
-  fragment ViewingRoomArtwork_selectedArtwork on Artwork {
-    title
-    artistNames
-    date
-    additionalInformation
-    saleMessage
-    href
-    slug
-    image {
-      url(version: "larger")
-      aspectRatio
-    }
-    isHangable
-    widthCm
-    heightCm
-    id
-    images {
-      ...ImageCarousel_images @relay(mask: false) # We need this because ImageCarousel uses regular react-relay and we have relay-hooks here.
-    }
-  }
-`
+interface ViewingRoomArtworkContainerProps {
+  queryRef: PreloadedQuery<ViewingRoomArtworkQuery>
+}
 
-const viewingRoomInfoFragmentSpec = graphql`
-  fragment ViewingRoomArtwork_viewingRoomInfo on ViewingRoom {
-    title
-    partner {
-      name
-    }
-    heroImage: image {
-      imageURLs {
-        normalized
-      }
-    }
-    status
-    distanceToOpen
-    distanceToClose
-    internalID
-    slug
-  }
-`
-
-export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = (props) => {
+export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => {
   const selectedArtwork = useFragment(selectedArtworkFragmentSpec, props.selectedArtwork)
   const vrInfo = useFragment(viewingRoomInfoFragmentSpec, props.viewingRoomInfo)
 
@@ -184,6 +145,62 @@ export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkProps> = (p
   )
 }
 
+export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkContainerProps> = ({ queryRef }) => {
+  const data = usePreloadedQuery<ViewingRoomArtworkQuery>(ViewingRoomArtworkScreenQuery, queryRef)
+
+  if (!data.artwork || !data.viewingRoom) {
+    return null
+  }
+
+  return <ViewingRoomArtwork selectedArtwork={data.artwork} viewingRoomInfo={data.viewingRoom} />
+}
+
+const ViewingRoomArtworkScreenQuery = graphql`
+  query ViewingRoomArtworkQuery($viewingRoomID: ID!, $artworkID: String!) {
+    artwork(id: $artworkID) {
+      ...ViewingRoomArtwork_selectedArtwork
+    }
+
+    viewingRoom(id: $viewingRoomID) {
+      ...ViewingRoomArtwork_viewingRoomInfo
+    }
+  }
+`
+
+export const ViewingRoomArtworkScreen: React.FC<{ viewing_room_id: string; artwork_id: string }> = ({
+  viewing_room_id: viewingRoomID,
+  artwork_id: artworkID,
+}) => {
+  const [queryRef, loadQuery] = useQueryLoader<ViewingRoomArtworkQuery>(ViewingRoomArtworkScreenQuery)
+
+  useEffect(() => {
+    if (!queryRef) {
+      loadQuery({ viewingRoomID, artworkID })
+    }
+  })
+
+  if (!queryRef) {
+    return null
+  }
+
+  return (
+    <Suspense fallback={<Placeholder />}>
+      <ViewingRoomArtworkContainer queryRef={queryRef} />
+    </Suspense>
+  )
+}
+
+const Placeholder = () => (
+  <ProvidePlaceholderContext>
+    <PlaceholderBox width="100%" height="60%" />
+    <Flex mt="2" ml="2">
+      <PlaceholderText width={130 + Math.random() * 100} marginTop={10} />
+      <PlaceholderText width={100 + Math.random() * 100} marginTop={8} />
+      <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
+    </Flex>
+  </ProvidePlaceholderContext>
+)
+
 const tracks = {
   screen: (vrId: string, vrSlug: string, artworkId: string, artworkSlug: string) => ({
     screen: Schema.PageNames.ViewingRoomArtworkPage,
@@ -206,45 +223,44 @@ const tracks = {
   }),
 }
 
-const query = graphql`
-  query ViewingRoomArtworkQuery($viewingRoomID: ID!, $artworkID: String!) {
-    artwork(id: $artworkID) {
-      ...ViewingRoomArtwork_selectedArtwork
+const selectedArtworkFragmentSpec = graphql`
+  fragment ViewingRoomArtwork_selectedArtwork on Artwork {
+    title
+    artistNames
+    date
+    additionalInformation
+    saleMessage
+    href
+    slug
+    image {
+      url(version: "larger")
+      aspectRatio
     }
-
-    viewingRoom(id: $viewingRoomID) {
-      ...ViewingRoomArtwork_viewingRoomInfo
+    isHangable
+    widthCm
+    heightCm
+    id
+    images {
+      ...ImageCarousel_images @relay(mask: false) # We need this because ImageCarousel uses regular react-relay and we have relay-hooks here.
     }
   }
 `
 
-const Placeholder = () => (
-  <ProvidePlaceholderContext>
-    <PlaceholderBox width="100%" height="60%" />
-    <Flex mt="2" ml="2">
-      <PlaceholderText width={130 + Math.random() * 100} marginTop={10} />
-      <PlaceholderText width={100 + Math.random() * 100} marginTop={8} />
-      <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
-    </Flex>
-  </ProvidePlaceholderContext>
-)
-
-export const ViewingRoomArtworkQueryRenderer: React.FC<{ viewing_room_id: string; artwork_id: string }> = ({
-  viewing_room_id: viewingRoomID,
-  artwork_id: artworkID,
-}) => {
-  const { props, error, retry } = useQuery<ViewingRoomArtworkQuery>(
-    query,
-    { viewingRoomID, artworkID },
-    { networkCacheConfig: { force: true } }
-  )
-  if (props) {
-    return <ViewingRoomArtworkContainer selectedArtwork={props.artwork!} viewingRoomInfo={props.viewingRoom!} />
+const viewingRoomInfoFragmentSpec = graphql`
+  fragment ViewingRoomArtwork_viewingRoomInfo on ViewingRoom {
+    title
+    partner {
+      name
+    }
+    heroImage: image {
+      imageURLs {
+        normalized
+      }
+    }
+    status
+    distanceToOpen
+    distanceToClose
+    internalID
+    slug
   }
-  if (error) {
-    console.error(error)
-    return <LoadFailureView onRetry={retry} />
-  }
-
-  return <Placeholder />
-}
+`

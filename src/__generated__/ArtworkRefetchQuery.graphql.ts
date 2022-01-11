@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0b8e0df5cb911dd7c692f60d2948dbff */
+/* @relayHash 7a22ee8dd80e7e9ef1ce4f7ee8ae417d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,7 +34,7 @@ query ArtworkRefetchQuery(
 fragment AboutArtist_artwork on Artwork {
   artists {
     id
-    biography_blurb: biographyBlurb {
+    biographyBlurb {
       text
     }
     ...ArtistListItem_artist
@@ -42,7 +42,7 @@ fragment AboutArtist_artwork on Artwork {
 }
 
 fragment AboutWork_artwork on Artwork {
-  additional_information: additionalInformation
+  additionalInformation
   description
   isInAuction
 }
@@ -217,7 +217,7 @@ fragment ArtworkHeader_artwork on Artwork {
 
 fragment ArtworkHistory_artwork on Artwork {
   provenance
-  exhibition_history: exhibitionHistory
+  exhibitionHistory
   literature
 }
 
@@ -263,25 +263,25 @@ fragment Artwork_artworkAboveTheFold on Artwork {
   slug
   internalID
   id
-  is_acquireable: isAcquireable
-  is_offerable: isOfferable
-  is_biddable: isBiddable
-  is_inquireable: isInquireable
+  isAcquireable
+  isOfferable
+  isBiddable
+  isInquireable
   availability
 }
 
 fragment Artwork_artworkBelowTheFold on Artwork {
-  additional_information: additionalInformation
+  additionalInformation
   description
   provenance
-  exhibition_history: exhibitionHistory
+  exhibitionHistory
   literature
   partner {
     type
     id
   }
   artist {
-    biography_blurb: biographyBlurb {
+    biographyBlurb {
       text
     }
     artistSeriesConnection(first: 4) {
@@ -313,7 +313,7 @@ fragment Artwork_artworkBelowTheFold on Artwork {
   series
   publisher
   manufacturer
-  image_rights: imageRights
+  imageRights
   context {
     __typename
     ... on Sale {
@@ -653,7 +653,7 @@ fragment FollowArtistLink_artist on Artist {
 fragment GenericGrid_artworks on Artwork {
   id
   image {
-    aspect_ratio: aspectRatio
+    aspectRatio
   }
   ...ArtworkGridItem_artwork
 }
@@ -827,7 +827,7 @@ v8 = {
   "storageKey": null
 },
 v9 = {
-  "alias": "biography_blurb",
+  "alias": null,
   "args": null,
   "concreteType": "ArtistBlurb",
   "kind": "LinkedField",
@@ -1908,35 +1908,14 @@ return {
             "storageKey": null
           },
           {
-            "alias": "is_acquireable",
-            "args": null,
-            "kind": "ScalarField",
-            "name": "isAcquireable",
-            "storageKey": null
-          },
-          {
-            "alias": "is_offerable",
-            "args": null,
-            "kind": "ScalarField",
-            "name": "isOfferable",
-            "storageKey": null
-          },
-          {
-            "alias": "is_biddable",
+            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "isBiddable",
             "storageKey": null
           },
           {
-            "alias": "is_inquireable",
-            "args": null,
-            "kind": "ScalarField",
-            "name": "isInquireable",
-            "storageKey": null
-          },
-          {
-            "alias": "additional_information",
+            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "additionalInformation",
@@ -1957,7 +1936,7 @@ return {
             "storageKey": null
           },
           {
-            "alias": "exhibition_history",
+            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "exhibitionHistory",
@@ -1992,7 +1971,7 @@ return {
             "storageKey": null
           },
           {
-            "alias": "image_rights",
+            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "imageRights",
@@ -2119,13 +2098,7 @@ return {
                             "name": "image",
                             "plural": false,
                             "selections": [
-                              {
-                                "alias": "aspect_ratio",
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "aspectRatio",
-                                "storageKey": null
-                              },
+                              (v36/*: any*/),
                               {
                                 "alias": null,
                                 "args": [
@@ -2138,8 +2111,7 @@ return {
                                 "kind": "ScalarField",
                                 "name": "url",
                                 "storageKey": "url(version:\"large\")"
-                              },
-                              (v36/*: any*/)
+                              }
                             ],
                             "storageKey": null
                           },
@@ -2355,6 +2327,13 @@ return {
             "storageKey": "artistSeriesConnection(first:1)"
           },
           {
+            "alias": "image_rights",
+            "args": null,
+            "kind": "ScalarField",
+            "name": "imageRights",
+            "storageKey": null
+          },
+          {
             "alias": null,
             "args": null,
             "concreteType": "ArtworkMedium",
@@ -2372,7 +2351,7 @@ return {
     ]
   },
   "params": {
-    "id": "0b8e0df5cb911dd7c692f60d2948dbff",
+    "id": "7a22ee8dd80e7e9ef1ce4f7ee8ae417d",
     "metadata": {},
     "name": "ArtworkRefetchQuery",
     "operationKind": "query",

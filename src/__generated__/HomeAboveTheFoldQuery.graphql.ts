@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a78223e3071b01d08b87e646f6708270 */
+/* @relayHash ec8bcba76d9f6a49259f39fe557c2757 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -178,7 +178,7 @@ fragment EmailConfirmationBanner_me on Me {
 fragment GenericGrid_artworks on Artwork {
   id
   image {
-    aspect_ratio: aspectRatio
+    aspectRatio
   }
   ...ArtworkGridItem_artwork
 }
@@ -379,6 +379,7 @@ fragment SmallTileRail_artworks on Artwork {
   }
   image {
     imageURL
+    aspectRatio
   }
 }
 */
@@ -580,6 +581,13 @@ v20 = {
 },
 v21 = {
   "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "aspectRatio",
+  "storageKey": null
+},
+v22 = {
+  "alias": null,
   "args": [
     {
       "kind": "Literal",
@@ -590,13 +598,6 @@ v21 = {
   "kind": "ScalarField",
   "name": "url",
   "storageKey": "url(version:\"large\")"
-},
-v22 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "aspectRatio",
-  "storageKey": null
 },
 v23 = {
   "alias": null,
@@ -668,13 +669,6 @@ v27 = [
         "plural": false,
         "selections": [
           (v20/*: any*/),
-          {
-            "alias": "aspect_ratio",
-            "args": null,
-            "kind": "ScalarField",
-            "name": "aspectRatio",
-            "storageKey": null
-          },
           (v21/*: any*/),
           (v22/*: any*/)
         ],
@@ -769,7 +763,7 @@ v27 = [
   }
 ],
 v28 = [
-  (v21/*: any*/)
+  (v22/*: any*/)
 ],
 v29 = {
   "alias": null,
@@ -1269,7 +1263,7 @@ return {
                                     "name": "url",
                                     "storageKey": "url(version:\"small\")"
                                   },
-                                  (v22/*: any*/)
+                                  (v21/*: any*/)
                                 ],
                                 "storageKey": null
                               },
@@ -1382,7 +1376,8 @@ return {
                         "name": "image",
                         "plural": false,
                         "selections": [
-                          (v20/*: any*/)
+                          (v20/*: any*/),
+                          (v21/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -1551,7 +1546,7 @@ return {
     ]
   },
   "params": {
-    "id": "a78223e3071b01d08b87e646f6708270",
+    "id": "ec8bcba76d9f6a49259f39fe557c2757",
     "metadata": {},
     "name": "HomeAboveTheFoldQuery",
     "operationKind": "query",
