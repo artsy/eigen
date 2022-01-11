@@ -199,6 +199,7 @@ const Buttons: React.FC<{ onClose(): void }> = ({ onClose }) => {
         <>
           <TouchableOpacity
             onPress={() => {
+              RelayCache.clearAll()
               onClose()
               requestAnimationFrame(() => DevSettings.reload())
             }}
