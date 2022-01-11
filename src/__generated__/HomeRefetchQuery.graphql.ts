@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8cf75528eb8b707d2c4ccabd3ee83783 */
+/* @relayHash bbdced50b5910dd9a8d6fbafdec81a83 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -169,7 +169,7 @@ fragment ArtworkTileRailCard2_artwork on Artwork {
   artistNames
   date
   image {
-    resized(width: 160) {
+    resized(width: 295) {
       src
       srcSet
       width
@@ -816,7 +816,7 @@ v26 = [
           {
             "kind": "Literal",
             "name": "width",
-            "value": 160
+            "value": 295
           }
         ],
         "concreteType": "ResizedImageUrl",
@@ -841,7 +841,7 @@ v26 = [
           (v14/*: any*/),
           (v15/*: any*/)
         ],
-        "storageKey": "resized(width:160)"
+        "storageKey": "resized(width:295)"
       },
       (v16/*: any*/),
       (v15/*: any*/)
@@ -2508,7 +2508,7 @@ return {
     ]
   },
   "params": {
-    "id": "8cf75528eb8b707d2c4ccabd3ee83783",
+    "id": "bbdced50b5910dd9a8d6fbafdec81a83",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",

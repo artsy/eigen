@@ -59,7 +59,7 @@ var v0 = {
 return {
   "argumentDefinitions": [
     {
-      "defaultValue": 160,
+      "defaultValue": 295,
       "kind": "LocalArgument",
       "name": "width"
     }
@@ -277,5 +277,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '20c14322a06dd92e72db2ea37759abc1';
+(node as any).hash = 'fb9985c8c936809c6aa68a179ff563f4';
 export default node;

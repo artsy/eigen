@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b6f7b5c6ccd9b253fc16149441c3c4e5 */
+/* @relayHash 63494973bf5002eb3cbcf54be9bd478b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -123,7 +123,7 @@ fragment ArtworkTileRailCard2_artwork on Artwork {
   artistNames
   date
   image {
-    resized(width: 160) {
+    resized(width: 295) {
       src
       srcSet
       width
@@ -611,7 +611,7 @@ v20 = [
               {
                 "kind": "Literal",
                 "name": "width",
-                "value": 160
+                "value": 295
               }
             ],
             "concreteType": "ResizedImageUrl",
@@ -636,7 +636,7 @@ v20 = [
               (v9/*: any*/),
               (v10/*: any*/)
             ],
-            "storageKey": "resized(width:160)"
+            "storageKey": "resized(width:295)"
           },
           (v11/*: any*/),
           (v10/*: any*/)
@@ -1808,7 +1808,7 @@ return {
     ]
   },
   "params": {
-    "id": "b6f7b5c6ccd9b253fc16149441c3c4e5",
+    "id": "63494973bf5002eb3cbcf54be9bd478b",
     "metadata": {},
     "name": "HomeBelowTheFoldQuery",
     "operationKind": "query",

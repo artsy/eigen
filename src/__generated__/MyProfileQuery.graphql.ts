@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ad0fc21e17f9cdbb442dee3d88836a53 */
+/* @relayHash 0124f8d6aca64c324f94d28f1284c605 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,7 +33,7 @@ fragment ArtworkTileRailCard2_artwork on Artwork {
   artistNames
   date
   image {
-    resized(width: 160) {
+    resized(width: 295) {
       src
       srcSet
       width
@@ -251,7 +251,7 @@ return {
                                   {
                                     "kind": "Literal",
                                     "name": "width",
-                                    "value": 160
+                                    "value": 295
                                   }
                                 ],
                                 "concreteType": "ResizedImageUrl",
@@ -282,7 +282,7 @@ return {
                                   },
                                   (v2/*: any*/)
                                 ],
-                                "storageKey": "resized(width:160)"
+                                "storageKey": "resized(width:295)"
                               },
                               {
                                 "alias": null,
@@ -422,7 +422,7 @@ return {
     ]
   },
   "params": {
-    "id": "ad0fc21e17f9cdbb442dee3d88836a53",
+    "id": "0124f8d6aca64c324f94d28f1284c605",
     "metadata": {},
     "name": "MyProfileQuery",
     "operationKind": "query",

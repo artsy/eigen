@@ -1,6 +1,6 @@
 import * as Analytics from "@artsy/cohesion"
 import { SmallTileRail_artworks } from "__generated__/SmallTileRail_artworks.graphql"
-import { ArtworkTileRailCard2 } from "lib/Components/ArtworkTileRail/ArtworkTileRailCard2"
+import { ArtworkCardSize, ArtworkTileRailCard2 } from "lib/Components/ArtworkTileRail/ArtworkTileRailCard2"
 import { PrefetchFlatList } from "lib/Components/PrefetchFlatList"
 import { navigate } from "lib/navigation/navigate"
 import { Spacer } from "palette"
@@ -11,12 +11,13 @@ import { useTracking } from "react-tracking"
 import HomeAnalytics from "../homeAnalytics"
 
 const MAX_NUMBER_OF_ARTWORKS = 30
+const DEFAULT_SIZE = "medium"
 
 interface Props {
   artworks: SmallTileRail_artworks
   listRef: React.RefObject<FlatList<any>>
   contextModule: Analytics.ContextModule | undefined
-  imageSize?: "small" | "medium" | "large"
+  size?: ArtworkCardSize
   onEndReached?: () => void
   onEndReachedThreshold?: number
   ListFooterComponent?: ReactElement
@@ -26,7 +27,7 @@ const SmallTileRail: React.FC<Props> = ({
   artworks,
   listRef,
   contextModule,
-  imageSize,
+  size = DEFAULT_SIZE,
   onEndReached,
   onEndReachedThreshold,
   ListFooterComponent = ListEndComponent,
@@ -63,7 +64,8 @@ const SmallTileRail: React.FC<Props> = ({
               : undefined
           }
           artwork={item}
-          size={imageSize ?? "small"}
+          size={size}
+          hidePartnerName
         />
       )}
       keyExtractor={(item, index) => String(item.slug || index)}

@@ -95,7 +95,7 @@ const ArtworkRail: React.FC<ArtworkRailProps & RailScrollProps> = ({ title, rail
       <SmallTileRailContainer
         listRef={listRef}
         artworks={artworks}
-        imageSize={useSmallTile ? "small" : "large"}
+        size={useSmallTile ? "small" : "large"}
         contextModule={HomeAnalytics.artworkRailContextModule(rail.key)}
       />
     </Flex>

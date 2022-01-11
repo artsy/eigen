@@ -6,7 +6,7 @@ import {
 import { getUrgencyTag } from "lib/utils/getUrgencyTag"
 import { Box, Flex, Sans, Text, useColor } from "palette"
 import React from "react"
-import { GestureResponderEvent, View } from "react-native"
+import { GestureResponderEvent } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import styled from "styled-components/native"
 import { saleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
@@ -18,21 +18,23 @@ const MAX_IMAGE_HEIGHTS = {
   large: 320,
 }
 
-type Size = "small" | "medium" | "large"
+export type ArtworkCardSize = "small" | "medium" | "large"
 
 export interface ArtworkTileRailCard2Props {
   onPress?: (event: GestureResponderEvent) => void
   artwork: ArtworkTileRailCard2_artwork$key
   lotLabel?: string | null
   testID?: string
-  size: Size
+  size: ArtworkCardSize
+  hidePartnerName?: boolean
 }
 
 export const ArtworkTileRailCard2: React.FC<ArtworkTileRailCard2Props> = ({
   onPress,
   testID,
   lotLabel,
-  size,
+  size = "medium",
+  hidePartnerName = false,
   ...restProps
 }) => {
   const artwork = useFragment<ArtworkTileRailCard2_artwork$key>(artworkFragment, restProps.artwork)
@@ -44,9 +46,9 @@ export const ArtworkTileRailCard2: React.FC<ArtworkTileRailCard2Props> = ({
 
   return (
     <ArtworkCard onPress={onPress || undefined} testID={testID}>
-      <Flex>
+      <Flex alignItems="flex-end">
         <ArtworkTileImage image={image} size={size} urgencyTag={urgencyTag} />
-        <Box mt={1} width={artwork.image?.resized?.width}>
+        <Flex mt={1} width={artwork.image?.resized?.width}>
           {!!lotLabel && (
             <Text lineHeight="20" color="black60" numberOfLines={1}>
               Lot {lotLabel}
@@ -54,7 +56,7 @@ export const ArtworkTileRailCard2: React.FC<ArtworkTileRailCard2Props> = ({
           )}
           {!!artistNames && (
             <Text numberOfLines={1} lineHeight="20" variant="sm">
-              {artistNames}saleArtwork
+              {artistNames}
             </Text>
           )}
           {!!(title || date) && (
@@ -62,7 +64,7 @@ export const ArtworkTileRailCard2: React.FC<ArtworkTileRailCard2Props> = ({
               {[title, date].filter(Boolean).join(", ")}
             </Text>
           )}
-          {!!partner?.name && (
+          {!hidePartnerName && !!partner?.name && (
             <Text lineHeight="20" color="black60" numberOfLines={1}>
               {partner?.name}
             </Text>
@@ -72,7 +74,7 @@ export const ArtworkTileRailCard2: React.FC<ArtworkTileRailCard2Props> = ({
               {saleMessage}
             </Text>
           )}
-        </Box>
+        </Flex>
       </Flex>
     </ArtworkCard>
   )
@@ -80,7 +82,7 @@ export const ArtworkTileRailCard2: React.FC<ArtworkTileRailCard2Props> = ({
 
 export interface ArtworkTileImageProps {
   image: ArtworkTileRailCard2_artwork["image"]
-  size: Size
+  size: ArtworkCardSize
   urgencyTag?: string | null
 }
 
@@ -93,13 +95,7 @@ const ArtworkTileImage: React.FC<ArtworkTileImageProps> = ({ image, size, urgenc
     return <Box bg={color("black30")} width={width} height={height} style={{ borderRadius: 2 }} />
   }
   return (
-    <View
-      style={{
-        borderRadius: 2,
-        overflow: "hidden",
-        flexDirection: "row",
-      }}
-    >
+    <Flex>
       <OpaqueImageView
         style={{ maxHeight: MAX_IMAGE_HEIGHTS[size] }}
         resizeMode="contain"
@@ -123,12 +119,13 @@ const ArtworkTileImage: React.FC<ArtworkTileImageProps> = ({ image, size, urgenc
           </Sans>
         </Flex>
       )}
-    </View>
+    </Flex>
   )
 }
 
+// TODO: Make size adjustable
 const artworkFragment = graphql`
-  fragment ArtworkTileRailCard2_artwork on Artwork @argumentDefinitions(width: { type: "Int", defaultValue: 160 }) {
+  fragment ArtworkTileRailCard2_artwork on Artwork @argumentDefinitions(width: { type: "Int", defaultValue: 295 }) {
     slug
     internalID
     href
