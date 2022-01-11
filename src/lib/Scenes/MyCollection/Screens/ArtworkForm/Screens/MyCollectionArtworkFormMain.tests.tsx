@@ -44,13 +44,11 @@ jest.mock("lib/utils/requestPhotos", () => ({
 
 describe("AddEditArtwork", () => {
   const useFormikContextMock = useFormikContext as jest.Mock
-  let mockNav: Partial<StackNavigationProp<{}>>
+  const mockNav: Partial<StackNavigationProp<{}>> = {
+    addListener: jest.fn(),
+  }
 
   beforeEach(() => {
-    mockNav = {
-      addListener: jest.fn(),
-    }
-
     useFormikContextMock.mockImplementation(() => ({
       handleSubmit: jest.fn(),
       handleBlur: jest.fn(),
