@@ -15,15 +15,11 @@ import {
 import { SIZES_OPTIONS } from "lib/Components/ArtworkFilter/Filters/SizesOptionsScreen"
 import { WAYS_TO_BUY_OPTIONS, WAYS_TO_BUY_PARAM_NAMES } from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
-import { SearchCriteriaAttributeKeys, SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { SearchCriteria, SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { compact, flatten, isNil, isUndefined, keyBy } from "lodash"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 
-export const extractPillFromAggregation = (
-  paramName: SearchCriteriaAttributeKeys,
-  values: string[],
-  aggregations: Aggregations
-) => {
+export const extractPillFromAggregation = (paramName: SearchCriteria, values: string[], aggregations: Aggregations) => {
   const aggregation = aggregationForFilter(paramName, aggregations)
 
   if (aggregation) {
@@ -67,7 +63,7 @@ export const extractSizesPill = (values: string[]): SavedSearchPill[] => {
     return {
       label: sizeOption?.displayText ?? "",
       value,
-      paramName: "sizes",
+      paramName: SearchCriteria.sizes,
     }
   })
 }
@@ -77,7 +73,7 @@ export const extractTimePeriodPills = (values: string[]): SavedSearchPill[] => {
     return {
       label: getDisplayNameForTimePeriod(value),
       value,
-      paramName: "majorPeriods",
+      paramName: SearchCriteria.majorPeriods,
     }
   })
 }
@@ -89,7 +85,7 @@ export const extractColorPills = (values: string[]): SavedSearchPill[] => {
     return {
       label: colorOption?.name ?? "",
       value,
-      paramName: "colors",
+      paramName: SearchCriteria.colors,
     }
   })
 }
@@ -101,7 +97,7 @@ export const extractAttributionPills = (values: string[]): SavedSearchPill[] => 
     return {
       label: colorOption?.displayText ?? "",
       value,
-      paramName: "attributionClass",
+      paramName: SearchCriteria.attributionClass,
     }
   })
 }
@@ -112,12 +108,14 @@ export const extractPriceRangePill = (value: string): SavedSearchPill => {
   return {
     label: parsePriceRangeLabel(min, max),
     value,
-    paramName: "priceRange",
+    paramName: SearchCriteria.priceRange,
   }
 }
 
-export const extractWaysToBuyPill = (paramName: SearchCriteriaAttributeKeys): SavedSearchPill => {
-  const waysToBuyOption = WAYS_TO_BUY_OPTIONS.find((option) => option.paramName === paramName)
+export const extractWaysToBuyPill = (paramName: SearchCriteria): SavedSearchPill => {
+  const waysToBuyOption = WAYS_TO_BUY_OPTIONS.find(
+    (option) => (option.paramName as unknown as SearchCriteria) === paramName
+  )
 
   return {
     label: waysToBuyOption?.displayText ?? "",
@@ -128,54 +126,54 @@ export const extractWaysToBuyPill = (paramName: SearchCriteriaAttributeKeys): Sa
 
 export const extractPills = (attributes: SearchCriteriaAttributes, aggregations: Aggregations): SavedSearchPill[] => {
   const pills = Object.entries(attributes).map((entry) => {
-    const [paramName, paramValue] = entry as [SearchCriteriaAttributeKeys, any]
+    const [paramName, paramValue] = entry as [SearchCriteria, any]
 
     if (isNil(paramValue)) {
       return null
     }
 
-    if (paramName === "width") {
+    if (paramName === SearchCriteria.width) {
       return {
         label: extractSizeLabel("w", paramValue),
         value: paramValue,
-        paramName: "width",
+        paramName: SearchCriteria.width,
       } as SavedSearchPill
     }
 
-    if (paramName === "height") {
+    if (paramName === SearchCriteria.height) {
       return {
         label: extractSizeLabel("h", paramValue),
         value: paramValue,
-        paramName: "height",
+        paramName: SearchCriteria.height,
       } as SavedSearchPill
     }
 
-    if (paramName === "sizes") {
+    if (paramName === SearchCriteria.sizes) {
       return extractSizesPill(paramValue)
     }
 
-    if (paramName === "majorPeriods") {
+    if (paramName === SearchCriteria.majorPeriods) {
       return extractTimePeriodPills(paramValue)
     }
 
-    if (paramName === "colors") {
+    if (paramName === SearchCriteria.colors) {
       return extractColorPills(paramValue)
     }
 
-    if (paramName === "attributionClass") {
+    if (paramName === SearchCriteria.attributionClass) {
       return extractAttributionPills(paramValue)
     }
 
-    if (paramName === "priceRange") {
+    if (paramName === SearchCriteria.priceRange) {
       return extractPriceRangePill(paramValue)
     }
 
     // Extract label from aggregations
-    if (shouldExtractValueNamesFromAggregation.includes(paramName as FilterParamName)) {
+    if (shouldExtractValueNamesFromAggregation.includes(paramName)) {
       return extractPillFromAggregation(paramName, paramValue, aggregations)
     }
 
-    if (WAYS_TO_BUY_PARAM_NAMES.includes(paramName as FilterParamName)) {
+    if (WAYS_TO_BUY_PARAM_NAMES.includes(paramName as unknown as FilterParamName)) {
       return extractWaysToBuyPill(paramName)
     }
 

@@ -1,4 +1,5 @@
 import { useFormikContext } from "formik"
+import { SearchCriteria } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { navigate } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Box, Button, CloseIcon as RemoveIcon, Flex, Input, InputTitle, Pill, Spacer, Text, Touchable } from "palette"
@@ -86,7 +87,7 @@ export const Form: React.FC<FormProps> = (props) => {
     return navigate("/unsubscribe")
   }
 
-  const isArtistPill = (pill: SavedSearchPill) => pill.paramName === "artistID"
+  const isArtistPill = (pill: SavedSearchPill) => pill.paramName === SearchCriteria.artistID
 
   return (
     <Box>

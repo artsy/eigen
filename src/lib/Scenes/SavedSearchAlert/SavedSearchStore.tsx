@@ -1,6 +1,6 @@
 import { action, Action, computed, Computed, createContextStore, State } from "easy-peasy"
 import { Aggregations } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { SearchCriteriaAttributeKeys, SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { SearchCriteria, SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { extractPills } from "./pillExtractors"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 
@@ -12,7 +12,7 @@ interface SavedSearchModel {
   removeValueFromAttributesByKeyAction: Action<
     this,
     {
-      key: SearchCriteriaAttributeKeys
+      key: SearchCriteria
       value: string | number | boolean
     }
   >

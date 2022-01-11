@@ -1,14 +1,14 @@
-import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { Aggregations } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { SearchCriteria, SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { extractPillFromAggregation, extractPills, extractSizeLabel } from "./pillExtractors"
 
 describe("extractPillFromAggregation", () => {
   it("returns pills", () => {
-    const result = extractPillFromAggregation(FilterParamName.materialsTerms, ["acrylic", "canvas"], aggregations)
+    const result = extractPillFromAggregation(SearchCriteria.materialsTerms, ["acrylic", "canvas"], aggregations)
 
     const pills = [
-      { label: "Acrylic", value: "acrylic", paramName: FilterParamName.materialsTerms },
-      { label: "Canvas", value: "canvas", paramName: FilterParamName.materialsTerms },
+      { label: "Acrylic", value: "acrylic", paramName: SearchCriteria.materialsTerms },
+      { label: "Canvas", value: "canvas", paramName: SearchCriteria.materialsTerms },
     ]
 
     expect(result).toEqual(pills)
@@ -16,14 +16,14 @@ describe("extractPillFromAggregation", () => {
 
   it("returns undefined for unknown param values", () => {
     const result = extractPillFromAggregation(
-      FilterParamName.materialsTerms,
+      SearchCriteria.materialsTerms,
       ["acrylic", "canvas", "unknown-value"],
       aggregations
     )
 
     const pills = [
-      { label: "Acrylic", value: "acrylic", paramName: FilterParamName.materialsTerms },
-      { label: "Canvas", value: "canvas", paramName: FilterParamName.materialsTerms },
+      { label: "Acrylic", value: "acrylic", paramName: SearchCriteria.materialsTerms },
+      { label: "Canvas", value: "canvas", paramName: SearchCriteria.materialsTerms },
       undefined,
     ]
 
@@ -31,11 +31,7 @@ describe("extractPillFromAggregation", () => {
   })
 
   it("returns empty array when couldn't get aggregation by param name", () => {
-    const result = extractPillFromAggregation(
-      FilterParamName.materialsTerms,
-      ["acrylic", "canvas", "unknown-value"],
-      []
-    )
+    const result = extractPillFromAggregation(SearchCriteria.materialsTerms, ["acrylic", "canvas", "unknown-value"], [])
 
     expect(result).toEqual([])
   })
@@ -76,43 +72,43 @@ describe("extractPills", () => {
     const pills = [
       {
         label: "Acrylic",
-        paramName: FilterParamName.materialsTerms,
+        paramName: SearchCriteria.materialsTerms,
         value: "acrylic",
       },
       {
         label: "Canvas",
-        paramName: FilterParamName.materialsTerms,
+        paramName: SearchCriteria.materialsTerms,
         value: "canvas",
       },
       {
         label: "$5,000–10,000",
         value: "5000-10000",
-        paramName: FilterParamName.priceRange,
+        paramName: SearchCriteria.priceRange,
       },
       {
-        paramName: FilterParamName.attributionClass,
+        paramName: SearchCriteria.attributionClass,
         label: "Limited Edition",
         value: "limited edition",
       },
       {
-        paramName: FilterParamName.attributionClass,
+        paramName: SearchCriteria.attributionClass,
         label: "Open Edition",
         value: "open edition",
       },
       {
         label: "Make Offer",
         value: true,
-        paramName: FilterParamName.waysToBuyMakeOffer,
+        paramName: SearchCriteria.offerable,
       },
       {
         label: "w: 5-10 in",
         value: "5-10",
-        paramName: FilterParamName.width,
+        paramName: SearchCriteria.width,
       },
       {
         label: "h: from 15 in",
         value: "15-*",
-        paramName: FilterParamName.height,
+        paramName: SearchCriteria.height,
       },
     ]
 
@@ -130,12 +126,12 @@ describe("extractPills", () => {
       {
         label: "Make Offer",
         value: true,
-        paramName: FilterParamName.waysToBuyMakeOffer,
+        paramName: SearchCriteria.offerable,
       },
       {
         label: "Bid",
         value: true,
-        paramName: FilterParamName.waysToBuyBid,
+        paramName: SearchCriteria.atAuction,
       },
     ]
 
@@ -151,12 +147,12 @@ describe("extractPills", () => {
     expect(result).toEqual([
       {
         label: "Small (under 16in)",
-        paramName: FilterParamName.sizes,
+        paramName: SearchCriteria.sizes,
         value: "SMALL",
       },
       {
         label: "Large (over 40in)",
-        paramName: FilterParamName.sizes,
+        paramName: SearchCriteria.sizes,
         value: "LARGE",
       },
     ])
@@ -171,12 +167,12 @@ describe("extractPills", () => {
     expect(result).toEqual([
       {
         label: "2020–Today",
-        paramName: FilterParamName.timePeriod,
+        paramName: SearchCriteria.majorPeriods,
         value: "2020",
       },
       {
         label: "2010–2019",
-        paramName: FilterParamName.timePeriod,
+        paramName: SearchCriteria.majorPeriods,
         value: "2010",
       },
     ])
@@ -191,17 +187,17 @@ describe("extractPills", () => {
     expect(result).toEqual([
       {
         label: "Pink",
-        paramName: FilterParamName.colors,
+        paramName: SearchCriteria.colors,
         value: "pink",
       },
       {
         label: "Orange",
-        paramName: FilterParamName.colors,
+        paramName: SearchCriteria.colors,
         value: "orange",
       },
       {
         label: "Dark Orange",
-        paramName: FilterParamName.colors,
+        paramName: SearchCriteria.colors,
         value: "darkorange",
       },
     ])
@@ -216,12 +212,12 @@ describe("extractPills", () => {
     expect(result).toEqual([
       {
         label: "Unique",
-        paramName: FilterParamName.attributionClass,
+        paramName: SearchCriteria.attributionClass,
         value: "unique",
       },
       {
         label: "Unknown Edition",
-        paramName: FilterParamName.attributionClass,
+        paramName: SearchCriteria.attributionClass,
         value: "unknown edition",
       },
     ])
@@ -236,7 +232,7 @@ describe("extractPills", () => {
     expect(result).toEqual([
       {
         label: "$1,000–1,500",
-        paramName: FilterParamName.priceRange,
+        paramName: SearchCriteria.priceRange,
         value: "1000-1500",
       },
     ])

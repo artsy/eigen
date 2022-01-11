@@ -1,4 +1,4 @@
-import { SearchCriteriaAttributeKeys, SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { SearchCriteria, SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
 import { bullet } from "palette"
@@ -89,12 +89,12 @@ export const clearDefaultAttributes = (attributes: SearchCriteriaAttributes) => 
   const clearedAttributes: SearchCriteriaAttributes = {}
 
   Object.entries(attributes).forEach((entry) => {
-    const [key, values] = entry
+    const [key, values] = entry as [SearchCriteria, any]
     const isEmptyArray = Array.isArray(values) && values.length === 0
     const isNull = values === null
 
     if (!isEmptyArray && !isNull) {
-      clearedAttributes[key as SearchCriteriaAttributeKeys] = values
+      clearedAttributes[key] = values
     }
   })
 

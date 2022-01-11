@@ -1,5 +1,6 @@
 import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
 import { FormikProvider, useFormik } from "formik"
+import { SearchCriteria } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Dialog, quoteLeft, quoteRight, useTheme } from "palette"
 import React, { useEffect, useState } from "react"
@@ -53,7 +54,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const artistPill: SavedSearchPill = {
     label: artistName,
     value: artistId,
-    paramName: "artistID",
+    paramName: SearchCriteria.artistID,
   }
   const pills = isEnabledImprovedAlertsFlow ? [artistPill, ...savedSearchPills] : savedSearchPills
 
