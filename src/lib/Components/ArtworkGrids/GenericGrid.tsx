@@ -111,7 +111,7 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
           section.push(artwork)
 
           // total section aspect ratio
-          const aspectRatio = artwork.image.aspect_ratio || 1
+          const aspectRatio = artwork.image.aspectRatio || 1
           sectionRatioSums[sectionIndex] += 1 / aspectRatio
         }
       }
@@ -199,7 +199,7 @@ const GenericGrid = createFragmentContainer(GenericArtworksGrid, {
     fragment GenericGrid_artworks on Artwork @relay(plural: true) {
       id
       image {
-        aspect_ratio: aspectRatio
+        aspectRatio
       }
       ...ArtworkGridItem_artwork
     }

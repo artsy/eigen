@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash eb5d0890f8f0b1a42e9835cd2bf5c213 */
+/* @relayHash ae8422e6f333e4bbd0fd90791e3a54a1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -337,7 +337,7 @@ fragment ContextCard_artwork on Artwork {
 fragment GenericGrid_artworks on Artwork {
   id
   image {
-    aspect_ratio: aspectRatio
+    aspectRatio
   }
   ...ArtworkGridItem_artwork
 }
@@ -1110,13 +1110,7 @@ return {
                             "name": "image",
                             "plural": false,
                             "selections": [
-                              {
-                                "alias": "aspect_ratio",
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "aspectRatio",
-                                "storageKey": null
-                              },
+                              (v18/*: any*/),
                               {
                                 "alias": null,
                                 "args": [
@@ -1129,8 +1123,7 @@ return {
                                 "kind": "ScalarField",
                                 "name": "url",
                                 "storageKey": "url(version:\"large\")"
-                              },
-                              (v18/*: any*/)
+                              }
                             ],
                             "storageKey": null
                           },
@@ -1433,7 +1426,7 @@ return {
     ]
   },
   "params": {
-    "id": "eb5d0890f8f0b1a42e9835cd2bf5c213",
+    "id": "ae8422e6f333e4bbd0fd90791e3a54a1",
     "metadata": {},
     "name": "ArtworkBelowTheFoldQuery",
     "operationKind": "query",

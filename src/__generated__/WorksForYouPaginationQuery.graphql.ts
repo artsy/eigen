@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 85df57c1df8d961a8bf7aa6462e18d9c */
+/* @relayHash 42f3e0e2b5e286605ddaca799095927d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -70,7 +70,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment GenericGrid_artworks on Artwork {
   id
   image {
-    aspect_ratio: aspectRatio
+    aspectRatio
   }
   ...ArtworkGridItem_artwork
 }
@@ -344,7 +344,7 @@ return {
                                         "plural": false,
                                         "selections": [
                                           {
-                                            "alias": "aspect_ratio",
+                                            "alias": null,
                                             "args": null,
                                             "kind": "ScalarField",
                                             "name": "aspectRatio",
@@ -362,13 +362,6 @@ return {
                                             "kind": "ScalarField",
                                             "name": "url",
                                             "storageKey": "url(version:\"large\")"
-                                          },
-                                          {
-                                            "alias": null,
-                                            "args": null,
-                                            "kind": "ScalarField",
-                                            "name": "aspectRatio",
-                                            "storageKey": null
                                           }
                                         ],
                                         "storageKey": null
@@ -623,7 +616,7 @@ return {
     ]
   },
   "params": {
-    "id": "85df57c1df8d961a8bf7aa6462e18d9c",
+    "id": "42f3e0e2b5e286605ddaca799095927d",
     "metadata": {},
     "name": "WorksForYouPaginationQuery",
     "operationKind": "query",
