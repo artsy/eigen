@@ -1,8 +1,8 @@
 import * as Analytics from "@artsy/cohesion"
 import { SmallTileRail_artworks } from "__generated__/SmallTileRail_artworks.graphql"
-import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
+import { PrefetchFlatList } from "lib/Components/PrefetchFlatList"
 import { navigate } from "lib/navigation/navigate"
 import { Spacer } from "palette"
 import React, { ReactElement } from "react"
@@ -16,6 +16,7 @@ interface Props {
   artworks: SmallTileRail_artworks
   listRef: React.RefObject<FlatList<any>>
   contextModule: Analytics.ContextModule | undefined
+  imageSize?: "small" | "medium" | "large"
   onEndReached?: () => void
   onEndReachedThreshold?: number
   ListFooterComponent?: ReactElement
@@ -25,14 +26,18 @@ const SmallTileRail: React.FC<Props> = ({
   artworks,
   listRef,
   contextModule,
+  imageSize,
   onEndReached,
   onEndReachedThreshold,
   ListFooterComponent = ListEndComponent,
 }) => {
   const tracking = useTracking()
 
+  const numberOfArtworksForSmallSizeImage = 30
+  const numberOfArtworksForLargeSizeImage = 12
+
   return (
-    <AboveTheFoldFlatList
+    <PrefetchFlatList
       onEndReached={onEndReached}
       onEndReachedThreshold={onEndReachedThreshold}
       prefetchUrlExtractor={(item) => item?.href!}
@@ -44,7 +49,8 @@ const SmallTileRail: React.FC<Props> = ({
       showsHorizontalScrollIndicator={false}
       data={artworks}
       initialNumToRender={4}
-      windowSize={3}
+      windowSize={imageSize === "small" ? numberOfArtworksForSmallSizeImage : numberOfArtworksForLargeSizeImage} // Based on number of artworks required in a rail
+      contentContainerStyle={{ alignItems: "flex-end" }}
       renderItem={({ item, index }) => (
         <ArtworkTileRailCard
           onPress={
@@ -60,8 +66,8 @@ const SmallTileRail: React.FC<Props> = ({
               : undefined
           }
           imageURL={item.image?.imageURL ?? ""}
-          imageSize="small"
-          useSquareAspectRatio
+          imageSize={imageSize ?? "small"}
+          imageAspectRatio={item.image?.aspectRatio}
           artistNames={item.artistNames}
           saleMessage={saleMessageOrBidInfo({ artwork: item, isSmallTile: true })}
           urgencyTag={item?.sale?.isAuction && !item?.sale?.isClosed ? getUrgencyTag(item?.sale?.endAt) : null}

@@ -1,5 +1,6 @@
 import { themeGet } from "@styled-system/theme-get"
 import { ArtworkTileRailCard_artwork } from "__generated__/ArtworkTileRailCard_artwork.graphql"
+import { useSizeToFitScreen } from "lib/utils/useSizeToFit"
 import { Box, Flex, Sans, Text, useColor } from "palette"
 import React from "react"
 import { GestureResponderEvent, View } from "react-native"
@@ -8,9 +9,9 @@ import styled from "styled-components/native"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
 const IMAGE_SIZES = {
-  small: 120,
+  small: 155,
   medium: 160,
-  large: 240,
+  large: 295,
 }
 
 const ArtworkCard = styled.TouchableHighlight.attrs(() => ({
@@ -55,23 +56,24 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
   }
 
   const size = IMAGE_SIZES[imageSize]
-  const imageHeight = size
-  const imageWidth = useSquareAspectRatio ? size : (imageAspectRatio ?? 1) * size
+  const imageWidth = size
+  const imageHeight = useSquareAspectRatio ? size : size / (imageAspectRatio ?? 1)
   const desiredVersion = useSquareAspectRatio ? "square" : "large"
+
+  const { width, height } = useSizeToFitScreen({
+    width: imageWidth,
+    height: imageHeight,
+  })
 
   const imageDisplay = imageURL ? (
     <View
       style={{
         borderRadius: 2,
         overflow: "hidden",
+        flexDirection: "row",
       }}
     >
-      <OpaqueImageView
-        imageURL={imageURL.replace(":version", desiredVersion)}
-        width={imageWidth}
-        height={imageHeight}
-        style={{ flex: 1 }}
-      />
+      <OpaqueImageView imageURL={imageURL.replace(":version", desiredVersion)} width={width} height={height} />
       {!!urgencyTag && (
         <Flex
           backgroundColor="white"

@@ -29,10 +29,13 @@ describe("ArtworkTileRailCard", () => {
       </GlobalStoreProvider>
     )
 
+    const imageWidth = 295
+    const imageHeight = imageWidth / (props.imageAspectRatio ?? 1)
+
     const image = result.find("AROpaqueImageView")
     expect(image.length).toBe(1)
-    expect(image.prop("height")).toBe(240)
-    expect(image.prop("width")).toBe(216)
+    expect(image.prop("height")).toBe(imageHeight)
+    expect(image.prop("width")).toBe(imageWidth)
   })
 
   it("renders the title and date together when both are given", () => {
@@ -193,7 +196,7 @@ describe("ArtworkTileRailCard", () => {
     )
 
     const image = result.find("AROpaqueImageView")
-    expect(image.prop("height")).toBe(240)
-    expect(image.prop("width")).toBe(240)
+    expect(image.prop("height")).toBe(295)
+    expect(image.prop("width")).toBe(295)
   })
 })

@@ -519,6 +519,21 @@ const BelowTheFoldPlaceholder: React.FC = () => {
 const HomePlaceholder: React.FC<{}> = () => {
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
 
+  const IMAGE_PLACEHOLDER_SIZES = {
+    small: {
+      width: 155,
+      height: 230,
+    },
+    large: {
+      width: 295,
+      height: 320,
+    },
+  }
+  const smallImagePlaceholderWidth = IMAGE_PLACEHOLDER_SIZES.small.width
+  const largeImagePlaceholderWidth = IMAGE_PLACEHOLDER_SIZES.large.width
+  const smallImagePlaceholderHeight = IMAGE_PLACEHOLDER_SIZES.small.height
+  const largeImagePlaceholderHeight = IMAGE_PLACEHOLDER_SIZES.large.height
+
   return (
     <Flex>
       <Box mb={1} mt={2}>
@@ -537,9 +552,9 @@ const HomePlaceholder: React.FC<{}> = () => {
             <Join separator={<Spacer width={15} />}>
               {times(3 + useMemoizedRandom() * 10).map((index) => (
                 <Flex key={index}>
-                  <PlaceholderBox height={120} width={120} />
-                  <Spacer mb={1} mt={0.3} />
-                  <PlaceholderText width={120} />
+                  <PlaceholderBox height={smallImagePlaceholderHeight} width={smallImagePlaceholderWidth} />
+                  <Spacer mb={2} />
+                  <PlaceholderText width={smallImagePlaceholderWidth} />
                   <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
                   <ModuleSeparator />
                 </Flex>

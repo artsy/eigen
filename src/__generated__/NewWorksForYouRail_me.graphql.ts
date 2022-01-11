@@ -6,11 +6,6 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type NewWorksForYouRail_me = {
     readonly newWorksByInterestingArtists: {
-        readonly pageInfo: {
-            readonly hasNextPage: boolean;
-            readonly startCursor: string | null;
-            readonly endCursor: string | null;
-        };
         readonly edges: ReadonlyArray<{
             readonly node: {
                 readonly " $fragmentRefs": FragmentRefs<"SmallTileRail_artworks">;
@@ -30,71 +25,29 @@ export type NewWorksForYouRail_me$key = {
 const node: ReaderFragment = {
   "argumentDefinitions": [
     {
-      "defaultValue": 6,
+      "defaultValue": 30,
       "kind": "LocalArgument",
       "name": "count"
-    },
-    {
-      "defaultValue": null,
-      "kind": "LocalArgument",
-      "name": "cursor"
     }
   ],
   "kind": "Fragment",
-  "metadata": {
-    "connection": [
-      {
-        "count": "count",
-        "cursor": "cursor",
-        "direction": "forward",
-        "path": [
-          "newWorksByInterestingArtists"
-        ]
-      }
-    ]
-  },
+  "metadata": null,
   "name": "NewWorksForYouRail_me",
   "selections": [
     {
-      "alias": "newWorksByInterestingArtists",
-      "args": null,
+      "alias": null,
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "first",
+          "variableName": "count"
+        }
+      ],
       "concreteType": "ArtworkConnection",
       "kind": "LinkedField",
-      "name": "__NewWorksForYouRail_newWorksByInterestingArtists_connection",
+      "name": "newWorksByInterestingArtists",
       "plural": false,
       "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "PageInfo",
-          "kind": "LinkedField",
-          "name": "pageInfo",
-          "plural": false,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "hasNextPage",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "startCursor",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "endCursor",
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        },
         {
           "alias": null,
           "args": null,
@@ -112,25 +65,11 @@ const node: ReaderFragment = {
               "plural": false,
               "selections": [
                 {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "__typename",
-                  "storageKey": null
-                },
-                {
                   "args": null,
                   "kind": "FragmentSpread",
                   "name": "SmallTileRail_artworks"
                 }
               ],
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "cursor",
               "storageKey": null
             }
           ],
@@ -143,5 +82,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'fda5fb0fb53b2bd3a28d66bbe234b582';
+(node as any).hash = 'cf43f011fb5d7af5599a6b1fdd060b46';
 export default node;

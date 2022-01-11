@@ -8,7 +8,7 @@ export type ArtworkRail_rail = {
     readonly title: string | null;
     readonly key: string | null;
     readonly results: ReadonlyArray<{
-        readonly " $fragmentRefs": FragmentRefs<"SmallTileRail_artworks" | "GenericGrid_artworks">;
+        readonly " $fragmentRefs": FragmentRefs<"SmallTileRail_artworks">;
     } | null> | null;
     readonly context: {
         readonly __typename: "HomePageRelatedArtistArtworkModule";
@@ -75,11 +75,6 @@ return {
           "args": null,
           "kind": "FragmentSpread",
           "name": "SmallTileRail_artworks"
-        },
-        {
-          "args": null,
-          "kind": "FragmentSpread",
-          "name": "GenericGrid_artworks"
         }
       ],
       "storageKey": null
@@ -193,5 +188,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '2e78962b49bafcfb33e1b3a654166d6f';
+(node as any).hash = '49c2890fc360066782d554ad3d03ef0a';
 export default node;

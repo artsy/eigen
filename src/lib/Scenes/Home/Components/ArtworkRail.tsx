@@ -1,9 +1,8 @@
-import { Box, Flex } from "palette"
+import { Flex } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
-import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { compact } from "lodash"
@@ -34,7 +33,7 @@ export function getViewAllUrl(rail: ArtworkRail_rail) {
 
 /*
 Your Active Bids
-New Works For You
+New Works by Followed Artists
 Recently Viewed
 Recently Saved
 */
@@ -93,25 +92,12 @@ const ArtworkRail: React.FC<ArtworkRailProps & RailScrollProps> = ({ title, rail
           }
         />
       </Flex>
-      {useSmallTile ? (
-        <SmallTileRailContainer
-          listRef={listRef}
-          artworks={artworks}
-          contextModule={HomeAnalytics.artworkRailContextModule(rail.key)}
-        />
-      ) : (
-        <Box mx={2}>
-          <GenericGrid
-            artworks={artworks}
-            trackTap={(artworkSlug, index) => {
-              const tapEvent = HomeAnalytics.artworkThumbnailTapEventFromKey(rail.key, artworkSlug, index)
-              if (tapEvent) {
-                tracking.trackEvent(tapEvent)
-              }
-            }}
-          />
-        </Box>
-      )}
+      <SmallTileRailContainer
+        listRef={listRef}
+        artworks={artworks}
+        imageSize={useSmallTile ? "small" : "large"}
+        contextModule={HomeAnalytics.artworkRailContextModule(rail.key)}
+      />
     </Flex>
   ) : null
 }
@@ -123,7 +109,6 @@ export const ArtworkRailFragmentContainer = createFragmentContainer(ArtworkRail,
       key
       results {
         ...SmallTileRail_artworks
-        ...GenericGrid_artworks
       }
       context {
         ... on HomePageRelatedArtistArtworkModule {
