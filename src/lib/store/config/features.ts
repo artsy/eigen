@@ -263,9 +263,6 @@ export const devToggles = defineDevToggles({
   DTEasyMyCollectionArtworkCreation: {
     description: "Easily add my collection artworks",
   },
-  DTMyCollectionShowLocalImages: {
-    description: "Local images in my collection",
-  },
   DTShowWebviewIndicator: {
     description: "Show webview indicator",
   },

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash fb1676a90f6156f6e31aa755a6af608e */
+/* @relayHash 6df92618e92bb336cf4937cc9cd66b60 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -149,6 +149,24 @@ fragment AuctionResultListItem_auctionResult on AuctionResult {
   title
 }
 
+fragment ImageCarousel_images on Image {
+  url: imageURL
+  width
+  height
+  imageVersions
+  deepZoom {
+    image: Image {
+      tileSize: TileSize
+      url: Url
+      format: Format
+      size: Size {
+        width: Width
+        height: Height
+      }
+    }
+  }
+}
+
 fragment MyCollectionArtworkArtistArticles_artwork on Artwork {
   internalID
   slug
@@ -225,12 +243,9 @@ fragment MyCollectionArtworkHeader_artwork on Artwork {
   artistNames
   date
   images {
-    height
-    isDefault
-    imageURL
-    width
-    internalID
+    ...ImageCarousel_images
     imageVersions
+    isDefault
   }
   internalID
   slug
@@ -978,10 +993,85 @@ return {
               (v14/*: any*/),
               (v4/*: any*/),
               {
+                "alias": "url",
+                "args": null,
+                "kind": "ScalarField",
+                "name": "imageURL",
+                "storageKey": null
+              },
+              {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
                 "name": "imageVersions",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "DeepZoom",
+                "kind": "LinkedField",
+                "name": "deepZoom",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": "image",
+                    "args": null,
+                    "concreteType": "DeepZoomImage",
+                    "kind": "LinkedField",
+                    "name": "Image",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": "tileSize",
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "TileSize",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": "url",
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "Url",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": "format",
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "Format",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": "size",
+                        "args": null,
+                        "concreteType": "DeepZoomImageSize",
+                        "kind": "LinkedField",
+                        "name": "Size",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": "width",
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "Width",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": "height",
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "Height",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
+                ],
                 "storageKey": null
               }
             ],
@@ -1069,7 +1159,7 @@ return {
     ]
   },
   "params": {
-    "id": "fb1676a90f6156f6e31aa755a6af608e",
+    "id": "6df92618e92bb336cf4937cc9cd66b60",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",

@@ -77,7 +77,7 @@ export const hasImagesStillProcessing = (
     return false
   }
 
-  const concreteImages = imagesToCheck as Image[]
+  const concreteImages = imagesToCheck as unknown as Array<Omit<Image, " $fragmentRefs">> as Image[]
   const stillProcessing = concreteImages.some((image) => imageIsProcessing(image, "normalized"))
   return stillProcessing
 }
