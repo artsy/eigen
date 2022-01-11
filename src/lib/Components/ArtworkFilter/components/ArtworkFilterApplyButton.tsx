@@ -86,7 +86,15 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
     <>
       <Separator my={0} />
       <Box p={2} pb={30}>
-        <Button disabled={disabled} onPress={onPress} block width={100} variant="fillDark" size="large">
+        <Button
+          disabled={disabled}
+          onPress={onPress}
+          block
+          width={100}
+          variant="fillDark"
+          size="large"
+          testID="artwork-filter-apply-button"
+        >
           Show results
         </Button>
       </Box>
