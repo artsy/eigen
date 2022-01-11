@@ -1,4 +1,5 @@
 import { Route } from "@react-navigation/native"
+import { StackNavigationProp } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
@@ -43,8 +44,13 @@ jest.mock("lib/utils/requestPhotos", () => ({
 
 describe("AddEditArtwork", () => {
   const useFormikContextMock = useFormikContext as jest.Mock
+  let mockNav: Partial<StackNavigationProp<{}>>
 
   beforeEach(() => {
+    mockNav = {
+      addListener: jest.fn(),
+    }
+
     useFormikContextMock.mockImplementation(() => ({
       handleSubmit: jest.fn(),
       handleBlur: jest.fn(),
@@ -62,7 +68,6 @@ describe("AddEditArtwork", () => {
   })
 
   it("renders correct components on Add", () => {
-    const mockNav = jest.fn()
     const mockRoute: Route<
       "ArtworkFormMain",
       {
@@ -94,7 +99,6 @@ describe("AddEditArtwork", () => {
   })
 
   it("renders correct components on Edit", () => {
-    const mockNav = jest.fn()
     const mockRoute: Route<
       "ArtworkFormMain",
       {
@@ -122,7 +126,6 @@ describe("AddEditArtwork", () => {
   })
 
   it("fires clear form on header Clear button click", () => {
-    const mockNav = jest.fn()
     const mockClearForm = jest.fn()
     const mockRoute: Route<
       "ArtworkFormMain",
@@ -174,7 +177,6 @@ describe("AddEditArtwork", () => {
         photos: [],
       },
     }))
-    const mockNav = jest.fn()
     const mockRoute: Route<
       "ArtworkFormMain",
       {
@@ -202,7 +204,6 @@ describe("AddEditArtwork", () => {
 
   it("fires delete artwork action on delete button click", () => {
     const mockDelete = jest.fn()
-    const mockNav = jest.fn()
     const mockRoute: Route<
       "ArtworkFormMain",
       {
