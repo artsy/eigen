@@ -25,6 +25,7 @@ export const ArtworksFilterHeader: React.FC<FilterHeaderProps> = ({
         <TouchableHighlightColor
           haptic
           onPress={onFilterPress}
+          testID="sort-and-filter-button"
           render={({ color }) => (
             <Flex flexDirection="row" alignItems="center">
               <FilterIcon fill={color} width="20px" height="20px" />
