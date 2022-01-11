@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 49177e0c53833f6a6e16257be64de369 */
+/* @relayHash e92d91455ae7869497d5f4b6e945a505 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -64,7 +64,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment GenericGrid_artworks on Artwork {
   id
   image {
-    aspect_ratio: aspectRatio
+    aspectRatio
   }
   ...ArtworkGridItem_artwork
 }
@@ -307,7 +307,7 @@ return {
                                         "plural": false,
                                         "selections": [
                                           {
-                                            "alias": "aspect_ratio",
+                                            "alias": null,
                                             "args": null,
                                             "kind": "ScalarField",
                                             "name": "aspectRatio",
@@ -325,13 +325,6 @@ return {
                                             "kind": "ScalarField",
                                             "name": "url",
                                             "storageKey": "url(version:\"large\")"
-                                          },
-                                          {
-                                            "alias": null,
-                                            "args": null,
-                                            "kind": "ScalarField",
-                                            "name": "aspectRatio",
-                                            "storageKey": null
                                           }
                                         ],
                                         "storageKey": null
@@ -586,7 +579,7 @@ return {
     ]
   },
   "params": {
-    "id": "49177e0c53833f6a6e16257be64de369",
+    "id": "e92d91455ae7869497d5f4b6e945a505",
     "metadata": {},
     "name": "WorksForYouQuery",
     "operationKind": "query",

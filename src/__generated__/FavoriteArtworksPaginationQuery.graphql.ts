@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8f86f5c82b10158ea995b3152625d03e */
+/* @relayHash 37fd94ca44b601e11512e5e53147d4fc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -92,7 +92,7 @@ fragment FavoriteArtworks_me_1G22uz on Me {
 fragment GenericGrid_artworks on Artwork {
   id
   image {
-    aspect_ratio: aspectRatio
+    aspectRatio
   }
   ...ArtworkGridItem_artwork
 }
@@ -275,7 +275,7 @@ return {
                             "plural": false,
                             "selections": [
                               {
-                                "alias": "aspect_ratio",
+                                "alias": null,
                                 "args": null,
                                 "kind": "ScalarField",
                                 "name": "aspectRatio",
@@ -293,13 +293,6 @@ return {
                                 "kind": "ScalarField",
                                 "name": "url",
                                 "storageKey": "url(version:\"large\")"
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "aspectRatio",
-                                "storageKey": null
                               }
                             ],
                             "storageKey": null
@@ -511,7 +504,7 @@ return {
     ]
   },
   "params": {
-    "id": "8f86f5c82b10158ea995b3152625d03e",
+    "id": "37fd94ca44b601e11512e5e53147d4fc",
     "metadata": {},
     "name": "FavoriteArtworksPaginationQuery",
     "operationKind": "query",
