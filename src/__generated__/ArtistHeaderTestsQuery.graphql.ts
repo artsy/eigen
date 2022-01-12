@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a31929eacfc4ec2a8bdfe5e06a9e019b */
+/* @relayHash 23ea74d958ccfbbd5b7d4987b88209dc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,8 +34,10 @@ fragment ArtistHeader_artist on Artist {
   id
   internalID
   slug
+  href
   isFollowed
   name
+  imageUrl
   nationality
   birthday
   counts {
@@ -144,6 +146,13 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "href",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "isFollowed",
             "storageKey": null
           },
@@ -152,6 +161,13 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "name",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "imageUrl",
             "storageKey": null
           },
           {
@@ -199,7 +215,7 @@ return {
     ]
   },
   "params": {
-    "id": "a31929eacfc4ec2a8bdfe5e06a9e019b",
+    "id": "23ea74d958ccfbbd5b7d4987b88209dc",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
@@ -217,7 +233,9 @@ return {
         },
         "artist.counts.artworks": (v3/*: any*/),
         "artist.counts.follows": (v3/*: any*/),
+        "artist.href": (v2/*: any*/),
         "artist.id": (v4/*: any*/),
+        "artist.imageUrl": (v2/*: any*/),
         "artist.internalID": (v4/*: any*/),
         "artist.isFollowed": {
           "enumValues": null,

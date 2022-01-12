@@ -11,6 +11,7 @@ import { commitMutation, createFragmentContainer, graphql, RelayProp } from "rea
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { Schema } from "../../utils/track"
+import { ShareSheet } from "../ShareSheet/ShareSheet"
 
 export const ARTIST_HEADER_HEIGHT = 156
 
@@ -25,6 +26,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
   const isShareButtonEnabled = useFeatureFlag("AREnableShareButtonForArtist")
 
   const [isFollowedChanging, setIsFollowedChanging] = useState(false)
+  const [shareSheetVisible, setShareSheetVisible] = useState(false)
 
   const getBirthdayString = () => {
     const birthday = artist.birthday
@@ -121,7 +123,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
   }
 
   const handleSharePress = () => {
-    console.log("[debug] share pressed")
+    setShareSheetVisible(true)
   }
 
   const descriptiveString = (artist.nationality || "") + getBirthdayString()
@@ -162,6 +164,21 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
           <FollowButton haptic isFollowed={!!artist.isFollowed} onPress={handleFollowChange} />
         </Flex>
       </Flex>
+
+      <ShareSheet
+        entry={{
+          internalID: artist.internalID,
+          slug: artist.slug,
+          href: artist.href!,
+          artistNames: [artist.name!],
+          imageURL: artist.imageUrl ?? undefined,
+        }}
+        ownerType={OwnerType.artist}
+        parentContextModule={ContextModule.artistHeader}
+        sharingEntryContextModule={"ArtistProfile" as ContextModule} // TODO: Replace on ContextModule from artsy/cohesion
+        visible={shareSheetVisible}
+        setVisible={setShareSheetVisible}
+      />
     </Box>
   )
 }
@@ -172,8 +189,10 @@ export const ArtistHeaderFragmentContainer = createFragmentContainer(ArtistHeade
       id
       internalID
       slug
+      href
       isFollowed
       name
+      imageUrl
       nationality
       birthday
       counts {
