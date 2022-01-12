@@ -4,16 +4,16 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtworkRail_artworks = ReadonlyArray<{
+export type SmallArtworkRail_artworks = ReadonlyArray<{
     readonly href: string | null;
     readonly slug: string;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkRailCard_artwork">;
-    readonly " $refType": "ArtworkRail_artworks";
+    readonly " $refType": "SmallArtworkRail_artworks";
 }>;
-export type ArtworkRail_artworks$data = ArtworkRail_artworks;
-export type ArtworkRail_artworks$key = ReadonlyArray<{
-    readonly " $data"?: ArtworkRail_artworks$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_artworks">;
+export type SmallArtworkRail_artworks$data = SmallArtworkRail_artworks;
+export type SmallArtworkRail_artworks$key = ReadonlyArray<{
+    readonly " $data"?: SmallArtworkRail_artworks$data | undefined;
+    readonly " $fragmentRefs": FragmentRefs<"SmallArtworkRail_artworks">;
 }>;
 
 
@@ -24,7 +24,7 @@ const node: ReaderFragment = {
   "metadata": {
     "plural": true
   },
-  "name": "ArtworkRail_artworks",
+  "name": "SmallArtworkRail_artworks",
   "selections": [
     {
       "alias": null,
@@ -45,7 +45,7 @@ const node: ReaderFragment = {
         {
           "kind": "Literal",
           "name": "width",
-          "value": 295
+          "value": 155
         }
       ],
       "kind": "FragmentSpread",
@@ -55,5 +55,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = 'f1d306d1c948131eb04ca292d31d43e7';
+(node as any).hash = '2239f3aab8efae99c5a7423cab3efa9f';
 export default node;

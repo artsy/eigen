@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4684dc2bbc2299d5c56b7d477a06b002 */
+/* @relayHash c9ed885a5d8c59df0fba7a19638c542f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -76,7 +76,7 @@ fragment ArtworkHomeRail_rail on HomePageArtworkModule {
   title
   key
   results {
-    ...ArtworkRail_artworks
+    ...LargeArtworkRail_artworks
     id
   }
   context {
@@ -153,12 +153,6 @@ fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
     id
   }
   title
-}
-
-fragment ArtworkRail_artworks on Artwork {
-  ...ArtworkRailCard_artwork_Q5Onb
-  href
-  slug
 }
 
 fragment AuctionResultListItem_auctionResult on AuctionResult {
@@ -322,6 +316,12 @@ fragment Home_meBelow on Me {
 
 fragment Home_showsByFollowedArtists on ShowConnection {
   ...ShowsRail_showsConnection
+}
+
+fragment LargeArtworkRail_artworks on Artwork {
+  ...ArtworkRailCard_artwork_Q5Onb
+  href
+  slug
 }
 
 fragment RecommendedArtistsRail_me on Me {
@@ -1808,7 +1808,7 @@ return {
     ]
   },
   "params": {
-    "id": "4684dc2bbc2299d5c56b7d477a06b002",
+    "id": "c9ed885a5d8c59df0fba7a19638c542f",
     "metadata": {},
     "name": "HomeBelowTheFoldQuery",
     "operationKind": "query",

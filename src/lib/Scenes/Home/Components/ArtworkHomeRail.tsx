@@ -3,13 +3,13 @@ import React, { useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { ArtworkHomeRail_rail } from "__generated__/ArtworkHomeRail_rail.graphql"
+import { LargeArtworkRail } from "lib/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { compact } from "lodash"
 import { FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
 import HomeAnalytics from "../homeAnalytics"
-import { ArtworkRail } from "./ArtworkRail"
 import { RailScrollProps } from "./types"
 
 export function getViewAllUrl(rail: ArtworkHomeRail_rail) {
@@ -31,14 +31,6 @@ export function getViewAllUrl(rail: ArtworkHomeRail_rail) {
   }
 }
 
-/*
-Your Active Bids
-New Works by Followed Artists
-Recently Viewed
-Recently Saved
-*/
-const smallTileKeys: Array<string | null> = ["active_bids", "followed_artists", "recently_viewed_works", "saved_works"]
-
 interface ArtworkHomeRailProps {
   title: string
   rail: ArtworkHomeRail_rail
@@ -54,7 +46,6 @@ const ArtworkHomeRail: React.FC<ArtworkHomeRailProps & RailScrollProps> = ({ tit
   }))
 
   const viewAllUrl = getViewAllUrl(rail)
-  const useSmallTile = smallTileKeys.includes(rail.key)
 
   const context = rail.context
   let subtitle: string | undefined
@@ -92,10 +83,9 @@ const ArtworkHomeRail: React.FC<ArtworkHomeRailProps & RailScrollProps> = ({ tit
           }
         />
       </Flex>
-      <ArtworkRail
+      <LargeArtworkRail
         listRef={listRef}
         artworks={artworks}
-        size={useSmallTile ? "small" : "large"}
         contextModule={HomeAnalytics.artworkRailContextModule(rail.key)}
       />
     </Flex>
@@ -108,7 +98,7 @@ export const ArtworkHomeRailFragmentContainer = createFragmentContainer(ArtworkH
       title
       key
       results {
-        ...ArtworkRail_artworks
+        ...LargeArtworkRail_artworks
       }
       context {
         ... on HomePageRelatedArtistArtworkModule {

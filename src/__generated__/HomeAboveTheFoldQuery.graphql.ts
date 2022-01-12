@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2c71afdddf3fd185ee5e7ffc9f4ba054 */
+/* @relayHash 6c442434b2fe03d1aeab56b09bbbc4ad */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -95,7 +95,7 @@ fragment ArtworkHomeRail_rail on HomePageArtworkModule {
   title
   key
   results {
-    ...ArtworkRail_artworks
+    ...LargeArtworkRail_artworks
     id
   }
   context {
@@ -174,12 +174,6 @@ fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
   title
 }
 
-fragment ArtworkRail_artworks on Artwork {
-  ...ArtworkRailCard_artwork_Q5Onb
-  href
-  slug
-}
-
 fragment EmailConfirmationBanner_me on Me {
   canRequestEmailConfirmation
 }
@@ -226,6 +220,12 @@ fragment Home_meAbove on Me {
   ...RecommendedArtistsRail_me
 }
 
+fragment LargeArtworkRail_artworks on Artwork {
+  ...ArtworkRailCard_artwork_Q5Onb
+  href
+  slug
+}
+
 fragment LotsByFollowedArtistsRail_me on Me {
   lotsByFollowedArtistsConnection(first: 6, includeArtworksByFollowedArtists: true, isAuction: true, liveSale: true) {
     pageInfo {
@@ -253,7 +253,7 @@ fragment NewWorksForYouRail_me on Me {
   newWorksByInterestingArtists(first: 30) {
     edges {
       node {
-        ...ArtworkRail_artworks
+        ...LargeArtworkRail_artworks
         id
       }
     }
@@ -1498,7 +1498,7 @@ return {
     ]
   },
   "params": {
-    "id": "2c71afdddf3fd185ee5e7ffc9f4ba054",
+    "id": "6c442434b2fe03d1aeab56b09bbbc4ad",
     "metadata": {},
     "name": "HomeAboveTheFoldQuery",
     "operationKind": "query",

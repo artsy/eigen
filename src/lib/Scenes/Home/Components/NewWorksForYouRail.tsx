@@ -1,5 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { NewWorksForYouRail_me } from "__generated__/NewWorksForYouRail_me.graphql"
+import { LargeArtworkRail } from "lib/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -8,7 +9,6 @@ import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ArtworkRail } from "./ArtworkRail"
 import { RailScrollProps } from "./types"
 interface NewWorksForYouRailProps {
   title: string
@@ -44,7 +44,7 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
         <Flex pl="2" pr="2">
           <SectionTitle title={title} onPress={navigateToNewWorksForYou} />
         </Flex>
-        {<ArtworkRail listRef={listRef} artworks={artworks} contextModule={ContextModule.newWorksForYouRail} />}
+        {<LargeArtworkRail listRef={listRef} artworks={artworks} contextModule={ContextModule.newWorksForYouRail} />}
       </View>
     </Flex>
   )
@@ -56,7 +56,7 @@ export const NewWorksForYouRailContainer = createFragmentContainer(NewWorksForYo
       newWorksByInterestingArtists(first: $count) {
         edges {
           node {
-            ...ArtworkRail_artworks
+            ...LargeArtworkRail_artworks
           }
         }
       }

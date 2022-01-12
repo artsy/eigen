@@ -8,7 +8,7 @@ export type NewWorksForYouRail_me = {
     readonly newWorksByInterestingArtists: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_artworks">;
+                readonly " $fragmentRefs": FragmentRefs<"LargeArtworkRail_artworks">;
             } | null;
         } | null> | null;
     } | null;
@@ -67,7 +67,7 @@ const node: ReaderFragment = {
                 {
                   "args": null,
                   "kind": "FragmentSpread",
-                  "name": "ArtworkRail_artworks"
+                  "name": "LargeArtworkRail_artworks"
                 }
               ],
               "storageKey": null
@@ -82,5 +82,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'baa2c6fb1c0a7b1ac4a5207dc72cae0b';
+(node as any).hash = '65065d339b77522d6342d6970ced0300';
 export default node;

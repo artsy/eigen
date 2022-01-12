@@ -245,7 +245,7 @@ const Home = (props: Props) => {
                     title={item.title}
                     rail={item.data || null}
                     scrollRef={scrollRefs.current[index]}
-                    mb={MODULE_SEPARATOR_HEIGHT}
+                    mb={MODULE_SEPARATOR_HEIGHT - 2}
                   />
                 )
               case "auction-results":

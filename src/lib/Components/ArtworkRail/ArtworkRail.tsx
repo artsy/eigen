@@ -1,40 +1,36 @@
 import * as Analytics from "@artsy/cohesion"
-import { ArtworkRail_artworks$key } from "__generated__/ArtworkRail_artworks.graphql"
-import { ArtworkCardSize, ArtworkRailCard } from "lib/Components/ArtworkTileRail/ArtworkRailCard"
+import { LargeArtworkRail_artworks } from "__generated__/LargeArtworkRail_artworks.graphql"
+import { ArtworkCardSize, ArtworkRailCard } from "lib/Components/ArtworkRail/ArtworkRailCard"
 import { PrefetchFlatList } from "lib/Components/PrefetchFlatList"
 import { navigate } from "lib/navigation/navigate"
 import { Spacer } from "palette"
 import React, { ReactElement } from "react"
 import { FlatList } from "react-native"
-import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import HomeAnalytics from "../homeAnalytics"
+import HomeAnalytics from "../../Scenes/Home/homeAnalytics"
 
 const MAX_NUMBER_OF_ARTWORKS = 30
-const DEFAULT_SIZE = "medium"
 
-interface Props {
-  artworks: ArtworkRail_artworks$key
+export interface ArtworkRailProps {
+  artworks: LargeArtworkRail_artworks
   listRef: React.RefObject<FlatList<any>>
   contextModule: Analytics.ContextModule | undefined
-  size?: ArtworkCardSize
+  size: ArtworkCardSize
   onEndReached?: () => void
   onEndReachedThreshold?: number
   ListFooterComponent?: ReactElement
 }
 
-export const ArtworkRail: React.FC<Props> = ({
+export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   listRef,
   contextModule,
-  size = DEFAULT_SIZE,
+  size,
   onEndReached,
   onEndReachedThreshold,
-  ListFooterComponent = ListEndComponent,
-  ...restProps
+  ListFooterComponent = SpacerComponent,
+  artworks,
 }) => {
   const tracking = useTracking()
-
-  const artworks = useFragment<ArtworkRail_artworks$key>(artworksFragment, restProps.artworks)
 
   return (
     <PrefetchFlatList
@@ -43,7 +39,7 @@ export const ArtworkRail: React.FC<Props> = ({
       prefetchUrlExtractor={(item) => item?.href!}
       listRef={listRef}
       horizontal
-      ListHeaderComponent={ListEndComponent}
+      ListHeaderComponent={SpacerComponent}
       ListFooterComponent={ListFooterComponent}
       ItemSeparatorComponent={() => <Spacer width={15} />}
       showsHorizontalScrollIndicator={false}
@@ -75,12 +71,4 @@ export const ArtworkRail: React.FC<Props> = ({
   )
 }
 
-const ListEndComponent = () => <Spacer mr={2} />
-
-const artworksFragment = graphql`
-  fragment ArtworkRail_artworks on Artwork @relay(plural: true) {
-    ...ArtworkRailCard_artwork @arguments(width: 295)
-    href
-    slug
-  }
-`
+const SpacerComponent = () => <Spacer mr={2} />

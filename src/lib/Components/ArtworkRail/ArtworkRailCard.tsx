@@ -10,12 +10,11 @@ import { saleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
 const MAX_IMAGE_HEIGHTS = {
-  small: 320,
-  medium: 320,
+  small: 230,
   large: 320,
 }
 
-export type ArtworkCardSize = "small" | "medium" | "large"
+export type ArtworkCardSize = "small" | "large"
 
 export interface ArtworkRailCardProps {
   onPress?: (event: GestureResponderEvent) => void
@@ -30,7 +29,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   onPress,
   testID,
   lotLabel,
-  size = "medium",
+  size,
   hidePartnerName = false,
   ...restProps
 }) => {
@@ -44,20 +43,20 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   return (
     <ArtworkCard onPress={onPress || undefined} testID={testID}>
       <Flex alignItems="flex-end">
-        <ArtworkTileImage image={image} size={size} urgencyTag={urgencyTag} />
-        <Flex mt={1} width={artwork.image?.resized?.width}>
+        <ArtworkRailCardImage image={image} size={size} urgencyTag={urgencyTag} />
+        <Flex mt={1} width={artwork.image?.resized?.width} style={{ height: 90 }}>
           {!!lotLabel && (
             <Text lineHeight="20" color="black60" numberOfLines={1}>
               Lot {lotLabel}
             </Text>
           )}
           {!!artistNames && (
-            <Text numberOfLines={1} lineHeight="20" variant="sm">
+            <Text numberOfLines={size === "small" ? 2 : 1} lineHeight="20" variant="sm">
               {artistNames}
             </Text>
           )}
           {!!(title || date) && (
-            <Text lineHeight="20" color="black60" numberOfLines={1}>
+            <Text lineHeight="20" color="black60" numberOfLines={size === "small" ? 2 : 1}>
               {[title, date].filter(Boolean).join(", ")}
             </Text>
           )}
@@ -77,13 +76,13 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   )
 }
 
-export interface ArtworkTileImageProps {
+export interface ArtworkRailCardImageProps {
   image: ArtworkRailCard_artwork["image"]
   size: ArtworkCardSize
   urgencyTag?: string | null
 }
 
-const ArtworkTileImage: React.FC<ArtworkTileImageProps> = ({ image, size, urgencyTag = null }) => {
+const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ image, size, urgencyTag = null }) => {
   const color = useColor()
 
   const { width, height, src } = image?.resized || {}
