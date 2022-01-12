@@ -61,14 +61,48 @@ pre_install do |installer|
 end
 
 target 'ArtsyAppClip' do
-  config = use_native_modules!
+  # config = use_native_modules!
 
-  use_react_native!(
-    :path => './node_modules/react-native',
-    # to enable hermes on iOS, change `false` to `true` and then install pods
-    :hermes_enabled => false
-  )
+  # use_react_native!(
+  #   :path => './node_modules/react-native',
+  #   # to enable hermes on iOS, change `false` to `true` and then install pods
+  #   :hermes_enabled => false
+  # )
 
+  pod 'FBLazyVector', :path => "./node_modules/react-native/Libraries/FBLazyVector"
+  pod 'FBReactNativeSpec', :path => "./node_modules/react-native/Libraries/FBReactNativeSpec"
+  pod 'RCTRequired', :path => "./node_modules/react-native/Libraries/RCTRequired"
+  pod 'RCTTypeSafety', :path => "./node_modules/react-native/Libraries/TypeSafety"
+  pod 'React', :path => "./node_modules/react-native/"
+  pod 'React-Core', :path => "./node_modules/react-native/"
+  pod 'React-CoreModules', :path => "./node_modules/react-native/React/CoreModules"
+  pod 'React-RCTActionSheet', :path => "./node_modules/react-native/Libraries/ActionSheetIOS"
+  pod 'React-RCTAnimation', :path => "./node_modules/react-native/Libraries/NativeAnimation"
+  pod 'React-RCTBlob', :path => "./node_modules/react-native/Libraries/Blob"
+  pod 'React-RCTImage', :path => "./node_modules/react-native/Libraries/Image"
+  pod 'React-RCTLinking', :path => "./node_modules/react-native/Libraries/LinkingIOS"
+  pod 'React-RCTNetwork', :path => "./node_modules/react-native/Libraries/Network"
+  pod 'React-RCTSettings', :path => "./node_modules/react-native/Libraries/Settings"
+  pod 'React-RCTText', :path => "./node_modules/react-native/Libraries/Text"
+  pod 'React-RCTVibration', :path => "./node_modules/react-native/Libraries/Vibration"
+  pod 'React-Core/RCTWebSocket', :path => "./node_modules/react-native/"
+
+  pod 'React-Core/DevSupport', :path => "./node_modules/react-native/"
+
+  pod 'React-cxxreact', :path => "./node_modules/react-native/ReactCommon/cxxreact"
+  pod 'React-jsi', :path => "./node_modules/react-native/ReactCommon/jsi"
+  pod 'React-jsiexecutor', :path => "./node_modules/react-native/ReactCommon/jsiexecutor"
+  pod 'React-jsinspector', :path => "./node_modules/react-native/ReactCommon/jsinspector"
+  pod 'React-callinvoker', :path => "./node_modules/react-native/ReactCommon/callinvoker"
+  pod 'ReactCommon/turbomodule/core', :path => "./node_modules/react-native/ReactCommon"
+  pod 'Yoga', :path => "./node_modules/react-native/ReactCommon/yoga", :modular_headers => true
+
+  pod 'DoubleConversion', :podspec => "./node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  pod 'glog', :podspec => "./node_modules/react-native/third-party-podspecs/glog.podspec"
+  pod 'Folly', :podspec => "./node_modules/react-native/third-party-podspecs/Folly.podspec"
+
+  # pod 'Emission', path: './emission', :inhibit_warnings => false
+  pod 'Artsy+UIFonts', '~> 3.3.4'
 end
 
 
@@ -141,7 +175,7 @@ target 'Artsy' do
   # Swift pods 🎉
   pod 'Then'
   pod 'Interstellar/Core', git: 'https://github.com/artsy/Interstellar.git', branch: 'observable-unsubscribe'
-  pod 'Starscream'
+  pod 'Starscream', '~> 3.0.4'
   pod 'SwiftyJSON'
 
   # Used in Live Auctions to hold user-state
@@ -175,77 +209,79 @@ post_install do |installer|
 
   $RNMBGL.post_install(installer)
 
-  # So we can show some of this stuff in the Admin panel
-  emission_podspec_json = installer.pod_targets.find { |f| f.name == 'Emission' }.specs[0].to_json
-  File.write('Pods/Local Podspecs/Emission.podspec.json', emission_podspec_json)
+  target 'Artsy' do
+    # So we can show some of this stuff in the Admin panel
+    emission_podspec_json = installer.pod_targets.find { |f| f.name == 'Emission' }.specs[0].to_json
+    File.write('Pods/Local Podspecs/Emission.podspec.json', emission_podspec_json)
 
-  # Disable bitcode for now. Specifically needed for HockeySDK and ARAnalytics.
-  installer.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      config.build_settings['ENABLE_BITCODE'] = 'NO'
-    end
-  end
-
-  # Forces the minimum to be 9.0 as that's our last deployment targer, and new xcode build tools
-  # give an error in Xcode 10
-  installer.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      if config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 9.0
-        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
+    # Disable bitcode for now. Specifically needed for HockeySDK and ARAnalytics.
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['ENABLE_BITCODE'] = 'NO'
       end
     end
-  end
 
-  # CI was having trouble shipping signed builds
-  # https://github.com/CocoaPods/CocoaPods/issues/4011
-  installer.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      config.build_settings['EXPANDED_CODE_SIGN_IDENTITY'] = ''
-      config.build_settings['CODE_SIGNING_REQUIRED'] = 'NO'
-      config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
+    # Forces the minimum to be 9.0 as that's our last deployment targer, and new xcode build tools
+    # give an error in Xcode 10
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        if config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 9.0
+          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
+        end
+      end
     end
-  end
 
-  # For now Nimble Snapshots needs to stay at Swift 4.0
-  swift4 = ['Nimble-Snapshots']
-  installer.pods_project.targets.each do |target|
-    target.build_configurations.each do |config|
-      config.build_settings['SWIFT_VERSION'] = '4.0' if swift4.include?(target.name)
+    # CI was having trouble shipping signed builds
+    # https://github.com/CocoaPods/CocoaPods/issues/4011
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['EXPANDED_CODE_SIGN_IDENTITY'] = ''
+        config.build_settings['CODE_SIGNING_REQUIRED'] = 'NO'
+        config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
+      end
     end
-  end
 
-  # Support toggling the RCT_Dev build flag so that we can have it in dev, but not in prod
-  react = installer.pods_project.targets.find { |target| target.name == 'React' }
-  react.build_configurations.each do |config|
-    allow_react_native_debugging = config.name == 'Debug' ? '1' : '0'
-    config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = '$(inherited) RCT_DEV=' + allow_react_native_debugging
-  end
-
-  # TODO:
-  # * ORStackView: Move Laura's changes into master and update
-  # * Send PRs for the rest
-  %w[
-    Pods/ORStackView/Classes/ios/ORStackView.h
-    Pods/NAMapKit/NAMapKit/*.h
-  ].flat_map { |x| Dir.glob(x) }.each do |header|
-    addition = "#import <UIKit/UIKit.h>\n"
-    contents = File.read(header)
-    next if contents.include?(addition)
-
-    File.open(header, 'w') do |file|
-      file.puts addition
-      file.puts contents
+    # For now Nimble Snapshots needs to stay at Swift 4.0
+    swift4 = ['Nimble-Snapshots']
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        config.build_settings['SWIFT_VERSION'] = '4.0' if swift4.include?(target.name)
+      end
     end
-  end
 
-  # TODO: Might be nice to have a `cocoapods-patch` plugin that applies patches like `patch-package` does for npm.
-  %w[
-    Pods/Nimble/Sources/NimbleObjectiveC
-    Pods/Nimble-Snapshots
-    Pods/Quick/Sources/QuickObjectiveC
-  ].flat_map { |x| Dir.glob(File.join(x, '**/*.{h,m}')) }.each do |header|
-    contents = File.read(header)
-    patched = contents.sub(%r{["<]\w+/(\w+-Swift\.h)[">]}, '"\1"')
-    File.write(header, patched) if Regexp.last_match
+    # Support toggling the RCT_Dev build flag so that we can have it in dev, but not in prod
+    react = installer.pods_project.targets.find { |target| target.name == 'React' }
+    react.build_configurations.each do |config|
+      allow_react_native_debugging = config.name == 'Debug' ? '1' : '0'
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] = '$(inherited) RCT_DEV=' + allow_react_native_debugging
+    end
+
+    # TODO:
+    # * ORStackView: Move Laura's changes into master and update
+    # * Send PRs for the rest
+    %w[
+      Pods/ORStackView/Classes/ios/ORStackView.h
+      Pods/NAMapKit/NAMapKit/*.h
+    ].flat_map { |x| Dir.glob(x) }.each do |header|
+      addition = "#import <UIKit/UIKit.h>\n"
+      contents = File.read(header)
+      next if contents.include?(addition)
+
+      File.open(header, 'w') do |file|
+        file.puts addition
+        file.puts contents
+      end
+    end
+
+    # TODO: Might be nice to have a `cocoapods-patch` plugin that applies patches like `patch-package` does for npm.
+    %w[
+      Pods/Nimble/Sources/NimbleObjectiveC
+      Pods/Nimble-Snapshots
+      Pods/Quick/Sources/QuickObjectiveC
+    ].flat_map { |x| Dir.glob(File.join(x, '**/*.{h,m}')) }.each do |header|
+      contents = File.read(header)
+      patched = contents.sub(%r{["<]\w+/(\w+-Swift\.h)[">]}, '"\1"')
+      File.write(header, patched) if Regexp.last_match
+    end
   end
 end

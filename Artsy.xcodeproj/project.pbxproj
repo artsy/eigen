@@ -365,7 +365,6 @@
 		66A43C671CE470C400FFD6ED /* Hash.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C641CE470C400FFD6ED /* Hash.png */; };
 		66A43C681CE470C400FFD6ED /* Hash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C651CE470C400FFD6ED /* Hash@2x.png */; };
 		66A43C691CE470C400FFD6ED /* Hash@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C661CE470C400FFD6ED /* Hash@3x.png */; };
-		68AE3912711D80B0018CCC9D /* libPods-Artsy Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 482115D14BD4E126B81B3A2B /* libPods-Artsy Tests.a */; };
 		7F9C7EF22221FE2900F6967E /* AREigenMapContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9C7EF12221FE2900F6967E /* AREigenMapContainerViewController.m */; };
 		837CEC841C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 837CEC831C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m */; };
 		83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* Location.m */; };
@@ -374,7 +373,6 @@
 		9D50B9562450CFB600A6DCD0 /* BackChevron@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D50B9532450CFB500A6DCD0 /* BackChevron@3x.png */; };
 		9D50B9572450CFB600A6DCD0 /* BackChevron.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D50B9542450CFB600A6DCD0 /* BackChevron.png */; };
 		9D50B9582450CFB600A6DCD0 /* BackChevron@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D50B9552450CFB600A6DCD0 /* BackChevron@2x.png */; };
-		A18CE1A9E25D2EE10D482D6C /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DA8D5507586C1A8D7D25B02D /* libPods-Artsy.a */; };
 		B30FEF5A181EEA47009E4EAD /* ARBidButtonTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */; };
 		B316E2F418170DF40086CCDB /* SaleArtwork.m in Sources */ = {isa = PBXBuildFile; fileRef = B316E2F318170DF40086CCDB /* SaleArtwork.m */; };
 		B316E2F7181713110086CCDB /* Bidder.m in Sources */ = {isa = PBXBuildFile; fileRef = B316E2F6181713110086CCDB /* Bidder.m */; };
@@ -405,6 +403,7 @@
 		CB9E244117CBC36F00773A9A /* ARAuthProviders.m in Sources */ = {isa = PBXBuildFile; fileRef = CB9E244017CBC36F00773A9A /* ARAuthProviders.m */; };
 		CBB469D0181F1F1200B5692B /* Bid.m in Sources */ = {isa = PBXBuildFile; fileRef = CBB469CF181F1F1200B5692B /* Bid.m */; };
 		CBF74085250ACDC5004048D3 /* ARAppDelegate+Echo.m in Sources */ = {isa = PBXBuildFile; fileRef = CBF74084250ACDC5004048D3 /* ARAppDelegate+Echo.m */; };
+		CDC03AAFBE5E6565C23BB25B /* libPods-Artsy.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B1808E3F238A1B01D00BA90E /* libPods-Artsy.a */; };
 		D35D9D5C1ACB4FF800E67A1D /* ARCustomEigenLabelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D35D9D5B1ACB4FF800E67A1D /* ARCustomEigenLabelTests.m */; };
 		D3ACE5391AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D3ACE5381AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m */; };
 		D3C8C2061B66D2FF004CAD7F /* ARImageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D3C8C2051B66D2FF004CAD7F /* ARImageTests.m */; };
@@ -434,6 +433,7 @@
 		E6F466E818EF52A800A09AFA /* Artwork_v1.data in Resources */ = {isa = PBXBuildFile; fileRef = E6F466E718EF52A800A09AFA /* Artwork_v1.data */; };
 		E6F84CFF1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E6F84CFE1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png */; };
 		E6F84D001A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E6F84CFE1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png */; };
+		E8182C32F570AF94E05E8047 /* libPods-Artsy Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FA6D6E305D7079923F26732 /* libPods-Artsy Tests.a */; };
 		F5277129022344A75FEDC2B7 /* libPods-ArtsyAppClip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B036CE8A56947DA1182A9D0C /* libPods-ArtsyAppClip.a */; };
 		FC073424275E8F6E008B29B9 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9DDB10274D8FFF005DEE85 /* Article.swift */; };
 		FC10F3782760FC15006CDAB5 /* WidgetUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B4A2746F81F00232337 /* WidgetUrl.swift */; };
@@ -634,6 +634,7 @@
 		342F9F4385F10D19BC94E456 /* UIView+HitTestExpansion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+HitTestExpansion.m"; sourceTree = "<group>"; };
 		342F9F752C66B13A43FD55DC /* StyledSubclasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StyledSubclasses.h; sourceTree = "<group>"; };
 		342F9FEFF4A1B56EE307467B /* ARFileUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFileUtils.m; sourceTree = "<group>"; };
+		39D28B1D93679E6015BCF0E9 /* Pods-Artsy Tests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.store.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.store.xcconfig"; sourceTree = "<group>"; };
 		3A6EBA7E22358DE60052D0C0 /* Emission.podspec.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Emission.podspec.json; path = "Pods/Local Podspecs/Emission.podspec.json"; sourceTree = "<group>"; };
 		3C205B58189000A5004280E0 /* ARAppNotificationsDelegateTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppNotificationsDelegateTests.m; sourceTree = "<group>"; };
 		3C22227318C6487C00B7CE3A /* User_v0.data */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = User_v0.data; sourceTree = "<group>"; };
@@ -694,7 +695,7 @@
 		3CF144B318E47F9F00B1A764 /* ARSystemTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSystemTime.m; sourceTree = "<group>"; };
 		3CF144B518E4802400B1A764 /* ARSystemTimeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSystemTimeTests.m; sourceTree = "<group>"; };
 		3CFBE33518C5848900C781D0 /* ARFileUtilsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARFileUtilsTests.m; sourceTree = "<group>"; };
-		482115D14BD4E126B81B3A2B /* libPods-Artsy Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FA6D6E305D7079923F26732 /* libPods-Artsy Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		491A4DE0168E4343003B2246 /* Gene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Gene.h; sourceTree = "<group>"; };
 		491A4DE1168E4343003B2246 /* Gene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Gene.m; sourceTree = "<group>"; };
 		4943331A166947A3005AB483 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -752,6 +753,7 @@
 		51F2C5F21CEE8A7700B881BE /* ARAppDelegate+Emission.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Emission.h"; sourceTree = "<group>"; };
 		51F2C5F31CEE8A7700B881BE /* ARAppDelegate+Emission.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Emission.m"; sourceTree = "<group>"; };
 		51F696081C6E55E0002B2E35 /* SaleViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaleViewModelTests.swift; sourceTree = "<group>"; };
+		52930A66EF129F47A25380FF /* Pods-Artsy Tests.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.demo.xcconfig"; sourceTree = "<group>"; };
 		54289FED18AA7F4E00681E49 /* UINavigationController_InnermostTopViewControllerSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINavigationController_InnermostTopViewControllerSpec.m; sourceTree = "<group>"; };
 		5435192C18A8E9420060F31E /* UIView+OldSchoolSnapshots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+OldSchoolSnapshots.h"; sourceTree = "<group>"; };
 		5435192D18A8E9420060F31E /* UIView+OldSchoolSnapshots.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+OldSchoolSnapshots.m"; sourceTree = "<group>"; };
@@ -806,7 +808,6 @@
 		5E6A16921C98A914004DB29B /* LiveAuctionStateManagerSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionStateManagerSpec.swift; path = ../../Artsy/View_Controllers/Live_Auctions/LiveAuctionStateManagerSpec.swift; sourceTree = "<group>"; };
 		5E6BA6E71C56B5D700B942C1 /* CircularCancelButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CircularCancelButton@2x.png"; sourceTree = "<group>"; };
 		5E6BA6E81C56B5D700B942C1 /* CircularCancelButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = CircularCancelButton.png; sourceTree = "<group>"; };
-		5E6C92F936EA71609C245323 /* Pods-Artsy Tests.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.store.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.store.xcconfig"; sourceTree = "<group>"; };
 		5E70AA8D1DF5C7B1002847E9 /* LiveAuctionCurrentLotCTAPositionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionCurrentLotCTAPositionManager.swift; sourceTree = "<group>"; };
 		5E70AA8F1DF5D4FE002847E9 /* LiveAuctionCurrentLotCTAPositionManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveAuctionCurrentLotCTAPositionManagerTests.swift; sourceTree = "<group>"; };
 		5E7598041D9D92F20084AAEC /* LiveAuctionLotBidHistoryGestureControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionLotBidHistoryGestureControllerTests.swift; path = Live_Auction/LiveAuctionLotBidHistoryGestureControllerTests.swift; sourceTree = "<group>"; };
@@ -1090,6 +1091,7 @@
 		66A43C641CE470C400FFD6ED /* Hash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Hash.png; sourceTree = "<group>"; };
 		66A43C651CE470C400FFD6ED /* Hash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Hash@2x.png"; sourceTree = "<group>"; };
 		66A43C661CE470C400FFD6ED /* Hash@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Hash@3x.png"; sourceTree = "<group>"; };
+		79BE3D4497C108C9F976F690 /* Pods-Artsy.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.demo.xcconfig"; sourceTree = "<group>"; };
 		7F9C7EF02221FE2900F6967E /* AREigenMapContainerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AREigenMapContainerViewController.h; sourceTree = "<group>"; };
 		7F9C7EF12221FE2900F6967E /* AREigenMapContainerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AREigenMapContainerViewController.m; sourceTree = "<group>"; };
 		837CEC821C876B7C00A7E0E1 /* ArtsyAPI+Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ArtsyAPI+Notifications.h"; sourceTree = "<group>"; };
@@ -1097,14 +1099,16 @@
 		83F9D57E1AD6FDE0000BCC77 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		83F9D57F1AD6FDE0000BCC77 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		83FF73B31CB87A74002B53FA /* RefinableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefinableType.swift; path = ../Views/RefinableType.swift; sourceTree = "<group>"; };
+		8B5D00D1838D5C924AE5F49A /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 		9434A9843098609F9F092F0D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		97983D93644ACC6409190A08 /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 		9D50B9502450CF6800A6DCD0 /* ARBackButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARBackButton.h; sourceTree = "<group>"; };
 		9D50B9512450CF6800A6DCD0 /* ARBackButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARBackButton.m; sourceTree = "<group>"; };
 		9D50B9532450CFB500A6DCD0 /* BackChevron@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackChevron@3x.png"; sourceTree = "<group>"; };
 		9D50B9542450CFB600A6DCD0 /* BackChevron.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BackChevron.png; sourceTree = "<group>"; };
 		9D50B9552450CFB600A6DCD0 /* BackChevron@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackChevron@2x.png"; sourceTree = "<group>"; };
+		9F5A42EA18A426CDC697200A /* Pods-Artsy Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		B036CE8A56947DA1182A9D0C /* libPods-ArtsyAppClip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ArtsyAppClip.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1808E3F238A1B01D00BA90E /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBidButtonTests.m; sourceTree = "<group>"; };
 		B316E2F218170DF40086CCDB /* SaleArtwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaleArtwork.h; sourceTree = "<group>"; };
 		B316E2F318170DF40086CCDB /* SaleArtwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaleArtwork.m; sourceTree = "<group>"; };
@@ -1130,8 +1134,6 @@
 		B9A0395B25540810002E010D /* UIView+ScrollToTop.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+ScrollToTop.m"; sourceTree = "<group>"; };
 		B9A29FDE23EB2680006EE2EC /* ARReactPackagerHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARReactPackagerHost.h; sourceTree = "<group>"; };
 		B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARReactPackagerHost.m; sourceTree = "<group>"; };
-		C1D5D316AD887B0D764B2DFF /* Pods-Artsy.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.demo.xcconfig"; sourceTree = "<group>"; };
-		C92C422D2B7B26F1D784B7A5 /* Pods-Artsy Tests.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.demo.xcconfig"; sourceTree = "<group>"; };
 		CB355E8217CAB0B3002A798D /* ARFollowable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFollowable.h; sourceTree = "<group>"; };
 		CB42B64D181092480069A801 /* ARCountdownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCountdownView.h; sourceTree = "<group>"; };
 		CB42B64E181092480069A801 /* ARCountdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCountdownView.m; sourceTree = "<group>"; };
@@ -1159,8 +1161,7 @@
 		D3ACE5381AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARExternalWebBrowserViewControllerTests.m; sourceTree = "<group>"; };
 		D3C8C2051B66D2FF004CAD7F /* ARImageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageTests.m; sourceTree = "<group>"; };
 		D3F69A491AC1F7CB007C65C9 /* ARDefaultsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDefaultsTests.m; sourceTree = "<group>"; };
-		DA8D5507586C1A8D7D25B02D /* libPods-Artsy.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Artsy.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E46CDB9EB7EB81BF77D63EF5 /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
+		DA01796B796D8A14B9C0A685 /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
 		E60673B119BE4E8C00EF05EB /* full_logo_white_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "full_logo_white_small@2x.png"; sourceTree = "<group>"; };
 		E611846F18D78068000FE4C9 /* ARMessageItemProviderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMessageItemProviderTests.m; sourceTree = "<group>"; };
 		E611847118D7B4C4000FE4C9 /* ARSharingControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSharingControllerTests.m; sourceTree = "<group>"; };
@@ -1197,7 +1198,6 @@
 		E6EC246018F7069300C89192 /* PartnerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartnerTests.m; sourceTree = "<group>"; };
 		E6F466E718EF52A800A09AFA /* Artwork_v1.data */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Artwork_v1.data; sourceTree = "<group>"; };
 		E6F84CFE1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CloseButtonLargeHighlighted@2x.png"; sourceTree = "<group>"; };
-		F5228136EBA7C3D968C3D845 /* Pods-Artsy Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		FC61189D2746FE2300612581 /* ArtworkStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtworkStore.swift; sourceTree = "<group>"; };
 		FC61189F2747001B00612581 /* ArtworkImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkImage.swift; sourceTree = "<group>"; };
 		FC6118A1274704FA00612581 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
@@ -1267,10 +1267,10 @@
 				512AB35B1BD7C7A100F92B9A /* CoreSpotlight.framework in Frameworks */,
 				60935A461A69CFEE00129CE1 /* WebKit.framework in Frameworks */,
 				1A0517C42746D93000248353 /* CoreServices.framework in Frameworks */,
-				A18CE1A9E25D2EE10D482D6C /* libPods-Artsy.a in Frameworks */,
 				CB8FF7C926C45D3400022DA3 /* AppTrackingTransparency.framework in Frameworks */,
 				CB8FF7C426C45CFC00022DA3 /* AdServices.framework in Frameworks */,
 				CB8FF7C726C45D2200022DA3 /* StoreKit.framework in Frameworks */,
+				CDC03AAFBE5E6565C23BB25B /* libPods-Artsy.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1288,7 +1288,7 @@
 			files = (
 				60476F4C1AD87DB200670502 /* UIKit.framework in Frameworks */,
 				B3ECE8291819D1E6009F5C5B /* Foundation.framework in Frameworks */,
-				68AE3912711D80B0018CCC9D /* libPods-Artsy Tests.a in Frameworks */,
+				E8182C32F570AF94E05E8047 /* libPods-Artsy Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1339,15 +1339,15 @@
 			isa = PBXGroup;
 			children = (
 				3A6EBA7E22358DE60052D0C0 /* Emission.podspec.json */,
-				97983D93644ACC6409190A08 /* Pods-Artsy.debug.xcconfig */,
-				E46CDB9EB7EB81BF77D63EF5 /* Pods-Artsy.store.xcconfig */,
-				C1D5D316AD887B0D764B2DFF /* Pods-Artsy.demo.xcconfig */,
-				F5228136EBA7C3D968C3D845 /* Pods-Artsy Tests.debug.xcconfig */,
-				5E6C92F936EA71609C245323 /* Pods-Artsy Tests.store.xcconfig */,
-				C92C422D2B7B26F1D784B7A5 /* Pods-Artsy Tests.demo.xcconfig */,
 				251623938AAD857411BAB380 /* Pods-ArtsyAppClip.debug.xcconfig */,
 				01EFB921EEDEF36658D1CCE9 /* Pods-ArtsyAppClip.store.xcconfig */,
 				CC2E915978CE7594318D40A7 /* Pods-ArtsyAppClip.demo.xcconfig */,
+				8B5D00D1838D5C924AE5F49A /* Pods-Artsy.debug.xcconfig */,
+				DA01796B796D8A14B9C0A685 /* Pods-Artsy.store.xcconfig */,
+				79BE3D4497C108C9F976F690 /* Pods-Artsy.demo.xcconfig */,
+				9F5A42EA18A426CDC697200A /* Pods-Artsy Tests.debug.xcconfig */,
+				39D28B1D93679E6015BCF0E9 /* Pods-Artsy Tests.store.xcconfig */,
+				52930A66EF129F47A25380FF /* Pods-Artsy Tests.demo.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1793,11 +1793,11 @@
 				49BA7E031655ABE600C06572 /* UIKit.framework */,
 				B3ECE8271819D1E6009F5C5B /* XCTest.framework */,
 				9434A9843098609F9F092F0D /* Pods.framework */,
-				DA8D5507586C1A8D7D25B02D /* libPods-Artsy.a */,
-				482115D14BD4E126B81B3A2B /* libPods-Artsy Tests.a */,
 				FCB45B232746EF3700232337 /* WidgetKit.framework */,
 				FCB45B252746EF3700232337 /* SwiftUI.framework */,
 				B036CE8A56947DA1182A9D0C /* libPods-ArtsyAppClip.a */,
+				B1808E3F238A1B01D00BA90E /* libPods-Artsy.a */,
+				3FA6D6E305D7079923F26732 /* libPods-Artsy Tests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2998,15 +2998,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 49BA7E231655ABE600C06572 /* Build configuration list for PBXNativeTarget "Artsy" */;
 			buildPhases = (
-				271FD00586DDEF4925626060 /* [CP] Check Pods Manifest.lock */,
+				E6E59E115FD5FA4E4AC3BF22 /* [CP] Check Pods Manifest.lock */,
 				49BA7DFB1655ABE600C06572 /* Sources */,
 				49BA7DFC1655ABE600C06572 /* Frameworks */,
 				5150685F1BCC176300018352 /* Generate Compilation DB */,
 				49BA7DFD1655ABE600C06572 /* Resources */,
-				5A71C447DFCD4F537CFB14BA /* [CP] Embed Pods Frameworks */,
-				3DC40A4868886E7A205B706E /* [CP] Copy Pods Resources */,
 				1AD4F8A325FBBA89007FDB71 /* Embed App Extensions */,
 				660D58FB278EDAB30066959C /* Embed App Clips */,
+				8F1C0A897B1D604AD3AAF222 /* [CP] Embed Pods Frameworks */,
+				8893F4C3EE4A492D3E9DECB3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -3028,8 +3028,8 @@
 				660F2F8C278EEE2200CDC6A0 /* Sources */,
 				660F2F8D278EEE2200CDC6A0 /* Frameworks */,
 				660F2F8E278EEE2200CDC6A0 /* Resources */,
-				1FF62FE5400E5547BF65C777 /* [CP] Embed Pods Frameworks */,
 				31D875E3AE64F9801BEDF178 /* [CP] Copy Pods Resources */,
+				3360BF204F719A006FC7642E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -3044,7 +3044,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B3ECE8361819D1E7009F5C5B /* Build configuration list for PBXNativeTarget "Artsy Tests" */;
 			buildPhases = (
-				98CDFEECF1F38475EE807C06 /* [CP] Check Pods Manifest.lock */,
+				52CB17F377902F0AD20E2C8F /* [CP] Check Pods Manifest.lock */,
 				B3ECE8221819D1E6009F5C5B /* Sources */,
 				B3ECE8231819D1E6009F5C5B /* Frameworks */,
 				B3ECE8241819D1E6009F5C5B /* Resources */,
@@ -3299,50 +3299,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1FF62FE5400E5547BF65C777 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ArtsyAppClip/Pods-ArtsyAppClip-frameworks.sh",
-				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
-				"${BUILT_PRODUCTS_DIR}/MapboxMobileEvents/MapboxMobileEvents.framework",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxMobileEvents.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ArtsyAppClip/Pods-ArtsyAppClip-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		271FD00586DDEF4925626060 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Artsy-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		31D875E3AE64F9801BEDF178 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3350,52 +3306,6 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ArtsyAppClip/Pods-ArtsyAppClip-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/AppboyUI.ContentCards.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/Appboy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/AppboyUI.InAppMessage.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/AppboyUI.NewsFeed.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FBSDKCoreKit/FacebookSDKStrings.bundle",
-				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppboyUI.ContentCards.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Appboy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppboyUI.InAppMessage.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppboyUI.NewsFeed.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ArtsyAppClip/Pods-ArtsyAppClip-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		3DC40A4868886E7A205B706E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/AppboyUI.ContentCards.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/Appboy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/AppboyUI.InAppMessage.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/AppboyUI.NewsFeed.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FBSDKCoreKit/FacebookSDKStrings.bundle",
-				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
 				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Bold.otf",
 				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-BoldItalic.otf",
 				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Italic.otf",
@@ -3409,24 +3319,10 @@
 				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-Medium.otf",
 				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-MediumItalic.otf",
 				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-Regular.otf",
-				"${PODS_ROOT}/Artsy+UILabels/Pod/Assets/Chevron_Black.png",
-				"${PODS_ROOT}/Artsy+UILabels/Pod/Assets/Chevron_Black@2x.png",
-				"${PODS_ROOT}/Extraction/Extraction/Assets/ARLoadFailureRetryIcon@2x.png",
-				"${PODS_CONFIGURATION_BUILD_DIR}/MARKRangeSlider/MARKRangeSlider.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppboyUI.ContentCards.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Appboy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppboyUI.InAppMessage.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppboyUI.NewsFeed.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Bold.otf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-BoldItalic.otf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Italic.otf",
@@ -3440,15 +3336,29 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-Medium.otf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-MediumItalic.otf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-Regular.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Chevron_Black.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Chevron_Black@2x.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ARLoadFailureRetryIcon@2x.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MARKRangeSlider.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/NPKeyboardLayoutGuide.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ArtsyAppClip/Pods-ArtsyAppClip-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3360BF204F719A006FC7642E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ArtsyAppClip/Pods-ArtsyAppClip-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ArtsyAppClip/Pods-ArtsyAppClip-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		5150685F1BCC176300018352 /* Generate Compilation DB */ = {
@@ -3466,29 +3376,7 @@
 			shellScript = "if type -p clang-compilation-database-tool > /dev/null 2>&1; then\n  clang-compilation-database-tool collect \"${OBJECT_FILE_DIR_normal}\" > \"${SRCROOT}/compiler_commands.json\"\nfi";
 			showEnvVarsInLog = 0;
 		};
-		5A71C447DFCD4F537CFB14BA /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh",
-				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
-				"${BUILT_PRODUCTS_DIR}/MapboxMobileEvents/MapboxMobileEvents.framework",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxMobileEvents.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		98CDFEECF1F38475EE807C06 /* [CP] Check Pods Manifest.lock */ = {
+		52CB17F377902F0AD20E2C8F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -3510,6 +3398,100 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		8893F4C3EE4A492D3E9DECB3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources.sh",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Bold.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-BoldItalic.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Italic.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Regular.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Semibold.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AVG65lig.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/ReactNativeAGaramondPro-Italic.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/ReactNativeAGaramondPro-Regular.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/ReactNativeAGaramondPro-Semibold.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-Italic.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-Medium.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-MediumItalic.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-Regular.otf",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/AppboyUI.ContentCards.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/Appboy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/AppboyUI.InAppMessage.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/AppboyUI.NewsFeed.bundle",
+				"${PODS_ROOT}/Artsy+UILabels/Pod/Assets/Chevron_Black.png",
+				"${PODS_ROOT}/Artsy+UILabels/Pod/Assets/Chevron_Black@2x.png",
+				"${PODS_ROOT}/Extraction/Extraction/Assets/ARLoadFailureRetryIcon@2x.png",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FBSDKCoreKit/FacebookSDKStrings.bundle",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/MARKRangeSlider/MARKRangeSlider.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Bold.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-BoldItalic.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Italic.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Regular.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Semibold.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AVG65lig.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ReactNativeAGaramondPro-Italic.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ReactNativeAGaramondPro-Regular.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ReactNativeAGaramondPro-Semibold.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-Italic.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-Medium.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-MediumItalic.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-Regular.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppboyUI.ContentCards.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Appboy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppboyUI.InAppMessage.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppboyUI.NewsFeed.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Chevron_Black.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Chevron_Black@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ARLoadFailureRetryIcon@2x.png",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MARKRangeSlider.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/NPKeyboardLayoutGuide.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8F1C0A897B1D604AD3AAF222 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh",
+				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
+				"${BUILT_PRODUCTS_DIR}/MapboxMobileEvents/MapboxMobileEvents.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxMobileEvents.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		D6183AF3EE80035CEEDEFDAF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3526,6 +3508,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-ArtsyAppClip-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E6E59E115FD5FA4E4AC3BF22 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Artsy-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -4201,7 +4205,7 @@
 		};
 		49BA7E241655ABE600C06572 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 97983D93644ACC6409190A08 /* Pods-Artsy.debug.xcconfig */;
+			baseConfigurationReference = 8B5D00D1838D5C924AE5F49A /* Pods-Artsy.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -4307,7 +4311,7 @@
 		};
 		60AF3D0318D33C80008F3CC0 /* Demo */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C1D5D316AD887B0D764B2DFF /* Pods-Artsy.demo.xcconfig */;
+			baseConfigurationReference = 79BE3D4497C108C9F976F690 /* Pods-Artsy.demo.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -4368,7 +4372,7 @@
 		};
 		60AF3D0418D33C80008F3CC0 /* Demo */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C92C422D2B7B26F1D784B7A5 /* Pods-Artsy Tests.demo.xcconfig */;
+			baseConfigurationReference = 52930A66EF129F47A25380FF /* Pods-Artsy Tests.demo.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
@@ -4659,7 +4663,7 @@
 		};
 		B34D39FF17DFD99600308CAB /* Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E46CDB9EB7EB81BF77D63EF5 /* Pods-Artsy.store.xcconfig */;
+			baseConfigurationReference = DA01796B796D8A14B9C0A685 /* Pods-Artsy.store.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -4718,7 +4722,7 @@
 		};
 		B3ECE8371819D1E7009F5C5B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F5228136EBA7C3D968C3D845 /* Pods-Artsy Tests.debug.xcconfig */;
+			baseConfigurationReference = 9F5A42EA18A426CDC697200A /* Pods-Artsy Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
@@ -4758,7 +4762,7 @@
 		};
 		B3ECE83A1819D1E7009F5C5B /* Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5E6C92F936EA71609C245323 /* Pods-Artsy Tests.store.xcconfig */;
+			baseConfigurationReference = 39D28B1D93679E6015BCF0E9 /* Pods-Artsy Tests.store.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
