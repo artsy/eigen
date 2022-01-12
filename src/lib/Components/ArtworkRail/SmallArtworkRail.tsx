@@ -4,7 +4,7 @@ import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArtworkRail, ArtworkRailProps } from "./ArtworkRail"
 
-type SmallArtworkRailProps = Omit<ArtworkRailProps, "artworks"> & { artworks: SmallArtworkRail_artworks$key }
+type SmallArtworkRailProps = Omit<ArtworkRailProps, "artworks" | "size"> & { artworks: SmallArtworkRail_artworks$key }
 
 export const SmallArtworkRail: React.FC<SmallArtworkRailProps> = ({ artworks, ...restProps }) => {
   const artworksData = useFragment<SmallArtworkRail_artworks$key>(smallArtworksFragment, artworks)

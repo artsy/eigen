@@ -1,7 +1,7 @@
 import { themeGet } from "@styled-system/theme-get"
 import { ArtworkRailCard_artwork, ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { getUrgencyTag } from "lib/utils/getUrgencyTag"
-import { Box, Flex, Sans, Text, useColor } from "palette"
+import { Flex, Sans, Text, useColor } from "palette"
 import React from "react"
 import { GestureResponderEvent } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -9,7 +9,8 @@ import styled from "styled-components/native"
 import { saleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
-const MAX_IMAGE_HEIGHTS = {
+const TEXT_CONTAINER_HEIGHT = 90
+const MAX_HEIGHT = {
   small: 230,
   large: 320,
 }
@@ -44,7 +45,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
     <ArtworkCard onPress={onPress || undefined} testID={testID}>
       <Flex alignItems="flex-end">
         <ArtworkRailCardImage image={image} size={size} urgencyTag={urgencyTag} />
-        <Flex mt={1} width={artwork.image?.resized?.width} style={{ height: 90 }}>
+        <Flex mt={1} width={artwork.image?.resized?.width} style={{ height: TEXT_CONTAINER_HEIGHT }}>
           {!!lotLabel && (
             <Text lineHeight="20" color="black60" numberOfLines={1}>
               Lot {lotLabel}
@@ -87,13 +88,14 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ image, size
 
   const { width, height, src } = image?.resized || {}
 
-  if (!image?.resized?.src) {
-    return <Box bg={color("black30")} width={width} height={height} style={{ borderRadius: 2 }} />
+  if (!src) {
+    return <Flex bg={color("black30")} width={width} height={MAX_HEIGHT[size]} style={{ borderRadius: 2 }} />
   }
+
   return (
     <Flex>
       <OpaqueImageView
-        style={{ maxHeight: MAX_IMAGE_HEIGHTS[size] }}
+        style={{ maxHeight: MAX_HEIGHT[size] }}
         resizeMode="contain"
         imageURL={src}
         height={height || 0}
@@ -101,7 +103,7 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ image, size
       />
       {!!urgencyTag && (
         <Flex
-          backgroundColor="white"
+          backgroundColor={color("white100")}
           position="absolute"
           px="5px"
           py="3px"
@@ -110,7 +112,7 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ image, size
           borderRadius={2}
           alignSelf="flex-start"
         >
-          <Sans size="2" color="black100" numberOfLines={1}>
+          <Sans size="2" color={color("black100")} numberOfLines={1}>
             {urgencyTag}
           </Sans>
         </Flex>
@@ -119,9 +121,8 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ image, size
   )
 }
 
-// TODO: Make size adjustable
 const artworkFragment = graphql`
-  fragment ArtworkRailCard_artwork on Artwork @argumentDefinitions(width: { type: "Int", defaultValue: 295 }) {
+  fragment ArtworkRailCard_artwork on Artwork @argumentDefinitions(width: { type: "Int" }) {
     slug
     internalID
     href
