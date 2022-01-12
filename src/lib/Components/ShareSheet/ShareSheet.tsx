@@ -22,7 +22,7 @@ interface ShareEntry {
   imageURL?: string
 }
 
-interface ShareSheetProps {
+export interface ShareSheetProps {
   visible: boolean
   entry: ShareEntry
   showWhatsapp?: boolean
