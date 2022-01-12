@@ -4,11 +4,11 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtworkRail_rail = {
+export type ArtworkHomeRail_rail = {
     readonly title: string | null;
     readonly key: string | null;
     readonly results: ReadonlyArray<{
-        readonly " $fragmentRefs": FragmentRefs<"SmallTileRail_artworks">;
+        readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_artworks">;
     } | null> | null;
     readonly context: {
         readonly __typename: "HomePageRelatedArtistArtworkModule";
@@ -22,12 +22,12 @@ export type ArtworkRail_rail = {
         } | null | undefined;
         readonly href?: string | null | undefined;
     } | null;
-    readonly " $refType": "ArtworkRail_rail";
+    readonly " $refType": "ArtworkHomeRail_rail";
 };
-export type ArtworkRail_rail$data = ArtworkRail_rail;
-export type ArtworkRail_rail$key = {
-    readonly " $data"?: ArtworkRail_rail$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_rail">;
+export type ArtworkHomeRail_rail$data = ArtworkHomeRail_rail;
+export type ArtworkHomeRail_rail$key = {
+    readonly " $data"?: ArtworkHomeRail_rail$data | undefined;
+    readonly " $fragmentRefs": FragmentRefs<"ArtworkHomeRail_rail">;
 };
 
 
@@ -47,7 +47,7 @@ return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "ArtworkRail_rail",
+  "name": "ArtworkHomeRail_rail",
   "selections": [
     {
       "alias": null,
@@ -74,7 +74,7 @@ return {
         {
           "args": null,
           "kind": "FragmentSpread",
-          "name": "SmallTileRail_artworks"
+          "name": "ArtworkRail_artworks"
         }
       ],
       "storageKey": null
@@ -188,5 +188,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '49c2890fc360066782d554ad3d03ef0a';
+(node as any).hash = 'e6f3860d31c724c06947ebe41619f277';
 export default node;

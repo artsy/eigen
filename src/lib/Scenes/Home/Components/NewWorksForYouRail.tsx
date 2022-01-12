@@ -8,7 +8,7 @@ import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
-import { SmallTileRailContainer } from "./SmallTileRail"
+import { ArtworkRail } from "./ArtworkRail"
 import { RailScrollProps } from "./types"
 interface NewWorksForYouRailProps {
   title: string
@@ -44,13 +44,7 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
         <Flex pl="2" pr="2">
           <SectionTitle title={title} onPress={navigateToNewWorksForYou} />
         </Flex>
-        {
-          <SmallTileRailContainer
-            listRef={listRef}
-            artworks={artworks}
-            contextModule={ContextModule.newWorksForYouRail}
-          />
-        }
+        {<ArtworkRail listRef={listRef} artworks={artworks} contextModule={ContextModule.newWorksForYouRail} />}
       </View>
     </Flex>
   )
@@ -62,7 +56,7 @@ export const NewWorksForYouRailContainer = createFragmentContainer(NewWorksForYo
       newWorksByInterestingArtists(first: $count) {
         edges {
           node {
-            ...SmallTileRail_artworks
+            ...ArtworkRail_artworks
           }
         }
       }

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash af7e59f34cd7fbe38121ff06cfd9da67 */
+/* @relayHash 2c71afdddf3fd185ee5e7ffc9f4ba054 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -91,11 +91,11 @@ fragment ArtistRail_rail on HomePageArtistModule {
   }
 }
 
-fragment ArtworkRail_rail on HomePageArtworkModule {
+fragment ArtworkHomeRail_rail on HomePageArtworkModule {
   title
   key
   results {
-    ...SmallTileRail_artworks
+    ...ArtworkRail_artworks
     id
   }
   context {
@@ -135,7 +135,7 @@ fragment ArtworkRail_rail on HomePageArtworkModule {
   }
 }
 
-fragment ArtworkTileRailCard2_artwork on Artwork {
+fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
   slug
   internalID
   href
@@ -174,6 +174,12 @@ fragment ArtworkTileRailCard2_artwork on Artwork {
   title
 }
 
+fragment ArtworkRail_artworks on Artwork {
+  ...ArtworkRailCard_artwork_Q5Onb
+  href
+  slug
+}
+
 fragment EmailConfirmationBanner_me on Me {
   canRequestEmailConfirmation
 }
@@ -197,11 +203,11 @@ fragment Home_articlesConnection on ArticleConnection {
 fragment Home_homePageAbove_1IwJ0h on HomePage {
   followedArtistsArtworkModule: artworkModule(key: FOLLOWED_ARTISTS) {
     id
-    ...ArtworkRail_rail
+    ...ArtworkHomeRail_rail
   }
   activeBidsArtworkModule: artworkModule(key: ACTIVE_BIDS) {
     id
-    ...ArtworkRail_rail
+    ...ArtworkHomeRail_rail
   }
   salesModule {
     ...SalesRail_salesModule
@@ -247,7 +253,7 @@ fragment NewWorksForYouRail_me on Me {
   newWorksByInterestingArtists(first: 30) {
     edges {
       node {
-        ...SmallTileRail_artworks
+        ...ArtworkRail_artworks
         id
       }
     }
@@ -337,12 +343,6 @@ fragment SalesRail_salesModule on HomePageSalesModule {
       }
     }
   }
-}
-
-fragment SmallTileRail_artworks on Artwork {
-  ...ArtworkTileRailCard2_artwork
-  href
-  slug
 }
 */
 
@@ -1498,7 +1498,7 @@ return {
     ]
   },
   "params": {
-    "id": "af7e59f34cd7fbe38121ff06cfd9da67",
+    "id": "2c71afdddf3fd185ee5e7ffc9f4ba054",
     "metadata": {},
     "name": "HomeAboveTheFoldQuery",
     "operationKind": "query",

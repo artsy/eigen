@@ -1,142 +1,86 @@
-import { Flex } from "palette"
-import React, { useImperativeHandle, useRef } from "react"
-import { createFragmentContainer, graphql } from "react-relay"
-
-import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
-import { SectionTitle } from "lib/Components/SectionTitle"
+import * as Analytics from "@artsy/cohesion"
+import { ArtworkRail_artworks$key } from "__generated__/ArtworkRail_artworks.graphql"
+import { ArtworkCardSize, ArtworkRailCard } from "lib/Components/ArtworkTileRail/ArtworkRailCard"
+import { PrefetchFlatList } from "lib/Components/PrefetchFlatList"
 import { navigate } from "lib/navigation/navigate"
-import { compact } from "lodash"
-import { FlatList, View } from "react-native"
+import { Spacer } from "palette"
+import React, { ReactElement } from "react"
+import { FlatList } from "react-native"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import HomeAnalytics from "../homeAnalytics"
-import { SmallTileRailContainer } from "./SmallTileRail"
-import { RailScrollProps } from "./types"
 
-export function getViewAllUrl(rail: ArtworkRail_rail) {
-  const context = rail.context
-  const key = rail.key
+const MAX_NUMBER_OF_ARTWORKS = 30
+const DEFAULT_SIZE = "medium"
 
-  switch (key) {
-    case "followed_artists":
-      return "/works-for-you"
-    case "followed_artist":
-    case "related_artists":
-      return context?.artist?.href
-    case "saved_works":
-      return "/favorites"
-    case "genes":
-    case "current_fairs":
-    case "live_auctions":
-      return context?.href
-  }
+interface Props {
+  artworks: ArtworkRail_artworks$key
+  listRef: React.RefObject<FlatList<any>>
+  contextModule: Analytics.ContextModule | undefined
+  size?: ArtworkCardSize
+  onEndReached?: () => void
+  onEndReachedThreshold?: number
+  ListFooterComponent?: ReactElement
 }
 
-/*
-Your Active Bids
-New Works by Followed Artists
-Recently Viewed
-Recently Saved
-*/
-const smallTileKeys: Array<string | null> = ["active_bids", "followed_artists", "recently_viewed_works", "saved_works"]
-
-interface ArtworkRailProps {
-  title: string
-  rail: ArtworkRail_rail
-  mb?: number
-}
-
-const ArtworkRail: React.FC<ArtworkRailProps & RailScrollProps> = ({ title, rail, scrollRef, mb }) => {
+export const ArtworkRail: React.FC<Props> = ({
+  listRef,
+  contextModule,
+  size = DEFAULT_SIZE,
+  onEndReached,
+  onEndReachedThreshold,
+  ListFooterComponent = ListEndComponent,
+  ...restProps
+}) => {
   const tracking = useTracking()
-  const railRef = useRef<View>(null)
-  const listRef = useRef<FlatList<any>>(null)
-  useImperativeHandle(scrollRef, () => ({
-    scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
-  }))
 
-  const viewAllUrl = getViewAllUrl(rail)
-  const useSmallTile = smallTileKeys.includes(rail.key)
+  const artworks = useFragment<ArtworkRail_artworks$key>(artworksFragment, restProps.artworks)
 
-  const context = rail.context
-  let subtitle: string | undefined
-  const basedOnName = context?.basedOn?.name
-  if (context?.__typename === "HomePageRelatedArtistArtworkModule" && Boolean(basedOnName)) {
-    subtitle = `Based on ${basedOnName}`
-  } else if (rail.key === "recommended_works") {
-    subtitle = `Based on your activity on Artsy`
-  }
-  // This is to satisfy the TypeScript compiler based on Metaphysics types.
-  const artworks = compact(rail.results ?? [])
-
-  const showRail = artworks.length
-
-  if (!showRail) {
-    return null
-  }
-
-  return artworks.length ? (
-    <Flex ref={railRef} mb={mb}>
-      <Flex pl="2" pr="2">
-        <SectionTitle
-          title={title}
-          subtitle={subtitle}
+  return (
+    <PrefetchFlatList
+      onEndReached={onEndReached}
+      onEndReachedThreshold={onEndReachedThreshold}
+      prefetchUrlExtractor={(item) => item?.href!}
+      listRef={listRef}
+      horizontal
+      ListHeaderComponent={ListEndComponent}
+      ListFooterComponent={ListFooterComponent}
+      ItemSeparatorComponent={() => <Spacer width={15} />}
+      showsHorizontalScrollIndicator={false}
+      // We need to set the maximum number of artists to not cause layout shifts
+      data={artworks.slice(0, MAX_NUMBER_OF_ARTWORKS)}
+      initialNumToRender={MAX_NUMBER_OF_ARTWORKS}
+      contentContainerStyle={{ alignItems: "flex-end" }}
+      renderItem={({ item, index }) => (
+        <ArtworkRailCard
           onPress={
-            viewAllUrl
+            item.href
               ? () => {
-                  const tapEvent = HomeAnalytics.artworkHeaderTapEvent(rail.key)
-                  if (tapEvent) {
-                    tracking.trackEvent(tapEvent)
+                  if (contextModule) {
+                    tracking.trackEvent(
+                      HomeAnalytics.artworkThumbnailTapEvent(contextModule, item.slug, index, "single")
+                    )
                   }
-                  navigate(viewAllUrl)
+                  navigate(item.href!)
                 }
               : undefined
           }
+          artwork={item}
+          size={size}
+          hidePartnerName
         />
-      </Flex>
-      <SmallTileRailContainer
-        listRef={listRef}
-        artworks={artworks}
-        size={useSmallTile ? "small" : "large"}
-        contextModule={HomeAnalytics.artworkRailContextModule(rail.key)}
-      />
-    </Flex>
-  ) : null
+      )}
+      keyExtractor={(item, index) => String(item.slug || index)}
+    />
+  )
 }
 
-export const ArtworkRailFragmentContainer = createFragmentContainer(ArtworkRail, {
-  rail: graphql`
-    fragment ArtworkRail_rail on HomePageArtworkModule {
-      title
-      key
-      results {
-        ...SmallTileRail_artworks
-      }
-      context {
-        ... on HomePageRelatedArtistArtworkModule {
-          __typename
-          artist {
-            slug
-            internalID
-            href
-          }
-          basedOn {
-            name
-          }
-        }
-        ... on HomePageFollowedArtistArtworkModule {
-          artist {
-            href
-          }
-        }
-        ... on Fair {
-          href
-        }
-        ... on Gene {
-          href
-        }
-        ... on Sale {
-          href
-        }
-      }
-    }
-  `,
-})
+const ListEndComponent = () => <Spacer mr={2} />
+
+const artworksFragment = graphql`
+  fragment ArtworkRail_artworks on Artwork @relay(plural: true) {
+    ...ArtworkRailCard_artwork @arguments(width: 295)
+    href
+    slug
+  }
+`

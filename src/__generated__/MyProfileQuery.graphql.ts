@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0124f8d6aca64c324f94d28f1284c605 */
+/* @relayHash 5cfb7ea3db1df71b95d538c1ff545a0c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,7 +26,7 @@ query MyProfileQuery {
   }
 }
 
-fragment ArtworkTileRailCard2_artwork on Artwork {
+fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
   slug
   internalID
   href
@@ -65,6 +65,12 @@ fragment ArtworkTileRailCard2_artwork on Artwork {
   title
 }
 
+fragment ArtworkRail_artworks on Artwork {
+  ...ArtworkRailCard_artwork_Q5Onb
+  href
+  slug
+}
+
 fragment MyProfile_me on Me {
   name
   createdAt
@@ -73,17 +79,11 @@ fragment MyProfile_me on Me {
       edges {
         node {
           id
-          ...SmallTileRail_artworks
+          ...ArtworkRail_artworks
         }
       }
     }
   }
-}
-
-fragment SmallTileRail_artworks on Artwork {
-  ...ArtworkTileRailCard2_artwork
-  href
-  slug
 }
 */
 
@@ -422,7 +422,7 @@ return {
     ]
   },
   "params": {
-    "id": "0124f8d6aca64c324f94d28f1284c605",
+    "id": "5cfb7ea3db1df71b95d538c1ff545a0c",
     "metadata": {},
     "name": "MyProfileQuery",
     "operationKind": "query",

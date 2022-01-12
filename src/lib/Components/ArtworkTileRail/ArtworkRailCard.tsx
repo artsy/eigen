@@ -1,8 +1,5 @@
 import { themeGet } from "@styled-system/theme-get"
-import {
-  ArtworkTileRailCard2_artwork,
-  ArtworkTileRailCard2_artwork$key,
-} from "__generated__/ArtworkTileRailCard2_artwork.graphql"
+import { ArtworkRailCard_artwork, ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwork.graphql"
 import { getUrgencyTag } from "lib/utils/getUrgencyTag"
 import { Box, Flex, Sans, Text, useColor } from "palette"
 import React from "react"
@@ -20,16 +17,16 @@ const MAX_IMAGE_HEIGHTS = {
 
 export type ArtworkCardSize = "small" | "medium" | "large"
 
-export interface ArtworkTileRailCard2Props {
+export interface ArtworkRailCardProps {
   onPress?: (event: GestureResponderEvent) => void
-  artwork: ArtworkTileRailCard2_artwork$key
+  artwork: ArtworkRailCard_artwork$key
   lotLabel?: string | null
   testID?: string
   size: ArtworkCardSize
   hidePartnerName?: boolean
 }
 
-export const ArtworkTileRailCard2: React.FC<ArtworkTileRailCard2Props> = ({
+export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   onPress,
   testID,
   lotLabel,
@@ -37,7 +34,7 @@ export const ArtworkTileRailCard2: React.FC<ArtworkTileRailCard2Props> = ({
   hidePartnerName = false,
   ...restProps
 }) => {
-  const artwork = useFragment<ArtworkTileRailCard2_artwork$key>(artworkFragment, restProps.artwork)
+  const artwork = useFragment<ArtworkRailCard_artwork$key>(artworkFragment, restProps.artwork)
 
   const { artistNames, date, partner, title, image } = artwork
 
@@ -81,7 +78,7 @@ export const ArtworkTileRailCard2: React.FC<ArtworkTileRailCard2Props> = ({
 }
 
 export interface ArtworkTileImageProps {
-  image: ArtworkTileRailCard2_artwork["image"]
+  image: ArtworkRailCard_artwork["image"]
   size: ArtworkCardSize
   urgencyTag?: string | null
 }
@@ -125,7 +122,7 @@ const ArtworkTileImage: React.FC<ArtworkTileImageProps> = ({ image, size, urgenc
 
 // TODO: Make size adjustable
 const artworkFragment = graphql`
-  fragment ArtworkTileRailCard2_artwork on Artwork @argumentDefinitions(width: { type: "Int", defaultValue: 295 }) {
+  fragment ArtworkRailCard_artwork on Artwork @argumentDefinitions(width: { type: "Int", defaultValue: 295 }) {
     slug
     internalID
     href

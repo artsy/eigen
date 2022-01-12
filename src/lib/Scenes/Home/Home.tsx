@@ -12,7 +12,7 @@ import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/Art
 import { RecommendedArtistsRailFragmentContainer } from "lib/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { LotsByFollowedArtistsRailContainer } from "lib/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkRail"
+import { ArtworkHomeRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkHomeRail"
 import { AuctionResultsRailFragmentContainer } from "lib/Scenes/Home/Components/AuctionResultsRail"
 import { CollectionsRailFragmentContainer } from "lib/Scenes/Home/Components/CollectionsRail"
 import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
@@ -241,7 +241,7 @@ const Home = (props: Props) => {
                 )
               case "artwork":
                 return (
-                  <ArtworkRailFragmentContainer
+                  <ArtworkHomeRailFragmentContainer
                     title={item.title}
                     rail={item.data || null}
                     scrollRef={scrollRefs.current[index]}
@@ -376,11 +376,11 @@ export const HomeFragmentContainer = createRefetchContainer(
       @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
         followedArtistsArtworkModule: artworkModule(key: FOLLOWED_ARTISTS) {
           id
-          ...ArtworkRail_rail
+          ...ArtworkHomeRail_rail
         }
         activeBidsArtworkModule: artworkModule(key: ACTIVE_BIDS) {
           id
-          ...ArtworkRail_rail
+          ...ArtworkHomeRail_rail
         }
         salesModule {
           ...SalesRail_salesModule
@@ -398,11 +398,11 @@ export const HomeFragmentContainer = createRefetchContainer(
       @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
         recentlyViewedWorksArtworkModule: artworkModule(key: RECENTLY_VIEWED_WORKS) {
           id
-          ...ArtworkRail_rail
+          ...ArtworkHomeRail_rail
         }
         similarToRecentlyViewedArtworkModule: artworkModule(key: SIMILAR_TO_RECENTLY_VIEWED) {
           id
-          ...ArtworkRail_rail
+          ...ArtworkHomeRail_rail
         }
         popularArtistsArtistModule: artistModule(key: POPULAR) {
           id

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash bbdced50b5910dd9a8d6fbafdec81a83 */
+/* @relayHash a3cfae20c055a873eda1a4cd65fd6977 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -118,11 +118,11 @@ fragment ArtistRail_rail on HomePageArtistModule {
   }
 }
 
-fragment ArtworkRail_rail on HomePageArtworkModule {
+fragment ArtworkHomeRail_rail on HomePageArtworkModule {
   title
   key
   results {
-    ...SmallTileRail_artworks
+    ...ArtworkRail_artworks
     id
   }
   context {
@@ -162,7 +162,7 @@ fragment ArtworkRail_rail on HomePageArtworkModule {
   }
 }
 
-fragment ArtworkTileRailCard2_artwork on Artwork {
+fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
   slug
   internalID
   href
@@ -199,6 +199,12 @@ fragment ArtworkTileRailCard2_artwork on Artwork {
     id
   }
   title
+}
+
+fragment ArtworkRail_artworks on Artwork {
+  ...ArtworkRailCard_artwork_Q5Onb
+  href
+  slug
 }
 
 fragment AuctionResultListItem_auctionResult on AuctionResult {
@@ -344,11 +350,11 @@ fragment Home_featured on ViewingRoomConnection {
 fragment Home_homePageAbove_1IwJ0h on HomePage {
   followedArtistsArtworkModule: artworkModule(key: FOLLOWED_ARTISTS) {
     id
-    ...ArtworkRail_rail
+    ...ArtworkHomeRail_rail
   }
   activeBidsArtworkModule: artworkModule(key: ACTIVE_BIDS) {
     id
-    ...ArtworkRail_rail
+    ...ArtworkHomeRail_rail
   }
   salesModule {
     ...SalesRail_salesModule
@@ -363,11 +369,11 @@ fragment Home_homePageAbove_1IwJ0h on HomePage {
 fragment Home_homePageBelow_1IwJ0h on HomePage {
   recentlyViewedWorksArtworkModule: artworkModule(key: RECENTLY_VIEWED_WORKS) {
     id
-    ...ArtworkRail_rail
+    ...ArtworkHomeRail_rail
   }
   similarToRecentlyViewedArtworkModule: artworkModule(key: SIMILAR_TO_RECENTLY_VIEWED) {
     id
-    ...ArtworkRail_rail
+    ...ArtworkHomeRail_rail
   }
   popularArtistsArtistModule: artistModule(key: POPULAR) {
     id
@@ -425,7 +431,7 @@ fragment NewWorksForYouRail_me on Me {
   newWorksByInterestingArtists(first: 30) {
     edges {
       node {
-        ...SmallTileRail_artworks
+        ...ArtworkRail_artworks
         id
       }
     }
@@ -550,12 +556,6 @@ fragment ShowsRail_showsConnection on ShowConnection {
       id
     }
   }
-}
-
-fragment SmallTileRail_artworks on Artwork {
-  ...ArtworkTileRailCard2_artwork
-  href
-  slug
 }
 
 fragment Trove_trove_1IwJ0h on HomePage {
@@ -2508,7 +2508,7 @@ return {
     ]
   },
   "params": {
-    "id": "bbdced50b5910dd9a8d6fbafdec81a83",
+    "id": "a3cfae20c055a873eda1a4cd65fd6977",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",

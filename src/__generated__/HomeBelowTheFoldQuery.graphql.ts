@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 63494973bf5002eb3cbcf54be9bd478b */
+/* @relayHash 4684dc2bbc2299d5c56b7d477a06b002 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -72,11 +72,11 @@ fragment ArtistRail_rail on HomePageArtistModule {
   }
 }
 
-fragment ArtworkRail_rail on HomePageArtworkModule {
+fragment ArtworkHomeRail_rail on HomePageArtworkModule {
   title
   key
   results {
-    ...SmallTileRail_artworks
+    ...ArtworkRail_artworks
     id
   }
   context {
@@ -116,7 +116,7 @@ fragment ArtworkRail_rail on HomePageArtworkModule {
   }
 }
 
-fragment ArtworkTileRailCard2_artwork on Artwork {
+fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
   slug
   internalID
   href
@@ -153,6 +153,12 @@ fragment ArtworkTileRailCard2_artwork on Artwork {
     id
   }
   title
+}
+
+fragment ArtworkRail_artworks on Artwork {
+  ...ArtworkRailCard_artwork_Q5Onb
+  href
+  slug
 }
 
 fragment AuctionResultListItem_auctionResult on AuctionResult {
@@ -290,11 +296,11 @@ fragment Home_featured on ViewingRoomConnection {
 fragment Home_homePageBelow_1IwJ0h on HomePage {
   recentlyViewedWorksArtworkModule: artworkModule(key: RECENTLY_VIEWED_WORKS) {
     id
-    ...ArtworkRail_rail
+    ...ArtworkHomeRail_rail
   }
   similarToRecentlyViewedArtworkModule: artworkModule(key: SIMILAR_TO_RECENTLY_VIEWED) {
     id
-    ...ArtworkRail_rail
+    ...ArtworkHomeRail_rail
   }
   popularArtistsArtistModule: artistModule(key: POPULAR) {
     id
@@ -380,12 +386,6 @@ fragment ShowsRail_showsConnection on ShowConnection {
       id
     }
   }
-}
-
-fragment SmallTileRail_artworks on Artwork {
-  ...ArtworkTileRailCard2_artwork
-  href
-  slug
 }
 
 fragment Trove_trove_1IwJ0h on HomePage {
@@ -1808,7 +1808,7 @@ return {
     ]
   },
   "params": {
-    "id": "63494973bf5002eb3cbcf54be9bd478b",
+    "id": "4684dc2bbc2299d5c56b7d477a06b002",
     "metadata": {},
     "name": "HomeBelowTheFoldQuery",
     "operationKind": "query",

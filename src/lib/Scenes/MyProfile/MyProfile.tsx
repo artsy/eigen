@@ -16,7 +16,7 @@ import { Flex, Join, Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
-import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
+import { ArtworkRail } from "../Home/Components/ArtworkRail"
 import { LoadingSkeleton as MyCollectionLoadingSkeleton, useEnableMyCollection } from "../MyCollection/MyCollection"
 import { MyCollectionAndSavedWorksQueryRenderer } from "./MyCollectionAndSavedWorks"
 import { confirmLogout, SectionHeading } from "./MyProfileSettings"
@@ -58,7 +58,7 @@ export const OldMyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp 
       <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />
       <MenuItem title="Saves and follows" onPress={() => navigate("favorites")} />
       {!!recentlySavedArtworks.length && (
-        <SmallTileRailContainer artworks={recentlySavedArtworks} listRef={listRef} contextModule={null as any} />
+        <ArtworkRail artworks={recentlySavedArtworks} listRef={listRef} contextModule={null as any} />
       )}
       <Separator mt={3} mb={2} />
       <SectionHeading title="Account Settings" />
@@ -129,7 +129,7 @@ export const OldMyProfileContainer = createRefetchContainer(
             edges {
               node {
                 id
-                ...SmallTileRail_artworks
+                ...ArtworkRail_artworks
               }
             }
           }

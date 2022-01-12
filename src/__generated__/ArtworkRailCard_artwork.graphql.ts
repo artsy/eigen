@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtworkTileRailCard2_artwork = {
+export type ArtworkRailCard_artwork = {
     readonly slug: string;
     readonly internalID: string;
     readonly href: string | null;
@@ -38,12 +38,12 @@ export type ArtworkTileRailCard2_artwork = {
         readonly name: string | null;
     } | null;
     readonly title: string | null;
-    readonly " $refType": "ArtworkTileRailCard2_artwork";
+    readonly " $refType": "ArtworkRailCard_artwork";
 };
-export type ArtworkTileRailCard2_artwork$data = ArtworkTileRailCard2_artwork;
-export type ArtworkTileRailCard2_artwork$key = {
-    readonly " $data"?: ArtworkTileRailCard2_artwork$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"ArtworkTileRailCard2_artwork">;
+export type ArtworkRailCard_artwork$data = ArtworkRailCard_artwork;
+export type ArtworkRailCard_artwork$key = {
+    readonly " $data"?: ArtworkRailCard_artwork$data | undefined;
+    readonly " $fragmentRefs": FragmentRefs<"ArtworkRailCard_artwork">;
 };
 
 
@@ -66,7 +66,7 @@ return {
   ],
   "kind": "Fragment",
   "metadata": null,
-  "name": "ArtworkTileRailCard2_artwork",
+  "name": "ArtworkRailCard_artwork",
   "selections": [
     {
       "alias": null,
@@ -277,5 +277,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'fb9985c8c936809c6aa68a179ff563f4';
+(node as any).hash = 'ea625b4bb539edd05e03480f85234161';
 export default node;
