@@ -4,7 +4,7 @@ import { BackButton } from "lib/navigation/BackButton"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Button, Flex, Input, Spacer, Text, useColor } from "palette"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { ScrollView, View } from "react-native"
 import * as Yup from "yup"
 import { Touchable } from "../../../palette/elements/Touchable/Touchable"
@@ -15,7 +15,9 @@ export const OnboardingLogin: React.FC = () => {
   return <OnboardingSocialPick mode="login" />
 }
 
-export interface OnboardingLoginProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWithEmail"> {}
+export interface OnboardingLoginProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWithEmail"> {
+  requiresOTP: boolean
+}
 
 export interface OnboardingLoginValuesSchema {
   email: string
@@ -27,7 +29,7 @@ export const loginSchema = Yup.object().shape({
   password: Yup.string().test("password", "Password field is required", (value) => value !== ""),
 })
 
-export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ navigation, route }) => {
+export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ navigation, route, requiresOTP }) => {
   const color = useColor()
   const { values, handleSubmit, handleChange, validateForm, errors, isValid, dirty, isSubmitting, setErrors } =
     useFormikContext<OnboardingLoginValuesSchema>()
@@ -36,7 +38,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
   const emailInputRef = useRef<Input>(null)
 
   /**
-   * When we land on OnboardingLogin from the OnboardingCreatAccount
+   * When we land on OnboardingLogin from the OnboardingCreateAccount
    * withFadeAnimation is set to true therefore if the user presses
    * on the back button to navigate to the welcome screen, the screen
    * fades instead of translating horizontally. To avoid that we need
@@ -55,6 +57,12 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
     // setting params on an unmounted screen
     return clearTimeout(timeout)
   }, [])
+
+  useEffect(() => {
+    if (requiresOTP) {
+      navigation.navigate("OnboardingLoginWithOTP", { email: values.email, password: values.password })
+    }
+  }, [requiresOTP])
 
   return (
     <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1 }}>
@@ -160,6 +168,8 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
 const initialValues: OnboardingLoginValuesSchema = { email: "", password: "" }
 
 export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ navigation, route }) => {
+  const [requiresOTP, setRequiresOTP] = useState<boolean>(false)
+
   const formik = useFormik<OnboardingLoginValuesSchema>({
     enableReinitialize: true,
     validateOnChange: false,
@@ -167,12 +177,18 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ navig
     initialValues,
     initialErrors: {},
     onSubmit: async ({ email, password }, { setErrors, validateForm }) => {
+      setRequiresOTP(false)
       validateForm()
       const res = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
         email,
         password,
       })
+
+      if (res === "otp_missing") {
+        setRequiresOTP(true)
+      }
+
       if (res !== "success") {
         // For security purposes, we are returning a generic error message
         setErrors({ password: "Incorrect email or password" })
@@ -184,7 +200,7 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ navig
 
   return (
     <FormikProvider value={formik}>
-      <OnboardingLoginWithEmailForm navigation={navigation} route={route} />
+      <OnboardingLoginWithEmailForm navigation={navigation} route={route} requiresOTP={requiresOTP} />
     </FormikProvider>
   )
 }
