@@ -2,7 +2,7 @@ import { StackScreenProps } from "@react-navigation/stack"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { BackButton } from "lib/navigation/BackButton"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Input, Spacer, Text, useColor } from "palette"
+import { Box, Button, Flex, Input, Spacer, Text, useColor } from "palette"
 import React, { useRef } from "react"
 import { ScrollView, View } from "react-native"
 import * as Yup from "yup"
@@ -32,7 +32,9 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPProps> =
 }) => {
   const color = useColor()
 
-  const { values, errors } = useFormikContext<OnboardingLoginWithOTPValuesSchema>()
+  const { values, handleChange, handleSubmit, errors, setErrors, isValid, dirty, isSubmitting, validateForm } =
+    useFormikContext<OnboardingLoginWithOTPValuesSchema>()
+
   const otpInputRef = useRef<Input>(null)
 
   return (
@@ -48,10 +50,22 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPProps> =
           <Input
             ref={otpInputRef}
             autoCapitalize="none"
+            autoCorrect={false}
             keyboardType="numeric"
+            onChangeText={(text) => {
+              // Hide error when the user starts to type again
+              if (errors.otp) {
+                setErrors({
+                  otp: undefined,
+                })
+                validateForm()
+              }
+              handleChange("otp")(text)
+            }}
+            onBlur={() => validateForm()}
             placeholder="Enter an authentication code"
             placeholderTextColor={color("black30")}
-            secureTextEntry
+            title="Authentication Code"
             returnKeyType="done"
             value={values.otp}
             error={errors.otp}
@@ -60,6 +74,19 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPProps> =
         <Spacer mt={4} />
       </ScrollView>
       <BackButton onPress={() => navigation.goBack()} />
+      <Flex px={2} paddingBottom={2}>
+        <Button
+          onPress={handleSubmit}
+          block
+          haptic="impactMedium"
+          disabled={!(isValid && dirty) || isSubmitting}
+          loading={isSubmitting}
+          testID="loginButton"
+          variant="fillDark"
+        >
+          Log in
+        </Button>
+      </Flex>
     </View>
   )
 }
