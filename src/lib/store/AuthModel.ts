@@ -33,6 +33,8 @@ const afterSocialAuthLogin = (res: any, reject: (reason?: any) => void, provider
   }
 }
 
+type SignInStatus = "failure" | "success" | "otp_missing"
+
 type OnboardingState = "none" | "incomplete" | "complete"
 export interface AuthModel {
   // State
@@ -70,7 +72,7 @@ export interface AuthModel {
     ),
     {},
     GlobalStoreModel,
-    Promise<boolean>
+    Promise<SignInStatus>
   >
   signUp: Thunk<
     this,
@@ -295,10 +297,15 @@ export const getAuthModel = (): AuthModel => ({
         actions.requestPushNotifPermission()
       }
 
-      return true
+      return "success"
     }
 
-    return false
+    const resultJSON = await result.json()
+    if (resultJSON?.error === "otp_missing") {
+      return "otp_missing"
+    }
+
+    return "failure"
   }),
   signUp: thunk(async (actions, args) => {
     const { oauthProvider, email, name, agreedToReceiveEmails } = args

@@ -173,7 +173,7 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ navig
         email,
         password,
       })
-      if (!res) {
+      if (res !== "success") {
         // For security purposes, we are returning a generic error message
         setErrors({ password: "Incorrect email or password" })
         validateForm()
