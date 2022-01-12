@@ -117,15 +117,41 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       rest.onClear?.()
     }
 
+    const reverseImageSearch = async (imagePath: string) => {
+      const body = new FormData()
+      body.append("image", {
+        uri: imagePath,
+        type: "image/jpeg",
+        name: "image.jpg",
+      })
+
+      try {
+        const response = await fetch("https://match-staging.artsy.net/search", {
+          body,
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          method: "POST",
+        })
+        // const json = await response.json()
+        console.warn({ response })
+        return response
+      } catch (error) {
+        console.error(error)
+      }
+    }
+
     const takePhoto = () => {
       ImagePicker.openCamera({
         cropping: true,
         width: 3000,
         height: 3000,
+        compressImageQuality: 0.2,
         forceJpg: true,
       })
         .then((image) => {
           console.warn(image.path)
+          reverseImageSearch(image.path)
           setIsVisible(true)
           setImgPath(image.path)
         })
