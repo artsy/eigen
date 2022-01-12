@@ -23,6 +23,11 @@ describe("getNamePlaceholder", () => {
       { label: "One", paramName: FilterParamName.materialsTerms, value: "one" },
       { label: "Two", paramName: FilterParamName.materialsTerms, value: "two" },
     ]
-    expect(getNamePlaceholder("artistName", pills)).toBe("artistName • 3 filters")
+    expect(getNamePlaceholder("artistName", pills)).toBe("artistName • 2 filters")
+  })
+
+  it("returns only artist name when pills are empty", () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
+    expect(getNamePlaceholder("artistName", [])).toBe("artistName")
   })
 })

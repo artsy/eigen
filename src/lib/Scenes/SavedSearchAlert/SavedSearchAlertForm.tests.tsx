@@ -572,7 +572,7 @@ describe("Saved search alert form", () => {
       )
 
       expect(getAllByText("Save Alert")[0]).toBeDisabled()
-      fireEvent.changeText(getByPlaceholderText(`artistName ${bullet} 6 filters`), "new value")
+      fireEvent.changeText(getByPlaceholderText(`artistName ${bullet} 5 filters`), "new value")
       expect(getAllByText("Save Alert")[0]).not.toBeDisabled()
     })
 
