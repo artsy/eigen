@@ -1,5 +1,5 @@
 import { storiesOf } from "@storybook/react-native"
-import { Button, Flex, Join, Separator, Spacer, Text } from "palette"
+import { CTAButton, Flex, Join, Separator, Spacer, Text } from "palette"
 import { CollapsibleMenuItem } from "palette/elements/CollapsibleMenuItem/CollapsibleMenuItem"
 import React, { useRef, useState } from "react"
 import { ScrollView, View } from "react-native"
@@ -10,7 +10,7 @@ export const ArtworkDetails = ({ handlePress }: { handlePress: () => void }) => 
     <Flex backgroundColor="peachpuff" p={1} mt={1}>
       <Text>ArtworkDetails content</Text>
       <Spacer mt={1} />
-      <CTAButton text="Save & Continue" onPress={handlePress} />
+      <CTAButton onPress={handlePress}>Save & Continue</CTAButton>
     </Flex>
   )
 }
@@ -20,7 +20,7 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
     <Flex backgroundColor="peachpuff" p={1} mt={1}>
       <Text>Upload Photos content</Text>
       <Spacer mt={1} />
-      <CTAButton text="Save & Continue" onPress={handlePress} />
+      <CTAButton onPress={handlePress}>Save & Continue</CTAButton>
     </Flex>
   )
 }
@@ -30,15 +30,10 @@ export const ContactInformation = ({ handlePress }: { handlePress: () => void })
     <Flex backgroundColor="peachpuff" p={1} mt={1}>
       <Text>ContactInformation content</Text>
       <Spacer mt={1} />
-      <CTAButton text="Submit Artwork" onPress={handlePress} />
+      <CTAButton onPress={handlePress}>Submit Artwork</CTAButton>
     </Flex>
   )
 }
-const CTAButton = ({ onPress, text }: { onPress: () => void; text: string }) => (
-  <Button block haptic maxWidth={540} onPress={onPress}>
-    {text}
-  </Button>
-)
 
 export const DisplayContent = () => {
   return (

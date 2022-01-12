@@ -36,7 +36,7 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
         </Button>
       </Flex>
       <Spacer m={1} />
-      <CTAButton text="Save & Continue" onPress={handlePress} />
+      <CTAButton onPress={handlePress}>Save & Continue</CTAButton>
     </Flex>
   )
 }

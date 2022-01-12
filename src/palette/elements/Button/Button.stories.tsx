@@ -52,7 +52,7 @@ storiesOf("Button", module)
     />
   ))
   .add("Call To Action Button (CTA Button)", () => (
-    <CTAButton text="Save & Continue" onPress={() => console.log("pressed")} />
+    <CTAButton onPress={() => console.log("pressed")}>cta button</CTAButton>
   ))
   // .add("Variants", () => ( // causes errors
   //   <DList
