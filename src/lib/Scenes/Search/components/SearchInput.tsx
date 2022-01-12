@@ -44,6 +44,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, pla
 
   return (
     <SearchBox
+      showCamera
       ref={searchProviderValues.inputRef}
       enableCancelButton
       placeholder={placeholder}

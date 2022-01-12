@@ -2,10 +2,12 @@ import { themeGet } from "@styled-system/theme-get"
 import { EventEmitter } from "events"
 import { MeasuredView } from "lib/utils/MeasuredView"
 import _ from "lodash"
-import { Color, EyeOpenedIcon, Flex, Spinner, Text, useTheme, XCircleIcon } from "palette"
+import { Button, CameraIcon, Color, EyeOpenedIcon, Flex, Spacer, Spinner, Text, useTheme, XCircleIcon } from "palette"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
+  Image,
   LayoutAnimation,
+  Modal,
   Platform,
   TextInput,
   TextInputProps,
@@ -14,6 +16,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native"
+import ImagePicker from "react-native-image-crop-picker"
 import styled from "styled-components/native"
 import { EyeClosedIcon } from "../../svgs/EyeClosedIcon"
 import { InputTitle } from "./InputTitle"
@@ -63,6 +66,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   canHidePassword?: boolean
   inputTextStyle?: TextStyle
   addClearListener?: boolean
+  showCamera?: boolean
   onClear?(): void
   renderLeftHandSection?(): JSX.Element
 }
@@ -93,6 +97,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       multiline,
       maxLength,
       showLimit,
+      showCamera,
       addClearListener = false,
       ...rest
     },
@@ -100,6 +105,8 @@ export const Input = React.forwardRef<TextInput, InputProps>(
   ) => {
     const { color, theme } = useTheme()
     const [focused, setFocused] = useState(false)
+    const [isVisible, setIsVisible] = useState(false)
+    const [imgPath, setImgPath] = useState<string>()
     const [showPassword, setShowPassword] = useState(!secureTextEntry)
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
     const input = useRef<TextInput>()
@@ -108,6 +115,21 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       input.current?.clear()
       localOnChangeText("")
       rest.onClear?.()
+    }
+
+    const takePhoto = () => {
+      ImagePicker.openCamera({
+        cropping: true,
+        width: 3000,
+        height: 3000,
+        forceJpg: true,
+      })
+        .then((image) => {
+          console.warn(image.path)
+          setIsVisible(true)
+          setImgPath(image.path)
+        })
+        .catch((e) => console.warn("error", e))
     }
 
     useImperativeHandle(ref, () => input.current!)
@@ -220,6 +242,34 @@ export const Input = React.forwardRef<TextInput, InputProps>(
 
     return (
       <Flex flexGrow={1} style={containerStyle}>
+        <Modal
+          visible={isVisible}
+          onDismiss={() => setIsVisible(false)}
+          presentationStyle="pageSheet"
+          animationType="slide"
+        >
+          <Spacer mb={1} />
+          {!!imgPath && (
+            <Image
+              source={{ uri: imgPath }}
+              style={{
+                resizeMode: "cover",
+                alignSelf: "center",
+                width: "100%",
+                height: 300,
+                borderRadius: 5,
+                borderColor: "black",
+                borderWidth: 2,
+              }}
+            />
+          )}
+          <Spacer mb={1} />
+          <Flex flex={1} alignItems="center">
+            <Button onPress={() => setIsVisible(false)} alignSelf="center">
+              <Text>close</Text>
+            </Button>
+          </Flex>
+        </Modal>
         <Flex flexDirection="row" alignItems="center">
           <InputTitle optional={optional} required={required}>
             {title}
@@ -296,6 +346,11 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                   rest.onBlur?.(e)
                 }}
               />
+            </Flex>
+            <Flex pr="1" justifyContent="center" alignItems="center" flexGrow={0}>
+              <TouchableOpacity onPress={takePhoto} hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}>
+                {!!showCamera && <CameraIcon fill="black100" />}
+              </TouchableOpacity>
             </Flex>
             {renderShowPasswordIcon()}
             {loading ? (
