@@ -1,6 +1,6 @@
 import { bullet, Button, Flex, Spacer, Text } from "palette"
+import { CTAButton } from "palette"
 import React from "react"
-import { CTAButton } from "../CTAButton"
 
 export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
   return (
