@@ -315,7 +315,7 @@
     ]
   },
   "prettier": {
-    "printWidth": 120,
+    "printWidth": 100,
     "semi": false,
     "singleQuote": false,
     "trailingComma": "es5",

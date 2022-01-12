@@ -13,8 +13,8 @@
   "prettier.singleQuote": false,
   "prettier.trailingComma": "es5",
   "prettier.semi": false,
-  "prettier.printWidth": 120,
-  "editor.rulers": [120],
+  "prettier.printWidth": 100,
+  "editor.rulers": [100],
   "editor.tabSize": 2,
   "files.exclude": {
     "**/.git": true,
