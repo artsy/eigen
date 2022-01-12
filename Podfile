@@ -60,6 +60,18 @@ pre_install do |installer|
    $RNMBGL.pre_install(installer)
 end
 
+target 'ArtsyAppClip' do
+  config = use_native_modules!
+
+  use_react_native!(
+    :path => './node_modules/react-native',
+    # to enable hermes on iOS, change `false` to `true` and then install pods
+    :hermes_enabled => false
+  )
+
+end
+
+
 target 'Artsy' do
   config = use_native_modules!
   use_react_native!(
@@ -153,11 +165,11 @@ target 'Artsy' do
   end
 end
 
-
 # Enables Flipper.
 # Note that if you have use_frameworks! enabled, Flipper will not work and
 # you should disable these next few lines.
 use_flipper!({ 'Flipper-Folly' => '2.5.3', 'Flipper' => '0.87.0', 'Flipper-RSocket' => '1.3.1' })
+
 post_install do |installer|
   flipper_post_install(installer)
 

@@ -354,6 +354,14 @@
 		60FC2CBB1C8DF29900ACD78F /* LiveEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 60FC2CBA1C8DF29900ACD78F /* LiveEvent.m */; };
 		60FC2CBD1C8F677700ACD78F /* live_auctions_static.json in Resources */ = {isa = PBXBuildFile; fileRef = 601E31AA1C80A55F00D09F73 /* live_auctions_static.json */; };
 		60FC2CBF1C8F704D00ACD78F /* SaleStatusType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FC2CBE1C8F704D00ACD78F /* SaleStatusType.swift */; };
+		660F2F94278EEE2300CDC6A0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 660F2F93278EEE2300CDC6A0 /* AppDelegate.m */; };
+		660F2F97278EEE2300CDC6A0 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 660F2F96278EEE2300CDC6A0 /* SceneDelegate.m */; };
+		660F2F9A278EEE2300CDC6A0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 660F2F99278EEE2300CDC6A0 /* ViewController.m */; };
+		660F2F9D278EEE2300CDC6A0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 660F2F9B278EEE2300CDC6A0 /* Main.storyboard */; };
+		660F2F9F278EEE2400CDC6A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 660F2F9E278EEE2400CDC6A0 /* Assets.xcassets */; };
+		660F2FA2278EEE2400CDC6A0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 660F2FA0278EEE2400CDC6A0 /* LaunchScreen.storyboard */; };
+		660F2FA5278EEE2400CDC6A0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 660F2FA4278EEE2400CDC6A0 /* main.m */; };
+		660F2FA9278EEE2400CDC6A0 /* ArtsyAppClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = 660F2F90278EEE2200CDC6A0 /* ArtsyAppClip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		66A43C671CE470C400FFD6ED /* Hash.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C641CE470C400FFD6ED /* Hash.png */; };
 		66A43C681CE470C400FFD6ED /* Hash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C651CE470C400FFD6ED /* Hash@2x.png */; };
 		66A43C691CE470C400FFD6ED /* Hash@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C661CE470C400FFD6ED /* Hash@3x.png */; };
@@ -426,6 +434,7 @@
 		E6F466E818EF52A800A09AFA /* Artwork_v1.data in Resources */ = {isa = PBXBuildFile; fileRef = E6F466E718EF52A800A09AFA /* Artwork_v1.data */; };
 		E6F84CFF1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E6F84CFE1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png */; };
 		E6F84D001A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E6F84CFE1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png */; };
+		F5277129022344A75FEDC2B7 /* libPods-ArtsyAppClip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B036CE8A56947DA1182A9D0C /* libPods-ArtsyAppClip.a */; };
 		FC073424275E8F6E008B29B9 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9DDB10274D8FFF005DEE85 /* Article.swift */; };
 		FC10F3782760FC15006CDAB5 /* WidgetUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B4A2746F81F00232337 /* WidgetUrl.swift */; };
 		FC61189E2746FE2300612581 /* ArtworkStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC61189D2746FE2300612581 /* ArtworkStore.swift */; };
@@ -490,6 +499,13 @@
 			remoteGlobalIDString = 1AD4F89A25FBBA85007FDB71;
 			remoteInfo = "Artsy Stickers";
 		};
+		660F2FA7278EEE2400CDC6A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49BA7DF61655ABE600C06572 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 660F2F8F278EEE2200CDC6A0;
+			remoteInfo = ArtsyAppClip;
+		};
 		B3ECE8341819D1E7009F5C5B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49BA7DF61655ABE600C06572 /* Project object */;
@@ -519,9 +535,21 @@
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		660D58FB278EDAB30066959C /* Embed App Clips */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/AppClips";
+			dstSubfolderSpec = 16;
+			files = (
+				660F2FA9278EEE2400CDC6A0 /* ArtsyAppClip.app in Embed App Clips */,
+			);
+			name = "Embed App Clips";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		01EFB921EEDEF36658D1CCE9 /* Pods-ArtsyAppClip.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyAppClip.store.xcconfig"; path = "Pods/Target Support Files/Pods-ArtsyAppClip/Pods-ArtsyAppClip.store.xcconfig"; sourceTree = "<group>"; };
 		06E44EB8170235D8001B2EBF /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		0C9332281BA1FA6B00F3CE95 /* ARUserActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARUserActivity.h; sourceTree = "<group>"; };
 		0C9332291BA1FA6B00F3CE95 /* ARUserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARUserActivity.m; sourceTree = "<group>"; };
@@ -551,6 +579,7 @@
 		1CFA4EB51E5C4B6B00D44A5A /* full_logo_black_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "full_logo_black_small@2x.png"; sourceTree = "<group>"; };
 		219967EB267B4B1C00ECA8E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		229364D21EC65CDC00D2045E /* SaleStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaleStatusView.swift; path = Live_Auctions/Views/SaleStatusView.swift; sourceTree = "<group>"; };
+		251623938AAD857411BAB380 /* Pods-ArtsyAppClip.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyAppClip.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ArtsyAppClip/Pods-ArtsyAppClip.debug.xcconfig"; sourceTree = "<group>"; };
 		29773A6F17B9749800FC89B3 /* ARHasImageBaseURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHasImageBaseURL.h; sourceTree = "<group>"; };
 		342F9036F798770D9E0CC66C /* UIImageView+AsyncImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AsyncImageLoading.h"; sourceTree = "<group>"; };
 		342F90BFE6268BEBC0E7BB2E /* ARValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARValueTransformer.m; sourceTree = "<group>"; };
@@ -1045,6 +1074,19 @@
 		60FFE3D8188E91C50012B485 /* deploy_to_beta.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = deploy_to_beta.md; sourceTree = "<group>"; };
 		60FFE3D9188E91C50012B485 /* getting_started.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = getting_started.md; sourceTree = "<group>"; };
 		60FFE3DA188E91C50012B485 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		660F2F90278EEE2200CDC6A0 /* ArtsyAppClip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ArtsyAppClip.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		660F2F92278EEE2300CDC6A0 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		660F2F93278EEE2300CDC6A0 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		660F2F95278EEE2300CDC6A0 /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
+		660F2F96278EEE2300CDC6A0 /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		660F2F98278EEE2300CDC6A0 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		660F2F99278EEE2300CDC6A0 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		660F2F9C278EEE2300CDC6A0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		660F2F9E278EEE2400CDC6A0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		660F2FA1278EEE2400CDC6A0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		660F2FA3278EEE2400CDC6A0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		660F2FA4278EEE2400CDC6A0 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		660F2FA6278EEE2400CDC6A0 /* ArtsyAppClip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ArtsyAppClip.entitlements; sourceTree = "<group>"; };
 		66A43C641CE470C400FFD6ED /* Hash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Hash.png; sourceTree = "<group>"; };
 		66A43C651CE470C400FFD6ED /* Hash@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Hash@2x.png"; sourceTree = "<group>"; };
 		66A43C661CE470C400FFD6ED /* Hash@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Hash@3x.png"; sourceTree = "<group>"; };
@@ -1062,6 +1104,7 @@
 		9D50B9532450CFB500A6DCD0 /* BackChevron@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackChevron@3x.png"; sourceTree = "<group>"; };
 		9D50B9542450CFB600A6DCD0 /* BackChevron.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BackChevron.png; sourceTree = "<group>"; };
 		9D50B9552450CFB600A6DCD0 /* BackChevron@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "BackChevron@2x.png"; sourceTree = "<group>"; };
+		B036CE8A56947DA1182A9D0C /* libPods-ArtsyAppClip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ArtsyAppClip.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B30FEF59181EEA47009E4EAD /* ARBidButtonTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARBidButtonTests.m; sourceTree = "<group>"; };
 		B316E2F218170DF40086CCDB /* SaleArtwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaleArtwork.h; sourceTree = "<group>"; };
 		B316E2F318170DF40086CCDB /* SaleArtwork.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaleArtwork.m; sourceTree = "<group>"; };
@@ -1111,6 +1154,7 @@
 		CBB469CF181F1F1200B5692B /* Bid.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Bid.m; sourceTree = "<group>"; };
 		CBF74083250ACDC5004048D3 /* ARAppDelegate+Echo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Echo.h"; sourceTree = "<group>"; };
 		CBF74084250ACDC5004048D3 /* ARAppDelegate+Echo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Echo.m"; sourceTree = "<group>"; };
+		CC2E915978CE7594318D40A7 /* Pods-ArtsyAppClip.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyAppClip.demo.xcconfig"; path = "Pods/Target Support Files/Pods-ArtsyAppClip/Pods-ArtsyAppClip.demo.xcconfig"; sourceTree = "<group>"; };
 		D35D9D5B1ACB4FF800E67A1D /* ARCustomEigenLabelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCustomEigenLabelTests.m; sourceTree = "<group>"; };
 		D3ACE5381AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARExternalWebBrowserViewControllerTests.m; sourceTree = "<group>"; };
 		D3C8C2051B66D2FF004CAD7F /* ARImageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageTests.m; sourceTree = "<group>"; };
@@ -1230,6 +1274,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		660F2F8D278EEE2200CDC6A0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F5277129022344A75FEDC2B7 /* libPods-ArtsyAppClip.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B3ECE8231819D1E6009F5C5B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1293,6 +1345,9 @@
 				F5228136EBA7C3D968C3D845 /* Pods-Artsy Tests.debug.xcconfig */,
 				5E6C92F936EA71609C245323 /* Pods-Artsy Tests.store.xcconfig */,
 				C92C422D2B7B26F1D784B7A5 /* Pods-Artsy Tests.demo.xcconfig */,
+				251623938AAD857411BAB380 /* Pods-ArtsyAppClip.debug.xcconfig */,
+				01EFB921EEDEF36658D1CCE9 /* Pods-ArtsyAppClip.store.xcconfig */,
+				CC2E915978CE7594318D40A7 /* Pods-ArtsyAppClip.demo.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1678,6 +1733,7 @@
 				B3ECE82B1819D1E6009F5C5B /* Artsy Tests */,
 				1AD4F89C25FBBA85007FDB71 /* Artsy Stickers */,
 				FCB45B272746EF3700232337 /* ArtsyWidget */,
+				660F2F91278EEE2300CDC6A0 /* ArtsyAppClip */,
 				49BA7E021655ABE600C06572 /* Frameworks */,
 				49BA7E001655ABE600C06572 /* Products */,
 				33C6886033769A61A3E99B18 /* Pods */,
@@ -1691,6 +1747,7 @@
 				B3ECE8261819D1E6009F5C5B /* Artsy Tests.xctest */,
 				1AD4F89B25FBBA85007FDB71 /* Artsy Stickers.appex */,
 				FCB45B222746EF3700232337 /* ArtsyWidgetExtension.appex */,
+				660F2F90278EEE2200CDC6A0 /* ArtsyAppClip.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1740,6 +1797,7 @@
 				482115D14BD4E126B81B3A2B /* libPods-Artsy Tests.a */,
 				FCB45B232746EF3700232337 /* WidgetKit.framework */,
 				FCB45B252746EF3700232337 /* SwiftUI.framework */,
+				B036CE8A56947DA1182A9D0C /* libPods-ArtsyAppClip.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2647,6 +2705,25 @@
 			path = docs;
 			sourceTree = "<group>";
 		};
+		660F2F91278EEE2300CDC6A0 /* ArtsyAppClip */ = {
+			isa = PBXGroup;
+			children = (
+				660F2F92278EEE2300CDC6A0 /* AppDelegate.h */,
+				660F2F93278EEE2300CDC6A0 /* AppDelegate.m */,
+				660F2F95278EEE2300CDC6A0 /* SceneDelegate.h */,
+				660F2F96278EEE2300CDC6A0 /* SceneDelegate.m */,
+				660F2F98278EEE2300CDC6A0 /* ViewController.h */,
+				660F2F99278EEE2300CDC6A0 /* ViewController.m */,
+				660F2F9B278EEE2300CDC6A0 /* Main.storyboard */,
+				660F2F9E278EEE2400CDC6A0 /* Assets.xcassets */,
+				660F2FA0278EEE2400CDC6A0 /* LaunchScreen.storyboard */,
+				660F2FA3278EEE2400CDC6A0 /* Info.plist */,
+				660F2FA4278EEE2400CDC6A0 /* main.m */,
+				660F2FA6278EEE2400CDC6A0 /* ArtsyAppClip.entitlements */,
+			);
+			path = ArtsyAppClip;
+			sourceTree = "<group>";
+		};
 		7F9C7EEF2221FE0700F6967E /* Map */ = {
 			isa = PBXGroup;
 			children = (
@@ -2929,17 +3006,39 @@
 				5A71C447DFCD4F537CFB14BA /* [CP] Embed Pods Frameworks */,
 				3DC40A4868886E7A205B706E /* [CP] Copy Pods Resources */,
 				1AD4F8A325FBBA89007FDB71 /* Embed App Extensions */,
+				660D58FB278EDAB30066959C /* Embed App Clips */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				1AD4F8A125FBBA89007FDB71 /* PBXTargetDependency */,
 				FCB45B2E2746EF3900232337 /* PBXTargetDependency */,
+				660F2FA8278EEE2400CDC6A0 /* PBXTargetDependency */,
 			);
 			name = Artsy;
 			productName = Artsy;
 			productReference = 49BA7DFF1655ABE600C06572 /* Artsy.app */;
 			productType = "com.apple.product-type.application";
+		};
+		660F2F8F278EEE2200CDC6A0 /* ArtsyAppClip */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 660F2FAA278EEE2400CDC6A0 /* Build configuration list for PBXNativeTarget "ArtsyAppClip" */;
+			buildPhases = (
+				D6183AF3EE80035CEEDEFDAF /* [CP] Check Pods Manifest.lock */,
+				660F2F8C278EEE2200CDC6A0 /* Sources */,
+				660F2F8D278EEE2200CDC6A0 /* Frameworks */,
+				660F2F8E278EEE2200CDC6A0 /* Resources */,
+				1FF62FE5400E5547BF65C777 /* [CP] Embed Pods Frameworks */,
+				31D875E3AE64F9801BEDF178 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ArtsyAppClip;
+			productName = ArtsyAppClip;
+			productReference = 660F2F90278EEE2200CDC6A0 /* ArtsyAppClip.app */;
+			productType = "com.apple.product-type.application.on-demand-install-capable";
 		};
 		B3ECE8251819D1E6009F5C5B /* Artsy Tests */ = {
 			isa = PBXNativeTarget;
@@ -2996,7 +3095,6 @@
 					49BA7DFE1655ABE600C06572 = {
 						DevelopmentTeam = 23KMWZ572J;
 						LastSwiftMigration = 1100;
-						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -3017,6 +3115,11 @@
 								enabled = 0;
 							};
 						};
+					};
+					660F2F8F278EEE2200CDC6A0 = {
+						CreatedOnToolsVersion = 13.1;
+						DevelopmentTeam = 23KMWZ572J;
+						ProvisioningStyle = Automatic;
 					};
 					B3ECE8251819D1E6009F5C5B = {
 						DevelopmentTeam = 23KMWZ572J;
@@ -3047,6 +3150,7 @@
 				B3ECE8251819D1E6009F5C5B /* Artsy Tests */,
 				1AD4F89A25FBBA85007FDB71 /* Artsy Stickers */,
 				FCB45B212746EF3700232337 /* ArtsyWidgetExtension */,
+				660F2F8F278EEE2200CDC6A0 /* ArtsyAppClip */,
 			);
 		};
 /* End PBXProject section */
@@ -3156,6 +3260,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		660F2F8E278EEE2200CDC6A0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				660F2FA2278EEE2400CDC6A0 /* LaunchScreen.storyboard in Resources */,
+				660F2F9F278EEE2400CDC6A0 /* Assets.xcassets in Resources */,
+				660F2F9D278EEE2300CDC6A0 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B3ECE8241819D1E6009F5C5B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3185,6 +3299,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		1FF62FE5400E5547BF65C777 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ArtsyAppClip/Pods-ArtsyAppClip-frameworks.sh",
+				"${PODS_ROOT}/Mapbox-iOS-SDK/dynamic/Mapbox.framework",
+				"${BUILT_PRODUCTS_DIR}/MapboxMobileEvents/MapboxMobileEvents.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL-Universal/OpenSSL.framework/OpenSSL",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Mapbox.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MapboxMobileEvents.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ArtsyAppClip/Pods-ArtsyAppClip-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		271FD00586DDEF4925626060 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3207,6 +3343,42 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		31D875E3AE64F9801BEDF178 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ArtsyAppClip/Pods-ArtsyAppClip-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/AppboyUI.ContentCards.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/Appboy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/AppboyUI.InAppMessage.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/AppboyUI.NewsFeed.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FBSDKCoreKit/FacebookSDKStrings.bundle",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppboyUI.ContentCards.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Appboy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppboyUI.InAppMessage.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppboyUI.NewsFeed.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ArtsyAppClip/Pods-ArtsyAppClip-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		3DC40A4868886E7A205B706E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3218,6 +3390,12 @@
 				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/Appboy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/AppboyUI.InAppMessage.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/Appboy-iOS-SDK/AppboyUI.NewsFeed.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/FBSDKCoreKit/FacebookSDKStrings.bundle",
+				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
 				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Bold.otf",
 				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-BoldItalic.otf",
 				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Italic.otf",
@@ -3234,14 +3412,8 @@
 				"${PODS_ROOT}/Artsy+UILabels/Pod/Assets/Chevron_Black.png",
 				"${PODS_ROOT}/Artsy+UILabels/Pod/Assets/Chevron_Black@2x.png",
 				"${PODS_ROOT}/Extraction/Extraction/Assets/ARLoadFailureRetryIcon@2x.png",
-				"${PODS_CONFIGURATION_BUILD_DIR}/FBSDKCoreKit/FacebookSDKStrings.bundle",
-				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/MARKRangeSlider/MARKRangeSlider.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/NPKeyboardLayoutGuide/NPKeyboardLayoutGuide.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/RNImageCropPicker/QBImagePicker.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Stripe/Stripe.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/TOCropViewController/TOCropViewControllerBundle.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
@@ -3249,6 +3421,12 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Appboy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppboyUI.InAppMessage.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppboyUI.NewsFeed.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Bold.otf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-BoldItalic.otf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Italic.otf",
@@ -3265,14 +3443,8 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Chevron_Black.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Chevron_Black@2x.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ARLoadFailureRetryIcon@2x.png",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleSignIn.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MARKRangeSlider.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/NPKeyboardLayoutGuide.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/QBImagePicker.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Stripe.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3332,6 +3504,28 @@
 			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-Artsy Tests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D6183AF3EE80035CEEDEFDAF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ArtsyAppClip-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3559,6 +3753,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		660F2F8C278EEE2200CDC6A0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				660F2F9A278EEE2300CDC6A0 /* ViewController.m in Sources */,
+				660F2F94278EEE2300CDC6A0 /* AppDelegate.m in Sources */,
+				660F2FA5278EEE2400CDC6A0 /* main.m in Sources */,
+				660F2F97278EEE2300CDC6A0 /* SceneDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B3ECE8221819D1E6009F5C5B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3722,6 +3927,11 @@
 			target = 1AD4F89A25FBBA85007FDB71 /* Artsy Stickers */;
 			targetProxy = 1AD4F8A025FBBA89007FDB71 /* PBXContainerItemProxy */;
 		};
+		660F2FA8278EEE2400CDC6A0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 660F2F8F278EEE2200CDC6A0 /* ArtsyAppClip */;
+			targetProxy = 660F2FA7278EEE2400CDC6A0 /* PBXContainerItemProxy */;
+		};
 		B3ECE8351819D1E7009F5C5B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 49BA7DFE1655ABE600C06572 /* Artsy */;
@@ -3742,6 +3952,22 @@
 			);
 			name = InfoPlist.strings;
 			path = .;
+			sourceTree = "<group>";
+		};
+		660F2F9B278EEE2300CDC6A0 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				660F2F9C278EEE2300CDC6A0 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		660F2FA0278EEE2400CDC6A0 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				660F2FA1278EEE2400CDC6A0 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 		B3ECE82E1819D1E6009F5C5B /* InfoPlist.strings */ = {
@@ -3769,6 +3995,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -3823,6 +4050,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -3884,6 +4112,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -3938,7 +4167,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -3988,6 +4217,7 @@
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = NO;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4055,7 +4285,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -4093,6 +4323,8 @@
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = NO;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.Store.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4118,6 +4350,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(APPLICATION_BUNDLE_IDENTIFIER)";
 				PRODUCT_NAME = Artsy;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SDKROOT = iphoneos;
 				SPRINGBOARD_DISPLAY_NAME = Artsy;
@@ -4176,6 +4409,206 @@
 			};
 			name = Demo;
 		};
+		660F2FAB278EEE2400CDC6A0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 251623938AAD857411BAB380 /* Pods-ArtsyAppClip.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = ArtsyAppClip/ArtsyAppClip.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2019.05.24.09;
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				ENABLE_BITCODE = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ArtsyAppClip/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Artsy;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 6.7.7;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.Clip;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		660F2FAC278EEE2400CDC6A0 /* Store */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 01EFB921EEDEF36658D1CCE9 /* Pods-ArtsyAppClip.store.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = ArtsyAppClip/ArtsyAppClip.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 2019.05.24.09;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				ENABLE_BITCODE = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ArtsyAppClip/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Artsy;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 6.7.7;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.Clip;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Store;
+		};
+		660F2FAD278EEE2400CDC6A0 /* Demo */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CC2E915978CE7594318D40A7 /* Pods-ArtsyAppClip.demo.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = ArtsyAppClip/ArtsyAppClip.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 2019.05.24.09;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				ENABLE_BITCODE = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ArtsyAppClip/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Artsy;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 6.7.7;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.Clip;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Demo;
+		};
 		B34D39FE17DFD99600308CAB /* Store */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4203,7 +4636,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				COPY_PHASE_STRIP = YES;
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -4242,6 +4675,7 @@
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = NO;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.Store.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4379,6 +4813,7 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 23KMWZ572J;
@@ -4444,6 +4879,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
@@ -4515,6 +4951,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
@@ -4580,6 +5017,16 @@
 				49BA7E241655ABE600C06572 /* Debug */,
 				B34D39FF17DFD99600308CAB /* Store */,
 				60AF3D0318D33C80008F3CC0 /* Demo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		660F2FAA278EEE2400CDC6A0 /* Build configuration list for PBXNativeTarget "ArtsyAppClip" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				660F2FAB278EEE2400CDC6A0 /* Debug */,
+				660F2FAC278EEE2400CDC6A0 /* Store */,
+				660F2FAD278EEE2400CDC6A0 /* Demo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
