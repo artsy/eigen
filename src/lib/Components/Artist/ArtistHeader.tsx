@@ -1,9 +1,10 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtistHeader_artist } from "__generated__/ArtistHeader_artist.graphql"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { formatLargeNumberOfItems } from "lib/utils/formatLargeNumberOfItems"
 import { userHadMeaningfulInteraction } from "lib/utils/userHadMeaningfulInteraction"
-import { Box, bullet, Flex, FollowButton, Sans, Spacer } from "palette"
+import { Box, bullet, Flex, FollowButton, Sans, ShareIcon, Spacer, Touchable, useSpace } from "palette"
 import React, { useState } from "react"
 import { Text } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
@@ -20,6 +21,8 @@ interface Props {
 
 export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
   const { trackEvent } = useTracking()
+  const space = useSpace()
+  const isShareButtonEnabled = useFeatureFlag("AREnableShareButtonForArtist")
 
   const [isFollowedChanging, setIsFollowedChanging] = useState(false)
 
@@ -117,12 +120,23 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
     setIsFollowedChanging(false)
   }
 
+  const handleSharePress = () => {
+    console.log("[debug] share pressed")
+  }
+
   const descriptiveString = (artist.nationality || "") + getBirthdayString()
 
   const bylineRequired = artist.nationality || artist.birthday
 
   return (
-    <Box px={2} pt={6} pb={1}>
+    <Box px={2} pb={1}>
+      <Box height={space(6)} flexDirection="row" alignItems="center" justifyContent="flex-end">
+        {!!isShareButtonEnabled && (
+          <Touchable haptic onPress={handleSharePress}>
+            <ShareIcon width={25} height={25} />
+          </Touchable>
+        )}
+      </Box>
       <Sans size="8">{artist.name}</Sans>
       <Spacer mb={1} />
 
