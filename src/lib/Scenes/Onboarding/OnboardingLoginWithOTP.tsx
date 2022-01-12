@@ -1,6 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { BackButton } from "lib/navigation/BackButton"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Button, Flex, Input, Spacer, Text, useColor } from "palette"
 import React, { useRef } from "react"
@@ -24,12 +25,7 @@ export const otpSchema = Yup.object().shape({
   otp: Yup.string().test("otp", "This field is required", (value) => value !== ""),
 })
 
-export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPProps> = ({
-  navigation,
-  route,
-  email,
-  password,
-}) => {
+export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPProps> = ({ navigation }) => {
   const color = useColor()
 
   const { values, handleChange, handleSubmit, errors, setErrors, isValid, dirty, isSubmitting, validateForm } =
@@ -91,12 +87,10 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPProps> =
   )
 }
 
-export const OnboardingLoginWithOTP: React.FC<OnboardingLoginWithOTPProps> = ({
-  navigation,
-  route,
-  email,
-  password,
-}) => {
+export const OnboardingLoginWithOTP: React.FC<OnboardingLoginWithOTPProps> = ({ navigation, route }) => {
+  const email = route.params.email
+  const password = route.params.password
+
   const formik = useFormik<OnboardingLoginWithOTPValuesSchema>({
     enableReinitialize: true,
     validateOnChange: false,
@@ -104,7 +98,20 @@ export const OnboardingLoginWithOTP: React.FC<OnboardingLoginWithOTPProps> = ({
     initialValues,
     initialErrors: {},
     onSubmit: async ({ otp }, { setErrors, validateForm }) => {
-      console.log("2FATest submitted otp", otp)
+      validateForm()
+      const res = await GlobalStore.actions.auth.signIn({
+        oauthProvider: "email",
+        email,
+        password,
+        otp,
+      })
+
+      if (res === "invalid_otp") {
+        setErrors({ otp: "Invalid two-factor authentication code" })
+      } else if (res !== "success") {
+        // TODO: What should generic error be?
+        setErrors({ otp: "Something went wrong" })
+      }
     },
     validationSchema: otpSchema,
   })

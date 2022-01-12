@@ -189,10 +189,9 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ navig
         setRequiresOTP(true)
       }
 
-      if (res !== "success") {
+      if (res !== "success" && res !== "otp_missing") {
         // For security purposes, we are returning a generic error message
         setErrors({ password: "Incorrect email or password" })
-        validateForm()
       }
     },
     validationSchema: loginSchema,

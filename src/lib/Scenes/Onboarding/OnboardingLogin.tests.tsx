@@ -30,7 +30,13 @@ jest.mock("formik", () => ({
 
 describe("OnboardingLogin", () => {
   const TestProvider = ({ email = "" }) => {
-    return <OnboardingLoginWithEmailForm navigation={navigationPropsMock as any} route={{ params: { email } } as any} />
+    return (
+      <OnboardingLoginWithEmailForm
+        navigation={navigationPropsMock as any}
+        route={{ params: { email } } as any}
+        requiresOTP={false}
+      />
+    )
   }
 
   describe("Forget Button", () => {
