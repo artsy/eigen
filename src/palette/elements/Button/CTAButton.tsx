@@ -1,8 +1,4 @@
-import { Button } from "palette"
+import { Button, ButtonProps } from "palette"
 import React from "react"
 
-export const CTAButton = ({ onPress, text }: { onPress: () => void; text: string }) => (
-  <Button block haptic maxWidth={540} onPress={onPress}>
-    {text}
-  </Button>
-)
+export const CTAButton: React.FC<ButtonProps> = (props) => <Button block haptic maxWidth={540} {...props} />
