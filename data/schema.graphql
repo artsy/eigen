@@ -8669,6 +8669,9 @@ type Me implements Node {
   ): CommerceOrderConnectionWithTotalCount
   paddleNumber: String
 
+  # A list of the current user’s managed partners
+  partners: [Partner]
+
   # The user's most current pending identity verification, if it exists
   pendingIdentityVerification: IdentityVerification
   phone: String
