@@ -1,7 +1,6 @@
 import { ContextModule, CustomService, OwnerType, share } from "@artsy/cohesion"
 import Clipboard from "@react-native-community/clipboard"
 import { InstagramStoryViewShot } from "lib/Scenes/Artwork/Components/InstagramStoryViewShot"
-import { unsafe__getEnvironment } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { useCanOpenURL } from "lib/utils/useCanOpenURL"
 import { InstagramAppIcon, LinkIcon, MoreIcon, ShareIcon, WhatsAppAppIcon } from "palette"
@@ -10,8 +9,9 @@ import { ScrollView } from "react-native"
 import Share, { ShareOptions } from "react-native-share"
 import ViewShot from "react-native-view-shot"
 import { useTracking } from "react-tracking"
-import { CustomShareSheet, CustomShareSheetItem } from "./CustomShareSheet"
-import { useToast } from "./Toast/toastHook"
+import { CustomShareSheet, CustomShareSheetItem } from "../CustomShareSheet"
+import { useToast } from "../Toast/toastHook"
+import { getBase64Data, getShareMessage, getShareURL } from "./helpers"
 
 interface ShareEntry {
   internalID: string
@@ -31,27 +31,6 @@ interface ShareSheetProps {
   sharingEntryContextModule: ContextModule
   ownerType: OwnerType
   setVisible: (isVisible: boolean) => void
-}
-
-export const getShareURL = (href: string) => {
-  return `${unsafe__getEnvironment().webURL}${href}`
-}
-
-export const getShareMessage = (artistNames: string[], title?: string) => {
-  const names = artistNames.slice(0, 3).join(", ")
-
-  if (title) {
-    return `${title} by ${names} on Artsy`
-  }
-
-  return `${names} on Artsy`
-}
-
-const getBase64Data = async (viewShot: ViewShot) => {
-  const base64RawData = await viewShot.capture!()
-  const base64Data = `data:image/png;base64,${base64RawData}`
-
-  return base64Data
 }
 
 export const ShareSheet: React.FC<ShareSheetProps> = (props) => {
@@ -79,7 +58,7 @@ export const ShareSheet: React.FC<ShareSheetProps> = (props) => {
 
       await Share.shareSingle({
         social: Share.Social.WHATSAPP,
-        message: message ?? "",
+        message,
         url,
       })
 
