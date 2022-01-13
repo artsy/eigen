@@ -10,17 +10,12 @@ export const useImageSearch = () => {
   const [imgPath, setImgPath] = useState<string>("")
 
   const reverseImageSearch = async (imagePath: string) => {
-    const shouldUseLocalImage = false
     const body = new FormData()
-    if (shouldUseLocalImage) {
-      body.append("image", {
-        uri: imagePath,
-        type: "image/jpeg",
-        name: "image.jpg",
-      })
-    } else {
-      body.append("url", "https://d32dm0rphc51dk.cloudfront.net/055ztBFvRMkxI6HfVb5RuA/normalized.jpg")
-    }
+    body.append("image", {
+      uri: imagePath,
+      type: "image/jpeg",
+      name: "image.jpg",
+    })
 
     try {
       const response = await fetch("https://match-staging.artsy.net/search", {
