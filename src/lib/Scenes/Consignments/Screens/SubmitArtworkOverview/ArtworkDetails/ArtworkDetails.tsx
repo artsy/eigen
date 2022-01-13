@@ -39,6 +39,5 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) =
           </Box>
         )}
       </Formik>
-    </Flex>
   )
 }
