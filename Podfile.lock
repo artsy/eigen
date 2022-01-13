@@ -674,7 +674,7 @@ PODS:
     - Sentry/Core (= 7.3.0)
   - Sentry/Core (7.3.0)
   - Specta (1.0.7)
-  - Starscream (3.0.6)
+  - Starscream (4.0.6)
   - Stripe (14.0.2)
   - SwiftyJSON (5.0.1)
   - Then (2.7.0)
