@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash cca0c57779439e5e6cc1047a08387d4d */
+/* @relayHash 426f2694e5685471c202630231ad9f04 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -151,12 +151,14 @@ fragment ArtistHeader_artist on Artist {
   href
   isFollowed
   name
-  imageUrl
   nationality
   birthday
   counts {
     artworks
     follows
+  }
+  image {
+    url(version: "large")
   }
 }
 
@@ -334,7 +336,20 @@ v12 = {
   "name": "name",
   "storageKey": null
 },
-v13 = [
+v13 = {
+  "alias": null,
+  "args": [
+    {
+      "kind": "Literal",
+      "name": "version",
+      "value": "large"
+    }
+  ],
+  "kind": "ScalarField",
+  "name": "url",
+  "storageKey": "url(version:\"large\")"
+},
+v14 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -342,7 +357,7 @@ v13 = [
   },
   (v9/*: any*/)
 ],
-v14 = {
+v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -452,13 +467,6 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "imageUrl",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
             "name": "nationality",
             "storageKey": null
           },
@@ -467,6 +475,18 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "birthday",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "image",
+            "plural": false,
+            "selections": [
+              (v13/*: any*/)
+            ],
             "storageKey": null
           },
           {
@@ -547,7 +567,7 @@ return {
           },
           {
             "alias": "artworks",
-            "args": (v13/*: any*/),
+            "args": (v14/*: any*/),
             "concreteType": "FilterArtworksConnection",
             "kind": "LinkedField",
             "name": "filterArtworksConnection",
@@ -570,7 +590,7 @@ return {
                     "plural": false,
                     "selections": [
                       (v10/*: any*/),
-                      (v14/*: any*/)
+                      (v15/*: any*/)
                     ],
                     "storageKey": null
                   },
@@ -657,7 +677,7 @@ return {
                     "name": "edges",
                     "plural": true,
                     "selections": [
-                      (v14/*: any*/),
+                      (v15/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -682,19 +702,7 @@ return {
                                 "name": "aspectRatio",
                                 "storageKey": null
                               },
-                              {
-                                "alias": null,
-                                "args": [
-                                  {
-                                    "kind": "Literal",
-                                    "name": "version",
-                                    "value": "large"
-                                  }
-                                ],
-                                "kind": "ScalarField",
-                                "name": "url",
-                                "storageKey": "url(version:\"large\")"
-                              }
+                              (v13/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -859,7 +867,7 @@ return {
           },
           {
             "alias": "artworks",
-            "args": (v13/*: any*/),
+            "args": (v14/*: any*/),
             "filters": [
               "input"
             ],
@@ -875,7 +883,7 @@ return {
     ]
   },
   "params": {
-    "id": "cca0c57779439e5e6cc1047a08387d4d",
+    "id": "426f2694e5685471c202630231ad9f04",
     "metadata": {},
     "name": "ArtistAboveTheFoldQuery",
     "operationKind": "query",

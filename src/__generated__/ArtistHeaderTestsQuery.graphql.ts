@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 23ea74d958ccfbbd5b7d4987b88209dc */
+/* @relayHash 5c4110cbd11a3175626a0fa0a6610f42 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -37,12 +37,14 @@ fragment ArtistHeader_artist on Artist {
   href
   isFollowed
   name
-  imageUrl
   nationality
   birthday
   counts {
     artworks
     follows
+  }
+  image {
+    url(version: "large")
   }
 }
 */
@@ -167,13 +169,6 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "imageUrl",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
             "name": "nationality",
             "storageKey": null
           },
@@ -208,6 +203,30 @@ return {
               }
             ],
             "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "image",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "version",
+                    "value": "large"
+                  }
+                ],
+                "kind": "ScalarField",
+                "name": "url",
+                "storageKey": "url(version:\"large\")"
+              }
+            ],
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -215,7 +234,7 @@ return {
     ]
   },
   "params": {
-    "id": "23ea74d958ccfbbd5b7d4987b88209dc",
+    "id": "5c4110cbd11a3175626a0fa0a6610f42",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": {
@@ -235,7 +254,13 @@ return {
         "artist.counts.follows": (v3/*: any*/),
         "artist.href": (v2/*: any*/),
         "artist.id": (v4/*: any*/),
-        "artist.imageUrl": (v2/*: any*/),
+        "artist.image": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "Image"
+        },
+        "artist.image.url": (v2/*: any*/),
         "artist.internalID": (v4/*: any*/),
         "artist.isFollowed": {
           "enumValues": null,

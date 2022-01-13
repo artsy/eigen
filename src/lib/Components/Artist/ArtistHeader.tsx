@@ -171,7 +171,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
           slug: artist.slug,
           href: artist.href!,
           artistNames: [artist.name!],
-          imageURL: artist.imageUrl ?? undefined,
+          imageURL: artist.image?.url ?? undefined,
         }}
         ownerType={OwnerType.artist}
         parentContextModule={ContextModule.artistHeader}
@@ -192,12 +192,14 @@ export const ArtistHeaderFragmentContainer = createFragmentContainer(ArtistHeade
       href
       isFollowed
       name
-      imageUrl
       nationality
       birthday
       counts {
         artworks
         follows
+      }
+      image {
+        url(version: "large")
       }
     }
   `,
