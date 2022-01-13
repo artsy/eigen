@@ -1,4 +1,3 @@
-import Crosshair from "lib/Icons/Crosshair"
 import { Box, Flex } from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
@@ -31,7 +30,7 @@ interface Props {
 }
 
 export const NotifyMeButton: React.FC<Props> = (props) => {
-  const { highlight, onPress } = props
+  const { onPress } = props
   return (
     <TouchableOpacity onPress={onPress}>
       <Background flexDirection="row" alignItems="center" style={shadowDetails}>

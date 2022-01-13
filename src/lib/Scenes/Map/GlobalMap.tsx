@@ -548,6 +548,10 @@ export class GlobalMap extends React.Component<Props, State> {
     })
   }
 
+  onPressNotifyMeButton = () => {
+    console.log("NTFY this is where I would ask to be notified")
+  }
+
   get currentFeatureCollection(): FilterData {
     const filterID = cityTabs[this.state.activeIndex].id
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -608,10 +612,7 @@ export class GlobalMap extends React.Component<Props, State> {
                     </Box>
                   )}
                   <Box style={{ marginLeft: 10 }}>
-                    <NotifyMeButton
-                      highlight={this.state.userLocation === this.state.currentLocation}
-                      onPress={this.onPressUserPositionButton}
-                    />
+                    <NotifyMeButton highlight={false} onPress={this.onPressNotifyMeButton} />
                   </Box>
                 </Flex>
               </Animated.View>
