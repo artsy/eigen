@@ -309,11 +309,13 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 }}
               />
             </Flex>
-            <Flex pr="1" justifyContent="center" alignItems="center" flexGrow={0}>
-              <TouchableOpacity onPress={capturePhoto} hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}>
-                {!!showCamera && <CameraIcon fill="black100" />}
-              </TouchableOpacity>
-            </Flex>
+            {!!showCamera && (
+              <Flex pr="1" justifyContent="center" alignItems="center" flexGrow={0}>
+                <TouchableOpacity onPress={capturePhoto} hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}>
+                  <CameraIcon fill="black100" />
+                </TouchableOpacity>
+              </Flex>
+            )}
             {renderShowPasswordIcon()}
             {loading ? (
               <Flex pr="3" justifyContent="center" flexGrow={0}>
