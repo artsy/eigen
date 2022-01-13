@@ -48,6 +48,9 @@ interface LegacyNativeModules {
   ARPHPhotoPickerModule: {
     requestPhotos(allowMultiple: boolean): Promise<RNCImage[]>
   }
+  ARProximityNotificationsModule: {
+    heyNow(): void
+  }
   ARCocoaConstantsModule: {
     AREnabled: boolean
     CurrentLocale: string
@@ -134,6 +137,9 @@ export const LegacyNativeModules: LegacyNativeModules =
         },
         ARPHPhotoPickerModule: {
           requestPhotos: noop("requestPhotos"),
+        },
+        ARProximityNotificationsModule: {
+          heyNow: noop("heyNow"),
         },
         ARScreenPresenterModule,
         AREventsModule: {
