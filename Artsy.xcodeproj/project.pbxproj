@@ -385,6 +385,7 @@
 		CB6AFF032790817000D7DC82 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AFF022790817000D7DC82 /* NotificationService.swift */; };
 		CB6AFF072790817000D7DC82 /* ArtsyLocationPushExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB6AFF002790817000D7DC82 /* ArtsyLocationPushExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CB6AFF142790CDDB00D7DC82 /* ARTProximityNotificationsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6AFF132790CDDB00D7DC82 /* ARTProximityNotificationsModule.m */; };
+		CB6AFF162790CF4F00D7DC82 /* ProximityNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AFF152790CF4F00D7DC82 /* ProximityNotificationsManager.swift */; };
 		CB6CE8E524F424E700ED2843 /* ARInternalWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */; };
 		CB6CE8E624F424E700ED2843 /* ARInternalWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E424F424E700ED2843 /* ARInternalWebView.m */; };
 		CB6CE8EF24F9684400ED2843 /* Thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8EB24F9684400ED2843 /* Thumb@2x.png */; };
@@ -1108,6 +1109,7 @@
 		CB6AFF042790817000D7DC82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB6AFF122790CDDB00D7DC82 /* ARTProximityNotificationsModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTProximityNotificationsModule.h; sourceTree = "<group>"; };
 		CB6AFF132790CDDB00D7DC82 /* ARTProximityNotificationsModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTProximityNotificationsModule.m; sourceTree = "<group>"; };
+		CB6AFF152790CF4F00D7DC82 /* ProximityNotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProximityNotificationsManager.swift; sourceTree = "<group>"; };
 		CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalWebViewManager.m; sourceTree = "<group>"; };
 		CB6CE8E224F424E700ED2843 /* ARInternalWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalWebViewManager.h; sourceTree = "<group>"; };
 		CB6CE8E324F424E700ED2843 /* ARInternalWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalWebView.h; sourceTree = "<group>"; };
@@ -1684,6 +1686,7 @@
 				1A248BDA265C282400E41409 /* ARTArtsyNativeModule.m */,
 				CB6AFF122790CDDB00D7DC82 /* ARTProximityNotificationsModule.h */,
 				CB6AFF132790CDDB00D7DC82 /* ARTProximityNotificationsModule.m */,
+				CB6AFF152790CF4F00D7DC82 /* ProximityNotificationsManager.swift */,
 				60A0E9FF1C5107DB002754A8 /* Routing */,
 				60A0E9FE1C5107B2002754A8 /* Setup */,
 				60A0E9FD1C510758002754A8 /* Force Touch */,
@@ -3616,6 +3619,7 @@
 				60794B9C1D0112ED0062C3F8 /* LiveAuctionsAdminViewController.swift in Sources */,
 				60AFD9A820AC9FA50013D74B /* ARInformationView.m in Sources */,
 				342F94077E27A45531E7A76F /* ARBidButton.m in Sources */,
+				CB6AFF162790CF4F00D7DC82 /* ProximityNotificationsManager.swift in Sources */,
 				5E925EAE1E6882D400A504D6 /* LiveAuctionStaticDataFetcher+Stubs.swift in Sources */,
 				342F9CB876CC63CF8E8C656F /* ARTextView.m in Sources */,
 				342F97971D28FDC703392765 /* MTLModel+JSON.m in Sources */,
