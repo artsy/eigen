@@ -238,8 +238,8 @@ function getNativeModules(): OurNativeModules {
     ARPHPhotoPickerModule: {
       requestPhotos: jest.fn(),
     },
-    ARProximityNotificationsModule: {
-      heyNow: jest.fn(),
+    ProximityNotificationsModule: {
+      startTrackingProximityNotifications: jest.fn(),
     },
     ARScreenPresenterModule: {
       presentMediaPreviewController: jest.fn(),

@@ -549,7 +549,7 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   onPressNotifyMeButton = () => {
-    LegacyNativeModules.ARProximityNotificationsModule.heyNow()
+    LegacyNativeModules.ProximityNotificationsModule.startTrackingProximityNotifications()
   }
 
   get currentFeatureCollection(): FilterData {

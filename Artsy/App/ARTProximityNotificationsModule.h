@@ -3,8 +3,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ARProximityNotificationsModule : NSObject <RCTBridgeModule>
+@interface ARTProximityNotificationsModule : NSObject <RCTBridgeModule>
 
 @end
 
 NS_ASSUME_NONNULL_END
+

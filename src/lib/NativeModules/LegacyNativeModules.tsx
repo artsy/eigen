@@ -48,8 +48,8 @@ interface LegacyNativeModules {
   ARPHPhotoPickerModule: {
     requestPhotos(allowMultiple: boolean): Promise<RNCImage[]>
   }
-  ARProximityNotificationsModule: {
-    heyNow(): void
+  ProximityNotificationsModule: {
+    startTrackingProximityNotifications(): void
   }
   ARCocoaConstantsModule: {
     AREnabled: boolean
@@ -138,8 +138,8 @@ export const LegacyNativeModules: LegacyNativeModules =
         ARPHPhotoPickerModule: {
           requestPhotos: noop("requestPhotos"),
         },
-        ARProximityNotificationsModule: {
-          heyNow: noop("heyNow"),
+        ProximityNotificationsModule: {
+          startTrackingProximityNotifications: noop("startTrackingProximityNotifications"),
         },
         ARScreenPresenterModule,
         AREventsModule: {
