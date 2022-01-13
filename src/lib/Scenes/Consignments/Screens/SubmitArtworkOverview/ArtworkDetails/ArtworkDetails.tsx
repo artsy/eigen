@@ -1,13 +1,19 @@
-import { Flex, Input, RadioButton, Spacer, Text } from "palette"
+import { Formik } from "formik"
+import { Box, Button, Flex, Spacer, Text } from "palette"
 import React from "react"
-import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
-
+import { ArtworkDetailsForm, ArtworkDetailsFormModel } from "./ArtworkDetailsForm"
+import { artworkDetailsInitialValues, artworkDetailsValidationSchema } from "./utils/validation"
 interface ArtworkDetailsProps {
-  // TODO
-  handlePress: any
+  handlePress: () => void
 }
 
 export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) => {
+  const handleSubmit = async (values: ArtworkDetailsFormModel) => {
+    // TODO: createSubmission
+    console.log({ values })
+    handlePress()
+  }
+
   return (
     <Flex p={1} mt={1}>
       <Text variant="sm" color="black60">
@@ -17,22 +23,24 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) =
         · Unfortunately, we do not allow&nbsp;
         <Text style={{ textDecorationLine: "underline" }}>artists to sell their own work</Text> on Artsy.
       </Text>
-
       <Spacer mt={2} />
 
-      <ArtworkDetailsForm handlePress={handlePress} />
-
-      <Input title="Rarity" placeholder="Select a Classification" />
-      <Input title="Height" placeholder="in" />
-      <Input title="Width" placeholder="in" />
-      <Input title="Depth" placeholder="in" />
-      <RadioButton text="in" />
-      <RadioButton text="cm" />
-
-      <Input title="Provenance" placeholder="Describe How You Acquired the Work" />
-      <Input title="Location" placeholder="Enter City Where Artwork is Located" />
-
-      <Spacer mt={1} />
+      <Formik<ArtworkDetailsFormModel>
+        initialValues={artworkDetailsInitialValues}
+        onSubmit={handleSubmit}
+        validationSchema={artworkDetailsValidationSchema}
+        validateOnMount
+      >
+        {({ isValid }) => (
+          <Box>
+            <ArtworkDetailsForm />
+            <Spacer mt={4} />
+            <Button disabled={!isValid} block haptic maxWidth={540}>
+              Save & Continue
+            </Button>
+          </Box>
+        )}
+      </Formik>
     </Flex>
   )
 }
