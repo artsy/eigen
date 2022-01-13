@@ -22,6 +22,7 @@ import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercl
 import { cityTabs } from "../City/cityTabs"
 import { bucketCityResults, BucketKey, BucketResults, emptyBucketResults } from "./bucketCityResults"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
+import { NotifyMeButton } from "./Components/NotifyMeButton"
 import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
 import { UserPositionButton } from "./Components/UserPositionButton"
@@ -606,6 +607,12 @@ export class GlobalMap extends React.Component<Props, State> {
                       />
                     </Box>
                   )}
+                  <Box style={{ marginLeft: 10 }}>
+                    <NotifyMeButton
+                      highlight={this.state.userLocation === this.state.currentLocation}
+                      onPress={this.onPressUserPositionButton}
+                    />
+                  </Box>
                 </Flex>
               </Animated.View>
             </TopButtonsContainer>
