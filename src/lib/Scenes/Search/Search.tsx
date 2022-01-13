@@ -174,9 +174,6 @@ export const Search: React.FC<SearchProps> = (props) => {
         })
         const aggregations = convertFacetsToAggregations(results.facets ?? {})
 
-        console.log("[debug] results", results)
-        console.log("[debug] aggregations", aggregations)
-
         setAggregations(aggregations)
         setFacetNames(Object.keys(results.facets ?? {}))
       } catch (error) {
@@ -208,6 +205,7 @@ export const Search: React.FC<SearchProps> = (props) => {
     setSearchState({
       ...searchState,
       query,
+      page: 1,
     })
   }
 
@@ -218,6 +216,7 @@ export const Search: React.FC<SearchProps> = (props) => {
           <TextInput
             value={searchState.query}
             onChangeText={onChangeQuery}
+            autoCorrect={false}
             style={{ borderColor: "black", borderWidth: 1, padding: 10 }}
           />
         </Box>
