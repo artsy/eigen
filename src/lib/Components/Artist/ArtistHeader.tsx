@@ -135,7 +135,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
       <Box height={space(6)} flexDirection="row" alignItems="center" justifyContent="flex-end">
         {!!isShareButtonEnabled && (
           <Touchable haptic onPress={handleSharePress}>
-            <ShareIcon width={25} height={25} />
+            <ShareIcon width={25} height={25} mt={0.5} />
           </Touchable>
         )}
       </Box>
