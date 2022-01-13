@@ -13,8 +13,10 @@ import React, { useEffect, useState } from "react"
 import {
   Configure,
   connectInfiniteHits,
+  connectRefinementList,
   connectStats,
   InfiniteHitsProvided,
+  SearchState,
   StatsProvided,
 } from "react-instantsearch-core"
 import { InstantSearch } from "react-instantsearch-native"
@@ -52,10 +54,12 @@ const List: React.FC<InfiniteHitsProvided> = (props) => {
     <FlatList
       data={hits}
       keyExtractor={(hit) => hit.objectID}
-      renderItem={({ item }) => {
+      renderItem={({ item, index }) => {
         return (
           <Box p={2}>
-            <Text>{item.name}</Text>
+            <Text>
+              [{index + 1}] {item.name}
+            </Text>
           </Box>
         )
       }}
@@ -85,6 +89,7 @@ const facetKeyByFilterParamName: Partial<Record<FilterParamName, string>> = {
 
 const ConnectedList = connectInfiniteHits(List)
 const ConnectedHeader = connectStats(Header)
+const VirtualRefinementList = connectRefinementList(() => null)
 
 const convertFacetsToAggregations = (facets: Record<string, Record<string, number>>) => {
   return Object.entries(facets).reduce((acc, entry) => {
@@ -114,21 +119,17 @@ const convertFacetsToAggregations = (facets: Record<string, Record<string, numbe
 }
 
 const convertFiltersToFacetFilters = (filters: FilterArray) => {
-  return filters.reduce((acc, filter) => {
+  const facets: Record<string, any> = {}
+
+  filters.forEach((filter) => {
     const facetKey = facetKeyByFilterParamName[filter.paramName]
 
     if (facetKey) {
-      if (Array.isArray(filter.paramValue)) {
-        const facets = filter.paramValue.map((value) => {
-          return `${facetKey}:${value}`
-        })
-
-        return [...acc, facets]
-      }
+      facets[facetKey] = filter.paramValue
     }
+  })
 
-    return acc
-  }, [] as any)
+  return facets
 }
 
 export const Search: React.FC<SearchProps> = (props) => {
@@ -136,22 +137,29 @@ export const Search: React.FC<SearchProps> = (props) => {
   const setAggregations = ArtworksFiltersStore.useStoreActions((action) => action.setAggregationsAction)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
-  const [query, setQuery] = useState("Ennui")
-  const [facetFilters, setFacetFilters] = useState([])
+  const [searchState, setSearchState] = useState<SearchState>({
+    query: "banksy",
+    hitsPerPage: HITS_PER_PAGE,
+  })
+  const [facetNames, setFacetNames] = useState<string[]>([])
 
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
 
   useEffect(() => {
     const getFacets = async () => {
       try {
-        const results = await searchClient!.initIndex(INDEX_NAME).search(query, {
+        const results = await searchClient!.initIndex(INDEX_NAME).search(searchState.query!, {
           facets: ["*"],
+          hitsPerPage: 0,
+          analytics: false,
         })
         const aggregations = convertFacetsToAggregations(results.facets ?? {})
 
         console.log("[debug] results", results)
+        console.log("[debug] aggregations", aggregations)
 
         setAggregations(aggregations)
+        setFacetNames(Object.keys(results.facets ?? {}))
       } catch (error) {
         console.log("[debug] error", error)
       }
@@ -160,27 +168,52 @@ export const Search: React.FC<SearchProps> = (props) => {
     if (searchClient) {
       getFacets()
     }
-  }, [searchClient, query])
+  }, [searchClient, searchState.query])
 
   useEffect(() => {
-    const facets = convertFiltersToFacetFilters(appliedFilters)
-    setFacetFilters(facets)
+    const refinementList = convertFiltersToFacetFilters(appliedFilters)
+
+    setSearchState({
+      ...searchState,
+      refinementList,
+      page: 1,
+    })
   }, [appliedFilters])
+
+  const onSearchStateChange = (updatedState: SearchState) => {
+    console.log("[debug] updatedState", updatedState)
+    setSearchState(updatedState)
+  }
+
+  const onChangeQuery = (query: string) => {
+    setSearchState({
+      ...searchState,
+      query,
+    })
+  }
 
   if (searchClient) {
     return (
       <Box flex={1}>
         <Box pt={2} pb={1} px={2}>
           <TextInput
-            value={query}
-            onChangeText={setQuery}
+            value={searchState.query}
+            onChangeText={onChangeQuery}
             style={{ borderColor: "black", borderWidth: 1, padding: 10 }}
           />
         </Box>
-        <InstantSearch searchClient={searchClient} indexName={INDEX_NAME}>
+        <InstantSearch
+          searchClient={searchClient}
+          indexName={INDEX_NAME}
+          searchState={searchState}
+          onSearchStateChange={onSearchStateChange}
+        >
+          <Configure hitsPerPage={searchState.hitsPerPage} query={searchState.query} />
           <ConnectedHeader onFilterPress={onFilterPress} />
           <RefetchWhenApiKeyExpiredContainer relay={relay} />
-          <Configure hitsPerPage={HITS_PER_PAGE} query={query} facetFilters={facetFilters} />
+          {facetNames.map((facetName) => (
+            <VirtualRefinementList key={facetName} attribute={facetName} />
+          ))}
           <ConnectedList />
         </InstantSearch>
       </Box>
@@ -262,9 +295,15 @@ export const SearchQueryRenderer: React.FC<{}> = ({}) => {
           }
         }
 
-        return <SearchRefetchContainer system={props?.system ?? null} />
+        if (props?.system) {
+          return <SearchRefetchContainer system={props.system} />
+        }
+        return null
       }}
       variables={{}}
+      cacheConfig={{
+        force: true,
+      }}
     />
   )
 }
