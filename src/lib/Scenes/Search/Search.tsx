@@ -155,6 +155,7 @@ export const Search: React.FC<SearchProps> = (props) => {
   const { system, relay, onFilterPress } = props
   const setAggregations = ArtworksFiltersStore.useStoreActions((action) => action.setAggregationsAction)
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
+  const resetFilters = ArtworksFiltersStore.useStoreActions((action) => action.clearFiltersZeroStateAction)
 
   const [searchState, setSearchState] = useState<SearchState>({
     query: "banksy",
@@ -202,6 +203,7 @@ export const Search: React.FC<SearchProps> = (props) => {
   }
 
   const onChangeQuery = (query: string) => {
+    resetFilters()
     setSearchState({
       ...searchState,
       query,
