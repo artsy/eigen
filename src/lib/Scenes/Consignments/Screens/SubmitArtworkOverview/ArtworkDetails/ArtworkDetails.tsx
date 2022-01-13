@@ -1,5 +1,5 @@
 import { Formik } from "formik"
-import { Box, Button, Flex, Spacer, Text } from "palette"
+import { Box, CTAButton, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { ArtworkDetailsForm, ArtworkDetailsFormModel } from "./ArtworkDetailsForm"
 import { artworkDetailsInitialValues, artworkDetailsValidationSchema } from "./utils/validation"
@@ -35,9 +35,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) =
           <Box>
             <ArtworkDetailsForm />
             <Spacer mt={4} />
-            <Button disabled={!isValid} block haptic maxWidth={540}>
-              Save & Continue
-            </Button>
+            <CTAButton disabled={!isValid}>Save & Continue</CTAButton>
           </Box>
         )}
       </Formik>
