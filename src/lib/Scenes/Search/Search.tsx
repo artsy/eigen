@@ -9,11 +9,12 @@ import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/ArtworksFilter
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
 import { Box, Separator, Text } from "palette"
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import {
   Configure,
   connectInfiniteHits,
   connectRefinementList,
+  connectScrollTo,
   connectStats,
   InfiniteHitsProvided,
   SearchState,
@@ -41,8 +42,24 @@ interface HeaderProps extends StatsProvided {
   onFilterPress: () => void
 }
 
-const List: React.FC<InfiniteHitsProvided> = (props) => {
-  const { hits, hasMore, refineNext } = props
+interface ListProps extends InfiniteHitsProvided {
+  scrollOn: string
+  hasNotChanged: boolean
+  value: any
+}
+
+const List: React.FC<ListProps> = (props) => {
+  const { hits, hasMore, hasNotChanged, value, refineNext } = props
+  const ref = useRef<FlatList | null>(null)
+
+  useEffect(() => {
+    if (!hasNotChanged && value === 1) {
+      ref.current?.scrollToOffset({
+        offset: 0,
+        animated: false,
+      })
+    }
+  }, [hasNotChanged, value])
 
   const loadMore = () => {
     if (hasMore) {
@@ -52,6 +69,7 @@ const List: React.FC<InfiniteHitsProvided> = (props) => {
 
   return (
     <FlatList
+      ref={ref}
       data={hits}
       keyExtractor={(hit) => hit.objectID}
       renderItem={({ item, index }) => {
@@ -87,7 +105,8 @@ const facetKeyByFilterParamName: Partial<Record<FilterParamName, string>> = {
   [FilterParamName.materialsTerms]: "materials_terms",
 }
 
-const ConnectedList = connectInfiniteHits(List)
+const ConnectedScrollToList = connectScrollTo(List)
+const ConnectedList = connectInfiniteHits(ConnectedScrollToList)
 const ConnectedHeader = connectStats(Header)
 const VirtualRefinementList = connectRefinementList(() => null)
 
