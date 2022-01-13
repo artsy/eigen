@@ -6,7 +6,6 @@ interface ImageSearchModalProps {
   isVisible: boolean
   onDismiss: () => void
   isLoading: boolean
-  imgPath?: string
   errorMessage: string
 }
 
@@ -14,7 +13,6 @@ export const ImageSearchModal: React.FC<ImageSearchModalProps> = ({
   isVisible,
   onDismiss,
   isLoading,
-  imgPath,
   errorMessage,
 }) => {
   return (
@@ -27,21 +25,6 @@ export const ImageSearchModal: React.FC<ImageSearchModalProps> = ({
         </Flex>
       ) : (
         <>
-          <Spacer mb={1} />
-          {!!imgPath && (
-            <Image
-              source={{ uri: imgPath }}
-              style={{
-                resizeMode: "cover",
-                alignSelf: "center",
-                width: "100%",
-                height: 300,
-                borderRadius: 5,
-                borderColor: "black",
-                borderWidth: 2,
-              }}
-            />
-          )}
           <Spacer mb={1} />
           <Flex flex={1} justifyContent="center" alignItems="center">
             <Text>{errorMessage}</Text>

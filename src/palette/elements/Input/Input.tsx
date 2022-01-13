@@ -229,7 +229,6 @@ export const Input = React.forwardRef<TextInput, InputProps>(
           onDismiss={() => setIsModalVisible(false)}
           isVisible={isModalVisible}
           isLoading={isLoading}
-          imgPath={imgPath}
           errorMessage={errorMessage}
         />
         <Flex flexDirection="row" alignItems="center">
