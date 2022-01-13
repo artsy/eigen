@@ -103,7 +103,7 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     ref
   ) => {
     const { color, theme } = useTheme()
-    const { capturePhoto, isModalVisible, setIsModalVisible, errorMessage, isLoading, imgPath } = useImageSearch()
+    const { capturePhoto, isModalVisible, setIsModalVisible, errorMessage, isLoading } = useImageSearch()
     const [focused, setFocused] = useState(false)
     const [showPassword, setShowPassword] = useState(!secureTextEntry)
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
