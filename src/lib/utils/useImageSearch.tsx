@@ -64,11 +64,12 @@ export const useImageSearch = () => {
       if (isEmpty(response.result)) {
         setErrorMessage("Unfortunatelly we didn't find anything for this image. Please try another one.")
       }
-      if (response.result[0]?.metadata?.artworkHref) {
+      const artworkHref = response.result[0]?.metadata?.artworkHref ?? response.result[0]?.metadata?.href
+      if (!!artworkHref) {
         // close modal
         setIsModalVisible(false)
         // navigate user to the matching artwork
-        navigate(response.result[0].metadata.artworkHref)
+        navigate(artworkHref)
       }
     } catch (error) {
       setErrorMessage(`Something went wrong with the request: ${error}`)
