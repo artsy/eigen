@@ -225,12 +225,14 @@ export const Input = React.forwardRef<TextInput, InputProps>(
 
     return (
       <Flex flexGrow={1} style={containerStyle}>
-        <ImageSearchModal
-          onDismiss={() => setIsModalVisible(false)}
-          isVisible={isModalVisible}
-          isLoading={isLoading}
-          errorMessage={errorMessage}
-        />
+        {!!showCamera && (
+          <ImageSearchModal
+            onDismiss={() => setIsModalVisible(false)}
+            isVisible={isModalVisible}
+            isLoading={isLoading}
+            errorMessage={errorMessage}
+          />
+        )}
         <Flex flexDirection="row" alignItems="center">
           <InputTitle optional={optional} required={required}>
             {title}
