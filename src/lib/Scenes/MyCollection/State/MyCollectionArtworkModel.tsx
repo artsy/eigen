@@ -96,7 +96,6 @@ export interface MyCollectionArtworkModel {
 
 export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   sessionState: {
-    // The internalID of the artwork
     artworkId: "",
     dirtyFormCheckValues: initialFormValues,
     formValues: initialFormValues,
