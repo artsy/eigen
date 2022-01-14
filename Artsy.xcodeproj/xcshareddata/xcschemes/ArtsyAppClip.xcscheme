@@ -53,7 +53,7 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "_XCAppClipURL"
-            value = "https://ac.artsy.net/test"
+            value = "https://ac.artsy.net/artwork/talia-ramkilawan-truly-madly-deeply-in-love-with-you"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
