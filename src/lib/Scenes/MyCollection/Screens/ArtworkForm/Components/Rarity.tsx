@@ -1,6 +1,7 @@
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
+import { artworkRarityClassifications } from "lib/utils/artworkRarityClassifications"
 import { Flex, Input, INPUT_HEIGHT, InputTitle, Separator, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
@@ -87,37 +88,4 @@ const RarityInfoModal: React.FC<{
       </Flex>
     </FancyModal>
   )
-}
-
-export const artworkRarityClassifications = [
-  {
-    name: "Unique",
-    label: "Unique",
-    value: "UNIQUE",
-    description: "One-of-a-kind piece.",
-  },
-  {
-    name: "Limited edition",
-    label: "Limited Edition",
-    value: "LIMITED_EDITION",
-    description: "The edition run has ended; the number of works produced is known and included in the listing.",
-  },
-  {
-    name: "Open edition",
-    label: "Open Edition",
-    value: "OPEN_EDITION",
-    description:
-      "The edition run is ongoing. New works are still being produced, which may be numbered. This includes made-to-order works.",
-  },
-  {
-    name: "Unknown edition",
-    label: "Unknown Edition",
-    value: "UNKNOWN_EDITION",
-    description:
-      "The edition run has ended; it is unclear how many works were produced. Our partners are responsible for providing accurate classification information for all works.",
-  },
-]
-
-export const getAttributionClassValueByName = (name?: string | null): string | undefined => {
-  return artworkRarityClassifications.find((classification) => classification.name === name)?.value
 }

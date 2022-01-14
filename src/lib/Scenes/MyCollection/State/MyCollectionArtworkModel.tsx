@@ -2,9 +2,9 @@ import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwo
 import { Action, action, thunk, Thunk } from "easy-peasy"
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
 import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
+import { getAttributionClassValueByName } from "lib/utils/artworkRarityClassifications"
 import { pick, uniqBy } from "lodash"
 import { Metric } from "../Screens/ArtworkForm/Components/Dimensions"
-import { getAttributionClassValueByName } from "../Screens/ArtworkForm/Components/Rarity"
 
 export interface Image {
   height?: number
