@@ -77,14 +77,14 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>2019.05.24.09</string>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
 	<key>FacebookAdvertiserIDCollectionEnabled</key>
 	<false/>
 	<key>FacebookAppID</key>
 	<string>308278682573501</string>
 	<key>FacebookDisplayName</key>
 	<string>Artsy</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>GITCommitDate</key>
 	<string>2021-01-21T15:08:22+04:00</string>
 	<key>GITCommitHash</key>
@@ -111,10 +111,10 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
-	<key>MGLMapboxMetricsEnabledSettingShownInApp</key>
-	<string>YES</string>
 	<key>MGLGlyphsRasterizationMode</key>
 	<string>MGLIdeographsRasterizedLocally</string>
+	<key>MGLMapboxMetricsEnabledSettingShownInApp</key>
+	<string>YES</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -165,6 +165,7 @@
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>location</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

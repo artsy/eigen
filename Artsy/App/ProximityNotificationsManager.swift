@@ -17,6 +17,7 @@ import CoreLocation
             self.locationManager?.delegate = self
             // TODO: Configure accuracy so we are not killing user battery
             self.locationManager?.requestAlwaysAuthorization()
+            self.locationManager?.allowsBackgroundLocationUpdates = true
             self.locationManager?.startUpdatingLocation()
         }
     }
@@ -75,5 +76,9 @@ import CoreLocation
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("NTFY location manager failed with error", error)
+    }
+
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        print("NTFY location manager region entrance event", region)
     }
 }
