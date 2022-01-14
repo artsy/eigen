@@ -50,6 +50,7 @@ static NSString *reactStateChanged = @"STATE_CHANGED";
 static NSString *requestNavigation = @"REQUEST_NAVIGATION";
 static NSString *eventTracking = @"EVENT_TRACKING";
 static NSString *identifyTracking = @"IDENTIFY_TRACKING";
+static NSString *locationUpdated = @"ART_LOCATION_UPDATED";
 
 
 @implementation ARNotificationsManager
@@ -125,6 +126,14 @@ RCT_EXPORT_MODULE();
     @synchronized(self)
     {
         [self dispatchAfterBootstrap:eventTracking data:traits];
+    }
+}
+
+- (void)sendLocationEvent:(NSDictionary *)traits
+{
+    @synchronized(self)
+    {
+        [self dispatchAfterBootstrap:locationUpdated data:traits];
     }
 }
 

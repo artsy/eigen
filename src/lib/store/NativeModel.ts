@@ -31,6 +31,10 @@ export type NativeEvent =
       type: "IDENTIFY_TRACKING"
       payload: InfoType
     }
+  | {
+      type: "ART_LOCATION_UPDATED"
+      payload: { lat: number; lon: number }
+    }
 
 export interface NativeState {
   userID: string
@@ -91,6 +95,8 @@ listenToNativeEvents((event: NativeEvent) => {
       return
     case "MODAL_DISMISSED":
       navigationEvents.emit("modalDismissed")
+      return
+    case "ART_LOCATION_UPDATED":
       return
     default:
       assertNever(event)

@@ -5,6 +5,7 @@ import { Pin } from "lib/Icons/Pin"
 import PinFairSelected from "lib/Icons/PinFairSelected"
 import PinSavedSelected from "lib/Icons/PinSavedSelected"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { listenToNativeEvents } from "lib/store/NativeModel"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -12,7 +13,7 @@ import { Schema, screenTrack, track } from "lib/utils/track"
 import { get, isEqual, uniq } from "lodash"
 import { Box, ClassTheme, Flex, Sans } from "palette"
 import React from "react"
-import { Animated, Dimensions, Easing, Image, View } from "react-native"
+import { Animated, Dimensions, Easing, EmitterSubscription, Image, View } from "react-native"
 import Config from "react-native-config"
 import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 // @ts-ignore
@@ -140,6 +141,8 @@ export class GlobalMap extends React.Component<Props, State> {
     return { lat: coords.latitude, lng: coords.longitude }
   }
 
+  listener: EmitterSubscription | null = null
+
   map: React.RefObject<MapboxGL.MapView>
   camera: React.RefObject<MapboxGL.Camera>
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -183,10 +186,17 @@ export class GlobalMap extends React.Component<Props, State> {
 
   componentDidMount() {
     EventEmitter.subscribe("filters:change", this.handleFilterChange)
+
+    this.listener = listenToNativeEvents((event) => {
+      if (event.type === "ART_LOCATION_UPDATED") {
+        console.log("NTFY location update event", event.payload)
+      }
+    })
   }
 
   componentWillUnmount() {
     EventEmitter.unsubscribe("filters:change", this.handleFilterChange)
+    this.listener?.remove()
   }
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -549,6 +559,14 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   onPressNotifyMeButton = () => {
+    // TODO: This location update listening might need to happen on native side
+    // Needs to be able to respond when app is in background or not active
+    this.listener = listenToNativeEvents((event) => {
+      if (event.type === "ART_LOCATION_UPDATED") {
+        console.log("NTFY got location payload in react", event.payload)
+      }
+    })
+
     LegacyNativeModules.ProximityNotificationsModule.startTrackingProximityNotifications()
   }
 

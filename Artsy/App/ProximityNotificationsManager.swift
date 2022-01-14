@@ -30,7 +30,8 @@ import CoreLocation
             return
         }
 
-        AREmission.sharedInstance().sendEvent(locationUpdateKey, traits: [
+        // TODO: This method can be type safe
+        AREmission.sharedInstance().sendLocationEvent([
             "lat": location.coordinate.latitude,
             "lon": location.coordinate.longitude,
         ])

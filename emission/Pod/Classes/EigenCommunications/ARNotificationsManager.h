@@ -29,6 +29,8 @@
 - (void)updateState:(NSDictionary *)state;
 - (void)sendEvent:(NSDictionary *)traits;
 - (void)sendIdentifyEvent:(NSDictionary *)traits;
+- (void)sendLocationEvent:(NSDictionary *)traits;
+
 - (NSDictionary *)state;
 - (NSDictionary *)reactState;
 

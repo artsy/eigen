@@ -99,6 +99,11 @@ static AREmission *_sharedInstance = nil;
     [self.notificationsManagerModule sendIdentifyEvent:traits];
 }
 
+- (void)sendLocationEvent:(NSDictionary *)traits
+{
+    [self.notificationsManagerModule sendLocationEvent:traits];
+}
+
 - (NSString *)stateStringForKey:(NSString *)stateKey
 {
     NSString *result = [self.notificationsManagerModule.state valueForKey:stateKey];
