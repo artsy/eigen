@@ -101,7 +101,10 @@ target 'ArtsyAppClip' do
   pod 'glog', :podspec => "./node_modules/react-native/third-party-podspecs/glog.podspec"
   pod 'Folly', :podspec => "./node_modules/react-native/third-party-podspecs/Folly.podspec"
 
-  # pod 'Emission', path: './emission', :inhibit_warnings => false
+  pod 'RNLocalize', :path => "node_modules/react-native-localize"
+  pod 'RNCAsyncStorage', :path => "node_modules/@react-native-community/async-storage"
+  pod 'react-native-config', :path => "node_modules/react-native-config"
+
   pod 'Artsy+UIFonts', '~> 3.3.4'
 end
 
@@ -175,7 +178,7 @@ target 'Artsy' do
   # Swift pods 🎉
   pod 'Then'
   pod 'Interstellar/Core', git: 'https://github.com/artsy/Interstellar.git', branch: 'observable-unsubscribe'
-  pod 'Starscream', '~> 3.0.4'
+  pod 'Starscream'
   pod 'SwiftyJSON'
 
   # Used in Live Auctions to hold user-state
