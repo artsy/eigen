@@ -3,8 +3,8 @@ import SearchIcon from "lib/Icons/SearchIcon"
 import { SearchContext, useSearchProviderValues } from "lib/Scenes/Search/SearchContext"
 import { Box, Input } from "palette"
 import React, { useState } from "react"
-import { ArtworkDetailsFormModel } from "./ArtworkDetailsForm"
-import { AutosuggestResult, AutosuggestResults } from "./AutosuggestResults"
+import { ArtworkDetailsFormModel } from "../ArtworkDetailsForm"
+import { ArtistAutosuggestResult, ArtistAutosuggestResults } from "./ArtistAutosuggestResults"
 
 export const ArtistAutosuggest: React.FC = () => {
   const {
@@ -21,7 +21,7 @@ export const ArtistAutosuggest: React.FC = () => {
     setFieldValue("artistId", "")
   }
 
-  const onArtistSelect = (result: AutosuggestResult) => {
+  const onArtistSelect = (result: ArtistAutosuggestResult) => {
     setFieldValue("artist", result.displayLabel)
     setFieldValue("artistId", result.internalID)
     setIsArtistSelected(true)
@@ -42,7 +42,7 @@ export const ArtistAutosuggest: React.FC = () => {
         {!isArtistSelected && artist.length > 2 ? (
           <>
             <Box height={198}>
-              <AutosuggestResults query={artist} entities={["ARTIST"]} onResultPress={onArtistSelect} />
+              <ArtistAutosuggestResults query={artist} entities={["ARTIST"]} onResultPress={onArtistSelect} />
             </Box>
           </>
         ) : null}

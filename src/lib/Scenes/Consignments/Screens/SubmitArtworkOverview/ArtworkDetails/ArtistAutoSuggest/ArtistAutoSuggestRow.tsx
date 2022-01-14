@@ -7,7 +7,7 @@ import React, { useContext } from "react"
 
 const IMAGE_SIZE = 40
 
-export const AutosuggestSearchResult: React.FC<{
+export const ArtistAutoSuggestRow: React.FC<{
   highlight: string
   result: AutosuggestResult
   onResultPress: (result: AutosuggestResult) => void

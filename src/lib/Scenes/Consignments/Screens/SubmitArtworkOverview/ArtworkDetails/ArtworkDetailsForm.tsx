@@ -2,7 +2,7 @@ import { useFormikContext } from "formik"
 import { Box, Flex, Input, InputTitle, RadioButton, Spacer } from "palette"
 import { Select } from "palette/elements/Select"
 import React from "react"
-import { ArtistAutosuggest } from "./ArtistAutosuggest"
+import { ArtistAutosuggest } from "./ArtistAutoSuggest/ArtistAutosuggest"
 import { rarityOptions } from "./utils/rarityOptions"
 
 export interface ArtworkDetailsFormModel {

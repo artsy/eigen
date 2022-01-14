@@ -1,12 +1,11 @@
 import { captureMessage } from "@sentry/react-native"
-import { AutosuggestResults_results } from "__generated__/AutosuggestResults_results.graphql"
+import { ArtistAutosuggestResults_results } from "__generated__/ArtistAutosuggestResults_results.graphql"
 import {
-  AutosuggestResultsQuery,
-  AutosuggestResultsQueryVariables,
-} from "__generated__/AutosuggestResultsQuery.graphql"
+  ArtistAutosuggestResultsQuery,
+  ArtistAutosuggestResultsQueryVariables,
+} from "__generated__/ArtistAutosuggestResultsQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { AutosuggestResultsPlaceholder } from "lib/Scenes/Search/components/placeholders/AutosuggestResultsPlaceholder"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Flex, quoteLeft, quoteRight, Separator, Spacer, Text, useSpace } from "palette"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
@@ -14,19 +13,20 @@ import React from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
-import { AutosuggestSearchResult } from "./AutosuggestSearchResult"
+import { ArtistAutosuggestResultsPlaceholder } from "./ArtistAutosuggestResultsPlaceholder"
+import { ArtistAutoSuggestRow } from "./ArtistAutoSuggestRow"
 
-export type AutosuggestResult = NonNullable<
-  NonNullable<NonNullable<NonNullable<AutosuggestResults_results["results"]>["edges"]>[0]>["node"]
+export type ArtistAutosuggestResult = NonNullable<
+  NonNullable<NonNullable<NonNullable<ArtistAutosuggestResults_results["results"]>["edges"]>[0]>["node"]
 >
 
 const INITIAL_BATCH_SIZE = 32
 const SUBSEQUENT_BATCH_SIZE = 64
 
-const AutosuggestResultsFlatList: React.FC<{
+const ArtistAutosuggestResultsFlatList: React.FC<{
   query: string
-  results: AutosuggestResults_results | null
-  onResultPress: (result: AutosuggestResult) => void
+  results: ArtistAutosuggestResults_results | null
+  onResultPress: (result: ArtistAutosuggestResult) => void
   relay: RelayPaginationProp
 }> = ({ query, results: latestResults, onResultPress, relay }) => {
   const space = useSpace()
@@ -37,23 +37,22 @@ const AutosuggestResultsFlatList: React.FC<{
   const onScrollBeginDrag = useCallback(() => {
     if (!userHasStartedScrolling.current) {
       userHasStartedScrolling.current = true
-      // fetch second page immediately
       loadMore()
     }
   }, [])
+
   const onEndReached = useCallback(() => {
     if (userHasStartedScrolling.current) {
       loadMore()
     }
   }, [])
+
   useEffect(() => {
     if (query) {
-      // the query changed, prevent loading more pages until the user starts scrolling
       userHasStartedScrolling.current = false
     }
   }, [query])
 
-  // Show loading placeholder for the first time
   useEffect(() => {
     if (latestResults !== null) {
       setShouldShowLoadingPlaceholder(false)
@@ -64,17 +63,14 @@ const AutosuggestResultsFlatList: React.FC<{
   const flatListRef = useRef<FlatList<any>>(null)
   useEffect(() => {
     if (lastResults === null && latestResults !== null) {
-      // results were updated after a new query, scroll user back to top
       flatListRef.current?.scrollToOffset({ offset: 0, animated: true })
-      // (we need to wait for the results to be updated to avoid janky behaviour that
-      // happens when the results get updated during a scroll)
     }
   }, [lastResults])
 
   const results = useRef(latestResults)
   results.current = latestResults || results.current
 
-  const nodes: AutosuggestResult[] = useMemo(
+  const nodes: ArtistAutosuggestResult[] = useMemo(
     () => results.current?.results?.edges?.map((e, i) => ({ ...e?.node!, key: e?.node?.href! + i })) ?? [],
     [results.current]
   )
@@ -84,13 +80,13 @@ const AutosuggestResultsFlatList: React.FC<{
   if (shouldShowLoadingPlaceholder) {
     return (
       <ProvidePlaceholderContext>
-        <AutosuggestResultsPlaceholder showResultType={false} />
+        <ArtistAutosuggestResultsPlaceholder />
       </ProvidePlaceholderContext>
     )
   }
 
   return (
-    <AboveTheFoldFlatList<AutosuggestResult>
+    <AboveTheFoldFlatList<ArtistAutosuggestResult>
       listRef={flatListRef}
       style={{
         flex: 1,
@@ -126,7 +122,7 @@ const AutosuggestResultsFlatList: React.FC<{
       renderItem={({ item, index }) => {
         return (
           <Flex mb={1}>
-            <AutosuggestSearchResult highlight={query} result={item} onResultPress={onResultPress} itemIndex={index} />
+            <ArtistAutoSuggestRow highlight={query} result={item} onResultPress={onResultPress} itemIndex={index} />
             <Separator mt={1} />
           </Flex>
         )
@@ -137,11 +133,11 @@ const AutosuggestResultsFlatList: React.FC<{
   )
 }
 
-const AutosuggestResultsContainer = createPaginationContainer(
-  AutosuggestResultsFlatList,
+const ArtistAutosuggestResultsContainer = createPaginationContainer(
+  ArtistAutosuggestResultsFlatList,
   {
     results: graphql`
-      fragment AutosuggestResults_results on Query
+      fragment ArtistAutosuggestResults_results on Query
       @argumentDefinitions(
         query: { type: "String!" }
         count: { type: "Int!" }
@@ -149,7 +145,7 @@ const AutosuggestResultsContainer = createPaginationContainer(
         entities: { type: "[SearchEntity]", defaultValue: [ARTIST, ARTWORK, FAIR, GENE, SALE, PROFILE, COLLECTION] }
       ) {
         results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: $cursor, entities: $entities)
-          @connection(key: "AutosuggestResults_results") {
+          @connection(key: "ArtistAutosuggestResults_results") {
           edges {
             node {
               imageUrl
@@ -188,22 +184,27 @@ const AutosuggestResultsContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query AutosuggestResultsPaginationQuery($query: String!, $count: Int!, $cursor: String, $entities: [SearchEntity])
-      @raw_response_type {
-        ...AutosuggestResults_results @arguments(query: $query, count: $count, cursor: $cursor, entities: $entities)
+      query ArtistAutosuggestResultsPaginationQuery(
+        $query: String!
+        $count: Int!
+        $cursor: String
+        $entities: [SearchEntity]
+      ) @raw_response_type {
+        ...ArtistAutosuggestResults_results
+          @arguments(query: $query, count: $count, cursor: $cursor, entities: $entities)
       }
     `,
   }
 )
 
-export const AutosuggestResults: React.FC<{
+export const ArtistAutosuggestResults: React.FC<{
   query: string
-  entities: AutosuggestResultsQueryVariables["entities"]
-  onResultPress: (result: AutosuggestResult) => void
+  entities: ArtistAutosuggestResultsQueryVariables["entities"]
+  onResultPress: (result: ArtistAutosuggestResult) => void
 }> = React.memo(
   ({ query, entities, onResultPress }) => {
     return (
-      <QueryRenderer<AutosuggestResultsQuery>
+      <QueryRenderer<ArtistAutosuggestResultsQuery>
         render={({ props, error }) => {
           if (error) {
             if (__DEV__) {
@@ -222,7 +223,7 @@ export const AutosuggestResults: React.FC<{
               </Flex>
             )
           }
-          return <AutosuggestResultsContainer query={query} results={props} onResultPress={onResultPress} />
+          return <ArtistAutosuggestResultsContainer query={query} results={props} onResultPress={onResultPress} />
         }}
         variables={{
           query,
@@ -230,8 +231,9 @@ export const AutosuggestResults: React.FC<{
           entities,
         }}
         query={graphql`
-          query AutosuggestResultsQuery($query: String!, $count: Int!, $entities: [SearchEntity]) @raw_response_type {
-            ...AutosuggestResults_results @arguments(query: $query, count: $count, entities: $entities)
+          query ArtistAutosuggestResultsQuery($query: String!, $count: Int!, $entities: [SearchEntity])
+          @raw_response_type {
+            ...ArtistAutosuggestResults_results @arguments(query: $query, count: $count, entities: $entities)
           }
         `}
         environment={defaultEnvironment}

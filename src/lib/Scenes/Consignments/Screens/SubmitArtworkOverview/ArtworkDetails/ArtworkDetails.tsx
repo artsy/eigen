@@ -8,15 +8,15 @@ interface ArtworkDetailsProps {
 }
 
 export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) => {
-  const handleSubmit = async (values: ArtworkDetailsFormModel) => {
-    // TODO: createSubmission
+  const handleArtworkDetailsSubmit = (values: ArtworkDetailsFormModel) => {
+    // TODO: post values
     console.log({ values })
-    console.log({ x: "XXXXX" })
     handlePress()
   }
 
   return (
     <Flex p={1} mt={1}>
+      <CTAButton onPress={handlePress}>Save & Continue</CTAButton>
       <Text variant="sm" color="black60">
         · All fields are required to submit an artwork.
       </Text>
@@ -28,17 +28,21 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) =
 
       <Formik<ArtworkDetailsFormModel>
         initialValues={artworkDetailsInitialValues}
-        onSubmit={handleSubmit}
+        onSubmit={handleArtworkDetailsSubmit}
         validationSchema={artworkDetailsValidationSchema}
         validateOnMount
       >
-        {({ isValid }) => (
-          <Box>
-            <ArtworkDetailsForm />
-            <Spacer mt={4} />
-            <CTAButton disabled={!isValid}>Save & Continue</CTAButton>
-          </Box>
-        )}
+        {({ values, isValid }) => {
+          return (
+            <Box>
+              <ArtworkDetailsForm />
+              <Spacer mt={4} />
+              <CTAButton disabled={!isValid} onPress={() => handleArtworkDetailsSubmit(values)}>
+                Save & Continue
+              </CTAButton>
+            </Box>
+          )
+        }}
       </Formik>
     </Flex>
   )
