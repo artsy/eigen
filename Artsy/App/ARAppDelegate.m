@@ -131,7 +131,9 @@ static ARAppDelegate *_sharedInstance = nil;
     // Temp Fix for: https://github.com/artsy/eigen/issues/602
     [self forceCacheCustomFonts];
 
-    [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = [[ARAppNotificationsDelegate alloc] init];
+    ARAppNotificationsDelegate *notificationsDelegate = [[ARAppNotificationsDelegate alloc] init];
+    [[UNUserNotificationCenter currentNotificationCenter] setDelegate:notificationsDelegate];
+    [JSDecoupledAppDelegate sharedAppDelegate].remoteNotificationsDelegate = notificationsDelegate;
 
     self.window = [[ARWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 

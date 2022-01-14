@@ -204,6 +204,7 @@ export class GlobalMap extends React.Component<Props, State> {
     // const closestFairs = this.sortedLocations(bucketResults.fairs, currentLocation)
     // const closestMuseums = this.sortedLocations(bucketResults.museums, currentLocation)
     const closestGalleries = this.sortedLocations(bucketResults.galleries, currentLocation)
+    console.log("NTFY got closest galleries", closestGalleries)
     return closestGalleries
   }
 

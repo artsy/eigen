@@ -312,6 +312,18 @@
     }
 }
 
+#pragma mark UNUserNotificationCenterDelegate
+
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)(void))completionHandler {
+
+    NSDictionary *userInfo = [[[[response notification] request] content] userInfo];
+
+    NSString *url = userInfo[@"url"];
+    if (url) {
+        [[AREmission sharedInstance] navigate:url withProps:@{}];
+    }
+}
+
 - (void)receivedNotification:(NSDictionary *)notificationInfo;
 {
     [[AREmission sharedInstance] sendEvent:ARAnalyticsNotificationReceived traits:notificationInfo];
