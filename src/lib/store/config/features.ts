@@ -227,6 +227,11 @@ export const features = defineFeatures({
     description: "Enable search with image",
     showInAdminMenu: true,
   },
+  AREnableShareButtonForArtist: {
+    readyForRelease: false,
+    description: "Enable share button on artist page",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
