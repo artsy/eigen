@@ -23,11 +23,15 @@ import CoreLocation
     }
 
     @objc func updateRegions(rawRegions: [[String: Any]]) {
-        stopMonitoringAllRegions()
+        print("NTFY location manager updateRegions event")
+
+        self.stopMonitoringAllRegions()
         let closest20RawRegions = Array(rawRegions[0..<20])
         for rawRegion in closest20RawRegions {
-            if let region = regionFromRawRegion(rawRegion: rawRegion) {
-                locationManager?.startMonitoring(for: region)
+            if let region = self.regionFromRawRegion(rawRegion: rawRegion) {
+                print("NTFY start monitoring region", region.identifier)
+                print("NTFY start monitoring region center", region.center)
+                self.locationManager?.startMonitoring(for: region)
             }
         }
     }
@@ -55,6 +59,7 @@ import CoreLocation
         }
 
         for region in locationManager.monitoredRegions {
+            print("NTFY stop monitoring region", region.identifier)
             locationManager.stopMonitoring(for: region)
         }
     }
@@ -63,6 +68,9 @@ import CoreLocation
 
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         // TODO: find most accurate rather than first, is first most accurate?
+
+        print("NTFY location manager didUpdateLocations")
+
         guard let location = locations.first else {
             return
         }
@@ -79,6 +87,27 @@ import CoreLocation
     }
 
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("NTFY location manager region entrance event", region)
+        // TODO: How to handle entering multiple regions
+        print("NTFY location manager region entrance event", region.identifier)
+
+        if UIApplication.shared.applicationState != .active {
+            let body = "You are near \(region.identifier), check it out!"
+            let notificationContent = UNMutableNotificationContent()
+            notificationContent.body = body
+            notificationContent.userInfo = ["url": "partner/\(region.identifier)" ]
+            notificationContent.sound = .default
+            notificationContent.badge = UIApplication.shared.applicationIconBadgeNumber + 1 as NSNumber
+                // 3
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+            let request = UNNotificationRequest(
+                  identifier: "location_change",
+                  content: notificationContent,
+                  trigger: trigger)
+            UNUserNotificationCenter.current().add(request) { error in
+                if let error = error {
+                    print("Error: \(error)")
+                }
+            }
+        }
     }
 }
