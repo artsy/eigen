@@ -2,6 +2,7 @@ import * as yup from "yup"
 
 export const artworkDetailsInitialValues = {
   artist: "",
+  artistId: "",
   title: "",
   year: "",
   materials: "",
@@ -15,6 +16,7 @@ export const artworkDetailsInitialValues = {
 
 export const artworkDetailsValidationSchema = yup.object().shape({
   artist: yup.string().required().trim(),
+  artistId: yup.string().required().trim(),
   title: yup.string().required().trim(),
   year: yup.string().required().trim(),
   materials: yup.string().required().trim(),

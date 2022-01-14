@@ -11,6 +11,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) =
   const handleSubmit = async (values: ArtworkDetailsFormModel) => {
     // TODO: createSubmission
     console.log({ values })
+    console.log({ x: "XXXXX" })
     handlePress()
   }
 

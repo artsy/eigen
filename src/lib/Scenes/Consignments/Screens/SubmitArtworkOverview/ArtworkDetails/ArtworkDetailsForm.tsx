@@ -2,10 +2,12 @@ import { useFormikContext } from "formik"
 import { Box, Flex, Input, InputTitle, RadioButton, Spacer } from "palette"
 import { Select } from "palette/elements/Select"
 import React from "react"
+import { ArtistAutosuggest } from "./ArtistAutosuggest"
 import { rarityOptions } from "./utils/rarityOptions"
 
 export interface ArtworkDetailsFormModel {
   artist: string
+  artistId: string
   title: string
   year: string
   materials: string
@@ -20,15 +22,13 @@ export interface ArtworkDetailsFormModel {
 export const ArtworkDetailsForm: React.FC = () => {
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
 
+  console.log({ artist: values.artist, id: values.artistId })
+
   return (
     <Flex flexDirection="column">
-      <Input
-        title="Artist"
-        placeholder="Enter Full Name"
-        value={values.artist}
-        onChangeText={(e) => setFieldValue("artist", e)}
-      />
-      {/* TODO: <ArtistAutosuggest onResultPress={handleArtistSelection} /> */}
+      <Spacer mt={2} />
+      <InputTitle>Artist</InputTitle>
+      <ArtistAutosuggest />
       <Spacer mt={2} />
       <Input
         title="Title"
