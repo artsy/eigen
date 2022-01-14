@@ -14,7 +14,7 @@ import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
 import { ArtistAutosuggestResultsPlaceholder } from "./ArtistAutosuggestResultsPlaceholder"
-import { ArtistAutoSuggestRow } from "./ArtistAutoSuggestRow"
+import { ArtistAutosuggestRow } from "./ArtistAutosuggestRow"
 
 export type ArtistAutosuggestResult = NonNullable<
   NonNullable<NonNullable<NonNullable<ArtistAutosuggestResults_results["results"]>["edges"]>[0]>["node"]
@@ -122,7 +122,7 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
       renderItem={({ item, index }) => {
         return (
           <Flex mb={1}>
-            <ArtistAutoSuggestRow highlight={query} result={item} onResultPress={onResultPress} itemIndex={index} />
+            <ArtistAutosuggestRow highlight={query} result={item} onResultPress={onResultPress} itemIndex={index} />
             <Separator mt={1} />
           </Flex>
         )

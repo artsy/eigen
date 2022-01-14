@@ -1,10 +1,10 @@
 import { useFormikContext } from "formik"
-import { Box, Flex, Input, InputTitle, RadioButton, Spacer } from "palette"
+import { Box, Flex, Input, InputTitle, RadioButton, Spacer, Text } from "palette"
 import { Select } from "palette/elements/Select"
-import React from "react"
-import { ArtistAutosuggest } from "./ArtistAutoSuggest/ArtistAutosuggest"
+import React, { useState } from "react"
+import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
+import { InfoModal } from "./Components/InfoModal"
 import { rarityOptions } from "./utils/rarityOptions"
-
 export interface ArtworkDetailsFormModel {
   artist: string
   artistId: string
@@ -22,7 +22,8 @@ export interface ArtworkDetailsFormModel {
 export const ArtworkDetailsForm: React.FC = () => {
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
 
-  console.log({ artist: values.artist, id: values.artistId })
+  const [isRarityInfoModalVisible, setRarityInfoModalVisible] = useState(false)
+  const [isProvenanceInfoModalVisible, setProvenanceInfoModalVisible] = useState(false)
 
   return (
     <Flex flexDirection="column">
@@ -47,14 +48,21 @@ export const ArtworkDetailsForm: React.FC = () => {
         onChangeText={(e) => setFieldValue("materials", e)}
       />
       <Spacer mt={2} />
-      {/* TODO: What is this? */}
       <Select
         onSelectValue={(e) => setFieldValue("rarity", e)}
         value={values.rarity}
         enableSearch={false}
         title="Rarity"
+        tooltipText="What is this?"
+        onTooltipPress={() => setRarityInfoModalVisible(true)}
         placeholder="Select a Classification"
         options={rarityOptions}
+      />
+      <InfoModal
+        title="Classifications"
+        visible={isRarityInfoModalVisible}
+        isRarity
+        onDismiss={() => setRarityInfoModalVisible(false)}
       />
       <Spacer mt={2} />
       <InputTitle>Dimensions</InputTitle>
@@ -76,13 +84,23 @@ export const ArtworkDetailsForm: React.FC = () => {
         </Box>
       </Flex>
       <Spacer mt={2} />
-      {/* TODO: What is this? */}
+      <Flex flexDirection="row" justifyContent="space-between">
+        <InputTitle>Provenance</InputTitle>
+        <Text variant="xs" color="black60" onPress={() => setProvenanceInfoModalVisible(true)}>
+          What is this?
+        </Text>
+      </Flex>
       <Input
-        title="Provenance"
         placeholder="Describe How You Acquired the Artwork"
         value={values.provenance}
         onChangeText={(e) => setFieldValue("provenance", e)}
         multiline
+      />
+      <InfoModal
+        title="Artwork Provenance"
+        visible={isProvenanceInfoModalVisible}
+        isRarity={false}
+        onDismiss={() => setProvenanceInfoModalVisible(false)}
       />
       <Spacer mt={2} />
       {/* TODO: location autocomplete */}

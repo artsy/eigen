@@ -16,12 +16,11 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) =
 
   return (
     <Flex p={1} mt={1}>
-      <CTAButton onPress={handlePress}>Save & Continue</CTAButton>
       <Text variant="sm" color="black60">
-        · All fields are required to submit an artwork.
+        • All fields are required to submit an artwork.
       </Text>
       <Text variant="sm" color="black60">
-        · Unfortunately, we do not allow&nbsp;
+        • Unfortunately, we do not allow&nbsp;
         <Text style={{ textDecorationLine: "underline" }}>artists to sell their own work</Text> on Artsy.
       </Text>
       <Spacer mt={2} />
