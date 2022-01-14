@@ -8,8 +8,11 @@ RCT_EXPORT_MODULE(ProximityNotificationsModule);
 RCT_EXPORT_METHOD(startTrackingProximityNotifications)
 {
     BOOL hasPermission = [[ProximityNotificationsManager sharedInstance] hasPermissionToTrackRegions];
-    NSString *hasPermissionStr = hasPermission ? @"YES" : @"NO";
-    NSLog(@"NTFY hasPermission to track regions %@", hasPermissionStr);
+
+    if (hasPermission) {
+        [[ProximityNotificationsManager sharedInstance] startTrackingProximity];
+    }
+    // TODO: Show user some message / request more fine grained permissions if cannot track
 }
 
 @end
