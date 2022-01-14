@@ -4,6 +4,7 @@ import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { InfoModal } from "./Components/InfoModal"
+import { LocationAutocomplete } from "./Components/LocationAutocomplete"
 import { rarityOptions } from "./utils/rarityOptions"
 export interface ArtworkDetailsFormModel {
   artist: string
@@ -25,8 +26,13 @@ export const ArtworkDetailsForm: React.FC = () => {
   const [isRarityInfoModalVisible, setRarityInfoModalVisible] = useState(false)
   const [isProvenanceInfoModalVisible, setProvenanceInfoModalVisible] = useState(false)
 
+  // TODO
+  const x = (e: any) => console.log({ e })
+
   return (
     <Flex flexDirection="column">
+      <Spacer mt={2} />
+      <LocationAutocomplete onChange={x} initialLocation={null} />
       <Spacer mt={2} />
       <InputTitle>Artist</InputTitle>
       <ArtistAutosuggest />

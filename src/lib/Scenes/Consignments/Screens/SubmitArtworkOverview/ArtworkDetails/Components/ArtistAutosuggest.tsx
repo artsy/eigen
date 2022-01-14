@@ -15,6 +15,7 @@ export const ArtistAutosuggest: React.FC = () => {
 
   const [isArtistSelected, setIsArtistSelected] = useState(false)
 
+  // TODO: types
   const onArtistSearchTextChange = (e: any) => {
     setIsArtistSelected(false)
     setFieldValue("artist", e)
@@ -29,24 +30,22 @@ export const ArtistAutosuggest: React.FC = () => {
 
   return (
     <SearchContext.Provider value={searchProviderValues}>
-      <Box>
-        <Input
-          placeholder="Enter Full Name"
-          icon={<SearchIcon width={18} height={18} />}
-          onChangeText={onArtistSearchTextChange}
-          value={artist}
-          enableClearButton
-          autoFocus={typeof jest === "undefined"}
-        />
+      <Input
+        placeholder="Enter Full Name"
+        icon={<SearchIcon width={18} height={18} />}
+        onChangeText={onArtistSearchTextChange}
+        value={artist}
+        enableClearButton
+        autoFocus={typeof jest === "undefined"}
+      />
 
-        {!isArtistSelected && artist.length > 2 ? (
-          <>
-            <Box height={198}>
-              <ArtistAutosuggestResults query={artist} onResultPress={onArtistSelect} />
-            </Box>
-          </>
-        ) : null}
-      </Box>
+      {!isArtistSelected && artist.length > 2 ? (
+        <>
+          <Box height={198}>
+            <ArtistAutosuggestResults query={artist} onResultPress={onArtistSelect} />
+          </Box>
+        </>
+      ) : null}
     </SearchContext.Provider>
   )
 }

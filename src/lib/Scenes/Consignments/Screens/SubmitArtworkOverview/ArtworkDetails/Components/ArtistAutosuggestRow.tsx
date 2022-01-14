@@ -21,7 +21,7 @@ export const ArtistAutosuggestRow: React.FC<{
   }
 
   return (
-    <Touchable onPress={() => onPress()}>
+    <Touchable onPress={onPress}>
       <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
         <OpaqueImageView
           imageURL={result.imageUrl}
