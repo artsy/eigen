@@ -42,7 +42,7 @@ export const ArtistAutosuggest: React.FC = () => {
         {!isArtistSelected && artist.length > 2 ? (
           <>
             <Box height={198}>
-              <ArtistAutosuggestResults query={artist} entities={["ARTIST"]} onResultPress={onArtistSelect} />
+              <ArtistAutosuggestResults query={artist} onResultPress={onArtistSelect} />
             </Box>
           </>
         ) : null}

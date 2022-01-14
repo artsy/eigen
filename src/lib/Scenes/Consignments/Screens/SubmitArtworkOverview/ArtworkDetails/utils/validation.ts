@@ -16,7 +16,7 @@ export const artworkDetailsInitialValues = {
 
 export const artworkDetailsValidationSchema = yup.object().shape({
   artist: yup.string().required().trim(),
-  artistId: yup.string().required().trim(),
+  artistId: yup.string().required(),
   title: yup.string().required().trim(),
   year: yup.string().required().trim(),
   materials: yup.string().required().trim(),

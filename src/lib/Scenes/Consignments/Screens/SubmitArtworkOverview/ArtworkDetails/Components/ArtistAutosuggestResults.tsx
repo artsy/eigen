@@ -199,10 +199,9 @@ const ArtistAutosuggestResultsContainer = createPaginationContainer(
 
 export const ArtistAutosuggestResults: React.FC<{
   query: string
-  entities: ArtistAutosuggestResultsQueryVariables["entities"]
   onResultPress: (result: ArtistAutosuggestResult) => void
 }> = React.memo(
-  ({ query, entities, onResultPress }) => {
+  ({ query, onResultPress }) => {
     return (
       <QueryRenderer<ArtistAutosuggestResultsQuery>
         render={({ props, error }) => {
@@ -228,7 +227,7 @@ export const ArtistAutosuggestResults: React.FC<{
         variables={{
           query,
           count: INITIAL_BATCH_SIZE,
-          entities,
+          entities: ["ARTIST"],
         }}
         query={graphql`
           query ArtistAutosuggestResultsQuery($query: String!, $count: Int!, $entities: [SearchEntity])
