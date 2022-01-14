@@ -201,8 +201,8 @@ export class GlobalMap extends React.Component<Props, State> {
 
   nearest20(bucketResults: BucketResults, currentLocation: { lat: number; lng: number }) {
     // TODO: how do we want to prioritize
-    const closestFairs = this.sortedLocations(bucketResults.fairs, currentLocation)
-    const closestMuseums = this.sortedLocations(bucketResults.museums, currentLocation)
+    // const closestFairs = this.sortedLocations(bucketResults.fairs, currentLocation)
+    // const closestMuseums = this.sortedLocations(bucketResults.museums, currentLocation)
     const closestGalleries = this.sortedLocations(bucketResults.galleries, currentLocation)
     return closestGalleries
   }

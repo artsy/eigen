@@ -18,6 +18,8 @@ RCT_EXPORT_METHOD(startTrackingProximityNotifications)
 RCT_EXPORT_METHOD(requestNewRegionTracking:(NSArray *)locations)
 {
     NSLog(@"NTFY got location array %@", locations.firstObject[@"id"]);
+
+    [[ProximityNotificationsManager sharedInstance] updateRegionsWithRawRegions:locations];
 }
 
 
