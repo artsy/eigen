@@ -50,7 +50,15 @@ interface LegacyNativeModules {
   }
   ProximityNotificationsModule: {
     startTrackingProximityNotifications(): void
-    requestNewRegionTracking(regions: Array<{ lat: number; lng: number }>): void
+    requestNewRegionTracking(
+      regions: Array<{
+        lat: number
+        lng: number
+        id: string
+        href: string
+        image_url: string
+      }>
+    ): void
   }
   ARCocoaConstantsModule: {
     AREnabled: boolean

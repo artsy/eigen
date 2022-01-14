@@ -40,7 +40,7 @@ import CoreLocation
         guard
             let lat = rawRegion["lat"] as? Double,
             let lon = rawRegion["lng"] as? Double,
-            let id = rawRegion["id"] as? String
+            let id = rawRegion["href"] as? String
         else {
             return nil
         }
@@ -94,7 +94,7 @@ import CoreLocation
             let body = "You are near \(region.identifier), check it out!"
             let notificationContent = UNMutableNotificationContent()
             notificationContent.body = body
-            notificationContent.userInfo = ["url": "partner/\(region.identifier)" ]
+            notificationContent.userInfo = ["url": region.identifier ]
             notificationContent.sound = .default
             notificationContent.badge = UIApplication.shared.applicationIconBadgeNumber + 1 as NSNumber
                 // 3

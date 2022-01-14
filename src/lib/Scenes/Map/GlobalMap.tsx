@@ -192,7 +192,13 @@ export class GlobalMap extends React.Component<Props, State> {
         console.log("NTFY location update event", event.payload)
         const nearest = this.nearest20(this.state.bucketResults, event.payload)
         const nearestLocations = nearest.map((item) => {
-          return { lat: item.location.coordinates.lat, lng: item.location.coordinates.lng, id: item.slug }
+          return {
+            lat: item.location.coordinates.lat,
+            lng: item.location.coordinates.lng,
+            id: item.slug,
+            href: item.href,
+            image_url: item.cover_image.url,
+          }
         })
         LegacyNativeModules.ProximityNotificationsModule.requestNewRegionTracking(nearestLocations)
       }
