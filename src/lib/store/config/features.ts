@@ -216,10 +216,15 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Enable New Artwork Submission Flow with Accordion",
     showInAdminMenu: true,
-   },
+  },
   ARCaptureExceptionsInSentryOnDev: {
     readyForRelease: false,
     description: "Enable capturing exceptions in Sentry on DEV",
+    showInAdminMenu: true,
+  },
+  AREnableImageSearch: {
+    readyForRelease: false,
+    description: "Enable search with image",
     showInAdminMenu: true,
   },
 })
