@@ -151,7 +151,7 @@
     "react-native-gesture-handler": "1.8.0",
     "react-native-haptic-feedback": "1.10.0",
     "react-native-hyperlink": "0.0.19",
-    "react-native-image-crop-picker": "^0.37.2",
+    "react-native-image-crop-picker": "0.35.1",
     "react-native-in-app-review": "3.2.3",
     "react-native-keychain": "8.0.0",
     "react-native-linear-gradient": "2.5.6",
