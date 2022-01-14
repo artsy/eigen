@@ -23,6 +23,7 @@
 		<string>applinks:wvxa.adj.st</string>
 		<string>appclips:artsy.net</string>
 		<string>appclips:appclip.artsy.net</string>
+		<string>appclips:www.artsy.net</string>
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
