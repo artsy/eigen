@@ -1,24 +1,48 @@
-import { AppRegistry, View, Text, Button } from 'react-native'
+import { AppRegistry, View, Text, Button, Image } from 'react-native'
 import React from 'react';
 import {NativeModules} from 'react-native'
+import { getArtwork } from "./src/lib/utils/appClipFetch"
+import { Theme } from './src/palette/Theme';
+import { AppClipArtwork } from './src/lib/Scenes/AppClip/Artwork';
 
 const AppClip = () => {
   const {AppClipLinkingManager} = NativeModules
-  const [url, setUrl] = React.useState('Checking URL')
+  const [artworkId, setArtworkId] = React.useState('Checking URL')
+  const [artwork, setArtwork] = React.useState(null)
+  const [clipFormat, setClipFormat] = React.useState('')
   React.useEffect(() => {
     AppClipLinkingManager.getInitialLink()
-      .then(setUrl)
-      .catch(e => setUrl(e.message))
+      .then(url => {
+        console.log('URL:', url)
+        const splitted = url.split('/')
+        const artworkId = splitted[splitted.length - 1]
+        console.log('artworkId:', artworkId)
+        setArtworkId(artworkId)
+        setClipFormat('artwork')
+      })
+      .catch(e => console.log('index error: ' +e.message))
   }, [])
+  React.useEffect(() => {
+    getArtwork(artworkId)
+      .then(setArtwork)
+      .catch(e => console.log('index error: ' +e.message))
+  }, [artworkId])
+
+  // const clipFormat = 'artwork'
+  // const artworkId = 'talia-ramkilawan-truly-madly-deeply-in-love-with-you'
+
+  const AppProviders = ({ children }) => (
+    <Theme>
+      {children}
+    </Theme>
+  )
+
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ fontSize: 22 }}>
-          Artsy App Clip
-      </Text>
-      <Text style={{ fontSize: 20 }}>
-          {url}
-      </Text>
-    </View>
+    <AppProviders>
+      { clipFormat === 'artwork' ?
+        <AppClipArtwork artworkId={artworkId} /> :
+        <View><Text>{artworkId}</Text></View> }
+    </AppProviders>
   )
 }
 

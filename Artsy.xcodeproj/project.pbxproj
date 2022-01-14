@@ -30,6 +30,7 @@
 		1CFA4EB81E5C4B6B00D44A5A /* full_logo_black_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1CFA4EB51E5C4B6B00D44A5A /* full_logo_black_small@2x.png */; };
 		219967EC267B4B1C00ECA8E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 219967EB267B4B1C00ECA8E1 /* GoogleService-Info.plist */; };
 		229364D31EC65CDC00D2045E /* SaleStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229364D21EC65CDC00D2045E /* SaleStatusView.swift */; };
+		2F733C8F279188FE00AB4142 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E620C74719C746530064A0FF /* Images.xcassets */; };
 		342F902302C1CF0FD342AB93 /* NSDate+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F97C153D8524B132D0927 /* NSDate+Util.m */; };
 		342F9061CC93426E7F8579A2 /* ARFeedImageLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F966C989CF0BE97711FB6 /* ARFeedImageLoader.m */; };
 		342F906FD605E75158D32876 /* ARSharingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 342F9DC4018D17E7378DA607 /* ARSharingController.m */; settings = {COMPILER_FLAGS = "-Wno-deprecated-declarations"; }; };
@@ -366,6 +367,10 @@
 		66A43C681CE470C400FFD6ED /* Hash@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C651CE470C400FFD6ED /* Hash@2x.png */; };
 		66A43C691CE470C400FFD6ED /* Hash@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66A43C661CE470C400FFD6ED /* Hash@3x.png */; };
 		66F9A374279043D400B8362F /* AppClipLinkingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 66F9A372279043D400B8362F /* AppClipLinkingManager.m */; };
+		66F9A393279199ED00B8362F /* Unica77LL-MediumItalic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 66F9A38F279199ED00B8362F /* Unica77LL-MediumItalic.otf */; };
+		66F9A394279199ED00B8362F /* Unica77LL-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = 66F9A390279199ED00B8362F /* Unica77LL-Italic.otf */; };
+		66F9A395279199ED00B8362F /* Unica77LL-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 66F9A391279199ED00B8362F /* Unica77LL-Regular.otf */; };
+		66F9A396279199ED00B8362F /* Unica77LL-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 66F9A392279199ED00B8362F /* Unica77LL-Medium.otf */; };
 		7F9C7EF22221FE2900F6967E /* AREigenMapContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F9C7EF12221FE2900F6967E /* AREigenMapContainerViewController.m */; };
 		837CEC841C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 837CEC831C876B7C00A7E0E1 /* ArtsyAPI+Notifications.m */; };
 		83F9D5801AD6FDE0000BCC77 /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 83F9D57F1AD6FDE0000BCC77 /* Location.m */; };
@@ -581,6 +586,7 @@
 		219967EB267B4B1C00ECA8E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		229364D21EC65CDC00D2045E /* SaleStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SaleStatusView.swift; path = Live_Auctions/Views/SaleStatusView.swift; sourceTree = "<group>"; };
 		251623938AAD857411BAB380 /* Pods-ArtsyAppClip.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyAppClip.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ArtsyAppClip/Pods-ArtsyAppClip.debug.xcconfig"; sourceTree = "<group>"; };
+		26B3F5F39E474A6BA6B8D15F /* AGaramondPro-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "AGaramondPro-Regular.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/AGaramondPro-Regular.otf"; sourceTree = "<group>"; };
 		29773A6F17B9749800FC89B3 /* ARHasImageBaseURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARHasImageBaseURL.h; sourceTree = "<group>"; };
 		342F9036F798770D9E0CC66C /* UIImageView+AsyncImageLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AsyncImageLoading.h"; sourceTree = "<group>"; };
 		342F90BFE6268BEBC0E7BB2E /* ARValueTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARValueTransformer.m; sourceTree = "<group>"; };
@@ -729,6 +735,7 @@
 		49EC62171778AF100020D648 /* PartnerShow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PartnerShow.m; sourceTree = "<group>"; };
 		49EF164516C568EA00460BD7 /* Profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Profile.h; sourceTree = "<group>"; };
 		49EF164616C568EA00460BD7 /* Profile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Profile.m; sourceTree = "<group>"; };
+		4CB9A4ABA6754DA38B369764 /* AGaramondPro-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "AGaramondPro-Bold.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/AGaramondPro-Bold.otf"; sourceTree = "<group>"; };
 		5102616D1BBE8324002AB8BB /* ARAuctionWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ARAuctionWebViewController.h; path = Auction_Results/ARAuctionWebViewController.h; sourceTree = "<group>"; };
 		5102616E1BBE8324002AB8BB /* ARAuctionWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ARAuctionWebViewController.m; path = Auction_Results/ARAuctionWebViewController.m; sourceTree = "<group>"; };
 		510261701BBE96BE002AB8BB /* ARAuctionWebViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAuctionWebViewControllerTests.m; sourceTree = "<group>"; };
@@ -759,6 +766,7 @@
 		5435192C18A8E9420060F31E /* UIView+OldSchoolSnapshots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+OldSchoolSnapshots.h"; sourceTree = "<group>"; };
 		5435192D18A8E9420060F31E /* UIView+OldSchoolSnapshots.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+OldSchoolSnapshots.m"; sourceTree = "<group>"; };
 		54AD031F18A4FCCE0055F2D2 /* ARMenuAwareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARMenuAwareViewController.h; sourceTree = "<group>"; };
+		5D0E4C98CD304B16BF0EF5DA /* ReactNativeAGaramondPro-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ReactNativeAGaramondPro-Regular.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/ReactNativeAGaramondPro-Regular.otf"; sourceTree = "<group>"; };
 		5E088DAD1C58072B00C448D7 /* RefinementOptionsViewController+Private.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "RefinementOptionsViewController+Private.swift"; path = "Auction/RefinementOptionsViewController+Private.swift"; sourceTree = "<group>"; };
 		5E088DAF1C58141D00C448D7 /* UIViewController+Tests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Tests.swift"; sourceTree = "<group>"; };
 		5E0AD37524BE453600FD54A0 /* ARAugmentedRealityConfigSpec.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARAugmentedRealityConfigSpec.m; sourceTree = "<group>"; };
@@ -782,6 +790,7 @@
 		5E26AF7F1CE66A7E00C67B7C /* Stringify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Stringify.swift; path = Artsy/Stringify.swift; sourceTree = SOURCE_ROOT; };
 		5E288EA81CC0219A00A974AA /* LotListCollectionViewCell+Private.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "LotListCollectionViewCell+Private.swift"; path = "Live_Auctions/LotListCollectionViewCell+Private.swift"; sourceTree = "<group>"; };
 		5E31524E1C90C97300C544D5 /* LiveAuctionSocketCommunicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionSocketCommunicator.swift; path = Live_Auctions/LiveAuctionSocketCommunicator.swift; sourceTree = "<group>"; };
+		5E37755D836B4DA7AE5DE9C7 /* Unica77LL-MediumItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Unica77LL-MediumItalic.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/Unica77LL-MediumItalic.otf"; sourceTree = "<group>"; };
 		5E3816F51CBECEA500477B17 /* LiveAuctionLotListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionLotListViewController.swift; path = Live_Auctions/LiveAuctionLotListViewController.swift; sourceTree = "<group>"; };
 		5E3816F71CBED2E100477B17 /* LiveAuctionLotListStickyCellCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LiveAuctionLotListStickyCellCollectionViewLayout.swift; path = Live_Auctions/LiveAuctionLotListStickyCellCollectionViewLayout.swift; sourceTree = "<group>"; };
 		5E3816F91CBEDDF900477B17 /* LotListCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LotListCollectionViewCell.swift; path = Live_Auctions/LotListCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1094,6 +1103,13 @@
 		66A43C661CE470C400FFD6ED /* Hash@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Hash@3x.png"; sourceTree = "<group>"; };
 		66F9A372279043D400B8362F /* AppClipLinkingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppClipLinkingManager.m; sourceTree = "<group>"; };
 		66F9A373279043D400B8362F /* AppClipLinkingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppClipLinkingManager.h; sourceTree = "<group>"; };
+		66F9A38F279199ED00B8362F /* Unica77LL-MediumItalic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Unica77LL-MediumItalic.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/Unica77LL-MediumItalic.otf"; sourceTree = "<group>"; };
+		66F9A390279199ED00B8362F /* Unica77LL-Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Unica77LL-Italic.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/Unica77LL-Italic.otf"; sourceTree = "<group>"; };
+		66F9A391279199ED00B8362F /* Unica77LL-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Unica77LL-Regular.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/Unica77LL-Regular.otf"; sourceTree = "<group>"; };
+		66F9A392279199ED00B8362F /* Unica77LL-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Unica77LL-Medium.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/Unica77LL-Medium.otf"; sourceTree = "<group>"; };
+		683B79FC9F7E4AA793FFB667 /* AVG65lig.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AVG65lig.otf; path = "Pods/Artsy+UIFonts/Pod/Assets/AVG65lig.otf"; sourceTree = "<group>"; };
+		6F57A5C225594B48B2FEF289 /* AGaramondPro-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "AGaramondPro-Italic.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/AGaramondPro-Italic.otf"; sourceTree = "<group>"; };
+		702BE4DCE2C54157AC1AA13F /* Unica77LL-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Unica77LL-Regular.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/Unica77LL-Regular.otf"; sourceTree = "<group>"; };
 		79BE3D4497C108C9F976F690 /* Pods-Artsy.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.demo.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.demo.xcconfig"; sourceTree = "<group>"; };
 		7F9C7EF02221FE2900F6967E /* AREigenMapContainerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AREigenMapContainerViewController.h; sourceTree = "<group>"; };
 		7F9C7EF12221FE2900F6967E /* AREigenMapContainerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AREigenMapContainerViewController.m; sourceTree = "<group>"; };
@@ -1102,6 +1118,8 @@
 		83F9D57E1AD6FDE0000BCC77 /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		83F9D57F1AD6FDE0000BCC77 /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		83FF73B31CB87A74002B53FA /* RefinableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RefinableType.swift; path = ../Views/RefinableType.swift; sourceTree = "<group>"; };
+		844CD3945BD0491EA93CA288 /* AGaramondPro-Semibold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "AGaramondPro-Semibold.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/AGaramondPro-Semibold.otf"; sourceTree = "<group>"; };
+		867D9231DC80411DBCA36CC7 /* AGaramondPro-BoldItalic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "AGaramondPro-BoldItalic.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/AGaramondPro-BoldItalic.otf"; sourceTree = "<group>"; };
 		8B5D00D1838D5C924AE5F49A /* Pods-Artsy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.debug.xcconfig"; sourceTree = "<group>"; };
 		9434A9843098609F9F092F0D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D50B9502450CF6800A6DCD0 /* ARBackButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARBackButton.h; sourceTree = "<group>"; };
@@ -1137,6 +1155,7 @@
 		B9A0395B25540810002E010D /* UIView+ScrollToTop.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+ScrollToTop.m"; sourceTree = "<group>"; };
 		B9A29FDE23EB2680006EE2EC /* ARReactPackagerHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARReactPackagerHost.h; sourceTree = "<group>"; };
 		B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARReactPackagerHost.m; sourceTree = "<group>"; };
+		C3A99677F2624EAFA4F71597 /* Unica77LL-Medium.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Unica77LL-Medium.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/Unica77LL-Medium.otf"; sourceTree = "<group>"; };
 		CB355E8217CAB0B3002A798D /* ARFollowable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFollowable.h; sourceTree = "<group>"; };
 		CB42B64D181092480069A801 /* ARCountdownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCountdownView.h; sourceTree = "<group>"; };
 		CB42B64E181092480069A801 /* ARCountdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCountdownView.m; sourceTree = "<group>"; };
@@ -1160,10 +1179,13 @@
 		CBF74083250ACDC5004048D3 /* ARAppDelegate+Echo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ARAppDelegate+Echo.h"; sourceTree = "<group>"; };
 		CBF74084250ACDC5004048D3 /* ARAppDelegate+Echo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ARAppDelegate+Echo.m"; sourceTree = "<group>"; };
 		CC2E915978CE7594318D40A7 /* Pods-ArtsyAppClip.demo.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArtsyAppClip.demo.xcconfig"; path = "Pods/Target Support Files/Pods-ArtsyAppClip/Pods-ArtsyAppClip.demo.xcconfig"; sourceTree = "<group>"; };
+		CFF1A0FDF96B47EFBF76D28C /* Unica77LL-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Unica77LL-Italic.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/Unica77LL-Italic.otf"; sourceTree = "<group>"; };
+		D2BD9AA1EADD42D3A6618B76 /* ReactNativeAGaramondPro-Italic.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ReactNativeAGaramondPro-Italic.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/ReactNativeAGaramondPro-Italic.otf"; sourceTree = "<group>"; };
 		D35D9D5B1ACB4FF800E67A1D /* ARCustomEigenLabelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCustomEigenLabelTests.m; sourceTree = "<group>"; };
 		D3ACE5381AEEF47C0053E0CE /* ARExternalWebBrowserViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARExternalWebBrowserViewControllerTests.m; sourceTree = "<group>"; };
 		D3C8C2051B66D2FF004CAD7F /* ARImageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARImageTests.m; sourceTree = "<group>"; };
 		D3F69A491AC1F7CB007C65C9 /* ARDefaultsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDefaultsTests.m; sourceTree = "<group>"; };
+		D59E2F9C13D7495187DA98E1 /* ReactNativeAGaramondPro-Semibold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ReactNativeAGaramondPro-Semibold.otf"; path = "Pods/Artsy+UIFonts/Pod/Assets/ReactNativeAGaramondPro-Semibold.otf"; sourceTree = "<group>"; };
 		DA01796B796D8A14B9C0A685 /* Pods-Artsy.store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy.store.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy/Pods-Artsy.store.xcconfig"; sourceTree = "<group>"; };
 		E60673B119BE4E8C00EF05EB /* full_logo_white_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "full_logo_white_small@2x.png"; sourceTree = "<group>"; };
 		E611846F18D78068000FE4C9 /* ARMessageItemProviderTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARMessageItemProviderTests.m; sourceTree = "<group>"; };
@@ -1731,6 +1753,10 @@
 			isa = PBXGroup;
 			children = (
 				219967EB267B4B1C00ECA8E1 /* GoogleService-Info.plist */,
+				66F9A390279199ED00B8362F /* Unica77LL-Italic.otf */,
+				66F9A392279199ED00B8362F /* Unica77LL-Medium.otf */,
+				66F9A38F279199ED00B8362F /* Unica77LL-MediumItalic.otf */,
+				66F9A391279199ED00B8362F /* Unica77LL-Regular.otf */,
 				60FFE3D5188E916C0012B485 /* Documentation */,
 				49BA7E091655ABE600C06572 /* Artsy */,
 				B3ECE82B1819D1E6009F5C5B /* Artsy Tests */,
@@ -1740,6 +1766,7 @@
 				49BA7E021655ABE600C06572 /* Frameworks */,
 				49BA7E001655ABE600C06572 /* Products */,
 				33C6886033769A61A3E99B18 /* Pods */,
+				BE369DC6195C4ECA9CA7D9E4 /* Resources */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2070,6 +2097,19 @@
 				601E31AA1C80A55F00D09F73 /* live_auctions_static.json */,
 				5E956E581CD2AD6E005C2332 /* live_auctions_socket.json */,
 				6019A9071C7E76EF00E292FA /* LiveAuctionsAssets.xcassets */,
+				4CB9A4ABA6754DA38B369764 /* AGaramondPro-Bold.otf */,
+				867D9231DC80411DBCA36CC7 /* AGaramondPro-BoldItalic.otf */,
+				6F57A5C225594B48B2FEF289 /* AGaramondPro-Italic.otf */,
+				26B3F5F39E474A6BA6B8D15F /* AGaramondPro-Regular.otf */,
+				844CD3945BD0491EA93CA288 /* AGaramondPro-Semibold.otf */,
+				683B79FC9F7E4AA793FFB667 /* AVG65lig.otf */,
+				D2BD9AA1EADD42D3A6618B76 /* ReactNativeAGaramondPro-Italic.otf */,
+				5D0E4C98CD304B16BF0EF5DA /* ReactNativeAGaramondPro-Regular.otf */,
+				D59E2F9C13D7495187DA98E1 /* ReactNativeAGaramondPro-Semibold.otf */,
+				CFF1A0FDF96B47EFBF76D28C /* Unica77LL-Italic.otf */,
+				C3A99677F2624EAFA4F71597 /* Unica77LL-Medium.otf */,
+				5E37755D836B4DA7AE5DE9C7 /* Unica77LL-MediumItalic.otf */,
+				702BE4DCE2C54157AC1AA13F /* Unica77LL-Regular.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2816,6 +2856,13 @@
 			path = Supporting_Files;
 			sourceTree = "<group>";
 		};
+		BE369DC6195C4ECA9CA7D9E4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		CBB469CD181F1EED00B5692B /* Auctions */ = {
 			isa = PBXGroup;
 			children = (
@@ -3269,9 +3316,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66F9A396279199ED00B8362F /* Unica77LL-Medium.otf in Resources */,
 				660F2FA2278EEE2400CDC6A0 /* LaunchScreen.storyboard in Resources */,
+				2F733C8F279188FE00AB4142 /* Images.xcassets in Resources */,
+				66F9A394279199ED00B8362F /* Unica77LL-Italic.otf in Resources */,
 				660F2F9F278EEE2400CDC6A0 /* Assets.xcassets in Resources */,
 				660F2F9D278EEE2300CDC6A0 /* Main.storyboard in Resources */,
+				66F9A393279199ED00B8362F /* Unica77LL-MediumItalic.otf in Resources */,
+				66F9A395279199ED00B8362F /* Unica77LL-Regular.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3311,36 +3363,10 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ArtsyAppClip/Pods-ArtsyAppClip-resources.sh",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Bold.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-BoldItalic.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Italic.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Regular.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Semibold.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AVG65lig.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/ReactNativeAGaramondPro-Italic.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/ReactNativeAGaramondPro-Regular.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/ReactNativeAGaramondPro-Semibold.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-Italic.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-Medium.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-MediumItalic.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-Regular.otf",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/AccessibilityResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Bold.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-BoldItalic.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Italic.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Regular.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Semibold.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AVG65lig.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ReactNativeAGaramondPro-Italic.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ReactNativeAGaramondPro-Regular.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ReactNativeAGaramondPro-Semibold.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-Italic.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-Medium.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-MediumItalic.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-Regular.otf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AccessibilityResources.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3410,15 +3436,12 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Artsy/Pods-Artsy-resources.sh",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Bold.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-BoldItalic.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Italic.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Regular.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AGaramondPro-Semibold.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/AVG65lig.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/ReactNativeAGaramondPro-Italic.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/ReactNativeAGaramondPro-Regular.otf",
-				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/ReactNativeAGaramondPro-Semibold.otf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/EBGaramond08-Italic.ttf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/EBGaramond08-Regular.ttf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/EBGaramond12-Italic.ttf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/EBGaramond12-Regular.ttf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/texgyreadventor-bold.ttf",
+				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/texgyreadventor-regular.ttf",
 				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-Italic.otf",
 				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-Medium.otf",
 				"${PODS_ROOT}/Artsy+UIFonts/Pod/Assets/Unica77LL-MediumItalic.otf",
@@ -3441,15 +3464,12 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Bold.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-BoldItalic.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Italic.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Regular.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AGaramondPro-Semibold.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AVG65lig.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ReactNativeAGaramondPro-Italic.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ReactNativeAGaramondPro-Regular.otf",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ReactNativeAGaramondPro-Semibold.otf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EBGaramond08-Italic.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EBGaramond08-Regular.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EBGaramond12-Italic.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EBGaramond12-Regular.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/texgyreadventor-bold.ttf",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/texgyreadventor-regular.ttf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-Italic.otf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-Medium.otf",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Unica77LL-MediumItalic.otf",
@@ -4007,6 +4027,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2022.1.14.10;
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4017,6 +4038,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "Artsy Stickers/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MARKETING_VERSION = 7.1.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Stickers";
@@ -4063,6 +4085,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 2022.1.14.10;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -4077,6 +4100,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "Artsy Stickers/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MARKETING_VERSION = 7.1.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Stickers";
@@ -4125,6 +4149,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 2022.1.14.10;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -4139,6 +4164,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "Artsy Stickers/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MARKETING_VERSION = 7.1.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "net.artsy.artsy.Artsy-Stickers";
@@ -4228,7 +4254,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
-				CURRENT_PROJECT_VERSION = 2022.1.13.8;
+				CURRENT_PROJECT_VERSION = 2022.1.14.10;
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4337,7 +4363,7 @@
 				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.Store.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2022.1.13.8;
+				CURRENT_PROJECT_VERSION = 2022.1.14.10;
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4441,7 +4467,7 @@
 				CODE_SIGN_ENTITLEMENTS = ArtsyAppClip/ArtsyAppClip.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2022.1.13.8;
+				CURRENT_PROJECT_VERSION = 2022.1.14.10;
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_BITCODE = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -4453,7 +4479,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ArtsyAppClip/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Δrtsy";
+				INFOPLIST_KEY_CFBundleDisplayName = Artsy;
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "Used for beta testers to collect usage information.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is needed for this experience.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Used to display shows near you";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Using User Location to display nearby shows";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Using User Location to display nearby shows";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Camera access is needed to submit consignments.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photos will be used to gauge the quality of the work you are submitting.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -4511,7 +4544,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2022.1.13.8;
+				CURRENT_PROJECT_VERSION = 2022.1.14.10;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_BITCODE = NO;
@@ -4527,7 +4560,14 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ArtsyAppClip/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Δrtsy";
+				INFOPLIST_KEY_CFBundleDisplayName = Artsy;
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "Used for beta testers to collect usage information.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is needed for this experience.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Used to display shows near you";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Using User Location to display nearby shows";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Using User Location to display nearby shows";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Camera access is needed to submit consignments.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photos will be used to gauge the quality of the work you are submitting.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -4587,7 +4627,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 2022.1.13.8;
+				CURRENT_PROJECT_VERSION = 2022.1.14.10;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_BITCODE = NO;
@@ -4603,7 +4643,14 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ArtsyAppClip/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Δrtsy";
+				INFOPLIST_KEY_CFBundleDisplayName = Artsy;
+				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "Used for beta testers to collect usage information.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera access is needed for this experience.";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Used to display shows near you";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "Using User Location to display nearby shows";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Using User Location to display nearby shows";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Camera access is needed to submit consignments.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Photos will be used to gauge the quality of the work you are submitting.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -4690,7 +4737,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CODE_SIGN_ENTITLEMENTS = Artsy/App_Resources/Artsy.Store.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
-				CURRENT_PROJECT_VERSION = 2022.1.13.8;
+				CURRENT_PROJECT_VERSION = 2022.1.14.10;
 				DEVELOPMENT_TEAM = 23KMWZ572J;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (

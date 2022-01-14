@@ -25,7 +25,6 @@
 		<string>webcredentials:m.artsy.net</string>
 		<string>applinks:wvxa.adj.st</string>
 		<string>appclips:appclip.artsy.net</string>
-		<string>appclips:artsy.net</string>
 	</array>
 	<key>keychain-access-groups</key>
 	<array>

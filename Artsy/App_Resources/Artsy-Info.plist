@@ -141,6 +141,14 @@
 		<string>AGaramondPro-Italic.otf</string>
 		<string>AGaramondPro-Regular.otf</string>
 		<string>AGaramondPro-Semibold.otf</string>
+		<string>AVG65lig.otf</string>
+		<string>ReactNativeAGaramondPro-Italic.otf</string>
+		<string>ReactNativeAGaramondPro-Regular.otf</string>
+		<string>ReactNativeAGaramondPro-Semibold.otf</string>
+		<string>Unica77LL-Italic.otf</string>
+		<string>Unica77LL-Medium.otf</string>
+		<string>Unica77LL-MediumItalic.otf</string>
+		<string>Unica77LL-Regular.otf</string>
 	</array>
 	<key>UIApplicationShortcutItems</key>
 	<array>
@@ -148,7 +156,7 @@
 			<key>UIApplicationShortcutItemIconType</key>
 			<string>UIApplicationShortcutIconTypeSearch</string>
 			<key>UIApplicationShortcutItemSubtitle</key>
-			<string></string>
+			<string/>
 			<key>UIApplicationShortcutItemTitle</key>
 			<string>Search</string>
 			<key>UIApplicationShortcutItemType</key>
