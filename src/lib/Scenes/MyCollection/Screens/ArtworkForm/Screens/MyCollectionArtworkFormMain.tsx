@@ -46,7 +46,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               text: "Discard",
               style: "destructive",
               onPress: () => {
-                GlobalStore.actions.myCollection.artwork.ResetFormButKeepArtist()
+                GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
                 navigation.dispatch(e.data.action)
               },
             },
