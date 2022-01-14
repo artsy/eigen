@@ -1,9 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
 import { ArtistAutosuggestResults_results } from "__generated__/ArtistAutosuggestResults_results.graphql"
-import {
-  ArtistAutosuggestResultsQuery,
-  ArtistAutosuggestResultsQueryVariables,
-} from "__generated__/ArtistAutosuggestResultsQuery.graphql"
+import { ArtistAutosuggestResultsQuery } from "__generated__/ArtistAutosuggestResultsQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
@@ -15,6 +12,8 @@ import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp 
 import usePrevious from "react-use/lib/usePrevious"
 import { ArtistAutosuggestResultsPlaceholder } from "./ArtistAutosuggestResultsPlaceholder"
 import { ArtistAutosuggestRow } from "./ArtistAutosuggestRow"
+
+// TODO: pagination query?
 
 export type ArtistAutosuggestResult = NonNullable<
   NonNullable<NonNullable<NonNullable<ArtistAutosuggestResults_results["results"]>["edges"]>[0]>["node"]

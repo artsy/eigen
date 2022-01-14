@@ -67,6 +67,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       <Spacer mt={2} />
       <InputTitle>Dimensions</InputTitle>
       <Spacer mt={1} />
+      {/* TODO: immute this info */}
       <Flex flexDirection="row">
         <RadioButton mr={2} text="in" selected />
         <RadioButton text="cm" />
