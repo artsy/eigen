@@ -50,6 +50,7 @@ interface LegacyNativeModules {
   }
   ProximityNotificationsModule: {
     startTrackingProximityNotifications(): void
+    requestNewRegionTracking(regions: Array<{ lat: number; lng: number }>): void
   }
   ARCocoaConstantsModule: {
     AREnabled: boolean
@@ -140,6 +141,7 @@ export const LegacyNativeModules: LegacyNativeModules =
         },
         ProximityNotificationsModule: {
           startTrackingProximityNotifications: noop("startTrackingProximityNotifications"),
+          requestNewRegionTracking: noop("requestNewRegions"),
         },
         ARScreenPresenterModule,
         AREventsModule: {

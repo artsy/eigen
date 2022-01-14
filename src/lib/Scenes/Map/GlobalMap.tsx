@@ -190,8 +190,78 @@ export class GlobalMap extends React.Component<Props, State> {
     this.listener = listenToNativeEvents((event) => {
       if (event.type === "ART_LOCATION_UPDATED") {
         console.log("NTFY location update event", event.payload)
+        const nearest = this.nearest20(this.state.bucketResults, event.payload)
+        const nearestLocations = nearest.map((item) => {
+          return { lat: item.location.coordinates.lat, lng: item.location.coordinates.lng, id: item.slug }
+        })
+        LegacyNativeModules.ProximityNotificationsModule.requestNewRegionTracking(nearestLocations)
       }
     })
+  }
+
+  nearest20(bucketResults: BucketResults, currentLocation: { lat: number; lng: number }) {
+    // TODO: how do we want to prioritize
+    const closestFairs = this.sortedLocations(bucketResults.fairs, currentLocation)
+    const closestMuseums = this.sortedLocations(bucketResults.museums, currentLocation)
+    const closestGalleries = this.sortedLocations(bucketResults.galleries, currentLocation)
+    return closestGalleries
+  }
+
+  sortedLocations(objects: any[], currentLocation: { lat: number; lng: number }) {
+    const copiedObjs = [...objects]
+    copiedObjs.sort((objectA, objectB) => {
+      let distanceA = -1
+      let distanceB = -1
+      if (
+        objectA &&
+        objectA.location &&
+        objectA.location.coordinates &&
+        objectA.location.coordinates.lat &&
+        objectA.location.coordinates.lng
+      ) {
+        distanceA = this.getDistanceFromLatLonInKm(currentLocation, {
+          lat: objectA.location.coordinates.lat,
+          lng: objectA.location.coordinates.lng,
+        })
+      }
+      if (
+        objectB &&
+        objectB.location &&
+        objectB.location.coordinates &&
+        objectB.location.coordinates.lat &&
+        objectB.location.coordinates.lng
+      ) {
+        distanceB = this.getDistanceFromLatLonInKm(currentLocation, {
+          lat: objectB.location.coordinates.lat,
+          lng: objectB.location.coordinates.lng,
+        })
+      }
+      return distanceA - distanceB
+    })
+    return copiedObjs
+  }
+
+  // Haversine formula for distance between points
+  // yes I took it from stack overflow
+  // https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+  getDistanceFromLatLonInKm(location1: { lat: number; lng: number }, location2: { lat: number; lng: number }) {
+    const R = 6371 // Radius of the earth in km
+    const dLat = this.deg2rad(location2.lat - location1.lat) // deg2rad below
+    const dLon = this.deg2rad(location2.lng - location2.lng)
+
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(this.deg2rad(location1.lat)) *
+        Math.cos(this.deg2rad(location2.lat)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2)
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+    const d = R * c // Distance in km
+    return d
+  }
+
+  deg2rad(deg: number) {
+    return deg * (Math.PI / 180)
   }
 
   componentWillUnmount() {
@@ -559,14 +629,6 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   onPressNotifyMeButton = () => {
-    // TODO: This location update listening might need to happen on native side
-    // Needs to be able to respond when app is in background or not active
-    this.listener = listenToNativeEvents((event) => {
-      if (event.type === "ART_LOCATION_UPDATED") {
-        console.log("NTFY got location payload in react", event.payload)
-      }
-    })
-
     LegacyNativeModules.ProximityNotificationsModule.startTrackingProximityNotifications()
   }
 

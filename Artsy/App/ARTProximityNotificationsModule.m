@@ -15,4 +15,10 @@ RCT_EXPORT_METHOD(startTrackingProximityNotifications)
     // TODO: Show user some message / request more fine grained permissions if cannot track
 }
 
+RCT_EXPORT_METHOD(requestNewRegionTracking:(NSArray *)locations)
+{
+    NSLog(@"NTFY got location array %@", locations.firstObject[@"id"]);
+}
+
+
 @end

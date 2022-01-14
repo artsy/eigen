@@ -33,7 +33,7 @@ export type NativeEvent =
     }
   | {
       type: "ART_LOCATION_UPDATED"
-      payload: { lat: number; lon: number }
+      payload: { lat: number; lng: number }
     }
 
 export interface NativeState {

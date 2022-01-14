@@ -240,6 +240,7 @@ function getNativeModules(): OurNativeModules {
     },
     ProximityNotificationsModule: {
       startTrackingProximityNotifications: jest.fn(),
+      requestNewRegionTracking: jest.fn(),
     },
     ARScreenPresenterModule: {
       presentMediaPreviewController: jest.fn(),
