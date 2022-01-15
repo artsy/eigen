@@ -57,6 +57,8 @@ interface LegacyNativeModules {
         id: string
         href: string
         image_url: string
+        name: string
+        type: string
       }>
     ): void
   }

@@ -198,6 +198,8 @@ export class GlobalMap extends React.Component<Props, State> {
             id: item.slug,
             href: item.href,
             image_url: item.cover_image.url,
+            type: item.type,
+            name: item.name,
           }
         })
         LegacyNativeModules.ProximityNotificationsModule.requestNewRegionTracking(nearestLocations)
