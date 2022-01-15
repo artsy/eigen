@@ -382,8 +382,6 @@
 		B9A29FE023EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */; };
 		B9A29FE123EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */; };
 		CB42B64F181092480069A801 /* ARCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB42B64E181092480069A801 /* ARCountdownView.m */; };
-		CB6AFF032790817000D7DC82 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AFF022790817000D7DC82 /* NotificationService.swift */; };
-		CB6AFF072790817000D7DC82 /* ArtsyLocationPushExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB6AFF002790817000D7DC82 /* ArtsyLocationPushExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CB6AFF142790CDDB00D7DC82 /* ARTProximityNotificationsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6AFF132790CDDB00D7DC82 /* ARTProximityNotificationsModule.m */; };
 		CB6AFF162790CF4F00D7DC82 /* ProximityNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AFF152790CF4F00D7DC82 /* ProximityNotificationsManager.swift */; };
 		CB6CE8E524F424E700ED2843 /* ARInternalWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */; };
@@ -501,13 +499,6 @@
 			remoteGlobalIDString = 49BA7DFE1655ABE600C06572;
 			remoteInfo = Artsy;
 		};
-		CB6AFF052790817000D7DC82 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 49BA7DF61655ABE600C06572 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CB6AFEFF2790817000D7DC82;
-			remoteInfo = ArtsyLocationPushExtension;
-		};
 		FCB45B2D2746EF3900232337 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49BA7DF61655ABE600C06572 /* Project object */;
@@ -526,7 +517,6 @@
 			files = (
 				FCB45B2F2746EF3900232337 /* ArtsyWidgetExtension.appex in Embed App Extensions */,
 				1AD4F8A225FBBA89007FDB71 /* Artsy Stickers.appex in Embed App Extensions */,
-				CB6AFF072790817000D7DC82 /* ArtsyLocationPushExtension.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1104,9 +1094,6 @@
 		CB355E8217CAB0B3002A798D /* ARFollowable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFollowable.h; sourceTree = "<group>"; };
 		CB42B64D181092480069A801 /* ARCountdownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCountdownView.h; sourceTree = "<group>"; };
 		CB42B64E181092480069A801 /* ARCountdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCountdownView.m; sourceTree = "<group>"; };
-		CB6AFF002790817000D7DC82 /* ArtsyLocationPushExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ArtsyLocationPushExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		CB6AFF022790817000D7DC82 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
-		CB6AFF042790817000D7DC82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB6AFF122790CDDB00D7DC82 /* ARTProximityNotificationsModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTProximityNotificationsModule.h; sourceTree = "<group>"; };
 		CB6AFF132790CDDB00D7DC82 /* ARTProximityNotificationsModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTProximityNotificationsModule.m; sourceTree = "<group>"; };
 		CB6AFF152790CF4F00D7DC82 /* ProximityNotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProximityNotificationsManager.swift; sourceTree = "<group>"; };
@@ -1255,13 +1242,6 @@
 				60476F4C1AD87DB200670502 /* UIKit.framework in Frameworks */,
 				B3ECE8291819D1E6009F5C5B /* Foundation.framework in Frameworks */,
 				68AE3912711D80B0018CCC9D /* libPods-Artsy Tests.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CB6AFEFD2790817000D7DC82 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1706,7 +1686,6 @@
 				B3ECE82B1819D1E6009F5C5B /* Artsy Tests */,
 				1AD4F89C25FBBA85007FDB71 /* Artsy Stickers */,
 				FCB45B272746EF3700232337 /* ArtsyWidget */,
-				CB6AFF012790817000D7DC82 /* ArtsyLocationPushExtension */,
 				49BA7E021655ABE600C06572 /* Frameworks */,
 				49BA7E001655ABE600C06572 /* Products */,
 				33C6886033769A61A3E99B18 /* Pods */,
@@ -1720,7 +1699,6 @@
 				B3ECE8261819D1E6009F5C5B /* Artsy Tests.xctest */,
 				1AD4F89B25FBBA85007FDB71 /* Artsy Stickers.appex */,
 				FCB45B222746EF3700232337 /* ArtsyWidgetExtension.appex */,
-				CB6AFF002790817000D7DC82 /* ArtsyLocationPushExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2764,15 +2742,6 @@
 			path = Supporting_Files;
 			sourceTree = "<group>";
 		};
-		CB6AFF012790817000D7DC82 /* ArtsyLocationPushExtension */ = {
-			isa = PBXGroup;
-			children = (
-				CB6AFF022790817000D7DC82 /* NotificationService.swift */,
-				CB6AFF042790817000D7DC82 /* Info.plist */,
-			);
-			path = ArtsyLocationPushExtension;
-			sourceTree = "<group>";
-		};
 		CBB469CD181F1EED00B5692B /* Auctions */ = {
 			isa = PBXGroup;
 			children = (
@@ -2974,7 +2943,6 @@
 			dependencies = (
 				1AD4F8A125FBBA89007FDB71 /* PBXTargetDependency */,
 				FCB45B2E2746EF3900232337 /* PBXTargetDependency */,
-				CB6AFF062790817000D7DC82 /* PBXTargetDependency */,
 			);
 			name = Artsy;
 			productName = Artsy;
@@ -2999,23 +2967,6 @@
 			productName = "Artsy Tests";
 			productReference = B3ECE8261819D1E6009F5C5B /* Artsy Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		CB6AFEFF2790817000D7DC82 /* ArtsyLocationPushExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CB6AFF0B2790817000D7DC82 /* Build configuration list for PBXNativeTarget "ArtsyLocationPushExtension" */;
-			buildPhases = (
-				CB6AFEFC2790817000D7DC82 /* Sources */,
-				CB6AFEFD2790817000D7DC82 /* Frameworks */,
-				CB6AFEFE2790817000D7DC82 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = ArtsyLocationPushExtension;
-			productName = ArtsyLocationPushExtension;
-			productReference = CB6AFF002790817000D7DC82 /* ArtsyLocationPushExtension.appex */;
-			productType = "com.apple.product-type.app-extension";
 		};
 		FCB45B212746EF3700232337 /* ArtsyWidgetExtension */ = {
 			isa = PBXNativeTarget;
@@ -3080,11 +3031,6 @@
 						LastSwiftMigration = 1100;
 						TestTargetID = 49BA7DFE1655ABE600C06572;
 					};
-					CB6AFEFF2790817000D7DC82 = {
-						CreatedOnToolsVersion = 13.2.1;
-						DevelopmentTeam = 23KMWZ572J;
-						ProvisioningStyle = Automatic;
-					};
 					FCB45B212746EF3700232337 = {
 						CreatedOnToolsVersion = 13.1;
 						DevelopmentTeam = 23KMWZ572J;
@@ -3109,7 +3055,6 @@
 				B3ECE8251819D1E6009F5C5B /* Artsy Tests */,
 				1AD4F89A25FBBA85007FDB71 /* Artsy Stickers */,
 				FCB45B212746EF3700232337 /* ArtsyWidgetExtension */,
-				CB6AFEFF2790817000D7DC82 /* ArtsyLocationPushExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -3234,13 +3179,6 @@
 				E6B9FA7B18A97C0A00E961F9 /* stub.jpg in Resources */,
 				E6F466E818EF52A800A09AFA /* Artwork_v1.data in Resources */,
 				6082B2051B46ADDE00953BC8 /* stubbed_image.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		CB6AFEFE2790817000D7DC82 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3739,14 +3677,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CB6AFEFC2790817000D7DC82 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				CB6AFF032790817000D7DC82 /* NotificationService.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		FCB45B1E2746EF3700232337 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3806,11 +3736,6 @@
 			isa = PBXTargetDependency;
 			target = 49BA7DFE1655ABE600C06572 /* Artsy */;
 			targetProxy = B3ECE8341819D1E7009F5C5B /* PBXContainerItemProxy */;
-		};
-		CB6AFF062790817000D7DC82 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CB6AFEFF2790817000D7DC82 /* ArtsyLocationPushExtension */;
-			targetProxy = CB6AFF052790817000D7DC82 /* PBXContainerItemProxy */;
 		};
 		FCB45B2E2746EF3900232337 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4450,186 +4375,6 @@
 			};
 			name = Store;
 		};
-		CB6AFF082790817000D7DC82 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 23KMWZ572J;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ArtsyLocationPushExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = ArtsyLocationPushExtension;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Artsy. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.ArtsyLocationPushExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		CB6AFF092790817000D7DC82 /* Store */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 23KMWZ572J;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ArtsyLocationPushExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = ArtsyLocationPushExtension;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Artsy. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.ArtsyLocationPushExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Store;
-		};
-		CB6AFF0A2790817000D7DC82 /* Demo */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_STYLE = Automatic;
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 23KMWZ572J;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ArtsyLocationPushExtension/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = ArtsyLocationPushExtension;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Artsy. All rights reserved.";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 1.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.ArtsyLocationPushExtension;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Demo;
-		};
 		FCB45B302746EF3A00232337 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4855,16 +4600,6 @@
 				B3ECE8371819D1E7009F5C5B /* Debug */,
 				B3ECE83A1819D1E7009F5C5B /* Store */,
 				60AF3D0418D33C80008F3CC0 /* Demo */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Debug;
-		};
-		CB6AFF0B2790817000D7DC82 /* Build configuration list for PBXNativeTarget "ArtsyLocationPushExtension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				CB6AFF082790817000D7DC82 /* Debug */,
-				CB6AFF092790817000D7DC82 /* Store */,
-				CB6AFF0A2790817000D7DC82 /* Demo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
