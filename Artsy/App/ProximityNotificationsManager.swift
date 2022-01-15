@@ -6,6 +6,25 @@ import CoreLocation
 
     var locationManager : CLLocationManager?
 
+    // probably want more permanent storage e.g. NSUserDefaults
+    var storedLocations : [String: StoredLocation] = [:]
+
+    enum LocationType {
+        case Show
+        case Gallery
+    }
+
+    struct StoredLocation {
+        let id : String
+        let name : String
+        let href : String
+        let imageURL : String
+        let type : LocationType
+        let lat : Double
+        let lon : Double
+    }
+
+
     @objc func hasPermissionToTrackRegions() -> Bool {
         return CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self)
     }
@@ -26,9 +45,13 @@ import CoreLocation
         print("NTFY location manager updateRegions event")
 
         self.stopMonitoringAllRegions()
-        let closest20RawRegions = Array(rawRegions[0..<20])
-        for rawRegion in closest20RawRegions {
-            if let region = self.regionFromRawRegion(rawRegion: rawRegion) {
+        self.storedLocations.removeAll()
+
+        let closest20RawLocations = Array(rawRegions[0..<20])
+        for rawLocation in closest20RawLocations {
+            if let location = self.locationFromLocationDict(locationDict: rawLocation) {
+                self.storedLocations[location.id] = location
+                let region = self.regionFromLocation(location: location)
                 print("NTFY start monitoring region", region.identifier)
                 print("NTFY start monitoring region center", region.center)
                 self.locationManager?.startMonitoring(for: region)
@@ -36,18 +59,36 @@ import CoreLocation
         }
     }
 
-    func regionFromRawRegion(rawRegion: [String: Any]) -> CLCircularRegion? {
+    func locationFromLocationDict(locationDict: [String: Any]) -> StoredLocation? {
         guard
-            let lat = rawRegion["lat"] as? Double,
-            let lon = rawRegion["lng"] as? Double,
-            let id = rawRegion["href"] as? String
+            let lat = locationDict["lat"] as? Double,
+            let lon = locationDict["lng"] as? Double,
+            let id = locationDict["href"] as? String,
+            let name = locationDict["name"] as? String,
+            let typeStr = locationDict["type"] as? String,
+            let imageURL = locationDict["image_url"] as? String
         else {
             return nil
         }
 
-        let center = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+        var type = LocationType.Gallery
+        if typeStr == "show" {
+            type = LocationType.Show
+        }
+
+        return StoredLocation(id: id,
+                              name: name,
+                              href: id,
+                              imageURL: imageURL,
+                              type: type,
+                              lat: lat,
+                              lon: lon)
+    }
+
+    func regionFromLocation(location: StoredLocation) -> CLCircularRegion {
+        let center = CLLocationCoordinate2D(latitude: location.lat, longitude: location.lon)
         let radius : CLLocationDistance = 1000 // 1000m - probably needs tweaking
-        let region = CLCircularRegion(center: center, radius: radius, identifier: id)
+        let region = CLCircularRegion(center: center, radius: radius, identifier: location.id)
         region.notifyOnEntry = true
         return region
     }
@@ -87,17 +128,13 @@ import CoreLocation
     }
 
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        // TODO: How to handle entering multiple regions
+        // TODO: How to handle entering multiple regions, debounce?
         print("NTFY location manager region entrance event", region.identifier)
 
         if UIApplication.shared.applicationState != .active {
-            let body = "You are near \(region.identifier), check it out!"
-            let notificationContent = UNMutableNotificationContent()
-            notificationContent.body = body
-            notificationContent.userInfo = ["url": region.identifier ]
-            notificationContent.sound = .default
-            notificationContent.badge = UIApplication.shared.applicationIconBadgeNumber + 1 as NSNumber
-                // 3
+            guard let notificationContent = notificationContent(regionId: region.identifier) else {
+                return
+            }
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
             let request = UNNotificationRequest(
                   identifier: "location_change",
@@ -109,5 +146,24 @@ import CoreLocation
                 }
             }
         }
+    }
+
+    func notificationContent(regionId: String) -> UNNotificationContent? {
+        guard let retrievedLocation = storedLocations[regionId] else {
+            return nil
+        }
+        let notificationContent = UNMutableNotificationContent()
+
+        switch retrievedLocation.type {
+        case .Show:
+            notificationContent.title = "Show nearby!"
+        case .Gallery:
+            notificationContent.title = "Gallery nearby!"
+        }
+        notificationContent.body = "You are only a couple blocks from art at \(retrievedLocation.name), check it out!"
+        notificationContent.userInfo = ["url": retrievedLocation.href ]
+        notificationContent.sound = .default
+        notificationContent.badge = UIApplication.shared.applicationIconBadgeNumber + 1 as NSNumber
+        return notificationContent
     }
 }
