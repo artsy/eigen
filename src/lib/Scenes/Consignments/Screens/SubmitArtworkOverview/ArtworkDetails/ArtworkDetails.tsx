@@ -1,18 +1,23 @@
 import AsyncStorage from "@react-native-community/async-storage"
+import { captureMessage } from "@sentry/react-native"
 import { ConsignmentAttributionClass } from "__generated__/createConsignSubmissionMutation.graphql"
 import { Formik } from "formik"
 import { CTAButton, Flex, Spacer, Text } from "palette"
-import React from "react"
+import React, { useState } from "react"
 import { CONSIGNMENT_SUBMISSION_STORAGE_ID } from "../SubmitArtworkOverview"
 import { createOrUpdateConsignSubmission } from "../utils/createOrUpdateConsignSubmission"
 import { limitedEditionValue } from "../utils/rarityOptions"
 import { artworkDetailsInitialValues, artworkDetailsValidationSchema } from "../utils/validation"
 import { ArtworkDetailsForm, ArtworkDetailsFormModel } from "./ArtworkDetailsForm"
+import { ErrorView } from "./Components/ErrorView"
+
 interface ArtworkDetailsProps {
   handlePress: () => void
 }
 
 export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) => {
+  const [submissionError, setSubmissionError] = useState(false)
+
   const handleArtworkDetailsSubmit = async (values: ArtworkDetailsFormModel) => {
     const isRarityLimitedEdition = values.rarity === limitedEditionValue
     const artworkDetailsForm = {
@@ -45,16 +50,19 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) =
         utmSource: artworkDetailsForm.utmSource,
         utmTerm: artworkDetailsForm.utmTerm,
       })
-    } catch (error) {
-      // TODO
-      console.log({ error })
-      return
-    }
 
-    if (submissionId) {
-      await AsyncStorage.setItem(CONSIGNMENT_SUBMISSION_STORAGE_ID, submissionId)
-      handlePress()
+      if (submissionId) {
+        await AsyncStorage.setItem(CONSIGNMENT_SUBMISSION_STORAGE_ID, submissionId)
+        handlePress()
+      }
+    } catch (error) {
+      captureMessage(JSON.stringify(error))
+      setSubmissionError(true)
     }
+  }
+
+  if (submissionError) {
+    return <ErrorView />
   }
 
   return (

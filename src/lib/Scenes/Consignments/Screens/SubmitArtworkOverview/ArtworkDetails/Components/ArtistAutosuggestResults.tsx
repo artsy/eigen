@@ -12,8 +12,7 @@ import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp 
 import usePrevious from "react-use/lib/usePrevious"
 import { ArtistAutosuggestResultsPlaceholder } from "./ArtistAutosuggestResultsPlaceholder"
 import { ArtistAutosuggestRow } from "./ArtistAutosuggestRow"
-
-// TODO: pagination query?
+import { ErrorView } from "./ErrorView"
 
 export type ArtistAutosuggestResult = NonNullable<
   NonNullable<NonNullable<NonNullable<ArtistAutosuggestResults_results["results"]>["edges"]>[0]>["node"]
@@ -211,15 +210,7 @@ export const ArtistAutosuggestResults: React.FC<{
               captureMessage(error.stack!)
             }
 
-            return (
-              <Flex alignItems="center" justifyContent="center">
-                <Flex maxWidth={280}>
-                  <Text variant="sm" textAlign="center">
-                    There seems to be a problem with the connection. Please try again shortly.
-                  </Text>
-                </Flex>
-              </Flex>
-            )
+            return <ErrorView message="There seems to be a problem with the connection. Please try again shortly." />
           }
           return <ArtistAutosuggestResultsContainer query={query} results={props} onResultPress={onResultPress} />
         }}
