@@ -26,9 +26,6 @@ export const MyCollectionArtworkFormArtwork: React.FC<StackScreenProps<ArtworkFo
 
   const { formik } = useArtworkForm()
 
-  const preferredCurrency = GlobalStore.useAppState((state) => state.userPreferences.currency)
-  const preferredMetric = GlobalStore.useAppState((state) => state.userPreferences.metric)
-
   useEffect(() => {
     // Navigate back to the artist search screen if no artist is selected.
     if (!formik.values.artistSearchResult) {

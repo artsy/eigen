@@ -32,6 +32,8 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
   const modalType = route.params.mode
   const addOrEditLabel = modalType === "edit" ? "Edit" : "Add"
   const formikValues = formik?.values
+  const preferredCurrency = GlobalStore.useAppState((state) => state.userPreferences.currency)
+  const preferredMetric = GlobalStore.useAppState((state) => state.userPreferences.metric)
 
   useEffect(() => {
     const isDirty = isFormDirty()
@@ -59,6 +61,13 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
     })
     return backListener
   }, [navigation, artworkState.sessionState.dirtyFormCheckValues])
+
+  useEffect(() => {
+    GlobalStore.actions.myCollection.artwork.updateFormValues({
+      pricePaidCurrency: formikValues.pricePaidCurrency || preferredCurrency,
+      metric: formikValues.metric || preferredMetric,
+    })
+  }, [])
 
   const isFormDirty = () => {
     // if you fill an empty field then delete it again, it changes from null to ""
