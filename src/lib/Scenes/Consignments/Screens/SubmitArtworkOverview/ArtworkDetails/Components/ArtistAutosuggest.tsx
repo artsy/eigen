@@ -15,8 +15,7 @@ export const ArtistAutosuggest: React.FC = () => {
 
   const [isArtistSelected, setIsArtistSelected] = useState(false)
 
-  // TODO: types
-  const onArtistSearchTextChange = (e: any) => {
+  const onArtistSearchTextChange = (e: string) => {
     setIsArtistSelected(false)
     setFieldValue("artist", e)
     setFieldValue("artistId", "")

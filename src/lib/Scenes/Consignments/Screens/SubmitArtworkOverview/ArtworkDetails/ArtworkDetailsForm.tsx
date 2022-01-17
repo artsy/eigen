@@ -2,10 +2,12 @@ import { useFormikContext } from "formik"
 import { Box, Flex, Input, InputTitle, RadioButton, Spacer, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
+import { rarityOptions } from "../utils/rarityOptions"
+import { limitedEditionValue } from "../utils/rarityOptions"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { InfoModal } from "./Components/InfoModal"
 import { LocationAutocomplete } from "./Components/LocationAutocomplete"
-import { rarityOptions } from "./utils/rarityOptions"
+
 export interface ArtworkDetailsFormModel {
   artist: string
   artistId: string
@@ -13,26 +15,28 @@ export interface ArtworkDetailsFormModel {
   year: string
   materials: string
   rarity: string
+  editionNumber: string
+  editionSize: string
+  units: string
   height: string
   width: string
   depth: string
   provenance: string
   location: string
+  state: string
+  utmMedium: string
+  utmSource: string
+  utmTerm: string
 }
 
 export const ArtworkDetailsForm: React.FC = () => {
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
 
-  const [isRarityInfoModalVisible, setRarityInfoModalVisible] = useState(false)
-  const [isProvenanceInfoModalVisible, setProvenanceInfoModalVisible] = useState(false)
-
-  // TODO
-  const x = (e: any) => console.log({ e })
+  const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
+  const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
 
   return (
     <Flex flexDirection="column">
-      <Spacer mt={2} />
-      <LocationAutocomplete onChange={x} initialLocation={null} />
       <Spacer mt={2} />
       <InputTitle>Artist</InputTitle>
       <ArtistAutosuggest />
@@ -60,7 +64,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         enableSearch={false}
         title="Rarity"
         tooltipText="What is this?"
-        onTooltipPress={() => setRarityInfoModalVisible(true)}
+        onTooltipPress={() => setIsRarityInfoModalVisible(true)}
         placeholder="Select a Classification"
         options={rarityOptions}
       />
@@ -68,15 +72,36 @@ export const ArtworkDetailsForm: React.FC = () => {
         title="Classifications"
         visible={isRarityInfoModalVisible}
         isRarity
-        onDismiss={() => setRarityInfoModalVisible(false)}
+        onDismiss={() => setIsRarityInfoModalVisible(false)}
       />
+      {values.rarity === limitedEditionValue && (
+        <>
+          <Spacer mt={2} />
+          <Flex flexDirection="row">
+            <Box width="48%" mr={1}>
+              <Input
+                title="Edition Number"
+                value={values.editionNumber}
+                onChangeText={(e) => setFieldValue("editionNumber", e)}
+              />
+            </Box>
+            <Box width="48%" mr={1}>
+              <Input
+                title="Edition Size"
+                value={values.editionSize}
+                onChangeText={(e) => setFieldValue("editionSize", e)}
+              />
+            </Box>
+          </Flex>
+        </>
+      )}
+
       <Spacer mt={2} />
       <InputTitle>Dimensions</InputTitle>
       <Spacer mt={1} />
-      {/* TODO: immute this info */}
       <Flex flexDirection="row">
-        <RadioButton mr={2} text="in" selected />
-        <RadioButton text="cm" />
+        <RadioButton mr={2} text="in" selected={values.units === "in"} onPress={() => setFieldValue("units", "in")} />
+        <RadioButton text="cm" selected={values.units === "cm"} onPress={() => setFieldValue("units", "cm")} />
       </Flex>
       <Spacer mt={2} />
       <Flex flexDirection="row">
@@ -93,7 +118,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       <Spacer mt={2} />
       <Flex flexDirection="row" justifyContent="space-between">
         <InputTitle>Provenance</InputTitle>
-        <Text variant="xs" color="black60" onPress={() => setProvenanceInfoModalVisible(true)}>
+        <Text variant="xs" color="black60" onPress={() => setIsProvenanceInfoModalVisible(true)}>
           What is this?
         </Text>
       </Flex>
@@ -107,16 +132,11 @@ export const ArtworkDetailsForm: React.FC = () => {
         title="Artwork Provenance"
         visible={isProvenanceInfoModalVisible}
         isRarity={false}
-        onDismiss={() => setProvenanceInfoModalVisible(false)}
+        onDismiss={() => setIsProvenanceInfoModalVisible(false)}
       />
       <Spacer mt={2} />
-      {/* TODO: location autocomplete */}
-      <Input
-        title="Location"
-        placeholder="Enter City Where Artwork Is Located"
-        value={values.location}
-        onChangeText={(e) => setFieldValue("location", e)}
-      />
+      {/* TODO: e */}
+      <LocationAutocomplete onChange={(e: any) => setFieldValue("location", e?.name || "")} initialLocation={null} />
     </Flex>
   )
 }
