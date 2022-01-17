@@ -74,22 +74,12 @@ export const MyCollectionArtworkFormArtwork: React.FC<StackScreenProps<ArtworkFo
 
   const navigateToNext = () => navigation.navigate("ArtworkFormMain", { ...route.params })
 
-  const skip = () => {
-    requestAnimationFrame(() => {
-      GlobalStore.actions.myCollection.artwork.ResetFormButKeepArtistWithPreferences({
-        pricePaidCurrency: preferredCurrency,
-        metric: preferredMetric,
-      })
-      navigateToNext()
-    })
-  }
-
   return (
     <>
       <FancyModalHeader
         onLeftButtonPress={route.params.onHeaderBackButtonPress}
         rightButtonText="Skip"
-        onRightButtonPress={skip}
+        onRightButtonPress={navigateToNext}
         hideBottomDivider
       >
         Select an Artwork
@@ -98,7 +88,7 @@ export const MyCollectionArtworkFormArtwork: React.FC<StackScreenProps<ArtworkFo
         <ScreenMargin>
           {!!formik.values.artistSearchResult && <ArtistSearchResult result={formik.values.artistSearchResult} />}
           <Spacer mb={2} />
-          <ArtworkAutosuggest onResultPress={updateFormValues} onSkipPress={skip} />
+          <ArtworkAutosuggest onResultPress={updateFormValues} onSkipPress={navigateToNext} />
         </ScreenMargin>
       </ScrollView>
       <LoadingModal isVisible={loading} />

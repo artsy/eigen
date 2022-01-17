@@ -6,12 +6,12 @@ import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { MyCollectionArtworkInsightsFragmentContainer } from "./Components/ArtworkInsights/MyCollectionArtworkInsights"
-import { MyCollectionArtworkHeaderRefetchContainer } from "./Components/MyCollectionArtworkHeader"
+import { MyCollectionArtworkHeaderFragmentContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
 import { tests } from "./MyCollectionArtwork"
 
 jest.mock("./Components/MyCollectionArtworkHeader", () => ({
-  MyCollectionArtworkHeaderRefetchContainer: () => null,
+  MyCollectionArtworkHeaderFragmentContainer: () => null,
 }))
 
 jest.mock("./Components/MyCollectionArtworkMeta", () => ({
@@ -35,7 +35,7 @@ describe("MyCollectionArtworkDetail", () => {
     it("renders correct components", () => {
       const artworkProps = { artwork: { internalID: "someInternalId" } }
       const wrapper = getWrapper(artworkProps)
-      expect(wrapper.root.findByType(MyCollectionArtworkHeaderRefetchContainer)).toBeDefined()
+      expect(wrapper.root.findByType(MyCollectionArtworkHeaderFragmentContainer)).toBeDefined()
       expect(wrapper.root.findByType(MyCollectionArtworkMetaFragmentContainer)).toBeDefined()
       expect(wrapper.root.findByType(MyCollectionArtworkInsightsFragmentContainer)).toBeDefined()
     })

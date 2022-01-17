@@ -26,18 +26,24 @@ const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
 
 describe("ImageCarouselEmbedded", () => {
   let context: ImageCarouselContext
+  const onImagePressedMock = jest.fn()
   function Mock({ contextInit = contextMock }: { contextInit?: typeof contextMock }) {
     const value = useNewImageCarouselContext(contextInit)
     context = value
     return (
       <ImageCarouselContext.Provider value={value}>
-        <ImageCarouselEmbedded cardHeight={275} />
+        <ImageCarouselEmbedded cardHeight={275} onImagePressed={onImagePressedMock} />
       </ImageCarouselContext.Provider>
     )
   }
   it("mounts", () => {
     const carousel = mount(<Mock />)
     expect(carousel.find(OpaqueImageView)).toHaveLength(2)
+  })
+  it("responds to onImagePressed prop", () => {
+    const carousel = mount(<Mock />)
+    carousel.find(ImageWithLoadingState).at(0).props().onPress()
+    expect(onImagePressedMock).toHaveBeenCalled()
   })
   it("does something when you tap an image with deepZoom", () => {
     const carousel = mount(<Mock />)

@@ -19,7 +19,7 @@ import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { MyCollectionArtworkHeaderRefetchContainer } from "./Components/MyCollectionArtworkHeader"
+import { MyCollectionArtworkHeaderFragmentContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
 import { WhySell } from "./Components/WhySell"
 
@@ -61,7 +61,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
           )}
         />
         <Join separator={<Spacer my={1} />}>
-          <MyCollectionArtworkHeaderRefetchContainer artwork={artwork} />
+          <MyCollectionArtworkHeaderFragmentContainer artwork={artwork} />
           <MyCollectionArtworkMetaFragmentContainer artwork={artwork} />
           <MyCollectionArtworkInsightsFragmentContainer artwork={artwork} marketPriceInsights={marketPriceInsights} />
           <WhySell />

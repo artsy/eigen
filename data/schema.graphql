@@ -870,10 +870,19 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     size: Int
   ): [Artist]
   counts: ArtistCounts
+  createdAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
   currentEvent: CurrentEvent
   deathday: String
   disablePriceContext: Boolean
   displayLabel: String
+  duplicates: [Artist]
 
   # Custom-sorted list of shows for an artist, in order of significance.
   exhibitionHighlights(
@@ -1081,6 +1090,7 @@ type ArtistCounts {
     label: String
   ): FormattedNumber
   auctionResults: Int
+  duplicates: Int
   ecommerceArtworks(
     # Returns a `String` when format is specified. e.g.`'0,0.0000''`
     format: String
@@ -1329,6 +1339,8 @@ type ArtistSeriesEdge {
 }
 
 enum ArtistSorts {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
   SORTABLE_ID_ASC
   SORTABLE_ID_DESC
   TRENDING_DESC
@@ -8656,6 +8668,9 @@ type Me implements Node {
     states: [CommerceOrderStateEnum!]
   ): CommerceOrderConnectionWithTotalCount
   paddleNumber: String
+
+  # A list of the current user’s managed partners
+  partners: [Partner]
 
   # The user's most current pending identity verification, if it exists
   pendingIdentityVerification: IdentityVerification

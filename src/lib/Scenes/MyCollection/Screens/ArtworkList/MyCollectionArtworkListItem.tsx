@@ -52,7 +52,6 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
           imageURL={imageURL ?? undefined}
           aspectRatio={image?.aspectRatio}
           artworkSlug={slug}
-          mode="list"
         />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
           <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={1}>

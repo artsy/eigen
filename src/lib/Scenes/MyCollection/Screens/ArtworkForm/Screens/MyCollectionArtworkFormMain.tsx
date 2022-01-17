@@ -8,8 +8,8 @@ import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { isEmpty } from "lodash"
 import { Box, Button, Flex, Input, Join, Sans, Separator, Spacer, Text } from "palette"
 import { Select } from "palette/elements/Select"
-import React from "react"
-import { ScrollView, TouchableOpacity } from "react-native"
+import React, { useEffect } from "react"
+import { Alert, ScrollView, TouchableOpacity } from "react-native"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
 import { ArrowDetails } from "../Components/ArrowDetails"
 import { ArtistSearchResult } from "../Components/ArtistSearchResult"
@@ -32,6 +32,33 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
   const modalType = route.params.mode
   const addOrEditLabel = modalType === "edit" ? "Edit" : "Add"
   const formikValues = formik?.values
+
+  useEffect(() => {
+    const isDirty = isFormDirty()
+    const backListener = navigation.addListener("beforeRemove", (e) => {
+      e.preventDefault()
+      if (isDirty) {
+        Alert.alert(
+          "Do you want to discard your changes?",
+          "Leaving this screen will discard any changes you have made on this form.",
+          [
+            { text: "Keep editing", style: "cancel", onPress: () => null },
+            {
+              text: "Discard",
+              style: "destructive",
+              onPress: () => {
+                GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
+                navigation.dispatch(e.data.action)
+              },
+            },
+          ]
+        )
+      } else {
+        navigation.dispatch(e.data.action)
+      }
+    })
+    return backListener
+  }, [navigation, artworkState.sessionState.dirtyFormCheckValues])
 
   const isFormDirty = () => {
     // if you fill an empty field then delete it again, it changes from null to ""

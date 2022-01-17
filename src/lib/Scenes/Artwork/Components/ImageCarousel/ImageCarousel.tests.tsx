@@ -1,10 +1,18 @@
 import { ImageCarouselTestsQueryRawResponse } from "__generated__/ImageCarouselTestsQuery.graphql"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
+import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Animated, FlatList } from "react-native"
 import { graphql } from "react-relay"
 import { getMeasurements } from "./geometry"
-import { ImageCarouselFragmentContainer, PaginationDot } from "./ImageCarousel"
+import {
+  CarouselImageDescriptor,
+  ImageCarousel,
+  ImageCarouselFragmentContainer,
+  ImageCarouselProps,
+} from "./ImageCarousel"
+import { PaginationDot, ScrollBar } from "./ImageCarouselPaginationIndicator"
+import { ImageWithLoadingState } from "./ImageWithLoadingState"
 
 jest.unmock("react-relay")
 
@@ -62,6 +70,27 @@ const artworkFixture: ImageCarouselTestsQueryRawResponse["artwork"] = {
     },
   ],
 }
+
+const localImages: CarouselImageDescriptor[] = [
+  {
+    url: "file:///this/is/not/a/real/image.jpg",
+    width: 2800,
+    height: 2100,
+    deepZoom: null,
+  },
+  {
+    url: "file:///this/is/not/a/real/image.jpg",
+    width: 2800,
+    height: 2100,
+    deepZoom: null,
+  },
+  {
+    url: "file:///this/is/not/a/real/image.jpg",
+    width: 2800,
+    height: 2100,
+    deepZoom: null,
+  },
+]
 
 describe("ImageCarouselFragmentContainer", () => {
   const getWrapper = async (artwork = artworkFixture) => {
@@ -183,5 +212,25 @@ describe("ImageCarouselFragmentContainer", () => {
       const wrapper = await getWrapper(artwork)
       expect(wrapper.find(FlatList).props().scrollEnabled).toBe(false)
     })
+  })
+})
+
+describe("Local Images and PaginationIndicator", () => {
+  const getWrapper = (props: ImageCarouselProps) => renderWithWrappers(<ImageCarousel {...props} />)
+
+  it("can display local images", () => {
+    const wrapper = getWrapper({ images: localImages, cardHeight: 275 })
+    expect(wrapper.root.findAllByType(ImageWithLoadingState).length).toEqual(localImages.length)
+  })
+
+  it("defaults to paginationDots", () => {
+    const wrapper = getWrapper({ images: localImages, cardHeight: 275 })
+    expect(wrapper.root.findAllByType(PaginationDot).length).toEqual(localImages.length)
+    expect(wrapper.root.findAllByType(ScrollBar).length).toBe(0)
+  })
+  it("Indicator can be a scrollbar", () => {
+    const wrapper = getWrapper({ paginationIndicatorType: "scrollBar", images: localImages, cardHeight: 275 })
+    expect(wrapper.root.findAllByType(PaginationDot).length).toBe(0)
+    expect(wrapper.root.findByType(ScrollBar)).toBeDefined()
   })
 })

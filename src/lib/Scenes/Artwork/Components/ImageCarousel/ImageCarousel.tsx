@@ -3,22 +3,41 @@ import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql
 import { createGeminiUrl } from "lib/Components/OpaqueImageView/createGeminiUrl"
 import { isPad } from "lib/utils/hardware"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Flex, Spacer } from "palette"
-import React, { useContext, useMemo } from "react"
-import { Animated, PixelRatio } from "react-native"
+import { Flex } from "palette"
+import React, { useMemo } from "react"
+import { PixelRatio } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
 import { fitInside } from "./geometry"
 import { ImageCarouselContext, ImageDescriptor, useNewImageCarouselContext } from "./ImageCarouselContext"
 import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
-import { useSpringValue } from "./useSpringValue"
+import { IndicatorType, PaginationIndicator } from "./ImageCarouselPaginationIndicator"
 
 export interface ImageCarouselProps {
-  images: ImageCarousel_images
+  /** CarouselImageDescriptor for when you want to display local images */
+  images: ImageCarousel_images | CarouselImageDescriptor[]
   cardHeight: number
   onImageIndexChange?: (imageIndex: number) => void
+  paginationIndicatorType?: IndicatorType
+  onImagePressed?: () => void
 }
 
+export interface CarouselImageDescriptor extends ImageDescriptor {
+  imageVersions?: string[]
+}
+interface MappedImageDescriptor extends Pick<ImageDescriptor, "deepZoom"> {
+  width: number
+  height: number
+  url: string
+}
+
+export const isALocalImage = (imageUrl?: string | null) => {
+  if (!imageUrl) {
+    return false
+  }
+  const regex = new RegExp("^[.|/|asset://|file:///].*.[/.](gif|jpg|jpeg|bmp|webp|png)$")
+  return regex.test(imageUrl)
+}
 /**
  * ImageCarousel
  * NOTE: This component currently assumes it is being rendered at the full width of the screen.
@@ -31,39 +50,45 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
 
   const embeddedCardBoundingBox = { width: screenDimensions.width, height: isPad() ? 460 : cardHeight }
 
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+  // TODO:- Deepzoom for local images?
+  const disableDeepZoom = props.images.some((image) => isALocalImage(image.url))
+
   const images: ImageDescriptor[] = useMemo(() => {
     let result = props.images
-      .map((image) => {
+      .map((image): MappedImageDescriptor | null => {
         if (!image.height || !image.width || !image.url) {
           // something is very wrong
           return null
         }
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        const { width, height } = fitInside(embeddedCardBoundingBox, image)
+        const { width, height } = fitInside(embeddedCardBoundingBox, image as MappedImageDescriptor)
         return {
           width,
           height,
-          url: createGeminiUrl({
-            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-            imageURL: image.url.replace(":version", getBestImageVersionForThumbnail(image.imageVersions)),
-            // upscale to match screen resolution
-            width: width * PixelRatio.get(),
-            height: height * PixelRatio.get(),
-          }),
+          url:
+            isALocalImage(image.url) || !imageHasVersions(image)
+              ? image.url
+              : createGeminiUrl({
+                  imageURL: image.url.replace(
+                    ":version",
+                    getBestImageVersionForThumbnail(image.imageVersions as string[])
+                  ),
+                  // upscale to match screen resolution
+                  width: width * PixelRatio.get(),
+                  height: height * PixelRatio.get(),
+                }),
           deepZoom: image.deepZoom,
         }
       })
-      .filter(Boolean)
+      .filter((mappedImage): mappedImage is MappedImageDescriptor => Boolean(mappedImage))
 
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    if (result.some((image) => !image.deepZoom)) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const filteredResult = result.filter((image) => image.deepZoom)
-      if (filteredResult.length === 0) {
-        result = [result[0]]
-      } else {
-        result = filteredResult
+    if (!disableDeepZoom) {
+      if (result.some((image) => !image.deepZoom)) {
+        const filteredResult = result.filter((image) => image.deepZoom)
+        if (filteredResult.length === 0) {
+          result = [result[0]]
+        } else {
+          result = filteredResult
+        }
       }
     }
 
@@ -81,44 +106,11 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
   return (
     <ImageCarouselContext.Provider value={context}>
       <Flex>
-        <ImageCarouselEmbedded cardHeight={cardHeight} />
-        {images.length > 1 && <PaginationDots />}
+        <ImageCarouselEmbedded cardHeight={cardHeight} disableFullScreen={disableDeepZoom} />
+        {images.length > 1 && <PaginationIndicator indicatorType={props.paginationIndicatorType} />}
         {context.fullScreenState.current !== "none" && <ImageCarouselFullScreen />}
       </Flex>
     </ImageCarouselContext.Provider>
-  )
-}
-
-function PaginationDots() {
-  const { images } = useContext(ImageCarouselContext)
-  return (
-    <>
-      <Spacer mb={2} />
-      <Flex flexDirection="row" justifyContent="center">
-        {images.map((_, index) => (
-          <PaginationDot key={index} diameter={5} index={index} />
-        ))}
-      </Flex>
-    </>
-  )
-}
-
-export const PaginationDot = ({ diameter, index }: { diameter: number; index: number }) => {
-  const { imageIndex } = useContext(ImageCarouselContext)
-  imageIndex.useUpdates()
-  const opacity = useSpringValue(imageIndex.current === index ? 1 : 0.1)
-
-  return (
-    <Animated.View
-      style={{
-        marginHorizontal: diameter * 0.8,
-        borderRadius: diameter / 2,
-        width: diameter,
-        height: diameter,
-        backgroundColor: "black",
-        opacity,
-      }}
-    />
   )
 }
 
@@ -167,4 +159,8 @@ function getBestImageVersionForThumbnail(imageVersions: readonly string[]) {
   // will fail to load and we'll see a gray square. I haven't come accross an image
   // that this will happen for, but better safe than sorry.
   return "normalized"
+}
+
+const imageHasVersions = (image: CarouselImageDescriptor | ImageCarousel_images[number]) => {
+  return image.imageVersions && image.imageVersions.length
 }
