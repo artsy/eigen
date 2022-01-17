@@ -315,14 +315,12 @@ const MyCollection: React.FC<{
   const space = useSpace()
   const toast = useToast()
 
-  const allowOrderImports = useFeatureFlag("AREnableMyCollectionOrderImport")
-
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
 
   useEffect(() => {
     if (artworks.length) {
       hasBeenShownBanner().then((hasSeenBanner) => {
-        const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && allowOrderImports && !hasSeenBanner
+        const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
 
         setJSX(
           <Flex>
@@ -501,21 +499,13 @@ export const MyCollectionContainer = createPaginationContainer(
   {
     me: graphql`
       fragment MyCollection_me on Me
-      @argumentDefinitions(
-        excludePurchasedArtworks: { type: "Boolean", defaultValue: true }
-        count: { type: "Int", defaultValue: 100 }
-        cursor: { type: "String" }
-      ) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 100 }, cursor: { type: "String" }) {
         id
         myCollectionInfo {
           includesPurchasedArtworks
         }
-        myCollectionConnection(
-          excludePurchasedArtworks: $excludePurchasedArtworks
-          first: $count
-          after: $cursor
-          sort: CREATED_AT_DESC
-        ) @connection(key: "MyCollection_myCollectionConnection", filters: []) {
+        myCollectionConnection(first: $count, after: $cursor, sort: CREATED_AT_DESC)
+          @connection(key: "MyCollection_myCollectionConnection", filters: []) {
           edges {
             node {
               id
@@ -549,10 +539,9 @@ export const MyCollectionContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query MyCollectionPaginationQuery($excludePurchasedArtworks: Boolean, $count: Int!, $cursor: String) {
+      query MyCollectionPaginationQuery($count: Int!, $cursor: String) {
         me {
-          ...MyCollection_me
-            @arguments(excludePurchasedArtworks: $excludePurchasedArtworks, count: $count, cursor: $cursor)
+          ...MyCollection_me @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
@@ -560,21 +549,18 @@ export const MyCollectionContainer = createPaginationContainer(
 )
 
 export const MyCollectionQueryRenderer: React.FC = () => {
-  const enableMyCollectionOrderImport = useFeatureFlag("AREnableMyCollectionOrderImport")
-  const excludePurchasedArtworks = !enableMyCollectionOrderImport
-
   return (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<MyCollectionQuery>
         environment={defaultEnvironment}
         query={graphql`
-          query MyCollectionQuery($excludePurchasedArtworks: Boolean) {
+          query MyCollectionQuery {
             me {
-              ...MyCollection_me @arguments(excludePurchasedArtworks: $excludePurchasedArtworks)
+              ...MyCollection_me
             }
           }
         `}
-        variables={{ excludePurchasedArtworks }}
+        variables={{}}
         cacheConfig={{ force: true }}
         render={renderWithPlaceholder({
           Container: MyCollectionContainer,
