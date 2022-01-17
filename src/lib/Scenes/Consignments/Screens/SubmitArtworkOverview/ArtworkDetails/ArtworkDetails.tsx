@@ -3,6 +3,7 @@ import { ConsignmentAttributionClass } from "__generated__/createConsignSubmissi
 import { Formik } from "formik"
 import { Box, CTAButton, Flex, Spacer, Text } from "palette"
 import React from "react"
+import { CONSIGNMENT_SUBMISSION_STORAGE_ID } from "../SubmitArtworkOverview"
 import { createOrUpdateConsignSubmission } from "../utils/createOrUpdateConsignSubmission"
 import { limitedEditionValue } from "../utils/rarityOptions"
 import { artworkDetailsInitialValues, artworkDetailsValidationSchema } from "../utils/validation"
@@ -11,29 +12,26 @@ interface ArtworkDetailsProps {
   handlePress: () => void
 }
 
-const CONSIGNMENT_SUBMISSION_ID = "CONSIGNMENT_SUBMISSION_ID"
-
 export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) => {
   const handleArtworkDetailsSubmit = async (values: ArtworkDetailsFormModel) => {
     const isRarityLimitedEdition = values.rarity === limitedEditionValue
-    const attributionClass = values.rarity.replace(" ", "_").toUpperCase() as ConsignmentAttributionClass
-    let submissionId: string | undefined = (await AsyncStorage.getItem(CONSIGNMENT_SUBMISSION_ID)) || undefined
-
     const artworkDetailsForm = {
       ...values,
-      attributionClass,
       editionNumber: isRarityLimitedEdition ? values.editionNumber : "",
       editionSize: isRarityLimitedEdition ? values.editionSize : "",
     }
 
+    let submissionId: string | undefined = (await AsyncStorage.getItem(CONSIGNMENT_SUBMISSION_STORAGE_ID)) || undefined
+    const attributionClass = artworkDetailsForm.rarity.replace(" ", "_").toUpperCase() as ConsignmentAttributionClass
+
     try {
       submissionId = await createOrUpdateConsignSubmission({
         id: submissionId,
-        attributionClass,
         artistID: artworkDetailsForm.artistId,
         year: artworkDetailsForm.year,
         title: artworkDetailsForm.title,
         medium: artworkDetailsForm.materials,
+        attributionClass,
         editionNumber: artworkDetailsForm.editionNumber,
         editionSizeFormatted: artworkDetailsForm.editionSize,
         height: artworkDetailsForm.height,
@@ -53,7 +51,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) =
     }
 
     if (submissionId) {
-      await AsyncStorage.setItem(CONSIGNMENT_SUBMISSION_ID, submissionId)
+      await AsyncStorage.setItem(CONSIGNMENT_SUBMISSION_STORAGE_ID, submissionId)
       handlePress()
     }
   }

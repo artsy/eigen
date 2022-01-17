@@ -7,6 +7,8 @@ export type SubmissionInput = CreateSubmissionMutationInput | UpdateSubmissionMu
 export const createOrUpdateConsignSubmission = async (submission: SubmissionInput) => {
   const input = submission as UpdateSubmissionMutationInput
 
+  console.log({ input })
+
   if (input.id) {
     return await updateConsignSubmission(input)
   }

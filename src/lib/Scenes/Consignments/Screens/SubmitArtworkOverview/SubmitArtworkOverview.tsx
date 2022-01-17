@@ -1,18 +1,27 @@
+import AsyncStorage from "@react-native-community/async-storage"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
 import { BackButton } from "lib/navigation/BackButton"
 import { CollapsibleMenuItem, Flex, Join, Separator, Spacer } from "palette"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { ArtworkDetails } from "./ArtworkDetails/ArtworkDetails"
 import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
 import { ContactInformation } from "./ContactInformation/ContactInformation"
 import { UploadPhotos } from "./UploadPhotos/UploadPhotos"
 
+export const CONSIGNMENT_SUBMISSION_STORAGE_ID = "CONSIGNMENT_SUBMISSION_STORAGE_ID"
+
 interface SubmitArtworkScreenNavigationProps
   extends StackScreenProps<SubmitArtworkOverviewNavigationStack, "SubmitArtworkScreen"> {}
 
 export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> = ({ navigation }) => {
+  useEffect(() => {
+    ;(async () => {
+      await AsyncStorage.removeItem(CONSIGNMENT_SUBMISSION_STORAGE_ID)
+    })()
+  }, [])
+
   const items = [
     {
       overtitle: "Step 1 of 3",
