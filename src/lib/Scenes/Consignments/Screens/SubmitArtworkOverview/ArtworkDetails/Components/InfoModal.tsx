@@ -4,12 +4,14 @@ import { artworkRarityClassifications } from "lib/utils/artworkRarityClassificat
 import { Button, Flex, InputTitle, Spacer, Text } from "palette"
 import React from "react"
 
-export const InfoModal: React.FC<{
+interface Props {
   title: string
   visible: boolean
   isRarity: boolean
   onDismiss: () => void
-}> = ({ title, visible, isRarity, onDismiss }) => {
+}
+
+export const InfoModal: React.FC<Props> = ({ title, visible, isRarity, onDismiss }) => {
   return (
     <FancyModal visible={visible} onBackgroundPressed={onDismiss}>
       <FancyModalHeader onRightButtonPress={onDismiss} hideBottomDivider rightCloseButton>
