@@ -94,14 +94,13 @@ const Home = (props: Props) => {
   const enableAuctionResultsByFollowedArtists = useFeatureFlag("ARHomeAuctionResultsByFollowedArtists")
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
   const enableTrove = useFeatureFlag("AREnableTrove")
-  const enableNewNewWorksForYouRail = useFeatureFlag("AREnableNewWorksForYou")
   const enableShowsForYouRail = useFeatureFlag("AREnableShowsRail")
 
   const newWorksTreatment = useTreatment("HomeScreenWorksForYouVsWorksByArtistsYouFollow")
   const artistRecommendationsTreatment = useTreatment("HomeScreenArtistRecommendations")
 
   const newWorks =
-    enableNewNewWorksForYouRail && newWorksTreatment === "worksForYou"
+    newWorksTreatment === "worksForYou"
       ? {
           title: "New Works for You",
           type: "newWorksForYou",

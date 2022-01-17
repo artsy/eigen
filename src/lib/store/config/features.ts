@@ -101,12 +101,6 @@ export const features = defineFeatures({
     description: "Enable Order History in settings",
     showInAdminMenu: true,
   },
-  AREnableNewWorksForYou: {
-    readyForRelease: true,
-    description: "Enable new 'New Works for You' rail",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableNewWorksForYou",
-  },
   AREnableSavedAddresses: {
     readyForRelease: false,
     description: "Enable Saved Addresses",
