@@ -8,4 +8,4 @@ it("renders without throwing an error", () => {
   renderWithWrappersTL(<UploadPhotos handlePress={() => console.log("do nothing")} />)
 })
 
-// add more tests!
+// add more tests
