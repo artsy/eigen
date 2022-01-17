@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { ConsignmentAttributionClass } from "__generated__/createConsignSubmissionMutation.graphql"
 import { Formik } from "formik"
-import { Box, CTAButton, Flex, Spacer, Text } from "palette"
+import { CTAButton, Flex, Spacer, Text } from "palette"
 import React from "react"
 import { CONSIGNMENT_SUBMISSION_STORAGE_ID } from "../SubmitArtworkOverview"
 import { createOrUpdateConsignSubmission } from "../utils/createOrUpdateConsignSubmission"
@@ -18,7 +18,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) =
     const artworkDetailsForm = {
       ...values,
       editionNumber: isRarityLimitedEdition ? values.editionNumber : "",
-      editionSize: isRarityLimitedEdition ? values.editionSize : "",
+      editionSizeFormatted: isRarityLimitedEdition ? values.editionSize : "",
     }
 
     let submissionId: string | undefined = (await AsyncStorage.getItem(CONSIGNMENT_SUBMISSION_STORAGE_ID)) || undefined
@@ -26,14 +26,14 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) =
 
     try {
       submissionId = await createOrUpdateConsignSubmission({
+        attributionClass,
         id: submissionId,
         artistID: artworkDetailsForm.artistId,
         year: artworkDetailsForm.year,
         title: artworkDetailsForm.title,
         medium: artworkDetailsForm.materials,
-        attributionClass,
         editionNumber: artworkDetailsForm.editionNumber,
-        editionSizeFormatted: artworkDetailsForm.editionSize,
+        editionSizeFormatted: artworkDetailsForm.editionSizeFormatted,
         height: artworkDetailsForm.height,
         width: artworkDetailsForm.width,
         depth: artworkDetailsForm.depth,
@@ -46,6 +46,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) =
         utmTerm: artworkDetailsForm.utmTerm,
       })
     } catch (error) {
+      // TODO
       console.log({ error })
       return
     }
@@ -57,34 +58,33 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) =
   }
 
   return (
-    <Flex p={1} mt={1}>
-      <Text variant="sm" color="black60">
-        • All fields are required to submit an artwork.
-      </Text>
-      <Text variant="sm" color="black60">
-        • Unfortunately, we do not allow&nbsp;
-        <Text style={{ textDecorationLine: "underline" }}>artists to sell their own work</Text> on Artsy.
-      </Text>
-      <Spacer mt={2} />
-
-      <Formik<ArtworkDetailsFormModel>
-        initialValues={artworkDetailsInitialValues}
-        onSubmit={handleArtworkDetailsSubmit}
-        validationSchema={artworkDetailsValidationSchema}
-        validateOnMount
-      >
-        {({ values, isValid }) => {
-          return (
-            <Box>
-              <ArtworkDetailsForm />
-              <Spacer mt={3} />
-              <CTAButton disabled={!isValid} onPress={() => handleArtworkDetailsSubmit(values)}>
-                Save & Continue
-              </CTAButton>
-            </Box>
-          )
-        }}
-      </Formik>
-    </Flex>
+    <Formik<ArtworkDetailsFormModel>
+      initialValues={artworkDetailsInitialValues}
+      onSubmit={handleArtworkDetailsSubmit}
+      validationSchema={artworkDetailsValidationSchema}
+      validateOnMount
+    >
+      {({ values, isValid }) => (
+        <Flex p={1} mt={1} height={1130}>
+          <Text variant="sm" color="black60">
+            • All fields are required to submit an artwork.
+          </Text>
+          <Text variant="sm" color="black60">
+            • Unfortunately, we do not allow&nbsp;
+            <Text style={{ textDecorationLine: "underline" }}>artists to sell their own work</Text> on Artsy.
+          </Text>
+          <Spacer mt={2} />
+          <ArtworkDetailsForm />
+          <Spacer mt={3} />
+          <CTAButton
+            mt={values.rarity === limitedEditionValue ? 0 : 2}
+            disabled={!isValid}
+            onPress={() => handleArtworkDetailsSubmit(values)}
+          >
+            Save & Continue
+          </CTAButton>
+        </Flex>
+      )}
+    </Formik>
   )
 }

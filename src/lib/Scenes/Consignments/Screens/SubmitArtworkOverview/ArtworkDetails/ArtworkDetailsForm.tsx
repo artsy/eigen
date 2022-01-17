@@ -38,8 +38,6 @@ export const ArtworkDetailsForm: React.FC = () => {
 
   return (
     <Flex flexDirection="column">
-      <Spacer mt={2} />
-      <InputTitle>Artist</InputTitle>
       <ArtistAutosuggest />
       <Spacer mt={2} />
       <Input
@@ -50,7 +48,6 @@ export const ArtworkDetailsForm: React.FC = () => {
       />
       <Spacer mt={2} />
       <Input title="Year" placeholder="YYYY" value={values.year} onChangeText={(e) => setFieldValue("year", e)} />
-
       <Spacer mt={2} />
       <Input
         title="Materials"
@@ -78,7 +75,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       {values.rarity === limitedEditionValue && (
         <>
           <Spacer mt={2} />
-          <Flex flexDirection="row">
+          <Flex flexDirection="row" justifyContent="space-between">
             <Box width="48%" mr={1}>
               <Input
                 title="Edition Number"
@@ -86,7 +83,7 @@ export const ArtworkDetailsForm: React.FC = () => {
                 onChangeText={(e) => setFieldValue("editionNumber", e)}
               />
             </Box>
-            <Box width="48%" mr={1}>
+            <Box width="48%">
               <Input
                 title="Edition Size"
                 value={values.editionSize}
@@ -105,14 +102,14 @@ export const ArtworkDetailsForm: React.FC = () => {
         <RadioButton text="cm" selected={values.units === "cm"} onPress={() => setFieldValue("units", "cm")} />
       </Flex>
       <Spacer mt={2} />
-      <Flex flexDirection="row">
+      <Flex flexDirection="row" justifyContent="space-between">
         <Box width="31%" mr={1}>
           <Input title="Height" value={values.height} onChangeText={(e) => setFieldValue("height", e)} />
         </Box>
         <Box width="31%" mr={1}>
           <Input title="Width" value={values.width} onChangeText={(e) => setFieldValue("width", e)} />
         </Box>
-        <Box width="31%" mr={1}>
+        <Box width="31%">
           <Input title="Depth" value={values.depth} onChangeText={(e) => setFieldValue("depth", e)} />
         </Box>
       </Flex>

@@ -30,6 +30,7 @@ export const ArtistAutosuggest: React.FC = () => {
   return (
     <SearchContext.Provider value={searchProviderValues}>
       <Input
+        title="Artist"
         placeholder="Enter Full Name"
         icon={<SearchIcon width={18} height={18} />}
         onChangeText={onArtistSearchTextChange}
