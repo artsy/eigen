@@ -2,7 +2,7 @@ import { Flex } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { ArtworkHomeRail_rail } from "__generated__/ArtworkHomeRail_rail.graphql"
+import { ArtworkModuleRail_rail } from "__generated__/ArtworkModuleRail_rail.graphql"
 import { LargeArtworkRail } from "lib/Components/ArtworkRail/LargeArtworkRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
@@ -12,7 +12,7 @@ import { useTracking } from "react-tracking"
 import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"
 
-export function getViewAllUrl(rail: ArtworkHomeRail_rail) {
+export function getViewAllUrl(rail: ArtworkModuleRail_rail) {
   const context = rail.context
   const key = rail.key
 
@@ -31,13 +31,13 @@ export function getViewAllUrl(rail: ArtworkHomeRail_rail) {
   }
 }
 
-interface ArtworkHomeRailProps {
+interface ArtworkModuleRailProps {
   title: string
-  rail: ArtworkHomeRail_rail
+  rail: ArtworkModuleRail_rail
   mb?: number
 }
 
-const ArtworkHomeRail: React.FC<ArtworkHomeRailProps & RailScrollProps> = ({ title, rail, scrollRef, mb }) => {
+const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({ title, rail, scrollRef, mb }) => {
   const tracking = useTracking()
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)
@@ -92,9 +92,9 @@ const ArtworkHomeRail: React.FC<ArtworkHomeRailProps & RailScrollProps> = ({ tit
   ) : null
 }
 
-export const ArtworkHomeRailFragmentContainer = createFragmentContainer(ArtworkHomeRail, {
+export const ArtworkModuleRailFragmentContainer = createFragmentContainer(ArtworkModuleRail, {
   rail: graphql`
-    fragment ArtworkHomeRail_rail on HomePageArtworkModule {
+    fragment ArtworkModuleRail_rail on HomePageArtworkModule {
       title
       key
       results {

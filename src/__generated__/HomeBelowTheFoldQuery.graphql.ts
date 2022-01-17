@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c9ed885a5d8c59df0fba7a19638c542f */
+/* @relayHash 24ea145170e802a041b882a207501018 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -72,7 +72,7 @@ fragment ArtistRail_rail on HomePageArtistModule {
   }
 }
 
-fragment ArtworkHomeRail_rail on HomePageArtworkModule {
+fragment ArtworkModuleRail_rail on HomePageArtworkModule {
   title
   key
   results {
@@ -290,11 +290,11 @@ fragment Home_featured on ViewingRoomConnection {
 fragment Home_homePageBelow_1IwJ0h on HomePage {
   recentlyViewedWorksArtworkModule: artworkModule(key: RECENTLY_VIEWED_WORKS) {
     id
-    ...ArtworkHomeRail_rail
+    ...ArtworkModuleRail_rail
   }
   similarToRecentlyViewedArtworkModule: artworkModule(key: SIMILAR_TO_RECENTLY_VIEWED) {
     id
-    ...ArtworkHomeRail_rail
+    ...ArtworkModuleRail_rail
   }
   popularArtistsArtistModule: artistModule(key: POPULAR) {
     id
@@ -1808,7 +1808,7 @@ return {
     ]
   },
   "params": {
-    "id": "c9ed885a5d8c59df0fba7a19638c542f",
+    "id": "24ea145170e802a041b882a207501018",
     "metadata": {},
     "name": "HomeBelowTheFoldQuery",
     "operationKind": "query",

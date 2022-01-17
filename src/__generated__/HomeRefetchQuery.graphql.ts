@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8df40c2914c12bda2a544648ffd2dec0 */
+/* @relayHash d3effafb5119c1b01d90b9dce1710039 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -118,7 +118,7 @@ fragment ArtistRail_rail on HomePageArtistModule {
   }
 }
 
-fragment ArtworkHomeRail_rail on HomePageArtworkModule {
+fragment ArtworkModuleRail_rail on HomePageArtworkModule {
   title
   key
   results {
@@ -344,11 +344,11 @@ fragment Home_featured on ViewingRoomConnection {
 fragment Home_homePageAbove_1IwJ0h on HomePage {
   followedArtistsArtworkModule: artworkModule(key: FOLLOWED_ARTISTS) {
     id
-    ...ArtworkHomeRail_rail
+    ...ArtworkModuleRail_rail
   }
   activeBidsArtworkModule: artworkModule(key: ACTIVE_BIDS) {
     id
-    ...ArtworkHomeRail_rail
+    ...ArtworkModuleRail_rail
   }
   salesModule {
     ...SalesRail_salesModule
@@ -363,11 +363,11 @@ fragment Home_homePageAbove_1IwJ0h on HomePage {
 fragment Home_homePageBelow_1IwJ0h on HomePage {
   recentlyViewedWorksArtworkModule: artworkModule(key: RECENTLY_VIEWED_WORKS) {
     id
-    ...ArtworkHomeRail_rail
+    ...ArtworkModuleRail_rail
   }
   similarToRecentlyViewedArtworkModule: artworkModule(key: SIMILAR_TO_RECENTLY_VIEWED) {
     id
-    ...ArtworkHomeRail_rail
+    ...ArtworkModuleRail_rail
   }
   popularArtistsArtistModule: artistModule(key: POPULAR) {
     id
@@ -2508,7 +2508,7 @@ return {
     ]
   },
   "params": {
-    "id": "8df40c2914c12bda2a544648ffd2dec0",
+    "id": "d3effafb5119c1b01d90b9dce1710039",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",

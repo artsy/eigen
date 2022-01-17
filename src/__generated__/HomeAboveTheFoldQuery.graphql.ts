@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6c442434b2fe03d1aeab56b09bbbc4ad */
+/* @relayHash e86260d328c40614eaa250a2bb475094 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -91,7 +91,7 @@ fragment ArtistRail_rail on HomePageArtistModule {
   }
 }
 
-fragment ArtworkHomeRail_rail on HomePageArtworkModule {
+fragment ArtworkModuleRail_rail on HomePageArtworkModule {
   title
   key
   results {
@@ -197,11 +197,11 @@ fragment Home_articlesConnection on ArticleConnection {
 fragment Home_homePageAbove_1IwJ0h on HomePage {
   followedArtistsArtworkModule: artworkModule(key: FOLLOWED_ARTISTS) {
     id
-    ...ArtworkHomeRail_rail
+    ...ArtworkModuleRail_rail
   }
   activeBidsArtworkModule: artworkModule(key: ACTIVE_BIDS) {
     id
-    ...ArtworkHomeRail_rail
+    ...ArtworkModuleRail_rail
   }
   salesModule {
     ...SalesRail_salesModule
@@ -1498,7 +1498,7 @@ return {
     ]
   },
   "params": {
-    "id": "6c442434b2fe03d1aeab56b09bbbc4ad",
+    "id": "e86260d328c40614eaa250a2bb475094",
     "metadata": {},
     "name": "HomeAboveTheFoldQuery",
     "operationKind": "query",
