@@ -4,6 +4,12 @@ import { Metric } from "../MyCollection/Screens/ArtworkForm/Components/Dimension
 const DEFAULT_CURRENCY = "USD"
 const DEFAULT_METRIC = ""
 
+// please update this when adding new user preferences
+export interface UserPreferences {
+  pricePaidCurrency: Currency
+  metric: Metric
+}
+
 export type Currency = "USD" | "EUR" | "GBP"
 
 export interface UserPreferencesModel {

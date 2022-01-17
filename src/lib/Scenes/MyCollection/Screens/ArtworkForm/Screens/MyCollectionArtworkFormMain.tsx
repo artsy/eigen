@@ -8,7 +8,7 @@ import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { isEmpty } from "lodash"
 import { Box, Button, Flex, Input, Join, Sans, Separator, Spacer, Text } from "palette"
 import { Select } from "palette/elements/Select"
-import React, { useEffect } from "react"
+import React from "react"
 import { ScrollView, TouchableOpacity } from "react-native"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
 import { ArrowDetails } from "../Components/ArrowDetails"
@@ -45,16 +45,6 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
       false
     )
   }
-
-  const initialCurrency = GlobalStore.useAppState((state) => state.userPreferences.currency)
-  const initialMetric = GlobalStore.useAppState((state) => state.userPreferences.metric)
-
-  useEffect(() => {
-    const metric = formikValues.metric || initialMetric
-    const pricePaidCurrency = formikValues.pricePaidCurrency || initialCurrency
-
-    GlobalStore.actions.myCollection.artwork.setFormValues({ ...formikValues, pricePaidCurrency, metric })
-  }, [])
 
   return (
     <ArtsyKeyboardAvoidingView>
