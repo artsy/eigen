@@ -1,6 +1,7 @@
 import { Action, action } from "easy-peasy"
 import { Metric } from "../MyCollection/Screens/ArtworkForm/Components/Dimensions"
 
+// TODO: set currency depends on location
 const DEFAULT_CURRENCY = "USD"
 const DEFAULT_METRIC = ""
 
@@ -24,8 +25,10 @@ export const getUserPreferencesModel = (): UserPreferencesModel => ({
   metric: DEFAULT_METRIC,
   setCurrency: action((state, currency) => {
     state.currency = currency
+    // TODO: update currency in gravity
   }),
   setMetric: action((state, metric) => {
     state.metric = metric
+    // TODO: update unit in gravity
   }),
 })
