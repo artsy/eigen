@@ -1,4 +1,5 @@
 import { useFormikContext } from "formik"
+import { SimpleLocation } from "lib/utils/googleMaps"
 import { Box, Flex, Input, InputTitle, RadioButton, Spacer, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
@@ -135,8 +136,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         onDismiss={() => setIsProvenanceInfoModalVisible(false)}
       />
       <Spacer mt={2} />
-      {/* TODO: e */}
-      <LocationAutocomplete onChange={(e: any) => setFieldValue("location", e?.name || "")} initialLocation={null} />
+      <LocationAutocomplete onChange={(e: SimpleLocation) => setFieldValue("location", e.name)} />
     </Flex>
   )
 }

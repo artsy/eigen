@@ -77,7 +77,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) =
           return (
             <Box>
               <ArtworkDetailsForm />
-              <Spacer mt={4} />
+              <Spacer mt={3} />
               <CTAButton disabled={!isValid} onPress={() => handleArtworkDetailsSubmit(values)}>
                 Save & Continue
               </CTAButton>

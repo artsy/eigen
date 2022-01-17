@@ -44,6 +44,7 @@ export const getLocationDetails = async ({ id, name }: SimpleLocation): Promise<
   const queryString = stringify({
     key: API_KEY,
     placeid: id,
+    language: "en",
   })
 
   const response = await fetch("https://maps.googleapis.com/maps/api/place/details/json?" + queryString)

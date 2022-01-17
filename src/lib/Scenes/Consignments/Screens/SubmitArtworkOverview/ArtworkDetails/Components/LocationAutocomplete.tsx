@@ -1,23 +1,24 @@
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
-import { getLocationPredictions, SimpleLocation } from "lib/utils/googleMaps"
+import { getLocationDetails, getLocationPredictions, SimpleLocation } from "lib/utils/googleMaps"
 import { Box, Flex, Input, LocationIcon, Separator, Text, Touchable, useSpace } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { FlatList } from "react-native"
 
-// TODO
 interface Props {
-  onChange: any
-  initialLocation: SimpleLocation | null
+  onChange: (loc: SimpleLocation) => void
 }
 
-export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocation }) => {
+export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
   const [predictions, setPredictions] = useState<SimpleLocation[]>([])
-  const [selectedLocation, setSelectedLocation] = useState(initialLocation)
+  const [selectedLocation, setSelectedLocation] = useState<SimpleLocation | null>()
   const [query, setQuery] = useState(selectedLocation?.name || "")
 
   useEffect(() => {
     setPredictions([])
-    onChange(selectedLocation)
+
+    if (selectedLocation) {
+      onChange(selectedLocation)
+    }
   }, [selectedLocation])
 
   useEffect(() => {
@@ -47,7 +48,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocatio
   }
 
   return (
-    <Box>
+    <>
       <Input
         title="Location"
         placeholder="Enter City Where Artwork Is Located"
@@ -55,15 +56,13 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange, initialLocatio
         onFocus={reset}
         value={selectedLocation ? selectedLocation.name : query}
       />
-      <Box height={198}>
-        <LocationPredictions
-          predictions={predictions}
-          query={query}
-          onSelect={setSelectedLocation}
-          onOutsidePress={touchOut}
-        />
-      </Box>
-    </Box>
+      <LocationPredictions
+        predictions={predictions}
+        query={query}
+        onSelect={setSelectedLocation}
+        onOutsidePress={touchOut}
+      />
+    </>
   )
 }
 
@@ -74,7 +73,7 @@ export const LocationPredictions = ({
 }: {
   predictions: SimpleLocation[]
   query?: string
-  onSelect: (l: SimpleLocation) => void
+  onSelect: (loc: SimpleLocation) => void
   onOutsidePress: () => void
 }) => {
   const space = useSpace()
@@ -99,55 +98,61 @@ export const LocationPredictions = ({
     return formatted
   }
 
+  const onLocationSelect = async (item: SimpleLocation) => {
+    const { id, city, state, country } = await getLocationDetails(item)
+    onSelect({
+      id,
+      name: `${city}, ${state}, ${country}`,
+    })
+  }
+
   if (predictions.length === 0) {
     return null
   }
 
   return (
-    <AboveTheFoldFlatList<any>
-      listRef={flatListRef}
-      style={{
-        flex: 1,
-        padding: space(2),
-        borderStyle: "solid",
-        borderColor: "#707070",
-        borderWidth: 1,
-        marginTop: 3,
-      }}
-      data={predictions}
-      showsVerticalScrollIndicator
-      keyboardDismissMode="on-drag"
-      keyboardShouldPersistTaps="handled"
-      ListEmptyComponent={
-        !predictions.length
-          ? () => {
-              return (
-                <>
-                  <Text variant="md" color="black60" textAlign="center">
-                    Please try searching again with a different spelling.
-                  </Text>
-                </>
-              )
-            }
-          : null
-      }
-      renderItem={({ item, index }) => {
-        return (
-          <Flex key={index} mb={1}>
-            <Touchable
-              onPress={() => {
-                onSelect(item)
-              }}
-            >
-              <Flex flexDirection="row" alignItems="center">
-                <LocationIcon mr={1} />
-                <Text variant="xs">{highlightedQuery(item.name)}</Text>
-              </Flex>
-            </Touchable>
-            <Separator mt={1} />
-          </Flex>
-        )
-      }}
-    />
+    <Box height={100}>
+      <AboveTheFoldFlatList<any>
+        listRef={flatListRef}
+        style={{
+          flex: 1,
+          padding: space(2),
+          borderStyle: "solid",
+          borderColor: "#707070",
+          borderWidth: 1,
+          marginTop: 3,
+        }}
+        data={predictions}
+        showsVerticalScrollIndicator
+        keyboardDismissMode="on-drag"
+        keyboardShouldPersistTaps="handled"
+        ListEmptyComponent={
+          !predictions.length
+            ? () => {
+                return (
+                  <>
+                    <Text variant="md" color="black60" textAlign="center">
+                      Please try searching again with a different spelling.
+                    </Text>
+                  </>
+                )
+              }
+            : null
+        }
+        renderItem={({ item, index }) => {
+          return (
+            <Flex key={index} mb={1}>
+              <Touchable onPress={() => onLocationSelect(item)}>
+                <Flex flexDirection="row" alignItems="center">
+                  <LocationIcon mr={1} />
+                  <Text variant="xs">{highlightedQuery(item.name)}</Text>
+                </Flex>
+              </Touchable>
+              <Separator mt={1} />
+            </Flex>
+          )
+        }}
+      />
+    </Box>
   )
 }
