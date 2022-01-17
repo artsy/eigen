@@ -54,6 +54,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
         placeholder="Enter City Where Artwork Is Located"
         onChangeText={setQuery}
         onFocus={reset}
+        testID="Consignment_LocationInput"
         value={selectedLocation ? selectedLocation.name : query}
       />
       <LocationPredictions

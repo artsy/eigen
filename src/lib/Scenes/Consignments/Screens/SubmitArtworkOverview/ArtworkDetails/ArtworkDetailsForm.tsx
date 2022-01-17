@@ -31,7 +31,7 @@ export interface ArtworkDetailsFormModel {
 }
 
 export const ArtworkDetailsForm: React.FC = () => {
-  const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
+  const { values, setFieldValue, handleBlur } = useFormikContext<ArtworkDetailsFormModel>()
 
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
@@ -43,15 +43,26 @@ export const ArtworkDetailsForm: React.FC = () => {
       <Input
         title="Title"
         placeholder="Add Title or Write 'Unknown'"
+        testID="Consignment_TitleInput"
+        onBlur={handleBlur("title")}
         value={values.title}
         onChangeText={(e) => setFieldValue("title", e)}
       />
       <Spacer mt={2} />
-      <Input title="Year" placeholder="YYYY" value={values.year} onChangeText={(e) => setFieldValue("year", e)} />
+      <Input
+        title="Year"
+        placeholder="YYYY"
+        testID="Consignment_YearInput"
+        onBlur={handleBlur("year")}
+        value={values.year}
+        onChangeText={(e) => setFieldValue("year", e)}
+      />
       <Spacer mt={2} />
       <Input
         title="Materials"
         placeholder="Oil on Canvas, Mixed Media, Lithograph.."
+        testID="Consignment_MaterialsInput"
+        onBlur={handleBlur("materials")}
         value={values.materials}
         onChangeText={(e) => setFieldValue("materials", e)}
       />
@@ -79,6 +90,8 @@ export const ArtworkDetailsForm: React.FC = () => {
             <Box width="48%" mr={1}>
               <Input
                 title="Edition Number"
+                testID="Consignment_EditionNumberInput"
+                onBlur={handleBlur("editionNumber")}
                 value={values.editionNumber}
                 onChangeText={(e) => setFieldValue("editionNumber", e)}
               />
@@ -86,6 +99,8 @@ export const ArtworkDetailsForm: React.FC = () => {
             <Box width="48%">
               <Input
                 title="Edition Size"
+                testID="Consignment_EditionSizeInput"
+                onBlur={handleBlur("editionSize")}
                 value={values.editionSize}
                 onChangeText={(e) => setFieldValue("editionSize", e)}
               />
@@ -104,13 +119,31 @@ export const ArtworkDetailsForm: React.FC = () => {
       <Spacer mt={2} />
       <Flex flexDirection="row" justifyContent="space-between">
         <Box width="31%" mr={1}>
-          <Input title="Height" value={values.height} onChangeText={(e) => setFieldValue("height", e)} />
+          <Input
+            title="Height"
+            testID="Consignment_HeightSizeInput"
+            onBlur={handleBlur("height")}
+            value={values.height}
+            onChangeText={(e) => setFieldValue("height", e)}
+          />
         </Box>
         <Box width="31%" mr={1}>
-          <Input title="Width" value={values.width} onChangeText={(e) => setFieldValue("width", e)} />
+          <Input
+            title="Width"
+            testID="Consignment_WidthInput"
+            onBlur={handleBlur("width")}
+            value={values.width}
+            onChangeText={(e) => setFieldValue("width", e)}
+          />
         </Box>
         <Box width="31%">
-          <Input title="Depth" value={values.depth} onChangeText={(e) => setFieldValue("depth", e)} />
+          <Input
+            title="Depth"
+            testID="Consignment_DepthInput"
+            onBlur={handleBlur("depth")}
+            value={values.depth}
+            onChangeText={(e) => setFieldValue("depth", e)}
+          />
         </Box>
       </Flex>
       <Spacer mt={2} />
@@ -122,6 +155,8 @@ export const ArtworkDetailsForm: React.FC = () => {
       </Flex>
       <Input
         placeholder="Describe How You Acquired the Artwork"
+        testID="Consignment_ProvenanceInput"
+        onBlur={handleBlur("provenance")}
         value={values.provenance}
         onChangeText={(e) => setFieldValue("provenance", e)}
         multiline
