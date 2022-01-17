@@ -22,7 +22,7 @@ describe("getNamePlaceholder", () => {
     const pills: SavedSearchPill[] = [
       { label: "Artist Name", paramName: SearchCriteria.artistID, value: "artistName" },
       { label: "One", paramName: SearchCriteria.materialsTerms, value: "one" },
-      { label: "Two", paramName: SearchCriteria.artistID, value: "two" },
+      { label: "Two", paramName: SearchCriteria.materialsTerms, value: "two" },
     ]
     expect(getNamePlaceholder("artistName", pills)).toBe("artistName • 2 filters")
   })
