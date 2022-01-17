@@ -6,8 +6,14 @@ import { extractPillValue } from "./pillExtractors"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 
 export const getNamePlaceholder = (artistName: string, pills: SavedSearchPill[]) => {
-  const filtersCountLabel = pills.length > 1 ? "filters" : "filter"
-  return `${artistName} ${bullet} ${pills.length} ${filtersCountLabel}`
+  const filteredPills = pills.filter((pill) => pill.paramName !== FilterParamName.artistIDs)
+  const filtersCountLabel = filteredPills.length > 1 ? "filters" : "filter"
+
+  if (filteredPills.length === 0) {
+    return artistName
+  }
+
+  return `${artistName} ${bullet} ${filteredPills.length} ${filtersCountLabel}`
 }
 
 export const getSearchCriteriaFromPills = (pills: SavedSearchPill[]) => {
