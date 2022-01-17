@@ -1,7 +1,6 @@
 import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { Action, action, thunk, Thunk } from "easy-peasy"
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
-import { UserPreferences } from "lib/Scenes/Search/UserPreferencesModel"
 import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
 import { getAttributionClassValueByName } from "lib/utils/artworkRarityClassifications"
 import { pick, uniqBy } from "lodash"
@@ -75,7 +74,6 @@ export interface MyCollectionArtworkModel {
   setDirtyFormCheckValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
   resetForm: Action<MyCollectionArtworkModel>
   resetFormButKeepArtist: Action<MyCollectionArtworkModel>
-  resetFormButKeepArtistWithPreferences: Action<MyCollectionArtworkModel, UserPreferences>
   setArtistSearchResult: Action<MyCollectionArtworkModel, AutosuggestResult | null>
   setArtworkId: Action<MyCollectionArtworkModel, { artworkId: string }>
   setArtworkErrorOccurred: Action<MyCollectionArtworkModel, boolean>
@@ -127,13 +125,6 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     const artistValues = pick(state.sessionState.formValues, ["artist", "artistIds", "artistSearchResult"])
 
     state.sessionState.formValues = { ...initialFormValues, ...artistValues }
-    state.sessionState.dirtyFormCheckValues = { ...initialFormValues, ...artistValues }
-  }),
-
-  resetFormButKeepArtistWithPreferences: action((state, userPreferences) => {
-    const artistValues = pick(state.sessionState.formValues, ["artist", "artistIds", "artistSearchResult"])
-
-    state.sessionState.formValues = { ...initialFormValues, ...artistValues, ...userPreferences }
     state.sessionState.dirtyFormCheckValues = { ...initialFormValues, ...artistValues }
   }),
 
