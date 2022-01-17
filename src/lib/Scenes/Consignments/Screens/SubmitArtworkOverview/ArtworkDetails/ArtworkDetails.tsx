@@ -84,11 +84,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) =
           <Spacer mt={2} />
           <ArtworkDetailsForm />
           <Spacer mt={3} />
-          <CTAButton
-            mt={values.rarity === limitedEditionValue ? 0 : 2}
-            disabled={!isValid}
-            onPress={() => handleArtworkDetailsSubmit(values)}
-          >
+          <CTAButton disabled={!isValid} onPress={() => handleArtworkDetailsSubmit(values)}>
             Save & Continue
           </CTAButton>
         </Flex>

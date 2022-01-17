@@ -103,8 +103,7 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
           ? () => {
               return (
                 <>
-                  <Spacer mt={1} />
-                  <Spacer mt={2} />
+                  <Spacer mt={3} />
                   <Text variant="md" textAlign="center">
                     Sorry, we couldn’t find anything for {quoteLeft}
                     {query}.{quoteRight}

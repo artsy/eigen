@@ -106,12 +106,12 @@ export const LocationPredictions = ({
     })
   }
 
-  if (predictions.length === 0) {
+  if (!predictions.length) {
     return null
   }
 
   return (
-    <Box height={100}>
+    <Box height={150}>
       <AboveTheFoldFlatList<any>
         listRef={flatListRef}
         style={{
@@ -128,15 +128,11 @@ export const LocationPredictions = ({
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={
           !predictions.length
-            ? () => {
-                return (
-                  <>
-                    <Text variant="md" color="black60" textAlign="center">
-                      Please try searching again with a different spelling.
-                    </Text>
-                  </>
-                )
-              }
+            ? () => (
+                <Text variant="md" color="black60" textAlign="center">
+                  Please try searching again with a different spelling.
+                </Text>
+              )
             : null
         }
         renderItem={({ item, index }) => {
