@@ -3,7 +3,7 @@ import React, { useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import { ArtworkModuleRail_rail } from "__generated__/ArtworkModuleRail_rail.graphql"
-import { LargeArtworkRail } from "lib/Components/ArtworkRail/LargeArtworkRail"
+import { SmallArtworkRail } from "lib/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { compact } from "lodash"
@@ -83,7 +83,7 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
           }
         />
       </Flex>
-      <LargeArtworkRail
+      <SmallArtworkRail
         listRef={listRef}
         artworks={artworks}
         contextModule={HomeAnalytics.artworkRailContextModule(rail.key)}
@@ -98,7 +98,7 @@ export const ArtworkModuleRailFragmentContainer = createFragmentContainer(Artwor
       title
       key
       results {
-        ...LargeArtworkRail_artworks
+        ...SmallArtworkRail_artworks
       }
       context {
         ... on HomePageRelatedArtistArtworkModule {

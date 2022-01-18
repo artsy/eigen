@@ -10,7 +10,7 @@ export type ArtistNotableWorksRail_artist = {
     readonly filterArtworksConnection: {
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly " $fragmentRefs": FragmentRefs<"LargeArtworkRail_artworks">;
+                readonly " $fragmentRefs": FragmentRefs<"SmallArtworkRail_artworks">;
             } | null;
         } | null> | null;
     } | null;
@@ -84,7 +84,7 @@ const node: ReaderFragment = {
                 {
                   "args": null,
                   "kind": "FragmentSpread",
-                  "name": "LargeArtworkRail_artworks"
+                  "name": "SmallArtworkRail_artworks"
                 }
               ],
               "storageKey": null
@@ -99,5 +99,5 @@ const node: ReaderFragment = {
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = 'cdace17ef19d32c405e7aa73db9c97be';
+(node as any).hash = '043d0056d691b9a4809647339db9e4f7';
 export default node;

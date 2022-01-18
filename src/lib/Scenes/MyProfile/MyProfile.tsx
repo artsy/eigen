@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
-import { LargeArtworkRail } from "lib/Components/ArtworkRail/LargeArtworkRail"
+import { SmallArtworkRail } from "lib/Components/ArtworkRail/SmallArtworkRail"
 import { MenuItem } from "lib/Components/MenuItem"
 import { presentEmailComposer } from "lib/NativeModules/presentEmailComposer"
 import { navigate } from "lib/navigation/navigate"
@@ -58,7 +58,7 @@ export const OldMyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp 
       <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />
       <MenuItem title="Saves and follows" onPress={() => navigate("favorites")} />
       {!!recentlySavedArtworks.length && (
-        <LargeArtworkRail artworks={recentlySavedArtworks} listRef={listRef} contextModule={null as any} />
+        <SmallArtworkRail artworks={recentlySavedArtworks} listRef={listRef} contextModule={null as any} />
       )}
       <Separator mt={3} mb={2} />
       <SectionHeading title="Account Settings" />
@@ -129,7 +129,7 @@ export const OldMyProfileContainer = createRefetchContainer(
             edges {
               node {
                 id
-                ...LargeArtworkRail_artworks
+                ...SmallArtworkRail_artworks
               }
             }
           }

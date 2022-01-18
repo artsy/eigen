@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e3cf22bf80762f44800113f7c186a15f */
+/* @relayHash 00efb3f57dc0a45fd26dae6325044714 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -202,7 +202,7 @@ fragment ArtistNotableWorksRail_artist on Artist {
   filterArtworksConnection(first: 10, input: {sort: "-weighted_iconicity"}) {
     edges {
       node {
-        ...LargeArtworkRail_artworks
+        ...SmallArtworkRail_artworks
         id
       }
     }
@@ -240,7 +240,7 @@ fragment ArtistShow_show on Show {
   ...Metadata_show
 }
 
-fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
+fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
   id
   slug
   internalID
@@ -248,7 +248,7 @@ fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
   artistNames
   date
   image {
-    resized(width: 295) {
+    resized(width: 155) {
       src
       srcSet
       width
@@ -319,13 +319,6 @@ fragment Biography_artist on Artist {
   blurb
 }
 
-fragment LargeArtworkRail_artworks on Artwork {
-  ...ArtworkRailCard_artwork_Q5Onb
-  id
-  href
-  slug
-}
-
 fragment Metadata_show on Show {
   kind
   name
@@ -367,6 +360,13 @@ fragment RelatedArtist_artist on Artist {
 fragment RelatedArtists_artists on Artist {
   id
   ...RelatedArtist_artist
+}
+
+fragment SmallArtworkRail_artworks on Artwork {
+  ...ArtworkRailCard_artwork_hl5k2
+  id
+  href
+  slug
 }
 */
 
@@ -873,7 +873,7 @@ return {
                               {
                                 "kind": "Literal",
                                 "name": "width",
-                                "value": 295
+                                "value": 155
                               }
                             ],
                             "concreteType": "ResizedImageUrl",
@@ -898,7 +898,7 @@ return {
                               (v12/*: any*/),
                               (v13/*: any*/)
                             ],
-                            "storageKey": "resized(width:295)"
+                            "storageKey": "resized(width:155)"
                           },
                           (v14/*: any*/)
                         ],
@@ -1668,7 +1668,7 @@ return {
     ]
   },
   "params": {
-    "id": "e3cf22bf80762f44800113f7c186a15f",
+    "id": "00efb3f57dc0a45fd26dae6325044714",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",

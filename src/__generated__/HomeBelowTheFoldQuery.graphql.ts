@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d6f1ecfab0323515e9726c97eb790577 */
+/* @relayHash 0982478ab1bd979f2132b7c47e3e5863 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -76,7 +76,7 @@ fragment ArtworkModuleRail_rail on HomePageArtworkModule {
   title
   key
   results {
-    ...LargeArtworkRail_artworks
+    ...SmallArtworkRail_artworks
     id
   }
   context {
@@ -116,7 +116,7 @@ fragment ArtworkModuleRail_rail on HomePageArtworkModule {
   }
 }
 
-fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
+fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
   id
   slug
   internalID
@@ -124,7 +124,7 @@ fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
   artistNames
   date
   image {
-    resized(width: 295) {
+    resized(width: 155) {
       src
       srcSet
       width
@@ -318,13 +318,6 @@ fragment Home_showsByFollowedArtists on ShowConnection {
   ...ShowsRail_showsConnection
 }
 
-fragment LargeArtworkRail_artworks on Artwork {
-  ...ArtworkRailCard_artwork_Q5Onb
-  id
-  href
-  slug
-}
-
 fragment RecommendedArtistsRail_me on Me {
   artistRecommendations(first: 6) {
     edges {
@@ -387,6 +380,13 @@ fragment ShowsRail_showsConnection on ShowConnection {
       id
     }
   }
+}
+
+fragment SmallArtworkRail_artworks on Artwork {
+  ...ArtworkRailCard_artwork_hl5k2
+  id
+  href
+  slug
 }
 
 fragment Trove_trove_1IwJ0h on HomePage {
@@ -613,7 +613,7 @@ v20 = [
               {
                 "kind": "Literal",
                 "name": "width",
-                "value": 295
+                "value": 155
               }
             ],
             "concreteType": "ResizedImageUrl",
@@ -638,7 +638,7 @@ v20 = [
               (v9/*: any*/),
               (v10/*: any*/)
             ],
-            "storageKey": "resized(width:295)"
+            "storageKey": "resized(width:155)"
           },
           (v11/*: any*/)
         ],
@@ -1808,7 +1808,7 @@ return {
     ]
   },
   "params": {
-    "id": "d6f1ecfab0323515e9726c97eb790577",
+    "id": "0982478ab1bd979f2132b7c47e3e5863",
     "metadata": {},
     "name": "HomeBelowTheFoldQuery",
     "operationKind": "query",

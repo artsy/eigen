@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 99f051a51dd5453a8e6b56a78832d770 */
+/* @relayHash e130ba26e97882f7f229004df9816fc3 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,7 +26,7 @@ query MyProfileRefetchQuery {
   }
 }
 
-fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
+fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
   id
   slug
   internalID
@@ -34,7 +34,7 @@ fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
   artistNames
   date
   image {
-    resized(width: 295) {
+    resized(width: 155) {
       src
       srcSet
       width
@@ -65,13 +65,6 @@ fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
   title
 }
 
-fragment LargeArtworkRail_artworks on Artwork {
-  ...ArtworkRailCard_artwork_Q5Onb
-  id
-  href
-  slug
-}
-
 fragment MyProfile_me on Me {
   name
   createdAt
@@ -80,11 +73,18 @@ fragment MyProfile_me on Me {
       edges {
         node {
           id
-          ...LargeArtworkRail_artworks
+          ...SmallArtworkRail_artworks
         }
       }
     }
   }
+}
+
+fragment SmallArtworkRail_artworks on Artwork {
+  ...ArtworkRailCard_artwork_hl5k2
+  id
+  href
+  slug
 }
 */
 
@@ -245,7 +245,7 @@ return {
                                   {
                                     "kind": "Literal",
                                     "name": "width",
-                                    "value": 295
+                                    "value": 155
                                   }
                                 ],
                                 "concreteType": "ResizedImageUrl",
@@ -282,7 +282,7 @@ return {
                                     "storageKey": null
                                   }
                                 ],
-                                "storageKey": "resized(width:295)"
+                                "storageKey": "resized(width:155)"
                               },
                               {
                                 "alias": null,
@@ -421,7 +421,7 @@ return {
     ]
   },
   "params": {
-    "id": "99f051a51dd5453a8e6b56a78832d770",
+    "id": "e130ba26e97882f7f229004df9816fc3",
     "metadata": {},
     "name": "MyProfileRefetchQuery",
     "operationKind": "query",

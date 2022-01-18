@@ -1,6 +1,6 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtistNotableWorksRail_artist } from "__generated__/ArtistNotableWorksRail_artist.graphql"
-import { LargeArtworkRail } from "lib/Components/ArtworkRail/LargeArtworkRail"
+import { SmallArtworkRail } from "lib/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
@@ -29,7 +29,7 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist 
         <SectionTitle title="Notable Works" />
       </Box>
       <ArtistNotableWorksRailWrapper>
-        <LargeArtworkRail
+        <SmallArtworkRail
           artworks={artworks}
           onPress={(position, id, slug) => {
             if (!slug || !id) {
@@ -59,7 +59,7 @@ export const ArtistNotableWorksRailFragmentContainer = createFragmentContainer(A
       filterArtworksConnection(first: 10, input: { sort: "-weighted_iconicity" }) {
         edges {
           node {
-            ...LargeArtworkRail_artworks
+            ...SmallArtworkRail_artworks
           }
         }
       }

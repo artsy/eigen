@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash beb7a958a97e2c0593009877dc2b2ae5 */
+/* @relayHash 79c1a58e2ebb8f9b17e3fad94671cb42 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -166,7 +166,7 @@ fragment ArtistNotableWorksRail_artist on Artist {
   filterArtworksConnection(first: 10, input: {sort: "-weighted_iconicity"}) {
     edges {
       node {
-        ...LargeArtworkRail_artworks
+        ...SmallArtworkRail_artworks
         id
       }
     }
@@ -204,7 +204,7 @@ fragment ArtistShow_show on Show {
   ...Metadata_show
 }
 
-fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
+fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
   id
   slug
   internalID
@@ -212,7 +212,7 @@ fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
   artistNames
   date
   image {
-    resized(width: 295) {
+    resized(width: 155) {
       src
       srcSet
       width
@@ -246,13 +246,6 @@ fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
 fragment Biography_artist on Artist {
   bio
   blurb
-}
-
-fragment LargeArtworkRail_artworks on Artwork {
-  ...ArtworkRailCard_artwork_Q5Onb
-  id
-  href
-  slug
 }
 
 fragment Metadata_show on Show {
@@ -296,6 +289,13 @@ fragment RelatedArtist_artist on Artist {
 fragment RelatedArtists_artists on Artist {
   id
   ...RelatedArtist_artist
+}
+
+fragment SmallArtworkRail_artworks on Artwork {
+  ...ArtworkRailCard_artwork_hl5k2
+  id
+  href
+  slug
 }
 */
 
@@ -833,7 +833,7 @@ return {
                               {
                                 "kind": "Literal",
                                 "name": "width",
-                                "value": 295
+                                "value": 155
                               }
                             ],
                             "concreteType": "ResizedImageUrl",
@@ -870,7 +870,7 @@ return {
                                 "storageKey": null
                               }
                             ],
-                            "storageKey": "resized(width:295)"
+                            "storageKey": "resized(width:155)"
                           },
                           {
                             "alias": null,
@@ -1392,7 +1392,7 @@ return {
     ]
   },
   "params": {
-    "id": "beb7a958a97e2c0593009877dc2b2ae5",
+    "id": "79c1a58e2ebb8f9b17e3fad94671cb42",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": (v17/*: any*/),

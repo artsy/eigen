@@ -12,7 +12,7 @@ export type MyProfile_me = {
             readonly edges: ReadonlyArray<{
                 readonly node: {
                     readonly id: string;
-                    readonly " $fragmentRefs": FragmentRefs<"LargeArtworkRail_artworks">;
+                    readonly " $fragmentRefs": FragmentRefs<"SmallArtworkRail_artworks">;
                 } | null;
             } | null> | null;
         } | null;
@@ -100,7 +100,7 @@ const node: ReaderFragment = {
                     {
                       "args": null,
                       "kind": "FragmentSpread",
-                      "name": "LargeArtworkRail_artworks"
+                      "name": "SmallArtworkRail_artworks"
                     }
                   ],
                   "storageKey": null
@@ -118,5 +118,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '3577e5f2bbc61fd38aa6f0f40e4e84f4';
+(node as any).hash = '8b5ddc2696df4c5995fdb2b2ec42f407';
 export default node;

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ab543ecc2c642192f6c3529ac8179034 */
+/* @relayHash ff12794c344f9bbdbe0fb7de259ed6b8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -83,7 +83,7 @@ fragment ArtistNotableWorksRail_artist on Artist {
   filterArtworksConnection(first: 10, input: {sort: "-weighted_iconicity"}) {
     edges {
       node {
-        ...LargeArtworkRail_artworks
+        ...SmallArtworkRail_artworks
         id
       }
     }
@@ -91,7 +91,7 @@ fragment ArtistNotableWorksRail_artist on Artist {
   }
 }
 
-fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
+fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
   id
   slug
   internalID
@@ -99,7 +99,7 @@ fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
   artistNames
   date
   image {
-    resized(width: 295) {
+    resized(width: 155) {
       src
       srcSet
       width
@@ -130,8 +130,8 @@ fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
   title
 }
 
-fragment LargeArtworkRail_artworks on Artwork {
-  ...ArtworkRailCard_artwork_Q5Onb
+fragment SmallArtworkRail_artworks on Artwork {
+  ...ArtworkRailCard_artwork_hl5k2
   id
   href
   slug
@@ -285,7 +285,7 @@ return {
                               {
                                 "kind": "Literal",
                                 "name": "width",
-                                "value": 295
+                                "value": 155
                               }
                             ],
                             "concreteType": "ResizedImageUrl",
@@ -322,7 +322,7 @@ return {
                                 "storageKey": null
                               }
                             ],
-                            "storageKey": "resized(width:295)"
+                            "storageKey": "resized(width:155)"
                           },
                           {
                             "alias": null,
@@ -465,7 +465,7 @@ return {
     ]
   },
   "params": {
-    "id": "ab543ecc2c642192f6c3529ac8179034",
+    "id": "ff12794c344f9bbdbe0fb7de259ed6b8",
     "metadata": {},
     "name": "ArtistNotableWorksRailTestsQuery",
     "operationKind": "query",
