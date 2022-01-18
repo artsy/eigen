@@ -64,7 +64,7 @@ describe("ShareSheet", () => {
     expect(Clipboard.setString).toBeCalledWith("https://staging.artsy.net/href")
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "share",
-      context_module: "sharingEntryContextModule",
+      context_module: "contextModule",
       context_owner_type: "ownerType",
       context_owner_id: "internalID",
       context_owner_slug: "slug",
@@ -80,13 +80,13 @@ describe("ShareSheet", () => {
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action_name: "share",
       action_type: "tap",
-      context_module: "parentContextModule",
+      context_module: "shareSheet",
     })
 
     await waitFor(() =>
       expect(mockTrackEvent).toHaveBeenCalledWith({
         action: "share",
-        context_module: "sharingEntryContextModule",
+        context_module: "contextModule",
         context_owner_id: "internalID",
         context_owner_slug: "slug",
         context_owner_type: "ownerType",
@@ -141,7 +141,7 @@ describe("ShareSheet", () => {
       await waitFor(() =>
         expect(mockTrackEvent).toBeCalledWith({
           action: "share",
-          context_module: "sharingEntryContextModule",
+          context_module: "contextModule",
           context_owner_type: "ownerType",
           context_owner_id: "internalID",
           context_owner_slug: "slug",
@@ -183,7 +183,7 @@ describe("ShareSheet", () => {
       await waitFor(() =>
         expect(mockTrackEvent).toBeCalledWith({
           action: "share",
-          context_module: "sharingEntryContextModule",
+          context_module: "contextModule",
           context_owner_type: "ownerType",
           context_owner_id: "internalID",
           context_owner_slug: "slug",
@@ -202,8 +202,8 @@ const defaultProps: ShareSheetProps = {
     href: "/href",
     artistNames: ["Artist One"],
   },
-  parentContextModule: "parentContextModule" as ContextModule,
-  sharingEntryContextModule: "sharingEntryContextModule" as ContextModule,
+  componentContextModule: "shareSheet" as ContextModule,
+  contextModule: "contextModule" as ContextModule,
   ownerType: "ownerType" as OwnerType,
   setVisible: setVisibleMock,
 }

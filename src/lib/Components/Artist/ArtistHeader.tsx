@@ -174,8 +174,7 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
           imageURL: artist.image?.url ?? undefined,
         }}
         ownerType={OwnerType.artist}
-        parentContextModule={ContextModule.artistHeader}
-        sharingEntryContextModule={"ArtistProfile" as ContextModule} // TODO: Replace on ContextModule from artsy/cohesion
+        contextModule={ContextModule.artistHeader}
         visible={shareSheetVisible}
         setVisible={setShareSheetVisible}
       />
