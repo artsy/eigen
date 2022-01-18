@@ -2,7 +2,7 @@ import { Action, action } from "easy-peasy"
 import { getCurrencies } from "react-native-localize"
 import { Metric } from "../MyCollection/Screens/ArtworkForm/Components/Dimensions"
 
-// set currency depends on location
+// set default currency depending on device locale
 export type Currency = "USD" | "EUR" | "GBP"
 const currencyRgx = /USD|EUR|GBP/
 const localCurrency = getCurrencies()?.[0]
