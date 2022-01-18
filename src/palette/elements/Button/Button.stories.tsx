@@ -1,6 +1,6 @@
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
-import { Wrap } from "lib/utils/Wrap"
+// import { Wrap } from "lib/utils/Wrap"
 import { BellIcon, Box, Flex, LinkIcon, Spacer } from "palette"
 import React, { useState } from "react"
 import { Button as RNButton } from "react-native"
@@ -10,15 +10,15 @@ import { Button, ButtonProps, CTAButton, FollowButton } from "."
 import { _test_DisplayState } from "./Button"
 
 const sizes: Array<ButtonProps["size"]> = ["small", "large"]
-const variants: Array<ButtonProps["variant"]> = [
-  "fillDark",
-  "fillLight",
-  "fillGray",
-  "outline",
-  "outlineGray",
-  "outlineLight",
-  "text",
-]
+// const variants: Array<ButtonProps["variant"]> = [
+//   "fillDark",
+//   "fillLight",
+//   "fillGray",
+//   "outline",
+//   "outlineGray",
+//   "outlineLight",
+//   "text",
+// ]
 const states: Array<_test_DisplayState | undefined> = [
   undefined,
   _test_DisplayState.Enabled,
@@ -54,55 +54,54 @@ storiesOf("Button", module)
   .add("Call To Action Button (CTA Button)", () => (
     <CTAButton onPress={() => console.log("pressed")}>cta button</CTAButton>
   ))
-  .add("Variants", () => (
-    // causes errors
-    <DList
-      data={variants}
-      renderItem={({ item: variant }) => (
-        <Wrap
-          if={variant === "outlineLight"}
-          with={(c) => (
-            <Flex backgroundColor="black100" p={10}>
-              {c}
-            </Flex>
-          )}
-        >
-          <Button variant={variant} onPress={() => action(`tapped ${variant}`)}>
-            {variant}
-          </Button>
-        </Wrap>
-      )}
-    />
-  ))
-  .add("Variants (loading)", () => (
-    <DList
-      data={variants}
-      renderItem={({ item: variant }) => (
-        <Button variant={variant} loading onPress={() => action(`tapped ${variant}`)}>
-          {variant}
-        </Button>
-      )}
-    />
-  ))
-  .add("Variants (disabled)", () => (
-    <DList
-      data={variants}
-      renderItem={({ item: variant }) => (
-        <Wrap
-          if={variant === "outlineLight"}
-          with={(c) => (
-            <Flex backgroundColor="black100" p={10}>
-              {c}
-            </Flex>
-          )}
-        >
-          <Button variant={variant} disabled onPress={() => action(`tapped ${variant}`)}>
-            {variant}
-          </Button>
-        </Wrap>
-      )}
-    />
-  ))
+  // .add("Variants", () => ( // causes errors
+  //   <DList
+  //     data={variants}
+  //     renderItem={({ item: variant }) => (
+  //       <Wrap
+  //         if={variant === "outlineLight"}
+  //         with={(c) => (
+  //           <Flex backgroundColor="black100" p={10}>
+  //             {c}
+  //           </Flex>
+  //         )}
+  //       >
+  //         <Button variant={variant} onPress={() => action(`tapped ${variant}`)}>
+  //           {variant}
+  //         </Button>
+  //       </Wrap>
+  //     )}
+  //   />
+  // ))
+  // .add("Variants (loading)", () => (
+  //   <DList
+  //     data={variants}
+  //     renderItem={({ item: variant }) => (
+  //       <Button variant={variant} loading onPress={() => action(`tapped ${variant}`)}>
+  //         {variant}
+  //       </Button>
+  //     )}
+  //   />
+  // ))
+  // .add("Variants (disabled)", () => (
+  //   <DList
+  //     data={variants}
+  //     renderItem={({ item: variant }) => (
+  //       <Wrap
+  //         if={variant === "outlineLight"}
+  //         with={(c) => (
+  //           <Flex backgroundColor="black100" p={10}>
+  //             {c}
+  //           </Flex>
+  //         )}
+  //       >
+  //         <Button variant={variant} disabled onPress={() => action(`tapped ${variant}`)}>
+  //           {variant}
+  //         </Button>
+  //       </Wrap>
+  //     )}
+  //   />
+  // ))
   .add("Miscellaneous", () => (
     <List>
       <Button loading disabled>
