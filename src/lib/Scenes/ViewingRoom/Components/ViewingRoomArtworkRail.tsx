@@ -1,7 +1,8 @@
 import { ViewingRoomArtworkRail_viewingRoom } from "__generated__/ViewingRoomArtworkRail_viewingRoom.graphql"
-import { ArtworkTileRail } from "lib/Components/ArtworkTileRail"
+import { SmallArtworkRail } from "lib/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
+import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
 import { Box } from "palette"
 import React from "react"
@@ -15,9 +16,11 @@ interface ViewingRoomArtworkRailProps {
 
 export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = (props) => {
   const viewingRoom = props.viewingRoom
-  const totalCount = viewingRoom.artworks! /* STRICTNESS_MIGRATION */.totalCount! /* STRICTNESS_MIGRATION */
+  const totalCount = viewingRoom.artworks?.totalCount
   const tracking = useTracking()
   const pluralizedArtworksCount = totalCount === 1 ? "artwork" : "artworks"
+
+  const artworks = extractNodes(props.viewingRoom?.artworks)
 
   return (
     <View>
@@ -30,10 +33,9 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = (pr
           }}
         />
       </Box>
-      <ArtworkTileRail
-        artworksConnection={props!.viewingRoom!.artworks!}
-        shouldTrack={false}
-        onTilePress={(slug, id) => {
+      <SmallArtworkRail
+        artworks={artworks}
+        onPress={(_position, id, slug, _href) => {
           tracking.trackEvent(tracks.tappedArtworkThumbnail(viewingRoom.internalID, viewingRoom.slug, id, slug))
           navigate(`/viewing-room/${viewingRoom.slug}/${slug}`)
         }}
@@ -80,7 +82,11 @@ export const ViewingRoomArtworkRailContainer = createFragmentContainer(ViewingRo
       internalID
       artworks: artworksConnection(first: 10) {
         totalCount
-        ...ArtworkTileRail_artworksConnection
+        edges {
+          node {
+            ...SmallArtworkRail_artworks
+          }
+        }
       }
     }
   `,

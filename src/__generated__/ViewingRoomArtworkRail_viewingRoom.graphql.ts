@@ -9,7 +9,11 @@ export type ViewingRoomArtworkRail_viewingRoom = {
     readonly internalID: string;
     readonly artworks: {
         readonly totalCount: number | null;
-        readonly " $fragmentRefs": FragmentRefs<"ArtworkTileRail_artworksConnection">;
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly " $fragmentRefs": FragmentRefs<"SmallArtworkRail_artworks">;
+            } | null;
+        } | null> | null;
     } | null;
     readonly " $refType": "ViewingRoomArtworkRail_viewingRoom";
 };
@@ -63,9 +67,31 @@ const node: ReaderFragment = {
           "storageKey": null
         },
         {
+          "alias": null,
           "args": null,
-          "kind": "FragmentSpread",
-          "name": "ArtworkTileRail_artworksConnection"
+          "concreteType": "ArtworkEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "Artwork",
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                {
+                  "args": null,
+                  "kind": "FragmentSpread",
+                  "name": "SmallArtworkRail_artworks"
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
         }
       ],
       "storageKey": "artworksConnection(first:10)"
@@ -74,5 +100,5 @@ const node: ReaderFragment = {
   "type": "ViewingRoom",
   "abstractKey": null
 };
-(node as any).hash = 'b4964f00e2bc88be12888d7ed2bc8e08';
+(node as any).hash = 'a859f1f27fa2169d1381258c774aee56';
 export default node;

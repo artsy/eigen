@@ -1,8 +1,7 @@
 import { ViewingRoomArtworkRailTestsQuery } from "__generated__/ViewingRoomArtworkRailTestsQuery.graphql"
-import { ArtworkTileRail } from "lib/Components/ArtworkTileRail"
+import { ArtworkRailCard } from "lib/Components/ArtworkRail/ArtworkRailCard"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
-import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { postEventToProviders } from "lib/utils/track/providers"
@@ -98,8 +97,6 @@ describe("ViewingRoomArtworkRail", () => {
       })
       return result
     })
-    expect(tree.root.findAllByType(ArtworkTileRail)).toHaveLength(1)
-    expect(extractText(tree.root)).toMatch(/Nicolas Party\$20,000/)
-    expect(extractText(tree.root)).toMatch(/Nicolas Party\$25,000/)
+    expect(tree.root.findAllByType(ArtworkRailCard)).toHaveLength(2)
   })
 })
