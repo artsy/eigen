@@ -10,7 +10,7 @@ import { saleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
 const TEXT_CONTAINER_HEIGHT = 90
-const MAX_HEIGHT = {
+export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
   small: 230,
   large: 320,
 }
@@ -89,13 +89,20 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ image, size
   const { width, height, src } = image?.resized || {}
 
   if (!src) {
-    return <Flex bg={color("black30")} width={width} height={MAX_HEIGHT[size]} style={{ borderRadius: 2 }} />
+    return (
+      <Flex
+        bg={color("black30")}
+        width={width}
+        height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size]}
+        style={{ borderRadius: 2 }}
+      />
+    )
   }
 
   return (
     <Flex>
       <OpaqueImageView
-        style={{ maxHeight: MAX_HEIGHT[size] }}
+        style={{ maxHeight: ARTWORK_RAIL_CARD_IMAGE_HEIGHT[size] }}
         resizeMode="contain"
         imageURL={src}
         height={height || 0}

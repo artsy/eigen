@@ -8,6 +8,7 @@ import { Home_showsByFollowedArtists } from "__generated__/Home_showsByFollowedA
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
+import { SmallArtworkRailPlaceholder } from "lib/Components/ArtworkRail/SmallArtworkRail"
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "lib/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { LotsByFollowedArtistsRailContainer } from "lib/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
@@ -519,19 +520,6 @@ const BelowTheFoldPlaceholder: React.FC = () => {
 const HomePlaceholder: React.FC<{}> = () => {
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
 
-  const IMAGE_PLACEHOLDER_SIZES = {
-    small: {
-      width: 155,
-      height: 230,
-    },
-    large: {
-      width: 295,
-      height: 320,
-    },
-  }
-  const smallImagePlaceholderWidth = IMAGE_PLACEHOLDER_SIZES.small.width
-  const smallImagePlaceholderHeight = IMAGE_PLACEHOLDER_SIZES.small.height
-
   return (
     <Flex>
       <Box mb={1} mt={2}>
@@ -547,17 +535,7 @@ const HomePlaceholder: React.FC<{}> = () => {
           <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
           <Spacer mb={0.3} />
           <Flex flexDirection="row" mt={1}>
-            <Join separator={<Spacer width={15} />}>
-              {times(3 + useMemoizedRandom() * 10).map((index) => (
-                <Flex key={index}>
-                  <PlaceholderBox height={smallImagePlaceholderHeight} width={smallImagePlaceholderWidth} />
-                  <Spacer mb={2} />
-                  <PlaceholderText width={smallImagePlaceholderWidth} />
-                  <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
-                  <ModuleSeparator />
-                </Flex>
-              ))}
-            </Join>
+            <SmallArtworkRailPlaceholder />
           </Flex>
         </Box>
       }
