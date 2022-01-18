@@ -1,8 +1,13 @@
 import { Action, action } from "easy-peasy"
+import { getCurrencies } from "react-native-localize"
 import { Metric } from "../MyCollection/Screens/ArtworkForm/Components/Dimensions"
 
-// TODO: set currency depends on location
-const DEFAULT_CURRENCY = "USD"
+// set currency depends on location
+export type Currency = "USD" | "EUR" | "GBP"
+const currencyRgx = /USD|EUR|GBP/
+const localCurrency = getCurrencies()?.[0]
+
+const DEFAULT_CURRENCY = currencyRgx.test(localCurrency) ? (localCurrency as Currency) : "USD"
 const DEFAULT_METRIC = ""
 
 // please update this when adding new user preferences
@@ -10,8 +15,6 @@ export interface UserPreferences {
   pricePaidCurrency: Currency
   metric: Metric
 }
-
-export type Currency = "USD" | "EUR" | "GBP"
 
 export interface UserPreferencesModel {
   currency: Currency
