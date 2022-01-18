@@ -69,7 +69,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
           <Input
             ref={emailInputRef}
             autoCapitalize="none"
-            autoCompleteType="email"
+            autoComplete="email"
             // There is no need to autofocus here if we are getting
             // the email already from the navigation params
             autoFocus={!route.params?.email}
@@ -98,7 +98,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
           <Spacer mt={2} />
           <Input
             autoCapitalize="none"
-            autoCompleteType="password"
+            autoComplete="password"
             autoCorrect={false}
             // If we have the email already prefilled from the navigation params
             // we want the autoFocus to be on the password

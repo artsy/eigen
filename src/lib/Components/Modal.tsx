@@ -1,5 +1,4 @@
-import { TextAlignProperty } from "csstype"
-import { Button, ClassTheme, Sans } from "palette"
+import { Button, ClassTheme, Sans, SansProps } from "palette"
 import React from "react"
 import { Modal as RNModal, TouchableWithoutFeedback, View, ViewProps } from "react-native"
 import styled from "styled-components/native"
@@ -8,7 +7,7 @@ interface ModalProps extends ViewProps {
   headerText: string
   detailText: string
   visible?: boolean
-  textAlign?: TextAlignProperty
+  textAlign?: SansProps["textAlign"]
   closeModal?: () => void
 }
 

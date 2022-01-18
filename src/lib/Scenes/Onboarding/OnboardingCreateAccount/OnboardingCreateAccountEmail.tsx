@@ -28,7 +28,7 @@ export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmail
     >
       <Input
         autoCapitalize="none"
-        autoCompleteType="email"
+        autoComplete="email"
         enableClearButton
         autoFocus
         keyboardType="email-address"

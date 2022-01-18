@@ -494,7 +494,6 @@ jest.mock("react-native-gesture-handler", () => {
     Slider: View,
     Switch: View,
     TextInput: View,
-    ToolbarAndroid: View,
     ViewPagerAndroid: View,
     DrawerLayoutAndroid: View,
     WebView: View,

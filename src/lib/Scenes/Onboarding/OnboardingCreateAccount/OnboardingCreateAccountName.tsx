@@ -28,7 +28,7 @@ export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNamePr
     >
       <Input
         autoCapitalize="words"
-        autoCompleteType="name"
+        autoComplete="name"
         autoCorrect={false}
         autoFocus
         onChangeText={(text) => {

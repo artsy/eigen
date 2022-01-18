@@ -50,7 +50,7 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
             <Input
               ref={inputRef}
               autoCapitalize="none"
-              autoCompleteType="email"
+              autoComplete="email"
               enableClearButton
               keyboardType="email-address"
               onChangeText={(text) => {

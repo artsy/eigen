@@ -91,7 +91,7 @@ export const MyAccountEditPassword: React.FC<{}> = ({}) => {
     >
       <Flex mx="2">
         <Input
-          autoCompleteType="password"
+          autoComplete="password"
           autoFocus
           onChangeText={setCurrentPassword}
           placeholder="Current password"
