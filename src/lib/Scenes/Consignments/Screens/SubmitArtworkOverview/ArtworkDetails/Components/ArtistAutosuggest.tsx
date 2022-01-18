@@ -39,13 +39,11 @@ export const ArtistAutosuggest: React.FC = () => {
         autoFocus={typeof jest === "undefined"}
       />
 
-      {!isArtistSelected && artist.length > 2 ? (
-        <>
-          <Box height={198}>
-            <ArtistAutosuggestResults query={artist} onResultPress={onArtistSelect} />
-          </Box>
-        </>
-      ) : null}
+      {!isArtistSelected && artist?.length > 2 && (
+        <Box height={198}>
+          <ArtistAutosuggestResults query={artist} onResultPress={onArtistSelect} />
+        </Box>
+      )}
     </SearchContext.Provider>
   )
 }

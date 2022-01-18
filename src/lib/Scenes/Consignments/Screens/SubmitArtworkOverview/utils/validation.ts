@@ -1,4 +1,4 @@
-import * as yup from "yup"
+import * as Yup from "yup"
 
 export const artworkDetailsInitialValues = {
   artist: "",
@@ -21,23 +21,23 @@ export const artworkDetailsInitialValues = {
   utmTerm: "",
 }
 
-export const artworkDetailsValidationSchema = yup.object().shape({
-  artist: yup.string().required().trim(),
-  artistId: yup.string().required(),
-  title: yup.string().required().trim(),
-  year: yup.string().required().trim(),
-  materials: yup.string().required().trim(),
-  rarity: yup.string().required(),
-  editioneditionNumberSize: yup.string(),
-  editionSize: yup.string(),
-  units: yup.string().required(),
-  height: yup.string().required().trim(),
-  width: yup.string().required().trim(),
-  depth: yup.string().required().trim(),
-  provenance: yup.string().required().trim(),
-  location: yup.string().required(),
-  state: yup.string(),
-  utmMedium: yup.string(),
-  utmSource: yup.string(),
-  utmTerm: yup.string(),
+export const artworkDetailsValidationSchema = Yup.object().shape({
+  artist: Yup.string().required().trim(),
+  artistId: Yup.string().required(),
+  title: Yup.string().required().trim(),
+  year: Yup.string().required().trim(),
+  materials: Yup.string().required().trim(),
+  rarity: Yup.string().required(),
+  editioneditionNumberSize: Yup.string(),
+  editionSize: Yup.string(),
+  units: Yup.string().required(),
+  height: Yup.string().required().trim(),
+  width: Yup.string().required().trim(),
+  depth: Yup.string().required().trim(),
+  provenance: Yup.string().required().trim(),
+  location: Yup.string().required(),
+  state: Yup.string(),
+  utmMedium: Yup.string(),
+  utmSource: Yup.string(),
+  utmTerm: Yup.string(),
 })

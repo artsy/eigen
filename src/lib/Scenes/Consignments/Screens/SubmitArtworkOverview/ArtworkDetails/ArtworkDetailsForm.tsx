@@ -31,8 +31,7 @@ export interface ArtworkDetailsFormModel {
 }
 
 export const ArtworkDetailsForm: React.FC = () => {
-  const { values, setFieldValue, handleBlur } = useFormikContext<ArtworkDetailsFormModel>()
-
+  const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
 
@@ -44,7 +43,6 @@ export const ArtworkDetailsForm: React.FC = () => {
         title="Title"
         placeholder="Add Title or Write 'Unknown'"
         testID="Consignment_TitleInput"
-        onBlur={handleBlur("title")}
         value={values.title}
         onChangeText={(e) => setFieldValue("title", e)}
       />
@@ -53,7 +51,6 @@ export const ArtworkDetailsForm: React.FC = () => {
         title="Year"
         placeholder="YYYY"
         testID="Consignment_YearInput"
-        onBlur={handleBlur("year")}
         value={values.year}
         onChangeText={(e) => setFieldValue("year", e)}
       />
@@ -62,7 +59,6 @@ export const ArtworkDetailsForm: React.FC = () => {
         title="Materials"
         placeholder="Oil on Canvas, Mixed Media, Lithograph.."
         testID="Consignment_MaterialsInput"
-        onBlur={handleBlur("materials")}
         value={values.materials}
         onChangeText={(e) => setFieldValue("materials", e)}
       />
@@ -91,7 +87,6 @@ export const ArtworkDetailsForm: React.FC = () => {
               <Input
                 title="Edition Number"
                 testID="Consignment_EditionNumberInput"
-                onBlur={handleBlur("editionNumber")}
                 value={values.editionNumber}
                 onChangeText={(e) => setFieldValue("editionNumber", e)}
               />
@@ -100,7 +95,6 @@ export const ArtworkDetailsForm: React.FC = () => {
               <Input
                 title="Edition Size"
                 testID="Consignment_EditionSizeInput"
-                onBlur={handleBlur("editionSize")}
                 value={values.editionSize}
                 onChangeText={(e) => setFieldValue("editionSize", e)}
               />
@@ -122,7 +116,6 @@ export const ArtworkDetailsForm: React.FC = () => {
           <Input
             title="Height"
             testID="Consignment_HeightInput"
-            onBlur={handleBlur("height")}
             value={values.height}
             onChangeText={(e) => setFieldValue("height", e)}
           />
@@ -131,7 +124,6 @@ export const ArtworkDetailsForm: React.FC = () => {
           <Input
             title="Width"
             testID="Consignment_WidthInput"
-            onBlur={handleBlur("width")}
             value={values.width}
             onChangeText={(e) => setFieldValue("width", e)}
           />
@@ -140,7 +132,6 @@ export const ArtworkDetailsForm: React.FC = () => {
           <Input
             title="Depth"
             testID="Consignment_DepthInput"
-            onBlur={handleBlur("depth")}
             value={values.depth}
             onChangeText={(e) => setFieldValue("depth", e)}
           />
@@ -156,7 +147,6 @@ export const ArtworkDetailsForm: React.FC = () => {
       <Input
         placeholder="Describe How You Acquired the Artwork"
         testID="Consignment_ProvenanceInput"
-        onBlur={handleBlur("provenance")}
         value={values.provenance}
         onChangeText={(e) => setFieldValue("provenance", e)}
         multiline
