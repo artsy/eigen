@@ -1,5 +1,5 @@
 import { addCollectedArtwork, OwnerType } from "@artsy/cohesion"
-import AsyncStorage from "@react-native-community/async-storage"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionArtworkListItem_artwork } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"

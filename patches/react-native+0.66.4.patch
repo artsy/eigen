@@ -18,6 +18,32 @@ index 185ddcb..113671f 100644
    const parsedStack = Array.isArray(errorStack)
      ? errorStack
      : global.HermesInternal
+diff --git a/node_modules/react-native/Libraries/LayoutAnimation/LayoutAnimation.js b/node_modules/react-native/Libraries/LayoutAnimation/LayoutAnimation.js
+index efb12af..09b5978 100644
+--- a/node_modules/react-native/Libraries/LayoutAnimation/LayoutAnimation.js
++++ b/node_modules/react-native/Libraries/LayoutAnimation/LayoutAnimation.js
+@@ -64,9 +64,9 @@ function configureNext(
+ 
+   // In Fabric, LayoutAnimations are unconditionally enabled for Android, and
+   // conditionally enabled on iOS (pending fully shipping; this is a temporary state).
+-  const FabricUIManager: FabricUIManagerSpec = global?.nativeFabricUIManager;
+-  if (FabricUIManager?.configureNextLayoutAnimation) {
+-    global?.nativeFabricUIManager?.configureNextLayoutAnimation(
++  const FabricUIManager: FabricUIManagerSpec = global && global.nativeFabricUIManager;
++  if (FabricUIManager && FabricUIManager.configureNextLayoutAnimation) {
++    global.nativeFabricUIManager.configureNextLayoutAnimation(
+       config,
+       onAnimationComplete,
+       onAnimationDidFail ??
+@@ -78,7 +78,7 @@ function configureNext(
+   // This will only run if Fabric is *not* installed.
+   // If you have Fabric + non-Fabric running in the same VM, non-Fabric LayoutAnimations
+   // will not work.
+-  if (UIManager?.configureNextLayoutAnimation) {
++  if (UIManager && UIManager.configureNextLayoutAnimation) {
+     UIManager.configureNextLayoutAnimation(
+       config,
+       onAnimationComplete ?? function() {},
 diff --git a/node_modules/react-native/React/Base/RCTTouchHandler.m b/node_modules/react-native/React/Base/RCTTouchHandler.m
 index b4dab8e..8f606b5 100644
 --- a/node_modules/react-native/React/Base/RCTTouchHandler.m

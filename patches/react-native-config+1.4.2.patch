@@ -1,3 +1,49 @@
+diff --git a/node_modules/react-native-config/android/dotenv.gradle b/node_modules/react-native-config/android/dotenv.gradle
+index d7373f8..9032316 100644
+--- a/node_modules/react-native-config/android/dotenv.gradle
++++ b/node_modules/react-native-config/android/dotenv.gradle
+@@ -142,41 +142,3 @@ android {
+ 
+     }
+ }
+-
+-tasks.whenTaskAdded { task ->
+-    if (project.hasProperty("envConfigFiles")) {
+-        project.envConfigFiles.each { envConfigName, envConfigFile ->
+-            if (task.name.toLowerCase() == "generate"+envConfigName+"buildconfig") {
+-                task.doFirst() {
+-                    android.applicationVariants.all { variant ->
+-                        def variantConfigString = variant.getName()
+-                        if (envConfigName.contains(variantConfigString.toLowerCase())) {
+-                            loadDotEnv(envConfigName)
+-
+-                            def encodedKeys = [] //needed to keep track of keys encoded
+-                            String xorKey = generateKey(keyLength)
+-                            project.env.each { k, v ->
+-                                def escaped = v.replaceAll("%","\\\\u0025")
+-                                def encodedValue = encodeString(v, xorKey)
+-                                def encodedEscaped = encodeString(escaped, xorKey)
+-
+-
+-                                variant.buildConfigField "String", k, "\"$encodedValue\""
+-                                variant.buildConfigField "String", "XOR_KEY", "\"$xorKey\""
+-
+-                                variant.resValue "string", k, "\"$encodedEscaped\""
+-                                variant.resValue "string", "XOR_KEY", "\"$xorKey\""
+-
+-                                encodedKeys << k
+-                            }
+-                            //Add the encodedkeys to buildconfig. Needed to know which var to decode
+-                            def escapedKeys = escapeEncodedKeys(encodedKeys)
+-                            variant.buildConfigField "String[]", "ENCODED_KEYS", escapedKeys
+-                        }
+-                    }
+-                }
+-            }
+-        }
+-    }
+-}
+-
 diff --git a/node_modules/react-native-config/react-native-config.podspec b/node_modules/react-native-config/react-native-config.podspec
 index 54985dd..3429114 100644
 --- a/node_modules/react-native-config/react-native-config.podspec
