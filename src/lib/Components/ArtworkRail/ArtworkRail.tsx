@@ -13,9 +13,10 @@ const MAX_NUMBER_OF_ARTWORKS = 30
 
 export interface ArtworkRailProps {
   artworks: LargeArtworkRail_artworks
-  listRef: React.RefObject<FlatList<any>>
-  contextModule: Analytics.ContextModule | undefined
+  listRef?: React.RefObject<FlatList<any>>
+  contextModule?: Analytics.ContextModule | undefined
   size: ArtworkCardSize
+  onPress?: (index: number, id: string, slug: string, href: string | null) => void
   onEndReached?: () => void
   onEndReachedThreshold?: number
   ListFooterComponent?: ReactElement
@@ -25,6 +26,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   listRef,
   contextModule,
   size,
+  onPress,
   onEndReached,
   onEndReachedThreshold,
   ListFooterComponent = SpacerComponent,
@@ -49,18 +51,19 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       contentContainerStyle={{ alignItems: "flex-end" }}
       renderItem={({ item, index }) => (
         <ArtworkRailCard
-          onPress={
-            item.href
-              ? () => {
-                  if (contextModule) {
-                    tracking.trackEvent(
-                      HomeAnalytics.artworkThumbnailTapEvent(contextModule, item.slug, index, "single")
-                    )
-                  }
-                  navigate(item.href!)
-                }
-              : undefined
-          }
+          onPress={() => {
+            if (onPress) {
+              onPress(index, item.id, item.slug, item.href)
+              return
+            }
+
+            if (item.href) {
+              if (contextModule) {
+                tracking.trackEvent(HomeAnalytics.artworkThumbnailTapEvent(contextModule, item.slug, index, "single"))
+              }
+              navigate(item.href!)
+            }
+          }}
           artwork={item}
           size={size}
           hidePartnerName

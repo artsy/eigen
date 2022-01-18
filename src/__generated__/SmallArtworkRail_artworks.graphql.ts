@@ -5,6 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SmallArtworkRail_artworks = ReadonlyArray<{
+    readonly id: string;
     readonly href: string | null;
     readonly slug: string;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkRailCard_artwork">;
@@ -26,6 +27,13 @@ const node: ReaderFragment = {
   },
   "name": "SmallArtworkRail_artworks",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "id",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": null,
@@ -55,5 +63,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = '2239f3aab8efae99c5a7423cab3efa9f';
+(node as any).hash = '214e510b10009978b8894992814d00b1';
 export default node;

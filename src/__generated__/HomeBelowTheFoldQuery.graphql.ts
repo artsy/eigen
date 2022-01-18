@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 24ea145170e802a041b882a207501018 */
+/* @relayHash d6f1ecfab0323515e9726c97eb790577 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -117,6 +117,7 @@ fragment ArtworkModuleRail_rail on HomePageArtworkModule {
 }
 
 fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
+  id
   slug
   internalID
   href
@@ -130,7 +131,6 @@ fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
       height
     }
     aspectRatio
-    height
   }
   sale {
     isAuction
@@ -320,6 +320,7 @@ fragment Home_showsByFollowedArtists on ShowConnection {
 
 fragment LargeArtworkRail_artworks on Artwork {
   ...ArtworkRailCard_artwork_Q5Onb
+  id
   href
   slug
 }
@@ -580,6 +581,7 @@ v20 = [
     "name": "results",
     "plural": true,
     "selections": [
+      (v3/*: any*/),
       (v6/*: any*/),
       (v7/*: any*/),
       (v8/*: any*/),
@@ -638,8 +640,7 @@ v20 = [
             ],
             "storageKey": "resized(width:295)"
           },
-          (v11/*: any*/),
-          (v10/*: any*/)
+          (v11/*: any*/)
         ],
         "storageKey": null
       },
@@ -726,8 +727,7 @@ v20 = [
         "storageKey": null
       },
       (v15/*: any*/),
-      (v4/*: any*/),
-      (v3/*: any*/)
+      (v4/*: any*/)
     ],
     "storageKey": null
   },
@@ -1808,7 +1808,7 @@ return {
     ]
   },
   "params": {
-    "id": "24ea145170e802a041b882a207501018",
+    "id": "d6f1ecfab0323515e9726c97eb790577",
     "metadata": {},
     "name": "HomeBelowTheFoldQuery",
     "operationKind": "query",

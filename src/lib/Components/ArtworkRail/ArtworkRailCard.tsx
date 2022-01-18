@@ -123,6 +123,7 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ image, size
 
 const artworkFragment = graphql`
   fragment ArtworkRailCard_artwork on Artwork @argumentDefinitions(width: { type: "Int" }) {
+    id
     slug
     internalID
     href
@@ -136,7 +137,6 @@ const artworkFragment = graphql`
         height
       }
       aspectRatio
-      height
     }
     sale {
       isAuction

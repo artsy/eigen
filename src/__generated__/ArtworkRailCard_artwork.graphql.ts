@@ -5,6 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type ArtworkRailCard_artwork = {
+    readonly id: string;
     readonly slug: string;
     readonly internalID: string;
     readonly href: string | null;
@@ -18,7 +19,6 @@ export type ArtworkRailCard_artwork = {
             readonly height: number | null;
         } | null;
         readonly aspectRatio: number;
-        readonly height: number | null;
     } | null;
     readonly sale: {
         readonly isAuction: boolean | null;
@@ -48,15 +48,7 @@ export type ArtworkRailCard_artwork$key = {
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "height",
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "argumentDefinitions": [
     {
       "defaultValue": null,
@@ -68,6 +60,13 @@ return {
   "metadata": null,
   "name": "ArtworkRailCard_artwork",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "id",
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": null,
@@ -146,7 +145,13 @@ return {
               "name": "width",
               "storageKey": null
             },
-            (v0/*: any*/)
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "height",
+              "storageKey": null
+            }
           ],
           "storageKey": null
         },
@@ -156,8 +161,7 @@ return {
           "kind": "ScalarField",
           "name": "aspectRatio",
           "storageKey": null
-        },
-        (v0/*: any*/)
+        }
       ],
       "storageKey": null
     },
@@ -276,6 +280,5 @@ return {
   "type": "Artwork",
   "abstractKey": null
 };
-})();
-(node as any).hash = '6d6bd23b22e9e685863fb1e7cd9b1f79';
+(node as any).hash = '29ecea9f1f52373b03e652624468a99e';
 export default node;

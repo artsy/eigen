@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6df53edc8661d5575678b485fba1ba26 */
+/* @relayHash 99f051a51dd5453a8e6b56a78832d770 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,6 +27,7 @@ query MyProfileRefetchQuery {
 }
 
 fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
+  id
   slug
   internalID
   href
@@ -40,7 +41,6 @@ fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
       height
     }
     aspectRatio
-    height
   }
   sale {
     isAuction
@@ -67,6 +67,7 @@ fragment ArtworkRailCard_artwork_Q5Onb on Artwork {
 
 fragment LargeArtworkRail_artworks on Artwork {
   ...ArtworkRailCard_artwork_Q5Onb
+  id
   href
   slug
 }
@@ -100,13 +101,6 @@ v1 = {
   "args": null,
   "kind": "ScalarField",
   "name": "id",
-  "storageKey": null
-},
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "height",
   "storageKey": null
 };
 return {
@@ -280,7 +274,13 @@ return {
                                     "name": "width",
                                     "storageKey": null
                                   },
-                                  (v2/*: any*/)
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "height",
+                                    "storageKey": null
+                                  }
                                 ],
                                 "storageKey": "resized(width:295)"
                               },
@@ -290,8 +290,7 @@ return {
                                 "kind": "ScalarField",
                                 "name": "aspectRatio",
                                 "storageKey": null
-                              },
-                              (v2/*: any*/)
+                              }
                             ],
                             "storageKey": null
                           },
@@ -422,7 +421,7 @@ return {
     ]
   },
   "params": {
-    "id": "6df53edc8661d5575678b485fba1ba26",
+    "id": "99f051a51dd5453a8e6b56a78832d770",
     "metadata": {},
     "name": "MyProfileRefetchQuery",
     "operationKind": "query",

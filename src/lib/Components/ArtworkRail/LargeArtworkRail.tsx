@@ -7,14 +7,15 @@ import { ArtworkRail, ArtworkRailProps } from "./ArtworkRail"
 type LargeArtworkRailProps = Omit<ArtworkRailProps, "artworks" | "size"> & { artworks: LargeArtworkRail_artworks$key }
 
 export const LargeArtworkRail: React.FC<LargeArtworkRailProps> = ({ artworks, ...restProps }) => {
-  const artworksData = useFragment<LargeArtworkRail_artworks$key>(smallArtworksFragment, artworks)
+  const artworksData = useFragment<LargeArtworkRail_artworks$key>(largeArtworksFragment, artworks)
 
   return <ArtworkRail artworks={artworksData} {...restProps} size="large" />
 }
 
-const smallArtworksFragment = graphql`
+const largeArtworksFragment = graphql`
   fragment LargeArtworkRail_artworks on Artwork @relay(plural: true) {
     ...ArtworkRailCard_artwork @arguments(width: 295)
+    id
     href
     slug
   }
