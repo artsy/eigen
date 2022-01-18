@@ -1,6 +1,7 @@
 CHANGELOG.yml merge=union
-src/__generated__/*.graphql.ts linguist-generated=true
+
+src/__generated__/*.graphql.ts    linguist-generated=true
 src/__generated__/*.queryMap.json linguist-generated=true
 
 # handle windows files with crlf line endings
-*.bat	text eol=crlf
+*.bat text eol=crlf
