@@ -71,7 +71,9 @@
     "detect-secrets-all": "scripts/detect-secrets-all",
     "update-metaphysics": "node scripts/update-metaphysics.js",
     "new-android": "react-native run-android",
-    "new-start": "react-native start"
+    "new-start": "react-native start",
+    "new-ios": "react-native run-ios",
+    "new-lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -198,6 +200,7 @@
     "@octokit/rest": "16.34.0",
     "@omakase/cli": "0.0.10",
     "@react-native-community/cli-platform-ios": "3.0.0",
+    "@react-native-community/eslint-config": "^3.0.1",
     "@storybook/addon-actions": "5.3.21",
     "@storybook/react-native": "5.3.25",
     "@storybook/react-native-server": "5.3.23",
@@ -252,6 +255,7 @@
     "dotenv": "8.2.0",
     "enzyme": "3.9.0",
     "enzyme-adapter-react-16": "1.13.0",
+    "eslint": "^8.7.0",
     "glob": "7.2.0",
     "graphql": "14.5.6",
     "graphql-request": "3.7.0",
