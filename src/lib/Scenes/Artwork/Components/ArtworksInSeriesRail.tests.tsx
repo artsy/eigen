@@ -2,7 +2,6 @@ import {
   ArtworksInSeriesRailTestsQuery,
   ArtworksInSeriesRailTestsQueryRawResponse,
 } from "__generated__/ArtworksInSeriesRailTestsQuery.graphql"
-import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail/ArtworkTileRailCard"
 import { navigate } from "lib/navigation/navigate"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -12,6 +11,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworksInSeriesRail, ArtworksInSeriesRailFragmentContainer } from "./ArtworksInSeriesRail"
+import { ArtworkRailCard } from "lib/Components/ArtworkRail/ArtworkRailCard"
 
 jest.unmock("react-relay")
 
@@ -67,7 +67,7 @@ describe("ArtworksInSeriesRail", () => {
 
   it("renders each artwork in the artist series", () => {
     const wrapper = getWrapper()
-    expect(wrapper.root.findAllByType(ArtworkTileRailCard)).toHaveLength(5)
+    expect(wrapper.root.findAllByType(ArtworkRailCard)).toHaveLength(5)
   })
 
   it("navigates to the artist series when the header is tapped", () => {
@@ -96,7 +96,7 @@ describe("ArtworksInSeriesRail", () => {
 
   it("tracks clicks on an individual artwork", () => {
     const wrapper = getWrapper()
-    const firstArtwork = wrapper.root.findAllByType(ArtworkTileRailCard)[0]
+    const firstArtwork = wrapper.root.findAllByType(ArtworkRailCard)[0]
     firstArtwork.props.onPress()
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
@@ -133,8 +133,14 @@ describe("ArtworksInSeriesRail", () => {
                       href: "/artwork/alex-katz-departure-28",
                       artistNames: "Alex Katz",
                       image: {
-                        imageURL: "https://d32dm0rphc51dk.cloudfront.net/FCwTE6IvudGFVmnR9106xg/:version.jpg",
-                        aspectRatio: 0.67,
+                        resized: {
+                          src: "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg",
+                          srcSet:
+                            "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg 1x, https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=590&height=800&quality=50&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg 2x",
+                          width: 295,
+                          height: 400,
+                        },
+                        aspectRatio: 0.74,
                       },
                       sale: null,
                       saleArtwork: null,
@@ -155,8 +161,14 @@ describe("ArtworksInSeriesRail", () => {
                       href: "/artwork/alex-katz-departure-56",
                       artistNames: "Alex Katz",
                       image: {
-                        imageURL: "https://d32dm0rphc51dk.cloudfront.net/PPclmZKx-vXZTSJdAEHUzw/:version.jpg",
-                        aspectRatio: 0.67,
+                        resized: {
+                          src: "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg",
+                          srcSet:
+                            "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg 1x, https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=590&height=800&quality=50&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg 2x",
+                          width: 295,
+                          height: 400,
+                        },
+                        aspectRatio: 0.74,
                       },
                       sale: null,
                       saleArtwork: null,
@@ -177,8 +189,14 @@ describe("ArtworksInSeriesRail", () => {
                       href: "/artwork/alex-katz-departure-2-ada",
                       artistNames: "Alex Katz",
                       image: {
-                        imageURL: "https://d32dm0rphc51dk.cloudfront.net/l9MiP2_A-_CoWimV4ZnNRA/:version.jpg",
-                        aspectRatio: 0.5,
+                        resized: {
+                          src: "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg",
+                          srcSet:
+                            "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg 1x, https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=590&height=800&quality=50&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg 2x",
+                          width: 295,
+                          height: 400,
+                        },
+                        aspectRatio: 0.74,
                       },
                       sale: null,
                       saleArtwork: null,
@@ -199,8 +217,14 @@ describe("ArtworksInSeriesRail", () => {
                       href: "/artwork/alex-katz-park-avenue-departure",
                       artistNames: "Alex Katz",
                       image: {
-                        imageURL: "https://d32dm0rphc51dk.cloudfront.net/fz_V0Mj3GPFnKhMwujWB3g/:version.jpg",
-                        aspectRatio: 0.67,
+                        resized: {
+                          src: "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg",
+                          srcSet:
+                            "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg 1x, https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=590&height=800&quality=50&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg 2x",
+                          width: 295,
+                          height: 400,
+                        },
+                        aspectRatio: 0.74,
                       },
                       sale: null,
                       saleArtwork: null,
@@ -221,8 +245,14 @@ describe("ArtworksInSeriesRail", () => {
                       href: "/artwork/alex-katz-departure-cut-out-2",
                       artistNames: "Alex Katz",
                       image: {
-                        imageURL: "https://d32dm0rphc51dk.cloudfront.net/IQp10TeWJi6CHJu-Nm6yrQ/:version.jpg",
-                        aspectRatio: 0.7,
+                        resized: {
+                          src: "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg",
+                          srcSet:
+                            "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg 1x, https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=590&height=800&quality=50&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg 2x",
+                          width: 295,
+                          height: 400,
+                        },
+                        aspectRatio: 0.74,
                       },
                       sale: null,
                       saleArtwork: null,

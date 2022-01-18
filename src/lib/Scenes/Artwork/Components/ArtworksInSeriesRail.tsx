@@ -1,12 +1,11 @@
 import { ActionType, ContextModule, OwnerType, ScreenOwnerType, TappedArtworkGroup } from "@artsy/cohesion"
 import { ArtworksInSeriesRail_artwork } from "__generated__/ArtworksInSeriesRail_artwork.graphql"
-import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
-import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
+import { SmallArtworkRail } from "lib/Components/ArtworkRail/SmallArtworkRail"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
-import { ArrowRightIcon, Flex, Sans, Spacer } from "palette"
+import { ArrowRightIcon, Flex, Sans } from "palette"
 import React from "react"
-import { FlatList, TouchableOpacity } from "react-native"
+import { TouchableOpacity } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -85,31 +84,14 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
           <ArrowRightIcon mr="-5px" />
         </Flex>
       </TouchableOpacity>
-      <FlatList
-        horizontal
-        ItemSeparatorComponent={() => <Spacer width={10} />}
-        showsHorizontalScrollIndicator={false}
-        data={artworks}
-        initialNumToRender={5}
-        windowSize={3}
-        renderItem={({ item }) => (
-          <ArtworkTileRailCard
-            onPress={() => {
-              trackArtworkClick({ destinationScreenOwnerID: item.internalID, destinationScreenOwnerSlug: item.slug })
-              navigate(item.href!)
-            }}
-            imageURL={item.image?.imageURL}
-            imageAspectRatio={item.image?.aspectRatio}
-            imageSize="medium"
-            artistNames={item.artistNames}
-            title={item.title}
-            partner={item.partner}
-            date={item.date}
-            saleMessage={saleMessageOrBidInfo({ artwork: item })}
-            key={item.internalID}
-          />
-        )}
-        keyExtractor={(item, index) => String(item.image?.imageURL || index)}
+      <SmallArtworkRail
+        artworks={artworks}
+        onPress={(_, id, slug, href) => {
+          trackArtworkClick({ destinationScreenOwnerID: id, destinationScreenOwnerSlug: slug })
+          navigate(href!)
+        }}
+        ListHeaderComponent={null}
+        ListFooterComponent={null}
       />
     </Flex>
   )
@@ -128,33 +110,7 @@ export const ArtworksInSeriesRailFragmentContainer = createFragmentContainer(Art
             filterArtworksConnection(first: 20, input: { sort: "-decayed_merch" }) {
               edges {
                 node {
-                  slug
-                  internalID
-                  href
-                  artistNames
-                  image {
-                    imageURL
-                    aspectRatio
-                  }
-                  sale {
-                    isAuction
-                    isClosed
-                    displayTimelyAt
-                  }
-                  saleArtwork {
-                    counts {
-                      bidderPositions
-                    }
-                    currentBid {
-                      display
-                    }
-                  }
-                  saleMessage
-                  title
-                  date
-                  partner {
-                    name
-                  }
+                  ...SmallArtworkRail_artworks
                 }
               }
             }

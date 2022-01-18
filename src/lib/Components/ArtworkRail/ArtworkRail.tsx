@@ -19,7 +19,8 @@ export interface ArtworkRailProps {
   onPress?: (index: number, id: string, slug: string, href: string | null) => void
   onEndReached?: () => void
   onEndReachedThreshold?: number
-  ListFooterComponent?: ReactElement
+  ListHeaderComponent?: ReactElement | null
+  ListFooterComponent?: ReactElement | null
 }
 
 export const ArtworkRail: React.FC<ArtworkRailProps> = ({
@@ -29,6 +30,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   onPress,
   onEndReached,
   onEndReachedThreshold,
+  ListHeaderComponent = SpacerComponent,
   ListFooterComponent = SpacerComponent,
   artworks,
 }) => {
@@ -41,7 +43,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       prefetchUrlExtractor={(item) => item?.href!}
       listRef={listRef}
       horizontal
-      ListHeaderComponent={SpacerComponent}
+      ListHeaderComponent={ListHeaderComponent}
       ListFooterComponent={ListFooterComponent}
       ItemSeparatorComponent={() => <Spacer width={15} />}
       showsHorizontalScrollIndicator={false}
@@ -53,7 +55,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
         <ArtworkRailCard
           onPress={() => {
             if (onPress) {
-              onPress(index, item.id, item.slug, item.href)
+              onPress(index, item.internalID, item.slug, item.href)
               return
             }
 

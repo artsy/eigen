@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8cec8d4a0f200d226a3521ebbf4f5f55 */
+/* @relayHash 41a2277b87d0924bc2afd0152178c9d2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -261,7 +261,7 @@ fragment Home_meAbove on Me {
 
 fragment LargeArtworkRail_artworks on Artwork {
   ...ArtworkRailCard_artwork_Q5Onb
-  id
+  internalID
   href
   slug
 }
@@ -387,7 +387,7 @@ fragment SalesRail_salesModule on HomePageSalesModule {
 
 fragment SmallArtworkRail_artworks on Artwork {
   ...ArtworkRailCard_artwork_hl5k2
-  id
+  internalID
   href
   slug
 }
@@ -1586,7 +1586,7 @@ return {
     ]
   },
   "params": {
-    "id": "8cec8d4a0f200d226a3521ebbf4f5f55",
+    "id": "41a2277b87d0924bc2afd0152178c9d2",
     "metadata": {},
     "name": "HomeAboveTheFoldQuery",
     "operationKind": "query",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ff12794c344f9bbdbe0fb7de259ed6b8 */
+/* @relayHash 49e9f472195889f9f8c5445beb633df0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -132,7 +132,7 @@ fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
 
 fragment SmallArtworkRail_artworks on Artwork {
   ...ArtworkRailCard_artwork_hl5k2
-  id
+  internalID
   href
   slug
 }
@@ -465,7 +465,7 @@ return {
     ]
   },
   "params": {
-    "id": "ff12794c344f9bbdbe0fb7de259ed6b8",
+    "id": "49e9f472195889f9f8c5445beb633df0",
     "metadata": {},
     "name": "ArtistNotableWorksRailTestsQuery",
     "operationKind": "query",

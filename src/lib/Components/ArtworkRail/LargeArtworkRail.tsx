@@ -15,7 +15,7 @@ export const LargeArtworkRail: React.FC<LargeArtworkRailProps> = ({ artworks, ..
 const largeArtworksFragment = graphql`
   fragment LargeArtworkRail_artworks on Artwork @relay(plural: true) {
     ...ArtworkRailCard_artwork @arguments(width: 295)
-    id
+    internalID
     href
     slug
   }

@@ -15,7 +15,7 @@ export const SmallArtworkRail: React.FC<SmallArtworkRailProps> = ({ artworks, ..
 const smallArtworksFragment = graphql`
   fragment SmallArtworkRail_artworks on Artwork @relay(plural: true) {
     ...ArtworkRailCard_artwork @arguments(width: 155)
-    id
+    internalID
     href
     slug
   }

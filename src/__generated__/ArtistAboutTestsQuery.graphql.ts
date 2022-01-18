@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 79c1a58e2ebb8f9b17e3fad94671cb42 */
+/* @relayHash a42bce8500eea9486bcc28f4f2e987cc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -293,7 +293,7 @@ fragment RelatedArtists_artists on Artist {
 
 fragment SmallArtworkRail_artworks on Artwork {
   ...ArtworkRailCard_artwork_hl5k2
-  id
+  internalID
   href
   slug
 }
@@ -1392,7 +1392,7 @@ return {
     ]
   },
   "params": {
-    "id": "79c1a58e2ebb8f9b17e3fad94671cb42",
+    "id": "a42bce8500eea9486bcc28f4f2e987cc",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": (v17/*: any*/),

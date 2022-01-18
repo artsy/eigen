@@ -5,7 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type LargeArtworkRail_artworks = ReadonlyArray<{
-    readonly id: string;
+    readonly internalID: string;
     readonly href: string | null;
     readonly slug: string;
     readonly " $fragmentRefs": FragmentRefs<"ArtworkRailCard_artwork">;
@@ -31,7 +31,7 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "id",
+      "name": "internalID",
       "storageKey": null
     },
     {
@@ -63,5 +63,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = 'e485b520177a3839312211c270314211';
+(node as any).hash = '1a026cb26ea9c42e2331450ed1ff6df0';
 export default node;

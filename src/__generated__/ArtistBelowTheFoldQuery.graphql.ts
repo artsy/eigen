@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 00efb3f57dc0a45fd26dae6325044714 */
+/* @relayHash 22d935a46e9ece6221fa5a8e65b0f676 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -364,7 +364,7 @@ fragment RelatedArtists_artists on Artist {
 
 fragment SmallArtworkRail_artworks on Artwork {
   ...ArtworkRailCard_artwork_hl5k2
-  id
+  internalID
   href
   slug
 }
@@ -1668,7 +1668,7 @@ return {
     ]
   },
   "params": {
-    "id": "00efb3f57dc0a45fd26dae6325044714",
+    "id": "22d935a46e9ece6221fa5a8e65b0f676",
     "metadata": {},
     "name": "ArtistBelowTheFoldQuery",
     "operationKind": "query",

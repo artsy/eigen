@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1873e5dceff3024fc0691d82e864ef9e */
+/* @relayHash b4cd70b85297c9fd9b19909a07afcd83 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -82,7 +82,7 @@ fragment MyProfile_me on Me {
 
 fragment SmallArtworkRail_artworks on Artwork {
   ...ArtworkRailCard_artwork_hl5k2
-  id
+  internalID
   href
   slug
 }
@@ -421,7 +421,7 @@ return {
     ]
   },
   "params": {
-    "id": "1873e5dceff3024fc0691d82e864ef9e",
+    "id": "b4cd70b85297c9fd9b19909a07afcd83",
     "metadata": {},
     "name": "MyProfileQuery",
     "operationKind": "query",
