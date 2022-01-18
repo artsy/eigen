@@ -1,7 +1,14 @@
 import { Formik } from "formik"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
 import React from "react"
+import * as Yup from "yup"
+
 export interface FormikSchema {
+  name: string
+  email: string
+  phoneNumber: string
+}
+interface ContactInfoFormModel {
   name: string
   email: string
   phoneNumber: string
@@ -10,10 +17,20 @@ export const ContactInformation = ({}: // handlePress,
 {
   handlePress: () => void
 }) => {
+  const schema = Yup.object().shape({
+    name: Yup.string().required("Name is required").trim(),
+    email: Yup.string().email().required("Email field is required").trim(),
+    phoneNumber: Yup.string()
+      .required("Please provide a valid phone number address")
+      .trim(),
+  })
+
   return (
-    <Formik
+    <Formik<ContactInfoFormModel>
       initialValues={{ name: "", email: "", phoneNumber: "" }}
       onSubmit={(values) => console.log(values)}
+      validationSchema={schema}
+      validateOnMount
     >
       {({ values, handleSubmit, setFieldValue, isValid }) => (
         <Flex p={1} mt={1}>
@@ -25,21 +42,21 @@ export const ContactInformation = ({}: // handlePress,
           <Input
             title="Name"
             placeholder="Name"
-            onChange={(e) => setFieldValue("name", e)}
+            onChangeText={(e) => setFieldValue("name", e)}
             value={values.name}
           />
           <Spacer mt={2} />
           <Input
             title="Email"
             placeholder="in"
-            onChange={(e) => setFieldValue("email", e)}
+            onChangeText={(e) => setFieldValue("email", e)}
             value={values.email}
           />
           <Spacer mt={2} />
           <Input
             title="Phone number"
             placeholder="in"
-            onChange={(e) => setFieldValue("phoneNumber", e)}
+            onChangeText={(e) => setFieldValue("phoneNumber", e)}
             value={values.phoneNumber}
           />
           <Spacer mt={2} />
