@@ -69,7 +69,9 @@
     "start-storybook": "STORYBOOK=1 yarn start",
     "detect-secrets-staged": "scripts/detect-secrets-staged",
     "detect-secrets-all": "scripts/detect-secrets-all",
-    "update-metaphysics": "node scripts/update-metaphysics.js"
+    "update-metaphysics": "node scripts/update-metaphysics.js",
+    "new-android":"react-native run-android",
+    "new-start": "react-native start"
   },
   "repository": {
     "type": "git",
