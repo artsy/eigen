@@ -6,8 +6,8 @@ import { createMockEnvironment } from "relay-test-utils"
 jest.mock("lib/Components/Home/ArtistRails/ArtistRail", () => ({
   ArtistRailFragmentContainer: jest.fn(() => null),
 }))
-jest.mock("lib/Scenes/Home/Components/ArtworkRail", () => ({
-  ArtworkRailFragmentContainer: jest.fn(() => null),
+jest.mock("lib/Scenes/Home/Components/ArtworkModuleRail", () => ({
+  ArtworkModuleRailFragmentContainer: jest.fn(() => null),
 }))
 jest.mock("lib/Scenes/Home/Components/FairsRail", () => ({
   FairsRailFragmentContainer: jest.fn(() => null),

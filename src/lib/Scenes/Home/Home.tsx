@@ -8,11 +8,12 @@ import { Home_showsByFollowedArtists } from "__generated__/Home_showsByFollowedA
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
+import { SmallArtworkRailPlaceholder } from "lib/Components/ArtworkRail/SmallArtworkRail"
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "lib/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { LotsByFollowedArtistsRailContainer } from "lib/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkRail"
+import { ArtworkModuleRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkModuleRail"
 import { AuctionResultsRailFragmentContainer } from "lib/Scenes/Home/Components/AuctionResultsRail"
 import { CollectionsRailFragmentContainer } from "lib/Scenes/Home/Components/CollectionsRail"
 import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
@@ -241,11 +242,11 @@ const Home = (props: Props) => {
                 )
               case "artwork":
                 return (
-                  <ArtworkRailFragmentContainer
+                  <ArtworkModuleRailFragmentContainer
                     title={item.title}
                     rail={item.data || null}
                     scrollRef={scrollRefs.current[index]}
-                    mb={MODULE_SEPARATOR_HEIGHT}
+                    mb={MODULE_SEPARATOR_HEIGHT - 2}
                   />
                 )
               case "auction-results":
@@ -376,11 +377,11 @@ export const HomeFragmentContainer = createRefetchContainer(
       @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
         followedArtistsArtworkModule: artworkModule(key: FOLLOWED_ARTISTS) {
           id
-          ...ArtworkRail_rail
+          ...ArtworkModuleRail_rail
         }
         activeBidsArtworkModule: artworkModule(key: ACTIVE_BIDS) {
           id
-          ...ArtworkRail_rail
+          ...ArtworkModuleRail_rail
         }
         salesModule {
           ...SalesRail_salesModule
@@ -398,11 +399,11 @@ export const HomeFragmentContainer = createRefetchContainer(
       @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
         recentlyViewedWorksArtworkModule: artworkModule(key: RECENTLY_VIEWED_WORKS) {
           id
-          ...ArtworkRail_rail
+          ...ArtworkModuleRail_rail
         }
         similarToRecentlyViewedArtworkModule: artworkModule(key: SIMILAR_TO_RECENTLY_VIEWED) {
           id
-          ...ArtworkRail_rail
+          ...ArtworkModuleRail_rail
         }
         popularArtistsArtistModule: artistModule(key: POPULAR) {
           id
@@ -534,17 +535,7 @@ const HomePlaceholder: React.FC<{}> = () => {
           <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
           <Spacer mb={0.3} />
           <Flex flexDirection="row" mt={1}>
-            <Join separator={<Spacer width={15} />}>
-              {times(3 + useMemoizedRandom() * 10).map((index) => (
-                <Flex key={index}>
-                  <PlaceholderBox height={120} width={120} />
-                  <Spacer mb={1} mt={0.3} />
-                  <PlaceholderText width={120} />
-                  <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
-                  <ModuleSeparator />
-                </Flex>
-              ))}
-            </Join>
+            <SmallArtworkRailPlaceholder />
           </Flex>
         </Box>
       }
