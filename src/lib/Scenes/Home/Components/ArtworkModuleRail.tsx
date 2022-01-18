@@ -47,6 +47,8 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
 
   const viewAllUrl = getViewAllUrl(rail)
 
+  const contextModule = HomeAnalytics.artworkRailContextModule(rail.key)
+
   const context = rail.context
   let subtitle: string | undefined
   const basedOnName = context?.basedOn?.name
@@ -86,7 +88,13 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
       <SmallArtworkRail
         listRef={listRef}
         artworks={artworks}
-        contextModule={HomeAnalytics.artworkRailContextModule(rail.key)}
+        onPress={(artwork, position) => {
+          if (contextModule) {
+            tracking.trackEvent(HomeAnalytics.artworkThumbnailTapEvent(contextModule, artwork.slug, position, "single"))
+          }
+
+          navigate(artwork.href!)
+        }}
       />
     </Flex>
   ) : null

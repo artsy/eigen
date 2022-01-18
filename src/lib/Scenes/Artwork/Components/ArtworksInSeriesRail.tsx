@@ -86,9 +86,9 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
       </TouchableOpacity>
       <SmallArtworkRail
         artworks={artworks}
-        onPress={(_, id, slug, href) => {
-          trackArtworkClick({ destinationScreenOwnerID: id, destinationScreenOwnerSlug: slug })
-          navigate(href!)
+        onPress={(item) => {
+          trackArtworkClick({ destinationScreenOwnerID: item.internalID, destinationScreenOwnerSlug: item.slug })
+          navigate(item.href!)
         }}
         ListHeaderComponent={null}
         ListFooterComponent={null}

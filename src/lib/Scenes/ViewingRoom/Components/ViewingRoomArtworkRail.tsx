@@ -35,9 +35,11 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = (pr
       </Box>
       <SmallArtworkRail
         artworks={artworks}
-        onPress={(_position, id, slug, _href) => {
-          tracking.trackEvent(tracks.tappedArtworkThumbnail(viewingRoom.internalID, viewingRoom.slug, id, slug))
-          navigate(`/viewing-room/${viewingRoom.slug}/${slug}`)
+        onPress={(artwork) => {
+          tracking.trackEvent(
+            tracks.tappedArtworkThumbnail(viewingRoom.internalID, viewingRoom.slug, artwork.internalID, artwork.slug)
+          )
+          navigate(`/viewing-room/${viewingRoom.slug}/${artwork.slug}`)
         }}
       />
     </View>

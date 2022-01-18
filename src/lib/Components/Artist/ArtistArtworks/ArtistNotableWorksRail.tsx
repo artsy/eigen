@@ -31,14 +31,14 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist 
       <ArtistNotableWorksRailWrapper>
         <SmallArtworkRail
           artworks={artworks}
-          onPress={(position, id, slug) => {
-            if (!slug || !id) {
+          onPress={(artwork, position) => {
+            if (!artwork.slug || !artwork.internalID) {
               return
             }
 
-            trackEvent(tracks.tapArtwork(artist.internalID, artist.slug, id, slug, position))
+            trackEvent(tracks.tapArtwork(artist.internalID, artist.slug, artwork.internalID, artwork.slug, position))
 
-            return navigate(`/artwork/${slug}`)
+            return navigate(`/artwork/${artwork.slug}`)
           }}
         />
       </ArtistNotableWorksRailWrapper>

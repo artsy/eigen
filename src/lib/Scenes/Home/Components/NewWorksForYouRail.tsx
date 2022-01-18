@@ -9,7 +9,9 @@ import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
+import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"
+
 interface NewWorksForYouRailProps {
   title: string
   me: NewWorksForYouRail_me
@@ -44,7 +46,24 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
         <Flex pl="2" pr="2">
           <SectionTitle title={title} onPress={navigateToNewWorksForYou} />
         </Flex>
-        {<LargeArtworkRail listRef={listRef} artworks={artworks} contextModule={ContextModule.newWorksForYouRail} />}
+        {
+          <LargeArtworkRail
+            listRef={listRef}
+            artworks={artworks}
+            onPress={(artwork, position) => {
+              trackEvent(
+                HomeAnalytics.artworkThumbnailTapEvent(
+                  ContextModule.newWorksForYouRail,
+                  artwork.slug,
+                  position,
+                  "single"
+                )
+              )
+
+              navigate(artwork.href!)
+            }}
+          />
+        }
       </View>
     </Flex>
   )

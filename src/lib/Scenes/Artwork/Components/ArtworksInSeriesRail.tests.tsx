@@ -2,6 +2,7 @@ import {
   ArtworksInSeriesRailTestsQuery,
   ArtworksInSeriesRailTestsQueryRawResponse,
 } from "__generated__/ArtworksInSeriesRailTestsQuery.graphql"
+import { ArtworkRailCard } from "lib/Components/ArtworkRail/ArtworkRailCard"
 import { navigate } from "lib/navigation/navigate"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -11,7 +12,6 @@ import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { ArtworksInSeriesRail, ArtworksInSeriesRailFragmentContainer } from "./ArtworksInSeriesRail"
-import { ArtworkRailCard } from "lib/Components/ArtworkRail/ArtworkRailCard"
 
 jest.unmock("react-relay")
 

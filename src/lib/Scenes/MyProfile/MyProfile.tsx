@@ -57,9 +57,7 @@ export const OldMyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp 
       <SectionHeading title="Favorites" />
       <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />
       <MenuItem title="Saves and follows" onPress={() => navigate("favorites")} />
-      {!!recentlySavedArtworks.length && (
-        <SmallArtworkRail artworks={recentlySavedArtworks} listRef={listRef} contextModule={null as any} />
-      )}
+      {!!recentlySavedArtworks.length && <SmallArtworkRail artworks={recentlySavedArtworks} listRef={listRef} />}
       <Separator mt={3} mb={2} />
       <SectionHeading title="Account Settings" />
       <MenuItem title="Account" onPress={() => navigate("my-account")} />
