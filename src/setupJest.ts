@@ -466,6 +466,9 @@ jest.mock("react-native-localize", () => ({
       { countryCode: "FR", languageTag: "fr-FR", languageCode: "fr", isRTL: false },
     ]
   },
+  getCurrencies() {
+    return ["USD", "EUR"]
+  },
   getTimeZone() {
     return "America/New_York"
   },

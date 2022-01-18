@@ -27,9 +27,10 @@ export const Versions = {
   AddExperimentsModel: 15,
   AddPreviousSessionUserID: 16,
   RemoveNativeOnboardingState: 17,
+  AddUserPreferences: 18,
 }
 
-export const CURRENT_APP_VERSION = Versions.RemoveNativeOnboardingState
+export const CURRENT_APP_VERSION = Versions.AddUserPreferences
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -114,6 +115,9 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.RemoveNativeOnboardingState]: (state) => {
     delete state.native.onboardingState
+  },
+  [Versions.AddUserPreferences]: (state) => {
+    state.userPreferences = { currency: "USD", metric: "" }
   },
 }
 
