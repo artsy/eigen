@@ -174,7 +174,7 @@ post_install do |installer|
     end
   end
 
-  # Forces the minimum to be 9.0 as that's our last deployment targer, and new xcode build tools
+  # Forces the minimum to be 9.0 as that's our last deployment target, and new xcode build tools
   # give an error in Xcode 10
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
@@ -214,8 +214,8 @@ post_install do |installer|
   # * Send PRs for the rest
   %w[
     Pods/ORStackView/Classes/ios/ORStackView.h
-    Pods/NAMapKit/NAMapKit/*.h
   ].flat_map { |x| Dir.glob(x) }.each do |header|
+    system("chmod +w #{header}")
     addition = "#import <UIKit/UIKit.h>\n"
     contents = File.read(header)
     next if contents.include?(addition)
@@ -232,6 +232,7 @@ post_install do |installer|
     Pods/Nimble-Snapshots
     Pods/Quick/Sources/QuickObjectiveC
   ].flat_map { |x| Dir.glob(File.join(x, '**/*.{h,m}')) }.each do |header|
+    system("chmod +w #{header}")
     contents = File.read(header)
     patched = contents.sub(%r{["<]\w+/(\w+-Swift\.h)[">]}, '"\1"')
     File.write(header, patched) if Regexp.last_match
