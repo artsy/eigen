@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, waitFor } from "@testing-library/react-native"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
@@ -7,7 +7,6 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { createConsignSubmission, updateConsignSubmission } from "../Mutations"
 import { ArtworkDetails } from "./ArtworkDetails"
-
 // import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 // import { createConsignmentSubmissionMutationResponse } from "__generated__/createConsignmentSubmissionMutation.graphql"
 // import { updateConsignSubmissionMutationResponse } from "__generated__/updateConsignSubmissionMutation.graphql"
@@ -45,62 +44,80 @@ describe("ArtworkDetailsForm", () => {
       expect(getByText("• All fields are required to submit an artwork.")).toBeTruthy()
     })
 
-    it("renders ArtworkDetailsForm with inputs that correctly mutate their respective values", () => {
-      const { getByTestId } = renderWithWrappersTL(<ArtworkDetails handlePress={jest.fn()} />)
+    it("keeps Save & Continue button disabled until required fields validated", async () => {
+      const { getByTestId, UNSAFE_getByProps } = renderWithWrappersTL(<ArtworkDetails handlePress={jest.fn()} />)
 
-      // title
-      const TitleInput = getByTestId("Consignment_TitleInput")
-      expect(TitleInput.props.value).toBe("")
-      act(() => fireEvent.changeText(TitleInput, "caspar david"))
-      expect(TitleInput.props.value).toBe("caspar david")
+      const SaveButton = UNSAFE_getByProps({
+        testID: "Consignment_ArtworkDetails_Button",
+      })
 
-      // year
-      const YearInput = getByTestId("Consignment_YearInput")
-      expect(YearInput.props.value).toBe("")
-      act(() => fireEvent.changeText(YearInput, "1812"))
-      expect(YearInput.props.value).toBe("1812")
+      const inputs = {
+        title: getByTestId("Consignment_TitleInput"),
+        year: getByTestId("Consignment_YearInput"),
+        material: getByTestId("Consignment_MaterialsInput"),
+        height: getByTestId("Consignment_HeightInput"),
+        width: getByTestId("Consignment_WidthInput"),
+        depth: getByTestId("Consignment_DepthInput"),
+        provenance: getByTestId("Consignment_ProvenanceInput"),
+      }
 
-      // material
-      const MaterialInput = getByTestId("Consignment_MaterialsInput")
-      expect(MaterialInput.props.value).toBe("")
-      act(() => fireEvent.changeText(MaterialInput, "Lithograph"))
-      expect(MaterialInput.props.value).toBe("Lithograph")
+      // title missing
+      await waitFor(() => act(() => fireEvent.changeText(inputs.title, "")))
+      expect(SaveButton.props.disabled).toBe(true)
 
-      // height
-      const HeightInput = getByTestId("Consignment_HeightSizeInput")
-      expect(HeightInput.props.value).toBe("")
-      act(() => fireEvent.changeText(HeightInput, "120"))
-      expect(HeightInput.props.value).toBe("120")
+      // year missing
+      await waitFor(() => {
+        act(() => {
+          fireEvent.changeText(inputs.year, "")
+          fireEvent.changeText(inputs.title, "someTitle")
+        })
+      })
+      expect(SaveButton.props.disabled).toBe(true)
 
-      // width
-      const WidthInput = getByTestId("Consignment_WidthInput")
-      expect(WidthInput.props.value).toBe("")
-      act(() => fireEvent.changeText(WidthInput, "130"))
-      expect(WidthInput.props.value).toBe("130")
+      // material missing
+      await waitFor(() => {
+        act(() => {
+          fireEvent.changeText(inputs.material, "")
+          fireEvent.changeText(inputs.year, "1999")
+        })
+      })
+      expect(SaveButton.props.disabled).toBe(true)
 
-      // depth
-      const DepthInput = getByTestId("Consignment_DepthInput")
-      expect(DepthInput.props.value).toBe("")
-      act(() => fireEvent.changeText(DepthInput, "3"))
-      expect(DepthInput.props.value).toBe("3")
+      // height missing
+      await waitFor(() => {
+        act(() => {
+          fireEvent.changeText(inputs.height, "")
+          fireEvent.changeText(inputs.material, "oil on c")
+        })
+      })
+      expect(SaveButton.props.disabled).toBe(true)
 
-      // provenance
-      const ProvenanceInput = getByTestId("Consignment_ProvenanceInput")
-      expect(ProvenanceInput.props.value).toBe("")
-      act(() => fireEvent.changeText(ProvenanceInput, "present by x gallery"))
-      expect(ProvenanceInput.props.value).toBe("present by x gallery")
+      // width missing
+      await waitFor(() => {
+        act(() => {
+          fireEvent.changeText(inputs.width, "")
+          fireEvent.changeText(inputs.height, "123")
+        })
+      })
+      expect(SaveButton.props.disabled).toBe(true)
 
-      // provenance
-      const LocationInput = getByTestId("Consignment_LocationInput")
-      expect(LocationInput.props.value).toBe("")
-      act(() => fireEvent.changeText(LocationInput, "moscow"))
-      expect(LocationInput.props.value).toBe("moscow")
-    })
+      // depth missing
+      await waitFor(() => {
+        act(() => {
+          fireEvent.changeText(inputs.depth, "")
+          fireEvent.changeText(inputs.width, "123")
+        })
+      })
+      expect(SaveButton.props.disabled).toBe(true)
 
-    it("keeps Save button disabled until all required fields validated", () => {
-      const { getByTestId } = renderWithWrappersTL(<ArtworkDetails handlePress={jest.fn()} />)
-      const SaveButton = getByTestId("Consignment_ArtworkDetails_Button")
-      console.log(SaveButton.props)
+      // provenance missing
+      await waitFor(() => {
+        act(() => {
+          fireEvent.changeText(inputs.provenance, "")
+          fireEvent.changeText(inputs.depth, "123")
+        })
+      })
+      expect(SaveButton.props.disabled).toBe(true)
     })
 
     it("successfully creates a submission upon Save & Continue click", () => {

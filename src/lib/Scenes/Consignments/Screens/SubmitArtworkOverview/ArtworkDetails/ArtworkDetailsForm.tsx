@@ -121,7 +121,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         <Box width="31%" mr={1}>
           <Input
             title="Height"
-            testID="Consignment_HeightSizeInput"
+            testID="Consignment_HeightInput"
             onBlur={handleBlur("height")}
             value={values.height}
             onChangeText={(e) => setFieldValue("height", e)}
