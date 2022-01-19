@@ -33,7 +33,7 @@ const afterSocialAuthLogin = (res: any, reject: (reason?: any) => void, provider
   }
 }
 
-type SignInStatus = "failure" | "success" | "otp_missing" | "invalid_otp"
+type SignInStatus = "failure" | "success" | "otp_missing" | "on_demand_otp_missing" | "invalid_otp"
 
 type OnboardingState = "none" | "incomplete" | "complete"
 export interface AuthModel {
@@ -303,6 +303,10 @@ export const getAuthModel = (): AuthModel => ({
     const resultJSON = await result.json()
     if (resultJSON?.error === "otp_missing") {
       return "otp_missing"
+    }
+
+    if (resultJSON?.error === "on_demand_otp_missing") {
+      return "on_demand_otp_missing"
     }
 
     if (resultJSON?.error_description === "invalid two-factor authentication code") {

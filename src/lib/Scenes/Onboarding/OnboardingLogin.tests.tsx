@@ -34,7 +34,7 @@ describe("OnboardingLogin", () => {
       <OnboardingLoginWithEmailForm
         navigation={navigationPropsMock as any}
         route={{ params: { email } } as any}
-        requiresOTP={false}
+        otpMode={null}
       />
     )
   }

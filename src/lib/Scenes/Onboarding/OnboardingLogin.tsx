@@ -9,6 +9,7 @@ import { ScrollView, View } from "react-native"
 import * as Yup from "yup"
 import { Touchable } from "../../../palette/elements/Touchable/Touchable"
 import { OnboardingNavigationStack } from "./Onboarding"
+import { OTPMode } from "./OnboardingLoginWithOTP"
 import { OnboardingSocialPick } from "./OnboardingSocialPick"
 
 export const OnboardingLogin: React.FC = () => {
@@ -16,7 +17,7 @@ export const OnboardingLogin: React.FC = () => {
 }
 
 export interface OnboardingLoginProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWithEmail"> {
-  requiresOTP: boolean
+  otpMode: OTPMode | null
 }
 
 export interface OnboardingLoginValuesSchema {
@@ -29,7 +30,7 @@ export const loginSchema = Yup.object().shape({
   password: Yup.string().test("password", "Password field is required", (value) => value !== ""),
 })
 
-export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ navigation, route, requiresOTP }) => {
+export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ navigation, route, otpMode }) => {
   const color = useColor()
   const { values, handleSubmit, handleChange, validateForm, errors, isValid, dirty, isSubmitting, setErrors } =
     useFormikContext<OnboardingLoginValuesSchema>()
@@ -59,10 +60,10 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
   }, [])
 
   useEffect(() => {
-    if (requiresOTP) {
-      navigation.navigate("OnboardingLoginWithOTP", { email: values.email, password: values.password })
+    if (otpMode) {
+      navigation.navigate("OnboardingLoginWithOTP", { email: values.email, password: values.password, otpMode })
     }
-  }, [requiresOTP])
+  }, [otpMode])
 
   return (
     <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1 }}>
@@ -168,7 +169,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
 const initialValues: OnboardingLoginValuesSchema = { email: "", password: "" }
 
 export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ navigation, route }) => {
-  const [requiresOTP, setRequiresOTP] = useState<boolean>(false)
+  const [otpMode, setOTPMode] = useState<OTPMode | null>(null)
 
   const formik = useFormik<OnboardingLoginValuesSchema>({
     enableReinitialize: true,
@@ -177,7 +178,7 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ navig
     initialValues,
     initialErrors: {},
     onSubmit: async ({ email, password }, { setErrors, validateForm }) => {
-      setRequiresOTP(false)
+      setOTPMode(null)
       validateForm()
       const res = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
@@ -186,10 +187,12 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ navig
       })
 
       if (res === "otp_missing") {
-        setRequiresOTP(true)
+        setOTPMode("standard")
+      } else if (res === "on_demand_otp_missing") {
+        setOTPMode("on_demand")
       }
 
-      if (res !== "success" && res !== "otp_missing") {
+      if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
         // For security purposes, we are returning a generic error message
         setErrors({ password: "Incorrect email or password" })
       }
@@ -199,7 +202,7 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ navig
 
   return (
     <FormikProvider value={formik}>
-      <OnboardingLoginWithEmailForm navigation={navigation} route={route} requiresOTP={requiresOTP} />
+      <OnboardingLoginWithEmailForm navigation={navigation} route={route} otpMode={otpMode} />
     </FormikProvider>
   )
 }

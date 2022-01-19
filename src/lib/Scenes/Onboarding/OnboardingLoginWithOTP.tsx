@@ -13,11 +13,14 @@ export interface OnboardingLoginWithOTPProps
   extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWithOTP"> {
   email: string
   password: string
+  otpMode: OTPMode
 }
 
 export interface OnboardingLoginWithOTPValuesSchema {
   otp: string
 }
+
+export type OTPMode = "on_demand" | "standard"
 
 const initialValues: OnboardingLoginWithOTPValuesSchema = { otp: "" }
 
@@ -90,6 +93,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPProps> =
 export const OnboardingLoginWithOTP: React.FC<OnboardingLoginWithOTPProps> = ({ navigation, route }) => {
   const email = route.params.email
   const password = route.params.password
+  const otpMode = route.params.otpMode
 
   const formik = useFormik<OnboardingLoginWithOTPValuesSchema>({
     enableReinitialize: true,
@@ -118,7 +122,13 @@ export const OnboardingLoginWithOTP: React.FC<OnboardingLoginWithOTPProps> = ({ 
 
   return (
     <FormikProvider value={formik}>
-      <OnboardingLoginWithOTPForm navigation={navigation} route={route} email={email} password={password} />
+      <OnboardingLoginWithOTPForm
+        navigation={navigation}
+        route={route}
+        email={email}
+        password={password}
+        otpMode={otpMode}
+      />
     </FormikProvider>
   )
 }
