@@ -1,7 +1,7 @@
 PODS:
-  - Adjust (4.29.3):
-    - Adjust/Core (= 4.29.3)
-  - Adjust/Core (4.29.3)
+  - Adjust (4.29.6):
+    - Adjust/Core (= 4.29.6)
+  - Adjust/Core (4.29.6)
   - Aerodramus (2.0.0):
     - ISO8601DateFormatter
   - AFNetworkActivityLogger (2.0.4):
@@ -65,7 +65,7 @@ PODS:
   - CocoaLumberjack/Core (3.7.2)
   - DHCShakeNotifier (0.2.0)
   - DoubleConversion (1.1.6)
-  - EDColor (1.0.0)
+  - EDColor (1.0.1)
   - Emission (1.21.52):
     - "Artsy+UIColors"
     - "Artsy+UIFonts (>= 3.0.0)"
@@ -147,10 +147,10 @@ PODS:
   - FBSnapshotTestCase/Core (2.1.4)
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
-  - Firebase/Auth (8.1.1):
+  - Firebase/Auth (8.1.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 8.1.0)
-  - Firebase/CoreOnly (8.1.1):
+  - Firebase/CoreOnly (8.1.0):
     - FirebaseCore (= 8.1.0)
   - FirebaseAuth (8.1.0):
     - FirebaseCore (~> 8.0)
@@ -161,10 +161,10 @@ PODS:
     - FirebaseCoreDiagnostics (~> 8.0)
     - GoogleUtilities/Environment (~> 7.4)
     - GoogleUtilities/Logger (~> 7.4)
-  - FirebaseCoreDiagnostics (8.1.0):
-    - GoogleDataTransport (~> 9.0)
-    - GoogleUtilities/Environment (~> 7.4)
-    - GoogleUtilities/Logger (~> 7.4)
+  - FirebaseCoreDiagnostics (8.9.0):
+    - GoogleDataTransport (~> 9.1)
+    - GoogleUtilities/Environment (~> 7.6)
+    - GoogleUtilities/Logger (~> 7.6)
     - nanopb (~> 2.30908.0)
   - Flipper (0.87.0):
     - Flipper-Folly (~> 2.5)
@@ -231,30 +231,30 @@ PODS:
   - Forgeries/Mocks (1.0.0):
     - Forgeries/Core
     - OCMock
-  - FXBlurView (1.6.1)
+  - FXBlurView (1.6.4)
   - glog (0.3.5)
-  - GoogleDataTransport (9.0.1):
+  - GoogleDataTransport (9.1.2):
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30908.0)
-    - PromisesObjC (~> 1.2)
+    - PromisesObjC (< 3.0, >= 1.2)
   - GoogleSignIn (5.0.2):
     - AppAuth (~> 1.2)
     - GTMAppAuth (~> 1.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleUtilities/AppDelegateSwizzler (7.4.1):
+  - GoogleUtilities/AppDelegateSwizzler (7.6.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (7.4.1):
-    - PromisesObjC (~> 1.2)
-  - GoogleUtilities/Logger (7.4.1):
+  - GoogleUtilities/Environment (7.6.0):
+    - PromisesObjC (< 3.0, >= 1.2)
+  - GoogleUtilities/Logger (7.6.0):
     - GoogleUtilities/Environment
-  - GoogleUtilities/Network (7.4.1):
+  - GoogleUtilities/Network (7.6.0):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (7.4.1)"
-  - GoogleUtilities/Reachability (7.4.1):
+  - "GoogleUtilities/NSData+zlib (7.6.0)"
+  - GoogleUtilities/Reachability (7.6.0):
     - GoogleUtilities/Logger
   - GTMAppAuth (1.2.2):
     - AppAuth/Core (~> 1.4)
@@ -297,7 +297,7 @@ PODS:
   - ORKeyboardReactingApplication (0.5.3)
   - ORStackView (2.0.3):
     - FLKAutoLayout
-  - PromisesObjC (1.2.12)
+  - PromisesObjC (2.0.0)
   - Pulley (2.6.2)
   - Quick (2.0.0)
   - RCT-Folly (2021.06.28.00-v2):
@@ -682,7 +682,7 @@ PODS:
   - SDWebImage (5.8.3):
     - SDWebImage/Core (= 5.8.3)
   - SDWebImage/Core (5.8.3)
-  - Segment-Adjust (3.1.2):
+  - Segment-Adjust (3.1.4):
     - Adjust (~> 4.29.3)
     - Analytics
   - Segment-Appboy (4.2.0):
@@ -714,33 +714,33 @@ PODS:
 DEPENDENCIES:
   - Aerodramus (= 2.0.0)
   - AFNetworkActivityLogger
-  - AFNetworking/NSURLConnection (~> 2.5)
-  - AFNetworking/NSURLSession (~> 2.5)
-  - AFNetworking/Reachability (~> 2.5)
-  - AFNetworking/Security (~> 2.5)
-  - AFNetworking/Serialization (~> 2.5)
+  - AFNetworking/NSURLConnection (= 2.7.0)
+  - AFNetworking/NSURLSession (= 2.7.0)
+  - AFNetworking/Reachability (= 2.7.0)
+  - AFNetworking/Security (= 2.7.0)
+  - AFNetworking/Serialization (= 2.7.0)
   - AFOAuth1Client (from `https://github.com/artsy/AFOAuth1Client.git`, tag `0.4.0-subspec-fix`)
   - ARGenericTableViewController (from `https://github.com/artsy/ARGenericTableViewController.git`)
   - "Artsy+UIColors"
-  - "Artsy+UIFonts (~> 3.3.4)"
+  - "Artsy+UIFonts (= 3.3.4)"
   - "Artsy+UILabels"
   - Artsy-UIButtons
   - boost (from `./node_modules/react-native/third-party-podspecs/boost.podspec`)
   - BVLinearGradient (from `node_modules/react-native-linear-gradient`)
   - CocoaLumberjack (= 3.7.2)
-  - DHCShakeNotifier
+  - DHCShakeNotifier (= 0.2.0)
   - DoubleConversion (from `./node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
-  - EDColor
+  - EDColor (= 1.0.1)
   - Emission (from `./emission`)
   - Expecta (= 1.0.6)
   - "Expecta+Snapshots (= 3.1.1)"
   - Extraction
   - FBLazyVector (from `./node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `./node_modules/react-native/React/FBReactNativeSpec`)
-  - FBSDKCoreKit (~> 9.3)
-  - FBSDKLoginKit (~> 9.3)
-  - FBSDKShareKit (~> 9.3)
-  - Firebase/Auth
+  - FBSDKCoreKit (= 9.3.0)
+  - FBSDKLoginKit (= 9.3.0)
+  - FBSDKShareKit (= 9.3.0)
+  - Firebase/Auth (= 8.1.0)
   - Flipper (= 0.87.0)
   - Flipper-Boost-iOSX (= 1.76.0.1.11)
   - Flipper-DoubleConversion (= 3.1.7)
@@ -764,9 +764,9 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (= 0.87.0)
   - FLKAutoLayout (from `https://github.com/artsy/FLKAutoLayout.git`, branch `v1`)
   - Forgeries/Mocks
-  - FXBlurView
+  - FXBlurView (= 1.6.4)
   - glog (from `./node_modules/react-native/third-party-podspecs/glog.podspec`)
-  - GoogleSignIn (~> 5.0.2)
+  - GoogleSignIn (= 5.0.2)
   - Interstellar/Core (from `https://github.com/artsy/Interstellar.git`, branch `observable-unsubscribe`)
   - ISO8601DateFormatter (from `https://github.com/artsy/iso-8601-date-formatter`)
   - JLRoutes (from `https://github.com/artsy/JLRoutes.git`)
@@ -782,7 +782,7 @@ DEPENDENCIES:
   - ObjectiveSugar
   - OCMock
   - OHHTTPStubs
-  - ORKeyboardReactingApplication
+  - ORKeyboardReactingApplication (= 0.5.3)
   - ORStackView (= 2.0.3)
   - Pulley (from `https://github.com/artsy/Pulley.git`, branch `master`)
   - Quick (= 2.0.0)
@@ -849,12 +849,12 @@ DEPENDENCIES:
   - "RNSplit (from `node_modules/@splitsoftware/splitio-react-native`)"
   - RNSVG (from `node_modules/react-native-svg`)
   - SDWebImage (= 5.8.3)
-  - Segment-Adjust
-  - Segment-Appboy
+  - Segment-Adjust (= 3.1.4)
+  - Segment-Appboy (= 4.2.0)
   - Specta
-  - Starscream
+  - Starscream (= 3.0.4)
   - SwiftyJSON
-  - Then
+  - Then (= 2.3.0)
   - tipsi-stripe (from `node_modules/tipsi-stripe`)
   - UICKeyChainStore
   - "UIView+BooleanAnimations"
@@ -1127,7 +1127,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/artsy/Pulley.git
 
 SPEC CHECKSUMS:
-  Adjust: ad533ac69e620bda48fa26a26fea2343aba39449
+  Adjust: 94f1c99429fb2a7ebe530294fd66a88d63a54922
   Aerodramus: a22de7451c8fc85ae5d974f5d6a656f59046fffc
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 8dd5f9b9691e09186393069a12cc3b5ed7c8b511
@@ -1147,7 +1147,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: b7e05132ff94f6ae4dfa9d5bce9141893a21d9da
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
-  EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
+  EDColor: 91d127cd67d7c1d3862846fb11ef4b3851151bfa
   Emission: 8f3d65a1108812947dd989727f05abce92d2b4f5
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": dcff217eef506dabd6dfdc7864ea2da321fafbb8
@@ -1158,10 +1158,10 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: aea68df6121c5e165ccae2fabfdc83c4644ee40f
   FBSDKShareKit: 70889c97c62f0c6b3ccb8b999e73a85f19024001
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
-  Firebase: 4bb49ae87756034cef870fa3c4006235eb46f475
+  Firebase: b5956acddaaa53a6c292bec00649fadd18367344
   FirebaseAuth: e069ff5736fe9d5dcf61f36244bb1b1ce1897d17
   FirebaseCore: 389c4ce9a7cce4a7e25eb22326b4bee0050557b2
-  FirebaseCoreDiagnostics: 3e249cee3de5c5f9cfd6cc2a19997231286fec11
+  FirebaseCoreDiagnostics: 5daa63f1c1409d981a2d5007daa100b36eac6a34
   Flipper: 1bd2db48dcc31e4b167b9a33ec1df01c2ded4893
   Flipper-Boost-iOSX: fd1e2b8cbef7e662a122412d7ac5f5bea715403c
   Flipper-DoubleConversion: 57ffbe81ef95306cc9e69c4aa3aeeeeb58a6a28c
@@ -1174,11 +1174,11 @@ SPEC CHECKSUMS:
   FLKAutoLayout: 106b14dbae09d32c6730190f4e78a959759ba4a4
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   Forgeries: 64ced144ea8341d89a7eec9d1d7986f0f1366250
-  FXBlurView: 5121730176fd52bcf7bffd0bd8c1485e8aabc3cb
-  glog: 85ecdd10ee8d8ec362ef519a6a45ff9aa27b2e85
-  GoogleDataTransport: 04c3e9a480bbcaa2ec3f5d27f1cdeb6a92f20c8d
+  FXBlurView: db786c2561cb49a09ae98407f52460096ab8a44f
+  glog: 5337263514dd6f09803962437687240c5dc39aa4
+  GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
-  GoogleUtilities: f8a43108b38a68eebe8b3540e1f4f2d28843ce20
+  GoogleUtilities: 684ee790a24f73ebb2d1d966e9711c203f2a4237
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   Interstellar: ab67502af03105f92100a043e178d188a1a437c9
@@ -1204,10 +1204,10 @@ SPEC CHECKSUMS:
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
   ORKeyboardReactingApplication: 05af5ead40af968d5423d54b6a0dc050858b0e82
   ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
-  PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
+  PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   Pulley: edc993fb57f7eb20541c8453d0fce10559f21dac
   Quick: ce1276c7c27ba2da3cb2fd0cde053c3648b3b22d
-  RCT-Folly: 803a9cfd78114b2ec0f140cfa6fa2a6bafb2d685
+  RCT-Folly: a21c126816d8025b547704b777a2ba552f3d9fa9
   RCTRequired: 4bf86c70714490bca4bf2696148638284622644b
   RCTTypeSafety: c475a7059eb77935fa53d2c17db299893f057d5d
   React: f64af14e3f2c50f6f2c91a5fd250e4ff1b3c3459
@@ -1268,7 +1268,7 @@ SPEC CHECKSUMS:
   RNSplit: 5c78d865a08e56dd125968ba1b529358f0b9f537
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   SDWebImage: 112503ec94a5a2a41869503844a15e8d8f1ead5c
-  Segment-Adjust: 7646c502b087a153d89a42059dd53e6d1d143737
+  Segment-Adjust: 1a12861ab2e9372fc70af949057490858666cd37
   Segment-Appboy: 5688916eb8fb104b638116ba251cee5d4d8bd266
   Sentry: 9a4e621430e2dae4477d791f2f7e905720b6efbf
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
@@ -1284,6 +1284,6 @@ SPEC CHECKSUMS:
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 9afbdfb04de4b49a23cf4e2540528eecf7c85572
+PODFILE CHECKSUM: fd52db119fe739d73a72d610c91d601fe6d4fc3e
 
 COCOAPODS: 1.11.2
