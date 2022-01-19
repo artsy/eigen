@@ -80,6 +80,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
       try {
         let result: SavedSearchAlertMutationResult
+        const clearedAttributes = clearDefaultAttributes(attributes)
 
         /**
          * We perform the mutation only if
@@ -91,7 +92,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         }
 
         if (isUpdateForm) {
-          const criteria = isEnabledImprovedAlertsFlow ? getSearchCriteriaFromPills(pills) : null
+          const criteria = isEnabledImprovedAlertsFlow ? clearedAttributes : null
 
           const response = await updateSavedSearchAlert(savedSearchAlertId!, userAlertSettings, criteria)
           tracking.trackEvent(tracks.editedSavedSearch(savedSearchAlertId!, initialValues, values))
@@ -100,7 +101,6 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
             id: response.updateSavedSearch?.savedSearchOrErrors.internalID!,
           }
         } else {
-          const clearedAttributes = clearDefaultAttributes(attributes)
           const response = await createSavedSearchAlert(userAlertSettings, clearedAttributes)
 
           result = {
