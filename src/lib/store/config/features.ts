@@ -215,6 +215,11 @@ export const features = defineFeatures({
     description: "Enable search with image",
     showInAdminMenu: true,
   },
+  AREnableCollectorProfile: {
+    readyForRelease: false,
+    description: "Enable collector profile",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
