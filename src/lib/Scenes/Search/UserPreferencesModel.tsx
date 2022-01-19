@@ -2,7 +2,7 @@ import { Action, action } from "easy-peasy"
 import { getCurrencies } from "react-native-localize"
 
 const currencies = ["USD", "EUR", "GBP"] as const
-const metrics = ["in", "cm", ""] as const
+const metrics = ["in", "cm"] as const
 
 export type Currency = typeof currencies[number]
 export type Metric = typeof metrics[number]
@@ -11,7 +11,8 @@ export type Metric = typeof metrics[number]
 const userCurrencies = getCurrencies()
 
 const DEFAULT_CURRENCY =
-  (userCurrencies.find((currency) => currencies.includes(currency as Currency)) as Currency) ?? "USD"
+  (userCurrencies.find((userCurrency) => (currencies as unknown as string[]).includes(userCurrency)) as Currency) ??
+  "USD"
 const DEFAULT_METRIC = ""
 
 // please update this when adding new user preferences
@@ -22,7 +23,7 @@ export interface UserPreferences {
 
 export interface UserPreferencesModel {
   currency: Currency
-  metric: Metric
+  metric: Metric | ""
   setCurrency: Action<this, Currency>
   setMetric: Action<this, Metric>
 }

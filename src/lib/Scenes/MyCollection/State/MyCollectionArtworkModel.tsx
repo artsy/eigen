@@ -30,7 +30,7 @@ export interface ArtworkFormValues {
   height: string
   isEdition: boolean
   medium: string
-  metric: Metric
+  metric: Metric | ""
   photos: Image[]
   provenance: string
   title: string
