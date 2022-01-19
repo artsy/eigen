@@ -73,6 +73,7 @@
     "update-metaphysics": "node scripts/update-metaphysics.js",
     "new-start": "react-native start",
     "new-ios": "react-native run-ios",
+    "new-pod-install": "cd ios; bundle exec pod install",
     "new-lint": "eslint ."
   },
   "repository": {
