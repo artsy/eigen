@@ -3,7 +3,7 @@ import { FormikProvider, useFormik, useFormikContext } from "formik"
 import { BackButton } from "lib/navigation/BackButton"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Button, Flex, Input, Spacer, Text, useColor } from "palette"
+import { Box, Button, Flex, Input, Message, Spacer, Text, useColor } from "palette"
 import React, { useRef } from "react"
 import { ScrollView, View } from "react-native"
 import * as Yup from "yup"
@@ -28,7 +28,7 @@ export const otpSchema = Yup.object().shape({
   otp: Yup.string().test("otp", "This field is required", (value) => value !== ""),
 })
 
-export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPProps> = ({ navigation }) => {
+export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPProps> = ({ navigation, otpMode }) => {
   const color = useColor()
 
   const { values, handleChange, handleSubmit, errors, setErrors, isValid, dirty, isSubmitting, validateForm } =
@@ -44,8 +44,19 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPProps> =
       >
         <Spacer mt={60} />
         <Text variant="lg">Authentication Code</Text>
-        <Spacer mt={50} />
         <Box>
+          {otpMode === "on_demand" ? (
+            <>
+              <Spacer mb={20} />
+              <Message>
+                Your safety and security are important to us. Please check your email for a one-time authentication code
+                to complete your login.
+              </Message>
+              <Spacer mb={20} />
+            </>
+          ) : (
+            <Spacer mt={50} />
+          )}
           <Input
             ref={otpInputRef}
             autoCapitalize="none"
