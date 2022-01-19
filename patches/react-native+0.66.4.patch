@@ -45,7 +45,7 @@ index efb12af..09b5978 100644
        config,
        onAnimationComplete ?? function() {},
 diff --git a/node_modules/react-native/React/Base/RCTTouchHandler.m b/node_modules/react-native/React/Base/RCTTouchHandler.m
-index b4dab8e..8f606b5 100644
+index b4dab8e..2195f8e 100644
 --- a/node_modules/react-native/React/Base/RCTTouchHandler.m
 +++ b/node_modules/react-native/React/Base/RCTTouchHandler.m
 @@ -14,6 +14,7 @@
@@ -73,3 +73,20 @@ index b4dab8e..8f606b5 100644
      // Get new, unique touch identifier for the react touch
      const NSUInteger RCTMaxTouches = 11; // This is the maximum supported by iDevices
      NSInteger touchID = ([_reactTouches.lastObject[@"identifier"] integerValue] + 1) % RCTMaxTouches;
+diff --git a/node_modules/react-native/scripts/find-node.sh b/node_modules/react-native/scripts/find-node.sh
+index c498ba6..d5793ed 100755
+--- a/node_modules/react-native/scripts/find-node.sh
++++ b/node_modules/react-native/scripts/find-node.sh
+@@ -37,3 +37,12 @@ if [[ ! -x node && -d ${HOME}/.anyenv/bin ]]; then
+     eval "$(anyenv init -)"
+   fi
+ fi
++
++# Set up asdf-vm if present
++if [[ -f "$HOME/.asdf/asdf.sh" ]]; then
++  # shellcheck source=/dev/null
++  . "$HOME/.asdf/asdf.sh"
++elif [[ -x "$(command -v brew)" && -f "$(brew --prefix asdf)/asdf.sh" ]]; then
++  # shellcheck source=/dev/null
++  . "$(brew --prefix asdf)/asdf.sh"
++fi
