@@ -12,6 +12,7 @@ import { getNativeModel, NativeModel } from "./NativeModel"
 import { getPendingPushNotificationModel, PendingPushNotificationModel } from "./PendingPushNotificationModel"
 import { assignDeep, sanitize } from "./persistence"
 import { getToastModel, ToastModel } from "./ToastModel"
+import { getVisualClueModel, VisualClueModel } from "./VisualClueModel"
 
 interface GlobalStoreStateModel {
   version: number
@@ -28,6 +29,7 @@ interface GlobalStoreStateModel {
   toast: ToastModel
   pendingPushNotification: PendingPushNotificationModel
   userPreferences: UserPreferencesModel
+  visualClue: VisualClueModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
@@ -98,6 +100,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   toast: getToastModel(),
   pendingPushNotification: getPendingPushNotificationModel(),
   userPreferences: getUserPreferencesModel(),
+  visualClue: getVisualClueModel(),
 
   // for dev only.
   _setVersion: action((state, newVersion) => {
