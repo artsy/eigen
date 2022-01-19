@@ -91,7 +91,9 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         }
 
         if (isUpdateForm) {
-          const response = await updateSavedSearchAlert(userAlertSettings, savedSearchAlertId!)
+          const criteria = isEnabledImprovedAlertsFlow ? getSearchCriteriaFromPills(pills) : null
+
+          const response = await updateSavedSearchAlert(savedSearchAlertId!, userAlertSettings, criteria)
           tracking.trackEvent(tracks.editedSavedSearch(savedSearchAlertId!, initialValues, values))
 
           result = {
