@@ -199,7 +199,7 @@
     "@babel/runtime": "7.12.5",
     "@octokit/rest": "16.34.0",
     "@omakase/cli": "0.0.10",
-    "@react-native-community/cli-platform-ios": "3.0.0",
+    "@react-native-community/cli-platform-ios": "^6.2.0",
     "@react-native-community/eslint-config": "^3.0.1",
     "@storybook/addon-actions": "5.3.21",
     "@storybook/react-native": "5.3.25",
