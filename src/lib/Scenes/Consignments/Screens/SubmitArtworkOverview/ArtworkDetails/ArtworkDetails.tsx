@@ -23,7 +23,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) =
     const artworkDetailsForm = {
       ...values,
       editionNumber: isRarityLimitedEdition ? values.editionNumber : "",
-      editionSizeFormatted: isRarityLimitedEdition ? values.editionSize : "",
+      editionSizeFormatted: isRarityLimitedEdition ? values.editionSizeFormatted : "",
     }
 
     let submissionId: string | undefined = (await AsyncStorage.getItem(CONSIGNMENT_SUBMISSION_STORAGE_ID)) || undefined

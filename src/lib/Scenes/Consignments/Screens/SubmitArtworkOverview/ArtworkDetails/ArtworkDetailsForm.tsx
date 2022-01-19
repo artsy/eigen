@@ -1,4 +1,5 @@
 import { useFormikContext } from "formik"
+import { artworkRarityClassifications } from "lib/utils/artworkRarityClassifications"
 import { SimpleLocation } from "lib/utils/googleMaps"
 import { Box, Flex, Input, InputTitle, RadioButton, Spacer, Text } from "palette"
 import { Select } from "palette/elements/Select"
@@ -17,7 +18,7 @@ export interface ArtworkDetailsFormModel {
   materials: string
   rarity: string
   editionNumber: string
-  editionSize: string
+  editionSizeFormatted: string
   units: string
   height: string
   width: string
@@ -76,9 +77,15 @@ export const ArtworkDetailsForm: React.FC = () => {
       <InfoModal
         title="Classifications"
         visible={isRarityInfoModalVisible}
-        isRarity
         onDismiss={() => setIsRarityInfoModalVisible(false)}
-      />
+      >
+        {artworkRarityClassifications.map((classification) => (
+          <Flex mb={2} key={classification.label}>
+            <InputTitle>{classification.label}</InputTitle>
+            <Text>{classification.description}</Text>
+          </Flex>
+        ))}
+      </InfoModal>
       {values.rarity === limitedEditionValue && (
         <>
           <Spacer mt={2} />
@@ -95,8 +102,8 @@ export const ArtworkDetailsForm: React.FC = () => {
               <Input
                 title="Edition Size"
                 testID="Consignment_EditionSizeInput"
-                value={values.editionSize}
-                onChangeText={(e) => setFieldValue("editionSize", e)}
+                value={values.editionSizeFormatted}
+                onChangeText={(e) => setFieldValue("editionSizeFormatted", e)}
               />
             </Box>
           </Flex>
@@ -154,9 +161,22 @@ export const ArtworkDetailsForm: React.FC = () => {
       <InfoModal
         title="Artwork Provenance"
         visible={isProvenanceInfoModalVisible}
-        isRarity={false}
         onDismiss={() => setIsProvenanceInfoModalVisible(false)}
-      />
+      >
+        <Flex mb={4}>
+          <Text>
+            Provenance is the documented history of an artwork’s ownership and authenticity. Please list any
+            documentation you have that proves your artwork’s provenance, such as:
+          </Text>
+        </Flex>
+
+        <Flex flexDirection="column">
+          <Text> • Invoices from previous owners</Text>
+          <Text> • Certificates of authenticity</Text>
+          <Text> • Gallery exhibition catalogues</Text>
+        </Flex>
+      </InfoModal>
+
       <Spacer mt={2} />
       <LocationAutocomplete onChange={(e: SimpleLocation) => setFieldValue("location", e.name)} />
     </Flex>
