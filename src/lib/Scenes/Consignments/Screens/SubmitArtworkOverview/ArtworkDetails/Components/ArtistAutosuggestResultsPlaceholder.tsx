@@ -9,15 +9,14 @@ const IMAGE_SIZE = 40
 export const ArtistAutosuggestResultsPlaceholder: React.FC = () => {
   return (
     <Flex
-      p={1}
-      mb={1}
-      mt={1}
       style={{
         flex: 1,
         borderStyle: "solid",
         borderColor: "#707070",
         borderWidth: 1,
+        padding: 1,
         marginTop: 3,
+        marginBottom: 1,
       }}
     >
       {times(20).map((index) => (

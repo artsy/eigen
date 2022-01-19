@@ -118,8 +118,8 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
       }
       renderItem={({ item, index }) => {
         return (
-          <Flex mb={1}>
-            <ArtistAutosuggestRow highlight={query} result={item} onResultPress={onResultPress} itemIndex={index} />
+          <Flex key={index} mb={1}>
+            <ArtistAutosuggestRow highlight={query} result={item} onResultPress={onResultPress} />
             <Separator mt={1} />
           </Flex>
         )
