@@ -21,7 +21,7 @@ describe("FilteredArtworkGridZeroState", () => {
 
   it("displays correct text", () => {
     const { getByText } = renderWithWrappersTL(<TestWrapper />)
-    expect(getByText("No results found\nPlease try another search.")).toBeDefined()
+    expect(getByText("No results found Please try another search.")).toBeTruthy()
   })
 
   it(`displays "Clear filters" button`, () => {

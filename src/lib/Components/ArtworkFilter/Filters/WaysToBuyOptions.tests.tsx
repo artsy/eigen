@@ -1,3 +1,4 @@
+import { within } from "@testing-library/react-native"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "lib/Components/ArtworkFilter/FilterTestHelper"
@@ -85,8 +86,7 @@ describe("Ways to Buy Options Screen", () => {
     }
 
     const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
-
-    expect(getByText("Ways to Buy • 3")).toBeTruthy()
+    expect(within(getByText("Ways to Buy")).getByText("• 3")).toBeTruthy()
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {

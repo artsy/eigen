@@ -12,7 +12,7 @@ describe("ArtistSeriesFilterHeader", () => {
     )
 
     expect(getByText("Sort & Filter")).toBeTruthy()
-    expect(getByText(" • 3")).toBeTruthy()
+    expect(getByText("• 3")).toBeTruthy()
   })
 
   it("should call `onFilterPress` when `sort & filter` button is pressed", () => {
