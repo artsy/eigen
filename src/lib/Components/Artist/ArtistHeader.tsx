@@ -1,7 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtistHeader_artist } from "__generated__/ArtistHeader_artist.graphql"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { formatLargeNumberOfItems } from "lib/utils/formatLargeNumberOfItems"
 import { userHadMeaningfulInteraction } from "lib/utils/userHadMeaningfulInteraction"
 import { Box, bullet, Flex, FollowButton, Sans, ShareIcon, Spacer, Touchable, useSpace } from "palette"
@@ -23,7 +22,6 @@ interface Props {
 export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
   const { trackEvent } = useTracking()
   const space = useSpace()
-  const isShareButtonEnabled = useFeatureFlag("AREnableShareButtonForArtist")
 
   const [isFollowedChanging, setIsFollowedChanging] = useState(false)
   const [shareSheetVisible, setShareSheetVisible] = useState(false)
@@ -133,11 +131,9 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
   return (
     <Box px={2} pb={1}>
       <Box height={space(6)} flexDirection="row" alignItems="center" justifyContent="flex-end">
-        {!!isShareButtonEnabled && (
-          <Touchable haptic onPress={handleSharePress}>
-            <ShareIcon width={25} height={25} mt={0.5} />
-          </Touchable>
-        )}
+        <Touchable haptic onPress={handleSharePress}>
+          <ShareIcon width={25} height={25} mt={0.5} />
+        </Touchable>
       </Box>
       <Sans size="8">{artist.name}</Sans>
       <Spacer mb={1} />
