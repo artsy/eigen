@@ -62,7 +62,7 @@ describe("ViewingRoomArtworkRail", () => {
     )
   })
 
-  it("renders one artwork card per edge", () => {
+  it("renders artworks", () => {
     const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironment.mock.resolveMostRecentOperation((operation) => {
       const result = MockPayloadGenerator.generate(operation, {

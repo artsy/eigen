@@ -13,19 +13,20 @@ interface ViewingRoomArtworkRailProps {
   viewingRoom: ViewingRoomArtworkRail_viewingRoom
 }
 
-export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = (props) => {
-  const viewingRoom = props.viewingRoom
-  const totalCount = viewingRoom.artworks?.totalCount
+export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = ({ viewingRoom }) => {
   const tracking = useTracking()
-  const pluralizedArtworksCount = totalCount === 1 ? "artwork" : "artworks"
 
-  const artworks = extractNodes(props.viewingRoom?.artworks)
+  const artworks = extractNodes(viewingRoom?.artworks)
+
+  const totalCount = viewingRoom.artworks?.totalCount
+  const pluralizedArtworksCount = totalCount === 1 ? "artwork" : "artworks"
+  const title = `${typeof totalCount === "number" ? totalCount : ""} ${pluralizedArtworksCount}`
 
   return (
     <Flex>
       <Flex mx="2">
         <SectionTitle
-          title={`${totalCount} ${pluralizedArtworksCount}`}
+          title={title}
           onPress={() => {
             tracking.trackEvent(tracks.tappedArtworkGroupHeader(viewingRoom.internalID, viewingRoom.slug))
             navigate(`/viewing-room/${viewingRoom.slug}/artworks`)
