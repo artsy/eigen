@@ -3,10 +3,10 @@ import Foundation
 struct ArtworkImage: Codable {
     static func fallback() -> ArtworkImage {
         let artwork = Fixtures.primaryArtwork
-        let imageUrl = artwork.artworkImages.first!.imageUrl
-        let artworkImage = ArtworkImage(imageUrl: imageUrl)
+        let token = artwork.artworkImages.first!.geminiToken
+        let artworkImage = ArtworkImage(geminiToken: token)
         return artworkImage
     }
     
-    let imageUrl: String
+    let geminiToken: String
 }
