@@ -124,8 +124,7 @@ export const OnboardingLoginWithOTP: React.FC<OnboardingLoginWithOTPProps> = ({ 
       if (res === "invalid_otp") {
         setErrors({ otp: "Invalid two-factor authentication code" })
       } else if (res !== "success") {
-        // TODO: What should generic error be?
-        setErrors({ otp: "Something went wrong" })
+        setErrors({ otp: "Something went wrong. Please try again, or contact support@artsy.net" })
       }
     },
     validationSchema: otpSchema,
