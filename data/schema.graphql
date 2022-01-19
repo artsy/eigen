@@ -672,6 +672,8 @@ type Article implements Node {
   cached: Int
   channelID: String
   contributingAuthors: [Author]
+  description: String
+  hero: ArticleHero
   href: String
 
   # A globally unique ID.
@@ -679,6 +681,9 @@ type Article implements Node {
 
   # A type-specific ID.
   internalID: ID!
+  keywords: [String!]!
+  layout: ArticleLayout!
+  postscript: String
   publishedAt(
     format: String
 
@@ -687,7 +692,14 @@ type Article implements Node {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
-  sections: [ArticleSectionsType]
+  relatedArticles(
+    # Enables configuration for loading the type of articles that sit in between full-page articles
+    inVertical: Boolean = false
+
+    # Number of articles to return
+    size: Int = 3
+  ): [Article!]!
+  sections: [ArticleSections!]!
   slug: String
   thumbnailImage: Image
   thumbnailTeaser: String
@@ -725,6 +737,33 @@ type ArticleEdge {
   node: Article
 }
 
+type ArticleFeatureSection {
+  image: Image
+  layout: ArticleFeatureSectionType!
+  title: String
+}
+
+enum ArticleFeatureSectionType {
+  BASIC
+  FULLSCREEN
+  SPLIT
+  TEXT
+}
+
+union ArticleHero = ArticleFeatureSection
+
+type ArticleImageSection {
+  caption: String
+  id: ID!
+  image: Image
+  layout: String
+}
+
+enum ArticleLayout {
+  FEATURE
+  STANDARD
+}
+
 type ArticleSectionCallout {
   article: String
   hideImage: String
@@ -743,23 +782,38 @@ type ArticleSectionEmbed {
 }
 
 type ArticleSectionImageCollection {
-  layout: String
-  type: String
+  figures: [ArticleSectionImageCollectionFigure!]!
+  layout: ArticleSectionImageCollectionLayout!
+}
+
+union ArticleSectionImageCollectionFigure = ArticleImageSection | Artwork
+
+enum ArticleSectionImageCollectionLayout {
+  COLUMN_WIDTH
+  FILLWIDTH
+  OVERFLOW_FILLWIDTH
 }
 
 type ArticleSectionImageSet {
-  layout: String
+  counts: ArticleSectionImageSetCounts!
+  cover: ArticleSectionImageSetFigure
+  figures: [ArticleSectionImageSetFigure!]!
+  layout: ArticleSectionImageSetLayout!
   title: String
-  type: String
 }
 
-type ArticleSectionSocialEmbed {
-  layout: String
-  type: String
-  url: String
+type ArticleSectionImageSetCounts {
+  figures: Int!
 }
 
-union ArticleSectionsType =
+union ArticleSectionImageSetFigure = ArticleImageSection | Artwork
+
+enum ArticleSectionImageSetLayout {
+  FULL
+  MINI
+}
+
+union ArticleSections =
     ArticleSectionCallout
   | ArticleSectionEmbed
   | ArticleSectionImageCollection
@@ -768,10 +822,15 @@ union ArticleSectionsType =
   | ArticleSectionText
   | ArticleSectionVideo
 
+type ArticleSectionSocialEmbed {
+  layout: String
+  type: String
+  url: String
+}
+
 type ArticleSectionText {
   body: String
   layout: String
-  type: String
 }
 
 type ArticleSectionVideo {
@@ -2672,7 +2731,7 @@ type CollectorProfileType {
     timezone: String
   ): String
   name: String
-  privacy: Int
+  privacy: String
   professionalBuyerAppliedAt(
     format: String
 
@@ -8645,7 +8704,7 @@ type Me implements Node {
     before: String
 
     # Exclude artworks that have been purchased on Artsy and automatically added to the collection.
-    excludePurchasedArtworks: Boolean = true
+    excludePurchasedArtworks: Boolean = false
     first: Int
     last: Int
     sort: MyCollectionArtworkSorts
@@ -8669,6 +8728,9 @@ type Me implements Node {
   ): CommerceOrderConnectionWithTotalCount
   paddleNumber: String
 
+  # A list of the current user’s managed partners
+  partners: [Partner]
+
   # The user's most current pending identity verification, if it exists
   pendingIdentityVerification: IdentityVerification
   phone: String
@@ -8676,7 +8738,7 @@ type Me implements Node {
   priceRange: String
   priceRangeMax: Float
   priceRangeMin: Float
-  privacy: Int
+  privacy: String
   profession: String
 
   # This user should receive lot opening notifications
@@ -12700,7 +12762,7 @@ type UpdateCollectorProfilePayload {
     timezone: String
   ): String
   name: String
-  privacy: Int
+  privacy: String
   professionalBuyerAppliedAt(
     format: String
 
@@ -12802,7 +12864,7 @@ input UpdateMyProfileInput {
   priceRangeMin: Int
 
   # Wheter or not the collector shares detailed profile information with galleries.
-  privacy: Int
+  privacy: String
 
   # Profession.
   profession: String

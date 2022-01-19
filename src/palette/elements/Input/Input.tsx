@@ -1,8 +1,10 @@
 import { themeGet } from "@styled-system/theme-get"
 import { EventEmitter } from "events"
+import { ImageSearchModal } from "lib/Scenes/Search/components/ImageSearchModal"
 import { MeasuredView } from "lib/utils/MeasuredView"
+import { useImageSearch } from "lib/utils/useImageSearch"
 import _ from "lodash"
-import { Color, EyeOpenedIcon, Flex, Spinner, Text, useTheme, XCircleIcon } from "palette"
+import { CameraIcon, Color, EyeOpenedIcon, Flex, Spinner, Text, useTheme, XCircleIcon } from "palette"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,
@@ -63,6 +65,7 @@ export interface InputProps extends Omit<TextInputProps, "placeholder"> {
   canHidePassword?: boolean
   inputTextStyle?: TextStyle
   addClearListener?: boolean
+  showCamera?: boolean
   onClear?(): void
   renderLeftHandSection?(): JSX.Element
 }
@@ -93,12 +96,14 @@ export const Input = React.forwardRef<TextInput, InputProps>(
       multiline,
       maxLength,
       showLimit,
+      showCamera,
       addClearListener = false,
       ...rest
     },
     ref
   ) => {
     const { color, theme } = useTheme()
+    const { capturePhoto, isModalVisible, setIsModalVisible, errorMessage, isLoading } = useImageSearch()
     const [focused, setFocused] = useState(false)
     const [showPassword, setShowPassword] = useState(!secureTextEntry)
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
@@ -220,6 +225,14 @@ export const Input = React.forwardRef<TextInput, InputProps>(
 
     return (
       <Flex flexGrow={1} style={containerStyle}>
+        {!!showCamera && (
+          <ImageSearchModal
+            onDismiss={() => setIsModalVisible(false)}
+            isVisible={isModalVisible}
+            isLoading={isLoading}
+            errorMessage={errorMessage}
+          />
+        )}
         <Flex flexDirection="row" alignItems="center">
           <InputTitle optional={optional} required={required}>
             {title}
@@ -297,6 +310,13 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 }}
               />
             </Flex>
+            {!!showCamera && (
+              <Flex pr="1" justifyContent="center" alignItems="center" flexGrow={0}>
+                <TouchableOpacity onPress={capturePhoto} hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}>
+                  <CameraIcon fill="black100" />
+                </TouchableOpacity>
+              </Flex>
+            )}
             {renderShowPasswordIcon()}
             {loading ? (
               <Flex pr="3" justifyContent="center" flexGrow={0}>

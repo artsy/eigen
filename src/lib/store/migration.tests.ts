@@ -423,3 +423,21 @@ describe("App version Versions.RemoveNativeOnboardingState", () => {
     expect(migratedState.native.onboardingState).toEqual(undefined)
   })
 })
+
+describe("App version Versions.AddUserPreferences", () => {
+  const migrationToTest = Versions.AddUserPreferences
+
+  it("adds UserPreferences to state", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.userPreferences).toEqual({ currency: "USD", metric: "" })
+  })
+})

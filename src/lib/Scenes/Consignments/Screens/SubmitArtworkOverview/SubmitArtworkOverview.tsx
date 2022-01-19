@@ -7,6 +7,8 @@ import React, { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { ArtworkDetails } from "./ArtworkDetails/ArtworkDetails"
 import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
+import { ContactInformation } from "./ContactInformation/ContactInformation"
+import { UploadPhotos } from "./UploadPhotos/UploadPhotos"
 
 export const CONSIGNMENT_SUBMISSION_STORAGE_ID = "CONSIGNMENT_SUBMISSION_STORAGE_ID"
 
