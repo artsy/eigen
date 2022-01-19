@@ -2981,6 +2981,7 @@ type CommerceBuyOrder implements CommerceOrder {
     thousand: String = ","
   ): String
   shippingTotalCents: Int
+  source: CommerceOrderSourceEnum!
   state: CommerceOrderStateEnum!
   stateExpiresAt(
     format: String
@@ -3654,6 +3655,7 @@ type CommerceOfferOrder implements CommerceOrder {
     thousand: String = ","
   ): String
   shippingTotalCents: Int
+  source: CommerceOrderSourceEnum!
   state: CommerceOrderStateEnum!
   stateExpiresAt(
     format: String
@@ -3834,6 +3836,7 @@ interface CommerceOrder {
     thousand: String = ","
   ): String
   shippingTotalCents: Int
+  source: CommerceOrderSourceEnum!
   state: CommerceOrderStateEnum!
   stateExpiresAt(
     format: String
@@ -4014,6 +4017,14 @@ union CommerceOrderPartyUnion = CommercePartner | CommerceUser
 type CommerceOrderRequiresAction {
   # Data related to action needed
   actionData: CommerceOrderActionData!
+}
+
+enum CommerceOrderSourceEnum {
+  # The order was originated on the artwork page
+  artwork_page
+
+  # The order was originated on a conversation
+  inquiry
 }
 
 type CommerceOrderStateChangedEvent implements CommerceEventInterface {
