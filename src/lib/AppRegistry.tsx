@@ -279,7 +279,7 @@ export const modules = defineModules({
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
   Articles: reactModule(ArticlesScreen, {}, ArticlesScreenQuery),
-  Artist: reactModule(ArtistQueryRenderer, {}, ArtistScreenQuery),
+  Artist: reactModule(ArtistQueryRenderer, { hidesBackButton: true }, ArtistScreenQuery),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer),

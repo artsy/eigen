@@ -42,6 +42,7 @@ describe(navigate, () => {
         Array [
           "home",
           Object {
+            "hidesBackButton": true,
             "moduleName": "Artist",
             "props": Object {
               "artistID": "banksy",
@@ -88,6 +89,7 @@ describe(navigate, () => {
         Array [
           "home",
           Object {
+            "hidesBackButton": true,
             "moduleName": "Artist",
             "props": Object {
               "artistID": "banksy",

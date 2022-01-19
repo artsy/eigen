@@ -3,14 +3,13 @@ import { ArtistHeader_artist } from "__generated__/ArtistHeader_artist.graphql"
 import { ArtistHeaderFollowArtistMutation } from "__generated__/ArtistHeaderFollowArtistMutation.graphql"
 import { formatLargeNumberOfItems } from "lib/utils/formatLargeNumberOfItems"
 import { userHadMeaningfulInteraction } from "lib/utils/userHadMeaningfulInteraction"
-import { Box, bullet, Flex, FollowButton, Sans, ShareIcon, Spacer, Touchable, useSpace } from "palette"
+import { Box, bullet, Flex, FollowButton, Sans, Spacer } from "palette"
 import React, { useState } from "react"
 import { Text } from "react-native"
 import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { Schema } from "../../utils/track"
-import { ShareSheet } from "../ShareSheet/ShareSheet"
 
 export const ARTIST_HEADER_HEIGHT = 156
 
@@ -21,10 +20,8 @@ interface Props {
 
 export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
   const { trackEvent } = useTracking()
-  const space = useSpace()
 
   const [isFollowedChanging, setIsFollowedChanging] = useState(false)
-  const [shareSheetVisible, setShareSheetVisible] = useState(false)
 
   const getBirthdayString = () => {
     const birthday = artist.birthday
@@ -120,21 +117,12 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
     setIsFollowedChanging(false)
   }
 
-  const handleSharePress = () => {
-    setShareSheetVisible(true)
-  }
-
   const descriptiveString = (artist.nationality || "") + getBirthdayString()
 
   const bylineRequired = artist.nationality || artist.birthday
 
   return (
-    <Box px={2} pb={1}>
-      <Box height={space(6)} flexDirection="row" alignItems="center" justifyContent="flex-end">
-        <Touchable haptic onPress={handleSharePress}>
-          <ShareIcon width={25} height={25} mt={0.5} />
-        </Touchable>
-      </Box>
+    <Box px={2} pt={6} pb={1}>
       <Sans size="8">{artist.name}</Sans>
       <Spacer mb={1} />
 
@@ -160,20 +148,6 @@ export const ArtistHeader: React.FC<Props> = ({ artist, relay }) => {
           <FollowButton haptic isFollowed={!!artist.isFollowed} onPress={handleFollowChange} />
         </Flex>
       </Flex>
-
-      <ShareSheet
-        entry={{
-          internalID: artist.internalID,
-          slug: artist.slug,
-          href: artist.href!,
-          artistNames: [artist.name!],
-          imageURL: artist.image?.url ?? undefined,
-        }}
-        ownerType={OwnerType.artist}
-        contextModule={ContextModule.artistHeader}
-        visible={shareSheetVisible}
-        setVisible={setShareSheetVisible}
-      />
     </Box>
   )
 }
@@ -184,7 +158,6 @@ export const ArtistHeaderFragmentContainer = createFragmentContainer(ArtistHeade
       id
       internalID
       slug
-      href
       isFollowed
       name
       nationality
@@ -192,9 +165,6 @@ export const ArtistHeaderFragmentContainer = createFragmentContainer(ArtistHeade
       counts {
         artworks
         follows
-      }
-      image {
-        url(version: "large")
       }
     }
   `,

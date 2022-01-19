@@ -8,7 +8,6 @@ export type ArtistHeader_artist = {
     readonly id: string;
     readonly internalID: string;
     readonly slug: string;
-    readonly href: string | null;
     readonly isFollowed: boolean | null;
     readonly name: string | null;
     readonly nationality: string | null;
@@ -16,9 +15,6 @@ export type ArtistHeader_artist = {
     readonly counts: {
         readonly artworks: number | null;
         readonly follows: number | null;
-    } | null;
-    readonly image: {
-        readonly url: string | null;
     } | null;
     readonly " $refType": "ArtistHeader_artist";
 };
@@ -55,13 +51,6 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "ScalarField",
       "name": "slug",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "href",
       "storageKey": null
     },
     {
@@ -116,34 +105,10 @@ const node: ReaderFragment = {
         }
       ],
       "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "Image",
-      "kind": "LinkedField",
-      "name": "image",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": [
-            {
-              "kind": "Literal",
-              "name": "version",
-              "value": "large"
-            }
-          ],
-          "kind": "ScalarField",
-          "name": "url",
-          "storageKey": "url(version:\"large\")"
-        }
-      ],
-      "storageKey": null
     }
   ],
   "type": "Artist",
   "abstractKey": null
 };
-(node as any).hash = '50f29873ff84ca26f527c9539a9821d4';
+(node as any).hash = '85b1e9bf69856f6babaa4bef03b1223f';
 export default node;

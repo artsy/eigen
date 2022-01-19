@@ -9,6 +9,7 @@ import {
 import { ArtistAboutContainer } from "lib/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeader"
+import { ArtistHeaderFloatingButtonsFragmentContainer } from "lib/Components/Artist/ArtistHeaderFloatingButtons"
 import { ArtistInsightsFragmentContainer } from "lib/Components/Artist/ArtistInsights/ArtistInsights"
 import { DEFAULT_ARTWORK_SORT } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { getOnlyFilledSearchCriteriaValues } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
@@ -43,6 +44,7 @@ interface ArtistProps {
 export const Artist: React.FC<ArtistProps> = (props) => {
   const { artistAboveTheFold, artistBelowTheFold, initialTab = INITIAL_TAB, searchCriteria, fetchCriteriaError } = props
   const popoverMessage = usePopoverMessage()
+
   const tabs: TabProps[] = []
   const displayAboutSection =
     artistAboveTheFold.has_metadata ||
@@ -117,6 +119,8 @@ export const Artist: React.FC<ArtistProps> = (props) => {
         <StickyTabPage
           staticHeaderContent={<ArtistHeaderFragmentContainer artist={artistAboveTheFold!} />}
           tabs={tabs}
+          bottomContent={<ArtistHeaderFloatingButtonsFragmentContainer artist={artistAboveTheFold} />}
+          disableBackButtonUpdate
         />
       </Flex>
     </ProvideScreenTracking>
@@ -142,6 +146,7 @@ export const ArtistScreenQuery = graphql`
       }
       ...ArtistHeader_artist
       ...ArtistArtworks_artist @arguments(input: $input)
+      ...ArtistHeaderFloatingButtons_artist
       statuses {
         artworks
         auctionLots
