@@ -11,7 +11,7 @@ interface ArtworkSubmittedScreenNavigationProps
 export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationProps> = ({ navigation }) => {
   return (
     <Box>
-      <ArtsyLogoHeader />
+      <ArtsyLogoHeader shadow />
       <Text variant="lg" mx="2">
         Your Artwork has been submitted
       </Text>
