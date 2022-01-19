@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, within } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import _ from "lodash"
@@ -61,9 +61,9 @@ describe("Saved search banner on artist screen", () => {
 
     fireEvent.press(getByText("Sort & Filter"))
 
-    expect(getByText("Sort By • 1")).toBeTruthy()
-    expect(getByText("Rarity • 2")).toBeTruthy()
-    expect(getByText("Ways to Buy • 2")).toBeTruthy()
+    expect(within(getByText("Sort By")).getByText("• 1")).toBeTruthy()
+    expect(within(getByText("Rarity")).getByText("• 2")).toBeTruthy()
+    expect(within(getByText("Ways to Buy")).getByText("• 2")).toBeTruthy()
   })
 
   it("should an error message when something went wrong during the search criteria query", async () => {
