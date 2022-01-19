@@ -8737,6 +8737,9 @@ type Me implements Node {
     sort: CommerceOrderConnectionSortEnum
     states: [CommerceOrderStateEnum!]
   ): CommerceOrderConnectionWithTotalCount
+
+  # Collector's position with relevant institutions
+  otherRelevantPosition: String
   paddleNumber: String
 
   # A list of the current user’s managed partners
@@ -12861,6 +12864,9 @@ input UpdateMyProfileInput {
 
   # Additional personal notes.
   notes: String
+
+  # Collector's position with relevant institutions
+  otherRelevantPosition: String
 
   # The user's password, required to change email address.
   password: String
