@@ -8,7 +8,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { LocalImage, retrieveLocalImages, storeLocalImages } from "lib/utils/LocalImageStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Avatar, Box, Button, Flex, Sans, useColor } from "palette"
+import { Avatar, Box, BriefcaseIcon, Button, Flex, Join, MapPinIcon, MuseumIcon, Sans, Spacer, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -115,6 +115,33 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
             <Sans size="2" color={color("black60")}>{`Member since ${new Date(me?.createdAt).getFullYear()}`}</Sans>
           )}
         </Box>
+      </Flex>
+
+      <Spacer m={1} />
+
+      <Flex px={2}>
+        <Join separator={<Spacer my={0.5} />}>
+          <Flex flexDirection="row" alignItems="center">
+            <MapPinIcon width={14} height={14} />
+            <Sans size="2" color={color("black100")} px={0.5}>
+              {"Berlin"}
+            </Sans>
+          </Flex>
+
+          <Flex flexDirection="row" alignItems="center">
+            <BriefcaseIcon width={14} height={14} />
+            <Sans size="2" color={color("black100")} px={0.5}>
+              {"Designer"}
+            </Sans>
+          </Flex>
+
+          <Flex flexDirection="row" alignItems="center">
+            <MuseumIcon width={14} height={14} />
+            <Sans size="2" color={color("black100")} px={0.5}>
+              {"Member of Guggenheim Museum Bilbao"}
+            </Sans>
+          </Flex>
+        </Join>
       </Flex>
       {!!me?.bio && showIconAndBio && (
         <Sans size="2" color={color("black100")} px={2} pt={2}>
