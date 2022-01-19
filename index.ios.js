@@ -4,6 +4,8 @@ global.__STORYBOOK__ = false
 // start storybook depending on content of storybook.json
 let startStorybook = false
 
+require("./src/lib/ignoreLogs")
+
 if (__DEV__) {
   try {
     const fileContent = require("./storybook.json")

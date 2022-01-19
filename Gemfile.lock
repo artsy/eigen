@@ -331,7 +331,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  cocoapods
+  cocoapods (= 1.11.2)
   cocoapods-check
   danger
   dotenv
@@ -346,4 +346,4 @@ DEPENDENCIES
   xcpretty
 
 BUNDLED WITH
-   2.2.11
+   2.3.5

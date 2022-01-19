@@ -40,7 +40,7 @@ allprojects {
 
         google()
         maven { url 'https://www.jitpack.io' }
-        maven { url "http://appboy.github.io/appboy-android-sdk/sdk" }
+        maven { url "https://appboy.github.io/appboy-android-sdk/sdk" }
         jcenter()
         maven {
             url 'https://api.mapbox.com/downloads/v2/releases/maven'
