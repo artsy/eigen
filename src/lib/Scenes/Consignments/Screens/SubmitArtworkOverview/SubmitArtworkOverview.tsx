@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-community/async-storage"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
 import { BackButton } from "lib/navigation/BackButton"
-import { CollapsibleMenuItem, CTAButton, Flex, Join, Separator, Spacer, Text } from "palette"
+import { CollapsibleMenuItem, Flex, Join, Separator, Spacer } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { ArtworkDetails } from "./ArtworkDetails/ArtworkDetails"
@@ -39,29 +39,24 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
       overtitle: "Step 2 of 3",
       title: "Upload Photos",
       Content: (
-        <Flex backgroundColor="peachpuff" p={1} mt={1}>
-          <Text>ContactInformation content</Text>
-          <Spacer mt={1} />
-          <CTAButton
-            onPress={() => {
-              expandCollapsibleMenuContent(2)
-              enableStep(2)
-            }}
-          >
-            Submit Artwork
-          </CTAButton>
-        </Flex>
+        <UploadPhotos
+          handlePress={() => {
+            expandCollapsibleMenuContent(2)
+            enableStep(2)
+          }}
+        />
       ),
     },
     {
       overtitle: "Step 3 of 3",
       title: "Contact Information",
       Content: (
-        <Flex backgroundColor="peachpuff" p={1} mt={1}>
-          <Text>ContactInformation content</Text>
-          <Spacer mt={1} />
-          <CTAButton onPress={() => navigation.navigate("ArtworkSubmittedScreen")}>Submit Artwork</CTAButton>
-        </Flex>
+        <ContactInformation
+          handlePress={() => {
+            navigation.navigate("ArtworkSubmittedScreen")
+            // do nothing
+          }}
+        />
       ),
     },
   ]
