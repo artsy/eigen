@@ -1,13 +1,17 @@
 import { Action, action } from "easy-peasy"
 import { getCurrencies } from "react-native-localize"
-import { Metric } from "../MyCollection/Screens/ArtworkForm/Components/Dimensions"
+
+const currencies = ["USD", "EUR", "GBP"] as const
+const metrics = ["in", "cm", ""] as const
+
+export type Currency = typeof currencies[number]
+export type Metric = typeof metrics[number]
 
 // set default currency depending on device locale
-export type Currency = "USD" | "EUR" | "GBP"
-const currencyRgx = /USD|EUR|GBP/
-const localCurrency = getCurrencies()?.[0]
+const userCurrencies = getCurrencies()
 
-const DEFAULT_CURRENCY = currencyRgx.test(localCurrency) ? (localCurrency as Currency) : "USD"
+const DEFAULT_CURRENCY =
+  (userCurrencies.find((currency) => currencies.includes(currency as Currency)) as Currency) ?? "USD"
 const DEFAULT_METRIC = ""
 
 // please update this when adding new user preferences
@@ -27,11 +31,21 @@ export const getUserPreferencesModel = (): UserPreferencesModel => ({
   currency: DEFAULT_CURRENCY,
   metric: DEFAULT_METRIC,
   setCurrency: action((state, currency) => {
-    state.currency = currency
+    if (currencies.includes(currency)) {
+      state.currency = currency
+    } else {
+      console.warn("Currency not supported")
+    }
+
     // TODO: update currency in gravity
   }),
   setMetric: action((state, metric) => {
-    state.metric = metric
+    if (metrics.includes(metric)) {
+      state.metric = metric
+    } else {
+      console.warn("Metric/Dimension Unit not supported")
+    }
+
     // TODO: update unit in gravity
   }),
 })
