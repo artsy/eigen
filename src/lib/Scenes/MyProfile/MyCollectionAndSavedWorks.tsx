@@ -72,6 +72,8 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
 
   const showIconAndBio = useFeatureFlag("AREnableVisualProfileIconAndBio")
 
+  const showCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
+
   return (
     <>
       {!!me && (
@@ -117,32 +119,32 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
         </Box>
       </Flex>
 
-      <Spacer m={1} />
+      {showCollectorProfile && (
+        <Flex px={2} mt={2}>
+          <Join separator={<Spacer my={0.5} />}>
+            <Flex flexDirection="row" alignItems="center">
+              <MapPinIcon width={14} height={14} />
+              <Sans size="2" color={color("black100")} px={0.5}>
+                {"Berlin"}
+              </Sans>
+            </Flex>
 
-      <Flex px={2}>
-        <Join separator={<Spacer my={0.5} />}>
-          <Flex flexDirection="row" alignItems="center">
-            <MapPinIcon width={14} height={14} />
-            <Sans size="2" color={color("black100")} px={0.5}>
-              {"Berlin"}
-            </Sans>
-          </Flex>
+            <Flex flexDirection="row" alignItems="center">
+              <BriefcaseIcon width={14} height={14} />
+              <Sans size="2" color={color("black100")} px={0.5}>
+                {"Designer"}
+              </Sans>
+            </Flex>
 
-          <Flex flexDirection="row" alignItems="center">
-            <BriefcaseIcon width={14} height={14} />
-            <Sans size="2" color={color("black100")} px={0.5}>
-              {"Designer"}
-            </Sans>
-          </Flex>
-
-          <Flex flexDirection="row" alignItems="center">
-            <MuseumIcon width={14} height={14} />
-            <Sans size="2" color={color("black100")} px={0.5}>
-              {"Member of Guggenheim Museum Bilbao"}
-            </Sans>
-          </Flex>
-        </Join>
-      </Flex>
+            <Flex flexDirection="row" alignItems="center">
+              <MuseumIcon width={14} height={14} />
+              <Sans size="2" color={color("black100")} px={0.5}>
+                {"Member of Guggenheim Museum Bilbao"}
+              </Sans>
+            </Flex>
+          </Join>
+        </Flex>
+      )}
       {!!me?.bio && showIconAndBio && (
         <Sans size="2" color={color("black100")} px={2} pt={2}>
           {me?.bio}
