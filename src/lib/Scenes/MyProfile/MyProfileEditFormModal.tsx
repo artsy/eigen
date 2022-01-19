@@ -14,6 +14,7 @@ import React, { useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import * as Yup from "yup"
+import { useFeatureFlag } from "../../store/GlobalStore"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 
 interface MyProfileEditFormModalProps {
@@ -38,12 +39,18 @@ export const editMyProfileSchema = Yup.object().shape({
 
 export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (props) => {
   const { visible, onDismiss, me, setProfileIconLocally } = props
+
   const color = useColor()
+
   const { showActionSheetWithOptions } = useActionSheet()
+
   const nameInputRef = useRef<Input>(null)
   const bioInputRef = useRef<TextInput>(null)
+
   const [loading, setLoading] = useState<boolean>(false)
   const [didUpdatePhoto, setDidUpdatePhoto] = useState(false)
+
+  const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
 
   const uploadProfilePhoto = async (photo: string) => {
     const existingProfileImage = me.icon?.url ?? ""
@@ -115,7 +122,7 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
   }
 
   return (
-    <FancyModal visible={visible} onBackgroundPressed={hideModal}>
+    <FancyModal visible={visible} onBackgroundPressed={hideModal} fullScreen={enableCollectorProfile}>
       <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={hideModal}>
         Edit Profile
       </FancyModalHeader>
