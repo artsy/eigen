@@ -148,3 +148,5 @@ storybook.json
 
 # Keep these, so we can keep the folders these appear in
 !.gitkeep
+
+image_tinkering/downloads
