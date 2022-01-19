@@ -48,7 +48,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPProps> =
           {otpMode === "on_demand" ? (
             <>
               <Spacer mb={20} />
-              <Message>
+              <Message testID="on_demand_message">
                 Your safety and security are important to us. Please check your email for a one-time authentication code
                 to complete your login.
               </Message>

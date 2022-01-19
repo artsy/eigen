@@ -1,7 +1,9 @@
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Input, Touchable } from "palette"
 import React from "react"
 import { OnboardingLoginWithEmailForm } from "./OnboardingLogin"
+import { OTPMode } from "./OnboardingLoginWithOTP"
 
 const navigateMock = jest.fn()
 
@@ -29,12 +31,17 @@ jest.mock("formik", () => ({
 }))
 
 describe("OnboardingLogin", () => {
-  const TestProvider = ({ email = "" }) => {
+  interface TestProps {
+    email?: string
+    otpMode?: OTPMode
+  }
+
+  const TestProvider = (props: TestProps) => {
     return (
       <OnboardingLoginWithEmailForm
         navigation={navigationPropsMock as any}
-        route={{ params: { email } } as any}
-        otpMode={null}
+        route={{ params: { email: props.email ?? "" } } as any}
+        otpMode={props.otpMode ?? null}
       />
     )
   }
@@ -45,6 +52,14 @@ describe("OnboardingLogin", () => {
       const forgotPasswordButton = tree.root.findAllByType(Touchable)[0]
       forgotPasswordButton.props.onPress()
       expect(navigateMock).toHaveBeenCalledWith("ForgotPassword")
+    })
+  })
+
+  describe("2FA enforcement", () => {
+    it("navigates to otp screen when otpMode is set", async () => {
+      renderWithWrappers(<TestProvider otpMode="on_demand" />)
+      await flushPromiseQueue()
+      expect(navigateMock).toHaveBeenCalledWith("OnboardingLoginWithOTP", expect.anything())
     })
   })
 
