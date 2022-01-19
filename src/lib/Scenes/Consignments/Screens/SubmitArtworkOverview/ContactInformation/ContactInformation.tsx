@@ -4,20 +4,15 @@ import { CTAButton, Flex, Input, Spacer, Text } from "palette"
 import React from "react"
 import * as Yup from "yup"
 
-export interface FormikSchema {
-  name: string
-  email: string
-  phoneNumber: string
+interface Props {
+  handlePress: () => void
 }
 interface ContactInfoFormModel {
   name: string
   email: string
   phoneNumber: string
 }
-export const ContactInformation = ({}: // handlePress,
-{
-  handlePress: () => void
-}) => {
+export const ContactInformation = ({ handlePress }: Props) => {
   const schema = Yup.object().shape({
     name: Yup.string().required("Name is required").trim(),
     email: Yup.string().email().required("Email field is required").trim(),
@@ -36,7 +31,7 @@ export const ContactInformation = ({}: // handlePress,
           <Text variant="sm" color="black60">
             We will only use these details to contact you regarding your submission.
           </Text>
-          <Spacer mt={1} />
+          <Spacer mt={4} />
           <Input
             title="Name"
             placeholder="Your Full Name"
@@ -63,7 +58,13 @@ export const ContactInformation = ({}: // handlePress,
           />
           <Spacer mt={6} />
           <Spacer mt={4} />
-          <CTAButton onPress={handleSubmit} disabled={!isValid}>
+          <CTAButton
+            onPress={() => {
+              handleSubmit()
+              handlePress()
+            }}
+            disabled={!isValid}
+          >
             Submit Artwork
           </CTAButton>
         </Flex>
