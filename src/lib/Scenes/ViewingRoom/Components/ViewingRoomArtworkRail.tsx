@@ -1,11 +1,11 @@
 import { ViewingRoomArtworkRail_viewingRoom } from "__generated__/ViewingRoomArtworkRail_viewingRoom.graphql"
-import { ArtworkTileRail } from "lib/Components/ArtworkTileRail"
+import { SmallArtworkRail } from "lib/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
+import { extractNodes } from "lib/utils/extractNodes"
 import { Schema } from "lib/utils/track"
-import { Box } from "palette"
+import { Flex } from "palette"
 import React from "react"
-import { View } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -13,32 +13,36 @@ interface ViewingRoomArtworkRailProps {
   viewingRoom: ViewingRoomArtworkRail_viewingRoom
 }
 
-export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = (props) => {
-  const viewingRoom = props.viewingRoom
-  const totalCount = viewingRoom.artworks! /* STRICTNESS_MIGRATION */.totalCount! /* STRICTNESS_MIGRATION */
+export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = ({ viewingRoom }) => {
   const tracking = useTracking()
+
+  const artworks = extractNodes(viewingRoom?.artworks)
+
+  const totalCount = viewingRoom.artworks?.totalCount
   const pluralizedArtworksCount = totalCount === 1 ? "artwork" : "artworks"
+  const title = `${typeof totalCount === "number" ? totalCount : ""} ${pluralizedArtworksCount}`
 
   return (
-    <View>
-      <Box mx="2">
+    <Flex>
+      <Flex mx="2">
         <SectionTitle
-          title={`${totalCount} ${pluralizedArtworksCount}`}
+          title={title}
           onPress={() => {
             tracking.trackEvent(tracks.tappedArtworkGroupHeader(viewingRoom.internalID, viewingRoom.slug))
             navigate(`/viewing-room/${viewingRoom.slug}/artworks`)
           }}
         />
-      </Box>
-      <ArtworkTileRail
-        artworksConnection={props!.viewingRoom!.artworks!}
-        shouldTrack={false}
-        onTilePress={(slug, id) => {
-          tracking.trackEvent(tracks.tappedArtworkThumbnail(viewingRoom.internalID, viewingRoom.slug, id, slug))
-          navigate(`/viewing-room/${viewingRoom.slug}/${slug}`)
+      </Flex>
+      <SmallArtworkRail
+        artworks={artworks}
+        onPress={(artwork) => {
+          tracking.trackEvent(
+            tracks.tappedArtworkThumbnail(viewingRoom.internalID, viewingRoom.slug, artwork.internalID, artwork.slug)
+          )
+          navigate(`/viewing-room/${viewingRoom.slug}/${artwork.slug}`)
         }}
       />
-    </View>
+    </Flex>
   )
 }
 
@@ -80,7 +84,11 @@ export const ViewingRoomArtworkRailContainer = createFragmentContainer(ViewingRo
       internalID
       artworks: artworksConnection(first: 10) {
         totalCount
-        ...ArtworkTileRail_artworksConnection
+        edges {
+          node {
+            ...SmallArtworkRail_artworks
+          }
+        }
       }
     }
   `,
