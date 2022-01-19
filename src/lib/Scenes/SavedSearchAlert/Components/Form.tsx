@@ -61,7 +61,7 @@ export const Form: React.FC<FormProps> = (props) => {
   }
 
   // Enable "Save Alert" button if the user has removed the filters or changed data
-  if (isEnabledImprovedAlertsFlow && !isEditMode && (hasChangedFilters || dirty)) {
+  if (isEnabledImprovedAlertsFlow && (hasChangedFilters || dirty)) {
     isSaveAlertButtonDisabled = false
   }
 
