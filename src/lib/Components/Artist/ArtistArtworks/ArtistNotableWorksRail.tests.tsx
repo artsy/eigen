@@ -40,6 +40,31 @@ describe("Notable Works Rail", () => {
     expect(wrapper.find(PrefetchFlatList)).toHaveLength(1)
     expect(wrapper.find(ArtworkRailCard)).toHaveLength(3)
   })
+
+  describe("Notable artwork metadata", () => {
+    it("renders artwork price and title metadata when price", async () => {
+      const wrapper = await getWrapper()
+
+      expect(wrapper.find(ArtworkRailCard).first().text()).toContain("My Second Greatest Art")
+
+      expect(wrapper.find(ArtworkRailCard).first().text()).toContain("€2,500 - 5,000")
+    })
+
+    it("renders artwork price and title metadata when bidding closed", async () => {
+      const wrapper = await getWrapper()
+
+      expect(wrapper.find(ArtworkRailCard).at(1).text()).toContain("Bidding closed")
+      expect(wrapper.find(ArtworkRailCard).at(1).text()).toContain("My Greatest Art")
+    })
+
+    it("renders artwork price and title metadata when auction price", async () => {
+      const wrapper = await getWrapper()
+
+      expect(wrapper.find(ArtworkRailCard).at(2).text()).toContain("My Third Greatest Art")
+
+      expect(wrapper.find(ArtworkRailCard).at(2).text()).toContain("$4,500")
+    })
+  })
 })
 
 const artistMockData: ArtistNotableWorksRailTestsQueryRawResponse["artist"] = {
