@@ -500,7 +500,7 @@ PODS:
   - RNSentry (3.1.1):
     - React-Core
     - Sentry (= 7.3.0)
-  - RNShare (7.3.2):
+  - RNShare (7.3.3):
     - React-Core
   - RNSplit (0.0.1):
     - React
@@ -885,7 +885,7 @@ SPEC CHECKSUMS:
   RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
   RNSentry: 49abc89b0190b4c8afe0fa5d065f98e36cb53233
-  RNShare: d76b8c9c6e6ffb38fc18f40b4338c9d867592ed3
+  RNShare: 3185c074441b7e8897014d95ba982434a0a024a1
   RNSplit: 5c78d865a08e56dd125968ba1b529358f0b9f537
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   SDWebImage: 4dc3e42d9ec0c1028b960a33ac6b637bb432207b
@@ -898,6 +898,6 @@ SPEC CHECKSUMS:
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: e03a4c071328b94a98f36ad9c9c55c5c811b52b8
+PODFILE CHECKSUM: 7ec53363180d7a09702ae8c6846a14957ba0d918
 
 COCOAPODS: 1.11.2
