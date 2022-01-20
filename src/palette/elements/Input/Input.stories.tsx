@@ -3,7 +3,7 @@ import SearchIcon from "lib/Icons/SearchIcon"
 import { Box, Input } from "palette"
 import React from "react"
 import { withTheme } from "storybook/decorators"
-import { DList, List } from "storybook/helpers"
+import { DataList, List } from "storybook/helpers"
 
 storiesOf("Input", module)
   .addDecorator(withTheme)
@@ -36,7 +36,7 @@ storiesOf("Input", module)
       "even more",
     ]
     return (
-      <DList
+      <DataList
         contentContainerStyle={{ marginHorizontal: 20, alignItems: "flex-start" }}
         data={[350, 300, 250, 200, 170, 150, 100]}
         renderItem={({ item: width }) => (
