@@ -1,6 +1,5 @@
 import { useFormikContext } from "formik"
 import { artworkRarityClassifications } from "lib/utils/artworkRarityClassifications"
-import { SimpleLocation } from "lib/utils/googleMaps"
 import { Box, Flex, Input, InputTitle, RadioButton, Spacer, Text } from "palette"
 import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
@@ -24,11 +23,19 @@ export interface ArtworkDetailsFormModel {
   width: string
   depth: string
   provenance: string
-  location: string
   state: string
   utmMedium: string
   utmSource: string
   utmTerm: string
+  locationCity: string
+  locationState: string
+  locationCountry: string
+}
+
+export interface Location {
+  locationCity: string
+  locationState: string
+  locationCountry: string
 }
 
 export const ArtworkDetailsForm: React.FC = () => {
@@ -178,7 +185,13 @@ export const ArtworkDetailsForm: React.FC = () => {
       </InfoModal>
 
       <Spacer mt={2} />
-      <LocationAutocomplete onChange={(e: SimpleLocation) => setFieldValue("location", e.name)} />
+      <LocationAutocomplete
+        onChange={(e: Location) => {
+          setFieldValue("locationCity", e.locationCity)
+          setFieldValue("locationState", e.locationState)
+          setFieldValue("locationCountry", e.locationCountry)
+        }}
+      />
     </Flex>
   )
 }

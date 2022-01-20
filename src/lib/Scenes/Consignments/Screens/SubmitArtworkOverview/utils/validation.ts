@@ -14,11 +14,13 @@ export const artworkDetailsInitialValues = {
   width: "",
   depth: "",
   provenance: "",
-  location: "",
   state: "DRAFT",
   utmMedium: "",
   utmSource: "",
   utmTerm: "",
+  locationCity: "",
+  locationState: "",
+  locationCountry: "",
 }
 
 export const artworkDetailsValidationSchema = Yup.object().shape({
@@ -41,9 +43,11 @@ export const artworkDetailsValidationSchema = Yup.object().shape({
   width: Yup.string().required().trim(),
   depth: Yup.string().trim(),
   provenance: Yup.string().required().trim(),
-  location: Yup.string().required(),
   state: Yup.string(),
   utmMedium: Yup.string(),
   utmSource: Yup.string(),
   utmTerm: Yup.string(),
+  locationCity: Yup.string().required(),
+  locationState: Yup.string(),
+  locationCountry: Yup.string(),
 })

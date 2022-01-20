@@ -3,15 +3,16 @@ import { getLocationDetails, getLocationPredictions, SimpleLocation } from "lib/
 import { Box, Flex, Input, LocationIcon, Separator, Text, Touchable, useSpace } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { FlatList } from "react-native"
+import { Location } from "../ArtworkDetailsForm"
 
 interface Props {
-  onChange: (loc: SimpleLocation) => void
+  onChange: (loc: Location) => void
 }
 
 export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
   const [predictions, setPredictions] = useState<SimpleLocation[]>([])
-  const [selectedLocation, setSelectedLocation] = useState<SimpleLocation | null>()
-  const [query, setQuery] = useState(selectedLocation?.name || "")
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>()
+  const [query, setQuery] = useState(selectedLocation?.locationCity || "")
 
   useEffect(() => {
     setPredictions([])
@@ -22,11 +23,11 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
   }, [selectedLocation])
 
   useEffect(() => {
-    if (query !== selectedLocation?.name) {
+    if (query !== selectedLocation?.locationCity) {
       setSelectedLocation(null)
     }
 
-    if (query.length < 3 || selectedLocation?.name === query) {
+    if (query.length < 3 || selectedLocation?.locationCity === query) {
       setPredictions([])
     } else {
       ;(async () => {
@@ -38,7 +39,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
 
   const reset = () => {
     if (selectedLocation) {
-      setQuery(selectedLocation.name)
+      setQuery(selectedLocation.locationCity)
     }
   }
   const touchOut = () => {
@@ -55,7 +56,11 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
         onChangeText={setQuery}
         onFocus={reset}
         testID="Consignment_LocationInput"
-        value={selectedLocation ? selectedLocation.name : query}
+        value={
+          selectedLocation
+            ? `${selectedLocation.locationCity}, ${selectedLocation.locationState}, ${selectedLocation.locationCountry}`
+            : query
+        }
       />
       <LocationPredictions
         predictions={predictions}
@@ -74,7 +79,7 @@ export const LocationPredictions = ({
 }: {
   predictions: SimpleLocation[]
   query?: string
-  onSelect: (loc: SimpleLocation) => void
+  onSelect: (loc: Location) => void
   onOutsidePress: () => void
 }) => {
   const space = useSpace()
@@ -100,10 +105,11 @@ export const LocationPredictions = ({
   }
 
   const onLocationSelect = async (item: SimpleLocation) => {
-    const { id, city, state, country } = await getLocationDetails(item)
+    const { city, state, country } = await getLocationDetails(item)
     onSelect({
-      id,
-      name: `${city}, ${state}, ${country}`,
+      locationCity: city || "",
+      locationState: state || "",
+      locationCountry: country || "",
     })
   }
 
