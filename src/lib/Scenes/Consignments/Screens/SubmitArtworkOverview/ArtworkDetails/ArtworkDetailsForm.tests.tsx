@@ -96,9 +96,11 @@ const mockArtworkDetailsFormValues = {
   width: "200",
   depth: "3",
   provenance: "acquired",
-  location: "",
   state: "DRAFT",
   utmMedium: "",
   utmSource: "",
   utmTerm: "",
+  locationCity: "",
+  locationState: "",
+  locationCountry: "",
 }
