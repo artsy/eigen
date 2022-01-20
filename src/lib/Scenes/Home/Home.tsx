@@ -1,12 +1,3 @@
-import { Home_articlesConnection } from "__generated__/Home_articlesConnection.graphql"
-import { Home_featured } from "__generated__/Home_featured.graphql"
-import { Home_homePageAbove } from "__generated__/Home_homePageAbove.graphql"
-import { Home_homePageBelow } from "__generated__/Home_homePageBelow.graphql"
-import { Home_meAbove } from "__generated__/Home_meAbove.graphql"
-import { Home_meBelow } from "__generated__/Home_meBelow.graphql"
-import { Home_showsByFollowedArtists } from "__generated__/Home_showsByFollowedArtists.graphql"
-import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
-import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { SmallArtworkRailPlaceholder } from "lib/Components/ArtworkRail/SmallArtworkRail"
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
@@ -37,12 +28,21 @@ import { ArtsyLogoIcon, Box, Flex, Join, Spacer } from "palette"
 import React, { createRef, RefObject, useEffect, useRef, useState } from "react"
 import { Alert, RefreshControl, View, ViewProps } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
+import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
+import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
+import { Home_articlesConnection } from "__generated__/Home_articlesConnection.graphql"
+import { Home_featured } from "__generated__/Home_featured.graphql"
+import { Home_homePageAbove } from "__generated__/Home_homePageAbove.graphql"
+import { Home_homePageBelow } from "__generated__/Home_homePageBelow.graphql"
+import { Home_meAbove } from "__generated__/Home_meAbove.graphql"
+import { Home_meBelow } from "__generated__/Home_meBelow.graphql"
+import { Home_showsByFollowedArtists } from "__generated__/Home_showsByFollowedArtists.graphql"
 import { articlesQueryVariables } from "../Articles/Articles"
 import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollow/LotsByArtistsYouFollow"
 import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
-import { NewWorksForYouRailContainer } from "./Components/NewWorksForYouRail"
+import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
@@ -278,7 +278,7 @@ const Home = (props: Props) => {
                 )
               case "newWorksForYou":
                 return (
-                  <NewWorksForYouRailContainer
+                  <NewWorksForYouRail
                     title={item.title}
                     me={item.data}
                     scrollRef={scrollRefs.current[index]}
