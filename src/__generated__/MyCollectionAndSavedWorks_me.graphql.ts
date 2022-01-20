@@ -7,6 +7,11 @@ import { FragmentRefs } from "relay-runtime";
 export type MyCollectionAndSavedWorks_me = {
     readonly name: string | null;
     readonly bio: string | null;
+    readonly location: {
+        readonly city: string | null;
+    } | null;
+    readonly otherRelevantPosition: string | null;
+    readonly profession: string | null;
     readonly icon: {
         readonly url: string | null;
     } | null;
@@ -40,6 +45,38 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "ScalarField",
       "name": "bio",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "MyLocation",
+      "kind": "LinkedField",
+      "name": "location",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "city",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "otherRelevantPosition",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "profession",
       "storageKey": null
     },
     {
@@ -82,5 +119,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'd53caa423bcd68a0251cfe7a1e29b9d3';
+(node as any).hash = '069a8fb0ef25ff69d145bab4adcd9782';
 export default node;

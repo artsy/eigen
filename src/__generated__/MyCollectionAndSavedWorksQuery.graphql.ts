@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0b7a60c41163ceed3735a692cbc77fef */
+/* @relayHash f45008c1ad478717a98e457451110ae8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,6 +29,12 @@ query MyCollectionAndSavedWorksQuery {
 fragment MyCollectionAndSavedWorks_me on Me {
   name
   bio
+  location {
+    city
+    id
+  }
+  otherRelevantPosition
+  profession
   icon {
     url(version: "thumbnail")
   }
@@ -45,7 +51,15 @@ fragment MyProfileEditFormModal_me on Me {
 }
 */
 
-const node: ConcreteRequest = {
+const node: ConcreteRequest = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
+return {
   "fragment": {
     "argumentDefinitions": [],
     "kind": "Fragment",
@@ -103,6 +117,39 @@ const node: ConcreteRequest = {
           {
             "alias": null,
             "args": null,
+            "concreteType": "MyLocation",
+            "kind": "LinkedField",
+            "name": "location",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "city",
+                "storageKey": null
+              },
+              (v0/*: any*/)
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "otherRelevantPosition",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "profession",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": "Image",
             "kind": "LinkedField",
             "name": "icon",
@@ -131,25 +178,20 @@ const node: ConcreteRequest = {
             "name": "createdAt",
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "id",
-            "storageKey": null
-          }
+          (v0/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "0b7a60c41163ceed3735a692cbc77fef",
+    "id": "f45008c1ad478717a98e457451110ae8",
     "metadata": {},
     "name": "MyCollectionAndSavedWorksQuery",
     "operationKind": "query",
     "text": null
   }
 };
+})();
 (node as any).hash = 'e2528a0edab35bb34cd3e89a63547d21';
 export default node;

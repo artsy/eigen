@@ -122,26 +122,32 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
       {showCollectorProfile && (
         <Flex px={2} mt={2}>
           <Join separator={<Spacer my={0.5} />}>
-            <Flex flexDirection="row" alignItems="center">
-              <MapPinIcon width={14} height={14} />
-              <Sans size="2" color={color("black100")} px={0.5}>
-                {"Berlin"}
-              </Sans>
-            </Flex>
+            {!!me?.location?.city && (
+              <Flex flexDirection="row" alignItems="center">
+                <MapPinIcon width={14} height={14} />
+                <Sans size="2" color={color("black100")} px={0.5}>
+                  {me.location.city}
+                </Sans>
+              </Flex>
+            )}
 
-            <Flex flexDirection="row" alignItems="center">
-              <BriefcaseIcon width={14} height={14} />
-              <Sans size="2" color={color("black100")} px={0.5}>
-                {"Designer"}
-              </Sans>
-            </Flex>
+            {!!me?.profession && (
+              <Flex flexDirection="row" alignItems="center">
+                <BriefcaseIcon width={14} height={14} />
+                <Sans size="2" color={color("black100")} px={0.5}>
+                  {me.profession}
+                </Sans>
+              </Flex>
+            )}
 
-            <Flex flexDirection="row" alignItems="center">
-              <MuseumIcon width={14} height={14} />
-              <Sans size="2" color={color("black100")} px={0.5}>
-                {"Member of Guggenheim Museum Bilbao"}
-              </Sans>
-            </Flex>
+            {!!me?.otherRelevantPosition && (
+              <Flex flexDirection="row" alignItems="center">
+                <MuseumIcon width={14} height={14} />
+                <Sans size="2" color={color("black100")} px={0.5}>
+                  {me?.otherRelevantPosition}
+                </Sans>
+              </Flex>
+            )}
           </Join>
         </Flex>
       )}
@@ -173,6 +179,11 @@ export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContaine
     fragment MyCollectionAndSavedWorks_me on Me {
       name
       bio
+      location {
+        city
+      }
+      otherRelevantPosition
+      profession
       icon {
         url(version: "thumbnail")
       }
