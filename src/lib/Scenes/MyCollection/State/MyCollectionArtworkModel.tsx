@@ -2,6 +2,7 @@ import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwo
 import { Action, action, thunk, Thunk } from "easy-peasy"
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
 import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
+import { getAttributionClassValueByName } from "lib/utils/artworkRarityClassifications"
 import { pick, uniqBy } from "lodash"
 import { Metric } from "../Screens/ArtworkForm/Components/Dimensions"
 
@@ -72,7 +73,7 @@ export interface MyCollectionArtworkModel {
   updateFormValues: Action<MyCollectionArtworkModel, Partial<ArtworkFormValues>>
   setDirtyFormCheckValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
   resetForm: Action<MyCollectionArtworkModel>
-  ResetFormButKeepArtist: Action<MyCollectionArtworkModel>
+  resetFormButKeepArtist: Action<MyCollectionArtworkModel>
   setArtistSearchResult: Action<MyCollectionArtworkModel, AutosuggestResult | null>
   setArtworkId: Action<MyCollectionArtworkModel, { artworkId: string }>
   setArtworkErrorOccurred: Action<MyCollectionArtworkModel, boolean>
@@ -120,7 +121,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
     state.sessionState.dirtyFormCheckValues = initialFormValues
   }),
 
-  ResetFormButKeepArtist: action((state) => {
+  resetFormButKeepArtist: action((state) => {
     const artistValues = pick(state.sessionState.formValues, ["artist", "artistIds", "artistSearchResult"])
 
     state.sessionState.formValues = { ...initialFormValues, ...artistValues }
@@ -171,6 +172,8 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
 
     const pricePaidDollars = artwork.pricePaid ? artwork.pricePaid.minor / 100 : null
 
+    const attributionClass = getAttributionClassValueByName(artwork?.attributionClass?.name)
+
     const editProps: any /* FIXME: any */ = {
       artistSearchResult: {
         internalID: artwork?.artist?.internalID,
@@ -178,6 +181,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
         imageUrl: artwork?.images?.[0]?.imageURL?.replace(":version", "square"),
         formattedNationalityAndBirthday: artwork?.artist?.formattedNationalityAndBirthday,
       },
+      attributionClass,
       category: artwork.category,
       date: artwork.date,
       depth: artwork.depth,

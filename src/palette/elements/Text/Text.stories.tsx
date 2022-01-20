@@ -3,7 +3,7 @@ import { Box, Flex } from "palette"
 import React from "react"
 import { Platform, Text as RNText, TextStyle, View } from "react-native"
 import { withTheme } from "storybook/decorators"
-import { DList, List } from "storybook/helpers"
+import { DataList, List } from "storybook/helpers"
 import { Text, TextProps } from "."
 
 const variants: Array<TextProps["variant"]> = ["xs", "sm", "md", "lg", "xl", "xxl"]
@@ -11,13 +11,13 @@ const variants: Array<TextProps["variant"]> = ["xs", "sm", "md", "lg", "xl", "xx
 storiesOf("Theme/Text", module)
   .addDecorator(withTheme)
   .add("Variants", () => (
-    <DList
+    <DataList
       data={variants}
       renderItem={({ item: variant }) => <Text variant={variant}>{variant} ~~ This is a text.</Text>}
     />
   ))
   .add("Variants in boxes", () => (
-    <DList
+    <DataList
       data={variants}
       renderItem={({ item: variant }) => (
         <Box borderWidth={1} borderColor="black" width={100}>

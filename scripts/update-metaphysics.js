@@ -10,12 +10,12 @@ async function main() {
       repo: { owner: "artsy", repo: "metaphysics" },
       branch: "update-eigen-query-map",
       title: "Update eigen query map",
-      targetBranch: "master",
+      targetBranch: "main",
       commitMessage: "Update eigen query map",
       body: "Greetings human :robot: this PR was automatically created as part of eigen's deploy process",
       assignees: ["artsyit"],
       labels: ["Merge On Green"],
-      update: dir => {
+      update: (dir) => {
         console.log("∙ Merging complete.queryMap.json")
         // merge metaphysics into eigen map first, to preserve any manual edits made in MP
         mergeJson("data/complete.queryMap.json", path.join(dir, "src/data/complete.queryMap.json"))

@@ -1,21 +1,39 @@
-export interface SearchCriteriaAttributes {
-  artistID?: string | null
-  locationCities?: string[] | null
-  colors?: string[] | null
-  partnerIDs?: string[] | null
-  additionalGeneIDs?: string[] | null
-  attributionClass?: string[] | null
-  majorPeriods?: string[] | null
-  acquireable?: boolean | null
-  atAuction?: boolean | null
-  inquireableOnly?: boolean | null
-  offerable?: boolean | null
-  dimensionRange?: string | null
-  sizes?: string[] | null
-  height?: string | null
-  width?: string | null
-  materialsTerms?: string[] | null
-  priceRange?: string | null
+export enum SearchCriteria {
+  artistID = "artistID",
+  locationCities = "locationCities",
+  colors = "colors",
+  partnerIDs = "partnerIDs",
+  additionalGeneIDs = "additionalGeneIDs",
+  attributionClass = "attributionClass",
+  majorPeriods = "majorPeriods",
+  acquireable = "acquireable",
+  atAuction = "atAuction",
+  inquireableOnly = "inquireableOnly",
+  offerable = "offerable",
+  dimensionRange = "dimensionRange",
+  sizes = "sizes",
+  height = "height",
+  width = "width",
+  materialsTerms = "materialsTerms",
+  priceRange = "priceRange",
 }
 
-export type SearchCriteriaAttributeKeys = keyof SearchCriteriaAttributes
+export interface SearchCriteriaAttributes {
+  [SearchCriteria.artistID]?: string | null
+  [SearchCriteria.locationCities]?: string[] | null
+  [SearchCriteria.colors]?: string[] | null
+  [SearchCriteria.partnerIDs]?: string[] | null
+  [SearchCriteria.additionalGeneIDs]?: string[] | null
+  [SearchCriteria.attributionClass]?: string[] | null
+  [SearchCriteria.majorPeriods]?: string[] | null
+  [SearchCriteria.acquireable]?: boolean | null
+  [SearchCriteria.atAuction]?: boolean | null
+  [SearchCriteria.inquireableOnly]?: boolean | null
+  [SearchCriteria.offerable]?: boolean | null
+  [SearchCriteria.dimensionRange]?: string | null
+  [SearchCriteria.sizes]?: string[] | null
+  [SearchCriteria.height]?: string | null
+  [SearchCriteria.width]?: string | null
+  [SearchCriteria.materialsTerms]?: string[] | null
+  [SearchCriteria.priceRange]?: string | null
+}

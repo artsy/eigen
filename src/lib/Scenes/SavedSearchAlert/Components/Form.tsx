@@ -1,5 +1,5 @@
 import { useFormikContext } from "formik"
-import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { SearchCriteria } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { navigate } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Box, Button, CloseIcon as RemoveIcon, Flex, Input, InputTitle, Pill, Spacer, Text, Touchable } from "palette"
@@ -61,7 +61,7 @@ export const Form: React.FC<FormProps> = (props) => {
   }
 
   // Enable "Save Alert" button if the user has removed the filters or changed data
-  if (isEnabledImprovedAlertsFlow && !isEditMode && (hasChangedFilters || dirty)) {
+  if (isEnabledImprovedAlertsFlow && (hasChangedFilters || dirty)) {
     isSaveAlertButtonDisabled = false
   }
 
@@ -87,7 +87,7 @@ export const Form: React.FC<FormProps> = (props) => {
     return navigate("/unsubscribe")
   }
 
-  const isArtistPill = (pill: SavedSearchPill) => pill.paramName === FilterParamName.artistIDs
+  const isArtistPill = (pill: SavedSearchPill) => pill.paramName === SearchCriteria.artistID
 
   return (
     <Box>
@@ -139,17 +139,12 @@ export const Form: React.FC<FormProps> = (props) => {
                 m={0.5}
                 key={`filter-label-${index}`}
                 iconPosition="right"
-                // this is to make the pills removable only on create alert screen
-                {...(!isEditMode
-                  ? {
-                      onPress: () => {
-                        if (!isArtistPill(pill)) {
-                          onRemovePill(pill)
-                        }
-                      },
-                      Icon: isArtistPill(pill) ? undefined : RemoveIcon,
-                    }
-                  : {})}
+                onPress={() => {
+                  if (!isArtistPill(pill)) {
+                    onRemovePill(pill)
+                  }
+                }}
+                Icon={isArtistPill(pill) ? undefined : RemoveIcon}
               >
                 {pill.label}
               </Pill>

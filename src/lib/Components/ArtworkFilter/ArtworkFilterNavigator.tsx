@@ -1,4 +1,4 @@
-import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType, TappedCreateAlert } from "@artsy/cohesion"
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import {
@@ -249,6 +249,11 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
     applyFilters()
   }
 
+  const handleCreateAlertPress = () => {
+    setIsCreateAlertModalVisible(true)
+    tracking.trackEvent(tracks.tappedCreateAlert(id!, name!))
+  }
+
   return (
     <NavigationContainer independent>
       <FancyModal
@@ -303,7 +308,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
           <ArtworkFilterApplyButton
             disabled={!isApplyButtonEnabled}
             onPress={handleApplyPress}
-            onCreateAlertPress={() => setIsCreateAlertModalVisible(true)}
+            onCreateAlertPress={handleCreateAlertPress}
             shouldShowCreateAlertButton={shouldShowCreateAlertButton}
           />
 
@@ -321,4 +326,14 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
       </FancyModal>
     </NavigationContainer>
   )
+}
+
+export const tracks = {
+  tappedCreateAlert: (artistId: string, artistSlug: string): TappedCreateAlert => ({
+    action: ActionType.tappedCreateAlert,
+    context_screen_owner_type: OwnerType.artist,
+    context_screen_owner_id: artistId,
+    context_screen_owner_slug: artistSlug,
+    context_module: ContextModule.filterScreen,
+  }),
 }

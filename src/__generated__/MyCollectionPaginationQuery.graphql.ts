@@ -1,12 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 62d2a34246216b28717722b374fdcbe7 */
+/* @relayHash 8ce4f3d8ac717a774ab84663dd6540d5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyCollectionPaginationQueryVariables = {
-    excludePurchasedArtworks?: boolean | null | undefined;
     count: number;
     cursor?: string | null | undefined;
 };
@@ -24,12 +23,11 @@ export type MyCollectionPaginationQuery = {
 
 /*
 query MyCollectionPaginationQuery(
-  $excludePurchasedArtworks: Boolean
   $count: Int!
   $cursor: String
 ) {
   me {
-    ...MyCollection_me_19sDyO
+    ...MyCollection_me_1G22uz
     id
   }
 }
@@ -86,12 +84,12 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
   date
 }
 
-fragment MyCollection_me_19sDyO on Me {
+fragment MyCollection_me_1G22uz on Me {
   id
   myCollectionInfo {
     includesPurchasedArtworks
   }
-  myCollectionConnection(excludePurchasedArtworks: $excludePurchasedArtworks, first: $count, after: $cursor, sort: CREATED_AT_DESC) {
+  myCollectionConnection(first: $count, after: $cursor, sort: CREATED_AT_DESC) {
     edges {
       node {
         id
@@ -125,40 +123,31 @@ fragment MyCollection_me_19sDyO on Me {
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "count"
-},
+var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "count"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "cursor"
+  }
+],
 v1 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "cursor"
-},
-v2 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "excludePurchasedArtworks"
-},
-v3 = {
-  "kind": "Variable",
-  "name": "excludePurchasedArtworks",
-  "variableName": "excludePurchasedArtworks"
-},
-v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v5 = [
+v2 = [
   {
     "kind": "Variable",
     "name": "after",
     "variableName": "cursor"
   },
-  (v3/*: any*/),
   {
     "kind": "Variable",
     "name": "first",
@@ -170,14 +159,14 @@ v5 = [
     "value": "CREATED_AT_DESC"
   }
 ],
-v6 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v7 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -186,11 +175,7 @@ v7 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": [
-      (v0/*: any*/),
-      (v1/*: any*/),
-      (v2/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "MyCollectionPaginationQuery",
@@ -214,8 +199,7 @@ return {
                 "kind": "Variable",
                 "name": "cursor",
                 "variableName": "cursor"
-              },
-              (v3/*: any*/)
+              }
             ],
             "kind": "FragmentSpread",
             "name": "MyCollection_me"
@@ -229,11 +213,7 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [
-      (v2/*: any*/),
-      (v0/*: any*/),
-      (v1/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "MyCollectionPaginationQuery",
     "selections": [
@@ -245,7 +225,7 @@ return {
         "name": "me",
         "plural": false,
         "selections": [
-          (v4/*: any*/),
+          (v1/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -266,7 +246,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v5/*: any*/),
+            "args": (v2/*: any*/),
             "concreteType": "MyCollectionConnection",
             "kind": "LinkedField",
             "name": "myCollectionConnection",
@@ -288,7 +268,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
-                      (v4/*: any*/),
+                      (v1/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -322,8 +302,8 @@ return {
                         "name": "attributionClass",
                         "plural": false,
                         "selections": [
-                          (v6/*: any*/),
-                          (v4/*: any*/)
+                          (v3/*: any*/),
+                          (v1/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -356,9 +336,9 @@ return {
                         "name": "artist",
                         "plural": false,
                         "selections": [
-                          (v7/*: any*/),
-                          (v6/*: any*/),
-                          (v4/*: any*/)
+                          (v4/*: any*/),
+                          (v3/*: any*/),
+                          (v1/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -408,7 +388,7 @@ return {
                         "name": "date",
                         "storageKey": null
                       },
-                      (v7/*: any*/),
+                      (v4/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -491,7 +471,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v5/*: any*/),
+            "args": (v2/*: any*/),
             "filters": [],
             "handle": "connection",
             "key": "MyCollection_myCollectionConnection",
@@ -504,7 +484,7 @@ return {
     ]
   },
   "params": {
-    "id": "62d2a34246216b28717722b374fdcbe7",
+    "id": "8ce4f3d8ac717a774ab84663dd6540d5",
     "metadata": {},
     "name": "MyCollectionPaginationQuery",
     "operationKind": "query",
@@ -512,5 +492,5 @@ return {
   }
 };
 })();
-(node as any).hash = '0585937c74cf2419e1b146f0ebbe4175';
+(node as any).hash = 'a64e16a10c23765ed650241c94d11823';
 export default node;

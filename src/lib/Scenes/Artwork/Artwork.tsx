@@ -325,6 +325,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
         context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
         context_screen_owner_slug: slug,
         context_screen_owner_id: internalID,
+        // @ts-ignore
+        availability: artworkAboveTheFold?.availability,
+        acquireable: artworkAboveTheFold?.isAcquireable,
+        inquireable: artworkAboveTheFold?.isInquireable,
+        offerable: artworkAboveTheFold?.isOfferable,
+        biddable: artworkAboveTheFold?.isBiddable,
       }}
     >
       {fetchingData ? (
