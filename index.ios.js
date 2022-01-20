@@ -19,8 +19,8 @@ if (newIosAppShell) {
   require("react-native-screens").enableScreens()
   // require("./src/lib/ErrorReporting").setupSentry()
   const { AppRegistry } = require("react-native")
-  const { App } = require("./App")
-  AppRegistry.registerComponent("Artsy", () => App)
+  const { App } = require("./src/lib/AndroidApp")
+  AppRegistry.registerComponent("eigen", () => App)
 } else {
   if (startStorybook) {
     global.__STORYBOOK__ = true
