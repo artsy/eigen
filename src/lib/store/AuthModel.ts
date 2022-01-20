@@ -309,7 +309,7 @@ export const getAuthModel = (): AuthModel => ({
       return "on_demand_otp_missing"
     }
 
-    if (resultJSON?.error_description === "invalid two-factor authentication code") {
+    if (resultJSON?.error === "invalid_grant") {
       return "invalid_otp"
     }
 
