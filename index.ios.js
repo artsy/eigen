@@ -11,11 +11,16 @@ if (__DEV__) {
     const fileContent = require("./metaflags.json")
     startStorybook = fileContent.startStorybook
     newIosAppShell = fileContent.newIosAppShell
-  } catch {}
+  } catch { }
 }
 
 if (newIosAppShell) {
-  require("./App")
+  require("react-native-gesture-handler")
+  require("react-native-screens").enableScreens()
+  // require("./src/lib/ErrorReporting").setupSentry()
+  const { AppRegistry } = require("react-native")
+  const { App } = require("./App")
+  AppRegistry.registerComponent("Artsy", () => App)
 } else {
   if (startStorybook) {
     global.__STORYBOOK__ = true
