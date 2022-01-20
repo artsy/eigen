@@ -1,4 +1,4 @@
-import { act, fireEvent, within } from "@testing-library/react-native"
+import { act, fireEvent, getDefaultNormalizer, within } from "@testing-library/react-native"
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
@@ -25,7 +25,9 @@ describe("ReadMore", () => {
     const { getByText } = renderWithWrappersTL(<ReadMore maxChars={3} content="Small text." />)
 
     expect(getByText(/Sma/)).toBeTruthy()
-    expect(getByText(/Read more/)).toBeTruthy()
+    expect(
+      getByText(`Read${nbsp}more`, { normalizer: getDefaultNormalizer({ collapseWhitespace: false }) })
+    ).toBeTruthy()
   })
 
   it("Renders markdown", () => {
@@ -51,13 +53,15 @@ describe("ReadMore", () => {
     expect(extractText(UNSAFE_queryAllByType(RNText)[1])).toBe(`Read${nbsp}more`)
 
     // Clicking "Read more" expands the text
-    act(() => fireEvent.press(getByText(/Read more/)))
+    act(() =>
+      fireEvent.press(getByText(`Read${nbsp}more`, { normalizer: getDefaultNormalizer({ collapseWhitespace: false }) }))
+    )
 
     expect(queryByText("This text is slightly longer than is allowed.")).toBeTruthy()
   })
 
   it("truncates correctly if there are links within the text", () => {
-    const { getByText, UNSAFE_getAllByType, queryByText } = renderWithWrappersTL(
+    const { getByText, UNSAFE_getAllByType } = renderWithWrappersTL(
       <ReadMore
         maxChars={7}
         textStyle="new"
@@ -66,11 +70,15 @@ describe("ReadMore", () => {
     )
 
     expect(within(getByText(/This/)).getByText(/te/)).toBeTruthy()
-    expect(queryByText(/Read more/)).toBeTruthy()
+    expect(
+      getByText(`Read${nbsp}more`, { normalizer: getDefaultNormalizer({ collapseWhitespace: false }) })
+    ).toBeTruthy()
     expect(UNSAFE_getAllByType(LinkText)).toHaveLength(2) // One for the `/artist/text` link, one for "Read more"
 
     // Clicking "Read more" expands the text
-    act(() => fireEvent.press(getByText(/Read more/)))
+    act(() =>
+      fireEvent.press(getByText(`Read${nbsp}more`, { normalizer: getDefaultNormalizer({ collapseWhitespace: false }) }))
+    )
 
     expect(within(getByText(/This/)).getByText(/text/)).toBeTruthy()
     expect(within(getByText(/is slightly longer than is/)).getByText(/allowed/)).toBeTruthy()
