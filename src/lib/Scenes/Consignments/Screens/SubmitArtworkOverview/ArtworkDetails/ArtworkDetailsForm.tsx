@@ -46,12 +46,6 @@ export const ArtworkDetailsForm: React.FC<ArtworkDetailsFormProps> = ({ handlePr
       <Spacer mt={2} />
       <Input title="Materials" placeholder="Oil on Canvas, Mixed Media, Lithograph..." />
       <Spacer mt={2} />
-
-      <Spacer mt={2} />
-
-      <Button onPress={handleSubmit} disabled={!isValid} block haptic maxWidth={540}>
-        Save & Continue
-      </Button>
     </FormikProvider>
   )
 }
