@@ -42,7 +42,7 @@ import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollo
 import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
-import { NewWorksForYouRailContainer } from "./Components/NewWorksForYouRail"
+import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
@@ -278,7 +278,7 @@ const Home = (props: Props) => {
                 )
               case "newWorksForYou":
                 return (
-                  <NewWorksForYouRailContainer
+                  <NewWorksForYouRail
                     title={item.title}
                     me={item.data}
                     scrollRef={scrollRefs.current[index]}
