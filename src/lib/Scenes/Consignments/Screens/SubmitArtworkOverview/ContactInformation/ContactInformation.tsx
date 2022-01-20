@@ -26,7 +26,12 @@ export const ContactInformation = ({ handlePress }: Props) => {
       validationSchema={schema}
       validateOnMount
     >
-      {({ values, handleSubmit, setFieldValue, isValid }) => (
+      {({
+        values,
+        handleSubmit,
+        setFieldValue,
+        // isValid
+      }) => (
         <Flex p={1} mt={1}>
           <Text variant="sm" color="black60">
             We will only use these details to contact you regarding your submission.
