@@ -6,6 +6,13 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '12.1'
 
+$ReactNativeMapboxGLIOSVersion = '~> 6.4'
+
+
+pre_install do |installer|
+  $RNMBGL.pre_install(installer)
+end
+
 
 target 'eigen' do
   config = use_native_modules!
@@ -30,5 +37,7 @@ target 'eigen' do
   post_install do |installer|
     react_native_post_install(installer)
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
+
+    $RNMBGL.post_install(installer)
   end
 end
