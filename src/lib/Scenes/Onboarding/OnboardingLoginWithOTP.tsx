@@ -45,18 +45,7 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPProps> =
         <Spacer mt={60} />
         <Text variant="lg">Authentication Code</Text>
         <Box>
-          {otpMode === "on_demand" ? (
-            <>
-              <Spacer mb={20} />
-              <Message testID="on_demand_message">
-                Your safety and security are important to us. Please check your email for a one-time authentication code
-                to complete your login.
-              </Message>
-              <Spacer mb={20} />
-            </>
-          ) : (
-            <Spacer mt={50} />
-          )}
+          <Spacer mt={50} />
           <Input
             ref={otpInputRef}
             autoCapitalize="none"
@@ -80,6 +69,15 @@ export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPProps> =
             value={values.otp}
             error={errors.otp}
           />
+          {otpMode === "on_demand" ? (
+            <>
+              <Spacer mb={20} />
+              <Message testID="on_demand_message">
+                Your safety and security are important to us. Please check your email for a one-time authentication code
+                to complete your login.
+              </Message>
+            </>
+          ) : null}
         </Box>
         <Spacer mt={4} />
       </ScrollView>
