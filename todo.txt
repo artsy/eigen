@@ -5,7 +5,9 @@
 - for the old app, to install pods, we rename the new `ios` folder to `new-ios` temporarily.
 - we have the metaflag `newIosAppShell` to know if we should start the new or old app
 - we added yarn go-old and yarn go-new to control which app to run.
-
+- updated react-native-config patch to get source directory correct in ios folder, should be able to remove when we have just one dir
+- returning same modules for native for ios as android, many are broken and will need to be fixed, may want to distinguish Android and iOS still here
+- adding placeholder constants for native module export to prevent crash - see ARTArtsyNativeModule.m, use real thing when we have access to old ios files
 
 
 possibly need to set up:
