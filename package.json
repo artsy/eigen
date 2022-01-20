@@ -33,7 +33,7 @@
     "flip_table": "./scripts/flip-table",
     "flip_table_extreme": "./scripts/flip-table-extreme",
     "install:all": "./scripts/install",
-    "pod-install": "bundle exec pod install; ./scripts/post-pod-install.rb",
+    "pod-install": "mv ios new-ios; bundle exec pod install; ./scripts/post-pod-install.rb; mv new-ios ios",
     "pod-install-repo-update": "bundle exec pod install --repo-update; ./scripts/post-pod-install.rb",
     "lint-fix": "yarn lint --fix; yarn prettier-project",
     "lint": "tslint 'src/**/*.{ts,tsx}'",

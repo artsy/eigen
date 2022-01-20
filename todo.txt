@@ -2,3 +2,4 @@
 - for some reason, `tasks.whenTaskAdded` in `node_modules/react-native-config/android/dotenv.gradle` is not working.
   in upstream this function is deleted. in our fork we still have it. can we delete it? can we make it work?
 - warn people that they should run `yarn cache clean` before running `yarn install:all`. we had some issues with master -> main for react-native-config
+- for the old app, to install pods, we rename the new `ios` folder to `new-ios` temporarily.
