@@ -8,7 +8,7 @@ export type MyCollectionAndSavedWorks_me = {
     readonly name: string | null;
     readonly bio: string | null;
     readonly location: {
-        readonly city: string | null;
+        readonly display: string | null;
     } | null;
     readonly otherRelevantPosition: string | null;
     readonly profession: string | null;
@@ -59,7 +59,7 @@ const node: ReaderFragment = {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
-          "name": "city",
+          "name": "display",
           "storageKey": null
         }
       ],
@@ -119,5 +119,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '069a8fb0ef25ff69d145bab4adcd9782';
+(node as any).hash = 'e1371c550e346cec9693e20aa161c532';
 export default node;

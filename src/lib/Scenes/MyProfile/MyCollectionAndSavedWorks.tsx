@@ -122,17 +122,17 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
       {showCollectorProfile && (
         <Flex px={2} mt={2}>
           <Join separator={<Spacer my={0.5} />}>
-            {!!me?.location?.city && (
-              <Flex flexDirection="row" alignItems="center">
+            {!!me?.location?.display && (
+              <Flex flexDirection="row" alignItems="flex-end">
                 <MapPinIcon width={14} height={14} />
                 <Sans size="2" color={color("black100")} px={0.5}>
-                  {me.location.city}
+                  {me.location.display}
                 </Sans>
               </Flex>
             )}
 
             {!!me?.profession && (
-              <Flex flexDirection="row" alignItems="center">
+              <Flex flexDirection="row" alignItems="flex-end">
                 <BriefcaseIcon width={14} height={14} />
                 <Sans size="2" color={color("black100")} px={0.5}>
                   {me.profession}
@@ -141,7 +141,7 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
             )}
 
             {!!me?.otherRelevantPosition && (
-              <Flex flexDirection="row" alignItems="center">
+              <Flex flexDirection="row" alignItems="flex-end">
                 <MuseumIcon width={14} height={14} />
                 <Sans size="2" color={color("black100")} px={0.5}>
                   {me?.otherRelevantPosition}
@@ -180,7 +180,7 @@ export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContaine
       name
       bio
       location {
-        city
+        display
       }
       otherRelevantPosition
       profession

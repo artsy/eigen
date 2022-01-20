@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f45008c1ad478717a98e457451110ae8 */
+/* @relayHash e1cb197a626bda625d5ef56b9bda88e5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -30,7 +30,7 @@ fragment MyCollectionAndSavedWorks_me on Me {
   name
   bio
   location {
-    city
+    display
     id
   }
   otherRelevantPosition
@@ -126,7 +126,7 @@ return {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
-                "name": "city",
+                "name": "display",
                 "storageKey": null
               },
               (v0/*: any*/)
@@ -185,7 +185,7 @@ return {
     ]
   },
   "params": {
-    "id": "f45008c1ad478717a98e457451110ae8",
+    "id": "e1cb197a626bda625d5ef56b9bda88e5",
     "metadata": {},
     "name": "MyCollectionAndSavedWorksQuery",
     "operationKind": "query",
