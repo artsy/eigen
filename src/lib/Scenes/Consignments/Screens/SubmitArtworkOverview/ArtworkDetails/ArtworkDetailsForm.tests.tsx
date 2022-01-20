@@ -90,7 +90,7 @@ const mockArtworkDetailsFormValues = {
   year: "1820",
   materials: "oil on canvas",
   editionNumber: "1",
-  editionSize: "1",
+  editionSizeFormatted: "1",
   units: "in",
   height: "100",
   width: "200",
