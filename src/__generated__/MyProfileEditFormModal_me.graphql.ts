@@ -5,6 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyProfileEditFormModal_me = {
+<<<<<<< HEAD
     readonly name: string | null;
     readonly profession: string | null;
     readonly otherRelevantPositions: string | null;
@@ -15,11 +16,16 @@ export type MyProfileEditFormModal_me = {
         readonly state: string | null;
         readonly country: string | null;
     } | null;
+=======
+    readonly bio: string | null;
+    readonly canRequestEmailConfirmation?: boolean | undefined;
+    readonly email?: string | null | undefined;
+    readonly identityVerified?: boolean | null | undefined;
+>>>>>>> 52000b447e (send verification email on verify press)
     readonly icon: {
         readonly url: string | null;
     } | null;
-    readonly identityVerified?: boolean | null | undefined;
-    readonly canRequestEmailConfirmation?: boolean | undefined;
+    readonly name: string | null;
     readonly " $refType": "MyProfileEditFormModal_me";
 };
 export type MyProfileEditFormModal_me$data = MyProfileEditFormModal_me;
@@ -46,6 +52,7 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+<<<<<<< HEAD
       "name": "name",
       "storageKey": null
     },
@@ -67,6 +74,8 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+=======
+>>>>>>> 52000b447e (send verification email on verify press)
       "name": "bio",
       "storageKey": null
     },
@@ -134,6 +143,13 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "name",
+      "storageKey": null
+    },
+    {
       "condition": "enableCollectorProfile",
       "kind": "Condition",
       "passingValue": true,
@@ -142,14 +158,21 @@ const node: ReaderFragment = {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
-          "name": "identityVerified",
+          "name": "canRequestEmailConfirmation",
           "storageKey": null
         },
         {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
-          "name": "canRequestEmailConfirmation",
+          "name": "email",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "identityVerified",
           "storageKey": null
         }
       ]
@@ -159,8 +182,12 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 <<<<<<< HEAD
+<<<<<<< HEAD
 (node as any).hash = '54c50800a327082547ff9a21ca7f8686';
 =======
 (node as any).hash = 'be66b5b98e725095225cb36f334b8e10';
 >>>>>>> 0ac07c6c97 (add profile verification methods)
+=======
+(node as any).hash = 'd8aed4ed40ee7805f43a917c8396c9c0';
+>>>>>>> 52000b447e (send verification email on verify press)
 export default node;

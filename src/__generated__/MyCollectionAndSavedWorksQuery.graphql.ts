@@ -2,10 +2,28 @@
 /* eslint-disable */
 // @ts-nocheck
 <<<<<<< HEAD
+<<<<<<< HEAD
 /* @relayHash f1edc159ab605a68cb8b1e7d7eb79c9f */
 =======
 /* @relayHash b088d1289ffcba232f80baa277f03144 */
 >>>>>>> 0ac07c6c97 (add profile verification methods)
+=======
+/* @relayHash b088d1289ffcba232f80baa277f03144 */
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+/* @relayHash 83152c6de36b76dce0613b7a5afce5a2 */
+=======
+/* @relayHash f2a6335131b742baf833d2a19c44611c */
+>>>>>>> 6f81cd6a42 (add profile verification methods)
+=======
+/* @relayHash f2a6335131b742baf833d2a19c44611c */
+=======
+/* @relayHash c1788367c3492bd8fbb3b802b8e6939c */
+>>>>>>> 2db50a06fb (send verification email on verify press)
+>>>>>>> 157b1cc5be (send verification email on verify press)
+>>>>>>> bf16f44883 (send verification email on verify press)
+>>>>>>> 52000b447e (send verification email on verify press)
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -51,6 +69,7 @@ fragment MyCollectionAndSavedWorks_me_3CllfQ on Me {
 }
 
 fragment MyProfileEditFormModal_me_3CllfQ on Me {
+<<<<<<< HEAD
   name
   profession
   otherRelevantPositions
@@ -62,11 +81,16 @@ fragment MyProfileEditFormModal_me_3CllfQ on Me {
     country
     id
   }
+=======
+  bio
+  canRequestEmailConfirmation @include(if: $enableCollectorProfile)
+  email @include(if: $enableCollectorProfile)
+  identityVerified @include(if: $enableCollectorProfile)
+>>>>>>> 52000b447e (send verification email on verify press)
   icon {
     url(version: "thumbnail")
   }
-  identityVerified @include(if: $enableCollectorProfile)
-  canRequestEmailConfirmation @include(if: $enableCollectorProfile)
+  name
 }
 */
 
@@ -245,14 +269,21 @@ return {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
-                "name": "identityVerified",
+                "name": "canRequestEmailConfirmation",
                 "storageKey": null
               },
               {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
-                "name": "canRequestEmailConfirmation",
+                "name": "email",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "identityVerified",
                 "storageKey": null
               }
             ]
@@ -264,10 +295,28 @@ return {
   },
   "params": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "id": "f1edc159ab605a68cb8b1e7d7eb79c9f",
 =======
     "id": "b088d1289ffcba232f80baa277f03144",
 >>>>>>> 0ac07c6c97 (add profile verification methods)
+=======
+    "id": "b088d1289ffcba232f80baa277f03144",
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+    "id": "83152c6de36b76dce0613b7a5afce5a2",
+=======
+    "id": "f2a6335131b742baf833d2a19c44611c",
+>>>>>>> 6f81cd6a42 (add profile verification methods)
+=======
+    "id": "f2a6335131b742baf833d2a19c44611c",
+=======
+    "id": "c1788367c3492bd8fbb3b802b8e6939c",
+>>>>>>> 2db50a06fb (send verification email on verify press)
+>>>>>>> 157b1cc5be (send verification email on verify press)
+>>>>>>> bf16f44883 (send verification email on verify press)
+>>>>>>> 52000b447e (send verification email on verify press)
     "metadata": {},
     "name": "MyCollectionAndSavedWorksQuery",
     "operationKind": "query",
