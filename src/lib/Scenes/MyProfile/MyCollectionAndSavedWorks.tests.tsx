@@ -166,5 +166,62 @@ describe("MyCollectionAndSavedWorks", () => {
         expect(wrapper.root.findAllByType(Avatar).length).toEqual(1)
       })
     })
+
+    describe("With Collector Profile feature flag OFF", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCollectorProfile: false })
+      })
+
+      it("should not render Collector Profile info", async () => {
+        const wrapper = getWrapper({
+          Me: () => ({
+            name: "Princess",
+            createdAt: new Date("12/12/12").toISOString(),
+            bio: "Richest Collector! 💰",
+            location: {
+              city: "Atlantis",
+            },
+            profession: "Guardian of the Galaxy",
+            otherRelevantPosition: "Marvel Universe",
+          }),
+        })
+
+        const text = extractText(wrapper.root)
+
+        expect(text).toContain("Princess")
+        expect(text).toContain("Member since 2012")
+        expect(text).toContain("Richest Collector! 💰")
+        expect(text).not.toContain("Guardian of the Galaxy")
+        expect(text).not.toContain("Atlantis")
+        expect(text).not.toContain("Marvel Universe")
+      })
+    })
+
+    describe("With Collector Profile feature flag ON", () => {
+      beforeEach(() => {
+        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableCollectorProfile: true })
+      })
+
+      it("should render Collector Profile info", async () => {
+        const wrapper = getWrapper({
+          Me: () => ({
+            name: "Princess",
+            createdAt: new Date("12/12/12").toISOString(),
+            bio: "Richest Collector! 💰",
+            location: {
+              city: "Atlantis",
+            },
+            profession: "Guardian of the Galaxy",
+            otherRelevantPosition: "Marvel Universe",
+          }),
+        })
+
+        const text = extractText(wrapper.root)
+
+        expect(text).toContain("Guardian of the Galaxy")
+        expect(text).toContain("Atlantis")
+        expect(text).toContain("Marvel Universe")
+      })
+    })
   })
 })
