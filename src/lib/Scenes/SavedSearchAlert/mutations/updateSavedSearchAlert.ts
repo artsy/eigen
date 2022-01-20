@@ -11,7 +11,7 @@ import { SavedSearchAlertFormValues } from "../SavedSearchAlertModel"
 export const updateSavedSearchAlert = (
   savedSearchAlertId: string,
   userAlertSettings: SavedSearchAlertFormValues,
-  attributes: SearchCriteriaAttributes | null
+  attributes?: SearchCriteriaAttributes
 ): Promise<updateSavedSearchAlertMutationResponse> => {
   const input: updateSavedSearchAlertMutationVariables["input"] = {
     searchCriteriaID: savedSearchAlertId,
