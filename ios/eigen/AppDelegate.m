@@ -12,6 +12,11 @@
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
 
+
+#import <Analytics/SEGAnalytics.h>
+#import <Segment-Adjust/SEGAdjustIntegrationFactory.h>
+#import <react-native-config/ReactNativeConfig.h>
+
 static void InitializeFlipper(UIApplication *application) {
   FlipperClient *client = [FlipperClient sharedClient];
   SKDescriptorMapper *layoutDescriptorMapper = [[SKDescriptorMapper alloc] initWithDefaults];
@@ -47,6 +52,9 @@ static void InitializeFlipper(UIApplication *application) {
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+
+  [self setupAnalytics:application withLaunchOptions:launchOptions];
+
   return YES;
 }
 
@@ -57,6 +65,23 @@ static void InitializeFlipper(UIApplication *application) {
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
+}
+
+- (void)setupAnalytics:(UIApplication *)application withLaunchOptions:(NSDictionary *)launchOptions {
+  NSString *segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_STAGING_WRITE_KEY_IOS"];
+
+  // TODO: ARAppStatus is in other Xcode project so can't be referenced
+  // if (![ARAppStatus isDev]) {
+  if (NO) {
+      segmentWriteKey = [ReactNativeConfig envFor:@"SEGMENT_PRODUCTION_WRITE_KEY_IOS"];
+  }
+
+  SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:segmentWriteKey];
+  configuration.trackApplicationLifecycleEvents = YES;
+  configuration.trackPushNotifications = YES;
+  configuration.trackDeepLinks = YES;
+  [configuration use:[SEGAdjustIntegrationFactory instance]];
+  [SEGAnalytics setupWithConfiguration:configuration];
 }
 
 @end
