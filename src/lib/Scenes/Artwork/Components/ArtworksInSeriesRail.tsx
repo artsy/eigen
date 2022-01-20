@@ -1,166 +1,98 @@
-import { ActionType, ContextModule, OwnerType, ScreenOwnerType, TappedArtworkGroup } from "@artsy/cohesion"
-import { ArtworksInSeriesRail_artwork } from "__generated__/ArtworksInSeriesRail_artwork.graphql"
-import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
-import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
+import { ActionType, ContextModule, OwnerType, ScreenOwnerType } from "@artsy/cohesion"
+import {
+  ArtworksInSeriesRail_artwork,
+  ArtworksInSeriesRail_artwork$key,
+} from "__generated__/ArtworksInSeriesRail_artwork.graphql"
+import { SmallArtworkRail } from "lib/Components/ArtworkRail/SmallArtworkRail"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
-import { ArrowRightIcon, Flex, Sans, Spacer } from "palette"
+import { Flex } from "palette"
 import React from "react"
-import { FlatList, TouchableOpacity } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 
 interface ArtworksInSeriesRailProps {
-  artwork: ArtworksInSeriesRail_artwork
+  artwork: ArtworksInSeriesRail_artwork$key
 }
 
-export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artwork }) => {
+export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = (props) => {
   const { trackEvent } = useTracking()
 
-  const artistSeriesSlug = artwork?.artistSeriesConnection?.edges?.[0]?.node?.slug
-  const artistSeriesID = artwork?.artistSeriesConnection?.edges?.[0]?.node?.internalID
-  const filterArtworksConnection = artwork?.artistSeriesConnection?.edges?.[0]?.node?.filterArtworksConnection
+  const artwork = useFragment<ArtworksInSeriesRail_artwork$key>(artworkFragment, props.artwork)
 
-  if (!filterArtworksConnection) {
+  const firstArtistSeries = extractNodes(artwork?.artistSeriesConnection)[0]
+  const artworks = extractNodes(firstArtistSeries?.filterArtworksConnection)
+
+  if (!artworks) {
     return null
-  }
-
-  const artworks = extractNodes(filterArtworksConnection)
-
-  const trackingContext = {
-    context_module: ContextModule.moreFromThisSeries,
-    context_screen_owner_type: OwnerType.artwork as ScreenOwnerType,
-    context_screen_owner_id: artwork.internalID,
-    context_screen_owner_slug: artwork.slug,
-  }
-
-  const trackHeaderClick = ({
-    destinationScreenOwnerID,
-    destinationScreenOwnerSlug,
-  }: {
-    destinationScreenOwnerID: string
-    destinationScreenOwnerSlug: string
-  }) => {
-    const properties: TappedArtworkGroup = {
-      action: ActionType.tappedArtworkGroup,
-      ...trackingContext,
-      destination_screen_owner_type: OwnerType.artistSeries,
-      destination_screen_owner_slug: destinationScreenOwnerSlug,
-      destination_screen_owner_id: destinationScreenOwnerID,
-      type: "viewAll",
-    }
-
-    trackEvent(properties)
-  }
-
-  const trackArtworkClick = ({
-    destinationScreenOwnerID,
-    destinationScreenOwnerSlug,
-  }: {
-    destinationScreenOwnerID: string
-    destinationScreenOwnerSlug: string
-  }) => {
-    const properties: TappedArtworkGroup = {
-      action: ActionType.tappedArtworkGroup,
-      ...trackingContext,
-      destination_screen_owner_type: OwnerType.artwork,
-      destination_screen_owner_slug: destinationScreenOwnerSlug,
-      destination_screen_owner_id: destinationScreenOwnerID,
-      type: "thumbnail",
-    }
-
-    trackEvent(properties)
   }
 
   return (
     <Flex>
-      <TouchableOpacity
+      <SectionTitle
+        title="More from this series"
         onPress={() => {
-          trackHeaderClick({ destinationScreenOwnerSlug: artistSeriesSlug!, destinationScreenOwnerID: artistSeriesID! })
-          navigate(`/artist-series/${artistSeriesSlug}`)
+          trackEvent(tracks.tappedHeader(artwork, firstArtistSeries))
+          navigate(`/artist-series/${firstArtistSeries?.slug}`)
         }}
-      >
-        <Flex pb={1} flexDirection="row" justifyContent="space-between">
-          <Sans size="4">More from this series</Sans>
-          <ArrowRightIcon mr="-5px" />
-        </Flex>
-      </TouchableOpacity>
-      <FlatList
-        horizontal
-        ItemSeparatorComponent={() => <Spacer width={10} />}
-        showsHorizontalScrollIndicator={false}
-        data={artworks}
-        initialNumToRender={5}
-        windowSize={3}
-        renderItem={({ item }) => (
-          <ArtworkTileRailCard
-            onPress={() => {
-              trackArtworkClick({ destinationScreenOwnerID: item.internalID, destinationScreenOwnerSlug: item.slug })
-              navigate(item.href!)
-            }}
-            imageURL={item.image?.imageURL}
-            imageAspectRatio={item.image?.aspectRatio}
-            imageSize="medium"
-            artistNames={item.artistNames}
-            title={item.title}
-            partner={item.partner}
-            date={item.date}
-            saleMessage={saleMessageOrBidInfo({ artwork: item })}
-            key={item.internalID}
-          />
-        )}
-        keyExtractor={(item, index) => String(item.image?.imageURL || index)}
+      />
+      <SmallArtworkRail
+        artworks={artworks}
+        onPress={(item) => {
+          trackEvent(tracks.tappedArtwork(artwork, item))
+          navigate(item.href!)
+        }}
+        ListHeaderComponent={null}
+        ListFooterComponent={null}
       />
     </Flex>
   )
 }
 
-export const ArtworksInSeriesRailFragmentContainer = createFragmentContainer(ArtworksInSeriesRail, {
-  artwork: graphql`
-    fragment ArtworksInSeriesRail_artwork on Artwork {
-      internalID
-      slug
-      artistSeriesConnection(first: 1) {
-        edges {
-          node {
-            slug
-            internalID
-            filterArtworksConnection(first: 20, input: { sort: "-decayed_merch" }) {
-              edges {
-                node {
-                  slug
-                  internalID
-                  href
-                  artistNames
-                  image {
-                    imageURL
-                    aspectRatio
-                  }
-                  sale {
-                    isAuction
-                    isClosed
-                    displayTimelyAt
-                  }
-                  saleArtwork {
-                    counts {
-                      bidderPositions
-                    }
-                    currentBid {
-                      display
-                    }
-                  }
-                  saleMessage
-                  title
-                  date
-                  partner {
-                    name
-                  }
-                }
+const artworkFragment = graphql`
+  fragment ArtworksInSeriesRail_artwork on Artwork {
+    internalID
+    slug
+    artistSeriesConnection(first: 1) {
+      edges {
+        node {
+          slug
+          internalID
+          filterArtworksConnection(first: 20, input: { sort: "-decayed_merch" }) {
+            edges {
+              node {
+                ...SmallArtworkRail_artworks
               }
             }
           }
         }
       }
     }
-  `,
-})
+  }
+`
+
+const tracks = {
+  tappedHeader: (sourceArtwork: ArtworksInSeriesRail_artwork, destination: { internalID: string; slug: string }) => ({
+    action: ActionType.tappedArtworkGroup,
+    context_module: ContextModule.moreFromThisSeries,
+    context_screen_owner_type: OwnerType.artwork as ScreenOwnerType,
+    context_screen_owner_id: sourceArtwork.internalID,
+    context_screen_owner_slug: sourceArtwork.slug,
+    destination_screen_owner_type: OwnerType.artistSeries,
+    destination_screen_owner_id: destination.internalID,
+    destination_screen_owner_slug: destination.slug,
+    type: "viewAll",
+  }),
+  tappedArtwork: (sourceArtwork: ArtworksInSeriesRail_artwork, destination: { internalID: string; slug: string }) => ({
+    action: ActionType.tappedArtworkGroup,
+    context_module: ContextModule.moreFromThisSeries,
+    context_screen_owner_type: OwnerType.artwork as ScreenOwnerType,
+    context_screen_owner_id: sourceArtwork.internalID,
+    context_screen_owner_slug: sourceArtwork.slug,
+    destination_screen_owner_type: OwnerType.artwork,
+    destination_screen_owner_id: destination.internalID,
+    destination_screen_owner_slug: destination.slug,
+    type: "thumbnail",
+  }),
+}
