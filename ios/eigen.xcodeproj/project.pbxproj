@@ -14,6 +14,7 @@
 		4BA54428740D364B54D4A17D /* libPods-eigen-eigenTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE0ED407FA44DD891F5B3246 /* libPods-eigen-eigenTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		C11AFA11C74E7B66FF34011D /* libPods-eigen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB231E790C61B818E9DBE3 /* libPods-eigen.a */; };
+		CBEEEFBA279A02B600BA725F /* ARTArtsyNativeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEEEFB9279A02B600BA725F /* ARTArtsyNativeModule.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +42,8 @@
 		17C42880D2ACAFFAD6731367 /* Pods-eigen-eigenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen-eigenTests.debug.xcconfig"; path = "Target Support Files/Pods-eigen-eigenTests/Pods-eigen-eigenTests.debug.xcconfig"; sourceTree = "<group>"; };
 		236DCB5FAF86376660CE95DA /* Pods-eigen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen.release.xcconfig"; path = "Target Support Files/Pods-eigen/Pods-eigen.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = eigen/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		CBEEEFB8279A02B600BA725F /* ARTArtsyNativeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTArtsyNativeModule.h; sourceTree = "<group>"; };
+		CBEEEFB9279A02B600BA725F /* ARTArtsyNativeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTArtsyNativeModule.m; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE0ED407FA44DD891F5B3246 /* libPods-eigen-eigenTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eigen-eigenTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4EB231E790C61B818E9DBE3 /* libPods-eigen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eigen.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,6 +89,7 @@
 		13B07FAE1A68108700A75B9A /* eigen */ = {
 			isa = PBXGroup;
 			children = (
+				CBEEEFB7279A008800BA725F /* NativeModules */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -114,7 +118,6 @@
 				17C42880D2ACAFFAD6731367 /* Pods-eigen-eigenTests.debug.xcconfig */,
 				13F369B4E56A4D026D55DC53 /* Pods-eigen-eigenTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -147,6 +150,16 @@
 				00E356EE1AD99517003FC87E /* eigenTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		CBEEEFB7279A008800BA725F /* NativeModules */ = {
+			isa = PBXGroup;
+			children = (
+				CBEEEFB8279A02B600BA725F /* ARTArtsyNativeModule.h */,
+				CBEEEFB9279A02B600BA725F /* ARTArtsyNativeModule.m */,
+			);
+			name = NativeModules;
+			path = eigen/NativeModules;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -412,6 +425,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				CBEEEFBA279A02B600BA725F /* ARTArtsyNativeModule.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

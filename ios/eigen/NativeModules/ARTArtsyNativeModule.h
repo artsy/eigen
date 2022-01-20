@@ -1,15 +1,9 @@
-//
-//  ARTArtsyNativeModule.h
-//  eigen
-//
-//  Created by Brian Beckerle on 1/20/22.
-//
-
 #import <Foundation/Foundation.h>
+#import <React/RCTBridgeModule.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ARTArtsyNativeModule : NSObject
+@interface ARTArtsyNativeModule : NSObject <RCTBridgeModule>
 
 @end
 

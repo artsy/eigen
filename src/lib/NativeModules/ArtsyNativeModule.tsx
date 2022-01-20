@@ -7,9 +7,20 @@ import { LegacyNativeModules } from "./LegacyNativeModules"
  * All new artsy-specific native bridge code should be exposed here.
  * Any legacy iOS native bridge code that is made cross-platform should also be exposed here.
  */
+
+let newIOSAppShell = false
+try {
+  // tslint:disable-next-line:no-var-requires
+  const fileContent = require("../../../metaflags.json")
+  newIOSAppShell = fileContent.newIosAppShell
+  console.log("NEWSHELL successfully loaded metaflags useNewAppShell", newIOSAppShell)
+} catch {
+  console.log("NEWSHELL failed to load metaflags")
+}
+
 export const ArtsyNativeModule = {
   launchCount:
-    Platform.OS === "ios"
+    Platform.OS === "ios" && !newIOSAppShell
       ? LegacyNativeModules.ARNotificationsManager.nativeState.launchCount
       : (NativeModules.ArtsyNativeModule.getConstants().launchCount as number),
   setAppStyling:
