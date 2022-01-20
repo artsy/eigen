@@ -1,9 +1,11 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { captureMessage } from "@sentry/react-native"
+import { ArtworkDetails_submission } from "__generated__/ArtworkDetails_submission.graphql"
 import { ConsignmentAttributionClass } from "__generated__/createConsignSubmissionMutation.graphql"
 import { Formik } from "formik"
 import { CTAButton, Flex, Spacer, Text } from "palette"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+import { createFragmentContainer, graphql } from "react-relay"
 import { CONSIGNMENT_SUBMISSION_STORAGE_ID } from "../SubmitArtworkOverview"
 import { createOrUpdateConsignSubmission } from "../utils/createOrUpdateConsignSubmission"
 import { limitedEditionValue } from "../utils/rarityOptions"
@@ -12,11 +14,17 @@ import { ArtworkDetailsForm, ArtworkDetailsFormModel } from "./ArtworkDetailsFor
 import { ErrorView } from "./Components/ErrorView"
 
 interface ArtworkDetailsProps {
+  submission?: ArtworkDetails_submission
   handlePress: () => void
 }
 
-export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) => {
+export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ submission, handlePress }) => {
   const [submissionError, setSubmissionError] = useState(false)
+
+  useEffect(() => {
+    //  TODO: prepopulate form
+    console.log(submission)
+  }, [])
 
   const handleArtworkDetailsSubmit = async (values: ArtworkDetailsFormModel) => {
     const isRarityLimitedEdition = values.rarity === limitedEditionValue
@@ -98,3 +106,29 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ handlePress }) =
     </Formik>
   )
 }
+
+export const ArtworkDetailsFragmentContainer = createFragmentContainer(ArtworkDetails, {
+  submission: graphql`
+    fragment ArtworkDetails_submission on ConsignmentSubmission {
+      id
+      artist {
+        internalID
+        name
+      }
+      locationCity
+      locationCountry
+      locationState
+      year
+      title
+      medium
+      attributionClass
+      editionNumber
+      editionSize
+      height
+      width
+      depth
+      dimensionsMetric
+      provenance
+    }
+  `,
+})
