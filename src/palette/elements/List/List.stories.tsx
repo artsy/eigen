@@ -10,7 +10,7 @@ storiesOf("List", module)
   .add("Bulleted Item", () => (
     <List>
       <Flex>
-        <BulletedItem> Bulleted Item text</BulletedItem>
+        <BulletedItem>Bulleted Item text</BulletedItem>
         <BulletedItem>
           The good thing about Bulleted Item text is that the bullet is aligned separately from the rest of the text
         </BulletedItem>
