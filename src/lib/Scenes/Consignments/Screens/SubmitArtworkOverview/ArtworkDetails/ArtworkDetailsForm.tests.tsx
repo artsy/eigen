@@ -100,7 +100,9 @@ const mockArtworkDetailsFormValues = {
   utmMedium: "",
   utmSource: "",
   utmTerm: "",
-  locationCity: "",
-  locationState: "",
-  locationCountry: "",
+  location: {
+    city: "",
+    state: "",
+    country: "",
+  },
 }

@@ -12,22 +12,28 @@ interface Props {
 export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
   const [predictions, setPredictions] = useState<SimpleLocation[]>([])
   const [selectedLocation, setSelectedLocation] = useState<Location | null>()
-  const [query, setQuery] = useState(selectedLocation?.locationCity || "")
+  const [query, setQuery] = useState(selectedLocation?.city || "")
 
   useEffect(() => {
     setPredictions([])
 
     if (selectedLocation) {
       onChange(selectedLocation)
+    } else {
+      onChange({
+        city: "",
+        state: "",
+        country: "",
+      })
     }
   }, [selectedLocation])
 
   useEffect(() => {
-    if (query !== selectedLocation?.locationCity) {
+    if (query !== selectedLocation?.city) {
       setSelectedLocation(null)
     }
 
-    if (query.length < 3 || selectedLocation?.locationCity === query) {
+    if (query.length < 3 || selectedLocation?.city === query) {
       setPredictions([])
     } else {
       ;(async () => {
@@ -39,7 +45,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
 
   const reset = () => {
     if (selectedLocation) {
-      setQuery(selectedLocation.locationCity)
+      setQuery(selectedLocation.city)
     }
   }
   const touchOut = () => {
@@ -57,9 +63,7 @@ export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
         onFocus={reset}
         testID="Consignment_LocationInput"
         value={
-          selectedLocation
-            ? `${selectedLocation.locationCity}, ${selectedLocation.locationState}, ${selectedLocation.locationCountry}`
-            : query
+          selectedLocation ? `${selectedLocation.city}, ${selectedLocation.state}, ${selectedLocation.country}` : query
         }
       />
       <LocationPredictions
@@ -107,9 +111,9 @@ export const LocationPredictions = ({
   const onLocationSelect = async (item: SimpleLocation) => {
     const { city, state, country } = await getLocationDetails(item)
     onSelect({
-      locationCity: city || "",
-      locationState: state || "",
-      locationCountry: country || "",
+      city: city || "",
+      state: state || "",
+      country: country || "",
     })
   }
 

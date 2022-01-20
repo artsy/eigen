@@ -18,13 +18,15 @@ export const artworkDetailsInitialValues = {
   utmMedium: "",
   utmSource: "",
   utmTerm: "",
-  locationCity: "",
-  locationState: "",
-  locationCountry: "",
+  location: {
+    city: "",
+    state: "",
+    country: "",
+  },
 }
 
 export const artworkDetailsValidationSchema = Yup.object().shape({
-  artist: Yup.string().required().trim(),
+  artist: Yup.string().trim(),
   artistId: Yup.string().required(),
   title: Yup.string().required().trim(),
   year: Yup.string().required().trim(),
@@ -47,7 +49,9 @@ export const artworkDetailsValidationSchema = Yup.object().shape({
   utmMedium: Yup.string(),
   utmSource: Yup.string(),
   utmTerm: Yup.string(),
-  locationCity: Yup.string().required(),
-  locationState: Yup.string(),
-  locationCountry: Yup.string(),
+  location: Yup.object().shape({
+    city: Yup.string().required().trim(),
+    state: Yup.string(),
+    country: Yup.string(),
+  }),
 })

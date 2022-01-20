@@ -9,6 +9,12 @@ import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { InfoModal } from "./Components/InfoModal"
 import { LocationAutocomplete } from "./Components/LocationAutocomplete"
 
+export interface Location {
+  city: string
+  state: string
+  country: string
+}
+
 export interface ArtworkDetailsFormModel {
   artist: string
   artistId: string
@@ -27,15 +33,7 @@ export interface ArtworkDetailsFormModel {
   utmMedium: string
   utmSource: string
   utmTerm: string
-  locationCity: string
-  locationState: string
-  locationCountry: string
-}
-
-export interface Location {
-  locationCity: string
-  locationState: string
-  locationCountry: string
+  location: Location
 }
 
 export const ArtworkDetailsForm: React.FC = () => {
@@ -185,13 +183,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       </InfoModal>
 
       <Spacer mt={2} />
-      <LocationAutocomplete
-        onChange={(e: Location) => {
-          setFieldValue("locationCity", e.locationCity)
-          setFieldValue("locationState", e.locationState)
-          setFieldValue("locationCountry", e.locationCountry)
-        }}
-      />
+      <LocationAutocomplete onChange={(e: Location) => setFieldValue("location", e)} />
     </Flex>
   )
 }
