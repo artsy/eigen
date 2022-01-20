@@ -7,11 +7,26 @@ import { Image } from "lib/Components/Bidding/Elements/Image"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { LoadingIndicator } from "lib/Components/LoadingIndicator"
+import { LinkText } from "lib/Components/Text/LinkText"
 import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
 import { LocalImage } from "lib/utils/LocalImageStore"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
+import { sendEmail } from "lib/utils/sendEmail"
 import { compact, isArray } from "lodash"
-import { Avatar, Box, Button, Flex, Input, Join, Spacer, Text, Touchable, useColor } from "palette"
+import {
+  Avatar,
+  Box,
+  Button,
+  CheckCircleFillIcon,
+  CheckCircleIcon,
+  Flex,
+  Input,
+  Join,
+  Spacer,
+  Text,
+  Touchable,
+  useColor,
+} from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
 import { graphql, useFragment } from "react-relay"
@@ -57,6 +72,8 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = ({
   ...restProps
 }) => {
   const me = useFragment<MyProfileEditFormModal_me$key>(meFragment, restProps.me)
+
+  console.log("me => ", me)
 
   const color = useColor()
 
@@ -276,6 +293,16 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = ({
                   placeholder="You can add a short bio to tell more about yourself and your collection. It can be anything like the artists you collect, the genres you're interested in , etc."
                 />
 
+                <Spacer py={2} />
+                {!!enableCollectorProfile && (
+                  <ProfileVerifications
+                    isIDVerified={!!me.identityVerified}
+                    isEmailVerified={!!me.canRequestEmailConfirmation}
+                  />
+                )}
+
+                <Spacer py={2} />
+
                 <Button flex={1} disabled={!dirty} onPress={handleSubmit} mb={2}>
                   Save
                 </Button>
@@ -304,5 +331,91 @@ const meFragment = graphql`
     icon {
       url(version: "thumbnail")
     }
+    identityVerified @include(if: $enableCollectorProfile)
+    canRequestEmailConfirmation @include(if: $enableCollectorProfile)
   }
 `
+
+const renderVerifiedRow = ({ title, subtitle }: { title: string; subtitle: string }) => {
+  const color = useColor()
+  return (
+    <Flex flexDirection="row">
+      <CheckCircleFillIcon height={22} width={22} fill="green100" />
+      <Flex ml={1}>
+        <Text>{title}</Text>
+        <Text color={color("black60")}>{subtitle}</Text>
+      </Flex>
+    </Flex>
+  )
+}
+
+const ProfileVerifications = ({
+  isIDVerified,
+  isEmailVerified,
+}: {
+  isIDVerified: boolean
+  isEmailVerified: boolean
+}) => {
+  const color = useColor()
+  return (
+    <Flex>
+      {/* ID Verification */}
+      {isIDVerified ? (
+        renderVerifiedRow({
+          title: "ID Verified",
+          subtitle: "For details, see FAQs or contact verification@artsy.net",
+        })
+      ) : (
+        <Flex flexDirection="row">
+          <CheckCircleIcon height={22} width={22} fill="black30" />
+          <Flex ml={1}>
+            <LinkText
+              onPress={() => {
+                // Trigger ID Verification Process
+                // This will be done in a separate ticket
+              }}
+            >
+              Verify Your ID
+            </LinkText>
+            <Text color={color("black60")}>
+              For details about identity verification, see the FAQ or contact{" "}
+              <LinkText
+                onPress={() => sendEmail("verification@artsy.net", { subject: "ID Verification" })}
+              >
+                verification@artsy.net
+              </LinkText>
+              .
+            </Text>
+          </Flex>
+        </Flex>
+      )}
+
+      <Spacer height={30} />
+
+      {/* Email Verification */}
+      {isEmailVerified ? (
+        renderVerifiedRow({
+          title: "Email Address Verified",
+          subtitle: "Description Text explaining Email verification for the Collector.",
+        })
+      ) : (
+        <Flex flexDirection="row">
+          <CheckCircleIcon height={22} width={22} fill="black30" />
+          <Flex ml={1}>
+            <LinkText
+              onPress={() => {
+                // Trigger Email Verification Process
+              }}
+            >
+              Verify Your Email
+            </LinkText>
+            {/* This text will be replaced in a separate ticket */}
+            <Text color="black60">
+              Secure your account and receive updates about your transactions on Artsy.
+            </Text>
+          </Flex>
+        </Flex>
+      )}
+    </Flex>
+  )
+}

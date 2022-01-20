@@ -28,7 +28,13 @@ export type MyCollectionAndSavedWorks_me$key = {
 
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": false,
+      "kind": "LocalArgument",
+      "name": "enableCollectorProfile"
+    }
+  ],
   "kind": "Fragment",
   "metadata": null,
   "name": "MyCollectionAndSavedWorks_me",
@@ -111,7 +117,13 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
-      "args": null,
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "enableCollectorProfile",
+          "variableName": "enableCollectorProfile"
+        }
+      ],
       "kind": "FragmentSpread",
       "name": "MyProfileEditFormModal_me"
     }
@@ -119,5 +131,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'f7ed36cd328873a04fa10b49d448e4a2';
+(node as any).hash = '11c870aea48c96f943a26dec1a5eaff7';
 export default node;

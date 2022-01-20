@@ -62,6 +62,8 @@ export const MyCollectionAndSavedWorks: React.FC<{ me?: MyCollectionAndSavedWork
 export const LOCAL_PROFILE_ICON_PATH_KEY = "LOCAL_PROFILE_ICON_PATH_KEY"
 
 export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({ me }) => {
+  console.log("me => ", Object.keys(me))
+
   const color = useColor()
 
   const [showModal, setShowModal] = useState(false)
@@ -191,7 +193,8 @@ export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContaine
   MyCollectionAndSavedWorks,
   {
     me: graphql`
-      fragment MyCollectionAndSavedWorks_me on Me {
+      fragment MyCollectionAndSavedWorks_me on Me
+      @argumentDefinitions(enableCollectorProfile: { type: "Boolean", defaultValue: false }) {
         name
         bio
         location {
@@ -203,32 +206,32 @@ export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContaine
           url(version: "thumbnail")
         }
         createdAt
-        ...MyProfileEditFormModal_me
+        ...MyProfileEditFormModal_me @arguments(enableCollectorProfile: $enableCollectorProfile)
       }
     `,
   }
 )
 
-export const MyCollectionAndSavedWorksScreenQuery = graphql`
-  query MyCollectionAndSavedWorksQuery {
-    me @optionalField {
-      ...MyCollectionAndSavedWorks_me
-    }
-  }
-`
-
-export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => (
-  <ProvideScreenTrackingWithCohesionSchema
-    info={screen({ context_screen_owner_type: OwnerType.profile })}
-  >
+export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => {
+  const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
+  return (
     <QueryRenderer<MyCollectionAndSavedWorksQuery>
       environment={defaultEnvironment}
-      query={MyCollectionAndSavedWorksScreenQuery}
+      query={graphql`
+        query MyCollectionAndSavedWorksQuery($enableCollectorProfile: Boolean!) {
+          me @optionalField {
+            ...MyCollectionAndSavedWorks_me
+              @arguments(enableCollectorProfile: $enableCollectorProfile)
+          }
+        }
+      `}
       render={renderWithPlaceholder({
         Container: MyCollectionAndSavedWorksFragmentContainer,
         renderPlaceholder: () => <MyCollectionPlaceholder />,
       })}
-      variables={{}}
+      variables={{
+        enableCollectorProfile,
+      }}
     />
-  </ProvideScreenTrackingWithCohesionSchema>
-)
+  )
+}

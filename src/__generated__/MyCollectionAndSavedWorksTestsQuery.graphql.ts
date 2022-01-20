@@ -1,7 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
+<<<<<<< HEAD
 /* @relayHash 8da4f7a2cbc3a38a53c25071e43ae6cc */
+=======
+/* @relayHash bb0ab40a7b853c68f2b739f0e2c7f43c */
+>>>>>>> 0ac07c6c97 (add profile verification methods)
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -39,10 +43,10 @@ fragment MyCollectionAndSavedWorks_me on Me {
     url(version: "thumbnail")
   }
   createdAt
-  ...MyProfileEditFormModal_me
+  ...MyProfileEditFormModal_me_40LmUp
 }
 
-fragment MyProfileEditFormModal_me on Me {
+fragment MyProfileEditFormModal_me_40LmUp on Me {
   name
   profession
   otherRelevantPositions
@@ -227,7 +231,11 @@ return {
     ]
   },
   "params": {
+<<<<<<< HEAD
     "id": "8da4f7a2cbc3a38a53c25071e43ae6cc",
+=======
+    "id": "bb0ab40a7b853c68f2b739f0e2c7f43c",
+>>>>>>> 0ac07c6c97 (add profile verification methods)
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {

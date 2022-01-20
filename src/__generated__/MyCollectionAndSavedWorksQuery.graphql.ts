@@ -1,11 +1,17 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
+<<<<<<< HEAD
 /* @relayHash f1edc159ab605a68cb8b1e7d7eb79c9f */
+=======
+/* @relayHash b088d1289ffcba232f80baa277f03144 */
+>>>>>>> 0ac07c6c97 (add profile verification methods)
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionAndSavedWorksQueryVariables = {};
+export type MyCollectionAndSavedWorksQueryVariables = {
+    enableCollectorProfile: boolean;
+};
 export type MyCollectionAndSavedWorksQueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"MyCollectionAndSavedWorks_me">;
@@ -19,14 +25,16 @@ export type MyCollectionAndSavedWorksQuery = {
 
 
 /*
-query MyCollectionAndSavedWorksQuery {
+query MyCollectionAndSavedWorksQuery(
+  $enableCollectorProfile: Boolean!
+) {
   me @optionalField {
-    ...MyCollectionAndSavedWorks_me
+    ...MyCollectionAndSavedWorks_me_3CllfQ
     id
   }
 }
 
-fragment MyCollectionAndSavedWorks_me on Me {
+fragment MyCollectionAndSavedWorks_me_3CllfQ on Me {
   name
   bio
   location {
@@ -39,10 +47,10 @@ fragment MyCollectionAndSavedWorks_me on Me {
     url(version: "thumbnail")
   }
   createdAt
-  ...MyProfileEditFormModal_me
+  ...MyProfileEditFormModal_me_3CllfQ
 }
 
-fragment MyProfileEditFormModal_me on Me {
+fragment MyProfileEditFormModal_me_3CllfQ on Me {
   name
   profession
   otherRelevantPositions
@@ -57,11 +65,20 @@ fragment MyProfileEditFormModal_me on Me {
   icon {
     url(version: "thumbnail")
   }
+  identityVerified @include(if: $enableCollectorProfile)
+  canRequestEmailConfirmation @include(if: $enableCollectorProfile)
 }
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = {
+var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "enableCollectorProfile"
+  }
+],
+v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -70,7 +87,7 @@ var v0 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "MyCollectionAndSavedWorksQuery",
@@ -84,7 +101,13 @@ return {
         "plural": false,
         "selections": [
           {
-            "args": null,
+            "args": [
+              {
+                "kind": "Variable",
+                "name": "enableCollectorProfile",
+                "variableName": "enableCollectorProfile"
+              }
+            ],
             "kind": "FragmentSpread",
             "name": "MyCollectionAndSavedWorks_me"
           }
@@ -97,7 +120,7 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "MyCollectionAndSavedWorksQuery",
     "selections": [
@@ -138,6 +161,7 @@ return {
                 "name": "display",
                 "storageKey": null
               },
+<<<<<<< HEAD
               (v0/*: any*/),
               {
                 "alias": null,
@@ -160,6 +184,9 @@ return {
                 "name": "country",
                 "storageKey": null
               }
+=======
+              (v1/*: any*/)
+>>>>>>> 0ac07c6c97 (add profile verification methods)
             ],
             "storageKey": null
           },
@@ -208,14 +235,39 @@ return {
             "name": "createdAt",
             "storageKey": null
           },
-          (v0/*: any*/)
+          (v1/*: any*/),
+          {
+            "condition": "enableCollectorProfile",
+            "kind": "Condition",
+            "passingValue": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "identityVerified",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "canRequestEmailConfirmation",
+                "storageKey": null
+              }
+            ]
+          }
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
+<<<<<<< HEAD
     "id": "f1edc159ab605a68cb8b1e7d7eb79c9f",
+=======
+    "id": "b088d1289ffcba232f80baa277f03144",
+>>>>>>> 0ac07c6c97 (add profile verification methods)
     "metadata": {},
     "name": "MyCollectionAndSavedWorksQuery",
     "operationKind": "query",
@@ -223,5 +275,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'e2528a0edab35bb34cd3e89a63547d21';
+(node as any).hash = 'd127f9d668c0f4e07494a43a1e189dfa';
 export default node;

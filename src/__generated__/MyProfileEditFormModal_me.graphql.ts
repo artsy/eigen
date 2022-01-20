@@ -18,6 +18,8 @@ export type MyProfileEditFormModal_me = {
     readonly icon: {
         readonly url: string | null;
     } | null;
+    readonly identityVerified?: boolean | null | undefined;
+    readonly canRequestEmailConfirmation?: boolean | undefined;
     readonly " $refType": "MyProfileEditFormModal_me";
 };
 export type MyProfileEditFormModal_me$data = MyProfileEditFormModal_me;
@@ -29,7 +31,13 @@ export type MyProfileEditFormModal_me$key = {
 
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": false,
+      "kind": "LocalArgument",
+      "name": "enableCollectorProfile"
+    }
+  ],
   "kind": "Fragment",
   "metadata": null,
   "name": "MyProfileEditFormModal_me",
@@ -124,10 +132,35 @@ const node: ReaderFragment = {
         }
       ],
       "storageKey": null
+    },
+    {
+      "condition": "enableCollectorProfile",
+      "kind": "Condition",
+      "passingValue": true,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "identityVerified",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "canRequestEmailConfirmation",
+          "storageKey": null
+        }
+      ]
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
+<<<<<<< HEAD
 (node as any).hash = '54c50800a327082547ff9a21ca7f8686';
+=======
+(node as any).hash = 'be66b5b98e725095225cb36f334b8e10';
+>>>>>>> 0ac07c6c97 (add profile verification methods)
 export default node;
