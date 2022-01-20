@@ -1,13 +1,11 @@
-import { ActionType, ContextModule, OwnerType, TappedArtworkGroup } from "@artsy/cohesion"
+import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { FairExhibitorRail_show } from "__generated__/FairExhibitorRail_show.graphql"
-import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
-import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
+import { SmallArtworkRail } from "lib/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
-import { getUrgencyTag } from "lib/utils/getUrgencyTag"
-import { Box, Spacer } from "palette"
+import { extractNodes } from "lib/utils/extractNodes"
+import { Flex } from "palette"
 import React from "react"
-import { FlatList } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -16,14 +14,16 @@ interface FairExhibitorRailProps {
 }
 
 const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
-  const tracking = useTracking()
-  const artworks = show?.artworks?.edges!.map((item) => item?.node)
+  const { trackEvent } = useTracking()
+
+  const artworks = extractNodes(show?.artworksConnection)
+
   const count = show?.counts?.artworks ?? 0
   const partnerName = show?.partner?.name ?? ""
   const viewAllUrl = show?.href
 
   const trackTappedArtwork = (artworkID: string, artworkSlug: string, position: number) => {
-    const trackTappedArtworkProps: TappedArtworkGroup = {
+    trackEvent({
       action: ActionType.tappedArtworkGroup,
       context_module: ContextModule.galleryBoothRail,
       context_screen_owner_type: OwnerType.fair,
@@ -34,12 +34,11 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
       destination_screen_owner_slug: artworkSlug,
       horizontal_slide_position: position,
       type: "thumbnail",
-    }
-    tracking.trackEvent(trackTappedArtworkProps)
+    })
   }
 
   const trackTappedShow = (showInternalID: string, showSlug: string) => {
-    const trackTappedShowProps: TappedArtworkGroup = {
+    trackEvent({
       action: ActionType.tappedArtworkGroup,
       context_module: ContextModule.galleryBoothRail,
       context_screen_owner_type: OwnerType.fair,
@@ -49,8 +48,7 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
       destination_screen_owner_id: showInternalID,
       destination_screen_owner_slug: showSlug,
       type: "viewAll",
-    }
-    tracking.trackEvent(trackTappedShowProps)
+    })
   }
 
   if (count === 0) {
@@ -59,7 +57,7 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
 
   return (
     <>
-      <Box px={2}>
+      <Flex px={2}>
         <SectionTitle
           title={partnerName}
           subtitle={`${count} works`}
@@ -71,33 +69,13 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
             navigate(viewAllUrl)
           }}
         />
-      </Box>
-      <FlatList
-        horizontal
-        ListHeaderComponent={() => <Spacer mr={2} />}
-        ListFooterComponent={() => <Spacer mr={2} />}
-        ItemSeparatorComponent={() => <Spacer width={15} />}
-        showsHorizontalScrollIndicator={false}
-        data={artworks}
-        initialNumToRender={3}
-        windowSize={3}
-        renderItem={({ item, index }) => {
-          return (
-            <ArtworkTileRailCard
-              onPress={() => {
-                trackTappedArtwork(item?.internalID ?? "", item?.slug ?? "", index)
-                navigate(item?.href!)
-              }}
-              imageURL={item?.image?.imageURL ?? ""}
-              imageSize="small"
-              useSquareAspectRatio
-              artistNames={item?.artistNames}
-              saleMessage={item && saleMessageOrBidInfo({ artwork: item, isSmallTile: true })}
-              urgencyTag={item?.sale?.isAuction && !item?.sale?.isClosed ? getUrgencyTag(item?.sale?.endAt) : null}
-            />
-          )
+      </Flex>
+      <SmallArtworkRail
+        artworks={artworks}
+        onPress={(artwork, position) => {
+          trackTappedArtwork(artwork?.internalID ?? "", artwork?.slug ?? "", position)
+          navigate(artwork?.href!)
         }}
-        keyExtractor={(item, index) => String(item?.internalID || index)}
       />
     </>
   )
@@ -124,39 +102,10 @@ export const FairExhibitorRailFragmentContainer = createFragmentContainer(FairEx
         internalID
         slug
       }
-      artworks: artworksConnection(first: 20) {
+      artworksConnection(first: 20) {
         edges {
           node {
-            href
-            artistNames
-            id
-            image {
-              imageURL
-              aspectRatio
-            }
-            saleMessage
-            saleArtwork {
-              openingBid {
-                display
-              }
-              highestBid {
-                display
-              }
-              currentBid {
-                display
-              }
-              counts {
-                bidderPositions
-              }
-            }
-            sale {
-              isClosed
-              isAuction
-              endAt
-            }
-            title
-            internalID
-            slug
+            ...SmallArtworkRail_artworks
           }
         }
       }

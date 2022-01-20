@@ -88,6 +88,8 @@ const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ image, size
 
   const { width, height, src } = image?.resized || {}
 
+  console.log({ daImage: image?.resized })
+
   if (!src) {
     return (
       <Flex
