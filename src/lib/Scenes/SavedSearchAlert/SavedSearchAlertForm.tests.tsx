@@ -560,6 +560,15 @@ describe("Saved search alert form", () => {
       fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
       expect(getAllByText("Save Alert")[0]).not.toBeDisabled()
     })
+
+    it("should be enabled if filters are changed in edit mode", () => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
+      const { getByText, getAllByText } = renderWithWrappersTL(<TestRenderer savedSearchAlertId="savedSearchAlertId" />)
+
+      expect(getAllByText("Save Alert")[0]).toBeDisabled()
+      fireEvent.press(getByText("Limited Edition"))
+      expect(getAllByText("Save Alert")[0]).not.toBeDisabled()
+    })
   })
 
   describe("Create Alert Form", () => {
