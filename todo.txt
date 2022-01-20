@@ -3,6 +3,8 @@
   in upstream this function is deleted. in our fork we still have it. can we delete it? can we make it work?
 - warn people that they should run `yarn cache clean` before running `yarn install:all`. we had some issues with master -> main for react-native-config
 - for the old app, to install pods, we rename the new `ios` folder to `new-ios` temporarily.
+- we have the metaflag `newIosAppShell` to know if we should start the new or old app
+- we added yarn go-old and yarn go-new to control which app to run.
 
 
 
@@ -44,3 +46,9 @@ react-native-viewpager,
 react-native-webview,
 rn-fetch-blob,
 tipsi-stripe
+
+
+
+
+todo:
+- bring xcode projects to a similar state

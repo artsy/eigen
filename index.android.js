@@ -8,7 +8,7 @@ require("./src/lib/ignoreLogs")
 
 if (__DEV__) {
   try {
-    const fileContent = require("./storybook.json")
+    const fileContent = require("./metaflags.json")
     startStorybook = fileContent.startStorybook
   } catch {}
 }

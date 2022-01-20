@@ -1,5 +1,5 @@
 import React from "react"
-import { SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View } from "react-native"
+import { AppRegistry, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View } from "react-native"
 
 import {
   Colors,
@@ -91,4 +91,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default App
+AppRegistry.registerComponent("eigen", () => App)
