@@ -22,6 +22,7 @@ app_json = JSON.parse(File.read(app_json_path))
 app_plist = "../Artsy/App_Resources/Artsy-Info.plist"
 sticker_plist = "../Artsy Stickers/Info.plist"
 widget_plist = "../ArtsyWidget/Info.plist"
+braze_push_plist = "../BrazePushServiceExtension/Info.plist"
 
 
 lane :ship_beta_ios do
@@ -41,7 +42,12 @@ lane :ship_beta_ios do
   beta_readme = "Thanks for using the Artsy beta!"
 
   # Builds the app
-  sync_code_signing(app_identifier: ['net.artsy.artsy', 'net.artsy.artsy.Artsy-Stickers', 'net.artsy.artsy.ArtsyWidget'], type: 'appstore')
+  sync_code_signing(app_identifier: [
+    'net.artsy.artsy',
+    'net.artsy.artsy.Artsy-Stickers',
+    'net.artsy.artsy.ArtsyWidget',
+    'net.artsy.artsy.BrazePushServiceExtension'
+  ], type: 'appstore')
 
   disable_automatic_code_signing(
     path: 'Artsy.xcodeproj',
@@ -60,6 +66,12 @@ lane :ship_beta_ios do
     team_id: '23KMWZ572J',
     targets: ['ArtsyWidgetExtension'],
     profile_name: 'match AppStore net.artsy.artsy.ArtsyWidget'
+  )
+  disable_automatic_code_signing(
+    path: 'Artsy.xcodeproj',
+    team_id: '23KMWZ572J',
+    targets: ['BrazePushServiceExtension'],
+    profile_name: 'match AppStore net.artsy.artsy.BrazePushServiceExtension'
   )
 
   root = File.expand_path('..', __dir__)
@@ -105,9 +117,11 @@ lane :set_build_version_ios do
   system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" #{app_plist}")
   system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" \"#{sticker_plist}\"")
   system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" \"#{widget_plist}\"")
+  system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" \"#{braze_push_plist}\"")
   system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" #{app_plist}")
   system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" \"#{sticker_plist}\"")
   system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" \"#{widget_plist}\"")
+  system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" \"#{braze_push_plist}\"")
 end
 
 build_gradle = "../android/app/build.gradle"
