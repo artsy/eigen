@@ -1,12 +1,42 @@
 import { storiesOf } from "@storybook/react-native"
+import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { Box, Input } from "palette"
 import React from "react"
 import { withTheme } from "storybook/decorators"
 import { DataList, List } from "storybook/helpers"
 
+const phoneNumber = "124343434"
+
 storiesOf("Input", module)
   .addDecorator(withTheme)
+  .add("PhoneInput", () => (
+    <List contentContainerStyle={{ marginHorizontal: 20, alignItems: "stretch" }}>
+      <PhoneInput
+        style={{ flex: 1 }}
+        title="Phone number (enabled)"
+        value={phoneNumber ?? ""}
+        onChangeText={() => {
+          // onChangeText function
+        }}
+        setValidation={() => {
+          //  validation function
+        }}
+      />
+      <PhoneInput
+        style={{ flex: 1 }}
+        title="Phone number (disabled)"
+        value={phoneNumber ?? ""}
+        onChangeText={() => {
+          // onChangeText function
+        }}
+        disabled
+        setValidation={() => {
+          //  validation function
+        }}
+      />
+    </List>
+  ))
   .add("Variants", () => (
     <List contentContainerStyle={{ marginHorizontal: 20, alignItems: "stretch" }}>
       <Input />
