@@ -24,6 +24,7 @@ export interface ArtworkRailCardProps {
   testID?: string
   size: ArtworkCardSize
   hidePartnerName?: boolean
+  hideArtistName?: boolean
 }
 
 export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
@@ -32,6 +33,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   lotLabel,
   size,
   hidePartnerName = false,
+  hideArtistName = false,
   ...restProps
 }) => {
   const artwork = useFragment<ArtworkRailCard_artwork$key>(artworkFragment, restProps.artwork)
@@ -51,7 +53,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
               Lot {lotLabel}
             </Text>
           )}
-          {!!artistNames && (
+          {!hideArtistName && !!artistNames && (
             <Text numberOfLines={size === "small" ? 2 : 1} lineHeight="20" variant="sm">
               {artistNames}
             </Text>
