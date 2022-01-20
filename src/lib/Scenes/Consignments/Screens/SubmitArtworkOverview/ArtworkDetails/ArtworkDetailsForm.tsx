@@ -1,6 +1,6 @@
 import { FormikProvider, useFormik } from "formik"
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
-import { Button, Input, Spacer } from "palette"
+import { Input, Spacer } from "palette"
 import React from "react"
 import { ArtistAutosuggest } from "./ArtistAutosuggest"
 import { ArtworkFormValues, artworkSchema, validateArtworkSchema } from "./utils/schema"
@@ -28,7 +28,7 @@ export const ArtworkDetailsForm: React.FC<ArtworkDetailsFormProps> = ({ handlePr
   })
 
   // TODO: values
-  const { setFieldValue, handleSubmit, isValid } = formikbag
+  const { setFieldValue } = formikbag
 
   const handleArtistSelection = (selectedArtist: AutosuggestResult) => {
     setFieldValue("artist", selectedArtist.displayLabel)
