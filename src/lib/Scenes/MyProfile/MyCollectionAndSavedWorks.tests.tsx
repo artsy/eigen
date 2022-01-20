@@ -179,7 +179,7 @@ describe("MyCollectionAndSavedWorks", () => {
             createdAt: new Date("12/12/12").toISOString(),
             bio: "Richest Collector! 💰",
             location: {
-              city: "Atlantis",
+              display: "Atlantis",
             },
             profession: "Guardian of the Galaxy",
             otherRelevantPosition: "Marvel Universe",
@@ -209,7 +209,7 @@ describe("MyCollectionAndSavedWorks", () => {
             createdAt: new Date("12/12/12").toISOString(),
             bio: "Richest Collector! 💰",
             location: {
-              city: "Atlantis",
+              display: "Atlantis",
             },
             profession: "Guardian of the Galaxy",
             otherRelevantPosition: "Marvel Universe",
