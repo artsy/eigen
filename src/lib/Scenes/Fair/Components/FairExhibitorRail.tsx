@@ -22,35 +22,6 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
   const partnerName = show?.partner?.name ?? ""
   const viewAllUrl = show?.href
 
-  const trackTappedArtwork = (artworkID: string, artworkSlug: string, position: number) => {
-    trackEvent({
-      action: ActionType.tappedArtworkGroup,
-      context_module: ContextModule.galleryBoothRail,
-      context_screen_owner_type: OwnerType.fair,
-      context_screen_owner_id: show.fair?.internalID ?? "",
-      context_screen_owner_slug: show.fair?.slug ?? "",
-      destination_screen_owner_type: OwnerType.artwork,
-      destination_screen_owner_id: artworkID,
-      destination_screen_owner_slug: artworkSlug,
-      horizontal_slide_position: position,
-      type: "thumbnail",
-    })
-  }
-
-  const trackTappedShow = (showInternalID: string, showSlug: string) => {
-    trackEvent({
-      action: ActionType.tappedArtworkGroup,
-      context_module: ContextModule.galleryBoothRail,
-      context_screen_owner_type: OwnerType.fair,
-      context_screen_owner_id: show.fair?.internalID ?? "",
-      context_screen_owner_slug: show.fair?.slug ?? "",
-      destination_screen_owner_type: OwnerType.show,
-      destination_screen_owner_id: showInternalID,
-      destination_screen_owner_slug: showSlug,
-      type: "viewAll",
-    })
-  }
-
   if (count === 0) {
     return null
   }
@@ -65,7 +36,8 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
             if (!viewAllUrl) {
               return
             }
-            trackTappedShow(show.internalID, show.slug)
+
+            trackEvent(tracks.tappedShow(show))
             navigate(viewAllUrl)
           }}
         />
@@ -73,7 +45,7 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
       <SmallArtworkRail
         artworks={artworks}
         onPress={(artwork, position) => {
-          trackTappedArtwork(artwork?.internalID ?? "", artwork?.slug ?? "", position)
+          trackEvent(tracks.tappedArtwork(show, artwork?.internalID ?? "", artwork?.slug ?? "", position))
           navigate(artwork?.href!)
         }}
       />
@@ -112,3 +84,29 @@ export const FairExhibitorRailFragmentContainer = createFragmentContainer(FairEx
     }
   `,
 })
+
+const tracks = {
+  tappedArtwork: (show: FairExhibitorRail_show, artworkID: string, artworkSlug: string, position: number) => ({
+    action: ActionType.tappedArtworkGroup,
+    context_module: ContextModule.galleryBoothRail,
+    context_screen_owner_type: OwnerType.fair,
+    context_screen_owner_id: show.fair?.internalID ?? "",
+    context_screen_owner_slug: show.fair?.slug ?? "",
+    destination_screen_owner_type: OwnerType.artwork,
+    destination_screen_owner_id: artworkID,
+    destination_screen_owner_slug: artworkSlug,
+    horizontal_slide_position: position,
+    type: "thumbnail",
+  }),
+  tappedShow: (show: FairExhibitorRail_show) => ({
+    action: ActionType.tappedArtworkGroup,
+    context_module: ContextModule.galleryBoothRail,
+    context_screen_owner_type: OwnerType.fair,
+    context_screen_owner_id: show.fair?.internalID ?? "",
+    context_screen_owner_slug: show.fair?.slug ?? "",
+    destination_screen_owner_type: OwnerType.show,
+    destination_screen_owner_id: show.internalID,
+    destination_screen_owner_slug: show.slug,
+    type: "viewAll",
+  }),
+}
