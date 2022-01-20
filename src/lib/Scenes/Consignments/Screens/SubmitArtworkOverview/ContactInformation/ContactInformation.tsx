@@ -63,7 +63,7 @@ export const ContactInformation = ({ handlePress }: Props) => {
               handleSubmit()
               handlePress()
             }}
-            disabled={!isValid}
+            // disabled={!isValid}
           >
             Submit Artwork
           </CTAButton>
