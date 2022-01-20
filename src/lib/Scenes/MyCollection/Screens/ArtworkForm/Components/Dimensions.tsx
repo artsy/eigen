@@ -1,9 +1,15 @@
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { Flex, Input, RadioButton, Spacer, Text } from "palette"
 import React from "react"
 
 export const Dimensions: React.FC = () => {
   const { formik } = useArtworkForm()
+
+  const handleMetricChange = (unit: Metric) => {
+    GlobalStore.actions.userPreferences.setMetric(unit)
+    formik.handleChange("metric")(unit)
+  }
 
   return (
     <>
@@ -12,9 +18,9 @@ export const Dimensions: React.FC = () => {
       </Flex>
       <Spacer mt={1} mb={0.3} />
       <Flex flexDirection="row">
-        <RadioButton selected={formik.values.metric === "cm"} onPress={() => formik.handleChange("metric")("cm")} />
+        <RadioButton selected={formik.values.metric === "cm"} onPress={() => handleMetricChange("cm")} />
         <Text marginRight="3">cm</Text>
-        <RadioButton selected={formik.values.metric === "in"} onPress={() => formik.handleChange("metric")("in")} />
+        <RadioButton selected={formik.values.metric === "in"} onPress={() => handleMetricChange("in")} />
         <Text>in</Text>
       </Flex>
       <Spacer my={1} />

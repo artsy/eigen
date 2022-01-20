@@ -1,6 +1,6 @@
 import * as Analytics from "@artsy/cohesion"
 import { TappedEntityGroup } from "@artsy/cohesion"
-import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
+import { ArtworkModuleRail_rail } from "__generated__/ArtworkModuleRail_rail.graphql"
 
 type ValidHomeDestination =
   | Analytics.OwnerType.auctions
@@ -186,7 +186,7 @@ export default class HomeAnalytics {
     }
   }
 
-  static destinationScreenSlug(rail: ArtworkRail_rail): string | undefined {
+  static destinationScreenSlug(rail: ArtworkModuleRail_rail): string | undefined {
     const context = rail.context
     const key = rail.key
     switch (key) {

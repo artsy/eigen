@@ -1,31 +1,31 @@
-import { FilterParamName } from "../ArtworkFilterHelpers"
 import { IS_USA } from "../Filters/helpers"
+import { SearchCriteria } from "./types"
 
 export const shouldExtractValueNamesFromAggregation = [
-  FilterParamName.locationCities,
-  FilterParamName.materialsTerms,
-  FilterParamName.additionalGeneIDs,
-  FilterParamName.partnerIDs,
+  SearchCriteria.locationCities,
+  SearchCriteria.materialsTerms,
+  SearchCriteria.additionalGeneIDs,
+  SearchCriteria.partnerIDs,
 ]
 
 export const allowedSearchCriteriaKeys = [
-  "artistID",
-  "locationCities",
-  "colors",
-  "partnerIDs",
-  "additionalGeneIDs",
-  "attributionClass",
-  "majorPeriods",
-  "acquireable",
-  "atAuction",
-  "inquireableOnly",
-  "offerable",
-  "materialsTerms",
-  "priceRange",
-  "dimensionRange", // keep for backward compatibility (replaced with sizes)
-  "height",
-  "width",
-  "sizes",
+  SearchCriteria.artistID,
+  SearchCriteria.locationCities,
+  SearchCriteria.colors,
+  SearchCriteria.partnerIDs,
+  SearchCriteria.additionalGeneIDs,
+  SearchCriteria.attributionClass,
+  SearchCriteria.majorPeriods,
+  SearchCriteria.acquireable,
+  SearchCriteria.atAuction,
+  SearchCriteria.inquireableOnly,
+  SearchCriteria.offerable,
+  SearchCriteria.materialsTerms,
+  SearchCriteria.priceRange,
+  SearchCriteria.dimensionRange, // keep for backward compatibility (replaced with sizes)
+  SearchCriteria.height,
+  SearchCriteria.width,
+  SearchCriteria.sizes,
 ]
 
 export const FALLBACK_SIZE_OPTIONS = IS_USA

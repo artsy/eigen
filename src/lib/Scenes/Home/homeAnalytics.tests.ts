@@ -1,5 +1,5 @@
 import * as Analytics from "@artsy/cohesion"
-import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
+import { ArtworkModuleRail_rail } from "__generated__/ArtworkModuleRail_rail.graphql"
 import HomeAnalytics from "./homeAnalytics"
 
 describe("Events", () => {
@@ -28,7 +28,7 @@ describe("Events", () => {
   })
 
   it("returns correct artwork events", () => {
-    const artworkRail: Pick<ArtworkRail_rail, "title" | "key" | "context"> = {
+    const artworkRail: Pick<ArtworkModuleRail_rail, "title" | "key" | "context"> = {
       title: "some_title",
       key: "followed_artists",
       context: {

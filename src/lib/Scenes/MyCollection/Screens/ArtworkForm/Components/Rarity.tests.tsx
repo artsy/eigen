@@ -38,6 +38,6 @@ describe("Rarity", () => {
     expect(getByText("Unique")).toBeTruthy()
     expect(getByText("Limited Edition")).toBeTruthy()
     expect(getByText("Open Edition")).toBeTruthy()
-    expect(getByText("Unknown edition")).toBeTruthy()
+    expect(getByText("Unknown Edition")).toBeTruthy()
   })
 })

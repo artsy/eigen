@@ -7,11 +7,11 @@ import { FragmentRefs } from "relay-runtime";
 export type Home_homePageBelow = {
     readonly recentlyViewedWorksArtworkModule: {
         readonly id: string;
-        readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_rail">;
+        readonly " $fragmentRefs": FragmentRefs<"ArtworkModuleRail_rail">;
     } | null;
     readonly similarToRecentlyViewedArtworkModule: {
         readonly id: string;
-        readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_rail">;
+        readonly " $fragmentRefs": FragmentRefs<"ArtworkModuleRail_rail">;
     } | null;
     readonly popularArtistsArtistModule: {
         readonly id: string;
@@ -47,7 +47,7 @@ v1 = [
   {
     "args": null,
     "kind": "FragmentSpread",
-    "name": "ArtworkRail_rail"
+    "name": "ArtworkModuleRail_rail"
   }
 ],
 v2 = [
@@ -171,5 +171,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '918150a193ba8e9682046443df9ab291';
+(node as any).hash = 'd677861390352fd22198156ed03338ad';
 export default node;

@@ -2,6 +2,7 @@ import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { Currency } from "lib/Scenes/Search/UserPreferencesModel"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { isEmpty } from "lodash"
@@ -46,7 +47,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               text: "Discard",
               style: "destructive",
               onPress: () => {
-                GlobalStore.actions.myCollection.artwork.ResetFormButKeepArtist()
+                GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
                 navigation.dispatch(e.data.action)
               },
             },
@@ -136,6 +137,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               enableSearch={false}
               showTitleLabel={false}
               onSelectValue={(value) => {
+                GlobalStore.actions.userPreferences.setCurrency(value as Currency)
                 formik.handleChange("pricePaidCurrency")(value)
               }}
               testID="CurrencyPicker"
@@ -233,7 +235,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
 
 const pricePaidCurrencySelectOptions: Array<{
   label: string
-  value: string
+  value: Currency
 }> = [
   { label: "$ USD", value: "USD" },
   { label: "€ EUR", value: "EUR" },

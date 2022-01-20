@@ -1,14 +1,14 @@
 import { isEqual, isNull } from "lodash"
 import { defaultCommonFilterOptions, FilterArray, FilterData } from "../ArtworkFilterHelpers"
 import { allowedSearchCriteriaKeys } from "./constants"
-import { SearchCriteriaAttributeKeys, SearchCriteriaAttributes } from "./types"
+import { SearchCriteria, SearchCriteriaAttributes } from "./types"
 
 export const getOnlyFilledSearchCriteriaValues = (searchCriteria: SearchCriteriaAttributes) => {
   const prepared: Record<string, any> = {}
 
   if (searchCriteria) {
     const filledSavedSearchCriteriaKeys = Object.keys(searchCriteria).filter((criteriaKey) => {
-      const value = searchCriteria[criteriaKey as SearchCriteriaAttributeKeys]
+      const value = searchCriteria[criteriaKey as SearchCriteria]
 
       if (Array.isArray(value)) {
         return value.length > 0
@@ -18,7 +18,7 @@ export const getOnlyFilledSearchCriteriaValues = (searchCriteria: SearchCriteria
     })
 
     filledSavedSearchCriteriaKeys.forEach((criteriaKey) => {
-      const value = searchCriteria[criteriaKey as SearchCriteriaAttributeKeys]
+      const value = searchCriteria[criteriaKey as SearchCriteria]
       prepared[criteriaKey] = value
     })
   }
@@ -27,7 +27,7 @@ export const getOnlyFilledSearchCriteriaValues = (searchCriteria: SearchCriteria
 }
 
 export const getAllowedFiltersForSavedSearchInput = (filters: FilterArray) => {
-  return filters.filter((filter) => allowedSearchCriteriaKeys.includes(filter.paramName))
+  return filters.filter((filter) => allowedSearchCriteriaKeys.includes(filter.paramName as unknown as SearchCriteria))
 }
 
 export const prepareFilterDataForSaveSearchInput = (filters: FilterData[]) => {
@@ -39,7 +39,7 @@ export const prepareFilterDataForSaveSearchInput = (filters: FilterData[]) => {
     const defaultValue = defaultCommonFilterOptions[filter.paramName]
 
     if (!isEqual(defaultValue, value)) {
-      input[filter.paramName as keyof SearchCriteriaAttributes] = value as any
+      input[filter.paramName as unknown as SearchCriteria] = value as any
     }
   }
 

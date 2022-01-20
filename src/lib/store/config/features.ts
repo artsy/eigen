@@ -101,12 +101,6 @@ export const features = defineFeatures({
     description: "Enable Order History in settings",
     showInAdminMenu: true,
   },
-  AREnableNewWorksForYou: {
-    readyForRelease: true,
-    description: "Enable new 'New Works for You' rail",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableNewWorksForYou",
-  },
   AREnableSavedAddresses: {
     readyForRelease: false,
     description: "Enable Saved Addresses",
@@ -171,12 +165,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableSplitIOABTesting",
   },
-  AREnableMyCollectionOrderImport: {
-    readyForRelease: true,
-    description: "Enable My Collection Order Import",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionOrderImport",
-  },
   AREnableSortFilterForArtworksPill: {
     readyForRelease: true,
     description: "Enable sort filter for artworks pill",
@@ -216,10 +204,20 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Enable New Artwork Submission Flow with Accordion",
     showInAdminMenu: true,
-   },
+  },
   ARCaptureExceptionsInSentryOnDev: {
     readyForRelease: false,
     description: "Enable capturing exceptions in Sentry on DEV",
+    showInAdminMenu: true,
+  },
+  AREnableImageSearch: {
+    readyForRelease: false,
+    description: "Enable search with image",
+    showInAdminMenu: true,
+  },
+  AREnableCollectorProfile: {
+    readyForRelease: false,
+    description: "Enable collector profile",
     showInAdminMenu: true,
   },
 })

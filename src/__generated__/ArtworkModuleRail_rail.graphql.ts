@@ -4,11 +4,11 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type ArtworkRail_rail = {
+export type ArtworkModuleRail_rail = {
     readonly title: string | null;
     readonly key: string | null;
     readonly results: ReadonlyArray<{
-        readonly " $fragmentRefs": FragmentRefs<"SmallTileRail_artworks" | "GenericGrid_artworks">;
+        readonly " $fragmentRefs": FragmentRefs<"SmallArtworkRail_artworks">;
     } | null> | null;
     readonly context: {
         readonly __typename: "HomePageRelatedArtistArtworkModule";
@@ -22,12 +22,12 @@ export type ArtworkRail_rail = {
         } | null | undefined;
         readonly href?: string | null | undefined;
     } | null;
-    readonly " $refType": "ArtworkRail_rail";
+    readonly " $refType": "ArtworkModuleRail_rail";
 };
-export type ArtworkRail_rail$data = ArtworkRail_rail;
-export type ArtworkRail_rail$key = {
-    readonly " $data"?: ArtworkRail_rail$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"ArtworkRail_rail">;
+export type ArtworkModuleRail_rail$data = ArtworkModuleRail_rail;
+export type ArtworkModuleRail_rail$key = {
+    readonly " $data"?: ArtworkModuleRail_rail$data | undefined;
+    readonly " $fragmentRefs": FragmentRefs<"ArtworkModuleRail_rail">;
 };
 
 
@@ -47,7 +47,7 @@ return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "ArtworkRail_rail",
+  "name": "ArtworkModuleRail_rail",
   "selections": [
     {
       "alias": null,
@@ -74,12 +74,7 @@ return {
         {
           "args": null,
           "kind": "FragmentSpread",
-          "name": "SmallTileRail_artworks"
-        },
-        {
-          "args": null,
-          "kind": "FragmentSpread",
-          "name": "GenericGrid_artworks"
+          "name": "SmallArtworkRail_artworks"
         }
       ],
       "storageKey": null
@@ -193,5 +188,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '2e78962b49bafcfb33e1b3a654166d6f';
+(node as any).hash = 'ee899bb4a79feb4ebc16bcda76ed4e0b';
 export default node;

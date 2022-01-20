@@ -107,7 +107,6 @@ export const CreateSavedSearchAlertContentQueryRenderer: React.FC<CreateSavedSea
   props
 ) => {
   const { artistId } = props
-  const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const filterState = ArtworksFiltersStore.useStoreState((state) => state)
   const unitedFilters = getUnitedSelectedAndAppliedFilters(filterState)
   const filters = getAllowedFiltersForSavedSearchInput(unitedFilters)
@@ -138,8 +137,6 @@ export const CreateSavedSearchAlertContentQueryRenderer: React.FC<CreateSavedSea
             me={relayProps?.me ?? null}
             loading={relayProps === null && error === null}
             criteria={criteria}
-            filters={filters}
-            aggregations={aggregations}
           />
         )
       }}
