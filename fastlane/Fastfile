@@ -19,10 +19,14 @@ end
 app_json_path = "../app.json"
 app_json = JSON.parse(File.read(app_json_path))
 
-app_plist = "../Artsy/App_Resources/Artsy-Info.plist"
-sticker_plist = "../Artsy Stickers/Info.plist"
-widget_plist = "../ArtsyWidget/Info.plist"
+app_plist = '../Artsy/App_Resources/Artsy-Info.plist'
 
+ios_targets = {
+  'net.artsy.artsy' => { :name => 'Artsy', :plist_path => app_plist },
+  'net.artsy.artsy.Artsy-Stickers' => { :name => 'Artsy Stickers', :plist_path => '../Artsy Stickers/Info.plist' },
+  'net.artsy.artsy.ArtsyWidget' => { :name => 'ArtsyWidgetExtension', :plist_path => '../ArtsyWidget/Info.plist' },
+  'net.artsy.artsy.BrazePushServiceExtension' => { :name => 'BrazePushServiceExtension', :plist_path => '../BrazePushServiceExtension/Info.plist' }
+}
 
 lane :ship_beta_ios do
   api_key = app_store_connect_api_key(
@@ -41,26 +45,17 @@ lane :ship_beta_ios do
   beta_readme = "Thanks for using the Artsy beta!"
 
   # Builds the app
-  sync_code_signing(app_identifier: ['net.artsy.artsy', 'net.artsy.artsy.Artsy-Stickers', 'net.artsy.artsy.ArtsyWidget'], type: 'appstore')
+  ios_target_ids = ios_targets.keys
+  sync_code_signing(app_identifier: ios_target_ids, type: 'appstore')
 
-  disable_automatic_code_signing(
-    path: 'Artsy.xcodeproj',
-    team_id: '23KMWZ572J',
-    targets: ['Artsy'],
-    profile_name: 'match AppStore net.artsy.artsy'
-  )
-  disable_automatic_code_signing(
-    path: 'Artsy.xcodeproj',
-    team_id: '23KMWZ572J',
-    targets: ['Artsy Stickers'],
-    profile_name: 'match AppStore net.artsy.artsy.Artsy-Stickers'
-  )
-  disable_automatic_code_signing(
-    path: 'Artsy.xcodeproj',
-    team_id: '23KMWZ572J',
-    targets: ['ArtsyWidgetExtension'],
-    profile_name: 'match AppStore net.artsy.artsy.ArtsyWidget'
-  )
+  ios_targets.each do |id, meta|
+    disable_automatic_code_signing(
+      path: 'Artsy.xcodeproj',
+      team_id: '23KMWZ572J',
+      targets: [meta[:name]],
+      profile_name: "match AppStore #{id}"
+    )
+  end
 
   root = File.expand_path('..', __dir__)
   bundle_version = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, 'Artsy/App_Resources/Artsy-Info.plist')}`.strip
@@ -102,12 +97,10 @@ end
 
 date_str = DateTime.now.strftime("%Y.%m.%d.%H")
 lane :set_build_version_ios do
-  system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" #{app_plist}")
-  system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" \"#{sticker_plist}\"")
-  system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" \"#{widget_plist}\"")
-  system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" #{app_plist}")
-  system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" \"#{sticker_plist}\"")
-  system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" \"#{widget_plist}\"")
+  ios_targets.each do |id, meta|
+    system("/usr/libexec/PlistBuddy -c \"Set CFBundleShortVersionString #{app_json['version']}\" #{meta[:plist_path]}")
+    system("/usr/libexec/PlistBuddy -c \"Set CFBundleVersion #{date_str}\" #{meta[:plist_path]}")
+  end
 end
 
 build_gradle = "../android/app/build.gradle"
