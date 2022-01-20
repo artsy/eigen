@@ -16,7 +16,7 @@ describe("SimpleTicker", () => {
       </Theme>
     )
 
-    expect(getByText("00d  00h  00m  01s")).toBeTruthy()
+    expect(getByText("00d 00h 00m 01s")).toBeTruthy()
   })
 
   it("renders properly when duration is over", () => {
@@ -27,7 +27,7 @@ describe("SimpleTicker", () => {
       </Theme>
     )
 
-    expect(getByText("00d  00h  00m  00s")).toBeTruthy()
+    expect(getByText("00d 00h 00m 00s")).toBeTruthy()
   })
 
   it("renders properly with days overflowing a single month", () => {
@@ -39,7 +39,7 @@ describe("SimpleTicker", () => {
       </Theme>
     )
 
-    expect(getByText("730d  11h  38m  24s")).toBeTruthy()
+    expect(getByText("730d 11h 38m 24s")).toBeTruthy()
   })
 })
 
