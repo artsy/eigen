@@ -25,6 +25,7 @@ interface StickyTabPageProps {
   tabs: TabProps[]
   staticHeaderContent: JSX.Element
   stickyHeaderContent?: JSX.Element
+  bottomContent?: JSX.Element
   // disableBackButtonUpdate allows the original BackButton visibility state. Useful when using StickyTabPage
   // as a root view where you don't want BackButton to ever be visible.
   disableBackButtonUpdate?: boolean
@@ -43,6 +44,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   tabs,
   staticHeaderContent,
   stickyHeaderContent = <StickyTabPageTabBar />,
+  bottomContent,
   disableBackButtonUpdate,
 }) => {
   const { width } = useScreenDimensions()
@@ -165,6 +167,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
             ))}
           </SnappyHorizontalRail>
         </Animated.View>
+        {bottomContent}
       </View>
     </StickyTabPageContext.Provider>
   )
