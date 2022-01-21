@@ -5,7 +5,7 @@ import { BackButton } from "lib/navigation/BackButton"
 import { CollapsibleMenuItem, Flex, Join, Separator, Spacer } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { ScrollView } from "react-native"
-import { ConsignmentSubmission } from "./ArtworkDetails/ConsignmentSubmission"
+import { ArtworkDetailsScreen } from "./ArtworkDetails/ArtworkDetails"
 import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
 import { ContactInformation } from "./ContactInformation/ContactInformation"
 import { UploadPhotos } from "./UploadPhotos/UploadPhotos"
@@ -16,9 +16,14 @@ interface SubmitArtworkScreenNavigationProps
   extends StackScreenProps<SubmitArtworkOverviewNavigationStack, "SubmitArtworkScreen"> {}
 
 export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> = ({ navigation }) => {
+  const [submissionId, setSubmissionId] = useState("")
+
   useEffect(() => {
     ;(async () => {
-      await AsyncStorage.removeItem(CONSIGNMENT_SUBMISSION_STORAGE_ID)
+      const id = await AsyncStorage.getItem(CONSIGNMENT_SUBMISSION_STORAGE_ID)
+      if (id) {
+        setSubmissionId(id)
+      }
     })()
   }, [])
 
@@ -27,7 +32,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
       overtitle: "Step 1 of 3",
       title: "Artwork Details",
       Content: (
-        <ConsignmentSubmission
+        <ArtworkDetailsScreen
           id="71997"
           handlePress={() => {
             expandCollapsibleMenuContent(1)

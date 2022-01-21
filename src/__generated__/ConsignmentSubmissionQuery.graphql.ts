@@ -1,16 +1,19 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1e36b2dcc46f0ef72d8ac84e47f38285 */
+/* @relayHash 07ccfd21e4f22282caa09c65e4df25e7 */
 
 import { ConcreteRequest } from "relay-runtime";
-import { FragmentRefs } from "relay-runtime";
 export type ConsignmentSubmissionQueryVariables = {
     id: string;
 };
 export type ConsignmentSubmissionQueryResponse = {
     readonly submission: {
-        readonly " $fragmentRefs": FragmentRefs<"ArtworkDetails_submission">;
+        readonly id: string;
+        readonly artist: {
+            readonly internalID: string;
+            readonly name: string | null;
+        } | null;
     } | null;
 };
 export type ConsignmentSubmissionQuery = {
@@ -25,32 +28,13 @@ query ConsignmentSubmissionQuery(
   $id: ID!
 ) {
   submission(id: $id) {
-    ...ArtworkDetails_submission
     id
+    artist {
+      internalID
+      name
+      id
+    }
   }
-}
-
-fragment ArtworkDetails_submission on ConsignmentSubmission {
-  id
-  artist {
-    internalID
-    name
-    id
-  }
-  locationCity
-  locationCountry
-  locationState
-  year
-  title
-  medium
-  attributionClass
-  editionNumber
-  editionSize
-  height
-  width
-  depth
-  dimensionsMetric
-  provenance
 }
 */
 
@@ -75,6 +59,20 @@ v2 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "internalID",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -91,10 +89,19 @@ return {
         "name": "submission",
         "plural": false,
         "selections": [
+          (v2/*: any*/),
           {
+            "alias": null,
             "args": null,
-            "kind": "FragmentSpread",
-            "name": "ArtworkDetails_submission"
+            "concreteType": "Artist",
+            "kind": "LinkedField",
+            "name": "artist",
+            "plural": false,
+            "selections": [
+              (v3/*: any*/),
+              (v4/*: any*/)
+            ],
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -126,120 +133,10 @@ return {
             "name": "artist",
             "plural": false,
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "internalID",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "name",
-                "storageKey": null
-              },
+              (v3/*: any*/),
+              (v4/*: any*/),
               (v2/*: any*/)
             ],
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "locationCity",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "locationCountry",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "locationState",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "year",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "title",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "medium",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "attributionClass",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "editionNumber",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "editionSize",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "height",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "width",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "depth",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "dimensionsMetric",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "provenance",
             "storageKey": null
           }
         ],
@@ -248,7 +145,7 @@ return {
     ]
   },
   "params": {
-    "id": "1e36b2dcc46f0ef72d8ac84e47f38285",
+    "id": "07ccfd21e4f22282caa09c65e4df25e7",
     "metadata": {},
     "name": "ConsignmentSubmissionQuery",
     "operationKind": "query",
@@ -256,5 +153,5 @@ return {
   }
 };
 })();
-(node as any).hash = '53f4f017da9ed36363526eacbac76fe4';
+(node as any).hash = '7bb905c01bf44c01de20c3601adfdbfc';
 export default node;

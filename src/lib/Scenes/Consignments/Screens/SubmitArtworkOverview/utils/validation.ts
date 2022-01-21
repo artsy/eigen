@@ -1,6 +1,6 @@
 import * as Yup from "yup"
 
-export const artworkDetailsInitialValues = {
+export const artworkDetailsEmptyInitialValues = {
   artist: "",
   artistId: "",
   title: "",
