@@ -63,9 +63,9 @@ export class CitySwitcherButton extends Component<Props> {
                     {city.name}
                   </Sans>
                   <Box ml={2} mr={3}>
-                    {/* @ts-ignore */}
                     <ChevronIcon
                       initialDirection="down"
+                      // @ts-ignore
                       color={color("black100")}
                       width={20}
                       height={20}
