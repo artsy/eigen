@@ -62,8 +62,6 @@ export const MyCollectionAndSavedWorks: React.FC<{ me?: MyCollectionAndSavedWork
 export const LOCAL_PROFILE_ICON_PATH_KEY = "LOCAL_PROFILE_ICON_PATH_KEY"
 
 export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({ me }) => {
-  console.log("me => ", Object.keys(me))
-
   const color = useColor()
 
   const [showModal, setShowModal] = useState(false)

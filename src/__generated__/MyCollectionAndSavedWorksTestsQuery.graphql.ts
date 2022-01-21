@@ -3,6 +3,7 @@
 // @ts-nocheck
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 /* @relayHash 8da4f7a2cbc3a38a53c25071e43ae6cc */
 =======
 /* @relayHash bb0ab40a7b853c68f2b739f0e2c7f43c */
@@ -24,6 +25,9 @@
 >>>>>>> 157b1cc5be (send verification email on verify press)
 >>>>>>> bf16f44883 (send verification email on verify press)
 >>>>>>> 52000b447e (send verification email on verify press)
+=======
+/* @relayHash 15513e608a578b4937e46991dcfb21a7 */
+>>>>>>> 8284d04a6e (add tests)
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -255,6 +259,7 @@ return {
   "params": {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "id": "8da4f7a2cbc3a38a53c25071e43ae6cc",
 =======
     "id": "bb0ab40a7b853c68f2b739f0e2c7f43c",
@@ -276,6 +281,9 @@ return {
 >>>>>>> 157b1cc5be (send verification email on verify press)
 >>>>>>> bf16f44883 (send verification email on verify press)
 >>>>>>> 52000b447e (send verification email on verify press)
+=======
+    "id": "15513e608a578b4937e46991dcfb21a7",
+>>>>>>> 8284d04a6e (add tests)
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {

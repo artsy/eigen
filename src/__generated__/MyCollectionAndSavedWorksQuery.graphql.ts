@@ -3,6 +3,7 @@
 // @ts-nocheck
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 /* @relayHash f1edc159ab605a68cb8b1e7d7eb79c9f */
 =======
 /* @relayHash b088d1289ffcba232f80baa277f03144 */
@@ -24,6 +25,9 @@
 >>>>>>> 157b1cc5be (send verification email on verify press)
 >>>>>>> bf16f44883 (send verification email on verify press)
 >>>>>>> 52000b447e (send verification email on verify press)
+=======
+/* @relayHash 1d9a233da97db962eee57413cc3f13fc */
+>>>>>>> 8284d04a6e (add tests)
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -296,6 +300,7 @@ return {
   "params": {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "id": "f1edc159ab605a68cb8b1e7d7eb79c9f",
 =======
     "id": "b088d1289ffcba232f80baa277f03144",
@@ -317,6 +322,9 @@ return {
 >>>>>>> 157b1cc5be (send verification email on verify press)
 >>>>>>> bf16f44883 (send verification email on verify press)
 >>>>>>> 52000b447e (send verification email on verify press)
+=======
+    "id": "1d9a233da97db962eee57413cc3f13fc",
+>>>>>>> 8284d04a6e (add tests)
     "metadata": {},
     "name": "MyCollectionAndSavedWorksQuery",
     "operationKind": "query",

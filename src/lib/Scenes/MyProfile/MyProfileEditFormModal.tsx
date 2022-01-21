@@ -8,7 +8,6 @@ import { Image } from "lib/Components/Bidding/Elements/Image"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { LoadingIndicator } from "lib/Components/LoadingIndicator"
-import { LinkText } from "lib/Components/Text/LinkText"
 import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
 import { LocalImage } from "lib/utils/LocalImageStore"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
@@ -462,7 +461,7 @@ const ProfileVerifications = ({
 }) => {
   const color = useColor()
   return (
-    <Flex>
+    <Flex testID="profile-verifications">
       {/* ID Verification */}
       {isIDVerified ? (
         renderVerifiedRow({
@@ -473,21 +472,23 @@ const ProfileVerifications = ({
         <Flex flexDirection="row">
           <CheckCircleIcon height={22} width={22} fill="black30" />
           <Flex ml={1}>
-            <LinkText
+            <Text
               onPress={() => {
                 // Trigger ID Verification Process
                 // This will be done in a separate ticket
               }}
+              style={{ textDecorationLine: "underline" }}
             >
               Verify Your ID
-            </LinkText>
+            </Text>
             <Text color={color("black60")}>
               For details about identity verification, see the FAQ or contact{" "}
-              <LinkText
+              <Text
+                style={{ textDecorationLine: "underline" }}
                 onPress={() => sendEmail("verification@artsy.net", { subject: "ID Verification" })}
               >
                 verification@artsy.net
-              </LinkText>
+              </Text>
               .
             </Text>
           </Flex>
@@ -506,7 +507,9 @@ const ProfileVerifications = ({
         <Flex flexDirection="row">
           <CheckCircleIcon height={22} width={22} fill="black30" />
           <Flex ml={1}>
-            <LinkText onPress={handleEmailVerification}>Verify Your Email</LinkText>
+            <Text style={{ textDecorationLine: "underline" }} onPress={handleEmailVerification}>
+              Verify Your Email
+            </Text>
             {/* This text will be replaced in a separate ticket */}
             <Text color="black60">
               Secure your account and receive updates about your transactions on Artsy.
