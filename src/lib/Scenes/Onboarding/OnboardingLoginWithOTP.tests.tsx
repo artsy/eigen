@@ -29,15 +29,7 @@ jest.mock("formik", () => ({
 
 describe("OnboardingLoginWithOTPTests", () => {
   const TestProvider = (mode: OTPMode) => {
-    return (
-      <OnboardingLoginWithOTPForm
-        otpMode={mode}
-        email="someemail@test.com"
-        password="somepassword"
-        navigation={navigationPropsMock as any}
-        route={null as any}
-      />
-    )
+    return <OnboardingLoginWithOTPForm otpMode={mode} navigation={navigationPropsMock as any} route={null as any} />
   }
 
   describe("on demand requests", () => {
