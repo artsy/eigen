@@ -7,6 +7,7 @@ import { graphql, PreloadedQuery, useFragment, usePreloadedQuery, useQueryLoader
 import AsyncStorage from "@react-native-community/async-storage"
 import { captureMessage } from "@sentry/react-native"
 import { ArtworkDetails_submission$key } from "__generated__/ArtworkDetails_submission.graphql"
+import { ArtworkDetailsQuery } from "__generated__/ArtworkDetailsQuery.graphql"
 import { ConsignmentAttributionClass } from "__generated__/createConsignSubmissionMutation.graphql"
 import { Formik } from "formik"
 import { CONSIGNMENT_SUBMISSION_STORAGE_ID } from "../SubmitArtworkOverview"
@@ -17,20 +18,21 @@ import { ArtworkDetailsForm, ArtworkDetailsFormModel } from "./ArtworkDetailsFor
 import { ErrorView } from "./Components/ErrorView"
 
 interface ArtworkDetailsProps {
-  submission: ArtworkDetails_submission$key
+  submission: ArtworkDetails_submission$key | null
   handlePress: () => void
 }
 
 interface ArtworkDetailsContainerProps {
-  queryRef: PreloadedQuery<ConsignmentSubmissionQuery>
+  queryRef: PreloadedQuery<ArtworkDetailsQuery>
+  handlePress: () => void
 }
 
 export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
-  const [submissionError, setSubmissionError] = useState(false)
-  const [artworkDetailsInitialValues] = useState<ArtworkDetailsFormModel>(artworkDetailsEmptyInitialValues)
-
   const submission = useFragment(submissionFragmentSpec, props.submission)
   console.log({ submission })
+
+  const [submissionError, setSubmissionError] = useState(false)
+  const [artworkDetailsInitialValues] = useState<ArtworkDetailsFormModel>(artworkDetailsEmptyInitialValues)
 
   const handleArtworkDetailsSubmit = async (values: ArtworkDetailsFormModel) => {
     const isRarityLimitedEdition = values.rarity === limitedEditionValue
@@ -113,18 +115,13 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
   )
 }
 
-export const ArtworkDetailsContainer: React.FC<ArtworkDetailsContainerProps> = ({ queryRef }) => {
-  const data = usePreloadedQuery<ConsignmentSubmissionQuery>(ArtworkDetailsScreenQuery, queryRef)
-
-  if (!data.submission) {
-    return null
-  }
-
-  return <ArtworkDetails submission={data.submission} handlePress={() => console.log("pressed")} />
+export const ArtworkDetailsContainer: React.FC<ArtworkDetailsContainerProps> = ({ queryRef, handlePress }) => {
+  const data = usePreloadedQuery<ArtworkDetailsQuery>(ArtworkDetailsScreenQuery, queryRef)
+  return <ArtworkDetails submission={data.submission} handlePress={handlePress} />
 }
 
 const ArtworkDetailsScreenQuery = graphql`
-  query ConsignmentSubmissionQuery($id: ID!) {
+  query ArtworkDetailsQuery($id: ID!) {
     submission(id: $id) {
       ...ArtworkDetails_submission
     }
@@ -132,7 +129,7 @@ const ArtworkDetailsScreenQuery = graphql`
 `
 
 export const ArtworkDetailsScreen: React.FC<{ id: string; handlePress: () => void }> = ({ id, handlePress }) => {
-  const [queryRef, loadQuery] = useQueryLoader<ConsignmentSubmissionQuery>(ArtworkDetailsScreenQuery)
+  const [queryRef, loadQuery] = useQueryLoader<ArtworkDetailsQuery>(ArtworkDetailsScreenQuery)
 
   useEffect(() => {
     if (!queryRef) {
@@ -140,24 +137,20 @@ export const ArtworkDetailsScreen: React.FC<{ id: string; handlePress: () => voi
     }
   })
 
-  if (!queryRef) {
-    return null
-  }
-
-  if (!id) {
+  if (!queryRef || !id) {
     return <ArtworkDetails submission={null} handlePress={handlePress} />
   }
 
   return (
     <Suspense fallback={<Placeholder />}>
-      <ArtworkDetailsContainer queryRef={queryRef} />
+      <ArtworkDetailsContainer queryRef={queryRef} handlePress={handlePress} />
     </Suspense>
   )
 }
 
 const Placeholder = () => (
   <ProvidePlaceholderContext>
-    <PlaceholderBox width="100%" height="60%" />
+    <PlaceholderBox width="100%" height="100%" />
     <Flex mt="2" ml="2">
       <PlaceholderText width={130 + Math.random() * 100} marginTop={10} />
       <PlaceholderText width={100 + Math.random() * 100} marginTop={8} />
