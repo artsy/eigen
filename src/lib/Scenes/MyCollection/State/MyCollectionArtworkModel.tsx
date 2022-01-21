@@ -1,10 +1,10 @@
 import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
 import { Action, action, thunk, Thunk } from "easy-peasy"
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
+import { Metric } from "lib/Scenes/Search/UserPreferencesModel"
 import { GlobalStoreModel } from "lib/store/GlobalStoreModel"
 import { getAttributionClassValueByName } from "lib/utils/artworkRarityClassifications"
 import { pick, uniqBy } from "lodash"
-import { Metric } from "../Screens/ArtworkForm/Components/Dimensions"
 
 export interface Image {
   height?: number
@@ -30,7 +30,7 @@ export interface ArtworkFormValues {
   height: string
   isEdition: boolean
   medium: string
-  metric: Metric
+  metric: Metric | ""
   photos: Image[]
   provenance: string
   title: string

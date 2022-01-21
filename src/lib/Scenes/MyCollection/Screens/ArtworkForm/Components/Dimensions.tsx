@@ -1,4 +1,5 @@
 import { useArtworkForm } from "lib/Scenes/MyCollection/Screens/ArtworkForm/Form/useArtworkForm"
+import { Metric } from "lib/Scenes/Search/UserPreferencesModel"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { Flex, Input, RadioButton, Spacer, Text } from "palette"
 import React from "react"
@@ -59,5 +60,3 @@ export const Dimensions: React.FC = () => {
     </>
   )
 }
-
-export type Metric = "in" | "cm" | ""
