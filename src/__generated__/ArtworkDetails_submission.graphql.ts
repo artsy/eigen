@@ -25,6 +25,9 @@ export type ArtworkDetails_submission = {
     readonly depth: string | null;
     readonly dimensionsMetric: string | null;
     readonly provenance: string | null;
+    readonly utmMedium: string | null;
+    readonly utmSource: string | null;
+    readonly utmTerm: string | null;
     readonly " $refType": "ArtworkDetails_submission";
 };
 export type ArtworkDetails_submission$data = ArtworkDetails_submission;
@@ -170,10 +173,31 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "name": "provenance",
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "utmMedium",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "utmSource",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "utmTerm",
+      "storageKey": null
     }
   ],
   "type": "ConsignmentSubmission",
   "abstractKey": null
 };
-(node as any).hash = '6bac5054bb25e2f6d968ea96e93e81e9';
+(node as any).hash = '0fd6b10415e8f3cad3597d6e417a401b';
 export default node;

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 88e9058317560ffd26ea4570aef903eb */
+/* @relayHash a4cc4d0612ccf8d58561f03fd8bc840c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -51,6 +51,9 @@ fragment ArtworkDetails_submission on ConsignmentSubmission {
   depth
   dimensionsMetric
   provenance
+  utmMedium
+  utmSource
+  utmTerm
 }
 */
 
@@ -241,6 +244,27 @@ return {
             "kind": "ScalarField",
             "name": "provenance",
             "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "utmMedium",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "utmSource",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "utmTerm",
+            "storageKey": null
           }
         ],
         "storageKey": null
@@ -248,7 +272,7 @@ return {
     ]
   },
   "params": {
-    "id": "88e9058317560ffd26ea4570aef903eb",
+    "id": "a4cc4d0612ccf8d58561f03fd8bc840c",
     "metadata": {},
     "name": "ArtworkDetailsQuery",
     "operationKind": "query",

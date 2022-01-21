@@ -13,6 +13,7 @@ import { Formik } from "formik"
 import { CONSIGNMENT_SUBMISSION_STORAGE_ID } from "../SubmitArtworkOverview"
 import { createOrUpdateConsignSubmission } from "../utils/createOrUpdateConsignSubmission"
 import { limitedEditionValue } from "../utils/rarityOptions"
+import { updateArtworkDetailsInitialValues } from "../utils/updateArtworkDetailsInitialValues"
 import { artworkDetailsEmptyInitialValues, artworkDetailsValidationSchema } from "../utils/validation"
 import { ArtworkDetailsForm, ArtworkDetailsFormModel } from "./ArtworkDetailsForm"
 import { ErrorView } from "./Components/ErrorView"
@@ -29,10 +30,14 @@ interface ArtworkDetailsContainerProps {
 
 export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
   const submission = useFragment(submissionFragmentSpec, props.submission)
-  console.log({ submission })
+
+  let artworkDetailsInitialValues: ArtworkDetailsFormModel = artworkDetailsEmptyInitialValues
+
+  if (submission) {
+    artworkDetailsInitialValues = updateArtworkDetailsInitialValues(submission)
+  }
 
   const [submissionError, setSubmissionError] = useState(false)
-  const [artworkDetailsInitialValues] = useState<ArtworkDetailsFormModel>(artworkDetailsEmptyInitialValues)
 
   const handleArtworkDetailsSubmit = async (values: ArtworkDetailsFormModel) => {
     const isRarityLimitedEdition = values.rarity === limitedEditionValue
@@ -180,5 +185,8 @@ const submissionFragmentSpec = graphql`
     depth
     dimensionsMetric
     provenance
+    utmMedium
+    utmSource
+    utmTerm
   }
 `
