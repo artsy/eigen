@@ -68,6 +68,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const [shouldShowEmailWarning, setShouldShowEmailWarning] = useState(!userAllowsEmails)
   const formik = useFormik<SavedSearchAlertFormValues>({
     initialValues,
+    enableReinitialize: true,
     initialErrors: {},
     onSubmit: async (values) => {
       let alertName = values.name
@@ -123,17 +124,10 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     },
   })
 
-  /**
-   * If the initial value of push has changed (for example, the user has minimized the app and turned off Push notifications in settings)
-   * then we sync the updated value with the formik state
-   */
+  // Save the previously entered name
   useEffect(() => {
-    formik.setFieldValue("push", initialValues.push)
-  }, [initialValues.push])
-
-  useEffect(() => {
-    formik.setFieldValue("email", initialValues.email)
-  }, [initialValues.email])
+    formik.setFieldValue("name", formik.values.name)
+  }, [initialValues.email, initialValues.push])
 
   useEffect(() => {
     setShouldShowEmailWarning(!userAllowsEmails)
