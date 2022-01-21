@@ -11,8 +11,9 @@ export type Metric = typeof metrics[number]
 const userCurrencies = getCurrencies()
 
 const DEFAULT_CURRENCY =
-  (userCurrencies.find((userCurrency) => (currencies as unknown as string[]).includes(userCurrency)) as Currency) ??
-  "USD"
+  (userCurrencies.find((userCurrency) =>
+    (currencies as unknown as string[]).includes(userCurrency)
+  ) as Currency) ?? "USD"
 const DEFAULT_METRIC = ""
 
 // please update this when adding new user preferences
