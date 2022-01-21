@@ -6,6 +6,7 @@ import { Dialog, quoteLeft, quoteRight, useTheme } from "palette"
 import React, { useEffect, useState } from "react"
 import { Alert, ScrollView, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
+import { useFirstMountState } from "react-use/lib/useFirstMountState"
 import { Form } from "./Components/Form"
 import {
   checkOrRequestPushPermissions,
@@ -48,6 +49,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   } = props
   const isUpdateForm = !!savedSearchAlertId
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
+  const isFirstRender = useFirstMountState()
   const savedSearchPills = SavedSearchStore.useStoreState((state) => state.pills)
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const hasChangedFilters = SavedSearchStore.useStoreState((state) => state.dirty)
@@ -126,7 +128,9 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
   // Save the previously entered name
   useEffect(() => {
-    formik.setFieldValue("name", formik.values.name)
+    if (!isFirstRender) {
+      formik.setFieldValue("name", formik.values.name)
+    }
   }, [initialValues.email, initialValues.push])
 
   useEffect(() => {
