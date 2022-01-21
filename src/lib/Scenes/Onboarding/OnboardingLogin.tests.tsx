@@ -3,7 +3,6 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Input, Touchable } from "palette"
 import React from "react"
 import { OnboardingLoginWithEmailForm } from "./OnboardingLogin"
-import { OTPMode } from "./OnboardingLoginWithOTP"
 
 const navigateMock = jest.fn()
 
@@ -33,7 +32,6 @@ jest.mock("formik", () => ({
 describe("OnboardingLogin", () => {
   interface TestProps {
     email?: string
-    otpMode?: OTPMode
   }
 
   const TestProvider = (props: TestProps) => {
@@ -41,7 +39,6 @@ describe("OnboardingLogin", () => {
       <OnboardingLoginWithEmailForm
         navigation={navigationPropsMock as any}
         route={{ params: { email: props.email ?? "" } } as any}
-        otpMode={props.otpMode ?? null}
       />
     )
   }
@@ -57,7 +54,7 @@ describe("OnboardingLogin", () => {
 
   describe("2FA enforcement", () => {
     it("navigates to otp screen when otpMode is set", async () => {
-      renderWithWrappers(<TestProvider otpMode="on_demand" />)
+      renderWithWrappers(<TestProvider />)
       await flushPromiseQueue()
       expect(navigateMock).toHaveBeenCalledWith("OnboardingLoginWithOTP", expect.anything())
     })
