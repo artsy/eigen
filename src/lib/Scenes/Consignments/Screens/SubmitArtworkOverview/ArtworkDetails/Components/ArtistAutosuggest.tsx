@@ -2,18 +2,24 @@ import { useFormikContext } from "formik"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { SearchContext, useSearchProviderValues } from "lib/Scenes/Search/SearchContext"
 import { Box, Input } from "palette"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { ArtworkDetailsFormModel } from "../ArtworkDetailsForm"
 import { ArtistAutosuggestResult, ArtistAutosuggestResults } from "./ArtistAutosuggestResults"
 
-export const ArtistAutosuggest: React.FC = () => {
+export const ArtistAutosuggest: React.FC<{}> = () => {
   const {
-    values: { artist },
+    values: { artist, artistId },
     setFieldValue,
   } = useFormikContext<ArtworkDetailsFormModel>()
   const searchProviderValues = useSearchProviderValues(artist)
 
   const [isArtistSelected, setIsArtistSelected] = useState(false)
+
+  useEffect(() => {
+    if (artist && artistId) {
+      setIsArtistSelected(true)
+    }
+  }, [])
 
   const onArtistSearchTextChange = (e: string) => {
     setIsArtistSelected(false)

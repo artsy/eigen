@@ -1,4 +1,3 @@
-// import { ConsignmentSubmissionQuery } from "__generated__/ConsignmentSubmissionQuery.graphql"
 import AsyncStorage from "@react-native-community/async-storage"
 import { captureMessage } from "@sentry/react-native"
 import { ArtworkDetails_submission$key } from "__generated__/ArtworkDetails_submission.graphql"
@@ -29,16 +28,13 @@ interface ArtworkDetailsContainerProps {
 
 export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
   const submission = useFragment(submissionFragmentSpec, props.submission)
+  const [submissionError, setSubmissionError] = useState(false)
 
   let artworkDetailsInitialValues: ArtworkDetailsFormModel = artworkDetailsEmptyInitialValues
 
   if (submission) {
     artworkDetailsInitialValues = updateArtworkDetailsInitialValues(submission)
   }
-
-  console.log({ artworkDetailsInitialValues })
-
-  const [submissionError, setSubmissionError] = useState(false)
 
   const handleArtworkDetailsSubmit = async (values: ArtworkDetailsFormModel) => {
     const isRarityLimitedEdition = values.attributionClass === limitedEditionValue

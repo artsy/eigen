@@ -6,12 +6,13 @@ import { FlatList } from "react-native"
 import { Location } from "../ArtworkDetailsForm"
 
 interface Props {
+  initialLocation: Location
   onChange: (loc: Location) => void
 }
 
-export const LocationAutocomplete: React.FC<Props> = ({ onChange }) => {
+export const LocationAutocomplete: React.FC<Props> = ({ initialLocation, onChange }) => {
   const [predictions, setPredictions] = useState<SimpleLocation[]>([])
-  const [selectedLocation, setSelectedLocation] = useState<Location | null>()
+  const [selectedLocation, setSelectedLocation] = useState<Location | null>(initialLocation)
   const [query, setQuery] = useState(selectedLocation?.city || "")
 
   useEffect(() => {

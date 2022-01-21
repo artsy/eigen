@@ -192,7 +192,10 @@ export const ArtworkDetailsForm: React.FC = () => {
       </InfoModal>
 
       <Spacer mt={2} />
-      <LocationAutocomplete onChange={(e: Location) => setFieldValue("location", e)} />
+      <LocationAutocomplete
+        initialLocation={values.location}
+        onChange={(e: Location) => setFieldValue("location", e)}
+      />
     </Flex>
   )
 }
