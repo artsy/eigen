@@ -135,16 +135,19 @@ const ArtworkDetailsScreenQuery = graphql`
   }
 `
 
-export const ArtworkDetailsScreen: React.FC<{ id: string; handlePress: () => void }> = ({ id, handlePress }) => {
+export const ArtworkDetailsScreen: React.FC<{ handlePress: () => void }> = ({ handlePress }) => {
   const [queryRef, loadQuery] = useQueryLoader<ArtworkDetailsQuery>(ArtworkDetailsScreenQuery)
 
   useEffect(() => {
-    if (!queryRef) {
-      loadQuery({ id })
-    }
+    ;(async () => {
+      const id = await AsyncStorage.getItem(CONSIGNMENT_SUBMISSION_STORAGE_ID)
+      if (id && !queryRef) {
+        loadQuery({ id })
+      }
+    })()
   })
 
-  if (!queryRef || !id) {
+  if (!queryRef) {
     return <ArtworkDetails submission={null} handlePress={handlePress} />
   }
 
