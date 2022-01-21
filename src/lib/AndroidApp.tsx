@@ -71,7 +71,9 @@ const Main: React.FC<{}> = track()(({}) => {
             ArtsyNativeModule.lockActivityScreenOrientation()
           })
         })
-        ArtsyNativeModule.setAppStyling()
+        if (Platform.OS === "android") {
+          ArtsyNativeModule.setAppStyling()
+        }
         if (isLoggedIn) {
           ArtsyNativeModule.setNavigationBarColor("#FFFFFF")
           ArtsyNativeModule.setAppLightContrast(false)
