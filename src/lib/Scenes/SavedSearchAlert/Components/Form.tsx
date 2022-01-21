@@ -97,7 +97,13 @@ export const Form: React.FC<FormProps> = (props) => {
       return onUpdateEmailPreferencesPress()
     }
 
-    return navigate("/unsubscribe")
+    return navigate("/unsubscribe", {
+      passProps: {
+        backProps: {
+          fromScreen: "Unsubscribe",
+        },
+      },
+    })
   }
 
   const isArtistPill = (pill: SavedSearchPill) => pill.paramName === SearchCriteria.artistID
