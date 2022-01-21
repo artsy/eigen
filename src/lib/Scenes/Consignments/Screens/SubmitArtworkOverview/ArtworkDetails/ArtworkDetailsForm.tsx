@@ -20,11 +20,11 @@ export interface ArtworkDetailsFormModel {
   artistId: string
   title: string
   year: string
-  materials: string
-  rarity: string
+  medium: string
+  attributionClass: string
   editionNumber: string
   editionSizeFormatted: string
-  units: string
+  dimensionsMetric: string
   height: string
   width: string
   depth: string
@@ -65,13 +65,13 @@ export const ArtworkDetailsForm: React.FC = () => {
         title="Materials"
         placeholder="Oil on Canvas, Mixed Media, Lithograph.."
         testID="Consignment_MaterialsInput"
-        value={values.materials}
-        onChangeText={(e) => setFieldValue("materials", e)}
+        value={values.medium}
+        onChangeText={(e) => setFieldValue("medium", e)}
       />
       <Spacer mt={2} />
       <Select
-        onSelectValue={(e) => setFieldValue("rarity", e)}
-        value={values.rarity}
+        onSelectValue={(e) => setFieldValue("attributionClass", e)}
+        value={values.attributionClass}
         enableSearch={false}
         title="Rarity"
         tooltipText="What is this?"
@@ -91,7 +91,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           </Flex>
         ))}
       </InfoModal>
-      {values.rarity === limitedEditionValue && (
+      {values.attributionClass === limitedEditionValue && (
         <>
           <Spacer mt={2} />
           <Flex flexDirection="row" justifyContent="space-between">
@@ -119,8 +119,17 @@ export const ArtworkDetailsForm: React.FC = () => {
       <InputTitle>Dimensions</InputTitle>
       <Spacer mt={1} />
       <Flex flexDirection="row">
-        <RadioButton mr={2} text="in" selected={values.units === "in"} onPress={() => setFieldValue("units", "in")} />
-        <RadioButton text="cm" selected={values.units === "cm"} onPress={() => setFieldValue("units", "cm")} />
+        <RadioButton
+          mr={2}
+          text="in"
+          selected={values.dimensionsMetric === "in"}
+          onPress={() => setFieldValue("dimensionsMetric", "in")}
+        />
+        <RadioButton
+          text="cm"
+          selected={values.dimensionsMetric === "cm"}
+          onPress={() => setFieldValue("dimensionsMetric", "cm")}
+        />
       </Flex>
       <Spacer mt={2} />
       <Flex flexDirection="row" justifyContent="space-between">

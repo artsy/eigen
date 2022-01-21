@@ -40,7 +40,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
   const [submissionError, setSubmissionError] = useState(false)
 
   const handleArtworkDetailsSubmit = async (values: ArtworkDetailsFormModel) => {
-    const isRarityLimitedEdition = values.rarity === limitedEditionValue
+    const isRarityLimitedEdition = values.attributionClass === limitedEditionValue
     const artworkDetailsForm = {
       ...values,
       editionNumber: isRarityLimitedEdition ? values.editionNumber : "",
@@ -48,22 +48,23 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
     }
 
     let submissionId: string | undefined = (await AsyncStorage.getItem(CONSIGNMENT_SUBMISSION_STORAGE_ID)) || undefined
-    const attributionClass = artworkDetailsForm.rarity.replace(" ", "_").toUpperCase() as ConsignmentAttributionClass
 
     try {
       submissionId = await createOrUpdateConsignSubmission({
-        attributionClass,
         id: submissionId,
         artistID: artworkDetailsForm.artistId,
         year: artworkDetailsForm.year,
         title: artworkDetailsForm.title,
-        medium: artworkDetailsForm.materials,
+        medium: artworkDetailsForm.medium,
+        attributionClass: artworkDetailsForm.attributionClass
+          .replace(" ", "_")
+          .toUpperCase() as ConsignmentAttributionClass,
         editionNumber: artworkDetailsForm.editionNumber,
         editionSizeFormatted: artworkDetailsForm.editionSizeFormatted,
         height: artworkDetailsForm.height,
         width: artworkDetailsForm.width,
         depth: artworkDetailsForm.depth,
-        dimensionsMetric: artworkDetailsForm.units,
+        dimensionsMetric: artworkDetailsForm.dimensionsMetric,
         provenance: artworkDetailsForm.provenance,
         locationCity: artworkDetailsForm.location.city,
         locationState: artworkDetailsForm.location.state,
