@@ -8,7 +8,19 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { LocalImage, retrieveLocalImages, storeLocalImages } from "lib/utils/LocalImageStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Avatar, Box, BriefcaseIcon, Button, Flex, Join, MapPinIcon, MuseumIcon, Sans, Spacer, useColor } from "palette"
+import {
+  Avatar,
+  Box,
+  BriefcaseIcon,
+  Button,
+  Flex,
+  Join,
+  MapPinIcon,
+  MuseumIcon,
+  Spacer,
+  Text,
+  useColor,
+} from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -112,13 +124,13 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
           </Box>
         )}
         <Box px={2} flexShrink={1} pb={!showIconAndBio ? 6 : undefined}>
-          <Sans size="10" color={color("black100")}>
+          <Text variant="xl" color={color("black100")}>
             {me?.name}
-          </Sans>
+          </Text>
           {!!me?.createdAt && (
-            <Sans size="2" color={color("black60")}>{`Member since ${new Date(
+            <Text variant="xs" color={color("black60")}>{`Member since ${new Date(
               me?.createdAt
-            ).getFullYear()}`}</Sans>
+            ).getFullYear()}`}</Text>
           )}
         </Box>
       </Flex>
@@ -129,36 +141,36 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
             {!!me?.location?.display && (
               <Flex flexDirection="row" alignItems="flex-end">
                 <MapPinIcon width={14} height={14} />
-                <Sans size="2" color={color("black100")} px={0.5}>
+                <Text variant="xs" color={color("black100")} px={0.5}>
                   {me.location.display}
-                </Sans>
+                </Text>
               </Flex>
             )}
 
             {!!me?.profession && (
               <Flex flexDirection="row" alignItems="flex-end">
                 <BriefcaseIcon width={14} height={14} />
-                <Sans size="2" color={color("black100")} px={0.5}>
+                <Text variant="xs" color={color("black100")} px={0.5}>
                   {me.profession}
-                </Sans>
+                </Text>
               </Flex>
             )}
 
             {!!me?.otherRelevantPosition && (
               <Flex flexDirection="row" alignItems="flex-end">
                 <MuseumIcon width={14} height={14} />
-                <Sans size="2" color={color("black100")} px={0.5}>
+                <Text variant="xs" color={color("black100")} px={0.5}>
                   {me?.otherRelevantPosition}
-                </Sans>
+                </Text>
               </Flex>
             )}
           </Join>
         </Flex>
       )}
       {!!me?.bio && showIconAndBio && (
-        <Sans size="2" color={color("black100")} px={2} pt={2}>
+        <Text variant="xs" color={color("black100")} px={2} pt={2}>
           {me?.bio}
-        </Sans>
+        </Text>
       )}
       {showIconAndBio && (
         <Flex p={2}>
@@ -177,7 +189,6 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
     </>
   )
 }
-
 
 export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContainer(
   MyCollectionAndSavedWorks,
