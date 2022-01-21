@@ -49,7 +49,7 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
   const emailInputRef = useRef<Input>(null)
 
   /**
-   * When we land on OnboardingLogin from the OnboardingCreatAccount
+   * When we land on OnboardingLogin from the OnboardingCreateAccount
    * withFadeAnimation is set to true therefore if the user presses
    * on the back button to navigate to the welcome screen, the screen
    * fades instead of translating horizontally. To avoid that we need
@@ -189,7 +189,14 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ navig
         email,
         password,
       })
-      if (!res) {
+
+      if (res === "otp_missing") {
+        navigation.navigate("OnboardingLoginWithOTP", { email, password, otpMode: "standard" })
+      } else if (res === "on_demand_otp_missing") {
+        navigation.navigate("OnboardingLoginWithOTP", { email, password, otpMode: "on_demand" })
+      }
+
+      if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
         // For security purposes, we are returning a generic error message
         setErrors({ password: "Incorrect email or password" })
       }

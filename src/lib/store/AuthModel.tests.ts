@@ -141,7 +141,7 @@ describe("AuthModel", () => {
         password: "hunter2",
       })
 
-      expect(result).toBe(true)
+      expect(result).toBe("success")
 
       expect(mockFetch).toHaveBeenCalledTimes(2)
       expect(mockFetch.mock.calls[0][0]).toMatchInlineSnapshot(
@@ -207,14 +207,14 @@ describe("AuthModel", () => {
       `)
     })
 
-    it("returns false if the token creation fails", async () => {
+    it("returns 'failure' if the token creation fails", async () => {
       mockFetchJsonOnce({ error: "bad times" }, 500)
       const result = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
         email: "user@example.com",
         password: "hunter2",
       })
-      expect(result).toBe(false)
+      expect(result).toBe("failure")
     })
 
     it("does not clear recent searches if user id has not changed after the previous session", async () => {

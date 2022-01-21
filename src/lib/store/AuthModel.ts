@@ -55,6 +55,8 @@ const afterSocialAuthLogin = (
   }
 }
 
+type SignInStatus = "failure" | "success" | "otp_missing" | "on_demand_otp_missing" | "invalid_otp"
+
 type OnboardingState = "none" | "incomplete" | "complete"
 export interface AuthModel {
   // State
@@ -79,6 +81,7 @@ export interface AuthModel {
       | {
           oauthProvider: "email"
           password: string
+          otp?: string
         }
       | {
           oauthProvider: "facebook" | "google"
@@ -92,7 +95,7 @@ export interface AuthModel {
     ),
     {},
     GlobalStoreModel,
-    Promise<boolean>
+    Promise<SignInStatus>
   >
   signUp: Thunk<
     this,
@@ -257,14 +260,13 @@ export const getAuthModel = (): AuthModel => ({
       body: {
         email,
         oauth_provider: oauthProvider,
-
+        otp_attempt: oauthProvider === "email" ? args?.otp ?? undefined : undefined,
         password: oauthProvider === "email" ? args.password : undefined,
         oauth_token:
           oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
         apple_uid: oauthProvider === "apple" ? args.appleUID : undefined,
         id_token: oauthProvider === "apple" ? args.idToken : undefined,
         grant_type: grantTypeMap[oauthProvider],
-
         client_id: Config.ARTSY_API_CLIENT_KEY,
         client_secret: Config.ARTSY_API_CLIENT_SECRET,
         scope: "offline_access",
@@ -318,10 +320,23 @@ export const getAuthModel = (): AuthModel => ({
         actions.requestPushNotifPermission()
       }
 
-      return true
+      return "success"
     }
 
-    return false
+    const resultJSON = await result.json()
+    if (resultJSON?.error_description === "missing two-factor authentication code") {
+      return "otp_missing"
+    }
+
+    if (resultJSON?.error_description === "missing on-demand authentication code") {
+      return "on_demand_otp_missing"
+    }
+
+    if (resultJSON?.error_description === "invalid two-factor authentication code") {
+      return "invalid_otp"
+    }
+
+    return "failure"
   }),
   signUp: thunk(async (actions, args) => {
     const { oauthProvider, email, name, agreedToReceiveEmails } = args

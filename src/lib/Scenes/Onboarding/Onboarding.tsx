@@ -20,6 +20,7 @@ import {
   OnboardingCreateAccountWithEmail,
 } from "./OnboardingCreateAccount/OnboardingCreateAccount"
 import { OnboardingLogin, OnboardingLoginWithEmail } from "./OnboardingLogin"
+import { OnboardingLoginWithOTP, OTPMode } from "./OnboardingLoginWithOTP"
 import { OnboardingPersonalization } from "./OnboardingPersonalization/OnboardingPersonalization"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
@@ -28,6 +29,7 @@ export type OnboardingNavigationStack = {
   OnboardingWelcome: undefined
   OnboardingLogin: { withFadeAnimation: boolean } | undefined
   OnboardingLoginWithEmail: { withFadeAnimation: boolean; email: string } | undefined
+  OnboardingLoginWithOTP: { email: string; password: string; otpMode: OTPMode }
   OnboardingCreateAccount: { withFadeAnimation: boolean } | undefined
   OnboardingCreateAccountWithEmail: undefined
   ForgotPassword: undefined
@@ -66,6 +68,7 @@ export const OnboardingWelcomeScreens = () => {
               : CardStyleInterpolators.forHorizontalIOS,
           })}
         />
+        <StackNavigator.Screen name="OnboardingLoginWithOTP" component={OnboardingLoginWithOTP} />
         <StackNavigator.Screen
           name="OnboardingCreateAccount"
           component={OnboardingCreateAccount}
