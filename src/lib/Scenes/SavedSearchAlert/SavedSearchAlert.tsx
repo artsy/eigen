@@ -24,7 +24,6 @@ export const SavedSearchAlertQueryRenderer: React.FC<SearchCriteriaAlertBaseProp
       query={graphql`
         query SavedSearchAlertQuery($savedSearchAlertId: ID!) {
           me {
-            emailFrequency
             savedSearch(id: $savedSearchAlertId) {
               internalID
               acquireable

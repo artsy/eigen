@@ -28,6 +28,7 @@ interface FormProps {
   isLoading?: boolean
   isPreviouslySaved?: boolean
   hasChangedFilters?: boolean
+  shouldShowEmailWarning?: boolean
   onDeletePress?: () => void
   onSubmitPress?: () => void
   onUpdateEmailPreferencesPress?: () => void
@@ -45,6 +46,7 @@ export const Form: React.FC<FormProps> = (props) => {
     isLoading,
     isPreviouslySaved,
     hasChangedFilters,
+    shouldShowEmailWarning,
     onDeletePress,
     onSubmitPress,
     onUpdateEmailPreferencesPress,
@@ -178,6 +180,16 @@ export const Form: React.FC<FormProps> = (props) => {
         onChange={handleToggleEmailNotification}
         active={values.email}
       />
+      {!!shouldShowEmailWarning && (
+        <Box backgroundColor="orange10" my={1} p={2}>
+          <Text variant="xs" color="orange150">
+            Your email frequency is set to None
+          </Text>
+          <Text variant="xs" mt={0.5}>
+            To receive Email Alerts, please update your email preferences.
+          </Text>
+        </Box>
+      )}
       {!!values.email && (
         <Text
           onPress={handleUpdateEmailPreferencesPress}
