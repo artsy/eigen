@@ -90,7 +90,7 @@ interface State {
   /** The users's location from core location */
   userLocation?: { lat: number; lng: number }
   /** A set of GeoJSON features, which right now is our show clusters */
-  featureCollections: { [key in BucketKey]: FilterData } | {}
+  featureCollections: { [key in BucketKey]: FilterData } | Record<string, unknown>
   /** Has the map fully rendered? */
   mapLoaded: boolean
   /** In the process of saving a show */
@@ -282,7 +282,6 @@ export class GlobalMap extends React.Component<Props, State> {
 
       clusterEngine.load(geoJSONFeature.features as any)
 
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       featureCollections[tab.id] = {
         featureCollection: geoJSONFeature,
         filter: tab.id,

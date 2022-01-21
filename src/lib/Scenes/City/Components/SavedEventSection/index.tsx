@@ -16,7 +16,7 @@ export interface Props {
   sponsoredContentUrl: string
 }
 
-const track: Track<Props, {}> = _track as any
+const track: Track<Props, unknown> = _track as any
 
 @track()
 export class SavedEventSection extends Component<any> {

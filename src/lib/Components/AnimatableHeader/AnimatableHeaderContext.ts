@@ -18,7 +18,7 @@ export const AnimatableHeaderContext = React.createContext<AnimatableHeaderConte
   title: "",
   largeTitleHeight: new Animated.Value(0),
   largeTitleEndEdge: new Animated.Value(0),
-  // tslint:disable-next-line:no-empty
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setTitle: () => {},
 })
 

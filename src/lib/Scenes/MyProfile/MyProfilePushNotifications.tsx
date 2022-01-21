@@ -272,7 +272,7 @@ const MyProfilePushNotificationsContainer = createRefetchContainer(
   `
 )
 
-export const MyProfilePushNotificationsQueryRenderer: React.FC<{}> = ({}) => {
+export const MyProfilePushNotificationsQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<MyProfilePushNotificationsQuery>
       environment={defaultEnvironment}

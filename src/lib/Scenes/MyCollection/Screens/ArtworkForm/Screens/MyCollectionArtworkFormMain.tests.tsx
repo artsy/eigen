@@ -44,6 +44,7 @@ jest.mock("lib/utils/requestPhotos", () => ({
 
 describe("AddEditArtwork", () => {
   const useFormikContextMock = useFormikContext as jest.Mock
+  // eslint-disable-next-line @typescript-eslint/ban-types
   const mockNav: Partial<StackNavigationProp<{}>> = {
     addListener: jest.fn(),
   }

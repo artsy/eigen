@@ -18,9 +18,9 @@ export const StickyTabPageContext = React.createContext<{
         headerOffsetY: new Animated.Value(0),
         tabLabels: ["test"],
         tabSuperscripts: ["test"],
-        // tslint:disable-next-line:no-empty
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         activeTabIndex: { current: 0, set() {}, useUpdates() {} },
-        // tslint:disable-next-line:no-empty
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         setActiveTabIndex() {},
       }
     : (null as any)

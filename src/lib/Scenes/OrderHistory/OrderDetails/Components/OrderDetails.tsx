@@ -118,7 +118,7 @@ const OrderDetails: FC<OrderDetailsProps> = ({ order }) => {
   )
 }
 
-export const OrderDetailsPlaceholder: FC<{}> = () => (
+export const OrderDetailsPlaceholder: FC = () => (
   <PageWithSimpleHeader title="Order Details">
     <Flex px={2}>
       <Flex flexDirection="row" mt={2}>

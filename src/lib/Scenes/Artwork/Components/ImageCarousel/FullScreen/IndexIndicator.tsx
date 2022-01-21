@@ -1,6 +1,5 @@
 import { Sans } from "palette"
-import { useContext, useMemo } from "react"
-import React from "react"
+import React, { useContext, useMemo } from "react"
 import { Animated, View } from "react-native"
 import { ImageCarouselContext } from "../ImageCarouselContext"
 import { useSpringValue } from "../useSpringValue"

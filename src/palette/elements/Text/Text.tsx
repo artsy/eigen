@@ -1,8 +1,7 @@
 import { useTheme } from "palette"
 import { isThemeV3, TextVariantV3 } from "palette/Theme"
 import React from "react"
-import { StyleProp, TextStyle } from "react-native"
-import { Text as RNText, TextProps as RNTextProps } from "react-native"
+import { StyleProp, TextStyle , Text as RNText, TextProps as RNTextProps } from "react-native"
 import styled from "styled-components/native"
 import {
   color,
@@ -45,9 +44,10 @@ export const Text: React.FC<TextProps> = React.forwardRef<RNText, TextProps>(
         ]}
         fontFamily={fontFamily}
         {...theme.textTreatments[variant]}
-        children={children}
         {...rest}
-      />
+      >
+        {children}
+      </InnerStyledText>
     )
   }
 )

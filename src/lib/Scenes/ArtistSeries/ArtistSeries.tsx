@@ -146,7 +146,7 @@ export const ArtistSeriesFragmentContainer = createFragmentContainer(ArtistSerie
   `,
 })
 
-const ArtistSeriesPlaceholder: React.FC<{}> = ({}) => {
+const ArtistSeriesPlaceholder: React.FC = () => {
   return (
     <Box>
       <Box px="2" pt="1">

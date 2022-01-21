@@ -15,11 +15,10 @@ interface FeaturedArtistsProps {
   tracking?: TrackingProp
 }
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const track: Track<FeaturedArtistsProps, {}> = _track
+const track: Track<FeaturedArtistsProps, unknown> = _track
 
 @track()
-export class FeaturedArtists extends React.Component<FeaturedArtistsProps, {}> {
+export class FeaturedArtists extends React.Component<FeaturedArtistsProps> {
   getFeaturedArtistEntityCollection = (
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     artists: FeaturedArtists_collection["artworksConnection"]["merchandisableArtists"]

@@ -298,7 +298,6 @@ function expandGoogleAdLink(url: string) {
   return url
 }
 
-// tslint:disable-next-line:variable-name
 export const __webViewTestUtils__ = __TEST__
   ? {
       ProgressBar,

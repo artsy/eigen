@@ -153,7 +153,7 @@ export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContaine
   `,
 })
 
-export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => (
+export const MyCollectionAndSavedWorksQueryRenderer: React.FC = () => (
   <QueryRenderer<MyCollectionAndSavedWorksQuery>
     environment={defaultEnvironment}
     query={graphql`

@@ -89,7 +89,6 @@ export function useNewImageCarouselContext({
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 embeddedFlatListRef.current.scrollToIndex({ index: action.nextImageIndex, animated: false })
               }
-              // tslint:disable-next-line: no-unused-expression
               onImageIndexChange && onImageIndexChange(imageIndex.current)
             }
             break

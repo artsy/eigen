@@ -55,7 +55,7 @@ const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp
   )
 }
 
-const MyAccountEditEmailPlaceholder: React.FC<{}> = ({}) => {
+const MyAccountEditEmailPlaceholder: React.FC = () => {
   return (
     <MyAccountFieldEditScreenPlaceholder title="Email">
       <PlaceholderBox height={40} />
@@ -71,7 +71,7 @@ const MyAccountEditEmailContainer = createFragmentContainer(MyAccountEditEmail, 
   `,
 })
 
-export const MyAccountEditEmailQueryRenderer: React.FC<{}> = () => {
+export const MyAccountEditEmailQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<MyAccountEditEmailQuery>
       environment={defaultEnvironment}

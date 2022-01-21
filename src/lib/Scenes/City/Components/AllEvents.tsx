@@ -56,14 +56,13 @@ export class AllEvents extends React.Component<Props, State> {
 
   shouldUpdate(otherProps: Props): boolean {
     let bmwUpdated
-    let showsUpdated
     if (this.props.sponsoredContent && this.props.sponsoredContent.featuredShows) {
       bmwUpdated = !isEqual(
         this.props.sponsoredContent.featuredShows.map((g) => g.is_followed),
         otherProps.sponsoredContent.featuredShows.map((g) => g.is_followed)
       )
     }
-    showsUpdated = ["saved", "closing", "museums", "opening", "closing"]
+    const showsUpdated = ["saved", "closing", "museums", "opening", "closing"]
       .map((key) => {
         return !isEqual(
           // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏

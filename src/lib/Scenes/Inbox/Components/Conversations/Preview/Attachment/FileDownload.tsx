@@ -1,11 +1,10 @@
-import { IconProps, Text } from "palette"
+import { IconProps, Text , DownloadIcon } from "palette"
 import React from "react"
 import { Linking } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import AttachmentPreview, { AttachmentProps } from "./AttachmentPreview"
 
 import { FileDownload_attachment } from "__generated__/FileDownload_attachment.graphql"
-import { DownloadIcon } from "palette"
 import styled from "styled-components/native"
 import { AttachmentContainer, AttachmentTextContainer } from "./PDFPreview"
 

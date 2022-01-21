@@ -41,7 +41,7 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
 
   requestConditionReport = () => {
     const { artwork, relay } = this.props
-    return new Promise<RequestConditionReportMutationResponse>(async (resolve, reject) => {
+    return new Promise<RequestConditionReportMutationResponse>((resolve, reject) =>
       commitMutation<RequestConditionReportMutation>(relay.environment, {
         onCompleted: resolve,
         onError: reject,
@@ -59,7 +59,7 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
           input: { saleArtworkID: artwork.saleArtwork.internalID },
         },
       })
-    })
+    )
   }
 
   @track({

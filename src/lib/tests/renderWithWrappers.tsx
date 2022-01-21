@@ -43,7 +43,6 @@ const componentWithWrappers = (component: ReactElement) => {
 export const renderWithWrappers = (component: ReactElement) => {
   const wrappedComponent = componentWithWrappers(component)
   try {
-    // tslint:disable-next-line:use-wrapped-components
     const renderedComponent = ReactTestRenderer.create(wrappedComponent)
 
     // monkey patch update method to wrap components

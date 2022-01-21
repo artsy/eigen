@@ -69,20 +69,20 @@ export interface MyCollectionArtworkModel {
     formValues: ArtworkFormValues
     artworkErrorOccurred: boolean
   }
-  setFormValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
-  updateFormValues: Action<MyCollectionArtworkModel, Partial<ArtworkFormValues>>
-  setDirtyFormCheckValues: Action<MyCollectionArtworkModel, ArtworkFormValues>
-  resetForm: Action<MyCollectionArtworkModel>
-  resetFormButKeepArtist: Action<MyCollectionArtworkModel>
-  setArtistSearchResult: Action<MyCollectionArtworkModel, AutosuggestResult | null>
-  setArtworkId: Action<MyCollectionArtworkModel, { artworkId: string }>
-  setArtworkErrorOccurred: Action<MyCollectionArtworkModel, boolean>
+  setFormValues: Action<this, ArtworkFormValues>
+  updateFormValues: Action<this, Partial<ArtworkFormValues>>
+  setDirtyFormCheckValues: Action<this, ArtworkFormValues>
+  resetForm: Action<this>
+  resetFormButKeepArtist: Action<this>
+  setArtistSearchResult: Action<this, AutosuggestResult | null>
+  setArtworkId: Action<this, { artworkId: string }>
+  setArtworkErrorOccurred: Action<this, boolean>
 
-  addPhotos: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"]>
-  removePhoto: Action<MyCollectionArtworkModel, ArtworkFormValues["photos"][0]>
+  addPhotos: Action<this, ArtworkFormValues["photos"]>
+  removePhoto: Action<this, ArtworkFormValues["photos"][0]>
 
   startEditingArtwork: Thunk<
-    MyCollectionArtworkModel,
+    this,
     Partial<MyCollectionArtwork_sharedProps> & {
       internalID: string
       id: string
@@ -90,7 +90,7 @@ export interface MyCollectionArtworkModel {
       artistNames: string
       images: Image[]
     },
-    {},
+    unknown,
     GlobalStoreModel
   >
 }

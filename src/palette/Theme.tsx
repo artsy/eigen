@@ -249,5 +249,4 @@ export const isThemeV3 = (theme: ThemeType): theme is ThemeV3Type => theme.id ==
 /**
  * Only use this if it's are absolutely neccessary, and only in tests.
  */
-// tslint:disable-next-line:variable-name
 export const _test_THEMES = THEMES

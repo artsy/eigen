@@ -75,22 +75,20 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
         <Flex pl="2" pr="2">
           <SectionTitle title={title} onPress={navigateToNewWorksForYou} />
         </Flex>
-        {
-          <SmallTileRailContainer
-            listRef={listRef}
-            artworks={artworks as any}
-            contextModule={ContextModule.newWorksForYouRail}
-            onEndReached={loadMoreArtworks}
-            onEndReachedThreshold={0.1}
-            ListFooterComponent={
-              loadingMoreData ? (
-                <Flex justifyContent="center" ml={3} mr={5} height="120">
-                  <Spinner />
-                </Flex>
-              ) : undefined
-            }
-          />
-        }
+        <SmallTileRailContainer
+          listRef={listRef}
+          artworks={artworks as any}
+          contextModule={ContextModule.newWorksForYouRail}
+          onEndReached={loadMoreArtworks}
+          onEndReachedThreshold={0.1}
+          ListFooterComponent={
+            loadingMoreData ? (
+              <Flex justifyContent="center" ml={3} mr={5} height="120">
+                <Spinner />
+              </Flex>
+            ) : undefined
+          }
+        />
       </View>
     </Flex>
   )

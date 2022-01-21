@@ -13,13 +13,11 @@ storiesOf("Checkbox", module)
       <Checkbox />
       <Checkbox text="Checkbox" />
       <Checkbox
-        // tslint:disable-next-line: jsx-curly-brace-presence
         text={`Multiline
 Text`}
       />
       <Checkbox text="Checkbox" subtitle="Subtitle" />
       <Checkbox
-        // tslint:disable-next-line: jsx-curly-brace-presence
         text={`Multiline
 Text`}
         subtitle="With Subtitle"

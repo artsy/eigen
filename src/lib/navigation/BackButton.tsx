@@ -1,8 +1,7 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { ChevronIcon, CloseIcon } from "palette"
 import React, { useEffect, useRef } from "react"
-import { Animated } from "react-native"
-import { TouchableOpacity } from "react-native"
+import { Animated , TouchableOpacity } from "react-native"
 import { useFirstMountState } from "react-use/esm/useFirstMountState"
 import { goBack } from "./navigate"
 

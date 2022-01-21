@@ -83,7 +83,7 @@ commands:
           name: Run TypeScript check
           command: ls test-results.json || yarn type-check
       - run:
-          name: Run TSLint check
+          name: Run lint check
           command: ls test-results.json || yarn lint
       - run:
           name: Run jest tests

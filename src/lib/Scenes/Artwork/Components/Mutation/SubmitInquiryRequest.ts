@@ -1,5 +1,4 @@
-import { SubmitInquiryRequestMutation } from "__generated__/SubmitInquiryRequestMutation.graphql"
-import { InquiryQuestionInput } from "__generated__/SubmitInquiryRequestMutation.graphql"
+import { SubmitInquiryRequestMutation , InquiryQuestionInput } from "__generated__/SubmitInquiryRequestMutation.graphql"
 import { ArtworkInquiryContextState } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { commitMutation, Environment, graphql } from "relay-runtime"
 

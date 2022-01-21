@@ -1,6 +1,6 @@
 import { ImageCarouselContext, ImageDescriptor } from "../ImageCarouselContext"
 
-import { useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
+import React, { useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
 
 import {
   Animated,
@@ -23,7 +23,6 @@ import { fitInside, Position, Rect } from "../geometry"
 import { captureMessage } from "@sentry/react-native"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import React from "react"
 import { calculateMaxZoomViewScale } from "./DeepZoom/deepZoomGeometry"
 import { DeepZoomOverlay } from "./DeepZoom/DeepZoomOverlay"
 import { useDoublePressCallback } from "./useDoublePressCallback"

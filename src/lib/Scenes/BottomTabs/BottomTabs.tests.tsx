@@ -43,7 +43,7 @@ function resolveUnreadConversationCountQuery(unreadConversationCount: number) {
   )
 }
 
-const TestWrapper: React.FC<{}> = ({}) => {
+const TestWrapper: React.FC = () => {
   return (
     <GlobalStoreProvider>
       <BottomTabs />

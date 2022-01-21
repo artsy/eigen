@@ -82,6 +82,7 @@ export class Collapse extends React.Component<CollapseProps, State> {
     }
   }
 
+  // eslint-disable-next-line react/no-deprecated
   componentWillReceiveProps(nextProps: CollapseProps) {
     const willExpand = nextProps.open && !this.props.open
     if (nextProps.open !== this.props.open) {

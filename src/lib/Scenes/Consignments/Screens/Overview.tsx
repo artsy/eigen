@@ -1,10 +1,9 @@
 import { Schema, screenTrack, Track, track as _track } from "lib/utils/track"
 import React from "react"
-import { Alert } from "react-native"
+import { Alert , Dimensions, ScrollView, View } from "react-native"
 
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import type NavigatorIOS from "lib/utils/__legacy_do_not_use__navigator-ios-shim"
-import { Dimensions, ScrollView, View } from "react-native"
 
 import { ActionSheetOptions, connectActionSheet } from "@expo/react-native-action-sheet"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"

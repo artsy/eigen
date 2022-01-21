@@ -194,10 +194,12 @@ export function normalizeText(text: string) {
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       // handle other edge cases like ø
+      // eslint-disable-next-line no-control-regex
       .replace(/[^\u0000-\u007E]/g, (a) => {
         return diacriticsMap[a] || a
       })
       // remove punctuation https://stackoverflow.com/a/25575009
+      // eslint-disable-next-line no-useless-escape
       .replace(/[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,\-.\/:;<=>?@\[\]^_`{|}~]/, "")
   )
 }

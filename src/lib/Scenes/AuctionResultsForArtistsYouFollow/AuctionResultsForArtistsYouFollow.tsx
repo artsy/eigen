@@ -19,8 +19,7 @@ import moment from "moment"
 import { Flex, Separator, Spacer, Spinner, Text } from "palette"
 import React, { useState } from "react"
 import { RefreshControl, SectionList } from "react-native"
-import { RelayPaginationProp } from "react-relay"
-import { createPaginationContainer, graphql, QueryRenderer } from "react-relay"
+import { RelayPaginationProp , createPaginationContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { Tab } from "../Favorites/Favorites"
 
@@ -175,7 +174,7 @@ export const ListHeader: React.FC = () => {
   return (
     <Flex>
       <Text fontSize={14} lineHeight={21} textAlign="left" color="black60" mx={20} my={17}>
-        The latest auction results for the {""}
+        The latest auction results for the{" "}
         <LinkText
           onPress={() => {
             trackEvent(tracks.tappedLink)

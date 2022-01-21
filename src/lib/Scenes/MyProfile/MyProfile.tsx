@@ -83,7 +83,7 @@ export const OldMyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp 
   )
 }
 
-export const MyProfilePlaceholder: React.FC<{}> = () => {
+export const MyProfilePlaceholder: React.FC = () => {
   const shouldDisplayMyCollection = useEnableMyCollection()
   if (shouldDisplayMyCollection) {
     return <MyCollectionLoadingSkeleton />
@@ -166,7 +166,7 @@ export const OldMyProfileQueryRenderer = () => (
   />
 )
 
-export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
+export const MyProfileQueryRenderer: React.FC = () => {
   const shouldDisplayMyCollection = useEnableMyCollection()
 
   if (shouldDisplayMyCollection) {

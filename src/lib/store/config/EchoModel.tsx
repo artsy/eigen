@@ -22,11 +22,11 @@ export interface Echo {
 
 export interface EchoModel {
   state: Echo
-  setEchoState: Action<EchoModel, Echo>
-  fetchRemoteEcho: Thunk<EchoModel>
-  didRehydrate: ThunkOn<EchoModel, {}, GlobalStoreModel>
-  stripePublishableKey: Computed<EchoModel, string, GlobalStoreModel>
-  forceUpdateMessage: Computed<EchoModel, string | undefined>
+  setEchoState: Action<this, Echo>
+  fetchRemoteEcho: Thunk<this>
+  didRehydrate: ThunkOn<this, unknown, GlobalStoreModel>
+  stripePublishableKey: Computed<this, string, GlobalStoreModel>
+  forceUpdateMessage: Computed<this, string | undefined>
 }
 
 export const getEchoModel = (): EchoModel => ({

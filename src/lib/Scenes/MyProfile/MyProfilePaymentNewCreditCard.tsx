@@ -82,7 +82,7 @@ const useStore = createComponentStore<Store>({
   }),
 })
 
-export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
+export const MyProfilePaymentNewCreditCard: React.FC = () => {
   const [state, actions] = useStore()
   const paymentInfoRef = useRef<any>(null)
 

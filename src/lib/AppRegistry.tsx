@@ -388,7 +388,7 @@ for (const moduleName of Object.keys(modules)) {
   }
 }
 
-const Main: React.FC<{}> = track()(({}) => {
+const Main: React.FC = track()(() => {
   usePreferredThemeTracking()
   useScreenReaderTracking()
   useFreshInstallTracking()

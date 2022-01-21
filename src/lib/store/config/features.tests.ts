@@ -47,7 +47,6 @@ describe("feature conventions", () => {
   })
   it("should contain a key named readyForRelease", () => {
     Object.entries(features).forEach(([_, val]) => {
-      // tslint:disable-next-line:no-string-literal
       expect(val["readyForRelease"]).toBeDefined()
     })
   })

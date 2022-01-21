@@ -69,7 +69,7 @@ export const OrderHistory: React.FC<{ me: OrderHistory_me; relay: RelayPaginatio
   )
 }
 
-export const OrderHistoryPlaceholder: React.FC<{}> = () => (
+export const OrderHistoryPlaceholder: React.FC = () => (
   <PageWithSimpleHeader title="Order History">
     <Flex px={15} mt={15}>
       {times(2).map((index: number) => (
@@ -147,7 +147,7 @@ export const OrderHistoryContainer = createPaginationContainer(
   }
 )
 
-export const OrderHistoryQueryRender: React.FC<{}> = ({}) => {
+export const OrderHistoryQueryRender: React.FC = () => {
   return (
     <QueryRenderer<OrderHistoryQuery>
       environment={defaultEnvironment}

@@ -107,19 +107,19 @@ export default class Metadata extends React.Component<Props, State> {
   }
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   updateWidth = (width) => {
-    const value = width.match(/\d*[\.\,]?\d*/g)
+    const value = width.match(/\d*[.,]?\d*/g)
 
     return this.setState({ width: value[0] })
   }
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   updateHeight = (height) => {
-    const value = height.match(/\d*[\.\,]?\d*/g)
+    const value = height.match(/\d*[.,]?\d*/g)
 
     return this.setState({ height: value[0] })
   }
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   updateDepth = (depth) => {
-    const value = depth.match(/\d*[\.\,]?\d*/g)
+    const value = depth.match(/\d*[.,]?\d*/g)
 
     return this.setState({ depth: value[0] })
   }

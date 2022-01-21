@@ -25,7 +25,6 @@ const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) =
     console.warn(route.params.moduleName, { module })
     throw new Error("native modules not yet supported in new nav setup")
   }
-  // tslint:disable-next-line:variable-name
   const [legacy_shouldHideBackButton, updateShouldHideBackButton] = useState(false)
 
   const isRootScreen = useNavigationState((state) => state.routes[0].key === route.key)

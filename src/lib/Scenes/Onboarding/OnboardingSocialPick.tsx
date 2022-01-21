@@ -1,12 +1,11 @@
 import { useNavigation } from "@react-navigation/native"
 import { BackButton } from "lib/navigation/BackButton"
 import { navigate } from "lib/navigation/navigate"
-import { GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore , useFeatureFlag } from "lib/store/GlobalStore"
 import { Button, Flex, Join, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
 import { Alert, Image, Platform } from "react-native"
 import { EnvelopeIcon } from "../../../palette/svgs/EnvelopeIcon"
-import { useFeatureFlag } from "../../store/GlobalStore"
 
 interface OnboardingSocialPickProps {
   mode: "login" | "signup"

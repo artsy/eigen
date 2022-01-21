@@ -2,7 +2,7 @@ import PropTypes from "prop-types"
 import React from "react"
 import { NativeScrollEvent, NativeSyntheticEvent, ScrollView, ScrollViewProps } from "react-native"
 
-// tslint:disable-next-line:interface-over-type-literal
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type ScrollContext = {
   horizontal: boolean
 }

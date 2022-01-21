@@ -47,7 +47,7 @@ export function renderWithPlaceholder<Props>({
         let data = networkError.response._bodyInit || "{}"
         try {
           data = JSON.parse(data)
-          // tslint:disable-next-line:no-empty
+          // eslint-disable-next-line no-empty
         } catch (e) {}
         console.error("Error data", data)
       }
@@ -80,7 +80,6 @@ export function renderWithPlaceholder<Props>({
   }
 }
 
-// tslint:disable-next-line:variable-name
 export const __renderWithPlaceholderTestUtils__ = __TEST__
   ? {
       allowFallbacksAtTestTime: false,

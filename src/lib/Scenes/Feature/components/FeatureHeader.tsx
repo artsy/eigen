@@ -60,7 +60,7 @@ export const FeatureHeaderFragmentContainer = createFragmentContainer(FeatureHea
   `,
 })
 
-export const FeatureHeaderPlaceholder: React.FC<{}> = ({}) => {
+export const FeatureHeaderPlaceholder: React.FC = () => {
   const { height, width } = useScreenDimensions()
   const imageHeight = isPad() ? height * 0.6 : width
 

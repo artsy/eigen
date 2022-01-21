@@ -29,10 +29,9 @@ const Card = styled(Flex)`
   border-radius: 4;
 `
 
-// tslint:disable-next-line:variable-name
 const NUM_ADDRESSES_TO_FETCH = 10
 
-// tslint:disable-next-line:no-empty
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 export const util = { onRefresh: () => {} }
 
 const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
@@ -222,7 +221,7 @@ export const SavedAddressesContainer = createRefetchContainer(
   `
 )
 
-export const SavedAddressesQueryRenderer: React.FC<{}> = ({}) => {
+export const SavedAddressesQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<SavedAddressesQuery>
       environment={defaultEnvironment}

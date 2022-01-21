@@ -1,7 +1,5 @@
 import { delay } from "lib/utils/delay"
-import React, { useCallback, useState } from "react"
-import { useEffect } from "react"
-import { useRef } from "react"
+import React, { useCallback, useState , useEffect , useRef } from "react"
 import { Animated } from "react-native"
 import { PopoverMessage, PopoverMessageItem } from "./PopoverMessage"
 
@@ -15,9 +13,9 @@ const HIDE_ANIMATION_VELOCITY = 400
 const REPLACE_ANIMATION_VELOCITY = 350
 
 export const PopoverMessageContext = React.createContext<PopoverMessageContextContextValue>({
-  // tslint:disable-next-line:no-empty
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   show: () => {},
-  // tslint:disable-next-line:no-empty
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   hide: () => {},
 })
 

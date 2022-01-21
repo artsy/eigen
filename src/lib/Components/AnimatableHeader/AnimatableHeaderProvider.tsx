@@ -3,7 +3,7 @@ import React, { useMemo, useRef, useState } from "react"
 import Animated from "react-native-reanimated"
 import { AnimatableHeaderContext } from "./AnimatableHeaderContext"
 
-export const AnimatableHeaderProvider: React.FC<{}> = (props) => {
+export const AnimatableHeaderProvider: React.FC = (props) => {
   const { children } = props
   const space = useSpace()
   const headerHeight = space(6)

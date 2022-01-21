@@ -70,7 +70,6 @@ describe("LocalImageStore", () => {
     const parsedImages = JSON.parse(imagesJSON!)
 
     const in2mins = DateTime.fromMillis(Date.now()).plus({ minutes: 2 }).toISO()
-    // tslint:disable-next-line:no-string-literal
     expect(parsedImages[0]["expirationDate"]).toEqual(in2mins)
   })
 

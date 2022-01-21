@@ -60,7 +60,7 @@ export const VanityURLPossibleRedirect: React.FC<{ slug: string }> = ({ slug }) 
   return jsx
 }
 
-const Loading: React.FC<{}> = ({}) => {
+const Loading: React.FC = () => {
   return (
     <Flex style={{ flex: 1 }} flexDirection="row" alignItems="center" justifyContent="center">
       <Spinner />

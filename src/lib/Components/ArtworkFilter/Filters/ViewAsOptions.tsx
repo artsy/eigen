@@ -5,8 +5,7 @@ import {
   FilterDisplayName,
   FilterParamName,
   ViewAsValues,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+ FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import React from "react"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"

@@ -2,7 +2,6 @@ import { useColor } from "palette/hooks"
 import React from "react"
 import { Icon, IconProps, Path } from "../Icon"
 
-/** Stopwatch */
 export const Stopwatch: React.FC<IconProps> = (props) => {
   const color = useColor()
   return (

@@ -1,7 +1,6 @@
 import { FileDownload_attachment } from "__generated__/FileDownload_attachment.graphql"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
-import "react-native"
 import { Linking } from "react-native"
 
 import AttachmentPreview from "./AttachmentPreview"

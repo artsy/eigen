@@ -53,7 +53,7 @@ const MyAccount: React.FC<{ me: MyAccount_me }> = ({ me }) => {
   )
 }
 
-const MyAccountPlaceholder: React.FC<{}> = ({}) => {
+const MyAccountPlaceholder: React.FC = () => {
   return (
     <PageWithSimpleHeader title="Account">
       <Flex px={2} py={1}>
@@ -79,7 +79,7 @@ export const MyAccountContainer = createFragmentContainer(MyAccount, {
   `,
 })
 
-export const MyAccountQueryRenderer: React.FC<{}> = () => {
+export const MyAccountQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<MyAccountQuery>
       environment={defaultEnvironment}

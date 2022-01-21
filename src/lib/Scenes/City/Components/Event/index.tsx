@@ -24,8 +24,7 @@ interface State {
   isFollowedSaving: boolean
 }
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const track: Track<Props, {}> = _track
+const track: Track<Props, unknown> = _track
 
 @track()
 export class Event extends React.Component<Props, State> {

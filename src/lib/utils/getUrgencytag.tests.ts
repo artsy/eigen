@@ -1,4 +1,3 @@
-/* eslint-disable promise/always-return */
 import { getUrgencyTag } from "./getUrgencyTag"
 
 describe(getUrgencyTag, () => {

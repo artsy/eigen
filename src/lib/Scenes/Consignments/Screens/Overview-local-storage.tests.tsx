@@ -17,13 +17,11 @@ beforeEach(() => {
 const key = "ConsignmentsStoredState"
 
 it("restores when no props are provided", () => {
-  // tslint:disable-next-line
   new Overview({ setup: null, params: {} })
   expect(AsyncStorage.getItem).toBeCalledWith(key, expect.anything())
 })
 
 it("does not restore setup props are provided", () => {
-  // tslint:disable-next-line
   new Overview({ setup: {}, params: {} })
   expect(AsyncStorage.getItem).not.toBeCalled()
 })

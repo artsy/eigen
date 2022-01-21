@@ -3,7 +3,7 @@ import { captureMessage } from "@sentry/react-native"
 import { Sale_me } from "__generated__/Sale_me.graphql"
 import { Sale_sale } from "__generated__/Sale_sale.graphql"
 import { SaleAboveTheFoldQuery } from "__generated__/SaleAboveTheFoldQuery.graphql"
-import { SaleBelowTheFoldQuery } from "__generated__/SaleBelowTheFoldQuery.graphql"
+import { SaleBelowTheFoldQuery , SaleBelowTheFoldQueryResponse } from "__generated__/SaleBelowTheFoldQuery.graphql"
 import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { LoadFailureView } from "lib/Components/LoadFailureView"
@@ -25,7 +25,6 @@ import { useTracking } from "react-tracking"
 import useInterval from "react-use/lib/useInterval"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { SaleBelowTheFoldQueryResponse } from "../../../__generated__/SaleBelowTheFoldQuery.graphql"
 import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
 import { RegisterToBidButtonContainer } from "./Components/RegisterToBidButton"
 import { SaleActiveBidsContainer } from "./Components/SaleActiveBids"
@@ -271,7 +270,7 @@ export const tracks = {
   },
 }
 
-export const SalePlaceholder: React.FC<{}> = () => (
+export const SalePlaceholder: React.FC = () => (
   <ProvidePlaceholderContext>
     <PlaceholderBox height={COVER_IMAGE_HEIGHT} width="100%" />
     <Flex px={2}>

@@ -152,7 +152,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
   )
 }
 
-// tslint:disable-next-line:interface-over-type-literal
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type SubmitArtworkOverviewNavigationStack = {
   SubmitArtworkScreen: undefined
   ArtworkSubmittedScreen: undefined

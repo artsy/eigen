@@ -7,7 +7,7 @@ import React from "react"
 import { Alert, ScrollView } from "react-native"
 import { Tab } from "../Favorites/Favorites"
 
-export const MyProfileSettings: React.FC<{}> = () => {
+export const MyProfileSettings: React.FC = () => {
   const showOrderHistory = useFeatureFlag("AREnableOrderHistoryOption")
   const showSavedAddresses = useFeatureFlag("AREnableSavedAddresses")
 
@@ -17,7 +17,7 @@ export const MyProfileSettings: React.FC<{}> = () => {
   return (
     <ScrollView>
       <Sans size="8" mx="2" mt="6">
-        {"Settings"}
+        Settings
       </Sans>
       <Spacer mt={3} mb={2} />
       <SectionHeading title="FAVORITES" />

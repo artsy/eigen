@@ -24,8 +24,7 @@ import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { ScreenDimensionsWithSafeAreas, useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box, Flex, Separator, Spacer, useSpace } from "palette"
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { ActivityIndicator, FlatList, View } from "react-native"
-import { RefreshControl } from "react-native"
+import { ActivityIndicator, FlatList, View , RefreshControl } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { TrackingProp } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
@@ -579,7 +578,7 @@ const AboveTheFoldPlaceholder: React.FC<{ artworkID?: string }> = ({ artworkID }
   )
 }
 
-const BelowTheFoldPlaceholder: React.FC<{}> = ({}) => {
+const BelowTheFoldPlaceholder: React.FC = () => {
   return (
     <ProvidePlaceholderContext>
       <Separator />

@@ -10,7 +10,7 @@ import { Button, Sans, Text } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import relay from "react-relay"
+import * as relay from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
 import { BidInfoRow } from "../Components/BidInfoRow"

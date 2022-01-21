@@ -59,7 +59,6 @@ function createGlobalStore() {
   return store
 }
 
-// tslint:disable-next-line:variable-name
 export const __globalStoreTestUtils__ = __TEST__
   ? {
       // this can be used to mock the initial state before mounting a test renderer
@@ -100,7 +99,7 @@ export const GlobalStore = {
   },
 }
 
-export const GlobalStoreProvider: React.FC<{}> = ({ children }) => {
+export const GlobalStoreProvider: React.FC = ({ children }) => {
   return <StoreProvider store={globalStoreInstance()}>{children}</StoreProvider>
 }
 
@@ -139,6 +138,7 @@ export function useDevToggle(key: DevToggleName) {
  * if used in a react component. Use `useFeatureFlag` instead.
  * It is safe to use in contexts that don't require reactivity.
  */
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export function unsafe_getFeatureFlag(key: FeatureName): boolean {
   const state = globalStoreInstance().getState() ?? null
   if (state) {
@@ -150,6 +150,7 @@ export function unsafe_getFeatureFlag(key: FeatureName): boolean {
   return features[key].readyForRelease
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export function unsafe_getDevToggle(key: DevToggleName) {
   const state = globalStoreInstance().getState() ?? null
   if (state) {
@@ -161,6 +162,7 @@ export function unsafe_getDevToggle(key: DevToggleName) {
   return false
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export function unsafe_getUserAccessToken() {
   const state = globalStoreInstance().getState() ?? null
   if (state) {
@@ -196,6 +198,7 @@ export function getCurrentEmissionState() {
  * Use `useSelectedTab` in react components, and use this in rare cases where you need to know the current tab outside of
  * react components.
  */
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export function unsafe__getSelectedTab(): BottomTabType {
   if (Platform.OS === "ios") {
     return globalStoreInstance().getState().bottomTabs.sessionState.selectedTab
@@ -218,6 +221,7 @@ export function useIsStaging() {
  * if used during a react component's render. Use `useEnvironment` instead.
  * This is safe to use in contexts that don't require reactivity, e.g. onPress handlers.
  */
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export function unsafe__getEnvironment() {
   const {
     environment: { env, strings },

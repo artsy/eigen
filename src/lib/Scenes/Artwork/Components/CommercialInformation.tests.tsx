@@ -14,7 +14,7 @@ import { CommercialButtons } from "./CommercialButtons/CommercialButtons"
 import { CommercialEditionSetInformation } from "./CommercialEditionSetInformation"
 import { CommercialInformationTimerWrapper, SaleAvailability } from "./CommercialInformation"
 
-const Wrapper: React.FC<{}> = ({ children }) => {
+const Wrapper: React.FC = ({ children }) => {
   return (
     <GlobalStoreProvider>
       <Theme>

@@ -36,9 +36,8 @@ export const retrieveLocalImages = async (
   key: string,
   currentTime: number = Date.now()
 ): Promise<LocalImage[] | null> => {
-  return new Promise(async (resolve) => {
-    const imagesJSON = await AsyncStorage.getItem(key)
-
+  const imagesJSON = await AsyncStorage.getItem(key)
+  return new Promise((resolve) => {
     if (!imagesJSON) {
       resolve(null)
       return

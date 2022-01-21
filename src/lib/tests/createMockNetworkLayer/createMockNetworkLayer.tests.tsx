@@ -12,7 +12,7 @@ describe("createMockNetworkLayer", () => {
     const store = new Store(source)
     const environment = new Environment({ network, store })
 
-    return fetchQuery<{ variables: {}; response: any }>(
+    return fetchQuery<{ variables: Record<string, unknown>; response: any }>(
       environment,
       query ||
         graphql`

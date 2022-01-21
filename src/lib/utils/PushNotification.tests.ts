@@ -175,7 +175,7 @@ describe("Push Notification Tests", () => {
         alert: {},
         id: "22",
         sound: "default",
-        // tslint:disable-next-line:no-empty
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         finish: () => {},
       }
 

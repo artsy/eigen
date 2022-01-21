@@ -36,8 +36,7 @@ import { RefetchWhenApiKeyExpiredContainer } from "./RefetchWhenApiKeyExpired"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 import { SearchContext, useSearchProviderValues } from "./SearchContext"
 import { SearchResults } from "./SearchResults"
-import { AlgoliaIndexKey } from "./types"
-import { AlgoliaSearchResult, PillType } from "./types"
+import { AlgoliaIndexKey , AlgoliaSearchResult, PillType } from "./types"
 
 interface TappedSearchResultData {
   query: string
@@ -287,7 +286,7 @@ export const SearchScreenQuery = graphql`
   }
 `
 
-export const SearchQueryRenderer: React.FC<{}> = ({}) => {
+export const SearchQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<SearchQuery>
       environment={defaultEnvironment}

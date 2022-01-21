@@ -32,7 +32,7 @@ type GenericArtworkType = GenericGrid_artworks extends ReadonlyArray<infer Gener
 
 export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork, State> {
   static defaultProps = {
-    sectionDirection: "column" as "column",
+    sectionDirection: "column" as const,
     sectionMargin: 20,
     itemMargin: 20,
   }

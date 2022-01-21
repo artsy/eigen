@@ -14,7 +14,6 @@ import {
   TopProps,
 } from "styled-system"
 
-// tslint:disable-next-line:no-empty-interface
 export interface IconProps extends SvgProps, SpaceProps, PositionProps, TopProps, RightProps, LeftProps {
   fill?: Color
 }

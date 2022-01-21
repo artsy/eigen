@@ -36,7 +36,7 @@ const MyAccountEditName: React.FC<{ me: MyAccountEditName_me; relay: RelayProp }
   )
 }
 
-const MyAccountEditNamePlaceholder: React.FC<{}> = ({}) => {
+const MyAccountEditNamePlaceholder: React.FC = () => {
   return (
     <MyAccountFieldEditScreenPlaceholder title="Full Name">
       <PlaceholderBox height={40} />
@@ -52,7 +52,7 @@ const MyAccountEditNameContainer = createFragmentContainer(MyAccountEditName, {
   `,
 })
 
-export const MyAccountEditNameQueryRenderer: React.FC<{}> = () => {
+export const MyAccountEditNameQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<MyAccountEditNameQuery>
       environment={defaultEnvironment}

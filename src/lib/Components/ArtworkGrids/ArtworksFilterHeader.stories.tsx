@@ -18,7 +18,7 @@ storiesOf("ArtworkFilterHeader", module)
     const selectedFiltersCount = useSelectedFiltersCount()
     return (
       <Flex mt={100}>
-        {/* tslint:disable-next-line:no-empty */}
+        {/* eslint-disable-next-line @typescript-eslint/no-empty-function */}
         <ArtworksFilterHeader selectedFiltersCount={selectedFiltersCount} onFilterPress={() => {}} />
       </Flex>
     )

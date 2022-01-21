@@ -27,7 +27,6 @@ describe("callbacks", () => {
 
     const submissionRequestValidationCheck = jest.fn()
     const _confirm = new Confirmation({ ...emptyProps, submissionRequestValidationCheck })
-    // tslint:disable-next-line:no-unused-expression
     _confirm
 
     jest.runOnlyPendingTimers()

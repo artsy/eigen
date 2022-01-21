@@ -20,7 +20,7 @@ export function explicitlyClearedFields(
 
   const diffPayload: { [k: string]: any } = {}
   for (const key in cleanPreviousPayload) {
-    if (!cleanPayload.hasOwnProperty(key)) {
+    if (!Object.prototype.hasOwnProperty.call(cleanPayload, key)) {
       diffPayload[key] = null
     }
   }

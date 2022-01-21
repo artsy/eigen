@@ -8,7 +8,7 @@ import "react-native"
 
 import { Button } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
-import relay from "react-relay"
+import * as relay from "react-relay"
 import { FakeNavigator } from "./Helpers/FakeNavigator"
 import { SelectMaxBid } from "./Screens/SelectMaxBid"
 

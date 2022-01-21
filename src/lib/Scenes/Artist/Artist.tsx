@@ -224,7 +224,7 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
  * unlikely to tap into them quick enough to see the loading state
  * @param param0
  */
-const LoadingPage: React.FC<{}> = ({}) => {
+const LoadingPage: React.FC = () => {
   return (
     <View style={{ alignItems: "center", justifyContent: "center", flex: 1 }}>
       <ActivityIndicator />

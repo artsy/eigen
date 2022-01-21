@@ -9,8 +9,7 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Button, Flex } from "palette"
 import React from "react"
-import { QueryRenderer } from "react-relay"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { QueryRenderer , createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 
 export interface ArtworkAutosuggestResultsProps {
   viewer: ArtworkAutosuggestResults_viewer

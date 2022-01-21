@@ -8,12 +8,6 @@ export interface S3UploadResponse {
   key: string
 }
 
-// These are in RN, but not declared in the RN types:
-// https://github.com/facebook/react-native/blob/master/Libraries/Network/FormData.js
-// https://github.com/facebook/react-native/blob/master/Libraries/Network/XMLHttpRequest.js
-declare var FormData: any
-declare var XMLHttpRequest: any
-
 export const uploadFileToS3 = (file: string, acl: string, asset: AssetCredentials, filename?: string) =>
   new Promise<S3UploadResponse>((resolve, reject) => {
     const formData = new FormData()
@@ -32,7 +26,7 @@ export const uploadFileToS3 = (file: string, acl: string, asset: AssetCredential
     }
 
     for (const key in data) {
-      if (data.hasOwnProperty(key)) {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         formData.append(key, data[key])
       }
@@ -49,10 +43,11 @@ export const uploadFileToS3 = (file: string, acl: string, asset: AssetCredential
     //
     // Kinda sucks, but https://github.com/jhen0409/react-native-debugger/issues/38
     const request = new XMLHttpRequest()
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     request.onload = (e) => {
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       if (e.target.status.toString() === asset.policyDocument.conditions.successActionStatus) {
         // e.g. https://artsy-media-uploads.s3.amazonaws.com/A3tfuXp0t5OuUKv07XaBOw%2F%24%7Bfilename%7D
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         const url = e.target.responseHeaders.Location
         resolve({
           key: url.split("/").pop().replace("%2F", "/"),

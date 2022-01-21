@@ -68,12 +68,12 @@ export interface EnvironmentModel {
   setEnv: Action<this, this["env"]>
 
   adminOverrides: { [k in EnvironmentKey]?: string }
-  setAdminOverride: Action<EnvironmentModel, { key: EnvironmentKey; value: string | null }>
-  clearAdminOverrides: Action<EnvironmentModel>
+  setAdminOverride: Action<this, { key: EnvironmentKey; value: string | null }>
+  clearAdminOverrides: Action<this>
 
   strings: Computed<EnvironmentModel, { [k in EnvironmentKey]: string }>
 
-  updateNativeState: ThunkOn<EnvironmentModel, {}, GlobalStoreModel>
+  updateNativeState: ThunkOn<this, unknown, GlobalStoreModel>
 }
 
 export const getEnvironmentModel = (): EnvironmentModel => ({

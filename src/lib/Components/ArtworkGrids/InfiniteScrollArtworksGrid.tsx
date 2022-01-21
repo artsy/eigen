@@ -196,12 +196,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
     })
   }
 
-  // tslint:disable-next-line:member-ordering
   handleFetchNextPageOnScroll = isCloseToBottom(this.fetchNextPage)
 
   /** A simplified version of the Relay debugging logs for infinite scrolls */
   debugLog(query: string, response?: any, error?: any) {
-    // tslint:disable:no-console
+    // eslint-disable no-console
     if (__DEV__ && originalXMLHttpRequest !== undefined) {
       const groupName = "Infinite scroll request"
       const c: any = console
@@ -215,7 +214,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
         console.error("Error:\n", error)
       }
     }
-    // tslint:enable:no-console
+    // eslint-enable no-console
   }
 
   getSectionDimension(width: number | null | undefined) {

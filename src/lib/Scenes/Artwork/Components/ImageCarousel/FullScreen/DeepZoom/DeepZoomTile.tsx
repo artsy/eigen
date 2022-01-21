@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react"
-import React from "react"
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import { Animated, Image, View } from "react-native"
 import { useSpringValue } from "../../useSpringValue"
 import { VISUAL_DEBUG_MODE } from "./__deepZoomDebug"

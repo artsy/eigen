@@ -11,7 +11,7 @@ jest.unmock("react-relay")
 
 describe("PaymentSection", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const TestRenderer = ({}) => (
+  const TestRenderer = () => (
     <QueryRenderer<OrderDetailsPaymentTestsQuery>
       environment={mockEnvironment}
       query={graphql`

@@ -1,6 +1,5 @@
 import React from "react"
-import { View } from "react-native"
-import { StyleProp, ViewStyle } from "react-native"
+import { View , StyleProp, ViewStyle } from "react-native"
 import { PositionProps } from "styled-system"
 import { useColor } from "../../hooks"
 import { Color } from "../../Theme"

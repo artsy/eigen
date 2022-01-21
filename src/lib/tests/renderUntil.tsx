@@ -3,10 +3,11 @@ import { mount, ReactWrapper, RenderUntilPredicate } from "enzyme"
 import * as React from "react"
 import { waitUntil } from "./waitUntil"
 
-function renderUntil<P = {}, S = {}, C extends React.Component = React.Component>(
-  this: ReactWrapper,
-  predicate: RenderUntilPredicate<P, S, C>
-) {
+function renderUntil<
+  P = Record<string, unknown>,
+  S = Record<string, unknown>,
+  C extends React.Component = React.Component
+>(this: ReactWrapper, predicate: RenderUntilPredicate<P, S, C>) {
   return waitUntil(() => {
     if (!predicate(this)) {
       this.update()
@@ -23,10 +24,12 @@ ReactWrapper.prototype.renderUntil = renderUntil
 /**
  * @deprecated Use {@link ReactWrapper.prototype.renderUntil} instead.
  */
-function deprecated_renderUntil<P = {}, S = {}, C extends React.Component = React.Component>(
-  until: RenderUntilPredicate<P, S, C>,
-  element: React.ReactElement<P>
-) {
+// eslint-disable-next-line @typescript-eslint/naming-convention
+function deprecated_renderUntil<
+  P = Record<string, unknown>,
+  S = Record<string, unknown>,
+  C extends React.Component = React.Component
+>(until: RenderUntilPredicate<P, S, C>, element: React.ReactElement<P>) {
   /**
    * In case of an uncaught error, be sure to reject the promise ASAP and
    * with a helpful error.

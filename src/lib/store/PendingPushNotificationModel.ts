@@ -3,7 +3,7 @@ import { ReceivedNotification } from "react-native-push-notification"
 
 export interface PendingPushNotification extends Omit<ReceivedNotification, "userInfo" | "finish"> {
   tappedAt: number
-  finish?: () => {}
+  finish?: () => void
 }
 
 export interface PendingPushNotificationModel {

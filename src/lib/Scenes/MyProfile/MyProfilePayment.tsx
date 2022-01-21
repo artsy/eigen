@@ -21,7 +21,6 @@ const NUM_CARDS_TO_FETCH = 100 // stupidly high because most people will have 1 
 // When creating a new card we need to wait for a refresh of this screen before navigating back.
 // At the moment the only way for these screens to communicate is via global state, since we can't
 // transmit react contexts accross screens.
-// tslint:disable-next-line:variable-name
 export let __triggerRefresh: null | (() => Promise<void>) = null
 
 const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginationProp }> = ({ relay, me }) => {
@@ -149,7 +148,7 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
   )
 }
 
-export const MyProfilePaymentPlaceholder: React.FC<{}> = () => (
+export const MyProfilePaymentPlaceholder: React.FC = () => (
   <PageWithSimpleHeader title="Payment">
     <Flex px={2} py={15}>
       {times(2).map((index: number) => (
@@ -202,7 +201,7 @@ const MyProfilePaymentContainer = createPaginationContainer(
   }
 )
 
-export const MyProfilePaymentQueryRenderer: React.FC<{}> = ({}) => {
+export const MyProfilePaymentQueryRenderer: React.FC = () => {
   return (
     <QueryRenderer<MyProfilePaymentQuery>
       environment={defaultEnvironment}

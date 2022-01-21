@@ -12,8 +12,9 @@ import { Versions } from "lib/store/migration"
 import { capitalize, compact, sortBy } from "lodash"
 import { ChevronIcon, CloseIcon, Flex, ReloadIcon, Sans, Separator, Spacer, Text, Touchable, useColor } from "palette"
 import React, { useEffect, useState } from "react"
-import { Button as RNButton, NativeModules } from "react-native"
 import {
+  Button as RNButton,
+  NativeModules,
   Alert,
   AlertButton,
   BackHandler,
@@ -23,7 +24,7 @@ import {
   TouchableHighlight,
   TouchableOpacity,
 } from "react-native"
-import Config from "react-native-config"
+import { Config } from "react-native-config"
 import { getBuildNumber, getUniqueId, getVersion } from "react-native-device-info"
 import Keychain from "react-native-keychain"
 import { useScreenDimensions } from "./useScreenDimensions"

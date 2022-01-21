@@ -2,11 +2,10 @@ import { NavigationContainer } from "@react-navigation/native"
 import { CardStyleInterpolators, createStackNavigator, TransitionPresets } from "@react-navigation/stack"
 import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { ArtsyWebViewPrivacy, ArtsyWebViewTerms } from "lib/Components/ArtsyReactWebViewPolicy"
-import { GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore , useFeatureFlag } from "lib/store/GlobalStore"
 import { NetworkAwareProvider } from "lib/utils/NetworkAwareProvider"
 import React from "react"
 import { View } from "react-native"
-import { useFeatureFlag } from "../../store/GlobalStore"
 import { ForgotPassword } from "./ForgotPassword"
 import {
   OnboardingCreateAccount,
@@ -16,7 +15,7 @@ import { OnboardingLogin, OnboardingLoginWithEmail } from "./OnboardingLogin"
 import { OnboardingPersonalization } from "./OnboardingPersonalization/OnboardingPersonalization"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
-// tslint:disable-next-line:interface-over-type-literal
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type OnboardingNavigationStack = {
   OnboardingWelcome: undefined
   OnboardingLogin: { withFadeAnimation: boolean } | undefined

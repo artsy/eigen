@@ -4,7 +4,7 @@ import { Button, Flex, Spacer, Text } from "palette"
 import React, { useEffect, useState } from "react"
 import { Modal } from "react-native"
 
-export const NetworkAwareProvider: React.FC<{}> = () => {
+export const NetworkAwareProvider: React.FC = () => {
   const [isDismissed, setIsDismissed] = useState(false)
   const [isConnected, setIsConnected] = useState<boolean | null>(null)
   const { safeAreaInsets } = useScreenDimensions()

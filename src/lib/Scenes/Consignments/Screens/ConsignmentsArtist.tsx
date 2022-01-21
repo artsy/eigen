@@ -46,7 +46,6 @@ export default class Artist extends React.Component<Props, State> {
     this.searchForQuery(text)
   }
 
-  // tslint:disable:member-ordering
   searchForQuery = throttle(async (query: string) => {
     const data = await fetchQuery<ConsignmentsArtistQuery>(
       environment,

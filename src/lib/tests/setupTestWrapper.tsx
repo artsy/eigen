@@ -26,7 +26,6 @@ export const setupTestWrapperTL = <T extends OperationType>({
       <QueryRenderer<T>
         environment={env}
         variables={variables}
-        // tslint:disable-next-line: relay-operation-generics
         query={query}
         render={({ props, error }) => {
           if (props) {

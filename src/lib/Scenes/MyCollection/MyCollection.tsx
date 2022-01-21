@@ -48,6 +48,7 @@ export const useEnableMyCollection = () => {
   return useFeatureFlag(featureFlagKey)
 }
 
+// eslint-disable-next-line @typescript-eslint/naming-convention
 export function unsafe_getEnableMyCollection() {
   return unsafe_getFeatureFlag(featureFlagKey)
 }
@@ -85,7 +86,6 @@ const MyCollection: React.FC<{
         paramName: FilterParamName.sort,
         displayText: "Price Paid (High to Low)",
         paramValue: "local-price-paid-high-low",
-        // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks) =>
           orderBy(
             artworks,
@@ -99,7 +99,6 @@ const MyCollection: React.FC<{
         paramName: FilterParamName.sort,
         displayText: "Price Paid (Low to High)",
         paramValue: "local-price-paid-low-high",
-        // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks) =>
           orderBy(
             artworks,
@@ -113,7 +112,6 @@ const MyCollection: React.FC<{
         paramName: FilterParamName.sort,
         displayText: "Artwork Year (Ascending)",
         paramValue: "local-year-old-new",
-        // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks) =>
           orderBy(
             artworks,
@@ -128,7 +126,6 @@ const MyCollection: React.FC<{
         paramName: FilterParamName.sort,
         displayText: "Artwork Year (Descending)",
         paramValue: "local-year-new-old",
-        // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks) =>
           orderBy(
             artworks,
@@ -143,14 +140,12 @@ const MyCollection: React.FC<{
         paramName: FilterParamName.sort,
         displayText: "Alphabetical by Artist (A to Z)",
         paramValue: "local-alpha-a-z",
-        // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks) => orderBy(artworks, (a) => a.artistNames, "asc"),
       },
       {
         paramName: FilterParamName.sort,
         displayText: "Alphabetical by Artist (Z to A)",
         paramValue: "local-alpha-z-a",
-        // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks) => orderBy(artworks, (a) => a.artistNames, "desc"),
       },
     ])
@@ -174,7 +169,6 @@ const MyCollection: React.FC<{
           ),
           (m) => m.paramValue
         ),
-        // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks, artistIDs: string[]) =>
           filter(artworks, (a) => artistIDs.includes(a.artist.internalID)),
       },
@@ -182,7 +176,6 @@ const MyCollection: React.FC<{
         displayText: FilterDisplayName.attributionClass,
         filterType: "attributionClass",
         ScreenComponent: "AttributionClassOptionsScreen",
-        // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks, attributionClasses: string[]) => {
           return filter(artworks, (a) => {
             if (a.attributionClass && a.attributionClass.name) {
@@ -206,14 +199,12 @@ const MyCollection: React.FC<{
           ),
           (m) => m.paramValue
         ),
-        // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks, mediums: string[]) => filter(artworks, (a) => mediums.includes(a.medium)),
       },
       {
         displayText: FilterDisplayName.priceRange,
         filterType: "priceRange",
         ScreenComponent: "PriceRangeOptionsScreen",
-        // tslint:disable-next-line: no-shadowed-variable
         localSortAndFilter: (artworks, priceRange: string) => {
           const splitRange = priceRange.split("-")
           const lowerBoundStr = splitRange[0]
@@ -248,7 +239,6 @@ const MyCollection: React.FC<{
         ScreenComponent: "SizesOptionsScreen",
 
         localSortAndFilter: (
-          // tslint:disable-next-line: no-shadowed-variable
           artworks,
           sizeParams: {
             paramName: FilterParamName.width | FilterParamName.height | FilterParamName.sizes
@@ -432,7 +422,6 @@ const MyCollection: React.FC<{
               myCollectionConnection={me.myCollectionConnection!}
               hasMore={relay.hasMore}
               loadMore={relay.loadMore}
-              // tslint:disable-next-line: no-shadowed-variable
               localSortAndFilterArtworks={(artworks: MyCollectionArtworkListItem_artwork[]) => {
                 let processedArtworks = artworks
 
@@ -444,7 +433,6 @@ const MyCollection: React.FC<{
                 // custom size filters come back with a different type, consolidate to one
                 const sizeFilterTypes = [FilterParamName.width, FilterParamName.height, FilterParamName.sizes]
 
-                // tslint:disable-next-line: no-shadowed-variable
                 filtering.forEach((filter) => {
                   if (sizeFilterTypes.includes(filter.paramName)) {
                     /*
@@ -585,7 +573,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
   )
 }
 
-export const LoadingSkeleton: React.FC<{}> = () => {
+export const LoadingSkeleton: React.FC = () => {
   return (
     <Flex>
       <Flex flexDirection="row" justifyContent="space-between">

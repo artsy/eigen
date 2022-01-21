@@ -1,6 +1,5 @@
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { ArtworkFiltersState } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkFiltersStoreProvider , ArtworkFiltersState } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "lib/Components/ArtworkFilter/FilterTestHelper"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"

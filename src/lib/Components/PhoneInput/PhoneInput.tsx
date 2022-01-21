@@ -2,8 +2,7 @@ import * as glibphone from "google-libphonenumber"
 import { TriangleDown } from "lib/Icons/TriangleDown"
 import replace from "lodash/replace"
 import { Flex, Input, InputProps, Sans, Spacer, Text, Touchable, useColor } from "palette"
-import { useEffect, useRef, useState } from "react"
-import React from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Platform } from "react-native"
 import { Select, SelectOption } from "../../../palette/elements/Select"
 import { cleanUserPhoneNumber } from "./cleanUserPhoneNumber"
@@ -143,7 +142,6 @@ export const PhoneInput = React.forwardRef<
                 </Touchable>
               )
             }}
-            // tslint:disable-next-line:no-shadowed-variable
             renderItemLabel={({ label, value }) => {
               return (
                 <Flex flexDirection="row" alignItems="center" flexShrink={1}>

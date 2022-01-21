@@ -1,8 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
-import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/GlobalStore"
-import { GlobalStore, unsafe_getUserAccessToken } from "lib/store/GlobalStore"
+import { getCurrentEmissionState, unsafe__getEnvironment , GlobalStore, unsafe_getUserAccessToken } from "lib/store/GlobalStore"
 import { PendingPushNotification } from "lib/store/PendingPushNotificationModel"
 import { Platform } from "react-native"
 import { getDeviceId } from "react-native-device-info"
@@ -41,6 +40,7 @@ export const savePendingToken = async () => {
 }
 
 export const saveToken = (token: string, ignoreSameTokenCheck: boolean = false) => {
+  // eslint-disable-next-line no-async-promise-executor
   return new Promise<boolean>(async (resolve, reject) => {
     const previousToken = await AsyncStorage.getItem(PUSH_NOTIFICATION_TOKEN)
     if (token !== previousToken || ignoreSameTokenCheck) {

@@ -1,6 +1,5 @@
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { ArtworkFiltersState } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkFiltersStoreProvider , ArtworkFiltersState } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { RadioDot } from "palette"

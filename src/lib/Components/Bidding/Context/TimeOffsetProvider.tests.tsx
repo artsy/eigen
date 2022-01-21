@@ -6,7 +6,6 @@ import { View } from "react-native"
 
 import { TimeOffsetProvider } from "./TimeOffsetProvider"
 
-// tslint:disable-next-line:no-var-requires
 const RelayRuntime = require("relay-runtime")
 RelayRuntime.fetchQuery = jest.fn()
 
