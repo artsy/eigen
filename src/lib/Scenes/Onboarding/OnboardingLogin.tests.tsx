@@ -1,4 +1,3 @@
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Input, Touchable } from "palette"
 import React from "react"
@@ -49,14 +48,6 @@ describe("OnboardingLogin", () => {
       const forgotPasswordButton = tree.root.findAllByType(Touchable)[0]
       forgotPasswordButton.props.onPress()
       expect(navigateMock).toHaveBeenCalledWith("ForgotPassword")
-    })
-  })
-
-  describe("2FA enforcement", () => {
-    it("navigates to otp screen when otpMode is set", async () => {
-      renderWithWrappers(<TestProvider />)
-      await flushPromiseQueue()
-      expect(navigateMock).toHaveBeenCalledWith("OnboardingLoginWithOTP", expect.anything())
     })
   })
 
