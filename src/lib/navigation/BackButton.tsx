@@ -36,7 +36,7 @@ export const BackButton: React.FC<{
       }}
     >
       <TouchableOpacity
-        onPress={onPress}
+        onPress={() => onPress()}
         style={{ width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}
       >
         {showCloseIcon ? (
