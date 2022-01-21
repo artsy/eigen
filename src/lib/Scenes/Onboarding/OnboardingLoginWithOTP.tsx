@@ -16,6 +16,11 @@ export interface OnboardingLoginWithOTPProps
   otpMode: OTPMode
 }
 
+export interface OnboardingLoginWithOTPFormProps
+  extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWithOTP"> {
+  otpMode: OTPMode
+}
+
 export interface OnboardingLoginWithOTPValuesSchema {
   otp: string
 }
@@ -28,7 +33,7 @@ export const otpSchema = Yup.object().shape({
   otp: Yup.string().test("otp", "This field is required", (value) => value !== ""),
 })
 
-export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPProps> = ({ navigation, otpMode }) => {
+export const OnboardingLoginWithOTPForm: React.FC<OnboardingLoginWithOTPFormProps> = ({ navigation, otpMode }) => {
   const color = useColor()
 
   const { values, handleChange, handleSubmit, errors, setErrors, isValid, dirty, isSubmitting, validateForm } =
@@ -130,13 +135,7 @@ export const OnboardingLoginWithOTP: React.FC<OnboardingLoginWithOTPProps> = ({ 
 
   return (
     <FormikProvider value={formik}>
-      <OnboardingLoginWithOTPForm
-        navigation={navigation}
-        route={route}
-        email={email}
-        password={password}
-        otpMode={otpMode}
-      />
+      <OnboardingLoginWithOTPForm navigation={navigation} route={route} otpMode={otpMode} />
     </FormikProvider>
   )
 }
