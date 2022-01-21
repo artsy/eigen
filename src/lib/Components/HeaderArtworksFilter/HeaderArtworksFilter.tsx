@@ -76,9 +76,11 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
       return
     }
     // @ts-ignore
-    event.target.measure((x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
-      setPageY(pageY)
-    })
+    event.target.measure(
+      (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
+        setPageY(pageY)
+      }
+    )
     setOnLayoutCalled(true)
   }
 
@@ -108,7 +110,8 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
               {
                 translateY:
                   animationValue?.interpolate({
-                    inputRange: filterPageY > 0 ? [0, filterPageY - ANIM_START, filterPageY] : [0, 0, 0],
+                    inputRange:
+                      filterPageY > 0 ? [0, filterPageY - ANIM_START, filterPageY] : [0, 0, 0],
                     outputRange: filterPageY > 0 ? [0, 0, TRANSLATE_Y_VALUE] : [0, 0, 0],
                     extrapolate: "clamp",
                   }) ?? 0,
@@ -124,7 +127,10 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
                     {
                       translateX:
                         animationValue?.interpolate({
-                          inputRange: filterPageY > 0 ? [0, filterPageY - ANIM_START, filterPageY] : [0, 0, 0],
+                          inputRange:
+                            filterPageY > 0
+                              ? [0, filterPageY - ANIM_START, filterPageY]
+                              : [0, 0, 0],
                           outputRange: filterPageY > 0 ? [0, 0, TRANSLATE_X_VALUE] : [0, 0, 0],
                           extrapolate: "clamp",
                         }) ?? 0,

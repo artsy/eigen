@@ -1,4 +1,10 @@
-import { EntityType, navigate, navigateToEntity, navigateToPartner, SlugType } from "lib/navigation/navigate"
+import {
+  EntityType,
+  navigate,
+  navigateToEntity,
+  navigateToPartner,
+  SlugType,
+} from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { ArtworkIcon, AuctionIcon, CloseIcon, Flex, Pill, Spacer, Text, Touchable } from "palette"
@@ -64,7 +70,10 @@ export const AutosuggestSearchResult: React.FC<{
       setTimeout(() => {
         navigateToResult(result, passProps?.artistTab)
         if (updateRecentSearchesOnTap) {
-          GlobalStore.actions.search.addRecentSearch({ type: "AUTOSUGGEST_RESULT_TAPPED", props: result })
+          GlobalStore.actions.search.addRecentSearch({
+            type: "AUTOSUGGEST_RESULT_TAPPED",
+            props: result,
+          })
         }
       }, 20)
 
@@ -89,7 +98,10 @@ export const AutosuggestSearchResult: React.FC<{
 
   return (
     <>
-      <Touchable onPress={() => onPress()} testID={`autosuggest-search-result-${result.displayLabel}`}>
+      <Touchable
+        onPress={() => onPress()}
+        testID={`autosuggest-search-result-${result.displayLabel}`}
+      >
         <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
           <SearchResultImage imageURL={result.imageUrl} resultType={resultType} />
 
@@ -131,11 +143,21 @@ export const AutosuggestSearchResult: React.FC<{
             <Spacer ml={4} />
 
             <Spacer ml={1} />
-            <Pill highlightEnabled Icon={ArtworkIcon} rounded onPress={() => onPress({ artistTab: "Artworks" })}>
+            <Pill
+              highlightEnabled
+              Icon={ArtworkIcon}
+              rounded
+              onPress={() => onPress({ artistTab: "Artworks" })}
+            >
               Artworks
             </Pill>
             <Spacer ml={1} />
-            <Pill highlightEnabled Icon={AuctionIcon} rounded onPress={() => onPress({ artistTab: "Insights" })}>
+            <Pill
+              highlightEnabled
+              Icon={AuctionIcon}
+              rounded
+              onPress={() => onPress({ artistTab: "Insights" })}
+            >
               Auction Results
             </Pill>
           </Flex>

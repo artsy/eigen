@@ -103,7 +103,9 @@ describe("CreateSavedSearchAlert", () => {
   })
 
   it("the push notification toggle is disabled by default when push permissions are not determined", async () => {
-    notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.NotDetermined))
+    notificationPermissions.mockImplementation((cb) =>
+      cb(null, PushAuthorizationStatus.NotDetermined)
+    )
 
     const { findAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
     const toggles = await findAllByA11yState({ selected: false })

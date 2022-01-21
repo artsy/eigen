@@ -11,7 +11,11 @@ import React, { Suspense } from "react"
 import { FlatList } from "react-native"
 import { graphql, useFragment, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
-import { featuredFragment, FeaturedRail, tracks as featuredTracks } from "./ViewingRoomsListFeatured"
+import {
+  featuredFragment,
+  FeaturedRail,
+  tracks as featuredTracks,
+} from "./ViewingRoomsListFeatured"
 import { tagForStatus } from "./ViewingRoomsListItem"
 
 interface ViewingRoomsHomeMainRailProps {
@@ -20,7 +24,11 @@ interface ViewingRoomsHomeMainRailProps {
   mb?: number
 }
 
-export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> = ({ featured, title, mb }) => {
+export const ViewingRoomsHomeMainRail: React.FC<ViewingRoomsHomeMainRailProps> = ({
+  featured,
+  title,
+  mb,
+}) => {
   const { trackEvent } = useTracking()
 
   const featuredData = useFragment(featuredFragment, featured)

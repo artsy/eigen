@@ -8,7 +8,9 @@ export interface VisualClueDescriptor {
 }
 
 // Helper function to get good typings and intellisense
-function defineVisualClues<T extends string>(visualClueMap: { readonly [visualClueName in T]: VisualClueDescriptor }) {
+function defineVisualClues<T extends string>(visualClueMap: {
+  readonly [visualClueName in T]: VisualClueDescriptor
+}) {
   return visualClueMap
 }
 

@@ -62,7 +62,10 @@ describe("PartnerCard", () => {
     const component = mount(
       <GlobalStoreProvider>
         <Theme>
-          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkInstitutionalSeller} />
+          <PartnerCard
+            relay={{ environment: {} } as RelayProp}
+            artwork={PartnerCardArtworkInstitutionalSeller}
+          />
         </Theme>
       </GlobalStoreProvider>
     )
@@ -81,7 +84,10 @@ describe("PartnerCard", () => {
     const component = mount(
       <GlobalStoreProvider>
         <Theme>
-          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkOtherType} />
+          <PartnerCard
+            relay={{ environment: {} } as RelayProp}
+            artwork={PartnerCardArtworkOtherType}
+          />
         </Theme>
       </GlobalStoreProvider>
     )
@@ -101,7 +107,10 @@ describe("PartnerCard", () => {
     const component = mount(
       <GlobalStoreProvider>
         <Theme>
-          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkWithoutImage} />
+          <PartnerCard
+            relay={{ environment: {} } as RelayProp}
+            artwork={PartnerCardArtworkWithoutImage}
+          />
         </Theme>
       </GlobalStoreProvider>
     )
@@ -146,7 +155,10 @@ describe("PartnerCard", () => {
     const component = mount(
       <GlobalStoreProvider>
         <Theme>
-          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkAuctionHouse} />
+          <PartnerCard
+            relay={{ environment: {} } as RelayProp}
+            artwork={PartnerCardArtworkAuctionHouse}
+          />
         </Theme>
       </GlobalStoreProvider>
     )
@@ -164,7 +176,10 @@ describe("PartnerCard", () => {
     const component = mount(
       <GlobalStoreProvider>
         <Theme>
-          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkAuction} />
+          <PartnerCard
+            relay={{ environment: {} } as RelayProp}
+            artwork={PartnerCardArtworkAuction}
+          />
         </Theme>
       </GlobalStoreProvider>
     )
@@ -182,7 +197,10 @@ describe("PartnerCard", () => {
     const component = mount(
       <GlobalStoreProvider>
         <Theme>
-          <PartnerCard relay={{ environment: {} } as RelayProp} artwork={PartnerCardArtworkNoProfile} />
+          <PartnerCard
+            relay={{ environment: {} } as RelayProp}
+            artwork={PartnerCardArtworkNoProfile}
+          />
         </Theme>
       </GlobalStoreProvider>
     )

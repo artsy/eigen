@@ -446,7 +446,10 @@ jest.mock("@react-native-community/async-storage", () => {
         delete state[k]
       })
     },
-    multiSet(keyValuePairs: string[][], callback?: ((errors?: string[] | undefined) => void) | undefined) {
+    multiSet(
+      keyValuePairs: string[][],
+      callback?: ((errors?: string[] | undefined) => void) | undefined
+    ) {
       return new Promise((resolve) => {
         for (const keyValue of keyValuePairs) {
           state[keyValue[0]] = keyValue[1]

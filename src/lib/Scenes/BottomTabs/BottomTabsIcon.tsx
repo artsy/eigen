@@ -8,7 +8,10 @@ export const ICON_HEIGHT = 52
 // need to bring the icons up a smidge because of the way they were exported
 const yOffset = 2
 
-export const BottomTabsIcon: React.FC<{ tab: BottomTabType; state: "active" | "inactive" }> = ({ tab, state }) => {
+export const BottomTabsIcon: React.FC<{ tab: BottomTabType; state: "active" | "inactive" }> = ({
+  tab,
+  state,
+}) => {
   return (
     <Svg
       width={ICON_WIDTH}

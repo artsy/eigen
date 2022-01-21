@@ -32,6 +32,8 @@ describe("ViewingRoomSubsections", () => {
     const tree = renderWithWrappers(<TestRenderer />)
     mockEnvironmentPayload(mockEnvironment)
 
-    expect(tree.root.findAllByType(Box).filter((box) => box.props.testID === "subsection")).toHaveLength(1)
+    expect(
+      tree.root.findAllByType(Box).filter((box) => box.props.testID === "subsection")
+    ).toHaveLength(1)
   })
 })

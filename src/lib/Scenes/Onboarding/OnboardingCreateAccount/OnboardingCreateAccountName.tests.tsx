@@ -16,11 +16,11 @@ const navigationMock = {
 const onSubmitMock = jest.fn()
 
 describe("OnboardingCreateAccountName", () => {
-  const Test: React.FC<{ name?: string; acceptedTerms?: boolean; agreedToReceiveEmails?: boolean }> = ({
-    name = "",
-    acceptedTerms = false,
-    agreedToReceiveEmails = false,
-  }) => {
+  const Test: React.FC<{
+    name?: string
+    acceptedTerms?: boolean
+    agreedToReceiveEmails?: boolean
+  }> = ({ name = "", acceptedTerms = false, agreedToReceiveEmails = false }) => {
     const formik = useFormik<FormikSchema>({
       enableReinitialize: true,
       validateOnChange: false,

@@ -1,7 +1,12 @@
 import { themeGet } from "@styled-system/theme-get"
 import { Text, useTheme } from "palette"
 import React, { useState } from "react"
-import { PixelRatio, StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from "react-native"
+import {
+  PixelRatio,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  TouchableWithoutFeedbackProps,
+} from "react-native"
 import styled from "styled-components/native"
 
 import { CssTransition } from "../../../lib/Components/Bidding/Components/Animation/CssTransition"
@@ -86,11 +91,20 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         <Flex flexDirection="row">
           <Flex mt="2px">
             <CssTransition
-              style={[styles(fontScale).container, { marginRight: space("1") * fontScale }, checkboxStyle]}
+              style={[
+                styles(fontScale).container,
+                { marginRight: space("1") * fontScale },
+                checkboxStyle,
+              ]}
               animate={["backgroundColor", "borderColor"]}
               duration={DURATION}
             >
-              {!!isChecked && (!!disabled ? <DisabledMark size={checkboxSize} /> : <CheckMark size={checkboxSize} />)}
+              {!!isChecked &&
+                (!!disabled ? (
+                  <DisabledMark size={checkboxSize} />
+                ) : (
+                  <CheckMark size={checkboxSize} />
+                ))}
             </CssTransition>
           </Flex>
 

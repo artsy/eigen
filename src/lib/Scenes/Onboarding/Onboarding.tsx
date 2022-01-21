@@ -1,6 +1,13 @@
 import { NavigationContainer } from "@react-navigation/native"
-import { CardStyleInterpolators, createStackNavigator, TransitionPresets } from "@react-navigation/stack"
-import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "lib/Components/ArtsyKeyboardAvoidingView"
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+  TransitionPresets,
+} from "@react-navigation/stack"
+import {
+  ArtsyKeyboardAvoidingView,
+  ArtsyKeyboardAvoidingViewContext,
+} from "lib/Components/ArtsyKeyboardAvoidingView"
 import { ArtsyWebViewPrivacy, ArtsyWebViewTerms } from "lib/Components/ArtsyReactWebViewPolicy"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { NetworkAwareProvider } from "lib/utils/NetworkAwareProvider"
@@ -68,8 +75,15 @@ export const OnboardingWelcomeScreens = () => {
               : CardStyleInterpolators.forHorizontalIOS,
           })}
         />
-        <StackNavigator.Screen name="OnboardingCreateAccountWithEmail" component={OnboardingCreateAccountWithEmail} />
-        <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
+        <StackNavigator.Screen
+          name="OnboardingCreateAccountWithEmail"
+          component={OnboardingCreateAccountWithEmail}
+        />
+        <StackNavigator.Screen
+          name="ForgotPassword"
+          component={ForgotPassword}
+          options={{ headerShown: false }}
+        />
         <StackNavigator.Screen name="Terms" component={ArtsyWebViewTerms} />
         <StackNavigator.Screen name="Privacy" component={ArtsyWebViewPrivacy} />
       </StackNavigator.Navigator>
@@ -86,7 +100,11 @@ export const Onboarding = () => {
         value={{ isVisible: true, isPresentedModally: false, bottomOffset: 0 }}
       >
         <ArtsyKeyboardAvoidingView>
-          {onboardingState === "incomplete" ? <OnboardingPersonalization /> : <OnboardingWelcomeScreens />}
+          {onboardingState === "incomplete" ? (
+            <OnboardingPersonalization />
+          ) : (
+            <OnboardingWelcomeScreens />
+          )}
           {!!showNetworkUnavailableModal && <NetworkAwareProvider />}
         </ArtsyKeyboardAvoidingView>
       </ArtsyKeyboardAvoidingViewContext.Provider>

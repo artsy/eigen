@@ -3,7 +3,10 @@ import React from "react"
 import { ArtsyReactWebView } from "./ArtsyReactWebView"
 import InternalWebView from "./InternalWebView"
 
-export const ArtsyWebView: React.FC<{ url: string; showFullScreen?: boolean }> = ({ url, showFullScreen }) => {
+export const ArtsyWebView: React.FC<{ url: string; showFullScreen?: boolean }> = ({
+  url,
+  showFullScreen,
+}) => {
   const useReactNativeWebView = useFeatureFlag("AROptionsUseReactNativeWebView")
 
   if (useReactNativeWebView) {

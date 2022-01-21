@@ -1,6 +1,11 @@
 import { SendConversationMessageMutation } from "__generated__/SendConversationMessageMutation.graphql"
 import { commitMutation, graphql } from "react-relay"
-import { ConnectionHandler, Environment, MutationConfig, RecordSourceSelectorProxy } from "relay-runtime"
+import {
+  ConnectionHandler,
+  Environment,
+  MutationConfig,
+  RecordSourceSelectorProxy,
+} from "relay-runtime"
 
 interface Conversation {
   lastMessageID: string
@@ -24,7 +29,10 @@ export function sendConversationMessage(
     const newMessageEdge = mutationPayload.getLinkedRecord("messageEdge")
     const conversationStore = store.get(conversation.id)
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const connection = ConnectionHandler.getConnection(conversationStore, "Messages_messagesConnection")
+    const connection = ConnectionHandler.getConnection(
+      conversationStore,
+      "Messages_messagesConnection"
+    )
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     ConnectionHandler.insertEdgeBefore(connection, newMessageEdge)
   }

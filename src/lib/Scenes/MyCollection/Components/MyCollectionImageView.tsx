@@ -55,7 +55,13 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
       const width = imageWidth ?? 120
 
       return (
-        <Flex testID="Fallback" bg={color("black5")} width={width} height={120} justifyContent="center">
+        <Flex
+          testID="Fallback"
+          bg={color("black5")}
+          width={width}
+          height={120}
+          justifyContent="center"
+        >
           <NoImageIcon fill="black60" mx="auto" />
         </Flex>
       )

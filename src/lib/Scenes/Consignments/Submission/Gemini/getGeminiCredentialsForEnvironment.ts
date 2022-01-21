@@ -10,11 +10,15 @@ export type AssetCredentials =
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   getGeminiCredentialsForEnvironmentMutationResponse["requestCredentialsForAssetUpload"]["asset"]
 
-export const getGeminiCredentialsForEnvironment = (input: RequestCredentialsForAssetUploadInput) => {
+export const getGeminiCredentialsForEnvironment = (
+  input: RequestCredentialsForAssetUploadInput
+) => {
   return new Promise<AssetCredentials>((resolve, reject) => {
     commitMutation<getGeminiCredentialsForEnvironmentMutation>(defaultEnvironment, {
       mutation: graphql`
-        mutation getGeminiCredentialsForEnvironmentMutation($input: RequestCredentialsForAssetUploadInput!) {
+        mutation getGeminiCredentialsForEnvironmentMutation(
+          $input: RequestCredentialsForAssetUploadInput!
+        ) {
           requestCredentialsForAssetUpload(input: $input) {
             asset {
               signature

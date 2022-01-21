@@ -1,6 +1,13 @@
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useCallback, useContext, useEffect, useMemo, useState } from "react"
-import { Animated, Easing, FlatList, Modal, NativeScrollEvent, NativeSyntheticEvent } from "react-native"
+import {
+  Animated,
+  Easing,
+  FlatList,
+  Modal,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+} from "react-native"
 import { ImageCarouselContext, ImageDescriptor } from "../ImageCarouselContext"
 import { useAnimatedValue } from "../useAnimatedValue"
 import { ImageCarouselCloseButton } from "./ImageCarouselCloseButton"
@@ -56,7 +63,12 @@ export const ImageCarouselFullScreen = () => {
   return (
     // on mount we want the modal to be visible instantly and handle transitions elsewhere ourselves
     // on unmount we use it's built-in fade transition
-    <Modal transparent animated={false} hardwareAccelerated supportedOrientations={["landscape", "portrait"]}>
+    <Modal
+      transparent
+      animated={false}
+      hardwareAccelerated
+      supportedOrientations={["landscape", "portrait"]}
+    >
       <Animated.View
         style={{
           position: "absolute",

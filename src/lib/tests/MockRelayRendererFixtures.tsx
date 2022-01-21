@@ -13,7 +13,9 @@ import { Image, Text, View } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 
 const Metadata = createFragmentContainer(
-  (props: { artworkMetadata: MockRelayRendererFixtures_artworkMetadata }) => <Text>{props.artworkMetadata.title}</Text>,
+  (props: { artworkMetadata: MockRelayRendererFixtures_artworkMetadata }) => (
+    <Text>{props.artworkMetadata.title}</Text>
+  ),
   {
     artworkMetadata: graphql`
       fragment MockRelayRendererFixtures_artworkMetadata on Artwork {

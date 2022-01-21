@@ -20,7 +20,12 @@ export const ItemArtwork: React.FC<ItemArtworkProps> = ({ artwork }) => {
         <Touchable onPress={() => artwork.href && navigate(artwork.href)}>
           <Flex flexDirection="row">
             <Box height="100px" width="100px" justifyContent="center" backgroundColor="pink">
-              <OpaqueImageView testID="artworkImage" imageURL={artwork.image?.thumbnailUrl} width={100} height={100} />
+              <OpaqueImageView
+                testID="artworkImage"
+                imageURL={artwork.image?.thumbnailUrl}
+                width={100}
+                height={100}
+              />
             </Box>
 
             <Flex flexDirection="column" ml={2} flexShrink={1}>

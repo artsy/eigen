@@ -21,7 +21,9 @@ const route = {} as any
 const anything = expect.anything
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(<Overview navigator={nav} params={{}} setup={{}} showActionSheetWithOptions={jest.fn()} />)
+  renderWithWrappers(
+    <Overview navigator={nav} params={{}} setup={{}} showActionSheetWithOptions={jest.fn()} />
+  )
 })
 
 describe("Opening the right page", () => {
@@ -79,7 +81,10 @@ describe("Updating State", () => {
 
   it("updates Location", () => {
     overview.updateLocation("Huddersfield", "Yorkshire", "UK")
-    expect(stateMock).toBeCalledWith({ location: { city: "Huddersfield", country: "UK", state: "Yorkshire" } }, update)
+    expect(stateMock).toBeCalledWith(
+      { location: { city: "Huddersfield", country: "UK", state: "Yorkshire" } },
+      update
+    )
   })
 
   it("updates Artist", () => {

@@ -61,7 +61,12 @@ export const FairCollections: React.FC<FairCollectionsProps> = ({ fair, ...rest 
                 navigate(`/collection/${collection.slug}`)
               }}
             >
-              <SmallCard width={CARD_WIDTH} images={images} title={collection.title} subtitle={collection.category} />
+              <SmallCard
+                width={CARD_WIDTH}
+                images={images}
+                title={collection.title}
+                subtitle={collection.category}
+              />
             </TouchableWithScale>
           )
         }}

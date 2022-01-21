@@ -32,7 +32,12 @@ export const FeaturedCollectionsRail: React.FC<FeaturedCollectionsRailProps> = (
       ruleOverrides: {
         paragraph: {
           react: (node, output, state) => (
-            <Sans size="3t" color="black100" key={state.key} numberOfLines={titleLength > 32 ? 3 : 4}>
+            <Sans
+              size="3t"
+              color="black100"
+              key={state.key}
+              numberOfLines={titleLength > 32 ? 3 : 4}
+            >
               {output(node.content, state)}
             </Sans>
           ),
@@ -131,7 +136,11 @@ export const FeaturedCollectionsRailContainer = createFragmentContainer(Featured
         title
         priceGuidance
         descriptionMarkdown
-        featuredCollectionArtworks: artworksConnection(first: 1, aggregations: [TOTAL], sort: "-decayed_merch") {
+        featuredCollectionArtworks: artworksConnection(
+          first: 1
+          aggregations: [TOTAL]
+          sort: "-decayed_merch"
+        ) {
           edges {
             node {
               image {

@@ -36,7 +36,15 @@ const ArtistNotableWorksRail: React.FC<ArtistNotableWorksRailProps> = ({ artist 
               return
             }
 
-            trackEvent(tracks.tapArtwork(artist.internalID, artist.slug, artwork.internalID, artwork.slug, position))
+            trackEvent(
+              tracks.tapArtwork(
+                artist.internalID,
+                artist.slug,
+                artwork.internalID,
+                artwork.slug,
+                position
+              )
+            )
 
             return navigate(`/artwork/${artwork.slug}`)
           }}
@@ -51,25 +59,34 @@ const ArtistNotableWorksRailWrapper = styled(Box)`
   margin: 0px -20px 20px -20px;
 `
 
-export const ArtistNotableWorksRailFragmentContainer = createFragmentContainer(ArtistNotableWorksRail, {
-  artist: graphql`
-    fragment ArtistNotableWorksRail_artist on Artist {
-      internalID
-      slug
-      # this should match the notableWorks query in ArtistAbout
-      filterArtworksConnection(first: 10, input: { sort: "-weighted_iconicity" }) {
-        edges {
-          node {
-            ...SmallArtworkRail_artworks
+export const ArtistNotableWorksRailFragmentContainer = createFragmentContainer(
+  ArtistNotableWorksRail,
+  {
+    artist: graphql`
+      fragment ArtistNotableWorksRail_artist on Artist {
+        internalID
+        slug
+        # this should match the notableWorks query in ArtistAbout
+        filterArtworksConnection(first: 10, input: { sort: "-weighted_iconicity" }) {
+          edges {
+            node {
+              ...SmallArtworkRail_artworks
+            }
           }
         }
       }
-    }
-  `,
-})
+    `,
+  }
+)
 
 export const tracks = {
-  tapArtwork: (artistId: string, artistSlug: string, artworkId: string, artworkSlug: string, position: number) => ({
+  tapArtwork: (
+    artistId: string,
+    artistSlug: string,
+    artworkId: string,
+    artworkSlug: string,
+    position: number
+  ) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.topWorksRail,
     context_screen_owner_type: OwnerType.artist,

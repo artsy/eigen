@@ -198,7 +198,10 @@ export type SelectedFiltersCounts = {
   [Name in FilterParamName | "waysToBuy" | "year"]: number
 }
 
-export const filterKeyFromAggregation: Record<AggregationName, FilterParamName | string | undefined> = {
+export const filterKeyFromAggregation: Record<
+  AggregationName,
+  FilterParamName | string | undefined
+> = {
   ARTIST_NATIONALITY: FilterParamName.artistNationalities,
   ARTIST: "artistIDs",
   COLOR: FilterParamName.colors,
@@ -253,7 +256,10 @@ const DEFAULT_TAG_ARTWORK_PARAMS = {
   sort: "-partner_updated_at",
 } as FilterParams
 
-const createdYearsFilterNames = [FilterParamName.earliestCreatedYear, FilterParamName.latestCreatedYear]
+const createdYearsFilterNames = [
+  FilterParamName.earliestCreatedYear,
+  FilterParamName.latestCreatedYear,
+]
 const sizesFilterNames = [FilterParamName.width, FilterParamName.height]
 
 const waysToBuyFilterNames = [
@@ -275,7 +281,10 @@ const getDefaultParamsByType = (filterType: FilterType) => {
   }[filterType]
 }
 
-export const changedFiltersParams = (currentFilterParams: FilterParams, selectedFilterOptions: FilterArray) => {
+export const changedFiltersParams = (
+  currentFilterParams: FilterParams,
+  selectedFilterOptions: FilterArray
+) => {
   const changedFilters: { [key: string]: any } = {}
 
   selectedFilterOptions.forEach((selectedFilterOption) => {
@@ -292,7 +301,10 @@ export const changedFiltersParams = (currentFilterParams: FilterParams, selected
   return changedFilters
 }
 
-export const filterArtworksParams = (appliedFilters: FilterArray, filterType: FilterType = "artwork") => {
+export const filterArtworksParams = (
+  appliedFilters: FilterArray,
+  filterType: FilterType = "artwork"
+) => {
   const defaultFilterParams = getDefaultParamsByType(filterType)
   const appliedFilterParams: Partial<FilterParams> = {}
 

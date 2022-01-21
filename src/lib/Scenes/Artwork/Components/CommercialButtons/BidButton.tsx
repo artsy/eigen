@@ -21,9 +21,11 @@ export interface BidButtonProps {
 }
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const watchOnly = (sale) => sale.isRegistrationClosed && !sale?.registrationStatus?.qualifiedForBidding
+const watchOnly = (sale) =>
+  sale.isRegistrationClosed && !sale?.registrationStatus?.qualifiedForBidding
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const getMyLotStanding = (artwork) => artwork.myLotStanding && artwork.myLotStanding.length && artwork.myLotStanding[0]
+const getMyLotStanding = (artwork) =>
+  artwork.myLotStanding && artwork.myLotStanding.length && artwork.myLotStanding[0]
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const getHasBid = (myLotStanding) => !!(myLotStanding && myLotStanding.mostRecentBid)
 
@@ -60,7 +62,9 @@ export class BidButton extends React.Component<BidButtonProps> {
   @track((props) => {
     const { artwork } = props
     return {
-      action_name: watchOnly(artwork.sale) ? Schema.ActionNames.EnterLiveBidding : Schema.ActionNames.WatchLiveBidding,
+      action_name: watchOnly(artwork.sale)
+        ? Schema.ActionNames.EnterLiveBidding
+        : Schema.ActionNames.WatchLiveBidding,
       action_type: Schema.ActionTypes.Tap,
     }
   })
@@ -103,11 +107,20 @@ export class BidButton extends React.Component<BidButtonProps> {
       <>
         {!registrationStatus && (
           <>
-            <Button width={100} block size="large" mt={1} onPress={() => this.redirectToRegister()} haptic>
+            <Button
+              width={100}
+              block
+              size="large"
+              mt={1}
+              onPress={() => this.redirectToRegister()}
+              haptic
+            >
               Register to bid
             </Button>
             {needsIdentityVerification && (
-              <IdentityVerificationRequiredMessage onPress={() => this.redirectToIdentityVerificationFAQ()} />
+              <IdentityVerificationRequiredMessage
+                onPress={() => this.redirectToIdentityVerificationFAQ()}
+              />
             )}
           </>
         )}
@@ -117,7 +130,9 @@ export class BidButton extends React.Component<BidButtonProps> {
               Registration pending
             </Button>
             {needsIdentityVerification && (
-              <IdentityVerificationRequiredMessage onPress={() => this.redirectToIdentityVerificationFAQ()} />
+              <IdentityVerificationRequiredMessage
+                onPress={() => this.redirectToIdentityVerificationFAQ()}
+              />
             )}
           </>
         )}
@@ -164,7 +179,11 @@ export class BidButton extends React.Component<BidButtonProps> {
 
     const qualifiedForBidding = registrationStatus?.qualifiedForBidding
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const needsIdentityVerification = bidderNeedsIdentityVerification({ sale, user: me, bidder: registrationStatus })
+    const needsIdentityVerification = bidderNeedsIdentityVerification({
+      sale,
+      user: me,
+      bidder: registrationStatus,
+    })
 
     /**
      * NOTE: This is making an incorrect assumption that there could only ever
@@ -185,7 +204,9 @@ export class BidButton extends React.Component<BidButtonProps> {
             Registration pending
           </Button>
           {needsIdentityVerification && (
-            <IdentityVerificationRequiredMessage onPress={() => this.redirectToIdentityVerificationFAQ()} />
+            <IdentityVerificationRequiredMessage
+              onPress={() => this.redirectToIdentityVerificationFAQ()}
+            />
           )}
         </>
       )
@@ -202,19 +223,29 @@ export class BidButton extends React.Component<BidButtonProps> {
           <Button width={100} block size="large" mt={1} onPress={() => this.redirectToRegister()}>
             Register to bid
           </Button>
-          <IdentityVerificationRequiredMessage onPress={() => this.redirectToIdentityVerificationFAQ()} />
+          <IdentityVerificationRequiredMessage
+            onPress={() => this.redirectToIdentityVerificationFAQ()}
+          />
         </>
       )
     } else {
       const myLastMaxBid = hasBid && myLotStanding.mostRecentBid.maxBid.cents
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const increments = saleArtwork.increments.filter((increment) => increment.cents > (myLastMaxBid || 0))
+      const increments = saleArtwork.increments.filter(
+        (increment) => increment.cents > (myLastMaxBid || 0)
+      )
       const firstIncrement = increments && increments.length && increments[0]
       const incrementCents = firstIncrement && firstIncrement.cents
 
       return (
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        <Button width={100} size="large" block onPress={() => this.redirectToBid(incrementCents)} haptic>
+        <Button
+          width={100}
+          size="large"
+          block
+          onPress={() => this.redirectToBid(incrementCents)}
+          haptic
+        >
           {hasBid ? "Increase max bid" : "Bid"}
         </Button>
       )

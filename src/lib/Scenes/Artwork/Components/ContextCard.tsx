@@ -104,7 +104,9 @@ export class ContextCard extends React.Component<ContextCardProps, ContextCardSt
   followButton = (show: Show) => {
     const { isFollowed } = show
 
-    return <FollowButton haptic isFollowed={!!isFollowed} onPress={() => this.handleFollowShow(show)} />
+    return (
+      <FollowButton haptic isFollowed={!!isFollowed} onPress={() => this.handleFollowShow(show)} />
+    )
   }
 
   render() {

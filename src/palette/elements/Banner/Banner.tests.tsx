@@ -21,13 +21,17 @@ describe("Banner", () => {
   })
 
   it("shows close button when showCloseButton", () => {
-    const { getByTestId } = renderWithWrappersTL(<Banner title="title" text="text" showCloseButton />)
+    const { getByTestId } = renderWithWrappersTL(
+      <Banner title="title" text="text" showCloseButton />
+    )
     expect(getByTestId("banner-close-button")).toBeDefined()
   })
 
   it("fires onClose press event", () => {
     const onClose = jest.fn()
-    const { getByTestId } = renderWithWrappersTL(<Banner onClose={onClose} title="title" text="text" showCloseButton />)
+    const { getByTestId } = renderWithWrappersTL(
+      <Banner onClose={onClose} title="title" text="text" showCloseButton />
+    )
     fireEvent.press(getByTestId("banner-close-button"))
     expect(onClose).toHaveBeenCalled()
   })

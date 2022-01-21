@@ -9,7 +9,9 @@ export const bucketCityResults = (viewer: GlobalMap_viewer) => {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   const savedShows = viewer.city.shows.edges.filter((e) => e.node.is_followed === true)
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  const savedUpcomingShows = viewer.city.upcomingShows.edges.filter((e) => e.node.is_followed === true)
+  const savedUpcomingShows = viewer.city.upcomingShows.edges.filter(
+    (e) => e.node.is_followed === true
+  )
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   const savedFiltered = uniq(savedShows.concat(savedUpcomingShows)).map((n) => n.node)
   const saved = sortBy(savedFiltered, (event) => {
@@ -19,11 +21,15 @@ export const bucketCityResults = (viewer: GlobalMap_viewer) => {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   const fairs = viewer.city.fairs.edges.map((n) => n.node)
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  const galleries = viewer.city.shows.edges.filter((e) => e.node.partner.type === "Gallery").map((n) => n.node)
+  const galleries = viewer.city.shows.edges
+    .filter((e) => e.node.partner.type === "Gallery")
+    .map((n) => n.node)
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   const museums = viewer.city.shows.edges
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    .filter((e) => e.node.partner.type === "Institution" || e.node.partner.type === "InstitutionalSeller")
+    .filter(
+      (e) => e.node.partner.type === "Institution" || e.node.partner.type === "InstitutionalSeller"
+    )
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     .map((n) => n.node)
 

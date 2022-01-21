@@ -81,7 +81,9 @@ const getWrapper = (event = {}) => {
   const tree = renderWithWrappers(<TestRenderer />)
   const finalResolvers = { Conversation: () => mockConversation }
   act(() => {
-    env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, finalResolvers))
+    env.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, finalResolvers)
+    )
   })
   return tree
 }
@@ -132,14 +134,20 @@ describe("OrderUpdate with order updates", () => {
   })
 
   it("shows an offer submitted event", () => {
-    const tree = getWrapper({ __typename: "CommerceOfferSubmittedEvent", offer: { respondsTo: null } })
+    const tree = getWrapper({
+      __typename: "CommerceOfferSubmittedEvent",
+      offer: { respondsTo: null },
+    })
 
     expect(extractText(tree.root)).toMatch("You sent an offer")
     tree.root.findByType(MoneyFillIcon)
   })
 
   it("shows a counteroffer offer from the user", () => {
-    const tree = getWrapper({ __typename: "CommerceOfferSubmittedEvent", offer: { respondsTo: {} } })
+    const tree = getWrapper({
+      __typename: "CommerceOfferSubmittedEvent",
+      offer: { respondsTo: {} },
+    })
 
     expect(extractText(tree.root)).toMatch("You sent a counteroffer")
     tree.root.findByType(MoneyFillIcon)

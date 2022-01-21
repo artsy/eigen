@@ -14,7 +14,9 @@ export const StyledWebView: React.FC<{ body: string }> = ({ body }) => {
   }, [webViewHeight])
 
   // @ts-ignore
-  const htmlOutput = SimpleMarkdown.htmlFor(SimpleMarkdown.ruleOutput(SimpleMarkdown.defaultRules, "html"))
+  const htmlOutput = SimpleMarkdown.htmlFor(
+    SimpleMarkdown.ruleOutput(SimpleMarkdown.defaultRules, "html")
+  )
 
   const html = `
   <html>

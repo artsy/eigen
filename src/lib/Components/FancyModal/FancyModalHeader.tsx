@@ -1,5 +1,14 @@
 import { themeGet } from "@styled-system/theme-get"
-import { ArrowLeftIcon, ArrowRightIcon, CloseIcon, Flex, Separator, ShareIcon, Text, useTheme } from "palette"
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CloseIcon,
+  Flex,
+  Separator,
+  ShareIcon,
+  Text,
+  useTheme,
+} from "palette"
 import React from "react"
 import { TouchableOpacity } from "react-native"
 import styled from "styled-components/native"

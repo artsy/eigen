@@ -21,7 +21,9 @@ const TestWrapper: React.FC<React.ComponentProps<typeof BottomTabsButton>> = (pr
 describe(BottomTabsButton, () => {
   it(`updates the selected tab state on press`, async () => {
     const tree = renderWithWrappers(<TestWrapper tab="search" />)
-    expect(__globalStoreTestUtils__?.getCurrentState().bottomTabs.sessionState.selectedTab).toBe("home")
+    expect(__globalStoreTestUtils__?.getCurrentState().bottomTabs.sessionState.selectedTab).toBe(
+      "home"
+    )
     tree.root.findByType(TouchableWithoutFeedback).props.onPress()
     await flushPromiseQueue()
     expect(switchTab).toHaveBeenCalledWith("search")

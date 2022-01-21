@@ -7,7 +7,9 @@ describe("SavedSearchAlertSwitch", () => {
   const onChangeMock = jest.fn()
 
   const TestRenderer = (props: Partial<SavedSearchAlertSwitchProps>) => {
-    return <SavedSearchAlertSwitch onChange={onChangeMock} active={false} label="Label" {...props} />
+    return (
+      <SavedSearchAlertSwitch onChange={onChangeMock} active={false} label="Label" {...props} />
+    )
   }
 
   afterEach(() => {

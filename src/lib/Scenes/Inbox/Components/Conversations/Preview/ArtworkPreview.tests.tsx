@@ -8,7 +8,9 @@ import { Touchable } from "palette"
 
 describe("concerning selection handling", () => {
   it("passes a onPress handler to the touchable component if an onSelected handler is given", () => {
-    const tree = renderWithWrappers(<ArtworkPreview artwork={artwork as any} onSelected={() => null} />)
+    const tree = renderWithWrappers(
+      <ArtworkPreview artwork={artwork as any} onSelected={() => null} />
+    )
     expect(tree.root.findByType(Touchable).props.onPress).toBeTruthy()
   })
 

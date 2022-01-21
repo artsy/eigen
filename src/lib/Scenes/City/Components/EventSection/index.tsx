@@ -23,7 +23,9 @@ export class EventSection extends React.Component<Props> {
     const { data } = this.props
     let finalShowsForPreviewBricks
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const eligibleForBrick = data.filter((s) => !s.isStubShow && !!s.cover_image && !!s.cover_image.url)
+    const eligibleForBrick = data.filter(
+      (s) => !s.isStubShow && !!s.cover_image && !!s.cover_image.url
+    )
     finalShowsForPreviewBricks = eligibleForBrick.slice(0, 2)
 
     if (!!finalShowsForPreviewBricks) {
@@ -48,7 +50,10 @@ export class EventSection extends React.Component<Props> {
         {this.renderEvents()}
         {data.length > 2 && (
           <Box px={2} mb={2}>
-            <CaretButton onPress={() => this.viewAllPressed()} text={`View all ${data.length} shows`} />
+            <CaretButton
+              onPress={() => this.viewAllPressed()}
+              text={`View all ${data.length} shows`}
+            />
           </Box>
         )}
       </>

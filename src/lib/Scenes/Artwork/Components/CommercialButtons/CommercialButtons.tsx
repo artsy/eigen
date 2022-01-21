@@ -36,7 +36,15 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
 
   render() {
     const { artwork, me, auctionState } = this.props
-    const { isBuyNowable, isAcquireable, isOfferable, isInquireable, isInAuction, editionSets, isForSale } = artwork
+    const {
+      isBuyNowable,
+      isAcquireable,
+      isOfferable,
+      isInquireable,
+      isInAuction,
+      editionSets,
+      isForSale,
+    } = artwork
     const noEditions = (editionSets && editionSets.length === 0) || !editionSets
     // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
     const newFirstInquiry = unsafe_getFeatureFlag("AROptionsNewFirstInquiry")
@@ -79,10 +87,17 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
       )
     } else if (isAcquireable) {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return <BuyNowButtonFragmentContainer artwork={artwork} editionSetID={this.props.editionSetID} />
+      return (
+        <BuyNowButtonFragmentContainer artwork={artwork} editionSetID={this.props.editionSetID} />
+      )
     } else if (isOfferable) {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      return <MakeOfferButtonFragmentContainer artwork={artwork} editionSetID={this.props.editionSetID} />
+      return (
+        <MakeOfferButtonFragmentContainer
+          artwork={artwork}
+          editionSetID={this.props.editionSetID}
+        />
+      )
     } else if (isInquireable && !newFirstInquiry) {
       return (
         <Button onPress={() => this.handleInquiry()} size="large" block width={100} haptic>
@@ -90,7 +105,9 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
         </Button>
       )
     } else if (isInquireable && newFirstInquiry) {
-      return <InquiryButtonsFragmentContainer artwork={artwork} editionSetID={this.props.editionSetID} />
+      return (
+        <InquiryButtonsFragmentContainer artwork={artwork} editionSetID={this.props.editionSetID} />
+      )
     } else {
       return <></>
     }

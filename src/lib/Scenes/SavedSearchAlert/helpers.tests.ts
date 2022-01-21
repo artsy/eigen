@@ -1,11 +1,16 @@
-import { SearchCriteria, SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import {
+  SearchCriteria,
+  SearchCriteriaAttributes,
+} from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { clearDefaultAttributes, getNamePlaceholder } from "./helpers"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 
 describe("getNamePlaceholder", () => {
   it("returns the singular form for the filter label", () => {
-    const pills: SavedSearchPill[] = [{ label: "One", paramName: SearchCriteria.materialsTerms, value: "one" }]
+    const pills: SavedSearchPill[] = [
+      { label: "One", paramName: SearchCriteria.materialsTerms, value: "one" },
+    ]
     expect(getNamePlaceholder("artistName", pills)).toBe("artistName • 1 filter")
   })
 

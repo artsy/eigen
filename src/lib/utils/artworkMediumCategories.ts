@@ -8,7 +8,10 @@ export const artworkMediumCategories: Medium[] = [
   { label: "Sculpture", value: "Sculpture" },
   { label: "Photography", value: "Photography" },
   { label: "Print", value: "Print" },
-  { label: "Drawing, Collage or other Work on Paper", value: "Drawing, Collage or other Work on Paper" },
+  {
+    label: "Drawing, Collage or other Work on Paper",
+    value: "Drawing, Collage or other Work on Paper",
+  },
   { label: "Mixed Media", value: "Mixed Media" },
   { label: "Performance Art", value: "Performance Art" },
   { label: "Installation", value: "Installation" },

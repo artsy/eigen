@@ -91,7 +91,9 @@ export const EditSavedSearchAlertFragmentContainer = createFragmentContainer(Edi
   `,
 })
 
-export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBaseProps> = (props) => {
+export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBaseProps> = (
+  props
+) => {
   const { savedSearchAlertId } = props
 
   return (

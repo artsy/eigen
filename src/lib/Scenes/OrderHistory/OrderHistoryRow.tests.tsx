@@ -68,21 +68,31 @@ describe("Order history row", () => {
       mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => mockOrder })
 
       expect(extractText(tree.findByProps({ testID: "artist-names" }))).toBe("Torbjørn Rødland")
-      expect(extractText(tree.findByProps({ testID: "partner-name" }))).toBe("Andrea Festa Fine Art")
+      expect(extractText(tree.findByProps({ testID: "partner-name" }))).toBe(
+        "Andrea Festa Fine Art"
+      )
       expect(extractText(tree.findByProps({ testID: "date" }))).toBe("5/18/2021")
       expect(extractText(tree.findByProps({ testID: "price" }))).toBe("11,200")
       expect(extractText(tree.findByProps({ testID: "order-status" }))).toBe("pending")
       expect(extractText(tree.findByProps({ testID: "view-order-button" }))).toContain("View Order")
-      expect(extractText(tree.findByProps({ testID: "track-package-button" }))).toContain("Track Package")
-      expect(tree.findByProps({ testID: "image-container" }).findByProps({ testID: "image" })).toBeTruthy()
+      expect(extractText(tree.findByProps({ testID: "track-package-button" }))).toContain(
+        "Track Package"
+      )
+      expect(
+        tree.findByProps({ testID: "image-container" }).findByProps({ testID: "image" })
+      ).toBeTruthy()
     })
 
     describe("Offer mode", () => {
       it("View Offer button when SUBMITTED state", () => {
         const tree = renderWithWrappers(<TestRenderer />).root
-        mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => ({ ...mockOrder, mode: "OFFER" }) })
+        mockEnvironmentPayload(mockEnvironment, {
+          CommerceOrder: () => ({ ...mockOrder, mode: "OFFER" }),
+        })
 
-        expect(extractText(tree.findByProps({ testID: "view-order-button" }))).toContain("View Offer")
+        expect(extractText(tree.findByProps({ testID: "view-order-button" }))).toContain(
+          "View Offer"
+        )
       })
 
       it("View Order button when APPROVED state", () => {
@@ -91,7 +101,9 @@ describe("Order history row", () => {
           CommerceOrder: () => ({ ...mockOrder, state: "APPROVED", mode: "OFFER" }),
         })
 
-        expect(extractText(tree.findByProps({ testID: "view-order-button" }))).toContain("View Order")
+        expect(extractText(tree.findByProps({ testID: "view-order-button" }))).toContain(
+          "View Order"
+        )
       })
     })
 
@@ -115,7 +127,9 @@ describe("Order history row", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
       mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => order })
 
-      expect(tree.findByProps({ testID: "image-container" }).findByProps({ testID: "image-box" })).toBeTruthy()
+      expect(
+        tree.findByProps({ testID: "image-container" }).findByProps({ testID: "image-box" })
+      ).toBeTruthy()
     })
   })
 
@@ -129,21 +143,27 @@ describe("Order history row", () => {
 
     it("APPROVED order", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => ({ ...mockOrder, state: "APPROVED" }) })
+      mockEnvironmentPayload(mockEnvironment, {
+        CommerceOrder: () => ({ ...mockOrder, state: "APPROVED" }),
+      })
 
       expect(extractText(tree.findByProps({ testID: "order-status" }))).toBe("confirmed")
     })
 
     it("FULFILLED order", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => ({ ...mockOrder, state: "FULFILLED" }) })
+      mockEnvironmentPayload(mockEnvironment, {
+        CommerceOrder: () => ({ ...mockOrder, state: "FULFILLED" }),
+      })
 
       expect(extractText(tree.findByProps({ testID: "order-status" }))).toBe("delivered")
     })
 
     it("CANCELED order", () => {
       const tree = renderWithWrappers(<TestRenderer />).root
-      mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => ({ ...mockOrder, state: "CANCELED" }) })
+      mockEnvironmentPayload(mockEnvironment, {
+        CommerceOrder: () => ({ ...mockOrder, state: "CANCELED" }),
+      })
 
       expect(extractText(tree.findByProps({ testID: "order-status" }))).toBe("canceled")
     })
@@ -174,7 +194,9 @@ describe("Order history row", () => {
 
       it("REFUNDED order without trackingId", () => {
         const tree = renderWithWrappers(<TestRenderer />).root
-        mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => ({ ...order, state: "REFUNDED" }) })
+        mockEnvironmentPayload(mockEnvironment, {
+          CommerceOrder: () => ({ ...order, state: "REFUNDED" }),
+        })
 
         expect(extractText(tree.findByProps({ testID: "order-status" }))).toBe("refunded")
         expect(tree.findByProps({ testID: "view-order-button-box" })).not.toContain(Button)

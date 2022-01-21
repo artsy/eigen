@@ -16,7 +16,8 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
 
   const hasSingleArtist = artists && artists.length === 1
 
-  const text = hasSingleArtist && artists[0]?.biographyBlurb?.text ? artists[0]?.biographyBlurb?.text : null
+  const text =
+    hasSingleArtist && artists[0]?.biographyBlurb?.text ? artists[0]?.biographyBlurb?.text : null
   const textLimit = truncatedTextLimit()
 
   return (
@@ -29,7 +30,11 @@ export const AboutArtist: React.FC<AboutArtistProps> = ({ artwork }) => {
           {artists.map(
             (artist) =>
               !!artist && (
-                <ArtistListItem key={artist.id} artist={artist} contextModule={Schema.ContextModules.AboutTheArtist} />
+                <ArtistListItem
+                  key={artist.id}
+                  artist={artist}
+                  contextModule={Schema.ContextModules.AboutTheArtist}
+                />
               )
           )}
         </Join>

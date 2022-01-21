@@ -3,7 +3,13 @@ import parse from "autosuggest-highlight/parse"
 import { Text } from "palette"
 import React from "react"
 
-export const ResultWithHighlight = ({ displayLabel, highlight }: { displayLabel: string; highlight?: string }) => {
+export const ResultWithHighlight = ({
+  displayLabel,
+  highlight,
+}: {
+  displayLabel: string
+  highlight?: string
+}) => {
   const matches = match(displayLabel, highlight!)
   const parts = parse(displayLabel, matches)
 

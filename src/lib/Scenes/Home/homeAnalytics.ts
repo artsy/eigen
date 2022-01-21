@@ -43,7 +43,11 @@ export default class HomeAnalytics {
 
   // Fair events
 
-  static fairThumbnailTapEvent(fairID?: string, fairSlug?: string, index?: number): Analytics.TappedEntityGroup {
+  static fairThumbnailTapEvent(
+    fairID?: string,
+    fairSlug?: string,
+    index?: number
+  ): Analytics.TappedEntityGroup {
     return Analytics.tappedEntityGroup({
       contextScreenOwnerType: Analytics.OwnerType.home,
       destinationScreenOwnerId: fairID,

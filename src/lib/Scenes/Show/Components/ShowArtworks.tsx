@@ -47,9 +47,15 @@ const ShowArtworks: React.FC<Props> = ({ show, relay, initiallyAppliedFilter }) 
   const artworksTotal = artworks?.counts?.total ?? 0
   const artworkAggregations = (artworks?.aggregations ?? []) as aggregationsType
 
-  const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
-  const setFilterTypeAction = ArtworksFiltersStore.useStoreActions((state) => state.setFilterTypeAction)
-  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((state) => state.setFiltersCountAction)
+  const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.setInitialFilterStateAction
+  )
+  const setFilterTypeAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.setFilterTypeAction
+  )
+  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.setFiltersCountAction
+  )
   const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
 
   useArtworkFilters({

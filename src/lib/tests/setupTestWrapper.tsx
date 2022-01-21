@@ -41,7 +41,9 @@ export const setupTestWrapperTL = <T extends OperationType>({
     const view = render(<TestRenderer />)
 
     act(() => {
-      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, mockResolvers)
+      )
     })
 
     return view
@@ -76,7 +78,9 @@ export const setupTestWrapper = <T extends OperationType>({
     const wrapper = renderWithWrappers(<TestRenderer />)
 
     act(() => {
-      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, mockResolvers)
+      )
     })
 
     return wrapper

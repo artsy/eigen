@@ -26,7 +26,9 @@ describe("tracking", () => {
 
   it("sends an event when trackTap is passed", () => {
     const trackTap = jest.fn()
-    const rendered = renderWithWrappers(<Artwork trackTap={trackTap} artwork={artworkProps() as any} itemIndex={1} />)
+    const rendered = renderWithWrappers(
+      <Artwork trackTap={trackTap} artwork={artworkProps() as any} itemIndex={1} />
+    )
 
     const touchableArtwork = rendered.root.findByType(Touchable)
     act(() => touchableArtwork.props.onPress())
@@ -161,7 +163,9 @@ describe("in a closed sale", () => {
         // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
       },
     }
-    const tree = renderWithWrappers(<Artwork artwork={artworkProps(saleArtwork) as any} hidePartner />)
+    const tree = renderWithWrappers(
+      <Artwork artwork={artworkProps(saleArtwork) as any} hidePartner />
+    )
 
     expect(extractText(tree.root)).not.toContain("partner")
   })
@@ -174,7 +178,9 @@ describe("in a closed sale", () => {
         // is_open: false (this would be returned from Metaphysics, though we don't fetch this field)
       },
     }
-    const tree = renderWithWrappers(<Artwork artwork={artworkProps(saleArtwork) as any} hidePartner={false} />)
+    const tree = renderWithWrappers(
+      <Artwork artwork={artworkProps(saleArtwork) as any} hidePartner={false} />
+    )
 
     expect(extractText(tree.root)).toContain("partner")
   })

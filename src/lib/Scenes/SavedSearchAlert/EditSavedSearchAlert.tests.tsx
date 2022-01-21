@@ -22,7 +22,9 @@ describe("EditSavedSearchAlert", () => {
 
   beforeEach(() => {
     mockEnvironment.mockClear()
-    notificationPermissions.mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Authorized))
+    notificationPermissions.mockImplementationOnce((cb) =>
+      cb(null, PushAuthorizationStatus.Authorized)
+    )
   })
 
   const TestRenderer = () => {

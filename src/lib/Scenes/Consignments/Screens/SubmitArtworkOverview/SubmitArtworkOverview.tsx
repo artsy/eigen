@@ -12,7 +12,9 @@ import { UploadPhotos } from "./UploadPhotos/UploadPhotos"
 interface SubmitArtworkScreenNavigationProps
   extends StackScreenProps<SubmitArtworkOverviewNavigationStack, "SubmitArtworkScreen"> {}
 
-export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> = ({ navigation }) => {
+export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> = ({
+  navigation,
+}) => {
   const items = [
     {
       overtitle: "Step 1 of 3",

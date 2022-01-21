@@ -26,7 +26,9 @@ describe("Saved search alert form", () => {
   beforeEach(() => {
     spyAlert.mockClear()
     mockEnvironment.mockClear()
-    notificationPermissions.mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Authorized))
+    notificationPermissions.mockImplementationOnce((cb) =>
+      cb(null, PushAuthorizationStatus.Authorized)
+    )
   })
 
   const TestRenderer = (props: Partial<SavedSearchAlertFormProps>) => {
@@ -44,7 +46,9 @@ describe("Saved search alert form", () => {
   it("correctly renders placeholder for input name", () => {
     const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
 
-    expect(getByTestId("alert-input-name").props.placeholder).toEqual(`artistName ${bullet} 5 filters`)
+    expect(getByTestId("alert-input-name").props.placeholder).toEqual(
+      `artistName ${bullet} 5 filters`
+    )
   })
 
   it("correctly extracts the values of pills", () => {
@@ -74,13 +78,17 @@ describe("Saved search alert form", () => {
   })
 
   it(`should render "Delete Alert" button when the savedSearchAlertId is passed`, () => {
-    const { getAllByTestId } = renderWithWrappersTL(<TestRenderer savedSearchAlertId="savedSearchAlertId" />)
+    const { getAllByTestId } = renderWithWrappersTL(
+      <TestRenderer savedSearchAlertId="savedSearchAlertId" />
+    )
 
     expect(getAllByTestId("delete-alert-button")).toHaveLength(1)
   })
 
   it("calls update mutation when form is submitted", async () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer savedSearchAlertId="savedSearchAlertId" />)
+    const { getByTestId } = renderWithWrappersTL(
+      <TestRenderer savedSearchAlertId="savedSearchAlertId" />
+    )
 
     fireEvent.changeText(getByTestId("alert-input-name"), "something new")
     fireEvent.press(getByTestId("save-alert-button"))
@@ -103,7 +111,9 @@ describe("Saved search alert form", () => {
   })
 
   it("tracks the edited saved search event when the save alert button is pressed", async () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer savedSearchAlertId="savedSearchAlertId" />)
+    const { getByTestId } = renderWithWrappersTL(
+      <TestRenderer savedSearchAlertId="savedSearchAlertId" />
+    )
 
     fireEvent.changeText(getByTestId("alert-input-name"), "something new")
     fireEvent.press(getByTestId("save-alert-button"))
@@ -181,7 +191,9 @@ describe("Saved search alert form", () => {
   })
 
   it("tracks clicks when the delete alert button is pressed", async () => {
-    const { getByTestId } = renderWithWrappersTL(<TestRenderer savedSearchAlertId="savedSearchAlertId" />)
+    const { getByTestId } = renderWithWrappersTL(
+      <TestRenderer savedSearchAlertId="savedSearchAlertId" />
+    )
 
     fireEvent.press(getByTestId("delete-alert-button"))
     fireEvent.press(getByTestId("dialog-primary-action-button"))
@@ -328,7 +340,9 @@ describe("Saved search alert form", () => {
 
     it("the push notification toggle keeps in the same state when push permissions are not not determined", async () => {
       notificationPermissions.mockReset()
-      notificationPermissions.mockImplementation((cb) => cb(null, PushAuthorizationStatus.NotDetermined))
+      notificationPermissions.mockImplementation((cb) =>
+        cb(null, PushAuthorizationStatus.NotDetermined)
+      )
 
       const { getByA11yLabel, queryAllByA11yState } = renderWithWrappersTL(
         <TestRenderer initialValues={{ ...baseProps.initialValues, push: false, email: false }} />
@@ -545,7 +559,9 @@ describe("Saved search alert form", () => {
 
     it("should be enabled if name is changed and there is a saved alert with the same criteria", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-      const { getByPlaceholderText, getAllByText } = renderWithWrappersTL(<TestRenderer isPreviouslySaved />)
+      const { getByPlaceholderText, getAllByText } = renderWithWrappersTL(
+        <TestRenderer isPreviouslySaved />
+      )
 
       expect(getAllByText("Save Alert")[0]).toBeDisabled()
       fireEvent.changeText(getByPlaceholderText(`artistName ${bullet} 5 filters`), "new value")
@@ -554,7 +570,9 @@ describe("Saved search alert form", () => {
 
     it("should be enabled if notification toggles are changed and there is a saved alert with the same criteria", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-      const { getByA11yLabel, getAllByText } = renderWithWrappersTL(<TestRenderer isPreviouslySaved />)
+      const { getByA11yLabel, getAllByText } = renderWithWrappersTL(
+        <TestRenderer isPreviouslySaved />
+      )
 
       expect(getAllByText("Save Alert")[0]).toBeDisabled()
       fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
@@ -563,7 +581,9 @@ describe("Saved search alert form", () => {
 
     it("should be enabled if filters are changed in edit mode", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-      const { getByText, getAllByText } = renderWithWrappersTL(<TestRenderer savedSearchAlertId="savedSearchAlertId" />)
+      const { getByText, getAllByText } = renderWithWrappersTL(
+        <TestRenderer savedSearchAlertId="savedSearchAlertId" />
+      )
 
       expect(getAllByText("Save Alert")[0]).toBeDisabled()
       fireEvent.press(getByText("Limited Edition"))

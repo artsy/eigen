@@ -38,30 +38,33 @@ const ArtistSeriesRailWrapper = styled(Box)`
   margin: 0 -20px 20px -40px;
 `
 
-export const ArtistCollectionsRailFragmentContainer = createFragmentContainer(ArtistCollectionsRail, {
-  artist: graphql`
-    fragment ArtistCollectionsRail_artist on Artist {
-      internalID
-      slug
-    }
-  `,
+export const ArtistCollectionsRailFragmentContainer = createFragmentContainer(
+  ArtistCollectionsRail,
+  {
+    artist: graphql`
+      fragment ArtistCollectionsRail_artist on Artist {
+        internalID
+        slug
+      }
+    `,
 
-  collections: graphql`
-    fragment ArtistCollectionsRail_collections on MarketingCollection @relay(plural: true) {
-      slug
-      id
-      title
-      priceGuidance
-      artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
-        edges {
-          node {
-            title
-            image {
-              url
+    collections: graphql`
+      fragment ArtistCollectionsRail_collections on MarketingCollection @relay(plural: true) {
+        slug
+        id
+        title
+        priceGuidance
+        artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
+          edges {
+            node {
+              title
+              image {
+                url
+              }
             }
           }
         }
       }
-    }
-  `,
-})
+    `,
+  }
+)

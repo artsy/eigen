@@ -49,7 +49,10 @@ describe("ViewingRoomViewWorksButton", () => {
     expect(navigate).toHaveBeenCalledWith("/viewing-room/gallery-name-viewing-room-name/artworks")
 
     expect(useTracking().trackEvent).toHaveBeenCalledWith(
-      tracks.tappedViewWorksButton("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name")
+      tracks.tappedViewWorksButton(
+        "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
+        "gallery-name-viewing-room-name"
+      )
     )
   })
 })

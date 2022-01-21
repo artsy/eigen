@@ -1,5 +1,9 @@
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { GraphQLResponseErrors, MiddlewareNextFn, RelayNetworkLayerResponse } from "react-relay-network-modern/node8"
+import {
+  GraphQLResponseErrors,
+  MiddlewareNextFn,
+  RelayNetworkLayerResponse,
+} from "react-relay-network-modern/node8"
 import { checkAuthenticationMiddleware } from "./checkAuthenticationMiddleware"
 import { GraphQLRequest } from "./types"
 
@@ -20,7 +24,9 @@ describe(checkAuthenticationMiddleware, () => {
   }
 
   it("calls signOut if there are errors", async () => {
-    const errors: GraphQLResponseErrors = [{ message: "The access token is invalid or has expired." }]
+    const errors: GraphQLResponseErrors = [
+      { message: "The access token is invalid or has expired." },
+    ]
     // @ts-ignore
     const relayResponse: RelayNetworkLayerResponse = { errors }
 
@@ -29,8 +35,12 @@ describe(checkAuthenticationMiddleware, () => {
     expect(fetchMock).toHaveBeenCalledTimes(0)
     await middleware(next)(request)
     expect(fetchMock).toHaveBeenCalledTimes(1)
-    expect(__globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)).toContain("@thunk.auth.signOut")
-    expect(__globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)).toContain("@thunkOn.resetAfterSignOut")
+    expect(__globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)).toContain(
+      "@thunk.auth.signOut"
+    )
+    expect(__globalStoreTestUtils__?.dispatchedActions.map((x) => x.type)).toContain(
+      "@thunkOn.resetAfterSignOut"
+    )
   })
 
   it("passes through if there is no errors", async () => {

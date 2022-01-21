@@ -110,7 +110,9 @@ export function useSelectedTab(): BottomTabType {
     return hooks.useStoreState((state) => state.bottomTabs.sessionState.selectedTab)
   }
 
-  const tabState = useNavigationState((state) => state.routes.find((r) => r.state?.type === "tab")?.state)
+  const tabState = useNavigationState(
+    (state) => state.routes.find((r) => r.state?.type === "tab")?.state
+  )
   if (!tabState) {
     return "home"
   } else {
@@ -213,7 +215,9 @@ export function unsafe__getSelectedTab(): BottomTabType {
   if (Platform.OS === "ios") {
     return globalStoreInstance().getState().bottomTabs.sessionState.selectedTab
   }
-  const tabState = __unsafe_mainModalStackRef.current?.getRootState().routes.find((r) => r.state?.type === "tab")?.state
+  const tabState = __unsafe_mainModalStackRef.current
+    ?.getRootState()
+    .routes.find((r) => r.state?.type === "tab")?.state
   if (!tabState) {
     return "home"
   } else {

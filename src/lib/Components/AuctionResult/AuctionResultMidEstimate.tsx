@@ -21,7 +21,11 @@ export const AuctionResultsMidEstimate: React.FC<AuctionResultsMidEstimateProps>
   return (
     <Flex flexDirection="row" alignItems="center">
       {/* Up arrow is heavier toward bottom so appears off center without padding */}
-      {arrowDirection === "up" ? <IncreaseIcon height={10} fill={color} /> : <DecreaseIcon height={10} fill={color} />}
+      {arrowDirection === "up" ? (
+        <IncreaseIcon height={10} fill={color} />
+      ) : (
+        <DecreaseIcon height={10} fill={color} />
+      )}
       <Text variant={textVariant} color={color}>
         {new Intl.NumberFormat().format(Number(value.replace(/%|-/gm, "")))}% {shortDescription}
       </Text>

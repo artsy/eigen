@@ -34,7 +34,10 @@ describe("CommercialInformation", () => {
 
     const component = mount(
       <Wrapper>
-        <CommercialInformationTimerWrapper artwork={ForSaleArtwork as any} me={{ identityVerified: false } as any} />
+        <CommercialInformationTimerWrapper
+          artwork={ForSaleArtwork as any}
+          me={{ identityVerified: false } as any}
+        />
       </Wrapper>
     )
 
@@ -52,12 +55,17 @@ describe("CommercialInformation", () => {
 
     const component = mount(
       <Wrapper>
-        <CommercialInformationTimerWrapper artwork={OnHoldArtwork as any} me={{ identityVerified: false } as any} />
+        <CommercialInformationTimerWrapper
+          artwork={OnHoldArtwork as any}
+          me={{ identityVerified: false } as any}
+        />
       </Wrapper>
     )
 
     expect(component.text()).toContain("On hold")
-    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual(_test_THEMES.v2.colors.yellow100) // we dont have a v3 yellow yet, so we are keeping the v2 for now.
+    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual(
+      _test_THEMES.v2.colors.yellow100
+    ) // we dont have a v3 yellow yet, so we are keeping the v2 for now.
   })
 
   it("renders red indicator and correct message when artwork is sold", () => {
@@ -69,12 +77,17 @@ describe("CommercialInformation", () => {
 
     const component = mount(
       <Wrapper>
-        <CommercialInformationTimerWrapper artwork={SoldArtwork as any} me={{ identityVerified: false } as any} />
+        <CommercialInformationTimerWrapper
+          artwork={SoldArtwork as any}
+          me={{ identityVerified: false } as any}
+        />
       </Wrapper>
     )
 
     expect(component.text()).toContain("Sold")
-    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual(_test_THEMES.v3.colors.red100)
+    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual(
+      _test_THEMES.v3.colors.red100
+    )
   })
 
   it("renders green indicator and correct message when artwork is for sale", () => {
@@ -86,12 +99,17 @@ describe("CommercialInformation", () => {
 
     const component = mount(
       <Wrapper>
-        <CommercialInformationTimerWrapper artwork={ForSaleArtwork as any} me={{ identityVerified: false } as any} />
+        <CommercialInformationTimerWrapper
+          artwork={ForSaleArtwork as any}
+          me={{ identityVerified: false } as any}
+        />
       </Wrapper>
     )
 
     expect(component.text()).toContain("For sale")
-    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual(_test_THEMES.v3.colors.green100)
+    expect(component.find(SaleAvailability).first().prop("dotColor")).toEqual(
+      _test_THEMES.v3.colors.green100
+    )
   })
 
   it("renders Bidding Closed and no CommercialButtons for auction works when the auction has ended", () => {
@@ -269,13 +287,20 @@ describe("CommercialInformation", () => {
     )
 
     // Expect the component to default to first edition set's internalID
-    expect(component.find(CommercialButtons).props().editionSetID).toEqual("5bbb9777ce2fc3002c179013")
+    expect(component.find(CommercialButtons).props().editionSetID).toEqual(
+      "5bbb9777ce2fc3002c179013"
+    )
 
-    const secondEditionButton = component.find(CommercialEditionSetInformation).find(TouchableWithoutFeedback).at(2)
+    const secondEditionButton = component
+      .find(CommercialEditionSetInformation)
+      .find(TouchableWithoutFeedback)
+      .at(2)
     secondEditionButton.props().onPress()
     component.update()
 
-    expect(component.find(CommercialButtons).props().editionSetID).toEqual("5bc0ec007e64300a39b23da4")
+    expect(component.find(CommercialButtons).props().editionSetID).toEqual(
+      "5bc0ec007e64300a39b23da4"
+    )
   })
 })
 
@@ -400,7 +425,10 @@ describe("ArtworkExtraLinks", () => {
 
     const component = mount(
       <Wrapper>
-        <CommercialInformationTimerWrapper artwork={offerableArtwork as any} me={{ identityVerified: false } as any} />
+        <CommercialInformationTimerWrapper
+          artwork={offerableArtwork as any}
+          me={{ identityVerified: false } as any}
+        />
       </Wrapper>
     )
     expect(component.find(ArtworkExtraLinks).length).toEqual(1)

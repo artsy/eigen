@@ -6,7 +6,11 @@ import PinFairSelected from "lib/Icons/PinFairSelected"
 import PinSavedSelected from "lib/Icons/PinSavedSelected"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
-import { convertCityToGeoJSON, fairToGeoCityFairs, showsToGeoCityShow } from "lib/utils/convertCityToGeoJSON"
+import {
+  convertCityToGeoJSON,
+  fairToGeoCityFairs,
+  showsToGeoCityShow,
+} from "lib/utils/convertCityToGeoJSON"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Schema, screenTrack, track } from "lib/utils/track"
 import { get, isEqual, uniq } from "lodash"
@@ -20,7 +24,12 @@ import { animated, config, Spring } from "react-spring/renderprops-native.cjs"
 import styled from "styled-components/native"
 import Supercluster, { AnyProps, ClusterProperties, PointFeature } from "supercluster"
 import { cityTabs } from "../City/cityTabs"
-import { bucketCityResults, BucketKey, BucketResults, emptyBucketResults } from "./bucketCityResults"
+import {
+  bucketCityResults,
+  BucketKey,
+  BucketResults,
+  emptyBucketResults,
+} from "./bucketCityResults"
 import { CitySwitcherButton } from "./Components/CitySwitcherButton"
 import { PinsShapeLayer } from "./Components/PinsShapeLayer"
 import { ShowCard } from "./Components/ShowCard"
@@ -157,7 +166,8 @@ export class GlobalMap extends React.Component<Props, State> {
     this.map = React.createRef()
     this.camera = React.createRef()
 
-    const currentLocation = this.props.initialCoordinates || get(this.props, "viewer.city.coordinates")
+    const currentLocation =
+      this.props.initialCoordinates || get(this.props, "viewer.city.coordinates")
     this.state = {
       activeShows: [],
       activeIndex: 0,
@@ -378,7 +388,12 @@ export class GlobalMap extends React.Component<Props, State> {
         pointCount && (
           <ClassTheme>
             {({ color }) => (
-              <MapboxGL.PointAnnotation key={clusterId} id={clusterId} selected coordinate={[clusterLat, clusterLng]}>
+              <MapboxGL.PointAnnotation
+                key={clusterId}
+                id={clusterId}
+                selected
+                coordinate={[clusterLat, clusterLng]}
+              >
                 <SelectedCluster width={radius} height={radius}>
                   <Sans size="3" weight="medium" color={color("white100")}>
                     {pointCount}
@@ -517,7 +532,10 @@ export class GlobalMap extends React.Component<Props, State> {
   }
 
   onDidFinishRenderingMapFully = () => {
-    LegacyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryMapHasRendered", {})
+    LegacyNativeModules.ARNotificationsManager.postNotificationName(
+      "ARLocalDiscoveryMapHasRendered",
+      {}
+    )
     this.setState({ mapLoaded: true })
   }
 
@@ -557,7 +575,8 @@ export class GlobalMap extends React.Component<Props, State> {
   render() {
     const city = get(this.props, "viewer.city")
     const { relayErrorState, userLocationWithinCity } = this.props
-    const { lat: centerLat, lng: centerLng } = this.props.initialCoordinates || get(city, "coordinates")
+    const { lat: centerLat, lng: centerLng } =
+      this.props.initialCoordinates || get(city, "coordinates")
     const { mapLoaded, activeShows, activePin } = this.state
 
     const mapProps: MapViewProps = {
@@ -593,7 +612,9 @@ export class GlobalMap extends React.Component<Props, State> {
                 <Flex flexDirection="row" justifyContent="flex-end" alignContent="flex-end" px={3}>
                   <CitySwitcherButton
                     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                    sponsoredContentUrl={this.props.viewer && this.props.viewer.city.sponsoredContent.artGuideUrl}
+                    sponsoredContentUrl={
+                      this.props.viewer && this.props.viewer.city.sponsoredContent.artGuideUrl
+                    }
                     city={city}
                     isLoading={!city && !(relayErrorState && !relayErrorState.isRetrying)}
                     onPress={this.onPressCitySwitcherButton}
@@ -721,8 +742,14 @@ export class GlobalMap extends React.Component<Props, State> {
       const [westLng, southLat] = sw
 
       const clusterEngine = this.currentFeatureCollection.clusterEngine
-      const visibleFeatures = clusterEngine.getClusters([westLng, southLat, eastLng, northLat], zoom)
-      const nearestFeature = this.getNearestPointToLatLongInCollection({ lat, lng }, visibleFeatures)
+      const visibleFeatures = clusterEngine.getClusters(
+        [westLng, southLat, eastLng, northLat],
+        zoom
+      )
+      const nearestFeature = this.getNearestPointToLatLongInCollection(
+        { lat, lng },
+        visibleFeatures
+      )
       const points = clusterEngine.getLeaves(nearestFeature.properties.cluster_id, Infinity)
       activeShows = points.map((a) => a.properties) as any
       this.setState({
@@ -741,7 +768,10 @@ export class GlobalMap extends React.Component<Props, State> {
     function distance(lat1: number, lon1: number, lat2: number, lon2: number) {
       const p = 0.017453292519943295 // Math.PI / 180
       const c = Math.cos
-      const a = 0.5 - c((lat2 - lat1) * p) / 2 + (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2
+      const a =
+        0.5 -
+        c((lat2 - lat1) * p) / 2 +
+        (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2
 
       return 12742 * Math.asin(Math.sqrt(a)) // 2 * R; R = 6371 km
     }
@@ -784,7 +814,8 @@ const SelectedCluster = styled(Flex)`
 //       too easy to miss a place that needs to be updated. This should be cleaned up when the above FIXME is addressed.
 export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
   viewer: graphql`
-    fragment GlobalMap_viewer on Query @argumentDefinitions(citySlug: { type: "String!" }, maxInt: { type: "Int!" }) {
+    fragment GlobalMap_viewer on Query
+    @argumentDefinitions(citySlug: { type: "String!" }, maxInt: { type: "Int!" }) {
       city(slug: $citySlug) {
         name
         slug
@@ -872,7 +903,12 @@ export const GlobalMapContainer = createFragmentContainer(GlobalMap, {
             }
           }
         }
-        shows: showsConnection(includeStubShows: true, status: RUNNING, first: $maxInt, sort: PARTNER_ASC) {
+        shows: showsConnection(
+          includeStubShows: true
+          status: RUNNING
+          first: $maxInt
+          sort: PARTNER_ASC
+        ) {
           edges {
             node {
               slug

@@ -22,7 +22,10 @@ export const RecentSearches: React.FC = () => {
               updateRecentSearchesOnTap={false}
               displayingRecentResult
               onDelete={() => {
-                LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 230 })
+                LayoutAnimation.configureNext({
+                  ...LayoutAnimation.Presets.easeInEaseOut,
+                  duration: 230,
+                })
                 GlobalStore.actions.search.deleteRecentSearch(result)
               }}
             />

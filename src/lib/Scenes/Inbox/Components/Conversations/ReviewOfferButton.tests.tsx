@@ -12,7 +12,10 @@ import { ReviewOfferButton, ReviewOfferButtonProps, ReviewOfferCTAKind } from ".
 jest.unmock("react-relay")
 
 describe("ReviewOfferButton", () => {
-  const getWrapper = (kind: ReviewOfferCTAKind, activeOrder: Partial<ReviewOfferButtonProps["activeOrder"]> = {}) => {
+  const getWrapper = (
+    kind: ReviewOfferCTAKind,
+    activeOrder: Partial<ReviewOfferButtonProps["activeOrder"]> = {}
+  ) => {
     const props = {
       conversationID: "conversation-id",
       kind,

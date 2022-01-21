@@ -17,7 +17,9 @@ export const withScreenDimensions: DecoratorFunction<React.ReactNode> = (story) 
   </SafeAreaProvider>
 )
 
-export const withTracking: DecoratorFunction<React.ReactNode> = (story) => <TrackProvider>{story()}</TrackProvider>
+export const withTracking: DecoratorFunction<React.ReactNode> = (story) => (
+  <TrackProvider>{story()}</TrackProvider>
+)
 
 /**
  * Add this as the last decorator, if you use any other decorators that use hooks in them.

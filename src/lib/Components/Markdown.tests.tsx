@@ -20,8 +20,12 @@ describe("Markdown", () => {
     )
 
     expect(markdown.root.findAllByType(Text).length).toEqual(4)
-    expect(markdown.root.findAllByType(Text)[0].props.children[0]).toMatch("paragraph 1 has some text")
-    expect(markdown.root.findAllByType(Text)[2].props.children[0]).toMatch("paragraph 2 also has text")
+    expect(markdown.root.findAllByType(Text)[0].props.children[0]).toMatch(
+      "paragraph 1 has some text"
+    )
+    expect(markdown.root.findAllByType(Text)[2].props.children[0]).toMatch(
+      "paragraph 2 also has text"
+    )
   })
 
   it("renders links as LinkText", () => {
@@ -36,7 +40,9 @@ describe("Markdown", () => {
     )
 
     expect(markdown.root.findAllByType(LinkText).length).toEqual(1)
-    expect(markdown.root.findAllByType(LinkText)[0].props.children[0]).toMatch("join the live auction")
+    expect(markdown.root.findAllByType(LinkText)[0].props.children[0]).toMatch(
+      "join the live auction"
+    )
 
     markdown.root.findAllByType(LinkText)[0].props.onPress()
 
@@ -74,7 +80,9 @@ describe("Markdown", () => {
         react: (node, output, state) => <Text testID="foobar">{output(node.content, state)}</Text>,
       },
     }
-    const markdown = renderWithWrappers(<Markdown rules={rules}>Paragraph 1 has some text</Markdown>)
+    const markdown = renderWithWrappers(
+      <Markdown rules={rules}>Paragraph 1 has some text</Markdown>
+    )
 
     expect(markdown.root.findAllByType(Text)[0].props.testID).toBe("foobar")
   })

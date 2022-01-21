@@ -1,4 +1,8 @@
-import MapboxGL, { CircleLayerStyle, ShapeSourceProps, SymbolLayerStyle } from "@react-native-mapbox-gl/maps"
+import MapboxGL, {
+  CircleLayerStyle,
+  ShapeSourceProps,
+  SymbolLayerStyle,
+} from "@react-native-mapbox-gl/maps"
 import { isEqual } from "lodash"
 import React, { Component } from "react"
 import { Animated, StyleProp } from "react-native"

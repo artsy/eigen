@@ -52,7 +52,8 @@ let nextStep
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const mockNavigator = { push: (route) => (nextStep = route) }
 jest.useFakeTimers()
-const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager.postNotificationName as jest.Mock
+const mockPostNotificationName = LegacyNativeModules.ARNotificationsManager
+  .postNotificationName as jest.Mock
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const findPlaceBidButton = (component) => {
@@ -164,7 +165,11 @@ describe("checkbox and payment info display", () => {
     expect(component.root.findAllByType(BidInfoRow).length).toEqual(1)
 
     const serifs = component.root.findAllByType(Serif)
-    expect(serifs.find((s) => s.props.children.join && s.props.children.join("").includes("You agree to"))).toBeTruthy()
+    expect(
+      serifs.find(
+        (s) => s.props.children.join && s.props.children.join("").includes("You agree to")
+      )
+    ).toBeTruthy()
   })
 
   it("shows a checkbox but no payment info if the user is not registered and has cc on file", () => {
@@ -246,7 +251,9 @@ describe("when pressing bid button", () => {
       const component = mountConfirmBidComponent(initialProps)
 
       component.root.findByType(Checkbox).props.onPress()
-      bidderPositionQueryMock.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
+      bidderPositionQueryMock.mockReturnValueOnce(
+        Promise.resolve(mockRequestResponses.pollingForBid.highestBidder)
+      )
       relay.commitMutation = jest.fn()
 
       findPlaceBidButton(component).props.onPress()
@@ -306,7 +313,8 @@ describe("when pressing bid button", () => {
 
       it("displays an error message on a createBidderPosition mutation failure", async () => {
         const error = {
-          message: 'GraphQL Timeout Error: Mutation.createBidderPosition has timed out after waiting for 5000ms"}',
+          message:
+            'GraphQL Timeout Error: Mutation.createBidderPosition has timed out after waiting for 5000ms"}',
         }
 
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -348,10 +356,18 @@ describe("editing bid amount", () => {
       ...initialPropsForRegisteredUser,
       navigator: fakeNavigator,
     }
-    fakeNavigator.push({ component: SelectMaxBid, id: "", title: "", passProps: fakeNavigatorProps })
+    fakeNavigator.push({
+      component: SelectMaxBid,
+      id: "",
+      title: "",
+      passProps: fakeNavigatorProps,
+    })
     fakeNavigator.push({ component: ConfirmBid, id: "", title: "", passProps: fakeNavigatorProps })
 
-    const component = mountConfirmBidComponent({ ...initialPropsForRegisteredUser, navigator: fakeNavigator })
+    const component = mountConfirmBidComponent({
+      ...initialPropsForRegisteredUser,
+      navigator: fakeNavigator,
+    })
 
     const selectMaxBidRow = component.root.findAllByType(TouchableWithoutFeedback)[0]
 
@@ -412,7 +428,9 @@ describe("polling to verify bid position", () => {
       const component = mountConfirmBidComponent(initialProps)
 
       component.root.findByType(Checkbox).props.onPress()
-      bidderPositionQueryMock.mockReturnValue(Promise.resolve(mockRequestResponses.pollingForBid.pending))
+      bidderPositionQueryMock.mockReturnValue(
+        Promise.resolve(mockRequestResponses.pollingForBid.pending)
+      )
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -439,7 +457,9 @@ describe("polling to verify bid position", () => {
       const component = mountConfirmBidComponent(initialProps)
 
       component.root.findByType(Checkbox).props.onPress()
-      bidderPositionQueryMock.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
+      bidderPositionQueryMock.mockReturnValueOnce(
+        Promise.resolve(mockRequestResponses.pollingForBid.highestBidder)
+      )
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -466,7 +486,9 @@ describe("polling to verify bid position", () => {
       const component = mountConfirmBidComponent(initialProps)
 
       component.root.findByType(Checkbox).props.onPress()
-      bidderPositionQueryMock.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.outbid))
+      bidderPositionQueryMock.mockReturnValueOnce(
+        Promise.resolve(mockRequestResponses.pollingForBid.outbid)
+      )
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -493,7 +515,9 @@ describe("polling to verify bid position", () => {
       const component = mountConfirmBidComponent(initialProps)
 
       component.root.findByType(Checkbox).props.onPress()
-      bidderPositionQueryMock.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet))
+      bidderPositionQueryMock.mockReturnValueOnce(
+        Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet)
+      )
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -524,7 +548,9 @@ describe("polling to verify bid position", () => {
         refreshSaleArtwork: jest.fn(),
       })
       component.root.findByType(Checkbox).props.onPress()
-      bidderPositionQueryMock.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet))
+      bidderPositionQueryMock.mockReturnValueOnce(
+        Promise.resolve(mockRequestResponses.pollingForBid.reserveNotMet)
+      )
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -608,7 +634,8 @@ describe("polling to verify bid position", () => {
       expect(nextStep.passProps).toEqual(
         expect.objectContaining({
           // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          bidderPositionResult: mockRequestResponses.placingBid.bidRejected.createBidderPosition.result,
+          bidderPositionResult:
+            mockRequestResponses.placingBid.bidRejected.createBidderPosition.result,
         })
       )
     })
@@ -628,8 +655,9 @@ describe("ConfirmBid for unqualified user", () => {
   }
 
   it("shows the billing address that the user typed in the billing address form", () => {
-    const billingAddressRow =
-      mountConfirmBidComponent(initialPropsForUnqualifiedUser).root.findAllByType(TouchableWithoutFeedback)[2]
+    const billingAddressRow = mountConfirmBidComponent(
+      initialPropsForUnqualifiedUser
+    ).root.findAllByType(TouchableWithoutFeedback)[2]
 
     billingAddressRow.instance.props.onPress()
 
@@ -639,12 +667,15 @@ describe("ConfirmBid for unqualified user", () => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     nextStep.passProps.onSubmit(billingAddress)
 
-    expect(billingAddressRow.findAllByType(Text)[1].props.children).toEqual("401 Broadway 25th floor New York NY")
+    expect(billingAddressRow.findAllByType(Text)[1].props.children).toEqual(
+      "401 Broadway 25th floor New York NY"
+    )
   })
 
   it("shows the credit card form when the user tap the edit text in the credit card row", () => {
-    const creditcardRow =
-      mountConfirmBidComponent(initialPropsForUnqualifiedUser).root.findAllByType(TouchableWithoutFeedback)[1]
+    const creditcardRow = mountConfirmBidComponent(
+      initialPropsForUnqualifiedUser
+    ).root.findAllByType(TouchableWithoutFeedback)[1]
 
     creditcardRow.instance.props.onPress()
 
@@ -767,7 +798,8 @@ describe("ConfirmBid for unqualified user", () => {
       expect.objectContaining({
         bidderPositionResult: {
           message_header: "An error occurred",
-          message_description_md: "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
+          message_description_md:
+            "Your bid couldn’t be placed. Please\ncheck your internet connection\nand try again.",
         },
       })
     )
@@ -778,9 +810,15 @@ describe("ConfirmBid for unqualified user", () => {
       stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
       relay.commitMutation = jest
         .fn()
-        .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.updateMyUserProfile))
-        .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.creatingCreditCardSuccess))
-        .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.placingBid.bidAccepted))
+        .mockImplementationOnce((_, { onCompleted }) =>
+          onCompleted(mockRequestResponses.updateMyUserProfile)
+        )
+        .mockImplementationOnce((_, { onCompleted }) =>
+          onCompleted(mockRequestResponses.creatingCreditCardSuccess)
+        )
+        .mockImplementationOnce((_, { onCompleted }) =>
+          onCompleted(mockRequestResponses.placingBid.bidAccepted)
+        )
     })
 
     it("commits two mutations, createCreditCard followed by createBidderPosition on a successful bid", async () => {

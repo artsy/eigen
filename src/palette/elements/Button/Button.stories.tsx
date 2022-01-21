@@ -46,7 +46,11 @@ storiesOf("Button", module)
     <DataList
       data={states}
       renderItem={({ item: state }) => (
-        <Button variant="fillLight" testOnly_state={state} onPress={() => action(`tapped ${state}`)}>
+        <Button
+          variant="fillLight"
+          testOnly_state={state}
+          onPress={() => action(`tapped ${state}`)}
+        >
           {state ?? "regular button"}
         </Button>
       )}
@@ -111,7 +115,13 @@ storiesOf("Button", module)
         loading and disabled
       </Button>
       <Button block>block</Button>
-      <Flex backgroundColor="orange" width={400} height={80} alignItems="center" justifyContent="center">
+      <Flex
+        backgroundColor="orange"
+        width={400}
+        height={80}
+        alignItems="center"
+        justifyContent="center"
+      >
         <Button variant="fillLight" icon={<LinkIcon />}>
           left icon
         </Button>
@@ -122,7 +132,11 @@ storiesOf("Button", module)
       <Button size="small" icon={<LinkIcon fill="white100" />} iconPosition="right">
         Right Icon Small
       </Button>
-      <Button variant="fillDark" size="small" icon={<BellIcon fill="white100" width="16px" height="16px" />}>
+      <Button
+        variant="fillDark"
+        size="small"
+        icon={<BellIcon fill="white100" width="16px" height="16px" />}
+      >
         Create Alert
       </Button>
       <Box flexDirection="row">

@@ -1,4 +1,9 @@
-import { ContextModule, ScreenOwnerType, tappedRegisterToBid, TappedRegisterToBidArgs } from "@artsy/cohesion"
+import {
+  ContextModule,
+  ScreenOwnerType,
+  tappedRegisterToBid,
+  TappedRegisterToBidArgs,
+} from "@artsy/cohesion"
 import { RegisterToBidButton_me } from "__generated__/RegisterToBidButton_me.graphql"
 import { RegisterToBidButton_sale } from "__generated__/RegisterToBidButton_sale.graphql"
 import { Box, Button, CheckIcon, Flex, Spacer, Text } from "palette"
@@ -14,7 +19,12 @@ interface RegisterToBidButtonProps {
   contextModule: ContextModule
 }
 
-const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({ me, sale, contextType, contextModule }) => {
+const RegisterToBidButton: React.FC<RegisterToBidButtonProps> = ({
+  me,
+  sale,
+  contextType,
+  contextModule,
+}) => {
   const { trackEvent } = useTracking()
 
   if (sale.registrationStatus === null) {

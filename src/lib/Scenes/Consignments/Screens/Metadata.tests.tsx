@@ -24,13 +24,17 @@ describe("state", () => {
   it("is set up with empty consignment metadata", () => {
     const consignmentMetadata = {} as ConsignmentMetadata
     const tree = renderWithWrappers(<Metadata navigator={nav} metadata={consignmentMetadata} />)
-    expect(tree.root.findByProps({ testID: "consigments-metatdata-title" }).props.text.value).toBeFalsy()
+    expect(
+      tree.root.findByProps({ testID: "consigments-metatdata-title" }).props.text.value
+    ).toBeFalsy()
   })
 
   it("is set up with filled consignment metadata", () => {
     const tree = renderWithWrappers(<Metadata navigator={nav} metadata={exampleMetadata} />)
 
-    expect(tree.root.findByProps({ testID: "consigments-metatdata-title" }).props.text.value).toBeTruthy()
+    expect(
+      tree.root.findByProps({ testID: "consigments-metatdata-title" }).props.text.value
+    ).toBeTruthy()
   })
 
   it("sets state correctly at init", () => {

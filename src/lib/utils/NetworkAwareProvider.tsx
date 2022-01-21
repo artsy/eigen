@@ -31,7 +31,13 @@ export const NetworkAwareProvider: React.FC<{}> = () => {
       presentationStyle="overFullScreen"
     >
       <Flex flex={1} justifyContent="flex-end" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
-        <Flex backgroundColor="white" alignItems="center" px={2} py={2} paddingBottom={safeAreaInsets.bottom + 20}>
+        <Flex
+          backgroundColor="white"
+          alignItems="center"
+          px={2}
+          py={2}
+          paddingBottom={safeAreaInsets.bottom + 20}
+        >
           <Text textAlign="center" variant="lg">
             Connection Error
           </Text>

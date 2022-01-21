@@ -190,7 +190,9 @@ describe("BidResult component", () => {
       bidResult.root.findByType(Button).props.onPress()
       jest.runAllTicks()
 
-      expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/sale-id", { modal: true })
+      expect(navigate).toHaveBeenCalledWith("https://live-staging.artsy.net/sale-id", {
+        modal: true,
+      })
     })
   })
 })

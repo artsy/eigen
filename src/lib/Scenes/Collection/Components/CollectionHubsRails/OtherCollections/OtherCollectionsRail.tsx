@@ -12,10 +12,19 @@ export interface OtherCollectionsRailProps {
 
 export const CollectionGroupMemberPill: React.FC<Partial<SansProps>> = (props) => (
   // @ts-ignore
-  <Sans px={3} py={2} size="3t" bg="black10" style={{ overflow: "hidden", borderRadius: "6px" }} {...props} />
+  <Sans
+    px={3}
+    py={2}
+    size="3t"
+    bg="black10"
+    style={{ overflow: "hidden", borderRadius: "6px" }}
+    {...props}
+  />
 )
 
-export const OtherCollectionsRail: React.FC<OtherCollectionsRailProps> = ({ collectionGroup: { name, members } }) => {
+export const OtherCollectionsRail: React.FC<OtherCollectionsRailProps> = ({
+  collectionGroup: { name, members },
+}) => {
   const ref = useRef<View | null>(null)
 
   return (

@@ -1,6 +1,9 @@
 import { ActionType, ContextModule, OwnerType, TappedInfoBubble } from "@artsy/cohesion"
 import { ArtistInsightsAuctionResults_artist } from "__generated__/ArtistInsightsAuctionResults_artist.graphql"
-import { filterArtworksParams, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  filterArtworksParams,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ORDERED_AUCTION_RESULTS_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { useArtworkFilters } from "lib/Components/ArtworkFilter/useArtworkFilters"
@@ -33,11 +36,15 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
 
   const auctionResults = extractNodes(artist.auctionResultsConnection)
 
-  const setFilterTypeAction = ArtworksFiltersStore.useStoreActions((state) => state.setFilterTypeAction)
+  const setFilterTypeAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.setFilterTypeAction
+  )
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const filterParams = filterArtworksParams(appliedFilters, "auctionResult")
 
-  const keywordFilterValue = appliedFilters?.find((filter) => filter.paramName === FilterParamName.keyword)?.paramValue
+  const keywordFilterValue = appliedFilters?.find(
+    (filter) => filter.paramName === FilterParamName.keyword
+  )?.paramValue
   const isKeywordFilterActive = !!keywordFilterValue
 
   const [loadingMoreData, setLoadingMoreData] = useState(false)
@@ -64,7 +71,8 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
       slice: "latestCreatedYear",
       counts: [
         {
-          value: artist.auctionResultsConnection?.createdYearRange?.endAt || new Date().getFullYear(),
+          value:
+            artist.auctionResultsConnection?.createdYearRange?.endAt || new Date().getFullYear(),
           name: "latestCreatedYear",
         },
       ],
@@ -85,7 +93,9 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
   }, [])
 
   const getSortDescription = useCallback(() => {
-    const sortMode = ORDERED_AUCTION_RESULTS_SORTS.find((sort) => sort.paramValue === filterParams?.sort)
+    const sortMode = ORDERED_AUCTION_RESULTS_SORTS.find(
+      (sort) => sort.paramValue === filterParams?.sort
+    )
     if (sortMode) {
       return sortMode.displayText
     }
@@ -108,19 +118,20 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
     <>
       <Spacer my={1} />
       <Text>
-        These auction results bring together sale data from top auction houses around the world, including Christie’s,
-        Sotheby’s, Phillips and Bonhams. Results are updated daily.
+        These auction results bring together sale data from top auction houses around the world,
+        including Christie’s, Sotheby’s, Phillips and Bonhams. Results are updated daily.
       </Text>
       <Spacer mb={2} />
       <Text>
-        Please note that the sale price includes the hammer price and buyer’s premium, as well as any other additional
-        fees (e.g., Artist’s Resale Rights).
+        Please note that the sale price includes the hammer price and buyer’s premium, as well as
+        any other additional fees (e.g., Artist’s Resale Rights).
       </Text>
       <Spacer mb={2} />
     </>
   )
 
-  const resultsString = Number(artist.auctionResultsConnection?.totalCount) === 1 ? "result" : "results"
+  const resultsString =
+    Number(artist.auctionResultsConnection?.totalCount) === 1 ? "result" : "results"
 
   return (
     <View
@@ -191,7 +202,11 @@ const ArtistInsightsAuctionResults: React.FC<Props> = ({ artist, relay, scrollTo
         </Flex>
       ) : (
         <Box my="80px">
-          <FilteredArtworkGridZeroState id={artist.id} slug={artist.slug} hideClearButton={isKeywordFilterActive} />
+          <FilteredArtworkGridZeroState
+            id={artist.id}
+            slug={artist.slug}
+            hideClearButton={isKeywordFilterActive}
+          />
         </Box>
       )}
     </View>

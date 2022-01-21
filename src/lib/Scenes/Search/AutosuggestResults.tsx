@@ -16,7 +16,11 @@ import React from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
-import { AutosuggestSearchResult, OnResultPress, TrackResultPress } from "./components/AutosuggestSearchResult"
+import {
+  AutosuggestSearchResult,
+  OnResultPress,
+  TrackResultPress,
+} from "./components/AutosuggestSearchResult"
 import { AutosuggestResultsPlaceholder } from "./components/placeholders/AutosuggestResultsPlaceholder"
 
 export type AutosuggestResult = NonNullable<
@@ -105,12 +109,15 @@ const AutosuggestResultsFlatList: React.FC<{
   results.current = latestResults || results.current
 
   const nodes: AutosuggestResult[] = useMemo(
-    () => results.current?.results?.edges?.map((e, i) => ({ ...e?.node!, key: e?.node?.href! + i })) ?? [],
+    () =>
+      results.current?.results?.edges?.map((e, i) => ({ ...e?.node!, key: e?.node?.href! + i })) ??
+      [],
     [results.current]
   )
 
   // We want to show a loading spinner at the bottom so long as there are more results to be had
-  const hasMoreResults = results.current && results.current.results?.edges?.length! > 0 && relay.hasMore()
+  const hasMoreResults =
+    results.current && results.current.results?.edges?.length! > 0 && relay.hasMore()
   const ListFooterComponent = useMemo(() => {
     return () => (
       <Flex justifyContent="center" p={3} pb={6}>
@@ -188,10 +195,18 @@ const AutosuggestResultsContainer = createPaginationContainer(
         query: { type: "String!" }
         count: { type: "Int!" }
         cursor: { type: "String" }
-        entities: { type: "[SearchEntity]", defaultValue: [ARTIST, ARTWORK, FAIR, GENE, SALE, PROFILE, COLLECTION] }
+        entities: {
+          type: "[SearchEntity]"
+          defaultValue: [ARTIST, ARTWORK, FAIR, GENE, SALE, PROFILE, COLLECTION]
+        }
       ) {
-        results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: $cursor, entities: $entities)
-          @connection(key: "AutosuggestResults_results") {
+        results: searchConnection(
+          query: $query
+          mode: AUTOSUGGEST
+          first: $count
+          after: $cursor
+          entities: $entities
+        ) @connection(key: "AutosuggestResults_results") {
           edges {
             node {
               imageUrl
@@ -230,9 +245,14 @@ const AutosuggestResultsContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query AutosuggestResultsPaginationQuery($query: String!, $count: Int!, $cursor: String, $entities: [SearchEntity])
-      @raw_response_type {
-        ...AutosuggestResults_results @arguments(query: $query, count: $count, cursor: $cursor, entities: $entities)
+      query AutosuggestResultsPaginationQuery(
+        $query: String!
+        $count: Int!
+        $cursor: String
+        $entities: [SearchEntity]
+      ) @raw_response_type {
+        ...AutosuggestResults_results
+          @arguments(query: $query, count: $count, cursor: $cursor, entities: $entities)
       }
     `,
   }
@@ -297,8 +317,10 @@ export const AutosuggestResults: React.FC<{
           entities,
         }}
         query={graphql`
-          query AutosuggestResultsQuery($query: String!, $count: Int!, $entities: [SearchEntity]) @raw_response_type {
-            ...AutosuggestResults_results @arguments(query: $query, count: $count, entities: $entities)
+          query AutosuggestResultsQuery($query: String!, $count: Int!, $entities: [SearchEntity])
+          @raw_response_type {
+            ...AutosuggestResults_results
+              @arguments(query: $query, count: $count, entities: $entities)
           }
         `}
         environment={defaultEnvironment}

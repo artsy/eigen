@@ -45,7 +45,11 @@ interface LabeledTickerProps {
   textProps?: ExtractProps<typeof Sans>
 }
 
-export const LabeledTicker: React.FC<LabeledTickerProps> = ({ duration, renderSeparator, textProps }) => {
+export const LabeledTicker: React.FC<LabeledTickerProps> = ({
+  duration,
+  renderSeparator,
+  textProps,
+}) => {
   const sections = durationSections(duration, ["d", "h", "m", "s"])
   return (
     <Flex flexDirection="row" justifyContent="center" alignItems="center">
@@ -73,7 +77,9 @@ export const SimpleTicker: React.FC<SimpleTickerProps> = ({ duration, separator,
   return (
     <Sans {...rest}>
       {sections
-        .map(({ time, label }, idx) => (idx < sections.length - 1 ? time + label + separator : time + label))
+        .map(({ time, label }, idx) =>
+          idx < sections.length - 1 ? time + label + separator : time + label
+        )
         .join("")}
     </Sans>
   )

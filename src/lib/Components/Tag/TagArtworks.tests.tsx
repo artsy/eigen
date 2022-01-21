@@ -23,7 +23,8 @@ describe("TagArtworks", () => {
       <QueryRenderer<TagArtworksTestsQuery>
         environment={environment}
         query={graphql`
-          query TagArtworksTestsQuery($tagID: String!, $input: FilterArtworksInput) @relay_test_operation {
+          query TagArtworksTestsQuery($tagID: String!, $input: FilterArtworksInput)
+          @relay_test_operation {
             tag(id: $tagID) {
               ...TagArtworks_tag @arguments(input: $input)
             }

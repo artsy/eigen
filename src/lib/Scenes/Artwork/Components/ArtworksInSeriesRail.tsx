@@ -1,4 +1,10 @@
-import { ActionType, ContextModule, OwnerType, ScreenOwnerType, TappedArtworkGroup } from "@artsy/cohesion"
+import {
+  ActionType,
+  ContextModule,
+  OwnerType,
+  ScreenOwnerType,
+  TappedArtworkGroup,
+} from "@artsy/cohesion"
 import { ArtworksInSeriesRail_artwork } from "__generated__/ArtworksInSeriesRail_artwork.graphql"
 import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
@@ -19,7 +25,8 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
 
   const artistSeriesSlug = artwork?.artistSeriesConnection?.edges?.[0]?.node?.slug
   const artistSeriesID = artwork?.artistSeriesConnection?.edges?.[0]?.node?.internalID
-  const filterArtworksConnection = artwork?.artistSeriesConnection?.edges?.[0]?.node?.filterArtworksConnection
+  const filterArtworksConnection =
+    artwork?.artistSeriesConnection?.edges?.[0]?.node?.filterArtworksConnection
 
   if (!filterArtworksConnection) {
     return null
@@ -76,7 +83,10 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
     <Flex>
       <TouchableOpacity
         onPress={() => {
-          trackHeaderClick({ destinationScreenOwnerSlug: artistSeriesSlug!, destinationScreenOwnerID: artistSeriesID! })
+          trackHeaderClick({
+            destinationScreenOwnerSlug: artistSeriesSlug!,
+            destinationScreenOwnerID: artistSeriesID!,
+          })
           navigate(`/artist-series/${artistSeriesSlug}`)
         }}
       >
@@ -95,7 +105,10 @@ export const ArtworksInSeriesRail: React.FC<ArtworksInSeriesRailProps> = ({ artw
         renderItem={({ item }) => (
           <ArtworkTileRailCard
             onPress={() => {
-              trackArtworkClick({ destinationScreenOwnerID: item.internalID, destinationScreenOwnerSlug: item.slug })
+              trackArtworkClick({
+                destinationScreenOwnerID: item.internalID,
+                destinationScreenOwnerSlug: item.slug,
+              })
               navigate(item.href!)
             }}
             imageURL={item.image?.imageURL}

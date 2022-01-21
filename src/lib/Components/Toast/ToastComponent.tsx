@@ -16,7 +16,14 @@ const NAVBAR_HEIGHT = 44
 
 type ToastProps = ToastDetails
 
-export const ToastComponent: React.FC<ToastProps> = ({ id, positionIndex, placement, message, onPress, Icon }) => {
+export const ToastComponent: React.FC<ToastProps> = ({
+  id,
+  positionIndex,
+  placement,
+  message,
+  onPress,
+  Icon,
+}) => {
   const color = useColor()
   const { width, height } = useScreenDimensions()
   const { top: topSafeAreaInset } = useScreenDimensions().safeAreaInsets

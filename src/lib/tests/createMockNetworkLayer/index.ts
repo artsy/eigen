@@ -65,7 +65,8 @@ export const createMockFetchQuery = ({
       const pathAsArray = responsePathAsArray(info.path)
       if (pathAsArray.length === 1) {
         // source is null for root fields
-        source = source || (info.operation.operation === "mutation" ? mockMutationResults : mockData)
+        source =
+          source || (info.operation.operation === "mutation" ? mockMutationResults : mockData)
       }
 
       // fail early if source is not an object type
@@ -148,7 +149,10 @@ export const createMockFetchQuery = ({
         (acc, k) => ({
           ...acc,
           // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          [k]: typeof mockMutationResults[k] === "function" ? mockMutationResults[k] : () => mockMutationResults[k],
+          [k]:
+            typeof mockMutationResults[k] === "function"
+              ? mockMutationResults[k]
+              : () => mockMutationResults[k],
         }),
         {}
       ),

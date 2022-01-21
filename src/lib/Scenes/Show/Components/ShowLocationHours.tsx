@@ -11,7 +11,10 @@ interface ShowLocationHours extends BoxProps {
   location: ShowLocationHours_location
 }
 
-const ShowLocationHours: React.FC<ShowLocationHours> = ({ location: { openingHours }, ...rest }) => {
+const ShowLocationHours: React.FC<ShowLocationHours> = ({
+  location: { openingHours },
+  ...rest
+}) => {
   if (!openingHours?.text && !openingHours?.schedules) {
     return null
   }

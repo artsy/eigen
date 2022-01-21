@@ -26,7 +26,10 @@ class RelatedArtist extends Component<Props> {
     return (
       <TouchableWithoutFeedback onPress={this.handleTap.bind(this)}>
         <View style={{ width: this.props.imageSize.width }}>
-          <ImageView style={[this.props.imageSize, { overflow: "hidden", borderRadius: 2 }]} imageURL={imageURL} />
+          <ImageView
+            style={[this.props.imageSize, { overflow: "hidden", borderRadius: 2 }]}
+            imageURL={imageURL}
+          />
           <Spacer mb={1} />
           <Sans size="3t" weight="medium">
             {artist.name}
@@ -45,7 +48,9 @@ class RelatedArtist extends Component<Props> {
 
   artworksString(counts: RelatedArtist_artist["counts"]) {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const totalWorks = counts.artworks ? counts.artworks + (counts.artworks > 1 ? " works" : " work") : null
+    const totalWorks = counts.artworks
+      ? counts.artworks + (counts.artworks > 1 ? " works" : " work")
+      : null
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     if (totalWorks && counts.forSaleArtworks === counts.artworks) {
       return totalWorks + " for sale"

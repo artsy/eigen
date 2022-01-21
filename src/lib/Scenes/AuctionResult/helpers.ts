@@ -3,7 +3,10 @@ import moment from "moment"
 
 type AuctionResultHelperNeededData = "currency" | "boughtIn" | "priceRealized" | "saleDate"
 // This type just mirrors the types that come back from metaphysics.
-export type AuctionResultHelperData = Pick<AuctionResultListItem_auctionResult, AuctionResultHelperNeededData>
+export type AuctionResultHelperData = Pick<
+  AuctionResultListItem_auctionResult,
+  AuctionResultHelperNeededData
+>
 
 export const auctionResultHasPrice = (auctionResult: AuctionResultHelperData): boolean => {
   if (

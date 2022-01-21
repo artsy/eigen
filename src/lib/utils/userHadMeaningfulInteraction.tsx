@@ -33,7 +33,12 @@ export async function userHadMeaningfulInteraction({
       hasRequested = true
       try {
         postEventToProviders(
-          tracks.promptForReview({ contextModule, contextOwnerType, contextOwnerSlug, contextOwnerId })
+          tracks.promptForReview({
+            contextModule,
+            contextOwnerType,
+            contextOwnerSlug,
+            contextOwnerId,
+          })
         )
         await InAppReview.RequestInAppReview()
       } catch (error) {

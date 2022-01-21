@@ -17,13 +17,21 @@ export const InputTitle: React.FC<{ optional?: boolean; required?: boolean }> = 
       <Text variant="md" style={{ fontSize: 13, marginBottom: 2, textTransform: "uppercase" }}>
         {title}
         {!!required && (
-          <Text variant="md" style={{ fontSize: 13, textTransform: "none" }} color={color("black60")}>
+          <Text
+            variant="md"
+            style={{ fontSize: 13, textTransform: "none" }}
+            color={color("black60")}
+          >
             {" "}
             Required
           </Text>
         )}
         {!!optional && (
-          <Text variant="md" style={{ fontSize: 13, textTransform: "none" }} color={color("black60")}>
+          <Text
+            variant="md"
+            style={{ fontSize: 13, textTransform: "none" }}
+            color={color("black60")}
+          >
             {" "}
             Optional
           </Text>

@@ -46,7 +46,9 @@ describe("VanityURLEntity", () => {
   })
 
   it("renders a fairQueryRenderer when given a fair id", () => {
-    const tree = renderWithWrappers(<TestRenderer entity="fair" slugType="fairID" slug="some-fair" />)
+    const tree = renderWithWrappers(
+      <TestRenderer entity="fair" slugType="fairID" slug="some-fair" />
+    )
     expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("FairQuery")
     act(() => {
       env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation))
@@ -57,26 +59,36 @@ describe("VanityURLEntity", () => {
 
   describe("rendering a profile", () => {
     it("shows a fair placeholder when entityType is fair", () => {
-      const tree = renderWithWrappers(<TestRenderer entity="fair" slugType="profileID" slug="some-fair" />)
+      const tree = renderWithWrappers(
+        <TestRenderer entity="fair" slugType="profileID" slug="some-fair" />
+      )
       const fairPlaceholder = tree.root.findByType(FairPlaceholder)
       expect(fairPlaceholder).toBeDefined()
     })
 
     it("shows a partner placeholder when entityType is partner", () => {
-      const tree = renderWithWrappers(<TestRenderer entity="partner" slugType="profileID" slug="some-partner" />)
+      const tree = renderWithWrappers(
+        <TestRenderer entity="partner" slugType="profileID" slug="some-partner" />
+      )
       const partnerPlaceholder = tree.root.findByType(HeaderTabsGridPlaceholder)
       expect(partnerPlaceholder).toBeDefined()
     })
 
     it("shows a spinner when entityType is unknown", () => {
-      const tree = renderWithWrappers(<TestRenderer entity="unknown" slugType="profileID" slug="some-partner" />)
+      const tree = renderWithWrappers(
+        <TestRenderer entity="unknown" slugType="profileID" slug="some-partner" />
+      )
       const spinner = tree.root.findByType(Spinner)
       expect(spinner).toBeDefined()
     })
 
     it("renders a partner when a partner is returned", () => {
-      const tree = renderWithWrappers(<TestRenderer entity="partner" slugType="profileID" slug="some-gallery" />)
-      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("VanityURLEntityQuery")
+      const tree = renderWithWrappers(
+        <TestRenderer entity="partner" slugType="profileID" slug="some-gallery" />
+      )
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "VanityURLEntityQuery"
+      )
       act(() => {
         env.mock.resolveMostRecentOperation((operation) =>
           MockPayloadGenerator.generate(operation, {
@@ -95,8 +107,12 @@ describe("VanityURLEntity", () => {
 
     // TODO: Passes in isolation, but not with other specs
     xit("renders a fair when a fair is returned", () => {
-      const tree = renderWithWrappers(<TestRenderer entity="fair" slugType="profileID" slug="some-fair" />)
-      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("VanityURLEntityQuery")
+      const tree = renderWithWrappers(
+        <TestRenderer entity="fair" slugType="profileID" slug="some-fair" />
+      )
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "VanityURLEntityQuery"
+      )
       act(() => {
         env.mock.resolveMostRecentOperation((operation) =>
           MockPayloadGenerator.generate(operation, {
@@ -113,8 +129,12 @@ describe("VanityURLEntity", () => {
     })
 
     it("renders a webview when an unknown profile type is returned", () => {
-      const tree = renderWithWrappers(<TestRenderer entity="unknown" slugType="profileID" slug="some-unknown-id" />)
-      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("VanityURLEntityQuery")
+      const tree = renderWithWrappers(
+        <TestRenderer entity="unknown" slugType="profileID" slug="some-unknown-id" />
+      )
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "VanityURLEntityQuery"
+      )
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],

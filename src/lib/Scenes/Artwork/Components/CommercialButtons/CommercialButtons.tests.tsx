@@ -15,7 +15,11 @@ import { CommercialButtonsFragmentContainer } from "./CommercialButtons"
 jest.unmock("react-relay")
 
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-const componentWithQuery = async ({ mockArtworkData, mockOrderMutationResults, mockOfferMutationResults }) => {
+const componentWithQuery = async ({
+  mockArtworkData,
+  mockOrderMutationResults,
+  mockOfferMutationResults,
+}) => {
   return await renderRelayTree({
     Component: CommercialButtonsFragmentContainer,
     query: graphql`
@@ -196,7 +200,10 @@ describe("CommercialButtons", () => {
     const BuyNowButton = commercialButtons.find(Button).at(0)
     BuyNowButton.props().onPress()
     await flushPromiseQueue()
-    expect(navigate).toHaveBeenCalledWith("/orders/buyNowID", { modal: true, passProps: { title: "Buy Now" } })
+    expect(navigate).toHaveBeenCalledWith("/orders/buyNowID", {
+      modal: true,
+      passProps: { title: "Buy Now" },
+    })
   })
 
   it("commits the Make Offer mutation", async () => {

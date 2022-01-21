@@ -53,7 +53,11 @@ storiesOf("Content Tabs", module)
 storiesOf("Step Tabs", module)
   .addDecorator(withTheme)
   .add("Step Tabs with step 1 completed", () => {
-    const tabs: TabsType = [{ label: "Step 1", completed: true }, { label: "Step 2" }, { label: "Step 3" }]
+    const tabs: TabsType = [
+      { label: "Step 1", completed: true },
+      { label: "Step 2" },
+      { label: "Step 3" },
+    ]
     return <Wrapper tabs={tabs} component={StepTabs} />
   })
   .add("Step Tabs with NO step completed", () => {

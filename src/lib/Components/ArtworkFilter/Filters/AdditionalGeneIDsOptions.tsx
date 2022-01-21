@@ -1,7 +1,11 @@
 import { toTitleCase } from "@artsy/to-title-case"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
-import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  FilterData,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import React from "react"
 import { ArtworksFiltersStore } from "../ArtworkFilterStore"
@@ -11,7 +15,9 @@ import { useMultiSelect } from "./useMultiSelect"
 interface AdditionalGeneIDsOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "AdditionalGeneIDsOptionsScreen"> {}
 
-export const AdditionalGeneIDsOptionsScreen: React.FC<AdditionalGeneIDsOptionsScreenProps> = ({ navigation }) => {
+export const AdditionalGeneIDsOptionsScreen: React.FC<AdditionalGeneIDsOptionsScreenProps> = ({
+  navigation,
+}) => {
   const filterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
   const localFilterOptions = ArtworksFiltersStore.useStoreState((state) => state.filterOptions)
 
@@ -24,7 +30,11 @@ export const AdditionalGeneIDsOptionsScreen: React.FC<AdditionalGeneIDsOptionsSc
   } else {
     // Convert aggregations to filter options
     options = (aggregation?.counts ?? []).map(({ name: displayText, value: paramValue }) => {
-      return { paramName: FilterParamName.additionalGeneIDs, displayText: toTitleCase(displayText), paramValue }
+      return {
+        paramName: FilterParamName.additionalGeneIDs,
+        displayText: toTitleCase(displayText),
+        paramValue,
+      }
     })
   }
 

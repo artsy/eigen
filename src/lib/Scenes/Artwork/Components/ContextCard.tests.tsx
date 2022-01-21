@@ -15,7 +15,10 @@ describe("ContextCard", () => {
       const component = mount(
         <GlobalStoreProvider>
           <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={fairContextArtwork as any} />
+            <ContextCard
+              relay={{ environment: {} } as RelayProp}
+              artwork={fairContextArtwork as any}
+            />
           </Theme>
         </GlobalStoreProvider>
       )
@@ -28,7 +31,10 @@ describe("ContextCard", () => {
       const component = mount(
         <GlobalStoreProvider>
           <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={fairContextArtwork as any} />
+            <ContextCard
+              relay={{ environment: {} } as RelayProp}
+              artwork={fairContextArtwork as any}
+            />
           </Theme>
         </GlobalStoreProvider>
       )
@@ -42,7 +48,10 @@ describe("ContextCard", () => {
       const component = mount(
         <GlobalStoreProvider>
           <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={showContextArtwork as any} />
+            <ContextCard
+              relay={{ environment: {} } as RelayProp}
+              artwork={showContextArtwork as any}
+            />
           </Theme>
         </GlobalStoreProvider>
       )
@@ -55,7 +64,10 @@ describe("ContextCard", () => {
       const component = mount(
         <GlobalStoreProvider>
           <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={showContextArtwork as any} />
+            <ContextCard
+              relay={{ environment: {} } as RelayProp}
+              artwork={showContextArtwork as any}
+            />
           </Theme>
         </GlobalStoreProvider>
       )
@@ -67,13 +79,18 @@ describe("ContextCard", () => {
       const component = mount(
         <GlobalStoreProvider>
           <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={showContextArtwork as any} />
+            <ContextCard
+              relay={{ environment: {} } as RelayProp}
+              artwork={showContextArtwork as any}
+            />
           </Theme>
         </GlobalStoreProvider>
       )
       expect(component.find(Button)).toHaveLength(1)
 
-      expect(component.find(Button).at(0).render().text()).toMatchInlineSnapshot(`"FollowingFollow"`)
+      expect(component.find(Button).at(0).render().text()).toMatchInlineSnapshot(
+        `"FollowingFollow"`
+      )
     })
   })
 
@@ -82,7 +99,10 @@ describe("ContextCard", () => {
       const component = mount(
         <GlobalStoreProvider>
           <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
+            <ContextCard
+              relay={{ environment: {} } as RelayProp}
+              artwork={auctionContextArtwork as any}
+            />
           </Theme>
         </GlobalStoreProvider>
       )
@@ -95,7 +115,10 @@ describe("ContextCard", () => {
       const component = mount(
         <GlobalStoreProvider>
           <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
+            <ContextCard
+              relay={{ environment: {} } as RelayProp}
+              artwork={auctionContextArtwork as any}
+            />
           </Theme>
         </GlobalStoreProvider>
       )
@@ -115,7 +138,10 @@ describe("ContextCard", () => {
       const component = mount(
         <GlobalStoreProvider>
           <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={saleContextArtwork as any} />
+            <ContextCard
+              relay={{ environment: {} } as RelayProp}
+              artwork={saleContextArtwork as any}
+            />
           </Theme>
         </GlobalStoreProvider>
       )
@@ -128,7 +154,10 @@ describe("ContextCard", () => {
       const component = mount(
         <GlobalStoreProvider>
           <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
+            <ContextCard
+              relay={{ environment: {} } as RelayProp}
+              artwork={auctionContextArtwork as any}
+            />
           </Theme>
         </GlobalStoreProvider>
       )
@@ -140,7 +169,10 @@ describe("ContextCard", () => {
       const component = mount(
         <GlobalStoreProvider>
           <Theme>
-            <ContextCard relay={{ environment: {} } as RelayProp} artwork={auctionContextArtwork as any} />
+            <ContextCard
+              relay={{ environment: {} } as RelayProp}
+              artwork={auctionContextArtwork as any}
+            />
           </Theme>
         </GlobalStoreProvider>
       )

@@ -11,10 +11,9 @@ import { ArtistAutosuggest } from "../Components/ArtistAutosuggest"
 
 import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
-export const MyCollectionArtworkFormArtist: React.FC<StackScreenProps<ArtworkFormScreen, "ArtworkFormArtist">> = ({
-  route,
-  navigation,
-}) => {
+export const MyCollectionArtworkFormArtist: React.FC<
+  StackScreenProps<ArtworkFormScreen, "ArtworkFormArtist">
+> = ({ route, navigation }) => {
   const tracking = useTracking()
   const handleResultPress = async (result: AutosuggestResult) => {
     tracking.trackEvent(tracks.tappedArtist({ artistSlug: result.slug, artistId: result.slug }))
