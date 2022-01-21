@@ -11,12 +11,12 @@ import { ArtworkDetailsForm, ArtworkDetailsFormModel } from "./ArtworkDetailsFor
 
 jest.unmock("react-relay")
 
-const ArtworkDetailsFormTestRenderer: React.FC<{ rarity?: string }> = ({ rarity }) => {
+const ArtworkDetailsFormTestRenderer: React.FC<{ attributionClass?: string }> = ({ attributionClass }) => {
   return (
     <Formik<ArtworkDetailsFormModel>
       initialValues={{
         ...mockArtworkDetailsFormValues,
-        rarity: rarity || "unique",
+        attributionClass: attributionClass || "unique",
       }}
       onSubmit={jest.fn()}
       validationSchema={artworkDetailsValidationSchema}
@@ -71,7 +71,9 @@ describe("ArtworkDetailsForm", () => {
   })
 
   it("when rarity is limited edition, renders additional inputs for edition number and size", () => {
-    const { getByTestId } = renderWithWrappersTL(<ArtworkDetailsFormTestRenderer rarity={limitedEditionValue} />)
+    const { getByTestId } = renderWithWrappersTL(
+      <ArtworkDetailsFormTestRenderer attributionClass={limitedEditionValue} />
+    )
 
     const inputs = {
       editionNumber: getByTestId("Consignment_EditionNumberInput"),
@@ -88,10 +90,11 @@ const mockArtworkDetailsFormValues = {
   artistId: "123",
   title: "work",
   year: "1820",
-  materials: "oil on canvas",
+  medium: "oil on canvas",
+  attributionClass: "",
   editionNumber: "1",
   editionSizeFormatted: "1",
-  units: "in",
+  dimensionsMetric: "in",
   height: "100",
   width: "200",
   depth: "3",
