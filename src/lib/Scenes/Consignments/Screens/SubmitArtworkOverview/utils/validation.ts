@@ -27,7 +27,9 @@ export const artworkDetailsEmptyInitialValues = {
 
 export const artworkDetailsValidationSchema = Yup.object().shape({
   artist: Yup.string().trim(),
-  artistId: Yup.string().required(),
+  artistId: Yup.string().required(
+    "Please select an artist from the list. Artists who are not  listed cannot be submitted due to limited demand."
+  ),
   title: Yup.string().required().trim(),
   year: Yup.string().required().trim(),
   medium: Yup.string().required().trim(),

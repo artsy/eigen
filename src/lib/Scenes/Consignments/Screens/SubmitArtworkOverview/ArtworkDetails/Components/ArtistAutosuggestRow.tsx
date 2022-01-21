@@ -1,7 +1,7 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { AutosuggestResult } from "lib/Scenes/Search/AutosuggestResults"
 import { ResultWithHighlight } from "lib/Scenes/Search/components/ResultWithHighlight"
-import { Flex, Spacer, Touchable } from "palette"
+import { Box, Flex, Spacer } from "palette"
 import React from "react"
 
 const IMAGE_SIZE = 40
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const ArtistAutosuggestRow: React.FC<Props> = ({ result, highlight, onResultPress }) => (
-  <Touchable onPress={() => onResultPress(result)}>
+  <Box onTouchStart={() => onResultPress(result)}>
     <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
       <OpaqueImageView
         imageURL={result.imageUrl}
@@ -28,5 +28,5 @@ export const ArtistAutosuggestRow: React.FC<Props> = ({ result, highlight, onRes
         <ResultWithHighlight displayLabel={result.displayLabel!} highlight={highlight} />
       </Flex>
     </Flex>
-  </Touchable>
+  </Box>
 )

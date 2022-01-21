@@ -10,10 +10,12 @@ export const ArtistAutosuggest: React.FC<{}> = () => {
   const {
     values: { artist, artistId },
     setFieldValue,
+    errors,
   } = useFormikContext<ArtworkDetailsFormModel>()
   const searchProviderValues = useSearchProviderValues(artist)
 
   const [isArtistSelected, setIsArtistSelected] = useState(false)
+  const [focused, setFocused] = useState(false)
 
   useEffect(() => {
     if (artist && artistId) {
@@ -31,6 +33,7 @@ export const ArtistAutosuggest: React.FC<{}> = () => {
     setFieldValue("artist", result.displayLabel)
     setFieldValue("artistId", result.internalID)
     setIsArtistSelected(true)
+    setFocused(false)
   }
 
   return (
@@ -41,11 +44,17 @@ export const ArtistAutosuggest: React.FC<{}> = () => {
         icon={<SearchIcon width={18} height={18} />}
         onChangeText={onArtistSearchTextChange}
         value={artist}
+        onBlur={() => setFocused(false)}
+        onFocus={() => {
+          setIsArtistSelected(false)
+          setFocused(true)
+        }}
         enableClearButton
         autoFocus={typeof jest === "undefined"}
+        error={!focused ? errors.artistId : undefined}
       />
 
-      {!isArtistSelected && artist?.length > 2 && (
+      {!!focused && !isArtistSelected && artist?.length > 2 && (
         <Box height={198}>
           <ArtistAutosuggestResults query={artist} onResultPress={onArtistSelect} />
         </Box>
