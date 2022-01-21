@@ -30,17 +30,17 @@ export const artworkDetailsValidationSchema = Yup.object().shape({
   artistId: Yup.string().required(),
   title: Yup.string().required().trim(),
   year: Yup.string().required().trim(),
-  materials: Yup.string().required().trim(),
-  rarity: Yup.string().required(),
-  editionNumber: Yup.string().when("rarity", {
+  medium: Yup.string().required().trim(),
+  attributionClass: Yup.string().required(),
+  editionNumber: Yup.string().when("attributionClass", {
     is: "limited edition",
     then: Yup.string().required().trim(),
   }),
-  editionSizeFormatted: Yup.string().when("rarity", {
+  editionSizeFormatted: Yup.string().when("attributionClass", {
     is: "limited edition",
     then: Yup.string().required().trim(),
   }),
-  units: Yup.string().required(),
+  dimensionsMetric: Yup.string().required(),
   height: Yup.string().required().trim(),
   width: Yup.string().required().trim(),
   depth: Yup.string().trim(),

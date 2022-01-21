@@ -33,7 +33,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
       title: "Artwork Details",
       Content: (
         <ArtworkDetailsScreen
-          id={submissionId}
+          id="71997"
           handlePress={() => {
             expandCollapsibleMenuContent(1)
             enableStep(1)

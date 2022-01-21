@@ -1,15 +1,14 @@
 // import { ConsignmentSubmissionQuery } from "__generated__/ConsignmentSubmissionQuery.graphql"
-import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
-import { CTAButton, Flex, Spacer, Text } from "palette"
-import React, { Suspense, useEffect, useState } from "react"
-import { graphql, PreloadedQuery, useFragment, usePreloadedQuery, useQueryLoader } from "react-relay"
-
 import AsyncStorage from "@react-native-community/async-storage"
 import { captureMessage } from "@sentry/react-native"
 import { ArtworkDetails_submission$key } from "__generated__/ArtworkDetails_submission.graphql"
 import { ArtworkDetailsQuery } from "__generated__/ArtworkDetailsQuery.graphql"
 import { ConsignmentAttributionClass } from "__generated__/createConsignSubmissionMutation.graphql"
 import { Formik } from "formik"
+import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
+import { CTAButton, Flex, Spacer, Text } from "palette"
+import React, { Suspense, useEffect, useState } from "react"
+import { graphql, PreloadedQuery, useFragment, usePreloadedQuery, useQueryLoader } from "react-relay"
 import { CONSIGNMENT_SUBMISSION_STORAGE_ID } from "../SubmitArtworkOverview"
 import { createOrUpdateConsignSubmission } from "../utils/createOrUpdateConsignSubmission"
 import { limitedEditionValue } from "../utils/rarityOptions"
@@ -36,6 +35,8 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
   if (submission) {
     artworkDetailsInitialValues = updateArtworkDetailsInitialValues(submission)
   }
+
+  console.log({ artworkDetailsInitialValues })
 
   const [submissionError, setSubmissionError] = useState(false)
 

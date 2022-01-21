@@ -8,7 +8,7 @@ export const updateArtworkDetailsInitialValues = (submission: ArtworkDetails_sub
     title: submission.title || "",
     year: submission.year || "",
     medium: submission.medium || "",
-    attributionClass: submission.attributionClass ? submission.attributionClass.replace(" ", "_").toUpperCase() : "",
+    attributionClass: submission.attributionClass ? submission.attributionClass.replace("_", " ").toLowerCase() : "",
     editionNumber: submission.editionNumber || "",
     editionSizeFormatted: submission.editionSize || "",
     dimensionsMetric: submission.dimensionsMetric || "",
