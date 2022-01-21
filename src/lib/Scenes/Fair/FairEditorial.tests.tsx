@@ -41,7 +41,9 @@ describe("FairEditorial", () => {
       />
     )
 
-    env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
+    env.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, mockResolvers)
+    )
 
     return tree
   }
@@ -120,7 +122,8 @@ describe("FairEditorial", () => {
       context_screen_owner_slug: "art-basel-hong-kong-2020",
       destination_screen_owner_type: "article",
       destination_screen_owner_id: "xyz123",
-      destination_screen_owner_slug: "artsy-editorial-sold-art-basel-hong-kongs-online-viewing-rooms",
+      destination_screen_owner_slug:
+        "artsy-editorial-sold-art-basel-hong-kongs-online-viewing-rooms",
       type: "thumbnail",
     })
   })

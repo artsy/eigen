@@ -66,13 +66,15 @@ describe("OnboardingSocialPick", () => {
 
       const tree = renderWithWrappers(<OnboardingSocialPick mode="signup" />)
       tree.root.findByProps({ testID: "useApple" }).props.onPress()
-      expect(GlobalStore.actions.auth.authApple).toHaveBeenCalledWith({ agreedToReceiveEmails: true })
+      expect(GlobalStore.actions.auth.authApple).toHaveBeenCalledWith({
+        agreedToReceiveEmails: true,
+      })
     })
   })
 })
 
 describe("webView links ", () => {
-  describe.only("on Android", () => {
+  describe("on Android", () => {
     beforeEach(() => {
       Platform.OS = "android"
       ;(useNavigation as jest.Mock).mockReturnValue({

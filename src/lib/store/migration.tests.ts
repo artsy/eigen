@@ -9,7 +9,8 @@ jest.mock("lib/NativeModules/LegacyNativeModules", () => ({
   LegacyNativeModules: {
     ...jest.requireActual("lib/NativeModules/LegacyNativeModules").LegacyNativeModules,
     ARNotificationsManager: {
-      ...jest.requireActual("lib/NativeModules/LegacyNativeModules").LegacyNativeModules.ARNotificationsManager,
+      ...jest.requireActual("lib/NativeModules/LegacyNativeModules").LegacyNativeModules
+        .ARNotificationsManager,
       nativeState: {
         userAgent: "Jest Unit Tests",
         authenticationToken: null,
@@ -168,7 +169,9 @@ describe("artsy app store migrations", () => {
     }
 
     __globalStoreTestUtils__?.reset()
-    expect(migrate({ state: { version: 0 } })).toEqual(sanitize(__globalStoreTestUtils__?.getCurrentState()))
+    expect(migrate({ state: { version: 0 } })).toEqual(
+      sanitize(__globalStoreTestUtils__?.getCurrentState())
+    )
   })
 
   it("CURRENT_APP_VERSION is always the latest one", () => {
@@ -177,7 +180,9 @@ describe("artsy app store migrations", () => {
 
   it("Versions list starts from `1` and increases by `1`", () => {
     expect(_.min(Object.values(Versions))).toBe(1)
-    expect(Object.values(Versions).sort((a, b) => a - b)).toStrictEqual(_.range(1, Object.values(Versions).length + 1))
+    expect(Object.values(Versions).sort((a, b) => a - b)).toStrictEqual(
+      _.range(1, Object.values(Versions).length + 1)
+    )
   })
 })
 
@@ -296,7 +301,9 @@ describe("App version Versions.RenameUserEmail", () => {
 
     previousState.native.sessionState = { userEmail: "user@ios.com" }
 
-    LegacyNativeModules.ARTemporaryAPIModule.getUserEmail = jest.fn(() => previousState.native.sessionState.userEmail)
+    LegacyNativeModules.ARTemporaryAPIModule.getUserEmail = jest.fn(
+      () => previousState.native.sessionState.userEmail
+    )
     const migratedState = migrate({
       state: previousState,
       toVersion: migrationToTest,
@@ -421,5 +428,23 @@ describe("App version Versions.RemoveNativeOnboardingState", () => {
     }) as any
 
     expect(migratedState.native.onboardingState).toEqual(undefined)
+  })
+})
+
+describe("App version Versions.AddUserPreferences", () => {
+  const migrationToTest = Versions.AddUserPreferences
+
+  it("adds UserPreferences to state", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.userPreferences).toEqual({ currency: "USD", metric: "" })
   })
 })

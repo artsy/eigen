@@ -2,8 +2,15 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import React, { useContext, useEffect, useRef, useState } from "react"
 import { Modal, Platform } from "react-native"
 import { useSafeAreaFrame } from "react-native-safe-area-context"
-import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "../ArtsyKeyboardAvoidingView"
-import { CARD_STACK_OVERLAY_HEIGHT, CARD_STACK_OVERLAY_Y_OFFSET, FancyModalAnimationPosition } from "./FancyModalCard"
+import {
+  ArtsyKeyboardAvoidingView,
+  ArtsyKeyboardAvoidingViewContext,
+} from "../ArtsyKeyboardAvoidingView"
+import {
+  CARD_STACK_OVERLAY_HEIGHT,
+  CARD_STACK_OVERLAY_Y_OFFSET,
+  FancyModalAnimationPosition,
+} from "./FancyModalCard"
 import { FancyModalContext } from "./FancyModalContext"
 
 export const FancyModal: React.FC<{
@@ -28,7 +35,8 @@ export const FancyModal: React.FC<{
   } = useScreenDimensions()
   const frame = useSafeAreaFrame()
 
-  const actualMaxHeight = screenHeight - (top + CARD_STACK_OVERLAY_HEIGHT + CARD_STACK_OVERLAY_Y_OFFSET)
+  const actualMaxHeight =
+    screenHeight - (top + CARD_STACK_OVERLAY_HEIGHT + CARD_STACK_OVERLAY_Y_OFFSET)
   let height: number
 
   if (fullScreen) {
@@ -70,7 +78,9 @@ export const FancyModal: React.FC<{
           up to the maximum 'top' value, and then add padding if the keyboard comes up any more.
           I'd imagine it would have an API like <FancyKeyboardAvoding height={sheetHeighht} maxHeight={screenHeight - (top + 10)}>
       */
-      <ArtsyKeyboardAvoidingViewContext.Provider value={{ isPresentedModally: true, isVisible: true, bottomOffset: 0 }}>
+      <ArtsyKeyboardAvoidingViewContext.Provider
+        value={{ isPresentedModally: true, isVisible: true, bottomOffset: 0 }}
+      >
         <ArtsyKeyboardAvoidingView>{children}</ArtsyKeyboardAvoidingView>
       </ArtsyKeyboardAvoidingViewContext.Provider>
     ) : null,
@@ -102,7 +112,9 @@ export const FancyModal: React.FC<{
       statusBarTranslucent
       onRequestClose={onBackgroundPressed}
     >
-      <FancyModalContext.Provider value={context.nextLevel()}>{card.jsx}</FancyModalContext.Provider>
+      <FancyModalContext.Provider value={context.nextLevel()}>
+        {card.jsx}
+      </FancyModalContext.Provider>
     </Modal>
   )
 }

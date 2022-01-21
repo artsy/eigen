@@ -1,6 +1,9 @@
 import { SearchArtworksGrid_viewer } from "__generated__/SearchArtworksGrid_viewer.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
-import { useArtworkFilters, useSelectedFiltersCount } from "lib/Components/ArtworkFilter/useArtworkFilters"
+import {
+  useArtworkFilters,
+  useSelectedFiltersCount,
+} from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 
 import { OwnerType } from "@artsy/cohesion"
@@ -29,7 +32,9 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
   const { space } = useTheme()
   const { trackEvent } = useTracking()
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
-  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((state) => state.setFiltersCountAction)
+  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.setFiltersCountAction
+  )
 
   const handleCloseFilterArtworksModal = (withFiltersApplying: boolean = false) => {
     if (!withFiltersApplying) {
@@ -53,7 +58,10 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
 
   useEffect(() => {
     if (viewer.artworks?.counts) {
-      setFiltersCountAction({ followedArtists: viewer.artworks.counts.followedArtists, total: null })
+      setFiltersCountAction({
+        followedArtists: viewer.artworks.counts.followedArtists,
+        total: null,
+      })
     }
   }, [setFiltersCountAction])
 
@@ -83,7 +91,10 @@ const SearchArtworksGrid: React.FC<SearchArtworksGridProps> = ({ viewer, relay, 
         closeModal={handleCloseFilterArtworksModal}
         mode={FilterModalMode.Search}
       />
-      <ArtworksFilterHeader selectedFiltersCount={appliedFiltersCount} onFilterPress={handleOpenFilterArtworksModal} />
+      <ArtworksFilterHeader
+        selectedFiltersCount={appliedFiltersCount}
+        onFilterPress={handleOpenFilterArtworksModal}
+      />
       {artworksCount === 0 ? (
         <Box mb="80px" pt={6}>
           <Box px={2}>
@@ -171,9 +182,15 @@ export const SearchArtworksGridPaginationContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query SearchArtworksGridQuery($count: Int!, $cursor: String, $keyword: String, $input: FilterArtworksInput) {
+      query SearchArtworksGridQuery(
+        $count: Int!
+        $cursor: String
+        $keyword: String
+        $input: FilterArtworksInput
+      ) {
         viewer {
-          ...SearchArtworksGrid_viewer @arguments(count: $count, cursor: $cursor, keyword: $keyword, input: $input)
+          ...SearchArtworksGrid_viewer
+            @arguments(count: $count, cursor: $cursor, keyword: $keyword, input: $input)
         }
       }
     `,

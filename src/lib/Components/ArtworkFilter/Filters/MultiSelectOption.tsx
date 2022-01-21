@@ -124,7 +124,11 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
       {!!searchable && (
         <>
           <Flex m={2}>
-            <SearchInput onChangeText={setQuery} testID="multi-select-search-input" placeholder="Filter results" />
+            <SearchInput
+              onChangeText={setQuery}
+              testID="multi-select-search-input"
+              placeholder="Filter results"
+            />
           </Flex>
 
           {filteredOptions.length === 0 && (
@@ -139,7 +143,9 @@ export const MultiSelectOptionScreen: React.FC<MultiSelectOptionScreenProps> = (
         {useScrollView ? (
           <ScrollView style={{ flex: 1 }}>
             {filteredOptions.map((option, index) => (
-              <React.Fragment key={keyExtractor(option, index)}>{renderItem(option)}</React.Fragment>
+              <React.Fragment key={keyExtractor(option, index)}>
+                {renderItem(option)}
+              </React.Fragment>
             ))}
             {footerComponent}
           </ScrollView>

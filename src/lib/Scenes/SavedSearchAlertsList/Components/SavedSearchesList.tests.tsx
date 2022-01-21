@@ -1,13 +1,10 @@
 import { SavedSearchesListTestsQuery } from "__generated__/SavedSearchesListTestsQuery.graphql"
-import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { EmptyMessage } from "./EmptyMessage"
 import { SavedSearchesListContainer as SavedSearchesList } from "./SavedSearchesList"
-import { SavedSearchListItem } from "./SavedSearchListItem"
 
 jest.unmock("react-relay")
 
@@ -42,7 +39,7 @@ describe("SavedSearches", () => {
   }
 
   it("renders correctly", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
     mockEnvironmentPayload(mockEnvironment, {
       SearchCriteriaConnection: () => ({
@@ -65,15 +62,12 @@ describe("SavedSearches", () => {
       }),
     })
 
-    const items = tree.root.findAllByType(SavedSearchListItem)
-
-    expect(items.length).toBe(2)
-    expect(extractText(items[0])).toBe("one")
-    expect(extractText(items[1])).toBe("two")
+    expect(getByText("one")).toBeTruthy()
+    expect(getByText("two")).toBeTruthy()
   })
 
   it("renders an empty message if there are no saved search alerts", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
     mockEnvironmentPayload(mockEnvironment, {
       SearchCriteriaConnection: () => ({
@@ -81,11 +75,11 @@ describe("SavedSearches", () => {
       }),
     })
 
-    expect(tree.root.findAllByType(EmptyMessage)).toHaveLength(1)
+    expect(getByText("You haven’t created any Alerts yet.")).toBeTruthy()
   })
 
-  it("renders an empty message if there is no name for saved search alert", () => {
-    const tree = renderWithWrappers(<TestRenderer />)
+  it("renders the default name placeholder if there is no name for saved search alert", () => {
+    const { getByText } = renderWithWrappersTL(<TestRenderer />)
 
     mockEnvironmentPayload(mockEnvironment, {
       SearchCriteriaConnection: () => ({
@@ -108,10 +102,7 @@ describe("SavedSearches", () => {
       }),
     })
 
-    const items = tree.root.findAllByType(SavedSearchListItem)
-
-    expect(items.length).toBe(2)
-    expect(extractText(items[0])).toBe("one")
-    expect(extractText(items[1])).toBe("Untitled Alert")
+    expect(getByText("one")).toBeTruthy()
+    expect(getByText("Untitled Alert")).toBeTruthy()
   })
 })

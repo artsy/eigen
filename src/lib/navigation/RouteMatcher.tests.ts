@@ -65,7 +65,9 @@ describe(RouteMatcher, () => {
     expect(new RouteMatcher("/home", "Home").match(["home"])).toEqual({})
     expect(new RouteMatcher("/:id", "Home").match(["david"])).toEqual({ id: "david" })
     expect(new RouteMatcher("/:id/home", "Home").match(["david", "home"])).toEqual({ id: "david" })
-    expect(new RouteMatcher("/home/:id", "Home").match(["home", "stephen"])).toEqual({ id: "stephen" })
+    expect(new RouteMatcher("/home/:id", "Home").match(["home", "stephen"])).toEqual({
+      id: "stephen",
+    })
     expect(
       new RouteMatcher("/home/:id/thing/:slug/other_thing/:slug2", "Home").match([
         "home",

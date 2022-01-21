@@ -1,132 +1,109 @@
 import {
-  aggregationForFilter,
-  Aggregations,
-  defaultCommonFilterOptions,
-  FilterArray,
-  FilterData,
-  FilterParamName,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { LOCALIZED_UNIT, parseRange } from "lib/Components/ArtworkFilter/Filters/helpers"
-import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
-import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
-import { compact, flatten, groupBy, isUndefined, keyBy } from "lodash"
+  SearchCriteria,
+  SearchCriteriaAttributes,
+} from "lib/Components/ArtworkFilter/SavedSearch/types"
+import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import {
+  getNotificationPermissionsStatus,
+  PushAuthorizationStatus,
+} from "lib/utils/PushNotification"
 import { bullet } from "palette"
+import { Alert, AlertButton, Linking, Platform } from "react-native"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 
-export const extractPillFromAggregation = (filter: FilterData, aggregations: Aggregations) => {
-  const { paramName, paramValue } = filter
-  const aggregation = aggregationForFilter(paramName, aggregations)
-
-  if (aggregation) {
-    const aggregationByValue = keyBy(aggregation.counts, "value")
-
-    return (paramValue as string[]).map((value) => {
-      if (!isUndefined(aggregationByValue[value])) {
-        return {
-          label: aggregationByValue[value]?.name,
-          value,
-          paramName,
-        } as SavedSearchPill
-      }
-    })
-  }
-
-  return []
-}
-
-export const extractSizeLabel = (prefix: string, value: string) => {
-  const { min, max } = parseRange(value)
-  let label
-
-  if (max === "*") {
-    label = `from ${min}`
-  } else if (min === "*") {
-    label = `to ${max}`
-  } else {
-    label = `${min}-${max}`
-  }
-
-  return `${prefix}: ${label} ${LOCALIZED_UNIT}`
-}
-
-export const extractPills = (filters: FilterArray, aggregations: Aggregations): SavedSearchPill[] => {
-  const pills = filters.map((filter) => {
-    const { paramName, paramValue, displayText } = filter
-
-    if (isUndefined(paramValue)) {
-      return null
-    }
-
-    if (paramName === FilterParamName.width) {
-      return {
-        label: extractSizeLabel("w", displayText),
-        value: paramValue as string,
-        paramName: FilterParamName.width,
-      }
-    }
-
-    if (paramName === FilterParamName.height) {
-      return {
-        label: extractSizeLabel("h", displayText),
-        value: paramValue as string,
-        paramName: FilterParamName.height,
-      }
-    }
-
-    // Extract label from aggregations
-    if (shouldExtractValueNamesFromAggregation.includes(paramName)) {
-      return extractPillFromAggregation(filter, aggregations)
-    }
-
-    // If the filter value is an array, then we extract the label from the displayed text
-    if (Array.isArray(paramValue)) {
-      return displayText.split(", ").map((label, index) => {
-        return {
-          label,
-          value: paramValue[index],
-          paramName,
-        }
-      })
-    }
-
-    return {
-      label: displayText,
-      value: paramValue,
-      paramName,
-    }
-  })
-
-  return compact(flatten(pills))
-}
-
 export const getNamePlaceholder = (artistName: string, pills: SavedSearchPill[]) => {
-  const filtersCountLabel = pills.length > 1 ? "filters" : "filter"
-  return `${artistName} ${bullet} ${pills.length} ${filtersCountLabel}`
+  const filteredPills = pills.filter((pill) => pill.paramName !== SearchCriteria.artistID)
+  const filtersCountLabel = filteredPills.length > 1 ? "filters" : "filter"
+
+  if (filteredPills.length === 0) {
+    return artistName
+  }
+
+  return `${artistName} ${bullet} ${filteredPills.length} ${filtersCountLabel}`
 }
 
-export const extractPillValue = (pills: SavedSearchPill[]) => {
-  return pills.map((pill) => pill.value)
+export const requestNotificationPermissions = () => {
+  // permissions not determined: Android should never need this
+  if (Platform.OS === "ios") {
+    Alert.alert(
+      "Artsy would like to send you notifications",
+      "We need your permission to send notifications on alerts you have created.",
+      [
+        {
+          text: "Proceed",
+          onPress: () =>
+            LegacyNativeModules.ARTemporaryAPIModule.requestDirectNotificationPermissions(),
+        },
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+      ]
+    )
+  }
 }
 
-export const getSearchCriteriaFromPills = (pills: SavedSearchPill[]) => {
-  const pillsByParamName = groupBy(pills, "paramName")
-  const criteria: SearchCriteriaAttributes = {}
-
-  Object.entries(pillsByParamName).forEach((entry) => {
-    const [paramName, values] = entry
-
-    if (paramName === FilterParamName.artistIDs) {
-      criteria.artistID = extractPillValue(values)[0] as string
-      return
-    }
-
-    if (Array.isArray(defaultCommonFilterOptions[paramName as FilterParamName])) {
-      criteria[paramName as keyof SearchCriteriaAttributes] = extractPillValue(values) as any
-      return
-    }
-
-    criteria[paramName as keyof SearchCriteriaAttributes] = extractPillValue(values)[0] as any
+export const showHowToEnableNotificationInstructionAlert = () => {
+  const deviceText = Platform.select({
+    ios: "iOS",
+    android: "android",
+    default: "device",
+  })
+  const instruction = Platform.select({
+    ios: `Tap 'Artsy' and enable "Allow Notifications" for Artsy.`,
+    default: "",
   })
 
-  return criteria
+  const buttons: AlertButton[] = [
+    {
+      text: "Settings",
+      onPress: () => {
+        if (Platform.OS === "android") {
+          Linking.openSettings()
+        } else {
+          Linking.openURL("App-prefs:NOTIFICATIONS_ID")
+        }
+      },
+    },
+    {
+      text: "Cancel",
+      style: "cancel",
+    },
+  ]
+
+  Alert.alert(
+    "Artsy would like to send you notifications",
+    `To receive notifications for your alerts, you will need to enable them in your ${deviceText} Settings. ${instruction}`,
+    Platform.OS === "ios" ? buttons : buttons.reverse()
+  )
+}
+
+export const checkOrRequestPushPermissions = async () => {
+  const notificationStatus = await getNotificationPermissionsStatus()
+
+  if (notificationStatus === PushAuthorizationStatus.Denied) {
+    showHowToEnableNotificationInstructionAlert()
+  }
+
+  if (notificationStatus === PushAuthorizationStatus.NotDetermined) {
+    requestNotificationPermissions()
+  }
+
+  return notificationStatus === PushAuthorizationStatus.Authorized
+}
+
+export const clearDefaultAttributes = (attributes: SearchCriteriaAttributes) => {
+  const clearedAttributes: SearchCriteriaAttributes = {}
+
+  Object.entries(attributes).forEach((entry) => {
+    const [key, values] = entry as [SearchCriteria, any]
+    const isEmptyArray = Array.isArray(values) && values.length === 0
+    const isNull = values === null
+
+    if (!isEmptyArray && !isNull) {
+      clearedAttributes[key] = values
+    }
+  })
+
+  return clearedAttributes
 }

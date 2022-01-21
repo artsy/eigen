@@ -8,7 +8,9 @@ export function useInitialNotification() {
 
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
 
-  const pendingNotification = GlobalStore.useAppState((state) => state.pendingPushNotification.notification)
+  const pendingNotification = GlobalStore.useAppState(
+    (state) => state.pendingPushNotification.notification
+  )
 
   useEffect(() => {
     if (isLoggedIn && !hasHandledInitialNotification) {

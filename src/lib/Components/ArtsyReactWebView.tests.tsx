@@ -24,7 +24,8 @@ jest.mock("react-native-device-info", () => ({
 describe(ArtsyReactWebViewPage, () => {
   const render = (props: Partial<React.ComponentProps<typeof ArtsyReactWebViewPage>> = {}) =>
     renderWithWrappers(<ArtsyReactWebViewPage url="https://staging.artsy.net/hello" {...props} />)
-  const webViewProps = (tree: ReturnType<typeof render>) => tree.root.findByType(WebView).props as WebViewProps
+  const webViewProps = (tree: ReturnType<typeof render>) =>
+    tree.root.findByType(WebView).props as WebViewProps
   beforeEach(() => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsUseReactNativeWebView: true })
   })
@@ -67,7 +68,9 @@ describe(ArtsyReactWebViewPage, () => {
     expect(getProgressBar().children).toHaveLength(0)
     act(() => tree.root.findByType(WebView).props.onLoadStart())
     expect(getProgressBar().children).toHaveLength(1)
-    act(() => tree.root.findByType(WebView).props.onLoadProgress({ nativeEvent: { progress: 0.5 } }))
+    act(() =>
+      tree.root.findByType(WebView).props.onLoadProgress({ nativeEvent: { progress: 0.5 } })
+    )
     expect(getProgressBar().findByProps({ testID: "progress-bar" }).props.width).toBe("50%")
     act(() => tree.root.findByType(WebView).props.onLoadEnd())
     expect(getProgressBar().children).toHaveLength(0)
@@ -183,7 +186,9 @@ describe(useWebViewCookies, () => {
     return null
   }
   it("tries to make an authenticated HEAD request to force and prediction to make sure we get the user's coookies", () => {
-    __globalStoreTestUtils__?.injectState({ native: { sessionState: { authenticationToken: "userAccessToken" } } })
+    __globalStoreTestUtils__?.injectState({
+      native: { sessionState: { authenticationToken: "userAccessToken" } },
+    })
     act(() => {
       renderWithWrappers(<Wrapper />)
     })
@@ -199,7 +204,9 @@ describe(useWebViewCookies, () => {
     })
   })
   it("retries if it fails", async () => {
-    __globalStoreTestUtils__?.injectState({ native: { sessionState: { authenticationToken: "userAccessToken" } } })
+    __globalStoreTestUtils__?.injectState({
+      native: { sessionState: { authenticationToken: "userAccessToken" } },
+    })
     mockFetch.mockReturnValue(Promise.resolve({ ok: false, status: 500 } as any))
     const tree = renderWithWrappers(<Wrapper />)
     await act(() => undefined)
@@ -236,8 +243,10 @@ describe(__webViewTestUtils__?.expandGoogleAdLink!, () => {
   })
 
   it("expands google ad links with url params", () => {
-    const targetURL = "https://www.artsy.net/search?" + stringify({ query: "Hello World &hello=world" })
-    const googleURL = "https://googleads.g.doubleclick.net/pcs/click?" + stringify({ adurl: targetURL })
+    const targetURL =
+      "https://www.artsy.net/search?" + stringify({ query: "Hello World &hello=world" })
+    const googleURL =
+      "https://googleads.g.doubleclick.net/pcs/click?" + stringify({ adurl: targetURL })
 
     const expanded = __webViewTestUtils__?.expandGoogleAdLink(googleURL)
     expect(expanded).toBe(targetURL)

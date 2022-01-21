@@ -15,9 +15,12 @@ import { TermsOfServiceCheckbox } from "./TermsOfServiceCheckbox"
 export interface OnboardingCreateAccountNameProps
   extends StackScreenProps<OnboardingCreateAccountNavigationStack, "OnboardingCreateAccountName"> {}
 
-export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNameProps> = ({ navigation }) => {
+export const OnboardingCreateAccountName: React.FC<OnboardingCreateAccountNameProps> = ({
+  navigation,
+}) => {
   const color = useColor()
-  const { values, handleSubmit, handleChange, errors, setErrors, setFieldValue } = useFormikContext<FormikSchema>()
+  const { values, handleSubmit, handleChange, errors, setErrors, setFieldValue } =
+    useFormikContext<FormikSchema>()
   const [highlightTerms, setHighlightTerms] = useState<boolean>(false)
 
   return (

@@ -3,7 +3,7 @@ import { Box, Flex } from "palette"
 import React from "react"
 import { Platform, Text as RNText, TextStyle, View } from "react-native"
 import { withTheme } from "storybook/decorators"
-import { DList, List } from "storybook/helpers"
+import { DataList, List } from "storybook/helpers"
 import { Text, TextProps } from "."
 
 const variants: Array<TextProps["variant"]> = ["xs", "sm", "md", "lg", "xl", "xxl"]
@@ -11,13 +11,15 @@ const variants: Array<TextProps["variant"]> = ["xs", "sm", "md", "lg", "xl", "xx
 storiesOf("Theme/Text", module)
   .addDecorator(withTheme)
   .add("Variants", () => (
-    <DList
+    <DataList
       data={variants}
-      renderItem={({ item: variant }) => <Text variant={variant}>{variant} ~~ This is a text.</Text>}
+      renderItem={({ item: variant }) => (
+        <Text variant={variant}>{variant} ~~ This is a text.</Text>
+      )}
     />
   ))
   .add("Variants in boxes", () => (
-    <DList
+    <DataList
       data={variants}
       renderItem={({ item: variant }) => (
         <Box borderWidth={1} borderColor="black" width={100}>
@@ -50,8 +52,10 @@ storiesOf("Theme/Text", module)
   // this is useful for making sure our custom fonts are rendering at the same height for ios and android
   .add("Font centering (raw)", () => {
     const style: TextStyle = { borderWidth: 1, borderColor: "black", fontSize: 16, lineHeight: 16 }
-    const systemFontStyle: TextStyle = Platform.OS === "android" ? { textAlignVertical: "bottom" } : {} // this we add in our Text in palette-eigen
-    const unicaFontStyle: TextStyle = Platform.OS === "android" ? { textAlignVertical: "center" } : {} // this we add in our Text in palette-eigen
+    const systemFontStyle: TextStyle =
+      Platform.OS === "android" ? { textAlignVertical: "bottom" } : {} // this we add in our Text in palette-eigen
+    const unicaFontStyle: TextStyle =
+      Platform.OS === "android" ? { textAlignVertical: "center" } : {} // this we add in our Text in palette-eigen
 
     return (
       <Flex flexDirection="row" flex={1}>
@@ -68,8 +72,12 @@ storiesOf("Theme/Text", module)
         <Flex flex={1}>
           <RNText>Unica custom font</RNText>
           <List>
-            <RNText style={[style, { fontFamily: "Unica77LL-Regular" }, unicaFontStyle]}>regular TEXT.</RNText>
-            <RNText style={[style, { fontFamily: "Unica77LL-Regular" }, unicaFontStyle]}>ALL CAPS text.</RNText>
+            <RNText style={[style, { fontFamily: "Unica77LL-Regular" }, unicaFontStyle]}>
+              regular TEXT.
+            </RNText>
+            <RNText style={[style, { fontFamily: "Unica77LL-Regular" }, unicaFontStyle]}>
+              ALL CAPS text.
+            </RNText>
           </List>
         </Flex>
       </Flex>

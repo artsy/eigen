@@ -26,7 +26,8 @@ describe("Gene", () => {
       <QueryRenderer<GeneTestsQuery>
         environment={environment}
         query={graphql`
-          query GeneTestsQuery($geneID: String!, $input: FilterArtworksInput) @relay_test_operation {
+          query GeneTestsQuery($geneID: String!, $input: FilterArtworksInput)
+          @relay_test_operation {
             gene(id: $geneID) {
               slug
               ...Header_gene

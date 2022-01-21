@@ -1,19 +1,18 @@
-import { Box, Flex } from "palette"
+import { Flex } from "palette"
 import React, { useImperativeHandle, useRef } from "react"
 import { createFragmentContainer, graphql } from "react-relay"
 
-import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
-import GenericGrid from "lib/Components/ArtworkGrids/GenericGrid"
+import { ArtworkModuleRail_rail } from "__generated__/ArtworkModuleRail_rail.graphql"
+import { SmallArtworkRail } from "lib/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { compact } from "lodash"
 import { FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
 import HomeAnalytics from "../homeAnalytics"
-import { SmallTileRailContainer } from "./SmallTileRail"
 import { RailScrollProps } from "./types"
 
-export function getViewAllUrl(rail: ArtworkRail_rail) {
+export function getViewAllUrl(rail: ArtworkModuleRail_rail) {
   const context = rail.context
   const key = rail.key
 
@@ -32,21 +31,18 @@ export function getViewAllUrl(rail: ArtworkRail_rail) {
   }
 }
 
-/*
-Your Active Bids
-New Works For You
-Recently Viewed
-Recently Saved
-*/
-const smallTileKeys: Array<string | null> = ["active_bids", "followed_artists", "recently_viewed_works", "saved_works"]
-
-interface ArtworkRailProps {
+interface ArtworkModuleRailProps {
   title: string
-  rail: ArtworkRail_rail
+  rail: ArtworkModuleRail_rail
   mb?: number
 }
 
-const ArtworkRail: React.FC<ArtworkRailProps & RailScrollProps> = ({ title, rail, scrollRef, mb }) => {
+const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
+  title,
+  rail,
+  scrollRef,
+  mb,
+}) => {
   const tracking = useTracking()
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)
@@ -55,7 +51,8 @@ const ArtworkRail: React.FC<ArtworkRailProps & RailScrollProps> = ({ title, rail
   }))
 
   const viewAllUrl = getViewAllUrl(rail)
-  const useSmallTile = smallTileKeys.includes(rail.key)
+
+  const contextModule = HomeAnalytics.artworkRailContextModule(rail.key)
 
   const context = rail.context
   let subtitle: string | undefined
@@ -93,37 +90,35 @@ const ArtworkRail: React.FC<ArtworkRailProps & RailScrollProps> = ({ title, rail
           }
         />
       </Flex>
-      {useSmallTile ? (
-        <SmallTileRailContainer
-          listRef={listRef}
-          artworks={artworks}
-          contextModule={HomeAnalytics.artworkRailContextModule(rail.key)}
-        />
-      ) : (
-        <Box mx={2}>
-          <GenericGrid
-            artworks={artworks}
-            trackTap={(artworkSlug, index) => {
-              const tapEvent = HomeAnalytics.artworkThumbnailTapEventFromKey(rail.key, artworkSlug, index)
-              if (tapEvent) {
-                tracking.trackEvent(tapEvent)
-              }
-            }}
-          />
-        </Box>
-      )}
+      <SmallArtworkRail
+        listRef={listRef}
+        artworks={artworks}
+        onPress={(artwork, position) => {
+          if (contextModule) {
+            tracking.trackEvent(
+              HomeAnalytics.artworkThumbnailTapEvent(
+                contextModule,
+                artwork.slug,
+                position,
+                "single"
+              )
+            )
+          }
+
+          navigate(artwork.href!)
+        }}
+      />
     </Flex>
   ) : null
 }
 
-export const ArtworkRailFragmentContainer = createFragmentContainer(ArtworkRail, {
+export const ArtworkModuleRailFragmentContainer = createFragmentContainer(ArtworkModuleRail, {
   rail: graphql`
-    fragment ArtworkRail_rail on HomePageArtworkModule {
+    fragment ArtworkModuleRail_rail on HomePageArtworkModule {
       title
       key
       results {
-        ...SmallTileRail_artworks
-        ...GenericGrid_artworks
+        ...SmallArtworkRail_artworks
       }
       context {
         ... on HomePageRelatedArtistArtworkModule {

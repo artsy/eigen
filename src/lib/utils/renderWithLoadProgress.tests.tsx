@@ -14,7 +14,10 @@ describe(renderWithLoadProgress, () => {
 
   it(`renders the real content when the graphqls are done`, () => {
     const { getByText } = renderWithWrappersTL(
-      renderWithLoadProgress(() => <Text>the real content</Text>, {})({ error: null, props: {}, retry: () => null })!
+      renderWithLoadProgress(
+        () => <Text>the real content</Text>,
+        {}
+      )({ error: null, props: {}, retry: () => null })!
     )
 
     expect(getByText("the real content")).toBeTruthy()

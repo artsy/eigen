@@ -6,8 +6,6 @@ import { SavedSearchAlertQueryResponse } from "__generated__/SavedSearchAlertQue
 import { emitSavedSearchRefetchEvent } from "lib/Components/Artist/ArtistArtworks/SavedSearchButton"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { Aggregations } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
-import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { goBack } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -18,6 +16,7 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { EditSavedSearchFormPlaceholder } from "./Components/EditSavedSearchAlertPlaceholder"
 import { SavedSearchAlertQueryRenderer } from "./SavedSearchAlert"
 import { SavedSearchAlertForm } from "./SavedSearchAlertForm"
+import { SavedSearchStoreProvider } from "./SavedSearchStore"
 
 interface EditSavedSearchAlertBaseProps {
   savedSearchAlertId: string
@@ -33,11 +32,7 @@ interface EditSavedSearchAlertProps {
 export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props) => {
   const { me, artist, artworksConnection, savedSearchAlertId } = props
   const aggregations = (artworksConnection.aggregations ?? []) as Aggregations
-  const { userAlertSettings, ...savedSearchCriteria } = me?.savedSearch ?? {}
-  const filters = convertSavedSearchCriteriaToFilterParams(
-    savedSearchCriteria as SearchCriteriaAttributes,
-    aggregations
-  )
+  const { userAlertSettings, internalID, ...attributes } = me?.savedSearch ?? {}
 
   const onComplete = () => {
     goBack()
@@ -54,21 +49,21 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
     >
       <ArtsyKeyboardAvoidingView>
         <PageWithSimpleHeader title="Edit your Alert">
-          <SavedSearchAlertForm
-            initialValues={{
-              name: userAlertSettings?.name ?? "",
-              email: userAlertSettings?.email ?? false,
-              push: userAlertSettings?.push ?? false,
-            }}
-            artistId={artist.internalID}
-            artistName={artist.name!}
-            filters={filters}
-            aggregations={aggregations}
-            savedSearchAlertId={savedSearchAlertId}
-            userAllowsEmails={me?.emailFrequency !== "none"}
-            onComplete={onComplete}
-            onDeleteComplete={onComplete}
-          />
+          <SavedSearchStoreProvider initialData={{ attributes, aggregations }}>
+            <SavedSearchAlertForm
+              initialValues={{
+                name: userAlertSettings?.name ?? "",
+                email: userAlertSettings?.email ?? false,
+                push: userAlertSettings?.push ?? false,
+              }}
+              artistId={artist.internalID}
+              artistName={artist.name!}
+              savedSearchAlertId={savedSearchAlertId}
+              userAllowsEmails={me?.emailFrequency !== "none"}
+              onComplete={onComplete}
+              onDeleteComplete={onComplete}
+            />
+          </SavedSearchStoreProvider>
         </PageWithSimpleHeader>
       </ArtsyKeyboardAvoidingView>
     </ProvideScreenTracking>
@@ -96,7 +91,9 @@ export const EditSavedSearchAlertFragmentContainer = createFragmentContainer(Edi
   `,
 })
 
-export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBaseProps> = (props) => {
+export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBaseProps> = (
+  props
+) => {
   const { savedSearchAlertId } = props
 
   return (

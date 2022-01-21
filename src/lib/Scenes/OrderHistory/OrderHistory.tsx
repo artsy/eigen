@@ -14,7 +14,10 @@ import { OrderHistoryRowContainer } from "./OrderHistoryRow"
 
 const NUM_ORDERS_TO_FETCH = 10
 
-export const OrderHistory: React.FC<{ me: OrderHistory_me; relay: RelayPaginationProp }> = ({ relay, me }) => {
+export const OrderHistory: React.FC<{ me: OrderHistory_me; relay: RelayPaginationProp }> = ({
+  relay,
+  me,
+}) => {
   const { color } = useTheme()
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
@@ -115,7 +118,8 @@ export const OrderHistoryContainer = createPaginationContainer(
           defaultValue: [APPROVED, CANCELED, FULFILLED, REFUNDED, SUBMITTED]
         }
       ) {
-        orders(first: $count, after: $cursor, states: $states) @connection(key: "OrderHistory_orders") {
+        orders(first: $count, after: $cursor, states: $states)
+          @connection(key: "OrderHistory_orders") {
           edges {
             node {
               code
@@ -138,7 +142,11 @@ export const OrderHistoryContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query OrderHistoryPaginationQuery($count: Int!, $cursor: String, $states: [CommerceOrderStateEnum!]) {
+      query OrderHistoryPaginationQuery(
+        $count: Int!
+        $cursor: String
+        $states: [CommerceOrderStateEnum!]
+      ) {
         me {
           ...OrderHistory_me @arguments(count: $count, cursor: $cursor, states: $states)
         }

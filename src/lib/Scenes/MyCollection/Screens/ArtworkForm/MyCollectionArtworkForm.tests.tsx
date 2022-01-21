@@ -1,7 +1,11 @@
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Image } from "react-native-image-crop-picker"
-import { MyCollectionArtworkForm, MyCollectionArtworkFormProps, updateArtwork } from "./MyCollectionArtworkForm"
+import {
+  MyCollectionArtworkForm,
+  MyCollectionArtworkFormProps,
+  updateArtwork,
+} from "./MyCollectionArtworkForm"
 
 import { fireEvent } from "@testing-library/react-native"
 import { AutosuggestResultsQueryRawResponse } from "__generated__/AutosuggestResultsQuery.graphql"
@@ -49,7 +53,12 @@ describe("MyCollectionArtworkForm", () => {
   describe("Editing an artwork", () => {
     it("renders the main form", async () => {
       const { getByText, getByTestId } = renderWithWrappersTL(
-        <MyCollectionArtworkForm artwork={mockArtwork as any} mode="edit" onSuccess={jest.fn()} onDelete={jest.fn()} />
+        <MyCollectionArtworkForm
+          artwork={mockArtwork as any}
+          mode="edit"
+          onSuccess={jest.fn()}
+          onDelete={jest.fn()}
+        />
       )
 
       act(() => GlobalStore.actions.myCollection.artwork.startEditingArtwork(mockArtwork as any))
@@ -75,8 +84,15 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByText("Select an Artist")).toBeTruthy()
 
-        act(() => fireEvent.changeText(getByPlaceholderText("Search for Artists on Artsy"), "banksy"))
-        act(() => mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtistSearchResult }))
+        act(() =>
+          fireEvent.changeText(getByPlaceholderText("Search for Artists on Artsy"), "banksy")
+        )
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({
+            errors: [],
+            data: mockArtistSearchResult,
+          })
+        )
         act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
 
         await flushPromiseQueue()
@@ -85,10 +101,17 @@ describe("MyCollectionArtworkForm", () => {
         expect(getByText("Select an Artwork")).toBeTruthy()
 
         act(() => fireEvent.changeText(getByPlaceholderText("Search artworks"), "banksy"))
-        act(() => mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkSearchResult }))
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({
+            errors: [],
+            data: mockArtworkSearchResult,
+          })
+        )
         act(() => fireEvent.press(getByTestId("artworkGridItem-Morons")))
 
-        act(() => mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult }))
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtworkResult })
+        )
 
         await flushPromiseQueue()
 
@@ -122,8 +145,15 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(getByText("Select an Artist")).toBeTruthy()
 
-        act(() => fireEvent.changeText(getByPlaceholderText("Search for Artists on Artsy"), "banksy"))
-        act(() => mockEnvironment.mock.resolveMostRecentOperation({ errors: [], data: mockArtistSearchResult }))
+        act(() =>
+          fireEvent.changeText(getByPlaceholderText("Search for Artists on Artsy"), "banksy")
+        )
+        act(() =>
+          mockEnvironment.mock.resolveMostRecentOperation({
+            errors: [],
+            data: mockArtistSearchResult,
+          })
+        )
         act(() => fireEvent.press(getByTestId("autosuggest-search-result-Banksy")))
 
         await flushPromiseQueue()
@@ -194,13 +224,22 @@ describe("MyCollectionArtworkForm", () => {
 
         expect(uploadFileToS3).toHaveBeenCalledTimes(2)
         expect(uploadFileToS3).toHaveBeenNthCalledWith(1, "some-path", "private", assetCredentials)
-        expect(uploadFileToS3).toHaveBeenNthCalledWith(2, "some-other-path", "private", assetCredentials)
+        expect(uploadFileToS3).toHaveBeenNthCalledWith(
+          2,
+          "some-other-path",
+          "private",
+          assetCredentials
+        )
       })
     })
 
     describe("updating artworks", () => {
       it("stores uploaded photos locally on artwork add", async () => {
-        const fakePhotos = [fakePhoto("some-path"), fakePhoto("some-other-path"), fakePhoto("yet-another-path")]
+        const fakePhotos = [
+          fakePhoto("some-path"),
+          fakePhoto("some-other-path"),
+          fakePhoto("yet-another-path"),
+        ]
 
         const formValues: ArtworkFormValues = {
           artist: "some-artist",
@@ -236,7 +275,9 @@ describe("MyCollectionArtworkForm", () => {
           mode: "add",
         }
         const uploadPhotosMock = jest.spyOn(photoUtil, "uploadPhotos")
-        uploadPhotosMock.mockImplementation(() => Promise.resolve(["image-url0", "image-url1", "image-url2"]))
+        uploadPhotosMock.mockImplementation(() =>
+          Promise.resolve(["image-url0", "image-url1", "image-url2"])
+        )
 
         const artworkSlug = "some-slug"
         const artworkResponse: myCollectionAddArtworkMutationResponse = {
@@ -299,7 +340,10 @@ const mockArtworkSearchResult = {
             id: "QXJ0d29yazo2MTg5N2MxMWFlMmUzMzAwMGRjOTUwODg=",
             __typename: "Artwork",
             slug: "banksy-morons-unsigned-16",
-            image: { aspectRatio: 1.4, url: "https://d32dm0rphc51dk.cloudfront.net/CwzH4uRDHZbb04u9eC3uhg/large.jpg" },
+            image: {
+              aspectRatio: 1.4,
+              url: "https://d32dm0rphc51dk.cloudfront.net/CwzH4uRDHZbb04u9eC3uhg/large.jpg",
+            },
             title: "Morons",
             date: "2007",
             saleMessage: "Contact For Price",

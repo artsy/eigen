@@ -1,5 +1,8 @@
 import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { RightButtonContainer } from "lib/Components/FancyModal/FancyModalHeader"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -49,7 +52,9 @@ describe("ArtistNationalitiesOptionsScreen", () => {
   }
 
   it("renders the options", () => {
-    const tree = renderWithWrappers(<MockArtistNationalitiesOptionsScreen initialData={INITIAL_DATA} />)
+    const tree = renderWithWrappers(
+      <MockArtistNationalitiesOptionsScreen initialData={INITIAL_DATA} />
+    )
     expect(tree.root.findAllByType(OptionListItem)).toHaveLength(5)
     const items = tree.root.findAllByType(OptionListItem)
     expect(items.map(extractText)).toEqual(["American", "British", "German", "Italian", "Japanese"])
@@ -67,7 +72,9 @@ describe("ArtistNationalitiesOptionsScreen", () => {
       ],
     }
 
-    const tree = renderWithWrappers(<MockArtistNationalitiesOptionsScreen initialData={initialData} />)
+    const tree = renderWithWrappers(
+      <MockArtistNationalitiesOptionsScreen initialData={initialData} />
+    )
     const options = tree.root.findAllByType(Check)
 
     expect(options[0].props.selected).toBe(true)
@@ -89,7 +96,9 @@ describe("ArtistNationalitiesOptionsScreen", () => {
       ],
     }
 
-    const tree = renderWithWrappers(<MockArtistNationalitiesOptionsScreen initialData={initialData} />)
+    const tree = renderWithWrappers(
+      <MockArtistNationalitiesOptionsScreen initialData={initialData} />
+    )
     const options = tree.root.findAllByType(Check)
     const clear = tree.root.findByType(RightButtonContainer)
 

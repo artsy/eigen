@@ -70,7 +70,11 @@ describe("AddEditPhotos", () => {
     const initialPhotos = [fakePhoto("path1"), fakePhoto("path2"), fakePhoto("path3")]
 
     const tree = renderWithWrappers(
-      <AddEditPhotos initialPhotos={initialPhotos} photosUpdated={jest.fn()} navigator={fakeNavigator} />
+      <AddEditPhotos
+        initialPhotos={initialPhotos}
+        photosUpdated={jest.fn()}
+        navigator={fakeNavigator}
+      />
     )
     const images = tree.root.findAllByType(Image)
     expect(images.length).toEqual(3)

@@ -14,7 +14,8 @@ export const ImageCarouselCloseButton = ({ onClose }: { onClose(): void }) => {
   fullScreenState.useUpdates()
 
   const showCloseButton =
-    fullScreenState.current === "entered" || fullScreenState.current === "animating entry transition"
+    fullScreenState.current === "entered" ||
+    fullScreenState.current === "animating entry transition"
   return (
     <View
       style={{

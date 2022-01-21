@@ -50,7 +50,11 @@ export const InfoButton: React.FC<InfoButtonProps> = ({
         </TouchableOpacity>
       </Flex>
       {!!subTitle && <Text color="black60">{subTitle}</Text>}
-      <FancyModal visible={modalVisible} maxHeight={maxModalHeight} onBackgroundPressed={() => setModalVisible(false)}>
+      <FancyModal
+        visible={modalVisible}
+        maxHeight={maxModalHeight}
+        onBackgroundPressed={() => setModalVisible(false)}
+      >
         <FancyModalHeader useXButton onLeftButtonPress={() => setModalVisible(false)}>
           {modalTitle ?? title}
         </FancyModalHeader>

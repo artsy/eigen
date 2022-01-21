@@ -34,7 +34,16 @@ export interface BoxProps
 /**
  * All the system functions for Box
  */
-export const boxMixin = compose(background, border, color, flexbox, layout, position, space, textAlign)
+export const boxMixin = compose(
+  background,
+  border,
+  color,
+  flexbox,
+  layout,
+  position,
+  space,
+  textAlign
+)
 
 /**
  * Box is just a `View` with common styled-system props.

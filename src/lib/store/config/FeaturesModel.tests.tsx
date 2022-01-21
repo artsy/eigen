@@ -41,9 +41,15 @@ jest.mock("lib/store/config/features", () => {
 })
 
 const getComputedFeatures = () =>
-  __globalStoreTestUtils__?.getCurrentState().config.features.flags as unknown as Record<TestFeatures, boolean>
+  __globalStoreTestUtils__?.getCurrentState().config.features.flags as unknown as Record<
+    TestFeatures,
+    boolean
+  >
 const getComputedDevToggles = () =>
-  __globalStoreTestUtils__?.getCurrentState().config.features.devToggles as unknown as Record<TestDevToggles, boolean>
+  __globalStoreTestUtils__?.getCurrentState().config.features.devToggles as unknown as Record<
+    TestDevToggles,
+    boolean
+  >
 
 describe("Feature flags", () => {
   it("are taken from the features definition map and turned into a computed boolean map in the global store", () => {

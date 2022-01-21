@@ -7,7 +7,11 @@ import { getEssentialProps } from "./helper"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 
 const EXAMPLE_FILTER_OPTIONS: FilterData[] = [
-  { displayText: "First Example", paramValue: "first-example", paramName: FilterParamName.partnerIDs },
+  {
+    displayText: "First Example",
+    paramValue: "first-example",
+    paramName: FilterParamName.partnerIDs,
+  },
   { displayText: "Another One", paramValue: "another-one", paramName: FilterParamName.partnerIDs },
   { displayText: "The Third", paramValue: "the-third", paramName: FilterParamName.partnerIDs },
 ]
@@ -15,7 +19,11 @@ const EXAMPLE_FILTER_OPTIONS: FilterData[] = [
 describe("MultiSelectOption", () => {
   it("renders the options", () => {
     const { getAllByTestId } = renderWithWrappersTL(
-      <MultiSelectOptionScreen filterOptions={EXAMPLE_FILTER_OPTIONS} searchable {...getEssentialProps()} />
+      <MultiSelectOptionScreen
+        filterOptions={EXAMPLE_FILTER_OPTIONS}
+        searchable
+        {...getEssentialProps()}
+      />
     )
 
     expect(getAllByTestId("multi-select-option-button").map(extractText)).toEqual([
@@ -44,7 +52,11 @@ describe("MultiSelectOption", () => {
   describe("searchable", () => {
     it("filters the options with searchable", () => {
       const { getAllByTestId, getByTestId } = renderWithWrappersTL(
-        <MultiSelectOptionScreen filterOptions={EXAMPLE_FILTER_OPTIONS} searchable {...getEssentialProps()} />
+        <MultiSelectOptionScreen
+          filterOptions={EXAMPLE_FILTER_OPTIONS}
+          searchable
+          {...getEssentialProps()}
+        />
       )
 
       expect(getAllByTestId("multi-select-option-button").map(extractText)).toEqual([
@@ -60,7 +72,11 @@ describe("MultiSelectOption", () => {
 
     it("displays a message indicating no results when nothing matches the search input", () => {
       const { getAllByTestId, getByTestId, getByText } = renderWithWrappersTL(
-        <MultiSelectOptionScreen filterOptions={EXAMPLE_FILTER_OPTIONS} searchable {...getEssentialProps()} />
+        <MultiSelectOptionScreen
+          filterOptions={EXAMPLE_FILTER_OPTIONS}
+          searchable
+          {...getEssentialProps()}
+        />
       )
 
       expect(getAllByTestId("multi-select-option-button").map(extractText)).toEqual([

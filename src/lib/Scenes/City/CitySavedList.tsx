@@ -76,10 +76,17 @@ export const CitySavedListContainer = createPaginationContainer(
     `,
     me: graphql`
       fragment CitySavedList_me on Me
-      @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 20 }
+        cursor: { type: "String", defaultValue: "" }
+      ) {
         followsAndSaves {
-          shows: showsConnection(first: $count, status: RUNNING_AND_UPCOMING, city: $citySlug, after: $cursor)
-            @connection(key: "CitySavedList_shows") {
+          shows: showsConnection(
+            first: $count
+            status: RUNNING_AND_UPCOMING
+            city: $citySlug
+            after: $cursor
+          ) @connection(key: "CitySavedList_shows") {
             edges {
               node {
                 slug

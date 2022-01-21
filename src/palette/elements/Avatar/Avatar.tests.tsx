@@ -21,7 +21,9 @@ describe("Avatar", () => {
 
   it("returns correct sizes with initials", () => {
     const getInitialHolder = (size: any) =>
-      renderWithWrappersTL(<Avatar size={size} initials="AB" />).container.findByType(InitialsHolder)
+      renderWithWrappersTL(<Avatar size={size} initials="AB" />).container.findByType(
+        InitialsHolder
+      )
 
     expect(getInitialHolder("xxs").props.width).toEqual(30)
     expect(getInitialHolder("xs").props.height).toEqual(45)

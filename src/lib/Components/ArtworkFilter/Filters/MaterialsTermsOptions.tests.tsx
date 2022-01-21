@@ -42,7 +42,11 @@ describe("Materials Options Screen", () => {
     selectedFilters: [],
   }
 
-  const MockMaterialsTermsOptionsScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
+  const MockMaterialsTermsOptionsScreen = ({
+    initialData = initialState,
+  }: {
+    initialData?: ArtworkFiltersState
+  }) => {
     return (
       <ArtworkFiltersStoreProvider initialData={initialData}>
         <MaterialsTermsOptionsScreen {...getEssentialProps()} />
@@ -52,7 +56,9 @@ describe("Materials Options Screen", () => {
 
   describe("before any filters are selected", () => {
     it("renders all options present in the aggregation", () => {
-      const { getByText } = renderWithWrappersTL(<MockMaterialsTermsOptionsScreen initialData={initialState} />)
+      const { getByText } = renderWithWrappersTL(
+        <MockMaterialsTermsOptionsScreen initialData={initialState} />
+      )
 
       expect(getByText("Acrylic")).toBeTruthy()
       expect(getByText("Canvas")).toBeTruthy()
@@ -79,7 +85,9 @@ describe("Materials Options Screen", () => {
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      const { getAllByA11yState } = renderWithWrappersTL(<MockMaterialsTermsOptionsScreen initialData={state} />)
+      const { getAllByA11yState } = renderWithWrappersTL(
+        <MockMaterialsTermsOptionsScreen initialData={state} />
+      )
       const options = getAllByA11yState({ checked: true })
 
       expect(options).toHaveLength(1)

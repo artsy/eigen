@@ -27,7 +27,9 @@ interface Props {
   isActiveTab: boolean
 }
 
-type Item = NonNullable<NonNullable<NonNullable<Conversations_me["conversations"]>["edges"]>[0]>["node"]
+type Item = NonNullable<
+  NonNullable<NonNullable<Conversations_me["conversations"]>["edges"]>[0]
+>["node"]
 
 // @track()
 export const Conversations: React.FC<Props> = (props) => {
@@ -97,10 +99,17 @@ export const Conversations: React.FC<Props> = (props) => {
   const shouldDisplayMyBids = unsafe_getFeatureFlag("AROptionsBidManagement")
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.inboxInquiries })}>
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({ context_screen_owner_type: OwnerType.inboxInquiries })}
+    >
       {!shouldDisplayMyBids && (
         <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
-          <Sans mx={2} mt={1} size="8" style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
+          <Sans
+            mx={2}
+            mt={1}
+            size="8"
+            style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}
+          >
             Inbox {unreadCounter}
           </Sans>
         </Flex>
@@ -118,11 +127,19 @@ export const Conversations: React.FC<Props> = (props) => {
         keyExtractor={(item) => item.internalID!}
         ItemSeparatorComponent={() => <Separator mx={2} width="auto" />}
         renderItem={({ item }) => {
-          return <ConversationSnippet conversation={item} onSelected={() => handleSelectConversation(item)} />
+          return (
+            <ConversationSnippet
+              conversation={item}
+              onSelected={() => handleSelectConversation(item)}
+            />
+          )
         }}
         onEndReached={fetchData}
         onEndReachedThreshold={0.2}
-        contentContainerStyle={{ flexGrow: 1, justifyContent: !conversations.length ? "center" : "flex-start" }}
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: !conversations.length ? "center" : "flex-start",
+        }}
         ListEmptyComponent={<NoMessages />}
       />
       {!!(relay.hasMore() && isLoading) && (
@@ -155,7 +172,10 @@ export const ConversationsContainer = createPaginationContainer(
   {
     me: graphql`
       fragment Conversations_me on Me
-      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 10 }
+        cursor: { type: "String", defaultValue: "" }
+      ) {
         conversations: conversationsConnection(first: $count, after: $cursor)
           @connection(key: "Conversations_conversations") {
           pageInfo {

@@ -12,14 +12,18 @@ let client: SplitIO.IClient | null = null
 export const useExperiments = () => {
   const enableSplitIOABTesting = useFeatureFlag("AREnableSplitIOABTesting")
   const environment = GlobalStore.useAppState((store) => store.config.environment.env)
-  const userIdOrDeviceId = GlobalStore.useAppState((store) => store.auth.userID ?? `not-logged-in_${getUniqueId()}`)
+  const userIdOrDeviceId = GlobalStore.useAppState(
+    (store) => store.auth.userID ?? `not-logged-in_${getUniqueId()}`
+  )
 
   useEffect(() => {
     if (enableSplitIOABTesting) {
       const config: IReactNativeSettings = {
         core: {
           authorizationKey:
-            environment === "staging" ? Config.SPLIT_IO_STAGING_API_KEY : Config.SPLIT_IO_PRODUCTION_API_KEY,
+            environment === "staging"
+              ? Config.SPLIT_IO_STAGING_API_KEY
+              : Config.SPLIT_IO_PRODUCTION_API_KEY,
           key: userIdOrDeviceId,
         },
         streamingEnabled: true,
@@ -28,13 +32,18 @@ export const useExperiments = () => {
       client = client ?? factory.client()
 
       client?.on(client.Event.SDK_READY, () => {
-        GlobalStore.actions.config.experiments.setSessionState({ isReady: true, lastUpdate: DateTime.utc().toISO() })
+        GlobalStore.actions.config.experiments.setSessionState({
+          isReady: true,
+          lastUpdate: DateTime.utc().toISO(),
+        })
       })
       client?.on(client.Event.SDK_READY_TIMED_OUT, () => {
         GlobalStore.actions.config.experiments.setSessionState({ isReady: false })
       })
       client?.on(client.Event.SDK_UPDATE, () => {
-        GlobalStore.actions.config.experiments.setSessionState({ lastUpdate: DateTime.now().toISO() })
+        GlobalStore.actions.config.experiments.setSessionState({
+          lastUpdate: DateTime.now().toISO(),
+        })
       })
     }
   }, [enableSplitIOABTesting])
@@ -50,7 +59,9 @@ export const useTreatment = (treatment: EXPERIMENT_NAME) => {
   // That means that when `client.getTreatment(treatment)` runs, it will return a new value.
   // So we "read" this value, in order to make the hook re-render the components it is used in.
   // @ts-ignore
-  const _lastUpdate = GlobalStore.useAppState((store) => store.config.experiments.sessionState.lastUpdate)
+  const _lastUpdate = GlobalStore.useAppState(
+    (store) => store.config.experiments.sessionState.lastUpdate
+  )
 
   if (!enableSplitIOABTesting) {
     return experiments[treatment].fallbackTreatment

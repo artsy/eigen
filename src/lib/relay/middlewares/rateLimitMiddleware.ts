@@ -8,7 +8,11 @@ interface RateLimitMiddlewareOpts {
 }
 
 export const rateLimitMiddleware = (
-  { limit, interval, logger = console.log.bind(console, "[RELAY-NETWORK]") }: RateLimitMiddlewareOpts = {
+  {
+    limit,
+    interval,
+    logger = console.log.bind(console, "[RELAY-NETWORK]"),
+  }: RateLimitMiddlewareOpts = {
     limit: 50,
     interval: 1000,
   }

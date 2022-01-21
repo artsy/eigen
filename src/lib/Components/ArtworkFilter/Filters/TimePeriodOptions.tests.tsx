@@ -44,7 +44,11 @@ describe("TimePeriodOptions Screen", () => {
     selectedFilters: [],
   }
 
-  const MockTimePeriodOptionsScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
+  const MockTimePeriodOptionsScreen = ({
+    initialData = initialState,
+  }: {
+    initialData?: ArtworkFiltersState
+  }) => {
     return (
       <ArtworkFiltersStoreProvider initialData={initialData}>
         <TimePeriodOptionsScreen {...getEssentialProps()} />
@@ -60,7 +64,9 @@ describe("TimePeriodOptions Screen", () => {
     })
 
     it("renders all options present in the aggregation", () => {
-      const { getByText } = renderWithWrappersTL(<MockTimePeriodOptionsScreen initialData={initialState} />)
+      const { getByText } = renderWithWrappersTL(
+        <MockTimePeriodOptionsScreen initialData={initialState} />
+      )
 
       expect(getByText("2020–Today")).toBeTruthy()
       expect(getByText("2010–2019")).toBeTruthy()
@@ -87,7 +93,9 @@ describe("TimePeriodOptions Screen", () => {
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      const { getAllByA11yState } = renderWithWrappersTL(<MockTimePeriodOptionsScreen initialData={state} />)
+      const { getAllByA11yState } = renderWithWrappersTL(
+        <MockTimePeriodOptionsScreen initialData={state} />
+      )
       const options = getAllByA11yState({ checked: true })
 
       expect(options).toHaveLength(1)

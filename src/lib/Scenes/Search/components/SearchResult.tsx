@@ -3,21 +3,19 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { searchInsights } from "lib/utils/useSearchInsightsConfig"
 import { Flex, Spacer, Touchable } from "palette"
 import React from "react"
-import { AlgoliaSearchResult } from "../types"
+import { AlgoliaSearchResult, PillType } from "../types"
 import { SearchHighlight } from "./SearchHighlight"
 import { IMAGE_SIZE, SearchResultImage } from "./SearchResultImage"
 
 interface SearchResultsItemProps {
   result: AlgoliaSearchResult
-  categoryName: string
-  indexName: string
+  selectedPill: PillType
   trackResultPress?: (result: AlgoliaSearchResult) => void
 }
 
 export const SearchResult: React.FC<SearchResultsItemProps> = ({
   result,
-  categoryName,
-  indexName,
+  selectedPill,
   trackResultPress,
 }) => {
   const addArtworkToRecentSearches = () => {
@@ -28,8 +26,8 @@ export const SearchResult: React.FC<SearchResultsItemProps> = ({
         href: result.href,
         slug: result.slug,
         displayLabel: result.name,
-        __typename: categoryName,
-        displayType: categoryName,
+        __typename: selectedPill.displayName,
+        displayType: selectedPill.displayName,
       },
     })
   }
@@ -40,7 +38,7 @@ export const SearchResult: React.FC<SearchResultsItemProps> = ({
 
     trackResultPress?.(result)
     searchInsights("clickedObjectIDsAfterSearch", {
-      index: indexName,
+      index: selectedPill.indexName!,
       eventName: "Search item clicked",
       positions: [result.__position],
       queryID: result.__queryID,
@@ -51,7 +49,7 @@ export const SearchResult: React.FC<SearchResultsItemProps> = ({
   return (
     <Touchable onPress={onPress}>
       <Flex height={IMAGE_SIZE} flexDirection="row" alignItems="center">
-        <SearchResultImage imageURL={result.image_url} resultType={categoryName} />
+        <SearchResultImage imageURL={result.image_url} resultType={selectedPill.displayName} />
 
         <Spacer ml={1} />
 

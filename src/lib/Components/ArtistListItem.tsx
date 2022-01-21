@@ -24,7 +24,11 @@ interface State {
   isFollowedChanging: boolean
 }
 
-export const formatTombstoneText = (nationality: string | null, birthday: string | null, deathday: string | null) => {
+export const formatTombstoneText = (
+  nationality: string | null,
+  birthday: string | null,
+  deathday: string | null
+) => {
   if (nationality && birthday && deathday) {
     return nationality.trim() + ", " + birthday + "-" + deathday
   } else if (nationality && birthday) {
@@ -77,7 +81,9 @@ export class ArtistListItem extends React.Component<Props, State> {
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   @track((props: Props) => ({
-    action_name: props.artist.is_followed ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
+    action_name: props.artist.is_followed
+      ? Schema.ActionNames.ArtistFollow
+      : Schema.ActionNames.ArtistUnfollow,
     action_type: Schema.ActionTypes.Success,
     owner_id: props.artist.internalID,
     owner_slug: props.artist.slug,
@@ -136,7 +142,11 @@ export class ArtistListItem extends React.Component<Props, State> {
                 />
               </Flex>
               <Flex>
-                <FollowButton haptic isFollowed={!!is_followed} onPress={this.handleFollowArtist.bind(this)} />
+                <FollowButton
+                  haptic
+                  isFollowed={!!is_followed}
+                  onPress={this.handleFollowArtist.bind(this)}
+                />
               </Flex>
             </Flex>
           </Touchable>

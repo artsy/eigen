@@ -267,12 +267,18 @@ describe("ArtworkExtraLinks", () => {
     })
 
     it("hides auction links when auctionState is closed", () => {
-      const componentWithEndedAuctionState = getWrapper({ artwork, auctionState: AuctionTimerState.CLOSED })
+      const componentWithEndedAuctionState = getWrapper({
+        artwork,
+        auctionState: AuctionTimerState.CLOSED,
+      })
       expect(componentWithEndedAuctionState.text()).not.toContain("By placing a bid you agree to")
     })
 
     it("displays auction links when auctionState is closing", () => {
-      const componentWithEndedAuctionState = getWrapper({ artwork, auctionState: AuctionTimerState.CLOSING })
+      const componentWithEndedAuctionState = getWrapper({
+        artwork,
+        auctionState: AuctionTimerState.CLOSING,
+      })
       expect(componentWithEndedAuctionState.text()).toContain("By placing a bid you agree to")
     })
 
@@ -285,7 +291,10 @@ describe("ArtworkExtraLinks", () => {
     })
 
     it("displays auction links when auctionState is inProgress", () => {
-      const componentWithEndedAuctionState = getWrapper({ artwork, auctionState: AuctionTimerState.CLOSING })
+      const componentWithEndedAuctionState = getWrapper({
+        artwork,
+        auctionState: AuctionTimerState.CLOSING,
+      })
       expect(componentWithEndedAuctionState.text()).toContain("By placing a bid you agree to")
     })
 

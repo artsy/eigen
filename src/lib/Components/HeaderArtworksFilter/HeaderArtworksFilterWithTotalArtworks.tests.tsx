@@ -1,4 +1,7 @@
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { useAnimatedValue } from "lib/Scenes/Artwork/Components/ImageCarousel/useAnimatedValue"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -21,7 +24,11 @@ describe("HeaderArtworksFilterWithTotalArtworks", () => {
     },
   }
 
-  const TestHeaderArtworksFilterWithTotalArtworks = ({ initialData }: { initialData?: ArtworkFiltersState }) => {
+  const TestHeaderArtworksFilterWithTotalArtworks = ({
+    initialData,
+  }: {
+    initialData?: ArtworkFiltersState
+  }) => {
     const animationValue = useAnimatedValue(0)
     return (
       <ArtworkFiltersStoreProvider initialData={initialData}>
@@ -31,7 +38,9 @@ describe("HeaderArtworksFilterWithTotalArtworks", () => {
   }
 
   const getWrapper = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
-    const tree = renderWithWrappers(<TestHeaderArtworksFilterWithTotalArtworks initialData={initialData} />)
+    const tree = renderWithWrappers(
+      <TestHeaderArtworksFilterWithTotalArtworks initialData={initialData} />
+    )
     return tree
   }
 

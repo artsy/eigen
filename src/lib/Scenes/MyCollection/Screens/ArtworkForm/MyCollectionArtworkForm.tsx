@@ -7,7 +7,10 @@ import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwo
 import { FormikProvider, useFormik } from "formik"
 import LoadingModal from "lib/Components/Modals/LoadingModal"
 import { goBack } from "lib/navigation/navigate"
-import { cleanArtworkPayload, explicitlyClearedFields } from "lib/Scenes/MyCollection/utils/cleanArtworkPayload"
+import {
+  cleanArtworkPayload,
+  explicitlyClearedFields,
+} from "lib/Scenes/MyCollection/utils/cleanArtworkPayload"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { isEqual } from "lodash"
 import React, { useEffect, useRef, useState } from "react"
@@ -162,12 +165,13 @@ export const MyCollectionArtworkForm: React.FC<MyCollectionArtworkFormProps> = (
       }
     }
 
-    GlobalStore.actions.myCollection.artwork.ResetFormButKeepArtist()
+    GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
   }
 
   const onHeaderBackButtonPress = () => {
     const currentRoute = navContainerRef.current?.getCurrentRoute()
-    const isFirstScreen = props.mode === "edit" || !currentRoute?.name || currentRoute?.name === "ArtworkFormArtist"
+    const isFirstScreen =
+      props.mode === "edit" || !currentRoute?.name || currentRoute?.name === "ArtworkFormArtist"
 
     // clear and exit the form if we're on the first screen
     if (isFirstScreen) {
@@ -225,7 +229,15 @@ export const updateArtwork = async (
   dirtyFormCheckValues: ArtworkFormValues,
   props: MyCollectionArtworkFormProps
 ) => {
-  const { photos, artistSearchResult, pricePaidDollars, pricePaidCurrency, artist, artistIds, ...others } = values
+  const {
+    photos,
+    artistSearchResult,
+    pricePaidDollars,
+    pricePaidCurrency,
+    artist,
+    artistIds,
+    ...others
+  } = values
   const externalImageUrls = await uploadPhotos(photos)
 
   let pricePaidCents

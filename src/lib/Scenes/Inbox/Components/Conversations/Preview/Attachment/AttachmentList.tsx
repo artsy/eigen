@@ -44,7 +44,8 @@ const AttachmentList: React.FC<Props> = ({ conversation }) => {
 export const AttachmentListFragmentContainer = createFragmentContainer(AttachmentList, {
   conversation: graphql`
     fragment AttachmentList_conversation on Conversation {
-      messagesConnection(first: 30, sort: DESC) @connection(key: "Details_messagesConnection", filters: []) {
+      messagesConnection(first: 30, sort: DESC)
+        @connection(key: "Details_messagesConnection", filters: []) {
         edges {
           node {
             __typename

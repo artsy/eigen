@@ -4,13 +4,19 @@ import { RecommendedArtistsRail_me } from "__generated__/RecommendedArtistsRail_
 import { RecommendedArtistsRailFollowMutation } from "__generated__/RecommendedArtistsRailFollowMutation.graphql"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { defaultArtistVariables } from "lib/Scenes/Artist/Artist"
 import { RailScrollProps } from "lib/Scenes/Home/Components/types"
 import HomeAnalytics from "lib/Scenes/Home/homeAnalytics"
 import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Spacer, Spinner } from "palette"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import { FlatList, ViewProps } from "react-native"
-import { commitMutation, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import {
+  commitMutation,
+  createPaginationContainer,
+  graphql,
+  RelayPaginationProp,
+} from "react-relay"
 import { useTracking } from "react-tracking"
 import { CardRailFlatList } from "../CardRailFlatList"
 import { ArtistCard } from "./ArtistCard"
@@ -67,7 +73,9 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
   }
 
   const handleFollowChange = (artist: ArtistCard_artist) => {
-    trackEvent(tracks.tapFollowOrUnfollowArtist(!!artist.isFollowed, artist.internalID, artist.slug))
+    trackEvent(
+      tracks.tapFollowOrUnfollowArtist(!!artist.isFollowed, artist.internalID, artist.slug)
+    )
 
     followOrUnfollowArtist(artist)
   }
@@ -79,6 +87,8 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
       </Flex>
       <CardRailFlatList<ArtistCard_artist>
         listRef={listRef}
+        prefetchUrlExtractor={(item) => item?.href!}
+        prefetchVariablesExtractor={defaultArtistVariables}
         data={artists as any}
         keyExtractor={(artist) => artist.id}
         onEndReached={loadMoreArtists}

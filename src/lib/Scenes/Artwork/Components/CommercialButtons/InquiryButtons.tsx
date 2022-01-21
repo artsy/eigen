@@ -1,7 +1,10 @@
 import { ActionType, OwnerType, TappedContactGallery } from "@artsy/cohesion"
 import { InquiryButtons_artwork } from "__generated__/InquiryButtons_artwork.graphql"
 import { InquirySuccessNotification } from "lib/Scenes/Artwork/Components/CommercialButtons/InquirySuccessNotification"
-import { ArtworkInquiryContext, ArtworkInquiryStateProvider } from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
+import {
+  ArtworkInquiryContext,
+  ArtworkInquiryStateProvider,
+} from "lib/utils/ArtworkInquiry/ArtworkInquiryStore"
 import { InquiryTypes } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { InquiryOptions } from "lib/utils/ArtworkInquiry/ArtworkInquiryTypes"
 import { Button, ButtonProps } from "palette"

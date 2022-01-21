@@ -1,3 +1,4 @@
+import { toTitleCase } from "@artsy/to-title-case"
 import { ArrowRightIcon, Flex, Text, useSpace } from "palette"
 import React from "react"
 import { TouchableOpacity, View } from "react-native"
@@ -27,7 +28,7 @@ export const SectionTitle: React.FC<{
       <Flex mb={2} flexDirection="row" alignItems="center">
         <View style={{ overflow: "hidden", flex: 1 }}>
           <Text lineHeight="20" variant="sm" ellipsizeMode="tail" numberOfLines={1} testID="title">
-            {title}
+            {toTitleCase(String(title))}
           </Text>
           {Boolean(subtitle) && (
             <Text variant="sm" color="black60" lineHeight="20" testID="subtitle">

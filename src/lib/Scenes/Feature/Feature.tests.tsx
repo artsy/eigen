@@ -11,7 +11,8 @@ jest.mock("lib/relay/createEnvironment", () => {
 })
 let mockRelayEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 beforeEach(() => {
-  mockRelayEnvironment = require("lib/relay/createEnvironment").defaultEnvironment = createMockEnvironment()
+  mockRelayEnvironment = require("lib/relay/createEnvironment").defaultEnvironment =
+    createMockEnvironment()
 })
 
 describe(FeatureQueryRenderer, () => {

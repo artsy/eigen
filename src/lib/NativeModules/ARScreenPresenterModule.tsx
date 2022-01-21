@@ -1,4 +1,9 @@
-import { NavigationContainerRef, NavigationState, StackActions, TabActions } from "@react-navigation/native"
+import {
+  NavigationContainerRef,
+  NavigationState,
+  StackActions,
+  TabActions,
+} from "@react-navigation/native"
 import immer from "immer-peasy"
 import { ViewDescriptor } from "lib/navigation/navigate"
 import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
@@ -34,12 +39,15 @@ function updateNavigationState(updater: (draft: Mutable<NavigationState>) => voi
   const nextState = immer(currentState, updater)
   __unsafe_mainModalStackRef.current?.resetRoot(nextState)
 }
-function updateTabStackState(tab: BottomTabType, updater: (draft: Mutable<NavigationState>) => void) {
+function updateTabStackState(
+  tab: BottomTabType,
+  updater: (draft: Mutable<NavigationState>) => void
+) {
   updateNavigationState((state) => {
     const tabs = state.routes[0].state?.routes
-    const tabState = (tabs as Array<{ name: BottomTabType; state: Mutable<NavigationState> }>)?.find(
-      (x) => x.name === tab
-    )?.state
+    const tabState = (
+      tabs as Array<{ name: BottomTabType; state: Mutable<NavigationState> }>
+    )?.find((x) => x.name === tab)?.state
     if (!tabState) {
       console.error("unable to find tab state for tab", tab, state)
       return
@@ -85,7 +93,10 @@ export const ARScreenPresenterModule: typeof NativeModules["ARScreenPresenterMod
       )
     } else {
       __unsafe_mainModalStackRef.current?.dispatch(
-        StackActions.push("modal", { rootModuleName: viewDescriptor.moduleName, rootModuleProps: viewDescriptor.props })
+        StackActions.push("modal", {
+          rootModuleName: viewDescriptor.moduleName,
+          rootModuleProps: viewDescriptor.props,
+        })
       )
     }
   },

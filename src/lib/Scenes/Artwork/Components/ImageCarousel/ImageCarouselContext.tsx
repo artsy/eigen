@@ -1,11 +1,14 @@
 import { ImageCarousel_images } from "__generated__/ImageCarousel_images.graphql"
 import { Schema } from "lib/utils/track"
 import React, { useMemo, useRef } from "react"
-import { FlatList, View } from "react-native"
+import { Animated, FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
 import { GlobalState, useGlobalState } from "../../../../utils/useGlobalState"
 
-export type ImageDescriptor = Pick<ImageCarousel_images[number], "deepZoom" | "height" | "width" | "url">
+export type ImageDescriptor = Pick<
+  ImageCarousel_images[number],
+  "deepZoom" | "height" | "width" | "url"
+>
 
 export type ImageCarouselAction =
   | {
@@ -32,7 +35,12 @@ export type ImageCarouselAction =
       nextZoomScale: number
     }
 
-export type FullScreenState = "none" | "doing first render" | "animating entry transition" | "entered" | "exiting"
+export type FullScreenState =
+  | "none"
+  | "doing first render"
+  | "animating entry transition"
+  | "entered"
+  | "exiting"
 
 export interface ImageCarouselContext {
   imageIndex: GlobalState<number>
@@ -42,6 +50,7 @@ export interface ImageCarouselContext {
   images: ImageDescriptor[]
   embeddedImageRefs: View[]
   embeddedFlatListRef: React.RefObject<FlatList<any>>
+  xScrollOffsetAnimatedValue: React.RefObject<Animated.Value>
   dispatch(action: ImageCarouselAction): void
 }
 
@@ -54,6 +63,7 @@ export function useNewImageCarouselContext({
 }): ImageCarouselContext {
   const embeddedImageRefs = useMemo(() => [], [])
   const embeddedFlatListRef = useRef<FlatList<any>>()
+  const xScrollOffsetAnimatedValue = useRef<Animated.Value>(new Animated.Value(0))
   const [imageIndex, setImageIndex] = useGlobalState(0)
   const [lastImageIndex, setLastImageIndex] = useGlobalState(0)
   const [fullScreenState, setFullScreenState] = useGlobalState("none" as FullScreenState)
@@ -70,6 +80,7 @@ export function useNewImageCarouselContext({
       images,
       embeddedImageRefs,
       embeddedFlatListRef,
+      xScrollOffsetAnimatedValue,
       dispatch: (action: ImageCarouselAction) => {
         switch (action.type) {
           case "IMAGE_INDEX_CHANGED":
@@ -84,7 +95,10 @@ export function useNewImageCarouselContext({
               setIsZoomedCompletelyOut(true)
               if (fullScreenState.current !== "none") {
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                embeddedFlatListRef.current.scrollToIndex({ index: action.nextImageIndex, animated: false })
+                embeddedFlatListRef.current.scrollToIndex({
+                  index: action.nextImageIndex,
+                  animated: false,
+                })
               }
               // tslint:disable-next-line: no-unused-expression
               onImageIndexChange && onImageIndexChange(imageIndex.current)
@@ -123,4 +137,6 @@ export function useNewImageCarouselContext({
   )
 }
 
-export const ImageCarouselContext = React.createContext<ImageCarouselContext>(null as any /* STRICTNESS_MIGRATION */)
+export const ImageCarouselContext = React.createContext<ImageCarouselContext>(
+  null as any /* STRICTNESS_MIGRATION */
+)

@@ -34,7 +34,9 @@ export const ViewingRoomViewWorksButton: React.FC<ViewingRoomViewWorksButtonProp
         buttonStyles={roundedButtonStyle}
         isVisible={props.isVisible}
         onPress={() => {
-          tracking.trackEvent(tracks.tappedViewWorksButton(viewingRoom.internalID, viewingRoom.slug))
+          tracking.trackEvent(
+            tracks.tappedViewWorksButton(viewingRoom.internalID, viewingRoom.slug)
+          )
           navigate(`/viewing-room/${viewingRoom.slug}/artworks`)
         }}
       >
@@ -71,14 +73,17 @@ export const tracks = {
   },
 }
 
-export const ViewingRoomViewWorksButtonContainer = createFragmentContainer(ViewingRoomViewWorksButton, {
-  viewingRoom: graphql`
-    fragment ViewingRoomViewWorksButton_viewingRoom on ViewingRoom {
-      slug
-      internalID
-      artworksForCount: artworksConnection(first: 1) {
-        totalCount
+export const ViewingRoomViewWorksButtonContainer = createFragmentContainer(
+  ViewingRoomViewWorksButton,
+  {
+    viewingRoom: graphql`
+      fragment ViewingRoomViewWorksButton_viewingRoom on ViewingRoom {
+        slug
+        internalID
+        artworksForCount: artworksConnection(first: 1) {
+          totalCount
+        }
       }
-    }
-  `,
-})
+    `,
+  }
+)

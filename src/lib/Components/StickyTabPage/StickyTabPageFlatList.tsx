@@ -29,7 +29,10 @@ export interface StickyTabSection {
   content: JSX.Element
 }
 export interface StickyTabFlatListProps
-  extends Omit<FlatListProps<any>, "onScroll" | "data" | "scrollEventThrottle" | "ListHeaderComponent" | "renderItem"> {
+  extends Omit<
+    FlatListProps<any>,
+    "onScroll" | "data" | "scrollEventThrottle" | "ListHeaderComponent" | "renderItem"
+  > {
   data: StickyTabSection[]
   paddingHorizontal?: number
   innerRef?: React.MutableRefObject<{ getNode(): FlatList<any> } | null>
@@ -194,7 +197,10 @@ function useStickyHeaderPositioning({
         // y offset got smaller so scrolling up (content travels down the screen)
         // if velocity is high enough or we're already moving the header up or we're near the top of the scroll view
         // then move the header down (show it)
-        Animated.set(amountScrolledUpward, Animated.add(amountScrolledUpward, Animated.abs(scrollDiff))),
+        Animated.set(
+          amountScrolledUpward,
+          Animated.add(amountScrolledUpward, Animated.abs(scrollDiff))
+        ),
         Animated.cond(Animated.or(upwardScrollThresholdBreached, headerIsNotFullyUp, nearTheTop), [
           Animated.set(headerOffsetY, Animated.min(0, Animated.sub(headerOffsetY, scrollDiff))),
         ]),
@@ -204,7 +210,10 @@ function useStickyHeaderPositioning({
     // we don't want to manipulate the header position while bouncing at the top or the bottom of the scroll view
     // cause it feels weeeird
     const notBouncingAtTheTop = Animated.greaterThan(scrollOffsetY, 0)
-    const notBouncingAtTheBottom = Animated.lessThan(scrollOffsetY, Animated.sub(contentHeight, layoutHeight))
+    const notBouncingAtTheBottom = Animated.lessThan(
+      scrollOffsetY,
+      Animated.sub(contentHeight, layoutHeight)
+    )
 
     const updateHeaderOffsetWhenNotBouncing = Animated.cond(
       Animated.and(notBouncingAtTheTop, notBouncingAtTheBottom),
@@ -225,13 +234,19 @@ function useStickyHeaderPositioning({
                 // y offset got bigger so scrolling down (content travels up the screen)
                 Animated.set(
                   headerOffsetY,
-                  Animated.max(negative(staticHeaderHeight), Animated.sub(headerOffsetY, scrollDiff))
+                  Animated.max(
+                    negative(staticHeaderHeight),
+                    Animated.sub(headerOffsetY, scrollDiff)
+                  )
                 ),
               ],
               [
                 // y offset got smaller so scrolling up (content travels down the screen)
                 Animated.cond(Animated.or(headerIsNotFullyUp, nearTheTop), [
-                  Animated.set(headerOffsetY, Animated.min(0, Animated.sub(headerOffsetY, scrollDiff))),
+                  Animated.set(
+                    headerOffsetY,
+                    Animated.min(0, Animated.sub(headerOffsetY, scrollDiff))
+                  ),
                 ]),
               ]
             ),

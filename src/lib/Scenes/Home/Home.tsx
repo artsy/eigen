@@ -8,11 +8,12 @@ import { Home_showsByFollowedArtists } from "__generated__/Home_showsByFollowedA
 import { HomeAboveTheFoldQuery } from "__generated__/HomeAboveTheFoldQuery.graphql"
 import { HomeBelowTheFoldQuery } from "__generated__/HomeBelowTheFoldQuery.graphql"
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
+import { SmallArtworkRailPlaceholder } from "lib/Components/ArtworkRail/SmallArtworkRail"
 import { ArtistRailFragmentContainer } from "lib/Components/Home/ArtistRails/ArtistRail"
 import { RecommendedArtistsRailFragmentContainer } from "lib/Components/Home/ArtistRails/RecommendedArtistsRail"
 import { LotsByFollowedArtistsRailContainer } from "lib/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { ArtworkRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkRail"
+import { ArtworkModuleRailFragmentContainer } from "lib/Scenes/Home/Components/ArtworkModuleRail"
 import { AuctionResultsRailFragmentContainer } from "lib/Scenes/Home/Components/AuctionResultsRail"
 import { CollectionsRailFragmentContainer } from "lib/Scenes/Home/Components/CollectionsRail"
 import { EmailConfirmationBannerFragmentContainer } from "lib/Scenes/Home/Components/EmailConfirmationBanner"
@@ -41,7 +42,7 @@ import { lotsByArtistsYouFollowDefaultVariables } from "../LotsByArtistsYouFollo
 import { ViewingRoomsHomeMainRail } from "../ViewingRoom/Components/ViewingRoomsHomeRail"
 import { ArticlesRailFragmentContainer } from "./Components/ArticlesRail"
 import { HomeHeroContainer } from "./Components/HomeHero"
-import { NewWorksForYouRailContainer } from "./Components/NewWorksForYouRail"
+import { NewWorksForYouRail } from "./Components/NewWorksForYouRail"
 import { ShowsRailFragmentContainer } from "./Components/ShowsRail"
 import { TroveFragmentContainer } from "./Components/Trove"
 import { RailScrollRef } from "./Components/types"
@@ -91,17 +92,18 @@ const Home = (props: Props) => {
     relay,
   } = props
 
-  const enableAuctionResultsByFollowedArtists = useFeatureFlag("ARHomeAuctionResultsByFollowedArtists")
+  const enableAuctionResultsByFollowedArtists = useFeatureFlag(
+    "ARHomeAuctionResultsByFollowedArtists"
+  )
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
   const enableTrove = useFeatureFlag("AREnableTrove")
-  const enableNewNewWorksForYouRail = useFeatureFlag("AREnableNewWorksForYou")
   const enableShowsForYouRail = useFeatureFlag("AREnableShowsRail")
 
   const newWorksTreatment = useTreatment("HomeScreenWorksForYouVsWorksByArtistsYouFollow")
   const artistRecommendationsTreatment = useTreatment("HomeScreenArtistRecommendations")
 
   const newWorks =
-    enableNewNewWorksForYouRail && newWorksTreatment === "worksForYou"
+    newWorksTreatment === "worksForYou"
       ? {
           title: "New Works for You",
           type: "newWorksForYou",
@@ -191,7 +193,11 @@ const Home = (props: Props) => {
       data: homePageBelow?.fairsModule,
     },
     { title: "Popular Artists", type: "artist", data: homePageBelow?.popularArtistsArtistModule },
-    { title: "Recently Viewed", type: "artwork", data: homePageBelow?.recentlyViewedWorksArtworkModule },
+    {
+      title: "Recently Viewed",
+      type: "artwork",
+      data: homePageBelow?.recentlyViewedWorksArtworkModule,
+    },
     {
       title: "Similar to Works You've Viewed",
       type: "artwork",
@@ -242,16 +248,20 @@ const Home = (props: Props) => {
                 )
               case "artwork":
                 return (
-                  <ArtworkRailFragmentContainer
+                  <ArtworkModuleRailFragmentContainer
                     title={item.title}
                     rail={item.data || null}
                     scrollRef={scrollRefs.current[index]}
-                    mb={MODULE_SEPARATOR_HEIGHT}
+                    mb={MODULE_SEPARATOR_HEIGHT - 2}
                   />
                 )
               case "auction-results":
                 return (
-                  <AuctionResultsRailFragmentContainer title={item.title} me={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
+                  <AuctionResultsRailFragmentContainer
+                    title={item.title}
+                    me={item.data}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
                 )
               case "collections":
                 return (
@@ -274,11 +284,15 @@ const Home = (props: Props) => {
                 )
               case "lotsByFollowedArtists":
                 return (
-                  <LotsByFollowedArtistsRailContainer title={item.title} me={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
+                  <LotsByFollowedArtistsRailContainer
+                    title={item.title}
+                    me={item.data}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
                 )
               case "newWorksForYou":
                 return (
-                  <NewWorksForYouRailContainer
+                  <NewWorksForYouRail
                     title={item.title}
                     me={item.data}
                     scrollRef={scrollRefs.current[index]}
@@ -315,7 +329,13 @@ const Home = (props: Props) => {
               case "trove":
                 return <TroveFragmentContainer trove={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
               case "viewing-rooms":
-                return <ViewingRoomsHomeMainRail title={item.title} featured={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
+                return (
+                  <ViewingRoomsHomeMainRail
+                    title={item.title}
+                    featured={item.data}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
+                )
               default:
                 return null
             }
@@ -377,11 +397,11 @@ export const HomeFragmentContainer = createRefetchContainer(
       @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
         followedArtistsArtworkModule: artworkModule(key: FOLLOWED_ARTISTS) {
           id
-          ...ArtworkRail_rail
+          ...ArtworkModuleRail_rail
         }
         activeBidsArtworkModule: artworkModule(key: ACTIVE_BIDS) {
           id
-          ...ArtworkRail_rail
+          ...ArtworkModuleRail_rail
         }
         salesModule {
           ...SalesRail_salesModule
@@ -399,11 +419,11 @@ export const HomeFragmentContainer = createRefetchContainer(
       @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
         recentlyViewedWorksArtworkModule: artworkModule(key: RECENTLY_VIEWED_WORKS) {
           id
-          ...ArtworkRail_rail
+          ...ArtworkModuleRail_rail
         }
         similarToRecentlyViewedArtworkModule: artworkModule(key: SIMILAR_TO_RECENTLY_VIEWED) {
           id
-          ...ArtworkRail_rail
+          ...ArtworkModuleRail_rail
         }
         popularArtistsArtistModule: artistModule(key: POPULAR) {
           id
@@ -533,29 +553,26 @@ const HomePlaceholder: React.FC<{}> = () => {
         // Small tiles to mimic the artwork rails
         <Box ml={2} mr={2}>
           <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
+          <Spacer mb={0.3} />
           <Flex flexDirection="row" mt={1}>
-            <Join separator={<Spacer width={15} />}>
-              {times(3 + useMemoizedRandom() * 10).map((index) => (
-                <Flex key={index}>
-                  <PlaceholderBox height={120} width={120} />
-                  <Spacer mb={2} />
-                  <PlaceholderText width={120} />
-                  <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
-                  <ModuleSeparator />
-                </Flex>
-              ))}
-            </Join>
+            <SmallArtworkRailPlaceholder />
           </Flex>
         </Box>
       }
 
-      {/* Larger tiles to mimic the fairs, sales, and collections rails */}
+      {/* Larger tiles to mimic the artist rails */}
       <Box ml={2} mr={2}>
         <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
-        <Flex flexDirection="row" mt={1}>
+        <Spacer mb={0.3} />
+        <Flex flexDirection="row" mt={0.5}>
           <Join separator={<Spacer width={15} />}>
-            {times(10).map((index) => (
-              <PlaceholderBox key={index} height={270} width={270} />
+            {times(3 + useMemoizedRandom() * 10).map((index) => (
+              <Flex key={index}>
+                <PlaceholderBox key={index} height={180} width={295} />
+                <Spacer mb={1} mt={0.3} />
+                <PlaceholderText width={120} />
+                <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
+              </Flex>
             ))}
           </Join>
           <ModuleSeparator />
@@ -600,7 +617,9 @@ const messages = {
 }
 
 export const HomeQueryRenderer: React.FC = () => {
-  const { flash_message } = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.tabProps.home ?? {}) as {
+  const { flash_message } = GlobalStore.useAppState(
+    (state) => state.bottomTabs.sessionState.tabProps.home ?? {}
+  ) as {
     flash_message?: string
   }
 
@@ -633,7 +652,8 @@ export const HomeQueryRenderer: React.FC = () => {
               ...Home_meAbove
               ...NewWorksForYouRail_me
             }
-            articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
+            articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true)
+              @optionalField {
               ...Home_articlesConnection
             }
           }

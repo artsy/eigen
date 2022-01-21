@@ -19,7 +19,11 @@ export default function useAppState({ onForeground, onBackground }: AppStateProp
   useEffect(() => {
     const _handleAppStateChange = (nextAppState: AppStateStatus) => {
       // App has come to the foreground
-      if (appState.current.match(/inactive|background/) && nextAppState === "active" && onForeground) {
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === "active" &&
+        onForeground
+      ) {
         onForeground()
       }
 

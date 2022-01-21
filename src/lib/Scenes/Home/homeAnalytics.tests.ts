@@ -1,5 +1,5 @@
 import * as Analytics from "@artsy/cohesion"
-import { ArtworkRail_rail } from "__generated__/ArtworkRail_rail.graphql"
+import { ArtworkModuleRail_rail } from "__generated__/ArtworkModuleRail_rail.graphql"
 import HomeAnalytics from "./homeAnalytics"
 
 describe("Events", () => {
@@ -28,7 +28,7 @@ describe("Events", () => {
   })
 
   it("returns correct artwork events", () => {
-    const artworkRail: Pick<ArtworkRail_rail, "title" | "key" | "context"> = {
+    const artworkRail: Pick<ArtworkModuleRail_rail, "title" | "key" | "context"> = {
       title: "some_title",
       key: "followed_artists",
       context: {
@@ -52,7 +52,10 @@ describe("Events", () => {
       type: "header",
     })
 
-    const thumbnailTapEvent = HomeAnalytics.artworkThumbnailTapEventFromKey(artworkRail.key, "some-slug")
+    const thumbnailTapEvent = HomeAnalytics.artworkThumbnailTapEventFromKey(
+      artworkRail.key,
+      "some-slug"
+    )
     expect(thumbnailTapEvent).toEqual({
       action: Analytics.ActionType.tappedArtworkGroup,
       context_module: Analytics.ContextModule.newWorksByArtistsYouFollowRail,
@@ -65,7 +68,11 @@ describe("Events", () => {
   })
 
   it("returns correct artist events", () => {
-    const artistThumbnailTapEvent = HomeAnalytics.artistThumbnailTapEvent("SUGGESTED", "artist-id", "artist-slug")
+    const artistThumbnailTapEvent = HomeAnalytics.artistThumbnailTapEvent(
+      "SUGGESTED",
+      "artist-id",
+      "artist-slug"
+    )
     expect(artistThumbnailTapEvent).toEqual({
       action: Analytics.ActionType.tappedArtistGroup,
       context_module: Analytics.ContextModule.recommendedArtistsRail,
@@ -79,7 +86,11 @@ describe("Events", () => {
   })
 
   it("returns correct articles events", () => {
-    const artistThumbnailTapEvent = HomeAnalytics.articleThumbnailTapEvent("article-id", "article-slug", 1)
+    const artistThumbnailTapEvent = HomeAnalytics.articleThumbnailTapEvent(
+      "article-id",
+      "article-slug",
+      1
+    )
     expect(artistThumbnailTapEvent).toEqual({
       action: Analytics.ActionType.tappedArticleGroup,
       context_module: Analytics.ContextModule.articleRail,

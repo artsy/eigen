@@ -1,6 +1,9 @@
 import { within } from "@testing-library/react-native"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "lib/Components/ArtworkFilter/FilterTestHelper"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -21,7 +24,11 @@ describe("Ways to Buy Options Screen", () => {
     },
   }
 
-  const MockWaysToBuyScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => (
+  const MockWaysToBuyScreen = ({
+    initialData = initialState,
+  }: {
+    initialData?: ArtworkFiltersState
+  }) => (
     <ArtworkFiltersStoreProvider initialData={initialData}>
       <WaysToBuyOptionsScreen {...getEssentialProps()} />
     </ArtworkFiltersStoreProvider>
@@ -109,7 +116,9 @@ describe("Ways to Buy Options Screen", () => {
       },
     }
 
-    const { getAllByA11yState } = renderWithWrappersTL(<MockWaysToBuyScreen initialData={injectedState} />)
+    const { getAllByA11yState } = renderWithWrappersTL(
+      <MockWaysToBuyScreen initialData={injectedState} />
+    )
     const options = getAllByA11yState({ checked: true })
 
     expect(options).toHaveLength(1)
@@ -142,7 +151,9 @@ describe("Ways to Buy Options Screen", () => {
       },
     }
 
-    const { getAllByA11yState } = renderWithWrappersTL(<MockWaysToBuyScreen initialData={injectedState} />)
+    const { getAllByA11yState } = renderWithWrappersTL(
+      <MockWaysToBuyScreen initialData={injectedState} />
+    )
     const options = getAllByA11yState({ checked: true })
 
     expect(options).toHaveLength(1)

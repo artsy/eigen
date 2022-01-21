@@ -27,13 +27,17 @@ const LoadingIndicator = styled.ActivityIndicator`
 `
 
 type Order = NonNullable<
-  NonNullable<NonNullable<NonNullable<Props["conversation"]["orderConnection"]>["edges"]>[number]>["node"]
+  NonNullable<
+    NonNullable<NonNullable<Props["conversation"]["orderConnection"]>["edges"]>[number]
+  >["node"]
 >
 type OrderEvent = Order["orderHistory"][number]
 type OrderEventWithKey = OrderEvent & { key: string }
 
 export type ConversationMessage = NonNullable<
-  NonNullable<NonNullable<NonNullable<Props["conversation"]["messagesConnection"]>["edges"]>[number]>["node"]
+  NonNullable<
+    NonNullable<NonNullable<Props["conversation"]["messagesConnection"]>["edges"]>[number]
+  >["node"]
 >
 
 export const Messages: React.FC<Props> = forwardRef((props, ref) => {
@@ -61,7 +65,13 @@ export const Messages: React.FC<Props> = forwardRef((props, ref) => {
     .map<OrderEventWithKey>((event, index) => ({ ...event, key: `event-${index}` }))
 
   const orderEventsWithoutFailedPayment = allOrderEvents.filter((event, index) => {
-    if (!(event.state === "APPROVED" && allOrderEvents[index + 1] && allOrderEvents[index + 1].state === "SUBMITTED")) {
+    if (
+      !(
+        event.state === "APPROVED" &&
+        allOrderEvents[index + 1] &&
+        allOrderEvents[index + 1].state === "SUBMITTED"
+      )
+    ) {
       return event
     }
   })

@@ -360,7 +360,9 @@ describe("Artwork", () => {
     })
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
 
-    expect(tree.root.findByType(Artwork).props.artworkAboveTheFold.slug).toBe("completely-different-slug")
+    expect(tree.root.findByType(Artwork).props.artworkAboveTheFold.slug).toBe(
+      "completely-different-slug"
+    )
   })
 
   it("does not show a contextCard if the work is in a non-auction sale", async () => {
@@ -406,7 +408,12 @@ describe("Artwork", () => {
 
         mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
           Artwork() {
-            return merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationClosed, RegisteredBidder)
+            return merge(
+              {},
+              ArtworkFixture,
+              ArtworkFromLiveAuctionRegistrationClosed,
+              RegisteredBidder
+            )
           },
         })
 
@@ -421,7 +428,12 @@ describe("Artwork", () => {
 
         mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
           Artwork() {
-            return merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationClosed, NotRegisteredToBid)
+            return merge(
+              {},
+              ArtworkFixture,
+              ArtworkFromLiveAuctionRegistrationClosed,
+              NotRegisteredToBid
+            )
           },
         })
 
@@ -437,7 +449,12 @@ describe("Artwork", () => {
 
         mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
           Artwork() {
-            return merge({}, ArtworkFixture, ArtworkFromLiveAuctionRegistrationOpen, NotRegisteredToBid)
+            return merge(
+              {},
+              ArtworkFixture,
+              ArtworkFromLiveAuctionRegistrationOpen,
+              NotRegisteredToBid
+            )
           },
         })
 

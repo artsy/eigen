@@ -11,8 +11,8 @@ function! ArtsyIndent()
   setlocal shiftwidth=4
   setlocal softtabstop=4
   setlocal tabstop=4
-  setlocal textwidth=120
-  setlocal cc=120
+  setlocal textwidth=100
+  setlocal cc=100
 endfunction
 
 autocmd Filetype c,cpp,objc call ArtsyIndent()

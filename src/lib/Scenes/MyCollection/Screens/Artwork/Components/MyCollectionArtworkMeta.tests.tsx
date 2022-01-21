@@ -28,7 +28,12 @@ describe("MyCollectionArtworkMeta", () => {
       variables={{}}
       render={({ props }) => {
         if (props?.artwork) {
-          return <MyCollectionArtworkMetaFragmentContainer artwork={props.artwork} viewAll={passedProps.viewAll} />
+          return (
+            <MyCollectionArtworkMetaFragmentContainer
+              artwork={props.artwork}
+              viewAll={passedProps.viewAll}
+            />
+          )
         }
         return null
       }}

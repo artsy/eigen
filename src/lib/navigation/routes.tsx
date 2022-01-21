@@ -141,7 +141,9 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     unsafe_getFeatureFlag("AROptionsNewSalePage")
       ? new RouteMatcher("/auction/:saleID", "Auction2")
       : new RouteMatcher("/auction/:id", "Auction"),
-    unsafe_getFeatureFlag("AROptionsNewSalePage") ? new RouteMatcher("/auction/:saleID/info", "AuctionInfo") : null,
+    unsafe_getFeatureFlag("AROptionsNewSalePage")
+      ? new RouteMatcher("/auction/:saleID/info", "AuctionInfo")
+      : null,
     new RouteMatcher("/auction-faq", "AuctionFAQ"),
     new RouteMatcher("/auction/:saleID/bid/:artworkID", "AuctionBidArtwork"),
     new RouteMatcher("/gene/:geneID", "Gene"),
@@ -151,7 +153,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     new RouteMatcher("/inquiry/:artworkID", "Inquiry"),
     new RouteMatcher("/viewing-rooms", "ViewingRooms"),
-    new RouteMatcher("/auction-results-for-artists-you-follow", "AuctionResultsForArtistsYouFollow"),
+    new RouteMatcher(
+      "/auction-results-for-artists-you-follow",
+      "AuctionResultsForArtistsYouFollow"
+    ),
     new RouteMatcher("/viewing-room/:viewing_room_id", "ViewingRoom"),
     new RouteMatcher("/viewing-room/:viewing_room_id/artworks", "ViewingRoomArtworks"),
     new RouteMatcher("/viewing-room/:viewing_room_id/:artwork_id", "ViewingRoomArtwork"),
@@ -186,14 +191,18 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
 
     new RouteMatcher("/my-collection", "MyCollection"),
     new RouteMatcher("/my-collection/artwork/:artworkSlug", "MyCollectionArtwork"),
-    new RouteMatcher("/my-collection/artwork-details/:artworkSlug", "MyCollectionArtworkFullDetails"),
-    new RouteMatcher("/my-collection/artwork-images/:artworkSlug", "MyCollectionArtworkImages"),
-    new RouteMatcher("/my-collection/local-images", "MyCollectionLocalArtworkImages"),
+    new RouteMatcher(
+      "/my-collection/artwork-details/:artworkSlug",
+      "MyCollectionArtworkFullDetails"
+    ),
     new RouteMatcher("/my-collection/artworks/new", "AddOrEditMyCollectionArtwork"),
     new RouteMatcher("/my-collection/artworks/:artworkID/edit", "AddOrEditMyCollectionArtwork"),
 
     // TODO: Follow-up about below route names
-    new RouteMatcher("/collections/my-collection/artworks/new/submissions/new", "ConsignmentsSubmissionForm"),
+    new RouteMatcher(
+      "/collections/my-collection/artworks/new/submissions/new",
+      "ConsignmentsSubmissionForm"
+    ),
     new RouteMatcher("/consign/submission", "ConsignmentsSubmissionForm"),
     new RouteMatcher("/collections/my-collection/marketing-landing", "SalesNotRootTabView"),
 
@@ -235,7 +244,10 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     new RouteMatcher("/my-profile/saved-search-alerts", "SavedSearchAlertsList"),
     new RouteMatcher("/my-profile/saved-search-alerts/:savedSearchAlertId", "EditSavedSearchAlert"),
     unsafe_getFeatureFlag("AROptionsUseReactNativeWebView")
-      ? webViewRoute("/orders/:orderID", { mimicBrowserBackButton: true, useRightCloseButton: true })
+      ? webViewRoute("/orders/:orderID", {
+          mimicBrowserBackButton: true,
+          useRightCloseButton: true,
+        })
       : new RouteMatcher("/orders/:orderID", "Checkout"),
     __DEV__ && new RouteMatcher("/storybook", "Storybook"),
 

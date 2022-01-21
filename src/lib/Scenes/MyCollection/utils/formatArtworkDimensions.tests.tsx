@@ -6,6 +6,8 @@ describe("formatArtworkDimensions", () => {
   })
 
   it("formats dimensions", () => {
-    expect(formatArtworkDimensions({ height: 10, width: 20, depth: 30, metric: "in" })).toBe("10 × 20 × 30 in")
+    expect(formatArtworkDimensions({ height: 10, width: 20, depth: 30, metric: "in" })).toBe(
+      "10 × 20 × 30 in"
+    )
   })
 })

@@ -13,7 +13,9 @@ export interface ZeroStateProps {
 
 export const FilteredArtworkGridZeroState: React.FC<ZeroStateProps> = (props) => {
   const { id, slug, trackClear, hideClearButton } = props
-  const clearFiltersZeroStateAction = ArtworksFiltersStore.useStoreActions((state) => state.clearFiltersZeroStateAction)
+  const clearFiltersZeroStateAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.clearFiltersZeroStateAction
+  )
 
   return (
     <Flex flexDirection="column" px={4}>

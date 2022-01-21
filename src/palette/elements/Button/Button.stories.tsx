@@ -1,12 +1,13 @@
 import { action } from "@storybook/addon-actions"
 import { storiesOf } from "@storybook/react-native"
 import { Wrap } from "lib/utils/Wrap"
+// import { Wrap } from "lib/utils/Wrap"
 import { BellIcon, Box, Flex, LinkIcon, Spacer } from "palette"
 import React, { useState } from "react"
 import { Button as RNButton } from "react-native"
 import { withHooks, withScreenDimensions, withTheme } from "storybook/decorators"
-import { DList, List } from "storybook/helpers"
-import { Button, ButtonProps, FollowButton } from "."
+import { DataList, List } from "storybook/helpers"
+import { Button, ButtonProps, CTAButton, FollowButton } from "."
 import { _test_DisplayState } from "./Button"
 
 const sizes: Array<ButtonProps["size"]> = ["small", "large"]
@@ -32,7 +33,7 @@ storiesOf("Button", module)
   .addDecorator(withScreenDimensions)
   .addDecorator(withHooks)
   .add("Sizes", () => (
-    <DList
+    <DataList
       data={sizes}
       renderItem={({ item: size }) => (
         <Button size={size} onPress={() => console.log(`tapped ${size}`)}>
@@ -42,21 +43,30 @@ storiesOf("Button", module)
     />
   ))
   .add("States", () => (
-    <DList
+    <DataList
       data={states}
       renderItem={({ item: state }) => (
-        <Button variant="fillLight" testOnly_state={state} onPress={() => action(`tapped ${state}`)}>
+        <Button
+          variant="fillLight"
+          testOnly_state={state}
+          onPress={() => action(`tapped ${state}`)}
+        >
           {state ?? "regular button"}
         </Button>
       )}
     />
   ))
+  .add("Call To Action Button (CTA Button)", () => (
+    <List>
+      <CTAButton onPress={() => console.log("pressed")}>cta button</CTAButton>
+    </List>
+  ))
   .add("Variants", () => (
-    <DList
+    <DataList
       data={variants}
       renderItem={({ item: variant }) => (
         <Wrap
-          if={variant === "outlineLight"}
+          if={variant === "outlineLight" || variant === "fillLight"}
           with={(c) => (
             <Flex backgroundColor="black100" p={10}>
               {c}
@@ -71,7 +81,7 @@ storiesOf("Button", module)
     />
   ))
   .add("Variants (loading)", () => (
-    <DList
+    <DataList
       data={variants}
       renderItem={({ item: variant }) => (
         <Button variant={variant} loading onPress={() => action(`tapped ${variant}`)}>
@@ -81,7 +91,7 @@ storiesOf("Button", module)
     />
   ))
   .add("Variants (disabled)", () => (
-    <DList
+    <DataList
       data={variants}
       renderItem={({ item: variant }) => (
         <Wrap
@@ -105,7 +115,13 @@ storiesOf("Button", module)
         loading and disabled
       </Button>
       <Button block>block</Button>
-      <Flex backgroundColor="orange" width={400} height={80} alignItems="center" justifyContent="center">
+      <Flex
+        backgroundColor="orange"
+        width={400}
+        height={80}
+        alignItems="center"
+        justifyContent="center"
+      >
         <Button variant="fillLight" icon={<LinkIcon />}>
           left icon
         </Button>
@@ -116,7 +132,11 @@ storiesOf("Button", module)
       <Button size="small" icon={<LinkIcon fill="white100" />} iconPosition="right">
         Right Icon Small
       </Button>
-      <Button variant="fillDark" size="small" icon={<BellIcon fill="white100" width="16px" height="16px" />}>
+      <Button
+        variant="fillDark"
+        size="small"
+        icon={<BellIcon fill="white100" width="16px" height="16px" />}
+      >
         Create Alert
       </Button>
       <Box flexDirection="row">

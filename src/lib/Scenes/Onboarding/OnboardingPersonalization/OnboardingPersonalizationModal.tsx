@@ -18,7 +18,10 @@ import { OnboardingPersonalizationNavigationStack } from "./OnboardingPersonaliz
 import { OnboardingPersonalizationArtistListItem } from "./OnboardingPersonalizationArtistListItem"
 
 interface OnboardingPersonalizationModalNavigationProps
-  extends StackScreenProps<OnboardingPersonalizationNavigationStack, "OnboardingPersonalizationModal"> {}
+  extends StackScreenProps<
+    OnboardingPersonalizationNavigationStack,
+    "OnboardingPersonalizationModal"
+  > {}
 
 interface OnboardingPersonalizationListProps extends OnboardingPersonalizationModalNavigationProps {
   artists: OnboardingPersonalizationModal_artists
@@ -78,7 +81,9 @@ const OnboardingPersonalizationModal: React.FC<OnboardingPersonalizationListProp
   // Using props.relay.isLoading() causes jest to fail as it is always return true.
   // We had instead to assign it to a boolean to avoid that
   // See: https://github.com/facebook/relay/issues/1973
-  const isLoading = !__TEST__ ? props.relay.isLoading() : useMemo(() => props.relay.isLoading(), [props.relay])
+  const isLoading = !__TEST__
+    ? props.relay.isLoading()
+    : useMemo(() => props.relay.isLoading(), [props.relay])
 
   return (
     <Flex
@@ -151,9 +156,18 @@ export const OnboardingPersonalizationModalPaginationContainer = createPaginatio
   {
     artists: graphql`
       fragment OnboardingPersonalizationModal_artists on Query
-      @argumentDefinitions(query: { type: "String!" }, count: { type: "Int!" }, cursor: { type: "String" }) {
-        searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: $cursor, entities: [ARTIST])
-          @connection(key: "OnboardingPersonalizationModal__searchConnection") {
+      @argumentDefinitions(
+        query: { type: "String!" }
+        count: { type: "Int!" }
+        cursor: { type: "String" }
+      ) {
+        searchConnection(
+          query: $query
+          mode: AUTOSUGGEST
+          first: $count
+          after: $cursor
+          entities: [ARTIST]
+        ) @connection(key: "OnboardingPersonalizationModal__searchConnection") {
           edges {
             node {
               imageUrl
@@ -192,17 +206,21 @@ export const OnboardingPersonalizationModalPaginationContainer = createPaginatio
       }
     },
     query: graphql`
-      query OnboardingPersonalizationModalPaginationQuery($query: String!, $count: Int!, $cursor: String)
-      @raw_response_type {
-        ...OnboardingPersonalizationModal_artists @arguments(query: $query, count: $count, cursor: $cursor)
+      query OnboardingPersonalizationModalPaginationQuery(
+        $query: String!
+        $count: Int!
+        $cursor: String
+      ) @raw_response_type {
+        ...OnboardingPersonalizationModal_artists
+          @arguments(query: $query, count: $count, cursor: $cursor)
       }
     `,
   }
 )
 
-export const OnboardingPersonalizationModalQueryRenderer: React.FC<OnboardingPersonalizationModalNavigationProps> = (
-  initialProps
-) => (
+export const OnboardingPersonalizationModalQueryRenderer: React.FC<
+  OnboardingPersonalizationModalNavigationProps
+> = (initialProps) => (
   <QueryRenderer<OnboardingPersonalizationModalQuery>
     render={({ props, error }) => {
       if (error) {
@@ -213,7 +231,9 @@ export const OnboardingPersonalizationModalQueryRenderer: React.FC<OnboardingPer
         }
         return <LoadFailureView />
       }
-      return <OnboardingPersonalizationModalPaginationContainer artists={props!} {...initialProps} />
+      return (
+        <OnboardingPersonalizationModalPaginationContainer artists={props!} {...initialProps} />
+      )
     }}
     cacheConfig={{ force: true }}
     variables={{

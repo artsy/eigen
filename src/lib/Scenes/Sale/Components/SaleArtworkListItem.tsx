@@ -1,4 +1,10 @@
-import { ContextModule, OwnerType, ScreenOwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
+import {
+  ContextModule,
+  OwnerType,
+  ScreenOwnerType,
+  tappedEntityGroup,
+  TappedEntityGroupArgs,
+} from "@artsy/cohesion"
 import { SaleArtworkListItem_artwork } from "__generated__/SaleArtworkListItem_artwork.graphql"
 import { saleMessageOrBidInfo } from "lib/Components/ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -46,13 +52,22 @@ export const SaleArtworkListItem: React.FC<Props> = ({ artwork, contextScreenOwn
     artwork,
   })
 
-  const imageDimensions = getImageDimensions(artwork.image?.height, artwork.image?.width, CONTAINER_HEIGHT)
+  const imageDimensions = getImageDimensions(
+    artwork.image?.height,
+    artwork.image?.width,
+    CONTAINER_HEIGHT
+  )
 
   return (
     <Touchable onPress={onPress}>
       <Flex flexDirection="row" alignItems="center" height={CONTAINER_HEIGHT} ref={itemRef}>
         {!!artwork.image && (
-          <Flex height={CONTAINER_HEIGHT} width={CONTAINER_HEIGHT} alignItems="center" justifyContent="center">
+          <Flex
+            height={CONTAINER_HEIGHT}
+            width={CONTAINER_HEIGHT}
+            alignItems="center"
+            justifyContent="center"
+          >
             <OpaqueImageView
               imageURL={artwork.image?.small}
               height={imageDimensions.height}

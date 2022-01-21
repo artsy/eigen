@@ -150,7 +150,9 @@ export const handlePendingNotification = (notification: PendingPushNotification 
   GlobalStore.actions.pendingPushNotification.setPendingPushNotification(null)
 }
 
-export const handleReceivedNotification = (notification: Omit<ReceivedNotification, "userInfo">) => {
+export const handleReceivedNotification = (
+  notification: Omit<ReceivedNotification, "userInfo">
+) => {
   if (__DEV__ && !__TEST__) {
     console.log("RECIEVED NOTIFICATION", notification)
   }
@@ -238,12 +240,16 @@ export async function configure() {
 export const getNotificationPermissionsStatus = (): Promise<PushAuthorizationStatus> => {
   return new Promise((resolve) => {
     if (Platform.OS === "ios") {
-      LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions((_, result: PushAuthorizationStatus) => {
-        resolve(result)
-      })
+      LegacyNativeModules.ARTemporaryAPIModule.fetchNotificationPermissions(
+        (_, result: PushAuthorizationStatus) => {
+          resolve(result)
+        }
+      )
     } else if (Platform.OS === "android") {
       PushNotification.checkPermissions((permissions) => {
-        resolve(permissions.alert ? PushAuthorizationStatus.Authorized : PushAuthorizationStatus.Denied)
+        resolve(
+          permissions.alert ? PushAuthorizationStatus.Authorized : PushAuthorizationStatus.Denied
+        )
       })
     }
   })

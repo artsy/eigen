@@ -93,7 +93,11 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
               useSquareAspectRatio
               artistNames={item?.artistNames}
               saleMessage={item && saleMessageOrBidInfo({ artwork: item, isSmallTile: true })}
-              urgencyTag={item?.sale?.isAuction && !item?.sale?.isClosed ? getUrgencyTag(item?.sale?.endAt) : null}
+              urgencyTag={
+                item?.sale?.isAuction && !item?.sale?.isClosed
+                  ? getUrgencyTag(item?.sale?.endAt)
+                  : null
+              }
             />
           )
         }}

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 358073a090bd7b5bf3e5149cf74dc730 */
+/* @relayHash 1875c2da5b67707215123ddbe20ef014 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -22,9 +22,8 @@ export type ShowArtworksPreviewTestsQueryRawResponse = {
                 readonly node: ({
                     readonly id: string;
                     readonly image: ({
-                        readonly aspect_ratio: number;
-                        readonly url: string | null;
                         readonly aspectRatio: number;
+                        readonly url: string | null;
                     }) | null;
                     readonly title: string | null;
                     readonly date: string | null;
@@ -113,7 +112,7 @@ fragment ArtworkGridItem_artwork on Artwork {
 fragment GenericGrid_artworks on Artwork {
   id
   image {
-    aspect_ratio: aspectRatio
+    aspectRatio
   }
   ...ArtworkGridItem_artwork
 }
@@ -249,7 +248,7 @@ return {
                         "plural": false,
                         "selections": [
                           {
-                            "alias": "aspect_ratio",
+                            "alias": null,
                             "args": null,
                             "kind": "ScalarField",
                             "name": "aspectRatio",
@@ -267,13 +266,6 @@ return {
                             "kind": "ScalarField",
                             "name": "url",
                             "storageKey": "url(version:\"large\")"
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "aspectRatio",
-                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -456,7 +448,7 @@ return {
     ]
   },
   "params": {
-    "id": "358073a090bd7b5bf3e5149cf74dc730",
+    "id": "1875c2da5b67707215123ddbe20ef014",
     "metadata": {},
     "name": "ShowArtworksPreviewTestsQuery",
     "operationKind": "query",

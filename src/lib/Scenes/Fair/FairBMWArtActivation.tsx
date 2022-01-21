@@ -90,7 +90,10 @@ export class FairBMWArtActivation extends React.Component<Props, State> {
   }
 }
 
-function eventProps(actionName: Schema.ActionNames, actionType: Schema.ActionTypes = Schema.ActionTypes.Tap) {
+function eventProps(
+  actionName: Schema.ActionNames,
+  actionType: Schema.ActionTypes = Schema.ActionTypes.Tap
+) {
   return (props: Props) => ({
     action_name: actionName,
     action_type: actionType,

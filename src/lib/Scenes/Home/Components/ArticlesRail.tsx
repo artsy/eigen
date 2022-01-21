@@ -48,7 +48,11 @@ export const ArticlesRail: React.FC<ArticlesRailProps> = ({ title, articlesConne
           renderItem={({ item, index }) => (
             <ArticleCardContainer
               onPress={() => {
-                const tapEvent = HomeAnalytics.articleThumbnailTapEvent(item.internalID, item.slug || "", index)
+                const tapEvent = HomeAnalytics.articleThumbnailTapEvent(
+                  item.internalID,
+                  item.slug || "",
+                  index
+                )
                 tracking.trackEvent(tapEvent)
               }}
               article={item}

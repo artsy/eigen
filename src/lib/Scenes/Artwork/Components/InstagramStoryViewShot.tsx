@@ -22,10 +22,15 @@ export interface InstagramStoryViewShotProps {
   shotRef: RefObject<ViewShot>
   href: string
   artist: string
-  title: string
+  title?: string
 }
 
-export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({ shotRef, href, artist, title }) => {
+export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({
+  shotRef,
+  href,
+  artist,
+  title,
+}) => {
   const debugInstagramShot = useDevToggle("DTShowInstagramShot")
   const { width, height } = useSizeToFitScreen({
     width: InstagramStoryBackgroundDimensions.width,
@@ -37,7 +42,11 @@ export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({ 
 
   return (
     <Flex {...offscreenStyle} alignItems="center">
-      <ViewShot ref={shotRef} options={{ format: "png", result: "base64" }} style={{ backgroundColor: "white" }}>
+      <ViewShot
+        ref={shotRef}
+        options={{ format: "png", result: "base64" }}
+        style={{ backgroundColor: "white" }}
+      >
         <Image source={{ uri: href }} style={{ width, height }} resizeMode="contain" />
 
         <Flex
@@ -52,9 +61,11 @@ export const InstagramStoryViewShot: React.FC<InstagramStoryViewShotProps> = ({ 
             <Text variant="md" weight="medium">
               {artist}
             </Text>
-            <Text variant="md" italic opacity={0.6} mt={10 * scale} ellipsizeMode="middle">
-              {title}
-            </Text>
+            {title ? (
+              <Text variant="md" italic opacity={0.6} mt={10 * scale} ellipsizeMode="middle">
+                {title}
+              </Text>
+            ) : null}
           </Flex>
           <ArtsyLogoBlackIcon scale={0.8} />
         </Flex>

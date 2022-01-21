@@ -46,8 +46,10 @@ describe("renderUntil", () => {
     })
 
     it("resolves the promise with an enzyme wrapper with the final state", async () => {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const wrapper = await mount(<Component />).renderUntil((tree) => tree.find(Text).text() !== "Loading")
+      const wrapper = await mount(<Component />).renderUntil(
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        (tree) => tree.find(Text).text() !== "Loading"
+      )
       expect(wrapper.find(Text).text()).toEqual("ohai")
     })
   })

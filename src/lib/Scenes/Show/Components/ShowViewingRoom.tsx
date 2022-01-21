@@ -48,7 +48,11 @@ export const ShowViewingRoom: React.FC<ShowViewingRoomProps> = ({ show, ...rest 
           title={viewingRoom.title}
           subtitle={show.partner?.name ?? undefined}
           image={viewingRoom.image?.imageURLs?.normalized ?? ""}
-          tag={tagForStatus(viewingRoom.status, viewingRoom.distanceToOpen, viewingRoom.distanceToClose)}
+          tag={tagForStatus(
+            viewingRoom.status,
+            viewingRoom.distanceToOpen,
+            viewingRoom.distanceToClose
+          )}
           style={{ aspectRatio: 3 / 4 }}
         />
       </TouchableOpacity>

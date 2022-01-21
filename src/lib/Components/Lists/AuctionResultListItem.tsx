@@ -74,7 +74,9 @@ const AuctionResultListItem: React.FC<Props> = ({
               )}
               <Text variant="xs" ellipsizeMode="middle" numberOfLines={2} style={{ flexShrink: 1 }}>
                 {auctionResult.title}
-                {!!auctionResult.dateText && auctionResult.dateText !== "" && `, ${auctionResult.dateText}`}
+                {!!auctionResult.dateText &&
+                  auctionResult.dateText !== "" &&
+                  `, ${auctionResult.dateText}`}
               </Text>
             </Flex>
             {!!auctionResult.mediumText && (
@@ -105,12 +107,21 @@ const AuctionResultListItem: React.FC<Props> = ({
                   </Text>
                 )}
                 {!!auctionResult.performance?.mid && (
-                  <AuctionResultsMidEstimate value={auctionResult.performance.mid} shortDescription="est" />
+                  <AuctionResultsMidEstimate
+                    value={auctionResult.performance.mid}
+                    shortDescription="est"
+                  />
                 )}
               </Flex>
             ) : (
               <Flex alignItems="flex-end">
-                <Text variant="xs" fontWeight="bold" style={{ width: 100 }} textAlign="right" testID="price">
+                <Text
+                  variant="xs"
+                  fontWeight="bold"
+                  style={{ width: 100 }}
+                  textAlign="right"
+                  testID="price"
+                >
                   {auctionResultText(auctionResult)}
                 </Text>
               </Flex>
@@ -123,40 +134,43 @@ const AuctionResultListItem: React.FC<Props> = ({
   )
 }
 
-export const AuctionResultListItemFragmentContainer = createFragmentContainer(AuctionResultListItem, {
-  auctionResult: graphql`
-    fragment AuctionResultListItem_auctionResult on AuctionResult {
-      currency
-      dateText
-      id
-      internalID
-      artist {
-        name
-      }
-      images {
-        thumbnail {
-          url(version: "square140")
-          height
-          width
-          aspectRatio
+export const AuctionResultListItemFragmentContainer = createFragmentContainer(
+  AuctionResultListItem,
+  {
+    auctionResult: graphql`
+      fragment AuctionResultListItem_auctionResult on AuctionResult {
+        currency
+        dateText
+        id
+        internalID
+        artist {
+          name
         }
+        images {
+          thumbnail {
+            url(version: "square140")
+            height
+            width
+            aspectRatio
+          }
+        }
+        estimate {
+          low
+        }
+        mediumText
+        organization
+        boughtIn
+        performance {
+          mid
+        }
+        priceRealized {
+          cents
+          display
+          displayUSD
+        }
+        saleDate
+        title
       }
-      estimate {
-        low
-      }
-      mediumText
-      organization
-      boughtIn
-      performance {
-        mid
-      }
-      priceRealized {
-        cents
-        display
-        displayUSD
-      }
-      saleDate
-      title
-    }
-  `,
-})
+    `,
+  }
+)

@@ -9,7 +9,9 @@ export const createGeminiAssetWithS3Credentials = (input: CreateGeminiEntryForAs
   return new Promise<string>((resolve, reject) => {
     commitMutation<createGeminiAssetWithS3CredentialsMutation>(defaultEnvironment, {
       mutation: graphql`
-        mutation createGeminiAssetWithS3CredentialsMutation($input: CreateGeminiEntryForAssetInput!) {
+        mutation createGeminiAssetWithS3CredentialsMutation(
+          $input: CreateGeminiEntryForAssetInput!
+        ) {
           createGeminiEntryForAsset(input: $input) {
             asset {
               token

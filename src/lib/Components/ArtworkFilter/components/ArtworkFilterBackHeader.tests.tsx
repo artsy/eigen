@@ -22,7 +22,9 @@ describe("ArtworkFilterBackHeader", () => {
 
   it('should call "onLeftButtonPress" handler when left button is pressed', () => {
     const onLeftButtonPressMock = jest.fn()
-    const { getByA11yLabel } = renderWithWrappersTL(<TestRenderer onLeftButtonPress={onLeftButtonPressMock} />)
+    const { getByA11yLabel } = renderWithWrappersTL(
+      <TestRenderer onLeftButtonPress={onLeftButtonPressMock} />
+    )
 
     fireEvent.press(getByA11yLabel("Header back button"))
 

@@ -5,9 +5,18 @@ import React from "react"
 import { Text } from "react-native"
 import { ReactTestInstance } from "react-test-renderer"
 import { FilterArray, FilterData, FilterParamName } from "../ArtworkFilterHelpers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider, useSelectedOptionsDisplay } from "../ArtworkFilterStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+  useSelectedOptionsDisplay,
+} from "../ArtworkFilterStore"
 import { getEssentialProps } from "./helper"
-import { checkIsEmptyCustomValues, CustomSize, getCustomValues, SizesOptionsScreen } from "./SizesOptionsScreen"
+import {
+  checkIsEmptyCustomValues,
+  CustomSize,
+  getCustomValues,
+  SizesOptionsScreen,
+} from "./SizesOptionsScreen"
 
 // Helpers
 const getFilters = (element: ReactTestInstance) => {
@@ -54,7 +63,9 @@ describe("SizesOptionsScreen", () => {
     )
   }
 
-  const TestRenderer = ({ initialData = INITIAL_DATA }: { initialData?: ArtworkFiltersState } = {}) => {
+  const TestRenderer = ({
+    initialData = INITIAL_DATA,
+  }: { initialData?: ArtworkFiltersState } = {}) => {
     return (
       <ArtworkFiltersStoreProvider initialData={initialData}>
         <MockSizesOptionsScreen />
@@ -177,7 +188,9 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("should keep custom inputs filled in if a predefined value is selected", () => {
-      const { getByA11yLabel, getByDisplayValue, getByText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByA11yLabel, getByDisplayValue, getByText } = renderWithWrappersTL(
+        <TestRenderer />
+      )
 
       fireEvent.changeText(getByA11yLabel("Minimum Width Input"), "5")
       fireEvent.changeText(getByA11yLabel("Maximum Width Input"), "10")
@@ -188,7 +201,9 @@ describe("SizesOptionsScreen", () => {
     })
 
     it("should clear the previously selected option if a custom value is entered", () => {
-      const { getByText, getByA11yLabel, getAllByA11yState, getByTestId } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText, getByA11yLabel, getAllByA11yState, getByTestId } = renderWithWrappersTL(
+        <TestRenderer />
+      )
 
       fireEvent.press(getByText("Small (under 16in)"))
       fireEvent.changeText(getByA11yLabel("Minimum Width Input"), "5")
@@ -322,7 +337,9 @@ describe("SizesOptionsScreen", () => {
     })
 
     it('should clear selected custom values if "Clear" button is pressed', () => {
-      const { getByText, getByA11yLabel, queryAllByA11yState } = renderWithWrappersTL(<TestRenderer />)
+      const { getByText, getByA11yLabel, queryAllByA11yState } = renderWithWrappersTL(
+        <TestRenderer />
+      )
 
       fireEvent.changeText(getByA11yLabel("Minimum Width Input"), "5")
       fireEvent.press(getByText("Clear"))

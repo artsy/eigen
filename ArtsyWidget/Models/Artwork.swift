@@ -13,12 +13,10 @@ struct Artwork: Codable {
     
     var image: UIImage?
     
-    var firstImageUrl: URL {
+    var firstImageToken: String {
         let firstImage = artworkImages.first ?? ArtworkImage.fallback()
-        let imageUrl = firstImage.imageUrl.replacingOccurrences(of: ":version", with: "larger")
-        let url = URL(string: imageUrl)!
         
-        return url
+        return firstImage.geminiToken
     }
     
     var url: URL {

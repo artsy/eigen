@@ -13,7 +13,7 @@ export type NewWorksForYouRail_me = {
         };
         readonly edges: ReadonlyArray<{
             readonly node: {
-                readonly " $fragmentRefs": FragmentRefs<"SmallTileRail_artworks">;
+                readonly " $fragmentRefs": FragmentRefs<"SmallArtworkRail_artworks">;
             } | null;
         } | null> | null;
     } | null;
@@ -121,7 +121,7 @@ const node: ReaderFragment = {
                 {
                   "args": null,
                   "kind": "FragmentSpread",
-                  "name": "SmallTileRail_artworks"
+                  "name": "SmallArtworkRail_artworks"
                 }
               ],
               "storageKey": null
@@ -143,5 +143,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'fda5fb0fb53b2bd3a28d66bbe234b582';
+(node as any).hash = '8e821bddebf34ea9ed443fcc060388a0';
 export default node;

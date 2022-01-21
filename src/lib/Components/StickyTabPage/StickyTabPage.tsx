@@ -25,6 +25,7 @@ interface StickyTabPageProps {
   tabs: TabProps[]
   staticHeaderContent: JSX.Element
   stickyHeaderContent?: JSX.Element
+  bottomContent?: JSX.Element
   // disableBackButtonUpdate allows the original BackButton visibility state. Useful when using StickyTabPage
   // as a root view where you don't want BackButton to ever be visible.
   disableBackButtonUpdate?: boolean
@@ -43,6 +44,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   tabs,
   staticHeaderContent,
   stickyHeaderContent = <StickyTabPageTabBar />,
+  bottomContent,
   disableBackButtonUpdate,
 }) => {
   const { width } = useScreenDimensions()
@@ -56,8 +58,11 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   )
   const activeTabIndexNative = useAnimatedValue(initialTabIndex)
   const [activeTabIndex, setActiveTabIndex] = useGlobalState(initialTabIndex)
-  const [tabSpecificStickyHeaderContent, setTabSpecificStickyHeaderContent] = useState<Array<JSX.Element | null>>([])
-  const { jsx: staticHeader, nativeHeight: staticHeaderHeight } = useAutoCollapsingMeasuredView(staticHeaderContent)
+  const [tabSpecificStickyHeaderContent, setTabSpecificStickyHeaderContent] = useState<
+    Array<JSX.Element | null>
+  >([])
+  const { jsx: staticHeader, nativeHeight: staticHeaderHeight } =
+    useAutoCollapsingMeasuredView(staticHeaderContent)
 
   const stickyRailRef = useRef<SnappyHorizontalRail>(null)
 
@@ -69,7 +74,8 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
     return useAutoCollapsingMeasuredView(tabSpecificStickyHeaderContent[i])
   })
 
-  const { jsx: stickyHeader, nativeHeight: stickyHeaderHeight } = useAutoCollapsingMeasuredView(stickyHeaderContent)
+  const { jsx: stickyHeader, nativeHeight: stickyHeaderHeight } =
+    useAutoCollapsingMeasuredView(stickyHeaderContent)
   const tracking = useTracking()
   const headerOffsetY = useAnimatedValue(0)
   const railRef = useRef<SnappyHorizontalRail>(null)
@@ -117,14 +123,19 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
 
         {!!Animated.neq(stickyHeaderHeight, new Animated.Value(-1)) &&
           !!Animated.neq(staticHeaderHeight, new Animated.Value(-1)) && (
-            <SnappyHorizontalRail ref={railRef} initialOffset={initialTabIndex * width} width={width * tabs.length}>
+            <SnappyHorizontalRail
+              ref={railRef}
+              initialOffset={initialTabIndex * width}
+              width={width * tabs.length}
+            >
               {tabs.map(({ content }, index) => {
                 return (
                   <View style={{ flex: 1, width }} key={index}>
                     <StickyTabPageFlatListContext.Provider
                       value={{
                         tabIsActive: Animated.eq(index, activeTabIndexNative),
-                        tabSpecificContentHeight: tabSpecificStickyHeaderContentArray[index].nativeHeight!,
+                        tabSpecificContentHeight:
+                          tabSpecificStickyHeaderContentArray[index].nativeHeight!,
                         setJSX: (jsx) =>
                           setTabSpecificStickyHeaderContent((prev) => {
                             const newArray = prev.slice(0)
@@ -165,6 +176,7 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
             ))}
           </SnappyHorizontalRail>
         </Animated.View>
+        {bottomContent}
       </View>
     </StickyTabPageContext.Provider>
   )

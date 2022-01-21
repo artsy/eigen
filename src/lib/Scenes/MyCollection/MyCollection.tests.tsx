@@ -1,12 +1,15 @@
 import { addCollectedArtwork } from "@artsy/cohesion"
+import { fireEvent, RenderAPI } from "@testing-library/react-native"
 import { MyCollectionTestsQuery } from "__generated__/MyCollectionTestsQuery.graphql"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
+import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
@@ -18,23 +21,35 @@ jest.unmock("react-relay")
 describe("MyCollection", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <QueryRenderer<MyCollectionTestsQuery>
-      environment={mockEnvironment}
-      query={graphql`
-        query MyCollectionTestsQuery @relay_test_operation {
-          me {
-            ...MyCollection_me
+    <ArtworkFiltersStoreProvider>
+      <QueryRenderer<MyCollectionTestsQuery>
+        environment={mockEnvironment}
+        query={graphql`
+          query MyCollectionTestsQuery @relay_test_operation {
+            me {
+              ...MyCollection_me
+            }
           }
-        }
-      `}
-      variables={{}}
-      render={({ props }) => {
-        if (props?.me) {
-          return <MyCollectionContainer me={props.me} />
-        }
-        return null
-      }}
-    />
+        `}
+        variables={{}}
+        render={({ props }) => {
+          if (props?.me) {
+            return (
+              <StickyTabPage
+                staticHeaderContent={<></>}
+                tabs={[
+                  {
+                    title: "My Collection",
+                    content: <MyCollectionContainer me={props.me} />,
+                  },
+                ]}
+              />
+            )
+          }
+          return null
+        }}
+      />
+    </ArtworkFiltersStoreProvider>
   )
 
   beforeEach(() => {
@@ -46,11 +61,7 @@ describe("MyCollection", () => {
   })
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(
-      <ArtworkFiltersStoreProvider>
-        <TestRenderer />
-      </ArtworkFiltersStoreProvider>
-    )
+    const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, mockResolvers)
@@ -77,7 +88,9 @@ describe("MyCollection", () => {
 
     it("shows zerostate", () => {
       expect(extractText(tree.root)).toContain("Your art collection in your pocket.")
-      expect(extractText(tree.root)).toContain("Keep track of your collection all in one place and get market insights")
+      expect(extractText(tree.root)).toContain(
+        "Keep track of your collection all in one place and get market insights"
+      )
     })
 
     it("navigates to MyCollectionArtworkForm when Add Artwork is pressed", () => {
@@ -110,4 +123,60 @@ describe("MyCollection", () => {
       expect(tree.root.findByType(InfiniteScrollMyCollectionArtworksGridContainer)).toBeDefined()
     })
   })
+
+  describe("sorting and filtering", () => {
+    it("filters and sorts without crashing", async () => {
+      const renderApi = renderWithWrappersTL(<TestRenderer />)
+
+      act(() => {
+        mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+          MockPayloadGenerator.generate(operation, {
+            Me: () => ({
+              myCollectionConnection: mockArtworkConnection,
+            }),
+          })
+        )
+      })
+
+      await applyFilter(renderApi, "Sort By", "Price Paid (High to Low)")
+      await applyFilter(renderApi, "Artists", "Banksy")
+      // await applyFilter(renderApi, "Rarity", "Unique")
+      // await applyFilter(renderApi, "Medium", "Print")
+      // await applyFilter(renderApi, "Price", "$0-1,000")
+      // await applyFilter(renderApi, "Size", "Small (under 40cm)")
+    })
+  })
 })
+
+const applyFilter = async (renderApi: RenderAPI, filterName: string, filterOption: string) => {
+  await flushPromiseQueue()
+  act(() => fireEvent.press(renderApi.getByTestId("sort-and-filter-button")))
+  act(() => fireEvent.press(renderApi.getByText(filterName)))
+  act(() => fireEvent.press(renderApi.getByText(filterOption)))
+  act(() => fireEvent.press(renderApi.getByTestId("artwork-filter-apply-button")))
+}
+
+const mockArtworkConnection = {
+  edges: [
+    {
+      node: {
+        id: "QXJ0d29yazo2MWMwOTk4ZWU0YjZjMzAwMGI3NmJmYjE=",
+        medium: "Print",
+        pricePaid: {
+          minor: "2000",
+        },
+        attributionClass: {
+          name: "Unique",
+        },
+        sizeBucket: null,
+        width: 30,
+        height: 20,
+        artist: {
+          name: "Banksy",
+          internalID: "4dd1584de0091e000100207c",
+          formattedNationalityAndBirthday: "British",
+        },
+      },
+    },
+  ],
+}

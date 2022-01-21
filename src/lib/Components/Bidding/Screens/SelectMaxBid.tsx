@@ -158,7 +158,11 @@ export const SelectMaxBidQueryRenderer: React.FC<{
           saleID,
         }}
         render={renderWithLoadProgress<SelectMaxBidQuery["response"]>((props) => (
-          <SelectMaxBidContainer me={props.me!} sale_artwork={props.artwork!.sale_artwork!} navigator={navigator} />
+          <SelectMaxBidContainer
+            me={props.me!}
+            sale_artwork={props.artwork!.sale_artwork!}
+            navigator={navigator}
+          />
         ))}
       />
     </Flex>

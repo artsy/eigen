@@ -12,7 +12,10 @@ import { Box, Flex, Separator, Spacer, Text } from "palette"
 import React, { useState } from "react"
 
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
-import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworkFiltersStoreProvider,
+  ArtworksFiltersStore,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/ArtworksFilterHeader"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
@@ -101,7 +104,10 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
           ) : undefined
         }
         stickyHeaderContent={
-          <ArtworksFilterHeader selectedFiltersCount={selectedFiltersCount} onFilterPress={openFilterArtworksModal} />
+          <ArtworksFilterHeader
+            selectedFiltersCount={selectedFiltersCount}
+            onFilterPress={openFilterArtworksModal}
+          />
         }
       >
         <Flex px={2} mt={2}>
@@ -166,7 +172,9 @@ const ArtistSeriesPlaceholder: React.FC<{}> = ({}) => {
   )
 }
 
-export const ArtistSeriesQueryRenderer: React.FC<{ artistSeriesID: string }> = ({ artistSeriesID }) => {
+export const ArtistSeriesQueryRenderer: React.FC<{ artistSeriesID: string }> = ({
+  artistSeriesID,
+}) => {
   return (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<ArtistSeriesQuery>

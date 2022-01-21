@@ -10,14 +10,21 @@ interface AutosuggestResultsPlaceholderProps {
   showResultType?: boolean
 }
 
-export const AutosuggestResultsPlaceholder: React.FC<AutosuggestResultsPlaceholderProps> = ({ showResultType }) => {
+export const AutosuggestResultsPlaceholder: React.FC<AutosuggestResultsPlaceholderProps> = ({
+  showResultType,
+}) => {
   return (
     <Box p={2} accessibilityLabel="Autosuggest results are loading">
       {times(20).map((index) => (
         <Flex key={`autosuggest-result-${index}`} flexDirection="row" mb={2}>
           <PlaceholderBox width={IMAGE_SIZE} height={IMAGE_SIZE} borderRadius={IMAGE_SIZE / 2} />
           <Flex flex={1} ml={1} justifyContent="center">
-            <RandomWidthPlaceholderText minWidth={100} maxWidth={150} height={TEXT_SIZE} marginBottom={0} />
+            <RandomWidthPlaceholderText
+              minWidth={100}
+              maxWidth={150}
+              height={TEXT_SIZE}
+              marginBottom={0}
+            />
             {!!showResultType && (
               <RandomWidthPlaceholderText
                 minWidth={50}

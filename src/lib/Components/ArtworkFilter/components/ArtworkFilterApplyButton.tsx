@@ -65,7 +65,14 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
           elevation: 12,
         }}
       >
-        <Box height={50} borderRadius={50} px={1} backgroundColor="black100" flexDirection="row" alignItems="center">
+        <Box
+          height={50}
+          borderRadius={50}
+          px={1}
+          backgroundColor="black100"
+          flexDirection="row"
+          alignItems="center"
+        >
           {!!shouldShowCreateAlertButton && (
             <>
               <InnerButton
@@ -86,7 +93,15 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
     <>
       <Separator my={0} />
       <Box p={2} pb={30}>
-        <Button disabled={disabled} onPress={onPress} block width={100} variant="fillDark" size="large">
+        <Button
+          disabled={disabled}
+          onPress={onPress}
+          block
+          width={100}
+          variant="fillDark"
+          size="large"
+          testID="artwork-filter-apply-button"
+        >
           Show results
         </Button>
       </Box>

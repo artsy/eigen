@@ -63,6 +63,8 @@ describe("MockRelayRenderer", () => {
         errorInfo: {},
       },
     })
-    expect(tree.update().text()).toEqual("Error occurred while rendering Relay component: Error: Hey it's an error!")
+    expect(tree.update().text()).toEqual(
+      "Error occurred while rendering Relay component: Error: Hey it's an error!"
+    )
   })
 })

@@ -4,7 +4,9 @@ import { useDevToggle } from "lib/store/GlobalStore"
 import { Flex, FlexProps, Text, Touchable, useColor } from "palette"
 import React from "react"
 
-export const QAInfoPanel: React.FC<Omit<FlexProps, "children"> & { info: Array<[string, string]> }> = (props) => (
+export const QAInfoPanel: React.FC<
+  Omit<FlexProps, "children"> & { info: Array<[string, string]> }
+> = (props) => (
   <QAInfoManualPanel {...props}>
     {props.info.map(([key, value]) => (
       <QAInfoRow key={key} name={key} value={value} />

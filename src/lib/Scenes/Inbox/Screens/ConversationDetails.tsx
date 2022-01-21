@@ -37,7 +37,9 @@ export const ConversationDetails: React.FC<Props> = ({ me }) => {
 
           {!!item && <ItemInfoFragmentContainer item={item} />}
 
-          {!!item && !!orderItem && <OrderInformationFragmentContainer artwork={item} order={orderItem} />}
+          {!!item && !!orderItem && (
+            <OrderInformationFragmentContainer artwork={item} order={orderItem} />
+          )}
 
           {!!orderItem && (
             <>

@@ -105,7 +105,7 @@ describe("Search Screen", () => {
     const isPadMock = isPad as jest.Mock
     isPadMock.mockImplementationOnce(() => false)
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
-    expect(getByText("Explore art on view")).toBeTruthy()
+    expect(getByText("Explore Art on View")).toBeTruthy()
   })
 
   it('the "Top" pill should be selected by default', () => {
@@ -118,7 +118,9 @@ describe("Search Screen", () => {
   })
 
   it("should not be able to untoggle the same pill", () => {
-    const { getByPlaceholderText, getByText, getByA11yState } = renderWithWrappersTL(<TestRenderer />)
+    const { getByPlaceholderText, getByText, getByA11yState } = renderWithWrappersTL(
+      <TestRenderer />
+    )
     const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
     mockEnvironmentPayload(mockEnvironment, {
@@ -414,7 +416,9 @@ describe("Search Screen", () => {
     })
 
     it("should render only allowed algolia indices", () => {
-      const { getByPlaceholderText, getByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByPlaceholderText, getByText, queryByText } = renderWithWrappersTL(
+        <TestRenderer />
+      )
       const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
       mockEnvironmentPayload(mockEnvironment, {

@@ -47,7 +47,10 @@ export class BidResult extends React.Component<BidResultProps> {
   backButtonListener?: NativeEventSubscription = undefined
 
   componentDidMount = () => {
-    this.backButtonListener = BackHandler.addEventListener("hardwareBackPress", this.handleBackButton)
+    this.backButtonListener = BackHandler.addEventListener(
+      "hardwareBackPress",
+      this.handleBackButton
+    )
   }
 
   componentWillUnmount = () => {
@@ -111,14 +114,20 @@ export class BidResult extends React.Component<BidResultProps> {
                 }
               />
               <Title mt={2} mb={5}>
-                {status === "PENDING" ? messageForPollingTimeout.title : message_header || "You’re the highest bidder"}
+                {status === "PENDING"
+                  ? messageForPollingTimeout.title
+                  : message_header || "You’re the highest bidder"}
               </Title>
               {status !== "WINNING" && (
                 <Markdown mb={5}>
-                  {status === "PENDING" ? messageForPollingTimeout.description : message_description_md}
+                  {status === "PENDING"
+                    ? messageForPollingTimeout.description
+                    : message_description_md}
                 </Markdown>
               )}
-              {!!this.shouldDisplayTimer(status) && <Timer liveStartsAt={liveStartAt} endsAt={endAt} />}
+              {!!this.shouldDisplayTimer(status) && (
+                <Timer liveStartsAt={liveStartAt} endsAt={endAt} />
+              )}
             </Flex>
           </View>
           {this.canBidAgain(status) ? (
