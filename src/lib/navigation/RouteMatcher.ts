@@ -1,10 +1,17 @@
 import { AppModule } from "lib/AppRegistry"
 
-type RoutePart = { type: "match"; value: string } | { type: "variable"; name: string } | { type: "wildcard" }
+type RoutePart =
+  | { type: "match"; value: string }
+  | { type: "variable"; name: string }
+  | { type: "wildcard" }
 
 export class RouteMatcher {
   private parts: ReadonlyArray<RoutePart>
-  constructor(public route: string, public module: AppModule, private paramsMapper?: (val: any) => object) {
+  constructor(
+    public route: string,
+    public module: AppModule,
+    private paramsMapper?: (val: any) => object
+  ) {
     if (!route.match(/^(\/\*?|(\/:?[\w-]+)+(\/\*)?)$/)) {
       throw new Error(`Invalid route format '${route}'.
 

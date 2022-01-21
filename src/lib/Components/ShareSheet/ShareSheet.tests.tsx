@@ -102,7 +102,10 @@ describe("ShareSheet", () => {
 
     it("should hide item if showInstagram props is set to false", async () => {
       const { queryByText } = renderWithWrappersTL(
-        <TestWrapper entry={{ ...defaultProps.entry, imageURL: "imageURL" }} showInstagram={false} />
+        <TestWrapper
+          entry={{ ...defaultProps.entry, imageURL: "imageURL" }}
+          showInstagram={false}
+        />
       )
 
       expect(queryByText("Instagram Stories")).toBeFalsy()

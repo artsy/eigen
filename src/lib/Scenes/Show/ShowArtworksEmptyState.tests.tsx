@@ -40,7 +40,9 @@ describe("ShowArtworksEmptyState", () => {
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
-      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, mockResolvers)
+      )
     })
     return tree
   }
@@ -71,7 +73,9 @@ describe("ShowArtworksEmptyState", () => {
       const wrapper = getWrapper({ Show: () => ({ isFairBooth: false }) })
       const text = extractText(wrapper.root)
 
-      expect(text).toContain("This show is currently unavailable. Please check back closer to the show for artworks.")
+      expect(text).toContain(
+        "This show is currently unavailable. Please check back closer to the show for artworks."
+      )
     })
 
     it("renders the correct message for closed shows", () => {

@@ -7,14 +7,20 @@ import {
   ViewAsValues,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworksFiltersStore,
+  useSelectedOptionsDisplay,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import React from "react"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface ViewAsOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "WaysToBuyOptionsScreen"> {}
+interface ViewAsOptionsScreenProps
+  extends StackScreenProps<ArtworkFilterNavigationStack, "WaysToBuyOptionsScreen"> {}
 
 export const ViewAsOptionsScreen: React.FC<ViewAsOptionsScreenProps> = ({ navigation }) => {
-  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((action) => action.selectFiltersAction)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
+    (action) => action.selectFiltersAction
+  )
 
   const paramName = FilterParamName.viewAs
 

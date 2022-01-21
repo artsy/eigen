@@ -27,7 +27,9 @@ interface LocationCoordinates {
   lng: number | null
 }
 
-export const shouldShowLocationMap = (coordinates: LocationCoordinates | null | undefined): boolean => {
+export const shouldShowLocationMap = (
+  coordinates: LocationCoordinates | null | undefined
+): boolean => {
   return !!(coordinates && coordinates?.lat && coordinates?.lng)
 }
 
@@ -76,7 +78,10 @@ export const FairMoreInfo: React.FC<FairMoreInfoProps> = ({ fair }) => {
               {!!shouldShowLocationMap(fair.location?.coordinates) && (
                 <>
                   <Spacer my={1} />
-                  <LocationMapContainer location={fair.location} partnerName={fair.profile?.name ?? fair.name} />
+                  <LocationMapContainer
+                    location={fair.location}
+                    partnerName={fair.profile?.name ?? fair.name}
+                  />
                 </>
               )}
               <Spacer my={1} />

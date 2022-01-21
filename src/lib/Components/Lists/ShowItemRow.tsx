@@ -139,17 +139,36 @@ export class ShowItemRow extends React.Component<Props, State> {
             )}
             <Flex flexDirection="column" flexGrow={1} width={165} mr={10}>
               {!!(show.partner && show.partner.name) && (
-                <Text variant="sm" lineHeight="20" color="black" weight="medium" numberOfLines={1} ml={15}>
+                <Text
+                  variant="sm"
+                  lineHeight="20"
+                  color="black"
+                  weight="medium"
+                  numberOfLines={1}
+                  ml={15}
+                >
                   {show.partner.name}
                 </Text>
               )}
               {!!show.name && (
-                <Text variant="sm" lineHeight="20" color={color("black60")} ml={15} numberOfLines={1}>
+                <Text
+                  variant="sm"
+                  lineHeight="20"
+                  color={color("black60")}
+                  ml={15}
+                  numberOfLines={1}
+                >
                   {show.name}
                 </Text>
               )}
               {!!(show.exhibition_period && show.status) && (
-                <Text variant="sm" lineHeight="20" color={color("black60")} ml={15} numberOfLines={1}>
+                <Text
+                  variant="sm"
+                  lineHeight="20"
+                  color={color("black60")}
+                  ml={15}
+                  numberOfLines={1}
+                >
                   {show.status.includes("closed")
                     ? show.status.charAt(0).toUpperCase() + show.status.slice(1)
                     : exhibitionDates(

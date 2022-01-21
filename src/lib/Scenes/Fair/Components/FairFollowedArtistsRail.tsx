@@ -13,7 +13,10 @@ interface FairFollowedArtistsRailProps {
   fair: FairFollowedArtistsRail_fair
 }
 
-export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = ({ fair, ...rest }) => {
+export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = ({
+  fair,
+  ...rest
+}) => {
   if (!fair.followedArtistArtworks?.edges?.length) {
     return null
   }
@@ -92,21 +95,27 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = (
   )
 }
 
-export const FairFollowedArtistsRailFragmentContainer = createFragmentContainer(FairFollowedArtistsRail, {
-  fair: graphql`
-    fragment FairFollowedArtistsRail_fair on Fair {
-      internalID
-      slug
-      followedArtistArtworks: filterArtworksConnection(first: 20, input: { includeArtworksByFollowedArtists: true }) {
-        edges {
-          artwork: node {
-            id
-            internalID
-            slug
-            ...ArtworkTileRailCard_artwork
+export const FairFollowedArtistsRailFragmentContainer = createFragmentContainer(
+  FairFollowedArtistsRail,
+  {
+    fair: graphql`
+      fragment FairFollowedArtistsRail_fair on Fair {
+        internalID
+        slug
+        followedArtistArtworks: filterArtworksConnection(
+          first: 20
+          input: { includeArtworksByFollowedArtists: true }
+        ) {
+          edges {
+            artwork: node {
+              id
+              internalID
+              slug
+              ...ArtworkTileRailCard_artwork
+            }
           }
         }
       }
-    }
-  `,
-})
+    `,
+  }
+)

@@ -37,7 +37,9 @@ class Header extends React.Component<Props, State> {
   }
 
   @track((props) => ({
-    action_name: props.gene.isFollowed ? Schema.ActionNames.GeneUnfollow : Schema.ActionNames.GeneFollow,
+    action_name: props.gene.isFollowed
+      ? Schema.ActionNames.GeneUnfollow
+      : Schema.ActionNames.GeneFollow,
     action_type: Schema.ActionTypes.Tap,
     owner_id: props.gene.internalID,
     owner_slug: props.gene.slug,
@@ -97,7 +99,9 @@ class Header extends React.Component<Props, State> {
   }
 
   @track((props) => ({
-    action_name: props.gene.isFollowed ? Schema.ActionNames.GeneFollow : Schema.ActionNames.GeneUnfollow,
+    action_name: props.gene.isFollowed
+      ? Schema.ActionNames.GeneFollow
+      : Schema.ActionNames.GeneUnfollow,
     action_type: Schema.ActionTypes.Success,
     owner_id: props.gene.internalID,
     owner_slug: props.gene.slug,
@@ -111,7 +115,9 @@ class Header extends React.Component<Props, State> {
   }
 
   @track((props) => ({
-    action_name: props.gene.isFollowed ? Schema.ActionNames.GeneFollow : Schema.ActionNames.GeneUnfollow,
+    action_name: props.gene.isFollowed
+      ? Schema.ActionNames.GeneFollow
+      : Schema.ActionNames.GeneUnfollow,
     action_type: Schema.ActionTypes.Fail,
     owner_id: props.gene.internalID,
     owner_slug: props.gene.slug,
@@ -132,7 +138,11 @@ class Header extends React.Component<Props, State> {
 
     return (
       <Box mt={15}>
-        <FollowButton block isFollowed={!!gene.isFollowed} onPress={() => this.handleFollowChange()} />
+        <FollowButton
+          block
+          isFollowed={!!gene.isFollowed}
+          onPress={() => this.handleFollowChange()}
+        />
       </Box>
     )
   }

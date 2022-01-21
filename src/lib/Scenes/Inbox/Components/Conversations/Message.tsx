@@ -98,7 +98,12 @@ export class Message extends React.Component<Props> {
           const backgroundColor = color(isFromUser ? "black100" : "black10")
           return (
             <>
-              <Flex maxWidth="66.67%" alignItems={alignAttachments} flexDirection="column" style={{ alignSelf }}>
+              <Flex
+                maxWidth="66.67%"
+                alignItems={alignAttachments}
+                flexDirection="column"
+                style={{ alignSelf }}
+              >
                 <AttachmentContainer
                   style={{
                     backgroundColor: color(isFromUser ? "black100" : "black10"),
@@ -119,7 +124,9 @@ export class Message extends React.Component<Props> {
                 {!!message.attachments?.length && <Spacer mb={0.5} />}
                 {this.renderAttachmentPreviews(message.attachments, backgroundColor)}
               </Flex>
-              {!!showTimeSince && <TimeSince time={message.createdAt} style={{ alignSelf }} mt={0.5} />}
+              {!!showTimeSince && (
+                <TimeSince time={message.createdAt} style={{ alignSelf }} mt={0.5} />
+              )}
             </>
           )
         }}

@@ -6,7 +6,10 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MyCollectionArtworkDemandIndexFragmentContainer, tests } from "./MyCollectionArtworkDemandIndex"
+import {
+  MyCollectionArtworkDemandIndexFragmentContainer,
+  tests,
+} from "./MyCollectionArtworkDemandIndex"
 
 jest.unmock("react-relay")
 

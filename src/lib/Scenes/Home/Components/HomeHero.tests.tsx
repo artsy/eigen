@@ -27,7 +27,9 @@ describe("HomeHero", () => {
           }
         }
       `}
-      render={({ props }) => (props?.homePage ? <HomeHeroContainer homePage={props.homePage} /> : null)}
+      render={({ props }) =>
+        props?.homePage ? <HomeHeroContainer homePage={props.homePage} /> : null
+      }
       variables={{}}
       environment={environment}
     />
@@ -49,7 +51,9 @@ describe("HomeHero", () => {
     )
 
     expect(tree.root.findAllByType(OpaqueImageView)).toHaveLength(1)
-    expect(extractText(tree.root)).toMatchInlineSnapshot(`"Art Keeps GoingArt in the time of pandemicLearn More"`)
+    expect(extractText(tree.root)).toMatchInlineSnapshot(
+      `"Art Keeps GoingArt in the time of pandemicLearn More"`
+    )
   })
 
   it(`only shows the credit line after the image has loaded`, () => {

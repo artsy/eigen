@@ -56,24 +56,27 @@ export const MyCollectionArtworkInsights: React.FC<MyCollectionArtworkInsightsPr
   )
 }
 
-export const MyCollectionArtworkInsightsFragmentContainer = createFragmentContainer(MyCollectionArtworkInsights, {
-  artwork: graphql`
-    fragment MyCollectionArtworkInsights_artwork on Artwork {
-      sizeBucket
-      medium
-      artist {
-        name
+export const MyCollectionArtworkInsightsFragmentContainer = createFragmentContainer(
+  MyCollectionArtworkInsights,
+  {
+    artwork: graphql`
+      fragment MyCollectionArtworkInsights_artwork on Artwork {
+        sizeBucket
+        medium
+        artist {
+          name
+        }
+        ...MyCollectionArtworkArtistAuctionResults_artwork
+        ...MyCollectionArtworkArtistArticles_artwork
+        ...MyCollectionArtworkArtistMarket_artwork
+        ...MyCollectionArtworkDemandIndex_artwork
       }
-      ...MyCollectionArtworkArtistAuctionResults_artwork
-      ...MyCollectionArtworkArtistArticles_artwork
-      ...MyCollectionArtworkArtistMarket_artwork
-      ...MyCollectionArtworkDemandIndex_artwork
-    }
-  `,
-  marketPriceInsights: graphql`
-    fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights {
-      ...MyCollectionArtworkDemandIndex_marketPriceInsights
-      ...MyCollectionArtworkArtistMarket_marketPriceInsights
-    }
-  `,
-})
+    `,
+    marketPriceInsights: graphql`
+      fragment MyCollectionArtworkInsights_marketPriceInsights on MarketPriceInsights {
+        ...MyCollectionArtworkDemandIndex_marketPriceInsights
+        ...MyCollectionArtworkArtistMarket_marketPriceInsights
+      }
+    `,
+  }
+)

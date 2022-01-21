@@ -15,8 +15,9 @@ import "./renderUntil"
  * need to use `renderUntil` directly, such as after making updates to a Relay
  * tree.
  */
-export const RelayFinishedLoading: RenderUntilPredicate<any, any, any> = (tree: any /* STRICTNESS_MIGRATION */) =>
-  !tree.find(`[testID="${LoadingTestID}"]`).length
+export const RelayFinishedLoading: RenderUntilPredicate<any, any, any> = (
+  tree: any /* STRICTNESS_MIGRATION */
+) => !tree.find(`[testID="${LoadingTestID}"]`).length
 
 /**
  * Renders a tree of Relay containers with a mocked local instance of the

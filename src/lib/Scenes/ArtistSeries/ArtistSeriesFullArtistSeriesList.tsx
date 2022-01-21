@@ -50,28 +50,33 @@ export const FullArtistSeriesList: React.FC<FullArtistSeriesListProps> = ({ arti
   )
 }
 
-export const ArtistSeriesFullArtistSeriesListFragmentContainer = createFragmentContainer(FullArtistSeriesList, {
-  artist: graphql`
-    fragment ArtistSeriesFullArtistSeriesList_artist on Artist {
-      artistSeriesConnection(first: 50) {
-        edges {
-          node {
-            slug
-            internalID
-            title
-            featured
-            artworksCountMessage
-            image {
-              url
+export const ArtistSeriesFullArtistSeriesListFragmentContainer = createFragmentContainer(
+  FullArtistSeriesList,
+  {
+    artist: graphql`
+      fragment ArtistSeriesFullArtistSeriesList_artist on Artist {
+        artistSeriesConnection(first: 50) {
+          edges {
+            node {
+              slug
+              internalID
+              title
+              featured
+              artworksCountMessage
+              image {
+                url
+              }
             }
           }
         }
       }
-    }
-  `,
-})
+    `,
+  }
+)
 
-export const ArtistSeriesFullArtistSeriesListQueryRenderer: React.FC<{ artistID: string }> = ({ artistID }) => {
+export const ArtistSeriesFullArtistSeriesListQueryRenderer: React.FC<{ artistID: string }> = ({
+  artistID,
+}) => {
   return (
     <QueryRenderer<ArtistSeriesFullArtistSeriesListQuery>
       environment={defaultEnvironment}

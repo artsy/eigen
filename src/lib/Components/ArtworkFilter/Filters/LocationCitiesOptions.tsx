@@ -1,6 +1,10 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
-import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  FilterData,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import React from "react"
 import { useArtworkFiltersAggregation } from "../useArtworkFilters"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
@@ -9,8 +13,12 @@ import { useMultiSelect } from "./useMultiSelect"
 interface LocationCitiesOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "LocationCitiesOptionsScreen"> {}
 
-export const LocationCitiesOptionsScreen: React.FC<LocationCitiesOptionsScreenProps> = ({ navigation }) => {
-  const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.locationCities })
+export const LocationCitiesOptionsScreen: React.FC<LocationCitiesOptionsScreenProps> = ({
+  navigation,
+}) => {
+  const { aggregation } = useArtworkFiltersAggregation({
+    paramName: FilterParamName.locationCities,
+  })
 
   const options: FilterData[] = (aggregation?.counts ?? []).map(({ value: paramValue, name }) => {
     return { displayText: name, paramName: FilterParamName.locationCities, paramValue }

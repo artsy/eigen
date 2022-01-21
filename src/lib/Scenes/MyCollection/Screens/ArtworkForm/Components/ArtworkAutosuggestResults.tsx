@@ -67,8 +67,12 @@ export const ArtworkAutosuggestResultsPaginationContainer = createPaginationCont
         keyword: { type: "String" }
         input: { type: "FilterArtworksInput" }
       ) {
-        artworks: artworksConnection(first: $count, after: $cursor, keyword: $keyword, input: $input)
-          @connection(key: "ArtworkAutosuggestResults_artworks") {
+        artworks: artworksConnection(
+          first: $count
+          after: $cursor
+          keyword: $keyword
+          input: $input
+        ) @connection(key: "ArtworkAutosuggestResults_artworks") {
           edges {
             node {
               title

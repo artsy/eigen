@@ -34,7 +34,10 @@ describe("MyCollectionAddPhotos", () => {
 
   it("updates header with correct label based on number of photos selected", () => {
     const wrapper = renderWithWrappers(mockAddPhotos)
-    expect(wrapper.root.findByType(FancyModalHeader).props.children).toStrictEqual(["Photos ", "(2)"])
+    expect(wrapper.root.findByType(FancyModalHeader).props.children).toStrictEqual([
+      "Photos ",
+      "(2)",
+    ])
   })
 
   it("displays the correct number of photos", () => {
@@ -56,7 +59,9 @@ describe("MyCollectionAddPhotos", () => {
 
   it("triggers action on add photo button click", () => {
     const mockNav = jest.fn()
-    const wrapper = renderWithWrappers(<MyCollectionAddPhotos navigation={mockNav as any} route={{} as any} />)
+    const wrapper = renderWithWrappers(
+      <MyCollectionAddPhotos navigation={mockNav as any} route={{} as any} />
+    )
     wrapper.root.findByType(tests.AddPhotosButton).findByType(TouchableOpacity).props.onPress()
     expect(showPhotoActionSheet).toHaveBeenCalled()
   })
@@ -65,8 +70,13 @@ describe("MyCollectionAddPhotos", () => {
     const spy = jest.fn()
     GlobalStore.actions.myCollection.artwork.removePhoto = spy as any
     const mockNav = jest.fn()
-    const wrapper = renderWithWrappers(<MyCollectionAddPhotos navigation={mockNav as any} route={{} as any} />)
-    wrapper.root.findAllByType(tests.DeletePhotoButton)[0].findByType(TouchableOpacity).props.onPress()
+    const wrapper = renderWithWrappers(
+      <MyCollectionAddPhotos navigation={mockNav as any} route={{} as any} />
+    )
+    wrapper.root
+      .findAllByType(tests.DeletePhotoButton)[0]
+      .findByType(TouchableOpacity)
+      .props.onPress()
     expect(spy).toHaveBeenCalledWith({ path: "photo/1" })
   })
 })

@@ -4,7 +4,11 @@ import { Animated, View } from "react-native"
 import { fitInside, Rect } from "../../geometry"
 import { ImageDescriptor } from "../../ImageCarouselContext"
 import { EventStream } from "../useEventStream"
-import { calculateDeepZoomLevels, calculateMinMaxDeepZoomLevels, getZoomScaleBoundaries } from "./deepZoomGeometry"
+import {
+  calculateDeepZoomLevels,
+  calculateMinMaxDeepZoomLevels,
+  getZoomScaleBoundaries,
+} from "./deepZoomGeometry"
 import { DeepZoomLevel } from "./DeepZoomLevel"
 import { DeepZoomPyramid } from "./DeepZoomPyramid"
 
@@ -51,7 +55,10 @@ export const DeepZoomOverlay: React.FC<DeepZoomOverlayProps> = ({
 
   // setup geometry
   const levels = useMemo(() => calculateDeepZoomLevels(fullImageSize), [fullImageSize])
-  const imageFittedWithinScreen = useMemo(() => fitInside(screenDimensions, { width, height }), [width, height])
+  const imageFittedWithinScreen = useMemo(
+    () => fitInside(screenDimensions, { width, height }),
+    [width, height]
+  )
   const zoomScaleBoundaries = useMemo(
     () => getZoomScaleBoundaries({ imageFittedWithinScreen, levels }),
     [levels, imageFittedWithinScreen]

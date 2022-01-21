@@ -2,7 +2,10 @@ import { fireEvent } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
-import { ArtworkFilterOptionsHeader, ArtworkFilterOptionsHeaderProps } from "./ArtworkFilterOptionsHeader"
+import {
+  ArtworkFilterOptionsHeader,
+  ArtworkFilterOptionsHeaderProps,
+} from "./ArtworkFilterOptionsHeader"
 
 const defaultProps: ArtworkFilterOptionsHeaderProps = {
   title: "Title",
@@ -27,7 +30,9 @@ describe("ArtworkFilterOptionsHeader", () => {
   })
 
   it("should render passed rightButtonText prop", () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper rightButtonText="Custom Right Button Text" />)
+    const { getByText } = renderWithWrappersTL(
+      <TestWrapper rightButtonText="Custom Right Button Text" />
+    )
 
     expect(getByText("Custom Right Button Text")).toBeTruthy()
   })
@@ -48,7 +53,9 @@ describe("ArtworkFilterOptionsHeader", () => {
 
   it('should call "onLeftButtonPress" handler when back button is pressed', () => {
     const onLeftButtonPressMock = jest.fn()
-    const { getByA11yLabel } = renderWithWrappersTL(<TestWrapper onLeftButtonPress={onLeftButtonPressMock} />)
+    const { getByA11yLabel } = renderWithWrappersTL(
+      <TestWrapper onLeftButtonPress={onLeftButtonPressMock} />
+    )
 
     fireEvent.press(getByA11yLabel("Header back button"))
 
@@ -57,7 +64,9 @@ describe("ArtworkFilterOptionsHeader", () => {
 
   it('should call "onRightButtonPress" handler when clear all is pressed', () => {
     const onRightButtonPressMock = jest.fn()
-    const { getByText } = renderWithWrappersTL(<TestWrapper onRightButtonPress={onRightButtonPressMock} />)
+    const { getByText } = renderWithWrappersTL(
+      <TestWrapper onRightButtonPress={onRightButtonPressMock} />
+    )
 
     fireEvent.press(getByText("Clear"))
 

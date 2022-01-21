@@ -74,8 +74,12 @@ export const Pill: React.FC<PillProps> = ({
   const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
 
   const textStyle = useTextStyleForPalette(size === "xxs" ? "xs" : "sm")
-  const enabledDisplayState = enableImprovedPills ? DisplayState.EnabledImprovedFlag : DisplayState.Enabled
-  const selectedDisplayState = enableImprovedPills ? DisplayState.SelectedImprovedFlag : DisplayState.Selected
+  const enabledDisplayState = enableImprovedPills
+    ? DisplayState.EnabledImprovedFlag
+    : DisplayState.Enabled
+  const selectedDisplayState = enableImprovedPills
+    ? DisplayState.SelectedImprovedFlag
+    : DisplayState.Selected
   const standartDisplayState = disabled ? DisplayState.Disabled : enabledDisplayState
   const initialDisplayState = selected ? selectedDisplayState : standartDisplayState
   const [innerDisplayState, setInnerDisplayState] = useState(initialDisplayState)
@@ -146,7 +150,9 @@ export const Pill: React.FC<PillProps> = ({
   )
 }
 
-const useStyleForState = (state: DisplayState): { textColor: string; borderColor: string; backgroundColor: string } => {
+const useStyleForState = (
+  state: DisplayState
+): { textColor: string; borderColor: string; backgroundColor: string } => {
   const color = useColor()
 
   const retval = {} as ReturnType<typeof useStyleForState>

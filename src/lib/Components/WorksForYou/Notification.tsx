@@ -1,5 +1,12 @@
 import React from "react"
-import { Image, ImageStyle, StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from "react-native"
+import {
+  Image,
+  ImageStyle,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle,
+} from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 
 import GenericGrid from "../ArtworkGrids/GenericGrid"
@@ -20,7 +27,8 @@ const HORIZONTAL_PADDING = 20
 export class Notification extends React.Component<Props> {
   handleArtistTap() {
     const artistHref =
-      this.props.notification.artistHref || extractNodes(this.props.notification.artworks)[0]?.artists?.[0]?.href
+      this.props.notification.artistHref ||
+      extractNodes(this.props.notification.artworks)[0]?.artists?.[0]?.href
     if (artistHref) {
       navigate(artistHref)
     }

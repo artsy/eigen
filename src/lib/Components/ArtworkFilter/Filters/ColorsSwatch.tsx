@@ -21,7 +21,14 @@ export const ColorsSwatch: React.FC<ColorsSwatchProps> = ({
   return (
     <TouchableRow {...rest}>
       <Box width={width} py={1}>
-        <Box position="relative" mx="auto" width="34px" height="34px" borderRadius="17px" bg={backgroundColor}>
+        <Box
+          position="relative"
+          mx="auto"
+          width="34px"
+          height="34px"
+          borderRadius="17px"
+          bg={backgroundColor}
+        >
           {!!selected && (
             <CheckIcon
               position="absolute"

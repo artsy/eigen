@@ -1,5 +1,10 @@
 import { SmallArtworkRail_artworks$key } from "__generated__/SmallArtworkRail_artworks.graphql"
-import { PlaceholderBox, PlaceholderText, RandomWidthPlaceholderText, useMemoizedRandom } from "lib/utils/placeholders"
+import {
+  PlaceholderBox,
+  PlaceholderText,
+  RandomWidthPlaceholderText,
+  useMemoizedRandom,
+} from "lib/utils/placeholders"
 import { times } from "lodash"
 import { Flex, Join, Spacer } from "palette"
 import React from "react"
@@ -8,7 +13,9 @@ import { graphql } from "relay-runtime"
 import { ArtworkRail, ArtworkRailProps } from "./ArtworkRail"
 import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "./ArtworkRailCard"
 
-type SmallArtworkRailProps = Omit<ArtworkRailProps, "artworks" | "size"> & { artworks: SmallArtworkRail_artworks$key }
+type SmallArtworkRailProps = Omit<ArtworkRailProps, "artworks" | "size"> & {
+  artworks: SmallArtworkRail_artworks$key
+}
 
 const IMAGE_WIDTH = 155
 

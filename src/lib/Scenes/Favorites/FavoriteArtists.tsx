@@ -61,17 +61,28 @@ class Artists extends React.Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const rows = extractNodes(this.props.me.followsAndSaves?.artists, (node) => node.artist!).map((artist) => ({
-      key: artist.id,
-      content: (
-        <ArtistListItem artist={artist} withFeedback containerStyle={{ paddingHorizontal: 20, paddingVertical: 5 }} />
-      ),
-    }))
+    const rows = extractNodes(this.props.me.followsAndSaves?.artists, (node) => node.artist!).map(
+      (artist) => ({
+        key: artist.id,
+        content: (
+          <ArtistListItem
+            artist={artist}
+            withFeedback
+            containerStyle={{ paddingHorizontal: 20, paddingVertical: 5 }}
+          />
+        ),
+      })
+    )
 
     if (rows.length === 0) {
       return (
         <StickyTabPageScrollView
-          refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshingFromPull}
+              onRefresh={this.handleRefresh}
+            />
+          }
         >
           <ZeroState
             title="You haven’t followed any artists yet"
@@ -90,12 +101,17 @@ class Artists extends React.Component<Props, State> {
             contentContainerStyle={{ paddingVertical: space(2) }}
             onEndReachedThreshold={0.2}
             refreshControl={
-              <RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />
+              <RefreshControl
+                refreshing={this.state.refreshingFromPull}
+                onRefresh={this.handleRefresh}
+              />
             }
             style={{ paddingHorizontal: 0 }}
             ItemSeparatorComponent={() => <Spacer mb="10px" />}
             ListFooterComponent={
-              this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
+              this.state.fetchingMoreData ? (
+                <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
+              ) : null
             }
           />
         )}
@@ -112,7 +128,8 @@ const FavoriteArtistsContainer = createPaginationContainer(
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         labFeatures
         followsAndSaves {
-          artists: artistsConnection(first: $count, after: $cursor) @connection(key: "Artists_artists") {
+          artists: artistsConnection(first: $count, after: $cursor)
+            @connection(key: "Artists_artists") {
             edges {
               node {
                 artist {

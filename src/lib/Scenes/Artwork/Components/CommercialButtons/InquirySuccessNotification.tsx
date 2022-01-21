@@ -33,7 +33,12 @@ export const InquirySuccessNotification: React.FC<InquirySuccessNotificationProp
   }, [modalVisible])
 
   return (
-    <Modal visible={modalVisible} onRequestClose={() => toggleNotification(false)} animationType="fade" transparent>
+    <Modal
+      visible={modalVisible}
+      onRequestClose={() => toggleNotification(false)}
+      animationType="fade"
+      transparent
+    >
       <Animated.View
         style={{
           position: "absolute",

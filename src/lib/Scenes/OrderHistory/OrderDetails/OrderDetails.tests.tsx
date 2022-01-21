@@ -122,7 +122,9 @@ describe(OrderDetailsQueryRender, () => {
   })
 
   it("Loads OrderHistoryQueryRender with OrderDetailsPlaceholder", () => {
-    const tree = renderWithWrappers(<OrderDetailsQueryRender orderID="21856921-fa90-4a36-a17e-dd52870952d2" />).root
+    const tree = renderWithWrappers(
+      <OrderDetailsQueryRender orderID="21856921-fa90-4a36-a17e-dd52870952d2" />
+    ).root
     expect(tree.findAllByType(OrderDetailsPlaceholder)).toHaveLength(1)
   })
 })

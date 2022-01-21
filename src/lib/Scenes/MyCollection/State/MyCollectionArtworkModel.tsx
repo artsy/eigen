@@ -122,7 +122,11 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
   }),
 
   resetFormButKeepArtist: action((state) => {
-    const artistValues = pick(state.sessionState.formValues, ["artist", "artistIds", "artistSearchResult"])
+    const artistValues = pick(state.sessionState.formValues, [
+      "artist",
+      "artistIds",
+      "artistSearchResult",
+    ])
 
     state.sessionState.formValues = { ...initialFormValues, ...artistValues }
     state.sessionState.dirtyFormCheckValues = { ...initialFormValues, ...artistValues }

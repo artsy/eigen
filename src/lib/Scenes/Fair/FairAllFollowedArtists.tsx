@@ -1,8 +1,16 @@
 import { FairAllFollowedArtists_fair } from "__generated__/FairAllFollowedArtists_fair.graphql"
 import { FairAllFollowedArtists_fairForFilters } from "__generated__/FairAllFollowedArtists_fairForFilters.graphql"
 import { FairAllFollowedArtistsQuery } from "__generated__/FairAllFollowedArtistsQuery.graphql"
-import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
-import { Aggregations, FilterArray, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  AnimatedArtworkFilterButton,
+  ArtworkFilterNavigator,
+  FilterModalMode,
+} from "lib/Components/ArtworkFilter"
+import {
+  Aggregations,
+  FilterArray,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
@@ -18,7 +26,10 @@ interface FairAllFollowedArtistsProps {
   fairForFilters: FairAllFollowedArtists_fairForFilters
 }
 
-export const FairAllFollowedArtists: React.FC<FairAllFollowedArtistsProps> = ({ fair, fairForFilters }) => {
+export const FairAllFollowedArtists: React.FC<FairAllFollowedArtistsProps> = ({
+  fair,
+  fairForFilters,
+}) => {
   const [isFilterArtworksModalVisible, setFilterArtworkModalVisible] = useState(false)
   const handleFilterArtworksModal = () => {
     setFilterArtworkModalVisible(!isFilterArtworksModalVisible)
@@ -62,44 +73,57 @@ export const FairAllFollowedArtists: React.FC<FairAllFollowedArtistsProps> = ({ 
   )
 }
 
-export const FairAllFollowedArtistsFragmentContainer = createFragmentContainer(FairAllFollowedArtists, {
-  fair: graphql`
-    fragment FairAllFollowedArtists_fair on Fair {
-      internalID
-      slug
-      ...FairArtworks_fair @arguments(input: { includeArtworksByFollowedArtists: true, sort: "-decayed_merch" })
-    }
-  `,
-  /**
-   * Filter aggregations are normally dynamic according to applied filters.
-   * Because of the `includeArtworksByFollowedArtists` argument used above, the artwork grid is intially scoped to only
-   * include works by followed artists.
-   * The filter options become incomplete if that option is later disabled in the filter menu.
-   * To compensate, we are querying for the complete set below without the `includeArtworksByFollowedArtists`
-   * argument so that the complete set of filters is available.
-   */
-  fairForFilters: graphql`
-    fragment FairAllFollowedArtists_fairForFilters on Fair {
-      filterArtworksConnection(
-        first: 0
-        aggregations: [COLOR, DIMENSION_RANGE, PARTNER, MAJOR_PERIOD, MEDIUM, PRICE_RANGE, FOLLOWED_ARTISTS, ARTIST]
-      ) {
-        aggregations {
-          slice
+export const FairAllFollowedArtistsFragmentContainer = createFragmentContainer(
+  FairAllFollowedArtists,
+  {
+    fair: graphql`
+      fragment FairAllFollowedArtists_fair on Fair {
+        internalID
+        slug
+        ...FairArtworks_fair
+          @arguments(input: { includeArtworksByFollowedArtists: true, sort: "-decayed_merch" })
+      }
+    `,
+    /**
+     * Filter aggregations are normally dynamic according to applied filters.
+     * Because of the `includeArtworksByFollowedArtists` argument used above, the artwork grid is intially scoped to only
+     * include works by followed artists.
+     * The filter options become incomplete if that option is later disabled in the filter menu.
+     * To compensate, we are querying for the complete set below without the `includeArtworksByFollowedArtists`
+     * argument so that the complete set of filters is available.
+     */
+    fairForFilters: graphql`
+      fragment FairAllFollowedArtists_fairForFilters on Fair {
+        filterArtworksConnection(
+          first: 0
+          aggregations: [
+            COLOR
+            DIMENSION_RANGE
+            PARTNER
+            MAJOR_PERIOD
+            MEDIUM
+            PRICE_RANGE
+            FOLLOWED_ARTISTS
+            ARTIST
+          ]
+        ) {
+          aggregations {
+            slice
+            counts {
+              count
+              name
+              value
+            }
+          }
+
           counts {
-            count
-            name
-            value
+            followedArtists
           }
         }
-
-        counts {
-          followedArtists
-        }
       }
-    }
-  `,
-})
+    `,
+  }
+)
 
 export const FairAllFollowedArtistsQueryRenderer: React.FC<{ fairID: string }> = ({ fairID }) => {
   return (

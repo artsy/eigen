@@ -105,7 +105,9 @@ export const VerticalSwipeToDismiss: React.FC<{ onClose(): void }> = ({ children
       scrollEventThrottle={0.000000001}
     >
       <View style={{ height: screenHeight * 3, width: screenWidth }}>
-        <View style={{ height: screenHeight, width: screenWidth, marginTop: screenHeight }}>{children}</View>
+        <View style={{ height: screenHeight, width: screenWidth, marginTop: screenHeight }}>
+          {children}
+        </View>
       </View>
     </Animated.ScrollView>
   )

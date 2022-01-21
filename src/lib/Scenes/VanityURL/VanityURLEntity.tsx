@@ -83,14 +83,24 @@ export const VanityURLEntityRenderer: React.FC<RendererProps> = ({ entity, slugT
                 )
               default:
                 return (
-                  <Flex style={{ flex: 1 }} flexDirection="row" alignItems="center" justifyContent="center">
+                  <Flex
+                    style={{ flex: 1 }}
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
                     <Spinner />
                   </Flex>
                 )
             }
           },
           render: (props: any) => {
-            return <VanityURLEntityFragmentContainer fairOrPartner={props.vanityURLEntity} originalSlug={slug} />
+            return (
+              <VanityURLEntityFragmentContainer
+                fairOrPartner={props.vanityURLEntity}
+                originalSlug={slug}
+              />
+            )
           },
         })}
       />

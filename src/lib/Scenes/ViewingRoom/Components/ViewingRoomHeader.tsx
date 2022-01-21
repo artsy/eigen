@@ -48,13 +48,19 @@ const CountdownText: React.FC<CountdownProps> = ({ duration }) => {
   return (
     <Text variant="xs" fontWeight={500} color="white100">
       {sections
-        .map(({ time, label }, idx) => (idx < sections.length - 1 ? time + label + separator : time + label))
+        .map(({ time, label }, idx) =>
+          idx < sections.length - 1 ? time + label + separator : time + label
+        )
         .join("")}
     </Text>
   )
 }
 
-const Countdown: React.FC<{ startAt: string; endAt: string; status: string }> = ({ startAt, endAt, status }) => {
+const Countdown: React.FC<{ startAt: string; endAt: string; status: string }> = ({
+  startAt,
+  endAt,
+  status,
+}) => {
   let finalText = ""
   if (status === ViewingRoomStatus.CLOSED) {
     finalText = "Closed"

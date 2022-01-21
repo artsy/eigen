@@ -17,7 +17,9 @@ import { SearchCriteria, SearchCriteriaAttributes } from "./types"
 
 export type AggregationByFilterParamName = Dictionary<Aggregation[]>
 
-export const convertPriceToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
+export const convertPriceToFilterParam = (
+  criteria: SearchCriteriaAttributes
+): FilterData | null => {
   const priceRangeValue = criteria[SearchCriteria.priceRange]
 
   if (!isNil(priceRangeValue)) {
@@ -47,7 +49,9 @@ export const convertCustomSizeToFilterParamByName = (paramName: FilterParamName,
   }
 }
 
-export const convertSizeToFilterParams = (criteria: SearchCriteriaAttributes): FilterData[] | null => {
+export const convertSizeToFilterParams = (
+  criteria: SearchCriteriaAttributes
+): FilterData[] | null => {
   const filterParams: FilterData[] = []
   const dimensionRangeValue = criteria.dimensionRange
   const widthValue = criteria[SearchCriteria.width]
@@ -56,7 +60,9 @@ export const convertSizeToFilterParams = (criteria: SearchCriteriaAttributes): F
 
   // Convert old size filter format to new
   if (!isNil(dimensionRangeValue) && dimensionRangeValue !== "0-*") {
-    const sizeOptionItem = FALLBACK_SIZE_OPTIONS.find((option) => option.oldParamValue === dimensionRangeValue)
+    const sizeOptionItem = FALLBACK_SIZE_OPTIONS.find(
+      (option) => option.oldParamValue === dimensionRangeValue
+    )
 
     if (sizeOptionItem) {
       filterParams.push({
@@ -128,7 +134,9 @@ export const convertAggregationValueNamesToFilterParam = (
   criteriaValues: string[]
 ): FilterData | null => {
   const aggregationByValue = keyBy(aggregations, "value")
-  const availableValues = criteriaValues.filter((criteriaValue) => !!aggregationByValue[criteriaValue])
+  const availableValues = criteriaValues.filter(
+    (criteriaValue) => !!aggregationByValue[criteriaValue]
+  )
   const names = availableValues.map((value) => aggregationByValue[value].name)
 
   if (availableValues.length > 0) {
@@ -142,13 +150,19 @@ export const convertAggregationValueNamesToFilterParam = (
   return null
 }
 
-export const convertAttributionToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
+export const convertAttributionToFilterParam = (
+  criteria: SearchCriteriaAttributes
+): FilterData | null => {
   const attributionValues = criteria[SearchCriteria.attributionClass]
 
   if (Array.isArray(attributionValues) && attributionValues.length > 0) {
     const attributionItemByValue = keyBy(ATTRIBUTION_CLASS_OPTIONS, "paramValue")
-    const availableAttributions = attributionValues.filter((attribution) => !!attributionItemByValue[attribution])
-    const names = availableAttributions.map((attribution) => attributionItemByValue[attribution].displayText)
+    const availableAttributions = attributionValues.filter(
+      (attribution) => !!attributionItemByValue[attribution]
+    )
+    const names = availableAttributions.map(
+      (attribution) => attributionItemByValue[attribution].displayText
+    )
 
     if (availableAttributions.length > 0) {
       return {
@@ -162,7 +176,9 @@ export const convertAttributionToFilterParam = (criteria: SearchCriteriaAttribut
   return null
 }
 
-export const convertWaysToBuyToFilterParams = (criteria: SearchCriteriaAttributes): FilterData[] | null => {
+export const convertWaysToBuyToFilterParams = (
+  criteria: SearchCriteriaAttributes
+): FilterData[] | null => {
   const options = WAYS_TO_BUY_OPTIONS.filter((option) => {
     return !isNil(criteria[option.paramName as unknown as SearchCriteria])
   })
@@ -177,7 +193,9 @@ export const convertWaysToBuyToFilterParams = (criteria: SearchCriteriaAttribute
   return null
 }
 
-export const convertMajorPeriodToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
+export const convertMajorPeriodToFilterParam = (
+  criteria: SearchCriteriaAttributes
+): FilterData | null => {
   const periods = criteria[SearchCriteria.majorPeriods]
 
   if (Array.isArray(periods) && periods.length > 0) {
@@ -198,7 +216,10 @@ export const convertSavedSearchCriteriaToFilterParams = (
   aggregations: Aggregations
 ): FilterData[] => {
   let filterParams: FilterData[] = []
-  const aggregationByFilterParamName = keyBy(aggregations, (aggregation) => filterKeyFromAggregation[aggregation.slice])
+  const aggregationByFilterParamName = keyBy(
+    aggregations,
+    (aggregation) => filterKeyFromAggregation[aggregation.slice]
+  )
   const aggregationValueByFilterParamName = mapValues(
     aggregationByFilterParamName,
     "counts"

@@ -6,7 +6,10 @@ import {
   FilterDisplayName,
   FilterParamName,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworksFiltersStore,
+  useSelectedOptionsDisplay,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import React from "react"
 import { MultiSelectCheckOptionScreen } from "./MultiSelectCheckOption"
 import { useMultiSelect } from "./useMultiSelect"
@@ -21,11 +24,13 @@ const isAllArtistsFilter = (option: FilterData) => {
   return option.displayText === "All Artists"
 }
 
-export const ArtistIDsSaleArtworksOptionsScreen: React.FC<ArtistIDsSaleArtworksOptionsScreenProps> = ({
-  navigation,
-}) => {
+export const ArtistIDsSaleArtworksOptionsScreen: React.FC<
+  ArtistIDsSaleArtworksOptionsScreenProps
+> = ({ navigation }) => {
   const paramName = FilterParamName.artistIDs
-  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.selectFiltersAction
+  )
   const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const aggregation = aggregationForFilter(paramName, aggregations)

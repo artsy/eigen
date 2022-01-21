@@ -22,7 +22,8 @@ export const getUrgencyTag = (endAt: string | null | undefined): string | null =
     return null
   }
 
-  const unit = timeUntilSaleEnd.duration === 1 ? timeUntilSaleEnd.unit.slice(0, -1) : timeUntilSaleEnd.unit
+  const unit =
+    timeUntilSaleEnd.duration === 1 ? timeUntilSaleEnd.unit.slice(0, -1) : timeUntilSaleEnd.unit
 
   return `${timeUntilSaleEnd.duration} ${unit} left`
 }

@@ -61,7 +61,9 @@ const TestRenderer = () => (
 const getWrapper = (mockResolvers = {}) => {
   const tree = renderWithWrappers(<TestRenderer />)
   act(() => {
-    env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
+    env.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, mockResolvers)
+    )
   })
   return tree
 }
@@ -86,7 +88,9 @@ const withConversationItems = (
   wrapperGetter: typeof getWrapper,
   {
     events = [],
-    messages = [{ createdAt: new Date("1970-12-25").toISOString(), body: "First message", attachments: [] }],
+    messages = [
+      { createdAt: new Date("1970-12-25").toISOString(), body: "First message", attachments: [] },
+    ],
   }: { events?: any; messages?: any }
 ) => {
   return wrapperGetter({

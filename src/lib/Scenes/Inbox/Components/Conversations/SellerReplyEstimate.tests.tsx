@@ -11,7 +11,9 @@ describe("SellerReplyEstimateFragmentContainer", () => {
     Component: ({ me }) => {
       return (
         <Theme>
-          <SellerReplyEstimateFragmentContainer order={me.conversation.orderConnection.edges[0].node} />
+          <SellerReplyEstimateFragmentContainer
+            order={me.conversation.orderConnection.edges[0].node}
+          />
         </Theme>
       )
     },
@@ -98,7 +100,9 @@ describe("SellerReplyEstimateFragmentContainer", () => {
     })
 
     expect(
-      getByText("Your order will be delivered in 1 business day once shipped, plus up to 7 days processing time.")
+      getByText(
+        "Your order will be delivered in 1 business day once shipped, plus up to 7 days processing time."
+      )
     ).toBeDefined()
   })
 
@@ -127,7 +131,9 @@ describe("SellerReplyEstimateFragmentContainer", () => {
     })
 
     expect(
-      getByText("Your order will be delivered in 2 business days once shipped, plus up to 7 days processing time.")
+      getByText(
+        "Your order will be delivered in 2 business days once shipped, plus up to 7 days processing time."
+      )
     ).toBeDefined()
   })
 
@@ -156,7 +162,9 @@ describe("SellerReplyEstimateFragmentContainer", () => {
     })
 
     expect(
-      getByText("Your order will be delivered in 3-5 business days once shipped, plus up to 7 days processing time.")
+      getByText(
+        "Your order will be delivered in 3-5 business days once shipped, plus up to 7 days processing time."
+      )
     ).toBeDefined()
   })
 

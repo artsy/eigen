@@ -6,7 +6,14 @@ import { SavedSearchButtonV2, SavedSearchButtonV2Props } from "./SavedSearchButt
 
 describe("SavedSearchButtonV2", () => {
   const TestWrapper = (props: Partial<SavedSearchButtonV2Props>) => {
-    return <SavedSearchButtonV2 onPress={jest.fn} artistId="artistId" artistSlug="artistSlug" {...props} />
+    return (
+      <SavedSearchButtonV2
+        onPress={jest.fn}
+        artistId="artistId"
+        artistSlug="artistSlug"
+        {...props}
+      />
+    )
   }
 
   it("renders without error", () => {

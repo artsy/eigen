@@ -15,7 +15,10 @@ import { ClosedLotStanding_saleArtwork } from "../../../../__generated__/ClosedL
 
 type BidderResult = "won" | "lost" | "passed"
 
-const saleClosedMessage: (sale: { endAt: string | null; status: string | null }) => string | undefined = (sale) => {
+const saleClosedMessage: (sale: {
+  endAt: string | null
+  status: string | null
+}) => string | undefined = (sale) => {
   const timelySale = TimelySale.create(sale)
   if (timelySale.isClosed) {
     const tz = moment.tz.guess(true)
@@ -41,7 +44,11 @@ export const ClosedLotStanding = ({
   const subtitle = withTimelyInfo ? saleClosedMessage(sale) : undefined
 
   const result: BidderResult =
-    saleArtwork?.lotState?.soldStatus! === "Passed" ? "passed" : saleArtwork?.isHighestBidder ? "won" : "lost"
+    saleArtwork?.lotState?.soldStatus! === "Passed"
+      ? "passed"
+      : saleArtwork?.isHighestBidder
+      ? "won"
+      : "lost"
   const Badge = result === "won" ? StarCircleFill : undefined
 
   const bidderMessages: { [k in BidderResult]: React.ComponentType } = {
@@ -66,7 +73,11 @@ export const ClosedLotStanding = ({
   }
 
   return (
-    <TouchableOpacity onPress={() => handleLotTap()} style={{ marginHorizontal: 0, width: "100%" }} testID={testID}>
+    <TouchableOpacity
+      onPress={() => handleLotTap()}
+      style={{ marginHorizontal: 0, width: "100%" }}
+      testID={testID}
+    >
       <Flex flexDirection="row" justifyContent="space-between">
         <Lot saleArtwork={saleArtwork!} subtitle={subtitle} ArtworkBadge={Badge} />
         <Flex>

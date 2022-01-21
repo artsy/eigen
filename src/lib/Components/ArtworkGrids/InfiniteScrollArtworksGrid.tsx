@@ -115,7 +115,9 @@ export interface Props {
 }
 
 interface PrivateProps {
-  connection: InfiniteScrollArtworksGrid_connection | InfiniteScrollArtworksGrid_myCollectionConnection
+  connection:
+    | InfiniteScrollArtworksGrid_connection
+    | InfiniteScrollArtworksGrid_myCollectionConnection
   loadMore: RelayPaginationProp["loadMore"]
   hasMore: RelayPaginationProp["hasMore"]
 }
@@ -252,7 +254,8 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       sectionRatioSums.push(0)
     }
 
-    const preprocessedArtworks = (this.props.localSortAndFilterArtworks?.(artworks) as typeof artworks) ?? artworks
+    const preprocessedArtworks =
+      (this.props.localSortAndFilterArtworks?.(artworks) as typeof artworks) ?? artworks
 
     preprocessedArtworks.forEach((artwork) => {
       // There are artworks without images and other ‘issues’. Like Force we’re just going to reject those for now.
@@ -300,7 +303,9 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       for (let row = 0; row < sectionedArtworks[column].length; row++) {
         const artwork = sectionedArtworks[column][row]
         const itemIndex = row * columnCount + column
-        const ItemComponent = this.props.isMyCollection ? MyCollectionArtworkListItemFragmentContainer : Artwork
+        const ItemComponent = this.props.isMyCollection
+          ? MyCollectionArtworkListItemFragmentContainer
+          : Artwork
 
         artworkComponents.push(
           <ItemComponent
@@ -322,7 +327,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
         // Setting a marginBottom on the artwork component didn’t work, so using a spacer view instead.
         if (row < artworks.length - 1) {
           artworkComponents.push(
-            <View style={spacerStyle} key={"spacer-" + row + "-" + artwork.id} accessibilityLabel="Spacer View" />
+            <View
+              style={spacerStyle}
+              key={"spacer-" + row + "-" + artwork.id}
+              accessibilityLabel="Spacer View"
+            />
           )
         }
       }
@@ -333,7 +342,11 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
       }
 
       sections.push(
-        <View style={[styles.section, sectionSpecificStyle]} key={column} accessibilityLabel={"Section " + column}>
+        <View
+          style={[styles.section, sectionSpecificStyle]}
+          key={column}
+          accessibilityLabel={"Section " + column}
+        >
           {artworkComponents}
         </View>
       )
@@ -417,7 +430,9 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
             pb="9"
             style={{ opacity: this.state.isLoading && hasMore() ? 1 : 0 }}
           >
-            {!!this.props.autoFetch && <ActivityIndicator color={Platform.OS === "android" ? "black" : undefined} />}
+            {!!this.props.autoFetch && (
+              <ActivityIndicator color={Platform.OS === "android" ? "black" : undefined} />
+            )}
           </Flex>
         )}
 
@@ -442,29 +457,32 @@ const styles = StyleSheet.create<Styles>({
   },
 })
 
-export const InfiniteScrollArtworksGridContainer = createFragmentContainer(InfiniteScrollArtworksGridMapper, {
-  connection: graphql`
-    fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface
-    @argumentDefinitions(skipMyCollection: { type: "Boolean", defaultValue: true }) {
-      pageInfo {
-        hasNextPage
-        startCursor
-        endCursor
-      }
-      edges {
-        node {
-          slug
-          id
-          image {
-            aspectRatio
+export const InfiniteScrollArtworksGridContainer = createFragmentContainer(
+  InfiniteScrollArtworksGridMapper,
+  {
+    connection: graphql`
+      fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface
+      @argumentDefinitions(skipMyCollection: { type: "Boolean", defaultValue: true }) {
+        pageInfo {
+          hasNextPage
+          startCursor
+          endCursor
+        }
+        edges {
+          node {
+            slug
+            id
+            image {
+              aspectRatio
+            }
+            ...ArtworkGridItem_artwork
+            ...MyCollectionArtworkListItem_artwork @skip(if: $skipMyCollection)
           }
-          ...ArtworkGridItem_artwork
-          ...MyCollectionArtworkListItem_artwork @skip(if: $skipMyCollection)
         }
       }
-    }
-  `,
-})
+    `,
+  }
+)
 
 /** Same as InfiniteScrollArtworksGridContainer but for MyCollection Artworks */
 export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentContainer(

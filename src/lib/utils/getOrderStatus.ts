@@ -1,12 +1,24 @@
-import { CommerceOrderStateEnum, OrderDetailsHeader_info } from "__generated__/OrderDetailsHeader_info.graphql"
+import {
+  CommerceOrderStateEnum,
+  OrderDetailsHeader_info,
+} from "__generated__/OrderDetailsHeader_info.graphql"
 import { OrderHistoryRowLineItem } from "./getTrackingUrl"
 
 export type OrderDetailsHeaderLineItem = NonNullable<
   NonNullable<NonNullable<OrderDetailsHeader_info["lineItems"]>["edges"]>[0]
 >["node"]
 
-export type OrderState = Exclude<CommerceOrderStateEnum, "ABANDONED" | "PENDING" | "%future added value">
-export type ShipmentStatus = "PENDING" | "CONFIRMED" | "COLLECTED" | "IN_TRANSIT" | "COMPLETED" | "CANCELED"
+export type OrderState = Exclude<
+  CommerceOrderStateEnum,
+  "ABANDONED" | "PENDING" | "%future added value"
+>
+export type ShipmentStatus =
+  | "PENDING"
+  | "CONFIRMED"
+  | "COLLECTED"
+  | "IN_TRANSIT"
+  | "COMPLETED"
+  | "CANCELED"
 
 enum ORDER_STATUSES {
   Pending = "Pending",

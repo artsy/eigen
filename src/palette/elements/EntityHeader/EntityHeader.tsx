@@ -26,7 +26,12 @@ export const EntityHeader: React.FC<EntityHeaderProps> = ({
   ...remainderProps
 }) => {
   const followButton = FollowButton && (
-    <Flex ml={smallVariant ? 0.3 : 1} flexDirection="row" alignItems="center" justifyContent="flex-end">
+    <Flex
+      ml={smallVariant ? 0.3 : 1}
+      flexDirection="row"
+      alignItems="center"
+      justifyContent="flex-end"
+    >
       {FollowButton}
     </Flex>
   )

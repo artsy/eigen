@@ -28,13 +28,18 @@ export interface ShowMoreInfoProps {
 }
 
 export const ShowMoreInfo: React.FC<ShowMoreInfoProps> = ({ show }) => {
-  const displayablePartnerType = DISPLAYABLE_PARTNER_TYPES[show.partner?.type as keyof typeof DISPLAYABLE_PARTNER_TYPES]
+  const displayablePartnerType =
+    DISPLAYABLE_PARTNER_TYPES[show.partner?.type as keyof typeof DISPLAYABLE_PARTNER_TYPES]
   const location = show.location ?? show.fair?.location
-  const shouldDisplayPartnerType = Object.keys(DISPLAYABLE_PARTNER_TYPES).includes(show.partner?.type!)
+  const shouldDisplayPartnerType = Object.keys(DISPLAYABLE_PARTNER_TYPES).includes(
+    show.partner?.type!
+  )
   const shouldDisplayHours =
-    (location?.openingHours?.__typename === "OpeningHoursArray" && !!location.openingHours.schedules) ||
+    (location?.openingHours?.__typename === "OpeningHoursArray" &&
+      !!location.openingHours.schedules) ||
     (location?.openingHours?.__typename === "OpeningHoursText" && !!location.openingHours.text)
-  const shouldDisplayLocation = !!show.partner && !!location?.coordinates?.lat && !!location?.coordinates?.lng
+  const shouldDisplayLocation =
+    !!show.partner && !!location?.coordinates?.lat && !!location?.coordinates?.lng
 
   const sections: Section[] = [
     {

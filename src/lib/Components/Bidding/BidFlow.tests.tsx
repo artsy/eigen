@@ -62,7 +62,9 @@ it("allows bidders with a qualified credit card to bid", async () => {
   screen = fakeNavigator.nextStep()
   expect(extractText(screen.root)).toContain("Confirm your bid")
 
-  bidderPositionQueryMock.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
+  bidderPositionQueryMock.mockReturnValueOnce(
+    Promise.resolve(mockRequestResponses.pollingForBid.highestBidder)
+  )
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   relay.commitMutation = commitMutationMock((_, { onCompleted }) => {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -99,10 +101,18 @@ it("allows bidders without a qualified credit card to register a card and bid", 
   stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
   relay.commitMutation = jest
     .fn()
-    .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.updateMyUserProfile))
-    .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.creatingCreditCardSuccess))
-    .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.placingBid.bidAccepted))
-  bidderPositionQueryMock.mockReturnValueOnce(Promise.resolve(mockRequestResponses.pollingForBid.highestBidder))
+    .mockImplementationOnce((_, { onCompleted }) =>
+      onCompleted(mockRequestResponses.updateMyUserProfile)
+    )
+    .mockImplementationOnce((_, { onCompleted }) =>
+      onCompleted(mockRequestResponses.creatingCreditCardSuccess)
+    )
+    .mockImplementationOnce((_, { onCompleted }) =>
+      onCompleted(mockRequestResponses.placingBid.bidAccepted)
+    )
+  bidderPositionQueryMock.mockReturnValueOnce(
+    Promise.resolve(mockRequestResponses.pollingForBid.highestBidder)
+  )
 
   // manually setting state to avoid duplicating tests for skipping UI interaction, but practically better not to do this.
   screen.root.findByProps({ nextScreen: true }).instance.setState({

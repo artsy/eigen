@@ -48,9 +48,14 @@ export const MultiSelectCheckOptionScreen: React.FC<MultiSelectOptionScreenProps
   return (
     <Flex flexGrow={1}>
       {isEnabledImprovedAlertsFlow ? (
-        <ArtworkFilterBackHeader title={filterHeaderText} onLeftButtonPress={handleBackNavigation} />
+        <ArtworkFilterBackHeader
+          title={filterHeaderText}
+          onLeftButtonPress={handleBackNavigation}
+        />
       ) : (
-        <FancyModalHeader onLeftButtonPress={handleBackNavigation}>{filterHeaderText}</FancyModalHeader>
+        <FancyModalHeader onLeftButtonPress={handleBackNavigation}>
+          {filterHeaderText}
+        </FancyModalHeader>
       )}
       <Flex mb={120}>
         <FlatList

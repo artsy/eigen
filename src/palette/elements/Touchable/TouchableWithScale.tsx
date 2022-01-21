@@ -1,5 +1,10 @@
 import React from "react"
-import { Animated, GestureResponderEvent, TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from "react-native"
+import {
+  Animated,
+  GestureResponderEvent,
+  TouchableWithoutFeedback,
+  TouchableWithoutFeedbackProps,
+} from "react-native"
 
 const ANIMATION_DEFAULTS = {
   stiffness: 600,
@@ -38,7 +43,9 @@ export const TouchableWithScale: React.FC<TouchableWithScaleProps> = ({
 
   return (
     <TouchableWithoutFeedback onPressIn={handlePressIn} onPressOut={handlePressOut} {...rest}>
-      <Animated.View style={[style, { transform: [{ scale: scaleAnimation }] }]}>{children}</Animated.View>
+      <Animated.View style={[style, { transform: [{ scale: scaleAnimation }] }]}>
+        {children}
+      </Animated.View>
     </TouchableWithoutFeedback>
   )
 }

@@ -34,7 +34,9 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
     return null
   }
 
-  const recentlySoldArtworks = shuffle(microfunnelItems.map((x) => x?.artworksConnection?.edges?.[0]?.node))
+  const recentlySoldArtworks = shuffle(
+    microfunnelItems.map((x) => x?.artworksConnection?.edges?.[0]?.node)
+  )
 
   return (
     <Box>
@@ -55,7 +57,9 @@ export const RecentlySold: React.FC<RecentlySoldProps> = ({ targetSupply, isLoad
               windowSize={3}
               data={recentlySoldArtworks}
               renderItem={({ item }) => {
-                const saleMessage = item?.realizedPrice ? `Sold for ${item?.realizedPrice}` : undefined
+                const saleMessage = item?.realizedPrice
+                  ? `Sold for ${item?.realizedPrice}`
+                  : undefined
 
                 return (
                   <ArtworkTileRailCard

@@ -92,7 +92,9 @@ describe("ArtistSeriesMoreSeries", () => {
 
     it("tracks an event on click", () => {
       const wrapper = getWrapper(ArtistSeriesMoreSeriesFixture)
-      const artistSeriesButton = wrapper.root.findAllByType(ArtistSeriesListItem)[0].findByType(Touchable)
+      const artistSeriesButton = wrapper.root
+        .findAllByType(ArtistSeriesListItem)[0]
+        .findByType(Touchable)
 
       act(() => artistSeriesButton.props.onPress())
 
@@ -227,55 +229,56 @@ const ArtistSeriesMoreSeriesFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse
   },
 }
 
-const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse = {
-  artistSeries: {
-    artist: [
-      {
-        id: "abc123",
-        internalID: "jahfadf981",
-        slug: "yayoi-kusama",
-        artistSeriesConnection: {
-          totalCount: 3,
-          edges: [
-            {
-              node: {
-                featured: true,
-                slug: "yayoi-kusama-pumpkins",
-                internalID: "58597ef5-3390-406b-b6d2-d4e308125d0d",
-                title: "Pumpkins",
-                artworksCountMessage: "25 available",
-                image: {
-                  url: "https://d32dm0rphc51dk.cloudfront.net/dL3hz4h6f_tMHQjVHsdO4w/medium.jpg",
+const ArtistSeriesMoreSeriesBelowViewAllThresholdFixture: ArtistSeriesMoreSeriesTestsQueryRawResponse =
+  {
+    artistSeries: {
+      artist: [
+        {
+          id: "abc123",
+          internalID: "jahfadf981",
+          slug: "yayoi-kusama",
+          artistSeriesConnection: {
+            totalCount: 3,
+            edges: [
+              {
+                node: {
+                  featured: true,
+                  slug: "yayoi-kusama-pumpkins",
+                  internalID: "58597ef5-3390-406b-b6d2-d4e308125d0d",
+                  title: "Pumpkins",
+                  artworksCountMessage: "25 available",
+                  image: {
+                    url: "https://d32dm0rphc51dk.cloudfront.net/dL3hz4h6f_tMHQjVHsdO4w/medium.jpg",
+                  },
                 },
               },
-            },
-            {
-              node: {
-                featured: true,
-                slug: "yayoi-kusama-apples",
-                internalID: "5856ee51-35eb-4b75-bb12-15a1cd7e012e",
-                title: "apples",
-                artworksCountMessage: "4 available",
-                image: {
-                  url: "https://d32dm0rphc51dk.cloudfront.net/Nv63KiPQo91g2-W2V3lgAw/main.jpg",
+              {
+                node: {
+                  featured: true,
+                  slug: "yayoi-kusama-apples",
+                  internalID: "5856ee51-35eb-4b75-bb12-15a1cd7e012e",
+                  title: "apples",
+                  artworksCountMessage: "4 available",
+                  image: {
+                    url: "https://d32dm0rphc51dk.cloudfront.net/Nv63KiPQo91g2-W2V3lgAw/main.jpg",
+                  },
                 },
               },
-            },
-            {
-              node: {
-                featured: true,
-                slug: "yayoi-kusama-dragonfruit",
-                internalID: "5856ee51-35eb-4b75-bb12-15a1cd18161",
-                title: "dragonfruit",
-                artworksCountMessage: "8 available",
-                image: {
-                  url: "https://d32dm0rphc51dk.cloudfront.net/Nv63KiPQo91g2-W2V3lgAw/main.jpg",
+              {
+                node: {
+                  featured: true,
+                  slug: "yayoi-kusama-dragonfruit",
+                  internalID: "5856ee51-35eb-4b75-bb12-15a1cd18161",
+                  title: "dragonfruit",
+                  artworksCountMessage: "8 available",
+                  image: {
+                    url: "https://d32dm0rphc51dk.cloudfront.net/Nv63KiPQo91g2-W2V3lgAw/main.jpg",
+                  },
                 },
               },
-            },
-          ],
+            ],
+          },
         },
-      },
-    ],
-  },
-}
+      ],
+    },
+  }

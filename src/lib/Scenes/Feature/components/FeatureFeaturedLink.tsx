@@ -26,7 +26,11 @@ const FeatureFeaturedLink: React.FC<FeatureFeaturedLinkProps> = ({ featuredLink,
             : undefined
         }
       >
-        <OpaqueImageView imageURL={featuredLink.image?.url} width={width} height={(width / 3) * 4} />
+        <OpaqueImageView
+          imageURL={featuredLink.image?.url}
+          width={width}
+          height={(width / 3) * 4}
+        />
         <LinearGradient
           colors={["rgba(0,0,0,0)", "rgba(0,0,0,0.4)"]}
           style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 180 }}

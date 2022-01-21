@@ -55,14 +55,20 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
         renderItem={({ item: result, index }) => {
           // Collections are expected to always have >= 2 artworks, but we should
           // still be cautious to avoid crashes if this assumption is broken.
-          const artworkImageURLs = extractNodes(result.artworksConnection, (artwork) => artwork.image?.url!)
+          const artworkImageURLs = extractNodes(
+            result.artworksConnection,
+            (artwork) => artwork.image?.url!
+          )
 
           return (
             <CardRailCard
               onPress={
                 result?.slug
                   ? () => {
-                      const tapEvent = HomeAnalytics.collectionThumbnailTapEvent(result?.slug, index)
+                      const tapEvent = HomeAnalytics.collectionThumbnailTapEvent(
+                        result?.slug,
+                        index
+                      )
                       if (tapEvent) {
                         tracking.trackEvent(tapEvent)
                       }
@@ -73,7 +79,11 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
             >
               <View>
                 <ArtworkImageContainer>
-                  <ImageView width={ARTWORKS_HEIGHT} height={ARTWORKS_HEIGHT} imageURL={artworkImageURLs[0]} />
+                  <ImageView
+                    width={ARTWORKS_HEIGHT}
+                    height={ARTWORKS_HEIGHT}
+                    imageURL={artworkImageURLs[0]}
+                  />
                   <Division />
                   <View>
                     <ImageView
@@ -94,7 +104,9 @@ const CollectionsRail: React.FC<Props & RailScrollProps> = (props) => {
                     {result?.title}
                   </Sans>
                   <Sans numberOfLines={1} size="3t" color="black60">
-                    {result?.artworksConnection?.counts?.total ? `${result.artworksConnection.counts.total} works` : ""}
+                    {result?.artworksConnection?.counts?.total
+                      ? `${result.artworksConnection.counts.total} works`
+                      : ""}
                   </Sans>
                 </MetadataContainer>
               </View>

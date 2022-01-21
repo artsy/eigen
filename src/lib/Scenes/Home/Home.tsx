@@ -92,7 +92,9 @@ const Home = (props: Props) => {
     relay,
   } = props
 
-  const enableAuctionResultsByFollowedArtists = useFeatureFlag("ARHomeAuctionResultsByFollowedArtists")
+  const enableAuctionResultsByFollowedArtists = useFeatureFlag(
+    "ARHomeAuctionResultsByFollowedArtists"
+  )
   const enableViewingRooms = useFeatureFlag("AREnableViewingRooms")
   const enableTrove = useFeatureFlag("AREnableTrove")
   const enableShowsForYouRail = useFeatureFlag("AREnableShowsRail")
@@ -191,7 +193,11 @@ const Home = (props: Props) => {
       data: homePageBelow?.fairsModule,
     },
     { title: "Popular Artists", type: "artist", data: homePageBelow?.popularArtistsArtistModule },
-    { title: "Recently Viewed", type: "artwork", data: homePageBelow?.recentlyViewedWorksArtworkModule },
+    {
+      title: "Recently Viewed",
+      type: "artwork",
+      data: homePageBelow?.recentlyViewedWorksArtworkModule,
+    },
     {
       title: "Similar to Works You've Viewed",
       type: "artwork",
@@ -251,7 +257,11 @@ const Home = (props: Props) => {
                 )
               case "auction-results":
                 return (
-                  <AuctionResultsRailFragmentContainer title={item.title} me={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
+                  <AuctionResultsRailFragmentContainer
+                    title={item.title}
+                    me={item.data}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
                 )
               case "collections":
                 return (
@@ -274,7 +284,11 @@ const Home = (props: Props) => {
                 )
               case "lotsByFollowedArtists":
                 return (
-                  <LotsByFollowedArtistsRailContainer title={item.title} me={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
+                  <LotsByFollowedArtistsRailContainer
+                    title={item.title}
+                    me={item.data}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
                 )
               case "newWorksForYou":
                 return (
@@ -315,7 +329,13 @@ const Home = (props: Props) => {
               case "trove":
                 return <TroveFragmentContainer trove={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
               case "viewing-rooms":
-                return <ViewingRoomsHomeMainRail title={item.title} featured={item.data} mb={MODULE_SEPARATOR_HEIGHT} />
+                return (
+                  <ViewingRoomsHomeMainRail
+                    title={item.title}
+                    featured={item.data}
+                    mb={MODULE_SEPARATOR_HEIGHT}
+                  />
+                )
               default:
                 return null
             }
@@ -597,7 +617,9 @@ const messages = {
 }
 
 export const HomeQueryRenderer: React.FC = () => {
-  const { flash_message } = GlobalStore.useAppState((state) => state.bottomTabs.sessionState.tabProps.home ?? {}) as {
+  const { flash_message } = GlobalStore.useAppState(
+    (state) => state.bottomTabs.sessionState.tabProps.home ?? {}
+  ) as {
     flash_message?: string
   }
 
@@ -630,7 +652,8 @@ export const HomeQueryRenderer: React.FC = () => {
               ...Home_meAbove
               ...NewWorksForYouRail_me
             }
-            articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true) @optionalField {
+            articlesConnection(first: 10, sort: PUBLISHED_AT_DESC, inEditorialFeed: true)
+              @optionalField {
               ...Home_articlesConnection
             }
           }

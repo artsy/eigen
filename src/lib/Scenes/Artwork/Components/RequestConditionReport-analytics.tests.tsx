@@ -96,7 +96,9 @@ it("tracks request condition report failure", async () => {
   )
 
   const requestConditionReportComponent = trackingComponent.find("RequestConditionReport")
-  requestConditionReportComponent.instance().requestConditionReport = jest.fn().mockReturnValue(Promise.reject())
+  requestConditionReportComponent.instance().requestConditionReport = jest
+    .fn()
+    .mockReturnValue(Promise.reject())
   requestConditionReportComponent.update()
   const requestReportButton = requestConditionReportComponent.find(Button).at(0)
   requestReportButton.props().onPress()

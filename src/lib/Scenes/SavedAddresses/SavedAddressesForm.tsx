@@ -78,11 +78,16 @@ const useStore = createComponentStore<Store>({
     region: emptyFieldState(),
   },
   allPresent: computed((store) => {
-    return Boolean(Object.keys(store.fields).every((k) => store.fields[k as keyof FormFields].isPresent))
+    return Boolean(
+      Object.keys(store.fields).every((k) => store.fields[k as keyof FormFields].isPresent)
+    )
   }),
 })
 
-export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId?: string }> = ({ me, addressId }) => {
+export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId?: string }> = ({
+  me,
+  addressId,
+}) => {
   const isEditForm = !!addressId
   const toast = useToast()
   const [isValidNumber, setIsValidNumber] = useState<boolean>(false)
@@ -108,7 +113,8 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
   const screenRef = useRef<MyAccountFieldEditScreen>(null)
 
   const submitAddAddress = async () => {
-    const phoneNumberCountryCode = countryCodes[cleanUserPhoneNumber(phoneNumber)?.countryCode?.toLocaleUpperCase()]
+    const phoneNumberCountryCode =
+      countryCodes[cleanUserPhoneNumber(phoneNumber)?.countryCode?.toLocaleUpperCase()]
 
     try {
       const creatingResponse = await createUserAddress({
@@ -124,7 +130,9 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
       })
 
       if (isDefaultAddress) {
-        await setAsDefaultAddress(creatingResponse.createUserAddress?.userAddressOrErrors.internalID!)
+        await setAsDefaultAddress(
+          creatingResponse.createUserAddress?.userAddressOrErrors.internalID!
+        )
       }
       if (!creatingResponse.createUserAddress?.userAddressOrErrors.errors) {
         toast.show("Address successfully added", "top")
@@ -132,12 +140,15 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
       goBack()
     } catch (e: any) {
       captureMessage(e.stack)
-      Alert.alert("Something went wrong while attempting to save your address. Please try again or contact us.")
+      Alert.alert(
+        "Something went wrong while attempting to save your address. Please try again or contact us."
+      )
     }
   }
 
   const editUserAddress = async (userAddressID: string) => {
-    const phoneNumberCountryCode = countryCodes[cleanUserPhoneNumber(phoneNumber)?.countryCode?.toLocaleUpperCase()]
+    const phoneNumberCountryCode =
+      countryCodes[cleanUserPhoneNumber(phoneNumber)?.countryCode?.toLocaleUpperCase()]
 
     try {
       const response = await updateUserAddress(userAddressID, {
@@ -160,7 +171,9 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
       }
       goBack()
     } catch (e: any) {
-      Alert.alert("Something went wrong while attempting to save your address. Please try again or contact us.")
+      Alert.alert(
+        "Something went wrong while attempting to save your address. Please try again or contact us."
+      )
       captureMessage(e.stack)
     }
   }
@@ -190,7 +203,10 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
           value={state.fields.name.value ?? ""}
           onChangeText={actions.fields.name.setValue}
         />
-        <CountrySelect onSelectValue={actions.fields.country.setValue} value={state.fields.country.value} />
+        <CountrySelect
+          onSelectValue={actions.fields.country.setValue}
+          value={state.fields.country.value}
+        />
         <Input
           title="Postal Code"
           placeholder="Add postal code"
@@ -241,7 +257,13 @@ export const SavedAddressesForm: React.FC<{ me: SavedAddressesForm_me; addressId
         </Checkbox>
 
         {!!isEditForm && (
-          <Text onPress={() => deleteUserAddress(addressId!)} variant="xs" textAlign="center" mb={2} color="red">
+          <Text
+            onPress={() => deleteUserAddress(addressId!)}
+            variant="xs"
+            textAlign="center"
+            mb={2}
+            color="red"
+          >
             Delete address
           </Text>
         )}

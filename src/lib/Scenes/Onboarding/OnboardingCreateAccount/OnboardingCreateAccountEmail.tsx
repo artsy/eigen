@@ -15,9 +15,14 @@ export interface OnboardingCreateAccountEmailParams {
 }
 
 interface OnboardingCreateAccountEmailProps
-  extends StackScreenProps<OnboardingCreateAccountNavigationStack, "OnboardingCreateAccountEmail"> {}
+  extends StackScreenProps<
+    OnboardingCreateAccountNavigationStack,
+    "OnboardingCreateAccountEmail"
+  > {}
 
-export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmailProps> = ({ route }) => {
+export const OnboardingCreateAccountEmail: React.FC<OnboardingCreateAccountEmailProps> = ({
+  route,
+}) => {
   const color = useColor()
   const { values, handleChange, errors, setErrors, handleSubmit } = useFormikContext<FormikSchema>()
 

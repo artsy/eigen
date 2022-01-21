@@ -4,7 +4,13 @@ import { isThemeV3 } from "palette/Theme"
 import { TextStyle } from "react-native"
 import { TextProps } from "."
 
-export const useFontFamilyFor = ({ italic, weight }: { italic: TextProps["italic"]; weight: TextProps["weight"] }) => {
+export const useFontFamilyFor = ({
+  italic,
+  weight,
+}: {
+  italic: TextProps["italic"]
+  weight: TextProps["weight"]
+}) => {
   const { theme } = useTheme()
   if (!isThemeV3(theme)) {
     return "no-font"

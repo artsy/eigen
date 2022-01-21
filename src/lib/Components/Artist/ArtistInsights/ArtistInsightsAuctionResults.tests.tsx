@@ -1,5 +1,8 @@
 import { ArtistInsightsAuctionResultsTestsQuery } from "__generated__/ArtistInsightsAuctionResultsTestsQuery.graphql"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { AuctionResultListItemFragmentContainer } from "lib/Components/Lists/AuctionResultListItem"
 import { extractText } from "lib/tests/extractText"
@@ -10,7 +13,10 @@ import React from "react"
 import { FlatList } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { ArtistInsightsAuctionResultsPaginationContainer, SortMode } from "./ArtistInsightsAuctionResults"
+import {
+  ArtistInsightsAuctionResultsPaginationContainer,
+  SortMode,
+} from "./ArtistInsightsAuctionResults"
 
 jest.unmock("react-relay")
 
@@ -104,7 +110,9 @@ describe("ArtistInsightsAuctionResults", () => {
         }),
       })
 
-      expect(extractText(tree.root.findByType(SortMode))).toBe("1 result • Sorted by most recent sale date")
+      expect(extractText(tree.root.findByType(SortMode))).toBe(
+        "1 result • Sorted by most recent sale date"
+      )
     })
 
     it("renders the results string when totalCount is greater than 1", () => {
@@ -117,7 +125,9 @@ describe("ArtistInsightsAuctionResults", () => {
           },
         }),
       })
-      expect(extractText(tree.root.findByType(SortMode))).toBe("10 results • Sorted by most recent sale date")
+      expect(extractText(tree.root.findByType(SortMode))).toBe(
+        "10 results • Sorted by most recent sale date"
+      )
     })
   })
 })

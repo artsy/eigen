@@ -4,7 +4,11 @@ import { Sale_me } from "__generated__/Sale_me.graphql"
 import { Sale_sale } from "__generated__/Sale_sale.graphql"
 import { SaleAboveTheFoldQuery } from "__generated__/SaleAboveTheFoldQuery.graphql"
 import { SaleBelowTheFoldQuery } from "__generated__/SaleBelowTheFoldQuery.graphql"
-import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
+import {
+  AnimatedArtworkFilterButton,
+  ArtworkFilterNavigator,
+  FilterModalMode,
+} from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { LoadFailureView } from "lib/Components/LoadFailureView"
 import { RetryErrorBoundaryLegacy } from "lib/Components/RetryErrorBoundary"
@@ -140,7 +144,9 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
   }
 
   const scrollToTop = () => {
-    const saleLotsListIndex = saleSectionsData.findIndex((section) => section.key === SALE_LOTS_LIST)
+    const saleLotsListIndex = saleSectionsData.findIndex(
+      (section) => section.key === SALE_LOTS_LIST
+    )
     flatListRef.current?.scrollToIndex({ index: saleLotsListIndex, viewOffset: 50 })
   }
 
@@ -228,7 +234,10 @@ export const Sale: React.FC<Props> = ({ sale, me, below, relay }) => {
           exitModal={closeFilterArtworksModal}
           closeModal={closeFilterArtworksModal}
         />
-        <AnimatedArtworkFilterButton isVisible={isArtworksGridVisible} onPress={openFilterArtworksModal} />
+        <AnimatedArtworkFilterButton
+          isVisible={isArtworksGridVisible}
+          onPress={openFilterArtworksModal}
+        />
       </ProvideScreenTracking>
     </ArtworkFiltersStoreProvider>
   )
@@ -348,10 +357,10 @@ export const SaleScreenQuery = graphql`
   }
 `
 
-export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayModernEnvironment }> = ({
-  saleID,
-  environment,
-}) => {
+export const SaleQueryRenderer: React.FC<{
+  saleID: string
+  environment?: RelayModernEnvironment
+}> = ({ saleID, environment }) => {
   const { trackEvent } = useTracking()
 
   useEffect(() => {
@@ -373,7 +382,10 @@ export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayMo
                 # query SaleBelowTheFoldQuery($saleID: String!, $saleSlug: ID!) {
                 query SaleBelowTheFoldQuery($saleID: ID) {
                   ...SaleLotsList_saleArtworksConnection @arguments(saleID: $saleID)
-                  unfilteredSaleArtworksConnection: saleArtworksConnection(saleID: $saleID, aggregations: [TOTAL]) {
+                  unfilteredSaleArtworksConnection: saleArtworksConnection(
+                    saleID: $saleID
+                    aggregations: [TOTAL]
+                  ) {
                     ...SaleLotsList_unfilteredSaleArtworksConnection
                     counts {
                       total
@@ -395,7 +407,9 @@ export const SaleQueryRenderer: React.FC<{ saleID: string; environment?: RelayMo
               if (!props?.above.me || !props.above.sale) {
                 return <SalePlaceholder />
               }
-              return <SaleContainer sale={props.above.sale} me={props.above.me} below={props.below} />
+              return (
+                <SaleContainer sale={props.above.sale} me={props.above.me} below={props.below} />
+              )
             }}
             cacheConfig={{
               // Bypass Relay cache on retries.

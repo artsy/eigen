@@ -1,6 +1,9 @@
 import { CreateSavedSearchAlertTestsQuery } from "__generated__/CreateSavedSearchAlertTestsQuery.graphql"
 import { FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
@@ -86,7 +89,10 @@ describe("CreateSavedSearchAlert", () => {
     )
   }
 
-  const renderAndExecuteQuery = (props?: Partial<CreateSavedSearchAlertProps>, mockResolvers?: MockResolvers) => {
+  const renderAndExecuteQuery = (
+    props?: Partial<CreateSavedSearchAlertProps>,
+    mockResolvers?: MockResolvers
+  ) => {
     const render = renderWithWrappersTL(<TestRenderer {...props} />)
 
     // CreateSavedSearchAlertTestsQuery

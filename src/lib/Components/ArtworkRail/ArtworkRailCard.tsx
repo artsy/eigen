@@ -1,5 +1,8 @@
 import { themeGet } from "@styled-system/theme-get"
-import { ArtworkRailCard_artwork, ArtworkRailCard_artwork$key } from "__generated__/ArtworkRailCard_artwork.graphql"
+import {
+  ArtworkRailCard_artwork,
+  ArtworkRailCard_artwork$key,
+} from "__generated__/ArtworkRailCard_artwork.graphql"
 import { getUrgencyTag } from "lib/utils/getUrgencyTag"
 import { Flex, Sans, Text, useColor } from "palette"
 import React from "react"
@@ -41,13 +44,20 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
   const { artistNames, date, partner, title, image } = artwork
 
   const saleMessage = saleMessageOrBidInfo({ artwork, isSmallTile: true })
-  const urgencyTag = artwork?.sale?.isAuction && !artwork?.sale?.isClosed ? getUrgencyTag(artwork?.sale?.endAt) : null
+  const urgencyTag =
+    artwork?.sale?.isAuction && !artwork?.sale?.isClosed
+      ? getUrgencyTag(artwork?.sale?.endAt)
+      : null
 
   return (
     <ArtworkCard onPress={onPress || undefined} testID={testID}>
       <Flex alignItems="flex-end">
         <ArtworkRailCardImage image={image} size={size} urgencyTag={urgencyTag} />
-        <Flex mt={1} width={artwork.image?.resized?.width} style={{ height: TEXT_CONTAINER_HEIGHT }}>
+        <Flex
+          mt={1}
+          width={artwork.image?.resized?.width}
+          style={{ height: TEXT_CONTAINER_HEIGHT }}
+        >
           {!!lotLabel && (
             <Text lineHeight="20" color="black60" numberOfLines={1}>
               Lot {lotLabel}
@@ -85,7 +95,11 @@ export interface ArtworkRailCardImageProps {
   urgencyTag?: string | null
 }
 
-const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({ image, size, urgencyTag = null }) => {
+const ArtworkRailCardImage: React.FC<ArtworkRailCardImageProps> = ({
+  image,
+  size,
+  urgencyTag = null,
+}) => {
   const color = useColor()
 
   const { width, height, src } = image?.resized || {}

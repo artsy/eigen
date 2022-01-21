@@ -15,7 +15,9 @@ export type SelectProps<ValueType> = (SelectV2Props<ValueType> | SelectV3Props<V
 export type SelectComponentI<ValueType = any> = React.FC<SelectProps<ValueType>>
 // export type SelectComponentI = React.FC<React.ComponentPropsWithRef<typeof SelectV2>>
 
-export const Select = <ValueType,>(props: SelectProps<ValueType>) => <SelectV3 {...transformV3Props(props)} />
+export const Select = <ValueType,>(props: SelectProps<ValueType>) => (
+  <SelectV3 {...transformV3Props(props)} />
+)
 
 const transformV3Props = <T,>(props: SelectV2Props<T>): SelectV3Props<T> => {
   return { ...props } as SelectV3Props<T>

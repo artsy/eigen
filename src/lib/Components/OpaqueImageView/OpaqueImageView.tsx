@@ -101,7 +101,9 @@ export default class OpaqueImageView extends React.Component<Props, State> {
           style.flex
         )
       ) {
-        console.error("[OpaqueImageView] Either an aspect ratio or specific dimensions or flex should be specified.")
+        console.error(
+          "[OpaqueImageView] Either an aspect ratio or specific dimensions or flex should be specified."
+        )
       }
     }
   }

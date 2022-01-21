@@ -10,10 +10,9 @@ interface CompleteRegistrationCTAWrapperProps {
   saleID: string
 }
 
-export const CompleteRegistrationCTAWrapper: React.FunctionComponent<CompleteRegistrationCTAWrapperProps> = ({
-  navLink,
-  saleID,
-}) => {
+export const CompleteRegistrationCTAWrapper: React.FunctionComponent<
+  CompleteRegistrationCTAWrapperProps
+> = ({ navLink, saleID }) => {
   const tracking = useTracking()
 
   return (
@@ -32,7 +31,14 @@ export const CompleteRegistrationCTAWrapper: React.FunctionComponent<CompleteReg
         navigate(navLink)
       }}
     >
-      <Flex flexDirection="row" alignItems="center" justifyContent="center" py={1} bg="black5" mt={1}>
+      <Flex
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="center"
+        py={1}
+        bg="black5"
+        mt={1}
+      >
         {
           <>
             <ExclamationMarkCircleFill fill="black100" />

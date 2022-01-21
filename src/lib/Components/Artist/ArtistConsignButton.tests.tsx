@@ -68,7 +68,9 @@ describe("ArtistConsignButton", () => {
 
     it("renders microfunnel correctly", () => {
       const tree = renderWithWrappers(<TestRenderer />)
-      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("ArtistConsignButtonTestsQuery")
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "ArtistConsignButtonTestsQuery"
+      )
       act(() => {
         env.mock.resolveMostRecentOperation({
           errors: [],
@@ -81,7 +83,9 @@ describe("ArtistConsignButton", () => {
 
     it("renders target supply correctly", () => {
       const tree = renderWithWrappers(<TestRenderer />)
-      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("ArtistConsignButtonTestsQuery")
+      expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+        "ArtistConsignButtonTestsQuery"
+      )
       act(() => {
         const targetSupplyResponse = cloneDeep(response)
         targetSupplyResponse.artist.targetSupply.isInMicrofunnel = false
@@ -214,7 +218,9 @@ describe("ArtistConsignButton", () => {
       })
       tree.root.findByType(TouchableOpacity).props.onPress()
 
-      expect(navigate).toHaveBeenCalledWith("/sales", { passProps: { overwriteHardwareBackButtonPath: "search" } })
+      expect(navigate).toHaveBeenCalledWith("/sales", {
+        passProps: { overwriteHardwareBackButtonPath: "search" },
+      })
     })
 
     it("sends user to a new instance of landing page if user is already in sales tab", () => {

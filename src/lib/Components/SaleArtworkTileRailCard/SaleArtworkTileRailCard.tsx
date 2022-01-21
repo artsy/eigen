@@ -1,4 +1,10 @@
-import { ContextModule, OwnerType, ScreenOwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
+import {
+  ContextModule,
+  OwnerType,
+  ScreenOwnerType,
+  tappedEntityGroup,
+  TappedEntityGroupArgs,
+} from "@artsy/cohesion"
 import { themeGet } from "@styled-system/theme-get"
 import { SaleArtworkTileRailCard_saleArtwork } from "__generated__/SaleArtworkTileRailCard_saleArtwork.graphql"
 import { Box, Flex, Text, useColor } from "palette"
@@ -55,7 +61,9 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
     throw new Error("imageAspectRatio is required for non-square images")
   }
 
-  const imageWidth = useSquareAspectRatio ? CONTAINER_HEIGHT : (artwork.image?.aspectRatio ?? 1) * CONTAINER_HEIGHT
+  const imageWidth = useSquareAspectRatio
+    ? CONTAINER_HEIGHT
+    : (artwork.image?.aspectRatio ?? 1) * CONTAINER_HEIGHT
 
   const imageDisplay = artwork.image?.imageURL ? (
     <OpaqueImageView
@@ -71,7 +79,12 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
       }}
     />
   ) : (
-    <Box bg={color("black30")} width={CONTAINER_HEIGHT} height={CONTAINER_HEIGHT} style={{ borderRadius: 2 }} />
+    <Box
+      bg={color("black30")}
+      width={CONTAINER_HEIGHT}
+      height={CONTAINER_HEIGHT}
+      style={{ borderRadius: 2 }}
+    />
   )
 
   const artistNamesDisplay = artwork.artistNames ? (
