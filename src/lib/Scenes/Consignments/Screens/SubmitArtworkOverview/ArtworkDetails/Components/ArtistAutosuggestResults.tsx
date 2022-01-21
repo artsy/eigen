@@ -4,13 +4,14 @@ import { ArtistAutosuggestResultsQuery } from "__generated__/ArtistAutosuggestRe
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
+import { PlaceholderBox, RandomWidthPlaceholderText } from "lib/utils/placeholders"
+import { times } from "lodash"
 import { Flex, quoteLeft, quoteRight, Separator, Spacer, Text, useSpace } from "palette"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import React from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
-import { ArtistAutosuggestResultsPlaceholder } from "./ArtistAutosuggestResultsPlaceholder"
 import { ArtistAutosuggestRow } from "./ArtistAutosuggestRow"
 import { ErrorView } from "./ErrorView"
 
@@ -230,3 +231,31 @@ export const ArtistAutosuggestResults: React.FC<{
   },
   (a, b) => a.query === b.query
 )
+
+const TEXT_SIZE = 12
+const IMAGE_SIZE = 35
+
+const ArtistAutosuggestResultsPlaceholder: React.FC = () => {
+  return (
+    <Flex
+      p={2}
+      mb={1}
+      mt={1}
+      style={{
+        flex: 1,
+        borderStyle: "solid",
+        borderColor: "#707070",
+        borderWidth: 1,
+      }}
+    >
+      {times(3).map((index) => (
+        <Flex key={`autosuggest-result-${index}`} flexDirection="row" mb={2}>
+          <PlaceholderBox width={IMAGE_SIZE} height={IMAGE_SIZE} />
+          <Flex flex={1} ml={1} justifyContent="center">
+            <RandomWidthPlaceholderText minWidth={100} maxWidth={150} height={TEXT_SIZE} marginBottom={0} />
+          </Flex>
+        </Flex>
+      ))}
+    </Flex>
+  )
+}
