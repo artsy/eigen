@@ -11,6 +11,8 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1A38C961279B03770031C1A2 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 1A38C960279B03760031C1A2 /* fonts */; };
+		1A38C962279B03770031C1A2 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 1A38C960279B03760031C1A2 /* fonts */; };
 		4BA54428740D364B54D4A17D /* libPods-eigen-eigenTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE0ED407FA44DD891F5B3246 /* libPods-eigen-eigenTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		C11AFA11C74E7B66FF34011D /* libPods-eigen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4EB231E790C61B818E9DBE3 /* libPods-eigen.a */; };
@@ -40,6 +42,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = eigen/main.m; sourceTree = "<group>"; };
 		13F369B4E56A4D026D55DC53 /* Pods-eigen-eigenTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen-eigenTests.release.xcconfig"; path = "Target Support Files/Pods-eigen-eigenTests/Pods-eigen-eigenTests.release.xcconfig"; sourceTree = "<group>"; };
 		17C42880D2ACAFFAD6731367 /* Pods-eigen-eigenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen-eigenTests.debug.xcconfig"; path = "Target Support Files/Pods-eigen-eigenTests/Pods-eigen-eigenTests.debug.xcconfig"; sourceTree = "<group>"; };
+		1A38C960279B03760031C1A2 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = fonts; path = eigen/fonts; sourceTree = "<group>"; };
 		236DCB5FAF86376660CE95DA /* Pods-eigen.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen.release.xcconfig"; path = "Target Support Files/Pods-eigen/Pods-eigen.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = eigen/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CBEEEFB8279A02B600BA725F /* ARTArtsyNativeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTArtsyNativeModule.h; sourceTree = "<group>"; };
@@ -96,6 +99,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				1A38C960279B03760031C1A2 /* fonts */,
 			);
 			name = eigen;
 			sourceTree = "<group>";
@@ -249,6 +253,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A38C962279B03770031C1A2 /* fonts in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -256,6 +261,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A38C961279B03770031C1A2 /* fonts in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);

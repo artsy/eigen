@@ -135,6 +135,7 @@ android-secret.json
 
 # Fonts
 android/app/src/main/assets/fonts/*
+ios/eigen/fonts/*
 
 
 # Firebase files
