@@ -56,7 +56,9 @@ describe("ShowsRailFragmentContainer", () => {
       variables={{}}
       render={({ props, error }) => {
         if (props) {
-          return <ShowsRailFragmentContainer title="Shows" showsConnection={props.showsConnection!} />
+          return (
+            <ShowsRailFragmentContainer title="Shows" showsConnection={props.showsConnection!} />
+          )
         } else if (error) {
           console.log(error)
         }

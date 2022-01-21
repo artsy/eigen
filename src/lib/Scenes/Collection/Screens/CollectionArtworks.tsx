@@ -18,7 +18,11 @@ interface CollectionArtworksProps {
   scrollToTop: () => void
 }
 
-export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collection, relay, scrollToTop }) => {
+export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({
+  collection,
+  relay,
+  scrollToTop,
+}) => {
   useArtworkFilters({
     relay,
     aggregations: collection.collectionArtworks!.aggregations,
@@ -32,7 +36,9 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
   const artworks = get(collection, (p) => p.collectionArtworks)
   const artworksTotal = artworks?.counts?.total
 
-  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((action) => action.setFiltersCountAction)
+  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
+    (action) => action.setFiltersCountAction
+  )
   const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
 
   useEffect(() => {
@@ -56,7 +62,11 @@ export const CollectionArtworks: React.FC<CollectionArtworksProps> = ({ collecti
     return (
       <Box mb="80px">
         <Spacer mt={3} />
-        <FilteredArtworkGridZeroState id={collection.id} slug={collection.slug} trackClear={trackClear} />
+        <FilteredArtworkGridZeroState
+          id={collection.id}
+          slug={collection.slug}
+          trackClear={trackClear}
+        />
       </Box>
     )
   }

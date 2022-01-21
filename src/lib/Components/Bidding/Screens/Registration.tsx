@@ -19,7 +19,13 @@ import { Box, Button, Flex, Text } from "palette"
 import { Checkbox } from "palette/elements/Checkbox"
 import React from "react"
 import { ScrollView, View, ViewProps } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import {
+  commitMutation,
+  createFragmentContainer,
+  graphql,
+  QueryRenderer,
+  RelayProp,
+} from "react-relay"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import stripe from "tipsi-stripe"
 import { LinkText } from "../../Text/LinkText"
@@ -107,7 +113,9 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   async register() {
     this.setState({ isLoading: true })
 
-    this.state.requiresPaymentInformation ? await this.setupAddressCardAndBidder() : await this.setupBidder()
+    this.state.requiresPaymentInformation
+      ? await this.setupAddressCardAndBidder()
+      : await this.setupBidder()
   }
 
   /** Make a bid */
@@ -195,7 +203,8 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             done()
           } else {
             if (isEmpty(errors)) {
-              const mutationError = data && get(data, "createCreditCard.creditCardOrError.mutationError")
+              const mutationError =
+                data && get(data, "createCreditCard.creditCardOrError.mutationError")
               this.presentErrorModal(mutationError, mutationError.detail)
             } else {
               this.presentErrorModal(errors, null)
@@ -236,7 +245,9 @@ export class Registration extends React.Component<RegistrationProps, Registratio
   createBidder() {
     commitMutation<RegistrationCreateBidderMutation>(this.props.relay.environment, {
       onCompleted: (results, errors) =>
-        isEmpty(errors) ? this.presentRegistrationSuccess(results) : this.presentErrorModal(errors, null),
+        isEmpty(errors)
+          ? this.presentRegistrationSuccess(results)
+          : this.presentErrorModal(errors, null),
       onError: (error) => this.presentErrorModal(error, null),
       mutation: graphql`
         mutation RegistrationCreateBidderMutation($input: CreateBidderInput!) {
@@ -260,9 +271,12 @@ export class Registration extends React.Component<RegistrationProps, Registratio
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   presentRegistrationSuccess({ createBidder }) {
-    LegacyNativeModules.ARNotificationsManager.postNotificationName("ARAuctionArtworkRegistrationUpdated", {
-      ARAuctionID: this.props.sale.slug,
-    })
+    LegacyNativeModules.ARNotificationsManager.postNotificationName(
+      "ARAuctionArtworkRegistrationUpdated",
+      {
+        ARAuctionID: this.props.sale.slug,
+      }
+    )
 
     const qualifiedForBidding = createBidder.bidder.qualified_for_bidding
     if (qualifiedForBidding === true) {
@@ -293,7 +307,8 @@ export class Registration extends React.Component<RegistrationProps, Registratio
     console.error("Registration.tsx", errors)
 
     const errorMessage =
-      mutationMessage || "There was a problem processing your information. Check your payment details and try again."
+      mutationMessage ||
+      "There was a problem processing your information. Check your payment details and try again."
     this.setState({ errorModalVisible: true, errorModalDetailText: errorMessage, isLoading: false })
   }
 
@@ -343,14 +358,20 @@ export class Registration extends React.Component<RegistrationProps, Registratio
             !!bidderNeedsIdentityVerification({ sale, user: me }) && (
               <>
                 <Hint>This auction requires Artsy to verify your identity before bidding.</Hint>
-                <Hint>After you register, you’ll receive an email with a link to complete identity verification.</Hint>
+                <Hint>
+                  After you register, you’ll receive an email with a link to complete identity
+                  verification.
+                </Hint>
               </>
             )
           }
           {
             // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             !requiresPaymentInformation && !bidderNeedsIdentityVerification({ sale, user: me }) && (
-              <Hint>To complete your registration, please confirm that you agree to the Conditions of Sale.</Hint>
+              <Hint>
+                To complete your registration, please confirm that you agree to the Conditions of
+                Sale.
+              </Hint>
             )
           }
           <Modal
@@ -362,7 +383,9 @@ export class Registration extends React.Component<RegistrationProps, Registratio
           <Checkbox mb={4} onPress={() => this.conditionsOfSalePressed()} disabled={isLoading}>
             <Text variant="xs" fontSize="2">
               Agree to{" "}
-              <LinkText onPress={isLoading ? undefined : this.onPressConditionsOfSale}>Conditions of Sale</LinkText>
+              <LinkText onPress={isLoading ? undefined : this.onPressConditionsOfSale}>
+                Conditions of Sale
+              </LinkText>
             </Text>
           </Checkbox>
         </Flex>

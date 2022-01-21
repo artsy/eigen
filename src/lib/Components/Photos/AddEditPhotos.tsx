@@ -7,7 +7,17 @@ import { isPad } from "lib/utils/hardware"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { chunk } from "lodash"
-import { AddIcon, BorderBox, Box, Button, Flex, Separator, Spacer, useColor, XCircleIcon } from "palette"
+import {
+  AddIcon,
+  BorderBox,
+  Box,
+  Button,
+  Flex,
+  Separator,
+  Spacer,
+  useColor,
+  XCircleIcon,
+} from "palette"
 import React, { useState } from "react"
 import { Image, ScrollView, TouchableOpacity } from "react-native"
 import { Image as RNCImage } from "react-native-image-crop-picker"
@@ -20,7 +30,11 @@ interface AddEditPhotosProps {
   navigator: NavigatorIOS
 }
 
-export const AddEditPhotos: React.FC<AddEditPhotosProps> = ({ initialPhotos, photosUpdated, navigator }) => {
+export const AddEditPhotos: React.FC<AddEditPhotosProps> = ({
+  initialPhotos,
+  photosUpdated,
+  navigator,
+}) => {
   const [photos, setPhotos] = useState(initialPhotos)
 
   const { width: screenWidth } = useScreenDimensions()
@@ -43,7 +57,9 @@ export const AddEditPhotos: React.FC<AddEditPhotosProps> = ({ initialPhotos, pho
     navigator.pop()
   }
 
-  const items = [<AddPhotosButton addPhotos={addPhotos} key="button" imageSize={imageSize} />].concat(
+  const items = [
+    <AddPhotosButton addPhotos={addPhotos} key="button" imageSize={imageSize} />,
+  ].concat(
     photos.map((photo, index) => {
       return (
         <Box key={index}>
@@ -82,10 +98,10 @@ export const AddEditPhotos: React.FC<AddEditPhotosProps> = ({ initialPhotos, pho
   )
 }
 
-const AddPhotosButton: React.FC<{ imageSize: number; addPhotos: (addedImages: RNCImage[]) => void }> = ({
-  imageSize,
-  addPhotos,
-}) => {
+const AddPhotosButton: React.FC<{
+  imageSize: number
+  addPhotos: (addedImages: RNCImage[]) => void
+}> = ({ imageSize, addPhotos }) => {
   const color = useColor()
   const { showActionSheetWithOptions } = useActionSheet()
 
@@ -98,7 +114,13 @@ const AddPhotosButton: React.FC<{ imageSize: number; addPhotos: (addedImages: RN
         })
       }}
     >
-      <BorderBox p={0} bg={color("white100")} width={imageSize} height={imageSize} key="addMorePhotos">
+      <BorderBox
+        p={0}
+        bg={color("white100")}
+        width={imageSize}
+        height={imageSize}
+        key="addMorePhotos"
+      >
         <Flex flex={1} flexDirection="row" justifyContent="center" alignItems="center">
           <AddIcon width={30} height={30} />
         </Flex>

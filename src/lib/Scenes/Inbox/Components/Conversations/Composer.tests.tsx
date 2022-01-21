@@ -39,7 +39,9 @@ const TestRenderer = (nonRelayProps: { disabled: boolean; value?: string }) => (
     variables={{}}
     render={({ props, error }) => {
       if (Boolean(props?.me?.conversation)) {
-        return <ComposerFragmentContainer conversation={props!.me!.conversation!} {...nonRelayProps} />
+        return (
+          <ComposerFragmentContainer conversation={props!.me!.conversation!} {...nonRelayProps} />
+        )
       } else if (Boolean(error)) {
         console.log(error)
       }
@@ -51,7 +53,9 @@ const defaultProps = { disabled: false }
 const getWrapper = (mockResolvers = {}, nonRelayProps = {}) => {
   const tree = renderWithWrappers(<TestRenderer {...{ ...defaultProps, ...nonRelayProps }} />)
   act(() => {
-    env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
+    env.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, mockResolvers)
+    )
   })
   return tree
 }

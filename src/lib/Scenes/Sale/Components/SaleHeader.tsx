@@ -76,7 +76,9 @@ export const SaleHeader: React.FC<Props> = ({ sale, scrollAnim }) => {
       <View
         style={{
           backgroundColor: "white",
-          marginTop: !!sale.coverImage?.url ? COVER_IMAGE_HEIGHT : useScreenDimensions().safeAreaInsets.top + 40,
+          marginTop: !!sale.coverImage?.url
+            ? COVER_IMAGE_HEIGHT
+            : useScreenDimensions().safeAreaInsets.top + 40,
         }}
       >
         <Flex mx="2" mt="2">

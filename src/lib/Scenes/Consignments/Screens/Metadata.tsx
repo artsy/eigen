@@ -25,7 +25,10 @@ const categoryOptions = [
   { name: "Sculpture", value: "SCULPTURE" },
   { name: "Photography", value: "PHOTOGRAPHY" },
   { name: "Print", value: "PRINT" },
-  { name: "Drawing, Collage or other Work on Paper", value: "DRAWING_COLLAGE_OR_OTHER_WORK_ON_PAPER" },
+  {
+    name: "Drawing, Collage or other Work on Paper",
+    value: "DRAWING_COLLAGE_OR_OTHER_WORK_ON_PAPER",
+  },
   { name: "Mixed Media", value: "MIXED_MEDIA" },
   { name: "Performance Art", value: "PERFORMANCE_ART" },
   { name: "Installation", value: "INSTALLATION" },
@@ -133,7 +136,13 @@ export default class Metadata extends React.Component<Props, State> {
   }
 
   selectNextInput = () => {
-    const inputs = [this.yearInput, this.mediumInput, this.widthInput, this.heightInput, this.depthInput]
+    const inputs = [
+      this.yearInput,
+      this.mediumInput,
+      this.widthInput,
+      this.heightInput,
+      this.depthInput,
+    ]
     for (const input of inputs) {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       if (input && input.root && input.root.focus && !input.root.props.value) {
@@ -161,7 +170,8 @@ export default class Metadata extends React.Component<Props, State> {
                     returnKeyType: "next",
                     autoFocus: this.state.title
                       ? false
-                      : typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
+                      : typeof jest ===
+                        "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
                   }}
                   style={{ margin: 10 }}
                 />
@@ -249,7 +259,12 @@ export default class Metadata extends React.Component<Props, State> {
                   }}
                 >
                   <Sans size="4">Units</Sans>
-                  <Toggle selected={this.state.unit === "CM"} left="cm" right="in" onPress={this.updateUnit} />
+                  <Toggle
+                    selected={this.state.unit === "CM"}
+                    left="cm"
+                    right="in"
+                    onPress={this.updateUnit}
+                  />
                 </View>
               </Row>
               <View style={{ paddingHorizontal: 10 }}>

@@ -4,7 +4,10 @@ import { CreateSavedSearchContentContainerV1_me } from "__generated__/CreateSave
 import React, { useCallback, useState } from "react"
 import { createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { CreateSavedSearchContent } from "../Components/CreateSavedSearchContent"
-import { CreateSavedSearchAlertNavigationStack, CreateSavedSearchAlertParams } from "../SavedSearchAlertModel"
+import {
+  CreateSavedSearchAlertNavigationStack,
+  CreateSavedSearchAlertParams,
+} from "../SavedSearchAlertModel"
 
 interface ContainerProps extends Omit<CreateSavedSearchAlertParams, "me"> {
   navigation: StackNavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">

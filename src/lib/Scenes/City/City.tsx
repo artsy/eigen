@@ -82,7 +82,10 @@ export class CityView extends Component<Props, State> {
         sponsoredContent,
       },
       () => {
-        LegacyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryQueryResponseReceived", {})
+        LegacyNativeModules.ARNotificationsManager.postNotificationName(
+          "ARLocalDiscoveryQueryResponseReceived",
+          {}
+        )
       }
     )
   }
@@ -90,7 +93,10 @@ export class CityView extends Component<Props, State> {
   handleError = ({ relayErrorState }: { relayErrorState: RelayErrorState }) => {
     // We have a Relay error; post a notification so that the ARMapContainerViewController can finalize the native UI (ie: show the drawer partially).
     this.setState({ relayErrorState }, () => {
-      LegacyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryQueryResponseReceived", {})
+      LegacyNativeModules.ARNotificationsManager.postNotificationName(
+        "ARLocalDiscoveryQueryResponseReceived",
+        {}
+      )
     })
   }
 
@@ -107,7 +113,10 @@ export class CityView extends Component<Props, State> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   setSelectedTab(selectedTab) {
     EventEmitter.dispatch("filters:change", selectedTab.i)
-    LegacyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
+    LegacyNativeModules.ARNotificationsManager.postNotificationName(
+      "ARLocalDiscoveryCityGotScrollView",
+      {}
+    )
   }
 
   @track((__, _, args) => {
@@ -167,7 +176,10 @@ export class CityView extends Component<Props, State> {
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   onScrollViewLayout = (layout) => {
     this.scrollViewVerticalStart = layout.nativeEvent.layout.y
-    LegacyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryCityGotScrollView", {})
+    LegacyNativeModules.ARNotificationsManager.postNotificationName(
+      "ARLocalDiscoveryCityGotScrollView",
+      {}
+    )
   }
 
   render() {
@@ -241,7 +253,9 @@ const Handle = styled.View`
 `
 
 // @TODO: Implement test for this component https://artsyproduct.atlassian.net/browse/LD-562
-const ErrorScreen: React.FC<{ relayErrorState: RelayErrorState }> = ({ relayErrorState: { retry, isRetrying } }) => {
+const ErrorScreen: React.FC<{ relayErrorState: RelayErrorState }> = ({
+  relayErrorState: { retry, isRetrying },
+}) => {
   return (
     <Box py={2}>
       <Sans size="3t" textAlign="center" mx={2}>

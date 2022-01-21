@@ -20,7 +20,12 @@ export interface MyAccountFieldEditScreen {
   save(): Promise<void>
 }
 
-export type AlertArgs = [title: string, message?: string, buttons?: AlertButton[], options?: AlertOptions]
+export type AlertArgs = [
+  title: string,
+  message?: string,
+  buttons?: AlertButton[],
+  options?: AlertOptions
+]
 
 export interface MyAccountFieldEditScreenProps {
   title: string
@@ -124,7 +129,10 @@ export const MyAccountFieldEditScreen = React.forwardRef<
   )
 })
 
-export const MyAccountFieldEditScreenPlaceholder: React.FC<{ title: string }> = ({ children, title }) => (
+export const MyAccountFieldEditScreenPlaceholder: React.FC<{ title: string }> = ({
+  children,
+  title,
+}) => (
   <MyAccountFieldEditScreen isSaveButtonVisible={false} canSave={false} title={title}>
     {children}
   </MyAccountFieldEditScreen>

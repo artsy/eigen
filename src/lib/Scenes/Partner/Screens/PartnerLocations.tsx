@@ -59,7 +59,8 @@ export const PartnerLocationsContainer = createPaginationContainer(
       @argumentDefinitions(count: { type: "Int", defaultValue: 4 }, cursor: { type: "String" }) {
         name
         internalID
-        locations: locationsConnection(first: $count, after: $cursor) @connection(key: "Partner_locations") {
+        locations: locationsConnection(first: $count, after: $cursor)
+          @connection(key: "Partner_locations") {
           pageInfo {
             hasNextPage
             startCursor

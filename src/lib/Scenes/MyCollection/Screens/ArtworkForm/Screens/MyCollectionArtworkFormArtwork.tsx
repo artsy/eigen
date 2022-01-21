@@ -18,10 +18,9 @@ import { ArtworkAutosuggest } from "../Components/ArtworkAutosuggest"
 import { useArtworkForm } from "../Form/useArtworkForm"
 import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
-export const MyCollectionArtworkFormArtwork: React.FC<StackScreenProps<ArtworkFormScreen, "ArtworkFormArtwork">> = ({
-  route,
-  navigation,
-}) => {
+export const MyCollectionArtworkFormArtwork: React.FC<
+  StackScreenProps<ArtworkFormScreen, "ArtworkFormArtwork">
+> = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false)
 
   const { formik } = useArtworkForm()
@@ -100,7 +99,9 @@ export const MyCollectionArtworkFormArtwork: React.FC<StackScreenProps<ArtworkFo
       </FancyModalHeader>
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
         <ScreenMargin>
-          {!!formik.values.artistSearchResult && <ArtistSearchResult result={formik.values.artistSearchResult} />}
+          {!!formik.values.artistSearchResult && (
+            <ArtistSearchResult result={formik.values.artistSearchResult} />
+          )}
           <Spacer mb={2} />
           <ArtworkAutosuggest onResultPress={updateFormValues} onSkipPress={onSkip} />
         </ScreenMargin>

@@ -52,7 +52,12 @@ const SmallTileRail: React.FC<Props> = ({
               ? () => {
                   if (contextModule) {
                     tracking.trackEvent(
-                      HomeAnalytics.artworkThumbnailTapEvent(contextModule, item.slug, index, "single")
+                      HomeAnalytics.artworkThumbnailTapEvent(
+                        contextModule,
+                        item.slug,
+                        index,
+                        "single"
+                      )
                     )
                   }
                   navigate(item.href!)
@@ -64,7 +69,9 @@ const SmallTileRail: React.FC<Props> = ({
           useSquareAspectRatio
           artistNames={item.artistNames}
           saleMessage={saleMessageOrBidInfo({ artwork: item, isSmallTile: true })}
-          urgencyTag={item?.sale?.isAuction && !item?.sale?.isClosed ? getUrgencyTag(item?.sale?.endAt) : null}
+          urgencyTag={
+            item?.sale?.isAuction && !item?.sale?.isClosed ? getUrgencyTag(item?.sale?.endAt) : null
+          }
         />
       )}
       keyExtractor={(item, index) => String(item.image?.imageURL || index)}

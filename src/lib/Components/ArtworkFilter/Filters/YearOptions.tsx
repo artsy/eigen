@@ -1,8 +1,15 @@
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
-import { aggregationForFilter, FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  aggregationForFilter,
+  FilterData,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  ArtworksFiltersStore,
+  useSelectedOptionsDisplay,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkFilterBackHeader } from "lib/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { CircleWithBorder } from "lib/Components/CircleWithBorder/CircleWithBorder"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
@@ -14,7 +21,8 @@ import React, { useState } from "react"
 import Haptic from "react-native-haptic-feedback"
 import styled from "styled-components/native"
 
-interface YearOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "YearOptionsScreen"> {}
+interface YearOptionsScreenProps
+  extends StackScreenProps<ArtworkFilterNavigationStack, "YearOptionsScreen"> {}
 
 export const ALLOW_EMPTY_CREATED_DATES_FILTER: FilterData = {
   displayText: "Include Lots without Artwork Date Listed",
@@ -31,7 +39,9 @@ export const YearOptionsScreen: React.FC<YearOptionsScreenProps> = ({ navigation
   const selectedFilters = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
 
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
-  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.selectFiltersAction
+  )
 
   const artistEarliestCreatedYear = Number(
     aggregationForFilter(FilterParamName.earliestCreatedYear, aggregations)?.counts[0].value
@@ -159,7 +169,14 @@ interface OptionItemProps {
 export const OptionItem = ({ onPress, text, selected }: OptionItemProps) => (
   <TouchableRow onPress={onPress}>
     <Flex flexGrow={1} justifyContent="space-between" flexDirection="row" height={60}>
-      <Flex flexDirection="row" justifyContent="space-between" flexGrow={1} alignItems="center" pl={2} pr={2}>
+      <Flex
+        flexDirection="row"
+        justifyContent="space-between"
+        flexGrow={1}
+        alignItems="center"
+        pl={2}
+        pr={2}
+      >
         <Text variant="xs">{text}</Text>
         {!!selected && (
           <Box mb={0.1}>

@@ -14,7 +14,9 @@ interface MyCollectionArtworkArtistArticlesProps {
   artwork: MyCollectionArtworkArtistArticles_artwork
 }
 
-const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArticlesProps> = (props) => {
+const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArticlesProps> = (
+  props
+) => {
   const artist = props?.artwork?.artist!
   const articleEdges = extractNodes(artist?.articlesConnection)
   const { trackEvent } = useTracking()
@@ -60,7 +62,13 @@ const MyCollectionArtworkArtistArticles: React.FC<MyCollectionArtworkArtistArtic
       <Box>
         <CaretButton
           onPress={() => {
-            trackEvent(tracks.tappedShowMore(props.artwork.internalID, props.artwork.slug, "See all articles"))
+            trackEvent(
+              tracks.tappedShowMore(
+                props.artwork.internalID,
+                props.artwork.slug,
+                "See all articles"
+              )
+            )
             navigate(`/artist/${artist?.slug}/articles`)
           }}
           text="See all articles"

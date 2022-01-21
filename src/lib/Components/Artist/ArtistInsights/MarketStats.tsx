@@ -43,18 +43,19 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
     <ScrollView showsVerticalScrollIndicator={false}>
       <Spacer my={1} />
       <Text>
-        The following data points provide an overview of an artist’s auction market for a specific medium (e.g.,
-        photography, painting) over the past 36 months.
+        The following data points provide an overview of an artist’s auction market for a specific
+        medium (e.g., photography, painting) over the past 36 months.
       </Text>
       <Spacer mb={2} />
       <Text>
-        These market signals bring together data from top auction houses around the world, including Christie’s,
-        Sotheby’s, Phillips and Bonhams.
+        These market signals bring together data from top auction houses around the world, including
+        Christie’s, Sotheby’s, Phillips and Bonhams.
       </Text>
       <Spacer mb={2} />
       <Text>
-        In this data set, please note that the sale price includes the hammer price and buyer’s premium, as well as any
-        other additional fees (e.g., Artist’s Resale Rights). The data set only includes works valued over $1,000.
+        In this data set, please note that the sale price includes the hammer price and buyer’s
+        premium, as well as any other additional fees (e.g., Artist’s Resale Rights). The data set
+        only includes works valued over $1,000.
       </Text>
       <Spacer mb={2} />
       <Text fontWeight="bold">Average yearly lots sold</Text>
@@ -72,20 +73,23 @@ const MarketStats: React.FC<MarketStatsProps> = ({ priceInsightsConnection }) =>
       <Text fontWeight="bold">Sale price over estimate</Text>
       <Spacer mb={1} />
       <Text>
-        The average percentage difference of the sale price over the mid-estimate (the midpoint of the low and high
-        estimates set by the auction house before the auction takes place) for lots sold at auction over the past 36
-        months.
+        The average percentage difference of the sale price over the mid-estimate (the midpoint of
+        the low and high estimates set by the auction house before the auction takes place) for lots
+        sold at auction over the past 36 months.
       </Text>
       <Spacer mb={100} />
     </ScrollView>
   )
 
   const averageValueSold =
-    (selectedPriceInsight.annualValueSoldCents as number) / 100 / (selectedPriceInsight.annualLotsSold || 1)
+    (selectedPriceInsight.annualValueSoldCents as number) /
+    100 /
+    (selectedPriceInsight.annualLotsSold || 1)
   const formattedAverageValueSold = formatLargeNumber(averageValueSold)
 
   let deltaIcon: React.ReactNode
-  const actualMedianSaleOverEstimatePercentage = selectedPriceInsight?.medianSaleOverEstimatePercentage || 0
+  const actualMedianSaleOverEstimatePercentage =
+    selectedPriceInsight?.medianSaleOverEstimatePercentage || 0
   if (actualMedianSaleOverEstimatePercentage < 0) {
     deltaIcon = <DecreaseIcon />
   } else if (actualMedianSaleOverEstimatePercentage > 0) {
@@ -185,7 +189,10 @@ export const MarketStatsQueryRenderer: React.FC<{
       variables={{ artistInternalID }}
       query={graphql`
         query MarketStatsQuery($artistInternalID: ID!) {
-          priceInsightsConnection: priceInsights(artistId: $artistInternalID, sort: ANNUAL_VALUE_SOLD_CENTS_DESC) {
+          priceInsightsConnection: priceInsights(
+            artistId: $artistInternalID
+            sort: ANNUAL_VALUE_SOLD_CENTS_DESC
+          ) {
             ...MarketStats_priceInsightsConnection
           }
         }

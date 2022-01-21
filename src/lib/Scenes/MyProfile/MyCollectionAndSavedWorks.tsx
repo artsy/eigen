@@ -21,7 +21,9 @@ export enum Tab {
   savedWorks = "Saved Works",
 }
 
-export const MyCollectionAndSavedWorks: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({ me }) => {
+export const MyCollectionAndSavedWorks: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({
+  me,
+}) => {
   return (
     <StickyTabPage
       disableBackButtonUpdate
@@ -114,7 +116,9 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
             {me?.name}
           </Sans>
           {!!me?.createdAt && (
-            <Sans size="2" color={color("black60")}>{`Member since ${new Date(me?.createdAt).getFullYear()}`}</Sans>
+            <Sans size="2" color={color("black60")}>{`Member since ${new Date(
+              me?.createdAt
+            ).getFullYear()}`}</Sans>
           )}
         </Box>
       </Flex>
@@ -174,24 +178,28 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
   )
 }
 
-export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContainer(MyCollectionAndSavedWorks, {
-  me: graphql`
-    fragment MyCollectionAndSavedWorks_me on Me {
-      name
-      bio
-      location {
-        display
+
+export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContainer(
+  MyCollectionAndSavedWorks,
+  {
+    me: graphql`
+      fragment MyCollectionAndSavedWorks_me on Me {
+        name
+        bio
+        location {
+          display
+        }
+        otherRelevantPosition
+        profession
+        icon {
+          url(version: "thumbnail")
+        }
+        createdAt
+        ...MyProfileEditFormModal_me
       }
-      otherRelevantPosition
-      profession
-      icon {
-        url(version: "thumbnail")
-      }
-      createdAt
-      ...MyProfileEditFormModal_me
-    }
-  `,
-})
+    `,
+  }
+)
 
 export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => (
   <QueryRenderer<MyCollectionAndSavedWorksQuery>

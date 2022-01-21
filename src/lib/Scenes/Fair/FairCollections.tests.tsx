@@ -41,7 +41,9 @@ describe("FairCollections", () => {
       />
     )
 
-    env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
+    env.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, mockResolvers)
+    )
 
     return tree
   }

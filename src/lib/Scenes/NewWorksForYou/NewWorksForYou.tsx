@@ -24,7 +24,9 @@ const NewWorksForYou: React.FC<NewWorksForYouProps> = ({ me, relay }) => {
   const { hasMore, loadMore } = relay
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}>
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({ context_screen_owner_type: OwnerType.newWorksForYou })}
+    >
       <PageWithSimpleHeader title={SCREEN_TITLE}>
         <Box>
           {!!me.artworks?.edges?.length ? (

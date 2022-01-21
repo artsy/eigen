@@ -27,7 +27,9 @@ const tabs = [{ label: "Tab one" }, { label: "Tab Two" }]
 
 describe("Tab", () => {
   it("renders without throwing a error", () => {
-    renderWithWrappers(<TabV3 onPress={() => null} label="Tab" active={false} onLayout={() => null} />)
+    renderWithWrappers(
+      <TabV3 onPress={() => null} label="Tab" active={false} onLayout={() => null} />
+    )
   })
 
   it("Is pressable", () => {
@@ -78,7 +80,9 @@ describe("StepTabs Behaviour", () => {
 
   it("Is always able to go back to step 0", async () => {
     const mockOnTabPress = jest.fn()
-    const tree = renderWithWrappers(<StepTabs tabs={sTabs} onTabPress={mockOnTabPress} activeTab={1} />)
+    const tree = renderWithWrappers(
+      <StepTabs tabs={sTabs} onTabPress={mockOnTabPress} activeTab={1} />
+    )
 
     const touchables = tree.root.findAllByType(TouchableOpacity)
     await act(() => touchables[0].props.onPress())
@@ -87,7 +91,9 @@ describe("StepTabs Behaviour", () => {
 
   it("Should not be able to go to step 2 because step 1 is not completed", async () => {
     const mockOnTabPress = jest.fn()
-    const tree = renderWithWrappers(<StepTabs tabs={sTabs} onTabPress={mockOnTabPress} activeTab={1} />)
+    const tree = renderWithWrappers(
+      <StepTabs tabs={sTabs} onTabPress={mockOnTabPress} activeTab={1} />
+    )
 
     const touchables = tree.root.findAllByType(TouchableOpacity)
     await act(() => touchables[2].props.onPress())

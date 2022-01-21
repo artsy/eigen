@@ -20,7 +20,11 @@ export function simpleLoggerMiddleware(): Middleware {
         "with response",
         response.data,
         ...(response.errors?.length
-          ? ["and errors\n\n" + response.errors.map((err, i) => `    ${i + 1}. ${err.message}`).join("\n"), "\n"]
+          ? [
+              "and errors\n\n" +
+                response.errors.map((err, i) => `    ${i + 1}. ${err.message}`).join("\n"),
+              "\n",
+            ]
           : [])
       )
     }

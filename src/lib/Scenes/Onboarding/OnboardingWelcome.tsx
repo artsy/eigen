@@ -10,7 +10,8 @@ import Animated, { Easing } from "react-native-reanimated"
 import backgoundImage from "../../../../images/WelcomeImage.webp"
 import { OnboardingNavigationStack } from "./Onboarding"
 
-interface OnboardingWelcomeProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingWelcome"> {}
+interface OnboardingWelcomeProps
+  extends StackScreenProps<OnboardingNavigationStack, "OnboardingWelcome"> {}
 
 const imgProps = Image.resolveAssetSource(backgoundImage)
 
@@ -114,7 +115,13 @@ export const OnboardingWelcome: React.FC<OnboardingWelcomeProps> = ({ navigation
       </Animated.View>
 
       <Animated.View
-        style={{ flex: 1, paddingTop: space(2), paddingHorizontal: space(2), justifyContent: "flex-end", opacity }}
+        style={{
+          flex: 1,
+          paddingTop: space(2),
+          paddingHorizontal: space(2),
+          justifyContent: "flex-end",
+          opacity,
+        }}
       >
         <Text variant="xxl" color="white">
           Collect Art by the World’s Leading Artists

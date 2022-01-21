@@ -173,7 +173,12 @@ beforeEach(() => {
 describe("saleTime", () => {
   it("returns null when timezone is missing", () => {
     expect(
-      saleTime({ startAt: times.present, liveStartAt: times.present, endAt: times.present, timeZone: null })
+      saleTime({
+        startAt: times.present,
+        liveStartAt: times.present,
+        endAt: times.present,
+        timeZone: null,
+      })
     ).toEqual({
       absolute: null,
       relative: null,
@@ -192,7 +197,9 @@ describe("#saleTime.absolute", () => {
   })
   it("recognises whether an auction is over or not", () => {
     expect(saleTime(finishedSaleNY).absolute).toEqual("Closed on Sep 1")
-    expect(saleTime(completeNotYetOpenSaleNY).absolute).toEqual("Live bidding begins Sep 5 at 3:00pm EDT")
+    expect(saleTime(completeNotYetOpenSaleNY).absolute).toEqual(
+      "Live bidding begins Sep 5 at 3:00pm EDT"
+    )
     expect(saleTime(completeFinishedSaleNY).absolute).toEqual("Closed on Sep 1")
   })
   it("works for currently open sales", () => {

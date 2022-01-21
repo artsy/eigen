@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 22a8424e208a2f58408f1f0ed07b0697 */
+/* @relayHash a8c21ccdf5527cc197f0cc363811c418 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -74,7 +74,7 @@ export type ArtistAboveTheFoldQueryResponse = {
             readonly auctionLots: boolean | null;
             readonly articles: boolean | null;
         } | null;
-        readonly " $fragmentRefs": FragmentRefs<"ArtistHeader_artist" | "ArtistArtworks_artist">;
+        readonly " $fragmentRefs": FragmentRefs<"ArtistHeader_artist" | "ArtistArtworks_artist" | "ArtistHeaderFloatingButtons_artist">;
     } | null;
 };
 export type ArtistAboveTheFoldQuery = {
@@ -99,6 +99,7 @@ query ArtistAboveTheFoldQuery(
     }
     ...ArtistHeader_artist
     ...ArtistArtworks_artist_2VV6jB
+    ...ArtistHeaderFloatingButtons_artist
     statuses {
       artworks
       auctionLots
@@ -141,6 +142,16 @@ fragment ArtistArtworks_artist_2VV6jB on Artist {
       hasNextPage
     }
     id
+  }
+}
+
+fragment ArtistHeaderFloatingButtons_artist on Artist {
+  internalID
+  slug
+  href
+  name
+  image {
+    url(version: "large")
   }
 }
 
@@ -339,6 +350,26 @@ v13 = {
   "kind": "ScalarField",
   "name": "__typename",
   "storageKey": null
+},
+v14 = {
+  "alias": null,
+  "args": [
+    {
+      "kind": "Literal",
+      "name": "version",
+      "value": "large"
+    }
+  ],
+  "kind": "ScalarField",
+  "name": "url",
+  "storageKey": "url(version:\"large\")"
+},
+v15 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "href",
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -383,6 +414,11 @@ return {
             ],
             "kind": "FragmentSpread",
             "name": "ArtistArtworks_artist"
+          },
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "ArtistHeaderFloatingButtons_artist"
           }
         ],
         "storageKey": null
@@ -665,19 +701,7 @@ return {
                                 "name": "aspectRatio",
                                 "storageKey": null
                               },
-                              {
-                                "alias": null,
-                                "args": [
-                                  {
-                                    "kind": "Literal",
-                                    "name": "version",
-                                    "value": "large"
-                                  }
-                                ],
-                                "kind": "ScalarField",
-                                "name": "url",
-                                "storageKey": "url(version:\"large\")"
-                              }
+                              (v14/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -710,13 +734,7 @@ return {
                             "name": "artistNames",
                             "storageKey": null
                           },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "href",
-                            "storageKey": null
-                          },
+                          (v15/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -857,6 +875,19 @@ return {
             "kind": "LinkedHandle",
             "name": "filterArtworksConnection"
           },
+          (v15/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Image",
+            "kind": "LinkedField",
+            "name": "image",
+            "plural": false,
+            "selections": [
+              (v14/*: any*/)
+            ],
+            "storageKey": null
+          },
           (v8/*: any*/)
         ],
         "storageKey": null
@@ -864,7 +895,7 @@ return {
     ]
   },
   "params": {
-    "id": "22a8424e208a2f58408f1f0ed07b0697",
+    "id": "a8c21ccdf5527cc197f0cc363811c418",
     "metadata": {},
     "name": "ArtistAboveTheFoldQuery",
     "operationKind": "query",
@@ -872,5 +903,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'f6e5a4bb62c32d7f2388dc5edbb7032b';
+(node as any).hash = '745a76b2a63ba41c2aae94f158ec3be7';
 export default node;

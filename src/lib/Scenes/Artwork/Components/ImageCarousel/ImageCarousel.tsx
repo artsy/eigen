@@ -9,7 +9,11 @@ import { PixelRatio } from "react-native"
 import { createFragmentContainer, graphql } from "react-relay"
 import { ImageCarouselFullScreen } from "./FullScreen/ImageCarouselFullScreen"
 import { fitInside } from "./geometry"
-import { ImageCarouselContext, ImageDescriptor, useNewImageCarouselContext } from "./ImageCarouselContext"
+import {
+  ImageCarouselContext,
+  ImageDescriptor,
+  useNewImageCarouselContext,
+} from "./ImageCarouselContext"
 import { ImageCarouselEmbedded } from "./ImageCarouselEmbedded"
 import { IndicatorType, PaginationIndicator } from "./ImageCarouselPaginationIndicator"
 
@@ -48,7 +52,10 @@ export const ImageCarousel = (props: ImageCarouselProps) => {
   const screenDimensions = useScreenDimensions()
   const { cardHeight, onImageIndexChange } = props
 
-  const embeddedCardBoundingBox = { width: screenDimensions.width, height: isPad() ? 460 : cardHeight }
+  const embeddedCardBoundingBox = {
+    width: screenDimensions.width,
+    height: isPad() ? 460 : cardHeight,
+  }
 
   // TODO:- Deepzoom for local images?
   const disableDeepZoom = props.images.some((image) => isALocalImage(image.url))

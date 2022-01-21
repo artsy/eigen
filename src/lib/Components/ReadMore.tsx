@@ -2,7 +2,16 @@ import { plainTextFromTree } from "lib/utils/plainTextFromTree"
 import { defaultRules, renderMarkdown } from "lib/utils/renderMarkdown"
 import { Schema } from "lib/utils/track"
 import _ from "lodash"
-import { Color, emdash, Flex, nbsp, Sans, SansProps, Text as PaletteText, TextProps as PaletteTextProps } from "palette"
+import {
+  Color,
+  emdash,
+  Flex,
+  nbsp,
+  Sans,
+  SansProps,
+  Text as PaletteText,
+  TextProps as PaletteTextProps,
+} from "palette"
 import React, { useState } from "react"
 import { Text } from "react-native"
 import { useTracking } from "react-tracking"
@@ -40,7 +49,8 @@ export const ReadMore = React.memo(
     const TextComponent: React.ComponentType<SansProps | PaletteTextProps> = (
       textStyle === "new" ? PaletteText : Sans
     ) as any
-    const textProps: SansProps | PaletteTextProps = textStyle === "new" ? { variant: "xs" } : { size: "3" }
+    const textProps: SansProps | PaletteTextProps =
+      textStyle === "new" ? { variant: "xs" } : { size: "3" }
     const rules = {
       ...basicRules,
       ...(type === "show" && {

@@ -44,19 +44,22 @@ export class CommercialPartnerInformation extends React.Component<Props> {
   }
 }
 
-export const CommercialPartnerInformationFragmentContainer = createFragmentContainer(CommercialPartnerInformation, {
-  artwork: graphql`
-    fragment CommercialPartnerInformation_artwork on Artwork {
-      availability
-      isAcquireable
-      isForSale
-      isOfferable
-      shippingOrigin
-      shippingInfo
-      priceIncludesTaxDisplay
-      partner {
-        name
+export const CommercialPartnerInformationFragmentContainer = createFragmentContainer(
+  CommercialPartnerInformation,
+  {
+    artwork: graphql`
+      fragment CommercialPartnerInformation_artwork on Artwork {
+        availability
+        isAcquireable
+        isForSale
+        isOfferable
+        shippingOrigin
+        shippingInfo
+        priceIncludesTaxDisplay
+        partner {
+          name
+        }
       }
-    }
-  `,
-})
+    `,
+  }
+)

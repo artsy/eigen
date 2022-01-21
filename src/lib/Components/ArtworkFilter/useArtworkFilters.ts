@@ -31,7 +31,9 @@ export const useArtworkFilters = ({
   onRefetch,
   type = "filter",
 }: UseArtworkFiltersOptions) => {
-  const setAggregationsAction = ArtworksFiltersStore.useStoreActions((state) => state.setAggregationsAction)
+  const setAggregationsAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.setAggregationsAction
+  )
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const applyFilters = ArtworksFiltersStore.useStoreState((state) => state.applyFilters)
   const filterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
@@ -54,7 +56,9 @@ export const useArtworkFilters = ({
             onRefetch(error)
           }
           if (error) {
-            const errorMessage = componentPath ? `${componentPath} ${type} error: ${error.message}` : error.message
+            const errorMessage = componentPath
+              ? `${componentPath} ${type} error: ${error.message}`
+              : error.message
             throw new Error(errorMessage)
           }
         },
@@ -71,7 +75,9 @@ export const useArtworkFiltersAggregation = ({ paramName }: { paramName: FilterP
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const selectedFilters = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
   const filterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
-  const previouslyAppliedFilters = ArtworksFiltersStore.useStoreState((state) => state.previouslyAppliedFilters)
+  const previouslyAppliedFilters = ArtworksFiltersStore.useStoreState(
+    (state) => state.previouslyAppliedFilters
+  )
 
   const aggregation = aggregationForFilter(paramName, aggregations)
 
@@ -92,7 +98,11 @@ export const useArtworkFiltersAggregation = ({ paramName }: { paramName: FilterP
 export const useSelectedFiltersCount = () => {
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   return useMemo(
-    () => Object.values(getSelectedFiltersCounts(appliedFilters)).reduce((prev, value) => prev + value, 0),
+    () =>
+      Object.values(getSelectedFiltersCounts(appliedFilters)).reduce(
+        (prev, value) => prev + value,
+        0
+      ),
     [appliedFilters]
   )
 }

@@ -96,6 +96,8 @@ export class PaymentInfo extends React.Component<PaymentInfoProps> {
   }
 
   private formatAddress(address: Address) {
-    return [address.addressLine1, address.addressLine2, address.city, address.state].filter((el) => el).join(" ")
+    return [address.addressLine1, address.addressLine2, address.city, address.state]
+      .filter((el) => el)
+      .join(" ")
   }
 }

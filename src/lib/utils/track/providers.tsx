@@ -14,7 +14,8 @@ type NativeIOSTrackingEventID =
     }
   | { event_name: string }
 
-export const isCohesionScreen = (info: CohesionAction | Screen): info is Screen => info.action === ActionType.screen
+export const isCohesionScreen = (info: CohesionAction | Screen): info is Screen =>
+  info.action === ActionType.screen
 
 interface LegacyNameAction {
   // TODO: This can be removed once we remove these uses. Currently there is one in `WorksForYou` and one in `ArtistRail`.

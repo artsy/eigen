@@ -49,7 +49,9 @@ describe("collection header", () => {
         </Theme>
       </GlobalStoreProvider>
     )
-    expect(wrapper.find(OpaqueImageView).html()).toContain("http://imageuploadedbymarketingteam.jpg")
+    expect(wrapper.find(OpaqueImageView).html()).toContain(
+      "http://imageuploadedbymarketingteam.jpg"
+    )
   })
 
   it("passes the collection header title to collection header", () => {
@@ -73,7 +75,9 @@ describe("collection header", () => {
         </Theme>
       </GlobalStoreProvider>
     )
-    expect(wrapper.find(OpaqueImageView).html()).toContain("https://defaultmostmarketableartworkincollectionimage.jpg")
+    expect(wrapper.find(OpaqueImageView).html()).toContain(
+      "https://defaultmostmarketableartworkincollectionimage.jpg"
+    )
   })
 
   it("does not render the Read More component when there is no description", () => {

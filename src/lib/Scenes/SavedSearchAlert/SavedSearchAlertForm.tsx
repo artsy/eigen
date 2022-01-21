@@ -7,7 +7,11 @@ import React, { useEffect, useState } from "react"
 import { Alert, ScrollView, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
 import { Form } from "./Components/Form"
-import { checkOrRequestPushPermissions, clearDefaultAttributes, getNamePlaceholder } from "./helpers"
+import {
+  checkOrRequestPushPermissions,
+  clearDefaultAttributes,
+  getNamePlaceholder,
+} from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
 import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
 import { updateEmailFrequency } from "./mutations/updateEmailFrequency"
@@ -80,6 +84,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
       try {
         let result: SavedSearchAlertMutationResult
+        const clearedAttributes = clearDefaultAttributes(attributes)
 
         /**
          * We perform the mutation only if
@@ -91,14 +96,19 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         }
 
         if (isUpdateForm) {
-          const response = await updateSavedSearchAlert(userAlertSettings, savedSearchAlertId!)
+          const criteria = isEnabledImprovedAlertsFlow ? clearedAttributes : undefined
+
+          const response = await updateSavedSearchAlert(
+            savedSearchAlertId!,
+            userAlertSettings,
+            criteria
+          )
           tracking.trackEvent(tracks.editedSavedSearch(savedSearchAlertId!, initialValues, values))
 
           result = {
             id: response.updateSavedSearch?.savedSearchOrErrors.internalID!,
           }
         } else {
-          const clearedAttributes = clearDefaultAttributes(attributes)
           const response = await createSavedSearchAlert(userAlertSettings, clearedAttributes)
 
           result = {

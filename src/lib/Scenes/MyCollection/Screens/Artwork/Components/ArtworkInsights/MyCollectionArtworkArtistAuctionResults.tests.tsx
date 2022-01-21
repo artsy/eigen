@@ -29,7 +29,9 @@ describe("MyCollectionArtworkArtistAuctionResults", () => {
       variables={{}}
       render={({ props }) => {
         if (props?.artwork) {
-          return <MyCollectionArtworkArtistAuctionResultsFragmentContainer artwork={props.artwork} />
+          return (
+            <MyCollectionArtworkArtistAuctionResultsFragmentContainer artwork={props.artwork} />
+          )
         }
         return null
       }}

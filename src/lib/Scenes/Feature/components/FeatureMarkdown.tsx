@@ -4,10 +4,10 @@ import React from "react"
 import { Text } from "react-native"
 import SimpleMarkdown from "simple-markdown"
 
-export const FeatureMarkdown: React.FC<{ content: string; sansProps?: Partial<React.ComponentProps<typeof Sans>> }> = ({
-  content,
-  sansProps,
-}) => {
+export const FeatureMarkdown: React.FC<{
+  content: string
+  sansProps?: Partial<React.ComponentProps<typeof Sans>>
+}> = ({ content, sansProps }) => {
   const rendered = renderMarkdown(content, {
     ...defaultRules({
       modal: false,
@@ -28,7 +28,11 @@ export const FeatureMarkdown: React.FC<{ content: string; sansProps?: Partial<Re
 
   // remove empty final paragraph
   if (Array.isArray(rendered)) {
-    while (rendered.length && rendered[rendered.length - 1] && rendered[rendered.length - 1].type === Text) {
+    while (
+      rendered.length &&
+      rendered[rendered.length - 1] &&
+      rendered[rendered.length - 1].type === Text
+    ) {
       rendered.pop()
     }
   }

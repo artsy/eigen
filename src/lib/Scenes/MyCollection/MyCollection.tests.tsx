@@ -88,7 +88,9 @@ describe("MyCollection", () => {
 
     it("shows zerostate", () => {
       expect(extractText(tree.root)).toContain("Your art collection in your pocket.")
-      expect(extractText(tree.root)).toContain("Keep track of your collection all in one place and get market insights")
+      expect(extractText(tree.root)).toContain(
+        "Keep track of your collection all in one place and get market insights"
+      )
     })
 
     it("navigates to MyCollectionArtworkForm when Add Artwork is pressed", () => {

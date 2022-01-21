@@ -128,11 +128,15 @@ describe("SaleInfo", () => {
       })
     )
 
-    expect(extractText(tree.root)).toContain("On the hammer price up to and including $150,000: 25%")
+    expect(extractText(tree.root)).toContain(
+      "On the hammer price up to and including $150,000: 25%"
+    )
     expect(extractText(tree.root)).toContain(
       "On the hammer price in excess of $150,000 up to and including $3,000,000: 20%"
     )
-    expect(extractText(tree.root)).toContain("On the portion of the hammer price in excess of $3,000,000: 12%")
+    expect(extractText(tree.root)).toContain(
+      "On the portion of the hammer price in excess of $3,000,000: 12%"
+    )
   })
 })
 

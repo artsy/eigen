@@ -16,7 +16,10 @@ import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
-import { LOCAL_PROFILE_ICON_PATH_KEY, MyCollectionAndSavedWorksFragmentContainer } from "./MyCollectionAndSavedWorks"
+import {
+  LOCAL_PROFILE_ICON_PATH_KEY,
+  MyCollectionAndSavedWorksFragmentContainer,
+} from "./MyCollectionAndSavedWorks"
 
 jest.mock("./LoggedInUserInfo")
 jest.unmock("react-relay")

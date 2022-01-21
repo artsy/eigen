@@ -31,11 +31,14 @@ export const PartnerSubscriberBanner: React.FC<PartnerSubscriberBannerProps> = (
   )
 }
 
-export const PartnerSubscriberBannerFragmentContainer = createFragmentContainer(PartnerSubscriberBanner, {
-  partner: graphql`
-    fragment PartnerSubscriberBanner_partner on Partner {
-      name
-      hasFairPartnership
-    }
-  `,
-})
+export const PartnerSubscriberBannerFragmentContainer = createFragmentContainer(
+  PartnerSubscriberBanner,
+  {
+    partner: graphql`
+      fragment PartnerSubscriberBanner_partner on Partner {
+        name
+        hasFairPartnership
+      }
+    `,
+  }
+)

@@ -1,4 +1,10 @@
-import { ContextModule, FollowedArgs, followedArtist, OwnerType, unfollowedArtist } from "@artsy/cohesion"
+import {
+  ContextModule,
+  FollowedArgs,
+  followedArtist,
+  OwnerType,
+  unfollowedArtist,
+} from "@artsy/cohesion"
 import { ArtistSeriesMeta_artistSeries } from "__generated__/ArtistSeriesMeta_artistSeries.graphql"
 import { ArtistSeriesMetaFollowMutation } from "__generated__/ArtistSeriesMetaFollowMutation.graphql"
 import { ReadMore } from "lib/Components/ReadMore"
@@ -15,7 +21,9 @@ interface ArtistSeriesMetaProps {
   relay: RelayProp
 }
 
-type ArtistToFollowOrUnfollow = NonNullable<NonNullable<ArtistSeriesMetaProps["artistSeries"]["artists"]>[0]>
+type ArtistToFollowOrUnfollow = NonNullable<
+  NonNullable<ArtistSeriesMetaProps["artistSeries"]["artists"]>[0]
+>
 
 export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries, relay }) => {
   const metaRef = useRef<View | null>(null)
@@ -102,7 +110,11 @@ export const ArtistSeriesMeta: React.FC<ArtistSeriesMetaProps> = ({ artistSeries
           <Spacer my={0.5} />
         </TouchableOpacity>
       )}
-      <ReadMore testID="description" content={artistSeries?.description ?? ""} maxChars={maxChars} />
+      <ReadMore
+        testID="description"
+        content={artistSeries?.description ?? ""}
+        maxChars={maxChars}
+      />
     </View>
   )
 }

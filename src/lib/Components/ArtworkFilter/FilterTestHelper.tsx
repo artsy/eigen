@@ -1,5 +1,9 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { ArtworkFilterNavigationStack, ArtworkFilterOptionsScreen, FilterModalMode } from "lib/Components/ArtworkFilter"
+import {
+  ArtworkFilterNavigationStack,
+  ArtworkFilterOptionsScreen,
+  FilterModalMode,
+} from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkFiltersState } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"

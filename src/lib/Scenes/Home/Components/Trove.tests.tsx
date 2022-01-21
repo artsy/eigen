@@ -27,7 +27,9 @@ describe("Trove", () => {
           }
         }
       `}
-      render={({ props }) => (props?.homePage ? <TroveFragmentContainer trove={props.homePage} /> : null)}
+      render={({ props }) =>
+        props?.homePage ? <TroveFragmentContainer trove={props.homePage} /> : null
+      }
       variables={{}}
       environment={environment}
     />
@@ -48,7 +50,9 @@ describe("Trove", () => {
     )
 
     expect(tree.root.findAllByType(OpaqueImageView)).toHaveLength(1)
-    expect(extractText(tree.root)).toMatchInlineSnapshot(`"TroveBrowse available artworks by emerging artists."`)
+    expect(extractText(tree.root)).toMatchInlineSnapshot(
+      `"TroveBrowse available artworks by emerging artists."`
+    )
   })
 
   it("is tappable", () => {

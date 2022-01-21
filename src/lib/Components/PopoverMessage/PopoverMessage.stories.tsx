@@ -3,7 +3,7 @@ import { storiesOf } from "@storybook/react-native"
 import { Button } from "palette/elements/Button"
 import React from "react"
 import { withTheme } from "storybook/decorators"
-import { DList, List } from "storybook/helpers"
+import { DataList, List } from "storybook/helpers"
 import { PopoverMessageItem, PopoverMessageType } from "./PopoverMessage"
 import { usePopoverMessage } from "./popoverMessageHooks"
 
@@ -32,7 +32,7 @@ const PopoverMessage: React.FC<PopoverMessageItem & { label: string }> = (props)
 storiesOf("Popover message", module)
   .addDecorator(withTheme)
   .add("Variants", () => (
-    <DList
+    <DataList
       data={variants}
       renderItem={({ item: variant }) => (
         <PopoverMessage label={variant} title="Some title" message="Some message" type={variant} />
@@ -65,7 +65,11 @@ storiesOf("Popover message", module)
         message="You can tap on the message to hide it"
         autoHide={false}
       />
-      <PopoverMessage label="With press hander" title="Tappable" onPress={() => action("item tapped")} />
+      <PopoverMessage
+        label="With press hander"
+        title="Tappable"
+        onPress={() => action("item tapped")}
+      />
       <PopoverMessage
         label="With undo action (only title)"
         title="Some title"

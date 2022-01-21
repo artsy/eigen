@@ -45,7 +45,9 @@ describe("FairHeader", () => {
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
-      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, mockResolvers)
+      )
     })
     return tree
   }
@@ -61,7 +63,9 @@ describe("FairHeader", () => {
         name: "Art Basel Hong Kong 2020",
       }),
     })
-    expect(wrapper.root.findByProps({ variant: "lg" }).props.children).toBe("Art Basel Hong Kong 2020")
+    expect(wrapper.root.findByProps({ variant: "lg" }).props.children).toBe(
+      "Art Basel Hong Kong 2020"
+    )
   })
 
   it("renders the fair main image when present", () => {

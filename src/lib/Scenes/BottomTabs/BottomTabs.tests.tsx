@@ -107,7 +107,9 @@ describe(BottomTabs, () => {
       await flushPromiseQueue()
     })
 
-    expect(LegacyNativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber).toHaveBeenCalledWith(9)
+    expect(
+      LegacyNativeModules.ARTemporaryAPIModule.setApplicationIconBadgeNumber
+    ).toHaveBeenCalledWith(9)
   })
 
   it(`fetches the current unread conversation count once in a while`, async () => {

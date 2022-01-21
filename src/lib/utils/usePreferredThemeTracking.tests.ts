@@ -7,6 +7,8 @@ describe("usePreferredThemeTracking", () => {
     renderHook(() => usePreferredThemeTracking())
 
     expect(SegmentTrackingProvider.identify).toHaveBeenCalledTimes(1)
-    expect(SegmentTrackingProvider.identify).toHaveBeenCalledWith(null, { "user interface style": "light" })
+    expect(SegmentTrackingProvider.identify).toHaveBeenCalledWith(null, {
+      "user interface style": "light",
+    })
   })
 })

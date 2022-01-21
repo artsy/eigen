@@ -1,5 +1,12 @@
-import { aggregationForFilter, Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  aggregationForFilter,
+  Aggregations,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { act, ReactTestRenderer } from "react-test-renderer"
@@ -60,7 +67,11 @@ describe("Colors options screen", () => {
     return selectedOption
   }
 
-  const MockColorScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
+  const MockColorScreen = ({
+    initialData = initialState,
+  }: {
+    initialData?: ArtworkFiltersState
+  }) => {
     return (
       <ArtworkFiltersStoreProvider initialData={initialData}>
         <ColorsOptionsScreen {...getEssentialProps()} />
@@ -72,7 +83,11 @@ describe("Colors options screen", () => {
 
   it("shows the correct number of color options", () => {
     const tree = renderWithWrappers(
-      <MockColorScreen aggregations={mockAggregations} {...getEssentialProps()} initialData={initialState} />
+      <MockColorScreen
+        aggregations={mockAggregations}
+        {...getEssentialProps()}
+        initialData={initialState}
+      />
     )
 
     expect(tree.root.findAllByType(ColorsSwatch)).toHaveLength(aggregation!.counts.length)
@@ -99,7 +114,9 @@ describe("Colors options screen", () => {
         },
       }
 
-      const component = renderWithWrappers(<MockColorScreen {...getEssentialProps()} initialData={injectedState} />)
+      const component = renderWithWrappers(
+        <MockColorScreen {...getEssentialProps()} initialData={injectedState} />
+      )
 
       const selectedOption = selectedColorOptions(component)[0]
       expect(selectedOption.props.name).toMatch(aggregation!.counts[0].name)
@@ -125,7 +142,9 @@ describe("Colors options screen", () => {
         },
       }
 
-      const tree = renderWithWrappers(<MockColorScreen {...getEssentialProps()} initialData={injectedState} />)
+      const tree = renderWithWrappers(
+        <MockColorScreen {...getEssentialProps()} initialData={injectedState} />
+      )
 
       const firstOptionInstance = tree.root.findAllByType(ColorsSwatch)[0]
       const secondOptionInstance = tree.root.findAllByType(ColorsSwatch)[1]
@@ -158,7 +177,9 @@ describe("Colors options screen", () => {
         },
       }
 
-      const tree = renderWithWrappers(<MockColorScreen {...getEssentialProps()} initialData={injectedState} />)
+      const tree = renderWithWrappers(
+        <MockColorScreen {...getEssentialProps()} initialData={injectedState} />
+      )
 
       const secondOptionInstance = tree.root.findAllByType(ColorsSwatch)[1]
 

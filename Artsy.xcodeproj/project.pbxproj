@@ -430,6 +430,7 @@
 		E6F84D001A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E6F84CFE1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png */; };
 		FC073424275E8F6E008B29B9 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9DDB10274D8FFF005DEE85 /* Article.swift */; };
 		FC10F3782760FC15006CDAB5 /* WidgetUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B4A2746F81F00232337 /* WidgetUrl.swift */; };
+		FC592EF52798A8B4001A4FD6 /* ImageUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC592EF42798A8B4001A4FD6 /* ImageUrl.swift */; };
 		FC61189E2746FE2300612581 /* ArtworkStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC61189D2746FE2300612581 /* ArtworkStore.swift */; };
 		FC6118A02747001B00612581 /* ArtworkImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC61189F2747001B00612581 /* ArtworkImage.swift */; };
 		FC6118A2274704FA00612581 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6118A1274704FA00612581 /* Schedule.swift */; };
@@ -1167,6 +1168,7 @@
 		E6F466E718EF52A800A09AFA /* Artwork_v1.data */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Artwork_v1.data; sourceTree = "<group>"; };
 		E6F84CFE1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CloseButtonLargeHighlighted@2x.png"; sourceTree = "<group>"; };
 		F5228136EBA7C3D968C3D845 /* Pods-Artsy Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		FC592EF42798A8B4001A4FD6 /* ImageUrl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUrl.swift; sourceTree = "<group>"; };
 		FC61189D2746FE2300612581 /* ArtworkStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtworkStore.swift; sourceTree = "<group>"; };
 		FC61189F2747001B00612581 /* ArtworkImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkImage.swift; sourceTree = "<group>"; };
 		FC6118A1274704FA00612581 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
@@ -2916,6 +2918,7 @@
 				FC6118A1274704FA00612581 /* Schedule.swift */,
 				FCB45B482746F72800232337 /* SecondaryText.swift */,
 				FCB45B4A2746F81F00232337 /* WidgetUrl.swift */,
+				FC592EF42798A8B4001A4FD6 /* ImageUrl.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -3753,6 +3756,7 @@
 				FCB45B292746EF3700232337 /* ArtsyWidgets.swift in Sources */,
 				FC9DDB0B274D8FA1005DEE85 /* LatestArticles+View.swift in Sources */,
 				FCB45B4B2746F81F00232337 /* WidgetUrl.swift in Sources */,
+				FC592EF52798A8B4001A4FD6 /* ImageUrl.swift in Sources */,
 				FC6118A92747091500612581 /* VolleyPayload.swift in Sources */,
 				FCB45B3D2746F0F100232337 /* FullBleed.swift in Sources */,
 				FCB45B442746F42800232337 /* FullBleed+Widget.swift in Sources */,

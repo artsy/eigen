@@ -11,95 +11,96 @@ import { CollectionFeaturedArtistsContainer as FeaturedArtists, ViewAll } from "
 jest.unmock("react-relay")
 jest.unmock("react-tracking")
 
-const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQueryRawResponse["marketingCollection"] = {
-  id: "some-id",
-  slug: "some-collection",
-  artworksConnection: {
-    id: "connection-id",
-    merchandisableArtists: [
-      {
-        id: "2342-pablo-picassos-id",
-        slug: "pablo-picasso",
-        internalID: "2342-pablo-picassos-id",
-        name: "Pablo Picasso",
-        image: {
-          url: "/some/resized/picasso/image/url",
+const FeaturedArtistCollectionFixture: FeaturedArtistsTestsQueryRawResponse["marketingCollection"] =
+  {
+    id: "some-id",
+    slug: "some-collection",
+    artworksConnection: {
+      id: "connection-id",
+      merchandisableArtists: [
+        {
+          id: "2342-pablo-picassos-id",
+          slug: "pablo-picasso",
+          internalID: "2342-pablo-picassos-id",
+          name: "Pablo Picasso",
+          image: {
+            url: "/some/resized/picasso/image/url",
+          },
+          birthday: "1877",
+          nationality: "American",
+          is_followed: true,
+          initials: "PP",
+          href: "/a/link/to/picasso",
+          deathday: "1973",
         },
-        birthday: "1877",
-        nationality: "American",
-        is_followed: true,
-        initials: "PP",
-        href: "/a/link/to/picasso",
-        deathday: "1973",
-      },
-      {
-        id: "34534-andy-warhols-id",
-        slug: "andy-warhol",
-        internalID: "34534-andy-warhols-id",
-        name: "Andy Warhol",
-        image: {
-          url: "/some/resized/warhol/image/url",
+        {
+          id: "34534-andy-warhols-id",
+          slug: "andy-warhol",
+          internalID: "34534-andy-warhols-id",
+          name: "Andy Warhol",
+          image: {
+            url: "/some/resized/warhol/image/url",
+          },
+          birthday: "1947",
+          nationality: "American",
+          is_followed: true,
+          initials: "AW",
+          href: "/a/link/to/warhol",
+          deathday: "1987",
         },
-        birthday: "1947",
-        nationality: "American",
-        is_followed: true,
-        initials: "AW",
-        href: "/a/link/to/warhol",
-        deathday: "1987",
-      },
-      {
-        id: "3454",
-        slug: "joan-miro",
-        internalID: "3454",
-        name: "Joan Miro",
-        image: {
-          url: "/some/resized/miro/image/url",
+        {
+          id: "3454",
+          slug: "joan-miro",
+          internalID: "3454",
+          name: "Joan Miro",
+          image: {
+            url: "/some/resized/miro/image/url",
+          },
+          birthday: "1877",
+          nationality: "Spanish",
+          is_followed: true,
+          initials: "JM",
+          href: "/a/link/to/miro",
+          deathday: "1983",
         },
-        birthday: "1877",
-        nationality: "Spanish",
-        is_followed: true,
-        initials: "JM",
-        href: "/a/link/to/miro",
-        deathday: "1983",
-      },
-      {
-        id: "9807",
-        slug: "jean-michel-basquiat",
-        internalID: "9807",
-        name: "Jean-Michel Basquiat",
-        image: {
-          url: "/some/resized/basquiat/image/url",
+        {
+          id: "9807",
+          slug: "jean-michel-basquiat",
+          internalID: "9807",
+          name: "Jean-Michel Basquiat",
+          image: {
+            url: "/some/resized/basquiat/image/url",
+          },
+          birthday: "1960",
+          nationality: "American",
+          is_followed: false,
+          initials: "JMB",
+          href: "/a/link/to/basquiat",
+          deathday: "2001",
         },
-        birthday: "1960",
-        nationality: "American",
-        is_followed: false,
-        initials: "JMB",
-        href: "/a/link/to/basquiat",
-        deathday: "2001",
-      },
-      {
-        id: "0120",
-        slug: "kenny-scharf",
-        internalID: "0120",
-        name: "Kenny Scharf",
-        image: {
-          url: "/some/resized/scharf/image/url",
+        {
+          id: "0120",
+          slug: "kenny-scharf",
+          internalID: "0120",
+          name: "Kenny Scharf",
+          image: {
+            url: "/some/resized/scharf/image/url",
+          },
+          birthday: "1958",
+          nationality: "American",
+          is_followed: false,
+          initials: "KS",
+          href: "/a/link/to/scharf",
+          deathday: null,
         },
-        birthday: "1958",
-        nationality: "American",
-        is_followed: false,
-        initials: "KS",
-        href: "/a/link/to/scharf",
-        deathday: null,
-      },
-    ],
-  },
-  featuredArtistExclusionIds: [],
-  query: {
-    id: "query-id",
-    artistIDs: [],
-  },
-}
+      ],
+    },
+    featuredArtistExclusionIds: [],
+    query: {
+      id: "query-id",
+      artistIDs: [],
+    },
+  }
 
 describe("FeaturedArtists", () => {
   const render = (collection: FeaturedArtistsTestsQueryRawResponse["marketingCollection"]) =>

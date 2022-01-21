@@ -60,7 +60,8 @@ const ReadOnlyInput = (props: TextInputProps) => {
         paddingTop: 8,
       }}
     >
-      {props.text! /* STRICTNESS_MIGRATION */.value || props.text! /* STRICTNESS_MIGRATION */.placeholder}
+      {props.text! /* STRICTNESS_MIGRATION */.value ||
+        props.text! /* STRICTNESS_MIGRATION */.placeholder}
     </Text>
   )
 }

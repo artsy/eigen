@@ -80,15 +80,21 @@ describe("useMultiSelect", () => {
 
     buttons[0].props.onPress()
 
-    expect(extractText(tree.root.findByProps({ testID: "nextParamValues" }))).toEqual('["example-1"]')
+    expect(extractText(tree.root.findByProps({ testID: "nextParamValues" }))).toEqual(
+      '["example-1"]'
+    )
 
     buttons[2].props.onPress()
 
-    expect(extractText(tree.root.findByProps({ testID: "nextParamValues" }))).toEqual('["example-1","example-3"]')
+    expect(extractText(tree.root.findByProps({ testID: "nextParamValues" }))).toEqual(
+      '["example-1","example-3"]'
+    )
 
     buttons[0].props.onPress()
 
-    expect(extractText(tree.root.findByProps({ testID: "nextParamValues" }))).toEqual('["example-3"]')
+    expect(extractText(tree.root.findByProps({ testID: "nextParamValues" }))).toEqual(
+      '["example-3"]'
+    )
   })
 
   it("dispatches filter updates", async () => {

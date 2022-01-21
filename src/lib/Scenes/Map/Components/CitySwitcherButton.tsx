@@ -39,9 +39,12 @@ export class CitySwitcherButton extends Component<Props> {
               if (this.props.onPress) {
                 this.props.onPress()
               }
-              LegacyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryOpenCityPicker", {
-                ...(sponsoredContentUrl && { sponsoredContentUrl }),
-              })
+              LegacyNativeModules.ARNotificationsManager.postNotificationName(
+                "ARLocalDiscoveryOpenCityPicker",
+                {
+                  ...(sponsoredContentUrl && { sponsoredContentUrl }),
+                }
+              )
             }}
           >
             <Background
@@ -60,13 +63,22 @@ export class CitySwitcherButton extends Component<Props> {
                     {city.name}
                   </Sans>
                   <Box ml={2} mr={3}>
-                    {/* @ts-ignore */}
-                    <ChevronIcon initialDirection="down" color={color("black100")} width={20} height={20} />
+                    <ChevronIcon
+                      initialDirection="down"
+                      // @ts-ignore
+                      color={color("black100")}
+                      width={20}
+                      height={20}
+                    />
                   </Box>
                 </>
               ) : (
                 <Flex alignItems="center" justifyContent="center" flexGrow={1}>
-                  <Spinner spinnerColor="black60" style={{ backgroundColor: "transparent" }} size="medium" />
+                  <Spinner
+                    spinnerColor="black60"
+                    style={{ backgroundColor: "transparent" }}
+                    size="medium"
+                  />
                 </Flex>
               )}
             </Background>

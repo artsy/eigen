@@ -117,7 +117,9 @@ describe("CollectionsRailFragmentContainer", () => {
     })
     // @ts-ignore
     first(tree.root.findAllByType(CardRailCard)).props.onPress()
-    expect(mockTrackEvent).toHaveBeenCalledWith(HomeAnalytics.collectionThumbnailTapEvent("test-collection-one", 0))
+    expect(mockTrackEvent).toHaveBeenCalledWith(
+      HomeAnalytics.collectionThumbnailTapEvent("test-collection-one", 0)
+    )
   })
 })
 

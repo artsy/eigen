@@ -16,7 +16,8 @@ export const SearchArtworksQueryRenderer: React.FC<{ keyword: string }> = ({ key
         query={graphql`
           query SearchArtworksContainerQuery($count: Int!, $cursor: String, $keyword: String) {
             viewer {
-              ...SearchArtworksGrid_viewer @arguments(count: $count, cursor: $cursor, keyword: $keyword)
+              ...SearchArtworksGrid_viewer
+                @arguments(count: $count, cursor: $cursor, keyword: $keyword)
             }
           }
         `}

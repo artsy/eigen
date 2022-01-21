@@ -6,11 +6,11 @@ import { TouchableOpacity } from "react-native"
 import { useFirstMountState } from "react-use/esm/useFirstMountState"
 import { goBack } from "./navigate"
 
-export const BackButton: React.FC<{ show?: boolean; showCloseIcon?: boolean; onPress?(): void }> = ({
-  onPress = goBack,
-  show = true,
-  showCloseIcon = false,
-}) => {
+export const BackButton: React.FC<{
+  show?: boolean
+  showCloseIcon?: boolean
+  onPress?(): void
+}> = ({ onPress = goBack, show = true, showCloseIcon = false }) => {
   const isFirstRender = useFirstMountState()
   const opacity = useRef(new Animated.Value(show ? 1 : 0)).current
   useEffect(() => {
@@ -39,7 +39,11 @@ export const BackButton: React.FC<{ show?: boolean; showCloseIcon?: boolean; onP
         onPress={onPress}
         style={{ width: "100%", height: "100%", alignItems: "center", justifyContent: "center" }}
       >
-        {showCloseIcon ? <CloseIcon fill="black100" width={26} height={26} /> : <ChevronIcon direction="left" />}
+        {showCloseIcon ? (
+          <CloseIcon fill="black100" width={26} height={26} />
+        ) : (
+          <ChevronIcon direction="left" />
+        )}
       </TouchableOpacity>
     </Animated.View>
   )

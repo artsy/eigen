@@ -90,7 +90,12 @@ export const ArtworkTileRailCard: React.FC<ArtworkTileRailCardProps> = ({
       )}
     </View>
   ) : (
-    <Box bg={color("black30")} width={imageWidth} height={imageHeight} style={{ borderRadius: 2 }} />
+    <Box
+      bg={color("black30")}
+      width={imageWidth}
+      height={imageHeight}
+      style={{ borderRadius: 2 }}
+    />
   )
 
   const artistNamesDisplay = artistNames ? (
@@ -158,17 +163,20 @@ const ArtworkTileRailCardContainer: React.FC<
   )
 }
 
-export const ArtworkTileRailCardFragmentContainer = createFragmentContainer(ArtworkTileRailCardContainer, {
-  artwork: graphql`
-    fragment ArtworkTileRailCard_artwork on Artwork {
-      slug
-      internalID
-      href
-      artistNames
-      image {
-        imageURL
+export const ArtworkTileRailCardFragmentContainer = createFragmentContainer(
+  ArtworkTileRailCardContainer,
+  {
+    artwork: graphql`
+      fragment ArtworkTileRailCard_artwork on Artwork {
+        slug
+        internalID
+        href
+        artistNames
+        image {
+          imageURL
+        }
+        saleMessage
       }
-      saleMessage
-    }
-  `,
-})
+    `,
+  }
+)

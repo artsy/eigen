@@ -72,7 +72,9 @@ describe("OnboardingCreateAccountPassword", () => {
       input.props.onChangeText("missing1uppercase")
       input.props.onSubmitEditing()
       await flushPromiseQueue()
-      expect(input.props.error).toEqual("Your password should contain at least one uppercase letter")
+      expect(input.props.error).toEqual(
+        "Your password should contain at least one uppercase letter"
+      )
 
       input.props.onChangeText("Nodigits")
       input.props.onSubmitEditing()
@@ -82,7 +84,9 @@ describe("OnboardingCreateAccountPassword", () => {
       input.props.onChangeText("MISSING1LOWERCASE")
       input.props.onSubmitEditing()
       await flushPromiseQueue()
-      expect(input.props.error).toEqual("Your password should contain at least one lowercase letter")
+      expect(input.props.error).toEqual(
+        "Your password should contain at least one lowercase letter"
+      )
 
       input.props.onChangeText("")
       input.props.onSubmitEditing()

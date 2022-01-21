@@ -57,7 +57,10 @@ const useNumColumns = () => {
 }
 
 export const ViewingRoomsList: FC = () => {
-  const queryData = useLazyLoadQuery<ViewingRoomsListQuery>(ViewingRoomsListScreenQuery, viewingRoomsDefaultVariables)
+  const queryData = useLazyLoadQuery<ViewingRoomsListQuery>(
+    ViewingRoomsListScreenQuery,
+    viewingRoomsDefaultVariables
+  )
 
   const space = useSpace()
   const { data, isLoadingNext, hasNext, loadNext, refetch } = usePaginationFragment<
@@ -66,7 +69,10 @@ export const ViewingRoomsList: FC = () => {
   >(fragmentSpec, queryData)
   const viewingRooms = extractNodes(data.viewingRooms)
 
-  const featuredData = useFragment<ViewingRoomsListFeatured_featured$key>(featuredFragment, queryData.featured!)
+  const featuredData = useFragment<ViewingRoomsListFeatured_featured$key>(
+    featuredFragment,
+    queryData.featured!
+  )
   const featuredLength = extractNodes(featuredData).length
 
   const handleLoadMore = () => {
@@ -129,8 +135,16 @@ export const ViewingRoomsList: FC = () => {
                     <Flex flex={1}>
                       <ViewingRoomsListItem item={item} />
                     </Flex>
-                    {/* right side separator*/ index % numColumns < numColumns - 1 && <Spacer mr="1" />}
-                    {/* right list padding */ index % numColumns === numColumns - 1 && <Spacer mr="2" />}
+                    {
+                      /* right side separator*/ index % numColumns < numColumns - 1 && (
+                        <Spacer mr="1" />
+                      )
+                    }
+                    {
+                      /* right list padding */ index % numColumns === numColumns - 1 && (
+                        <Spacer mr="2" />
+                      )
+                    }
                   </Flex>
                 )
               }
@@ -138,7 +152,9 @@ export const ViewingRoomsList: FC = () => {
             ItemSeparatorComponent={() => <Spacer mt="3" />}
             onEndReached={handleLoadMore}
             onEndReachedThreshold={1}
-            ListFooterComponent={() => (hasNext ? <LoadingMorePlaceholder /> : <Flex height={space(6)} />)}
+            ListFooterComponent={() =>
+              hasNext ? <LoadingMorePlaceholder /> : <Flex height={space(6)} />
+            }
           />
         </Flex>
       </PageWithSimpleHeader>

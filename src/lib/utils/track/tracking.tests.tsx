@@ -37,7 +37,10 @@ describe("Tracking", () => {
     const button = component.findByType(Button)
     button.props.onPress()
     expect(postEventToProviders).toHaveBeenCalledTimes(2)
-    expect(postEventToProviders).toHaveBeenNthCalledWith(2, { aScreen: "a test screen", wow: "yes!" })
+    expect(postEventToProviders).toHaveBeenNthCalledWith(2, {
+      aScreen: "a test screen",
+      wow: "yes!",
+    })
   })
 
   @screenTrack({ aScreen: "a class screen" } as any)
@@ -67,6 +70,9 @@ describe("Tracking", () => {
     const button = component.findByType(Button)
     button.props.onPress()
     expect(postEventToProviders).toHaveBeenCalledTimes(2)
-    expect(postEventToProviders).toHaveBeenNthCalledWith(2, { aScreen: "a class screen", wow: "indeed!" })
+    expect(postEventToProviders).toHaveBeenNthCalledWith(2, {
+      aScreen: "a class screen",
+      wow: "indeed!",
+    })
   })
 })

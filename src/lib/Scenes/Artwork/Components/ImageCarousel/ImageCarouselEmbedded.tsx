@@ -22,7 +22,10 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
 }) => {
   const screenDimensions = useScreenDimensions()
 
-  const embeddedCardBoundingBox = { width: screenDimensions.width, height: isPad() ? 460 : cardHeight }
+  const embeddedCardBoundingBox = {
+    width: screenDimensions.width,
+    height: isPad() ? 460 : cardHeight,
+  }
 
   const {
     images,
@@ -72,7 +75,8 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
   // this exists as a hack to get onPress functionality while the flat list is still coming to a stop after a swipe.
   // without this the user can tap the image to go fullscreen but nothing happens and it feels baaaad.
   const onResponderRelease = useCallback((ev: any) => {
-    const { touchBank, indexOfSingleActiveTouch, numberActiveTouches } = ev.touchHistory || ({} as any)
+    const { touchBank, indexOfSingleActiveTouch, numberActiveTouches } =
+      ev.touchHistory || ({} as any)
     if (numberActiveTouches !== 0) {
       return
     }
@@ -97,7 +101,8 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
     const duration = info.currentTimeStamp - info.startTimeStamp
 
     const distance = Math.sqrt(
-      Math.pow(info.currentPageX - info.startPageX, 2) + Math.pow(info.currentPageY - info.startPageY, 2)
+      Math.pow(info.currentPageX - info.startPageX, 2) +
+        Math.pow(info.currentPageY - info.startPageY, 2)
     )
 
     if (distance > 5) {
@@ -119,7 +124,11 @@ export const ImageCarouselEmbedded: React.FC<ImageCarouselEmbeddedProps> = ({
       ref={embeddedFlatListRef}
       showsHorizontalScrollIndicator={false}
       scrollEnabled={scrollEnabled}
-      getItemLayout={(_, index) => ({ index, offset: offsets[index], length: embeddedCardBoundingBox.width })}
+      getItemLayout={(_, index) => ({
+        index,
+        offset: offsets[index],
+        length: embeddedCardBoundingBox.width,
+      })}
       snapToOffsets={offsets}
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       keyExtractor={(item) => item.url}

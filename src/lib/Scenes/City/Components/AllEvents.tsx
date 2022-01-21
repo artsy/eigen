@@ -206,7 +206,13 @@ export class AllEvents extends React.Component<Props, State> {
           />
         )
       case "saved":
-        return <SavedEventSection data={data} citySlug={citySlug} sponsoredContentUrl={sponsoredContent.artGuideUrl} />
+        return (
+          <SavedEventSection
+            data={data}
+            citySlug={citySlug}
+            sponsoredContentUrl={sponsoredContent.artGuideUrl}
+          />
+        )
       case "header":
         return (
           <Box px={2} pt={4}>

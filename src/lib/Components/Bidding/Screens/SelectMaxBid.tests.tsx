@@ -76,13 +76,23 @@ beforeEach(() => {
 
 it("renders without throwing an error", () => {
   renderWithWrappers(
-    <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
+    <SelectMaxBid
+      me={Me}
+      sale_artwork={SaleArtwork}
+      navigator={fakeNavigator as any}
+      relay={fakeRelay as any}
+    />
   )
 })
 
 it("shows a spinner while fetching new bid increments", () => {
   const component = renderWithWrappers(
-    <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
+    <SelectMaxBid
+      me={Me}
+      sale_artwork={SaleArtwork}
+      navigator={fakeNavigator as any}
+      relay={fakeRelay as any}
+    />
   )
 
   const selectBidComponent = component.root.findByType(SelectMaxBid)
@@ -93,22 +103,37 @@ it("shows a spinner while fetching new bid increments", () => {
 
 it("refetches in next component's refreshSaleArtwork", () => {
   const component = renderWithWrappers(
-    <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
+    <SelectMaxBid
+      me={Me}
+      sale_artwork={SaleArtwork}
+      navigator={fakeNavigator as any}
+      relay={fakeRelay as any}
+    />
   )
   component.root.findByType(Button).props.onPress()
   const nextScreen = fakeNavigator.nextStep()
 
   nextScreen.root.findByProps({ nextScreen: true }).instance.props.refreshSaleArtwork()
 
-  expect(fakeRelay.refetch).toHaveBeenCalledWith({ saleArtworkNodeID: "sale-artwork-id" }, null, expect.anything(), {
-    force: true,
-  })
+  expect(fakeRelay.refetch).toHaveBeenCalledWith(
+    { saleArtworkNodeID: "sale-artwork-id" },
+    null,
+    expect.anything(),
+    {
+      force: true,
+    }
+  )
   expect(component.root.findByType(ActivityIndicator)).toBeDefined()
 })
 
 it("removes the spinner once the refetch is complete", () => {
   const component = renderWithWrappers(
-    <SelectMaxBid me={Me} sale_artwork={SaleArtwork} navigator={fakeNavigator as any} relay={fakeRelay as any} />
+    <SelectMaxBid
+      me={Me}
+      sale_artwork={SaleArtwork}
+      navigator={fakeNavigator as any}
+      relay={fakeRelay as any}
+    />
   )
   component.root.findByType(Button).props.onPress()
   const nextScreen = fakeNavigator.nextStep()

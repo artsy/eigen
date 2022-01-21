@@ -75,7 +75,10 @@ import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayme
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { MyProfilePushNotificationsQueryRenderer } from "./Scenes/MyProfile/MyProfilePushNotifications"
 import { MyProfileSettings } from "./Scenes/MyProfile/MyProfileSettings"
-import { NewWorksForYouQueryRenderer, NewWorksForYouScreenQuery } from "./Scenes/NewWorksForYou/NewWorksForYou"
+import {
+  NewWorksForYouQueryRenderer,
+  NewWorksForYouScreenQuery,
+} from "./Scenes/NewWorksForYou/NewWorksForYou"
 import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { OrderDetailsQueryRender } from "./Scenes/OrderHistory/OrderDetails/Components/OrderDetails"
 import { OrderHistoryQueryRender } from "./Scenes/OrderHistory/OrderHistory"
@@ -97,14 +100,20 @@ import { VanityURLEntityRenderer } from "./Scenes/VanityURL/VanityURLEntity"
 import { ViewingRoomQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoom"
 import { ViewingRoomArtworkScreen } from "./Scenes/ViewingRoom/ViewingRoomArtwork"
 import { ViewingRoomArtworksQueryRenderer } from "./Scenes/ViewingRoom/ViewingRoomArtworks"
-import { ViewingRoomsListScreen, ViewingRoomsListScreenQuery } from "./Scenes/ViewingRoom/ViewingRoomsList"
+import {
+  ViewingRoomsListScreen,
+  ViewingRoomsListScreenQuery,
+} from "./Scenes/ViewingRoom/ViewingRoomsList"
 import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { AdminMenu } from "./utils/AdminMenu"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
-import { SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider } from "./utils/track/SegmentTrackingProvider"
+import {
+  SEGMENT_TRACKING_PROVIDER,
+  SegmentTrackingProvider,
+} from "./utils/track/SegmentTrackingProvider"
 import { useExperiments } from "./utils/useExperiments"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { usePreferredThemeTracking } from "./utils/usePreferredThemeTracking"
@@ -145,7 +154,9 @@ interface PartnerLocationsProps {
   safeAreaInsets: SafeAreaInsets
   isVisible: boolean
 }
-const PartnerLocations: React.FC<PartnerLocationsProps> = (props) => <PartnerLocationsQueryRenderer {...props} />
+const PartnerLocations: React.FC<PartnerLocationsProps> = (props) => (
+  <PartnerLocationsQueryRenderer {...props} />
+)
 
 interface InquiryProps {
   artworkID: string
@@ -177,7 +188,12 @@ interface PageWrapperProps {
   moduleName: string
 }
 
-const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, ViewComponent, viewProps }) => {
+const InnerPageWrapper: React.FC<PageWrapperProps> = ({
+  fullBleed,
+  isMainView,
+  ViewComponent,
+  viewProps,
+}) => {
   const safeAreaInsets = useScreenDimensions().safeAreaInsets
   const paddingTop = fullBleed ? 0 : safeAreaInsets.top
   const paddingBottom = isMainView ? 0 : safeAreaInsets.bottom
@@ -191,7 +207,9 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({ fullBleed, isMainView, V
   }
   const isPresentedModally = viewProps.isPresentedModally
   return (
-    <ArtsyKeyboardAvoidingViewContext.Provider value={{ isVisible, isPresentedModally, bottomOffset: paddingBottom }}>
+    <ArtsyKeyboardAvoidingViewContext.Provider
+      value={{ isVisible, isPresentedModally, bottomOffset: paddingBottom }}
+    >
       <View style={{ flex: 1, paddingTop, paddingBottom }}>
         {isHydrated ? (
           <FadeIn style={{ flex: 1 }} slide={false}>
@@ -209,7 +227,10 @@ class PageWrapper extends React.Component<PageWrapperProps> {
   render() {
     const props = {
       ...this.props,
-      viewProps: { ...this.props.viewProps, ...propsStore.getPropsForModule(this.props.moduleName) },
+      viewProps: {
+        ...this.props.viewProps,
+        ...propsStore.getPropsForModule(this.props.moduleName),
+      },
     }
     return (
       <AppProviders>
@@ -279,7 +300,7 @@ export const modules = defineModules({
   About: reactModule(About),
   AddOrEditMyCollectionArtwork: reactModule(MyCollectionArtworkForm, { hidesBackButton: true }),
   Articles: reactModule(ArticlesScreen, {}, ArticlesScreenQuery),
-  Artist: reactModule(ArtistQueryRenderer, {}, ArtistScreenQuery),
+  Artist: reactModule(ArtistQueryRenderer, { hidesBackButton: true }, ArtistScreenQuery),
   ArtistShows: reactModule(ArtistShows2QueryRenderer),
   ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
@@ -356,12 +377,18 @@ export const modules = defineModules({
   MyCollection: reactModule(MyCollectionQueryRenderer),
   MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer),
   MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
-  MyProfile: reactModule(MyProfileQueryRenderer, { isRootViewForTabName: "profile" }, MyProfileScreenQuery),
+  MyProfile: reactModule(
+    MyProfileQueryRenderer,
+    { isRootViewForTabName: "profile" },
+    MyProfileScreenQuery
+  ),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfileSettings: reactModule(MyProfileSettings),
   OrderHistory: reactModule(OrderHistoryQueryRender),
   OrderDetails: reactModule(OrderDetailsQueryRender),
-  MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, { hidesBackButton: true }),
+  MyProfilePaymentNewCreditCard: reactModule(MyProfilePaymentNewCreditCard, {
+    hidesBackButton: true,
+  }),
   MyProfilePushNotifications: reactModule(MyProfilePushNotificationsQueryRenderer),
   MySellingProfile: reactModule(View),
   Partner: reactModule(PartnerQueryRenderer),
@@ -387,7 +414,11 @@ export const modules = defineModules({
   }),
   WorksForYou: reactModule(WorksForYouQueryRenderer, {}, WorksForYouScreenQuery),
   NewWorksForYou: reactModule(NewWorksForYouQueryRenderer, {}, NewWorksForYouScreenQuery),
-  LotsByArtistsYouFollow: reactModule(LotsByArtistsYouFollowQueryRenderer, {}, LotsByArtistsYouFollowScreenQuery),
+  LotsByArtistsYouFollow: reactModule(
+    LotsByArtistsYouFollowQueryRenderer,
+    {},
+    LotsByArtistsYouFollowScreenQuery
+  ),
   Storybook: reactModule(StorybookUIRoot, { fullBleed: true, hidesBackButton: true }),
   SavedSearchAlertsList: reactModule(SavedSearchAlertsListQueryRenderer),
   EditSavedSearchAlert: reactModule(EditSavedSearchAlertQueryRenderer),
@@ -398,7 +429,10 @@ for (const moduleName of Object.keys(modules)) {
   const descriptor = modules[moduleName as AppModule]
   if ("Component" in descriptor) {
     if (Platform.OS === "ios") {
-      register(moduleName, descriptor.Component, { fullBleed: descriptor.options.fullBleed, moduleName })
+      register(moduleName, descriptor.Component, {
+        fullBleed: descriptor.options.fullBleed,
+        moduleName,
+      })
     }
   }
 }
@@ -417,7 +451,9 @@ const Main: React.FC<{}> = track()(({}) => {
   const isLoggedIn = GlobalStore.useAppState((store) => store.auth.userAccessToken)
 
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
-  const forceUpdateMessage = GlobalStore.useAppState((state) => state.config.echo.forceUpdateMessage)
+  const forceUpdateMessage = GlobalStore.useAppState(
+    (state) => state.config.echo.forceUpdateMessage
+  )
 
   useSentryConfig()
   useStripeConfig()

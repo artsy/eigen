@@ -87,7 +87,11 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
 
                 <Text variant="xs">{heroArticle!.publishedAt}</Text>
 
-                <FairEditorialShare mt={1} subject={heroArticle!.title!} url={`${webURL}${heroArticle!.href}`} />
+                <FairEditorialShare
+                  mt={1}
+                  subject={heroArticle!.title!}
+                  url={`${webURL}${heroArticle!.href}`}
+                />
               </Box>
             </Box>
           </Touchable>
@@ -120,7 +124,11 @@ export const FairArticles: React.FC<FairArticlesProps> = ({ fair, relay }) => {
 
                     <Text variant="xs">{article!.publishedAt}</Text>
 
-                    <FairEditorialShare mt={1} subject={article!.title!} url={`${webURL}${article!.href}`} />
+                    <FairEditorialShare
+                      mt={1}
+                      subject={article!.title!}
+                      url={`${webURL}${article!.href}`}
+                    />
                   </Box>
                 </Touchable>
               )
@@ -157,7 +165,8 @@ export const FairArticlesPaginationContainer = createPaginationContainer(
   FairArticles,
   {
     fair: graphql`
-      fragment FairArticles_fair on Fair @argumentDefinitions(first: { type: "Int" }, after: { type: "String" }) {
+      fragment FairArticles_fair on Fair
+      @argumentDefinitions(first: { type: "Int" }, after: { type: "String" }) {
         slug
         articlesConnection(first: $first, after: $after, inEditorialFeed: true)
           @connection(key: "FairArticlesQuery_articlesConnection") {

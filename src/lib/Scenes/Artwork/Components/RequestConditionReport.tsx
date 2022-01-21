@@ -11,7 +11,13 @@ import { Schema, track } from "lib/utils/track"
 import { Button, Flex } from "palette"
 import React from "react"
 import { View } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import {
+  commitMutation,
+  createFragmentContainer,
+  graphql,
+  QueryRenderer,
+  RelayProp,
+} from "react-relay"
 import { PayloadError } from "relay-runtime"
 
 interface RequestConditionReportProps {
@@ -106,7 +112,12 @@ export class RequestConditionReport extends React.Component<RequestConditionRepo
 
   render() {
     const { me } = this.props
-    const { requestingConditionReport, showErrorModal, errorModalText, showConditionReportRequestedModal } = this.state
+    const {
+      requestingConditionReport,
+      showErrorModal,
+      errorModalText,
+      showConditionReportRequestedModal,
+    } = this.state
 
     return (
       <View>
@@ -172,20 +183,23 @@ export const RequestConditionReportQueryRenderer: React.FC<{
   )
 }
 
-export const RequestConditionReportFragmentContainer = createFragmentContainer(RequestConditionReport, {
-  me: graphql`
-    fragment RequestConditionReport_me on Me {
-      email
-      internalID
-    }
-  `,
-  artwork: graphql`
-    fragment RequestConditionReport_artwork on Artwork {
-      internalID
-      slug
-      saleArtwork {
+export const RequestConditionReportFragmentContainer = createFragmentContainer(
+  RequestConditionReport,
+  {
+    me: graphql`
+      fragment RequestConditionReport_me on Me {
+        email
         internalID
       }
-    }
-  `,
-})
+    `,
+    artwork: graphql`
+      fragment RequestConditionReport_artwork on Artwork {
+        internalID
+        slug
+        saleArtwork {
+          internalID
+        }
+      }
+    `,
+  }
+)

@@ -32,7 +32,11 @@ jest.mock("formik", () => ({
 describe("ForgotPassword", () => {
   const TestProvider = () => {
     return (
-      <ForgotPasswordForm requestedPasswordReset={false} navigation={navigationPropsMock as any} route={null as any} />
+      <ForgotPasswordForm
+        requestedPasswordReset={false}
+        navigation={navigationPropsMock as any}
+        route={null as any}
+      />
     )
   }
 

@@ -2,7 +2,12 @@ import { __globalStoreTestUtils__, GlobalStore, GlobalStoreProvider } from "lib/
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { times } from "lodash"
 import React from "react"
-import { MAX_SAVED_RECENT_SEARCHES, RecentSearch, SearchModel, useRecentSearches } from "./SearchModel"
+import {
+  MAX_SAVED_RECENT_SEARCHES,
+  RecentSearch,
+  SearchModel,
+  useRecentSearches,
+} from "./SearchModel"
 
 const banksy: RecentSearch = {
   type: "AUTOSUGGEST_RESULT_TAPPED",

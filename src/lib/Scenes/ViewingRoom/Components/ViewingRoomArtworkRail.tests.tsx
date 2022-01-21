@@ -58,7 +58,10 @@ describe("ViewingRoomArtworkRail", () => {
 
     expect(navigate).toHaveBeenCalledWith("/viewing-room/gallery-name-viewing-room-name/artworks")
     expect(postEventToProviders).toHaveBeenCalledWith(
-      tracks.tappedArtworkGroupHeader("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name")
+      tracks.tappedArtworkGroupHeader(
+        "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
+        "gallery-name-viewing-room-name"
+      )
     )
   })
 
@@ -76,7 +79,8 @@ describe("ViewingRoomArtworkRail", () => {
                   slug: "nicolas-party-rocks-ii",
                   artistNames: ["Nicolas Party"],
                   image: {
-                    imageURL: "https://d32dm0rphc51dk.cloudfront.net/Tc9k2ROn55SxNHWjYxxnrg/:version.jpg",
+                    imageURL:
+                      "https://d32dm0rphc51dk.cloudfront.net/Tc9k2ROn55SxNHWjYxxnrg/:version.jpg",
                   },
                   saleMessage: "$20,000",
                 },
@@ -89,7 +93,8 @@ describe("ViewingRoomArtworkRail", () => {
                   href: "/artwork/nicolas-party-still-life-no-011",
                   saleMessage: "$25,000",
                   image: {
-                    imageURL: "https://d32dm0rphc51dk.cloudfront.net/Tc9k2ROn55SxNHWjYxxnrg/:version.jpg",
+                    imageURL:
+                      "https://d32dm0rphc51dk.cloudfront.net/Tc9k2ROn55SxNHWjYxxnrg/:version.jpg",
                   },
                 },
               },

@@ -1,10 +1,17 @@
 import { Aggregations } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { SearchCriteria, SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import {
+  SearchCriteria,
+  SearchCriteriaAttributes,
+} from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { extractPillFromAggregation, extractPills, extractSizeLabel } from "./pillExtractors"
 
 describe("extractPillFromAggregation", () => {
   it("returns pills", () => {
-    const result = extractPillFromAggregation(SearchCriteria.materialsTerms, ["acrylic", "canvas"], aggregations)
+    const result = extractPillFromAggregation(
+      SearchCriteria.materialsTerms,
+      ["acrylic", "canvas"],
+      aggregations
+    )
 
     const pills = [
       { label: "Acrylic", value: "acrylic", paramName: SearchCriteria.materialsTerms },
@@ -31,7 +38,11 @@ describe("extractPillFromAggregation", () => {
   })
 
   it("returns empty array when couldn't get aggregation by param name", () => {
-    const result = extractPillFromAggregation(SearchCriteria.materialsTerms, ["acrylic", "canvas", "unknown-value"], [])
+    const result = extractPillFromAggregation(
+      SearchCriteria.materialsTerms,
+      ["acrylic", "canvas", "unknown-value"],
+      []
+    )
 
     expect(result).toEqual([])
   })

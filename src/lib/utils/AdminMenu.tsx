@@ -10,7 +10,18 @@ import { DevToggleName, devToggles, FeatureName, features } from "lib/store/conf
 import { GlobalStore } from "lib/store/GlobalStore"
 import { Versions } from "lib/store/migration"
 import { capitalize, compact, sortBy } from "lodash"
-import { ChevronIcon, CloseIcon, Flex, ReloadIcon, Sans, Separator, Spacer, Text, Touchable, useColor } from "palette"
+import {
+  ChevronIcon,
+  CloseIcon,
+  Flex,
+  ReloadIcon,
+  Sans,
+  Separator,
+  Spacer,
+  Text,
+  Touchable,
+  useColor,
+} from "palette"
 import React, { useEffect, useState } from "react"
 import { Button as RNButton, NativeModules } from "react-native"
 import {
@@ -33,13 +44,16 @@ const configurableFeatureFlagKeys = sortBy(
   ([k, { description }]) => description ?? k
 ).map(([k]) => k as FeatureName)
 
-const configurableDevToggleKeys = sortBy(Object.entries(devToggles), ([k, { description }]) => description ?? k).map(
-  ([k]) => k as DevToggleName
-)
+const configurableDevToggleKeys = sortBy(
+  Object.entries(devToggles),
+  ([k, { description }]) => description ?? k
+).map(([k]) => k as DevToggleName)
 
 export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModal }) => {
   const migrationVersion = GlobalStore.useAppState((s) => s.version)
-  const server = GlobalStore.useAppState((s) => s.config.environment.strings.webURL).slice("https://".length)
+  const server = GlobalStore.useAppState((s) => s.config.environment.strings.webURL).slice(
+    "https://".length
+  )
 
   useEffect(
     React.useCallback(() => {
@@ -123,9 +137,15 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
           title="Migration version"
           rightView={
             <Flex flexDirection="row" alignItems="center">
-              <RNButton title="-" onPress={() => GlobalStore.actions._setVersion(migrationVersion - 1)} />
+              <RNButton
+                title="-"
+                onPress={() => GlobalStore.actions._setVersion(migrationVersion - 1)}
+              />
               <Text>{migrationVersion}</Text>
-              <RNButton title="+" onPress={() => GlobalStore.actions._setVersion(migrationVersion + 1)} />
+              <RNButton
+                title="+"
+                onPress={() => GlobalStore.actions._setVersion(migrationVersion + 1)}
+              />
             </Flex>
           }
         />
@@ -141,7 +161,10 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
             Keychain.resetInternetCredentials(server)
           }}
         />
-        <FeatureFlagMenuItem title="Open RN Dev Menu" onPress={() => NativeModules.DevMenu.show()} />
+        <FeatureFlagMenuItem
+          title="Open RN Dev Menu"
+          onPress={() => NativeModules.DevMenu.show()}
+        />
         <FeatureFlagMenuItem
           title="Clear AsyncStorage"
           onPress={() => {
@@ -344,10 +367,14 @@ function envMenuOption(
 
 const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const color = useColor()
-  const { env, adminOverrides, strings } = GlobalStore.useAppState((store) => store.config.environment)
+  const { env, adminOverrides, strings } = GlobalStore.useAppState(
+    (store) => store.config.environment
+  )
   // show custom url options if there are already admin overrides in effect, or if the user has tapped the option
   // to set custom overrides during the lifetime of this component
-  const [showCustomURLOptions, setShowCustomURLOptions] = useState(Object.keys(adminOverrides).length > 0)
+  const [showCustomURLOptions, setShowCustomURLOptions] = useState(
+    Object.keys(adminOverrides).length > 0
+  )
   return (
     <>
       <FeatureFlagMenuItem
@@ -359,7 +386,13 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             undefined,
             compact([
               envMenuOption("staging", env, showCustomURLOptions, setShowCustomURLOptions, onClose),
-              envMenuOption("production", env, showCustomURLOptions, setShowCustomURLOptions, onClose),
+              envMenuOption(
+                "production",
+                env,
+                showCustomURLOptions,
+                setShowCustomURLOptions,
+                onClose
+              ),
               {
                 text: "Cancel",
                 style: "destructive",
@@ -382,13 +415,23 @@ const EnvironmentOptions: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   Object.entries(presets).map(([name, value]) => ({
                     text: name,
                     onPress: () => {
-                      GlobalStore.actions.config.environment.setAdminOverride({ key: key as EnvironmentKey, value })
+                      GlobalStore.actions.config.environment.setAdminOverride({
+                        key: key as EnvironmentKey,
+                        value,
+                      })
                     },
                   }))
                 )
               }}
             >
-              <Flex ml="2" mr="15px" my="5px" flexDirection="row" justifyContent="space-between" alignItems="center">
+              <Flex
+                ml="2"
+                mr="15px"
+                my="5px"
+                flexDirection="row"
+                justifyContent="space-between"
+                alignItems="center"
+              >
                 <Flex>
                   <Text variant="xs" color="black60" mb="0.5">
                     {description}
@@ -415,7 +458,14 @@ export const FeatureFlagMenuItem: React.FC<{
   const color = useColor()
   return (
     <Touchable onPress={onPress} underlayColor={color("black5")} disabled={disabled}>
-      <Flex flexDirection="row" alignItems="center" justifyContent="space-between" py={7.5} px="2" pr="15px">
+      <Flex
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="space-between"
+        py={7.5}
+        px="2"
+        pr="15px"
+      >
         <Flex flexDirection="row" mr="2" flex={5}>
           <Sans size="5">{title}</Sans>
         </Flex>

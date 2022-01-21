@@ -10,7 +10,12 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { act } from "react-test-renderer"
 import { getEssentialProps } from "./helper"
-import { ALLOW_EMPTY_CREATED_DATES_FILTER, OptionItem, YearOptionsScreen, YearText } from "./YearOptions"
+import {
+  ALLOW_EMPTY_CREATED_DATES_FILTER,
+  OptionItem,
+  YearOptionsScreen,
+  YearText,
+} from "./YearOptions"
 
 describe("Year Options Screen", () => {
   let storeInstance: ReturnType<typeof ArtworksFiltersStore.useStore>
@@ -53,7 +58,11 @@ describe("Year Options Screen", () => {
     return null
   }
 
-  const MockYearOptionsScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => (
+  const MockYearOptionsScreen = ({
+    initialData = initialState,
+  }: {
+    initialData?: ArtworkFiltersState
+  }) => (
     <ArtworkFiltersStoreProvider initialData={initialData}>
       <YearOptionsScreen {...getEssentialProps()} />
       <ArtworkFiltersStoreConsumer />
@@ -64,7 +73,9 @@ describe("Year Options Screen", () => {
     const tree = renderWithWrappers(<MockYearOptionsScreen initialData={initialState} />)
 
     expect(extractText(tree.root.findAllByType(YearText)[0])).toEqual("2010 – 2021")
-    expect(extractText(tree.root.findAllByType(OptionItem)[0])).toEqual(ALLOW_EMPTY_CREATED_DATES_FILTER.displayText)
+    expect(extractText(tree.root.findAllByType(OptionItem)[0])).toEqual(
+      ALLOW_EMPTY_CREATED_DATES_FILTER.displayText
+    )
   })
 
   it("selects the right year range and option", () => {

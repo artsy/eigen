@@ -23,7 +23,11 @@ screenTrack({
   context_screen_owner_type: null,
 })
 
-export const BillingAddress: React.FC<BillingAddressProps> = ({ onSubmit, navigator, billingAddress }) => {
+export const BillingAddress: React.FC<BillingAddressProps> = ({
+  onSubmit,
+  navigator,
+  billingAddress,
+}) => {
   const scrollViewRef = useRef<ScrollView>(null)
 
   const fullNameRef = useRef<Input>(null)
@@ -105,7 +109,9 @@ export const BillingAddress: React.FC<BillingAddressProps> = ({ onSubmit, naviga
   return (
     <ArtsyKeyboardAvoidingView>
       <Theme>
-        <FancyModalHeader onLeftButtonPress={() => navigator?.pop()}>Add billing address</FancyModalHeader>
+        <FancyModalHeader onLeftButtonPress={() => navigator?.pop()}>
+          Add billing address
+        </FancyModalHeader>
       </Theme>
       <ScrollView
         ref={scrollViewRef}

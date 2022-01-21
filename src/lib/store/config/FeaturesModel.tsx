@@ -7,7 +7,10 @@ export type DevToggleMap = { [k in DevToggleName]: boolean }
 
 export interface FeaturesModel {
   adminOverrides: { [k in FeatureName | DevToggleName]?: boolean }
-  setAdminOverride: Action<FeaturesModel, { key: FeatureName | DevToggleName; value: boolean | null }>
+  setAdminOverride: Action<
+    FeaturesModel,
+    { key: FeatureName | DevToggleName; value: boolean | null }
+  >
 
   // user features
   flags: Computed<FeaturesModel, FeatureMap, GlobalStoreModel>

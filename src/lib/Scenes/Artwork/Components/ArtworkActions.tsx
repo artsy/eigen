@@ -32,7 +32,11 @@ interface ArtworkActionsProps {
   shareOnPress: () => void
 }
 
-export const shareContent = (title: string, href: string, artists: ArtworkActions_artwork["artists"]) => {
+export const shareContent = (
+  title: string,
+  href: string,
+  artists: ArtworkActions_artwork["artists"]
+) => {
   let computedTitle: string | null
   if (artists && artists.length) {
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
@@ -54,7 +58,9 @@ export const shareContent = (title: string, href: string, artists: ArtworkAction
 export class ArtworkActions extends React.Component<ArtworkActionsProps> {
   @track((props: ArtworkActionsProps) => {
     return {
-      action_name: props.artwork.is_saved ? Schema.ActionNames.ArtworkUnsave : Schema.ActionNames.ArtworkSave,
+      action_name: props.artwork.is_saved
+        ? Schema.ActionNames.ArtworkUnsave
+        : Schema.ActionNames.ArtworkSave,
       action_type: Schema.ActionTypes.Success,
       context_module: Schema.ContextModules.ArtworkActions,
     }
@@ -75,7 +81,9 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
       `,
       variables: { input: { artworkID: artwork.internalID, remove: artwork.is_saved } },
       // @ts-ignore RELAY 12 MIGRATION
-      optimisticResponse: { saveArtwork: { artwork: { id: artwork.id, is_saved: !artwork.is_saved } } },
+      optimisticResponse: {
+        saveArtwork: { artwork: { id: artwork.id, is_saved: !artwork.is_saved } },
+      },
       onCompleted: () =>
         userHadMeaningfulInteraction({
           contextModule: ContextModule.artworkMetadata,
@@ -98,7 +106,13 @@ export class ArtworkActions extends React.Component<ArtworkActionsProps> {
     const heightIn = cm2in(heightCm!)
     const widthIn = cm2in(widthCm!)
 
-    LegacyNativeModules.ARScreenPresenterModule.presentAugmentedRealityVIR(image?.url!, widthIn, heightIn, slug, id)
+    LegacyNativeModules.ARScreenPresenterModule.presentAugmentedRealityVIR(
+      image?.url!,
+      widthIn,
+      heightIn,
+      slug,
+      id
+    )
   }
 
   render() {

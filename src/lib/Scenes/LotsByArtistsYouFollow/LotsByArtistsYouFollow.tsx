@@ -55,8 +55,12 @@ export const LotsByArtistsYouFollowFragmentContainer = createPaginationContainer
     me: graphql`
       fragment LotsByArtistsYouFollow_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
-        lotsByFollowedArtistsConnection(first: $count, after: $cursor, liveSale: true, isAuction: true)
-          @connection(key: "LotsByArtistsYouFollow_lotsByFollowedArtistsConnection") {
+        lotsByFollowedArtistsConnection(
+          first: $count
+          after: $cursor
+          liveSale: true
+          isAuction: true
+        ) @connection(key: "LotsByArtistsYouFollow_lotsByFollowedArtistsConnection") {
           edges {
             cursor
           }

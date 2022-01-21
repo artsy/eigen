@@ -46,7 +46,11 @@ describe("ReadMore", () => {
 
   it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
     const { queryByText, getAllByText, UNSAFE_queryAllByType } = renderWithWrappersTL(
-      <ReadMore maxChars={7} textStyle="new" content="This text is slightly longer than is allowed." />
+      <ReadMore
+        maxChars={7}
+        textStyle="new"
+        content="This text is slightly longer than is allowed."
+      />
     )
 
     expect(extractText(UNSAFE_queryAllByType(RNText)[0])).toBe(`This te... Read${nbsp}more`)

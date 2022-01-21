@@ -43,8 +43,12 @@ describe("SaleArtworksRail", () => {
 
     mockEnvironmentPayload(mockEnvironment, mockProps)
 
-    expect(tree.root.findAllByType(SectionTitle)[0].props.title).toEqual("Lots by artists you follow")
-    expect(tree.root.findAllByType(SaleArtworkTileRailCardContainer)).toHaveLength(INITIAL_NUMBER_TO_RENDER)
+    expect(tree.root.findAllByType(SectionTitle)[0].props.title).toEqual(
+      "Lots by artists you follow"
+    )
+    expect(tree.root.findAllByType(SaleArtworkTileRailCardContainer)).toHaveLength(
+      INITIAL_NUMBER_TO_RENDER
+    )
   })
 
   it("returns null if there are no artworks", () => {

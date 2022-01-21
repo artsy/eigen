@@ -21,7 +21,13 @@ const options = [
 
 it("shows title and subtitle within the select", () => {
   const component = renderWithWrappers(
-    <Select title="Title" subTitle="Subtitle" options={options} value="option-1" onSelectValue={() => null} />
+    <Select
+      title="Title"
+      subTitle="Subtitle"
+      options={options}
+      value="option-1"
+      onSelectValue={() => null}
+    />
   )
 
   expect(component.root.findAllByType(Text)[0].props.children).toEqual(["Title", false, false])
@@ -32,7 +38,13 @@ it("selects correct value", async () => {
   const onSelectValue = jest.fn()
 
   const component = renderWithWrappers(
-    <Select title="Title" subTitle="Subtitle" options={options} value="option-1" onSelectValue={onSelectValue} />
+    <Select
+      title="Title"
+      subTitle="Subtitle"
+      options={options}
+      value="option-1"
+      onSelectValue={onSelectValue}
+    />
   )
 
   await act(() => component.root.findAllByType(TouchableOpacity)[0].props.onPress())
@@ -65,5 +77,7 @@ it("filters on search", async () => {
   const selectModal = component.root.findAllByType(Modal)[0]
 
   expect(selectModal.findAllByType(Touchable).length).toEqual(1)
-  expect(extractText(selectModal.findAllByType(Touchable)[0].findAllByType(Text)[0])).toEqual("Option 2")
+  expect(extractText(selectModal.findAllByType(Touchable)[0].findAllByType(Text)[0])).toEqual(
+    "Option 2"
+  )
 })

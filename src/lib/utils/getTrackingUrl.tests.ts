@@ -66,7 +66,8 @@ describe(getTrackingUrl, () => {
     mockOrderLineItem = {
       shipment: {
         trackingNumber: null,
-        trackingUrl: "https://www.ups.com/track?loc=en_us&tracknum=1zw475770393992448&Requester=NS/trackdetails",
+        trackingUrl:
+          "https://www.ups.com/track?loc=en_us&tracknum=1zw475770393992448&Requester=NS/trackdetails",
       },
       fulfillments: {
         edges: [

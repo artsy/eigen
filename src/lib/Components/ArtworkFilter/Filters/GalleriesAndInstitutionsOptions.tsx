@@ -1,6 +1,10 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
-import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  FilterData,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import React from "react"
 import { useArtworkFiltersAggregation } from "../useArtworkFilters"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
@@ -9,9 +13,9 @@ import { useMultiSelect } from "./useMultiSelect"
 interface GalleriesAndInstitutionsOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "GalleriesAndInstitutionsOptionsScreen"> {}
 
-export const GalleriesAndInstitutionsOptionsScreen: React.FC<GalleriesAndInstitutionsOptionsScreenProps> = ({
-  navigation,
-}) => {
+export const GalleriesAndInstitutionsOptionsScreen: React.FC<
+  GalleriesAndInstitutionsOptionsScreenProps
+> = ({ navigation }) => {
   const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.partnerIDs })
 
   const options: FilterData[] = (aggregation?.counts ?? []).map(({ value: paramValue, name }) => {
