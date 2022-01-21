@@ -178,9 +178,10 @@ export class BidButton extends React.Component<BidButtonProps> {
     }
 
     const qualifiedForBidding = registrationStatus?.qualifiedForBidding
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const needsIdentityVerification = bidderNeedsIdentityVerification({
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       sale,
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       user: me,
       bidder: registrationStatus,
     })
@@ -232,17 +233,18 @@ export class BidButton extends React.Component<BidButtonProps> {
       const myLastMaxBid = hasBid && myLotStanding.mostRecentBid.maxBid.cents
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const increments = saleArtwork.increments.filter(
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         (increment) => increment.cents > (myLastMaxBid || 0)
       )
       const firstIncrement = increments && increments.length && increments[0]
       const incrementCents = firstIncrement && firstIncrement.cents
 
       return (
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         <Button
           width={100}
           size="large"
           block
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           onPress={() => this.redirectToBid(incrementCents)}
           haptic
         >

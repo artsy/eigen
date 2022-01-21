@@ -77,6 +77,7 @@ export const HeaderArtworksFilter: React.FC<FilterProps> = ({ total, animationVa
     }
     // @ts-ignore
     event.target.measure(
+      // @ts-ignore
       (x: number, y: number, width: number, height: number, pageX: number, pageY: number) => {
         setPageY(pageY)
       }

@@ -28,8 +28,8 @@ export function sendConversationMessage(
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const newMessageEdge = mutationPayload.getLinkedRecord("messageEdge")
     const conversationStore = store.get(conversation.id)
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const connection = ConnectionHandler.getConnection(
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       conversationStore,
       "Messages_messagesConnection"
     )

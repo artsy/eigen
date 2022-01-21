@@ -143,8 +143,8 @@ describe("ImageCarouselFragmentContainer", () => {
     it("'selects' subsequent pagination dots as a result of scrolling", async () => {
       const wrapper = await getWrapper()
 
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const measurements = getMeasurements({
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         images: artworkFixture.images,
         boundingBox: { width: 375, height: 275 },
       })

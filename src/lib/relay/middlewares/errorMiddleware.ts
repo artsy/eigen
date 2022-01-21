@@ -59,8 +59,8 @@ export const errorMiddleware = () => {
       return res
     }
 
-    // @ts-ignore RELAY 12 MIGRATION
     const allErrorsAreOptional =
+      // @ts-ignore RELAY 12 MIGRATION
       resJson.extensions?.optionalFields?.length === resJson.errors?.length
 
     if (allErrorsAreOptional) {
@@ -83,6 +83,7 @@ export const errorMiddleware = () => {
     // a field marked with the @principalField directive, or any sub-selection of such a field.
     // @ts-ignore RELAY 12 MIGRATION
     const principalFieldWasInvolvedInError = isErrorStatus(
+      // @ts-ignore RELAY 12 MIGRATION
       resJson.extensions?.principalField?.httpStatusCode
     )
 

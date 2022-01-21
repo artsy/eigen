@@ -256,10 +256,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
   createBidderPosition() {
     commitMutation<ConfirmBidCreateBidderPositionMutation>(this.props.relay.environment, {
       onCompleted: (results, errors) => {
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         return isEmpty(errors)
           ? this.verifyBidderPosition(results)
-          : this.presentErrorResult(errors)
+          : // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            this.presentErrorResult(errors)
       },
       onError: this.presentErrorResult.bind(this),
       mutation: graphql`
@@ -482,10 +482,10 @@ export class ConfirmBid extends React.Component<ConfirmBidProps, ConfirmBidState
           <Box>
             <Flex m={4} alignItems="center">
               {!!artworkImage && (
-                // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                 <Image
                   resizeMode="contain"
                   style={{ width: 50, height: 50 }}
+                  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                   source={{ uri: artworkImage.url }}
                 />
               )}

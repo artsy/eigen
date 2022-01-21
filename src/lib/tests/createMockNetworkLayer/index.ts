@@ -148,11 +148,13 @@ export const createMockFetchQuery = ({
       Mutation: Object.keys(mockMutationResults).reduce(
         (acc, k) => ({
           ...acc,
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           [k]:
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             typeof mockMutationResults[k] === "function"
-              ? mockMutationResults[k]
-              : () => mockMutationResults[k],
+              ? // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                mockMutationResults[k]
+              : // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+                () => mockMutationResults[k],
         }),
         {}
       ),

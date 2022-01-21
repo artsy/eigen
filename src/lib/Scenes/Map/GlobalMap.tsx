@@ -613,6 +613,7 @@ export class GlobalMap extends React.Component<Props, State> {
                   <CitySwitcherButton
                     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                     sponsoredContentUrl={
+                      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
                       this.props.viewer && this.props.viewer.city.sponsoredContent.artGuideUrl
                     }
                     city={city}

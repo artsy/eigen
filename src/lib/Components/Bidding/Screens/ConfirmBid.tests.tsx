@@ -633,8 +633,8 @@ describe("polling to verify bid position", () => {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       expect(nextStep.passProps).toEqual(
         expect.objectContaining({
-          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           bidderPositionResult:
+            // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
             mockRequestResponses.placingBid.bidRejected.createBidderPosition.result,
         })
       )

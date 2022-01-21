@@ -86,15 +86,15 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
         </>
       )
     } else if (isAcquireable) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       return (
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         <BuyNowButtonFragmentContainer artwork={artwork} editionSetID={this.props.editionSetID} />
       )
     } else if (isOfferable) {
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       return (
         <MakeOfferButtonFragmentContainer
           artwork={artwork}
+          // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
           editionSetID={this.props.editionSetID}
         />
       )

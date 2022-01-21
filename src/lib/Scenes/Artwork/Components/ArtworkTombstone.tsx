@@ -99,6 +99,7 @@ export class ArtworkTombstone extends React.Component<
       return (
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         <React.Fragment key={artist.href}>
+          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
           {this.renderArtistName(artistNameWithComma, artist.href)}
         </React.Fragment>
       )

@@ -38,6 +38,7 @@ export class ShowArtistsPreview extends React.Component<Props> {
     const artistsShown = 5
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const artists = get(show, (s) => s.artists, []).concat(
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       get(show, (s) => s.artists_without_artworks, [])
     )
     const items = compact(take(artists, artistsShown))

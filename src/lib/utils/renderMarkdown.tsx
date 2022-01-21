@@ -216,10 +216,11 @@ export function defaultRules({
           3: "subtitle",
           4: "text",
         }
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         const size = useNewTextStyles
-          ? newTextMap[node.level] || "subtitle"
-          : map[node.level] || "4"
+          ? // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            newTextMap[node.level] || "subtitle"
+          : // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            map[node.level] || "4"
         return useNewTextStyles ? (
           <Text mb="1" variant={size} key={state.key}>
             {output(node.content, state)}

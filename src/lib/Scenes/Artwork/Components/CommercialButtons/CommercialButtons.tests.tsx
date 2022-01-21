@@ -14,10 +14,12 @@ import { CommercialButtonsFragmentContainer } from "./CommercialButtons"
 
 jest.unmock("react-relay")
 
-// @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 const componentWithQuery = async ({
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   mockArtworkData,
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   mockOrderMutationResults,
+  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   mockOfferMutationResults,
 }) => {
   return await renderRelayTree({

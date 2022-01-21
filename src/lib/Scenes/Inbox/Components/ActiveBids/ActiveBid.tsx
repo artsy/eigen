@@ -113,21 +113,24 @@ class ActiveBid extends React.Component<Props, State> {
   handleTap = () => {
     const bid = this.props.bid
     // push user into live auction if it's open; otherwise go to artwork
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const href =
       this.state.status === "live_auction"
-        ? bid.sale.href
-        : bid.most_recent_bid.sale_artwork.artwork.href
+        ? // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          bid.sale.href
+        : // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+          bid.most_recent_bid.sale_artwork.artwork.href
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     navigate(href)
   }
 
   render() {
     const bid = this.props.bid.most_recent_bid
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const imageURL =
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       bid.sale_artwork.artwork &&
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       bid.sale_artwork.artwork.image &&
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       bid.sale_artwork.artwork.image.url
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const lotNumber = bid.sale_artwork.lot_label
