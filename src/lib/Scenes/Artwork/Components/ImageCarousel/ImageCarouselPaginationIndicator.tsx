@@ -7,7 +7,9 @@ import { useSpringValue } from "./useSpringValue"
 
 export type IndicatorType = "dots" | "scrollBar" | undefined
 
-export const PaginationIndicator: React.FC<{ indicatorType: IndicatorType }> = ({ indicatorType }) => {
+export const PaginationIndicator: React.FC<{ indicatorType: IndicatorType }> = ({
+  indicatorType,
+}) => {
   if (indicatorType === "scrollBar") {
     return <ScrollBar />
   }
@@ -28,7 +30,10 @@ const PaginationDots: React.FC = () => {
   )
 }
 
-export const PaginationDot: React.FC<{ diameter: number; index: number }> = ({ diameter, index }) => {
+export const PaginationDot: React.FC<{ diameter: number; index: number }> = ({
+  diameter,
+  index,
+}) => {
   const { imageIndex } = useContext(ImageCarouselContext)
   imageIndex.useUpdates()
   const opacity = useSpringValue(imageIndex.current === index ? 1 : 0.1)

@@ -22,7 +22,11 @@ function useCurrentTime() {
     }
   }, [])
   Animated.useCode(
-    () => Animated.onChange(isMounted, Animated.cond(isMounted, Animated.startClock(clock), Animated.stopClock(clock))),
+    () =>
+      Animated.onChange(
+        isMounted,
+        Animated.cond(isMounted, Animated.startClock(clock), Animated.stopClock(clock))
+      ),
     []
   )
   return clock
@@ -76,12 +80,12 @@ export const useMemoizedRandom = () => useMemo(Math.random, [])
 /**
  * Placeholder with memoized random with between `minWidth` and `maxWidth`.
  */
-export const RandomWidthPlaceholderText: React.FC<ViewStyle & { minWidth: number; maxWidth: number }> = ({
-  minWidth,
-  maxWidth,
-  ...props
-}) => {
-  return <PlaceholderText width={minWidth + useMemoizedRandom() * (maxWidth - minWidth)} {...props} />
+export const RandomWidthPlaceholderText: React.FC<
+  ViewStyle & { minWidth: number; maxWidth: number }
+> = ({ minWidth, maxWidth, ...props }) => {
+  return (
+    <PlaceholderText width={minWidth + useMemoizedRandom() * (maxWidth - minWidth)} {...props} />
+  )
 }
 
 const BUTTON_HEIGHT = 42
@@ -106,11 +110,11 @@ export class RandomNumberGenerator {
   }
 }
 
-export const PlaceholderRaggedText: React.FC<{ numLines: number; seed?: number; textHeight?: number }> = ({
-  numLines,
-  seed = 10,
-  textHeight = TEXT_HEIGHT,
-}) => {
+export const PlaceholderRaggedText: React.FC<{
+  numLines: number
+  seed?: number
+  textHeight?: number
+}> = ({ numLines, seed = 10, textHeight = TEXT_HEIGHT }) => {
   const lengths = useMemo(() => {
     // create our own little deterministic math.random() to avoid snapshot churn
     const rng = new RandomNumberGenerator(seed)

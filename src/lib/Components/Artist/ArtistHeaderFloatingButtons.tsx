@@ -71,7 +71,9 @@ const runTiming = (clock: Clock, value: Animated.Value<number>) => {
   ])
 }
 
-export const ArtistHeaderFloatingButtons: React.FC<ArtistHeaderFloatingButtonsProps> = ({ artist }) => {
+export const ArtistHeaderFloatingButtons: React.FC<ArtistHeaderFloatingButtonsProps> = ({
+  artist,
+}) => {
   const [shareSheetVisible, setShareSheetVisible] = useState(false)
   const [hideButton, setHideButton] = useState(false)
   const { headerOffsetY } = useStickyTabPageContext()
@@ -134,16 +136,19 @@ export const ArtistHeaderFloatingButtons: React.FC<ArtistHeaderFloatingButtonsPr
   )
 }
 
-export const ArtistHeaderFloatingButtonsFragmentContainer = createFragmentContainer(ArtistHeaderFloatingButtons, {
-  artist: graphql`
-    fragment ArtistHeaderFloatingButtons_artist on Artist {
-      internalID
-      slug
-      href
-      name
-      image {
-        url(version: "large")
+export const ArtistHeaderFloatingButtonsFragmentContainer = createFragmentContainer(
+  ArtistHeaderFloatingButtons,
+  {
+    artist: graphql`
+      fragment ArtistHeaderFloatingButtons_artist on Artist {
+        internalID
+        slug
+        href
+        name
+        image {
+          url(version: "large")
+        }
       }
-    }
-  `,
-})
+    `,
+  }
+)

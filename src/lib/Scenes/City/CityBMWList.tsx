@@ -77,7 +77,10 @@ export const CityBMWListContainer = createPaginationContainer(
   {
     city: graphql`
       fragment CityBMWList_city on City
-      @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 20 }
+        cursor: { type: "String", defaultValue: "" }
+      ) {
         name
         slug
         sponsoredContent {

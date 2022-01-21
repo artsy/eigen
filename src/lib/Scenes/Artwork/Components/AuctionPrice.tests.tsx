@@ -57,7 +57,10 @@ describe("AuctionPrice", () => {
 
   describe("for live sale in progress", () => {
     it("does not display anything", async () => {
-      const wrapper = await getWrapper(LiveAuctionInProgeress, AuctionTimerState.LIVE_INTEGRATION_ONGOING)
+      const wrapper = await getWrapper(
+        LiveAuctionInProgeress,
+        AuctionTimerState.LIVE_INTEGRATION_ONGOING
+      )
 
       expect(wrapper.html()).toBe(null)
     })
@@ -138,7 +141,10 @@ describe("AuctionPrice", () => {
 
   describe("for open auction with my bid winning", () => {
     it("displays max bid and winning indicator", async () => {
-      const wrapper = await getWrapper(OpenAuctionReserveMetWithMyWinningBid, AuctionTimerState.CLOSING)
+      const wrapper = await getWrapper(
+        OpenAuctionReserveMetWithMyWinningBid,
+        AuctionTimerState.CLOSING
+      )
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const texts = wrapper.find(Sans).map((x) => x.text())
 
@@ -149,7 +155,10 @@ describe("AuctionPrice", () => {
 
   describe("for open auction with my bid losing", () => {
     it("displays max bid and losing indicator", async () => {
-      const wrapper = await getWrapper(OpenAuctionReserveMetWithMyLosingBid, AuctionTimerState.CLOSING)
+      const wrapper = await getWrapper(
+        OpenAuctionReserveMetWithMyLosingBid,
+        AuctionTimerState.CLOSING
+      )
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const texts = wrapper.find(Sans).map((x) => x.text())
 
@@ -160,7 +169,10 @@ describe("AuctionPrice", () => {
 
   describe("for open auction with me increasing my max bid while winning", () => {
     it("displays max bid and winning indicator", async () => {
-      const wrapper = await getWrapper(OpenAuctionReserveNotMetIncreasingOwnBid, AuctionTimerState.CLOSING)
+      const wrapper = await getWrapper(
+        OpenAuctionReserveNotMetIncreasingOwnBid,
+        AuctionTimerState.CLOSING
+      )
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       const texts = wrapper.find(Sans).map((x) => x.text())
 

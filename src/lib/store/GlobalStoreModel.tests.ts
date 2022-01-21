@@ -24,7 +24,9 @@ describe("GlobalStoreModel", () => {
       },
     })
 
-    expect(__globalStoreTestUtils__?.getCurrentState().search.recentSearches[0].props.displayLabel).toEqual("Banksy")
+    expect(
+      __globalStoreTestUtils__?.getCurrentState().search.recentSearches[0].props.displayLabel
+    ).toEqual("Banksy")
   })
 
   it("can be manipulated", () => {
@@ -36,7 +38,10 @@ describe("GlobalStoreModel", () => {
       store.sessionState.testStuff = ["wow", 8]
     })
     // @ts-expect-error
-    expect(__globalStoreTestUtils__?.getCurrentState().sessionState.testStuff).toStrictEqual(["wow", 8])
+    expect(__globalStoreTestUtils__?.getCurrentState().sessionState.testStuff).toStrictEqual([
+      "wow",
+      8,
+    ])
 
     GlobalStore.actions.rehydrate({
       sessionState: {
@@ -45,7 +50,9 @@ describe("GlobalStoreModel", () => {
       },
     })
     // @ts-expect-error
-    expect(__globalStoreTestUtils__?.getCurrentState().sessionState.testStuff).toStrictEqual(["new stuff!"])
+    expect(__globalStoreTestUtils__?.getCurrentState().sessionState.testStuff).toStrictEqual([
+      "new stuff!",
+    ])
 
     GlobalStore.actions.rehydrate({
       sessionState: {
@@ -54,7 +61,10 @@ describe("GlobalStoreModel", () => {
       },
     })
     // @ts-expect-error
-    expect(__globalStoreTestUtils__?.getCurrentState().sessionState.testStuff).toStrictEqual(["wow", "once again"])
+    expect(__globalStoreTestUtils__?.getCurrentState().sessionState.testStuff).toStrictEqual([
+      "wow",
+      "once again",
+    ])
 
     GlobalStore.actions.__manipulate((store) => {
       // @ts-expect-error

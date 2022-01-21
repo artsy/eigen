@@ -1,6 +1,10 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistInsights_artist } from "__generated__/ArtistInsights_artist.graphql"
-import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
+import {
+  AnimatedArtworkFilterButton,
+  ArtworkFilterNavigator,
+  FilterModalMode,
+} from "lib/Components/ArtworkFilter"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { useOnTabFocusedEffect } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
@@ -89,7 +93,10 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
         onScrollEndDrag={onScrollEndDrag}
         innerRef={flatListRef}
       >
-        <MarketStatsQueryRenderer artistInternalID={artist.internalID} environment={relay.environment} />
+        <MarketStatsQueryRenderer
+          artistInternalID={artist.internalID}
+          environment={relay.environment}
+        />
         <View
           onLayout={({
             nativeEvent: {
@@ -99,7 +106,10 @@ export const ArtistInsights: React.FC<ArtistInsightsProps> = (props) => {
             auctionResultsYCoordinate.current = y
           }}
         >
-          <ArtistInsightsAuctionResultsPaginationContainer artist={artist} scrollToTop={scrollToTop} />
+          <ArtistInsightsAuctionResultsPaginationContainer
+            artist={artist}
+            scrollToTop={scrollToTop}
+          />
         </View>
       </StickyTabPageScrollView>
       <ArtworkFilterNavigator

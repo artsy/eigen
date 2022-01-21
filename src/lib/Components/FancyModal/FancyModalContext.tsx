@@ -3,7 +3,13 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { compact, flatten } from "lodash"
 import React, { RefObject, useEffect, useRef, useState } from "react"
 import { Animated, View } from "react-native"
-import { AnimationCreator, ease, FancyModalAnimationPosition, FancyModalCard, spring } from "./FancyModalCard"
+import {
+  AnimationCreator,
+  ease,
+  FancyModalAnimationPosition,
+  FancyModalCard,
+  spring,
+} from "./FancyModalCard"
 
 /**
  * This is responsible for managing a stack of FancyModalCard instances, and making sure they are positioned correctly.
@@ -33,7 +39,11 @@ class FancyModalCardStack {
   }
 
   getStackAnimations(createAnimation: AnimationCreator) {
-    return flatten(compact(this.stack.map((card) => card.current?.getStackAnimations(createAnimation, this.stack))))
+    return flatten(
+      compact(
+        this.stack.map((card) => card.current?.getStackAnimations(createAnimation, this.stack))
+      )
+    )
   }
 
   getRootCard(height: number, content: React.ReactNode) {

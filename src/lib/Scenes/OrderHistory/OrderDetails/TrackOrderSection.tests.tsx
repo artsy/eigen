@@ -88,10 +88,16 @@ describe("TrackOrderSection", () => {
 
       expect(extractText(tree.findByProps({ testID: "orderStatus" }))).toBe("pending")
       expect(tree.findAllByProps({ testID: "trackingNumber" })).toHaveLength(0)
-      expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe("Tracking not available")
+      expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe(
+        "Tracking not available"
+      )
       expect(extractText(tree.findByProps({ testID: "shippedOn" }))).toContain("Sep 2, 2021")
-      expect(extractText(tree.findByProps({ testID: "estimatedDelivery" }))).toContain("Oct 2, 2021")
-      expect(extractText(tree.findByProps({ testID: "trackingUrl" }))).toContain("View full tracking details")
+      expect(extractText(tree.findByProps({ testID: "estimatedDelivery" }))).toContain(
+        "Oct 2, 2021"
+      )
+      expect(extractText(tree.findByProps({ testID: "trackingUrl" }))).toContain(
+        "View full tracking details"
+      )
     })
 
     it("not renders fields without data", () => {
@@ -105,7 +111,9 @@ describe("TrackOrderSection", () => {
 
       expect(extractText(tree.findByProps({ testID: "orderStatus" }))).toBe("pending")
       expect(tree.findAllByProps({ testID: "trackingNumber" })).toHaveLength(0)
-      expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe("Tracking not available")
+      expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe(
+        "Tracking not available"
+      )
       expect(tree.findAllByProps({ testID: "shippedOn" })).toHaveLength(0)
       expect(tree.findAllByProps({ testID: "estimatedDelivery" })).toHaveLength(0)
       expect(tree.findAllByProps({ testID: "trackingUrl" })).toHaveLength(0)
@@ -121,8 +129,12 @@ describe("TrackOrderSection", () => {
       expect(extractText(tree.findByProps({ testID: "trackingNumber" }))).toContain("12345678910")
       expect(tree.findAllByProps({ testID: "noTrackingNumber" })).toHaveLength(0)
       expect(extractText(tree.findByProps({ testID: "shippedOn" }))).toContain("Oct 3, 2021")
-      expect(extractText(tree.findByProps({ testID: "estimatedDelivery" }))).toContain("on September 20, 2021")
-      expect(extractText(tree.findByProps({ testID: "trackingUrl" }))).toContain("View full tracking details")
+      expect(extractText(tree.findByProps({ testID: "estimatedDelivery" }))).toContain(
+        "on September 20, 2021"
+      )
+      expect(extractText(tree.findByProps({ testID: "trackingUrl" }))).toContain(
+        "View full tracking details"
+      )
     })
 
     it("not renders fields without data", () => {
@@ -152,7 +164,9 @@ describe("TrackOrderSection", () => {
 
       expect(extractText(tree.findByProps({ testID: "orderStatus" }))).toBe("in transit")
       expect(tree.findAllByProps({ testID: "trackingNumber" })).toHaveLength(0)
-      expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe("Tracking not available")
+      expect(extractText(tree.findByProps({ testID: "noTrackingNumber" }))).toBe(
+        "Tracking not available"
+      )
       expect(tree.findAllByProps({ testID: "shippedOn" })).toHaveLength(0)
       expect(tree.findAllByProps({ testID: "estimatedDelivery" })).toHaveLength(0)
       expect(tree.findAllByProps({ testID: "trackingUrl" })).toHaveLength(0)
@@ -164,12 +178,20 @@ describe("TrackOrderSection", () => {
         CommerceOrder: () => ({
           ...CommerceShipArtaOrder,
           lineItems: {
-            edges: [{ node: { shipment: { status: "completed", deliveryEnd: "2021-09-02T14:51:19+03:00" } } }],
+            edges: [
+              {
+                node: {
+                  shipment: { status: "completed", deliveryEnd: "2021-09-02T14:51:19+03:00" },
+                },
+              },
+            ],
           },
         }),
       })
 
-      expect(extractText(tree.findByProps({ testID: "deliveredStatus" }))).toBe("Delivered on Sep 2, 2021")
+      expect(extractText(tree.findByProps({ testID: "deliveredStatus" }))).toBe(
+        "Delivered on Sep 2, 2021"
+      )
     })
   })
 

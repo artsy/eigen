@@ -37,7 +37,10 @@ export class ShowArtistsPreview extends React.Component<Props> {
     const { show, onViewAllArtistsPressed, Component } = this.props
     const artistsShown = 5
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const artists = get(show, (s) => s.artists, []).concat(get(show, (s) => s.artists_without_artworks, []))
+    const artists = get(show, (s) => s.artists, []).concat(
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+      get(show, (s) => s.artists_without_artworks, [])
+    )
     const items = compact(take(artists, artistsShown))
 
     return (
@@ -56,7 +59,10 @@ export class ShowArtistsPreview extends React.Component<Props> {
         {artists.length > artistsShown && (
           <>
             <Spacer m={1} />
-            <CaretButton text={`View all ${artists.length} artists`} onPress={() => onViewAllArtistsPressed()} />
+            <CaretButton
+              text={`View all ${artists.length} artists`}
+              onPress={() => onViewAllArtistsPressed()}
+            />
           </>
         )}
       </>

@@ -118,7 +118,9 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
             addressZip: state.fields.postCode.value,
           })
           if (!stripeResult?.tokenId) {
-            throw new Error(`Unexpected stripe card tokenization result ${JSON.stringify(stripeResult)}`)
+            throw new Error(
+              `Unexpected stripe card tokenization result ${JSON.stringify(stripeResult)}`
+            )
           }
           const gravityResult = await saveCreditCard(stripeResult.tokenId)
           if (gravityResult.createCreditCard?.creditCardOrError?.creditCard) {
@@ -134,7 +136,9 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
           dismiss()
         } catch (e) {
           console.error(e)
-          alert("Something went wrong while attempting to save your credit card. Please try again or contact us.")
+          alert(
+            "Something went wrong while attempting to save your credit card. Please try again or contact us."
+          )
         }
       }}
     >
@@ -222,36 +226,38 @@ export const MyProfilePaymentNewCreditCard: React.FC<{}> = ({}) => {
 }
 
 const saveCreditCard = (token: string) => {
-  return new Promise<MyProfilePaymentNewCreditCardSaveCardMutation["response"]>((resolve, reject) => {
-    commitMutation<MyProfilePaymentNewCreditCardSaveCardMutation>(defaultEnvironment, {
-      mutation: graphql`
-        mutation MyProfilePaymentNewCreditCardSaveCardMutation($input: CreditCardInput!) {
-          createCreditCard(input: $input) {
-            creditCardOrError {
-              ... on CreditCardMutationSuccess {
-                creditCard {
-                  internalID
+  return new Promise<MyProfilePaymentNewCreditCardSaveCardMutation["response"]>(
+    (resolve, reject) => {
+      commitMutation<MyProfilePaymentNewCreditCardSaveCardMutation>(defaultEnvironment, {
+        mutation: graphql`
+          mutation MyProfilePaymentNewCreditCardSaveCardMutation($input: CreditCardInput!) {
+            createCreditCard(input: $input) {
+              creditCardOrError {
+                ... on CreditCardMutationSuccess {
+                  creditCard {
+                    internalID
+                  }
                 }
-              }
-              ... on CreditCardMutationFailure {
-                mutationError {
-                  detail
-                  error
-                  message
+                ... on CreditCardMutationFailure {
+                  mutationError {
+                    detail
+                    error
+                    message
+                  }
                 }
               }
             }
           }
-        }
-      `,
-      onCompleted: resolve,
-      onError: reject,
-      variables: {
-        input: {
-          oneTimeUse: false,
-          token,
+        `,
+        onCompleted: resolve,
+        onError: reject,
+        variables: {
+          input: {
+            oneTimeUse: false,
+            token,
+          },
         },
-      },
-    })
-  })
+      })
+    }
+  )
 }

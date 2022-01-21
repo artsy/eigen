@@ -26,7 +26,10 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
 }) => {
   const { trackEvent } = useTracking()
 
-  const { newWorksByInterestingArtists } = useFragment<NewWorksForYouRail_me$key>(artworksFragment, me)
+  const { newWorksByInterestingArtists } = useFragment<NewWorksForYouRail_me$key>(
+    artworksFragment,
+    me
+  )
 
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)
@@ -57,7 +60,12 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
           artworks={artworks}
           onPress={(artwork, position) => {
             trackEvent(
-              HomeAnalytics.artworkThumbnailTapEvent(ContextModule.newWorksForYouRail, artwork.slug, position, "single")
+              HomeAnalytics.artworkThumbnailTapEvent(
+                ContextModule.newWorksForYouRail,
+                artwork.slug,
+                position,
+                "single"
+              )
             )
             navigate(artwork.href!)
           }}

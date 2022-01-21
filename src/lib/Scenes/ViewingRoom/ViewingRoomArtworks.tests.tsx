@@ -52,9 +52,9 @@ describe("ViewingRoom", () => {
       }),
     })
 
-    expect(extractText(tree.root.findByProps({ testID: "artwork-additional-information" }))).toEqual(
-      "additionalInformation-1"
-    )
+    expect(
+      extractText(tree.root.findByProps({ testID: "artwork-additional-information" }))
+    ).toEqual("additionalInformation-1")
   })
 
   it("navigates to artwork screen + calls tracking on press", () => {

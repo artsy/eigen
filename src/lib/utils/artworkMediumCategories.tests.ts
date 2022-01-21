@@ -2,7 +2,9 @@ import { artworkMediumCategories } from "./artworkMediumCategories"
 
 describe("artworkMediumCategories", () => {
   it("maps raw (Gravity) artwork category labels to their respective values", () => {
-    expect(artworkMediumCategories.reduce((acc, cur) => ({ ...acc, [cur.value]: cur.label }), {})).toEqual({
+    expect(
+      artworkMediumCategories.reduce((acc, cur) => ({ ...acc, [cur.value]: cur.label }), {})
+    ).toEqual({
       Architecture: "Architecture",
       "Design/Decorative Art": "Design/Decorative Art",
       "Drawing, Collage or other Work on Paper": "Drawing, Collage or other Work on Paper",

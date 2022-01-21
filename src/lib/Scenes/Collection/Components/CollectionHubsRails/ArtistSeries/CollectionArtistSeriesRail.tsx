@@ -33,33 +33,36 @@ export const CollectionArtistSeriesRail: React.FC<CollectionArtistSeriesRailProp
   )
 }
 
-export const CollectionArtistSeriesRailContainer = createFragmentContainer(CollectionArtistSeriesRail, {
-  collection: graphql`
-    fragment CollectionArtistSeriesRail_collection on MarketingCollection {
-      slug
-      id
-    }
-  `,
-
-  collectionGroup: graphql`
-    fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup {
-      name
-      members {
+export const CollectionArtistSeriesRailContainer = createFragmentContainer(
+  CollectionArtistSeriesRail,
+  {
+    collection: graphql`
+      fragment CollectionArtistSeriesRail_collection on MarketingCollection {
         slug
         id
-        title
-        priceGuidance
-        artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
-          edges {
-            node {
-              title
-              image {
-                url
+      }
+    `,
+
+    collectionGroup: graphql`
+      fragment CollectionArtistSeriesRail_collectionGroup on MarketingCollectionGroup {
+        name
+        members {
+          slug
+          id
+          title
+          priceGuidance
+          artworksConnection(first: 3, aggregations: [TOTAL], sort: "-decayed_merch") {
+            edges {
+              node {
+                title
+                image {
+                  url
+                }
               }
             }
           }
         }
       }
-    }
-  `,
-})
+    `,
+  }
+)

@@ -5,7 +5,10 @@ import { Animated, FlatList, View } from "react-native"
 import { useTracking } from "react-tracking"
 import { GlobalState, useGlobalState } from "../../../../utils/useGlobalState"
 
-export type ImageDescriptor = Pick<ImageCarousel_images[number], "deepZoom" | "height" | "width" | "url">
+export type ImageDescriptor = Pick<
+  ImageCarousel_images[number],
+  "deepZoom" | "height" | "width" | "url"
+>
 
 export type ImageCarouselAction =
   | {
@@ -32,7 +35,12 @@ export type ImageCarouselAction =
       nextZoomScale: number
     }
 
-export type FullScreenState = "none" | "doing first render" | "animating entry transition" | "entered" | "exiting"
+export type FullScreenState =
+  | "none"
+  | "doing first render"
+  | "animating entry transition"
+  | "entered"
+  | "exiting"
 
 export interface ImageCarouselContext {
   imageIndex: GlobalState<number>
@@ -87,7 +95,10 @@ export function useNewImageCarouselContext({
               setIsZoomedCompletelyOut(true)
               if (fullScreenState.current !== "none") {
                 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-                embeddedFlatListRef.current.scrollToIndex({ index: action.nextImageIndex, animated: false })
+                embeddedFlatListRef.current.scrollToIndex({
+                  index: action.nextImageIndex,
+                  animated: false,
+                })
               }
               // tslint:disable-next-line: no-unused-expression
               onImageIndexChange && onImageIndexChange(imageIndex.current)
@@ -126,4 +137,6 @@ export function useNewImageCarouselContext({
   )
 }
 
-export const ImageCarouselContext = React.createContext<ImageCarouselContext>(null as any /* STRICTNESS_MIGRATION */)
+export const ImageCarouselContext = React.createContext<ImageCarouselContext>(
+  null as any /* STRICTNESS_MIGRATION */
+)

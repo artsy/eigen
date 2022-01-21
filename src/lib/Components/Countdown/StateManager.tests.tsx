@@ -25,7 +25,9 @@ describe("StateManager", () => {
       />
     )
 
-    expect(comp.find(Countdown).props().duration.toString()).toEqual(moment.duration(1000).toString())
+    expect(comp.find(Countdown).props().duration.toString()).toEqual(
+      moment.duration(1000).toString()
+    )
   })
 
   it("Transitions state when duration expires", () => {

@@ -21,7 +21,10 @@ const artworkDetailItems = (artwork: CollapsibleArtworkDetails_artwork) => {
     { title: "Publisher", value: artwork.publisher },
     { title: "Materials", value: artwork.medium },
     { title: "Classification", value: artwork.attributionClass?.name },
-    { title: "Dimensions", value: [artwork.dimensions?.in, artwork.dimensions?.cm].filter((d) => d).join("\n") },
+    {
+      title: "Dimensions",
+      value: [artwork.dimensions?.in, artwork.dimensions?.cm].filter((d) => d).join("\n"),
+    },
     { title: "Signature", value: artwork.signatureInfo?.details },
     { title: "Frame", value: artwork.framed?.details },
     { title: "Certificate of Authenticity", value: artwork.certificateOfAuthenticity?.details },
@@ -86,42 +89,45 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
   ) : null
 }
 
-export const CollapsibleArtworkDetailsFragmentContainer = createFragmentContainer(CollapsibleArtworkDetails, {
-  artwork: graphql`
-    fragment CollapsibleArtworkDetails_artwork on Artwork {
-      image {
-        url
-        width
-        height
+export const CollapsibleArtworkDetailsFragmentContainer = createFragmentContainer(
+  CollapsibleArtworkDetails,
+  {
+    artwork: graphql`
+      fragment CollapsibleArtworkDetails_artwork on Artwork {
+        image {
+          url
+          width
+          height
+        }
+        internalID
+        title
+        date
+        saleMessage
+        attributionClass {
+          name
+        }
+        category
+        manufacturer
+        publisher
+        medium
+        conditionDescription {
+          details
+        }
+        certificateOfAuthenticity {
+          details
+        }
+        framed {
+          details
+        }
+        dimensions {
+          in
+          cm
+        }
+        signatureInfo {
+          details
+        }
+        artistNames
       }
-      internalID
-      title
-      date
-      saleMessage
-      attributionClass {
-        name
-      }
-      category
-      manufacturer
-      publisher
-      medium
-      conditionDescription {
-        details
-      }
-      certificateOfAuthenticity {
-        details
-      }
-      framed {
-        details
-      }
-      dimensions {
-        in
-        cm
-      }
-      signatureInfo {
-        details
-      }
-      artistNames
-    }
-  `,
-})
+    `,
+  }
+)

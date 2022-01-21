@@ -2,7 +2,15 @@ import { tappedViewOffer } from "@artsy/cohesion"
 import { navigate } from "lib/navigation/navigate"
 import { useEventTiming } from "lib/utils/useEventTiming"
 import { DateTime } from "luxon"
-import { AlertCircleFillIcon, ArrowRightIcon, Color, Flex, IconProps, MoneyFillIcon, Text } from "palette"
+import {
+  AlertCircleFillIcon,
+  ArrowRightIcon,
+  Color,
+  Flex,
+  IconProps,
+  MoneyFillIcon,
+  Text,
+} from "palette"
 import React from "react"
 import { TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
@@ -26,7 +34,11 @@ export type ReviewOfferCTAKind =
   | "OFFER_RECEIVED_CONFIRM_NEEDED"
   | "PROVISIONAL_OFFER_ACCEPTED"
 
-export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({ conversationID, activeOrder, kind }) => {
+export const ReviewOfferButton: React.FC<ReviewOfferButtonProps> = ({
+  conversationID,
+  activeOrder,
+  kind,
+}) => {
   const { internalID: orderID, offers } = activeOrder
   const { trackEvent } = useTracking()
 

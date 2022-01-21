@@ -35,13 +35,17 @@ describe("FilteredArtworkGridZeroState", () => {
   })
 
   it(`does not call "trackClear" callback on "Clear filters" button press if id is not passed`, () => {
-    const { queryAllByText } = renderWithWrappersTL(<TestWrapper slug="test-slug" trackClear={trackClearMock} />)
+    const { queryAllByText } = renderWithWrappersTL(
+      <TestWrapper slug="test-slug" trackClear={trackClearMock} />
+    )
     fireEvent(queryAllByText("Clear filters")[0], "press")
     expect(trackClearMock).not.toHaveBeenCalled()
   })
 
   it(`does not call "trackClear" callback on "Clear filters" button press if slug is not passed`, () => {
-    const { queryAllByText } = renderWithWrappersTL(<TestWrapper id="test-id" trackClear={trackClearMock} />)
+    const { queryAllByText } = renderWithWrappersTL(
+      <TestWrapper id="test-id" trackClear={trackClearMock} />
+    )
     fireEvent(queryAllByText("Clear filters")[0], "press")
     expect(trackClearMock).not.toHaveBeenCalled()
   })

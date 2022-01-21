@@ -1,7 +1,11 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArticleCard_article } from "__generated__/ArticleCard_article.graphql"
 import { ArticleCardContainer } from "lib/Components/ArticleCard"
-import { PlaceholderBox, ProvidePlaceholderContext, RandomWidthPlaceholderText } from "lib/utils/placeholders"
+import {
+  PlaceholderBox,
+  ProvidePlaceholderContext,
+  RandomWidthPlaceholderText,
+} from "lib/utils/placeholders"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
@@ -131,7 +135,12 @@ export const ArticlesPlaceholder = () => {
               <ArticlesListItem index={item} key={item}>
                 <PlaceholderBox aspectRatio={1.33} width="100%" marginBottom={10} />
                 <RandomWidthPlaceholderText minWidth={50} maxWidth={100} marginTop={1} />
-                <RandomWidthPlaceholderText height={18} minWidth={200} maxWidth={200} marginTop={1} />
+                <RandomWidthPlaceholderText
+                  height={18}
+                  minWidth={200}
+                  maxWidth={200}
+                  marginTop={1}
+                />
                 <RandomWidthPlaceholderText minWidth={100} maxWidth={100} marginTop={1} />
                 <Spacer mb={2} />
               </ArticlesListItem>

@@ -1,6 +1,9 @@
 import { fireEvent } from "@testing-library/react-native"
 import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { ArtistIDsArtworksOptionsScreen } from "./ArtistIDsArtworksOptions"
@@ -71,7 +74,9 @@ describe("Artist options screen", () => {
         followedArtists: null,
       },
     }
-    const { getAllByA11yState } = renderWithWrappersTL(<MockArtistScreen initialData={injectedState} />)
+    const { getAllByA11yState } = renderWithWrappersTL(
+      <MockArtistScreen initialData={injectedState} />
+    )
 
     expect(getAllByA11yState({ checked: false })).toHaveLength(6)
   })
@@ -97,7 +102,9 @@ describe("Artist options screen", () => {
         },
       }
 
-      const { getAllByA11yState } = renderWithWrappersTL(<MockArtistScreen initialData={injectedState} />)
+      const { getAllByA11yState } = renderWithWrappersTL(
+        <MockArtistScreen initialData={injectedState} />
+      )
       const selectedOptions = getAllByA11yState({ checked: true })
 
       expect(selectedOptions[0]).toHaveTextContent("Artist 2")
@@ -117,7 +124,9 @@ describe("Artist options screen", () => {
         },
       }
 
-      const { getByText, getAllByA11yState } = renderWithWrappersTL(<MockArtistScreen initialData={injectedState} />)
+      const { getByText, getAllByA11yState } = renderWithWrappersTL(
+        <MockArtistScreen initialData={injectedState} />
+      )
 
       fireEvent.press(getByText("All Artists I Follow"))
       fireEvent.press(getByText("Artist 1"))

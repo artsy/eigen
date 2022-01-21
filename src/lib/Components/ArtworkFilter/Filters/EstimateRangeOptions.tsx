@@ -1,7 +1,10 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { AggregateOption, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworksFiltersStore,
+  useSelectedOptionsDisplay,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { Sans, Separator } from "palette"
 import React from "react"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
@@ -18,10 +21,14 @@ const EstimateRanges = [
   { paramValue: "5000000-*", paramDisplay: "$50,000+" },
 ]
 
-export const EstimateRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
+export const EstimateRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({
+  navigation,
+}) => {
   const paramName = FilterParamName.estimateRange
 
-  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.selectFiltersAction
+  )
 
   const options = EstimateRanges.map((estimateRange) => {
     return {

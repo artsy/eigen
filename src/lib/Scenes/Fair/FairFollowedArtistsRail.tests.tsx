@@ -23,7 +23,9 @@ describe("FairFollowedArtistsRail", () => {
     <QueryRenderer<FairFollowedArtistsRailTestsQuery>
       environment={env}
       query={graphql`
-        query FairFollowedArtistsRailTestsQuery($fairID: String!) @raw_response_type @relay_test_operation {
+        query FairFollowedArtistsRailTestsQuery($fairID: String!)
+        @raw_response_type
+        @relay_test_operation {
           fair(id: $fairID) {
             ...FairFollowedArtistsRail_fair
           }
@@ -48,7 +50,9 @@ describe("FairFollowedArtistsRail", () => {
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
-      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, mockResolvers)
+      )
     })
     return tree
   }

@@ -95,7 +95,10 @@ const notificationsResponse = () => {
                   artists: "Ana Mendieta",
                   summary: "2 Works Added",
                   artworks: {
-                    edges: [{ node: { title: "Corazón de Roca con Sangre" } }, { node: { title: "Butterfly" } }],
+                    edges: [
+                      { node: { title: "Corazón de Roca con Sangre" } },
+                      { node: { title: "Butterfly" } },
+                    ],
                   },
                   image: {
                     resized: {

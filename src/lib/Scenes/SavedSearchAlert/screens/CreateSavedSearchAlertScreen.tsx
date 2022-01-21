@@ -23,7 +23,9 @@ export const CreateSavedSearchAlertScreen: React.FC<Props> = (props) => {
     const attributes = getSearchCriteriaFromFilters(route.params.artistId, unitedFilters)
 
     return (
-      <SavedSearchStoreProvider initialData={{ attributes, aggregations: filterState.aggregations }}>
+      <SavedSearchStoreProvider
+        initialData={{ attributes, aggregations: filterState.aggregations }}
+      >
         <Box flex={1}>
           <CreateSavedSearchAlertContentQueryRenderer
             navigation={navigation}

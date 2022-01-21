@@ -41,7 +41,10 @@ export const GeneArtworks: React.FC<GeneArtworksProps> = ({ gene, relay, openFil
   useEffect(() => {
     setJSX(
       <Box backgroundColor="white">
-        <ArtworksFilterHeader selectedFiltersCount={selectedFiltersCount} onFilterPress={openFilterModal} />
+        <ArtworksFilterHeader
+          selectedFiltersCount={selectedFiltersCount}
+          onFilterPress={openFilterModal}
+        />
       </Box>
     )
   }, [artworksTotal, openFilterModal])
@@ -71,7 +74,11 @@ export const GeneArtworks: React.FC<GeneArtworksProps> = ({ gene, relay, openFil
       <Text variant="md" color="black60" mb={2}>
         Showing {artworksTotal} works
       </Text>
-      <InfiniteScrollArtworksGrid connection={gene.artworks!} hasMore={relay.hasMore} loadMore={relay.loadMore} />
+      <InfiniteScrollArtworksGrid
+        connection={gene.artworks!}
+        hasMore={relay.hasMore}
+        loadMore={relay.loadMore}
+      />
     </Box>
   )
 }
@@ -179,7 +186,12 @@ export const GeneArtworksPaginationContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query GeneArtworksPaginationQuery($id: ID!, $count: Int!, $cursor: String, $input: FilterArtworksInput) {
+      query GeneArtworksPaginationQuery(
+        $id: ID!
+        $count: Int!
+        $cursor: String
+        $input: FilterArtworksInput
+      ) {
         node(id: $id) {
           ... on Gene {
             ...GeneArtworks_gene @arguments(count: $count, cursor: $cursor, input: $input)

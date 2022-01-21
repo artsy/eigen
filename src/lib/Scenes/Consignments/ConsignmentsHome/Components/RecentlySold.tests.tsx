@@ -137,7 +137,12 @@ describe("RecentlySold", () => {
 })
 
 function makeTargetSupply(
-  artworks: Array<{ artistNames?: string; realizedPrice?: string | null; slug?: string; internalID?: string }>
+  artworks: Array<{
+    artistNames?: string
+    realizedPrice?: string | null
+    slug?: string
+    internalID?: string
+  }>
 ) {
   const items = artworks.map((artwork) => {
     return {

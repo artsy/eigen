@@ -57,13 +57,20 @@ class Sales extends React.Component<Props, State> {
     const timedAuctions = sales.filter((a) => !a.live_start_at)
 
     return (
-      <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.auctions })}>
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({ context_screen_owner_type: OwnerType.auctions })}
+      >
         <PageWithSimpleHeader title="Auctions">
           <ScrollView
-            refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
+            refreshControl={
+              <RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />
+            }
           >
             <Stack py={2} spacing={3}>
-              <LotsByFollowedArtistsRailContainer title="Lots by Artists You Follow" me={this.props.me} />
+              <LotsByFollowedArtistsRailContainer
+                title="Lots by Artists You Follow"
+                me={this.props.me}
+              />
               <SaleList title="Current Live Auctions" sales={liveAuctions} />
               <SaleList title="Current Timed Auctions" sales={timedAuctions} />
             </Stack>

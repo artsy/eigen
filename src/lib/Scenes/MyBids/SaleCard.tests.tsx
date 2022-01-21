@@ -44,7 +44,9 @@ describe("SaleCard", () => {
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
-      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, mockResolvers)
+      )
     })
     return tree
   }
@@ -77,7 +79,9 @@ describe("SaleCard", () => {
     })
 
     expect(wrapper.root.findAllByType(CompleteRegistrationCTAWrapper)).toHaveLength(1)
-    expect(wrapper.root.findAllByProps({ navLink: "/identity-verification/idv-id" }).length).toEqual(1)
+    expect(
+      wrapper.root.findAllByProps({ navLink: "/identity-verification/idv-id" }).length
+    ).toEqual(1)
   })
 
   it("renders a notice that registration is pending when identity verification is not required, but the user is not yet qualified for bidding", () => {
@@ -102,6 +106,8 @@ describe("SaleCard", () => {
     })
 
     expect(wrapper.root.findAllByType(RegistrationCTAWrapper)).toHaveLength(1)
-    expect(wrapper.root.findAllByProps({ navLink: "/auction-registration/test-sale" }).length).toEqual(1)
+    expect(
+      wrapper.root.findAllByProps({ navLink: "/auction-registration/test-sale" }).length
+    ).toEqual(1)
   })
 })

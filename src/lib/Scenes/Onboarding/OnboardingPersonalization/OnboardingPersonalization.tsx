@@ -2,7 +2,10 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps, TransitionPresets } from "@react-navigation/stack"
 import { OnboardingPersonalization_highlights } from "__generated__/OnboardingPersonalization_highlights.graphql"
 import { OnboardingPersonalizationListQuery } from "__generated__/OnboardingPersonalizationListQuery.graphql"
-import { ArtistListItemContainer as ArtistListItem, ArtistListItemPlaceholder } from "lib/Components/ArtistListItem"
+import {
+  ArtistListItemContainer as ArtistListItem,
+  ArtistListItemPlaceholder,
+} from "lib/Components/ArtistListItem"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -48,13 +51,20 @@ export const OnboardingPersonalization = () => {
 }
 
 interface OnboardingPersonalizationListNavigationProps
-  extends StackScreenProps<OnboardingPersonalizationNavigationStack, "OnboardingPersonalizationList"> {}
+  extends StackScreenProps<
+    OnboardingPersonalizationNavigationStack,
+    "OnboardingPersonalizationList"
+  > {}
 
 interface OnboardingPersonalizationListProps extends OnboardingPersonalizationListNavigationProps {
   highlights: OnboardingPersonalization_highlights
 }
 
-const OnboardingPersonalizationListHeader = ({ navigateToModal }: { navigateToModal: () => void }) => {
+const OnboardingPersonalizationListHeader = ({
+  navigateToModal,
+}: {
+  navigateToModal: () => void
+}) => {
   const color = useColor()
   return (
     <>
@@ -69,7 +79,8 @@ const OnboardingPersonalizationListHeader = ({ navigateToModal }: { navigateToMo
         <Text variant="lg">What Artists do You Collect?</Text>
         <Spacer mt={0.5} />
         <Text variant="xs" color={color("black100")}>
-          Follow at least three artists you’re looking to collect or track so we can personalize your experience.
+          Follow at least three artists you’re looking to collect or track so we can personalize
+          your experience.
         </Text>
       </Box>
       <Spacer mt={2} />
@@ -77,7 +88,12 @@ const OnboardingPersonalizationListHeader = ({ navigateToModal }: { navigateToMo
       {/* Fake search Input */}
       <Flex px={2}>
         <TouchableWithoutFeedback onPress={navigateToModal} testID="searchArtistButton">
-          <Flex flexDirection="row" borderWidth={1} borderColor={color("black60")} height={INPUT_HEIGHT}>
+          <Flex
+            flexDirection="row"
+            borderWidth={1}
+            borderColor={color("black60")}
+            height={INPUT_HEIGHT}
+          >
             <Flex pl="1" justifyContent="center" flexGrow={0}>
               <SearchIcon width={18} height={18} />
             </Flex>
@@ -93,7 +109,9 @@ const OnboardingPersonalizationListHeader = ({ navigateToModal }: { navigateToMo
   )
 }
 
-export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationListProps> = ({ ...props }) => {
+export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationListProps> = ({
+  ...props
+}) => {
   const space = useSpace()
   const popularArtists = compact(props.highlights.popularArtists)
 
@@ -128,7 +146,12 @@ export const OnboardingPersonalizationList: React.FC<OnboardingPersonalizationLi
         />
       </ScrollView>
       <Flex p={2} position="absolute" bottom={0} backgroundColor="white">
-        <Button variant="fillDark" block testID="doneButton" onPress={handleFinishOnboardingPersonalization}>
+        <Button
+          variant="fillDark"
+          block
+          testID="doneButton"
+          onPress={handleFinishOnboardingPersonalization}
+        >
           Done
         </Button>
       </Flex>
@@ -141,19 +164,24 @@ const handleFinishOnboardingPersonalization = async () => {
   GlobalStore.actions.auth.requestPushNotifPermission()
 }
 
-export const OnboardingPersonalizationListRefetchContainer = createFragmentContainer(OnboardingPersonalizationList, {
-  highlights: graphql`
-    fragment OnboardingPersonalization_highlights on Highlights
-    @argumentDefinitions(excludeArtistIDs: { type: "[String]" }) {
-      popularArtists(excludeFollowedArtists: true, excludeArtistIDs: $excludeArtistIDs) {
-        internalID
-        ...ArtistListItem_artist
+export const OnboardingPersonalizationListRefetchContainer = createFragmentContainer(
+  OnboardingPersonalizationList,
+  {
+    highlights: graphql`
+      fragment OnboardingPersonalization_highlights on Highlights
+      @argumentDefinitions(excludeArtistIDs: { type: "[String]" }) {
+        popularArtists(excludeFollowedArtists: true, excludeArtistIDs: $excludeArtistIDs) {
+          internalID
+          ...ArtistListItem_artist
+        }
       }
-    }
-  `,
-})
+    `,
+  }
+)
 
-const OnboardingPersonalizationListQueryRenderer: React.FC<OnboardingPersonalizationListNavigationProps> = (props) => (
+const OnboardingPersonalizationListQueryRenderer: React.FC<
+  OnboardingPersonalizationListNavigationProps
+> = (props) => (
   <QueryRenderer<OnboardingPersonalizationListQuery>
     environment={defaultEnvironment}
     query={graphql`

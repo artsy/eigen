@@ -57,10 +57,13 @@ export const ConversationCTA: React.FC<Props> = ({ conversation, show }) => {
       } else if (state === "FULFILLED") {
         kind = "OFFER_ACCEPTED"
       } else if (state === "APPROVED") {
-        const isProvisionalOffer = lastOffer?.fromParticipant === "SELLER" && lastOffer?.definesTotal
+        const isProvisionalOffer =
+          lastOffer?.fromParticipant === "SELLER" && lastOffer?.definesTotal
         kind = isProvisionalOffer ? "PROVISIONAL_OFFER_ACCEPTED" : "OFFER_ACCEPTED"
       }
-      CTA = kind && <ReviewOfferButton kind={kind} activeOrder={activeOrder} conversationID={conversationID} />
+      CTA = kind && (
+        <ReviewOfferButton kind={kind} activeOrder={activeOrder} conversationID={conversationID} />
+      )
     }
   }
   if (!CTA) {

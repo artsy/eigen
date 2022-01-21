@@ -16,7 +16,12 @@ export const ImageSearchModal: React.FC<ImageSearchModalProps> = ({
   errorMessage,
 }) => {
   return (
-    <Modal visible={isVisible} onDismiss={onDismiss} presentationStyle="fullScreen" animationType="slide">
+    <Modal
+      visible={isVisible}
+      onDismiss={onDismiss}
+      presentationStyle="fullScreen"
+      animationType="slide"
+    >
       {isLoading ? (
         <Flex flex={1} justifyContent="center" alignItems="center">
           <Text>Analyzing image to find matches...</Text>

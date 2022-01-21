@@ -11,7 +11,10 @@ const NAVBAR_HEIGHT = 44
 
 export type PopoverMessagePlacement = "top" | "bottom"
 export type PopoverMessageType = "info" | "success" | "error" | "default"
-export type PopoverMessageItem = Omit<PopoverMessageProps, "translateYAnimation" | "opacityAnimation">
+export type PopoverMessageItem = Omit<
+  PopoverMessageProps,
+  "translateYAnimation" | "opacityAnimation"
+>
 
 export interface PopoverMessageProps {
   placement?: PopoverMessagePlacement
@@ -59,7 +62,16 @@ export const getColorsByType = (type?: PopoverMessageType) => {
 // TODO: Remove NAVBAR_HEIGHT when a new design without a floating back button is added
 export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
   const color = useColor()
-  const { placement = "top", title, message, type, translateYAnimation, opacityAnimation, onPress, onUndoPress } = props
+  const {
+    placement = "top",
+    title,
+    message,
+    type,
+    translateYAnimation,
+    opacityAnimation,
+    onPress,
+    onUndoPress,
+  } = props
   const { safeAreaInsets } = useScreenDimensions()
   const { hide } = usePopoverMessage()
   const colors = getColorsByType(type)
@@ -95,7 +107,11 @@ export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
         {!!onUndoPress && (
           <Box>
             <Touchable noFeedback onPress={handlePopoverMessageUndoPress}>
-              <Text variant="xs" color={colors.descriptionColor} style={{ textDecorationLine: "underline" }}>
+              <Text
+                variant="xs"
+                color={colors.descriptionColor}
+                style={{ textDecorationLine: "underline" }}
+              >
                 Undo
               </Text>
             </Touchable>
@@ -110,8 +126,14 @@ export const PopoverMessage: React.FC<PopoverMessageProps> = (props) => {
       position="absolute"
       left="1"
       right="1"
-      bottom={placement === "bottom" ? safeAreaInsets.bottom + EDGE_POPOVER_MESSAGE_PADDING : undefined}
-      top={placement === "top" ? safeAreaInsets.top + EDGE_POPOVER_MESSAGE_PADDING + NAVBAR_HEIGHT : undefined}
+      bottom={
+        placement === "bottom" ? safeAreaInsets.bottom + EDGE_POPOVER_MESSAGE_PADDING : undefined
+      }
+      top={
+        placement === "top"
+          ? safeAreaInsets.top + EDGE_POPOVER_MESSAGE_PADDING + NAVBAR_HEIGHT
+          : undefined
+      }
       style={{
         opacity,
         transform: [{ translateY }],

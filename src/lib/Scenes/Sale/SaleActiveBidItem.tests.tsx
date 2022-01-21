@@ -58,7 +58,11 @@ describe("SaleActiveBidItem", () => {
       `}
       variables={{}}
       render={({ props }) => {
-        if (props?.me?.lotStandings && Array.isArray(props.me.lotStandings) && props.me.lotStandings[0]) {
+        if (
+          props?.me?.lotStandings &&
+          Array.isArray(props.me.lotStandings) &&
+          props.me.lotStandings[0]
+        ) {
           return <SaleActiveBidItemContainer lotStanding={props?.me?.lotStandings[0]} />
         }
         return null

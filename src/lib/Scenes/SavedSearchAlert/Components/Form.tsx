@@ -2,7 +2,18 @@ import { useFormikContext } from "formik"
 import { SearchCriteria } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { navigate } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import { Box, Button, CloseIcon as RemoveIcon, Flex, Input, InputTitle, Pill, Spacer, Text, Touchable } from "palette"
+import {
+  Box,
+  Button,
+  CloseIcon as RemoveIcon,
+  Flex,
+  Input,
+  InputTitle,
+  Pill,
+  Spacer,
+  Text,
+  Touchable,
+} from "palette"
 import React from "react"
 import { LayoutAnimation } from "react-native"
 import { getNamePlaceholder } from "../helpers"
@@ -156,9 +167,17 @@ export const Form: React.FC<FormProps> = (props) => {
           )}
         </Flex>
       </Box>
-      <SavedSearchAlertSwitch label="Mobile Alerts" onChange={onTogglePushNotification} active={values.push} />
+      <SavedSearchAlertSwitch
+        label="Mobile Alerts"
+        onChange={onTogglePushNotification}
+        active={values.push}
+      />
       <Spacer mt={2} />
-      <SavedSearchAlertSwitch label="Email Alerts" onChange={handleToggleEmailNotification} active={values.email} />
+      <SavedSearchAlertSwitch
+        label="Email Alerts"
+        onChange={handleToggleEmailNotification}
+        active={values.email}
+      />
       {!!values.email && (
         <Text
           onPress={handleUpdateEmailPreferencesPress}
@@ -184,7 +203,13 @@ export const Form: React.FC<FormProps> = (props) => {
         {!!isEditMode && (
           <>
             <Spacer mt={2} />
-            <Button testID="delete-alert-button" variant="outline" size="large" block onPress={onDeletePress}>
+            <Button
+              testID="delete-alert-button"
+              variant="outline"
+              size="large"
+              block
+              onPress={onDeletePress}
+            >
               Delete Alert
             </Button>
           </>

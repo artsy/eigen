@@ -63,7 +63,10 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
       })}
     >
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1, justifyContent: !somethingToShow ? "center" : "flex-start" }}
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: !somethingToShow ? "center" : "flex-start",
+        }}
         stickyHeaderIndices={[0, 2]}
         refreshControl={
           <RefreshControl
@@ -90,7 +93,8 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
                   return null
                 }
 
-                const showNoBids = !saleArtworks.length || !sale?.registrationStatus?.qualifiedForBidding
+                const showNoBids =
+                  !saleArtworks.length || !sale?.registrationStatus?.qualifiedForBidding
                 return (
                   <SaleCardFragmentContainer
                     key={sale.internalID}
@@ -110,7 +114,12 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
                           return <></>
                         }
 
-                        return <LotStatusListItemContainer key={saleArtwork.internalID} saleArtwork={saleArtwork} />
+                        return (
+                          <LotStatusListItemContainer
+                            key={saleArtwork.internalID}
+                            saleArtwork={saleArtwork}
+                          />
+                        )
                       })}
                     </Join>
                   </SaleCardFragmentContainer>
@@ -130,7 +139,10 @@ const MyBids: React.FC<MyBidsProps> = (props) => {
                     const { saleArtworks } = closedSale!
 
                     return (
-                      <Join key={`${closedSale?.sale?.internalID}-join`} separator={<Separator my={2} />}>
+                      <Join
+                        key={`${closedSale?.sale?.internalID}-join`}
+                        separator={<Separator my={2} />}
+                      >
                         {saleArtworks!.map((saleArtwork) => {
                           if (!saleArtwork) {
                             return null

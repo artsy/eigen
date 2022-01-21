@@ -21,7 +21,9 @@ describe("<ParentAwareScrollView>", () => {
     // react to the parent flatlist scroll by calling props.aFunc
     const AFlatList = () => (
       <FlatList
-        data={[<ParentAwareScrollView key="a" onScroll={(e: typeof scrollEvent) => props.aFunc(e)} />]}
+        data={[
+          <ParentAwareScrollView key="a" onScroll={(e: typeof scrollEvent) => props.aFunc(e)} />,
+        ]}
         renderItem={({ item }) => item}
       />
     )

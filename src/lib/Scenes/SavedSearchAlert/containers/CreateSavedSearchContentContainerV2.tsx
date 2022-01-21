@@ -103,9 +103,9 @@ const CreateSavedSearchContentContainerV2 = createRefetchContainer(
   `
 )
 
-export const CreateSavedSearchAlertContentQueryRenderer: React.FC<CreateSavedSearchAlertContentQueryRendererProps> = (
-  props
-) => {
+export const CreateSavedSearchAlertContentQueryRenderer: React.FC<
+  CreateSavedSearchAlertContentQueryRendererProps
+> = (props) => {
   const { artistId } = props
   const filterState = ArtworksFiltersStore.useStoreState((state) => state)
   const unitedFilters = getUnitedSelectedAndAppliedFilters(filterState)

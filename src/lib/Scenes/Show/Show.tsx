@@ -61,7 +61,9 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
   const sections: Section[] = [
     { key: "header", element: <ShowHeader show={show} mx={2} /> },
 
-    ...(Boolean(show.images?.length) ? [{ key: "install-shots", element: <ShowInstallShots show={show} /> }] : []),
+    ...(Boolean(show.images?.length)
+      ? [{ key: "install-shots", element: <ShowInstallShots show={show} /> }]
+      : []),
 
     { key: "info", element: <ShowInfo show={show} mx={2} /> },
 
@@ -70,7 +72,10 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
       element: (
         <Flex backgroundColor="white">
           <Spacer mt={1} mb={0.5} />
-          <HeaderArtworksFilter animationValue={filterComponentAnimationValue} onPress={toggleFilterArtworksModal} />
+          <HeaderArtworksFilter
+            animationValue={filterComponentAnimationValue}
+            onPress={toggleFilterArtworksModal}
+          />
         </Flex>
       ),
     },
@@ -118,11 +123,17 @@ export const Show: React.FC<ShowProps> = ({ show }) => {
           ListHeaderComponent={<Spacer mt={6} pt={2} />}
           ListFooterComponent={<Spacer my={2} />}
           ItemSeparatorComponent={() => <Spacer my={15} />}
-          contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top, paddingBottom: 40 }}
+          contentContainerStyle={{
+            paddingTop: useScreenDimensions().safeAreaInsets.top,
+            paddingBottom: 40,
+          }}
           renderItem={({ item: { element } }) => element}
-          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: filterComponentAnimationValue } } }], {
-            useNativeDriver: true,
-          })}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: filterComponentAnimationValue } } }],
+            {
+              useNativeDriver: true,
+            }
+          )}
         />
       </ArtworkFiltersStoreProvider>
     </ProvideScreenTracking>

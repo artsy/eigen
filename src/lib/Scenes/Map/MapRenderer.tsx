@@ -62,7 +62,9 @@ export const MapRenderer: React.FC<{
           // isRetrying that the user hit the retry button on the last render. The next time we render, the request will
           // have completed (with success or error).
           isRetrying = false
-          return <GlobalMap {...computedProps} viewer={null} relayErrorState={{ isRetrying: true }} />
+          return (
+            <GlobalMap {...computedProps} viewer={null} relayErrorState={{ isRetrying: true }} />
+          )
         } else if (mapProps || props.initialCoordinates) {
           return <GlobalMap {...computedProps} />
         } else {

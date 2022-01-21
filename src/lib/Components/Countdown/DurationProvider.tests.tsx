@@ -20,7 +20,9 @@ describe("DurationProvider", () => {
       </DurationProvider>
     )
 
-    expect(comp.find(DurationConsumer).props().duration.toString()).toEqual(moment.duration(1000).toString())
+    expect(comp.find(DurationConsumer).props().duration.toString()).toEqual(
+      moment.duration(1000).toString()
+    )
   })
 
   it("updates duration every second", () => {
@@ -31,6 +33,8 @@ describe("DurationProvider", () => {
       </DurationProvider>
     )
     jest.advanceTimersByTime(1000)
-    expect(comp.find(DurationConsumer).props().duration.toString()).toEqual(moment.duration(0).toString())
+    expect(comp.find(DurationConsumer).props().duration.toString()).toEqual(
+      moment.duration(0).toString()
+    )
   })
 })

@@ -146,7 +146,9 @@ export class MockRelayRenderer<T extends OperationType> extends React.Component<
 
     if (mockNetwork) {
       if (mockResolvers || mockData || mockMutationResults) {
-        throw new Error("You cannot use mockNetwork with mockResolvers, mockData, or mockMutationResults")
+        throw new Error(
+          "You cannot use mockNetwork with mockResolvers, mockData, or mockMutationResults"
+        )
       }
       return mockNetwork
     }
@@ -176,7 +178,8 @@ export class MockRelayRenderer<T extends OperationType> extends React.Component<
     //       to test this in a generic way, plus with the rule we get fixes.
     if (__TEST__ && QueryRenderer === require("../../../__mocks__/react-relay").QueryRenderer) {
       throw new Error(
-        "The `react-relay` module has been mocked, be sure to unmock it with: " + '`jest.unmock("react-relay")`'
+        "The `react-relay` module has been mocked, be sure to unmock it with: " +
+          '`jest.unmock("react-relay")`'
       )
     }
 

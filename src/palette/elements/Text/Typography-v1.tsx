@@ -70,25 +70,36 @@ type FontFamily = typeof fontFamily
  *        An optional function that maps weight+italic to a font-family.
  */
 export function createStyledText<P extends StyledTextProps>(fontType: keyof FontFamily) {
-  return styled<React.ComponentType<P>>(({ size, weight, italic, style: _style, ...textProps }: StyledTextProps) => {
-    const fontFamilyString = fontFamily[fontType][weight ?? "regular"][italic ? "italic" : "normal"]
-    if (fontFamilyString === null) {
-      throw new Error(
-        `Incompatible text style combination: {type: ${fontType}, weight: ${weight}, italic: ${!!italic}}`
+  return styled<React.ComponentType<P>>(
+    ({ size, weight, italic, style: _style, ...textProps }: StyledTextProps) => {
+      const fontFamilyString =
+        fontFamily[fontType][weight ?? "regular"][italic ? "italic" : "normal"]
+      if (fontFamilyString === null) {
+        throw new Error(
+          `Incompatible text style combination: {type: ${fontType}, weight: ${weight}, italic: ${!!italic}}`
+        )
+      }
+
+      const fontMetrics = themeProps.typeSizes[fontType as "sans"][size as "4"]
+
+      if (fontMetrics == null) {
+        throw new Error(`"${size}" is not a valid size for ${fontType}`)
+      }
+
+      return (
+        <BaseText
+          style={[_style, { fontFamily: fontFamilyString, ...stripPx(fontMetrics) }]}
+          {...textProps}
+        />
       )
     }
-
-    const fontMetrics = themeProps.typeSizes[fontType as "sans"][size as "4"]
-
-    if (fontMetrics == null) {
-      throw new Error(`"${size}" is not a valid size for ${fontType}`)
-    }
-
-    return <BaseText style={[_style, { fontFamily: fontFamilyString, ...stripPx(fontMetrics) }]} {...textProps} />
-  })``
+  )``
 }
 
-function stripPx(fontMetrics: { fontSize: string; lineHeight: string }): { fontSize: number; lineHeight: number } {
+function stripPx(fontMetrics: { fontSize: string; lineHeight: string }): {
+  fontSize: number
+  lineHeight: number
+} {
   return {
     fontSize: Number(fontMetrics.fontSize.replace("px", "")),
     lineHeight: Number(fontMetrics.lineHeight.replace("px", "")),

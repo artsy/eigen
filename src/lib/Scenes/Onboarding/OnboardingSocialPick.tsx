@@ -38,7 +38,10 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
       if (mode === "login") {
         await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" })
       } else {
-        await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
+        await GlobalStore.actions.auth.authFacebook({
+          signInOrUp: "signUp",
+          agreedToReceiveEmails: true,
+        })
       }
     } catch (error) {
       if (typeof error === "string") {
@@ -52,7 +55,10 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
       if (mode === "login") {
         await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signIn" })
       } else {
-        await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signUp", agreedToReceiveEmails: true })
+        await GlobalStore.actions.auth.authGoogle({
+          signInOrUp: "signUp",
+          agreedToReceiveEmails: true,
+        })
       }
     } catch (error) {
       if (typeof error === "string") {
@@ -110,7 +116,13 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                 mb={1}
                 variant="fillDark"
                 iconPosition="left-start"
-                icon={<Image source={require("@images/apple.webp")} resizeMode="contain" style={{ marginRight: 10 }} />}
+                icon={
+                  <Image
+                    source={require("@images/apple.webp")}
+                    resizeMode="contain"
+                    style={{ marginRight: 10 }}
+                  />
+                }
                 testID="useApple"
               >
                 Continue with Apple
@@ -125,7 +137,11 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                 variant="outline"
                 iconPosition="left-start"
                 icon={
-                  <Image source={require("@images/google.webp")} resizeMode="contain" style={{ marginRight: 10 }} />
+                  <Image
+                    source={require("@images/google.webp")}
+                    resizeMode="contain"
+                    style={{ marginRight: 10 }}
+                  />
                 }
                 testID="useGoogle"
               >
@@ -141,7 +157,11 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               variant="outline"
               iconPosition="left-start"
               icon={
-                <Image source={require("@images/facebook.webp")} resizeMode="contain" style={{ marginRight: 10 }} />
+                <Image
+                  source={require("@images/facebook.webp")}
+                  resizeMode="contain"
+                  style={{ marginRight: 10 }}
+                />
               }
               testID="useFacebook"
             >
@@ -154,7 +174,9 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             {!!enableGoogleAuth ? ", Google" : ""}
             {isiOS ? " or Apple" : ""}, you agree to Artsy's{" "}
             <Text
-              onPress={() => (isiOS ? navigate("/terms", { modal: true }) : navigation.navigate("Terms"))}
+              onPress={() =>
+                isiOS ? navigate("/terms", { modal: true }) : navigation.navigate("Terms")
+              }
               variant="xs"
               style={{ textDecorationLine: "underline" }}
               testID="openTerms"
@@ -163,7 +185,9 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             </Text>{" "}
             and{" "}
             <Text
-              onPress={() => (isiOS ? navigate("/privacy", { modal: true }) : navigation.navigate("Privacy"))}
+              onPress={() =>
+                isiOS ? navigate("/privacy", { modal: true }) : navigation.navigate("Privacy")
+              }
               variant="xs"
               style={{ textDecorationLine: "underline" }}
               testID="openPrivacy"

@@ -20,7 +20,8 @@ describe("AuctionResult", () => {
     <QueryRenderer<AuctionResultTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query AuctionResultTestsQuery($auctionResultInternalID: String!, $artistID: String!) @relay_test_operation {
+        query AuctionResultTestsQuery($auctionResultInternalID: String!, $artistID: String!)
+        @relay_test_operation {
           auctionResult(id: $auctionResultInternalID) {
             ...AuctionResult_auctionResult
           }
@@ -32,7 +33,12 @@ describe("AuctionResult", () => {
       variables={{ artistID: "artist-id", auctionResultInternalID: "auction-result-id" }}
       render={({ props }) => {
         if (props?.artist && props?.auctionResult) {
-          return <AuctionResultFragmentContainer artist={props.artist} auctionResult={props.auctionResult} />
+          return (
+            <AuctionResultFragmentContainer
+              artist={props.artist}
+              auctionResult={props.auctionResult}
+            />
+          )
         }
         return null
       }}
@@ -81,7 +87,9 @@ describe("AuctionResult", () => {
         })
       )
       expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.value).toEqual("262%")
-      expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.shortDescription).toEqual("mid-estimate")
+      expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.shortDescription).toEqual(
+        "mid-estimate"
+      )
     })
 
     it("shows the correct sale date", () => {
@@ -152,7 +160,12 @@ const mockAuctionResult = {
   mediumText: "Aquatint in colors, on Fabriano paper",
   organization: "Bonhams",
   performance: { mid: "262%" },
-  priceRealized: { cents: 2531200, centsUSD: 2531200, display: "US$25,312", displayUSD: "US$25,312" },
+  priceRealized: {
+    cents: 2531200,
+    centsUSD: 2531200,
+    display: "US$25,312",
+    displayUSD: "US$25,312",
+  },
   saleDate: "2021-11-18T01:00:00+01:00",
   saleTitle: "Sam Francis Prints: California Cool",
   title: "Trietto 5 (SFE-078RC)",

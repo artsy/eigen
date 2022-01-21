@@ -72,7 +72,9 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
             <CardRailCard
               key={result?.slug}
               onPress={() => {
-                tracking.trackEvent(HomeAnalytics.fairThumbnailTapEvent(result?.internalID, result?.slug, index))
+                tracking.trackEvent(
+                  HomeAnalytics.fairThumbnailTapEvent(result?.internalID, result?.slug, index)
+                )
                 if (result?.slug) {
                   navigate(`/fair/${result?.slug}`)
                 }
@@ -80,7 +82,11 @@ const FairsRail: React.FC<Props & RailScrollProps> = (props) => {
             >
               <View>
                 <ArtworkImageContainer>
-                  <ImageView width={ARTWORKS_HEIGHT} height={ARTWORKS_HEIGHT} imageURL={artworkImageURLs[0]} />
+                  <ImageView
+                    width={ARTWORKS_HEIGHT}
+                    height={ARTWORKS_HEIGHT}
+                    imageURL={artworkImageURLs[0]}
+                  />
                   <Division />
                   <View>
                     <ImageView
@@ -140,7 +146,10 @@ export const FairsRailFragmentContainer = createFragmentContainer(FairsRail, {
           city
           country
         }
-        followedArtistArtworks: filterArtworksConnection(first: 2, input: { includeArtworksByFollowedArtists: true }) {
+        followedArtistArtworks: filterArtworksConnection(
+          first: 2
+          input: { includeArtworksByFollowedArtists: true }
+        ) {
           edges {
             node {
               image {

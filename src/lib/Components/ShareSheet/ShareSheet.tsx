@@ -142,7 +142,11 @@ export const ShareSheet: React.FC<ShareSheetProps> = (props) => {
         ) : null}
 
         {showWhatsapp && canOpenWhatsapp ? (
-          <CustomShareSheetItem title="WhatsApp" Icon={<WhatsAppAppIcon />} onPress={handleShareOnWhatsAppPress} />
+          <CustomShareSheetItem
+            title="WhatsApp"
+            Icon={<WhatsAppAppIcon />}
+            onPress={handleShareOnWhatsAppPress}
+          />
         ) : null}
 
         {entry.imageURL && showInstagram && canOpenInstagram ? (
@@ -161,7 +165,12 @@ export const ShareSheet: React.FC<ShareSheetProps> = (props) => {
 }
 
 export const tracks = {
-  share: (contextModule: ContextModule, ownerType: OwnerType, entry: ShareEntry, service: string): Share => ({
+  share: (
+    contextModule: ContextModule,
+    ownerType: OwnerType,
+    entry: ShareEntry,
+    service: string
+  ): Share => ({
     action: ActionType.share,
     context_module: contextModule,
     context_owner_type: ownerType,

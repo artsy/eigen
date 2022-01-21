@@ -47,4 +47,6 @@ storiesOf("Dialog", module)
       )}
     />
   ))
-  .add("With background press handler", () => <DialogDemo onBackgroundPress={() => action("tapped background")} />)
+  .add("With background press handler", () => (
+    <DialogDemo onBackgroundPress={() => action("tapped background")} />
+  ))

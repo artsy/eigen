@@ -24,10 +24,13 @@ export function PrefetchFlatList<ItemType>({
 }: PrefetchFlatListProps<ItemType>) {
   const prefetchUrl = usePrefetch()
 
-  const [viewedUrls, addViewedUrl] = useReducer((state: { [key: string]: boolean }, url: string) => {
-    state[url] = true
-    return state
-  }, {})
+  const [viewedUrls, addViewedUrl] = useReducer(
+    (state: { [key: string]: boolean }, url: string) => {
+      state[url] = true
+      return state
+    },
+    {}
+  )
 
   const viewabilityConfigRef = useRef({
     waitForInteraction: true,

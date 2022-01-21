@@ -103,7 +103,12 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
           </>
         ) : (
           <TouchableWithoutFeedback onPress={confirmed ? undefined : didTapSendConfirmationEmail}>
-            <Flex flexDirection="row" width="100%" justifyContent="space-between" alignItems="center">
+            <Flex
+              flexDirection="row"
+              width="100%"
+              justifyContent="space-between"
+              alignItems="center"
+            >
               <Text>{message}</Text>
 
               <TouchableWithoutFeedback onPress={() => toggleVisible(false)}>
@@ -119,10 +124,13 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
   }
 }
 
-export const EmailConfirmationBannerFragmentContainer = createFragmentContainer(EmailConfirmationBanner, {
-  me: graphql`
-    fragment EmailConfirmationBanner_me on Me {
-      canRequestEmailConfirmation
-    }
-  `,
-})
+export const EmailConfirmationBannerFragmentContainer = createFragmentContainer(
+  EmailConfirmationBanner,
+  {
+    me: graphql`
+      fragment EmailConfirmationBanner_me on Me {
+        canRequestEmailConfirmation
+      }
+    `,
+  }
+)

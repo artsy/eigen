@@ -1,6 +1,13 @@
 import AsyncStorage from "@react-native-community/async-storage"
 import { migrate } from "./migration"
-import { assignDeep, LEGACY_SEARCH_STORAGE_KEY, persist, sanitize, STORAGE_KEY, unpersist } from "./persistence"
+import {
+  assignDeep,
+  LEGACY_SEARCH_STORAGE_KEY,
+  persist,
+  sanitize,
+  STORAGE_KEY,
+  unpersist,
+} from "./persistence"
 
 jest.mock("./migration", () => ({ migrate: jest.fn((a) => a.state) }))
 
@@ -121,17 +128,23 @@ describe(persist, () => {
     require("@react-native-community/async-storage").__resetState()
   })
   it("omits the sessionStorage key", async () => {
-    await persist({ bottomTabs: { selectedTab: "home", sessionState: { unreadConversationCount: 5 } } } as any)
+    await persist({
+      bottomTabs: { selectedTab: "home", sessionState: { unreadConversationCount: 5 } },
+    } as any)
     expect(JSON.parse((await AsyncStorage.getItem(STORAGE_KEY)) ?? "")).toEqual({
       bottomTabs: { selectedTab: "home" },
     })
   })
   it("overwrites the previous value", async () => {
-    await persist({ bottomTabs: { selectedTab: "home", sessionState: { unreadConversationCount: 5 } } } as any)
+    await persist({
+      bottomTabs: { selectedTab: "home", sessionState: { unreadConversationCount: 5 } },
+    } as any)
     expect(JSON.parse((await AsyncStorage.getItem(STORAGE_KEY)) ?? "")).toEqual({
       bottomTabs: { selectedTab: "home" },
     })
-    await persist({ bottomTabs: { selectedTab: "explore", sessionState: { unreadConversationCount: 5 } } } as any)
+    await persist({
+      bottomTabs: { selectedTab: "explore", sessionState: { unreadConversationCount: 5 } },
+    } as any)
     expect(JSON.parse((await AsyncStorage.getItem(STORAGE_KEY)) ?? "")).toEqual({
       bottomTabs: { selectedTab: "explore" },
     })
@@ -182,7 +195,9 @@ describe(unpersist, () => {
       ])
     )
 
-    expect(await unpersist()).toMatchObject({ search: { recentSearches: [{ props: { displayLabel: "Banksy" } }] } })
+    expect(await unpersist()).toMatchObject({
+      search: { recentSearches: [{ props: { displayLabel: "Banksy" } }] },
+    })
   })
 
   it("ignores corrupt legacy search state", async () => {
@@ -196,11 +211,15 @@ describe(unpersist, () => {
     )
     await AsyncStorage.setItem(LEGACY_SEARCH_STORAGE_KEY, "{: 0}")
 
-    expect((await unpersist()).search?.recentSearches?.[0]?.props?.displayLabel).toBe("i am a recent search")
+    expect((await unpersist()).search?.recentSearches?.[0]?.props?.displayLabel).toBe(
+      "i am a recent search"
+    )
 
     await AsyncStorage.setItem(LEGACY_SEARCH_STORAGE_KEY, "{}")
 
-    expect((await unpersist()).search?.recentSearches?.[0]?.props?.displayLabel).toBe("i am a recent search")
+    expect((await unpersist()).search?.recentSearches?.[0]?.props?.displayLabel).toBe(
+      "i am a recent search"
+    )
   })
 
   it("loads legacy search state even if no existing app state was present", async () => {
@@ -219,6 +238,8 @@ describe(unpersist, () => {
       ])
     )
 
-    expect(await unpersist()).toMatchObject({ search: { recentSearches: [{ props: { displayLabel: "Banksy" } }] } })
+    expect(await unpersist()).toMatchObject({
+      search: { recentSearches: [{ props: { displayLabel: "Banksy" } }] },
+    })
   })
 })

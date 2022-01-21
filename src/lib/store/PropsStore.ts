@@ -11,7 +11,11 @@ class PropsStore {
     PropsStore._instance = this
   }
 
-  updateProps(moduleName: string, props: any, callback?: (updatedProps: { [key: string]: any }) => void) {
+  updateProps(
+    moduleName: string,
+    props: any,
+    callback?: (updatedProps: { [key: string]: any }) => void
+  ) {
     this.mergeNewPropsForModule(moduleName, props)
     callback?.(this.propsByModuleName[moduleName])
   }

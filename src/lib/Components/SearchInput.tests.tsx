@@ -14,7 +14,14 @@ describe("SearchInput", () => {
 
   const TestWrapper = (props: SearchInputProps) => {
     const ref = { current: null as null | TextInput }
-    return <SearchInput ref={ref} onCancelPress={onCancelPressMock} placeholder="Type something..." {...props} />
+    return (
+      <SearchInput
+        ref={ref}
+        onCancelPress={onCancelPressMock}
+        placeholder="Type something..."
+        {...props}
+      />
+    )
   }
 
   beforeEach(() => {
@@ -71,9 +78,8 @@ describe("SearchInput", () => {
   })
 
   it(`hides "x" button when pressing "Cancel"`, () => {
-    const { getAllByText, getByA11yLabel, queryAllByA11yLabel, getByPlaceholderText } = renderWithWrappersTL(
-      <TestWrapper enableCancelButton />
-    )
+    const { getAllByText, getByA11yLabel, queryAllByA11yLabel, getByPlaceholderText } =
+      renderWithWrappersTL(<TestWrapper enableCancelButton />)
     const searchInput = getByPlaceholderText("Type something...")
     fireEvent(searchInput, "changeText", "text")
     expect(getByA11yLabel("Clear input button")).toBeTruthy()
@@ -82,9 +88,8 @@ describe("SearchInput", () => {
   })
 
   it('should hide "Cancel" when it is pressed', () => {
-    const { queryAllByA11yLabel, getAllByText, findAllByA11yLabel, getByPlaceholderText } = renderWithWrappersTL(
-      <TestWrapper enableCancelButton />
-    )
+    const { queryAllByA11yLabel, getAllByText, findAllByA11yLabel, getByPlaceholderText } =
+      renderWithWrappersTL(<TestWrapper enableCancelButton />)
 
     fireEvent.changeText(getByPlaceholderText("Type something..."), "text")
     expect(findAllByA11yLabel("Cancel")).toBeTruthy()

@@ -1,6 +1,9 @@
 import { Registration_me } from "__generated__/Registration_me.graphql"
 import { Registration_sale } from "__generated__/Registration_sale.graphql"
-import { RegistrationResult, RegistrationStatus } from "lib/Components/Bidding/Screens/RegistrationResult"
+import {
+  RegistrationResult,
+  RegistrationStatus,
+} from "lib/Components/Bidding/Screens/RegistrationResult"
 import { Modal } from "lib/Components/Modal"
 import { LinkText } from "lib/Components/Text/LinkText"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
@@ -44,7 +47,9 @@ beforeEach(() => {
 it("renders properly for a user without a credit card", () => {
   const component = renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCard} />)
 
-  expect(component.root.findAllByType(Text)[5].props.children).toEqual("A valid credit card is required.")
+  expect(component.root.findAllByType(Text)[5].props.children).toEqual(
+    "A valid credit card is required."
+  )
 })
 
 it("renders properly for a user with a credit card", () => {
@@ -81,7 +86,9 @@ it("shows the billing address that the user typed in the billing address form", 
 
   nextStep.passProps.onSubmit(billingAddress)
 
-  expect(billingAddressRow.findAllByType(Text)[1].props.children).toEqual("401 Broadway 25th floor New York NY")
+  expect(billingAddressRow.findAllByType(Text)[1].props.children).toEqual(
+    "401 Broadway 25th floor New York NY"
+  )
 })
 
 it("shows the credit card form when the user tap the edit text in the credit card row", () => {
@@ -161,9 +168,11 @@ describe("when pressing register button", () => {
     stripe.createTokenWithCard.mockReturnValueOnce(stripeToken)
 
     const component = renderWithWrappers(<Registration {...initialPropsForUserWithoutCreditCard} />)
-    component.root
-      .findByType(Registration)
-      .instance.setState({ conditionsOfSaleChecked: true, billingAddress, creditCardToken: stripeToken })
+    component.root.findByType(Registration).instance.setState({
+      conditionsOfSaleChecked: true,
+      billingAddress,
+      creditCardToken: stripeToken,
+    })
 
     await component.root.findAllByType(Button)[1].props.onPress()
     expect(relay.commitMutation).toHaveBeenCalledWith(
@@ -253,7 +262,9 @@ describe("when pressing register button", () => {
 
     relay.commitMutation = jest
       .fn()
-      .mockImplementationOnce((_, { onCompleted }) => onCompleted(mockRequestResponses.updateMyUserProfile))
+      .mockImplementationOnce((_, { onCompleted }) =>
+        onCompleted(mockRequestResponses.updateMyUserProfile)
+      )
 
     stripe.createTokenWithCard.mockImplementation(() => {
       throw new Error("Error tokenizing card")
@@ -465,7 +476,9 @@ describe("when pressing register button", () => {
     }
 
     console.error = jest.fn() // Silences component logging.
-    relay.commitMutation = jest.fn().mockImplementation((_, { onCompleted }) => onCompleted({}, [error]))
+    relay.commitMutation = jest
+      .fn()
+      .mockImplementation((_, { onCompleted }) => onCompleted({}, [error]))
 
     const component = renderWithWrappers(<Registration {...initialPropsForUserWithCreditCard} />)
 

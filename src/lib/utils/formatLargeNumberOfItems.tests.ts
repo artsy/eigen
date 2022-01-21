@@ -18,22 +18,24 @@ describe(formatLargeNumberOfItems, () => {
 
   describe("custom pluralization", () => {
     it("formats a single item", () => {
-      expect(formatLargeNumberOfItems(1, "work for sale", "works for sale")).toMatchInlineSnapshot(`"1 work for sale"`)
+      expect(formatLargeNumberOfItems(1, "work for sale", "works for sale")).toMatchInlineSnapshot(
+        `"1 work for sale"`
+      )
     })
     it("formats less than a thousand", () => {
-      expect(formatLargeNumberOfItems(850, "work for sale", "works for sale")).toMatchInlineSnapshot(
-        `"850 works for sale"`
-      )
+      expect(
+        formatLargeNumberOfItems(850, "work for sale", "works for sale")
+      ).toMatchInlineSnapshot(`"850 works for sale"`)
     })
     it("formats more than a thousand less than a million", () => {
-      expect(formatLargeNumberOfItems(151000, "work for sale", "works for sale")).toMatchInlineSnapshot(
-        `"151.0k works for sale"`
-      )
+      expect(
+        formatLargeNumberOfItems(151000, "work for sale", "works for sale")
+      ).toMatchInlineSnapshot(`"151.0k works for sale"`)
     })
     it("formats more than a million", () => {
-      expect(formatLargeNumberOfItems(2200000, "work for sale", "works for sale")).toMatchInlineSnapshot(
-        `"2.2M works for sale"`
-      )
+      expect(
+        formatLargeNumberOfItems(2200000, "work for sale", "works for sale")
+      ).toMatchInlineSnapshot(`"2.2M works for sale"`)
     })
   })
 })

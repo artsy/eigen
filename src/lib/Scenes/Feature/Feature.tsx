@@ -14,7 +14,10 @@ import { Flex, Sans, Separator, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { FeatureFeaturedLinkFragmentContainer } from "./components/FeatureFeaturedLink"
-import { FeatureHeaderFragmentContainer, FeatureHeaderPlaceholder } from "./components/FeatureHeader"
+import {
+  FeatureHeaderFragmentContainer,
+  FeatureHeaderPlaceholder,
+} from "./components/FeatureHeader"
 import { FeatureMarkdown } from "./components/FeatureMarkdown"
 
 const SUPPORTED_ITEM_TYPES = ["FeaturedLink", "Artwork"]
@@ -26,7 +29,11 @@ interface FlatListSection {
 
 type FlatListSections = Array<FlatListSection | FlatListSections>
 
-function addSeparatorBetweenAllSections(sections: FlatListSections, key: string, element: JSX.Element) {
+function addSeparatorBetweenAllSections(
+  sections: FlatListSections,
+  key: string,
+  element: JSX.Element
+) {
   const result: FlatListSections = []
   for (let i = 0; i < sections.length; i++) {
     result.push(sections[i])
@@ -48,7 +55,10 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
   const sets = extractNodes(feature.sets)
   const { width, orientation } = useScreenDimensions()
 
-  const header: FlatListSection = { key: "header", content: <FeatureHeaderFragmentContainer feature={feature} /> }
+  const header: FlatListSection = {
+    key: "header",
+    content: <FeatureHeaderFragmentContainer feature={feature} />,
+  }
 
   // these are the major sections of the page which get separated by a black line
   const contentSections: FlatListSections = []
@@ -59,8 +69,12 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
       content: (
         <Flex alignItems="center">
           <Stack spacing={3} pt="3" px="2" maxWidth={600}>
-            {!!feature.description && <FeatureMarkdown content={feature.description} sansProps={{ size: "4" }} />}
-            {!!feature.callout && <FeatureMarkdown content={feature.callout} sansProps={{ size: "6" }} />}
+            {!!feature.description && (
+              <FeatureMarkdown content={feature.description} sansProps={{ size: "4" }} />
+            )}
+            {!!feature.callout && (
+              <FeatureMarkdown content={feature.callout} sansProps={{ size: "6" }} />
+            )}
           </Stack>
         </Flex>
       ),
@@ -113,7 +127,11 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
                 <Stack horizontal px="2">
                   {row.map((item) => {
                     return (
-                      <FeatureFeaturedLinkFragmentContainer width={columnWidth} key={item.id} featuredLink={item} />
+                      <FeatureFeaturedLinkFragmentContainer
+                        width={columnWidth}
+                        key={item.id}
+                        featuredLink={item}
+                      />
                     )
                   })}
                 </Stack>
@@ -121,7 +139,13 @@ const FeatureApp: React.FC<FeatureAppProps> = ({ feature }) => {
             })
           }
 
-          renderedSet.push(addSeparatorBetweenAllSections(renderedRows, set.id + ":featuredLink", <Spacer mb={4} />))
+          renderedSet.push(
+            addSeparatorBetweenAllSections(
+              renderedRows,
+              set.id + ":featuredLink",
+              <Spacer mb={4} />
+            )
+          )
 
           break
         case "Artwork":

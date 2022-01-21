@@ -8,7 +8,9 @@ import Edition from "./Edition"
 const nav = {} as any
 
 it("renders without throwing an error", () => {
-  const tree = renderWithWrappers(<Edition navigator={nav} setup={{}} updateWithEdition={() => ""} />)
+  const tree = renderWithWrappers(
+    <Edition navigator={nav} setup={{}} updateWithEdition={() => ""} />
+  )
   expect(tree.root.findAllByType(Text)).toHaveLength(0)
 })
 

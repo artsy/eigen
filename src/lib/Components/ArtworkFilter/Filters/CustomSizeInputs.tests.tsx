@@ -5,7 +5,14 @@ import { CustomSizeInputs, CustomSizeInputsProps } from "./CustomSizeInputs"
 
 describe("CustomSizeInputs", () => {
   const TestRenderer = (props: Partial<CustomSizeInputsProps>) => {
-    return <CustomSizeInputs label="Label" range={{ min: "*", max: "*" }} onChange={jest.fn} {...props} />
+    return (
+      <CustomSizeInputs
+        label="Label"
+        range={{ min: "*", max: "*" }}
+        onChange={jest.fn}
+        {...props}
+      />
+    )
   }
 
   it("renders without throwing an error", () => {

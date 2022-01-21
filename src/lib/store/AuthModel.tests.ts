@@ -144,7 +144,9 @@ describe("AuthModel", () => {
       expect(result).toBe("success")
 
       expect(mockFetch).toHaveBeenCalledTimes(2)
-      expect(mockFetch.mock.calls[0][0]).toMatchInlineSnapshot(`"https://stagingapi.artsy.net/oauth2/access_token"`)
+      expect(mockFetch.mock.calls[0][0]).toMatchInlineSnapshot(
+        `"https://stagingapi.artsy.net/oauth2/access_token"`
+      )
       expect(JSON.parse(mockFetch.mock.calls[0][1].body)).toMatchInlineSnapshot(`
         Object {
           "client_id": "artsy_api_client_key",
@@ -175,8 +177,12 @@ describe("AuthModel", () => {
         password: "hunter2",
       })
 
-      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe("my-access-token")
-      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessTokenExpiresIn).toBe("a billion years")
+      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe(
+        "my-access-token"
+      )
+      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessTokenExpiresIn).toBe(
+        "a billion years"
+      )
       expect(__globalStoreTestUtils__?.getCurrentState().auth.userID).toBe("my-user-id")
     })
 
@@ -184,7 +190,11 @@ describe("AuthModel", () => {
       mockFetchJsonOnce({ access_token: "my-access-token", expires_in: "a billion years" }, 201)
       mockFetchJsonOnce({ id: "my-user-id" })
 
-      await GlobalStore.actions.auth.signIn({ oauthProvider: "email", email: "user@example.com", password: "hunter2" })
+      await GlobalStore.actions.auth.signIn({
+        oauthProvider: "email",
+        email: "user@example.com",
+        password: "hunter2",
+      })
 
       expect(mockPostEventToProviders).toHaveBeenCalledTimes(1)
       expect(mockPostEventToProviders.mock.calls[0]).toMatchInlineSnapshot(`
@@ -291,8 +301,12 @@ describe("AuthModel", () => {
 
       expect(result.success).toBe(true)
       expect(__globalStoreTestUtils__?.getCurrentState().auth.onboardingState).toBe("incomplete")
-      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe("my-access-token")
-      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessTokenExpiresIn).toBe("a billion years")
+      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe(
+        "my-access-token"
+      )
+      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessTokenExpiresIn).toBe(
+        "a billion years"
+      )
       expect(__globalStoreTestUtils__?.getCurrentState().auth.userID).toBe("my-user-id")
     })
 
@@ -318,14 +332,18 @@ describe("AuthModel", () => {
       await GlobalStore.actions.auth.getXAppToken()
       mockFetch.mockClear()
       ;(LoginManager.logInWithPermissions as jest.Mock).mockReturnValue({ isCancelled: false })
-      ;(AccessToken.getCurrentAccessToken as jest.Mock).mockReturnValue({ accessToken: "facebook-token" })
+      ;(AccessToken.getCurrentAccessToken as jest.Mock).mockReturnValue({
+        accessToken: "facebook-token",
+      })
       ;(GraphRequest as jest.Mock).mockImplementation((_route, _config, callback) => {
         callback(undefined, { email: "emailFromFacebook@email.com", name: "name from facebook" })
       })
     })
 
     it("throws an error when email permission was denied", async () => {
-      ;(LoginManager.logInWithPermissions as jest.Mock).mockReturnValue({ declinedPermissions: ["email"] })
+      ;(LoginManager.logInWithPermissions as jest.Mock).mockReturnValue({
+        declinedPermissions: ["email"],
+      })
 
       const result = await GlobalStore.actions.auth
         .authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
@@ -352,7 +370,10 @@ describe("AuthModel", () => {
     it("fetches access token from facebook", async () => {
       GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
 
-      await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
+      await GlobalStore.actions.auth.authFacebook({
+        signInOrUp: "signUp",
+        agreedToReceiveEmails: true,
+      })
 
       expect(AccessToken.getCurrentAccessToken).toHaveBeenCalled()
     })
@@ -372,7 +393,10 @@ describe("AuthModel", () => {
     it("fetches profile info from facebook and signs up", async () => {
       GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
 
-      await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
+      await GlobalStore.actions.auth.authFacebook({
+        signInOrUp: "signUp",
+        agreedToReceiveEmails: true,
+      })
 
       expect(GlobalStore.actions.auth.signUp).toHaveBeenCalledWith({
         email: "emailFromFacebook@email.com",
@@ -384,7 +408,10 @@ describe("AuthModel", () => {
     })
 
     it("throws an error if sign up fails", async () => {
-      GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: false, message: "Could not sign up" })) as any
+      GlobalStore.actions.auth.signUp = jest.fn(() => ({
+        success: false,
+        message: "Could not sign up",
+      })) as any
 
       const result = await GlobalStore.actions.auth
         .authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
@@ -429,7 +456,9 @@ describe("AuthModel", () => {
     it("throws an error if getting X-ACCESS-TOKEN fails", async () => {
       mockFetchJsonOnce({ error_description: "getting X-ACCESS-TOKEN error" })
 
-      const result = await GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" }).catch((e) => e)
+      const result = await GlobalStore.actions.auth
+        .authFacebook({ signInOrUp: "signIn" })
+        .catch((e) => e)
 
       expect(result).toBe("Login attempt failed")
     })
@@ -463,7 +492,10 @@ describe("AuthModel", () => {
     it("fetches profile info from google and signs up", async () => {
       GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: true })) as any
 
-      await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signUp", agreedToReceiveEmails: false })
+      await GlobalStore.actions.auth.authGoogle({
+        signInOrUp: "signUp",
+        agreedToReceiveEmails: false,
+      })
 
       expect(GlobalStore.actions.auth.signUp).toHaveBeenCalledWith({
         email: "googleEmail@gmail.com",
@@ -475,7 +507,10 @@ describe("AuthModel", () => {
     })
 
     it("throws an error if sign up fails", async () => {
-      GlobalStore.actions.auth.signUp = jest.fn(() => ({ success: false, message: "Could not sign up" })) as any
+      GlobalStore.actions.auth.signUp = jest.fn(() => ({
+        success: false,
+        message: "Could not sign up",
+      })) as any
 
       const result = await GlobalStore.actions.auth
         .authGoogle({ signInOrUp: "signUp", agreedToReceiveEmails: true })
@@ -520,7 +555,9 @@ describe("AuthModel", () => {
     it("throws an error if getting X-ACCESS-TOKEN fails", async () => {
       mockFetchJsonOnce({ error_description: "getting X-ACCESS-TOKEN error" })
 
-      const result = await GlobalStore.actions.auth.authGoogle({ signInOrUp: "signIn" }).catch((e) => e)
+      const result = await GlobalStore.actions.auth
+        .authGoogle({ signInOrUp: "signIn" })
+        .catch((e) => e)
 
       expect(result).toBe("Login attempt failed")
     })
@@ -534,7 +571,10 @@ describe("AuthModel", () => {
       })
       await GlobalStore.actions.auth.getXAppToken()
       mockFetch.mockClear()
-      ;(appleAuth.performRequest as jest.Mock).mockReturnValue({ identityToken: "apple-id-token", user: "appleUID" })
+      ;(appleAuth.performRequest as jest.Mock).mockReturnValue({
+        identityToken: "apple-id-token",
+        user: "appleUID",
+      })
     })
 
     it("fetches profile info from apple and signs up", async () => {
@@ -640,7 +680,9 @@ describe("AuthModel", () => {
     })
 
     it("clears user access token", async () => {
-      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe("user-access-token")
+      expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe(
+        "user-access-token"
+      )
       await GlobalStore.actions.auth.signOut()
       expect(__globalStoreTestUtils__?.getCurrentState().auth.userAccessToken).toBe(null)
     })

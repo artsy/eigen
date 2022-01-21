@@ -38,9 +38,14 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
             mt={2}
           />
         )}
-        {artist.notableWorks?.edges?.length === 3 && <ArtistNotableWorksRailFragmentContainer artist={artist} />}
+        {artist.notableWorks?.edges?.length === 3 && (
+          <ArtistNotableWorksRailFragmentContainer artist={artist} />
+        )}
         {!!artist.iconicCollections && artist.iconicCollections.length > 1 && (
-          <ArtistCollectionsRailFragmentContainer collections={artist.iconicCollections} artist={artist} />
+          <ArtistCollectionsRailFragmentContainer
+            collections={artist.iconicCollections}
+            artist={artist}
+          />
         )}
         <ArtistConsignButton artist={artist} />
         <ArtistAboutShowsFragmentContainer artist={artist} />
