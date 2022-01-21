@@ -19,9 +19,16 @@ export interface ViewDescriptor extends ViewOptions {
   props: object
 }
 
+export interface BackProps {
+  fromScreen?: string
+}
+
 export interface NavigateOptions {
   modal?: boolean
-  passProps?: object
+  passProps?: {
+    backProps?: BackProps
+    [key: string]: any
+  }
   replace?: boolean
   // Only when onlyShowInTabName specified
   popToRootTabView?: boolean
@@ -160,9 +167,9 @@ export function dismissModal() {
   }
 }
 
-export function goBack() {
+export function goBack(backProps?: BackProps) {
   LegacyNativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
-  navigationEvents.emit("goBack")
+  navigationEvents.emit("goBack", backProps)
 }
 
 export function popParentViewController() {
