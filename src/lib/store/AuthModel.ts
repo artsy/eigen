@@ -301,15 +301,15 @@ export const getAuthModel = (): AuthModel => ({
     }
 
     const resultJSON = await result.json()
-    if (resultJSON?.error === "otp_missing") {
+    if (resultJSON?.error_description === "missing two-factor authentication code") {
       return "otp_missing"
     }
 
-    if (resultJSON?.error === "on_demand_otp_missing") {
+    if (resultJSON?.error_description === "missing on-demand authentication code") {
       return "on_demand_otp_missing"
     }
 
-    if (resultJSON?.error === "invalid_grant") {
+    if (resultJSON?.error_description === "invalid two-factor authentication code") {
       return "invalid_otp"
     }
 
