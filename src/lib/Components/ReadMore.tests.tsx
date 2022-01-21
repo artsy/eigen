@@ -26,12 +26,16 @@ describe("ReadMore", () => {
 
     expect(getByText(/Sma/)).toBeTruthy()
     expect(
-      getByText(`Read${nbsp}more`, { normalizer: getDefaultNormalizer({ collapseWhitespace: false }) })
+      getByText(`Read${nbsp}more`, {
+        normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+      })
     ).toBeTruthy()
   })
 
   it("Renders markdown", () => {
-    const { getByText } = renderWithWrappersTL(<ReadMore maxChars={11} content="Small [text](/artist/andy-warhol)." />)
+    const { getByText } = renderWithWrappersTL(
+      <ReadMore maxChars={11} content="Small [text](/artist/andy-warhol)." />
+    )
     expect(within(getByText(/Small/)).getByText(/text/)).toBeTruthy()
   })
 
@@ -45,7 +49,7 @@ describe("ReadMore", () => {
   })
 
   it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
-    const { queryByText, getAllByText, UNSAFE_queryAllByType } = renderWithWrappersTL(
+    const { queryByText, getByText, UNSAFE_queryAllByType } = renderWithWrappersTL(
       <ReadMore
         maxChars={7}
         textStyle="new"
@@ -58,7 +62,11 @@ describe("ReadMore", () => {
 
     // Clicking "Read more" expands the text
     act(() =>
-      fireEvent.press(getByText(`Read${nbsp}more`, { normalizer: getDefaultNormalizer({ collapseWhitespace: false }) }))
+      fireEvent.press(
+        getByText(`Read${nbsp}more`, {
+          normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+        })
+      )
     )
 
     expect(queryByText("This text is slightly longer than is allowed.")).toBeTruthy()
@@ -75,13 +83,19 @@ describe("ReadMore", () => {
 
     expect(within(getByText(/This/)).getByText(/te/)).toBeTruthy()
     expect(
-      getByText(`Read${nbsp}more`, { normalizer: getDefaultNormalizer({ collapseWhitespace: false }) })
+      getByText(`Read${nbsp}more`, {
+        normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+      })
     ).toBeTruthy()
     expect(UNSAFE_getAllByType(LinkText)).toHaveLength(2) // One for the `/artist/text` link, one for "Read more"
 
     // Clicking "Read more" expands the text
     act(() =>
-      fireEvent.press(getByText(`Read${nbsp}more`, { normalizer: getDefaultNormalizer({ collapseWhitespace: false }) }))
+      fireEvent.press(
+        getByText(`Read${nbsp}more`, {
+          normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+        })
+      )
     )
 
     expect(within(getByText(/This/)).getByText(/text/)).toBeTruthy()
