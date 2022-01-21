@@ -43,7 +43,7 @@ describe("ArtworkDetailsForm", () => {
 
   describe("ArtworkDetails", () => {
     it("renders correct explanation for form fields", () => {
-      const { getByText } = renderWithWrappersTL(<ArtworkDetails handlePress={jest.fn()} />)
+      const { getByText } = renderWithWrappersTL(<ArtworkDetails submission={null} handlePress={jest.fn()} />)
       expect(getByText("• All fields are required to submit an artwork.")).toBeTruthy()
     })
 
@@ -72,7 +72,9 @@ describe("ArtworkDetailsForm", () => {
 
     describe("validation", () => {
       it("keeps Save & Continue button disabled until required fields validated", async () => {
-        const { getByTestId, UNSAFE_getByProps } = renderWithWrappersTL(<ArtworkDetails handlePress={jest.fn()} />)
+        const { getByTestId, UNSAFE_getByProps } = renderWithWrappersTL(
+          <ArtworkDetails submission={null} handlePress={jest.fn()} />
+        )
 
         const SaveButton = UNSAFE_getByProps({
           testID: "Consignment_ArtworkDetails_Button",
