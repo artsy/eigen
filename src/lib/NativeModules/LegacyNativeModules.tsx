@@ -17,6 +17,21 @@ const noop: any = (name: string) => () => console.warn(`method ${name} doesn't e
  *
  * When a thing is made available on android, it should be removed from this file and added to ArtsyNativeModule.
  */
+
+export const usingNewIOSAppShell = () => {
+  let newIOSAppShell = false
+  try {
+    // tslint:disable-next-line:no-var-requires
+    const fileContent = require("../../../metaflags.json")
+    newIOSAppShell = fileContent.newIosAppShell
+    console.log("NEWSHELL successfully loaded metaflags useNewAppShell", newIOSAppShell)
+  } catch {
+    console.log("NEWSHELL failed to load metaflags")
+    newIOSAppShell = false // default to false
+  }
+  return newIOSAppShell
+}
+
 interface LegacyNativeModules {
   ARTemporaryAPIModule: {
     requestPrepromptNotificationPermissions(): void
@@ -137,15 +152,5 @@ const PlaceholderModules = {
   },
 }
 
-let newIOSAppShell = false
-try {
-  // tslint:disable-next-line:no-var-requires
-  const fileContent = require("../../../metaflags.json")
-  newIOSAppShell = fileContent.newIosAppShell
-  console.log("NEWSHELL successfully loaded metaflags useNewAppShell", newIOSAppShell)
-} catch {
-  console.log("NEWSHELL failed to load metaflags")
-}
-
 export const LegacyNativeModules: LegacyNativeModules =
-  Platform.OS === "ios" && !newIOSAppShell ? LegacyNativeModulesIOS : PlaceholderModules
+  Platform.OS === "ios" && !usingNewIOSAppShell() ? LegacyNativeModulesIOS : PlaceholderModules

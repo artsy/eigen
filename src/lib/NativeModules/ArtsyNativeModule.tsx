@@ -1,6 +1,6 @@
 import { appJson } from "lib/utils/jsonFiles"
 import { NativeModules, PixelRatio, Platform } from "react-native"
-import { LegacyNativeModules } from "./LegacyNativeModules"
+import { LegacyNativeModules, usingNewIOSAppShell } from "./LegacyNativeModules"
 
 /**
  * Cross-platform native module facade.
@@ -8,19 +8,9 @@ import { LegacyNativeModules } from "./LegacyNativeModules"
  * Any legacy iOS native bridge code that is made cross-platform should also be exposed here.
  */
 
-let newIOSAppShell = false
-try {
-  // tslint:disable-next-line:no-var-requires
-  const fileContent = require("../../../metaflags.json")
-  newIOSAppShell = fileContent.newIosAppShell
-  console.log("NEWSHELL successfully loaded metaflags useNewAppShell", newIOSAppShell)
-} catch {
-  console.log("NEWSHELL failed to load metaflags")
-}
-
 export const ArtsyNativeModule = {
   launchCount:
-    Platform.OS === "ios" && !newIOSAppShell
+    Platform.OS === "ios" && !usingNewIOSAppShell()
       ? LegacyNativeModules.ARNotificationsManager.nativeState.launchCount
       : (NativeModules.ArtsyNativeModule.getConstants().launchCount as number),
   setAppStyling:
