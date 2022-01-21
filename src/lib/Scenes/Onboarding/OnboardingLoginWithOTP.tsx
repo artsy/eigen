@@ -121,7 +121,7 @@ export const OnboardingLoginWithOTP: React.FC<OnboardingLoginWithOTPProps> = ({ 
         oauthProvider: "email",
         email,
         password,
-        otp,
+        otp: otp.trim(),
       })
 
       if (res === "invalid_otp") {
