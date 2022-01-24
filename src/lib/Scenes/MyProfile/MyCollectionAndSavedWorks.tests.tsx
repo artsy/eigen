@@ -72,9 +72,6 @@ describe("MyCollectionAndSavedWorks", () => {
     })
 
     describe("With Bio and Icon Feature flags off", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableVisualProfileIconAndBio: false })
-      })
       it("Header shows the right text", async () => {
         const wrapper = getWrapper({
           Me: () => ({
@@ -120,9 +117,6 @@ describe("MyCollectionAndSavedWorks", () => {
     })
 
     describe("With Bio and Icon Feature flags ON", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableVisualProfileIconAndBio: true })
-      })
       it("Header shows the right text", () => {
         const wrapper = getWrapper({
           Me: () => ({
