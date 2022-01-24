@@ -64,7 +64,9 @@ export const LocationAutocomplete: React.FC<Props> = ({ initialLocation, onChang
         onFocus={reset}
         testID="Consignment_LocationInput"
         value={
-          selectedLocation ? `${selectedLocation.city}, ${selectedLocation.state}, ${selectedLocation.country}` : query
+          selectedLocation?.city
+            ? `${selectedLocation.city}, ${selectedLocation.state}, ${selectedLocation.country}`
+            : query
         }
       />
       <LocationPredictions
