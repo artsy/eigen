@@ -6,6 +6,7 @@ import { Dialog, quoteLeft, quoteRight, useTheme } from "palette"
 import React, { useEffect, useState } from "react"
 import { Alert, ScrollView, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
+import { useFirstMountState } from "react-use/lib/useFirstMountState"
 import { Form } from "./Components/Form"
 import {
   checkOrRequestPushPermissions,
@@ -48,6 +49,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   } = props
   const isUpdateForm = !!savedSearchAlertId
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
+  const isFirstRender = useFirstMountState()
   const savedSearchPills = SavedSearchStore.useStoreState((state) => state.pills)
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const hasChangedFilters = SavedSearchStore.useStoreState((state) => state.dirty)
@@ -68,6 +70,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const [shouldShowEmailWarning, setShouldShowEmailWarning] = useState(!userAllowsEmails)
   const formik = useFormik<SavedSearchAlertFormValues>({
     initialValues,
+    enableReinitialize: true,
     initialErrors: {},
     onSubmit: async (values) => {
       let alertName = values.name
@@ -123,17 +126,12 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     },
   })
 
-  /**
-   * If the initial value of push has changed (for example, the user has minimized the app and turned off Push notifications in settings)
-   * then we sync the updated value with the formik state
-   */
+  // Save the previously entered name
   useEffect(() => {
-    formik.setFieldValue("push", initialValues.push)
-  }, [initialValues.push])
-
-  useEffect(() => {
-    formik.setFieldValue("email", initialValues.email)
-  }, [initialValues.email])
+    if (!isFirstRender) {
+      formik.setFieldValue("name", formik.values.name)
+    }
+  }, [initialValues.email, initialValues.push])
 
   useEffect(() => {
     setShouldShowEmailWarning(!userAllowsEmails)
