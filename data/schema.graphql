@@ -6025,7 +6025,7 @@ input CreateUserAddressInput {
 type CreateUserAddressPayload {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
-  me: Me!
+  me: Me
   userAddressOrErrors: UserAddressOrErrorsUnion!
 }
 
@@ -6285,7 +6285,7 @@ input DeleteUserAddressInput {
 type DeleteUserAddressPayload {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
-  me: Me!
+  me: Me
   userAddressOrErrors: UserAddressOrErrorsUnion!
 }
 
@@ -13176,7 +13176,7 @@ input UpdateUserAddressInput {
 type UpdateUserAddressPayload {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
-  me: Me!
+  me: Me
   userAddressOrErrors: UserAddressOrErrorsUnion!
 }
 
@@ -13191,7 +13191,7 @@ input UpdateUserDefaultAddressInput {
 type UpdateUserDefaultAddressPayload {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
-  me: Me!
+  me: Me
   userAddressOrErrors: UserAddressOrErrorsUnion!
 }
 
