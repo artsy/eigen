@@ -42,9 +42,9 @@ export const ArtworkDetailsForm: React.FC = () => {
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
 
   return (
-    <Flex flexDirection="column">
+    <>
       <ArtistAutosuggest />
-      <Spacer mt={2} />
+      <Spacer mt={4} />
       <Input
         title="Title"
         placeholder="Add Title or Write 'Unknown'"
@@ -52,7 +52,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.title}
         onChangeText={(e) => setFieldValue("title", e)}
       />
-      <Spacer mt={2} />
+      <Spacer mt={4} />
       <Input
         title="Year"
         placeholder="YYYY"
@@ -60,7 +60,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.year}
         onChangeText={(e) => setFieldValue("year", e)}
       />
-      <Spacer mt={2} />
+      <Spacer mt={4} />
       <Input
         title="Materials"
         placeholder="Oil on Canvas, Mixed Media, Lithograph.."
@@ -68,7 +68,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.medium}
         onChangeText={(e) => setFieldValue("medium", e)}
       />
-      <Spacer mt={2} />
+      <Spacer mt={4} />
       <Select
         onSelectValue={(e) => setFieldValue("attributionClass", e)}
         value={values.attributionClass}
@@ -93,7 +93,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       </InfoModal>
       {values.attributionClass === limitedEditionValue && (
         <>
-          <Spacer mt={2} />
+          <Spacer mt={4} />
           <Flex flexDirection="row" justifyContent="space-between">
             <Box width="48%" mr={1}>
               <Input
@@ -115,7 +115,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         </>
       )}
 
-      <Spacer mt={2} />
+      <Spacer mt={4} />
       <InputTitle>Dimensions</InputTitle>
       <Spacer mt={1} />
       <Flex flexDirection="row">
@@ -131,7 +131,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           onPress={() => setFieldValue("dimensionsMetric", "cm")}
         />
       </Flex>
-      <Spacer mt={2} />
+      <Spacer mt={4} />
       <Flex flexDirection="row" justifyContent="space-between">
         <Box width="31%" mr={1}>
           <Input
@@ -158,7 +158,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           />
         </Box>
       </Flex>
-      <Spacer mt={2} />
+      <Spacer mt={4} />
       <Flex flexDirection="row" justifyContent="space-between">
         <InputTitle>Provenance</InputTitle>
         <Text variant="xs" color="black60" onPress={() => setIsProvenanceInfoModalVisible(true)}>
@@ -191,11 +191,11 @@ export const ArtworkDetailsForm: React.FC = () => {
         </Flex>
       </InfoModal>
 
-      <Spacer mt={2} />
+      <Spacer mt={4} />
       <LocationAutocomplete
         initialLocation={values.location}
         onChange={(e: Location) => setFieldValue("location", e)}
       />
-    </Flex>
+    </>
   )
 }

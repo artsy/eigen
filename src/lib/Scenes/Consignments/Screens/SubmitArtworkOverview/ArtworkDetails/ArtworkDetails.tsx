@@ -7,6 +7,7 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { CTAButton, Flex, Spacer, Text } from "palette"
 import React, { Suspense, useEffect, useState } from "react"
+import { ScrollView } from "react-native"
 import { graphql, PreloadedQuery, useFragment, usePreloadedQuery, useQueryLoader } from "react-relay"
 import { createOrUpdateConsignSubmission } from "../utils/createOrUpdateConsignSubmission"
 import { limitedEditionValue } from "../utils/rarityOptions"
@@ -93,25 +94,27 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
       validateOnMount
     >
       {({ values, isValid }) => (
-        <Flex p={1} mt={1} height={1130}>
-          <Text variant="sm" color="black60">
-            • All fields are required to submit an artwork.
-          </Text>
-          <Text variant="sm" color="black60">
-            • Unfortunately, we do not allow&nbsp;
-            <Text style={{ textDecorationLine: "underline" }}>artists to sell their own work</Text> on Artsy.
-          </Text>
-          <Spacer mt={2} />
-          <ArtworkDetailsForm />
-          <Spacer mt={3} />
-          <CTAButton
-            disabled={!isValid}
-            onPress={() => handleArtworkDetailsSubmit(values)}
-            testID="Consignment_ArtworkDetails_Button"
-          >
-            Save & Continue
-          </CTAButton>
-        </Flex>
+        <ScrollView>
+          <Flex flexDirection="column" p={1} mt={1}>
+            <Text variant="sm" color="black60">
+              • All fields are required to submit an artwork.
+            </Text>
+            <Text variant="sm" color="black60">
+              • Unfortunately, we do not allow&nbsp;
+              <Text style={{ textDecorationLine: "underline" }}>artists to sell their own work</Text> on Artsy.
+            </Text>
+            <Spacer mt={4} />
+            <ArtworkDetailsForm />
+            <Spacer mt={3} />
+            <CTAButton
+              disabled={!isValid}
+              onPress={() => handleArtworkDetailsSubmit(values)}
+              testID="Consignment_ArtworkDetails_Button"
+            >
+              Save & Continue
+            </CTAButton>
+          </Flex>
+        </ScrollView>
       )}
     </Formik>
   )
