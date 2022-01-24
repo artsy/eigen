@@ -8,6 +8,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
+import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { createConsignSubmission, updateConsignSubmission } from "../Mutations"
@@ -35,6 +36,12 @@ const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
 const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe("ArtworkDetailsForm", () => {
+  const TestRenderer = () => (
+    <RelayEnvironmentProvider environment={mockEnvironment}>
+      <ArtworkDetails submission={null} handlePress={jest.fn()} />
+    </RelayEnvironmentProvider>
+  )
+
   beforeEach(() => {
     ;(createConsignSubmissionMock as jest.Mock).mockClear()
     ;(updateConsignSubmissionMock as jest.Mock).mockClear()
@@ -43,7 +50,7 @@ describe("ArtworkDetailsForm", () => {
 
   describe("ArtworkDetails", () => {
     it("renders correct explanation for form fields", () => {
-      const { getByText } = renderWithWrappersTL(<ArtworkDetails submission={null} handlePress={jest.fn()} />)
+      const { getByText } = renderWithWrappersTL(<TestRenderer />)
       expect(getByText("• All fields are required to submit an artwork.")).toBeTruthy()
     })
 
@@ -72,9 +79,7 @@ describe("ArtworkDetailsForm", () => {
 
     describe("validation", () => {
       it("keeps Save & Continue button disabled until required fields validated", async () => {
-        const { getByTestId, UNSAFE_getByProps } = renderWithWrappersTL(
-          <ArtworkDetails submission={null} handlePress={jest.fn()} />
-        )
+        const { getByTestId, UNSAFE_getByProps } = renderWithWrappersTL(<TestRenderer />)
 
         const SaveButton = UNSAFE_getByProps({
           testID: "Consignment_ArtworkDetails_Button",
