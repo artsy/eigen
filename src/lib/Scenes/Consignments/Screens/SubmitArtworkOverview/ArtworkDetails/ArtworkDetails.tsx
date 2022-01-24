@@ -8,11 +8,20 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/
 import { CTAButton, Flex, Spacer, Text } from "palette"
 import React, { Suspense, useEffect, useState } from "react"
 import { ScrollView } from "react-native"
-import { graphql, PreloadedQuery, useFragment, usePreloadedQuery, useQueryLoader } from "react-relay"
+import {
+  graphql,
+  PreloadedQuery,
+  useFragment,
+  usePreloadedQuery,
+  useQueryLoader,
+} from "react-relay"
 import { createOrUpdateConsignSubmission } from "../utils/createOrUpdateConsignSubmission"
 import { limitedEditionValue } from "../utils/rarityOptions"
 import { updateArtworkDetailsInitialValues } from "../utils/updateArtworkDetailsInitialValues"
-import { artworkDetailsEmptyInitialValues, artworkDetailsValidationSchema } from "../utils/validation"
+import {
+  artworkDetailsEmptyInitialValues,
+  artworkDetailsValidationSchema,
+} from "../utils/validation"
 import { ArtworkDetailsForm, ArtworkDetailsFormModel } from "./ArtworkDetailsForm"
 import { ErrorView } from "./Components/ErrorView"
 
@@ -73,7 +82,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
       })
 
       if (id) {
-        GlobalStore.actions.consignment.submission.setSubmissionId(id)
+        GlobalStore.actions.consignmentSubmission.submission.setSubmissionId(id)
         props.handlePress()
       }
     } catch (error) {
@@ -101,7 +110,10 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
             </Text>
             <Text variant="sm" color="black60">
               • Unfortunately, we do not allow&nbsp;
-              <Text style={{ textDecorationLine: "underline" }}>artists to sell their own work</Text> on Artsy.
+              <Text style={{ textDecorationLine: "underline" }}>
+                artists to sell their own work
+              </Text>{" "}
+              on Artsy.
             </Text>
             <Spacer mt={4} />
             <ArtworkDetailsForm />
@@ -120,7 +132,10 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
   )
 }
 
-export const ArtworkDetailsContainer: React.FC<ArtworkDetailsContainerProps> = ({ queryRef, handlePress }) => {
+export const ArtworkDetailsContainer: React.FC<ArtworkDetailsContainerProps> = ({
+  queryRef,
+  handlePress,
+}) => {
   const data = usePreloadedQuery<ArtworkDetailsQuery>(ArtworkDetailsScreenQuery, queryRef)
   return <ArtworkDetails submission={data.submission} handlePress={handlePress} />
 }
@@ -135,7 +150,9 @@ const ArtworkDetailsScreenQuery = graphql`
 
 export const ArtworkDetailsScreen: React.FC<{ handlePress: () => void }> = ({ handlePress }) => {
   const [queryRef, loadQuery] = useQueryLoader<ArtworkDetailsQuery>(ArtworkDetailsScreenQuery)
-  const { submissionId } = GlobalStore.useAppState((state) => state.consignment.submission.sessionState)
+  const { submissionId } = GlobalStore.useAppState(
+    (state) => state.consignmentSubmission.submission.sessionState
+  )
 
   useEffect(() => {
     if (submissionId && !queryRef) {

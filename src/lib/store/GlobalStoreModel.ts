@@ -3,7 +3,7 @@ import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { BottomTabsModel, getBottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
 import {
   ConsignmentModel,
-  getConsignmentModel,
+  getConsignmentSubmissionModel,
 } from "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/State/ConsignmentModel"
 import {
   getMyCollectionModel,
@@ -43,7 +43,7 @@ interface GlobalStoreStateModel {
   pendingPushNotification: PendingPushNotificationModel
   userPreferences: UserPreferencesModel
   visualClue: VisualClueModel
-  consignment: ConsignmentModel
+  consignmentSubmission: ConsignmentModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
@@ -115,7 +115,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   pendingPushNotification: getPendingPushNotificationModel(),
   userPreferences: getUserPreferencesModel(),
   visualClue: getVisualClueModel(),
-  consignment: getConsignmentModel(),
+  consignmentSubmission: getConsignmentSubmissionModel(),
 
   // for dev only.
   _setVersion: action((state, newVersion) => {

@@ -29,9 +29,10 @@ export const Versions = {
   RemoveNativeOnboardingState: 17,
   AddUserPreferences: 18,
   AddVisualClueModel: 19,
+  AddConsignmentSubmissionModel: 20,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddVisualClueModel
+export const CURRENT_APP_VERSION = Versions.AddConsignmentSubmissionModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -123,6 +124,11 @@ export const artsyAppMigrations: Migrations = {
   [Versions.AddVisualClueModel]: (state) => {
     state.visualClue = {
       seenVisualClues: [],
+    }
+  },
+  [Versions.AddConsignmentSubmissionModel]: (state) => {
+    state.consignmentSubmission = {
+      submission: {},
     }
   },
 }

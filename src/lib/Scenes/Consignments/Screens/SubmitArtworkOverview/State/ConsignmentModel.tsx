@@ -10,7 +10,7 @@ export interface ConsignmentSubmissionModel {
 
 export const ConsignmentSubmissionModel: ConsignmentSubmissionModel = {
   sessionState: {
-    submissionId: "72421",
+    submissionId: "",
   },
   setSubmissionId: action((state, id) => {
     state.sessionState.submissionId = id
@@ -24,6 +24,6 @@ export interface ConsignmentModel {
   submission: ConsignmentSubmissionModel
 }
 
-export const getConsignmentModel = (): ConsignmentModel => ({
+export const getConsignmentSubmissionModel = (): ConsignmentModel => ({
   submission: ConsignmentSubmissionModel,
 })
