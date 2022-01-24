@@ -245,6 +245,15 @@ describe("Saved search alert form", () => {
     })
   })
 
+  it("should show a warning message if a user has set email frequency to None in update mode", async () => {
+    const { getByText } = renderWithWrappersTL(
+      <TestRenderer savedSearchAlertId="savedSearchAlertId" userAllowsEmails={false} />
+    )
+
+    expect(getByText("Your email frequency is set to None")).toBeTruthy()
+    expect(getByText("To receive Email Alerts, please update your email preferences.")).toBeTruthy()
+  })
+
   describe("Notification toggles", () => {
     const notificationPermissionsMock = mockFetchNotificationPermissions(false)
 

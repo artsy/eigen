@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 79caa0c330d4c63b9272ec4f52ac8cf6 */
+/* @relayHash a3abe9edb6a85abc6f9aa6a8923d86d0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -9,6 +9,9 @@ export type EditSavedSearchAlertQueryVariables = {
     artistID: string;
 };
 export type EditSavedSearchAlertQueryResponse = {
+    readonly user: {
+        readonly " $fragmentRefs": FragmentRefs<"EditSavedSearchAlert_user">;
+    } | null;
     readonly artist: {
         readonly " $fragmentRefs": FragmentRefs<"EditSavedSearchAlert_artist">;
     } | null;
@@ -27,6 +30,10 @@ export type EditSavedSearchAlertQuery = {
 query EditSavedSearchAlertQuery(
   $artistID: String!
 ) {
+  user: me {
+    ...EditSavedSearchAlert_user
+    id
+  }
   artist(id: $artistID) {
     ...EditSavedSearchAlert_artist
     id
@@ -51,6 +58,10 @@ fragment EditSavedSearchAlert_artworksConnection on FilterArtworksConnection {
       value
     }
   }
+}
+
+fragment EditSavedSearchAlert_user on Me {
+  emailFrequency
 }
 */
 
@@ -97,14 +108,14 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "id",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "name",
   "storageKey": null
 };
 return {
@@ -114,6 +125,22 @@ return {
     "metadata": null,
     "name": "EditSavedSearchAlertQuery",
     "selections": [
+      {
+        "alias": "user",
+        "args": null,
+        "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
+        "plural": false,
+        "selections": [
+          {
+            "args": null,
+            "kind": "FragmentSpread",
+            "name": "EditSavedSearchAlert_user"
+          }
+        ],
+        "storageKey": null
+      },
       {
         "alias": null,
         "args": (v1/*: any*/),
@@ -157,6 +184,25 @@ return {
     "name": "EditSavedSearchAlertQuery",
     "selections": [
       {
+        "alias": "user",
+        "args": null,
+        "concreteType": "Me",
+        "kind": "LinkedField",
+        "name": "me",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "emailFrequency",
+            "storageKey": null
+          },
+          (v3/*: any*/)
+        ],
+        "storageKey": null
+      },
+      {
         "alias": null,
         "args": (v1/*: any*/),
         "concreteType": "Artist",
@@ -171,8 +217,8 @@ return {
             "name": "internalID",
             "storageKey": null
           },
-          (v3/*: any*/),
-          (v4/*: any*/)
+          (v4/*: any*/),
+          (v3/*: any*/)
         ],
         "storageKey": null
       },
@@ -214,7 +260,7 @@ return {
                     "name": "count",
                     "storageKey": null
                   },
-                  (v3/*: any*/),
+                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -228,14 +274,14 @@ return {
             ],
             "storageKey": null
           },
-          (v4/*: any*/)
+          (v3/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "79caa0c330d4c63b9272ec4f52ac8cf6",
+    "id": "a3abe9edb6a85abc6f9aa6a8923d86d0",
     "metadata": {},
     "name": "EditSavedSearchAlertQuery",
     "operationKind": "query",
@@ -243,5 +289,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'b7ba8ea3f6d77b3e8cb1436877763543';
+(node as any).hash = 'bc62a42de7d55f8e498e65ed1723ee63';
 export default node;
