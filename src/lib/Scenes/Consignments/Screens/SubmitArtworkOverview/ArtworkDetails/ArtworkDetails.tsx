@@ -33,6 +33,7 @@ interface ArtworkDetailsContainerProps {
 }
 
 export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
+  const { utmParams } = GlobalStore.useAppState((state) => state.consignmentSubmission.submission)
   const submission = useFragment(submissionFragmentSpec, props.submission)
   const [submissionError, setSubmissionError] = useState(false)
 
@@ -70,9 +71,9 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
         locationState: artworkDetailsForm.location.state,
         locationCountry: artworkDetailsForm.location.country,
         state: "DRAFT",
-        utmMedium: artworkDetailsForm.utmMedium,
-        utmSource: artworkDetailsForm.utmSource,
-        utmTerm: artworkDetailsForm.utmTerm,
+        utmMedium: utmParams.utm_medium,
+        utmSource: utmParams.utm_source,
+        utmTerm: utmParams.utm_term,
       })
 
       if (id) {
