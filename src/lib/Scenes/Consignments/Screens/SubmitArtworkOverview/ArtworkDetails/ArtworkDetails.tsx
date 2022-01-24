@@ -16,12 +16,9 @@ import {
   useQueryLoader,
 } from "react-relay"
 import { createOrUpdateConsignSubmission } from "../utils/createOrUpdateConsignSubmission"
+import { getArtworkDetailsInitialValues } from "../utils/getArtworkDetailsInitialValues"
 import { limitedEditionValue } from "../utils/rarityOptions"
-import { updateArtworkDetailsInitialValues } from "../utils/updateArtworkDetailsInitialValues"
-import {
-  artworkDetailsEmptyInitialValues,
-  artworkDetailsValidationSchema,
-} from "../utils/validation"
+import { artworkDetailsValidationSchema } from "../utils/validation"
 import { ArtworkDetailsForm, ArtworkDetailsFormModel } from "./ArtworkDetailsForm"
 import { ErrorView } from "./Components/ErrorView"
 
@@ -39,11 +36,8 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
   const submission = useFragment(submissionFragmentSpec, props.submission)
   const [submissionError, setSubmissionError] = useState(false)
 
-  let artworkDetailsInitialValues: ArtworkDetailsFormModel = artworkDetailsEmptyInitialValues
-
-  if (submission) {
-    artworkDetailsInitialValues = updateArtworkDetailsInitialValues(submission)
-  }
+  const artworkDetailsInitialValues: ArtworkDetailsFormModel =
+    getArtworkDetailsInitialValues(submission)
 
   const handleArtworkDetailsSubmit = async (values: ArtworkDetailsFormModel) => {
     const isRarityLimitedEdition = values.attributionClass === limitedEditionValue
