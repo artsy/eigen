@@ -146,7 +146,7 @@ const ArtworkDetailsScreenQuery = graphql`
 export const ArtworkDetailsScreen: React.FC<{ handlePress: () => void }> = ({ handlePress }) => {
   const [queryRef, loadQuery] = useQueryLoader<ArtworkDetailsQuery>(ArtworkDetailsScreenQuery)
   const { submissionId } = GlobalStore.useAppState(
-    (state) => state.consignmentSubmission.submission.sessionState
+    (state) => state.consignmentSubmission.submission
   )
 
   useEffect(() => {

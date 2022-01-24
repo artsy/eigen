@@ -2,9 +2,7 @@ import { Action, action } from "easy-peasy"
 import { ConsignmentsSubmissionUtmParams } from "../../../ConsignmentsHome/ConsignmentsSubmissionForm"
 
 export interface ConsignmentSubmissionModel {
-  sessionState: {
-    submissionId: string
-  }
+  submissionId: string
   utmParams: ConsignmentsSubmissionUtmParams
   setSubmissionId: Action<ConsignmentSubmissionModel, string>
   setUtmParams: Action<ConsignmentSubmissionModel, ConsignmentsSubmissionUtmParams>
@@ -12,22 +10,20 @@ export interface ConsignmentSubmissionModel {
 }
 
 export const ConsignmentSubmissionModel: ConsignmentSubmissionModel = {
-  sessionState: {
-    submissionId: "",
-  },
+  submissionId: "",
   utmParams: {
     utm_term: "",
     utm_medium: "",
     utm_source: "",
   },
   setSubmissionId: action((state, id) => {
-    state.sessionState.submissionId = id
+    state.submissionId = id
   }),
   setUtmParams: action((state, params) => {
     state.utmParams = params
   }),
   resetSessionState: action((state) => {
-    state.sessionState.submissionId = ""
+    state.submissionId = ""
     state.utmParams = {
       utm_term: "",
       utm_medium: "",

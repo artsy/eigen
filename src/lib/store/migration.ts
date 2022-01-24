@@ -128,7 +128,14 @@ export const artsyAppMigrations: Migrations = {
   },
   [Versions.AddConsignmentSubmissionModel]: (state) => {
     state.consignmentSubmission = {
-      submission: {},
+      submission: {
+        submissionId: "",
+        utmParams: {
+          utm_medium: "",
+          utm_source: "",
+          utm_term: "",
+        },
+      },
     }
   },
 }
