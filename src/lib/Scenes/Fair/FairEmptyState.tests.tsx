@@ -30,7 +30,9 @@ describe("FairEmptyState", () => {
     })
 
     it("renders correctly when the fair is in the future", () => {
-      const wrapper = getWrapper({ Fair: () => ({ isActive: false, endAt: DateTime.local().plus({ days: 1 }) }) })
+      const wrapper = getWrapper({
+        Fair: () => ({ isActive: false, endAt: DateTime.local().plus({ days: 1 }) }),
+      })
       expect(extractText(wrapper.root)).toEqual(
         "This fair is currently unavailable. Please check back closer to the fair for artworks."
       )

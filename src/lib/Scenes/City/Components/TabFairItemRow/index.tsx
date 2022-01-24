@@ -26,7 +26,11 @@ export class TabFairItemRow extends React.Component<Props> {
             <TouchableWithoutFeedback onPress={() => this.handleTap(item)}>
               <Flex flexWrap="nowrap" flexDirection="row" alignItems="center" mr={10}>
                 <RoundedImageWrapper>
-                  <OpaqueImageView height={58} width={58} imageURL={fairImage! /* STRICTNESS_MIGRATION */} />
+                  <OpaqueImageView
+                    height={58}
+                    width={58}
+                    imageURL={fairImage! /* STRICTNESS_MIGRATION */}
+                  />
                 </RoundedImageWrapper>
                 <Box width={boxWidth} pl={1}>
                   {!!item.name && (

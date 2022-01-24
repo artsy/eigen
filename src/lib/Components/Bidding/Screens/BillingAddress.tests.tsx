@@ -50,7 +50,11 @@ describe("BillingAddress component", () => {
 
   it("correctly populates relevant inputs with the passed address fields", () => {
     const { getByTestId } = renderWithWrappersTL(
-      <BillingAddress onSubmit={onSubmitMock} billingAddress={mockFullAddress} navigator={fakeNavigator as any} />
+      <BillingAddress
+        onSubmit={onSubmitMock}
+        billingAddress={mockFullAddress}
+        navigator={fakeNavigator as any}
+      />
     )
 
     expect(getByTestId("input-full-name").props.value).toEqual(mockFullAddress.fullName)
@@ -64,7 +68,11 @@ describe("BillingAddress component", () => {
 
   it("fires the passed callback when address is submitted and no required field is missing", () => {
     const { getByTestId } = renderWithWrappersTL(
-      <BillingAddress onSubmit={onSubmitMock} billingAddress={mockFullAddress} navigator={fakeNavigator as any} />
+      <BillingAddress
+        onSubmit={onSubmitMock}
+        billingAddress={mockFullAddress}
+        navigator={fakeNavigator as any}
+      />
     )
 
     getByTestId("button-add").props.onClick()

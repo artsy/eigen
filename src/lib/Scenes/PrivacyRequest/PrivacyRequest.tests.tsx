@@ -21,10 +21,9 @@ describe(PrivacyRequest, () => {
 
     tree.find(LinkText).at(1).simulate("press")
 
-    expect(LegacyNativeModules.ARScreenPresenterModule.presentEmailComposerWithSubject).toHaveBeenCalledWith(
-      "Personal Data Request",
-      "privacy@artsy.net"
-    )
+    expect(
+      LegacyNativeModules.ARScreenPresenterModule.presentEmailComposerWithSubject
+    ).toHaveBeenCalledWith("Personal Data Request", "privacy@artsy.net")
   })
 
   it("handles CCPA button presses", () => {
@@ -32,7 +31,9 @@ describe(PrivacyRequest, () => {
 
     tree.find(Button).simulate("press")
 
-    expect(LegacyNativeModules.ARScreenPresenterModule.presentEmailComposerWithBody).toHaveBeenCalledWith(
+    expect(
+      LegacyNativeModules.ARScreenPresenterModule.presentEmailComposerWithBody
+    ).toHaveBeenCalledWith(
       "Hello, I'm contacting you to ask that...",
       "Personal Data Request",
       "privacy@artsy.net"

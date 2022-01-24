@@ -24,9 +24,12 @@ export const CityPicker: React.FC<Props> = (props) => {
 
   const selectCity = (city: string, index: number) => {
     setSelectedCity(city)
-    LegacyNativeModules.ARNotificationsManager.postNotificationName("ARLocalDiscoveryUserSelectedCity", {
-      cityIndex: index,
-    })
+    LegacyNativeModules.ARNotificationsManager.postNotificationName(
+      "ARLocalDiscoveryUserSelectedCity",
+      {
+        cityIndex: index,
+      }
+    )
   }
 
   useEffect(() => {
@@ -76,7 +79,10 @@ export const CityPicker: React.FC<Props> = (props) => {
             </Box>
           ))}
           <LogoContainer>
-            <BMWSponsorship url={sponsoredContentUrl} logoText="Presented in partnership with BMW" />
+            <BMWSponsorship
+              url={sponsoredContentUrl}
+              logoText="Presented in partnership with BMW"
+            />
           </LogoContainer>
         </Box>
       </Overlay>

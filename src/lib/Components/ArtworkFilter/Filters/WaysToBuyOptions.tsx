@@ -1,6 +1,13 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  FilterData,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  ArtworksFiltersStore,
+  useSelectedOptionsDisplay,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import React, { useState } from "react"
 import { ArtworkFilterNavigationStack } from "../ArtworkFilterNavigator"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
@@ -30,7 +37,9 @@ export const WAYS_TO_BUY_OPTIONS: FilterData[] = [
 export const WAYS_TO_BUY_PARAM_NAMES = WAYS_TO_BUY_OPTIONS.map((option) => option.paramName)
 
 export const WaysToBuyOptionsScreen: React.FC<WaysToBuyOptionsScreenProps> = ({ navigation }) => {
-  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.selectFiltersAction
+  )
 
   const selectedOptions = useSelectedOptionsDisplay()
   const options = WAYS_TO_BUY_OPTIONS.map((option) => {
@@ -72,7 +81,9 @@ export const WaysToBuyOptionsScreen: React.FC<WaysToBuyOptionsScreenProps> = ({ 
       filterHeaderText={FilterDisplayName.waysToBuy}
       filterOptions={options}
       navigation={navigation}
-      {...(selected.length > 0 ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
+      {...(selected.length > 0
+        ? { rightButtonText: "Clear", onRightButtonPress: handleClear }
+        : {})}
     />
   )
 }

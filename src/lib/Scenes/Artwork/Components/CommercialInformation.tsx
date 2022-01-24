@@ -60,7 +60,9 @@ export const CommercialInformationTimerWrapper: React.FC<CommercialInformationPr
             return { label, date, state }
           }}
           onNextTickerState={({ state }) => {
-            const nextState = nextTimerState(state as AuctionTimerState, { liveStartsAt: liveStartsAt || undefined })
+            const nextState = nextTimerState(state as AuctionTimerState, {
+              liveStartsAt: liveStartsAt || undefined,
+            })
             const { label, date } = relevantStateData(nextState, {
               liveStartsAt: liveStartsAt || undefined,
               startsAt: startsAt || undefined,
@@ -86,7 +88,10 @@ const ColoredDot = styled(Box)<{ dotColor: string }>`
   margin-right: 8px;
 `
 
-export const SaleAvailability: React.FC<{ dotColor?: string; saleMessage: string }> = ({ dotColor, saleMessage }) => {
+export const SaleAvailability: React.FC<{ dotColor?: string; saleMessage: string }> = ({
+  dotColor,
+  saleMessage,
+}) => {
   return (
     <Box>
       <Flex flexWrap="nowrap" flexDirection="row" width="100%">
@@ -126,7 +131,9 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
 
   const renderSingleEditionArtwork = () => {
     const artworkIsInClosedAuction = artwork.isInAuction && timerState === AuctionTimerState.CLOSED
-    const saleMessage = artwork.saleMessage ? artwork.saleMessage : capitalize(artwork.availability || undefined)
+    const saleMessage = artwork.saleMessage
+      ? artwork.saleMessage
+      : capitalize(artwork.availability || undefined)
 
     return (
       <ClassTheme>
@@ -134,7 +141,10 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
           let indicatorColor
           let newSaleMessage
 
-          if (artwork.availability?.toLowerCase() === "on loan" || artwork.availability?.toLowerCase() === "on hold") {
+          if (
+            artwork.availability?.toLowerCase() === "on loan" ||
+            artwork.availability?.toLowerCase() === "on hold"
+          ) {
             indicatorColor = color("yellow100")
           } else if (
             artwork.availability?.toLowerCase() === "sold" ||
@@ -143,14 +153,20 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
             indicatorColor = color("red100")
           } else if (artworkIsInClosedAuction) {
             newSaleMessage = "Bidding closed"
-          } else if (artwork.saleMessage?.toLowerCase() === "contact for price" && artwork.isForSale) {
+          } else if (
+            artwork.saleMessage?.toLowerCase() === "contact for price" &&
+            artwork.isForSale
+          ) {
             newSaleMessage = "For sale"
             indicatorColor = color("green100")
           }
 
           return (
             <>
-              <SaleAvailability dotColor={indicatorColor} saleMessage={newSaleMessage ? newSaleMessage : saleMessage} />
+              <SaleAvailability
+                dotColor={indicatorColor}
+                saleMessage={newSaleMessage ? newSaleMessage : saleMessage}
+              />
               {!artworkIsInClosedAuction && <CommercialPartnerInformation artwork={artwork} />}
             </>
           )
@@ -186,11 +202,14 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
 
   const { isAcquireable, isOfferable, isInquireable, isInAuction, sale, isForSale } = artwork
 
-  const isBiddableInAuction = isInAuction && sale && timerState !== AuctionTimerState.CLOSED && isForSale
+  const isBiddableInAuction =
+    isInAuction && sale && timerState !== AuctionTimerState.CLOSED && isForSale
   const isInClosedAuction = isInAuction && sale && timerState === AuctionTimerState.CLOSED
-  const canTakeCommercialAction = isAcquireable || isOfferable || isInquireable || isBiddableInAuction
+  const canTakeCommercialAction =
+    isAcquireable || isOfferable || isInquireable || isBiddableInAuction
   const artistIsConsignable = artwork?.artists?.filter((artist) => artist?.isConsignable).length
-  const hidesPriceInformation = isInAuction && isForSale && timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
+  const hidesPriceInformation =
+    isInAuction && isForSale && timerState === AuctionTimerState.LIVE_INTEGRATION_ONGOING
 
   return (
     <>
@@ -234,49 +253,52 @@ export const CommercialInformation: React.FC<CommercialInformationProps> = ({
   )
 }
 
-export const CommercialInformationFragmentContainer = createFragmentContainer(CommercialInformationTimerWrapper, {
-  artwork: graphql`
-    fragment CommercialInformation_artwork on Artwork {
-      isAcquireable
-      isOfferable
-      isInquireable
-      isInAuction
-      availability
-      saleMessage
-      isForSale
-      internalID
-      slug
-
-      artists {
-        isConsignable
-      }
-
-      editionSets {
-        id
-      }
-
-      sale {
+export const CommercialInformationFragmentContainer = createFragmentContainer(
+  CommercialInformationTimerWrapper,
+  {
+    artwork: graphql`
+      fragment CommercialInformation_artwork on Artwork {
+        isAcquireable
+        isOfferable
+        isInquireable
+        isInAuction
+        availability
+        saleMessage
+        isForSale
         internalID
-        isClosed
-        isAuction
-        isLiveOpen
-        isPreview
-        liveStartAt
-        endAt
         slug
-        startAt
-      }
 
-      ...CommercialButtons_artwork
-      ...CommercialPartnerInformation_artwork
-      ...CommercialEditionSetInformation_artwork
-      ...ArtworkExtraLinks_artwork
-      ...AuctionPrice_artwork
-    }
-  `,
-  me: graphql`
-    fragment CommercialInformation_me on Me {
-      ...CommercialButtons_me
-    }
-  `,
-})
+        artists {
+          isConsignable
+        }
+
+        editionSets {
+          id
+        }
+
+        sale {
+          internalID
+          isClosed
+          isAuction
+          isLiveOpen
+          isPreview
+          liveStartAt
+          endAt
+          slug
+          startAt
+        }
+
+        ...CommercialButtons_artwork
+        ...CommercialPartnerInformation_artwork
+        ...CommercialEditionSetInformation_artwork
+        ...ArtworkExtraLinks_artwork
+        ...AuctionPrice_artwork
+      }
+    `,
+    me: graphql`
+      fragment CommercialInformation_me on Me {
+        ...CommercialButtons_me
+      }
+    `,
+  }
+)

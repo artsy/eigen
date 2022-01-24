@@ -2,17 +2,35 @@ import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
+import {
+  action,
+  Action,
+  Computed,
+  computed,
+  StateMapper,
+  thunk,
+  Thunk,
+  thunkOn,
+  ThunkOn,
+} from "easy-peasy"
 import * as RelayCache from "lib/relay/RelayCache"
 import { isArtsyEmail } from "lib/utils/general"
-import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
+import {
+  getNotificationPermissionsStatus,
+  PushAuthorizationStatus,
+} from "lib/utils/PushNotification"
 import { postEventToProviders } from "lib/utils/track/providers"
 import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { capitalize } from "lodash"
 import { stringify } from "qs"
 import { Alert, Linking, Platform } from "react-native"
 import Config from "react-native-config"
-import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from "react-native-fbsdk-next"
+import {
+  AccessToken,
+  GraphRequest,
+  GraphRequestManager,
+  LoginManager,
+} from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
 import { LegacyNativeModules } from "../NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState } from "./GlobalStore"
@@ -20,7 +38,11 @@ import type { GlobalStoreModel } from "./GlobalStoreModel"
 
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
 
-const afterSocialAuthLogin = (res: any, reject: (reason?: any) => void, provider: "facebook" | "apple" | "google") => {
+const afterSocialAuthLogin = (
+  res: any,
+  reject: (reason?: any) => void,
+  provider: "facebook" | "apple" | "google"
+) => {
   const providerName = capitalize(provider)
   if (res.error_description) {
     if (res.error_description.includes("no account linked to oauth token")) {
@@ -32,6 +54,8 @@ const afterSocialAuthLogin = (res: any, reject: (reason?: any) => void, provider
     }
   }
 }
+
+type SignInStatus = "failure" | "success" | "otp_missing" | "on_demand_otp_missing" | "invalid_otp"
 
 type OnboardingState = "none" | "incomplete" | "complete"
 export interface AuthModel {
@@ -57,6 +81,7 @@ export interface AuthModel {
       | {
           oauthProvider: "email"
           password: string
+          otp?: string
         }
       | {
           oauthProvider: "facebook" | "google"
@@ -70,7 +95,7 @@ export interface AuthModel {
     ),
     {},
     GlobalStoreModel,
-    Promise<boolean>
+    Promise<SignInStatus>
   >
   signUp: Thunk<
     this,
@@ -235,13 +260,13 @@ export const getAuthModel = (): AuthModel => ({
       body: {
         email,
         oauth_provider: oauthProvider,
-
+        otp_attempt: oauthProvider === "email" ? args?.otp ?? undefined : undefined,
         password: oauthProvider === "email" ? args.password : undefined,
-        oauth_token: oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
+        oauth_token:
+          oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
         apple_uid: oauthProvider === "apple" ? args.appleUID : undefined,
         id_token: oauthProvider === "apple" ? args.idToken : undefined,
         grant_type: grantTypeMap[oauthProvider],
-
         client_id: Config.ARTSY_API_CLIENT_KEY,
         client_secret: Config.ARTSY_API_CLIENT_SECRET,
         scope: "offline_access",
@@ -295,10 +320,23 @@ export const getAuthModel = (): AuthModel => ({
         actions.requestPushNotifPermission()
       }
 
-      return true
+      return "success"
     }
 
-    return false
+    const resultJSON = await result.json()
+    if (resultJSON?.error_description === "missing two-factor authentication code") {
+      return "otp_missing"
+    }
+
+    if (resultJSON?.error_description === "missing on-demand authentication code") {
+      return "on_demand_otp_missing"
+    }
+
+    if (resultJSON?.error_description === "invalid two-factor authentication code") {
+      return "invalid_otp"
+    }
+
+    return "failure"
   }),
   signUp: thunk(async (actions, args) => {
     const { oauthProvider, email, name, agreedToReceiveEmails } = args
@@ -314,7 +352,8 @@ export const getAuthModel = (): AuthModel => ({
         name,
 
         password: oauthProvider === "email" ? args.password : undefined,
-        oauth_token: oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
+        oauth_token:
+          oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
         apple_uid: oauthProvider === "apple" ? args.appleUID : undefined,
         id_token: oauthProvider === "apple" ? args.idToken : undefined,
 
@@ -381,7 +420,10 @@ export const getAuthModel = (): AuthModel => ({
   }),
   authFacebook: thunk(async (actions, options) => {
     return await new Promise<true>(async (resolve, reject) => {
-      const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions(["public_profile", "email"])
+      const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions([
+        "public_profile",
+        "email",
+      ])
       if (declinedPermissions?.includes("email")) {
         reject("Please allow the use of email to continue.")
       }
@@ -620,7 +662,9 @@ export const getAuthModel = (): AuthModel => ({
     }
 
     await Promise.all([
-      Platform.OS === "ios" ? await LegacyNativeModules.ArtsyNativeModule.clearUserData() : Promise.resolve(),
+      Platform.OS === "ios"
+        ? await LegacyNativeModules.ArtsyNativeModule.clearUserData()
+        : Promise.resolve(),
       await signOutGoogle(),
       CookieManager.clearAll(),
       RelayCache.clearAll(),

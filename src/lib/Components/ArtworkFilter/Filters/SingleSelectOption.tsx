@@ -44,7 +44,12 @@ export const SingleSelectOptionScreen: React.FC<SingleSelectOptionScreenProps> =
   const renderItem = (item: FilterData | JSX.Element) => {
     if (isFilterData(item)) {
       return (
-        <ListItem item={item} selectedOption={selectedOption} onSelect={onSelect} withExtraPadding={withExtraPadding} />
+        <ListItem
+          item={item}
+          selectedOption={selectedOption}
+          onSelect={onSelect}
+          withExtraPadding={withExtraPadding}
+        />
       )
     }
 

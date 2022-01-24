@@ -21,10 +21,9 @@ import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 
-export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormScreen, "ArtworkFormMain">> = ({
-  route,
-  navigation,
-}) => {
+export const MyCollectionArtworkFormMain: React.FC<
+  StackScreenProps<ArtworkFormScreen, "ArtworkFormMain">
+> = ({ route, navigation }) => {
   const artworkActions = GlobalStore.actions.myCollection.artwork
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
   const { formik } = useArtworkForm()
@@ -68,7 +67,10 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
     return Object.getOwnPropertyNames(dirtyFormCheckValues).reduce(
       (accum: boolean, key: string) =>
         accum ||
-        !isEqual((formValues as { [key: string]: any })[key], (dirtyFormCheckValues as { [key: string]: any })[key]),
+        !isEqual(
+          (formValues as { [key: string]: any })[key],
+          (dirtyFormCheckValues as { [key: string]: any })[key]
+        ),
       false
     )
   }
@@ -86,7 +88,9 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
         <Flex p={2}>
           <Join separator={<Spacer my={1} />}>
-            {!!formik.values.artistSearchResult && <ArtistSearchResult result={formik.values.artistSearchResult} />}
+            {!!formik.values.artistSearchResult && (
+              <ArtistSearchResult result={formik.values.artistSearchResult} />
+            )}
             <Input
               title="TITLE"
               placeholder="Title"

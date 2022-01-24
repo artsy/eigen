@@ -4,7 +4,16 @@ import { ImageSearchModal } from "lib/Scenes/Search/components/ImageSearchModal"
 import { MeasuredView } from "lib/utils/MeasuredView"
 import { useImageSearch } from "lib/utils/useImageSearch"
 import _ from "lodash"
-import { CameraIcon, Color, EyeOpenedIcon, Flex, Spinner, Text, useTheme, XCircleIcon } from "palette"
+import {
+  CameraIcon,
+  Color,
+  EyeOpenedIcon,
+  Flex,
+  Spinner,
+  Text,
+  useTheme,
+  XCircleIcon,
+} from "palette"
 import React, { useEffect, useImperativeHandle, useRef, useState } from "react"
 import {
   LayoutAnimation,
@@ -103,7 +112,8 @@ export const Input = React.forwardRef<TextInput, InputProps>(
     ref
   ) => {
     const { color, theme } = useTheme()
-    const { capturePhoto, isModalVisible, setIsModalVisible, errorMessage, isLoading } = useImageSearch()
+    const { capturePhoto, isModalVisible, setIsModalVisible, errorMessage, isLoading } =
+      useImageSearch()
     const [focused, setFocused] = useState(false)
     const [showPassword, setShowPassword] = useState(!secureTextEntry)
     const [value, setValue] = useState(rest.value ?? rest.defaultValue ?? "")
@@ -296,14 +306,18 @@ export const Input = React.forwardRef<TextInput, InputProps>(
                 onChangeText={localOnChangeText}
                 onFocus={(e) => {
                   if (Platform.OS === "android") {
-                    LayoutAnimation.configureNext(LayoutAnimation.create(60, "easeInEaseOut", "opacity"))
+                    LayoutAnimation.configureNext(
+                      LayoutAnimation.create(60, "easeInEaseOut", "opacity")
+                    )
                   }
                   setFocused(true)
                   rest.onFocus?.(e)
                 }}
                 onBlur={(e) => {
                   if (Platform.OS === "android") {
-                    LayoutAnimation.configureNext(LayoutAnimation.create(60, "easeInEaseOut", "opacity"))
+                    LayoutAnimation.configureNext(
+                      LayoutAnimation.create(60, "easeInEaseOut", "opacity")
+                    )
                   }
                   setFocused(false)
                   rest.onBlur?.(e)
@@ -312,7 +326,10 @@ export const Input = React.forwardRef<TextInput, InputProps>(
             </Flex>
             {!!showCamera && (
               <Flex pr="1" justifyContent="center" alignItems="center" flexGrow={0}>
-                <TouchableOpacity onPress={capturePhoto} hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}>
+                <TouchableOpacity
+                  onPress={capturePhoto}
+                  hitSlop={{ bottom: 40, right: 40, left: 0, top: 40 }}
+                >
                   <CameraIcon fill="black100" />
                 </TouchableOpacity>
               </Flex>

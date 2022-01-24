@@ -9,7 +9,9 @@ interface FairTimingProps {
   fair: FairTiming_fair
 }
 
-export const FairTiming: React.FC<FairTimingProps> = ({ fair: { exhibitionPeriod, startAt, endAt } }) => {
+export const FairTiming: React.FC<FairTimingProps> = ({
+  fair: { exhibitionPeriod, startAt, endAt },
+}) => {
   return (
     <Box py={1}>
       <Text variant="sm" color="black100">

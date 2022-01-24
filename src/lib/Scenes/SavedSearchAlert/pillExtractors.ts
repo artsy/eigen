@@ -13,13 +13,23 @@ import {
   parseRange,
 } from "lib/Components/ArtworkFilter/Filters/helpers"
 import { SIZES_OPTIONS } from "lib/Components/ArtworkFilter/Filters/SizesOptionsScreen"
-import { WAYS_TO_BUY_OPTIONS, WAYS_TO_BUY_PARAM_NAMES } from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
+import {
+  WAYS_TO_BUY_OPTIONS,
+  WAYS_TO_BUY_PARAM_NAMES,
+} from "lib/Components/ArtworkFilter/Filters/WaysToBuyOptions"
 import { shouldExtractValueNamesFromAggregation } from "lib/Components/ArtworkFilter/SavedSearch/constants"
-import { SearchCriteria, SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import {
+  SearchCriteria,
+  SearchCriteriaAttributes,
+} from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { compact, flatten, isNil, isUndefined, keyBy } from "lodash"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 
-export const extractPillFromAggregation = (paramName: SearchCriteria, values: string[], aggregations: Aggregations) => {
+export const extractPillFromAggregation = (
+  paramName: SearchCriteria,
+  values: string[],
+  aggregations: Aggregations
+) => {
   const aggregation = aggregationForFilter(paramName, aggregations)
 
   if (aggregation) {
@@ -124,7 +134,10 @@ export const extractWaysToBuyPill = (paramName: SearchCriteria): SavedSearchPill
   }
 }
 
-export const extractPills = (attributes: SearchCriteriaAttributes, aggregations: Aggregations): SavedSearchPill[] => {
+export const extractPills = (
+  attributes: SearchCriteriaAttributes,
+  aggregations: Aggregations
+): SavedSearchPill[] => {
   const pills = Object.entries(attributes).map((entry) => {
     const [paramName, paramValue] = entry as [SearchCriteria, any]
 

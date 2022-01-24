@@ -18,7 +18,9 @@ describe("SearchCriteria", () => {
     const mockRenderComponent = jest.fn(() => <></>)
 
     renderWithWrappersTL(
-      <SearchCriteriaQueryRenderer render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }} />
+      <SearchCriteriaQueryRenderer
+        render={{ renderComponent: mockRenderComponent, renderPlaceholder: jest.fn() }}
+      />
     )
 
     expect(mockRenderComponent).toBeCalledWith({

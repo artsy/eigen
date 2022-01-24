@@ -9,7 +9,8 @@ export const artworkRarityClassifications = [
     name: "Limited edition",
     label: "Limited Edition",
     value: "LIMITED_EDITION",
-    description: "The edition run has ended; the number of works produced is known and included in the listing.",
+    description:
+      "The edition run has ended; the number of works produced is known and included in the listing.",
   },
   {
     name: "Open edition",

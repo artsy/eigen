@@ -10,7 +10,10 @@ export interface OpenInquiryModalButtonProps {
   conversationID: string
 }
 
-export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({ artworkID, conversationID }) => {
+export const OpenInquiryModalButton: React.FC<OpenInquiryModalButtonProps> = ({
+  artworkID,
+  conversationID,
+}) => {
   const { trackEvent } = useTracking()
 
   return (

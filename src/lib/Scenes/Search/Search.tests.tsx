@@ -118,7 +118,9 @@ describe("Search Screen", () => {
   })
 
   it("should not be able to untoggle the same pill", () => {
-    const { getByPlaceholderText, getByText, getByA11yState } = renderWithWrappersTL(<TestRenderer />)
+    const { getByPlaceholderText, getByText, getByA11yState } = renderWithWrappersTL(
+      <TestRenderer />
+    )
     const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
     mockEnvironmentPayload(mockEnvironment, {
@@ -414,7 +416,9 @@ describe("Search Screen", () => {
     })
 
     it("should render only allowed algolia indices", () => {
-      const { getByPlaceholderText, getByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByPlaceholderText, getByText, queryByText } = renderWithWrappersTL(
+        <TestRenderer />
+      )
       const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
       mockEnvironmentPayload(mockEnvironment, {

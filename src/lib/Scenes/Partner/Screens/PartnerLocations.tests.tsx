@@ -12,7 +12,11 @@ describe("PartnerLocations", () => {
     await renderRelayTree({
       Component: (props: any) => {
         return (
-          <PartnerLocations partner={{ ...partner }} relay={{ environment: {} } as RelayPaginationProp} {...props} />
+          <PartnerLocations
+            partner={{ ...partner }}
+            relay={{ environment: {} } as RelayPaginationProp}
+            {...props}
+          />
         )
       },
       query: graphql`

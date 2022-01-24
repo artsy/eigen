@@ -28,7 +28,9 @@ interface State {
 
 type PropsForArtwork = Omit<ArtworkProps, "artwork">
 
-type GenericArtworkType = GenericGrid_artworks extends ReadonlyArray<infer GenericArtwork> ? GenericArtwork : never
+type GenericArtworkType = GenericGrid_artworks extends ReadonlyArray<infer GenericArtwork>
+  ? GenericArtwork
+  : never
 
 export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork, State> {
   static defaultProps = {
@@ -146,7 +148,9 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
           />
         )
         if (row < artworks.length - 1) {
-          artworkComponents.push(<View style={spacerStyle} key={"spacer-" + row} accessibilityLabel="Spacer View" />)
+          artworkComponents.push(
+            <View style={spacerStyle} key={"spacer-" + row} accessibilityLabel="Spacer View" />
+          )
         }
       }
 
@@ -155,7 +159,11 @@ export class GenericArtworksGrid extends React.Component<Props & PropsForArtwork
         marginRight: column === this.state.sectionCount - 1 ? 0 : this.props.sectionMargin,
       }
       sections.push(
-        <View style={[styles.section, sectionSpecificStyle]} key={column} accessibilityLabel={"Section " + column}>
+        <View
+          style={[styles.section, sectionSpecificStyle]}
+          key={column}
+          accessibilityLabel={"Section " + column}
+        >
           {artworkComponents}
         </View>
       )

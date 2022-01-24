@@ -86,7 +86,11 @@ export class HoursCollapsible extends React.Component<Props, State> {
           <Box>
             <TouchableWithoutFeedback onPress={this.handleToggleIsExpanded}>
               <Flex alignItems="center" flexDirection="row">
-                <Sans size="3t" weight="medium" color={isExpanded ? color("black60") : color("black100")}>
+                <Sans
+                  size="3t"
+                  weight="medium"
+                  color={isExpanded ? color("black60") : color("black100")}
+                >
                   Opening hours
                 </Sans>
                 <Box ml={1}>

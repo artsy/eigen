@@ -12,8 +12,21 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { Flex, Sans, Spacer } from "palette"
 import React, { useCallback, useEffect, useReducer, useState } from "react"
-import { ActivityIndicator, Alert, FlatList, LayoutAnimation, RefreshControl, TouchableOpacity } from "react-native"
-import { commitMutation, createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import {
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  LayoutAnimation,
+  RefreshControl,
+  TouchableOpacity,
+} from "react-native"
+import {
+  commitMutation,
+  createPaginationContainer,
+  graphql,
+  QueryRenderer,
+  RelayPaginationProp,
+} from "react-relay"
 
 const NUM_CARDS_TO_FETCH = 100 // stupidly high because most people will have 1 or *maybe* 2
 
@@ -24,13 +37,18 @@ const NUM_CARDS_TO_FETCH = 100 // stupidly high because most people will have 1 
 // tslint:disable-next-line:variable-name
 export let __triggerRefresh: null | (() => Promise<void>) = null
 
-const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginationProp }> = ({ relay, me }) => {
+const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginationProp }> = ({
+  relay,
+  me,
+}) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [deletingIDs, dispatch] = useReducer(
     (
       state: { [internalID: string]: boolean },
-      action: { type: "deleting"; internalID: string } | { type: "not deleting"; internalID: string }
+      action:
+        | { type: "deleting"; internalID: string }
+        | { type: "not deleting"; internalID: string }
     ) => {
       switch (action.type) {
         case "deleting":
@@ -102,7 +120,10 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
         } else {
           relay.refetchConnection(NUM_CARDS_TO_FETCH, () => {
             dispatch({ type: "not deleting", internalID })
-            LayoutAnimation.configureNext({ duration: 380, update: { type: "spring", springDamping: 0.8 } })
+            LayoutAnimation.configureNext({
+              duration: 380,
+              update: { type: "spring", springDamping: 0.8 },
+            })
           })
         }
       },
@@ -140,7 +161,10 @@ const MyProfilePayment: React.FC<{ me: MyProfilePayment_me; relay: RelayPaginati
         ItemSeparatorComponent={() => <Spacer mb={10} />}
         ListFooterComponent={
           <Flex pt={creditCards.length === 0 ? 0 : "2"}>
-            <MenuItem title="Add New Card" onPress={() => navigate("/my-profile/payment/new-card")} />
+            <MenuItem
+              title="Add New Card"
+              onPress={() => navigate("/my-profile/payment/new-card")}
+            />
             {!!isLoadingMore && <ActivityIndicator style={{ marginTop: 30 }} />}
           </Flex>
         }
@@ -168,7 +192,8 @@ const MyProfilePaymentContainer = createPaginationContainer(
       fragment MyProfilePayment_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         name
-        creditCards(first: $count, after: $cursor) @connection(key: "MyProfilePayment_creditCards") {
+        creditCards(first: $count, after: $cursor)
+          @connection(key: "MyProfilePayment_creditCards") {
           edges {
             node {
               internalID

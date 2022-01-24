@@ -89,10 +89,10 @@ export function spring(node: Animated.Value, toValue: number) {
 /**
  * Underlines the Active Tab. Same implementation in StickyTabPageTabBar
  */
-export const ActiveTabBorder: React.FC<{ tabLayouts: LayoutRectangle[]; activeTabIndex: number }> = ({
-  tabLayouts,
-  activeTabIndex,
-}) => {
+export const ActiveTabBorder: React.FC<{
+  tabLayouts: LayoutRectangle[]
+  activeTabIndex: number
+}> = ({ tabLayouts, activeTabIndex }) => {
   const color = useColor()
   // We resize this border using the `scaleX` transform property rather than the `width` property, to avoid running
   // animations on the JS thread, so we need to set an initial, pre-transform span for the border.

@@ -17,6 +17,7 @@ export interface ArtworkRailProps {
   onEndReachedThreshold?: number
   ListHeaderComponent?: ReactElement | null
   ListFooterComponent?: ReactElement | null
+  hideArtistName?: boolean
 }
 
 export const ArtworkRail: React.FC<ArtworkRailProps> = ({
@@ -27,6 +28,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
   onEndReachedThreshold,
   ListHeaderComponent = SpacerComponent,
   ListFooterComponent = SpacerComponent,
+  hideArtistName = false,
   artworks,
 }) => {
   return (
@@ -53,6 +55,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
           artwork={item}
           size={size}
           hidePartnerName
+          hideArtistName={hideArtistName}
         />
       )}
       keyExtractor={(item, index) => String(item.slug || index)}

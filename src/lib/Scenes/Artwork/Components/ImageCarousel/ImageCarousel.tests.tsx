@@ -17,7 +17,9 @@ import { ImageWithLoadingState } from "./ImageWithLoadingState"
 jest.unmock("react-relay")
 
 const deepZoomFixture: NonNullable<
-  NonNullable<NonNullable<NonNullable<ImageCarouselTestsQueryRawResponse["artwork"]>["images"]>[0]>["deepZoom"]
+  NonNullable<
+    NonNullable<NonNullable<ImageCarouselTestsQueryRawResponse["artwork"]>["images"]>[0]
+  >["deepZoom"]
 > = {
   image: {
     format: "jpg",
@@ -95,7 +97,9 @@ const localImages: CarouselImageDescriptor[] = [
 describe("ImageCarouselFragmentContainer", () => {
   const getWrapper = async (artwork = artworkFixture) => {
     return await renderRelayTree({
-      Component: ({ artwork: { images } }) => <ImageCarouselFragmentContainer images={images} cardHeight={275} />,
+      Component: ({ artwork: { images } }) => (
+        <ImageCarouselFragmentContainer images={images} cardHeight={275} />
+      ),
       query: graphql`
         query ImageCarouselTestsQuery @raw_response_type {
           artwork(id: "unused") {
@@ -139,8 +143,11 @@ describe("ImageCarouselFragmentContainer", () => {
     it("'selects' subsequent pagination dots as a result of scrolling", async () => {
       const wrapper = await getWrapper()
 
-      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-      const measurements = getMeasurements({ images: artworkFixture.images, boundingBox: { width: 375, height: 275 } })
+      const measurements = getMeasurements({
+        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+        images: artworkFixture.images,
+        boundingBox: { width: 375, height: 275 },
+      })
 
       wrapper
         .find(FlatList)
@@ -229,7 +236,11 @@ describe("Local Images and PaginationIndicator", () => {
     expect(wrapper.root.findAllByType(ScrollBar).length).toBe(0)
   })
   it("Indicator can be a scrollbar", () => {
-    const wrapper = getWrapper({ paginationIndicatorType: "scrollBar", images: localImages, cardHeight: 275 })
+    const wrapper = getWrapper({
+      paginationIndicatorType: "scrollBar",
+      images: localImages,
+      cardHeight: 275,
+    })
     expect(wrapper.root.findAllByType(PaginationDot).length).toBe(0)
     expect(wrapper.root.findByType(ScrollBar)).toBeDefined()
   })

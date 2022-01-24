@@ -2,7 +2,7 @@ import { Flex, Spacer } from "palette"
 import React from "react"
 import { FlatList, StyleProp, ViewStyle } from "react-native"
 
-export const DList = <ItemT,>({
+export const DataList = <ItemT,>({
   data,
   keyExtractor,
   renderItem,

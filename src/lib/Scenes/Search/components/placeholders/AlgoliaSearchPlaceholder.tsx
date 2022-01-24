@@ -8,7 +8,9 @@ interface AlgoliaSearchPlaceholderProps {
   hasRoundedImages: boolean
 }
 
-export const AlgoliaSearchPlaceholder: React.FC<AlgoliaSearchPlaceholderProps> = ({ hasRoundedImages }) => {
+export const AlgoliaSearchPlaceholder: React.FC<AlgoliaSearchPlaceholderProps> = ({
+  hasRoundedImages,
+}) => {
   return (
     <>
       <Box px={2}>
@@ -20,7 +22,12 @@ export const AlgoliaSearchPlaceholder: React.FC<AlgoliaSearchPlaceholderProps> =
               borderRadius={hasRoundedImages ? IMAGE_SIZE / 2 : 0}
             />
             <Flex flex={1} justifyContent="center" ml={1}>
-              <RandomWidthPlaceholderText minWidth={100} maxWidth={200} height={14} marginBottom={0} />
+              <RandomWidthPlaceholderText
+                minWidth={100}
+                maxWidth={200}
+                height={14}
+                marginBottom={0}
+              />
             </Flex>
           </Flex>
         ))}

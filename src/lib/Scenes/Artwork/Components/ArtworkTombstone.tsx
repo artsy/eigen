@@ -19,7 +19,10 @@ export interface ArtworkTombstoneState {
 }
 
 @track()
-export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, ArtworkTombstoneState> {
+export class ArtworkTombstone extends React.Component<
+  ArtworkTombstoneProps,
+  ArtworkTombstoneState
+> {
   state = {
     showingMoreArtists: false,
   }
@@ -95,7 +98,10 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
       const artistNameWithComma = index !== artists.length - 1 ? artist.name + ", " : artist.name
       return (
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        <React.Fragment key={artist.href}>{this.renderArtistName(artistNameWithComma, artist.href)}</React.Fragment>
+        <React.Fragment key={artist.href}>
+          {/* @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏 */}
+          {this.renderArtistName(artistNameWithComma, artist.href)}
+        </React.Fragment>
       )
     })
 
@@ -161,13 +167,14 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
             {artwork.medium}
           </Sans>
         )}
-        {!!artwork.dimensions! /* STRICTNESS_MIGRATION */.in && !!artwork.dimensions! /* STRICTNESS_MIGRATION */.cm && (
-          <Sans color="black60" size="3">
-            {LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
-              ? artwork.dimensions! /* STRICTNESS_MIGRATION */.in
-              : artwork.dimensions! /* STRICTNESS_MIGRATION */.cm}
-          </Sans>
-        )}
+        {!!artwork.dimensions! /* STRICTNESS_MIGRATION */.in &&
+          !!artwork.dimensions! /* STRICTNESS_MIGRATION */.cm && (
+            <Sans color="black60" size="3">
+              {LegacyNativeModules.ARCocoaConstantsModule.CurrentLocale === "en_US"
+                ? artwork.dimensions! /* STRICTNESS_MIGRATION */.in
+                : artwork.dimensions! /* STRICTNESS_MIGRATION */.cm}
+            </Sans>
+          )}
         {!!artwork.edition_of && (
           <Sans color="black60" size="3">
             {artwork.edition_of}
@@ -175,8 +182,12 @@ export class ArtworkTombstone extends React.Component<ArtworkTombstoneProps, Art
         )}
         {!!artwork.attribution_class && (
           <Sans color="black60" size="3" mt={1}>
-            <TouchableWithoutFeedback onPress={() => this.handleClassificationTap("/artwork-classifications")}>
-              <Text style={{ textDecorationLine: "underline" }}>{artwork.attribution_class.shortDescription}</Text>
+            <TouchableWithoutFeedback
+              onPress={() => this.handleClassificationTap("/artwork-classifications")}
+            >
+              <Text style={{ textDecorationLine: "underline" }}>
+                {artwork.attribution_class.shortDescription}
+              </Text>
             </TouchableWithoutFeedback>
             .
           </Sans>

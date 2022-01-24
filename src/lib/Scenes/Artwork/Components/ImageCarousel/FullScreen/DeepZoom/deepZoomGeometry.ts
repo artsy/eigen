@@ -26,7 +26,10 @@ export const calculateDeepZoomLevels = ({ width, height }: DeepZoomImageSize) =>
 /**
  * calculates the max ScrollView.zoomScale for this image
  */
-export const calculateMaxZoomViewScale = (imageFittedWithinScreen: Size, fullResolutionImage: DeepZoomImageSize) => {
+export const calculateMaxZoomViewScale = (
+  imageFittedWithinScreen: Size,
+  fullResolutionImage: DeepZoomImageSize
+) => {
   return fullResolutionImage.height / imageFittedWithinScreen.height
 }
 
@@ -35,7 +38,10 @@ export const calculateMaxZoomViewScale = (imageFittedWithinScreen: Size, fullRes
  * is around level 9. This function figures it out! I have a feeling this could be done with logarithms rather than a
  * for loop, but I forgot all the maths I ever learned about 5 years ago.
  */
-export const calculateMinMaxDeepZoomLevels = (imageFittedWithinScreen: Size, zoomLevels: Size[]) => {
+export const calculateMinMaxDeepZoomLevels = (
+  imageFittedWithinScreen: Size,
+  zoomLevels: Size[]
+) => {
   let minLevel = 0
   const maxLevel = zoomLevels.length - 1
   for (const { width } of zoomLevels) {

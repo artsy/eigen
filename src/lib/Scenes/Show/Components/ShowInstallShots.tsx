@@ -30,7 +30,11 @@ export const ShowInstallShots: React.FC<ShowInstallShotsProps> = ({ show, ...res
 
           return (
             <Box>
-              <OpaqueImageView width={image.dimensions.width!} height={image.dimensions.height!} imageURL={image.src} />
+              <OpaqueImageView
+                width={image.dimensions.width!}
+                height={image.dimensions.height!}
+                imageURL={image.src}
+              />
 
               {!!image.caption && (
                 <Text

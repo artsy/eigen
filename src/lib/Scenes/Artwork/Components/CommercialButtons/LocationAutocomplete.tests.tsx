@@ -11,7 +11,9 @@ import { LocationAutocomplete, LocationPredictions } from "./LocationAutocomplet
 
 const mockOnChange = jest.fn()
 const getWrapper = (initialLocation: SimpleLocation | null = null) =>
-  renderWithWrappers(<LocationAutocomplete initialLocation={initialLocation} onChange={mockOnChange} />)
+  renderWithWrappers(
+    <LocationAutocomplete initialLocation={initialLocation} onChange={mockOnChange} />
+  )
 
 const locationQueryResult = [
   { id: "a", name: "Busytown, USA" },

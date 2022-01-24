@@ -3,7 +3,11 @@ import { extractText } from "lib/tests/extractText"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { Text } from "react-native"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider, useSelectedOptionsDisplay } from "../ArtworkFilterStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+  useSelectedOptionsDisplay,
+} from "../ArtworkFilterStore"
 import { getEssentialProps } from "./helper"
 import { Range } from "./helpers"
 import { PriceRangeOptionsScreen } from "./PriceRangeOptions"
@@ -17,12 +21,19 @@ const DEFAULT_RANGE: Range = {
 
 describe("CustomPriceInput", () => {
   it("renders without error", () => {
-    renderWithWrappersTL(<Input value={DEFAULT_RANGE} onChange={jest.fn()} {...getEssentialProps()} />)
+    renderWithWrappersTL(
+      <Input value={DEFAULT_RANGE} onChange={jest.fn()} {...getEssentialProps()} />
+    )
   })
 
   it("renders the min value", () => {
     const { getByTestId } = renderWithWrappersTL(
-      <Input testID="price-min-input" value={{ min: 444, max: 99999 }} onChange={jest.fn()} {...getEssentialProps()} />
+      <Input
+        testID="price-min-input"
+        value={{ min: 444, max: 99999 }}
+        onChange={jest.fn()}
+        {...getEssentialProps()}
+      />
     )
 
     expect(getByTestId("price-min-input").props.value.min).toBe(444)
@@ -30,7 +41,12 @@ describe("CustomPriceInput", () => {
 
   it("renders the max value", () => {
     const { getByTestId } = renderWithWrappersTL(
-      <Input testID="price-max-input" value={{ min: 444, max: 99999 }} onChange={jest.fn()} {...getEssentialProps()} />
+      <Input
+        testID="price-max-input"
+        value={{ min: 444, max: 99999 }}
+        onChange={jest.fn()}
+        {...getEssentialProps()}
+      />
     )
 
     expect(getByTestId("price-max-input").props.value.max).toBe(99999)
@@ -39,7 +55,12 @@ describe("CustomPriceInput", () => {
   it("calls onChange with the min when it is updated", () => {
     const handleChange = jest.fn()
     const { getByTestId } = renderWithWrappersTL(
-      <Input testID="price-min-input" value={DEFAULT_RANGE} onChangeText={handleChange} {...getEssentialProps()} />
+      <Input
+        testID="price-min-input"
+        value={DEFAULT_RANGE}
+        onChangeText={handleChange}
+        {...getEssentialProps()}
+      />
     )
 
     fireEvent.changeText(getByTestId("price-min-input"), "777")
@@ -50,7 +71,12 @@ describe("CustomPriceInput", () => {
   it("calls onChange with the max when it is updated", () => {
     const handleChange = jest.fn()
     const { getByTestId } = renderWithWrappersTL(
-      <Input testID="price-max-input" value={DEFAULT_RANGE} onChangeText={handleChange} {...getEssentialProps()} />
+      <Input
+        testID="price-max-input"
+        value={DEFAULT_RANGE}
+        onChangeText={handleChange}
+        {...getEssentialProps()}
+      />
     )
 
     fireEvent.changeText(getByTestId("price-max-input"), "12345")

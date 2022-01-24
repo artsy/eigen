@@ -55,9 +55,9 @@ const AuctionIsLive = () => (
       This is a live auction
     </Sans>
     <Text variant="sm" color="black" fontSize={15}>
-      Participating in a live auction means you’ll be competing against bidders in real time on an auction room floor.
-      You can place max bids which will be represented by Artsy in the auction room or you can bid live when the auction
-      opens.
+      Participating in a live auction means you’ll be competing against bidders in real time on an
+      auction room floor. You can place max bids which will be represented by Artsy in the auction
+      room or you can bid live when the auction opens.
     </Text>
   </Flex>
 )
@@ -182,7 +182,9 @@ const BuyersPremium: React.FC<{ sale: SaleInfo_sale }> = (props) => {
   }
 
   if (buyersPremium.length === 1) {
-    premiumDisplay = <Text variant="sm">{makePercent(buyersPremium[0]?.percent || 0)}% on the hammer price</Text>
+    premiumDisplay = (
+      <Text variant="sm">{makePercent(buyersPremium[0]?.percent || 0)}% on the hammer price</Text>
+    )
   } else {
     premiumDisplay = createPremiumDisplay(props)
   }
@@ -264,7 +266,10 @@ export const SaleInfoQueryRenderer: React.FC<{ saleID: string }> = ({ saleID: sa
         }
       `}
       variables={{ saleID }}
-      render={renderWithPlaceholder({ Container: SaleInfoContainer, renderPlaceholder: SaleInfoPlaceholder })}
+      render={renderWithPlaceholder({
+        Container: SaleInfoContainer,
+        renderPlaceholder: SaleInfoPlaceholder,
+      })}
     />
   )
 }

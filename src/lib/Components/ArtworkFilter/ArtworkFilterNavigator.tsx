@@ -33,7 +33,10 @@ import { View, ViewProps } from "react-native"
 import { useTracking } from "react-tracking"
 import { CreateSavedSearchModal } from "../Artist/ArtistArtworks/CreateSavedSearchModal"
 import { FancyModal } from "../FancyModal/FancyModal"
-import { ArtworkFilterOptionsScreen, FilterModalMode as ArtworkFilterMode } from "./ArtworkFilterOptionsScreen"
+import {
+  ArtworkFilterOptionsScreen,
+  FilterModalMode as ArtworkFilterMode,
+} from "./ArtworkFilterOptionsScreen"
 import { ArtworkFilterApplyButton } from "./components/ArtworkFilterApplyButton"
 import { AuctionHouseOptionsScreen } from "./Filters/AuctionHouseOptions"
 import { LocationCitiesOptionsScreen } from "./Filters/LocationCitiesOptions"
@@ -99,11 +102,17 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
-  const previouslyAppliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.previouslyAppliedFilters)
+  const previouslyAppliedFiltersState = ArtworksFiltersStore.useStoreState(
+    (state) => state.previouslyAppliedFilters
+  )
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
 
-  const applyFiltersAction = ArtworksFiltersStore.useStoreActions((action) => action.applyFiltersAction)
-  const resetFiltersAction = ArtworksFiltersStore.useStoreActions((action) => action.resetFiltersAction)
+  const applyFiltersAction = ArtworksFiltersStore.useStoreActions(
+    (action) => action.applyFiltersAction
+  )
+  const resetFiltersAction = ArtworksFiltersStore.useStoreActions(
+    (action) => action.resetFiltersAction
+  )
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
   const handleClosingModal = () => {
@@ -147,7 +156,8 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
   }
 
   const isApplyButtonEnabled =
-    selectedFiltersState.length > 0 || (previouslyAppliedFiltersState.length === 0 && appliedFiltersState.length > 0)
+    selectedFiltersState.length > 0 ||
+    (previouslyAppliedFiltersState.length === 0 && appliedFiltersState.length > 0)
 
   const handleApplyPress = () => {
     const appliedFiltersParams = filterArtworksParams(appliedFiltersState, filterTypeState)
@@ -273,17 +283,30 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
               cardStyle: { backgroundColor: "white" },
             }}
           >
-            <Stack.Screen name="FilterOptionsScreen" component={ArtworkFilterOptionsScreen} initialParams={props} />
+            <Stack.Screen
+              name="FilterOptionsScreen"
+              component={ArtworkFilterOptionsScreen}
+              initialParams={props}
+            />
             <Stack.Screen name="ArtistIDsOptionsScreen" component={ArtistIDsOptionsScreen} />
-            <Stack.Screen name="AttributionClassOptionsScreen" component={AttributionClassOptionsScreen} />
+            <Stack.Screen
+              name="AttributionClassOptionsScreen"
+              component={AttributionClassOptionsScreen}
+            />
             <Stack.Screen name="AuctionHouseOptionsScreen" component={AuctionHouseOptionsScreen} />
             <Stack.Screen name="ColorsOptionsScreen" component={ColorsOptionsScreen} />
-            <Stack.Screen name="EstimateRangeOptionsScreen" component={EstimateRangeOptionsScreen} />
+            <Stack.Screen
+              name="EstimateRangeOptionsScreen"
+              component={EstimateRangeOptionsScreen}
+            />
             <Stack.Screen
               name="GalleriesAndInstitutionsOptionsScreen"
               component={GalleriesAndInstitutionsOptionsScreen}
             />
-            <Stack.Screen name="AdditionalGeneIDsOptionsScreen" component={AdditionalGeneIDsOptionsScreen} />
+            <Stack.Screen
+              name="AdditionalGeneIDsOptionsScreen"
+              component={AdditionalGeneIDsOptionsScreen}
+            />
             <Stack.Screen name="MediumOptionsScreen" component={MediumOptionsScreen} />
             <Stack.Screen name="PriceRangeOptionsScreen" component={PriceRangeOptionsScreen} />
             <Stack.Screen name="SizesOptionsScreen" component={SizesOptionsScreen} />
@@ -300,9 +323,18 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             />
             <Stack.Screen name="WaysToBuyOptionsScreen" component={WaysToBuyOptionsScreen} />
             <Stack.Screen name="CategoriesOptionsScreen" component={CategoriesOptionsScreen} />
-            <Stack.Screen name="MaterialsTermsOptionsScreen" component={MaterialsTermsOptionsScreen} />
-            <Stack.Screen name="ArtistNationalitiesOptionsScreen" component={ArtistNationalitiesOptionsScreen} />
-            <Stack.Screen name="LocationCitiesOptionsScreen" component={LocationCitiesOptionsScreen} />
+            <Stack.Screen
+              name="MaterialsTermsOptionsScreen"
+              component={MaterialsTermsOptionsScreen}
+            />
+            <Stack.Screen
+              name="ArtistNationalitiesOptionsScreen"
+              component={ArtistNationalitiesOptionsScreen}
+            />
+            <Stack.Screen
+              name="LocationCitiesOptionsScreen"
+              component={LocationCitiesOptionsScreen}
+            />
           </Stack.Navigator>
 
           <ArtworkFilterApplyButton

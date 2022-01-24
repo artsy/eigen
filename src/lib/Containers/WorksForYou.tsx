@@ -89,7 +89,9 @@ export class WorksForYou extends React.Component<Props, State> {
         <FlatList
           data={this.state.width === null ? [] : notifications}
           keyExtractor={(item) => item.id}
-          refreshControl={<RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />}
+          refreshControl={
+            <RefreshControl refreshing={this.state.isRefreshing} onRefresh={this.handleRefresh} />
+          }
           onLayout={(event) => {
             this.setState({ width: event.nativeEvent.layout.width })
           }}
@@ -140,8 +142,11 @@ export const WorksForYouContainer = createPaginationContainer(
         sort: { type: "ArtworkSorts", defaultValue: PUBLISHED_AT_DESC }
       ) {
         followsAndSaves {
-          notifications: bundledArtworksByArtistConnection(sort: $sort, first: $count, after: $cursor)
-            @connection(key: "WorksForYou_notifications") {
+          notifications: bundledArtworksByArtistConnection(
+            sort: $sort
+            first: $count
+            after: $cursor
+          ) @connection(key: "WorksForYou_notifications") {
             pageInfo {
               hasNextPage
               endCursor

@@ -1,12 +1,19 @@
 import { fireEvent } from "@testing-library/react-native"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { AuctionHouseOptionsScreen } from "./AuctionHouseOptions"
 import { getEssentialProps } from "./helper"
 
 describe("AuctionHouse options screen", () => {
-  const MockAuctionHouseScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
+  const MockAuctionHouseScreen = ({
+    initialData = initialState,
+  }: {
+    initialData?: ArtworkFiltersState
+  }) => {
     return (
       <ArtworkFiltersStoreProvider initialData={initialData}>
         <AuctionHouseOptionsScreen {...getEssentialProps()} />

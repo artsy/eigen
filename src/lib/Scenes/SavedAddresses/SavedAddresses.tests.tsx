@@ -123,7 +123,9 @@ describe(SavedAddressesQueryRenderer, () => {
     })
 
     fireEvent.press(getAllByText("Add New Address")[0])
-    expect(navigate).toHaveBeenCalledWith("/my-profile/saved-addresses/new-address", { modal: true })
+    expect(navigate).toHaveBeenCalledWith("/my-profile/saved-addresses/new-address", {
+      modal: true,
+    })
   })
 
   it("should navigate to edit address screen", () => {
@@ -231,7 +233,9 @@ describe(SavedAddressesQueryRenderer, () => {
     act(() => fireEvent.press(getAllByText("Delete")[0]))
 
     const createOperation = mockEnvironment.mock.getMostRecentOperation()
-    expect(createOperation.request.node.operation.name).toEqual("deleteSavedAddressDeleteUserAddressMutation")
+    expect(createOperation.request.node.operation.name).toEqual(
+      "deleteSavedAddressDeleteUserAddressMutation"
+    )
     expect(createOperation.request.variables).toEqual({ input: { userAddressID: "5840" } })
   })
 })

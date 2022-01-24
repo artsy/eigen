@@ -1,7 +1,12 @@
 import { themeGet } from "@styled-system/theme-get"
 import { Text, useTheme } from "palette"
 import React, { useState } from "react"
-import { PixelRatio, StyleSheet, TouchableWithoutFeedback, TouchableWithoutFeedbackProps } from "react-native"
+import {
+  PixelRatio,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  TouchableWithoutFeedbackProps,
+} from "react-native"
 import styled from "styled-components/native"
 
 import { CssTransition } from "lib/Components/Bidding/Components/Animation/CssTransition"
@@ -86,12 +91,20 @@ export const RadioButton: React.FC<RadioButtonProps> = ({
         <Flex flexDirection="row">
           <Flex mt="2px">
             <CssTransition
-              style={[styles(fontScale).container, { marginRight: space("1") * fontScale }, radioButtonStyle]}
+              style={[
+                styles(fontScale).container,
+                { marginRight: space("1") * fontScale },
+                radioButtonStyle,
+              ]}
               animate={["backgroundColor", "borderColor"]}
               duration={DURATION}
             >
               {!!isSelected &&
-                (!!disabled ? <DisabledDot size={radioButtonSize} /> : <RadioDot size={radioButtonSize} />)}
+                (!!disabled ? (
+                  <DisabledDot size={radioButtonSize} />
+                ) : (
+                  <RadioDot size={radioButtonSize} />
+                ))}
             </CssTransition>
           </Flex>
 

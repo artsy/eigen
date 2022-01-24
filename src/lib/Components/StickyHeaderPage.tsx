@@ -15,8 +15,10 @@ interface StickyHeaderPageProps {
 export const StickyHeaderPage: React.FC<StickyHeaderPageProps> = (props) => {
   const { headerContent, stickyHeaderContent, footerContent, children } = props
 
-  const { jsx: staticHeader, nativeHeight: headerHeight } = useAutoCollapsingMeasuredView(headerContent)
-  const { jsx: stickyHeader, nativeHeight: stickyHeaderHeight } = useAutoCollapsingMeasuredView(stickyHeaderContent)
+  const { jsx: staticHeader, nativeHeight: headerHeight } =
+    useAutoCollapsingMeasuredView(headerContent)
+  const { jsx: stickyHeader, nativeHeight: stickyHeaderHeight } =
+    useAutoCollapsingMeasuredView(stickyHeaderContent)
   const footerOffsetY = useAnimatedValue(-1)
   const scrollOffsetY = useAnimatedValue(0)
   const { width: screenWidth } = useScreenDimensions()
@@ -24,7 +26,11 @@ export const StickyHeaderPage: React.FC<StickyHeaderPageProps> = (props) => {
 
   const shouldHideBackButton = Animated.greaterOrEq(scrollOffsetY, 10)
 
-  const headerHeightRendered = Animated.cond(Animated.neq(headerHeight, new Animated.Value(-1)), headerHeight, 0)
+  const headerHeightRendered = Animated.cond(
+    Animated.neq(headerHeight, new Animated.Value(-1)),
+    headerHeight,
+    0
+  )
   const stickyHeaderOffsetY = Animated.max(Animated.sub(headerHeightRendered, scrollOffsetY), 0)
 
   const stickyHeaderHeightRendered = Animated.cond(
@@ -83,7 +89,9 @@ export const StickyHeaderPage: React.FC<StickyHeaderPageProps> = (props) => {
         <Animated.View style={{ width: screenWidth, height: stickyHeaderHeightRendered }} />
         {children}
         {!!footerContent && (
-          <Animated.View onLayout={Animated.event([{ nativeEvent: { layout: { y: footerOffsetY } } }])}>
+          <Animated.View
+            onLayout={Animated.event([{ nativeEvent: { layout: { y: footerOffsetY } } }])}
+          >
             {footerContent}
           </Animated.View>
         )}

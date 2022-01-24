@@ -1,6 +1,9 @@
 import { createStore } from "easy-peasy"
 import { FilterArray, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { getArtworkFiltersModel, selectedOptionsUnion } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  getArtworkFiltersModel,
+  selectedOptionsUnion,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ArtworkFiltersModel, ArtworkFiltersState } from "./ArtworkFilterStore"
 
 let filterState: ArtworkFiltersState
@@ -12,8 +15,12 @@ describe("Reset Filters", () => {
   it("returns empty arrays/default state values ", () => {
     filterState = {
       appliedFilters: [{ displayText: "Recently Updated", paramName: FilterParamName.sort }],
-      selectedFilters: [{ displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort }],
-      previouslyAppliedFilters: [{ displayText: "Recently Updated", paramName: FilterParamName.sort }],
+      selectedFilters: [
+        { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
+      ],
+      previouslyAppliedFilters: [
+        { displayText: "Recently Updated", paramName: FilterParamName.sort },
+      ],
       applyFilters: true,
       aggregations: [],
       filterType: "artwork",
@@ -30,7 +37,9 @@ describe("Reset Filters", () => {
       appliedFilters: [{ displayText: "Recently Updated", paramName: FilterParamName.sort }],
       applyFilters: false,
       selectedFilters: [],
-      previouslyAppliedFilters: [{ displayText: "Recently Updated", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [
+        { displayText: "Recently Updated", paramName: FilterParamName.sort },
+      ],
       aggregations: [],
       filterType: "artwork",
       counts: {
@@ -43,9 +52,13 @@ describe("Reset Filters", () => {
   it("returns empty arrays/default state values ", () => {
     filterState = {
       appliedFilters: [{ displayText: "Price (Low to High)", paramName: FilterParamName.sort }],
-      selectedFilters: [{ displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort }],
+      selectedFilters: [
+        { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
+      ],
       applyFilters: false,
-      previouslyAppliedFilters: [{ displayText: "Price (Low to High)", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [
+        { displayText: "Price (Low to High)", paramName: FilterParamName.sort },
+      ],
       aggregations: [],
       filterType: "artwork",
       counts: {
@@ -61,7 +74,9 @@ describe("Reset Filters", () => {
       appliedFilters: [{ displayText: "Price (Low to High)", paramName: FilterParamName.sort }],
       applyFilters: false,
       selectedFilters: [],
-      previouslyAppliedFilters: [{ displayText: "Price (Low to High)", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [
+        { displayText: "Price (Low to High)", paramName: FilterParamName.sort },
+      ],
       aggregations: [],
       filterType: "artwork",
       counts: {
@@ -381,7 +396,9 @@ describe("Select Filters", () => {
       applyFilters: false,
       appliedFilters: [],
       previouslyAppliedFilters: [],
-      selectedFilters: [{ displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort }],
+      selectedFilters: [
+        { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
+      ],
       aggregations: [],
       filterType: "artwork",
       counts: {
@@ -433,7 +450,9 @@ describe("Select Filters", () => {
       applyFilters: false,
       appliedFilters: [],
       previouslyAppliedFilters: [],
-      selectedFilters: [{ displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort }],
+      selectedFilters: [
+        { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
+      ],
       aggregations: [],
       filterType: "artwork",
       counts: {
@@ -446,8 +465,12 @@ describe("Select Filters", () => {
   it("does not select a filter that is already applied", () => {
     filterState = {
       applyFilters: false,
-      appliedFilters: [{ displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort }],
-      previouslyAppliedFilters: [{ displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort }],
+      appliedFilters: [
+        { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
+      ],
+      previouslyAppliedFilters: [
+        { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
+      ],
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
@@ -465,8 +488,12 @@ describe("Select Filters", () => {
 
     expect(filterArtworksStore.getState()).toEqual({
       applyFilters: false,
-      appliedFilters: [{ displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort }],
-      previouslyAppliedFilters: [{ displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort }],
+      appliedFilters: [
+        { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
+      ],
+      previouslyAppliedFilters: [
+        { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
+      ],
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
@@ -667,7 +694,9 @@ describe("Apply Filters", () => {
       applyFilters: true,
       appliedFilters: [],
       previouslyAppliedFilters: [],
-      selectedFilters: [{ displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort }],
+      selectedFilters: [
+        { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
+      ],
       aggregations: [],
       filterType: "artwork",
       counts: {
@@ -681,8 +710,12 @@ describe("Apply Filters", () => {
 
     expect(filterArtworksStore.getState()).toEqual({
       applyFilters: true,
-      appliedFilters: [{ displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort }],
-      previouslyAppliedFilters: [{ displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort }],
+      appliedFilters: [
+        { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
+      ],
+      previouslyAppliedFilters: [
+        { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
+      ],
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
@@ -697,7 +730,9 @@ describe("Apply Filters", () => {
     filterState = {
       applyFilters: true,
       appliedFilters: [{ displayText: "Recently Updated", paramName: FilterParamName.sort }],
-      previouslyAppliedFilters: [{ displayText: "Recently Updated", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [
+        { displayText: "Recently Updated", paramName: FilterParamName.sort },
+      ],
       selectedFilters: [{ displayText: "Recently Updated", paramName: FilterParamName.sort }],
       aggregations: [],
       filterType: "artwork",
@@ -713,7 +748,9 @@ describe("Apply Filters", () => {
     expect(filterArtworksStore.getState()).toEqual({
       applyFilters: true,
       appliedFilters: [{ displayText: "Recently Updated", paramName: FilterParamName.sort }],
-      previouslyAppliedFilters: [{ displayText: "Recently Updated", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [
+        { displayText: "Recently Updated", paramName: FilterParamName.sort },
+      ],
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
@@ -727,9 +764,15 @@ describe("Apply Filters", () => {
   it("applies false ways to buy filters correctly", () => {
     filterState = {
       applyFilters: false,
-      appliedFilters: [{ paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Buy Now" }],
-      previouslyAppliedFilters: [{ paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Buy Now" }],
-      selectedFilters: [{ paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Buy Now" }],
+      appliedFilters: [
+        { paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Buy Now" },
+      ],
+      previouslyAppliedFilters: [
+        { paramName: FilterParamName.waysToBuyBuy, paramValue: true, displayText: "Buy Now" },
+      ],
+      selectedFilters: [
+        { paramName: FilterParamName.waysToBuyBuy, paramValue: false, displayText: "Buy Now" },
+      ],
       aggregations: [],
       filterType: "artwork",
       counts: { total: null, followedArtists: null },
@@ -753,8 +796,12 @@ describe("Apply Filters", () => {
     filterState = {
       applyFilters: true,
       appliedFilters: [{ displayText: "Recently Updated", paramName: FilterParamName.sort }],
-      previouslyAppliedFilters: [{ displayText: "Recently Updated", paramName: FilterParamName.sort }],
-      selectedFilters: [{ displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [
+        { displayText: "Recently Updated", paramName: FilterParamName.sort },
+      ],
+      selectedFilters: [
+        { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
+      ],
       aggregations: [],
       filterType: "artwork",
       counts: {
@@ -768,8 +815,12 @@ describe("Apply Filters", () => {
 
     expect(filterArtworksStore.getState()).toEqual({
       applyFilters: true,
-      appliedFilters: [{ displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort }],
-      previouslyAppliedFilters: [{ displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort }],
+      appliedFilters: [
+        { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
+      ],
+      previouslyAppliedFilters: [
+        { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
+      ],
       selectedFilters: [],
       aggregations: [],
       filterType: "artwork",
@@ -942,8 +993,12 @@ describe("clearFiltersZeroState", () => {
         { displayText: "Recently Updated", paramName: FilterParamName.sort },
         { displayText: "Jewelry", paramName: FilterParamName.medium },
       ],
-      previouslyAppliedFilters: [{ displayText: "Recently Updated", paramName: FilterParamName.sort }],
-      selectedFilters: [{ displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [
+        { displayText: "Recently Updated", paramName: FilterParamName.sort },
+      ],
+      selectedFilters: [
+        { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
+      ],
       aggregations: [],
       filterType: "artwork",
       counts: {
@@ -972,7 +1027,9 @@ describe("clearFiltersZeroState", () => {
   it("clears out the selectedFilters", () => {
     filterState = {
       appliedFilters: [],
-      selectedFilters: [{ displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort }],
+      selectedFilters: [
+        { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
+      ],
       previouslyAppliedFilters: [],
       applyFilters: true,
       aggregations: [],
@@ -1019,12 +1076,16 @@ describe("SetInitialFilterState", () => {
     const filterArtworksStore = getFilterArtworksStore(filterState)
     filterArtworksStore
       .getActions()
-      .setInitialFilterStateAction([{ displayText: "Recently Updated", paramName: FilterParamName.sort }])
+      .setInitialFilterStateAction([
+        { displayText: "Recently Updated", paramName: FilterParamName.sort },
+      ])
 
     expect(filterArtworksStore.getState()).toEqual({
       appliedFilters: [{ displayText: "Recently Updated", paramName: FilterParamName.sort }],
       selectedFilters: [],
-      previouslyAppliedFilters: [{ displayText: "Recently Updated", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [
+        { displayText: "Recently Updated", paramName: FilterParamName.sort },
+      ],
       applyFilters: false,
       aggregations: [],
       filterType: "artwork",
@@ -1039,8 +1100,12 @@ describe("SetInitialFilterState", () => {
 describe("selectedOptionsUnion", () => {
   describe("artworks", () => {
     it("correctly unions params", () => {
-      const previouslyAppliedFilters = [{ displayText: "Recently Updated", paramName: FilterParamName.sort }]
-      const selectedFilters = [{ displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort }]
+      const previouslyAppliedFilters = [
+        { displayText: "Recently Updated", paramName: FilterParamName.sort },
+      ]
+      const selectedFilters = [
+        { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
+      ]
 
       expect(selectedOptionsUnion({ selectedFilters, previouslyAppliedFilters })).toEqual([
         { displayText: "Artwork Year (Descending)", paramName: FilterParamName.sort },
@@ -1732,10 +1797,20 @@ describe("selectedOptionsUnion", () => {
 
   describe("saleArtworks", () => {
     it("correctly sets selected filter", () => {
-      const previouslyAppliedFilters = [{ displayText: "Lot Number Ascending", paramName: FilterParamName.sort }]
-      const selectedFilters = [{ displayText: "Lot Number Descending", paramName: FilterParamName.sort }]
+      const previouslyAppliedFilters = [
+        { displayText: "Lot Number Ascending", paramName: FilterParamName.sort },
+      ]
+      const selectedFilters = [
+        { displayText: "Lot Number Descending", paramName: FilterParamName.sort },
+      ]
 
-      expect(selectedOptionsUnion({ selectedFilters, previouslyAppliedFilters, filterType: "saleArtwork" })).toEqual([
+      expect(
+        selectedOptionsUnion({
+          selectedFilters,
+          previouslyAppliedFilters,
+          filterType: "saleArtwork",
+        })
+      ).toEqual([
         { displayText: "Lot Number Descending", paramName: FilterParamName.sort },
         {
           displayText: "All",
@@ -1844,7 +1919,13 @@ describe("selectedOptionsUnion", () => {
         },
       ]
 
-      expect(selectedOptionsUnion({ selectedFilters, previouslyAppliedFilters, filterType: "saleArtwork" })).toEqual([
+      expect(
+        selectedOptionsUnion({
+          selectedFilters,
+          previouslyAppliedFilters,
+          filterType: "saleArtwork",
+        })
+      ).toEqual([
         {
           paramName: FilterParamName.artistIDs,
           paramValue: ["artist-1"],
@@ -1963,7 +2044,13 @@ describe("selectedOptionsUnion", () => {
         },
       ]
 
-      expect(selectedOptionsUnion({ selectedFilters, previouslyAppliedFilters, filterType: "saleArtwork" })).toEqual([
+      expect(
+        selectedOptionsUnion({
+          selectedFilters,
+          previouslyAppliedFilters,
+          filterType: "saleArtwork",
+        })
+      ).toEqual([
         {
           displayText: "All",
           paramName: "artistIDs",
@@ -2072,8 +2159,18 @@ describe("selectedOptionsUnion", () => {
       const previouslyAppliedFilters = [] as FilterArray
       const selectedFilters = [] as FilterArray
 
-      expect(selectedOptionsUnion({ selectedFilters, previouslyAppliedFilters, filterType: "showArtwork" })).toEqual([
-        { displayText: "Gallery Curated", paramName: FilterParamName.sort, paramValue: "partner_show_position" },
+      expect(
+        selectedOptionsUnion({
+          selectedFilters,
+          previouslyAppliedFilters,
+          filterType: "showArtwork",
+        })
+      ).toEqual([
+        {
+          displayText: "Gallery Curated",
+          paramName: FilterParamName.sort,
+          paramValue: "partner_show_position",
+        },
         {
           displayText: "All",
           paramName: "estimateRange",

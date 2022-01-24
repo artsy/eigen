@@ -93,8 +93,11 @@ describe("artsy.net routes", () => {
         "type": "match",
       }
     `)
-    expect(matchRoute("artist/josef-albers?utm_medium=social&utm_source=instagram-story&utm_campaign=dp."))
-      .toMatchInlineSnapshot(`
+    expect(
+      matchRoute(
+        "artist/josef-albers?utm_medium=social&utm_source=instagram-story&utm_campaign=dp."
+      )
+    ).toMatchInlineSnapshot(`
       Object {
         "module": "Artist",
         "params": Object {
@@ -161,8 +164,11 @@ describe("artsy.net routes", () => {
         "type": "match",
       }
     `)
-    expect(matchRoute(encodeURIComponent(encodeURIComponent("https://www.artsy.net/artwork/more%26more"))))
-      .toMatchInlineSnapshot(`
+    expect(
+      matchRoute(
+        encodeURIComponent(encodeURIComponent("https://www.artsy.net/artwork/more%26more"))
+      )
+    ).toMatchInlineSnapshot(`
       Object {
         "module": "Artwork",
         "params": Object {
@@ -172,7 +178,9 @@ describe("artsy.net routes", () => {
       }
     `)
     expect(
-      matchRoute("/artwork/yayoi-kusama-red-pumpkin?utm_medium=social&utm_source=instagram-story&utm_campaign=dp.")
+      matchRoute(
+        "/artwork/yayoi-kusama-red-pumpkin?utm_medium=social&utm_source=instagram-story&utm_campaign=dp."
+      )
     ).toMatchInlineSnapshot(`
       Object {
         "module": "Artwork",
@@ -320,7 +328,8 @@ describe("artsy.net routes", () => {
   })
 
   it("routes to AuctionBidArtwork", () => {
-    expect(matchRoute("/auction/special-auction/bid/josef-albers-homage-to-the-square")).toMatchInlineSnapshot(`
+    expect(matchRoute("/auction/special-auction/bid/josef-albers-homage-to-the-square"))
+      .toMatchInlineSnapshot(`
       Object {
         "module": "AuctionBidArtwork",
         "params": Object {
@@ -330,7 +339,8 @@ describe("artsy.net routes", () => {
         "type": "match",
       }
     `)
-    expect(matchRoute("/auction/other-auction/bid/yayoi-kusama-red-pumpkin")).toMatchInlineSnapshot(`
+    expect(matchRoute("/auction/other-auction/bid/yayoi-kusama-red-pumpkin"))
+      .toMatchInlineSnapshot(`
       Object {
         "module": "AuctionBidArtwork",
         "params": Object {
@@ -480,7 +490,8 @@ describe("artsy.net routes", () => {
   })
 
   it("routes to ViewingRoomArtwork", () => {
-    expect(matchRoute("/viewing-room/red/josef-albers-homage-to-the-square")).toMatchInlineSnapshot(`
+    expect(matchRoute("/viewing-room/red/josef-albers-homage-to-the-square"))
+      .toMatchInlineSnapshot(`
       Object {
         "module": "ViewingRoomArtwork",
         "params": Object {
@@ -1267,9 +1278,12 @@ describe("other domains", () => {
 describe(replaceParams, () => {
   it("replaces the params in a url with params from an object", () => {
     expect(replaceParams("/artist/:id", { id: "banksy" })).toBe("/artist/banksy")
-    expect(replaceParams("/bid/:saleID/:artworkID", { saleID: "christies", artworkID: "keith-haring-dog" })).toBe(
-      "/bid/christies/keith-haring-dog"
-    )
+    expect(
+      replaceParams("/bid/:saleID/:artworkID", {
+        saleID: "christies",
+        artworkID: "keith-haring-dog",
+      })
+    ).toBe("/bid/christies/keith-haring-dog")
     expect(replaceParams("/artist/:artistID/auction-results", { artistID: "josef-albers" })).toBe(
       "/artist/josef-albers/auction-results"
     )

@@ -40,7 +40,9 @@ export const SaleLotsListSortMode = ({
   totalCount: number | null | undefined
 }) => {
   const getSortDescription = useCallback(() => {
-    const sortMode = ORDERED_SALE_ARTWORK_SORTS.find((sort) => sort.paramValue === filterParams?.sort)
+    const sortMode = ORDERED_SALE_ARTWORK_SORTS.find(
+      (sort) => sort.paramValue === filterParams?.sort
+    )
     if (sortMode) {
       return sortMode.displayText
     }
@@ -72,11 +74,17 @@ export const SaleLotsList: React.FC<Props> = ({
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
-  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((action) => action.setFiltersCountAction)
-  const setFilterTypeAction = ArtworksFiltersStore.useStoreActions((action) => action.setFilterTypeAction)
+  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
+    (action) => action.setFiltersCountAction
+  )
+  const setFilterTypeAction = ArtworksFiltersStore.useStoreActions(
+    (action) => action.setFilterTypeAction
+  )
 
   const filterParams = filterArtworksParams(appliedFiltersState, filterTypeState)
-  const viewAsFilter = appliedFiltersState.find((filter) => filter.paramName === FilterParamName.viewAs)
+  const viewAsFilter = appliedFiltersState.find(
+    (filter) => filter.paramName === FilterParamName.viewAs
+  )
   const counts = saleArtworksConnection.saleArtworksConnection?.counts
 
   // Add the new medium to geneIDs array
@@ -134,7 +142,11 @@ export const SaleLotsList: React.FC<Props> = ({
 
   return (
     <Flex flex={0} my={4}>
-      <SaleLotsListSortMode filterParams={filterParams} filteredTotal={counts?.total} totalCount={totalCount} />
+      <SaleLotsListSortMode
+        filterParams={filterParams}
+        filteredTotal={counts?.total}
+        totalCount={totalCount}
+      />
 
       {viewAsFilter?.paramValue === ViewAsValues.List ? (
         <SaleArtworkListContainer

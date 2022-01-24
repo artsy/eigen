@@ -101,7 +101,11 @@ export const Favorites: React.FC<Props> = ({ initialTab = Tab.works }) => {
         <StickyTabPage
           tabs={tabs}
           staticHeaderContent={
-            enableMyCollection ? <StickyHeaderContent enableMyCollection={enableMyCollection} /> : <></>
+            enableMyCollection ? (
+              <StickyHeaderContent enableMyCollection={enableMyCollection} />
+            ) : (
+              <></>
+            )
           }
           stickyHeaderContent={
             enableMyCollection ? (
@@ -122,7 +126,9 @@ export const Favorites: React.FC<Props> = ({ initialTab = Tab.works }) => {
             )
           }
         />
-        {!!isStaging && <DarkNavigationButton title="Warning: on staging, favourites don't migrate" />}
+        {!!isStaging && (
+          <DarkNavigationButton title="Warning: on staging, favourites don't migrate" />
+        )}
       </View>
     </ProvideScreenTracking>
   )

@@ -22,7 +22,13 @@ export const ArtworkFilterBackHeader: React.FC<ArtworkFilterBackHeaderProps> = (
 
   return (
     <>
-      <Box flexDirection="row" alignItems="center" justifyContent="space-between" height={space(6)} px={2}>
+      <Box
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="space-between"
+        height={space(6)}
+        px={2}
+      >
         <TouchableOpacity
           onPress={onLeftButtonPress}
           hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}

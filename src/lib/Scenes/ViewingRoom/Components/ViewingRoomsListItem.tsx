@@ -92,7 +92,12 @@ export const ViewingRoomsListItem: React.FC<ViewingRoomsListItemProps> = (props)
           navigate(`/viewing-room/${slug!}`)
         }}
       >
-        <SmallCard images={images} title={title} subtitle={item.partner?.name ?? undefined} tag={tag} />
+        <SmallCard
+          images={images}
+          title={title}
+          subtitle={item.partner?.name ?? undefined}
+          tag={tag}
+        />
       </Touchable>
     </View>
   )

@@ -6,8 +6,13 @@ import { Dialog, quoteLeft, quoteRight, useTheme } from "palette"
 import React, { useEffect, useState } from "react"
 import { Alert, ScrollView, StyleProp, ViewStyle } from "react-native"
 import { useTracking } from "react-tracking"
+import { useFirstMountState } from "react-use/lib/useFirstMountState"
 import { Form } from "./Components/Form"
-import { checkOrRequestPushPermissions, clearDefaultAttributes, getNamePlaceholder } from "./helpers"
+import {
+  checkOrRequestPushPermissions,
+  clearDefaultAttributes,
+  getNamePlaceholder,
+} from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
 import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
 import { updateEmailFrequency } from "./mutations/updateEmailFrequency"
@@ -44,6 +49,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   } = props
   const isUpdateForm = !!savedSearchAlertId
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
+  const isFirstRender = useFirstMountState()
   const savedSearchPills = SavedSearchStore.useStoreState((state) => state.pills)
   const attributes = SavedSearchStore.useStoreState((state) => state.attributes)
   const hasChangedFilters = SavedSearchStore.useStoreState((state) => state.dirty)
@@ -61,9 +67,12 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const tracking = useTracking()
   const { space } = useTheme()
   const [visibleDeleteDialog, setVisibleDeleteDialog] = useState(false)
-  const [shouldShowEmailWarning, setShouldShowEmailWarning] = useState(!userAllowsEmails)
+  const [shouldShowEmailSubscriptionWarning, setShouldShowEmailSubscriptionWarning] = useState(
+    !userAllowsEmails
+  )
   const formik = useFormik<SavedSearchAlertFormValues>({
     initialValues,
+    enableReinitialize: true,
     initialErrors: {},
     onSubmit: async (values) => {
       let alertName = values.name
@@ -80,6 +89,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
       try {
         let result: SavedSearchAlertMutationResult
+        const clearedAttributes = clearDefaultAttributes(attributes)
 
         /**
          * We perform the mutation only if
@@ -91,14 +101,19 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         }
 
         if (isUpdateForm) {
-          const response = await updateSavedSearchAlert(userAlertSettings, savedSearchAlertId!)
+          const criteria = isEnabledImprovedAlertsFlow ? clearedAttributes : undefined
+
+          const response = await updateSavedSearchAlert(
+            savedSearchAlertId!,
+            userAlertSettings,
+            criteria
+          )
           tracking.trackEvent(tracks.editedSavedSearch(savedSearchAlertId!, initialValues, values))
 
           result = {
             id: response.updateSavedSearch?.savedSearchOrErrors.internalID!,
           }
         } else {
-          const clearedAttributes = clearDefaultAttributes(attributes)
           const response = await createSavedSearchAlert(userAlertSettings, clearedAttributes)
 
           result = {
@@ -113,20 +128,15 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     },
   })
 
-  /**
-   * If the initial value of push has changed (for example, the user has minimized the app and turned off Push notifications in settings)
-   * then we sync the updated value with the formik state
-   */
+  // Save the previously entered name
   useEffect(() => {
-    formik.setFieldValue("push", initialValues.push)
-  }, [initialValues.push])
+    if (!isFirstRender) {
+      formik.setFieldValue("name", formik.values.name)
+    }
+  }, [initialValues.email, initialValues.push])
 
   useEffect(() => {
-    formik.setFieldValue("email", initialValues.email)
-  }, [initialValues.email])
-
-  useEffect(() => {
-    setShouldShowEmailWarning(!userAllowsEmails)
+    setShouldShowEmailSubscriptionWarning(!userAllowsEmails)
   }, [userAllowsEmails])
 
   const handleTogglePushNotification = async (enabled: boolean) => {
@@ -144,7 +154,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
   const handleToggleEmailNotification = (enabled: boolean) => {
     // Show the modal only when the user is opted out of email and changes the "email alerts" toggle from off to on state
-    if (shouldShowEmailWarning && !initialValues.email && enabled) {
+    if (shouldShowEmailSubscriptionWarning && !initialValues.email && enabled) {
       const title = "Artsy would like to send you email notifications"
       const description = `After clicking ${quoteLeft}Save Alert${quoteRight}, you are opting in to receive alert notifications via email. You can update your email preferences by clicking into any alert listed in your profile tab and clicking ${quoteLeft}Update email preferences${quoteRight} underneath the ${quoteLeft}Email Alerts${quoteRight} toggle`
 
@@ -153,7 +163,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         {
           text: "Accept",
           onPress: () => {
-            setShouldShowEmailWarning(false)
+            setShouldShowEmailSubscriptionWarning(false)
             formik.setFieldValue("email", enabled)
           },
         },
@@ -185,6 +195,8 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     })
   }
 
+  const shouldShowEmailWarning = !!savedSearchAlertId && !!initialValues.email && !userAllowsEmails
+
   return (
     <FormikProvider value={formik}>
       <ScrollView
@@ -203,6 +215,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
           onTogglePushNotification={handleTogglePushNotification}
           onToggleEmailNotification={handleToggleEmailNotification}
           onRemovePill={handleRemovePill}
+          shouldShowEmailWarning={shouldShowEmailWarning}
           {...other}
         />
       </ScrollView>

@@ -10,7 +10,10 @@ import { renderWithWrappers, renderWithWrappersTL } from "lib/tests/renderWithWr
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { MyCollectionArtworkHeader, MyCollectionArtworkHeaderFragmentContainer } from "./MyCollectionArtworkHeader"
+import {
+  MyCollectionArtworkHeader,
+  MyCollectionArtworkHeaderFragmentContainer,
+} from "./MyCollectionArtworkHeader"
 
 jest.unmock("react-relay")
 
@@ -79,7 +82,10 @@ describe("MyCollectionArtworkHeader", () => {
     // expect 2 calls: 1 for our custom tracking, 2 for tracking deep zoom taps
     expect(mockTrackEvent).toHaveBeenCalledTimes(2)
     expect(mockTrackEvent).toHaveBeenCalledWith(
-      tappedCollectedArtworkImages({ contextOwnerId: "someInternalId", contextOwnerSlug: "someSlug" })
+      tappedCollectedArtworkImages({
+        contextOwnerId: "someInternalId",
+        contextOwnerSlug: "someSlug",
+      })
     )
   })
 

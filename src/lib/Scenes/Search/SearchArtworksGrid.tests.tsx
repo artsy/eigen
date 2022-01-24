@@ -25,10 +25,14 @@ describe("SearchArtworksGrid", () => {
         <QueryRenderer<SearchArtworksGridTestsQuery>
           environment={environment}
           query={graphql`
-            query SearchArtworksGridTestsQuery($input: FilterArtworksInput, $count: Int, $keyword: String)
-            @relay_test_operation {
+            query SearchArtworksGridTestsQuery(
+              $input: FilterArtworksInput
+              $count: Int
+              $keyword: String
+            ) @relay_test_operation {
               viewer {
-                ...SearchArtworksGrid_viewer @arguments(input: $input, keyword: $keyword, count: $count)
+                ...SearchArtworksGrid_viewer
+                  @arguments(input: $input, keyword: $keyword, count: $count)
               }
             }
           `}

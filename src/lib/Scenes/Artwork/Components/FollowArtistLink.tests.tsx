@@ -28,7 +28,9 @@ describe("FollowArtistLink", () => {
     )
     expect(component.find(TouchableWithoutFeedback).length).toEqual(1)
 
-    expect(component.find(TouchableWithoutFeedback).at(0).render().text()).toMatchInlineSnapshot(`"Follow"`)
+    expect(component.find(TouchableWithoutFeedback).at(0).render().text()).toMatchInlineSnapshot(
+      `"Follow"`
+    )
   })
 
   describe("Following an artist", () => {

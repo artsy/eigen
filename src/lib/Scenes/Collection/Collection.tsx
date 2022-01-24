@@ -52,9 +52,12 @@ export class Collection extends Component<CollectionProps> {
         <View style={{ flex: 1 }}>
           <Animated.FlatList
             ref={this.flatList}
-            onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: this.filterComponentAnimationValue } } }], {
-              useNativeDriver: true,
-            })}
+            onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: this.filterComponentAnimationValue } } }],
+              {
+                useNativeDriver: true,
+              }
+            )}
             keyExtractor={(_item, index) => String(index)}
             data={sections}
             ListHeaderComponent={<CollectionHeader collection={this.props.collection} />}
@@ -82,7 +85,10 @@ export class Collection extends Component<CollectionProps> {
                 case "collectionArtworks":
                   return (
                     <Box px={2}>
-                      <CollectionArtworks collection={collection} scrollToTop={() => this.scrollToTop()} />
+                      <CollectionArtworks
+                        collection={collection}
+                        scrollToTop={() => this.scrollToTop()}
+                      />
                     </Box>
                   )
               }
@@ -118,7 +124,9 @@ interface CollectionQueryRendererProps {
   collectionID: string
 }
 
-export const CollectionQueryRenderer: React.FC<CollectionQueryRendererProps> = ({ collectionID }) => (
+export const CollectionQueryRenderer: React.FC<CollectionQueryRendererProps> = ({
+  collectionID,
+}) => (
   <QueryRenderer<CollectionQuery>
     environment={defaultEnvironment}
     query={graphql`

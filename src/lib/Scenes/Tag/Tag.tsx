@@ -74,7 +74,11 @@ export const Tag: React.FC<TagProps> = (props) => {
       }}
     >
       <Flex flex={1}>
-        <StickyTabPage staticHeaderContent={headerContent} {...stickyHeaderContentProp} tabs={tabs} />
+        <StickyTabPage
+          staticHeaderContent={headerContent}
+          {...stickyHeaderContentProp}
+          tabs={tabs}
+        />
       </Flex>
     </ProvideScreenTracking>
   )

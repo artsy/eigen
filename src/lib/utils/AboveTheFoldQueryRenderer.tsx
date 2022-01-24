@@ -4,7 +4,10 @@ import { CacheConfig, GraphQLTaggedNode, OperationType } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 import { renderWithPlaceholder } from "./renderWithPlaceholder"
 
-interface AboveTheFoldQueryRendererProps<AboveQuery extends OperationType, BelowQuery extends OperationType> {
+interface AboveTheFoldQueryRendererProps<
+  AboveQuery extends OperationType,
+  BelowQuery extends OperationType
+> {
   environment: RelayModernEnvironment
   above: {
     query: GraphQLTaggedNode
@@ -15,7 +18,9 @@ interface AboveTheFoldQueryRendererProps<AboveQuery extends OperationType, Below
     variables: BelowQuery["variables"]
   }
   render:
-    | ((args: RenderArgs<{ above: AboveQuery["response"]; below: BelowQuery["response"] }>) => React.ReactChild)
+    | ((
+        args: RenderArgs<{ above: AboveQuery["response"]; below: BelowQuery["response"] }>
+      ) => React.ReactChild)
     // convenience option for using `renderWithPlaceholder` logic without too much boilerplate
     | {
         renderComponent: (args: {
@@ -42,9 +47,10 @@ interface RenderArgs<Response> {
  * in cases where the 'below-the-fold' content adds significant time to the query duration.
  * @param props
  */
-export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, BelowQuery extends OperationType>(
-  props: AboveTheFoldQueryRendererProps<AboveQuery, BelowQuery>
-) {
+export function AboveTheFoldQueryRenderer<
+  AboveQuery extends OperationType,
+  BelowQuery extends OperationType
+>(props: AboveTheFoldQueryRendererProps<AboveQuery, BelowQuery>) {
   const [aboveArgs, setAboveArgs] = useState<null | RenderArgs<AboveQuery["response"]>>(null)
   const [belowArgs, setBelowArgs] = useState<null | RenderArgs<BelowQuery["response"]>>(null)
   // We want to debounce the initial render in case there is a cache hit for both queries
@@ -108,7 +114,9 @@ export function AboveTheFoldQueryRenderer<AboveQuery extends OperationType, Belo
             ? render({
                 // make props null if we haven't received the above-the-fold result yet
                 // to make sure `renderWithPlaceholder` works properly
-                props: aboveArgs?.props ? { above: aboveArgs.props, below: belowArgs?.props || null } : null,
+                props: aboveArgs?.props
+                  ? { above: aboveArgs.props, below: belowArgs?.props || null }
+                  : null,
                 error,
                 retry,
               })

@@ -47,7 +47,9 @@ export default class Location extends React.Component<Props, State> {
       placeid: result.id,
     })
 
-    const response = await fetch("https://maps.googleapis.com/maps/api/place/details/json?" + queryString)
+    const response = await fetch(
+      "https://maps.googleapis.com/maps/api/place/details/json?" + queryString
+    )
     const results = await response.json()
 
     // TODO: Add dedicated error handling to the maps response
@@ -55,8 +57,10 @@ export default class Location extends React.Component<Props, State> {
     const { address_components } = results.result
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const cityPlace = address_components.find((comp) => comp.types[0] === "locality")
-    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    const statePlace = address_components.find((comp) => comp.types[0] === "administrative_area_level_1")
+    const statePlace = address_components.find(
+      // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+      (comp) => comp.types[0] === "administrative_area_level_1"
+    )
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const countryPlace = address_components.find((comp) => comp.types[0] === "country")
 
@@ -85,7 +89,9 @@ export default class Location extends React.Component<Props, State> {
       input: query,
     })
 
-    const response = await fetch("https://maps.googleapis.com/maps/api/place/autocomplete/json?" + queryString)
+    const response = await fetch(
+      "https://maps.googleapis.com/maps/api/place/autocomplete/json?" + queryString
+    )
     const results = await response.json()
 
     this.setState({

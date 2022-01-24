@@ -1,4 +1,7 @@
-import { PartnerShowsTestsQuery, PartnerShowsTestsQueryRawResponse } from "__generated__/PartnerShowsTestsQuery.graphql"
+import {
+  PartnerShowsTestsQuery,
+  PartnerShowsTestsQueryRawResponse,
+} from "__generated__/PartnerShowsTestsQuery.graphql"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { cloneDeep } from "lodash"

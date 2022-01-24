@@ -5,7 +5,13 @@ import { TabFairItemRow } from "lib/Scenes/City/Components/TabFairItemRow"
 import { isEqual } from "lodash"
 import { Box, ClassTheme, Text } from "palette"
 import React, { Component } from "react"
-import { Dimensions, FlatList, NativeScrollEvent, NativeSyntheticEvent, TouchableOpacity } from "react-native"
+import {
+  Dimensions,
+  FlatList,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  TouchableOpacity,
+} from "react-native"
 import { RelayProp } from "react-relay"
 import styled from "styled-components/native"
 import { Fair, Show } from "../types"
@@ -152,7 +158,11 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
         {({ space }) => (
           <>
             <PageIndicator style={shadowDetails} mx={1} px={0.5} my={0.5}>
-              <Text variant="xs" weight="medium" px={0.5}>{`${currentPage} of ${shows.length}`}</Text>
+              <Text
+                variant="xs"
+                weight="medium"
+                px={0.5}
+              >{`${currentPage} of ${shows.length}`}</Text>
             </PageIndicator>
             <FlatList
               ref={(c) => (this.list = c as any)}
@@ -163,7 +173,10 @@ export class ShowCard extends Component<ShowCardProps, ShowCardState> {
               onScroll={this.onScroll}
               showsHorizontalScrollIndicator={false}
               snapToInterval={this.cardWidth + space(1)}
-              contentContainerStyle={{ paddingLeft: space(0.5), paddingRight: space(2) + space(0.3) }}
+              contentContainerStyle={{
+                paddingLeft: space(0.5),
+                paddingRight: space(2) + space(0.3),
+              }}
               scrollEventThrottle={299}
               directionalLockEnabled
               overScrollMode="always"

@@ -55,7 +55,9 @@ describe("Galleries and Institutions Options Screen", () => {
 
   describe("before any filters are selected", () => {
     it("renders all options present in the aggregation", () => {
-      const { getByText } = renderWithWrappersTL(<MockGalleriesAndInstitutionsScreen initialData={initialState} />)
+      const { getByText } = renderWithWrappersTL(
+        <MockGalleriesAndInstitutionsScreen initialData={initialState} />
+      )
 
       expect(getByText("Musée Picasso Paris"))
       expect(getByText("Gagosian"))
@@ -82,7 +84,9 @@ describe("Galleries and Institutions Options Screen", () => {
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      const { getAllByA11yState } = renderWithWrappersTL(<MockGalleriesAndInstitutionsScreen initialData={state} />)
+      const { getAllByA11yState } = renderWithWrappersTL(
+        <MockGalleriesAndInstitutionsScreen initialData={state} />
+      )
 
       const options = getAllByA11yState({ checked: true })
 

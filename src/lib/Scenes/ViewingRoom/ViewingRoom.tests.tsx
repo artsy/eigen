@@ -135,12 +135,17 @@ describe("ViewingRoom", () => {
         expect(tree.root.findAllByType(AnimatedBottomButton)[0].props.isVisible).toBe(false)
 
         act(() => {
-          tree.root.findByType(FlatList).props.onViewableItemsChanged({ viewableItems: [{ item: { key: "body" } }] })
+          tree.root
+            .findByType(FlatList)
+            .props.onViewableItemsChanged({ viewableItems: [{ item: { key: "body" } }] })
         })
 
         expect(tree.root.findAllByType(AnimatedBottomButton)[0].props.isVisible).toBe(true)
         expect(useTracking().trackEvent).toHaveBeenCalledWith(
-          tracks.bodyImpression("2955ab33-c205-44ea-93d2-514cd7ee2bcd", "gallery-name-viewing-room-name")
+          tracks.bodyImpression(
+            "2955ab33-c205-44ea-93d2-514cd7ee2bcd",
+            "gallery-name-viewing-room-name"
+          )
         )
       })
     })

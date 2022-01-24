@@ -26,7 +26,9 @@ export interface FeatureDescriptor {
 }
 
 // Helper function to get good typings and intellisense
-function defineFeatures<T extends string>(featureMap: { readonly [featureName in T]: FeatureDescriptor }) {
+function defineFeatures<T extends string>(featureMap: {
+  readonly [featureName in T]: FeatureDescriptor
+}) {
   return featureMap
 }
 
@@ -215,6 +217,11 @@ export const features = defineFeatures({
     description: "Enable search with image",
     showInAdminMenu: true,
   },
+  AREnableCollectorProfile: {
+    readyForRelease: false,
+    description: "Enable collector profile",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
@@ -229,8 +236,9 @@ export interface DevToggleDescriptor {
 }
 
 // Helper function to get good typings and intellisense
-const defineDevToggles = <T extends string>(devToggleMap: { readonly [devToggleName in T]: DevToggleDescriptor }) =>
-  devToggleMap
+const defineDevToggles = <T extends string>(devToggleMap: {
+  readonly [devToggleName in T]: DevToggleDescriptor
+}) => devToggleMap
 
 export type DevToggleName = keyof typeof devToggles
 
@@ -270,7 +278,5 @@ export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggl
 
 type Assert<T, U extends T> = U
 // If you mouse-over the name of the type below, you should be able to see the key that needs renaming!
-export type _ThereIsAKeyThatIsCommonInFeaturesAndDevToggles_PleaseRename_MouseOverToSeeTheNaughtyKey = Assert<
-  never,
-  keyof (typeof features | typeof devToggles)
->
+export type _ThereIsAKeyThatIsCommonInFeaturesAndDevToggles_PleaseRename_MouseOverToSeeTheNaughtyKey =
+  Assert<never, keyof (typeof features | typeof devToggles)>

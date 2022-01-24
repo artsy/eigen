@@ -15,8 +15,12 @@ import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
 const MARGIN = 20
 
-export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormScreen, "AddPhotos">> = ({ navigation }) => {
-  const formValues = GlobalStore.useAppState((state) => state.myCollection.artwork.sessionState.formValues)
+export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormScreen, "AddPhotos">> = ({
+  navigation,
+}) => {
+  const formValues = GlobalStore.useAppState(
+    (state) => state.myCollection.artwork.sessionState.formValues
+  )
   const { photos } = formValues
   const { width: screenWidth } = useScreenDimensions()
   const numColumns = isPad() ? 5 : 2
@@ -38,7 +42,9 @@ export const MyCollectionAddPhotos: React.FC<StackScreenProps<ArtworkFormScreen,
 
   return (
     <>
-      <NavHeader onLeftButtonPress={navigation.goBack}>Photos {!!photos.length && `(${photos.length})`}</NavHeader>
+      <NavHeader onLeftButtonPress={navigation.goBack}>
+        Photos {!!photos.length && `(${photos.length})`}
+      </NavHeader>
       <ScrollView>
         <Flex flexDirection="row" flexWrap="wrap" my="2">
           {rows.map((row, i) => (
@@ -65,7 +71,13 @@ const AddPhotosButton: React.FC<{ imageSize: number }> = ({ imageSize }) => {
         })
       }}
     >
-      <BorderBox p={0} bg={color("white100")} width={imageSize} height={imageSize} key="addMorePhotos">
+      <BorderBox
+        p={0}
+        bg={color("white100")}
+        width={imageSize}
+        height={imageSize}
+        key="addMorePhotos"
+      >
         <Flex flex={1} flexDirection="row" justifyContent="center" alignItems="center">
           <AddIcon width={30} height={30} />
         </Flex>

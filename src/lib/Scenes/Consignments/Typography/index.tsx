@@ -35,7 +35,12 @@ const Subtitle: React.FC<TextProps> = (props) => {
 const BodyText: React.FC<TextProps> = (props) => {
   const { color } = useTheme()
   const children: string = (props as any).children
-  const style = [styles.bodyDefault, { color: color("black30") }, props.style || {}, styles.bodyRequired]
+  const style = [
+    styles.bodyDefault,
+    { color: color("black30") },
+    props.style || {},
+    styles.bodyRequired,
+  ]
   return (
     <Text key={children} style={style}>
       {children}
@@ -46,7 +51,12 @@ const BodyText: React.FC<TextProps> = (props) => {
 const SmallPrint: React.FC<TextProps> = (props) => {
   const { color } = useTheme()
   const children: string = (props as any).children
-  const style = [styles.smallPrintDefault, { color: color("black30") }, props.style || {}, styles.smallPrintRequired]
+  const style = [
+    styles.smallPrintDefault,
+    { color: color("black30") },
+    props.style || {},
+    styles.smallPrintRequired,
+  ]
   return (
     <Text key={children} style={style}>
       {children}

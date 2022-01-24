@@ -5,8 +5,15 @@ import { MyCollectionArtworkListItem_artwork } from "__generated__/MyCollectionA
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { EventEmitter } from "events"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
-import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  FilterData,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  ArtworkFiltersStoreProvider,
+  ArtworksFiltersStore,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/ArtworksFilterHeader"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -207,7 +214,8 @@ const MyCollection: React.FC<{
           (m) => m.paramValue
         ),
         // tslint:disable-next-line: no-shadowed-variable
-        localSortAndFilter: (artworks, mediums: string[]) => filter(artworks, (a) => mediums.includes(a.medium)),
+        localSortAndFilter: (artworks, mediums: string[]) =>
+          filter(artworks, (a) => mediums.includes(a.medium)),
       },
       {
         displayText: FilterDisplayName.priceRange,
@@ -373,7 +381,9 @@ const MyCollection: React.FC<{
                 title="Your collection is growing"
                 text="Based on your purchase history, we’ve added the following works."
                 showCloseButton
-                onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
+                onClose={() =>
+                  AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")
+                }
               />
             )}
           </Flex>
@@ -440,7 +450,11 @@ const MyCollection: React.FC<{
                 )
 
                 // custom size filters come back with a different type, consolidate to one
-                const sizeFilterTypes = [FilterParamName.width, FilterParamName.height, FilterParamName.sizes]
+                const sizeFilterTypes = [
+                  FilterParamName.width,
+                  FilterParamName.height,
+                  FilterParamName.sizes,
+                ]
 
                 // tslint:disable-next-line: no-shadowed-variable
                 filtering.forEach((filter) => {
@@ -453,20 +467,24 @@ const MyCollection: React.FC<{
                      * pass the paramName so we can distinguish how to handle in the step
                      */
                     const sizeFilterParamName = FilterParamName.sizes
-                    const sizeFilterStep = (filterOptions ?? []).find((f) => f.filterType === sizeFilterParamName)!
-                      .localSortAndFilter!
+                    const sizeFilterStep = (filterOptions ?? []).find(
+                      (f) => f.filterType === sizeFilterParamName
+                    )!.localSortAndFilter!
                     processedArtworks = sizeFilterStep(processedArtworks, {
                       paramValue: filter.paramValue,
                       paramName: filter.paramName,
                     })
                   } else {
-                    const filterStep = (filterOptions ?? []).find((f) => f.filterType === filter.paramName)!
-                      .localSortAndFilter!
+                    const filterStep = (filterOptions ?? []).find(
+                      (f) => f.filterType === filter.paramName
+                    )!.localSortAndFilter!
                     processedArtworks = filterStep(processedArtworks, filter.paramValue)
                   }
                 })
 
-                const sorting = appliedFiltersState.filter((x) => x.paramName === FilterParamName.sort)
+                const sorting = appliedFiltersState.filter(
+                  (x) => x.paramName === FilterParamName.sort
+                )
                 if (sorting.length > 0) {
                   const sortStep = sorting[0].localSortAndFilter!
                   processedArtworks = sortStep(processedArtworks)

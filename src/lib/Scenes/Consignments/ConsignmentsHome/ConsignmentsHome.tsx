@@ -64,7 +64,9 @@ interface ConsignmentsHomeQueryRendererProps {
   environment?: RelayModernEnvironment
 }
 
-export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRendererProps> = ({ environment }) => {
+export const ConsignmentsHomeQueryRenderer: React.FC<ConsignmentsHomeQueryRendererProps> = ({
+  environment,
+}) => {
   return (
     <QueryRenderer<ConsignmentsHomeQuery>
       environment={environment || defaultEnvironment}

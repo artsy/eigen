@@ -19,7 +19,8 @@ describe("AuctionResultsForArtistsYouFollowContainer", () => {
     <QueryRenderer<AuctionResultsForArtistsYouFollowTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query AuctionResultsForArtistsYouFollowTestsQuery($first: Int!, $after: String) @relay_test_operation {
+        query AuctionResultsForArtistsYouFollowTestsQuery($first: Int!, $after: String)
+        @relay_test_operation {
           me {
             ...AuctionResultsForArtistsYouFollow_me @arguments(first: $first, after: $after)
           }

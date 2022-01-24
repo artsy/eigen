@@ -1,6 +1,16 @@
 import { TriangleDown } from "lib/Icons/TriangleDown"
 import { Autocomplete } from "lib/utils/Autocomplete"
-import { CheckIcon, CloseIcon, Flex, InputTitle, Sans, Separator, Spacer, Touchable, useColor } from "palette"
+import {
+  CheckIcon,
+  CloseIcon,
+  Flex,
+  InputTitle,
+  Sans,
+  Separator,
+  Spacer,
+  Touchable,
+  useColor,
+} from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
 import { FancyModal } from "../../../lib/Components/FancyModal/FancyModal"
@@ -74,7 +84,10 @@ export class Select<ValueType> extends React.Component<SelectProps<ValueType>, S
     const selectedItem = options.find((o) => o.value === value)
     return (
       <>
-        {this.props.renderButton?.({ selectedValue: selectedItem?.value ?? null, onPress: this.open.bind(this) }) ?? (
+        {this.props.renderButton?.({
+          selectedValue: selectedItem?.value ?? null,
+          onPress: this.open.bind(this),
+        }) ?? (
           <SelectButton
             testID={this.props.testID}
             title={title}
@@ -185,7 +198,11 @@ const SelectModal: React.FC<{
               console.error("Option with empty search terms: " + JSON.stringify(option))
               return { searchTerms: [], importance: 0, key: option }
             }
-            return { searchTerms: option.searchTerms, importance: option.searchImportance ?? 0, key: option }
+            return {
+              searchTerms: option.searchTerms,
+              importance: option.searchImportance ?? 0,
+              key: option,
+            }
           })
         )
       : null
@@ -224,7 +241,8 @@ const SelectModal: React.FC<{
         // search was cleared (or hasn't been touched yet) and the user has previously selected a value
         const initialScrollIndex = props.options.indexOf(selectedItem)
         // try to center the option on screen
-        const initialScrollOffset = initialScrollIndex * ROW_HEIGHT - (flatListHeight.current ?? 0) / 2 + ROW_HEIGHT
+        const initialScrollOffset =
+          initialScrollIndex * ROW_HEIGHT - (flatListHeight.current ?? 0) / 2 + ROW_HEIGHT
         requestAnimationFrame(() => {
           flatListRef.current?.scrollToOffset({ offset: initialScrollOffset, animated: false })
         })
@@ -278,7 +296,11 @@ const SelectModal: React.FC<{
         // we handle scrolling to the selected value ourselves because FlatList has weird
         // rendering bugs when initialScrollIndex changes, at the time of writing
         initialScrollIndex={undefined}
-        getItemLayout={(_item, index) => ({ index, length: ROW_HEIGHT, offset: ROW_HEIGHT * index })}
+        getItemLayout={(_item, index) => ({
+          index,
+          length: ROW_HEIGHT,
+          offset: ROW_HEIGHT * index,
+        })}
         style={{ flex: 1 }}
         onLayout={(e) => (flatListHeight.current = e.nativeEvent.layout.height)}
         renderItem={({ item, index }) => (

@@ -21,7 +21,14 @@ import {
 
 type SpacingUnitV3 = `${SpacingUnitV3Numbers}`
 export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
-export type Color = ColorV3BeforeDevPurple | "devpurple" | "yellow100" | "yellow30" | "yellow10" // yellows are temporary, until we add them to palette-tokens
+export type Color =
+  | ColorV3BeforeDevPurple
+  | "devpurple"
+  | "yellow100"
+  | "yellow30"
+  | "yellow10"
+  | "orange10"
+  | "orange100" // yellows and orange are temporary, until we add them to palette-tokens
 export { SpacingUnitV2, SpacingUnitV3 }
 export { TextVariantV3 }
 
@@ -98,6 +105,8 @@ const fixColorV3 = (
   ourColors.yellow100 = "#A85F00"
   ourColors.yellow30 = "#FAE7BA"
   ourColors.yellow10 = "#F6EFE5"
+  ourColors.orange10 = "#FCF7F3"
+  ourColors.orange150 = "#A8501C"
   return colors as any
 }
 
@@ -143,7 +152,10 @@ const THEMES = {
         semibold: { normal: null, italic: null },
       },
       serif: {
-        regular: { normal: "ReactNativeAGaramondPro-Regular", italic: "ReactNativeAGaramondPro-Italic" },
+        regular: {
+          normal: "ReactNativeAGaramondPro-Regular",
+          italic: "ReactNativeAGaramondPro-Italic",
+        },
         medium: { normal: null, italic: null },
         semibold: { normal: "ReactNativeAGaramondPro-Semibold", italic: null },
       },
@@ -233,7 +245,9 @@ export const useTheme = () => {
     console.error(
       "You are trying to use the `Theme` but you have not wrapped your component/screen with `<Theme>`. Please wrap and try again."
     )
-    throw new Error("ThemeContext is not defined. Wrap your component with `<Theme>` and try again.")
+    throw new Error(
+      "ThemeContext is not defined. Wrap your component with `<Theme>` and try again."
+    )
   }
   const themeIfUnwrapped = THEMES.v3
 

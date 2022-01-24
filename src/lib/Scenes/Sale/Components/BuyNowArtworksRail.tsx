@@ -82,7 +82,8 @@ export const BuyNowArtworksRailContainer = createPaginationContainer(
       @argumentDefinitions(count: { type: "Int", defaultValue: 4 }, cursor: { type: "String" }) {
         internalID
         promotedSale {
-          saleArtworksConnection(first: $count, after: $cursor) @connection(key: "Sale_saleArtworksConnection") {
+          saleArtworksConnection(first: $count, after: $cursor)
+            @connection(key: "Sale_saleArtworksConnection") {
             edges {
               node {
                 artwork {

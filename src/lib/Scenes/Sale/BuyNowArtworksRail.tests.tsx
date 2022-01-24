@@ -4,7 +4,10 @@ import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { BuyNowArtworksRailContainer, INITIAL_NUMBER_TO_RENDER } from "./Components/BuyNowArtworksRail"
+import {
+  BuyNowArtworksRailContainer,
+  INITIAL_NUMBER_TO_RENDER,
+} from "./Components/BuyNowArtworksRail"
 
 jest.unmock("react-relay")
 

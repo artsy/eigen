@@ -18,13 +18,18 @@ interface ArtistSeriesArtworksProps {
 
 const PAGE_SIZE = 20
 
-export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ artistSeries, relay }) => {
+export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({
+  artistSeries,
+  relay,
+}) => {
   const tracking = useTracking()
 
   const artworks = artistSeries?.artistSeriesArtworks!
   const artworksTotal = artworks?.counts?.total ?? 0
 
-  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions((state) => state.setFiltersCountAction)
+  const setFiltersCountAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.setFiltersCountAction
+  )
 
   useArtworkFilters({
     relay,
@@ -54,7 +59,11 @@ export const ArtistSeriesArtworks: React.FC<ArtistSeriesArtworksProps> = ({ arti
   if (artworksTotal === 0) {
     return (
       <Box>
-        <FilteredArtworkGridZeroState id={artistSeries.internalID} slug={artistSeries.slug} trackClear={trackClear} />
+        <FilteredArtworkGridZeroState
+          id={artistSeries.internalID}
+          slug={artistSeries.slug}
+          trackClear={trackClear}
+        />
         <Spacer mb={2} />
       </Box>
     )
@@ -152,7 +161,8 @@ export const ArtistSeriesArtworksFragmentContainer = createPaginationContainer(
         $input: FilterArtworksInput
       ) {
         artistSeries(id: $id) {
-          ...ArtistSeriesArtworks_artistSeries @arguments(count: $count, cursor: $cursor, input: $input)
+          ...ArtistSeriesArtworks_artistSeries
+            @arguments(count: $count, cursor: $cursor, input: $input)
         }
       }
     `,

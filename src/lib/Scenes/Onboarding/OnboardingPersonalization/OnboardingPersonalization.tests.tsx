@@ -22,7 +22,8 @@ describe("OnboardingPersonalizationList", () => {
     <QueryRenderer<OnboardingPersonalizationTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query OnboardingPersonalizationTestsQuery($excludeArtistIDs: [String]) @relay_test_operation {
+        query OnboardingPersonalizationTestsQuery($excludeArtistIDs: [String])
+        @relay_test_operation {
           highlights {
             popularArtists(excludeFollowedArtists: true, excludeArtistIDs: $excludeArtistIDs) {
               internalID
@@ -80,7 +81,9 @@ describe("OnboardingPersonalizationList", () => {
       jest.runAllTimers()
 
       expect(__globalStoreTestUtils__?.getCurrentState().auth.onboardingState).toEqual("complete")
-      expect(LegacyNativeModules.ARTemporaryAPIModule.requestPrepromptNotificationPermissions).toBeCalled()
+      expect(
+        LegacyNativeModules.ARTemporaryAPIModule.requestPrepromptNotificationPermissions
+      ).toBeCalled()
     })
   })
 })

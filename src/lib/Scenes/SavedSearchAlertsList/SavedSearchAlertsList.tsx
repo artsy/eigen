@@ -22,13 +22,16 @@ export const SavedSearchAlertsList: React.FC<SavedSearchAlertsListProps> = (prop
   )
 }
 
-export const SavedSearchAlertsListFragmentContainer = createFragmentContainer(SavedSearchAlertsList, {
-  me: graphql`
-    fragment SavedSearchAlertsList_me on Me {
-      ...SavedSearchesList_me
-    }
-  `,
-})
+export const SavedSearchAlertsListFragmentContainer = createFragmentContainer(
+  SavedSearchAlertsList,
+  {
+    me: graphql`
+      fragment SavedSearchAlertsList_me on Me {
+        ...SavedSearchesList_me
+      }
+    `,
+  }
+)
 
 export const SavedSearchAlertsListQueryRenderer: React.FC = () => {
   return (

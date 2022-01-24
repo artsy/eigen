@@ -37,7 +37,10 @@ describe(ClosedLotStanding, () => {
     it("says 'You won!' if the user won the lot", () => {
       const tree = renderWithWrappers(
         <ClosedLotStanding
-          saleArtwork={saleArtworkFixture({ isHighestBidder: true, lotState: { soldStatus: "Sold" } })}
+          saleArtwork={saleArtworkFixture({
+            isHighestBidder: true,
+            lotState: { soldStatus: "Sold" },
+          })}
         />
       )
       expect(extractText(tree.root)).toContain("You won!")
@@ -46,7 +49,10 @@ describe(ClosedLotStanding, () => {
     it("says 'Outbid' if the the lot sold to someone else", () => {
       const tree = renderWithWrappers(
         <ClosedLotStanding
-          saleArtwork={saleArtworkFixture({ isHighestBidder: false, lotState: { soldStatus: "Sold" } })}
+          saleArtwork={saleArtworkFixture({
+            isHighestBidder: false,
+            lotState: { soldStatus: "Sold" },
+          })}
         />
       )
       expect(extractText(tree.root)).toContain("Outbid")
@@ -55,7 +61,10 @@ describe(ClosedLotStanding, () => {
     it("says 'Passed' if the lot did not sell at all", () => {
       const tree = renderWithWrappers(
         <ClosedLotStanding
-          saleArtwork={saleArtworkFixture({ isHighestBidder: true, lotState: { soldStatus: "Passed" } })}
+          saleArtwork={saleArtworkFixture({
+            isHighestBidder: true,
+            lotState: { soldStatus: "Passed" },
+          })}
         />
       )
       expect(extractText(tree.root)).toContain("Passed")
@@ -67,7 +76,10 @@ describe(ClosedLotStanding, () => {
       expect(
         renderWithWrappers(
           <ClosedLotStanding
-            saleArtwork={saleArtworkFixture({ isHighestBidder: true, lotState: { soldStatus: "Sold" } })}
+            saleArtwork={saleArtworkFixture({
+              isHighestBidder: true,
+              lotState: { soldStatus: "Sold" },
+            })}
           />
         ).root.findAllByType(StarCircleFill).length
       ).toBe(1)

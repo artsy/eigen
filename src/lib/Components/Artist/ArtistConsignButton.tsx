@@ -32,7 +32,9 @@ export const ArtistConsignButton: React.FC<ArtistConsignButtonProps> = (props) =
     <TouchableOpacity
       ref={buttonRef}
       onPress={() => {
-        const destination: string = isSalesTab ? "/collections/my-collection/marketing-landing" : "/sales"
+        const destination: string = isSalesTab
+          ? "/collections/my-collection/marketing-landing"
+          : "/sales"
 
         tracking.trackEvent({
           context_page: Schema.PageNames.ArtistPage,

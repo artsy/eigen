@@ -34,7 +34,9 @@ describe("ConversationCTA", () => {
       variables={{ conversationID: "test-conversation" }}
       render={({ error, props }) => {
         if (props?.me?.conversation) {
-          return <ConversationCTAFragmentContainer show={showCTA} conversation={props.me.conversation} />
+          return (
+            <ConversationCTAFragmentContainer show={showCTA} conversation={props.me.conversation} />
+          )
         } else if (error) {
           console.error(error)
         }
@@ -69,7 +71,9 @@ describe("ConversationCTA", () => {
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
-      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, mockResolvers)
+      )
     })
     return tree
   }
@@ -121,7 +125,10 @@ describe("ConversationCTA", () => {
       expectReviewOfferButton(wrapper, {
         bg: "red100",
         Icon: AlertCircleFillIcon,
-        strings: ["Payment Failed", "Unable to process payment for accepted offer. Update payment method."],
+        strings: [
+          "Payment Failed",
+          "Unable to process payment for accepted offer. Update payment method.",
+        ],
       })
     })
 
@@ -143,7 +150,11 @@ describe("ConversationCTA", () => {
           offerAmountChanged: true,
         },
       })
-      expectReviewOfferButton(wrapper, { bg: "copper100", strings: ["Offer Received"], Icon: AlertCircleFillIcon })
+      expectReviewOfferButton(wrapper, {
+        bg: "copper100",
+        strings: ["Offer Received"],
+        Icon: AlertCircleFillIcon,
+      })
     })
 
     it("shows correct message for an offer accepted by the buyer", () => {
@@ -152,7 +163,11 @@ describe("ConversationCTA", () => {
         lastOffer: { fromParticipant: "BUYER" },
       })
 
-      expectReviewOfferButton(wrapper, { bg: "green100", strings: ["Offer Accepted"], Icon: MoneyFillIcon })
+      expectReviewOfferButton(wrapper, {
+        bg: "green100",
+        strings: ["Offer Accepted"],
+        Icon: MoneyFillIcon,
+      })
     })
 
     it("shows correct message for an offer accepted by the seller that does not define total (change amount)", () => {
@@ -161,7 +176,11 @@ describe("ConversationCTA", () => {
         lastOffer: { fromParticipant: "SELLER", definesTotal: false },
       })
 
-      expectReviewOfferButton(wrapper, { bg: "green100", strings: ["Offer Accepted"], Icon: MoneyFillIcon })
+      expectReviewOfferButton(wrapper, {
+        bg: "green100",
+        strings: ["Offer Accepted"],
+        Icon: MoneyFillIcon,
+      })
     })
 
     it("shows counter received - confirm total when offer defines total and amount changes", () => {
@@ -183,7 +202,11 @@ describe("ConversationCTA", () => {
         lastOffer: { fromParticipant: "BUYER" },
       })
 
-      expectReviewOfferButton(wrapper, { bg: "green100", strings: ["Offer Accepted"], Icon: MoneyFillIcon })
+      expectReviewOfferButton(wrapper, {
+        bg: "green100",
+        strings: ["Offer Accepted"],
+        Icon: MoneyFillIcon,
+      })
     })
 
     it("shows accepted  - confirm total when offer defines total and amount stays the same", () => {

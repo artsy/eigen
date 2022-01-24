@@ -21,7 +21,11 @@ describe("InfoButton", () => {
 
   it("only shows the modal when the button is pressed", () => {
     const wrapper = renderWithWrappers(
-      <InfoButton title="title" subTitle="subTitle" modalContent={<Text testID="hello">Hello</Text>} />
+      <InfoButton
+        title="title"
+        subTitle="subTitle"
+        modalContent={<Text testID="hello">Hello</Text>}
+      />
     )
     expect(wrapper.root.findByType(FancyModal).props.visible).toBe(false)
     wrapper.root.findByType(TouchableOpacity).props.onPress()
@@ -31,7 +35,12 @@ describe("InfoButton", () => {
   it("calls onPress arg if it's passed in", () => {
     const handlePress = jest.fn()
     const wrapper = renderWithWrappers(
-      <InfoButton title="title" subTitle="subTitle" modalContent={<Text>Hello</Text>} onPress={handlePress} />
+      <InfoButton
+        title="title"
+        subTitle="subTitle"
+        modalContent={<Text>Hello</Text>}
+        onPress={handlePress}
+      />
     )
     wrapper.root.findByType(TouchableOpacity).props.onPress()
 

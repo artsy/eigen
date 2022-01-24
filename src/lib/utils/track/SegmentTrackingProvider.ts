@@ -19,8 +19,12 @@ export const SegmentTrackingProvider: TrackingProvider = {
     analytics
       .setup(
         Platform.select({
-          ios: __DEV__ ? Config.SEGMENT_STAGING_WRITE_KEY_IOS : Config.SEGMENT_PRODUCTION_WRITE_KEY_IOS,
-          android: __DEV__ ? Config.SEGMENT_STAGING_WRITE_KEY_ANDROID : Config.SEGMENT_PRODUCTION_WRITE_KEY_ANDROID,
+          ios: __DEV__
+            ? Config.SEGMENT_STAGING_WRITE_KEY_IOS
+            : Config.SEGMENT_PRODUCTION_WRITE_KEY_IOS,
+          android: __DEV__
+            ? Config.SEGMENT_STAGING_WRITE_KEY_ANDROID
+            : Config.SEGMENT_PRODUCTION_WRITE_KEY_ANDROID,
           default: "",
         }),
         {

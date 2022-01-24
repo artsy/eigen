@@ -19,7 +19,12 @@ jest.unmock("react-relay")
 let env: ReturnType<typeof createMockEnvironment>
 
 const FakeApp = (props: MakeOfferModalTestsQueryResponse) => {
-  return <MakeOfferModalFragmentContainer artwork={props!.artwork!} conversationID="test-conversation-id" />
+  return (
+    <MakeOfferModalFragmentContainer
+      artwork={props!.artwork!}
+      conversationID="test-conversation-id"
+    />
+  )
 }
 
 interface RenderComponentProps {
@@ -142,7 +147,10 @@ describe("<MakeOfferModal />", () => {
   // EDITIONS
   describe("when artwork is edition set", () => {
     const tapOn = (edition: ReactTestInstance) => {
-      edition.props.onPress(edition.props.edition.internalID, edition.props.edition.isOfferableFromInquiry)
+      edition.props.onPress(
+        edition.props.edition.internalID,
+        edition.props.edition.isOfferableFromInquiry
+      )
     }
     it("shows edition selection when it's an edition", () => {
       const wrapper = getWrapper(mockEditionsResolver)

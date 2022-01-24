@@ -1,7 +1,7 @@
 import { ArtistNotableWorksRailTestsQueryRawResponse } from "__generated__/ArtistNotableWorksRailTestsQuery.graphql"
-import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { ArtistNotableWorksRailFragmentContainer } from "lib/Components/Artist/ArtistArtworks/ArtistNotableWorksRail"
-import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
+import { ArtworkRailCard } from "lib/Components/ArtworkRail/ArtworkRailCard"
+import { PrefetchFlatList } from "lib/Components/PrefetchFlatList"
 import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { renderRelayTree } from "lib/tests/renderRelayTree"
 import { Theme } from "palette"
@@ -37,32 +37,32 @@ describe("Notable Works Rail", () => {
 
   it("renders without throwing an error when 3 or more notable artworks", async () => {
     const wrapper = await getWrapper()
-    expect(wrapper.find(AboveTheFoldFlatList)).toHaveLength(1)
-    expect(wrapper.find(ArtworkTileRailCard)).toHaveLength(3)
+    expect(wrapper.find(PrefetchFlatList)).toHaveLength(1)
+    expect(wrapper.find(ArtworkRailCard)).toHaveLength(3)
   })
 
   describe("Notable artwork metadata", () => {
     it("renders artwork price and title metadata when price", async () => {
       const wrapper = await getWrapper()
 
-      expect(wrapper.find(ArtworkTileRailCard).first().props().title).toBe("My Second Greatest Art")
+      expect(wrapper.find(ArtworkRailCard).first().text()).toContain("My Second Greatest Art")
 
-      expect(wrapper.find(ArtworkTileRailCard).first().props().saleMessage).toBe("€2,500 - 5,000")
+      expect(wrapper.find(ArtworkRailCard).first().text()).toContain("€2,500 - 5,000")
     })
 
     it("renders artwork price and title metadata when bidding closed", async () => {
       const wrapper = await getWrapper()
 
-      expect(wrapper.find(ArtworkTileRailCard).at(1).props().saleMessage).toBe("Bidding closed")
-      expect(wrapper.find(ArtworkTileRailCard).at(1).props().title).toBe("My Greatest Art")
+      expect(wrapper.find(ArtworkRailCard).at(1).text()).toContain("Bidding closed")
+      expect(wrapper.find(ArtworkRailCard).at(1).text()).toContain("My Greatest Art")
     })
 
     it("renders artwork price and title metadata when auction price", async () => {
       const wrapper = await getWrapper()
 
-      expect(wrapper.find(ArtworkTileRailCard).at(2).props().title).toBe("My Third Greatest Art")
+      expect(wrapper.find(ArtworkRailCard).at(2).text()).toContain("My Third Greatest Art")
 
-      expect(wrapper.find(ArtworkTileRailCard).at(2).props().saleMessage).toBe("$4,500")
+      expect(wrapper.find(ArtworkRailCard).at(2).text()).toContain("$4,500")
     })
   })
 })
@@ -77,9 +77,19 @@ const artistMockData: ArtistNotableWorksRailTestsQueryRawResponse["artist"] = {
       {
         node: {
           id: "another-another-id-2",
+          href: "/artwork/another-another-id-3",
+          artistNames: "Artist Name",
+          date: "2020",
+          partner: null,
           image: {
-            imageURL: "https://www.testimages.net/test2.jpg",
-            aspectRatio: 0.5,
+            resized: {
+              src: "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg",
+              srcSet:
+                "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg 1x, https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=590&height=800&quality=50&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg 2x",
+              width: 295,
+              height: 400,
+            },
+            aspectRatio: 0.74,
           },
           saleMessage: "€2,500 - 5,000",
           saleArtwork: null,
@@ -92,9 +102,19 @@ const artistMockData: ArtistNotableWorksRailTestsQueryRawResponse["artist"] = {
       {
         node: {
           id: "another-another-id",
+          href: "/artwork/another-another-id-3",
+          artistNames: "Artist Name",
+          date: "2020",
+          partner: null,
           image: {
-            imageURL: "https://www.testimages.net/test.jpg",
-            aspectRatio: 0.8,
+            resized: {
+              src: "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg",
+              srcSet:
+                "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg 1x, https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=590&height=800&quality=50&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg 2x",
+              width: 295,
+              height: 400,
+            },
+            aspectRatio: 0.74,
           },
           saleMessage: null,
           saleArtwork: null,
@@ -102,6 +122,7 @@ const artistMockData: ArtistNotableWorksRailTestsQueryRawResponse["artist"] = {
             isAuction: true,
             isClosed: true,
             id: "sale-id2",
+            endAt: "2020-01-01T00:00:00+00:00",
           },
           title: "My Greatest Art",
           internalID: "37297491dDsddS",
@@ -111,23 +132,34 @@ const artistMockData: ArtistNotableWorksRailTestsQueryRawResponse["artist"] = {
       {
         node: {
           id: "another-another-id-3",
+          href: "/artwork/another-another-id-3",
+          artistNames: "Artist Name",
+          date: "2020",
+          partner: null,
           image: {
-            imageURL: "https://www.testimages.net/test3.jpg",
-            aspectRatio: 0.9,
+            resized: {
+              src: "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg",
+              srcSet:
+                "https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=295&height=400&quality=80&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg 1x, https://d196wkiy8qx2u5.cloudfront.net?resize_to=fit&width=590&height=800&quality=50&src=https%3A%2F%2Fd32dm0rphc51dk.cloudfront.net%2F6q3YwlLkt3gxMLuUx9xvCw%2Flarge.jpg 2x",
+              width: 295,
+              height: 400,
+            },
+            aspectRatio: 0.74,
           },
           saleMessage: null,
           saleArtwork: {
-            highestBid: {
+            currentBid: {
               display: "$4,500",
             },
-            openingBid: {
-              display: "$2,500",
+            counts: {
+              bidderPositions: 2,
             },
             id: "id-123",
           },
           sale: {
             isClosed: false,
             isAuction: true,
+            endAt: "2020-01-01T00:00:00+00:00",
             id: "sale-id",
           },
           title: "My Third Greatest Art",
