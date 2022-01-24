@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+if ! which aws;
+then
+  echo "installing aws"
+  # install awscli
+  brew install six || brew link --overwrite six
+  brew install awscli
+
+  # configure awscli
+  mkdir -p ~/.aws
+  touch ~/.aws/config
+  echo "[default]" >> ~/.aws/config
+  echo "region = us-east-1" >> ~/.aws/config
+  echo "output = json" >> ~/.aws/config
+else
+  echo "aws already installed"
+fi

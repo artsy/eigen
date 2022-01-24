@@ -1,27 +1,11 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-
 ./scripts/setup-fastlane-env
 brew tap getsentry/tools
 brew install sentry-cli
 bundle exec fastlane update_plugins
 
-if ! which aws;
-then
-  echo "installing aws"
-  # install awscli
-  brew install six || brew link --overwrite six
-  brew install awscli
-
-  # configure awscli
-  mkdir -p ~/.aws
-  touch ~/.aws/config
-  echo "[default]" >> ~/.aws/config
-  echo "region = us-east-1" >> ~/.aws/config
-  echo "output = json" >> ~/.aws/config
-else
-  echo "aws already installed"
-fi
+./scripts/setup-awscli-macos
 
 aws s3 cp s3://artsy-citadel/eigen/GoogleService-Info.plist GoogleService-Info.plist
