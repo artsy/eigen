@@ -1,6 +1,10 @@
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { BottomTabsModel, getBottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
+import {
+  ConsignmentModel,
+  getConsignmentModel,
+} from "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/State/ConsignmentModel"
 import { getMyCollectionModel, MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
 import { getSearchModel, SearchModel } from "lib/Scenes/Search/SearchModel"
 import { getUserPreferencesModel, UserPreferencesModel } from "lib/Scenes/Search/UserPreferencesModel"
@@ -30,6 +34,7 @@ interface GlobalStoreStateModel {
   pendingPushNotification: PendingPushNotificationModel
   userPreferences: UserPreferencesModel
   visualClue: VisualClueModel
+  consignment: ConsignmentModel
 }
 export interface GlobalStoreModel extends GlobalStoreStateModel {
   rehydrate: Action<this, DeepPartial<State<GlobalStoreStateModel>>>
@@ -101,6 +106,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   pendingPushNotification: getPendingPushNotificationModel(),
   userPreferences: getUserPreferencesModel(),
   visualClue: getVisualClueModel(),
+  consignment: getConsignmentModel(),
 
   // for dev only.
   _setVersion: action((state, newVersion) => {

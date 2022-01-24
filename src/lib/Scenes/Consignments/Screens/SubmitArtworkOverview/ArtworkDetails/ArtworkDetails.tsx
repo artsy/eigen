@@ -1,14 +1,13 @@
-import AsyncStorage from "@react-native-community/async-storage"
 import { captureMessage } from "@sentry/react-native"
 import { ArtworkDetails_submission$key } from "__generated__/ArtworkDetails_submission.graphql"
 import { ArtworkDetailsQuery } from "__generated__/ArtworkDetailsQuery.graphql"
 import { ConsignmentAttributionClass } from "__generated__/createConsignSubmissionMutation.graphql"
 import { Formik } from "formik"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { CTAButton, Flex, Spacer, Text } from "palette"
 import React, { Suspense, useEffect, useState } from "react"
 import { graphql, PreloadedQuery, useFragment, usePreloadedQuery, useQueryLoader } from "react-relay"
-import { CONSIGNMENT_SUBMISSION_STORAGE_ID } from "../SubmitArtworkOverview"
 import { createOrUpdateConsignSubmission } from "../utils/createOrUpdateConsignSubmission"
 import { limitedEditionValue } from "../utils/rarityOptions"
 import { updateArtworkDetailsInitialValues } from "../utils/updateArtworkDetailsInitialValues"
@@ -44,11 +43,11 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
       editionSizeFormatted: isRarityLimitedEdition ? values.editionSizeFormatted : "",
     }
 
-    let submissionId: string | undefined = (await AsyncStorage.getItem(CONSIGNMENT_SUBMISSION_STORAGE_ID)) || undefined
+    let id: string | undefined = submission?.id || undefined
 
     try {
-      submissionId = await createOrUpdateConsignSubmission({
-        id: submissionId,
+      id = await createOrUpdateConsignSubmission({
+        id,
         artistID: artworkDetailsForm.artistId,
         year: artworkDetailsForm.year,
         title: artworkDetailsForm.title,
@@ -72,8 +71,8 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
         utmTerm: artworkDetailsForm.utmTerm,
       })
 
-      if (submissionId) {
-        await AsyncStorage.setItem(CONSIGNMENT_SUBMISSION_STORAGE_ID, submissionId)
+      if (id) {
+        GlobalStore.actions.consignment.submission.setSubmissionId(id)
         props.handlePress()
       }
     } catch (error) {
@@ -133,14 +132,12 @@ const ArtworkDetailsScreenQuery = graphql`
 
 export const ArtworkDetailsScreen: React.FC<{ handlePress: () => void }> = ({ handlePress }) => {
   const [queryRef, loadQuery] = useQueryLoader<ArtworkDetailsQuery>(ArtworkDetailsScreenQuery)
+  const { submissionId } = GlobalStore.useAppState((state) => state.consignment.submission.sessionState)
 
   useEffect(() => {
-    ;(async () => {
-      const id = await AsyncStorage.getItem(CONSIGNMENT_SUBMISSION_STORAGE_ID)
-      if (id && !queryRef) {
-        loadQuery({ id })
-      }
-    })()
+    if (submissionId && !queryRef) {
+      loadQuery({ id: submissionId })
+    }
   })
 
   if (!queryRef) {

@@ -3,9 +3,10 @@ import { ConsignmentsHome_targetSupply } from "__generated__/ConsignmentsHome_ta
 import { ConsignmentsHomeQuery } from "__generated__/ConsignmentsHomeQuery.graphql"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { Join, Separator } from "palette"
-import React from "react"
+import React, { useEffect } from "react"
 import { ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
@@ -28,6 +29,12 @@ export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading }) =
     const route = "/collections/my-collection/artworks/new/submissions/new"
     navigate(route)
   }
+
+  useEffect(() => {
+    return () => {
+      GlobalStore.actions.consignment.submission.resetSessionState()
+    }
+  }, [])
 
   return (
     <>
