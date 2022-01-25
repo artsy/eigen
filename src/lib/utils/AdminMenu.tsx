@@ -37,6 +37,7 @@ import {
 import Config from "react-native-config"
 import { getBuildNumber, getUniqueId, getVersion } from "react-native-device-info"
 import Keychain from "react-native-keychain"
+import { sentryReleaseName } from "../../../app.json"
 import { useScreenDimensions } from "./useScreenDimensions"
 
 const configurableFeatureFlagKeys = sortBy(
@@ -209,6 +210,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
             Sentry.nativeCrash()
           }}
         />
+        <FeatureFlagMenuItem title={`Sentry release name: "${sentryReleaseName}"`} />
         <FeatureFlagMenuItem title={`Device ID: "${getUniqueId()}"`} />
       </ScrollView>
     </Flex>
