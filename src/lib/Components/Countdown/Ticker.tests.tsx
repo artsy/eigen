@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react-native"
+import { getDefaultNormalizer, render } from "@testing-library/react-native"
 import moment from "moment"
 import { Theme } from "palette"
 import React from "react"
@@ -16,7 +16,9 @@ describe("SimpleTicker", () => {
       </Theme>
     )
 
-    expect(getByText("00d  00h  00m  01s")).toBeTruthy()
+    expect(
+      getByText("00d  00h  00m  01s", { normalizer: getDefaultNormalizer({ collapseWhitespace: false }) })
+    ).toBeTruthy()
   })
 
   it("renders properly when duration is over", () => {
@@ -27,7 +29,9 @@ describe("SimpleTicker", () => {
       </Theme>
     )
 
-    expect(getByText("00d  00h  00m  00s")).toBeTruthy()
+    expect(
+      getByText("00d  00h  00m  00s", { normalizer: getDefaultNormalizer({ collapseWhitespace: false }) })
+    ).toBeTruthy()
   })
 
   it("renders properly with days overflowing a single month", () => {
@@ -39,7 +43,9 @@ describe("SimpleTicker", () => {
       </Theme>
     )
 
-    expect(getByText("730d  11h  38m  24s")).toBeTruthy()
+    expect(
+      getByText("730d  11h  38m  24s", { normalizer: getDefaultNormalizer({ collapseWhitespace: false }) })
+    ).toBeTruthy()
   })
 })
 
