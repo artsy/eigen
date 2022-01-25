@@ -50,6 +50,7 @@ export const ArtworkRail: React.FC<ArtworkRailProps> = ({
       renderItem={({ item, index }) => (
         <ArtworkRailCard
           onPress={() => {
+            // @ts-ignore
             onPress?.(item, index)
           }}
           artwork={item}
