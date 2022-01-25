@@ -1,14 +1,14 @@
 import { themeGet } from "@styled-system/theme-get"
-import {
-  ArtworkRailCard_artwork,
-  ArtworkRailCard_artwork$key,
-} from "__generated__/ArtworkRailCard_artwork.graphql"
 import { getUrgencyTag } from "lib/utils/getUrgencyTag"
 import { Flex, Sans, Text, useColor } from "palette"
 import React from "react"
 import { GestureResponderEvent } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import styled from "styled-components/native"
+import {
+  ArtworkRailCard_artwork,
+  ArtworkRailCard_artwork$key,
+} from "__generated__/ArtworkRailCard_artwork.graphql"
 import { saleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 

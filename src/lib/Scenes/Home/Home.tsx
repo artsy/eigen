@@ -560,6 +560,8 @@ const HomePlaceholder: React.FC<{}> = () => {
         </Box>
       }
 
+      <ModuleSeparator />
+
       {/* Larger tiles to mimic the artist rails */}
       <Box ml={2} mr={2}>
         <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
