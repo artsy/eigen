@@ -40,14 +40,19 @@ describe("PartnerEntityHeader", () => {
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
-      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, mockResolvers)
+      )
     })
     return tree
   }
 
   it("renders correctly", () => {
     const wrapper = getWrapper({
-      Partner: () => ({ name: "Example Partner Name", cities: ["New York", "Berlin", "Tokyo", "Milan"] }),
+      Partner: () => ({
+        name: "Example Partner Name",
+        cities: ["New York", "Berlin", "Tokyo", "Milan"],
+      }),
     })
 
     const text = extractText(wrapper.root)

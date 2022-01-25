@@ -8,7 +8,9 @@ import { View } from "react-native"
 import LinearGradient from "react-native-linear-gradient"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
-type UnitType = NonNullable<NonNullable<HomeHero_homePage["heroUnits"] | Trove_trove["heroUnits"]>[0]>
+type UnitType = NonNullable<
+  NonNullable<HomeHero_homePage["heroUnits"] | Trove_trove["heroUnits"]>[0]
+>
 
 interface Props {
   unit: UnitType
@@ -33,7 +35,12 @@ export const HeroUnit: React.FC<Props> = ({ unit, onPress, isTrove = false }) =>
 
   return (
     <Touchable haptic activeOpacity={0.9} onPress={onPress}>
-      <Flex height={height} justifyContent="flex-end" p="2" style={{ backgroundColor: color("black30") }}>
+      <Flex
+        height={height}
+        justifyContent="flex-end"
+        p="2"
+        style={{ backgroundColor: color("black30") }}
+      >
         <OpaqueImageView
           style={{ width, height, position: "absolute" }}
           imageURL={unit.backgroundImageURL}

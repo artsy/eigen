@@ -9,5 +9,7 @@ export const ClassTheme = ({
   children: React.ReactNode | ((helpers: ReturnType<typeof useTheme>) => React.ReactNode)
 }) => {
   const hookStuff = useTheme()
-  return <Theme theme={theme}>{typeof children === "function" ? children(hookStuff) : children}</Theme>
+  return (
+    <Theme theme={theme}>{typeof children === "function" ? children(hookStuff) : children}</Theme>
+  )
 }

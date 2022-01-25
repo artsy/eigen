@@ -86,16 +86,23 @@ export const Search: React.FC<SearchProps> = (props) => {
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
-  const searchInsightsConfigured = useSearchInsightsConfig(system?.algolia?.appID, system?.algolia?.apiKey)
+  const searchInsightsConfigured = useSearchInsightsConfig(
+    system?.algolia?.appID,
+    system?.algolia?.apiKey
+  )
   const indices = system?.algolia?.indices
-  const { loading: indicesInfoLoading, indicesInfo, updateIndicesInfo } = useAlgoliaIndices(searchClient, indices)
+  const {
+    loading: indicesInfoLoading,
+    indicesInfo,
+    updateIndicesInfo,
+  } = useAlgoliaIndices(searchClient, indices)
   const { trackEvent } = useTracking()
   const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
 
   const pillsArray = useMemo<PillType[]>(() => {
     if (Array.isArray(indices) && indices.length > 0) {
-      const allowedIndices = (indices as NonNullable<Search_system["algolia"]>["indices"]).filter((indice) =>
-        ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndexKey)
+      const allowedIndices = (indices as NonNullable<Search_system["algolia"]>["indices"]).filter(
+        (indice) => ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndexKey)
       )
       const formattedIndices: PillType[] = allowedIndices.map((index) => {
         const { name, ...other } = index

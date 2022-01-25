@@ -49,7 +49,9 @@ export const FancyModalCard = React.forwardRef<
   const isRightAnimationPosition = animationPosition === "right"
   const backdropOpacity = useRef(new Animated.Value(0)).current
   const scale = useRef(new Animated.Value(1)).current
-  const translateY = useRef(new Animated.Value(isRootCard || isRightAnimationPosition ? 0 : props.height)).current
+  const translateY = useRef(
+    new Animated.Value(isRootCard || isRightAnimationPosition ? 0 : props.height)
+  ).current
   const translateX = useRef(new Animated.Value(isRightAnimationPosition ? screen.width : 0)).current
   const borderRadius = useRef(new Animated.Value(isRootCard || props.fullScreen ? 0 : 10)).current
 
@@ -204,7 +206,11 @@ export const FancyModalCard = React.forwardRef<
         {/* We need to apply background color in this extra inner view otherwise there is some glitchy
             tearing sometimes when hiding the modal */}
         <View
-          style={{ flex: 1, backgroundColor: "white", paddingTop: props.fullScreen ? screen.safeAreaInsets.top : 0 }}
+          style={{
+            flex: 1,
+            backgroundColor: "white",
+            paddingTop: props.fullScreen ? screen.safeAreaInsets.top : 0,
+          }}
         >
           {props.children}
         </View>

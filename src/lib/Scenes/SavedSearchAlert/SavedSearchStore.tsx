@@ -1,6 +1,9 @@
 import { action, Action, computed, Computed, createContextStore, State } from "easy-peasy"
 import { Aggregations } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { SearchCriteria, SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import {
+  SearchCriteria,
+  SearchCriteriaAttributes,
+} from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { extractPills } from "./pillExtractors"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 
@@ -31,7 +34,9 @@ const savedSearchModel: SavedSearchModel = {
     const prevValue = state.attributes[payload.key]
 
     if (Array.isArray(prevValue)) {
-      ;(state.attributes[payload.key] as string[]) = prevValue.filter((value) => value !== payload.value)
+      ;(state.attributes[payload.key] as string[]) = prevValue.filter(
+        (value) => value !== payload.value
+      )
     } else {
       state.attributes[payload.key] = null
     }

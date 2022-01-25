@@ -11,7 +11,9 @@ export interface ExperimentDescriptor {
 }
 
 // Helper function to get good typings and intellisense
-function defineExperiments<T extends string>(expirmentMap: { readonly [experimentName in T]: ExperimentDescriptor }) {
+function defineExperiments<T extends string>(expirmentMap: {
+  readonly [experimentName in T]: ExperimentDescriptor
+}) {
   return expirmentMap
 }
 

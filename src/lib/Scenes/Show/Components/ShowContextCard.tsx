@@ -16,7 +16,9 @@ export interface ShowContextCardProps extends BoxProps {
 export const ShowContextCard: React.FC<ShowContextCardProps> = ({ show, ...rest }) => {
   const { isFairBooth, fair, partner } = show
 
-  const { onPress, ...card } = isFairBooth ? extractPropsFromFair(fair) : extractPropsFromPartner(partner)
+  const { onPress, ...card } = isFairBooth
+    ? extractPropsFromFair(fair)
+    : extractPropsFromPartner(partner)
 
   const tracking = useTracking()
 
@@ -123,7 +125,12 @@ const ContextCard: React.FC<ContextCardProps> = ({
               bottom={0}
               left={2}
             >
-              <OpaqueImageView width={60} height={40} imageURL={iconUrl} placeholderBackgroundColor="white" />
+              <OpaqueImageView
+                width={60}
+                height={40}
+                imageURL={iconUrl}
+                placeholderBackgroundColor="white"
+              />
             </Flex>
           )}
         </Box>

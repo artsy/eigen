@@ -14,7 +14,11 @@ import { RelayPaginationProp } from "react-relay"
 interface Props {
   artist: NonNullable<
     NonNullable<
-      NonNullable<NonNullable<NonNullable<OnboardingPersonalizationModal_artists["searchConnection"]>["edges"]>[0]>
+      NonNullable<
+        NonNullable<
+          NonNullable<OnboardingPersonalizationModal_artists["searchConnection"]>["edges"]
+        >[0]
+      >
     >["node"]
   >
   relay: RelayPaginationProp
@@ -31,7 +35,11 @@ interface State {
   isFollowedChanging: boolean
 }
 
-export const formatTombstoneText = (nationality: string | null, birthday: string | null, deathday: string | null) => {
+export const formatTombstoneText = (
+  nationality: string | null,
+  birthday: string | null,
+  deathday: string | null
+) => {
   if (nationality && birthday && deathday) {
     return nationality.trim() + ", " + birthday + "-" + deathday
   } else if (nationality && birthday) {
@@ -86,7 +94,9 @@ export class OnboardingPersonalizationArtistListItem extends React.Component<Pro
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   @track((props: Props) => ({
-    action_name: props.artist.is_followed ? Schema.ActionNames.ArtistFollow : Schema.ActionNames.ArtistUnfollow,
+    action_name: props.artist.is_followed
+      ? Schema.ActionNames.ArtistFollow
+      : Schema.ActionNames.ArtistUnfollow,
     action_type: Schema.ActionTypes.Success,
     owner_id: props.artist.internalID,
     owner_slug: props.artist.slug,

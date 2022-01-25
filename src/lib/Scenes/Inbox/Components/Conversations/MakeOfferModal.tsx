@@ -1,6 +1,9 @@
 import { ActionType, OwnerType } from "@artsy/cohesion"
 import { MakeOfferModal_artwork } from "__generated__/MakeOfferModal_artwork.graphql"
-import { MakeOfferModalQuery, MakeOfferModalQueryResponse } from "__generated__/MakeOfferModalQuery.graphql"
+import {
+  MakeOfferModalQuery,
+  MakeOfferModalQueryResponse,
+} from "__generated__/MakeOfferModalQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { dismissModal } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -86,7 +89,8 @@ export const MakeOfferModal: React.FC<MakeOfferModalProps> = ({ ...props }) => {
           </Button>
           <Flex bg="black5" p={1} mt={1} mb={6}>
             <Text variant="xs">
-              Making an offer doesn’t guarantee you the work, as the seller might be receiving competing offers.
+              Making an offer doesn’t guarantee you the work, as the seller might be receiving
+              competing offers.
             </Text>
           </Flex>
         </Flex>

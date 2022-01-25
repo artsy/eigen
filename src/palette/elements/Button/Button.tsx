@@ -18,7 +18,14 @@ export interface ButtonProps extends BoxProps {
   children: ReactNode
 
   size?: "small" | "large"
-  variant?: "fillDark" | "fillLight" | "fillGray" | "outline" | "outlineGray" | "outlineLight" | "text"
+  variant?:
+    | "fillDark"
+    | "fillLight"
+    | "fillGray"
+    | "outline"
+    | "outlineGray"
+    | "outlineLight"
+    | "text"
   onPress?: PressableProps["onPress"]
 
   icon?: ReactNode
@@ -76,7 +83,10 @@ export const Button: React.FC<ButtonProps> = ({
 
   const [innerDisplayState, setInnerDisplayState] = useState(DisplayState.Enabled)
 
-  const [longestTextMeasurements, setLongestTextMeasurements] = useState<ViewMeasurements>({ width: 0, height: 0 })
+  const [longestTextMeasurements, setLongestTextMeasurements] = useState<ViewMeasurements>({
+    width: 0,
+    height: 0,
+  })
 
   const displayState =
     testOnly_state ?? // if we use the test prop, use that

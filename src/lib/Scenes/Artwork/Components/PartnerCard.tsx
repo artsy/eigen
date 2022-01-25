@@ -87,7 +87,8 @@ export class PartnerCard extends React.Component<Props, State> {
   render() {
     const { artwork } = this.props
     const partner = artwork.partner!
-    const galleryOrBenefitAuction = artwork.sale && (artwork.sale.isBenefit || artwork.sale.isGalleryAuction)
+    const galleryOrBenefitAuction =
+      artwork.sale && (artwork.sale.isBenefit || artwork.sale.isGalleryAuction)
     if (partner.type === "Auction House" || galleryOrBenefitAuction) {
       return null
     }
@@ -97,7 +98,9 @@ export class PartnerCard extends React.Component<Props, State> {
       locationNames = get(partner, (p) => limitWithCount(p.cities as any, 2), [])!.join(", ")
     }
     const showPartnerType =
-      partner.type === "Institution" || partner.type === "Gallery" || partner.type === "Institutional Seller"
+      partner.type === "Institution" ||
+      partner.type === "Gallery" ||
+      partner.type === "Institutional Seller"
     const partnerTypeDisplayText = partner.type === "Gallery" ? "gallery" : "institution"
     return (
       <Flex>

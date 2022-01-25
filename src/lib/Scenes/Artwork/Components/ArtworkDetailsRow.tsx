@@ -18,7 +18,12 @@ interface ArtworkDetailsRowProps {
   }
 }
 
-export const ArtworkDetailsRow: React.FC<ArtworkDetailsRowProps> = ({ key, title, value, tracking }) => {
+export const ArtworkDetailsRow: React.FC<ArtworkDetailsRowProps> = ({
+  key,
+  title,
+  value,
+  tracking,
+}) => {
   return (
     <React.Fragment key={key}>
       <Text>{title}</Text>

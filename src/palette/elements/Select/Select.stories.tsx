@@ -23,7 +23,13 @@ storiesOf("Select", module)
   .addDecorator(withScreenDimensions)
   .add("Variants", () => (
     <List>
-      <Select title="Title" showTitleLabel={false} options={options} value="option-1" onSelectValue={() => null} />
+      <Select
+        title="Title"
+        showTitleLabel={false}
+        options={options}
+        value="option-1"
+        onSelectValue={() => null}
+      />
       <Select title="Title" options={options} value={null} onSelectValue={() => null} />
       <Select
         title="Tooltip"
@@ -42,8 +48,21 @@ storiesOf("Select", module)
         onSelectValue={() => null}
       />
       <Select title="Title" options={options} required value={null} onSelectValue={() => null} />
-      <Select title="Title" subTitle="Subtitle" options={options} optional value={null} onSelectValue={() => null} />
-      <Select title="With Search" enableSearch options={options} value="option-1" onSelectValue={() => null} />
+      <Select
+        title="Title"
+        subTitle="Subtitle"
+        options={options}
+        optional
+        value={null}
+        onSelectValue={() => null}
+      />
+      <Select
+        title="With Search"
+        enableSearch
+        options={options}
+        value="option-1"
+        onSelectValue={() => null}
+      />
       <Select
         title="With Max Modal Height"
         maxModalHeight={200}
@@ -51,7 +70,13 @@ storiesOf("Select", module)
         value="option-1"
         onSelectValue={() => null}
       />
-      <Select title="With Error" hasError options={options} value="option-1" onSelectValue={() => null} />
+      <Select
+        title="With Error"
+        hasError
+        options={options}
+        value="option-1"
+        onSelectValue={() => null}
+      />
       <Select
         title="CustomButton"
         renderButton={({ selectedValue }) => <Text>{"Custom " + selectedValue}</Text>}

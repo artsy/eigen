@@ -1,14 +1,15 @@
 import Foundation
 import SwiftUI
 import Combine
+import WidgetKit
 
 typealias ZippedOutputs = (URLSession.DataTaskPublisher.Output, URLSession.DataTaskPublisher.Output, URLSession.DataTaskPublisher.Output, URLSession.DataTaskPublisher.Output)
 typealias PublisherCompletionStatus = Subscribers.Completion<URLSession.DataTaskPublisher.Failure>
 typealias StoreCompletionHandler = ([Artwork]) -> Void
 
 class ArtworkStore {
-    static func fetch(completion: @escaping StoreCompletionHandler) {
-        let store = ArtworkStore()
+    static func fetch(context: TimelineProviderContext, completion: @escaping StoreCompletionHandler) {
+        let store = ArtworkStore(context: context)
         store.fetch(completion: completion)
     }
     
@@ -16,11 +17,13 @@ class ArtworkStore {
     var cancellable: AnyCancellable?
     var completion: StoreCompletionHandler?
     
+    let context: TimelineProviderContext
     let dateFormatter: DateFormatter
     let decoder: JSONDecoder
     let urlSession: URLSession
     
-    init() {
+    init(context: TimelineProviderContext) {
+        self.context = context
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         self.dateFormatter = dateFormatter
@@ -54,7 +57,8 @@ class ArtworkStore {
         
         self.artworks = artworks
         
-        let imageUrls = artworks.map(\.firstImageUrl)
+        let imageTokens = artworks.map(\.firstImageToken)
+        let imageUrls: [URL] = imageTokens.map() { token in ImageUrl.build(token: token, context: context) }
         
         let publishers: [URLSession.DataTaskPublisher] = imageUrls.map() { imageUrl in
             let publisher = self.urlSession.dataTaskPublisher(for: imageUrl)
@@ -74,12 +78,11 @@ class ArtworkStore {
         else { return }
         
         let values = [outputs.0, outputs.1, outputs.2, outputs.3]
-        let enhancedArtworks: [Artwork] = values.compactMap() { (data, response) in
-            guard
-                var artwork = artworks.first(where: { $0.firstImageUrl == response.url }),
-                let image = UIImage(data: data)
-            else { return nil }
+        
+        let enhancedArtworks: [Artwork] = values.enumerated().compactMap() { (index, value) in
+            guard let image = UIImage(data: value.data) else { return nil }
             
+            var artwork = artworks[index]
             artwork.image = image
             
             return artwork

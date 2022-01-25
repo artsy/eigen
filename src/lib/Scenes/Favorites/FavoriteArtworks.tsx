@@ -78,7 +78,10 @@ export class SavedWorks extends Component<Props, State> {
           {({ space }) => (
             <StickyTabPageScrollView
               refreshControl={
-                <RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />
+                <RefreshControl
+                  refreshing={this.state.refreshingFromPull}
+                  onRefresh={this.handleRefresh}
+                />
               }
               contentContainerStyle={{ paddingBottom: space(2) }}
             >
@@ -110,7 +113,10 @@ export class SavedWorks extends Component<Props, State> {
             contentContainerStyle={{ paddingVertical: space(2) }}
             onEndReached={this.loadMore}
             refreshControl={
-              <RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />
+              <RefreshControl
+                refreshing={this.state.refreshingFromPull}
+                onRefresh={this.handleRefresh}
+              />
             }
           >
             <GenericGrid
@@ -139,7 +145,10 @@ const FavoriteArtworksContainer = createPaginationContainer(
   {
     me: graphql`
       fragment FavoriteArtworks_me on Me
-      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 10 }
+        cursor: { type: "String", defaultValue: "" }
+      ) {
         labFeatures
         followsAndSaves {
           artworks: artworksConnection(private: true, first: $count, after: $cursor)

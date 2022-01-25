@@ -18,7 +18,12 @@ describe("PhoneInput", () => {
 
   it("renders an input with the phone number pre-filled", () => {
     const tree = renderWithWrappers(
-      <PhoneInput value="+447825577664" onChange={onChange} onChangeText={onChangeText} setValidation={setValidation} />
+      <PhoneInput
+        value="+447825577664"
+        onChange={onChange}
+        onChangeText={onChangeText}
+        setValidation={setValidation}
+      />
     )
     expect(tree.root.findAllByType(Input)).toHaveLength(1)
     expect(extractText(tree.root.findByType(Input))).toBe("🇬🇧+447825 577664")
@@ -29,7 +34,12 @@ describe("PhoneInput", () => {
   })
   it("renders an input with the phone number pre-filled", () => {
     const tree = renderWithWrappers(
-      <PhoneInput value="+447825577664" onChange={onChange} onChangeText={onChangeText} setValidation={setValidation} />
+      <PhoneInput
+        value="+447825577664"
+        onChange={onChange}
+        onChangeText={onChangeText}
+        setValidation={setValidation}
+      />
     )
     expect(tree.root.findAllByType(Input)).toHaveLength(1)
     expect(extractText(tree.root.findByType(Input))).toBe("🇬🇧+447825 577664")
@@ -62,7 +72,12 @@ describe("PhoneInput", () => {
 
   it("calls onChange and onChangeText when the value changes", () => {
     const tree = renderWithWrappers(
-      <PhoneInput value="+447825577664" onChange={onChange} onChangeText={onChangeText} setValidation={setValidation} />
+      <PhoneInput
+        value="+447825577664"
+        onChange={onChange}
+        onChangeText={onChangeText}
+        setValidation={setValidation}
+      />
     )
     expect(onChange).not.toHaveBeenCalled()
     expect(onChangeText).not.toHaveBeenCalled()

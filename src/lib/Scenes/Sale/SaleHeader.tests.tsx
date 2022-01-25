@@ -80,7 +80,9 @@ describe("SaleHeader", () => {
       })
     )
 
-    expect(extractText(tree.root.findByProps({ testID: "sale-header-hero" }))).toBe("Auction closed")
+    expect(extractText(tree.root.findByProps({ testID: "sale-header-hero" }))).toBe(
+      "Auction closed"
+    )
   })
 
   it("does not render auction is closed when an auction is still active", () => {

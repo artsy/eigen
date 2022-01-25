@@ -9,11 +9,19 @@ interface CustomShareSheetProps {
   setVisible: (value: boolean) => void
 }
 
-export const CustomShareSheet: React.FC<CustomShareSheetProps> = ({ children, visible, setVisible }) => {
+export const CustomShareSheet: React.FC<CustomShareSheetProps> = ({
+  children,
+  visible,
+  setVisible,
+}) => {
   const { height: screenHeight } = useScreenDimensions()
 
   return (
-    <FancyModal maxHeight={screenHeight / 2} visible={visible} onBackgroundPressed={() => setVisible(false)}>
+    <FancyModal
+      maxHeight={screenHeight / 2}
+      visible={visible}
+      onBackgroundPressed={() => setVisible(false)}
+    >
       <FancyModalHeader useXButton onLeftButtonPress={() => setVisible(false)}>
         Share
       </FancyModalHeader>
@@ -28,7 +36,11 @@ interface CustomShareSheetItemProps {
   onPress?: () => void
 }
 
-export const CustomShareSheetItem: React.FC<CustomShareSheetItemProps> = ({ title, Icon, onPress }) => (
+export const CustomShareSheetItem: React.FC<CustomShareSheetItemProps> = ({
+  title,
+  Icon,
+  onPress,
+}) => (
   <Touchable onPress={onPress}>
     <Flex width="100%" height={60} flexDirection="row" alignItems="center" px="2">
       {Icon}

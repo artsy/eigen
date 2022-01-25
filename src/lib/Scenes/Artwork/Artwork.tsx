@@ -39,7 +39,10 @@ import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { ContextCardFragmentContainer as ContextCard } from "./Components/ContextCard"
 import { getMeasurements } from "./Components/ImageCarousel/geometry"
-import { OtherWorksFragmentContainer as OtherWorks, populatedGrids } from "./Components/OtherWorks/OtherWorks"
+import {
+  OtherWorksFragmentContainer as OtherWorks,
+  populatedGrids,
+} from "./Components/OtherWorks/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
 
 interface ArtworkProps {
@@ -224,7 +227,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
       sections.push({
         key: "commercialInformation",
-        element: <CommercialInformation artwork={artworkAboveTheFold} me={me} tracking={tracking} />,
+        element: (
+          <CommercialInformation artwork={artworkAboveTheFold} me={me} tracking={tracking} />
+        ),
       })
     }
 
@@ -250,7 +255,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (artworkBelowTheFold.provenance || artworkBelowTheFold.exhibitionHistory || artworkBelowTheFold.literature) {
+    if (
+      artworkBelowTheFold.provenance ||
+      artworkBelowTheFold.exhibitionHistory ||
+      artworkBelowTheFold.literature
+    ) {
       sections.push({
         key: "history",
         element: <ArtworkHistory artwork={artworkBelowTheFold} />,
@@ -347,7 +356,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
           )}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           contentContainerStyle={{ paddingBottom: 40 }}
-          renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
+          renderItem={({ item }) =>
+            item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>
+          }
         />
       )}
       <QAInfo />
@@ -597,7 +608,10 @@ const BelowTheFoldPlaceholder: React.FC<{}> = ({}) => {
   )
 }
 
-const getDefaultImageDimensions = (screenDimensions: ScreenDimensionsWithSafeAreas, space: number) => {
+const getDefaultImageDimensions = (
+  screenDimensions: ScreenDimensionsWithSafeAreas,
+  space: number
+) => {
   // The logic for artworkHeight comes from the zeplin spec https://zpl.io/25JLX0Q
   return {
     width: (screenDimensions.width >= 375 ? 340 : 290) - space,

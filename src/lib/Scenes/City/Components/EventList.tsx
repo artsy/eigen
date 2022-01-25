@@ -41,7 +41,11 @@ export class EventList extends React.Component<Props> {
     const { type } = this.props
     return (
       <Box height={RowHeight} py={2}>
-        {type === "fairs" ? <TabFairItemRow item={item} /> : <ShowItemRow show={item} relay={this.props.relay} />}
+        {type === "fairs" ? (
+          <TabFairItemRow item={item} />
+        ) : (
+          <ShowItemRow show={item} relay={this.props.relay} />
+        )}
       </Box>
     )
   }
@@ -57,7 +61,10 @@ export class EventList extends React.Component<Props> {
         <>
           <Separator />
           <Box mt={2} mb={3}>
-            <CaretButton onPress={() => this.viewAllPressed()} text={`View all ${bucket.length} shows`} />
+            <CaretButton
+              onPress={() => this.viewAllPressed()}
+              text={`View all ${bucket.length} shows`}
+            />
           </Box>
         </>
       )

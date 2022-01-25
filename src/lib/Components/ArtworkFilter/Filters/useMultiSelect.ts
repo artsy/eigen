@@ -10,12 +10,20 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 // Default value is always empty array since this is a multi-select
 const DEFAULT_VALUE: string[] = []
 
-export const useMultiSelect = ({ options, paramName }: { options: FilterData[]; paramName: FilterParamName }) => {
+export const useMultiSelect = ({
+  options,
+  paramName,
+}: {
+  options: FilterData[]
+  paramName: FilterParamName
+}) => {
   const defaultFilter = DEFAULT_FILTERS.find((option) => option.paramName === paramName)
 
   const didMountRef = useRef(false)
 
-  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.selectFiltersAction
+  )
 
   const selectedOptions = useSelectedOptionsDisplay()
 
@@ -25,7 +33,8 @@ export const useMultiSelect = ({ options, paramName }: { options: FilterData[]; 
 
   // Array of selected paramValues: the value that's actually dispatched
   const [nextParamValues, setNextParamValues] = useState<string[]>(
-    typeof selectedParamOptions?.paramValue === "object" && every(selectedParamOptions.paramValue, isString)
+    typeof selectedParamOptions?.paramValue === "object" &&
+      every(selectedParamOptions.paramValue, isString)
       ? selectedParamOptions.paramValue
       : []
   )
@@ -96,7 +105,9 @@ export const useMultiSelect = ({ options, paramName }: { options: FilterData[]; 
         paramName,
         // Label which appears on the filter overview screen
         displayText:
-          nextOptions.map(({ displayText }) => displayText).join(", ") || defaultFilter?.displayText || "All",
+          nextOptions.map(({ displayText }) => displayText).join(", ") ||
+          defaultFilter?.displayText ||
+          "All",
         // Array of paramValues
         paramValue: nextParamValues,
       })

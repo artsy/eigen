@@ -36,13 +36,17 @@ export const AuctionResultsForArtistsYouFollow: React.FC<Props> = ({ me, relay }
 
   const { trackEvent } = useTracking()
   const allAuctionResults = extractNodes(me?.auctionResultsByFollowedArtists)
-  const groupedAuctionResults = groupBy(allAuctionResults, (item) => moment(item!.saleDate!).format("YYYY-MM"))
+  const groupedAuctionResults = groupBy(allAuctionResults, (item) =>
+    moment(item!.saleDate!).format("YYYY-MM")
+  )
 
-  const groupedAuctionResultSections = Object.entries(groupedAuctionResults).map(([date, auctionResults]) => {
-    const sectionTitle = moment(date).format("MMMM")
+  const groupedAuctionResultSections = Object.entries(groupedAuctionResults).map(
+    ([date, auctionResults]) => {
+      const sectionTitle = moment(date).format("MMMM")
 
-    return { sectionTitle, data: auctionResults }
-  })
+      return { sectionTitle, data: auctionResults }
+    }
+  )
 
   const loadMoreArtworks = () => {
     if (!hasMore() || isLoading()) {
@@ -135,7 +139,9 @@ export const AuctionResultsForArtistsYouFollowContainer = createPaginationContai
       fragment AuctionResultsForArtistsYouFollow_me on Me
       @argumentDefinitions(first: { type: "Int", defaultValue: 10 }, after: { type: "String" }) {
         auctionResultsByFollowedArtists(first: $first, after: $after)
-          @connection(key: "AuctionResultsForArtistsYouFollowContainer_auctionResultsByFollowedArtists") {
+          @connection(
+            key: "AuctionResultsForArtistsYouFollowContainer_auctionResultsByFollowedArtists"
+          ) {
           totalCount
           edges {
             node {
@@ -161,7 +167,10 @@ export const AuctionResultsForArtistsYouFollowContainer = createPaginationContai
       }
     },
     query: graphql`
-      query AuctionResultsForArtistsYouFollowContainerPaginationQuery($first: Int!, $after: String) {
+      query AuctionResultsForArtistsYouFollowContainerPaginationQuery(
+        $first: Int!
+        $after: String
+      ) {
         me {
           ...AuctionResultsForArtistsYouFollow_me @arguments(first: $first, after: $after)
         }

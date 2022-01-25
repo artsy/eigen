@@ -7,7 +7,11 @@ interface FairEditorialShareProps extends BoxProps {
   url: string
 }
 
-export const FairEditorialShare: React.FC<FairEditorialShareProps> = ({ subject, url, ...rest }) => (
+export const FairEditorialShare: React.FC<FairEditorialShareProps> = ({
+  subject,
+  url,
+  ...rest
+}) => (
   <Box display="flex" flexDirection="row" alignItems="center" {...rest}>
     <Touchable
       onPress={() => {

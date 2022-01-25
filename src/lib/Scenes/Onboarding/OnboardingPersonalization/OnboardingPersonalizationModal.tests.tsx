@@ -19,7 +19,8 @@ describe("OnboardingPersonalizationModal", () => {
     <QueryRenderer<OnboardingPersonalizationModalTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query OnboardingPersonalizationModalTestsQuery($query: String!, $count: Int!) @relay_test_operation {
+        query OnboardingPersonalizationModalTestsQuery($query: String!, $count: Int!)
+        @relay_test_operation {
           ...OnboardingPersonalizationModal_artists @arguments(query: $query, count: $count)
         }
       `}
@@ -88,6 +89,8 @@ describe("OnboardingPersonalizationModal", () => {
 
     const noResults = tree.root.findByProps({ testID: "noResults" })
 
-    expect(extractText(noResults)).toContain("We couldn't find anything for “artist with no results”")
+    expect(extractText(noResults)).toContain(
+      "We couldn't find anything for “artist with no results”"
+    )
   })
 })

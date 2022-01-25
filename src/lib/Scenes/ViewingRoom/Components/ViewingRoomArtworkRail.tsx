@@ -28,7 +28,9 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = ({ 
         <SectionTitle
           title={title}
           onPress={() => {
-            tracking.trackEvent(tracks.tappedArtworkGroupHeader(viewingRoom.internalID, viewingRoom.slug))
+            tracking.trackEvent(
+              tracks.tappedArtworkGroupHeader(viewingRoom.internalID, viewingRoom.slug)
+            )
             navigate(`/viewing-room/${viewingRoom.slug}/artworks`)
           }}
         />
@@ -37,7 +39,12 @@ export const ViewingRoomArtworkRail: React.FC<ViewingRoomArtworkRailProps> = ({ 
         artworks={artworks}
         onPress={(artwork) => {
           tracking.trackEvent(
-            tracks.tappedArtworkThumbnail(viewingRoom.internalID, viewingRoom.slug, artwork.internalID, artwork.slug)
+            tracks.tappedArtworkThumbnail(
+              viewingRoom.internalID,
+              viewingRoom.slug,
+              artwork.internalID,
+              artwork.slug
+            )
           )
           navigate(`/viewing-room/${viewingRoom.slug}/${artwork.slug}`)
         }}
@@ -61,7 +68,12 @@ export const tracks = {
       type: "header",
     }
   },
-  tappedArtworkThumbnail: (vrId: string, vrSlug: string, artworkId: string, artworkSlug: string) => ({
+  tappedArtworkThumbnail: (
+    vrId: string,
+    vrSlug: string,
+    artworkId: string,
+    artworkSlug: string
+  ) => ({
     action: Schema.ActionNames.TappedArtworkGroup,
     context_module: Schema.ContextModules.ViewingRoomArtworkRail,
     context_screen_owner_type: Schema.OwnerEntityTypes.ViewingRoom,

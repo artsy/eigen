@@ -18,7 +18,10 @@ export const ModalStack: React.FC = ({ children }) => {
   const initialState = useReloadedDevNavigationState("main_modal_stack", __unsafe_mainModalStackRef)
   return (
     <NavigationContainer ref={__unsafe_mainModalStackRef} initialState={initialState}>
-      <Stack.Navigator mode="modal" screenOptions={{ headerShown: false, cardStyle: { backgroundColor: "white" } }}>
+      <Stack.Navigator
+        mode="modal"
+        screenOptions={{ headerShown: false, cardStyle: { backgroundColor: "white" } }}
+      >
         <Stack.Screen name="root">{() => children}</Stack.Screen>
         <Stack.Screen name="modal" component={ModalNavStack} />
       </Stack.Navigator>
@@ -26,9 +29,9 @@ export const ModalStack: React.FC = ({ children }) => {
   )
 }
 
-const ModalNavStack: React.FC<{ route: Route<"", { rootModuleName: AppModule; rootModuleProps?: object }> }> = ({
-  route,
-}) => {
+const ModalNavStack: React.FC<{
+  route: Route<"", { rootModuleName: AppModule; rootModuleProps?: object }>
+}> = ({ route }) => {
   return (
     <NavStack
       id={route.key}

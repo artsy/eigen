@@ -17,7 +17,12 @@ export interface SearchInputProps {
 
 const SEARCH_THROTTLE_INTERVAL = 500
 
-export const SearchInput: React.FC<SearchInputProps> = ({ currentRefinement, placeholder, refine, onTextChange }) => {
+export const SearchInput: React.FC<SearchInputProps> = ({
+  currentRefinement,
+  placeholder,
+  refine,
+  onTextChange,
+}) => {
   const { trackEvent } = useTracking()
   const searchProviderValues = useSearchProviderValues(currentRefinement)
   const isImageSearchEnabled = useFeatureFlag("AREnableImageSearch")

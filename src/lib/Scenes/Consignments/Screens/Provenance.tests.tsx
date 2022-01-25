@@ -38,7 +38,9 @@ describe("state", () => {
 
     provenance.textChanged("Acquired by my father somewhere")
 
-    expect(provenance.setState).toHaveBeenCalledWith({ provenance: "Acquired by my father somewhere" })
+    expect(provenance.setState).toHaveBeenCalledWith({
+      provenance: "Acquired by my father somewhere",
+    })
   })
 })
 

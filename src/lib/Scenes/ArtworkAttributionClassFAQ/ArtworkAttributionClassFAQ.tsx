@@ -38,7 +38,8 @@ export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttribution
             <Separator />
 
             <Text color="black60">
-              Our partners are responsible for providing accurate classification information for all works.
+              Our partners are responsible for providing accurate classification information for all
+              works.
             </Text>
 
             <Button onPress={goBack} block>
@@ -51,14 +52,18 @@ export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttribution
   )
 }
 
-export const ArtworkAttributionClassFAQContainer = createFragmentContainer(ArtworkAttributionClassFAQ, {
-  artworkAttributionClasses: graphql`
-    fragment ArtworkAttributionClassFAQ_artworkAttributionClasses on AttributionClass @relay(plural: true) {
-      name
-      longDescription
-    }
-  `,
-})
+export const ArtworkAttributionClassFAQContainer = createFragmentContainer(
+  ArtworkAttributionClassFAQ,
+  {
+    artworkAttributionClasses: graphql`
+      fragment ArtworkAttributionClassFAQ_artworkAttributionClasses on AttributionClass
+      @relay(plural: true) {
+        name
+        longDescription
+      }
+    `,
+  }
+)
 
 export const ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY = graphql`
   query ArtworkAttributionClassFAQQuery {

@@ -14,7 +14,14 @@ export class CityGuideCTA extends React.Component {
           <Flex>
             <SectionTitle title="Explore art on view" />
             <TouchableOpacity onPress={() => navigate("/local-discovery")}>
-              <Flex style={{ borderWidth: 1, borderColor: color("black10"), borderRadius: 4, overflow: "hidden" }}>
+              <Flex
+                style={{
+                  borderWidth: 1,
+                  borderColor: color("black10"),
+                  borderRadius: 4,
+                  overflow: "hidden",
+                }}
+              >
                 <Image source={cityGuideMapImage} style={{ width: "100%" }} />
                 <Flex m={15}>
                   <Sans size="3t" weight="medium">

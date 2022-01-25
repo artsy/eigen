@@ -2,7 +2,10 @@ import { useColor } from "palette/hooks"
 import React from "react"
 import { Icon, IconProps, Path } from "./Icon"
 
-export const AlertCircleFillIcon: React.FC<IconProps> = ({ title = "AlertCircleFillIcon", ...props }) => {
+export const AlertCircleFillIcon: React.FC<IconProps> = ({
+  title = "AlertCircleFillIcon",
+  ...props
+}) => {
   const color = useColor()
   return (
     <Icon {...props} viewBox="0 0 18 18">

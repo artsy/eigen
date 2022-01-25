@@ -24,7 +24,11 @@ describe("Sort Options Screen", () => {
     },
   }
 
-  const MockSortScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => (
+  const MockSortScreen = ({
+    initialData = initialState,
+  }: {
+    initialData?: ArtworkFiltersState
+  }) => (
     <ArtworkFiltersStoreProvider initialData={initialData}>
       <SortOptionsScreen {...getEssentialProps()} />
     </ArtworkFiltersStoreProvider>
@@ -32,7 +36,9 @@ describe("Sort Options Screen", () => {
 
   const selectedSortOption = (componentTree: ReactTestRenderer) => {
     const innerOptions = componentTree.root.findAllByType(InnerOptionListItem)
-    const selectedOption = innerOptions.filter((item) => item.findByType(RadioDot).props.selected)[0]
+    const selectedOption = innerOptions.filter(
+      (item) => item.findByType(RadioDot).props.selected
+    )[0]
     return selectedOption
   }
 

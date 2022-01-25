@@ -29,7 +29,8 @@ const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) =
   const [legacy_shouldHideBackButton, updateShouldHideBackButton] = useState(false)
 
   const isRootScreen = useNavigationState((state) => state.routes[0].key === route.key)
-  const showBackButton = !isRootScreen && !module.options.hidesBackButton && !legacy_shouldHideBackButton
+  const showBackButton =
+    !isRootScreen && !module.options.hidesBackButton && !legacy_shouldHideBackButton
 
   const isPresentedModally = (route.params.props as any)?.isPresentedModally
 
@@ -38,7 +39,9 @@ const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) =
   return (
     <LegacyBackButtonContext.Provider value={{ updateShouldHideBackButton }}>
       <ProvideScreenDimensions>
-        <ArtsyKeyboardAvoidingViewContext.Provider value={{ isPresentedModally, isVisible, bottomOffset: 0 }}>
+        <ArtsyKeyboardAvoidingViewContext.Provider
+          value={{ isPresentedModally, isVisible, bottomOffset: 0 }}
+        >
           <ScreenPadding
             isPresentedModally={isPresentedModally}
             isVisible={isVisible}
@@ -53,23 +56,28 @@ const ScreenWrapper: React.FC<{ route: Route<"", ScreenProps> }> = ({ route }) =
   )
 }
 
-const ScreenPadding: React.FC<{ fullBleed: boolean; isPresentedModally: boolean; isVisible: boolean }> = ({
-  fullBleed,
-  children,
-}) => {
+const ScreenPadding: React.FC<{
+  fullBleed: boolean
+  isPresentedModally: boolean
+  isVisible: boolean
+}> = ({ fullBleed, children }) => {
   const topInset = useScreenDimensions().safeAreaInsets.top
-  return <View style={{ flex: 1, backgroundColor: "white", paddingTop: fullBleed ? 0 : topInset }}>{children}</View>
+  return (
+    <View style={{ flex: 1, backgroundColor: "white", paddingTop: fullBleed ? 0 : topInset }}>
+      {children}
+    </View>
+  )
 }
 
 /**
  * NavStack is a native navigation stack. Each tab in the main view has its own NavStack. Each modal that
  * is presented (excluding FancyModal) also has its own NavStack.
  */
-export const NavStack: React.FC<{ id: string; rootModuleName: AppModule; rootModuleProps?: any }> = ({
-  id,
-  rootModuleName,
-  rootModuleProps,
-}) => {
+export const NavStack: React.FC<{
+  id: string
+  rootModuleName: AppModule
+  rootModuleProps?: any
+}> = ({ id, rootModuleName, rootModuleProps }) => {
   const initialParams: ScreenProps = {
     moduleName: rootModuleName,
     props: rootModuleProps,

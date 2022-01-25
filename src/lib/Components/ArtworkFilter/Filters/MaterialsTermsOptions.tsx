@@ -1,6 +1,10 @@
 import { toTitleCase } from "@artsy/to-title-case"
 import { StackScreenProps } from "@react-navigation/stack"
-import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  FilterData,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { orderBy } from "lodash"
 import React from "react"
@@ -11,12 +15,23 @@ import { useMultiSelect } from "./useMultiSelect"
 interface MaterialsTermsOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "MaterialsTermsOptionsScreen"> {}
 
-export const MaterialsTermsOptionsScreen: React.FC<MaterialsTermsOptionsScreenProps> = ({ navigation }) => {
-  const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.materialsTerms })
-
-  const options: FilterData[] = (aggregation?.counts ?? []).map(({ value: paramValue, name, count }) => {
-    return { displayText: toTitleCase(name), paramName: FilterParamName.materialsTerms, paramValue, count }
+export const MaterialsTermsOptionsScreen: React.FC<MaterialsTermsOptionsScreenProps> = ({
+  navigation,
+}) => {
+  const { aggregation } = useArtworkFiltersAggregation({
+    paramName: FilterParamName.materialsTerms,
   })
+
+  const options: FilterData[] = (aggregation?.counts ?? []).map(
+    ({ value: paramValue, name, count }) => {
+      return {
+        displayText: toTitleCase(name),
+        paramName: FilterParamName.materialsTerms,
+        paramValue,
+        count,
+      }
+    }
+  )
 
   const { handleSelect, handleClear, isSelected, isActive } = useMultiSelect({
     options,

@@ -41,7 +41,13 @@ interface SaleCardProps {
   hideChildren?: boolean
 }
 
-export const SaleCard: React.FC<SaleCardProps> = ({ sale, me, smallScreen, hideChildren, children }) => {
+export const SaleCard: React.FC<SaleCardProps> = ({
+  sale,
+  me,
+  smallScreen,
+  hideChildren,
+  children,
+}) => {
   const { registrationStatus, internalID } = sale
   const tracking = useTracking()
   const pendingIdentityVerification = me.pendingIdentityVerification
@@ -73,7 +79,9 @@ export const SaleCard: React.FC<SaleCardProps> = ({ sale, me, smallScreen, hideC
       )
     }
   } else {
-    RegistrationCTA = () => <RegistrationCTAWrapper navLink={`/auction-registration/${sale.slug}`} />
+    RegistrationCTA = () => (
+      <RegistrationCTAWrapper navLink={`/auction-registration/${sale.slug}`} />
+    )
   }
 
   return (
@@ -110,7 +118,9 @@ export const SaleCard: React.FC<SaleCardProps> = ({ sale, me, smallScreen, hideC
         {!hideChildren && (
           <>
             <Separator mt={1} />
-            <Flex style={{ marginHorizontal: smallScreen! ? 10 : 20, marginVertical: 10 }}>{children}</Flex>
+            <Flex style={{ marginHorizontal: smallScreen! ? 10 : 20, marginVertical: 10 }}>
+              {children}
+            </Flex>
           </>
         )}
       </Flex>

@@ -23,7 +23,9 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event }) => {
       color = "copper100"
       Icon = AlertCircleFillIcon
       if (offer.offerAmountChanged) {
-        message = `You received ${isCounter ? "a counteroffer" : "an offer"} for ${event.offer.amount}`
+        message = `You received ${isCounter ? "a counteroffer" : "an offer"} for ${
+          event.offer.amount
+        }`
       } else {
         message = "Offer Accepted - Pending Action"
       }

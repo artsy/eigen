@@ -84,7 +84,9 @@ describe("AddEditArtwork", () => {
         onHeaderBackButtonPress: jest.fn(),
       },
     }
-    const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    const artworkForm = (
+      <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    )
     const wrapper = renderWithWrappers(artworkForm)
     const expected = [FancyModalHeader, MediumPicker, Dimensions]
     expected.forEach((Component) => {
@@ -115,7 +117,9 @@ describe("AddEditArtwork", () => {
         onHeaderBackButtonPress: jest.fn(),
       },
     }
-    const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    const artworkForm = (
+      <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    )
     const wrapper = renderWithWrappers(artworkForm)
     const completeButton = wrapper.root.findByProps({ testID: "CompleteButton" })
     const deleteButton = wrapper.root.findByProps({ testID: "DeleteButton" })
@@ -143,7 +147,9 @@ describe("AddEditArtwork", () => {
         onHeaderBackButtonPress: jest.fn(),
       },
     }
-    const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    const artworkForm = (
+      <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    )
     // make form dirty
     __globalStoreTestUtils__?.injectState({
       myCollection: {
@@ -193,7 +199,9 @@ describe("AddEditArtwork", () => {
         onHeaderBackButtonPress: jest.fn(),
       },
     }
-    const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    const artworkForm = (
+      <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    )
     const wrapper = renderWithWrappers(artworkForm)
     const completeButton = wrapper.root.findByProps({ testID: "CompleteButton" })
     completeButton.props.onPress()
@@ -221,7 +229,9 @@ describe("AddEditArtwork", () => {
       },
     }
 
-    const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    const artworkForm = (
+      <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    )
     const wrapper = renderWithWrappers(artworkForm)
     const deleteButton = wrapper.root.findByProps({ testID: "DeleteButton" })
     deleteButton.props.onPress()

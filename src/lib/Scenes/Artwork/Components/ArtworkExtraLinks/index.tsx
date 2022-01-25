@@ -66,7 +66,10 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
         <>
           <Sans size="2" color="black60">
             By placing a bid you agree to {partnerName(sale)}{" "}
-            <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleConditionsOfSaleTap()}>
+            <Text
+              style={{ textDecorationLine: "underline" }}
+              onPress={() => this.handleConditionsOfSaleTap()}
+            >
               Conditions of Sale
             </Text>
             .
@@ -74,7 +77,10 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
           <Spacer mb={1} />
           <Sans size="2" color="black60">
             Have a question?{" "}
-            <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleReadOurAuctionFAQsTap()}>
+            <Text
+              style={{ textDecorationLine: "underline" }}
+              onPress={() => this.handleReadOurAuctionFAQsTap()}
+            >
               Read our auction FAQs
             </Text>{" "}
             or{" "}
@@ -92,7 +98,10 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
       return (
         <Sans size="2" color="black60">
           Have a question?{" "}
-          <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleReadOurFAQTap()}>
+          <Text
+            style={{ textDecorationLine: "underline" }}
+            onPress={() => this.handleReadOurFAQTap()}
+          >
             Read our FAQ
           </Text>{" "}
           or{" "}
@@ -123,7 +132,9 @@ export class ArtworkExtraLinks extends React.Component<ArtworkExtraLinksProps> {
       <>
         {this.renderFAQAndSpecialist()}
         {!!consignableArtistsCount && (
-          <ConsignmentsLink artistName={consignableArtistsCount > 1 ? "these artists" : artistName ?? "this artist"} />
+          <ConsignmentsLink
+            artistName={consignableArtistsCount > 1 ? "these artists" : artistName ?? "this artist"}
+          />
         )}
       </>
     )

@@ -22,7 +22,10 @@ it("renders without throwing an error", () => {
 
 it("Shows a zero state when there are no bids/conversations", () => {
   const tree = JSON.stringify(
-    renderWithLayout(<InboxContainer me={emptyMeProps as any} isVisible />, { width: 768, height: 1024 })
+    renderWithLayout(<InboxContainer me={emptyMeProps as any} isVisible />, {
+      width: 768,
+      height: 1024,
+    })
   )
   // Taken from the title in ZeroStateInbox
   expect(tree).toContain("Buying art on Artsy is simple")
@@ -70,7 +73,8 @@ const meProps = (withBids: boolean = true, withMessages: boolean = true) => {
                     artist_names: "Bradley Theodore",
                     image: {
                       url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/normalized.jpg",
-                      image_url: "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/:version.jpg",
+                      image_url:
+                        "https://d32dm0rphc51dk.cloudfront.net/bJ9I_vJX9ksaKFJAkOAIKg/:version.jpg",
                     },
                   },
                 },
@@ -99,7 +103,8 @@ const meProps = (withBids: boolean = true, withMessages: boolean = true) => {
                     artist_names: "Aida Muluneh",
                     image: {
                       url: "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/normalized.jpg",
-                      image_url: "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/:version.jpg",
+                      image_url:
+                        "https://d32dm0rphc51dk.cloudfront.net/FDIuqbZUY1kLR-1Pd-Ec8w/:version.jpg",
                     },
                   },
                 },
@@ -136,7 +141,8 @@ const meProps = (withBids: boolean = true, withMessages: boolean = true) => {
                 id: "josephine-meckseper-untitled-flag-2-2017",
                 title: "Untitled (Flag 2), 2017",
                 image: {
-                  image_url: "https://d32dm0rphc51dk.cloudfront.net/3N6jyj5G_jjzYbkwbIM4tA/:version.jpg",
+                  image_url:
+                    "https://d32dm0rphc51dk.cloudfront.net/3N6jyj5G_jjzYbkwbIM4tA/:version.jpg",
                 },
                 artist: {
                   name: "Josephine Meckseper",
@@ -169,7 +175,8 @@ const meProps = (withBids: boolean = true, withMessages: boolean = true) => {
                 id: "robert-longo-untitled-dividing-time",
                 title: "Untitled (Dividing Time)",
                 image: {
-                  image_url: "https://d32dm0rphc51dk.cloudfront.net/4GlhFa7ci5-0W25sjDNFIQ/:version.jpg",
+                  image_url:
+                    "https://d32dm0rphc51dk.cloudfront.net/4GlhFa7ci5-0W25sjDNFIQ/:version.jpg",
                 },
                 artist: {
                   name: "Robert Longo",
@@ -202,7 +209,8 @@ const meProps = (withBids: boolean = true, withMessages: boolean = true) => {
                 id: "trevor-paglen-weeping-angel",
                 title: "Weeping Angel",
                 image: {
-                  image_url: "https://d32dm0rphc51dk.cloudfront.net/W-XblMAGxZJbhx0FfH1HtQ/:version.jpg",
+                  image_url:
+                    "https://d32dm0rphc51dk.cloudfront.net/W-XblMAGxZJbhx0FfH1HtQ/:version.jpg",
                 },
                 artist: {
                   name: "Trevor Paglen",

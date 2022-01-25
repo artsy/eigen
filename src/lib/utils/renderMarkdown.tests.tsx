@@ -18,7 +18,9 @@ describe("renderMarkdown", () => {
   })
 
   it("returns markdown for multiple paragraphs", () => {
-    const componentList = renderMarkdown("This is a first paragraph\n\nThis is a second paragraph") as any
+    const componentList = renderMarkdown(
+      "This is a first paragraph\n\nThis is a second paragraph"
+    ) as any
     expect(componentList.length).toEqual(4)
 
     const { queryByText } = renderWithWrappersTL(<Flex>{componentList}</Flex>)
@@ -60,7 +62,10 @@ describe("renderMarkdown", () => {
         },
       },
     }
-    const componentList = renderMarkdown("This is a first paragraph\n\nThis is a second paragraph", customRules) as any
+    const componentList = renderMarkdown(
+      "This is a first paragraph\n\nThis is a second paragraph",
+      customRules
+    ) as any
     expect(componentList.length).toEqual(4)
     const { queryByText } = renderWithWrappersTL(<Flex>{componentList}</Flex>)
     expect(queryByText("This is a first paragraph")).toBeTruthy()

@@ -149,7 +149,8 @@ export const SavedSearchButtonRefetchContainer = createRefetchContainer(
   SavedSearchButton,
   {
     me: graphql`
-      fragment SavedSearchButton_me on Me @argumentDefinitions(criteria: { type: "SearchCriteriaAttributes" }) {
+      fragment SavedSearchButton_me on Me
+      @argumentDefinitions(criteria: { type: "SearchCriteriaAttributes" }) {
         ...CreateSavedSearchContentContainerV1_me
         savedSearch(criteria: $criteria) {
           internalID
@@ -166,9 +167,14 @@ export const SavedSearchButtonRefetchContainer = createRefetchContainer(
   `
 )
 
-export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRendererProps> = (props) => {
+export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRendererProps> = (
+  props
+) => {
   const { filters, artistId } = props
-  const criteria = useMemo(() => getSearchCriteriaFromFilters(artistId, filters), [artistId, filters])
+  const criteria = useMemo(
+    () => getSearchCriteriaFromFilters(artistId, filters),
+    [artistId, filters]
+  )
 
   return (
     <QueryRenderer<SavedSearchButtonQuery>

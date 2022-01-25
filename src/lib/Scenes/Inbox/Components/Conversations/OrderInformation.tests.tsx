@@ -11,7 +11,10 @@ describe("PaymentMethodFragmentContainer", () => {
     Component: ({ me, artwork }) => {
       return (
         <Theme>
-          <OrderInformationFragmentContainer artwork={artwork} order={me.conversation.orderConnection.edges[0].node} />
+          <OrderInformationFragmentContainer
+            artwork={artwork}
+            order={me.conversation.orderConnection.edges[0].node}
+          />
         </Theme>
       )
     },

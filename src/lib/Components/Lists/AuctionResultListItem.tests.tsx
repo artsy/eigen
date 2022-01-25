@@ -36,7 +36,12 @@ describe("AuctionResults", () => {
       render={({ props }) => {
         if (props?.artist) {
           const results = extractNodes(props.artist.auctionResultsConnection)
-          return <AuctionResultListItemFragmentContainer auctionResult={results[0]} onPress={() => null} />
+          return (
+            <AuctionResultListItemFragmentContainer
+              auctionResult={results[0]}
+              onPress={() => null}
+            />
+          )
         }
         return null
       }}
@@ -171,6 +176,8 @@ describe("AuctionResults", () => {
 
     expect(tree.root.findByProps({ testID: "saleInfo" }).props.children).toContain("Jan 12, 2021")
     expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.value).toEqual("mid-1")
-    expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.shortDescription).toEqual("est")
+    expect(tree.root.findAllByType(AuctionResultsMidEstimate)[0].props.shortDescription).toEqual(
+      "est"
+    )
   })
 })

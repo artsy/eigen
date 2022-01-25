@@ -76,7 +76,8 @@ function render<T>(props: SearchQueryProps<T>) {
           returnKeyType: "search",
           value: props.query || "",
           onChangeText: props.onChangeText,
-          autoFocus: typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
+          autoFocus:
+            typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */,
         }}
       />
       <ScrollView

@@ -35,7 +35,11 @@ const PartnerMap: React.FC<{
       </Sans>
       <Spacer mb={0.5} />
       <TouchableOpacity
-        onPress={() => showActionSheetWithOptions(...tappedOnMap(lat, lng, address, null, null, city, postalCode))}
+        onPress={() =>
+          showActionSheetWithOptions(
+            ...tappedOnMap(lat, lng, address, null, null, city, postalCode)
+          )
+        }
       >
         <MapWrapper>
           <MapboxGL.MapView

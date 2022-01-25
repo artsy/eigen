@@ -18,7 +18,10 @@ describe("Artist Series Rail", () => {
         return (
           <GlobalStoreProvider>
             <Theme>
-              <ArtistCollectionsRailFragmentContainer collections={props.marketingCollections} {...props} />
+              <ArtistCollectionsRailFragmentContainer
+                collections={props.marketingCollections}
+                {...props}
+              />
             </Theme>
           </GlobalStoreProvider>
         )

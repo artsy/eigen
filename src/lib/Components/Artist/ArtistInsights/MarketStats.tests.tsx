@@ -57,7 +57,9 @@ describe("MarketStats", () => {
 
   describe("median sale over estimate icons", () => {
     function renderWithOnePriceInsightNode(
-      nodeSpecs: Partial<NonNullable<NonNullable<MarketStats_priceInsightsConnection["edges"]>[0]>["node"]>
+      nodeSpecs: Partial<
+        NonNullable<NonNullable<MarketStats_priceInsightsConnection["edges"]>[0]>["node"]
+      >
     ) {
       const tree = renderWithWrappers(<TestWrapper />).root
       const priceInsights = {

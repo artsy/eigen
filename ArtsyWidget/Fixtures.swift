@@ -90,7 +90,7 @@ extension Fixtures {
     
     static var primaryArtwork: Artwork {
         let artist = Artist(name: "Alex Katz")
-        let artworkImage = ArtworkImage(imageUrl: "https://d32dm0rphc51dk.cloudfront.net/pd7rW3I1mXhW0vbAJDVm3Q/:version.jpg")
+        let artworkImage = ArtworkImage(geminiToken: "pd7rW3I1mXhW0vbAJDVm3Q")
         let image = UIImage(named: "PrimaryArtworkImage")!
         let artwork = Artwork(
             artist: artist,
@@ -105,7 +105,7 @@ extension Fixtures {
     
     static var secondaryArtwork: Artwork {
         let artist = Artist(name: "René Magritte")
-        let artworkImage = ArtworkImage(imageUrl: "https://d32dm0rphc51dk.cloudfront.net/qX0FwYdx5eGxF7cx8V6fkw/:version.jpg")
+        let artworkImage = ArtworkImage(geminiToken: "qX0FwYdx5eGxF7cx8V6fkw")
         let image = UIImage(named: "SecondaryArtworkImage")!
         let artwork = Artwork(
             artist: artist,
@@ -120,7 +120,7 @@ extension Fixtures {
     
     static var tertiaryArtwork: Artwork {
         let artist = Artist(name: "Judy Chicago")
-        let artworkImage = ArtworkImage(imageUrl: "https://d32dm0rphc51dk.cloudfront.net/wh7YA3qtmGFEwC611OklJQ/:version.jpg")
+        let artworkImage = ArtworkImage(geminiToken: "wh7YA3qtmGFEwC611OklJQ")
         let image = UIImage(named: "TertiaryArtworkImage")!
         let artwork = Artwork(
             artist: artist,
@@ -135,7 +135,7 @@ extension Fixtures {
     
     static var quaternaryArtwork: Artwork {
         let artist = Artist(name: "Francis Picabia")
-        let artworkImage = ArtworkImage(imageUrl: "https://d32dm0rphc51dk.cloudfront.net/ZjpYFZIoBhhLCzQow6V7DA/:version.jpg")
+        let artworkImage = ArtworkImage(geminiToken: "ZjpYFZIoBhhLCzQow6V7DA")
         let image = UIImage(named: "QuaternaryArtworkImage")!
         let artwork = Artwork(
             artist: artist,

@@ -2,7 +2,18 @@ import { useFormikContext } from "formik"
 import { SearchCriteria } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { navigate } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import { Box, Button, CloseIcon as RemoveIcon, Flex, Input, InputTitle, Pill, Spacer, Text, Touchable } from "palette"
+import {
+  Box,
+  Button,
+  CloseIcon as RemoveIcon,
+  Flex,
+  Input,
+  InputTitle,
+  Pill,
+  Spacer,
+  Text,
+  Touchable,
+} from "palette"
 import React from "react"
 import { LayoutAnimation } from "react-native"
 import { getNamePlaceholder } from "../helpers"
@@ -17,6 +28,7 @@ interface FormProps {
   isLoading?: boolean
   isPreviouslySaved?: boolean
   hasChangedFilters?: boolean
+  shouldShowEmailWarning?: boolean
   onDeletePress?: () => void
   onSubmitPress?: () => void
   onUpdateEmailPreferencesPress?: () => void
@@ -34,6 +46,7 @@ export const Form: React.FC<FormProps> = (props) => {
     isLoading,
     isPreviouslySaved,
     hasChangedFilters,
+    shouldShowEmailWarning,
     onDeletePress,
     onSubmitPress,
     onUpdateEmailPreferencesPress,
@@ -156,9 +169,27 @@ export const Form: React.FC<FormProps> = (props) => {
           )}
         </Flex>
       </Box>
-      <SavedSearchAlertSwitch label="Mobile Alerts" onChange={onTogglePushNotification} active={values.push} />
+      <SavedSearchAlertSwitch
+        label="Mobile Alerts"
+        onChange={onTogglePushNotification}
+        active={values.push}
+      />
       <Spacer mt={2} />
-      <SavedSearchAlertSwitch label="Email Alerts" onChange={handleToggleEmailNotification} active={values.email} />
+      <SavedSearchAlertSwitch
+        label="Email Alerts"
+        onChange={handleToggleEmailNotification}
+        active={values.email}
+      />
+      {!!shouldShowEmailWarning && (
+        <Box backgroundColor="orange10" my={1} p={2}>
+          <Text variant="xs" color="orange150">
+            Your email frequency is set to None
+          </Text>
+          <Text variant="xs" mt={0.5}>
+            To receive Email Alerts, please update your email preferences.
+          </Text>
+        </Box>
+      )}
       {!!values.email && (
         <Text
           onPress={handleUpdateEmailPreferencesPress}
@@ -184,7 +215,13 @@ export const Form: React.FC<FormProps> = (props) => {
         {!!isEditMode && (
           <>
             <Spacer mt={2} />
-            <Button testID="delete-alert-button" variant="outline" size="large" block onPress={onDeletePress}>
+            <Button
+              testID="delete-alert-button"
+              variant="outline"
+              size="large"
+              block
+              onPress={onDeletePress}
+            >
               Delete Alert
             </Button>
           </>

@@ -13,8 +13,8 @@ export const EmptyMessage: React.FC = () => {
           </Text>
           <Spacer mb={1} />
           <Text textAlign="center" variant="xs" color="black60">
-            Filter for the artworks you love on an Artist Page and tap ‘Create Alert’ to be notified when new works are
-            added to Artsy.
+            Filter for the artworks you love on an Artist Page and tap ‘Create Alert’ to be notified
+            when new works are added to Artsy.
           </Text>
           <Spacer mb={2} />
           <Button onPress={() => navigate("/")}>Explore Artists</Button>

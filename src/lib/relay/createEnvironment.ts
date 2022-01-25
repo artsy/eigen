@@ -1,4 +1,7 @@
-import { errorMiddleware as relayErrorMiddleware, RelayNetworkLayer } from "react-relay-network-modern/node8"
+import {
+  errorMiddleware as relayErrorMiddleware,
+  RelayNetworkLayer,
+} from "react-relay-network-modern/node8"
 import { Environment, RecordSource, Store } from "relay-runtime"
 
 import { cacheMiddleware } from "./middlewares/cacheMiddleware"

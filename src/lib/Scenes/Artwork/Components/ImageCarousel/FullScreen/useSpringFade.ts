@@ -11,7 +11,8 @@ export const useSpringFade = (fade: "in" | "out") => {
   const { fullScreenState } = useContext(ImageCarouselContext)
   fullScreenState.useUpdates()
   const isFullScreenReady =
-    fullScreenState.current === "animating entry transition" || fullScreenState.current === "entered"
+    fullScreenState.current === "animating entry transition" ||
+    fullScreenState.current === "entered"
   const [from, to] = fade === "in" ? [0, 1] : [1, 0]
   return useSpringValue(isFullScreenReady ? to : from)
 }

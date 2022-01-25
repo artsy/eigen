@@ -56,7 +56,11 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onDismiss, onFol
             borderRadius={12}
             style={{ top: 6, right: 6, width: 24, height: 24 }}
           >
-            <Touchable hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }} activeOpacity={0.2} onPress={onDismiss}>
+            <Touchable
+              hitSlop={{ top: 10, left: 10, right: 10, bottom: 10 }}
+              activeOpacity={0.2}
+              onPress={onDismiss}
+            >
               <CloseIcon fill="black60" width={16} height={16} />
             </Touchable>
           </Flex>
@@ -66,7 +70,9 @@ export const ArtistCard: React.FC<ArtistCardProps> = ({ artist, onDismiss, onFol
   )
 }
 
-export const ArtistCardWrapper = styled.TouchableHighlight.attrs(() => ({ underlayColor: "transparent" }))`
+export const ArtistCardWrapper = styled.TouchableHighlight.attrs(() => ({
+  underlayColor: "transparent",
+}))`
   width: ${ARTIST_CARD_WIDTH}px;
   overflow: hidden;
 `

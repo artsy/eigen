@@ -220,7 +220,9 @@ export const Fair: React.FC<FairProps> = ({ fair }) => {
                       activeTab={activeTab}
                       tabs={tabs}
                     />
-                    {tabToShow?.label === "Artworks" && <HeaderArtworksFilter onPress={openFilterArtworksModal} />}
+                    {tabToShow?.label === "Artworks" && (
+                      <HeaderArtworksFilter onPress={openFilterArtworksModal} />
+                    )}
                   </Box>
                 )
               }
@@ -277,7 +279,10 @@ export const FairFragmentContainer = createFragmentContainer(Fair, {
         artworks
         partnerShows
       }
-      followedArtistArtworks: filterArtworksConnection(first: 20, input: { includeArtworksByFollowedArtists: true }) {
+      followedArtistArtworks: filterArtworksConnection(
+        first: 20
+        input: { includeArtworksByFollowedArtists: true }
+      ) {
         edges {
           __typename
         }

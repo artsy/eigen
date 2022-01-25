@@ -23,7 +23,8 @@ describe("GeneArtworks", () => {
       <QueryRenderer<GeneArtworksTestsQuery>
         environment={environment}
         query={graphql`
-          query GeneArtworksTestsQuery($geneID: String!, $input: FilterArtworksInput) @relay_test_operation {
+          query GeneArtworksTestsQuery($geneID: String!, $input: FilterArtworksInput)
+          @relay_test_operation {
             gene(id: $geneID) {
               ...GeneArtworks_gene @arguments(input: $input)
             }

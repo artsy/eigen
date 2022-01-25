@@ -19,13 +19,16 @@ export const useEventTiming = ({
   startAt = DateTime.local().toString(),
   endAt = DateTime.local().toString(),
 }: UseEventTiming) => {
-  const durationTilEnd = Duration.fromISO(DateTime.fromISO(endAt).diff(DateTime.fromISO(currentTime)).toString())
+  const durationTilEnd = Duration.fromISO(
+    DateTime.fromISO(endAt).diff(DateTime.fromISO(currentTime)).toString()
+  )
   const daysTilEnd = durationTilEnd.as("days")
   const hoursTillEnd = durationTilEnd.as("hours")
   const secondsTilEnd = durationTilEnd.as("seconds")
 
   const hasStarted =
-    Duration.fromISO(DateTime.fromISO(startAt).diff(DateTime.fromISO(currentTime)).toString()).seconds < 0
+    Duration.fromISO(DateTime.fromISO(startAt).diff(DateTime.fromISO(currentTime)).toString())
+      .seconds < 0
 
   const hasEnded = Math.floor(secondsTilEnd) <= 0
   const closesSoon = daysTilEnd <= 3 && daysTilEnd >= 1

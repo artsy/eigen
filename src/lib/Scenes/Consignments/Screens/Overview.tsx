@@ -62,7 +62,8 @@ export class Overview extends React.Component<Props, State> {
     }
   }
 
-  saveStateToLocalStorage = () => AsyncStorage.setItem(consignmentsStateKey, JSON.stringify(this.state))
+  saveStateToLocalStorage = () =>
+    AsyncStorage.setItem(consignmentsStateKey, JSON.stringify(this.state))
   restoreFromLocalStorage = () =>
     AsyncStorage.getItem(consignmentsStateKey, (_err, result) => {
       const results = (result && JSON.parse(result)) || {}
@@ -112,10 +113,14 @@ export class Overview extends React.Component<Props, State> {
     })
 
   goToLocationTapped = () =>
-    this.props.navigator.push({ component: Location, passProps: { updateWithResult: this.updateLocation } })
+    this.props.navigator.push({
+      component: Location,
+      passProps: { updateWithResult: this.updateLocation },
+    })
 
   updateArtist = (result: ArtistResult) => this.updateStateAndMetaphysics({ artist: result })
-  updateMetadata = (result: ConsignmentMetadata) => this.updateStateAndMetaphysics({ metadata: result })
+  updateMetadata = (result: ConsignmentMetadata) =>
+    this.updateStateAndMetaphysics({ metadata: result })
   updateProvenance = (result: string) => this.updateStateAndMetaphysics({ provenance: result })
   updateEdition = (result: ConsignmentSetup) => this.updateStateAndMetaphysics(result)
   updateLocation = (city: string, state: string, country: string) =>
@@ -150,18 +155,22 @@ export class Overview extends React.Component<Props, State> {
   }
 
   showUploadFailureAlert(error: Error) {
-    Alert.alert("Sorry, we couldn't upload your images.", "Please try again or contact consign@artsy.net for help.", [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "Retry",
-        onPress: () => {
-          this.updateLocalStateAndMetaphysics()
+    Alert.alert(
+      "Sorry, we couldn't upload your images.",
+      "Please try again or contact consign@artsy.net for help.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
         },
-      },
-    ])
+        {
+          text: "Retry",
+          onPress: () => {
+            this.updateLocalStateAndMetaphysics()
+          },
+        },
+      ]
+    )
     console.log("src/Screens/Consignments/Screens/Overview.tsx", error)
   }
 
@@ -185,7 +194,13 @@ export class Overview extends React.Component<Props, State> {
       const utmSource = this.props.params.utm_source
       const utmMedium = this.props.params.utm_medium
       const utmTerm = this.props.params.utm_term
-      await updateConsignmentSubmission({ ...submission, utmSource, utmTerm, utmMedium, state: "SUBMITTED" })
+      await updateConsignmentSubmission({
+        ...submission,
+        utmSource,
+        utmTerm,
+        utmMedium,
+        state: "SUBMITTED",
+      })
       await AsyncStorage.removeItem(consignmentsStateKey)
       this.submissionDraftSubmitted()
     } catch (error) {
@@ -221,7 +236,8 @@ export class Overview extends React.Component<Props, State> {
 
   uploadPhotosIfNeeded = async () => {
     const uploading = this.state.photos && this.state.photos.some((f) => f.uploading)
-    const toUpload = this.state.photos && this.state.photos.filter((f) => !f.uploaded && f.image.path)
+    const toUpload =
+      this.state.photos && this.state.photos.filter((f) => !f.uploaded && f.image.path)
     if (!uploading && toUpload && toUpload.length) {
       // Pull out the first in the queue and upload it
       const photo = toUpload[0]

@@ -14,7 +14,9 @@ afterEach(() => {
 })
 
 it("Renders the fallback view when the rendered component crashes", () => {
-  const tree = renderWithWrappers(<RetryErrorBoundaryLegacy render={() => <CrashingComponent shouldCrash />} />)
+  const tree = renderWithWrappers(
+    <RetryErrorBoundaryLegacy render={() => <CrashingComponent shouldCrash />} />
+  )
   expect(tree.root.findAllByType(LoadFailureView)).toHaveLength(1)
 })
 

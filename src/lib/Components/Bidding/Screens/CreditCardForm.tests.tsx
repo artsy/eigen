@@ -110,7 +110,9 @@ it("shows an error when stripe's API returns an error", () => {
   component.findByType(Button).props.onPress()
 
   jest.runAllTicks()
-  expect(component.findAllByType(Sans)[0].props.children).toEqual("There was an error. Please try again.")
+  expect(component.findAllByType(Sans)[0].props.children).toEqual(
+    "There was an error. Please try again."
+  )
 })
 
 const creditCard = {

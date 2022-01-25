@@ -52,12 +52,18 @@ export const MyProfileSettings: React.FC<{}> = () => {
 
       {!!showSavedAddresses && (
         <>
-          <MenuItem title="Saved Addresses" onPress={() => navigate("my-profile/saved-addresses")} />
+          <MenuItem
+            title="Saved Addresses"
+            onPress={() => navigate("my-profile/saved-addresses")}
+          />
           <Separator my={1} borderColor={separatorColor} />
         </>
       )}
 
-      <MenuItem title="Push Notifications" onPress={() => navigate("my-profile/push-notifications")} />
+      <MenuItem
+        title="Push Notifications"
+        onPress={() => navigate("my-profile/push-notifications")}
+      />
       <Separator my={1} borderColor={separatorColor} />
 
       <MenuItem
@@ -72,7 +78,14 @@ export const MyProfileSettings: React.FC<{}> = () => {
       <MenuItem title="About" onPress={() => navigate("about")} />
       <Separator my={1} borderColor={separatorColor} />
 
-      <Flex flexDirection="row" alignItems="center" justifyContent="center" py={7.5} px="2" pr="15px">
+      <Flex
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="center"
+        py={7.5}
+        px="2"
+        pr="15px"
+      >
         <Button variant="fillDark" haptic onPress={confirmLogout} block>
           Log Out{" "}
         </Button>

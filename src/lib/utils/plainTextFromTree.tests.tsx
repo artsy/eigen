@@ -34,7 +34,8 @@ describe("plainTextFromTree", () => {
   })
 
   it("correctly handles the output from renderMarkdown", () => {
-    const markdown = "This is a *link* for an [artist](/artist/andy-warhol) and a [gene](/gene/minimalism)."
+    const markdown =
+      "This is a *link* for an [artist](/artist/andy-warhol) and a [gene](/gene/minimalism)."
     const component = renderMarkdown(markdown)
     expect(plainTextFromTree(component)).toEqual("This is a link for an artist and a gene.")
   })

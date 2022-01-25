@@ -6,13 +6,25 @@ import { ColorsSwatch } from "./ColorsSwatch"
 describe("Colors swatch", () => {
   it("adds a check icon when selected", () => {
     const selectedTree = renderWithWrappers(
-      <ColorsSwatch width={30} backgroundColor="black" foregroundColor="#fff" name="darkblue" selected />
+      <ColorsSwatch
+        width={30}
+        backgroundColor="black"
+        foregroundColor="#fff"
+        name="darkblue"
+        selected
+      />
     )
     const selectedCheckIcon = selectedTree.root.findByType(CheckIcon)
     expect(selectedCheckIcon.props.fill).toMatch("#fff")
 
     const unselectedTree = renderWithWrappers(
-      <ColorsSwatch width={30} backgroundColor="black" foregroundColor="#fff" name="darkblue" selected={false} />
+      <ColorsSwatch
+        width={30}
+        backgroundColor="black"
+        foregroundColor="#fff"
+        name="darkblue"
+        selected={false}
+      />
     )
     const unselectedCheckIcon = unselectedTree.root.findAllByType(CheckIcon)
     expect(unselectedCheckIcon.length).toEqual(0)
@@ -20,7 +32,13 @@ describe("Colors swatch", () => {
 
   it("has correct background color for passed in color", () => {
     const darkblue = renderWithWrappers(
-      <ColorsSwatch width={30} backgroundColor="#435EA9" foregroundColor="#fff" name="darkblue" selected />
+      <ColorsSwatch
+        width={30}
+        backgroundColor="#435EA9"
+        foregroundColor="#fff"
+        name="darkblue"
+        selected
+      />
     )
     const darkBlueView = darkblue.root.findAllByType(Box)[1]
     expect(darkBlueView.props.bg).toMatch("#435EA9")
@@ -39,7 +57,13 @@ describe("Colors swatch", () => {
     expect(blackAndWhiteView.props.bg).toMatch("#595A5B")
 
     const orange = renderWithWrappers(
-      <ColorsSwatch width={30} backgroundColor="#F1572C" foregroundColor="#fff" name="darkorange" selected={false} />
+      <ColorsSwatch
+        width={30}
+        backgroundColor="#F1572C"
+        foregroundColor="#fff"
+        name="darkorange"
+        selected={false}
+      />
     )
     const orangeView = orange.root.findAllByType(Box)[1]
     expect(orangeView.props.bg).toMatch("#F1572C")

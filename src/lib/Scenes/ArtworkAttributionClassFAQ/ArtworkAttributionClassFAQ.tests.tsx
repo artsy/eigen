@@ -2,7 +2,10 @@ import { goBack } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { setupTestWrapper } from "lib/tests/setupTestWrapper"
 import { Button, Text } from "palette"
-import { ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY, ArtworkAttributionClassFAQ } from "./ArtworkAttributionClassFAQ"
+import {
+  ARTWORK_ATTRIBUTION_CLASS_FAQ_QUERY,
+  ArtworkAttributionClassFAQ,
+} from "./ArtworkAttributionClassFAQ"
 
 jest.unmock("react-relay")
 
@@ -58,7 +61,8 @@ const ATTRIBUTION_CLASSES = [
   },
   {
     name: "Made-to-order",
-    longDescription: "A piece that is made-to-order, taking into account the collector’s preferences.",
+    longDescription:
+      "A piece that is made-to-order, taking into account the collector’s preferences.",
   },
   {
     name: "Reproduction",

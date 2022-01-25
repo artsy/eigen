@@ -73,7 +73,10 @@ export const Banner: React.FC<BannerProps> = ({
                 onPress={handleClose}
                 hitSlop={{ bottom: 40, right: 40, left: 40, top: 40 }}
               >
-                <Image source={require("../../../../images/close-x.webp")} style={{ tintColor: color("black100") }} />
+                <Image
+                  source={require("../../../../images/close-x.webp")}
+                  style={{ tintColor: color("black100") }}
+                />
               </TouchableOpacity>
             </Flex>
           )}

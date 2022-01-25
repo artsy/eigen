@@ -47,7 +47,9 @@ export const ArtworkTileRailContainer: React.FC<ArtworkTileRailContainerProps> =
           <ArtworkTileRailCard
             onPress={() => {
               if (shouldTrack) {
-                tracking.trackEvent(tappedArtworkGroupThumbnail(contextModule!, item.internalID, item.slug))
+                tracking.trackEvent(
+                  tappedArtworkGroupThumbnail(contextModule!, item.internalID, item.slug)
+                )
               }
               {
                 !!onTilePress ? onTilePress(item.slug, item.internalID) : navigate(item.href!)
@@ -66,7 +68,11 @@ export const ArtworkTileRailContainer: React.FC<ArtworkTileRailContainerProps> =
   )
 }
 
-export const tappedArtworkGroupThumbnail = (contextModule: Schema.ContextModules, internalID: string, slug: string) => {
+export const tappedArtworkGroupThumbnail = (
+  contextModule: Schema.ContextModules,
+  internalID: string,
+  slug: string
+) => {
   return {
     action_name: Schema.ActionNames.TappedArtworkGroup,
     action_type: Schema.ActionTypes.Tap,

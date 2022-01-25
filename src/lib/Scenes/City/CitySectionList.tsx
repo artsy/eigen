@@ -216,7 +216,10 @@ interface CitySectionListProps {
   citySlug: string
   section: BucketKey
 }
-export const CitySectionListQueryRenderer: React.FC<CitySectionListProps> = ({ citySlug, section }) => {
+export const CitySectionListQueryRenderer: React.FC<CitySectionListProps> = ({
+  citySlug,
+  section,
+}) => {
   const variables: {
     citySlug: string
     partnerType?: PartnerShowPartnerType
@@ -260,7 +263,12 @@ export const CitySectionListQueryRenderer: React.FC<CitySectionListProps> = ({ c
         ) {
           city(slug: $citySlug) {
             ...CitySectionList_city
-              @arguments(partnerType: $partnerType, status: $status, sort: $sort, dayThreshold: $dayThreshold)
+              @arguments(
+                partnerType: $partnerType
+                status: $status
+                sort: $sort
+                dayThreshold: $dayThreshold
+              )
           }
         }
       `}

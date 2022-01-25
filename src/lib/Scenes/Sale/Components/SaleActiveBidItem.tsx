@@ -23,7 +23,9 @@ export const SaleActiveBidItem: React.FC<SaleActiveBidItemProps> = ({ lotStandin
   return (
     saleArtwork && (
       <TouchableOpacity
-        onPress={() => lotStanding?.saleArtwork?.artwork?.href && navigate(lotStanding.saleArtwork.artwork.href)}
+        onPress={() =>
+          lotStanding?.saleArtwork?.artwork?.href && navigate(lotStanding.saleArtwork.artwork.href)
+        }
       >
         <Flex flexDirection="row" justifyContent="space-between">
           <LotFragmentContainer saleArtwork={saleArtwork} />

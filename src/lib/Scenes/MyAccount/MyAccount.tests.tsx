@@ -40,7 +40,8 @@ describe(MyAccountQueryRenderer, () => {
       const result = MockPayloadGenerator.generate(operation, {
         Me: () => ({
           name: "pavlos",
-          email: "myverylongemailmyverylongemailmyverylongemail@averylongdomainaverylongdomainaverylongdomain.com",
+          email:
+            "myverylongemailmyverylongemailmyverylongemail@averylongdomainaverylongdomainaverylongdomain.com",
           phone: "123",
           paddleNumber: "321",
           hasPassword: true,

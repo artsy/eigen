@@ -72,7 +72,10 @@ export class ArtworkPreview extends React.Component<Props> {
             <Container>
               {!!artworkImage && (
                 <ImageContainer>
-                  <OpaqueImageView aspectRatio={artworkImage.aspectRatio} imageURL={artworkImage.url} />
+                  <OpaqueImageView
+                    aspectRatio={artworkImage.aspectRatio}
+                    imageURL={artworkImage.url}
+                  />
                 </ImageContainer>
               )}
               <TextContainer>

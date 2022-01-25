@@ -128,9 +128,16 @@ export class Inbox extends React.Component<Props, State> {
         onChangeTab={({ i }: { i: number }) => this.handleNavigationTab(i)}
       >
         <TabWrapper tabLabel="Bids" key="bids" style={{ flexGrow: 1, justifyContent: "center" }}>
-          <MyBidsContainer isActiveTab={this.props.isVisible && this.state.activeTab === Tab.bids} me={this.props.me} />
+          <MyBidsContainer
+            isActiveTab={this.props.isVisible && this.state.activeTab === Tab.bids}
+            me={this.props.me}
+          />
         </TabWrapper>
-        <TabWrapper tabLabel="Inquiries" key="inquiries" style={{ flexGrow: 1, justifyContent: "flex-start" }}>
+        <TabWrapper
+          tabLabel="Inquiries"
+          key="inquiries"
+          style={{ flexGrow: 1, justifyContent: "flex-start" }}
+        >
           <ConversationsContainer
             me={this.props.me}
             isActiveTab={this.props.isVisible && this.state.activeTab === Tab.inquiries}

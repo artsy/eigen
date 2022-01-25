@@ -416,7 +416,8 @@ export const CityFixture = {
           end_at: "2004-03-20T23:00:00+00:00",
           exhibition_period: "Mar 21 – May 25",
           href: "https://wwww.show.com",
-          gravityID: "galerie-perrotin-gianni-motti-plausible-deniability-at-migros-museum-fur-gegenwartskunst-zurich",
+          gravityID:
+            "galerie-perrotin-gianni-motti-plausible-deniability-at-migros-museum-fur-gegenwartskunst-zurich",
           id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLWdpYW5uaS1tb3R0aS1wbGF1c2libGUtZGVuaWFiaWxpdHktYXQtbWlncm9zLW11c2V1bS1mdXItZ2VnZW53YXJ0c2t1bnN0LXp1cmljaA==",
           is_followed: true,
           isStubShow: false,
@@ -676,7 +677,8 @@ export const CityFixture = {
           end_at: "2007-11-10T23:00:00+00:00",
           exhibition_period: "Mar 21 – May 25",
           href: "https://wwww.show.com",
-          gravityID: "galerie-perrotin-aya-takano-tradition-and-modernity-at-fondation-joan-miro-barcelona",
+          gravityID:
+            "galerie-perrotin-aya-takano-tradition-and-modernity-at-fondation-joan-miro-barcelona",
           id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLWF5YS10YWthbm8tdHJhZGl0aW9uLWFuZC1tb2Rlcm5pdHktYXQtZm9uZGF0aW9uLWpvYW4tbWlyby1iYXJjZWxvbmE=",
           is_followed: true,
           isStubShow: false,
@@ -750,7 +752,8 @@ export const CityFixture = {
           end_at: "2008-04-19T22:00:00+00:00",
           exhibition_period: "Mar 21 – May 25",
           href: "https://wwww.show.com",
-          gravityID: "galerie-perrotin-gelitin-la-louvre-paris-at-musee-dart-moderne-de-la-ville-de-paris",
+          gravityID:
+            "galerie-perrotin-gelitin-la-louvre-paris-at-musee-dart-moderne-de-la-ville-de-paris",
           id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLWdlbGl0aW4tbGEtbG91dnJlLXBhcmlzLWF0LW11c2VlLWRhcnQtbW9kZXJuZS1kZS1sYS12aWxsZS1kZS1wYXJpcw==",
           is_followed: true,
           isStubShow: false,
@@ -898,7 +901,8 @@ export const CityFixture = {
           end_at: "2010-03-14T12:00:00+00:00",
           exhibition_period: "Mar 21 – May 25",
           href: "https://wwww.show.com",
-          gravityID: "galerie-jacob-paulett-hotel-normandy-deauville-for-international-asian-film-festival",
+          gravityID:
+            "galerie-jacob-paulett-hotel-normandy-deauville-for-international-asian-film-festival",
           id: "U2hvdzpnYWxlcmllLWphY29iLXBhdWxldHQtaG90ZWwtbm9ybWFuZHktZGVhdXZpbGxlLWZvci1pbnRlcm5hdGlvbmFsLWFzaWFuLWZpbG0tZmVzdGl2YWw=",
           is_followed: true,
           isStubShow: false,
@@ -935,7 +939,8 @@ export const CityFixture = {
           end_at: "2010-09-25T22:00:00+00:00",
           exhibition_period: "Mar 21 – May 25",
           href: "https://wwww.show.com",
-          gravityID: "galerie-perrotin-sophie-calle-talking-to-strangers-at-louisiana-museum-copenhagen",
+          gravityID:
+            "galerie-perrotin-sophie-calle-talking-to-strangers-at-louisiana-museum-copenhagen",
           id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLXNvcGhpZS1jYWxsZS10YWxraW5nLXRvLXN0cmFuZ2Vycy1hdC1sb3Vpc2lhbmEtbXVzZXVtLWNvcGVuaGFnZW4=",
           is_followed: true,
           isStubShow: false,
@@ -1751,7 +1756,8 @@ export const CityFixture = {
           end_at: "2012-08-25T22:00:00+00:00",
           exhibition_period: "Mar 21 – May 25",
           href: "https://wwww.show.com",
-          gravityID: "galerie-perrotin-paola-pivi-how-i-roll-at-doris-c-freedman-plaza-central-park-new-york",
+          gravityID:
+            "galerie-perrotin-paola-pivi-how-i-roll-at-doris-c-freedman-plaza-central-park-new-york",
           id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLXBhb2xhLXBpdmktaG93LWktcm9sbC1hdC1kb3Jpcy1jLWZyZWVkbWFuLXBsYXphLWNlbnRyYWwtcGFyay1uZXcteW9yaw==",
           is_followed: true,
           isStubShow: false,
@@ -2243,7 +2249,8 @@ export const CityFixture = {
             end_at: "2002-03-31T22:00:00+00:00",
             exhibition_period: "Mar 21 – May 25",
             href: "https://wwww.show.com",
-            gravityID: "galerie-perrotin-gianni-motti-cadeaux-diplomatiques-at-kunstmuseum-thun-thun",
+            gravityID:
+              "galerie-perrotin-gianni-motti-cadeaux-diplomatiques-at-kunstmuseum-thun-thun",
             id: "U2hvdzpnYWxlcmllLXBlcnJvdGluLWdpYW5uaS1tb3R0aS1jYWRlYXV4LWRpcGxvbWF0aXF1ZXMtYXQta3Vuc3RtdXNldW0tdGh1bi10aHVu",
             is_followed: true,
             isStubShow: false,

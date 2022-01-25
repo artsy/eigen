@@ -4,7 +4,9 @@ export const CollectionFixture = {
     description:
       '<p>From <a href="https://www.someartsyimage.net/artist/jean-michel-basquiat">Jean-Michel Basquiat</a> to <a href="https://www.someartsyimage.net/artist/shepard-fairey">Shepard Fairey</a>, street artists are known for their creative expressions of rebellion.</p>',
     headerImage: "http://imageuploadedbymarketingteam.jpg",
-    image: { edges: [{ node: { imageUrl: "https://defaultmostmarketableartworkincollectionimage.jpg" } }] },
+    image: {
+      edges: [{ node: { imageUrl: "https://defaultmostmarketableartworkincollectionimage.jpg" } }],
+    },
     " $refType": "CollectionArtworkPreview_collection",
     artworks: {
       edges: [
@@ -505,7 +507,8 @@ export const CollectionFixture = {
           node: {
             id: "QXJ0d29yazpwYWJsby1waWNhc3NvLW1vZGVsLWNvbnRlbXBsYXRpbmctYS1ncm91cC1vZi1zY3VscHR1cmVzLW1vZGVsZS1jb250ZW1wbGFudC11bi1ncm91cGUtc2N1bHB0ZQ==",
             slug: "pablo-picasso-model-contemplating-a-group-of-sculptures-modele-contemplant-un-groupe-sculpte",
-            title: "Model Contemplating a Group of Sculptures (Modele Contemplant Un Groupe Sculpte)",
+            title:
+              "Model Contemplating a Group of Sculptures (Modele Contemplant Un Groupe Sculpte)",
             partner: {
               name: "Anderson Fine Art Gallery",
               id: "anderson-fine-art-gallery",

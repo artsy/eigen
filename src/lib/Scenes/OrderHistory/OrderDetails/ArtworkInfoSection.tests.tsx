@@ -63,7 +63,9 @@ describe("ArtworkInfoSection", () => {
     })
 
     expect(tree.findByProps({ testID: "date" }).props.children).toBe("2017")
-    expect(tree.findByProps({ testID: "medium" }).props.children).toBe("Rayon thread on poly twill backed")
+    expect(tree.findByProps({ testID: "medium" }).props.children).toBe(
+      "Rayon thread on poly twill backed"
+    )
 
     expect(tree.findByProps({ testID: "title" }).props.children).toBe(
       "Set of Six (Six) Scout Series Embroidered Patches, "

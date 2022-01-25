@@ -23,12 +23,22 @@ export const CollectionsHubRails: React.FC<CollectionsHubRailsProps> = (props) =
             switch (collectionGroup.groupType) {
               case "ArtistSeries":
                 return (
-                  <TrendingArtistSeriesRail collectionGroup={collectionGroup} collection={collection} {...others} />
+                  <TrendingArtistSeriesRail
+                    collectionGroup={collectionGroup}
+                    collection={collection}
+                    {...others}
+                  />
                 )
               case "OtherCollections":
                 return <OtherCollectionsRail collectionGroup={collectionGroup} {...props} />
               case "FeaturedCollections":
-                return <FeaturedCollectionsRail collectionGroup={collectionGroup} collection={collection} {...others} />
+                return (
+                  <FeaturedCollectionsRail
+                    collectionGroup={collectionGroup}
+                    collection={collection}
+                    {...others}
+                  />
+                )
             }
           })()}
         </Box>
@@ -39,7 +49,8 @@ export const CollectionsHubRails: React.FC<CollectionsHubRailsProps> = (props) =
 
 export const CollectionsHubRailsContainer = createFragmentContainer(CollectionsHubRails, {
   linkedCollections: graphql`
-    fragment CollectionHubsRails_linkedCollections on MarketingCollectionGroup @relay(plural: true) {
+    fragment CollectionHubsRails_linkedCollections on MarketingCollectionGroup
+    @relay(plural: true) {
       groupType
       ...CollectionArtistSeriesRail_collectionGroup
       ...OtherCollectionsRail_collectionGroup

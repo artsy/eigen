@@ -65,7 +65,11 @@ storiesOf("Popover message", module)
         message="You can tap on the message to hide it"
         autoHide={false}
       />
-      <PopoverMessage label="With press hander" title="Tappable" onPress={() => action("item tapped")} />
+      <PopoverMessage
+        label="With press hander"
+        title="Tappable"
+        onPress={() => action("item tapped")}
+      />
       <PopoverMessage
         label="With undo action (only title)"
         title="Some title"

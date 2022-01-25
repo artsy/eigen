@@ -105,7 +105,11 @@ export const PopoverMessageProvider: React.FC = ({ children }) => {
     <PopoverMessageContext.Provider value={{ show, hide }}>
       {children}
       {!!popoverMessage && (
-        <PopoverMessage {...popoverMessage} opacityAnimation={opacityAnim} translateYAnimation={translateYAnim} />
+        <PopoverMessage
+          {...popoverMessage}
+          opacityAnimation={opacityAnim}
+          translateYAnimation={translateYAnim}
+        />
       )}
     </PopoverMessageContext.Provider>
   )
