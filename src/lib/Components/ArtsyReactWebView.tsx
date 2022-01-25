@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { addBreadcrumb } from "@sentry/react-native"
-import { dismissModal, goBack, navigate } from "lib/navigation/navigate"
+import { dismissModal, goBack, GoBackProps, navigate } from "lib/navigation/navigate"
 import { matchRoute } from "lib/navigation/routes"
 import { BottomTabRoutes } from "lib/Scenes/BottomTabs/bottomTabsConfig"
 import {
@@ -50,6 +50,7 @@ export const ArtsyReactWebViewPage: React.FC<
   {
     url: string
     isPresentedModally?: boolean
+    backProps?: GoBackProps
   } & ArtsyWebViewConfig
 > = ({
   url,
@@ -59,6 +60,7 @@ export const ArtsyReactWebViewPage: React.FC<
   mimicBrowserBackButton = true,
   useRightCloseButton = false,
   showShareButton,
+  backProps,
 }) => {
   const paddingTop = useScreenDimensions().safeAreaInsets.top
 
@@ -85,11 +87,15 @@ export const ArtsyReactWebViewPage: React.FC<
     }
   }
 
+  const handleGoBack = () => {
+    goBack(backProps)
+  }
+
   const onRightButtonPress = () => {
     if (showShareButton) {
       return handleArticleShare()
     } else if (useRightCloseButton) {
-      return goBack()
+      return handleGoBack()
     }
   }
 
@@ -106,7 +112,7 @@ export const ArtsyReactWebViewPage: React.FC<
                   if (isPresentedModally && !canGoBack) {
                     dismissModal()
                   } else if (!canGoBack) {
-                    goBack()
+                    handleGoBack()
                   } else {
                     ref.current?.goBack()
                   }

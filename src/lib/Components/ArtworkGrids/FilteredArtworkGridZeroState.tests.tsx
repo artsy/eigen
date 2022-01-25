@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, getDefaultNormalizer } from "@testing-library/react-native"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -21,7 +21,14 @@ describe("FilteredArtworkGridZeroState", () => {
 
   it("displays correct text", () => {
     const { getByText } = renderWithWrappersTL(<TestWrapper />)
-    expect(getByText("No results found\nPlease try another search.")).toBeDefined()
+
+    expect(
+      getByText("No results found\nPlease try another search.", {
+        normalizer: getDefaultNormalizer({
+          collapseWhitespace: false,
+        }),
+      })
+    ).toBeTruthy()
   })
 
   it(`displays "Clear filters" button`, () => {
