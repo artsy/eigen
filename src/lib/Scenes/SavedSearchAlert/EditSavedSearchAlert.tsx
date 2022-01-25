@@ -8,7 +8,7 @@ import { emitSavedSearchRefetchEvent } from "lib/Components/Artist/ArtistArtwork
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { Aggregations } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
-import { BackProps, goBack, navigationEvents } from "lib/navigation/navigate"
+import { goBack, GoBackProps, navigationEvents } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
@@ -39,14 +39,14 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
 
   const onComplete = () => {
     goBack({
-      fromScreen: "EditSavedSearchAlert",
+      previousScreen: "EditSavedSearchAlert",
     })
     emitSavedSearchRefetchEvent()
   }
 
   const refetch = useCallback(
-    (backProps: BackProps) => {
-      if (backProps.fromScreen === "Unsubscribe") {
+    (backProps: GoBackProps) => {
+      if (backProps.previousScreen === "Unsubscribe") {
         relay.refetch({}, null, null, { force: true })
       }
     },

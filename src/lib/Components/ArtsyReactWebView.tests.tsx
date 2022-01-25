@@ -65,14 +65,14 @@ describe(ArtsyReactWebViewPage, () => {
   it("calls goBack with props when the close/back button is pressed", () => {
     const tree = render({
       backProps: {
-        fromScreen: "BackScreen",
+        previousScreen: "BackScreen",
       },
     })
 
     expect(goBack).not.toHaveBeenCalled()
     tree.root.findByType(FancyModalHeader).props.onLeftButtonPress()
     expect(goBack).toHaveBeenCalledWith({
-      fromScreen: "BackScreen",
+      previousScreen: "BackScreen",
     })
   })
   it("has a progress bar that follows page load events", () => {

@@ -391,7 +391,7 @@ describe("Saved search alert form", () => {
       expect(navigate).toBeCalledWith("/unsubscribe", {
         passProps: {
           backProps: {
-            fromScreen: "Unsubscribe",
+            previousScreen: "Unsubscribe",
           },
         },
       })

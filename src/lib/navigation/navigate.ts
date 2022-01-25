@@ -19,14 +19,14 @@ export interface ViewDescriptor extends ViewOptions {
   props: object
 }
 
-export interface BackProps {
-  fromScreen?: string
+export interface GoBackProps {
+  previousScreen?: string
 }
 
 export interface NavigateOptions {
   modal?: boolean
   passProps?: {
-    backProps?: BackProps
+    backProps?: GoBackProps
     [key: string]: any
   }
   replace?: boolean
@@ -167,7 +167,7 @@ export function dismissModal() {
   }
 }
 
-export function goBack(backProps?: BackProps) {
+export function goBack(backProps?: GoBackProps) {
   LegacyNativeModules.ARScreenPresenterModule.goBack(unsafe__getSelectedTab())
   navigationEvents.emit("goBack", backProps)
 }

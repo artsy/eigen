@@ -1,6 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { addBreadcrumb } from "@sentry/react-native"
-import { BackProps, dismissModal, goBack, navigate } from "lib/navigation/navigate"
+import { dismissModal, goBack, GoBackProps, navigate } from "lib/navigation/navigate"
 import { matchRoute } from "lib/navigation/routes"
 import { BottomTabRoutes } from "lib/Scenes/BottomTabs/bottomTabsConfig"
 import {
@@ -50,7 +50,7 @@ export const ArtsyReactWebViewPage: React.FC<
   {
     url: string
     isPresentedModally?: boolean
-    backProps?: BackProps
+    backProps?: GoBackProps
   } & ArtsyWebViewConfig
 > = ({
   url,

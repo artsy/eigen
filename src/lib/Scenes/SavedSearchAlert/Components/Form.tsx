@@ -100,7 +100,7 @@ export const Form: React.FC<FormProps> = (props) => {
     return navigate("/unsubscribe", {
       passProps: {
         backProps: {
-          fromScreen: "Unsubscribe",
+          previousScreen: "Unsubscribe",
         },
       },
     })

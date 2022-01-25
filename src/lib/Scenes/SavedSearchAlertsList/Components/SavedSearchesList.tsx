@@ -1,7 +1,7 @@
 import { OwnerType } from "@artsy/cohesion"
 import { SavedSearchesList_me } from "__generated__/SavedSearchesList_me.graphql"
 import { SAVED_SERCHES_PAGE_SIZE } from "lib/Components/constants"
-import { BackProps, navigate, navigationEvents } from "lib/navigation/navigate"
+import { GoBackProps, navigate, navigationEvents } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
@@ -42,8 +42,8 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   )
 
   useEffect(() => {
-    const onDeleteRefresh = (backProps: BackProps) => {
-      if (backProps.fromScreen === "EditSavedSearchAlert") {
+    const onDeleteRefresh = (backProps: GoBackProps) => {
+      if (backProps.previousScreen === "EditSavedSearchAlert") {
         onRefresh("delete")
       }
     }
