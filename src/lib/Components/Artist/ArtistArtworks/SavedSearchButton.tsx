@@ -9,7 +9,6 @@ import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSear
 import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
 import { navigate, NavigateOptions } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { useEnableMyCollection } from "lib/Scenes/MyCollection/MyCollection"
 import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import {
   CreateSavedSearchAlertParams,
@@ -55,7 +54,6 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   criteria,
 }) => {
   const tracking = useTracking()
-  const shouldDisplayMyCollection = useEnableMyCollection()
   const [visibleForm, setVisibleForm] = useState(false)
   const [refetching, setRefetching] = useState(false)
   const popover = usePopoverMessage()
@@ -91,16 +89,10 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
           showInTabName: "profile",
         }
 
-        if (shouldDisplayMyCollection) {
-          await navigate("/my-profile/settings", options)
-          setTimeout(() => {
-            navigate("/my-profile/saved-search-alerts")
-          }, 100)
-
-          return
-        }
-
-        navigate("/my-profile/saved-search-alerts", options)
+        await navigate("/my-profile/settings", options)
+        setTimeout(() => {
+          navigate("/my-profile/saved-search-alerts")
+        }, 100)
       },
     })
   }
