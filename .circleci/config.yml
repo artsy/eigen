@@ -472,7 +472,7 @@ jobs:
           branch: play_store_submission
       - run:
           name: Setup
-          command: ./scripts/setup-distribute-linux
+          command: ./scripts/setup-distribute
       - run:
           name: Promote if play_store_submission
           command: ./scripts/promote-if-playstore-submission-branch
