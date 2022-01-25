@@ -3,15 +3,16 @@ import { verifyEmail } from "lib/utils/verifyEmail"
 import { Flex, Sans, SansProps, Spinner, useColor } from "palette"
 import React, { FC, useState } from "react"
 import { Image, TouchableWithoutFeedback } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 const Text: FC<Partial<SansProps>> = (props) => <Sans color="white100" size="3t" {...props} />
 
 export interface Props {
   me: EmailConfirmationBanner_me
+  relay: RelayProp
 }
 
-export const EmailConfirmationBanner: React.FC<Props> = ({ me }) => {
+export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
   const color = useColor()
   const [shouldDisplayBanner, toggleVisible] = useState<boolean>(me?.canRequestEmailConfirmation)
   const [isLoading, setLoading] = useState<boolean>(false)
@@ -22,7 +23,7 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me }) => {
     try {
       setLoading(true)
 
-      const { sendConfirmationEmail } = await verifyEmail()
+      const { sendConfirmationEmail } = await verifyEmail(relay.environment)
       const confirmationOrError = sendConfirmationEmail?.confirmationOrError
       const emailToConfirm = confirmationOrError?.unconfirmedEmail
 

@@ -1,3 +1,4 @@
+import { fireEvent } from "@testing-library/react-native"
 import { MyProfileEditFormModalTestsQuery } from "__generated__/MyProfileEditFormModalTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
@@ -36,6 +37,7 @@ describe("MyProfileEditFormModal", () => {
               onDismiss={jest.fn}
               setProfileIconLocally={jest.fn}
               localImage={null}
+              refetchProfileIdentification={jest.fn}
             />
           )
         }
@@ -55,28 +57,61 @@ describe("MyProfileEditFormModal", () => {
       expect(getByTestId("profile-verifications")).toBeDefined()
     })
 
-    describe("Email", () => {
-      it("is shown as verified when it's verified in gravity", () => {
-        const { getByText } = renderWithWrappersTL(<TestRenderer />)
-        mockEnvironmentPayload(mockEnvironment, {
-          Me: () => ({
-            canRequestEmailConfirmation: false,
-          }),
+    describe("Email Verification", () => {
+      describe("When the email is verified in Gravity", () => {
+        it("is shown as verified when it's verified in gravity", () => {
+          const { getByText } = renderWithWrappersTL(<TestRenderer />)
+          mockEnvironmentPayload(mockEnvironment, {
+            Me: () => ({
+              canRequestEmailConfirmation: false,
+            }),
+          })
+          expect(getByText("Email Address Verified")).toBeTruthy()
         })
-        expect(getByText("Email Address Verified")).toBeTruthy()
       })
-      it("is shown as non verified when it's not verified in gravity", () => {
-        const { getByText } = renderWithWrappersTL(<TestRenderer />)
-        mockEnvironmentPayload(mockEnvironment, {
-          Me: () => ({
-            canRequestEmailConfirmation: true,
-          }),
+
+      describe("When the email is not verified in Gravity", () => {
+        it("is shown as non verified when it's not verified in gravity", () => {
+          const { getByText } = renderWithWrappersTL(<TestRenderer />)
+          mockEnvironmentPayload(mockEnvironment, {
+            Me: () => ({
+              canRequestEmailConfirmation: true,
+            }),
+          })
+          expect(getByText("Verify Your Email")).toBeTruthy()
         })
-        expect(getByText("Verify Your Email")).toBeTruthy()
+
+        it("Triggers the email verification when they user presses on Verify Your Email", () => {
+          const { getByTestId, getByText } = renderWithWrappersTL(<TestRenderer />)
+          mockEnvironmentPayload(mockEnvironment, {
+            Me: () => ({
+              canRequestEmailConfirmation: true,
+            }),
+          })
+          const VerifyYouEmailButton = getByTestId("verify-your-email")
+          expect(VerifyYouEmailButton).toBeTruthy()
+
+          // console.log(VerifyYouEmailButton)
+          // fireEvent(VerifyYouEmailButton, "onPress")
+
+          // mockEnvironment.mock.resolveMostRecentOperation({
+          //   data: {
+          //     sendConfirmationEmail: {
+          //       confirmationOrError: {
+          //         __typename: "SendConfirmationEmailMutationSuccess",
+          //         unconfirmedEmail: "i.am.unconfirmed@gmail.com",
+          //       },
+          //     },
+          //   },
+          //   errors: [],
+          // })
+
+          // expect(getByText("Email sent to")).toBeTruthy()
+        })
       })
     })
 
-    describe("ID", () => {
+    describe("ID Verification", () => {
       it("is shown as verified when it's verified in gravity", () => {
         const { getByText } = renderWithWrappersTL(<TestRenderer />)
         mockEnvironmentPayload(mockEnvironment, {

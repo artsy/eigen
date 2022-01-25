@@ -25,7 +25,12 @@ import {
   useColor,
 } from "palette"
 import React, { useEffect, useState } from "react"
-import { createFragmentContainer, QueryRenderer } from "react-relay"
+import {
+  createFragmentContainer,
+  createRefetchContainer,
+  QueryRenderer,
+  RelayRefetchProp,
+} from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionPlaceholder, MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
@@ -36,9 +41,10 @@ export enum Tab {
   savedWorks = "Saved Works",
 }
 
-export const MyCollectionAndSavedWorks: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({
-  me,
-}) => {
+export const MyCollectionAndSavedWorks: React.FC<{
+  me?: MyCollectionAndSavedWorks_me
+  relay: RelayRefetchProp
+}> = ({ me, relay }) => {
   return (
     <StickyTabPage
       disableBackButtonUpdate
@@ -54,14 +60,17 @@ export const MyCollectionAndSavedWorks: React.FC<{ me?: MyCollectionAndSavedWork
           initial: false,
         },
       ]}
-      staticHeaderContent={<MyProfileHeader me={me} />}
+      staticHeaderContent={<MyProfileHeader me={me} relay={relay} />}
     />
   )
 }
 
 export const LOCAL_PROFILE_ICON_PATH_KEY = "LOCAL_PROFILE_ICON_PATH_KEY"
 
-export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({ me }) => {
+export const MyProfileHeader: React.FC<{
+  me?: MyCollectionAndSavedWorks_me
+  relay: RelayRefetchProp
+}> = ({ me, relay }) => {
   const color = useColor()
 
   const [showModal, setShowModal] = useState(false)
@@ -98,6 +107,9 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
           onDismiss={() => setShowModal(false)}
           setProfileIconLocally={setProfileIconHandler}
           localImage={localImage}
+          refetchProfileIdentification={() => {
+            relay.refetch({}, null, null, { force: true })
+          }}
         />
       )}
       <FancyModalHeader
@@ -187,7 +199,7 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
   )
 }
 
-export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContainer(
+export const MyCollectionAndSavedWorksFragmentContainer = createRefetchContainer(
   MyCollectionAndSavedWorks,
   {
     me: graphql`
@@ -207,7 +219,14 @@ export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContaine
         ...MyProfileEditFormModal_me @arguments(enableCollectorProfile: $enableCollectorProfile)
       }
     `,
-  }
+  },
+  graphql`
+    query MyCollectionAndSavedWorksRefetchQuery($enableCollectorProfile: Boolean!) {
+      me {
+        ...MyProfileEditFormModal_me @arguments(enableCollectorProfile: $enableCollectorProfile)
+      }
+    }
+  `
 )
 
 export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => {

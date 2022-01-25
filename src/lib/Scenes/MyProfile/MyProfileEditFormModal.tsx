@@ -30,10 +30,10 @@ import {
   useColor,
   useSpace,
 } from "palette"
-import React, { useCallback, useRef, useState } from "react"
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
-import { graphql, useFragment } from "react-relay"
+import { graphql, RelayProp, useFragment } from "react-relay"
 import * as Yup from "yup"
 import {
   buildLocationDisplay,
@@ -49,7 +49,9 @@ interface MyProfileEditFormModalProps {
   me: MyProfileEditFormModal_me$key
   setProfileIconLocally: (path: string) => void
   localImage: LocalImage | null
+  relay: RelayProp
   onDismiss(): void
+  refetchProfileIdentification(): void
 }
 
 export interface EditMyProfileValuesSchema {
@@ -73,6 +75,8 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = ({
   onDismiss,
   setProfileIconLocally,
   localImage,
+  refetchProfileIdentification,
+  relay,
   ...restProps
 }) => {
   const me = useFragment<MyProfileEditFormModal_me$key>(meFragment, restProps.me)
@@ -178,6 +182,19 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = ({
       )
   }
 
+  useEffect(() => {
+    const refetchProfileIdentificationInterval = setInterval(() => {
+      // When the user applies the email verification and the modal is visible
+      if (didSuccessfullyVerifiyEmail && visible) {
+        refetchProfileIdentification()
+      }
+    }, 3000)
+
+    return () => {
+      clearInterval(refetchProfileIdentificationInterval)
+    }
+  }, [didSuccessfullyVerifiyEmail, visible])
+
   const hideModal = () => {
     setDidUpdatePhoto(false)
     onDismiss()
@@ -192,7 +209,9 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = ({
       setShowVerificationBanner(true)
       setIsVerificationLoading(true)
 
-      const { sendConfirmationEmail } = await verifyEmail()
+      console.log(" => ")
+
+      const { sendConfirmationEmail } = await verifyEmail(relay.environment)
       const confirmationOrError = sendConfirmationEmail?.confirmationOrError
       const emailToConfirm = confirmationOrError?.unconfirmedEmail
 
@@ -507,7 +526,11 @@ const ProfileVerifications = ({
         <Flex flexDirection="row">
           <CheckCircleIcon height={22} width={22} fill="black30" />
           <Flex ml={1}>
-            <Text style={{ textDecorationLine: "underline" }} onPress={handleEmailVerification}>
+            <Text
+              style={{ textDecorationLine: "underline" }}
+              onPress={handleEmailVerification}
+              testID="verify-your-email"
+            >
               Verify Your Email
             </Text>
             {/* This text will be replaced in a separate ticket */}
