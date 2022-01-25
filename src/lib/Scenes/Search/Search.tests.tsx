@@ -510,13 +510,13 @@ describe("Search Screen", () => {
     })
 
     it("when cancel button is pressed", () => {
-      const { queryByA11yState, getByPlaceholderText, getByText, getAllByText } = tree
+      const { queryByA11yState, getByPlaceholderText, getByText } = tree
       const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
       fireEvent(searchInput, "changeText", "prev value")
       fireEvent(getByText("Artists"), "press")
       fireEvent(searchInput, "focus")
-      fireEvent(getAllByText("Cancel")[0], "press")
+      fireEvent(getByText("Cancel"), "press")
       fireEvent(searchInput, "changeText", "new value")
 
       expect(queryByA11yState({ selected: true })).toHaveTextContent("Top")

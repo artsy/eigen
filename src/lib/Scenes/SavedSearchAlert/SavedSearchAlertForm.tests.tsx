@@ -388,7 +388,13 @@ describe("Saved search alert form", () => {
 
       fireEvent.press(getByText("Update email preferences"))
 
-      expect(navigate).toBeCalledWith("/unsubscribe")
+      expect(navigate).toBeCalledWith("/unsubscribe", {
+        passProps: {
+          backProps: {
+            previousScreen: "Unsubscribe",
+          },
+        },
+      })
     })
 
     it("should call custom update email preferences handler when it is passed", async () => {
