@@ -1,5 +1,5 @@
 import { FairExhibitorRailTestsQuery } from "__generated__/FairExhibitorRailTestsQuery.graphql"
-import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
+import { ArtworkRailCard } from "lib/Components/ArtworkRail/ArtworkRailCard"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -66,7 +66,7 @@ describe("FairExhibitors", () => {
           internalID: "abc123",
           slug: "some-fair",
         },
-        artworks: {
+        artworksConnection: {
           edges: [
             {
               node: {
@@ -78,7 +78,7 @@ describe("FairExhibitors", () => {
         },
       }),
     })
-    const artwork = wrapper.root.findAllByType(ArtworkTileRailCard)[0]
+    const artwork = wrapper.root.findAllByType(ArtworkRailCard)[0]
     act(() => artwork.props.onPress())
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
