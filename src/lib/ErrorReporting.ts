@@ -8,7 +8,7 @@ export const setupSentry = (
   props: Partial<Sentry.ReactNativeOptions> = {},
   captureExceptions = !__DEV__
 ) => {
-  if (captureExceptions && Config.SENTRY_DSN) {
+  if (!captureExceptions && Config.SENTRY_DSN) {
     Sentry.init({
       dsn: Config.SENTRY_DSN,
       release: sentryReleaseName,
