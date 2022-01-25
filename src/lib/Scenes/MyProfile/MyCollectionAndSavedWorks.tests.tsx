@@ -71,103 +71,50 @@ describe("MyCollectionAndSavedWorks", () => {
       expect(navigate).toHaveBeenCalledWith("/my-profile/settings")
     })
 
-    describe("With Bio and Icon Feature flags off", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableVisualProfileIconAndBio: false })
-      })
-      it("Header shows the right text", async () => {
-        const wrapper = getWrapper({
-          Me: () => ({
-            name: "My Name",
-            createdAt: new Date().toISOString(),
-            bio: "My Bio",
-            icon: {
-              url: "https://someurll.jpg",
-            },
-          }),
-        })
-
-        const text = extractText(wrapper.root)
-        const year = new Date().getFullYear()
-        expect(extractText(text)).toContain("My Name")
-        expect(extractText(text)).toContain(`Member since ${year}`)
-        expect(extractText(text)).not.toContain("My Bio")
+    it("Header shows the right text", () => {
+      const wrapper = getWrapper({
+        Me: () => ({
+          name: "My Name",
+          createdAt: new Date().toISOString(),
+          bio: "My Bio",
+          icon: {
+            url: "https://someurll.jpg",
+          },
+        }),
       })
 
-      it("does not render Icon", async () => {
-        const localImage: LocalImage = {
-          path: "some/my/profile/path",
-          width: 10,
-          height: 10,
-        }
-        await act(async () => {
-          await storeLocalImages([localImage], LOCAL_PROFILE_ICON_PATH_KEY)
-        })
-
-        const wrapper = getWrapper({
-          Me: () => ({
-            name: "My Name",
-            createdAt: new Date().toISOString(),
-            bio: "My Bio",
-            icon: {
-              url: "https://someurll.jpg",
-            },
-          }),
-        })
-        // No avatar
-        expect(wrapper.root.findAllByType(Avatar)).toEqual([])
-      })
+      const text = extractText(wrapper.root)
+      const year = new Date().getFullYear()
+      expect(extractText(text)).toContain("My Name")
+      expect(extractText(text)).toContain(`Member since ${year}`)
+      expect(extractText(text)).toContain("My Bio")
     })
 
-    describe("With Bio and Icon Feature flags ON", () => {
-      beforeEach(() => {
-        __globalStoreTestUtils__?.injectFeatureFlags({ AREnableVisualProfileIconAndBio: true })
-      })
-      it("Header shows the right text", () => {
-        const wrapper = getWrapper({
-          Me: () => ({
-            name: "My Name",
-            createdAt: new Date().toISOString(),
-            bio: "My Bio",
-            icon: {
-              url: "https://someurll.jpg",
-            },
-          }),
-        })
-
-        const text = extractText(wrapper.root)
-        const year = new Date().getFullYear()
-        expect(extractText(text)).toContain("My Name")
-        expect(extractText(text)).toContain(`Member since ${year}`)
-        expect(extractText(text)).toContain("My Bio")
+    it("Renders Icon", async () => {
+      const localImage: LocalImage = {
+        path: "some/my/profile/path",
+        width: 10,
+        height: 10,
+      }
+      await act(async () => {
+        await storeLocalImages([localImage], LOCAL_PROFILE_ICON_PATH_KEY)
       })
 
-      it("Renders Icon", async () => {
-        const localImage: LocalImage = {
-          path: "some/my/profile/path",
-          width: 10,
-          height: 10,
-        }
-        await act(async () => {
-          await storeLocalImages([localImage], LOCAL_PROFILE_ICON_PATH_KEY)
-        })
-
-        const wrapper = getWrapper({
-          Me: () => ({
-            name: "My Name",
-            createdAt: new Date().toISOString(),
-            bio: "My Bio",
-            icon: {
-              url: "https://someurll.jpg",
-            },
-          }),
-        })
-
-        await flushPromiseQueue()
-        expect(wrapper.root.findAllByType(Avatar)).toBeDefined()
-        // expect only one avatar
-        expect(wrapper.root.findAllByType(Avatar).length).toEqual(1)
+      const wrapper = getWrapper({
+        Me: () => ({
+          name: "My Name",
+          createdAt: new Date().toISOString(),
+          bio: "My Bio",
+          icon: {
+            url: "https://someurll.jpg",
+          },
+        }),
       })
+
+      await flushPromiseQueue()
+      expect(wrapper.root.findAllByType(Avatar)).toBeDefined()
+      // expect only one avatar
+      expect(wrapper.root.findAllByType(Avatar).length).toEqual(1)
     })
 
     describe("With Collector Profile feature flag OFF", () => {

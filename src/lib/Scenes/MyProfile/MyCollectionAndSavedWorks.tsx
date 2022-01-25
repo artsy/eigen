@@ -84,8 +84,6 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
 
   const userProfileImagePath = localImage?.path || me?.icon?.url
 
-  const showIconAndBio = useFeatureFlag("AREnableVisualProfileIconAndBio")
-
   const showCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
 
   return (
@@ -107,23 +105,21 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
         }}
       />
       <Flex flexDirection="row" alignItems="center" px={2}>
-        {!!showIconAndBio && (
-          <Box
-            height="99"
-            width="99"
-            borderRadius="50"
-            backgroundColor={color("black10")}
-            justifyContent="center"
-            alignItems="center"
-          >
-            {!!userProfileImagePath ? (
-              <Avatar src={userProfileImagePath} size="md" />
-            ) : (
-              <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
-            )}
-          </Box>
-        )}
-        <Box px={2} flexShrink={1} pb={!showIconAndBio ? 6 : undefined}>
+        <Box
+          height="99"
+          width="99"
+          borderRadius="50"
+          backgroundColor={color("black10")}
+          justifyContent="center"
+          alignItems="center"
+        >
+          {!!userProfileImagePath ? (
+            <Avatar src={userProfileImagePath} size="md" />
+          ) : (
+            <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
+          )}
+        </Box>
+        <Box px={2} flexShrink={1}>
           <Text variant="xl" color={color("black100")}>
             {me?.name}
           </Text>
@@ -167,25 +163,23 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
           </Join>
         </Flex>
       )}
-      {!!me?.bio && showIconAndBio && (
+      {!!me?.bio && (
         <Text variant="xs" color={color("black100")} px={2} pt={2}>
           {me?.bio}
         </Text>
       )}
-      {showIconAndBio && (
-        <Flex p={2}>
-          <Button
-            variant="outline"
-            size="small"
-            flex={1}
-            onPress={() => {
-              setShowModal(true)
-            }}
-          >
-            Edit Profile
-          </Button>
-        </Flex>
-      )}
+      <Flex p={2}>
+        <Button
+          variant="outline"
+          size="small"
+          flex={1}
+          onPress={() => {
+            setShowModal(true)
+          }}
+        >
+          Edit Profile
+        </Button>
+      </Flex>
     </>
   )
 }

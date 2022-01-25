@@ -173,12 +173,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableSortFilterForArtworksPill",
   },
-  AREnableVisualProfileIconAndBio: {
-    readyForRelease: true,
-    description: "Enable Visual Profile Icon and Bio",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableVisualProfileIconAndBio",
-  },
   ARMyCollectionLocalSortAndFilter: {
     readyForRelease: true,
     description: "My Collection Sort & Filter",

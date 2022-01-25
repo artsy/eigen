@@ -47,6 +47,8 @@ iOSInjectionProject/
 .vscode/.browse.VC.db
 Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 
+.vendor
+
 # regular Pods. No longer a submodule
 Pods
 
@@ -144,6 +146,7 @@ GoogleService-Info.plist
 eigen-firebase-app-distribution.json
 
 storybook.json
+metaflags.json
 
 
 # Keep these, so we can keep the folders these appear in
