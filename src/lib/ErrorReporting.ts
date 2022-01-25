@@ -1,6 +1,7 @@
 import * as Sentry from "@sentry/react-native"
 import { useEffect } from "react"
 import Config from "react-native-config"
+import { getBuildNumber } from "react-native-device-info"
 import { sentryReleaseName } from "../../app.json"
 import { GlobalStore, useFeatureFlag } from "./store/GlobalStore"
 
@@ -12,6 +13,7 @@ export const setupSentry = (
     Sentry.init({
       dsn: Config.SENTRY_DSN,
       release: sentryReleaseName,
+      dist: getBuildNumber(),
       enableAutoSessionTracking: true,
       autoSessionTracking: true,
       // Sentry will be re-initialised with a proper environment as soon as the main app component mounts
