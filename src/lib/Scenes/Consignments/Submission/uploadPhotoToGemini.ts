@@ -6,7 +6,11 @@ import {
   uploadFileToS3,
 } from "./geminiUploadToS3"
 
-export const uploadImageAndPassToGemini = async (file: string, acl: string, submissionID: string) => {
+export const uploadImageAndPassToGemini = async (
+  file: string,
+  acl: string,
+  submissionID: string
+) => {
   const convectionKey = await getConvectionGeminiKey()
 
   if (!convectionKey) {

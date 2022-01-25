@@ -12,6 +12,8 @@ import track from "react-tracking"
  * and then make assertions like
  *   expect(Events.postEvent).toHaveBeenCalledWith({myTrackingProperty: "whateve"})
  */
-export function mockTracking<Props>(Component: React.ComponentType<Props>): React.ComponentType<Props> {
+export function mockTracking<Props>(
+  Component: React.ComponentType<Props>
+): React.ComponentType<Props> {
   return track({}, { dispatch: (data) => postEventToProviders(data) })(Component)
 }

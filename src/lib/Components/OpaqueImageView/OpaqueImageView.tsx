@@ -2,6 +2,7 @@ import { isALocalImage } from "lib/Scenes/Artwork/Components/ImageCarousel/Image
 import React from "react"
 import {
   Image,
+  ImageResizeMode,
   LayoutChangeEvent,
   PixelRatio,
   Platform,
@@ -35,6 +36,7 @@ interface Props extends ViewProps {
 
   width?: number
   height?: number
+  resizeMode?: ImageResizeMode
 
   /**
    * An aspect ratio created with: width / height.
@@ -99,7 +101,9 @@ export default class OpaqueImageView extends React.Component<Props, State> {
           style.flex
         )
       ) {
-        console.error("[OpaqueImageView] Either an aspect ratio or specific dimensions or flex should be specified.")
+        console.error(
+          "[OpaqueImageView] Either an aspect ratio or specific dimensions or flex should be specified."
+        )
       }
     }
   }

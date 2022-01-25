@@ -13,7 +13,11 @@ import { BottomTabType } from "./BottomTabType"
 
 const Tab = createBottomTabNavigator()
 
-const TabContent = ({ route }: { route: { params: { tabName: BottomTabType; rootModuleName: AppModule } } }) => {
+const TabContent = ({
+  route,
+}: {
+  route: { params: { tabName: BottomTabType; rootModuleName: AppModule } }
+}) => {
   if (Platform.OS === "ios" && !usingNewIOSAppShell()) {
     return <NativeTabs viewProps={route.params} />
   }
@@ -29,11 +33,26 @@ export const BottomTabsNavigator = () => {
       <View style={{ flex: 1, paddingBottom: bottom }}>
         <FadeBetween
           views={[
-            <TabContent key="home" route={{ params: { tabName: "home", rootModuleName: "Home" } }} />,
-            <TabContent key="search" route={{ params: { tabName: "search", rootModuleName: "Search" } }} />,
-            <TabContent key="inbox" route={{ params: { tabName: "inbox", rootModuleName: "Inbox" } }} />,
-            <TabContent key="sell" route={{ params: { tabName: "sell", rootModuleName: "Sales" } }} />,
-            <TabContent key="profile" route={{ params: { tabName: "profile", rootModuleName: "MyProfile" } }} />,
+            <TabContent
+              key="home"
+              route={{ params: { tabName: "home", rootModuleName: "Home" } }}
+            />,
+            <TabContent
+              key="search"
+              route={{ params: { tabName: "search", rootModuleName: "Search" } }}
+            />,
+            <TabContent
+              key="inbox"
+              route={{ params: { tabName: "inbox", rootModuleName: "Inbox" } }}
+            />,
+            <TabContent
+              key="sell"
+              route={{ params: { tabName: "sell", rootModuleName: "Sales" } }}
+            />,
+            <TabContent
+              key="profile"
+              route={{ params: { tabName: "profile", rootModuleName: "MyProfile" } }}
+            />,
           ]}
           activeIndex={["home", "search", "inbox", "sell", "profile"].indexOf(selectedTab)}
         />
@@ -44,14 +63,26 @@ export const BottomTabsNavigator = () => {
 
   return (
     <Tab.Navigator tabBar={() => <BottomTabs />} backBehavior="firstRoute">
-      <Tab.Screen name="home" component={TabContent} initialParams={{ tabName: "home", rootModuleName: "Home" }} />
+      <Tab.Screen
+        name="home"
+        component={TabContent}
+        initialParams={{ tabName: "home", rootModuleName: "Home" }}
+      />
       <Tab.Screen
         name="search"
         component={TabContent}
         initialParams={{ tabName: "search", rootModuleName: "Search" }}
       />
-      <Tab.Screen name="inbox" component={TabContent} initialParams={{ tabName: "inbox", rootModuleName: "Inbox" }} />
-      <Tab.Screen name="sell" component={TabContent} initialParams={{ tabName: "sell", rootModuleName: "Sales" }} />
+      <Tab.Screen
+        name="inbox"
+        component={TabContent}
+        initialParams={{ tabName: "inbox", rootModuleName: "Inbox" }}
+      />
+      <Tab.Screen
+        name="sell"
+        component={TabContent}
+        initialParams={{ tabName: "sell", rootModuleName: "Sales" }}
+      />
       <Tab.Screen
         name="profile"
         component={TabContent}
@@ -61,9 +92,14 @@ export const BottomTabsNavigator = () => {
   )
 }
 
-const FadeBetween: React.FC<{ views: JSX.Element[]; activeIndex: number }> = ({ views, activeIndex }) => {
+const FadeBetween: React.FC<{ views: JSX.Element[]; activeIndex: number }> = ({
+  views,
+  activeIndex,
+}) => {
   const hasLoaded = useRef({ [activeIndex]: true }).current
-  const opacities = useRef(views.map((_, index) => new Animated.Value(index === activeIndex ? 1 : 0.01))).current
+  const opacities = useRef(
+    views.map((_, index) => new Animated.Value(index === activeIndex ? 1 : 0.01))
+  ).current
   const lastActiveIndex = usePrevious(activeIndex)
 
   useEffect(() => {
@@ -75,7 +111,11 @@ const FadeBetween: React.FC<{ views: JSX.Element[]; activeIndex: number }> = ({ 
       // fade in screen above, then make previous screen transparent
       opacities[activeIndex].setValue(0)
       requestAnimationFrame(() => {
-        Animated.spring(opacities[activeIndex], { toValue: 1, useNativeDriver: true, speed: 100 }).start(() => {
+        Animated.spring(opacities[activeIndex], {
+          toValue: 1,
+          useNativeDriver: true,
+          speed: 100,
+        }).start(() => {
           opacities[lastActiveIndex].setValue(0)
         })
       })
@@ -83,7 +123,11 @@ const FadeBetween: React.FC<{ views: JSX.Element[]; activeIndex: number }> = ({ 
       // make next screen opaque, then fade out screen above
       opacities[activeIndex].setValue(1)
       requestAnimationFrame(() => {
-        Animated.spring(opacities[lastActiveIndex], { toValue: 0, useNativeDriver: true, speed: 100 }).start()
+        Animated.spring(opacities[lastActiveIndex], {
+          toValue: 0,
+          useNativeDriver: true,
+          speed: 100,
+        }).start()
       })
     }
 

@@ -82,7 +82,11 @@ const ConfirmContactInfo: React.FC<{
       showSeparator={isInputFocused}
     >
       <FancyModalHeader useXButton onLeftButtonPress={handleDismiss} />
-      <ScrollView style={{ flex: 1 }} alwaysBounceVertical={false} contentContainerStyle={{ paddingVertical: 20 }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        alwaysBounceVertical={false}
+        contentContainerStyle={{ paddingVertical: 20 }}
+      >
         <View
           style={{
             alignSelf: "center",
@@ -105,8 +109,8 @@ const ConfirmContactInfo: React.FC<{
               color="black60"
               style={{ textAlign: isPad ? "center" : "left", marginBottom: isPad ? 80 : 0 }}
             >
-              Please verify your phone number so we can reach you about the status of your work. This info will also be
-              saved to your account.
+              Please verify your phone number so we can reach you about the status of your work.
+              This info will also be saved to your account.
             </Text>
             <Spacer mb={3} />
             {me ? (

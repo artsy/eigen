@@ -73,7 +73,9 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
   } else if (module.options.isRootViewForTabName) {
     // this view is one of our root tab views, e.g. home, search, etc.
     // switch to the tab, pop the stack, and scroll to the top.
-    await LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(module.options.isRootViewForTabName)
+    await LegacyNativeModules.ARScreenPresenterModule.popToRootAndScrollToTop(
+      module.options.isRootViewForTabName
+    )
     switchTab(module.options.isRootViewForTabName, screenDescriptor.props)
   } else {
     const onlyShowInTabName = module.options.onlyShowInTabName || showInTabName
@@ -83,7 +85,10 @@ export async function navigate(url: string, options: NavigateOptions = {}) {
     // we will need to delay the navigation action until we change tabs
     const waitForTabsToChange = !!onlyShowInTabName && onlyShowInTabName !== selectedTab
     const pushView = () => {
-      LegacyNativeModules.ARScreenPresenterModule.pushView(onlyShowInTabName ?? selectedTab, screenDescriptor)
+      LegacyNativeModules.ARScreenPresenterModule.pushView(
+        onlyShowInTabName ?? selectedTab,
+        screenDescriptor
+      )
     }
 
     // If the screen should be on a tab, then switch to this tab first

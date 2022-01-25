@@ -6,11 +6,15 @@ import "react-native"
 import ConversationSnippet from "./ConversationSnippet"
 
 it("renders with an artwork without throwing an error", () => {
-  renderWithWrappers(<ConversationSnippet conversation={artworkConversation as any} onSelected={undefined} />)
+  renderWithWrappers(
+    <ConversationSnippet conversation={artworkConversation as any} onSelected={undefined} />
+  )
 })
 
 it("renders with a show without throwing an error", () => {
-  renderWithWrappers(<ConversationSnippet conversation={showConversation as any} onSelected={undefined} />)
+  renderWithWrappers(
+    <ConversationSnippet conversation={showConversation as any} onSelected={undefined} />
+  )
 })
 
 const artwork = {

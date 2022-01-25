@@ -18,9 +18,15 @@ describe("CommercialPartnerInformation", () => {
       </GlobalStoreProvider>
     )
     expect(component.find(Sans).at(0).render().text()).toMatchInlineSnapshot(`"From Bob's Gallery"`)
-    expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(`"Ships from Brooklyn"`)
-    expect(component.find(Sans).at(2).render().text()).toMatchInlineSnapshot(`"Ships within the continental USA"`)
-    expect(component.find(Sans).at(3).render().text()).toMatchInlineSnapshot(`"VAT included in price"`)
+    expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(
+      `"Ships from Brooklyn"`
+    )
+    expect(component.find(Sans).at(2).render().text()).toMatchInlineSnapshot(
+      `"Ships within the continental USA"`
+    )
+    expect(component.find(Sans).at(3).render().text()).toMatchInlineSnapshot(
+      `"VAT included in price"`
+    )
   })
 
   it("hides shipping info for works from closed auctions", () => {

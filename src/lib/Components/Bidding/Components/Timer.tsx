@@ -33,7 +33,10 @@ function formatDate(date: string) {
   return dateInMoment.format(format)
 }
 
-export function relevantStateData(currentState: AuctionTimerState, { liveStartsAt, startsAt, endsAt }: Props) {
+export function relevantStateData(
+  currentState: AuctionTimerState,
+  { liveStartsAt, startsAt, endsAt }: Props
+) {
   switch (currentState) {
     case AuctionTimerState.PREVIEW: {
       if (!startsAt) {

@@ -133,9 +133,15 @@ export const ArtistShows2PaginationContainer = createPaginationContainer(
 
     query: graphql`
       # Here is the query to fetch any specific page
-      query ArtistShows2PastShowsQuery($count: Int!, $cursor: String, $artistID: String!, $status: String!) {
+      query ArtistShows2PastShowsQuery(
+        $count: Int!
+        $cursor: String
+        $artistID: String!
+        $status: String!
+      ) {
         artist(id: $artistID) {
-          ...ArtistShows2_artist @arguments(count: $count, cursor: $cursor, artistID: $artistID, status: $status)
+          ...ArtistShows2_artist
+            @arguments(count: $count, cursor: $cursor, artistID: $artistID, status: $status)
         }
       }
     `,

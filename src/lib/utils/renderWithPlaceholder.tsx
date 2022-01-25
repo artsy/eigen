@@ -75,7 +75,11 @@ export function renderWithPlaceholder<Props>({
         return <Container {...initialProps} {...(props as any)} />
       }
     } else {
-      return <ProvidePlaceholderContext>{renderPlaceholder({ ...placeholderProps })}</ProvidePlaceholderContext>
+      return (
+        <ProvidePlaceholderContext>
+          {renderPlaceholder({ ...placeholderProps })}
+        </ProvidePlaceholderContext>
+      )
     }
   }
 }

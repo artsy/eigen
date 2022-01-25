@@ -1,7 +1,10 @@
 import { SaleLotsListTestsQuery } from "__generated__/SaleLotsListTestsQuery.graphql"
 import { FilterParamName, ViewAsValues } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { FilterParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { InfiniteScrollArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
@@ -10,7 +13,12 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
 import { SaleArtworkListContainer } from "./Components/SaleArtworkList"
-import { FilterDescription, FilterTitle, SaleLotsListContainer, SaleLotsListSortMode } from "./Components/SaleLotsList"
+import {
+  FilterDescription,
+  FilterTitle,
+  SaleLotsListContainer,
+  SaleLotsListSortMode,
+} from "./Components/SaleLotsList"
 
 jest.unmock("react-relay")
 

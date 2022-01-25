@@ -30,11 +30,20 @@ interface Props {
 
 type Sale = SalesRail_salesModule["results"][0]
 
-const SalesRail: React.FC<Props & RailScrollProps> = ({ title, subtitle, scrollRef, salesModule, mb }) => {
+const SalesRail: React.FC<Props & RailScrollProps> = ({
+  title,
+  subtitle,
+  scrollRef,
+  salesModule,
+  mb,
+}) => {
   const listRef = useRef<FlatList<any>>()
   const tracking = useTracking()
 
-  const getSaleSubtitle = (liveStartAt: string | undefined | null, displayTimelyAt: string | undefined | null) => {
+  const getSaleSubtitle = (
+    liveStartAt: string | undefined | null,
+    displayTimelyAt: string | undefined | null
+  ) => {
     const saleSubtitle = !!liveStartAt ? "Live Auction" : "Timed Auction"
     const dateAt = formatDisplayTimelyAt(displayTimelyAt !== undefined ? displayTimelyAt : null)
     if (dateAt) {
@@ -87,7 +96,9 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({ title, subtitle, scrollR
             <CardRailCard
               key={result?.href!}
               onPress={() => {
-                tracking.trackEvent(HomeAnalytics.auctionThumbnailTapEvent(result?.internalID, result?.slug, index))
+                tracking.trackEvent(
+                  HomeAnalytics.auctionThumbnailTapEvent(result?.internalID, result?.slug, index)
+                )
                 const url = result?.liveURLIfOpen ?? result?.href
                 if (url) {
                   navigate(url)
@@ -96,7 +107,11 @@ const SalesRail: React.FC<Props & RailScrollProps> = ({ title, subtitle, scrollR
             >
               <View>
                 <ArtworkImageContainer>
-                  <ImageView width={ARTWORKS_HEIGHT} height={ARTWORKS_HEIGHT} imageURL={artworkImageURLs[0]} />
+                  <ImageView
+                    width={ARTWORKS_HEIGHT}
+                    height={ARTWORKS_HEIGHT}
+                    imageURL={artworkImageURLs[0]}
+                  />
                   <Division />
                   <View>
                     <ImageView

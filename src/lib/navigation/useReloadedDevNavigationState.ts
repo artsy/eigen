@@ -24,7 +24,9 @@ const currentCache: NavStateCache = {
 
 // On dev mode, if the app restarted because of a bundle reload/fast refresh,
 // We want to rehydrate the navigation state
-export async function loadDevNavigationStateCache(switchTabAction: (tabName: BottomTabType) => void) {
+export async function loadDevNavigationStateCache(
+  switchTabAction: (tabName: BottomTabType) => void
+) {
   if (!__DEV__) {
     return
   }

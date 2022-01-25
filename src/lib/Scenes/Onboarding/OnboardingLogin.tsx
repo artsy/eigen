@@ -15,7 +15,8 @@ export const OnboardingLogin: React.FC = () => {
   return <OnboardingSocialPick mode="login" />
 }
 
-export interface OnboardingLoginProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWithEmail"> {}
+export interface OnboardingLoginProps
+  extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWithEmail"> {}
 
 export interface OnboardingLoginValuesSchema {
   email: string
@@ -27,16 +28,28 @@ export const loginSchema = Yup.object().shape({
   password: Yup.string().test("password", "Password field is required", (value) => value !== ""),
 })
 
-export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ navigation, route }) => {
+export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
+  navigation,
+  route,
+}) => {
   const color = useColor()
-  const { values, handleSubmit, handleChange, validateForm, errors, isValid, dirty, isSubmitting, setErrors } =
-    useFormikContext<OnboardingLoginValuesSchema>()
+  const {
+    values,
+    handleSubmit,
+    handleChange,
+    validateForm,
+    errors,
+    isValid,
+    dirty,
+    isSubmitting,
+    setErrors,
+  } = useFormikContext<OnboardingLoginValuesSchema>()
 
   const passwordInputRef = useRef<Input>(null)
   const emailInputRef = useRef<Input>(null)
 
   /**
-   * When we land on OnboardingLogin from the OnboardingCreatAccount
+   * When we land on OnboardingLogin from the OnboardingCreateAccount
    * withFadeAnimation is set to true therefore if the user presses
    * on the back button to navigate to the welcome screen, the screen
    * fades instead of translating horizontally. To avoid that we need
@@ -59,7 +72,10 @@ export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ n
   return (
     <View style={{ flex: 1, backgroundColor: "white", flexGrow: 1 }}>
       <ScrollView
-        contentContainerStyle={{ paddingTop: useScreenDimensions().safeAreaInsets.top, paddingHorizontal: 20 }}
+        contentContainerStyle={{
+          paddingTop: useScreenDimensions().safeAreaInsets.top,
+          paddingHorizontal: 20,
+        }}
         keyboardShouldPersistTaps="always"
       >
         <Spacer mt={60} />
@@ -173,10 +189,16 @@ export const OnboardingLoginWithEmail: React.FC<OnboardingLoginProps> = ({ navig
         email,
         password,
       })
-      if (!res) {
+
+      if (res === "otp_missing") {
+        navigation.navigate("OnboardingLoginWithOTP", { email, password, otpMode: "standard" })
+      } else if (res === "on_demand_otp_missing") {
+        navigation.navigate("OnboardingLoginWithOTP", { email, password, otpMode: "on_demand" })
+      }
+
+      if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
         // For security purposes, we are returning a generic error message
         setErrors({ password: "Incorrect email or password" })
-        validateForm()
       }
     },
     validationSchema: loginSchema,

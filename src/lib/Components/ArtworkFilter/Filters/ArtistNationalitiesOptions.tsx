@@ -12,7 +12,9 @@ const PARAM_NAME = FilterParamName.artistNationalities
 interface ArtistNationalitiesOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "ArtistNationalitiesOptionsScreen"> {}
 
-export const ArtistNationalitiesOptionsScreen: React.FC<ArtistNationalitiesOptionsScreenProps> = ({ navigation }) => {
+export const ArtistNationalitiesOptionsScreen: React.FC<ArtistNationalitiesOptionsScreenProps> = ({
+  navigation,
+}) => {
   const { aggregation } = useArtworkFiltersAggregation({ paramName: PARAM_NAME })
 
   const options: FilterData[] = (aggregation?.counts ?? []).map(({ value: paramValue, name }) => {

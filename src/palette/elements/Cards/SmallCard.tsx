@@ -63,7 +63,9 @@ export const SmallCard: React.FC<SmallCardProps> = ({ images, title, subtitle, t
         </Text>
       )}
 
-      {!!tag && <CardTag {...tag} style={{ position: "absolute", top: space(1), left: space(1) }} />}
+      {!!tag && (
+        <CardTag {...tag} style={{ position: "absolute", top: space(1), left: space(1) }} />
+      )}
     </Box>
   )
 }

@@ -6,7 +6,10 @@ import {
   FilterDisplayName,
   FilterParamName,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworksFiltersStore,
+  useSelectedOptionsDisplay,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { Flex, Input, Spacer } from "palette"
 import React, { useState } from "react"
 import { parsePriceRangeLabel, parseRange, Range } from "./helpers"
@@ -32,13 +35,19 @@ const PRICE_RANGE_OPTIONS: FilterData[] = [
 ]
 
 export const PriceRangeOptionsScreen: React.FC<PriceRangeOptionsScreenProps> = ({ navigation }) => {
-  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.selectFiltersAction
+  )
 
   const selectedOptions = useSelectedOptionsDisplay()
   const selectedFilterOption = selectedOptions.find((option) => option.paramName === PARAM_NAME)!
-  const isCustomOption = PRICE_RANGE_OPTIONS.every((option) => option.paramValue !== selectedFilterOption.paramValue)
+  const isCustomOption = PRICE_RANGE_OPTIONS.every(
+    (option) => option.paramValue !== selectedFilterOption.paramValue
+  )
   const [customPriceValue, setCustomPriceValue] = useState(
-    parseRange(isCustomOption ? (selectedFilterOption.paramValue as string) : DEFAULT_PRICE_OPTION.paramValue)
+    parseRange(
+      isCustomOption ? (selectedFilterOption.paramValue as string) : DEFAULT_PRICE_OPTION.paramValue
+    )
   )
   const [customSelected, setCustomSelected] = useState(isCustomOption)
   const selectedOption = customSelected ? DEFAULT_PRICE_OPTION : selectedFilterOption

@@ -70,7 +70,9 @@ describe("SummarySection", () => {
       }),
     })
 
-    expect(tree.findByProps({ testID: "shippingTotalLabel" }).props.children).toBe("Second Day Air delivery")
+    expect(tree.findByProps({ testID: "shippingTotalLabel" }).props.children).toBe(
+      "Second Day Air delivery"
+    )
   })
 
   it("Render correct shipping name if shipping quote not selected", () => {

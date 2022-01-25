@@ -14,7 +14,13 @@ interface SavedItemRowProps {
   size?: number
 }
 
-export const SavedItemRow: React.FC<SavedItemRowProps> = ({ href, name, image, square_image, size = 60 }) => {
+export const SavedItemRow: React.FC<SavedItemRowProps> = ({
+  href,
+  name,
+  image,
+  square_image,
+  size = 60,
+}) => {
   const color = useColor()
   const imageURL = image?.url
   return (

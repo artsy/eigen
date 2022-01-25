@@ -2,7 +2,10 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { AdminMenuWrapper } from "lib/utils/AdminMenuWrapper"
 import { addTrackingProvider, track } from "lib/utils/track"
-import { SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
+import {
+  SEGMENT_TRACKING_PROVIDER,
+  SegmentTrackingProvider,
+} from "lib/utils/track/SegmentTrackingProvider"
 import { useDeepLinks } from "lib/utils/useDeepLinks"
 import { useStripeConfig } from "lib/utils/useStripeConfig"
 import React, { useEffect } from "react"
@@ -45,7 +48,9 @@ const Main: React.FC<{}> = track()(({}) => {
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
   const onboardingState = GlobalStore.useAppState((state) => state.auth.onboardingState)
-  const forceUpdateMessage = GlobalStore.useAppState((state) => state.config.echo.forceUpdateMessage)
+  const forceUpdateMessage = GlobalStore.useAppState(
+    (state) => state.config.echo.forceUpdateMessage
+  )
 
   useSentryConfig()
   useStripeConfig()

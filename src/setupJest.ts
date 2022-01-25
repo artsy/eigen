@@ -446,7 +446,10 @@ jest.mock("@react-native-async-storage/async-storage", () => {
         delete state[k]
       })
     },
-    multiSet(keyValuePairs: string[][], callback?: ((errors?: string[] | undefined) => void) | undefined) {
+    multiSet(
+      keyValuePairs: string[][],
+      callback?: ((errors?: string[] | undefined) => void) | undefined
+    ) {
       return new Promise((resolve) => {
         for (const keyValue of keyValuePairs) {
           state[keyValue[0]] = keyValue[1]
@@ -465,6 +468,9 @@ jest.mock("react-native-localize", () => ({
       { countryCode: "US", languageTag: "en-US", languageCode: "en", isRTL: false },
       { countryCode: "FR", languageTag: "fr-FR", languageCode: "fr", isRTL: false },
     ]
+  },
+  getCurrencies() {
+    return ["USD", "EUR"]
   },
   getTimeZone() {
     return "America/New_York"

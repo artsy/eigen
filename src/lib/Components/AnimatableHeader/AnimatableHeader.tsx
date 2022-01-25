@@ -71,7 +71,8 @@ const runTiming = (clock: Clock, value: Animated.Value<number>) => {
 export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
   const { title, rightButtonDisabled, rightButtonText, onRightButtonPress } = props
   const { space } = useTheme()
-  const { scrollOffsetY, headerHeight, largeTitleHeight, largeTitleEndEdge, setTitle } = useAnimatableHeaderContext()
+  const { scrollOffsetY, headerHeight, largeTitleHeight, largeTitleEndEdge, setTitle } =
+    useAnimatableHeaderContext()
   const clock = useRef(new Animated.Clock()).current
   const value = useRef(new Animated.Value(0)).current
   const opacity = useRef(runTiming(clock, value)).current

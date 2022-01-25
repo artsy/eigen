@@ -34,8 +34,8 @@ const MyCollectionArtworkDemandIndex: React.FC<MyCollectionArtworkDemandIndexPro
           <>
             <Spacer my={1} />
             <Text>
-              Overall strength of demand for this artist and medium combination. Based on the last 36 months of auction
-              sale data from top commercial auction houses.
+              Overall strength of demand for this artist and medium combination. Based on the last
+              36 months of auction sale data from top commercial auction houses.
             </Text>
           </>
         }
@@ -131,19 +131,22 @@ const ProgressBar: React.FC<{ width: number }> = ({ width }) => {
   )
 }
 
-export const MyCollectionArtworkDemandIndexFragmentContainer = createFragmentContainer(MyCollectionArtworkDemandIndex, {
-  marketPriceInsights: graphql`
-    fragment MyCollectionArtworkDemandIndex_marketPriceInsights on MarketPriceInsights {
-      demandRank
-    }
-  `,
-  artwork: graphql`
-    fragment MyCollectionArtworkDemandIndex_artwork on Artwork {
-      internalID
-      slug
-    }
-  `,
-})
+export const MyCollectionArtworkDemandIndexFragmentContainer = createFragmentContainer(
+  MyCollectionArtworkDemandIndex,
+  {
+    marketPriceInsights: graphql`
+      fragment MyCollectionArtworkDemandIndex_marketPriceInsights on MarketPriceInsights {
+        demandRank
+      }
+    `,
+    artwork: graphql`
+      fragment MyCollectionArtworkDemandIndex_artwork on Artwork {
+        internalID
+        slug
+      }
+    `,
+  }
+)
 
 export const tests = {
   DemandRankScale,

@@ -69,7 +69,11 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   })
 
   const details = []
-  const makeRow = (label: string, value: string, options?: { fullWidth?: boolean; testID?: string }) => (
+  const makeRow = (
+    label: string,
+    value: string,
+    options?: { fullWidth?: boolean; testID?: string }
+  ) => (
     <Flex key={label} mb={1}>
       <Flex style={{ opacity: 0.5 }}>
         <Separator mb={1} />
@@ -119,7 +123,9 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   }
   if (auctionResult.saleDate) {
     details.push(
-      makeRow("Sale date", moment(auctionResult.saleDate).utc().format("MMM D, YYYY"), { testID: "saleDate" })
+      makeRow("Sale date", moment(auctionResult.saleDate).utc().format("MMM D, YYYY"), {
+        testID: "saleDate",
+      })
     )
   }
   if (auctionResult.organization) {
@@ -140,8 +146,8 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
     <>
       <Spacer my={1} />
       <Text>
-        The sale price includes the hammer price and buyer’s premium, as well as any other additional fees (e.g.,
-        Artist’s Resale Rights).
+        The sale price includes the hammer price and buyer’s premium, as well as any other
+        additional fees (e.g., Artist’s Resale Rights).
       </Text>
       <Spacer mb={2} />
     </>
@@ -178,7 +184,9 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
                 alignItems="center"
                 justifyContent="center"
               >
-                {!auctionResult.images?.thumbnail?.url && <NoArtworkIcon width={28} height={28} opacity={0.3} />}
+                {!auctionResult.images?.thumbnail?.url && (
+                  <NoArtworkIcon width={28} height={28} opacity={0.3} />
+                )}
               </Box>
             )}
             <Flex justifyContent="center" flex={1} ml={2}>
@@ -237,7 +245,9 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             Stats
           </Text>
           {details}
-          {!!enableAuctionResultComparableWorks && <ComparableWorksFragmentContainer auctionResult={auctionResult} />}
+          {!!enableAuctionResultComparableWorks && (
+            <ComparableWorksFragmentContainer auctionResult={auctionResult} />
+          )}
         </Box>
         <QAInfo />
       </Animated.ScrollView>
@@ -340,8 +350,14 @@ const LoadingSkeleton = () => {
   for (let i = 0; i < 8; i++) {
     details.push(
       <Flex flexDirection="row" justifyContent="space-between" mb={2} key={i}>
-        <PlaceholderBox width={CONTAINER_HEIGHT + Math.round(Math.random() * CONTAINER_HEIGHT)} height={20} />
-        <PlaceholderBox width={CONTAINER_HEIGHT + Math.round(Math.random() * CONTAINER_HEIGHT)} height={20} />
+        <PlaceholderBox
+          width={CONTAINER_HEIGHT + Math.round(Math.random() * CONTAINER_HEIGHT)}
+          height={20}
+        />
+        <PlaceholderBox
+          width={CONTAINER_HEIGHT + Math.round(Math.random() * CONTAINER_HEIGHT)}
+          height={20}
+        />
       </Flex>
     )
   }

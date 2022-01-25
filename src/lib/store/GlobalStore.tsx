@@ -12,6 +12,7 @@ import { Action, Middleware } from "redux"
 import { version } from "./../../../app.json"
 import { DevToggleName, FeatureName, features } from "./config/features"
 import { FeatureMap } from "./config/FeaturesModel"
+import { VisualClueName } from "./config/visualClues"
 import { getGlobalStoreModel, GlobalStoreModel, GlobalStoreState } from "./GlobalStoreModel"
 import { persistenceMiddleware, unpersist } from "./persistence"
 
@@ -109,7 +110,9 @@ export function useSelectedTab(): BottomTabType {
     return hooks.useStoreState((state) => state.bottomTabs.sessionState.selectedTab)
   }
 
-  const tabState = useNavigationState((state) => state.routes.find((r) => r.state?.type === "tab")?.state)
+  const tabState = useNavigationState(
+    (state) => state.routes.find((r) => r.state?.type === "tab")?.state
+  )
   if (!tabState) {
     return "home"
   } else {
@@ -161,6 +164,18 @@ export function unsafe_getDevToggle(key: DevToggleName) {
   return false
 }
 
+export const useVisualClue = () => {
+  const seenVisualClues = GlobalStore.useAppState((state) => state.visualClue.seenVisualClues)
+
+  const showVisualClue = (clueName?: VisualClueName): boolean => {
+    return !!clueName && !seenVisualClues.includes(clueName)
+  }
+
+  return { seenVisualClues, showVisualClue }
+}
+
+export const setVisualClueAsSeen = GlobalStore.actions.visualClue.setVisualClueAsSeen
+
 export function unsafe_getUserAccessToken() {
   const state = globalStoreInstance().getState() ?? null
   if (state) {
@@ -200,7 +215,9 @@ export function unsafe__getSelectedTab(): BottomTabType {
   if (Platform.OS === "ios") {
     return globalStoreInstance().getState().bottomTabs.sessionState.selectedTab
   }
-  const tabState = __unsafe_mainModalStackRef.current?.getRootState().routes.find((r) => r.state?.type === "tab")?.state
+  const tabState = __unsafe_mainModalStackRef.current
+    ?.getRootState()
+    .routes.find((r) => r.state?.type === "tab")?.state
   if (!tabState) {
     return "home"
   } else {

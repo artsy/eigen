@@ -47,7 +47,9 @@ export const TrackOrderSection: FC<Props> = ({ section }) => {
           <Text testID="shippedOn" variant="sm" color="black60">
             Shipped on&nbsp;
             <Text variant="sm" color="black60" weight={!deliveredStatus ? "medium" : "regular"}>
-              {DateTime.fromISO(shipment?.deliveryStart || createdAt).toLocaleString(DateTime.DATE_MED)}
+              {DateTime.fromISO(shipment?.deliveryStart || createdAt).toLocaleString(
+                DateTime.DATE_MED
+              )}
             </Text>
           </Text>
         )}
@@ -76,7 +78,13 @@ export const TrackOrderSection: FC<Props> = ({ section }) => {
           </>
         )}
         {!!trackingUrl && (
-          <Button testID="trackingUrl" mt={2} block variant="fillDark" onPress={() => Linking.openURL(trackingUrl)}>
+          <Button
+            testID="trackingUrl"
+            mt={2}
+            block
+            variant="fillDark"
+            onPress={() => Linking.openURL(trackingUrl)}
+          >
             View full tracking details
           </Button>
         )}

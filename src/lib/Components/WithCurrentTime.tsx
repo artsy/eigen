@@ -31,7 +31,11 @@ interface WithCurrentTimeProps {
   children: (currentTime: string) => React.ReactElement<any>
 }
 
-export const WithCurrentTime: React.FC<WithCurrentTimeProps> = ({ children, interval = 1000, syncWithServer }) => {
+export const WithCurrentTime: React.FC<WithCurrentTimeProps> = ({
+  children,
+  interval = 1000,
+  syncWithServer,
+}) => {
   const [currentTime, setCurrentTime] = useState(getCurrentTimeAsIsoString())
   const [timeOffsetInMilliseconds, setTimeOffsetInMilliseconds] = useState(0)
   let intervalId: NodeJS.Timeout
@@ -54,5 +58,7 @@ export const WithCurrentTime: React.FC<WithCurrentTimeProps> = ({ children, inte
     }
   }, [])
 
-  return children(DateTime.fromISO(currentTime).minus({ millisecond: timeOffsetInMilliseconds }).toString())
+  return children(
+    DateTime.fromISO(currentTime).minus({ millisecond: timeOffsetInMilliseconds }).toString()
+  )
 }

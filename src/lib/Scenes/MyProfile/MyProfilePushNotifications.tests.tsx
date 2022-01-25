@@ -64,7 +64,9 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
   it("renders without throwing an error", () => {
     const tree = renderWithWrappers(<MyProfilePushNotificationsQueryRenderer />)
 
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("MyProfilePushNotificationsQuery")
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+      "MyProfilePushNotificationsQuery"
+    )
 
     act(() => {
       env.mock.resolveMostRecentOperation({
@@ -94,7 +96,9 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
     Platform.OS = "ios"
     const tree = renderWithWrappers(<MyProfilePushNotificationsQueryRenderer />)
 
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("MyProfilePushNotificationsQuery")
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+      "MyProfilePushNotificationsQuery"
+    )
 
     act(() => {
       env.mock.resolveMostRecentOperation({
@@ -121,7 +125,9 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
 
     const tree = renderWithWrappers(<MyProfilePushNotificationsQueryRenderer />)
 
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("MyProfilePushNotificationsQuery")
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+      "MyProfilePushNotificationsQuery"
+    )
 
     act(() => {
       env.mock.resolveMostRecentOperation({
@@ -143,7 +149,9 @@ describe(MyProfilePushNotificationsQueryRenderer, () => {
   })
 
   it("should show the open settings banner on iOS if the user did not allow push notifications", async () => {
-    mockFetchNotificationPermissions(false).mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Denied))
+    mockFetchNotificationPermissions(false).mockImplementationOnce((cb) =>
+      cb(null, PushAuthorizationStatus.Denied)
+    )
     Platform.OS = "ios"
     const tree = renderWithWrappers(<MyProfilePushNotificationsQueryRenderer />)
 

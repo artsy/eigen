@@ -14,7 +14,9 @@ interface Props {
 
 const About: React.FC<Props> = ({ gene }) => {
   const relatedArtists = () => {
-    return (gene.trending_artists || []).length ? <RelatedArtists artists={gene.trending_artists as any} /> : null
+    return (gene.trending_artists || []).length ? (
+      <RelatedArtists artists={gene.trending_artists as any} />
+    ) : null
   }
 
   return (

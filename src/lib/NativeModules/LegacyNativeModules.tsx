@@ -6,7 +6,8 @@ import type { Image as RNCImage } from "react-native-image-crop-picker"
 import { getLocales, getTimeZone } from "react-native-localize"
 import { ARScreenPresenterModule } from "./ARScreenPresenterModule"
 
-const noop: any = (name: string) => () => console.warn(`method ${name} doesn't exist on android yet`)
+const noop: any = (name: string) => () =>
+  console.warn(`method ${name} doesn't exist on android yet`)
 
 /**
  * This file is a gateway to our iOS-specific native modules that either
@@ -36,7 +37,9 @@ interface LegacyNativeModules {
   ARTemporaryAPIModule: {
     requestPrepromptNotificationPermissions(): void
     requestDirectNotificationPermissions(): void
-    fetchNotificationPermissions(callback: (error: any, result: PushAuthorizationStatus) => void): void
+    fetchNotificationPermissions(
+      callback: (error: any, result: PushAuthorizationStatus) => void
+    ): void
     markNotificationsRead(callback: (error?: Error) => any): void
     setApplicationIconBadgeNumber(n: number): void
     getUserEmail(): string
@@ -76,7 +79,12 @@ interface LegacyNativeModules {
     popStack(stackID: string): void
     popToRootOrScrollToTop(stackID: string): void
     popToRootAndScrollToTop(stackID: string): Promise<void>
-    presentMediaPreviewController(reactTag: number, route: string, mimeType: string, cacheKey: string): void
+    presentMediaPreviewController(
+      reactTag: number,
+      route: string,
+      mimeType: string,
+      cacheKey: string
+    ): void
     presentEmailComposerWithBody(body: string, subject: string, toAddress: string): void
     presentEmailComposerWithSubject(subject: string, toAddress: string): void
     presentAugmentedRealityVIR(

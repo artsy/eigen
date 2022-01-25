@@ -23,7 +23,9 @@ describe("SectionTitle", () => {
 
   it(`renders a right arrow when given an 'onPress' prop`, async () => {
     const onPress = jest.fn()
-    const tree = renderWithWrappers(<SectionTitle title="Hello" subtitle="welcome to test" onPress={onPress} />)
+    const tree = renderWithWrappers(
+      <SectionTitle title="Hello" subtitle="welcome to test" onPress={onPress} />
+    )
 
     expect(extractText(tree.root.findByProps({ testID: "title" }))).toContain("Hello")
     expect(extractText(tree.root.findByProps({ testID: "subtitle" }))).toBe("welcome to test")

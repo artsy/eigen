@@ -47,7 +47,10 @@ export const TagArtworks: React.FC<TagArtworksProps> = ({ tag, relay, openFilter
       <Box backgroundColor="white">
         <Spacer mb={1} />
         <Separator />
-        <ArtworksFilterHeader selectedFiltersCount={selectedFiltersCount} onFilterPress={openFilterModal} />
+        <ArtworksFilterHeader
+          selectedFiltersCount={selectedFiltersCount}
+          onFilterPress={openFilterModal}
+        />
       </Box>
     )
   }, [artworksTotal, openFilterModal])
@@ -185,7 +188,12 @@ export const TagArtworksPaginationContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query TagArtworksPaginationQuery($id: String!, $count: Int!, $cursor: String, $input: FilterArtworksInput) {
+      query TagArtworksPaginationQuery(
+        $id: String!
+        $count: Int!
+        $cursor: String
+        $input: FilterArtworksInput
+      ) {
         tag(id: $id) {
           ...TagArtworks_tag @arguments(count: $count, cursor: $cursor, input: $input)
         }

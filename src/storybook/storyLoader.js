@@ -4,9 +4,6 @@
 // https://github.com/elderfo/react-native-storybook-loader.git
 
 function loadStories() {
-  require("../lib/Components/ArtworkGrids/ArtworksFilterHeader.stories")
-  require("../lib/Components/PopoverMessage/PopoverMessage.stories")
-  require("../lib/Components/ReadMore.stories")
   require("../palette/colors.stories")
   require("../palette/elements/Avatar/Avatar.stories")
   require("../palette/elements/Banner/Banner.stories")
@@ -23,12 +20,13 @@ function loadStories() {
   require("../palette/elements/Text/Text.stories")
   require("../palette/icons.stories")
   require("../palette/space.stories")
+  require("../palette/elements/VisualClue/VisualClue.stories")
+  require("../lib/Components/ArtworkGrids/ArtworksFilterHeader.stories")
+  require("../lib/Components/PopoverMessage/PopoverMessage.stories")
+  require("../lib/Components/ReadMore.stories")
 }
 
 const stories = [
-  "../lib/Components/ArtworkGrids/ArtworksFilterHeader.stories",
-  "../lib/Components/PopoverMessage/PopoverMessage.stories",
-  "../lib/Components/ReadMore.stories",
   "../palette/colors.stories",
   "../palette/elements/Avatar/Avatar.stories",
   "../palette/elements/Banner/Banner.stories",
@@ -45,6 +43,10 @@ const stories = [
   "../palette/elements/Text/Text.stories",
   "../palette/icons.stories",
   "../palette/space.stories",
+  "../palette/elements/VisualClue/VisualClue.stories",
+  "../lib/Components/ArtworkGrids/ArtworksFilterHeader.stories",
+  "../lib/Components/PopoverMessage/PopoverMessage.stories",
+  "../lib/Components/ReadMore.stories",
 ]
 
 module.exports = {

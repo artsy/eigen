@@ -61,10 +61,14 @@ export const getEchoModel = (): EchoModel => ({
       actions.fetchRemoteEcho()
     }
   ),
-  stripePublishableKey: computed([(_, store) => store.config.environment.env, (state) => state], (env, state) => {
-    const key = env === "production" ? "StripeProductionPublishableKey" : "StripeStagingPublishableKey"
-    return state.state.messages.find((e) => e.name === key)?.content!
-  }),
+  stripePublishableKey: computed(
+    [(_, store) => store.config.environment.env, (state) => state],
+    (env, state) => {
+      const key =
+        env === "production" ? "StripeProductionPublishableKey" : "StripeStagingPublishableKey"
+      return state.state.messages.find((e) => e.name === key)?.content!
+    }
+  ),
   forceUpdateMessage: computed((state) => {
     const appVersion = appJson().version
     const killedVersions = state.state.killedVersions

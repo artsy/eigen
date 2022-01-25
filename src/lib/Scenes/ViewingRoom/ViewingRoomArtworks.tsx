@@ -124,7 +124,12 @@ export const tracks = {
     context_screen_owner_id: viewingRoomID,
     context_screen_owner_slug: viewingRoomSlug,
   }),
-  tappedArtworkGroup: (viewingRoomID: string, viewingRoomSlug: string, artworkID: string, artworkSlug: string) => ({
+  tappedArtworkGroup: (
+    viewingRoomID: string,
+    viewingRoomSlug: string,
+    artworkID: string,
+    artworkSlug: string
+  ) => ({
     action: Schema.ActionNames.TappedArtworkGroup,
     context_module: Schema.ContextModules.ArtworkGrid,
     destination_screen: Schema.PageNames.ViewingRoomArtworkPage,
@@ -141,10 +146,14 @@ export const ViewingRoomArtworksContainer = createPaginationContainer(
   {
     viewingRoom: graphql`
       fragment ViewingRoomArtworks_viewingRoom on ViewingRoom
-      @argumentDefinitions(count: { type: "Int", defaultValue: 5 }, cursor: { type: "String", defaultValue: "" }) {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 5 }
+        cursor: { type: "String", defaultValue: "" }
+      ) {
         internalID
         slug
-        artworksConnection(first: $count, after: $cursor) @connection(key: "ViewingRoomArtworks_artworksConnection") {
+        artworksConnection(first: $count, after: $cursor)
+          @connection(key: "ViewingRoomArtworks_artworksConnection") {
           edges {
             node {
               additionalInformation

@@ -9,7 +9,9 @@ describe("Collapse", () => {
   })
 
   it("is not visible (height: 0) when open is false", () => {
-    const component = mount(<Collapse open={false}>The elegant spiral of the Nautilus ...</Collapse>)
+    const component = mount(
+      <Collapse open={false}>The elegant spiral of the Nautilus ...</Collapse>
+    )
 
     expect(component.find("div").prop("style")).toHaveProperty("height", "0px")
   })

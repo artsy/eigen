@@ -29,7 +29,12 @@ interface CacheRecord {
   expires: number
 }
 
-export async function set(queryID: string, variables: object, response: string | null, ttlSeconds: number = 0) {
+export async function set(
+  queryID: string,
+  variables: object,
+  response: string | null,
+  ttlSeconds: number = 0
+) {
   if (ttlSeconds === 0) {
     // default should be one day according to objc code
     ttlSeconds = 60 * 60 * 24

@@ -78,7 +78,9 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   }
 
   if (searchResults?.nbHits === 0) {
-    const article = ALGOLIA_INDICES_WITH_AN_ARTICLE.includes(selectedPill.key as AlgoliaIndexKey) ? "an" : "a"
+    const article = ALGOLIA_INDICES_WITH_AN_ARTICLE.includes(selectedPill.key as AlgoliaIndexKey)
+      ? "an"
+      : "a"
 
     return (
       <Box px={2} py={1}>
@@ -102,7 +104,11 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
       keyExtractor={(item) => item.objectID}
       ItemSeparatorComponent={() => <Spacer mb={2} />}
       renderItem={({ item }) => (
-        <SearchResult result={item} selectedPill={selectedPill} trackResultPress={trackResultPress} />
+        <SearchResult
+          result={item}
+          selectedPill={selectedPill}
+          trackResultPress={trackResultPress}
+        />
       )}
       onEndReached={loadMore}
       ListFooterComponent={

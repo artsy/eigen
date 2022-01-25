@@ -209,7 +209,9 @@ export class Inquiry extends React.Component<Props, State> {
               value={message || undefined}
               keyboardAppearance="dark"
               multiline
-              autoFocus={typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */}
+              autoFocus={
+                typeof jest === "undefined" /* TODO: https://github.com/facebook/jest/issues/3707 */
+              }
               onEndEditing={() => {
                 this.setState({ text: null })
               }}

@@ -6,7 +6,10 @@ import {
   FilterDisplayName,
   FilterParamName,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworksFiltersStore,
+  useSelectedOptionsDisplay,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
 import { sortBy } from "lodash"
@@ -17,10 +20,14 @@ import { useMultiSelect } from "./useMultiSelect"
 interface ArtistIDsArtworksOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "ArtistIDsOptionsScreen"> {}
 
-export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsScreenProps> = ({ navigation }) => {
+export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsScreenProps> = ({
+  navigation,
+}) => {
   const selectedOptions = useSelectedOptionsDisplay()
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
-  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.selectFiltersAction
+  )
   const counts = ArtworksFiltersStore.useStoreState((state) => state.counts)
   const filterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
   const localFilterOptions = ArtworksFiltersStore.useStoreState((state) => state.filterOptions)
@@ -31,7 +38,8 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
 
   let artistDisplayOptions: FilterData[] = []
   if (filterType === "local") {
-    artistDisplayOptions = (localFilterOptions ?? []).find((o) => o.filterType === "artistIDs")!.values!
+    artistDisplayOptions = (localFilterOptions ?? []).find((o) => o.filterType === "artistIDs")!
+      .values!
   } else {
     const aggregation = aggregationForFilter(FilterParamName.artistIDs, aggregations)
     artistDisplayOptions =
@@ -50,7 +58,10 @@ export const ArtistIDsArtworksOptionsScreen: React.FC<ArtistIDsArtworksOptionsSc
     paramName: FilterParamName.artistIDs,
   })
 
-  const formattedArtistOptions = artistDisplayOptions.map((option) => ({ ...option, paramValue: isSelected(option) }))
+  const formattedArtistOptions = artistDisplayOptions.map((option) => ({
+    ...option,
+    paramValue: isSelected(option),
+  }))
   const sortedArtistOptions = sortBy(formattedArtistOptions, ["displayText"])
 
   // If FOLLOWED_ARTISTS is included in the list of available aggregations, it means

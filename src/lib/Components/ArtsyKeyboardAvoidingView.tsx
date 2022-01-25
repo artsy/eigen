@@ -28,7 +28,9 @@ export const ArtsyKeyboardAvoidingViewContext = React.createContext({
 })
 
 export const ArtsyKeyboardAvoidingView: React.FC<{}> = ({ children }) => {
-  const { isPresentedModally, isVisible, bottomOffset } = useContext(ArtsyKeyboardAvoidingViewContext)
+  const { isPresentedModally, isVisible, bottomOffset } = useContext(
+    ArtsyKeyboardAvoidingViewContext
+  )
 
   return (
     <KeyboardAvoidingView
@@ -142,7 +144,9 @@ class KeyboardAvoidingView extends React.Component<
 
   componentDidMount(): void {
     if (Platform.OS === "ios") {
-      this._subscriptions = [Keyboard.addListener("keyboardWillChangeFrame", this._onKeyboardChange)]
+      this._subscriptions = [
+        Keyboard.addListener("keyboardWillChangeFrame", this._onKeyboardChange),
+      ]
     } else {
       this._subscriptions = [
         Keyboard.addListener("keyboardDidHide", this._onKeyboardChange),

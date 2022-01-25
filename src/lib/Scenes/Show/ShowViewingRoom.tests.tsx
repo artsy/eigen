@@ -42,7 +42,9 @@ describe("ShowViewingRoom", () => {
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
-      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, mockResolvers)
+      )
     })
     return tree
   }
@@ -62,7 +64,10 @@ describe("ShowViewingRoom", () => {
   it("tracks taps", () => {
     const wrapper = getWrapper({
       Show: () => ({ internalID: "example-show-id", slug: "example-slug" }),
-      ViewingRoom: () => ({ internalID: "example-viewing-room-id", slug: "example-viewing-room-slug" }),
+      ViewingRoom: () => ({
+        internalID: "example-viewing-room-id",
+        slug: "example-viewing-room-slug",
+      }),
     })
 
     act(() => {

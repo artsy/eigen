@@ -1,13 +1,22 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistArtworks_artist } from "__generated__/ArtistArtworks_artist.graphql"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
-import { Aggregations, filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  Aggregations,
+  filterArtworksParams,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  ArtworkFiltersStoreProvider,
+  ArtworksFiltersStore,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { ORDERED_ARTWORK_SORTS } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { convertSavedSearchCriteriaToFilterParams } from "lib/Components/ArtworkFilter/SavedSearch/convertersToFilterParams"
 import { getAllowedFiltersForSavedSearchInput } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
-import { useArtworkFilters, useSelectedFiltersCount } from "lib/Components/ArtworkFilter/useArtworkFilters"
+import {
+  useArtworkFilters,
+  useSelectedFiltersCount,
+} from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/ArtworksFilterHeader"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import {
@@ -71,7 +80,12 @@ const ArtworksGrid: React.FC<ArtworksGridProps> = ({ artist, relay, ...props }) 
   return (
     <ArtworkFiltersStoreProvider>
       <StickyTabPageScrollView>
-        <ArtistArtworksContainer {...props} artist={artist} relay={relay} openFilterModal={openFilterArtworksModal} />
+        <ArtistArtworksContainer
+          {...props}
+          artist={artist}
+          relay={relay}
+          openFilterModal={openFilterArtworksModal}
+        />
         <ArtworkFilterNavigator
           {...props}
           id={artist.internalID}
@@ -103,7 +117,9 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
   const appliedFilters = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
-  const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions((state) => state.setInitialFilterStateAction)
+  const setInitialFilterStateAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.setInitialFilterStateAction
+  )
 
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
 
@@ -116,7 +132,8 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
   const artworks = artist.artworks
   const artworksCount = artworks?.edges?.length
   const artworksTotal = artworks?.counts?.total ?? 0
-  const shouldShowSavedSearchButton = allowedFiltersForSavedSearch.length > 0 || isEnabledImprovedAlertsFlow
+  const shouldShowSavedSearchButton =
+    allowedFiltersForSavedSearch.length > 0 || isEnabledImprovedAlertsFlow
 
   useArtworkFilters({
     relay,
@@ -130,7 +147,9 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
         searchCriteria,
         artist.aggregations.aggregations as Aggregations
       )
-      const sortFilterItem = ORDERED_ARTWORK_SORTS.find((sortEntity) => sortEntity.paramValue === "-published_at")
+      const sortFilterItem = ORDERED_ARTWORK_SORTS.find(
+        (sortEntity) => sortEntity.paramValue === "-published_at"
+      )
 
       setInitialFilterStateAction([...params, sortFilterItem!])
     }
@@ -284,7 +303,12 @@ export default createPaginationContainer(
       }
     },
     query: graphql`
-      query ArtistArtworksQuery($id: ID!, $count: Int!, $cursor: String, $input: FilterArtworksInput) {
+      query ArtistArtworksQuery(
+        $id: ID!
+        $count: Int!
+        $cursor: String
+        $input: FilterArtworksInput
+      ) {
         node(id: $id) {
           ... on Artist {
             ...ArtistArtworks_artist @arguments(count: $count, cursor: $cursor, input: $input)

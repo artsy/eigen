@@ -108,7 +108,9 @@ describe("Echo", () => {
       GlobalStore.actions.__manipulate((state) => {
         state.config.echo.state = echoConfig
       })
-      expect(forceUpdateMessage()).toEqual("New app version required. Please update your Artsy app to continue.")
+      expect(forceUpdateMessage()).toEqual(
+        "New app version required. Please update your Artsy app to continue."
+      )
     })
 
     it("when the version number is exactly the minumum required version", () => {

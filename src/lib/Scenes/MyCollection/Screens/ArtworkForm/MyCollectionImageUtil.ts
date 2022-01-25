@@ -32,7 +32,9 @@ export const removeLocalPhotos = (slug: string) => {
  */
 export const uploadPhotos = async (photos: ArtworkFormValues["photos"]) => {
   // only recently added photos have a path
-  const imagePaths: string[] = photos.map((photo) => photo.path).filter((path): path is string => path !== undefined)
+  const imagePaths: string[] = photos
+    .map((photo) => photo.path)
+    .filter((path): path is string => path !== undefined)
   const externalImageUrls: string[] = []
 
   for (const path of imagePaths) {

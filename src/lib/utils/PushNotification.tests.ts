@@ -84,7 +84,10 @@ describe("Push Notification Tests", () => {
     const notification = {
       channelId: "fcm_fallback_notification_channel",
       color: null,
-      data: { url: "https://www.artsy.net/artwork/fabrice-monteiro-signares-number-3-goree", id: "0" },
+      data: {
+        url: "https://www.artsy.net/artwork/fabrice-monteiro-signares-number-3-goree",
+        id: "0",
+      },
       finish: () => {
         //
       },
@@ -103,12 +106,12 @@ describe("Push Notification Tests", () => {
 
     it("Saves tapped notification When a user is not logged in", () => {
       Push.handleReceivedNotification(notification)
-      expect(__globalStoreTestUtils__?.getCurrentState().pendingPushNotification.notification).toHaveProperty(
-        "tappedAt"
-      )
-      expect(__globalStoreTestUtils__?.getCurrentState().pendingPushNotification.notification?.data).toEqual(
-        notification.data
-      )
+      expect(
+        __globalStoreTestUtils__?.getCurrentState().pendingPushNotification.notification
+      ).toHaveProperty("tappedAt")
+      expect(
+        __globalStoreTestUtils__?.getCurrentState().pendingPushNotification.notification?.data
+      ).toEqual(notification.data)
       // notification is not handled
       expect(navigate).not.toHaveBeenCalled()
     })
@@ -150,7 +153,8 @@ describe("Push Notification Tests", () => {
 
     it("Pending Notification: navigates to appropriate screen when called", () => {
       Push.handleReceivedNotification(notification)
-      const pendingNotification = __globalStoreTestUtils__?.getCurrentState().pendingPushNotification.notification
+      const pendingNotification =
+        __globalStoreTestUtils__?.getCurrentState().pendingPushNotification.notification
       Push.handlePendingNotification(pendingNotification as PendingPushNotification)
       expect(navigate).toHaveBeenNthCalledWith(1, notification.data.url, {
         passProps: notification.data,

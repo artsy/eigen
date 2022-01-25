@@ -26,7 +26,11 @@ export const PhoneInput = React.forwardRef<
   const initialValues = cleanUserPhoneNumber(value ?? "")
   const [countryCode, setCountryCode] = useState<string>(initialValues.countryCode)
   const [phoneNumber, setPhoneNumber] = useState(
-    formatPhoneNumber({ current: initialValues.phoneNumber, previous: initialValues.phoneNumber, countryCode })
+    formatPhoneNumber({
+      current: initialValues.phoneNumber,
+      previous: initialValues.phoneNumber,
+      countryCode,
+    })
   )
   const [validationMessage, setValidationMessage] = useState<string | undefined>(undefined)
   const dialCode = countryIndex[countryCode].dialCode
@@ -105,7 +109,9 @@ export const PhoneInput = React.forwardRef<
         placeholder={countryIndex[countryCode]?.mask?.replace(/9/g, "0")}
         placeholderTextColor={color("black30")}
         onChangeText={(newPhoneNumber) =>
-          setPhoneNumber(formatPhoneNumber({ current: newPhoneNumber, previous: phoneNumber, countryCode }))
+          setPhoneNumber(
+            formatPhoneNumber({ current: newPhoneNumber, previous: phoneNumber, countryCode })
+          )
         }
         keyboardType="phone-pad"
         renderLeftHandSection={() => (
@@ -120,7 +126,11 @@ export const PhoneInput = React.forwardRef<
             onSelectValue={(newCountryCode) => {
               setCountryCode(newCountryCode)
               setPhoneNumber(
-                formatPhoneNumber({ current: phoneNumber, previous: phoneNumber, countryCode: newCountryCode })
+                formatPhoneNumber({
+                  current: phoneNumber,
+                  previous: phoneNumber,
+                  countryCode: newCountryCode,
+                })
               )
             }}
             title="Country code"

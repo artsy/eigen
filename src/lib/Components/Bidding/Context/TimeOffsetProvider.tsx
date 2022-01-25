@@ -33,7 +33,8 @@ const getGravityTimestampInMilliSeconds = async () => {
   const system = systemTimeResponse?.system
 
   const possibleNetworkLatencyInMilliSeconds = (getLocalTimestampInMilliSeconds() - startTime) / 2
-  const serverTimestampInMilliSeconds = (system?.time?.unix || 0) * 1e3 + possibleNetworkLatencyInMilliSeconds
+  const serverTimestampInMilliSeconds =
+    (system?.time?.unix || 0) * 1e3 + possibleNetworkLatencyInMilliSeconds
 
   if (__DEV__) {
     if (typeof jest === "undefined") {

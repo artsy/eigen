@@ -1,12 +1,19 @@
 import { fireEvent } from "@testing-library/react-native"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { CategoriesOptionsScreen } from "./CategoriesOptions"
 import { getEssentialProps } from "./helper"
 
 describe("Categories options screen", () => {
-  const MockCategoryScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
+  const MockCategoryScreen = ({
+    initialData = initialState,
+  }: {
+    initialData?: ArtworkFiltersState
+  }) => {
     return (
       <ArtworkFiltersStoreProvider initialData={initialData}>
         <CategoriesOptionsScreen {...getEssentialProps()} />

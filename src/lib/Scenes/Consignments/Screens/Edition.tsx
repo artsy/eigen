@@ -48,21 +48,35 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
   updateCert = () => this.setState({ certificateOfAuth: !this.state.certificateOfAuth })
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  updateEditionSize = (text) => this.setState({ editionInfo: { ...this.state.editionInfo, size: text } })
+  updateEditionSize = (text) =>
+    this.setState({ editionInfo: { ...this.state.editionInfo, size: text } })
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  updateEditionNumber = (text) => this.setState({ editionInfo: { ...this.state.editionInfo, number: text } })
+  updateEditionNumber = (text) =>
+    this.setState({ editionInfo: { ...this.state.editionInfo, number: text } })
 
   render() {
     return (
       <BottomAlignedButton onPress={this.doneTapped} buttonText="Done">
-        <FancyModalHeader onLeftButtonPress={this.doneTapped}>Edition & Authenticity</FancyModalHeader>
+        <FancyModalHeader onLeftButtonPress={this.doneTapped}>
+          Edition & Authenticity
+        </FancyModalHeader>
         <Flex style={{ flex: 1 }} p={1}>
           <Form>
-            <Flex justifyContent="space-between" alignItems="center" flexDirection="row" flexWrap="nowrap">
+            <Flex
+              justifyContent="space-between"
+              alignItems="center"
+              flexDirection="row"
+              flexWrap="nowrap"
+            >
               <Flex style={{ flex: 1 }}>
                 <Sans size="4">Is this an edition?</Sans>
               </Flex>
-              <Toggle selected={!!this.state.editionInfo} left="Yes" right="No" onPress={this.updateEdition} />
+              <Toggle
+                selected={!!this.state.editionInfo}
+                left="Yes"
+                right="No"
+                onPress={this.updateEdition}
+              />
             </Flex>
             <Spacer mb={2} />
             {this.state.editionInfo ? (
@@ -88,7 +102,12 @@ export default class Edition extends React.Component<Props, ConsignmentSetup> {
                 <Spacer mb={2} />
               </>
             ) : null}
-            <Flex justifyContent="space-between" alignItems="center" flexDirection="row" flexWrap="nowrap">
+            <Flex
+              justifyContent="space-between"
+              alignItems="center"
+              flexDirection="row"
+              flexWrap="nowrap"
+            >
               <Flex style={{ flex: 1 }}>
                 <Sans size="4">Is this work signed?</Sans>
               </Flex>

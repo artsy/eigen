@@ -7,7 +7,10 @@ import React, { useEffect, useRef, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { string } from "yup"
 import { MyAccountEditEmail_me } from "../../../__generated__/MyAccountEditEmail_me.graphql"
-import { MyAccountFieldEditScreen, MyAccountFieldEditScreenPlaceholder } from "./Components/MyAccountFieldEditScreen"
+import {
+  MyAccountFieldEditScreen,
+  MyAccountFieldEditScreenPlaceholder,
+} from "./Components/MyAccountFieldEditScreen"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
 const MyAccountEditEmail: React.FC<{ me: MyAccountEditEmail_me; relay: RelayProp }> = ({ me }) => {

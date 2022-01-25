@@ -1,11 +1,19 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
-import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  FilterData,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  ArtworksFiltersStore,
+  useSelectedOptionsDisplay,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import React from "react"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface SortOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "SortOptionsScreen"> {}
+interface SortOptionsScreenProps
+  extends StackScreenProps<ArtworkFilterNavigationStack, "SortOptionsScreen"> {}
 
 // Sorting types
 enum ArtworkSorts {
@@ -132,10 +140,14 @@ export const ORDERED_AUCTION_RESULTS_SORTS: FilterData[] = [
 export const SortOptionsScreen: React.FC<SortOptionsScreenProps> = ({ navigation }) => {
   const filterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
   const localSortOptions = ArtworksFiltersStore.useStoreState((state) => state.sortOptions)
-  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.selectFiltersAction
+  )
 
   const selectedOptions = useSelectedOptionsDisplay()
-  const selectedOption = selectedOptions.find((option) => option.paramName === FilterParamName.sort)!
+  const selectedOption = selectedOptions.find(
+    (option) => option.paramName === FilterParamName.sort
+  )!
 
   const filterOptions = {
     artwork: [DEFAULT_ARTWORK_SORT, ...ORDERED_ARTWORK_SORTS],

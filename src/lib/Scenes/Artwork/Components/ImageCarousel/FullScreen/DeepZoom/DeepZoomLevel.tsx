@@ -58,8 +58,12 @@ export const DeepZoomLevel: React.FC<{
   const transform = useMemo(() => {
     // in debug mode we ignore the controlling ScrollView so that it doesn't zoom or pan and you can see the whole pyramid at a glance
     const zoomScale = VISUAL_DEBUG_MODE ? 1 : $zoomScale
-    const contentOffsetY = VISUAL_DEBUG_MODE ? -imageFittedWithinScreen.marginVertical : $contentOffsetY
-    const contentOffsetX = VISUAL_DEBUG_MODE ? -imageFittedWithinScreen.marginHorizontal : $contentOffsetX
+    const contentOffsetY = VISUAL_DEBUG_MODE
+      ? -imageFittedWithinScreen.marginVertical
+      : $contentOffsetY
+    const contentOffsetX = VISUAL_DEBUG_MODE
+      ? -imageFittedWithinScreen.marginHorizontal
+      : $contentOffsetX
 
     // the first thing we want to do is place this level directly over the place where the base
     // image in the scroll view is (so, centered on screen when zoomScale === 1)

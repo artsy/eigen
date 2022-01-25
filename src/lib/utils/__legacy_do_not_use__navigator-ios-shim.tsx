@@ -13,7 +13,10 @@ interface ScreenProps {
 const ScreenWrapper: React.FC<{ route: { params: ScreenProps } }> = (props) => {
   return (
     <View style={{ flex: 1, backgroundColor: "white" }}>
-      <props.route.params.Component {...props.route.params.props} navigator={props.route.params.navigator} />
+      <props.route.params.Component
+        {...props.route.params.props}
+        navigator={props.route.params.navigator}
+      />
     </View>
   )
 }
@@ -45,7 +48,11 @@ class NavigatorIOS extends React.Component<{
     return (
       <NavigationContainer ref={(ref) => (this.navigator = ref)} independent>
         <Stack.Navigator screenOptions={{ headerShown: false, stackAnimation: "slide_from_right" }}>
-          <Stack.Screen component={ScreenWrapper} name="screen" initialParams={initialScreenParams} />
+          <Stack.Screen
+            component={ScreenWrapper}
+            name="screen"
+            initialParams={initialScreenParams}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     )

@@ -8,7 +8,9 @@ import { CollectionGroupMemberPill, OtherCollectionsRail } from "./OtherCollecti
 
 describe("Other Collections Rail", () => {
   const TestRenderer = () => (
-    <OtherCollectionsRail {...({ collectionGroup: CollectionHubRailsOtherCollectionsRailFixture } as any)} />
+    <OtherCollectionsRail
+      {...({ collectionGroup: CollectionHubRailsOtherCollectionsRailFixture } as any)}
+    />
   )
 
   it("renders a title", () => {
@@ -23,11 +25,9 @@ describe("Other Collections Rail", () => {
   it("renders the other collection pills", () => {
     const { root } = renderWithWrappers(<TestRenderer />)
 
-    expect(root.findAllByType(CollectionGroupMemberPill).map(({ props: { children } }) => children)).toEqual([
-      "Abstract Expressionist Art",
-      "Arte Povera",
-      "Black Arts Movement",
-    ])
+    expect(
+      root.findAllByType(CollectionGroupMemberPill).map(({ props: { children } }) => children)
+    ).toEqual(["Abstract Expressionist Art", "Arte Povera", "Black Arts Movement"])
   })
 
   it("navigates to a new collection when a pill is tapped", () => {

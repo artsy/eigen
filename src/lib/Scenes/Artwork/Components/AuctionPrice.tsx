@@ -14,7 +14,8 @@ interface AuctionPriceProps {
 
 export class AuctionPrice extends React.Component<AuctionPriceProps> {
   handleBuyersPremiumTap = () => {
-    const auctionInternalID = this.props.artwork && this.props.artwork.sale && this.props.artwork.sale.internalID
+    const auctionInternalID =
+      this.props.artwork && this.props.artwork.sale && this.props.artwork.sale.internalID
     if (auctionInternalID) {
       navigate(`/auction/${auctionInternalID}/buyers-premium`, { modal: true })
     }
@@ -68,7 +69,9 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
     const bidsCount = get(artwork, (a) => a.saleArtwork.counts.bidderPositions)
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
     const bidsPresent = bidsCount > 0
-    const bidText = this.bidText(bidsPresent, bidsCount) ? this.bidText(bidsPresent, bidsCount) : null
+    const bidText = this.bidText(bidsPresent, bidsCount)
+      ? this.bidText(bidsPresent, bidsCount)
+      : null
 
     return (
       <>
@@ -107,7 +110,10 @@ export class AuctionPrice extends React.Component<AuctionPriceProps> {
             <Spacer mb={1} />
             <Sans size="3t" color="black60">
               This auction has a{" "}
-              <Text style={{ textDecorationLine: "underline" }} onPress={() => this.handleBuyersPremiumTap()}>
+              <Text
+                style={{ textDecorationLine: "underline" }}
+                onPress={() => this.handleBuyersPremiumTap()}
+              >
                 buyer's premium
               </Text>
               .{"\n"}

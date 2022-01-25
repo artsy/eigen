@@ -12,7 +12,11 @@ export class DeepZoomTileID {
     return new DeepZoomTileID(level, row, col).intern()
   }
   id: string | null = null
-  private constructor(public readonly level: number, public readonly row: number, public readonly col: number) {}
+  private constructor(
+    public readonly level: number,
+    public readonly row: number,
+    public readonly col: number
+  ) {}
   toString() {
     if (this.id !== null) {
       return this.id
@@ -45,7 +49,15 @@ export interface DeepZoomTileProps {
 /**
  * A tile is a single image in the pyramid
  */
-export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({ url, top, left, width, height, id, pyramid }) => {
+export const DeepZoomTile: React.FC<DeepZoomTileProps> = ({
+  url,
+  top,
+  left,
+  width,
+  height,
+  id,
+  pyramid,
+}) => {
   const [showing, setShowing] = useState(false)
   const [loaded, setLoaded] = useState(false)
   const isMounted = useIsMounted()

@@ -9,6 +9,7 @@ import {
 import { ArtistAboutContainer } from "lib/Components/Artist/ArtistAbout/ArtistAbout"
 import ArtistArtworks from "lib/Components/Artist/ArtistArtworks/ArtistArtworks"
 import { ArtistHeaderFragmentContainer } from "lib/Components/Artist/ArtistHeader"
+import { ArtistHeaderFloatingButtonsFragmentContainer } from "lib/Components/Artist/ArtistHeaderFloatingButtons"
 import { ArtistInsightsFragmentContainer } from "lib/Components/Artist/ArtistInsights/ArtistInsights"
 import { DEFAULT_ARTWORK_SORT } from "lib/Components/ArtworkFilter/Filters/SortOptions"
 import { getOnlyFilledSearchCriteriaValues } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
@@ -41,8 +42,15 @@ interface ArtistProps {
 }
 
 export const Artist: React.FC<ArtistProps> = (props) => {
-  const { artistAboveTheFold, artistBelowTheFold, initialTab = INITIAL_TAB, searchCriteria, fetchCriteriaError } = props
+  const {
+    artistAboveTheFold,
+    artistBelowTheFold,
+    initialTab = INITIAL_TAB,
+    searchCriteria,
+    fetchCriteriaError,
+  } = props
   const popoverMessage = usePopoverMessage()
+
   const tabs: TabProps[] = []
   const displayAboutSection =
     artistAboveTheFold.has_metadata ||
@@ -63,7 +71,11 @@ export const Artist: React.FC<ArtistProps> = (props) => {
   if (displayAboutSection) {
     tabs.push({
       title: "Overview",
-      content: artistBelowTheFold ? <ArtistAboutContainer artist={artistBelowTheFold} /> : <LoadingPage />,
+      content: artistBelowTheFold ? (
+        <ArtistAboutContainer artist={artistBelowTheFold} />
+      ) : (
+        <LoadingPage />
+      ),
     })
   }
 
@@ -78,7 +90,9 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     tabs.push({
       title: "Insights",
       content: artistBelowTheFold ? (
-        (tabIndex: number) => <ArtistInsightsFragmentContainer tabIndex={tabIndex} artist={artistBelowTheFold} />
+        (tabIndex: number) => (
+          <ArtistInsightsFragmentContainer tabIndex={tabIndex} artist={artistBelowTheFold} />
+        )
       ) : (
         <LoadingPage />
       ),
@@ -91,8 +105,8 @@ export const Artist: React.FC<ArtistProps> = (props) => {
       content: (
         <StickyTabPageScrollView>
           <Message>
-            There aren’t any works available by the artist at this time. Follow to receive notifications when new works
-            are added.
+            There aren’t any works available by the artist at this time. Follow to receive
+            notifications when new works are added.
           </Message>
         </StickyTabPageScrollView>
       ),
@@ -117,13 +131,19 @@ export const Artist: React.FC<ArtistProps> = (props) => {
         <StickyTabPage
           staticHeaderContent={<ArtistHeaderFragmentContainer artist={artistAboveTheFold!} />}
           tabs={tabs}
+          bottomContent={
+            <ArtistHeaderFloatingButtonsFragmentContainer artist={artistAboveTheFold} />
+          }
+          disableBackButtonUpdate
         />
       </Flex>
     </ProvideScreenTracking>
   )
 }
 
-interface ArtistQueryRendererProps extends ArtistAboveTheFoldQueryVariables, ArtistBelowTheFoldQueryVariables {
+interface ArtistQueryRendererProps
+  extends ArtistAboveTheFoldQueryVariables,
+    ArtistBelowTheFoldQueryVariables {
   environment?: RelayModernEnvironment
   initialTab?: string
   searchCriteriaID?: string
@@ -142,6 +162,7 @@ export const ArtistScreenQuery = graphql`
       }
       ...ArtistHeader_artist
       ...ArtistArtworks_artist @arguments(input: $input)
+      ...ArtistHeaderFloatingButtons_artist
       statuses {
         artworks
         auctionLots
@@ -168,7 +189,9 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
         renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
         renderComponent: (searchCriteriaProps) => {
           const { savedSearchCriteria, fetchCriteriaError } = searchCriteriaProps
-          const preparedSavedSearchCriteria = getOnlyFilledSearchCriteriaValues(savedSearchCriteria ?? {})
+          const preparedSavedSearchCriteria = getOnlyFilledSearchCriteriaValues(
+            savedSearchCriteria ?? {}
+          )
           const initialArtworksInput = {
             ...defaultArtistVariables().input,
             sort: !!savedSearchCriteria ? "-published_at" : DEFAULT_ARTWORK_SORT.paramValue,

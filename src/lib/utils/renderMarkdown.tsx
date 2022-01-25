@@ -59,7 +59,11 @@ export function defaultRules({
         }
 
         return (
-          <LinkText key={state.key} testID={`linktext-${state.key}`} onPress={() => openUrl(node.target)}>
+          <LinkText
+            key={state.key}
+            testID={`linktext-${state.key}`}
+            onPress={() => openUrl(node.target)}
+          >
             {output(node.content, state)}
           </LinkText>
         )
@@ -212,8 +216,11 @@ export function defaultRules({
           3: "subtitle",
           4: "text",
         }
-        // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-        const size = useNewTextStyles ? newTextMap[node.level] || "subtitle" : map[node.level] || "4"
+        const size = useNewTextStyles
+          ? // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            newTextMap[node.level] || "subtitle"
+          : // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+            map[node.level] || "4"
         return useNewTextStyles ? (
           <Text mb="1" variant={size} key={state.key}>
             {output(node.content, state)}
@@ -244,7 +251,13 @@ export function defaultRules({
       react: (node, output, state) => (
         <ClassTheme>
           {({ color, space }) => (
-            <View style={{ borderLeftColor: color("black10"), borderLeftWidth: 2, paddingLeft: space(1) }}>
+            <View
+              style={{
+                borderLeftColor: color("black10"),
+                borderLeftWidth: 2,
+                paddingLeft: space(1),
+              }}
+            >
               {output(node.content, state)}
             </View>
           )}
@@ -258,7 +271,10 @@ export function defaultRules({
   })
 }
 
-export function renderMarkdown(markdown: string, rules: any = defaultRules({})): React.ReactElement {
+export function renderMarkdown(
+  markdown: string,
+  rules: any = defaultRules({})
+): React.ReactElement {
   const parser = SimpleMarkdown.parserFor(rules)
   const writer = SimpleMarkdown.outputFor<any, any>(rules, "react")
 

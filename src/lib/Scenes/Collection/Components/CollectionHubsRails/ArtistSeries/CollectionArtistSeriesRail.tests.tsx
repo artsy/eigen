@@ -14,7 +14,10 @@ import {
   GenericArtistSeriesRail,
   GenericArtistSeriesTitle,
 } from "lib/Components/GenericArtistSeriesRail"
-import { CardRailArtworkImageContainer as ArtworkImageContainer, CardRailCard } from "lib/Components/Home/CardRailCard"
+import {
+  CardRailArtworkImageContainer as ArtworkImageContainer,
+  CardRailCard,
+} from "lib/Components/Home/CardRailCard"
 import ImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import {
@@ -109,7 +112,8 @@ describe("Artist Series Rail", () => {
     let props: any /* STRICTNESS_MIGRATION */
     beforeEach(() => {
       props = {
-        collectionGroup: CollectionHubRailsArtistSeriesFixture?.marketingCollection?.linkedCollections[0],
+        collectionGroup:
+          CollectionHubRailsArtistSeriesFixture?.marketingCollection?.linkedCollections[0],
         collection: CollectionHubRailsArtistSeriesFixture?.marketingCollection,
       }
     })
@@ -187,7 +191,9 @@ describe("Artist Series Rail", () => {
         </GlobalStoreProvider>
       )
 
-      expect(wrapper.find(GenericArtistSeriesTitle).at(0).text()).toBe("Cindy Sherman: Untitled Film Stills")
+      expect(wrapper.find(GenericArtistSeriesTitle).at(0).text()).toBe(
+        "Cindy Sherman: Untitled Film Stills"
+      )
 
       expect(wrapper.find(GenericArtistSeriesTitle).at(1).text()).toBe("Damien Hirst: Butterflies")
 

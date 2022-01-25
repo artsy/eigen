@@ -18,13 +18,14 @@ import { ArtworkAutosuggest } from "../Components/ArtworkAutosuggest"
 import { useArtworkForm } from "../Form/useArtworkForm"
 import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
-export const MyCollectionArtworkFormArtwork: React.FC<StackScreenProps<ArtworkFormScreen, "ArtworkFormArtwork">> = ({
-  route,
-  navigation,
-}) => {
+export const MyCollectionArtworkFormArtwork: React.FC<
+  StackScreenProps<ArtworkFormScreen, "ArtworkFormArtwork">
+> = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false)
 
   const { formik } = useArtworkForm()
+  const preferredCurrency = GlobalStore.useAppState((state) => state.userPreferences.currency)
+  const preferredMetric = GlobalStore.useAppState((state) => state.userPreferences.metric)
 
   useEffect(() => {
     // Navigate back to the artist search screen if no artist is selected.
@@ -58,7 +59,12 @@ export const MyCollectionArtworkFormArtwork: React.FC<StackScreenProps<ArtworkFo
         width: image?.width || undefined,
       }))
 
-      GlobalStore.actions.myCollection.artwork.updateFormValues({ ...filteredFormValues, photos })
+      GlobalStore.actions.myCollection.artwork.updateFormValues({
+        metric: preferredMetric,
+        pricePaidCurrency: preferredCurrency,
+        ...filteredFormValues,
+        photos,
+      })
     } catch (error) {
       console.error("Couldn't load artwork data", error)
     } finally {
@@ -69,6 +75,16 @@ export const MyCollectionArtworkFormArtwork: React.FC<StackScreenProps<ArtworkFo
     }
   }
 
+  const onSkip = () => {
+    requestAnimationFrame(() => {
+      GlobalStore.actions.myCollection.artwork.updateFormValues({
+        metric: preferredMetric,
+        pricePaidCurrency: preferredCurrency,
+      })
+      navigateToNext()
+    })
+  }
+
   const navigateToNext = () => navigation.navigate("ArtworkFormMain", { ...route.params })
 
   return (
@@ -76,16 +92,18 @@ export const MyCollectionArtworkFormArtwork: React.FC<StackScreenProps<ArtworkFo
       <FancyModalHeader
         onLeftButtonPress={route.params.onHeaderBackButtonPress}
         rightButtonText="Skip"
-        onRightButtonPress={navigateToNext}
+        onRightButtonPress={onSkip}
         hideBottomDivider
       >
         Select an Artwork
       </FancyModalHeader>
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
         <ScreenMargin>
-          {!!formik.values.artistSearchResult && <ArtistSearchResult result={formik.values.artistSearchResult} />}
+          {!!formik.values.artistSearchResult && (
+            <ArtistSearchResult result={formik.values.artistSearchResult} />
+          )}
           <Spacer mb={2} />
-          <ArtworkAutosuggest onResultPress={updateFormValues} onSkipPress={navigateToNext} />
+          <ArtworkAutosuggest onResultPress={updateFormValues} onSkipPress={onSkip} />
         </ScreenMargin>
       </ScrollView>
       <LoadingModal isVisible={loading} />

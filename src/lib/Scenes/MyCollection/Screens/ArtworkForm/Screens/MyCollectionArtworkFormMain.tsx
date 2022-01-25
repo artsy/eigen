@@ -2,6 +2,7 @@ import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { Currency } from "lib/Scenes/Search/UserPreferencesModel"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { isEmpty } from "lodash"
@@ -20,10 +21,9 @@ import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 
-export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormScreen, "ArtworkFormMain">> = ({
-  route,
-  navigation,
-}) => {
+export const MyCollectionArtworkFormMain: React.FC<
+  StackScreenProps<ArtworkFormScreen, "ArtworkFormMain">
+> = ({ route, navigation }) => {
   const artworkActions = GlobalStore.actions.myCollection.artwork
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
   const { formik } = useArtworkForm()
@@ -67,7 +67,10 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
     return Object.getOwnPropertyNames(dirtyFormCheckValues).reduce(
       (accum: boolean, key: string) =>
         accum ||
-        !isEqual((formValues as { [key: string]: any })[key], (dirtyFormCheckValues as { [key: string]: any })[key]),
+        !isEqual(
+          (formValues as { [key: string]: any })[key],
+          (dirtyFormCheckValues as { [key: string]: any })[key]
+        ),
       false
     )
   }
@@ -85,7 +88,9 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
         <Flex p={2}>
           <Join separator={<Spacer my={1} />}>
-            {!!formik.values.artistSearchResult && <ArtistSearchResult result={formik.values.artistSearchResult} />}
+            {!!formik.values.artistSearchResult && (
+              <ArtistSearchResult result={formik.values.artistSearchResult} />
+            )}
             <Input
               title="TITLE"
               placeholder="Title"
@@ -136,6 +141,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               enableSearch={false}
               showTitleLabel={false}
               onSelectValue={(value) => {
+                GlobalStore.actions.userPreferences.setCurrency(value as Currency)
                 formik.handleChange("pricePaidCurrency")(value)
               }}
               testID="CurrencyPicker"
@@ -233,7 +239,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
 
 const pricePaidCurrencySelectOptions: Array<{
   label: string
-  value: string
+  value: Currency
 }> = [
   { label: "$ USD", value: "USD" },
   { label: "€ EUR", value: "EUR" },

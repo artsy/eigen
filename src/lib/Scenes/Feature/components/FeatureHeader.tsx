@@ -18,7 +18,9 @@ export const FeatureHeader: React.FC<FeatureHeaderProps> = ({ feature }) => {
   const imageHeight = isPad() ? height * 0.6 : width
   const imageWidth = isPad() ? width / 2 : width
 
-  const image = <OpaqueImageView imageURL={feature.image?.url} width={imageWidth} height={imageHeight} />
+  const image = (
+    <OpaqueImageView imageURL={feature.image?.url} width={imageWidth} height={imageHeight} />
+  )
   const title = (
     <Sans size="8" style={{ fontSize: 42, lineHeight: 50 }} maxWidth="80%" textAlign="center">
       {feature.name}

@@ -73,7 +73,7 @@ describe(SavedAddressesFormQueryRenderer, () => {
                   internalID: "5861",
                   name: "George Testing",
                   addressLine1: "401 Broadway",
-                  addressLine2: "26th Floor",
+                  addressLine2: "24th Floor",
                   addressLine3: null,
                   city: "New York",
                   region: "New York",

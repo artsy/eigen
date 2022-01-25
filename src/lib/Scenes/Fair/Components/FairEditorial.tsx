@@ -36,7 +36,14 @@ export const FairEditorial: React.FC<FairEditorialProps> = ({ fair, ...rest }) =
 
   return (
     <Box {...rest}>
-      <Box mx={2} mb={2} display="flex" flexDirection="row" alignItems="center" justifyContent="space-between">
+      <Box
+        mx={2}
+        mb={2}
+        display="flex"
+        flexDirection="row"
+        alignItems="center"
+        justifyContent="space-between"
+      >
         <Text variant="md">Related Reading</Text>
 
         {(fair.articles.totalCount ?? 0) > 5 && (

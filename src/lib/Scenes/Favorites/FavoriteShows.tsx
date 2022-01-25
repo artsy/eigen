@@ -68,7 +68,12 @@ export class Shows extends Component<Props, State> {
     if (!shows.length) {
       return (
         <StickyTabPageScrollView
-          refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshingFromPull}
+              onRefresh={this.handleRefresh}
+            />
+          }
         >
           <ZeroState
             title="You haven’t saved any shows yet"
@@ -86,9 +91,16 @@ export class Shows extends Component<Props, State> {
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
         ItemSeparatorComponent={() => <Spacer mb="5px" />}
-        refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshingFromPull}
+            onRefresh={this.handleRefresh}
+          />
+        }
         ListFooterComponent={
-          this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
+          this.state.fetchingMoreData ? (
+            <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
+          ) : null
         }
       />
     )
@@ -102,7 +114,8 @@ const FavoriteShowsContainer = createPaginationContainer(
       fragment FavoriteShows_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followsAndSaves {
-          shows: showsConnection(first: $count, after: $cursor) @connection(key: "SavedShows_shows") {
+          shows: showsConnection(first: $count, after: $cursor)
+            @connection(key: "SavedShows_shows") {
             pageInfo {
               startCursor
               endCursor

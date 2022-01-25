@@ -23,7 +23,9 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     artwork: { artistNames, date, images, internalID, title, slug },
   } = props
 
-  const [imagesToDisplay, setImagesToDisplay] = useState<typeof images | CarouselImageDescriptor[] | null>(images)
+  const [imagesToDisplay, setImagesToDisplay] = useState<
+    typeof images | CarouselImageDescriptor[] | null
+  >(images)
   const [isDisplayingLocalImages, setIsDisplayingLocalImages] = useState(false)
 
   const dimensions = useScreenDimensions()
@@ -51,7 +53,9 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
     }
   }, [])
 
-  const ImagesToDisplayCarousel = isDisplayingLocalImages ? ImageCarousel : ImageCarouselFragmentContainer
+  const ImagesToDisplayCarousel = isDisplayingLocalImages
+    ? ImageCarousel
+    : ImageCarouselFragmentContainer
 
   return (
     <>
@@ -84,22 +88,25 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
   )
 }
 
-export const MyCollectionArtworkHeaderFragmentContainer = createFragmentContainer(MyCollectionArtworkHeader, {
-  artwork: graphql`
-    fragment MyCollectionArtworkHeader_artwork on Artwork {
-      artistNames
-      date
-      images {
-        ...ImageCarousel_images
-        imageVersions
-        isDefault
+export const MyCollectionArtworkHeaderFragmentContainer = createFragmentContainer(
+  MyCollectionArtworkHeader,
+  {
+    artwork: graphql`
+      fragment MyCollectionArtworkHeader_artwork on Artwork {
+        artistNames
+        date
+        images {
+          ...ImageCarousel_images
+          imageVersions
+          isDefault
+        }
+        internalID
+        slug
+        title
       }
-      internalID
-      slug
-      title
-    }
-  `,
-})
+    `,
+  }
+)
 
 const tracks = {
   tappedCollectedArtworkImages: (internalID: string, slug: string) => {

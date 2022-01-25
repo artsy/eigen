@@ -12,8 +12,10 @@ import { SalesFragmentContainer } from "./index"
 jest.mock("lib/Components/LotsByArtistsYouFollowRail/LotsByFollowedArtistsRail.tsx", () => "")
 
 it("renders the ZeroState when there are no sales", () => {
-  // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-  const auctions = shallow(<SalesFragmentContainer {...props} sales={{ edges: [] } as any} me={null} />)
+  const auctions = shallow(
+    // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
+    <SalesFragmentContainer {...props} sales={{ edges: [] } as any} me={null} />
+  )
   expect(auctions.find("ZeroState").length).toEqual(1)
 })
 

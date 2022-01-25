@@ -32,18 +32,22 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   onMutationError(error) {
-    Alert.alert("Sorry, we couldn't process the request.", "Please try again or contact orders@artsy.net for help.", [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "Retry",
-        onPress: () => {
-          this.handleCreateInquiryOfferOrder()
+    Alert.alert(
+      "Sorry, we couldn't process the request.",
+      "Please try again or contact orders@artsy.net for help.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
         },
-      },
-    ])
+        {
+          text: "Retry",
+          onPress: () => {
+            this.handleCreateInquiryOfferOrder()
+          },
+        },
+      ]
+    )
     console.log("src/lib/Scenes/Inbox/Components/Conversations/InquiryMakeOfferButton.tsx", error)
   }
 
@@ -60,7 +64,9 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
       if (relay && relay.environment) {
         commitMutation<InquiryMakeOfferButtonOrderMutation>(relay.environment, {
           mutation: graphql`
-            mutation InquiryMakeOfferButtonOrderMutation($input: CommerceCreateInquiryOfferOrderWithArtworkInput!) {
+            mutation InquiryMakeOfferButtonOrderMutation(
+              $input: CommerceCreateInquiryOfferOrderWithArtworkInput!
+            ) {
               createInquiryOfferOrder(input: $input) {
                 orderOrError {
                   __typename
@@ -109,7 +115,9 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
             })
           },
           onError: (error) =>
-            this.setState({ isCommittingCreateOfferOrderMutation: false }, () => this.onMutationError(error)),
+            this.setState({ isCommittingCreateOfferOrderMutation: false }, () =>
+              this.onMutationError(error)
+            ),
         })
       }
     })
@@ -135,10 +143,13 @@ export class InquiryMakeOfferButton extends React.Component<InquiryMakeOfferButt
   }
 }
 
-export const InquiryMakeOfferButtonFragmentContainer = createFragmentContainer(InquiryMakeOfferButton, {
-  artwork: graphql`
-    fragment InquiryMakeOfferButton_artwork on Artwork {
-      internalID
-    }
-  `,
-})
+export const InquiryMakeOfferButtonFragmentContainer = createFragmentContainer(
+  InquiryMakeOfferButton,
+  {
+    artwork: graphql`
+      fragment InquiryMakeOfferButton_artwork on Artwork {
+        internalID
+      }
+    `,
+  }
+)

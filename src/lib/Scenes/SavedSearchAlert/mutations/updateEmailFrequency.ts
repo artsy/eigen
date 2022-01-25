@@ -5,7 +5,9 @@ import {
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { commitMutation, graphql } from "relay-runtime"
 
-export const updateEmailFrequency = (emailFrequency: string): Promise<updateEmailFrequencyMutationResponse> => {
+export const updateEmailFrequency = (
+  emailFrequency: string
+): Promise<updateEmailFrequencyMutationResponse> => {
   return new Promise((resolve, reject) => {
     commitMutation<updateEmailFrequencyMutation>(defaultEnvironment, {
       mutation: graphql`

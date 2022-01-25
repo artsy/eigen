@@ -5,7 +5,9 @@ describe(requestFingerprint, () => {
   it("makes a fingerprint of a graphql request with a stable key ordering", () => {
     const fingerprintA = requestFingerprint("myQueryID", { a: "A", b: "B", c: "C" })
     const fingerprintB = requestFingerprint("myQueryID", { b: "B", c: "C", a: "A" })
-    expect(fingerprintA).toMatchInlineSnapshot(`"{\\"myQueryID\\":{\\"a\\":\\"A\\",\\"b\\":\\"B\\",\\"c\\":\\"C\\"}}"`)
+    expect(fingerprintA).toMatchInlineSnapshot(
+      `"{\\"myQueryID\\":{\\"a\\":\\"A\\",\\"b\\":\\"B\\",\\"c\\":\\"C\\"}}"`
+    )
     expect(fingerprintA).toEqual(fingerprintB)
   })
   it("works with nested objects and arrays", () => {

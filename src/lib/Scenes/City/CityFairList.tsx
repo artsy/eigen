@@ -1,5 +1,8 @@
 import { CityFairList_city } from "__generated__/CityFairList_city.graphql"
-import { CityFairListQuery, CityFairListQueryVariables } from "__generated__/CityFairListQuery.graphql"
+import {
+  CityFairListQuery,
+  CityFairListQueryVariables,
+} from "__generated__/CityFairListQuery.graphql"
 import { PAGE_SIZE } from "lib/Components/constants"
 import Spinner from "lib/Components/Spinner"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -82,7 +85,9 @@ class CityFairList extends React.Component<Props, State> {
           renderItem={({ item }) => this.renderItem(item)}
           onScroll={isCloseToBottom(this.fetchData)}
           // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-          ListFooterComponent={!!fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />}
+          ListFooterComponent={
+            !!fetchingNextPage && <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
+          }
         />
       </Box>
     )
@@ -94,7 +99,10 @@ export const CityFairListContainer = createPaginationContainer(
   {
     city: graphql`
       fragment CityFairList_city on City
-      @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String", defaultValue: "" }) {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 20 }
+        cursor: { type: "String", defaultValue: "" }
+      ) {
         slug
         fairs: fairsConnection(first: $count, after: $cursor, status: CURRENT, sort: START_AT_ASC)
           @connection(key: "CityFairList_fairs") {

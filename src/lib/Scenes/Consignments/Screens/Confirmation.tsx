@@ -46,13 +46,19 @@ export default class Confirmation extends React.Component<Props, State> {
       submissionState: props.initialState || SubmissionTypes.Submitting,
     }
 
-    if (this.state.submissionState === SubmissionTypes.Submitting && props.submissionRequestValidationCheck) {
+    if (
+      this.state.submissionState === SubmissionTypes.Submitting &&
+      props.submissionRequestValidationCheck
+    ) {
       setTimeout(this.checkForSubmissionStatus.bind(this), 1000)
     }
   }
 
   componentDidMount = () => {
-    this.backButtonListener = BackHandler.addEventListener("hardwareBackPress", this.handleDismiss.bind(this))
+    this.backButtonListener = BackHandler.addEventListener(
+      "hardwareBackPress",
+      this.handleDismiss.bind(this)
+    )
   }
 
   componentWillUnmount = () => {
@@ -79,7 +85,9 @@ export default class Confirmation extends React.Component<Props, State> {
     if (success === undefined) {
       setTimeout(this.checkForSubmissionStatus, 1000)
     } else {
-      const submissionState = success ? SubmissionTypes.SuccessfulSubmission : SubmissionTypes.FailedSubmission
+      const submissionState = success
+        ? SubmissionTypes.SuccessfulSubmission
+        : SubmissionTypes.FailedSubmission
       this.setState({ submissionState })
     }
   }
@@ -107,12 +115,13 @@ export default class Confirmation extends React.Component<Props, State> {
             </Sans>
             <Spacer mb={3} />
             <Sans size="4" color={color("black60")} style={{ textAlign: "center" }}>
-              Our team of specialists are reviewing your work. You'll receive an email update once the status of your
-              submission changes.
+              Our team of specialists are reviewing your work. You'll receive an email update once
+              the status of your submission changes.
             </Sans>
             <Spacer mb={3} />
             <Sans size="4" color={color("black60")} style={{ textAlign: "center" }}>
-              If your work is accepted, Artsy will gather competitive offers and guide you through the selling process.
+              If your work is accepted, Artsy will gather competitive offers and guide you through
+              the selling process.
             </Sans>
             <Spacer mb={3} />
             <Flex alignItems="stretch" flexDirection="column" width="100%">

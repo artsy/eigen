@@ -52,7 +52,11 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
     <Box>
       {!!image ? (
         <Flex alignItems="center" justifyContent="center" style={{ position: "relative" }}>
-          <OpaqueImageView width={screenWidth} height={screenWidth / image.aspectRatio} imageURL={image.imageUrl} />
+          <OpaqueImageView
+            width={screenWidth}
+            height={screenWidth / image.aspectRatio}
+            imageURL={image.imageUrl}
+          />
           {!!profileImageUrl && (
             <Flex
               alignItems="center"
@@ -65,7 +69,12 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
               bottom={0}
               left={2}
             >
-              <OpaqueImageView width={60} height={40} imageURL={profileImageUrl} placeholderBackgroundColor="white" />
+              <OpaqueImageView
+                width={60}
+                height={40}
+                imageURL={profileImageUrl}
+                placeholderBackgroundColor="white"
+              />
             </Flex>
           )}
         </Flex>
@@ -77,7 +86,9 @@ export const FairHeader: React.FC<FairHeaderProps> = ({ fair }) => {
           {name}
         </Text>
         <FairTiming fair={fair} />
-        {!!previewText && <ReadMore textStyle="new" content={previewText} maxChars={truncatedTextLimit()} />}
+        {!!previewText && (
+          <ReadMore textStyle="new" content={previewText} maxChars={truncatedTextLimit()} />
+        )}
         {!!canShowMoreInfoLink && (
           <TouchableOpacity onPress={() => navigate(`/fair/${slug}/info`)}>
             <Flex pt={2} flexDirection="row" justifyContent="flex-start">

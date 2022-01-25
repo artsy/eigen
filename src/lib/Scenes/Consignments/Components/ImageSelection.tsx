@@ -17,7 +17,8 @@ const SelectedIndicator = styled.View`
 `
 
 const Overlay = styled.View`
-  ${(p: { selected: boolean }) => p.selected && `border-width: 1; border-color: ${themeGet("colors.black60")}`};
+  ${(p: { selected: boolean }) =>
+    p.selected && `border-width: 1; border-color: ${themeGet("colors.black60")}`};
 `
 
 export interface ImageData {
@@ -37,7 +38,9 @@ interface TakePhotoImageProps {
 }
 
 const SelectedIcon = () => (
-  <SelectedIndicator style={{ backgroundColor: "white", position: "absolute", bottom: 20, right: 0 }}>
+  <SelectedIndicator
+    style={{ backgroundColor: "white", position: "absolute", bottom: 20, right: 0 }}
+  >
     <Image source={require("../../../../../images/consignments/black-tick.webp")} />
   </SelectedIndicator>
 )
@@ -98,7 +101,10 @@ const ImageForURI = (props: ImagePreviewProps) => {
           opacity: props.selected ? 0.5 : 1.0,
         }}
       >
-        <Image source={{ uri: props.data.image.uri }} style={{ height: imageSize, width: imageSize }} />
+        <Image
+          source={{ uri: props.data.image.uri }}
+          style={{ height: imageSize, width: imageSize }}
+        />
       </Touchable>
       {props.selected ? <SelectedIcon /> : null}
     </View>
@@ -153,7 +159,9 @@ export default class ImageSelection extends React.Component<Props, State> {
   render() {
     const dimensionsWidth = Dimensions.get("window").width
     const isPad = dimensionsWidth > 700
-    const data = isPad ? [TakePhotoID, ...this.props.data] : [TakePhotoID, ...this.props.data, BlankImageID]
+    const data = isPad
+      ? [TakePhotoID, ...this.props.data]
+      : [TakePhotoID, ...this.props.data, BlankImageID]
 
     return (
       <FlatList

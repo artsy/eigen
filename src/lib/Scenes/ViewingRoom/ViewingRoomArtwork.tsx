@@ -5,7 +5,18 @@ import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import _ from "lodash"
-import { Box, Button, EyeOpenedIcon, Flex, LargeCard, Sans, Separator, Spacer, Text, Touchable } from "palette"
+import {
+  Box,
+  Button,
+  EyeOpenedIcon,
+  Flex,
+  LargeCard,
+  Sans,
+  Separator,
+  Spacer,
+  Text,
+  Touchable,
+} from "palette"
 import React, { Suspense, useEffect } from "react"
 import { FlatList, ScrollView, TouchableWithoutFeedback } from "react-native"
 import { useTracking } from "react-tracking"
@@ -13,7 +24,13 @@ import { useTracking } from "react-tracking"
 import { ViewingRoomArtwork_selectedArtwork$key } from "__generated__/ViewingRoomArtwork_selectedArtwork.graphql"
 import { ViewingRoomArtwork_viewingRoomInfo$key } from "__generated__/ViewingRoomArtwork_viewingRoomInfo.graphql"
 import { ViewingRoomArtworkQuery } from "__generated__/ViewingRoomArtworkQuery.graphql"
-import { graphql, PreloadedQuery, useFragment, usePreloadedQuery, useQueryLoader } from "react-relay"
+import {
+  graphql,
+  PreloadedQuery,
+  useFragment,
+  usePreloadedQuery,
+  useQueryLoader,
+} from "react-relay"
 import { ImageCarousel } from "../Artwork/Components/ImageCarousel/ImageCarousel"
 import { tagForStatus } from "./Components/ViewingRoomsListItem"
 
@@ -57,7 +74,9 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
       <ScrollView>
         <Flex>
           <ImageCarousel images={[selectedArtwork.images![0]] as any} cardHeight={screenHeight} />
-          {!!(LegacyNativeModules.ARCocoaConstantsModule.AREnabled && selectedArtwork.isHangable) && (
+          {!!(
+            LegacyNativeModules.ARCocoaConstantsModule.AREnabled && selectedArtwork.isHangable
+          ) && (
             <Flex
               position="absolute"
               bottom="1"
@@ -99,7 +118,9 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
             variant="fillDark"
             block
             onPress={() => {
-              trackEvent(tracks.tap(vrInfo.internalID, vrInfo.slug, selectedArtwork.id, selectedArtwork.slug))
+              trackEvent(
+                tracks.tap(vrInfo.internalID, vrInfo.slug, selectedArtwork.id, selectedArtwork.slug)
+              )
               navigate(selectedArtwork.href!)
             }}
           >
@@ -119,7 +140,9 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
             <FlatList
               data={moreImages}
               keyExtractor={(_item, index) => `${index}`}
-              renderItem={({ item }) => <ImageCarousel images={[item] as any} cardHeight={screenHeight} />}
+              renderItem={({ item }) => (
+                <ImageCarousel images={[item] as any} cardHeight={screenHeight} />
+              )}
               ItemSeparatorComponent={() => <Spacer mt={0.5} />}
             />
           </>
@@ -145,7 +168,9 @@ export const ViewingRoomArtwork: React.FC<ViewingRoomArtworkProps> = (props) => 
   )
 }
 
-export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkContainerProps> = ({ queryRef }) => {
+export const ViewingRoomArtworkContainer: React.FC<ViewingRoomArtworkContainerProps> = ({
+  queryRef,
+}) => {
   const data = usePreloadedQuery<ViewingRoomArtworkQuery>(ViewingRoomArtworkScreenQuery, queryRef)
 
   if (!data.artwork || !data.viewingRoom) {
@@ -167,11 +192,13 @@ const ViewingRoomArtworkScreenQuery = graphql`
   }
 `
 
-export const ViewingRoomArtworkScreen: React.FC<{ viewing_room_id: string; artwork_id: string }> = ({
-  viewing_room_id: viewingRoomID,
-  artwork_id: artworkID,
-}) => {
-  const [queryRef, loadQuery] = useQueryLoader<ViewingRoomArtworkQuery>(ViewingRoomArtworkScreenQuery)
+export const ViewingRoomArtworkScreen: React.FC<{
+  viewing_room_id: string
+  artwork_id: string
+}> = ({ viewing_room_id: viewingRoomID, artwork_id: artworkID }) => {
+  const [queryRef, loadQuery] = useQueryLoader<ViewingRoomArtworkQuery>(
+    ViewingRoomArtworkScreenQuery
+  )
 
   useEffect(() => {
     if (!queryRef) {

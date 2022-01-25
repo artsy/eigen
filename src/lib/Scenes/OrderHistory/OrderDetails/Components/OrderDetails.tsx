@@ -45,7 +45,9 @@ const OrderDetails: FC<OrderDetailsProps> = ({ order }) => {
   const DATA: SectionListItem[] = compact([
     {
       key: "OrderDetailsHeader",
-      data: [<OrderDetailsHeaderFragmentContainer key="OrderDetailsHeaderComponent" info={order} />],
+      data: [
+        <OrderDetailsHeaderFragmentContainer key="OrderDetailsHeaderComponent" info={order} />,
+      ],
     },
     {
       key: "Artwork_Info",
@@ -60,12 +62,16 @@ const OrderDetails: FC<OrderDetailsProps> = ({ order }) => {
     {
       key: "Payment_Method",
       title: "Payment Method",
-      data: [<CreditCardSummaryItemFragmentContainer key="Payment_MethodComponent" order={order} />],
+      data: [
+        <CreditCardSummaryItemFragmentContainer key="Payment_MethodComponent" order={order} />,
+      ],
     },
     isShipping && {
       key: "TrackOrder_Section",
       title: "Track Order",
-      data: [<TrackOrderSectionFragmentContainer key="TrackOrder_SectionComponent" section={order} />],
+      data: [
+        <TrackOrderSectionFragmentContainer key="TrackOrder_SectionComponent" section={order} />,
+      ],
     },
     isShipping && {
       key: "ShipTo_Section",

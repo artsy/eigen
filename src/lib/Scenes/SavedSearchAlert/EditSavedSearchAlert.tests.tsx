@@ -2,6 +2,7 @@ import { fireEvent, waitFor } from "@testing-library/react-native"
 import * as savedSearchButton from "lib/Components/Artist/ArtistArtworks/SavedSearchButton"
 import { goBack, navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
@@ -21,7 +22,9 @@ describe("EditSavedSearchAlert", () => {
 
   beforeEach(() => {
     mockEnvironment.mockClear()
-    notificationPermissions.mockImplementationOnce((cb) => cb(null, PushAuthorizationStatus.Authorized))
+    notificationPermissions.mockImplementationOnce((cb) =>
+      cb(null, PushAuthorizationStatus.Authorized)
+    )
   })
 
   const TestRenderer = () => {
@@ -33,10 +36,10 @@ describe("EditSavedSearchAlert", () => {
 
     mockEnvironmentPayload(mockEnvironment, {
       SearchCriteria: () => searchCriteria,
-      Me: () => meMocked,
     })
     mockEnvironmentPayload(mockEnvironment, {
       FilterArtworksConnection: () => filterArtworks,
+      Me: () => meMocked,
     })
 
     expect(getAllByTestId("alert-pill").map(extractText)).toEqual(["Lithograph", "Paper"])
@@ -48,10 +51,10 @@ describe("EditSavedSearchAlert", () => {
 
     mockEnvironmentPayload(mockEnvironment, {
       SearchCriteria: () => searchCriteria,
-      Me: () => meMocked,
     })
     mockEnvironmentPayload(mockEnvironment, {
       FilterArtworksConnection: () => filterArtworks,
+      Me: () => meMocked,
     })
 
     fireEvent.changeText(getByTestId("alert-input-name"), "something new")
@@ -76,13 +79,13 @@ describe("EditSavedSearchAlert", () => {
 
     mockEnvironmentPayload(mockEnvironment, {
       SearchCriteria: () => searchCriteria,
-      Me: () => meMocked,
     })
     mockEnvironmentPayload(mockEnvironment, {
       Artist: () => ({
         internalID: "artistID",
       }),
       FilterArtworksConnection: () => filterArtworks,
+      Me: () => meMocked,
     })
 
     fireEvent.press(getByTestId("view-artworks-button"))
@@ -99,10 +102,10 @@ describe("EditSavedSearchAlert", () => {
 
     mockEnvironmentPayload(mockEnvironment, {
       SearchCriteria: () => searchCriteria,
-      Me: () => meMocked,
     })
     mockEnvironmentPayload(mockEnvironment, {
       FilterArtworksConnection: () => filterArtworks,
+      Me: () => meMocked,
     })
 
     expect(getAllByA11yState({ selected: true })).toHaveLength(2)
@@ -120,10 +123,10 @@ describe("EditSavedSearchAlert", () => {
           push: false,
         },
       }),
-      Me: () => meMocked,
     })
     mockEnvironmentPayload(mockEnvironment, {
       FilterArtworksConnection: () => filterArtworks,
+      Me: () => meMocked,
     })
 
     expect(getAllByA11yState({ selected: false })).toHaveLength(2)
@@ -140,10 +143,10 @@ describe("EditSavedSearchAlert", () => {
           push: false,
         },
       }),
-      Me: () => meMocked,
     })
     mockEnvironmentPayload(mockEnvironment, {
       FilterArtworksConnection: () => filterArtworks,
+      Me: () => meMocked,
     })
 
     expect(getAllByA11yState({ selected: false })).toHaveLength(1)
@@ -160,13 +163,48 @@ describe("EditSavedSearchAlert", () => {
           email: false,
         },
       }),
-      Me: () => meMocked,
     })
     mockEnvironmentPayload(mockEnvironment, {
       FilterArtworksConnection: () => filterArtworks,
+      Me: () => meMocked,
     })
 
     expect(getAllByA11yState({ selected: false })).toHaveLength(1)
+  })
+
+  it("should pass updated criteria to update mutation when pills are removed", async () => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
+    const { getByText, getAllByText } = renderWithWrappersTL(<TestRenderer />)
+
+    mockEnvironmentPayload(mockEnvironment, {
+      SearchCriteria: () => searchCriteria,
+      Me: () => meMocked,
+    })
+    mockEnvironmentPayload(mockEnvironment, {
+      Artist: () => ({
+        internalID: "artistID",
+      }),
+      FilterArtworksConnection: () => filterArtworks,
+    })
+
+    fireEvent.press(getByText("Lithograph"))
+    fireEvent.press(getAllByText("Save Alert")[0])
+
+    await waitFor(() => {
+      const operation = mockEnvironment.mock.getMostRecentOperation()
+      expect(operation.request.variables.input).toEqual({
+        searchCriteriaID: "savedSearchAlertId",
+        attributes: {
+          artistID: "artistID",
+          materialsTerms: ["paper"],
+        },
+        userAlertSettings: {
+          name: "unique-name",
+          push: true,
+          email: true,
+        },
+      })
+    })
   })
 })
 

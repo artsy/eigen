@@ -14,7 +14,10 @@ export const Form: React.FC<{ title?: string }> = (props) => (
 
 /** An individual row inside the form */
 export const Row: React.FC<ViewProps> = ({ children, ...props }) => (
-  <View {...props} style={[props.style, { flexDirection: "row", paddingVertical: 6, alignItems: "center" }]}>
+  <View
+    {...props}
+    style={[props.style, { flexDirection: "row", paddingVertical: 6, alignItems: "center" }]}
+  >
     {children}
   </View>
 )

@@ -1,4 +1,10 @@
-import { ActionType, ContextModule, OwnerType, TappedInfoBubble, TappedShowMore } from "@artsy/cohesion"
+import {
+  ActionType,
+  ContextModule,
+  OwnerType,
+  TappedInfoBubble,
+  TappedShowMore,
+} from "@artsy/cohesion"
 import { MyCollectionArtworkArtistAuctionResults_artwork } from "__generated__/MyCollectionArtworkArtistAuctionResults_artwork.graphql"
 import { CaretButton } from "lib/Components/Buttons/CaretButton"
 import { InfoButton } from "lib/Components/Buttons/InfoButton"
@@ -17,7 +23,9 @@ interface MyCollectionArtworkArtistAuctionResultsProps {
   artwork: MyCollectionArtworkArtistAuctionResults_artwork
 }
 
-const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtistAuctionResultsProps> = (props) => {
+const MyCollectionArtworkArtistAuctionResults: React.FC<
+  MyCollectionArtworkArtistAuctionResultsProps
+> = (props) => {
   const { trackEvent } = useTracking()
   const auctionResults = extractNodes(props?.artwork?.artist?.auctionResultsConnection)
 
@@ -37,12 +45,14 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
             <>
               <Spacer my={1} />
               <Text>
-                This data set includes the latest lots from auction sales at top commercial auction houses. Lots are
-                updated daily.
+                This data set includes the latest lots from auction sales at top commercial auction
+                houses. Lots are updated daily.
               </Text>
             </>
           }
-          onPress={() => trackEvent(tracks.tappedInfoBubble(props?.artwork?.internalID, props?.artwork?.slug))}
+          onPress={() =>
+            trackEvent(tracks.tappedInfoBubble(props?.artwork?.internalID, props?.artwork?.slug))
+          }
         />
 
         <Spacer my={0.5} />
@@ -54,7 +64,11 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
             <>
               <AuctionResultListItemFragmentContainer
                 auctionResult={item}
-                onPress={() => navigate(`/artist/${props?.artwork?.artist?.slug!}/auction-result/${item.internalID}`)}
+                onPress={() =>
+                  navigate(
+                    `/artist/${props?.artwork?.artist?.slug!}/auction-result/${item.internalID}`
+                  )
+                }
               />
             </>
           )}
@@ -80,7 +94,11 @@ const MyCollectionArtworkArtistAuctionResults: React.FC<MyCollectionArtworkArtis
             testID="AuctionsResultsButton"
             onPress={() => {
               trackEvent(
-                tracks.tappedShowMore(props.artwork?.internalID, props.artwork?.slug, "Explore auction results")
+                tracks.tappedShowMore(
+                  props.artwork?.internalID,
+                  props.artwork?.slug,
+                  "Explore auction results"
+                )
               )
               navigate(`/artist/${props?.artwork?.artist?.slug!}/auction-results`)
             }}

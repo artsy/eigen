@@ -11,7 +11,9 @@ export const Support = () => {
       </Text>
       <Touchable
         onPress={() => {
-          navigate("https://support.artsy.net/hc/en-us/sections/360008203054-Contact-a-gallery", { modal: true })
+          navigate("https://support.artsy.net/hc/en-us/sections/360008203054-Contact-a-gallery", {
+            modal: true,
+          })
         }}
       >
         <Flex mb={1} alignItems="center" flexDirection="row">

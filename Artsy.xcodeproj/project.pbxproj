@@ -382,6 +382,8 @@
 		B9A29FE023EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */; };
 		B9A29FE123EB27BD006EE2EC /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = B9A29FDF23EB27BD006EE2EC /* ARReactPackagerHost.m */; };
 		CB42B64F181092480069A801 /* ARCountdownView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB42B64E181092480069A801 /* ARCountdownView.m */; };
+		CB6AFF2E2793654E00D7DC82 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB6AFF2D2793654E00D7DC82 /* NotificationService.swift */; };
+		CB6AFF322793654E00D7DC82 /* BrazePushServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CB6AFF2B2793654E00D7DC82 /* BrazePushServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		CB6CE8E524F424E700ED2843 /* ARInternalWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */; };
 		CB6CE8E624F424E700ED2843 /* ARInternalWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = CB6CE8E424F424E700ED2843 /* ARInternalWebView.m */; };
 		CB6CE8EF24F9684400ED2843 /* Thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB6CE8EB24F9684400ED2843 /* Thumb@2x.png */; };
@@ -428,6 +430,7 @@
 		E6F84D001A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E6F84CFE1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png */; };
 		FC073424275E8F6E008B29B9 /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC9DDB10274D8FFF005DEE85 /* Article.swift */; };
 		FC10F3782760FC15006CDAB5 /* WidgetUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCB45B4A2746F81F00232337 /* WidgetUrl.swift */; };
+		FC592EF52798A8B4001A4FD6 /* ImageUrl.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC592EF42798A8B4001A4FD6 /* ImageUrl.swift */; };
 		FC61189E2746FE2300612581 /* ArtworkStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC61189D2746FE2300612581 /* ArtworkStore.swift */; };
 		FC6118A02747001B00612581 /* ArtworkImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC61189F2747001B00612581 /* ArtworkImage.swift */; };
 		FC6118A2274704FA00612581 /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6118A1274704FA00612581 /* Schedule.swift */; };
@@ -497,6 +500,13 @@
 			remoteGlobalIDString = 49BA7DFE1655ABE600C06572;
 			remoteInfo = Artsy;
 		};
+		CB6AFF302793654E00D7DC82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 49BA7DF61655ABE600C06572 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CB6AFF2A2793654E00D7DC82;
+			remoteInfo = BrazePushServiceExtension;
+		};
 		FCB45B2D2746EF3900232337 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 49BA7DF61655ABE600C06572 /* Project object */;
@@ -513,6 +523,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				CB6AFF322793654E00D7DC82 /* BrazePushServiceExtension.appex in Embed App Extensions */,
 				FCB45B2F2746EF3900232337 /* ArtsyWidgetExtension.appex in Embed App Extensions */,
 				1AD4F8A225FBBA89007FDB71 /* Artsy Stickers.appex in Embed App Extensions */,
 			);
@@ -1092,6 +1103,9 @@
 		CB355E8217CAB0B3002A798D /* ARFollowable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFollowable.h; sourceTree = "<group>"; };
 		CB42B64D181092480069A801 /* ARCountdownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCountdownView.h; sourceTree = "<group>"; };
 		CB42B64E181092480069A801 /* ARCountdownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCountdownView.m; sourceTree = "<group>"; };
+		CB6AFF2B2793654E00D7DC82 /* BrazePushServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BrazePushServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		CB6AFF2D2793654E00D7DC82 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
+		CB6AFF2F2793654E00D7DC82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CB6CE8E124F424E700ED2843 /* ARInternalWebViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARInternalWebViewManager.m; sourceTree = "<group>"; };
 		CB6CE8E224F424E700ED2843 /* ARInternalWebViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalWebViewManager.h; sourceTree = "<group>"; };
 		CB6CE8E324F424E700ED2843 /* ARInternalWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARInternalWebView.h; sourceTree = "<group>"; };
@@ -1154,6 +1168,7 @@
 		E6F466E718EF52A800A09AFA /* Artwork_v1.data */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Artwork_v1.data; sourceTree = "<group>"; };
 		E6F84CFE1A0A920600BF99A3 /* CloseButtonLargeHighlighted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "CloseButtonLargeHighlighted@2x.png"; sourceTree = "<group>"; };
 		F5228136EBA7C3D968C3D845 /* Pods-Artsy Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Artsy Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Artsy Tests/Pods-Artsy Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		FC592EF42798A8B4001A4FD6 /* ImageUrl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUrl.swift; sourceTree = "<group>"; };
 		FC61189D2746FE2300612581 /* ArtworkStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArtworkStore.swift; sourceTree = "<group>"; };
 		FC61189F2747001B00612581 /* ArtworkImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkImage.swift; sourceTree = "<group>"; };
 		FC6118A1274704FA00612581 /* Schedule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
@@ -1237,6 +1252,13 @@
 				60476F4C1AD87DB200670502 /* UIKit.framework in Frameworks */,
 				B3ECE8291819D1E6009F5C5B /* Foundation.framework in Frameworks */,
 				68AE3912711D80B0018CCC9D /* libPods-Artsy Tests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB6AFF282793654E00D7DC82 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1678,6 +1700,7 @@
 				B3ECE82B1819D1E6009F5C5B /* Artsy Tests */,
 				1AD4F89C25FBBA85007FDB71 /* Artsy Stickers */,
 				FCB45B272746EF3700232337 /* ArtsyWidget */,
+				CB6AFF2C2793654E00D7DC82 /* BrazePushServiceExtension */,
 				49BA7E021655ABE600C06572 /* Frameworks */,
 				49BA7E001655ABE600C06572 /* Products */,
 				33C6886033769A61A3E99B18 /* Pods */,
@@ -1691,6 +1714,7 @@
 				B3ECE8261819D1E6009F5C5B /* Artsy Tests.xctest */,
 				1AD4F89B25FBBA85007FDB71 /* Artsy Stickers.appex */,
 				FCB45B222746EF3700232337 /* ArtsyWidgetExtension.appex */,
+				CB6AFF2B2793654E00D7DC82 /* BrazePushServiceExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2734,6 +2758,15 @@
 			path = Supporting_Files;
 			sourceTree = "<group>";
 		};
+		CB6AFF2C2793654E00D7DC82 /* BrazePushServiceExtension */ = {
+			isa = PBXGroup;
+			children = (
+				CB6AFF2D2793654E00D7DC82 /* NotificationService.swift */,
+				CB6AFF2F2793654E00D7DC82 /* Info.plist */,
+			);
+			path = BrazePushServiceExtension;
+			sourceTree = "<group>";
+		};
 		CBB469CD181F1EED00B5692B /* Auctions */ = {
 			isa = PBXGroup;
 			children = (
@@ -2885,6 +2918,7 @@
 				FC6118A1274704FA00612581 /* Schedule.swift */,
 				FCB45B482746F72800232337 /* SecondaryText.swift */,
 				FCB45B4A2746F81F00232337 /* WidgetUrl.swift */,
+				FC592EF42798A8B4001A4FD6 /* ImageUrl.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -2935,6 +2969,7 @@
 			dependencies = (
 				1AD4F8A125FBBA89007FDB71 /* PBXTargetDependency */,
 				FCB45B2E2746EF3900232337 /* PBXTargetDependency */,
+				CB6AFF312793654E00D7DC82 /* PBXTargetDependency */,
 			);
 			name = Artsy;
 			productName = Artsy;
@@ -2960,6 +2995,23 @@
 			productReference = B3ECE8261819D1E6009F5C5B /* Artsy Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		CB6AFF2A2793654E00D7DC82 /* BrazePushServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CB6AFF362793654E00D7DC82 /* Build configuration list for PBXNativeTarget "BrazePushServiceExtension" */;
+			buildPhases = (
+				CB6AFF272793654E00D7DC82 /* Sources */,
+				CB6AFF282793654E00D7DC82 /* Frameworks */,
+				CB6AFF292793654E00D7DC82 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BrazePushServiceExtension;
+			productName = BrazePushServiceExtension;
+			productReference = CB6AFF2B2793654E00D7DC82 /* BrazePushServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		FCB45B212746EF3700232337 /* ArtsyWidgetExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FCB45B332746EF3A00232337 /* Build configuration list for PBXNativeTarget "ArtsyWidgetExtension" */;
@@ -2984,7 +3036,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = AR;
-				LastSwiftUpdateCheck = 1310;
+				LastSwiftUpdateCheck = 1320;
 				LastUpgradeCheck = 1210;
 				ORGANIZATIONNAME = Artsy;
 				TargetAttributes = {
@@ -3023,6 +3075,11 @@
 						LastSwiftMigration = 1100;
 						TestTargetID = 49BA7DFE1655ABE600C06572;
 					};
+					CB6AFF2A2793654E00D7DC82 = {
+						CreatedOnToolsVersion = 13.2.1;
+						DevelopmentTeam = 23KMWZ572J;
+						ProvisioningStyle = Automatic;
+					};
 					FCB45B212746EF3700232337 = {
 						CreatedOnToolsVersion = 13.1;
 						DevelopmentTeam = 23KMWZ572J;
@@ -3047,6 +3104,7 @@
 				B3ECE8251819D1E6009F5C5B /* Artsy Tests */,
 				1AD4F89A25FBBA85007FDB71 /* Artsy Stickers */,
 				FCB45B212746EF3700232337 /* ArtsyWidgetExtension */,
+				CB6AFF2A2793654E00D7DC82 /* BrazePushServiceExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -3171,6 +3229,13 @@
 				E6B9FA7B18A97C0A00E961F9 /* stub.jpg in Resources */,
 				E6F466E818EF52A800A09AFA /* Artwork_v1.data in Resources */,
 				6082B2051B46ADDE00953BC8 /* stubbed_image.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CB6AFF292793654E00D7DC82 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3669,6 +3734,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CB6AFF272793654E00D7DC82 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CB6AFF2E2793654E00D7DC82 /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FCB45B1E2746EF3700232337 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -3685,6 +3758,7 @@
 				FCB45B292746EF3700232337 /* ArtsyWidgets.swift in Sources */,
 				FC9DDB0B274D8FA1005DEE85 /* LatestArticles+View.swift in Sources */,
 				FCB45B4B2746F81F00232337 /* WidgetUrl.swift in Sources */,
+				FC592EF52798A8B4001A4FD6 /* ImageUrl.swift in Sources */,
 				FC6118A92747091500612581 /* VolleyPayload.swift in Sources */,
 				FCB45B3D2746F0F100232337 /* FullBleed.swift in Sources */,
 				FCB45B442746F42800232337 /* FullBleed+Widget.swift in Sources */,
@@ -3728,6 +3802,11 @@
 			isa = PBXTargetDependency;
 			target = 49BA7DFE1655ABE600C06572 /* Artsy */;
 			targetProxy = B3ECE8341819D1E7009F5C5B /* PBXContainerItemProxy */;
+		};
+		CB6AFF312793654E00D7DC82 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CB6AFF2A2793654E00D7DC82 /* BrazePushServiceExtension */;
+			targetProxy = CB6AFF302793654E00D7DC82 /* PBXContainerItemProxy */;
 		};
 		FCB45B2E2746EF3900232337 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4367,6 +4446,186 @@
 			};
 			name = Store;
 		};
+		CB6AFF332793654E00D7DC82 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BrazePushServiceExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BrazePushServiceExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Artsy. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.BrazePushServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CB6AFF342793654E00D7DC82 /* Store */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BrazePushServiceExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BrazePushServiceExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Artsy. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.BrazePushServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Store;
+		};
+		CB6AFF352793654E00D7DC82 /* Demo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 23KMWZ572J;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BrazePushServiceExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = BrazePushServiceExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2022 Artsy. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy.BrazePushServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Demo;
+		};
 		FCB45B302746EF3A00232337 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4592,6 +4851,16 @@
 				B3ECE8371819D1E7009F5C5B /* Debug */,
 				B3ECE83A1819D1E7009F5C5B /* Store */,
 				60AF3D0418D33C80008F3CC0 /* Demo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CB6AFF362793654E00D7DC82 /* Build configuration list for PBXNativeTarget "BrazePushServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CB6AFF332793654E00D7DC82 /* Debug */,
+				CB6AFF342793654E00D7DC82 /* Store */,
+				CB6AFF352793654E00D7DC82 /* Demo */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

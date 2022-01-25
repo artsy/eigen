@@ -86,8 +86,15 @@ export class InboxOld extends React.Component<Props, State> {
     const hasBids = !!lotStanding && lotStanding.length > 0
     const hasConversations = !!conversationsExistenceCheck && conversationsExistenceCheck.length > 0
     return hasBids || hasConversations ? (
-      <Container refreshControl={<RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />}>
-        <ActiveBids me={this.props.me} componentRef={(activeBids) => (this.activeBids = activeBids)} />
+      <Container
+        refreshControl={
+          <RefreshControl refreshing={this.state.fetchingData} onRefresh={this.fetchData} />
+        }
+      >
+        <ActiveBids
+          me={this.props.me}
+          componentRef={(activeBids) => (this.activeBids = activeBids)}
+        />
         <ConversationsContainer
           isActiveTab={this.props.isVisible}
           me={this.props.me}

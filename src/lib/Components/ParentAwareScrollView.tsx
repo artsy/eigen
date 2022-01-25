@@ -70,7 +70,10 @@ class ParentAwareScrollView extends React.PureComponent<ScrollViewProps, State> 
 
   isNestedInAVirtualizedListWithSameOrientation = (): boolean => {
     const virtualizedListContext = this.context?.virtualizedList
-    return !!(virtualizedListContext && virtualizedListContext.horizontal === (this.props.horizontal ?? false))
+    return !!(
+      virtualizedListContext &&
+      virtualizedListContext.horizontal === (this.props.horizontal ?? false)
+    )
   }
 
   // The following methods are required by any parent VirtualizedList

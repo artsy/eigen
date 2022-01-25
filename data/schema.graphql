@@ -582,7 +582,11 @@ enum AnalyticsRankedStatsObjectTypeEnum {
 }
 
 # An artwork, artist, show, or viewing room
-union AnalyticsRankedStatsUnion = AnalyticsArtist | AnalyticsArtwork | AnalyticsShow | AnalyticsViewingRoom
+union AnalyticsRankedStatsUnion =
+    AnalyticsArtist
+  | AnalyticsArtwork
+  | AnalyticsShow
+  | AnalyticsViewingRoom
 
 type AnalyticsShow {
   entityId: String!
@@ -672,6 +676,8 @@ type Article implements Node {
   cached: Int
   channelID: String
   contributingAuthors: [Author]
+  description: String
+  hero: ArticleHero
   href: String
 
   # A globally unique ID.
@@ -679,6 +685,9 @@ type Article implements Node {
 
   # A type-specific ID.
   internalID: ID!
+  keywords: [String!]!
+  layout: ArticleLayout!
+  postscript: String
   publishedAt(
     format: String
 
@@ -687,7 +696,14 @@ type Article implements Node {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
-  sections: [ArticleSectionsType]
+  relatedArticles(
+    # Enables configuration for loading the type of articles that sit in between full-page articles
+    inVertical: Boolean = false
+
+    # Number of articles to return
+    size: Int = 3
+  ): [Article!]!
+  sections: [ArticleSections!]!
   slug: String
   thumbnailImage: Image
   thumbnailTeaser: String
@@ -725,6 +741,33 @@ type ArticleEdge {
   node: Article
 }
 
+type ArticleFeatureSection {
+  image: Image
+  layout: ArticleFeatureSectionType!
+  title: String
+}
+
+enum ArticleFeatureSectionType {
+  BASIC
+  FULLSCREEN
+  SPLIT
+  TEXT
+}
+
+union ArticleHero = ArticleFeatureSection
+
+type ArticleImageSection {
+  caption: String
+  id: ID!
+  image: Image
+  layout: String
+}
+
+enum ArticleLayout {
+  FEATURE
+  STANDARD
+}
+
 type ArticleSectionCallout {
   article: String
   hideImage: String
@@ -743,23 +786,38 @@ type ArticleSectionEmbed {
 }
 
 type ArticleSectionImageCollection {
-  layout: String
-  type: String
+  figures: [ArticleSectionImageCollectionFigure!]!
+  layout: ArticleSectionImageCollectionLayout!
+}
+
+union ArticleSectionImageCollectionFigure = ArticleImageSection | Artwork
+
+enum ArticleSectionImageCollectionLayout {
+  COLUMN_WIDTH
+  FILLWIDTH
+  OVERFLOW_FILLWIDTH
 }
 
 type ArticleSectionImageSet {
-  layout: String
+  counts: ArticleSectionImageSetCounts!
+  cover: ArticleSectionImageSetFigure
+  figures: [ArticleSectionImageSetFigure!]!
+  layout: ArticleSectionImageSetLayout!
   title: String
-  type: String
 }
 
-type ArticleSectionSocialEmbed {
-  layout: String
-  type: String
-  url: String
+type ArticleSectionImageSetCounts {
+  figures: Int!
 }
 
-union ArticleSectionsType =
+union ArticleSectionImageSetFigure = ArticleImageSection | Artwork
+
+enum ArticleSectionImageSetLayout {
+  FULL
+  MINI
+}
+
+union ArticleSections =
     ArticleSectionCallout
   | ArticleSectionEmbed
   | ArticleSectionImageCollection
@@ -768,10 +826,15 @@ union ArticleSectionsType =
   | ArticleSectionText
   | ArticleSectionVideo
 
+type ArticleSectionSocialEmbed {
+  layout: String
+  type: String
+  url: String
+}
+
 type ArticleSectionText {
   body: String
   layout: String
-  type: String
 }
 
 type ArticleSectionVideo {
@@ -801,7 +864,12 @@ type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Sear
     limit: Int
     sort: ArticleSorts
   ): ArticleConnection
-  artistSeriesConnection(after: String, before: String, first: Int, last: Int): ArtistSeriesConnection
+  artistSeriesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtistSeriesConnection
   artworksConnection(
     after: String
     before: String
@@ -1058,7 +1126,8 @@ type ArtistBlurb {
   partner: Partner
 
   # The partner id of the partner who submitted the featured bio.
-  partnerID: String @deprecated(reason: "No longer used as the partner field contains the partner.id")
+  partnerID: String
+    @deprecated(reason: "No longer used as the partner field contains the partner.id")
   text: String
 }
 
@@ -1396,7 +1465,12 @@ type Artwork implements Node & Searchable & Sellable {
     # Use whatever is in the original response instead of making a request
     shallow: Boolean
   ): [Artist]
-  artistSeriesConnection(after: String, before: String, first: Int, last: Int): ArtistSeriesConnection
+  artistSeriesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtistSeriesConnection
 
   # Represents the location of the artwork for "My Collection" artworks
   artworkLocation: String
@@ -1915,7 +1989,12 @@ type AuctionResult implements Node {
   categoryText: String
 
   # Comparable auction results
-  comparableAuctionResults(after: String, before: String, first: Int, last: Int): AuctionResultConnection
+  comparableAuctionResults(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): AuctionResultConnection
   currency: String
   date(
     format: String
@@ -2672,7 +2751,7 @@ type CollectorProfileType {
     timezone: String
   ): String
   name: String
-  privacy: Int
+  privacy: String
   professionalBuyerAppliedAt(
     format: String
 
@@ -2922,6 +3001,7 @@ type CommerceBuyOrder implements CommerceOrder {
     thousand: String = ","
   ): String
   shippingTotalCents: Int
+  source: CommerceOrderSourceEnum!
   state: CommerceOrderStateEnum!
   stateExpiresAt(
     format: String
@@ -3595,6 +3675,7 @@ type CommerceOfferOrder implements CommerceOrder {
     thousand: String = ","
   ): String
   shippingTotalCents: Int
+  source: CommerceOrderSourceEnum!
   state: CommerceOrderStateEnum!
   stateExpiresAt(
     format: String
@@ -3775,6 +3856,7 @@ interface CommerceOrder {
     thousand: String = ","
   ): String
   shippingTotalCents: Int
+  source: CommerceOrderSourceEnum!
   state: CommerceOrderStateEnum!
   stateExpiresAt(
     format: String
@@ -3955,6 +4037,14 @@ union CommerceOrderPartyUnion = CommercePartner | CommerceUser
 type CommerceOrderRequiresAction {
   # Data related to action needed
   actionData: CommerceOrderActionData!
+}
+
+enum CommerceOrderSourceEnum {
+  # The order was originated on the artwork page
+  artwork_page
+
+  # The order was originated on a conversation
+  inquiry
 }
 
 type CommerceOrderStateChangedEvent implements CommerceEventInterface {
@@ -5452,7 +5542,12 @@ type Conversation implements Node {
   ): String
 
   # Messages and other events in a conversation.
-  conversationEventConnection(after: String, before: String, first: Int, last: Int): ConversationEventConnection
+  conversationEventConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ConversationEventConnection
   createdAt(
     format: String
 
@@ -5469,7 +5564,9 @@ type Conversation implements Node {
   # A globally unique ID.
   id: ID!
   initialMessage: String!
-    @deprecated(reason: "This field is no longer required. Prefer the first message from the MessageConnection.")
+    @deprecated(
+      reason: "This field is no longer required. Prefer the first message from the MessageConnection."
+    )
 
   # Gravity inquiry id.
   inquiryID: String
@@ -5499,14 +5596,22 @@ type Conversation implements Node {
 
   # Impulse id of the last message.
   lastMessageID: String
-    @deprecated(reason: "Prefer querying `messagesConnection(last:1) { edges { node { internalID } } }`")
+    @deprecated(
+      reason: "Prefer querying `messagesConnection(last:1) { edges { node { internalID } } }`"
+    )
 
   # A connection for all messages in a single conversation
   messages(after: String, before: String, first: Int, last: Int, sort: sort): MessageConnection
     @deprecated(reason: "Prefer messagesConnection")
 
   # A connection for all messages in a single conversation
-  messagesConnection(after: String, before: String, first: Int, last: Int, sort: sort): MessageConnection
+  messagesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    sort: sort
+  ): MessageConnection
   orderConnection(
     after: String
     before: String
@@ -5688,7 +5793,9 @@ type CreateAccountRequestMutationSuccess {
   accountRequest: AccountRequest
 }
 
-union CreateAccountRequestMutationType = CreateAccountRequestMutationFailure | CreateAccountRequestMutationSuccess
+union CreateAccountRequestMutationType =
+    CreateAccountRequestMutationFailure
+  | CreateAccountRequestMutationSuccess
 
 # Autogenerated input type of CreateAppSecondFactor
 input CreateAppSecondFactorInput {
@@ -5918,6 +6025,7 @@ input CreateUserAddressInput {
 type CreateUserAddressPayload {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
+  me: Me
   userAddressOrErrors: UserAddressOrErrorsUnion!
 }
 
@@ -6177,6 +6285,7 @@ input DeleteUserAddressInput {
 type DeleteUserAddressPayload {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
+  me: Me
   userAddressOrErrors: UserAddressOrErrorsUnion!
 }
 
@@ -6939,7 +7048,13 @@ type Feature {
   name: String!
 
   # Features are composed of sets, which are themselves composed of items of various types
-  setsConnection(after: String, before: String, first: Int, last: Int, sort: OrderedSetSorts): OrderedSetConnection
+  setsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    sort: OrderedSetSorts
+  ): OrderedSetConnection
 
   # A slug ID.
   slug: ID!
@@ -7399,10 +7514,22 @@ type FollowsAndSaves {
   fairsConnection(after: String, before: String, first: Int, last: Int): FollowedFairConnection
 
   # A list of the current user’s currently followed gallery profiles
-  galleriesConnection(after: String, before: String, first: Int, last: Int): FollowedGalleryConnection
+  galleriesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): FollowedGalleryConnection
 
   # A list of the current user’s inquiry requests
-  genesConnection(after: String, before: String, first: Int, last: Int, page: Int, size: Int): FollowGeneConnection
+  genesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+    size: Int
+  ): FollowGeneConnection
 
   # A list of the current user’s currently followed partner profiles
   profilesConnection(
@@ -8388,8 +8515,10 @@ type MarketingCollectionQuery {
   geneIDs: [String!]
   height: String
   id: ID
-  include_artworks_by_followed_artists: Boolean @deprecated(reason: "Prefer includeArtworksByFollowedArtists")
-  include_medium_filter_in_aggregation: Boolean @deprecated(reason: "Prefer includeMediumFilterInAggregation")
+  include_artworks_by_followed_artists: Boolean
+    @deprecated(reason: "Prefer includeArtworksByFollowedArtists")
+  include_medium_filter_in_aggregation: Boolean
+    @deprecated(reason: "Prefer includeMediumFilterInAggregation")
   includeArtworksByFollowedArtists: Boolean
   includeMediumFilterInAggregation: Boolean
   inquireable_only: Boolean @deprecated(reason: "Prefer inquireableOnly")
@@ -8461,10 +8590,21 @@ type Me implements Node {
   addressConnection(after: String, before: String, first: Int, last: Int): UserAddressConnection
 
   # A connection of artist recommendations for the current user.
-  artistRecommendations(after: String, before: String, first: Int, last: Int, page: Int): ArtistConnection
+  artistRecommendations(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+  ): ArtistConnection
 
   # A list of the current user’s inquiry requests
-  artworkInquiriesConnection(after: String, before: String, first: Int, last: Int): ArtworkInquiryConnection
+  artworkInquiriesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkInquiryConnection
 
   # A list of the auction results by followed artists
   auctionResultsByFollowedArtists(
@@ -8495,7 +8635,12 @@ type Me implements Node {
     sizes: [ArtworkSizes]
     sort: AuctionResultSorts
   ): AuctionResultConnection
-  auctionsLotStandingConnection(after: String, before: String, first: Int, last: Int): AuctionsLotStandingConnection!
+  auctionsLotStandingConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): AuctionsLotStandingConnection!
 
   # A list of authenticated external services
   authentications: [AuthenticationType!]!
@@ -8542,7 +8687,12 @@ type Me implements Node {
   ): Conversation
 
   # Conversations, usually between a user and partner.
-  conversationsConnection(after: String, before: String, first: Int, last: Int): ConversationConnection
+  conversationsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ConversationConnection
   createdAt(
     format: String
 
@@ -8645,7 +8795,7 @@ type Me implements Node {
     before: String
 
     # Exclude artworks that have been purchased on Artsy and automatically added to the collection.
-    excludePurchasedArtworks: Boolean = true
+    excludePurchasedArtworks: Boolean = false
     first: Int
     last: Int
     sort: MyCollectionArtworkSorts
@@ -8656,7 +8806,13 @@ type Me implements Node {
   name: String
 
   # A connection of new works by artists the user interacted with (sorted by publication date).
-  newWorksByInterestingArtists(after: String, before: String, first: Int, last: Int, page: Int): ArtworkConnection
+  newWorksByInterestingArtists(
+    after: String
+    before: String
+    first: Int
+    last: Int
+    page: Int
+  ): ArtworkConnection
   orders(
     after: String
     before: String
@@ -8667,6 +8823,9 @@ type Me implements Node {
     sort: CommerceOrderConnectionSortEnum
     states: [CommerceOrderStateEnum!]
   ): CommerceOrderConnectionWithTotalCount
+
+  # Collector's position with relevant institutions
+  otherRelevantPosition: String
   paddleNumber: String
 
   # A list of the current user’s managed partners
@@ -8679,7 +8838,7 @@ type Me implements Node {
   priceRange: String
   priceRangeMax: Float
   priceRangeMin: Float
-  privacy: Int
+  privacy: String
   profession: String
 
   # This user should receive lot opening notifications
@@ -8705,7 +8864,12 @@ type Me implements Node {
   recentlyViewedArtworkIds: [String]!
 
   # A list of the current user’s recently viewed artworks.
-  recentlyViewedArtworksConnection(after: String, before: String, first: Int, last: Int): ArtworkConnection
+  recentlyViewedArtworksConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ArtworkConnection
   saleRegistrationsConnection(
     after: String
     auctionState: AuctionState
@@ -8733,7 +8897,12 @@ type Me implements Node {
     sort: SaleSorts
   ): SaleRegistrationConnection
   savedSearch(criteria: SearchCriteriaAttributes, id: ID): SearchCriteria
-  savedSearchesConnection(after: String, before: String, first: Int, last: Int): SearchCriteriaConnection
+  savedSearchesConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): SearchCriteriaConnection
   secondFactors(kinds: [SecondFactorKind]): [SecondFactor]
   shareFollows: Boolean!
 
@@ -8966,9 +9135,13 @@ type Mutation {
   confirmPassword(input: ConfirmPasswordInput!): ConfirmPasswordPayload
 
   # Create an account request
-  createAccountRequest(input: CreateAccountRequestMutationInput!): CreateAccountRequestMutationPayload
+  createAccountRequest(
+    input: CreateAccountRequestMutationInput!
+  ): CreateAccountRequestMutationPayload
   createAppSecondFactor(input: CreateAppSecondFactorInput!): CreateAppSecondFactorPayload
-  createBackupSecondFactors(input: CreateBackupSecondFactorsInput!): CreateBackupSecondFactorsPayload
+  createBackupSecondFactors(
+    input: CreateBackupSecondFactorsInput!
+  ): CreateBackupSecondFactorsPayload
 
   # Create a bidder
   createBidder(input: CreateBidderInput!): CreateBidderPayload
@@ -8992,7 +9165,9 @@ type Mutation {
   createCreditCard(input: CreditCardInput!): CreditCardPayload
 
   # Attach an gemini asset to a consignment submission
-  createGeminiEntryForAsset(input: CreateGeminiEntryForAssetInput!): CreateGeminiEntryForAssetPayload
+  createGeminiEntryForAsset(
+    input: CreateGeminiEntryForAssetInput!
+  ): CreateGeminiEntryForAssetPayload
   createImage(input: CreateImageInput!): CreateImagePayload
   createInquiryOfferOrder(
     input: CommerceCreateInquiryOfferOrderWithArtworkInput!
@@ -9046,13 +9221,19 @@ type Mutation {
   linkAuthentication(input: LinkAuthenticationMutationInput!): LinkAuthenticationMutationPayload
 
   # Create an artwork in my collection
-  myCollectionCreateArtwork(input: MyCollectionCreateArtworkInput!): MyCollectionCreateArtworkPayload
+  myCollectionCreateArtwork(
+    input: MyCollectionCreateArtworkInput!
+  ): MyCollectionCreateArtworkPayload
 
   # Deletes an artwork from my collection
-  myCollectionDeleteArtwork(input: MyCollectionDeleteArtworkInput!): MyCollectionDeleteArtworkPayload
+  myCollectionDeleteArtwork(
+    input: MyCollectionDeleteArtworkInput!
+  ): MyCollectionDeleteArtworkPayload
 
   # Update an artwork in my collection
-  myCollectionUpdateArtwork(input: MyCollectionUpdateArtworkInput!): MyCollectionUpdateArtworkPayload
+  myCollectionUpdateArtwork(
+    input: MyCollectionUpdateArtworkInput!
+  ): MyCollectionUpdateArtworkPayload
   publishViewingRoom(input: PublishViewingRoomInput!): PublishViewingRoomPayload
   recordArtworkView(input: RecordArtworkViewInput!): RecordArtworkViewPayload
   removeAssetFromConsignmentSubmission(
@@ -9070,22 +9251,32 @@ type Mutation {
   saveArtwork(input: SaveArtworkInput!): SaveArtworkPayload
 
   # Send a confirmation email
-  sendConfirmationEmail(input: SendConfirmationEmailMutationInput!): SendConfirmationEmailMutationPayload
+  sendConfirmationEmail(
+    input: SendConfirmationEmailMutationInput!
+  ): SendConfirmationEmailMutationPayload
 
   # Appending a message to a conversation thread
-  sendConversationMessage(input: SendConversationMessageMutationInput!): SendConversationMessageMutationPayload
+  sendConversationMessage(
+    input: SendConversationMessageMutationInput!
+  ): SendConversationMessageMutationPayload
 
   # Send a feedback message
   sendFeedback(input: SendFeedbackMutationInput!): SendFeedbackMutationPayload
 
   # Start an identity verification flow for a pending identity verification
-  startIdentityVerification(input: startIdentityVerificationMutationInput!): startIdentityVerificationMutationPayload
+  startIdentityVerification(
+    input: startIdentityVerificationMutationInput!
+  ): startIdentityVerificationMutationPayload
 
   # Create an artwork inquiry request
-  submitInquiryRequestMutation(input: SubmitInquiryRequestMutationInput!): SubmitInquiryRequestMutationPayload
+  submitInquiryRequestMutation(
+    input: SubmitInquiryRequestMutationInput!
+  ): SubmitInquiryRequestMutationPayload
 
   # Unlinks a 3rd party account
-  unlinkAuthentication(input: UnlinkAuthenticationMutationInput!): UnlinkAuthenticationMutationPayload
+  unlinkAuthentication(
+    input: UnlinkAuthenticationMutationInput!
+  ): UnlinkAuthenticationMutationPayload
   unpublishViewingRoom(input: UnpublishViewingRoomInput!): UnpublishViewingRoomPayload
   updateAppSecondFactor(input: UpdateAppSecondFactorInput!): UpdateAppSecondFactorPayload
 
@@ -9109,8 +9300,12 @@ type Mutation {
   updateUserAddress(input: UpdateUserAddressInput!): UpdateUserAddressPayload
   updateUserDefaultAddress(input: UpdateUserDefaultAddressInput!): UpdateUserDefaultAddressPayload
   updateViewingRoom(input: UpdateViewingRoomInput!): UpdateViewingRoomPayload
-  updateViewingRoomArtworks(input: UpdateViewingRoomArtworksInput!): UpdateViewingRoomArtworksPayload
-  updateViewingRoomSubsections(input: UpdateViewingRoomSubsectionsInput!): UpdateViewingRoomSubsectionsPayload
+  updateViewingRoomArtworks(
+    input: UpdateViewingRoomArtworksInput!
+  ): UpdateViewingRoomArtworksPayload
+  updateViewingRoomSubsections(
+    input: UpdateViewingRoomSubsectionsInput!
+  ): UpdateViewingRoomSubsectionsPayload
 }
 
 type MyBid {
@@ -9323,7 +9518,12 @@ type OrderedSet {
   key: String
   layout: OrderedSetLayouts!
   name: String
-  orderedItemsConnection(after: String, before: String, first: Int, last: Int): OrderedSetItemConnection!
+  orderedItemsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): OrderedSetItemConnection!
 }
 
 # A connection to a list of items.
@@ -9634,7 +9834,11 @@ type Partner implements Node {
   slug: ID!
   type: String
   vatNumber: String
-  viewingRoomsConnection(after: String, first: Int, statuses: [ViewingRoomStatusEnum!]): ViewingRoomsConnection
+  viewingRoomsConnection(
+    after: String
+    first: Int
+    statuses: [ViewingRoomStatusEnum!]
+  ): ViewingRoomsConnection
 
   # The gallery partner's web address
   website: String
@@ -10243,7 +10447,12 @@ type Query {
   ): [DoNotUseThisPartner!] @deprecated(reason: "Use matchPartners")
 
   # Autocomplete resolvers.
-  _unused_gravity_matchPartners(matchType: String, page: Int = 1, size: Int = 5, term: String!): [DoNotUseThisPartner!]
+  _unused_gravity_matchPartners(
+    matchType: String
+    page: Int = 1
+    size: Int = 5
+    term: String!
+  ): [DoNotUseThisPartner!]
 
   # Find a partner by ID
   _unused_gravity_partner(id: ID!): DoNotUseThisPartner
@@ -10455,7 +10664,9 @@ type Query {
     last: Int
     respectParamsOrder: Boolean = false
   ): ArtworkConnection
-    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+    @deprecated(
+      reason: "This is only for use in resolving stitched queries, not for first-class client use."
+    )
 
   # Artworks Elastic Search results
   artworksConnection(
@@ -10858,7 +11069,9 @@ type Query {
     private: Boolean
     viewingRoomID: String
   ): ArtworkConnection
-    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+    @deprecated(
+      reason: "This is only for use in resolving stitched queries, not for first-class client use."
+    )
 
   # A list of PartnerCategories
   partnerCategories(
@@ -11084,7 +11297,13 @@ type Query {
   ): User
 
   # A list of Users
-  usersConnection(after: String, before: String, first: Int, ids: [String], last: Int): UserConnection
+  usersConnection(
+    after: String
+    before: String
+    first: Int
+    ids: [String]
+    last: Int
+  ): UserConnection
 
   # A Partner or Fair
   vanityURLEntity(
@@ -11951,7 +12170,9 @@ type SendConfirmationEmailMutationSuccess {
   unconfirmedEmail: String
 }
 
-union SendConfirmationEmailMutationType = SendConfirmationEmailMutationFailure | SendConfirmationEmailMutationSuccess
+union SendConfirmationEmailMutationType =
+    SendConfirmationEmailMutationFailure
+  | SendConfirmationEmailMutationSuccess
 
 input SendConversationMessageMutationInput {
   bodyText: String!
@@ -12137,7 +12358,12 @@ type Show implements EntityWithFilterArtworksConnectionInterface & Node {
   ): FilterArtworksConnection
 
   # A Connection of followed artists by current user for this show
-  followedArtistsConnection(after: String, before: String, first: Int, last: Int): ShowFollowArtistConnection
+  followedArtistsConnection(
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): ShowFollowArtistConnection
 
   # Flag showing if show has any location.
   hasLocation: Boolean
@@ -12408,7 +12634,9 @@ type startIdentityVerificationMutationPayload {
   startIdentityVerificationResponseOrError: StartIdentityVerificationResponseOrError
 }
 
-union StartIdentityVerificationResponseOrError = StartIdentityVerificationFailure | StartIdentityVerificationSuccess
+union StartIdentityVerificationResponseOrError =
+    StartIdentityVerificationFailure
+  | StartIdentityVerificationSuccess
 
 type StartIdentityVerificationSuccess {
   # URL that hosts the user-facing identity verification flow (Jumio)
@@ -12703,7 +12931,7 @@ type UpdateCollectorProfilePayload {
     timezone: String
   ): String
   name: String
-  privacy: Int
+  privacy: String
   professionalBuyerAppliedAt(
     format: String
 
@@ -12792,6 +13020,9 @@ input UpdateMyProfileInput {
   # Additional personal notes.
   notes: String
 
+  # Collector's position with relevant institutions
+  otherRelevantPosition: String
+
   # The user's password, required to change email address.
   password: String
 
@@ -12805,7 +13036,7 @@ input UpdateMyProfileInput {
   priceRangeMin: Int
 
   # Wheter or not the collector shares detailed profile information with galleries.
-  privacy: Int
+  privacy: String
 
   # Profession.
   profession: String
@@ -12945,6 +13176,7 @@ input UpdateUserAddressInput {
 type UpdateUserAddressPayload {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
+  me: Me
   userAddressOrErrors: UserAddressOrErrorsUnion!
 }
 
@@ -12959,6 +13191,7 @@ input UpdateUserDefaultAddressInput {
 type UpdateUserDefaultAddressPayload {
   # A unique identifier for the client performing the mutation.
   clientMutationId: String
+  me: Me
   userAddressOrErrors: UserAddressOrErrorsUnion!
 }
 
@@ -13350,7 +13583,9 @@ type Viewer {
     last: Int
     respectParamsOrder: Boolean = false
   ): ArtworkConnection
-    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+    @deprecated(
+      reason: "This is only for use in resolving stitched queries, not for first-class client use."
+    )
 
   # Artworks Elastic Search results
   artworksConnection(
@@ -13603,7 +13838,9 @@ type Viewer {
     private: Boolean
     viewingRoomID: String
   ): ArtworkConnection
-    @deprecated(reason: "This is only for use in resolving stitched queries, not for first-class client use.")
+    @deprecated(
+      reason: "This is only for use in resolving stitched queries, not for first-class client use."
+    )
 
   # A list of PartnerCategories
   partnerCategories(
@@ -13777,7 +14014,13 @@ type Viewer {
   ): User
 
   # A list of Users
-  usersConnection(after: String, before: String, first: Int, ids: [String], last: Int): UserConnection
+  usersConnection(
+    after: String
+    before: String
+    first: Int
+    ids: [String]
+    last: Int
+  ): UserConnection
 
   # A Partner or Fair
   vanityURLEntity(

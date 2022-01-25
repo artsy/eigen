@@ -134,7 +134,9 @@ describe("PartnerOverview", () => {
   })
 })
 
-const artists: NonNullable<NonNullable<PartnerOverviewTestsQueryRawResponse["partner"]>["artists"]>["edges"] = [
+const artists: NonNullable<
+  NonNullable<PartnerOverviewTestsQueryRawResponse["partner"]>["artists"]
+>["edges"] = [
   {
     cursor: "a",
     id: "a",

@@ -9,7 +9,14 @@ import { once } from "lodash"
 import { Box, Button, Flex, Sans, ShareIcon, Spacer, Text } from "palette"
 import { _maxWidth as maxWidth } from "palette"
 import React, { useCallback, useState } from "react"
-import { FlatList, LayoutAnimation, Share, TouchableWithoutFeedback, View, ViewToken } from "react-native"
+import {
+  FlatList,
+  LayoutAnimation,
+  Share,
+  TouchableWithoutFeedback,
+  View,
+  ViewToken,
+} from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
@@ -35,12 +42,17 @@ export enum ViewingRoomStatus {
   CLOSED = "closed",
 }
 
-export const ClosedNotice: React.FC<{ status: string; partnerHref: string }> = ({ status, partnerHref }) => {
+export const ClosedNotice: React.FC<{ status: string; partnerHref: string }> = ({
+  status,
+  partnerHref,
+}) => {
   let finalText = ""
   if (status === ViewingRoomStatus.CLOSED) {
-    finalText = "This viewing room is now closed. We invite you to view this gallery’s current works."
+    finalText =
+      "This viewing room is now closed. We invite you to view this gallery’s current works."
   } else if (status === ViewingRoomStatus.SCHEDULED) {
-    finalText = "This viewing room is not yet open. We invite you to view this gallery’s current works."
+    finalText =
+      "This viewing room is not yet open. We invite you to view this gallery’s current works."
   }
 
   return (
@@ -60,10 +72,13 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
   const [displayViewWorksButton, setDisplayViewWorksButton] = useState(false)
   const tracking = useTracking()
   const trackBodyImpression = useCallback(
-    once(() => tracking.trackEvent(tracks.bodyImpression(viewingRoom.internalID, viewingRoom.slug))),
+    once(() =>
+      tracking.trackEvent(tracks.bodyImpression(viewingRoom.internalID, viewingRoom.slug))
+    ),
     []
   )
-  const trackShare = () => tracking.trackEvent(tracks.share(viewingRoom.internalID, viewingRoom.slug))
+  const trackShare = () =>
+    tracking.trackEvent(tracks.share(viewingRoom.internalID, viewingRoom.slug))
   async function handleViewingRoomShare() {
     trackShare()
     try {
@@ -79,10 +94,15 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
 
   const sections: ViewingRoomSection[] = []
 
-  if (viewingRoom.status === ViewingRoomStatus.CLOSED || viewingRoom.status === ViewingRoomStatus.SCHEDULED) {
+  if (
+    viewingRoom.status === ViewingRoomStatus.CLOSED ||
+    viewingRoom.status === ViewingRoomStatus.SCHEDULED
+  ) {
     sections.push({
       key: "closedNotice",
-      content: <ClosedNotice status={viewingRoom.status} partnerHref={viewingRoom.partner!.href!} />,
+      content: (
+        <ClosedNotice status={viewingRoom.status} partnerHref={viewingRoom.partner!.href!} />
+      ),
     })
   } else if (viewingRoom.status === ViewingRoomStatus.LIVE) {
     sections.push({
@@ -164,7 +184,10 @@ export const ViewingRoom: React.FC<ViewingRoomProps> = (props) => {
           onViewableItemsChanged={useCallback(({ viewableItems }) => {
             if (viewableItems.find((viewableItem: ViewToken) => viewableItem.item.key === "body")) {
               trackBodyImpression()
-              LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.easeInEaseOut, duration: 150 })
+              LayoutAnimation.configureNext({
+                ...LayoutAnimation.Presets.easeInEaseOut,
+                duration: 150,
+              })
               setDisplayViewWorksButton(true)
             }
           }, [])}
@@ -232,7 +255,9 @@ export const ViewingRoomFragmentContainer = createFragmentContainer(ViewingRoom,
   `,
 })
 
-export const ViewingRoomQueryRenderer: React.FC<{ viewing_room_id: string }> = ({ viewing_room_id: viewingRoomID }) => {
+export const ViewingRoomQueryRenderer: React.FC<{ viewing_room_id: string }> = ({
+  viewing_room_id: viewingRoomID,
+}) => {
   return (
     <QueryRenderer<ViewingRoomQuery>
       environment={defaultEnvironment}

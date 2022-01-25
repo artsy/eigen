@@ -46,6 +46,8 @@ iOSInjectionProject/
 .vscode/.browse.VC.db
 Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 
+.vendor
+
 # regular Pods. No longer a submodule
 Pods
 

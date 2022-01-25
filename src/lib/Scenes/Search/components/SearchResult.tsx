@@ -13,7 +13,11 @@ interface SearchResultsItemProps {
   trackResultPress?: (result: AlgoliaSearchResult) => void
 }
 
-export const SearchResult: React.FC<SearchResultsItemProps> = ({ result, selectedPill, trackResultPress }) => {
+export const SearchResult: React.FC<SearchResultsItemProps> = ({
+  result,
+  selectedPill,
+  trackResultPress,
+}) => {
   const addArtworkToRecentSearches = () => {
     GlobalStore.actions.search.addRecentSearch({
       type: "AUTOSUGGEST_RESULT_TAPPED",

@@ -304,7 +304,7 @@
     "tslint-config-prettier": "1.18.0",
     "tslint-plugin-relay": "0.0.3",
     "tslint-react": "5.0.0",
-    "typescript": "4.5.4",
+    "typescript": "4.5.5",
     "typescript-styled-plugin": "0.18.2",
     "vscode-apollo-relay": "1.5.2"
   },
@@ -328,7 +328,7 @@
     ]
   },
   "prettier": {
-    "printWidth": 120,
+    "printWidth": 100,
     "semi": false,
     "singleQuote": false,
     "trailingComma": "es5",
