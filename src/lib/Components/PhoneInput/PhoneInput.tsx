@@ -88,8 +88,9 @@ export const PhoneInput = React.forwardRef<
   }, [phoneNumber, dialCode])
 
   return (
-    <>
+    <Flex background="pink" style={{ height: 90 }}>
       <Input
+        style={{ height: 70 }}
         {...rest}
         ref={(ref) => {
           if (typeof outerRef === "function") {
@@ -173,10 +174,11 @@ export const PhoneInput = React.forwardRef<
           />
         )}
       />
-      <Text numberOfLines={1} variant="xs" color="red">
+      <Text numberOfLines={1} variant="xs" color="red" style={{ height: 20 }}>
         {validationMessage}
+        {/* should display on blur */}
       </Text>
-    </>
+    </Flex>
   )
 })
 
