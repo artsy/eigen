@@ -83,7 +83,7 @@ note that
 import resolveAssetSource from "react-native/Libraries/Image/resolveAssetSource"
 
 const source = resolveAssetSource(this.props.source)
-console.log(source) // => { uri: "pods/Assets/.../some-video.mp4" }
+console.log("source:", source) // => { uri: "pods/Assets/.../some-video.mp4" }
 ```
 
 See [Video.tsx](https://github.com/artsy/emission/tree/master/src/lib/Components/Video.tsx) for an example implementation and [here](https://facebook.github.io/react-native/docs/images#static-non-image-resources) for a list of supported file formats.
