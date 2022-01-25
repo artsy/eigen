@@ -19,6 +19,20 @@ const noop: any = (name: string) => () =>
  * When a thing is made available on android, it should be removed from this file and added to ArtsyNativeModule.
  */
 
+export const usingNewIOSAppShell = () => {
+  let newIOSAppShell = false
+  try {
+    // tslint:disable-next-line:no-var-requires
+    const fileContent = require("../../../metaflags.json")
+    newIOSAppShell = fileContent.newIosAppShell
+    console.log("NEWSHELL successfully loaded metaflags useNewAppShell", newIOSAppShell)
+  } catch {
+    console.log("NEWSHELL failed to load metaflags")
+    newIOSAppShell = false // default to false
+  }
+  return newIOSAppShell
+}
+
 interface LegacyNativeModules {
   ARTemporaryAPIModule: {
     requestPrepromptNotificationPermissions(): void
@@ -97,54 +111,54 @@ interface LegacyNativeModules {
 }
 const LegacyNativeModulesIOS: LegacyNativeModules = AllNativeModules as any
 
+const PlaceholderModules = {
+  ARTakeCameraPhotoModule: {
+    errorCodes: {
+      cameraNotAvailable: "cameraNotAvailable",
+      imageMediaNotAvailable: "imageMediaNotAvailable",
+      cameraAccessDenied: "cameraAccessDenied",
+      saveFailed: "saveFailed",
+    },
+    triggerCameraModal: noop("triggerCameraModal"),
+  },
+
+  ARCocoaConstantsModule: {
+    UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
+    AREnabled: false,
+    CurrentLocale: getLocales()[0].languageTag,
+    LocalTimeZone: getTimeZone(),
+  },
+
+  ArtsyNativeModule: {
+    updateAuthState: noop("updateAuthState"),
+    clearUserData: () => Promise.resolve(),
+  },
+
+  ARNotificationsManager: {
+    nativeState: null as any,
+    postNotificationName: noop("postNotificationName"),
+    didFinishBootstrapping: () => null,
+    reactStateUpdated: () => null,
+  },
+
+  ARTemporaryAPIModule: {
+    requestPrepromptNotificationPermissions: noop("requestPrepromptNotificationPermissions"),
+    requestDirectNotificationPermissions: noop("requestDirectNotificationPermissions"),
+    fetchNotificationPermissions: noop("fetchNotificationPermissions"),
+    markNotificationsRead: noop("markNotificationsRead"),
+    setApplicationIconBadgeNumber: () => {
+      console.log("TODO: make app icon badge work on android")
+    },
+    getUserEmail: () => "",
+  },
+  ARPHPhotoPickerModule: {
+    requestPhotos: noop("requestPhotos"),
+  },
+  ARScreenPresenterModule,
+  AREventsModule: {
+    requestAppStoreRating: noop("requestAppStoreRating"),
+  },
+}
+
 export const LegacyNativeModules: LegacyNativeModules =
-  Platform.OS === "ios"
-    ? LegacyNativeModulesIOS
-    : {
-        ARTakeCameraPhotoModule: {
-          errorCodes: {
-            cameraNotAvailable: "cameraNotAvailable",
-            imageMediaNotAvailable: "imageMediaNotAvailable",
-            cameraAccessDenied: "cameraAccessDenied",
-            saveFailed: "saveFailed",
-          },
-          triggerCameraModal: noop("triggerCameraModal"),
-        },
-
-        ARCocoaConstantsModule: {
-          UIApplicationOpenSettingsURLString: "UIApplicationOpenSettingsURLString",
-          AREnabled: false,
-          CurrentLocale: getLocales()[0].languageTag,
-          LocalTimeZone: getTimeZone(),
-        },
-
-        ArtsyNativeModule: {
-          updateAuthState: noop("updateAuthState"),
-          clearUserData: () => Promise.resolve(),
-        },
-
-        ARNotificationsManager: {
-          nativeState: null as any,
-          postNotificationName: noop("postNotificationName"),
-          didFinishBootstrapping: () => null,
-          reactStateUpdated: () => null,
-        },
-
-        ARTemporaryAPIModule: {
-          requestPrepromptNotificationPermissions: noop("requestPrepromptNotificationPermissions"),
-          requestDirectNotificationPermissions: noop("requestDirectNotificationPermissions"),
-          fetchNotificationPermissions: noop("fetchNotificationPermissions"),
-          markNotificationsRead: noop("markNotificationsRead"),
-          setApplicationIconBadgeNumber: () => {
-            console.log("TODO: make app icon badge work on android")
-          },
-          getUserEmail: () => "",
-        },
-        ARPHPhotoPickerModule: {
-          requestPhotos: noop("requestPhotos"),
-        },
-        ARScreenPresenterModule,
-        AREventsModule: {
-          requestAppStoreRating: noop("requestAppStoreRating"),
-        },
-      }
+  Platform.OS === "ios" && !usingNewIOSAppShell() ? LegacyNativeModulesIOS : PlaceholderModules

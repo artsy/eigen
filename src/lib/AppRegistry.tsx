@@ -1,7 +1,7 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
 import React, { useEffect } from "react"
-import { AppRegistry, LogBox, Platform, View } from "react-native"
+import { AppRegistry, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
 import { AppProviders } from "./AppProviders"
 import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoidingView"
@@ -123,21 +123,6 @@ import { useStripeConfig } from "./utils/useStripeConfig"
 
 // keep this import of storybook last, otherwise it produces an error when debugging
 import { StorybookUIRoot } from "../storybook/storybook-ui"
-
-LogBox.ignoreLogs([
-  "Non-serializable values were found in the navigation state",
-  "Calling `getNode()` on the ref of an Animated component is no longer necessary.",
-  "RelayResponseNormalizer: Payload did not contain a value for field `id: id`. Check that you are parsing with the same query that was used to fetch the payload.",
-
-  // RN 0.59.0 ships with this bug, see: https://github.com/facebook/react-native/issues/16376
-  "RCTBridge required dispatch_sync to load RCTDevLoadingView. This may lead to deadlocks",
-
-  "Require cycle:",
-
-  // This is for the Artist page, which will likely get redone soon anyway.
-  "VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead.",
-  "Picker has been extracted",
-])
 
 addTrackingProvider(SEGMENT_TRACKING_PROVIDER, SegmentTrackingProvider)
 addTrackingProvider("console", ConsoleTrackingProvider)

@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-community/async-storage"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { migrate } from "./migration"
 import {
   assignDeep,
@@ -125,7 +125,7 @@ describe(assignDeep, () => {
 
 describe(persist, () => {
   beforeEach(() => {
-    require("@react-native-community/async-storage").__resetState()
+    require("@react-native-async-storage/async-storage").__resetState()
   })
   it("omits the sessionStorage key", async () => {
     await persist({
@@ -153,7 +153,7 @@ describe(persist, () => {
 
 describe(unpersist, () => {
   beforeEach(() => {
-    require("@react-native-community/async-storage").__resetState()
+    require("@react-native-async-storage/async-storage").__resetState()
   })
   it("returns an empty object if there was nothing saved before", async () => {
     expect(await unpersist()).toEqual({})

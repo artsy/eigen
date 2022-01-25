@@ -21,12 +21,11 @@ DerivedData
 tmtags
 tmtagsHistory
 config/releasenotes.txt
-.bundle
 Podfile.local
 chairs/
 Artsy.xcodeproj/project.xcworkspace/xcshareddata/
 Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
-vendor/
+.vendor/
 compiler_commands.json
 .swiftpm
 
@@ -138,6 +137,7 @@ android-secret.json
 
 # Fonts
 android/app/src/main/assets/fonts/*
+ios/eigen/fonts/*
 
 
 # Firebase files
@@ -145,7 +145,6 @@ android/app/google-services.json
 GoogleService-Info.plist
 eigen-firebase-app-distribution.json
 
-storybook.json
 metaflags.json
 
 

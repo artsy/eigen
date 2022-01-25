@@ -68,7 +68,7 @@ target 'Artsy' do
   )
 
   # Networking
-  pod 'AFNetworking', '~> 2.5', subspecs: %w[Reachability Serialization Security NSURLSession NSURLConnection]
+  pod 'AFNetworking', '2.7.0', subspecs: %w[Reachability Serialization Security NSURLSession NSURLConnection]
   pod 'AFOAuth1Client', git: 'https://github.com/artsy/AFOAuth1Client.git', tag: '0.4.0-subspec-fix'
   pod 'AFNetworkActivityLogger'
   pod 'SDWebImage', '5.8.3'
@@ -77,7 +77,7 @@ target 'Artsy' do
   pod 'ARGenericTableViewController', git: 'https://github.com/artsy/ARGenericTableViewController.git'
   pod 'CocoaLumberjack', '3.7.2'
   pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
-  pod 'FXBlurView'
+  pod 'FXBlurView', '1.6.4'
   pod 'ISO8601DateFormatter', git: 'https://github.com/artsy/iso-8601-date-formatter'
   pod 'JLRoutes', git: 'https://github.com/artsy/JLRoutes.git'
   pod 'JSDecoupledAppDelegate'
@@ -86,7 +86,7 @@ target 'Artsy' do
   pod 'NPKeyboardLayoutGuide'
   pod 'UICKeyChainStore'
   pod 'MARKRangeSlider'
-  pod 'EDColor'
+  pod 'EDColor', '1.0.1'
 
   # Core owned by Artsy
   pod 'ORStackView', '2.0.3'
@@ -98,7 +98,7 @@ target 'Artsy' do
   pod 'ObjectiveSugar'
 
   # Artsy Spec repo stuff
-  pod 'Artsy+UIFonts', '~> 3.3.4'
+  pod 'Artsy+UIFonts', '3.3.4'
   pod 'Artsy-UIButtons'
   pod 'Artsy+UIColors'
   pod 'Artsy+UILabels'
@@ -110,26 +110,26 @@ target 'Artsy' do
   pod 'Pulley', git: 'https://github.com/artsy/Pulley.git', branch: 'master'
 
   # Facebook
-  pod 'FBSDKCoreKit', '~> 9.3'
-  pod 'FBSDKLoginKit', '~> 9.3'
-  pod 'FBSDKShareKit', '~> 9.3'
+  pod 'FBSDKCoreKit', '9.3.0'
+  pod 'FBSDKLoginKit', '9.3.0'
+  pod 'FBSDKShareKit', '9.3.0'
 
   # Google & Firebase
-  pod 'GoogleSignIn', '~> 5.0.2'
-  pod 'Firebase/Auth'
+  pod 'GoogleSignIn', '5.0.2'
+  pod 'Firebase/Auth', '8.1.0'
 
   # Analytics
-  pod 'Segment-Appboy'
-  pod 'Segment-Adjust'
+  pod 'Segment-Appboy', '4.2.0'
+  pod 'Segment-Adjust', '3.1.4'
 
   # Developer Pods
-  pod 'DHCShakeNotifier'
-  pod 'ORKeyboardReactingApplication'
+  pod 'DHCShakeNotifier', '0.2.0'
+  pod 'ORKeyboardReactingApplication', '0.5.3'
 
   # Swift pods 🎉
-  pod 'Then'
+  pod 'Then', '2.3.0'
   pod 'Interstellar/Core', git: 'https://github.com/artsy/Interstellar.git', branch: 'observable-unsubscribe'
-  pod 'Starscream'
+  pod 'Starscream', '3.0.4'
   pod 'SwiftyJSON'
 
   # Used in Live Auctions to hold user-state
@@ -174,7 +174,7 @@ post_install do |installer|
     end
   end
 
-  # Forces the minimum to be 9.0 as that's our last deployment targer, and new xcode build tools
+  # Forces the minimum to be 9.0 as that's our last deployment target, and new xcode build tools
   # give an error in Xcode 10
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
@@ -214,8 +214,8 @@ post_install do |installer|
   # * Send PRs for the rest
   %w[
     Pods/ORStackView/Classes/ios/ORStackView.h
-    Pods/NAMapKit/NAMapKit/*.h
   ].flat_map { |x| Dir.glob(x) }.each do |header|
+    system("chmod +w #{header}")
     addition = "#import <UIKit/UIKit.h>\n"
     contents = File.read(header)
     next if contents.include?(addition)
@@ -232,6 +232,7 @@ post_install do |installer|
     Pods/Nimble-Snapshots
     Pods/Quick/Sources/QuickObjectiveC
   ].flat_map { |x| Dir.glob(File.join(x, '**/*.{h,m}')) }.each do |header|
+    system("chmod +w #{header}")
     contents = File.read(header)
     patched = contents.sub(%r{["<]\w+/(\w+-Swift\.h)[">]}, '"\1"')
     File.write(header, patched) if Regexp.last_match

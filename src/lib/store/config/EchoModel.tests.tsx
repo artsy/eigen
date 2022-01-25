@@ -16,6 +16,7 @@ const appVersion = (version: string) => ({
   sentryReleaseName: "wut",
   version,
   isAndroidBeta: false,
+  appName: "eigen",
 })
 
 const _echoLaunchJsonActual = loads.echoLaunchJson()

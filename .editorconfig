@@ -1,3 +1,5 @@
+end_of_line = lf # even on windows files
+
 [*.{js,jsx,ts,tsx}]
 indent_style = space
 indent_size = 2

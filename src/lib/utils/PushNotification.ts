@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-community/async-storage"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/GlobalStore"
@@ -188,9 +188,6 @@ export async function configure() {
   PushNotification.configure({
     // (optional) Called when Token is generated (iOS and Android)
     onRegister: (token) => {
-      if (__DEV__) {
-        console.log("TOKEN:", token)
-      }
       saveToken(token.token)
     },
 

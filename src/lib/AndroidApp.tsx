@@ -9,7 +9,7 @@ import {
 import { useDeepLinks } from "lib/utils/useDeepLinks"
 import { useStripeConfig } from "lib/utils/useStripeConfig"
 import React, { useEffect } from "react"
-import { UIManager, View } from "react-native"
+import { Platform, UIManager, View } from "react-native"
 import RNBootSplash from "react-native-bootsplash"
 import { AppProviders } from "./AppProviders"
 import { useWebViewCookies } from "./Components/ArtsyReactWebView"
@@ -22,6 +22,7 @@ import { Onboarding } from "./Scenes/Onboarding/Onboarding"
 import { createAllChannels, savePendingToken } from "./utils/PushNotification"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
+import { useDebugging } from "./utils/useDebugging"
 import { useExperiments } from "./utils/useExperiments"
 import { useFreshInstallTracking } from "./utils/useFreshInstallTracking"
 import { useInitialNotification } from "./utils/useInitialNotification"
@@ -36,10 +37,13 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 }
 
 const Main: React.FC<{}> = track()(({}) => {
+  useDebugging()
   useEffect(() => {
-    GoogleSignin.configure({
-      webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
-    })
+    if (Platform.OS === "android") {
+      GoogleSignin.configure({
+        webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
+      })
+    }
   }, [])
   const isHydrated = GlobalStore.useAppState((state) => state.sessionState.isHydrated)
   const isLoggedIn = GlobalStore.useAppState((state) => !!state.auth.userAccessToken)
@@ -72,7 +76,9 @@ const Main: React.FC<{}> = track()(({}) => {
             ArtsyNativeModule.lockActivityScreenOrientation()
           })
         })
-        ArtsyNativeModule.setAppStyling()
+        if (Platform.OS === "android") {
+          ArtsyNativeModule.setAppStyling()
+        }
         if (isLoggedIn) {
           ArtsyNativeModule.setNavigationBarColor("#FFFFFF")
           ArtsyNativeModule.setAppLightContrast(false)
