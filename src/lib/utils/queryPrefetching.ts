@@ -4,6 +4,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { RateLimiter } from "limiter"
 import { useEffect } from "react"
+import Config from "react-native-config"
 import {
   createOperationDescriptor,
   Environment,
@@ -84,8 +85,9 @@ const prefetchUrl = async (environment: Environment, url: string, variables: Var
   }
 
   const options = { ...result.params, ...variables }
-
-  console.log(`Prefetching "${url}"`)
+  if (Config.ACTION_LOGGERS_ACTIVE === "TRUE") {
+    console.log(`Prefetching "${url}"`)
+  }
 
   try {
     prefetchQuery(environment, query, options)

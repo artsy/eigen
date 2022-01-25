@@ -1,3 +1,4 @@
+import Config from "react-native-config"
 import { TrackingProvider } from "./providers"
 
 export const ConsoleTrackingProvider: TrackingProvider = {
@@ -5,8 +6,9 @@ export const ConsoleTrackingProvider: TrackingProvider = {
     if (!__DEV__) {
       return
     }
-
-    console.log("[Event tracked]", JSON.stringify({ userId, ...traits }, null, 2))
+    if (Config.ACTION_LOGGERS_ACTIVE === "TRUE") {
+      console.log("[Event tracked]", JSON.stringify({ userId, ...traits }, null, 2))
+    }
   },
 
   postEvent: (info) => {
