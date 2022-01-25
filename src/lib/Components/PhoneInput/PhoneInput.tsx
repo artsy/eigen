@@ -176,7 +176,6 @@ export const PhoneInput = React.forwardRef<
       />
       <Text numberOfLines={1} variant="xs" color="red" style={{ height: 20 }}>
         {validationMessage}
-        {/* should display on blur */}
       </Text>
     </Flex>
   )
