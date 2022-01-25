@@ -1,18 +1,18 @@
 import { themeGet } from "@styled-system/theme-get"
+import {
+  ArtworkRailCard_artwork,
+  ArtworkRailCard_artwork$key,
+} from "__generated__/ArtworkRailCard_artwork.graphql"
 import { getUrgencyTag } from "lib/utils/getUrgencyTag"
 import { Flex, Sans, Text, useColor } from "palette"
 import React from "react"
 import { GestureResponderEvent } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import styled from "styled-components/native"
-import {
-  ArtworkRailCard_artwork,
-  ArtworkRailCard_artwork$key,
-} from "__generated__/ArtworkRailCard_artwork.graphql"
 import { saleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
-const TEXT_CONTAINER_HEIGHT = 90
+export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 90
 export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
   small: 230,
   large: 320,
@@ -56,7 +56,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         <Flex
           mt={1}
           width={artwork.image?.resized?.width}
-          style={{ height: TEXT_CONTAINER_HEIGHT }}
+          style={{ height: ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT }}
         >
           {!!lotLabel && (
             <Text lineHeight="20" color="black60" numberOfLines={1}>
