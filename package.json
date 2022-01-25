@@ -263,7 +263,7 @@
     "klaw-sync": "6.0.0",
     "lint-staged": "12.1.2",
     "metro-react-native-babel-preset": "0.63.0",
-    "node-fetch": "2.6.1",
+    "node-fetch": "2.6.7",
     "ora": "5.4.0",
     "patch-package": "6.4.7",
     "postinstall-prepare": "1.0.1",
