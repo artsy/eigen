@@ -7,6 +7,10 @@ describe("Presence validator", () => {
   })
 
   it("correctly returns missing fields' keys as string[]", () => {
-    expect(validateAddressFieldsPresence(mockPartiallyEmptyAddress)).toEqual(["fullName", "state", "country"])
+    expect(validateAddressFieldsPresence(mockPartiallyEmptyAddress)).toEqual([
+      "fullName",
+      "state",
+      "country",
+    ])
   })
 })

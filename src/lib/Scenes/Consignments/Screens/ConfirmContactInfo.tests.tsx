@@ -96,8 +96,12 @@ describe("ConfirmContactInfo", () => {
     })
     tree.root.findByType(Button).props.onPress()
     expect(env.mock.getAllOperations()).toHaveLength(1)
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("updateMyUserProfileMutation")
-    expect(env.mock.getMostRecentOperation().request.variables).toEqual({ input: { phone: "+1 (555) 890-2345" } })
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+      "updateMyUserProfileMutation"
+    )
+    expect(env.mock.getMostRecentOperation().request.variables).toEqual({
+      input: { phone: "+1 (555) 890-2345" },
+    })
   })
 
   it("shows an alert if something went wrong", async () => {
@@ -113,7 +117,9 @@ describe("ConfirmContactInfo", () => {
     )
     tree.root.findByType(Button).props.onPress()
     expect(env.mock.getAllOperations()).toHaveLength(1)
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("updateMyUserProfileMutation")
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+      "updateMyUserProfileMutation"
+    )
 
     expect(Alert.alert).not.toHaveBeenCalled()
     await act(() => {

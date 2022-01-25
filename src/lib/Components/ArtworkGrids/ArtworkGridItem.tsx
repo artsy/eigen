@@ -6,7 +6,11 @@ import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { getUrgencyTag } from "lib/utils/getUrgencyTag"
-import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "lib/utils/placeholders"
+import {
+  PlaceholderBox,
+  PlaceholderRaggedText,
+  RandomNumberGenerator,
+} from "lib/utils/placeholders"
 import { Box, Flex, Sans, Spacer, Text, TextProps, Touchable } from "palette"
 import React, { useRef } from "react"
 import { View } from "react-native"
@@ -136,8 +140,13 @@ export const Artwork: React.FC<ArtworkProps> = ({
       <View ref={itemRef}>
         {!!artwork.image && (
           <View>
-            <OpaqueImageView aspectRatio={artwork.image?.aspectRatio ?? 1} imageURL={artwork.image?.url} />
-            {Boolean(!hideUrgencyTags && urgencyTag && artwork?.sale?.isAuction && !artwork?.sale?.isClosed) && (
+            <OpaqueImageView
+              aspectRatio={artwork.image?.aspectRatio ?? 1}
+              imageURL={artwork.image?.url}
+            />
+            {Boolean(
+              !hideUrgencyTags && urgencyTag && artwork?.sale?.isAuction && !artwork?.sale?.isClosed
+            ) && (
               <Flex
                 position="absolute"
                 bottom="5px"
@@ -162,12 +171,25 @@ export const Artwork: React.FC<ArtworkProps> = ({
             </Text>
           )}
           {!!artwork.artistNames && (
-            <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={1} {...artistNamesTextStyle}>
+            <Text
+              lineHeight="18"
+              weight="regular"
+              variant="xs"
+              numberOfLines={1}
+              {...artistNamesTextStyle}
+            >
               {artwork.artistNames}
             </Text>
           )}
           {!!artwork.title && (
-            <Text lineHeight="18" variant="xs" weight="regular" color="black60" numberOfLines={1} {...titleTextStyle}>
+            <Text
+              lineHeight="18"
+              variant="xs"
+              weight="regular"
+              color="black60"
+              numberOfLines={1}
+              {...titleTextStyle}
+            >
               <Text lineHeight="18" variant="xs" weight="regular" italic>
                 {artwork.title}
               </Text>
@@ -175,12 +197,24 @@ export const Artwork: React.FC<ArtworkProps> = ({
             </Text>
           )}
           {!hidePartner && !!artwork.partner?.name && (
-            <Text variant="xs" lineHeight="18" color="black60" numberOfLines={1} {...partnerNameTextStyle}>
+            <Text
+              variant="xs"
+              lineHeight="18"
+              color="black60"
+              numberOfLines={1}
+              {...partnerNameTextStyle}
+            >
               {artwork.partner.name}
             </Text>
           )}
           {!!saleInfo && !hideSaleInfo && (
-            <Text lineHeight="18" variant="xs" weight="medium" numberOfLines={1} {...saleInfoTextStyle}>
+            <Text
+              lineHeight="18"
+              variant="xs"
+              weight="medium"
+              numberOfLines={1}
+              {...saleInfoTextStyle}
+            >
               {saleInfo}
             </Text>
           )}
@@ -281,7 +315,9 @@ export default createFragmentContainer(Artwork, {
   `,
 })
 
-export const ArtworkGridItemPlaceholder: React.FC<{ seed?: number }> = ({ seed = Math.random() }) => {
+export const ArtworkGridItemPlaceholder: React.FC<{ seed?: number }> = ({
+  seed = Math.random(),
+}) => {
   const rng = new RandomNumberGenerator(seed)
   return (
     <Flex>

@@ -10,7 +10,10 @@ interface IndicesInfo {
   [key: string]: IndexInfo
 }
 
-export const useAlgoliaIndices = (client: SearchClient | null, indices?: ReadonlyArray<{ name: string }>) => {
+export const useAlgoliaIndices = (
+  client: SearchClient | null,
+  indices?: ReadonlyArray<{ name: string }>
+) => {
   const [indicesInfo, setIndicesInfo] = useState<IndicesInfo>({})
   const [loading, setLoading] = useState(false)
   const lastQuery = useRef<string | null>(null)
@@ -33,12 +36,15 @@ export const useAlgoliaIndices = (client: SearchClient | null, indices?: Readonl
           setLoading(true)
           const indicesResponse = await client.multipleQueries<SearchResponse>(queries)
           if (query === lastQuery.current) {
-            const newIndicesInfo = indicesResponse.results.reduce((acc: IndicesInfo, { index, nbHits }) => {
-              if (!!index) {
-                acc[index] = { hasResults: !!nbHits }
-              }
-              return acc
-            }, {})
+            const newIndicesInfo = indicesResponse.results.reduce(
+              (acc: IndicesInfo, { index, nbHits }) => {
+                if (!!index) {
+                  acc[index] = { hasResults: !!nbHits }
+                }
+                return acc
+              },
+              {}
+            )
             setIndicesInfo(newIndicesInfo)
             setLoading(false)
           }

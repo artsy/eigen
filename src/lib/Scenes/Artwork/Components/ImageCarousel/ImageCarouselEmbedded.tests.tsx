@@ -13,13 +13,17 @@ const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
       height: 5,
       width: 5,
       url: "a",
-      deepZoom: { image: { url: "", format: "", tileSize: 300, size: { width: 302, height: 302 } } },
+      deepZoom: {
+        image: { url: "", format: "", tileSize: 300, size: { width: 302, height: 302 } },
+      },
     },
     {
       height: 5,
       width: 5,
       url: "b",
-      deepZoom: { image: { url: "", format: "", tileSize: 300, size: { width: 302, height: 302 } } },
+      deepZoom: {
+        image: { url: "", format: "", tileSize: 300, size: { width: 302, height: 302 } },
+      },
     },
   ],
 }

@@ -22,12 +22,17 @@ export class PrivacyRequest extends React.Component {
           <Join separator={<Spacer mb={2} />}>
             <Sans size="3" textAlign="left">
               Please see Artsy’s{" "}
-              <LinkText onPress={() => navigate("/privacy", { modal: true })}>Privacy Policy</LinkText> for more
-              information about the information we collect, how we use it, and why we use it.
+              <LinkText onPress={() => navigate("/privacy", { modal: true })}>
+                Privacy Policy
+              </LinkText>{" "}
+              for more information about the information we collect, how we use it, and why we use
+              it.
             </Sans>
             <Sans size="3" textAlign="left">
               To submit a personal data request tap the button below or email{" "}
-              <LinkText onPress={() => presentEmailComposer("privacy@artsy.net", "Personal Data Request")}>
+              <LinkText
+                onPress={() => presentEmailComposer("privacy@artsy.net", "Personal Data Request")}
+              >
                 privacy@artsy.net.
               </LinkText>{" "}
             </Sans>

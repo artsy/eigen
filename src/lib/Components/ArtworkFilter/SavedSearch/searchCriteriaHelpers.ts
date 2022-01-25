@@ -27,7 +27,9 @@ export const getOnlyFilledSearchCriteriaValues = (searchCriteria: SearchCriteria
 }
 
 export const getAllowedFiltersForSavedSearchInput = (filters: FilterArray) => {
-  return filters.filter((filter) => allowedSearchCriteriaKeys.includes(filter.paramName as unknown as SearchCriteria))
+  return filters.filter((filter) =>
+    allowedSearchCriteriaKeys.includes(filter.paramName as unknown as SearchCriteria)
+  )
 }
 
 export const prepareFilterDataForSaveSearchInput = (filters: FilterData[]) => {

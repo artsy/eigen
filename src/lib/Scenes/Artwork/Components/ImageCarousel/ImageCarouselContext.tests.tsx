@@ -10,13 +10,17 @@ const contextMock: Parameters<typeof useNewImageCarouselContext>[0] = {
       height: 5,
       width: 5,
       url: "a",
-      deepZoom: { image: { url: "", format: "", tileSize: 300, size: { width: 302, height: 302 } } },
+      deepZoom: {
+        image: { url: "", format: "", tileSize: 300, size: { width: 302, height: 302 } },
+      },
     },
     {
       height: 5,
       width: 5,
       url: "b",
-      deepZoom: { image: { url: "", format: "", tileSize: 300, size: { width: 302, height: 302 } } },
+      deepZoom: {
+        image: { url: "", format: "", tileSize: 300, size: { width: 302, height: 302 } },
+      },
     },
   ],
 }
@@ -103,11 +107,17 @@ describe("image carousel context", () => {
 
     context.dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex: 1 })
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(context.embeddedFlatListRef.current.scrollToIndex).toHaveBeenCalledWith({ animated: false, index: 1 })
+    expect(context.embeddedFlatListRef.current.scrollToIndex).toHaveBeenCalledWith({
+      animated: false,
+      index: 1,
+    })
 
     context.dispatch({ type: "IMAGE_INDEX_CHANGED", nextImageIndex: 0 })
     // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
-    expect(context.embeddedFlatListRef.current.scrollToIndex).toHaveBeenCalledWith({ animated: false, index: 0 })
+    expect(context.embeddedFlatListRef.current.scrollToIndex).toHaveBeenCalledWith({
+      animated: false,
+      index: 0,
+    })
   })
 
   it("tracks the imageIndex changes", () => {

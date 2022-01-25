@@ -73,31 +73,35 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
     }
   }
 
-  const { handleSubmit, handleChange, dirty, values, errors, validateForm } = useFormik<EditMyProfileValuesSchema>({
-    enableReinitialize: true,
-    validateOnChange: true,
-    validateOnBlur: true,
-    initialValues: {
-      name: me?.name ?? "",
-      bio: me?.bio ?? "",
-      photo: me?.icon?.url ?? props.localImage?.path ?? "",
-    },
-    initialErrors: {},
-    onSubmit: async ({ name, bio, photo }) => {
-      try {
-        setLoading(true)
-        await Promise.all(
-          compact([await updateUserInfo({ name, bio }), didUpdatePhoto && (await uploadProfilePhoto(photo))])
-        )
-      } catch (error) {
-        console.error("Failed to update user profile ", error)
-      } finally {
-        setLoading(false)
-      }
-      onDismiss()
-    },
-    validationSchema: editMyProfileSchema,
-  })
+  const { handleSubmit, handleChange, dirty, values, errors, validateForm } =
+    useFormik<EditMyProfileValuesSchema>({
+      enableReinitialize: true,
+      validateOnChange: true,
+      validateOnBlur: true,
+      initialValues: {
+        name: me?.name ?? "",
+        bio: me?.bio ?? "",
+        photo: me?.icon?.url ?? props.localImage?.path ?? "",
+      },
+      initialErrors: {},
+      onSubmit: async ({ name, bio, photo }) => {
+        try {
+          setLoading(true)
+          await Promise.all(
+            compact([
+              await updateUserInfo({ name, bio }),
+              didUpdatePhoto && (await uploadProfilePhoto(photo)),
+            ])
+          )
+        } catch (error) {
+          console.error("Failed to update user profile ", error)
+        } finally {
+          setLoading(false)
+        }
+        onDismiss()
+      },
+      validationSchema: editMyProfileSchema,
+    })
 
   const chooseImageHandler = () => {
     showPhotoActionSheet(showActionSheetWithOptions, true, false)
@@ -107,7 +111,9 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
           ;(handleChange("photo") as (value: string) => void)(images[0].path)
         }
       })
-      .catch((e) => console.error("Error when uploading an image from the device", JSON.stringify(e)))
+      .catch((e) =>
+        console.error("Error when uploading an image from the device", JSON.stringify(e))
+      )
   }
 
   const hideModal = () => {
@@ -122,7 +128,11 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
   }
 
   return (
-    <FancyModal visible={visible} onBackgroundPressed={hideModal} fullScreen={enableCollectorProfile}>
+    <FancyModal
+      visible={visible}
+      onBackgroundPressed={hideModal}
+      fullScreen={enableCollectorProfile}
+    >
       <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={hideModal}>
         Edit Profile
       </FancyModalHeader>
@@ -186,14 +196,17 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
   )
 }
 
-export const MyProfileEditFormModalFragmentContainer = createFragmentContainer(MyProfileEditFormModal, {
-  me: graphql`
-    fragment MyProfileEditFormModal_me on Me {
-      name
-      bio
-      icon {
-        url(version: "thumbnail")
+export const MyProfileEditFormModalFragmentContainer = createFragmentContainer(
+  MyProfileEditFormModal,
+  {
+    me: graphql`
+      fragment MyProfileEditFormModal_me on Me {
+        name
+        bio
+        icon {
+          url(version: "thumbnail")
+        }
       }
-    }
-  `,
-})
+    `,
+  }
+)

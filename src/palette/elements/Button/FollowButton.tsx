@@ -2,7 +2,10 @@ import { Button, CheckIcon } from "palette"
 import React from "react"
 import { ButtonProps } from "."
 
-type FollowButtonProps = Omit<ButtonProps, "variant" | "size" | "longestText" | "icon" | "children"> & {
+type FollowButtonProps = Omit<
+  ButtonProps,
+  "variant" | "size" | "longestText" | "icon" | "children"
+> & {
   isFollowed: boolean
 }
 

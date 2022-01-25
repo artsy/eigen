@@ -80,7 +80,9 @@ describe(AutosuggestSearchResult, () => {
   })
 
   it("calls onDelete calback when pressing on delete button", async () => {
-    const { getByA11yLabel } = renderWithWrappersTL(<TestWrapper result={result} onDelete={onDeleteMock} />)
+    const { getByA11yLabel } = renderWithWrappersTL(
+      <TestWrapper result={result} onDelete={onDeleteMock} />
+    )
 
     fireEvent.press(getByA11yLabel("Remove recent search item"))
     expect(onDeleteMock).toHaveBeenCalled()
@@ -121,7 +123,9 @@ describe(AutosuggestSearchResult, () => {
   })
 
   it(`won't update recent searches if told not to`, async () => {
-    const tree = renderWithWrappers(<TestWrapper result={result} updateRecentSearchesOnTap={false} />)
+    const tree = renderWithWrappers(
+      <TestWrapper result={result} updateRecentSearchesOnTap={false} />
+    )
     expect(navigate).not.toHaveBeenCalled()
     expect(recentSearchesArray).toHaveLength(0)
     act(() => {
@@ -160,7 +164,11 @@ describe(AutosuggestSearchResult, () => {
       tree.root.findByType(Touchable).props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
-    expect(navigateToEntity).toHaveBeenCalledWith("/art-expo-diff-profile-slug", EntityType.Fair, SlugType.ProfileID)
+    expect(navigateToEntity).toHaveBeenCalledWith(
+      "/art-expo-diff-profile-slug",
+      EntityType.Fair,
+      SlugType.ProfileID
+    )
   })
 
   it(`shows navigation buttons when enabled and available`, async () => {
@@ -247,13 +255,17 @@ describe(AutosuggestSearchResult, () => {
       tree.root.findAllByType(Pressable)[0].props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
-    expect(navigate).toHaveBeenCalledWith("/artist/anto-carte", { passProps: { initialTab: "Artworks" } })
+    expect(navigate).toHaveBeenCalledWith("/artist/anto-carte", {
+      passProps: { initialTab: "Artworks" },
+    })
 
     act(() => {
       tree.root.findAllByType(Pressable)[1].props.onPress()
     })
     await new Promise((r) => setTimeout(r, 50))
-    expect(navigate).toHaveBeenCalledWith("/artist/anto-carte", { passProps: { initialTab: "Insights" } })
+    expect(navigate).toHaveBeenCalledWith("/artist/anto-carte", {
+      passProps: { initialTab: "Insights" },
+    })
   })
 
   it("should call custom event track handler when search result is pressed", () => {

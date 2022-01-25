@@ -13,7 +13,13 @@ export const addRandomMyCollectionArtwork = async () => {
   const externalImageUrls = await uploadPhotos(photos)
   const input: MyCollectionCreateArtworkInput = {
     // KAWS, Bisa Butler, Kerry James Marshall
-    artistIds: [randomValue(["4e934002e340fa0001005336", "57434d159c18db3ccf003d03", "4e9750d06ba7120001001cdb"])],
+    artistIds: [
+      randomValue([
+        "4e934002e340fa0001005336",
+        "57434d159c18db3ccf003d03",
+        "4e9750d06ba7120001001cdb",
+      ]),
+    ],
     medium: randomValue(["photography", "oil", "chewing-gum"]),
     category: randomValue(["some-category"]),
     costCurrencyCode: randomValue(["USD"]),

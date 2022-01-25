@@ -2,13 +2,24 @@ import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
 import { SwitchMenu } from "lib/Components/SwitchMenu"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
+import {
+  getNotificationPermissionsStatus,
+  PushAuthorizationStatus,
+} from "lib/utils/PushNotification"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import useAppState from "lib/utils/useAppState"
 import { debounce } from "lodash"
 import { Box, Button, Flex, Join, Sans, Separator } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
-import { ActivityIndicator, Alert, Linking, Platform, RefreshControl, ScrollView, View } from "react-native"
+import {
+  ActivityIndicator,
+  Alert,
+  Linking,
+  Platform,
+  RefreshControl,
+  ScrollView,
+  View,
+} from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { MyProfilePushNotifications_me } from "../../../__generated__/MyProfilePushNotifications_me.graphql"
 import { MyProfilePushNotificationsQuery } from "../../../__generated__/MyProfilePushNotificationsQuery.graphql"
@@ -63,8 +74,8 @@ export const AllowPushNotificationsBanner = () => (
         Artsy would like to send you notifications
       </Sans>
       <Sans size="3t" textAlign="center" color="black60" marginTop="1" marginBottom="2">
-        We need your permission to send push notifications, which may include alerts, artwork reminders or purchase
-        updates.
+        We need your permission to send push notifications, which may include alerts, artwork
+        reminders or purchase updates.
       </Sans>
       <Button
         size="large"
@@ -101,10 +112,10 @@ export const MyProfilePushNotifications: React.FC<{
   relay: RelayRefetchProp
   isLoading: boolean
 }> = ({ me, relay, isLoading = false }) => {
-  const [notificationAuthorizationStatus, setNotificationAuthorizationStatus] = useState<PushAuthorizationStatus>(
-    PushAuthorizationStatus.NotDetermined
-  )
-  const [userNotificationSettings, setUserNotificationSettings] = useState<MyProfilePushNotifications_me>(me)
+  const [notificationAuthorizationStatus, setNotificationAuthorizationStatus] =
+    useState<PushAuthorizationStatus>(PushAuthorizationStatus.NotDetermined)
+  const [userNotificationSettings, setUserNotificationSettings] =
+    useState<MyProfilePushNotifications_me>(me)
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
 
   useEffect(() => {
@@ -134,7 +145,10 @@ export const MyProfilePushNotifications: React.FC<{
   const handleUpdateUserNotificationSettings = useCallback(
     async (notificationType: UserPushNotificationSettings, value: boolean) => {
       try {
-        const updatedUserNotificationSettings = { ...userNotificationSettings, [notificationType]: value }
+        const updatedUserNotificationSettings = {
+          ...userNotificationSettings,
+          [notificationType]: value,
+        }
         setUserNotificationSettings(updatedUserNotificationSettings)
         await updateNotificationPermissions(updatedUserNotificationSettings)
       } catch (error) {
@@ -155,8 +169,12 @@ export const MyProfilePushNotifications: React.FC<{
   // Render list of enabled push notification permissions
   const renderContent = () => (
     <View
-      style={{ opacity: notificationAuthorizationStatus === PushAuthorizationStatus.Authorized ? 1 : 0.5 }}
-      pointerEvents={notificationAuthorizationStatus === PushAuthorizationStatus.Authorized ? "auto" : "none"}
+      style={{
+        opacity: notificationAuthorizationStatus === PushAuthorizationStatus.Authorized ? 1 : 0.5,
+      }}
+      pointerEvents={
+        notificationAuthorizationStatus === PushAuthorizationStatus.Authorized ? "auto" : "none"
+      }
     >
       <Join separator={<Separator my={1} />}>
         <NotificationPermissionsBox title="Purchase Updates" isLoading={isLoading}>
@@ -237,11 +255,14 @@ export const MyProfilePushNotifications: React.FC<{
       title="Push Notifications"
       right={isLoading ? <ActivityIndicator style={{ marginRight: 5 }} /> : null}
     >
-      <ScrollView refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}>
-        {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && <OpenSettingsBanner />}
-        {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined && Platform.OS === "ios" && (
-          <AllowPushNotificationsBanner />
+      <ScrollView
+        refreshControl={<RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />}
+      >
+        {notificationAuthorizationStatus === PushAuthorizationStatus.Denied && (
+          <OpenSettingsBanner />
         )}
+        {notificationAuthorizationStatus === PushAuthorizationStatus.NotDetermined &&
+          Platform.OS === "ios" && <AllowPushNotificationsBanner />}
         {renderContent()}
       </ScrollView>
     </PageWithSimpleHeader>
@@ -285,7 +306,9 @@ export const MyProfilePushNotificationsQueryRenderer: React.FC<{}> = ({}) => {
       `}
       render={renderWithPlaceholder({
         Container: MyProfilePushNotificationsContainer,
-        renderPlaceholder: () => <MyProfilePushNotifications isLoading me={{} as any} relay={null as any} />,
+        renderPlaceholder: () => (
+          <MyProfilePushNotifications isLoading me={{} as any} relay={null as any} />
+        ),
       })}
       variables={{}}
     />

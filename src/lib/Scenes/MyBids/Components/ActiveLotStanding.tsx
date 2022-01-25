@@ -11,11 +11,17 @@ import { TimelySale } from "../helpers/timely"
 import { HighestBid, Outbid, ReserveNotMet } from "./BiddingStatuses"
 import { LotFragmentContainer as Lot } from "./Lot"
 
-export const ActiveLotStanding = ({ saleArtwork }: { saleArtwork: ActiveLotStanding_saleArtwork }) => {
+export const ActiveLotStanding = ({
+  saleArtwork,
+}: {
+  saleArtwork: ActiveLotStanding_saleArtwork
+}) => {
   const timelySale = TimelySale.create(saleArtwork?.sale!)
 
   const sellingPrice =
-    saleArtwork?.currentBid?.display || saleArtwork?.lotState?.sellingPrice?.display || saleArtwork?.estimate
+    saleArtwork?.currentBid?.display ||
+    saleArtwork?.lotState?.sellingPrice?.display ||
+    saleArtwork?.estimate
   const bidCount = saleArtwork?.lotState?.bidCount
   const tracking = useTracking()
   const { isSmallScreen } = useScreenDimensions()
@@ -42,7 +48,10 @@ export const ActiveLotStanding = ({ saleArtwork }: { saleArtwork: ActiveLotStand
 
   return (
     saleArtwork && (
-      <TouchableOpacity onPress={() => handleLotTap()} style={{ marginHorizontal: 0, width: "100%" }}>
+      <TouchableOpacity
+        onPress={() => handleLotTap()}
+        style={{ marginHorizontal: 0, width: "100%" }}
+      >
         <Flex flexDirection="row" justifyContent="space-between">
           <Lot saleArtwork={saleArtwork} isSmallScreen={isSmallScreen} />
           <Flex>

@@ -46,7 +46,9 @@ export const useStickyScrollHeader = ({
     () => (
       <Animated.View
         pointerEvents={
-          translateYNumber?.current !== undefined && translateYNumber.current < fadeInStart ? undefined : "none"
+          translateYNumber?.current !== undefined && translateYNumber.current < fadeInStart
+            ? undefined
+            : "none"
         }
         style={{
           position: "absolute",

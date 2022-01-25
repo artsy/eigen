@@ -25,7 +25,8 @@ interface CardProps {
 
 const Card = styled(Flex)`
   border: 1px solid
-    ${(props: CardProps) => (props.isDefault ? themeGet("colors.black100") : themeGet("colors.black30"))};
+    ${(props: CardProps) =>
+      props.isDefault ? themeGet("colors.black100") : themeGet("colors.black30")};
   border-radius: 4;
 `
 
@@ -35,7 +36,10 @@ const NUM_ADDRESSES_TO_FETCH = 10
 // tslint:disable-next-line:no-empty
 export const util = { onRefresh: () => {} }
 
-const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
+const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp }> = ({
+  me,
+  relay,
+}) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const toast = useToast()
 
@@ -103,7 +107,9 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
                   {item.name}
                 </Text>
                 <Text fontSize={16} lineHeight={24} color="black60">
-                  {[item.addressLine1, item?.addressLine2, item?.addressLine3].filter(Boolean).join(", ")}
+                  {[item.addressLine1, item?.addressLine2, item?.addressLine3]
+                    .filter(Boolean)
+                    .join(", ")}
                 </Text>
                 <Text fontSize={16} lineHeight={24} color="black60">
                   {item.city}, {item.postalCode}
@@ -122,7 +128,11 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
                       testID={`EditAddress-${item.internalID}`}
                       onPress={() => onPressEditAddress(item.internalID)}
                     >
-                      <Text variant="sm" color="black100" style={{ textDecorationLine: "underline" }}>
+                      <Text
+                        variant="sm"
+                        color="black100"
+                        style={{ textDecorationLine: "underline" }}
+                      >
                         Edit
                       </Text>
                     </Touchable>
@@ -145,7 +155,9 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
               <AddAddressButton
                 block={false}
                 variant="outline"
-                handleOnPress={() => navigate("/my-profile/saved-addresses/new-address", { modal: true })}
+                handleOnPress={() =>
+                  navigate("/my-profile/saved-addresses/new-address", { modal: true })
+                }
                 title="Add New Address"
               />
             </Box>
@@ -162,7 +174,9 @@ const SavedAddresses: React.FC<{ me: SavedAddresses_me; relay: RelayRefetchProp 
               Please add an address for a faster checkout experience in the future.
             </Text>
             <AddAddressButton
-              handleOnPress={() => navigate("/my-profile/saved-addresses/new-address", { modal: true })}
+              handleOnPress={() =>
+                navigate("/my-profile/saved-addresses/new-address", { modal: true })
+              }
               title="Add New Address"
             />
           </Flex>

@@ -8,7 +8,9 @@ import { SubmitArtworkOverviewNavigationStack } from "./SubmitArtworkOverview"
 interface ArtworkSubmittedScreenNavigationProps
   extends StackScreenProps<SubmitArtworkOverviewNavigationStack, "ArtworkSubmittedScreen"> {}
 
-export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationProps> = ({ navigation }) => {
+export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationProps> = ({
+  navigation,
+}) => {
   return (
     <Box>
       <ArtsyLogoHeader />
@@ -17,12 +19,13 @@ export const ArtworkSubmittedScreen: React.FC<ArtworkSubmittedScreenNavigationPr
       </Text>
       <Spacer mb={2} />
       <Text mx="2" color="black60">
-        We will email you within 1-3 days to confirm if your artwork has been accepted or not. In the meantime your
-        submission will appear in the feature, My Collection.
+        We will email you within 1-3 days to confirm if your artwork has been accepted or not. In
+        the meantime your submission will appear in the feature, My Collection.
       </Text>
       <Spacer mb={2} />
       <Text mx="2" color="black60">
-        With low fees, informed pricing, and multiple sales options, why not submit another piece with Artsy.
+        With low fees, informed pricing, and multiple sales options, why not submit another piece
+        with Artsy.
       </Text>
       <Spacer mb={4} />
       <Flex justifyContent="space-between" mx={2}>

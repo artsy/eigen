@@ -133,7 +133,8 @@ describe("ArtworksInSeriesRail", () => {
                       href: "/artwork/alex-katz-departure-28",
                       artistNames: "Alex Katz",
                       image: {
-                        imageURL: "https://d32dm0rphc51dk.cloudfront.net/FCwTE6IvudGFVmnR9106xg/:version.jpg",
+                        imageURL:
+                          "https://d32dm0rphc51dk.cloudfront.net/FCwTE6IvudGFVmnR9106xg/:version.jpg",
                         aspectRatio: 0.67,
                       },
                       sale: null,
@@ -155,7 +156,8 @@ describe("ArtworksInSeriesRail", () => {
                       href: "/artwork/alex-katz-departure-56",
                       artistNames: "Alex Katz",
                       image: {
-                        imageURL: "https://d32dm0rphc51dk.cloudfront.net/PPclmZKx-vXZTSJdAEHUzw/:version.jpg",
+                        imageURL:
+                          "https://d32dm0rphc51dk.cloudfront.net/PPclmZKx-vXZTSJdAEHUzw/:version.jpg",
                         aspectRatio: 0.67,
                       },
                       sale: null,
@@ -177,7 +179,8 @@ describe("ArtworksInSeriesRail", () => {
                       href: "/artwork/alex-katz-departure-2-ada",
                       artistNames: "Alex Katz",
                       image: {
-                        imageURL: "https://d32dm0rphc51dk.cloudfront.net/l9MiP2_A-_CoWimV4ZnNRA/:version.jpg",
+                        imageURL:
+                          "https://d32dm0rphc51dk.cloudfront.net/l9MiP2_A-_CoWimV4ZnNRA/:version.jpg",
                         aspectRatio: 0.5,
                       },
                       sale: null,
@@ -199,7 +202,8 @@ describe("ArtworksInSeriesRail", () => {
                       href: "/artwork/alex-katz-park-avenue-departure",
                       artistNames: "Alex Katz",
                       image: {
-                        imageURL: "https://d32dm0rphc51dk.cloudfront.net/fz_V0Mj3GPFnKhMwujWB3g/:version.jpg",
+                        imageURL:
+                          "https://d32dm0rphc51dk.cloudfront.net/fz_V0Mj3GPFnKhMwujWB3g/:version.jpg",
                         aspectRatio: 0.67,
                       },
                       sale: null,
@@ -221,7 +225,8 @@ describe("ArtworksInSeriesRail", () => {
                       href: "/artwork/alex-katz-departure-cut-out-2",
                       artistNames: "Alex Katz",
                       image: {
-                        imageURL: "https://d32dm0rphc51dk.cloudfront.net/IQp10TeWJi6CHJu-Nm6yrQ/:version.jpg",
+                        imageURL:
+                          "https://d32dm0rphc51dk.cloudfront.net/IQp10TeWJi6CHJu-Nm6yrQ/:version.jpg",
                         aspectRatio: 0.7,
                       },
                       sale: null,

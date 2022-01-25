@@ -3,7 +3,10 @@ import {
   ArtistSeriesMetaTestsQueryRawResponse,
 } from "__generated__/ArtistSeriesMetaTestsQuery.graphql"
 import { navigate } from "lib/navigation/navigate"
-import { ArtistSeriesMeta, ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
+import {
+  ArtistSeriesMeta,
+  ArtistSeriesMetaFragmentContainer,
+} from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { EntityHeader } from "palette"
@@ -67,7 +70,9 @@ describe("Artist Series Meta", () => {
 
   it("renders the Artist Series title", () => {
     const wrapper = getWrapper()
-    expect(wrapper.root.findByProps({ testID: "title" }).props.children).toBe("These are the Pumpkins")
+    expect(wrapper.root.findByProps({ testID: "title" }).props.children).toBe(
+      "These are the Pumpkins"
+    )
   })
 
   it("renders the Artist Series description", () => {
@@ -91,7 +96,9 @@ describe("Artist Series Meta", () => {
 
   it("tracks unfollows", () => {
     const wrapper = getWrapper()
-    const followButton = wrapper.root.findAllByType(EntityHeader)[0].findAllByType(TouchableWithoutFeedback)[0]
+    const followButton = wrapper.root
+      .findAllByType(EntityHeader)[0]
+      .findAllByType(TouchableWithoutFeedback)[0]
     followButton.props.onPress()
     expect(mockTrackEvent).toHaveBeenCalledWith({
       action: "unfollowedArtist",

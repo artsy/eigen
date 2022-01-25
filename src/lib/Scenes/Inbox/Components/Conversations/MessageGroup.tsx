@@ -71,7 +71,10 @@ const IndividualMessage: React.FC<{
           </Flex>
           <SubjectContainer>
             {subjectItem?.__typename === "Artwork" && (
-              <ArtworkPreview artwork={subjectItem} onSelected={() => navigate(subjectItem.href!)} />
+              <ArtworkPreview
+                artwork={subjectItem}
+                onSelected={() => navigate(subjectItem.href!)}
+              />
             )}
             {subjectItem?.__typename === "Show" && (
               <ShowPreview show={subjectItem} onSelected={() => navigate(subjectItem.href!)} />

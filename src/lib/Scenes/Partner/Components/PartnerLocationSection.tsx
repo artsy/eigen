@@ -18,7 +18,9 @@ const createLocationsString = (partner: PartnerLocationSection_partner) => {
     lastUniqCity = uniqCities.pop()
   }
   const joinedCities = uniqCities.join(", ")
-  const locationCountText = `${partner.name} has ${locationsCount} ${cityLength < 2 ? "location" : "locations"} in`
+  const locationCountText = `${partner.name} has ${locationsCount} ${
+    cityLength < 2 ? "location" : "locations"
+  } in`
   return { locationText: locationCountText, cityText: joinedCities, lastCity: lastUniqCity }
 }
 
@@ -54,7 +56,13 @@ class PartnerLocationSection extends React.Component<Props> {
             .
           </Sans>
           <Spacer mb={2} />
-          <Button variant="fillGray" size="large" block width="100%" onPress={() => handleSeeAllLocations()}>
+          <Button
+            variant="fillGray"
+            size="large"
+            block
+            width="100%"
+            onPress={() => handleSeeAllLocations()}
+          >
             See all location details
           </Button>
           <Spacer mb={3} />

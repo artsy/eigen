@@ -12,7 +12,10 @@ import { useAnimatedValue } from "./useAnimatedValue"
  * @param currentValue
  * @param config
  */
-export const useSpringValue = (currentValue: number, config: Partial<Animated.SpringAnimationConfig> = {}) => {
+export const useSpringValue = (
+  currentValue: number,
+  config: Partial<Animated.SpringAnimationConfig> = {}
+) => {
   const value = useAnimatedValue(currentValue)
   const anim = useRef<Animated.CompositeAnimation>()
   useEffect(() => {

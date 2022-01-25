@@ -17,7 +17,10 @@ export const useImageSearch = () => {
     const convectionKey = await getConvectionGeminiKey()
     const acl = "private"
 
-    const assetCredentials = await getGeminiCredentialsForEnvironment({ acl, name: convectionKey || "" })
+    const assetCredentials = await getGeminiCredentialsForEnvironment({
+      acl,
+      name: convectionKey || "",
+    })
     const s3 = await uploadFileToS3(imgPath, acl, assetCredentials)
 
     return `https://artsy-hack9.imgix.net/${s3.key}?trim=auto&trim-sd=25&q=1`
@@ -62,9 +65,12 @@ export const useImageSearch = () => {
       const imgUrl = await getImgixUrl(image?.path!)
       const response = await reverseImageSearch(imgUrl)
       if (isEmpty(response.result)) {
-        setErrorMessage("Unfortunatelly we didn't find anything for this image. Please try another one.")
+        setErrorMessage(
+          "Unfortunatelly we didn't find anything for this image. Please try another one."
+        )
       }
-      const artworkHref = response.result[0]?.metadata?.artworkHref ?? response.result[0]?.metadata?.href
+      const artworkHref =
+        response.result[0]?.metadata?.artworkHref ?? response.result[0]?.metadata?.href
       if (!!artworkHref) {
         // close modal
         setIsModalVisible(false)

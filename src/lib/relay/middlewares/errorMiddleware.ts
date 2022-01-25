@@ -35,7 +35,11 @@ const throwError = (req: GraphQLRequest, res: RelayNetworkLayerResponse) => {
   throw createRequestError(req, res)
 }
 
-const trackError = (queryName: string, queryKind: string, handler: "optionalField" | "principalField" | "default") => {
+const trackError = (
+  queryName: string,
+  queryKind: string,
+  handler: "optionalField" | "principalField" | "default"
+) => {
   volleyClient.send({
     type: "increment",
     name: "graphql-request-with-errors",
@@ -55,8 +59,9 @@ export const errorMiddleware = () => {
       return res
     }
 
-    // @ts-ignore RELAY 12 MIGRATION
-    const allErrorsAreOptional = resJson.extensions?.optionalFields?.length === resJson.errors?.length
+    const allErrorsAreOptional =
+      // @ts-ignore RELAY 12 MIGRATION
+      resJson.extensions?.optionalFields?.length === resJson.errors?.length
 
     if (allErrorsAreOptional) {
       trackError(req.operation.name, req.operation.kind, "optionalField")
@@ -77,7 +82,10 @@ export const errorMiddleware = () => {
     // This represents whether or not the query experienced an error and that error was thrown while resolving
     // a field marked with the @principalField directive, or any sub-selection of such a field.
     // @ts-ignore RELAY 12 MIGRATION
-    const principalFieldWasInvolvedInError = isErrorStatus(resJson.extensions?.principalField?.httpStatusCode)
+    const principalFieldWasInvolvedInError = isErrorStatus(
+      // @ts-ignore RELAY 12 MIGRATION
+      resJson.extensions?.principalField?.httpStatusCode
+    )
 
     if (principalFieldWasInvolvedInError) {
       trackError(req.operation.name, req.operation.kind, "principalField")

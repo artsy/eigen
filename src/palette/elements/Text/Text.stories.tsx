@@ -13,7 +13,9 @@ storiesOf("Theme/Text", module)
   .add("Variants", () => (
     <DataList
       data={variants}
-      renderItem={({ item: variant }) => <Text variant={variant}>{variant} ~~ This is a text.</Text>}
+      renderItem={({ item: variant }) => (
+        <Text variant={variant}>{variant} ~~ This is a text.</Text>
+      )}
     />
   ))
   .add("Variants in boxes", () => (
@@ -50,8 +52,10 @@ storiesOf("Theme/Text", module)
   // this is useful for making sure our custom fonts are rendering at the same height for ios and android
   .add("Font centering (raw)", () => {
     const style: TextStyle = { borderWidth: 1, borderColor: "black", fontSize: 16, lineHeight: 16 }
-    const systemFontStyle: TextStyle = Platform.OS === "android" ? { textAlignVertical: "bottom" } : {} // this we add in our Text in palette-eigen
-    const unicaFontStyle: TextStyle = Platform.OS === "android" ? { textAlignVertical: "center" } : {} // this we add in our Text in palette-eigen
+    const systemFontStyle: TextStyle =
+      Platform.OS === "android" ? { textAlignVertical: "bottom" } : {} // this we add in our Text in palette-eigen
+    const unicaFontStyle: TextStyle =
+      Platform.OS === "android" ? { textAlignVertical: "center" } : {} // this we add in our Text in palette-eigen
 
     return (
       <Flex flexDirection="row" flex={1}>
@@ -68,8 +72,12 @@ storiesOf("Theme/Text", module)
         <Flex flex={1}>
           <RNText>Unica custom font</RNText>
           <List>
-            <RNText style={[style, { fontFamily: "Unica77LL-Regular" }, unicaFontStyle]}>regular TEXT.</RNText>
-            <RNText style={[style, { fontFamily: "Unica77LL-Regular" }, unicaFontStyle]}>ALL CAPS text.</RNText>
+            <RNText style={[style, { fontFamily: "Unica77LL-Regular" }, unicaFontStyle]}>
+              regular TEXT.
+            </RNText>
+            <RNText style={[style, { fontFamily: "Unica77LL-Regular" }, unicaFontStyle]}>
+              ALL CAPS text.
+            </RNText>
           </List>
         </Flex>
       </Flex>

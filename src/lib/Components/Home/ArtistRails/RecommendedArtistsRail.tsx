@@ -11,7 +11,12 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { Flex, Spacer, Spinner } from "palette"
 import React, { useImperativeHandle, useRef, useState } from "react"
 import { FlatList, ViewProps } from "react-native"
-import { commitMutation, createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import {
+  commitMutation,
+  createPaginationContainer,
+  graphql,
+  RelayPaginationProp,
+} from "react-relay"
 import { useTracking } from "react-tracking"
 import { CardRailFlatList } from "../CardRailFlatList"
 import { ArtistCard } from "./ArtistCard"
@@ -68,7 +73,9 @@ export const RecommendedArtistsRail: React.FC<RecommendedArtistsRailProps & Rail
   }
 
   const handleFollowChange = (artist: ArtistCard_artist) => {
-    trackEvent(tracks.tapFollowOrUnfollowArtist(!!artist.isFollowed, artist.internalID, artist.slug))
+    trackEvent(
+      tracks.tapFollowOrUnfollowArtist(!!artist.isFollowed, artist.internalID, artist.slug)
+    )
 
     followOrUnfollowArtist(artist)
   }

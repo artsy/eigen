@@ -2,7 +2,10 @@ import { Stack } from "lib/Components/Stack"
 import { getCurrentEmissionState, GlobalStore, unsafe__getEnvironment } from "lib/store/GlobalStore"
 import { Flex, Input, Separator } from "palette"
 import React, { useEffect, useState } from "react"
-import { MyAccountFieldEditScreen, MyAccountFieldEditScreenProps } from "./Components/MyAccountFieldEditScreen"
+import {
+  MyAccountFieldEditScreen,
+  MyAccountFieldEditScreenProps,
+} from "./Components/MyAccountFieldEditScreen"
 
 export const MyAccountEditPassword: React.FC<{}> = ({}) => {
   const [currentPassword, setCurrentPassword] = useState<string>("")

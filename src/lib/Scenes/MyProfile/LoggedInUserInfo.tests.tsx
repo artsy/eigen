@@ -19,7 +19,9 @@ describe(UserProfileQueryRenderer, () => {
 
   it("renders upon sucess", () => {
     const tree = renderWithWrappers(<UserProfileQueryRenderer />)
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("LoggedInUserInfoQuery")
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+      "LoggedInUserInfoQuery"
+    )
 
     act(() => {
       env.mock.resolveMostRecentOperation({

@@ -59,7 +59,9 @@ describe("PaymentSection", () => {
       }),
     })
 
-    expect(extractText(tree.root.findByProps({ testID: "credit-card-info" }))).toEqual(`visa ending in 4242`)
+    expect(extractText(tree.root.findByProps({ testID: "credit-card-info" }))).toEqual(
+      `visa ending in 4242`
+    )
   })
 
   it("renders when credit card doesn't exist", () => {

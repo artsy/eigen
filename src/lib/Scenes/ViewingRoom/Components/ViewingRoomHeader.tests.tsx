@@ -103,7 +103,9 @@ describe("ViewingRoomHeader", () => {
       })
       return result
     })
-    expect(tree.root.findByProps({ testID: "partner-icon" }).props.source.uri).toBe("https://example.com/image.jpg")
+    expect(tree.root.findByProps({ testID: "partner-icon" }).props.source.uri).toBe(
+      "https://example.com/image.jpg"
+    )
   })
 
   it("doesn't render logo (and doesn't crash) if partner profile is null", () => {

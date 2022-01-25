@@ -7,7 +7,10 @@ import {
   getSelectedFiltersCounts,
   getUnitedSelectedAndAppliedFilters,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersModel, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworkFiltersModel,
+  ArtworksFiltersStore,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
@@ -47,7 +50,9 @@ export const ArtworkFilterOptionsScreen: React.FC<
   const { closeModal, id, mode, slug, title = "Sort & Filter" } = route.params
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-  const previouslyAppliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.previouslyAppliedFilters)
+  const previouslyAppliedFiltersState = ArtworksFiltersStore.useStoreState(
+    (state) => state.previouslyAppliedFilters
+  )
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
   const aggregationsState = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
@@ -82,9 +87,10 @@ export const ArtworkFilterOptionsScreen: React.FC<
     })
   )
 
-  const filterOptions: FilterDisplayConfig[] = getStaticFilterOptionsByMode(mode, localFilterOptions).concat(
-    aggregateFilterOptions
-  )
+  const filterOptions: FilterDisplayConfig[] = getStaticFilterOptionsByMode(
+    mode,
+    localFilterOptions
+  ).concat(aggregateFilterOptions)
 
   const sortedFilterOptions = filterOptions
     .sort(getFilterScreenSortByMode(mode, localFilterOptions))
@@ -199,7 +205,10 @@ export const getStaticFilterOptionsByMode = (
         ]
       }
 
-      return [filterOptionToDisplayConfigMap.waysToBuy, filterOptionToDisplayConfigMap.attributionClass]
+      return [
+        filterOptionToDisplayConfigMap.waysToBuy,
+        filterOptionToDisplayConfigMap.attributionClass,
+      ]
 
     case FilterModalMode.Custom:
       return customFilterOptions!
@@ -316,7 +325,9 @@ export const AnimatedArtworkFilterButton: React.FC<AnimatedArtworkFilterButtonPr
       const hasArtistsIFollow = !!appliedFiltersState.find(
         (filter) => filter.paramName === FilterParamName.artistsIFollow
       )
-      const hasArtistIDs = !!appliedFiltersState.find((filter) => filter.paramName === FilterParamName.artistIDs)
+      const hasArtistIDs = !!appliedFiltersState.find(
+        (filter) => filter.paramName === FilterParamName.artistIDs
+      )
 
       if (hasArtistIDs && hasArtistsIFollow) {
         --selectedFiltersSum
@@ -573,4 +584,10 @@ const TagAndGeneFiltersSorted: FilterScreen[] = [
   "partnerIDs",
 ]
 
-const AuctionResultsFiltersSorted: FilterScreen[] = ["sort", "categories", "sizes", "year", "organizations"]
+const AuctionResultsFiltersSorted: FilterScreen[] = [
+  "sort",
+  "categories",
+  "sizes",
+  "year",
+  "organizations",
+]

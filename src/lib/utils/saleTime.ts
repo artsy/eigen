@@ -15,8 +15,11 @@ export const saleTime = (sale: {
   const saleType = sale.liveStartAt != null ? "live" : "timed"
   const userTimeZone = moment.tz.guess()
   const startDateMoment =
-    startDate !== null ? moment.tz(startDate, moment.ISO_8601, sale.timeZone).tz(userTimeZone) : null
-  const endDateMoment = endDate !== null ? moment.tz(endDate, moment.ISO_8601, sale.timeZone).tz(userTimeZone) : null
+    startDate !== null
+      ? moment.tz(startDate, moment.ISO_8601, sale.timeZone).tz(userTimeZone)
+      : null
+  const endDateMoment =
+    endDate !== null ? moment.tz(endDate, moment.ISO_8601, sale.timeZone).tz(userTimeZone) : null
   const now = moment()
 
   return {
@@ -56,7 +59,11 @@ const absolute = (
   return null
 }
 
-const begins = (startDate: moment.Moment, userTimeZone: string, saleType: "live" | "timed"): string =>
+const begins = (
+  startDate: moment.Moment,
+  userTimeZone: string,
+  saleType: "live" | "timed"
+): string =>
   `${saleType === "live" ? "Live bidding" : "Bidding"} ` +
   `begins ${startDate.format("MMM D")} ` +
   `at ${startDate.format("h:mma")} ` +
@@ -97,7 +104,9 @@ const relative = (
 
 const maybePluralise = (word: string, unit: number) => word + (unit === 1 ? "" : "s")
 const maybeAddMinutes = (minutesUntilSale: number) =>
-  minutesUntilSale % 60 === 0 ? "" : ` ${minutesUntilSale % 60} ${maybePluralise("minute", minutesUntilSale)}`
+  minutesUntilSale % 60 === 0
+    ? ""
+    : ` ${minutesUntilSale % 60} ${maybePluralise("minute", minutesUntilSale)}`
 
 const starts = (now: moment.Moment, startDate: moment.Moment): string | null => {
   const hours = startDate.diff(now, "hours")

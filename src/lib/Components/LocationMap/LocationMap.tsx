@@ -87,7 +87,13 @@ export const tappedOnMap = (
   return [
     {
       title,
-      options: ["Open in Apple Maps", "Open in City Mapper", "Open in Google Maps", "Copy Address", "Cancel"],
+      options: [
+        "Open in Apple Maps",
+        "Open in City Mapper",
+        "Open in Google Maps",
+        "Copy Address",
+        "Cancel",
+      ],
       get cancelButtonIndex() {
         return this.options.length - 1
       },
@@ -216,7 +222,9 @@ export const LocationMap: React.FC<Props> = (props) => {
   return (
     <TouchableOpacity
       onPress={() =>
-        showActionSheetWithOptions(...tappedOnMap(lat, lng, address, summary, partnerName, city, postalCode))
+        showActionSheetWithOptions(
+          ...tappedOnMap(lat, lng, address, summary, partnerName, city, postalCode)
+        )
       }
     >
       <MapWrapper>

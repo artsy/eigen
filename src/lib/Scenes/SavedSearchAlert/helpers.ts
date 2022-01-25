@@ -1,6 +1,12 @@
-import { SearchCriteria, SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import {
+  SearchCriteria,
+  SearchCriteriaAttributes,
+} from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
-import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
+import {
+  getNotificationPermissionsStatus,
+  PushAuthorizationStatus,
+} from "lib/utils/PushNotification"
 import { bullet } from "palette"
 import { Alert, AlertButton, Linking, Platform } from "react-native"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
@@ -25,7 +31,8 @@ export const requestNotificationPermissions = () => {
       [
         {
           text: "Proceed",
-          onPress: () => LegacyNativeModules.ARTemporaryAPIModule.requestDirectNotificationPermissions(),
+          onPress: () =>
+            LegacyNativeModules.ARTemporaryAPIModule.requestDirectNotificationPermissions(),
         },
         {
           text: "Cancel",

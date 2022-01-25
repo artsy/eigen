@@ -58,7 +58,8 @@ export const SearchCriteriaQueryRenderer: React.FC<SearchCriteriaQueryRendererPr
           if (isNull(error) && isNull(relayProps)) {
             return <ProvidePlaceholderContext>{renderPlaceholder()}</ProvidePlaceholderContext>
           }
-          const savedSearchCriteria = (relayProps?.me?.savedSearch as SearchCriteriaAttributes) ?? null
+          const savedSearchCriteria =
+            (relayProps?.me?.savedSearch as SearchCriteriaAttributes) ?? null
 
           return renderComponent({
             fetchCriteriaError: error,

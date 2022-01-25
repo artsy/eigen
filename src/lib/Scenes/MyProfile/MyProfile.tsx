@@ -17,18 +17,27 @@ import React, { useCallback, useRef, useState } from "react"
 import { FlatList, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
-import { LoadingSkeleton as MyCollectionLoadingSkeleton, useEnableMyCollection } from "../MyCollection/MyCollection"
+import {
+  LoadingSkeleton as MyCollectionLoadingSkeleton,
+  useEnableMyCollection,
+} from "../MyCollection/MyCollection"
 import { MyCollectionAndSavedWorksQueryRenderer } from "./MyCollectionAndSavedWorks"
 import { confirmLogout, SectionHeading } from "./MyProfileSettings"
 
-export const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
+export const MyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({
+  me,
+  relay,
+}) => {
   return <OldMyProfile me={me} relay={relay} />
 }
 
 /*
  * TODO: Marked For Deletion. Remove when MyCollections is released
  */
-export const OldMyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({ me, relay }) => {
+export const OldMyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp }> = ({
+  me,
+  relay,
+}) => {
   const showOrderHistory = useFeatureFlag("AREnableOrderHistoryOption")
   const showSavedAddresses = useFeatureFlag("AREnableSavedAddresses")
   const listRef = useRef<FlatList<any>>(null)
@@ -47,7 +56,11 @@ export const OldMyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp 
     <ScrollView
       testID="my-old-profile-scrollview"
       refreshControl={
-        <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} testID="my-old-profile-scrollview" />
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={onRefresh}
+          testID="my-old-profile-scrollview"
+        />
       }
     >
       <Sans size="8" mx="2" mt="3">
@@ -58,7 +71,11 @@ export const OldMyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp 
       <MenuItem title="Saved Alerts" onPress={() => navigate("my-profile/saved-search-alerts")} />
       <MenuItem title="Saves and follows" onPress={() => navigate("favorites")} />
       {!!recentlySavedArtworks.length && (
-        <SmallTileRailContainer artworks={recentlySavedArtworks} listRef={listRef} contextModule={null as any} />
+        <SmallTileRailContainer
+          artworks={recentlySavedArtworks}
+          listRef={listRef}
+          contextModule={null as any}
+        />
       )}
       <Separator mt={3} mb={2} />
       <SectionHeading title="Account Settings" />
@@ -66,7 +83,10 @@ export const OldMyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp 
       {!!showOrderHistory && <MenuItem title="Order History" onPress={() => navigate("/orders")} />}
       <MenuItem title="Payment" onPress={() => navigate("my-profile/payment")} />
 
-      <MenuItem title="Push notifications" onPress={() => navigate("my-profile/push-notifications")} />
+      <MenuItem
+        title="Push notifications"
+        onPress={() => navigate("my-profile/push-notifications")}
+      />
 
       {!!showSavedAddresses && (
         <MenuItem title="Saved Addresses" onPress={() => navigate("my-profile/saved-addresses")} />
@@ -171,14 +191,18 @@ export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
 
   if (shouldDisplayMyCollection) {
     return (
-      <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.profile })}>
+      <ProvideScreenTrackingWithCohesionSchema
+        info={screen({ context_screen_owner_type: OwnerType.profile })}
+      >
         <MyCollectionAndSavedWorksQueryRenderer />
       </ProvideScreenTrackingWithCohesionSchema>
     )
   }
 
   return (
-    <ProvideScreenTrackingWithCohesionSchema info={screen({ context_screen_owner_type: OwnerType.profile })}>
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({ context_screen_owner_type: OwnerType.profile })}
+    >
       <OldMyProfileQueryRenderer />
     </ProvideScreenTrackingWithCohesionSchema>
   )

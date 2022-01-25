@@ -9,7 +9,10 @@ interface ArtworkAutosuggestProps {
   onSkipPress: () => void
 }
 
-export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({ onResultPress, onSkipPress }) => {
+export const ArtworkAutosuggest: React.FC<ArtworkAutosuggestProps> = ({
+  onResultPress,
+  onSkipPress,
+}) => {
   const { formik } = useArtworkForm()
 
   const { artistSearchResult } = formik.values

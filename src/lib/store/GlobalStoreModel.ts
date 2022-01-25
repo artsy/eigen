@@ -1,15 +1,24 @@
 import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { BottomTabsModel, getBottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
-import { getMyCollectionModel, MyCollectionModel } from "lib/Scenes/MyCollection/State/MyCollectionModel"
+import {
+  getMyCollectionModel,
+  MyCollectionModel,
+} from "lib/Scenes/MyCollection/State/MyCollectionModel"
 import { getSearchModel, SearchModel } from "lib/Scenes/Search/SearchModel"
-import { getUserPreferencesModel, UserPreferencesModel } from "lib/Scenes/Search/UserPreferencesModel"
+import {
+  getUserPreferencesModel,
+  UserPreferencesModel,
+} from "lib/Scenes/Search/UserPreferencesModel"
 import { AuthModel, getAuthModel } from "./AuthModel"
 import { ConfigModel, getConfigModel } from "./ConfigModel"
 import { unsafe__getEnvironment } from "./GlobalStore"
 import { CURRENT_APP_VERSION } from "./migration"
 import { getNativeModel, NativeModel } from "./NativeModel"
-import { getPendingPushNotificationModel, PendingPushNotificationModel } from "./PendingPushNotificationModel"
+import {
+  getPendingPushNotificationModel,
+  PendingPushNotificationModel,
+} from "./PendingPushNotificationModel"
 import { assignDeep, sanitize } from "./persistence"
 import { getToastModel, ToastModel } from "./ToastModel"
 import { getVisualClueModel, VisualClueModel } from "./VisualClueModel"

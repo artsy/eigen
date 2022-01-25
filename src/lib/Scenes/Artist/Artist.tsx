@@ -42,7 +42,13 @@ interface ArtistProps {
 }
 
 export const Artist: React.FC<ArtistProps> = (props) => {
-  const { artistAboveTheFold, artistBelowTheFold, initialTab = INITIAL_TAB, searchCriteria, fetchCriteriaError } = props
+  const {
+    artistAboveTheFold,
+    artistBelowTheFold,
+    initialTab = INITIAL_TAB,
+    searchCriteria,
+    fetchCriteriaError,
+  } = props
   const popoverMessage = usePopoverMessage()
 
   const tabs: TabProps[] = []
@@ -65,7 +71,11 @@ export const Artist: React.FC<ArtistProps> = (props) => {
   if (displayAboutSection) {
     tabs.push({
       title: "Overview",
-      content: artistBelowTheFold ? <ArtistAboutContainer artist={artistBelowTheFold} /> : <LoadingPage />,
+      content: artistBelowTheFold ? (
+        <ArtistAboutContainer artist={artistBelowTheFold} />
+      ) : (
+        <LoadingPage />
+      ),
     })
   }
 
@@ -80,7 +90,9 @@ export const Artist: React.FC<ArtistProps> = (props) => {
     tabs.push({
       title: "Insights",
       content: artistBelowTheFold ? (
-        (tabIndex: number) => <ArtistInsightsFragmentContainer tabIndex={tabIndex} artist={artistBelowTheFold} />
+        (tabIndex: number) => (
+          <ArtistInsightsFragmentContainer tabIndex={tabIndex} artist={artistBelowTheFold} />
+        )
       ) : (
         <LoadingPage />
       ),
@@ -93,8 +105,8 @@ export const Artist: React.FC<ArtistProps> = (props) => {
       content: (
         <StickyTabPageScrollView>
           <Message>
-            There aren’t any works available by the artist at this time. Follow to receive notifications when new works
-            are added.
+            There aren’t any works available by the artist at this time. Follow to receive
+            notifications when new works are added.
           </Message>
         </StickyTabPageScrollView>
       ),
@@ -119,7 +131,9 @@ export const Artist: React.FC<ArtistProps> = (props) => {
         <StickyTabPage
           staticHeaderContent={<ArtistHeaderFragmentContainer artist={artistAboveTheFold!} />}
           tabs={tabs}
-          bottomContent={<ArtistHeaderFloatingButtonsFragmentContainer artist={artistAboveTheFold} />}
+          bottomContent={
+            <ArtistHeaderFloatingButtonsFragmentContainer artist={artistAboveTheFold} />
+          }
           disableBackButtonUpdate
         />
       </Flex>
@@ -127,7 +141,9 @@ export const Artist: React.FC<ArtistProps> = (props) => {
   )
 }
 
-interface ArtistQueryRendererProps extends ArtistAboveTheFoldQueryVariables, ArtistBelowTheFoldQueryVariables {
+interface ArtistQueryRendererProps
+  extends ArtistAboveTheFoldQueryVariables,
+    ArtistBelowTheFoldQueryVariables {
   environment?: RelayModernEnvironment
   initialTab?: string
   searchCriteriaID?: string
@@ -173,7 +189,9 @@ export const ArtistQueryRenderer: React.FC<ArtistQueryRendererProps> = (props) =
         renderPlaceholder: () => <HeaderTabsGridPlaceholder />,
         renderComponent: (searchCriteriaProps) => {
           const { savedSearchCriteria, fetchCriteriaError } = searchCriteriaProps
-          const preparedSavedSearchCriteria = getOnlyFilledSearchCriteriaValues(savedSearchCriteria ?? {})
+          const preparedSavedSearchCriteria = getOnlyFilledSearchCriteriaValues(
+            savedSearchCriteria ?? {}
+          )
           const initialArtworksInput = {
             ...defaultArtistVariables().input,
             sort: !!savedSearchCriteria ? "-published_at" : DEFAULT_ARTWORK_SORT.paramValue,

@@ -1,6 +1,14 @@
 import { ImageCarouselContext, ImageDescriptor } from "../ImageCarouselContext"
 
-import { useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react"
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 
 import {
   Animated,
@@ -39,7 +47,9 @@ export interface ImageZoomViewProps {
 }
 
 const measure = (ref: View): Promise<Rect> =>
-  new Promise((resolve) => ref.measure((_, __, width, height, x, y) => resolve({ x, y, width, height })))
+  new Promise((resolve) =>
+    ref.measure((_, __, width, height, x, y) => resolve({ x, y, width, height }))
+  )
 
 interface TransitionOffset {
   translateX: number
@@ -49,7 +59,13 @@ interface TransitionOffset {
 
 // calculates the transition offset between the embedded thumbnail (fromRef)
 // and the full-screen image position (toBox)
-async function getTransitionOffset({ fromRef, toBox }: { fromRef: View; toBox: Rect }): Promise<TransitionOffset> {
+async function getTransitionOffset({
+  fromRef,
+  toBox,
+}: {
+  fromRef: View
+  toBox: Rect
+}): Promise<TransitionOffset> {
   const fromBox = await measure(fromRef)
 
   const scale = fromBox.width / toBox.width
@@ -116,7 +132,10 @@ export const ImageZoomView =
     })
 
     const transition = useAnimatedValue(0)
-    const transform = useMemo(() => createTransform(transition, imageTransitionOffset), [imageTransitionOffset])
+    const transform = useMemo(
+      () => createTransform(transition, imageTransitionOffset),
+      [imageTransitionOffset]
+    )
 
     const rawImageSize = image?.deepZoom?.image?.size
     if (!rawImageSize) {
@@ -296,7 +315,14 @@ export const ImageZoomView =
           ref={scrollViewRef}
           scrollEnabled={fullScreenState.current === "entered"}
           onScroll={Animated.event(
-            [{ nativeEvent: { zoomScale: $zoomScale, contentOffset: { x: $contentOffsetX, y: $contentOffsetY } } }],
+            [
+              {
+                nativeEvent: {
+                  zoomScale: $zoomScale,
+                  contentOffset: { x: $contentOffsetX, y: $contentOffsetY },
+                },
+              },
+            ],
             {
               useNativeDriver: true,
               listener: onScroll,

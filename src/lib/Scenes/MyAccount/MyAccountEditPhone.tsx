@@ -6,7 +6,10 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { MyAccountEditPhone_me } from "../../../__generated__/MyAccountEditPhone_me.graphql"
-import { MyAccountFieldEditScreen, MyAccountFieldEditScreenPlaceholder } from "./Components/MyAccountFieldEditScreen"
+import {
+  MyAccountFieldEditScreen,
+  MyAccountFieldEditScreenPlaceholder,
+} from "./Components/MyAccountFieldEditScreen"
 import { updateMyUserProfile } from "./updateMyUserProfile"
 
 const MyAccountEditPhone: React.FC<{ me: MyAccountEditPhone_me }> = ({ me }) => {

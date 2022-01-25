@@ -2,7 +2,12 @@ import { InquiryQuestionInput } from "__generated__/SubmitInquiryRequestMutation
 import { Dispatch } from "react"
 import { LocationWithDetails } from "../googleMaps"
 
-export type ArtworkInquiryActions = SelectInquiryType | SelectLocation | SelectInquiryQuestion | SetMessage | ResetForm
+export type ArtworkInquiryActions =
+  | SelectInquiryType
+  | SelectLocation
+  | SelectInquiryQuestion
+  | SetMessage
+  | ResetForm
 
 export interface ArtworkInquiryContextProps {
   state: ArtworkInquiryContextState

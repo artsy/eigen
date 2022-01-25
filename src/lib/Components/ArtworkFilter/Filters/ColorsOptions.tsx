@@ -1,6 +1,10 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
-import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  FilterData,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFilterBackHeader } from "lib/Components/ArtworkFilter/components/ArtworkFilterBackHeader"
 import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
@@ -13,7 +17,12 @@ import { ColorsSwatch } from "./ColorsSwatch"
 import { useMultiSelect } from "./useMultiSelect"
 
 export const COLORS = [
-  { value: "black-and-white", name: "Black and White", backgroundColor: "#000", foregroundColor: "#fff" },
+  {
+    value: "black-and-white",
+    name: "Black and White",
+    backgroundColor: "#000",
+    foregroundColor: "#fff",
+  },
   { value: "red", name: "Red", backgroundColor: "#FF0000", foregroundColor: "#fff" },
   { value: "yellow", name: "Yellow", backgroundColor: "#FBE854", foregroundColor: "#000" },
   { value: "pink", name: "Pink", backgroundColor: "#FB81CD", foregroundColor: "#000" },
@@ -37,7 +46,8 @@ export const COLORS_INDEXED_BY_VALUE = COLORS.reduce(
 
 const SWATCHES_PER_ROW = 4
 
-interface ColorsOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "ColorsOptionsScreen"> {}
+interface ColorsOptionsScreenProps
+  extends StackScreenProps<ArtworkFilterNavigationStack, "ColorsOptionsScreen"> {}
 
 export const ColorsOptionsScreen: React.FC<ColorsOptionsScreenProps> = ({ navigation }) => {
   const space = useSpace()

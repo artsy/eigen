@@ -15,7 +15,9 @@ interface Props {
 export class FollowArtistLink extends React.Component<Props> {
   @track((props: Props) => {
     return {
-      action_name: props.artist.is_followed ? Schema.ActionNames.ArtistUnfollow : Schema.ActionNames.ArtistFollow,
+      action_name: props.artist.is_followed
+        ? Schema.ActionNames.ArtistUnfollow
+        : Schema.ActionNames.ArtistFollow,
       action_type: Schema.ActionTypes.Success,
       owner_id: props.artist.internalID,
       owner_slug: props.artist.slug,

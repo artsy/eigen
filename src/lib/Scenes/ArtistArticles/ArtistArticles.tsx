@@ -59,8 +59,12 @@ export const ArtistArticlesContainer = createPaginationContainer(
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         internalID
         name
-        articlesConnection(first: $count, after: $cursor, sort: PUBLISHED_AT_DESC, inEditorialFeed: true)
-          @connection(key: "ArtistArticles_articlesConnection") {
+        articlesConnection(
+          first: $count
+          after: $cursor
+          sort: PUBLISHED_AT_DESC
+          inEditorialFeed: true
+        ) @connection(key: "ArtistArticles_articlesConnection") {
           edges {
             cursor
             node {

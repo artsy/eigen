@@ -8,7 +8,19 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { LocalImage, retrieveLocalImages, storeLocalImages } from "lib/utils/LocalImageStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
-import { Avatar, Box, Button, Flex, Sans, useColor } from "palette"
+import {
+  Avatar,
+  Box,
+  BriefcaseIcon,
+  Button,
+  Flex,
+  Join,
+  MapPinIcon,
+  MuseumIcon,
+  Spacer,
+  Text,
+  useColor,
+} from "palette"
 import React, { useEffect, useState } from "react"
 import { createFragmentContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -21,7 +33,9 @@ export enum Tab {
   savedWorks = "Saved Works",
 }
 
-export const MyCollectionAndSavedWorks: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({ me }) => {
+export const MyCollectionAndSavedWorks: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({
+  me,
+}) => {
   return (
     <StickyTabPage
       disableBackButtonUpdate
@@ -70,7 +84,7 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
 
   const userProfileImagePath = localImage?.path || me?.icon?.url
 
-  const showIconAndBio = useFeatureFlag("AREnableVisualProfileIconAndBio")
+  const showCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
 
   return (
     <>
@@ -91,67 +105,106 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
         }}
       />
       <Flex flexDirection="row" alignItems="center" px={2}>
-        {!!showIconAndBio && (
-          <Box
-            height="99"
-            width="99"
-            borderRadius="50"
-            backgroundColor={color("black10")}
-            justifyContent="center"
-            alignItems="center"
-          >
-            {!!userProfileImagePath ? (
-              <Avatar src={userProfileImagePath} size="md" />
-            ) : (
-              <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
-            )}
-          </Box>
-        )}
-        <Box px={2} flexShrink={1} pb={!showIconAndBio ? 6 : undefined}>
-          <Sans size="10" color={color("black100")}>
+        <Box
+          height="99"
+          width="99"
+          borderRadius="50"
+          backgroundColor={color("black10")}
+          justifyContent="center"
+          alignItems="center"
+        >
+          {!!userProfileImagePath ? (
+            <Avatar src={userProfileImagePath} size="md" />
+          ) : (
+            <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
+          )}
+        </Box>
+        <Box px={2} flexShrink={1}>
+          <Text variant="xl" color={color("black100")}>
             {me?.name}
-          </Sans>
+          </Text>
           {!!me?.createdAt && (
-            <Sans size="2" color={color("black60")}>{`Member since ${new Date(me?.createdAt).getFullYear()}`}</Sans>
+            <Text variant="xs" color={color("black60")}>{`Member since ${new Date(
+              me?.createdAt
+            ).getFullYear()}`}</Text>
           )}
         </Box>
       </Flex>
-      {!!me?.bio && showIconAndBio && (
-        <Sans size="2" color={color("black100")} px={2} pt={2}>
-          {me?.bio}
-        </Sans>
-      )}
-      {showIconAndBio && (
-        <Flex p={2}>
-          <Button
-            variant="outline"
-            size="small"
-            flex={1}
-            onPress={() => {
-              setShowModal(true)
-            }}
-          >
-            Edit Profile
-          </Button>
+
+      {showCollectorProfile && (
+        <Flex px={2} mt={2}>
+          <Join separator={<Spacer my={0.5} />}>
+            {!!me?.location?.display && (
+              <Flex flexDirection="row" alignItems="flex-end">
+                <MapPinIcon width={14} height={14} />
+                <Text variant="xs" color={color("black100")} px={0.5}>
+                  {me.location.display}
+                </Text>
+              </Flex>
+            )}
+
+            {!!me?.profession && (
+              <Flex flexDirection="row" alignItems="flex-end">
+                <BriefcaseIcon width={14} height={14} />
+                <Text variant="xs" color={color("black100")} px={0.5}>
+                  {me.profession}
+                </Text>
+              </Flex>
+            )}
+
+            {!!me?.otherRelevantPosition && (
+              <Flex flexDirection="row" alignItems="flex-end">
+                <MuseumIcon width={14} height={14} />
+                <Text variant="xs" color={color("black100")} px={0.5}>
+                  {me?.otherRelevantPosition}
+                </Text>
+              </Flex>
+            )}
+          </Join>
         </Flex>
       )}
+      {!!me?.bio && (
+        <Text variant="xs" color={color("black100")} px={2} pt={2}>
+          {me?.bio}
+        </Text>
+      )}
+      <Flex p={2}>
+        <Button
+          variant="outline"
+          size="small"
+          flex={1}
+          onPress={() => {
+            setShowModal(true)
+          }}
+        >
+          Edit Profile
+        </Button>
+      </Flex>
     </>
   )
 }
 
-export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContainer(MyCollectionAndSavedWorks, {
-  me: graphql`
-    fragment MyCollectionAndSavedWorks_me on Me {
-      name
-      bio
-      icon {
-        url(version: "thumbnail")
+export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContainer(
+  MyCollectionAndSavedWorks,
+  {
+    me: graphql`
+      fragment MyCollectionAndSavedWorks_me on Me {
+        name
+        bio
+        location {
+          display
+        }
+        otherRelevantPosition
+        profession
+        icon {
+          url(version: "thumbnail")
+        }
+        createdAt
+        ...MyProfileEditFormModal_me
       }
-      createdAt
-      ...MyProfileEditFormModal_me
-    }
-  `,
-})
+    `,
+  }
+)
 
 export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => (
   <QueryRenderer<MyCollectionAndSavedWorksQuery>

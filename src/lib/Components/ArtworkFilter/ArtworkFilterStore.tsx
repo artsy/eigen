@@ -161,7 +161,9 @@ export const getArtworkFiltersModel = (): ArtworkFiltersModel => ({
 // Return the list of selected options (union of selected and applied)
 export const useSelectedOptionsDisplay = (): FilterArray => {
   const selectedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
-  const previouslyAppliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.previouslyAppliedFilters)
+  const previouslyAppliedFiltersState = ArtworksFiltersStore.useStoreState(
+    (state) => state.previouslyAppliedFilters
+  )
   const filterTypeState = ArtworksFiltersStore.useStoreState((state) => state.filterType)
 
   return selectedOptionsUnion({
@@ -187,7 +189,11 @@ export const DEFAULT_FILTERS: FilterArray = [
   { paramName: FilterParamName.waysToBuyInquire, paramValue: false, displayText: "Inquire" },
   { paramName: FilterParamName.waysToBuyMakeOffer, paramValue: false, displayText: "Make Offer" },
   { paramName: FilterParamName.waysToBuyBid, paramValue: false, displayText: "Bid" },
-  { paramName: FilterParamName.artistsIFollow, paramValue: false, displayText: "All Artists I Follow" },
+  {
+    paramName: FilterParamName.artistsIFollow,
+    paramValue: false,
+    displayText: "All Artists I Follow",
+  },
   { paramName: FilterParamName.artistIDs, paramValue: [], displayText: "All" },
   { paramName: FilterParamName.viewAs, paramValue: false, displayText: "Grid" },
   { paramName: FilterParamName.attributionClass, paramValue: "", displayText: "All" },

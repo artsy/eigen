@@ -97,7 +97,10 @@ export class BMWEventSection extends React.Component<Props> {
             {this.renderEvents()}
             {totalCount > 2 && (
               <Box px={2} mb={2}>
-                <CaretButton onPress={() => this.viewAllBmwShows()} text={`View all ${totalCount} shows`} />
+                <CaretButton
+                  onPress={() => this.viewAllBmwShows()}
+                  text={`View all ${totalCount} shows`}
+                />
               </Box>
             )}
           </>

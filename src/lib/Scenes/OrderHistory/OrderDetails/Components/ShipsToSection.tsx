@@ -9,7 +9,10 @@ interface Props {
 }
 
 export const ShipsToSection: React.FC<Props> = ({ address }) => {
-  if (!address.requestedFulfillment || address.requestedFulfillment.__typename === "CommercePickup") {
+  if (
+    !address.requestedFulfillment ||
+    address.requestedFulfillment.__typename === "CommercePickup"
+  ) {
     return null
   }
 
@@ -17,7 +20,8 @@ export const ShipsToSection: React.FC<Props> = ({ address }) => {
     address.requestedFulfillment.__typename === "CommerceShip" ||
     address.requestedFulfillment.__typename === "CommerceShipArta"
   ) {
-    const { city, addressLine1, addressLine2, region, postalCode, country, phoneNumber } = address.requestedFulfillment
+    const { city, addressLine1, addressLine2, region, postalCode, country, phoneNumber } =
+      address.requestedFulfillment
     const addedComma = city ? "," : ""
     return (
       <Flex style={{ flexDirection: "column", justifyContent: "space-between" }}>

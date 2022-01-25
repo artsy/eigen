@@ -18,8 +18,12 @@ import { Fair, Show } from "lib/Scenes/Map/types"
 //       },
 // }
 
-export type FairsEdge = NonNullable<NonNullable<NonNullable<GlobalMap_viewer["city"]>["fairs"]>["edges"]>
-export type ShowsEdge = NonNullable<NonNullable<NonNullable<GlobalMap_viewer["city"]>["shows"]>["edges"]>
+export type FairsEdge = NonNullable<
+  NonNullable<NonNullable<GlobalMap_viewer["city"]>["fairs"]>["edges"]
+>
+export type ShowsEdge = NonNullable<
+  NonNullable<NonNullable<GlobalMap_viewer["city"]>["shows"]>["edges"]
+>
 
 export const showsToGeoCityShow = (edges: Show[]): Show[] =>
   edges.map((node) => {

@@ -19,7 +19,9 @@ import { PartnerShowsRailContainer as PartnerShowsRail } from "./PartnerShowsRai
 const PAGE_SIZE = 32
 
 interface ShowGridItemProps {
-  show: NonNullable<NonNullable<NonNullable<NonNullable<PartnerShows_partner["pastShows"]>["edges"]>[0]>["node"]>
+  show: NonNullable<
+    NonNullable<NonNullable<NonNullable<PartnerShows_partner["pastShows"]>["edges"]>[0]>["node"]
+  >
   itemIndex: number
 }
 
@@ -36,13 +38,18 @@ class ShowGridItem extends React.Component<ShowGridItemProps> {
     return (
       <ClassTheme>
         {({ space }) => {
-          const styles = itemIndex % 2 === 0 ? { paddingRight: space(1) } : { paddingLeft: space(1) }
+          const styles =
+            itemIndex % 2 === 0 ? { paddingRight: space(1) } : { paddingLeft: space(1) }
           return (
             <GridItem key={show.id}>
               <TouchableWithoutFeedback onPress={this.onPress}>
                 <Box style={styles}>
                   {showImageURL ? (
-                    <BackgroundImage key={show.id} resizeMode="cover" source={{ uri: showImageURL }} />
+                    <BackgroundImage
+                      key={show.id}
+                      resizeMode="cover"
+                      source={{ uri: showImageURL }}
+                    />
                   ) : (
                     <EmptyImage />
                   )}
@@ -122,7 +129,9 @@ export const PartnerShows: React.FC<{
             // using tabIsActive here to render only the minimal UI on this tab before the user actually switches to it
             onEndReachedThreshold={tabIsActive ? 1 : 0}
             // render up to the first chunk on initial mount
-            initialNumToRender={sections.findIndex((section) => section.key.startsWith("chunk")) + 1}
+            initialNumToRender={
+              sections.findIndex((section) => section.key.startsWith("chunk")) + 1
+            }
             windowSize={tabIsActive ? 5 : 1}
             onEndReached={() => {
               if (isLoadingMore || !relay.hasMore()) {
@@ -169,8 +178,12 @@ export const PartnerShowsFragmentContainer = createPaginationContainer(
             }
           }
         }
-        pastShows: showsConnection(status: CLOSED, sort: END_AT_DESC, first: $count, after: $cursor)
-          @connection(key: "Partner_pastShows") {
+        pastShows: showsConnection(
+          status: CLOSED
+          sort: END_AT_DESC
+          first: $count
+          after: $cursor
+        ) @connection(key: "Partner_pastShows") {
           pageInfo {
             hasNextPage
             startCursor

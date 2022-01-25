@@ -27,7 +27,11 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
         <Flex flexDirection="row" justifyContent="space-between">
           <Flex justifyContent="center" testID="image-container" mr={2}>
             {!!artwork?.image ? (
-              <Image source={{ uri: artwork?.image?.resized?.url }} style={{ height: 50, width: 50 }} testID="image" />
+              <Image
+                source={{ uri: artwork?.image?.resized?.url }}
+                style={{ height: 50, width: 50 }}
+                testID="image"
+              />
             ) : (
               <Box width={50} height={50} backgroundColor="black10" testID="image-box" />
             )}
@@ -36,7 +40,13 @@ export const OrderHistoryRow: React.FC<OrderHistoryRowProps> = ({ order }) => {
             <Text variant="sm" testID="artist-names" ellipsizeMode="tail" numberOfLines={1}>
               {artwork?.artistNames}
             </Text>
-            <Text variant="xs" color="black60" testID="partner-name" ellipsizeMode="tail" numberOfLines={1}>
+            <Text
+              variant="xs"
+              color="black60"
+              testID="partner-name"
+              ellipsizeMode="tail"
+              numberOfLines={1}
+            >
               {artwork?.partner?.name}
             </Text>
             <Text variant="xs" color="black60" testID="date">

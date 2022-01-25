@@ -60,14 +60,18 @@ const TestRenderer = () => (
 const getWrapper = (mockResolvers = {}) => {
   const tree = renderWithWrappers(<TestRenderer />)
   act(() => {
-    env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
+    env.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, mockResolvers)
+    )
   })
   return tree
 }
 
 it("looks correct when rendered", () => {
   const conversation = getWrapper()
-  const componentInstance = (conversation.root.findByType(Conversation).children[0] as ReactTestInstance).instance
+  const componentInstance = (
+    conversation.root.findByType(Conversation).children[0] as ReactTestInstance
+  ).instance
   componentInstance.handleConnectivityChange(true)
   expect(conversation.root.findByType(Composer).props.disabled).toBeFalsy()
   expect(conversation.root.findAllByType(ConnectivityBanner)).toHaveLength(0)
@@ -75,7 +79,9 @@ it("looks correct when rendered", () => {
 
 it("looks correct when rendered", () => {
   const conversation = getWrapper()
-  const componentInstance = (conversation.root.findByType(Conversation).children[0] as ReactTestInstance).instance
+  const componentInstance = (
+    conversation.root.findByType(Conversation).children[0] as ReactTestInstance
+  ).instance
   componentInstance.handleConnectivityChange(false)
   expect(conversation.root.findByType(Composer).props.disabled).toBeTruthy()
   expect(conversation.root.findAllByType(ConnectivityBanner)).toHaveLength(1)
@@ -98,7 +104,9 @@ it("clicking on detail link opens pushes detail screen into navigator", () => {
 
 it("handles a dismissed modal with modalDismiss event", () => {
   const conversation = getWrapper()
-  const componentInstance = (conversation.root.findByType(Conversation).children[0] as ReactTestInstance).instance
+  const componentInstance = (
+    conversation.root.findByType(Conversation).children[0] as ReactTestInstance
+  ).instance
 
   jest.spyOn(componentInstance, "refetch")
   navigationEvents.emit("modalDismissed")
@@ -108,7 +116,9 @@ it("handles a dismissed modal with modalDismiss event", () => {
 
 it("handles a dismissed modal with goBack event", () => {
   const conversation = getWrapper()
-  const componentInstance = (conversation.root.findByType(Conversation).children[0] as ReactTestInstance).instance
+  const componentInstance = (
+    conversation.root.findByType(Conversation).children[0] as ReactTestInstance
+  ).instance
 
   jest.spyOn(componentInstance, "refetch")
   navigationEvents.emit("goBack")

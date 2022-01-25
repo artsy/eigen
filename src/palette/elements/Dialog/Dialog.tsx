@@ -60,7 +60,10 @@ export const Dialog = (props: DialogProps) => {
 
   const backdrop = (
     <Animated.View
-      style={[StyleSheet.absoluteFillObject, { opacity: value, backgroundColor: "rgba(194,194,194,0.5)" }]}
+      style={[
+        StyleSheet.absoluteFillObject,
+        { opacity: value, backgroundColor: "rgba(194,194,194,0.5)" },
+      ]}
     />
   )
 
@@ -104,7 +107,10 @@ export const Dialog = (props: DialogProps) => {
             {title}
           </Text>
           {!!detail && (
-            <ScrollView alwaysBounceVertical={false} contentContainerStyle={{ paddingHorizontal: space(2) }}>
+            <ScrollView
+              alwaysBounceVertical={false}
+              contentContainerStyle={{ paddingHorizontal: space(2) }}
+            >
               <Text testID="dialog-detail" variant="sm" color="black60">
                 {detail}
               </Text>

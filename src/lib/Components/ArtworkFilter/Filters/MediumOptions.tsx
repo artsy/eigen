@@ -9,16 +9,22 @@ import {
   FilterParamName,
   ParamDefaultValues,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworksFiltersStore,
+  useSelectedOptionsDisplay,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import React from "react"
 import { SingleSelectOptionScreen } from "./SingleSelectOption"
 
-interface MediumOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "MediumOptionsScreen"> {}
+interface MediumOptionsScreenProps
+  extends StackScreenProps<ArtworkFilterNavigationStack, "MediumOptionsScreen"> {}
 
 export const MediumOptionsScreen: React.FC<MediumOptionsScreenProps> = ({ navigation }) => {
   const paramName = FilterParamName.medium
 
-  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.selectFiltersAction
+  )
 
   const aggregations = ArtworksFiltersStore.useStoreState((state) => state.aggregations)
   const aggregation = aggregationForFilter(paramName, aggregations)

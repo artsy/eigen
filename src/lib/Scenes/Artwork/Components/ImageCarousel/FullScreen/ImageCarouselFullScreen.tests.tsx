@@ -11,8 +11,18 @@ describe("ImageCarouselFullScreen", () => {
   const Mock = () => {
     const value = useNewImageCarouselContext({
       images: [
-        { height: 5, width: 5, url: "a", deepZoom: { image: { size: { width: 5, height: 5 } } as any } },
-        { height: 5, width: 5, url: "b", deepZoom: { image: { size: { width: 5, height: 5 } } as any } },
+        {
+          height: 5,
+          width: 5,
+          url: "a",
+          deepZoom: { image: { size: { width: 5, height: 5 } } as any },
+        },
+        {
+          height: 5,
+          width: 5,
+          url: "b",
+          deepZoom: { image: { size: { width: 5, height: 5 } } as any },
+        },
       ],
     })
     return (

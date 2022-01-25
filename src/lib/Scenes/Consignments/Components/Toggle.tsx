@@ -65,7 +65,11 @@ const render = (props: ToggleProps) => {
   return (
     <ClassTheme>
       {({ color }) => (
-        <Background style={{ backgroundColor: mainBGColor }} onPress={props.onPress} underlayColor={color("white100")}>
+        <Background
+          style={{ backgroundColor: mainBGColor }}
+          onPress={props.onPress}
+          underlayColor={color("white100")}
+        >
           <View>
             <TextBackground>
               <Title style={{ color: leftTextColor }}>{selected ? props.left : ""}</Title>

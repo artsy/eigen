@@ -14,7 +14,12 @@ export interface S3UploadResponse {
 declare var FormData: any
 declare var XMLHttpRequest: any
 
-export const uploadFileToS3 = (file: string, acl: string, asset: AssetCredentials, filename?: string) =>
+export const uploadFileToS3 = (
+  file: string,
+  acl: string,
+  asset: AssetCredentials,
+  filename?: string
+) =>
   new Promise<S3UploadResponse>((resolve, reject) => {
     const formData = new FormData()
     const geminiKey = asset.policyDocument.conditions.geminiKey

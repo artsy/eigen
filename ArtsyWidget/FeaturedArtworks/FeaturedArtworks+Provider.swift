@@ -14,7 +14,7 @@ extension FeaturedArtworks {
         
         func getTimeline(in context: Context, completion: @escaping (WidgetKit.Timeline<Entry>) -> ()) {
             VolleyClient.reportGetTimeline(kind: FeaturedArtworks.Widget.kind, family: context.family)
-            Timeline.generate(completion: completion)
+            Timeline.generate(context: context, completion: completion)
         }
     }
 }

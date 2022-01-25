@@ -1,34 +1,35 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { NewWorksForYouRail_me } from "__generated__/NewWorksForYouRail_me.graphql"
+import { NewWorksForYouRail_me$key } from "__generated__/NewWorksForYouRail_me.graphql"
+import { SmallArtworkRail } from "lib/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Flex, Spinner } from "palette"
-import React, { useImperativeHandle, useRef, useState } from "react"
+import { Flex } from "palette"
+import React, { useImperativeHandle, useRef } from "react"
 import { FlatList, View } from "react-native"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
+import { graphql, useFragment } from "react-relay"
 import { useTracking } from "react-tracking"
-import { SmallTileRailContainer } from "./SmallTileRail"
+import HomeAnalytics from "../homeAnalytics"
 import { RailScrollProps } from "./types"
-
-const PAGE_SIZE = 10
-const MAX_ARTWORKS = 30
 
 interface NewWorksForYouRailProps {
   title: string
-  me: NewWorksForYouRail_me
-  relay: RelayPaginationProp
+  me: NewWorksForYouRail_me$key
   mb?: number
 }
 
-const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = ({
+export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = ({
   title,
   me,
-  relay,
   scrollRef,
   mb,
 }) => {
   const { trackEvent } = useTracking()
+
+  const { newWorksByInterestingArtists } = useFragment<NewWorksForYouRail_me$key>(
+    artworksFragment,
+    me
+  )
 
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)
@@ -37,113 +38,61 @@ const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollProps> = 
     scrollToTop: () => listRef.current?.scrollToOffset({ offset: 0, animated: false }),
   }))
 
-  const { hasMore, isLoading, loadMore } = relay
-  // TODO: Add spinner when loading more data
-  const [loadingMoreData, setLoadingMoreData] = useState(false)
-
-  // This is to satisfy the TypeScript compiler based on Metaphysics types.
-  const artworks = extractNodes(me?.newWorksByInterestingArtists)
-
-  const loadMoreArtworks = () => {
-    if (!hasMore() || isLoading() || artworks.length >= MAX_ARTWORKS) {
-      return
-    }
-
-    setLoadingMoreData(true)
-
-    loadMore(PAGE_SIZE, (error) => {
-      if (error) {
-        console.error(error.message)
-      }
-
-      setLoadingMoreData(false)
-    })
-  }
+  const artworks = extractNodes(newWorksByInterestingArtists)
 
   if (!artworks.length) {
     return null
-  }
-
-  const navigateToNewWorksForYou = () => {
-    trackEvent(tracks.tappedHeader())
-    navigate(`/new-works-for-you`)
   }
 
   return (
     <Flex mb={mb}>
       <View ref={railRef}>
         <Flex pl="2" pr="2">
-          <SectionTitle title={title} onPress={navigateToNewWorksForYou} />
-        </Flex>
-        {
-          <SmallTileRailContainer
-            listRef={listRef}
-            artworks={artworks as any}
-            contextModule={ContextModule.newWorksForYouRail}
-            onEndReached={loadMoreArtworks}
-            onEndReachedThreshold={0.1}
-            ListFooterComponent={
-              loadingMoreData ? (
-                <Flex justifyContent="center" ml={3} mr={5} height="120">
-                  <Spinner />
-                </Flex>
-              ) : undefined
-            }
+          <SectionTitle
+            title={title}
+            onPress={() => {
+              trackEvent(tracks.tappedHeader())
+              navigate(`/new-works-for-you`)
+            }}
           />
-        }
+        </Flex>
+        <SmallArtworkRail
+          artworks={artworks}
+          onPress={(artwork, position) => {
+            trackEvent(
+              HomeAnalytics.artworkThumbnailTapEvent(
+                ContextModule.newWorksForYouRail,
+                artwork.slug,
+                position,
+                "single"
+              )
+            )
+            navigate(artwork.href!)
+          }}
+        />
       </View>
     </Flex>
   )
 }
 
-export const NewWorksForYouRailContainer = createPaginationContainer(
-  NewWorksForYouRail,
-  {
-    me: graphql`
-      fragment NewWorksForYouRail_me on Me
-      @argumentDefinitions(count: { type: "Int", defaultValue: 6 }, cursor: { type: "String" }) {
-        newWorksByInterestingArtists(first: $count, after: $cursor)
-          @connection(key: "NewWorksForYouRail_newWorksByInterestingArtists") {
-          pageInfo {
-            hasNextPage
-            startCursor
-            endCursor
-          }
-          edges {
-            node {
-              ...SmallTileRail_artworks
-            }
-          }
+const artworksFragment = graphql`
+  fragment NewWorksForYouRail_me on Me
+  @argumentDefinitions(count: { type: "Int", defaultValue: 6 }, cursor: { type: "String" }) {
+    newWorksByInterestingArtists(first: $count, after: $cursor)
+      @connection(key: "NewWorksForYouRail_newWorksByInterestingArtists") {
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
+      }
+      edges {
+        node {
+          ...SmallArtworkRail_artworks
         }
       }
-    `,
-  },
-  {
-    getConnectionFromProps(props) {
-      return props?.me?.newWorksByInterestingArtists
-    },
-    getFragmentVariables(prevVars, totalCount) {
-      return {
-        ...prevVars,
-        count: totalCount,
-      }
-    },
-    getVariables(_props, { count, cursor }, fragmentVariables) {
-      return {
-        ...fragmentVariables,
-        cursor,
-        count,
-      }
-    },
-    query: graphql`
-      query NewWorksForYouRailQuery($cursor: String, $count: Int!) {
-        me {
-          ...NewWorksForYouRail_me @arguments(cursor: $cursor, count: $count)
-        }
-      }
-    `,
+    }
   }
-)
+`
 
 const tracks = {
   tappedHeader: () => ({

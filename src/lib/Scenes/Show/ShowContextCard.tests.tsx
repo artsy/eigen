@@ -45,7 +45,9 @@ describe("ShowContextCard", () => {
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
-      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, mockResolvers)
+      )
     })
     return tree
   }
@@ -77,7 +79,9 @@ describe("ShowContextCard", () => {
       expect(text).toMatch("Part of IFPDA Print Fair 2020")
       expect(text).toMatch("Jan 1 - Jan 31")
 
-      const renderedImages = wrapper.root.findAllByType(OpaqueImageView).map((img) => img.props.imageURL)
+      const renderedImages = wrapper.root
+        .findAllByType(OpaqueImageView)
+        .map((img) => img.props.imageURL)
       expect(renderedImages).toContain("http://test.artsy.net/fair-logo.jpg")
       expect(renderedImages).toContain("http://test.artsy.net/fair-main.jpg")
     })
@@ -151,7 +155,9 @@ describe("ShowContextCard", () => {
       expect(text).toMatch("Presented by Pace Prints")
       expect(text).toMatch("New York, London")
 
-      const renderedImages = wrapper.root.findAllByType(OpaqueImageView).map((img) => img.props.imageURL)
+      const renderedImages = wrapper.root
+        .findAllByType(OpaqueImageView)
+        .map((img) => img.props.imageURL)
       expect(renderedImages).toContain("http://test.artsy.net/artwork-1.jpg")
       expect(renderedImages).toContain("http://test.artsy.net/artwork-2.jpg")
       expect(renderedImages).toContain("http://test.artsy.net/artwork-3.jpg")

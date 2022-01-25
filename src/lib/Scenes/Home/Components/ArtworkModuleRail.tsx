@@ -37,7 +37,12 @@ interface ArtworkModuleRailProps {
   mb?: number
 }
 
-const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({ title, rail, scrollRef, mb }) => {
+const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
+  title,
+  rail,
+  scrollRef,
+  mb,
+}) => {
   const tracking = useTracking()
   const railRef = useRef<View>(null)
   const listRef = useRef<FlatList<any>>(null)
@@ -90,7 +95,14 @@ const ArtworkModuleRail: React.FC<ArtworkModuleRailProps & RailScrollProps> = ({
         artworks={artworks}
         onPress={(artwork, position) => {
           if (contextModule) {
-            tracking.trackEvent(HomeAnalytics.artworkThumbnailTapEvent(contextModule, artwork.slug, position, "single"))
+            tracking.trackEvent(
+              HomeAnalytics.artworkThumbnailTapEvent(
+                contextModule,
+                artwork.slug,
+                position,
+                "single"
+              )
+            )
           }
 
           navigate(artwork.href!)

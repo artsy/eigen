@@ -6,7 +6,11 @@ export function presentEmailComposer(toAddress: string, subject: string, body?: 
   if (Platform.OS !== "ios") {
     Linking.openURL(`mailto:${toAddress}?${stringify({ subject, body })}`)
   } else if (body) {
-    LegacyNativeModules.ARScreenPresenterModule.presentEmailComposerWithBody(body, subject, toAddress)
+    LegacyNativeModules.ARScreenPresenterModule.presentEmailComposerWithBody(
+      body,
+      subject,
+      toAddress
+    )
   } else {
     LegacyNativeModules.ARScreenPresenterModule.presentEmailComposerWithSubject(subject, toAddress)
   }

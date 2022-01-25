@@ -10,9 +10,14 @@ import {
 } from "./OnboardingCreateAccount"
 
 interface OnboardingCreateAccountPasswordProps
-  extends StackScreenProps<OnboardingCreateAccountNavigationStack, "OnboardingCreateAccountPassword"> {}
+  extends StackScreenProps<
+    OnboardingCreateAccountNavigationStack,
+    "OnboardingCreateAccountPassword"
+  > {}
 
-export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPasswordProps> = ({ navigation }) => {
+export const OnboardingCreateAccountPassword: React.FC<OnboardingCreateAccountPasswordProps> = ({
+  navigation,
+}) => {
   const color = useColor()
   const { values, handleSubmit, handleChange, errors, setErrors } = useFormikContext<UserSchema>()
 

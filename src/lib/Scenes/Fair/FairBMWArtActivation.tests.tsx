@@ -1,6 +1,9 @@
 import { extractText } from "lib/tests/extractText"
 import { setupTestWrapper } from "lib/tests/setupTestWrapper"
-import { FAIR_BMW_ART_ACTIVATION_QUERY, FairBMWArtActivationFragmentContainer } from "./FairBMWArtActivation"
+import {
+  FAIR_BMW_ART_ACTIVATION_QUERY,
+  FairBMWArtActivationFragmentContainer,
+} from "./FairBMWArtActivation"
 
 jest.unmock("react-relay")
 
