@@ -7,20 +7,15 @@ import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
-import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
-import { times } from "lodash"
-import { Flex, Join, Sans, Separator, Spacer } from "palette"
+import { Sans, Separator, Spacer } from "palette"
 import React, { useCallback, useRef, useState } from "react"
 import { FlatList, RefreshControl, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { SmallTileRailContainer } from "../Home/Components/SmallTileRail"
-import {
-  LoadingSkeleton as MyCollectionLoadingSkeleton,
-  useEnableMyCollection,
-} from "../MyCollection/MyCollection"
+import { LoadingSkeleton as MyCollectionLoadingSkeleton } from "../MyCollection/MyCollection"
 import { MyCollectionAndSavedWorksQueryRenderer } from "./MyCollectionAndSavedWorks"
 import { confirmLogout, SectionHeading } from "./MyProfileSettings"
 
@@ -104,37 +99,7 @@ export const OldMyProfile: React.FC<{ me: MyProfile_me; relay: RelayRefetchProp 
 }
 
 export const MyProfilePlaceholder: React.FC<{}> = () => {
-  const shouldDisplayMyCollection = useEnableMyCollection()
-  if (shouldDisplayMyCollection) {
-    return <MyCollectionLoadingSkeleton />
-  }
-  return (
-    <Flex pt="3" px="2">
-      <Join separator={<Separator my={2} />}>
-        <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
-        <Flex>
-          <PlaceholderText width={100 + Math.random() * 100} />
-          <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
-          <Flex flexDirection="row" py={2}>
-            {times(3).map((index: number) => (
-              <Flex key={index} marginRight={1}>
-                <PlaceholderBox height={120} width={120} />
-                <PlaceholderText marginTop={20} key={index} width={40 + Math.random() * 80} />
-              </Flex>
-            ))}
-          </Flex>
-        </Flex>
-        <Flex>
-          <PlaceholderText width={100 + Math.random() * 100} />
-          {times(3).map((index: number) => (
-            <Flex key={index} py={1}>
-              <PlaceholderText width={200 + Math.random() * 100} />
-            </Flex>
-          ))}
-        </Flex>
-      </Join>
-    </Flex>
-  )
+  return <MyCollectionLoadingSkeleton />
 }
 
 export const OldMyProfileContainer = createRefetchContainer(
@@ -187,23 +152,11 @@ export const OldMyProfileQueryRenderer = () => (
 )
 
 export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
-  const shouldDisplayMyCollection = useEnableMyCollection()
-
-  if (shouldDisplayMyCollection) {
-    return (
-      <ProvideScreenTrackingWithCohesionSchema
-        info={screen({ context_screen_owner_type: OwnerType.profile })}
-      >
-        <MyCollectionAndSavedWorksQueryRenderer />
-      </ProvideScreenTrackingWithCohesionSchema>
-    )
-  }
-
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.profile })}
     >
-      <OldMyProfileQueryRenderer />
+      <MyCollectionAndSavedWorksQueryRenderer />
     </ProvideScreenTrackingWithCohesionSchema>
   )
 }
