@@ -88,7 +88,7 @@ export const PhoneInput = React.forwardRef<
   }, [phoneNumber, dialCode])
 
   return (
-    <Flex background="pink" style={{ height: 90 }}>
+    <Flex style={{ height: 90 }}>
       <Input
         style={{ height: 70 }}
         {...rest}
