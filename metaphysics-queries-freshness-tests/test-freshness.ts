@@ -104,7 +104,7 @@ const doIt = async (): Promise<never> => {
   ) => {
     const log = (...args: Parameters<typeof console.log>) => {
       if (options.verbose) {
-        console.log(...args)
+        console.log("logging ...args", ...args)
       }
     }
     if (Config.ACTION_LOGGERS_ACTIVE === "TRUE") {
