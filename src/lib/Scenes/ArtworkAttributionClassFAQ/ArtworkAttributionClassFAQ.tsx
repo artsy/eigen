@@ -42,7 +42,7 @@ export const ArtworkAttributionClassFAQ: React.FC<Props> = ({ artworkAttribution
               works.
             </Text>
 
-            <Button onPress={goBack} block>
+            <Button onPress={() => goBack()} block>
               OK
             </Button>
           </Join>
