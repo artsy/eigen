@@ -132,6 +132,11 @@ commands:
           key: v4-gems-{{ checksum "Gemfile.lock" }}-{{ arch }}
           paths:
             - vendor/bundle
+  update-sentry-release-name:
+    steps:
+      - run:
+          name: Update sentry release name
+          command: ./scripts/update-sentry-release-name
   install-cocoapods:
     steps:
       - restore_cache:
@@ -377,6 +382,7 @@ jobs:
       - install-node-modules
       - update-echo
       - install-gems
+      - update-sentry-release-name
       - install-cocoapods
       - build-app-ios
       - run:
