@@ -49,16 +49,11 @@ commands:
       - run:
           name: "Set up .env file"
           command: touch .env.shared && scripts/setup-env-for-ci
-  setup-awscli-macos:
+  setup-awscli:
     steps:
       - run:
-          name: "Set up aws cli for macos if not installed"
-          command: scripts/setup-awscli-macos
-  setup-awscli-linux:
-    steps:
-      - run:
-          name: "Set up aws cli for linux if not installed"
-          command: scripts/setup-awscli-linux
+          name: "Set up aws cli not installed"
+          command: scripts/setup-awscli
   install-node-modules:
     steps:
       - restore_cache:
@@ -185,7 +180,7 @@ commands:
       - attach_workspace:
           at: .
       - install-node
-      - setup-awscli-linux
+      - setup-awscli
       - setup-env-file
       - restore_cache:
           keys:
@@ -322,7 +317,7 @@ jobs:
     steps:
       - checkout
       - generate-checksums
-      - setup-awscli-linux
+      - setup-awscli
       - setup-env-file
       - install-node-modules
       - update-echo
@@ -385,7 +380,7 @@ jobs:
       - attach_workspace:
           at: .
       - install-node
-      - setup-awscli-macos
+      - setup-awscli
       - setup-env-file
       - install-node-modules
       - update-echo

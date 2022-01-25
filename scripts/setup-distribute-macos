@@ -6,6 +6,6 @@ brew tap getsentry/tools
 brew install sentry-cli
 bundle exec fastlane update_plugins
 
-./scripts/setup-awscli-macos
+./scripts/setup-awscli
 
 aws s3 cp s3://artsy-citadel/eigen/GoogleService-Info.plist GoogleService-Info.plist

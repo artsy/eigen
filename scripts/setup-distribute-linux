@@ -17,7 +17,7 @@ fi
 
 bundle exec fastlane update_plugins
 
-./scripts/setup-awscli-linux
+./scripts/setup-awscli
 
 aws s3 cp s3://artsy-citadel/eigen/release.keystore android/app/release.keystore
 aws s3 cp s3://artsy-citadel/eigen/android-secret.json android-secret.json
