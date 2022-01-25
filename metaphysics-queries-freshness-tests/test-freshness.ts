@@ -1,6 +1,7 @@
 #!/usr/bin/env yarn ts-node
-
+// @ts-ignore tslint(no-var-requires)
 require("dotenv").config()
+import Config from "react-native-config"
 
 import { GraphQLClient } from "graphql-request"
 import { values } from "lodash"
@@ -14,9 +15,15 @@ const login = async (): Promise<{ userId: string; accessToken: string }> => {
   await page.goto("https://staging.artsy.net")
   await page.click('aria/button[name="Log in"]')
   await page.click('aria/textbox[name="Enter your email address"]')
-  await page.type('aria/textbox[name="Enter your email address"]', process.env.FRESHNESS_TEST_EMAIL ?? "missing email")
+  await page.type(
+    'aria/textbox[name="Enter your email address"]',
+    process.env.FRESHNESS_TEST_EMAIL ?? "missing email"
+  )
   await page.click('aria/textbox[name="Enter your password"]')
-  await page.type('aria/textbox[name="Enter your password"]', process.env.FRESHNESS_TEST_PASSWORD ?? "missing password")
+  await page.type(
+    'aria/textbox[name="Enter your password"]',
+    process.env.FRESHNESS_TEST_PASSWORD ?? "missing password"
+  )
   await page.click('aria/pushbutton[name="Log in"]')
   await page.waitForNavigation()
   const { id: userId, accessToken } = await page.evaluate("sd.CURRENT_USER")
@@ -76,14 +83,19 @@ const doIt = async (): Promise<never> => {
   const queries = allNonTestQueries.filter((q) => q.startsWith("query"))
   const queriesWithoutVars = queries.filter((q) => !q.includes("$"))
   const queriesWithCursor = queries.filter((q) => q.includes("$cursor"))
-  const queriesWithVars = queries.filter((q) => !queriesWithoutVars.includes(q) && !queriesWithCursor.includes(q))
+  const queriesWithVars = queries.filter(
+    (q) => !queriesWithoutVars.includes(q) && !queriesWithCursor.includes(q)
+  )
   const mutations = allNonTestQueries.filter((q) => q.startsWith("mutation"))
 
   console.warn(`Skipping ${mutations.length} mutations`)
   console.log(`Skipping ${allQueries.length - allNonTestQueries.length} test queries`)
   console.warn(`Skipping ${queriesWithCursor.length} queries with cursors`)
 
-  type Error = { request: string; error: string }
+  interface Error {
+    request: string
+    error: string
+  }
   const errors: Error[] = [] as Error[]
   const executeRequests = async (
     requests: string[],
@@ -95,8 +107,9 @@ const doIt = async (): Promise<never> => {
         console.log(...args)
       }
     }
-
-    console.log(`Running ${requests.length} ${description}`)
+    if (Config.ACTION_LOGGERS_ACTIVE === "TRUE") {
+      console.log(`Running ${requests.length} ${description}`)
+    }
     await Promise.all(
       requests.map(async (req) => {
         try {
