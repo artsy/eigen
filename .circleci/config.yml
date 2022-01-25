@@ -383,6 +383,7 @@ jobs:
       - update-echo
       - install-gems
       - update-sentry-release-name
+      - bundle-js
       - install-cocoapods
       - build-app-ios
       - run:
@@ -587,7 +588,6 @@ workflows:
                 - beta-android
                 - update-changelog
           requires:
-            - build-test-js
             - horizon/block
       - build-test-app-android:
           filters:
