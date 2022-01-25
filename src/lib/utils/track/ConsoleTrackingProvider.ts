@@ -15,7 +15,8 @@ export const ConsoleTrackingProvider: TrackingProvider = {
     if (!__DEV__) {
       return
     }
-
-    console.log("[Event tracked]", JSON.stringify(info, null, 2))
+    if (Config.ACTION_LOGGERS_ACTIVE === "TRUE") {
+      console.log("[Event tracked]", JSON.stringify(info, null, 2))
+    }
   },
 }

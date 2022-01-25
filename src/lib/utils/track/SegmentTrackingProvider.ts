@@ -31,7 +31,11 @@ export const SegmentTrackingProvider: TrackingProvider = {
           using: [Braze, Adjust],
         }
       )
-      .then(() => console.log("Analytics is ready"))
+      .then(() => {
+        if (Config.ACTION_LOGGERS_ACTIVE === "TRUE") {
+          console.log("Analytics is ready")
+        }
+      })
       .catch((err) => console.error("Something went wrong", err))
   },
 
