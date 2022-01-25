@@ -103,7 +103,6 @@ describe("AuctionResult", () => {
     })
 
     it("have comparable works", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAuctionResultComparableWorks: true })
       const tree = renderWithWrappers(<TestRenderer />)
       mockEnvironment.mock.resolveMostRecentOperation((operation) =>
         MockPayloadGenerator.generate(operation, {

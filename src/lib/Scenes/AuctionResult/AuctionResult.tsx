@@ -7,7 +7,6 @@ import { InfoButton } from "lib/Components/Buttons/InfoButton"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { PlaceholderBox } from "lib/utils/placeholders"
 import { QAInfoPanel } from "lib/utils/QAInfo"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -38,8 +37,6 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
   const [imageWidth, setImageWidth] = useState<number>(0)
 
   const tracking = useTracking()
-
-  const enableAuctionResultComparableWorks = useFeatureFlag("AREnableAuctionResultComparableWorks")
 
   if (!auctionResult) {
     // The only chance someone would land on this case is using a deep link for an auction result
@@ -245,9 +242,7 @@ export const AuctionResult: React.FC<Props> = ({ artist, auctionResult }) => {
             Stats
           </Text>
           {details}
-          {!!enableAuctionResultComparableWorks && (
-            <ComparableWorksFragmentContainer auctionResult={auctionResult} />
-          )}
+          <ComparableWorksFragmentContainer auctionResult={auctionResult} />
         </Box>
         <QAInfo />
       </Animated.ScrollView>
