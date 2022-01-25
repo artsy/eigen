@@ -4,10 +4,6 @@ import { screen } from "lib/utils/track/helpers"
 import React from "react"
 import { MyCollectionAndSavedWorksQueryRenderer } from "./MyCollectionAndSavedWorks"
 
-/*
- * TODO: Marked For Deletion. Remove when MyCollections is released
- */
-
 export const MyProfileQueryRenderer: React.FC<{}> = ({}) => {
   return (
     <ProvideScreenTrackingWithCohesionSchema
