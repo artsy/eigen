@@ -6,6 +6,7 @@ import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNaviga
 import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import React from "react"
 import { Platform } from "react-native"
+import Config from "react-native-config"
 // @ts-ignore
 import { getBuildNumber, getModel, getUserAgentSync } from "react-native-device-info"
 import { Action, Middleware } from "redux"
@@ -31,7 +32,9 @@ function createGlobalStore() {
   // At dev time but not test time, let's log out each action that is dispatched
   if (__DEV__ && !__TEST__) {
     middleware.push((_api) => (next) => (_action) => {
-      console.log(`ACTION ${_action.type}`, _action)
+      if (Config.ACTION_LOGGERS_ACTIVE === "TRUE") {
+        console.log(`ACTION ${_action.type}`, _action)
+      }
       next(_action)
     })
   }
