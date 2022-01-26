@@ -221,7 +221,7 @@ jobs:
     working_directory: /usr/src/app
     steps:
       - checkout
-      - run: detect-secrets-hook --baseline .secrets.baseline $(git ls-files)
+      - run: ./scripts/detect-check-all
 
   deploy-nightly-beta:
     environment:
