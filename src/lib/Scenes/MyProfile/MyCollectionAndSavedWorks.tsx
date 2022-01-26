@@ -152,11 +152,11 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
               </Flex>
             )}
 
-            {!!me?.otherRelevantPosition && (
+            {!!me?.otherRelevantPositions && (
               <Flex flexDirection="row" alignItems="flex-end">
                 <MuseumIcon width={14} height={14} />
                 <Text variant="xs" color={color("black100")} px={0.5}>
-                  {me?.otherRelevantPosition}
+                  {me?.otherRelevantPositions}
                 </Text>
               </Flex>
             )}
@@ -194,7 +194,7 @@ export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContaine
         location {
           display
         }
-        otherRelevantPosition
+        otherRelevantPositions
         profession
         icon {
           url(version: "thumbnail")
