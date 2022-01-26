@@ -106,8 +106,6 @@ const main = async () => {
       await check(false)
       break
   }
-
-  await exec("git add .secrets.baseline")
 }
 
 main()
