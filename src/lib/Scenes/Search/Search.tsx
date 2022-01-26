@@ -104,6 +104,7 @@ export const Search: React.FC<SearchProps> = (props) => {
       const allowedIndices = (indices as NonNullable<Search_system["algolia"]>["indices"]).filter(
         (indice) => ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndexKey)
       )
+
       const formattedIndices: PillType[] = allowedIndices.map((index) => {
         const { name, ...other } = index
 
