@@ -44,18 +44,53 @@ const getFileArray = async (onlyStaged) => {
       .replace(/\(/g, "\\(") // need to escape parens for filenames like `God from Creation of Adam (2).sticker`
       .replace(/\)/g, "\\)")
     return `"${escaped}"`
-  })(filesToScan).join(" ")
+  })(filesToScan)
+
+  return filesEscaped
+}
+
+const generateBaseline = async () => {
+  const files = await getFileArray(false)
+  const filesArg = files.join(" ")
+
+  const command = `npx detect-secrets scan ${filesArg} > .secrets.baseline`
+  await exec(command)
+}
+
+const scan = async (onlyStaged) => {
+  const files = await getFileArray(onlyStaged)
+  const filesArg = files.join(" ")
 
   const command = `yarn detect-secrets-launcher --baseline .secrets.baseline ${filesArg}`
   try {
-    const out = await exec(command)
-    console.log({ out })
+    await exec(command)
   } catch (e) {
-    // if exit code is 3, it's a success with changes
+    // if exit code is 3, it's a success with changes.
+    // we just swallow the error and let the script continue.
     // https://github.com/Yelp/detect-secrets/pull/214
     if (e.message.includes("exit code 3")) {
-      // keep going
+      // do nothing with the error. keep going.
     }
+  }
+}
+
+const scanStaged = () => scan(true)
+const scanAll = () => scan(false)
+
+const main = async () => {
+  switch (process.argv[2]) {
+    case "generate":
+      await generateBaseline()
+      break
+
+    case "staged":
+      await scanStaged()
+      break
+
+    case "all":
+    default:
+      await scanAll()
+      break
   }
 
   await exec("git add .secrets.baseline")

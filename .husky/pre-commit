@@ -3,4 +3,4 @@
 
 
 yarn lint-staged
-yarn detect-secrets.js staged
+yarn detect-secrets-staged
