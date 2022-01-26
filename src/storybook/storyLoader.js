@@ -18,6 +18,8 @@ function loadStories() {
   require("../palette/elements/Select/Select.stories")
   require("../palette/elements/Tabs/Tabs.stories")
   require("../palette/elements/Text/Text.stories")
+  require("../palette/elements/List/List.stories")
+  require("../palette/elements/CollapsibleMenuItem/CollapsibleMenuItem.stories")
   require("../palette/icons.stories")
   require("../palette/space.stories")
   require("../palette/elements/VisualClue/VisualClue.stories")
@@ -27,26 +29,28 @@ function loadStories() {
 }
 
 const stories = [
+  "../lib/Components/ArtworkGrids/ArtworksFilterHeader.stories",
+  "../lib/Components/PopoverMessage/PopoverMessage.stories",
+  "../lib/Components/ReadMore.stories",
   "../palette/colors.stories",
   "../palette/elements/Avatar/Avatar.stories",
   "../palette/elements/Banner/Banner.stories",
   "../palette/elements/Button/Button.stories",
   "../palette/elements/Checkbox/Checkbox.stories",
   "../palette/elements/CollapsibleMenuItem/CollapsibleMenuItem.stories",
+  "../palette/elements/CollapsibleMenuItem/CollapsibleMenuItem.stories",
   "../palette/elements/Dialog/Dialog.stories",
   "../palette/elements/Header/Header.stories",
   "../palette/elements/Input/Input.stories",
+  "../palette/elements/List/List.stories",
   "../palette/elements/Pill/Pill.stories",
   "../palette/elements/Radio/RadioButton.stories",
   "../palette/elements/Select/Select.stories",
   "../palette/elements/Tabs/Tabs.stories",
   "../palette/elements/Text/Text.stories",
+  "../palette/elements/VisualClue/VisualClue.stories",
   "../palette/icons.stories",
   "../palette/space.stories",
-  "../palette/elements/VisualClue/VisualClue.stories",
-  "../lib/Components/ArtworkGrids/ArtworksFilterHeader.stories",
-  "../lib/Components/PopoverMessage/PopoverMessage.stories",
-  "../lib/Components/ReadMore.stories",
 ]
 
 module.exports = {

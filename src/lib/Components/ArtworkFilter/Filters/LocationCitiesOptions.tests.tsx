@@ -1,3 +1,4 @@
+import { within } from "@testing-library/react-native"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -80,7 +81,7 @@ describe(LocationCitiesOptionsScreen, () => {
     it("displays the number of the selected filters on the filter modal screen", () => {
       const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={state} />)
 
-      expect(getByText("Artwork Location • 2")).toBeTruthy()
+      expect(within(getByText("Artwork Location")).getByText("• 2")).toBeTruthy()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {

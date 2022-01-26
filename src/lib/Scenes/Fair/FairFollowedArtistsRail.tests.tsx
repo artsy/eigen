@@ -1,5 +1,5 @@
 import { FairFollowedArtistsRailTestsQuery } from "__generated__/FairFollowedArtistsRailTestsQuery.graphql"
-import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
+import { ArtworkRailCard } from "lib/Components/ArtworkRail/ArtworkRailCard"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TouchableOpacity } from "react-native"
@@ -62,10 +62,10 @@ describe("FairFollowedArtistsRail", () => {
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
-        followedArtistArtworks: {
+        filterArtworksConnection: {
           edges: [
             {
-              artwork: {
+              node: {
                 internalID: "abc123",
                 slug: "some-artwork",
               },
@@ -74,7 +74,7 @@ describe("FairFollowedArtistsRail", () => {
         },
       }),
     })
-    const artwork = wrapper.root.findAllByType(ArtworkTileRailCard)[0]
+    const artwork = wrapper.root.findAllByType(ArtworkRailCard)[0]
     act(() => artwork.props.onPress())
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
@@ -90,33 +90,33 @@ describe("FairFollowedArtistsRail", () => {
     })
   })
 
-  it("displays the 'View all' button if there are 4 or more artworks", () => {
+  it("displays the '>' button if there are 3 or more artworks", () => {
     const wrapper = getWrapper({
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
-        followedArtistArtworks: {
+        filterArtworksConnection: {
           edges: [
             {
-              artwork: {
+              node: {
                 internalID: "id-1",
                 slug: "some-artwork-1",
               },
             },
             {
-              artwork: {
+              node: {
                 internalID: "id-2",
                 slug: "some-artwork-2",
               },
             },
             {
-              artwork: {
+              node: {
                 internalID: "id-3",
                 slug: "some-artwork-3",
               },
             },
             {
-              artwork: {
+              node: {
                 internalID: "id-4",
                 slug: "some-artwork-4",
               },
@@ -128,29 +128,23 @@ describe("FairFollowedArtistsRail", () => {
     expect(wrapper.root.findAllByType(TouchableOpacity).length).toBe(1)
   })
 
-  it("doesn't display the 'View all' button if there are less than 4 artworks to show", () => {
+  it("doesn't display the '>' button if there are less than 3 artworks to show", () => {
     const wrapper = getWrapper({
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
-        followedArtistArtworks: {
+        filterArtworksConnection: {
           edges: [
             {
-              artwork: {
+              node: {
                 internalID: "id-1",
                 slug: "some-artwork-1",
               },
             },
             {
-              artwork: {
+              node: {
                 internalID: "id-2",
                 slug: "some-artwork-2",
-              },
-            },
-            {
-              artwork: {
-                internalID: "id-3",
-                slug: "some-artwork-3",
               },
             },
           ],
@@ -160,33 +154,33 @@ describe("FairFollowedArtistsRail", () => {
     expect(wrapper.root.findAllByType(TouchableOpacity).length).toBe(0)
   })
 
-  it("tracks taps on the View All button", () => {
+  it("tracks taps on the rails header", () => {
     const wrapper = getWrapper({
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
-        followedArtistArtworks: {
+        filterArtworksConnection: {
           edges: [
             {
-              artwork: {
+              node: {
                 internalID: "id-1",
                 slug: "some-artwork-1",
               },
             },
             {
-              artwork: {
+              node: {
                 internalID: "id-2",
                 slug: "some-artwork-2",
               },
             },
             {
-              artwork: {
+              node: {
                 internalID: "id-3",
                 slug: "some-artwork-3",
               },
             },
             {
-              artwork: {
+              node: {
                 internalID: "id-4",
                 slug: "some-artwork-4",
               },

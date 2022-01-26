@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 43571d56930220e2cec6e08d1947d6a1 */
+/* @relayHash 5df5f403a527e9a821cebb0393ab4f79 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -244,7 +244,7 @@ fragment LotsByFollowedArtistsRail_me on Me {
 }
 
 fragment NewWorksForYouRail_me on Me {
-  newWorksByInterestingArtists(first: 6) {
+  newWorksByInterestingArtists(first: 20) {
     pageInfo {
       hasNextPage
       startCursor
@@ -867,6 +867,13 @@ v37 = {
   "storageKey": null
 },
 v38 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 20
+  }
+],
+v39 = [
   (v32/*: any*/)
 ];
 return {
@@ -1372,7 +1379,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "newWorksByInterestingArtists(first:6)"
+            "storageKey": "newWorksByInterestingArtists(first:20)"
           },
           {
             "alias": null,
@@ -1385,7 +1392,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v38/*: any*/),
+            "args": (v39/*: any*/),
             "concreteType": "ArtistConnection",
             "kind": "LinkedField",
             "name": "artistRecommendations",
@@ -1442,7 +1449,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v38/*: any*/),
+            "args": (v39/*: any*/),
             "filters": null,
             "handle": "connection",
             "key": "RecommendedArtistsRail_artistRecommendations",
@@ -1527,7 +1534,7 @@ return {
     ]
   },
   "params": {
-    "id": "43571d56930220e2cec6e08d1947d6a1",
+    "id": "5df5f403a527e9a821cebb0393ab4f79",
     "metadata": {},
     "name": "HomeAboveTheFoldQuery",
     "operationKind": "query",

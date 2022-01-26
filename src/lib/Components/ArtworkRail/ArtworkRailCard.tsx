@@ -12,7 +12,7 @@ import styled from "styled-components/native"
 import { saleMessageOrBidInfo } from "../ArtworkGrids/ArtworkGridItem"
 import OpaqueImageView from "../OpaqueImageView/OpaqueImageView"
 
-const TEXT_CONTAINER_HEIGHT = 90
+export const ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT = 90
 export const ARTWORK_RAIL_CARD_IMAGE_HEIGHT = {
   small: 230,
   large: 320,
@@ -56,7 +56,7 @@ export const ArtworkRailCard: React.FC<ArtworkRailCardProps> = ({
         <Flex
           mt={1}
           width={artwork.image?.resized?.width}
-          style={{ height: TEXT_CONTAINER_HEIGHT }}
+          style={{ height: ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT }}
         >
           {!!lotLabel && (
             <Text lineHeight="20" color="black60" numberOfLines={1}>

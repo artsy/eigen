@@ -1,5 +1,5 @@
 import { toTitleCase } from "@artsy/to-title-case"
-import { ArrowRightIcon, Flex, Text, useSpace } from "palette"
+import { ArrowRightIcon, Flex, Text, useTheme } from "palette"
 import React from "react"
 import { TouchableOpacity, View } from "react-native"
 
@@ -19,9 +19,9 @@ export const SectionTitle: React.FC<{
   title: React.ReactNode
   subtitle?: React.ReactNode
   onPress?: () => any
-  RightButtonContent?: React.ComponentType<any> | null
-}> = ({ title, subtitle, onPress, RightButtonContent }) => {
-  const space = useSpace()
+  RightButtonContent?: React.FC
+}> = ({ title, subtitle, onPress, RightButtonContent = RightButton }) => {
+  const { color, space } = useTheme()
 
   return (
     <Wrapper onPress={onPress}>
@@ -31,17 +31,26 @@ export const SectionTitle: React.FC<{
             {toTitleCase(String(title))}
           </Text>
           {Boolean(subtitle) && (
-            <Text variant="sm" color="black60" lineHeight="20" testID="subtitle">
+            <Text variant="sm" color={color("black60")} lineHeight="20" testID="subtitle">
               {subtitle}
             </Text>
           )}
         </View>
         {!!onPress && (
           <View style={{ flexShrink: 0, paddingLeft: space(1) }}>
-            {RightButtonContent ? <RightButtonContent /> : <ArrowRightIcon />}
+            <RightButtonContent />
           </View>
         )}
       </Flex>
     </Wrapper>
   )
 }
+
+const RightButton = () => (
+  <Flex flexDirection="row" alignContent="center">
+    <Text color="black60">View All</Text>
+    <Flex my="auto">
+      <ArrowRightIcon width={12} fill="black60" ml={0.5} />
+    </Flex>
+  </Flex>
+)

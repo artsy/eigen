@@ -30,7 +30,7 @@ export type NewWorksForYouRail_me$key = {
 const node: ReaderFragment = {
   "argumentDefinitions": [
     {
-      "defaultValue": 6,
+      "defaultValue": 20,
       "kind": "LocalArgument",
       "name": "count"
     },
@@ -143,5 +143,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '8e821bddebf34ea9ed443fcc060388a0';
+(node as any).hash = 'f18be635cfa2e004e1488e83d7e740e0';
 export default node;

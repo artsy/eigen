@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+if ! which aws;
+then
+  echo "installing aws"
+
+  # install awscli
+  if [ "$(uname)" == "Darwin" ]; then # MacOS
+    brew install six || brew link --overwrite six
+    brew install awscli
+  else # Assume Linux
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip -o -qq awscliv2.zip
+    sudo ./aws/install
+  fi
+
+  # configure awscli
+  mkdir -p ~/.aws
+  touch ~/.aws/config
+  echo "[default]" >> ~/.aws/config
+  echo "region = us-east-1" >> ~/.aws/config
+  echo "output = json" >> ~/.aws/config
+else
+  echo "aws already installed"
+fi
