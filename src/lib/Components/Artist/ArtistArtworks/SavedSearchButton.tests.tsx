@@ -146,7 +146,7 @@ describe("SavedSearchButton", () => {
     })
   })
 
-  it('should call navigate twice when "My Collection" is enabled', async () => {
+  it("should call navigate twice", async () => {
     jest.useFakeTimers()
     const tree = renderWithWrappers(<TestRenderer />)
 

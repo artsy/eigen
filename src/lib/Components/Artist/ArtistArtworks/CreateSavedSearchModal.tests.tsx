@@ -73,7 +73,7 @@ describe("CreateSavedSearchModal", () => {
     })
   })
 
-  it('should call navigate twice when "My Collection" is enabled', async () => {
+  it("should call navigate twice", async () => {
     const { container, getByText } = renderWithWrappersTL(<TestRenderer />)
 
     container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
