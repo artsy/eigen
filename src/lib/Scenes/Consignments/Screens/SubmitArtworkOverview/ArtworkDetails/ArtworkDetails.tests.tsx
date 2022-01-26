@@ -58,7 +58,7 @@ describe("ArtworkDetailsForm", () => {
 
     describe("createOrUpdateSubmission", () => {
       it("creates new submission", async () => {
-        await createOrUpdateSubmission(mockSubmissionForm, undefined)
+        await createOrUpdateSubmission(mockSubmissionForm, "")
         expect(createConsignSubmissionMock).toHaveBeenCalled()
       })
 
