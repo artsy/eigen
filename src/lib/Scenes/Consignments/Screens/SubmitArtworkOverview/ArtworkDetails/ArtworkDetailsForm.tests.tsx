@@ -7,7 +7,8 @@ import React from "react"
 import { act } from "react-test-renderer"
 import { limitedEditionValue } from "../utils/rarityOptions"
 import { artworkDetailsValidationSchema } from "../utils/validation"
-import { ArtworkDetailsForm, ArtworkDetailsFormModel } from "./ArtworkDetailsForm"
+import { ArtworkDetailsFormModel } from "../utils/validation"
+import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
 
 jest.unmock("react-relay")
 
