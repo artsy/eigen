@@ -1,20 +1,10 @@
 import { captureMessage } from "@sentry/react-native"
-import { ArtworkDetails_submission$key } from "__generated__/ArtworkDetails_submission.graphql"
-import { ArtworkDetailsQuery } from "__generated__/ArtworkDetailsQuery.graphql"
 import { ConsignmentAttributionClass } from "__generated__/createConsignSubmissionMutation.graphql"
 import { Formik } from "formik"
 import { GlobalStore } from "lib/store/GlobalStore"
-import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { CTAButton, Flex, Spacer, Text } from "palette"
-import React, { Suspense, useEffect, useState } from "react"
+import React, { useState } from "react"
 import { ScrollView } from "react-native"
-import {
-  graphql,
-  PreloadedQuery,
-  useFragment,
-  usePreloadedQuery,
-  useQueryLoader,
-} from "react-relay"
 import { createOrUpdateConsignSubmission } from "../utils/createOrUpdateConsignSubmission"
 import { getArtworkDetailsInitialValues } from "../utils/getArtworkDetailsInitialValues"
 import { limitedEditionValue } from "../utils/rarityOptions"
@@ -22,23 +12,13 @@ import { artworkDetailsValidationSchema } from "../utils/validation"
 import { ArtworkDetailsForm, ArtworkDetailsFormModel } from "./ArtworkDetailsForm"
 import { ErrorView } from "./Components/ErrorView"
 
-interface ArtworkDetailsProps {
-  submission: ArtworkDetails_submission$key | null
-  handlePress: () => void
-}
+export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePress }) => {
+  const { submissionForm } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
 
-interface ArtworkDetailsContainerProps {
-  queryRef: PreloadedQuery<ArtworkDetailsQuery>
-  handlePress: () => void
-}
-
-export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
-  const { utmParams } = GlobalStore.useAppState((state) => state.consignmentSubmission.submission)
-  const submission = useFragment(submissionFragmentSpec, props.submission)
   const [submissionError, setSubmissionError] = useState(false)
 
   const artworkDetailsInitialValues: ArtworkDetailsFormModel =
-    getArtworkDetailsInitialValues(submission)
+    getArtworkDetailsInitialValues(submissionForm)
 
   const handleArtworkDetailsSubmit = async (values: ArtworkDetailsFormModel) => {
     const isRarityLimitedEdition = values.attributionClass === limitedEditionValue
@@ -48,7 +28,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
       editionSizeFormatted: isRarityLimitedEdition ? values.editionSizeFormatted : "",
     }
 
-    let id: string | undefined = submission?.id || undefined
+    let id: string | undefined = submissionForm?.id || undefined
 
     try {
       id = await createOrUpdateConsignSubmission({
@@ -71,14 +51,38 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
         locationState: artworkDetailsForm.location.state,
         locationCountry: artworkDetailsForm.location.country,
         state: "DRAFT",
-        utmMedium: utmParams.utm_medium,
-        utmSource: utmParams.utm_source,
-        utmTerm: utmParams.utm_term,
+        utmMedium: "",
+        utmSource: "",
+        utmTerm: "",
       })
 
       if (id) {
-        GlobalStore.actions.consignmentSubmission.submission.setSubmissionId(id)
-        props.handlePress()
+        GlobalStore.actions.artworkSubmission.submission.setSubmissionForm({
+          id,
+          artistName: artworkDetailsForm.artist,
+          artistID: artworkDetailsForm.artistId,
+          year: artworkDetailsForm.year,
+          title: artworkDetailsForm.title,
+          medium: artworkDetailsForm.medium,
+          attributionClass: artworkDetailsForm.attributionClass
+            .replace(" ", "_")
+            .toUpperCase() as ConsignmentAttributionClass,
+          editionNumber: artworkDetailsForm.editionNumber,
+          editionSizeFormatted: artworkDetailsForm.editionSizeFormatted,
+          height: artworkDetailsForm.height,
+          width: artworkDetailsForm.width,
+          depth: artworkDetailsForm.depth,
+          dimensionsMetric: artworkDetailsForm.dimensionsMetric,
+          provenance: artworkDetailsForm.provenance,
+          locationCity: artworkDetailsForm.location.city,
+          locationState: artworkDetailsForm.location.state,
+          locationCountry: artworkDetailsForm.location.country,
+          state: "DRAFT",
+          utmMedium: "",
+          utmSource: "",
+          utmTerm: "",
+        })
+        handlePress()
       }
     } catch (error) {
       captureMessage(JSON.stringify(error))
@@ -126,80 +130,3 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
     </Formik>
   )
 }
-
-export const ArtworkDetailsContainer: React.FC<ArtworkDetailsContainerProps> = ({
-  queryRef,
-  handlePress,
-}) => {
-  const data = usePreloadedQuery<ArtworkDetailsQuery>(ArtworkDetailsScreenQuery, queryRef)
-  return <ArtworkDetails submission={data.submission} handlePress={handlePress} />
-}
-
-const ArtworkDetailsScreenQuery = graphql`
-  query ArtworkDetailsQuery($id: ID!) {
-    submission(id: $id) {
-      ...ArtworkDetails_submission
-    }
-  }
-`
-
-export const ArtworkDetailsScreen: React.FC<{ handlePress: () => void }> = ({ handlePress }) => {
-  const [queryRef, loadQuery] = useQueryLoader<ArtworkDetailsQuery>(ArtworkDetailsScreenQuery)
-  const { submissionId } = GlobalStore.useAppState(
-    (state) => state.consignmentSubmission.submission
-  )
-
-  useEffect(() => {
-    if (submissionId && !queryRef) {
-      loadQuery({ id: submissionId })
-    }
-  })
-
-  if (!queryRef) {
-    return <ArtworkDetails submission={null} handlePress={handlePress} />
-  }
-
-  return (
-    <Suspense fallback={<Placeholder />}>
-      <ArtworkDetailsContainer queryRef={queryRef} handlePress={handlePress} />
-    </Suspense>
-  )
-}
-
-const Placeholder = () => (
-  <ProvidePlaceholderContext>
-    <PlaceholderBox width="100%" height="100%" />
-    <Flex mt="2" ml="2">
-      <PlaceholderText width={130 + Math.random() * 100} marginTop={10} />
-      <PlaceholderText width={100 + Math.random() * 100} marginTop={8} />
-      <PlaceholderText width={100 + Math.random() * 100} marginTop={15} />
-    </Flex>
-  </ProvidePlaceholderContext>
-)
-
-const submissionFragmentSpec = graphql`
-  fragment ArtworkDetails_submission on ConsignmentSubmission {
-    id
-    artist {
-      internalID
-      name
-    }
-    locationCity
-    locationCountry
-    locationState
-    year
-    title
-    medium
-    attributionClass
-    editionNumber
-    editionSize
-    height
-    width
-    depth
-    dimensionsMetric
-    provenance
-    utmMedium
-    utmSource
-    utmTerm
-  }
-`

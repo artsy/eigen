@@ -21,7 +21,7 @@ export const ConsignmentsSubmissionForm: React.FC<ConsignmentsSubmissionUtmParam
 
   useEffect(() => {
     if (utm_term || utm_medium || utm_source) {
-      GlobalStore.actions.consignmentSubmission.submission.setUtmParams({
+      GlobalStore.actions.artworkSubmission.submission.setUtmParams({
         utm_term,
         utm_medium,
         utm_source,

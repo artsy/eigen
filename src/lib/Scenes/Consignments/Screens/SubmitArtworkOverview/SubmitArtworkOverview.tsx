@@ -4,7 +4,7 @@ import { BackButton } from "lib/navigation/BackButton"
 import { CollapsibleMenuItem, Flex, Join, Separator, Spacer } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
-import { ArtworkDetailsScreen } from "./ArtworkDetails/ArtworkDetails"
+import { ArtworkDetails } from "./ArtworkDetails/ArtworkDetails"
 import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
 import { ContactInformation } from "./ContactInformation/ContactInformation"
 import { UploadPhotos } from "./UploadPhotos/UploadPhotos"
@@ -20,7 +20,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
       overtitle: "Step 1 of 3",
       title: "Artwork Details",
       Content: (
-        <ArtworkDetailsScreen
+        <ArtworkDetails
           handlePress={() => {
             expandCollapsibleMenuContent(1)
             enableStep(1)

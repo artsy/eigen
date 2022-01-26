@@ -32,7 +32,7 @@ export const ConsignmentsHome: React.FC<Props> = ({ targetSupply, isLoading }) =
 
   useEffect(() => {
     return () => {
-      GlobalStore.actions.consignmentSubmission.submission.resetSessionState()
+      GlobalStore.actions.artworkSubmission.submission.resetSessionState()
     }
   }, [])
 

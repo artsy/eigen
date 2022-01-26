@@ -1,17 +1,17 @@
-import { ArtworkDetails_submission } from "__generated__/ArtworkDetails_submission.graphql"
 import { ArtworkDetailsFormModel } from "../ArtworkDetails/ArtworkDetailsForm"
+import { SubmissionForm } from "../State/SubmissionModel"
 import { artworkDetailsEmptyInitialValues } from "./validation"
 
 export const getArtworkDetailsInitialValues = (
-  submission: ArtworkDetails_submission | null
+  submission: SubmissionForm | null
 ): ArtworkDetailsFormModel => {
   if (!submission) {
     return artworkDetailsEmptyInitialValues
   }
 
   const updatedForm = {
-    artist: submission.artist?.name || "",
-    artistId: submission.artist?.internalID || "",
+    artist: submission.artistName || "",
+    artistId: submission.artistID || "",
     title: submission.title || "",
     year: submission.year || "",
     medium: submission.medium || "",
@@ -19,7 +19,7 @@ export const getArtworkDetailsInitialValues = (
       ? submission.attributionClass.replace("_", " ").toLowerCase()
       : "",
     editionNumber: submission.editionNumber || "",
-    editionSizeFormatted: submission.editionSize || "",
+    editionSizeFormatted: submission.editionSizeFormatted || "",
     dimensionsMetric: submission.dimensionsMetric || "",
     height: submission.height || "",
     width: submission.width || "",
