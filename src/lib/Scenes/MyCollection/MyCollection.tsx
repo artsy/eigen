@@ -73,7 +73,6 @@ const MyCollection: React.FC<{
   const { trackEvent } = useTracking()
   const [filterModalVisible, setFilterModalVisible] = useState(false)
   const filtersCount = useSelectedFiltersCount()
-  const enabledSortAndFilter = useFeatureFlag("ARMyCollectionLocalSortAndFilter")
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
@@ -332,50 +331,28 @@ const MyCollection: React.FC<{
 
         setJSX(
           <Flex>
-            {enabledSortAndFilter ? (
-              <ArtworksFilterHeader
-                selectedFiltersCount={filtersCount}
-                onFilterPress={() => setFilterModalVisible(true)}
+            <ArtworksFilterHeader
+              selectedFiltersCount={filtersCount}
+              onFilterPress={() => setFilterModalVisible(true)}
+            >
+              <Button
+                data-test-id="add-artwork-button-non-zero-state"
+                size="small"
+                variant="fillDark"
+                onPress={() => {
+                  navigate("my-collection/artworks/new", {
+                    passProps: {
+                      mode: "add",
+                      onSuccess: popToRoot,
+                    },
+                  })
+                  trackEvent(tracks.addCollectedArtwork())
+                }}
+                haptic
               >
-                <Button
-                  data-test-id="add-artwork-button-non-zero-state"
-                  size="small"
-                  variant="fillDark"
-                  onPress={() => {
-                    navigate("my-collection/artworks/new", {
-                      passProps: {
-                        mode: "add",
-                        onSuccess: popToRoot,
-                      },
-                    })
-                    trackEvent(tracks.addCollectedArtwork())
-                  }}
-                  haptic
-                >
-                  Add Works
-                </Button>
-              </ArtworksFilterHeader>
-            ) : (
-              <Flex flexDirection="row" alignSelf="flex-end" px={2} py={1}>
-                <Button
-                  testID="add-artwork-button-non-zero-state"
-                  size="small"
-                  variant="fillDark"
-                  onPress={() => {
-                    navigate("my-collection/artworks/new", {
-                      passProps: {
-                        mode: "add",
-                        onSuccess: popToRoot,
-                      },
-                    })
-                    trackEvent(tracks.addCollectedArtwork())
-                  }}
-                  haptic
-                >
-                  Add Works
-                </Button>
-              </Flex>
-            )}
+                Add Works
+              </Button>
+            </ArtworksFilterHeader>
             {!!showNewWorksBanner && (
               <Banner
                 title="Your collection is growing"
@@ -393,7 +370,7 @@ const MyCollection: React.FC<{
       // remove already set JSX
       setJSX(null)
     }
-  }, [artworks.length, filtersCount, enabledSortAndFilter])
+  }, [artworks.length, filtersCount])
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
