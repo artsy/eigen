@@ -588,6 +588,7 @@ workflows:
                 - beta-android
                 - update-changelog
           requires:
+            - build-test-js
             - horizon/block
       - build-test-app-android:
           filters:
