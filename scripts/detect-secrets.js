@@ -74,6 +74,7 @@ const scan = async (onlyStaged) => {
   }
 }
 
+const checkStaged = () => check(true)
 const scanStaged = () => scan(true)
 const scanAll = () => scan(false)
 

@@ -1,1 +1,3 @@
-detect-secrets >= 1.1
+# commented out for now, and replaced with the brew version
+# read more here: https://github.com/artsy/homebrew-formulas/pull/13
+# detect-secrets==1.1
