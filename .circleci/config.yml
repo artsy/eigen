@@ -136,7 +136,7 @@ commands:
     steps:
       - run:
           name: Update sentry release name
-          command: ./scripts/update-sentry-release-name
+          command: "node ./scripts/update-sentry-release-name.js"
   install-cocoapods:
     steps:
       - restore_cache:
@@ -319,6 +319,7 @@ jobs:
       - setup-env-file
       - install-node-modules
       - update-echo
+      - update-sentry-release-name
       - generate-query-map
       - run:
           name: Check generated folder
@@ -382,8 +383,6 @@ jobs:
       - install-node-modules
       - update-echo
       - install-gems
-      - update-sentry-release-name
-      - bundle-js
       - install-cocoapods
       - build-app-ios
       - run:
@@ -588,6 +587,7 @@ workflows:
                 - beta-android
                 - update-changelog
           requires:
+            - build-test-js
             - horizon/block
       - build-test-app-android:
           filters:
