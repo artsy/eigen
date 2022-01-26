@@ -2,7 +2,7 @@
 set -euxo pipefail
 
 if [ "$(uname)" == "Darwin" ]; then # MacOS
-    ./setup-distribute-macos
+    ./scripts/setup-distribute-macos
 else # Assume Linux
-    ./setup-distribute-linux
+    ./scripts/setup-distribute-linux
 fi
