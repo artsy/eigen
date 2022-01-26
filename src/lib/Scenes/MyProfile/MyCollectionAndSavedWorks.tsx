@@ -209,19 +209,21 @@ export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContaine
   }
 )
 
+export const MyCollectionAndSavedWorksScreenQuery = graphql`
+  query MyCollectionAndSavedWorksQuery {
+    me @optionalField {
+      ...MyCollectionAndSavedWorks_me
+    }
+  }
+`
+
 export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => (
   <ProvideScreenTrackingWithCohesionSchema
     info={screen({ context_screen_owner_type: OwnerType.profile })}
   >
     <QueryRenderer<MyCollectionAndSavedWorksQuery>
       environment={defaultEnvironment}
-      query={graphql`
-        query MyCollectionAndSavedWorksQuery {
-          me @optionalField {
-            ...MyCollectionAndSavedWorks_me
-          }
-        }
-      `}
+      query={MyCollectionAndSavedWorksScreenQuery}
       render={renderWithLoadProgress(MyCollectionAndSavedWorksFragmentContainer)}
       variables={{}}
     />

@@ -76,6 +76,7 @@ const Home = (props: Props) => {
 
   useEffect(() => {
     prefetchUrl("search")
+    prefetchUrl("my-profile")
     prefetchUrl("inbox")
   }, [])
 
