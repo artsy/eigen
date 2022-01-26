@@ -3,7 +3,7 @@ set -euxo pipefail
 
 
 bundle check || bundle install
-brew bundle
+brew install detect_secrets # temporary, while the python version is not working. check `requirements.txt` for more info.
 pip install -r requirements.txt
 yarn install
 yarn pod-install

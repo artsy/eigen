@@ -55,14 +55,6 @@ const getFileArray = async (onlyStaged) => {
   return filesEscaped
 }
 
-const generateBaseline = async () => {
-  const files = await getFileArray(false)
-  const filesArg = files.join(" ")
-
-  const command = `detect-secrets scan ${filesArg} > .secrets.baseline`
-  await exec(command)
-}
-
 const check = async (onlyStaged) => {
   const files = await getFileArray(onlyStaged)
   const filesArg = files.join(" ")
@@ -90,10 +82,6 @@ const scan = async (onlyStaged) => {
 
 const main = async () => {
   switch (process.argv[2]) {
-    case "generate":
-      await generateBaseline()
-      break
-
     case "check":
       await check(process.argv[3] === "staged")
       break

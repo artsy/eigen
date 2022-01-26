@@ -72,7 +72,7 @@
     "secrets-scan-staged": "scripts/detect-secrets.js scan staged",
     "secrets-check-staged": "scripts/detect-secrets.js check staged",
     "secrets-check-all": "scripts/detect-secrets.js check all",
-    "secrets-generate-once": "scripts/detect-secrets.js generate",
+    "secrets-generate-once": "scripts/secrets-generate-baseline",
     "update-metaphysics": "node scripts/update-metaphysics.js"
   },
   "repository": {
