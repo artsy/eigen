@@ -221,7 +221,7 @@ jobs:
     working_directory: /usr/src/app
     steps:
       - checkout
-      - run: ./scripts/detect-check-all
+      - run: ./scripts/secrets-check-all
 
   deploy-nightly-beta:
     environment:
