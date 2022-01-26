@@ -1,5 +1,31 @@
 import * as Yup from "yup"
 
+export interface Location {
+  city: string
+  state: string
+  country: string
+}
+export interface ArtworkDetailsFormModel {
+  artist: string
+  artistId: string
+  title: string
+  year: string
+  medium: string
+  attributionClass: string
+  editionNumber: string
+  editionSizeFormatted: string
+  dimensionsMetric: string
+  height: string
+  width: string
+  depth: string
+  provenance: string
+  state: string
+  utmMedium: string | undefined
+  utmSource: string | undefined
+  utmTerm: string | undefined
+  location: Location
+}
+
 export const artworkDetailsEmptyInitialValues = {
   artist: "",
   artistId: "",

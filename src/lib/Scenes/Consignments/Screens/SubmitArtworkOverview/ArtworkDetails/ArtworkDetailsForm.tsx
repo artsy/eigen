@@ -5,36 +5,10 @@ import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
 import { rarityOptions } from "../utils/rarityOptions"
 import { limitedEditionValue } from "../utils/rarityOptions"
+import { ArtworkDetailsFormModel, Location } from "../utils/validation"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { InfoModal } from "./Components/InfoModal"
 import { LocationAutocomplete } from "./Components/LocationAutocomplete"
-
-export interface Location {
-  city: string
-  state: string
-  country: string
-}
-
-export interface ArtworkDetailsFormModel {
-  artist: string
-  artistId: string
-  title: string
-  year: string
-  medium: string
-  attributionClass: string
-  editionNumber: string
-  editionSizeFormatted: string
-  dimensionsMetric: string
-  height: string
-  width: string
-  depth: string
-  provenance: string
-  state: string
-  utmMedium: string
-  utmSource: string
-  utmTerm: string
-  location: Location
-}
 
 export const ArtworkDetailsForm: React.FC = () => {
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()

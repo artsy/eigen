@@ -3,7 +3,7 @@ import SearchIcon from "lib/Icons/SearchIcon"
 import { SearchContext, useSearchProviderValues } from "lib/Scenes/Search/SearchContext"
 import { Box, Input } from "palette"
 import React, { useEffect, useState } from "react"
-import { ArtworkDetailsFormModel } from "../ArtworkDetailsForm"
+import { ArtworkDetailsFormModel } from "../../utils/validation"
 import { ArtistAutosuggestResult, ArtistAutosuggestResults } from "./ArtistAutosuggestResults"
 
 export const ArtistAutosuggest: React.FC<{}> = () => {
@@ -14,6 +14,8 @@ export const ArtistAutosuggest: React.FC<{}> = () => {
   } = useFormikContext<ArtworkDetailsFormModel>()
   const searchProviderValues = useSearchProviderValues(artist)
 
+  console.log({ artist, artistId })
+
   const [isArtistSelected, setIsArtistSelected] = useState(false)
   const [focused, setFocused] = useState(false)
 
@@ -21,7 +23,7 @@ export const ArtistAutosuggest: React.FC<{}> = () => {
     if (artist && artistId) {
       setIsArtistSelected(true)
     }
-  }, [])
+  }, [artist, artistId])
 
   const onArtistSearchTextChange = (e: string) => {
     setIsArtistSelected(false)

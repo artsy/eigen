@@ -1,87 +1,27 @@
 import { captureMessage } from "@sentry/react-native"
-import { ConsignmentAttributionClass } from "__generated__/createConsignSubmissionMutation.graphql"
 import { Formik } from "formik"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { CTAButton, Flex, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
 import { createOrUpdateConsignSubmission } from "../utils/createOrUpdateConsignSubmission"
-import { getArtworkDetailsInitialValues } from "../utils/getArtworkDetailsInitialValues"
-import { limitedEditionValue } from "../utils/rarityOptions"
-import { artworkDetailsValidationSchema } from "../utils/validation"
-import { ArtworkDetailsForm, ArtworkDetailsFormModel } from "./ArtworkDetailsForm"
+// import { getArtworkDetailsInitialValues } from "../utils/getArtworkDetailsInitialValues"
+import { ArtworkDetailsFormModel, artworkDetailsValidationSchema } from "../utils/validation"
+import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
 import { ErrorView } from "./Components/ErrorView"
 
 export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePress }) => {
-  const { submissionForm } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
-
+  const { submissionId, artworkDetails } = GlobalStore.useAppState(
+    (state) => state.artworkSubmission.submission
+  )
   const [submissionError, setSubmissionError] = useState(false)
 
-  const artworkDetailsInitialValues: ArtworkDetailsFormModel =
-    getArtworkDetailsInitialValues(submissionForm)
-
   const handleArtworkDetailsSubmit = async (values: ArtworkDetailsFormModel) => {
-    const isRarityLimitedEdition = values.attributionClass === limitedEditionValue
-    const artworkDetailsForm = {
-      ...values,
-      editionNumber: isRarityLimitedEdition ? values.editionNumber : "",
-      editionSizeFormatted: isRarityLimitedEdition ? values.editionSizeFormatted : "",
-    }
-
-    let id: string | undefined = submissionForm?.id || undefined
-
     try {
-      id = await createOrUpdateConsignSubmission({
-        id,
-        artistID: artworkDetailsForm.artistId,
-        year: artworkDetailsForm.year,
-        title: artworkDetailsForm.title,
-        medium: artworkDetailsForm.medium,
-        attributionClass: artworkDetailsForm.attributionClass
-          .replace(" ", "_")
-          .toUpperCase() as ConsignmentAttributionClass,
-        editionNumber: artworkDetailsForm.editionNumber,
-        editionSizeFormatted: artworkDetailsForm.editionSizeFormatted,
-        height: artworkDetailsForm.height,
-        width: artworkDetailsForm.width,
-        depth: artworkDetailsForm.depth,
-        dimensionsMetric: artworkDetailsForm.dimensionsMetric,
-        provenance: artworkDetailsForm.provenance,
-        locationCity: artworkDetailsForm.location.city,
-        locationState: artworkDetailsForm.location.state,
-        locationCountry: artworkDetailsForm.location.country,
-        state: "DRAFT",
-        utmMedium: "",
-        utmSource: "",
-        utmTerm: "",
-      })
-
+      const id = await createOrUpdateConsignSubmission(values, submissionId || undefined)
       if (id) {
-        GlobalStore.actions.artworkSubmission.submission.setSubmissionForm({
-          id,
-          artistName: artworkDetailsForm.artist,
-          artistID: artworkDetailsForm.artistId,
-          year: artworkDetailsForm.year,
-          title: artworkDetailsForm.title,
-          medium: artworkDetailsForm.medium,
-          attributionClass: artworkDetailsForm.attributionClass
-            .replace(" ", "_")
-            .toUpperCase() as ConsignmentAttributionClass,
-          editionNumber: artworkDetailsForm.editionNumber,
-          editionSizeFormatted: artworkDetailsForm.editionSizeFormatted,
-          height: artworkDetailsForm.height,
-          width: artworkDetailsForm.width,
-          depth: artworkDetailsForm.depth,
-          dimensionsMetric: artworkDetailsForm.dimensionsMetric,
-          provenance: artworkDetailsForm.provenance,
-          locationCity: artworkDetailsForm.location.city,
-          locationState: artworkDetailsForm.location.state,
-          locationCountry: artworkDetailsForm.location.country,
-          state: "DRAFT",
-          utmMedium: "",
-          utmSource: "",
-          utmTerm: "",
-        })
+        GlobalStore.actions.artworkSubmission.submission.setSubmissionId(id)
+        GlobalStore.actions.artworkSubmission.submission.setArtworkDetailsForm(values)
         handlePress()
       }
     } catch (error) {
@@ -96,7 +36,7 @@ export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePr
 
   return (
     <Formik<ArtworkDetailsFormModel>
-      initialValues={artworkDetailsInitialValues}
+      initialValues={artworkDetails}
       onSubmit={handleArtworkDetailsSubmit}
       validationSchema={artworkDetailsValidationSchema}
       validateOnMount
