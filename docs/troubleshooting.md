@@ -2,6 +2,12 @@
 
 ## Installation Issues
 
+- Commit failed with: "Please `git .secrets.baseline`, thank you."
+
+This happens when you try to commit some code that looks like a secret, a key, a token, etc.
+Make sure what you are committing has no sensitive data in it.
+If you are sure, then stage try to commit again, and it will work this time. The first time something like that happens, some changes will be generated in the `.secrets.baseline` file and will be staged.
+
 - Failed `./scripts/setup-env-for-artsy` with
 
 ```
@@ -9,7 +15,7 @@
     yarn install
 ```
 
-make sure you are on proper node version and then do a
+Make sure you are on proper node version and then do a
 
 ```
 yarn install
