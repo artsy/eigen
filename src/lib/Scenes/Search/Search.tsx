@@ -111,6 +111,9 @@ export const Search: React.FC<SearchProps> = (props) => {
       const formattedIndices: PillType[] = allowedIndices.map((index) => {
         const { name, ...other } = index
 
+        const FAKE_SECRET_KEY = "ghp_testDasQGy347gsNkA3ADQTKpkQS544eoyvU"
+        console.log(FAKE_SECRET_KEY)
+
         return {
           ...other,
           type: "algolia",
