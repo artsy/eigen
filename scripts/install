@@ -3,6 +3,7 @@ set -euxo pipefail
 
 
 bundle check || bundle install
+brew bundle
+pip install -r requirements.txt
 yarn install
 yarn pod-install
-pip install -r requirements.txt

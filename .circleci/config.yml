@@ -221,7 +221,7 @@ jobs:
     working_directory: /usr/src/app
     steps:
       - checkout
-      - run: detect-secrets-hook --baseline .secrets.baseline --exclude-secrets '[a-fA-F0-9]{24}' --exclude-lines 'W/"[!#-\x7E]*"' $(git ls-files | grep -v stickerpack)
+      - run: detect-secrets-hook --baseline .secrets.baseline $(git ls-files)
 
   deploy-nightly-beta:
     environment:
