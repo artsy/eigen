@@ -156,7 +156,7 @@ describe("Fair", () => {
     let wrapper = getWrapper({
       Fair: () => ({
         isActive: true,
-        followedArtistArtworks: {
+        filterArtworksConnection: {
           edges: [],
         },
       }),
