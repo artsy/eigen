@@ -269,7 +269,7 @@
     "postinstall-prepare": "1.0.1",
     "prettier": "2.5.1",
     "pull-lock": "1.0.0",
-    "puppeteer": "7.1.0",
+    "puppeteer": "13.1.2",
     "react-dom": "16.8.3",
     "react-native-flipper": "0.94.1",
     "react-native-storybook-loader": "2.0.4",
