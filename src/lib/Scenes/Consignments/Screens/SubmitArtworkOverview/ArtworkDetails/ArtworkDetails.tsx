@@ -4,8 +4,7 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { CTAButton, Flex, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
-import { createOrUpdateConsignSubmission } from "../utils/createOrUpdateConsignSubmission"
-// import { getArtworkDetailsInitialValues } from "../utils/getArtworkDetailsInitialValues"
+import { createOrUpdateSubmission } from "../utils/createOrUpdateSubmission"
 import { ArtworkDetailsFormModel, artworkDetailsValidationSchema } from "../utils/validation"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
 import { ErrorView } from "./Components/ErrorView"
@@ -18,7 +17,7 @@ export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePr
 
   const handleArtworkDetailsSubmit = async (values: ArtworkDetailsFormModel) => {
     try {
-      const id = await createOrUpdateConsignSubmission(values, submissionId || undefined)
+      const id = await createOrUpdateSubmission(values, submissionId || undefined)
       if (id) {
         GlobalStore.actions.artworkSubmission.submission.setSubmissionId(id)
         GlobalStore.actions.artworkSubmission.submission.setArtworkDetailsForm(values)

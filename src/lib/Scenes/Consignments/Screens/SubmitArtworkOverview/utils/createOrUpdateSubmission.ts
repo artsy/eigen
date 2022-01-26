@@ -9,7 +9,7 @@ import { ArtworkDetailsFormModel } from "./validation"
 
 export type SubmissionInput = CreateSubmissionMutationInput | UpdateSubmissionMutationInput
 
-export const createOrUpdateConsignSubmission = async (
+export const createOrUpdateSubmission = async (
   values: ArtworkDetailsFormModel,
   submissionId: string | undefined
 ) => {

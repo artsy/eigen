@@ -1,9 +1,4 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
-import {
-  ConsignmentAttributionClass,
-  CreateSubmissionMutationInput,
-} from "__generated__/createConsignmentSubmissionMutation.graphql"
-import { UpdateSubmissionMutationInput } from "__generated__/updateConsignSubmissionMutation.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
@@ -12,7 +7,8 @@ import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { createConsignSubmission, updateConsignSubmission } from "../Mutations"
-import { createOrUpdateConsignSubmission } from "../utils/createOrUpdateConsignSubmission"
+import { createOrUpdateSubmission } from "../utils/createOrUpdateSubmission"
+import { ArtworkDetailsFormModel } from "../utils/validation"
 import { ArtworkDetails } from "./ArtworkDetails"
 
 jest.mock(
@@ -44,7 +40,7 @@ const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnviro
 describe("ArtworkDetailsForm", () => {
   const TestRenderer = () => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <ArtworkDetails submission={null} handlePress={jest.fn()} />
+      <ArtworkDetails handlePress={jest.fn()} />
     </RelayEnvironmentProvider>
   )
 
@@ -60,24 +56,15 @@ describe("ArtworkDetailsForm", () => {
       expect(getByText("• All fields are required to submit an artwork.")).toBeTruthy()
     })
 
-    describe("createOrUpdateConsignSubmission", () => {
+    describe("createOrUpdateSubmission", () => {
       it("creates new submission", async () => {
-        await createOrUpdateConsignSubmission(mockSubmissionForm)
-
+        await createOrUpdateSubmission(mockSubmissionForm, undefined)
         expect(createConsignSubmissionMock).toHaveBeenCalled()
-        expect(createConsignSubmissionMock).toHaveBeenCalledWith(mockSubmissionForm)
       })
 
       it("updates existing submission when ID passed", async () => {
-        const mockUpdateSubmissionForm: UpdateSubmissionMutationInput = {
-          id: "someId",
-          ...mockSubmissionForm,
-        }
-
-        await createOrUpdateConsignSubmission(mockUpdateSubmissionForm)
-
+        await createOrUpdateSubmission(mockSubmissionForm, "12345")
         expect(updateConsignSubmissionMock).toHaveBeenCalled()
-        expect(updateConsignSubmissionMock).toHaveBeenCalledWith(mockUpdateSubmissionForm)
       })
     })
 
@@ -90,13 +77,13 @@ describe("ArtworkDetailsForm", () => {
         })
 
         const inputs = {
-          title: getByTestId("Consignment_TitleInput"),
-          year: getByTestId("Consignment_YearInput"),
-          material: getByTestId("Consignment_MaterialsInput"),
-          height: getByTestId("Consignment_HeightInput"),
-          width: getByTestId("Consignment_WidthInput"),
-          depth: getByTestId("Consignment_DepthInput"),
-          provenance: getByTestId("Consignment_ProvenanceInput"),
+          title: getByTestId("Submission_TitleInput"),
+          year: getByTestId("Submission_YearInput"),
+          material: getByTestId("Submission_MaterialsInput"),
+          height: getByTestId("Submission_HeightInput"),
+          width: getByTestId("Submission_WidthInput"),
+          depth: getByTestId("Submission_DepthInput"),
+          provenance: getByTestId("Submission_ProvenanceInput"),
         }
 
         // title missing
@@ -161,22 +148,27 @@ describe("ArtworkDetailsForm", () => {
   })
 })
 
-const mockSubmissionForm: CreateSubmissionMutationInput = {
-  artistID: "123",
+const mockSubmissionForm: ArtworkDetailsFormModel = {
+  artist: "123",
+  artistId: "200",
+  title: "hello",
   year: "2000",
-  title: "artworkTitle",
-  medium: "oil on canvas",
-  attributionClass: "attributionClass" as ConsignmentAttributionClass,
-  editionNumber: "",
-  editionSizeFormatted: "",
-  height: "100",
-  width: "200",
-  depth: "3",
+  medium: "oil",
+  attributionClass: "attributionClass",
+  editionNumber: "1",
+  editionSizeFormatted: "1",
   dimensionsMetric: "in",
-  provenance: "acquired",
-  locationCity: "London, England. UK",
+  height: "2",
+  width: "2",
+  depth: "2",
+  provenance: "found",
   state: "DRAFT",
   utmMedium: "",
   utmSource: "",
   utmTerm: "",
+  location: {
+    city: "London",
+    state: "England",
+    country: "UK",
+  },
 }

@@ -14,8 +14,6 @@ export const ArtistAutosuggest: React.FC<{}> = () => {
   } = useFormikContext<ArtworkDetailsFormModel>()
   const searchProviderValues = useSearchProviderValues(artist)
 
-  console.log({ artist, artistId })
-
   const [isArtistSelected, setIsArtistSelected] = useState(false)
   const [focused, setFocused] = useState(false)
 
@@ -23,7 +21,7 @@ export const ArtistAutosuggest: React.FC<{}> = () => {
     if (artist && artistId) {
       setIsArtistSelected(true)
     }
-  }, [artist, artistId])
+  }, [])
 
   const onArtistSearchTextChange = (e: string) => {
     setIsArtistSelected(false)
