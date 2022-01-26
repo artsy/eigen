@@ -2,11 +2,11 @@
 
 ## Installation Issues
 
-- Commit failed with: "Please `git .secrets.baseline`, thank you."
+- Commit failed with: "ERROR: Potential secrets about to be committed to git repo!"
 
 This happens when you try to commit some code that looks like a secret, a key, a token, etc.
 Make sure what you are committing has no sensitive data in it.
-If you are sure, then stage try to commit again, and it will work this time. The first time something like that happens, some changes will be generated in the `.secrets.baseline` file and will be staged.
+If you are sure is it _not_ sensitive data, then you can add an inline comment containing `pragma: allowlist secret`, to signify it is ok to commit. Then try to commit again, and it will work this time.
 
 - Failed `./scripts/setup-env-for-artsy` with
 
