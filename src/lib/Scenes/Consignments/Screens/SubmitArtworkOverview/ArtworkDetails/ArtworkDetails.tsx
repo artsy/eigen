@@ -116,7 +116,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = (props) => {
             <CTAButton
               disabled={!isValid}
               onPress={() => handleArtworkDetailsSubmit(values)}
-              testID="Consignment_ArtworkDetails_Button"
+              testID="Submission_ArtworkDetails_Button"
             >
               Save & Continue
             </CTAButton>

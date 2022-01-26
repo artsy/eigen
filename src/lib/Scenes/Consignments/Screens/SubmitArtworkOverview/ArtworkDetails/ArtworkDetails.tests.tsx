@@ -86,7 +86,7 @@ describe("ArtworkDetailsForm", () => {
         const { getByTestId, UNSAFE_getByProps } = renderWithWrappersTL(<TestRenderer />)
 
         const SaveButton = UNSAFE_getByProps({
-          testID: "Consignment_ArtworkDetails_Button",
+          testID: "Submission_ArtworkDetails_Button",
         })
 
         const inputs = {

@@ -48,7 +48,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       <Input
         title="Title"
         placeholder="Add Title or Write 'Unknown'"
-        testID="Consignment_TitleInput"
+        testID="Submission_TitleInput"
         value={values.title}
         onChangeText={(e) => setFieldValue("title", e)}
       />
@@ -56,7 +56,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       <Input
         title="Year"
         placeholder="YYYY"
-        testID="Consignment_YearInput"
+        testID="Submission_YearInput"
         value={values.year}
         onChangeText={(e) => setFieldValue("year", e)}
       />
@@ -64,7 +64,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       <Input
         title="Materials"
         placeholder="Oil on Canvas, Mixed Media, Lithograph.."
-        testID="Consignment_MaterialsInput"
+        testID="Submission_MaterialsInput"
         value={values.medium}
         onChangeText={(e) => setFieldValue("medium", e)}
       />
@@ -98,7 +98,7 @@ export const ArtworkDetailsForm: React.FC = () => {
             <Box width="48%" mr={1}>
               <Input
                 title="Edition Number"
-                testID="Consignment_EditionNumberInput"
+                testID="Submission_EditionNumberInput"
                 value={values.editionNumber}
                 onChangeText={(e) => setFieldValue("editionNumber", e)}
               />
@@ -106,7 +106,7 @@ export const ArtworkDetailsForm: React.FC = () => {
             <Box width="48%">
               <Input
                 title="Edition Size"
-                testID="Consignment_EditionSizeInput"
+                testID="Submission_EditionSizeInput"
                 value={values.editionSizeFormatted}
                 onChangeText={(e) => setFieldValue("editionSizeFormatted", e)}
               />
@@ -136,7 +136,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         <Box width="31%" mr={1}>
           <Input
             title="Height"
-            testID="Consignment_HeightInput"
+            testID="Submission_HeightInput"
             value={values.height}
             onChangeText={(e) => setFieldValue("height", e)}
           />
@@ -144,7 +144,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         <Box width="31%" mr={1}>
           <Input
             title="Width"
-            testID="Consignment_WidthInput"
+            testID="Submission_WidthInput"
             value={values.width}
             onChangeText={(e) => setFieldValue("width", e)}
           />
@@ -152,7 +152,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         <Box width="31%">
           <Input
             title="Depth"
-            testID="Consignment_DepthInput"
+            testID="Submission_DepthInput"
             value={values.depth}
             onChangeText={(e) => setFieldValue("depth", e)}
           />
@@ -167,7 +167,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       </Flex>
       <Input
         placeholder="Describe How You Acquired the Artwork"
-        testID="Consignment_ProvenanceInput"
+        testID="Submission_ProvenanceInput"
         value={values.provenance}
         onChangeText={(e) => setFieldValue("provenance", e)}
         multiline

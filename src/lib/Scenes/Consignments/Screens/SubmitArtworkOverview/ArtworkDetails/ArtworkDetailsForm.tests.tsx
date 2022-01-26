@@ -11,7 +11,9 @@ import { ArtworkDetailsForm, ArtworkDetailsFormModel } from "./ArtworkDetailsFor
 
 jest.unmock("react-relay")
 
-const ArtworkDetailsFormTestRenderer: React.FC<{ attributionClass?: string }> = ({ attributionClass }) => {
+const ArtworkDetailsFormTestRenderer: React.FC<{ attributionClass?: string }> = ({
+  attributionClass,
+}) => {
   return (
     <Formik<ArtworkDetailsFormModel>
       initialValues={{
@@ -25,7 +27,11 @@ const ArtworkDetailsFormTestRenderer: React.FC<{ attributionClass?: string }> = 
       {({ isValid }) => (
         <>
           <ArtworkDetailsForm />
-          <CTAButton disabled={!isValid} onPress={jest.fn()} testID="Consignment_ArtworkDetails_Button">
+          <CTAButton
+            disabled={!isValid}
+            onPress={jest.fn()}
+            testID="Submission_ArtworkDetails_Button"
+          >
             Save & Continue
           </CTAButton>
         </>
@@ -39,14 +45,14 @@ describe("ArtworkDetailsForm", () => {
     const { getByTestId } = renderWithWrappersTL(<ArtworkDetailsFormTestRenderer />)
 
     const inputs = {
-      title: getByTestId("Consignment_TitleInput"),
-      year: getByTestId("Consignment_YearInput"),
-      material: getByTestId("Consignment_MaterialsInput"),
-      height: getByTestId("Consignment_HeightInput"),
-      width: getByTestId("Consignment_WidthInput"),
-      depth: getByTestId("Consignment_DepthInput"),
-      provenance: getByTestId("Consignment_ProvenanceInput"),
-      location: getByTestId("Consignment_LocationInput"),
+      title: getByTestId("Submission_TitleInput"),
+      year: getByTestId("Submission_YearInput"),
+      material: getByTestId("Submission_MaterialsInput"),
+      height: getByTestId("Submission_HeightInput"),
+      width: getByTestId("Submission_WidthInput"),
+      depth: getByTestId("Submission_DepthInput"),
+      provenance: getByTestId("Submission_ProvenanceInput"),
+      location: getByTestId("Submission_LocationInput"),
     }
 
     act(() => {
@@ -76,8 +82,8 @@ describe("ArtworkDetailsForm", () => {
     )
 
     const inputs = {
-      editionNumber: getByTestId("Consignment_EditionNumberInput"),
-      editionSize: getByTestId("Consignment_EditionSizeInput"),
+      editionNumber: getByTestId("Submission_EditionNumberInput"),
+      editionSize: getByTestId("Submission_EditionSizeInput"),
     }
 
     expect(inputs.editionNumber).toBeTruthy()
