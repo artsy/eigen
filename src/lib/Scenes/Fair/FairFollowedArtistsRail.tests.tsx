@@ -1,5 +1,5 @@
 import { FairFollowedArtistsRailTestsQuery } from "__generated__/FairFollowedArtistsRailTestsQuery.graphql"
-import { ArtworkTileRailCard } from "lib/Components/ArtworkTileRail"
+import { ArtworkRailCard } from "lib/Components/ArtworkRail/ArtworkRailCard"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { TouchableOpacity } from "react-native"
@@ -62,10 +62,10 @@ describe("FairFollowedArtistsRail", () => {
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
-        followedArtistArtworks: {
+        filterArtworksConnection: {
           edges: [
             {
-              artwork: {
+              node: {
                 internalID: "abc123",
                 slug: "some-artwork",
               },
@@ -74,7 +74,7 @@ describe("FairFollowedArtistsRail", () => {
         },
       }),
     })
-    const artwork = wrapper.root.findAllByType(ArtworkTileRailCard)[0]
+    const artwork = wrapper.root.findAllByType(ArtworkRailCard)[0]
     act(() => artwork.props.onPress())
     expect(trackEvent).toHaveBeenCalledWith({
       action: "tappedArtworkGroup",
@@ -95,28 +95,28 @@ describe("FairFollowedArtistsRail", () => {
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
-        followedArtistArtworks: {
+        filterArtworksConnection: {
           edges: [
             {
-              artwork: {
+              node: {
                 internalID: "id-1",
                 slug: "some-artwork-1",
               },
             },
             {
-              artwork: {
+              node: {
                 internalID: "id-2",
                 slug: "some-artwork-2",
               },
             },
             {
-              artwork: {
+              node: {
                 internalID: "id-3",
                 slug: "some-artwork-3",
               },
             },
             {
-              artwork: {
+              node: {
                 internalID: "id-4",
                 slug: "some-artwork-4",
               },
@@ -133,22 +133,22 @@ describe("FairFollowedArtistsRail", () => {
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
-        followedArtistArtworks: {
+        filterArtworksConnection: {
           edges: [
             {
-              artwork: {
+              node: {
                 internalID: "id-1",
                 slug: "some-artwork-1",
               },
             },
             {
-              artwork: {
+              node: {
                 internalID: "id-2",
                 slug: "some-artwork-2",
               },
             },
             {
-              artwork: {
+              node: {
                 internalID: "id-3",
                 slug: "some-artwork-3",
               },
@@ -165,28 +165,28 @@ describe("FairFollowedArtistsRail", () => {
       Fair: () => ({
         internalID: "xyz123",
         slug: "art-basel-hong-kong-2019",
-        followedArtistArtworks: {
+        filterArtworksConnection: {
           edges: [
             {
-              artwork: {
+              node: {
                 internalID: "id-1",
                 slug: "some-artwork-1",
               },
             },
             {
-              artwork: {
+              node: {
                 internalID: "id-2",
                 slug: "some-artwork-2",
               },
             },
             {
-              artwork: {
+              node: {
                 internalID: "id-3",
                 slug: "some-artwork-3",
               },
             },
             {
-              artwork: {
+              node: {
                 internalID: "id-4",
                 slug: "some-artwork-4",
               },
