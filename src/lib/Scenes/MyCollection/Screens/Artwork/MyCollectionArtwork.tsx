@@ -13,18 +13,16 @@ import {
 import { Divider } from "lib/Components/Bidding/Components/Divider"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { navigate, popToRoot } from "lib/navigation/navigate"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { MyCollectionArtworkInsightsFragmentContainer } from "lib/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/MyCollectionArtworkInsights"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
-import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import { Button, Flex, Join, Spacer, Text } from "palette"
-import React from "react"
+import React, { Suspense } from "react"
 import { ScrollView } from "react-native"
-import { graphql, QueryRenderer } from "react-relay"
+import { graphql, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkHeaderFragmentContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
@@ -149,47 +147,58 @@ export const ArtworkMetaProps = graphql`
   }
 `
 
-export const MyCollectionArtworkQueryRenderer: React.FC<{
-  artworkSlug: string
-  artistInternalID: string
-  medium: string
-}> = ({ artworkSlug, artistInternalID, medium }) => {
-  return (
-    <QueryRenderer<MyCollectionArtworkQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query MyCollectionArtworkQuery(
-          $artworkSlug: String!
-          $artistInternalID: ID!
-          $medium: String!
-        ) {
-          artwork(id: $artworkSlug) {
-            ...MyCollectionArtwork_sharedProps @relay(mask: false)
-            ...MyCollectionArtworkHeader_artwork
-            ...MyCollectionArtworkMeta_artwork
-            ...MyCollectionArtworkInsights_artwork
-          }
+const MyCollectionArtworkScreenQuery = graphql`
+  query MyCollectionArtworkQuery($artworkSlug: String!, $artistInternalID: ID!, $medium: String!) {
+    artwork(id: $artworkSlug) {
+      ...MyCollectionArtwork_sharedProps @relay(mask: false)
+      ...MyCollectionArtworkHeader_artwork
+      ...MyCollectionArtworkMeta_artwork
+      ...MyCollectionArtworkInsights_artwork
+    }
 
-          marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
-            ...MyCollectionArtworkInsights_marketPriceInsights
-          }
-        }
-      `}
-      variables={{
-        artworkSlug,
-        artistInternalID,
-        medium,
-      }}
-      cacheConfig={{ force: true }}
-      render={renderWithPlaceholder({
-        Container: MyCollectionArtwork,
-        renderPlaceholder: LoadingSkeleton,
-      })}
-    />
+    marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
+      ...MyCollectionArtworkInsights_marketPriceInsights
+    }
+  }
+`
+
+const MyCollectionArtworkContainer: React.FC<MyCollectionArtworkScreenProps> = ({
+  artworkSlug,
+  artistInternalID,
+  medium,
+}) => {
+  const data = useLazyLoadQuery<MyCollectionArtworkQuery>(
+    MyCollectionArtworkScreenQuery,
+    {
+      artworkSlug,
+      artistInternalID,
+      medium,
+    },
+    {
+      fetchPolicy: "store-and-network",
+    }
+  )
+
+  return (
+    <MyCollectionArtwork artwork={data.artwork!} marketPriceInsights={data.marketPriceInsights!} />
   )
 }
 
-const LoadingSkeleton = () => {
+interface MyCollectionArtworkScreenProps {
+  artworkSlug: string
+  artistInternalID: string
+  medium: string
+}
+
+export const MyCollectionArtworkScreen: React.FC<MyCollectionArtworkScreenProps> = (props) => {
+  return (
+    <Suspense fallback={MyCollectionArtworkPlaceholder}>
+      <MyCollectionArtworkContainer {...props} />
+    </Suspense>
+  )
+}
+
+const MyCollectionArtworkPlaceholder = () => {
   return (
     <>
       <ScreenMargin>

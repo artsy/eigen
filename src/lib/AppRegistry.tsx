@@ -67,7 +67,7 @@ import { MyAccountEditPassword } from "./Scenes/MyAccount/MyAccountEditPassword"
 import { MyAccountEditPhoneQueryRenderer } from "./Scenes/MyAccount/MyAccountEditPhone"
 import { MyBidsQueryRenderer } from "./Scenes/MyBids"
 import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
-import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
+import { MyCollectionArtworkScreen } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
 import { MyProfileQueryRenderer, MyProfileScreenQuery } from "./Scenes/MyProfile/MyProfile"
@@ -375,7 +375,7 @@ export const modules = defineModules({
   MyAccountEditPhone: reactModule(MyAccountEditPhoneQueryRenderer, { hidesBackButton: true }),
   MyBids: reactModule(MyBidsQueryRenderer),
   MyCollection: reactModule(MyCollectionQueryRenderer),
-  MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer),
+  MyCollectionArtwork: reactModule(MyCollectionArtworkScreen),
   MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
   MyProfile: reactModule(
     MyProfileQueryRenderer,
