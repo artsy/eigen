@@ -77,7 +77,7 @@ export const NewWorksForYouRail: React.FC<NewWorksForYouRailProps & RailScrollPr
 
 const artworksFragment = graphql`
   fragment NewWorksForYouRail_me on Me
-  @argumentDefinitions(count: { type: "Int", defaultValue: 6 }, cursor: { type: "String" }) {
+  @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String" }) {
     newWorksByInterestingArtists(first: $count, after: $cursor)
       @connection(key: "NewWorksForYouRail_newWorksByInterestingArtists") {
       pageInfo {

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 69ef3b4f7118b4597090f09042fa56d4 */
+/* @relayHash 39eb938f21ed59da49373ffd76db44b1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -422,7 +422,7 @@ fragment LotsByFollowedArtistsRail_me on Me {
 }
 
 fragment NewWorksForYouRail_me on Me {
-  newWorksByInterestingArtists(first: 6) {
+  newWorksByInterestingArtists(first: 20) {
     pageInfo {
       hasNextPage
       startCursor
@@ -1270,9 +1270,16 @@ v54 = {
   "storageKey": null
 },
 v55 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 20
+  }
+],
+v56 = [
   (v49/*: any*/)
 ],
-v56 = {
+v57 = {
   "alias": null,
   "args": (v35/*: any*/),
   "concreteType": "AuctionResultConnection",
@@ -1475,14 +1482,14 @@ v56 = {
   ],
   "storageKey": "auctionResultsByFollowedArtists(first:3)"
 },
-v57 = [
+v58 = [
   {
     "kind": "Literal",
     "name": "format",
     "value": "MMM D"
   }
 ],
-v58 = [
+v59 = [
   {
     "kind": "Literal",
     "name": "short",
@@ -2192,7 +2199,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "newWorksByInterestingArtists(first:6)"
+            "storageKey": "newWorksByInterestingArtists(first:20)"
           },
           {
             "alias": null,
@@ -2205,7 +2212,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v55/*: any*/),
+            "args": (v56/*: any*/),
             "concreteType": "ArtistConnection",
             "kind": "LinkedField",
             "name": "artistRecommendations",
@@ -2262,14 +2269,14 @@ return {
           },
           {
             "alias": null,
-            "args": (v55/*: any*/),
+            "args": (v56/*: any*/),
             "filters": null,
             "handle": "connection",
             "key": "RecommendedArtistsRail_artistRecommendations",
             "kind": "LinkedHandle",
             "name": "artistRecommendations"
           },
-          (v56/*: any*/),
+          (v57/*: any*/),
           {
             "alias": null,
             "args": (v3/*: any*/),
@@ -2299,14 +2306,14 @@ return {
                       (v26/*: any*/),
                       {
                         "alias": "formattedStartAt",
-                        "args": (v57/*: any*/),
+                        "args": (v58/*: any*/),
                         "kind": "ScalarField",
                         "name": "startAt",
                         "storageKey": "startAt(format:\"MMM D\")"
                       },
                       {
                         "alias": "formattedEndAt",
-                        "args": (v57/*: any*/),
+                        "args": (v58/*: any*/),
                         "kind": "ScalarField",
                         "name": "endAt",
                         "storageKey": "endAt(format:\"MMM D\")"
@@ -2371,7 +2378,7 @@ return {
         "name": "me",
         "plural": false,
         "selections": [
-          (v56/*: any*/),
+          (v57/*: any*/),
           (v6/*: any*/)
         ],
         "storageKey": null
@@ -2441,14 +2448,14 @@ return {
                   },
                   {
                     "alias": null,
-                    "args": (v58/*: any*/),
+                    "args": (v59/*: any*/),
                     "kind": "ScalarField",
                     "name": "distanceToOpen",
                     "storageKey": "distanceToOpen(short:true)"
                   },
                   {
                     "alias": null,
-                    "args": (v58/*: any*/),
+                    "args": (v59/*: any*/),
                     "kind": "ScalarField",
                     "name": "distanceToClose",
                     "storageKey": "distanceToClose(short:true)"
@@ -2537,7 +2544,7 @@ return {
     ]
   },
   "params": {
-    "id": "69ef3b4f7118b4597090f09042fa56d4",
+    "id": "39eb938f21ed59da49373ffd76db44b1",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",
