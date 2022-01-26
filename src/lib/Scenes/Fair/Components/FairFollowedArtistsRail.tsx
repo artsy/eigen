@@ -14,11 +14,12 @@ interface FairFollowedArtistsRailProps {
 }
 
 export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = ({ fair }) => {
-  if (!fair.filterArtworksConnection?.edges?.length) {
-    return null
-  }
   const { trackEvent } = useTracking()
   const artworks = extractNodes(fair?.filterArtworksConnection)
+
+  if (!artworks.length) {
+    return null
+  }
 
   return (
     <>
