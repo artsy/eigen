@@ -107,7 +107,7 @@ const main = async () => {
       break
   }
 
-  // await exec("git add .secrets.baseline")
+  await exec("git add .secrets.baseline")
 }
 
 main()
