@@ -17,7 +17,7 @@ export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePr
 
   const handleArtworkDetailsSubmit = async (values: ArtworkDetailsFormModel) => {
     try {
-      const id = await createOrUpdateSubmission(values, submissionId || undefined)
+      const id = await createOrUpdateSubmission(values, submissionId)
       if (id) {
         GlobalStore.actions.artworkSubmission.submission.setSubmissionId(id)
         GlobalStore.actions.artworkSubmission.submission.setArtworkDetailsForm(values)

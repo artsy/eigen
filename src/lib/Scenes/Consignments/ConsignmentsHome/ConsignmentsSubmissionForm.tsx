@@ -12,21 +12,13 @@ export interface ConsignmentsSubmissionUtmParams {
   utm_source?: string
 }
 
-export const ConsignmentsSubmissionForm: React.FC<ConsignmentsSubmissionUtmParams> = ({
-  utm_term,
-  utm_medium,
-  utm_source,
-}) => {
+export const ConsignmentsSubmissionForm: React.FC<ConsignmentsSubmissionUtmParams> = (props) => {
   const enableNewSWAFlow = useFeatureFlag("AREnableAccordionNavigationOnSubmitArtwork")
 
   useEffect(() => {
-    if (utm_term || utm_medium || utm_source) {
-      GlobalStore.actions.artworkSubmission.submission.setUtmParams({
-        utm_term,
-        utm_medium,
-        utm_source,
-      })
-    }
+    GlobalStore.actions.artworkSubmission.submission.setUtmParams({
+      ...props,
+    })
   }, [])
 
   if (enableNewSWAFlow) {
@@ -38,11 +30,7 @@ export const ConsignmentsSubmissionForm: React.FC<ConsignmentsSubmissionUtmParam
         initialRoute={{
           component: Overview,
           passProps: {
-            params: {
-              utm_term,
-              utm_medium,
-              utm_source,
-            },
+            params: props,
           },
         }}
       />

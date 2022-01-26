@@ -11,7 +11,7 @@ export type SubmissionInput = CreateSubmissionMutationInput | UpdateSubmissionMu
 
 export const createOrUpdateSubmission = async (
   values: ArtworkDetailsFormModel,
-  submissionId: string | undefined
+  submissionId: string
 ) => {
   const isRarityLimitedEdition = values.attributionClass === limitedEditionValue
 
@@ -35,9 +35,9 @@ export const createOrUpdateSubmission = async (
     locationState: values.location.state,
     locationCountry: values.location.country,
     state: "DRAFT",
-    utmMedium: "",
-    utmSource: "",
-    utmTerm: "",
+    utmMedium: values.utmMedium,
+    utmSource: values.utmSource,
+    utmTerm: values.utmTerm,
   }
 
   if (submissionId) {
