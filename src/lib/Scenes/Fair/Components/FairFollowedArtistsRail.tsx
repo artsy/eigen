@@ -25,10 +25,14 @@ export const FairFollowedArtistsRail: React.FC<FairFollowedArtistsRailProps> = (
       <Flex px={2}>
         <SectionTitle
           title="Works by artists you follow"
-          onPress={() => {
-            trackEvent(tracks.tappedViewAll(fair))
-            navigate(`/fair/${fair.slug}/followedArtists`)
-          }}
+          onPress={
+            artworks.length > 2
+              ? () => {
+                  trackEvent(tracks.tappedViewAll(fair))
+                  navigate(`/fair/${fair.slug}/followedArtists`)
+                }
+              : undefined
+          }
         />
       </Flex>
       <SmallArtworkRail

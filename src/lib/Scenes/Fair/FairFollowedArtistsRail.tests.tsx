@@ -90,7 +90,7 @@ describe("FairFollowedArtistsRail", () => {
     })
   })
 
-  it("displays the 'View all' button if there are 4 or more artworks", () => {
+  it("displays the '>' button if there are 3 or more artworks", () => {
     const wrapper = getWrapper({
       Fair: () => ({
         internalID: "xyz123",
@@ -128,7 +128,7 @@ describe("FairFollowedArtistsRail", () => {
     expect(wrapper.root.findAllByType(TouchableOpacity).length).toBe(1)
   })
 
-  it("doesn't display the 'View all' button if there are less than 4 artworks to show", () => {
+  it("doesn't display the '>' button if there are less than 3 artworks to show", () => {
     const wrapper = getWrapper({
       Fair: () => ({
         internalID: "xyz123",
@@ -147,12 +147,6 @@ describe("FairFollowedArtistsRail", () => {
                 slug: "some-artwork-2",
               },
             },
-            {
-              node: {
-                internalID: "id-3",
-                slug: "some-artwork-3",
-              },
-            },
           ],
         },
       }),
@@ -160,7 +154,7 @@ describe("FairFollowedArtistsRail", () => {
     expect(wrapper.root.findAllByType(TouchableOpacity).length).toBe(0)
   })
 
-  it("tracks taps on the View All button", () => {
+  it("tracks taps on the rails header", () => {
     const wrapper = getWrapper({
       Fair: () => ({
         internalID: "xyz123",
