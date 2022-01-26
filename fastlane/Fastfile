@@ -315,6 +315,18 @@ lane :update_sentry_release_json do |options|
   end
 end
 
+lane :update_sentry_release_name do
+  latest_version = app_json['version']
+
+  root = File.expand_path('..', __dir__)
+  bundle_version = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, 'Artsy/App_Resources/Artsy-Info.plist')}`.strip
+
+  # important! this much match the release version specified
+  # in Eigen in order for sourcemaps to work correctly
+  sentry_release_name = "ios-#{latest_version}+#{bundle_version}"
+  update_sentry_release_json(sentry_release_name: sentry_release_name)
+end
+
 lane :flag_android_beta do |options|
   is_android_beta = options[:is_android_beta]
   app_json['isAndroidBeta'] = is_android_beta

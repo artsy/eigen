@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euxo pipefail
+
+bundle exec fastlane update_sentry_release_name
