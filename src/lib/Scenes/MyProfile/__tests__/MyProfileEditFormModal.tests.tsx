@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { MyProfileEditFormModalTestsQuery } from "__generated__/MyProfileEditFormModalTestsQuery.graphql"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
@@ -81,7 +81,7 @@ describe("MyProfileEditFormModal", () => {
           expect(getByText("Verify Your Email")).toBeTruthy()
         })
 
-        it("Triggers the email verification when they user presses on Verify Your Email", () => {
+        it("Triggers the email verification when they user presses on Verify Your Email", async () => {
           const { getByTestId, getByText } = renderWithWrappersTL(<TestRenderer />)
           mockEnvironmentPayload(mockEnvironment, {
             Me: () => ({
@@ -91,22 +91,23 @@ describe("MyProfileEditFormModal", () => {
           const VerifyYouEmailButton = getByTestId("verify-your-email")
           expect(VerifyYouEmailButton).toBeTruthy()
 
-          // console.log(VerifyYouEmailButton)
-          // fireEvent(VerifyYouEmailButton, "onPress")
+          fireEvent(VerifyYouEmailButton, "onPress")
 
-          // mockEnvironment.mock.resolveMostRecentOperation({
-          //   data: {
-          //     sendConfirmationEmail: {
-          //       confirmationOrError: {
-          //         __typename: "SendConfirmationEmailMutationSuccess",
-          //         unconfirmedEmail: "i.am.unconfirmed@gmail.com",
-          //       },
-          //     },
-          //   },
-          //   errors: [],
-          // })
+          mockEnvironment.mock.resolveMostRecentOperation({
+            data: {
+              sendConfirmationEmail: {
+                confirmationOrError: {
+                  __typename: "SendConfirmationEmailMutationSuccess",
+                  unconfirmedEmail: "i.am.unconfirmed@gmail.com",
+                },
+              },
+            },
+            errors: [],
+          })
 
-          // expect(getByText("Email sent to")).toBeTruthy()
+          expect(getByTestId("verification-confirmation-banner")).toBeTruthy()
+          expect(getByText("Sending a confirmation email...")).toBeTruthy()
+          await waitForElementToBeRemoved(() => getByText("Sending a confirmation email..."))
         })
       })
     })

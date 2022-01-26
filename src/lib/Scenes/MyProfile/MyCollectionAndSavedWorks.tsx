@@ -25,12 +25,7 @@ import {
   useColor,
 } from "palette"
 import React, { useEffect, useState } from "react"
-import {
-  createFragmentContainer,
-  createRefetchContainer,
-  QueryRenderer,
-  RelayRefetchProp,
-} from "react-relay"
+import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionPlaceholder, MyCollectionQueryRenderer } from "../MyCollection/MyCollection"

@@ -28,7 +28,6 @@ import {
   Text,
   Touchable,
   useColor,
-  useSpace,
 } from "palette"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
@@ -209,8 +208,6 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = ({
       setShowVerificationBanner(true)
       setIsVerificationLoading(true)
 
-      console.log(" => ")
-
       const { sendConfirmationEmail } = await verifyEmail(relay.environment)
       const confirmationOrError = sendConfirmationEmail?.confirmationOrError
       const emailToConfirm = confirmationOrError?.unconfirmedEmail
@@ -386,6 +383,7 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = ({
   )
 }
 
+<<<<<<< HEAD
 const meFragment = graphql`
   fragment MyProfileEditFormModal_me on Me {
     name
@@ -407,7 +405,7 @@ const meFragment = graphql`
   }
 `
 
-const VerificationConfirmationBanner = ({
+export const VerificationConfirmationBanner = ({
   isLoading,
   didSuccessfullyVerifiyEmail,
   resultText,
@@ -417,8 +415,6 @@ const VerificationConfirmationBanner = ({
   resultText: string
 }) => {
   const color = useColor()
-  const space = useSpace()
-  const { bottom } = useSafeAreaInsets()
 
   const renderContent = () => {
     if (isLoading) {
@@ -442,14 +438,14 @@ const VerificationConfirmationBanner = ({
   }
   return (
     <Flex
-      px="2"
-      pt="1"
+      px={2}
+      py={1}
       // Avoid system bottom navigation bar
-      pb={bottom + space("1")}
       background={color("black100")}
       flexDirection="row"
       justifyContent="space-between"
       alignItems="center"
+      testID="verification-confirmation-banner"
     >
       {renderContent()}
     </Flex>
