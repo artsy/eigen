@@ -130,10 +130,29 @@ export const artsyAppMigrations: Migrations = {
     state.artworkSubmission = {
       submission: {
         submissionId: "",
-        utmParams: {
-          utm_medium: "",
-          utm_source: "",
-          utm_term: "",
+        artworkDetails: {
+          artist: "",
+          artistId: "",
+          title: "",
+          year: "",
+          medium: "",
+          attributionClass: "",
+          editionNumber: "",
+          editionSizeFormatted: "",
+          dimensionsMetric: "in",
+          height: "",
+          width: "",
+          depth: "",
+          provenance: "",
+          state: "DRAFT",
+          utmMedium: "",
+          utmSource: "",
+          utmTerm: "",
+          location: {
+            city: "",
+            state: "",
+            country: "",
+          },
         },
       },
     }
