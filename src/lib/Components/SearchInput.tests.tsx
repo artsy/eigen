@@ -66,35 +66,35 @@ describe("SearchInput", () => {
   })
 
   it(`renders "Cancel" button when "enableCancelButton" is passed`, () => {
-    const { getAllByText } = renderWithWrappersTL(<TestWrapper enableCancelButton />)
-    expect(getAllByText("Cancel")[0]).toBeDefined()
+    const { getByText } = renderWithWrappersTL(<TestWrapper enableCancelButton />)
+    expect(getByText("Cancel")).toBeDefined()
   })
 
   it(`calls passed "onCancelPress" callback and emits "clear" event when pressing on "Cancel" button`, () => {
-    const { getAllByText } = renderWithWrappersTL(<TestWrapper enableCancelButton />)
-    fireEvent.press(getAllByText("Cancel")[0])
+    const { getByText } = renderWithWrappersTL(<TestWrapper enableCancelButton />)
+    fireEvent.press(getByText("Cancel"))
     expect(onCancelPressMock).toHaveBeenCalled()
     expect(emitInputClearEventSpy).toHaveBeenCalled()
   })
 
   it(`hides "x" button when pressing "Cancel"`, () => {
-    const { getAllByText, getByA11yLabel, queryAllByA11yLabel, getByPlaceholderText } =
+    const { getByText, getByA11yLabel, queryAllByA11yLabel, getByPlaceholderText } =
       renderWithWrappersTL(<TestWrapper enableCancelButton />)
     const searchInput = getByPlaceholderText("Type something...")
     fireEvent(searchInput, "changeText", "text")
     expect(getByA11yLabel("Clear input button")).toBeTruthy()
-    fireEvent.press(getAllByText("Cancel")[0])
+    fireEvent.press(getByText("Cancel"))
     expect(queryAllByA11yLabel("Clear input button")).toHaveLength(0)
   })
 
   it('should hide "Cancel" when it is pressed', () => {
-    const { queryAllByA11yLabel, getAllByText, findAllByA11yLabel, getByPlaceholderText } =
+    const { queryAllByA11yLabel, getByText, findAllByA11yLabel, getByPlaceholderText } =
       renderWithWrappersTL(<TestWrapper enableCancelButton />)
 
     fireEvent.changeText(getByPlaceholderText("Type something..."), "text")
     expect(findAllByA11yLabel("Cancel")).toBeTruthy()
 
-    fireEvent.press(getAllByText("Cancel")[0])
+    fireEvent.press(getByText("Cancel"))
     expect(queryAllByA11yLabel("Cancel")).toHaveLength(0)
   })
 })

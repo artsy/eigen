@@ -6,8 +6,7 @@ export const artworkSchema = Yup.object().shape({
   artistSearchResult: Yup.object()
     .nullable()
     .test("artistSearchResult", "Artist search result required", (value) => value !== null),
-  medium: Yup.string().test("medium", "Medium required", (value) => value !== ""),
-  title: Yup.string().test("title", "Title is required", (value) => value !== ""),
+  title: Yup.string().required("Title is required"),
 })
 
 export function validateArtworkSchema(values: ArtworkFormValues) {

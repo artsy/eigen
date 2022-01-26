@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, within } from "@testing-library/react-native"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -32,7 +32,7 @@ describe("ArtworkFilterOptionItem", () => {
   it("should render count label if it is passed", () => {
     const { getByText } = renderWithWrappersTL(<TestWrapper count={3} />)
 
-    expect(getByText("Rarity • 3"))
+    expect(within(getByText("Rarity")).getByText("• 3")).toBeTruthy()
   })
 
   it('should call "onPress" handler when item is pressed', () => {

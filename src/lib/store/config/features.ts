@@ -173,12 +173,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableSortFilterForArtworksPill",
   },
-  ARMyCollectionLocalSortAndFilter: {
-    readyForRelease: true,
-    description: "My Collection Sort & Filter",
-    showInAdminMenu: true,
-    echoFlagKey: "ARMyCollectionLocalSortAndFilter",
-  },
   AREnableArtistRecommendations: {
     readyForRelease: false,
     description: "Enable new artist recommendations",

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euxo pipefail
 
-./scripts/setup-distribute-linux
+./scripts/setup-distribute
 
 DISTRIBUTION_TARGET="${1-"PLAY_STORE"}"
 if [ $DISTRIBUTION_TARGET == "FIREBASE" ]; then
