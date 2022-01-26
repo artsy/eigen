@@ -132,7 +132,7 @@ describe("MyCollectionAndSavedWorks", () => {
               display: "Atlantis",
             },
             profession: "Guardian of the Galaxy",
-            otherRelevantPosition: "Marvel Universe",
+            otherRelevantPositions: "Marvel Universe",
           }),
         })
 
@@ -162,7 +162,7 @@ describe("MyCollectionAndSavedWorks", () => {
               display: "Atlantis",
             },
             profession: "Guardian of the Galaxy",
-            otherRelevantPosition: "Marvel Universe",
+            otherRelevantPositions: "Marvel Universe",
           }),
         })
 
