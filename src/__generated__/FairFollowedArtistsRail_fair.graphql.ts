@@ -7,13 +7,10 @@ import { FragmentRefs } from "relay-runtime";
 export type FairFollowedArtistsRail_fair = {
     readonly internalID: string;
     readonly slug: string;
-    readonly followedArtistArtworks: {
+    readonly filterArtworksConnection: {
         readonly edges: ReadonlyArray<{
-            readonly artwork: {
-                readonly id: string;
-                readonly internalID: string;
-                readonly slug: string;
-                readonly " $fragmentRefs": FragmentRefs<"ArtworkTileRailCard_artwork">;
+            readonly node: {
+                readonly " $fragmentRefs": FragmentRefs<"SmallArtworkRail_artworks">;
             } | null;
         } | null> | null;
     } | null;
@@ -27,31 +24,28 @@ export type FairFollowedArtistsRail_fair$key = {
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-},
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "slug",
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
   "name": "FairFollowedArtistsRail_fair",
   "selections": [
-    (v0/*: any*/),
-    (v1/*: any*/),
     {
-      "alias": "followedArtistArtworks",
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "internalID",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "slug",
+      "storageKey": null
+    },
+    {
+      "alias": null,
       "args": [
         {
           "kind": "Literal",
@@ -80,7 +74,7 @@ return {
           "plural": true,
           "selections": [
             {
-              "alias": "artwork",
+              "alias": null,
               "args": null,
               "concreteType": "Artwork",
               "kind": "LinkedField",
@@ -88,18 +82,9 @@ return {
               "plural": false,
               "selections": [
                 {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "id",
-                  "storageKey": null
-                },
-                (v0/*: any*/),
-                (v1/*: any*/),
-                {
                   "args": null,
                   "kind": "FragmentSpread",
-                  "name": "ArtworkTileRailCard_artwork"
+                  "name": "SmallArtworkRail_artworks"
                 }
               ],
               "storageKey": null
@@ -114,6 +99,5 @@ return {
   "type": "Fair",
   "abstractKey": null
 };
-})();
-(node as any).hash = 'b81993cbfa008efcc7000a2784054251';
+(node as any).hash = '06503f3d1133e44ce601275d4b2a319a';
 export default node;
