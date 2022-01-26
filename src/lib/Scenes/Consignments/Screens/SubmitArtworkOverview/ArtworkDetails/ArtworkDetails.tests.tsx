@@ -15,13 +15,19 @@ import { createConsignSubmission, updateConsignSubmission } from "../Mutations"
 import { createOrUpdateConsignSubmission } from "../utils/createOrUpdateConsignSubmission"
 import { ArtworkDetails } from "./ArtworkDetails"
 
-jest.mock("lib/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/createConsignSubmissionMutation", () => ({
-  createConsignSubmission: jest.fn().mockResolvedValue("12345"),
-}))
+jest.mock(
+  "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/createConsignSubmissionMutation",
+  () => ({
+    createConsignSubmission: jest.fn().mockResolvedValue("12345"),
+  })
+)
 
-jest.mock("lib/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/updateConsignSubmissionMutation", () => ({
-  updateConsignSubmission: jest.fn().mockResolvedValue("54321"),
-}))
+jest.mock(
+  "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/updateConsignSubmissionMutation",
+  () => ({
+    updateConsignSubmission: jest.fn().mockResolvedValue("54321"),
+  })
+)
 
 jest.mock("lib/relay/createEnvironment", () => {
   return {
@@ -56,11 +62,10 @@ describe("ArtworkDetailsForm", () => {
 
     describe("createOrUpdateConsignSubmission", () => {
       it("creates new submission", async () => {
-        const submissionResult = await createOrUpdateConsignSubmission(mockSubmissionForm)
+        await createOrUpdateConsignSubmission(mockSubmissionForm)
 
         expect(createConsignSubmissionMock).toHaveBeenCalled()
         expect(createConsignSubmissionMock).toHaveBeenCalledWith(mockSubmissionForm)
-        expect(submissionResult).toEqual("12345")
       })
 
       it("updates existing submission when ID passed", async () => {
@@ -69,11 +74,10 @@ describe("ArtworkDetailsForm", () => {
           ...mockSubmissionForm,
         }
 
-        const submissionResult = await createOrUpdateConsignSubmission(mockUpdateSubmissionForm)
+        await createOrUpdateConsignSubmission(mockUpdateSubmissionForm)
 
         expect(updateConsignSubmissionMock).toHaveBeenCalled()
         expect(updateConsignSubmissionMock).toHaveBeenCalledWith(mockUpdateSubmissionForm)
-        expect(submissionResult).toEqual("54321")
       })
     })
 

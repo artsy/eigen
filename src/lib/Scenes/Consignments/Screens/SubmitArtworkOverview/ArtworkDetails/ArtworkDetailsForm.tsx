@@ -179,8 +179,8 @@ export const ArtworkDetailsForm: React.FC = () => {
       >
         <Flex mb={4}>
           <Text>
-            Provenance is the documented history of an artwork’s ownership and authenticity. Please list any
-            documentation you have that proves your artwork’s provenance, such as:
+            Provenance is the documented history of an artwork’s ownership and authenticity. Please
+            list any documentation you have that proves your artwork’s provenance, such as:
           </Text>
         </Flex>
 
