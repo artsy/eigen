@@ -105,7 +105,7 @@ export const Search: React.FC<SearchProps> = (props) => {
         (indice) => ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndexKey)
       )
 
-      const SECRET_KEY = "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"
+      const SECRET_KEY = "ghp_JrJsDaIQGy347gANkA3ADQTKpkQS544eoyvU"
       console.log(SECRET_KEY)
 
       const formattedIndices: PillType[] = allowedIndices.map((index) => {

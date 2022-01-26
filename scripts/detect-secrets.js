@@ -12,19 +12,25 @@ const chalk = require("chalk")
 
 const gray = (text) => chalk.bold.gray(text)
 
-const exec = (command, cwd) => {
+const exec = (command, { dontExit } = { dontExit: false }) => {
   console.log(gray(`$ ${command}`))
 
-  const task = spawnSync(command, { shell: true, cwd })
-  if (task.status != 0) {
-    throw new Error(task.stderr.toString())
+  const task = spawnSync(command, { shell: true })
+  console.log(task.stdout.toString())
+  console.log(task.stderr.toString())
+
+  if (task.status !== 0) {
+    if (!dontExit) {
+      process.exit(task.status)
+    }
   }
-  return task.stdout.toString()
+
+  return { exitCode: task.status, stdout: task.stdout.toString(), stderr: task.stderr.toString() }
 }
 
 const getFileArray = async (onlyStaged) => {
   const command = onlyStaged ? "git diff --staged --name-only" : "git ls-files"
-  const files = (await exec(command)).split("\n")
+  const files = (await exec(command)).stdout.split("\n")
 
   // clean up
   const filesToScan = pipe(
@@ -69,7 +75,7 @@ const scan = async (onlyStaged) => {
   const files = await getFileArray(onlyStaged)
   const filesArg = files.join(" ")
 
-  const command = `yarn detect-secrets-launcher --baseline .secrets.baseline ${filesArg}`
+  const command = `detect-secrets scan --baseline .secrets.baseline ${filesArg}`
   try {
     await exec(command)
   } catch (e) {
@@ -82,11 +88,6 @@ const scan = async (onlyStaged) => {
   }
 }
 
-const checkStaged = () => check(true)
-const checkAll = () => check(false)
-const scanStaged = () => scan(true)
-const scanAll = () => scan(false)
-
 const main = async () => {
   switch (process.argv[2]) {
     case "generate":
@@ -97,17 +98,16 @@ const main = async () => {
       await check(process.argv[3] === "staged")
       break
 
-    case "staged":
-      await scanStaged()
+    case "scan":
+      await scan(process.argv[3] === "staged")
       break
 
-    case "all":
     default:
-      await scanAll()
+      await check(false)
       break
   }
 
-  await exec("git add .secrets.baseline")
+  // await exec("git add .secrets.baseline")
 }
 
 main()
