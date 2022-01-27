@@ -84,7 +84,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           </Flex>
         </>
       )}
-      <Spacer mt={5} />
+      <Spacer mt={4} />
       <InputTitle>Dimensions</InputTitle>
       <Spacer mt={1} />
       <Flex flexDirection="row">
@@ -127,7 +127,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           />
         </Box>
       </Flex>
-      <Spacer mt={5} />
+      <Spacer mt={4} />
       <Flex flexDirection="row" justifyContent="space-between">
         <InputTitle>Provenance</InputTitle>
         <Text variant="xs" color="black60" onPress={() => setIsProvenanceInfoModalVisible(true)}>

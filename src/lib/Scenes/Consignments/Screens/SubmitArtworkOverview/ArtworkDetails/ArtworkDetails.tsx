@@ -50,7 +50,7 @@ export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePr
         {({ values, isValid }) => (
           <>
             <ArtworkDetailsForm />
-            <Spacer mt={3} />
+            <Spacer mt={2} />
             <CTAButton
               disabled={!isValid}
               onPress={() => handleArtworkDetailsSubmit(values)}
