@@ -45,7 +45,9 @@ const FairExhibitorRail: React.FC<FairExhibitorRailProps> = ({ show }) => {
       <SmallArtworkRail
         artworks={artworks}
         onPress={(artwork, position) => {
-          trackEvent(tracks.tappedArtwork(show, artwork?.internalID ?? "", artwork?.slug ?? "", position))
+          trackEvent(
+            tracks.tappedArtwork(show, artwork?.internalID ?? "", artwork?.slug ?? "", position)
+          )
           navigate(artwork?.href!)
         }}
       />
@@ -86,7 +88,12 @@ export const FairExhibitorRailFragmentContainer = createFragmentContainer(FairEx
 })
 
 const tracks = {
-  tappedArtwork: (show: FairExhibitorRail_show, artworkID: string, artworkSlug: string, position: number) => ({
+  tappedArtwork: (
+    show: FairExhibitorRail_show,
+    artworkID: string,
+    artworkSlug: string,
+    position: number
+  ) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.galleryBoothRail,
     context_screen_owner_type: OwnerType.fair,

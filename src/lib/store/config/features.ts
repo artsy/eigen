@@ -173,12 +173,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableSortFilterForArtworksPill",
   },
-  AREnableAuctionResultComparableWorks: {
-    readyForRelease: true,
-    description: "Comparable works in Auction Result",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableAuctionResultComparableWorks",
-  },
   AREnableArtistRecommendations: {
     readyForRelease: false,
     description: "Enable new artist recommendations",
