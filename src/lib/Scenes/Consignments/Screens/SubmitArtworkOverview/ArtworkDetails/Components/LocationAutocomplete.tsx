@@ -125,7 +125,7 @@ export const LocationPredictions = ({
   }
 
   return (
-    <Box height={150}>
+    <Box height={175}>
       <AboveTheFoldFlatList
         listRef={flatListRef}
         style={{
@@ -134,20 +134,17 @@ export const LocationPredictions = ({
           borderStyle: "solid",
           borderColor: "#707070",
           borderWidth: 1,
-          marginTop: 3,
         }}
         data={predictions}
         showsVerticalScrollIndicator
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="handled"
         ListEmptyComponent={
-          !predictions.length
-            ? () => (
-                <Text variant="md" color="black60" textAlign="center">
-                  Please try searching again with a different spelling.
-                </Text>
-              )
-            : null
+          !predictions.length ? (
+            <Text variant="md" color="black60" textAlign="center">
+              Please try searching again with a different spelling.
+            </Text>
+          ) : null
         }
         renderItem={({ item, index }) => {
           return (
