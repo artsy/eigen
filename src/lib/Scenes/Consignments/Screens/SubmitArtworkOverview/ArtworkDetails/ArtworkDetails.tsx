@@ -3,7 +3,6 @@ import { Formik } from "formik"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { BulletedItem, CTAButton, Flex, Spacer, Text } from "palette"
 import React, { useState } from "react"
-import { ScrollView } from "react-native"
 import { createOrUpdateSubmission } from "../utils/createOrUpdateSubmission"
 import { ArtworkDetailsFormModel, artworkDetailsValidationSchema } from "../utils/validation"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
@@ -34,24 +33,22 @@ export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePr
   }
 
   return (
-    <Formik<ArtworkDetailsFormModel>
-      initialValues={artworkDetails}
-      onSubmit={handleArtworkDetailsSubmit}
-      validationSchema={artworkDetailsValidationSchema}
-      validateOnMount
-    >
-      {({ values, isValid }) => (
-        <ScrollView>
-          <Flex flexDirection="column" p={1} mt={1}>
-            <BulletedItem>All fields are required to submit an artwork.</BulletedItem>
-            <BulletedItem>
-              Unfortunately, we do not allow{" "}
-              <Text style={{ textDecorationLine: "underline" }}>
-                artists to sell their own work
-              </Text>{" "}
-              on Artsy.
-            </BulletedItem>
-            <Spacer mt={4} />
+    <Flex flex={3} p={1} mt={1}>
+      <BulletedItem>All fields are required to submit an artwork.</BulletedItem>
+      <BulletedItem>
+        Unfortunately, we do not allow{" "}
+        <Text style={{ textDecorationLine: "underline" }}>artists to sell their own work</Text> on
+        Artsy.
+      </BulletedItem>
+      <Spacer mt={4} />
+      <Formik<ArtworkDetailsFormModel>
+        initialValues={artworkDetails}
+        onSubmit={handleArtworkDetailsSubmit}
+        validationSchema={artworkDetailsValidationSchema}
+        validateOnMount
+      >
+        {({ values, isValid }) => (
+          <>
             <ArtworkDetailsForm />
             <Spacer mt={3} />
             <CTAButton
@@ -61,9 +58,9 @@ export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePr
             >
               Save & Continue
             </CTAButton>
-          </Flex>
-        </ScrollView>
-      )}
-    </Formik>
+          </>
+        )}
+      </Formik>
+    </Flex>
   )
 }
