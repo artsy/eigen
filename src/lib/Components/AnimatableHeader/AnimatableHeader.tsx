@@ -110,7 +110,7 @@ export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
         onPress={props.onLeftButtonPress}
         accessibilityLabel="Header back button"
       >
-        <ArrowLeftIcon fill="black100" />
+        <ArrowLeftIcon fill="black100" mt="2px" />
       </TouchableOpacity>
       <Animated.View
         pointerEvents="none"
@@ -123,7 +123,7 @@ export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
           transform: [{ translateX }],
         }}
       >
-        <Text numberOfLines={2} lineHeight={18}>
+        <Text variant="sm" numberOfLines={2}>
           {title}
         </Text>
       </Animated.View>
@@ -133,7 +133,11 @@ export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
           onPress={onRightButtonPress}
           disabled={rightButtonDisabled}
         >
-          <Text variant="sm" color={rightButtonDisabled ? "black30" : "black100"}>
+          <Text
+            variant="sm"
+            style={{ textDecorationLine: "underline" }}
+            color={rightButtonDisabled ? "black30" : "black100"}
+          >
             {rightButtonText}
           </Text>
         </TouchableOpacity>

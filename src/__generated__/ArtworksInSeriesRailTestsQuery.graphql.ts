@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 27d9d3ec937f864f4de098b386bef847 */
+/* @relayHash 727e354cbce76b9fe4503cc441b0497d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -23,20 +23,28 @@ export type ArtworksInSeriesRailTestsQueryRawResponse = {
                     readonly filterArtworksConnection: ({
                         readonly edges: ReadonlyArray<({
                             readonly node: ({
+                                readonly id: string;
                                 readonly slug: string;
                                 readonly internalID: string;
                                 readonly href: string | null;
                                 readonly artistNames: string | null;
+                                readonly date: string | null;
                                 readonly image: ({
-                                    readonly imageURL: string | null;
+                                    readonly resized: ({
+                                        readonly src: string;
+                                        readonly srcSet: string;
+                                        readonly width: number | null;
+                                        readonly height: number | null;
+                                    }) | null;
                                     readonly aspectRatio: number;
                                 }) | null;
                                 readonly sale: ({
                                     readonly isAuction: boolean | null;
                                     readonly isClosed: boolean | null;
-                                    readonly displayTimelyAt: string | null;
+                                    readonly endAt: string | null;
                                     readonly id: string;
                                 }) | null;
+                                readonly saleMessage: string | null;
                                 readonly saleArtwork: ({
                                     readonly counts: ({
                                         readonly bidderPositions: number | null;
@@ -46,14 +54,11 @@ export type ArtworksInSeriesRailTestsQueryRawResponse = {
                                     }) | null;
                                     readonly id: string;
                                 }) | null;
-                                readonly saleMessage: string | null;
-                                readonly title: string | null;
-                                readonly date: string | null;
                                 readonly partner: ({
                                     readonly name: string | null;
                                     readonly id: string;
                                 }) | null;
-                                readonly id: string;
+                                readonly title: string | null;
                             }) | null;
                         }) | null> | null;
                         readonly id: string;
@@ -80,6 +85,45 @@ query ArtworksInSeriesRailTestsQuery {
   }
 }
 
+fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
+  id
+  slug
+  internalID
+  href
+  artistNames
+  date
+  image {
+    resized(width: 155) {
+      src
+      srcSet
+      width
+      height
+    }
+    aspectRatio
+  }
+  sale {
+    isAuction
+    isClosed
+    endAt
+    id
+  }
+  saleMessage
+  saleArtwork {
+    counts {
+      bidderPositions
+    }
+    currentBid {
+      display
+    }
+    id
+  }
+  partner {
+    name
+    id
+  }
+  title
+}
+
 fragment ArtworksInSeriesRail_artwork on Artwork {
   internalID
   slug
@@ -91,36 +135,7 @@ fragment ArtworksInSeriesRail_artwork on Artwork {
         filterArtworksConnection(first: 20, input: {sort: "-decayed_merch"}) {
           edges {
             node {
-              slug
-              internalID
-              href
-              artistNames
-              image {
-                imageURL
-                aspectRatio
-              }
-              sale {
-                isAuction
-                isClosed
-                displayTimelyAt
-                id
-              }
-              saleArtwork {
-                counts {
-                  bidderPositions
-                }
-                currentBid {
-                  display
-                }
-                id
-              }
-              saleMessage
-              title
-              date
-              partner {
-                name
-                id
-              }
+              ...SmallArtworkRail_artworks
               id
             }
           }
@@ -129,6 +144,13 @@ fragment ArtworksInSeriesRail_artwork on Artwork {
       }
     }
   }
+}
+
+fragment SmallArtworkRail_artworks on Artwork {
+  ...ArtworkRailCard_artwork_hl5k2
+  internalID
+  href
+  slug
 }
 */
 
@@ -273,6 +295,7 @@ return {
                                 "name": "node",
                                 "plural": false,
                                 "selections": [
+                                  (v3/*: any*/),
                                   (v2/*: any*/),
                                   (v1/*: any*/),
                                   {
@@ -292,6 +315,13 @@ return {
                                   {
                                     "alias": null,
                                     "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "date",
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "alias": null,
+                                    "args": null,
                                     "concreteType": "Image",
                                     "kind": "LinkedField",
                                     "name": "image",
@@ -299,10 +329,48 @@ return {
                                     "selections": [
                                       {
                                         "alias": null,
-                                        "args": null,
-                                        "kind": "ScalarField",
-                                        "name": "imageURL",
-                                        "storageKey": null
+                                        "args": [
+                                          {
+                                            "kind": "Literal",
+                                            "name": "width",
+                                            "value": 155
+                                          }
+                                        ],
+                                        "concreteType": "ResizedImageUrl",
+                                        "kind": "LinkedField",
+                                        "name": "resized",
+                                        "plural": false,
+                                        "selections": [
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "kind": "ScalarField",
+                                            "name": "src",
+                                            "storageKey": null
+                                          },
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "kind": "ScalarField",
+                                            "name": "srcSet",
+                                            "storageKey": null
+                                          },
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "kind": "ScalarField",
+                                            "name": "width",
+                                            "storageKey": null
+                                          },
+                                          {
+                                            "alias": null,
+                                            "args": null,
+                                            "kind": "ScalarField",
+                                            "name": "height",
+                                            "storageKey": null
+                                          }
+                                        ],
+                                        "storageKey": "resized(width:155)"
                                       },
                                       {
                                         "alias": null,
@@ -340,11 +408,18 @@ return {
                                         "alias": null,
                                         "args": null,
                                         "kind": "ScalarField",
-                                        "name": "displayTimelyAt",
+                                        "name": "endAt",
                                         "storageKey": null
                                       },
                                       (v3/*: any*/)
                                     ],
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "saleMessage",
                                     "storageKey": null
                                   },
                                   {
@@ -398,27 +473,6 @@ return {
                                   {
                                     "alias": null,
                                     "args": null,
-                                    "kind": "ScalarField",
-                                    "name": "saleMessage",
-                                    "storageKey": null
-                                  },
-                                  {
-                                    "alias": null,
-                                    "args": null,
-                                    "kind": "ScalarField",
-                                    "name": "title",
-                                    "storageKey": null
-                                  },
-                                  {
-                                    "alias": null,
-                                    "args": null,
-                                    "kind": "ScalarField",
-                                    "name": "date",
-                                    "storageKey": null
-                                  },
-                                  {
-                                    "alias": null,
-                                    "args": null,
                                     "concreteType": "Partner",
                                     "kind": "LinkedField",
                                     "name": "partner",
@@ -435,7 +489,13 @@ return {
                                     ],
                                     "storageKey": null
                                   },
-                                  (v3/*: any*/)
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "title",
+                                    "storageKey": null
+                                  }
                                 ],
                                 "storageKey": null
                               }
@@ -462,7 +522,7 @@ return {
     ]
   },
   "params": {
-    "id": "27d9d3ec937f864f4de098b386bef847",
+    "id": "727e354cbce76b9fe4503cc441b0497d",
     "metadata": {},
     "name": "ArtworksInSeriesRailTestsQuery",
     "operationKind": "query",

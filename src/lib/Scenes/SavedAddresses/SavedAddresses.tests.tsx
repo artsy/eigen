@@ -79,7 +79,7 @@ describe(SavedAddressesQueryRenderer, () => {
                   internalID: "5861",
                   name: "George Testing",
                   addressLine1: "401 Brodway",
-                  addressLine2: "26th Floor",
+                  addressLine2: "24th Floor",
                   addressLine3: null,
                   city: "New York",
                   region: "New York",
@@ -100,7 +100,7 @@ describe(SavedAddressesQueryRenderer, () => {
     expect(queryByText("015904832846")).toBeTruthy()
 
     expect(queryByText("George Testing")).toBeTruthy()
-    expect(queryByText("401 Brodway, 26th Floor")).toBeTruthy()
+    expect(queryByText("401 Brodway, 24th Floor")).toBeTruthy()
     expect(queryByText("New York, NY 10013")).toBeTruthy()
     expect(queryByText("1293581028945")).toBeTruthy()
 
@@ -156,7 +156,7 @@ describe(SavedAddressesQueryRenderer, () => {
                   internalID: "5861",
                   name: "George Testing",
                   addressLine1: "401 Brodway",
-                  addressLine2: "26th Floor",
+                  addressLine2: "24th Floor",
                   addressLine3: null,
                   city: "New York",
                   region: "New York",
@@ -215,7 +215,7 @@ describe(SavedAddressesQueryRenderer, () => {
                   internalID: "5861",
                   name: "George Testing",
                   addressLine1: "401 Brodway",
-                  addressLine2: "26th Floor",
+                  addressLine2: "24th Floor",
                   addressLine3: null,
                   city: "New York",
                   region: "New York",

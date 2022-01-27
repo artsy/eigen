@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, within } from "@testing-library/react-native"
 import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   ArtworkFiltersState,
@@ -89,7 +89,7 @@ describe("AdditionalGeneIDsOptions Screen", () => {
 
     const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
 
-    expect(getByText("Medium • 2")).toBeTruthy()
+    expect(within(getByText("Medium")).getByText("• 2")).toBeTruthy()
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {

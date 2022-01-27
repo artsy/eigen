@@ -36,7 +36,7 @@ export const ArtworkMedium: React.FC<Props> = ({ artwork }) => {
               or format used to create the artwork.
             </Text>
 
-            <Button onPress={goBack} block>
+            <Button onPress={() => goBack()} block>
               OK
             </Button>
           </Join>

@@ -173,23 +173,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableSortFilterForArtworksPill",
   },
-  AREnableVisualProfileIconAndBio: {
-    readyForRelease: true,
-    description: "Enable Visual Profile Icon and Bio",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableVisualProfileIconAndBio",
-  },
   AREnableAuctionResultComparableWorks: {
     readyForRelease: true,
     description: "Comparable works in Auction Result",
     showInAdminMenu: true,
     echoFlagKey: "AREnableAuctionResultComparableWorks",
-  },
-  ARMyCollectionLocalSortAndFilter: {
-    readyForRelease: true,
-    description: "My Collection Sort & Filter",
-    showInAdminMenu: true,
-    echoFlagKey: "ARMyCollectionLocalSortAndFilter",
   },
   AREnableArtistRecommendations: {
     readyForRelease: false,
