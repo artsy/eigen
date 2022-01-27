@@ -47,6 +47,7 @@ export const ArtistAutosuggest: React.FC = () => {
         onBlur={() => setFocused(false)}
         onFocus={() => setFocused(true)}
         enableClearButton
+        testID="Submission_ArtistInput"
         error={!focused && artist && !isArtistSelected ? errors.artistId : undefined}
       />
 

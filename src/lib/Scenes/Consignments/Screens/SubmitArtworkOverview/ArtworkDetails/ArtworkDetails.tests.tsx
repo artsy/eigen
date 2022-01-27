@@ -53,7 +53,7 @@ describe("ArtworkDetailsForm", () => {
   describe("ArtworkDetails", () => {
     it("renders correct explanation for form fields", () => {
       const { getByText } = renderWithWrappersTL(<TestRenderer />)
-      expect(getByText("• All fields are required to submit an artwork.")).toBeTruthy()
+      expect(getByText("All fields are required to submit an artwork.")).toBeTruthy()
     })
 
     describe("createOrUpdateSubmission", () => {
@@ -148,7 +148,7 @@ describe("ArtworkDetailsForm", () => {
   })
 })
 
-const mockSubmissionForm: ArtworkDetailsFormModel = {
+export const mockSubmissionForm: ArtworkDetailsFormModel = {
   artist: "123",
   artistId: "200",
   title: "hello",

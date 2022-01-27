@@ -8,6 +8,7 @@ import { act } from "react-test-renderer"
 import { limitedEditionValue } from "../utils/rarityOptions"
 import { artworkDetailsValidationSchema } from "../utils/validation"
 import { ArtworkDetailsFormModel } from "../utils/validation"
+import { mockSubmissionForm } from "./ArtworkDetails.tests"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
 
 jest.unmock("react-relay")
@@ -18,7 +19,7 @@ const ArtworkDetailsFormTestRenderer: React.FC<{ attributionClass?: string }> = 
   return (
     <Formik<ArtworkDetailsFormModel>
       initialValues={{
-        ...mockArtworkDetailsFormValues,
+        ...mockSubmissionForm,
         attributionClass: attributionClass || "unique",
       }}
       onSubmit={jest.fn()}
@@ -91,28 +92,3 @@ describe("ArtworkDetailsForm", () => {
     expect(inputs.editionSize).toBeTruthy()
   })
 })
-
-const mockArtworkDetailsFormValues = {
-  artist: "caspar david friedrich",
-  artistId: "123",
-  title: "work",
-  year: "1820",
-  medium: "oil on canvas",
-  attributionClass: "",
-  editionNumber: "1",
-  editionSizeFormatted: "1",
-  dimensionsMetric: "in",
-  height: "100",
-  width: "200",
-  depth: "3",
-  provenance: "acquired",
-  state: "DRAFT",
-  utmMedium: "",
-  utmSource: "",
-  utmTerm: "",
-  location: {
-    city: "",
-    state: "",
-    country: "",
-  },
-}
