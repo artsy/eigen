@@ -15,7 +15,7 @@ import { Box, Button, Flex, Spacer, Text } from "palette"
 import { Image as RNCImage } from "react-native-image-crop-picker"
 import { ArtistResult, ConsignmentMetadata, ConsignmentSetup, Photo } from "../"
 import TODO from "../Components/ArtworkConsignmentTodo"
-import { ConsignmentsSubmissionFormProps } from "../ConsignmentsHome/ConsignmentsSubmissionForm"
+import { ConsignmentsSubmissionUtmParams } from "../ConsignmentsHome/ConsignmentsSubmissionForm"
 import { createConsignmentSubmission } from "../Submission/createConsignmentSubmission"
 import { updateConsignmentSubmission } from "../Submission/updateConsignmentSubmission"
 import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
@@ -30,7 +30,7 @@ const consignmentsStateKey = "ConsignmentsStoredState"
 
 interface Props {
   navigator: NavigatorIOS
-  params: ConsignmentsSubmissionFormProps
+  params: ConsignmentsSubmissionUtmParams
   setup: ConsignmentSetup
   showActionSheetWithOptions: (options: ActionSheetOptions, callback: (i: number) => void) => void
 }
