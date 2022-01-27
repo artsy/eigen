@@ -135,34 +135,47 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     userAlertSettings: SavedSearchAlertFormValues,
     alertAttributes: SearchCriteriaAttributes
   ) => {
-    formik.setSubmitting(true)
-    const criteria = isEnabledImprovedAlertsFlow ? alertAttributes : undefined
+    try {
+      formik.setSubmitting(true)
+      const criteria = isEnabledImprovedAlertsFlow ? alertAttributes : undefined
 
-    const response = await updateSavedSearchAlert(savedSearchAlertId!, userAlertSettings, criteria)
-    tracking.trackEvent(
-      tracks.editedSavedSearch(savedSearchAlertId!, initialValues, userAlertSettings)
-    )
+      const response = await updateSavedSearchAlert(
+        savedSearchAlertId!,
+        userAlertSettings,
+        criteria
+      )
+      tracking.trackEvent(
+        tracks.editedSavedSearch(savedSearchAlertId!, initialValues, userAlertSettings)
+      )
 
-    const result: SavedSearchAlertMutationResult = {
-      id: response.updateSavedSearch?.savedSearchOrErrors.internalID!,
+      const result: SavedSearchAlertMutationResult = {
+        id: response.updateSavedSearch?.savedSearchOrErrors.internalID!,
+      }
+      onComplete?.(result)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      formik.setSubmitting(false)
     }
-
-    formik.setSubmitting(false)
-    onComplete?.(result)
   }
 
   const handleCreateAlert = async (
     userAlertSettings: SavedSearchAlertFormValues,
     alertAttributes: SearchCriteriaAttributes
   ) => {
-    formik.setSubmitting(true)
-    const response = await createSavedSearchAlert(userAlertSettings, alertAttributes)
-    const result: SavedSearchAlertMutationResult = {
-      id: response.createSavedSearch?.savedSearchOrErrors.internalID!,
-    }
+    try {
+      formik.setSubmitting(true)
+      const response = await createSavedSearchAlert(userAlertSettings, alertAttributes)
+      const result: SavedSearchAlertMutationResult = {
+        id: response.createSavedSearch?.savedSearchOrErrors.internalID!,
+      }
 
-    formik.setSubmitting(false)
-    onComplete?.(result)
+      onComplete?.(result)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      formik.setSubmitting(false)
+    }
   }
 
   // Save the previously entered name
