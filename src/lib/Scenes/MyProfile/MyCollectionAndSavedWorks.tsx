@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { MyCollectionAndSavedWorks_me } from "__generated__/MyCollectionAndSavedWorks_me.graphql"
 import { MyCollectionAndSavedWorksQuery } from "__generated__/MyCollectionAndSavedWorksQuery.graphql"
 import { Image } from "lib/Components/Bidding/Elements/Image"
@@ -8,6 +9,8 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { LocalImage, retrieveLocalImages, storeLocalImages } from "lib/utils/LocalImageStore"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { screen } from "lib/utils/track/helpers"
 import {
   Avatar,
   Box,
@@ -206,17 +209,23 @@ export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContaine
   }
 )
 
+export const MyCollectionAndSavedWorksScreenQuery = graphql`
+  query MyCollectionAndSavedWorksQuery {
+    me @optionalField {
+      ...MyCollectionAndSavedWorks_me
+    }
+  }
+`
+
 export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => (
-  <QueryRenderer<MyCollectionAndSavedWorksQuery>
-    environment={defaultEnvironment}
-    query={graphql`
-      query MyCollectionAndSavedWorksQuery {
-        me @optionalField {
-          ...MyCollectionAndSavedWorks_me
-        }
-      }
-    `}
-    render={renderWithLoadProgress(MyCollectionAndSavedWorksFragmentContainer)}
-    variables={{}}
-  />
+  <ProvideScreenTrackingWithCohesionSchema
+    info={screen({ context_screen_owner_type: OwnerType.profile })}
+  >
+    <QueryRenderer<MyCollectionAndSavedWorksQuery>
+      environment={defaultEnvironment}
+      query={MyCollectionAndSavedWorksScreenQuery}
+      render={renderWithLoadProgress(MyCollectionAndSavedWorksFragmentContainer)}
+      variables={{}}
+    />
+  </ProvideScreenTrackingWithCohesionSchema>
 )
