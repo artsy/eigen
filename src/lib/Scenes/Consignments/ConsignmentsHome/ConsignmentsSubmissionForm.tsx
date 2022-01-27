@@ -17,7 +17,9 @@ export const ConsignmentsSubmissionForm: React.FC<ConsignmentsSubmissionUtmParam
 
   useEffect(() => {
     GlobalStore.actions.artworkSubmission.submission.setUtmParams({
-      ...props,
+      utm_term: props.utm_term || "",
+      utm_medium: props.utm_medium || "",
+      utm_source: props.utm_source || "",
     })
   }, [])
 
