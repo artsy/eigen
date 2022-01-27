@@ -1,7 +1,7 @@
 import { captureMessage } from "@sentry/react-native"
 import { Formik } from "formik"
 import { GlobalStore } from "lib/store/GlobalStore"
-import { CTAButton, Flex, Spacer, Text } from "palette"
+import { BulletedItem, CTAButton, Flex, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { ScrollView } from "react-native"
 import { createOrUpdateSubmission } from "../utils/createOrUpdateSubmission"
@@ -43,16 +43,14 @@ export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePr
       {({ values, isValid }) => (
         <ScrollView>
           <Flex flexDirection="column" p={1} mt={1}>
-            <Text variant="sm" color="black60">
-              • All fields are required to submit an artwork.
-            </Text>
-            <Text variant="sm" color="black60">
-              • Unfortunately, we do not allow&nbsp;
+            <BulletedItem>All fields are required to submit an artwork.</BulletedItem>
+            <BulletedItem>
+              Unfortunately, we do not allow{" "}
               <Text style={{ textDecorationLine: "underline" }}>
                 artists to sell their own work
               </Text>{" "}
               on Artsy.
-            </Text>
+            </BulletedItem>
             <Spacer mt={4} />
             <ArtworkDetailsForm />
             <Spacer mt={3} />
