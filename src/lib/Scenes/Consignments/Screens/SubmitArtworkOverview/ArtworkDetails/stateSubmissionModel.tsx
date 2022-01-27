@@ -1,6 +1,6 @@
 import { Action, action } from "easy-peasy"
 import { ConsignmentsSubmissionUtmParams } from "../../../ConsignmentsHome/ConsignmentsSubmissionForm"
-import { artworkDetailsEmptyInitialValues, ArtworkDetailsFormModel } from "../utils/validation"
+import { artworkDetailsEmptyInitialValues, ArtworkDetailsFormModel } from "./validation"
 
 export interface ArtworkSubmissionModel {
   submissionId: string

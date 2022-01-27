@@ -4,7 +4,7 @@ import { BottomTabsModel, getBottomTabsModel } from "lib/Scenes/BottomTabs/Botto
 import {
   getSubmissionSubmissionModel,
   SubmissionModel,
-} from "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/State/SubmissionModel"
+} from "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/ArtworkDetails/stateSubmissionModel"
 import {
   getMyCollectionModel,
   MyCollectionModel,
