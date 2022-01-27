@@ -16,7 +16,6 @@ export const createOrUpdateSubmission = async (
   const isRarityLimitedEdition = values.attributionClass === limitedEditionValue
 
   const submissionValues: SubmissionInput = {
-    id: submissionId,
     artistID: values.artistId,
     year: values.year,
     title: values.title,
@@ -41,7 +40,10 @@ export const createOrUpdateSubmission = async (
   }
 
   if (submissionId) {
-    return await updateConsignSubmission(submissionValues as UpdateSubmissionMutationInput)
+    return await updateConsignSubmission({
+      id: submissionId,
+      ...submissionValues,
+    } as UpdateSubmissionMutationInput)
   }
 
   return await createConsignSubmission(submissionValues as CreateSubmissionMutationInput)

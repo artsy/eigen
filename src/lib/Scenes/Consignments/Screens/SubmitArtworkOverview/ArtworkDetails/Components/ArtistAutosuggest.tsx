@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react"
 import { ArtworkDetailsFormModel } from "../../utils/validation"
 import { ArtistAutosuggestResult, ArtistAutosuggestResults } from "./ArtistAutosuggestResults"
 
-export const ArtistAutosuggest: React.FC<{}> = () => {
+export const ArtistAutosuggest: React.FC = () => {
   const {
     values: { artist, artistId },
     setFieldValue,
@@ -45,13 +45,9 @@ export const ArtistAutosuggest: React.FC<{}> = () => {
         onChangeText={onArtistSearchTextChange}
         value={artist}
         onBlur={() => setFocused(false)}
-        onFocus={() => {
-          setIsArtistSelected(false)
-          setFocused(true)
-        }}
+        onFocus={() => setFocused(true)}
         enableClearButton
-        autoFocus={typeof jest === "undefined"}
-        error={!focused ? errors.artistId : undefined}
+        error={!focused && artist && !isArtistSelected ? errors.artistId : undefined}
       />
 
       {!!focused && !isArtistSelected && artist?.length > 2 && (
