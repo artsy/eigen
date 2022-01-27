@@ -153,6 +153,11 @@ export interface AuthModel {
   didRehydrate: ThunkOn<this, {}, GlobalStoreModel>
 }
 
+const clientKey = __DEV__ ? Config.ARTSY_DEV_API_CLIENT_KEY : Config.ARTSY_PROD_API_CLIENT_KEY
+const clientSecret = __DEV__
+  ? Config.ARTSY_DEV_API_CLIENT_SECRET
+  : Config.ARTSY_PROD_API_CLIENT_SECRET
+
 export const getAuthModel = (): AuthModel => ({
   userID: null,
   userAccessToken: null,
@@ -173,8 +178,8 @@ export const getAuthModel = (): AuthModel => ({
     }
     const gravityBaseURL = context.getStoreState().config.environment.strings.gravityURL
     const tokenURL = `${gravityBaseURL}/api/v1/xapp_token?${stringify({
-      client_id: Config.ARTSY_API_CLIENT_KEY,
-      client_secret: Config.ARTSY_API_CLIENT_SECRET,
+      client_id: clientKey,
+      client_secret: clientSecret,
     })}`
     const result = await fetch(tokenURL, {
       headers: {
@@ -267,8 +272,8 @@ export const getAuthModel = (): AuthModel => ({
         apple_uid: oauthProvider === "apple" ? args.appleUID : undefined,
         id_token: oauthProvider === "apple" ? args.idToken : undefined,
         grant_type: grantTypeMap[oauthProvider],
-        client_id: Config.ARTSY_API_CLIENT_KEY,
-        client_secret: Config.ARTSY_API_CLIENT_SECRET,
+        client_id: clientKey,
+        client_secret: clientSecret,
         scope: "offline_access",
       },
     })
@@ -470,8 +475,8 @@ export const getAuthModel = (): AuthModel => ({
             body: {
               oauth_provider: "facebook",
               oauth_token: accessToken.accessToken,
-              client_id: Config.ARTSY_API_CLIENT_KEY,
-              client_secret: Config.ARTSY_API_CLIENT_SECRET,
+              client_id: clientKey,
+              client_secret: clientSecret,
               grant_type: "oauth_token",
               scope: "offline_access",
             },
@@ -547,8 +552,8 @@ export const getAuthModel = (): AuthModel => ({
           body: {
             oauth_provider: "google",
             oauth_token: accessToken,
-            client_id: Config.ARTSY_API_CLIENT_KEY,
-            client_secret: Config.ARTSY_API_CLIENT_SECRET,
+            client_id: clientKey,
+            client_secret: clientSecret,
             grant_type: "oauth_token",
             scope: "offline_access",
           },
@@ -622,8 +627,8 @@ export const getAuthModel = (): AuthModel => ({
             oauth_provider: "apple",
             apple_uid: appleUID,
             id_token: idToken,
-            client_id: Config.ARTSY_API_CLIENT_KEY,
-            client_secret: Config.ARTSY_API_CLIENT_SECRET,
+            client_id: clientKey,
+            client_secret: clientSecret,
             grant_type: "apple_uid",
             scope: "offline_access",
           },
