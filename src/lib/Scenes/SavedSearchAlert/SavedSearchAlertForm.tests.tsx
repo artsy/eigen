@@ -563,37 +563,6 @@ describe("Saved search alert form", () => {
       expect(getByTestId("save-alert-button")).not.toBeDisabled()
     })
 
-    it("should be enabled if filters are changed and there is a saved alert with the same criteria", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-      const { getByText, getAllByText } = renderWithWrappersTL(<TestRenderer isPreviouslySaved />)
-
-      expect(getAllByText("Save Alert")[0]).toBeDisabled()
-      fireEvent.press(getByText("Limited Edition"))
-      expect(getAllByText("Save Alert")[0]).not.toBeDisabled()
-    })
-
-    it("should be enabled if name is changed and there is a saved alert with the same criteria", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-      const { getByPlaceholderText, getAllByText } = renderWithWrappersTL(
-        <TestRenderer isPreviouslySaved />
-      )
-
-      expect(getAllByText("Save Alert")[0]).toBeDisabled()
-      fireEvent.changeText(getByPlaceholderText(`artistName ${bullet} 5 filters`), "new value")
-      expect(getAllByText("Save Alert")[0]).not.toBeDisabled()
-    })
-
-    it("should be enabled if notification toggles are changed and there is a saved alert with the same criteria", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-      const { getByA11yLabel, getAllByText } = renderWithWrappersTL(
-        <TestRenderer isPreviouslySaved />
-      )
-
-      expect(getAllByText("Save Alert")[0]).toBeDisabled()
-      fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
-      expect(getAllByText("Save Alert")[0]).not.toBeDisabled()
-    })
-
     it("should be enabled if filters are changed in edit mode", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
       const { getByText, getAllByText } = renderWithWrappersTL(

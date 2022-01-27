@@ -41,7 +41,6 @@ const Container: React.FC<CreateSavedSearchAlertContentProps> = (props) => {
   const { me, loading, relay, criteria, navigation, ...other } = props
   const isPreviouslyFocused = useRef(false)
   const [refetching, setRefetching] = useState(false)
-  const isPreviouslySaved = !!me?.savedSearch?.internalID
 
   const handleUpdateEmailPreferencesPress = () => {
     navigation.navigate("EmailPreferences")
@@ -74,7 +73,6 @@ const Container: React.FC<CreateSavedSearchAlertContentProps> = (props) => {
     <CreateSavedSearchContent
       userAllowsEmails={me?.emailFrequency !== "none"}
       isLoading={loading || refetching}
-      isPreviouslySaved={isPreviouslySaved}
       onUpdateEmailPreferencesPress={handleUpdateEmailPreferencesPress}
       {...other}
     />
