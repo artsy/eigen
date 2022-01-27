@@ -59,7 +59,7 @@ export const Form: React.FC<FormProps> = (props) => {
   const isEditMode = !!savedSearchAlertId
   let isSaveAlertButtonDisabled = false
 
-  // Data has not changed or has already been saved
+  // Data has not changed
   if (isEditMode && !dirty) {
     isSaveAlertButtonDisabled = true
   }
