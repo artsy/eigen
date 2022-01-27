@@ -224,26 +224,39 @@ export const MyCollectionAndSavedWorksFragmentContainer = createRefetchContainer
   `
 )
 
+export const MyCollectionAndSavedWorksScreenQuery = graphql`
+  query MyCollectionAndSavedWorksQuery {
+    me @optionalField {
+      ...MyCollectionAndSavedWorks_me
+    }
+  }
+`
+
 export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => {
   const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
+
   return (
-    <QueryRenderer<MyCollectionAndSavedWorksQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query MyCollectionAndSavedWorksQuery($enableCollectorProfile: Boolean!) {
-          me @optionalField {
-            ...MyCollectionAndSavedWorks_me
-              @arguments(enableCollectorProfile: $enableCollectorProfile)
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({ context_screen_owner_type: OwnerType.profile })}
+    >
+      <QueryRenderer<MyCollectionAndSavedWorksQuery>
+        environment={defaultEnvironment}
+        query={graphql`
+          query MyCollectionAndSavedWorksQuery($enableCollectorProfile: Boolean!) {
+            me @optionalField {
+              ...MyCollectionAndSavedWorks_me
+                @arguments(enableCollectorProfile: $enableCollectorProfile)
+            }
           }
-        }
-      `}
-      render={renderWithPlaceholder({
-        Container: MyCollectionAndSavedWorksFragmentContainer,
-        renderPlaceholder: () => <MyCollectionPlaceholder />,
-      })}
-      variables={{
-        enableCollectorProfile,
-      }}
-    />
+        `}
+        render={renderWithPlaceholder({
+          Container: MyCollectionAndSavedWorksFragmentContainer,
+          renderPlaceholder: () => <MyCollectionPlaceholder />,
+        })}
+        variables={{
+          enableCollectorProfile,
+        }}
+      />
+    </ProvideScreenTrackingWithCohesionSchema>
   )
 }

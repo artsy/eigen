@@ -4,6 +4,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 /* @relayHash f1edc159ab605a68cb8b1e7d7eb79c9f */
 =======
 /* @relayHash b088d1289ffcba232f80baa277f03144 */
@@ -28,12 +29,13 @@
 =======
 /* @relayHash 1d9a233da97db962eee57413cc3f13fc */
 >>>>>>> 8284d04a6e (add tests)
+=======
+/* @relayHash 1ad0b13d40c215504e72045918f4e71a */
+>>>>>>> 8ad8e5aa5e (fix merge conflicts)
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionAndSavedWorksQueryVariables = {
-    enableCollectorProfile: boolean;
-};
+export type MyCollectionAndSavedWorksQueryVariables = {};
 export type MyCollectionAndSavedWorksQueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"MyCollectionAndSavedWorks_me">;
@@ -47,16 +49,14 @@ export type MyCollectionAndSavedWorksQuery = {
 
 
 /*
-query MyCollectionAndSavedWorksQuery(
-  $enableCollectorProfile: Boolean!
-) {
+query MyCollectionAndSavedWorksQuery {
   me @optionalField {
-    ...MyCollectionAndSavedWorks_me_3CllfQ
+    ...MyCollectionAndSavedWorks_me
     id
   }
 }
 
-fragment MyCollectionAndSavedWorks_me_3CllfQ on Me {
+fragment MyCollectionAndSavedWorks_me on Me {
   name
   bio
   location {
@@ -69,9 +69,10 @@ fragment MyCollectionAndSavedWorks_me_3CllfQ on Me {
     url(version: "thumbnail")
   }
   createdAt
-  ...MyProfileEditFormModal_me_3CllfQ
+  ...MyProfileEditFormModal_me_40LmUp
 }
 
+<<<<<<< HEAD
 fragment MyProfileEditFormModal_me_3CllfQ on Me {
 <<<<<<< HEAD
   name
@@ -91,6 +92,10 @@ fragment MyProfileEditFormModal_me_3CllfQ on Me {
   email @include(if: $enableCollectorProfile)
   identityVerified @include(if: $enableCollectorProfile)
 >>>>>>> 52000b447e (send verification email on verify press)
+=======
+fragment MyProfileEditFormModal_me_40LmUp on Me {
+  bio
+>>>>>>> 8ad8e5aa5e (fix merge conflicts)
   icon {
     url(version: "thumbnail")
   }
@@ -99,14 +104,7 @@ fragment MyProfileEditFormModal_me_3CllfQ on Me {
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "enableCollectorProfile"
-  }
-],
-v1 = {
+var v0 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -115,7 +113,7 @@ v1 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
     "name": "MyCollectionAndSavedWorksQuery",
@@ -129,13 +127,7 @@ return {
         "plural": false,
         "selections": [
           {
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "enableCollectorProfile",
-                "variableName": "enableCollectorProfile"
-              }
-            ],
+            "args": null,
             "kind": "FragmentSpread",
             "name": "MyCollectionAndSavedWorks_me"
           }
@@ -148,7 +140,7 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "MyCollectionAndSavedWorksQuery",
     "selections": [
@@ -190,6 +182,7 @@ return {
                 "storageKey": null
               },
 <<<<<<< HEAD
+<<<<<<< HEAD
               (v0/*: any*/),
               {
                 "alias": null,
@@ -215,6 +208,9 @@ return {
 =======
               (v1/*: any*/)
 >>>>>>> 0ac07c6c97 (add profile verification methods)
+=======
+              (v0/*: any*/)
+>>>>>>> 8ad8e5aa5e (fix merge conflicts)
             ],
             "storageKey": null
           },
@@ -263,41 +259,14 @@ return {
             "name": "createdAt",
             "storageKey": null
           },
-          (v1/*: any*/),
-          {
-            "condition": "enableCollectorProfile",
-            "kind": "Condition",
-            "passingValue": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "canRequestEmailConfirmation",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "email",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "identityVerified",
-                "storageKey": null
-              }
-            ]
-          }
+          (v0/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -325,6 +294,9 @@ return {
 =======
     "id": "1d9a233da97db962eee57413cc3f13fc",
 >>>>>>> 8284d04a6e (add tests)
+=======
+    "id": "1ad0b13d40c215504e72045918f4e71a",
+>>>>>>> 8ad8e5aa5e (fix merge conflicts)
     "metadata": {},
     "name": "MyCollectionAndSavedWorksQuery",
     "operationKind": "query",
@@ -332,5 +304,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'd127f9d668c0f4e07494a43a1e189dfa';
+(node as any).hash = 'e2528a0edab35bb34cd3e89a63547d21';
 export default node;
