@@ -2,7 +2,7 @@ import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { getLocationDetails, getLocationPredictions, SimpleLocation } from "lib/utils/googleMaps"
 import { Box, Flex, Input, LocationIcon, Separator, Text, Touchable, useSpace } from "palette"
 import React, { useEffect, useRef, useState } from "react"
-import { FlatList } from "react-native"
+import { FlatList, Image } from "react-native"
 import { Location } from "../../utils/validation"
 
 interface Props {
@@ -126,7 +126,7 @@ export const LocationPredictions = ({
 
   return (
     <Box height={150}>
-      <AboveTheFoldFlatList<any>
+      <AboveTheFoldFlatList
         listRef={flatListRef}
         style={{
           flex: 1,
@@ -163,6 +163,9 @@ export const LocationPredictions = ({
           )
         }}
       />
+      <Flex alignItems="flex-end" pt={0.5}>
+        <Image source={require("@images/powered_by_google.webp")} resizeMode="contain" />
+      </Flex>
     </Box>
   )
 }
