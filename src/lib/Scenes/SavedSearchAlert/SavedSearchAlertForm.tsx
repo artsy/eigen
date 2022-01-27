@@ -124,7 +124,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
           return
         }
 
-        submitHandler(userAlertSettings, clearedAttributes)
+        await submitHandler(userAlertSettings, clearedAttributes)
       } catch (error) {
         console.error(error)
       }
@@ -135,6 +135,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     userAlertSettings: SavedSearchAlertFormValues,
     alertAttributes: SearchCriteriaAttributes
   ) => {
+    formik.setSubmitting(true)
     const criteria = isEnabledImprovedAlertsFlow ? alertAttributes : undefined
 
     const response = await updateSavedSearchAlert(savedSearchAlertId!, userAlertSettings, criteria)
@@ -146,6 +147,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       id: response.updateSavedSearch?.savedSearchOrErrors.internalID!,
     }
 
+    formik.setSubmitting(false)
     onComplete?.(result)
   }
 
@@ -153,16 +155,14 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     userAlertSettings: SavedSearchAlertFormValues,
     alertAttributes: SearchCriteriaAttributes
   ) => {
-    try {
-      const response = await createSavedSearchAlert(userAlertSettings, alertAttributes)
-      const result: SavedSearchAlertMutationResult = {
-        id: response.createSavedSearch?.savedSearchOrErrors.internalID!,
-      }
-
-      onComplete?.(result)
-    } catch (error) {
-      console.error(error)
+    formik.setSubmitting(true)
+    const response = await createSavedSearchAlert(userAlertSettings, alertAttributes)
+    const result: SavedSearchAlertMutationResult = {
+      id: response.createSavedSearch?.savedSearchOrErrors.internalID!,
     }
+
+    formik.setSubmitting(false)
+    onComplete?.(result)
   }
 
   // Save the previously entered name
