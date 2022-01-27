@@ -21,9 +21,9 @@ export const BuyNowArtworksRail: React.FC<BuyNowArtworksRailProps> = ({ sale }) 
     return null
   }
 
-  const artworkss = artworks.map((artwork) => {
-    return artwork.artwork
-  })
+  // const artworkss = artworks.map((artwork) => {
+  //   return artwork.artwork
+  // })
 
   return (
     <Flex mt={3} testID="bnmo-rail-wrapper">
@@ -31,7 +31,7 @@ export const BuyNowArtworksRail: React.FC<BuyNowArtworksRailProps> = ({ sale }) 
         <SectionTitle title="Artworks Available to Buy Now" />
       </Flex>
       <SmallArtworkRail
-        artworks={artworkss}
+        artworks={[]}
         onPress={(artwork) => {
           navigate(artwork?.href!)
         }}
