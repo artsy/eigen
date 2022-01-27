@@ -139,9 +139,10 @@ export const features = defineFeatures({
     echoFlagKey: "ARGoogleAuth",
   },
   AREnableImprovedAlertsFlow: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Improved Alerts flow",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableImprovedAlertsFlow",
   },
   AREnableWebPImages: {
     readyForRelease: true,
