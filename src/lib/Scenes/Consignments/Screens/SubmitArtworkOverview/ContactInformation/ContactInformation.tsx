@@ -3,10 +3,14 @@ import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
 import React from "react"
 import * as Yup from "yup"
+import { updateConsignSubmission } from "../mutations/updateConsignSubmissionMutation"
 
 interface Props {
   handlePress: () => void
 }
+// Update this to get the submissionId from globalStore
+const submissionId = "72504"
+
 interface ContactInfoFormModel {
   name: string
   email: string
@@ -19,6 +23,30 @@ export const ContactInformation = ({ handlePress }: Props) => {
     phoneNumber: Yup.string().required("Please provide a valid phone number").trim(),
   })
 
+  const handleError = () => {
+    // let's add error display here
+    console.log("handling error")
+  }
+  const handleSubmit = async (values: ContactInfoFormModel) => {
+    try {
+      const updateResults = await updateConsignSubmission({
+        id: submissionId,
+        userName: values.name,
+        userEmail: values.email,
+        userPhone: values.phoneNumber,
+      })
+      if (updateResults) {
+        handlePress()
+      }
+    } catch (error) {
+      console.log("error whiles", error)
+      handleError()
+
+      // remove submissions
+      // GlobalStore.actions.artworkSubmission.submission.resetSessionState()
+    }
+  }
+
   return (
     <Formik<ContactInfoFormModel>
       initialValues={{ name: "", email: "", phoneNumber: "" }}
@@ -26,7 +54,7 @@ export const ContactInformation = ({ handlePress }: Props) => {
       validationSchema={schema}
       validateOnMount
     >
-      {({ values, handleSubmit, setFieldValue, isValid }) => (
+      {({ values, setFieldValue, isValid }) => (
         <Flex p={1} mt={1}>
           <Text variant="sm" color="black60">
             We will only use these details to contact you regarding your submission.
@@ -38,14 +66,14 @@ export const ContactInformation = ({ handlePress }: Props) => {
             onChangeText={(e) => setFieldValue("name", e)}
             value={values.name}
           />
-          <Spacer mt={2} />
+          <Spacer mt={4} />
           <Input
             title="Email"
             placeholder="Your Email Address"
             onChangeText={(e) => setFieldValue("email", e)}
             value={values.email}
           />
-          <Spacer mt={2} />
+          <Spacer mt={4} />
           <PhoneInput
             style={{ flex: 1 }}
             title="Phone number"
@@ -57,11 +85,9 @@ export const ContactInformation = ({ handlePress }: Props) => {
             }}
           />
           <Spacer mt={6} />
-          <Spacer mt={4} />
           <CTAButton
             onPress={() => {
-              handleSubmit()
-              handlePress()
+              handleSubmit(values)
             }}
             disabled={!isValid}
           >
