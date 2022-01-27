@@ -1,32 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b635ab06273d929c97ba4b6d2e68a80f */
+/* @relayHash 0ac9711f91281df7c2ce24f14369e58a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SearchCriteriaAttributes = {
-    acquireable?: boolean | null | undefined;
-    additionalGeneIDs?: Array<string> | null | undefined;
-    artistID?: string | null | undefined;
-    atAuction?: boolean | null | undefined;
-    attributionClass?: Array<string> | null | undefined;
-    colors?: Array<string> | null | undefined;
-    dimensionRange?: string | null | undefined;
-    height?: string | null | undefined;
-    inquireableOnly?: boolean | null | undefined;
-    locationCities?: Array<string> | null | undefined;
-    majorPeriods?: Array<string> | null | undefined;
-    materialsTerms?: Array<string> | null | undefined;
-    offerable?: boolean | null | undefined;
-    partnerIDs?: Array<string> | null | undefined;
-    priceRange?: string | null | undefined;
-    sizes?: Array<string> | null | undefined;
-    width?: string | null | undefined;
-};
-export type CreateSavedSearchContentContainerV2QueryVariables = {
-    criteria: SearchCriteriaAttributes;
-};
+export type CreateSavedSearchContentContainerV2QueryVariables = {};
 export type CreateSavedSearchContentContainerV2QueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"CreateSavedSearchContentContainerV2_me">;
@@ -40,41 +19,21 @@ export type CreateSavedSearchContentContainerV2Query = {
 
 
 /*
-query CreateSavedSearchContentContainerV2Query(
-  $criteria: SearchCriteriaAttributes!
-) {
+query CreateSavedSearchContentContainerV2Query {
   me {
-    ...CreateSavedSearchContentContainerV2_me_1ff8oJ
+    ...CreateSavedSearchContentContainerV2_me
     id
   }
 }
 
-fragment CreateSavedSearchContentContainerV2_me_1ff8oJ on Me {
+fragment CreateSavedSearchContentContainerV2_me on Me {
   emailFrequency
-  savedSearch(criteria: $criteria) {
-    internalID
-  }
 }
 */
 
-const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "criteria"
-  }
-],
-v1 = [
-  {
-    "kind": "Variable",
-    "name": "criteria",
-    "variableName": "criteria"
-  }
-];
-return {
+const node: ConcreteRequest = {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
     "name": "CreateSavedSearchContentContainerV2Query",
@@ -88,7 +47,7 @@ return {
         "plural": false,
         "selections": [
           {
-            "args": (v1/*: any*/),
+            "args": null,
             "kind": "FragmentSpread",
             "name": "CreateSavedSearchContentContainerV2_me"
           }
@@ -101,7 +60,7 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "CreateSavedSearchContentContainerV2Query",
     "selections": [
@@ -122,24 +81,6 @@ return {
           },
           {
             "alias": null,
-            "args": (v1/*: any*/),
-            "concreteType": "SearchCriteria",
-            "kind": "LinkedField",
-            "name": "savedSearch",
-            "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "internalID",
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          },
-          {
-            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "id",
@@ -151,13 +92,12 @@ return {
     ]
   },
   "params": {
-    "id": "b635ab06273d929c97ba4b6d2e68a80f",
+    "id": "0ac9711f91281df7c2ce24f14369e58a",
     "metadata": {},
     "name": "CreateSavedSearchContentContainerV2Query",
     "operationKind": "query",
     "text": null
   }
 };
-})();
-(node as any).hash = '83e19f35cf81a2faacf7ed1828cf614f';
+(node as any).hash = 'a2498d1873550bd3f9aec3b590625ed7';
 export default node;
