@@ -34,13 +34,28 @@ describe("ArtworkDetailsForm", () => {
     </RelayEnvironmentProvider>
   )
 
+  beforeEach(() => {
+    // this does not work here . . .
+    // ;(createConsignSubmissionMock as jest.Mock).mockClear()
+    // ;(updateConsignSubmissionMock as jest.Mock).mockClear()
+    // mockEnvironment.mockClear()
+  })
+
   it("renders without throwing an error", () => {
     renderWithWrappersTL(<ContactInformation handlePress={() => console.log("do nothing")} />)
   })
-  it("sends information correctly", () => {
-    renderWithWrappersTL(<ContactInformation handlePress={() => console.log("do nothing")} />)
+
+  it("renders correct explanation for form fields", () => {
+    const { getByText } = renderWithWrappersTL(<TestRenderer />)
+    expect(
+      getByText("We will only use these details to contact you regarding your submission.")
+    ).toBeTruthy()
   })
-  it(" navigate to the next page correctly", () => {
-    renderWithWrappersTL(<ContactInformation handlePress={() => console.log("do nothing")} />)
-  })
+
+  // it("sends information correctly", () => {
+  //   renderWithWrappersTL(<ContactInformation handlePress={() => console.log("do nothing")} />)
+  // })
+  // it(" navigate to the next page correctly", () => {
+  //   renderWithWrappersTL(<ContactInformation handlePress={() => console.log("do nothing")} />)
+  // })
 })
