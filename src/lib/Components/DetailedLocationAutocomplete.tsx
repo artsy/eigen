@@ -13,12 +13,12 @@ import { Text } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 
 interface DetailedLocationAutocompleteProps extends Omit<InputProps, "onChange"> {
-  initialLocation: string
+  initialLocation?: string
   onChange: (location: LocationWithDetails) => void
 }
 
 export const DetailedLocationAutocomplete: React.FC<DetailedLocationAutocompleteProps> = ({
-  initialLocation,
+  initialLocation = "",
   onChange,
   ...restProps
 }) => {
@@ -88,12 +88,17 @@ export const DetailedLocationAutocomplete: React.FC<DetailedLocationAutocomplete
         }}
         onBlur={handleBlur}
         selectTextOnFocus
+        testID="detailed-location-autocomplete-input"
       />
       {!!showSearchResults && (
         <ScrollView keyboardShouldPersistTaps="always">
           <Flex height={2 * screenHeight} mt={1} mb={2}>
             {results.map((result) => (
-              <Touchable onPress={() => handleLocationSelected(result)} key={result.id}>
+              <Touchable
+                onPress={() => handleLocationSelected(result)}
+                key={result.id}
+                testID={`detailed-location-autocomplete-result-${result.id}`}
+              >
                 <Flex
                   flexDirection="row"
                   alignItems="center"
