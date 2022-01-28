@@ -5290,10 +5290,10 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-tracking@7.0.1":
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/@types/react-tracking/-/react-tracking-7.0.1.tgz#aa431b621c9fbee5d5a56844039216bfbfe3f713"
-  integrity sha512-W/EzjMYKbFUMYm/FvWd5vK1PjZ1Lt4Q7UxHlA4QaTw1sjL+QNTIgoqlPfIlxxFcxu2RB91uXrqqSVPsLxmKoPw==
+"@types/react-tracking@^8.1.2":
+  version "8.1.2"
+  resolved "https://registry.yarnpkg.com/@types/react-tracking/-/react-tracking-8.1.2.tgz#333acfcb4b7cff3f175821273a54113ce60d9a35"
+  integrity sha512-FILKMlXtGJCGJvdp/br1TfvK1ijLc+SOkjjxaH968hofhK3Z9aLhRQ5tBc4O2TvGsBkO3PakGp++fBlsJfvl8g==
   dependencies:
     "@types/react" "*"
 
@@ -8136,11 +8136,6 @@ core-js@^3.0.1, core-js@^3.0.4:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.15.2.tgz#740660d2ff55ef34ce664d7e2455119c5bdd3d61"
   integrity sha512-tKs41J7NJVuaya8DxIOCnl8QuPHx5/ZVbFo1oKgVl1qHFBBrDctzQGtuLjPpRdNTWmKPH6oEvgN/MUID+l485Q==
 
-core-js@^3.3.2:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.4.1.tgz#76dd6828412900ab27c8ce0b22e6114d7ce21b18"
-  integrity sha512-KX/dnuY/J8FtEwbnrzmAjUYgLqtk+cxM86hfG60LGiW3MmltIc2yAmDgBgEkfm0blZhUrdr1Zd84J2Y14mLxzg==
-
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
@@ -8684,7 +8679,7 @@ deepmerge@^4.0.0:
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-4.2.1.tgz#018a3e5dfe82b95e35e36a9a29ba15ddb194e40f"
   integrity sha512-32P7FIV6JKt0hPMFNlWFytzVGpppYHFKdnhFUEMXheWc8Lw4HnHEzJa5yxhaQedDAXv2SI6zD7+UbqnC5k9g9Q==
 
-deepmerge@^4.1.1, deepmerge@^4.2.2:
+deepmerge@^4.2.2:
   version "4.2.2"
   resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-4.2.2.tgz#44d2ea3679b8f4d4ffba33f03d865fc1e7bf4955"
   integrity sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg==
@@ -16834,14 +16829,13 @@ react-timer-mixin@^0.13.3:
   resolved "https://registry.yarnpkg.com/react-timer-mixin/-/react-timer-mixin-0.13.3.tgz#0da8b9f807ec07dc3e854d082c737c65605b3d22"
   integrity sha1-Dai5+AfsB9w+hU0ILHN8ZWBbPSI=
 
-react-tracking@7.2.1:
-  version "7.2.1"
-  resolved "https://registry.yarnpkg.com/react-tracking/-/react-tracking-7.2.1.tgz#36a2636a32a5d2ecdde3664c9440ea7ddc72ae20"
-  integrity sha512-oFQ75Sczqxy34G5AfUGjcnzzwBgbzgj4xpzpW4Yq8ixfTj0IB+IE84XkBk5XWJvPcPQgWHgnxX2tLpDGicFxNw==
+react-tracking@^9.1.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/react-tracking/-/react-tracking-9.1.0.tgz#02b69385f4f439628146b79b06c37a9b865dabb4"
+  integrity sha512-hZ19F2bqHeamxFt0W5+yJ04yn7xnZCWs6gUiKMeNBQ05JAR6kLG0pFJ+oJehyVPuGvRlIuIZ63JU8fXAjFnNYw==
   dependencies:
-    core-js "^3.3.2"
-    deepmerge "^4.1.1"
-    hoist-non-react-statics "^3.3.0"
+    deepmerge "^4.2.2"
+    hoist-non-react-statics "^3.3.2"
 
 react-universal-interface@^0.6.2:
   version "0.6.2"
