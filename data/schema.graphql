@@ -12032,7 +12032,8 @@ type SearchAggregationResults {
 type SearchCriteria {
   acquireable: Boolean
   additionalGeneIDs: [String!]!
-  artistID: String
+  artistID: String @deprecated(reason: "Deprecated in favor of artistIDs array")
+  artistIDs: [String!]
   atAuction: Boolean
   attributionClass: [String!]!
   colors: [String!]!
@@ -12055,7 +12056,10 @@ type SearchCriteria {
 input SearchCriteriaAttributes {
   acquireable: Boolean = null
   additionalGeneIDs: [String!] = []
+
+  # DEPRECATED Please use artistIDs instead
   artistID: String = null
+  artistIDs: [String!] = []
   atAuction: Boolean = null
   attributionClass: [String!] = []
   colors: [String!] = []
