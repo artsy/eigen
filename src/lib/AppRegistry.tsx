@@ -227,17 +227,23 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({
 // provide the tracking context so pages can use `useTracking` all the time
 @track()
 class PageWrapper extends React.Component<PageWrapperProps> {
-  render() {
-    const props = {
+  pageProps: PageWrapperProps
+
+  constructor(props: PageWrapperProps) {
+    super(props)
+    this.pageProps = {
       ...this.props,
       viewProps: {
         ...this.props.viewProps,
         ...propsStore.getPropsForModule(this.props.moduleName),
       },
     }
+  }
+
+  render() {
     return (
       <AppProviders>
-        <InnerPageWrapper {...props} />
+        <InnerPageWrapper {...this.pageProps} />
       </AppProviders>
     )
   }
