@@ -1,4 +1,6 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
+import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
+import { MyProfileEditFormModal_me$key } from "__generated__/MyProfileEditFormModal_me.graphql"
 import { useFormik } from "formik"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { Image } from "lib/Components/Bidding/Elements/Image"
@@ -14,8 +16,6 @@ import React, { useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
 import { graphql, useFragment } from "react-relay"
 import * as Yup from "yup"
-import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
-import { MyProfileEditFormModal_me$key } from "__generated__/MyProfileEditFormModal_me.graphql"
 import {
   buildLocationDisplay,
   DetailedLocationAutocomplete,

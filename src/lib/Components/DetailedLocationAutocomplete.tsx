@@ -25,6 +25,7 @@ export const DetailedLocationAutocomplete: React.FC<DetailedLocationAutocomplete
   const [query, setQuery] = useState(initialLocation)
   const [selectedLocation, setSelectedLocation] = useState<LocationWithDetails | null>(null)
   const [results, setResults] = useState<SimpleLocation[]>([])
+  const [currentResult, setCurrentResult] = useState<LocationResult | null>(null)
   const [isFocused, setIsFocused] = useState(false)
 
   const inputRef = useRef<Input>(null)
@@ -50,25 +51,25 @@ export const DetailedLocationAutocomplete: React.FC<DetailedLocationAutocomplete
   }
 
   const handleLocationSelected = async (result: LocationResult) => {
-    try {
-      const locationDetails = await getLocationDetails(result)
+    setCurrentResult(result)
 
-      setQuery(result.name)
-      setSelectedLocation(locationDetails)
+    const locationDetails = await getLocationDetails(result)
 
-      inputRef.current?.blur()
-    } catch (error) {
-      console.error(error)
-    }
+    setQuery(result.name)
+    setSelectedLocation(locationDetails)
+
+    inputRef.current?.blur()
   }
 
   const handleBlur = () => {
-    if (query !== initialLocation) {
-      // @ts-expect-error No need to set ID and name here
-      setSelectedLocation({ city: query })
+    setIsFocused(false)
+
+    if (query === initialLocation || query === currentResult?.name) {
+      return
     }
 
-    setIsFocused(false)
+    // @ts-expect-error No need to set ID and name here
+    setSelectedLocation({ city: query })
   }
 
   const showSearchResults = isFocused && query?.length > 0 && results?.length
