@@ -79,8 +79,7 @@ describe("MyCollectionArtworkHeader", () => {
       }),
     })
     wrapper.root.findAllByType(ImageWithLoadingState)[0].props.onPress()
-    // expect 2 calls: 1 for our custom tracking, 2 for tracking deep zoom taps
-    expect(mockTrackEvent).toHaveBeenCalledTimes(2)
+    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
     expect(mockTrackEvent).toHaveBeenCalledWith(
       tappedCollectedArtworkImages({
         contextOwnerId: "someInternalId",
