@@ -3,7 +3,7 @@ import SearchIcon from "lib/Icons/SearchIcon"
 import { SearchContext, useSearchProviderValues } from "lib/Scenes/Search/SearchContext"
 import { Box, Input } from "palette"
 import React, { useEffect, useState } from "react"
-import { ArtworkDetailsFormModel } from "../../utils/validation"
+import { ArtworkDetailsFormModel } from "../validation"
 import { ArtistAutosuggestResult, ArtistAutosuggestResults } from "./ArtistAutosuggestResults"
 
 export const ArtistAutosuggest: React.FC = () => {

@@ -5,10 +5,10 @@ import { Select } from "palette/elements/Select"
 import React, { useState } from "react"
 import { rarityOptions } from "../utils/rarityOptions"
 import { limitedEditionValue } from "../utils/rarityOptions"
-import { ArtworkDetailsFormModel, Location } from "../utils/validation"
 import { ArtistAutosuggest } from "./Components/ArtistAutosuggest"
 import { InfoModal } from "./Components/InfoModal"
 import { LocationAutocomplete } from "./Components/LocationAutocomplete"
+import { ArtworkDetailsFormModel, Location } from "./validation"
 
 export const ArtworkDetailsForm: React.FC = () => {
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
