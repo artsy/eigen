@@ -3,6 +3,7 @@ import { SmallArtworkRail } from "lib/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
+import { compact } from "lodash"
 import { Flex } from "palette"
 import React from "react"
 import { createFragmentContainer } from "react-relay"
@@ -15,15 +16,13 @@ interface BuyNowArtworksRailProps {
 }
 
 export const BuyNowArtworksRail: React.FC<BuyNowArtworksRailProps> = ({ sale }) => {
-  const artworks = extractNodes(sale?.promotedSale?.saleArtworksConnection)
+  const artworks = extractNodes(sale.promotedSale?.saleArtworksConnection).map(
+    (saleArtwork) => saleArtwork.artwork
+  )
 
   if (!artworks?.length) {
     return null
   }
-
-  // const artworkss = artworks.map((artwork) => {
-  //   return artwork.artwork
-  // })
 
   return (
     <Flex mt={3} testID="bnmo-rail-wrapper">
@@ -31,7 +30,7 @@ export const BuyNowArtworksRail: React.FC<BuyNowArtworksRailProps> = ({ sale }) 
         <SectionTitle title="Artworks Available to Buy Now" />
       </Flex>
       <SmallArtworkRail
-        artworks={[]}
+        artworks={compact(artworks)}
         onPress={(artwork) => {
           navigate(artwork?.href!)
         }}
