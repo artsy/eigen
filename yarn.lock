@@ -5290,7 +5290,7 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-tracking@^8.1.2":
+"@types/react-tracking@8.1.2":
   version "8.1.2"
   resolved "https://registry.yarnpkg.com/@types/react-tracking/-/react-tracking-8.1.2.tgz#333acfcb4b7cff3f175821273a54113ce60d9a35"
   integrity sha512-FILKMlXtGJCGJvdp/br1TfvK1ijLc+SOkjjxaH968hofhK3Z9aLhRQ5tBc4O2TvGsBkO3PakGp++fBlsJfvl8g==
@@ -16829,7 +16829,7 @@ react-timer-mixin@^0.13.3:
   resolved "https://registry.yarnpkg.com/react-timer-mixin/-/react-timer-mixin-0.13.3.tgz#0da8b9f807ec07dc3e854d082c737c65605b3d22"
   integrity sha1-Dai5+AfsB9w+hU0ILHN8ZWBbPSI=
 
-react-tracking@^9.1.0:
+react-tracking@9.1.0:
   version "9.1.0"
   resolved "https://registry.yarnpkg.com/react-tracking/-/react-tracking-9.1.0.tgz#02b69385f4f439628146b79b06c37a9b865dabb4"
   integrity sha512-hZ19F2bqHeamxFt0W5+yJ04yn7xnZCWs6gUiKMeNBQ05JAR6kLG0pFJ+oJehyVPuGvRlIuIZ63JU8fXAjFnNYw==
