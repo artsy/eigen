@@ -71,7 +71,7 @@ export const MyCollectionArtworkHeader: React.FC<MyCollectionArtworkHeaderProps>
           images={imagesToDisplay as any}
           cardHeight={dimensions.height / 2.5}
           paginationIndicatorType="scrollBar"
-          onImagePressed={trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))}
+          onImagePressed={() => trackEvent(tracks.tappedCollectedArtworkImages(internalID, slug))}
         />
       ) : (
         <Flex
