@@ -4,10 +4,7 @@ import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import {
-  BuyNowArtworksRailContainer,
-  INITIAL_NUMBER_TO_RENDER,
-} from "./Components/BuyNowArtworksRail"
+import { BuyNowArtworksRailContainer } from "./Components/BuyNowArtworksRail"
 
 jest.unmock("react-relay")
 
@@ -40,14 +37,7 @@ describe("BuyNowArtworksRail", () => {
     mockEnvironmentPayload(mockEnvironment, mockProps)
     expect(getByText("Artworks Available to Buy Now")).toBeDefined()
   })
-  it("renders initial amount of cards with proper text", () => {
-    const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
-    mockEnvironmentPayload(mockEnvironment, mockProps)
-    expect(getAllByText("Banksy")).toHaveLength(INITIAL_NUMBER_TO_RENDER)
-    expect(getAllByText("Best artwork ever, 2019")).toHaveLength(INITIAL_NUMBER_TO_RENDER)
-    expect(getAllByText("Heritage Auctions")).toHaveLength(INITIAL_NUMBER_TO_RENDER)
-    expect(getAllByText("Contact For Price")).toHaveLength(INITIAL_NUMBER_TO_RENDER)
-  })
+
   it("renders nothing if there are no artworks", () => {
     const { queryAllByTestId } = renderWithWrappersTL(<TestRenderer />)
     const noArtworksProps = {
