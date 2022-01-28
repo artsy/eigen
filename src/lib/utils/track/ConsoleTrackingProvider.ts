@@ -1,4 +1,4 @@
-import Config from "react-native-config"
+import { EVENT_TRACKED_LOGGERS_ACTIVE } from "../hideLoggers"
 import { TrackingProvider } from "./providers"
 
 export const ConsoleTrackingProvider: TrackingProvider = {
@@ -6,7 +6,7 @@ export const ConsoleTrackingProvider: TrackingProvider = {
     if (!__DEV__) {
       return
     }
-    if (Config.ACTION_LOGGERS_ACTIVE === "TRUE") {
+    if (EVENT_TRACKED_LOGGERS_ACTIVE) {
       console.log("[Event tracked]", JSON.stringify({ userId, ...traits }, null, 2))
     }
   },
@@ -15,7 +15,7 @@ export const ConsoleTrackingProvider: TrackingProvider = {
     if (!__DEV__) {
       return
     }
-    if (Config.ACTION_LOGGERS_ACTIVE === "TRUE") {
+    if (EVENT_TRACKED_LOGGERS_ACTIVE) {
       console.log("[Event tracked]", JSON.stringify(info, null, 2))
     }
   },

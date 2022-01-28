@@ -5,9 +5,9 @@ import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/Globa
 import { GlobalStore, unsafe_getUserAccessToken } from "lib/store/GlobalStore"
 import { PendingPushNotification } from "lib/store/PendingPushNotificationModel"
 import { Platform } from "react-native"
-import Config from "react-native-config"
 import { getDeviceId } from "react-native-device-info"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
+import { ACTION_LOGGERS_ACTIVE, NOTIFICATION_LOGGERS_ACTIVE } from "./hideLoggers"
 
 export const PUSH_NOTIFICATION_TOKEN = "PUSH_NOTIFICATION_TOKEN"
 export const HAS_PENDING_NOTIFICATION = "HAS_PENDING_NOTIFICATION"
@@ -200,9 +200,13 @@ export async function configure() {
 
     // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
     onAction: (notification) => {
-      if (__DEV__ && Config.ACTION_LOGGERS_ACTIVE === "TRUE") {
-        console.log("ACTION:", notification.action)
-        console.log("NOTIFICATION:", notification)
+      if (__DEV__) {
+        if (ACTION_LOGGERS_ACTIVE) {
+          console.log("ACTION:", notification.action)
+        }
+        if (NOTIFICATION_LOGGERS_ACTIVE) {
+          console.log("NOTIFICATION:", notification)
+        }
       }
 
       // process the action

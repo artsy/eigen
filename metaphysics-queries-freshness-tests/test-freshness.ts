@@ -1,12 +1,12 @@
 #!/usr/bin/env yarn ts-node
 // @ts-ignore tslint(no-var-requires)
 require("dotenv").config()
-import Config from "react-native-config"
 
 import { GraphQLClient } from "graphql-request"
 import { values } from "lodash"
 import { exit, stdout } from "process"
 import puppeteer from "puppeteer"
+import { RUNNING_REQUEST_LOGGERS_ACTIVE } from '../src/lib/utils/hideLoggers'
 
 const login = async (): Promise<{ userId: string; accessToken: string }> => {
   console.log("Logging in..")
@@ -107,7 +107,7 @@ const doIt = async (): Promise<never> => {
         console.log("logging ...args", ...args)
       }
     }
-    if (Config.ACTION_LOGGERS_ACTIVE === "TRUE") {
+    if (RUNNING_REQUEST_LOGGERS_ACTIVE) {
       console.log(`Running ${requests.length} ${description}`)
     }
     await Promise.all(

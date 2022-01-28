@@ -5,6 +5,8 @@ import { Toast } from "lib/Components/Toast/Toast"
 import { unsafe_getDevToggle } from "lib/store/GlobalStore"
 import { Platform } from "react-native"
 import Config from "react-native-config"
+import { ACTION_LOGGERS_ACTIVE } from "../hideLoggers"
+
 import { isCohesionScreen, TrackingProvider } from "./providers"
 
 export const SEGMENT_TRACKING_PROVIDER = "SEGMENT_TRACKING_PROVIDER"
@@ -32,7 +34,7 @@ export const SegmentTrackingProvider: TrackingProvider = {
         }
       )
       .then(() => {
-        if (Config.ACTION_LOGGERS_ACTIVE === "TRUE") {
+        if (ACTION_LOGGERS_ACTIVE) {
           console.log("Analytics is ready")
         }
       })

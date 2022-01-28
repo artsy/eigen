@@ -1,5 +1,5 @@
 import { captureMessage } from "@sentry/react-native"
-import Config from "react-native-config"
+import { OPERATION_LOGGERS_ACTIVE } from "lib/utils/hideLoggers"
 import { Middleware } from "react-relay-network-modern/node8"
 
 interface RateLimitMiddlewareOpts {
@@ -40,7 +40,7 @@ export const rateLimitMiddleware = (
 
       count = count + 1
       prevTimeElapsed = Date.now()
-      if (Config.ACTION_LOGGERS_ACTIVE === "TRUE") {
+      if (OPERATION_LOGGERS_ACTIVE) {
         logger(`${operationName}: request +${count}`)
       }
       return next(req)

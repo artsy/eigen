@@ -1,8 +1,8 @@
 import { captureMessage } from "@sentry/react-native"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/GlobalStore"
+import { ROUTE_LOGGERS_ACTIVE } from "lib/utils/hideLoggers"
 import _ from "lodash"
-import Config from "react-native-config"
 import { Middleware, urlMiddleware } from "react-relay-network-modern/node8"
 
 /**
@@ -50,7 +50,7 @@ export function metaphysicsExtensionsLoggerMiddleware() {
         const title = `%cMetaphysics API -${requestSummary}${stitchSummary}`
 
         // Make sure we have something to show
-        if (Config.ACTION_LOGGERS_ACTIVE === "TRUE" && (requestCount || stitchCount)) {
+        if (ROUTE_LOGGERS_ACTIVE && (requestCount || stitchCount)) {
           // The main title for the metaphysics section
           console.groupCollapsed(title, noBold, colorForRequests, noColor)
           // Loop through all of the hosts, make a subsection for those

@@ -1,5 +1,5 @@
 import { addBreadcrumb } from "@sentry/react-native"
-import Config from "react-native-config"
+import { RELAY_LOGGERS_ACTIVE } from "lib/utils/hideLoggers"
 import { Middleware } from "react-relay-network-modern/node8"
 
 export function simpleLoggerMiddleware(): Middleware {
@@ -11,7 +11,7 @@ export function simpleLoggerMiddleware(): Middleware {
     })
     const response = await next(req)
     const duration = ((Date.now() - startTime) / 1000).toFixed(1) + "s"
-    if (__DEV__ && Config.ACTION_LOGGERS_ACTIVE === "TRUE") {
+    if (__DEV__ && RELAY_LOGGERS_ACTIVE) {
       console.log(
         "RELAY",
         req.operation.name,

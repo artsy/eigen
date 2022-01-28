@@ -1,7 +1,7 @@
 import NetInfo from "@react-native-community/netinfo"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/GlobalStore"
 import { throttle } from "lodash"
-import Config from "react-native-config"
+import { DATADOG_LOGGERS_ACTIVE } from "../utils/hideLoggers"
 
 const URLS = {
   production: "https://volley.artsy.net/report",
@@ -74,7 +74,7 @@ class VolleyClient {
       const metrics = this.queue
       this.queue = []
 
-      if (__DEV__ && !__TEST__ && Config.ACTION_LOGGERS_ACTIVE === "TRUE") {
+      if (__DEV__ && !__TEST__ && DATADOG_LOGGERS_ACTIVE) {
         console.log("DATADOG", metrics)
       }
 

@@ -4,7 +4,6 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { RateLimiter } from "limiter"
 import { useEffect } from "react"
-import Config from "react-native-config"
 import {
   createOperationDescriptor,
   Environment,
@@ -14,6 +13,7 @@ import {
   Variables,
 } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { PREFETCHING_LOGGERS_ACTIVE } from './hideLoggers'
 import { useTreatment } from "./useExperiments"
 
 const DEFAULT_QUERIES_PER_INTERVAL = 60
@@ -85,7 +85,7 @@ const prefetchUrl = async (environment: Environment, url: string, variables: Var
   }
 
   const options = { ...result.params, ...variables }
-  if (Config.ACTION_LOGGERS_ACTIVE === "TRUE") {
+  if (PREFETCHING_LOGGERS_ACTIVE) {
     console.log(`Prefetching "${url}"`)
   }
 
