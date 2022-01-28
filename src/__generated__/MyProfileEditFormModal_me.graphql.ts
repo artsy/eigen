@@ -6,7 +6,15 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyProfileEditFormModal_me = {
     readonly name: string | null;
+    readonly profession: string | null;
+    readonly otherRelevantPositions: string | null;
     readonly bio: string | null;
+    readonly location: {
+        readonly display: string | null;
+        readonly city: string | null;
+        readonly state: string | null;
+        readonly country: string | null;
+    } | null;
     readonly icon: {
         readonly url: string | null;
     } | null;
@@ -37,7 +45,60 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "profession",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "otherRelevantPositions",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "bio",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "MyLocation",
+      "kind": "LinkedField",
+      "name": "location",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "display",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "city",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "state",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "country",
+          "storageKey": null
+        }
+      ],
       "storageKey": null
     },
     {
@@ -68,5 +129,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '2a2999c02d81e82b1ab351a36d90b806';
+(node as any).hash = '54c50800a327082547ff9a21ca7f8686';
 export default node;

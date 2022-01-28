@@ -29,7 +29,7 @@ import { createFragmentContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionPlaceholder, MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
-import { MyProfileEditFormModalFragmentContainer } from "./MyProfileEditFormModal"
+import { MyProfileEditFormModal } from "./MyProfileEditFormModal"
 
 export enum Tab {
   collection = "My Collection",
@@ -92,7 +92,7 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
   return (
     <>
       {!!me && (
-        <MyProfileEditFormModalFragmentContainer
+        <MyProfileEditFormModal
           me={me}
           visible={showModal}
           onDismiss={() => setShowModal(false)}
@@ -208,14 +208,6 @@ export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContaine
     `,
   }
 )
-
-export const MyCollectionAndSavedWorksScreenQuery = graphql`
-  query MyCollectionAndSavedWorksQuery {
-    me @optionalField {
-      ...MyCollectionAndSavedWorks_me
-    }
-  }
-`
 
 export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => (
   <ProvideScreenTrackingWithCohesionSchema

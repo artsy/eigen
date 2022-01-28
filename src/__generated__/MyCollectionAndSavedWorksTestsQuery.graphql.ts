@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5add6cc756eed4180860c0da673e0644 */
+/* @relayHash 8da4f7a2cbc3a38a53c25071e43ae6cc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -44,7 +44,16 @@ fragment MyCollectionAndSavedWorks_me on Me {
 
 fragment MyProfileEditFormModal_me on Me {
   name
+  profession
+  otherRelevantPositions
   bio
+  location {
+    display
+    city
+    state
+    country
+    id
+  }
   icon {
     url(version: "thumbnail")
   }
@@ -141,7 +150,28 @@ return {
                 "name": "display",
                 "storageKey": null
               },
-              (v0/*: any*/)
+              (v0/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "city",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "state",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "country",
+                "storageKey": null
+              }
             ],
             "storageKey": null
           },
@@ -197,7 +227,7 @@ return {
     ]
   },
   "params": {
-    "id": "5add6cc756eed4180860c0da673e0644",
+    "id": "8da4f7a2cbc3a38a53c25071e43ae6cc",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -222,8 +252,11 @@ return {
           "plural": false,
           "type": "MyLocation"
         },
+        "me.location.city": (v1/*: any*/),
+        "me.location.country": (v1/*: any*/),
         "me.location.display": (v1/*: any*/),
         "me.location.id": (v2/*: any*/),
+        "me.location.state": (v1/*: any*/),
         "me.name": (v1/*: any*/),
         "me.otherRelevantPositions": (v1/*: any*/),
         "me.profession": (v1/*: any*/)
