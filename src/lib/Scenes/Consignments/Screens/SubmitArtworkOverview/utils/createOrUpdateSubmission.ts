@@ -4,7 +4,7 @@ import {
 } from "__generated__/createConsignmentSubmissionMutation.graphql"
 import { UpdateSubmissionMutationInput } from "__generated__/updateConsignSubmissionMutation.graphql"
 import { ArtworkDetailsFormModel } from "../ArtworkDetails/validation"
-import { createConsignSubmission, updateConsignSubmission } from "../mutations"
+import { createConsignSubmission, updateConsignSubmission } from "../Mutations"
 import { limitedEditionValue } from "./rarityOptions"
 
 export type SubmissionInput = CreateSubmissionMutationInput | UpdateSubmissionMutationInput
