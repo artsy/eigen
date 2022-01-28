@@ -18,8 +18,8 @@ interface ContactInfoFormModel {
 }
 export const ContactInformation = ({ handlePress }: Props) => {
   const schema = Yup.object().shape({
-    name: Yup.string().required("Name is required").trim(),
-    email: Yup.string().email().required("Email field is required").trim(),
+    name: Yup.string().required("Please provide a name").trim(),
+    email: Yup.string().email().required("Please provide a valid Email").trim(),
     phoneNumber: Yup.string().required("Please provide a valid phone number").trim(),
   })
 
