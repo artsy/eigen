@@ -39,7 +39,7 @@ export const ContactInformation = ({ handlePress }: Props) => {
         handlePress()
       }
     } catch (error) {
-      console.log("error whiles", error)
+      console.log("error while", error)
       handleError()
 
       // remove submissions
