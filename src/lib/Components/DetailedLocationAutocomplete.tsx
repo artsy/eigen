@@ -12,12 +12,12 @@ import React, { useEffect, useRef, useState } from "react"
 import { Text } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
 
-interface DetailedLocationAutocomplete extends Omit<InputProps, "onChange"> {
+interface DetailedLocationAutocompleteProps extends Omit<InputProps, "onChange"> {
   initialLocation: string
   onChange: (location: LocationWithDetails) => void
 }
 
-export const LocationAutocompleteInput: React.FC<DetailedLocationAutocomplete> = ({
+export const DetailedLocationAutocomplete: React.FC<DetailedLocationAutocompleteProps> = ({
   initialLocation,
   onChange,
   ...restProps
@@ -55,6 +55,7 @@ export const LocationAutocompleteInput: React.FC<DetailedLocationAutocomplete> =
 
       setQuery(result.name)
       setSelectedLocation(locationDetails)
+
       inputRef.current?.blur()
     } catch (error) {
       console.error(error)
