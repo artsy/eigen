@@ -8,6 +8,7 @@ export type SearchCriteriaAttributes = {
     acquireable?: boolean | null | undefined;
     additionalGeneIDs?: Array<string> | null | undefined;
     artistID?: string | null | undefined;
+    artistIDs?: Array<string> | null | undefined;
     atAuction?: boolean | null | undefined;
     attributionClass?: Array<string> | null | undefined;
     colors?: Array<string> | null | undefined;
