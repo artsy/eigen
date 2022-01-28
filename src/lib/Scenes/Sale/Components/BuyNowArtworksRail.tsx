@@ -9,8 +9,6 @@ import React from "react"
 import { createFragmentContainer } from "react-relay"
 import { graphql } from "react-relay"
 
-export const INITIAL_NUMBER_TO_RENDER = 4
-
 interface BuyNowArtworksRailProps {
   sale: BuyNowArtworksRail_sale
 }
