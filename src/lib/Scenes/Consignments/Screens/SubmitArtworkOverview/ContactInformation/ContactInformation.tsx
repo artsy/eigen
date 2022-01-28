@@ -11,29 +11,29 @@ interface Props {
 // Update this to get the submissionId from globalStore
 const submissionId = "72504"
 
-interface ContactInfoFormModel {
-  name: string
-  email: string
-  phoneNumber: string
+export interface ContactInformationFormModel {
+  userName: string
+  userEmail: string
+  userPhone: string
 }
 export const ContactInformation = ({ handlePress }: Props) => {
   const schema = Yup.object().shape({
-    name: Yup.string().required("Please provide a name").trim(),
+    userName: Yup.string().required("Please provide a name").trim(),
     email: Yup.string().email().required("Please provide a valid Email").trim(),
-    phoneNumber: Yup.string().required("Please provide a valid phone number").trim(),
+    userPhone: Yup.string().required("Please provide a valid phone number").trim(),
   })
 
   const handleError = () => {
     // let's add error display here
     console.log("handling error")
   }
-  const handleSubmit = async (values: ContactInfoFormModel) => {
+  const handleSubmit = async (values: ContactInformationFormModel) => {
     try {
       const updateResults = await updateConsignSubmission({
         id: submissionId,
-        userName: values.name,
-        userEmail: values.email,
-        userPhone: values.phoneNumber,
+        userName: values.userName,
+        userEmail: values.userEmail,
+        userPhone: values.userPhone,
       })
       if (updateResults) {
         handlePress()
@@ -48,8 +48,8 @@ export const ContactInformation = ({ handlePress }: Props) => {
   }
 
   return (
-    <Formik<ContactInfoFormModel>
-      initialValues={{ name: "", email: "", phoneNumber: "" }}
+    <Formik<ContactInformationFormModel>
+      initialValues={{ userName: "", userEmail: "", userPhone: "" }}
       onSubmit={(values) => console.log(values)}
       validationSchema={schema}
       validateOnMount
@@ -63,23 +63,23 @@ export const ContactInformation = ({ handlePress }: Props) => {
           <Input
             title="Name"
             placeholder="Your Full Name"
-            onChangeText={(e) => setFieldValue("name", e)}
-            value={values.name}
+            onChangeText={(e) => setFieldValue("userName", e)}
+            value={values.userName}
           />
           <Spacer mt={4} />
           <Input
             title="Email"
             placeholder="Your Email Address"
-            onChangeText={(e) => setFieldValue("email", e)}
-            value={values.email}
+            onChangeText={(e) => setFieldValue("userEmail", e)}
+            value={values.userEmail}
           />
           <Spacer mt={4} />
           <PhoneInput
             style={{ flex: 1 }}
             title="Phone number"
             placeholder="(000) 000 0000"
-            onChangeText={(e) => setFieldValue("phoneNumber", e)}
-            value={values.phoneNumber}
+            onChangeText={(e) => setFieldValue("userPhone", e)}
+            value={values.userPhone}
             setValidation={() => {
               //  validation function
             }}
