@@ -30,7 +30,7 @@ export type BuyNowArtworksRail_sale$key = {
 const node: ReaderFragment = {
   "argumentDefinitions": [
     {
-      "defaultValue": 6,
+      "defaultValue": 20,
       "kind": "LocalArgument",
       "name": "count"
     },
@@ -166,5 +166,5 @@ const node: ReaderFragment = {
   "type": "Sale",
   "abstractKey": null
 };
-(node as any).hash = '67a92fd517f5535c26aa78f3aa3d23e2';
+(node as any).hash = '13b8908fd830a4ec7967078293d674fe';
 export default node;

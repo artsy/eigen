@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a3f074c209db9abdf0c80effe02986c0 */
+/* @relayHash 5cdd75068ca17c9dbda6557c880a7b5f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -81,7 +81,7 @@ fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
 fragment BuyNowArtworksRail_sale on Sale {
   internalID
   promotedSale {
-    saleArtworksConnection(first: 6) {
+    saleArtworksConnection(first: 20) {
       edges {
         node {
           artwork {
@@ -432,7 +432,7 @@ v21 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 6
+    "value": 20
   }
 ];
 return {
@@ -1045,7 +1045,7 @@ return {
                     "storageKey": null
                   }
                 ],
-                "storageKey": "saleArtworksConnection(first:6)"
+                "storageKey": "saleArtworksConnection(first:20)"
               },
               {
                 "alias": null,
@@ -1074,7 +1074,7 @@ return {
     ]
   },
   "params": {
-    "id": "a3f074c209db9abdf0c80effe02986c0",
+    "id": "5cdd75068ca17c9dbda6557c880a7b5f",
     "metadata": {},
     "name": "SaleRefetchQuery",
     "operationKind": "query",

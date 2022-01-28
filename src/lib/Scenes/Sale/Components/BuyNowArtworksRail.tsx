@@ -42,7 +42,7 @@ export const BuyNowArtworksRail: React.FC<BuyNowArtworksRailProps> = ({ sale }) 
 export const BuyNowArtworksRailContainer = createFragmentContainer(BuyNowArtworksRail, {
   sale: graphql`
     fragment BuyNowArtworksRail_sale on Sale
-    @argumentDefinitions(count: { type: "Int", defaultValue: 6 }, cursor: { type: "String" }) {
+    @argumentDefinitions(count: { type: "Int", defaultValue: 20 }, cursor: { type: "String" }) {
       internalID
       promotedSale {
         saleArtworksConnection(first: $count, after: $cursor)
