@@ -122,6 +122,12 @@ commands:
             - emission/Pod/Assets/Emission.js
             - emission/Pod/Assets/Emission.js.map
             - emission/Pod/Assets/assets
+  bundle-js-skip-cache:
+    steps:
+      - run:
+          name: Bundle emission
+          command: ls emission/Pod/Assets/Emission.js || yarn bundle-for-native-ci:ios
+
   install-gems:
     steps:
       - restore_cache:
@@ -391,7 +397,7 @@ jobs:
       - update-echo
       - install-gems
       - update-sentry-release-name
-      - bundle-js
+      - bundle-js-skip-cache
       - install-cocoapods
       - build-app-ios
       - run:
