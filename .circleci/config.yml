@@ -126,7 +126,7 @@ commands:
     steps:
       - run:
           name: Bundle emission
-          command: ls emission/Pod/Assets/Emission.js || yarn bundle-for-native-ci:ios
+          command: yarn bundle-for-native-ci:ios
 
   install-gems:
     steps:
