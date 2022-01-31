@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5cdd75068ca17c9dbda6557c880a7b5f */
+/* @relayHash a0cd6362c495c9c919385a2a4d2856a9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -76,6 +76,7 @@ fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
     id
   }
   title
+  realizedPrice
 }
 
 fragment BuyNowArtworksRail_sale on Sale {
@@ -994,7 +995,14 @@ return {
                                 ],
                                 "storageKey": null
                               },
-                              (v10/*: any*/)
+                              (v10/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "realizedPrice",
+                                "storageKey": null
+                              }
                             ],
                             "storageKey": null
                           },
@@ -1074,7 +1082,7 @@ return {
     ]
   },
   "params": {
-    "id": "5cdd75068ca17c9dbda6557c880a7b5f",
+    "id": "a0cd6362c495c9c919385a2a4d2856a9",
     "metadata": {},
     "name": "SaleRefetchQuery",
     "operationKind": "query",

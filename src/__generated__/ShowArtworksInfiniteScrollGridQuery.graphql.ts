@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e945b37ffea25419cbec3c06038dedde */
+/* @relayHash bb2a2257ead959f565f81f323aa0a772 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -119,6 +119,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
+  realizedPrice
 }
 
 fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
@@ -678,6 +679,13 @@ return {
                               (v10/*: any*/)
                             ],
                             "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "realizedPrice",
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -719,7 +727,7 @@ return {
     ]
   },
   "params": {
-    "id": "e945b37ffea25419cbec3c06038dedde",
+    "id": "bb2a2257ead959f565f81f323aa0a772",
     "metadata": {},
     "name": "ShowArtworksInfiniteScrollGridQuery",
     "operationKind": "query",

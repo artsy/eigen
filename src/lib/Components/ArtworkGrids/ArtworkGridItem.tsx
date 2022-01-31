@@ -244,10 +244,16 @@ export const saleMessageOrBidInfo = ({
       currentBid: { display: string | null } | null
     } | null
     saleMessage: string | null
+    realizedPrice: string | null
   }>
   isSmallTile?: boolean
 }): string | null | undefined => {
-  const { sale, saleArtwork } = artwork
+  const { sale, saleArtwork, realizedPrice } = artwork
+
+  // Price which an artwork was sold for.
+  if (realizedPrice) {
+    return `Sold for ${realizedPrice}`
+  }
 
   // Auction specs are available at https://artsyproduct.atlassian.net/browse/MX-482
   if (sale?.isAuction) {
@@ -311,6 +317,7 @@ export default createFragmentContainer(Artwork, {
         url(version: "large")
         aspectRatio
       }
+      realizedPrice
     }
   `,
 })

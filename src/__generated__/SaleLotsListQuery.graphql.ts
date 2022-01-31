@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e828ff0222243db5f075d49ba9b154d9 */
+/* @relayHash f16e0ca6a10ef0362d2dbd6ffaf4a8c4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -72,6 +72,7 @@ export type SaleLotsListQueryRawResponse = {
                     readonly name: string | null;
                     readonly id: string;
                 }) | null | undefined;
+                readonly realizedPrice?: string | null | undefined;
             }) | null;
             readonly cursor: string | null;
             readonly id: string;
@@ -141,6 +142,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
+  realizedPrice
 }
 
 fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
@@ -792,6 +794,13 @@ return {
                           (v16/*: any*/)
                         ],
                         "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "realizedPrice",
+                        "storageKey": null
                       }
                     ],
                     "storageKey": null
@@ -848,7 +857,7 @@ return {
     ]
   },
   "params": {
-    "id": "e828ff0222243db5f075d49ba9b154d9",
+    "id": "f16e0ca6a10ef0362d2dbd6ffaf4a8c4",
     "metadata": {},
     "name": "SaleLotsListQuery",
     "operationKind": "query",

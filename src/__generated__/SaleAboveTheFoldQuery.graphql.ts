@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e56be071b2a4118d997a4cdaf5824b09 */
+/* @relayHash 44103fc8355d4b12ec615d299a510812 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -76,6 +76,7 @@ fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
     id
   }
   title
+  realizedPrice
 }
 
 fragment BuyNowArtworksRail_sale on Sale {
@@ -701,7 +702,14 @@ return {
                                 ],
                                 "storageKey": null
                               },
-                              (v19/*: any*/)
+                              (v19/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "realizedPrice",
+                                "storageKey": null
+                              }
                             ],
                             "storageKey": null
                           },
@@ -1074,7 +1082,7 @@ return {
     ]
   },
   "params": {
-    "id": "e56be071b2a4118d997a4cdaf5824b09",
+    "id": "44103fc8355d4b12ec615d299a510812",
     "metadata": {},
     "name": "SaleAboveTheFoldQuery",
     "operationKind": "query",

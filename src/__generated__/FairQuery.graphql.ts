@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f64b7a83e759a6366bcadd102f6aaaca */
+/* @relayHash 3c72e56b5853edb51b4a016aa3b19f90 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -63,6 +63,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
+  realizedPrice
 }
 
 fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
@@ -102,6 +103,7 @@ fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
     id
   }
   title
+  realizedPrice
 }
 
 fragment FairArtworks_fair_ZORN9 on Fair {
@@ -638,6 +640,13 @@ v27 = {
   "storageKey": null
 },
 v28 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "realizedPrice",
+  "storageKey": null
+},
+v29 = {
   "kind": "InlineFragment",
   "selections": [
     (v5/*: any*/)
@@ -645,7 +654,7 @@ v28 = {
   "type": "Node",
   "abstractKey": "__isNode"
 },
-v29 = [
+v30 = [
   (v16/*: any*/),
   {
     "kind": "Literal",
@@ -653,11 +662,11 @@ v29 = [
     "value": "FEATURED_ASC"
   }
 ],
-v30 = [
+v31 = [
   (v5/*: any*/),
   (v12/*: any*/)
 ],
-v31 = [
+v32 = [
   {
     "alias": null,
     "args": null,
@@ -760,7 +769,8 @@ v31 = [
         "storageKey": null
       },
       (v27/*: any*/),
-      (v6/*: any*/)
+      (v6/*: any*/),
+      (v28/*: any*/)
     ],
     "storageKey": null
   }
@@ -1457,11 +1467,12 @@ return {
                             ],
                             "storageKey": null
                           },
-                          (v27/*: any*/)
+                          (v27/*: any*/),
+                          (v28/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v28/*: any*/)
+                      (v29/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -1486,7 +1497,7 @@ return {
           },
           {
             "alias": "exhibitors",
-            "args": (v29/*: any*/),
+            "args": (v30/*: any*/),
             "concreteType": "ShowConnection",
             "kind": "LinkedField",
             "name": "showsConnection",
@@ -1532,17 +1543,17 @@ return {
                           (v4/*: any*/),
                           {
                             "kind": "InlineFragment",
-                            "selections": (v30/*: any*/),
+                            "selections": (v31/*: any*/),
                             "type": "Partner",
                             "abstractKey": null
                           },
                           {
                             "kind": "InlineFragment",
-                            "selections": (v30/*: any*/),
+                            "selections": (v31/*: any*/),
                             "type": "ExternalPartner",
                             "abstractKey": null
                           },
-                          (v28/*: any*/)
+                          (v29/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -1580,7 +1591,7 @@ return {
                             "kind": "LinkedField",
                             "name": "edges",
                             "plural": true,
-                            "selections": (v31/*: any*/),
+                            "selections": (v32/*: any*/),
                             "storageKey": null
                           }
                         ],
@@ -1600,7 +1611,7 @@ return {
           },
           {
             "alias": "exhibitors",
-            "args": (v29/*: any*/),
+            "args": (v30/*: any*/),
             "filters": [
               "sort"
             ],
@@ -1624,7 +1635,7 @@ return {
                 "kind": "LinkedField",
                 "name": "edges",
                 "plural": true,
-                "selections": (v31/*: any*/),
+                "selections": (v32/*: any*/),
                 "storageKey": null
               },
               (v5/*: any*/)
@@ -1638,7 +1649,7 @@ return {
     ]
   },
   "params": {
-    "id": "f64b7a83e759a6366bcadd102f6aaaca",
+    "id": "3c72e56b5853edb51b4a016aa3b19f90",
     "metadata": {},
     "name": "FairQuery",
     "operationKind": "query",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 707a2eff37fa0796d220e5ee0608f5f4 */
+/* @relayHash 1812c2f8cfb97efb5d33b7e4ba379d57 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -123,6 +123,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
+  realizedPrice
 }
 
 fragment GeneArtworks_gene_YCAiB on Gene {
@@ -703,6 +704,13 @@ return {
                                   (v7/*: any*/)
                                 ],
                                 "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "realizedPrice",
+                                "storageKey": null
                               }
                             ],
                             "storageKey": null
@@ -748,7 +756,7 @@ return {
     ]
   },
   "params": {
-    "id": "707a2eff37fa0796d220e5ee0608f5f4",
+    "id": "1812c2f8cfb97efb5d33b7e4ba379d57",
     "metadata": {},
     "name": "GeneArtworksPaginationQuery",
     "operationKind": "query",

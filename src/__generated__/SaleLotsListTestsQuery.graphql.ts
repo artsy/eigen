@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 45967506c5f4f37bf69b7fde2f3d42b2 */
+/* @relayHash b81677562fc9da74b061bbaf3cc7ad88 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -58,6 +58,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
+  realizedPrice
 }
 
 fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
@@ -669,6 +670,13 @@ return {
                           (v4/*: any*/)
                         ],
                         "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "realizedPrice",
+                        "storageKey": null
                       }
                     ],
                     "storageKey": null
@@ -725,7 +733,7 @@ return {
     ]
   },
   "params": {
-    "id": "45967506c5f4f37bf69b7fde2f3d42b2",
+    "id": "b81677562fc9da74b061bbaf3cc7ad88",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "saleArtworksConnection": {
@@ -820,6 +828,7 @@ return {
         },
         "saleArtworksConnection.edges.node.partner.id": (v9/*: any*/),
         "saleArtworksConnection.edges.node.partner.name": (v8/*: any*/),
+        "saleArtworksConnection.edges.node.realizedPrice": (v8/*: any*/),
         "saleArtworksConnection.edges.node.sale": {
           "enumValues": null,
           "nullable": true,
