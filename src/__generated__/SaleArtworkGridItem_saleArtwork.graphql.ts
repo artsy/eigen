@@ -17,6 +17,7 @@ export type SaleArtworkGridItem_saleArtwork = {
             readonly url: string | null;
             readonly aspectRatio: number;
         } | null;
+        readonly realizedPrice: string | null;
     } | null;
     readonly counts: {
         readonly bidderPositions: number | null;
@@ -133,6 +134,13 @@ const node: ReaderFragment = {
             }
           ],
           "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "realizedPrice",
+          "storageKey": null
         }
       ],
       "storageKey": null
@@ -216,5 +224,5 @@ const node: ReaderFragment = {
   "type": "SaleArtwork",
   "abstractKey": null
 };
-(node as any).hash = 'fc056945899d6b7fcc12119a9ba2b94b';
+(node as any).hash = '490d62cf03c3b32744daa6b9710ff860';
 export default node;

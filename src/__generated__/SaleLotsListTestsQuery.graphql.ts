@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b81677562fc9da74b061bbaf3cc7ad88 */
+/* @relayHash fd8a8e35240168d3b90e7da829ca9807 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -95,6 +95,7 @@ fragment SaleArtworkListItem_artwork on Artwork {
     height
     width
   }
+  realizedPrice
   saleMessage
   slug
   title
@@ -539,6 +540,13 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "realizedPrice",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "saleMessage",
                         "storageKey": null
                       },
@@ -670,13 +678,6 @@ return {
                           (v4/*: any*/)
                         ],
                         "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "realizedPrice",
-                        "storageKey": null
                       }
                     ],
                     "storageKey": null
@@ -733,7 +734,7 @@ return {
     ]
   },
   "params": {
-    "id": "b81677562fc9da74b061bbaf3cc7ad88",
+    "id": "fd8a8e35240168d3b90e7da829ca9807",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "saleArtworksConnection": {

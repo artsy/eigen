@@ -97,6 +97,7 @@ const artistMockData: ArtistNotableWorksRailTestsQueryRawResponse["artist"] = {
           title: "My Second Greatest Art",
           internalID: "37297491dDsddS22222",
           slug: "this-artworks-slug-2",
+          realizedPrice: null,
         },
       },
       {
@@ -127,6 +128,7 @@ const artistMockData: ArtistNotableWorksRailTestsQueryRawResponse["artist"] = {
           title: "My Greatest Art",
           internalID: "37297491dDsddS",
           slug: "this-artworks-slug",
+          realizedPrice: null,
         },
       },
       {
@@ -165,6 +167,7 @@ const artistMockData: ArtistNotableWorksRailTestsQueryRawResponse["artist"] = {
           title: "My Third Greatest Art",
           internalID: "37297491dDsddS3333",
           slug: "this-artworks-slug-3",
+          realizedPrice: null,
         },
       },
     ],

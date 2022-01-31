@@ -14,6 +14,7 @@ export type SaleArtworkListItem_artwork = {
         readonly height: number | null;
         readonly width: number | null;
     } | null;
+    readonly realizedPrice: string | null;
     readonly saleMessage: string | null;
     readonly slug: string;
     readonly title: string | null;
@@ -113,6 +114,13 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "realizedPrice",
       "storageKey": null
     },
     {
@@ -240,5 +248,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = 'd3aa6e607fccbb1fdfec93ec0d7aef67';
+(node as any).hash = 'd5c576e16ab5ca0ff6e0833ba9ee444f';
 export default node;

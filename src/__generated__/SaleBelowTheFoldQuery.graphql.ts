@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d6f481d6d8a96122dd77064554fdaded */
+/* @relayHash 017c5a8ce12c090dcd8ab624636d4dee */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -107,6 +107,7 @@ fragment SaleArtworkListItem_artwork on Artwork {
     height
     width
   }
+  realizedPrice
   saleMessage
   slug
   title
@@ -561,6 +562,13 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "realizedPrice",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "saleMessage",
                         "storageKey": null
                       },
@@ -692,13 +700,6 @@ return {
                           (v7/*: any*/)
                         ],
                         "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "realizedPrice",
-                        "storageKey": null
                       }
                     ],
                     "storageKey": null
@@ -767,7 +768,7 @@ return {
     ]
   },
   "params": {
-    "id": "d6f481d6d8a96122dd77064554fdaded",
+    "id": "017c5a8ce12c090dcd8ab624636d4dee",
     "metadata": {},
     "name": "SaleBelowTheFoldQuery",
     "operationKind": "query",

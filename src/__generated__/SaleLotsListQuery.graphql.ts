@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f16e0ca6a10ef0362d2dbd6ffaf4a8c4 */
+/* @relayHash f58e9d45343ccb85493dd38b3f48d598 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -47,6 +47,7 @@ export type SaleLotsListQueryRawResponse = {
                     readonly width: number | null;
                     readonly url: string | null;
                 }) | null | undefined;
+                readonly realizedPrice?: string | null | undefined;
                 readonly saleMessage?: string | null | undefined;
                 readonly slug?: string | undefined;
                 readonly title?: string | null | undefined;
@@ -72,7 +73,6 @@ export type SaleLotsListQueryRawResponse = {
                     readonly name: string | null;
                     readonly id: string;
                 }) | null | undefined;
-                readonly realizedPrice?: string | null | undefined;
             }) | null;
             readonly cursor: string | null;
             readonly id: string;
@@ -179,6 +179,7 @@ fragment SaleArtworkListItem_artwork on Artwork {
     height
     width
   }
+  realizedPrice
   saleMessage
   slug
   title
@@ -663,6 +664,13 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "realizedPrice",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "saleMessage",
                         "storageKey": null
                       },
@@ -794,13 +802,6 @@ return {
                           (v16/*: any*/)
                         ],
                         "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "realizedPrice",
-                        "storageKey": null
                       }
                     ],
                     "storageKey": null
@@ -857,7 +858,7 @@ return {
     ]
   },
   "params": {
-    "id": "f16e0ca6a10ef0362d2dbd6ffaf4a8c4",
+    "id": "f58e9d45343ccb85493dd38b3f48d598",
     "metadata": {},
     "name": "SaleLotsListQuery",
     "operationKind": "query",
