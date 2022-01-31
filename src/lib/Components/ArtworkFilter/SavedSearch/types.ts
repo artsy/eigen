@@ -1,4 +1,5 @@
 export enum SearchCriteria {
+  artistID = "artistID",
   artistIDs = "artistIDs",
   locationCities = "locationCities",
   colors = "colors",
@@ -19,6 +20,7 @@ export enum SearchCriteria {
 }
 
 export interface SearchCriteriaAttributes {
+  [SearchCriteria.artistID]?: string | null
   [SearchCriteria.artistIDs]?: string[] | null
   [SearchCriteria.locationCities]?: string[] | null
   [SearchCriteria.colors]?: string[] | null
