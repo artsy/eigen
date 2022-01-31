@@ -44,7 +44,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const {
     initialValues,
     savedSearchAlertId,
-    artistId,
+    artistIds,
     artistName,
     userAllowsEmails,
     contentContainerStyle,
@@ -64,9 +64,10 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
   const artistPill: SavedSearchPill = {
     label: artistName,
-    value: artistId,
-    paramName: SearchCriteria.artistID,
+    value: artistIds[0],
+    paramName: SearchCriteria.artistIDs,
   }
+
   const pills = isEnabledImprovedAlertsFlow ? [artistPill, ...savedSearchPills] : savedSearchPills
 
   const tracking = useTracking()
@@ -257,7 +258,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         <Form
           pills={pills}
           savedSearchAlertId={savedSearchAlertId}
-          artistId={artistId}
+          artistIds={artistIds}
           artistName={artistName}
           hasChangedFilters={hasChangedFilters}
           onDeletePress={handleDeletePress}

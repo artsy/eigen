@@ -179,7 +179,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
         >
           {isEnabledImprovedAlertsFlow ? (
             <SavedSearchButtonV2
-              artistId={artist.internalID}
+              artistIds={[artist.internalID]}
               artistSlug={artist.slug}
               onPress={() => openFilterModal("createAlert")}
             />
@@ -187,7 +187,7 @@ const ArtistArtworksContainer: React.FC<ArtworksGridProps & ArtistArtworksContai
             !!shouldShowSavedSearchButton && (
               <SavedSearchButtonQueryRenderer
                 filters={allowedFiltersForSavedSearch}
-                artistId={artist.internalID}
+                artistIds={[artist.internalID]}
                 artistName={artist.name!}
                 artistSlug={artist.slug}
                 aggregations={aggregations}

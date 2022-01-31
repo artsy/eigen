@@ -20,7 +20,7 @@ export const CreateSavedSearchAlertScreen: React.FC<Props> = (props) => {
   if (isEnabledImprovedAlertsFlow) {
     const filterState = ArtworksFiltersStore.useStoreState((state) => state)
     const unitedFilters = getUnitedSelectedAndAppliedFilters(filterState)
-    const attributes = getSearchCriteriaFromFilters(route.params.artistId, unitedFilters)
+    const attributes = getSearchCriteriaFromFilters(route.params.artistIds, unitedFilters)
 
     return (
       <SavedSearchStoreProvider
@@ -29,7 +29,7 @@ export const CreateSavedSearchAlertScreen: React.FC<Props> = (props) => {
         <Box flex={1}>
           <CreateSavedSearchAlertContentQueryRenderer
             navigation={navigation}
-            artistId={route.params.artistId}
+            artistIds={route.params.artistIds}
             artistName={route.params.artistName}
             onClosePress={route.params.onClosePress}
             onComplete={route.params.onComplete}
@@ -39,7 +39,7 @@ export const CreateSavedSearchAlertScreen: React.FC<Props> = (props) => {
     )
   }
 
-  const attributesFromFilters = getSearchCriteriaFromFilters(route.params.artistId, filters!)
+  const attributesFromFilters = getSearchCriteriaFromFilters(route.params.artistIds, filters!)
 
   return (
     <SavedSearchStoreProvider initialData={{ attributes: attributesFromFilters, aggregations }}>

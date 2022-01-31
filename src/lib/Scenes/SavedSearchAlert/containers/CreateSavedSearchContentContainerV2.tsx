@@ -15,7 +15,7 @@ import {
 
 interface CreateSavedSearchAlertContentQueryRendererProps {
   navigation: StackNavigationProp<CreateSavedSearchAlertNavigationStack, "CreateSavedSearchAlert">
-  artistId: string
+  artistIds: string[]
   artistName: string
   onClosePress: () => void
   onComplete: (response: SavedSearchAlertMutationResult) => void

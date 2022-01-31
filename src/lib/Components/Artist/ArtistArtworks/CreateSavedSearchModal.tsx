@@ -11,7 +11,7 @@ import { useTracking } from "react-tracking"
 
 export interface CreateSavedSearchModalProps {
   visible: boolean
-  artistId: string
+  artistIds: string[]
   artistName: string
   artistSlug: string
   closeModal: () => void
@@ -19,12 +19,12 @@ export interface CreateSavedSearchModalProps {
 }
 
 export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (props) => {
-  const { visible, artistId, artistName, artistSlug, closeModal, onComplete } = props
+  const { visible, artistIds, artistName, artistSlug, closeModal, onComplete } = props
   const tracking = useTracking()
   const popover = usePopoverMessage()
 
   const handleComplete = (result: SavedSearchAlertMutationResult) => {
-    tracking.trackEvent(tracks.toggleSavedSearch(true, artistId, artistSlug, result.id))
+    tracking.trackEvent(tracks.toggleSavedSearch(true, artistIds, artistSlug, result.id))
     closeModal()
     onComplete?.()
 
@@ -46,7 +46,7 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
   }
 
   const params: CreateSavedSearchAlertParams = {
-    artistId,
+    artistIds,
     artistName,
     onClosePress: closeModal,
     onComplete: handleComplete,
@@ -58,13 +58,13 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
 export const tracks = {
   toggleSavedSearch: (
     enabled: boolean,
-    artistId: string,
+    artistIds: string[],
     artistSlug: string,
     searchCriteriaId: string
   ): ToggledSavedSearch => ({
     action: ActionType.toggledSavedSearch,
     context_screen_owner_type: OwnerType.artist,
-    context_screen_owner_id: artistId,
+    context_screen_owner_id: artistIds[0],
     context_screen_owner_slug: artistSlug,
     modified: enabled,
     original: !enabled,

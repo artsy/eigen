@@ -4,18 +4,18 @@ import React from "react"
 import { useTracking } from "react-tracking"
 
 export interface SavedSearchButtonV2Props {
-  artistId: string
+  artistIds: string[]
   artistSlug: string
   onPress: () => void
 }
 
 export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) => {
-  const { artistId, artistSlug, onPress } = props
+  const { artistIds, artistSlug, onPress } = props
   const tracking = useTracking()
 
   const handlePress = () => {
     onPress()
-    tracking.trackEvent(tracks.tappedCreateAlert(artistId, artistSlug))
+    tracking.trackEvent(tracks.tappedCreateAlert(artistIds, artistSlug))
   }
 
   return (
@@ -39,10 +39,10 @@ export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) =
 }
 
 export const tracks = {
-  tappedCreateAlert: (artistId: string, artistSlug: string): TappedCreateAlert => ({
+  tappedCreateAlert: (artistIds: string[], artistSlug: string): TappedCreateAlert => ({
     action: ActionType.tappedCreateAlert,
     context_screen_owner_type: OwnerType.artist,
-    context_screen_owner_id: artistId,
+    context_screen_owner_id: artistIds[0],
     context_screen_owner_slug: artistSlug,
     context_module: ContextModule.artworkGrid,
   }),

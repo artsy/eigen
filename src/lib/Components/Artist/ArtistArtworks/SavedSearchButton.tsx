@@ -45,7 +45,7 @@ export const emitSavedSearchRefetchEvent = () => {
 export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   me,
   loading,
-  artistId,
+  artistIds,
   artistName,
   artistSlug,
   filters,
@@ -75,7 +75,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   const handleCloseForm = () => setVisibleForm(false)
 
   const handleComplete = (result: SavedSearchAlertMutationResult) => {
-    tracking.trackEvent(tracks.toggleSavedSearch(true, artistId, artistSlug, result.id))
+    tracking.trackEvent(tracks.toggleSavedSearch(true, artistIds, artistSlug, result.id))
 
     refetch()
     handleCloseForm()
@@ -99,7 +99,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
 
   const handleCreateAlertPress = () => {
     handleOpenForm()
-    tracking.trackEvent(tracks.tappedCreateAlert(artistId, artistSlug))
+    tracking.trackEvent(tracks.tappedCreateAlert(artistIds, artistSlug))
   }
 
   useEffect(() => {
@@ -110,7 +110,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   }, [refetch])
 
   const params: CreateSavedSearchAlertParams = {
-    artistId,
+    artistIds,
     artistName,
     filters,
     aggregations,
@@ -162,10 +162,10 @@ export const SavedSearchButtonRefetchContainer = createRefetchContainer(
 export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRendererProps> = (
   props
 ) => {
-  const { filters, artistId } = props
+  const { filters, artistIds } = props
   const criteria = useMemo(
-    () => getSearchCriteriaFromFilters(artistId, filters),
-    [artistId, filters]
+    () => getSearchCriteriaFromFilters(artistIds, filters),
+    [artistIds, filters]
   )
 
   return (
@@ -205,21 +205,21 @@ export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRend
 }
 
 export const tracks = {
-  tappedCreateAlert: (artistId: string, artistSlug: string): TappedCreateAlert => ({
+  tappedCreateAlert: (artistIds: string[], artistSlug: string): TappedCreateAlert => ({
     action: ActionType.tappedCreateAlert,
     context_screen_owner_type: OwnerType.artist,
-    context_screen_owner_id: artistId,
+    context_screen_owner_id: artistIds[0],
     context_screen_owner_slug: artistSlug,
   }),
   toggleSavedSearch: (
     enabled: boolean,
-    artistId: string,
+    artistIds: string[],
     artistSlug: string,
     searchCriteriaId: string
   ): ToggledSavedSearch => ({
     action: ActionType.toggledSavedSearch,
     context_screen_owner_type: OwnerType.artist,
-    context_screen_owner_id: artistId,
+    context_screen_owner_id: artistIds[0],
     context_screen_owner_slug: artistSlug,
     modified: enabled,
     original: !enabled,

@@ -12,7 +12,7 @@ import { Alert, AlertButton, Linking, Platform } from "react-native"
 import { SavedSearchPill } from "./SavedSearchAlertModel"
 
 export const getNamePlaceholder = (artistName: string, pills: SavedSearchPill[]) => {
-  const filteredPills = pills.filter((pill) => pill.paramName !== SearchCriteria.artistID)
+  const filteredPills = pills.filter((pill) => pill.paramName !== SearchCriteria.artistIDs)
   const filtersCountLabel = filteredPills.length > 1 ? "filters" : "filter"
 
   if (filteredPills.length === 0) {
