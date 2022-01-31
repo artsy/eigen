@@ -126,8 +126,7 @@ describe("RecentlySold", () => {
     const artworkWrapper = tree.root.findAllByType(ArtworkRailCard)[0]
     act(() => artworkWrapper.props.onPress())
 
-    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
-    expect(mockTrackEvent).toHaveBeenLastCalledWith(
+    expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
         context_module: "artworkRecentlySoldGrid",
         context_screen_owner_type: "sell",
