@@ -258,22 +258,30 @@ describe("getAllowedFiltersForSavedSearchInput", () => {
 })
 
 describe("getSearchCriteriaFromFilters", () => {
-  it("returns fields in the saved search criteria format", () => {
-    const filters = [
-      {
-        displayText: "Prints",
-        paramName: FilterParamName.additionalGeneIDs,
-        paramValue: ["prints"],
-      },
-      {
-        displayText: "1990-1999",
-        paramName: FilterParamName.timePeriod,
-        paramValue: ["1990"],
-      },
-    ]
+  const filters = [
+    {
+      displayText: "Prints",
+      paramName: FilterParamName.additionalGeneIDs,
+      paramValue: ["prints"],
+    },
+    {
+      displayText: "1990-1999",
+      paramName: FilterParamName.timePeriod,
+      paramValue: ["1990"],
+    },
+  ]
 
-    expect(getSearchCriteriaFromFilters("artistID", filters)).toEqual({
-      artistID: "artistID",
+  it("returns fields in the saved search criteria format", () => {
+    expect(getSearchCriteriaFromFilters(["artistID"], filters)).toEqual({
+      artistIDs: ["artistID"],
+      additionalGeneIDs: ["prints"],
+      majorPeriods: ["1990"],
+    })
+  })
+
+  it("returns fileds in the saved search criteria format when having two artists", () => {
+    expect(getSearchCriteriaFromFilters(["artistID", "artistID2"], filters)).toEqual({
+      artistIDs: ["artistID", "artistID2"],
       additionalGeneIDs: ["prints"],
       majorPeriods: ["1990"],
     })

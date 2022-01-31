@@ -741,7 +741,7 @@ describe("Saved search alert form", () => {
 })
 
 const attributes: SearchCriteriaAttributes = {
-  artistID: "artistID",
+  artistIDs: ["artistID"],
   attributionClass: ["limited edition"],
   partnerIDs: ["tate-ward-auctions"],
   locationCities: ["New York, NY, USA"],
@@ -801,7 +801,7 @@ const aggregations: Aggregations = [
 ]
 
 const createMutationAttributes = {
-  artistID: "artistID",
+  artistIDs: ["artistID"],
   attributionClass: ["limited edition"],
   partnerIDs: ["tate-ward-auctions"],
   locationCities: ["New York, NY, USA"],
@@ -814,7 +814,7 @@ const baseProps: SavedSearchAlertFormProps = {
     email: true,
     push: true,
   },
-  artistId: "artistID",
+  artistIds: ["artistID"],
   artistName: "artistName",
   userAllowsEmails: true,
 }

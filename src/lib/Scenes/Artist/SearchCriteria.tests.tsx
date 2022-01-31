@@ -85,7 +85,7 @@ describe("SearchCriteria", () => {
 const mockResponse = {
   acquireable: "acquireable-1",
   additionalGeneIDs: "additionalGeneIDs-1",
-  artistID: "artistID-1",
+  artistIDs: ["artistID-1"],
   atAuction: "atAuction-1",
   attributionClass: "attributionClass-1",
   colors: "colors-1",

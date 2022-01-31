@@ -21,7 +21,7 @@ jest.unmock("react-relay")
 
 const defaultProps: CreateSavedSearchModalProps = {
   visible: true,
-  artistId: "artistId",
+  artistIds: ["artistId"],
   artistName: "artistName",
   artistSlug: "artistSlug",
   closeModal: jest.fn,
@@ -94,7 +94,7 @@ describe("CreateSavedSearchModal", () => {
     container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
-      tracks.toggleSavedSearch(true, "artistId", "artistSlug", "savedSearchAlertId")
+      tracks.toggleSavedSearch(true, ["artistId"], "artistSlug", "savedSearchAlertId")
     )
   })
 })
