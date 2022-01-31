@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 34eb01517c8d673c29fe868f85bf7bbd */
+/* @relayHash 439cbb9eda07c0d1e751313b9d31cdf6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -70,6 +70,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
+  realizedPrice
 }
 
 fragment FairAllFollowedArtists_fair on Fair {
@@ -642,6 +643,13 @@ return {
                               (v7/*: any*/)
                             ],
                             "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "realizedPrice",
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -740,7 +748,7 @@ return {
     ]
   },
   "params": {
-    "id": "34eb01517c8d673c29fe868f85bf7bbd",
+    "id": "439cbb9eda07c0d1e751313b9d31cdf6",
     "metadata": {},
     "name": "FairAllFollowedArtistsQuery",
     "operationKind": "query",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 96febd82056beb8a2264e84e64a0312f */
+/* @relayHash 52db835f8bbedfc2ae7f76a832f640ae */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -39,6 +39,7 @@ fragment SaleArtworkTileRailCard_saleArtwork on SaleArtwork {
     slug
     saleMessage
     title
+    realizedPrice
     id
   }
   counts {
@@ -219,6 +220,13 @@ return {
                 "name": "title",
                 "storageKey": null
               },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "realizedPrice",
+                "storageKey": null
+              },
               (v1/*: any*/)
             ],
             "storageKey": null
@@ -306,7 +314,7 @@ return {
     ]
   },
   "params": {
-    "id": "96febd82056beb8a2264e84e64a0312f",
+    "id": "52db835f8bbedfc2ae7f76a832f640ae",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "saleArtwork": {
@@ -339,6 +347,7 @@ return {
         },
         "saleArtwork.artwork.image.imageURL": (v2/*: any*/),
         "saleArtwork.artwork.internalID": (v3/*: any*/),
+        "saleArtwork.artwork.realizedPrice": (v2/*: any*/),
         "saleArtwork.artwork.saleMessage": (v2/*: any*/),
         "saleArtwork.artwork.slug": (v3/*: any*/),
         "saleArtwork.artwork.title": (v2/*: any*/),

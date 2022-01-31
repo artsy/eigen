@@ -31,6 +31,7 @@ export type SmallTileRail_artworks = ReadonlyArray<{
         readonly imageURL: string | null;
         readonly aspectRatio: number;
     } | null;
+    readonly realizedPrice: string | null;
     readonly " $refType": "SmallTileRail_artworks";
 }>;
 export type SmallTileRail_artworks$data = SmallTileRail_artworks;
@@ -212,10 +213,17 @@ const node: ReaderFragment = {
         }
       ],
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "realizedPrice",
+      "storageKey": null
     }
   ],
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = '41240b93e3968ac055105ccf501f7c42';
+(node as any).hash = 'bacf4fb62767107fd83e9657eca182da';
 export default node;

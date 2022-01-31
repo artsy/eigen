@@ -60,7 +60,7 @@ export type ArtworkFormScreen = {
   AddPhotos: undefined
 }
 
-export type MyCollectionArtworkFormProps = { onSuccess: () => void } & (
+export type MyCollectionArtworkFormProps = { onSuccess?: () => void } & (
   | {
       mode: "add"
     }
@@ -285,7 +285,7 @@ export const updateArtwork = async (
   }
 
   refreshMyCollection()
-  props.onSuccess()
+  props.onSuccess?.()
 }
 
 const tracks = {

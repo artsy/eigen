@@ -24,7 +24,7 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { useToast } from "lib/Components/Toast/toastHook"
 import { navigate, popToRoot } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { unsafe_getFeatureFlag, useDevToggle, useFeatureFlag } from "lib/store/GlobalStore"
+import { useDevToggle } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -34,7 +34,7 @@ import _, { filter, orderBy, uniqBy } from "lodash"
 import { DateTime } from "luxon"
 import { Banner, Button, Flex, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
-import { Platform, RefreshControl } from "react-native"
+import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
@@ -44,19 +44,6 @@ const REFRESH_KEY = "refresh"
 
 export function refreshMyCollection() {
   RefreshEvents.emit(REFRESH_KEY)
-}
-
-const featureFlagKey = Platform.select({
-  android: "AREnableMyCollectionAndroid",
-  ios: "AREnableMyCollectionIOS",
-}) as "AREnableMyCollectionIOS" | "AREnableMyCollectionAndroid"
-
-export const useEnableMyCollection = () => {
-  return useFeatureFlag(featureFlagKey)
-}
-
-export function unsafe_getEnableMyCollection() {
-  return unsafe_getFeatureFlag(featureFlagKey)
 }
 
 export const HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER = "HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER"
@@ -73,7 +60,6 @@ const MyCollection: React.FC<{
   const { trackEvent } = useTracking()
   const [filterModalVisible, setFilterModalVisible] = useState(false)
   const filtersCount = useSelectedFiltersCount()
-  const enabledSortAndFilter = useFeatureFlag("ARMyCollectionLocalSortAndFilter")
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
@@ -332,50 +318,28 @@ const MyCollection: React.FC<{
 
         setJSX(
           <Flex>
-            {enabledSortAndFilter ? (
-              <ArtworksFilterHeader
-                selectedFiltersCount={filtersCount}
-                onFilterPress={() => setFilterModalVisible(true)}
+            <ArtworksFilterHeader
+              selectedFiltersCount={filtersCount}
+              onFilterPress={() => setFilterModalVisible(true)}
+            >
+              <Button
+                data-test-id="add-artwork-button-non-zero-state"
+                size="small"
+                variant="fillDark"
+                onPress={() => {
+                  navigate("my-collection/artworks/new", {
+                    passProps: {
+                      mode: "add",
+                      onSuccess: popToRoot,
+                    },
+                  })
+                  trackEvent(tracks.addCollectedArtwork())
+                }}
+                haptic
               >
-                <Button
-                  data-test-id="add-artwork-button-non-zero-state"
-                  size="small"
-                  variant="fillDark"
-                  onPress={() => {
-                    navigate("my-collection/artworks/new", {
-                      passProps: {
-                        mode: "add",
-                        onSuccess: popToRoot,
-                      },
-                    })
-                    trackEvent(tracks.addCollectedArtwork())
-                  }}
-                  haptic
-                >
-                  Add Works
-                </Button>
-              </ArtworksFilterHeader>
-            ) : (
-              <Flex flexDirection="row" alignSelf="flex-end" px={2} py={1}>
-                <Button
-                  testID="add-artwork-button-non-zero-state"
-                  size="small"
-                  variant="fillDark"
-                  onPress={() => {
-                    navigate("my-collection/artworks/new", {
-                      passProps: {
-                        mode: "add",
-                        onSuccess: popToRoot,
-                      },
-                    })
-                    trackEvent(tracks.addCollectedArtwork())
-                  }}
-                  haptic
-                >
-                  Add Works
-                </Button>
-              </Flex>
-            )}
+                Add Works
+              </Button>
+            </ArtworksFilterHeader>
             {!!showNewWorksBanner && (
               <Banner
                 title="Your collection is growing"
@@ -393,7 +357,7 @@ const MyCollection: React.FC<{
       // remove already set JSX
       setJSX(null)
     }
-  }, [artworks.length, filtersCount, enabledSortAndFilter])
+  }, [artworks.length, filtersCount])
 
   return (
     <ProvideScreenTrackingWithCohesionSchema

@@ -563,37 +563,6 @@ describe("Saved search alert form", () => {
       expect(getByTestId("save-alert-button")).not.toBeDisabled()
     })
 
-    it("should be enabled if filters are changed and there is a saved alert with the same criteria", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-      const { getByText, getAllByText } = renderWithWrappersTL(<TestRenderer isPreviouslySaved />)
-
-      expect(getAllByText("Save Alert")[0]).toBeDisabled()
-      fireEvent.press(getByText("Limited Edition"))
-      expect(getAllByText("Save Alert")[0]).not.toBeDisabled()
-    })
-
-    it("should be enabled if name is changed and there is a saved alert with the same criteria", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-      const { getByPlaceholderText, getAllByText } = renderWithWrappersTL(
-        <TestRenderer isPreviouslySaved />
-      )
-
-      expect(getAllByText("Save Alert")[0]).toBeDisabled()
-      fireEvent.changeText(getByPlaceholderText(`artistName ${bullet} 5 filters`), "new value")
-      expect(getAllByText("Save Alert")[0]).not.toBeDisabled()
-    })
-
-    it("should be enabled if notification toggles are changed and there is a saved alert with the same criteria", () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-      const { getByA11yLabel, getAllByText } = renderWithWrappersTL(
-        <TestRenderer isPreviouslySaved />
-      )
-
-      expect(getAllByText("Save Alert")[0]).toBeDisabled()
-      fireEvent(getByA11yLabel("Email Alerts Toggler"), "valueChange", false)
-      expect(getAllByText("Save Alert")[0]).not.toBeDisabled()
-    })
-
     it("should be enabled if filters are changed in edit mode", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
       const { getByText, getAllByText } = renderWithWrappersTL(
@@ -630,6 +599,143 @@ describe("Saved search alert form", () => {
 
       expect(getByText("Prints")).not.toHaveProp("onPress")
       expect(getByText("Photography")).not.toHaveProp("onPress")
+    })
+  })
+
+  describe("Сhecking for a duplicate alert", () => {
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
+    })
+
+    describe("Create flow", () => {
+      it("should call create mutation without a warning message", async () => {
+        const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
+
+        fireEvent.press(getAllByText("Save Alert")[0])
+
+        await waitFor(() => {
+          const mutation = mockEnvironment.mock.getMostRecentOperation()
+          expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+        })
+
+        // No duplicate alert
+        mockEnvironmentPayload(mockEnvironment, {
+          Me: () => ({
+            savedSearch: null,
+          }),
+        })
+
+        await waitFor(() => {
+          const mutation = mockEnvironment.mock.getMostRecentOperation()
+          expect(mutation.fragment.node.name).toBe("createSavedSearchAlertMutation")
+        })
+      })
+
+      it("should display a warning message if there is a duplicate", async () => {
+        const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
+
+        fireEvent.press(getAllByText("Save Alert")[0])
+
+        await waitFor(() => {
+          const mutation = mockEnvironment.mock.getMostRecentOperation()
+          expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+        })
+
+        mockEnvironmentPayload(mockEnvironment)
+
+        await waitFor(() => expect(spyAlert.mock.calls[0][0]).toBe("Duplicate Alert"))
+      })
+
+      it('should call create mutation when "Replace" button is pressed', async () => {
+        // @ts-ignore
+        spyAlert.mockImplementation((_title, _message, buttons) => buttons[1].onPress()) // Click "Replace" button
+
+        const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
+
+        fireEvent.press(getAllByText("Save Alert")[0])
+
+        await waitFor(() => {
+          const mutation = mockEnvironment.mock.getMostRecentOperation()
+          expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+        })
+
+        mockEnvironmentPayload(mockEnvironment)
+
+        await waitFor(() => {
+          const mutation = mockEnvironment.mock.getMostRecentOperation()
+          expect(mutation.fragment.node.name).toBe("createSavedSearchAlertMutation")
+        })
+      })
+    })
+
+    describe("Edit flow", () => {
+      it("should call update mutation without a warning message", async () => {
+        const { getAllByText, getByText } = renderWithWrappersTL(
+          <TestRenderer savedSearchAlertId="savedSearchAlertId" />
+        )
+
+        fireEvent.press(getByText("Prints"))
+        fireEvent.press(getAllByText("Save Alert")[0])
+
+        await waitFor(() => {
+          const mutation = mockEnvironment.mock.getMostRecentOperation()
+          expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+        })
+
+        // No duplicate alert
+        mockEnvironmentPayload(mockEnvironment, {
+          Me: () => ({
+            savedSearch: null,
+          }),
+        })
+
+        await waitFor(() => {
+          const mutation = mockEnvironment.mock.getMostRecentOperation()
+          expect(mutation.fragment.node.name).toBe("updateSavedSearchAlertMutation")
+        })
+      })
+
+      it("should display a warning message if there is a duplicate", async () => {
+        const { getAllByText, getByText } = renderWithWrappersTL(
+          <TestRenderer savedSearchAlertId="savedSearchAlertId" />
+        )
+
+        fireEvent.press(getByText("Prints"))
+        fireEvent.press(getAllByText("Save Alert")[0])
+
+        await waitFor(() => {
+          const mutation = mockEnvironment.mock.getMostRecentOperation()
+          expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+        })
+
+        mockEnvironmentPayload(mockEnvironment)
+
+        await waitFor(() => expect(spyAlert.mock.calls[0][0]).toBe("Duplicate Alert"))
+      })
+
+      it('should call update mutation when "Replace" button is pressed', async () => {
+        // @ts-ignore
+        spyAlert.mockImplementation((_title, _message, buttons) => buttons[1].onPress()) // Click "Replace" button
+
+        const { getAllByText, getByText } = renderWithWrappersTL(
+          <TestRenderer savedSearchAlertId="savedSearchAlertId" />
+        )
+
+        fireEvent.press(getByText("Prints"))
+        fireEvent.press(getAllByText("Save Alert")[0])
+
+        await waitFor(() => {
+          const mutation = mockEnvironment.mock.getMostRecentOperation()
+          expect(mutation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+        })
+
+        mockEnvironmentPayload(mockEnvironment)
+
+        await waitFor(() => {
+          const mutation = mockEnvironment.mock.getMostRecentOperation()
+          expect(mutation.fragment.node.name).toBe("updateSavedSearchAlertMutation")
+        })
+      })
     })
   })
 })

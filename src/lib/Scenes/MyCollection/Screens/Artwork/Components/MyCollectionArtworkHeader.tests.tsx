@@ -1,4 +1,3 @@
-import { tappedCollectedArtworkImages } from "@artsy/cohesion"
 import { MyCollectionArtworkHeader_artwork } from "__generated__/MyCollectionArtworkHeader_artwork.graphql"
 import { MyCollectionArtworkHeaderTestsQuery } from "__generated__/MyCollectionArtworkHeaderTestsQuery.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
@@ -79,14 +78,12 @@ describe("MyCollectionArtworkHeader", () => {
       }),
     })
     wrapper.root.findAllByType(ImageWithLoadingState)[0].props.onPress()
-    // expect 2 calls: 1 for our custom tracking, 2 for tracking deep zoom taps
-    expect(mockTrackEvent).toHaveBeenCalledTimes(2)
-    expect(mockTrackEvent).toHaveBeenCalledWith(
-      tappedCollectedArtworkImages({
-        contextOwnerId: "someInternalId",
-        contextOwnerSlug: "someSlug",
-      })
-    )
+    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
+    expect(mockTrackEvent).toHaveBeenCalledWith({
+      action_name: "artworkImageZoom",
+      action_type: "tap",
+      context_module: "ArtworkImage",
+    })
   })
 
   it("shows fallback view when images are null", () => {

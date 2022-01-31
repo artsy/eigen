@@ -12,7 +12,10 @@ export interface ArtworkRailProps {
   artworks: LargeArtworkRail_artworks | SmallArtworkRail_artworks
   listRef?: React.RefObject<FlatList<any>>
   size: ArtworkCardSize
-  onPress?: (artwork: LargeArtworkRail_artworks[0], index: number) => void
+  onPress?: (
+    artwork: LargeArtworkRail_artworks[0] | SmallArtworkRail_artworks[0],
+    index: number
+  ) => void
   onEndReached?: () => void
   onEndReachedThreshold?: number
   ListHeaderComponent?: ReactElement | null

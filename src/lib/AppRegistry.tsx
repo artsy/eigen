@@ -1,6 +1,6 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
 import { AppProviders } from "./AppProviders"
@@ -8,8 +8,7 @@ import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoi
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { FadeIn } from "./Components/FadeIn"
 import { BidFlow } from "./Containers/BidFlow"
-import { InboxWrapper } from "./Containers/Inbox"
-import { InboxScreenQuery } from "./Containers/Inbox/Inbox"
+import { InboxQueryRenderer, InboxScreenQuery } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer, WorksForYouScreenQuery } from "./Containers/WorksForYou"
@@ -70,7 +69,10 @@ import { MyCollectionQueryRenderer } from "./Scenes/MyCollection/MyCollection"
 import { MyCollectionArtworkQueryRenderer } from "./Scenes/MyCollection/Screens/Artwork/MyCollectionArtwork"
 import { MyCollectionArtworkForm } from "./Scenes/MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyCollectionArtworkFullDetailsQueryRenderer } from "./Scenes/MyCollection/Screens/ArtworkFullDetails/MyCollectionArtworkFullDetails"
-import { MyProfileQueryRenderer, MyProfileScreenQuery } from "./Scenes/MyProfile/MyProfile"
+import {
+  MyCollectionAndSavedWorksQueryRenderer,
+  MyCollectionAndSavedWorksScreenQuery,
+} from "./Scenes/MyProfile/MyCollectionAndSavedWorks"
 import { MyProfilePaymentQueryRenderer } from "./Scenes/MyProfile/MyProfilePayment"
 import { MyProfilePaymentNewCreditCard } from "./Scenes/MyProfile/MyProfilePaymentNewCreditCard"
 import { MyProfilePushNotificationsQueryRenderer } from "./Scenes/MyProfile/MyProfilePushNotifications"
@@ -221,23 +223,20 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({
   )
 }
 
-// provide the tracking context so pages can use `useTracking` all the time
-@track()
-class PageWrapper extends React.Component<PageWrapperProps> {
-  render() {
-    const props = {
-      ...this.props,
-      viewProps: {
-        ...this.props.viewProps,
-        ...propsStore.getPropsForModule(this.props.moduleName),
-      },
-    }
-    return (
-      <AppProviders>
-        <InnerPageWrapper {...props} />
-      </AppProviders>
-    )
-  }
+const PageWrapper: React.FC<PageWrapperProps> = (props) => {
+  const pageProps = useRef({
+    ...props,
+    viewProps: {
+      ...props.viewProps,
+      ...propsStore.getPropsForModule(props.moduleName),
+    },
+  }).current
+
+  return (
+    <AppProviders>
+      <InnerPageWrapper {...pageProps} />
+    </AppProviders>
+  )
 }
 
 function register(
@@ -350,7 +349,7 @@ export const modules = defineModules({
   Gene: reactModule(GeneQueryRenderer),
   Tag: reactModule(TagQueryRenderer),
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
-  Inbox: reactModule(InboxWrapper, { isRootViewForTabName: "inbox" }, InboxScreenQuery),
+  Inbox: reactModule(InboxQueryRenderer, { isRootViewForTabName: "inbox" }, InboxScreenQuery),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   LiveAuction: nativeModule({
     alwaysPresentModally: true,
@@ -378,9 +377,11 @@ export const modules = defineModules({
   MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer),
   MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
   MyProfile: reactModule(
-    MyProfileQueryRenderer,
-    { isRootViewForTabName: "profile" },
-    MyProfileScreenQuery
+    MyCollectionAndSavedWorksQueryRenderer,
+    {
+      isRootViewForTabName: "profile",
+    },
+    MyCollectionAndSavedWorksScreenQuery
   ),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfileSettings: reactModule(MyProfileSettings),

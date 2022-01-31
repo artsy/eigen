@@ -42,8 +42,8 @@ export const SavedSearchesList: React.FC<SavedSearchesListProps> = (props) => {
   )
 
   useEffect(() => {
-    const onDeleteRefresh = (backProps: GoBackProps) => {
-      if (backProps.previousScreen === "EditSavedSearchAlert") {
+    const onDeleteRefresh = (backProps?: GoBackProps) => {
+      if (backProps?.previousScreen === "EditSavedSearchAlert") {
         onRefresh("delete")
       }
     }

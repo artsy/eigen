@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash fcdb85d95eca3c77f6eea4d021d2e15d */
+/* @relayHash 144f5f26f5c16eab2dd9efb303266f14 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -67,6 +67,7 @@ fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
     id
   }
   title
+  realizedPrice
 }
 
 fragment FairExhibitorRail_show on Show {
@@ -610,6 +611,13 @@ return {
                                     "kind": "ScalarField",
                                     "name": "title",
                                     "storageKey": null
+                                  },
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "realizedPrice",
+                                    "storageKey": null
                                   }
                                 ],
                                 "storageKey": null
@@ -680,7 +688,7 @@ return {
     ]
   },
   "params": {
-    "id": "fcdb85d95eca3c77f6eea4d021d2e15d",
+    "id": "144f5f26f5c16eab2dd9efb303266f14",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": (v10/*: any*/),
@@ -757,6 +765,7 @@ return {
         },
         "fair.exhibitors.edges.node.artworksConnection.edges.node.partner.id": (v13/*: any*/),
         "fair.exhibitors.edges.node.artworksConnection.edges.node.partner.name": (v12/*: any*/),
+        "fair.exhibitors.edges.node.artworksConnection.edges.node.realizedPrice": (v12/*: any*/),
         "fair.exhibitors.edges.node.artworksConnection.edges.node.sale": {
           "enumValues": null,
           "nullable": true,

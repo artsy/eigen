@@ -38,6 +38,7 @@ export type ArtworkRailCard_artwork = {
         readonly name: string | null;
     } | null;
     readonly title: string | null;
+    readonly realizedPrice: string | null;
     readonly " $refType": "ArtworkRailCard_artwork";
 };
 export type ArtworkRailCard_artwork$data = ArtworkRailCard_artwork;
@@ -275,10 +276,17 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "name": "title",
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "realizedPrice",
+      "storageKey": null
     }
   ],
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = '29ecea9f1f52373b03e652624468a99e';
+(node as any).hash = 'a35c6488cca1ce178eeaf1e7b17b8a2d';
 export default node;

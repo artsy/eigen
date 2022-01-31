@@ -527,8 +527,10 @@ jest.mock("react-native-gesture-handler", () => {
 })
 
 jest.mock("react-native-config", () => ({
-  ARTSY_API_CLIENT_SECRET: "artsy_api_client_secret",
-  ARTSY_API_CLIENT_KEY: "artsy_api_client_key",
+  ARTSY_DEV_API_CLIENT_SECRET: "artsy_api_client_secret",
+  ARTSY_DEV_API_CLIENT_KEY: "artsy_api_client_key",
+  ARTSY_PROD_API_CLIENT_SECRET: "artsy_api_client_secret",
+  ARTSY_PROD_API_CLIENT_KEY: "artsy_api_client_key",
   ARTSY_FACEBOOK_APP_ID: "artsy_facebook_app_id",
   SEGMENT_PRODUCTION_WRITE_KEY_IOS: "segment_production_write_key_ios",
   SEGMENT_PRODUCTION_WRITE_KEY_ANDROID: "segment_production_write_key_android",

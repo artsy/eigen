@@ -48,7 +48,12 @@ commands:
     steps:
       - run:
           name: "Set up .env file"
-          command: touch .env.shared && scripts/generate-env.js
+          command: touch .env.shared && scripts/setup-env-for-ci
+  setup-awscli:
+    steps:
+      - run:
+          name: "Set up aws cli not installed"
+          command: scripts/setup-awscli
   install-node-modules:
     steps:
       - restore_cache:
@@ -180,6 +185,7 @@ commands:
       - attach_workspace:
           at: .
       - install-node
+      - setup-awscli
       - setup-env-file
       - restore_cache:
           keys:
@@ -316,6 +322,7 @@ jobs:
     steps:
       - checkout
       - generate-checksums
+      - setup-awscli
       - setup-env-file
       - install-node-modules
       - update-echo
@@ -378,6 +385,7 @@ jobs:
       - attach_workspace:
           at: .
       - install-node
+      - setup-awscli
       - setup-env-file
       - install-node-modules
       - update-echo
@@ -471,7 +479,7 @@ jobs:
           branch: play_store_submission
       - run:
           name: Setup
-          command: ./scripts/setup-distribute-linux
+          command: ./scripts/setup-distribute
       - run:
           name: Promote if play_store_submission
           command: ./scripts/promote-if-playstore-submission-branch

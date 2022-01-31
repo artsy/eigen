@@ -11,7 +11,10 @@ import React from "react"
 import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { ArtworkRail, ArtworkRailProps } from "./ArtworkRail"
-import { ARTWORK_RAIL_CARD_IMAGE_HEIGHT } from "./ArtworkRailCard"
+import {
+  ARTWORK_RAIL_CARD_IMAGE_HEIGHT,
+  ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT,
+} from "./ArtworkRailCard"
 
 type SmallArtworkRailProps = Omit<ArtworkRailProps, "artworks" | "size"> & {
   artworks: SmallArtworkRail_artworks$key
@@ -40,8 +43,11 @@ export const SmallArtworkRailPlaceholder: React.FC = () => (
       <Flex key={index}>
         <PlaceholderBox height={ARTWORK_RAIL_CARD_IMAGE_HEIGHT.small} width={IMAGE_WIDTH} />
         <Spacer mb={2} />
-        <PlaceholderText width={IMAGE_WIDTH} />
-        <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
+        <Flex height={ARTWORK_RAIL_TEXT_CONTAINER_HEIGHT}>
+          <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
+          <PlaceholderText width={IMAGE_WIDTH} />
+          <RandomWidthPlaceholderText minWidth={30} maxWidth={90} />
+        </Flex>
       </Flex>
     ))}
   </Join>

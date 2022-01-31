@@ -1,7 +1,6 @@
 import { ActionType, OwnerType, ToggledSavedSearch } from "@artsy/cohesion"
 import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
 import { navigate, NavigateOptions } from "lib/navigation/navigate"
-import { useEnableMyCollection } from "lib/Scenes/MyCollection/MyCollection"
 import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import {
   CreateSavedSearchAlertParams,
@@ -23,7 +22,6 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
   const { visible, artistId, artistName, artistSlug, closeModal, onComplete } = props
   const tracking = useTracking()
   const popover = usePopoverMessage()
-  const shouldDisplayMyCollection = useEnableMyCollection()
 
   const handleComplete = (result: SavedSearchAlertMutationResult) => {
     tracking.trackEvent(tracks.toggleSavedSearch(true, artistId, artistSlug, result.id))
@@ -39,16 +37,10 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
           showInTabName: "profile",
         }
 
-        if (shouldDisplayMyCollection) {
-          await navigate("/my-profile/settings", options)
-          setTimeout(() => {
-            navigate("/my-profile/saved-search-alerts")
-          }, 100)
-
-          return
-        }
-
-        navigate("/my-profile/saved-search-alerts", options)
+        await navigate("/my-profile/settings", options)
+        setTimeout(() => {
+          navigate("/my-profile/saved-search-alerts")
+        }, 100)
       },
     })
   }

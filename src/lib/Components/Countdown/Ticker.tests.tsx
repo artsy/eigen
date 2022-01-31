@@ -17,7 +17,9 @@ describe("SimpleTicker", () => {
     )
 
     expect(
-      getByText("00d  00h  00m  01s", { normalizer: getDefaultNormalizer({ collapseWhitespace: false }) })
+      getByText("00d  00h  00m  01s", {
+        normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+      })
     ).toBeTruthy()
   })
 
@@ -30,7 +32,9 @@ describe("SimpleTicker", () => {
     )
 
     expect(
-      getByText("00d  00h  00m  00s", { normalizer: getDefaultNormalizer({ collapseWhitespace: false }) })
+      getByText("00d  00h  00m  00s", {
+        normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+      })
     ).toBeTruthy()
   })
 
@@ -44,7 +48,9 @@ describe("SimpleTicker", () => {
     )
 
     expect(
-      getByText("730d  11h  38m  24s", { normalizer: getDefaultNormalizer({ collapseWhitespace: false }) })
+      getByText("730d  11h  38m  24s", {
+        normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+      })
     ).toBeTruthy()
   })
 })

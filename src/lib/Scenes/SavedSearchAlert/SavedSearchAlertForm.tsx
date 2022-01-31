@@ -1,6 +1,9 @@
 import { ActionType, DeletedSavedSearch, EditedSavedSearch, OwnerType } from "@artsy/cohesion"
 import { FormikProvider, useFormik } from "formik"
-import { SearchCriteria } from "lib/Components/ArtworkFilter/SavedSearch/types"
+import {
+  SearchCriteria,
+  SearchCriteriaAttributes,
+} from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Dialog, quoteLeft, quoteRight, useTheme } from "palette"
 import React, { useEffect, useState } from "react"
@@ -12,11 +15,13 @@ import {
   checkOrRequestPushPermissions,
   clearDefaultAttributes,
   getNamePlaceholder,
+  showWarningMessageForDuplicateAlert,
 } from "./helpers"
 import { createSavedSearchAlert } from "./mutations/createSavedSearchAlert"
 import { deleteSavedSearchMutation } from "./mutations/deleteSavedSearchAlert"
 import { updateEmailFrequency } from "./mutations/updateEmailFrequency"
 import { updateSavedSearchAlert } from "./mutations/updateSavedSearchAlert"
+import { getSavedSearchIdByCriteria } from "./queries/getSavedSearchIdByCriteria"
 import {
   SavedSearchAlertFormPropsBase,
   SavedSearchAlertFormValues,
@@ -88,8 +93,9 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
       }
 
       try {
-        let result: SavedSearchAlertMutationResult
         const clearedAttributes = clearDefaultAttributes(attributes)
+        const submitHandler = isUpdateForm ? handleUpdateAlert : handleCreateAlert
+        let duplicateSavedSearchId = null
 
         /**
          * We perform the mutation only if
@@ -100,33 +106,77 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
           await updateEmailFrequency("alerts_only")
         }
 
-        if (isUpdateForm) {
-          const criteria = isEnabledImprovedAlertsFlow ? clearedAttributes : undefined
-
-          const response = await updateSavedSearchAlert(
-            savedSearchAlertId!,
-            userAlertSettings,
-            criteria
-          )
-          tracking.trackEvent(tracks.editedSavedSearch(savedSearchAlertId!, initialValues, values))
-
-          result = {
-            id: response.updateSavedSearch?.savedSearchOrErrors.internalID!,
-          }
-        } else {
-          const response = await createSavedSearchAlert(userAlertSettings, clearedAttributes)
-
-          result = {
-            id: response.createSavedSearch?.savedSearchOrErrors.internalID!,
-          }
+        /**
+         * We need to check a duplicate alert if
+         * - this is create alert flow
+         * - this is update alert flow AND there were changes in filters
+         */
+        if (isEnabledImprovedAlertsFlow && (!isUpdateForm || (isUpdateForm && hasChangedFilters))) {
+          duplicateSavedSearchId = await getSavedSearchIdByCriteria(clearedAttributes)
         }
 
-        onComplete?.(result)
+        if (isEnabledImprovedAlertsFlow && duplicateSavedSearchId) {
+          showWarningMessageForDuplicateAlert({
+            onReplacePress: () => {
+              submitHandler(userAlertSettings, clearedAttributes)
+            },
+          })
+          return
+        }
+
+        await submitHandler(userAlertSettings, clearedAttributes)
       } catch (error) {
         console.error(error)
       }
     },
   })
+
+  const handleUpdateAlert = async (
+    userAlertSettings: SavedSearchAlertFormValues,
+    alertAttributes: SearchCriteriaAttributes
+  ) => {
+    try {
+      formik.setSubmitting(true)
+      const criteria = isEnabledImprovedAlertsFlow ? alertAttributes : undefined
+
+      const response = await updateSavedSearchAlert(
+        savedSearchAlertId!,
+        userAlertSettings,
+        criteria
+      )
+      tracking.trackEvent(
+        tracks.editedSavedSearch(savedSearchAlertId!, initialValues, userAlertSettings)
+      )
+
+      const result: SavedSearchAlertMutationResult = {
+        id: response.updateSavedSearch?.savedSearchOrErrors.internalID!,
+      }
+      onComplete?.(result)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      formik.setSubmitting(false)
+    }
+  }
+
+  const handleCreateAlert = async (
+    userAlertSettings: SavedSearchAlertFormValues,
+    alertAttributes: SearchCriteriaAttributes
+  ) => {
+    try {
+      formik.setSubmitting(true)
+      const response = await createSavedSearchAlert(userAlertSettings, alertAttributes)
+      const result: SavedSearchAlertMutationResult = {
+        id: response.createSavedSearch?.savedSearchOrErrors.internalID!,
+      }
+
+      onComplete?.(result)
+    } catch (error) {
+      console.error(error)
+    } finally {
+      formik.setSubmitting(false)
+    }
+  }
 
   // Save the previously entered name
   useEffect(() => {

@@ -192,6 +192,17 @@ describe("EditSavedSearchAlert", () => {
 
     await waitFor(() => {
       const operation = mockEnvironment.mock.getMostRecentOperation()
+      expect(operation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+    })
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Me: () => ({
+        savedSearch: null,
+      }),
+    })
+
+    await waitFor(() => {
+      const operation = mockEnvironment.mock.getMostRecentOperation()
       expect(operation.request.variables.input).toEqual({
         searchCriteriaID: "savedSearchAlertId",
         attributes: {

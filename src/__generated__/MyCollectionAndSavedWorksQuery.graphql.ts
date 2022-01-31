@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e1cb197a626bda625d5ef56b9bda88e5 */
+/* @relayHash 83152c6de36b76dce0613b7a5afce5a2 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -33,7 +33,7 @@ fragment MyCollectionAndSavedWorks_me on Me {
     display
     id
   }
-  otherRelevantPosition
+  otherRelevantPositions
   profession
   icon {
     url(version: "thumbnail")
@@ -137,7 +137,7 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "otherRelevantPosition",
+            "name": "otherRelevantPositions",
             "storageKey": null
           },
           {
@@ -185,7 +185,7 @@ return {
     ]
   },
   "params": {
-    "id": "e1cb197a626bda625d5ef56b9bda88e5",
+    "id": "83152c6de36b76dce0613b7a5afce5a2",
     "metadata": {},
     "name": "MyCollectionAndSavedWorksQuery",
     "operationKind": "query",

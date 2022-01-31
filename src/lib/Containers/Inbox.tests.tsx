@@ -10,7 +10,7 @@ import { graphql, QueryRenderer } from "react-relay"
 import { OperationDescriptor } from "relay-runtime"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { MockResolvers } from "relay-test-utils/lib/RelayMockPayloadGenerator"
-import { InboxContainer } from "./Inbox/Inbox"
+import { InboxContainer } from "./Inbox"
 
 jest.unmock("react-relay")
 jest.unmock("react-native-scrollable-tab-view")

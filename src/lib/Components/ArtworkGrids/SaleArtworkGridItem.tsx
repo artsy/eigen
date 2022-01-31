@@ -77,6 +77,7 @@ export const SaleArtworkGridItem: React.FC<ArtworkProps> = ({
       sale: saleArtwork.sale,
       saleArtwork,
       saleMessage: saleArtwork.artwork?.saleMessage || null,
+      realizedPrice: artwork.realizedPrice,
     },
   })
 
@@ -162,6 +163,7 @@ export const SaleArtworkGridItemContainer = createFragmentContainer(SaleArtworkG
           url(version: "large")
           aspectRatio
         }
+        realizedPrice
       }
       counts {
         bidderPositions

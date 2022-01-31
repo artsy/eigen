@@ -35,10 +35,6 @@ function defineFeatures<T extends string>(featureMap: {
 export type FeatureName = keyof typeof features
 
 export const features = defineFeatures({
-  AROptionsBidManagement: {
-    readyForRelease: true,
-    echoFlagKey: "AROptionsBidManagement",
-  },
   AROptionsArtistSeries: {
     readyForRelease: true,
     echoFlagKey: "AROptionsArtistSeries",
@@ -126,18 +122,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableShowsRail",
   },
-  AREnableMyCollectionAndroid: {
-    readyForRelease: true,
-    description: "Enable My Collection (Android)",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionAndroid",
-  },
-  AREnableMyCollectionIOS: {
-    readyForRelease: true,
-    description: "Enable My Collection (iOS)",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionIOS",
-  },
   ARShowNetworkUnavailableModal: {
     readyForRelease: true,
     description: "Enable network unavailable modal",
@@ -151,9 +135,10 @@ export const features = defineFeatures({
     echoFlagKey: "ARGoogleAuth",
   },
   AREnableImprovedAlertsFlow: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Improved Alerts flow",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableImprovedAlertsFlow",
   },
   AREnableWebPImages: {
     readyForRelease: true,
@@ -172,18 +157,6 @@ export const features = defineFeatures({
     description: "Enable sort filter for artworks pill",
     showInAdminMenu: true,
     echoFlagKey: "AREnableSortFilterForArtworksPill",
-  },
-  AREnableAuctionResultComparableWorks: {
-    readyForRelease: true,
-    description: "Comparable works in Auction Result",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableAuctionResultComparableWorks",
-  },
-  ARMyCollectionLocalSortAndFilter: {
-    readyForRelease: true,
-    description: "My Collection Sort & Filter",
-    showInAdminMenu: true,
-    echoFlagKey: "ARMyCollectionLocalSortAndFilter",
   },
   AREnableArtistRecommendations: {
     readyForRelease: false,
