@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8cf7fcf39c2d256436b36b47dd16a65c */
+/* @relayHash 84159d1ea7e623d39bf0693ced593811 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -80,6 +80,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
+  realizedPrice
 }
 
 fragment CollectionArtistSeriesRail_collection on MarketingCollection {
@@ -864,6 +865,13 @@ return {
                               (v2/*: any*/)
                             ],
                             "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "realizedPrice",
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -1140,7 +1148,7 @@ return {
     ]
   },
   "params": {
-    "id": "8cf7fcf39c2d256436b36b47dd16a65c",
+    "id": "84159d1ea7e623d39bf0693ced593811",
     "metadata": {},
     "name": "CollectionQuery",
     "operationKind": "query",

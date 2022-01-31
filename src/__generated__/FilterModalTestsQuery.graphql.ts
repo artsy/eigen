@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0ac9c4bbf04b60ebbe588bfb4536add5 */
+/* @relayHash 05f25ec4d735bfe524d64bb108da7a4f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -65,6 +65,7 @@ export type FilterModalTestsQueryRawResponse = {
                         readonly name: string | null;
                         readonly id: string;
                     }) | null | undefined;
+                    readonly realizedPrice?: string | null | undefined;
                 }) | null;
                 readonly cursor: string;
                 readonly __typename?: string | undefined;
@@ -130,6 +131,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
+  realizedPrice
 }
 
 fragment CollectionArtworks_collection on MarketingCollection {
@@ -680,6 +682,13 @@ return {
                               (v2/*: any*/)
                             ],
                             "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "realizedPrice",
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -720,7 +729,7 @@ return {
     ]
   },
   "params": {
-    "id": "0ac9c4bbf04b60ebbe588bfb4536add5",
+    "id": "05f25ec4d735bfe524d64bb108da7a4f",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "marketingCollection": {
@@ -831,6 +840,7 @@ return {
         },
         "marketingCollection.collectionArtworks.edges.node.partner.id": (v8/*: any*/),
         "marketingCollection.collectionArtworks.edges.node.partner.name": (v9/*: any*/),
+        "marketingCollection.collectionArtworks.edges.node.realizedPrice": (v9/*: any*/),
         "marketingCollection.collectionArtworks.edges.node.sale": {
           "enumValues": null,
           "nullable": true,

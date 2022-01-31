@@ -34,6 +34,7 @@ export type ArtworkGridItem_artwork = {
         readonly url: string | null;
         readonly aspectRatio: number;
     } | null;
+    readonly realizedPrice: string | null;
     readonly " $refType": "ArtworkGridItem_artwork";
 };
 export type ArtworkGridItem_artwork$data = ArtworkGridItem_artwork;
@@ -240,10 +241,17 @@ const node: ReaderFragment = {
         }
       ],
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "realizedPrice",
+      "storageKey": null
     }
   ],
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = 'e16b72b00d843bc38430e61ed44ea305';
+(node as any).hash = '7ee9061e306a9d768320d0c1e8d7740e';
 export default node;

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a42bce8500eea9486bcc28f4f2e987cc */
+/* @relayHash 94a90f0ea070ba70995fa93402cb9086 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -241,6 +241,7 @@ fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
     id
   }
   title
+  realizedPrice
 }
 
 fragment Biography_artist on Artist {
@@ -980,7 +981,14 @@ return {
                         "selections": (v12/*: any*/),
                         "storageKey": null
                       },
-                      (v4/*: any*/)
+                      (v4/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "realizedPrice",
+                        "storageKey": null
+                      }
                     ],
                     "storageKey": null
                   }
@@ -1392,7 +1400,7 @@ return {
     ]
   },
   "params": {
-    "id": "a42bce8500eea9486bcc28f4f2e987cc",
+    "id": "94a90f0ea070ba70995fa93402cb9086",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artist": (v17/*: any*/),
@@ -1523,6 +1531,7 @@ return {
         },
         "artist.filterArtworksConnection.edges.node.partner.id": (v18/*: any*/),
         "artist.filterArtworksConnection.edges.node.partner.name": (v19/*: any*/),
+        "artist.filterArtworksConnection.edges.node.realizedPrice": (v19/*: any*/),
         "artist.filterArtworksConnection.edges.node.sale": {
           "enumValues": null,
           "nullable": true,

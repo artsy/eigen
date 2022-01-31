@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d5dc737ccc3385ce39713501cec51669 */
+/* @relayHash ded3062baa66d439a9197978a0a78c41 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -63,6 +63,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
+  realizedPrice
 }
 
 fragment FairArtworks_fair on Fair {
@@ -616,6 +617,13 @@ return {
                               (v6/*: any*/)
                             ],
                             "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "realizedPrice",
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -657,7 +665,7 @@ return {
     ]
   },
   "params": {
-    "id": "d5dc737ccc3385ce39713501cec51669",
+    "id": "ded3062baa66d439a9197978a0a78c41",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": {
@@ -769,6 +777,7 @@ return {
         },
         "fair.fairArtworks.edges.node.partner.id": (v10/*: any*/),
         "fair.fairArtworks.edges.node.partner.name": (v11/*: any*/),
+        "fair.fairArtworks.edges.node.realizedPrice": (v11/*: any*/),
         "fair.fairArtworks.edges.node.sale": {
           "enumValues": null,
           "nullable": true,

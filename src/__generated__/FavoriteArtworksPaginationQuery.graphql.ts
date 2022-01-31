@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 37fd94ca44b601e11512e5e53147d4fc */
+/* @relayHash f6aa8ebaa754b293983bf38a496d040d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -65,6 +65,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
+  realizedPrice
 }
 
 fragment FavoriteArtworks_me_1G22uz on Me {
@@ -464,6 +465,13 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
+                            "name": "realizedPrice",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "__typename",
                             "storageKey": null
                           }
@@ -504,7 +512,7 @@ return {
     ]
   },
   "params": {
-    "id": "37fd94ca44b601e11512e5e53147d4fc",
+    "id": "f6aa8ebaa754b293983bf38a496d040d",
     "metadata": {},
     "name": "FavoriteArtworksPaginationQuery",
     "operationKind": "query",
