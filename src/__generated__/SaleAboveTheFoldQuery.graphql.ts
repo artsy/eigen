@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 44103fc8355d4b12ec615d299a510812 */
+/* @relayHash ea3da5c4bdfdb7171cf417fa9cb36978 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -189,6 +189,7 @@ fragment SaleArtworkTileRailCard_saleArtwork on SaleArtwork {
     slug
     saleMessage
     title
+    realizedPrice
     id
   }
   counts {
@@ -426,10 +427,17 @@ v20 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "realizedPrice",
+  "storageKey": null
+},
+v21 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "lotLabel",
   "storageKey": null
 },
-v21 = [
+v22 = [
   {
     "kind": "Variable",
     "name": "saleID",
@@ -703,13 +711,7 @@ return {
                                 "storageKey": null
                               },
                               (v19/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "realizedPrice",
-                                "storageKey": null
-                              }
+                              (v20/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -884,13 +886,14 @@ return {
                               (v3/*: any*/),
                               (v15/*: any*/),
                               (v19/*: any*/),
+                              (v20/*: any*/),
                               (v7/*: any*/)
                             ],
                             "storageKey": null
                           },
                           (v16/*: any*/),
                           (v18/*: any*/),
-                          (v20/*: any*/),
+                          (v21/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -928,7 +931,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v21/*: any*/),
+            "args": (v22/*: any*/),
             "concreteType": "LotStanding",
             "kind": "LinkedField",
             "name": "lotStandings",
@@ -1030,7 +1033,7 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v20/*: any*/),
+                  (v21/*: any*/),
                   (v7/*: any*/),
                   (v3/*: any*/)
                 ],
@@ -1054,7 +1057,7 @@ return {
           },
           {
             "alias": "biddedLots",
-            "args": (v21/*: any*/),
+            "args": (v22/*: any*/),
             "concreteType": "LotStanding",
             "kind": "LinkedField",
             "name": "lotStandings",
@@ -1082,7 +1085,7 @@ return {
     ]
   },
   "params": {
-    "id": "44103fc8355d4b12ec615d299a510812",
+    "id": "ea3da5c4bdfdb7171cf417fa9cb36978",
     "metadata": {},
     "name": "SaleAboveTheFoldQuery",
     "operationKind": "query",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8a444545f4bfe63a6690cfa3d40415c3 */
+/* @relayHash ceeded4cc2c946a7d5fbc28f88930b11 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -304,6 +304,7 @@ fragment SaleArtworkTileRailCard_saleArtwork on SaleArtwork {
     slug
     saleMessage
     title
+    realizedPrice
     id
   }
   counts {
@@ -1285,6 +1286,7 @@ return {
                               (v5/*: any*/),
                               (v15/*: any*/),
                               (v3/*: any*/),
+                              (v22/*: any*/),
                               (v2/*: any*/)
                             ],
                             "storageKey": null
@@ -1544,7 +1546,7 @@ return {
     ]
   },
   "params": {
-    "id": "8a444545f4bfe63a6690cfa3d40415c3",
+    "id": "ceeded4cc2c946a7d5fbc28f88930b11",
     "metadata": {},
     "name": "HomeAboveTheFoldQuery",
     "operationKind": "query",

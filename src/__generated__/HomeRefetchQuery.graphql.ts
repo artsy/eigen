@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 396b30e34ee759254261ebd4b90a52dd */
+/* @relayHash 09f51110639fdf947a69b894d0b13870 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -482,6 +482,7 @@ fragment SaleArtworkTileRailCard_saleArtwork on SaleArtwork {
     slug
     saleMessage
     title
+    realizedPrice
     id
   }
   counts {
@@ -2105,6 +2106,7 @@ return {
                               (v9/*: any*/),
                               (v21/*: any*/),
                               (v7/*: any*/),
+                              (v29/*: any*/),
                               (v6/*: any*/)
                             ],
                             "storageKey": null
@@ -2554,7 +2556,7 @@ return {
     ]
   },
   "params": {
-    "id": "396b30e34ee759254261ebd4b90a52dd",
+    "id": "09f51110639fdf947a69b894d0b13870",
     "metadata": {},
     "name": "HomeRefetchQuery",
     "operationKind": "query",

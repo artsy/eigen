@@ -157,6 +157,7 @@ export const SaleArtworkTileRailCardContainer = createFragmentContainer(SaleArtw
         slug
         saleMessage
         title
+        realizedPrice
       }
       counts {
         bidderPositions

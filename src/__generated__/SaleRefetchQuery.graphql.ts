@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a0cd6362c495c9c919385a2a4d2856a9 */
+/* @relayHash 833b1be1a5b760fc6e99d5aef6ada730 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -189,6 +189,7 @@ fragment SaleArtworkTileRailCard_saleArtwork on SaleArtwork {
     slug
     saleMessage
     title
+    realizedPrice
     id
   }
   counts {
@@ -346,6 +347,13 @@ v10 = {
 v11 = {
   "alias": null,
   "args": null,
+  "kind": "ScalarField",
+  "name": "realizedPrice",
+  "storageKey": null
+},
+v12 = {
+  "alias": null,
+  "args": null,
   "concreteType": "SaleArtworkCounts",
   "kind": "LinkedField",
   "name": "counts",
@@ -361,7 +369,7 @@ v11 = {
   ],
   "storageKey": null
 },
-v12 = [
+v13 = [
   {
     "alias": null,
     "args": null,
@@ -370,66 +378,66 @@ v12 = [
     "storageKey": null
   }
 ],
-v13 = {
+v14 = {
   "alias": null,
   "args": null,
   "concreteType": "SaleArtworkCurrentBid",
   "kind": "LinkedField",
   "name": "currentBid",
   "plural": false,
-  "selections": (v12/*: any*/),
-  "storageKey": null
-},
-v14 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "lotLabel",
+  "selections": (v13/*: any*/),
   "storageKey": null
 },
 v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "isAuction",
+  "name": "lotLabel",
   "storageKey": null
 },
 v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "isAuction",
+  "storageKey": null
+},
+v17 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "isClosed",
   "storageKey": null
 },
-v17 = [
+v18 = [
   {
     "kind": "Variable",
     "name": "saleID",
     "variableName": "saleID"
   }
 ],
-v18 = {
+v19 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "liveStartAt",
   "storageKey": null
 },
-v19 = {
+v20 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v20 = {
+v21 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "endAt",
   "storageKey": null
 },
-v21 = [
+v22 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -583,13 +591,14 @@ return {
                               (v8/*: any*/),
                               (v9/*: any*/),
                               (v10/*: any*/),
+                              (v11/*: any*/),
                               (v2/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v11/*: any*/),
-                          (v13/*: any*/),
+                          (v12/*: any*/),
                           (v14/*: any*/),
+                          (v15/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -598,8 +607,8 @@ return {
                             "name": "sale",
                             "plural": false,
                             "selections": [
-                              (v15/*: any*/),
                               (v16/*: any*/),
+                              (v17/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -627,7 +636,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v17/*: any*/),
+            "args": (v18/*: any*/),
             "concreteType": "LotStanding",
             "kind": "LinkedField",
             "name": "lotStandings",
@@ -667,7 +676,7 @@ return {
                     "kind": "LinkedField",
                     "name": "maxBid",
                     "plural": false,
-                    "selections": (v12/*: any*/),
+                    "selections": (v13/*: any*/),
                     "storageKey": null
                   },
                   (v2/*: any*/)
@@ -689,8 +698,8 @@ return {
                     "name": "reserveStatus",
                     "storageKey": null
                   },
-                  (v11/*: any*/),
-                  (v13/*: any*/),
+                  (v12/*: any*/),
+                  (v14/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -729,7 +738,7 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v14/*: any*/),
+                  (v15/*: any*/),
                   (v2/*: any*/),
                   (v8/*: any*/)
                 ],
@@ -743,7 +752,7 @@ return {
                 "name": "sale",
                 "plural": false,
                 "selections": [
-                  (v18/*: any*/),
+                  (v19/*: any*/),
                   (v2/*: any*/)
                 ],
                 "storageKey": null
@@ -753,7 +762,7 @@ return {
           },
           {
             "alias": "biddedLots",
-            "args": (v17/*: any*/),
+            "args": (v18/*: any*/),
             "concreteType": "LotStanding",
             "kind": "LinkedField",
             "name": "lotStandings",
@@ -786,10 +795,10 @@ return {
         "name": "sale",
         "plural": false,
         "selections": [
-          (v19/*: any*/),
-          (v8/*: any*/),
-          (v18/*: any*/),
           (v20/*: any*/),
+          (v8/*: any*/),
+          (v19/*: any*/),
+          (v21/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -859,7 +868,7 @@ return {
             "selections": [
               {
                 "alias": null,
-                "args": (v21/*: any*/),
+                "args": (v22/*: any*/),
                 "concreteType": "SaleArtworkConnection",
                 "kind": "LinkedField",
                 "name": "saleArtworksConnection",
@@ -960,9 +969,9 @@ return {
                                 "name": "sale",
                                 "plural": false,
                                 "selections": [
-                                  (v15/*: any*/),
                                   (v16/*: any*/),
-                                  (v20/*: any*/),
+                                  (v17/*: any*/),
+                                  (v21/*: any*/),
                                   (v2/*: any*/)
                                 ],
                                 "storageKey": null
@@ -976,8 +985,8 @@ return {
                                 "name": "saleArtwork",
                                 "plural": false,
                                 "selections": [
-                                  (v11/*: any*/),
-                                  (v13/*: any*/),
+                                  (v12/*: any*/),
+                                  (v14/*: any*/),
                                   (v2/*: any*/)
                                 ],
                                 "storageKey": null
@@ -990,19 +999,13 @@ return {
                                 "name": "partner",
                                 "plural": false,
                                 "selections": [
-                                  (v19/*: any*/),
+                                  (v20/*: any*/),
                                   (v2/*: any*/)
                                 ],
                                 "storageKey": null
                               },
                               (v10/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "realizedPrice",
-                                "storageKey": null
-                              }
+                              (v11/*: any*/)
                             ],
                             "storageKey": null
                           },
@@ -1057,7 +1060,7 @@ return {
               },
               {
                 "alias": null,
-                "args": (v21/*: any*/),
+                "args": (v22/*: any*/),
                 "filters": null,
                 "handle": "connection",
                 "key": "Sale_saleArtworksConnection",
@@ -1082,7 +1085,7 @@ return {
     ]
   },
   "params": {
-    "id": "a0cd6362c495c9c919385a2a4d2856a9",
+    "id": "833b1be1a5b760fc6e99d5aef6ada730",
     "metadata": {},
     "name": "SaleRefetchQuery",
     "operationKind": "query",
