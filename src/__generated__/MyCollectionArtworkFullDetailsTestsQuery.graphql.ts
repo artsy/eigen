@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash fef967a5d0cd0c1aa2e26ea0e271d370 */
+/* @relayHash ba3db8a88663d1767414b1b47f47035d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -60,6 +60,7 @@ fragment MyCollectionArtworkFullDetails_artwork on Artwork {
   isEdition
   medium
   metric
+  artworkLocation
   provenance
   slug
   title
@@ -357,6 +358,13 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "artworkLocation",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "provenance",
             "storageKey": null
           },
@@ -381,7 +389,7 @@ return {
     ]
   },
   "params": {
-    "id": "fef967a5d0cd0c1aa2e26ea0e271d370",
+    "id": "ba3db8a88663d1767414b1b47f47035d",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -400,6 +408,7 @@ return {
         "artwork.artist.id": (v6/*: any*/),
         "artwork.artist.internalID": (v6/*: any*/),
         "artwork.artistNames": (v5/*: any*/),
+        "artwork.artworkLocation": (v5/*: any*/),
         "artwork.attributionClass": {
           "enumValues": null,
           "nullable": true,

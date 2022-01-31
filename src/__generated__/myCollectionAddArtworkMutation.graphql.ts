@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 2fba09faced9b5e1b32148bfe91d87cd */
+/* @relayHash 901e77e3f2f242d5514c482580273cf1 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type ArtworkAttributionClassType = "LIMITED_EDITION" | "OPEN_EDITION" | "UNIQUE" | "UNKNOWN_EDITION" | "%future added value";
@@ -68,6 +68,7 @@ export type myCollectionAddArtworkMutationResponse = {
                     readonly isEdition: boolean | null;
                     readonly medium: string | null;
                     readonly metric: string | null;
+                    readonly artworkLocation: string | null;
                     readonly provenance: string | null;
                     readonly slug: string;
                     readonly title: string | null;
@@ -130,6 +131,7 @@ mutation myCollectionAddArtworkMutation(
             isEdition
             medium
             metric
+            artworkLocation
             provenance
             slug
             title
@@ -331,24 +333,31 @@ v19 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "provenance",
+  "name": "artworkLocation",
   "storageKey": null
 },
 v20 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "slug",
+  "name": "provenance",
   "storageKey": null
 },
 v21 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "title",
+  "name": "slug",
   "storageKey": null
 },
 v22 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
+  "storageKey": null
+},
+v23 = {
   "kind": "ClientExtension",
   "selections": [
     {
@@ -360,7 +369,7 @@ v22 = {
     }
   ]
 },
-v23 = {
+v24 = {
   "kind": "InlineFragment",
   "selections": [
     {
@@ -469,11 +478,12 @@ return {
                           (v19/*: any*/),
                           (v20/*: any*/),
                           (v21/*: any*/),
+                          (v22/*: any*/),
                           (v14/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v22/*: any*/)
+                      (v23/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -481,7 +491,7 @@ return {
                 "type": "MyCollectionArtworkMutationSuccess",
                 "abstractKey": null
               },
-              (v23/*: any*/)
+              (v24/*: any*/)
             ],
             "storageKey": null
           }
@@ -584,11 +594,12 @@ return {
                           (v19/*: any*/),
                           (v20/*: any*/),
                           (v21/*: any*/),
+                          (v22/*: any*/),
                           (v14/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v22/*: any*/)
+                      (v23/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -596,7 +607,7 @@ return {
                 "type": "MyCollectionArtworkMutationSuccess",
                 "abstractKey": null
               },
-              (v23/*: any*/)
+              (v24/*: any*/)
             ],
             "storageKey": null
           }
@@ -606,7 +617,7 @@ return {
     ]
   },
   "params": {
-    "id": "2fba09faced9b5e1b32148bfe91d87cd",
+    "id": "901e77e3f2f242d5514c482580273cf1",
     "metadata": {},
     "name": "myCollectionAddArtworkMutation",
     "operationKind": "mutation",
