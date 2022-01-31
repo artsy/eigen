@@ -3,7 +3,7 @@ import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
 import React from "react"
 import * as Yup from "yup"
-import { updateConsignSubmission } from "../mutations/updateConsignSubmissionMutation"
+import { updateConsignSubmission } from "../Mutations/updateConsignSubmissionMutation"
 
 interface Props {
   handlePress: () => void
