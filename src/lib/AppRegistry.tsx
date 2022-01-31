@@ -8,8 +8,7 @@ import { ArtsyKeyboardAvoidingViewContext } from "./Components/ArtsyKeyboardAvoi
 import { ArtsyReactWebViewPage, useWebViewCookies } from "./Components/ArtsyReactWebView"
 import { FadeIn } from "./Components/FadeIn"
 import { BidFlow } from "./Containers/BidFlow"
-import { InboxWrapper } from "./Containers/Inbox"
-import { InboxScreenQuery } from "./Containers/Inbox/Inbox"
+import { InboxQueryRenderer, InboxScreenQuery } from "./Containers/Inbox"
 import { InquiryQueryRenderer } from "./Containers/Inquiry"
 import { RegistrationFlow } from "./Containers/RegistrationFlow"
 import { WorksForYouQueryRenderer, WorksForYouScreenQuery } from "./Containers/WorksForYou"
@@ -350,7 +349,7 @@ export const modules = defineModules({
   Gene: reactModule(GeneQueryRenderer),
   Tag: reactModule(TagQueryRenderer),
   Home: reactModule(HomeQueryRenderer, { isRootViewForTabName: "home" }),
-  Inbox: reactModule(InboxWrapper, { isRootViewForTabName: "inbox" }, InboxScreenQuery),
+  Inbox: reactModule(InboxQueryRenderer, { isRootViewForTabName: "inbox" }, InboxScreenQuery),
   Inquiry: reactModule(Inquiry, { alwaysPresentModally: true, hasOwnModalCloseButton: true }),
   LiveAuction: nativeModule({
     alwaysPresentModally: true,
