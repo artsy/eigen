@@ -104,6 +104,7 @@ export const SaleArtworkTileRailCard: React.FC<SaleArtworkTileRailCardProps> = (
       sale: saleArtwork.sale,
       saleArtwork,
       saleMessage: saleArtwork.artwork?.saleMessage || null,
+      realizedPrice: saleArtwork.artwork?.realizedPrice || null,
     },
     isSmallTile: true,
   })
