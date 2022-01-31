@@ -1,6 +1,9 @@
 import { ContextModule, OwnerType, tappedEntityGroup, TappedEntityGroupArgs } from "@artsy/cohesion"
 import { RecentlySold_targetSupply } from "__generated__/RecentlySold_targetSupply.graphql"
-import { SmallArtworkRail } from "lib/Components/ArtworkRail/SmallArtworkRail"
+import {
+  SmallArtworkRail,
+  SmallArtworkRailPlaceholder,
+} from "lib/Components/ArtworkRail/SmallArtworkRail"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
@@ -86,18 +89,7 @@ const RecentlySoldPlaceholder: React.FC = () => {
       <Spacer mb={2} />
 
       <Flex flexDirection="row" pl={2}>
-        <Join separator={<Spacer mr={0.5} />}>
-          {[...new Array(4)].map((_, index) => {
-            return (
-              <Box key={index}>
-                <PlaceholderBox width={180} height={270} marginRight={10} />
-                <Spacer mb={1} />
-                <PlaceholderText width={60} />
-                <PlaceholderText width={40} />
-              </Box>
-            )
-          })}
-        </Join>
+        <SmallArtworkRailPlaceholder />
       </Flex>
     </Box>
   )
