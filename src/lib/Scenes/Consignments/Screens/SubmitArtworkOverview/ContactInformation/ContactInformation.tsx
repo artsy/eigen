@@ -6,13 +6,11 @@ import { CTAButton, Flex, Input, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { ErrorView } from "../Components/ErrorView"
 import { updateConsignSubmission } from "../Mutations/updateConsignSubmissionMutation"
-import { contactInformationValidationSchema } from "../utils/validation"
-
-export interface ContactInformationFormModel {
-  userName: string
-  userEmail: string
-  userPhone: string
-}
+import {
+  contactInformationEmptyInitialValues,
+  ContactInformationFormModel,
+  contactInformationValidationSchema,
+} from "../utils/validation"
 
 export const ContactInformation: React.FC<{ handlePress: () => void }> = ({ handlePress }) => {
   const { submissionId } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
@@ -43,7 +41,7 @@ export const ContactInformation: React.FC<{ handlePress: () => void }> = ({ hand
 
   return (
     <Formik<ContactInformationFormModel>
-      initialValues={{ userName: "", userEmail: "", userPhone: "" }}
+      initialValues={contactInformationEmptyInitialValues}
       onSubmit={handleSubmit}
       validationSchema={contactInformationValidationSchema}
       validateOnMount
