@@ -6,8 +6,8 @@ import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils/"
 import { createConsignSubmission, updateConsignSubmission } from "../Mutations"
 import { updateSubmission } from "../utils/createOrUpdateSubmission"
-
-import { ContactInformation, ContactInformationFormModel } from "./ContactInformation"
+import { ContactInformationFormModel } from "../utils/validation"
+import { ContactInformation } from "./ContactInformation"
 
 jest.mock(
   "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/createConsignSubmissionMutation",
