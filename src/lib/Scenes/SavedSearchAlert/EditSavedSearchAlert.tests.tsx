@@ -206,7 +206,7 @@ describe("EditSavedSearchAlert", () => {
       expect(operation.request.variables.input).toEqual({
         searchCriteriaID: "savedSearchAlertId",
         attributes: {
-          artistID: "artistID",
+          artistIDs: ["artistID"],
           materialsTerms: ["paper"],
         },
         userAlertSettings: {
@@ -222,7 +222,7 @@ describe("EditSavedSearchAlert", () => {
 const searchCriteria = {
   acquireable: null,
   additionalGeneIDs: [],
-  artistID: "artistID",
+  artistIDs: ["artistID"],
   atAuction: null,
   attributionClass: [],
   colors: [],

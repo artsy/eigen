@@ -26,11 +26,12 @@ import { navigate, popToRoot } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useDevToggle } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
-import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
+import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
-import _, { filter, orderBy, uniqBy } from "lodash"
+import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { filter, orderBy, uniqBy } from "lodash"
 import { DateTime } from "luxon"
 import { Banner, Button, Flex, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
@@ -546,14 +547,16 @@ export const MyCollectionQueryRenderer: React.FC = () => {
         cacheConfig={{ force: true }}
         render={renderWithPlaceholder({
           Container: MyCollectionContainer,
-          renderPlaceholder: () => <LoadingSkeleton />,
+          renderPlaceholder: () => <MyCollectionPlaceholder />,
         })}
       />
     </ArtworkFiltersStoreProvider>
   )
 }
 
-export const LoadingSkeleton: React.FC<{}> = () => {
+export const MyCollectionPlaceholder: React.FC<{}> = () => {
+  const screenWidth = useScreenDimensions().width
+
   return (
     <Flex>
       <Flex flexDirection="row" justifyContent="space-between">
@@ -563,22 +566,41 @@ export const LoadingSkeleton: React.FC<{}> = () => {
       </Flex>
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center" px="2">
         <Flex>
-          <Spacer mb={40} />
-          {/* Entity name */}
+          <Spacer mb={20} />
+          <Flex flexDirection="row">
+            <PlaceholderBox width={100} height={100} borderRadius={50} />
+            <Flex justifyContent="center" ml={2}>
+              <PlaceholderText width={80} height={24} />
+              <PlaceholderText width={100} />
+            </Flex>
+          </Flex>
+          <Spacer mb={1} />
+          <Spacer mb={1} />
           <PlaceholderText width={180} />
-          {/* subtitle text */}
+          <Spacer mb={1} />
           <PlaceholderText width={100} />
+          <Spacer mb={2} />
+          <PlaceholderText width={200} />
+          <Spacer mb={1} />
+          <PlaceholderBox width={screenWidth - 40} height={28} borderRadius={50} />
         </Flex>
       </Flex>
-      <Spacer mb={3} />
+      <Spacer mb={2} mt={1} />
       {/* tabs */}
       <Flex justifyContent="space-around" flexDirection="row" px={2}>
-        <PlaceholderText width="40%" />
-        <PlaceholderText width="40%" />
+        <PlaceholderText width="40%" height={22} />
+        <PlaceholderText width="40%" height={22} />
       </Flex>
       <Spacer mb={1} />
       <Separator />
-      <Spacer mb={3} />
+      <Spacer mb={1} />
+      {/* Sort & Filter  */}
+      <Flex justifyContent="space-between" flexDirection="row" px={2} py={0.5}>
+        <PlaceholderText width={120} height={22} />
+        <PlaceholderText width={90} height={22} borderRadius={11} />
+      </Flex>
+      <Separator />
+      <Spacer mb={1} mt={0.5} />
       {/* masonry grid */}
       <PlaceholderGrid />
     </Flex>

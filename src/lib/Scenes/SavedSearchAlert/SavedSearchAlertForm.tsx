@@ -67,6 +67,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
     value: artistId,
     paramName: SearchCriteria.artistID,
   }
+
   const pills = isEnabledImprovedAlertsFlow ? [artistPill, ...savedSearchPills] : savedSearchPills
 
   const tracking = useTracking()
