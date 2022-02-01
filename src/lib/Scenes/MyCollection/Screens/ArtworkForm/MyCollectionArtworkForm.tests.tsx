@@ -305,6 +305,7 @@ describe("MyCollectionArtworkForm", () => {
                   images: null,
                   isEdition: null,
                   metric: null,
+                  artworkLocation: null,
                   provenance: null,
                   width: null,
                   title: null,
