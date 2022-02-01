@@ -5,8 +5,16 @@ import "react-native"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils/"
 import { createConsignSubmission, updateConsignSubmission } from "../Mutations"
+import { updateSubmission } from "../utils/createOrUpdateSubmission"
 
-import { ContactInformation } from "./ContactInformation"
+import { ContactInformation, ContactInformationFormModel } from "./ContactInformation"
+
+jest.mock(
+  "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/createConsignSubmissionMutation",
+  () => ({
+    createConsignSubmission: jest.fn().mockResolvedValue("12345"),
+  })
+)
 
 jest.mock(
   "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/updateConsignSubmissionMutation",
@@ -27,7 +35,7 @@ const createConsignSubmissionMock = createConsignSubmission as jest.Mock
 const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
 const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
-describe("ArtworkDetailsForm", () => {
+describe("ContactInformationForm", () => {
   const TestRenderer = () => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
       <ContactInformation handlePress={jest.fn()} />
@@ -35,10 +43,9 @@ describe("ArtworkDetailsForm", () => {
   )
 
   beforeEach(() => {
-    // this does not work here . . .
-    // ;(createConsignSubmissionMock as jest.Mock).mockClear()
-    // ;(updateConsignSubmissionMock as jest.Mock).mockClear()
-    // mockEnvironment.mockClear()
+    ;(createConsignSubmissionMock as jest.Mock).mockClear()
+    ;(updateConsignSubmissionMock as jest.Mock).mockClear()
+    mockEnvironment.mockClear()
   })
 
   it("renders without throwing an error", () => {
@@ -52,10 +59,21 @@ describe("ArtworkDetailsForm", () => {
     ).toBeTruthy()
   })
 
-  // it("sends information correctly", () => {
-  //   renderWithWrappersTL(<ContactInformation handlePress={() => console.log("do nothing")} />)
-  // })
-  // it(" navigate to the next page correctly", () => {
+  it("updates existing submission when ID passed", async () => {
+    // check what is in submission // check all fields are there
+    // if everything is ok => updateSubmission()
+    // make sure "userName" exists in submission
+    await updateSubmission(mockSubmissionForm, "12345")
+    expect(updateConsignSubmissionMock).toHaveBeenCalled()
+  })
+
+  // it("navigate to the next page correctly", () => {
   //   renderWithWrappersTL(<ContactInformation handlePress={() => console.log("do nothing")} />)
   // })
 })
+
+export const mockSubmissionForm: ContactInformationFormModel = {
+  userName: "Angela",
+  userEmail: "a@a.aaa",
+  userPhone: "202-555-0174",
+}
