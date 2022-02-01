@@ -38,7 +38,10 @@ const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnviro
 describe("ContactInformationForm", () => {
   const TestRenderer = () => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <ContactInformation handlePress={jest.fn()} />
+      <ContactInformation
+        me={null}
+        // handlePress={jest.fn()}
+      />
     </RelayEnvironmentProvider>
   )
 
@@ -49,7 +52,12 @@ describe("ContactInformationForm", () => {
   })
 
   it("renders without throwing an error", () => {
-    renderWithWrappersTL(<ContactInformation handlePress={() => console.log("do nothing")} />)
+    renderWithWrappersTL(
+      <ContactInformation
+        me={null}
+        // handlePress={() => console.log("do nothing")}
+      />
+    )
   })
 
   it("renders correct explanation for form fields", () => {
