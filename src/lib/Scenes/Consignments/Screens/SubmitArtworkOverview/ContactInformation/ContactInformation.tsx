@@ -19,7 +19,7 @@ export interface ContactInformationFormModel {
 export const ContactInformation = ({ handlePress }: Props) => {
   const schema = Yup.object().shape({
     userName: Yup.string().required("Please provide a name").trim(),
-    email: Yup.string().email().required("Please provide a valid Email").trim(),
+    userEmail: Yup.string().email().required("Please provide a valid Email").trim(),
     userPhone: Yup.string().required("Please provide a valid phone number").trim(),
   })
 
@@ -27,6 +27,7 @@ export const ContactInformation = ({ handlePress }: Props) => {
     // let's add error display here
     console.log("handling error")
   }
+
   const handleSubmit = async (values: ContactInformationFormModel) => {
     try {
       const updateResults = await updateConsignSubmission({

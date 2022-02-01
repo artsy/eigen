@@ -1,3 +1,7 @@
+import {
+  ConsignmentAttributionClass,
+  ConsignmentSubmissionStateAggregation,
+} from "__generated__/createConsignmentSubmissionMutation.graphql"
 import * as Yup from "yup"
 
 export interface Location {
@@ -11,7 +15,7 @@ export interface ArtworkDetailsFormModel {
   title: string
   year: string
   medium: string
-  attributionClass: string
+  attributionClass: ConsignmentAttributionClass
   editionNumber: string
   editionSizeFormatted: string
   dimensionsMetric: string
@@ -19,19 +23,20 @@ export interface ArtworkDetailsFormModel {
   width: string
   depth: string
   provenance: string
-  state: string
+  state: ConsignmentSubmissionStateAggregation
   utmMedium: string | undefined
   utmSource: string | undefined
   utmTerm: string | undefined
   location: Location
 }
 
-export const artworkDetailsEmptyInitialValues = {
+export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
   artist: "",
   artistId: "",
   title: "",
   year: "",
   medium: "",
+  // TODO: This needs to be fixed!
   attributionClass: "",
   editionNumber: "",
   editionSizeFormatted: "",
