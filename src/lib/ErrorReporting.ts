@@ -5,7 +5,7 @@ import Config from "react-native-config"
 import { getBuildNumber, getVersion } from "react-native-device-info"
 import { GlobalStore, useFeatureFlag } from "./store/GlobalStore"
 
-// important! this much match the release version specified
+// important! this must match the release version specified
 // in fastfile in order for sourcemaps/sentry stack traces to work
 export const eigenSentryReleaseName = () => {
   const prefix = Platform.OS === "ios" ? "ios" : "android"
