@@ -1,58 +1,51 @@
+import { captureMessage } from "@sentry/react-native"
 import { Formik } from "formik"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
-import React from "react"
-import * as Yup from "yup"
+import React, { useState } from "react"
+import { ErrorView } from "../Components/ErrorView"
 import { updateConsignSubmission } from "../Mutations/updateConsignSubmissionMutation"
-
-interface Props {
-  handlePress: () => void
-}
-// Update this to get the submissionId from globalStore
-const submissionId = "72504"
+import { contactInformationValidationSchema } from "../utils/validation"
 
 export interface ContactInformationFormModel {
   userName: string
   userEmail: string
   userPhone: string
 }
-export const ContactInformation = ({ handlePress }: Props) => {
-  const schema = Yup.object().shape({
-    userName: Yup.string().required("Please provide a name").trim(),
-    userEmail: Yup.string().email().required("Please provide a valid Email").trim(),
-    userPhone: Yup.string().required("Please provide a valid phone number").trim(),
-  })
 
-  const handleError = () => {
-    // let's add error display here
-    console.log("handling error")
-  }
+export const ContactInformation: React.FC<{ handlePress: () => void }> = ({ handlePress }) => {
+  const { submissionId } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
+  const [submissionError, setSubmissionError] = useState(false)
 
   const handleSubmit = async (values: ContactInformationFormModel) => {
     try {
-      const updateResults = await updateConsignSubmission({
+      const updatedSubmissionId = await updateConsignSubmission({
         id: submissionId,
         userName: values.userName,
         userEmail: values.userEmail,
         userPhone: values.userPhone,
       })
-      if (updateResults) {
+
+      if (updatedSubmissionId) {
+        GlobalStore.actions.artworkSubmission.submission.resetSessionState()
         handlePress()
       }
     } catch (error) {
-      console.log("error while", error)
-      handleError()
-
-      // remove submissions
-      // GlobalStore.actions.artworkSubmission.submission.resetSessionState()
+      captureMessage(JSON.stringify(error))
+      setSubmissionError(true)
     }
+  }
+
+  if (submissionError) {
+    return <ErrorView />
   }
 
   return (
     <Formik<ContactInformationFormModel>
       initialValues={{ userName: "", userEmail: "", userPhone: "" }}
-      onSubmit={(values) => console.log(values)}
-      validationSchema={schema}
+      onSubmit={handleSubmit}
+      validationSchema={contactInformationValidationSchema}
       validateOnMount
     >
       {({ values, setFieldValue, isValid }) => (

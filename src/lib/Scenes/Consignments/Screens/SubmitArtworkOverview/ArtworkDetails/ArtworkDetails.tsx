@@ -3,10 +3,10 @@ import { Formik } from "formik"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { BulletedItem, CTAButton, Flex, Spacer, Text } from "palette"
 import React, { useState } from "react"
+import { ErrorView } from "../Components/ErrorView"
 import { createOrUpdateSubmission } from "../utils/createOrUpdateSubmission"
 import { ArtworkDetailsFormModel, artworkDetailsValidationSchema } from "../utils/validation"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
-import { ErrorView } from "./Components/ErrorView"
 
 export const ArtworkDetails: React.FC<{ handlePress: () => void }> = ({ handlePress }) => {
   const { submissionId, artworkDetails } = GlobalStore.useAppState(

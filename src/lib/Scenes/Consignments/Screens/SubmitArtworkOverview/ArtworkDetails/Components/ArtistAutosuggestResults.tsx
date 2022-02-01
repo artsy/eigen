@@ -12,11 +12,13 @@ import React from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
+import { ErrorView } from "../../Components/ErrorView"
 import { ArtistAutosuggestRow } from "./ArtistAutosuggestRow"
-import { ErrorView } from "./ErrorView"
 
 export type ArtistAutosuggestResult = NonNullable<
-  NonNullable<NonNullable<NonNullable<ArtistAutosuggestResults_results["results"]>["edges"]>[0]>["node"]
+  NonNullable<
+    NonNullable<NonNullable<ArtistAutosuggestResults_results["results"]>["edges"]>[0]
+  >["node"]
 >
 
 const INITIAL_BATCH_SIZE = 32
@@ -70,7 +72,9 @@ const ArtistAutosuggestResultsFlatList: React.FC<{
   results.current = latestResults || results.current
 
   const nodes: ArtistAutosuggestResult[] = useMemo(
-    () => results.current?.results?.edges?.map((e, i) => ({ ...e?.node!, key: e?.node?.href! + i })) ?? [],
+    () =>
+      results.current?.results?.edges?.map((e, i) => ({ ...e?.node!, key: e?.node?.href! + i })) ??
+      [],
     [results.current]
   )
 
@@ -140,10 +144,18 @@ const ArtistAutosuggestResultsContainer = createPaginationContainer(
         query: { type: "String!" }
         count: { type: "Int!" }
         cursor: { type: "String" }
-        entities: { type: "[SearchEntity]", defaultValue: [ARTIST, ARTWORK, FAIR, GENE, SALE, PROFILE, COLLECTION] }
+        entities: {
+          type: "[SearchEntity]"
+          defaultValue: [ARTIST, ARTWORK, FAIR, GENE, SALE, PROFILE, COLLECTION]
+        }
       ) {
-        results: searchConnection(query: $query, mode: AUTOSUGGEST, first: $count, after: $cursor, entities: $entities)
-          @connection(key: "ArtistAutosuggestResults_results") {
+        results: searchConnection(
+          query: $query
+          mode: AUTOSUGGEST
+          first: $count
+          after: $cursor
+          entities: $entities
+        ) @connection(key: "ArtistAutosuggestResults_results") {
           edges {
             node {
               imageUrl
@@ -210,9 +222,17 @@ export const ArtistAutosuggestResults: React.FC<{
               captureMessage(error.stack!)
             }
 
-            return <ErrorView message="There seems to be a problem with the connection. Please try again shortly." />
+            return (
+              <ErrorView message="There seems to be a problem with the connection. Please try again shortly." />
+            )
           }
-          return <ArtistAutosuggestResultsContainer query={query} results={props} onResultPress={onResultPress} />
+          return (
+            <ArtistAutosuggestResultsContainer
+              query={query}
+              results={props}
+              onResultPress={onResultPress}
+            />
+          )
         }}
         variables={{
           query,
@@ -220,9 +240,13 @@ export const ArtistAutosuggestResults: React.FC<{
           entities: ["ARTIST"],
         }}
         query={graphql`
-          query ArtistAutosuggestResultsQuery($query: String!, $count: Int!, $entities: [SearchEntity])
-          @raw_response_type {
-            ...ArtistAutosuggestResults_results @arguments(query: $query, count: $count, entities: $entities)
+          query ArtistAutosuggestResultsQuery(
+            $query: String!
+            $count: Int!
+            $entities: [SearchEntity]
+          ) @raw_response_type {
+            ...ArtistAutosuggestResults_results
+              @arguments(query: $query, count: $count, entities: $entities)
           }
         `}
         environment={defaultEnvironment}
@@ -252,7 +276,12 @@ const ArtistAutosuggestResultsPlaceholder: React.FC = () => {
         <Flex key={`autosuggest-result-${index}`} flexDirection="row" mb={2}>
           <PlaceholderBox width={IMAGE_SIZE} height={IMAGE_SIZE} />
           <Flex flex={1} ml={1} justifyContent="center">
-            <RandomWidthPlaceholderText minWidth={100} maxWidth={150} height={TEXT_SIZE} marginBottom={0} />
+            <RandomWidthPlaceholderText
+              minWidth={100}
+              maxWidth={150}
+              height={TEXT_SIZE}
+              marginBottom={0}
+            />
           </Flex>
         </Flex>
       ))}
