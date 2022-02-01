@@ -1,5 +1,9 @@
 import { PartnerArtwork_partner } from "__generated__/PartnerArtwork_partner.graphql"
-import { AnimatedArtworkFilterButton, ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
+import {
+  AnimatedArtworkFilterButton,
+  ArtworkFilterNavigator,
+  FilterModalMode,
+} from "lib/Components/ArtworkFilter"
 import { useArtworkFilters } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
@@ -30,7 +34,11 @@ export const PartnerArtwork: React.FC<{
         <Spacer mb={2} />
 
         {artworks ? (
-          <InfiniteScrollArtworksGrid connection={artworks} loadMore={relay.loadMore} hasMore={relay.hasMore} />
+          <InfiniteScrollArtworksGrid
+            connection={artworks}
+            loadMore={relay.loadMore}
+            hasMore={relay.hasMore}
+          />
         ) : (
           <TabEmptyState text="There is no artwork from this gallery yet" />
         )}

@@ -1,6 +1,9 @@
 import { CreateSavedSearchAlertTestsQuery } from "__generated__/CreateSavedSearchAlertTestsQuery.graphql"
 import { FilterData, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
@@ -86,7 +89,10 @@ describe("CreateSavedSearchAlert", () => {
     )
   }
 
-  const renderAndExecuteQuery = (props?: Partial<CreateSavedSearchAlertProps>, mockResolvers?: MockResolvers) => {
+  const renderAndExecuteQuery = (
+    props?: Partial<CreateSavedSearchAlertProps>,
+    mockResolvers?: MockResolvers
+  ) => {
     const render = renderWithWrappersTL(<TestRenderer {...props} />)
 
     // CreateSavedSearchAlertTestsQuery
@@ -162,18 +168,15 @@ describe("CreateSavedSearchAlertV2", () => {
     expect(toggles).toHaveLength(1)
   })
 
-  it('should disable "Save Alert" button if there is already a saved search with the same criteria', async () => {
+  it('"Save Alert" should be enabled by default', async () => {
     const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
 
     mockEnvironmentPayload(mockEnvironment, {
       Me: () => ({
         emailFrequency: "none",
-        savedSearch: {
-          internalID: "internalID",
-        },
       }),
     })
 
-    expect(getAllByText("Save Alert")[0]).toBeDisabled()
+    expect(getAllByText("Save Alert")[0]).toBeEnabled()
   })
 })

@@ -61,7 +61,15 @@ export interface ColorProps {
 export function color(...args: any[]): any
 
 // text align
-export type TextAlignValue = "left" | "right" | "center" | "justify" | "justify-all" | "start" | "end" | "match-parent"
+export type TextAlignValue =
+  | "left"
+  | "right"
+  | "center"
+  | "justify"
+  | "justify-all"
+  | "start"
+  | "end"
+  | "match-parent"
 export type ResponsiveTextAlignValue = ResponsiveValue<TextAlignValue>
 
 export interface TextAlignProps {

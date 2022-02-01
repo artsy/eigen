@@ -93,7 +93,15 @@ const BodyText: React.FC<TextProps & { disabled?: boolean }> = (props) => {
   )
 }
 
-export { LargeHeadline, SmallHeadline, Subtitle, FromSignatureText, MetadataText, PreviewText, BodyText }
+export {
+  LargeHeadline,
+  SmallHeadline,
+  Subtitle,
+  FromSignatureText,
+  MetadataText,
+  PreviewText,
+  BodyText,
+}
 
 interface Styles {
   largeDefault: TextStyle

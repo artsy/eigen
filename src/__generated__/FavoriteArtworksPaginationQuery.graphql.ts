@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 8f86f5c82b10158ea995b3152625d03e */
+/* @relayHash f6aa8ebaa754b293983bf38a496d040d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -65,6 +65,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
+  realizedPrice
 }
 
 fragment FavoriteArtworks_me_1G22uz on Me {
@@ -92,7 +93,7 @@ fragment FavoriteArtworks_me_1G22uz on Me {
 fragment GenericGrid_artworks on Artwork {
   id
   image {
-    aspect_ratio: aspectRatio
+    aspectRatio
   }
   ...ArtworkGridItem_artwork
 }
@@ -275,7 +276,7 @@ return {
                             "plural": false,
                             "selections": [
                               {
-                                "alias": "aspect_ratio",
+                                "alias": null,
                                 "args": null,
                                 "kind": "ScalarField",
                                 "name": "aspectRatio",
@@ -293,13 +294,6 @@ return {
                                 "kind": "ScalarField",
                                 "name": "url",
                                 "storageKey": "url(version:\"large\")"
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "aspectRatio",
-                                "storageKey": null
                               }
                             ],
                             "storageKey": null
@@ -471,6 +465,13 @@ return {
                             "alias": null,
                             "args": null,
                             "kind": "ScalarField",
+                            "name": "realizedPrice",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
                             "name": "__typename",
                             "storageKey": null
                           }
@@ -511,7 +512,7 @@ return {
     ]
   },
   "params": {
-    "id": "8f86f5c82b10158ea995b3152625d03e",
+    "id": "f6aa8ebaa754b293983bf38a496d040d",
     "metadata": {},
     "name": "FavoriteArtworksPaginationQuery",
     "operationKind": "query",

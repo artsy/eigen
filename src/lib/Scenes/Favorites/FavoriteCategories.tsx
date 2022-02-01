@@ -61,15 +61,24 @@ export class Categories extends React.Component<Props, State> {
 
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
-    const rows = extractNodes(this.props.me.followsAndSaves?.genes, (node) => node.gene!).map((gene) => ({
-      key: gene.id,
-      content: <SavedItemRow square_image href={gene.href!} image={gene.image!} name={gene.name!} />,
-    }))
+    const rows = extractNodes(this.props.me.followsAndSaves?.genes, (node) => node.gene!).map(
+      (gene) => ({
+        key: gene.id,
+        content: (
+          <SavedItemRow square_image href={gene.href!} image={gene.image!} name={gene.name!} />
+        ),
+      })
+    )
 
     if (rows.length === 0) {
       return (
         <StickyTabPageScrollView
-          refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshingFromPull}
+              onRefresh={this.handleRefresh}
+            />
+          }
         >
           <ZeroState
             title="You’re not following any categories yet"
@@ -87,9 +96,16 @@ export class Categories extends React.Component<Props, State> {
         ItemSeparatorComponent={() => <Spacer mb="5px" />}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.2}
-        refreshControl={<RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshingFromPull}
+            onRefresh={this.handleRefresh}
+          />
+        }
         ListFooterComponent={
-          this.state.fetchingMoreData ? <Spinner style={{ marginTop: 20, marginBottom: 20 }} /> : null
+          this.state.fetchingMoreData ? (
+            <Spinner style={{ marginTop: 20, marginBottom: 20 }} />
+          ) : null
         }
       />
     )
@@ -103,7 +119,8 @@ const FavoriteCategoriesContainer = createPaginationContainer(
       fragment FavoriteCategories_me on Me
       @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String" }) {
         followsAndSaves {
-          genes: genesConnection(first: $count, after: $cursor) @connection(key: "Categories_followed_genes") {
+          genes: genesConnection(first: $count, after: $cursor)
+            @connection(key: "Categories_followed_genes") {
             pageInfo {
               endCursor
               hasNextPage

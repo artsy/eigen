@@ -33,7 +33,8 @@ const Trove: React.FC<TroveProps> = ({ trove, mb }) => {
 
 export const TroveFragmentContainer = createFragmentContainer(Trove, {
   trove: graphql`
-    fragment Trove_trove on HomePage @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
+    fragment Trove_trove on HomePage
+    @argumentDefinitions(heroImageVersion: { type: "HomePageHeroUnitImageVersion" }) {
       heroUnits(platform: MOBILE) {
         title
         subtitle

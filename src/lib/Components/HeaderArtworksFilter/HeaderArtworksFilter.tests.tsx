@@ -4,14 +4,25 @@ import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Text, TouchableHighlightColor } from "palette"
 import React from "react"
 import { act } from "react-test-renderer"
-import { FilterProps, HeaderArtworksFilter, SeparatorWithSmoothOpacity } from "./HeaderArtworksFilter"
+import {
+  FilterProps,
+  HeaderArtworksFilter,
+  SeparatorWithSmoothOpacity,
+} from "./HeaderArtworksFilter"
 
 describe("HeaderArtworksFilter", () => {
   const onPress = jest.fn()
 
   const MockHeaderArtworksFilter = (props: Partial<FilterProps>) => {
     const animationValue = useAnimatedValue(0)
-    return <HeaderArtworksFilter total={120} animationValue={animationValue} onPress={onPress} {...props} />
+    return (
+      <HeaderArtworksFilter
+        total={120}
+        animationValue={animationValue}
+        onPress={onPress}
+        {...props}
+      />
+    )
   }
 
   it("renders without throwing an error", () => {

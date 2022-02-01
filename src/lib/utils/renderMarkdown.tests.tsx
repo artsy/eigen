@@ -1,4 +1,4 @@
-import { act, fireEvent } from "@testing-library/react-native"
+import { act, fireEvent, within } from "@testing-library/react-native"
 import { readFileSync } from "fs"
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
@@ -18,7 +18,9 @@ describe("renderMarkdown", () => {
   })
 
   it("returns markdown for multiple paragraphs", () => {
-    const componentList = renderMarkdown("This is a first paragraph\n\nThis is a second paragraph") as any
+    const componentList = renderMarkdown(
+      "This is a first paragraph\n\nThis is a second paragraph"
+    ) as any
     expect(componentList.length).toEqual(4)
 
     const { queryByText } = renderWithWrappersTL(<Flex>{componentList}</Flex>)
@@ -28,18 +30,26 @@ describe("renderMarkdown", () => {
 
   it("returns markdown for multiple paragraphs and links", () => {
     const componentList = renderMarkdown(
-      "This is a [first](/artist/first) paragraph\n\nThis is a [second](/gene/second) paragraph"
+      "This is a [first](/artist/first) paragraph\n\nAnd that is a [second](/gene/second) paragraph"
     ) as any
     expect(componentList.length).toEqual(4)
 
-    const { queryByText, queryAllByTestId } = renderWithWrappersTL(<Flex>{componentList}</Flex>)
+    const { getByText, queryAllByTestId } = renderWithWrappersTL(<Flex>{componentList}</Flex>)
+
     expect(queryAllByTestId(/linktext-/)).toHaveLength(2)
 
-    expect(queryByText("This is a first paragraph")).toBeTruthy()
+    // ensures that there is a <Text> element that includes another one with "first" in it
+    expect(within(getByText(/This is a/)).getByText(/first/)).toBeTruthy()
+    // ensures that there is a <Text> element that includes another one with "paragraph" in it
+    expect(within(getByText(/This is a/)).getByText(/paragraph/)).toBeTruthy()
 
     expect(extractText(queryAllByTestId(/linktext-/)[0])).toEqual("first")
 
-    expect(queryByText("This is a second paragraph")).toBeTruthy()
+    // ensures that there is a <Text> element that includes another one with "second" in it
+    expect(within(getByText(/And that is a/)).getByText(/second/)).toBeTruthy()
+
+    // ensures that there is a <Text> element that includes another one with "paragraph" in it
+    expect(within(getByText(/And that is a/)).getByText(/paragraph/)).toBeTruthy()
 
     expect(extractText(queryAllByTestId(/linktext-/)[1])).toEqual("second")
   })
@@ -60,7 +70,10 @@ describe("renderMarkdown", () => {
         },
       },
     }
-    const componentList = renderMarkdown("This is a first paragraph\n\nThis is a second paragraph", customRules) as any
+    const componentList = renderMarkdown(
+      "This is a first paragraph\n\nThis is a second paragraph",
+      customRules
+    ) as any
     expect(componentList.length).toEqual(4)
     const { queryByText } = renderWithWrappersTL(<Flex>{componentList}</Flex>)
     expect(queryByText("This is a first paragraph")).toBeTruthy()

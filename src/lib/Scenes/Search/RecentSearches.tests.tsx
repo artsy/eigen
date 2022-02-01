@@ -85,7 +85,9 @@ describe("Recent Searches", () => {
   it("has an empty state", () => {
     const tree = renderWithWrappers(<TestPage />)
 
-    expect(extractText(tree.root)).toMatchInlineSnapshot(`"Recent SearchesWe’ll save your recent searches here"`)
+    expect(extractText(tree.root)).toMatchInlineSnapshot(
+      `"Recent SearchesWe’ll save your recent searches here"`
+    )
     expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(0)
   })
 

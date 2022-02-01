@@ -19,7 +19,9 @@ interface MyCollectionArtworkListItemProps {
 
 const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = ({ artwork }) => {
   const { trackEvent } = useTracking()
-  const imageURL = artwork.images?.find((i: any) => i?.isDefault)?.url || (artwork.images && artwork.images[0]?.url)
+  const imageURL =
+    artwork.images?.find((i: any) => i?.isDefault)?.url ||
+    (artwork.images && artwork.images[0]?.url)
   const { width } = useScreenDimensions()
 
   const { artist, artistNames, internalID, medium, slug, title, image, date } = artwork
@@ -52,7 +54,6 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
           imageURL={imageURL ?? undefined}
           aspectRatio={image?.aspectRatio}
           artworkSlug={slug}
-          mode="list"
         />
         <Box maxWidth={width} mt={1} style={{ flex: 1 }}>
           <Text lineHeight="18" weight="regular" variant="xs" numberOfLines={1}>
@@ -72,28 +73,31 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
   )
 }
 
-export const MyCollectionArtworkListItemFragmentContainer = createFragmentContainer(MyCollectionArtworkListItem, {
-  artwork: graphql`
-    fragment MyCollectionArtworkListItem_artwork on Artwork {
-      internalID
-      artist {
+export const MyCollectionArtworkListItemFragmentContainer = createFragmentContainer(
+  MyCollectionArtworkListItem,
+  {
+    artwork: graphql`
+      fragment MyCollectionArtworkListItem_artwork on Artwork {
         internalID
+        artist {
+          internalID
+        }
+        images {
+          url
+          isDefault
+        }
+        image {
+          aspectRatio
+        }
+        artistNames
+        medium
+        slug
+        title
+        date
       }
-      images {
-        url
-        isDefault
-      }
-      image {
-        aspectRatio
-      }
-      artistNames
-      medium
-      slug
-      title
-      date
-    }
-  `,
-})
+    `,
+  }
+)
 
 const TouchElement = styled.TouchableHighlight.attrs(() => ({
   underlayColor: themeGet("colors.white100"),

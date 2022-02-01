@@ -32,7 +32,11 @@ export const WhySell: React.FC = () => {
   )
 }
 
-const WhySellStep: React.FC<{ step: number; title: string; description: string }> = ({ step, title, description }) => {
+const WhySellStep: React.FC<{ step: number; title: string; description: string }> = ({
+  step,
+  title,
+  description,
+}) => {
   return (
     <Flex flexDirection="row">
       <Box mr={2}>

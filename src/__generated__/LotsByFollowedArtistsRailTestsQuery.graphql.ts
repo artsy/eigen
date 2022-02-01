@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash a9b1d72f48ccad94bf3300d3188175b6 */
+/* @relayHash 2c019cc91a0def77c2f75f63bf8952d1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -62,6 +62,7 @@ fragment SaleArtworkTileRailCard_saleArtwork on SaleArtwork {
     slug
     saleMessage
     title
+    realizedPrice
     id
   }
   counts {
@@ -330,6 +331,13 @@ return {
                                 "name": "title",
                                 "storageKey": null
                               },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "realizedPrice",
+                                "storageKey": null
+                              },
                               (v1/*: any*/)
                             ],
                             "storageKey": null
@@ -458,7 +466,7 @@ return {
     ]
   },
   "params": {
-    "id": "a9b1d72f48ccad94bf3300d3188175b6",
+    "id": "2c019cc91a0def77c2f75f63bf8952d1",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -516,6 +524,7 @@ return {
         },
         "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.image.imageURL": (v4/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.internalID": (v3/*: any*/),
+        "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.realizedPrice": (v4/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.saleMessage": (v4/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.slug": (v3/*: any*/),
         "me.lotsByFollowedArtistsConnection.edges.node.saleArtwork.artwork.title": (v4/*: any*/),

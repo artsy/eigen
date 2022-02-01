@@ -26,13 +26,19 @@ export class StateManager extends React.Component<Props, State> {
     // If this component receives a new tickerState as props,
     // update to use the new props.
     if (props.onCurrentTickerState().date !== state.previousTickerState.date) {
-      return { tickerState: props.onCurrentTickerState(), previousTickerState: props.onCurrentTickerState() }
+      return {
+        tickerState: props.onCurrentTickerState(),
+        previousTickerState: props.onCurrentTickerState(),
+      }
     } else {
       return null
     }
   }
 
-  state = { tickerState: this.props.onCurrentTickerState(), previousTickerState: this.props.onCurrentTickerState() }
+  state = {
+    tickerState: this.props.onCurrentTickerState(),
+    previousTickerState: this.props.onCurrentTickerState(),
+  }
 
   handleDurationEnd = () => {
     this.setState({ tickerState: this.props.onNextTickerState(this.state.tickerState) })

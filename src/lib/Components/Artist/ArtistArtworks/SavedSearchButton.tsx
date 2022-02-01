@@ -3,12 +3,12 @@ import { captureMessage } from "@sentry/react-native"
 import { SavedSearchButton_me } from "__generated__/SavedSearchButton_me.graphql"
 import { SavedSearchButtonQuery } from "__generated__/SavedSearchButtonQuery.graphql"
 import { EventEmitter } from "events"
+import { Aggregations, FilterData } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { getSearchCriteriaFromFilters } from "lib/Components/ArtworkFilter/SavedSearch/searchCriteriaHelpers"
 import { SearchCriteriaAttributes } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { usePopoverMessage } from "lib/Components/PopoverMessage/popoverMessageHooks"
 import { navigate, NavigateOptions } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { useEnableMyCollection } from "lib/Scenes/MyCollection/MyCollection"
 import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import {
   CreateSavedSearchAlertParams,
@@ -25,11 +25,15 @@ interface SavedSearchButtonProps extends SavedSearchAlertFormPropsBase {
   loading?: boolean
   relay: RelayRefetchProp
   criteria: SearchCriteriaAttributes
+  filters: FilterData[]
+  aggregations: Aggregations
   artistSlug: string
 }
 
 interface SavedSearchButtonQueryRendererProps extends SavedSearchAlertFormPropsBase {
   artistSlug: string
+  filters: FilterData[]
+  aggregations: Aggregations
 }
 
 export const savedSearchEvents = new EventEmitter()
@@ -50,7 +54,6 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   criteria,
 }) => {
   const tracking = useTracking()
-  const shouldDisplayMyCollection = useEnableMyCollection()
   const [visibleForm, setVisibleForm] = useState(false)
   const [refetching, setRefetching] = useState(false)
   const popover = usePopoverMessage()
@@ -86,16 +89,10 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
           showInTabName: "profile",
         }
 
-        if (shouldDisplayMyCollection) {
-          await navigate("/my-profile/settings", options)
-          setTimeout(() => {
-            navigate("/my-profile/saved-search-alerts")
-          }, 100)
-
-          return
-        }
-
-        navigate("/my-profile/saved-search-alerts", options)
+        await navigate("/my-profile/settings", options)
+        setTimeout(() => {
+          navigate("/my-profile/saved-search-alerts")
+        }, 100)
       },
     })
   }
@@ -144,7 +141,8 @@ export const SavedSearchButtonRefetchContainer = createRefetchContainer(
   SavedSearchButton,
   {
     me: graphql`
-      fragment SavedSearchButton_me on Me @argumentDefinitions(criteria: { type: "SearchCriteriaAttributes" }) {
+      fragment SavedSearchButton_me on Me
+      @argumentDefinitions(criteria: { type: "SearchCriteriaAttributes" }) {
         ...CreateSavedSearchContentContainerV1_me
         savedSearch(criteria: $criteria) {
           internalID
@@ -161,9 +159,14 @@ export const SavedSearchButtonRefetchContainer = createRefetchContainer(
   `
 )
 
-export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRendererProps> = (props) => {
+export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRendererProps> = (
+  props
+) => {
   const { filters, artistId } = props
-  const criteria = useMemo(() => getSearchCriteriaFromFilters(artistId, filters), [artistId, filters])
+  const criteria = useMemo(
+    () => getSearchCriteriaFromFilters(artistId, filters),
+    [artistId, filters]
+  )
 
   return (
     <QueryRenderer<SavedSearchButtonQuery>
@@ -190,7 +193,6 @@ export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRend
             me={relayProps?.me ?? null}
             loading={relayProps === null && error === null}
             criteria={criteria}
-            filters={filters}
           />
         )
       }}

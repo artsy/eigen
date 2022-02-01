@@ -45,5 +45,7 @@ it("renders without throwing an error with null show kind", () => {
     kind: null,
   }
 
-  renderWithWrappers(<ArtistShowFragmentContainer show={showPropsNullKind as any} styles={showStyles} />)
+  renderWithWrappers(
+    <ArtistShowFragmentContainer show={showPropsNullKind as any} styles={showStyles} />
+  )
 })

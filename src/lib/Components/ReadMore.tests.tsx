@@ -1,4 +1,4 @@
-import { act, fireEvent } from "@testing-library/react-native"
+import { act, fireEvent, getDefaultNormalizer, within } from "@testing-library/react-native"
 import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
@@ -22,17 +22,21 @@ describe("ReadMore", () => {
   })
 
   it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
-    const { queryByText } = renderWithWrappersTL(<ReadMore maxChars={3} content="Small text." />)
+    const { getByText } = renderWithWrappersTL(<ReadMore maxChars={3} content="Small text." />)
 
-    expect(queryByText(`Sma... Read${nbsp}more`)).toBeTruthy()
+    expect(getByText(/Sma/)).toBeTruthy()
+    expect(
+      getByText(`Read${nbsp}more`, {
+        normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+      })
+    ).toBeTruthy()
   })
 
   it("Renders markdown", () => {
-    const { queryByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappersTL(
       <ReadMore maxChars={11} content="Small [text](/artist/andy-warhol)." />
     )
-
-    expect(queryByText("Small text.")).toBeTruthy()
+    expect(within(getByText(/Small/)).getByText(/text/)).toBeTruthy()
   })
 
   it("Renders an em dash if the text has line breaks when not expanded", () => {
@@ -45,21 +49,31 @@ describe("ReadMore", () => {
   })
 
   it("Shows the 'Read more' link when the length of the text is > the number of characters allowed", () => {
-    const { queryByText, getAllByText, UNSAFE_queryAllByType } = renderWithWrappersTL(
-      <ReadMore maxChars={7} textStyle="new" content="This text is slightly longer than is allowed." />
+    const { queryByText, getByText, UNSAFE_queryAllByType } = renderWithWrappersTL(
+      <ReadMore
+        maxChars={7}
+        textStyle="new"
+        content="This text is slightly longer than is allowed."
+      />
     )
 
     expect(extractText(UNSAFE_queryAllByType(RNText)[0])).toBe(`This te... Read${nbsp}more`)
     expect(extractText(UNSAFE_queryAllByType(RNText)[1])).toBe(`Read${nbsp}more`)
 
     // Clicking "Read more" expands the text
-    act(() => fireEvent.press(getAllByText(`Read${nbsp}more`)[1]))
+    act(() =>
+      fireEvent.press(
+        getByText(`Read${nbsp}more`, {
+          normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+        })
+      )
+    )
 
     expect(queryByText("This text is slightly longer than is allowed.")).toBeTruthy()
   })
 
   it("truncates correctly if there are links within the text", () => {
-    const { getAllByText, UNSAFE_getAllByType, queryByText } = renderWithWrappersTL(
+    const { getByText, UNSAFE_getAllByType } = renderWithWrappersTL(
       <ReadMore
         maxChars={7}
         textStyle="new"
@@ -67,13 +81,25 @@ describe("ReadMore", () => {
       />
     )
 
-    expect(queryByText(`This te... Read${nbsp}more`)).toBeTruthy()
+    expect(within(getByText(/This/)).getByText(/te/)).toBeTruthy()
+    expect(
+      getByText(`Read${nbsp}more`, {
+        normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+      })
+    ).toBeTruthy()
     expect(UNSAFE_getAllByType(LinkText)).toHaveLength(2) // One for the `/artist/text` link, one for "Read more"
 
     // Clicking "Read more" expands the text
-    act(() => fireEvent.press(getAllByText(`Read${nbsp}more`)[1]))
+    act(() =>
+      fireEvent.press(
+        getByText(`Read${nbsp}more`, {
+          normalizer: getDefaultNormalizer({ collapseWhitespace: false }),
+        })
+      )
+    )
 
-    expect(queryByText("This text is slightly longer than is allowed.")).toBeTruthy()
+    expect(within(getByText(/This/)).getByText(/text/)).toBeTruthy()
+    expect(within(getByText(/is slightly longer than is/)).getByText(/allowed/)).toBeTruthy()
     expect(UNSAFE_getAllByType(LinkText)).toHaveLength(2) // We still have 2 links, since we expanded to view one
   })
 

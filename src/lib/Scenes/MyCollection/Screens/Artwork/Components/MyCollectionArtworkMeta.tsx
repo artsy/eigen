@@ -16,7 +16,10 @@ interface MyCollectionArtworkMetaProps {
   viewAll?: boolean
 }
 
-const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwork, viewAll = false }) => {
+const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({
+  artwork,
+  viewAll = false,
+}) => {
   const {
     artistNames,
     category,
@@ -76,28 +79,31 @@ const MyCollectionArtworkMeta: React.FC<MyCollectionArtworkMetaProps> = ({ artwo
   }
 }
 
-export const MyCollectionArtworkMetaFragmentContainer = createFragmentContainer(MyCollectionArtworkMeta, {
-  artwork: graphql`
-    fragment MyCollectionArtworkMeta_artwork on Artwork {
-      slug
-      internalID
-      artistNames
-      category
-      pricePaid {
-        display
+export const MyCollectionArtworkMetaFragmentContainer = createFragmentContainer(
+  MyCollectionArtworkMeta,
+  {
+    artwork: graphql`
+      fragment MyCollectionArtworkMeta_artwork on Artwork {
+        slug
+        internalID
+        artistNames
+        category
+        pricePaid {
+          display
+        }
+        date
+        depth
+        editionNumber
+        editionSize
+        height
+        medium
+        metric
+        title
+        width
       }
-      date
-      depth
-      editionNumber
-      editionSize
-      height
-      medium
-      metric
-      title
-      width
-    }
-  `,
-})
+    `,
+  }
+)
 
 const tracks = {
   tappedShowMore: (internalID: string, slug: string, subject: string) => {

@@ -5,8 +5,15 @@ import { MyCollectionArtworkListItem_artwork } from "__generated__/MyCollectionA
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { EventEmitter } from "events"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
-import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersStoreProvider, ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  FilterData,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  ArtworkFiltersStoreProvider,
+  ArtworksFiltersStore,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/ArtworksFilterHeader"
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -17,7 +24,7 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { useToast } from "lib/Components/Toast/toastHook"
 import { navigate, popToRoot } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { unsafe_getFeatureFlag, useDevToggle, useFeatureFlag } from "lib/store/GlobalStore"
+import { useDevToggle } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import { PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
@@ -27,7 +34,7 @@ import _, { filter, orderBy, uniqBy } from "lodash"
 import { DateTime } from "luxon"
 import { Banner, Button, Flex, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
-import { Platform, RefreshControl } from "react-native"
+import { RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
@@ -37,19 +44,6 @@ const REFRESH_KEY = "refresh"
 
 export function refreshMyCollection() {
   RefreshEvents.emit(REFRESH_KEY)
-}
-
-const featureFlagKey = Platform.select({
-  android: "AREnableMyCollectionAndroid",
-  ios: "AREnableMyCollectionIOS",
-}) as "AREnableMyCollectionIOS" | "AREnableMyCollectionAndroid"
-
-export const useEnableMyCollection = () => {
-  return useFeatureFlag(featureFlagKey)
-}
-
-export function unsafe_getEnableMyCollection() {
-  return unsafe_getFeatureFlag(featureFlagKey)
 }
 
 export const HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER = "HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER"
@@ -66,7 +60,6 @@ const MyCollection: React.FC<{
   const { trackEvent } = useTracking()
   const [filterModalVisible, setFilterModalVisible] = useState(false)
   const filtersCount = useSelectedFiltersCount()
-  const enabledSortAndFilter = useFeatureFlag("ARMyCollectionLocalSortAndFilter")
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
@@ -90,7 +83,7 @@ const MyCollection: React.FC<{
           orderBy(
             artworks,
             (a) => {
-              return a.pricePaid.minor
+              return a.pricePaid?.minor
             },
             "asc"
           ),
@@ -104,7 +97,7 @@ const MyCollection: React.FC<{
           orderBy(
             artworks,
             (a) => {
-              return a.pricePaid.minor
+              return a.pricePaid?.minor
             },
             "desc"
           ),
@@ -207,7 +200,8 @@ const MyCollection: React.FC<{
           (m) => m.paramValue
         ),
         // tslint:disable-next-line: no-shadowed-variable
-        localSortAndFilter: (artworks, mediums: string[]) => filter(artworks, (a) => mediums.includes(a.medium)),
+        localSortAndFilter: (artworks, mediums: string[]) =>
+          filter(artworks, (a) => mediums.includes(a.medium)),
       },
       {
         displayText: FilterDisplayName.priceRange,
@@ -234,10 +228,10 @@ const MyCollection: React.FC<{
           }
 
           return filter(artworks, (a) => {
-            if (isNaN(a.pricePaid.minor)) {
+            if (isNaN(a.pricePaid?.minor)) {
               return false
             }
-            const pricePaid = a.pricePaid.minor / 100
+            const pricePaid = a.pricePaid?.minor / 100
             return pricePaid >= lowerBound && pricePaid <= upperBound
           })
         },
@@ -310,72 +304,50 @@ const MyCollection: React.FC<{
   }
 
   // hack for tests. we should fix that.
-  const setJSX = __TEST__ ? jest.fn() : useContext(StickyTabPageFlatListContext).setJSX
+  const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
   const space = useSpace()
   const toast = useToast()
-
-  const allowOrderImports = useFeatureFlag("AREnableMyCollectionOrderImport")
 
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
 
   useEffect(() => {
     if (artworks.length) {
       hasBeenShownBanner().then((hasSeenBanner) => {
-        const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && allowOrderImports && !hasSeenBanner
+        const showNewWorksBanner = me.myCollectionInfo?.includesPurchasedArtworks && !hasSeenBanner
 
         setJSX(
           <Flex>
-            {enabledSortAndFilter ? (
-              <ArtworksFilterHeader
-                selectedFiltersCount={filtersCount}
-                onFilterPress={() => setFilterModalVisible(true)}
+            <ArtworksFilterHeader
+              selectedFiltersCount={filtersCount}
+              onFilterPress={() => setFilterModalVisible(true)}
+            >
+              <Button
+                data-test-id="add-artwork-button-non-zero-state"
+                size="small"
+                variant="fillDark"
+                onPress={() => {
+                  navigate("my-collection/artworks/new", {
+                    passProps: {
+                      mode: "add",
+                      onSuccess: popToRoot,
+                    },
+                  })
+                  trackEvent(tracks.addCollectedArtwork())
+                }}
+                haptic
               >
-                <Button
-                  data-test-id="add-artwork-button-non-zero-state"
-                  size="small"
-                  variant="fillDark"
-                  onPress={() => {
-                    navigate("my-collection/artworks/new", {
-                      passProps: {
-                        mode: "add",
-                        onSuccess: popToRoot,
-                      },
-                    })
-                    trackEvent(tracks.addCollectedArtwork())
-                  }}
-                  haptic
-                >
-                  Add Works
-                </Button>
-              </ArtworksFilterHeader>
-            ) : (
-              <Flex flexDirection="row" alignSelf="flex-end" px={2} py={1}>
-                <Button
-                  testID="add-artwork-button-non-zero-state"
-                  size="small"
-                  variant="fillDark"
-                  onPress={() => {
-                    navigate("my-collection/artworks/new", {
-                      passProps: {
-                        mode: "add",
-                        onSuccess: popToRoot,
-                      },
-                    })
-                    trackEvent(tracks.addCollectedArtwork())
-                  }}
-                  haptic
-                >
-                  Add Works
-                </Button>
-              </Flex>
-            )}
+                Add Works
+              </Button>
+            </ArtworksFilterHeader>
             {!!showNewWorksBanner && (
               <Banner
                 title="Your collection is growing"
                 text="Based on your purchase history, we’ve added the following works."
                 showCloseButton
-                onClose={() => AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")}
+                onClose={() =>
+                  AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")
+                }
               />
             )}
           </Flex>
@@ -385,7 +357,7 @@ const MyCollection: React.FC<{
       // remove already set JSX
       setJSX(null)
     }
-  }, [artworks.length, filtersCount, enabledSortAndFilter])
+  }, [artworks.length, filtersCount])
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -442,7 +414,11 @@ const MyCollection: React.FC<{
                 )
 
                 // custom size filters come back with a different type, consolidate to one
-                const sizeFilterTypes = [FilterParamName.width, FilterParamName.height, FilterParamName.sizes]
+                const sizeFilterTypes = [
+                  FilterParamName.width,
+                  FilterParamName.height,
+                  FilterParamName.sizes,
+                ]
 
                 // tslint:disable-next-line: no-shadowed-variable
                 filtering.forEach((filter) => {
@@ -455,20 +431,24 @@ const MyCollection: React.FC<{
                      * pass the paramName so we can distinguish how to handle in the step
                      */
                     const sizeFilterParamName = FilterParamName.sizes
-                    const sizeFilterStep = (filterOptions ?? []).find((f) => f.filterType === sizeFilterParamName)!
-                      .localSortAndFilter!
+                    const sizeFilterStep = (filterOptions ?? []).find(
+                      (f) => f.filterType === sizeFilterParamName
+                    )!.localSortAndFilter!
                     processedArtworks = sizeFilterStep(processedArtworks, {
                       paramValue: filter.paramValue,
                       paramName: filter.paramName,
                     })
                   } else {
-                    const filterStep = (filterOptions ?? []).find((f) => f.filterType === filter.paramName)!
-                      .localSortAndFilter!
+                    const filterStep = (filterOptions ?? []).find(
+                      (f) => f.filterType === filter.paramName
+                    )!.localSortAndFilter!
                     processedArtworks = filterStep(processedArtworks, filter.paramValue)
                   }
                 })
 
-                const sorting = appliedFiltersState.filter((x) => x.paramName === FilterParamName.sort)
+                const sorting = appliedFiltersState.filter(
+                  (x) => x.paramName === FilterParamName.sort
+                )
                 if (sorting.length > 0) {
                   const sortStep = sorting[0].localSortAndFilter!
                   processedArtworks = sortStep(processedArtworks)
@@ -501,21 +481,13 @@ export const MyCollectionContainer = createPaginationContainer(
   {
     me: graphql`
       fragment MyCollection_me on Me
-      @argumentDefinitions(
-        excludePurchasedArtworks: { type: "Boolean", defaultValue: true }
-        count: { type: "Int", defaultValue: 100 }
-        cursor: { type: "String" }
-      ) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 100 }, cursor: { type: "String" }) {
         id
         myCollectionInfo {
           includesPurchasedArtworks
         }
-        myCollectionConnection(
-          excludePurchasedArtworks: $excludePurchasedArtworks
-          first: $count
-          after: $cursor
-          sort: CREATED_AT_DESC
-        ) @connection(key: "MyCollection_myCollectionConnection", filters: []) {
+        myCollectionConnection(first: $count, after: $cursor, sort: CREATED_AT_DESC)
+          @connection(key: "MyCollection_myCollectionConnection", filters: []) {
           edges {
             node {
               id
@@ -549,10 +521,9 @@ export const MyCollectionContainer = createPaginationContainer(
       }
     },
     query: graphql`
-      query MyCollectionPaginationQuery($excludePurchasedArtworks: Boolean, $count: Int!, $cursor: String) {
+      query MyCollectionPaginationQuery($count: Int!, $cursor: String) {
         me {
-          ...MyCollection_me
-            @arguments(excludePurchasedArtworks: $excludePurchasedArtworks, count: $count, cursor: $cursor)
+          ...MyCollection_me @arguments(count: $count, cursor: $cursor)
         }
       }
     `,
@@ -560,21 +531,18 @@ export const MyCollectionContainer = createPaginationContainer(
 )
 
 export const MyCollectionQueryRenderer: React.FC = () => {
-  const enableMyCollectionOrderImport = useFeatureFlag("AREnableMyCollectionOrderImport")
-  const excludePurchasedArtworks = !enableMyCollectionOrderImport
-
   return (
     <ArtworkFiltersStoreProvider>
       <QueryRenderer<MyCollectionQuery>
         environment={defaultEnvironment}
         query={graphql`
-          query MyCollectionQuery($excludePurchasedArtworks: Boolean) {
+          query MyCollectionQuery {
             me {
-              ...MyCollection_me @arguments(excludePurchasedArtworks: $excludePurchasedArtworks)
+              ...MyCollection_me
             }
           }
         `}
-        variables={{ excludePurchasedArtworks }}
+        variables={{}}
         cacheConfig={{ force: true }}
         render={renderWithPlaceholder({
           Container: MyCollectionContainer,

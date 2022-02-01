@@ -1,8 +1,19 @@
 import { useFormikContext } from "formik"
-import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import { SearchCriteria } from "lib/Components/ArtworkFilter/SavedSearch/types"
 import { navigate } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import { Box, Button, CloseIcon as RemoveIcon, Flex, Input, InputTitle, Pill, Spacer, Text, Touchable } from "palette"
+import {
+  Box,
+  Button,
+  CloseIcon as RemoveIcon,
+  Flex,
+  Input,
+  InputTitle,
+  Pill,
+  Spacer,
+  Text,
+  Touchable,
+} from "palette"
 import React from "react"
 import { LayoutAnimation } from "react-native"
 import { getNamePlaceholder } from "../helpers"
@@ -15,8 +26,8 @@ interface FormProps {
   artistId: string
   artistName: string
   isLoading?: boolean
-  isPreviouslySaved?: boolean
   hasChangedFilters?: boolean
+  shouldShowEmailWarning?: boolean
   onDeletePress?: () => void
   onSubmitPress?: () => void
   onUpdateEmailPreferencesPress?: () => void
@@ -32,8 +43,8 @@ export const Form: React.FC<FormProps> = (props) => {
     artistName,
     savedSearchAlertId,
     isLoading,
-    isPreviouslySaved,
     hasChangedFilters,
+    shouldShowEmailWarning,
     onDeletePress,
     onSubmitPress,
     onUpdateEmailPreferencesPress,
@@ -48,8 +59,8 @@ export const Form: React.FC<FormProps> = (props) => {
   const isEditMode = !!savedSearchAlertId
   let isSaveAlertButtonDisabled = false
 
-  // Data has not changed or has already been saved
-  if ((isEditMode && !dirty) || isPreviouslySaved) {
+  // Data has not changed
+  if (isEditMode && !dirty) {
     isSaveAlertButtonDisabled = true
   }
 
@@ -61,7 +72,7 @@ export const Form: React.FC<FormProps> = (props) => {
   }
 
   // Enable "Save Alert" button if the user has removed the filters or changed data
-  if (isEnabledImprovedAlertsFlow && !isEditMode && (hasChangedFilters || dirty)) {
+  if (isEnabledImprovedAlertsFlow && (hasChangedFilters || dirty)) {
     isSaveAlertButtonDisabled = false
   }
 
@@ -84,10 +95,16 @@ export const Form: React.FC<FormProps> = (props) => {
       return onUpdateEmailPreferencesPress()
     }
 
-    return navigate("/unsubscribe")
+    return navigate("/unsubscribe", {
+      passProps: {
+        backProps: {
+          previousScreen: "Unsubscribe",
+        },
+      },
+    })
   }
 
-  const isArtistPill = (pill: SavedSearchPill) => pill.paramName === FilterParamName.artistIDs
+  const isArtistPill = (pill: SavedSearchPill) => pill.paramName === SearchCriteria.artistID
 
   return (
     <Box>
@@ -139,17 +156,12 @@ export const Form: React.FC<FormProps> = (props) => {
                 m={0.5}
                 key={`filter-label-${index}`}
                 iconPosition="right"
-                // this is to make the pills removable only on create alert screen
-                {...(!isEditMode
-                  ? {
-                      onPress: () => {
-                        if (!isArtistPill(pill)) {
-                          onRemovePill(pill)
-                        }
-                      },
-                      Icon: isArtistPill(pill) ? undefined : RemoveIcon,
-                    }
-                  : {})}
+                onPress={() => {
+                  if (!isArtistPill(pill)) {
+                    onRemovePill(pill)
+                  }
+                }}
+                Icon={isArtistPill(pill) ? undefined : RemoveIcon}
               >
                 {pill.label}
               </Pill>
@@ -161,9 +173,27 @@ export const Form: React.FC<FormProps> = (props) => {
           )}
         </Flex>
       </Box>
-      <SavedSearchAlertSwitch label="Mobile Alerts" onChange={onTogglePushNotification} active={values.push} />
+      <SavedSearchAlertSwitch
+        label="Mobile Alerts"
+        onChange={onTogglePushNotification}
+        active={values.push}
+      />
       <Spacer mt={2} />
-      <SavedSearchAlertSwitch label="Email Alerts" onChange={handleToggleEmailNotification} active={values.email} />
+      <SavedSearchAlertSwitch
+        label="Email Alerts"
+        onChange={handleToggleEmailNotification}
+        active={values.email}
+      />
+      {!!shouldShowEmailWarning && (
+        <Box backgroundColor="orange10" my={1} p={2}>
+          <Text variant="xs" color="orange150">
+            Your email frequency is set to None
+          </Text>
+          <Text variant="xs" mt={0.5}>
+            To receive Email Alerts, please update your email preferences.
+          </Text>
+        </Box>
+      )}
       {!!values.email && (
         <Text
           onPress={handleUpdateEmailPreferencesPress}
@@ -189,7 +219,13 @@ export const Form: React.FC<FormProps> = (props) => {
         {!!isEditMode && (
           <>
             <Spacer mt={2} />
-            <Button testID="delete-alert-button" variant="outline" size="large" block onPress={onDeletePress}>
+            <Button
+              testID="delete-alert-button"
+              variant="outline"
+              size="large"
+              block
+              onPress={onDeletePress}
+            >
               Delete Alert
             </Button>
           </>

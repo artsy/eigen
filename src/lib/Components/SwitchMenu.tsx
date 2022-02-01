@@ -10,7 +10,13 @@ interface SwitchMenuProps {
   disabled?: boolean
 }
 
-export const SwitchMenu = ({ onChange, value, title, description, disabled = false }: SwitchMenuProps) => {
+export const SwitchMenu = ({
+  onChange,
+  value,
+  title,
+  description,
+  disabled = false,
+}: SwitchMenuProps) => {
   const color = useColor()
   return (
     <Flex flexDirection="row" alignItems="flex-start" flexShrink={0} my={1}>
@@ -24,7 +30,10 @@ export const SwitchMenu = ({ onChange, value, title, description, disabled = fal
       </Flex>
       <Flex style={{ width: "20%" }} alignItems="flex-end">
         <Switch
-          trackColor={{ false: color("black10"), true: disabled ? color("black30") : color("black100") }}
+          trackColor={{
+            false: color("black10"),
+            true: disabled ? color("black30") : color("black100"),
+          }}
           onValueChange={onChange}
           value={disabled || value}
           disabled={disabled}

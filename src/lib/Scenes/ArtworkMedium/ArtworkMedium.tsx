@@ -32,11 +32,11 @@ export const ArtworkMedium: React.FC<Props> = ({ artwork }) => {
             )}
 
             <Text>
-              Artsy has nineteen medium types. Medium types are categories that define the material or format used to
-              create the artwork.
+              Artsy has nineteen medium types. Medium types are categories that define the material
+              or format used to create the artwork.
             </Text>
 
-            <Button onPress={goBack} block>
+            <Button onPress={() => goBack()} block>
               OK
             </Button>
           </Join>

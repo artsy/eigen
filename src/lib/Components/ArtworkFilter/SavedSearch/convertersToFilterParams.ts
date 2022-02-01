@@ -7,19 +7,20 @@ import {
   FilterParamName,
   getDisplayNameForTimePeriod,
 } from "../ArtworkFilterHelpers"
-import { DEFAULT_FILTERS } from "../ArtworkFilterStore"
 import { ATTRIBUTION_CLASS_OPTIONS } from "../Filters/AttributionClassOptions"
 import { COLORS_INDEXED_BY_VALUE } from "../Filters/ColorsOptions"
 import { localizeDimension, parsePriceRangeLabel, parseRange } from "../Filters/helpers"
 import { SIZES_OPTIONS } from "../Filters/SizesOptionsScreen"
-import { WAYS_TO_BUY_FILTER_PARAM_NAMES } from "../Filters/WaysToBuyOptions"
+import { WAYS_TO_BUY_OPTIONS } from "../Filters/WaysToBuyOptions"
 import { FALLBACK_SIZE_OPTIONS, shouldExtractValueNamesFromAggregation } from "./constants"
-import { SearchCriteriaAttributeKeys, SearchCriteriaAttributes } from "./types"
+import { SearchCriteria, SearchCriteriaAttributes } from "./types"
 
 export type AggregationByFilterParamName = Dictionary<Aggregation[]>
 
-export const convertPriceToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
-  const priceRangeValue = criteria[FilterParamName.priceRange]
+export const convertPriceToFilterParam = (
+  criteria: SearchCriteriaAttributes
+): FilterData | null => {
+  const priceRangeValue = criteria[SearchCriteria.priceRange]
 
   if (!isNil(priceRangeValue)) {
     const { min, max } = parseRange(priceRangeValue)
@@ -48,16 +49,20 @@ export const convertCustomSizeToFilterParamByName = (paramName: FilterParamName,
   }
 }
 
-export const convertSizeToFilterParams = (criteria: SearchCriteriaAttributes): FilterData[] | null => {
+export const convertSizeToFilterParams = (
+  criteria: SearchCriteriaAttributes
+): FilterData[] | null => {
   const filterParams: FilterData[] = []
   const dimensionRangeValue = criteria.dimensionRange
-  const widthValue = criteria[FilterParamName.width]
-  const heightValue = criteria[FilterParamName.height]
-  const sizesValues = criteria[FilterParamName.sizes]
+  const widthValue = criteria[SearchCriteria.width]
+  const heightValue = criteria[SearchCriteria.height]
+  const sizesValues = criteria[SearchCriteria.sizes]
 
   // Convert old size filter format to new
   if (!isNil(dimensionRangeValue) && dimensionRangeValue !== "0-*") {
-    const sizeOptionItem = FALLBACK_SIZE_OPTIONS.find((option) => option.oldParamValue === dimensionRangeValue)
+    const sizeOptionItem = FALLBACK_SIZE_OPTIONS.find(
+      (option) => option.oldParamValue === dimensionRangeValue
+    )
 
     if (sizeOptionItem) {
       filterParams.push({
@@ -104,10 +109,10 @@ export const convertColorsToFilterParam = (
   criteria: SearchCriteriaAttributes,
   aggregation: AggregationByFilterParamName
 ): FilterData | null => {
-  const colorsValue = criteria[FilterParamName.colors]
+  const colorsValue = criteria[SearchCriteria.colors]
 
   if (Array.isArray(colorsValue) && colorsValue.length > 0) {
-    const colorFromAggregationByValue = keyBy(aggregation[FilterParamName.colors], "value")
+    const colorFromAggregationByValue = keyBy(aggregation[SearchCriteria.colors], "value")
     const availableColors = colorsValue.filter((color) => !!colorFromAggregationByValue[color])
     const colorNames = availableColors.map((color) => COLORS_INDEXED_BY_VALUE[color].name)
 
@@ -129,7 +134,9 @@ export const convertAggregationValueNamesToFilterParam = (
   criteriaValues: string[]
 ): FilterData | null => {
   const aggregationByValue = keyBy(aggregations, "value")
-  const availableValues = criteriaValues.filter((criteriaValue) => !!aggregationByValue[criteriaValue])
+  const availableValues = criteriaValues.filter(
+    (criteriaValue) => !!aggregationByValue[criteriaValue]
+  )
   const names = availableValues.map((value) => aggregationByValue[value].name)
 
   if (availableValues.length > 0) {
@@ -143,13 +150,19 @@ export const convertAggregationValueNamesToFilterParam = (
   return null
 }
 
-export const convertAttributionToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
-  const attributionValues = criteria[FilterParamName.attributionClass]
+export const convertAttributionToFilterParam = (
+  criteria: SearchCriteriaAttributes
+): FilterData | null => {
+  const attributionValues = criteria[SearchCriteria.attributionClass]
 
   if (Array.isArray(attributionValues) && attributionValues.length > 0) {
     const attributionItemByValue = keyBy(ATTRIBUTION_CLASS_OPTIONS, "paramValue")
-    const availableAttributions = attributionValues.filter((attribution) => !!attributionItemByValue[attribution])
-    const names = availableAttributions.map((attribution) => attributionItemByValue[attribution].displayText)
+    const availableAttributions = attributionValues.filter(
+      (attribution) => !!attributionItemByValue[attribution]
+    )
+    const names = availableAttributions.map(
+      (attribution) => attributionItemByValue[attribution].displayText
+    )
 
     if (availableAttributions.length > 0) {
       return {
@@ -163,25 +176,27 @@ export const convertAttributionToFilterParam = (criteria: SearchCriteriaAttribut
   return null
 }
 
-export const convertWaysToBuyToFilterParams = (criteria: SearchCriteriaAttributes): FilterData[] | null => {
-  const defautFilterParamByName = keyBy(DEFAULT_FILTERS, "paramName")
-  const availableWaysToBuyFilterParamNames = WAYS_TO_BUY_FILTER_PARAM_NAMES.filter(
-    (filterParamName) => !isNil(criteria[filterParamName as SearchCriteriaAttributeKeys])
-  )
+export const convertWaysToBuyToFilterParams = (
+  criteria: SearchCriteriaAttributes
+): FilterData[] | null => {
+  const options = WAYS_TO_BUY_OPTIONS.filter((option) => {
+    return !isNil(criteria[option.paramName as unknown as SearchCriteria])
+  })
 
-  if (availableWaysToBuyFilterParamNames.length > 0) {
-    return availableWaysToBuyFilterParamNames.map((filterParamName) => ({
-      displayText: defautFilterParamByName[filterParamName].displayText,
-      paramValue: criteria[filterParamName as SearchCriteriaAttributeKeys]!,
-      paramName: filterParamName,
+  if (options.length > 0) {
+    return options.map((option) => ({
+      ...option,
+      paramValue: !!criteria[option.paramName as unknown as SearchCriteria],
     }))
   }
 
   return null
 }
 
-export const convertMajorPeriodToFilterParam = (criteria: SearchCriteriaAttributes): FilterData | null => {
-  const periods = criteria[FilterParamName.timePeriod]
+export const convertMajorPeriodToFilterParam = (
+  criteria: SearchCriteriaAttributes
+): FilterData | null => {
+  const periods = criteria[SearchCriteria.majorPeriods]
 
   if (Array.isArray(periods) && periods.length > 0) {
     const namedPeriods = periods.map((period) => getDisplayNameForTimePeriod(period))
@@ -201,7 +216,10 @@ export const convertSavedSearchCriteriaToFilterParams = (
   aggregations: Aggregations
 ): FilterData[] => {
   let filterParams: FilterData[] = []
-  const aggregationByFilterParamName = keyBy(aggregations, (aggregation) => filterKeyFromAggregation[aggregation.slice])
+  const aggregationByFilterParamName = keyBy(
+    aggregations,
+    (aggregation) => filterKeyFromAggregation[aggregation.slice]
+  )
   const aggregationValueByFilterParamName = mapValues(
     aggregationByFilterParamName,
     "counts"
@@ -227,11 +245,11 @@ export const convertSavedSearchCriteriaToFilterParams = (
   // Extract value names from aggregation
   shouldExtractValueNamesFromAggregation.forEach((filterParamName) => {
     const aggregationValue = aggregationValueByFilterParamName[filterParamName]
-    const criteriaValue = criteria[filterParamName as SearchCriteriaAttributeKeys] as string[]
+    const criteriaValue = criteria[filterParamName] as string[]
 
     if (aggregationValue) {
       const filterParamItem = convertAggregationValueNamesToFilterParam(
-        filterParamName,
+        filterParamName as unknown as FilterParamName,
         aggregationValue,
         criteriaValue
       )

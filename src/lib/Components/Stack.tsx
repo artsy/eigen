@@ -6,7 +6,9 @@ export const Stack: React.FC<
 > = ({ children, spacing = 2, horizontal, ...others }) => {
   return (
     <Flex flexDirection={horizontal ? "row" : "column"} {...others}>
-      <Join separator={<Spacer mb={horizontal ? 0 : spacing} mr={horizontal ? spacing : 0} />}>{children}</Join>
+      <Join separator={<Spacer mb={horizontal ? 0 : spacing} mr={horizontal ? spacing : 0} />}>
+        {children}
+      </Join>
     </Flex>
   )
 }

@@ -5,7 +5,10 @@ import { createMockNetworkLayer2 } from "./index"
 jest.unmock("react-relay")
 
 describe("createMockNetworkLayer", () => {
-  function fetchQueryWithData(options: Parameters<typeof createMockNetworkLayer2>[0], query?: GraphQLTaggedNode) {
+  function fetchQueryWithData(
+    options: Parameters<typeof createMockNetworkLayer2>[0],
+    query?: GraphQLTaggedNode
+  ) {
     const network = createMockNetworkLayer2(options)
 
     const source = new RecordSource()
@@ -102,6 +105,8 @@ describe("createMockNetworkLayer", () => {
       `
     )
     expect(data.artist.forSaleArtworks).toEqual({ edges: [{ node: { id: "for-sale-work" } }] })
-    expect(data.artist.notForSaleArtworks).toEqual({ edges: [{ node: { id: "no-for-sale-work" } }] })
+    expect(data.artist.notForSaleArtworks).toEqual({
+      edges: [{ node: { id: "no-for-sale-work" } }],
+    })
   })
 })

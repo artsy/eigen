@@ -64,5 +64,9 @@ export const ArtworkInquiryStateProvider = ({ children }: any) => {
     reducer,
     initialArtworkInquiryState
   )
-  return <ArtworkInquiryContext.Provider value={{ state, dispatch }}>{children}</ArtworkInquiryContext.Provider>
+  return (
+    <ArtworkInquiryContext.Provider value={{ state, dispatch }}>
+      {children}
+    </ArtworkInquiryContext.Provider>
+  )
 }

@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, within } from "@testing-library/react-native"
 import { FilterModalTestsQuery } from "__generated__/FilterModalTestsQuery.graphql"
 import {
   AnimatedArtworkFilterButton,
@@ -7,7 +7,10 @@ import {
   FilterModalMode,
 } from "lib/Components/ArtworkFilter"
 import { Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { CollectionFixture } from "lib/Scenes/Collection/Components/__fixtures__/CollectionFixture"
 import { CollectionArtworksFragmentContainer } from "lib/Scenes/Collection/Screens/CollectionArtworks"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
@@ -18,7 +21,12 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { createMockEnvironment } from "relay-test-utils"
-import { closeModalMock, getEssentialProps, MockFilterScreen, navigateMock } from "./FilterTestHelper"
+import {
+  closeModalMock,
+  getEssentialProps,
+  MockFilterScreen,
+  navigateMock,
+} from "./FilterTestHelper"
 
 const exitModalMock = jest.fn()
 const trackEvent = jest.fn()
@@ -234,7 +242,7 @@ describe("Filter modal states", () => {
 
     const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
 
-    expect(getByText("Sort By • 1"))
+    expect(within(getByText("Sort By")).getByText("• 1")).toBeTruthy()
   })
 
   it("displays the currently selected medium option number on the filter screen", () => {
@@ -259,7 +267,7 @@ describe("Filter modal states", () => {
 
     const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
 
-    expect(getByText("Medium • 1")).toBeTruthy()
+    expect(within(getByText("Medium")).getByText("• 1")).toBeTruthy()
   })
 
   it("displays the filter screen apply button correctly when no filters are selected", () => {
@@ -282,7 +290,9 @@ describe("Filter modal states", () => {
       },
     }
 
-    const { getAllByText } = renderWithWrappersTL(<MockFilterModalNavigator initialData={injectedState} />)
+    const { getAllByText } = renderWithWrappersTL(
+      <MockFilterModalNavigator initialData={injectedState} />
+    )
 
     expect(getAllByText("Show results")[0]).not.toBeDisabled()
   })
@@ -298,7 +308,11 @@ describe("Filter modal states", () => {
   it("displays selected filters on the Filter modal", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
-        { displayText: "Drawing", paramValue: ["drawing"], paramName: FilterParamName.additionalGeneIDs },
+        {
+          displayText: "Drawing",
+          paramValue: ["drawing"],
+          paramName: FilterParamName.additionalGeneIDs,
+        },
         { displayText: "Price (Low to High)", paramName: FilterParamName.sort },
         { displayText: "$10,000-20,000", paramName: FilterParamName.priceRange },
         {
@@ -306,7 +320,11 @@ describe("Filter modal states", () => {
           paramValue: true,
           paramName: FilterParamName.waysToBuyBid,
         },
-        { displayText: "All", paramValue: ["2020-Today", "1970-1979"], paramName: FilterParamName.timePeriod },
+        {
+          displayText: "All",
+          paramValue: ["2020-Today", "1970-1979"],
+          paramName: FilterParamName.timePeriod,
+        },
       ],
       appliedFilters: [],
       previouslyAppliedFilters: [],
@@ -321,12 +339,12 @@ describe("Filter modal states", () => {
 
     const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
 
-    expect(getByText("Sort By • 1")).toBeTruthy()
+    expect(within(getByText("Sort By")).getByText("• 1")).toBeTruthy()
     expect(getByText("Rarity")).toBeTruthy()
-    expect(getByText("Medium • 1")).toBeTruthy()
-    expect(getByText("Price • 1")).toBeTruthy()
-    expect(getByText("Ways to Buy • 1")).toBeTruthy()
-    expect(getByText("Time Period • 2")).toBeTruthy()
+    expect(within(getByText("Medium")).getByText("• 1")).toBeTruthy()
+    expect(within(getByText("Price")).getByText("• 1")).toBeTruthy()
+    expect(within(getByText("Ways to Buy")).getByText("• 1")).toBeTruthy()
+    expect(within(getByText("Time Period")).getByText("• 2")).toBeTruthy()
   })
 })
 
@@ -341,7 +359,9 @@ describe("Clearing filters", () => {
         },
       ],
       appliedFilters: [{ displayText: "Recently Added", paramName: FilterParamName.sort }],
-      previouslyAppliedFilters: [{ displayText: "Recently Added", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [
+        { displayText: "Recently Added", paramName: FilterParamName.sort },
+      ],
       applyFilters: false,
       aggregations: mockAggregations,
       filterType: "artwork",
@@ -351,20 +371,24 @@ describe("Clearing filters", () => {
       },
     }
 
-    const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
+    const { getByText, queryByText } = renderWithWrappersTL(
+      <MockFilterScreen initialState={injectedState} />
+    )
 
-    expect(getByText("Sort By • 1"))
-
+    expect(within(getByText("Sort By")).getByText("• 1")).toBeTruthy()
     fireEvent.press(getByText("Clear All"))
 
-    expect(getByText("Sort By"))
+    expect(getByText("Sort By")).toBeTruthy()
+    expect(queryByText("• 1")).toBeFalsy()
   })
 
   it("exits the modal when clear all button is pressed", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [],
       appliedFilters: [{ displayText: "Recently Added", paramName: FilterParamName.sort }],
-      previouslyAppliedFilters: [{ displayText: "Recently Added", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [
+        { displayText: "Recently Added", paramName: FilterParamName.sort },
+      ],
       applyFilters: false,
       aggregations: mockAggregations,
       filterType: "artwork",
@@ -374,7 +398,9 @@ describe("Clearing filters", () => {
       },
     }
 
-    const { getAllByText, getByText } = renderWithWrappersTL(<MockFilterModalNavigator initialData={injectedState} />)
+    const { getAllByText, getByText } = renderWithWrappersTL(
+      <MockFilterModalNavigator initialData={injectedState} />
+    )
 
     expect(getAllByText("Show results")[0]).toBeDisabled()
 
@@ -410,7 +436,10 @@ describe("Applying filters on Artworks", () => {
             <GlobalStoreProvider>
               <Theme>
                 <ArtworkFiltersStoreProvider initialData={initialData}>
-                  <CollectionArtworksFragmentContainer collection={props.marketingCollection} scrollToTop={jest.fn()} />
+                  <CollectionArtworksFragmentContainer
+                    collection={props.marketingCollection}
+                    scrollToTop={jest.fn()}
+                  />
                 </ArtworkFiltersStoreProvider>
               </Theme>
             </GlobalStoreProvider>
@@ -426,7 +455,9 @@ describe("Applying filters on Artworks", () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [{ displayText: "Price (High to Low)", paramName: FilterParamName.sort }],
       appliedFilters: [{ displayText: "Price (High to Low)", paramName: FilterParamName.sort }],
-      previouslyAppliedFilters: [{ displayText: "Price (High to Low)", paramName: FilterParamName.sort }],
+      previouslyAppliedFilters: [
+        { displayText: "Price (High to Low)", paramName: FilterParamName.sort },
+      ],
       applyFilters: true,
       aggregations: mockAggregations,
       filterType: "artwork",
@@ -471,13 +502,25 @@ describe("Applying filters on Artworks", () => {
   it.skip("tracks changes in the filter state when a filter is applied", async () => {
     const injectedState: ArtworkFiltersState = {
       selectedFilters: [
-        { displayText: "Works on Paper", paramName: FilterParamName.medium, paramValue: "work-on-paper" },
+        {
+          displayText: "Works on Paper",
+          paramName: FilterParamName.medium,
+          paramValue: "work-on-paper",
+        },
       ],
       appliedFilters: [
-        { displayText: "Recently Added", paramName: FilterParamName.sort, paramValue: "-decayed_merch" },
+        {
+          displayText: "Recently Added",
+          paramName: FilterParamName.sort,
+          paramValue: "-decayed_merch",
+        },
       ],
       previouslyAppliedFilters: [
-        { displayText: "Recently Added", paramName: FilterParamName.sort, paramValue: "-decayed_merch" },
+        {
+          displayText: "Recently Added",
+          paramName: FilterParamName.sort,
+          paramValue: "-decayed_merch",
+        },
       ],
       applyFilters: true,
       aggregations: mockAggregations,
@@ -488,7 +531,9 @@ describe("Applying filters on Artworks", () => {
       },
     }
 
-    const { getAllByText } = renderWithWrappersTL(<MockFilterModalNavigator initialData={injectedState} />)
+    const { getAllByText } = renderWithWrappersTL(
+      <MockFilterModalNavigator initialData={injectedState} />
+    )
 
     mockEnvironmentPayload(env)
 
@@ -552,7 +597,9 @@ describe("Saved Search Flow", () => {
   })
 
   it('should show "Create Alert" button when shouldShowCreateAlertButton prop is passed', () => {
-    const { getByText } = renderWithWrappersTL(<MockFilterModalNavigator shouldShowCreateAlertButton />)
+    const { getByText } = renderWithWrappersTL(
+      <MockFilterModalNavigator shouldShowCreateAlertButton />
+    )
 
     expect(getByText("Create Alert")).toBeTruthy()
   })

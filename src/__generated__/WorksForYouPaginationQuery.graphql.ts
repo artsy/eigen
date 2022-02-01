@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 85df57c1df8d961a8bf7aa6462e18d9c */
+/* @relayHash 355609a269a12a732550c70afdcd7208 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -65,12 +65,13 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
+  realizedPrice
 }
 
 fragment GenericGrid_artworks on Artwork {
   id
   image {
-    aspect_ratio: aspectRatio
+    aspectRatio
   }
   ...ArtworkGridItem_artwork
 }
@@ -344,7 +345,7 @@ return {
                                         "plural": false,
                                         "selections": [
                                           {
-                                            "alias": "aspect_ratio",
+                                            "alias": null,
                                             "args": null,
                                             "kind": "ScalarField",
                                             "name": "aspectRatio",
@@ -362,13 +363,6 @@ return {
                                             "kind": "ScalarField",
                                             "name": "url",
                                             "storageKey": "url(version:\"large\")"
-                                          },
-                                          {
-                                            "alias": null,
-                                            "args": null,
-                                            "kind": "ScalarField",
-                                            "name": "aspectRatio",
-                                            "storageKey": null
                                           }
                                         ],
                                         "storageKey": null
@@ -529,6 +523,13 @@ return {
                                           (v2/*: any*/)
                                         ],
                                         "storageKey": null
+                                      },
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "kind": "ScalarField",
+                                        "name": "realizedPrice",
+                                        "storageKey": null
                                       }
                                     ],
                                     "storageKey": null
@@ -623,7 +624,7 @@ return {
     ]
   },
   "params": {
-    "id": "85df57c1df8d961a8bf7aa6462e18d9c",
+    "id": "355609a269a12a732550c70afdcd7208",
     "metadata": {},
     "name": "WorksForYouPaginationQuery",
     "operationKind": "query",

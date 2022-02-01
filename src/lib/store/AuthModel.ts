@@ -2,17 +2,35 @@ import { ActionType, AuthService, CreatedAccount } from "@artsy/cohesion"
 import { appleAuth } from "@invertase/react-native-apple-authentication"
 import CookieManager from "@react-native-cookies/cookies"
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
-import { action, Action, Computed, computed, StateMapper, thunk, Thunk, thunkOn, ThunkOn } from "easy-peasy"
+import {
+  action,
+  Action,
+  Computed,
+  computed,
+  StateMapper,
+  thunk,
+  Thunk,
+  thunkOn,
+  ThunkOn,
+} from "easy-peasy"
 import * as RelayCache from "lib/relay/RelayCache"
 import { isArtsyEmail } from "lib/utils/general"
-import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
+import {
+  getNotificationPermissionsStatus,
+  PushAuthorizationStatus,
+} from "lib/utils/PushNotification"
 import { postEventToProviders } from "lib/utils/track/providers"
 import { SegmentTrackingProvider } from "lib/utils/track/SegmentTrackingProvider"
 import { capitalize } from "lodash"
 import { stringify } from "qs"
 import { Alert, Linking, Platform } from "react-native"
 import Config from "react-native-config"
-import { AccessToken, GraphRequest, GraphRequestManager, LoginManager } from "react-native-fbsdk-next"
+import {
+  AccessToken,
+  GraphRequest,
+  GraphRequestManager,
+  LoginManager,
+} from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
 import { LegacyNativeModules } from "../NativeModules/LegacyNativeModules"
 import { getCurrentEmissionState } from "./GlobalStore"
@@ -20,7 +38,11 @@ import type { GlobalStoreModel } from "./GlobalStoreModel"
 
 type BasicHttpMethod = "GET" | "PUT" | "POST" | "DELETE"
 
-const showError = (res: any, reject: (reason?: any) => void, provider: "facebook" | "apple" | "google") => {
+const showError = (
+  res: any,
+  reject: (reason?: any) => void,
+  provider: "facebook" | "apple" | "google"
+) => {
   const providerName = capitalize(provider)
   if (res.error_description) {
     if (res.error_description.includes("no account linked to oauth token")) {
@@ -129,14 +151,16 @@ export interface AuthModel {
   >
   authFacebook: Thunk<
     this,
-    { signInOrUp: "signIn"; onSignIn?: () => void } | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
+    | { signInOrUp: "signIn"; onSignIn?: () => void }
+    | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
     {},
     GlobalStoreModel,
     Promise<AuthPromiseResolveType>
   >
   authGoogle: Thunk<
     this,
-    { signInOrUp: "signIn"; onSignIn?: () => void } | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
+    | { signInOrUp: "signIn"; onSignIn?: () => void }
+    | { signInOrUp: "signUp"; agreedToReceiveEmails: boolean },
     {},
     GlobalStoreModel,
     Promise<AuthPromiseResolveType>
@@ -168,6 +192,11 @@ export interface AuthModel {
   didRehydrate: ThunkOn<this, {}, GlobalStoreModel>
 }
 
+const clientKey = __DEV__ ? Config.ARTSY_DEV_API_CLIENT_KEY : Config.ARTSY_PROD_API_CLIENT_KEY
+const clientSecret = __DEV__
+  ? Config.ARTSY_DEV_API_CLIENT_SECRET
+  : Config.ARTSY_PROD_API_CLIENT_SECRET
+
 export const getAuthModel = (): AuthModel => ({
   userID: null,
   userAccessToken: null,
@@ -188,8 +217,8 @@ export const getAuthModel = (): AuthModel => ({
     }
     const gravityBaseURL = context.getStoreState().config.environment.strings.gravityURL
     const tokenURL = `${gravityBaseURL}/api/v1/xapp_token?${stringify({
-      client_id: Config.ARTSY_API_CLIENT_KEY,
-      client_secret: Config.ARTSY_API_CLIENT_SECRET,
+      client_id: clientKey,
+      client_secret: clientSecret,
     })}`
     const result = await fetch(tokenURL, {
       headers: {
@@ -277,12 +306,13 @@ export const getAuthModel = (): AuthModel => ({
         oauth_provider: oauthProvider,
         otp_attempt: oauthProvider === "email" ? args?.otp ?? undefined : undefined,
         password: oauthProvider === "email" ? args.password : undefined,
-        oauth_token: oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
+        oauth_token:
+          oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
         apple_uid: oauthProvider === "apple" ? args.appleUID : undefined,
         id_token: oauthProvider === "apple" ? args.idToken : undefined,
         grant_type: grantTypeMap[oauthProvider],
-        client_id: Config.ARTSY_API_CLIENT_KEY,
-        client_secret: Config.ARTSY_API_CLIENT_SECRET,
+        client_id: clientKey,
+        client_secret: clientSecret,
         scope: "offline_access",
       },
     })
@@ -368,7 +398,8 @@ export const getAuthModel = (): AuthModel => ({
         name,
 
         password: oauthProvider === "email" ? args.password : undefined,
-        oauth_token: oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
+        oauth_token:
+          oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
         apple_uid: oauthProvider === "apple" ? args.appleUID : undefined,
         id_token: oauthProvider === "apple" ? args.idToken : undefined,
 
@@ -444,14 +475,26 @@ export const getAuthModel = (): AuthModel => ({
       success: false,
       error,
       message,
-      meta: { existingProviders, email, oauthToken: accessToken, appleUID, idToken, provider: oauthProvider },
+      meta: {
+        existingProviders,
+        email,
+        oauthToken: accessToken,
+        appleUID,
+        idToken,
+        provider: oauthProvider,
+      },
     }
   }),
   authFacebook: thunk(async (actions, options) => {
     return await new Promise<AuthPromiseResolveType>(async (resolve, reject) => {
-      const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions(["public_profile", "email"])
+      const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions([
+        "public_profile",
+        "email",
+      ])
       if (declinedPermissions?.includes("email")) {
-        reject(new AuthError("Please allow the use of email to continue.", "Email Permission Declined"))
+        reject(
+          new AuthError("Please allow the use of email to continue.", "Email Permission Declined")
+        )
       }
       const accessToken = !isCancelled && (await AccessToken.getCurrentAccessToken())
       if (!accessToken) {
@@ -486,7 +529,13 @@ export const getAuthModel = (): AuthModel => ({
 
           resultGravitySignUp.success
             ? resolve({ success: true })
-            : reject(new AuthError(resultGravitySignUp.message, resultGravitySignUp.error, resultGravitySignUp.meta))
+            : reject(
+                new AuthError(
+                  resultGravitySignUp.message,
+                  resultGravitySignUp.error,
+                  resultGravitySignUp.meta
+                )
+              )
         }
 
         if (options.signInOrUp === "signIn") {
@@ -500,8 +549,8 @@ export const getAuthModel = (): AuthModel => ({
             body: {
               oauth_provider: "facebook",
               oauth_token: accessToken.accessToken,
-              client_id: Config.ARTSY_API_CLIENT_KEY,
-              client_secret: Config.ARTSY_API_CLIENT_SECRET,
+              client_id: clientKey,
+              client_secret: clientSecret,
               grant_type: "oauth_token",
               scope: "offline_access",
             },
@@ -521,7 +570,9 @@ export const getAuthModel = (): AuthModel => ({
               onSignIn: options.onSignIn,
             })
 
-            resultGravitySignIn ? resolve({ success: true }) : reject(new AuthError("Could not log in"))
+            resultGravitySignIn
+              ? resolve({ success: true })
+              : reject(new AuthError("Could not log in"))
           } else {
             const res = await resultGravityAccessToken.json()
             showError(res, reject, "facebook")
@@ -565,7 +616,13 @@ export const getAuthModel = (): AuthModel => ({
           : { success: false, message: "missing name in google's userInfo" }
         resultGravitySignUp.success
           ? resolve({ success: true })
-          : reject(new AuthError(resultGravitySignUp.message, resultGravitySignUp.error, resultGravitySignUp.meta))
+          : reject(
+              new AuthError(
+                resultGravitySignUp.message,
+                resultGravitySignUp.error,
+                resultGravitySignUp.meta
+              )
+            )
       }
 
       if (options.signInOrUp === "signIn") {
@@ -579,8 +636,8 @@ export const getAuthModel = (): AuthModel => ({
           body: {
             oauth_provider: "google",
             oauth_token: accessToken,
-            client_id: Config.ARTSY_API_CLIENT_KEY,
-            client_secret: Config.ARTSY_API_CLIENT_SECRET,
+            client_id: clientKey,
+            client_secret: clientSecret,
             grant_type: "oauth_token",
             scope: "offline_access",
           },
@@ -600,7 +657,9 @@ export const getAuthModel = (): AuthModel => ({
             onSignIn: options.onSignIn,
           })
 
-          resultGravitySignIn ? resolve({ success: true }) : reject(new AuthError("Could not log in"))
+          resultGravitySignIn
+            ? resolve({ success: true })
+            : reject(new AuthError("Could not log in"))
         } else {
           const res = await resultGravityAccessToken.json()
           showError(res, reject, "google")
@@ -646,7 +705,13 @@ export const getAuthModel = (): AuthModel => ({
         if (resultGravitySignUp.error === "Another Account Already Linked") {
           signInOrUp = "signIn"
         } else {
-          reject(new AuthError(resultGravitySignUp.message, resultGravitySignUp.error, resultGravitySignUp.meta))
+          reject(
+            new AuthError(
+              resultGravitySignUp.message,
+              resultGravitySignUp.error,
+              resultGravitySignUp.meta
+            )
+          )
           return
         }
       }
@@ -663,8 +728,8 @@ export const getAuthModel = (): AuthModel => ({
             oauth_provider: "apple",
             apple_uid: appleUID,
             id_token: idToken,
-            client_id: Config.ARTSY_API_CLIENT_KEY,
-            client_secret: Config.ARTSY_API_CLIENT_SECRET,
+            client_id: clientKey,
+            client_secret: clientSecret,
             grant_type: "apple_uid",
             scope: "offline_access",
           },
@@ -684,7 +749,9 @@ export const getAuthModel = (): AuthModel => ({
             onSignIn,
           })
 
-          resultGravitySignIn ? resolve({ success: true }) : reject(new AuthError("Could not log in"))
+          resultGravitySignIn
+            ? resolve({ success: true })
+            : reject(new AuthError("Could not log in"))
         } else {
           const res = await resultGravityAccessToken.json()
           showError(res, reject, "apple")
@@ -704,7 +771,9 @@ export const getAuthModel = (): AuthModel => ({
     }
 
     await Promise.all([
-      Platform.OS === "ios" ? await LegacyNativeModules.ArtsyNativeModule.clearUserData() : Promise.resolve(),
+      Platform.OS === "ios"
+        ? await LegacyNativeModules.ArtsyNativeModule.clearUserData()
+        : Promise.resolve(),
       await signOutGoogle(),
       CookieManager.clearAll(),
       RelayCache.clearAll(),

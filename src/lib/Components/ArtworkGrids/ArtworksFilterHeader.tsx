@@ -20,11 +20,18 @@ export const ArtworksFilterHeader: React.FC<FilterHeaderProps> = ({
 }) => {
   return (
     <Flex>
-      <Flex flexDirection="row" height={HEADER_HEIGHT} px={2} justifyContent="space-between" alignItems="center">
+      <Flex
+        flexDirection="row"
+        height={HEADER_HEIGHT}
+        px={2}
+        justifyContent="space-between"
+        alignItems="center"
+      >
         {childrenPosition === "left" && children}
         <TouchableHighlightColor
           haptic
           onPress={onFilterPress}
+          testID="sort-and-filter-button"
           render={({ color }) => (
             <Flex flexDirection="row" alignItems="center">
               <FilterIcon fill={color} width="20px" height="20px" />

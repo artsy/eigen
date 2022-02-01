@@ -1,3 +1,4 @@
+import { within } from "@testing-library/react-native"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -41,7 +42,11 @@ describe(LocationCitiesOptionsScreen, () => {
     selectedFilters: [],
   }
 
-  const MockLocationCitiesOptionsScreen = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => {
+  const MockLocationCitiesOptionsScreen = ({
+    initialData = initialState,
+  }: {
+    initialData?: ArtworkFiltersState
+  }) => {
     return (
       <ArtworkFiltersStoreProvider initialData={initialData}>
         <LocationCitiesOptionsScreen {...getEssentialProps()} />
@@ -51,7 +56,9 @@ describe(LocationCitiesOptionsScreen, () => {
 
   describe("no filters are selected", () => {
     it("renders all options present in the aggregation", () => {
-      const { getByText } = renderWithWrappersTL(<MockLocationCitiesOptionsScreen initialData={initialState} />)
+      const { getByText } = renderWithWrappersTL(
+        <MockLocationCitiesOptionsScreen initialData={initialState} />
+      )
 
       expect(getByText("Paris, France")).toBeTruthy()
       expect(getByText("London, United Kingdom")).toBeTruthy()
@@ -74,11 +81,13 @@ describe(LocationCitiesOptionsScreen, () => {
     it("displays the number of the selected filters on the filter modal screen", () => {
       const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={state} />)
 
-      expect(getByText("Artwork Location • 2")).toBeTruthy()
+      expect(within(getByText("Artwork Location")).getByText("• 2")).toBeTruthy()
     })
 
     it("toggles selected filters 'ON' and unselected filters 'OFF", async () => {
-      const { getAllByA11yState } = renderWithWrappersTL(<MockLocationCitiesOptionsScreen initialData={state} />)
+      const { getAllByA11yState } = renderWithWrappersTL(
+        <MockLocationCitiesOptionsScreen initialData={state} />
+      )
 
       const options = getAllByA11yState({ checked: true })
 

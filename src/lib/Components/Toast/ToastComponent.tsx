@@ -16,7 +16,14 @@ const NAVBAR_HEIGHT = 44
 
 type ToastProps = ToastDetails
 
-export const ToastComponent: React.FC<ToastProps> = ({ id, positionIndex, placement, message, onPress, Icon }) => {
+export const ToastComponent: React.FC<ToastProps> = ({
+  id,
+  positionIndex,
+  placement,
+  message,
+  onPress,
+  Icon,
+}) => {
   const color = useColor()
   const { width, height } = useScreenDimensions()
   const { top: topSafeAreaInset } = useScreenDimensions().safeAreaInsets
@@ -44,7 +51,7 @@ export const ToastComponent: React.FC<ToastProps> = ({ id, positionIndex, placem
     const innerMiddle = (
       <Flex flex={1} alignItems="center" justifyContent="center">
         {Icon !== undefined ? <Icon fill="white100" width={45} height={45} /> : null}
-        <Text variant="xs" color="white100">
+        <Text variant="xs" color="white100" textAlign="center" px={0.5}>
           {message}
         </Text>
       </Flex>

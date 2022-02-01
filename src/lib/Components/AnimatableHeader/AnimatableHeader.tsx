@@ -71,7 +71,8 @@ const runTiming = (clock: Clock, value: Animated.Value<number>) => {
 export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
   const { title, rightButtonDisabled, rightButtonText, onRightButtonPress } = props
   const { space } = useTheme()
-  const { scrollOffsetY, headerHeight, largeTitleHeight, largeTitleEndEdge, setTitle } = useAnimatableHeaderContext()
+  const { scrollOffsetY, headerHeight, largeTitleHeight, largeTitleEndEdge, setTitle } =
+    useAnimatableHeaderContext()
   const clock = useRef(new Animated.Clock()).current
   const value = useRef(new Animated.Value(0)).current
   const opacity = useRef(runTiming(clock, value)).current
@@ -109,7 +110,7 @@ export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
         onPress={props.onLeftButtonPress}
         accessibilityLabel="Header back button"
       >
-        <ArrowLeftIcon fill="black100" />
+        <ArrowLeftIcon fill="black100" mt="2px" />
       </TouchableOpacity>
       <Animated.View
         pointerEvents="none"
@@ -122,7 +123,7 @@ export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
           transform: [{ translateX }],
         }}
       >
-        <Text numberOfLines={2} lineHeight={18}>
+        <Text variant="sm" numberOfLines={2}>
           {title}
         </Text>
       </Animated.View>
@@ -132,7 +133,11 @@ export const AnimatableHeader: React.FC<AnimatableHeaderProps> = (props) => {
           onPress={onRightButtonPress}
           disabled={rightButtonDisabled}
         >
-          <Text variant="sm" color={rightButtonDisabled ? "black30" : "black100"}>
+          <Text
+            variant="sm"
+            style={{ textDecorationLine: "underline" }}
+            color={rightButtonDisabled ? "black30" : "black100"}
+          >
             {rightButtonText}
           </Text>
         </TouchableOpacity>

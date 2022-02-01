@@ -15,8 +15,8 @@ extension FeaturedArtworks {
             return nextLineups
         }
         
-        static func generate(completion: @escaping (WidgetKit.Timeline<Entry>) -> ()) {
-            ArtworkStore.fetch() { artworks in
+        static func generate(context: TimelineProviderContext, completion: @escaping (WidgetKit.Timeline<Entry>) -> ()) {
+            ArtworkStore.fetch(context: context) { artworks in
                 let schedule = Schedule()
                 let rotatedArtworks = Timeline.rotateArtworks(artworks: artworks)
                 let updateTimesToArtworks = Array(zip(schedule.updateTimes, rotatedArtworks))

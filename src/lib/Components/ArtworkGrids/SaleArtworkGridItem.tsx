@@ -3,7 +3,11 @@ import { SaleArtworkGridItem_saleArtwork } from "__generated__/SaleArtworkGridIt
 import { filterArtworksParams } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { PlaceholderBox, PlaceholderRaggedText, RandomNumberGenerator } from "lib/utils/placeholders"
+import {
+  PlaceholderBox,
+  PlaceholderRaggedText,
+  RandomNumberGenerator,
+} from "lib/utils/placeholders"
 import { Box, Flex, Sans, Spacer, Touchable } from "palette"
 import React from "react"
 import { StyleSheet, View } from "react-native"
@@ -69,7 +73,12 @@ export const SaleArtworkGridItem: React.FC<ArtworkProps> = ({
   }
 
   const saleInfo = saleMessageOrBidInfo({
-    artwork: { sale: saleArtwork.sale, saleArtwork, saleMessage: saleArtwork.artwork?.saleMessage || null },
+    artwork: {
+      sale: saleArtwork.sale,
+      saleArtwork,
+      saleMessage: saleArtwork.artwork?.saleMessage || null,
+      realizedPrice: artwork.realizedPrice,
+    },
   })
 
   return (
@@ -126,7 +135,9 @@ const styles = StyleSheet.create({
   },
 })
 
-export const SaleArtworkGridItemPlaceholder: React.FC<{ seed?: number }> = ({ seed = Math.random() }) => {
+export const SaleArtworkGridItemPlaceholder: React.FC<{ seed?: number }> = ({
+  seed = Math.random(),
+}) => {
   const rng = new RandomNumberGenerator(seed)
   return (
     <Flex>
@@ -152,6 +163,7 @@ export const SaleArtworkGridItemContainer = createFragmentContainer(SaleArtworkG
           url(version: "large")
           aspectRatio
         }
+        realizedPrice
       }
       counts {
         bidderPositions

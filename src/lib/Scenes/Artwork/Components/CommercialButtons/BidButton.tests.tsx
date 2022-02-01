@@ -82,7 +82,11 @@ describe("BidButton", () => {
 
   describe("for auction preview", () => {
     it("and not registered bidder", async () => {
-      const wrapper = await getWrapper(ArtworkFromAuctionPreview, meFixture, AuctionTimerState.PREVIEW)
+      const wrapper = await getWrapper(
+        ArtworkFromAuctionPreview,
+        meFixture,
+        AuctionTimerState.PREVIEW
+      )
 
       expect(wrapper.text()).toContain("Register to bid")
     })
@@ -233,35 +237,55 @@ describe("BidButton", () => {
   describe("for open, live auction during pre-bidding", () => {
     it("with open registration and not registered bidder ", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, NotRegisteredToBid)
-      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
+      const wrapper = await getWrapper(
+        artwork,
+        meFixture,
+        AuctionTimerState.LIVE_INTEGRATION_UPCOMING
+      )
 
       expect(wrapper.text()).toContain("Bid")
     })
 
     it("with closed registration and not registered bidder ", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationClosed, NotRegisteredToBid)
-      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
+      const wrapper = await getWrapper(
+        artwork,
+        meFixture,
+        AuctionTimerState.LIVE_INTEGRATION_UPCOMING
+      )
 
       expect(wrapper.text()).toContain("Registration closed")
     })
 
     it("with bidder registration pending approval", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, BidderPendingApproval)
-      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
+      const wrapper = await getWrapper(
+        artwork,
+        meFixture,
+        AuctionTimerState.LIVE_INTEGRATION_UPCOMING
+      )
 
       expect(wrapper.text()).toContain("Registration pending")
     })
 
     it("with registered bidder", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, RegisteredBidder)
-      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
+      const wrapper = await getWrapper(
+        artwork,
+        meFixture,
+        AuctionTimerState.LIVE_INTEGRATION_UPCOMING
+      )
 
       expect(wrapper.text()).toContain("Bid")
     })
 
     it("with registered bidder with bids", async () => {
       const artwork = merge({}, ArtworkFromTimedAuctionRegistrationOpen, RegistedBidderWithBids)
-      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
+      const wrapper = await getWrapper(
+        artwork,
+        meFixture,
+        AuctionTimerState.LIVE_INTEGRATION_UPCOMING
+      )
 
       expect(wrapper.text()).toContain("Increase max bid")
     })
@@ -274,7 +298,11 @@ describe("BidButton", () => {
       it("displays 'Register to bid' if the user is not verified", async () => {
         const me = { identityVerified: false }
 
-        const wrapper = await getWrapper(lotWithIDVRequired, me, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
+        const wrapper = await getWrapper(
+          lotWithIDVRequired,
+          me,
+          AuctionTimerState.LIVE_INTEGRATION_UPCOMING
+        )
 
         expect(wrapper.text()).toContain("Register to bid")
         expect(wrapper.text()).toContain("Identity verification required to bid.")
@@ -283,7 +311,11 @@ describe("BidButton", () => {
       it("displays 'Bid' if the user is verified", async () => {
         const me = { identityVerified: true }
 
-        const wrapper = await getWrapper(lotWithIDVRequired, me, AuctionTimerState.LIVE_INTEGRATION_UPCOMING)
+        const wrapper = await getWrapper(
+          lotWithIDVRequired,
+          me,
+          AuctionTimerState.LIVE_INTEGRATION_UPCOMING
+        )
 
         expect(wrapper.text()).toContain("Bid")
         expect(wrapper.text()).not.toContain("Identity verification required to bid.")
@@ -313,14 +345,22 @@ describe("BidButton", () => {
   describe("for live auction", () => {
     it("with open registration and not registered bidder ", async () => {
       const artwork = merge({}, ArtworkFromLiveAuctionRegistrationOpen, NotRegisteredToBid)
-      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.LIVE_INTEGRATION_ONGOING)
+      const wrapper = await getWrapper(
+        artwork,
+        meFixture,
+        AuctionTimerState.LIVE_INTEGRATION_ONGOING
+      )
 
       expect(wrapper.find(Button).text()).toContain("Enter live bidding")
     })
 
     it("with closed registration and not registered bidder ", async () => {
       const artwork = merge({}, ArtworkFromLiveAuctionRegistrationClosed, NotRegisteredToBid)
-      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.LIVE_INTEGRATION_ONGOING)
+      const wrapper = await getWrapper(
+        artwork,
+        meFixture,
+        AuctionTimerState.LIVE_INTEGRATION_ONGOING
+      )
 
       expect(wrapper.text()).toContain("Registration closed")
       expect(wrapper.find(Button).text()).toContain("Watch live bidding")
@@ -328,14 +368,22 @@ describe("BidButton", () => {
 
     it("with bidder registration pending approval", async () => {
       const artwork = merge({}, ArtworkFromLiveAuctionRegistrationOpen, BidderPendingApproval)
-      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.LIVE_INTEGRATION_ONGOING)
+      const wrapper = await getWrapper(
+        artwork,
+        meFixture,
+        AuctionTimerState.LIVE_INTEGRATION_ONGOING
+      )
 
       expect(wrapper.find(Button).text()).toContain("Enter live bidding")
     })
 
     it("with registered bidder", async () => {
       const artwork = merge({}, ArtworkFromLiveAuctionRegistrationOpen, RegisteredBidder)
-      const wrapper = await getWrapper(artwork, meFixture, AuctionTimerState.LIVE_INTEGRATION_ONGOING)
+      const wrapper = await getWrapper(
+        artwork,
+        meFixture,
+        AuctionTimerState.LIVE_INTEGRATION_ONGOING
+      )
 
       expect(wrapper.find(Button).text()).toContain("Enter live bidding")
     })

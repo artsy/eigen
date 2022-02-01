@@ -1,4 +1,11 @@
-import { ActionType, ContextModule, editCollectedArtwork, OwnerType, tappedSell, TappedShowMore } from "@artsy/cohesion"
+import {
+  ActionType,
+  ContextModule,
+  editCollectedArtwork,
+  OwnerType,
+  tappedSell,
+  TappedShowMore,
+} from "@artsy/cohesion"
 import {
   MyCollectionArtworkQuery,
   MyCollectionArtworkQueryResponse,
@@ -19,7 +26,7 @@ import React from "react"
 import { ScrollView } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
-import { MyCollectionArtworkHeaderRefetchContainer } from "./Components/MyCollectionArtworkHeader"
+import { MyCollectionArtworkHeaderFragmentContainer } from "./Components/MyCollectionArtworkHeader"
 import { MyCollectionArtworkMetaFragmentContainer } from "./Components/MyCollectionArtworkMeta"
 import { WhySell } from "./Components/WhySell"
 
@@ -28,7 +35,10 @@ export interface MyCollectionArtworkProps {
   marketPriceInsights: NonNullable<MyCollectionArtworkQueryResponse["marketPriceInsights"]>
 }
 
-export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwork, marketPriceInsights }) => {
+export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
+  artwork,
+  marketPriceInsights,
+}) => {
   const { trackEvent } = useTracking()
 
   return (
@@ -61,9 +71,12 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({ artwor
           )}
         />
         <Join separator={<Spacer my={1} />}>
-          <MyCollectionArtworkHeaderRefetchContainer artwork={artwork} />
+          <MyCollectionArtworkHeaderFragmentContainer artwork={artwork} />
           <MyCollectionArtworkMetaFragmentContainer artwork={artwork} />
-          <MyCollectionArtworkInsightsFragmentContainer artwork={artwork} marketPriceInsights={marketPriceInsights} />
+          <MyCollectionArtworkInsightsFragmentContainer
+            artwork={artwork}
+            marketPriceInsights={marketPriceInsights}
+          />
           <WhySell />
 
           <ScreenMargin>
@@ -145,7 +158,11 @@ export const MyCollectionArtworkQueryRenderer: React.FC<{
     <QueryRenderer<MyCollectionArtworkQuery>
       environment={defaultEnvironment}
       query={graphql`
-        query MyCollectionArtworkQuery($artworkSlug: String!, $artistInternalID: ID!, $medium: String!) {
+        query MyCollectionArtworkQuery(
+          $artworkSlug: String!
+          $artistInternalID: ID!
+          $medium: String!
+        ) {
           artwork(id: $artworkSlug) {
             ...MyCollectionArtwork_sharedProps @relay(mask: false)
             ...MyCollectionArtworkHeader_artwork

@@ -85,7 +85,8 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
   }
 
   const handleError = (error: AuthPromiseRejectType) => {
-    const canBeLinked = error.error === "User Already Exists" && error.meta && error.meta.existingProviders
+    const canBeLinked =
+      error.error === "User Already Exists" && error.meta && error.meta.existingProviders
     if (canBeLinked && allowLinkingOnSignUp) {
       handleErrorWithAlternativeProviders(error.meta)
       return
@@ -95,9 +96,11 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
 
   const continueWithFacebook = () => {
     if (mode === "login") {
-      GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" }).catch((error: AuthPromiseRejectType) => {
-        handleError(error)
-      })
+      GlobalStore.actions.auth
+        .authFacebook({ signInOrUp: "signIn" })
+        .catch((error: AuthPromiseRejectType) => {
+          handleError(error)
+        })
     } else {
       GlobalStore.actions.auth
         .authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
@@ -109,9 +112,11 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
 
   const continueWithGoogle = () => {
     if (mode === "login") {
-      GlobalStore.actions.auth.authGoogle({ signInOrUp: "signIn" }).catch((error: AuthPromiseRejectType) => {
-        handleError(error)
-      })
+      GlobalStore.actions.auth
+        .authGoogle({ signInOrUp: "signIn" })
+        .catch((error: AuthPromiseRejectType) => {
+          handleError(error)
+        })
     } else {
       GlobalStore.actions.auth
         .authGoogle({ signInOrUp: "signUp", agreedToReceiveEmails: true })
@@ -122,9 +127,11 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
   }
 
   const continueWithApple = () => {
-    GlobalStore.actions.auth.authApple({ agreedToReceiveEmails: true }).catch((error: AuthPromiseRejectType) => {
-      handleError(error)
-    })
+    GlobalStore.actions.auth
+      .authApple({ agreedToReceiveEmails: true })
+      .catch((error: AuthPromiseRejectType) => {
+        handleError(error)
+      })
   }
 
   const isiOS = Platform.OS === "ios"
@@ -162,7 +169,13 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                 mb={1}
                 variant="fillDark"
                 iconPosition="left-start"
-                icon={<Image source={require("@images/apple.webp")} resizeMode="contain" style={{ marginRight: 10 }} />}
+                icon={
+                  <Image
+                    source={require("@images/apple.webp")}
+                    resizeMode="contain"
+                    style={{ marginRight: 10 }}
+                  />
+                }
                 testID="continueWithApple"
               >
                 Continue with Apple
@@ -177,7 +190,11 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
                 variant="outline"
                 iconPosition="left-start"
                 icon={
-                  <Image source={require("@images/google.webp")} resizeMode="contain" style={{ marginRight: 10 }} />
+                  <Image
+                    source={require("@images/google.webp")}
+                    resizeMode="contain"
+                    style={{ marginRight: 10 }}
+                  />
                 }
                 testID="continueWithGoogle"
               >
@@ -193,7 +210,11 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
               variant="outline"
               iconPosition="left-start"
               icon={
-                <Image source={require("@images/facebook.webp")} resizeMode="contain" style={{ marginRight: 10 }} />
+                <Image
+                  source={require("@images/facebook.webp")}
+                  resizeMode="contain"
+                  style={{ marginRight: 10 }}
+                />
               }
               testID="continueWithFacebook"
             >
@@ -206,7 +227,9 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             {!!enableGoogleAuth ? ", Google" : ""}
             {isiOS ? " or Apple" : ""}, you agree to Artsy's{" "}
             <Text
-              onPress={() => (isiOS ? navigate("/terms", { modal: true }) : navigation.navigate("Terms"))}
+              onPress={() =>
+                isiOS ? navigate("/terms", { modal: true }) : navigation.navigate("Terms")
+              }
               variant="xs"
               style={{ textDecorationLine: "underline" }}
               testID="openTerms"
@@ -215,7 +238,9 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
             </Text>{" "}
             and{" "}
             <Text
-              onPress={() => (isiOS ? navigate("/privacy", { modal: true }) : navigation.navigate("Privacy"))}
+              onPress={() =>
+                isiOS ? navigate("/privacy", { modal: true }) : navigation.navigate("Privacy")
+              }
               variant="xs"
               style={{ textDecorationLine: "underline" }}
               testID="openPrivacy"

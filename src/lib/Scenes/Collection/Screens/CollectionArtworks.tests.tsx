@@ -1,5 +1,9 @@
 import { CollectionArtworksTestsQuery } from "__generated__/CollectionArtworksTestsQuery.graphql"
-import { FilterArray, filterArtworksParams, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  FilterArray,
+  filterArtworksParams,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilteredArtworkGridZeroState } from "lib/Components/ArtworkGrids/FilteredArtworkGridZeroState"
 import { InfiniteScrollArtworksGridContainer as InfiniteScrollArtworksGrid } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
@@ -44,7 +48,9 @@ describe("CollectionArtworks", () => {
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
-      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, mockResolvers)
+      )
     })
     return tree
   }
@@ -64,7 +70,9 @@ describe("CollectionArtworks", () => {
     })
 
     expect(tree.root.findAllByType(FilteredArtworkGridZeroState)).toHaveLength(1)
-    expect(extractText(tree.root)).toContain("No results found\nPlease try another search.Clear filtersClear filters")
+    expect(extractText(tree.root)).toContain(
+      "No results found\nPlease try another search.Clear filtersClear filters"
+    )
   })
 
   it("returns artworks", () => {

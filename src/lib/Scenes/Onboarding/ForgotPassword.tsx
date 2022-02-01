@@ -16,7 +16,8 @@ export interface ForgotPasswordValuesSchema {
   email: string
 }
 
-export interface ForgotPasswordProps extends StackScreenProps<OnboardingNavigationStack, "ForgotPassword"> {}
+export interface ForgotPasswordProps
+  extends StackScreenProps<OnboardingNavigationStack, "ForgotPassword"> {}
 export interface ForgotPasswordFormProps extends ForgotPasswordProps {
   requestedPasswordReset: boolean
   inputRef?: React.Ref<Input>
@@ -40,7 +41,8 @@ export const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
         <Flex flex={1} px={1.5} paddingTop={60} justifyContent="flex-start">
           <Text variant="lg">Forgot Password?</Text>
           <Text pt={0.5} color="black100" variant="xs">
-            Please enter the email address associated with your Artsy account to receive a reset link.
+            Please enter the email address associated with your Artsy account to receive a reset
+            link.
           </Text>
           <Spacer mt={2} />
 
@@ -133,7 +135,10 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ navigation, rout
       const res = await GlobalStore.actions.auth.forgotPassword({ email })
       if (!res) {
         // For security purposes, we are returning a generic error message
-        setErrors({ email: "Couldn’t send reset password link. Please try again, or contact support@artsy.net" })
+        setErrors({
+          email:
+            "Couldn’t send reset password link. Please try again, or contact support@artsy.net",
+        })
       } else {
         setRequestedPasswordReset(true)
         inputRef.current?.blur()

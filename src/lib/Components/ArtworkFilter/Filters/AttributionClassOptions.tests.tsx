@@ -1,5 +1,9 @@
+import { within } from "@testing-library/react-native"
 import { FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { MockFilterScreen } from "lib/Components/ArtworkFilter/FilterTestHelper"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -7,7 +11,11 @@ import { AttributionClassOptionsScreen } from "./AttributionClassOptions"
 import { getEssentialProps } from "./helper"
 
 describe("AttributionClassOptions Screen", () => {
-  const MockAttributionClassOptionsScreen = ({ initialData }: { initialData?: ArtworkFiltersState }) => {
+  const MockAttributionClassOptionsScreen = ({
+    initialData,
+  }: {
+    initialData?: ArtworkFiltersState
+  }) => {
     return (
       <ArtworkFiltersStoreProvider initialData={initialData}>
         <AttributionClassOptionsScreen {...getEssentialProps()} />
@@ -46,7 +54,7 @@ describe("AttributionClassOptions Screen", () => {
 
     const { getByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
 
-    expect(getByText("Rarity • 2")).toBeTruthy()
+    expect(within(getByText("Rarity")).getByText("• 2")).toBeTruthy()
   })
 
   it("toggles selected filters 'ON' and unselected filters 'OFF", () => {

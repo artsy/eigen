@@ -6,22 +6,25 @@ import { SearchPills, SearchPillsProps } from "./SearchPills"
 
 const pills: PillType[] = [
   {
-    name: "first",
+    indexName: "first",
     displayName: "First",
     type: "algolia",
     disabled: false,
+    key: "first",
   },
   {
-    name: "second",
+    indexName: "second",
     displayName: "Second",
     type: "algolia",
     disabled: false,
+    key: "second",
   },
   {
-    name: "third",
+    indexName: "third",
     displayName: "Third",
     type: "algolia",
     disabled: false,
+    key: "third",
   },
 ]
 
@@ -56,14 +59,15 @@ describe("SearchPills", () => {
 
     expect(onPillPressMock).toBeCalledWith({
       type: "algolia",
-      name: "second",
+      indexName: "second",
       displayName: "Second",
+      key: "second",
       disabled: false,
     })
   })
 
   it("the selected pill must be displayed correctly", () => {
-    const isSelected = (pill: PillType) => pill.name === "second"
+    const isSelected = (pill: PillType) => pill.key === "second"
     const { getByA11yState } = renderWithWrappersTL(<TestRenderer isSelected={isSelected} />)
 
     expect(getByA11yState({ selected: true })).toHaveTextContent("Second")

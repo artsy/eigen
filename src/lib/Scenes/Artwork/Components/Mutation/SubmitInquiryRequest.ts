@@ -13,7 +13,8 @@ export const SubmitInquiryRequest = (
 ) => {
   const formattedQuestions = inquiryState.inquiryQuestions.map((q: InquiryQuestionInput) => {
     if (q.questionID === "shipping_quote" && inquiryState.shippingLocation) {
-      const { city, coordinates, country, postalCode, state, stateCode } = inquiryState.shippingLocation
+      const { city, coordinates, country, postalCode, state, stateCode } =
+        inquiryState.shippingLocation
       const locationInput = {
         city,
         coordinates,

@@ -47,7 +47,9 @@ describe("Artist Series Artworks", () => {
   const getWrapper = (mockResolvers = {}) => {
     const tree = renderWithWrappers(<TestRenderer />)
     act(() => {
-      env.mock.resolveMostRecentOperation((operation) => MockPayloadGenerator.generate(operation, mockResolvers))
+      env.mock.resolveMostRecentOperation((operation) =>
+        MockPayloadGenerator.generate(operation, mockResolvers)
+      )
     })
     return tree
   }
@@ -70,6 +72,8 @@ describe("Artist Series Artworks", () => {
 
     expect(tree.root.findAllByType(InfiniteScrollArtworksGridContainer)).toHaveLength(0)
     expect(tree.root.findAllByType(FilteredArtworkGridZeroState)).toHaveLength(1)
-    expect(extractText(tree.root)).toContain("No results found\nPlease try another search.Clear filtersClear filters")
+    expect(extractText(tree.root)).toContain(
+      "No results found\nPlease try another search.Clear filtersClear filters"
+    )
   })
 })

@@ -1,6 +1,10 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
-import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  FilterData,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import React from "react"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
 import { useMultiSelect } from "./useMultiSelect"
@@ -26,13 +30,18 @@ export const AUCTION_HOUSE_OPTIONS: FilterData[] = [
 interface AuctionHouseOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "AuctionHouseOptionsScreen"> {}
 
-export const AuctionHouseOptionsScreen: React.FC<AuctionHouseOptionsScreenProps> = ({ navigation }) => {
+export const AuctionHouseOptionsScreen: React.FC<AuctionHouseOptionsScreenProps> = ({
+  navigation,
+}) => {
   const { handleSelect, isSelected, handleClear, isActive } = useMultiSelect({
     options: AUCTION_HOUSE_OPTIONS,
     paramName: FilterParamName.organizations,
   })
 
-  const filterOptions = AUCTION_HOUSE_OPTIONS.map((option) => ({ ...option, paramValue: isSelected(option) }))
+  const filterOptions = AUCTION_HOUSE_OPTIONS.map((option) => ({
+    ...option,
+    paramValue: isSelected(option),
+  }))
 
   return (
     <MultiSelectOptionScreen

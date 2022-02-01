@@ -1,4 +1,7 @@
-import { FilterArray, getUnitedSelectedAndAppliedFilters } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  FilterArray,
+  getUnitedSelectedAndAppliedFilters,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import {
   aggregationsWithFollowedArtists,
   changedFiltersParams,

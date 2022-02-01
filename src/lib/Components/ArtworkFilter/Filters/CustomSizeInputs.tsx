@@ -19,7 +19,12 @@ const getValue = (value: Numeric) => {
   return value.toString()
 }
 
-export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({ label, range, active, onChange }) => {
+export const CustomSizeInputs: React.FC<CustomSizeInputsProps> = ({
+  label,
+  range,
+  active,
+  onChange,
+}) => {
   const color = useColor()
   const handleInputChange = (field: keyof Range) => (text: string) => {
     const parsed = parseFloat(text)

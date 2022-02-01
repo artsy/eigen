@@ -118,7 +118,9 @@ describe("Search Screen", () => {
   })
 
   it("should not be able to untoggle the same pill", () => {
-    const { getByPlaceholderText, getByText, getByA11yState } = renderWithWrappersTL(<TestRenderer />)
+    const { getByPlaceholderText, getByText, getByA11yState } = renderWithWrappersTL(
+      <TestRenderer />
+    )
     const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
     mockEnvironmentPayload(mockEnvironment, {
@@ -414,7 +416,9 @@ describe("Search Screen", () => {
     })
 
     it("should render only allowed algolia indices", () => {
-      const { getByPlaceholderText, getByText, queryByText } = renderWithWrappersTL(<TestRenderer />)
+      const { getByPlaceholderText, getByText, queryByText } = renderWithWrappersTL(
+        <TestRenderer />
+      )
       const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
       mockEnvironmentPayload(mockEnvironment, {
@@ -506,13 +510,13 @@ describe("Search Screen", () => {
     })
 
     it("when cancel button is pressed", () => {
-      const { queryByA11yState, getByPlaceholderText, getByText, getAllByText } = tree
+      const { queryByA11yState, getByPlaceholderText, getByText } = tree
       const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
       fireEvent(searchInput, "changeText", "prev value")
       fireEvent(getByText("Artists"), "press")
       fireEvent(searchInput, "focus")
-      fireEvent(getAllByText("Cancel")[0], "press")
+      fireEvent(getByText("Cancel"), "press")
       fireEvent(searchInput, "changeText", "new value")
 
       expect(queryByA11yState({ selected: true })).toHaveTextContent("Top")

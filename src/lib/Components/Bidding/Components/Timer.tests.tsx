@@ -80,7 +80,11 @@ it("shows 'Live' when the liveStartsAt prop is given", () => {
 
 it("shows 'Starts' the sale has not started yet", () => {
   const timer = renderWithWrappers(
-    <Timer startsAt="2018-04-14T20:00:00+00:00" isPreview liveStartsAt="2018-05-14T20:00:00+00:00" />
+    <Timer
+      startsAt="2018-04-14T20:00:00+00:00"
+      isPreview
+      liveStartsAt="2018-05-14T20:00:00+00:00"
+    />
   )
 
   expect(getTimerLabel(timer)).toContain("Starts")
@@ -88,7 +92,12 @@ it("shows 'Starts' the sale has not started yet", () => {
 
 it("shows 'Bidding closed' when the auction is closed", () => {
   const timer = renderWithWrappers(
-    <Timer startsAt="2018-04-14T20:00:00+00:00" isPreview={false} liveStartsAt="2018-05-14T20:00:00+00:00" isClosed />
+    <Timer
+      startsAt="2018-04-14T20:00:00+00:00"
+      isPreview={false}
+      liveStartsAt="2018-05-14T20:00:00+00:00"
+      isClosed
+    />
   )
 
   expect(getTimerLabel(timer)).toContain("Bidding closed")

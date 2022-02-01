@@ -1,51 +1,20 @@
 import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator, StackScreenProps } from "@react-navigation/stack"
 import { BackButton } from "lib/navigation/BackButton"
-import { Button, CollapsibleMenuItem, Flex, Join, Separator, Spacer, Text } from "palette"
+import { CollapsibleMenuItem, Flex, Join, Separator, Spacer } from "palette"
 import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
+import { ArtworkDetails } from "./ArtworkDetails/ArtworkDetails"
 import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
-
-export const ArtworkDetails = ({ handlePress }: { handlePress: () => void }) => {
-  return (
-    <Flex backgroundColor="peachpuff" p={1} mt={1}>
-      <Text>ArtworkDetails content</Text>
-      <Spacer mt={1} />
-      <CTAButton text="Save & Continue" onPress={handlePress} />
-    </Flex>
-  )
-}
-
-export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
-  return (
-    <Flex backgroundColor="peachpuff" p={1} mt={1}>
-      <Text>Upload Photos content</Text>
-      <Spacer mt={1} />
-      <CTAButton text="Save & Continue" onPress={handlePress} />
-    </Flex>
-  )
-}
-
-export const ContactInformation = ({ handlePress }: { handlePress: () => void }) => {
-  return (
-    <Flex backgroundColor="peachpuff" p={1} mt={1}>
-      <Text>ContactInformation content</Text>
-      <Spacer mt={1} />
-      <CTAButton text="Submit Artwork" onPress={handlePress} />
-    </Flex>
-  )
-}
-
-const CTAButton = ({ onPress, text }: { onPress: () => void; text: string }) => (
-  <Button block haptic maxWidth={540} onPress={onPress}>
-    {text}
-  </Button>
-)
+import { ContactInformation } from "./ContactInformation/ContactInformation"
+import { UploadPhotos } from "./UploadPhotos/UploadPhotos"
 
 interface SubmitArtworkScreenNavigationProps
   extends StackScreenProps<SubmitArtworkOverviewNavigationStack, "SubmitArtworkScreen"> {}
 
-export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> = ({ navigation }) => {
+export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> = ({
+  navigation,
+}) => {
   const items = [
     {
       overtitle: "Step 1 of 3",

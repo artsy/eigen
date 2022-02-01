@@ -3,7 +3,10 @@ import { BottomTabsModelFetchCurrentUnreadConversationCountQuery } from "__gener
 import { Action, action, Thunk, thunk } from "easy-peasy"
 import { saveDevNavigationStateSelectedTab } from "lib/navigation/useReloadedDevNavigationState"
 import { createEnvironment } from "lib/relay/createEnvironment"
-import { metaphysicsURLMiddleware, persistedQueryMiddleware } from "lib/relay/middlewares/metaphysicsMiddleware"
+import {
+  metaphysicsURLMiddleware,
+  persistedQueryMiddleware,
+} from "lib/relay/middlewares/metaphysicsMiddleware"
 import { simpleLoggerMiddleware } from "lib/relay/middlewares/simpleLoggerMiddleware"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { fetchQuery, graphql } from "react-relay"
@@ -34,7 +37,9 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
   fetchCurrentUnreadConversationCount: thunk(async () => {
     try {
       const result = await fetchQuery<BottomTabsModelFetchCurrentUnreadConversationCountQuery>(
-        createEnvironment([[persistedQueryMiddleware(), metaphysicsURLMiddleware(), simpleLoggerMiddleware()]]),
+        createEnvironment([
+          [persistedQueryMiddleware(), metaphysicsURLMiddleware(), simpleLoggerMiddleware()],
+        ]),
         graphql`
           query BottomTabsModelFetchCurrentUnreadConversationCountQuery {
             me @principalField {
@@ -49,7 +54,9 @@ export const getBottomTabsModel = (): BottomTabsModel => ({
       ).toPromise()
 
       if (result?.me?.unreadConversationCount != null) {
-        GlobalStore.actions.bottomTabs.unreadConversationCountChanged(result.me.unreadConversationCount)
+        GlobalStore.actions.bottomTabs.unreadConversationCountChanged(
+          result.me.unreadConversationCount
+        )
         GlobalStore.actions.native.setApplicationIconBadgeNumber(result.me.unreadConversationCount)
       }
     } catch (e) {

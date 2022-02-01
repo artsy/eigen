@@ -86,7 +86,11 @@ export class PartnerFollowButton extends React.Component<Props, State> {
     const { partner } = this.props
 
     return (
-      <FollowButton haptic isFollowed={!!partner.profile?.isFollowed} onPress={this.handleFollowPartner.bind(this)} />
+      <FollowButton
+        haptic
+        isFollowed={!!partner.profile?.isFollowed}
+        onPress={this.handleFollowPartner.bind(this)}
+      />
     )
   }
 }

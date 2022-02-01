@@ -1,6 +1,13 @@
 import { NavigationContainer } from "@react-navigation/native"
-import { CardStyleInterpolators, createStackNavigator, TransitionPresets } from "@react-navigation/stack"
-import { ArtsyKeyboardAvoidingView, ArtsyKeyboardAvoidingViewContext } from "lib/Components/ArtsyKeyboardAvoidingView"
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+  TransitionPresets,
+} from "@react-navigation/stack"
+import {
+  ArtsyKeyboardAvoidingView,
+  ArtsyKeyboardAvoidingViewContext,
+} from "lib/Components/ArtsyKeyboardAvoidingView"
 import { ArtsyWebViewPrivacy, ArtsyWebViewTerms } from "lib/Components/ArtsyReactWebViewPolicy"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { NetworkAwareProvider } from "lib/utils/NetworkAwareProvider"
@@ -13,6 +20,7 @@ import {
   OnboardingCreateAccountWithEmail,
 } from "./OnboardingCreateAccount/OnboardingCreateAccount"
 import { OnboardingLogin, OnboardingLoginWithEmail } from "./OnboardingLogin"
+import { OnboardingLoginWithOTP, OTPMode } from "./OnboardingLoginWithOTP"
 import { OnboardingPersonalization } from "./OnboardingPersonalization/OnboardingPersonalization"
 import { AppleToken, GoogleOrFacebookToken, OnboardingSocialLink } from "./OnboardingSocialLink"
 import { OnboardingWelcome } from "./OnboardingWelcome"
@@ -22,6 +30,7 @@ export type OnboardingNavigationStack = {
   OnboardingWelcome: undefined
   OnboardingLogin: { withFadeAnimation: boolean } | undefined
   OnboardingLoginWithEmail: { withFadeAnimation: boolean; email: string } | undefined
+  OnboardingLoginWithOTP: { email: string; password: string; otpMode: OTPMode }
   OnboardingCreateAccount: { withFadeAnimation: boolean } | undefined
   OnboardingCreateAccountWithEmail: undefined
   OnboardingSocialLink: {
@@ -68,6 +77,7 @@ export const OnboardingWelcomeScreens = () => {
               : CardStyleInterpolators.forHorizontalIOS,
           })}
         />
+        <StackNavigator.Screen name="OnboardingLoginWithOTP" component={OnboardingLoginWithOTP} />
         <StackNavigator.Screen
           name="OnboardingCreateAccount"
           component={OnboardingCreateAccount}
@@ -77,9 +87,16 @@ export const OnboardingWelcomeScreens = () => {
               : CardStyleInterpolators.forHorizontalIOS,
           })}
         />
-        <StackNavigator.Screen name="OnboardingCreateAccountWithEmail" component={OnboardingCreateAccountWithEmail} />
+        <StackNavigator.Screen
+          name="OnboardingCreateAccountWithEmail"
+          component={OnboardingCreateAccountWithEmail}
+        />
         <StackNavigator.Screen name="OnboardingSocialLink" component={OnboardingSocialLink} />
-        <StackNavigator.Screen name="ForgotPassword" component={ForgotPassword} options={{ headerShown: false }} />
+        <StackNavigator.Screen
+          name="ForgotPassword"
+          component={ForgotPassword}
+          options={{ headerShown: false }}
+        />
         <StackNavigator.Screen name="Terms" component={ArtsyWebViewTerms} />
         <StackNavigator.Screen name="Privacy" component={ArtsyWebViewPrivacy} />
       </StackNavigator.Navigator>
@@ -96,7 +113,11 @@ export const Onboarding = () => {
         value={{ isVisible: true, isPresentedModally: false, bottomOffset: 0 }}
       >
         <ArtsyKeyboardAvoidingView>
-          {onboardingState === "incomplete" ? <OnboardingPersonalization /> : <OnboardingWelcomeScreens />}
+          {onboardingState === "incomplete" ? (
+            <OnboardingPersonalization />
+          ) : (
+            <OnboardingWelcomeScreens />
+          )}
           {!!showNetworkUnavailableModal && <NetworkAwareProvider />}
         </ArtsyKeyboardAvoidingView>
       </ArtsyKeyboardAvoidingViewContext.Provider>

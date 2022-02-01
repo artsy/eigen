@@ -7,7 +7,11 @@
  * @param unsafeDataOperation     Function that returns the deep property
  * @param valueIfFailOrUndefined  Value to return in case if there is no such property
  */
-export function get<O, T>(obj: O, unsafeDataOperation: (x: O) => T, valueIfFailOrUndefined?: T): T | undefined {
+export function get<O, T>(
+  obj: O,
+  unsafeDataOperation: (x: O) => T,
+  valueIfFailOrUndefined?: T
+): T | undefined {
   try {
     const result = unsafeDataOperation(obj)
     if (result) {

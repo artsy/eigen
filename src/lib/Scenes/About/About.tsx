@@ -14,7 +14,9 @@ export const About: React.FC = () => {
   const appVersion = getVersion()
   const toast = useToast()
   const [tapCount, updateTapCount] = useState(0)
-  const { value: userIsDev, flipValue: userIsDevFlipValue } = GlobalStore.useAppState((store) => store.config.userIsDev)
+  const { value: userIsDev, flipValue: userIsDevFlipValue } = GlobalStore.useAppState(
+    (store) => store.config.userIsDev
+  )
 
   useEffect(() => {
     const flip = (userIsDev && tapCount >= 3) || (!userIsDev && tapCount >= 7)
@@ -45,13 +47,18 @@ export const About: React.FC = () => {
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
         <MenuItem title="Terms of Use" onPress={() => navigate("/terms", { modal: true })} />
         <MenuItem title="Privacy Policy" onPress={() => navigate("/privacy", { modal: true })} />
-        <MenuItem title="Conditions of Sale" onPress={() => navigate("/conditions-of-sale", { modal: true })} />
+        <MenuItem
+          title="Conditions of Sale"
+          onPress={() => navigate("/conditions-of-sale", { modal: true })}
+        />
         <MenuItem
           title="Version"
           text={appVersion}
           onPress={() => updateTapCount((count) => count + 1)}
           chevron={false}
-          style={userIsDev ? { borderRightColor: color("devpurple"), borderRightWidth: 1 } : undefined}
+          style={
+            userIsDev ? { borderRightColor: color("devpurple"), borderRightWidth: 1 } : undefined
+          }
         />
       </ScrollView>
     </PageWithSimpleHeader>

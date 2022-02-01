@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3fbdf4898d34f038e5b8c560728a5443 */
+/* @relayHash 5add6cc756eed4180860c0da673e0644 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,6 +29,12 @@ query MyCollectionAndSavedWorksTestsQuery {
 fragment MyCollectionAndSavedWorks_me on Me {
   name
   bio
+  location {
+    display
+    id
+  }
+  otherRelevantPositions
+  profession
   icon {
     url(version: "thumbnail")
   }
@@ -47,10 +53,23 @@ fragment MyProfileEditFormModal_me on Me {
 
 const node: ConcreteRequest = (function(){
 var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v1 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
+},
+v2 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
 };
 return {
   "fragment": {
@@ -110,6 +129,39 @@ return {
           {
             "alias": null,
             "args": null,
+            "concreteType": "MyLocation",
+            "kind": "LinkedField",
+            "name": "location",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "display",
+                "storageKey": null
+              },
+              (v0/*: any*/)
+            ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "otherRelevantPositions",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "profession",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
             "concreteType": "Image",
             "kind": "LinkedField",
             "name": "icon",
@@ -138,20 +190,14 @@ return {
             "name": "createdAt",
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "id",
-            "storageKey": null
-          }
+          (v0/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "3fbdf4898d34f038e5b8c560728a5443",
+    "id": "5add6cc756eed4180860c0da673e0644",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -160,22 +206,27 @@ return {
           "plural": false,
           "type": "Me"
         },
-        "me.bio": (v0/*: any*/),
-        "me.createdAt": (v0/*: any*/),
+        "me.bio": (v1/*: any*/),
+        "me.createdAt": (v1/*: any*/),
         "me.icon": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Image"
         },
-        "me.icon.url": (v0/*: any*/),
-        "me.id": {
+        "me.icon.url": (v1/*: any*/),
+        "me.id": (v2/*: any*/),
+        "me.location": {
           "enumValues": null,
-          "nullable": false,
+          "nullable": true,
           "plural": false,
-          "type": "ID"
+          "type": "MyLocation"
         },
-        "me.name": (v0/*: any*/)
+        "me.location.display": (v1/*: any*/),
+        "me.location.id": (v2/*: any*/),
+        "me.name": (v1/*: any*/),
+        "me.otherRelevantPositions": (v1/*: any*/),
+        "me.profession": (v1/*: any*/)
       }
     },
     "name": "MyCollectionAndSavedWorksTestsQuery",

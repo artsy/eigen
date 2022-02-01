@@ -20,7 +20,12 @@ export const ItemShow: React.FC<ItemShowProps> = ({ show }) => {
         <Touchable onPress={() => show.href && navigate(show.href)}>
           <Flex flexDirection="row">
             <Box height="100px" width="100px" justifyContent="center" backgroundColor="pink">
-              <OpaqueImageView testID="showImage" imageURL={show.image?.thumbnailUrl} width={100} height={100} />
+              <OpaqueImageView
+                testID="showImage"
+                imageURL={show.image?.thumbnailUrl}
+                width={100}
+                height={100}
+              />
             </Box>
             <Flex flexDirection="column" ml={2} flexShrink={1}>
               <Text variant="sm" numberOfLines={1}>

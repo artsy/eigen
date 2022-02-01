@@ -65,7 +65,9 @@ describe("OrderDetailsHeader", () => {
 
         it("APPROVED state", () => {
           const tree = renderWithWrappers(<TestRenderer />).root
-          mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => ({ ...mockInfo, state: "APPROVED" }) })
+          mockEnvironmentPayload(mockEnvironment, {
+            CommerceOrder: () => ({ ...mockInfo, state: "APPROVED" }),
+          })
 
           expect(extractText(tree.findByProps({ testID: "status" }))).toBe("confirmed")
           expect(extractText(tree.findByProps({ testID: "fulfillment" }))).toBe("Delivery")
@@ -73,7 +75,9 @@ describe("OrderDetailsHeader", () => {
 
         it("FULFILLED state", () => {
           const tree = renderWithWrappers(<TestRenderer />).root
-          mockEnvironmentPayload(mockEnvironment, { CommerceOrder: () => ({ ...mockInfo, state: "FULFILLED" }) })
+          mockEnvironmentPayload(mockEnvironment, {
+            CommerceOrder: () => ({ ...mockInfo, state: "FULFILLED" }),
+          })
 
           expect(extractText(tree.findByProps({ testID: "status" }))).toBe("delivered")
           expect(extractText(tree.findByProps({ testID: "fulfillment" }))).toBe("Delivery")
@@ -164,7 +168,10 @@ describe("OrderDetailsHeader", () => {
         it("SUBMITTED state", () => {
           const tree = renderWithWrappers(<TestRenderer />).root
           mockEnvironmentPayload(mockEnvironment, {
-            CommerceOrder: () => ({ ...mockInfo, requestedFulfillment: { __typename: "CommercePickup" } }),
+            CommerceOrder: () => ({
+              ...mockInfo,
+              requestedFulfillment: { __typename: "CommercePickup" },
+            }),
           })
 
           expect(extractText(tree.findByProps({ testID: "status" }))).toBe("pending")

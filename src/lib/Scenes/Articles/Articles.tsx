@@ -73,8 +73,12 @@ const articlesConnectionFragment = graphql`
     sort: { type: "ArticleSorts" }
     inEditorialFeed: { type: "Boolean" }
   ) {
-    articlesConnection(first: $count, after: $after, sort: $sort, inEditorialFeed: $inEditorialFeed)
-      @connection(key: "Articles_articlesConnection") {
+    articlesConnection(
+      first: $count
+      after: $after
+      sort: $sort
+      inEditorialFeed: $inEditorialFeed
+    ) @connection(key: "Articles_articlesConnection") {
       edges {
         cursor
         node {

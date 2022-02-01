@@ -2,13 +2,14 @@ import { useActionSheet } from "@expo/react-native-action-sheet"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
+import { Currency } from "lib/Scenes/Search/UserPreferencesModel"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { isEmpty } from "lodash"
 import { Box, Button, Flex, Input, Join, Sans, Separator, Spacer, Text } from "palette"
 import { Select } from "palette/elements/Select"
-import React from "react"
-import { ScrollView, TouchableOpacity } from "react-native"
+import React, { useEffect } from "react"
+import { Alert, ScrollView, TouchableOpacity } from "react-native"
 import { ScreenMargin } from "../../../Components/ScreenMargin"
 import { ArrowDetails } from "../Components/ArrowDetails"
 import { ArtistSearchResult } from "../Components/ArtistSearchResult"
@@ -20,10 +21,9 @@ import { ArtworkFormScreen } from "../MyCollectionArtworkForm"
 
 const SHOW_FORM_VALIDATION_ERRORS_IN_DEV = false
 
-export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormScreen, "ArtworkFormMain">> = ({
-  route,
-  navigation,
-}) => {
+export const MyCollectionArtworkFormMain: React.FC<
+  StackScreenProps<ArtworkFormScreen, "ArtworkFormMain">
+> = ({ route, navigation }) => {
   const artworkActions = GlobalStore.actions.myCollection.artwork
   const artworkState = GlobalStore.useAppState((state) => state.myCollection.artwork)
   const { formik } = useArtworkForm()
@@ -31,6 +31,33 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
   const modalType = route.params.mode
   const addOrEditLabel = modalType === "edit" ? "Edit" : "Add"
   const formikValues = formik?.values
+
+  useEffect(() => {
+    const isDirty = isFormDirty()
+    const backListener = navigation.addListener("beforeRemove", (e) => {
+      e.preventDefault()
+      if (isDirty) {
+        Alert.alert(
+          "Do you want to discard your changes?",
+          "Leaving this screen will discard any changes you have made on this form.",
+          [
+            { text: "Keep editing", style: "cancel", onPress: () => null },
+            {
+              text: "Discard",
+              style: "destructive",
+              onPress: () => {
+                GlobalStore.actions.myCollection.artwork.resetFormButKeepArtist()
+                navigation.dispatch(e.data.action)
+              },
+            },
+          ]
+        )
+      } else {
+        navigation.dispatch(e.data.action)
+      }
+    })
+    return backListener
+  }, [navigation, artworkState.sessionState.dirtyFormCheckValues])
 
   const isFormDirty = () => {
     // if you fill an empty field then delete it again, it changes from null to ""
@@ -40,7 +67,10 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
     return Object.getOwnPropertyNames(dirtyFormCheckValues).reduce(
       (accum: boolean, key: string) =>
         accum ||
-        !isEqual((formValues as { [key: string]: any })[key], (dirtyFormCheckValues as { [key: string]: any })[key]),
+        !isEqual(
+          (formValues as { [key: string]: any })[key],
+          (dirtyFormCheckValues as { [key: string]: any })[key]
+        ),
       false
     )
   }
@@ -58,7 +88,9 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
         <Flex p={2}>
           <Join separator={<Spacer my={1} />}>
-            {!!formik.values.artistSearchResult && <ArtistSearchResult result={formik.values.artistSearchResult} />}
+            {!!formik.values.artistSearchResult && (
+              <ArtistSearchResult result={formik.values.artistSearchResult} />
+            )}
             <Input
               title="TITLE"
               placeholder="Title"
@@ -109,6 +141,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
               enableSearch={false}
               showTitleLabel={false}
               onSelectValue={(value) => {
+                GlobalStore.actions.userPreferences.setCurrency(value as Currency)
                 formik.handleChange("pricePaidCurrency")(value)
               }}
               testID="CurrencyPicker"
@@ -206,7 +239,7 @@ export const MyCollectionArtworkFormMain: React.FC<StackScreenProps<ArtworkFormS
 
 const pricePaidCurrencySelectOptions: Array<{
   label: string
-  value: string
+  value: Currency
 }> = [
   { label: "$ USD", value: "USD" },
   { label: "€ EUR", value: "EUR" },

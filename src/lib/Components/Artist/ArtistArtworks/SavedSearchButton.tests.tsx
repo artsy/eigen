@@ -46,7 +46,8 @@ describe("SavedSearchButton", () => {
       <QueryRenderer<SavedSearchButtonTestsQuery>
         environment={mockEnvironment}
         query={graphql`
-          query SavedSearchButtonTestsQuery($criteria: SearchCriteriaAttributes!) @relay_test_operation {
+          query SavedSearchButtonTestsQuery($criteria: SearchCriteriaAttributes!)
+          @relay_test_operation {
             me {
               ...SavedSearchButton_me @arguments(criteria: $criteria)
             }
@@ -134,7 +135,9 @@ describe("SavedSearchButton", () => {
   it("should navigate to the saved search alerts list when popover is pressed", async () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    act(() => tree.root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult))
+    act(() =>
+      tree.root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
+    )
     act(() => tree.root.findByType(PopoverMessage).props.onPress())
 
     expect(navigate).toHaveBeenCalledWith("/my-profile/settings", {
@@ -143,12 +146,13 @@ describe("SavedSearchButton", () => {
     })
   })
 
-  it('should call navigate twice when "My Collection" is enabled', async () => {
+  it("should call navigate twice", async () => {
     jest.useFakeTimers()
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionIOS: true })
     const tree = renderWithWrappers(<TestRenderer />)
 
-    act(() => tree.root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult))
+    act(() =>
+      tree.root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
+    )
     act(() => tree.root.findByType(PopoverMessage).props.onPress())
 
     jest.runAllTimers()
@@ -163,7 +167,9 @@ describe("SavedSearchButton", () => {
   it("tracks clicks when the create alert button is pressed", async () => {
     const tree = renderWithWrappers(<TestRenderer />)
 
-    act(() => tree.root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult))
+    act(() =>
+      tree.root.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
+    )
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
       tracks.toggleSavedSearch(true, "artistID", "artistSlug", "savedSearchAlertId")

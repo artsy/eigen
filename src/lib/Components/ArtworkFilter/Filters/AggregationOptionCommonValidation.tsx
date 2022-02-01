@@ -1,5 +1,12 @@
-import { aggregationForFilter, Aggregations, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  aggregationForFilter,
+  Aggregations,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { TouchableRow } from "lib/Components/TouchableRow"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -22,7 +29,9 @@ export interface ValidationParams {
 export const sharedAggregateFilterValidation = (params: ValidationParams) => {
   const selectedFilterOption = (componentTree: ReactTestRenderer) => {
     const innerOptions = componentTree.root.findAllByType(InnerOptionListItem)
-    const selectedOption = innerOptions.filter((item) => item.findByType(RadioDot).props.selected)[0]
+    const selectedOption = innerOptions.filter(
+      (item) => item.findByType(RadioDot).props.selected
+    )[0]
     return selectedOption
   }
 
@@ -42,7 +51,11 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
       },
     }
 
-    const MockScreenWrapper = ({ initialData = initialState }: { initialData?: ArtworkFiltersState }) => (
+    const MockScreenWrapper = ({
+      initialData = initialState,
+    }: {
+      initialData?: ArtworkFiltersState
+    }) => (
       <ArtworkFiltersStoreProvider initialData={initialData}>
         <params.Screen />
       </ArtworkFiltersStoreProvider>
@@ -104,8 +117,11 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
         () => {
           const tree = renderWithWrappers(<MockScreenWrapper />)
 
-          const [firstOptionInstance, secondOptionInstance, thirdOptionInstance] = tree.root.findAllByType(TouchableRow)
-          const selectedOptionIconBeforePress = tree.root.findAllByType(RadioDot).filter((item) => item.props.selected)
+          const [firstOptionInstance, secondOptionInstance, thirdOptionInstance] =
+            tree.root.findAllByType(TouchableRow)
+          const selectedOptionIconBeforePress = tree.root
+            .findAllByType(RadioDot)
+            .filter((item) => item.props.selected)
 
           expect(selectedOptionIconBeforePress).toHaveLength(1)
 
@@ -113,7 +129,9 @@ export const sharedAggregateFilterValidation = (params: ValidationParams) => {
           act(() => secondOptionInstance.props.onPress())
           act(() => thirdOptionInstance.props.onPress())
 
-          const selectedOptionIconAfterPress = tree.root.findAllByType(RadioDot).filter((item) => item.props.selected)
+          const selectedOptionIconAfterPress = tree.root
+            .findAllByType(RadioDot)
+            .filter((item) => item.props.selected)
 
           expect(selectedOptionIconAfterPress).toHaveLength(1)
         }

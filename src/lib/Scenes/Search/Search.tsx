@@ -29,13 +29,14 @@ import { CityGuideCTA } from "./components/CityGuideCTA"
 import { SearchPlaceholder } from "./components/placeholders/SearchPlaceholder"
 import { SearchInput } from "./components/SearchInput"
 import { SearchPills } from "./components/SearchPills"
+import { ALLOWED_ALGOLIA_KEYS } from "./constants"
 import { getContextModuleByPillName } from "./helpers"
 import { RecentSearches } from "./RecentSearches"
 import { RefetchWhenApiKeyExpiredContainer } from "./RefetchWhenApiKeyExpired"
 import { SearchArtworksQueryRenderer } from "./SearchArtworksContainer"
 import { SearchContext, useSearchProviderValues } from "./SearchContext"
-import { AlgoliaIndiceKey } from "./SearchModel"
 import { SearchResults } from "./SearchResults"
+import { AlgoliaIndexKey } from "./types"
 import { AlgoliaSearchResult, PillType } from "./types"
 
 interface TappedSearchResultData {
@@ -57,26 +58,16 @@ interface SearchState {
 }
 
 const TOP_PILL: PillType = {
-  name: "TOP",
   displayName: "Top",
   type: "elastic",
+  key: "top",
 }
 const ARTWORKS_PILL: PillType = {
-  name: "ARTWORK",
   displayName: "Artworks",
   type: "elastic",
+  key: "artworks",
 }
 const pills: PillType[] = [TOP_PILL, ARTWORKS_PILL]
-const ALLOWED_ALGOLIA_KEYS = [
-  AlgoliaIndiceKey.Artist,
-  AlgoliaIndiceKey.Article,
-  AlgoliaIndiceKey.Auction,
-  AlgoliaIndiceKey.ArtistSeries,
-  AlgoliaIndiceKey.Collection,
-  AlgoliaIndiceKey.Fair,
-  AlgoliaIndiceKey.Show,
-  AlgoliaIndiceKey.Gallery,
-]
 
 const objectTabByContextModule: Partial<Record<ContextModule, string>> = {
   [ContextModule.auctionTab]: "Auction Results",
@@ -95,19 +86,33 @@ export const Search: React.FC<SearchProps> = (props) => {
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
   const searchProviderValues = useSearchProviderValues(searchState?.query ?? "")
   const { searchClient } = useAlgoliaClient(system?.algolia?.appID!, system?.algolia?.apiKey!)
-  const searchInsightsConfigured = useSearchInsightsConfig(system?.algolia?.appID, system?.algolia?.apiKey)
+  const searchInsightsConfigured = useSearchInsightsConfig(
+    system?.algolia?.appID,
+    system?.algolia?.apiKey
+  )
   const indices = system?.algolia?.indices
-  const { loading: indicesInfoLoading, indicesInfo, updateIndicesInfo } = useAlgoliaIndices(searchClient, indices)
+  const {
+    loading: indicesInfoLoading,
+    indicesInfo,
+    updateIndicesInfo,
+  } = useAlgoliaIndices(searchClient, indices)
   const { trackEvent } = useTracking()
   const enableImprovedPills = useFeatureFlag("AREnableImprovedSearchPills")
 
   const pillsArray = useMemo<PillType[]>(() => {
     if (Array.isArray(indices) && indices.length > 0) {
-      const allowedIndices = (indices as NonNullable<Search_system["algolia"]>["indices"]).filter((indice) =>
-        ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndiceKey)
+      const allowedIndices = (indices as NonNullable<Search_system["algolia"]>["indices"]).filter(
+        (indice) => ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndexKey)
       )
       const formattedIndices: PillType[] = allowedIndices.map((index) => {
-        return { ...index, type: "algolia", disabled: enableImprovedPills && !indicesInfo[index.name]?.hasResults }
+        const { name, ...other } = index
+
+        return {
+          ...other,
+          type: "algolia",
+          disabled: enableImprovedPills && !indicesInfo[name]?.hasResults,
+          indexName: name,
+        }
       })
 
       return [...pills, ...formattedIndices]
@@ -132,14 +137,13 @@ export const Search: React.FC<SearchProps> = (props) => {
     if (selectedPill.type === "algolia") {
       return (
         <SearchResultsContainer
-          indexName={selectedPill.name}
-          categoryDisplayName={selectedPill.displayName}
+          selectedPill={selectedPill}
           onRetry={handleRetry}
           trackResultPress={handleTrackAlgoliaResultPress}
         />
       )
     }
-    if (selectedPill.name === TOP_PILL.name) {
+    if (selectedPill.key === TOP_PILL.key) {
       return (
         <AutosuggestResults
           query={searchState.query!}
@@ -165,7 +169,7 @@ export const Search: React.FC<SearchProps> = (props) => {
   }
 
   const isSelected = (pill: PillType) => {
-    return selectedPill.name === pill.name
+    return selectedPill.key === pill.key
   }
 
   const handleResetSearchInput = () => {
@@ -208,7 +212,7 @@ export const Search: React.FC<SearchProps> = (props) => {
       <ArtsyKeyboardAvoidingView>
         <InstantSearch
           searchClient={searchClient}
-          indexName={selectedPill.type === "algolia" ? selectedPill.name : ""}
+          indexName={selectedPill.type === "algolia" ? selectedPill.indexName! : ""}
           searchState={searchState}
           onSearchStateChange={setSearchState}
         >

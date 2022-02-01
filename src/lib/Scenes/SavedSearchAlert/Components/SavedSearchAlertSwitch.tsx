@@ -9,7 +9,11 @@ export interface SavedSearchAlertSwitchProps {
   description?: string
 }
 
-export const SavedSearchAlertSwitch = ({ onChange, active, label }: SavedSearchAlertSwitchProps) => {
+export const SavedSearchAlertSwitch = ({
+  onChange,
+  active,
+  label,
+}: SavedSearchAlertSwitchProps) => {
   const color = useColor()
   let thumbColor = color("white100")
   let disabledTrackColor = color("black30")

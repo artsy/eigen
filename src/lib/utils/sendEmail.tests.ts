@@ -42,13 +42,18 @@ describe("sendEmail", () => {
       it("calls Linking.openURL with the correct argument", async () => {
         await sendEmail("specialist@artsy.net", { subject: "Greetings" })
         expect(Linking.openURL).toHaveBeenCalledTimes(1)
-        expect(Linking.openURL).toHaveBeenCalledWith("mailto:specialist@artsy.net?subject=Greetings")
+        expect(Linking.openURL).toHaveBeenCalledWith(
+          "mailto:specialist@artsy.net?subject=Greetings"
+        )
       })
     })
 
     describe("when there is an email address with a subject line and a ", () => {
       it("calls Linking.openURL with the correct argument", async () => {
-        await sendEmail("specialist@artsy.net", { subject: "Greetings", body: "Hello, I need help." })
+        await sendEmail("specialist@artsy.net", {
+          subject: "Greetings",
+          body: "Hello, I need help.",
+        })
         expect(Linking.openURL).toHaveBeenCalledTimes(1)
         expect(Linking.openURL).toHaveBeenCalledWith(
           "mailto:specialist@artsy.net?subject=Greetings&body=Hello, I need help."

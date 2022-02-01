@@ -273,9 +273,11 @@ static NSString *hostFromString(NSString *string)
 
 + (NSURLRequest *)newXAppTokenRequest
 {
+    NSString *clientId = [ARAppStatus isDev] ? [ReactNativeConfig envFor:@"ARTSY_DEV_API_CLIENT_KEY"] : [ReactNativeConfig envFor:@"ARTSY_PROD_API_CLIENT_KEY"];
+    NSString *clientSecret = [ARAppStatus isDev] ? [ReactNativeConfig envFor:@"ARTSY_DEV_API_CLIENT_SECRET"] : [ReactNativeConfig envFor:@"ARTSY_PROD_API_CLIENT_SECRET"];
     NSDictionary *params = @{
-        @"client_id" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_KEY"],
-        @"client_secret" : [ReactNativeConfig envFor:@"ARTSY_API_CLIENT_SECRET"],
+        @"client_id" : clientId,
+        @"client_secret" : clientSecret,
     };
     return [self requestWithMethod:@"GET" path:ARXappURL parameters:params];
 }

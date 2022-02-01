@@ -32,7 +32,11 @@ const TestPage = (props: any) => {
         ...initialResult,
         ...result,
       }}
-      indexName="Article_staging"
+      selectedPill={{
+        indexName: "Article_staging",
+        displayName: "Article",
+        disabled: false,
+      }}
       {...rest}
     />
   )

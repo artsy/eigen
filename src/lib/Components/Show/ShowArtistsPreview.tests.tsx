@@ -89,7 +89,9 @@ describe("ArtistsContainer", () => {
 
     await flushPromiseQueue()
 
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toEqual("ArtistListItemFollowArtistMutation")
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toEqual(
+      "ArtistListItemFollowArtistMutation"
+    )
     expect(env.mock.getMostRecentOperation().request.variables).toMatchInlineSnapshot(`
       Object {
         "input": Object {

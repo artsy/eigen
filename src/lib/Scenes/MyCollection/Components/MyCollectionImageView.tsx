@@ -1,11 +1,8 @@
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
-import { Size } from "lib/Scenes/Artwork/Components/ImageCarousel/geometry"
 import { LocalImage, retrieveLocalImages } from "lib/utils/LocalImageStore"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Flex, NoImageIcon, useColor } from "palette"
 import React, { useEffect, useState } from "react"
 import { Image as RNImage } from "react-native"
-import { getBoundingBox } from "../Screens/ArtworkForm/MyCollectionImageUtil"
 
 export interface MyCollectionImageViewProps {
   imageURL?: string
@@ -13,7 +10,6 @@ export interface MyCollectionImageViewProps {
   imageHeight?: number
   aspectRatio?: number
   artworkSlug: string
-  mode: "list" | "details"
 }
 
 export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
@@ -22,10 +18,8 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
   imageHeight,
   aspectRatio,
   artworkSlug,
-  mode,
 }) => {
   const color = useColor()
-  const dimensions = useScreenDimensions()
   const [localImage, setLocalImage] = useState<LocalImage | null>(null)
 
   useEffect(() => {
@@ -36,33 +30,13 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
     })
   }, [])
 
-  const imageSize = (imageMode: "details" | "list", image: LocalImage, width?: number) => {
-    if (imageMode === "details") {
-      const maxImageHeight = dimensions.height / 2.5
-      const localImageSize: Size = {
-        width: image.width,
-        height: image.height,
-      }
-      const size = getBoundingBox(localImageSize, maxImageHeight, dimensions)
-      return size
-    } else {
-      const size = {
-        width: width ?? 120,
-        height: 120,
-      }
-      return size
-    }
-  }
-
   const renderImage = () => {
     if (!!imageURL) {
-      const targetURL = mode === "list" ? imageURL.replace(":version", "square") : imageURL
-      const useRawURL = mode !== "list"
+      const targetURL = imageURL.replace(":version", "square")
       return (
         <OpaqueImageView
           testID="Image-Remote"
           imageURL={targetURL}
-          useRawURL={useRawURL}
           retryFailedURLs
           height={imageHeight}
           width={imageWidth}
@@ -70,21 +44,24 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
         />
       )
     } else if (localImage) {
-      const size = imageSize(mode, localImage, imageWidth)
-
       return (
         <RNImage
           testID="Image-Local"
-          style={{ width: size.width, height: size.height, resizeMode: "cover" }}
+          style={{ width: imageWidth ?? 120, height: imageHeight ?? 120, resizeMode: "cover" }}
           source={{ uri: localImage.path }}
         />
       )
     } else {
-      const width = mode === "list" ? imageWidth ?? 120 : imageWidth ?? dimensions.width
-      const height = mode === "list" ? 120 : imageHeight ?? dimensions.width
+      const width = imageWidth ?? 120
 
       return (
-        <Flex testID="Fallback" bg={color("black10")} width={width} height={height} justifyContent="center">
+        <Flex
+          testID="Fallback"
+          bg={color("black5")}
+          width={width}
+          height={120}
+          justifyContent="center"
+        >
           <NoImageIcon fill="black60" mx="auto" />
         </Flex>
       )

@@ -1,5 +1,8 @@
 import { ActionType, ContextModule } from "@artsy/cohesion"
-import { filterArtworksParams, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  filterArtworksParams,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
@@ -29,8 +32,12 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
   const { trackEvent } = useTracking()
 
   const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
-  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
-  const applyFiltersAction = ArtworksFiltersStore.useStoreActions((action) => action.applyFiltersAction)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.selectFiltersAction
+  )
+  const applyFiltersAction = ArtworksFiltersStore.useStoreActions(
+    (action) => action.applyFiltersAction
+  )
   const appliedFiltersParams = filterArtworksParams(appliedFiltersState, "auctionResult")
 
   const inputRef = useRef(null)
@@ -47,12 +54,20 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
     applyFiltersAction()
   }
 
-  const handleChangeText = useMemo(() => debounce(updateKeywordFilter, DEBOUNCE_DELAY), [appliedFiltersParams])
-  const handleTypingStart = useMemo(() => throttle(() => onTypingStart?.(), DEBOUNCE_DELAY), [onTypingStart])
+  const handleChangeText = useMemo(
+    () => debounce(updateKeywordFilter, DEBOUNCE_DELAY),
+    [appliedFiltersParams]
+  )
+  const handleTypingStart = useMemo(
+    () => throttle(() => onTypingStart?.(), DEBOUNCE_DELAY),
+    [onTypingStart]
+  )
 
   // clear input text when keyword filter is reseted
   useEffect(() => {
-    const appliedKeywordFilter = appliedFiltersState?.find((filter) => filter.paramName === FilterParamName.keyword)
+    const appliedKeywordFilter = appliedFiltersState?.find(
+      (filter) => filter.paramName === FilterParamName.keyword
+    )
 
     if (appliedKeywordFilter?.paramValue || !inputRef.current) {
       return
@@ -91,7 +106,12 @@ export const KeywordFilter: React.FC<KeywordFilterProps> = ({
 }
 
 const tracks = {
-  changeKeywordFilter: (appliedFiltersParams: any, text: string, artistId: string, artistSlug: string) => {
+  changeKeywordFilter: (
+    appliedFiltersParams: any,
+    text: string,
+    artistId: string,
+    artistSlug: string
+  ) => {
     return {
       context_module: ContextModule.auctionResults,
       context_screen: PageNames.ArtistPage,

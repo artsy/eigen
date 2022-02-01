@@ -1,4 +1,5 @@
 import { Route } from "@react-navigation/native"
+import { StackNavigationProp } from "@react-navigation/stack"
 import { useFormikContext } from "formik"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
@@ -43,6 +44,9 @@ jest.mock("lib/utils/requestPhotos", () => ({
 
 describe("AddEditArtwork", () => {
   const useFormikContextMock = useFormikContext as jest.Mock
+  const mockNav: Partial<StackNavigationProp<{}>> = {
+    addListener: jest.fn(),
+  }
 
   beforeEach(() => {
     useFormikContextMock.mockImplementation(() => ({
@@ -62,7 +66,6 @@ describe("AddEditArtwork", () => {
   })
 
   it("renders correct components on Add", () => {
-    const mockNav = jest.fn()
     const mockRoute: Route<
       "ArtworkFormMain",
       {
@@ -81,7 +84,9 @@ describe("AddEditArtwork", () => {
         onHeaderBackButtonPress: jest.fn(),
       },
     }
-    const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    const artworkForm = (
+      <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    )
     const wrapper = renderWithWrappers(artworkForm)
     const expected = [FancyModalHeader, MediumPicker, Dimensions]
     expected.forEach((Component) => {
@@ -94,7 +99,6 @@ describe("AddEditArtwork", () => {
   })
 
   it("renders correct components on Edit", () => {
-    const mockNav = jest.fn()
     const mockRoute: Route<
       "ArtworkFormMain",
       {
@@ -113,7 +117,9 @@ describe("AddEditArtwork", () => {
         onHeaderBackButtonPress: jest.fn(),
       },
     }
-    const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    const artworkForm = (
+      <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    )
     const wrapper = renderWithWrappers(artworkForm)
     const completeButton = wrapper.root.findByProps({ testID: "CompleteButton" })
     const deleteButton = wrapper.root.findByProps({ testID: "DeleteButton" })
@@ -122,7 +128,6 @@ describe("AddEditArtwork", () => {
   })
 
   it("fires clear form on header Clear button click", () => {
-    const mockNav = jest.fn()
     const mockClearForm = jest.fn()
     const mockRoute: Route<
       "ArtworkFormMain",
@@ -142,7 +147,9 @@ describe("AddEditArtwork", () => {
         onHeaderBackButtonPress: jest.fn(),
       },
     }
-    const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    const artworkForm = (
+      <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    )
     // make form dirty
     __globalStoreTestUtils__?.injectState({
       myCollection: {
@@ -174,7 +181,6 @@ describe("AddEditArtwork", () => {
         photos: [],
       },
     }))
-    const mockNav = jest.fn()
     const mockRoute: Route<
       "ArtworkFormMain",
       {
@@ -193,7 +199,9 @@ describe("AddEditArtwork", () => {
         onHeaderBackButtonPress: jest.fn(),
       },
     }
-    const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    const artworkForm = (
+      <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    )
     const wrapper = renderWithWrappers(artworkForm)
     const completeButton = wrapper.root.findByProps({ testID: "CompleteButton" })
     completeButton.props.onPress()
@@ -202,7 +210,6 @@ describe("AddEditArtwork", () => {
 
   it("fires delete artwork action on delete button click", () => {
     const mockDelete = jest.fn()
-    const mockNav = jest.fn()
     const mockRoute: Route<
       "ArtworkFormMain",
       {
@@ -222,7 +229,9 @@ describe("AddEditArtwork", () => {
       },
     }
 
-    const artworkForm = <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    const artworkForm = (
+      <MyCollectionArtworkFormMain navigation={mockNav as any} route={mockRoute} />
+    )
     const wrapper = renderWithWrappers(artworkForm)
     const deleteButton = wrapper.root.findByProps({ testID: "DeleteButton" })
     deleteButton.props.onPress()

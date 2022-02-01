@@ -11,9 +11,7 @@ import { useIsStaging } from "lib/store/GlobalStore"
 import { compact } from "lodash"
 import { Flex, SettingsIcon as _SettingsIcon, Text } from "palette"
 import { useTracking } from "react-tracking"
-import { useEnableMyCollection } from "../MyCollection/MyCollection"
 import { FavoriteArtistsQueryRenderer } from "./FavoriteArtists"
-import { FavoriteArtworksQueryRenderer } from "./FavoriteArtworks"
 import { FavoriteCategoriesQueryRenderer } from "./FavoriteCategories"
 import { FavoriteShowsQueryRenderer } from "./FavoriteShows"
 
@@ -54,15 +52,7 @@ export const Favorites: React.FC<Props> = ({ initialTab = Tab.works }) => {
     })
   }
 
-  const enableMyCollection = useEnableMyCollection()
-
-  const showFavoriteArtworksTab = !enableMyCollection
-
   const tabs: TabProps[] = compact([
-    showFavoriteArtworksTab && {
-      title: Tab.works,
-      content: <FavoriteArtworksQueryRenderer />,
-    },
     {
       title: Tab.artists,
       content: <FavoriteArtistsQueryRenderer />,
@@ -100,46 +90,29 @@ export const Favorites: React.FC<Props> = ({ initialTab = Tab.works }) => {
       <View style={{ flex: 1 }}>
         <StickyTabPage
           tabs={tabs}
-          staticHeaderContent={
-            enableMyCollection ? <StickyHeaderContent enableMyCollection={enableMyCollection} /> : <></>
-          }
+          staticHeaderContent={<StickyHeaderContent />}
           stickyHeaderContent={
-            enableMyCollection ? (
-              <StickyTabPageTabBar
-                onTabPress={({ label }) => {
-                  fireTabSelectionAnalytics(label as Tab)
-                }}
-              />
-            ) : (
-              <>
-                <StickyHeaderContent enableMyCollection={enableMyCollection} />
-                <StickyTabPageTabBar
-                  onTabPress={({ label }) => {
-                    fireTabSelectionAnalytics(label as Tab)
-                  }}
-                />
-              </>
-            )
+            <StickyTabPageTabBar
+              onTabPress={({ label }) => {
+                fireTabSelectionAnalytics(label as Tab)
+              }}
+            />
           }
         />
-        {!!isStaging && <DarkNavigationButton title="Warning: on staging, favourites don't migrate" />}
+        {!!isStaging && (
+          <DarkNavigationButton title="Warning: on staging, favourites don't migrate" />
+        )}
       </View>
     </ProvideScreenTracking>
   )
 }
 
-const StickyHeaderContent: React.FC<{ enableMyCollection: boolean }> = ({ enableMyCollection }) => {
+const StickyHeaderContent: React.FC = ({}) => {
   return (
-    <Flex mt={enableMyCollection ? 4 : 2}>
-      {enableMyCollection ? (
-        <Text variant="lg" m={2}>
-          Follows
-        </Text>
-      ) : (
-        <Text variant="md" weight="medium" textAlign="center">
-          Saves and Follows
-        </Text>
-      )}
+    <Flex mt={4}>
+      <Text variant="lg" m={2}>
+        Follows
+      </Text>
     </Flex>
   )
 }

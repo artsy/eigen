@@ -101,7 +101,9 @@ const FixtureEmpty: AutosuggestResultsQueryRawResponse = {
 const inputBlurMock = jest.fn()
 
 const TestWrapper: typeof AutosuggestResults = (props) => (
-  <SearchContext.Provider value={{ inputRef: { current: { blur: inputBlurMock } as any }, queryRef: { current: "" } }}>
+  <SearchContext.Provider
+    value={{ inputRef: { current: { blur: inputBlurMock } as any }, queryRef: { current: "" } }}
+  >
     <CatchErrors>
       <AutosuggestResults {...props} />
     </CatchErrors>
@@ -132,7 +134,10 @@ const notifyRecentSearchMock = require("./RecentSearches").useRecentSearches().n
 
 const env = defaultEnvironment as any as ReturnType<typeof createMockEnvironment>
 const consoleErrorMock = jest.fn()
-const whiteListErrors = ["Warning: An update to %s inside a test was not wrapped in act(...).", "Bad connection"]
+const whiteListErrors = [
+  "Warning: An update to %s inside a test was not wrapped in act(...).",
+  "Bad connection",
+]
 
 console.error = (...args: any[]) => {
   let error = args[0]
@@ -168,7 +173,9 @@ describe("AutosuggestResults", () => {
     const tree = renderWithWrappers(<TestWrapper query="michael" />)
     expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(0)
 
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("AutosuggestResultsQuery")
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+      "AutosuggestResultsQuery"
+    )
     expect(env.mock.getMostRecentOperation().request.variables.query).toBe("michael")
 
     act(() => {
@@ -197,7 +204,9 @@ describe("AutosuggestResults", () => {
       tree.root.findByType(AboveTheFoldFlatList).props.onScrollBeginDrag()
     })
     expect(env.mock.getAllOperations()).toHaveLength(1)
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("AutosuggestResultsPaginationQuery")
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+      "AutosuggestResultsPaginationQuery"
+    )
     expect(env.mock.getMostRecentOperation().request.variables.cursor).toBe("page-2")
 
     act(() => {
@@ -213,7 +222,9 @@ describe("AutosuggestResults", () => {
       tree.root.findByType(AboveTheFoldFlatList).props.onEndReached()
     })
     expect(env.mock.getAllOperations()).toHaveLength(1)
-    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe("AutosuggestResultsPaginationQuery")
+    expect(env.mock.getMostRecentOperation().request.node.operation.name).toBe(
+      "AutosuggestResultsPaginationQuery"
+    )
     expect(env.mock.getMostRecentOperation().request.variables.cursor).toBe("page-3")
 
     act(() => {
@@ -232,7 +243,8 @@ describe("AutosuggestResults", () => {
       env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 })
     })
     const scrollToOffsetMock = jest.fn()
-    tree.root.findByType(AboveTheFoldFlatList).findByType(FlatList).instance.scrollToOffset = scrollToOffsetMock
+    tree.root.findByType(AboveTheFoldFlatList).findByType(FlatList).instance.scrollToOffset =
+      scrollToOffsetMock
 
     act(() => {
       tree.update(<TestWrapper query="michaela" />)
@@ -266,7 +278,9 @@ describe("AutosuggestResults", () => {
 
     expect(tree.root.findAllByType(AutosuggestSearchResult)).toHaveLength(0)
     expect(extractText(tree.root)).toContain("Sorry, we couldn’t find anything for “michael.”")
-    expect(extractText(tree.root)).toContain("Please try searching again with a different spelling.")
+    expect(extractText(tree.root)).toContain(
+      "Please try searching again with a different spelling."
+    )
   })
 
   it(`optionally hides the result type`, () => {
@@ -277,7 +291,9 @@ describe("AutosuggestResults", () => {
 
   it(`allows for custom touch handlers on search result items`, () => {
     const spy = jest.fn()
-    const tree = renderWithWrappers(<TestWrapper query="michael" showResultType={false} onResultPress={spy} />)
+    const tree = renderWithWrappers(
+      <TestWrapper query="michael" showResultType={false} onResultPress={spy} />
+    )
     act(() => env.mock.resolveMostRecentOperation({ errors: [], data: FixturePage1 }))
     tree.root.findByType(AutosuggestSearchResult).props.onResultPress()
     expect(spy).toHaveBeenCalled()
@@ -302,11 +318,15 @@ describe("AutosuggestResults", () => {
 
     act(() => env.mock.rejectMostRecentOperation(new Error("Bad connection")))
 
-    expect(getByText("There seems to be a problem with the connection. Please try again shortly.")).toBeTruthy()
+    expect(
+      getByText("There seems to be a problem with the connection. Please try again shortly.")
+    ).toBeTruthy()
   })
 
   it("should show the unable to load error message when showOnRetryErrorMessage prop is true", () => {
-    const { getByText } = renderWithWrappersTL(<TestWrapper query="michael" showOnRetryErrorMessage />)
+    const { getByText } = renderWithWrappersTL(
+      <TestWrapper query="michael" showOnRetryErrorMessage />
+    )
 
     act(() => env.mock.rejectMostRecentOperation(new Error("Bad connection")))
 

@@ -15,7 +15,8 @@ export const OnboardingLogin: React.FC = () => {
   return <OnboardingSocialPick mode="login" />
 }
 
-export interface OnboardingLoginProps extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWithEmail"> {}
+export interface OnboardingLoginProps
+  extends StackScreenProps<OnboardingNavigationStack, "OnboardingLoginWithEmail"> {}
 
 export interface OnboardingLoginValuesSchema {
   email: string
@@ -27,10 +28,22 @@ export const loginSchema = Yup.object().shape({
   password: Yup.string().test("password", "Password field is required", (value) => value !== ""),
 })
 
-export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({ navigation, route }) => {
+export const OnboardingLoginWithEmailForm: React.FC<OnboardingLoginProps> = ({
+  navigation,
+  route,
+}) => {
   const color = useColor()
-  const { values, handleSubmit, handleChange, validateForm, errors, isValid, dirty, isSubmitting, setErrors } =
-    useFormikContext<OnboardingLoginValuesSchema>()
+  const {
+    values,
+    handleSubmit,
+    handleChange,
+    validateForm,
+    errors,
+    isValid,
+    dirty,
+    isSubmitting,
+    setErrors,
+  } = useFormikContext<OnboardingLoginValuesSchema>()
 
   const passwordInputRef = useRef<Input>(null)
   const emailInputRef = useRef<Input>(null)

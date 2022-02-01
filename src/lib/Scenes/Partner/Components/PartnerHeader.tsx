@@ -19,7 +19,9 @@ const PartnerHeader: React.FC<{
       <Flex flexDirection="row" justifyContent="space-between" alignItems="center">
         <Stack spacing={0.5}>
           {!!eligibleArtworks && (
-            <Sans size="3t">{!!eligibleArtworks && formatLargeNumberOfItems(eligibleArtworks, "work", "works")}</Sans>
+            <Sans size="3t">
+              {!!eligibleArtworks && formatLargeNumberOfItems(eligibleArtworks, "work", "works")}
+            </Sans>
           )}
         </Stack>
         {!!partner.profile && (

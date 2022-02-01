@@ -43,7 +43,13 @@ export const OrderDetailsHeader: React.FC<Props> = ({ info }) => {
         <Text testID="code" color="black60" variant="sm" mb={1}>
           {code}
         </Text>
-        <Text testID="status" color="black60" variant="sm" mb={1} style={{ textTransform: "capitalize" }}>
+        <Text
+          testID="status"
+          color="black60"
+          variant="sm"
+          mb={1}
+          style={{ textTransform: "capitalize" }}
+        >
           {orderStatus}
         </Text>
         <Text testID="fulfillment" color="black60" variant="sm">

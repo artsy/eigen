@@ -21,7 +21,10 @@ const PAGE_END_THRESHOLD = 1000
 
 type CallBack = () => void
 
-export function isCloseToEdge(onScrollEnd: CallBack, pageEndThreshold: number = PAGE_END_THRESHOLD) {
+export function isCloseToEdge(
+  onScrollEnd: CallBack,
+  pageEndThreshold: number = PAGE_END_THRESHOLD
+) {
   const state = { sentEndForContentLength: 0 }
 
   interface ScrollEventProps {

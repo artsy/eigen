@@ -17,7 +17,10 @@ interface TestRendererProps {
 
 describe("SaleArtworkTileRailCard", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
-  const TestRenderer = ({ useCustomSaleMessage = false, useSquareAspectRatio = false }: TestRendererProps) => (
+  const TestRenderer = ({
+    useCustomSaleMessage = false,
+    useSquareAspectRatio = false,
+  }: TestRendererProps) => (
     <QueryRenderer<SaleArtworkTileRailCardTestsQuery>
       environment={mockEnvironment}
       query={graphql`
@@ -100,6 +103,7 @@ const mockProps = {
       slug: "artwork slug",
       saleMessage: null,
       title: "Captain America",
+      realizedPrice: null,
     },
     counts: {
       bidderPositions: 14,

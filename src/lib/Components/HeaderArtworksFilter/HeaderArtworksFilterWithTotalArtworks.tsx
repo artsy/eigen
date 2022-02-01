@@ -8,7 +8,9 @@ interface HeaderArtworksFilterWithTotalArtworksProps {
   onPress: () => void
 }
 
-export const HeaderArtworksFilterWithTotalArtworks: React.FC<HeaderArtworksFilterWithTotalArtworksProps> = (props) => {
+export const HeaderArtworksFilterWithTotalArtworks: React.FC<
+  HeaderArtworksFilterWithTotalArtworksProps
+> = (props) => {
   const artworksTotal = ArtworksFiltersStore.useStoreState((state) => state.counts.total) ?? 0
 
   return <HeaderArtworksFilter total={artworksTotal} {...props} />

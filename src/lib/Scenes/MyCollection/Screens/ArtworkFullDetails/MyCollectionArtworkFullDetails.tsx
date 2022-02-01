@@ -13,7 +13,9 @@ import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkMetaFragmentContainer } from "../Artwork/Components/MyCollectionArtworkMeta"
 
-const MyCollectionArtworkFullDetails: React.FC<{ artwork: MyCollectionArtworkFullDetails_artwork }> = (props) => {
+const MyCollectionArtworkFullDetails: React.FC<{
+  artwork: MyCollectionArtworkFullDetails_artwork
+}> = (props) => {
   const { trackEvent } = useTracking()
   return (
     <Flex>
@@ -40,16 +42,19 @@ const MyCollectionArtworkFullDetails: React.FC<{ artwork: MyCollectionArtworkFul
   )
 }
 
-export const MyCollectionArtworkFullDetailsContainer = createFragmentContainer(MyCollectionArtworkFullDetails, {
-  artwork: graphql`
-    fragment MyCollectionArtworkFullDetails_artwork on Artwork {
-      ...MyCollectionArtwork_sharedProps @relay(mask: false)
-      ...MyCollectionArtworkMeta_artwork
-      internalID
-      slug
-    }
-  `,
-})
+export const MyCollectionArtworkFullDetailsContainer = createFragmentContainer(
+  MyCollectionArtworkFullDetails,
+  {
+    artwork: graphql`
+      fragment MyCollectionArtworkFullDetails_artwork on Artwork {
+        ...MyCollectionArtwork_sharedProps @relay(mask: false)
+        ...MyCollectionArtworkMeta_artwork
+        internalID
+        slug
+      }
+    `,
+  }
+)
 
 export const MyCollectionArtworkFullDetailsQueryRenderer: React.FC<{
   artworkSlug: string

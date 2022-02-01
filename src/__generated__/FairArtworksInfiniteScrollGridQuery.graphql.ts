@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 87af1f3ad4ec50f56cb4f609de8b5a5c */
+/* @relayHash 8602c728fd032b46cf6619b736adcbe9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -120,6 +120,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
+  realizedPrice
 }
 
 fragment FairArtworks_fair_YCAiB on Fair {
@@ -689,6 +690,13 @@ return {
                               (v10/*: any*/)
                             ],
                             "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "realizedPrice",
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -730,7 +738,7 @@ return {
     ]
   },
   "params": {
-    "id": "87af1f3ad4ec50f56cb4f609de8b5a5c",
+    "id": "8602c728fd032b46cf6619b736adcbe9",
     "metadata": {},
     "name": "FairArtworksInfiniteScrollGridQuery",
     "operationKind": "query",

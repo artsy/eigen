@@ -11,6 +11,7 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
+import { isPad } from "lib/utils/hardware"
 import {
   PlaceholderBox,
   PlaceholderRaggedText,
@@ -18,25 +19,30 @@ import {
   ProvidePlaceholderContext,
 } from "lib/utils/placeholders"
 import { QAInfoPanel } from "lib/utils/QAInfo"
+import { findRelayRecord, findRelayRecordByDataID } from "lib/utils/relayHelpers"
 import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
-import { Box, Separator, Spacer, useSpace } from "palette"
+import { ScreenDimensionsWithSafeAreas, useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { Box, Flex, Separator, Spacer, useSpace } from "palette"
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { ActivityIndicator, FlatList, View } from "react-native"
-import { RefreshControl } from "react-native"
+import { ActivityIndicator, FlatList, RefreshControl, View } from "react-native"
 import { commitMutation, createRefetchContainer, graphql, RelayRefetchProp } from "react-relay"
 import { TrackingProp } from "react-tracking"
 import usePrevious from "react-use/lib/usePrevious"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
+import { Record } from "relay-runtime/lib/store/RelayStoreTypes"
 import { AboutArtistFragmentContainer as AboutArtist } from "./Components/AboutArtist"
 import { AboutWorkFragmentContainer as AboutWork } from "./Components/AboutWork"
 import { ArtworkDetailsFragmentContainer as ArtworkDetails } from "./Components/ArtworkDetails"
 import { ArtworkHeaderFragmentContainer as ArtworkHeader } from "./Components/ArtworkHeader"
 import { ArtworkHistoryFragmentContainer as ArtworkHistory } from "./Components/ArtworkHistory"
-import { ArtworksInSeriesRailFragmentContainer as ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
+import { ArtworksInSeriesRail } from "./Components/ArtworksInSeriesRail"
 import { CommercialInformationFragmentContainer as CommercialInformation } from "./Components/CommercialInformation"
 import { ContextCardFragmentContainer as ContextCard } from "./Components/ContextCard"
-import { OtherWorksFragmentContainer as OtherWorks, populatedGrids } from "./Components/OtherWorks/OtherWorks"
+import { getMeasurements } from "./Components/ImageCarousel/geometry"
+import {
+  OtherWorksFragmentContainer as OtherWorks,
+  populatedGrids,
+} from "./Components/OtherWorks/OtherWorks"
 import { PartnerCardFragmentContainer as PartnerCard } from "./Components/PartnerCard"
 
 interface ArtworkProps {
@@ -221,7 +227,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
 
       sections.push({
         key: "commercialInformation",
-        element: <CommercialInformation artwork={artworkAboveTheFold} me={me} tracking={tracking} />,
+        element: (
+          <CommercialInformation artwork={artworkAboveTheFold} me={me} tracking={tracking} />
+        ),
       })
     }
 
@@ -247,7 +255,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
       })
     }
 
-    if (artworkBelowTheFold.provenance || artworkBelowTheFold.exhibitionHistory || artworkBelowTheFold.literature) {
+    if (
+      artworkBelowTheFold.provenance ||
+      artworkBelowTheFold.exhibitionHistory ||
+      artworkBelowTheFold.literature
+    ) {
       sections.push({
         key: "history",
         element: <ArtworkHistory artwork={artworkBelowTheFold} />,
@@ -321,6 +333,12 @@ export const Artwork: React.FC<ArtworkProps> = ({
         context_screen_owner_type: Schema.OwnerEntityTypes.Artwork,
         context_screen_owner_slug: slug,
         context_screen_owner_id: internalID,
+        // @ts-ignore
+        availability: artworkAboveTheFold?.availability,
+        acquireable: artworkAboveTheFold?.isAcquireable,
+        inquireable: artworkAboveTheFold?.isInquireable,
+        offerable: artworkAboveTheFold?.isOfferable,
+        biddable: artworkAboveTheFold?.isBiddable,
       }}
     >
       {fetchingData ? (
@@ -338,7 +356,9 @@ export const Artwork: React.FC<ArtworkProps> = ({
           )}
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           contentContainerStyle={{ paddingBottom: 40 }}
-          renderItem={({ item }) => (item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>)}
+          renderItem={({ item }) =>
+            item.excludePadding ? item.element : <Box px={2}>{item.element}</Box>
+          }
         />
       )}
       <QAInfo />
@@ -505,7 +525,7 @@ export const ArtworkQueryRenderer: React.FC<{
               variables: { artworkID },
             }}
             render={{
-              renderPlaceholder: () => <AboveTheFoldPlaceholder />,
+              renderPlaceholder: () => <AboveTheFoldPlaceholder artworkID={artworkID} />,
               renderComponent: ({ above, below }) => {
                 return (
                   <ArtworkContainer
@@ -528,40 +548,44 @@ export const ArtworkQueryRenderer: React.FC<{
   )
 }
 
-const AboveTheFoldPlaceholder: React.FC<{}> = ({}) => {
+const AboveTheFoldPlaceholder: React.FC<{ artworkID?: string }> = ({ artworkID }) => {
   const space = useSpace()
-  const screenDimensions = useScreenDimensions()
-  // The logic for artworkHeight comes from the zeplin spec https://zpl.io/25JLX0Q
-  const artworkHeight = screenDimensions.width >= 375 ? 340 : 290
+
+  const { width, height } = useImagePlaceholderDimensions(artworkID)
 
   return (
-    <View style={{ flex: 1, padding: space(2) }}>
+    <Flex py={2}>
       {/* Artwork thumbnail */}
-      <PlaceholderBox height={artworkHeight} />
-      <Spacer mb={2} />
-      {/* save/share buttons */}
-      <View style={{ flexDirection: "row", justifyContent: "center" }}>
-        <PlaceholderText width={50} marginHorizontal={space(1)} />
-        <PlaceholderText width={50} marginHorizontal={space(1)} />
-        <PlaceholderText width={50} marginHorizontal={space(1)} />
-      </View>
-      <Spacer mb={2} />
-      {/* Artist name */}
-      <PlaceholderText width={100} />
-      <Spacer mb={2} />
-      {/* Artwork tombstone details */}
-      <View style={{ width: 130 }}>
-        <PlaceholderRaggedText numLines={4} />
-      </View>
-      <Spacer mb={3} />
-      {/* more junk */}
-      <Separator />
-      <Spacer mb={3} />
-      <PlaceholderRaggedText numLines={3} />
-      <Spacer mb={2} />
-      {/* commerce button */}
-      <PlaceholderBox height={60} />
-    </View>
+      <Flex mx="auto">
+        <PlaceholderBox width={width} height={height} />
+      </Flex>
+
+      <Flex px={2} flex={1}>
+        <Spacer mb={2} />
+        {/* save/share buttons */}
+        <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <PlaceholderText width={50} marginHorizontal={space(1)} />
+          <PlaceholderText width={50} marginHorizontal={space(1)} />
+          <PlaceholderText width={50} marginHorizontal={space(1)} />
+        </View>
+        <Spacer mb={2} />
+        {/* Artist name */}
+        <PlaceholderText width={100} />
+        <Spacer mb={2} />
+        {/* Artwork tombstone details */}
+        <View style={{ width: 130 }}>
+          <PlaceholderRaggedText numLines={4} />
+        </View>
+        <Spacer mb={3} />
+        {/* more junk */}
+        <Separator />
+        <Spacer mb={3} />
+        <PlaceholderRaggedText numLines={3} />
+        <Spacer mb={2} />
+        {/* commerce button */}
+        <PlaceholderBox height={60} />
+      </Flex>
+    </Flex>
   )
 }
 
@@ -582,4 +606,56 @@ const BelowTheFoldPlaceholder: React.FC<{}> = ({}) => {
       <Spacer mb={3} />
     </ProvidePlaceholderContext>
   )
+}
+
+const getDefaultImageDimensions = (
+  screenDimensions: ScreenDimensionsWithSafeAreas,
+  space: number
+) => {
+  // The logic for artworkHeight comes from the zeplin spec https://zpl.io/25JLX0Q
+  return {
+    width: (screenDimensions.width >= 375 ? 340 : 290) - space,
+    height: screenDimensions.width,
+  }
+}
+
+const getImageDimensionsByImage = (
+  screenDimensions: ScreenDimensionsWithSafeAreas,
+  image: { width?: number; height?: number; aspectRatio?: number }
+) => {
+  const boundingBox = {
+    width: screenDimensions.width,
+    height: isPad() ? 460 : screenDimensions.width >= 375 ? 340 : 290,
+  }
+
+  const imageSize = {
+    width: (image.width as number) || 1000 * (image.aspectRatio as number),
+    height: (image.height as number) || 1000,
+  }
+
+  const measurements = getMeasurements({ images: [imageSize], boundingBox })
+
+  return {
+    width: measurements[0].width,
+    height: measurements[0].height,
+  }
+}
+
+const useImagePlaceholderDimensions = (artworkID?: string) => {
+  const space = useSpace()
+  const screenDimensions = useScreenDimensions()
+
+  // Try to find the image for the artwork in the Relay store
+  const artwork = findRelayRecord("slug", artworkID)
+  const imageRef = (artwork?.image as Record)?.__ref as string
+  const image = findRelayRecordByDataID(imageRef)
+
+  const hasImageBeenFound = !!(image?.width && image?.height) || !!image?.aspectRatio
+
+  // Calculate the dimensions of the image
+  const { width, height } = hasImageBeenFound
+    ? getImageDimensionsByImage(screenDimensions, image)
+    : getDefaultImageDimensions(screenDimensions, space(1))
+
+  return { width, height }
 }

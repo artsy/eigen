@@ -42,7 +42,9 @@ export const SellerReplyEstimate: React.FC<SellerReplyEstimateProps> = ({ order 
       }
       break
     case "PROCESSING":
-      message = getDeliveryEstimateMessage(order?.lineItems?.edges?.[0]?.node?.selectedShippingQuote?.displayName ?? "")
+      message = getDeliveryEstimateMessage(
+        order?.lineItems?.edges?.[0]?.node?.selectedShippingQuote?.displayName ?? ""
+      )
       break
   }
 

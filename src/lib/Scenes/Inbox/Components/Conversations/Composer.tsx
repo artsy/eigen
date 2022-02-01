@@ -92,7 +92,10 @@ export default class Composer extends React.Component<Props, State> {
             <ArtsyKeyboardAvoidingView>
               {this.props.children}
               <Flex flexDirection="column">
-                <ConversationCTAFragmentContainer show={!this.state.active} conversation={this.props.conversation} />
+                <ConversationCTAFragmentContainer
+                  show={!this.state.active}
+                  conversation={this.props.conversation}
+                />
                 <Container active={this.state.active}>
                   <TextInput
                     placeholder="Type your message"
@@ -106,7 +109,10 @@ export default class Composer extends React.Component<Props, State> {
                     multiline
                     value={this.state.text || undefined}
                   />
-                  <TouchableWithoutFeedback disabled={disableSendButton} onPress={this.submitText.bind(this)}>
+                  <TouchableWithoutFeedback
+                    disabled={disableSendButton}
+                    onPress={this.submitText.bind(this)}
+                  >
                     <Button ml={1} disabled={!!disableSendButton}>
                       Send
                     </Button>

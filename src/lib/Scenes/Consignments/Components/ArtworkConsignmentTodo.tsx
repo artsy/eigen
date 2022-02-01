@@ -67,7 +67,11 @@ export default class ConsignmentTODO extends React.Component<TODOProps> {
     return (
       <Flex p="2">
         <Separator />
-        <TodoButton label="Artist/Designer name" onPress={this.props.goToArtist} isComplete={!!this.props.artist} />
+        <TodoButton
+          label="Artist/Designer name"
+          onPress={this.props.goToArtist}
+          isComplete={!!this.props.artist}
+        />
         <Separator />
         <TodoButton
           label="Photos"
@@ -87,9 +91,17 @@ export default class ConsignmentTODO extends React.Component<TODOProps> {
           isComplete={!!this.props.editionScreenViewed}
         />
         <Separator />
-        <TodoButton label="Location" onPress={this.props.goToLocation} isComplete={!!this.props.location} />
+        <TodoButton
+          label="Location"
+          onPress={this.props.goToLocation}
+          isComplete={!!this.props.location}
+        />
         <Separator />
-        <TodoButton label="Provenance" onPress={this.props.goToProvenance} isComplete={!!this.props.provenance} />
+        <TodoButton
+          label="Provenance"
+          onPress={this.props.goToProvenance}
+          isComplete={!!this.props.provenance}
+        />
         <Separator />
       </Flex>
     )

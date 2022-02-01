@@ -1,4 +1,7 @@
-import { SavedSearchAlertQuery, SavedSearchAlertQueryResponse } from "__generated__/SavedSearchAlertQuery.graphql"
+import {
+  SavedSearchAlertQuery,
+  SavedSearchAlertQueryResponse,
+} from "__generated__/SavedSearchAlertQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -21,7 +24,6 @@ export const SavedSearchAlertQueryRenderer: React.FC<SearchCriteriaAlertBaseProp
       query={graphql`
         query SavedSearchAlertQuery($savedSearchAlertId: ID!) {
           me {
-            emailFrequency
             savedSearch(id: $savedSearchAlertId) {
               internalID
               acquireable

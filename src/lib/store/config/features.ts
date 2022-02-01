@@ -26,17 +26,15 @@ export interface FeatureDescriptor {
 }
 
 // Helper function to get good typings and intellisense
-function defineFeatures<T extends string>(featureMap: { readonly [featureName in T]: FeatureDescriptor }) {
+function defineFeatures<T extends string>(featureMap: {
+  readonly [featureName in T]: FeatureDescriptor
+}) {
   return featureMap
 }
 
 export type FeatureName = keyof typeof features
 
 export const features = defineFeatures({
-  AROptionsBidManagement: {
-    readyForRelease: true,
-    echoFlagKey: "AROptionsBidManagement",
-  },
   AROptionsArtistSeries: {
     readyForRelease: true,
     echoFlagKey: "AROptionsArtistSeries",
@@ -101,12 +99,6 @@ export const features = defineFeatures({
     description: "Enable Order History in settings",
     showInAdminMenu: true,
   },
-  AREnableNewWorksForYou: {
-    readyForRelease: true,
-    description: "Enable new 'New Works for You' rail",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableNewWorksForYou",
-  },
   AREnableSavedAddresses: {
     readyForRelease: false,
     description: "Enable Saved Addresses",
@@ -130,18 +122,6 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableShowsRail",
   },
-  AREnableMyCollectionAndroid: {
-    readyForRelease: true,
-    description: "Enable My Collection (Android)",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionAndroid",
-  },
-  AREnableMyCollectionIOS: {
-    readyForRelease: true,
-    description: "Enable My Collection (iOS)",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionIOS",
-  },
   ARShowNetworkUnavailableModal: {
     readyForRelease: true,
     description: "Enable network unavailable modal",
@@ -155,9 +135,10 @@ export const features = defineFeatures({
     echoFlagKey: "ARGoogleAuth",
   },
   AREnableImprovedAlertsFlow: {
-    readyForRelease: false,
+    readyForRelease: true,
     description: "Enable Improved Alerts flow",
     showInAdminMenu: true,
+    echoFlagKey: "AREnableImprovedAlertsFlow",
   },
   AREnableWebPImages: {
     readyForRelease: true,
@@ -171,35 +152,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnableSplitIOABTesting",
   },
-  AREnableMyCollectionOrderImport: {
-    readyForRelease: true,
-    description: "Enable My Collection Order Import",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableMyCollectionOrderImport",
-  },
   AREnableSortFilterForArtworksPill: {
     readyForRelease: true,
     description: "Enable sort filter for artworks pill",
     showInAdminMenu: true,
     echoFlagKey: "AREnableSortFilterForArtworksPill",
-  },
-  AREnableVisualProfileIconAndBio: {
-    readyForRelease: true,
-    description: "Enable Visual Profile Icon and Bio",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableVisualProfileIconAndBio",
-  },
-  AREnableAuctionResultComparableWorks: {
-    readyForRelease: true,
-    description: "Comparable works in Auction Result",
-    showInAdminMenu: true,
-    echoFlagKey: "AREnableAuctionResultComparableWorks",
-  },
-  ARMyCollectionLocalSortAndFilter: {
-    readyForRelease: true,
-    description: "My Collection Sort & Filter",
-    showInAdminMenu: true,
-    echoFlagKey: "ARMyCollectionLocalSortAndFilter",
   },
   AREnableArtistRecommendations: {
     readyForRelease: false,
@@ -232,6 +189,16 @@ export const features = defineFeatures({
     description: "Allow linking of social accounts on sign up",
     showInAdminMenu: true,
   },
+  AREnableImageSearch: {
+    readyForRelease: false,
+    description: "Enable search with image",
+    showInAdminMenu: true,
+  },
+  AREnableCollectorProfile: {
+    readyForRelease: false,
+    description: "Enable collector profile",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
@@ -246,8 +213,9 @@ export interface DevToggleDescriptor {
 }
 
 // Helper function to get good typings and intellisense
-const defineDevToggles = <T extends string>(devToggleMap: { readonly [devToggleName in T]: DevToggleDescriptor }) =>
-  devToggleMap
+const defineDevToggles = <T extends string>(devToggleMap: {
+  readonly [devToggleName in T]: DevToggleDescriptor
+}) => devToggleMap
 
 export type DevToggleName = keyof typeof devToggles
 
@@ -273,9 +241,6 @@ export const devToggles = defineDevToggles({
   DTEasyMyCollectionArtworkCreation: {
     description: "Easily add my collection artworks",
   },
-  DTMyCollectionShowLocalImages: {
-    description: "Local images in my collection",
-  },
   DTShowWebviewIndicator: {
     description: "Show webview indicator",
   },
@@ -290,7 +255,5 @@ export const isDevToggle = (name: FeatureName | DevToggleName): name is DevToggl
 
 type Assert<T, U extends T> = U
 // If you mouse-over the name of the type below, you should be able to see the key that needs renaming!
-export type _ThereIsAKeyThatIsCommonInFeaturesAndDevToggles_PleaseRename_MouseOverToSeeTheNaughtyKey = Assert<
-  never,
-  keyof (typeof features | typeof devToggles)
->
+export type _ThereIsAKeyThatIsCommonInFeaturesAndDevToggles_PleaseRename_MouseOverToSeeTheNaughtyKey =
+  Assert<never, keyof (typeof features | typeof devToggles)>

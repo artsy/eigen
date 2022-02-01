@@ -1,4 +1,4 @@
-import { fireEvent } from "@testing-library/react-native"
+import { fireEvent, getDefaultNormalizer } from "@testing-library/react-native"
 import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -21,7 +21,14 @@ describe("FilteredArtworkGridZeroState", () => {
 
   it("displays correct text", () => {
     const { getByText } = renderWithWrappersTL(<TestWrapper />)
-    expect(getByText("No results found\nPlease try another search.")).toBeDefined()
+
+    expect(
+      getByText("No results found\nPlease try another search.", {
+        normalizer: getDefaultNormalizer({
+          collapseWhitespace: false,
+        }),
+      })
+    ).toBeTruthy()
   })
 
   it(`displays "Clear filters" button`, () => {
@@ -35,13 +42,17 @@ describe("FilteredArtworkGridZeroState", () => {
   })
 
   it(`does not call "trackClear" callback on "Clear filters" button press if id is not passed`, () => {
-    const { queryAllByText } = renderWithWrappersTL(<TestWrapper slug="test-slug" trackClear={trackClearMock} />)
+    const { queryAllByText } = renderWithWrappersTL(
+      <TestWrapper slug="test-slug" trackClear={trackClearMock} />
+    )
     fireEvent(queryAllByText("Clear filters")[0], "press")
     expect(trackClearMock).not.toHaveBeenCalled()
   })
 
   it(`does not call "trackClear" callback on "Clear filters" button press if slug is not passed`, () => {
-    const { queryAllByText } = renderWithWrappersTL(<TestWrapper id="test-id" trackClear={trackClearMock} />)
+    const { queryAllByText } = renderWithWrappersTL(
+      <TestWrapper id="test-id" trackClear={trackClearMock} />
+    )
     fireEvent(queryAllByText("Clear filters")[0], "press")
     expect(trackClearMock).not.toHaveBeenCalled()
   })

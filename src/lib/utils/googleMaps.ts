@@ -31,7 +31,9 @@ export const getLocationPredictions = async (query: string): Promise<SimpleLocat
     input: query,
   })
 
-  const response = await fetch("https://maps.googleapis.com/maps/api/place/autocomplete/json?" + queryString)
+  const response = await fetch(
+    "https://maps.googleapis.com/maps/api/place/autocomplete/json?" + queryString
+  )
   const results = await response.json()
   return results.predictions.map(predictionToResult)
 }
@@ -40,19 +42,27 @@ const predictionToResult = (prediction: QueryAutocompletePrediction): SimpleLoca
   return { id: prediction.place_id, name: prediction.description }
 }
 
-export const getLocationDetails = async ({ id, name }: SimpleLocation): Promise<LocationWithDetails> => {
+export const getLocationDetails = async ({
+  id,
+  name,
+}: SimpleLocation): Promise<LocationWithDetails> => {
   const queryString = stringify({
     key: API_KEY,
     placeid: id,
+    language: "en",
   })
 
-  const response = await fetch("https://maps.googleapis.com/maps/api/place/details/json?" + queryString)
+  const response = await fetch(
+    "https://maps.googleapis.com/maps/api/place/details/json?" + queryString
+  )
   const data = await response.json()
 
   // TODO: Add dedicated error handling to the maps response
   const { address_components, geometry } = data.result as PlaceResult
   const cityPlace = address_components.find((comp) => comp.types[0] === "locality")
-  const statePlace = address_components.find((comp) => comp.types[0] === "administrative_area_level_1")
+  const statePlace = address_components.find(
+    (comp) => comp.types[0] === "administrative_area_level_1"
+  )
   const countryPlace = address_components.find((comp) => comp.types[0] === "country")
   const postalCodePlace = address_components.find((comp) => comp.types[0] === "postal_code")
   const { lat, lng } = geometry.location

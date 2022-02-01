@@ -14,9 +14,14 @@ export const Shipping: React.FC<ShippingProps> = ({ order }) => {
     return null
   }
 
-  if (requestedFulfillment.__typename === "CommerceShip" || requestedFulfillment.__typename === "CommerceShipArta") {
+  if (
+    requestedFulfillment.__typename === "CommerceShip" ||
+    requestedFulfillment.__typename === "CommerceShipArta"
+  ) {
     const { name, addressLine1, city, country, postalCode } = requestedFulfillment
-    const addressCondensed = [city, country, postalCode].filter((value) => value && value !== "").join(", ")
+    const addressCondensed = [city, country, postalCode]
+      .filter((value) => value && value !== "")
+      .join(", ")
 
     return (
       <>
@@ -46,7 +51,8 @@ export const Shipping: React.FC<ShippingProps> = ({ order }) => {
         </Text>
 
         <Text color="black60">
-          After your order is confirmed, a specialist will contact you within 2 business days to coordinate pickup.
+          After your order is confirmed, a specialist will contact you within 2 business days to
+          coordinate pickup.
         </Text>
       </Flex>
       <Separator />

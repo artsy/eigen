@@ -45,7 +45,13 @@ export const MenuItem: React.FC<{
         <Flex flexDirection="row" justifyContent="flex-end" flex={1} height="100%">
           {!!value && (
             <Flex flex={1}>
-              <Text variant="md" color="black60" numberOfLines={1} ellipsizeMode={ellipsizeMode} textAlign="right">
+              <Text
+                variant="md"
+                color="black60"
+                numberOfLines={1}
+                ellipsizeMode={ellipsizeMode}
+                textAlign="right"
+              >
                 {value}
               </Text>
             </Flex>

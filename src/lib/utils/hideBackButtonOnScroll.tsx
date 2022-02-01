@@ -49,7 +49,10 @@ export const createHideBackButtonOnScroll: (
       // then show the back button if the user has scrolled up far enough
       updateShouldHideBackButton(false)
       return
-    } else if (direction === "down" && yOffset - offsetWhenDirectionChanged > SCROLL_DOWN_TO_HIDE_THRESHOLD) {
+    } else if (
+      direction === "down" &&
+      yOffset - offsetWhenDirectionChanged > SCROLL_DOWN_TO_HIDE_THRESHOLD
+    ) {
       // hide the back button if the user has scrolled down far enough
       updateShouldHideBackButton(true)
       return
@@ -60,7 +63,10 @@ export const createHideBackButtonOnScroll: (
 export function useUpdadeShouldHideBackButton() {
   if (Platform.OS === "ios") {
     return (shouldHide: boolean) =>
-      LegacyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton(shouldHide, unsafe__getSelectedTab())
+      LegacyNativeModules.ARScreenPresenterModule.updateShouldHideBackButton(
+        shouldHide,
+        unsafe__getSelectedTab()
+      )
   } else {
     return useContext(LegacyBackButtonContext).updateShouldHideBackButton
   }

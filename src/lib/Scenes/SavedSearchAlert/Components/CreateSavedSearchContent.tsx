@@ -1,5 +1,8 @@
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { getNotificationPermissionsStatus, PushAuthorizationStatus } from "lib/utils/PushNotification"
+import {
+  getNotificationPermissionsStatus,
+  PushAuthorizationStatus,
+} from "lib/utils/PushNotification"
 import useAppState from "lib/utils/useAppState"
 import { Box } from "palette"
 import React, { useCallback, useEffect, useState } from "react"
@@ -8,7 +11,6 @@ import { CreateSavedSearchAlertParams } from "../SavedSearchAlertModel"
 
 export type CreateSavedSearchContentProps = Omit<CreateSavedSearchAlertParams, "me"> & {
   userAllowsEmails: boolean
-  isPreviouslySaved?: boolean
   onUpdateEmailPreferencesPress: () => void
 }
 

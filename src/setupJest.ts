@@ -167,6 +167,7 @@ console.error = (message?: any) => {
       /Warning: React does not recognize the `\w+` prop on a DOM element\./.test(message) ||
       /Warning: The tag <\w+> is unrecognized in this browser\./.test(message) ||
       /Warning: Unknown event handler property `\w+`\./.test(message) ||
+      /Warning: An update to [\w\s]+ inside a test was not wrapped in act/.test(message) ||
       /Warning: Received `\w+` for a non-boolean attribute `\w+`\./.test(message) ||
       /Warning: [\w\s]+ has been extracted from react-native core/.test(message))
   ) {
@@ -445,7 +446,10 @@ jest.mock("@react-native-community/async-storage", () => {
         delete state[k]
       })
     },
-    multiSet(keyValuePairs: string[][], callback?: ((errors?: string[] | undefined) => void) | undefined) {
+    multiSet(
+      keyValuePairs: string[][],
+      callback?: ((errors?: string[] | undefined) => void) | undefined
+    ) {
       return new Promise((resolve) => {
         for (const keyValue of keyValuePairs) {
           state[keyValue[0]] = keyValue[1]
@@ -464,6 +468,9 @@ jest.mock("react-native-localize", () => ({
       { countryCode: "US", languageTag: "en-US", languageCode: "en", isRTL: false },
       { countryCode: "FR", languageTag: "fr-FR", languageCode: "fr", isRTL: false },
     ]
+  },
+  getCurrencies() {
+    return ["USD", "EUR"]
   },
   getTimeZone() {
     return "America/New_York"
@@ -520,8 +527,10 @@ jest.mock("react-native-gesture-handler", () => {
 })
 
 jest.mock("react-native-config", () => ({
-  ARTSY_API_CLIENT_SECRET: "artsy_api_client_secret",
-  ARTSY_API_CLIENT_KEY: "artsy_api_client_key",
+  ARTSY_DEV_API_CLIENT_SECRET: "artsy_api_client_secret",
+  ARTSY_DEV_API_CLIENT_KEY: "artsy_api_client_key",
+  ARTSY_PROD_API_CLIENT_SECRET: "artsy_api_client_secret",
+  ARTSY_PROD_API_CLIENT_KEY: "artsy_api_client_key",
   ARTSY_FACEBOOK_APP_ID: "artsy_facebook_app_id",
   SEGMENT_PRODUCTION_WRITE_KEY_IOS: "segment_production_write_key_ios",
   SEGMENT_PRODUCTION_WRITE_KEY_ANDROID: "segment_production_write_key_android",

@@ -35,7 +35,8 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
   const series = artist?.artistSeriesConnection?.edges ?? []
   const [artistSeries, setArtistSeries] = useState(series)
   const excludedArtistSeriesCount = currentArtistSeriesExcluded ? 1 : 0
-  const totalCount = Number(artist?.artistSeriesConnection?.totalCount ?? 0) + excludedArtistSeriesCount
+  const totalCount =
+    Number(artist?.artistSeriesConnection?.totalCount ?? 0) + excludedArtistSeriesCount
 
   if (!artist || series.length === 0) {
     return null
@@ -87,29 +88,32 @@ export const ArtistSeriesMoreSeries: React.FC<ArtistSeriesMoreSeriesProps> = ({
   )
 }
 
-export const ArtistSeriesMoreSeriesFragmentContainer = createFragmentContainer(ArtistSeriesMoreSeries, {
-  artist: graphql`
-    fragment ArtistSeriesMoreSeries_artist on Artist {
-      internalID
-      slug
-      artistSeriesConnection(first: 4) {
-        totalCount
-        edges {
-          node {
-            slug
-            internalID
-            title
-            featured
-            artworksCountMessage
-            image {
-              url
+export const ArtistSeriesMoreSeriesFragmentContainer = createFragmentContainer(
+  ArtistSeriesMoreSeries,
+  {
+    artist: graphql`
+      fragment ArtistSeriesMoreSeries_artist on Artist {
+        internalID
+        slug
+        artistSeriesConnection(first: 4) {
+          totalCount
+          edges {
+            node {
+              slug
+              internalID
+              title
+              featured
+              artworksCountMessage
+              image {
+                url
+              }
             }
           }
         }
       }
-    }
-  `,
-})
+    `,
+  }
+)
 
 export const tracks = {
   tapViewAllArtistSeries: (artistId: string, artistSlug: string) => ({

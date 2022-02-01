@@ -31,18 +31,22 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
 
   // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
   onMutationError(error) {
-    Alert.alert("Sorry, we couldn't process the request.", "Please try again or contact orders@artsy.net for help.", [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "Retry",
-        onPress: () => {
-          this.handleCreateOrder()
+    Alert.alert(
+      "Sorry, we couldn't process the request.",
+      "Please try again or contact orders@artsy.net for help.",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
         },
-      },
-    ])
+        {
+          text: "Retry",
+          onPress: () => {
+            this.handleCreateOrder()
+          },
+        },
+      ]
+    )
     console.log("src/lib/Scenes/Artwork/Components/BuyNowButton.tsx", error)
   }
 
@@ -101,12 +105,17 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
               if (orderOrError.__typename === "CommerceOrderWithMutationFailure") {
                 this.onMutationError(orderOrError.error)
               } else if (orderOrError.__typename === "CommerceOrderWithMutationSuccess") {
-                navigate(`/orders/${orderOrError.order.internalID}`, { modal: true, passProps: { title: "Buy Now" } })
+                navigate(`/orders/${orderOrError.order.internalID}`, {
+                  modal: true,
+                  passProps: { title: "Buy Now" },
+                })
               }
             })
           },
           onError: (error) =>
-            this.setState({ isCommittingCreateOrderMutation: false }, () => this.onMutationError(error)),
+            this.setState({ isCommittingCreateOrderMutation: false }, () =>
+              this.onMutationError(error)
+            ),
         })
       }
     })
@@ -126,7 +135,9 @@ export class BuyNowButton extends React.Component<BuyNowButtonProps, State> {
         width={100}
         haptic
       >
-        {variant && variant === "outline" && artwork.saleMessage ? `Buy now ${artwork.saleMessage}` : "Buy now"}
+        {variant && variant === "outline" && artwork.saleMessage
+          ? `Buy now ${artwork.saleMessage}`
+          : "Buy now"}
       </Button>
     )
   }

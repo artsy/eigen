@@ -2,16 +2,24 @@ import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Sans } from "palette"
 import { NavigationalTabs } from "palette/elements/Tabs"
 import React, { useEffect, useRef, useState } from "react"
-import { Animated, LayoutRectangle, ScrollView, TouchableOpacity, View, ViewProps } from "react-native"
+import {
+  Animated,
+  LayoutRectangle,
+  ScrollView,
+  TouchableOpacity,
+  View,
+  ViewProps,
+} from "react-native"
 import { useStickyTabPageContext } from "./SitckyTabPageContext"
 
 export const TAB_BAR_HEIGHT = 48
 
-export const StickyTabPageTabBar: React.FC<{ onTabPress?(tab: { label: string; index: number }): void }> = ({
-  onTabPress,
-}) => {
+export const StickyTabPageTabBar: React.FC<{
+  onTabPress?(tab: { label: string; index: number }): void
+}> = ({ onTabPress }) => {
   const screen = useScreenDimensions()
-  const { tabLabels, activeTabIndex, setActiveTabIndex, tabSuperscripts } = useStickyTabPageContext()
+  const { tabLabels, activeTabIndex, setActiveTabIndex, tabSuperscripts } =
+    useStickyTabPageContext()
   activeTabIndex.useUpdates()
 
   const [tabLayouts] = useState<Array<LayoutRectangle | null>>(tabLabels.map(() => null))

@@ -51,7 +51,11 @@ export const getSize = (props: SpinnerProps | BarProps) => {
 /**
  * Spinner component for React Native
  */
-export const Spinner: React.FC<SpinnerProps> = ({ size = "medium", color: theColor = "black100", ...rest }) => {
+export const Spinner: React.FC<SpinnerProps> = ({
+  size = "medium",
+  color: theColor = "black100",
+  ...rest
+}) => {
   const color = useColor()
   const rotation = useMemo(() => new Animated.Value(0), [])
 

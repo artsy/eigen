@@ -56,7 +56,8 @@ export { Schema }
  *
  *      ```
  */
-export interface Track<P = any, S = null, T extends Schema.Global = Schema.Entity> extends _Track<T, P, S> {} // tslint:disable-line:no-empty-interface
+export interface Track<P = any, S = null, T extends Schema.Global = Schema.Entity>
+  extends _Track<T, P, S> {} // tslint:disable-line:no-empty-interface
 
 /**
  * A typed tracking-info alias of the default react-tracking `track` function.

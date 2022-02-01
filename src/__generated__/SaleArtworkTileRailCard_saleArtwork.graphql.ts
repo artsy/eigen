@@ -17,6 +17,7 @@ export type SaleArtworkTileRailCard_saleArtwork = {
         readonly slug: string;
         readonly saleMessage: string | null;
         readonly title: string | null;
+        readonly realizedPrice: string | null;
     } | null;
     readonly counts: {
         readonly bidderPositions: number | null;
@@ -133,6 +134,13 @@ const node: ReaderFragment = {
           "kind": "ScalarField",
           "name": "title",
           "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "realizedPrice",
+          "storageKey": null
         }
       ],
       "storageKey": null
@@ -216,5 +224,5 @@ const node: ReaderFragment = {
   "type": "SaleArtwork",
   "abstractKey": null
 };
-(node as any).hash = '75d7c8fa320e57fadfef721ee379b5b3';
+(node as any).hash = 'c5e56ae13f198bbc9abee17bb9beb6cb';
 export default node;

@@ -1,6 +1,14 @@
 import { TriangleDown } from "lib/Icons/TriangleDown"
 import { Autocomplete } from "lib/utils/Autocomplete"
-import { CloseIcon, Flex, Separator, Text, Touchable, useColor, useTextStyleForPalette } from "palette"
+import {
+  CloseIcon,
+  Flex,
+  Separator,
+  Text,
+  Touchable,
+  useColor,
+  useTextStyleForPalette,
+} from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import { FlatList, TextInput, TouchableOpacity } from "react-native"
 import { FancyModal } from "../../../lib/Components/FancyModal/FancyModal"
@@ -232,7 +240,11 @@ const SelectModal: React.FC<{
               console.error("Option with empty search terms: " + JSON.stringify(option))
               return { searchTerms: [], importance: 0, key: option }
             }
-            return { searchTerms: option.searchTerms, importance: option.searchImportance ?? 0, key: option }
+            return {
+              searchTerms: option.searchTerms,
+              importance: option.searchImportance ?? 0,
+              key: option,
+            }
           })
         )
       : null
@@ -271,7 +283,8 @@ const SelectModal: React.FC<{
         // search was cleared (or hasn't been touched yet) and the user has previously selected a value
         const initialScrollIndex = options.indexOf(selectedItem)
         // try to center the option on screen
-        const initialScrollOffset = initialScrollIndex * INPUT_HEIGHT - (flatListHeight.current ?? 0) / 2 + INPUT_HEIGHT
+        const initialScrollOffset =
+          initialScrollIndex * INPUT_HEIGHT - (flatListHeight.current ?? 0) / 2 + INPUT_HEIGHT
         requestAnimationFrame(() => {
           flatListRef.current?.scrollToOffset({ offset: initialScrollOffset, animated: false })
         })
@@ -323,7 +336,11 @@ const SelectModal: React.FC<{
         // we handle scrolling to the selected value ourselves because FlatList has weird
         // rendering bugs when initialScrollIndex changes, at the time of writing
         initialScrollIndex={undefined}
-        getItemLayout={(_item, index) => ({ index, length: INPUT_HEIGHT, offset: INPUT_HEIGHT * index })}
+        getItemLayout={(_item, index) => ({
+          index,
+          length: INPUT_HEIGHT,
+          offset: INPUT_HEIGHT * index,
+        })}
         style={{ flex: 1 }}
         onLayout={(e) => (flatListHeight.current = e.nativeEvent.layout.height)}
         renderItem={({ item, index }) => {

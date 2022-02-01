@@ -1,6 +1,13 @@
 import { StackScreenProps } from "@react-navigation/stack"
-import { FilterData, FilterDisplayName, FilterParamName } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { ArtworksFiltersStore, useSelectedOptionsDisplay } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  FilterData,
+  FilterDisplayName,
+  FilterParamName,
+} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+import {
+  ArtworksFiltersStore,
+  useSelectedOptionsDisplay,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import React, { useState } from "react"
 import { ArtworkFilterNavigationStack } from "../ArtworkFilterNavigator"
 import { MultiSelectOptionScreen } from "./MultiSelectOption"
@@ -8,25 +15,41 @@ import { MultiSelectOptionScreen } from "./MultiSelectOption"
 interface WaysToBuyOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "WaysToBuyOptionsScreen"> {}
 
-export const WAYS_TO_BUY_FILTER_PARAM_NAMES = [
-  FilterParamName.waysToBuyBuy,
-  FilterParamName.waysToBuyMakeOffer,
-  FilterParamName.waysToBuyBid,
-  FilterParamName.waysToBuyInquire,
+export const WAYS_TO_BUY_OPTIONS: FilterData[] = [
+  {
+    displayText: "Buy Now",
+    paramName: FilterParamName.waysToBuyBuy,
+  },
+  {
+    displayText: "Make Offer",
+    paramName: FilterParamName.waysToBuyMakeOffer,
+  },
+  {
+    displayText: "Bid",
+    paramName: FilterParamName.waysToBuyBid,
+  },
+  {
+    displayText: "Inquire",
+    paramName: FilterParamName.waysToBuyInquire,
+  },
 ]
 
+export const WAYS_TO_BUY_PARAM_NAMES = WAYS_TO_BUY_OPTIONS.map((option) => option.paramName)
+
 export const WaysToBuyOptionsScreen: React.FC<WaysToBuyOptionsScreenProps> = ({ navigation }) => {
-  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.selectFiltersAction
+  )
 
   const selectedOptions = useSelectedOptionsDisplay()
+  const options = WAYS_TO_BUY_OPTIONS.map((option) => {
+    const selectedOptionByParamName = selectedOptions.find(
+      (selectedOption) => selectedOption.paramName === option.paramName
+    )
 
-  const options = selectedOptions.filter((value) => WAYS_TO_BUY_FILTER_PARAM_NAMES.includes(value.paramName))
-
-  const sortedOptions = options.sort(({ paramName: left }: FilterData, { paramName: right }: FilterData): number => {
-    if (WAYS_TO_BUY_FILTER_PARAM_NAMES.indexOf(left) < WAYS_TO_BUY_FILTER_PARAM_NAMES.indexOf(right)) {
-      return -1
-    } else {
-      return 1
+    return {
+      ...option,
+      paramValue: selectedOptionByParamName?.paramValue ?? false,
     }
   })
 
@@ -56,9 +79,11 @@ export const WaysToBuyOptionsScreen: React.FC<WaysToBuyOptionsScreenProps> = ({ 
       key={key}
       onSelect={handleSelect}
       filterHeaderText={FilterDisplayName.waysToBuy}
-      filterOptions={sortedOptions}
+      filterOptions={options}
       navigation={navigation}
-      {...(selected.length > 0 ? { rightButtonText: "Clear", onRightButtonPress: handleClear } : {})}
+      {...(selected.length > 0
+        ? { rightButtonText: "Clear", onRightButtonPress: handleClear }
+        : {})}
     />
   )
 }

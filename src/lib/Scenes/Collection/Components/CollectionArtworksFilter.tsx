@@ -60,12 +60,15 @@ export const CollectionArtworksFilter: React.FC<FilterProps> = ({ collection, an
   )
 }
 
-export const CollectionArtworksFilterFragmentContainer = createFragmentContainer(CollectionArtworksFilter, {
-  collection: graphql`
-    fragment CollectionArtworksFilter_collection on MarketingCollection
-    @argumentDefinitions(input: { type: "FilterArtworksInput" }) {
-      slug
-      id
-    }
-  `,
-})
+export const CollectionArtworksFilterFragmentContainer = createFragmentContainer(
+  CollectionArtworksFilter,
+  {
+    collection: graphql`
+      fragment CollectionArtworksFilter_collection on MarketingCollection
+      @argumentDefinitions(input: { type: "FilterArtworksInput" }) {
+        slug
+        id
+      }
+    `,
+  }
+)

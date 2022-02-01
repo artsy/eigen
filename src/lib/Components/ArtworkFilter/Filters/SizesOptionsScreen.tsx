@@ -14,7 +14,8 @@ export interface CustomSize {
   height: Range
 }
 
-interface SizesOptionsScreenProps extends StackScreenProps<ArtworkFilterNavigationStack, "SizesOptionsScreen"> {}
+interface SizesOptionsScreenProps
+  extends StackScreenProps<ArtworkFilterNavigationStack, "SizesOptionsScreen"> {}
 interface CustomSizeInputsContainerProps {
   values: CustomSize
   active?: boolean
@@ -70,7 +71,10 @@ const DEFAULT_CUSTOM_SIZE: CustomSize = {
   },
 }
 
-const CUSTOM_SIZE_OPTION_KEYS: Array<keyof CustomSize> = [FilterParamName.width, FilterParamName.height]
+const CUSTOM_SIZE_OPTION_KEYS: Array<keyof CustomSize> = [
+  FilterParamName.width,
+  FilterParamName.height,
+]
 
 // Helpers
 export const getCustomValues = (options: FilterData[]) => {
@@ -94,7 +98,11 @@ export const checkIsEmptyCustomValues = (values: CustomSize) => {
   })
 }
 
-const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({ values, active, onChange }) => {
+const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({
+  values,
+  active,
+  onChange,
+}) => {
   const handleChange = (paramName: FilterParamName) => (range: Range) => {
     onChange({ ...values, [paramName]: range })
   }
@@ -119,7 +127,9 @@ const CustomSizeInputsContainer: React.FC<CustomSizeInputsContainerProps> = ({ v
 }
 
 export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigation }) => {
-  const selectFiltersAction = ArtworksFiltersStore.useStoreActions((state) => state.selectFiltersAction)
+  const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
+    (state) => state.selectFiltersAction
+  )
   const {
     handleSelect,
     isSelected,
@@ -135,7 +145,9 @@ export const SizesOptionsScreen: React.FC<SizesOptionsScreenProps> = ({ navigati
     CUSTOM_SIZE_OPTION_KEYS.includes(option.paramName as keyof CustomSize)
   )
   const [customValues, setCustomValues] = useState(getCustomValues(selectedCustomOptions))
-  const [customSizeSelected, setCustomSizeSelected] = useState(!checkIsEmptyCustomValues(customValues))
+  const [customSizeSelected, setCustomSizeSelected] = useState(
+    !checkIsEmptyCustomValues(customValues)
+  )
   const [key, setKey] = useState(0)
   const shouldShowCustomInputs = filterType !== "auctionResult"
   const isActive = isActivePredefinedValues || !checkIsEmptyCustomValues(customValues)

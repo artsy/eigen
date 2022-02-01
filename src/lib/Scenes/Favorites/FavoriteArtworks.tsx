@@ -15,7 +15,6 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Button, ClassTheme } from "palette"
-import { unsafe_getEnableMyCollection } from "../MyCollection/MyCollection"
 
 interface Props {
   me: FavoriteArtworks_me
@@ -70,7 +69,6 @@ export class SavedWorks extends Component<Props, State> {
   // @TODO: Implement test on this component https://artsyproduct.atlassian.net/browse/LD-563
   render() {
     const artworks = extractNodes(this.props.me?.followsAndSaves?.artworks)
-    const isEnabledForMyCollection = unsafe_getEnableMyCollection()
 
     if (artworks.length === 0) {
       return (
@@ -78,7 +76,10 @@ export class SavedWorks extends Component<Props, State> {
           {({ space }) => (
             <StickyTabPageScrollView
               refreshControl={
-                <RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />
+                <RefreshControl
+                  refreshing={this.state.refreshingFromPull}
+                  onRefresh={this.handleRefresh}
+                />
               }
               contentContainerStyle={{ paddingBottom: space(2) }}
             >
@@ -110,22 +111,21 @@ export class SavedWorks extends Component<Props, State> {
             contentContainerStyle={{ paddingVertical: space(2) }}
             onEndReached={this.loadMore}
             refreshControl={
-              <RefreshControl refreshing={this.state.refreshingFromPull} onRefresh={this.handleRefresh} />
+              <RefreshControl
+                refreshing={this.state.refreshingFromPull}
+                onRefresh={this.handleRefresh}
+              />
             }
           >
             <GenericGrid
               artworks={artworks}
               isLoading={this.state.fetchingMoreData}
-              hidePartner={isEnabledForMyCollection}
-              artistNamesTextStyle={isEnabledForMyCollection ? { weight: "regular" } : undefined}
-              saleInfoTextStyle={
-                isEnabledForMyCollection
-                  ? {
-                      weight: "medium",
-                      color: "black100",
-                    }
-                  : undefined
-              }
+              hidePartner
+              artistNamesTextStyle={{ weight: "regular" }}
+              saleInfoTextStyle={{
+                weight: "medium",
+                color: "black100",
+              }}
             />
           </StickyTabPageScrollView>
         )}
@@ -139,7 +139,10 @@ const FavoriteArtworksContainer = createPaginationContainer(
   {
     me: graphql`
       fragment FavoriteArtworks_me on Me
-      @argumentDefinitions(count: { type: "Int", defaultValue: 10 }, cursor: { type: "String", defaultValue: "" }) {
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 10 }
+        cursor: { type: "String", defaultValue: "" }
+      ) {
         labFeatures
         followsAndSaves {
           artworks: artworksConnection(private: true, first: $count, after: $cursor)

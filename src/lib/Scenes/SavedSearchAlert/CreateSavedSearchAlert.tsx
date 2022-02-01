@@ -3,7 +3,10 @@ import { createStackNavigator, TransitionPresets } from "@react-navigation/stack
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { Box } from "palette"
 import React from "react"
-import { CreateSavedSearchAlertNavigationStack, CreateSavedSearchAlertProps } from "./SavedSearchAlertModel"
+import {
+  CreateSavedSearchAlertNavigationStack,
+  CreateSavedSearchAlertProps,
+} from "./SavedSearchAlertModel"
 import { CreateSavedSearchAlertScreen } from "./screens/CreateSavedSearchAlertScreen"
 import { EmailPreferencesScreen } from "./screens/EmailPreferencesScreen"
 

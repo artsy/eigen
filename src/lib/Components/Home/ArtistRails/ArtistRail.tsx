@@ -4,7 +4,13 @@
 
 import React, { useImperativeHandle, useRef, useState } from "react"
 import { FlatList, View, ViewProps } from "react-native"
-import { commitMutation, createFragmentContainer, fetchQuery, graphql, RelayProp } from "react-relay"
+import {
+  commitMutation,
+  createFragmentContainer,
+  fetchQuery,
+  graphql,
+  RelayProp,
+} from "react-relay"
 
 import HomeAnalytics from "lib/Scenes/Home/homeAnalytics"
 import { useTracking } from "react-tracking"
@@ -19,7 +25,7 @@ import {
 import { Disappearable } from "lib/Components/Disappearable"
 import { SectionTitle } from "lib/Components/SectionTitle"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { defaultArtworksVariables } from "lib/Scenes/Artist/Artist"
+import { defaultArtistVariables } from "lib/Scenes/Artist/Artist"
 import { RailScrollProps } from "lib/Scenes/Home/Components/types"
 import { Schema } from "lib/utils/track"
 import { sample, uniq } from "lodash"
@@ -28,7 +34,8 @@ import { CARD_WIDTH } from "../CardRailCard"
 import { CardRailFlatList, INTER_CARD_PADDING } from "../CardRailFlatList"
 import { ArtistCard } from "./ArtistCard"
 
-interface SuggestedArtist extends Pick<ArtistCard_artist, Exclude<keyof ArtistCard_artist, " $refType">> {
+interface SuggestedArtist
+  extends Pick<ArtistCard_artist, Exclude<keyof ArtistCard_artist, " $refType">> {
   _disappearable: Disappearable | null
 }
 
@@ -64,7 +71,10 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
       const result = await fetchQuery<ArtistRailNewSuggestionQuery>(
         defaultEnvironment,
         graphql`
-          query ArtistRailNewSuggestionQuery($basedOnArtistId: String!, $excludeArtistIDs: [String!]!) {
+          query ArtistRailNewSuggestionQuery(
+            $basedOnArtistId: String!
+            $excludeArtistIDs: [String!]!
+          ) {
             artist(id: $basedOnArtistId) {
               related {
                 suggestedConnection(
@@ -84,13 +94,16 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
           }
         `,
         {
-          excludeArtistIDs: uniq(artists.map((a) => a.internalID).concat(dismissedArtistIds.current)),
+          excludeArtistIDs: uniq(
+            artists.map((a) => a.internalID).concat(dismissedArtistIds.current)
+          ),
           basedOnArtistId: basedOnArtist.internalID,
         }
       ).toPromise()
 
       const artist =
-        (result as ArtistRailNewSuggestionQueryResponse).artist?.related?.suggestedConnection?.edges?.[0]?.node ?? null
+        (result as ArtistRailNewSuggestionQueryResponse).artist?.related?.suggestedConnection
+          ?.edges?.[0]?.node ?? null
 
       return (
         artist && {
@@ -98,7 +111,9 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
           _disappearable: null,
           // make the basedOn for this suggestion fall back to either the artist this was actually based on (if followed)
           // or whatever _that_ artist suggestion was based on, if available. Transient basedOn!
-          basedOn: artist.basedOn ?? (basedOnArtist.isFollowed ? { name: basedOnArtist.name } : basedOnArtist.basedOn),
+          basedOn:
+            artist.basedOn ??
+            (basedOnArtist.isFollowed ? { name: basedOnArtist.name } : basedOnArtist.basedOn),
         }
       )
     } catch (e) {
@@ -178,7 +193,10 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
   }
 
   const handleDismiss = async (artist: SuggestedArtist) => {
-    dismissedArtistIds.current = uniq([artist.internalID].concat(dismissedArtistIds.current)).slice(0, 100)
+    dismissedArtistIds.current = uniq([artist.internalID].concat(dismissedArtistIds.current)).slice(
+      0,
+      100
+    )
 
     await artist._disappearable?.disappear()
     setArtists((_artists) => _artists.filter((a) => a.internalID !== artist.internalID))
@@ -201,7 +219,7 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
       </Flex>
       <CardRailFlatList<SuggestedArtist>
         prefetchUrlExtractor={(item) => item?.href!}
-        prefetchVariablesExtractor={defaultArtworksVariables}
+        prefetchVariablesExtractor={defaultArtistVariables}
         listRef={listRef}
         data={artists}
         keyExtractor={(artist) => artist.id}
@@ -221,13 +239,22 @@ const ArtistRail: React.FC<Props & RailScrollProps> = (props) => {
                   artist={artist as any}
                   onPress={() =>
                     trackEvent(
-                      HomeAnalytics.artistThumbnailTapEvent(props.rail.key, artist.internalID, artist.slug, index)
+                      HomeAnalytics.artistThumbnailTapEvent(
+                        props.rail.key,
+                        artist.internalID,
+                        artist.slug,
+                        index
+                      )
                     )
                   }
                   onFollow={() => handleFollowChange(artist)}
-                  onDismiss={props.rail.key === "SUGGESTED" ? undefined : () => handleDismiss(artist)}
+                  onDismiss={
+                    props.rail.key === "SUGGESTED" ? undefined : () => handleDismiss(artist)
+                  }
                 />
-                {index === artists.length - 1 ? null : <View style={{ width: INTER_CARD_PADDING }} />}
+                {index === artists.length - 1 ? null : (
+                  <View style={{ width: INTER_CARD_PADDING }} />
+                )}
               </View>
             </Disappearable>
           )

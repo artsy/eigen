@@ -8,14 +8,14 @@ import { InfiniteHitsProvided, StateResultsProvided } from "react-instantsearch-
 import { FlatList } from "react-native"
 import { AlgoliaSearchPlaceholder } from "./components/placeholders/AlgoliaSearchPlaceholder"
 import { SearchResult } from "./components/SearchResult"
+import { ALGOLIA_INDICES_WITH_AN_ARTICLE } from "./constants"
 import { isAlgoliaApiKeyExpiredError } from "./helpers"
-import { AlgoliaSearchResult } from "./types"
+import { AlgoliaIndexKey, AlgoliaSearchResult, PillType } from "./types"
 
 interface SearchResultsProps
   extends StateResultsProvided<AlgoliaSearchResult>,
     InfiniteHitsProvided<AlgoliaSearchResult> {
-  indexName: string
-  categoryDisplayName: string
+  selectedPill: PillType
   onRetry?: () => void
   trackResultPress?: (result: AlgoliaSearchResult) => void
 }
@@ -26,10 +26,9 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   searching,
   isSearchStalled,
   searchState,
-  indexName,
   searchResults,
-  categoryDisplayName,
   error,
+  selectedPill,
   onRetry,
   refineNext,
   trackResultPress,
@@ -44,11 +43,11 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     requestAnimationFrame(() => {
       flatListRef.current?.scrollToOffset({ offset: 0, animated: true })
     })
-  }, [indexName])
+  }, [selectedPill.indexName])
 
   useEffect(() => {
     setShowLoadingPlaceholder(true)
-  }, [categoryDisplayName])
+  }, [selectedPill.displayName])
 
   // When we get the first search results, we hide the loading placeholder
   useEffect(() => {
@@ -73,20 +72,21 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
   if (showLoadingPlaceholder) {
     return (
       <ProvidePlaceholderContext>
-        <AlgoliaSearchPlaceholder hasRoundedImages={categoryDisplayName === "Artist"} />
+        <AlgoliaSearchPlaceholder hasRoundedImages={selectedPill.key === AlgoliaIndexKey.Artist} />
       </ProvidePlaceholderContext>
     )
   }
 
   if (searchResults?.nbHits === 0) {
-    const namesWithAnArticle = ["Artist", "Auction", "Artist Series"]
-    const article = namesWithAnArticle.includes(categoryDisplayName) ? "an" : "a"
+    const article = ALGOLIA_INDICES_WITH_AN_ARTICLE.includes(selectedPill.key as AlgoliaIndexKey)
+      ? "an"
+      : "a"
 
     return (
       <Box px={2} py={1}>
         <Spacer mt={4} />
         <Text variant="md" textAlign="center">
-          Sorry, we couldn’t find {article} {categoryDisplayName} for “{searchState.query}.”
+          Sorry, we couldn’t find {article} {selectedPill.displayName} for “{searchState.query}.”
         </Text>
         <Text variant="md" color="black60" textAlign="center">
           Please try searching again with a different spelling.
@@ -106,8 +106,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
       renderItem={({ item }) => (
         <SearchResult
           result={item}
-          indexName={indexName}
-          categoryName={categoryDisplayName}
+          selectedPill={selectedPill}
           trackResultPress={trackResultPress}
         />
       )}

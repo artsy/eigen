@@ -20,7 +20,9 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 
 interface GenericArtistSeriesRailProps {
-  collections: CollectionArtistSeriesRail_collectionGroup["members"] | ArtistAbout_artist["iconicCollections"]
+  collections:
+    | CollectionArtistSeriesRail_collectionGroup["members"]
+    | ArtistAbout_artist["iconicCollections"]
   contextScreenOwnerType: Schema.OwnerEntityTypes.Collection | Schema.OwnerEntityTypes.Artist
   contextScreenOwnerId: string
   contextScreenOwnerSlug: string
@@ -32,7 +34,8 @@ type GenericArtistSeriesItem =
 
 export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (props) => {
   const color = useColor()
-  const { collections, contextScreenOwnerType, contextScreenOwnerId, contextScreenOwnerSlug } = props
+  const { collections, contextScreenOwnerType, contextScreenOwnerId, contextScreenOwnerSlug } =
+    props
 
   const tracking = useTracking()
 
@@ -58,7 +61,10 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
         ListFooterComponent={() => <Spacer mx={2} />}
         ItemSeparatorComponent={() => <Spacer mx={0.5} />}
         renderItem={({ item: result, index }) => {
-          const artworkImageURLs = extractNodes(result?.artworksConnection, (artwork) => artwork.image?.url!)
+          const artworkImageURLs = extractNodes(
+            result?.artworksConnection,
+            (artwork) => artwork.image?.url!
+          )
 
           return (
             <CardRailCard
@@ -82,7 +88,11 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
             >
               <View>
                 <ArtworkImageContainer>
-                  <ImageView width={ARTWORKS_HEIGHT} height={ARTWORKS_HEIGHT} imageURL={artworkImageURLs[0]} />
+                  <ImageView
+                    width={ARTWORKS_HEIGHT}
+                    height={ARTWORKS_HEIGHT}
+                    imageURL={artworkImageURLs[0]}
+                  />
                   <Division />
                   <View>
                     <ImageView
@@ -94,7 +104,11 @@ export const GenericArtistSeriesRail: React.FC<GenericArtistSeriesRailProps> = (
                     <ImageView
                       width={ARTWORKS_HEIGHT / 2}
                       height={ARTWORKS_HEIGHT / 2 - 2}
-                      imageURL={validateArtworkImageURL(artworkImageURLs[2], artworkImageURLs[1], artworkImageURLs[0])}
+                      imageURL={validateArtworkImageURL(
+                        artworkImageURLs[2],
+                        artworkImageURLs[1],
+                        artworkImageURLs[0]
+                      )}
                     />
                   </View>
                 </ArtworkImageContainer>

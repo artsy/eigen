@@ -25,7 +25,13 @@ export const BottomAlignedButton: React.FC<BottomAlignedProps> = ({
     {!!showSeparator && <Separator key="separator" />}
     <Spacer mb={1} />
     <Box px={2}>
-      <Button accessibilityLabel={buttonText} block width="100%" onPress={onPress} disabled={disabled}>
+      <Button
+        accessibilityLabel={buttonText}
+        block
+        width="100%"
+        onPress={onPress}
+        disabled={disabled}
+      >
         {buttonText}
       </Button>
     </Box>

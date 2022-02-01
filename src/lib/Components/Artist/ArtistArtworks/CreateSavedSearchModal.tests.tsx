@@ -1,5 +1,8 @@
 import { fireEvent } from "@testing-library/react-native"
-import { ArtworkFiltersState, ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import {
+  ArtworkFiltersState,
+  ArtworkFiltersStoreProvider,
+} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { navigate } from "lib/navigation/navigate"
 import { CreateSavedSearchAlert } from "lib/Scenes/SavedSearchAlert/CreateSavedSearchAlert"
 import { SavedSearchAlertMutationResult } from "lib/Scenes/SavedSearchAlert/SavedSearchAlertModel"
@@ -8,7 +11,11 @@ import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { delay } from "lib/utils/delay"
 import React from "react"
-import { CreateSavedSearchModal, CreateSavedSearchModalProps, tracks } from "./CreateSavedSearchModal"
+import {
+  CreateSavedSearchModal,
+  CreateSavedSearchModalProps,
+  tracks,
+} from "./CreateSavedSearchModal"
 
 jest.unmock("react-relay")
 
@@ -66,8 +73,7 @@ describe("CreateSavedSearchModal", () => {
     })
   })
 
-  it('should call navigate twice when "My Collection" is enabled', async () => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionIOS: true })
+  it("should call navigate twice", async () => {
     const { container, getByText } = renderWithWrappersTL(<TestRenderer />)
 
     container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)

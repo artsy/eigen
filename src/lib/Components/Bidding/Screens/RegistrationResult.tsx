@@ -58,7 +58,8 @@ const registrationPendingDueToUnverifiedStatusMessage = {
 
 const registrationErrorMessage = {
   title: "An error occurred",
-  description: "Please contact [support@artsy.net](mailto:support@artsy.net)\n" + "with any questions.",
+  description:
+    "Please contact [support@artsy.net](mailto:support@artsy.net)\n" + "with any questions.",
 }
 
 const registrationNetworkErrorMessage = {
@@ -108,7 +109,10 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
   backButtonListener?: NativeEventSubscription = undefined
 
   componentDidMount = () => {
-    this.backButtonListener = BackHandler.addEventListener("hardwareBackPress", this.handleBackButton)
+    this.backButtonListener = BackHandler.addEventListener(
+      "hardwareBackPress",
+      this.handleBackButton
+    )
   }
 
   componentWillUnmount = () => {
@@ -163,7 +167,9 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
         </Theme>
         <View style={{ padding: 20 }}>
           <Flex alignItems="center">
-            {status !== RegistrationStatus.RegistrationStatusPending && <Icon20 source={Icons[status]} />}
+            {status !== RegistrationStatus.RegistrationStatusPending && (
+              <Icon20 source={Icons[status]} />
+            )}
             <Title mt={2} mb={4}>
               {title}
             </Title>
@@ -172,7 +178,9 @@ export class RegistrationResult extends React.Component<RegistrationResultProps>
             </Markdown>
           </Flex>
           <Button variant="outline" onPress={dismissModal} block width={100}>
-            {status === RegistrationStatus.RegistrationStatusPending ? "View works in this sale" : "Continue"}
+            {status === RegistrationStatus.RegistrationStatusPending
+              ? "View works in this sale"
+              : "Continue"}
           </Button>
         </View>
       </View>
