@@ -227,7 +227,6 @@ export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => (
       render={renderWithPlaceholder({
         Container: MyCollectionAndSavedWorksFragmentContainer,
         renderPlaceholder: () => <MyCollectionPlaceholder />,
-        renderFallback: () => null,
       })}
       variables={{}}
     />
