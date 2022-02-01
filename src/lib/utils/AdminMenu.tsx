@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-community/async-storage"
 import * as Sentry from "@sentry/react-native"
 import { MenuItem } from "lib/Components/MenuItem"
 import { useToast } from "lib/Components/Toast/toastHook"
+import { eigenSentryReleaseName } from "lib/ErrorReporting"
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import { RelayCache } from "lib/relay/RelayCache"
@@ -37,7 +38,6 @@ import {
 import Config from "react-native-config"
 import { getBuildNumber, getUniqueId, getVersion } from "react-native-device-info"
 import Keychain from "react-native-keychain"
-import { sentryReleaseName } from "../../../app.json"
 import { useScreenDimensions } from "./useScreenDimensions"
 
 const configurableFeatureFlagKeys = sortBy(
@@ -210,7 +210,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
             Sentry.nativeCrash()
           }}
         />
-        <FeatureFlagMenuItem title={`Sentry release name: "${sentryReleaseName}"`} />
+        <FeatureFlagMenuItem title={`Sentry release name: "${eigenSentryReleaseName()}"`} />
         <FeatureFlagMenuItem title={`Device ID: "${getUniqueId()}"`} />
       </ScrollView>
     </Flex>

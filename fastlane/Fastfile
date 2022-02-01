@@ -64,7 +64,6 @@ lane :ship_beta_ios do
   # important! this much match the release version specified
   # in Eigen in order for sourcemaps to work correctly
   sentry_release_name = "ios-#{latest_version}+#{bundle_version}"
-  update_sentry_release_json(sentry_release_name: sentry_release_name)
 
   build_ios_app(configuration: 'Store', silent: true)
 
@@ -164,7 +163,6 @@ lane :ship_beta_android_play_store do
   tag_and_push(tag: "android-#{vname}-#{vcode}")
 
   sentry_release_name = "android-#{vname}-#{vcode}"
-  update_sentry_release_json(sentry_release_name: sentry_release_name)
 
   # build again with flag set to false for release candidates
   flag_android_beta(is_android_beta: false)
@@ -197,7 +195,6 @@ lane :ship_beta_android_firebase do
   vname, vcode = set_build_version_android
 
   sentry_release_name = "android-#{vname}-#{vcode}"
-  update_sentry_release_json(sentry_release_name: sentry_release_name)
 
   sh("mkdir -p android/app/src/main/assets && touch android/app/src/main/assets/index.android.bundle && yarn bundle:android")
   gradle(
@@ -304,27 +301,6 @@ lane :promote_beta_ios do
 
   tag_and_push(tag: "ios-#{next_app_store_version}-#{build_version}-submission")
   puts 'All done.'
-end
-
-# update releaseName in app.json to tag errors in sentry correctly
-lane :update_sentry_release_json do |options|
-  sentry_release_name = options[:sentry_release_name]
-  app_json['sentryReleaseName'] = sentry_release_name
-  File.open(app_json_path, 'w') do |file|
-    file.puts JSON.pretty_generate(app_json)
-  end
-end
-
-lane :update_sentry_release_name do
-  latest_version = app_json['version']
-
-  root = File.expand_path('..', __dir__)
-  bundle_version = `/usr/libexec/PlistBuddy -c "print CFBundleVersion" #{File.join(root, 'Artsy/App_Resources/Artsy-Info.plist')}`.strip
-
-  # important! this much match the release version specified
-  # in Eigen in order for sourcemaps to work correctly
-  sentry_release_name = "ios-#{latest_version}+#{bundle_version}"
-  update_sentry_release_json(sentry_release_name: sentry_release_name)
 end
 
 lane :flag_android_beta do |options|

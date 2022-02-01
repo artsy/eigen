@@ -1,9 +1,18 @@
 import * as Sentry from "@sentry/react-native"
 import { useEffect } from "react"
+import { Platform } from "react-native"
 import Config from "react-native-config"
-import { getBuildNumber } from "react-native-device-info"
-import { sentryReleaseName } from "../../app.json"
+import { getBuildNumber, getVersion } from "react-native-device-info"
 import { GlobalStore, useFeatureFlag } from "./store/GlobalStore"
+
+// important! this much match the release version specified
+// in fastfile in order for sourcemaps/sentry stack traces to work
+export const eigenSentryReleaseName = () => {
+  const prefix = Platform.OS === "ios" ? "ios" : "android"
+  const buildNumber = getBuildNumber()
+  const version = getVersion()
+  return prefix + "-" + version + "-" + buildNumber
+}
 
 export const setupSentry = (
   props: Partial<Sentry.ReactNativeOptions> = {},
@@ -12,7 +21,7 @@ export const setupSentry = (
   if (captureExceptions && Config.SENTRY_DSN) {
     Sentry.init({
       dsn: Config.SENTRY_DSN,
-      release: sentryReleaseName,
+      release: eigenSentryReleaseName(),
       dist: getBuildNumber(),
       enableAutoSessionTracking: true,
       autoSessionTracking: true,
