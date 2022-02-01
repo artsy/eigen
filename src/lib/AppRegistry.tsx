@@ -54,6 +54,7 @@ import { HomeQueryRenderer } from "./Scenes/Home/Home"
 import { MakeOfferModalQueryRenderer } from "./Scenes/Inbox/Components/Conversations/MakeOfferModal"
 import { ConversationNavigator } from "./Scenes/Inbox/ConversationNavigator"
 import { Checkout } from "./Scenes/Inbox/Screens/Checkout"
+import { ConversationDetailsQueryRenderer } from "./Scenes/Inbox/Screens/ConversationDetails"
 import {
   LotsByArtistsYouFollowQueryRenderer,
   LotsByArtistsYouFollowScreenQuery,
@@ -345,6 +346,7 @@ export const modules = defineModules({
   Collection: reactModule(CollectionQueryRenderer, { fullBleed: true }),
   ConsignmentsSubmissionForm: reactModule(ConsignmentsSubmissionForm, {}),
   Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
+  ConversationDetails: reactModule(ConversationDetailsQueryRenderer),
   Fair: reactModule(FairQueryRenderer, { fullBleed: true }),
   FairMoreInfo: reactModule(FairMoreInfoQueryRenderer),
   FairArticles: reactModule(FairArticlesQueryRenderer),
