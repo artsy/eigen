@@ -5,7 +5,7 @@ import { useGlobalState } from "lib/utils/useGlobalState"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Box } from "palette"
 import React, { EffectCallback, useEffect, useMemo, useRef, useState } from "react"
-import { View } from "react-native"
+import { LayoutAnimation, View } from "react-native"
 import Animated from "react-native-reanimated"
 import { useTracking } from "react-tracking"
 import { useAnimatedValue } from "./reanimatedHelpers"
@@ -61,8 +61,11 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
   const [tabSpecificStickyHeaderContent, setTabSpecificStickyHeaderContent] = useState<
     Array<JSX.Element | null>
   >([])
-  const { jsx: staticHeader, nativeHeight: staticHeaderHeight } =
-    useAutoCollapsingMeasuredView(staticHeaderContent)
+  const [isStaticHeaderVisible, setIsStaticHeaderVisible] = useState(true)
+
+  const { jsx: staticHeader, nativeHeight: staticHeaderHeight } = useAutoCollapsingMeasuredView(
+    isStaticHeaderVisible ? staticHeaderContent : null
+  )
 
   const stickyRailRef = useRef<SnappyHorizontalRail>(null)
 
@@ -76,8 +79,16 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
 
   const { jsx: stickyHeader, nativeHeight: stickyHeaderHeight } =
     useAutoCollapsingMeasuredView(stickyHeaderContent)
+
   const tracking = useTracking()
+
   const headerOffsetY = useAnimatedValue(0)
+
+  // We need to set the header offset to 0 after hiding or showing the static header.
+  useEffect(() => {
+    requestAnimationFrame(() => headerOffsetY.setValue(0))
+  }, [isStaticHeaderVisible])
+
   const railRef = useRef<SnappyHorizontalRail>(null)
 
   const shouldHideBackButton = Animated.lessOrEq(headerOffsetY, -10)
@@ -106,6 +117,14 @@ export const StickyTabPage: React.FC<StickyTabPageProps> = ({
         headerOffsetY,
         tabLabels: tabs.map((tab) => tab.title),
         tabSuperscripts: tabs.map((tab) => tab.superscript),
+        hideStaticHeader() {
+          LayoutAnimation.spring()
+          setIsStaticHeaderVisible(false)
+        },
+        showStaticHeader() {
+          LayoutAnimation.spring()
+          setIsStaticHeaderVisible(true)
+        },
         setActiveTabIndex(index) {
           setActiveTabIndex(index)
           activeTabIndexNative.setValue(index)
