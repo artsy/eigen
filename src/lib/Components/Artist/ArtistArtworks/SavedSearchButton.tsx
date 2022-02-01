@@ -75,7 +75,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   const handleCloseForm = () => setVisibleForm(false)
 
   const handleComplete = (result: SavedSearchAlertMutationResult) => {
-    tracking.trackEvent(tracks.toggleSavedSearch(true, artistIds, artistSlug, result.id))
+    tracking.trackEvent(tracks.toggleSavedSearch(true, artistIds[0], artistSlug, result.id))
 
     refetch()
     handleCloseForm()
@@ -99,7 +99,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
 
   const handleCreateAlertPress = () => {
     handleOpenForm()
-    tracking.trackEvent(tracks.tappedCreateAlert(artistIds, artistSlug))
+    tracking.trackEvent(tracks.tappedCreateAlert(artistIds[0], artistSlug))
   }
 
   useEffect(() => {
@@ -205,21 +205,21 @@ export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRend
 }
 
 export const tracks = {
-  tappedCreateAlert: (artistIds: string[], artistSlug: string): TappedCreateAlert => ({
+  tappedCreateAlert: (artistId: string, artistSlug: string): TappedCreateAlert => ({
     action: ActionType.tappedCreateAlert,
     context_screen_owner_type: OwnerType.artist,
-    context_screen_owner_id: artistIds[0],
+    context_screen_owner_id: artistId,
     context_screen_owner_slug: artistSlug,
   }),
   toggleSavedSearch: (
     enabled: boolean,
-    artistIds: string[],
+    artistId: string,
     artistSlug: string,
     searchCriteriaId: string
   ): ToggledSavedSearch => ({
     action: ActionType.toggledSavedSearch,
     context_screen_owner_type: OwnerType.artist,
-    context_screen_owner_id: artistIds[0],
+    context_screen_owner_id: artistId,
     context_screen_owner_slug: artistSlug,
     modified: enabled,
     original: !enabled,

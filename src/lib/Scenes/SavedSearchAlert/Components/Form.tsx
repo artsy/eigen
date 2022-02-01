@@ -23,7 +23,7 @@ import { SavedSearchAlertSwitch } from "./SavedSearchAlertSwitch"
 interface FormProps {
   pills: SavedSearchPill[]
   savedSearchAlertId?: string
-  artistIds: string[]
+  artistId: string
   artistName: string
   isLoading?: boolean
   hasChangedFilters?: boolean
@@ -39,7 +39,7 @@ interface FormProps {
 export const Form: React.FC<FormProps> = (props) => {
   const {
     pills,
-    artistIds,
+    artistId,
     artistName,
     savedSearchAlertId,
     isLoading,
@@ -133,7 +133,7 @@ export const Form: React.FC<FormProps> = (props) => {
             testID="view-artworks-button"
             hitSlop={{ top: 20, left: 20, right: 20, bottom: 20 }}
             onPress={() =>
-              navigate(`artist/${artistIds[0]}`, {
+              navigate(`artist/${artistId}`, {
                 passProps: {
                   searchCriteriaID: savedSearchAlertId,
                 },

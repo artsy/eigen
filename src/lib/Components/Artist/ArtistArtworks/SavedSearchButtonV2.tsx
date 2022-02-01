@@ -15,7 +15,7 @@ export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) =
 
   const handlePress = () => {
     onPress()
-    tracking.trackEvent(tracks.tappedCreateAlert(artistIds, artistSlug))
+    tracking.trackEvent(tracks.tappedCreateAlert(artistIds[0], artistSlug))
   }
 
   return (
@@ -39,10 +39,10 @@ export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) =
 }
 
 export const tracks = {
-  tappedCreateAlert: (artistIds: string[], artistSlug: string): TappedCreateAlert => ({
+  tappedCreateAlert: (artistId: string, artistSlug: string): TappedCreateAlert => ({
     action: ActionType.tappedCreateAlert,
     context_screen_owner_type: OwnerType.artist,
-    context_screen_owner_id: artistIds[0],
+    context_screen_owner_id: artistId,
     context_screen_owner_slug: artistSlug,
     context_module: ContextModule.artworkGrid,
   }),

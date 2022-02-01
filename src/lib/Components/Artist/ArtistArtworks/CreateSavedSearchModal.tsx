@@ -24,7 +24,7 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
   const popover = usePopoverMessage()
 
   const handleComplete = (result: SavedSearchAlertMutationResult) => {
-    tracking.trackEvent(tracks.toggleSavedSearch(true, artistIds, artistSlug, result.id))
+    tracking.trackEvent(tracks.toggleSavedSearch(true, artistIds[0], artistSlug, result.id))
     closeModal()
     onComplete?.()
 
@@ -58,13 +58,13 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
 export const tracks = {
   toggleSavedSearch: (
     enabled: boolean,
-    artistIds: string[],
+    artistId: string,
     artistSlug: string,
     searchCriteriaId: string
   ): ToggledSavedSearch => ({
     action: ActionType.toggledSavedSearch,
     context_screen_owner_type: OwnerType.artist,
-    context_screen_owner_id: artistIds[0],
+    context_screen_owner_id: artistId,
     context_screen_owner_slug: artistSlug,
     modified: enabled,
     original: !enabled,

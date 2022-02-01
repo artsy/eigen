@@ -258,7 +258,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         <Form
           pills={pills}
           savedSearchAlertId={savedSearchAlertId}
-          artistIds={artistIds}
+          artistId={artistIds[0]}
           artistName={artistName}
           hasChangedFilters={hasChangedFilters}
           onDeletePress={handleDeletePress}
