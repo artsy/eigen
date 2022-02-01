@@ -154,7 +154,7 @@ export const mockSubmissionForm: ArtworkDetailsFormModel = {
   title: "hello",
   year: "2000",
   medium: "oil",
-  attributionClass: "attributionClass",
+  attributionClass: null,
   editionNumber: "1",
   editionSizeFormatted: "1",
   dimensionsMetric: "in",
