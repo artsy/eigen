@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 434cba45d49bc25f7ba25349a7f27b5d */
+/* @relayHash 18e70e82d7723287385abcde9ac660ea */
 
 import { ConcreteRequest } from "relay-runtime";
 export type SavedSearchAlertQueryVariables = {
@@ -13,7 +13,7 @@ export type SavedSearchAlertQueryResponse = {
             readonly internalID: string;
             readonly acquireable: boolean | null;
             readonly additionalGeneIDs: ReadonlyArray<string>;
-            readonly artistID: string | null;
+            readonly artistIDs: ReadonlyArray<string> | null;
             readonly atAuction: boolean | null;
             readonly attributionClass: ReadonlyArray<string>;
             readonly colors: ReadonlyArray<string>;
@@ -52,7 +52,7 @@ query SavedSearchAlertQuery(
       internalID
       acquireable
       additionalGeneIDs
-      artistID
+      artistIDs
       atAuction
       attributionClass
       colors
@@ -125,7 +125,7 @@ v1 = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "artistID",
+      "name": "artistIDs",
       "storageKey": null
     },
     {
@@ -312,7 +312,7 @@ return {
     ]
   },
   "params": {
-    "id": "434cba45d49bc25f7ba25349a7f27b5d",
+    "id": "18e70e82d7723287385abcde9ac660ea",
     "metadata": {},
     "name": "SavedSearchAlertQuery",
     "operationKind": "query",
@@ -320,5 +320,5 @@ return {
   }
 };
 })();
-(node as any).hash = 'ef8b45a2d729f9b791d4983d0b1a40e6';
+(node as any).hash = '920831f163c8befc1d904fca34e4d289';
 export default node;

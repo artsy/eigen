@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash ee1a590031e94c57799b4bb2edeedc59 */
+/* @relayHash 71cc5cc9edb22644186cb2b11b74eb7f */
 
 import { ConcreteRequest } from "relay-runtime";
 export type SearchCriteriaQueryVariables = {
@@ -13,7 +13,6 @@ export type SearchCriteriaQueryResponse = {
         readonly savedSearch: {
             readonly acquireable: boolean | null;
             readonly additionalGeneIDs: ReadonlyArray<string>;
-            readonly artistID: string | null;
             readonly atAuction: boolean | null;
             readonly attributionClass: ReadonlyArray<string>;
             readonly colors: ReadonlyArray<string>;
@@ -47,7 +46,6 @@ query SearchCriteriaQuery(
     savedSearch(id: $searchCriteriaId) {
       acquireable
       additionalGeneIDs
-      artistID
       atAuction
       attributionClass
       colors
@@ -109,13 +107,6 @@ v2 = {
       "args": null,
       "kind": "ScalarField",
       "name": "additionalGeneIDs",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "artistID",
       "storageKey": null
     },
     {
@@ -272,7 +263,7 @@ return {
     ]
   },
   "params": {
-    "id": "ee1a590031e94c57799b4bb2edeedc59",
+    "id": "71cc5cc9edb22644186cb2b11b74eb7f",
     "metadata": {},
     "name": "SearchCriteriaQuery",
     "operationKind": "query",
@@ -280,5 +271,5 @@ return {
   }
 };
 })();
-(node as any).hash = '82daec872d3fdb2c57fdcc0de7aa065f';
+(node as any).hash = 'e2ac3f01c403ee98e4371131c54aad9b';
 export default node;
