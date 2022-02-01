@@ -216,7 +216,7 @@ export const features = defineFeatures({
     readyForRelease: false,
     description: "Enable New Artwork Submission Flow with Accordion",
     showInAdminMenu: true,
-   },
+  },
   ARCaptureExceptionsInSentryOnDev: {
     readyForRelease: false,
     description: "Enable capturing exceptions in Sentry on DEV",
@@ -225,6 +225,11 @@ export const features = defineFeatures({
   ARShowLinkedAccounts: {
     readyForRelease: false,
     description: "Show linked social accounts",
+    showInAdminMenu: true,
+  },
+  ARAllowLinkSocialAccountsOnSignUp: {
+    readyForRelease: false,
+    description: "Allow linking of social accounts on sign up",
     showInAdminMenu: true,
   },
 })

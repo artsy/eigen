@@ -1,12 +1,14 @@
 import { useNavigation } from "@react-navigation/native"
 import { BackButton } from "lib/navigation/BackButton"
 import { navigate } from "lib/navigation/navigate"
+import { AuthPromiseRejectType } from "lib/store/AuthModel"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { Button, Flex, Join, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
 import { Alert, Image, Platform } from "react-native"
 import { EnvelopeIcon } from "../../../palette/svgs/EnvelopeIcon"
 import { useFeatureFlag } from "../../store/GlobalStore"
+import { AppleToken, GoogleOrFacebookToken, titleize } from "./OnboardingSocialLink"
 
 interface OnboardingSocialPickProps {
   mode: "login" | "signup"
@@ -16,6 +18,8 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
   const navigation = useNavigation()
 
   const enableGoogleAuth = useFeatureFlag("ARGoogleAuth")
+
+  const allowLinkingOnSignUp = useFeatureFlag("ARAllowLinkSocialAccountsOnSignUp")
 
   /**
    * When we land on OnboardingSocialPick coming from OnboardingCreateAccount or OnboardingLogin
@@ -33,34 +37,94 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
     return clearTimeout(timeout)
   }, [])
 
-  const continueWithFacebook = async () => {
-    try {
-      await GlobalStore.actions.auth.authFacebook({ navigation })
-    } catch (error) {
-      if (typeof error === "string") {
-        Alert.alert("Try again", error)
+  const handleErrorWithAlternativeProviders = (meta: AuthPromiseRejectType["meta"]) => {
+    const titleizedProvider = titleize(meta?.provider ?? "")
+    const {
+      email,
+      name,
+      existingProviders: providers,
+      provider: providerToBeLinked,
+      oauthToken,
+      idToken,
+      appleUID,
+    } = meta!
+    let tokenForProviderToBeLinked: GoogleOrFacebookToken | AppleToken
+    if (["google", "facebook"].includes(providerToBeLinked)) {
+      if (!oauthToken) {
+        console.warn(`Error: No oauthToken provided for ${titleizedProvider}`)
+        return
       }
+      tokenForProviderToBeLinked = oauthToken
+    } else if (providerToBeLinked === "apple") {
+      if (!idToken || !appleUID) {
+        console.warn(`Error: No oauthToken provided for ${titleizedProvider}`)
+        return
+      }
+      tokenForProviderToBeLinked = { idToken, appleUID }
+    }
+    Alert.alert(
+      "Error",
+      `An Artsy account with same email as your ${titleizedProvider} already exists. Do you want to link your ${titleizedProvider} account to your existing Artsy account?`,
+      [
+        {
+          text: "Dismiss",
+        },
+        {
+          text: "Link Accounts",
+          onPress: () =>
+            navigation.navigate("OnboardingSocialLink", {
+              email,
+              name,
+              providers,
+              providerToBeLinked,
+              tokenForProviderToBeLinked,
+            }),
+        },
+      ]
+    )
+  }
+
+  const handleError = (error: AuthPromiseRejectType) => {
+    const canBeLinked = error.error === "User Already Exists" && error.meta && error.meta.existingProviders
+    if (canBeLinked && allowLinkingOnSignUp) {
+      handleErrorWithAlternativeProviders(error.meta)
+      return
+    }
+    Alert.alert("Try again", error.message)
+  }
+
+  const continueWithFacebook = () => {
+    if (mode === "login") {
+      GlobalStore.actions.auth.authFacebook({ signInOrUp: "signIn" }).catch((error: AuthPromiseRejectType) => {
+        handleError(error)
+      })
+    } else {
+      GlobalStore.actions.auth
+        .authFacebook({ signInOrUp: "signUp", agreedToReceiveEmails: true })
+        .catch((error: AuthPromiseRejectType) => {
+          handleError(error)
+        })
     }
   }
 
-  const continueWithGoogle = async () => {
-    try {
-      await GlobalStore.actions.auth.authGoogle()
-    } catch (error) {
-      if (typeof error === "string") {
-        Alert.alert("Try again", error)
-      }
+  const continueWithGoogle = () => {
+    if (mode === "login") {
+      GlobalStore.actions.auth.authGoogle({ signInOrUp: "signIn" }).catch((error: AuthPromiseRejectType) => {
+        handleError(error)
+      })
+    } else {
+      GlobalStore.actions.auth
+        .authGoogle({ signInOrUp: "signUp", agreedToReceiveEmails: true })
+        .catch((error: AuthPromiseRejectType) => {
+          handleError(error)
+        })
     }
   }
 
-  const continueWithApple = async () => {
-    try {
-      await GlobalStore.actions.auth.authApple()
-    } catch (error) {
-      if (typeof error === "string") {
-        Alert.alert("Try again", error)
-      }
-    }
+  const continueWithApple = () => {
+    GlobalStore.actions.auth.authApple({ agreedToReceiveEmails: true }).catch((error: AuthPromiseRejectType) => {
+      handleError(error)
+    })
   }
 
   const isiOS = Platform.OS === "ios"

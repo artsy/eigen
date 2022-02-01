@@ -14,7 +14,7 @@ import {
 } from "./OnboardingCreateAccount/OnboardingCreateAccount"
 import { OnboardingLogin, OnboardingLoginWithEmail } from "./OnboardingLogin"
 import { OnboardingPersonalization } from "./OnboardingPersonalization/OnboardingPersonalization"
-import { OnboardingSocialLink } from "./OnboardingSocialLink"
+import { AppleToken, GoogleOrFacebookToken, OnboardingSocialLink } from "./OnboardingSocialLink"
 import { OnboardingWelcome } from "./OnboardingWelcome"
 
 // tslint:disable-next-line:interface-over-type-literal
@@ -24,7 +24,13 @@ export type OnboardingNavigationStack = {
   OnboardingLoginWithEmail: { withFadeAnimation: boolean; email: string } | undefined
   OnboardingCreateAccount: { withFadeAnimation: boolean } | undefined
   OnboardingCreateAccountWithEmail: undefined
-  OnboardingSocialLink: { email: string }
+  OnboardingSocialLink: {
+    email: string
+    name: string
+    providers: string[]
+    providerToBeLinked: string
+    tokenForProviderToBeLinked: GoogleOrFacebookToken | AppleToken
+  }
   ForgotPassword: { email?: string }
   Terms: undefined
   Privacy: undefined
