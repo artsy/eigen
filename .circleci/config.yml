@@ -397,6 +397,7 @@ jobs:
       - update-echo
       - install-gems
       - update-sentry-release-name
+      - generate-query-map
       - bundle-js-skip-cache
       - install-cocoapods
       - build-app-ios
