@@ -9,7 +9,7 @@ describe("SavedSearchButtonV2", () => {
     return (
       <SavedSearchButtonV2
         onPress={jest.fn}
-        artistIds={["artistId"]}
+        artistId="artistId"
         artistSlug="artistSlug"
         {...props}
       />

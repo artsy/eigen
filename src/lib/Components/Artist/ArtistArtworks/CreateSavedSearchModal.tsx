@@ -11,7 +11,7 @@ import { useTracking } from "react-tracking"
 
 export interface CreateSavedSearchModalProps {
   visible: boolean
-  artistIds: string[]
+  artistId: string
   artistName: string
   artistSlug: string
   closeModal: () => void
@@ -19,12 +19,12 @@ export interface CreateSavedSearchModalProps {
 }
 
 export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (props) => {
-  const { visible, artistIds, artistName, artistSlug, closeModal, onComplete } = props
+  const { visible, artistId, artistName, artistSlug, closeModal, onComplete } = props
   const tracking = useTracking()
   const popover = usePopoverMessage()
 
   const handleComplete = (result: SavedSearchAlertMutationResult) => {
-    tracking.trackEvent(tracks.toggleSavedSearch(true, artistIds[0], artistSlug, result.id))
+    tracking.trackEvent(tracks.toggleSavedSearch(true, artistId, artistSlug, result.id))
     closeModal()
     onComplete?.()
 
@@ -46,7 +46,7 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
   }
 
   const params: CreateSavedSearchAlertParams = {
-    artistIds,
+    artistId,
     artistName,
     onClosePress: closeModal,
     onComplete: handleComplete,

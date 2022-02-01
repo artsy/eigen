@@ -9,7 +9,7 @@ export interface SavedSearchAlertFormValues {
 }
 
 export interface SavedSearchAlertFormPropsBase {
-  artistIds: string[]
+  artistId: string
   artistName: string
   isLoading?: boolean
 }

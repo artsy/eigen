@@ -12,7 +12,7 @@ import { CreateSavedSearchContent, CreateSavedSearchContentProps } from "./Creat
 jest.unmock("react-relay")
 
 const defaultProps: CreateSavedSearchContentProps = {
-  artistIds: ["artistID"],
+  artistId: "artistID",
   artistName: "artistName",
   userAllowsEmails: true,
   onClosePress: jest.fn(),

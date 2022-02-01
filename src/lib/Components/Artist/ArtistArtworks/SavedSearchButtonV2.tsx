@@ -4,18 +4,18 @@ import React from "react"
 import { useTracking } from "react-tracking"
 
 export interface SavedSearchButtonV2Props {
-  artistIds: string[]
+  artistId: string
   artistSlug: string
   onPress: () => void
 }
 
 export const SavedSearchButtonV2: React.FC<SavedSearchButtonV2Props> = (props) => {
-  const { artistIds, artistSlug, onPress } = props
+  const { artistId, artistSlug, onPress } = props
   const tracking = useTracking()
 
   const handlePress = () => {
     onPress()
-    tracking.trackEvent(tracks.tappedCreateAlert(artistIds[0], artistSlug))
+    tracking.trackEvent(tracks.tappedCreateAlert(artistId, artistSlug))
   }
 
   return (

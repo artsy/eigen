@@ -43,7 +43,7 @@ const initialData: ArtworkFiltersState = {
 const defaultParams: CreateSavedSearchAlertParams = {
   filters,
   aggregations: [],
-  artistIds: ["artistID"],
+  artistId: "artistID",
   artistName: "artistName",
   onComplete: jest.fn(),
   onClosePress: jest.fn(),

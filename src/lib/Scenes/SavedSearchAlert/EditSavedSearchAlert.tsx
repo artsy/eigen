@@ -78,7 +78,7 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
                 email: userAlertSettings?.email ?? false,
                 push: userAlertSettings?.push ?? false,
               }}
-              artistIds={[artist.internalID]}
+              artistId={artist.internalID}
               artistName={artist.name!}
               savedSearchAlertId={savedSearchAlertId}
               userAllowsEmails={user?.emailFrequency !== "none"}

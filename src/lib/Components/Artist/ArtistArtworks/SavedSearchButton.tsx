@@ -45,7 +45,7 @@ export const emitSavedSearchRefetchEvent = () => {
 export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   me,
   loading,
-  artistIds,
+  artistId,
   artistName,
   artistSlug,
   filters,
@@ -75,7 +75,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   const handleCloseForm = () => setVisibleForm(false)
 
   const handleComplete = (result: SavedSearchAlertMutationResult) => {
-    tracking.trackEvent(tracks.toggleSavedSearch(true, artistIds[0], artistSlug, result.id))
+    tracking.trackEvent(tracks.toggleSavedSearch(true, artistId, artistSlug, result.id))
 
     refetch()
     handleCloseForm()
@@ -99,7 +99,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
 
   const handleCreateAlertPress = () => {
     handleOpenForm()
-    tracking.trackEvent(tracks.tappedCreateAlert(artistIds[0], artistSlug))
+    tracking.trackEvent(tracks.tappedCreateAlert(artistId, artistSlug))
   }
 
   useEffect(() => {
@@ -110,7 +110,7 @@ export const SavedSearchButton: React.FC<SavedSearchButtonProps> = ({
   }, [refetch])
 
   const params: CreateSavedSearchAlertParams = {
-    artistIds,
+    artistId,
     artistName,
     filters,
     aggregations,
@@ -162,10 +162,10 @@ export const SavedSearchButtonRefetchContainer = createRefetchContainer(
 export const SavedSearchButtonQueryRenderer: React.FC<SavedSearchButtonQueryRendererProps> = (
   props
 ) => {
-  const { filters, artistIds } = props
+  const { filters, artistId } = props
   const criteria = useMemo(
-    () => getSearchCriteriaFromFilters(artistIds, filters),
-    [artistIds, filters]
+    () => getSearchCriteriaFromFilters(artistId, filters),
+    [artistId, filters]
   )
 
   return (

@@ -21,7 +21,7 @@ jest.unmock("react-relay")
 
 const defaultProps: CreateSavedSearchModalProps = {
   visible: true,
-  artistIds: ["artistId"],
+  artistId: "artistId",
   artistName: "artistName",
   artistSlug: "artistSlug",
   closeModal: jest.fn,

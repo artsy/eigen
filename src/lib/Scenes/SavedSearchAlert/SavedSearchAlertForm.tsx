@@ -44,7 +44,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
   const {
     initialValues,
     savedSearchAlertId,
-    artistIds,
+    artistId,
     artistName,
     userAllowsEmails,
     contentContainerStyle,
@@ -64,7 +64,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
 
   const artistPill: SavedSearchPill = {
     label: artistName,
-    value: artistIds[0],
+    value: artistId,
     paramName: SearchCriteria.artistIDs,
   }
 
@@ -258,7 +258,7 @@ export const SavedSearchAlertForm: React.FC<SavedSearchAlertFormProps> = (props)
         <Form
           pills={pills}
           savedSearchAlertId={savedSearchAlertId}
-          artistId={artistIds[0]}
+          artistId={artistId}
           artistName={artistName}
           hasChangedFilters={hasChangedFilters}
           onDeletePress={handleDeletePress}

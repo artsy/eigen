@@ -60,7 +60,7 @@ describe("SavedSearchButton", () => {
             filters={mockedFilters}
             criteria={attributes}
             aggregations={[]}
-            artistIds={["artistID"]}
+            artistId="artistID"
             artistName="artistName"
             artistSlug="artistSlug"
           />
