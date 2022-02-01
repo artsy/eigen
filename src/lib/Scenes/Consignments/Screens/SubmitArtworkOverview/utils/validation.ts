@@ -15,7 +15,7 @@ export interface ArtworkDetailsFormModel {
   title: string
   year: string
   medium: string
-  attributionClass: ConsignmentAttributionClass
+  attributionClass: ConsignmentAttributionClass | null
   editionNumber: string
   editionSizeFormatted: string
   dimensionsMetric: string
@@ -36,8 +36,7 @@ export const artworkDetailsEmptyInitialValues: ArtworkDetailsFormModel = {
   title: "",
   year: "",
   medium: "",
-  // TODO: This needs to be fixed!
-  attributionClass: "",
+  attributionClass: null,
   editionNumber: "",
   editionSizeFormatted: "",
   dimensionsMetric: "in",
@@ -87,4 +86,10 @@ export const artworkDetailsValidationSchema = Yup.object().shape({
     state: Yup.string(),
     country: Yup.string(),
   }),
+})
+
+export const contactInformationValidationSchema = Yup.object().shape({
+  userName: Yup.string().required("Please provide a name").trim(),
+  userEmail: Yup.string().email().required("Please provide a valid Email").trim(),
+  userPhone: Yup.string().required("Please provide a valid phone number").trim(),
 })

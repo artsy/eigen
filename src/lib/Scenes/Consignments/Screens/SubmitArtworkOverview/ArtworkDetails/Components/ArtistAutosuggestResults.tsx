@@ -12,8 +12,8 @@ import React from "react"
 import { FlatList } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
+import { ErrorView } from "../../Components/ErrorView"
 import { ArtistAutosuggestRow } from "./ArtistAutosuggestRow"
-import { ErrorView } from "./ErrorView"
 
 export type ArtistAutosuggestResult = NonNullable<
   NonNullable<
