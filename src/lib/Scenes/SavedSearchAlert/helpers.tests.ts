@@ -25,7 +25,7 @@ describe("getNamePlaceholder", () => {
   it("returns the correct number of filters when artist pill is shown", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
     const pills: SavedSearchPill[] = [
-      { label: "Artist Name", paramName: SearchCriteria.artistIDs, value: "artistName" },
+      { label: "Artist Name", paramName: SearchCriteria.artistID, value: "artistName" },
       { label: "One", paramName: SearchCriteria.materialsTerms, value: "one" },
       { label: "Two", paramName: SearchCriteria.materialsTerms, value: "two" },
     ]
