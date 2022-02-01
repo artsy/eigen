@@ -88,6 +88,18 @@ export const artworkDetailsValidationSchema = Yup.object().shape({
   }),
 })
 
+export interface ContactInformationFormModel {
+  userName: string
+  userEmail: string
+  userPhone: string
+}
+
+export const contactInformationEmptyInitialValues: ContactInformationFormModel = {
+  userName: "",
+  userEmail: "",
+  userPhone: "",
+}
+
 export const contactInformationValidationSchema = Yup.object().shape({
   userName: Yup.string().required("Please provide a name").trim(),
   userEmail: Yup.string().email().required("Please provide a valid Email").trim(),
