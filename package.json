@@ -204,6 +204,7 @@
     "@types/argparse": "2.0.10",
     "@types/autosuggest-highlight": "^3.1.1",
     "@types/chalk": "2.2.0",
+    "@types/cheerio": "^0.22.30",
     "@types/dedent": "0.7.0",
     "@types/google-libphonenumber": "7.4.23",
     "@types/jest": "25.1.5",
