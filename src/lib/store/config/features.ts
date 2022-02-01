@@ -189,6 +189,11 @@ export const features = defineFeatures({
     description: "Enable collector profile",
     showInAdminMenu: true,
   },
+  AREnableMyCollectionSearchBar: {
+    readyForRelease: false,
+    description: "Enable My Collection search bar",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
