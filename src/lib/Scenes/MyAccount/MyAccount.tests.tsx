@@ -1,6 +1,6 @@
 import { MyAccountTestsQuery } from "__generated__/MyAccountTestsQuery.graphql"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
-import { Sans } from "palette"
+import { Text } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
@@ -50,7 +50,7 @@ describe(MyAccountQueryRenderer, () => {
       return result
     })
 
-    expect(tree.findAllByType(Sans)[4].props.children).toBe(
+    expect(tree.findAllByType(Text)[4].props.children).toBe(
       "myverylongemailmyverylongemailmyverylongemail@averylongdomainaverylongdomainaverylongdomain.com"
     )
   })

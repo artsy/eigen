@@ -33,6 +33,7 @@ import {
 } from "react-native-fbsdk-next"
 import Keychain from "react-native-keychain"
 import { LegacyNativeModules } from "../NativeModules/LegacyNativeModules"
+import { AuthError } from "./AuthError"
 import { getCurrentEmissionState } from "./GlobalStore"
 import type { GlobalStoreModel } from "./GlobalStoreModel"
 
@@ -105,19 +106,6 @@ export interface AuthPromiseRejectType {
   }
 }
 
-/**
- * Unifies and makes the errors thrown here consistent
- */
-class AuthError implements AuthPromiseRejectType {
-  public readonly message: string = ""
-  public readonly error?: string
-  public readonly meta?: AuthPromiseRejectType["meta"]
-  constructor(message: string, error?: string, meta?: AuthPromiseRejectType["meta"]) {
-    this.message = message
-    this.error = error
-    this.meta = meta
-  }
-}
 export interface AuthModel {
   // State
   userID: string | null
