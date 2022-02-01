@@ -185,13 +185,13 @@ commands:
       - restore_cache:
           keys:
             - v6-test-success-{{ checksum "../workspace/.manifests/android_native" }}
-      - run:
-          name: Quit early if possible
-          command: |
-            if test $CIRCLE_BRANCH != beta-android && ls build-success.log
-            then
-              circleci step halt
-            fi
+      # - run:
+      #     name: Quit early if possible
+      #     command: |
+      #       if test $CIRCLE_BRANCH != beta-android && ls build-success.log
+      #       then
+      #         circleci step halt
+      #       fi
       - install-node-modules
       - update-echo
       - install-gems
@@ -358,13 +358,13 @@ jobs:
             - v6-test-success-{{ checksum "../workspace/.manifests/native_code" }}
       # we can quit the macos build early if there were no native code changes
       # and we're not on the beta branch
-      - run:
-          name: Quit early if possible
-          command: |
-            if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
-            then
-              circleci step halt
-            fi
+      # - run:
+      #     name: Quit early if possible
+      #     command: |
+      #       if test $CIRCLE_BRANCH != beta-ios && ls xcode_test_raw.log
+      #       then
+      #         circleci step halt
+      #       fi
       - run:
           name: Quit early if Draft PR
           command: |
