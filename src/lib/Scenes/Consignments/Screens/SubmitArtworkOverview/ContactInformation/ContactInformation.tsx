@@ -2,7 +2,9 @@ import { captureMessage } from "@sentry/react-native"
 import { ContactInformationQuery } from "__generated__/ContactInformationQuery.graphql"
 import { Formik } from "formik"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { GlobalStore } from "lib/store/GlobalStore"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
@@ -25,6 +27,9 @@ export const ContactInformation: React.FC<{
   const email = queryData?.me?.email
   const phone = queryData?.me?.phone
 
+  // me now has what is asked for in the Fragment
+  //  console.log({ me })
+
   const handleSubmit = async (values: ContactInformationFormModel) => {
     try {
       const updatedSubmissionId = await updateConsignSubmission({
@@ -36,7 +41,7 @@ export const ContactInformation: React.FC<{
 
       if (updatedSubmissionId) {
         GlobalStore.actions.artworkSubmission.submission.resetSessionState()
-        handlePress()
+        // handlePress()
       }
     } catch (error) {
       captureMessage(JSON.stringify(error))
