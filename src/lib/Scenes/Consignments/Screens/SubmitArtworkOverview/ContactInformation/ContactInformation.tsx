@@ -1,9 +1,14 @@
 import { captureMessage } from "@sentry/react-native"
+import { ContactInformation_me } from "__generated__/ContactInformation_me.graphql"
+import { ContactInformationQueryRendererQuery } from "__generated__/ContactInformationQueryRendererQuery.graphql"
 import { Formik } from "formik"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { GlobalStore } from "lib/store/GlobalStore"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
 import React, { useState } from "react"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ErrorView } from "../Components/ErrorView"
 import { updateConsignSubmission } from "../Mutations/updateConsignSubmissionMutation"
 import {
@@ -12,9 +17,17 @@ import {
   contactInformationValidationSchema,
 } from "../utils/validation"
 
-export const ContactInformation: React.FC<{ handlePress: () => void }> = ({ handlePress }) => {
+interface Props {
+  handlePress: () => void
+  me: ContactInformation_me | null
+}
+
+export const ContactInformation: React.FC<Props> = ({ handlePress, me }) => {
   const { submissionId } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
   const [submissionError, setSubmissionError] = useState(false)
+
+  // me now has what is asked for in the Fragment
+  //  console.log({ me })
 
   const handleSubmit = async (values: ContactInformationFormModel) => {
     try {
@@ -90,3 +103,34 @@ export const ContactInformation: React.FC<{ handlePress: () => void }> = ({ hand
     </Formik>
   )
 }
+
+export const ContactInformationContainer = createFragmentContainer(ContactInformation, {
+  me: graphql`
+    fragment ContactInformation_me on Me {
+      name
+      email
+    }
+  `,
+})
+
+export const ContactInformationQueryRenderer: React.FC = () => {
+  return (
+    <QueryRenderer<ContactInformationQueryRendererQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query ContactInformationQueryRendererQuery {
+          me {
+            ...ContactInformation_me
+          }
+        }
+      `}
+      variables={{}}
+      render={renderWithPlaceholder({
+        Container: ContactInformationContainer,
+        renderPlaceholder: SaleInfoPlaceholder,
+      })}
+    />
+  )
+}
+
+const SaleInfoPlaceholder = () => <Text>some placeholder</Text>

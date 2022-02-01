@@ -6,15 +6,17 @@ import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { ArtworkDetails } from "./ArtworkDetails/ArtworkDetails"
 import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
-import { ContactInformation } from "./ContactInformation/ContactInformation"
+import { ContactInformationQueryRenderer } from "./ContactInformation/ContactInformation"
 import { UploadPhotos } from "./UploadPhotos/UploadPhotos"
 
 interface SubmitArtworkScreenNavigationProps
   extends StackScreenProps<SubmitArtworkOverviewNavigationStack, "SubmitArtworkScreen"> {}
 
-export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> = ({
-  navigation,
-}) => {
+export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> = (
+  {
+    // navigation,
+  }
+) => {
   const items = [
     {
       overtitle: "Step 1 of 3",
@@ -44,11 +46,11 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
       overtitle: "Step 3 of 3",
       title: "Contact Information",
       Content: (
-        <ContactInformation
-          handlePress={() => {
-            navigation.navigate("ArtworkSubmittedScreen")
-            // do nothing
-          }}
+        <ContactInformationQueryRenderer
+        // accept below prop in the query renderer
+        // handlePress={() => {
+        //   navigation.navigate("ArtworkSubmittedScreen")
+        // }}
         />
       ),
     },
