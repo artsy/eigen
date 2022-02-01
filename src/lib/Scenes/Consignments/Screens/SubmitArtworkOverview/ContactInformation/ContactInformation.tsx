@@ -57,7 +57,7 @@ export const ContactInformation = ({ handlePress }: Props) => {
     >
       {({ values, setFieldValue, isValid }) => (
         <Flex p={1} mt={1}>
-          <Text variant="sm" color="black60">
+          <Text color="black60">
             We will only use these details to contact you regarding your submission.
           </Text>
           <Spacer mt={4} />
