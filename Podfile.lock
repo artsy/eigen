@@ -86,7 +86,7 @@ PODS:
     - React-RCTLinking (= 0.63.3)
     - React-RCTNetwork (= 0.63.3)
     - React-RCTText (= 0.63.3)
-    - RNSentry (= 3.1.1)
+    - RNSentry (= 3.2.13)
     - RNSVG (= 9.13.3)
     - SDWebImage (= 5.8.3)
     - tipsi-stripe (= 7.5.0)
@@ -637,9 +637,9 @@ PODS:
   - RNScreens (3.4.0):
     - React-Core
     - React-RCTImage
-  - RNSentry (3.1.1):
+  - RNSentry (3.2.13):
     - React-Core
-    - Sentry (= 7.3.0)
+    - Sentry (= 7.9.0)
   - RNShare (7.3.2):
     - React-Core
   - RNSplit (0.0.1):
@@ -658,9 +658,9 @@ PODS:
   - Segment-Appboy/Full-SDK (4.2.0):
     - Analytics
     - Appboy-iOS-SDK (~> 4.3.0)
-  - Sentry (7.3.0):
-    - Sentry/Core (= 7.3.0)
-  - Sentry/Core (7.3.0)
+  - Sentry (7.9.0):
+    - Sentry/Core (= 7.9.0)
+  - Sentry/Core (7.9.0)
   - Specta (1.0.5)
   - Starscream (3.0.4)
   - Stripe (14.0.2)
@@ -1097,7 +1097,7 @@ SPEC CHECKSUMS:
   DHCShakeNotifier: 64048427ecaa763f2472d0032f58bf7a10074eee
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   EDColor: c83f9a61f9f9b3c23d541f1feb561558e29cb088
-  Emission: 3befbbf9a24aa4a1efcc129e5b61d7fd43af149f
+  Emission: 1b25a78dfec2c52dc26ef4a11b5832c8168c5609
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   "Expecta+Snapshots": dcff217eef506dabd6dfdc7864ea2da321fafbb8
   Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
@@ -1206,14 +1206,14 @@ SPEC CHECKSUMS:
   RNReactNativeHapticFeedback: 22c5ecf474428766c6b148f96f2ff6155cd7225e
   RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
-  RNSentry: 49abc89b0190b4c8afe0fa5d065f98e36cb53233
+  RNSentry: 0aa1567f66c20390f3834637fc4f73380dcd0774
   RNShare: d76b8c9c6e6ffb38fc18f40b4338c9d867592ed3
   RNSplit: 5c78d865a08e56dd125968ba1b529358f0b9f537
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
   SDWebImage: 112503ec94a5a2a41869503844a15e8d8f1ead5c
   Segment-Adjust: 7646c502b087a153d89a42059dd53e6d1d143737
   Segment-Appboy: 5688916eb8fb104b638116ba251cee5d4d8bd266
-  Sentry: 9a4e621430e2dae4477d791f2f7e905720b6efbf
+  Sentry: 2f7e91f247cfb05b05bd01e0b5d0692557a7687b
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
   Starscream: f5da93fe6984c77b694366bf7299b7dc63a76f26
   Stripe: 25c07000e7e86ffc53da0e41a5dd1bce30470fe0

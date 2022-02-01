@@ -4,7 +4,9 @@ import { InfoModal } from "./InfoModal"
 
 describe("InfoModal", () => {
   it("renders the passed title", () => {
-    const { findByText } = renderWithWrappersTL(<InfoModal title="someTitle" visible onDismiss={jest.fn()} />)
+    const { findByText } = renderWithWrappersTL(
+      <InfoModal title="someTitle" visible onDismiss={jest.fn()} />
+    )
     expect(findByText("someTitle")).toBeTruthy()
   })
 })
