@@ -122,7 +122,6 @@ commands:
             - emission/Pod/Assets/Emission.js
             - emission/Pod/Assets/Emission.js.map
             - emission/Pod/Assets/assets
-
   install-gems:
     steps:
       - restore_cache:
