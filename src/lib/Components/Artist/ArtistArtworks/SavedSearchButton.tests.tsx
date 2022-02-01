@@ -129,9 +129,7 @@ describe("SavedSearchButton", () => {
 
     act(() => tree.root.findByType(Button).props.onPress())
 
-    expect(mockTrackEvent).toHaveBeenCalledWith(
-      tracks.tappedCreateAlert(["artistID"], "artistSlug")
-    )
+    expect(mockTrackEvent).toHaveBeenCalledWith(tracks.tappedCreateAlert("artistID", "artistSlug"))
   })
 
   it("should navigate to the saved search alerts list when popover is pressed", async () => {
@@ -174,7 +172,7 @@ describe("SavedSearchButton", () => {
     )
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
-      tracks.toggleSavedSearch(true, ["artistID"], "artistSlug", "savedSearchAlertId")
+      tracks.toggleSavedSearch(true, "artistID", "artistSlug", "savedSearchAlertId")
     )
   })
 })

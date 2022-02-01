@@ -94,7 +94,7 @@ describe("CreateSavedSearchModal", () => {
     container.findByType(CreateSavedSearchAlert).props.params.onComplete(mockedMutationResult)
 
     expect(mockTrackEvent).toHaveBeenCalledWith(
-      tracks.toggleSavedSearch(true, ["artistId"], "artistSlug", "savedSearchAlertId")
+      tracks.toggleSavedSearch(true, "artistId", "artistSlug", "savedSearchAlertId")
     )
   })
 })
