@@ -18,11 +18,15 @@ import {
 } from "../utils/validation"
 
 interface Props {
-  handlePress: () => void
+  // handlePress: () => void
   me: ContactInformation_me | null
 }
 
-export const ContactInformation: React.FC<Props> = ({ handlePress, me }) => {
+export const ContactInformation: React.FC<Props> = (
+  {
+    // handlePress, me
+  }
+) => {
   const { submissionId } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
   const [submissionError, setSubmissionError] = useState(false)
 
@@ -40,7 +44,7 @@ export const ContactInformation: React.FC<Props> = ({ handlePress, me }) => {
 
       if (updatedSubmissionId) {
         GlobalStore.actions.artworkSubmission.submission.resetSessionState()
-        handlePress()
+        // handlePress()
       }
     } catch (error) {
       captureMessage(JSON.stringify(error))
