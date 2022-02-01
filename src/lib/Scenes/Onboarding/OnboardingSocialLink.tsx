@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from "@react-navigation/native"
-import { StackScreenProps } from "@react-navigation/stack"
+import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
 import { FormikProvider, useFormik } from "formik"
 import { BackButton } from "lib/navigation/BackButton"
 import { GlobalStore } from "lib/store/GlobalStore"
@@ -34,12 +34,14 @@ export const titleize = (str: string) =>
     .join("")
 
 export const OnboardingSocialLink: React.FC = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation<StackNavigationProp<OnboardingNavigationStack>>()
   const insets = useSafeAreaInsets()
   const { email, name, providers, providerToBeLinked, tokenForProviderToBeLinked } =
     useRoute<StackScreenProps<OnboardingNavigationStack, "OnboardingSocialLink">["route"]>().params
 
-  const [showPasswordForm, setShowPasswordForm] = useState(providers.length === 1 && providers[0] === "email")
+  const [showPasswordForm, setShowPasswordForm] = useState(
+    providers.length === 1 && providers[0] === "email"
+  )
   const environment = useRelayEnvironment()
 
   const { linkUsingOauthToken: linkFB, isLoading: fbLoading } = useFacebookLink(environment)
@@ -109,7 +111,11 @@ export const OnboardingSocialLink: React.FC = () => {
     initialValues: { password: "" },
     initialErrors: {},
     validationSchema: Yup.object().shape({
-      password: Yup.string().test("password", "Password field is required", (value) => value !== ""),
+      password: Yup.string().test(
+        "password",
+        "Password field is required",
+        (value) => value !== ""
+      ),
     }),
     onSubmit: async ({ password }, { setStatus: setFormikStatus, validateForm }) => {
       await validateForm()
@@ -126,7 +132,17 @@ export const OnboardingSocialLink: React.FC = () => {
       }
     },
   })
-  const { values, status, setStatus, isValid, dirty, handleSubmit, errors, handleChange, isSubmitting } = formik
+  const {
+    values,
+    status,
+    setStatus,
+    isValid,
+    dirty,
+    handleSubmit,
+    errors,
+    handleChange,
+    isSubmitting,
+  } = formik
 
   const isLoading = appleLoading || fbLoading || googleLoading || isSubmitting
 
@@ -140,7 +156,8 @@ export const OnboardingSocialLink: React.FC = () => {
             <Spacer mt={0.5} />
             <Text variant="xs">{`You already have an account ${email}`}.</Text>
             <Text variant="xs">
-              Please enter your artsy.net password to link your account. You will need to do this once.
+              Please enter your artsy.net password to link your account. You will need to do this
+              once.
             </Text>
             <Spacer mt={2} />
 
@@ -166,7 +183,7 @@ export const OnboardingSocialLink: React.FC = () => {
               testID="artsyPasswordInput"
             />
             <Spacer mt={2} />
-            <Touchable onPress={() => navigation.navigate("ForgotPassword", { email })}>
+            <Touchable onPress={() => navigation.replace("ForgotPassword")}>
               <Text variant="sm" color="black60" style={{ textDecorationLine: "underline" }}>
                 Forgot password?
               </Text>
@@ -210,7 +227,11 @@ export const OnboardingSocialLink: React.FC = () => {
         {providers.map((provider) => (
           <LinAccountButton
             key={provider}
-            onPress={provider === "email" ? () => setShowPasswordForm(true) : () => linkWithSocialAccount(provider)}
+            onPress={
+              provider === "email"
+                ? () => setShowPasswordForm(true)
+                : () => linkWithSocialAccount(provider)
+            }
             provider={provider}
             loading={isLoading}
           />
@@ -252,7 +273,9 @@ const LinAccountButton: React.FC<{ onPress: () => void; provider: string; loadin
       disabled={loading}
       variant={provider === "apple" ? "fillDark" : "outline"}
       iconPosition="left-start"
-      icon={<Image source={imageSources[provider]} resizeMode="contain" style={{ marginRight: 10 }} />}
+      icon={
+        <Image source={imageSources[provider]} resizeMode="contain" style={{ marginRight: 10 }} />
+      }
       testID={`linkWith${titleizedProvider}`}
     >
       {`Continue with ${titleizedProvider}`}

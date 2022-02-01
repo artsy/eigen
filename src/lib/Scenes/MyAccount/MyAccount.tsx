@@ -11,7 +11,7 @@ import { useGoogleLink } from "lib/utils/LinkedAccounts/google"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { FacebookIcon, Flex, Separator, Text } from "palette"
+import { Flex, Separator, Text } from "palette"
 import React from "react"
 import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
@@ -21,9 +21,21 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
   const showLinkGoogle = useFeatureFlag("ARGoogleAuth")
   const showLinkApple = Platform.OS === "ios"
 
-  const { link: linkFB, unlink: unlinkFB, isLoading: fbLoading } = useFacebookLink(relay.environment)
-  const { link: linkGoogle, unlink: unlinkGoogle, isLoading: googleLoading } = useGoogleLink(relay.environment)
-  const { link: linkApple, unlink: unlinkApple, isLoading: appleLoading } = useAppleLink(relay.environment)
+  const {
+    link: linkFB,
+    unlink: unlinkFB,
+    isLoading: fbLoading,
+  } = useFacebookLink(relay.environment)
+  const {
+    link: linkGoogle,
+    unlink: unlinkGoogle,
+    isLoading: googleLoading,
+  } = useGoogleLink(relay.environment)
+  const {
+    link: linkApple,
+    unlink: unlinkApple,
+    isLoading: appleLoading,
+  } = useAppleLink(relay.environment)
 
   const facebookLinked = me.authentications.map((a) => a.provider).includes("FACEBOOK")
   const googleLinked = me.authentications.map((a) => a.provider).includes("GOOGLE")
@@ -32,7 +44,11 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
   return (
     <PageWithSimpleHeader title="Account">
       <ScrollView contentContainerStyle={{ paddingTop: 10 }}>
-        <MenuItem title="Full Name" value={me.name} onPress={() => navigate("my-account/edit-name")} />
+        <MenuItem
+          title="Full Name"
+          value={me.name}
+          onPress={() => navigate("my-account/edit-name")}
+        />
         <MenuItem
           title="Email"
           value={me.email}
@@ -41,9 +57,17 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
             navigate("my-account/edit-email")
           }}
         />
-        <MenuItem title="Phone" value={me.phone || "Add phone"} onPress={() => navigate("my-account/edit-phone")} />
+        <MenuItem
+          title="Phone"
+          value={me.phone || "Add phone"}
+          onPress={() => navigate("my-account/edit-phone")}
+        />
         {!!me.hasPassword && (
-          <MenuItem title="Password" value="Change password" onPress={() => navigate("my-account/edit-password")} />
+          <MenuItem
+            title="Password"
+            value="Change password"
+            onPress={() => navigate("my-account/edit-password")}
+          />
         )}
         {!!me.paddleNumber && <MenuItem title="Paddle Number" value={me.paddleNumber} />}
         {!!showLinkedAccounts && (
@@ -57,7 +81,11 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
                   <ActivityIndicator size="small" color="#000000" />
                 ) : (
                   <Flex flexDirection="row" alignItems="center">
-                    <Image source={require(`@images/facebook.webp`)} resizeMode="contain" style={{ marginRight: 10 }} />
+                    <Image
+                      source={require(`@images/facebook.webp`)}
+                      resizeMode="contain"
+                      style={{ marginRight: 10 }}
+                    />
                     <Text variant="md" color="black60" lineHeight={18}>
                       {facebookLinked ? "Disconnect" : "Connect"}
                     </Text>
@@ -74,14 +102,20 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
                     <ActivityIndicator size="small" color="#000000" />
                   ) : (
                     <Flex flexDirection="row" alignItems="center">
-                      <Image source={require(`@images/google.webp`)} resizeMode="contain" style={{ marginRight: 10 }} />
+                      <Image
+                        source={require(`@images/google.webp`)}
+                        resizeMode="contain"
+                        style={{ marginRight: 10 }}
+                      />
                       <Text variant="md" color="black60" lineHeight={18}>
                         {googleLinked ? "Disconnect" : "Connect"}
                       </Text>
                     </Flex>
                   )
                 }
-                onPress={googleLoading ? () => null : () => (googleLinked ? unlinkGoogle() : linkGoogle())}
+                onPress={
+                  googleLoading ? () => null : () => (googleLinked ? unlinkGoogle() : linkGoogle())
+                }
               />
             )}
             {!!showLinkApple && (
@@ -92,14 +126,20 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
                     <ActivityIndicator size="small" />
                   ) : (
                     <Flex flexDirection="row" alignItems="center">
-                      <Image source={require(`@images/apple.webp`)} resizeMode="contain" style={{ marginRight: 10 }} />
+                      <Image
+                        source={require(`@images/apple.webp`)}
+                        resizeMode="contain"
+                        style={{ marginRight: 10 }}
+                      />
                       <Text variant="md" color="black60" lineHeight={18}>
                         {appleLinked ? "Disconnect" : "Connect"}
                       </Text>
                     </Flex>
                   )
                 }
-                onPress={appleLoading ? () => null : () => (appleLinked ? unlinkApple() : linkApple())}
+                onPress={
+                  appleLoading ? () => null : () => (appleLinked ? unlinkApple() : linkApple())
+                }
               />
             )}
           </>

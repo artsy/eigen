@@ -64,6 +64,7 @@ interface EmailOAuthParams {
   oauthProvider: "email"
   email: string
   password: string
+  otp?: string
 }
 interface FacebookOAuthParams {
   oauthProvider: "facebook"

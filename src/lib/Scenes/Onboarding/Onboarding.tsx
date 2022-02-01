@@ -40,7 +40,7 @@ export type OnboardingNavigationStack = {
     providerToBeLinked: string
     tokenForProviderToBeLinked: GoogleOrFacebookToken | AppleToken
   }
-  ForgotPassword: { email?: string }
+  ForgotPassword: undefined
   Terms: undefined
   Privacy: undefined
 }
