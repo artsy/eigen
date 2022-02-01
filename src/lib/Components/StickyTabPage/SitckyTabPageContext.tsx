@@ -9,6 +9,8 @@ export const StickyTabPageContext = React.createContext<{
   tabLabels: string[]
   tabSuperscripts: Array<string | undefined>
   activeTabIndex: GlobalState<number>
+  showStaticHeader: () => void
+  hideStaticHeader: () => void
   setActiveTabIndex(index: number): void
 }>(
   __TEST__
@@ -22,6 +24,10 @@ export const StickyTabPageContext = React.createContext<{
         activeTabIndex: { current: 0, set() {}, useUpdates() {} },
         // tslint:disable-next-line:no-empty
         setActiveTabIndex() {},
+        // tslint:disable-next-line:no-empty
+        showStaticHeader() {},
+        // tslint:disable-next-line:no-empty
+        hideStaticHeader() {},
       }
     : (null as any)
 )
