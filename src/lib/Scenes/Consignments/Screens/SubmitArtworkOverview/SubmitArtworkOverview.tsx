@@ -12,11 +12,9 @@ import { UploadPhotos } from "./UploadPhotos/UploadPhotos"
 interface SubmitArtworkScreenNavigationProps
   extends StackScreenProps<SubmitArtworkOverviewNavigationStack, "SubmitArtworkScreen"> {}
 
-export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> = (
-  {
-    // navigation,
-  }
-) => {
+export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> = ({
+  navigation,
+}) => {
   const items = [
     {
       overtitle: "Step 1 of 3",
@@ -47,10 +45,9 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
       title: "Contact Information",
       Content: (
         <ContactInformationQueryRenderer
-        // accept below prop in the query renderer
-        // handlePress={() => {
-        //   navigation.navigate("ArtworkSubmittedScreen")
-        // }}
+          handlePress={() => {
+            navigation.navigate("ArtworkSubmittedScreen")
+          }}
         />
       ),
     },

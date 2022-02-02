@@ -7,7 +7,7 @@ import { createMockEnvironment } from "relay-test-utils/"
 import { createConsignSubmission, updateConsignSubmission } from "../Mutations"
 import { updateSubmission } from "../utils/createOrUpdateSubmission"
 import { ContactInformationFormModel } from "../utils/validation"
-import { ContactInformation } from "./ContactInformation"
+import { ContactInformationQueryRenderer } from "./ContactInformation"
 
 jest.mock(
   "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/createConsignSubmissionMutation",
@@ -38,10 +38,7 @@ const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnviro
 describe("ContactInformationForm", () => {
   const TestRenderer = () => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <ContactInformation
-        me={null}
-        // handlePress={jest.fn()}
-      />
+      <ContactInformationQueryRenderer handlePress={jest.fn()} />
     </RelayEnvironmentProvider>
   )
 
@@ -53,10 +50,7 @@ describe("ContactInformationForm", () => {
 
   it("renders without throwing an error", () => {
     renderWithWrappersTL(
-      <ContactInformation
-        me={null}
-        // handlePress={() => console.log("do nothing")}
-      />
+      <ContactInformationQueryRenderer handlePress={() => console.log("do nothing")} />
     )
   })
 

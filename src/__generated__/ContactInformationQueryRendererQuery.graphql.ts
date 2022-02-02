@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3d54b09a7d9399c35784f1398e41a10f */
+/* @relayHash 4e1ccc56e86da831fc785b26d34114c8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -29,6 +29,7 @@ query ContactInformationQueryRendererQuery {
 fragment ContactInformation_me on Me {
   name
   email
+  phone
 }
 */
 
@@ -91,6 +92,13 @@ const node: ConcreteRequest = {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "phone",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "id",
             "storageKey": null
           }
@@ -100,7 +108,7 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "id": "3d54b09a7d9399c35784f1398e41a10f",
+    "id": "4e1ccc56e86da831fc785b26d34114c8",
     "metadata": {},
     "name": "ContactInformationQueryRendererQuery",
     "operationKind": "query",

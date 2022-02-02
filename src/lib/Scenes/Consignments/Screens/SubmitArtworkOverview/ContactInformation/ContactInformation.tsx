@@ -1,5 +1,6 @@
 import { captureMessage } from "@sentry/react-native"
-import { ContactInformationQuery } from "__generated__/ContactInformationQuery.graphql"
+import { ContactInformation_me } from "__generated__/ContactInformation_me.graphql"
+import { ContactInformationQueryRendererQuery } from "__generated__/ContactInformationQueryRendererQuery.graphql"
 import { Formik } from "formik"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
@@ -7,28 +8,28 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
 import React, { useState } from "react"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ErrorView } from "../Components/ErrorView"
 import { updateConsignSubmission } from "../Mutations/updateConsignSubmissionMutation"
 import {
-  contactInformationEmptyInitialValues,
   ContactInformationFormModel,
   contactInformationValidationSchema,
 } from "../utils/validation"
 
+const getContactInformationInitialValues = (me: ContactInformation_me | null) => {
+  return {
+    userName: me?.name || "",
+    userEmail: me?.email || "",
+    userPhone: me?.phone || "",
+  }
+}
+
 export const ContactInformation: React.FC<{
   handlePress: () => void
-}> = ({ handlePress }) => {
+  me: ContactInformation_me | null
+}> = ({ handlePress, me }) => {
   const { submissionId } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
   const [submissionError, setSubmissionError] = useState(false)
-  const queryData = useLazyLoadQuery<ContactInformationQuery>(ContactInformationScreenQuery, {})
-
-  const name = queryData?.me?.name
-  const email = queryData?.me?.email
-  const phone = queryData?.me?.phone
-
-  // me now has what is asked for in the Fragment
-  //  console.log({ me })
 
   const handleSubmit = async (values: ContactInformationFormModel) => {
     try {
@@ -41,7 +42,7 @@ export const ContactInformation: React.FC<{
 
       if (updatedSubmissionId) {
         GlobalStore.actions.artworkSubmission.submission.resetSessionState()
-        // handlePress()
+        handlePress()
       }
     } catch (error) {
       captureMessage(JSON.stringify(error))
@@ -55,7 +56,7 @@ export const ContactInformation: React.FC<{
 
   return (
     <Formik<ContactInformationFormModel>
-      initialValues={contactInformationEmptyInitialValues}
+      initialValues={getContactInformationInitialValues(me)}
       onSubmit={handleSubmit}
       validationSchema={contactInformationValidationSchema}
       validateOnMount
@@ -70,14 +71,14 @@ export const ContactInformation: React.FC<{
             title="Name"
             placeholder="Your Full Name"
             onChangeText={(e) => setFieldValue("userName", e)}
-            value={name || values.userName}
+            value={values.userName}
           />
           <Spacer mt={4} />
           <Input
             title="Email"
             placeholder="Your Email Address"
             onChangeText={(e) => setFieldValue("userEmail", e)}
-            value={email || values.userEmail}
+            value={values.userEmail}
           />
           <Spacer mt={4} />
           <PhoneInput
@@ -85,7 +86,7 @@ export const ContactInformation: React.FC<{
             title="Phone number"
             placeholder="(000) 000 0000"
             onChangeText={(e) => setFieldValue("userPhone", e)}
-            value={phone || values.userPhone}
+            value={values.userPhone}
             setValidation={() => {
               //  validation function
             }}
@@ -105,20 +106,36 @@ export const ContactInformation: React.FC<{
   )
 }
 
-export const ContactInformationScreenQuery = graphql`
-  query ContactInformationQuery {
-    me {
+export const ContactInformationContainer = createFragmentContainer(ContactInformation, {
+  me: graphql`
+    fragment ContactInformation_me on Me {
       name
       email
       phone
-      phoneNumber {
-        countryCode
-        display
-        error
-        isValid
-        originalNumber
-        regionCode
-      }
     }
-  }
-`
+  `,
+})
+
+export const ContactInformationQueryRenderer: React.FC<{
+  handlePress: () => void
+}> = () => {
+  return (
+    <QueryRenderer<ContactInformationQueryRendererQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query ContactInformationQueryRendererQuery {
+          me {
+            ...ContactInformation_me
+          }
+        }
+      `}
+      variables={{}}
+      render={renderWithPlaceholder({
+        Container: ContactInformationContainer,
+        renderPlaceholder: ContactInformationPlaceHolder,
+      })}
+    />
+  )
+}
+
+const ContactInformationPlaceHolder = () => <Text>some placeholder</Text>
