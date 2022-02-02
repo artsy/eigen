@@ -41,7 +41,7 @@ export const ArtworkDetailsForm: React.FC = () => {
       />
       <Select
         onSelectValue={(e) => setFieldValue("attributionClass", e)}
-        value={values?.attributionClass?.replace("_", " ").toLowerCase()}
+        value={values.attributionClass}
         enableSearch={false}
         title="Rarity"
         tooltipText="What is this?"

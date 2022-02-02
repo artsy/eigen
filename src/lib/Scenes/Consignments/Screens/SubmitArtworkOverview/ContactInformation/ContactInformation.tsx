@@ -5,7 +5,6 @@ import { Formik } from "formik"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { GlobalStore } from "lib/store/GlobalStore"
-import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
@@ -15,14 +14,6 @@ import {
   ContactInformationFormModel,
   contactInformationValidationSchema,
 } from "../utils/validation"
-
-const getContactInformationInitialValues = (me: ContactInformation_me | null) => {
-  return {
-    userName: me?.name || "",
-    userEmail: me?.email || "",
-    userPhone: me?.phone || "",
-  }
-}
 
 export const ContactInformation: React.FC<{
   handlePress: () => void
@@ -56,10 +47,15 @@ export const ContactInformation: React.FC<{
 
   return (
     <Formik<ContactInformationFormModel>
-      initialValues={getContactInformationInitialValues(me)}
+      initialValues={{
+        userName: me?.name || "",
+        userEmail: me?.email || "",
+        userPhone: me?.phone || "",
+      }}
       onSubmit={handleSubmit}
       validationSchema={contactInformationValidationSchema}
       validateOnMount
+      enableReinitialize
     >
       {({ values, setFieldValue, isValid }) => (
         <Flex p={1} mt={1}>
@@ -106,7 +102,7 @@ export const ContactInformation: React.FC<{
   )
 }
 
-export const ContactInformationContainer = createFragmentContainer(ContactInformation, {
+export const ContactInformationFragmentContainer = createFragmentContainer(ContactInformation, {
   me: graphql`
     fragment ContactInformation_me on Me {
       name
@@ -118,7 +114,7 @@ export const ContactInformationContainer = createFragmentContainer(ContactInform
 
 export const ContactInformationQueryRenderer: React.FC<{
   handlePress: () => void
-}> = () => {
+}> = ({ handlePress }) => {
   return (
     <QueryRenderer<ContactInformationQueryRendererQuery>
       environment={defaultEnvironment}
@@ -130,12 +126,15 @@ export const ContactInformationQueryRenderer: React.FC<{
         }
       `}
       variables={{}}
-      render={renderWithPlaceholder({
-        Container: ContactInformationContainer,
-        renderPlaceholder: ContactInformationPlaceHolder,
-      })}
+      render={({ error, props }) => {
+        if (error) {
+          return null
+        }
+
+        return (
+          <ContactInformationFragmentContainer handlePress={handlePress} me={props?.me || null} />
+        )
+      }}
     />
   )
 }
-
-const ContactInformationPlaceHolder = () => <Text>some placeholder</Text>

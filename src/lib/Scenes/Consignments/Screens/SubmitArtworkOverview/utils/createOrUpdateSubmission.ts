@@ -1,63 +1,51 @@
-import { CreateSubmissionMutationInput } from "__generated__/createConsignmentSubmissionMutation.graphql"
+import {
+  ConsignmentAttributionClass,
+  CreateSubmissionMutationInput,
+} from "__generated__/createConsignmentSubmissionMutation.graphql"
 import { UpdateSubmissionMutationInput } from "__generated__/updateConsignSubmissionMutation.graphql"
 import { createConsignSubmission, updateConsignSubmission } from "../Mutations"
-import { ArtworkDetailsFormModel, ContactInformationFormModel } from "./validation"
+import { limitedEditionValue } from "./rarityOptions"
+import { ArtworkDetailsFormModel } from "./validation"
 
-type SubmissionInput = CreateSubmissionMutationInput | UpdateSubmissionMutationInput
-type AllInformationFormModel = ArtworkDetailsFormModel | ContactInformationFormModel
-
-const artistInputValues = (
-  values: ArtworkDetailsFormModel
-): Pick<SubmissionInput, "artistID" | "editionNumber" | "editionSizeFormatted" | "state"> => {
-  const isRarityLimitedEdition = values.attributionClass === "LIMITED_EDITION"
-
-  return {
-    artistID: values.artistId,
-    editionNumber: isRarityLimitedEdition ? values.editionNumber : "",
-    editionSizeFormatted: isRarityLimitedEdition ? values.editionSizeFormatted : "",
-    state: "DRAFT",
-  }
-}
+export type SubmissionInput = CreateSubmissionMutationInput | UpdateSubmissionMutationInput
 
 export const createOrUpdateSubmission = async (
   values: ArtworkDetailsFormModel,
   submissionId: string
 ) => {
-  let submissionValues: Omit<SubmissionInput, "id">
+  const isRarityLimitedEdition = values.attributionClass === limitedEditionValue
+  const attributionClass =
+    (values?.attributionClass?.replace(" ", "_").toUpperCase() as ConsignmentAttributionClass) ||
+    null
 
-  submissionValues = {
-    ...values,
-    ...artistInputValues(values),
+  const submissionValues: SubmissionInput = {
+    artistID: values.artistId,
+    year: values.year,
+    title: values.title,
+    medium: values.medium,
+    attributionClass,
+    editionNumber: isRarityLimitedEdition ? values.editionNumber : "",
+    editionSizeFormatted: isRarityLimitedEdition ? values.editionSizeFormatted : "",
+    height: values.height,
+    width: values.width,
+    depth: values.depth,
+    dimensionsMetric: values.dimensionsMetric,
+    provenance: values.provenance,
+    locationCity: values.location.city,
+    locationState: values.location.state,
+    locationCountry: values.location.country,
+    state: "DRAFT",
+    utmMedium: values.utmMedium,
+    utmSource: values.utmSource,
+    utmTerm: values.utmTerm,
   }
 
   if (submissionId) {
     return await updateConsignSubmission({
       id: submissionId,
       ...submissionValues,
-    })
+    } as UpdateSubmissionMutationInput)
   }
+
   return await createConsignSubmission(submissionValues as CreateSubmissionMutationInput)
-}
-
-export const updateSubmission = async (values: AllInformationFormModel, submissionId: string) => {
-  let submissionValues: Omit<SubmissionInput, "id">
-
-  if ("artistId" in values) {
-    submissionValues = {
-      ...values,
-      ...artistInputValues(values),
-    }
-  } else if ("userName" in values) {
-    submissionValues = values
-  } else if ("photo" in values) {
-    submissionValues = values
-  } else {
-    assertNever(values)
-    submissionValues = {}
-  }
-
-  return await updateConsignSubmission({
-    id: submissionId,
-    ...submissionValues,
-  })
 }
