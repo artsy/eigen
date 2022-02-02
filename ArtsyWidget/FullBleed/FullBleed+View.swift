@@ -4,7 +4,13 @@ import WidgetKit
 
 extension FullBleed {
     struct View: SwiftUI.View {
-        static let supportedFamilies: [WidgetFamily] = [.systemLarge]
+        static var supportedFamilies: [WidgetFamily] {
+            if #available(iOSApplicationExtension 15.0, *) {
+                return [.systemLarge, .systemExtraLarge]
+            } else {
+                return [.systemLarge]
+            }
+        }
         
         let entry: Entry
         
