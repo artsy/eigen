@@ -4,13 +4,20 @@ import { Formik } from "formik"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
-import React, { useState } from "react"
+import React, { Suspense, useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ErrorView } from "../Components/ErrorView"
 import { updateConsignSubmission } from "../Mutations/updateConsignSubmissionMutation"
 import { ContactInformationFormModel, contactInformationValidationSchema } from "./validation"
 
 export const ContactInformation: React.FC<{
+  handlePress: () => void
+}> = ({ handlePress }) => (
+  <Suspense fallback={() => null}>
+    <ContactInformationComponent handlePress={handlePress} />
+  </Suspense>
+)
+export const ContactInformationComponent: React.FC<{
   handlePress: () => void
 }> = ({ handlePress }) => {
   const { submissionId } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
