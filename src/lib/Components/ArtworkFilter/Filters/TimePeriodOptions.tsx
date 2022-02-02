@@ -1,40 +1,39 @@
-import { toTitleCase } from "@artsy/to-title-case"
+// import { toTitleCase } from "@artsy/to-title-case"
 import MultiSlider from "@ptomasroos/react-native-multi-slider"
 import { StackScreenProps } from "@react-navigation/stack"
 import { ArtworkFilterNavigationStack } from "lib/Components/ArtworkFilter"
-import {
-  FilterData,
-  FilterDisplayName,
-  FilterParamName,
-  getDisplayNameForTimePeriod,
-} from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
-import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
+// import {
+//   FilterData,
+//   FilterDisplayName,
+//   FilterParamName,
+//   getDisplayNameForTimePeriod,
+// } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
+// import { useArtworkFiltersAggregation } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { Flex, Input, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { ArtworkFilterBackHeader } from "../components/ArtworkFilterBackHeader"
-import { MultiSelectOptionScreen } from "./MultiSelectOption"
-import { useMultiSelect } from "./useMultiSelect"
+// import { useMultiSelect } from "./useMultiSelect"
 
 interface TimePeriodOptionsScreenProps
   extends StackScreenProps<ArtworkFilterNavigationStack, "TimePeriodOptionsScreen"> {}
 
-export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = ({ navigation }) => {
-  const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.timePeriod })
+export const TimePeriodOptionsScreen: React.FC<TimePeriodOptionsScreenProps> = () => {
+  // const { aggregation } = useArtworkFiltersAggregation({ paramName: FilterParamName.timePeriod })
 
-  const options: FilterData[] = (aggregation?.counts ?? []).map(({ value: paramValue, name }) => {
-    const label = getDisplayNameForTimePeriod(name)
-    const displayText = toTitleCase(label)
+  // const options: FilterData[] = (aggregation?.counts ?? []).map(({ value: paramValue, name }) => {
+  //   const label = getDisplayNameForTimePeriod(name)
+  //   const displayText = toTitleCase(label)
 
-    return { displayText, paramName: FilterParamName.timePeriod, paramValue }
-  })
+  //   return { displayText, paramName: FilterParamName.timePeriod, paramValue }
+  // })
 
-  const { handleSelect, handleClear, isSelected, isActive } = useMultiSelect({
-    options,
-    paramName: FilterParamName.timePeriod,
-  })
+  // const { handleSelect, handleClear, isSelected, isActive } = useMultiSelect({
+  //   options,
+  //   paramName: FilterParamName.timePeriod,
+  // })
 
   // Convert options to boolean options for checkboxes
-  const filterOptions = options.map((option) => ({ ...option, paramValue: isSelected(option) }))
+  // const filterOptions = options.map((option) => ({ ...option, paramValue: isSelected(option) }))
   const [multiSliderValue, setMultiSliderValue] = useState([1964, 2022])
   const [minYear, _setMinYear] = useState(1964)
   const [maxYear, _setMaxYear] = useState(2022)

@@ -314,7 +314,7 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             <Stack.Screen
               name="TimePeriodOptionsScreen"
               component={TimePeriodOptionsScreen}
-              // options={{ gestureResponseDistance: { horizontal: 35 } }}
+              options={{ gestureResponseDistance: { horizontal: 35 } }}
             />
             <Stack.Screen name="ViewAsOptionsScreen" component={ViewAsOptionsScreen} />
             <Stack.Screen
