@@ -2,6 +2,7 @@ import { captureMessage } from "@sentry/react-native"
 import { ContactInformationQuery } from "__generated__/ContactInformationQuery.graphql"
 import { Formik } from "formik"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
+import { Placeholder } from "lib/Scenes/ViewingRoom/ViewingRoomArtwork"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
 import React, { Suspense, useState } from "react"
@@ -10,14 +11,14 @@ import { ErrorView } from "../Components/ErrorView"
 import { updateConsignSubmission } from "../Mutations/updateConsignSubmissionMutation"
 import { ContactInformationFormModel, contactInformationValidationSchema } from "./validation"
 
-export const ContactInformation: React.FC<{
+export const ContactInformationScreen: React.FC<{
   handlePress: () => void
 }> = ({ handlePress }) => (
-  <Suspense fallback={() => null}>
-    <ContactInformationComponent handlePress={handlePress} />
+  <Suspense fallback={<Placeholder />}>
+    <ContactInformation handlePress={handlePress} />
   </Suspense>
 )
-export const ContactInformationComponent: React.FC<{
+export const ContactInformation: React.FC<{
   handlePress: () => void
 }> = ({ handlePress }) => {
   const { submissionId } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)

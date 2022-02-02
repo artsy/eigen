@@ -217,7 +217,7 @@ export const ViewingRoomArtworkScreen: React.FC<{
   )
 }
 
-const Placeholder = () => (
+export const Placeholder = () => (
   <ProvidePlaceholderContext>
     <PlaceholderBox width="100%" height="60%" />
     <Flex mt="2" ml="2">

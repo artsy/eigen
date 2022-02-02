@@ -1,11 +1,11 @@
-import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 import { RelayEnvironmentProvider } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils/"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils/"
 import { createConsignSubmission, updateConsignSubmission } from "../Mutations"
-import { ContactInformation } from "./ContactInformation"
+import { ContactInformationScreen } from "./ContactInformation"
 import { ContactInformationFormModel } from "./validation"
 
 jest.mock(
@@ -32,40 +32,92 @@ jest.unmock("react-relay")
 
 const createConsignSubmissionMock = createConsignSubmission as jest.Mock
 const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
-const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe("ContactInformationForm", () => {
+  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+
   const TestRenderer = () => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <ContactInformation handlePress={jest.fn()} />
+      <ContactInformationScreen handlePress={() => console.log("do nothing")} />
     </RelayEnvironmentProvider>
   )
-
   beforeEach(() => {
+    mockEnvironment = createMockEnvironment()
     ;(createConsignSubmissionMock as jest.Mock).mockClear()
     ;(updateConsignSubmissionMock as jest.Mock).mockClear()
     mockEnvironment.mockClear()
   })
 
   it("renders without throwing an error", () => {
-    renderWithWrappersTL(<ContactInformation handlePress={() => console.log("do nothing")} />)
+    renderWithWrappersTL(<TestRenderer />)
   })
 
-  it("renders correct explanation for form fields", () => {
+  it("renders an empty form if user doesn 't have an account", async () => {
+    renderWithWrappersTL(<TestRenderer />)
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Query: () => ({
+          me: {
+            name: "",
+            email: "",
+            phone: "",
+            phoneNumber: {
+              countryCode: "",
+              display: "",
+              error: "",
+              isValid: true,
+              originalNumber: "",
+              regionCode: "",
+            },
+          },
+        }),
+      })
+    )
+  })
+
+  it("renders correct explanation", async () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
+
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Query: () => ({
+          me: {
+            name: "Angela",
+            email: "a@a.aaa",
+            phone: "123456789",
+            phoneNumber: {
+              countryCode: "+30",
+              display: "-",
+              error: "",
+              isValid: true,
+              originalNumber: "23456789",
+              regionCode: "020",
+            },
+          },
+        }),
+      })
+    )
+
+    await flushPromiseQueue()
     expect(
       getByText("We will only use these details to contact you regarding your submission.")
     ).toBeTruthy()
   })
 
-  it("updates existing submission when ID passed", async () => {
-    // check what is in submission // check all fields are there
-    // if everything is ok => updateSubmission()
-    // make sure "userName" exists in submission
-    // await updateSubmission(mockSubmissionForm, "12345")
-    // expect(updateConsignSubmissionMock).toHaveBeenCalled()
-  })
+  // TODO:
+  //
+  // it("renders with an error when something is missing/not properly filled out", async () => null)
 
+  // it("updates existing submission when ID passed", async () => {
+  //   // check what is in submission // check all fields are there
+  //   // if everything is ok => updateSubmission()
+  //   // make sure "userName" exists in submission
+  //   // await updateSubmission(mockSubmissionForm, "12345")
+  //   // expect updateSubmission to have been called...
+  //   // expect(updateConsignSubmissionMock).toHaveBeenCalled()
+  // })
+  //
   // it("navigate to the next page correctly", () => {
   //   renderWithWrappersTL(<ContactInformation handlePress={() => console.log("do nothing")} />)
   // })

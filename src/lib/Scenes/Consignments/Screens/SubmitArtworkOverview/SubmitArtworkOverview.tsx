@@ -6,7 +6,7 @@ import React, { useRef, useState } from "react"
 import { ScrollView } from "react-native"
 import { ArtworkDetails } from "./ArtworkDetails/ArtworkDetails"
 import { ArtworkSubmittedScreen } from "./ArtworkSubmitted"
-import { ContactInformation } from "./ContactInformation/ContactInformation"
+import { ContactInformationScreen } from "./ContactInformation/ContactInformation"
 import { UploadPhotos } from "./UploadPhotos/UploadPhotos"
 
 interface SubmitArtworkScreenNavigationProps
@@ -44,7 +44,7 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
       overtitle: "Step 3 of 3",
       title: "Contact Information",
       Content: (
-        <ContactInformation
+        <ContactInformationScreen
           handlePress={() => {
             navigation.navigate("ArtworkSubmittedScreen")
           }}
