@@ -47,13 +47,13 @@ describe("clearDefaultAttributes", () => {
       acquireable: null,
       sizes: ["SMALL", "MEDIUM"],
       atAuction: true,
-      artistID: "artistID",
+      artistIDs: ["artistID"],
     }
 
     expect(clearDefaultAttributes(attributes)).toEqual({
       sizes: ["SMALL", "MEDIUM"],
       atAuction: true,
-      artistID: "artistID",
+      artistIDs: ["artistID"],
     })
   })
 })

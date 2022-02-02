@@ -8240,7 +8240,7 @@ type LatLng {
 
 input LinkAuthenticationMutationInput {
   # Unique Apple user id. **Required** for Apple authentication.
-  applieUid: String
+  appleUid: String
   clientMutationId: String
 
   # User email, only used for Apple authentication.

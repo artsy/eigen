@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 27a5f360da51119c3784c6c9be968dc2 */
+/* @relayHash 59e26f18116036cf0991baa72c63783c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -40,7 +40,6 @@ fragment SavedSearchesList_me on Me {
     edges {
       node {
         internalID
-        artistID
         userAlertSettings {
           name
         }
@@ -167,13 +166,6 @@ return {
                       {
                         "alias": null,
                         "args": null,
-                        "kind": "ScalarField",
-                        "name": "artistID",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
                         "concreteType": "SavedSearchUserAlertSettings",
                         "kind": "LinkedField",
                         "name": "userAlertSettings",
@@ -234,7 +226,7 @@ return {
     ]
   },
   "params": {
-    "id": "27a5f360da51119c3784c6c9be968dc2",
+    "id": "59e26f18116036cf0991baa72c63783c",
     "metadata": {},
     "name": "SavedSearchAlertsListQuery",
     "operationKind": "query",
