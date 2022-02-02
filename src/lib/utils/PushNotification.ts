@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-community/async-storage"
+import { __unsafe_mainModalStackRef } from "lib/NativeModules/ARScreenPresenterModule"
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { navigate } from "lib/navigation/navigate"
 import { getCurrentEmissionState, unsafe__getEnvironment } from "lib/store/GlobalStore"
@@ -157,8 +158,9 @@ export const handleReceivedNotification = (
     console.log("RECIEVED NOTIFICATION", notification)
   }
   const isLoggedIn = !!unsafe_getUserAccessToken()
+  const modalStackIsReady = !!__unsafe_mainModalStackRef.current
   if (notification.userInteraction) {
-    if (!isLoggedIn) {
+    if (!isLoggedIn || !modalStackIsReady) {
       // removing finish because we do not use it on android and we don't want to serialise functions at this time
       const newNotification = { ...notification, finish: undefined, tappedAt: Date.now() }
       delete newNotification.finish
