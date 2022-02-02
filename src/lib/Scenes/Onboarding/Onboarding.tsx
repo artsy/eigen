@@ -30,7 +30,12 @@ export type OnboardingNavigationStack = {
   OnboardingWelcome: undefined
   OnboardingLogin: { withFadeAnimation: boolean } | undefined
   OnboardingLoginWithEmail: { withFadeAnimation: boolean; email: string } | undefined
-  OnboardingLoginWithOTP: { email: string; password: string; otpMode: OTPMode }
+  OnboardingLoginWithOTP: {
+    email: string
+    password: string
+    otpMode: OTPMode
+    onSignIn?: () => void
+  }
   OnboardingCreateAccount: { withFadeAnimation: boolean } | undefined
   OnboardingCreateAccountWithEmail: undefined
   OnboardingSocialLink: {

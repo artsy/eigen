@@ -126,6 +126,7 @@ export const OnboardingLoginWithOTP: React.FC<OnboardingLoginWithOTPProps> = ({
   const email = route.params.email
   const password = route.params.password
   const otpMode = route.params.otpMode
+  const onSignIn = route.params.onSignIn
 
   const formik = useFormik<OnboardingLoginWithOTPValuesSchema>({
     enableReinitialize: true,
@@ -140,6 +141,7 @@ export const OnboardingLoginWithOTP: React.FC<OnboardingLoginWithOTPProps> = ({
         email,
         password,
         otp: otp.trim(),
+        onSignIn,
       })
 
       if (res === "invalid_otp") {

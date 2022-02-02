@@ -64,20 +64,20 @@ export const OnboardingSocialLink: React.FC = () => {
     [navigation, showPasswordForm, providers]
   )
 
-  const onSignIn = async (provider: string, token: GoogleOrFacebookToken | AppleToken) => {
+  const onSignIn = (provider: string, token: GoogleOrFacebookToken | AppleToken) => {
     if ((provider === "facebook" || provider === "google") && typeof token !== "string") {
       console.warn(`Incompatible Type of Token provided for ${provider}`)
       return
     }
 
     if (provider === "facebook") {
-      await linkFB(token as GoogleOrFacebookToken)
+      linkFB(token as GoogleOrFacebookToken)
     }
     if (provider === "google") {
-      await linkGoogle(token as GoogleOrFacebookToken)
+      linkGoogle(token as GoogleOrFacebookToken)
     }
     if (provider === "apple") {
-      await linkApple(email, name ?? "", token as AppleToken)
+      linkApple(email, name ?? "", token as AppleToken)
     }
   }
 
@@ -117,32 +117,38 @@ export const OnboardingSocialLink: React.FC = () => {
         (value) => value !== ""
       ),
     }),
-    onSubmit: async ({ password }, { setStatus: setFormikStatus, validateForm }) => {
+    onSubmit: async ({ password }, { setErrors: setFormikErrors, validateForm }) => {
       await validateForm()
-      const verified = await GlobalStore.actions.auth.signIn({
+      const res = await GlobalStore.actions.auth.signIn({
         oauthProvider: "email",
         email,
         password,
         onSignIn: () => onSignIn(providerToBeLinked, tokenForProviderToBeLinked),
       })
-      if (!verified) {
-        await validateForm()
-        setFormikStatus("Incorrect password")
-        return
+      if (res === "otp_missing") {
+        navigation.navigate("OnboardingLoginWithOTP", {
+          email,
+          password,
+          otpMode: "standard",
+          onSignIn: () => onSignIn(providerToBeLinked, tokenForProviderToBeLinked),
+        })
+      } else if (res === "on_demand_otp_missing") {
+        navigation.navigate("OnboardingLoginWithOTP", {
+          email,
+          password,
+          otpMode: "on_demand",
+          onSignIn: () => onSignIn(providerToBeLinked, tokenForProviderToBeLinked),
+        })
+      }
+
+      if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
+        // For security purposes, we are returning a generic error message
+        setFormikErrors({ password: "Incorrect password" })
       }
     },
   })
-  const {
-    values,
-    status,
-    setStatus,
-    isValid,
-    dirty,
-    handleSubmit,
-    errors,
-    handleChange,
-    isSubmitting,
-  } = formik
+  const { values, setErrors, isValid, dirty, handleSubmit, errors, handleChange, isSubmitting } =
+    formik
 
   const isLoading = appleLoading || fbLoading || googleLoading || isSubmitting
 
@@ -169,7 +175,7 @@ export const OnboardingSocialLink: React.FC = () => {
               autoCompleteType="password"
               autoCorrect={false}
               onChangeText={(text) => {
-                setStatus(undefined)
+                setErrors({ password: undefined })
                 handleChange("password")(text)
               }}
               onSubmitEditing={handleSubmit}
@@ -179,7 +185,7 @@ export const OnboardingSocialLink: React.FC = () => {
               returnKeyType="go"
               textContentType="password"
               value={values.password}
-              error={status ?? errors.password}
+              error={errors.password}
               testID="artsyPasswordInput"
             />
             <Spacer mt={2} />
