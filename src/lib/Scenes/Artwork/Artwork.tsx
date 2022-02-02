@@ -158,7 +158,7 @@ export const Artwork: React.FC<ArtworkProps> = ({
       return
     }
 
-    refetch(markArtworkAsRecentlyViewed)
+    markArtworkAsRecentlyViewed()
   })
 
   const onRefresh = (cb?: () => any) => {
