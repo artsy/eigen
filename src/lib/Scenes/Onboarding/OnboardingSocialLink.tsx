@@ -143,6 +143,7 @@ export const OnboardingSocialLink: React.FC = () => {
 
       if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
         // For security purposes, we are returning a generic error message
+        // pragma: allowlist secret
         setFormikErrors({ password: "Incorrect password" })
       }
     },
