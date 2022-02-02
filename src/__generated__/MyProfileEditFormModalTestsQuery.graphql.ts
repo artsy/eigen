@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4c305c6f3ab0d1c91673fdd97c36630e */
+/* @relayHash 9c89bd1ab1fd629262ed2f3278f45cb8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -27,23 +27,45 @@ query MyProfileEditFormModalTestsQuery {
 }
 
 fragment MyProfileEditFormModal_me_2DDXa1 on Me {
+  name
+  profession
+  otherRelevantPositions
   bio
-  canRequestEmailConfirmation
-  email
+  location {
+    display
+    city
+    state
+    country
+    id
+  }
   icon {
     url(version: "thumbnail")
   }
+  email
   identityVerified
-  name
+  canRequestEmailConfirmation
 }
 */
 
 const node: ConcreteRequest = (function(){
 var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v1 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
+},
+v2 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "ID"
 };
 return {
   "fragment": {
@@ -96,21 +118,68 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "name",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "profession",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "otherRelevantPositions",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "bio",
             "storageKey": null
           },
           {
             "alias": null,
             "args": null,
-            "kind": "ScalarField",
-            "name": "canRequestEmailConfirmation",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "email",
+            "concreteType": "MyLocation",
+            "kind": "LinkedField",
+            "name": "location",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "display",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "city",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "state",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "country",
+                "storageKey": null
+              },
+              (v0/*: any*/)
+            ],
             "storageKey": null
           },
           {
@@ -141,6 +210,13 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "email",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "identityVerified",
             "storageKey": null
           },
@@ -148,23 +224,17 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "name",
+            "name": "canRequestEmailConfirmation",
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "id",
-            "storageKey": null
-          }
+          (v0/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "4c305c6f3ab0d1c91673fdd97c36630e",
+    "id": "9c89bd1ab1fd629262ed2f3278f45cb8",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -173,34 +243,42 @@ return {
           "plural": false,
           "type": "Me"
         },
-        "me.bio": (v0/*: any*/),
+        "me.bio": (v1/*: any*/),
         "me.canRequestEmailConfirmation": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "Boolean"
         },
-        "me.email": (v0/*: any*/),
+        "me.email": (v1/*: any*/),
         "me.icon": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Image"
         },
-        "me.icon.url": (v0/*: any*/),
-        "me.id": {
-          "enumValues": null,
-          "nullable": false,
-          "plural": false,
-          "type": "ID"
-        },
+        "me.icon.url": (v1/*: any*/),
+        "me.id": (v2/*: any*/),
         "me.identityVerified": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "Boolean"
         },
-        "me.name": (v0/*: any*/)
+        "me.location": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "MyLocation"
+        },
+        "me.location.city": (v1/*: any*/),
+        "me.location.country": (v1/*: any*/),
+        "me.location.display": (v1/*: any*/),
+        "me.location.id": (v2/*: any*/),
+        "me.location.state": (v1/*: any*/),
+        "me.name": (v1/*: any*/),
+        "me.otherRelevantPositions": (v1/*: any*/),
+        "me.profession": (v1/*: any*/)
       }
     },
     "name": "MyProfileEditFormModalTestsQuery",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 436b1ca090cb7b959d9d3027c1b71399 */
+/* @relayHash 410354f17af83ee80854201570096bd6 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -31,14 +31,23 @@ query MyCollectionAndSavedWorksRefetchQuery(
 }
 
 fragment MyProfileEditFormModal_me_3CllfQ on Me {
+  name
+  profession
+  otherRelevantPositions
   bio
-  canRequestEmailConfirmation @include(if: $enableCollectorProfile)
-  email @include(if: $enableCollectorProfile)
-  identityVerified @include(if: $enableCollectorProfile)
+  location {
+    display
+    city
+    state
+    country
+    id
+  }
   icon {
     url(version: "thumbnail")
   }
-  name
+  email @include(if: $enableCollectorProfile)
+  identityVerified @include(if: $enableCollectorProfile)
+  canRequestEmailConfirmation @include(if: $enableCollectorProfile)
 }
 */
 
@@ -49,7 +58,14 @@ var v0 = [
     "kind": "LocalArgument",
     "name": "enableCollectorProfile"
   }
-];
+],
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
@@ -101,7 +117,68 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "name",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "profession",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "otherRelevantPositions",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "bio",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "MyLocation",
+            "kind": "LinkedField",
+            "name": "location",
+            "plural": false,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "display",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "city",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "state",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "country",
+                "storageKey": null
+              },
+              (v1/*: any*/)
+            ],
             "storageKey": null
           },
           {
@@ -128,32 +205,12 @@ return {
             ],
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "name",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "id",
-            "storageKey": null
-          },
+          (v1/*: any*/),
           {
             "condition": "enableCollectorProfile",
             "kind": "Condition",
             "passingValue": true,
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "canRequestEmailConfirmation",
-                "storageKey": null
-              },
               {
                 "alias": null,
                 "args": null,
@@ -167,6 +224,13 @@ return {
                 "kind": "ScalarField",
                 "name": "identityVerified",
                 "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "canRequestEmailConfirmation",
+                "storageKey": null
               }
             ]
           }
@@ -176,7 +240,7 @@ return {
     ]
   },
   "params": {
-    "id": "436b1ca090cb7b959d9d3027c1b71399",
+    "id": "410354f17af83ee80854201570096bd6",
     "metadata": {},
     "name": "MyCollectionAndSavedWorksRefetchQuery",
     "operationKind": "query",

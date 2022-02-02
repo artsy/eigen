@@ -225,9 +225,9 @@ export const MyCollectionAndSavedWorksFragmentContainer = createRefetchContainer
 )
 
 export const MyCollectionAndSavedWorksScreenQuery = graphql`
-  query MyCollectionAndSavedWorksQuery {
+  query MyCollectionAndSavedWorksQuery($enableCollectorProfile: Boolean!) {
     me @optionalField {
-      ...MyCollectionAndSavedWorks_me
+      ...MyCollectionAndSavedWorks_me @arguments(enableCollectorProfile: $enableCollectorProfile)
     }
   }
 `
@@ -241,14 +241,7 @@ export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => {
     >
       <QueryRenderer<MyCollectionAndSavedWorksQuery>
         environment={defaultEnvironment}
-        query={graphql`
-          query MyCollectionAndSavedWorksQuery($enableCollectorProfile: Boolean!) {
-            me @optionalField {
-              ...MyCollectionAndSavedWorks_me
-                @arguments(enableCollectorProfile: $enableCollectorProfile)
-            }
-          }
-        `}
+        query={MyCollectionAndSavedWorksScreenQuery}
         render={renderWithPlaceholder({
           Container: MyCollectionAndSavedWorksFragmentContainer,
           renderPlaceholder: () => <MyCollectionPlaceholder />,

@@ -1,33 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-/* @relayHash 8da4f7a2cbc3a38a53c25071e43ae6cc */
-=======
-/* @relayHash bb0ab40a7b853c68f2b739f0e2c7f43c */
->>>>>>> 0ac07c6c97 (add profile verification methods)
-=======
-/* @relayHash bb0ab40a7b853c68f2b739f0e2c7f43c */
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-/* @relayHash 5add6cc756eed4180860c0da673e0644 */
-=======
-/* @relayHash a70fcc4496dae2887c634a26e6dcb2fe */
->>>>>>> 6f81cd6a42 (add profile verification methods)
-=======
-/* @relayHash a70fcc4496dae2887c634a26e6dcb2fe */
-=======
-/* @relayHash 60f471d2b3324d9d94ae0927c6c7f709 */
->>>>>>> 2db50a06fb (send verification email on verify press)
->>>>>>> 157b1cc5be (send verification email on verify press)
->>>>>>> bf16f44883 (send verification email on verify press)
->>>>>>> 52000b447e (send verification email on verify press)
-=======
-/* @relayHash 15513e608a578b4937e46991dcfb21a7 */
->>>>>>> 8284d04a6e (add tests)
+/* @relayHash 50c93b3f83303c1292ddf043a142c3a4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -69,12 +43,9 @@ fragment MyCollectionAndSavedWorks_me on Me {
 }
 
 fragment MyProfileEditFormModal_me_40LmUp on Me {
-<<<<<<< HEAD
   name
   profession
   otherRelevantPositions
-=======
->>>>>>> 52000b447e (send verification email on verify press)
   bio
   location {
     display
@@ -86,7 +57,6 @@ fragment MyProfileEditFormModal_me_40LmUp on Me {
   icon {
     url(version: "thumbnail")
   }
-  name
 }
 */
 
@@ -257,33 +227,7 @@ return {
     ]
   },
   "params": {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "id": "8da4f7a2cbc3a38a53c25071e43ae6cc",
-=======
-    "id": "bb0ab40a7b853c68f2b739f0e2c7f43c",
->>>>>>> 0ac07c6c97 (add profile verification methods)
-=======
-    "id": "bb0ab40a7b853c68f2b739f0e2c7f43c",
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "id": "5add6cc756eed4180860c0da673e0644",
-=======
-    "id": "a70fcc4496dae2887c634a26e6dcb2fe",
->>>>>>> 6f81cd6a42 (add profile verification methods)
-=======
-    "id": "a70fcc4496dae2887c634a26e6dcb2fe",
-=======
-    "id": "60f471d2b3324d9d94ae0927c6c7f709",
->>>>>>> 2db50a06fb (send verification email on verify press)
->>>>>>> 157b1cc5be (send verification email on verify press)
->>>>>>> bf16f44883 (send verification email on verify press)
->>>>>>> 52000b447e (send verification email on verify press)
-=======
-    "id": "15513e608a578b4937e46991dcfb21a7",
->>>>>>> 8284d04a6e (add tests)
+    "id": "50c93b3f83303c1292ddf043a142c3a4",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {

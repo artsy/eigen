@@ -383,9 +383,9 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = ({
   )
 }
 
-<<<<<<< HEAD
 const meFragment = graphql`
-  fragment MyProfileEditFormModal_me on Me {
+  fragment MyProfileEditFormModal_me on Me
+  @argumentDefinitions(enableCollectorProfile: { type: "Boolean", defaultValue: false }) {
     name
     profession
     otherRelevantPositions
