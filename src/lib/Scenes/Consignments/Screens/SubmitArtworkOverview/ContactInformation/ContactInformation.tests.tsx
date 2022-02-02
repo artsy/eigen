@@ -105,7 +105,7 @@ describe("ContactInformationForm", () => {
     ).toBeTruthy()
   })
 
-  // TODO:
+  // TODO: (related Jira ticket: https://artsyproduct.atlassian.net/browse/SWA-223 )
   //
   // it("renders with an error when something is missing/not properly filled out", async () => null)
 
