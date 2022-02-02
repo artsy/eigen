@@ -1,7 +1,7 @@
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { BellIcon, Box, Button, Separator, Text, useColor } from "palette"
 import React, { ReactNode, useState } from "react"
-import { Pressable } from "react-native"
+import { Pressable, SafeAreaView } from "react-native"
 
 export interface ArtworkFilterApplyButtonProps {
   disabled: boolean
@@ -51,9 +51,7 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
 
   if (isEnabledImprovedAlertsFlow && onCreateAlertPress) {
     return (
-      <Box
-        p={2}
-        backgroundColor="white"
+      <SafeAreaView
         style={{
           shadowColor: color("black100"),
           shadowOffset: {
@@ -63,29 +61,32 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
           shadowOpacity: 0.1,
           shadowRadius: 12,
           elevation: 12,
+          backgroundColor: "white",
         }}
       >
-        <Box
-          height={50}
-          borderRadius={50}
-          px={1}
-          backgroundColor="black100"
-          flexDirection="row"
-          alignItems="center"
-        >
-          {!!shouldShowCreateAlertButton && (
-            <>
-              <InnerButton
-                label="Create Alert"
-                icon={<BellIcon fill="white100" width="15px" height="15px" mr={1} />}
-                onPress={onCreateAlertPress}
-              />
-              <Box width="1" height={20} backgroundColor="white100" mx={1} />
-            </>
-          )}
-          <InnerButton disabled={disabled} label="Apply Filters" onPress={onPress} />
+        <Box pt={2} px={2} backgroundColor="white">
+          <Box
+            height={50}
+            borderRadius={50}
+            px={1}
+            backgroundColor="black100"
+            flexDirection="row"
+            alignItems="center"
+          >
+            {!!shouldShowCreateAlertButton && (
+              <>
+                <InnerButton
+                  label="Create Alert"
+                  icon={<BellIcon fill="white100" width="15px" height="15px" mr={1} />}
+                  onPress={onCreateAlertPress}
+                />
+                <Box width="1" height={20} backgroundColor="white100" mx={1} />
+              </>
+            )}
+            <InnerButton disabled={disabled} label="Apply Filters" onPress={onPress} />
+          </Box>
         </Box>
-      </Box>
+      </SafeAreaView>
     )
   }
 
