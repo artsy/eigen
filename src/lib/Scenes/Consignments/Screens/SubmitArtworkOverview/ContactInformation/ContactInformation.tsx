@@ -17,9 +17,9 @@ export const ContactInformation: React.FC<{
   const [submissionError, setSubmissionError] = useState(false)
   const queryData = useLazyLoadQuery<ContactInformationQuery>(ContactInformationScreenQuery, {})
 
-  const name = queryData?.me?.name
-  const email = queryData?.me?.email
-  const phone = queryData?.me?.phone
+  const name = queryData?.me?.name || ""
+  const email = queryData?.me?.email || ""
+  const phone = queryData?.me?.phone || ""
 
   const handleSubmit = async (values: ContactInformationFormModel) => {
     try {
@@ -47,9 +47,9 @@ export const ContactInformation: React.FC<{
   return (
     <Formik<ContactInformationFormModel>
       initialValues={{
-        userName: name || "",
-        userEmail: email || "",
-        userPhone: phone || "",
+        userName: name,
+        userEmail: email,
+        userPhone: phone,
       }}
       onSubmit={handleSubmit}
       validationSchema={contactInformationValidationSchema}
@@ -66,14 +66,14 @@ export const ContactInformation: React.FC<{
             title="Name"
             placeholder="Your Full Name"
             onChangeText={(e) => setFieldValue("userName", e)}
-            value={name || values.userName}
+            value={values.userName}
           />
           <Spacer mt={4} />
           <Input
             title="Email"
             placeholder="Your Email Address"
             onChangeText={(e) => setFieldValue("userEmail", e)}
-            value={email || values.userEmail}
+            value={values.userEmail}
           />
           <Spacer mt={4} />
           <PhoneInput
@@ -81,7 +81,7 @@ export const ContactInformation: React.FC<{
             title="Phone number"
             placeholder="(000) 000 0000"
             onChangeText={(e) => setFieldValue("userPhone", e)}
-            value={phone || values.userPhone}
+            value={values.userPhone}
             setValidation={() => {
               //  validation function
             }}
