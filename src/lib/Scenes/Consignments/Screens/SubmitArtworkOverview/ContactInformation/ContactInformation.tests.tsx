@@ -5,8 +5,8 @@ import "react-native"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils/"
 import { createConsignSubmission, updateConsignSubmission } from "../Mutations"
-import { ContactInformationFormModel } from "../utils/validation"
-import { ContactInformationQueryRenderer } from "./ContactInformation"
+import { ContactInformation } from "./ContactInformation"
+import { ContactInformationFormModel } from "./validation"
 
 jest.mock(
   "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/createConsignSubmissionMutation",
@@ -37,7 +37,7 @@ const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnviro
 describe("ContactInformationForm", () => {
   const TestRenderer = () => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <ContactInformationQueryRenderer handlePress={jest.fn()} />
+      <ContactInformation handlePress={jest.fn()} />
     </RelayEnvironmentProvider>
   )
 
@@ -48,9 +48,7 @@ describe("ContactInformationForm", () => {
   })
 
   it("renders without throwing an error", () => {
-    renderWithWrappersTL(
-      <ContactInformationQueryRenderer handlePress={() => console.log("do nothing")} />
-    )
+    renderWithWrappersTL(<ContactInformation handlePress={() => console.log("do nothing")} />)
   })
 
   it("renders correct explanation for form fields", () => {

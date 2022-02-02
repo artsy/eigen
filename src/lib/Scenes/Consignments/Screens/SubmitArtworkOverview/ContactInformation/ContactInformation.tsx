@@ -2,17 +2,13 @@ import { captureMessage } from "@sentry/react-native"
 import { ContactInformationQuery } from "__generated__/ContactInformationQuery.graphql"
 import { Formik } from "formik"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
 import { ErrorView } from "../Components/ErrorView"
 import { updateConsignSubmission } from "../Mutations/updateConsignSubmissionMutation"
-import {
-  ContactInformationFormModel,
-  contactInformationValidationSchema,
-} from "../utils/validation"
+import { ContactInformationFormModel, contactInformationValidationSchema } from "./validation"
 
 export const ContactInformation: React.FC<{
   handlePress: () => void
@@ -51,9 +47,9 @@ export const ContactInformation: React.FC<{
   return (
     <Formik<ContactInformationFormModel>
       initialValues={{
-        userName: me?.name || "",
-        userEmail: me?.email || "",
-        userPhone: me?.phone || "",
+        userName: name || "",
+        userEmail: email || "",
+        userPhone: phone || "",
       }}
       onSubmit={handleSubmit}
       validationSchema={contactInformationValidationSchema}
@@ -122,4 +118,3 @@ export const ContactInformationScreenQuery = graphql`
     }
   }
 `
-

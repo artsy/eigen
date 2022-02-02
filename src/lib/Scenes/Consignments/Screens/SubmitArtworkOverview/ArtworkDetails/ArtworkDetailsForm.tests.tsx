@@ -6,11 +6,11 @@ import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { CTAButton } from "palette"
 import React from "react"
 import { act } from "react-test-renderer"
-import { limitedEditionValue } from "../utils/rarityOptions"
-import { artworkDetailsValidationSchema } from "../utils/validation"
-import { ArtworkDetailsFormModel } from "../utils/validation"
 import { mockSubmissionForm } from "./ArtworkDetails.tests"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
+import { limitedEditionValue } from "./utils/rarityOptions"
+import { artworkDetailsValidationSchema } from "./validation"
+import { ArtworkDetailsFormModel } from "./validation"
 
 jest.unmock("react-relay")
 
