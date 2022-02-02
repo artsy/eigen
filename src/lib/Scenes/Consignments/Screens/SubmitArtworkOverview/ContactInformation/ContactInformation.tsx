@@ -98,7 +98,6 @@ export const ContactInformation: React.FC<{
             }}
           />
           <Spacer mt={6} />
-          {console.log("whoop isValid", isValid)}
           <CTAButton
             onPress={() => {
               handleSubmit(values)
