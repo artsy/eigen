@@ -6,10 +6,11 @@ import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ConversationsContainer } from "lib/Scenes/Inbox/Components/Conversations/Conversations"
 import { MyBidsContainer } from "lib/Scenes/MyBids/MyBids"
 import { listenToNativeEvents } from "lib/store/NativeModel"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { PlaceholderBox, PlaceholderText } from "lib/utils/placeholders"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { track } from "lib/utils/track"
 import { ActionNames, ActionTypes } from "lib/utils/track/schema"
-import { Flex, Separator, Text } from "palette"
+import { Flex, Separator, Spacer, Text } from "palette"
 import React from "react"
 import { EmitterSubscription, View, ViewProps } from "react-native"
 // @ts-expect-error @types file generates duplicate declaration problems
@@ -181,7 +182,48 @@ export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
       environment={defaultEnvironment}
       query={InboxScreenQuery}
       variables={{}}
-      render={(...args) => renderWithLoadProgress(InboxContainer, props)(...args)}
+      // render={() => (
+      //   <ProvidePlaceholderContext>
+      //     <InboxPlaceholder />
+      //   </ProvidePlaceholderContext>
+      // )}
+      render={(...args) =>
+        renderWithPlaceholder({
+          Container: InboxContainer,
+          initialProps: props,
+          renderPlaceholder: () => <InboxPlaceholder />,
+        })(...args)
+      }
     />
+  )
+}
+
+export const InboxPlaceholder: React.FC<{}> = () => {
+  return (
+    <Flex height="100%">
+      <Flex flexDirection="row" mx={2} mt={3} mb={1}>
+        <PlaceholderText width={60} height={26} />
+        <Spacer mx={1} />
+        <PlaceholderText width={80} height={26} />
+      </Flex>
+      <Flex>
+        <Separator mx={1} />
+      </Flex>
+      <Flex flex={1} px="2">
+        <Flex my="auto" alignItems="center">
+          <PlaceholderText width={240} />
+          <Spacer mb={1} />
+          <PlaceholderText width={230} />
+
+          <PlaceholderText width={240} />
+
+          <PlaceholderText width={200} />
+          <PlaceholderText width={70} />
+          <Spacer mb={1} />
+
+          <PlaceholderBox width={160} height={50} borderRadius={25} />
+        </Flex>
+      </Flex>
+    </Flex>
   )
 }
