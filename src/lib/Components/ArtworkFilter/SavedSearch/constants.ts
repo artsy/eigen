@@ -10,6 +10,7 @@ export const shouldExtractValueNamesFromAggregation = [
 
 export const allowedSearchCriteriaKeys = [
   SearchCriteria.artistID,
+  SearchCriteria.artistIDs,
   SearchCriteria.locationCities,
   SearchCriteria.colors,
   SearchCriteria.partnerIDs,

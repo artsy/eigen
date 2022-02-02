@@ -8,7 +8,7 @@ import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { LocalImage, retrieveLocalImages, storeLocalImages } from "lib/utils/LocalImageStore"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import {
@@ -28,8 +28,8 @@ import React, { useEffect, useState } from "react"
 import { createFragmentContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
-import { MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
-import { MyProfileEditFormModalFragmentContainer } from "./MyProfileEditFormModal"
+import { MyCollectionPlaceholder, MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
+import { MyProfileEditFormModal } from "./MyProfileEditFormModal"
 
 export enum Tab {
   collection = "My Collection",
@@ -92,7 +92,7 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
   return (
     <>
       {!!me && (
-        <MyProfileEditFormModalFragmentContainer
+        <MyProfileEditFormModal
           me={me}
           visible={showModal}
           onDismiss={() => setShowModal(false)}
@@ -224,7 +224,10 @@ export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => (
     <QueryRenderer<MyCollectionAndSavedWorksQuery>
       environment={defaultEnvironment}
       query={MyCollectionAndSavedWorksScreenQuery}
-      render={renderWithLoadProgress(MyCollectionAndSavedWorksFragmentContainer)}
+      render={renderWithPlaceholder({
+        Container: MyCollectionAndSavedWorksFragmentContainer,
+        renderPlaceholder: () => <MyCollectionPlaceholder />,
+      })}
       variables={{}}
     />
   </ProvideScreenTrackingWithCohesionSchema>

@@ -157,7 +157,7 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
                 }
               }
             `}
-            variables={{ artistID: relayProps.me?.savedSearch?.artistID! }}
+            variables={{ artistID: relayProps.me?.savedSearch?.artistIDs?.[0]! }}
             render={renderWithPlaceholder({
               Container: EditSavedSearchAlertRefetchContainer,
               renderPlaceholder: () => <EditSavedSearchFormPlaceholder />,

@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-community/async-storage"
 import * as Sentry from "@sentry/react-native"
 import { MenuItem } from "lib/Components/MenuItem"
 import { useToast } from "lib/Components/Toast/toastHook"
+import { eigenSentryReleaseName } from "lib/ErrorReporting"
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
 import { dismissModal, navigate } from "lib/navigation/navigate"
 import { RelayCache } from "lib/relay/RelayCache"
@@ -209,6 +210,7 @@ export const AdminMenu: React.FC<{ onClose(): void }> = ({ onClose = dismissModa
             Sentry.nativeCrash()
           }}
         />
+        <FeatureFlagMenuItem title={`Sentry release name: "${eigenSentryReleaseName()}"`} />
         <FeatureFlagMenuItem title={`Device ID: "${getUniqueId()}"`} />
       </ScrollView>
     </Flex>

@@ -260,16 +260,6 @@ Once storybook is upgraded to a version that does not use the removed `Cancellab
 
 We get an error like here, and that is the solution. https://github.com/DefinitelyTyped/DefinitelyTyped/issues/47166#issuecomment-685738545
 
-## typings @sentry/react-native
-
-#### When can we remove this:
-
-Once sentry adds `enableOutOfMemoryTracking` to their `ReactNativeOptions` type.
-
-#### Explanation/Context:
-
-`enableOutOfMemoryTracking` seems to be missing from the `ReactNativeOptions` typing although it's working properly (see https://github.com/getsentry/sentry-react-native/issues/1633). We need to add it so that we can stop receiving Sentry errors related to out of memory.
-
 # `PropsStore` pass functions as props inside navigate() on iOS
 
 #### When can we remove this:

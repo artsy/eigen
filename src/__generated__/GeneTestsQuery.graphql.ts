@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4e2dfb8793b02b9ffc540cea3ad1ed09 */
+/* @relayHash bfebbab20d5392aa0ca5d9d075ea0309 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -128,6 +128,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
+  realizedPrice
 }
 
 fragment Biography_gene on Gene {
@@ -813,6 +814,13 @@ return {
                               (v5/*: any*/)
                             ],
                             "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "realizedPrice",
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -854,7 +862,7 @@ return {
     ]
   },
   "params": {
-    "id": "4e2dfb8793b02b9ffc540cea3ad1ed09",
+    "id": "bfebbab20d5392aa0ca5d9d075ea0309",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "gene": {
@@ -960,6 +968,7 @@ return {
         },
         "gene.artworks.edges.node.partner.id": (v13/*: any*/),
         "gene.artworks.edges.node.partner.name": (v14/*: any*/),
+        "gene.artworks.edges.node.realizedPrice": (v14/*: any*/),
         "gene.artworks.edges.node.sale": {
           "enumValues": null,
           "nullable": true,

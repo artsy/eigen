@@ -151,6 +151,7 @@ describe("ArtworksInSeriesRail", () => {
                         id: "abc123",
                         name: "Haw Contemporary",
                       },
+                      realizedPrice: null,
                     },
                   },
                   {
@@ -179,6 +180,7 @@ describe("ArtworksInSeriesRail", () => {
                         id: "abc123",
                         name: "Newzones",
                       },
+                      realizedPrice: null,
                     },
                   },
                   {
@@ -207,6 +209,7 @@ describe("ArtworksInSeriesRail", () => {
                         id: "abc123",
                         name: "Kasmin",
                       },
+                      realizedPrice: null,
                     },
                   },
                   {
@@ -235,6 +238,7 @@ describe("ArtworksInSeriesRail", () => {
                         id: "abc123",
                         name: "Kasmin",
                       },
+                      realizedPrice: null,
                     },
                   },
                   {
@@ -263,6 +267,7 @@ describe("ArtworksInSeriesRail", () => {
                         id: "abc123",
                         name: "Meyerovich Gallery",
                       },
+                      realizedPrice: null,
                     },
                   },
                 ],

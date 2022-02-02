@@ -103,6 +103,7 @@ const mockProps = {
       slug: "artwork slug",
       saleMessage: null,
       title: "Captain America",
+      realizedPrice: null,
     },
     counts: {
       bidderPositions: 14,

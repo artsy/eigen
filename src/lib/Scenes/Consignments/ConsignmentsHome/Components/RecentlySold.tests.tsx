@@ -4,10 +4,12 @@ import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 
 import { RecentlySoldTestsQuery } from "__generated__/RecentlySoldTestsQuery.graphql"
+import { ArtworkRailCard } from "lib/Components/ArtworkRail/ArtworkRailCard"
 import { extractText } from "lib/tests/extractText"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { act } from "react-test-renderer"
 import { RecentlySoldFragmentContainer } from "./RecentlySold"
 
 jest.unmock("react-relay")
@@ -121,9 +123,10 @@ describe("RecentlySold", () => {
       return result
     })
 
-    tree.root.findByProps({ testID: "recently-sold-item" }).props.onPress()
-    expect(mockTrackEvent).toHaveBeenCalledTimes(1)
-    expect(mockTrackEvent).toHaveBeenLastCalledWith(
+    const artworkWrapper = tree.root.findAllByType(ArtworkRailCard)[0]
+    act(() => artworkWrapper.props.onPress())
+
+    expect(mockTrackEvent).toHaveBeenCalledWith(
       expect.objectContaining({
         context_module: "artworkRecentlySoldGrid",
         context_screen_owner_type: "sell",

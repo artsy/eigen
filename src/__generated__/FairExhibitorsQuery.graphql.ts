@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d41a82f40c703170cf61dfa4c18a12b2 */
+/* @relayHash 2807c99464d4c7fa2e44f6fd0fe9774d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -71,6 +71,7 @@ fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
     id
   }
   title
+  realizedPrice
 }
 
 fragment FairExhibitorRail_show on Show {
@@ -604,6 +605,13 @@ return {
                                     "kind": "ScalarField",
                                     "name": "title",
                                     "storageKey": null
+                                  },
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "realizedPrice",
+                                    "storageKey": null
                                   }
                                 ],
                                 "storageKey": null
@@ -674,7 +682,7 @@ return {
     ]
   },
   "params": {
-    "id": "d41a82f40c703170cf61dfa4c18a12b2",
+    "id": "2807c99464d4c7fa2e44f6fd0fe9774d",
     "metadata": {},
     "name": "FairExhibitorsQuery",
     "operationKind": "query",

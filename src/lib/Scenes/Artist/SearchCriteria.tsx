@@ -34,7 +34,6 @@ export const SearchCriteriaQueryRenderer: React.FC<SearchCriteriaQueryRendererPr
               savedSearch(id: $searchCriteriaId) {
                 acquireable
                 additionalGeneIDs
-                artistID
                 atAuction
                 attributionClass
                 colors

@@ -8240,7 +8240,7 @@ type LatLng {
 
 input LinkAuthenticationMutationInput {
   # Unique Apple user id. **Required** for Apple authentication.
-  applieUid: String
+  appleUid: String
   clientMutationId: String
 
   # User email, only used for Apple authentication.
@@ -8707,6 +8707,9 @@ type Me implements Node {
   # A list of the current user’s credit cards
   creditCards(after: String, before: String, first: Int, last: Int): CreditCardConnection
   email: String
+
+  # User has confirmed their email address
+  emailConfirmed: Boolean!
 
   # Frequency of marketing emails.
   emailFrequency: String

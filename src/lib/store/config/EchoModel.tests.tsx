@@ -13,7 +13,6 @@ const earlierDate = originalDate.clone().subtract(2, "days")
 const laterDate = originalDate.clone().add(2, "days")
 
 const appVersion = (version: string) => ({
-  sentryReleaseName: "wut",
   version,
   isAndroidBeta: false,
 })

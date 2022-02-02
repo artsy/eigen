@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 49e9f472195889f9f8c5445beb633df0 */
+/* @relayHash 09bf228646d7bf67bcd37bf1673111b5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -54,6 +54,7 @@ export type ArtistNotableWorksRailTestsQueryRawResponse = {
                         readonly id: string;
                     }) | null;
                     readonly title: string | null;
+                    readonly realizedPrice: string | null;
                 }) | null;
             }) | null> | null;
             readonly id: string;
@@ -128,6 +129,7 @@ fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
     id
   }
   title
+  realizedPrice
 }
 
 fragment SmallArtworkRail_artworks on Artwork {
@@ -447,6 +449,13 @@ return {
                         "kind": "ScalarField",
                         "name": "title",
                         "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "realizedPrice",
+                        "storageKey": null
                       }
                     ],
                     "storageKey": null
@@ -465,7 +474,7 @@ return {
     ]
   },
   "params": {
-    "id": "49e9f472195889f9f8c5445beb633df0",
+    "id": "09bf228646d7bf67bcd37bf1673111b5",
     "metadata": {},
     "name": "ArtistNotableWorksRailTestsQuery",
     "operationKind": "query",

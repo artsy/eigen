@@ -6,6 +6,7 @@ import {
 } from "lib/__fixtures__/ArtworkBidAction"
 import { ArtworkFixture } from "lib/__fixtures__/ArtworkFixture"
 import { Countdown } from "lib/Components/Bidding/Components/Timer"
+import { navigationEvents } from "lib/navigation/navigate"
 import { ArtistSeriesListItem } from "lib/Scenes/ArtistSeries/ArtistSeriesListItem"
 import { ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
@@ -308,11 +309,11 @@ describe("Artwork", () => {
 
     expect(environment.mock.getAllOperations()).toHaveLength(0)
 
+    navigationEvents.emit("modalDismissed")
+    mockMostRecentOperation("ArtworkRefetchQuery")
+
     tree.update(<TestRenderer isVisible={false} />)
     tree.update(<TestRenderer isVisible />)
-
-    mockMostRecentOperation("ArtworkRefetchQuery")
-    await flushPromiseQueue()
     mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
   })
 
@@ -326,24 +327,6 @@ describe("Artwork", () => {
     })
     expect(tree.root.findByType(Artwork).props.artworkAboveTheFold.slug).toBe("my-special-artwork")
 
-    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-    mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
-      Artwork() {
-        return { slug: "my-special-artwork" }
-      },
-    })
-
-    tree.update(<TestRenderer isVisible={false} />)
-    tree.update(<TestRenderer isVisible />)
-
-    mockMostRecentOperation("ArtworkRefetchQuery", {
-      Artwork() {
-        return { slug: "completely-different-slug" }
-      },
-    })
-
-    await flushPromiseQueue()
-
     expect(environment.mock.getMostRecentOperation()).toMatchObject({
       request: {
         node: {
@@ -354,6 +337,37 @@ describe("Artwork", () => {
         variables: {
           input: {
             artwork_id: "my-special-artwork",
+          },
+        },
+      },
+    })
+    mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
+    mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
+      Artwork() {
+        return { slug: "my-special-artwork" }
+      },
+    })
+
+    navigationEvents.emit("modalDismissed")
+    mockMostRecentOperation("ArtworkRefetchQuery", {
+      Artwork() {
+        return { slug: "completely-different-slug" }
+      },
+    })
+
+    tree.update(<TestRenderer isVisible={false} />)
+    tree.update(<TestRenderer isVisible />)
+
+    expect(environment.mock.getMostRecentOperation()).toMatchObject({
+      request: {
+        node: {
+          operation: {
+            name: "ArtworkMarkAsRecentlyViewedQuery",
+          },
+        },
+        variables: {
+          input: {
+            artwork_id: "completely-different-slug",
           },
         },
       },

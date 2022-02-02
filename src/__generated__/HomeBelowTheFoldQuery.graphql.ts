@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash aafe631d1dc3926eea9babee68db9494 */
+/* @relayHash c148f800eded2aa77639e94e6b748570 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -153,6 +153,7 @@ fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
     id
   }
   title
+  realizedPrice
 }
 
 fragment AuctionResultListItem_auctionResult on AuctionResult {
@@ -727,7 +728,14 @@ v20 = [
         "storageKey": null
       },
       (v15/*: any*/),
-      (v4/*: any*/)
+      (v4/*: any*/),
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "realizedPrice",
+        "storageKey": null
+      }
     ],
     "storageKey": null
   },
@@ -1808,7 +1816,7 @@ return {
     ]
   },
   "params": {
-    "id": "aafe631d1dc3926eea9babee68db9494",
+    "id": "c148f800eded2aa77639e94e6b748570",
     "metadata": {},
     "name": "HomeBelowTheFoldQuery",
     "operationKind": "query",

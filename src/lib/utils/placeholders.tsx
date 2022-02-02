@@ -1,7 +1,7 @@
 import { GenericGridPlaceholder } from "lib/Components/ArtworkGrids/GenericGrid"
 import { Flex, useColor } from "palette"
 import React, { useContext, useEffect, useMemo, useRef } from "react"
-import { View, ViewStyle } from "react-native"
+import { LayoutAnimation, View, ViewStyle } from "react-native"
 import Animated from "react-native-reanimated"
 import { useScreenDimensions } from "./useScreenDimensions"
 
@@ -15,10 +15,14 @@ function useCurrentTime() {
     return new Animated.Clock()
   }, [])
   useEffect(() => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+
     // isMounted starts as true so nothing to do here
     return () => {
       // this is called when the component unmounts
       isMounted.setValue(0)
+
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
     }
   }, [])
   Animated.useCode(

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1875c2da5b67707215123ddbe20ef014 */
+/* @relayHash 93edfd5876893b75e7e952fc882da929 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -53,6 +53,7 @@ export type ShowArtworksPreviewTestsQueryRawResponse = {
                         readonly name: string | null;
                         readonly id: string;
                     }) | null;
+                    readonly realizedPrice: string | null;
                 }) | null;
             }) | null> | null;
         }) | null;
@@ -107,6 +108,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
+  realizedPrice
 }
 
 fragment GenericGrid_artworks on Artwork {
@@ -432,6 +434,13 @@ return {
                           (v1/*: any*/)
                         ],
                         "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "realizedPrice",
+                        "storageKey": null
                       }
                     ],
                     "storageKey": null
@@ -448,7 +457,7 @@ return {
     ]
   },
   "params": {
-    "id": "1875c2da5b67707215123ddbe20ef014",
+    "id": "93edfd5876893b75e7e952fc882da929",
     "metadata": {},
     "name": "ShowArtworksPreviewTestsQuery",
     "operationKind": "query",

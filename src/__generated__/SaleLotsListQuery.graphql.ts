@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash e828ff0222243db5f075d49ba9b154d9 */
+/* @relayHash f58e9d45343ccb85493dd38b3f48d598 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -47,6 +47,7 @@ export type SaleLotsListQueryRawResponse = {
                     readonly width: number | null;
                     readonly url: string | null;
                 }) | null | undefined;
+                readonly realizedPrice?: string | null | undefined;
                 readonly saleMessage?: string | null | undefined;
                 readonly slug?: string | undefined;
                 readonly title?: string | null | undefined;
@@ -141,6 +142,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
+  realizedPrice
 }
 
 fragment InfiniteScrollArtworksGrid_connection on ArtworkConnectionInterface {
@@ -177,6 +179,7 @@ fragment SaleArtworkListItem_artwork on Artwork {
     height
     width
   }
+  realizedPrice
   saleMessage
   slug
   title
@@ -661,6 +664,13 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
+                        "name": "realizedPrice",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
                         "name": "saleMessage",
                         "storageKey": null
                       },
@@ -848,7 +858,7 @@ return {
     ]
   },
   "params": {
-    "id": "e828ff0222243db5f075d49ba9b154d9",
+    "id": "f58e9d45343ccb85493dd38b3f48d598",
     "metadata": {},
     "name": "SaleLotsListQuery",
     "operationKind": "query",
