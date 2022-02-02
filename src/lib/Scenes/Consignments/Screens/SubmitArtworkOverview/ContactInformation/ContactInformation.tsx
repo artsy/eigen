@@ -56,7 +56,7 @@ export const ContactInformation: React.FC<{
       validateOnMount
       enableReinitialize
     >
-      {({ values, setFieldValue, isValid }) => (
+      {({ values, setFieldValue, isValid, errors }) => (
         <Flex p={1} mt={1}>
           <Text color="black60">
             We will only use these details to contact you regarding your submission.
@@ -67,6 +67,7 @@ export const ContactInformation: React.FC<{
             placeholder="Your Full Name"
             onChangeText={(e) => setFieldValue("userName", e)}
             value={values.userName}
+            error={errors.userName}
           />
           <Spacer mt={4} />
           <Input
@@ -74,6 +75,7 @@ export const ContactInformation: React.FC<{
             placeholder="Your Email Address"
             onChangeText={(e) => setFieldValue("userEmail", e)}
             value={values.userEmail}
+            error={errors.userEmail}
           />
           <Spacer mt={4} />
           <PhoneInput
@@ -82,6 +84,7 @@ export const ContactInformation: React.FC<{
             placeholder="(000) 000 0000"
             onChangeText={(e) => setFieldValue("userPhone", e)}
             value={values.userPhone}
+            error={errors.userPhone}
             setValidation={() => {
               //  validation function
             }}
@@ -95,6 +98,7 @@ export const ContactInformation: React.FC<{
           >
             Submit Artwork
           </CTAButton>
+          <Spacer mt={2} />
         </Flex>
       )}
     </Formik>
