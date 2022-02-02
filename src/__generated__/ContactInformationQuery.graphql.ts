@@ -1,24 +1,15 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash fbf1691f12192e12e2d59c5bf230aee7 */
+/* @relayHash fe305f8dcfc8421471ece05157644a19 */
 
 import { ConcreteRequest } from "relay-runtime";
-export type PhoneNumberErrors = "INVALID_COUNTRY_CODE" | "INVALID_NUMBER" | "TOO_LONG" | "TOO_SHORT" | "%future added value";
 export type ContactInformationQueryVariables = {};
 export type ContactInformationQueryResponse = {
     readonly me: {
         readonly name: string | null;
         readonly email: string | null;
         readonly phone: string | null;
-        readonly phoneNumber: {
-            readonly countryCode: string | null;
-            readonly display: string | null;
-            readonly error: PhoneNumberErrors | null;
-            readonly isValid: boolean | null;
-            readonly originalNumber: string | null;
-            readonly regionCode: string | null;
-        } | null;
     } | null;
 };
 export type ContactInformationQuery = {
@@ -34,14 +25,6 @@ query ContactInformationQuery {
     name
     email
     phone
-    phoneNumber {
-      countryCode
-      display
-      error
-      isValid
-      originalNumber
-      regionCode
-    }
     id
   }
 }
@@ -68,59 +51,6 @@ v2 = {
   "kind": "ScalarField",
   "name": "phone",
   "storageKey": null
-},
-v3 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "PhoneNumberType",
-  "kind": "LinkedField",
-  "name": "phoneNumber",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "countryCode",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "display",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "error",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "isValid",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "originalNumber",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "regionCode",
-      "storageKey": null
-    }
-  ],
-  "storageKey": null
 };
 return {
   "fragment": {
@@ -139,8 +69,7 @@ return {
         "selections": [
           (v0/*: any*/),
           (v1/*: any*/),
-          (v2/*: any*/),
-          (v3/*: any*/)
+          (v2/*: any*/)
         ],
         "storageKey": null
       }
@@ -165,7 +94,6 @@ return {
           (v0/*: any*/),
           (v1/*: any*/),
           (v2/*: any*/),
-          (v3/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -179,7 +107,7 @@ return {
     ]
   },
   "params": {
-    "id": "fbf1691f12192e12e2d59c5bf230aee7",
+    "id": "fe305f8dcfc8421471ece05157644a19",
     "metadata": {},
     "name": "ContactInformationQuery",
     "operationKind": "query",
@@ -187,5 +115,5 @@ return {
   }
 };
 })();
-(node as any).hash = '9b33e36b9e816cefc13f4a9ca09361c7';
+(node as any).hash = '9a9e8f0ff472e37d49081dca4761221d';
 export default node;

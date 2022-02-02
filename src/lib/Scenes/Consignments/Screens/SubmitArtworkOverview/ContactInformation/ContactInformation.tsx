@@ -120,14 +120,26 @@ export const ContactInformationScreenQuery = graphql`
       name
       email
       phone
-      phoneNumber {
-        countryCode
-        display
-        error
-        isValid
-        originalNumber
-        regionCode
-      }
     }
   }
 `
+
+// TODO:
+// Pre-populate phone number from a user's `phoneNumber` field
+// https://artsyproduct.atlassian.net/browse/SWA-224
+//
+// scheme
+//
+// me {
+//   name
+//   email
+//   phone
+//   phoneNumber {
+//     countryCode
+//     display
+//     error
+//     isValid
+//     originalNumber
+//     regionCode
+//   }
+// }
