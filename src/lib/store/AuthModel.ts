@@ -77,7 +77,7 @@ interface GoogleOAuthParams {
 interface AppleOAuthParams {
   oauthProvider: "apple"
   idToken: string
-  appleUID: string
+  appleUid: string
 }
 
 interface SignUpParams {
@@ -103,7 +103,7 @@ export interface AuthPromiseRejectType {
     existingProviders?: string[]
     oauthToken?: string
     idToken?: string
-    appleUID?: string
+    appleUid?: string
   }
 }
 
@@ -297,7 +297,7 @@ export const getAuthModel = (): AuthModel => ({
         password: oauthProvider === "email" ? args.password : undefined,
         oauth_token:
           oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
-        apple_uid: oauthProvider === "apple" ? args.appleUID : undefined,
+        apple_uid: oauthProvider === "apple" ? args.appleUid : undefined,
         id_token: oauthProvider === "apple" ? args.idToken : undefined,
         grant_type: grantTypeMap[oauthProvider],
         client_id: clientKey,
@@ -389,7 +389,7 @@ export const getAuthModel = (): AuthModel => ({
         password: oauthProvider === "email" ? args.password : undefined,
         oauth_token:
           oauthProvider === "facebook" || oauthProvider === "google" ? args.accessToken : undefined,
-        apple_uid: oauthProvider === "apple" ? args.appleUID : undefined,
+        apple_uid: oauthProvider === "apple" ? args.appleUid : undefined,
         id_token: oauthProvider === "apple" ? args.idToken : undefined,
 
         agreed_to_receive_emails: agreedToReceiveEmails,
@@ -416,7 +416,7 @@ export const getAuthModel = (): AuthModel => ({
             oauthProvider,
             email,
             idToken: args.idToken,
-            appleUID: args.appleUID,
+            appleUid: args.appleUid,
             onboardingState: "incomplete",
           })
           break
@@ -436,18 +436,20 @@ export const getAuthModel = (): AuthModel => ({
     }
 
     const resultJson = await result.json()
+    console.log("RESULTJSON", resultJson)
     let message = ""
     const error = resultJson?.error
-    let existingProviders: string[] | undefined
+    let existingProviders: string[] = []
     const providerName = capitalize(oauthProvider)
     if (resultJson?.error === "User Already Exists") {
       message = `Your ${
         providerName === "Email" ? "" : providerName
       } email account is linked to an Artsy user account please Log in using your email and password instead.`
       const authentications = (resultJson?.providers ?? []) as string[]
-      if (oauthProvider !== "email" && !authentications.includes(oauthProvider)) {
-        existingProviders = ["email", ...authentications.map((p) => p.toLowerCase())]
+      if (resultJson?.has_password && oauthProvider !== "email") {
+        existingProviders = ["email"]
       }
+      existingProviders = [...existingProviders, ...authentications.map((p) => p.toLowerCase())]
     } else if (resultJson?.error === "Another Account Already Linked") {
       message =
         `Your ${providerName} account is already linked to another Artsy account. ` +
@@ -459,16 +461,16 @@ export const getAuthModel = (): AuthModel => ({
     }
 
     const { accessToken } = args as SignUpParams & (FacebookOAuthParams | GoogleOAuthParams)
-    const { appleUID, idToken } = args as SignUpParams & AppleOAuthParams
+    const { appleUid, idToken } = args as SignUpParams & AppleOAuthParams
     return {
       success: false,
       error,
       message,
       meta: {
-        existingProviders,
+        existingProviders: existingProviders.length ? existingProviders : undefined,
         email,
         oauthToken: accessToken,
-        appleUID,
+        appleUid,
         idToken,
         provider: oauthProvider,
       },
@@ -672,7 +674,7 @@ export const getAuthModel = (): AuthModel => ({
         reject(new AuthError("Failed to authenticate using apple sign in"))
         return
       }
-      const appleUID = userInfo.user
+      const appleUid = userInfo.user
 
       if (signInOrUp === "signUp") {
         const firstName = userInfo.fullName?.givenName ? userInfo.fullName.givenName : ""
@@ -682,7 +684,7 @@ export const getAuthModel = (): AuthModel => ({
           ? await actions.signUp({
               email: userInfo.email,
               name: `${firstName} ${lastName}`.trim(),
-              appleUID,
+              appleUid,
               idToken,
               oauthProvider: "apple",
               agreedToReceiveEmails: !!agreedToReceiveEmails,
@@ -715,7 +717,7 @@ export const getAuthModel = (): AuthModel => ({
           },
           body: {
             oauth_provider: "apple",
-            apple_uid: appleUID,
+            apple_uid: appleUid,
             id_token: idToken,
             client_id: clientKey,
             client_secret: clientSecret,
@@ -733,7 +735,7 @@ export const getAuthModel = (): AuthModel => ({
           const resultGravitySignIn = await actions.signIn({
             oauthProvider: "apple",
             email,
-            appleUID,
+            appleUid,
             idToken,
             onSignIn,
           })

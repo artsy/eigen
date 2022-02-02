@@ -46,7 +46,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
       provider: providerToBeLinked,
       oauthToken,
       idToken,
-      appleUID,
+      appleUid,
     } = meta!
     let tokenForProviderToBeLinked: GoogleOrFacebookToken | AppleToken
     if (["google", "facebook"].includes(providerToBeLinked)) {
@@ -56,11 +56,11 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
       }
       tokenForProviderToBeLinked = oauthToken
     } else if (providerToBeLinked === "apple") {
-      if (!idToken || !appleUID) {
+      if (!idToken || !appleUid) {
         console.warn(`Error: No oauthToken provided for ${titleizedProvider}`)
         return
       }
-      tokenForProviderToBeLinked = { idToken, appleUID }
+      tokenForProviderToBeLinked = { idToken, appleUid }
     }
     Alert.alert(
       "Error",

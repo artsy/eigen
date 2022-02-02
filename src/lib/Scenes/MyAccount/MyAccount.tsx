@@ -11,10 +11,11 @@ import { useGoogleLink } from "lib/utils/LinkedAccounts/google"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Flex, Separator, Text } from "palette"
+import { Flex, Separator, Text, useColor } from "palette"
 import React from "react"
 import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
+import { SectionHeading } from "../MyProfile/MyProfileSettings"
 
 const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay }) => {
   const showLinkedAccounts = useFeatureFlag("ARShowLinkedAccounts")
@@ -40,6 +41,8 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
   const facebookLinked = me.authentications.map((a) => a.provider).includes("FACEBOOK")
   const googleLinked = me.authentications.map((a) => a.provider).includes("GOOGLE")
   const appleLinked = me.authentications.map((a) => a.provider).includes("APPLE")
+
+  const blackColor = useColor()("black100")
 
   return (
     <PageWithSimpleHeader title="Account">
@@ -72,13 +75,13 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
         {!!me.paddleNumber && <MenuItem title="Paddle Number" value={me.paddleNumber} />}
         {!!showLinkedAccounts && (
           <>
-            <Separator />
-            <MenuItem title="Linked Accounts" />
+            <Separator mt={2} mb={2} />
+            <SectionHeading title="LINKED ACCOUNTS" />
             <MenuItem
               title="Facebook"
               rightView={
                 fbLoading ? (
-                  <ActivityIndicator size="small" color="#000000" />
+                  <ActivityIndicator size="small" color={blackColor} />
                 ) : (
                   <Flex flexDirection="row" alignItems="center">
                     <Image
@@ -99,7 +102,7 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
                 title="Google"
                 rightView={
                   googleLoading ? (
-                    <ActivityIndicator size="small" color="#000000" />
+                    <ActivityIndicator size="small" color={blackColor} />
                   ) : (
                     <Flex flexDirection="row" alignItems="center">
                       <Image
@@ -123,13 +126,13 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
                 title="Apple"
                 rightView={
                   appleLoading ? (
-                    <ActivityIndicator size="small" />
+                    <ActivityIndicator size="small" color={blackColor} />
                   ) : (
                     <Flex flexDirection="row" alignItems="center">
                       <Image
                         source={require(`@images/apple.webp`)}
                         resizeMode="contain"
-                        style={{ marginRight: 10 }}
+                        style={{ marginRight: 10, tintColor: blackColor }}
                       />
                       <Text variant="md" color="black60" lineHeight={18}>
                         {appleLinked ? "Disconnect" : "Connect"}

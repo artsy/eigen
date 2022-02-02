@@ -23,7 +23,7 @@ interface OnboardingSocialLinkFormSchema {
 export type GoogleOrFacebookToken = string
 export interface AppleToken {
   idToken: string
-  appleUID: string
+  appleUid: string
 }
 
 export const titleize = (str: string) =>

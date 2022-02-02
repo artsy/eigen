@@ -1,14 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 74f36cecce17904416eeb3c39e8cec5c */
+/* @relayHash 4457f9c1d4fffe76fd42c432c73628d7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type AuthenticationProvider = "APPLE" | "FACEBOOK" | "GOOGLE" | "%future added value";
 export type apple_LinkAccountMutationVariables = {
     provider: AuthenticationProvider;
-    applieUid: string;
+    appleUid: string;
     idToken: string;
     email: string;
     name: string;
@@ -31,13 +31,13 @@ export type apple_LinkAccountMutation = {
 /*
 mutation apple_LinkAccountMutation(
   $provider: AuthenticationProvider!
-  $applieUid: String!
+  $appleUid: String!
   $idToken: String!
   $email: String!
   $name: String!
   $oauthToken: String!
 ) {
-  linkAuthentication(input: {provider: $provider, applieUid: $applieUid, idToken: $idToken, email: $email, name: $name, oauthToken: $oauthToken}) {
+  linkAuthentication(input: {provider: $provider, appleUid: $appleUid, idToken: $idToken, email: $email, name: $name, oauthToken: $oauthToken}) {
     me {
       ...MyAccount_me
       id
@@ -62,7 +62,7 @@ const node: ConcreteRequest = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "applieUid"
+  "name": "appleUid"
 },
 v1 = {
   "defaultValue": null,
@@ -94,8 +94,8 @@ v6 = [
     "fields": [
       {
         "kind": "Variable",
-        "name": "applieUid",
-        "variableName": "applieUid"
+        "name": "appleUid",
+        "variableName": "appleUid"
       },
       {
         "kind": "Variable",
@@ -272,7 +272,7 @@ return {
     ]
   },
   "params": {
-    "id": "74f36cecce17904416eeb3c39e8cec5c",
+    "id": "4457f9c1d4fffe76fd42c432c73628d7",
     "metadata": {},
     "name": "apple_LinkAccountMutation",
     "operationKind": "mutation",
@@ -280,5 +280,5 @@ return {
   }
 };
 })();
-(node as any).hash = '8938550ef6c54bb60f982d4a0c09fa67';
+(node as any).hash = 'f402393ace149e2037e5e9fe2244644b';
 export default node;

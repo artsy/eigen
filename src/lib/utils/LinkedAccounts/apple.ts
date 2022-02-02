@@ -1,4 +1,7 @@
-import { appleAuth, AppleRequestResponseFullName } from "@invertase/react-native-apple-authentication"
+import {
+  appleAuth,
+  AppleRequestResponseFullName,
+} from "@invertase/react-native-apple-authentication"
 import { apple_LinkAccountMutation } from "__generated__/apple_LinkAccountMutation.graphql"
 import { apple_UnlinkAccountMutation } from "__generated__/apple_UnlinkAccountMutation.graphql"
 import { AppleToken } from "lib/Scenes/Onboarding/OnboardingSocialLink"
@@ -12,13 +15,13 @@ export const useAppleLink = (relayEnvironment: RelayModernEnvironment) => {
   const [loading, setLoading] = useState(false)
 
   const linkUsingOauthToken = (email: string, name: string, token: AppleToken) => {
-    const { appleUID: applieUid, idToken } = token
+    const { appleUid, idToken } = token
     setLoading(true)
     commitMutation<apple_LinkAccountMutation>(relayEnvironment, {
       mutation: graphql`
         mutation apple_LinkAccountMutation(
           $provider: AuthenticationProvider!
-          $applieUid: String!
+          $appleUid: String!
           $idToken: String!
           $email: String!
           $name: String!
@@ -27,7 +30,7 @@ export const useAppleLink = (relayEnvironment: RelayModernEnvironment) => {
           linkAuthentication(
             input: {
               provider: $provider
-              applieUid: $applieUid
+              appleUid: $appleUid
               idToken: $idToken
               email: $email
               name: $name
@@ -40,7 +43,7 @@ export const useAppleLink = (relayEnvironment: RelayModernEnvironment) => {
           }
         }
       `,
-      variables: { provider: "APPLE", oauthToken: "", applieUid, idToken, email, name },
+      variables: { provider: "APPLE", oauthToken: "", appleUid, idToken, email, name },
       onCompleted: () => {
         setLoading(false)
         provideFeedback({ success: true }, "Apple", "link")
@@ -72,7 +75,7 @@ export const useAppleLink = (relayEnvironment: RelayModernEnvironment) => {
       setLoading(false)
       return
     }
-    const appleUID = userInfo.user
+    const appleUid = userInfo.user
 
     const computeString = (str?: string | null) => (str ? str : "")
 
@@ -81,7 +84,7 @@ export const useAppleLink = (relayEnvironment: RelayModernEnvironment) => {
 
     const name = userInfo?.fullName ? computeName(userInfo.fullName) : ""
 
-    linkUsingOauthToken(userInfo.email, name, { idToken, appleUID })
+    linkUsingOauthToken(userInfo.email, name, { idToken, appleUid })
   }
 
   const unlink = () => {
