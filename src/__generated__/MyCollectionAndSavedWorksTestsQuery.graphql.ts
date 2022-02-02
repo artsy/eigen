@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 50c93b3f83303c1292ddf043a142c3a4 */
+/* @relayHash bb0ab40a7b853c68f2b739f0e2c7f43c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -44,16 +44,7 @@ fragment MyCollectionAndSavedWorks_me on Me {
 
 fragment MyProfileEditFormModal_me_40LmUp on Me {
   name
-  profession
-  otherRelevantPositions
   bio
-  location {
-    display
-    city
-    state
-    country
-    id
-  }
   icon {
     url(version: "thumbnail")
   }
@@ -150,28 +141,7 @@ return {
                 "name": "display",
                 "storageKey": null
               },
-              (v0/*: any*/),
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "city",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "state",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "country",
-                "storageKey": null
-              }
+              (v0/*: any*/)
             ],
             "storageKey": null
           },
@@ -227,7 +197,7 @@ return {
     ]
   },
   "params": {
-    "id": "50c93b3f83303c1292ddf043a142c3a4",
+    "id": "bb0ab40a7b853c68f2b739f0e2c7f43c",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -252,11 +222,8 @@ return {
           "plural": false,
           "type": "MyLocation"
         },
-        "me.location.city": (v1/*: any*/),
-        "me.location.country": (v1/*: any*/),
         "me.location.display": (v1/*: any*/),
         "me.location.id": (v2/*: any*/),
-        "me.location.state": (v1/*: any*/),
         "me.name": (v1/*: any*/),
         "me.otherRelevantPositions": (v1/*: any*/),
         "me.profession": (v1/*: any*/)

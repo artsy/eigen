@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 50fdd3b2e81fc2e2f3feb10fb0e2cf1d */
+/* @relayHash 1386b078142641ef4ab0f77fcd1da07f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -48,22 +48,23 @@ fragment MyCollectionAndSavedWorks_me_3CllfQ on Me {
 
 fragment MyProfileEditFormModal_me_3CllfQ on Me {
   name
-  profession
-  otherRelevantPositions
-  bio
-  location {
+  profession @include(if: $enableCollectorProfile)
+  otherRelevantPositions @include(if: $enableCollectorProfile)
+  location @include(if: $enableCollectorProfile) {
     display
     city
     state
     country
     id
   }
+  email @include(if: $enableCollectorProfile)
+  emailConfirmed @include(if: $enableCollectorProfile)
+  identityVerified @include(if: $enableCollectorProfile)
+  canRequestEmailConfirmation @include(if: $enableCollectorProfile)
+  bio
   icon {
     url(version: "thumbnail")
   }
-  email @include(if: $enableCollectorProfile)
-  identityVerified @include(if: $enableCollectorProfile)
-  canRequestEmailConfirmation @include(if: $enableCollectorProfile)
 }
 */
 
@@ -158,28 +159,7 @@ return {
                 "name": "display",
                 "storageKey": null
               },
-              (v1/*: any*/),
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "city",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "state",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "country",
-                "storageKey": null
-              }
+              (v1/*: any*/)
             ],
             "storageKey": null
           },
@@ -237,8 +217,47 @@ return {
               {
                 "alias": null,
                 "args": null,
+                "concreteType": "MyLocation",
+                "kind": "LinkedField",
+                "name": "location",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "city",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "state",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "country",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
                 "kind": "ScalarField",
                 "name": "email",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "emailConfirmed",
                 "storageKey": null
               },
               {
@@ -263,7 +282,7 @@ return {
     ]
   },
   "params": {
-    "id": "50fdd3b2e81fc2e2f3feb10fb0e2cf1d",
+    "id": "1386b078142641ef4ab0f77fcd1da07f",
     "metadata": {},
     "name": "MyCollectionAndSavedWorksQuery",
     "operationKind": "query",

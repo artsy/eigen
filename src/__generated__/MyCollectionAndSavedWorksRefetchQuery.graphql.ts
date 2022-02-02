@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 410354f17af83ee80854201570096bd6 */
+/* @relayHash d67795adeab589b05eac5375abf95983 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -32,22 +32,23 @@ query MyCollectionAndSavedWorksRefetchQuery(
 
 fragment MyProfileEditFormModal_me_3CllfQ on Me {
   name
-  profession
-  otherRelevantPositions
-  bio
-  location {
+  profession @include(if: $enableCollectorProfile)
+  otherRelevantPositions @include(if: $enableCollectorProfile)
+  location @include(if: $enableCollectorProfile) {
     display
     city
     state
     country
     id
   }
+  email @include(if: $enableCollectorProfile)
+  emailConfirmed @include(if: $enableCollectorProfile)
+  identityVerified @include(if: $enableCollectorProfile)
+  canRequestEmailConfirmation @include(if: $enableCollectorProfile)
+  bio
   icon {
     url(version: "thumbnail")
   }
-  email @include(if: $enableCollectorProfile)
-  identityVerified @include(if: $enableCollectorProfile)
-  canRequestEmailConfirmation @include(if: $enableCollectorProfile)
 }
 */
 
@@ -124,61 +125,7 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "profession",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "otherRelevantPositions",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
             "name": "bio",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "MyLocation",
-            "kind": "LinkedField",
-            "name": "location",
-            "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "display",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "city",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "state",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "country",
-                "storageKey": null
-              },
-              (v1/*: any*/)
-            ],
             "storageKey": null
           },
           {
@@ -215,7 +162,68 @@ return {
                 "alias": null,
                 "args": null,
                 "kind": "ScalarField",
+                "name": "profession",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "otherRelevantPositions",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "MyLocation",
+                "kind": "LinkedField",
+                "name": "location",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "display",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "city",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "state",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "country",
+                    "storageKey": null
+                  },
+                  (v1/*: any*/)
+                ],
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
                 "name": "email",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "emailConfirmed",
                 "storageKey": null
               },
               {
@@ -240,7 +248,7 @@ return {
     ]
   },
   "params": {
-    "id": "410354f17af83ee80854201570096bd6",
+    "id": "d67795adeab589b05eac5375abf95983",
     "metadata": {},
     "name": "MyCollectionAndSavedWorksRefetchQuery",
     "operationKind": "query",

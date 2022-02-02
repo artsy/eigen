@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 9c89bd1ab1fd629262ed2f3278f45cb8 */
+/* @relayHash f03bf20d2e7de4be252bc3207298333a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -42,6 +42,7 @@ fragment MyProfileEditFormModal_me_2DDXa1 on Me {
     url(version: "thumbnail")
   }
   email
+  emailConfirmed
   identityVerified
   canRequestEmailConfirmation
 }
@@ -62,6 +63,12 @@ v1 = {
   "type": "String"
 },
 v2 = {
+  "enumValues": null,
+  "nullable": false,
+  "plural": false,
+  "type": "Boolean"
+},
+v3 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
@@ -217,6 +224,13 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "emailConfirmed",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "identityVerified",
             "storageKey": null
           },
@@ -234,7 +248,7 @@ return {
     ]
   },
   "params": {
-    "id": "9c89bd1ab1fd629262ed2f3278f45cb8",
+    "id": "f03bf20d2e7de4be252bc3207298333a",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -244,13 +258,9 @@ return {
           "type": "Me"
         },
         "me.bio": (v1/*: any*/),
-        "me.canRequestEmailConfirmation": {
-          "enumValues": null,
-          "nullable": false,
-          "plural": false,
-          "type": "Boolean"
-        },
+        "me.canRequestEmailConfirmation": (v2/*: any*/),
         "me.email": (v1/*: any*/),
+        "me.emailConfirmed": (v2/*: any*/),
         "me.icon": {
           "enumValues": null,
           "nullable": true,
@@ -258,7 +268,7 @@ return {
           "type": "Image"
         },
         "me.icon.url": (v1/*: any*/),
-        "me.id": (v2/*: any*/),
+        "me.id": (v3/*: any*/),
         "me.identityVerified": {
           "enumValues": null,
           "nullable": true,
@@ -274,7 +284,7 @@ return {
         "me.location.city": (v1/*: any*/),
         "me.location.country": (v1/*: any*/),
         "me.location.display": (v1/*: any*/),
-        "me.location.id": (v2/*: any*/),
+        "me.location.id": (v3/*: any*/),
         "me.location.state": (v1/*: any*/),
         "me.name": (v1/*: any*/),
         "me.otherRelevantPositions": (v1/*: any*/),

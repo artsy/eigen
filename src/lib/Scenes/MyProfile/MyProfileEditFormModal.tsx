@@ -31,7 +31,6 @@ import {
 } from "palette"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { graphql, RelayProp, useFragment } from "react-relay"
 import * as Yup from "yup"
 import {
@@ -355,7 +354,8 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = ({
                 {!!enableCollectorProfile && (
                   <ProfileVerifications
                     isIDVerified={!!me.identityVerified}
-                    isEmailVerified={!me.canRequestEmailConfirmation}
+                    canRequestEmailConfirmation={!me.canRequestEmailConfirmation}
+                    emailConfirmed={!!me.emailConfirmed}
                     handleEmailVerification={throttleHandledEmailVerification}
                   />
                 )}
@@ -382,28 +382,6 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = ({
     </ArtsyKeyboardAvoidingView>
   )
 }
-
-const meFragment = graphql`
-  fragment MyProfileEditFormModal_me on Me
-  @argumentDefinitions(enableCollectorProfile: { type: "Boolean", defaultValue: false }) {
-    name
-    profession
-    otherRelevantPositions
-    bio
-    location {
-      display
-      city
-      state
-      country
-    }
-    icon {
-      url(version: "thumbnail")
-    }
-    email @include(if: $enableCollectorProfile)
-    identityVerified @include(if: $enableCollectorProfile)
-    canRequestEmailConfirmation @include(if: $enableCollectorProfile)
-  }
-`
 
 export const VerificationConfirmationBanner = ({
   isLoading,
@@ -466,13 +444,15 @@ const renderVerifiedRow = ({ title, subtitle }: { title: string; subtitle: strin
 }
 
 const ProfileVerifications = ({
-  isIDVerified,
-  isEmailVerified,
+  canRequestEmailConfirmation,
+  emailConfirmed,
   handleEmailVerification,
+  isIDVerified,
 }: {
-  isIDVerified: boolean
-  isEmailVerified: boolean
+  canRequestEmailConfirmation: boolean
+  emailConfirmed: boolean
   handleEmailVerification: () => void
+  isIDVerified: boolean
 }) => {
   const color = useColor()
   return (
@@ -513,7 +493,7 @@ const ProfileVerifications = ({
       <Spacer height={30} />
 
       {/* Email Verification */}
-      {isEmailVerified ? (
+      {emailConfirmed ? (
         renderVerifiedRow({
           title: "Email Address Verified",
           subtitle: "Description Text explaining Email verification for the Collector.",
@@ -523,8 +503,12 @@ const ProfileVerifications = ({
           <CheckCircleIcon height={22} width={22} fill="black30" />
           <Flex ml={1}>
             <Text
-              style={{ textDecorationLine: "underline" }}
-              onPress={handleEmailVerification}
+              style={{ textDecorationLine: canRequestEmailConfirmation ? "underline" : "none" }}
+              onPress={() => {
+                if (canRequestEmailConfirmation) {
+                  handleEmailVerification()
+                }
+              }}
               testID="verify-your-email"
             >
               Verify Your Email
@@ -539,3 +523,26 @@ const ProfileVerifications = ({
     </Flex>
   )
 }
+
+const meFragment = graphql`
+  fragment MyProfileEditFormModal_me on Me
+  @argumentDefinitions(enableCollectorProfile: { type: "Boolean", defaultValue: false }) {
+    name
+    profession @include(if: $enableCollectorProfile)
+    otherRelevantPositions @include(if: $enableCollectorProfile)
+    bio
+    location @include(if: $enableCollectorProfile) {
+      display
+      city
+      state
+      country
+    }
+    icon {
+      url(version: "thumbnail")
+    }
+    email @include(if: $enableCollectorProfile)
+    emailConfirmed @include(if: $enableCollectorProfile)
+    identityVerified @include(if: $enableCollectorProfile)
+    canRequestEmailConfirmation @include(if: $enableCollectorProfile)
+  }
+`
