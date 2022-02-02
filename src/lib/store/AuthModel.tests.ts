@@ -600,7 +600,7 @@ describe("AuthModel", () => {
       expect(GlobalStore.actions.auth.signUp).toHaveBeenCalledWith({
         email: "appleEmail@mail.com",
         name: "firstName lastName",
-        appleUID: "appleUID",
+        appleUid: "appleUID",
         idToken: "apple-id-token",
         oauthProvider: "apple",
         agreedToReceiveEmails: true,
@@ -621,7 +621,7 @@ describe("AuthModel", () => {
 
       expect(GlobalStore.actions.auth.signIn).toHaveBeenCalledWith({
         email: "emailFromArtsy@mail.com",
-        appleUID: "appleUID",
+        appleUid: "appleUID",
         idToken: "apple-id-token",
         oauthProvider: "apple",
         onSignIn: undefined,
