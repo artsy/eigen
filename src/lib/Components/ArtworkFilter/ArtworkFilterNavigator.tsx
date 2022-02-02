@@ -311,7 +311,11 @@ export const ArtworkFilterNavigator: React.FC<ArtworkFilterProps> = (props) => {
             <Stack.Screen name="PriceRangeOptionsScreen" component={PriceRangeOptionsScreen} />
             <Stack.Screen name="SizesOptionsScreen" component={SizesOptionsScreen} />
             <Stack.Screen name="SortOptionsScreen" component={SortOptionsScreen} />
-            <Stack.Screen name="TimePeriodOptionsScreen" component={TimePeriodOptionsScreen} />
+            <Stack.Screen
+              name="TimePeriodOptionsScreen"
+              component={TimePeriodOptionsScreen}
+              // options={{ gestureResponseDistance: { horizontal: 35 } }}
+            />
             <Stack.Screen name="ViewAsOptionsScreen" component={ViewAsOptionsScreen} />
             <Stack.Screen
               name="YearOptionsScreen"
