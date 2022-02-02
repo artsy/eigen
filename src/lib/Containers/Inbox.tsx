@@ -182,11 +182,6 @@ export const InboxQueryRenderer: React.FC<{ isVisible: boolean }> = (props) => {
       environment={defaultEnvironment}
       query={InboxScreenQuery}
       variables={{}}
-      // render={() => (
-      //   <ProvidePlaceholderContext>
-      //     <InboxPlaceholder />
-      //   </ProvidePlaceholderContext>
-      // )}
       render={(...args) =>
         renderWithPlaceholder({
           Container: InboxContainer,
