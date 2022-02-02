@@ -1,13 +1,12 @@
 import { captureMessage } from "@sentry/react-native"
-import { ContactInformation_me } from "__generated__/ContactInformation_me.graphql"
-import { ContactInformationQueryRendererQuery } from "__generated__/ContactInformationQueryRendererQuery.graphql"
+import { ContactInformationQuery } from "__generated__/ContactInformationQuery.graphql"
 import { Formik } from "formik"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
 import React, { useState } from "react"
-import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
+import { graphql, useLazyLoadQuery } from "react-relay"
 import { ErrorView } from "../Components/ErrorView"
 import { updateConsignSubmission } from "../Mutations/updateConsignSubmissionMutation"
 import {
@@ -17,10 +16,14 @@ import {
 
 export const ContactInformation: React.FC<{
   handlePress: () => void
-  me: ContactInformation_me | null
-}> = ({ handlePress, me }) => {
+}> = ({ handlePress }) => {
   const { submissionId } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
   const [submissionError, setSubmissionError] = useState(false)
+  const queryData = useLazyLoadQuery<ContactInformationQuery>(ContactInformationScreenQuery, {})
+
+  const name = queryData?.me?.name
+  const email = queryData?.me?.email
+  const phone = queryData?.me?.phone
 
   const handleSubmit = async (values: ContactInformationFormModel) => {
     try {
@@ -67,14 +70,14 @@ export const ContactInformation: React.FC<{
             title="Name"
             placeholder="Your Full Name"
             onChangeText={(e) => setFieldValue("userName", e)}
-            value={values.userName}
+            value={name || values.userName}
           />
           <Spacer mt={4} />
           <Input
             title="Email"
             placeholder="Your Email Address"
             onChangeText={(e) => setFieldValue("userEmail", e)}
-            value={values.userEmail}
+            value={email || values.userEmail}
           />
           <Spacer mt={4} />
           <PhoneInput
@@ -82,7 +85,7 @@ export const ContactInformation: React.FC<{
             title="Phone number"
             placeholder="(000) 000 0000"
             onChangeText={(e) => setFieldValue("userPhone", e)}
-            value={values.userPhone}
+            value={phone || values.userPhone}
             setValidation={() => {
               //  validation function
             }}
@@ -102,39 +105,21 @@ export const ContactInformation: React.FC<{
   )
 }
 
-export const ContactInformationFragmentContainer = createFragmentContainer(ContactInformation, {
-  me: graphql`
-    fragment ContactInformation_me on Me {
+export const ContactInformationScreenQuery = graphql`
+  query ContactInformationQuery {
+    me {
       name
       email
       phone
+      phoneNumber {
+        countryCode
+        display
+        error
+        isValid
+        originalNumber
+        regionCode
+      }
     }
-  `,
-})
+  }
+`
 
-export const ContactInformationQueryRenderer: React.FC<{
-  handlePress: () => void
-}> = ({ handlePress }) => {
-  return (
-    <QueryRenderer<ContactInformationQueryRendererQuery>
-      environment={defaultEnvironment}
-      query={graphql`
-        query ContactInformationQueryRendererQuery {
-          me {
-            ...ContactInformation_me
-          }
-        }
-      `}
-      variables={{}}
-      render={({ error, props }) => {
-        if (error) {
-          return null
-        }
-
-        return (
-          <ContactInformationFragmentContainer handlePress={handlePress} me={props?.me || null} />
-        )
-      }}
-    />
-  )
-}
