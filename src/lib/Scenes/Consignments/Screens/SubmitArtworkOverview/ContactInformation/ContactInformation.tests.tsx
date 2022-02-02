@@ -62,14 +62,17 @@ describe("ContactInformationForm", () => {
             name: "",
             email: "",
             phone: "",
-            phoneNumber: {
-              countryCode: "",
-              display: "",
-              error: "",
-              isValid: true,
-              originalNumber: "",
-              regionCode: "",
-            },
+            // TODO:
+            // Pre-populate phone number from a user's `phoneNumber` field
+            // https://artsyproduct.atlassian.net/browse/SWA-224
+            // phoneNumber: {
+            //   countryCode: "",
+            //   display: "",
+            //   error: "",
+            //   isValid: true,
+            //   originalNumber: "",
+            //   regionCode: "",
+            // },
           },
         }),
       })
@@ -86,14 +89,17 @@ describe("ContactInformationForm", () => {
             name: "Angela",
             email: "a@a.aaa",
             phone: "123456789",
-            phoneNumber: {
-              countryCode: "+30",
-              display: "-",
-              error: "",
-              isValid: true,
-              originalNumber: "23456789",
-              regionCode: "020",
-            },
+            // TODO:
+            // Pre-populate phone number from a user's `phoneNumber` field
+            // https://artsyproduct.atlassian.net/browse/SWA-224
+            // phoneNumber: {
+            //   countryCode: "+30",
+            //   display: "-",
+            //   error: "",
+            //   isValid: true,
+            //   originalNumber: "23456789",
+            //   regionCode: "020",
+            // },
           },
         }),
       })
