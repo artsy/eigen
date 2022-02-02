@@ -8708,6 +8708,9 @@ type Me implements Node {
   creditCards(after: String, before: String, first: Int, last: Int): CreditCardConnection
   email: String
 
+  # User has confirmed their email address
+  emailConfirmed: Boolean!
+
   # Frequency of marketing emails.
   emailFrequency: String
   followsAndSaves: FollowsAndSaves
