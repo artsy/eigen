@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 83152c6de36b76dce0613b7a5afce5a2 */
+/* @relayHash f1edc159ab605a68cb8b1e7d7eb79c9f */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -44,7 +44,16 @@ fragment MyCollectionAndSavedWorks_me on Me {
 
 fragment MyProfileEditFormModal_me on Me {
   name
+  profession
+  otherRelevantPositions
   bio
+  location {
+    display
+    city
+    state
+    country
+    id
+  }
   icon {
     url(version: "thumbnail")
   }
@@ -129,7 +138,28 @@ return {
                 "name": "display",
                 "storageKey": null
               },
-              (v0/*: any*/)
+              (v0/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "city",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "state",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "country",
+                "storageKey": null
+              }
             ],
             "storageKey": null
           },
@@ -185,7 +215,7 @@ return {
     ]
   },
   "params": {
-    "id": "83152c6de36b76dce0613b7a5afce5a2",
+    "id": "f1edc159ab605a68cb8b1e7d7eb79c9f",
     "metadata": {},
     "name": "MyCollectionAndSavedWorksQuery",
     "operationKind": "query",
