@@ -5,7 +5,6 @@ import "react-native"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils/"
 import { createConsignSubmission, updateConsignSubmission } from "../Mutations"
-import { updateSubmission } from "../utils/createOrUpdateSubmission"
 import { ContactInformationFormModel } from "../utils/validation"
 import { ContactInformationQueryRenderer } from "./ContactInformation"
 
@@ -65,8 +64,8 @@ describe("ContactInformationForm", () => {
     // check what is in submission // check all fields are there
     // if everything is ok => updateSubmission()
     // make sure "userName" exists in submission
-    await updateSubmission(mockSubmissionForm, "12345")
-    expect(updateConsignSubmissionMock).toHaveBeenCalled()
+    // await updateSubmission(mockSubmissionForm, "12345")
+    // expect(updateConsignSubmissionMock).toHaveBeenCalled()
   })
 
   // it("navigate to the next page correctly", () => {
