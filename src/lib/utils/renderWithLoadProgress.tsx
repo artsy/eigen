@@ -9,7 +9,7 @@ export const LoadingTestID = "relay-loading"
 
 /**
  * @deprecated
- * Use `renderWithPlaceholder` instead.
+ * Please use `renderWithPlaceholder` instead if possible.
  */
 export default function <Props>(
   Container: React.ComponentType<Props>,
