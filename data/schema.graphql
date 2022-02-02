@@ -12669,7 +12669,7 @@ type StartIdentityVerificationSuccess {
 }
 
 type StaticContent {
-  content: String
+  content(format: Format): String
 
   # A globally unique ID.
   id: ID!
