@@ -3,4 +3,4 @@
 
 
 yarn lint-staged
-yarn secrets-check-staged
+yarn secrets:check:staged
