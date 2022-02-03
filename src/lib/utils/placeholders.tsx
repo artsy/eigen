@@ -6,6 +6,8 @@ import { LayoutAnimation, Platform, View, ViewStyle } from "react-native"
 import Animated from "react-native-reanimated"
 import { useScreenDimensions } from "./useScreenDimensions"
 
+const layoutAnimationConfig = { ...LayoutAnimation.Presets.spring, duration: 100 }
+
 const PlaceholderContext = React.createContext<{ clock: Animated.Clock }>(null as any)
 
 const useCurrentTime = () => {
@@ -45,10 +47,10 @@ const useLayoutAnimation = () => {
   }
 
   useEffect(() => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+    LayoutAnimation.configureNext(layoutAnimationConfig)
 
     return () => {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+      LayoutAnimation.configureNext(layoutAnimationConfig)
     }
   }, [])
 }
