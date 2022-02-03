@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 3689e40acb6f6871f58bb136b9d1b0cd */
+/* @relayHash 86e550a3cde5e7100cc4bdffa51d2606 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -35,6 +35,10 @@ fragment MyAccount_me on Me {
   authentications {
     provider
     id
+  }
+  secondFactors(kinds: [sms, app, backup]) {
+    __typename
+    kind
   }
 }
 */
@@ -142,6 +146,41 @@ return {
             ],
             "storageKey": null
           },
+          {
+            "alias": null,
+            "args": [
+              {
+                "kind": "Literal",
+                "name": "kinds",
+                "value": [
+                  "sms",
+                  "app",
+                  "backup"
+                ]
+              }
+            ],
+            "concreteType": null,
+            "kind": "LinkedField",
+            "name": "secondFactors",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "__typename",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "kind",
+                "storageKey": null
+              }
+            ],
+            "storageKey": "secondFactors(kinds:[\"sms\",\"app\",\"backup\"])"
+          },
           (v0/*: any*/)
         ],
         "storageKey": null
@@ -149,7 +188,7 @@ return {
     ]
   },
   "params": {
-    "id": "3689e40acb6f6871f58bb136b9d1b0cd",
+    "id": "86e550a3cde5e7100cc4bdffa51d2606",
     "metadata": {},
     "name": "MyAccountTestsQuery",
     "operationKind": "query",

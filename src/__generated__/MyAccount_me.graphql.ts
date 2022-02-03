@@ -5,6 +5,7 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type AuthenticationProvider = "APPLE" | "FACEBOOK" | "GOOGLE" | "%future added value";
+export type SecondFactorKind = "app" | "backup" | "sms" | "%future added value";
 export type MyAccount_me = {
     readonly name: string | null;
     readonly email: string | null;
@@ -14,6 +15,9 @@ export type MyAccount_me = {
     readonly authentications: ReadonlyArray<{
         readonly provider: AuthenticationProvider;
     }>;
+    readonly secondFactors: ReadonlyArray<{
+        readonly kind: SecondFactorKind;
+    } | null> | null;
     readonly " $refType": "MyAccount_me";
 };
 export type MyAccount_me$data = MyAccount_me;
@@ -82,10 +86,38 @@ const node: ReaderFragment = {
         }
       ],
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "kinds",
+          "value": [
+            "sms",
+            "app",
+            "backup"
+          ]
+        }
+      ],
+      "concreteType": null,
+      "kind": "LinkedField",
+      "name": "secondFactors",
+      "plural": true,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "kind",
+          "storageKey": null
+        }
+      ],
+      "storageKey": "secondFactors(kinds:[\"sms\",\"app\",\"backup\"])"
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = 'c2446e55b9e00454b5af58790f36bd88';
+(node as any).hash = '859df82a70085d2305c810743ea7cf6a';
 export default node;

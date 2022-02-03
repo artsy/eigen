@@ -17,7 +17,6 @@ export const useAppleLink = (relayEnvironment: RelayModernEnvironment) => {
 
   const linkUsingOauthToken = (email: string, name: string, token: AppleToken) => {
     const { appleUid, idToken } = token
-    console.log("LINKING WITH OAUTH TOKEN", email, name, token)
     setLoading(true)
     commitMutation<apple_LinkAccountMutation>(relayEnvironment, {
       mutation: graphql`

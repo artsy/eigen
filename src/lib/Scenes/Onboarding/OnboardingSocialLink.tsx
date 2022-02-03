@@ -8,7 +8,7 @@ import { useFacebookLink } from "lib/utils/LinkedAccounts/facebook"
 import { useGoogleLink } from "lib/utils/LinkedAccounts/google"
 import { Button, Flex, Input, Spacer, Spinner, Text, Touchable } from "palette"
 import React, { useEffect, useState } from "react"
-import { Image } from "react-native"
+import { Alert, Image } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useRelayEnvironment } from "react-relay"
 import * as Yup from "yup"
@@ -125,23 +125,12 @@ export const OnboardingSocialLink: React.FC = () => {
         password,
         onSignIn: () => onSignIn(providerToBeLinked, tokenForProviderToBeLinked),
       })
-      if (res === "otp_missing") {
-        navigation.navigate("OnboardingLoginWithOTP", {
-          email,
-          password,
-          otpMode: "standard",
-          onSignIn: () => onSignIn(providerToBeLinked, tokenForProviderToBeLinked),
-        })
-      } else if (res === "on_demand_otp_missing") {
-        navigation.navigate("OnboardingLoginWithOTP", {
-          email,
-          password,
-          otpMode: "on_demand",
-          onSignIn: () => onSignIn(providerToBeLinked, tokenForProviderToBeLinked),
-        })
+      // Note: Users with 2FA enabled accounts cannot link accounts.
+      if (res === "on_demand_otp_missing" || res === "otp_missing") {
+        Alert.alert("Error", "2FA-enabled accounts cannot be linked to another account")
+        return
       }
-
-      if (res !== "success" && res !== "otp_missing" && res !== "on_demand_otp_missing") {
+      if (res !== "success") {
         // For security purposes, we are returning a generic error message
         setFormikErrors({ password: "Incorrect password" }) // pragma: allowlist secret
       }

@@ -13,12 +13,12 @@ import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
 import { Flex, Separator, Text, useColor } from "palette"
 import React from "react"
-import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
+import { ActivityIndicator, Alert, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 import { SectionHeading } from "../MyProfile/MyProfileSettings"
 
 const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay }) => {
-  const showLinkedAccounts = useFeatureFlag("ARShowLinkedAccounts")
+  const showLinkedAccounts = useFeatureFlag("ARShowLinkedAccounts") && !me.secondFactors?.length
   const showLinkGoogle = useFeatureFlag("ARGoogleAuth")
   const showLinkApple = Platform.OS === "ios"
 
@@ -43,6 +43,25 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
   const appleLinked = me.authentications.map((a) => a.provider).includes("APPLE")
 
   const blackColor = useColor()("black100")
+
+  const hasOnlyOneAuth = me.authentications.length + (me.hasPassword ? 1 : 0) < 2
+
+  const linkOrUnlink = (provider: "facebook" | "google" | "apple") => {
+    if (hasOnlyOneAuth) {
+      Alert.alert("Error", "You cannot unlink your only authentication method.")
+      return
+    }
+    switch (provider) {
+      case "apple":
+        return appleLinked ? unlinkApple() : linkApple()
+      case "facebook":
+        return facebookLinked ? unlinkFB() : linkFB()
+      case "google":
+        return googleLinked ? unlinkGoogle() : linkGoogle()
+      default:
+        return
+    }
+  }
 
   return (
     <PageWithSimpleHeader title="Account">
@@ -95,7 +114,7 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
                   </Flex>
                 )
               }
-              onPress={fbLoading ? () => null : () => (facebookLinked ? unlinkFB() : linkFB())}
+              onPress={fbLoading ? () => null : () => linkOrUnlink("facebook")}
             />
             {!!showLinkGoogle && (
               <MenuItem
@@ -116,9 +135,7 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
                     </Flex>
                   )
                 }
-                onPress={
-                  googleLoading ? () => null : () => (googleLinked ? unlinkGoogle() : linkGoogle())
-                }
+                onPress={googleLoading ? () => null : () => linkOrUnlink("google")}
               />
             )}
             {!!showLinkApple && (
@@ -140,9 +157,7 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
                     </Flex>
                   )
                 }
-                onPress={
-                  appleLoading ? () => null : () => (appleLinked ? unlinkApple() : linkApple())
-                }
+                onPress={appleLoading ? () => null : () => linkOrUnlink("apple")}
               />
             )}
           </>
@@ -176,6 +191,9 @@ export const MyAccountContainer = createFragmentContainer(MyAccount, {
       hasPassword
       authentications {
         provider
+      }
+      secondFactors(kinds: [sms, app, backup]) {
+        kind
       }
     }
   `,
