@@ -67,12 +67,12 @@
     "build-storybook": "build-storybook",
     "prestart-storybook": "yarn storybook-load-new",
     "start-storybook": "STORYBOOK=1 yarn start",
-    "secrets-audit": "detect-secrets audit .secrets.baseline",
-    "secrets-check-staged": "scripts/secrets-check-staged",
-    "secrets-check-all": "scripts/secrets-check-all",
-    "secrets-add-staged": "scripts/secrets-add-staged",
-    "secrets-add-all": "scripts/secrets-add-all",
-    "secrets-generate-once": "scripts/secrets-generate-baseline",
+    "secrets:audit": "detect-secrets audit .secrets.baseline",
+    "secrets:check:staged": "scripts/secrets-check-staged",
+    "secrets:check:all": "scripts/secrets-check-all",
+    "secrets:add-from:staged": "scripts/secrets-add-staged",
+    "secrets:add-from:all": "scripts/secrets-add-all",
+    "secrets:generate!": "scripts/secrets-generate-baseline",
     "update-metaphysics": "node scripts/update-metaphysics.js"
   },
   "repository": {
