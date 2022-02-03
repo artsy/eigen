@@ -125,6 +125,8 @@ import { useStripeConfig } from "./utils/useStripeConfig"
 
 // keep this import of storybook last, otherwise it produces an error when debugging
 import { StorybookUIRoot } from "../storybook/storybook-ui"
+import { MyProfileQueryRenderer, MyProfileScreenQuery } from "./Scenes/MyProfile/MyProfile"
+import { MyProfileEditForm } from "./Scenes/MyProfile/MyProfileEditForm"
 
 LogBox.ignoreLogs([
   "Non-serializable values were found in the navigation state",
@@ -385,12 +387,13 @@ export const modules = defineModules({
   MyCollectionArtwork: reactModule(MyCollectionArtworkQueryRenderer),
   MyCollectionArtworkFullDetails: reactModule(MyCollectionArtworkFullDetailsQueryRenderer),
   MyProfile: reactModule(
-    MyCollectionAndSavedWorksQueryRenderer,
+    MyProfileQueryRenderer,
     {
       isRootViewForTabName: "profile",
     },
-    MyCollectionAndSavedWorksScreenQuery
+    MyProfileScreenQuery
   ),
+  MyProfileEdit: reactModule(MyProfileEditForm, { hidesBackButton: true }),
   MyProfilePayment: reactModule(MyProfilePaymentQueryRenderer),
   MyProfileSettings: reactModule(MyProfileSettings),
   OrderHistory: reactModule(OrderHistoryQueryRender),

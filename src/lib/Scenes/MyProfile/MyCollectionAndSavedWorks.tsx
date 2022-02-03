@@ -180,18 +180,20 @@ export const MyProfileHeader: React.FC<{
           {normalizeMyProfileBio(me?.bio)}
         </Text>
       )}
-      <Flex p={2}>
-        <Button
-          variant="outline"
-          size="small"
-          flex={1}
-          onPress={() => {
-            setShowModal(true)
-          }}
-        >
-          Edit Profile
-        </Button>
-      </Flex>
+      {!!me && (
+        <Flex p={2}>
+          <Button
+            variant="outline"
+            size="small"
+            flex={1}
+            onPress={() => {
+              navigate("my-profile/edit")
+            }}
+          >
+            Edit Profile
+          </Button>
+        </Flex>
+      )}
     </>
   )
 }
