@@ -22,18 +22,17 @@ import { useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import * as Yup from "yup"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
-import { ArtworkFormScreen } from "../MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyProfileStackTypes } from "./MyProfile"
 
 const PRIMARY_LOCATION_OFFSET = 240
 
-interface MyProfileEditFormProps {
-  visible: boolean
-  me: MyProfileEditForm_me$key
-  setProfileIconLocally: (path: string) => void
-  localImage: LocalImage | null
-  onDismiss(): void
-}
+// interface MyProfileEditFormProps {
+//   visible: boolean
+//   me: MyProfileEditForm_me$key
+//   setProfileIconLocally: (path: string) => void
+//   localImage: LocalImage | null
+//   onDismiss(): void
+// }
 
 export interface EditMyProfileValuesSchema {
   photo: string
@@ -151,13 +150,13 @@ export const MyProfileEditForm: React.FC<
       )
   }
 
-  const hideModal = () => {
-    setDidUpdatePhoto(false)
+  // const hideModal = () => {
+  //   setDidUpdatePhoto(false)
 
-    handleChange("photo")(me?.icon?.url ?? route.params.localImage?.path ?? "")
-    handleChange("name")(me?.name ?? "")
-    handleChange("bio")(me?.bio ?? "")
-  }
+  //   handleChange("photo")(me?.icon?.url ?? route.params.localImage?.path ?? "")
+  //   handleChange("name")(me?.name ?? "")
+  //   handleChange("bio")(me?.bio ?? "")
+  // }
 
   return (
     <>
