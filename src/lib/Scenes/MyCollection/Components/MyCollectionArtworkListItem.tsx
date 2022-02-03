@@ -40,7 +40,6 @@ export const MyCollectionArtworkListItem: React.FC<{
             width={ARTWORK_LIST_IMAGE_SIZE}
             height={ARTWORK_LIST_IMAGE_SIZE}
             borderRadius={2}
-            backgroundColor="black10"
             alignItems="center"
             justifyContent="center"
           >
@@ -51,7 +50,6 @@ export const MyCollectionArtworkListItem: React.FC<{
             width={ARTWORK_LIST_IMAGE_SIZE}
             height={ARTWORK_LIST_IMAGE_SIZE}
             borderRadius={2}
-            backgroundColor="black"
             alignItems="center"
             justifyContent="center"
             overflow="hidden"
@@ -97,7 +95,7 @@ const artworkFragment = graphql`
     id
     medium
     image {
-      url
+      url(version: "small")
       aspectRatio
     }
     artistNames

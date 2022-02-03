@@ -1,16 +1,20 @@
 import { MyCollectionArtworkList_myCollectionConnection$key } from "__generated__/MyCollectionArtworkList_myCollectionConnection.graphql"
+import { PAGE_SIZE } from "lib/Components/constants"
 import { PrefetchFlatList } from "lib/Components/PrefetchFlatList"
 import { extractNodes } from "lib/utils/extractNodes"
-import { Flex } from "palette"
-import React from "react"
-import { useFragment } from "react-relay"
+import { Flex, Spinner } from "palette"
+import React, { useState } from "react"
+import { RelayPaginationProp, useFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import { MyCollectionArtworkListItem } from "./MyCollectionArtworkListItem"
 
 export const MyCollectionArtworkList: React.FC<{
   myCollectionConnection: MyCollectionArtworkList_myCollectionConnection$key | null
   localSortAndFilterArtworks?: (artworks: any[]) => any[]
-}> = ({ localSortAndFilterArtworks, ...restProps }) => {
+  loadMore: RelayPaginationProp["loadMore"]
+  hasMore: RelayPaginationProp["hasMore"]
+  isLoading: RelayPaginationProp["isLoading"]
+}> = ({ localSortAndFilterArtworks, isLoading, loadMore, hasMore, ...restProps }) => {
   const artworkConnection = useFragment<MyCollectionArtworkList_myCollectionConnection$key>(
     artworkConnectionFragment,
     restProps.myCollectionConnection
@@ -20,13 +24,41 @@ export const MyCollectionArtworkList: React.FC<{
 
   const preprocessedArtworks = localSortAndFilterArtworks?.(artworks) ?? artworks
 
+  const [loadingMoreData, setLoadingMoreData] = useState(false)
+
+  const loadMoreArtworks = () => {
+    if (!hasMore() || isLoading()) {
+      return
+    }
+    setLoadingMoreData(true)
+    loadMore(PAGE_SIZE, (error) => {
+      if (error) {
+        console.log(error.message)
+      }
+      setLoadingMoreData(false)
+    })
+  }
+
   return (
     <Flex>
       <PrefetchFlatList
-        // prefetchUrlExtractor={(item) => item?.href!}
         data={preprocessedArtworks}
         renderItem={({ item }) => <MyCollectionArtworkListItem artwork={item} />}
+        prefetchUrlExtractor={(artwork) => `/my-collection/artwork/${artwork.slug}`}
+        prefetchVariablesExtractor={(artwork) => ({
+          artworkSlug: artwork.slug,
+          medium: artwork.medium,
+          artistInternalID: artwork.artist?.internalID,
+        })}
+        onEndReached={loadMoreArtworks}
         keyExtractor={(item, index) => String(item.slug || index)}
+        ListFooterComponent={
+          loadingMoreData ? (
+            <Flex mx="auto" mb={15} mt={15}>
+              <Spinner />
+            </Flex>
+          ) : null
+        }
       />
     </Flex>
   )

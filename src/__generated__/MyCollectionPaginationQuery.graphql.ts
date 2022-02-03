@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 890155b9c8fc4414ae16d43103f765ee */
+/* @relayHash 4b78b38d59dc378aff90d81dbac853ea */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -92,7 +92,7 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
   id
   medium
   image {
-    url
+    url(version: "small")
     aspectRatio
   }
   artistNames
@@ -232,13 +232,6 @@ v4 = {
   "args": null,
   "kind": "ScalarField",
   "name": "internalID",
-  "storageKey": null
-},
-v5 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "url",
   "storageKey": null
 };
 return {
@@ -446,7 +439,19 @@ return {
                             "name": "aspectRatio",
                             "storageKey": null
                           },
-                          (v5/*: any*/)
+                          {
+                            "alias": null,
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "version",
+                                "value": "small"
+                              }
+                            ],
+                            "kind": "ScalarField",
+                            "name": "url",
+                            "storageKey": "url(version:\"small\")"
+                          }
                         ],
                         "storageKey": null
                       },
@@ -473,7 +478,13 @@ return {
                         "name": "images",
                         "plural": true,
                         "selections": [
-                          (v5/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "url",
+                            "storageKey": null
+                          },
                           {
                             "alias": null,
                             "args": null,
@@ -547,7 +558,7 @@ return {
     ]
   },
   "params": {
-    "id": "890155b9c8fc4414ae16d43103f765ee",
+    "id": "4b78b38d59dc378aff90d81dbac853ea",
     "metadata": {},
     "name": "MyCollectionPaginationQuery",
     "operationKind": "query",

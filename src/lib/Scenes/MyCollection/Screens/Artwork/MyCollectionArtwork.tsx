@@ -150,6 +150,21 @@ export const ArtworkMetaProps = graphql`
   }
 `
 
+export const MyCollectionArtworkScreenQuery = graphql`
+  query MyCollectionArtworkQuery($artworkSlug: String!, $artistInternalID: ID!, $medium: String!) {
+    artwork(id: $artworkSlug) {
+      ...MyCollectionArtwork_sharedProps @relay(mask: false)
+      ...MyCollectionArtworkHeader_artwork
+      ...MyCollectionArtworkMeta_artwork
+      ...MyCollectionArtworkInsights_artwork
+    }
+
+    marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
+      ...MyCollectionArtworkInsights_marketPriceInsights
+    }
+  }
+`
+
 export const MyCollectionArtworkQueryRenderer: React.FC<{
   artworkSlug: string
   artistInternalID: string
@@ -158,30 +173,12 @@ export const MyCollectionArtworkQueryRenderer: React.FC<{
   return (
     <QueryRenderer<MyCollectionArtworkQuery>
       environment={defaultEnvironment}
-      query={graphql`
-        query MyCollectionArtworkQuery(
-          $artworkSlug: String!
-          $artistInternalID: ID!
-          $medium: String!
-        ) {
-          artwork(id: $artworkSlug) {
-            ...MyCollectionArtwork_sharedProps @relay(mask: false)
-            ...MyCollectionArtworkHeader_artwork
-            ...MyCollectionArtworkMeta_artwork
-            ...MyCollectionArtworkInsights_artwork
-          }
-
-          marketPriceInsights(artistId: $artistInternalID, medium: $medium) {
-            ...MyCollectionArtworkInsights_marketPriceInsights
-          }
-        }
-      `}
+      query={MyCollectionArtworkScreenQuery}
       variables={{
         artworkSlug,
         artistInternalID,
         medium,
       }}
-      cacheConfig={{ force: true }}
       render={renderWithPlaceholder({
         Container: MyCollectionArtwork,
         renderPlaceholder: LoadingSkeleton,

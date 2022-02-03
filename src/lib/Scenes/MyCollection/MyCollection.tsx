@@ -102,6 +102,10 @@ const MyCollection: React.FC<{
     })
   }
 
+  useEffect(() => {
+    relay.loadMore(100)
+  }, [])
+
   // hack for tests. we should fix that.
   const setJSX = useContext(StickyTabPageFlatListContext).setJSX
 
@@ -209,6 +213,9 @@ const MyCollection: React.FC<{
             ) : (
               <MyCollectionArtworkList
                 myCollectionConnection={me.myCollectionConnection}
+                hasMore={relay.hasMore}
+                loadMore={relay.loadMore}
+                isLoading={relay.isLoading}
                 // tslint:disable-next-line: no-shadowed-variable
                 localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
                   localSortAndFilterArtworks(
@@ -244,7 +251,7 @@ export const MyCollectionContainer = createPaginationContainer(
   {
     me: graphql`
       fragment MyCollection_me on Me
-      @argumentDefinitions(count: { type: "Int", defaultValue: 100 }, cursor: { type: "String" }) {
+      @argumentDefinitions(count: { type: "Int", defaultValue: 30 }, cursor: { type: "String" }) {
         id
         myCollectionInfo {
           includesPurchasedArtworks
@@ -372,7 +379,7 @@ export const MyCollectionPlaceholder: React.FC<{}> = () => {
       ) : (
         <Flex mx={2} width="100%">
           {times(4).map((i) => (
-            <Flex key={i} mt={1} flexDirection="row">
+            <Flex key={i} my={0.5} flexDirection="row">
               <Flex>
                 <PlaceholderBox
                   key={i}

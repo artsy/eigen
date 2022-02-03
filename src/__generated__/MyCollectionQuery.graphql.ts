@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c37cf5c1bc02bd24c052ace86f7bbf7b */
+/* @relayHash 1c86b8639988c399c44d79f9174eec91 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -86,7 +86,7 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
   id
   medium
   image {
-    url
+    url(version: "small")
     aspectRatio
   }
   artistNames
@@ -142,7 +142,7 @@ fragment MyCollection_me on Me {
   myCollectionInfo {
     includesPurchasedArtworks
   }
-  myCollectionConnection(first: 100, sort: CREATED_AT_DESC) {
+  myCollectionConnection(first: 30, sort: CREATED_AT_DESC) {
     edges {
       node {
         id
@@ -189,7 +189,7 @@ v1 = [
   {
     "kind": "Literal",
     "name": "first",
-    "value": 100
+    "value": 30
   },
   {
     "kind": "Literal",
@@ -209,13 +209,6 @@ v3 = {
   "args": null,
   "kind": "ScalarField",
   "name": "internalID",
-  "storageKey": null
-},
-v4 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "url",
   "storageKey": null
 };
 return {
@@ -412,7 +405,19 @@ return {
                             "name": "aspectRatio",
                             "storageKey": null
                           },
-                          (v4/*: any*/)
+                          {
+                            "alias": null,
+                            "args": [
+                              {
+                                "kind": "Literal",
+                                "name": "version",
+                                "value": "small"
+                              }
+                            ],
+                            "kind": "ScalarField",
+                            "name": "url",
+                            "storageKey": "url(version:\"small\")"
+                          }
                         ],
                         "storageKey": null
                       },
@@ -439,7 +444,13 @@ return {
                         "name": "images",
                         "plural": true,
                         "selections": [
-                          (v4/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "url",
+                            "storageKey": null
+                          },
                           {
                             "alias": null,
                             "args": null,
@@ -496,7 +507,7 @@ return {
                 "storageKey": null
               }
             ],
-            "storageKey": "myCollectionConnection(first:100,sort:\"CREATED_AT_DESC\")"
+            "storageKey": "myCollectionConnection(first:30,sort:\"CREATED_AT_DESC\")"
           },
           {
             "alias": null,
@@ -513,7 +524,7 @@ return {
     ]
   },
   "params": {
-    "id": "c37cf5c1bc02bd24c052ace86f7bbf7b",
+    "id": "1c86b8639988c399c44d79f9174eec91",
     "metadata": {},
     "name": "MyCollectionQuery",
     "operationKind": "query",
