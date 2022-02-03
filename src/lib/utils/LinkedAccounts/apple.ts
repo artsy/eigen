@@ -5,6 +5,7 @@ import {
 import { apple_LinkAccountMutation } from "__generated__/apple_LinkAccountMutation.graphql"
 import { apple_UnlinkAccountMutation } from "__generated__/apple_UnlinkAccountMutation.graphql"
 import { AppleToken } from "lib/Scenes/Onboarding/OnboardingSocialLink"
+import { unsafe_getUserEmail } from "lib/store/GlobalStore"
 import { useState } from "react"
 import { Alert } from "react-native"
 import { commitMutation, graphql } from "relay-runtime"
@@ -16,6 +17,7 @@ export const useAppleLink = (relayEnvironment: RelayModernEnvironment) => {
 
   const linkUsingOauthToken = (email: string, name: string, token: AppleToken) => {
     const { appleUid, idToken } = token
+    console.log("LINKING WITH OAUTH TOKEN", email, name, token)
     setLoading(true)
     commitMutation<apple_LinkAccountMutation>(relayEnvironment, {
       mutation: graphql`
@@ -70,7 +72,14 @@ export const useAppleLink = (relayEnvironment: RelayModernEnvironment) => {
       setLoading(false)
       return
     }
-    if (!userInfo.email) {
+
+    const currentUserEmail = unsafe_getUserEmail()
+
+    // Because Apple Auth only ever returns user email and names once (i.e during the first login),
+    // fallback to current user's email when Apple auth does not return email
+    const email = userInfo.email ?? currentUserEmail
+
+    if (!email) {
       Alert.alert("Error", "There is no email associated with your Apple account.")
       setLoading(false)
       return
@@ -84,7 +93,7 @@ export const useAppleLink = (relayEnvironment: RelayModernEnvironment) => {
 
     const name = userInfo?.fullName ? computeName(userInfo.fullName) : ""
 
-    linkUsingOauthToken(userInfo.email, name, { idToken, appleUid })
+    linkUsingOauthToken(email, name, { idToken, appleUid })
   }
 
   const unlink = () => {

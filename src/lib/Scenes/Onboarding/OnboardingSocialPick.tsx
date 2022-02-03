@@ -57,7 +57,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
       tokenForProviderToBeLinked = oauthToken
     } else if (providerToBeLinked === "apple") {
       if (!idToken || !appleUid) {
-        console.warn(`Error: No oauthToken provided for ${titleizedProvider}`)
+        console.warn(`Error: idToken and appleUid must be provided for ${titleizedProvider}`)
         return
       }
       tokenForProviderToBeLinked = { idToken, appleUid }

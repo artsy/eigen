@@ -436,7 +436,6 @@ export const getAuthModel = (): AuthModel => ({
     }
 
     const resultJson = await result.json()
-    console.log("RESULTJSON", resultJson)
     let message = ""
     const error = resultJson?.error
     let existingProviders: string[] = []
@@ -689,11 +688,19 @@ export const getAuthModel = (): AuthModel => ({
               oauthProvider: "apple",
               agreedToReceiveEmails: !!agreedToReceiveEmails,
             })
-          : { success: false, message: "missing email in apple's userInfo" }
+          : {
+              success: false,
+              error: "Apple UserInfo Email Is Null",
+              message: "missing email in apple's userInfo",
+            }
         if (resultGravitySignUp.success) {
           resolve(resultGravitySignUp)
         }
-        if (resultGravitySignUp.error === "Another Account Already Linked") {
+        const shouldSignIn =
+          resultGravitySignUp.error === "Another Account Already Linked" ||
+          // because userinfo.email is returned only the first time
+          resultGravitySignUp.error === "Apple UserInfo Email Is Null"
+        if (shouldSignIn) {
           signInOrUp = "signIn"
         } else {
           reject(
