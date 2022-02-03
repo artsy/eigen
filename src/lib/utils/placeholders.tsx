@@ -1,4 +1,5 @@
 import { GenericGridPlaceholder } from "lib/Components/ArtworkGrids/GenericGrid"
+import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Flex, useColor } from "palette"
 import React, { useContext, useEffect, useMemo, useRef } from "react"
 import { LayoutAnimation, Platform, View, ViewStyle } from "react-native"
@@ -7,29 +8,23 @@ import { useScreenDimensions } from "./useScreenDimensions"
 
 const PlaceholderContext = React.createContext<{ clock: Animated.Clock }>(null as any)
 
-function useCurrentTime() {
+const useCurrentTime = () => {
   const isMounted = useMemo(() => {
     return new Animated.Value(1 as number)
   }, [])
+
   const clock = useMemo(() => {
     return new Animated.Clock()
   }, [])
-  useEffect(() => {
-    // Deactivating the layout animation for Android because it causes problems.
-    if (Platform.OS === "ios") {
-      LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-    }
 
+  useEffect(() => {
     // isMounted starts as true so nothing to do here
     return () => {
       // this is called when the component unmounts
       isMounted.setValue(0)
-
-      if (Platform.OS === "ios") {
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-      }
     }
   }, [])
+
   Animated.useCode(
     () =>
       Animated.onChange(
@@ -41,8 +36,28 @@ function useCurrentTime() {
   return clock
 }
 
+const useLayoutAnimation = () => {
+  const enablePlaceholderLayoutAnimation = useFeatureFlag("AREnablePlaceholderLayoutAnimation")
+
+  // Deactivating the layout animation for Android because it causes problems.
+  if (Platform.OS === "android" || !enablePlaceholderLayoutAnimation) {
+    return
+  }
+
+  useEffect(() => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+
+    return () => {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+    }
+  }, [])
+}
+
 export const ProvidePlaceholderContext: React.FC<{}> = ({ children }) => {
+  useLayoutAnimation()
+
   const clock = useCurrentTime()
+
   return <PlaceholderContext.Provider value={{ clock }} children={children} />
 }
 
