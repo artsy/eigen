@@ -4,16 +4,9 @@ import React from "react"
 import "react-native"
 import { RelayEnvironmentProvider } from "react-relay"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils/"
-import { createConsignSubmission, updateConsignSubmission } from "../Mutations"
+import { updateConsignSubmission } from "../Mutations"
 import { ContactInformationScreen } from "./ContactInformation"
 import { ContactInformationFormModel } from "./validation"
-
-jest.mock(
-  "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/createConsignSubmissionMutation",
-  () => ({
-    createConsignSubmission: jest.fn().mockResolvedValue("12345"),
-  })
-)
 
 jest.mock(
   "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/updateConsignSubmissionMutation",
@@ -30,7 +23,6 @@ jest.mock("lib/relay/createEnvironment", () => {
 
 jest.unmock("react-relay")
 
-const createConsignSubmissionMock = createConsignSubmission as jest.Mock
 const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
 
 describe("ContactInformationForm", () => {
@@ -43,7 +35,6 @@ describe("ContactInformationForm", () => {
   )
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
-    ;(createConsignSubmissionMock as jest.Mock).mockClear()
     ;(updateConsignSubmissionMock as jest.Mock).mockClear()
     mockEnvironment.mockClear()
   })
