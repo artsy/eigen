@@ -6,7 +6,7 @@ import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { MyProfileEditFormModalFragmentContainer } from "../MyProfileEditFormModal"
+import { MyProfileEditFormModal } from "../MyProfileEditFormModal"
 
 jest.unmock("react-relay")
 
@@ -31,13 +31,14 @@ describe("MyProfileEditFormModal", () => {
       render={({ props }) => {
         if (props?.me) {
           return (
-            <MyProfileEditFormModalFragmentContainer
+            <MyProfileEditFormModal
               me={props.me}
               visible
               onDismiss={jest.fn}
               setProfileIconLocally={jest.fn}
               localImage={null}
               refetchProfileIdentification={jest.fn}
+              relay={{ environment: mockEnvironment } as any}
             />
           )
         }
@@ -58,12 +59,13 @@ describe("MyProfileEditFormModal", () => {
     })
 
     describe("Email Verification", () => {
-      describe("When the email is verified in Gravity", () => {
+      describe("When the email is confirmed in Gravity", () => {
         it("is shown as verified when it's verified in gravity", () => {
           const { getByText } = renderWithWrappersTL(<TestRenderer />)
           mockEnvironmentPayload(mockEnvironment, {
             Me: () => ({
               canRequestEmailConfirmation: false,
+              emailConfirmed: true,
             }),
           })
           expect(getByText("Email Address Verified")).toBeTruthy()
@@ -76,16 +78,18 @@ describe("MyProfileEditFormModal", () => {
           mockEnvironmentPayload(mockEnvironment, {
             Me: () => ({
               canRequestEmailConfirmation: true,
+              emailConfirmed: false,
             }),
           })
           expect(getByText("Verify Your Email")).toBeTruthy()
         })
 
-        it("Triggers the email verification when they user presses on Verify Your Email", async () => {
+        it("Triggers the email verification when they user presses on Verify Your Email when canRequestEmailConfirmation is set to true", async () => {
           const { getByTestId, getByText } = renderWithWrappersTL(<TestRenderer />)
           mockEnvironmentPayload(mockEnvironment, {
             Me: () => ({
               canRequestEmailConfirmation: true,
+              emailConfirmed: false,
             }),
           })
           const VerifyYouEmailButton = getByTestId("verify-your-email")
@@ -108,6 +112,22 @@ describe("MyProfileEditFormModal", () => {
           expect(getByTestId("verification-confirmation-banner")).toBeTruthy()
           expect(getByText("Sending a confirmation email...")).toBeTruthy()
           await waitForElementToBeRemoved(() => getByText("Sending a confirmation email..."))
+        })
+
+        it("Triggers the email verification when they user presses on Verify Your Email when canRequestEmailConfirmation is set to false", async () => {
+          const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
+          mockEnvironmentPayload(mockEnvironment, {
+            Me: () => ({
+              canRequestEmailConfirmation: false,
+              emailConfirmed: false,
+            }),
+          })
+          const VerifyYouEmailButton = getByTestId("verify-your-email")
+          expect(VerifyYouEmailButton).toBeTruthy()
+
+          fireEvent(VerifyYouEmailButton, "onPress")
+
+          expect(() => getByTestId("verification-confirmation-banner")).toThrow()
         })
       })
     })

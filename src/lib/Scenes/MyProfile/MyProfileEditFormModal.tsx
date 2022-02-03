@@ -29,9 +29,9 @@ import {
   Touchable,
   useColor,
 } from "palette"
-import React, { useCallback, useEffect, useRef, useState } from "react"
+import React, { Suspense, useCallback, useEffect, useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
-import { graphql, RelayProp, useFragment } from "react-relay"
+import { graphql, RelayRefetchProp, useFragment } from "react-relay"
 import * as Yup from "yup"
 import {
   buildLocationDisplay,
@@ -47,7 +47,7 @@ interface MyProfileEditFormModalProps {
   me: MyProfileEditFormModal_me$key
   setProfileIconLocally: (path: string) => void
   localImage: LocalImage | null
-  relay: RelayProp
+  relay: RelayRefetchProp
   onDismiss(): void
   refetchProfileIdentification(): void
 }
@@ -208,6 +208,7 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = ({
       setIsVerificationLoading(true)
 
       const { sendConfirmationEmail } = await verifyEmail(relay.environment)
+
       const confirmationOrError = sendConfirmationEmail?.confirmationOrError
       const emailToConfirm = confirmationOrError?.unconfirmedEmail
 
@@ -238,148 +239,152 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = ({
   )
 
   return (
-    <ArtsyKeyboardAvoidingView>
-      <FancyModal
-        visible={visible}
-        onBackgroundPressed={hideModal}
-        fullScreen={enableCollectorProfile}
-      >
-        <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={hideModal}>
-          Edit Profile
-        </FancyModalHeader>
-
-        <ScrollView
-          ref={scrollViewRef}
-          keyboardDismissMode="on-drag"
-          keyboardShouldPersistTaps="handled"
+    <Suspense fallback={null}>
+      <ArtsyKeyboardAvoidingView>
+        <FancyModal
+          visible={visible}
+          onBackgroundPressed={hideModal}
+          fullScreen={enableCollectorProfile}
         >
-          <Join separator={<Spacer py={1} />}>
-            <Flex flexDirection="row" alignItems="center" px={2} mt={2}>
-              <Touchable onPress={chooseImageHandler}>
-                <Box
-                  height="99"
-                  width="99"
-                  mr={2}
-                  borderRadius="50"
-                  backgroundColor={color("black10")}
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  {!!values.photo ? (
-                    <Avatar src={values.photo} size="md" />
-                  ) : (
-                    <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
+          <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={hideModal}>
+            Edit Profile
+          </FancyModalHeader>
+
+          <ScrollView
+            ref={scrollViewRef}
+            keyboardDismissMode="on-drag"
+            keyboardShouldPersistTaps="handled"
+          >
+            <Join separator={<Spacer py={1} />}>
+              <Flex flexDirection="row" alignItems="center" px={2} mt={2}>
+                <Touchable onPress={chooseImageHandler}>
+                  <Box
+                    height="99"
+                    width="99"
+                    mr={2}
+                    borderRadius="50"
+                    backgroundColor={color("black10")}
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    {!!values.photo ? (
+                      <Avatar src={values.photo} size="md" />
+                    ) : (
+                      <Image
+                        source={require("../../../../images/profile_placeholder_avatar.webp")}
+                      />
+                    )}
+                  </Box>
+                </Touchable>
+                <Touchable haptic onPress={chooseImageHandler}>
+                  <Text style={{ textDecorationLine: "underline" }}>Choose an Image</Text>
+                </Touchable>
+              </Flex>
+              <Flex m={2}>
+                <Join separator={<Spacer py={2} />}>
+                  <Input
+                    ref={nameInputRef}
+                    title="Full Name"
+                    onChangeText={handleChange("name")}
+                    onBlur={() => validateForm()}
+                    error={errors.name}
+                    returnKeyType="next"
+                    defaultValue={values.name}
+                  />
+
+                  {!!enableCollectorProfile && (
+                    <DetailedLocationAutocomplete
+                      title="Primary Location"
+                      placeholder="City Name"
+                      returnKeyType="next"
+                      initialLocation={values.displayLocation?.display!}
+                      onFocus={() =>
+                        requestAnimationFrame(() =>
+                          scrollViewRef.current?.scrollTo({ y: PRIMARY_LOCATION_OFFSET })
+                        )
+                      }
+                      onChange={({ city, country, postalCode, state, stateCode }) => {
+                        setFieldValue("location", {
+                          city: city ?? "",
+                          country: country ?? "",
+                          postalCode: postalCode ?? "",
+                          state: state ?? "",
+                          stateCode: stateCode ?? "",
+                        })
+                      }}
+                    />
                   )}
-                </Box>
-              </Touchable>
-              <Touchable haptic onPress={chooseImageHandler}>
-                <Text style={{ textDecorationLine: "underline" }}>Choose an Image</Text>
-              </Touchable>
-            </Flex>
-            <Flex m={2}>
-              <Join separator={<Spacer py={2} />}>
-                <Input
-                  ref={nameInputRef}
-                  title="Full Name"
-                  onChangeText={handleChange("name")}
-                  onBlur={() => validateForm()}
-                  error={errors.name}
-                  returnKeyType="next"
-                  defaultValue={values.name}
-                />
 
-                {!!enableCollectorProfile && (
-                  <DetailedLocationAutocomplete
-                    title="Primary Location"
-                    placeholder="City Name"
-                    returnKeyType="next"
-                    initialLocation={values.displayLocation?.display!}
-                    onFocus={() =>
-                      requestAnimationFrame(() =>
-                        scrollViewRef.current?.scrollTo({ y: PRIMARY_LOCATION_OFFSET })
-                      )
-                    }
-                    onChange={({ city, country, postalCode, state, stateCode }) => {
-                      setFieldValue("location", {
-                        city: city ?? "",
-                        country: country ?? "",
-                        postalCode: postalCode ?? "",
-                        state: state ?? "",
-                        stateCode: stateCode ?? "",
-                      })
-                    }}
-                  />
-                )}
+                  {!!enableCollectorProfile && (
+                    <Input
+                      ref={nameInputRef}
+                      title="Profession"
+                      onChangeText={handleChange("profession")}
+                      onBlur={() => validateForm()}
+                      error={errors.name}
+                      returnKeyType="next"
+                      defaultValue={values.profession}
+                      placeholder="Select Your Profession"
+                    />
+                  )}
 
-                {!!enableCollectorProfile && (
+                  {!!enableCollectorProfile && (
+                    <Input
+                      ref={nameInputRef}
+                      title="Other Relevant Positions"
+                      onChangeText={handleChange("otherRelevantPositions")}
+                      onBlur={() => validateForm()}
+                      error={errors.name}
+                      returnKeyType="next"
+                      defaultValue={values.otherRelevantPositions}
+                      placeholder="Institution Name and Position"
+                    />
+                  )}
+
                   <Input
-                    ref={nameInputRef}
-                    title="Profession"
-                    onChangeText={handleChange("profession")}
+                    ref={bioInputRef}
+                    title="About"
+                    onChangeText={handleChange("bio")}
                     onBlur={() => validateForm()}
-                    error={errors.name}
-                    returnKeyType="next"
-                    defaultValue={values.profession}
-                    placeholder="Select Your Profession"
+                    error={errors.bio}
+                    maxLength={150}
+                    multiline
+                    showLimit
+                    defaultValue={values.bio}
+                    placeholder="You can add a short bio to tell more about yourself and your collection. It can be anything like the artists you collect, the genres you're interested in , etc."
                   />
-                )}
 
-                {!!enableCollectorProfile && (
-                  <Input
-                    ref={nameInputRef}
-                    title="Other Relevant Positions"
-                    onChangeText={handleChange("otherRelevantPositions")}
-                    onBlur={() => validateForm()}
-                    error={errors.name}
-                    returnKeyType="next"
-                    defaultValue={values.otherRelevantPositions}
-                    placeholder="Institution Name and Position"
-                  />
-                )}
+                  <Spacer py={2} />
+                  {!!enableCollectorProfile && (
+                    <ProfileVerifications
+                      isIDVerified={!!me.identityVerified}
+                      canRequestEmailConfirmation={!!me.canRequestEmailConfirmation}
+                      emailConfirmed={!!me.emailConfirmed}
+                      handleEmailVerification={throttleHandledEmailVerification}
+                    />
+                  )}
 
-                <Input
-                  ref={bioInputRef}
-                  title="About"
-                  onChangeText={handleChange("bio")}
-                  onBlur={() => validateForm()}
-                  error={errors.bio}
-                  maxLength={150}
-                  multiline
-                  showLimit
-                  defaultValue={values.bio}
-                  placeholder="You can add a short bio to tell more about yourself and your collection. It can be anything like the artists you collect, the genres you're interested in , etc."
-                />
+                  <Spacer py={2} />
 
-                <Spacer py={2} />
-                {!!enableCollectorProfile && (
-                  <ProfileVerifications
-                    isIDVerified={!!me.identityVerified}
-                    canRequestEmailConfirmation={!me.canRequestEmailConfirmation}
-                    emailConfirmed={!!me.emailConfirmed}
-                    handleEmailVerification={throttleHandledEmailVerification}
-                  />
-                )}
+                  <Button flex={1} disabled={!dirty} onPress={handleSubmit} mb={2}>
+                    Save
+                  </Button>
+                </Join>
+              </Flex>
+            </Join>
+          </ScrollView>
+          {!!showVerificationBanner && (
+            <VerificationConfirmationBanner
+              isLoading={isverificationLoading}
+              didSuccessfullyVerifiyEmail={didSuccessfullyVerifiyEmail}
+              resultText={`Email sent to ${me.email}`}
+            />
+          )}
 
-                <Spacer py={2} />
-
-                <Button flex={1} disabled={!dirty} onPress={handleSubmit} mb={2}>
-                  Save
-                </Button>
-              </Join>
-            </Flex>
-          </Join>
-        </ScrollView>
-        {!!showVerificationBanner && (
-          <VerificationConfirmationBanner
-            isLoading={isverificationLoading}
-            didSuccessfullyVerifiyEmail={didSuccessfullyVerifiyEmail}
-            resultText={`Email sent to ${me.email}`}
-          />
-        )}
-
-        {!!loading && <LoadingIndicator />}
-      </FancyModal>
-    </ArtsyKeyboardAvoidingView>
+          {!!loading && <LoadingIndicator />}
+        </FancyModal>
+      </ArtsyKeyboardAvoidingView>
+    </Suspense>
   )
 }
 
@@ -502,17 +507,26 @@ const ProfileVerifications = ({
         <Flex flexDirection="row">
           <CheckCircleIcon height={22} width={22} fill="black30" />
           <Flex ml={1}>
-            <Text
-              style={{ textDecorationLine: canRequestEmailConfirmation ? "underline" : "none" }}
-              onPress={() => {
-                if (canRequestEmailConfirmation) {
+            {canRequestEmailConfirmation ? (
+              <Text
+                style={{ textDecorationLine: "underline" }}
+                onPress={() => {
                   handleEmailVerification()
-                }
-              }}
-              testID="verify-your-email"
-            >
-              Verify Your Email
-            </Text>
+                }}
+                testID="verify-your-email"
+              >
+                Verify Your Email
+              </Text>
+            ) : (
+              <Text
+                style={{ textDecorationLine: "none" }}
+                color="black60"
+                testID="verify-your-email"
+              >
+                Verify Your Email
+              </Text>
+            )}
+
             {/* This text will be replaced in a separate ticket */}
             <Text color="black60">
               Secure your account and receive updates about your transactions on Artsy.

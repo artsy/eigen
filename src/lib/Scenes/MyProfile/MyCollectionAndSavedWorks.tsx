@@ -105,6 +105,7 @@ export const MyProfileHeader: React.FC<{
           refetchProfileIdentification={() => {
             relay.refetch({}, null, null, { force: true })
           }}
+          relay={relay}
         />
       )}
       <FancyModalHeader
