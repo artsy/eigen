@@ -11,16 +11,16 @@ import { ErrorView } from "../Components/ErrorView"
 import { updateConsignSubmission } from "../Mutations/updateConsignSubmissionMutation"
 import { ContactInformationFormModel, contactInformationValidationSchema } from "./validation"
 
-export const ContactInformationScreen: React.FC<{
+interface ContactInformationProps {
   handlePress: () => void
-}> = ({ handlePress }) => (
+}
+
+export const ContactInformationScreen: React.FC<ContactInformationProps> = ({ handlePress }) => (
   <Suspense fallback={<Placeholder />}>
     <ContactInformation handlePress={handlePress} />
   </Suspense>
 )
-export const ContactInformation: React.FC<{
-  handlePress: () => void
-}> = ({ handlePress }) => {
+export const ContactInformation: React.FC<ContactInformationProps> = ({ handlePress }) => {
   const { submissionId } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
   const [submissionError, setSubmissionError] = useState(false)
   const queryData = useLazyLoadQuery<ContactInformationQuery>(ContactInformationScreenQuery, {})
@@ -36,6 +36,7 @@ export const ContactInformation: React.FC<{
         userName: values.userName,
         userEmail: values.userEmail,
         userPhone: values.userPhone,
+        state: "SUBMITTED",
       })
 
       if (updatedSubmissionId) {
