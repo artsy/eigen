@@ -193,7 +193,6 @@ export const features = defineFeatures({
     readyForRelease: true,
     description: "Enable placeholder layout animation",
     showInAdminMenu: true,
-    echoFlagKey: "AREnablePlaceholderAnimation",
   },
 })
 
