@@ -6,8 +6,6 @@ import { LayoutAnimation, Platform, View, ViewStyle } from "react-native"
 import Animated from "react-native-reanimated"
 import { useScreenDimensions } from "./useScreenDimensions"
 
-const layoutAnimationConfig = { ...LayoutAnimation.Presets.spring, duration: 100 }
-
 const PlaceholderContext = React.createContext<{ clock: Animated.Clock }>(null as any)
 
 const useCurrentTime = () => {
@@ -41,17 +39,18 @@ const useCurrentTime = () => {
 const useLayoutAnimation = () => {
   const enablePlaceholderLayoutAnimation = useFeatureFlag("AREnablePlaceholderLayoutAnimation")
 
-  // Deactivating the layout animation for Android because it causes problems.
-  if (Platform.OS === "android" || !enablePlaceholderLayoutAnimation) {
-    return
+  const configureNextLayoutAnimation = () => {
+    if (Platform.OS === "android" || !enablePlaceholderLayoutAnimation) {
+      return
+    }
+
+    LayoutAnimation.configureNext({ ...LayoutAnimation.Presets.spring, duration: 100 })
   }
 
   useEffect(() => {
-    LayoutAnimation.configureNext(layoutAnimationConfig)
+    configureNextLayoutAnimation()
 
-    return () => {
-      LayoutAnimation.configureNext(layoutAnimationConfig)
-    }
+    return configureNextLayoutAnimation
   }, [])
 }
 
