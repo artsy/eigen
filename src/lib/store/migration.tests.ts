@@ -448,3 +448,45 @@ describe("App version Versions.AddUserPreferences", () => {
     expect(migratedState.userPreferences).toEqual({ currency: "USD", metric: "" })
   })
 })
+
+describe("App version Versions.AddArtworkSubmissionModel", () => {
+  const migrationToTest = Versions.AddArtworkSubmissionModel
+
+  it("adds artworkSubmission details to state", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.artworkSubmission.submission.submissionId).toEqual("")
+    expect(migratedState.artworkSubmission.submission.artworkDetails).toEqual({
+      artist: "",
+      artistId: "",
+      title: "",
+      year: "",
+      medium: "",
+      attributionClass: "",
+      editionNumber: "",
+      editionSizeFormatted: "",
+      dimensionsMetric: "in",
+      height: "",
+      width: "",
+      depth: "",
+      provenance: "",
+      state: "DRAFT",
+      utmMedium: "",
+      utmSource: "",
+      utmTerm: "",
+      location: {
+        city: "",
+        state: "",
+        country: "",
+      },
+    })
+  })
+})

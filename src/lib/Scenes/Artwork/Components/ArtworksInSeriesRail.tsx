@@ -73,7 +73,10 @@ const artworkFragment = graphql`
 `
 
 const tracks = {
-  tappedHeader: (sourceArtwork: ArtworksInSeriesRail_artwork, destination: { internalID: string; slug: string }) => ({
+  tappedHeader: (
+    sourceArtwork: ArtworksInSeriesRail_artwork,
+    destination: { internalID: string; slug: string }
+  ) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.moreFromThisSeries,
     context_screen_owner_type: OwnerType.artwork as ScreenOwnerType,
@@ -84,7 +87,10 @@ const tracks = {
     destination_screen_owner_slug: destination.slug,
     type: "viewAll",
   }),
-  tappedArtwork: (sourceArtwork: ArtworksInSeriesRail_artwork, destination: { internalID: string; slug: string }) => ({
+  tappedArtwork: (
+    sourceArtwork: ArtworksInSeriesRail_artwork,
+    destination: { internalID: string; slug: string }
+  ) => ({
     action: ActionType.tappedArtworkGroup,
     context_module: ContextModule.moreFromThisSeries,
     context_screen_owner_type: OwnerType.artwork as ScreenOwnerType,

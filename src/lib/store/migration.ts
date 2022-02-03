@@ -29,9 +29,10 @@ export const Versions = {
   RemoveNativeOnboardingState: 17,
   AddUserPreferences: 18,
   AddVisualClueModel: 19,
+  AddArtworkSubmissionModel: 20,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddVisualClueModel
+export const CURRENT_APP_VERSION = Versions.AddArtworkSubmissionModel
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -123,6 +124,37 @@ export const artsyAppMigrations: Migrations = {
   [Versions.AddVisualClueModel]: (state) => {
     state.visualClue = {
       seenVisualClues: [],
+    }
+  },
+  [Versions.AddArtworkSubmissionModel]: (state) => {
+    state.artworkSubmission = {
+      submission: {
+        submissionId: "",
+        artworkDetails: {
+          artist: "",
+          artistId: "",
+          title: "",
+          year: "",
+          medium: "",
+          attributionClass: "",
+          editionNumber: "",
+          editionSizeFormatted: "",
+          dimensionsMetric: "in",
+          height: "",
+          width: "",
+          depth: "",
+          provenance: "",
+          state: "DRAFT",
+          utmMedium: "",
+          utmSource: "",
+          utmTerm: "",
+          location: {
+            city: "",
+            state: "",
+            country: "",
+          },
+        },
+      },
     }
   },
 }

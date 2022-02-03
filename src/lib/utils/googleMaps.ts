@@ -49,6 +49,7 @@ export const getLocationDetails = async ({
   const queryString = stringify({
     key: API_KEY,
     placeid: id,
+    language: "en",
   })
 
   const response = await fetch(

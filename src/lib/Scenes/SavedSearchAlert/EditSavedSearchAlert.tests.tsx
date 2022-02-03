@@ -192,10 +192,21 @@ describe("EditSavedSearchAlert", () => {
 
     await waitFor(() => {
       const operation = mockEnvironment.mock.getMostRecentOperation()
+      expect(operation.fragment.node.name).toBe("getSavedSearchIdByCriteriaQuery")
+    })
+
+    mockEnvironmentPayload(mockEnvironment, {
+      Me: () => ({
+        savedSearch: null,
+      }),
+    })
+
+    await waitFor(() => {
+      const operation = mockEnvironment.mock.getMostRecentOperation()
       expect(operation.request.variables.input).toEqual({
         searchCriteriaID: "savedSearchAlertId",
         attributes: {
-          artistID: "artistID",
+          artistIDs: ["artistID"],
           materialsTerms: ["paper"],
         },
         userAlertSettings: {
@@ -211,7 +222,7 @@ describe("EditSavedSearchAlert", () => {
 const searchCriteria = {
   acquireable: null,
   additionalGeneIDs: [],
-  artistID: "artistID",
+  artistIDs: ["artistID"],
   atAuction: null,
   attributionClass: [],
   colors: [],

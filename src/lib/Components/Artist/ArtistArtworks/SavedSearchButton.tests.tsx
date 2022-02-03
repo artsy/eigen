@@ -146,9 +146,8 @@ describe("SavedSearchButton", () => {
     })
   })
 
-  it('should call navigate twice when "My Collection" is enabled', async () => {
+  it("should call navigate twice", async () => {
     jest.useFakeTimers()
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionIOS: true })
     const tree = renderWithWrappers(<TestRenderer />)
 
     act(() =>

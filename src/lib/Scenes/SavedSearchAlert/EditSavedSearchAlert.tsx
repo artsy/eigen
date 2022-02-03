@@ -45,8 +45,8 @@ export const EditSavedSearchAlert: React.FC<EditSavedSearchAlertProps> = (props)
   }
 
   const refetch = useCallback(
-    (backProps: GoBackProps) => {
-      if (backProps.previousScreen === "Unsubscribe") {
+    (backProps?: GoBackProps) => {
+      if (backProps?.previousScreen === "Unsubscribe") {
         relay.refetch({}, null, null, { force: true })
       }
     },
@@ -157,7 +157,7 @@ export const EditSavedSearchAlertQueryRenderer: React.FC<EditSavedSearchAlertBas
                 }
               }
             `}
-            variables={{ artistID: relayProps.me?.savedSearch?.artistID! }}
+            variables={{ artistID: relayProps.me?.savedSearch?.artistIDs?.[0]! }}
             render={renderWithPlaceholder({
               Container: EditSavedSearchAlertRefetchContainer,
               renderPlaceholder: () => <EditSavedSearchFormPlaceholder />,

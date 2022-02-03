@@ -1,23 +1,18 @@
-import React from "react"
-import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
-
-import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
-
-import { navigate } from "lib/navigation/navigate"
-import ConversationSnippet from "./ConversationSnippet"
-import { NoMessages } from "./NoMessages"
-
-import { PAGE_SIZE } from "lib/Components/constants"
-
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
 import { Conversations_me } from "__generated__/Conversations_me.graphql"
-import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
+import { PAGE_SIZE } from "lib/Components/constants"
+import { navigate } from "lib/navigation/navigate"
 import { extractNodes } from "lib/utils/extractNodes"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import { ActionNames, ActionTypes } from "lib/utils/track/schema"
 import { Flex, Sans, Separator, useColor } from "palette"
+import React from "react"
+import { ActivityIndicator, FlatList, RefreshControl } from "react-native"
+import { createPaginationContainer, graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import ConversationSnippet from "./ConversationSnippet"
+import { NoMessages } from "./NoMessages"
 
 interface Props {
   me: Conversations_me
@@ -95,25 +90,21 @@ export const Conversations: React.FC<Props> = (props) => {
 
   const unreadCount = props.me.conversations?.totalUnreadCount
   const unreadCounter = unreadCount ? `(${unreadCount})` : null
-  // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
-  const shouldDisplayMyBids = unsafe_getFeatureFlag("AROptionsBidManagement")
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.inboxInquiries })}
     >
-      {!shouldDisplayMyBids && (
-        <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
-          <Sans
-            mx={2}
-            mt={1}
-            size="8"
-            style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}
-          >
-            Inbox {unreadCounter}
-          </Sans>
-        </Flex>
-      )}
+      <Flex py={1} style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}>
+        <Sans
+          mx={2}
+          mt={1}
+          size="8"
+          style={{ borderBottomWidth: 1, borderBottomColor: color("black10") }}
+        >
+          Inbox {unreadCounter}
+        </Sans>
+      </Flex>
       <FlatList
         data={conversations}
         refreshControl={

@@ -179,6 +179,7 @@ const artworkFragment = graphql`
       name
     }
     title
+    realizedPrice
   }
 `
 

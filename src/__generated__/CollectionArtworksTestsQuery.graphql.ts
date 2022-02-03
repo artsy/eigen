@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 165d5195ba5a64d3bf0f178ab0f0eb26 */
+/* @relayHash 99b811f095980ff9495cc5c8f41e2625 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -59,6 +59,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
+  realizedPrice
 }
 
 fragment CollectionArtworks_collection on MarketingCollection {
@@ -609,6 +610,13 @@ return {
                               (v2/*: any*/)
                             ],
                             "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "realizedPrice",
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -649,7 +657,7 @@ return {
     ]
   },
   "params": {
-    "id": "165d5195ba5a64d3bf0f178ab0f0eb26",
+    "id": "99b811f095980ff9495cc5c8f41e2625",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "marketingCollection": {
@@ -760,6 +768,7 @@ return {
         },
         "marketingCollection.collectionArtworks.edges.node.partner.id": (v8/*: any*/),
         "marketingCollection.collectionArtworks.edges.node.partner.name": (v9/*: any*/),
+        "marketingCollection.collectionArtworks.edges.node.realizedPrice": (v9/*: any*/),
         "marketingCollection.collectionArtworks.edges.node.sale": {
           "enumValues": null,
           "nullable": true,

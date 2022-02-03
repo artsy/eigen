@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c0a2509ac6b1490d87fce893d0861df2 */
+/* @relayHash ddea5e0b2ff3f93c981741c7b9326c10 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -68,6 +68,7 @@ fragment SaleArtworkTileRailCard_saleArtwork on SaleArtwork {
     slug
     saleMessage
     title
+    realizedPrice
     id
   }
   counts {
@@ -344,6 +345,13 @@ return {
                                 "name": "title",
                                 "storageKey": null
                               },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "realizedPrice",
+                                "storageKey": null
+                              },
                               (v3/*: any*/)
                             ],
                             "storageKey": null
@@ -472,7 +480,7 @@ return {
     ]
   },
   "params": {
-    "id": "c0a2509ac6b1490d87fce893d0861df2",
+    "id": "ddea5e0b2ff3f93c981741c7b9326c10",
     "metadata": {},
     "name": "LotsByFollowedArtistsRailQuery",
     "operationKind": "query",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash b0ad82fd23e7bb5e01174353979a797a */
+/* @relayHash ff1392851a39448c7b7eb6e8bd6dee6c */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -56,6 +56,7 @@ export type FairFollowedArtistsRailTestsQueryRawResponse = {
                         readonly id: string;
                     }) | null;
                     readonly title: string | null;
+                    readonly realizedPrice: string | null;
                 }) | null;
             }) | null> | null;
             readonly id: string;
@@ -118,6 +119,7 @@ fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
     id
   }
   title
+  realizedPrice
 }
 
 fragment FairFollowedArtistsRail_fair on Fair {
@@ -488,6 +490,13 @@ return {
                         "kind": "ScalarField",
                         "name": "title",
                         "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "realizedPrice",
+                        "storageKey": null
                       }
                     ],
                     "storageKey": null
@@ -506,7 +515,7 @@ return {
     ]
   },
   "params": {
-    "id": "b0ad82fd23e7bb5e01174353979a797a",
+    "id": "ff1392851a39448c7b7eb6e8bd6dee6c",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "fair": {
@@ -568,6 +577,7 @@ return {
         },
         "fair.filterArtworksConnection.edges.node.partner.id": (v6/*: any*/),
         "fair.filterArtworksConnection.edges.node.partner.name": (v5/*: any*/),
+        "fair.filterArtworksConnection.edges.node.realizedPrice": (v5/*: any*/),
         "fair.filterArtworksConnection.edges.node.sale": {
           "enumValues": null,
           "nullable": true,

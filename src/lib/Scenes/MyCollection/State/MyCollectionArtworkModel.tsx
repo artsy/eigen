@@ -200,6 +200,7 @@ export const MyCollectionArtworkModel: MyCollectionArtworkModel = {
       photos: artwork.images,
       title: artwork.title,
       width: artwork.width,
+      artworkLocation: artwork.artworkLocation,
       provenance: artwork.provenance,
     }
 

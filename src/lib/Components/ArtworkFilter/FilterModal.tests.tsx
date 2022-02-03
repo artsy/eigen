@@ -371,7 +371,9 @@ describe("Clearing filters", () => {
       },
     }
 
-    const { getByText, queryByText } = renderWithWrappersTL(<MockFilterScreen initialState={injectedState} />)
+    const { getByText, queryByText } = renderWithWrappersTL(
+      <MockFilterScreen initialState={injectedState} />
+    )
 
     expect(within(getByText("Sort By")).getByText("• 1")).toBeTruthy()
     fireEvent.press(getByText("Clear All"))

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 727e354cbce76b9fe4503cc441b0497d */
+/* @relayHash cf92aaeb8871d9a4a1b798978035ec92 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -59,6 +59,7 @@ export type ArtworksInSeriesRailTestsQueryRawResponse = {
                                     readonly id: string;
                                 }) | null;
                                 readonly title: string | null;
+                                readonly realizedPrice: string | null;
                             }) | null;
                         }) | null> | null;
                         readonly id: string;
@@ -122,6 +123,7 @@ fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
     id
   }
   title
+  realizedPrice
 }
 
 fragment ArtworksInSeriesRail_artwork on Artwork {
@@ -495,6 +497,13 @@ return {
                                     "kind": "ScalarField",
                                     "name": "title",
                                     "storageKey": null
+                                  },
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "realizedPrice",
+                                    "storageKey": null
                                   }
                                 ],
                                 "storageKey": null
@@ -522,7 +531,7 @@ return {
     ]
   },
   "params": {
-    "id": "727e354cbce76b9fe4503cc441b0497d",
+    "id": "cf92aaeb8871d9a4a1b798978035ec92",
     "metadata": {},
     "name": "ArtworksInSeriesRailTestsQuery",
     "operationKind": "query",

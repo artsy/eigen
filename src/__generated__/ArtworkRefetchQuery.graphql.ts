@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash cf1b52e8f08881f3cc2c77048f734ee9 */
+/* @relayHash 66aedaa2a080348bab1c694c54805c9a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -195,6 +195,7 @@ fragment ArtworkGridItem_artwork on Artwork {
     url(version: "large")
     aspectRatio
   }
+  realizedPrice
 }
 
 fragment ArtworkHeader_artwork on Artwork {
@@ -258,6 +259,7 @@ fragment ArtworkRailCard_artwork_hl5k2 on Artwork {
     id
   }
   title
+  realizedPrice
 }
 
 fragment ArtworkTombstone_artwork on Artwork {
@@ -1099,6 +1101,13 @@ v36 = {
   "args": null,
   "kind": "ScalarField",
   "name": "aspectRatio",
+  "storageKey": null
+},
+v37 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "realizedPrice",
   "storageKey": null
 };
 return {
@@ -2169,7 +2178,8 @@ return {
                             ],
                             "storageKey": null
                           },
-                          (v21/*: any*/)
+                          (v21/*: any*/),
+                          (v37/*: any*/)
                         ],
                         "storageKey": null
                       }
@@ -2346,7 +2356,8 @@ return {
                                     "storageKey": null
                                   },
                                   (v21/*: any*/),
-                                  (v5/*: any*/)
+                                  (v5/*: any*/),
+                                  (v37/*: any*/)
                                 ],
                                 "storageKey": null
                               }
@@ -2393,7 +2404,7 @@ return {
     ]
   },
   "params": {
-    "id": "cf1b52e8f08881f3cc2c77048f734ee9",
+    "id": "66aedaa2a080348bab1c694c54805c9a",
     "metadata": {},
     "name": "ArtworkRefetchQuery",
     "operationKind": "query",

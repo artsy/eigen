@@ -1,32 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1ab7d09a51c2c1dc85e672dab4783d1f */
+/* @relayHash 3d478c267bb38cf0be324dd2ab1dcef8 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type SearchCriteriaAttributes = {
-    acquireable?: boolean | null | undefined;
-    additionalGeneIDs?: Array<string> | null | undefined;
-    artistID?: string | null | undefined;
-    atAuction?: boolean | null | undefined;
-    attributionClass?: Array<string> | null | undefined;
-    colors?: Array<string> | null | undefined;
-    dimensionRange?: string | null | undefined;
-    height?: string | null | undefined;
-    inquireableOnly?: boolean | null | undefined;
-    locationCities?: Array<string> | null | undefined;
-    majorPeriods?: Array<string> | null | undefined;
-    materialsTerms?: Array<string> | null | undefined;
-    offerable?: boolean | null | undefined;
-    partnerIDs?: Array<string> | null | undefined;
-    priceRange?: string | null | undefined;
-    sizes?: Array<string> | null | undefined;
-    width?: string | null | undefined;
-};
-export type CreateSavedSearchContentContainerV2RefetchQueryVariables = {
-    criteria?: SearchCriteriaAttributes | null | undefined;
-};
+export type CreateSavedSearchContentContainerV2RefetchQueryVariables = {};
 export type CreateSavedSearchContentContainerV2RefetchQueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"CreateSavedSearchContentContainerV2_me">;
@@ -40,41 +19,21 @@ export type CreateSavedSearchContentContainerV2RefetchQuery = {
 
 
 /*
-query CreateSavedSearchContentContainerV2RefetchQuery(
-  $criteria: SearchCriteriaAttributes
-) {
+query CreateSavedSearchContentContainerV2RefetchQuery {
   me {
-    ...CreateSavedSearchContentContainerV2_me_1ff8oJ
+    ...CreateSavedSearchContentContainerV2_me
     id
   }
 }
 
-fragment CreateSavedSearchContentContainerV2_me_1ff8oJ on Me {
+fragment CreateSavedSearchContentContainerV2_me on Me {
   emailFrequency
-  savedSearch(criteria: $criteria) {
-    internalID
-  }
 }
 */
 
-const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "criteria"
-  }
-],
-v1 = [
-  {
-    "kind": "Variable",
-    "name": "criteria",
-    "variableName": "criteria"
-  }
-];
-return {
+const node: ConcreteRequest = {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
     "name": "CreateSavedSearchContentContainerV2RefetchQuery",
@@ -88,7 +47,7 @@ return {
         "plural": false,
         "selections": [
           {
-            "args": (v1/*: any*/),
+            "args": null,
             "kind": "FragmentSpread",
             "name": "CreateSavedSearchContentContainerV2_me"
           }
@@ -101,7 +60,7 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "CreateSavedSearchContentContainerV2RefetchQuery",
     "selections": [
@@ -122,24 +81,6 @@ return {
           },
           {
             "alias": null,
-            "args": (v1/*: any*/),
-            "concreteType": "SearchCriteria",
-            "kind": "LinkedField",
-            "name": "savedSearch",
-            "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "internalID",
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          },
-          {
-            "alias": null,
             "args": null,
             "kind": "ScalarField",
             "name": "id",
@@ -151,13 +92,12 @@ return {
     ]
   },
   "params": {
-    "id": "1ab7d09a51c2c1dc85e672dab4783d1f",
+    "id": "3d478c267bb38cf0be324dd2ab1dcef8",
     "metadata": {},
     "name": "CreateSavedSearchContentContainerV2RefetchQuery",
     "operationKind": "query",
     "text": null
   }
 };
-})();
-(node as any).hash = 'f0c000e35ef49f83f05a8e83f042b9fa';
+(node as any).hash = '1e50ee2a72c8d4b281fcf57c2fb43898';
 export default node;

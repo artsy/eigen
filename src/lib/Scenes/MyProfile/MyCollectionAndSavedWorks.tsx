@@ -1,3 +1,4 @@
+import { OwnerType } from "@artsy/cohesion"
 import { MyCollectionAndSavedWorks_me } from "__generated__/MyCollectionAndSavedWorks_me.graphql"
 import { MyCollectionAndSavedWorksQuery } from "__generated__/MyCollectionAndSavedWorksQuery.graphql"
 import { Image } from "lib/Components/Bidding/Elements/Image"
@@ -7,7 +8,9 @@ import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { LocalImage, retrieveLocalImages, storeLocalImages } from "lib/utils/LocalImageStore"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
+import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
+import { screen } from "lib/utils/track/helpers"
 import {
   Avatar,
   Box,
@@ -25,8 +28,8 @@ import React, { useEffect, useState } from "react"
 import { createFragmentContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
-import { MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
-import { MyProfileEditFormModalFragmentContainer } from "./MyProfileEditFormModal"
+import { MyCollectionPlaceholder, MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
+import { MyProfileEditFormModal } from "./MyProfileEditFormModal"
 
 export enum Tab {
   collection = "My Collection",
@@ -89,7 +92,7 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
   return (
     <>
       {!!me && (
-        <MyProfileEditFormModalFragmentContainer
+        <MyProfileEditFormModal
           me={me}
           visible={showModal}
           onDismiss={() => setShowModal(false)}
@@ -206,17 +209,26 @@ export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContaine
   }
 )
 
+export const MyCollectionAndSavedWorksScreenQuery = graphql`
+  query MyCollectionAndSavedWorksQuery {
+    me @optionalField {
+      ...MyCollectionAndSavedWorks_me
+    }
+  }
+`
+
 export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => (
-  <QueryRenderer<MyCollectionAndSavedWorksQuery>
-    environment={defaultEnvironment}
-    query={graphql`
-      query MyCollectionAndSavedWorksQuery {
-        me @optionalField {
-          ...MyCollectionAndSavedWorks_me
-        }
-      }
-    `}
-    render={renderWithLoadProgress(MyCollectionAndSavedWorksFragmentContainer)}
-    variables={{}}
-  />
+  <ProvideScreenTrackingWithCohesionSchema
+    info={screen({ context_screen_owner_type: OwnerType.profile })}
+  >
+    <QueryRenderer<MyCollectionAndSavedWorksQuery>
+      environment={defaultEnvironment}
+      query={MyCollectionAndSavedWorksScreenQuery}
+      render={renderWithPlaceholder({
+        Container: MyCollectionAndSavedWorksFragmentContainer,
+        renderPlaceholder: () => <MyCollectionPlaceholder />,
+      })}
+      variables={{}}
+    />
+  </ProvideScreenTrackingWithCohesionSchema>
 )
