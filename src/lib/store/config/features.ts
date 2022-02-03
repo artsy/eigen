@@ -196,6 +196,10 @@ export const features = defineFeatures({
   AREnablePlaceholderLayoutAnimation: {
     readyForRelease: true,
     description: "Enable placeholder layout animation",
+  },
+  AREnableNewMyCollectionArtwork: {
+    readyForRelease: false,
+    description: "Enable new my collection artwork page",
     showInAdminMenu: true,
   },
 })
