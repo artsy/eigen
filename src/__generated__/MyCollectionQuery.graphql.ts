@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash cf02fb2cd2b8c3b43d646b03793e0fc0 */
+/* @relayHash c37cf5c1bc02bd24c052ace86f7bbf7b */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -54,12 +54,12 @@ fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectio
       width
       height
       date
-      ...MyCollectionArtworkListItem_artwork
+      ...MyCollectionArtworkGridItem_artwork
     }
   }
 }
 
-fragment MyCollectionArtworkListItem_artwork on Artwork {
+fragment MyCollectionArtworkGridItem_artwork on Artwork {
   internalID
   artist {
     internalID
@@ -77,6 +77,64 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
   slug
   title
   date
+}
+
+fragment MyCollectionArtworkListItem_artwork on Artwork {
+  internalID
+  title
+  slug
+  id
+  medium
+  image {
+    url
+    aspectRatio
+  }
+  artistNames
+  artist {
+    internalID
+    name
+    id
+  }
+  pricePaid {
+    minor
+  }
+  sizeBucket
+  width
+  height
+  date
+}
+
+fragment MyCollectionArtworkList_myCollectionConnection on MyCollectionConnection {
+  pageInfo {
+    hasNextPage
+    startCursor
+    endCursor
+  }
+  edges {
+    node {
+      title
+      slug
+      id
+      image {
+        aspectRatio
+      }
+      artistNames
+      medium
+      artist {
+        internalID
+        name
+        id
+      }
+      pricePaid {
+        minor
+      }
+      sizeBucket
+      width
+      height
+      date
+      ...MyCollectionArtworkListItem_artwork
+    }
+  }
 }
 
 fragment MyCollection_me on Me {
@@ -109,6 +167,7 @@ fragment MyCollection_me on Me {
       }
       cursor
     }
+    ...MyCollectionArtworkList_myCollectionConnection
     ...InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX
     pageInfo {
       endCursor
@@ -150,6 +209,13 @@ v3 = {
   "args": null,
   "kind": "ScalarField",
   "name": "internalID",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "url",
   "storageKey": null
 };
 return {
@@ -345,7 +411,8 @@ return {
                             "kind": "ScalarField",
                             "name": "aspectRatio",
                             "storageKey": null
-                          }
+                          },
+                          (v4/*: any*/)
                         ],
                         "storageKey": null
                       },
@@ -372,13 +439,7 @@ return {
                         "name": "images",
                         "plural": true,
                         "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "url",
-                            "storageKey": null
-                          },
+                          (v4/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -452,7 +513,7 @@ return {
     ]
   },
   "params": {
-    "id": "cf02fb2cd2b8c3b43d646b03793e0fc0",
+    "id": "c37cf5c1bc02bd24c052ace86f7bbf7b",
     "metadata": {},
     "name": "MyCollectionQuery",
     "operationKind": "query",

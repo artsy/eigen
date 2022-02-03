@@ -19,18 +19,26 @@ import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabP
 import { useToast } from "lib/Components/Toast/toastHook"
 import { navigate, popToRoot } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { useDevToggle, useFeatureFlag } from "lib/store/GlobalStore"
+import { GlobalStore, useDevToggle, useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
-import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
+import {
+  PlaceholderBox,
+  PlaceholderGrid,
+  PlaceholderText,
+  RandomWidthPlaceholderText,
+} from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
+import { times } from "lodash"
 import { Banner, Button, Flex, Separator, Spacer, useSpace } from "palette"
 import React, { useContext, useEffect, useState } from "react"
 import { LayoutAnimation, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
+import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
+import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
 import { MyCollectionSearchBar } from "./Components/MyCollectionSearchBar"
 import {
   localSortAndFilterArtworks,
@@ -57,9 +65,12 @@ const MyCollection: React.FC<{
   me: MyCollection_me
 }> = ({ relay, me }) => {
   const { trackEvent } = useTracking()
+  const { height: screenHeight } = useScreenDimensions()
 
   const enableSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
+
+  const viewOption = GlobalStore.useAppState((state) => state.userPreferences.artworkViewOption)
 
   const [keywordFilter, setKeywordFilter] = useState("")
   const [isSearchBarVisible, setIsSearchBarVisible] = useState(false)
@@ -177,20 +188,38 @@ const MyCollection: React.FC<{
           <MyCollectionZeroState />
         ) : (
           <Flex pt={1}>
-            <InfiniteScrollMyCollectionArtworksGridContainer
-              myCollectionConnection={me.myCollectionConnection!}
-              hasMore={relay.hasMore}
-              loadMore={relay.loadMore}
-              // tslint:disable-next-line: no-shadowed-variable
-              localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
-                localSortAndFilterArtworks(
-                  artworks,
-                  appliedFiltersState,
-                  filterOptions,
-                  keywordFilter
-                )
-              }
-            />
+            {viewOption === "grid" ? (
+              // Setting a min height to avoid a screen jump when switching to the grid view.
+              <Flex minHeight={screenHeight}>
+                <InfiniteScrollMyCollectionArtworksGridContainer
+                  myCollectionConnection={me.myCollectionConnection!}
+                  hasMore={relay.hasMore}
+                  loadMore={relay.loadMore}
+                  // tslint:disable-next-line: no-shadowed-variable
+                  localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
+                    localSortAndFilterArtworks(
+                      artworks,
+                      appliedFiltersState,
+                      filterOptions,
+                      keywordFilter
+                    )
+                  }
+                />
+              </Flex>
+            ) : (
+              <MyCollectionArtworkList
+                myCollectionConnection={me.myCollectionConnection}
+                // tslint:disable-next-line: no-shadowed-variable
+                localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
+                  localSortAndFilterArtworks(
+                    artworks,
+                    appliedFiltersState,
+                    filterOptions,
+                    keywordFilter
+                  )
+                }
+              />
+            )}
           </Flex>
         )}
         {!!showDevAddButton && (
@@ -242,6 +271,7 @@ export const MyCollectionContainer = createPaginationContainer(
               }
             }
           }
+          ...MyCollectionArtworkList_myCollectionConnection
           ...InfiniteScrollArtworksGrid_myCollectionConnection @arguments(skipArtworkGridItem: true)
         }
       }
@@ -290,6 +320,7 @@ export const MyCollectionQueryRenderer: React.FC = () => {
 
 export const MyCollectionPlaceholder: React.FC<{}> = () => {
   const screenWidth = useScreenDimensions().width
+  const viewOption = GlobalStore.useAppState((state) => state.userPreferences.artworkViewOption)
 
   return (
     <Flex>
@@ -336,7 +367,28 @@ export const MyCollectionPlaceholder: React.FC<{}> = () => {
       <Separator />
       <Spacer mb={1} mt={0.5} />
       {/* masonry grid */}
-      <PlaceholderGrid />
+      {viewOption === "grid" ? (
+        <PlaceholderGrid />
+      ) : (
+        <Flex mx={2} width="100%">
+          {times(4).map((i) => (
+            <Flex key={i} mt={1} flexDirection="row">
+              <Flex>
+                <PlaceholderBox
+                  key={i}
+                  width={ARTWORK_LIST_IMAGE_SIZE}
+                  height={ARTWORK_LIST_IMAGE_SIZE}
+                />
+              </Flex>
+              <Flex pl={15} flex={1}>
+                <RandomWidthPlaceholderText minWidth={80} maxWidth={120} />
+                <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
+                <RandomWidthPlaceholderText minWidth={100} maxWidth={200} />
+              </Flex>
+            </Flex>
+          ))}
+        </Flex>
+      )}
     </Flex>
   )
 }

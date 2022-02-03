@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type InfiniteScrollArtworksGrid_myCollectionConnection = {
+export type MyCollectionArtworkList_myCollectionConnection = {
     readonly pageInfo: {
         readonly hasNextPage: boolean;
         readonly startCursor: string | null;
@@ -31,30 +31,24 @@ export type InfiniteScrollArtworksGrid_myCollectionConnection = {
             readonly width: string | null;
             readonly height: string | null;
             readonly date: string | null;
-            readonly " $fragmentRefs": FragmentRefs<"ArtworkGridItem_artwork" | "MyCollectionArtworkGridItem_artwork">;
+            readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkListItem_artwork">;
         } | null;
     } | null> | null;
-    readonly " $refType": "InfiniteScrollArtworksGrid_myCollectionConnection";
+    readonly " $refType": "MyCollectionArtworkList_myCollectionConnection";
 };
-export type InfiniteScrollArtworksGrid_myCollectionConnection$data = InfiniteScrollArtworksGrid_myCollectionConnection;
-export type InfiniteScrollArtworksGrid_myCollectionConnection$key = {
-    readonly " $data"?: InfiniteScrollArtworksGrid_myCollectionConnection$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_myCollectionConnection">;
+export type MyCollectionArtworkList_myCollectionConnection$data = MyCollectionArtworkList_myCollectionConnection;
+export type MyCollectionArtworkList_myCollectionConnection$key = {
+    readonly " $data"?: MyCollectionArtworkList_myCollectionConnection$data | undefined;
+    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkList_myCollectionConnection">;
 };
 
 
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [
-    {
-      "defaultValue": true,
-      "kind": "LocalArgument",
-      "name": "skipArtworkGridItem"
-    }
-  ],
+  "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "InfiniteScrollArtworksGrid_myCollectionConnection",
+  "name": "MyCollectionArtworkList_myCollectionConnection",
   "selections": [
     {
       "alias": null,
@@ -229,21 +223,9 @@ const node: ReaderFragment = {
               "storageKey": null
             },
             {
-              "condition": "skipArtworkGridItem",
-              "kind": "Condition",
-              "passingValue": false,
-              "selections": [
-                {
-                  "args": null,
-                  "kind": "FragmentSpread",
-                  "name": "ArtworkGridItem_artwork"
-                }
-              ]
-            },
-            {
               "args": null,
               "kind": "FragmentSpread",
-              "name": "MyCollectionArtworkGridItem_artwork"
+              "name": "MyCollectionArtworkListItem_artwork"
             }
           ],
           "storageKey": null
@@ -255,5 +237,5 @@ const node: ReaderFragment = {
   "type": "MyCollectionConnection",
   "abstractKey": null
 };
-(node as any).hash = 'e709dce20874d91cb6f0f48ff087ad25';
+(node as any).hash = 'dd73d4e06d6e48e8a709ac5b371e76d8';
 export default node;
