@@ -12,7 +12,6 @@ const useCurrentTime = () => {
   const isMounted = useMemo(() => {
     return new Animated.Value(1 as number)
   }, [])
-
   const clock = useMemo(() => {
     return new Animated.Clock()
   }, [])
