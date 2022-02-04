@@ -470,7 +470,7 @@ describe("App version Versions.AddArtworkSubmissionModel", () => {
       title: "",
       year: "",
       medium: "",
-      attributionClass: "",
+      attributionClass: null,
       editionNumber: "",
       editionSizeFormatted: "",
       dimensionsMetric: "in",

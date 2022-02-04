@@ -1,26 +1,27 @@
 import { fireEvent } from "@testing-library/react-native"
+import { ConsignmentAttributionClass } from "__generated__/createConsignmentSubmissionMutation.graphql"
 import { Formik } from "formik"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { CTAButton } from "palette"
 import React from "react"
 import { act } from "react-test-renderer"
-import { limitedEditionValue } from "../utils/rarityOptions"
-import { artworkDetailsValidationSchema } from "../utils/validation"
-import { ArtworkDetailsFormModel } from "../utils/validation"
 import { mockSubmissionForm } from "./ArtworkDetails.tests"
 import { ArtworkDetailsForm } from "./ArtworkDetailsForm"
+import { limitedEditionValue } from "./utils/rarityOptions"
+import { artworkDetailsValidationSchema } from "./validation"
+import { ArtworkDetailsFormModel } from "./validation"
 
 jest.unmock("react-relay")
 
-const ArtworkDetailsFormTestRenderer: React.FC<{ attributionClass?: string }> = ({
-  attributionClass,
-}) => {
+const ArtworkDetailsFormTestRenderer: React.FC<{
+  attributionClass?: ConsignmentAttributionClass | null
+}> = ({ attributionClass }) => {
   return (
     <Formik<ArtworkDetailsFormModel>
       initialValues={{
         ...mockSubmissionForm,
-        attributionClass: attributionClass || "unique",
+        attributionClass: attributionClass ? attributionClass : null,
       }}
       onSubmit={jest.fn()}
       validationSchema={artworkDetailsValidationSchema}

@@ -3,7 +3,7 @@ import { getLocationDetails, getLocationPredictions, SimpleLocation } from "lib/
 import { Box, Flex, Input, LocationIcon, Separator, Text, Touchable, useSpace } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { FlatList, Image } from "react-native"
-import { Location } from "../../utils/validation"
+import { Location } from "../validation"
 
 interface Props {
   initialLocation: Location
