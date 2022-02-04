@@ -12,7 +12,7 @@ import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
 import { useAlgoliaIndices } from "lib/utils/useAlgoliaIndices"
 import { useSearchInsightsConfig } from "lib/utils/useSearchInsightsConfig"
 import { Box, Flex, Spacer } from "palette"
-import React, { useMemo, useRef, useState } from "react"
+import React, { Suspense, useMemo, useRef, useState } from "react"
 import {
   Configure,
   connectInfiniteHits,
@@ -20,8 +20,8 @@ import {
   connectStateResults,
   InstantSearch,
 } from "react-instantsearch-native"
-import { Keyboard, Platform, ScrollView } from "react-native"
-import { createRefetchContainer, graphql, QueryRenderer, RelayRefetchProp } from "react-relay"
+import { Keyboard, Platform, ScrollView, View } from "react-native"
+import { createRefetchContainer, graphql, RelayRefetchProp, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components"
 import { AutosuggestResult, AutosuggestResults } from "./AutosuggestResults"
@@ -122,11 +122,7 @@ export const Search: React.FC<SearchProps> = (props) => {
   }, [indices, indicesInfo])
 
   if (!searchClient || !searchInsightsConfigured) {
-    return (
-      <ProvidePlaceholderContext>
-        <SearchPlaceholder />
-      </ProvidePlaceholderContext>
-    )
+    return <SearchPlaceholder />
   }
 
   const handleRetry = () => {
@@ -295,23 +291,15 @@ export const SearchScreenQuery = graphql`
 `
 
 export const SearchQueryRenderer: React.FC<{}> = ({}) => {
-  return (
-    <QueryRenderer<SearchQuery>
-      environment={defaultEnvironment}
-      query={SearchScreenQuery}
-      render={({ props, error }) => {
-        if (error) {
-          if (__DEV__) {
-            console.error(error)
-          } else {
-            captureMessage(error.stack!)
-          }
-        }
+  const { system } = useLazyLoadQuery<SearchQuery>(SearchScreenQuery, {})
+  return <SearchRefetchContainer system={system ?? null} />
+}
 
-        return <SearchRefetchContainer system={props?.system ?? null} />
-      }}
-      variables={{}}
-    />
+export const SearchScreen: React.FC<{}> = ({}) => {
+  return (
+    <Suspense fallback={<SearchPlaceholder />}>
+      <SearchQueryRenderer />
+    </Suspense>
   )
 }
 
