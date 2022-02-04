@@ -2,6 +2,7 @@ import { MyAccount_me } from "__generated__/MyAccount_me.graphql"
 import { MyAccountQuery } from "__generated__/MyAccountQuery.graphql"
 import { MenuItem } from "lib/Components/MenuItem"
 import { PageWithSimpleHeader } from "lib/Components/PageWithSimpleHeader"
+import { SectionTitle } from "lib/Components/SectionTitle"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
@@ -15,7 +16,6 @@ import { Flex, Separator, Text, useColor } from "palette"
 import React from "react"
 import { ActivityIndicator, Alert, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
-import { SectionHeading } from "../MyProfile/MyProfileSettings"
 
 const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay }) => {
   const showLinkedAccounts = useFeatureFlag("ARShowLinkedAccounts") && !me.secondFactors?.length
@@ -95,7 +95,7 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
         {!!showLinkedAccounts && (
           <>
             <Separator mt={2} mb={2} />
-            <SectionHeading title="LINKED ACCOUNTS" />
+            <SectionTitle title="LINKED ACCOUNTS" />
             <MenuItem
               title="Facebook"
               rightView={

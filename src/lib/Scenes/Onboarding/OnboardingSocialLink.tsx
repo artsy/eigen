@@ -1,14 +1,13 @@
-import { useNavigation, useRoute } from "@react-navigation/native"
-import { StackNavigationProp, StackScreenProps } from "@react-navigation/stack"
+import { StackScreenProps } from "@react-navigation/stack"
 import { FormikProvider, useFormik } from "formik"
 import { BackButton } from "lib/navigation/BackButton"
-import { GlobalStore } from "lib/store/GlobalStore"
+import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { useAppleLink } from "lib/utils/LinkedAccounts/apple"
 import { useFacebookLink } from "lib/utils/LinkedAccounts/facebook"
 import { useGoogleLink } from "lib/utils/LinkedAccounts/google"
 import { Button, Flex, Input, Spacer, Spinner, Text, Touchable } from "palette"
 import React, { useEffect, useState } from "react"
-import { Alert, Image } from "react-native"
+import { Alert, Image, Platform } from "react-native"
 import { useSafeAreaInsets } from "react-native-safe-area-context"
 import { useRelayEnvironment } from "react-relay"
 import * as Yup from "yup"
@@ -33,15 +32,25 @@ export const titleize = (str: string) =>
     .map((s, i) => (i === 0 ? s.toUpperCase() : s))
     .join("")
 
-export const OnboardingSocialLink: React.FC = () => {
-  const navigation = useNavigation<StackNavigationProp<OnboardingNavigationStack>>()
+export const OnboardingSocialLink: React.FC<
+  StackScreenProps<OnboardingNavigationStack, "OnboardingSocialLink">
+> = ({ route, navigation }) => {
   const insets = useSafeAreaInsets()
-  const { email, name, providers, providerToBeLinked, tokenForProviderToBeLinked } =
-    useRoute<StackScreenProps<OnboardingNavigationStack, "OnboardingSocialLink">["route"]>().params
+  const { email, name, providers, providerToBeLinked, tokenForProviderToBeLinked } = route.params
+
+  const permittedProvidersTable: { [key: string]: boolean } = {
+    email: true,
+    google: useFeatureFlag("ARGoogleAuth"),
+    facebook: true,
+    apple: Platform.OS === "ios",
+  }
+
+  const permittedProviders = providers.filter((provider) => permittedProvidersTable[provider])
 
   const [showPasswordForm, setShowPasswordForm] = useState(
-    providers.length === 1 && providers[0] === "email"
+    permittedProviders.length === 1 && permittedProviders[0] === "email"
   )
+
   const environment = useRelayEnvironment()
 
   const { linkUsingOauthToken: linkFB, isLoading: fbLoading } = useFacebookLink(environment)
@@ -51,17 +60,17 @@ export const OnboardingSocialLink: React.FC = () => {
   useEffect(
     () =>
       navigation.addListener("beforeRemove", (e) => {
-        if (providers.length === 1 && providers[0] === "email") {
+        if (permittedProviders.length === 1 && permittedProviders[0] === "email") {
           return
         }
         e.preventDefault()
-        if (providers.length > 1 && showPasswordForm) {
+        if (permittedProviders.length > 1 && showPasswordForm) {
           setShowPasswordForm(false)
           return
         }
         navigation.dispatch(e.data.action)
       }),
-    [navigation, showPasswordForm, providers]
+    [navigation, showPasswordForm, providers, permittedProviders]
   )
 
   const onSignIn = (provider: string, token: GoogleOrFacebookToken | AppleToken) => {
@@ -131,7 +140,6 @@ export const OnboardingSocialLink: React.FC = () => {
         return
       }
       if (res !== "success") {
-        // For security purposes, we are returning a generic error message
         setFormikErrors({ password: "Incorrect password" }) // pragma: allowlist secret
       }
     },
@@ -175,7 +183,7 @@ export const OnboardingSocialLink: React.FC = () => {
               textContentType="password"
               value={values.password}
               error={errors.password}
-              testID="artsyPasswordInput"
+              testID="artsySocialLinkPasswordInput"
             />
             <Spacer mt={2} />
             <Touchable onPress={() => navigation.replace("ForgotPassword")}>
@@ -185,7 +193,12 @@ export const OnboardingSocialLink: React.FC = () => {
             </Touchable>
             <Spacer mt={4} />
 
-            <Button block disabled={!(isValid && dirty) || isLoading} onPress={handleSubmit}>
+            <Button
+              block
+              disabled={!(isValid && dirty) || isLoading}
+              onPress={handleSubmit}
+              testID="artsySocialLinkPasswordButton"
+            >
               Link Accounts
             </Button>
             <Spacer mt="2" />
@@ -219,8 +232,8 @@ export const OnboardingSocialLink: React.FC = () => {
           )} as one of your authentication methods.`}
         </Text>
         <Spacer mt={2} />
-        {providers.map((provider) => (
-          <LinAccountButton
+        {permittedProviders.map((provider) => (
+          <LinkAccountButton
             key={provider}
             onPress={
               provider === "email"
@@ -247,11 +260,11 @@ export const OnboardingSocialLink: React.FC = () => {
   )
 }
 
-const LinAccountButton: React.FC<{ onPress: () => void; provider: string; loading: boolean }> = ({
-  onPress,
-  provider,
-  loading,
-}) => {
+export const LinkAccountButton: React.FC<{
+  onPress: () => void
+  provider: string
+  loading: boolean
+}> = ({ onPress, provider, loading }) => {
   const titleizedProvider = titleize(provider)
   const imageSources: { [key: string]: NodeRequire } = {
     facebook: require(`@images/facebook.webp`),
