@@ -1,47 +1,15 @@
+import { EmailConfirmationBanner_me } from "__generated__/EmailConfirmationBanner_me.graphql"
+import { verifyEmail } from "lib/utils/verifyEmail"
 import { Flex, Sans, SansProps, Spinner, useColor } from "palette"
 import React, { FC, useState } from "react"
 import { Image, TouchableWithoutFeedback } from "react-native"
-import { commitMutation, createFragmentContainer, graphql, RelayProp } from "react-relay"
-import { Environment } from "relay-runtime"
-
-import { EmailConfirmationBanner_me } from "__generated__/EmailConfirmationBanner_me.graphql"
-import {
-  EmailConfirmationBannerMutation,
-  EmailConfirmationBannerMutationResponse,
-} from "__generated__/EmailConfirmationBannerMutation.graphql"
+import { createFragmentContainer, graphql, RelayProp } from "react-relay"
 
 const Text: FC<Partial<SansProps>> = (props) => <Sans color="white100" size="3t" {...props} />
 
 export interface Props {
   me: EmailConfirmationBanner_me
   relay: RelayProp
-}
-
-const submitMutation = async (relayEnvironment: Environment) => {
-  return new Promise<EmailConfirmationBannerMutationResponse>((done, reject) => {
-    commitMutation<EmailConfirmationBannerMutation>(relayEnvironment, {
-      onCompleted: (data, errors) => (errors && errors.length ? reject(errors) : done(data)),
-      onError: (error) => reject(error),
-      mutation: graphql`
-        mutation EmailConfirmationBannerMutation {
-          sendConfirmationEmail(input: {}) {
-            confirmationOrError {
-              ... on SendConfirmationEmailMutationSuccess {
-                unconfirmedEmail
-              }
-              ... on SendConfirmationEmailMutationFailure {
-                mutationError {
-                  error
-                  message
-                }
-              }
-            }
-          }
-        }
-      `,
-      variables: {},
-    })
-  })
 }
 
 export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
@@ -55,7 +23,7 @@ export const EmailConfirmationBanner: React.FC<Props> = ({ me, relay }) => {
     try {
       setLoading(true)
 
-      const { sendConfirmationEmail } = await submitMutation(relay.environment)
+      const { sendConfirmationEmail } = await verifyEmail(relay.environment)
       const confirmationOrError = sendConfirmationEmail?.confirmationOrError
       const emailToConfirm = confirmationOrError?.unconfirmedEmail
 
