@@ -67,8 +67,12 @@
     "build-storybook": "build-storybook",
     "prestart-storybook": "yarn storybook-load-new",
     "start-storybook": "STORYBOOK=1 yarn start",
-    "detect-secrets-staged": "scripts/detect-secrets-staged",
-    "detect-secrets-all": "scripts/detect-secrets-all",
+    "secrets:audit": "detect-secrets audit .secrets.baseline",
+    "secrets:check:staged": "scripts/secrets-check-staged",
+    "secrets:check:all": "scripts/secrets-check-all",
+    "secrets:add-from:staged": "scripts/secrets-add-staged",
+    "secrets:add-from:all": "scripts/secrets-add-all",
+    "secrets:generate!": "scripts/secrets-generate-baseline",
     "update-metaphysics": "node scripts/update-metaphysics.js"
   },
   "repository": {
@@ -247,7 +251,6 @@
     "danger": "10.7.1",
     "danger-plugin-jest": "1.3.0",
     "dedent": "0.7.0",
-    "detect-secrets": "1.0.6",
     "dotenv": "8.2.0",
     "enzyme": "3.9.0",
     "enzyme-adapter-react-16": "1.13.0",

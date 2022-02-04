@@ -192,6 +192,10 @@ export const features = defineFeatures({
   ARShowConsignmentsInMyCollection: {
     readyForRelease: false,
     description: "Show consignments in My Collection",
+  },
+  AREnablePlaceholderLayoutAnimation: {
+    readyForRelease: true,
+    description: "Enable placeholder layout animation",
     showInAdminMenu: true,
   },
 })

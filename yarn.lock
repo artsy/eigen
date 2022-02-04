@@ -8864,14 +8864,6 @@ detect-port@^1.3.0:
     address "^1.0.1"
     debug "^2.6.0"
 
-detect-secrets@1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/detect-secrets/-/detect-secrets-1.0.6.tgz#ce6f46840e666f7d396ffb9b458c29ce9fdb5afd"
-  integrity sha512-bAEmXtMJNS/By/TCg9uSW9Sp0V1Z0N+uwlQWFUMbCVri5Yq5rM8gVs+2zzNIjNOy36o5kANZRrMc+22Zf6eRFQ==
-  dependencies:
-    debug "^4.1.0"
-    which "^1.3.1"
-
 devtools-protocol@0.0.847576:
   version "0.0.847576"
   resolved "https://registry.yarnpkg.com/devtools-protocol/-/devtools-protocol-0.0.847576.tgz#2f201bfb68aa9ef4497199fbd7f5d5dfde3b200b"

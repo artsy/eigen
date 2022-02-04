@@ -1,11 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 90d2bd62d1af3056963ca33fbff85f72 */
+/* @relayHash 3829cfedf7697d8003b474016174ad35 */
 
 import { ConcreteRequest } from "relay-runtime";
-export type EmailConfirmationBannerMutationVariables = {};
-export type EmailConfirmationBannerMutationResponse = {
+export type verifyEmailMutationVariables = {};
+export type verifyEmailMutationResponse = {
     readonly sendConfirmationEmail: {
         readonly confirmationOrError: {
             readonly unconfirmedEmail?: string | null | undefined;
@@ -16,15 +16,15 @@ export type EmailConfirmationBannerMutationResponse = {
         } | null;
     } | null;
 };
-export type EmailConfirmationBannerMutation = {
-    readonly response: EmailConfirmationBannerMutationResponse;
-    readonly variables: EmailConfirmationBannerMutationVariables;
+export type verifyEmailMutation = {
+    readonly response: verifyEmailMutationResponse;
+    readonly variables: verifyEmailMutationVariables;
 };
 
 
 
 /*
-mutation EmailConfirmationBannerMutation {
+mutation verifyEmailMutation {
   sendConfirmationEmail(input: {}) {
     confirmationOrError {
       __typename
@@ -101,7 +101,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "EmailConfirmationBannerMutation",
+    "name": "verifyEmailMutation",
     "selections": [
       {
         "alias": null,
@@ -135,7 +135,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "EmailConfirmationBannerMutation",
+    "name": "verifyEmailMutation",
     "selections": [
       {
         "alias": null,
@@ -171,13 +171,13 @@ return {
     ]
   },
   "params": {
-    "id": "90d2bd62d1af3056963ca33fbff85f72",
+    "id": "3829cfedf7697d8003b474016174ad35",
     "metadata": {},
-    "name": "EmailConfirmationBannerMutation",
+    "name": "verifyEmailMutation",
     "operationKind": "mutation",
     "text": null
   }
 };
 })();
-(node as any).hash = '8182aba3e36ec68ddd990739d7e718ff';
+(node as any).hash = '69c843183da787e03abf1b3bb8bb5fed';
 export default node;

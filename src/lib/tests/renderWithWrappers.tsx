@@ -77,5 +77,18 @@ export const TrackProvider = track()(({ children }: { children?: React.ReactNode
  * @param component
  */
 export const renderWithWrappersTL = (component: ReactElement) => {
-  return render(component, { wrapper: Wrappers })
+  try {
+    return render(component, { wrapper: Wrappers })
+  } catch (error: any) {
+    if (error.message.includes("Element type is invalid")) {
+      throw new Error(
+        'Error: Relay test component failed to render. This may happen if you forget to add `jest.unmock("react-relay")` at the top ' +
+          "of your test? or if the module you are testing is getting mocked in setupJest.ts" +
+          "\n\n" +
+          error
+      )
+    } else {
+      throw new Error(error.stack)
+    }
+  }
 }

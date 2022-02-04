@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react"
 import { View } from "react-native"
-import Animated from "react-native-reanimated"
+import Animated, { Easing } from "react-native-reanimated"
 
 export function useAutoCollapsingMeasuredView(content: React.ReactChild | null) {
   const [nativeHeight, setNativeHeight] = useState<Animated.Value<number>>(
@@ -31,15 +31,11 @@ export function useAutoCollapsingMeasuredView(content: React.ReactChild | null) 
               if (animation.current) {
                 animation.current.stop()
               }
-              animation.current = Animated.spring(nativeHeight, {
-                ...Animated.SpringUtils.makeDefaultConfig(),
-                stiffness: 600,
-                damping: 120,
+              Animated.timing(nativeHeight, {
                 toValue: e.nativeEvent.layout.height,
-              })
-              animation.current.start(() => {
-                animation.current = null
-              })
+                duration: 0,
+                easing: Easing.linear,
+              }).start()
             } else {
               setNativeHeight(new Animated.Value(e.nativeEvent.layout.height))
             }
