@@ -189,6 +189,11 @@ export const features = defineFeatures({
     description: "Enable collector profile",
     showInAdminMenu: true,
   },
+  ARShowConsignmentsInMyCollection: {
+    readyForRelease: false,
+    description: "Show consignments My Collection",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
