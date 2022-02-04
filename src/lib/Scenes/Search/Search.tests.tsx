@@ -1,5 +1,4 @@
 import { act, fireEvent, RenderAPI, waitFor } from "@testing-library/react-native"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { RecentSearch } from "lib/Scenes/Search/SearchModel"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
@@ -9,8 +8,8 @@ import { isPad } from "lib/utils/hardware"
 import React from "react"
 import { Keyboard } from "react-native"
 import { RelayEnvironmentProvider } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { SearchQueryRenderer, SearchScreen } from "./Search"
+import { createMockEnvironment } from "relay-test-utils"
+import { SearchScreen } from "./Search"
 
 const banksy: RecentSearch = {
   type: "AUTOSUGGEST_RESULT_TAPPED",
@@ -65,37 +64,20 @@ describe("Search Screen", () => {
     )
   }
 
-  it.skip("should render a text input with placeholder", async () => {
-    const { debug, getByPlaceholderText, getByText, queryByText } = await renderWithWrappersTL(
+  it("should render a text input with placeholder", async () => {
+    const { getByPlaceholderText, getByText, queryByText } = await renderWithWrappersTL(
       <TestRenderer />
     )
 
-    // mockEnvironmentPayload(mockEnvironment, {
-    //   Algolia: () => ({
-    //     appID: "",
-    //     apiKey: "",
-    //     indices: [{ name: "Artist_staging", displayName: "Artists", key: "artist" }],
-    //   }),
-    // })
-    act(() =>
-      mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-        MockPayloadGenerator.generate(operation, {
-          Query: () => ({
-            system: {
-              algolia: {
-                appID: "",
-                apiKey: "",
-                indices: [{ name: "Artist_staging", displayName: "Artists", key: "artist" }],
-              },
-            },
-          }),
-        })
-      )
-    )
+    mockEnvironmentPayload(mockEnvironment, {
+      Algolia: () => ({
+        appID: "",
+        apiKey: "",
+        indices: [{ name: "Artist_staging", displayName: "Artists", key: "artist" }],
+      }),
+    })
 
-    debug()
-
-    // const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
+    const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
 
     // Pill should not be visible
     expect(queryByText("Artists")).toBeFalsy()
@@ -104,13 +86,13 @@ describe("Search Screen", () => {
     expect(getByText("City Guide")).toBeTruthy()
     expect(getByText("Recent Searches")).toBeTruthy()
 
-    // act(() => fireEvent.changeText(searchInput, "Ba"))
+    act(() => fireEvent.changeText(searchInput, "Ba"))
 
-    // // Pills should be visible
-    // await waitFor(() => {
-    //   getByText("Artworks")
-    //   getByText("Artists")
-    // })
+    // Pills should be visible
+    await waitFor(() => {
+      getByText("Artworks")
+      getByText("Artists")
+    })
   })
 
   it("does not show city guide entrance when on iPad", () => {
@@ -120,7 +102,7 @@ describe("Search Screen", () => {
     expect(queryByText("City Guide")).toBeFalsy()
   })
 
-  fit("shows city guide entrance when there are recent searches", () => {
+  it("shows city guide entrance when there are recent searches", () => {
     __globalStoreTestUtils__?.injectState({
       search: {
         recentSearches: [banksy],
