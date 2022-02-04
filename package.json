@@ -24,7 +24,6 @@
     "find-unused-fields": "ts-node --compiler-options '{\"types\": [\"node\"]}' scripts/find-unused-fields",
     "generate-cities-cache": "node scripts/generate-cities-cache.js",
     "generate-cities-objc": "node scripts/generate-cities-objc.js",
-    "generate-graphql-query-map": "node scripts/generate-graphql-query-map.js > emission/Pod/Classes/GraphQL/ARGraphQLQueryMap.generated.objc",
     "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
     "android": "react-native run-android",
     "clean-ios": "yarn rimraf ~/Library/Developer/Xcode/DerivedData",
