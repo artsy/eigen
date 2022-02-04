@@ -704,7 +704,8 @@ export const HomeQueryRenderer: React.FC = () => {
         },
         renderPlaceholder: () => <HomePlaceholder />,
       }}
-      cacheConfig={{ force: true }}
+      fetchPolicy="store-and-network"
+      cacheConfig={{ force: false }}
       belowTheFoldTimeout={100}
     />
   )

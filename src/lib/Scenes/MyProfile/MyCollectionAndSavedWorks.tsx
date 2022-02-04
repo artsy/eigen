@@ -250,6 +250,7 @@ export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => {
         variables={{
           enableCollectorProfile,
         }}
+        fetchPolicy="store-and-network"
       />
     </ProvideScreenTrackingWithCohesionSchema>
   )
