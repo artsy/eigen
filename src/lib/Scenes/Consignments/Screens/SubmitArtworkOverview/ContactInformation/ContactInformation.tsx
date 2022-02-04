@@ -16,7 +16,13 @@ interface ContactInformationProps {
 }
 
 export const ContactInformationScreen: React.FC<ContactInformationProps> = ({ handlePress }) => (
-  <Suspense fallback={<Placeholder />}>
+  <Suspense
+    fallback={
+      <Flex minHeight="800">
+        <Placeholder />
+      </Flex>
+    }
+  >
     <ContactInformation handlePress={handlePress} />
   </Suspense>
 )
