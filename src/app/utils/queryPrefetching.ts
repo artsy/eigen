@@ -19,7 +19,7 @@ const DEFAULT_QUERIES_PER_INTERVAL = 60
 
 let limiter: RateLimiter
 
-// Inintializes the rate limiter because we load parameters from Echo.
+// Initializes the rate limiter because we load parameters from Echo.
 export const useInitializeQueryPrefetching = () => {
   const echoMessages = GlobalStore.useAppState((state) => state.artsyPrefs.echo.state.messages)
 

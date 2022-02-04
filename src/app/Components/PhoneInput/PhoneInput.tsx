@@ -96,7 +96,6 @@ export const PhoneInput = React.forwardRef<
           if (typeof outerRef === "function") {
             outerRef(ref)
           } else if (outerRef && "current" in outerRef) {
-            // @ts-expect-error
             outerRef.current = ref
           } else if (outerRef != null) {
             console.error("bad ref given to PhoneInput")

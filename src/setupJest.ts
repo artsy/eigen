@@ -400,7 +400,7 @@ jest.mock("react-native-safe-area-context", () => {
   }
 })
 
-jest.mock("@react-native-community/async-storage", () => {
+jest.mock("@react-native-async-storage/async-storage", () => {
   let state: any = {}
   return {
     __resetState() {
@@ -567,7 +567,6 @@ jest.mock("react-native-gesture-handler", () => {
     Slider: View,
     Switch: View,
     TextInput: View,
-    ToolbarAndroid: View,
     ViewPagerAndroid: View,
     DrawerLayoutAndroid: View,
     WebView: View,

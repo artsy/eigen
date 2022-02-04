@@ -1,5 +1,6 @@
-module.exports = function(api) {
+module.exports = (api) => {
   api.cache.forever()
+
   return {
     plugins: [
       /**
@@ -16,12 +17,12 @@ module.exports = function(api) {
        * - https://github.com/babel/babel/issues/8417#issuecomment-430007587
        * - https://github.com/facebook/react-native/issues/20150#issuecomment-417858270
        */
-      ["@babel/plugin-transform-flow-strip-types"],
-      ["@babel/plugin-transform-runtime"],
+      "@babel/plugin-transform-flow-strip-types",
+      "@babel/plugin-transform-runtime",
       ["@babel/plugin-proposal-decorators", { legacy: true }],
       ["@babel/plugin-proposal-class-properties", { loose: true }],
       "relay",
-      ["import-graphql"],
+      "import-graphql",
     ],
     presets: ["module:metro-react-native-babel-preset", "@babel/preset-typescript"],
   }

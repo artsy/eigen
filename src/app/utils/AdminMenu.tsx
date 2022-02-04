@@ -1,4 +1,4 @@
-import AsyncStorage from "@react-native-community/async-storage"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 import * as Sentry from "@sentry/react-native"
 import { MenuItem } from "app/Components/MenuItem"
 import { useToast } from "app/Components/Toast/toastHook"

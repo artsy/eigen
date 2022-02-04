@@ -21,12 +21,11 @@ DerivedData
 tmtags
 tmtagsHistory
 config/releasenotes.txt
-.bundle
 Podfile.local
 chairs/
 Artsy.xcodeproj/project.xcworkspace/xcshareddata/
 Artsy.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
-vendor/
+.vendor/
 compiler_commands.json
 .swiftpm
 
