@@ -285,6 +285,7 @@ export class Overview extends React.Component<Props, State> {
   render() {
     // See https://github.com/artsy/convection/blob/master/app/models/submission.rb for list
     const canSubmit = this.canSubmit()
+    const isPhotoLoading = this.state.photos?.some((photo) => photo.uploading)
 
     const isPad = Dimensions.get("window").width > 700
 
@@ -342,8 +343,9 @@ export class Overview extends React.Component<Props, State> {
             <Button
               maxWidth={540}
               block
+              loading={isPhotoLoading}
               onPress={this.state.hasLoaded && canSubmit ? this.submitFinalSubmission : undefined}
-              disabled={!canSubmit}
+              disabled={isPhotoLoading || !canSubmit}
               haptic
             >
               Next
