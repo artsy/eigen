@@ -1,12 +1,9 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { captureMessage } from "@sentry/react-native"
 import { Search_system } from "__generated__/Search_system.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { isPad } from "lib/utils/hardware"
-import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Schema } from "lib/utils/track"
 import { useAlgoliaClient } from "lib/utils/useAlgoliaClient"
 import { useAlgoliaIndices } from "lib/utils/useAlgoliaIndices"
@@ -20,7 +17,7 @@ import {
   connectStateResults,
   InstantSearch,
 } from "react-instantsearch-native"
-import { Keyboard, Platform, ScrollView, View } from "react-native"
+import { Keyboard, Platform, ScrollView } from "react-native"
 import { createRefetchContainer, graphql, RelayRefetchProp, useLazyLoadQuery } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components"
