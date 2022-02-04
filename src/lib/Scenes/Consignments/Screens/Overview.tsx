@@ -163,6 +163,9 @@ export class Overview extends React.Component<Props, State> {
         {
           text: "Cancel",
           style: "cancel",
+          onPress: () => {
+            this.setState({ photos: this.state.photos?.filter((photo) => photo.uploaded) })
+          },
         },
         {
           text: "Retry",
