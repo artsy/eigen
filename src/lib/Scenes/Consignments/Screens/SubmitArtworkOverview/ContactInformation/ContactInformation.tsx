@@ -26,6 +26,7 @@ export const ContactInformation: React.FC<{
         userName: values.userName,
         userEmail: values.userEmail,
         userPhone: values.userPhone,
+        state: "SUBMITTED",
       })
 
       if (updatedSubmissionId) {
