@@ -1,3 +1,7 @@
-This update includes a number of improvements and bug fixes.
+This update includes a number of improvements and bug fixes including:
+
+- Improvements to the home screen
+- Improvements to collector profile
+- 2FA now supported for enabled accounts
 
 Have feedback? Email us at support@artsy.net
