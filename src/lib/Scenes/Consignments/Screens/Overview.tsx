@@ -136,21 +136,22 @@ export class Overview extends React.Component<Props, State> {
   updateLocalStateAndMetaphysics = async () => {
     this.saveStateToLocalStorage()
 
-    if (this.state.submissionID) {
-      try {
+    try {
+      if (this.state.submissionID) {
         await this.uploadPhotosIfNeeded()
         const utmSource = this.props.params.utm_source
         const utmMedium = this.props.params.utm_medium
         const utmTerm = this.props.params.utm_term
         updateConsignmentSubmission({ ...this.state, utmSource, utmTerm, utmMedium })
-      } catch (error: any) {
-        this.showUploadFailureAlert(error)
+      } else if (this.state.artist) {
+        const submissionID = await createConsignmentSubmission(this.state)
+        this.setState({ submissionID }, async () => {
+          this.submissionDraftCreated()
+          await this.uploadPhotosIfNeeded()
+        })
       }
-    } else if (this.state.artist) {
-      const submissionID = await createConsignmentSubmission(this.state)
-      this.setState({ submissionID }, () => {
-        this.submissionDraftCreated()
-      })
+    } catch (error: any) {
+      this.showUploadFailureAlert(error)
     }
   }
 
