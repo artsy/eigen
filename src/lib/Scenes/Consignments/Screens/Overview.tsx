@@ -279,7 +279,7 @@ export class Overview extends React.Component<Props, State> {
       this.state.metadata.height &&
       this.state.metadata.width &&
       this.state.editionScreenViewed &&
-      this.state.photos?.length! > 0
+      this.state.photos?.filter((photo) => photo.uploaded).length! > 0
     )
 
   render() {
