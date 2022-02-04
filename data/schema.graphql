@@ -1646,6 +1646,7 @@ type Artwork implements Node & Searchable & Sellable {
   # The price paid for the artwork in a user's 'my collection'
   pricePaid: Money
   pricingContext: AnalyticsPricingContext
+  processWithArtaShipping: Boolean
   provenance(format: Format): String
 
   # Whether this artwork is published or not
