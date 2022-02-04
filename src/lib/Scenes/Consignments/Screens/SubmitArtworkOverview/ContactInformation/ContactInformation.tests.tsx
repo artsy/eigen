@@ -1,11 +1,11 @@
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
 import { RelayEnvironmentProvider } from "react-relay"
-import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils/"
+import { createMockEnvironment } from "relay-test-utils/"
 import { updateConsignSubmission } from "../Mutations"
-import { ContactInformationScreen } from "./ContactInformation"
+import { ContactInformationQueryRenderer } from "./ContactInformation"
 import { ContactInformationFormModel } from "./validation"
 
 jest.mock(
@@ -24,79 +24,28 @@ jest.mock("lib/relay/createEnvironment", () => {
 jest.unmock("react-relay")
 
 const updateConsignSubmissionMock = updateConsignSubmission as jest.Mock
+const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
 describe("ContactInformationForm", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
-
   const TestRenderer = () => (
     <RelayEnvironmentProvider environment={mockEnvironment}>
-      <ContactInformationScreen handlePress={() => console.log("do nothing")} />
+      <ContactInformationQueryRenderer handlePress={jest.fn()} />
     </RelayEnvironmentProvider>
   )
+
   beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
     ;(updateConsignSubmissionMock as jest.Mock).mockClear()
     mockEnvironment.mockClear()
   })
 
   it("renders without throwing an error", () => {
-    renderWithWrappersTL(<TestRenderer />)
-  })
-
-  it("renders an empty form if user doesn 't have an account", async () => {
-    renderWithWrappersTL(<TestRenderer />)
-
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Query: () => ({
-          me: {
-            name: "",
-            email: "",
-            phone: "",
-            // TODO:
-            // Pre-populate phone number from a user's `phoneNumber` field
-            // https://artsyproduct.atlassian.net/browse/SWA-224
-            // phoneNumber: {
-            //   countryCode: "",
-            //   display: "",
-            //   error: "",
-            //   isValid: true,
-            //   originalNumber: "",
-            //   regionCode: "",
-            // },
-          },
-        }),
-      })
+    renderWithWrappersTL(
+      <ContactInformationQueryRenderer handlePress={() => console.log("do nothing")} />
     )
   })
 
-  it("renders correct explanation", async () => {
+  it("renders Form instructions", () => {
     const { getByText } = renderWithWrappersTL(<TestRenderer />)
-
-    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
-      MockPayloadGenerator.generate(operation, {
-        Query: () => ({
-          me: {
-            name: "Angela",
-            email: "a@a.aaa",
-            phone: "123456789",
-            // TODO:
-            // Pre-populate phone number from a user's `phoneNumber` field
-            // https://artsyproduct.atlassian.net/browse/SWA-224
-            // phoneNumber: {
-            //   countryCode: "+30",
-            //   display: "-",
-            //   error: "",
-            //   isValid: true,
-            //   originalNumber: "23456789",
-            //   regionCode: "020",
-            // },
-          },
-        }),
-      })
-    )
-
-    await flushPromiseQueue()
     expect(
       getByText("We will only use these details to contact you regarding your submission.")
     ).toBeTruthy()
@@ -105,16 +54,22 @@ describe("ContactInformationForm", () => {
   // TODO: (related Jira ticket: https://artsyproduct.atlassian.net/browse/SWA-223 )
   //
   // it("renders with an error when something is missing/not properly filled out", async () => null)
+  // it("renders empty form when user isn't logged in or does not have an account", () => {
+  //   const { getByText } = renderWithWrappersTL(<TestRenderer />)
+  // })
+
+  // it("renders User Information when that exists (user already has an account)", () => {
+  //   const { getByText } = renderWithWrappersTL(<TestRenderer />)
+  // })
 
   // it("updates existing submission when ID passed", async () => {
   //   // check what is in submission // check all fields are there
   //   // if everything is ok => updateSubmission()
   //   // make sure "userName" exists in submission
   //   // await updateSubmission(mockSubmissionForm, "12345")
-  //   // expect updateSubmission to have been called...
   //   // expect(updateConsignSubmissionMock).toHaveBeenCalled()
   // })
-  //
+
   // it("navigate to the next page correctly", () => {
   //   renderWithWrappersTL(<ContactInformation handlePress={() => console.log("do nothing")} />)
   // })
@@ -125,3 +80,15 @@ export const mockSubmissionForm: ContactInformationFormModel = {
   userEmail: "a@a.aaa",
   userPhone: "202-555-0174",
 }
+
+// TODO:
+// Pre-populate phone number from a user's `phoneNumber` field
+// https://artsyproduct.atlassian.net/browse/SWA-224
+// phoneNumber: {
+//   countryCode: "",
+//   display: "",
+//   error: "",
+//   isValid: true,
+//   originalNumber: "",
+//   regionCode: "",
+// },

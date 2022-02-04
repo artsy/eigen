@@ -1,33 +1,23 @@
 import { captureMessage } from "@sentry/react-native"
-import { ContactInformationQuery } from "__generated__/ContactInformationQuery.graphql"
+import { ContactInformation_me } from "__generated__/ContactInformation_me.graphql"
+import { ContactInformationQueryRendererQuery } from "__generated__/ContactInformationQueryRendererQuery.graphql"
 import { Formik } from "formik"
 import { PhoneInput } from "lib/Components/PhoneInput/PhoneInput"
-import { Placeholder } from "lib/Scenes/ViewingRoom/ViewingRoomArtwork"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { CTAButton, Flex, Input, Spacer, Text } from "palette"
-import React, { Suspense, useState } from "react"
-import { graphql, useLazyLoadQuery } from "react-relay"
+import React, { useState } from "react"
+import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { ErrorView } from "../Components/ErrorView"
 import { updateConsignSubmission } from "../Mutations/updateConsignSubmissionMutation"
 import { ContactInformationFormModel, contactInformationValidationSchema } from "./validation"
 
-interface ContactInformationProps {
+export const ContactInformation: React.FC<{
   handlePress: () => void
-}
-
-export const ContactInformationScreen: React.FC<ContactInformationProps> = ({ handlePress }) => (
-  <Suspense fallback={<Placeholder />}>
-    <ContactInformation handlePress={handlePress} />
-  </Suspense>
-)
-export const ContactInformation: React.FC<ContactInformationProps> = ({ handlePress }) => {
+  me: ContactInformation_me | null
+}> = ({ handlePress, me }) => {
   const { submissionId } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
   const [submissionError, setSubmissionError] = useState(false)
-  const queryData = useLazyLoadQuery<ContactInformationQuery>(ContactInformationScreenQuery, {})
-
-  const name = queryData?.me?.name || ""
-  const email = queryData?.me?.email || ""
-  const phone = queryData?.me?.phone || ""
 
   const handleSubmit = async (values: ContactInformationFormModel) => {
     try {
@@ -36,7 +26,6 @@ export const ContactInformation: React.FC<ContactInformationProps> = ({ handlePr
         userName: values.userName,
         userEmail: values.userEmail,
         userPhone: values.userPhone,
-        state: "SUBMITTED",
       })
 
       if (updatedSubmissionId) {
@@ -56,16 +45,16 @@ export const ContactInformation: React.FC<ContactInformationProps> = ({ handlePr
   return (
     <Formik<ContactInformationFormModel>
       initialValues={{
-        userName: name,
-        userEmail: email,
-        userPhone: phone,
+        userName: me?.name || "",
+        userEmail: me?.email || "",
+        userPhone: me?.phone || "",
       }}
       onSubmit={handleSubmit}
       validationSchema={contactInformationValidationSchema}
-      validateOnBlur
+      validateOnMount
       enableReinitialize
     >
-      {({ values, setFieldValue, isValid, errors }) => (
+      {({ values, setFieldValue, isValid }) => (
         <Flex p={1} mt={1}>
           <Text color="black60">
             We will only use these details to contact you regarding your submission.
@@ -76,7 +65,6 @@ export const ContactInformation: React.FC<ContactInformationProps> = ({ handlePr
             placeholder="Your Full Name"
             onChangeText={(e) => setFieldValue("userName", e)}
             value={values.userName}
-            error={errors.userName}
           />
           <Spacer mt={4} />
           <Input
@@ -84,7 +72,6 @@ export const ContactInformation: React.FC<ContactInformationProps> = ({ handlePr
             placeholder="Your Email Address"
             onChangeText={(e) => setFieldValue("userEmail", e)}
             value={values.userEmail}
-            error={errors.userEmail}
           />
           <Spacer mt={4} />
           <PhoneInput
@@ -93,7 +80,6 @@ export const ContactInformation: React.FC<ContactInformationProps> = ({ handlePr
             placeholder="(000) 000 0000"
             onChangeText={(e) => setFieldValue("userPhone", e)}
             value={values.userPhone}
-            error={errors.userPhone}
             setValidation={() => {
               //  validation function
             }}
@@ -107,39 +93,45 @@ export const ContactInformation: React.FC<ContactInformationProps> = ({ handlePr
           >
             Submit Artwork
           </CTAButton>
-          <Spacer mt={2} />
         </Flex>
       )}
     </Formik>
   )
 }
 
-export const ContactInformationScreenQuery = graphql`
-  query ContactInformationQuery {
-    me {
+export const ContactInformationFragmentContainer = createFragmentContainer(ContactInformation, {
+  me: graphql`
+    fragment ContactInformation_me on Me {
       name
       email
       phone
     }
-  }
-`
+  `,
+})
 
-// TODO:
-// Pre-populate phone number from a user's `phoneNumber` field
-// https://artsyproduct.atlassian.net/browse/SWA-224
-//
-// scheme
-//
-// me {
-//   name
-//   email
-//   phone
-//   phoneNumber {
-//     countryCode
-//     display
-//     error
-//     isValid
-//     originalNumber
-//     regionCode
-//   }
-// }
+export const ContactInformationQueryRenderer: React.FC<{
+  handlePress: () => void
+}> = ({ handlePress }) => {
+  return (
+    <QueryRenderer<ContactInformationQueryRendererQuery>
+      environment={defaultEnvironment}
+      query={graphql`
+        query ContactInformationQueryRendererQuery {
+          me {
+            ...ContactInformation_me
+          }
+        }
+      `}
+      variables={{}}
+      render={({ error, props }) => {
+        if (error) {
+          return null
+        }
+
+        return (
+          <ContactInformationFragmentContainer handlePress={handlePress} me={props?.me || null} />
+        )
+      }}
+    />
+  )
+}
