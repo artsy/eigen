@@ -30,6 +30,7 @@ import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionPlaceholder, MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
 import { MyProfileEditFormModal } from "./MyProfileEditFormModal"
+import { normalizeMyProfileBio } from "./utils"
 
 export enum Tab {
   collection = "My Collection",
@@ -176,7 +177,7 @@ export const MyProfileHeader: React.FC<{
       )}
       {!!me?.bio && (
         <Text variant="xs" color={color("black100")} px={2} pt={2}>
-          {me?.bio}
+          {normalizeMyProfileBio(me?.bio)}
         </Text>
       )}
       <Flex p={2}>
