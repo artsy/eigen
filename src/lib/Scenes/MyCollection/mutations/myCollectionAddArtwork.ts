@@ -17,7 +17,7 @@ export function myCollectionAddArtwork(input: myCollectionAddArtworkMutationVari
                 artworkEdge {
                   __id
                   node {
-                    ...MyCollectionArtwork_sharedProps @relay(mask: false)
+                    ...OldMyCollectionArtwork_sharedProps @relay(mask: false)
                   }
                 }
               }
