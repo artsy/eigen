@@ -189,6 +189,11 @@ export const features = defineFeatures({
     description: "Enable collector profile",
     showInAdminMenu: true,
   },
+  AREnablePlaceholderLayoutAnimation: {
+    readyForRelease: true,
+    description: "Enable placeholder layout animation",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {
