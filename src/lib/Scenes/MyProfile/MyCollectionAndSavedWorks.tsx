@@ -229,6 +229,7 @@ export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => (
         renderPlaceholder: () => <MyCollectionPlaceholder />,
       })}
       variables={{}}
+      fetchPolicy="store-and-network"
     />
   </ProvideScreenTrackingWithCohesionSchema>
 )
