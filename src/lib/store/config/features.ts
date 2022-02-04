@@ -191,7 +191,7 @@ export const features = defineFeatures({
   },
   ARShowConsignmentsInMyCollection: {
     readyForRelease: false,
-    description: "Show consignments My Collection",
+    description: "Show consignments in My Collection",
     showInAdminMenu: true,
   },
 })
