@@ -5,6 +5,7 @@ import { GlobalStore, useFeatureFlag } from "lib/store/GlobalStore"
 import { useAppleLink } from "lib/utils/LinkedAccounts/apple"
 import { useFacebookLink } from "lib/utils/LinkedAccounts/facebook"
 import { useGoogleLink } from "lib/utils/LinkedAccounts/google"
+import { capitalize } from "lodash"
 import { Button, Flex, Input, Spacer, Spinner, Text, Touchable } from "palette"
 import React, { useEffect, useState } from "react"
 import { Alert, Image, Platform } from "react-native"
@@ -24,13 +25,6 @@ export interface AppleToken {
   idToken: string
   appleUid: string
 }
-
-export const titleize = (str: string) =>
-  str
-    .trim()
-    .split("")
-    .map((s, i) => (i === 0 ? s.toUpperCase() : s))
-    .join("")
 
 export const OnboardingSocialLink: React.FC<
   StackScreenProps<OnboardingNavigationStack, "OnboardingSocialLink">
@@ -60,7 +54,12 @@ export const OnboardingSocialLink: React.FC<
   useEffect(
     () =>
       navigation.addListener("beforeRemove", (e) => {
-        if (permittedProviders.length === 1 && permittedProviders[0] === "email") {
+        const { payload } = e.data.action
+        const nextRouteName = payload ? (payload as { [key: string]: any }).name : ""
+        if (
+          (permittedProviders.length === 1 && permittedProviders[0] === "email") ||
+          nextRouteName === "ForgotPassword"
+        ) {
           return
         }
         e.preventDefault()
@@ -116,6 +115,18 @@ export const OnboardingSocialLink: React.FC<
     }
   }
 
+  const screenText = () => {
+    if (permittedProviders.length === 1 && permittedProviders[0] === "email") {
+      return `You already have an Artsy account with ${email}. Enter your password to link both log-in options to your account.`
+    }
+    if (permittedProviders.length > 1 && !showPasswordForm) {
+      return "You already have an account with that email address. Link both log-in options to your Artsy account, by logging in now with your previous login method."
+    } else if (showPasswordForm) {
+      return "Enter your password to link both login options to your account."
+    }
+    return ""
+  }
+
   const formik = useFormik<OnboardingSocialLinkFormSchema>({
     initialValues: { password: "" },
     initialErrors: {},
@@ -154,15 +165,12 @@ export const OnboardingSocialLink: React.FC<
       <FormikProvider value={formik}>
         <Flex flex={1} backgroundColor="white100">
           <BackButton onPress={() => navigation.goBack()} />
-          <Flex flex={1} px={2} mt={insets.top + NAVBAR_HEIGHT + 10} mb={insets.bottom}>
+          <Flex px={2} mt={insets.top + NAVBAR_HEIGHT + 20} mb={insets.bottom}>
             <Text variant="lg">Link Accounts</Text>
-            <Spacer mt={0.5} />
-            <Text variant="xs">{`You already have an account ${email}`}.</Text>
-            <Text variant="xs">
-              Please enter your artsy.net password to link your account. You will need to do this
-              once.
-            </Text>
             <Spacer mt={2} />
+            <Text variant="xs">{screenText()}</Text>
+
+            <Spacer mt={3} />
 
             <Input
               title="Artsy Password"
@@ -185,7 +193,7 @@ export const OnboardingSocialLink: React.FC<
               error={errors.password}
               testID="artsySocialLinkPasswordInput"
             />
-            <Spacer mt={2} />
+            <Spacer mt={1} />
             <Touchable onPress={() => navigation.replace("ForgotPassword")}>
               <Text variant="sm" color="black60" style={{ textDecorationLine: "underline" }}>
                 Forgot password?
@@ -210,7 +218,7 @@ export const OnboardingSocialLink: React.FC<
                 navigation.goBack()
               }}
             >
-              Continue with a Separate Account
+              Back to Log-In Options
             </Button>
           </Flex>
 
@@ -222,16 +230,11 @@ export const OnboardingSocialLink: React.FC<
   return (
     <Flex justifyContent="center" flex={1} backgroundColor="white">
       <BackButton onPress={() => navigation.goBack()} />
-      <Flex flex={1} px={2} mt={insets.top + NAVBAR_HEIGHT + 10} mb={insets.bottom}>
+      <Flex flex={1} px={2} mt={insets.top + NAVBAR_HEIGHT + 20} mb={insets.bottom}>
         <Text variant="lg">Link Accounts</Text>
-        <Spacer mt={0.5} />
-        <Text variant="xs">{`You already have an account ${email}`}.</Text>
-        <Text variant="xs">
-          {`Please log in with any of your existing authentication options below to automatically add ${titleize(
-            providerToBeLinked
-          )} as one of your authentication methods.`}
-        </Text>
         <Spacer mt={2} />
+        <Text variant="xs">{screenText()}</Text>
+        <Spacer mt={3} />
         {permittedProviders.map((provider) => (
           <LinkAccountButton
             key={provider}
@@ -252,7 +255,7 @@ export const OnboardingSocialLink: React.FC<
             navigation.goBack()
           }}
         >
-          Continue with a Separate Account
+          Back to Log-In Options
         </Button>
       </Flex>
       <LoadingOverlay loading={isLoading} />
@@ -265,7 +268,7 @@ export const LinkAccountButton: React.FC<{
   provider: string
   loading: boolean
 }> = ({ onPress, provider, loading }) => {
-  const titleizedProvider = titleize(provider)
+  const titleizedProvider = capitalize(provider)
   const imageSources: { [key: string]: NodeRequire } = {
     facebook: require(`@images/facebook.webp`),
     google: require(`@images/google.webp`),

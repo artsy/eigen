@@ -1,11 +1,11 @@
 import { facebook_LinkAccountMutation } from "__generated__/facebook_LinkAccountMutation.graphql"
 import { facebook_UnlinkAccountMutation } from "__generated__/facebook_UnlinkAccountMutation.graphql"
+import { Toast } from "lib/Components/Toast/Toast"
 import { useState } from "react"
 import { Alert } from "react-native"
 import { AccessToken, LoginManager } from "react-native-fbsdk-next"
 import { commitMutation, graphql } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { provideFeedback } from "./linkUtils"
 
 export const useFacebookLink = (relayEnvironment: RelayModernEnvironment) => {
   const [loading, setLoading] = useState(false)
@@ -14,7 +14,10 @@ export const useFacebookLink = (relayEnvironment: RelayModernEnvironment) => {
     setLoading(true)
     commitMutation<facebook_LinkAccountMutation>(relayEnvironment, {
       mutation: graphql`
-        mutation facebook_LinkAccountMutation($provider: AuthenticationProvider!, $oauthToken: String!) {
+        mutation facebook_LinkAccountMutation(
+          $provider: AuthenticationProvider!
+          $oauthToken: String!
+        ) {
           linkAuthentication(input: { provider: $provider, oauthToken: $oauthToken }) {
             me {
               ...MyAccount_me
@@ -25,19 +28,21 @@ export const useFacebookLink = (relayEnvironment: RelayModernEnvironment) => {
       variables: { provider: "FACEBOOK", oauthToken },
       onCompleted: () => {
         setLoading(false)
-        provideFeedback({ success: true }, "Facebook", "link")
+        Toast.show("Account has been successfully linked.", "top")
       },
-      onError: (err) => {
+      onError: () => {
         setLoading(false)
-        const error = err.message
-        provideFeedback({ success: false, error }, "Facebook", "link")
+        Toast.show("Error: Failed to link account.", "top")
       },
     })
   }
 
   const link = async () => {
     setLoading(true)
-    const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions(["email", "public_profile"])
+    const { declinedPermissions, isCancelled } = await LoginManager.logInWithPermissions([
+      "email",
+      "public_profile",
+    ])
 
     if (declinedPermissions?.includes("email")) {
       Alert.alert("Error", "Please allow the use of email to continue.")
@@ -69,12 +74,11 @@ export const useFacebookLink = (relayEnvironment: RelayModernEnvironment) => {
       variables: { provider: "FACEBOOK" },
       onCompleted: () => {
         setLoading(false)
-        provideFeedback({ success: true }, "Facebook", "unlink")
+        Toast.show("Account has been successfully unlinked.", "top")
       },
-      onError: (err) => {
+      onError: () => {
         setLoading(false)
-        const error = err.message
-        provideFeedback({ success: false, error }, "Facebook", "unlink")
+        Toast.show("Error: Failed to unlink account.", "top")
       },
     })
   }

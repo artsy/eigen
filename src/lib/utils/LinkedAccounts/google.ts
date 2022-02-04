@@ -1,11 +1,11 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { google_LinkAccountMutation } from "__generated__/google_LinkAccountMutation.graphql"
 import { google_UnlinkAccountMutation } from "__generated__/google_UnlinkAccountMutation.graphql"
+import { Toast } from "lib/Components/Toast/Toast"
 import { useState } from "react"
 import { Alert } from "react-native"
 import { commitMutation, graphql } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { provideFeedback } from "./linkUtils"
 
 export const useGoogleLink = (relayEnvironment: RelayModernEnvironment) => {
   const [loading, setLoading] = useState(false)
@@ -14,7 +14,10 @@ export const useGoogleLink = (relayEnvironment: RelayModernEnvironment) => {
     setLoading(true)
     commitMutation<google_LinkAccountMutation>(relayEnvironment, {
       mutation: graphql`
-        mutation google_LinkAccountMutation($provider: AuthenticationProvider!, $oauthToken: String!) {
+        mutation google_LinkAccountMutation(
+          $provider: AuthenticationProvider!
+          $oauthToken: String!
+        ) {
           linkAuthentication(input: { provider: $provider, oauthToken: $oauthToken }) {
             me {
               ...MyAccount_me
@@ -25,12 +28,11 @@ export const useGoogleLink = (relayEnvironment: RelayModernEnvironment) => {
       variables: { provider: "GOOGLE", oauthToken },
       onCompleted: () => {
         setLoading(false)
-        provideFeedback({ success: true }, "Google", "link")
+        Toast.show("Account has been successfully linked.", "top")
       },
-      onError: (err) => {
+      onError: () => {
         setLoading(false)
-        const error = err.message
-        provideFeedback({ success: false, error }, "Google", "link")
+        Toast.show("Error: Failed to link account.", "top")
       },
     })
   }
@@ -63,12 +65,11 @@ export const useGoogleLink = (relayEnvironment: RelayModernEnvironment) => {
       variables: { provider: "GOOGLE" },
       onCompleted: () => {
         setLoading(false)
-        provideFeedback({ success: true }, "Google", "unlink")
+        Toast.show("Account has been successfully unlinked.", "top")
       },
-      onError: (err) => {
+      onError: () => {
         setLoading(false)
-        const error = err.message
-        provideFeedback({ success: true, error }, "Google", "unlink")
+        Toast.show("Error: Failed to unlink account.", "top")
       },
     })
   }

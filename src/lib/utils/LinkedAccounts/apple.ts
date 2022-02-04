@@ -4,13 +4,13 @@ import {
 } from "@invertase/react-native-apple-authentication"
 import { apple_LinkAccountMutation } from "__generated__/apple_LinkAccountMutation.graphql"
 import { apple_UnlinkAccountMutation } from "__generated__/apple_UnlinkAccountMutation.graphql"
+import { Toast } from "lib/Components/Toast/Toast"
 import { AppleToken } from "lib/Scenes/Onboarding/OnboardingSocialLink"
 import { unsafe_getUserEmail } from "lib/store/GlobalStore"
 import { useState } from "react"
 import { Alert } from "react-native"
 import { commitMutation, graphql } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
-import { provideFeedback } from "./linkUtils"
 
 export const useAppleLink = (relayEnvironment: RelayModernEnvironment) => {
   const [loading, setLoading] = useState(false)
@@ -47,12 +47,11 @@ export const useAppleLink = (relayEnvironment: RelayModernEnvironment) => {
       variables: { provider: "APPLE", oauthToken: "", appleUid, idToken, email, name },
       onCompleted: () => {
         setLoading(false)
-        provideFeedback({ success: true }, "Apple", "link")
+        Toast.show("Account has been successfully linked.", "top")
       },
-      onError: (err) => {
+      onError: () => {
         setLoading(false)
-        const error = err.message
-        provideFeedback({ success: false, error }, "Apple", "link")
+        Toast.show("Error: Failed to link account.", "top")
       },
     })
   }
@@ -110,12 +109,11 @@ export const useAppleLink = (relayEnvironment: RelayModernEnvironment) => {
       variables: { provider: "APPLE" },
       onCompleted: () => {
         setLoading(false)
-        provideFeedback({ success: true }, "Apple", "unlink")
+        Toast.show("Account has been successfully unlinked.", "top")
       },
-      onError: (err) => {
+      onError: () => {
         setLoading(false)
-        const error = err.message
-        provideFeedback({ success: false, error }, "Apple", "unlink")
+        Toast.show("Error: Failed to unlink account.", "top")
       },
     })
   }

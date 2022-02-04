@@ -3,12 +3,13 @@ import { BackButton } from "lib/navigation/BackButton"
 import { navigate } from "lib/navigation/navigate"
 import { AuthPromiseRejectType } from "lib/store/AuthModel"
 import { GlobalStore } from "lib/store/GlobalStore"
+import { capitalize } from "lodash"
 import { Button, Flex, Join, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
 import { Alert, Image, Platform } from "react-native"
 import { EnvelopeIcon } from "../../../palette/svgs/EnvelopeIcon"
 import { useFeatureFlag } from "../../store/GlobalStore"
-import { AppleToken, GoogleOrFacebookToken, titleize } from "./OnboardingSocialLink"
+import { AppleToken, GoogleOrFacebookToken } from "./OnboardingSocialLink"
 
 interface OnboardingSocialPickProps {
   mode: "login" | "signup"
@@ -38,7 +39,7 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
   }, [])
 
   const handleErrorWithAlternativeProviders = (meta: AuthPromiseRejectType["meta"]) => {
-    const titleizedProvider = titleize(meta?.provider ?? "")
+    const titleizedProvider = capitalize(meta?.provider ?? "")
     const {
       email,
       name,
@@ -48,6 +49,12 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
       idToken,
       appleUid,
     } = meta!
+    const navParams = {
+      email,
+      name,
+      providers,
+      providerToBeLinked,
+    }
     let tokenForProviderToBeLinked: GoogleOrFacebookToken | AppleToken
     if (["google", "facebook"].includes(providerToBeLinked)) {
       if (!oauthToken) {
@@ -55,33 +62,21 @@ export const OnboardingSocialPick: React.FC<OnboardingSocialPickProps> = ({ mode
         return
       }
       tokenForProviderToBeLinked = oauthToken
+      navigation.navigate("OnboardingSocialLink", {
+        ...navParams,
+        tokenForProviderToBeLinked,
+      })
     } else if (providerToBeLinked === "apple") {
       if (!idToken || !appleUid) {
         console.warn(`Error: idToken and appleUid must be provided for ${titleizedProvider}`)
         return
       }
       tokenForProviderToBeLinked = { idToken, appleUid }
+      navigation.navigate("OnboardingSocialLink", {
+        ...navParams,
+        tokenForProviderToBeLinked,
+      })
     }
-    Alert.alert(
-      "Error",
-      `An Artsy account with same email as your ${titleizedProvider} already exists. Do you want to link your ${titleizedProvider} account to your existing Artsy account?`,
-      [
-        {
-          text: "Dismiss",
-        },
-        {
-          text: "Link Accounts",
-          onPress: () =>
-            navigation.navigate("OnboardingSocialLink", {
-              email,
-              name,
-              providers,
-              providerToBeLinked,
-              tokenForProviderToBeLinked,
-            }),
-        },
-      ]
-    )
   }
 
   const handleError = (error: AuthPromiseRejectType) => {

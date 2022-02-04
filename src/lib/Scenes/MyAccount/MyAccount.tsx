@@ -12,7 +12,7 @@ import { useGoogleLink } from "lib/utils/LinkedAccounts/google"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Flex, Separator, Text, useColor } from "palette"
+import { Box, Flex, Text, useColor } from "palette"
 import React from "react"
 import { ActivityIndicator, Alert, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
@@ -93,9 +93,11 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
         )}
         {!!me.paddleNumber && <MenuItem title="Paddle Number" value={me.paddleNumber} />}
         {!!showLinkedAccounts && (
-          <>
-            <Separator mt={2} mb={2} />
-            <SectionTitle title="LINKED ACCOUNTS" />
+          <Flex mt={3}>
+            <Box mx={2}>
+              <SectionTitle title="LINKED ACCOUNTS" />
+            </Box>
+
             <MenuItem
               title="Facebook"
               rightView={
@@ -160,7 +162,7 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
                 onPress={appleLoading ? () => null : () => linkOrUnlink("apple")}
               />
             )}
-          </>
+          </Flex>
         )}
       </ScrollView>
     </PageWithSimpleHeader>
