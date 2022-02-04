@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1c86b8639988c399c44d79f9174eec91 */
+/* @relayHash 0016ad171ec4739380ffa1e9183582d1 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -112,12 +112,10 @@ fragment MyCollectionArtworkList_myCollectionConnection on MyCollectionConnectio
   }
   edges {
     node {
+      ...MyCollectionArtworkListItem_artwork
       title
       slug
       id
-      image {
-        aspectRatio
-      }
       artistNames
       medium
       artist {
@@ -132,7 +130,6 @@ fragment MyCollectionArtworkList_myCollectionConnection on MyCollectionConnectio
       width
       height
       date
-      ...MyCollectionArtworkListItem_artwork
     }
   }
 }
@@ -383,6 +380,7 @@ return {
                         "name": "__typename",
                         "storageKey": null
                       },
+                      (v3/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -400,13 +398,6 @@ return {
                         "selections": [
                           {
                             "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "aspectRatio",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
                             "args": [
                               {
                                 "kind": "Literal",
@@ -417,6 +408,13 @@ return {
                             "kind": "ScalarField",
                             "name": "url",
                             "storageKey": "url(version:\"small\")"
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "aspectRatio",
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -435,7 +433,6 @@ return {
                         "name": "date",
                         "storageKey": null
                       },
-                      (v3/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -524,7 +521,7 @@ return {
     ]
   },
   "params": {
-    "id": "1c86b8639988c399c44d79f9174eec91",
+    "id": "0016ad171ec4739380ffa1e9183582d1",
     "metadata": {},
     "name": "MyCollectionQuery",
     "operationKind": "query",

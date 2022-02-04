@@ -517,6 +517,7 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
             width
             height
             date
+            ...MyCollectionArtworkList_filterProps @relay(mask: false)
             ...ArtworkGridItem_artwork @skip(if: $skipArtworkGridItem)
             ...MyCollectionArtworkGridItem_artwork
           }

@@ -255,5 +255,5 @@ const node: ReaderFragment = {
   "type": "MyCollectionConnection",
   "abstractKey": null
 };
-(node as any).hash = 'e709dce20874d91cb6f0f48ff087ad25';
+(node as any).hash = '1bc75d2be1a33bdd942a5d0663fa62ae';
 export default node;

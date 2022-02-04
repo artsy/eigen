@@ -15,9 +15,6 @@ export type MyCollectionArtworkList_myCollectionConnection = {
             readonly title: string | null;
             readonly slug: string;
             readonly id: string;
-            readonly image: {
-                readonly aspectRatio: number;
-            } | null;
             readonly artistNames: string | null;
             readonly medium: string | null;
             readonly artist: {
@@ -122,24 +119,6 @@ const node: ReaderFragment = {
             {
               "alias": null,
               "args": null,
-              "concreteType": "Image",
-              "kind": "LinkedField",
-              "name": "image",
-              "plural": false,
-              "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "aspectRatio",
-                  "storageKey": null
-                }
-              ],
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
               "kind": "ScalarField",
               "name": "artistNames",
               "storageKey": null
@@ -237,5 +216,5 @@ const node: ReaderFragment = {
   "type": "MyCollectionConnection",
   "abstractKey": null
 };
-(node as any).hash = 'dd73d4e06d6e48e8a709ac5b371e76d8';
+(node as any).hash = '280845b278f1ad1687575b6c4bf0a77d';
 export default node;
