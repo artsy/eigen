@@ -145,9 +145,9 @@ export class Overview extends React.Component<Props, State> {
         updateConsignmentSubmission({ ...this.state, utmSource, utmTerm, utmMedium })
       } else if (this.state.artist) {
         const submissionID = await createConsignmentSubmission(this.state)
-        this.setState({ submissionID }, async () => {
+        this.setState({ submissionID }, () => {
           this.submissionDraftCreated()
-          await this.uploadPhotosIfNeeded()
+          this.updateLocalStateAndMetaphysics()
         })
       }
     } catch (error: any) {
