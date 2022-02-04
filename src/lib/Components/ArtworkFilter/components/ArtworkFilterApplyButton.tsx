@@ -1,5 +1,4 @@
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { BellIcon, Box, Button, Separator, Text, useColor } from "palette"
 import React, { ReactNode, useState } from "react"
 import { Pressable } from "react-native"
