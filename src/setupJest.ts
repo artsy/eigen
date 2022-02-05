@@ -3,10 +3,10 @@ import mockRNCNetInfo from "@react-native-community/netinfo/jest/netinfo-mock.js
 import "@testing-library/jest-native/extend-expect"
 import "jest-extended"
 
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17"
 import chalk from "chalk"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import Enzyme from "enzyme"
-import Adapter from "@wojtekmaj/enzyme-adapter-react-17"
 import expect from "expect"
 import { format } from "util"
 
