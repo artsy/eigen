@@ -5,15 +5,10 @@ import { MyCollection_me } from "__generated__/MyCollection_me.graphql"
 import { MyCollectionQuery } from "__generated__/MyCollectionQuery.graphql"
 import { EventEmitter } from "events"
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
-import {
-  ArtworkFiltersStoreProvider,
-  ArtworksFiltersStore,
-} from "lib/Components/ArtworkFilter/ArtworkFilterStore"
+import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/ArtworksFilterHeader"
-import { InfiniteScrollMyCollectionArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { PAGE_SIZE } from "lib/Components/constants"
-import { ZeroState } from "lib/Components/States/ZeroState"
 import { StickyTabPageFlatListContext } from "lib/Components/StickyTabPage/StickyTabPageFlatList"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
 import { useToast } from "lib/Components/Toast/toastHook"
@@ -32,10 +27,8 @@ import { LayoutAnimation, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionSearchBar } from "./Components/MyCollectionSearchBar"
-import {
-  localSortAndFilterArtworks,
-  useLocalArtworkFilter,
-} from "./utils/localArtworkSortAndFilter"
+import { MyCollectionArtworks } from "./MyCollectionArtworks"
+import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
 import { addRandomMyCollectionArtwork } from "./utils/randomMyCollectionArtwork"
 
 const RefreshEvents = new EventEmitter()
@@ -66,11 +59,9 @@ const MyCollection: React.FC<{
   const [isFilterModalVisible, setIsFilterModalVisible] = useState(false)
 
   const filtersCount = useSelectedFiltersCount()
-  const appliedFiltersState = ArtworksFiltersStore.useStoreState((state) => state.appliedFilters)
 
   const artworks = extractNodes(me?.myCollectionConnection)
 
-  const filterOptions = ArtworksFiltersStore.useStoreState((s) => s.filterOptions)
   useLocalArtworkFilter(artworks)
 
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -173,26 +164,7 @@ const MyCollection: React.FC<{
           setIsSearchBarVisible(true)
         }}
       >
-        {artworks.length === 0 ? (
-          <MyCollectionZeroState />
-        ) : (
-          <Flex pt={1}>
-            <InfiniteScrollMyCollectionArtworksGridContainer
-              myCollectionConnection={me.myCollectionConnection!}
-              hasMore={relay.hasMore}
-              loadMore={relay.loadMore}
-              // tslint:disable-next-line: no-shadowed-variable
-              localSortAndFilterArtworks={(artworks: MyCollectionArtworkEdge[]) =>
-                localSortAndFilterArtworks(
-                  artworks,
-                  appliedFiltersState,
-                  filterOptions,
-                  keywordFilter
-                )
-              }
-            />
-          </Flex>
-        )}
+        <MyCollectionArtworks me={me} keywordFilter={keywordFilter} relay={relay} />
         {!!showDevAddButton && (
           <Button
             onPress={async () => {
@@ -338,34 +310,6 @@ export const MyCollectionPlaceholder: React.FC<{}> = () => {
       {/* masonry grid */}
       <PlaceholderGrid />
     </Flex>
-  )
-}
-
-const MyCollectionZeroState: React.FC = () => {
-  const { trackEvent } = useTracking()
-
-  return (
-    <ZeroState
-      title="Your art collection in your pocket."
-      subtitle="Keep track of your collection all in one place and get market insights"
-      callToAction={
-        <Button
-          testID="add-artwork-button-zero-state"
-          onPress={() => {
-            trackEvent(tracks.addCollectedArtwork())
-            navigate("my-collection/artworks/new", {
-              passProps: {
-                mode: "add",
-                onSuccess: popToRoot,
-              },
-            })
-          }}
-          block
-        >
-          Add artwork
-        </Button>
-      }
-    />
   )
 }
 
