@@ -8,12 +8,13 @@ import { LocalImage, retrieveLocalImages, storeLocalImages } from "lib/utils/Loc
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect } from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { MyCollectionPlaceholder } from "../MyCollection/MyCollection"
 import { MyCollectionArtworkForm } from "../MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyProfileEditFormQueryRenderer } from "./MyProfileEditForm"
 import { MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer } from "./MyProfileHeaderMyCollectionAndSavedWorks"
+import { MyProfileContext, MyProfileProvider } from "./MyProfileProvider"
 
 // This needs to be a `type` rather than an `interface` because there's
 // a long-standing thing where a typescript `interface` will be treated a bit more strictly
@@ -35,7 +36,7 @@ export type MyProfileScreen = {
 export const LOCAL_PROFILE_ICON_PATH_KEY = "LOCAL_PROFILE_ICON_PATH_KEY"
 
 export const MyProfile: React.FC<{ me?: MyProfile_me }> = ({ me }) => {
-  const [localImage, setLocalImage] = useState<LocalImage | null>(null)
+  const { localImage } = useContext(MyProfileContext)
 
   const setProfileIconHandler = async (path: string) => {
     console.log("Check path :: ", path)
@@ -54,7 +55,7 @@ export const MyProfile: React.FC<{ me?: MyProfile_me }> = ({ me }) => {
         setLocalImage(images[0])
       }
     })
-  }, [localImage])
+  }, [])
 
   console.log("Check me here :: ", me)
   console.log("Check me localImage:: ", localImage)
@@ -75,7 +76,7 @@ export const MyProfile: React.FC<{ me?: MyProfile_me }> = ({ me }) => {
         <Stack.Screen
           name="MyProfileHeaderMyCollectionAndSavedWorks"
           component={MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer}
-          initialParams={{ userProfileImagePath }}
+          initialParams={{ userProfileImagePath: me?.icon?.url }}
         />
         <Stack.Screen name="MyCollectionArtworkForm" component={MyCollectionArtworkForm} />
         <Stack.Screen
@@ -117,14 +118,16 @@ export const MyProfileQueryRenderer: React.FC<{}> = ({}) => (
   <ProvideScreenTrackingWithCohesionSchema
     info={screen({ context_screen_owner_type: OwnerType.profile })}
   >
-    <QueryRenderer<MyProfileQuery>
-      environment={defaultEnvironment}
-      query={MyProfileScreenQuery}
-      render={renderWithPlaceholder({
-        Container: MyProfileFragmentContainer,
-        renderPlaceholder: () => <MyCollectionPlaceholder />,
-      })}
-      variables={{}}
-    />
+    <MyProfileProvider>
+      <QueryRenderer<MyProfileQuery>
+        environment={defaultEnvironment}
+        query={MyProfileScreenQuery}
+        render={renderWithPlaceholder({
+          Container: MyProfileFragmentContainer,
+          renderPlaceholder: () => <MyCollectionPlaceholder />,
+        })}
+        variables={{}}
+      />
+    </MyProfileProvider>
   </ProvideScreenTrackingWithCohesionSchema>
 )

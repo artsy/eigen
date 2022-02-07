@@ -29,6 +29,7 @@ import { createFragmentContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionPlaceholder, MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
+import { MyProfileScreen } from "./MyProfile"
 import { MyProfileContext } from "./MyProfileProvider"
 
 export enum Tab {

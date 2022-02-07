@@ -1,6 +1,5 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
-import { StackScreenProps } from "@react-navigation/stack"
 import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
 import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.graphql"
@@ -14,17 +13,17 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import LoadingModal from "lib/Components/Modals/LoadingModal"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
-import { LocalImage } from "lib/utils/LocalImageStore"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { compact, isArray } from "lodash"
 import { Avatar, Box, Button, Flex, Input, Join, Spacer, Text, Touchable, useColor } from "palette"
-import React, { Suspense, useRef, useState } from "react"
+import React, { Suspense, useContext, useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
 import { useFragment, useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
 import * as Yup from "yup"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 import { MyProfileScreen } from "./MyProfile"
+import { MyProfileContext } from "./MyProfileProvider"
 
 const PRIMARY_LOCATION_OFFSET = 240
 
@@ -64,15 +63,21 @@ export const MyProfileEditForm: React.FC<{ me: MyProfileEditForm_me$key }> = (pr
 
   const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
 
+  const { setLocalImage } = useContext(MyProfileContext)
+
   const uploadProfilePhoto = async (photo: string) => {
     const existingProfileImage = me.icon?.url ?? ""
     try {
       // We want to show the local image initially for better UX since Gemini takes a while to process
-      setProfileIconHandler(photo)
+
+      setLocalImage(photo)
+      // setProfileIconHandler(photo)
+      console.log("Check me (new image)", photo)
+
       const iconUrl = await getConvertedImageUrlFromS3(photo)
       await updateMyUserProfile({ iconUrl })
     } catch (error) {
-      setProfileIconHandler(existingProfileImage)
+      // setProfileIconHandler(existingProfileImage)
       console.error("Failed to upload profile picture ", error)
     }
   }
