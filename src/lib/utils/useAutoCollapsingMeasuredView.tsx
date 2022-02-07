@@ -1,12 +1,11 @@
-import React, { useRef, useState } from "react"
+import React, { useState } from "react"
 import { View } from "react-native"
-import Animated, { Easing } from "react-native-reanimated"
+import Animated from "react-native-reanimated"
 
 export function useAutoCollapsingMeasuredView(content: React.ReactChild | null) {
   const [nativeHeight, setNativeHeight] = useState<Animated.Value<number>>(
     __TEST__ ? new Animated.Value(100) : new Animated.Value(-1)
   )
-  const animation = useRef<Animated.BackwardCompatibleWrapper | null>(null)
 
   return {
     nativeHeight,
@@ -27,18 +26,7 @@ export function useAutoCollapsingMeasuredView(content: React.ReactChild | null) 
               : undefined
           }
           onLayout={(e) => {
-            if (Animated.neq(nativeHeight, new Animated.Value(-1))) {
-              if (animation.current) {
-                animation.current.stop()
-              }
-              Animated.timing(nativeHeight, {
-                toValue: e.nativeEvent.layout.height,
-                duration: 0,
-                easing: Easing.linear,
-              }).start()
-            } else {
-              setNativeHeight(new Animated.Value(e.nativeEvent.layout.height))
-            }
+            setNativeHeight(new Animated.Value(e.nativeEvent.layout.height))
           }}
         >
           {content}
