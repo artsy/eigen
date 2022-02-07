@@ -1,5 +1,5 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import { useNavigation } from "@react-navigation/native"
 import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
 import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.graphql"
@@ -22,7 +22,6 @@ import { useFragment, useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
 import * as Yup from "yup"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
-import { MyProfileScreen } from "./MyProfile"
 import { MyProfileContext } from "./MyProfileProvider"
 
 const PRIMARY_LOCATION_OFFSET = 240
@@ -57,27 +56,19 @@ export const MyProfileEditForm: React.FC<{ me: MyProfileEditForm_me$key }> = (pr
   const [loading, setLoading] = useState<boolean>(false)
   const [didUpdatePhoto, setDidUpdatePhoto] = useState(false)
 
-  const route = useRoute<RouteProp<MyProfileScreen, "MyProfileEditForm">>()
-
-  const { localImage, setProfileIconHandler } = route.params
+  const { localImage } = useContext(MyProfileContext)
 
   const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
 
   const { setLocalImage } = useContext(MyProfileContext)
 
   const uploadProfilePhoto = async (photo: string) => {
-    const existingProfileImage = me.icon?.url ?? ""
     try {
       // We want to show the local image initially for better UX since Gemini takes a while to process
-
       setLocalImage(photo)
-      // setProfileIconHandler(photo)
-      console.log("Check me (new image)", photo)
-
       const iconUrl = await getConvertedImageUrlFromS3(photo)
       await updateMyUserProfile({ iconUrl })
     } catch (error) {
-      // setProfileIconHandler(existingProfileImage)
       console.error("Failed to upload profile picture ", error)
     }
   }
@@ -116,7 +107,7 @@ export const MyProfileEditForm: React.FC<{ me: MyProfileEditForm_me$key }> = (pr
         profession: me?.profession ?? "",
         otherRelevantPositions: me?.otherRelevantPositions ?? "",
         bio: me?.bio ?? "",
-        photo: me?.icon?.url ?? localImage?.path ?? "",
+        photo: me?.icon?.url ?? localImage ?? "",
       },
       initialErrors: {},
       onSubmit: async ({ photo, ...otherValues }) => {
@@ -151,14 +142,11 @@ export const MyProfileEditForm: React.FC<{ me: MyProfileEditForm_me$key }> = (pr
       )
   }
 
-  console.log("Check me?.icon?.url :: ", me?.icon?.url)
-  console.log("Check localImage?.path :: ", localImage?.path)
-
   const onLeftButtonPressHandler = () => {
     setDidUpdatePhoto(false)
     navigation.goBack()
 
-    handleChange("photo")(me?.icon?.url ?? localImage?.path ?? "")
+    handleChange("photo")(me?.icon?.url ?? localImage ?? "")
     handleChange("name")(me?.name ?? "")
     handleChange("bio")(me?.bio ?? "")
   }

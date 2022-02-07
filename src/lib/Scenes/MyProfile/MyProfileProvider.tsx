@@ -1,10 +1,18 @@
-import { LocalImage } from "lib/utils/LocalImageStore"
 import React, { useState } from "react"
 
-export const MyProfileContext = React.createContext({})
+interface MyProfileInterface {
+  localImage: string
+  setLocalImage: (imagePath: string) => void
+}
+
+export const MyProfileContext = React.createContext<MyProfileInterface>({
+  localImage: "",
+  // tslint:disable-next-line:no-empty
+  setLocalImage: () => {},
+})
 
 export const MyProfileProvider: React.FC = ({ children }) => {
-  const [localImage, setLocalImage] = useState<LocalImage | null>(null)
+  const [localImage, setLocalImage] = useState<string>("")
 
   return (
     <MyProfileContext.Provider value={{ localImage, setLocalImage }}>

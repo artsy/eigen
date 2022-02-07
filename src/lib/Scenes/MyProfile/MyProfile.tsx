@@ -4,17 +4,16 @@ import { createStackNavigator } from "@react-navigation/stack"
 import { MyProfile_me } from "__generated__/MyProfile_me.graphql"
 import { MyProfileQuery } from "__generated__/MyProfileQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { LocalImage, retrieveLocalImages, storeLocalImages } from "lib/utils/LocalImageStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
-import React, { useContext, useEffect } from "react"
+import React from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { MyCollectionPlaceholder } from "../MyCollection/MyCollection"
 import { MyCollectionArtworkForm } from "../MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
 import { MyProfileEditFormQueryRenderer } from "./MyProfileEditForm"
 import { MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer } from "./MyProfileHeaderMyCollectionAndSavedWorks"
-import { MyProfileContext, MyProfileProvider } from "./MyProfileProvider"
+import { MyProfileProvider } from "./MyProfileProvider"
 
 // This needs to be a `type` rather than an `interface` because there's
 // a long-standing thing where a typescript `interface` will be treated a bit more strictly
@@ -27,41 +26,11 @@ export type MyProfileScreen = {
     userProfileImagePath?: string
   }
   MyCollectionArtworkForm: undefined
-  MyProfileEditForm: {
-    localImage: LocalImage | null
-    setProfileIconHandler: (photo?: string) => void
-  }
 }
 
 export const LOCAL_PROFILE_ICON_PATH_KEY = "LOCAL_PROFILE_ICON_PATH_KEY"
 
 export const MyProfile: React.FC<{ me?: MyProfile_me }> = ({ me }) => {
-  const { localImage } = useContext(MyProfileContext)
-
-  const setProfileIconHandler = async (path: string) => {
-    console.log("Check path :: ", path)
-    const profileIcon: LocalImage = {
-      path,
-      width: 100, // don't care about aspect ratio for profile images
-      height: 100,
-    }
-    setLocalImage(profileIcon)
-    await storeLocalImages([profileIcon], LOCAL_PROFILE_ICON_PATH_KEY)
-  }
-
-  useEffect(() => {
-    retrieveLocalImages(LOCAL_PROFILE_ICON_PATH_KEY).then((images) => {
-      if (images && images.length > 0) {
-        setLocalImage(images[0])
-      }
-    })
-  }, [])
-
-  console.log("Check me here :: ", me)
-  console.log("Check me localImage:: ", localImage)
-
-  const userProfileImagePath = localImage?.path || me?.icon?.url
-
   return (
     <NavigationContainer independent>
       <Stack.Navigator
@@ -79,11 +48,7 @@ export const MyProfile: React.FC<{ me?: MyProfile_me }> = ({ me }) => {
           initialParams={{ userProfileImagePath: me?.icon?.url }}
         />
         <Stack.Screen name="MyCollectionArtworkForm" component={MyCollectionArtworkForm} />
-        <Stack.Screen
-          name="MyProfileEditForm"
-          component={MyProfileEditFormQueryRenderer}
-          initialParams={{ localImage, setProfileIconHandler }}
-        />
+        <Stack.Screen name="MyProfileEditForm" component={MyProfileEditFormQueryRenderer} />
       </Stack.Navigator>
     </NavigationContainer>
   )
