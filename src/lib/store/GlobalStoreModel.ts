@@ -2,7 +2,7 @@ import { Action, action, createStore, State, thunkOn, ThunkOn } from "easy-peasy
 import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
 import { BottomTabsModel, getBottomTabsModel } from "lib/Scenes/BottomTabs/BottomTabsModel"
 import {
-  getSubmissionSubmissionModel,
+  getSubmissionModel,
   SubmissionModel,
 } from "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/State/SubmissionModel"
 import {
@@ -115,7 +115,7 @@ export const getGlobalStoreModel = (): GlobalStoreModel => ({
   pendingPushNotification: getPendingPushNotificationModel(),
   userPreferences: getUserPreferencesModel(),
   visualClue: getVisualClueModel(),
-  artworkSubmission: getSubmissionSubmissionModel(),
+  artworkSubmission: getSubmissionModel(),
 
   // for dev only.
   _setVersion: action((state, newVersion) => {

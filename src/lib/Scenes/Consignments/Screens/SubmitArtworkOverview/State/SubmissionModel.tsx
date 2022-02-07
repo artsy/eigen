@@ -4,12 +4,18 @@ import {
   artworkDetailsEmptyInitialValues,
   ArtworkDetailsFormModel,
 } from "../ArtworkDetails/validation"
+// import {
+//   photosEmptyInitialValues,
+//   PhotosFormModel,
+// } from "../UploadPhotos/validation"
 
 export interface ArtworkSubmissionModel {
   submissionId: string
   setSubmissionId: Action<ArtworkSubmissionModel, string>
   artworkDetails: ArtworkDetailsFormModel
   setArtworkDetailsForm: Action<ArtworkSubmissionModel, ArtworkDetailsFormModel>
+  // photos: PhotosFormModel[]
+  // setPhotos: Action<>
   setUtmParams: Action<ArtworkSubmissionModel, ConsignmentsSubmissionUtmParams>
   resetSessionState: Action<ArtworkSubmissionModel>
 }
@@ -18,10 +24,14 @@ export interface SubmissionModel {
   submission: ArtworkSubmissionModel
 }
 
-export const getSubmissionSubmissionModel = (): SubmissionModel => ({
+export const getSubmissionModel = (): SubmissionModel => ({
   submission: {
     submissionId: "",
     artworkDetails: artworkDetailsEmptyInitialValues,
+    // photos: photosEmptyInitialValues,
+    // setPhotos: action((state, photos) => {
+    //   state.photos = photos
+    // }),
     setSubmissionId: action((state, id) => {
       state.submissionId = id
     }),
