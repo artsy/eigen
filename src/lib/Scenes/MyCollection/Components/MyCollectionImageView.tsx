@@ -6,7 +6,7 @@ import { Image as RNImage } from "react-native"
 
 export interface MyCollectionImageViewProps {
   imageURL?: string
-  imageWidth?: number
+  imageWidth: number
   imageHeight?: number
   aspectRatio?: number
   artworkSlug: string
@@ -47,7 +47,11 @@ export const MyCollectionImageView: React.FC<MyCollectionImageViewProps> = ({
       return (
         <RNImage
           testID="Image-Local"
-          style={{ width: imageWidth ?? 120, height: imageHeight ?? 120, resizeMode: "cover" }}
+          style={{
+            width: imageWidth,
+            height: (imageWidth / localImage.width) * localImage.height,
+          }}
+          resizeMode="contain"
           source={{ uri: localImage.path }}
         />
       )

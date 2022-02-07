@@ -1,6 +1,9 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
-import { MyProfileEditFormModal_me } from "__generated__/MyProfileEditFormModal_me.graphql"
+import { captureException } from "@sentry/react-native"
+import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
+import { MyProfileEditFormModal_me$key } from "__generated__/MyProfileEditFormModal_me.graphql"
 import { useFormik } from "formik"
+import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { Image } from "lib/Components/Bidding/Elements/Image"
 import { FancyModal } from "lib/Components/FancyModal/FancyModal"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
@@ -8,26 +11,54 @@ import { LoadingIndicator } from "lib/Components/LoadingIndicator"
 import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
 import { LocalImage } from "lib/utils/LocalImageStore"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
-import { compact, isArray } from "lodash"
-import { Avatar, Box, Button, Flex, Input, Join, Spacer, Text, Touchable, useColor } from "palette"
-import React, { useRef, useState } from "react"
+import { sendEmail } from "lib/utils/sendEmail"
+import { verifyEmail } from "lib/utils/verifyEmail"
+import { compact, isArray, throttle } from "lodash"
+import {
+  Avatar,
+  Box,
+  Button,
+  CheckCircleFillIcon,
+  CheckCircleIcon,
+  Flex,
+  Input,
+  Join,
+  Spacer,
+  Spinner,
+  Text,
+  Touchable,
+  useColor,
+} from "palette"
+import React, { Suspense, useCallback, useEffect, useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
-import { createFragmentContainer, graphql } from "react-relay"
+import { graphql, RelayRefetchProp, useFragment } from "react-relay"
 import * as Yup from "yup"
+import {
+  buildLocationDisplay,
+  DetailedLocationAutocomplete,
+} from "../../Components/DetailedLocationAutocomplete"
 import { useFeatureFlag } from "../../store/GlobalStore"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
 
+const PRIMARY_LOCATION_OFFSET = 240
+
 interface MyProfileEditFormModalProps {
   visible: boolean
-  me: MyProfileEditFormModal_me
+  me: MyProfileEditFormModal_me$key
   setProfileIconLocally: (path: string) => void
   localImage: LocalImage | null
+  relay: RelayRefetchProp
   onDismiss(): void
+  refetchProfileIdentification(): void
 }
 
 export interface EditMyProfileValuesSchema {
   photo: string
   name: string
+  displayLocation: { display: string | null }
+  location: EditableLocation | null
+  profession: string
+  otherRelevantPositions: string
   bio: string
 }
 
@@ -37,10 +68,20 @@ export const editMyProfileSchema = Yup.object().shape({
   bio: Yup.string(),
 })
 
-export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (props) => {
-  const { visible, onDismiss, me, setProfileIconLocally } = props
+export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = ({
+  visible,
+  onDismiss,
+  setProfileIconLocally,
+  localImage,
+  refetchProfileIdentification,
+  relay,
+  ...restProps
+}) => {
+  const me = useFragment<MyProfileEditFormModal_me$key>(meFragment, restProps.me)
 
   const color = useColor()
+
+  const scrollViewRef = useRef<ScrollView>(null)
 
   const { showActionSheetWithOptions } = useActionSheet()
 
@@ -49,6 +90,11 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
 
   const [loading, setLoading] = useState<boolean>(false)
   const [didUpdatePhoto, setDidUpdatePhoto] = useState(false)
+  const [showVerificationBanner, setShowVerificationBanner] = useState(false)
+  const [isverificationLoading, setIsVerificationLoading] = useState(false)
+  const [didSuccessfullyVerifiyEmail, setDidSuccessfullyVerifiyEmail] = useState<boolean | null>(
+    null
+  )
 
   const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
 
@@ -65,31 +111,49 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
     }
   }
 
-  const updateUserInfo = async ({ name, bio }: { name: string; bio: string }) => {
+  const updateUserInfo = async ({
+    name,
+    location,
+    profession,
+    otherRelevantPositions,
+    bio,
+  }: Partial<EditMyProfileValuesSchema>) => {
+    const payload = {
+      name,
+      ...(location ? { location } : {}),
+      profession,
+      otherRelevantPositions,
+      bio,
+    }
+
     try {
-      await updateMyUserProfile({ name, bio })
+      await updateMyUserProfile(payload)
     } catch (error) {
-      console.error("Failed to update user name and bio ", error)
+      console.error(`Failed to update ${Object.keys(payload).join(", ")}`, error)
     }
   }
 
-  const { handleSubmit, handleChange, dirty, values, errors, validateForm } =
+  const { handleSubmit, handleChange, setFieldValue, dirty, values, errors, validateForm } =
     useFormik<EditMyProfileValuesSchema>({
       enableReinitialize: true,
       validateOnChange: true,
       validateOnBlur: true,
       initialValues: {
         name: me?.name ?? "",
+        displayLocation: { display: buildLocationDisplay(me.location) },
+        location: null,
+        profession: me?.profession ?? "",
+        otherRelevantPositions: me?.otherRelevantPositions ?? "",
         bio: me?.bio ?? "",
-        photo: me?.icon?.url ?? props.localImage?.path ?? "",
+        photo: me?.icon?.url ?? localImage?.path ?? "",
       },
       initialErrors: {},
-      onSubmit: async ({ name, bio, photo }) => {
+      onSubmit: async ({ photo, ...otherValues }) => {
         try {
           setLoading(true)
           await Promise.all(
             compact([
-              await updateUserInfo({ name, bio }),
+              await updateUserInfo(otherValues),
               didUpdatePhoto && (await uploadProfilePhoto(photo)),
             ])
           )
@@ -116,97 +180,383 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = (pr
       )
   }
 
+  useEffect(() => {
+    const refetchProfileIdentificationInterval = setInterval(() => {
+      // When the user applies the email verification and the modal is visible
+      if (didSuccessfullyVerifiyEmail && visible) {
+        refetchProfileIdentification()
+      }
+    }, 3000)
+
+    return () => {
+      clearInterval(refetchProfileIdentificationInterval)
+    }
+  }, [didSuccessfullyVerifiyEmail, visible])
+
   const hideModal = () => {
     setDidUpdatePhoto(false)
     onDismiss()
-    // @ts-ignore
-    handleChange("photo")(me?.icon?.url ?? props.localImagePath ?? "")
-    // @ts-ignore
+
+    handleChange("photo")(me?.icon?.url ?? localImage?.path ?? "")
     handleChange("name")(me?.name ?? "")
-    // @ts-ignore
     handleChange("bio")(me?.bio ?? "")
   }
 
-  return (
-    <FancyModal
-      visible={visible}
-      onBackgroundPressed={hideModal}
-      fullScreen={enableCollectorProfile}
-    >
-      <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={hideModal}>
-        Edit Profile
-      </FancyModalHeader>
+  const handleEmailVerification = useCallback(async () => {
+    try {
+      setShowVerificationBanner(true)
+      setIsVerificationLoading(true)
 
-      <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
-        <Join separator={<Spacer py={1} />}>
-          <Flex flexDirection="row" alignItems="center" px={2} mt={2}>
-            <Touchable onPress={chooseImageHandler}>
-              <Box
-                height="99"
-                width="99"
-                mr={2}
-                borderRadius="50"
-                backgroundColor={color("black10")}
-                justifyContent="center"
-                alignItems="center"
-              >
-                {!!values.photo ? (
-                  <Avatar src={values.photo} size="md" />
-                ) : (
-                  <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
-                )}
-              </Box>
-            </Touchable>
-            <Touchable haptic onPress={chooseImageHandler}>
-              <Text style={{ textDecorationLine: "underline" }}>Choose an Image</Text>
-            </Touchable>
-          </Flex>
-          <Flex mx={2}>
-            <Input
-              ref={nameInputRef}
-              title="Name"
-              required
-              onChangeText={handleChange("name") as (value: string) => void}
-              onBlur={() => validateForm()}
-              error={errors.name}
-              returnKeyType="next"
-              defaultValue={values.name}
+      const { sendConfirmationEmail } = await verifyEmail(relay.environment)
+
+      const confirmationOrError = sendConfirmationEmail?.confirmationOrError
+      const emailToConfirm = confirmationOrError?.unconfirmedEmail
+
+      // this timeout is here to make sure that the user have enough time to read
+      // "Sending a confirmation email..."
+      setTimeout(() => {
+        if (emailToConfirm) {
+          setDidSuccessfullyVerifiyEmail(true)
+          setIsVerificationLoading(false)
+        } else {
+          setDidSuccessfullyVerifiyEmail(false)
+          setIsVerificationLoading(false)
+        }
+      }, 500)
+    } catch (error) {
+      captureException(error)
+    } finally {
+      // Allow the user some time to read the message
+      setTimeout(() => {
+        setShowVerificationBanner(false)
+      }, 2000)
+    }
+  }, [])
+
+  const throttleHandledEmailVerification = useCallback(
+    throttle(handleEmailVerification, 2000, { trailing: true }),
+    []
+  )
+
+  return (
+    <Suspense fallback={null}>
+      <ArtsyKeyboardAvoidingView>
+        <FancyModal
+          visible={visible}
+          onBackgroundPressed={hideModal}
+          fullScreen={enableCollectorProfile}
+        >
+          <FancyModalHeader leftButtonText="Cancel" onLeftButtonPress={hideModal}>
+            Edit Profile
+          </FancyModalHeader>
+
+          <ScrollView
+            ref={scrollViewRef}
+            keyboardDismissMode="on-drag"
+            keyboardShouldPersistTaps="handled"
+          >
+            <Join separator={<Spacer py={1} />}>
+              <Flex flexDirection="row" alignItems="center" px={2} mt={2}>
+                <Touchable onPress={chooseImageHandler}>
+                  <Box
+                    height="99"
+                    width="99"
+                    mr={2}
+                    borderRadius="50"
+                    backgroundColor={color("black10")}
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    {!!values.photo ? (
+                      <Avatar src={values.photo} size="md" />
+                    ) : (
+                      <Image
+                        source={require("../../../../images/profile_placeholder_avatar.webp")}
+                      />
+                    )}
+                  </Box>
+                </Touchable>
+                <Touchable haptic onPress={chooseImageHandler}>
+                  <Text style={{ textDecorationLine: "underline" }}>Choose an Image</Text>
+                </Touchable>
+              </Flex>
+              <Flex m={2}>
+                <Join separator={<Spacer py={2} />}>
+                  <Input
+                    ref={nameInputRef}
+                    title="Full Name"
+                    onChangeText={handleChange("name")}
+                    onBlur={() => validateForm()}
+                    error={errors.name}
+                    returnKeyType="next"
+                    defaultValue={values.name}
+                  />
+
+                  {!!enableCollectorProfile && (
+                    <DetailedLocationAutocomplete
+                      title="Primary Location"
+                      placeholder="City Name"
+                      returnKeyType="next"
+                      initialLocation={values.displayLocation?.display!}
+                      onFocus={() =>
+                        requestAnimationFrame(() =>
+                          scrollViewRef.current?.scrollTo({ y: PRIMARY_LOCATION_OFFSET })
+                        )
+                      }
+                      onChange={({ city, country, postalCode, state, stateCode }) => {
+                        setFieldValue("location", {
+                          city: city ?? "",
+                          country: country ?? "",
+                          postalCode: postalCode ?? "",
+                          state: state ?? "",
+                          stateCode: stateCode ?? "",
+                        })
+                      }}
+                    />
+                  )}
+
+                  {!!enableCollectorProfile && (
+                    <Input
+                      ref={nameInputRef}
+                      title="Profession"
+                      onChangeText={handleChange("profession")}
+                      onBlur={() => validateForm()}
+                      error={errors.name}
+                      returnKeyType="next"
+                      defaultValue={values.profession}
+                      placeholder="Select Your Profession"
+                    />
+                  )}
+
+                  {!!enableCollectorProfile && (
+                    <Input
+                      ref={nameInputRef}
+                      title="Other Relevant Positions"
+                      onChangeText={handleChange("otherRelevantPositions")}
+                      onBlur={() => validateForm()}
+                      error={errors.name}
+                      returnKeyType="next"
+                      defaultValue={values.otherRelevantPositions}
+                      placeholder="Institution Name and Position"
+                    />
+                  )}
+
+                  <Input
+                    ref={bioInputRef}
+                    title="About"
+                    onChangeText={handleChange("bio")}
+                    onBlur={() => validateForm()}
+                    error={errors.bio}
+                    maxLength={150}
+                    multiline
+                    showLimit
+                    defaultValue={values.bio}
+                    placeholder="You can add a short bio to tell more about yourself and your collection. It can be anything like the artists you collect, the genres you're interested in , etc."
+                  />
+
+                  <Spacer py={2} />
+                  {!!enableCollectorProfile && (
+                    <ProfileVerifications
+                      isIDVerified={!!me.identityVerified}
+                      canRequestEmailConfirmation={!!me.canRequestEmailConfirmation}
+                      emailConfirmed={!!me.emailConfirmed}
+                      handleEmailVerification={throttleHandledEmailVerification}
+                    />
+                  )}
+
+                  <Spacer py={2} />
+
+                  <Button flex={1} disabled={!dirty} onPress={handleSubmit} mb={2}>
+                    Save
+                  </Button>
+                </Join>
+              </Flex>
+            </Join>
+          </ScrollView>
+          {!!showVerificationBanner && (
+            <VerificationConfirmationBanner
+              isLoading={isverificationLoading}
+              didSuccessfullyVerifiyEmail={didSuccessfullyVerifiyEmail}
+              resultText={`Email sent to ${me.email}`}
             />
-            <Spacer py={2} />
-            <Input
-              ref={bioInputRef}
-              title="About"
-              onChangeText={handleChange("bio") as (value: string) => void}
-              onBlur={() => validateForm()}
-              error={errors.bio}
-              maxLength={150}
-              multiline
-              showLimit
-              defaultValue={values.bio}
-            />
-            <Spacer py={2} />
-            <Button flex={1} disabled={!dirty} onPress={handleSubmit}>
-              Save
-            </Button>
-          </Flex>
-        </Join>
-      </ScrollView>
-      {!!loading && <LoadingIndicator />}
-    </FancyModal>
+          )}
+
+          {!!loading && <LoadingIndicator />}
+        </FancyModal>
+      </ArtsyKeyboardAvoidingView>
+    </Suspense>
   )
 }
 
-export const MyProfileEditFormModalFragmentContainer = createFragmentContainer(
-  MyProfileEditFormModal,
-  {
-    me: graphql`
-      fragment MyProfileEditFormModal_me on Me {
-        name
-        bio
-        icon {
-          url(version: "thumbnail")
-        }
-      }
-    `,
+export const VerificationConfirmationBanner = ({
+  isLoading,
+  didSuccessfullyVerifiyEmail,
+  resultText,
+}: {
+  isLoading: boolean
+  didSuccessfullyVerifiyEmail: boolean | null
+  resultText: string
+}) => {
+  const color = useColor()
+
+  const renderContent = () => {
+    if (isLoading) {
+      return (
+        <>
+          <Text color={color("white100")}>Sending a confirmation email...</Text>
+
+          <Flex pr="1">
+            <Spinner size="small" color="white100" />
+          </Flex>
+        </>
+      )
+    }
+    return (
+      <Flex flexDirection="row" width="100%" justifyContent="space-between" alignItems="center">
+        <Text color={color("white100")} numberOfLines={2}>
+          {didSuccessfullyVerifiyEmail ? resultText : "Something went wrong, please try again"}
+        </Text>
+      </Flex>
+    )
   }
-)
+  return (
+    <Flex
+      px={2}
+      py={1}
+      // Avoid system bottom navigation bar
+      background={color("black100")}
+      flexDirection="row"
+      justifyContent="space-between"
+      alignItems="center"
+      testID="verification-confirmation-banner"
+    >
+      {renderContent()}
+    </Flex>
+  )
+}
+
+const renderVerifiedRow = ({ title, subtitle }: { title: string; subtitle: string }) => {
+  const color = useColor()
+  return (
+    <Flex flexDirection="row">
+      <CheckCircleFillIcon height={22} width={22} fill="green100" />
+      <Flex ml={1}>
+        <Text>{title}</Text>
+        <Text color={color("black60")}>{subtitle}</Text>
+      </Flex>
+    </Flex>
+  )
+}
+
+const ProfileVerifications = ({
+  canRequestEmailConfirmation,
+  emailConfirmed,
+  handleEmailVerification,
+  isIDVerified,
+}: {
+  canRequestEmailConfirmation: boolean
+  emailConfirmed: boolean
+  handleEmailVerification: () => void
+  isIDVerified: boolean
+}) => {
+  const color = useColor()
+  return (
+    <Flex testID="profile-verifications">
+      {/* ID Verification */}
+      {isIDVerified ? (
+        renderVerifiedRow({
+          title: "ID Verified",
+          subtitle: "For details, see FAQs or contact verification@artsy.net",
+        })
+      ) : (
+        <Flex flexDirection="row">
+          <CheckCircleIcon height={22} width={22} fill="black30" />
+          <Flex ml={1}>
+            <Text
+              onPress={() => {
+                // Trigger ID Verification Process
+                // This will be done in a separate ticket
+              }}
+              style={{ textDecorationLine: "underline" }}
+            >
+              Verify Your ID
+            </Text>
+            <Text color={color("black60")}>
+              For details about identity verification, see the FAQ or contact{" "}
+              <Text
+                style={{ textDecorationLine: "underline" }}
+                onPress={() => sendEmail("verification@artsy.net", { subject: "ID Verification" })}
+              >
+                verification@artsy.net
+              </Text>
+              .
+            </Text>
+          </Flex>
+        </Flex>
+      )}
+
+      <Spacer height={30} />
+
+      {/* Email Verification */}
+      {emailConfirmed ? (
+        renderVerifiedRow({
+          title: "Email Address Verified",
+          subtitle: "Description Text explaining Email verification for the Collector.",
+        })
+      ) : (
+        <Flex flexDirection="row">
+          <CheckCircleIcon height={22} width={22} fill="black30" />
+          <Flex ml={1}>
+            {canRequestEmailConfirmation ? (
+              <Text
+                style={{ textDecorationLine: "underline" }}
+                onPress={() => {
+                  handleEmailVerification()
+                }}
+                testID="verify-your-email"
+              >
+                Verify Your Email
+              </Text>
+            ) : (
+              <Text
+                style={{ textDecorationLine: "none" }}
+                color="black60"
+                testID="verify-your-email"
+              >
+                Verify Your Email
+              </Text>
+            )}
+
+            {/* This text will be replaced in a separate ticket */}
+            <Text color="black60">
+              Secure your account and receive updates about your transactions on Artsy.
+            </Text>
+          </Flex>
+        </Flex>
+      )}
+    </Flex>
+  )
+}
+
+const meFragment = graphql`
+  fragment MyProfileEditFormModal_me on Me
+  @argumentDefinitions(enableCollectorProfile: { type: "Boolean", defaultValue: false }) {
+    name
+    profession @include(if: $enableCollectorProfile)
+    otherRelevantPositions @include(if: $enableCollectorProfile)
+    bio
+    location @include(if: $enableCollectorProfile) {
+      display
+      city
+      state
+      country
+    }
+    icon {
+      url(version: "thumbnail")
+    }
+    email @include(if: $enableCollectorProfile)
+    emailConfirmed @include(if: $enableCollectorProfile)
+    identityVerified @include(if: $enableCollectorProfile)
+    canRequestEmailConfirmation @include(if: $enableCollectorProfile)
+  }
+`

@@ -1,5 +1,6 @@
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
+import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { Theme } from "palette"
 import * as React from "react"
 import { Image, Text, View } from "react-native"
@@ -15,19 +16,21 @@ describe("MockRelayRenderer", () => {
       // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
       (wrapper) => wrapper.text().includes("Mona Lisa"),
       <Theme>
-        <MockRelayRenderer
-          Component={Artwork}
-          query={query}
-          mockResolvers={{
-            Artwork: () => ({
-              title: "Mona Lisa",
-              image: {
-                url: "http://test/image.jpg",
-              },
-              artist: null,
-            }),
-          }}
-        />
+        <GlobalStoreProvider>
+          <MockRelayRenderer
+            Component={Artwork}
+            query={query}
+            mockResolvers={{
+              Artwork: () => ({
+                title: "Mona Lisa",
+                image: {
+                  url: "http://test/image.jpg",
+                },
+                artist: null,
+              }),
+            }}
+          />
+        </GlobalStoreProvider>
       </Theme>
     )
     expect(tree.html()).toEqual(

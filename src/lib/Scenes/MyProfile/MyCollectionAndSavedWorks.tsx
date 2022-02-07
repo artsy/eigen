@@ -25,20 +25,21 @@ import {
   useColor,
 } from "palette"
 import React, { useEffect, useState } from "react"
-import { createFragmentContainer, QueryRenderer } from "react-relay"
+import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionPlaceholder, MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
-import { MyProfileEditFormModalFragmentContainer } from "./MyProfileEditFormModal"
+import { MyProfileEditFormModal } from "./MyProfileEditFormModal"
 
 export enum Tab {
   collection = "My Collection",
   savedWorks = "Saved Works",
 }
 
-export const MyCollectionAndSavedWorks: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({
-  me,
-}) => {
+export const MyCollectionAndSavedWorks: React.FC<{
+  me?: MyCollectionAndSavedWorks_me
+  relay: RelayRefetchProp
+}> = ({ me, relay }) => {
   return (
     <StickyTabPage
       disableBackButtonUpdate
@@ -54,14 +55,17 @@ export const MyCollectionAndSavedWorks: React.FC<{ me?: MyCollectionAndSavedWork
           initial: false,
         },
       ]}
-      staticHeaderContent={<MyProfileHeader me={me} />}
+      staticHeaderContent={<MyProfileHeader me={me} relay={relay} />}
     />
   )
 }
 
 export const LOCAL_PROFILE_ICON_PATH_KEY = "LOCAL_PROFILE_ICON_PATH_KEY"
 
-export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = ({ me }) => {
+export const MyProfileHeader: React.FC<{
+  me?: MyCollectionAndSavedWorks_me
+  relay: RelayRefetchProp
+}> = ({ me, relay }) => {
   const color = useColor()
 
   const [showModal, setShowModal] = useState(false)
@@ -92,12 +96,16 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
   return (
     <>
       {!!me && (
-        <MyProfileEditFormModalFragmentContainer
+        <MyProfileEditFormModal
           me={me}
           visible={showModal}
           onDismiss={() => setShowModal(false)}
           setProfileIconLocally={setProfileIconHandler}
           localImage={localImage}
+          refetchProfileIdentification={() => {
+            relay.refetch({}, null, null, { force: true })
+          }}
+          relay={relay}
         />
       )}
       <FancyModalHeader
@@ -187,11 +195,12 @@ export const MyProfileHeader: React.FC<{ me?: MyCollectionAndSavedWorks_me }> = 
   )
 }
 
-export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContainer(
+export const MyCollectionAndSavedWorksFragmentContainer = createRefetchContainer(
   MyCollectionAndSavedWorks,
   {
     me: graphql`
-      fragment MyCollectionAndSavedWorks_me on Me {
+      fragment MyCollectionAndSavedWorks_me on Me
+      @argumentDefinitions(enableCollectorProfile: { type: "Boolean", defaultValue: false }) {
         name
         bio
         location {
@@ -203,32 +212,45 @@ export const MyCollectionAndSavedWorksFragmentContainer = createFragmentContaine
           url(version: "thumbnail")
         }
         createdAt
-        ...MyProfileEditFormModal_me
+        ...MyProfileEditFormModal_me @arguments(enableCollectorProfile: $enableCollectorProfile)
       }
     `,
-  }
+  },
+  graphql`
+    query MyCollectionAndSavedWorksRefetchQuery($enableCollectorProfile: Boolean!) {
+      me {
+        ...MyProfileEditFormModal_me @arguments(enableCollectorProfile: $enableCollectorProfile)
+      }
+    }
+  `
 )
 
 export const MyCollectionAndSavedWorksScreenQuery = graphql`
-  query MyCollectionAndSavedWorksQuery {
+  query MyCollectionAndSavedWorksQuery($enableCollectorProfile: Boolean!) {
     me @optionalField {
-      ...MyCollectionAndSavedWorks_me
+      ...MyCollectionAndSavedWorks_me @arguments(enableCollectorProfile: $enableCollectorProfile)
     }
   }
 `
 
-export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => (
-  <ProvideScreenTrackingWithCohesionSchema
-    info={screen({ context_screen_owner_type: OwnerType.profile })}
-  >
-    <QueryRenderer<MyCollectionAndSavedWorksQuery>
-      environment={defaultEnvironment}
-      query={MyCollectionAndSavedWorksScreenQuery}
-      render={renderWithPlaceholder({
-        Container: MyCollectionAndSavedWorksFragmentContainer,
-        renderPlaceholder: () => <MyCollectionPlaceholder />,
-      })}
-      variables={{}}
-    />
-  </ProvideScreenTrackingWithCohesionSchema>
-)
+export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => {
+  const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
+
+  return (
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({ context_screen_owner_type: OwnerType.profile })}
+    >
+      <QueryRenderer<MyCollectionAndSavedWorksQuery>
+        environment={defaultEnvironment}
+        query={MyCollectionAndSavedWorksScreenQuery}
+        render={renderWithPlaceholder({
+          Container: MyCollectionAndSavedWorksFragmentContainer,
+          renderPlaceholder: () => <MyCollectionPlaceholder />,
+        })}
+        variables={{
+          enableCollectorProfile,
+        }}
+      />
+    </ProvideScreenTrackingWithCohesionSchema>
+  )
+}

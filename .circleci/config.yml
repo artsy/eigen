@@ -221,14 +221,14 @@ jobs:
     working_directory: /usr/src/app
     steps:
       - checkout
-      - run: detect-secrets-hook --baseline .secrets.baseline --exclude-secrets '[a-fA-F0-9]{24}' --exclude-lines 'W/"[!#-\x7E]*"' $(git ls-files | grep -v stickerpack)
+      - run: ./scripts/secrets-check-all
 
   deploy-nightly-beta:
     environment:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
 
     macos:
-      xcode: 13.0.0
+      xcode: 13.2.1
 
     steps:
       - checkout
@@ -270,7 +270,7 @@ jobs:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
 
     macos:
-      xcode: 13.0.0
+      xcode: 13.2.1
 
     steps:
       - checkout
@@ -348,7 +348,7 @@ jobs:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
 
     macos:
-      xcode: 13.0.0
+      xcode: 13.2.1
 
     steps:
       - attach_workspace:
@@ -448,7 +448,7 @@ jobs:
     environment:
       BUNDLE_PATH: vendor/bundle # path to install gems and use for caching
     macos:
-      xcode: 13.0.0
+      xcode: 13.2.1
     steps:
       - checkout
       - install-gems

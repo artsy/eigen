@@ -6,6 +6,18 @@ import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type MyProfileEditFormModal_me = {
     readonly name: string | null;
+    readonly profession?: string | null | undefined;
+    readonly otherRelevantPositions?: string | null | undefined;
+    readonly location?: {
+        readonly display: string | null;
+        readonly city: string | null;
+        readonly state: string | null;
+        readonly country: string | null;
+    } | null | undefined;
+    readonly email?: string | null | undefined;
+    readonly emailConfirmed?: boolean | undefined;
+    readonly identityVerified?: boolean | null | undefined;
+    readonly canRequestEmailConfirmation?: boolean | undefined;
     readonly bio: string | null;
     readonly icon: {
         readonly url: string | null;
@@ -21,7 +33,13 @@ export type MyProfileEditFormModal_me$key = {
 
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": false,
+      "kind": "LocalArgument",
+      "name": "enableCollectorProfile"
+    }
+  ],
   "kind": "Fragment",
   "metadata": null,
   "name": "MyProfileEditFormModal_me",
@@ -63,10 +81,98 @@ const node: ReaderFragment = {
         }
       ],
       "storageKey": null
+    },
+    {
+      "condition": "enableCollectorProfile",
+      "kind": "Condition",
+      "passingValue": true,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "profession",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "otherRelevantPositions",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "MyLocation",
+          "kind": "LinkedField",
+          "name": "location",
+          "plural": false,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "display",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "city",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "state",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "country",
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "email",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "emailConfirmed",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "identityVerified",
+          "storageKey": null
+        },
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "canRequestEmailConfirmation",
+          "storageKey": null
+        }
+      ]
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '2a2999c02d81e82b1ab351a36d90b806';
+(node as any).hash = 'bd1d79e60001c825793c534d6b1f306b';
 export default node;

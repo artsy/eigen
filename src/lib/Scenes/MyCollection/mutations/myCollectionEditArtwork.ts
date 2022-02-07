@@ -15,7 +15,7 @@ export function myCollectionEditArtwork(input: myCollectionEditArtworkMutationVa
             artworkOrError {
               ... on MyCollectionArtworkMutationSuccess {
                 artwork {
-                  ...MyCollectionArtwork_sharedProps @relay(mask: false)
+                  ...OldMyCollectionArtwork_sharedProps @relay(mask: false)
                 }
               }
               ... on MyCollectionArtworkMutationFailure {

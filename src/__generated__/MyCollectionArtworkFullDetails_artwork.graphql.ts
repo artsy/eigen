@@ -36,6 +36,7 @@ export type MyCollectionArtworkFullDetails_artwork = {
     readonly isEdition: boolean | null;
     readonly medium: string | null;
     readonly metric: string | null;
+    readonly artworkLocation: string | null;
     readonly provenance: string | null;
     readonly slug: string;
     readonly title: string | null;
@@ -252,6 +253,13 @@ return {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "artworkLocation",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "provenance",
       "storageKey": null
     },
@@ -280,5 +288,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '5ceabc53f1732d6bae74db80b0c64901';
+(node as any).hash = '2ef689fad60377014b2ce95943ebf420';
 export default node;

@@ -7,9 +7,9 @@ import { RelayEnvironmentProvider } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment } from "relay-test-utils"
 import { createConsignSubmission, updateConsignSubmission } from "../Mutations"
-import { createOrUpdateSubmission } from "../utils/createOrUpdateSubmission"
-import { ArtworkDetailsFormModel } from "../utils/validation"
 import { ArtworkDetails } from "./ArtworkDetails"
+import { createOrUpdateSubmission } from "./utils/createOrUpdateSubmission"
+import { ArtworkDetailsFormModel } from "./validation"
 
 jest.mock(
   "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/Mutations/createConsignSubmissionMutation",
@@ -154,7 +154,7 @@ export const mockSubmissionForm: ArtworkDetailsFormModel = {
   title: "hello",
   year: "2000",
   medium: "oil",
-  attributionClass: "attributionClass",
+  attributionClass: null,
   editionNumber: "1",
   editionSizeFormatted: "1",
   dimensionsMetric: "in",

@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 6a6d232bce3246809cbf550a58813e55 */
+/* @relayHash f687c5b16ecf10dbed6b90e6f9a99963 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type MyCollectionArtworkListItemTestsQueryVariables = {};
@@ -38,6 +38,7 @@ export type MyCollectionArtworkListItemTestsQueryResponse = {
         readonly isEdition: boolean | null;
         readonly medium: string | null;
         readonly metric: string | null;
+        readonly artworkLocation: string | null;
         readonly provenance: string | null;
         readonly slug: string;
         readonly title: string | null;
@@ -87,6 +88,7 @@ query MyCollectionArtworkListItemTestsQuery {
     isEdition
     medium
     metric
+    artworkLocation
     provenance
     slug
     title
@@ -272,42 +274,49 @@ v18 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "provenance",
+  "name": "artworkLocation",
   "storageKey": null
 },
 v19 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "slug",
+  "name": "provenance",
   "storageKey": null
 },
 v20 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "title",
+  "name": "slug",
   "storageKey": null
 },
 v21 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "title",
+  "storageKey": null
+},
+v22 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "String"
 },
-v22 = {
+v23 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
   "type": "ID"
 },
-v23 = {
+v24 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
   "type": "Int"
 },
-v24 = {
+v25 = {
   "enumValues": null,
   "nullable": true,
   "plural": false,
@@ -370,6 +379,7 @@ return {
           (v18/*: any*/),
           (v19/*: any*/),
           (v20/*: any*/),
+          (v21/*: any*/),
           (v13/*: any*/)
         ],
         "storageKey": "artwork(id:\"some-slug\")"
@@ -436,6 +446,7 @@ return {
           (v18/*: any*/),
           (v19/*: any*/),
           (v20/*: any*/),
+          (v21/*: any*/),
           (v13/*: any*/)
         ],
         "storageKey": "artwork(id:\"some-slug\")"
@@ -443,7 +454,7 @@ return {
     ]
   },
   "params": {
-    "id": "6a6d232bce3246809cbf550a58813e55",
+    "id": "f687c5b16ecf10dbed6b90e6f9a99963",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "artwork": {
@@ -458,45 +469,46 @@ return {
           "plural": false,
           "type": "Artist"
         },
-        "artwork.artist.formattedNationalityAndBirthday": (v21/*: any*/),
-        "artwork.artist.id": (v22/*: any*/),
-        "artwork.artist.internalID": (v22/*: any*/),
-        "artwork.artistNames": (v21/*: any*/),
+        "artwork.artist.formattedNationalityAndBirthday": (v22/*: any*/),
+        "artwork.artist.id": (v23/*: any*/),
+        "artwork.artist.internalID": (v23/*: any*/),
+        "artwork.artistNames": (v22/*: any*/),
+        "artwork.artworkLocation": (v22/*: any*/),
         "artwork.attributionClass": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "AttributionClass"
         },
-        "artwork.attributionClass.id": (v22/*: any*/),
-        "artwork.attributionClass.name": (v21/*: any*/),
-        "artwork.category": (v21/*: any*/),
-        "artwork.date": (v21/*: any*/),
-        "artwork.depth": (v21/*: any*/),
-        "artwork.editionNumber": (v21/*: any*/),
-        "artwork.editionSize": (v21/*: any*/),
-        "artwork.height": (v21/*: any*/),
-        "artwork.id": (v22/*: any*/),
+        "artwork.attributionClass.id": (v23/*: any*/),
+        "artwork.attributionClass.name": (v22/*: any*/),
+        "artwork.category": (v22/*: any*/),
+        "artwork.date": (v22/*: any*/),
+        "artwork.depth": (v22/*: any*/),
+        "artwork.editionNumber": (v22/*: any*/),
+        "artwork.editionSize": (v22/*: any*/),
+        "artwork.height": (v22/*: any*/),
+        "artwork.id": (v23/*: any*/),
         "artwork.images": {
           "enumValues": null,
           "nullable": true,
           "plural": true,
           "type": "Image"
         },
-        "artwork.images.height": (v23/*: any*/),
-        "artwork.images.imageURL": (v21/*: any*/),
+        "artwork.images.height": (v24/*: any*/),
+        "artwork.images.imageURL": (v22/*: any*/),
         "artwork.images.internalID": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "ID"
         },
-        "artwork.images.isDefault": (v24/*: any*/),
-        "artwork.images.width": (v23/*: any*/),
-        "artwork.internalID": (v22/*: any*/),
-        "artwork.isEdition": (v24/*: any*/),
-        "artwork.medium": (v21/*: any*/),
-        "artwork.metric": (v21/*: any*/),
+        "artwork.images.isDefault": (v25/*: any*/),
+        "artwork.images.width": (v24/*: any*/),
+        "artwork.internalID": (v23/*: any*/),
+        "artwork.isEdition": (v25/*: any*/),
+        "artwork.medium": (v22/*: any*/),
+        "artwork.metric": (v22/*: any*/),
         "artwork.pricePaid": {
           "enumValues": null,
           "nullable": true,
@@ -509,17 +521,17 @@ return {
           "plural": false,
           "type": "String"
         },
-        "artwork.pricePaid.display": (v21/*: any*/),
+        "artwork.pricePaid.display": (v22/*: any*/),
         "artwork.pricePaid.minor": {
           "enumValues": null,
           "nullable": false,
           "plural": false,
           "type": "Int"
         },
-        "artwork.provenance": (v21/*: any*/),
-        "artwork.slug": (v22/*: any*/),
-        "artwork.title": (v21/*: any*/),
-        "artwork.width": (v21/*: any*/)
+        "artwork.provenance": (v22/*: any*/),
+        "artwork.slug": (v23/*: any*/),
+        "artwork.title": (v22/*: any*/),
+        "artwork.width": (v22/*: any*/)
       }
     },
     "name": "MyCollectionArtworkListItemTestsQuery",
@@ -528,5 +540,5 @@ return {
   }
 };
 })();
-(node as any).hash = '711379e212893cb5ab2d7b815d055d15';
+(node as any).hash = 'b72514ea1580ece1c88d0a4606d9f982';
 export default node;

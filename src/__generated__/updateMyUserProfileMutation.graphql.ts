@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash aa706326328bc80bc6c285e6c29eb729 */
+/* @relayHash c8738240fd89b1a327144743e6bf8983 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type UpdateMyProfileInput = {
@@ -59,6 +59,12 @@ export type updateMyUserProfileMutationResponse = {
                 readonly internalID: string | null;
                 readonly imageURL: string | null;
             } | null;
+            readonly location: {
+                readonly display: string | null;
+                readonly city: string | null;
+                readonly state: string | null;
+                readonly country: string | null;
+            } | null;
             readonly receiveLotOpeningSoonNotification: boolean | null;
             readonly receiveNewSalesNotification: boolean | null;
             readonly receiveNewWorksNotification: boolean | null;
@@ -89,6 +95,13 @@ mutation updateMyUserProfileMutation(
       icon {
         internalID
         imageURL
+      }
+      location {
+        display
+        city
+        state
+        country
+        id
       }
       receiveLotOpeningSoonNotification
       receiveNewSalesNotification
@@ -175,49 +188,84 @@ v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "receiveLotOpeningSoonNotification",
+  "name": "display",
   "storageKey": null
 },
 v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "receiveNewSalesNotification",
+  "name": "city",
   "storageKey": null
 },
 v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "receiveNewWorksNotification",
+  "name": "state",
   "storageKey": null
 },
 v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "receiveOutbidNotification",
+  "name": "country",
   "storageKey": null
 },
 v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "receivePromotionNotification",
+  "name": "receiveLotOpeningSoonNotification",
   "storageKey": null
 },
 v12 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "receivePurchaseNotification",
+  "name": "receiveNewSalesNotification",
   "storageKey": null
 },
 v13 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "receiveNewWorksNotification",
+  "storageKey": null
+},
+v14 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "receiveOutbidNotification",
+  "storageKey": null
+},
+v15 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "receivePromotionNotification",
+  "storageKey": null
+},
+v16 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "receivePurchaseNotification",
+  "storageKey": null
+},
+v17 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "receiveSaleOpeningClosingNotification",
+  "storageKey": null
+},
+v18 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
@@ -248,13 +296,28 @@ return {
               (v4/*: any*/),
               (v5/*: any*/),
               (v6/*: any*/),
-              (v7/*: any*/),
-              (v8/*: any*/),
-              (v9/*: any*/),
-              (v10/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "MyLocation",
+                "kind": "LinkedField",
+                "name": "location",
+                "plural": false,
+                "selections": [
+                  (v7/*: any*/),
+                  (v8/*: any*/),
+                  (v9/*: any*/),
+                  (v10/*: any*/)
+                ],
+                "storageKey": null
+              },
               (v11/*: any*/),
               (v12/*: any*/),
-              (v13/*: any*/)
+              (v13/*: any*/),
+              (v14/*: any*/),
+              (v15/*: any*/),
+              (v16/*: any*/),
+              (v17/*: any*/)
             ],
             "storageKey": null
           }
@@ -292,20 +355,30 @@ return {
               (v4/*: any*/),
               (v5/*: any*/),
               (v6/*: any*/),
-              (v7/*: any*/),
-              (v8/*: any*/),
-              (v9/*: any*/),
-              (v10/*: any*/),
-              (v11/*: any*/),
-              (v12/*: any*/),
-              (v13/*: any*/),
               {
                 "alias": null,
                 "args": null,
-                "kind": "ScalarField",
-                "name": "id",
+                "concreteType": "MyLocation",
+                "kind": "LinkedField",
+                "name": "location",
+                "plural": false,
+                "selections": [
+                  (v7/*: any*/),
+                  (v8/*: any*/),
+                  (v9/*: any*/),
+                  (v10/*: any*/),
+                  (v18/*: any*/)
+                ],
                 "storageKey": null
-              }
+              },
+              (v11/*: any*/),
+              (v12/*: any*/),
+              (v13/*: any*/),
+              (v14/*: any*/),
+              (v15/*: any*/),
+              (v16/*: any*/),
+              (v17/*: any*/),
+              (v18/*: any*/)
             ],
             "storageKey": null
           }
@@ -315,7 +388,7 @@ return {
     ]
   },
   "params": {
-    "id": "aa706326328bc80bc6c285e6c29eb729",
+    "id": "c8738240fd89b1a327144743e6bf8983",
     "metadata": {},
     "name": "updateMyUserProfileMutation",
     "operationKind": "mutation",
@@ -323,5 +396,5 @@ return {
   }
 };
 })();
-(node as any).hash = '8f1e05a691520961ee409afcd086275b';
+(node as any).hash = '89f9887e47b12f13823b173ea56d52dd';
 export default node;
