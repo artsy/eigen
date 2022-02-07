@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 7839015bcbb2f48bed00434d94d5cae8 */
+/* @relayHash cf02fb2cd2b8c3b43d646b03793e0fc0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -34,6 +34,7 @@ fragment InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX on MyCollectio
   }
   edges {
     node {
+      title
       slug
       id
       image {
@@ -88,6 +89,7 @@ fragment MyCollection_me on Me {
       node {
         id
         medium
+        title
         pricePaid {
           minor
         }
@@ -245,6 +247,13 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "kind": "ScalarField",
+                        "name": "title",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "concreteType": "Money",
                         "kind": "LinkedField",
                         "name": "pricePaid",
@@ -379,13 +388,6 @@ return {
                           }
                         ],
                         "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "title",
-                        "storageKey": null
                       }
                     ],
                     "storageKey": null
@@ -450,7 +452,7 @@ return {
     ]
   },
   "params": {
-    "id": "7839015bcbb2f48bed00434d94d5cae8",
+    "id": "cf02fb2cd2b8c3b43d646b03793e0fc0",
     "metadata": {},
     "name": "MyCollectionQuery",
     "operationKind": "query",

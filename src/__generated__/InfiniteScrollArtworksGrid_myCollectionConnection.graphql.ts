@@ -12,6 +12,7 @@ export type InfiniteScrollArtworksGrid_myCollectionConnection = {
     };
     readonly edges: ReadonlyArray<{
         readonly node: {
+            readonly title: string | null;
             readonly slug: string;
             readonly id: string;
             readonly image: {
@@ -103,6 +104,13 @@ const node: ReaderFragment = {
           "name": "node",
           "plural": false,
           "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "title",
+              "storageKey": null
+            },
             {
               "alias": null,
               "args": null,
@@ -247,5 +255,5 @@ const node: ReaderFragment = {
   "type": "MyCollectionConnection",
   "abstractKey": null
 };
-(node as any).hash = '84cd227c4b6e3878aaf95088b2698ee8';
+(node as any).hash = '7a3277f17802c64e0dfd6ede4bd4bc74';
 export default node;

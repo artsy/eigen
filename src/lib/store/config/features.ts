@@ -185,6 +185,11 @@ export const features = defineFeatures({
     description: "Enable collector profile",
     showInAdminMenu: true,
   },
+  AREnableMyCollectionSearchBar: {
+    readyForRelease: false,
+    description: "Enable My Collection search bar",
+    showInAdminMenu: true,
+  },
   ARShowConsignmentsInMyCollection: {
     readyForRelease: false,
     description: "Show consignments in My Collection",

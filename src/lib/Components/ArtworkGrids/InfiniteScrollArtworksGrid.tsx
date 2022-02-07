@@ -498,6 +498,7 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
         }
         edges {
           node {
+            title
             slug
             id
             image {
