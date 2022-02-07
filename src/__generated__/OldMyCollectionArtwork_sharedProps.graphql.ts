@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionArtwork_sharedProps = {
+export type OldMyCollectionArtwork_sharedProps = {
     readonly artist: {
         readonly internalID: string;
         readonly formattedNationalityAndBirthday: string | null;
@@ -41,12 +41,12 @@ export type MyCollectionArtwork_sharedProps = {
     readonly slug: string;
     readonly title: string | null;
     readonly width: string | null;
-    readonly " $refType": "MyCollectionArtwork_sharedProps";
+    readonly " $refType": "OldMyCollectionArtwork_sharedProps";
 };
-export type MyCollectionArtwork_sharedProps$data = MyCollectionArtwork_sharedProps;
-export type MyCollectionArtwork_sharedProps$key = {
-    readonly " $data"?: MyCollectionArtwork_sharedProps$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtwork_sharedProps">;
+export type OldMyCollectionArtwork_sharedProps$data = OldMyCollectionArtwork_sharedProps;
+export type OldMyCollectionArtwork_sharedProps$key = {
+    readonly " $data"?: OldMyCollectionArtwork_sharedProps$data | undefined;
+    readonly " $fragmentRefs": FragmentRefs<"OldMyCollectionArtwork_sharedProps">;
 };
 
 
@@ -77,7 +77,7 @@ return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "MyCollectionArtwork_sharedProps",
+  "name": "OldMyCollectionArtwork_sharedProps",
   "selections": [
     {
       "alias": null,
@@ -282,5 +282,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'dc305c9dd44bd32688fc8b596f608b73';
+(node as any).hash = '3f7ad1174539688a07f8ea19108e8f51';
 export default node;

@@ -3,7 +3,7 @@ import { useActionSheet } from "@expo/react-native-action-sheet"
 import { NavigationContainer, NavigationContainerRef } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import { captureException } from "@sentry/react-native"
-import { MyCollectionArtwork_sharedProps } from "__generated__/MyCollectionArtwork_sharedProps.graphql"
+import { OldMyCollectionArtwork_sharedProps } from "__generated__/OldMyCollectionArtwork_sharedProps.graphql"
 import { FormikProvider, useFormik } from "formik"
 import LoadingModal from "lib/Components/Modals/LoadingModal"
 import { goBack } from "lib/navigation/navigate"
@@ -67,7 +67,7 @@ export type MyCollectionArtworkFormProps = { onSuccess?: () => void } & (
   | {
       mode: "edit"
       onDelete: () => void
-      artwork: Omit<MyCollectionArtwork_sharedProps, " $refType">
+      artwork: Omit<OldMyCollectionArtwork_sharedProps, " $refType">
     }
 )
 

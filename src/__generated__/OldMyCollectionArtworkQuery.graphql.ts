@@ -1,16 +1,16 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 965529d7359f4581b137d9d05df1eca8 */
+/* @relayHash 64a4d49f10ae66315bb812ce73fc8efc */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionArtworkQueryVariables = {
+export type OldMyCollectionArtworkQueryVariables = {
     artworkSlug: string;
     artistInternalID: string;
     medium: string;
 };
-export type MyCollectionArtworkQueryResponse = {
+export type OldMyCollectionArtworkQueryResponse = {
     readonly artwork: {
         readonly artist: {
             readonly internalID: string;
@@ -54,15 +54,15 @@ export type MyCollectionArtworkQueryResponse = {
         readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkInsights_marketPriceInsights">;
     } | null;
 };
-export type MyCollectionArtworkQuery = {
-    readonly response: MyCollectionArtworkQueryResponse;
-    readonly variables: MyCollectionArtworkQueryVariables;
+export type OldMyCollectionArtworkQuery = {
+    readonly response: OldMyCollectionArtworkQueryResponse;
+    readonly variables: OldMyCollectionArtworkQueryVariables;
 };
 
 
 
 /*
-query MyCollectionArtworkQuery(
+query OldMyCollectionArtworkQuery(
   $artworkSlug: String!
   $artistInternalID: ID!
   $medium: String!
@@ -525,7 +525,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "MyCollectionArtworkQuery",
+    "name": "OldMyCollectionArtworkQuery",
     "selections": [
       {
         "alias": null,
@@ -640,7 +640,7 @@ return {
       (v2/*: any*/)
     ],
     "kind": "Operation",
-    "name": "MyCollectionArtworkQuery",
+    "name": "OldMyCollectionArtworkQuery",
     "selections": [
       {
         "alias": null,
@@ -1170,13 +1170,13 @@ return {
     ]
   },
   "params": {
-    "id": "965529d7359f4581b137d9d05df1eca8",
+    "id": "64a4d49f10ae66315bb812ce73fc8efc",
     "metadata": {},
-    "name": "MyCollectionArtworkQuery",
+    "name": "OldMyCollectionArtworkQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'ff48730bc0fe2c28a7e2ccd715f72842';
+(node as any).hash = '39df351bbb3a6ac17d632db949ae54aa';
 export default node;

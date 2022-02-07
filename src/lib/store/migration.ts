@@ -136,7 +136,7 @@ export const artsyAppMigrations: Migrations = {
           title: "",
           year: "",
           medium: "",
-          attributionClass: "",
+          attributionClass: null,
           editionNumber: "",
           editionSizeFormatted: "",
           dimensionsMetric: "in",

@@ -199,6 +199,20 @@ export const features = defineFeatures({
     description: "Enable collector profile",
     showInAdminMenu: true,
   },
+  ARShowConsignmentsInMyCollection: {
+    readyForRelease: false,
+    description: "Show consignments in My Collection",
+  },
+  AREnablePlaceholderLayoutAnimation: {
+    readyForRelease: true,
+    description: "Enable placeholder layout animation",
+  },
+  AREnableNewMyCollectionArtwork: {
+    readyForRelease: false,
+    description: "Enable new my collection artwork page",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnablePlaceholderLayoutAnimation",
+  },
 })
 
 export interface DevToggleDescriptor {

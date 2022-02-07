@@ -1,10 +1,11 @@
-import { updateMyUserProfileMutation } from "__generated__/updateMyUserProfileMutation.graphql"
+import {
+  UpdateMyProfileInput,
+  updateMyUserProfileMutation,
+} from "__generated__/updateMyUserProfileMutation.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { commitMutation, graphql } from "react-relay"
 
-export const updateMyUserProfile = async (
-  input: updateMyUserProfileMutation["variables"]["input"]
-) => {
+export const updateMyUserProfile = async (input: UpdateMyProfileInput = {}) => {
   await new Promise((resolve, reject) =>
     commitMutation<updateMyUserProfileMutation>(defaultEnvironment, {
       onCompleted: resolve,
@@ -19,6 +20,12 @@ export const updateMyUserProfile = async (
               icon {
                 internalID
                 imageURL
+              }
+              location {
+                display
+                city
+                state
+                country
               }
               receiveLotOpeningSoonNotification
               receiveNewSalesNotification

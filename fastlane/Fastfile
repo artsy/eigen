@@ -63,7 +63,7 @@ lane :ship_beta_ios do
 
   # important! this much match the release version specified
   # in Eigen in order for sourcemaps to work correctly
-  sentry_release_name = "ios-#{latest_version}+#{bundle_version}"
+  sentry_release_name = "ios-#{latest_version}-#{bundle_version}"
 
   build_ios_app(configuration: 'Store', silent: true)
 

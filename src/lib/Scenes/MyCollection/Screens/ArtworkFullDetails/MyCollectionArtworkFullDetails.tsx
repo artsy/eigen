@@ -47,7 +47,7 @@ export const MyCollectionArtworkFullDetailsContainer = createFragmentContainer(
   {
     artwork: graphql`
       fragment MyCollectionArtworkFullDetails_artwork on Artwork {
-        ...MyCollectionArtwork_sharedProps @relay(mask: false)
+        ...OldMyCollectionArtwork_sharedProps @relay(mask: false)
         ...MyCollectionArtworkMeta_artwork
         internalID
         slug
