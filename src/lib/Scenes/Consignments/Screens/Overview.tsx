@@ -279,13 +279,16 @@ export class Overview extends React.Component<Props, State> {
       this.state.metadata.height &&
       this.state.metadata.width &&
       this.state.editionScreenViewed &&
-      this.state.photos?.filter((photo) => photo.uploaded).length! > 0
+      this.state.photos?.filter((photo) => photo.uploaded).length! > 0 &&
+      !this.isPhotoLoading()
     )
+
+  isPhotoLoading = () => this.state.photos?.some((photo) => photo.uploading)
 
   render() {
     // See https://github.com/artsy/convection/blob/master/app/models/submission.rb for list
     const canSubmit = this.canSubmit()
-    const isPhotoLoading = this.state.photos?.some((photo) => photo.uploading)
+    const isPhotoLoading = this.isPhotoLoading()
 
     const isPad = Dimensions.get("window").width > 700
 
@@ -345,8 +348,9 @@ export class Overview extends React.Component<Props, State> {
               block
               loading={isPhotoLoading}
               onPress={this.state.hasLoaded && canSubmit ? this.submitFinalSubmission : undefined}
-              disabled={isPhotoLoading || !canSubmit}
+              disabled={!canSubmit}
               haptic
+              testID="consignments-next-button"
             >
               Next
             </Button>

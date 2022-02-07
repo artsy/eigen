@@ -1,7 +1,9 @@
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import React from "react"
 import "react-native"
+import { createConsignmentSubmission } from "../Submission/createConsignmentSubmission"
 
 import Artist from "./ConsignmentsArtist"
 import Edition from "./Edition"
@@ -15,13 +17,19 @@ jest.mock("lib/utils/requestPhotos", () => ({
   showPhotoActionSheet: jest.fn(() => Promise.resolve({ photos: [] })),
 }))
 
+jest.mock("../Submission/createConsignmentSubmission", () => ({
+  createConsignmentSubmission: jest.fn(),
+}))
+
+const mockCreateConsignmentSubmission = createConsignmentSubmission as jest.Mock
+
 const nav = {} as any
 const route = {} as any
 
 const anything = expect.anything
 
 it("renders without throwing an error", () => {
-  renderWithWrappers(
+  renderWithWrappersTL(
     <Overview navigator={nav} params={{}} setup={{}} showActionSheetWithOptions={jest.fn()} />
   )
 })
@@ -210,5 +218,59 @@ describe("required data", () => {
 
     const overview = new Overview({ setup })
     expect(overview.canSubmit()).toBeFalsy()
+  })
+
+  it("does not allow submission without any uploaded photos", () => {
+    const setup = {
+      ...requiredState,
+      photos: [
+        {
+          file: "some-image-file",
+          uploaded: false,
+        },
+      ],
+    }
+
+    const overview = new Overview({ setup })
+    expect(overview.canSubmit()).toBeFalsy()
+  })
+
+  it("does not allow submission when photo uploading", () => {
+    const setup = {
+      ...requiredState,
+      photos: [
+        {
+          file: "some-image-file",
+          uploading: true,
+        },
+      ],
+    }
+
+    const overview = new Overview({ setup })
+    expect(overview.canSubmit()).toBeFalsy()
+  })
+})
+
+describe("creates draft submission", () => {
+  const navigator: any = { push: jest.fn() }
+  let overview: Overview
+
+  beforeEach(() => {
+    mockCreateConsignmentSubmission.mockResolvedValue("1")
+    overview = new Overview({ navigator, route, setup: {}, params: {} })
+
+    overview.setState = (updated: any, callback: () => void) => {
+      overview.state = Object.assign({}, overview.state, updated)
+      callback()
+    }
+  })
+
+  it("triggers photo uploading draft creation", async () => {
+    overview.uploadPhotosIfNeeded = jest.fn()
+    overview.updateArtist({ internalID: "banksy", name: "Banksy" })
+
+    await flushPromiseQueue()
+
+    expect(overview.uploadPhotosIfNeeded).toHaveBeenCalled()
   })
 })
