@@ -9282,6 +9282,11 @@ type Mutation {
     input: SubmitInquiryRequestMutationInput!
   ): SubmitInquiryRequestMutationPayload
 
+  # Submits an OfferOrder and creates a conversation for it
+  submitOfferOrderWithConversation(
+    input: CommerceSubmitOrderWithOfferInput!
+  ): CommerceSubmitOrderWithOfferPayload
+
   # Unlinks a 3rd party account
   unlinkAuthentication(
     input: UnlinkAuthenticationMutationInput!
