@@ -9,7 +9,6 @@ import { RetryErrorBoundaryLegacy } from "lib/Components/RetryErrorBoundary"
 import { navigationEvents } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ArtistSeriesMoreSeriesFragmentContainer as ArtistSeriesMoreSeries } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { AboveTheFoldQueryRenderer } from "lib/utils/AboveTheFoldQueryRenderer"
 import { isPad } from "lib/utils/hardware"
 import {
@@ -64,9 +63,6 @@ export const Artwork: React.FC<ArtworkProps> = ({
 }) => {
   const [refreshing, setRefreshing] = useState(false)
   const [fetchingData, setFetchingData] = useState(false)
-
-  const artistSerieasEnabled = useFeatureFlag("AROptionsArtistSeries")
-  const artistSeriesEnabled = useFeatureFlag("AROptionsArtistSeries")
 
   const { internalID, slug } = artworkAboveTheFold || {}
   const {
@@ -128,11 +124,11 @@ export const Artwork: React.FC<ArtworkProps> = ({
   const shouldRenderArtworksInArtistSeries = () => {
     const artistSeries = artistSeriesConnection?.edges?.[0]
     const numArtistSeriesArtworks = artistSeries?.node?.filterArtworksConnection?.edges?.length ?? 0
-    return artistSerieasEnabled && numArtistSeriesArtworks > 0
+    return numArtistSeriesArtworks > 0
   }
 
   const shouldRenderArtistSeriesMoreSeries = () => {
-    return artistSeriesEnabled && (artist?.artistSeriesConnection?.totalCount ?? 0) > 0
+    return (artist?.artistSeriesConnection?.totalCount ?? 0) > 0
   }
 
   useEffect(() => {
