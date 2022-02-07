@@ -1,7 +1,9 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
 import { StackScreenProps } from "@react-navigation/stack"
 import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
+import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.graphql"
 import { useFormik } from "formik"
 import { Image } from "lib/Components/Bidding/Elements/Image"
 import {
@@ -12,26 +14,19 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import LoadingModal from "lib/Components/Modals/LoadingModal"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
+import { LocalImage } from "lib/utils/LocalImageStore"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { compact, isArray } from "lodash"
 import { Avatar, Box, Button, Flex, Input, Join, Spacer, Text, Touchable, useColor } from "palette"
-import React, { useRef, useState } from "react"
+import React, { Suspense, useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
-import { useFragment } from "react-relay"
+import { useFragment, useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
 import * as Yup from "yup"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
-import { MyProfileStackTypes } from "./MyProfile"
+import { MyProfileScreen } from "./MyProfile"
 
 const PRIMARY_LOCATION_OFFSET = 240
-
-// interface MyProfileEditFormProps {
-//   visible: boolean
-//   me: MyProfileEditForm_me$key
-//   setProfileIconLocally: (path: string) => void
-//   localImage: LocalImage | null
-//   onDismiss(): void
-// }
 
 export interface EditMyProfileValuesSchema {
   photo: string
@@ -49,14 +44,11 @@ export const editMyProfileSchema = Yup.object().shape({
   bio: Yup.string(),
 })
 
-export const MyProfileEditForm: React.FC<
-  StackScreenProps<MyProfileStackTypes, "MyProfileEditForm">
-> = ({ route }) => {
-  console.log("CHECK :: ", route)
-  const me = useFragment<MyProfileEditForm_me$key>(meFragment, route?.params.me)
+export const MyProfileEditForm: React.FC<{ me: MyProfileEditForm_me$key }> = (props) => {
+  const me = useFragment<MyProfileEditForm_me$key>(meFragment, props.me)
 
   const color = useColor()
-
+  const navigation = useNavigation()
   const scrollViewRef = useRef<ScrollView>(null)
   const { showActionSheetWithOptions } = useActionSheet()
 
@@ -66,17 +58,21 @@ export const MyProfileEditForm: React.FC<
   const [loading, setLoading] = useState<boolean>(false)
   const [didUpdatePhoto, setDidUpdatePhoto] = useState(false)
 
+  const route = useRoute<RouteProp<MyProfileScreen, "MyProfileEditForm">>()
+
+  const { localImage, setProfileIconHandler } = route.params
+
   const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
 
   const uploadProfilePhoto = async (photo: string) => {
     const existingProfileImage = me.icon?.url ?? ""
     try {
       // We want to show the local image initially for better UX since Gemini takes a while to process
-      route.params.setProfileIconLocally(photo)
+      setProfileIconHandler(photo)
       const iconUrl = await getConvertedImageUrlFromS3(photo)
       await updateMyUserProfile({ iconUrl })
     } catch (error) {
-      route.params.setProfileIconLocally(existingProfileImage)
+      setProfileIconHandler(existingProfileImage)
       console.error("Failed to upload profile picture ", error)
     }
   }
@@ -115,7 +111,7 @@ export const MyProfileEditForm: React.FC<
         profession: me?.profession ?? "",
         otherRelevantPositions: me?.otherRelevantPositions ?? "",
         bio: me?.bio ?? "",
-        photo: me?.icon?.url ?? route.params.localImage?.path ?? "",
+        photo: me?.icon?.url ?? localImage?.path ?? "",
       },
       initialErrors: {},
       onSubmit: async ({ photo, ...otherValues }) => {
@@ -132,6 +128,7 @@ export const MyProfileEditForm: React.FC<
         } finally {
           setLoading(false)
         }
+        navigation.goBack()
       },
       validationSchema: editMyProfileSchema,
     })
@@ -149,18 +146,22 @@ export const MyProfileEditForm: React.FC<
       )
   }
 
-  // const hideModal = () => {
-  //   setDidUpdatePhoto(false)
+  console.log("Check me?.icon?.url :: ", me?.icon?.url)
+  console.log("Check localImage?.path :: ", localImage?.path)
 
-  //   handleChange("photo")(me?.icon?.url ?? route.params.localImage?.path ?? "")
-  //   handleChange("name")(me?.name ?? "")
-  //   handleChange("bio")(me?.bio ?? "")
-  // }
+  const onLeftButtonPressHandler = () => {
+    setDidUpdatePhoto(false)
+    navigation.goBack()
+
+    handleChange("photo")(me?.icon?.url ?? localImage?.path ?? "")
+    handleChange("name")(me?.name ?? "")
+    handleChange("bio")(me?.bio ?? "")
+  }
 
   return (
     <>
       <FancyModalHeader
-        onLeftButtonPress={route.params.onHeaderBackButtonPress}
+        onLeftButtonPress={onLeftButtonPressHandler}
         rightButtonText="Skip"
         hideBottomDivider
       >
@@ -293,3 +294,31 @@ const meFragment = graphql`
     }
   }
 `
+
+const MyProfileEditFormScreenQuery = graphql`
+  query MyProfileEditFormQuery {
+    me {
+      ...MyProfileEditForm_me
+    }
+  }
+`
+
+const MyProfileEditFormContainer = () => {
+  const data = useLazyLoadQuery<MyProfileEditFormQuery>(
+    MyProfileEditFormScreenQuery,
+    {},
+    {
+      fetchPolicy: "store-and-network",
+    }
+  )
+
+  return <MyProfileEditForm me={data.me!} />
+}
+
+export const MyProfileEditFormQueryRenderer = () => {
+  return (
+    <Suspense fallback={null}>
+      <MyProfileEditFormContainer />
+    </Suspense>
+  )
+}

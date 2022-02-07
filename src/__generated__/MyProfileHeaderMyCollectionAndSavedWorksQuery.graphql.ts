@@ -1,32 +1,40 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash bb0ab40a7b853c68f2b739f0e2c7f43c */
+/* @relayHash a4f1e0986a0ebedbe87311972a23740d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionAndSavedWorksTestsQueryVariables = {};
-export type MyCollectionAndSavedWorksTestsQueryResponse = {
+export type MyProfileHeaderMyCollectionAndSavedWorksQueryVariables = {};
+export type MyProfileHeaderMyCollectionAndSavedWorksQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"MyCollectionAndSavedWorks_me">;
+        readonly " $fragmentRefs": FragmentRefs<"MyProfileHeaderMyCollectionAndSavedWorks_me">;
     } | null;
 };
-export type MyCollectionAndSavedWorksTestsQuery = {
-    readonly response: MyCollectionAndSavedWorksTestsQueryResponse;
-    readonly variables: MyCollectionAndSavedWorksTestsQueryVariables;
+export type MyProfileHeaderMyCollectionAndSavedWorksQuery = {
+    readonly response: MyProfileHeaderMyCollectionAndSavedWorksQueryResponse;
+    readonly variables: MyProfileHeaderMyCollectionAndSavedWorksQueryVariables;
 };
 
 
 
 /*
-query MyCollectionAndSavedWorksTestsQuery {
+query MyProfileHeaderMyCollectionAndSavedWorksQuery {
   me @optionalField {
-    ...MyCollectionAndSavedWorks_me
+    ...MyProfileHeaderMyCollectionAndSavedWorks_me
     id
   }
 }
 
-fragment MyCollectionAndSavedWorks_me on Me {
+fragment MyProfileEditFormModal_me on Me {
+  name
+  bio
+  icon {
+    url(version: "thumbnail")
+  }
+}
+
+fragment MyProfileHeaderMyCollectionAndSavedWorks_me on Me {
   name
   bio
   location {
@@ -39,15 +47,7 @@ fragment MyCollectionAndSavedWorks_me on Me {
     url(version: "thumbnail")
   }
   createdAt
-  ...MyProfileEditFormModal_me_40LmUp
-}
-
-fragment MyProfileEditFormModal_me_40LmUp on Me {
-  name
-  bio
-  icon {
-    url(version: "thumbnail")
-  }
+  ...MyProfileEditFormModal_me
 }
 */
 
@@ -58,25 +58,13 @@ var v0 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
-},
-v1 = {
-  "enumValues": null,
-  "nullable": true,
-  "plural": false,
-  "type": "String"
-},
-v2 = {
-  "enumValues": null,
-  "nullable": false,
-  "plural": false,
-  "type": "ID"
 };
 return {
   "fragment": {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "MyCollectionAndSavedWorksTestsQuery",
+    "name": "MyProfileHeaderMyCollectionAndSavedWorksQuery",
     "selections": [
       {
         "alias": null,
@@ -89,7 +77,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "MyCollectionAndSavedWorks_me"
+            "name": "MyProfileHeaderMyCollectionAndSavedWorks_me"
           }
         ],
         "storageKey": null
@@ -102,7 +90,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "MyCollectionAndSavedWorksTestsQuery",
+    "name": "MyProfileHeaderMyCollectionAndSavedWorksQuery",
     "selections": [
       {
         "alias": null,
@@ -197,43 +185,13 @@ return {
     ]
   },
   "params": {
-    "id": "bb0ab40a7b853c68f2b739f0e2c7f43c",
-    "metadata": {
-      "relayTestingSelectionTypeInfo": {
-        "me": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Me"
-        },
-        "me.bio": (v1/*: any*/),
-        "me.createdAt": (v1/*: any*/),
-        "me.icon": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Image"
-        },
-        "me.icon.url": (v1/*: any*/),
-        "me.id": (v2/*: any*/),
-        "me.location": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "MyLocation"
-        },
-        "me.location.display": (v1/*: any*/),
-        "me.location.id": (v2/*: any*/),
-        "me.name": (v1/*: any*/),
-        "me.otherRelevantPositions": (v1/*: any*/),
-        "me.profession": (v1/*: any*/)
-      }
-    },
-    "name": "MyCollectionAndSavedWorksTestsQuery",
+    "id": "a4f1e0986a0ebedbe87311972a23740d",
+    "metadata": {},
+    "name": "MyProfileHeaderMyCollectionAndSavedWorksQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '6510b5ab5aadfb3040f84106f4be7a50';
+(node as any).hash = 'cbf8f75bc3eef7a37edad533cc06ac99';
 export default node;

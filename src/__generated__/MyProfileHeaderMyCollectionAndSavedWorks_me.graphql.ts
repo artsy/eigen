@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionAndSavedWorks_me = {
+export type MyProfileHeaderMyCollectionAndSavedWorks_me = {
     readonly name: string | null;
     readonly bio: string | null;
     readonly location: {
@@ -17,27 +17,21 @@ export type MyCollectionAndSavedWorks_me = {
     } | null;
     readonly createdAt: string | null;
     readonly " $fragmentRefs": FragmentRefs<"MyProfileEditFormModal_me">;
-    readonly " $refType": "MyCollectionAndSavedWorks_me";
+    readonly " $refType": "MyProfileHeaderMyCollectionAndSavedWorks_me";
 };
-export type MyCollectionAndSavedWorks_me$data = MyCollectionAndSavedWorks_me;
-export type MyCollectionAndSavedWorks_me$key = {
-    readonly " $data"?: MyCollectionAndSavedWorks_me$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"MyCollectionAndSavedWorks_me">;
+export type MyProfileHeaderMyCollectionAndSavedWorks_me$data = MyProfileHeaderMyCollectionAndSavedWorks_me;
+export type MyProfileHeaderMyCollectionAndSavedWorks_me$key = {
+    readonly " $data"?: MyProfileHeaderMyCollectionAndSavedWorks_me$data | undefined;
+    readonly " $fragmentRefs": FragmentRefs<"MyProfileHeaderMyCollectionAndSavedWorks_me">;
 };
 
 
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [
-    {
-      "defaultValue": false,
-      "kind": "LocalArgument",
-      "name": "enableCollectorProfile"
-    }
-  ],
+  "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "MyCollectionAndSavedWorks_me",
+  "name": "MyProfileHeaderMyCollectionAndSavedWorks_me",
   "selections": [
     {
       "alias": null,
@@ -117,13 +111,7 @@ const node: ReaderFragment = {
       "storageKey": null
     },
     {
-      "args": [
-        {
-          "kind": "Variable",
-          "name": "enableCollectorProfile",
-          "variableName": "enableCollectorProfile"
-        }
-      ],
+      "args": null,
       "kind": "FragmentSpread",
       "name": "MyProfileEditFormModal_me"
     }
@@ -131,5 +119,5 @@ const node: ReaderFragment = {
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '11c870aea48c96f943a26dec1a5eaff7';
+(node as any).hash = 'bad53ff34ed23b8cefed3ba87e874040';
 export default node;

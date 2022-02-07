@@ -1,4 +1,4 @@
-import { MyCollectionAndSavedWorksTestsQuery } from "__generated__/MyCollectionAndSavedWorksTestsQuery.graphql"
+import { MyProfileHeaderMyCollectionAndSavedWorksTestsQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksTestsQuery.graphql"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "lib/navigation/navigate"
@@ -18,25 +18,25 @@ import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
 import {
   LOCAL_PROFILE_ICON_PATH_KEY,
-  MyCollectionAndSavedWorksFragmentContainer,
-} from "./MyCollectionAndSavedWorks"
+  MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
+} from "./MyProfileHeaderMyCollectionAndSavedWorks"
 
 jest.mock("./LoggedInUserInfo")
 jest.unmock("react-relay")
 
-describe("MyCollectionAndSavedWorks", () => {
+describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <QueryRenderer<MyCollectionAndSavedWorksTestsQuery>
+    <QueryRenderer<MyProfileHeaderMyCollectionAndSavedWorksTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query MyCollectionAndSavedWorksTestsQuery @relay_test_operation {
+        query MyProfileHeaderMyCollectionAndSavedWorksTestsQuery @relay_test_operation {
           me @optionalField {
-            ...MyCollectionAndSavedWorks_me
+            ...MyProfileHeaderMyCollectionAndSavedWorks_me
           }
         }
       `}
-      render={renderWithLoadProgress(MyCollectionAndSavedWorksFragmentContainer)}
+      render={renderWithLoadProgress(MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer)}
       variables={{}}
     />
   )
@@ -55,7 +55,7 @@ describe("MyCollectionAndSavedWorks", () => {
     jest.clearAllMocks()
   })
 
-  describe("Components of MyCollectionAndSavedWorks ", () => {
+  describe("Components of MyProfileHeaderMyCollectionAndSavedWorks ", () => {
     it("renders the right tabs", () => {
       const tree = getWrapper()
       expect(tree.root.findByType(StickyTabPage)).toBeDefined()

@@ -1,37 +1,28 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c8f8ec3b94988246b66f595fdf3f1402 */
+/* @relayHash c39bd9dee68481cd3d5c2866db63ad4a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyProfileQueryVariables = {};
-export type MyProfileQueryResponse = {
+export type MyProfileEditFormQueryVariables = {};
+export type MyProfileEditFormQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"MyProfileHeaderMyCollectionAndSavedWorks_me" | "MyProfile_me">;
+        readonly " $fragmentRefs": FragmentRefs<"MyProfileEditForm_me">;
     } | null;
 };
-export type MyProfileQuery = {
-    readonly response: MyProfileQueryResponse;
-    readonly variables: MyProfileQueryVariables;
+export type MyProfileEditFormQuery = {
+    readonly response: MyProfileEditFormQueryResponse;
+    readonly variables: MyProfileEditFormQueryVariables;
 };
 
 
 
 /*
-query MyProfileQuery {
-  me @optionalField {
-    ...MyProfileHeaderMyCollectionAndSavedWorks_me
-    ...MyProfile_me
+query MyProfileEditFormQuery {
+  me {
+    ...MyProfileEditForm_me
     id
-  }
-}
-
-fragment MyProfileEditFormModal_me on Me {
-  name
-  bio
-  icon {
-    url(version: "thumbnail")
   }
 }
 
@@ -51,32 +42,6 @@ fragment MyProfileEditForm_me on Me {
     url(version: "thumbnail")
   }
 }
-
-fragment MyProfileHeaderMyCollectionAndSavedWorks_me on Me {
-  name
-  bio
-  location {
-    display
-    id
-  }
-  otherRelevantPositions
-  profession
-  icon {
-    url(version: "thumbnail")
-  }
-  createdAt
-  ...MyProfileEditFormModal_me
-}
-
-fragment MyProfile_me on Me {
-  name
-  bio
-  icon {
-    url(version: "thumbnail")
-  }
-  ...MyProfileHeaderMyCollectionAndSavedWorks_me
-  ...MyProfileEditForm_me
-}
 */
 
 const node: ConcreteRequest = (function(){
@@ -92,7 +57,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "MyProfileQuery",
+    "name": "MyProfileEditFormQuery",
     "selections": [
       {
         "alias": null,
@@ -105,12 +70,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "MyProfileHeaderMyCollectionAndSavedWorks_me"
-          },
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "MyProfile_me"
+            "name": "MyProfileEditForm_me"
           }
         ],
         "storageKey": null
@@ -123,7 +83,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "MyProfileQuery",
+    "name": "MyProfileEditFormQuery",
     "selections": [
       {
         "alias": null,
@@ -138,6 +98,20 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "name",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "profession",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "otherRelevantPositions",
             "storageKey": null
           },
           {
@@ -162,7 +136,6 @@ return {
                 "name": "display",
                 "storageKey": null
               },
-              (v0/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -183,22 +156,9 @@ return {
                 "kind": "ScalarField",
                 "name": "country",
                 "storageKey": null
-              }
+              },
+              (v0/*: any*/)
             ],
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "otherRelevantPositions",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "profession",
             "storageKey": null
           },
           {
@@ -225,13 +185,6 @@ return {
             ],
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "createdAt",
-            "storageKey": null
-          },
           (v0/*: any*/)
         ],
         "storageKey": null
@@ -239,13 +192,13 @@ return {
     ]
   },
   "params": {
-    "id": "c8f8ec3b94988246b66f595fdf3f1402",
+    "id": "c39bd9dee68481cd3d5c2866db63ad4a",
     "metadata": {},
-    "name": "MyProfileQuery",
+    "name": "MyProfileEditFormQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'ac090279e66d810e376ad9c091fc8cba';
+(node as any).hash = 'f2b89bf46da7ae1f8e57eb1ed82d1489';
 export default node;
