@@ -57,12 +57,9 @@ const MyCollection: React.FC<{
   me: MyCollection_me
 }> = ({ relay, me }) => {
   const { trackEvent } = useTracking()
-  const { height: screenHeight } = useScreenDimensions()
 
   const enableSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
-
-  const viewOption = GlobalStore.useAppState((state) => state.userPreferences.artworkViewOption)
 
   const [keywordFilter, setKeywordFilter] = useState("")
   const [isSearchBarVisible, setIsSearchBarVisible] = useState(false)

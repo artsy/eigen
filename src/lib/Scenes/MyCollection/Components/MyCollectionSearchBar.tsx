@@ -84,19 +84,21 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
               </TouchableWithoutFeedback>
             </Flex>
             <Flex flexDirection="row">
-              <TouchableWithoutFeedback onPress={() => onViewOptionChange("list")}>
-                <Flex width={30} height={30} alignItems="center" justifyContent="center">
-                  <ListViewIcon
-                    fill={viewOption === "list" ? "black100" : "black30"}
-                    width={18}
-                    height={18}
-                  />
-                </Flex>
-              </TouchableWithoutFeedback>
+              <Flex mr={1}>
+                <TouchableWithoutFeedback onPress={() => onViewOptionChange("list")}>
+                  <Flex width={30} height={30} alignItems="center" justifyContent="center">
+                    <ListViewIcon
+                      fill={viewOption === "list" ? "black" : "gray"}
+                      width={18}
+                      height={18}
+                    />
+                  </Flex>
+                </TouchableWithoutFeedback>
+              </Flex>
               <TouchableWithoutFeedback onPress={() => onViewOptionChange("grid")}>
                 <Flex width={30} height={30} alignItems="center" justifyContent="center">
                   <GridViewIcon
-                    fill={viewOption === "grid" ? "black100" : "black30"}
+                    fill={viewOption === "grid" ? "black" : "gray"}
                     width={18}
                     height={18}
                   />
