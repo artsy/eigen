@@ -1,7 +1,6 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
-import { MyCollectionArtworkListItemTestsQuery } from "__generated__/MyCollectionArtworkListItemTestsQuery.graphql"
+import { MyCollectionArtworkGridItemTestsQuery } from "__generated__/MyCollectionArtworkGridItemTestsQuery.graphql"
 import { navigate } from "lib/navigation/navigate"
-import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
@@ -12,17 +11,17 @@ import { Image as RNImage } from "react-native"
 import { graphql, QueryRenderer } from "react-relay"
 import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MyCollectionArtworkListItemFragmentContainer, tests } from "./MyCollectionArtworkListItem"
+import { MyCollectionArtworkGridItemFragmentContainer, tests } from "./MyCollectionArtworkGridItem"
 
 jest.unmock("react-relay")
 
-describe("MyCollectionArtworkListItem", () => {
+describe("MyCollectionArtworkGridItem", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
   const TestRenderer = () => (
-    <QueryRenderer<MyCollectionArtworkListItemTestsQuery>
+    <QueryRenderer<MyCollectionArtworkGridItemTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query MyCollectionArtworkListItemTestsQuery @relay_test_operation {
+        query MyCollectionArtworkGridItemTestsQuery @relay_test_operation {
           artwork(id: "some-slug") {
             ...OldMyCollectionArtwork_sharedProps @relay(mask: false)
           }
@@ -31,7 +30,7 @@ describe("MyCollectionArtworkListItem", () => {
       variables={{}}
       render={({ props }) => {
         if (props?.artwork) {
-          return <MyCollectionArtworkListItemFragmentContainer artwork={props.artwork as any} />
+          return <MyCollectionArtworkGridItemFragmentContainer artwork={props.artwork as any} />
         }
         return null
       }}

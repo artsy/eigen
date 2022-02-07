@@ -10,7 +10,7 @@ import { ScreenOwnerType } from "@artsy/cohesion"
 import { InfiniteScrollArtworksGrid_connection } from "__generated__/InfiniteScrollArtworksGrid_connection.graphql"
 import { InfiniteScrollArtworksGrid_myCollectionConnection } from "__generated__/InfiniteScrollArtworksGrid_myCollectionConnection.graphql"
 import { PAGE_SIZE } from "lib/Components/constants"
-import { MyCollectionArtworkListItemFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkListItem"
+import { MyCollectionArtworkGridItemFragmentContainer } from "lib/Scenes/MyCollection/Screens/ArtworkList/MyCollectionArtworkGridItem"
 import { extractNodes } from "lib/utils/extractNodes"
 import { isCloseToBottom } from "lib/utils/isCloseToBottom"
 import { Box, Button, Flex, Spinner } from "palette"
@@ -99,7 +99,7 @@ export interface Props {
   /** To avoid layout jank, supply the width of the grid ahead of time. */
   width?: number
 
-  /** Allows to use MyCollectionArtworkListItem */
+  /** Allows to use MyCollectionArtworkGridItem */
   isMyCollection?: boolean
 
   /** Whether to use `ParentAwareScrollView` or `ScrollView` (defaults to true) */
@@ -304,7 +304,7 @@ class InfiniteScrollArtworksGrid extends React.Component<Props & PrivateProps, S
         const artwork = sectionedArtworks[column][row]
         const itemIndex = row * columnCount + column
         const ItemComponent = this.props.isMyCollection
-          ? MyCollectionArtworkListItemFragmentContainer
+          ? MyCollectionArtworkGridItemFragmentContainer
           : Artwork
 
         artworkComponents.push(
@@ -476,7 +476,7 @@ export const InfiniteScrollArtworksGridContainer = createFragmentContainer(
               aspectRatio
             }
             ...ArtworkGridItem_artwork
-            ...MyCollectionArtworkListItem_artwork @skip(if: $skipMyCollection)
+            ...MyCollectionArtworkGridItem_artwork @skip(if: $skipMyCollection)
           }
         }
       }
@@ -517,8 +517,9 @@ export const InfiniteScrollMyCollectionArtworksGridContainer = createFragmentCon
             width
             height
             date
+            ...MyCollectionArtworkList_filterProps @relay(mask: false)
             ...ArtworkGridItem_artwork @skip(if: $skipArtworkGridItem)
-            ...MyCollectionArtworkListItem_artwork
+            ...MyCollectionArtworkGridItem_artwork
           }
         }
       }

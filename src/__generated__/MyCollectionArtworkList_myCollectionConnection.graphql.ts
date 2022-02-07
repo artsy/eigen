@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type InfiniteScrollArtworksGrid_myCollectionConnection = {
+export type MyCollectionArtworkList_myCollectionConnection = {
     readonly pageInfo: {
         readonly hasNextPage: boolean;
         readonly startCursor: string | null;
@@ -15,9 +15,6 @@ export type InfiniteScrollArtworksGrid_myCollectionConnection = {
             readonly title: string | null;
             readonly slug: string;
             readonly id: string;
-            readonly image: {
-                readonly aspectRatio: number;
-            } | null;
             readonly artistNames: string | null;
             readonly medium: string | null;
             readonly artist: {
@@ -31,30 +28,24 @@ export type InfiniteScrollArtworksGrid_myCollectionConnection = {
             readonly width: string | null;
             readonly height: string | null;
             readonly date: string | null;
-            readonly " $fragmentRefs": FragmentRefs<"ArtworkGridItem_artwork" | "MyCollectionArtworkGridItem_artwork">;
+            readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkListItem_artwork">;
         } | null;
     } | null> | null;
-    readonly " $refType": "InfiniteScrollArtworksGrid_myCollectionConnection";
+    readonly " $refType": "MyCollectionArtworkList_myCollectionConnection";
 };
-export type InfiniteScrollArtworksGrid_myCollectionConnection$data = InfiniteScrollArtworksGrid_myCollectionConnection;
-export type InfiniteScrollArtworksGrid_myCollectionConnection$key = {
-    readonly " $data"?: InfiniteScrollArtworksGrid_myCollectionConnection$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_myCollectionConnection">;
+export type MyCollectionArtworkList_myCollectionConnection$data = MyCollectionArtworkList_myCollectionConnection;
+export type MyCollectionArtworkList_myCollectionConnection$key = {
+    readonly " $data"?: MyCollectionArtworkList_myCollectionConnection$data | undefined;
+    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkList_myCollectionConnection">;
 };
 
 
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [
-    {
-      "defaultValue": true,
-      "kind": "LocalArgument",
-      "name": "skipArtworkGridItem"
-    }
-  ],
+  "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "InfiniteScrollArtworksGrid_myCollectionConnection",
+  "name": "MyCollectionArtworkList_myCollectionConnection",
   "selections": [
     {
       "alias": null,
@@ -123,24 +114,6 @@ const node: ReaderFragment = {
               "args": null,
               "kind": "ScalarField",
               "name": "id",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "Image",
-              "kind": "LinkedField",
-              "name": "image",
-              "plural": false,
-              "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "aspectRatio",
-                  "storageKey": null
-                }
-              ],
               "storageKey": null
             },
             {
@@ -229,21 +202,9 @@ const node: ReaderFragment = {
               "storageKey": null
             },
             {
-              "condition": "skipArtworkGridItem",
-              "kind": "Condition",
-              "passingValue": false,
-              "selections": [
-                {
-                  "args": null,
-                  "kind": "FragmentSpread",
-                  "name": "ArtworkGridItem_artwork"
-                }
-              ]
-            },
-            {
               "args": null,
               "kind": "FragmentSpread",
-              "name": "MyCollectionArtworkGridItem_artwork"
+              "name": "MyCollectionArtworkListItem_artwork"
             }
           ],
           "storageKey": null
@@ -255,5 +216,5 @@ const node: ReaderFragment = {
   "type": "MyCollectionConnection",
   "abstractKey": null
 };
-(node as any).hash = '1bc75d2be1a33bdd942a5d0663fa62ae';
+(node as any).hash = '280845b278f1ad1687575b6c4bf0a77d';
 export default node;

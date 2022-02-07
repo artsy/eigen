@@ -1,6 +1,6 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
 import { themeGet } from "@styled-system/theme-get"
-import { MyCollectionArtworkListItem_artwork } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
+import { MyCollectionArtworkGridItem_artwork } from "__generated__/MyCollectionArtworkGridItem_artwork.graphql"
 import { DEFAULT_SECTION_MARGIN } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { navigate } from "lib/navigation/navigate"
 import { isPad } from "lib/utils/hardware"
@@ -13,11 +13,11 @@ import { useTracking } from "react-tracking"
 import styled from "styled-components/native"
 import { MyCollectionImageView } from "../../Components/MyCollectionImageView"
 
-interface MyCollectionArtworkListItemProps {
-  artwork: MyCollectionArtworkListItem_artwork
+interface MyCollectionArtworkGridItemProps {
+  artwork: MyCollectionArtworkGridItem_artwork
 }
 
-const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = ({ artwork }) => {
+const MyCollectionArtworkGridItem: React.FC<MyCollectionArtworkGridItemProps> = ({ artwork }) => {
   const { trackEvent } = useTracking()
   const imageURL =
     artwork.images?.find((i: any) => i?.isDefault)?.url ||
@@ -44,7 +44,7 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
             },
           })
         } else {
-          console.warn("MyCollectionArtworkListItem: Error: Missing artist.artistID")
+          console.warn("MyCollectionArtworkGridItem: Error: Missing artist.artistID")
         }
       }}
     >
@@ -73,11 +73,11 @@ const MyCollectionArtworkListItem: React.FC<MyCollectionArtworkListItemProps> = 
   )
 }
 
-export const MyCollectionArtworkListItemFragmentContainer = createFragmentContainer(
-  MyCollectionArtworkListItem,
+export const MyCollectionArtworkGridItemFragmentContainer = createFragmentContainer(
+  MyCollectionArtworkGridItem,
   {
     artwork: graphql`
-      fragment MyCollectionArtworkListItem_artwork on Artwork {
+      fragment MyCollectionArtworkGridItem_artwork on Artwork {
         internalID
         artist {
           internalID
