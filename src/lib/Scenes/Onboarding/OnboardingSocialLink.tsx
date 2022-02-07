@@ -207,7 +207,9 @@ export const OnboardingSocialLink: React.FC<
               onPress={handleSubmit}
               testID="artsySocialLinkPasswordButton"
             >
-              Link Accounts
+              {permittedProviders.length === 1 && permittedProviders[0] === "email"
+                ? "Yes, Link Accounts"
+                : "Link Accounts"}
             </Button>
             <Spacer mt="2" />
             <Button
@@ -218,7 +220,9 @@ export const OnboardingSocialLink: React.FC<
                 navigation.goBack()
               }}
             >
-              Back to Log-In Options
+              {permittedProviders.length === 1 && permittedProviders[0] === "email"
+                ? "No Thanks, Take Me Back"
+                : "Cancel"}
             </Button>
           </Flex>
 
@@ -255,7 +259,7 @@ export const OnboardingSocialLink: React.FC<
             navigation.goBack()
           }}
         >
-          Back to Log-In Options
+          No Thanks, Take Me Back
         </Button>
       </Flex>
       <LoadingOverlay loading={isLoading} />
