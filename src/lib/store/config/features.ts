@@ -35,10 +35,6 @@ function defineFeatures<T extends string>(featureMap: {
 export type FeatureName = keyof typeof features
 
 export const features = defineFeatures({
-  AROptionsArtistSeries: {
-    readyForRelease: true,
-    echoFlagKey: "AROptionsArtistSeries",
-  },
   AROptionsNewFirstInquiry: {
     readyForRelease: true,
     echoFlagKey: "AROptionsNewFirstInquiry",

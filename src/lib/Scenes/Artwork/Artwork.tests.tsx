@@ -128,8 +128,7 @@ describe("Artwork", () => {
   })
 
   describe("artist series components", () => {
-    it("renders with the feature flag enabled and artist series to show", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsArtistSeries: true })
+    it("renders when there are artist series to show", async () => {
       const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -149,29 +148,7 @@ describe("Artwork", () => {
       expect(tree.root.findAllByType(ArtworksInSeriesRail)).toHaveLength(1)
     })
 
-    it("does not render with the feature flag disabled", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsArtistSeries: false })
-      const tree = renderWithWrappers(<TestRenderer />)
-      mockMostRecentOperation("ArtworkAboveTheFoldQuery")
-      mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
-      mockMostRecentOperation("ArtworkBelowTheFoldQuery", {
-        Artwork() {
-          return {
-            artist: {
-              artistSeriesConnection: {
-                totalCount: 5,
-              },
-            },
-          }
-        },
-      })
-      await flushPromiseQueue()
-      expect(tree.root.findAllByType(ArtistSeriesMoreSeries)).toHaveLength(0)
-      expect(tree.root.findAllByType(ArtworksInSeriesRail)).toHaveLength(0)
-    })
-
     it("does not render when there are no artist series to show", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsArtistSeries: true })
       const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery")
       mockMostRecentOperation("ArtworkMarkAsRecentlyViewedQuery")
@@ -195,7 +172,6 @@ describe("Artwork", () => {
     })
 
     it("tracks a click to an artist series item", async () => {
-      __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsArtistSeries: true })
       const tree = renderWithWrappers(<TestRenderer />)
       mockMostRecentOperation("ArtworkAboveTheFoldQuery", {
         Artwork() {
