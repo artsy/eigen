@@ -26,7 +26,7 @@ export function useAutoCollapsingMeasuredView(content: React.ReactChild | null) 
               : undefined
           }
           onLayout={(e) => {
-            setNativeHeight(new Animated.Value(e.nativeEvent.layout.height))
+            nativeHeight.setValue(e.nativeEvent.layout.height)
           }}
         >
           {content}
