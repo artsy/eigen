@@ -1,11 +1,14 @@
 import { useStickyTabPageContext } from "lib/Components/StickyTabPage/SitckyTabPageContext"
+import { GridViewIcon } from "lib/Icons/GridViewIcon"
+import { ListViewIcon } from "lib/Icons/ListViewIcon"
 import SearchIcon from "lib/Icons/SearchIcon"
 import { ViewOption } from "lib/Scenes/Search/UserPreferencesModel"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { debounce } from "lodash"
-import { AddIcon, Flex, Input, MenuIcon, Text } from "palette"
+import { Flex, Input, Text } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import {
+  LayoutAnimation,
   NativeSyntheticEvent,
   TextInput,
   TextInputFocusEventData,
@@ -33,6 +36,11 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
   const debouncedSetKeywordFilter = useMemo(() => debounce((text) => onChangeText?.(text), 200), [])
 
   const onViewOptionChange = (selectedViewOption: ViewOption) => {
+    LayoutAnimation.configureNext({
+      ...LayoutAnimation.Presets.linear,
+      duration: 100,
+    })
+
     GlobalStore.actions.userPreferences.setArtworkViewOption(selectedViewOption)
   }
 
@@ -78,7 +86,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
             <Flex flexDirection="row">
               <TouchableWithoutFeedback onPress={() => onViewOptionChange("list")}>
                 <Flex width={30} height={30} alignItems="center" justifyContent="center">
-                  <MenuIcon
+                  <ListViewIcon
                     fill={viewOption === "list" ? "black100" : "black30"}
                     width={18}
                     height={18}
@@ -87,7 +95,7 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback onPress={() => onViewOptionChange("grid")}>
                 <Flex width={30} height={30} alignItems="center" justifyContent="center">
-                  <AddIcon
+                  <GridViewIcon
                     fill={viewOption === "grid" ? "black100" : "black30"}
                     width={18}
                     height={18}

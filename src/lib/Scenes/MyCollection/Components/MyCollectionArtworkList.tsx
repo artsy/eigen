@@ -21,7 +21,6 @@ export const MyCollectionArtworkList: React.FC<{
   )
 
   const artworks = extractNodes(artworkConnection)
-
   const preprocessedArtworks = localSortAndFilterArtworks?.(artworks) ?? artworks
 
   const [loadingMoreData, setLoadingMoreData] = useState(false)
@@ -30,11 +29,14 @@ export const MyCollectionArtworkList: React.FC<{
     if (!hasMore() || isLoading()) {
       return
     }
+
     setLoadingMoreData(true)
+
     loadMore(PAGE_SIZE, (error) => {
       if (error) {
         console.log(error.message)
       }
+
       setLoadingMoreData(false)
     })
   }
@@ -44,12 +46,13 @@ export const MyCollectionArtworkList: React.FC<{
       <PrefetchFlatList
         data={preprocessedArtworks}
         renderItem={({ item }) => <MyCollectionArtworkListItem artwork={item} />}
-        prefetchUrlExtractor={(artwork) => `/my-collection/artwork/${artwork.slug}`}
-        prefetchVariablesExtractor={(artwork) => ({
-          artworkSlug: artwork.slug,
-          medium: artwork.medium,
-          artistInternalID: artwork.artist?.internalID,
-        })}
+        // TODO: Add prefetching for this list when the new artwork detail screen is ready
+        // prefetchUrlExtractor={(artwork) => `/my-collection/artwork/${artwork.slug}`}
+        // prefetchVariablesExtractor={(artwork) => ({
+        //   artworkSlug: artwork.slug,
+        //   medium: artwork.medium,
+        //   artistInternalID: artwork.artist?.internalID,
+        // })}
         onEndReached={loadMoreArtworks}
         keyExtractor={(item, index) => String(item.slug || index)}
         ListFooterComponent={
