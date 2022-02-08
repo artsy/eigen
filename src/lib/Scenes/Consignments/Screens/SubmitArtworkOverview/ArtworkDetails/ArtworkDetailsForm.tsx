@@ -15,9 +15,12 @@ export const ArtworkDetailsForm: React.FC = () => {
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
 
+  const StandarSpace = () => <Spacer mt={4} />
+
   return (
     <>
       <ArtistAutosuggest />
+      <StandarSpace />
       <Input
         title="Title"
         placeholder="Add Title or Write 'Unknown'"
@@ -25,6 +28,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.title}
         onChangeText={(e) => setFieldValue("title", e)}
       />
+      <StandarSpace />
       <Input
         title="Year"
         placeholder="YYYY"
@@ -32,6 +36,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.year}
         onChangeText={(e) => setFieldValue("year", e)}
       />
+      <StandarSpace />
       <Input
         title="Materials"
         placeholder="Oil on Canvas, Mixed Media, Lithograph.."
@@ -39,6 +44,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.medium}
         onChangeText={(e) => setFieldValue("medium", e)}
       />
+      <StandarSpace />
       <Select
         onSelectValue={(e) => setFieldValue("attributionClass", e)}
         value={values.attributionClass}
@@ -84,7 +90,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           </Flex>
         </>
       )}
-      <Spacer mt={4} />
+      <StandarSpace />
       <InputTitle>Dimensions</InputTitle>
       <Spacer mt={1} />
       <Flex flexDirection="row">
@@ -127,7 +133,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           />
         </Box>
       </Flex>
-      <Spacer mt={4} />
+      <StandarSpace />
       <Flex flexDirection="row" justifyContent="space-between">
         <InputTitle>Provenance</InputTitle>
         <Text variant="xs" color="black60" onPress={() => setIsProvenanceInfoModalVisible(true)}>
@@ -159,11 +165,12 @@ export const ArtworkDetailsForm: React.FC = () => {
           <BulletedItem color="black">Gallery exhibition catalogues</BulletedItem>
         </Flex>
       </InfoModal>
-
+      <StandarSpace />
       <LocationAutocomplete
         initialLocation={values.location}
         onChange={(e: Location) => setFieldValue("location", e)}
       />
+      <StandarSpace />
     </>
   )
 }
