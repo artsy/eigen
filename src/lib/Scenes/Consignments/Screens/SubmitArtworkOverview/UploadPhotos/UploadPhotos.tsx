@@ -6,11 +6,12 @@ import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { uniqBy } from "lodash"
 import { BulletedItem, Button, CTAButton, Flex, Spacer, Text } from "palette"
 import React, { useState } from "react"
+import { uploadImageAndPassToGemini } from "../../../Submission/uploadPhotoToGemini"
 import { ErrorView } from "../Components/ErrorView"
 import { PhotosFormModel, photosValidationSchema } from "./validation"
 
 // TODO: get & set photos from and to GlobalStore
-let photos: PhotosFormModel[] = []
+const photos: PhotosFormModel[] = []
 console.log({ photos })
 
 export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
@@ -21,22 +22,38 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
   const handlePhotosSubmit = async (values: PhotosFormModel[]) => {
     console.log({ values })
 
-    try {
-      if (submissionId) {
-        // const id = await addAssetToConsignment(submissionId)
-        // if (id) {
-        // GlobalStore.actions.artworkSubmission.submission.setPhotos(photos)
-        handlePress()
-        // }
-      }
-    } catch (error) {
-      captureMessage(JSON.stringify(error))
-      setPhotoUploadError(true)
-    }
+    // try {
+    // if (submissionId) {
+    // const id = await addAssetToConsignment(submissionId)
+    // if (id) {
+    // GlobalStore.actions.artworkSubmission.submission.setPhotos(photos)
+    // handlePress()
+    // }
+    //   }
+    // } catch (error) {
+    //   captureMessage(JSON.stringify(error))
+    //   setPhotoUploadError(true)
+    // }
   }
 
-  const addPhotos = (photo: PhotosFormModel[]) => {
-    photos = uniqBy(photos.concat(photo), (p) => p.imageURL || p.path)
+  const upload = async (photo: PhotosFormModel) => {
+    const x = await uploadImageAndPassToGemini(photo.path || "", "private", submissionId)
+    console.log({ x })
+  }
+
+  const addPhotos = async (photo: PhotosFormModel[]) => {
+    console.log("X")
+    console.log({ photo })
+
+    if (photo?.length) {
+      photo.map((p: PhotosFormModel) => {
+        if (p.path) {
+          upload(p)
+        }
+      })
+    }
+
+    // photos = uniqBy(photos.concat(photo), (p) => p.imageURL || p.path)
     // GlobalStore.setPhotos(allPhotos)
   }
 
