@@ -5,6 +5,7 @@ interface Props {
   isOpen: boolean
   children: ReactNode
 }
+
 export const CollapseView: React.FC<Props> = ({ isOpen, children }) => {
   return <>{isOpen ? <View>{children}</View> : null}</>
 }
