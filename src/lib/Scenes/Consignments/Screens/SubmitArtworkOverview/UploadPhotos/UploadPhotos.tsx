@@ -28,7 +28,7 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
     }
   }
 
-  const handleAddPhotoClick = async () => {
+  const handleAddPhotoPress = async () => {
     try {
       const photos = await showPhotoActionSheet(showActionSheetWithOptions, true)
       if (photos?.length && submission?.submissionId) {
@@ -39,6 +39,8 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
       setPhotoUploadError(true)
     }
   }
+
+  const handleDeletePhotoPress = () => null
 
   if (photoUploadError) {
     return <ErrorView />
@@ -81,11 +83,14 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
               <Text variant="md" color="black60" marginBottom={3}>
                 Total Maximum Size: 30MB
               </Text>
-              <Button onPress={handleAddPhotoClick} variant="outline" size="large" block>
+              <Button onPress={handleAddPhotoPress} variant="outline" size="large" block>
                 Add Photo
               </Button>
               <Spacer mt={1} />
             </Flex>
+
+            {/* DISPLAY ADDED PHOTOS */}
+
             <CTAButton disabled={!isValid} onPress={handlePress} testID="Submission_Photos_Button">
               Save & Continue
             </CTAButton>
