@@ -1,6 +1,6 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { SafeAreaInsets } from "lib/types/SafeAreaInsets"
-import React, { useEffect, useRef } from "react"
+import React, { useEffect } from "react"
 import { AppRegistry, LogBox, Platform, View } from "react-native"
 import { GraphQLTaggedNode } from "relay-runtime"
 import { AppProviders } from "./AppProviders"
@@ -223,20 +223,28 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({
   )
 }
 
-const PageWrapper: React.FC<PageWrapperProps> = (props) => {
-  const pageProps = useRef({
-    ...props,
-    viewProps: {
-      ...props.viewProps,
-      ...propsStore.getPropsForModule(props.moduleName),
-    },
-  }).current
+@track()
+class PageWrapper extends React.Component<PageWrapperProps> {
+  pageProps: PageWrapperProps
 
-  return (
-    <AppProviders>
-      <InnerPageWrapper {...pageProps} />
-    </AppProviders>
-  )
+  constructor(props: PageWrapperProps) {
+    super(props)
+    this.pageProps = {
+      ...this.props,
+      viewProps: {
+        ...this.props.viewProps,
+        ...propsStore.getPropsForModule(this.props.moduleName),
+      },
+    }
+  }
+
+  render() {
+    return (
+      <AppProviders>
+        <InnerPageWrapper {...this.pageProps} />
+      </AppProviders>
+    )
+  }
 }
 
 function register(
