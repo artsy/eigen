@@ -1,31 +1,31 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d92b088e8d0278afc1b73e28df271da0 */
+/* @relayHash 3fad36ccb889ca8ecc1e56b7fdb74a07 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyProfileHeaderMyCollectionAndSavedWorksQueryVariables = {
+export type MyProfileHeaderMyCollectionAndSavedWorksRefetchQueryVariables = {
     enableCollectorProfile: boolean;
 };
-export type MyProfileHeaderMyCollectionAndSavedWorksQueryResponse = {
+export type MyProfileHeaderMyCollectionAndSavedWorksRefetchQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"MyProfileHeaderMyCollectionAndSavedWorks_me">;
+        readonly " $fragmentRefs": FragmentRefs<"MyProfileEditFormModal_me">;
     } | null;
 };
-export type MyProfileHeaderMyCollectionAndSavedWorksQuery = {
-    readonly response: MyProfileHeaderMyCollectionAndSavedWorksQueryResponse;
-    readonly variables: MyProfileHeaderMyCollectionAndSavedWorksQueryVariables;
+export type MyProfileHeaderMyCollectionAndSavedWorksRefetchQuery = {
+    readonly response: MyProfileHeaderMyCollectionAndSavedWorksRefetchQueryResponse;
+    readonly variables: MyProfileHeaderMyCollectionAndSavedWorksRefetchQueryVariables;
 };
 
 
 
 /*
-query MyProfileHeaderMyCollectionAndSavedWorksQuery(
+query MyProfileHeaderMyCollectionAndSavedWorksRefetchQuery(
   $enableCollectorProfile: Boolean!
 ) {
-  me @optionalField {
-    ...MyProfileHeaderMyCollectionAndSavedWorks_me_3CllfQ
+  me {
+    ...MyProfileEditFormModal_me_3CllfQ
     id
   }
 }
@@ -50,22 +50,6 @@ fragment MyProfileEditFormModal_me_3CllfQ on Me {
     url(version: "thumbnail")
   }
 }
-
-fragment MyProfileHeaderMyCollectionAndSavedWorks_me_3CllfQ on Me {
-  name
-  bio
-  location {
-    display
-    id
-  }
-  otherRelevantPositions
-  profession
-  icon {
-    url(version: "thumbnail")
-  }
-  createdAt
-  ...MyProfileEditFormModal_me_3CllfQ
-}
 */
 
 const node: ConcreteRequest = (function(){
@@ -88,7 +72,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "MyProfileHeaderMyCollectionAndSavedWorksQuery",
+    "name": "MyProfileHeaderMyCollectionAndSavedWorksRefetchQuery",
     "selections": [
       {
         "alias": null,
@@ -107,7 +91,7 @@ return {
               }
             ],
             "kind": "FragmentSpread",
-            "name": "MyProfileHeaderMyCollectionAndSavedWorks_me"
+            "name": "MyProfileEditFormModal_me"
           }
         ],
         "storageKey": null
@@ -120,7 +104,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "MyProfileHeaderMyCollectionAndSavedWorksQuery",
+    "name": "MyProfileHeaderMyCollectionAndSavedWorksRefetchQuery",
     "selections": [
       {
         "alias": null,
@@ -147,39 +131,6 @@ return {
           {
             "alias": null,
             "args": null,
-            "concreteType": "MyLocation",
-            "kind": "LinkedField",
-            "name": "location",
-            "plural": false,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "display",
-                "storageKey": null
-              },
-              (v1/*: any*/)
-            ],
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "otherRelevantPositions",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "profession",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
             "concreteType": "Image",
             "kind": "LinkedField",
             "name": "icon",
@@ -201,13 +152,6 @@ return {
             ],
             "storageKey": null
           },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "createdAt",
-            "storageKey": null
-          },
           (v1/*: any*/),
           {
             "condition": "enableCollectorProfile",
@@ -217,11 +161,32 @@ return {
               {
                 "alias": null,
                 "args": null,
+                "kind": "ScalarField",
+                "name": "profession",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "otherRelevantPositions",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
                 "concreteType": "MyLocation",
                 "kind": "LinkedField",
                 "name": "location",
                 "plural": false,
                 "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "display",
+                    "storageKey": null
+                  },
                   {
                     "alias": null,
                     "args": null,
@@ -242,7 +207,8 @@ return {
                     "kind": "ScalarField",
                     "name": "country",
                     "storageKey": null
-                  }
+                  },
+                  (v1/*: any*/)
                 ],
                 "storageKey": null
               },
@@ -282,13 +248,13 @@ return {
     ]
   },
   "params": {
-    "id": "d92b088e8d0278afc1b73e28df271da0",
+    "id": "3fad36ccb889ca8ecc1e56b7fdb74a07",
     "metadata": {},
-    "name": "MyProfileHeaderMyCollectionAndSavedWorksQuery",
+    "name": "MyProfileHeaderMyCollectionAndSavedWorksRefetchQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = '55f70488a25c2b85dc075abf6ba44e4e';
+(node as any).hash = '7cc8c1d55415ff8d7cbb86cedddc0d29';
 export default node;

@@ -25,7 +25,7 @@ import {
   useColor,
 } from "palette"
 import React, { useContext } from "react"
-import { createFragmentContainer, QueryRenderer } from "react-relay"
+import { createRefetchContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionPlaceholder, MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
@@ -71,7 +71,7 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
 
   const { localImage } = useContext(MyProfileContext)
 
-  const imagePath = localImage || me?.icon?.url
+  const userProfileImagePath = localImage || me?.icon?.url
 
   return (
     <>
@@ -91,8 +91,8 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
           justifyContent="center"
           alignItems="center"
         >
-          {!!imagePath ? (
-            <Avatar src={imagePath} size="md" />
+          {!!userProfileImagePath ? (
+            <Avatar src={userProfileImagePath} size="md" />
           ) : (
             <Image source={require("../../../../images/profile_placeholder_avatar.webp")} />
           )}
@@ -164,11 +164,12 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
   )
 }
 
-export const MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer = createFragmentContainer(
+export const MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer = createRefetchContainer(
   MyProfileHeaderMyCollectionAndSavedWorks,
   {
     me: graphql`
-      fragment MyProfileHeaderMyCollectionAndSavedWorks_me on Me {
+      fragment MyProfileHeaderMyCollectionAndSavedWorks_me on Me
+      @argumentDefinitions(enableCollectorProfile: { type: "Boolean", defaultValue: false }) {
         name
         bio
         location {
@@ -180,32 +181,44 @@ export const MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer = createF
           url(version: "thumbnail")
         }
         createdAt
-        ...MyProfileEditFormModal_me
+        ...MyProfileEditFormModal_me @arguments(enableCollectorProfile: $enableCollectorProfile)
       }
     `,
-  }
+  },
+  graphql`
+    query MyProfileHeaderMyCollectionAndSavedWorksRefetchQuery($enableCollectorProfile: Boolean!) {
+      me {
+        ...MyProfileEditFormModal_me @arguments(enableCollectorProfile: $enableCollectorProfile)
+      }
+    }
+  `
 )
 
 export const MyProfileHeaderMyCollectionAndSavedWorksScreenQuery = graphql`
-  query MyProfileHeaderMyCollectionAndSavedWorksQuery {
+  query MyProfileHeaderMyCollectionAndSavedWorksQuery($enableCollectorProfile: Boolean!) {
     me @optionalField {
       ...MyProfileHeaderMyCollectionAndSavedWorks_me
+        @arguments(enableCollectorProfile: $enableCollectorProfile)
     }
   }
 `
 
-export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => (
-  <ProvideScreenTrackingWithCohesionSchema
-    info={screen({ context_screen_owner_type: OwnerType.profile })}
-  >
-    <QueryRenderer<MyProfileHeaderMyCollectionAndSavedWorksQuery>
-      environment={defaultEnvironment}
-      query={MyProfileHeaderMyCollectionAndSavedWorksScreenQuery}
-      render={renderWithPlaceholder({
-        Container: MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
-        renderPlaceholder: () => <MyCollectionPlaceholder />,
-      })}
-      variables={{}}
-    />
-  </ProvideScreenTrackingWithCohesionSchema>
-)
+export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => {
+  const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
+
+  return (
+    <ProvideScreenTrackingWithCohesionSchema
+      info={screen({ context_screen_owner_type: OwnerType.profile })}
+    >
+      <QueryRenderer<MyProfileHeaderMyCollectionAndSavedWorksQuery>
+        environment={defaultEnvironment}
+        query={MyProfileHeaderMyCollectionAndSavedWorksScreenQuery}
+        render={renderWithPlaceholder({
+          Container: MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
+          renderPlaceholder: () => <MyCollectionPlaceholder />,
+        })}
+        variables={{ enableCollectorProfile }}
+      />
+    </ProvideScreenTrackingWithCohesionSchema>
+  )
+}
