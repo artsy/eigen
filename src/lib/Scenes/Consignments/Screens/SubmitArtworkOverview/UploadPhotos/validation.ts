@@ -10,7 +10,7 @@ export interface PhotosFormModel {
   imageVersions?: string[]
 }
 
-export const photosEmptyInitialValues = []
+export const photosEmptyInitialValues: PhotosFormModel[] = []
 
 export const photosValidationSchema = Yup.object().shape({
   photos: Yup.object().shape({

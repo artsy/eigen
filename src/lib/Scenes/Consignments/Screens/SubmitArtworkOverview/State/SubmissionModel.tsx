@@ -4,18 +4,15 @@ import {
   artworkDetailsEmptyInitialValues,
   ArtworkDetailsFormModel,
 } from "../ArtworkDetails/validation"
-// import {
-//   photosEmptyInitialValues,
-//   PhotosFormModel,
-// } from "../UploadPhotos/validation"
+import { photosEmptyInitialValues, PhotosFormModel } from "../UploadPhotos/validation"
 
 export interface ArtworkSubmissionModel {
   submissionId: string
   setSubmissionId: Action<ArtworkSubmissionModel, string>
   artworkDetails: ArtworkDetailsFormModel
   setArtworkDetailsForm: Action<ArtworkSubmissionModel, ArtworkDetailsFormModel>
-  // photos: PhotosFormModel[]
-  // setPhotos: Action<>
+  photos: PhotosFormModel[]
+  setPhotos: Action<ArtworkSubmissionModel, PhotosFormModel[]>
   setUtmParams: Action<ArtworkSubmissionModel, ConsignmentsSubmissionUtmParams>
   resetSessionState: Action<ArtworkSubmissionModel>
 }
@@ -28,10 +25,10 @@ export const getSubmissionModel = (): SubmissionModel => ({
   submission: {
     submissionId: "",
     artworkDetails: artworkDetailsEmptyInitialValues,
-    // photos: photosEmptyInitialValues,
-    // setPhotos: action((state, photos) => {
-    //   state.photos = photos
-    // }),
+    photos: photosEmptyInitialValues,
+    setPhotos: action((state, photos) => {
+      state.photos = photos
+    }),
     setSubmissionId: action((state, id) => {
       state.submissionId = id
     }),
@@ -49,6 +46,7 @@ export const getSubmissionModel = (): SubmissionModel => ({
     resetSessionState: action((state) => {
       state.submissionId = ""
       state.artworkDetails = artworkDetailsEmptyInitialValues
+      state.photos = photosEmptyInitialValues
     }),
   },
 })

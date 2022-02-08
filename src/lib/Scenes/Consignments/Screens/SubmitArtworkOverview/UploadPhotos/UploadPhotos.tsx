@@ -3,58 +3,41 @@ import { captureMessage } from "@sentry/react-native"
 import { Formik } from "formik"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
-import { uniqBy } from "lodash"
 import { BulletedItem, Button, CTAButton, Flex, Spacer, Text } from "palette"
 import React, { useState } from "react"
 import { uploadImageAndPassToGemini } from "../../../Submission/uploadPhotoToGemini"
 import { ErrorView } from "../Components/ErrorView"
-import { PhotosFormModel, photosValidationSchema } from "./validation"
-
-// TODO: get & set photos from and to GlobalStore
-const photos: PhotosFormModel[] = []
-console.log({ photos })
+import { photosEmptyInitialValues, PhotosFormModel, photosValidationSchema } from "./validation"
 
 export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
-  const { submissionId } = GlobalStore.useAppState((state) => state.artworkSubmission.submission)
+  const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const { showActionSheetWithOptions } = useActionSheet()
   const [photoUploadError, setPhotoUploadError] = useState(false)
 
-  const handlePhotosSubmit = async (values: PhotosFormModel[]) => {
-    console.log({ values })
-
-    // try {
-    // if (submissionId) {
-    // const id = await addAssetToConsignment(submissionId)
-    // if (id) {
-    // GlobalStore.actions.artworkSubmission.submission.setPhotos(photos)
-    // handlePress()
-    // }
-    //   }
-    // } catch (error) {
-    //   captureMessage(JSON.stringify(error))
-    //   setPhotoUploadError(true)
-    // }
-  }
-
-  const upload = async (photo: PhotosFormModel) => {
-    const x = await uploadImageAndPassToGemini(photo.path || "", "private", submissionId)
-    console.log({ x })
-  }
-
-  const addPhotos = async (photo: PhotosFormModel[]) => {
-    console.log("X")
-    console.log({ photo })
-
-    if (photo?.length) {
-      photo.map((p: PhotosFormModel) => {
-        if (p.path) {
-          upload(p)
+  const addPhotoToSubmission = async (photos: PhotosFormModel[]) => {
+    try {
+      for (const photo of photos) {
+        if (photo.path) {
+          await uploadImageAndPassToGemini(photo.path, "private", submission.submissionId)
+          GlobalStore.actions.artworkSubmission.submission.setPhotos([...submission.photos, photo])
         }
-      })
+      }
+    } catch (error) {
+      captureMessage(JSON.stringify(error))
+      setPhotoUploadError(true)
     }
+  }
 
-    // photos = uniqBy(photos.concat(photo), (p) => p.imageURL || p.path)
-    // GlobalStore.setPhotos(allPhotos)
+  const handleAddPhotoClick = async () => {
+    try {
+      const photos = await showPhotoActionSheet(showActionSheetWithOptions, true)
+      if (photos?.length && submission?.submissionId) {
+        addPhotoToSubmission(photos)
+      }
+    } catch (error) {
+      captureMessage(JSON.stringify(error))
+      setPhotoUploadError(true)
+    }
   }
 
   if (photoUploadError) {
@@ -74,12 +57,12 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
       </Flex>
 
       <Formik<PhotosFormModel[]>
-        initialValues={photos}
-        onSubmit={handlePhotosSubmit}
+        initialValues={photosEmptyInitialValues}
+        onSubmit={handlePress}
         validationSchema={photosValidationSchema}
         validateOnMount
       >
-        {({ values, isValid }) => (
+        {({ isValid }) => (
           <>
             <Flex
               style={{ borderColor: "lightgray", borderWidth: 1 }}
@@ -98,25 +81,12 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
               <Text variant="md" color="black60" marginBottom={3}>
                 Total Maximum Size: 30MB
               </Text>
-              <Button
-                onPress={() => {
-                  showPhotoActionSheet(showActionSheetWithOptions, true).then((photo) => {
-                    addPhotos(photo)
-                  })
-                }}
-                variant="outline"
-                size="large"
-                block
-              >
+              <Button onPress={handleAddPhotoClick} variant="outline" size="large" block>
                 Add Photo
               </Button>
               <Spacer mt={1} />
             </Flex>
-            <CTAButton
-              disabled={!isValid}
-              onPress={() => handlePhotosSubmit(values)}
-              testID="Submission_Photos_Button"
-            >
+            <CTAButton disabled={!isValid} onPress={handlePress} testID="Submission_Photos_Button">
               Save & Continue
             </CTAButton>
           </>
