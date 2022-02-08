@@ -1,6 +1,7 @@
 import { Formik } from "formik"
-import { BulletedItem, CTAButton, Flex, Text } from "palette"
+import { BulletedItem, Button, CTAButton, Flex, Spacer, Text } from "palette"
 import React, { useState } from "react"
+import { Image } from "react-native"
 import { ErrorView } from "../Components/ErrorView"
 import { UploadPhotosForm } from "./UploadPhotosForm"
 import {
@@ -15,6 +16,10 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
 
   if (photoUploadError) {
     return <ErrorView />
+  }
+
+  const handlePhotoDelete = (photo: Photo) => {
+    console.log({ deleted_photo: photo })
   }
 
   return (
@@ -39,9 +44,9 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
           return (
             <>
               <UploadPhotosForm setPhotoUploadError={setPhotoUploadError} />
-
+              <Spacer mt={2} />
               {values.photos.map((photo: Photo, idx: number) => (
-                <PhotoThumbnail key={idx} photo={photo} />
+                <PhotoThumbnail key={idx} photo={photo} handlePhotoDelete={handlePhotoDelete} />
               ))}
 
               {/* TODO: add loading view */}
@@ -60,13 +65,35 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
   )
 }
 
-const PhotoThumbnail: React.FC<{ photo: Photo }> = ({ photo }) => {
-  console.log({ ZZZZ: photo })
+const PhotoThumbnail: React.FC<{ photo: Photo; handlePhotoDelete: (arg: Photo) => void }> = ({
+  photo,
+  handlePhotoDelete,
+}) => {
+  // TODO: display error view
   return (
-    <Flex style={{ borderColor: "lightgray", borderWidth: 1 }} mt={4} mb={2} p={2} pt={3} pb={3}>
-      <Text variant="lg" color="black100" marginBottom={1}>
-        hello
-      </Text>
-    </Flex>
+    <>
+      <Flex
+        p={1}
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+        style={{ borderColor: "lightgray", borderWidth: 1, borderRadius: 4 }}
+      >
+        <Image
+          resizeMode="contain"
+          // TODO: get uril from photo
+          source={{
+            uri: "https://i.picsum.photos/id/14/200/300.jpg?hmac=FMdb1SH_oeEo4ibDe66-ORzb8p0VYJUS3xWfN3h2qDU",
+          }}
+          style={{ height: 58, width: 70 }}
+          testID="image"
+        />
+        <Text>0.32mb</Text>
+        <Button variant="text" size="small" onPress={() => handlePhotoDelete(photo)}>
+          <Text style={{ textDecorationLine: "underline" }}>Delete</Text>
+        </Button>
+      </Flex>
+      <Spacer mt={2} />
+    </>
   )
 }
