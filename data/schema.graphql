@@ -831,8 +831,8 @@ union ArticleSections =
   | ArticleSectionVideo
 
 type ArticleSectionSocialEmbed {
-  layout: String
-  type: String
+  # oEmbed HTML response. Only Twitter is currently supported.
+  embed: String
   url: String
 }
 
