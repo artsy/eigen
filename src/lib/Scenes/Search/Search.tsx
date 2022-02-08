@@ -201,7 +201,7 @@ export const Search: React.FC = () => {
   const handleTrackAlgoliaResultPress = (result: AlgoliaSearchResult) => {
     const contextModule = getContextModuleByPillName(selectedPill.displayName)
 
-    const analyticsData: TappedSearchResultData = {
+    const data: TappedSearchResultData = {
       type: selectedPill.displayName,
       slug: result.slug,
       position: result.__position - 1,
@@ -210,10 +210,10 @@ export const Search: React.FC = () => {
     }
 
     if (contextModule && objectTabByContextModule[contextModule]) {
-      analyticsData.objectTab = objectTabByContextModule[contextModule]
+      data.objectTab = objectTabByContextModule[contextModule]
     }
 
-    trackEvent(tracks.tappedSearchResult(analyticsData))
+    trackEvent(tracks.tappedSearchResult(data))
   }
 
   return (
