@@ -22,8 +22,8 @@ const spyAlert = jest.spyOn(Alert, "alert")
 describe("Saved search alert form", () => {
   const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
   const notificationPermissions = mockFetchNotificationPermissions(false)
-
   beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: false })
     spyAlert.mockClear()
     mockEnvironment.mockClear()
     notificationPermissions.mockImplementationOnce((cb) =>
@@ -579,7 +579,6 @@ describe("Saved search alert form", () => {
     it("should have removable filter pills when in create mode and AREnableImprovedAlertsFlow enabled", () => {
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
       const { getByText } = renderWithWrappersTL(<TestRenderer />)
-
       // artist pill should appear and not be removable
       expect(getByText("artistName")).toBeTruthy()
       expect(getByText("artistName")).not.toHaveProp("onPress")
@@ -604,9 +603,9 @@ describe("Saved search alert form", () => {
 
   describe("Сhecking for a duplicate alert", () => {
     beforeEach(() => {
+      mockEnvironment.mockClear()
       __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
     })
-
     describe("Create flow", () => {
       it("should call create mutation without a warning message", async () => {
         const { getAllByText } = renderWithWrappersTL(<TestRenderer />)

@@ -56,6 +56,7 @@ describe("CreateSavedSearchAlert", () => {
   beforeEach(() => {
     mockEnvironment.mockClear()
     notificationPermissions.mockClear()
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: false })
   })
 
   const TestRenderer = (props: Partial<CreateSavedSearchAlertProps>) => {
