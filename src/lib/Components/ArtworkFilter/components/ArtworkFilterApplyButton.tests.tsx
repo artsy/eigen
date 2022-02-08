@@ -11,10 +11,6 @@ const defaultProps: ArtworkFilterApplyButtonProps = {
 }
 
 describe("ArtworkFilterApplyButton", () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-  })
-
   const TestWrapper = (props?: Partial<ArtworkFilterApplyButtonProps>) => {
     return <ArtworkFilterApplyButton {...defaultProps} {...props} />
   }

@@ -4,6 +4,7 @@ import {
   ArtworkFiltersStoreProvider,
 } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { RightButtonContainer } from "lib/Components/FancyModal/FancyModalHeader"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { Check } from "palette"
@@ -26,6 +27,10 @@ const MOCK_AGGREGATIONS: Aggregations = [
 ]
 
 describe("ArtistNationalitiesOptionsScreen", () => {
+  beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: false })
+  })
+
   const INITIAL_DATA: ArtworkFiltersState = {
     selectedFilters: [],
     appliedFilters: [],

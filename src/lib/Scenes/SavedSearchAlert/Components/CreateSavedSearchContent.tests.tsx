@@ -1,5 +1,6 @@
 import { fireEvent, waitFor } from "@testing-library/react-native"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { mockFetchNotificationPermissions } from "lib/tests/mockFetchNotificationPermissions"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
@@ -25,6 +26,7 @@ describe("CreateSavedSearchAlert", () => {
   const notificationPermissions = mockFetchNotificationPermissions(false)
 
   beforeEach(() => {
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: false })
     mockEnvironment.mockClear()
     notificationPermissions.mockClear()
   })
