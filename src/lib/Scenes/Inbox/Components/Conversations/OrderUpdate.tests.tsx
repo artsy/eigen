@@ -1,6 +1,8 @@
 import React from "react"
 
 import { OrderUpdateTestsQuery } from "__generated__/OrderUpdateTestsQuery.graphql"
+import { LinkText } from "lib/Components/Text/LinkText"
+import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { AlertCircleFillIcon, MoneyFillIcon } from "palette"
@@ -146,6 +148,9 @@ describe("OrderUpdate with order updates", () => {
     expect(extractText(tree.root)).toMatch("You sent an offer")
     expect(extractText(tree.root)).toMatch("See details")
     tree.root.findByType(MoneyFillIcon)
+
+    tree.root.findByType(LinkText).props.onPress()
+    expect(navigate).toHaveBeenCalledWith("/conversation/12345/details")
   })
 
   it("shows a counteroffer offer from the user", () => {
