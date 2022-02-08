@@ -53,6 +53,7 @@ const MyCollection: React.FC<{
 
   const enableSearchBar = useFeatureFlag("AREnableMyCollectionSearchBar")
   const showDevAddButton = useDevToggle("DTEasyMyCollectionArtworkCreation")
+  const showConsignmentsInMyCollection = useFeatureFlag("ARShowConsignmentsInMyCollection")
 
   const [keywordFilter, setKeywordFilter] = useState("")
   const [isSearchBarVisible, setIsSearchBarVisible] = useState(false)
@@ -128,6 +129,16 @@ const MyCollection: React.FC<{
                 onClose={() =>
                   AsyncStorage.setItem(HAS_SEEN_MY_COLLECTION_NEW_WORKS_BANNER, "true")
                 }
+              />
+            )}
+            {!!showConsignmentsInMyCollection && (
+              <Banner
+                title="Artwork added to My Collection"
+                text="The artwork you submitted for sale has been automatically added."
+                showCloseButton
+                onClose={() => {
+                  return
+                }}
               />
             )}
           </Flex>
