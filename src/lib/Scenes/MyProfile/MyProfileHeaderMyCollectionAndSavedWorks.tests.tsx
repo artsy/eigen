@@ -3,12 +3,10 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "lib/navigation/navigate"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
-import { renderWithWrappers } from "lib/tests/renderWithWrappers"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { LocalImage, storeLocalImages } from "lib/utils/LocalImageStore"
-import renderWithLoadProgress from "lib/utils/renderWithLoadProgress"
 import { Avatar } from "palette"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
@@ -36,13 +34,19 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
           }
         }
       `}
-      render={renderWithLoadProgress(MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer)}
+      render={({ props, error }) => {
+        if (props?.me) {
+          return <MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer me={props?.me} />
+        } else if (error) {
+          console.log(error)
+        }
+      }}
       variables={{}}
     />
   )
 
   const getWrapper = (mockResolvers = {}) => {
-    const tree = renderWithWrappers(<TestRenderer />)
+    const tree = renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(mockEnvironment, mockResolvers)
     return tree
   }
@@ -57,22 +61,22 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
 
   describe("Components of MyProfileHeaderMyCollectionAndSavedWorks ", () => {
     it("renders the right tabs", () => {
-      const tree = getWrapper()
-      expect(tree.root.findByType(StickyTabPage)).toBeDefined()
-      expect(tree.root.findByType(MyCollectionQueryRenderer)).toBeDefined()
-      expect(tree.root.findByType(FavoriteArtworksQueryRenderer)).toBeDefined()
+      const { container } = getWrapper()
+      expect(container.findByType(StickyTabPage)).toBeDefined()
+      expect(container.findByType(MyCollectionQueryRenderer)).toBeDefined()
+      expect(container.findByType(FavoriteArtworksQueryRenderer)).toBeDefined()
     })
 
     // Header tests
     it("Header Settings onPress navigates to MyProfileSettings", () => {
-      const tree = getWrapper()
-      tree.root.findByType(FancyModalHeader).props.onRightButtonPress()
+      const { container } = getWrapper()
+      container.findByType(FancyModalHeader).props.onRightButtonPress()
       expect(navigate).toHaveBeenCalledTimes(1)
       expect(navigate).toHaveBeenCalledWith("/my-profile/settings")
     })
 
     it("Header shows the right text", () => {
-      const wrapper = getWrapper({
+      const { findByText } = getWrapper({
         Me: () => ({
           name: "My Name",
           createdAt: new Date().toISOString(),
@@ -83,11 +87,10 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
         }),
       })
 
-      const text = extractText(wrapper.root)
       const year = new Date().getFullYear()
-      expect(extractText(text)).toContain("My Name")
-      expect(extractText(text)).toContain(`Member since ${year}`)
-      expect(extractText(text)).toContain("My Bio")
+      expect(findByText("My Name")).toBeTruthy()
+      expect(findByText(`Member since ${year}`)).toBeTruthy()
+      expect(findByText("My Bio")).toBeTruthy()
     })
 
     it("Renders Icon", async () => {
@@ -100,7 +103,7 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
         await storeLocalImages([localImage], LOCAL_PROFILE_ICON_PATH_KEY)
       })
 
-      const wrapper = getWrapper({
+      const { container } = getWrapper({
         Me: () => ({
           name: "My Name",
           createdAt: new Date().toISOString(),
@@ -112,9 +115,9 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
       })
 
       await flushPromiseQueue()
-      expect(wrapper.root.findAllByType(Avatar)).toBeDefined()
+      expect(container.findAllByType(Avatar)).toBeDefined()
       // expect only one avatar
-      expect(wrapper.root.findAllByType(Avatar).length).toEqual(1)
+      expect(container.findAllByType(Avatar).length).toEqual(1)
     })
 
     describe("With Collector Profile feature flag OFF", () => {
@@ -123,7 +126,7 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
       })
 
       it("should not render Collector Profile info", async () => {
-        const wrapper = getWrapper({
+        const { findByText } = getWrapper({
           Me: () => ({
             name: "Princess",
             createdAt: new Date("12/12/12").toISOString(),
@@ -136,14 +139,12 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
           }),
         })
 
-        const text = extractText(wrapper.root)
-
-        expect(text).toContain("Princess")
-        expect(text).toContain("Member since 2012")
-        expect(text).toContain("Richest Collector! 💰")
-        expect(text).not.toContain("Guardian of the Galaxy")
-        expect(text).not.toContain("Atlantis")
-        expect(text).not.toContain("Marvel Universe")
+        expect(findByText("Princess")).toBeTruthy()
+        expect(findByText("Member since 2012")).toBeTruthy()
+        expect(findByText("Richest Collector! 💰")).toBeTruthy()
+        expect(findByText("Guardian of the Galaxy")).toEqual(Promise.resolve())
+        expect(findByText("Atlantis")).toEqual(Promise.resolve())
+        expect(findByText("Marvel Universe")).toEqual(Promise.resolve())
       })
     })
 
@@ -153,7 +154,7 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
       })
 
       it("should render Collector Profile info", async () => {
-        const wrapper = getWrapper({
+        const { findByText } = getWrapper({
           Me: () => ({
             name: "Princess",
             createdAt: new Date("12/12/12").toISOString(),
@@ -166,11 +167,9 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
           }),
         })
 
-        const text = extractText(wrapper.root)
-
-        expect(text).toContain("Guardian of the Galaxy")
-        expect(text).toContain("Atlantis")
-        expect(text).toContain("Marvel Universe")
+        expect(findByText("Guardian of the Galaxy")).toBeTruthy()
+        expect(findByText("Atlantis")).toBeTruthy()
+        expect(findByText("Marvel Universe")).toBeTruthy()
       })
     })
   })
