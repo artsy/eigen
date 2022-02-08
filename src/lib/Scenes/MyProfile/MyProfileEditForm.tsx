@@ -16,7 +16,7 @@ import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { compact, isArray } from "lodash"
 import { Avatar, Box, Button, Flex, Input, Join, Spacer, Text, Touchable, useColor } from "palette"
-import React, { Suspense, useContext, useRef, useState } from "react"
+import React, { Suspense, useContext, useEffect, useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
 import { useFragment, useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
@@ -56,11 +56,9 @@ export const MyProfileEditForm: React.FC<{ me: MyProfileEditForm_me$key }> = (pr
   const [loading, setLoading] = useState<boolean>(false)
   const [didUpdatePhoto, setDidUpdatePhoto] = useState(false)
 
-  const { localImage } = useContext(MyProfileContext)
-
   const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
 
-  const { setLocalImage } = useContext(MyProfileContext)
+  const { localImage, setLocalImage } = useContext(MyProfileContext)
 
   const uploadProfilePhoto = async (photo: string) => {
     try {
@@ -107,7 +105,7 @@ export const MyProfileEditForm: React.FC<{ me: MyProfileEditForm_me$key }> = (pr
         profession: me?.profession ?? "",
         otherRelevantPositions: me?.otherRelevantPositions ?? "",
         bio: me?.bio ?? "",
-        photo: me?.icon?.url ?? localImage ?? "",
+        photo: localImage || me?.icon?.url || "",
       },
       initialErrors: {},
       onSubmit: async ({ photo, ...otherValues }) => {
@@ -145,10 +143,6 @@ export const MyProfileEditForm: React.FC<{ me: MyProfileEditForm_me$key }> = (pr
   const onLeftButtonPressHandler = () => {
     setDidUpdatePhoto(false)
     navigation.goBack()
-
-    handleChange("photo")(me?.icon?.url ?? localImage ?? "")
-    handleChange("name")(me?.name ?? "")
-    handleChange("bio")(me?.bio ?? "")
   }
 
   return (
@@ -297,13 +291,7 @@ const MyProfileEditFormScreenQuery = graphql`
 `
 
 const MyProfileEditFormContainer = () => {
-  const data = useLazyLoadQuery<MyProfileEditFormQuery>(
-    MyProfileEditFormScreenQuery,
-    {},
-    {
-      fetchPolicy: "store-and-network",
-    }
-  )
+  const data = useLazyLoadQuery<MyProfileEditFormQuery>(MyProfileEditFormScreenQuery, {}, {})
 
   return <MyProfileEditForm me={data.me!} />
 }
