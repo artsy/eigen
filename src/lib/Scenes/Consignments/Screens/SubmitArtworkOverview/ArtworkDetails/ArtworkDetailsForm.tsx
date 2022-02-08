@@ -10,17 +10,17 @@ import { rarityOptions } from "./utils/rarityOptions"
 import { limitedEditionValue } from "./utils/rarityOptions"
 import { ArtworkDetailsFormModel, Location } from "./validation"
 
+const StandardSpace = () => <Spacer mt={4} />
+
 export const ArtworkDetailsForm: React.FC = () => {
   const { values, setFieldValue } = useFormikContext<ArtworkDetailsFormModel>()
   const [isRarityInfoModalVisible, setIsRarityInfoModalVisible] = useState(false)
   const [isProvenanceInfoModalVisible, setIsProvenanceInfoModalVisible] = useState(false)
 
-  const StandarSpace = () => <Spacer mt={4} />
-
   return (
     <>
       <ArtistAutosuggest />
-      <StandarSpace />
+      <StandardSpace />
       <Input
         title="Title"
         placeholder="Add Title or Write 'Unknown'"
@@ -28,7 +28,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.title}
         onChangeText={(e) => setFieldValue("title", e)}
       />
-      <StandarSpace />
+      <StandardSpace />
       <Input
         title="Year"
         placeholder="YYYY"
@@ -36,7 +36,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.year}
         onChangeText={(e) => setFieldValue("year", e)}
       />
-      <StandarSpace />
+      <StandardSpace />
       <Input
         title="Materials"
         placeholder="Oil on Canvas, Mixed Media, Lithograph.."
@@ -44,7 +44,7 @@ export const ArtworkDetailsForm: React.FC = () => {
         value={values.medium}
         onChangeText={(e) => setFieldValue("medium", e)}
       />
-      <StandarSpace />
+      <StandardSpace />
       <Select
         onSelectValue={(e) => setFieldValue("attributionClass", e)}
         value={values.attributionClass}
@@ -90,7 +90,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           </Flex>
         </>
       )}
-      <StandarSpace />
+      <StandardSpace />
       <InputTitle>Dimensions</InputTitle>
       <Spacer mt={1} />
       <Flex flexDirection="row">
@@ -133,7 +133,7 @@ export const ArtworkDetailsForm: React.FC = () => {
           />
         </Box>
       </Flex>
-      <StandarSpace />
+      <StandardSpace />
       <Flex flexDirection="row" justifyContent="space-between">
         <InputTitle>Provenance</InputTitle>
         <Text variant="xs" color="black60" onPress={() => setIsProvenanceInfoModalVisible(true)}>
@@ -165,12 +165,12 @@ export const ArtworkDetailsForm: React.FC = () => {
           <BulletedItem color="black">Gallery exhibition catalogues</BulletedItem>
         </Flex>
       </InfoModal>
-      <StandarSpace />
+      <StandardSpace />
       <LocationAutocomplete
         initialLocation={values.location}
         onChange={(e: Location) => setFieldValue("location", e)}
       />
-      <StandarSpace />
+      <StandardSpace />
     </>
   )
 }
