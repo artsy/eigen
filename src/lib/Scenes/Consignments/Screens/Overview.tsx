@@ -136,21 +136,22 @@ export class Overview extends React.Component<Props, State> {
   updateLocalStateAndMetaphysics = async () => {
     this.saveStateToLocalStorage()
 
-    if (this.state.submissionID) {
-      try {
+    try {
+      if (this.state.submissionID) {
         await this.uploadPhotosIfNeeded()
         const utmSource = this.props.params.utm_source
         const utmMedium = this.props.params.utm_medium
         const utmTerm = this.props.params.utm_term
         updateConsignmentSubmission({ ...this.state, utmSource, utmTerm, utmMedium })
-      } catch (error: any) {
-        this.showUploadFailureAlert(error)
+      } else if (this.state.artist) {
+        const submissionID = await createConsignmentSubmission(this.state)
+        this.setState({ submissionID }, () => {
+          this.submissionDraftCreated()
+          this.updateLocalStateAndMetaphysics()
+        })
       }
-    } else if (this.state.artist) {
-      const submissionID = await createConsignmentSubmission(this.state)
-      this.setState({ submissionID }, () => {
-        this.submissionDraftCreated()
-      })
+    } catch (error: any) {
+      this.showUploadFailureAlert(error)
     }
   }
 
@@ -162,6 +163,9 @@ export class Overview extends React.Component<Props, State> {
         {
           text: "Cancel",
           style: "cancel",
+          onPress: () => {
+            this.setState({ photos: this.state.photos?.filter((photo) => photo.uploaded) })
+          },
         },
         {
           text: "Retry",
@@ -275,12 +279,16 @@ export class Overview extends React.Component<Props, State> {
       this.state.metadata.height &&
       this.state.metadata.width &&
       this.state.editionScreenViewed &&
-      this.state.photos?.length! > 0
+      this.state.photos?.filter((photo) => photo.uploaded).length! > 0 &&
+      !this.isPhotoLoading()
     )
+
+  isPhotoLoading = () => this.state.photos?.some((photo) => photo.uploading)
 
   render() {
     // See https://github.com/artsy/convection/blob/master/app/models/submission.rb for list
     const canSubmit = this.canSubmit()
+    const isPhotoLoading = this.isPhotoLoading()
 
     const isPad = Dimensions.get("window").width > 700
 
@@ -338,9 +346,11 @@ export class Overview extends React.Component<Props, State> {
             <Button
               maxWidth={540}
               block
+              loading={isPhotoLoading}
               onPress={this.state.hasLoaded && canSubmit ? this.submitFinalSubmission : undefined}
               disabled={!canSubmit}
               haptic
+              testID="consignments-next-button"
             >
               Next
             </Button>
