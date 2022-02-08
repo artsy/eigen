@@ -16,7 +16,7 @@ import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { compact, isArray } from "lodash"
 import { Avatar, Box, Button, Flex, Input, Join, Spacer, Text, Touchable, useColor } from "palette"
-import React, { Suspense, useContext, useEffect, useRef, useState } from "react"
+import React, { Suspense, useContext, useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
 import { useFragment, useLazyLoadQuery } from "react-relay"
 import { graphql } from "relay-runtime"
