@@ -2724,6 +2724,10 @@ enum CollectionSorts {
   POSITION_DESC
 }
 
+type CollectorProfileArtists {
+  name: String
+}
+
 type CollectorProfileType {
   collectorLevel: Int
   confirmedBuyerAt(
@@ -8063,6 +8067,80 @@ type ImageURLs {
   normalized: String
 }
 
+type InquirerCollectorProfile {
+  artsyUserSince(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  bio: String
+  collectorLevel: Int
+
+  # List of artists the Collector is interested in.
+  collectorProfileArtists: [CollectorProfileArtists]
+  confirmedBuyerAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  email: String
+  emailConfirmed: Boolean
+  icon: Image
+
+  # A globally unique ID.
+  id: ID!
+  identityVerified: Boolean
+  institutionalAffiliations: String
+  intents: [String]
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  isActiveBidder: Boolean
+  isActiveInquirer: Boolean
+  location: MyLocation
+  loyaltyApplicantAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  name: String
+
+  # Collector's position with relevant institutions
+  otherRelevantPositions: String
+
+  # User ID of the collector profile's owner
+  ownerID: ID!
+  privacy: String
+  profession: String
+  professionalBuyerAppliedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  professionalBuyerAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  selfReportedPurchases: String
+  userInterests: [UserInterest]!
+}
+
 union InquiryItemType = Artwork | Show
 
 type InquiryQuestion {
@@ -9309,6 +9387,11 @@ type Mutation {
 
   # Update the current logged in user.
   updateMyUserProfile(input: UpdateMyProfileInput!): UpdateMyProfilePayload
+
+  # Update notification preferences.
+  updateNotificationPreferences(
+    input: updateNotificationPreferencesMutationInput!
+  ): updateNotificationPreferencesMutationPayload
   updateSavedSearch(input: UpdateSavedSearchInput!): UpdateSavedSearchPayload
   updateSmsSecondFactor(input: UpdateSmsSecondFactorInput!): UpdateSmsSecondFactorPayload
   updateUserAddress(input: UpdateUserAddressInput!): UpdateUserAddressPayload
@@ -9394,7 +9477,9 @@ input MyCollectionCreateArtworkInput {
   pricePaidCents: Int
   pricePaidCurrency: String
   provenance: String
+  submissionId: String
   title: String!
+  userId: String
   width: String
 }
 
@@ -9490,6 +9575,20 @@ input Near {
 interface Node {
   # A globally unique ID.
   id: ID!
+}
+
+type NotificationPreference {
+  channel: String!
+  id: String!
+  name: String!
+  status: SubGroupStatus!
+}
+
+input NotificationPreferenceInput {
+  channel: String!
+  id: String!
+  name: String!
+  status: SubGroupStatus!
 }
 
 # Consignment Offer Response
@@ -9797,6 +9896,12 @@ type Partner implements Node {
   # A globally unique ID.
   id: ID!
   initials(length: Int = 3): String
+
+  # Inquiry Request details
+  inquiryRequest(
+    # The inquiry id
+    inquiryId: String!
+  ): PartnerInquiryRequest
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
@@ -10111,6 +10216,10 @@ type PartnerEdge {
 
   # The item at the end of the edge
   node: Partner
+}
+
+type PartnerInquiryRequest {
+  collectorProfile: InquirerCollectorProfile
 }
 
 # A location
@@ -11021,6 +11130,9 @@ type Query {
     # The globally unique ID of the node.
     id: ID!
   ): Node
+
+  # User's notification preferences
+  notificationPreferences(authenticationToken: String): [NotificationPreference!]!
 
   # Get an Offer
   offer(
@@ -12689,6 +12801,11 @@ type StaticContent {
   slug: ID!
 }
 
+enum SubGroupStatus {
+  SUBSCRIBED
+  UNSUBSCRIBED
+}
+
 # An edge in a connection.
 type SubmissionEdge {
   # A cursor for use in pagination.
@@ -13110,6 +13227,16 @@ type UpdateMyProfilePayload {
   me: Me
   user: User
   userOrError: UpdateMyProfileMutation
+}
+
+input updateNotificationPreferencesMutationInput {
+  authenticationToken: String
+  clientMutationId: String
+  subscriptionGroups: [NotificationPreferenceInput!]!
+}
+
+type updateNotificationPreferencesMutationPayload {
+  clientMutationId: String
 }
 
 # Autogenerated input type of UpdateSavedSearch
@@ -13837,6 +13964,9 @@ type Viewer {
     # The globally unique ID of the node.
     id: ID!
   ): Node
+
+  # User's notification preferences
+  notificationPreferences(authenticationToken: String): [NotificationPreference!]!
 
   # An OrderedSet
   orderedSet(
