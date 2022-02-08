@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionArtworkList_filterProps = {
+export type MyCollectionArtworks_filterProps = {
     readonly title: string | null;
     readonly slug: string;
     readonly id: string;
@@ -21,12 +21,12 @@ export type MyCollectionArtworkList_filterProps = {
     readonly width: string | null;
     readonly height: string | null;
     readonly date: string | null;
-    readonly " $refType": "MyCollectionArtworkList_filterProps";
+    readonly " $refType": "MyCollectionArtworks_filterProps";
 };
-export type MyCollectionArtworkList_filterProps$data = MyCollectionArtworkList_filterProps;
-export type MyCollectionArtworkList_filterProps$key = {
-    readonly " $data"?: MyCollectionArtworkList_filterProps$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkList_filterProps">;
+export type MyCollectionArtworks_filterProps$data = MyCollectionArtworks_filterProps;
+export type MyCollectionArtworks_filterProps$key = {
+    readonly " $data"?: MyCollectionArtworks_filterProps$data | undefined;
+    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworks_filterProps">;
 };
 
 
@@ -35,7 +35,7 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "MyCollectionArtworkList_filterProps",
+  "name": "MyCollectionArtworks_filterProps",
   "selections": [
     {
       "alias": null,
@@ -147,5 +147,5 @@ const node: ReaderFragment = {
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = 'd9d37ee137ac0bbf091c045f73c64056';
+(node as any).hash = '646d153e9c0f8e1e5d6fafd1823fa908';
 export default node;

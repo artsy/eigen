@@ -77,36 +77,8 @@ const artworkConnectionFragment = graphql`
     edges {
       node {
         ...MyCollectionArtworkListItem_artwork
-        ...MyCollectionArtworkList_filterProps @relay(mask: false)
+        ...MyCollectionArtworks_filterProps @relay(mask: false)
       }
     }
-  }
-`
-
-/**
- * * IMPORTANT *
- *
- * The following shared artwork fields are needed for sorting and filtering artworks locally
- *
- * When adding new filters this fragment needs to be updated.
- */
-export const MyCollectionFilterPropsFragment = graphql`
-  fragment MyCollectionArtworkList_filterProps on Artwork {
-    title
-    slug
-    id
-    artistNames
-    medium
-    artist {
-      internalID
-      name
-    }
-    pricePaid {
-      minor
-    }
-    sizeBucket
-    width
-    height
-    date
   }
 `

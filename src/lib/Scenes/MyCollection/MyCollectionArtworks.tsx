@@ -10,7 +10,7 @@ import { extractNodes } from "lib/utils/extractNodes"
 import { useScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Button, Flex } from "palette"
 import React from "react"
-import { RelayPaginationProp } from "react-relay"
+import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
 import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
 import { MyCollectionArtworkEdge } from "./MyCollection"
@@ -117,3 +117,31 @@ const MyCollectionZeroState: React.FC = () => {
     />
   )
 }
+
+/**
+ * * IMPORTANT *
+ *
+ * The following shared artwork fields are needed for sorting and filtering artworks locally
+ *
+ * When adding new filters this fragment needs to be updated.
+ */
+export const MyCollectionFilterPropsFragment = graphql`
+  fragment MyCollectionArtworks_filterProps on Artwork {
+    title
+    slug
+    id
+    artistNames
+    medium
+    artist {
+      internalID
+      name
+    }
+    pricePaid {
+      minor
+    }
+    sizeBucket
+    width
+    height
+    date
+  }
+`
