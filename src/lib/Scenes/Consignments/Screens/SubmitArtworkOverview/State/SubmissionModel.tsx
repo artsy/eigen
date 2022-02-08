@@ -11,8 +11,8 @@ export interface ArtworkSubmissionModel {
   setSubmissionId: Action<ArtworkSubmissionModel, string>
   artworkDetails: ArtworkDetailsFormModel
   setArtworkDetailsForm: Action<ArtworkSubmissionModel, ArtworkDetailsFormModel>
-  photos: PhotosFormModel[]
-  setPhotos: Action<ArtworkSubmissionModel, PhotosFormModel[]>
+  photos: PhotosFormModel
+  setPhotos: Action<ArtworkSubmissionModel, PhotosFormModel>
   setUtmParams: Action<ArtworkSubmissionModel, ConsignmentsSubmissionUtmParams>
   resetSessionState: Action<ArtworkSubmissionModel>
 }
