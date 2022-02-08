@@ -83,7 +83,7 @@ describe("TagArtworks", () => {
   })
 
   it("renders empty artworks grid view", () => {
-    const { getByText, getAllByText } = renderWithWrappersTL(<TestRenderer />)
+    const { getByText } = renderWithWrappersTL(<TestRenderer />)
     mockEnvironmentPayload(environment, {
       FilterArtworksConnection() {
         return {
@@ -98,7 +98,7 @@ describe("TagArtworks", () => {
     fireEvent.press(getByText("Sort & Filter"))
     fireEvent.press(getByText("Sort By"))
     fireEvent.press(getByText("Recently Added"))
-    fireEvent.press(getAllByText("Show results")[0])
+    fireEvent.press(getByText("Apply Filters"))
 
     mockEnvironmentPayload(environment, {
       FilterArtworksConnection() {

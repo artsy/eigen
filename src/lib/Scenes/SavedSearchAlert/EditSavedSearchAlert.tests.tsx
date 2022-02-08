@@ -42,7 +42,7 @@ describe("EditSavedSearchAlert", () => {
       Me: () => meMocked,
     })
 
-    expect(getAllByTestId("alert-pill").map(extractText)).toEqual(["Lithograph", "Paper"])
+    expect(getAllByTestId("alert-pill").map(extractText)).toEqual(["name-1", "Lithograph", "Paper"])
     expect(getByTestId("alert-input-name").props.value).toBe("unique-name")
   })
 
