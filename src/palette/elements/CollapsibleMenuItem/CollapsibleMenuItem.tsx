@@ -1,5 +1,6 @@
-import { CheckCircleIcon, ChevronIcon, Collapse, Flex, Text, Touchable } from "palette"
+import { CheckCircleIcon, ChevronIcon, Flex, Text, Touchable } from "palette"
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from "react"
+import { CollapseView } from "../Collapse/CollapseView"
 
 interface CollapsableMenuItemProps {
   overtitle?: string
@@ -73,7 +74,7 @@ export const CollapsibleMenuItem = forwardRef<
           </Flex>
         </Flex>
       </Touchable>
-      <Collapse open={isOpen}>{children}</Collapse>
+      <CollapseView isOpen={isOpen}>{children}</CollapseView>
     </Flex>
   )
 })
