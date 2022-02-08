@@ -2,13 +2,27 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { google_LinkAccountMutation } from "__generated__/google_LinkAccountMutation.graphql"
 import { google_UnlinkAccountMutation } from "__generated__/google_UnlinkAccountMutation.graphql"
 import { Toast } from "lib/Components/Toast/Toast"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { commitMutation, graphql } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 export const useGoogleLink = (relayEnvironment: RelayModernEnvironment) => {
-  const [loading, setLoading] = useState(false)
+  const [loading, setIsLoading] = useState(false)
+  const isMountedRef = useRef(false)
+
+  useEffect(() => {
+    isMountedRef.current = true
+    return () => {
+      isMountedRef.current = false
+    }
+  }, [])
+
+  const setLoading = (state: boolean) => {
+    if (isMountedRef.current) {
+      setIsLoading(state)
+    }
+  }
 
   const linkUsingOauthToken = (oauthToken: string) => {
     setLoading(true)

@@ -7,13 +7,27 @@ import { apple_UnlinkAccountMutation } from "__generated__/apple_UnlinkAccountMu
 import { Toast } from "lib/Components/Toast/Toast"
 import { AppleToken } from "lib/Scenes/Onboarding/OnboardingSocialLink"
 import { unsafe_getUserEmail } from "lib/store/GlobalStore"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { commitMutation, graphql } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 export const useAppleLink = (relayEnvironment: RelayModernEnvironment) => {
-  const [loading, setLoading] = useState(false)
+  const [loading, setIsLoading] = useState(false)
+  const isMountedRef = useRef(false)
+
+  useEffect(() => {
+    isMountedRef.current = true
+    return () => {
+      isMountedRef.current = false
+    }
+  }, [])
+
+  const setLoading = (state: boolean) => {
+    if (isMountedRef.current) {
+      setIsLoading(state)
+    }
+  }
 
   const linkUsingOauthToken = (email: string, name: string, token: AppleToken) => {
     const { appleUid, idToken } = token

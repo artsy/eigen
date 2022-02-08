@@ -160,10 +160,8 @@ describe(MyAccountQueryRenderer, () => {
           })
           return result
         })
-        const fbUnlinkItem = tree.root.findAllByType(MenuItem)[4]
-        expect(fbUnlinkItem.props.title).toBe("Facebook")
-        fbUnlinkItem.props.onPress()
-        expect(mockUnlinkFB).not.toHaveBeenCalled()
+        // Facebook Link Button should not be available
+        expect(extractText(tree.root)).not.toContain("Facebook")
       })
     })
   })

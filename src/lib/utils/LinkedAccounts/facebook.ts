@@ -1,14 +1,28 @@
 import { facebook_LinkAccountMutation } from "__generated__/facebook_LinkAccountMutation.graphql"
 import { facebook_UnlinkAccountMutation } from "__generated__/facebook_UnlinkAccountMutation.graphql"
 import { Toast } from "lib/Components/Toast/Toast"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Alert } from "react-native"
 import { AccessToken, LoginManager } from "react-native-fbsdk-next"
 import { commitMutation, graphql } from "relay-runtime"
 import RelayModernEnvironment from "relay-runtime/lib/store/RelayModernEnvironment"
 
 export const useFacebookLink = (relayEnvironment: RelayModernEnvironment) => {
-  const [loading, setLoading] = useState(false)
+  const [loading, setIsLoading] = useState(false)
+  const isMountedRef = useRef(false)
+
+  useEffect(() => {
+    isMountedRef.current = true
+    return () => {
+      isMountedRef.current = false
+    }
+  }, [])
+
+  const setLoading = (state: boolean) => {
+    if (isMountedRef.current) {
+      setIsLoading(state)
+    }
+  }
 
   const linkUsingOauthToken = (oauthToken: string) => {
     setLoading(true)

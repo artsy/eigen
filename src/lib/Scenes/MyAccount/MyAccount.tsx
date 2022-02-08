@@ -12,15 +12,28 @@ import { useGoogleLink } from "lib/utils/LinkedAccounts/google"
 import { PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { times } from "lodash"
-import { Box, Flex, Text, useColor } from "palette"
+import { Box, Flex, Text } from "palette"
 import React from "react"
-import { ActivityIndicator, Alert, Image, Platform, ScrollView } from "react-native"
+import { ActivityIndicator, Image, Platform, ScrollView } from "react-native"
 import { createFragmentContainer, graphql, QueryRenderer, RelayProp } from "react-relay"
 
 const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay }) => {
-  const showLinkedAccounts = useFeatureFlag("ARShowLinkedAccounts") && !me.secondFactors?.length
-  const showLinkGoogle = useFeatureFlag("ARGoogleAuth")
-  const showLinkApple = Platform.OS === "ios"
+  const hasOnlyOneAuth = me.authentications.length + (me.hasPassword ? 1 : 0) < 2
+
+  const onlyExistingAuthFor = (provider: "FACEBOOK" | "GOOGLE" | "APPLE") => {
+    return (
+      hasOnlyOneAuth && me.authentications.length > 0 && me.authentications[0].provider === provider
+    )
+  }
+
+  const showLinkGoogle = useFeatureFlag("ARGoogleAuth") && !onlyExistingAuthFor("GOOGLE")
+  const showLinkApple = Platform.OS === "ios" && !onlyExistingAuthFor("APPLE")
+  const showLinkFacebook = !onlyExistingAuthFor("FACEBOOK")
+
+  const showLinkedAccounts =
+    useFeatureFlag("ARShowLinkedAccounts") &&
+    !me.secondFactors?.length &&
+    (showLinkGoogle || showLinkApple || showLinkFacebook)
 
   const {
     link: linkFB,
@@ -42,15 +55,7 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
   const googleLinked = me.authentications.map((a) => a.provider).includes("GOOGLE")
   const appleLinked = me.authentications.map((a) => a.provider).includes("APPLE")
 
-  const blackColor = useColor()("black100")
-
-  const hasOnlyOneAuth = me.authentications.length + (me.hasPassword ? 1 : 0) < 2
-
   const linkOrUnlink = (provider: "facebook" | "google" | "apple") => {
-    if (hasOnlyOneAuth) {
-      Alert.alert("Error", "You cannot unlink your only authentication method.")
-      return
-    }
     switch (provider) {
       case "apple":
         return appleLinked ? unlinkApple() : linkApple()
@@ -98,32 +103,45 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
               <SectionTitle title="LINKED ACCOUNTS" />
             </Box>
 
-            <MenuItem
-              title="Facebook"
-              rightView={
-                fbLoading ? (
-                  <ActivityIndicator size="small" color={blackColor} />
-                ) : (
-                  <Flex flexDirection="row" alignItems="center">
-                    <Image
-                      source={require(`@images/facebook.webp`)}
-                      resizeMode="contain"
-                      style={{ marginRight: 10 }}
-                    />
-                    <Text variant="md" color="black60" lineHeight={18}>
-                      {facebookLinked ? "Unlink" : "Link"}
-                    </Text>
-                  </Flex>
-                )
-              }
-              onPress={fbLoading ? () => null : () => linkOrUnlink("facebook")}
-            />
+            {!!showLinkFacebook && (
+              <MenuItem
+                title="Facebook"
+                disabled={
+                  hasOnlyOneAuth &&
+                  me.authentications.length > 0 &&
+                  me.authentications[0].provider === "FACEBOOK"
+                }
+                rightView={
+                  fbLoading ? (
+                    <ActivityIndicator size="small" color="black" />
+                  ) : (
+                    <Flex flexDirection="row" alignItems="center">
+                      <Image
+                        source={require(`@images/facebook.webp`)}
+                        resizeMode="contain"
+                        style={{ marginRight: 10 }}
+                      />
+                      <Text variant="md" color="black60" lineHeight={18}>
+                        {facebookLinked ? "Unlink" : "Link"}
+                      </Text>
+                    </Flex>
+                  )
+                }
+                onPress={fbLoading ? () => null : () => linkOrUnlink("facebook")}
+              />
+            )}
+
             {!!showLinkGoogle && (
               <MenuItem
                 title="Google"
+                disabled={
+                  hasOnlyOneAuth &&
+                  me.authentications.length > 0 &&
+                  me.authentications[0].provider === "GOOGLE"
+                }
                 rightView={
                   googleLoading ? (
-                    <ActivityIndicator size="small" color={blackColor} />
+                    <ActivityIndicator size="small" color="black" />
                   ) : (
                     <Flex flexDirection="row" alignItems="center">
                       <Image
@@ -143,15 +161,20 @@ const MyAccount: React.FC<{ me: MyAccount_me; relay: RelayProp }> = ({ me, relay
             {!!showLinkApple && (
               <MenuItem
                 title="Apple"
+                disabled={
+                  hasOnlyOneAuth &&
+                  me.authentications.length > 0 &&
+                  me.authentications[0].provider === "APPLE"
+                }
                 rightView={
                   appleLoading ? (
-                    <ActivityIndicator size="small" color={blackColor} />
+                    <ActivityIndicator size="small" color="black" />
                   ) : (
                     <Flex flexDirection="row" alignItems="center">
                       <Image
                         source={require(`@images/apple.webp`)}
                         resizeMode="contain"
-                        style={{ marginRight: 10, tintColor: blackColor }}
+                        style={{ marginRight: 10, tintColor: "black" }}
                       />
                       <Text variant="md" color="black60" lineHeight={18}>
                         {appleLinked ? "Unlink" : "Link"}

@@ -95,23 +95,24 @@ export const OnboardingSocialLink: React.FC<
       facebook: authFacebook,
       google: authGoogle,
     }
-    if (provider === "email") {
-      console.warn("You should not be passing email here. Use the formik form")
-      return
-    }
-    if (!FBOrGoogProvider[provider] && provider !== "apple") {
-      console.warn(`Unrecognised provider: ${provider}`)
-      return
-    }
-    if (provider === "apple") {
-      authApple({
-        onSignIn: () => onSignIn(providerToBeLinked, tokenForProviderToBeLinked),
-      })
-    } else {
-      FBOrGoogProvider[provider]({
-        signInOrUp: "signIn",
-        onSignIn: () => onSignIn(providerToBeLinked, tokenForProviderToBeLinked),
-      })
+    switch (provider) {
+      case "email":
+        console.warn("You should not be passing email here. Use the formik form")
+        return
+      case "apple":
+        authApple({
+          onSignIn: () => onSignIn(providerToBeLinked, tokenForProviderToBeLinked),
+        })
+        return
+      case "google":
+      case "facebook":
+        FBOrGoogProvider[provider]({
+          signInOrUp: "signIn",
+          onSignIn: () => onSignIn(providerToBeLinked, tokenForProviderToBeLinked),
+        })
+        return
+      default:
+        console.warn(`Unrecognised provider: ${provider}`)
     }
   }
 
