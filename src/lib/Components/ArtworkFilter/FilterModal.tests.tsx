@@ -217,9 +217,9 @@ describe("Filter modal navigation flow", () => {
   })
 
   it("allows users to exit filter modal screen when selecting close icon", () => {
-    const { getByTestId } = renderWithWrappersTL(<MockFilterModalNavigator />)
+    const { getByA11yLabel } = renderWithWrappersTL(<MockFilterModalNavigator />)
 
-    fireEvent.press(getByTestId("fancy-modal-header-left-button"))
+    fireEvent.press(getByA11yLabel("Header back button"))
 
     expect(closeModalMock).toHaveBeenCalled()
   })
@@ -271,9 +271,9 @@ describe("Filter modal states", () => {
   })
 
   it("displays the filter screen apply button correctly when no filters are selected", () => {
-    const { getAllByText } = renderWithWrappersTL(<MockFilterModalNavigator />)
+    const { getByText } = renderWithWrappersTL(<MockFilterModalNavigator />)
 
-    expect(getAllByText("Show results")[0]).toBeDisabled()
+    expect(getByText("Apply Filters")).toBeDisabled()
   })
 
   it("displays the filter screen apply button correctly when filters are selected", () => {
@@ -290,11 +290,11 @@ describe("Filter modal states", () => {
       },
     }
 
-    const { getAllByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappersTL(
       <MockFilterModalNavigator initialData={injectedState} />
     )
 
-    expect(getAllByText("Show results")[0]).not.toBeDisabled()
+    expect(getByText("Apply Filters")).not.toBeDisabled()
   })
 
   it("does not display default filters numbers on the Filter modal", () => {
@@ -398,11 +398,11 @@ describe("Clearing filters", () => {
       },
     }
 
-    const { getAllByText, getByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappersTL(
       <MockFilterModalNavigator initialData={injectedState} />
     )
 
-    expect(getAllByText("Show results")[0]).toBeDisabled()
+    expect(getByText("Apply Filters")).toBeDisabled()
 
     fireEvent.press(getByText("Clear All"))
 
@@ -531,13 +531,13 @@ describe("Applying filters on Artworks", () => {
       },
     }
 
-    const { getAllByText } = renderWithWrappersTL(
+    const { getByText } = renderWithWrappersTL(
       <MockFilterModalNavigator initialData={injectedState} />
     )
 
     mockEnvironmentPayload(env)
 
-    fireEvent.press(getAllByText("Show results")[0])
+    fireEvent.press(getByText("Apply Filters"))
 
     expect(trackEvent).toHaveBeenCalledWith({
       action_type: "commercialFilterParamsChanged",
@@ -586,10 +586,6 @@ describe("AnimatedArtworkFilterButton", () => {
 })
 
 describe("Saved Search Flow", () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-  })
-
   it('should hide "Create Alert" button by default', () => {
     const { queryByText } = renderWithWrappersTL(<MockFilterModalNavigator />)
 

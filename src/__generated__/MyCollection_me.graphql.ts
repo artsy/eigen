@@ -14,6 +14,7 @@ export type MyCollection_me = {
             readonly node: {
                 readonly id: string;
                 readonly medium: string | null;
+                readonly title: string | null;
                 readonly pricePaid: {
                     readonly minor: number;
                 } | null;
@@ -133,6 +134,13 @@ return {
                   "args": null,
                   "kind": "ScalarField",
                   "name": "medium",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "title",
                   "storageKey": null
                 },
                 {
@@ -269,5 +277,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '3010da83091aeb7032a7a0815f0ebf00';
+(node as any).hash = '63589ba403bbb9690e2d7aab64fe2cd8';
 export default node;

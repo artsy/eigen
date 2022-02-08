@@ -39,6 +39,7 @@ describe("SavedSearchButton", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: false })
   })
 
   const TestRenderer = ({ attributes = mockedAttributes }) => {

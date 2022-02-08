@@ -1,7 +1,6 @@
 import { ContextModule, OwnerType } from "@artsy/cohesion"
 import { ArtistAbout_artist } from "__generated__/ArtistAbout_artist.graphql"
 import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { useFeatureFlag } from "lib/store/GlobalStore"
 import { extractNodes } from "lib/utils/extractNodes"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -27,17 +26,15 @@ export const ArtistAbout: React.FC<Props> = ({ artist }) => {
     <StickyTabPageScrollView>
       <Stack spacing={3} my={2}>
         {!!artist.hasMetadata && <Biography artist={artist as any} />}
-        {!!useFeatureFlag("AROptionsArtistSeries") && (
-          <ArtistSeriesMoreSeriesFragmentContainer
-            contextScreenOwnerId={artist.internalID}
-            contextScreenOwnerSlug={artist.slug}
-            contextScreenOwnerType={OwnerType.artist}
-            contextModule={ContextModule.artistSeriesRail}
-            artist={artist}
-            artistSeriesHeader="Top Artist Series"
-            mt={2}
-          />
-        )}
+        <ArtistSeriesMoreSeriesFragmentContainer
+          contextScreenOwnerId={artist.internalID}
+          contextScreenOwnerSlug={artist.slug}
+          contextScreenOwnerType={OwnerType.artist}
+          contextModule={ContextModule.artistSeriesRail}
+          artist={artist}
+          artistSeriesHeader="Top Artist Series"
+          mt={2}
+        />
         {artist.notableWorks?.edges?.length === 3 && (
           <ArtistNotableWorksRailFragmentContainer artist={artist} />
         )}

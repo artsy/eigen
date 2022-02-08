@@ -35,10 +35,6 @@ function defineFeatures<T extends string>(featureMap: {
 export type FeatureName = keyof typeof features
 
 export const features = defineFeatures({
-  AROptionsArtistSeries: {
-    readyForRelease: true,
-    echoFlagKey: "AROptionsArtistSeries",
-  },
   AROptionsNewFirstInquiry: {
     readyForRelease: true,
     echoFlagKey: "AROptionsNewFirstInquiry",
@@ -197,6 +193,11 @@ export const features = defineFeatures({
   AREnableCollectorProfile: {
     readyForRelease: false,
     description: "Enable collector profile",
+    showInAdminMenu: true,
+  },
+  AREnableMyCollectionSearchBar: {
+    readyForRelease: false,
+    description: "Enable My Collection search bar",
     showInAdminMenu: true,
   },
   ARShowConsignmentsInMyCollection: {

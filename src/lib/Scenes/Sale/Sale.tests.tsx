@@ -33,6 +33,7 @@ describe("Sale", () => {
 
   beforeEach(() => {
     mockEnvironment = createMockEnvironment()
+    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: false })
   })
 
   afterEach(() => {

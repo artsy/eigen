@@ -15,10 +15,6 @@ const defaultProps: ArtworkFilterOptionsHeaderProps = {
 }
 
 describe("ArtworkFilterOptionsHeader", () => {
-  beforeEach(() => {
-    __globalStoreTestUtils__?.injectFeatureFlags({ AREnableImprovedAlertsFlow: true })
-  })
-
   const TestWrapper = (props?: Partial<ArtworkFilterOptionsHeaderProps>) => {
     return <ArtworkFilterOptionsHeader {...defaultProps} {...props} />
   }

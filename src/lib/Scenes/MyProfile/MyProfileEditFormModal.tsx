@@ -39,6 +39,7 @@ import {
 } from "../../Components/DetailedLocationAutocomplete"
 import { useFeatureFlag } from "../../store/GlobalStore"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
+import { normalizeMyProfileBio } from "./utils"
 
 const PRIMARY_LOCATION_OFFSET = 240
 
@@ -344,13 +345,14 @@ export const MyProfileEditFormModal: React.FC<MyProfileEditFormModalProps> = ({
                   <Input
                     ref={bioInputRef}
                     title="About"
-                    onChangeText={handleChange("bio")}
+                    onChangeText={(text) => setFieldValue("bio", normalizeMyProfileBio(text))}
                     onBlur={() => validateForm()}
                     error={errors.bio}
                     maxLength={150}
                     multiline
                     showLimit
-                    defaultValue={values.bio}
+                    returnKeyType="next"
+                    value={values.bio}
                     placeholder="You can add a short bio to tell more about yourself and your collection. It can be anything like the artists you collect, the genres you're interested in , etc."
                   />
 

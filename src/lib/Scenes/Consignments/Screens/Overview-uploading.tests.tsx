@@ -13,6 +13,7 @@ import { updateConsignmentSubmission } from "../Submission/updateConsignmentSubm
 jest.mock("../Submission/uploadPhotoToGemini", () => ({ uploadImageAndPassToGemini: jest.fn() }))
 import { uploadImageAndPassToGemini } from "../Submission/uploadPhotoToGemini"
 
+const mockUploadImageAndPassToGemini = uploadImageAndPassToGemini as jest.Mock
 const nav = {} as any
 const route = {} as any
 
@@ -58,6 +59,23 @@ it("calls update submission when submitting a non-draft version", () => {
 
   overview.submitFinalSubmission()
   expect(updateConsignmentSubmission).toBeCalledWith({ state: "SUBMITTED", submissionID: "123" })
+})
+
+it("if image uploadin failed", async () => {
+  mockUploadImageAndPassToGemini.mockRejectedValue("UploadImageError")
+  const overview = new Overview({
+    nav,
+    route,
+    setup: { submissionID: 1, photos: [{ image: { path: "/a/b/c.webp" }, uploaded: false }] },
+    params: {},
+  })
+  overview.setState = jest.fn()
+  overview.showUploadFailureAlert = jest.fn()
+
+  await overview.updateLocalStateAndMetaphysics()
+
+  expect(overview.showUploadFailureAlert).toHaveBeenCalled()
+  expect(overview.showUploadFailureAlert).toHaveBeenCalledWith("UploadImageError")
 })
 
 it("passes utm params when submitting", () => {
