@@ -764,8 +764,12 @@ type ArticleImageSection {
 }
 
 enum ArticleLayout {
+  CLASSIC
   FEATURE
+  NEWS
+  SERIES
   STANDARD
+  VIDEO
 }
 
 type ArticleSectionCallout {
@@ -840,10 +844,18 @@ type ArticleSectionText {
 type ArticleSectionVideo {
   backgroundColor: String
   caption: String
-  coverImageUrl: String
-  layout: String
-  type: String
-  url: String
+
+  # Only YouTube and Vimeo are supported
+  embed(autoPlay: Boolean = false): String
+  image: Image
+  layout: ArticleSectionVideoLayout
+  url: String!
+}
+
+enum ArticleSectionVideoLayout {
+  COLUMN_WIDTH
+  FILLWIDTH
+  OVERFLOW_FILLWIDTH
 }
 
 enum ArticleSorts {
