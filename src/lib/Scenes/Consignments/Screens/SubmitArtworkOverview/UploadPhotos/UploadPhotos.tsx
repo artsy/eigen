@@ -69,7 +69,7 @@ const PhotoThumbnail: React.FC<{ photo: Photo; handlePhotoDelete: (arg: Photo) =
   photo,
   handlePhotoDelete,
 }) => {
-  // TODO: display error view
+  // TODO: display error view & loading view
   return (
     <>
       <Flex
@@ -86,8 +86,10 @@ const PhotoThumbnail: React.FC<{ photo: Photo; handlePhotoDelete: (arg: Photo) =
             uri: "https://i.picsum.photos/id/14/200/300.jpg?hmac=FMdb1SH_oeEo4ibDe66-ORzb8p0VYJUS3xWfN3h2qDU",
           }}
           style={{ height: 58, width: 70 }}
+          // TODO
           testID="image"
         />
+        {/* TODO: actual size */}
         <Text>0.32mb</Text>
         <Button variant="text" size="small" onPress={() => handlePhotoDelete(photo)}>
           <Text style={{ textDecorationLine: "underline" }}>Delete</Text>
