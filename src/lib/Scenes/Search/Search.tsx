@@ -1,5 +1,5 @@
 import { ActionType, ContextModule, OwnerType } from "@artsy/cohesion"
-import { Search_system } from "__generated__/Search_system.graphql"
+import { Search_system$key } from "__generated__/Search_system.graphql"
 import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { ArtsyKeyboardAvoidingView } from "lib/Components/ArtsyKeyboardAvoidingView"
 import { useFeatureFlag } from "lib/store/GlobalStore"
@@ -18,7 +18,7 @@ import {
   InstantSearch,
 } from "react-instantsearch-native"
 import { Keyboard, Platform, ScrollView } from "react-native"
-import { createRefetchContainer, graphql, RelayRefetchProp, useLazyLoadQuery } from "react-relay"
+import { graphql, useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { useTracking } from "react-tracking"
 import styled from "styled-components"
 import { AutosuggestResult, AutosuggestResults } from "./AutosuggestResults"
@@ -71,13 +71,29 @@ const objectTabByContextModule: Partial<Record<ContextModule, string>> = {
   [ContextModule.artistsTab]: "Artworks",
 }
 
-interface SearchProps {
-  relay: RelayRefetchProp
-  system: Search_system | null
-}
+export const Search: React.FC = () => {
+  const queryData = useLazyLoadQuery<SearchQuery>(SearchScreenQuery, {})
 
-export const Search: React.FC<SearchProps> = (props) => {
-  const { system, relay } = props
+  const [{ system }, refetch] = useRefetchableFragment<SearchQuery, Search_system$key>(
+    graphql`
+      fragment Search_system on Query @refetchable(queryName: "SearchRefetchQuery") {
+        system {
+          __typename
+          algolia {
+            appID
+            apiKey
+            indices {
+              name
+              displayName
+              key
+            }
+          }
+        }
+      }
+    `,
+    queryData
+  )
+
   const searchPillsRef = useRef<ScrollView>(null)
   const [searchState, setSearchState] = useState<SearchState>({})
   const [selectedPill, setSelectedPill] = useState<PillType>(TOP_PILL)
@@ -98,8 +114,8 @@ export const Search: React.FC<SearchProps> = (props) => {
 
   const pillsArray = useMemo<PillType[]>(() => {
     if (Array.isArray(indices) && indices.length > 0) {
-      const allowedIndices = (indices as NonNullable<Search_system["algolia"]>["indices"]).filter(
-        (indice) => ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndexKey)
+      const allowedIndices = indices.filter((indice) =>
+        ALLOWED_ALGOLIA_KEYS.includes(indice.key as AlgoliaIndexKey)
       )
       const formattedIndices: PillType[] = allowedIndices.map((index) => {
         const { name, ...other } = index
@@ -185,7 +201,7 @@ export const Search: React.FC<SearchProps> = (props) => {
   const handleTrackAlgoliaResultPress = (result: AlgoliaSearchResult) => {
     const contextModule = getContextModuleByPillName(selectedPill.displayName)
 
-    const data: TappedSearchResultData = {
+    const analyticsData: TappedSearchResultData = {
       type: selectedPill.displayName,
       slug: result.slug,
       position: result.__position - 1,
@@ -194,10 +210,10 @@ export const Search: React.FC<SearchProps> = (props) => {
     }
 
     if (contextModule && objectTabByContextModule[contextModule]) {
-      data.objectTab = objectTabByContextModule[contextModule]
+      analyticsData.objectTab = objectTabByContextModule[contextModule]
     }
 
-    trackEvent(tracks.tappedSearchResult(data))
+    trackEvent(tracks.tappedSearchResult(analyticsData))
   }
 
   return (
@@ -210,7 +226,7 @@ export const Search: React.FC<SearchProps> = (props) => {
           onSearchStateChange={setSearchState}
         >
           <Configure clickAnalytics />
-          <RefetchWhenApiKeyExpiredContainer relay={relay} />
+          <RefetchWhenApiKeyExpiredContainer refetch={refetch} />
           <Flex p={2} pb={1}>
             <SearchInputContainer
               placeholder="Search artists, artworks, galleries, etc"
@@ -252,50 +268,16 @@ export const Search: React.FC<SearchProps> = (props) => {
   )
 }
 
-const SearchRefetchContainer = createRefetchContainer(
-  Search,
-  {
-    system: graphql`
-      fragment Search_system on System {
-        __typename
-        algolia {
-          appID
-          apiKey
-          indices {
-            name
-            displayName
-            key
-          }
-        }
-      }
-    `,
-  },
-  graphql`
-    query SearchRefetchQuery {
-      system {
-        ...Search_system
-      }
-    }
-  `
-)
-
 export const SearchScreenQuery = graphql`
   query SearchQuery {
-    system {
-      ...Search_system
-    }
+    ...Search_system
   }
 `
-
-export const SearchQueryRenderer: React.FC<{}> = ({}) => {
-  const { system } = useLazyLoadQuery<SearchQuery>(SearchScreenQuery, {})
-  return <SearchRefetchContainer system={system ?? null} />
-}
 
 export const SearchScreen: React.FC<{}> = ({}) => {
   return (
     <Suspense fallback={<SearchPlaceholder />}>
-      <SearchQueryRenderer />
+      <Search />
     </Suspense>
   )
 }
