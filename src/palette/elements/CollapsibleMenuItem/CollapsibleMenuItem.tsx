@@ -1,4 +1,4 @@
-import { CheckCircleIcon, ChevronIcon, CollapseView, Flex, Text, Touchable } from "palette"
+import { CheckCircleIcon, ChevronIcon, Collapse, Flex, Text, Touchable } from "palette"
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from "react"
 import { LayoutAnimation } from "react-native"
 
@@ -76,7 +76,7 @@ export const CollapsibleMenuItem = forwardRef<
           </Flex>
         </Flex>
       </Touchable>
-      <CollapseView isOpen={isOpen}>{children}</CollapseView>
+      <Collapse isOpen={isOpen}>{children}</Collapse>
     </Flex>
   )
 })
