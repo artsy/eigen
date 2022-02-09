@@ -647,7 +647,7 @@ describe("Saved search alert form", () => {
 
       it('should call create mutation when "Replace" button is pressed', async () => {
         // @ts-ignore
-        spyAlert.mockImplementation((_title, _message, buttons) => buttons[2].onPress()) // Click "Replace" button
+        spyAlert.mockImplementation((_title, _message, buttons) => buttons[0].onPress()) // Click "Replace" button
 
         const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
 
@@ -719,7 +719,7 @@ describe("Saved search alert form", () => {
 
       it('should call update mutation when "Replace" button is pressed', async () => {
         // @ts-ignore
-        spyAlert.mockImplementation((_title, _message, buttons) => buttons[2].onPress()) // Click "Replace" button
+        spyAlert.mockImplementation((_title, _message, buttons) => buttons[0].onPress()) // Click "Replace" button
 
         const { getAllByText, getByText } = renderWithWrappersTL(
           <TestRenderer savedSearchAlertId="savedSearchAlertId" />

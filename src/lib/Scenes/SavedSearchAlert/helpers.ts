@@ -120,16 +120,16 @@ export const showWarningMessageForDuplicateAlert = ({
     "You already have a saved alert with these filters. Do you want to replace it?",
     [
       {
-        text: "Cancel",
+        onPress: onReplacePress,
+        style: "destructive",
+        text: "Replace",
       },
       {
         onPress: onViewDuplicatePress,
         text: "View Duplicate",
       },
       {
-        onPress: onReplacePress,
-        style: "destructive",
-        text: "Replace",
+        text: "Cancel",
       },
     ]
   )
