@@ -24,9 +24,7 @@ const MyCollectionArtworkScreenQuery = graphql`
   }
 `
 
-const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
-  artworkSlug,
-}) => {
+const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({ artworkSlug }) => {
   const data = useLazyLoadQuery<MyCollectionArtworkQuery>(MyCollectionArtworkScreenQuery, {
     artworkSlug,
   })
@@ -83,7 +81,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   )
 }
 
-const MyCollectionArtworkQueryRendererPlaceholder = () => (
+const MyCollectionArtworkPlaceholder = () => (
   <ProvidePlaceholderContext>
     <Flex flexDirection="column" justifyContent="space-between" height="100%" pb={8}>
       <PlaceholderBox width="100%" marginBottom={10} />
@@ -105,7 +103,7 @@ export const MyCollectionArtworkQueryRenderer: React.FC<MyCollectionArtworkScree
   if (AREnableNewMyCollectionArtwork) {
     return (
       <Suspense fallback={<MyCollectionArtworkPlaceholder />}>
-        <MyCollectionArtworkQueryRendererContainer {...props} />
+        <MyCollectionArtwork {...props} />
       </Suspense>
     )
   }
