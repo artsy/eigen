@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+source 'https://cdn.cocoapods.org/'
+source 'https://github.com/artsy/Specs.git'
 
 require 'dotenv'
 Dotenv.load('../.env.shared')
@@ -37,6 +39,13 @@ target 'eigen' do
   # Note that if you have use_frameworks! enabled, Flipper will not work and
   # you should disable the next line.
   use_flipper!()
+
+  pod 'SDWebImage', '5.8.3'
+  pod 'Emission', path: '../emission', :inhibit_warnings => false
+
+
+  # For Stripe integration with Emission. Using a fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
+  pod 'Pulley', git: 'https://github.com/artsy/Pulley.git', branch: 'master'
 
   post_install do |installer|
     react_native_post_install(installer)

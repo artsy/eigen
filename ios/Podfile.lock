@@ -25,11 +25,66 @@ PODS:
     - Appboy-iOS-SDK/Core
     - Appboy-iOS-SDK/InAppMessage
     - Appboy-iOS-SDK/NewsFeed
+  - "Artsy+UIColors (3.1.0)"
+  - "Artsy+UIFonts (3.3.4)"
+  - Artsy-UIButtons (2.3.3):
+    - "Artsy+UIColors (~> 3.0)"
+    - "Artsy+UIFonts"
+    - "UIView+BooleanAnimations"
   - boost (1.76.0)
   - BVLinearGradient (2.5.6):
     - React
   - CocoaAsyncSocket (7.6.5)
   - DoubleConversion (1.1.6)
+  - Emission (1.21.52):
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts (>= 3.0.0)"
+    - boost (= 1.76.0)
+    - DoubleConversion (= 1.1.6)
+    - Extraction (>= 1.2.1)
+    - glog (= 0.3.5)
+    - INTUAnimationEngine
+    - Pulley
+    - RCT-Folly (= 2021.06.28.00-v2)
+    - React-Core (= 0.66.4)
+    - React-cxxreact (= 0.66.4)
+    - react-native-cameraroll (= 1.3.0)
+    - react-native-geolocation (= 2.0.2)
+    - react-native-mapbox-gl (= 8.4.0)
+    - react-native-netinfo (= 6.0.1)
+    - React-RCTActionSheet (= 0.66.4)
+    - React-RCTAnimation (= 0.66.4)
+    - React-RCTImage (= 0.66.4)
+    - React-RCTLinking (= 0.66.4)
+    - React-RCTNetwork (= 0.66.4)
+    - React-RCTText (= 0.66.4)
+    - RNSentry (= 3.1.1)
+    - RNSVG (= 9.13.3)
+    - SDWebImage (= 5.8.3)
+    - tipsi-stripe (= 7.5.0)
+  - Extraction (1.2.6):
+    - Extraction/ARAnimationContinuation (= 1.2.6)
+    - Extraction/ARLoadFailureView (= 1.2.6)
+    - Extraction/ARSpinner (= 1.2.6)
+    - Extraction/ARSwitchView (= 1.2.6)
+    - "Extraction/UILabel+Typography (= 1.2.6)"
+    - "Extraction/UIView+ARSpinner (= 1.2.6)"
+  - Extraction/ARAnimationContinuation (1.2.6)
+  - Extraction/ARLoadFailureView (1.2.6):
+    - Artsy-UIButtons
+    - "Extraction/UILabel+Typography"
+    - ORStackView (< 3)
+  - Extraction/ARSpinner (1.2.6):
+    - "Extraction/UIView+ARSpinner"
+    - "UIView+BooleanAnimations"
+  - Extraction/ARSwitchView (1.2.6):
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts (>= 1.1.0)"
+    - FLKAutoLayout
+    - "UIView+BooleanAnimations"
+  - "Extraction/UILabel+Typography (1.2.6)"
+  - "Extraction/UIView+ARSpinner (1.2.6)":
+    - Extraction/ARAnimationContinuation
   - FBLazyVector (0.66.4)
   - FBReactNativeSpec (0.66.4):
     - RCT-Folly (= 2021.06.28.00-v2)
@@ -112,6 +167,7 @@ PODS:
   - FlipperKit/SKIOSNetworkPlugin (0.99.0):
     - FlipperKit/Core
     - FlipperKit/FlipperKitNetworkPlugin
+  - FLKAutoLayout (1.0.1)
   - fmt (6.2.1)
   - glog (0.3.5)
   - GoogleSignIn (5.0.2):
@@ -122,11 +178,17 @@ PODS:
     - AppAuth/Core (~> 1.4)
     - GTMSessionFetcher/Core (~> 1.5)
   - GTMSessionFetcher/Core (1.7.0)
+  - INTUAnimationEngine (1.4.2):
+    - INTUAnimationEngine/SpringSolver (= 1.4.2)
+  - INTUAnimationEngine/SpringSolver (1.4.2)
   - libevent (2.1.12)
   - Mapbox-iOS-SDK (6.4.1):
     - MapboxMobileEvents (~> 0.10.12)
-  - MapboxMobileEvents (0.10.13)
+  - MapboxMobileEvents (0.10.14)
   - OpenSSL-Universal (1.1.180)
+  - ORStackView (2.0.3):
+    - FLKAutoLayout
+  - Pulley (2.6.2)
   - RCT-Folly (2021.06.28.00-v2):
     - boost
     - DoubleConversion
@@ -506,9 +568,9 @@ PODS:
     - React
   - RNSVG (9.13.3):
     - React
-  - SDWebImage (5.12.1):
-    - SDWebImage/Core (= 5.12.1)
-  - SDWebImage/Core (5.12.1)
+  - SDWebImage (5.8.3):
+    - SDWebImage/Core (= 5.8.3)
+  - SDWebImage/Core (5.8.3)
   - Segment-Adjust (3.1.4):
     - Adjust (~> 4.29.3)
     - Analytics
@@ -525,7 +587,8 @@ PODS:
   - tipsi-stripe (7.5.0):
     - React
     - Stripe (~> 14.0.0)
-  - TOCropViewController (2.6.0)
+  - TOCropViewController (2.6.1)
+  - "UIView+BooleanAnimations (1.0.2)"
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -534,6 +597,7 @@ DEPENDENCIES:
   - boost (from `../node_modules/react-native/third-party-podspecs/boost.podspec`)
   - BVLinearGradient (from `../node_modules/react-native-linear-gradient`)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - Emission (from `../emission`)
   - FBLazyVector (from `../node_modules/react-native/Libraries/FBLazyVector`)
   - FBReactNativeSpec (from `../node_modules/react-native/React/FBReactNativeSpec`)
   - Flipper (= 0.99.0)
@@ -558,6 +622,7 @@ DEPENDENCIES:
   - FlipperKit/FlipperKitUserDefaultsPlugin (= 0.99.0)
   - FlipperKit/SKIOSNetworkPlugin (= 0.99.0)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - Pulley (from `https://github.com/artsy/Pulley.git`, branch `master`)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
@@ -620,10 +685,16 @@ DEPENDENCIES:
   - RNShare (from `../node_modules/react-native-share`)
   - "RNSplit (from `../node_modules/@splitsoftware/splitio-react-native`)"
   - RNSVG (from `../node_modules/react-native-svg`)
+  - SDWebImage (= 5.8.3)
   - tipsi-stripe (from `../node_modules/tipsi-stripe`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
+  https://github.com/artsy/Specs.git:
+    - "Artsy+UIColors"
+    - "Artsy+UIFonts"
+    - Artsy-UIButtons
+    - Extraction
   trunk:
     - Adjust
     - Analytics
@@ -642,20 +713,24 @@ SPEC REPOS:
     - Flipper-PeerTalk
     - Flipper-RSocket
     - FlipperKit
+    - FLKAutoLayout
     - fmt
     - GoogleSignIn
     - GTMAppAuth
     - GTMSessionFetcher
+    - INTUAnimationEngine
     - libevent
     - Mapbox-iOS-SDK
     - MapboxMobileEvents
     - OpenSSL-Universal
+    - ORStackView
     - SDWebImage
     - Segment-Adjust
     - Segment-Appboy
     - Sentry
     - Stripe
     - TOCropViewController
+    - "UIView+BooleanAnimations"
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -665,12 +740,17 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-linear-gradient"
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  Emission:
+    :path: "../emission"
   FBLazyVector:
     :path: "../node_modules/react-native/Libraries/FBLazyVector"
   FBReactNativeSpec:
     :path: "../node_modules/react-native/React/FBReactNativeSpec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  Pulley:
+    :branch: master
+    :git: https://github.com/artsy/Pulley.git
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -796,15 +876,25 @@ EXTERNAL SOURCES:
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
+CHECKOUT OPTIONS:
+  Pulley:
+    :commit: f677b18b332ea3798dc379879dbc0d038efd3ccc
+    :git: https://github.com/artsy/Pulley.git
+
 SPEC CHECKSUMS:
   Adjust: 94f1c99429fb2a7ebe530294fd66a88d63a54922
   Analytics: eefe524436f904b8bb3f8c8c3425280e43b34efc
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
   Appboy-iOS-SDK: dd22a28a003c5a1331080ecec398eaa4d7ef4569
+  "Artsy+UIColors": 31c03c4146f5e6618a9b950f37dfe02dd9ac09a6
+  "Artsy+UIFonts": 19efbc985ba95156d75a860633df5538c8045b80
+  Artsy-UIButtons: 3c396f0fad352a7b0332100e0ffcb0ca577e0082
   boost: a7c83b31436843459a1961bfd74b96033dc77234
   BVLinearGradient: e3aad03778a456d77928f594a649e96995f1c872
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DoubleConversion: 831926d9b8bf8166fd87886c4abab286c2422662
+  Emission: 8f3d65a1108812947dd989727f05abce92d2b4f5
+  Extraction: 2be993a17f8f8c4fac988ebecaed93a409181faf
   FBLazyVector: e5569e42a1c79ca00521846c223173a57aca1fe1
   FBReactNativeSpec: fe08c1cd7e2e205718d77ad14b34957cce949b58
   FBSDKCoreKit: 0d1ae58388a458b8222f72025804cdc84eb5d0c3
@@ -819,15 +909,19 @@ SPEC CHECKSUMS:
   Flipper-PeerTalk: 116d8f857dc6ef55c7a5a75ea3ceaafe878aadc9
   Flipper-RSocket: d9d9ade67cbecf6ac10730304bf5607266dd2541
   FlipperKit: d8d346844eca5d9120c17d441a2f38596e8ed2b9
+  FLKAutoLayout: 37e1e09de6411dbee5526860d9f55d9063323ea8
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: 5337263514dd6f09803962437687240c5dc39aa4
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: 43748f93435c2aa068b1cbe39655aaf600652e91
+  INTUAnimationEngine: 3a7d63738cd51af573d16848a771feedea7cc9f2
   libevent: 4049cae6c81cdb3654a443be001fb9bdceff7913
   Mapbox-iOS-SDK: f870f83cbdc7aa4a74afcee143aafb0dae390c82
-  MapboxMobileEvents: e78db24b348f48e41e5895be7dc16e5b1bb43562
+  MapboxMobileEvents: 5a172cc9bbf8ac0e45ba86095cbee685ede248cc
   OpenSSL-Universal: 1aa4f6a6ee7256b83db99ec1ccdaa80d10f9af9b
+  ORStackView: b9507271cb41fb9e0b3eecc6414d831201e7cf7c
+  Pulley: edc993fb57f7eb20541c8453d0fce10559f21dac
   RCT-Folly: a21c126816d8025b547704b777a2ba552f3d9fa9
   RCTRequired: 4bf86c70714490bca4bf2696148638284622644b
   RCTTypeSafety: c475a7059eb77935fa53d2c17db299893f057d5d
@@ -888,16 +982,17 @@ SPEC CHECKSUMS:
   RNShare: 3185c074441b7e8897014d95ba982434a0a024a1
   RNSplit: 5c78d865a08e56dd125968ba1b529358f0b9f537
   RNSVG: f6177f8d7c095fada7cfee2e4bb7388ba426064c
-  SDWebImage: 4dc3e42d9ec0c1028b960a33ac6b637bb432207b
+  SDWebImage: 112503ec94a5a2a41869503844a15e8d8f1ead5c
   Segment-Adjust: 1a12861ab2e9372fc70af949057490858666cd37
   Segment-Appboy: c73225efe42c082b0c8d231aa1d6f37de09ba205
   Sentry: 9a4e621430e2dae4477d791f2f7e905720b6efbf
   Stripe: 25c07000e7e86ffc53da0e41a5dd1bce30470fe0
   tipsi-stripe: 8aaaa6f5e4cfea5c35be3affbb616c4e6cfafa5f
-  TOCropViewController: 3105367e808b7d3d886a74ff59bf4804e7d3ab38
+  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
+  "UIView+BooleanAnimations": a760be9a066036e55f298b7b7350a6cb14cfcd97
   Yoga: e7dc4e71caba6472ff48ad7d234389b91dadc280
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 33655cd67cf45765249202dcf7db3fa7cb58852e
+PODFILE CHECKSUM: a51cb1922447c5787470c665ac19efa741067b25
 
 COCOAPODS: 1.11.2
