@@ -1,4 +1,6 @@
 import { OrderUpdate_event } from "__generated__/OrderUpdate_event.graphql"
+import { LinkText } from "lib/Components/Text/LinkText"
+import { navigate } from "lib/navigation/navigate"
 import { AlertCircleFillIcon, Color, Flex, IconProps, MoneyFillIcon, Spacer, Text } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -6,12 +8,14 @@ import { TimeSince } from "./TimeSince"
 
 export interface OrderUpdateProps {
   event: OrderUpdate_event
+  conversationId: string
 }
 
-export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event }) => {
+export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event, conversationId }) => {
   let color: Color
   let message: string
   let Icon: React.FC<IconProps> = MoneyFillIcon
+  let action: { label?: string; onPress?: () => void } = {}
 
   if (event.__typename === "CommerceOfferSubmittedEvent") {
     const { offer } = event
@@ -19,6 +23,12 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event }) => {
     if (offer.fromParticipant === "BUYER") {
       color = "black100"
       message = `You sent ${isCounter ? "a counteroffer" : "an offer"} for ${event.offer.amount}`
+      if (!isCounter) {
+        action = {
+          label: "See details",
+          onPress: () => navigate(`/conversation/${conversationId}/details`),
+        }
+      }
     } else if (offer.fromParticipant === "SELLER") {
       color = "copper100"
       Icon = AlertCircleFillIcon
@@ -59,6 +69,12 @@ export const OrderUpdate: React.FC<OrderUpdateProps> = ({ event }) => {
           <Flex flexDirection="column" pl={1}>
             <Text color={color} variant="xs">
               {message}
+              {!!action.label && !!action.onPress && (
+                <>
+                  {". "}
+                  <LinkText onPress={action.onPress}>{action.label}.</LinkText>
+                </>
+              )}
             </Text>
           </Flex>
         </Flex>
