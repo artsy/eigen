@@ -273,7 +273,7 @@ describe("Filter modal states", () => {
   it("displays the filter screen apply button correctly when no filters are selected", () => {
     const { getByText } = renderWithWrappersTL(<MockFilterModalNavigator />)
 
-    expect(getByText("Apply Filters")).toBeDisabled()
+    expect(getByText("Show Results")).toBeDisabled()
   })
 
   it("displays the filter screen apply button correctly when filters are selected", () => {
@@ -294,7 +294,7 @@ describe("Filter modal states", () => {
       <MockFilterModalNavigator initialData={injectedState} />
     )
 
-    expect(getByText("Apply Filters")).not.toBeDisabled()
+    expect(getByText("Show Results")).not.toBeDisabled()
   })
 
   it("does not display default filters numbers on the Filter modal", () => {
@@ -402,7 +402,7 @@ describe("Clearing filters", () => {
       <MockFilterModalNavigator initialData={injectedState} />
     )
 
-    expect(getByText("Apply Filters")).toBeDisabled()
+    expect(getByText("Show Results")).toBeDisabled()
 
     fireEvent.press(getByText("Clear All"))
 
@@ -537,7 +537,7 @@ describe("Applying filters on Artworks", () => {
 
     mockEnvironmentPayload(env)
 
-    fireEvent.press(getByText("Apply Filters"))
+    fireEvent.press(getByText("Show Results"))
 
     expect(trackEvent).toHaveBeenCalledWith({
       action_type: "commercialFilterParamsChanged",

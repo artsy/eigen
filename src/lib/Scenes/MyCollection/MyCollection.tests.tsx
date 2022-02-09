@@ -153,7 +153,7 @@ const applyFilter = async (renderApi: RenderAPI, filterName: string, filterOptio
   act(() => fireEvent.press(renderApi.getByTestId("sort-and-filter-button")))
   act(() => fireEvent.press(renderApi.getByText(filterName)))
   act(() => fireEvent.press(renderApi.getByText(filterOption)))
-  act(() => fireEvent.press(renderApi.getByText("Apply Filters")))
+  act(() => fireEvent.press(renderApi.getByText("Show Results")))
 }
 
 const mockArtworkConnection = {
