@@ -782,11 +782,17 @@ type ArticleSectionCallout {
 }
 
 type ArticleSectionEmbed {
-  height: String
-  layout: String
-  mobileHeight: String
-  type: String
+  height: Int
+  layout: ArticleSectionEmbedLayout
+  mobileHeight: Int
   url: String
+}
+
+enum ArticleSectionEmbedLayout {
+  COLUMN_WIDTH
+  FILLWIDTH
+  OVERFLOW
+  OVERFLOW_FILLWIDTH
 }
 
 type ArticleSectionImageCollection {
