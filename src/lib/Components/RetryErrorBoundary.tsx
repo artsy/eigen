@@ -1,5 +1,5 @@
 import { captureMessage } from "@sentry/react-native"
-import React, { FC } from "react"
+import React, { FC, ReactNode } from "react"
 import { LoadFailureView } from "./LoadFailureView"
 
 enum ErrorState {
@@ -46,6 +46,7 @@ export class RetryErrorBoundaryLegacy extends React.Component<Props, State> {
 // Taken from https://relay.dev/docs/guided-tour/rendering/error-states/#when-using-uselazyloadquery
 interface RetryErrorBoundaryProps {
   failureView?: FC<{ error: Error; retry: () => void }>
+  children: ReactNode
 }
 interface RetryErrorBoundaryState {
   error: Error | null

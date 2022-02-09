@@ -110,7 +110,7 @@ import { GlobalStore, useSelectedTab } from "./store/GlobalStore"
 import { propsStore } from "./store/PropsStore"
 import { AdminMenu } from "./utils/AdminMenu"
 import { useInitializeQueryPrefetching } from "./utils/queryPrefetching"
-import { addTrackingProvider, Schema, screenTrack, track } from "./utils/track"
+import { addTrackingProvider, Schema, screenTrack } from "./utils/track"
 import { ConsoleTrackingProvider } from "./utils/track/ConsoleTrackingProvider"
 import {
   SEGMENT_TRACKING_PROVIDER,
@@ -223,7 +223,6 @@ const InnerPageWrapper: React.FC<PageWrapperProps> = ({
   )
 }
 
-@track()
 class PageWrapper extends React.Component<PageWrapperProps> {
   pageProps: PageWrapperProps
 
@@ -446,7 +445,7 @@ for (const moduleName of Object.keys(modules)) {
   }
 }
 
-const Main: React.FC<{}> = track()(({}) => {
+const Main: React.FC = () => {
   usePreferredThemeTracking()
   useScreenReaderTracking()
   useFreshInstallTracking()
@@ -483,7 +482,7 @@ const Main: React.FC<{}> = track()(({}) => {
   }
 
   return <BottomTabsNavigator />
-})
+}
 
 if (Platform.OS === "ios") {
   register("Artsy", Main, { fullBleed: true, isMainView: true, moduleName: "Artsy" })

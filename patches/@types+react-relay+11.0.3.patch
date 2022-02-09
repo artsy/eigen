@@ -1,0 +1,13 @@
+diff --git a/node_modules/@types/react-relay/relay-hooks/RelayEnvironmentProvider.react.d.ts b/node_modules/@types/react-relay/relay-hooks/RelayEnvironmentProvider.react.d.ts
+index 585fa73..b9c564c 100755
+--- a/node_modules/@types/react-relay/relay-hooks/RelayEnvironmentProvider.react.d.ts
++++ b/node_modules/@types/react-relay/relay-hooks/RelayEnvironmentProvider.react.d.ts
+@@ -2,7 +2,7 @@ import { ProviderProps, ReactElement, ReactNode } from 'react';
+ import { IEnvironment, RelayContext } from 'relay-runtime';
+ 
+ export interface Props {
+-    children: ReactNode;
++    children?: ReactNode;
+     environment: IEnvironment;
+ }
+ 
