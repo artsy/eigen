@@ -1,20 +1,24 @@
 import { Formik } from "formik"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { BulletedItem, CTAButton, Flex, Spacer } from "palette"
 import React, { useState } from "react"
 import { ErrorView } from "../Components/ErrorView"
 import { UploadPhotosForm } from "./UploadPhotosForm"
-import {
-  Photo,
-  photosEmptyInitialValues,
-  PhotosFormModel,
-  photosValidationSchema,
-} from "./validation"
+import { Photo, PhotosFormModel, photosValidationSchema } from "./validation"
 
 export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
+  const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const [photoUploadError, setPhotoUploadError] = useState(false)
 
   if (photoUploadError) {
     return <ErrorView />
+  }
+
+  const handlePhotosSavePress = (values: PhotosFormModel) => {
+    GlobalStore.actions.artworkSubmission.submission.setPhotos({
+      photos: [...values.photos],
+    })
+    handlePress()
   }
 
   return (
@@ -30,8 +34,8 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
       </Flex>
 
       <Formik<PhotosFormModel>
-        initialValues={photosEmptyInitialValues}
-        onSubmit={handlePress}
+        initialValues={submission.photos}
+        onSubmit={handlePhotosSavePress}
         validationSchema={photosValidationSchema}
         validateOnMount
       >
@@ -45,7 +49,7 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
               <Spacer mt={2} />
               <CTAButton
                 disabled={!isValid || isAnyPhotoLoading || isAnyPhotoError}
-                onPress={handlePress}
+                onPress={() => handlePhotosSavePress(values)}
                 testID="Submission_Photos_Button"
               >
                 {!!isAnyPhotoLoading ? "Loading Photos..." : "Save & Continue"}
