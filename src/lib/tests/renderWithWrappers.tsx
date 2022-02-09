@@ -5,7 +5,8 @@ import { GlobalStoreProvider } from "lib/store/GlobalStore"
 import { track } from "lib/utils/track"
 import { ProvideScreenDimensions } from "lib/utils/useScreenDimensions"
 import { Theme } from "palette"
-import React from "react"
+import React, { Suspense } from "react"
+import { Environment, RelayEnvironmentProvider } from "react-relay"
 import ReactTestRenderer from "react-test-renderer"
 import { ReactElement } from "simple-markdown"
 
@@ -91,4 +92,13 @@ export const renderWithWrappersTL = (component: ReactElement) => {
       throw new Error(error.stack)
     }
   }
+}
+
+export const renderWithHookWrappersTL = (component: ReactElement, environment: Environment) => {
+  const jsx = (
+    <RelayEnvironmentProvider environment={environment}>
+      <Suspense fallback="Loading...">{component}</Suspense>
+    </RelayEnvironmentProvider>
+  )
+  return renderWithWrappersTL(jsx)
 }
