@@ -11,9 +11,6 @@ import { createMockEnvironment } from "relay-test-utils"
 import { MyProfileEditForm } from "../MyProfileEditForm"
 
 jest.unmock("react-relay")
-// jest.mock("lib/relay/createEnvironment", () => ({
-//   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-// }))
 
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native")
