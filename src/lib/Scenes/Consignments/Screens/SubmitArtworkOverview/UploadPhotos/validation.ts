@@ -14,8 +14,11 @@ export interface Photo {
   imageVersions?: string[]
   loading?: boolean
   error?: boolean
+  errorMsg?: string
   geminiToken?: string
   id?: string
+  size?: number
+  sizeDisplayValue?: string
 }
 
 export const photosEmptyInitialValues: PhotosFormModel = {

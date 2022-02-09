@@ -23,11 +23,9 @@ export const PhotoThumbnailSuccessState: React.FC<{
             uri: "https://i.picsum.photos/id/14/200/300.jpg?hmac=FMdb1SH_oeEo4ibDe66-ORzb8p0VYJUS3xWfN3h2qDU",
           }}
           style={{ height: 58, width: 70 }}
-          // TODO
-          testID="image"
+          testID="Submission_image"
         />
-        {/* TODO: actual size */}
-        <Text>0.32mb</Text>
+        <Text>{photo.sizeDisplayValue}</Text>
         <Button variant="text" size="small" onPress={() => handlePhotoDelete(photo)}>
           <Text style={{ textDecorationLine: "underline" }}>Delete</Text>
         </Button>
@@ -54,7 +52,7 @@ export const PhotoThumbnailLoadingState = () => {
   )
 }
 
-export const PhotoThumbnailErrorState = () => {
+export const PhotoThumbnailErrorState: React.FC<{ photo: Photo }> = ({ photo }) => {
   return (
     <>
       <Flex
@@ -62,7 +60,7 @@ export const PhotoThumbnailErrorState = () => {
         alignItems="center"
         style={{ borderColor: "red", borderWidth: 1, borderRadius: 4, height: 68 }}
       >
-        <Text color="black60">Problem</Text>
+        <Text color="black60">{photo.errorMsg}</Text>
       </Flex>
       <Spacer mt={2} />
     </>
