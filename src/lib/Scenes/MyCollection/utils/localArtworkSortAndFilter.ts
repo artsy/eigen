@@ -6,7 +6,8 @@ import {
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { FilterDisplayConfig } from "lib/Components/ArtworkFilter/types"
-import { filter, orderBy, trim, uniqBy } from "lodash"
+import { normalizeText } from "lib/utils/normalizeText"
+import { filter, orderBy, uniqBy } from "lodash"
 import { DateTime } from "luxon"
 import { useEffect } from "react"
 import { MyCollectionArtworkEdge } from "../MyCollection"
@@ -286,7 +287,7 @@ export const filterArtworksByKeyword = (
   artworks: MyCollectionArtworkEdge[],
   keywordFilter: string
 ) => {
-  const normalizedKeywordFilter = normalizeKeyword(keywordFilter)
+  const normalizedKeywordFilter = normalizeText(keywordFilter)
 
   if (!normalizedKeywordFilter) {
     return artworks
@@ -297,19 +298,9 @@ export const filterArtworksByKeyword = (
   const doAllKeywordFiltersMatch = (artwork: MyCollectionArtworkEdge) =>
     keywordFilterWords.filter(
       (word) =>
-        !normalizeKeyword(artwork?.title).includes(word) &&
-        !normalizeKeyword(artwork?.artist?.name).includes(word)
+        !normalizeText(artwork?.title ?? "").includes(word) &&
+        !normalizeText(artwork?.artist?.name ?? "").includes(word)
     ).length === 0
 
   return artworks.filter(doAllKeywordFiltersMatch)
 }
-
-const normalizeKeyword = (text?: string | null) =>
-  text
-    ? trim(
-        text
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "")
-      )
-    : ""
