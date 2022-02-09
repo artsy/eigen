@@ -125,7 +125,7 @@ export const LocationPredictions = ({
   }
 
   return (
-    <Box height={175}>
+    <Box height={175} mt={0.5}>
       <AboveTheFoldFlatList
         listRef={flatListRef}
         style={{

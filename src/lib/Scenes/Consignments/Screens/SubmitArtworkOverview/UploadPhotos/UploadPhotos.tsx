@@ -23,7 +23,7 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
   }
 
   return (
-    <Flex p={1} mt={1} style={{ height: 700 }}>
+    <Flex p={1} mt={1}>
       <Flex>
         <BulletedItem>
           To evaluate your submission faster, please upload high-quality photos of the work's front
