@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1352d55253d1c8f441e311029061a0fd */
+/* @relayHash f6b93dbf81b98fb17fb31ec6b680e5c9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -26,14 +26,6 @@ query MyProfileHeaderMyCollectionAndSavedWorksTestsQuery {
   }
 }
 
-fragment MyProfileEditFormModal_me_40LmUp on Me {
-  name
-  bio
-  icon {
-    url(version: "thumbnail")
-  }
-}
-
 fragment MyProfileHeaderMyCollectionAndSavedWorks_me on Me {
   name
   bio
@@ -47,7 +39,6 @@ fragment MyProfileHeaderMyCollectionAndSavedWorks_me on Me {
     url(version: "thumbnail")
   }
   createdAt
-  ...MyProfileEditFormModal_me_40LmUp
 }
 */
 
@@ -197,7 +188,7 @@ return {
     ]
   },
   "params": {
-    "id": "1352d55253d1c8f441e311029061a0fd",
+    "id": "f6b93dbf81b98fb17fb31ec6b680e5c9",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {

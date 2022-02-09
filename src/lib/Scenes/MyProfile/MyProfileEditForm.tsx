@@ -1,5 +1,6 @@
 import { useActionSheet } from "@expo/react-native-action-sheet"
 import { useNavigation } from "@react-navigation/native"
+import { captureException } from "@sentry/react-native"
 import { EditableLocation } from "__generated__/ConfirmBidUpdateUserMutation.graphql"
 import { MyProfileEditForm_me$key } from "__generated__/MyProfileEditForm_me.graphql"
 import { MyProfileEditFormQuery } from "__generated__/MyProfileEditFormQuery.graphql"
@@ -11,15 +12,32 @@ import {
 } from "lib/Components/DetailedLocationAutocomplete"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import LoadingModal from "lib/Components/Modals/LoadingModal"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
 import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
-import { compact, isArray } from "lodash"
-import { Avatar, Box, Button, Flex, Input, Join, Spacer, Text, Touchable, useColor } from "palette"
-import React, { Suspense, useContext, useRef, useState } from "react"
+import { sendEmail } from "lib/utils/sendEmail"
+import { verifyEmail } from "lib/utils/verifyEmail"
+import { compact, isArray, throttle } from "lodash"
+import {
+  Avatar,
+  Box,
+  Button,
+  CheckCircleFillIcon,
+  CheckCircleIcon,
+  Flex,
+  Input,
+  Join,
+  Spacer,
+  Spinner,
+  Text,
+  Touchable,
+  useColor,
+} from "palette"
+import React, { Suspense, useCallback, useContext, useEffect, useRef, useState } from "react"
 import { ScrollView, TextInput } from "react-native"
-import { useFragment, useLazyLoadQuery } from "react-relay"
+import { useLazyLoadQuery, useRefetchableFragment } from "react-relay"
 import { graphql } from "relay-runtime"
 import * as Yup from "yup"
 import { updateMyUserProfile } from "../MyAccount/updateMyUserProfile"
@@ -43,12 +61,19 @@ export const editMyProfileSchema = Yup.object().shape({
   bio: Yup.string(),
 })
 
-export const MyProfileEditForm: React.FC<{ me: MyProfileEditForm_me$key }> = (props) => {
-  const me = useFragment<MyProfileEditForm_me$key>(meFragment, props.me)
+export const MyProfileEditForm: React.FC = () => {
+  const data = useLazyLoadQuery<MyProfileEditFormQuery>(MyProfileEditFormScreenQuery, {})
+
+  const [me, refetch] = useRefetchableFragment<MyProfileEditFormQuery, MyProfileEditForm_me$key>(
+    meFragment,
+    data.me
+  )
 
   const color = useColor()
   const navigation = useNavigation()
+
   const scrollViewRef = useRef<ScrollView>(null)
+
   const { showActionSheetWithOptions } = useActionSheet()
 
   const nameInputRef = useRef<Input>(null)
@@ -56,6 +81,11 @@ export const MyProfileEditForm: React.FC<{ me: MyProfileEditForm_me$key }> = (pr
 
   const [loading, setLoading] = useState<boolean>(false)
   const [didUpdatePhoto, setDidUpdatePhoto] = useState(false)
+  const [showVerificationBanner, setShowVerificationBanner] = useState(false)
+  const [isverificationLoading, setIsVerificationLoading] = useState(false)
+  const [didSuccessfullyVerifiyEmail, setDidSuccessfullyVerifiyEmail] = useState<boolean | null>(
+    null
+  )
 
   const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
 
@@ -101,7 +131,7 @@ export const MyProfileEditForm: React.FC<{ me: MyProfileEditForm_me$key }> = (pr
       validateOnBlur: true,
       initialValues: {
         name: me?.name ?? "",
-        displayLocation: { display: buildLocationDisplay(me.location) },
+        displayLocation: { display: buildLocationDisplay(me?.location || null) },
         location: null,
         profession: me?.profession ?? "",
         otherRelevantPositions: me?.otherRelevantPositions ?? "",
@@ -141,10 +171,59 @@ export const MyProfileEditForm: React.FC<{ me: MyProfileEditForm_me$key }> = (pr
       )
   }
 
+  useEffect(() => {
+    const refetchProfileIdentificationInterval = setInterval(() => {
+      // When the user applies the email verification and the modal is visible
+      if (didSuccessfullyVerifiyEmail) {
+        refetch({ enableCollectorProfile })
+      }
+    }, 3000)
+
+    return () => {
+      clearInterval(refetchProfileIdentificationInterval)
+    }
+  }, [didSuccessfullyVerifiyEmail])
+
   const onLeftButtonPressHandler = () => {
     setDidUpdatePhoto(false)
     navigation.goBack()
   }
+
+  const handleEmailVerification = useCallback(async () => {
+    try {
+      setShowVerificationBanner(true)
+      setIsVerificationLoading(true)
+
+      const { sendConfirmationEmail } = await verifyEmail(defaultEnvironment)
+
+      const confirmationOrError = sendConfirmationEmail?.confirmationOrError
+      const emailToConfirm = confirmationOrError?.unconfirmedEmail
+
+      // this timeout is here to make sure that the user have enough time to read
+      // "Sending a confirmation email..."
+      setTimeout(() => {
+        if (emailToConfirm) {
+          setDidSuccessfullyVerifiyEmail(true)
+          setIsVerificationLoading(false)
+        } else {
+          setDidSuccessfullyVerifiyEmail(false)
+          setIsVerificationLoading(false)
+        }
+      }, 500)
+    } catch (error) {
+      captureException(error)
+    } finally {
+      // Allow the user some time to read the message
+      setTimeout(() => {
+        setShowVerificationBanner(false)
+      }, 2000)
+    }
+  }, [])
+
+  const throttleHandledEmailVerification = useCallback(
+    throttle(handleEmailVerification, 2000, { trailing: true }),
+    []
+  )
 
   return (
     <>
@@ -253,6 +332,18 @@ export const MyProfileEditForm: React.FC<{ me: MyProfileEditForm_me$key }> = (pr
                 placeholder="You can add a short bio to tell more about yourself and your collection. It can be anything like the artists you collect, the genres you're interested in , etc."
               />
 
+              <Spacer py={2} />
+              {!!enableCollectorProfile && (
+                <ProfileVerifications
+                  isIDVerified={!!me?.identityVerified}
+                  canRequestEmailConfirmation={!!me?.canRequestEmailConfirmation}
+                  emailConfirmed={!!me?.emailConfirmed}
+                  handleEmailVerification={throttleHandledEmailVerification}
+                />
+              )}
+
+              <Spacer py={2} />
+
               <Button flex={1} disabled={!dirty} onPress={handleSubmit} mb={2}>
                 Save
               </Button>
@@ -260,13 +351,20 @@ export const MyProfileEditForm: React.FC<{ me: MyProfileEditForm_me$key }> = (pr
           </Flex>
         </Join>
       </ScrollView>
+      {!!showVerificationBanner && (
+        <VerificationConfirmationBanner
+          isLoading={isverificationLoading}
+          didSuccessfullyVerifiyEmail={didSuccessfullyVerifiyEmail}
+          resultText={`Email sent to ${me?.email ?? ""}`}
+        />
+      )}
       <LoadingModal isVisible={loading} />
     </>
   )
 }
 
 const meFragment = graphql`
-  fragment MyProfileEditForm_me on Me {
+  fragment MyProfileEditForm_me on Me @refetchable(queryName: "MyProfileEditForm_meRefetch") {
     name
     profession
     otherRelevantPositions
@@ -280,6 +378,10 @@ const meFragment = graphql`
     icon {
       url(version: "thumbnail")
     }
+    email
+    emailConfirmed
+    identityVerified
+    canRequestEmailConfirmation
   }
 `
 
@@ -291,22 +393,10 @@ const MyProfileEditFormScreenQuery = graphql`
   }
 `
 
-const MyProfileEditFormContainer = () => {
-  const data = useLazyLoadQuery<MyProfileEditFormQuery>(MyProfileEditFormScreenQuery, {}, {})
-
-  return <MyProfileEditForm me={data.me!} />
-}
-
-export const MyProfileEditFormQueryRenderer = () => {
+export const MyProfileEditFormScreen: React.FC = () => {
   return (
-    <Suspense
-      fallback={
-        <ProvidePlaceholderContext>
-          <LoadingSkeleton />
-        </ProvidePlaceholderContext>
-      }
-    >
-      <MyProfileEditFormContainer />
+    <Suspense fallback={<LoadingSkeleton />}>
+      <MyProfileEditForm />
     </Suspense>
   )
 }
@@ -314,7 +404,7 @@ export const MyProfileEditFormQueryRenderer = () => {
 const LoadingSkeleton = () => {
   const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
   return (
-    <>
+    <ProvidePlaceholderContext>
       <Flex alignItems="center" mt={2}>
         <Text variant="md" mr={0.5}>
           Select an Artwork
@@ -325,14 +415,14 @@ const LoadingSkeleton = () => {
         <PlaceholderBox width={99} height={99} borderRadius={50} />
         <PlaceholderText width={100} height={20} marginTop={5} marginLeft={20} />
       </Flex>
-      {Array(enableCollectorProfile ? 4 : 1).fill(
-        <Flex mt={30}>
+      {[...Array(enableCollectorProfile ? 4 : 1)].map((_x, i) => (
+        <Flex mt={30} key={i}>
           <Flex mx={20}>
             <PlaceholderText width={100} height={20} marginTop={5} />
             <PlaceholderBox height={50} marginTop={5} />
           </Flex>
         </Flex>
-      )}
+      ))}
       <Flex mt={30}>
         <Flex mx={20}>
           <PlaceholderText width={100} height={20} marginTop={5} />
@@ -341,6 +431,156 @@ const LoadingSkeleton = () => {
       </Flex>
       <Spacer mb={2} />
       <PlaceholderBox height={50} marginTop={5} borderRadius={50} marginHorizontal={20} />
-    </>
+    </ProvidePlaceholderContext>
+  )
+}
+
+const renderVerifiedRow = ({ title, subtitle }: { title: string; subtitle: string }) => {
+  const color = useColor()
+  return (
+    <Flex flexDirection="row">
+      <CheckCircleFillIcon height={22} width={22} fill="green100" />
+      <Flex ml={1}>
+        <Text>{title}</Text>
+        <Text color={color("black60")}>{subtitle}</Text>
+      </Flex>
+    </Flex>
+  )
+}
+
+const ProfileVerifications = ({
+  canRequestEmailConfirmation,
+  emailConfirmed,
+  handleEmailVerification,
+  isIDVerified,
+}: {
+  canRequestEmailConfirmation: boolean
+  emailConfirmed: boolean
+  handleEmailVerification: () => void
+  isIDVerified: boolean
+}) => {
+  const color = useColor()
+  return (
+    <Flex testID="profile-verifications">
+      {/* ID Verification */}
+      {isIDVerified ? (
+        renderVerifiedRow({
+          title: "ID Verified",
+          subtitle: "For details, see FAQs or contact verification@artsy.net",
+        })
+      ) : (
+        <Flex flexDirection="row">
+          <CheckCircleIcon height={22} width={22} fill="black30" />
+          <Flex ml={1}>
+            <Text
+              onPress={() => {
+                // Trigger ID Verification Process
+                // This will be done in a separate ticket
+              }}
+              style={{ textDecorationLine: "underline" }}
+            >
+              Verify Your ID
+            </Text>
+            <Text color={color("black60")}>
+              For details about identity verification, see the FAQ or contact{" "}
+              <Text
+                style={{ textDecorationLine: "underline" }}
+                onPress={() => sendEmail("verification@artsy.net", { subject: "ID Verification" })}
+              >
+                verification@artsy.net
+              </Text>
+              .
+            </Text>
+          </Flex>
+        </Flex>
+      )}
+
+      <Spacer height={30} />
+
+      {/* Email Verification */}
+      {emailConfirmed ? (
+        renderVerifiedRow({
+          title: "Email Address Verified",
+          subtitle: "Description Text explaining Email verification for the Collector.",
+        })
+      ) : (
+        <Flex flexDirection="row">
+          <CheckCircleIcon height={22} width={22} fill="black30" />
+          <Flex ml={1}>
+            {canRequestEmailConfirmation ? (
+              <Text
+                style={{ textDecorationLine: "underline" }}
+                onPress={() => {
+                  handleEmailVerification()
+                }}
+                testID="verify-your-email"
+              >
+                Verify Your Email
+              </Text>
+            ) : (
+              <Text
+                style={{ textDecorationLine: "none" }}
+                color="black60"
+                testID="verify-your-email"
+              >
+                Verify Your Email
+              </Text>
+            )}
+
+            {/* This text will be replaced in a separate ticket */}
+            <Text color="black60">
+              Secure your account and receive updates about your transactions on Artsy.
+            </Text>
+          </Flex>
+        </Flex>
+      )}
+    </Flex>
+  )
+}
+
+export const VerificationConfirmationBanner = ({
+  isLoading,
+  didSuccessfullyVerifiyEmail,
+  resultText,
+}: {
+  isLoading: boolean
+  didSuccessfullyVerifiyEmail: boolean | null
+  resultText: string
+}) => {
+  const color = useColor()
+
+  const renderContent = () => {
+    if (isLoading) {
+      return (
+        <>
+          <Text color={color("white100")}>Sending a confirmation email...</Text>
+
+          <Flex pr="1">
+            <Spinner size="small" color="white100" />
+          </Flex>
+        </>
+      )
+    }
+    return (
+      <Flex flexDirection="row" width="100%" justifyContent="space-between" alignItems="center">
+        <Text color={color("white100")} numberOfLines={2}>
+          {didSuccessfullyVerifiyEmail ? resultText : "Something went wrong, please try again"}
+        </Text>
+      </Flex>
+    )
+  }
+  return (
+    <Flex
+      px={2}
+      py={1}
+      // Avoid system bottom navigation bar
+      background={color("black100")}
+      flexDirection="row"
+      justifyContent="space-between"
+      alignItems="center"
+      testID="verification-confirmation-banner"
+    >
+      {renderContent()}
+    </Flex>
   )
 }

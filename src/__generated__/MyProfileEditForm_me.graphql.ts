@@ -18,6 +18,11 @@ export type MyProfileEditForm_me = {
     readonly icon: {
         readonly url: string | null;
     } | null;
+    readonly email: string | null;
+    readonly emailConfirmed: boolean;
+    readonly identityVerified: boolean | null;
+    readonly canRequestEmailConfirmation: boolean;
+    readonly id: string;
     readonly " $refType": "MyProfileEditForm_me";
 };
 export type MyProfileEditForm_me$data = MyProfileEditForm_me;
@@ -31,7 +36,16 @@ export type MyProfileEditForm_me$key = {
 const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
-  "metadata": null,
+  "metadata": {
+    "refetch": {
+      "connection": null,
+      "fragmentPathInResult": [
+        "node"
+      ],
+      "operation": require('./MyProfileEditForm_meRefetch.graphql'),
+      "identifierField": "id"
+    }
+  },
   "name": "MyProfileEditForm_me",
   "selections": [
     {
@@ -124,10 +138,45 @@ const node: ReaderFragment = {
         }
       ],
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "email",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "emailConfirmed",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "identityVerified",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "canRequestEmailConfirmation",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "id",
+      "storageKey": null
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '6f891c80b41550c0f7fa9f0ee1c78547';
+(node as any).hash = 'aa24414c197bceaced2bd1ddaaf08e23';
 export default node;

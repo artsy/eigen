@@ -1,13 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d92b088e8d0278afc1b73e28df271da0 */
+/* @relayHash a8ed9c52ad0368b4bec7106c0c28460e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyProfileHeaderMyCollectionAndSavedWorksQueryVariables = {
-    enableCollectorProfile: boolean;
-};
+export type MyProfileHeaderMyCollectionAndSavedWorksQueryVariables = {};
 export type MyProfileHeaderMyCollectionAndSavedWorksQueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"MyProfileHeaderMyCollectionAndSavedWorks_me">;
@@ -21,37 +19,14 @@ export type MyProfileHeaderMyCollectionAndSavedWorksQuery = {
 
 
 /*
-query MyProfileHeaderMyCollectionAndSavedWorksQuery(
-  $enableCollectorProfile: Boolean!
-) {
+query MyProfileHeaderMyCollectionAndSavedWorksQuery {
   me @optionalField {
-    ...MyProfileHeaderMyCollectionAndSavedWorks_me_3CllfQ
+    ...MyProfileHeaderMyCollectionAndSavedWorks_me
     id
   }
 }
 
-fragment MyProfileEditFormModal_me_3CllfQ on Me {
-  name
-  profession @include(if: $enableCollectorProfile)
-  otherRelevantPositions @include(if: $enableCollectorProfile)
-  location @include(if: $enableCollectorProfile) {
-    display
-    city
-    state
-    country
-    id
-  }
-  email @include(if: $enableCollectorProfile)
-  emailConfirmed @include(if: $enableCollectorProfile)
-  identityVerified @include(if: $enableCollectorProfile)
-  canRequestEmailConfirmation @include(if: $enableCollectorProfile)
-  bio
-  icon {
-    url(version: "thumbnail")
-  }
-}
-
-fragment MyProfileHeaderMyCollectionAndSavedWorks_me_3CllfQ on Me {
+fragment MyProfileHeaderMyCollectionAndSavedWorks_me on Me {
   name
   bio
   location {
@@ -64,19 +39,11 @@ fragment MyProfileHeaderMyCollectionAndSavedWorks_me_3CllfQ on Me {
     url(version: "thumbnail")
   }
   createdAt
-  ...MyProfileEditFormModal_me_3CllfQ
 }
 */
 
 const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "enableCollectorProfile"
-  }
-],
-v1 = {
+var v0 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -85,7 +52,7 @@ v1 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
     "name": "MyProfileHeaderMyCollectionAndSavedWorksQuery",
@@ -99,13 +66,7 @@ return {
         "plural": false,
         "selections": [
           {
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "enableCollectorProfile",
-                "variableName": "enableCollectorProfile"
-              }
-            ],
+            "args": null,
             "kind": "FragmentSpread",
             "name": "MyProfileHeaderMyCollectionAndSavedWorks_me"
           }
@@ -118,7 +79,7 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [],
     "kind": "Operation",
     "name": "MyProfileHeaderMyCollectionAndSavedWorksQuery",
     "selections": [
@@ -159,7 +120,7 @@ return {
                 "name": "display",
                 "storageKey": null
               },
-              (v1/*: any*/)
+              (v0/*: any*/)
             ],
             "storageKey": null
           },
@@ -208,81 +169,14 @@ return {
             "name": "createdAt",
             "storageKey": null
           },
-          (v1/*: any*/),
-          {
-            "condition": "enableCollectorProfile",
-            "kind": "Condition",
-            "passingValue": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "MyLocation",
-                "kind": "LinkedField",
-                "name": "location",
-                "plural": false,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "city",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "state",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "country",
-                    "storageKey": null
-                  }
-                ],
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "email",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "emailConfirmed",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "identityVerified",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "canRequestEmailConfirmation",
-                "storageKey": null
-              }
-            ]
-          }
+          (v0/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "id": "d92b088e8d0278afc1b73e28df271da0",
+    "id": "a8ed9c52ad0368b4bec7106c0c28460e",
     "metadata": {},
     "name": "MyProfileHeaderMyCollectionAndSavedWorksQuery",
     "operationKind": "query",
@@ -290,5 +184,5 @@ return {
   }
 };
 })();
-(node as any).hash = '55f70488a25c2b85dc075abf6ba44e4e';
+(node as any).hash = 'cbf8f75bc3eef7a37edad533cc06ac99';
 export default node;
