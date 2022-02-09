@@ -7,11 +7,7 @@ import { Button, Flex, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
 import { removeAssetFromSubmission } from "../Mutations/removeAssetFromConsignmentSubmissionMutation"
 import { addPhotoToConsignment } from "./addPhotoToConsignment"
-import {
-  PhotoThumbnailErrorState,
-  PhotoThumbnailLoadingState,
-  PhotoThumbnailSuccessState,
-} from "./PhotoThumbnail"
+import { PhotoRow } from "./PhotoThumbnail"
 import { calculatePhotoSize } from "./utils/calculatePhotoSize"
 import { Photo, PhotosFormModel } from "./validation"
 
@@ -100,28 +96,9 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
         <Spacer mt={1} />
       </Flex>
 
-      {/* render different photo thumbnails depending on loading and error states */}
-      {values.photos.map((photo: Photo, idx: number) => {
-        if (photo?.loading) {
-          return <PhotoThumbnailLoadingState key={idx} />
-        } else if (photo?.error) {
-          return (
-            <PhotoThumbnailErrorState
-              key={idx}
-              photo={photo}
-              handlePhotoDelete={handlePhotoDelete}
-            />
-          )
-        }
-
-        return (
-          <PhotoThumbnailSuccessState
-            key={idx}
-            photo={photo}
-            handlePhotoDelete={handlePhotoDelete}
-          />
-        )
-      })}
+      {values.photos.map((photo: Photo, idx: number) => (
+        <PhotoRow key={idx} photo={photo} handlePhotoDelete={handlePhotoDelete} />
+      ))}
     </>
   )
 }
