@@ -1,6 +1,6 @@
 import { ActionSheetProvider } from "@expo/react-native-action-sheet"
 import { Theme } from "palette"
-import React, { ReactNode } from "react"
+import React, { ComponentClass, FC, ReactNode } from "react"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 import { RelayEnvironmentProvider } from "react-relay"
 import { _FancyModalPageWrapper } from "./Components/FancyModal/FancyModalContext"
@@ -10,6 +10,7 @@ import { ToastProvider } from "./Components/Toast/toastHook"
 import { defaultEnvironment } from "./relay/createEnvironment"
 import { GlobalStoreProvider } from "./store/GlobalStore"
 import { ProvideScreenDimensions } from "./utils/useScreenDimensions"
+import { combineProviders } from "./utils/combineProviders"
 
 export const AppProviders = ({ children }: { children: ReactNode }) => {
   return (
