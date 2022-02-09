@@ -250,7 +250,7 @@ describe("Saved search alert form", () => {
       <TestRenderer savedSearchAlertId="savedSearchAlertId" userAllowsEmails={false} />
     )
 
-    expect(getByText("Your email frequency is set to None")).toBeTruthy()
+    expect(getByText("Change your email frequency")).toBeTruthy()
     expect(getByText("To receive Email Alerts, please update your email preferences.")).toBeTruthy()
   })
 
@@ -647,7 +647,7 @@ describe("Saved search alert form", () => {
 
       it('should call create mutation when "Replace" button is pressed', async () => {
         // @ts-ignore
-        spyAlert.mockImplementation((_title, _message, buttons) => buttons[1].onPress()) // Click "Replace" button
+        spyAlert.mockImplementation((_title, _message, buttons) => buttons[2].onPress()) // Click "Replace" button
 
         const { getAllByText } = renderWithWrappersTL(<TestRenderer />)
 
@@ -694,7 +694,10 @@ describe("Saved search alert form", () => {
         })
       })
 
-      it("should display a warning message if there is a duplicate", async () => {
+      it("should display a warning message if there is a duplicate and user is able to view duplicate alert", async () => {
+        // @ts-ignore
+        spyAlert.mockImplementation((_title, _message, buttons) => buttons[1].onPress()) // Click "View Duplicate" button
+
         const { getAllByText, getByText } = renderWithWrappersTL(
           <TestRenderer savedSearchAlertId="savedSearchAlertId" />
         )
@@ -710,11 +713,13 @@ describe("Saved search alert form", () => {
         mockEnvironmentPayload(mockEnvironment)
 
         await waitFor(() => expect(spyAlert.mock.calls[0][0]).toBe("Duplicate Alert"))
+
+        expect(navigate).toBeCalledWith("/my-profile/saved-search-alerts/internalID-1")
       })
 
       it('should call update mutation when "Replace" button is pressed', async () => {
         // @ts-ignore
-        spyAlert.mockImplementation((_title, _message, buttons) => buttons[1].onPress()) // Click "Replace" button
+        spyAlert.mockImplementation((_title, _message, buttons) => buttons[2].onPress()) // Click "Replace" button
 
         const { getAllByText, getByText } = renderWithWrappersTL(
           <TestRenderer savedSearchAlertId="savedSearchAlertId" />
