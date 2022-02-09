@@ -15,7 +15,7 @@ const Container: React.FC<ContainerProps> = (props) => {
 
   useEffect(() => {
     if (isAlgoliaApiKeyExpiredError(error)) {
-      refetch({})
+      refetch({ fetchPolicy: "network-only" })
     }
   }, [error?.message])
 
