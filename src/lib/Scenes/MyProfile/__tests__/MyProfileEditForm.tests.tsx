@@ -1,8 +1,7 @@
-import { act, fireEvent, waitForElementToBeRemoved } from "@testing-library/react-native"
+import { fireEvent, waitForElementToBeRemoved } from "@testing-library/react-native"
 import { MyProfileEditFormTestsQuery } from "__generated__/MyProfileEditFormTestsQuery.graphql"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
-import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
@@ -82,7 +81,7 @@ describe("MyProfileEditForm", () => {
           expect(getByText("Verify Your Email")).toBeTruthy()
         })
 
-        it("Triggers the email verification when they user presses on Verify Your Email when canRequestEmailConfirmation is set to true", async () => {
+        it("Triggers the email verification when they user presses on Verify Your Email when canRequestEmailConfirmation is set to true", () => {
           const { getByTestId, getByText } = renderWithWrappersTL(<TestRenderer />)
           mockEnvironmentPayload(mockEnvironment, {
             Me: () => ({
@@ -93,9 +92,7 @@ describe("MyProfileEditForm", () => {
           const VerifyYouEmailButton = getByTestId("verify-your-email")
           expect(VerifyYouEmailButton).toBeTruthy()
 
-          act(() => fireEvent(VerifyYouEmailButton, "onPress"))
-
-          await flushPromiseQueue()
+          fireEvent(VerifyYouEmailButton, "onPress")
 
           mockEnvironment.mock.resolveMostRecentOperation({
             data: {
