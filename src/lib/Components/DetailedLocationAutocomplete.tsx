@@ -1,4 +1,3 @@
-import { MyProfileEditFormModal_me } from "__generated__/MyProfileEditFormModal_me.graphql"
 import { LocationResult } from "lib/Scenes/Consignments"
 import {
   getLocationDetails,
@@ -11,6 +10,7 @@ import { Flex, Input, InputProps, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Text } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
+import { MyProfileEditForm_me } from "__generated__/MyProfileEditForm_me.graphql"
 
 interface DetailedLocationAutocompleteProps extends Omit<InputProps, "onChange"> {
   initialLocation?: string
@@ -117,5 +117,5 @@ export const DetailedLocationAutocomplete: React.FC<DetailedLocationAutocomplete
   )
 }
 
-export const buildLocationDisplay = (location: MyProfileEditFormModal_me["location"]): string =>
+export const buildLocationDisplay = (location: MyProfileEditForm_me["location"]): string =>
   [location?.city, location?.state, location?.country].filter((x) => x).join(", ")

@@ -1,32 +1,32 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f03bf20d2e7de4be252bc3207298333a */
+/* @relayHash bbae7a77e965e3dfc1bdceb440aa9692 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyProfileEditFormModalTestsQueryVariables = {};
-export type MyProfileEditFormModalTestsQueryResponse = {
+export type MyProfileEditFormTestsQueryVariables = {};
+export type MyProfileEditFormTestsQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"MyProfileEditFormModal_me">;
+        readonly " $fragmentRefs": FragmentRefs<"MyProfileEditForm_me">;
     } | null;
 };
-export type MyProfileEditFormModalTestsQuery = {
-    readonly response: MyProfileEditFormModalTestsQueryResponse;
-    readonly variables: MyProfileEditFormModalTestsQueryVariables;
+export type MyProfileEditFormTestsQuery = {
+    readonly response: MyProfileEditFormTestsQueryResponse;
+    readonly variables: MyProfileEditFormTestsQueryVariables;
 };
 
 
 
 /*
-query MyProfileEditFormModalTestsQuery {
+query MyProfileEditFormTestsQuery {
   me {
-    ...MyProfileEditFormModal_me_2DDXa1
+    ...MyProfileEditForm_me
     id
   }
 }
 
-fragment MyProfileEditFormModal_me_2DDXa1 on Me {
+fragment MyProfileEditForm_me on Me {
   name
   profession
   otherRelevantPositions
@@ -45,6 +45,7 @@ fragment MyProfileEditFormModal_me_2DDXa1 on Me {
   emailConfirmed
   identityVerified
   canRequestEmailConfirmation
+  id
 }
 */
 
@@ -79,7 +80,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "MyProfileEditFormModalTestsQuery",
+    "name": "MyProfileEditFormTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -90,15 +91,9 @@ return {
         "plural": false,
         "selections": [
           {
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "enableCollectorProfile",
-                "value": true
-              }
-            ],
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "MyProfileEditFormModal_me"
+            "name": "MyProfileEditForm_me"
           }
         ],
         "storageKey": null
@@ -111,7 +106,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "MyProfileEditFormModalTestsQuery",
+    "name": "MyProfileEditFormTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -248,7 +243,7 @@ return {
     ]
   },
   "params": {
-    "id": "f03bf20d2e7de4be252bc3207298333a",
+    "id": "bbae7a77e965e3dfc1bdceb440aa9692",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -291,11 +286,11 @@ return {
         "me.profession": (v1/*: any*/)
       }
     },
-    "name": "MyProfileEditFormModalTestsQuery",
+    "name": "MyProfileEditFormTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'ce1694871225ea5f97e8b85b526b68bf';
+(node as any).hash = '35abaf08e2b6072e0c20da0a14caac56';
 export default node;

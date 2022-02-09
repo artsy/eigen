@@ -2,7 +2,7 @@ import { NavigationContainer } from "@react-navigation/native"
 import { createStackNavigator } from "@react-navigation/stack"
 import React from "react"
 import { MyCollectionArtworkForm } from "../MyCollection/Screens/ArtworkForm/MyCollectionArtworkForm"
-import { MyProfileEditFormQueryRenderer } from "./MyProfileEditForm"
+import { MyProfileEditFormScreen } from "./MyProfileEditForm"
 import { MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer } from "./MyProfileHeaderMyCollectionAndSavedWorks"
 import { MyProfileProvider } from "./MyProfileProvider"
 
@@ -26,7 +26,7 @@ export const MyProfile = () => {
             component={MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer}
           />
           <Stack.Screen name="MyCollectionArtworkForm" component={MyCollectionArtworkForm} />
-          <Stack.Screen name="MyProfileEditForm" component={MyProfileEditFormQueryRenderer} />
+          <Stack.Screen name="MyProfileEditForm" component={MyProfileEditFormScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </MyProfileProvider>

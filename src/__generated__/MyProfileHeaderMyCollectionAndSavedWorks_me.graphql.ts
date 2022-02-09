@@ -16,7 +16,6 @@ export type MyProfileHeaderMyCollectionAndSavedWorks_me = {
         readonly url: string | null;
     } | null;
     readonly createdAt: string | null;
-    readonly " $fragmentRefs": FragmentRefs<"MyProfileEditFormModal_me">;
     readonly " $refType": "MyProfileHeaderMyCollectionAndSavedWorks_me";
 };
 export type MyProfileHeaderMyCollectionAndSavedWorks_me$data = MyProfileHeaderMyCollectionAndSavedWorks_me;
@@ -28,13 +27,7 @@ export type MyProfileHeaderMyCollectionAndSavedWorks_me$key = {
 
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [
-    {
-      "defaultValue": false,
-      "kind": "LocalArgument",
-      "name": "enableCollectorProfile"
-    }
-  ],
+  "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
   "name": "MyProfileHeaderMyCollectionAndSavedWorks_me",
@@ -115,21 +108,10 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "name": "createdAt",
       "storageKey": null
-    },
-    {
-      "args": [
-        {
-          "kind": "Variable",
-          "name": "enableCollectorProfile",
-          "variableName": "enableCollectorProfile"
-        }
-      ],
-      "kind": "FragmentSpread",
-      "name": "MyProfileEditFormModal_me"
     }
   ],
   "type": "Me",
   "abstractKey": null
 };
-(node as any).hash = '48a2533cdd07fe3fe50e3cb395a58f39';
+(node as any).hash = 'b57a94af6d58c0226fbb0a1722e121dc';
 export default node;

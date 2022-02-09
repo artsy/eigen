@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c39bd9dee68481cd3d5c2866db63ad4a */
+/* @relayHash d9037333a7fbae5f4991bff1f6ff1792 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -41,6 +41,11 @@ fragment MyProfileEditForm_me on Me {
   icon {
     url(version: "thumbnail")
   }
+  email
+  emailConfirmed
+  identityVerified
+  canRequestEmailConfirmation
+  id
 }
 */
 
@@ -185,6 +190,34 @@ return {
             ],
             "storageKey": null
           },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "email",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "emailConfirmed",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "identityVerified",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "canRequestEmailConfirmation",
+            "storageKey": null
+          },
           (v0/*: any*/)
         ],
         "storageKey": null
@@ -192,7 +225,7 @@ return {
     ]
   },
   "params": {
-    "id": "c39bd9dee68481cd3d5c2866db63ad4a",
+    "id": "d9037333a7fbae5f4991bff1f6ff1792",
     "metadata": {},
     "name": "MyProfileEditFormQuery",
     "operationKind": "query",

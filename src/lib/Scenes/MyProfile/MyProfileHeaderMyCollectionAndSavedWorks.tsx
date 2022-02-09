@@ -167,8 +167,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer = createR
   MyProfileHeaderMyCollectionAndSavedWorks,
   {
     me: graphql`
-      fragment MyProfileHeaderMyCollectionAndSavedWorks_me on Me
-      @argumentDefinitions(enableCollectorProfile: { type: "Boolean", defaultValue: false }) {
+      fragment MyProfileHeaderMyCollectionAndSavedWorks_me on Me {
         name
         bio
         location {
@@ -180,24 +179,22 @@ export const MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer = createR
           url(version: "thumbnail")
         }
         createdAt
-        ...MyProfileEditFormModal_me @arguments(enableCollectorProfile: $enableCollectorProfile)
       }
     `,
   },
   graphql`
-    query MyProfileHeaderMyCollectionAndSavedWorksRefetchQuery($enableCollectorProfile: Boolean!) {
+    query MyProfileHeaderMyCollectionAndSavedWorksRefetchQuery {
       me {
-        ...MyProfileEditFormModal_me @arguments(enableCollectorProfile: $enableCollectorProfile)
+        ...MyProfileHeaderMyCollectionAndSavedWorks_me
       }
     }
   `
 )
 
 export const MyProfileHeaderMyCollectionAndSavedWorksScreenQuery = graphql`
-  query MyProfileHeaderMyCollectionAndSavedWorksQuery($enableCollectorProfile: Boolean!) {
+  query MyProfileHeaderMyCollectionAndSavedWorksQuery {
     me @optionalField {
       ...MyProfileHeaderMyCollectionAndSavedWorks_me
-        @arguments(enableCollectorProfile: $enableCollectorProfile)
     }
   }
 `
