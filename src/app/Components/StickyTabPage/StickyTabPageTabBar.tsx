@@ -10,7 +10,7 @@ import {
   View,
   ViewProps,
 } from "react-native"
-import { useStickyTabPageContext } from "./SitckyTabPageContext"
+import { useStickyTabPageContext } from "./StickyTabPageContext"
 
 export const TAB_BAR_HEIGHT = 48
 
