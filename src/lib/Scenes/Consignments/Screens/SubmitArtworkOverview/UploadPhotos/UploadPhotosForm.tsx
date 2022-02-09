@@ -6,6 +6,7 @@ import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { Button, Flex, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
 import { uploadImageAndPassToGemini } from "../../../Submission/uploadPhotoToGemini"
+import { removeAssetFromSubmission } from "../Mutations/removeAssetFromConsignmentSubmissionMutation"
 import {
   PhotoThumbnailErrorState,
   PhotoThumbnailLoadingState,
@@ -65,8 +66,20 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
   }
 
   // remove photo from submission, GlobalStore and Formik values
-  const handlePhotoDelete = (photo: Photo) => {
-    console.log({ deleted_photo: photo })
+  const handlePhotoDelete = async (photo: Photo) => {
+    const filteredPhotos = values.photos.filter((p: Photo) => p.path !== photo.path)
+
+    try {
+      // TODO
+      await removeAssetFromSubmission({ assetID: "XXX" })
+      GlobalStore.actions.artworkSubmission.submission.setPhotos({
+        photos: filteredPhotos,
+      })
+      setFieldValue("photos", filteredPhotos)
+    } catch (error) {
+      captureMessage(JSON.stringify(error))
+      setPhotoUploadError(true)
+    }
   }
 
   return (
@@ -87,7 +100,7 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
         <Spacer mt={1} />
       </Flex>
 
-      {/* render different photo thumbnail depending on loading and error states */}
+      {/* render different photo thumbnails depending on loading and error states */}
       {values.photos.map((photo: Photo, idx: number) => {
         if (photo?.loading) {
           return <PhotoThumbnailLoadingState key={idx} />
