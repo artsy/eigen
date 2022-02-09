@@ -24,7 +24,7 @@ const MyCollectionArtworkScreenQuery = graphql`
   }
 `
 
-const MyCollectionArtworkQueryRendererContainer: React.FC<MyCollectionArtworkScreenProps> = ({
+const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({
   artworkSlug,
 }) => {
   const data = useLazyLoadQuery<MyCollectionArtworkQuery>(MyCollectionArtworkScreenQuery, {
