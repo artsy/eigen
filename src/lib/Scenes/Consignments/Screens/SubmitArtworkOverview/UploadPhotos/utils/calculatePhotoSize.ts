@@ -11,6 +11,7 @@ export const calculatePhotoSize = (photo: Photo): Photo => {
   if (photo.size > 30000000) {
     photo.error = true
     photo.errorMsg = "Photo is bigger than 30 MB"
+    photo.sizeDisplayValue = transformBytesToSize(photo.size)
     return photo
   }
 

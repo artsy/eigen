@@ -24,6 +24,7 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
 
   // pre-populate Formik values with photos from GlobalStore
   useEffect(() => {
+    //  TODO
     if (submission.photos.photos.length) {
       setFieldValue("photos", [...values.photos, ...submission.photos.photos])
     }
@@ -35,22 +36,20 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
       photo.loading = true
       setFieldValue("photos", [...values.photos, photo])
 
-      if (photo.path) {
-        try {
-          const uploadedPhoto = await addPhotoToConsignment(photo, submission.submissionId)
-          if (uploadedPhoto?.id) {
-            const sizedPhoto = calculatePhotoSize(photo)
-            GlobalStore.actions.artworkSubmission.submission.setPhotos({
-              photos: [...submission.photos.photos, sizedPhoto],
-            })
-            setFieldValue("photos", [...values.photos, sizedPhoto])
-          }
-        } catch (error) {
-          photo.error = true
-          captureMessage(JSON.stringify(error))
-        } finally {
-          photo.loading = false
+      try {
+        const uploadedPhoto = await addPhotoToConsignment(photo, submission.submissionId)
+        if (uploadedPhoto?.id) {
+          const sizedPhoto = calculatePhotoSize(photo)
+          GlobalStore.actions.artworkSubmission.submission.setPhotos({
+            photos: [...submission.photos.photos, sizedPhoto],
+          })
+          setFieldValue("photos", [...values.photos, sizedPhoto])
         }
+      } catch (error) {
+        photo.error = true
+        captureMessage(JSON.stringify(error))
+      } finally {
+        photo.loading = false
       }
     }
   }
@@ -106,7 +105,13 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
         if (photo?.loading) {
           return <PhotoThumbnailLoadingState key={idx} />
         } else if (photo?.error) {
-          return <PhotoThumbnailErrorState key={idx} photo={photo} />
+          return (
+            <PhotoThumbnailErrorState
+              key={idx}
+              photo={photo}
+              handlePhotoDelete={handlePhotoDelete}
+            />
+          )
         }
 
         return (
