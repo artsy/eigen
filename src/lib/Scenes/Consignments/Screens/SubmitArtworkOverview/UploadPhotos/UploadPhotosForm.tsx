@@ -18,7 +18,7 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const { showActionSheetWithOptions } = useActionSheet()
 
-  // add selected photos to gemini and submission; set them to GlobalStore and Formik values
+  // add selected photos to gemini and submission
   const addPhotoToSubmission = async (photos: Photo[]) => {
     for (const photo of photos) {
       photo.loading = true

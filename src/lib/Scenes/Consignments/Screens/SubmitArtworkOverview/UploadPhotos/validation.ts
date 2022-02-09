@@ -6,6 +6,7 @@ export interface PhotosFormModel {
 
 export interface Photo {
   id?: string
+  geminiToken?: string
   height?: number
   isDefault?: boolean
   imageURL?: string
@@ -16,7 +17,6 @@ export interface Photo {
   loading?: boolean
   error?: boolean
   errorMsg?: string
-  geminiToken?: string
   size?: number
   sizeDisplayValue?: string
 }
@@ -30,6 +30,8 @@ export const photosValidationSchema = Yup.object().shape({
     .min(1)
     .of(
       Yup.object().shape({
+        id: Yup.string().required(),
+        geminiToken: Yup.string().required(),
         height: Yup.string(),
         isDefault: Yup.string(),
         imageURL: Yup.string(),
@@ -40,8 +42,6 @@ export const photosValidationSchema = Yup.object().shape({
         loading: Yup.boolean(),
         error: Yup.boolean(),
         errorMsg: Yup.string(),
-        geminiToken: Yup.string(),
-        id: Yup.string().required(),
         size: Yup.number(),
         sizeDisplayValue: Yup.string(),
       })

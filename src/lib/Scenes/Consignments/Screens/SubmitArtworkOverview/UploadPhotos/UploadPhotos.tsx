@@ -6,6 +6,10 @@ import { ErrorView } from "../Components/ErrorView"
 import { UploadPhotosForm } from "./UploadPhotosForm"
 import { Photo, PhotosFormModel, photosValidationSchema } from "./validation"
 
+// TODO: uploading multiple photos at a time
+//  TODO: manual testing
+//  TODO: tests
+
 export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const [photoUploadError, setPhotoUploadError] = useState(false)
