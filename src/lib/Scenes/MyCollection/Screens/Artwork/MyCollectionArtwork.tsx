@@ -105,7 +105,7 @@ export const MyCollectionArtworkQueryRenderer: React.FC<MyCollectionArtworkScree
   if (AREnableNewMyCollectionArtwork) {
     // TODO: Rename this to MyCollectionArtworkQueryRenderer when we remove the feature flag
     return (
-      <Suspense fallback={<MyCollectionArtworkQueryRendererPlaceholder />}>
+      <Suspense fallback={<MyCollectionArtworkPlaceholder />}>
         <MyCollectionArtworkQueryRendererContainer {...props} />
       </Suspense>
     )
