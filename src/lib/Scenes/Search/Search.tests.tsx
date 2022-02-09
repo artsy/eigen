@@ -9,7 +9,7 @@ import { isPad } from "lib/utils/hardware"
 import React from "react"
 import { Keyboard } from "react-native"
 import { RelayEnvironmentProvider } from "react-relay"
-import { createMockEnvironment } from "relay-test-utils"
+import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
 import { SearchScreen } from "./Search"
 
 const banksy: RecentSearch = {
@@ -50,11 +50,19 @@ jest.mock("lodash", () => ({
   },
 }))
 
+jest.mock("lib/relay/createEnvironment", () => ({
+  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
+  reset(this: { defaultEnvironment: any }) {
+    this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
+  },
+}))
+
 describe("Search Screen", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
+    require("lib/relay/createEnvironment").reset()
+    mockEnvironment = require("lib/relay/createEnvironment").defaultEnvironment
   })
 
   const TestRenderer = () => {
@@ -405,7 +413,7 @@ describe("Search Screen", () => {
       `)
     })
 
-    it("should correctly track the previusly applied pill context module", async () => {
+    it("should correctly track the previously applied pill context module", async () => {
       const { getByText, getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
 
       mockEnvironmentPayload(mockEnvironment, {
@@ -641,59 +649,60 @@ describe("Search Screen", () => {
     })
   })
 
-  it.skip("should track event when a search result is pressed", async () => {
-    const { getByPlaceholderText } = renderWithWrappersTL(<TestRenderer />)
+  it("should track event when a search result is pressed", async () => {
+    const { getByPlaceholderText, getByText } = renderWithWrappersTL(<TestRenderer />)
 
-    mockEnvironmentPayload(mockEnvironment, {
-      Query: () => ({
-        system: {
-          algolia: {
-            appID: "",
-            apiKey: "",
-            indices: [{ name: "Artist_staging", displayName: "Artist", key: "artist" }],
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        Query: () => ({
+          system: {
+            algolia: {
+              appID: "",
+              apiKey: "",
+              indices: [{ name: "Artist_staging", displayName: "Artist", key: "artist" }],
+            },
           },
-        },
-      }),
-    })
+        }),
+      })
+    )
 
     await flushPromiseQueue()
 
     const searchInput = getByPlaceholderText("Search artists, artworks, galleries, etc")
-    fireEvent(searchInput, "changeText", "text")
+    act(() => fireEvent(searchInput, "changeText", "text"))
 
-    // @TODO: Figure out why this is failing, even though analytics work.
-    // one possible solution might be to convert AutosuggestResults to hooks
+    mockEnvironment.mock.resolveMostRecentOperation((operation) =>
+      MockPayloadGenerator.generate(operation, {
+        SearchableConnection: () => ({
+          edges: [
+            {
+              node: {
+                displayLabel: "Banksy",
+              },
+            },
+          ],
+        }),
+      })
+    )
 
-    // mockEnvironmentPayload(mockEnvironment, {
-    //   Query: () => ({
-    //     results: {
-    //       edges: [
-    //         {
-    //           node: {
-    //             displayLabel: "Banksy",
-    //           },
-    //         },
-    //       ],
-    //     },
-    //   }),
-    // })
+    await flushPromiseQueue()
 
-    // const elements = await findAllByText("Banksy")
-    // fireEvent.press(elements[0])
+    waitFor(() => getByText("Banksy"))
+    act(() => fireEvent.press(getByText("Banksy")))
 
-    // expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
-    //   Array [
-    //     Object {
-    //       "action": "selectedResultFromSearchScreen",
-    //       "context_module": "topTab",
-    //       "context_screen": "Search",
-    //       "context_screen_owner_type": "Search",
-    //       "position": 0,
-    //       "query": "text",
-    //       "selected_object_slug": "slug-1",
-    //       "selected_object_type": "displayType-1",
-    //     },
-    //   ]
-    // `)
+    expect(mockTrackEvent.mock.calls[1]).toMatchInlineSnapshot(`
+      Array [
+        Object {
+          "action": "selectedResultFromSearchScreen",
+          "context_module": "topTab",
+          "context_screen": "Search",
+          "context_screen_owner_type": "Search",
+          "position": 0,
+          "query": "text",
+          "selected_object_slug": "<mock-value-for-field-\\"slug\\">",
+          "selected_object_type": "<mock-value-for-field-\\"displayType\\">",
+        },
+      ]
+    `)
   })
 })
