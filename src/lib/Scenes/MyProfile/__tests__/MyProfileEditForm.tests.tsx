@@ -81,7 +81,7 @@ describe("MyProfileEditForm", () => {
           expect(getByText("Verify Your Email")).toBeTruthy()
         })
 
-        it("Triggers the email verification when they user presses on Verify Your Email when canRequestEmailConfirmation is set to true", () => {
+        it("Triggers the email verification when they user presses on Verify Your Email when canRequestEmailConfirmation is set to true", async () => {
           const { getByTestId, getByText } = renderWithWrappersTL(<TestRenderer />)
           mockEnvironmentPayload(mockEnvironment, {
             Me: () => ({
