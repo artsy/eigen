@@ -1,3 +1,4 @@
+import { MyProfileEditForm_me } from "__generated__/MyProfileEditForm_me.graphql"
 import { LocationResult } from "lib/Scenes/Consignments"
 import {
   getLocationDetails,
@@ -10,7 +11,6 @@ import { Flex, Input, InputProps, Touchable } from "palette"
 import React, { useEffect, useRef, useState } from "react"
 import { Text } from "react-native"
 import { ScrollView } from "react-native-gesture-handler"
-import { MyProfileEditForm_me } from "__generated__/MyProfileEditForm_me.graphql"
 
 interface DetailedLocationAutocompleteProps extends Omit<InputProps, "onChange"> {
   initialLocation?: string
