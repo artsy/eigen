@@ -84,7 +84,7 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
       expect(navigate).toHaveBeenCalledWith("/my-profile/settings")
     })
 
-    it("Header shows the right text", () => {
+    it("Header shows the right text", async () => {
       const { findByText } = getWrapper({
         Me: () => ({
           name: "My Name",
@@ -97,9 +97,9 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
       })
 
       const year = new Date().getFullYear()
-      expect(findByText("My Name")).toBeTruthy()
-      expect(findByText(`Member since ${year}`)).toBeTruthy()
-      expect(findByText("My Bio")).toBeTruthy()
+      expect(await findByText("My Name")).toBeTruthy()
+      expect(await findByText(`Member since ${year}`)).toBeTruthy()
+      expect(await findByText("My Bio")).toBeTruthy()
     })
 
     it("Renders Icon", async () => {
@@ -148,9 +148,9 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
           }),
         })
 
-        expect(findByText("Princess")).toBeTruthy()
-        expect(findByText("Member since 2012")).toBeTruthy()
-        expect(findByText("Richest Collector! 💰")).toBeTruthy()
+        expect(await findByText("Princess")).toBeTruthy()
+        expect(await findByText("Member since 2012")).toBeTruthy()
+        expect(await findByText("Richest Collector! 💰")).toBeTruthy()
         expect(queryByText("Guardian of the Galaxy")).toBeFalsy()
         expect(queryByText("Atlantis")).toBeFalsy()
         expect(queryByText("Marvel Universe")).toBeFalsy()
@@ -176,9 +176,9 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
           }),
         })
 
-        expect(findByText("Guardian of the Galaxy")).toBeTruthy()
-        expect(findByText("Atlantis")).toBeTruthy()
-        expect(findByText("Marvel Universe")).toBeTruthy()
+        expect(await findByText("Guardian of the Galaxy")).toBeTruthy()
+        expect(await findByText("Atlantis")).toBeTruthy()
+        expect(await findByText("Marvel Universe")).toBeTruthy()
       })
     })
   })
