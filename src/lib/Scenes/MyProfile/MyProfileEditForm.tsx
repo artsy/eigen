@@ -45,7 +45,7 @@ import { MyProfileContext } from "./MyProfileProvider"
 
 const PRIMARY_LOCATION_OFFSET = 240
 
-export interface EditMyProfileValuesSchema {
+interface EditMyProfileValuesSchema {
   photo: string
   name: string
   displayLocation: { display: string | null }
@@ -55,7 +55,7 @@ export interface EditMyProfileValuesSchema {
   bio: string
 }
 
-export const editMyProfileSchema = Yup.object().shape({
+const editMyProfileSchema = Yup.object().shape({
   photo: Yup.string(),
   name: Yup.string().required("Name is required"),
   bio: Yup.string(),
