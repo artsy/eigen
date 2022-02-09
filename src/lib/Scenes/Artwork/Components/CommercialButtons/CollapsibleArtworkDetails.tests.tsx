@@ -49,6 +49,8 @@ describe("CollapsibleArtworkDetails", () => {
     const wrapper = renderWithWrappers(<TestRenderer />)
     resolveData()
     expect(wrapper.root.findAllByType(OpaqueImageView)).toHaveLength(1)
+    // Show artwork details content
+    wrapper.root.findByProps({ testID: "toggle-artwork-details-button" }).props.onPress()
     expect(wrapper.root.findAllByType(Text)).toHaveLength(24)
   })
 
@@ -65,7 +67,6 @@ describe("CollapsibleArtworkDetails", () => {
   it("expands component on press", () => {
     const wrapper = renderWithWrappers(<TestRenderer />)
     resolveData()
-    expect(wrapper.root.findAllByType(Text)).toHaveLength(24)
     wrapper.root.findByType(TouchableOpacity).props.onPress()
     expect(wrapper.root.findAllByType(ArtworkDetailsRow)).toHaveLength(11)
   })
