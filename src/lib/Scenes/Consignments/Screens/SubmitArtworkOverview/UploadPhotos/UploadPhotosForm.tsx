@@ -3,10 +3,14 @@ import { captureMessage } from "@sentry/react-native"
 import { useFormikContext } from "formik"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
-import { Button, Flex, Spacer, Spinner, Text } from "palette"
+import { Button, Flex, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
-import { Image } from "react-native"
 import { uploadImageAndPassToGemini } from "../../../Submission/uploadPhotoToGemini"
+import {
+  PhotoThumbnailErrorState,
+  PhotoThumbnailLoadingState,
+  PhotoThumbnailSuccessState,
+} from "./PhotoThumbnail"
 import { Photo, PhotosFormModel } from "./validation"
 
 export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) => void }> = ({
@@ -16,12 +20,14 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const { showActionSheetWithOptions } = useActionSheet()
 
+  // pre-populate Formik values with photos from GlobalStore
   useEffect(() => {
     if (submission.photos.photos.length) {
-      setFieldValue("photos", [...values.photos, submission.photos.photos])
+      setFieldValue("photos", [...values.photos, ...submission.photos.photos])
     }
   }, [])
 
+  // add selected photos to gemini and submission; set them GlobalStore and Formik values
   const addPhotoToSubmission = async (photos: Photo[]) => {
     for (const photo of photos) {
       photo.loading = true
@@ -45,6 +51,7 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
     }
   }
 
+  // show Native action sheet and get photos from user's phone
   const handleAddPhotoPress = async () => {
     try {
       const photos = await showPhotoActionSheet(showActionSheetWithOptions, true)
@@ -57,6 +64,7 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
     }
   }
 
+  // remove photo from submission, GlobalStore and Formik values
   const handlePhotoDelete = (photo: Photo) => {
     console.log({ deleted_photo: photo })
   }
@@ -79,6 +87,7 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
         <Spacer mt={1} />
       </Flex>
 
+      {/* render different photo thumbnail depending on loading and error states */}
       {values.photos.map((photo: Photo, idx: number) => {
         if (photo?.loading) {
           return <PhotoThumbnailLoadingState key={idx} />
@@ -94,72 +103,6 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
           />
         )
       })}
-    </>
-  )
-}
-
-const PhotoThumbnailSuccessState: React.FC<{
-  photo: Photo
-  handlePhotoDelete: (arg: Photo) => void
-}> = ({ photo, handlePhotoDelete }) => {
-  return (
-    <>
-      <Flex
-        p={1}
-        flexDirection="row"
-        justifyContent="space-between"
-        alignItems="center"
-        style={{ borderColor: "lightgray", borderWidth: 1, borderRadius: 4, height: 68 }}
-      >
-        <Image
-          resizeMode="contain"
-          // TODO: get uril from photo
-          source={{
-            uri: "https://i.picsum.photos/id/14/200/300.jpg?hmac=FMdb1SH_oeEo4ibDe66-ORzb8p0VYJUS3xWfN3h2qDU",
-          }}
-          style={{ height: 58, width: 70 }}
-          // TODO
-          testID="image"
-        />
-        {/* TODO: actual size */}
-        <Text>0.32mb</Text>
-        <Button variant="text" size="small" onPress={() => handlePhotoDelete(photo)}>
-          <Text style={{ textDecorationLine: "underline" }}>Delete</Text>
-        </Button>
-      </Flex>
-      <Spacer mt={2} />
-    </>
-  )
-}
-
-const PhotoThumbnailLoadingState = () => {
-  return (
-    <>
-      <Flex
-        p={1}
-        flexDirection="row"
-        justifyContent="center"
-        alignItems="center"
-        style={{ borderColor: "lightgray", borderWidth: 1, borderRadius: 4, height: 68 }}
-      >
-        <Spinner color="black60" />
-      </Flex>
-      <Spacer mt={2} />
-    </>
-  )
-}
-
-const PhotoThumbnailErrorState = () => {
-  return (
-    <>
-      <Flex
-        p={1}
-        alignItems="center"
-        style={{ borderColor: "red", borderWidth: 1, borderRadius: 4, height: 68 }}
-      >
-        <Text color="black60">Problem</Text>
-      </Flex>
-      <Spacer mt={2} />
     </>
   )
 }
