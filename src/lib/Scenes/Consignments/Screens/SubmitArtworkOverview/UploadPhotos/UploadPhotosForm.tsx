@@ -5,8 +5,8 @@ import { GlobalStore } from "lib/store/GlobalStore"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { Button, Flex, Spacer, Text } from "palette"
 import React, { useEffect } from "react"
-import { uploadImageAndPassToGemini } from "../../../Submission/uploadPhotoToGemini"
 import { removeAssetFromSubmission } from "../Mutations/removeAssetFromConsignmentSubmissionMutation"
+import { addPhotoToConsignment } from "./addPhotoToConsignment"
 import {
   PhotoThumbnailErrorState,
   PhotoThumbnailLoadingState,
@@ -28,7 +28,7 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
     }
   }, [])
 
-  // add selected photos to gemini and submission; set them GlobalStore and Formik values
+  // add selected photos to gemini and submission; set them to GlobalStore and Formik values
   const addPhotoToSubmission = async (photos: Photo[]) => {
     for (const photo of photos) {
       photo.loading = true
@@ -36,18 +36,19 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
 
       if (photo.path) {
         try {
-          await uploadImageAndPassToGemini(photo.path, "private", submission.submissionId)
-          GlobalStore.actions.artworkSubmission.submission.setPhotos({
-            photos: [...submission.photos.photos, photo],
-          })
-
-          photo.loading = false
-          setFieldValue("photos", [...values.photos, photo])
+          const uploadedPhoto = await addPhotoToConsignment(photo, submission.submissionId)
+          if (uploadedPhoto?.id) {
+            GlobalStore.actions.artworkSubmission.submission.setPhotos({
+              photos: [...submission.photos.photos, uploadedPhoto],
+            })
+            setFieldValue("photos", [...values.photos, uploadedPhoto])
+          }
         } catch (error) {
-          photo.loading = false
           photo.error = true
           captureMessage(JSON.stringify(error))
         }
+
+        photo.loading = false
       }
     }
   }
@@ -67,11 +68,9 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
 
   // remove photo from submission, GlobalStore and Formik values
   const handlePhotoDelete = async (photo: Photo) => {
-    const filteredPhotos = values.photos.filter((p: Photo) => p.path !== photo.path)
-
+    const filteredPhotos = values.photos.filter((p: Photo) => p.id !== photo.id)
     try {
-      // TODO
-      await removeAssetFromSubmission({ assetID: "XXX" })
+      await removeAssetFromSubmission({ assetID: photo.id })
       GlobalStore.actions.artworkSubmission.submission.setPhotos({
         photos: filteredPhotos,
       })
