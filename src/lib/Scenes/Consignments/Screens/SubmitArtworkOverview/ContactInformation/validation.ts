@@ -3,7 +3,7 @@ import * as Yup from "yup"
 export interface ContactInformationFormModel {
   userName: string
   userEmail: string
-  userPhone: string
+  userPhone: string | undefined
 }
 
 export const contactInformationValidationSchema = Yup.object().shape({

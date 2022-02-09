@@ -43,12 +43,27 @@ export const ContactInformation: React.FC<{
     return <ErrorView />
   }
 
+  const userName = me?.name || ""
+  const userEmail = me?.email || ""
+  let userPhone: string | undefined
+
+  if (!me?.phoneNumber?.error) {
+    // if phoneNumber exists (error is null) render original Number
+    userPhone = me?.phoneNumber?.originalNumber || undefined // undefined or TS complains
+  } else if (me?.phone) {
+    // else render "phone"
+    userPhone = me?.phone
+  } else {
+    // if both me.phoneNumber and me.phone are empty, render empty string
+    userPhone = ""
+  }
+
   return (
     <Formik<ContactInformationFormModel>
       initialValues={{
-        userName: me?.name || "",
-        userEmail: me?.email || "",
-        userPhone: me?.phone || "",
+        userName,
+        userEmail,
+        userPhone,
       }}
       onSubmit={handleSubmit}
       validationSchema={contactInformationValidationSchema}
@@ -106,6 +121,14 @@ export const ContactInformationFragmentContainer = createFragmentContainer(Conta
       name
       email
       phone
+      phoneNumber {
+        countryCode
+        display
+        error
+        isValid
+        originalNumber
+        regionCode
+      }
     }
   `,
 })
