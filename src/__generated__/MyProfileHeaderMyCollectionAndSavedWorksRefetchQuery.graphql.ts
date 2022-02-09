@@ -1,27 +1,27 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d67795adeab589b05eac5375abf95983 */
+/* @relayHash 3fad36ccb889ca8ecc1e56b7fdb74a07 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionAndSavedWorksRefetchQueryVariables = {
+export type MyProfileHeaderMyCollectionAndSavedWorksRefetchQueryVariables = {
     enableCollectorProfile: boolean;
 };
-export type MyCollectionAndSavedWorksRefetchQueryResponse = {
+export type MyProfileHeaderMyCollectionAndSavedWorksRefetchQueryResponse = {
     readonly me: {
         readonly " $fragmentRefs": FragmentRefs<"MyProfileEditFormModal_me">;
     } | null;
 };
-export type MyCollectionAndSavedWorksRefetchQuery = {
-    readonly response: MyCollectionAndSavedWorksRefetchQueryResponse;
-    readonly variables: MyCollectionAndSavedWorksRefetchQueryVariables;
+export type MyProfileHeaderMyCollectionAndSavedWorksRefetchQuery = {
+    readonly response: MyProfileHeaderMyCollectionAndSavedWorksRefetchQueryResponse;
+    readonly variables: MyProfileHeaderMyCollectionAndSavedWorksRefetchQueryVariables;
 };
 
 
 
 /*
-query MyCollectionAndSavedWorksRefetchQuery(
+query MyProfileHeaderMyCollectionAndSavedWorksRefetchQuery(
   $enableCollectorProfile: Boolean!
 ) {
   me {
@@ -72,7 +72,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "MyCollectionAndSavedWorksRefetchQuery",
+    "name": "MyProfileHeaderMyCollectionAndSavedWorksRefetchQuery",
     "selections": [
       {
         "alias": null,
@@ -104,7 +104,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "MyCollectionAndSavedWorksRefetchQuery",
+    "name": "MyProfileHeaderMyCollectionAndSavedWorksRefetchQuery",
     "selections": [
       {
         "alias": null,
@@ -248,13 +248,13 @@ return {
     ]
   },
   "params": {
-    "id": "d67795adeab589b05eac5375abf95983",
+    "id": "3fad36ccb889ca8ecc1e56b7fdb74a07",
     "metadata": {},
-    "name": "MyCollectionAndSavedWorksRefetchQuery",
+    "name": "MyProfileHeaderMyCollectionAndSavedWorksRefetchQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'a31d04f6880ecff904c251ffb0eb117d';
+(node as any).hash = '7cc8c1d55415ff8d7cbb86cedddc0d29';
 export default node;

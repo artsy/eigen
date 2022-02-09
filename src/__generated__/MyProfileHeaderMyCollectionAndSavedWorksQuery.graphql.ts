@@ -1,49 +1,33 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 1386b078142641ef4ab0f77fcd1da07f */
+/* @relayHash d92b088e8d0278afc1b73e28df271da0 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionAndSavedWorksQueryVariables = {
+export type MyProfileHeaderMyCollectionAndSavedWorksQueryVariables = {
     enableCollectorProfile: boolean;
 };
-export type MyCollectionAndSavedWorksQueryResponse = {
+export type MyProfileHeaderMyCollectionAndSavedWorksQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"MyCollectionAndSavedWorks_me">;
+        readonly " $fragmentRefs": FragmentRefs<"MyProfileHeaderMyCollectionAndSavedWorks_me">;
     } | null;
 };
-export type MyCollectionAndSavedWorksQuery = {
-    readonly response: MyCollectionAndSavedWorksQueryResponse;
-    readonly variables: MyCollectionAndSavedWorksQueryVariables;
+export type MyProfileHeaderMyCollectionAndSavedWorksQuery = {
+    readonly response: MyProfileHeaderMyCollectionAndSavedWorksQueryResponse;
+    readonly variables: MyProfileHeaderMyCollectionAndSavedWorksQueryVariables;
 };
 
 
 
 /*
-query MyCollectionAndSavedWorksQuery(
+query MyProfileHeaderMyCollectionAndSavedWorksQuery(
   $enableCollectorProfile: Boolean!
 ) {
   me @optionalField {
-    ...MyCollectionAndSavedWorks_me_3CllfQ
+    ...MyProfileHeaderMyCollectionAndSavedWorks_me_3CllfQ
     id
   }
-}
-
-fragment MyCollectionAndSavedWorks_me_3CllfQ on Me {
-  name
-  bio
-  location {
-    display
-    id
-  }
-  otherRelevantPositions
-  profession
-  icon {
-    url(version: "thumbnail")
-  }
-  createdAt
-  ...MyProfileEditFormModal_me_3CllfQ
 }
 
 fragment MyProfileEditFormModal_me_3CllfQ on Me {
@@ -65,6 +49,22 @@ fragment MyProfileEditFormModal_me_3CllfQ on Me {
   icon {
     url(version: "thumbnail")
   }
+}
+
+fragment MyProfileHeaderMyCollectionAndSavedWorks_me_3CllfQ on Me {
+  name
+  bio
+  location {
+    display
+    id
+  }
+  otherRelevantPositions
+  profession
+  icon {
+    url(version: "thumbnail")
+  }
+  createdAt
+  ...MyProfileEditFormModal_me_3CllfQ
 }
 */
 
@@ -88,7 +88,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "MyCollectionAndSavedWorksQuery",
+    "name": "MyProfileHeaderMyCollectionAndSavedWorksQuery",
     "selections": [
       {
         "alias": null,
@@ -107,7 +107,7 @@ return {
               }
             ],
             "kind": "FragmentSpread",
-            "name": "MyCollectionAndSavedWorks_me"
+            "name": "MyProfileHeaderMyCollectionAndSavedWorks_me"
           }
         ],
         "storageKey": null
@@ -120,7 +120,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "MyCollectionAndSavedWorksQuery",
+    "name": "MyProfileHeaderMyCollectionAndSavedWorksQuery",
     "selections": [
       {
         "alias": null,
@@ -282,13 +282,13 @@ return {
     ]
   },
   "params": {
-    "id": "1386b078142641ef4ab0f77fcd1da07f",
+    "id": "d92b088e8d0278afc1b73e28df271da0",
     "metadata": {},
-    "name": "MyCollectionAndSavedWorksQuery",
+    "name": "MyProfileHeaderMyCollectionAndSavedWorksQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'd127f9d668c0f4e07494a43a1e189dfa';
+(node as any).hash = '55f70488a25c2b85dc075abf6ba44e4e';
 export default node;
