@@ -13,6 +13,7 @@ import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import LoadingModal from "lib/Components/Modals/LoadingModal"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { getConvertedImageUrlFromS3 } from "lib/utils/getConvertedImageUrlFromS3"
+import { PlaceholderBox, PlaceholderText, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { compact, isArray } from "lodash"
 import { Avatar, Box, Button, Flex, Input, Join, Spacer, Text, Touchable, useColor } from "palette"
@@ -67,7 +68,7 @@ export const MyProfileEditForm: React.FC<{ me: MyProfileEditForm_me$key }> = (pr
       const iconUrl = await getConvertedImageUrlFromS3(photo)
       await updateMyUserProfile({ iconUrl })
     } catch (error) {
-      console.error("Failed to upload profile picture ", error)
+      console.error("Failed to upload profile picture", error)
     }
   }
 
@@ -298,8 +299,48 @@ const MyProfileEditFormContainer = () => {
 
 export const MyProfileEditFormQueryRenderer = () => {
   return (
-    <Suspense fallback={null}>
+    <Suspense
+      fallback={
+        <ProvidePlaceholderContext>
+          <LoadingSkeleton />
+        </ProvidePlaceholderContext>
+      }
+    >
       <MyProfileEditFormContainer />
     </Suspense>
+  )
+}
+
+const LoadingSkeleton = () => {
+  const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
+  return (
+    <>
+      <Flex alignItems="center" mt={2}>
+        <Text variant="md" mr={0.5}>
+          Select an Artwork
+        </Text>
+      </Flex>
+      <Spacer mb={4} />
+      <Flex flexDirection="row" pl={2} alignItems="center">
+        <PlaceholderBox width={99} height={99} borderRadius={50} />
+        <PlaceholderText width={100} height={20} marginTop={5} marginLeft={20} />
+      </Flex>
+      {Array(enableCollectorProfile ? 4 : 1).fill(
+        <Flex mt={30}>
+          <Flex mx={20}>
+            <PlaceholderText width={100} height={20} marginTop={5} />
+            <PlaceholderBox height={50} marginTop={5} />
+          </Flex>
+        </Flex>
+      )}
+      <Flex mt={30}>
+        <Flex mx={20}>
+          <PlaceholderText width={100} height={20} marginTop={5} />
+          <PlaceholderBox height={100} marginTop={5} />
+        </Flex>
+      </Flex>
+      <Spacer mb={2} />
+      <PlaceholderBox height={50} marginTop={5} borderRadius={50} marginHorizontal={20} />
+    </>
   )
 }

@@ -30,6 +30,7 @@ import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionPlaceholder, MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
 import { MyProfileContext } from "./MyProfileProvider"
+import { normalizeMyProfileBio } from "./utils"
 
 export enum Tab {
   collection = "My Collection",
@@ -38,7 +39,7 @@ export enum Tab {
 
 export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
   me: MyProfileHeaderMyCollectionAndSavedWorks_me
-}> = (props) => {
+}> = ({ me }) => {
   return (
     <StickyTabPage
       disableBackButtonUpdate
@@ -54,7 +55,7 @@ export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
           initial: false,
         },
       ]}
-      staticHeaderContent={<MyProfileHeader {...props} />}
+      staticHeaderContent={<MyProfileHeader me={me} />}
     />
   )
 }
@@ -143,23 +144,21 @@ export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSaved
       )}
       {!!me?.bio && (
         <Text variant="xs" color={color("black100")} px={2} pt={2}>
-          {me?.bio}
+          {normalizeMyProfileBio(me?.bio)}
         </Text>
       )}
-      {!!me && (
-        <Flex p={2}>
-          <Button
-            variant="outline"
-            size="small"
-            flex={1}
-            onPress={() => {
-              navigation.navigate("MyProfileEditForm")
-            }}
-          >
-            Edit Profile
-          </Button>
-        </Flex>
-      )}
+      <Flex p={2}>
+        <Button
+          variant="outline"
+          size="small"
+          flex={1}
+          onPress={() => {
+            navigation.navigate("MyProfileEditForm")
+          }}
+        >
+          Edit Profile
+        </Button>
+      </Flex>
     </>
   )
 }

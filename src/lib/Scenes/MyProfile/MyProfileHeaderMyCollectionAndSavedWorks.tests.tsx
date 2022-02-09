@@ -21,6 +21,15 @@ import {
 
 jest.mock("./LoggedInUserInfo")
 jest.unmock("react-relay")
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native")
+  return {
+    ...actualNav,
+    useNavigation: () => ({
+      navigate: jest.fn(),
+    }),
+  }
+})
 
 describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
@@ -126,7 +135,7 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
       })
 
       it("should not render Collector Profile info", async () => {
-        const { findByText } = getWrapper({
+        const { findByText, queryByText } = getWrapper({
           Me: () => ({
             name: "Princess",
             createdAt: new Date("12/12/12").toISOString(),
@@ -142,9 +151,9 @@ describe("MyProfileHeaderMyCollectionAndSavedWorks", () => {
         expect(findByText("Princess")).toBeTruthy()
         expect(findByText("Member since 2012")).toBeTruthy()
         expect(findByText("Richest Collector! 💰")).toBeTruthy()
-        expect(findByText("Guardian of the Galaxy")).toEqual(Promise.resolve())
-        expect(findByText("Atlantis")).toEqual(Promise.resolve())
-        expect(findByText("Marvel Universe")).toEqual(Promise.resolve())
+        expect(queryByText("Guardian of the Galaxy")).toBeFalsy()
+        expect(queryByText("Atlantis")).toBeFalsy()
+        expect(queryByText("Marvel Universe")).toBeFalsy()
       })
     })
 
