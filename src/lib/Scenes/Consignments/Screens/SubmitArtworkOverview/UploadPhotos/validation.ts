@@ -12,6 +12,8 @@ export interface Photo {
   path?: string
   width?: number
   imageVersions?: string[]
+  loading?: boolean
+  error?: boolean
 }
 
 export const photosEmptyInitialValues: PhotosFormModel = {
@@ -30,6 +32,8 @@ export const photosValidationSchema = Yup.object().shape({
         path: Yup.string(),
         width: Yup.number(),
         imageVersions: Yup.string(),
+        loading: Yup.boolean(),
+        error: Yup.boolean(),
       })
     ),
 })

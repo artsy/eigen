@@ -1,5 +1,5 @@
 import { Formik } from "formik"
-import { BulletedItem, Button, CTAButton, Flex, Spacer, Text } from "palette"
+import { BulletedItem, Button, CTAButton, Flex, Spacer, Spinner, Text } from "palette"
 import React, { useState } from "react"
 import { Image } from "react-native"
 import { ErrorView } from "../Components/ErrorView"
@@ -41,21 +41,34 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
         validateOnMount
       >
         {({ values, isValid }) => {
+          const isAnyPhotoLoading = values.photos.some((photo: Photo) => photo.loading)
+
           return (
             <>
               <UploadPhotosForm setPhotoUploadError={setPhotoUploadError} />
               <Spacer mt={2} />
-              {values.photos.map((photo: Photo, idx: number) => (
-                <PhotoThumbnail key={idx} photo={photo} handlePhotoDelete={handlePhotoDelete} />
-              ))}
+              {values.photos.map((photo: Photo, idx: number) => {
+                if (photo?.loading) {
+                  return <PhotoThumbnailLoadingState key={idx} />
+                } else if (photo?.error) {
+                  return <PhotoThumbnailErrorState key={idx} />
+                }
 
-              {/* TODO: add loading view */}
+                return (
+                  <PhotoThumbnailSuccessState
+                    key={idx}
+                    photo={photo}
+                    handlePhotoDelete={handlePhotoDelete}
+                  />
+                )
+              })}
               <CTAButton
-                disabled={!isValid}
+                disabled={!isValid || isAnyPhotoLoading}
                 onPress={handlePress}
                 testID="Submission_Photos_Button"
               >
                 Save & Continue
+                {!!isAnyPhotoLoading && <Spinner color="black60" />}
               </CTAButton>
             </>
           )
@@ -65,11 +78,10 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
   )
 }
 
-const PhotoThumbnail: React.FC<{ photo: Photo; handlePhotoDelete: (arg: Photo) => void }> = ({
-  photo,
-  handlePhotoDelete,
-}) => {
-  // TODO: display error view & loading view
+const PhotoThumbnailSuccessState: React.FC<{
+  photo: Photo
+  handlePhotoDelete: (arg: Photo) => void
+}> = ({ photo, handlePhotoDelete }) => {
   return (
     <>
       <Flex
@@ -77,7 +89,7 @@ const PhotoThumbnail: React.FC<{ photo: Photo; handlePhotoDelete: (arg: Photo) =
         flexDirection="row"
         justifyContent="space-between"
         alignItems="center"
-        style={{ borderColor: "lightgray", borderWidth: 1, borderRadius: 4 }}
+        style={{ borderColor: "lightgray", borderWidth: 1, borderRadius: 4, height: 68 }}
       >
         <Image
           resizeMode="contain"
@@ -94,6 +106,38 @@ const PhotoThumbnail: React.FC<{ photo: Photo; handlePhotoDelete: (arg: Photo) =
         <Button variant="text" size="small" onPress={() => handlePhotoDelete(photo)}>
           <Text style={{ textDecorationLine: "underline" }}>Delete</Text>
         </Button>
+      </Flex>
+      <Spacer mt={2} />
+    </>
+  )
+}
+
+const PhotoThumbnailLoadingState = () => {
+  return (
+    <>
+      <Flex
+        p={1}
+        flexDirection="row"
+        justifyContent="center"
+        alignItems="center"
+        style={{ borderColor: "lightgray", borderWidth: 1, borderRadius: 4, height: 68 }}
+      >
+        <Spinner color="black60" />
+      </Flex>
+      <Spacer mt={2} />
+    </>
+  )
+}
+
+const PhotoThumbnailErrorState = () => {
+  return (
+    <>
+      <Flex
+        p={1}
+        alignItems="center"
+        style={{ borderColor: "red", borderWidth: 1, borderRadius: 4, height: 68 }}
+      >
+        <Text color="black60">Problem</Text>
       </Flex>
       <Spacer mt={2} />
     </>

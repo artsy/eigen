@@ -16,19 +16,25 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
   const { showActionSheetWithOptions } = useActionSheet()
 
   const addPhotoToSubmission = async (photos: Photo[]) => {
-    try {
-      for (const photo of photos) {
-        if (photo.path) {
+    for (const photo of photos) {
+      photo.loading = true
+      setFieldValue("photos", [...values.photos, photo])
+
+      if (photo.path) {
+        try {
           await uploadImageAndPassToGemini(photo.path, "private", submission.submissionId)
           GlobalStore.actions.artworkSubmission.submission.setPhotos({
             photos: [...submission.photos.photos, photo],
           })
+
+          photo.loading = false
           setFieldValue("photos", [...values.photos, photo])
+        } catch (error) {
+          photo.loading = false
+          photo.error = true
+          captureMessage(JSON.stringify(error))
         }
       }
-    } catch (error) {
-      captureMessage(JSON.stringify(error))
-      setPhotoUploadError(true)
     }
   }
 
