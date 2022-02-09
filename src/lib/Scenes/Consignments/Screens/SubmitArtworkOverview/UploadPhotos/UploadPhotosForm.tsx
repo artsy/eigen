@@ -4,7 +4,7 @@ import { useFormikContext } from "formik"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { showPhotoActionSheet } from "lib/utils/requestPhotos"
 import { Button, Flex, Spacer, Text } from "palette"
-import React from "react"
+import React, { useEffect } from "react"
 import { uploadImageAndPassToGemini } from "../../../Submission/uploadPhotoToGemini"
 import { Photo, PhotosFormModel } from "./validation"
 
@@ -14,6 +14,12 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
   const { values, setFieldValue } = useFormikContext<PhotosFormModel>()
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const { showActionSheetWithOptions } = useActionSheet()
+
+  useEffect(() => {
+    if (submission.photos.photos.length) {
+      setFieldValue("photos", [...values.photos, submission.photos.photos])
+    }
+  }, [])
 
   const addPhotoToSubmission = async (photos: Photo[]) => {
     for (const photo of photos) {
@@ -28,6 +34,7 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
           })
 
           photo.loading = false
+          photo.error = true
           setFieldValue("photos", [...values.photos, photo])
         } catch (error) {
           photo.loading = false
