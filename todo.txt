@@ -8,7 +8,7 @@
 - updated react-native-config patch to get source directory correct in ios folder, should be able to remove when we have just one dir
 - returning same modules for native for ios as android, many are broken and will need to be fixed, may want to distinguish Android and iOS still here
 - adding placeholder constants for native module export to prevent crash - see ARTArtsyNativeModule.m, use real thing when we have access to old ios files
-
+- we use a hook in main App for configuring push notifications that fails on iOS, need to figure out how to use our native module instead for iOS
 
 possibly need to set up:
 BVLinearGradient,
