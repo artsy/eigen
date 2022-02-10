@@ -704,6 +704,7 @@ type Article implements Node {
     size: Int = 3
   ): [Article!]!
   sections: [ArticleSections!]!
+  series: ArticleSeries
   slug: String
   thumbnailImage: Image
   thumbnailTeaser: String
@@ -862,6 +863,11 @@ enum ArticleSectionVideoLayout {
   COLUMN_WIDTH
   FILLWIDTH
   OVERFLOW_FILLWIDTH
+}
+
+type ArticleSeries {
+  # HTML string describing the series
+  description: String
 }
 
 enum ArticleSorts {
