@@ -1510,6 +1510,7 @@ type Artwork implements Node & Searchable & Sellable {
   certificateOfAuthenticity: ArtworkInfoRow
   collectingInstitution: String
   conditionDescription: ArtworkInfoRow
+  consignmentSubmission: ArtworkConsignmentSubmission
   contactLabel: String
 
   # Pre-filled inquiry text
@@ -1771,6 +1772,10 @@ interface ArtworkConnectionInterface {
   edges: [ArtworkEdgeInterface]
   pageCursors: PageCursors!
   pageInfo: PageInfo!
+}
+
+type ArtworkConsignmentSubmission {
+  displayText: String
 }
 
 union ArtworkContext = Fair | Sale | Show
