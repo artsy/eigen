@@ -54,8 +54,7 @@ describe("Search Screen", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
   beforeEach(() => {
-    require("lib/relay/createEnvironment").reset()
-    mockEnvironment = require("lib/relay/createEnvironment").defaultEnvironment
+    mockEnvironment = createMockEnvironment()
   })
 
   const TestRenderer = () => {

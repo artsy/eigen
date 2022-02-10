@@ -7,14 +7,19 @@ import {
 import { AboveTheFoldFlatList } from "lib/Components/AboveTheFoldFlatList"
 import { LoadFailureView } from "lib/Components/LoadFailureView"
 import Spinner from "lib/Components/Spinner"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { isPad } from "lib/utils/hardware"
 import { ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Flex, quoteLeft, quoteRight, Spacer, Text, useSpace } from "palette"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import React from "react"
 import { FlatList } from "react-native"
-import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
+import {
+  createPaginationContainer,
+  graphql,
+  QueryRenderer,
+  RelayPaginationProp,
+  useRelayEnvironment,
+} from "react-relay"
 import usePrevious from "react-use/lib/usePrevious"
 import {
   AutosuggestSearchResult,
@@ -276,6 +281,7 @@ export const AutosuggestResults: React.FC<{
     onResultPress,
     trackResultPress,
   }) => {
+    const env = useRelayEnvironment()
     return (
       <QueryRenderer<AutosuggestResultsQuery>
         render={({ props, error, retry }) => {
@@ -323,7 +329,7 @@ export const AutosuggestResults: React.FC<{
               @arguments(query: $query, count: $count, entities: $entities)
           }
         `}
-        environment={defaultEnvironment}
+        environment={env}
       />
     )
   },
