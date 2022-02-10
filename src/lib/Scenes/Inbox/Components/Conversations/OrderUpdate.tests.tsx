@@ -1,6 +1,8 @@
 import React from "react"
 
 import { OrderUpdateTestsQuery } from "__generated__/OrderUpdateTestsQuery.graphql"
+import { LinkText } from "lib/Components/Text/LinkText"
+import { navigate } from "lib/navigation/navigate"
 import { extractText } from "lib/tests/extractText"
 import { renderWithWrappers } from "lib/tests/renderWithWrappers"
 import { AlertCircleFillIcon, MoneyFillIcon } from "palette"
@@ -58,7 +60,7 @@ const TestRenderer = () => (
     render={({ props, error }) => {
       if (Boolean(props?.me)) {
         const event = props!.me!.conversation!.orderConnection!.edges![0]!.node!.orderHistory[0]
-        return <OrderUpdate event={event} />
+        return <OrderUpdate event={event} conversationId="12345" />
       } else if (Boolean(error)) {
         console.log(error)
       }
@@ -97,6 +99,7 @@ describe("OrderUpdate with order updates", () => {
     const tree = getWrapper({ __typename: "CommerceOrderStateChangedEvent", state: "APPROVED" })
 
     expect(extractText(tree.root)).toMatch("Offer Accepted")
+    expect(extractText(tree.root)).not.toMatch("See details")
     tree.root.findByType(MoneyFillIcon)
   })
 
@@ -108,6 +111,7 @@ describe("OrderUpdate with order updates", () => {
     })
 
     expect(extractText(tree.root)).toMatch("Offer Declined")
+    expect(extractText(tree.root)).not.toMatch("See details")
     tree.root.findByType(MoneyFillIcon)
   })
 
@@ -119,6 +123,7 @@ describe("OrderUpdate with order updates", () => {
     })
 
     expect(extractText(tree.root)).toMatch("Offer Declined")
+    expect(extractText(tree.root)).not.toMatch("See details")
     tree.root.findByType(MoneyFillIcon)
   })
 
@@ -130,6 +135,7 @@ describe("OrderUpdate with order updates", () => {
     })
 
     expect(extractText(tree.root)).toMatch("Offer Expired")
+    expect(extractText(tree.root)).not.toMatch("See details")
     tree.root.findByType(MoneyFillIcon)
   })
 
@@ -140,7 +146,11 @@ describe("OrderUpdate with order updates", () => {
     })
 
     expect(extractText(tree.root)).toMatch("You sent an offer")
+    expect(extractText(tree.root)).toMatch("See details")
     tree.root.findByType(MoneyFillIcon)
+
+    tree.root.findByType(LinkText).props.onPress()
+    expect(navigate).toHaveBeenCalledWith("/conversation/12345/details")
   })
 
   it("shows a counteroffer offer from the user", () => {
@@ -150,6 +160,7 @@ describe("OrderUpdate with order updates", () => {
     })
 
     expect(extractText(tree.root)).toMatch("You sent a counteroffer")
+    expect(extractText(tree.root)).not.toMatch("See details")
     tree.root.findByType(MoneyFillIcon)
   })
 
@@ -164,6 +175,7 @@ describe("OrderUpdate with order updates", () => {
     })
 
     expect(extractText(tree.root)).toMatch("You received a counteroffer")
+    expect(extractText(tree.root)).not.toMatch("See details")
     tree.root.findByType(AlertCircleFillIcon)
   })
   it("shows an accepted offer from the partner with pending action", () => {
@@ -177,6 +189,7 @@ describe("OrderUpdate with order updates", () => {
     })
 
     expect(extractText(tree.root)).toMatch("Offer Accepted - Pending Action")
+    expect(extractText(tree.root)).not.toMatch("See details")
     tree.root.findByType(AlertCircleFillIcon)
   })
 })

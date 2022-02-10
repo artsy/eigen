@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash c8738240fd89b1a327144743e6bf8983 */
+/* @relayHash f8df47c27da02f669c002aa85e039487 */
 
 import { ConcreteRequest } from "relay-runtime";
 export type UpdateMyProfileInput = {
@@ -54,6 +54,8 @@ export type updateMyUserProfileMutationResponse = {
             readonly email: string | null;
             readonly name: string | null;
             readonly phone: string | null;
+            readonly profession: string | null;
+            readonly otherRelevantPositions: string | null;
             readonly bio: string | null;
             readonly icon: {
                 readonly internalID: string | null;
@@ -91,6 +93,8 @@ mutation updateMyUserProfileMutation(
       email
       name
       phone
+      profession
+      otherRelevantPositions
       bio
       icon {
         internalID
@@ -156,10 +160,24 @@ v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "bio",
+  "name": "profession",
   "storageKey": null
 },
 v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "otherRelevantPositions",
+  "storageKey": null
+},
+v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "bio",
+  "storageKey": null
+},
+v8 = {
   "alias": null,
   "args": null,
   "concreteType": "Image",
@@ -184,84 +202,84 @@ v6 = {
   ],
   "storageKey": null
 },
-v7 = {
+v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "display",
   "storageKey": null
 },
-v8 = {
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "city",
   "storageKey": null
 },
-v9 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "state",
   "storageKey": null
 },
-v10 = {
+v12 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "country",
   "storageKey": null
 },
-v11 = {
+v13 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "receiveLotOpeningSoonNotification",
   "storageKey": null
 },
-v12 = {
+v14 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "receiveNewSalesNotification",
   "storageKey": null
 },
-v13 = {
+v15 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "receiveNewWorksNotification",
   "storageKey": null
 },
-v14 = {
+v16 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "receiveOutbidNotification",
   "storageKey": null
 },
-v15 = {
+v17 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "receivePromotionNotification",
   "storageKey": null
 },
-v16 = {
+v18 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "receivePurchaseNotification",
   "storageKey": null
 },
-v17 = {
+v19 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "receiveSaleOpeningClosingNotification",
   "storageKey": null
 },
-v18 = {
+v20 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -296,6 +314,8 @@ return {
               (v4/*: any*/),
               (v5/*: any*/),
               (v6/*: any*/),
+              (v7/*: any*/),
+              (v8/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -304,20 +324,20 @@ return {
                 "name": "location",
                 "plural": false,
                 "selections": [
-                  (v7/*: any*/),
-                  (v8/*: any*/),
                   (v9/*: any*/),
-                  (v10/*: any*/)
+                  (v10/*: any*/),
+                  (v11/*: any*/),
+                  (v12/*: any*/)
                 ],
                 "storageKey": null
               },
-              (v11/*: any*/),
-              (v12/*: any*/),
               (v13/*: any*/),
               (v14/*: any*/),
               (v15/*: any*/),
               (v16/*: any*/),
-              (v17/*: any*/)
+              (v17/*: any*/),
+              (v18/*: any*/),
+              (v19/*: any*/)
             ],
             "storageKey": null
           }
@@ -355,6 +375,8 @@ return {
               (v4/*: any*/),
               (v5/*: any*/),
               (v6/*: any*/),
+              (v7/*: any*/),
+              (v8/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -363,22 +385,22 @@ return {
                 "name": "location",
                 "plural": false,
                 "selections": [
-                  (v7/*: any*/),
-                  (v8/*: any*/),
                   (v9/*: any*/),
                   (v10/*: any*/),
-                  (v18/*: any*/)
+                  (v11/*: any*/),
+                  (v12/*: any*/),
+                  (v20/*: any*/)
                 ],
                 "storageKey": null
               },
-              (v11/*: any*/),
-              (v12/*: any*/),
               (v13/*: any*/),
               (v14/*: any*/),
               (v15/*: any*/),
               (v16/*: any*/),
               (v17/*: any*/),
-              (v18/*: any*/)
+              (v18/*: any*/),
+              (v19/*: any*/),
+              (v20/*: any*/)
             ],
             "storageKey": null
           }
@@ -388,7 +410,7 @@ return {
     ]
   },
   "params": {
-    "id": "c8738240fd89b1a327144743e6bf8983",
+    "id": "f8df47c27da02f669c002aa85e039487",
     "metadata": {},
     "name": "updateMyUserProfileMutation",
     "operationKind": "mutation",
@@ -396,5 +418,5 @@ return {
   }
 };
 })();
-(node as any).hash = '89f9887e47b12f13823b173ea56d52dd';
+(node as any).hash = '888a89a0b64fa0bb652a2e27269f1457';
 export default node;

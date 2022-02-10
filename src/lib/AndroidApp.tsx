@@ -1,7 +1,7 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { AdminMenuWrapper } from "lib/utils/AdminMenuWrapper"
-import { addTrackingProvider, track } from "lib/utils/track"
+import { addTrackingProvider } from "lib/utils/track"
 import {
   SEGMENT_TRACKING_PROVIDER,
   SegmentTrackingProvider,
@@ -35,7 +35,7 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true)
 }
 
-const Main: React.FC<{}> = track()(({}) => {
+const Main: React.FC = () => {
   useEffect(() => {
     GoogleSignin.configure({
       webClientId: "673710093763-hbj813nj4h3h183c4ildmu8vvqc0ek4h.apps.googleusercontent.com",
@@ -104,7 +104,7 @@ const Main: React.FC<{}> = track()(({}) => {
       <BottomTabsNavigator />
     </ModalStack>
   )
-})
+}
 
 export const App = () => (
   <AppProviders>

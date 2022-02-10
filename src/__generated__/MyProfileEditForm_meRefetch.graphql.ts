@@ -1,54 +1,56 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash d67795adeab589b05eac5375abf95983 */
+/* @relayHash d53fb1373d60910ccb615b77d91730f7 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionAndSavedWorksRefetchQueryVariables = {
-    enableCollectorProfile: boolean;
+export type MyProfileEditForm_meRefetchVariables = {
+    id: string;
 };
-export type MyCollectionAndSavedWorksRefetchQueryResponse = {
-    readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"MyProfileEditFormModal_me">;
+export type MyProfileEditForm_meRefetchResponse = {
+    readonly node: {
+        readonly " $fragmentRefs": FragmentRefs<"MyProfileEditForm_me">;
     } | null;
 };
-export type MyCollectionAndSavedWorksRefetchQuery = {
-    readonly response: MyCollectionAndSavedWorksRefetchQueryResponse;
-    readonly variables: MyCollectionAndSavedWorksRefetchQueryVariables;
+export type MyProfileEditForm_meRefetch = {
+    readonly response: MyProfileEditForm_meRefetchResponse;
+    readonly variables: MyProfileEditForm_meRefetchVariables;
 };
 
 
 
 /*
-query MyCollectionAndSavedWorksRefetchQuery(
-  $enableCollectorProfile: Boolean!
+query MyProfileEditForm_meRefetch(
+  $id: ID!
 ) {
-  me {
-    ...MyProfileEditFormModal_me_3CllfQ
+  node(id: $id) {
+    __typename
+    ...MyProfileEditForm_me
     id
   }
 }
 
-fragment MyProfileEditFormModal_me_3CllfQ on Me {
+fragment MyProfileEditForm_me on Me {
   name
-  profession @include(if: $enableCollectorProfile)
-  otherRelevantPositions @include(if: $enableCollectorProfile)
-  location @include(if: $enableCollectorProfile) {
+  profession
+  otherRelevantPositions
+  bio
+  location {
     display
     city
     state
     country
     id
   }
-  email @include(if: $enableCollectorProfile)
-  emailConfirmed @include(if: $enableCollectorProfile)
-  identityVerified @include(if: $enableCollectorProfile)
-  canRequestEmailConfirmation @include(if: $enableCollectorProfile)
-  bio
   icon {
     url(version: "thumbnail")
   }
+  email
+  emailConfirmed
+  identityVerified
+  canRequestEmailConfirmation
+  id
 }
 */
 
@@ -57,10 +59,17 @@ var v0 = [
   {
     "defaultValue": null,
     "kind": "LocalArgument",
-    "name": "enableCollectorProfile"
+    "name": "id"
   }
 ],
-v1 = {
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "id",
+    "variableName": "id"
+  }
+],
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -72,26 +81,20 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "MyCollectionAndSavedWorksRefetchQuery",
+    "name": "MyProfileEditForm_meRefetch",
     "selections": [
       {
         "alias": null,
-        "args": null,
-        "concreteType": "Me",
+        "args": (v1/*: any*/),
+        "concreteType": null,
         "kind": "LinkedField",
-        "name": "me",
+        "name": "node",
         "plural": false,
         "selections": [
           {
-            "args": [
-              {
-                "kind": "Variable",
-                "name": "enableCollectorProfile",
-                "variableName": "enableCollectorProfile"
-              }
-            ],
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "MyProfileEditFormModal_me"
+            "name": "MyProfileEditForm_me"
           }
         ],
         "storageKey": null
@@ -104,60 +107,34 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "MyCollectionAndSavedWorksRefetchQuery",
+    "name": "MyProfileEditForm_meRefetch",
     "selections": [
       {
         "alias": null,
-        "args": null,
-        "concreteType": "Me",
+        "args": (v1/*: any*/),
+        "concreteType": null,
         "kind": "LinkedField",
-        "name": "me",
+        "name": "node",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "name",
+            "name": "__typename",
             "storageKey": null
           },
+          (v2/*: any*/),
           {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "bio",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Image",
-            "kind": "LinkedField",
-            "name": "icon",
-            "plural": false,
+            "kind": "InlineFragment",
             "selections": [
               {
                 "alias": null,
-                "args": [
-                  {
-                    "kind": "Literal",
-                    "name": "version",
-                    "value": "thumbnail"
-                  }
-                ],
+                "args": null,
                 "kind": "ScalarField",
-                "name": "url",
-                "storageKey": "url(version:\"thumbnail\")"
-              }
-            ],
-            "storageKey": null
-          },
-          (v1/*: any*/),
-          {
-            "condition": "enableCollectorProfile",
-            "kind": "Condition",
-            "passingValue": true,
-            "selections": [
+                "name": "name",
+                "storageKey": null
+              },
               {
                 "alias": null,
                 "args": null,
@@ -170,6 +147,13 @@ return {
                 "args": null,
                 "kind": "ScalarField",
                 "name": "otherRelevantPositions",
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "bio",
                 "storageKey": null
               },
               {
@@ -208,7 +192,31 @@ return {
                     "name": "country",
                     "storageKey": null
                   },
-                  (v1/*: any*/)
+                  (v2/*: any*/)
+                ],
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "Image",
+                "kind": "LinkedField",
+                "name": "icon",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": [
+                      {
+                        "kind": "Literal",
+                        "name": "version",
+                        "value": "thumbnail"
+                      }
+                    ],
+                    "kind": "ScalarField",
+                    "name": "url",
+                    "storageKey": "url(version:\"thumbnail\")"
+                  }
                 ],
                 "storageKey": null
               },
@@ -240,7 +248,9 @@ return {
                 "name": "canRequestEmailConfirmation",
                 "storageKey": null
               }
-            ]
+            ],
+            "type": "Me",
+            "abstractKey": null
           }
         ],
         "storageKey": null
@@ -248,13 +258,13 @@ return {
     ]
   },
   "params": {
-    "id": "d67795adeab589b05eac5375abf95983",
+    "id": "d53fb1373d60910ccb615b77d91730f7",
     "metadata": {},
-    "name": "MyCollectionAndSavedWorksRefetchQuery",
+    "name": "MyProfileEditForm_meRefetch",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'a31d04f6880ecff904c251ffb0eb117d';
+(node as any).hash = 'aa24414c197bceaced2bd1ddaaf08e23';
 export default node;

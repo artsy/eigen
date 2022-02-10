@@ -1,5 +1,6 @@
 import { CheckCircleIcon, ChevronIcon, Collapse, Flex, Text, Touchable } from "palette"
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from "react"
+import { LayoutAnimation } from "react-native"
 
 interface CollapsableMenuItemProps {
   overtitle?: string
@@ -30,9 +31,11 @@ export const CollapsibleMenuItem = forwardRef<
     ref,
     () => ({
       collapse() {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
         setIsOpen(false)
       },
       expand() {
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut)
         setIsOpen(true)
       },
       completed() {
@@ -73,7 +76,7 @@ export const CollapsibleMenuItem = forwardRef<
           </Flex>
         </Flex>
       </Touchable>
-      <Collapse open={isOpen}>{children}</Collapse>
+      <Collapse isOpen={isOpen}>{children}</Collapse>
     </Flex>
   )
 })
