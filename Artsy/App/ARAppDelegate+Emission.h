@@ -1,5 +1,6 @@
 #import "ARAppDelegate.h"
+#import <Emission/AREmission.h>
 
 @interface ARAppDelegate (Emission)
-- (void)setupEmission;
+- (AREmission *)setupEmission;
 @end

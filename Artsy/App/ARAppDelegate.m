@@ -49,6 +49,7 @@
 #import <DHCShakeNotifier/UIWindow+DHCShakeRecognizer.h>
 #import <ObjectiveSugar/ObjectiveSugar.h>
 #import <React/RCTDevSettings.h>
+#import <React/RCTRootView.h>
 #import <Emission/AREmission.h>
 #import <Emission/ARNotificationsManager.h>
 
@@ -149,15 +150,31 @@ static ARAppDelegate *_sharedInstance = nil;
 
     [[ARLogger sharedLogger] startLogging];
 
-    [self setupEmission];
-    self.viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Artsy" initialProperties:@{}];
-    self.window.rootViewController = self.viewController;
-    [self.window makeKeyAndVisible];
+    AREmission *emission = [self setupEmission];
 
-    if (@available(iOS 13.0, *)) {
-      // prevent dark mode
-      self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
-    }
+// TODO: AppShell remove the else here once we have everything working
+#ifdef APP_SHELL
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:emission.bridge
+                                                    moduleName:@"eigen"
+                                             initialProperties:nil];
+
+
+   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+   UIViewController *rootViewController = [UIViewController new];
+   rootViewController.view = rootView;
+   self.window.rootViewController = rootViewController;
+   [self.window makeKeyAndVisible];
+#else
+  self.viewController = [[ARComponentViewController alloc] initWithEmission:nil moduleName:@"Artsy" initialProperties:@{}];
+  self.window.rootViewController = self.viewController;
+  [self.window makeKeyAndVisible];
+#endif
+
+  if (@available(iOS 13.0, *)) {
+    // prevent dark mode
+    self.window.overrideUserInterfaceStyle = UIUserInterfaceStyleLight;
+  }
+
 
     [ARWebViewCacheHost startup];
     [self registerNewSessionOpened];

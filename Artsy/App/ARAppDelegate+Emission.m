@@ -46,7 +46,7 @@
 
 @implementation ARAppDelegate (Emission)
 
-- (void)setupEmission;
+- (AREmission *)setupEmission;
 {
     BOOL isDebugMode;
 #if DEBUG
@@ -57,10 +57,10 @@
     if (isDebugMode) {
         NSString *bundleUrlString = [NSString stringWithFormat:@"http://%@:8081/index.ios.bundle?platform=ios&dev=true", [ARReactPackagerHost hostname]];
         NSURL *packagerURL = [NSURL URLWithString:bundleUrlString];
-        [self setupSharedEmissionWithPackagerURL:packagerURL];
+        return [self setupSharedEmissionWithPackagerURL:packagerURL];
     } else {
         // The normal flow for users
-        [self setupSharedEmissionWithPackagerURL:nil];
+        return [self setupSharedEmissionWithPackagerURL:nil];
     }
 }
 
@@ -96,7 +96,7 @@ SOFTWARE.
     return deviceId;
 }
 
-- (void)setupSharedEmissionWithPackagerURL:(NSURL *)packagerURL;
+- (AREmission *)setupSharedEmissionWithPackagerURL:(NSURL *)packagerURL;
 {
     NSString *userID = [[[ARUserManager sharedManager] currentUser] userID];
     NSString *userEmail = [[[ARUserManager sharedManager] currentUser] email];
@@ -173,6 +173,8 @@ SOFTWARE.
             [[AREmission sharedInstance] sendScreenEvent:info[@"context_screen"]  traits:[properties copy]];
         }
     };
+
+  return emission;
 }
 
 @end
