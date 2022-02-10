@@ -232,7 +232,7 @@ export const MyProfileEditForm: React.FC = () => {
         rightButtonText="Skip"
         hideBottomDivider
       >
-        Select an Artwork
+        Edit Profile
       </FancyModalHeader>
       <ScrollView keyboardDismissMode="on-drag" keyboardShouldPersistTaps="handled">
         <Join separator={<Spacer py={1} />}>
@@ -332,7 +332,6 @@ export const MyProfileEditForm: React.FC = () => {
                 placeholder="You can add a short bio to tell more about yourself and your collection. It can be anything like the artists you collect, the genres you're interested in , etc."
               />
 
-              <Spacer py={2} />
               {!!enableCollectorProfile && (
                 <ProfileVerifications
                   isIDVerified={!!me?.identityVerified}
@@ -341,8 +340,6 @@ export const MyProfileEditForm: React.FC = () => {
                   handleEmailVerification={throttleHandledEmailVerification}
                 />
               )}
-
-              <Spacer py={2} />
 
               <Button flex={1} disabled={!dirty} onPress={handleSubmit} mb={2}>
                 Save
@@ -407,7 +404,7 @@ const LoadingSkeleton = () => {
     <ProvidePlaceholderContext>
       <Flex alignItems="center" mt={2}>
         <Text variant="md" mr={0.5}>
-          Select an Artwork
+          Edit Profile
         </Text>
       </Flex>
       <Spacer mb={4} />
