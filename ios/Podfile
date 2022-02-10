@@ -14,6 +14,8 @@ platform :ios, '12.1'
 
 $ReactNativeMapboxGLIOSVersion = '~> 6.4'
 
+# ignore all warnings from all pods
+inhibit_all_warnings!
 
 pre_install do |installer|
   $RNMBGL.pre_install(installer)
@@ -40,17 +42,96 @@ target 'eigen' do
   # you should disable the next line.
   use_flipper!()
 
+  # Networking
+  pod 'AFNetworking', '2.7.0', subspecs: %w[Reachability Serialization Security NSURLSession NSURLConnection]
+  pod 'AFOAuth1Client', git: 'https://github.com/artsy/AFOAuth1Client.git', tag: '0.4.0-subspec-fix'
+  pod 'AFNetworkActivityLogger'
   pod 'SDWebImage', '5.8.3'
-  pod 'Emission', path: '../emission', :inhibit_warnings => false
 
+  # Core
+  pod 'ARGenericTableViewController', git: 'https://github.com/artsy/ARGenericTableViewController.git'
+  pod 'CocoaLumberjack', '3.7.2'
+  pod 'FLKAutoLayout', git: 'https://github.com/artsy/FLKAutoLayout.git', branch: 'v1'
+  pod 'FXBlurView', '1.6.4'
+  pod 'ISO8601DateFormatter', git: 'https://github.com/artsy/iso-8601-date-formatter'
+  pod 'JLRoutes', git: 'https://github.com/artsy/JLRoutes.git'
+  pod 'JSDecoupledAppDelegate'
+  pod 'Mantle', '1.5.6'
+  pod 'MMMarkdown', '0.4'
+  pod 'NPKeyboardLayoutGuide'
+  pod 'UICKeyChainStore'
+  pod 'MARKRangeSlider'
+  pod 'EDColor', '1.0.1'
+
+  # Core owned by Artsy
+  pod 'ORStackView', '2.0.3'
+  pod 'UIView+BooleanAnimations'
+  pod 'Aerodramus', '2.0.0'
+
+  # Language Enhancements
+  pod 'MultiDelegate'
+  pod 'ObjectiveSugar'
+
+  # Artsy Spec repo stuff
+  pod 'Artsy+UIFonts', '3.3.4'
+  pod 'Artsy-UIButtons'
+  pod 'Artsy+UIColors'
+  pod 'Artsy+UILabels'
+  pod 'Extraction'
+
+  pod 'Emission', path: '../emission', :inhibit_warnings => false
 
   # For Stripe integration with Emission. Using a fork for this issue: https://github.com/tipsi/tipsi-stripe/issues/408
   pod 'Pulley', git: 'https://github.com/artsy/Pulley.git', branch: 'master'
+
+  # Facebook
+  pod 'FBSDKCoreKit', '9.3.0'
+  pod 'FBSDKLoginKit', '9.3.0'
+  pod 'FBSDKShareKit', '9.3.0'
+
+  # Google & Firebase
+  pod 'GoogleSignIn', '5.0.2'
+  pod 'Firebase/Auth', '8.1.0'
+
+  # Analytics
+  pod 'Segment-Appboy', '4.2.0'
+  pod 'Segment-Adjust', '3.1.4'
+
+  # Developer Pods
+  pod 'DHCShakeNotifier', '0.2.0'
+  pod 'ORKeyboardReactingApplication', '0.5.3'
+
+  # Swift pods 🎉
+  pod 'Then', '2.3.0'
+  pod 'Interstellar/Core', git: 'https://github.com/artsy/Interstellar.git', branch: 'observable-unsubscribe'
+  pod 'Starscream', '3.0.4'
+  pod 'SwiftyJSON'
+
+  # Used in Live Auctions to hold user-state
+  pod 'JWTDecode'
 
   post_install do |installer|
     react_native_post_install(installer)
     __apply_Xcode_12_5_M1_post_install_workaround(installer)
 
     $RNMBGL.post_install(installer)
+
+
+    # TODO:
+    # * ORStackView: Move Laura's changes into master and update
+    # * Send PRs for the rest
+    %w[
+      Pods/ORStackView/Classes/ios/ORStackView.h
+    ].flat_map { |x| Dir.glob(x) }.each do |header|
+      system("chmod +w #{header}")
+      addition = "#import <UIKit/UIKit.h>\n"
+      contents = File.read(header)
+      next if contents.include?(addition)
+
+      File.open(header, 'w') do |file|
+        file.puts addition
+        file.puts contents
+      end
+    end
   end
 end
