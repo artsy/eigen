@@ -12,7 +12,7 @@ import {
 } from "__generated__/OldMyCollectionArtworkQuery.graphql"
 import { Divider } from "lib/Components/Bidding/Components/Divider"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
-import { navigate, popToRoot } from "lib/navigation/navigate"
+import { goBack, navigate, popToRoot } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { ScreenMargin } from "lib/Scenes/MyCollection/Components/ScreenMargin"
 import { MyCollectionArtworkInsightsFragmentContainer } from "lib/Scenes/MyCollection/Screens/Artwork/Components/ArtworkInsights/MyCollectionArtworkInsights"
@@ -64,6 +64,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
               },
             })
           }}
+          onLeftButtonPress={goBack}
           hideBottomDivider
           renderRightButton={() => (
             <Flex pt="2px">
