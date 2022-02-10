@@ -6,7 +6,7 @@ import { ErrorView } from "../Components/ErrorView"
 import { UploadPhotosForm } from "./UploadPhotosForm"
 import { Photo, PhotosFormModel, photosValidationSchema } from "./validation"
 
-// TODO: uploading multiple photos at a time
+// TODO: consider using formik errors
 //  TODO: manual testing
 //  TODO: tests
 
@@ -56,7 +56,7 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
                 onPress={() => handlePhotosSavePress(values)}
                 testID="Submission_Photos_Button"
               >
-                {!!isAnyPhotoLoading ? "Loading Photos..." : "Save & Continue"}
+                {!!isAnyPhotoLoading ? "Processing Photos..." : "Save & Continue"}
               </CTAButton>
             </>
           )

@@ -20,24 +20,33 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
 
   // add selected photos to gemini and submission
   const addPhotoToSubmission = async (photos: Photo[]) => {
-    for (const photo of photos) {
-      photo.loading = true
-      setFieldValue("photos", [...values.photos, photo])
+    const processedPhotos: Photo[] = []
 
+    // set each to-be-uploaded photo's loading status
+    photos.forEach((p: Photo) => (p.loading = true))
+    setFieldValue("photos", [...values.photos, ...photos])
+
+    for (const photo of photos) {
       try {
+        // upload & size the photo, and add it to processed photos
         const uploadedPhoto = await addPhotoToConsignment(photo, submission.submissionId)
         if (uploadedPhoto?.id) {
           const sizedPhoto = calculatePhotoSize(uploadedPhoto)
-          setFieldValue("photos", [...values.photos, sizedPhoto])
+          processedPhotos.push(sizedPhoto)
         }
       } catch (error) {
+        // set photo's error state and set it to processed photos
         photo.error = true
         photo.errorMsg = "Photo could not be uploaded"
+        processedPhotos.push(photo)
         captureMessage(JSON.stringify(error))
       } finally {
         photo.loading = false
       }
     }
+
+    // let Formik know about processed photos
+    setFieldValue("photos", [...values.photos, ...processedPhotos])
   }
 
   // show Native action sheet and get photos from user's phone
