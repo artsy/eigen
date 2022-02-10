@@ -332,7 +332,6 @@ export const MyProfileEditForm: React.FC = () => {
                 placeholder="You can add a short bio to tell more about yourself and your collection. It can be anything like the artists you collect, the genres you're interested in , etc."
               />
 
-              <Spacer py={2} />
               {!!enableCollectorProfile && (
                 <ProfileVerifications
                   isIDVerified={!!me?.identityVerified}
@@ -341,8 +340,6 @@ export const MyProfileEditForm: React.FC = () => {
                   handleEmailVerification={throttleHandledEmailVerification}
                 />
               )}
-
-              <Spacer py={2} />
 
               <Button flex={1} disabled={!dirty} onPress={handleSubmit} mb={2}>
                 Save
