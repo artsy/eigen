@@ -43,12 +43,16 @@ export const ContactInformation: React.FC<{
     return <ErrorView />
   }
 
+  const userName = me?.name || ""
+  const userEmail = me?.email || ""
+  const userPhone = me?.phoneNumber?.isValid ? me?.phoneNumber?.originalNumber || "" : ""
+
   return (
     <Formik<ContactInformationFormModel>
       initialValues={{
-        userName: me?.name || "",
-        userEmail: me?.email || "",
-        userPhone: me?.phone || "",
+        userName,
+        userEmail,
+        userPhone,
       }}
       onSubmit={handleSubmit}
       validationSchema={contactInformationValidationSchema}
@@ -105,7 +109,10 @@ export const ContactInformationFragmentContainer = createFragmentContainer(Conta
     fragment ContactInformation_me on Me {
       name
       email
-      phone
+      phoneNumber {
+        isValid
+        originalNumber
+      }
     }
   `,
 })
