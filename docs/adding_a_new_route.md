@@ -2,16 +2,16 @@
 
 ### Route in Eigen
 
-In Eigen, as in many native app, we have mainly two types for routes.
+In Eigen, as in many mobile apps, we have mainly two types for routes.
 
 - Global app routes
 - Context specific app routes
 
 ### Global App Routes
 
-Global app routes in Eigen, are routes that accessible everywhere in the app using the `src/lib/navigation/navigate` helper.
+Global app routes in Eigen, are routes that are accessible everywhere in the app using the `src/lib/navigation/navigate` helper.
 
-Before you maing the decision of creating a new global route - Make sure it is really needed. In many occasions, there is no need for it and using an independent Navigation container is all you need.
+Before making the decision of creating a new global route - make sure it is really needed. In many occasions, there is no need for it and using an independent Navigation container is all you need.
 
 Example of situations where **you do need** to add a new route:
 
@@ -59,11 +59,11 @@ Example of situations where **you do need** to add a new route:
 
 ### Context specific app routes
 
-Context specific app routes in Eigen are routes that are part of an independent [NavigationContainer](https://reactnavigation.org/docs/navigation-container/). All routes using defined inside a `NavigationContainer` context will receive a [navigation](https://reactnavigation.org/docs/navigation-prop/) and [route](https://reactnavigation.org/docs/glossary-of-terms/#route-prop) props which allow you to navigate through the different screens in a stack, listen to navigation events and also send params.
+Context specific app routes in Eigen are routes that are part of an independent [NavigationContainer](https://reactnavigation.org/docs/navigation-container/). All routes defined inside a `NavigationContainer` context will receive a [navigation](https://reactnavigation.org/docs/navigation-prop/) and [route](https://reactnavigation.org/docs/glossary-of-terms/#route-prop) props which allow you to navigate through the different screens in a stack, listen to navigation events and also send params.
 
-Example of situations where to use an independent navigation container
+Example of situations where we should use an independent navigation container
 
-- You are adding a new screen within a route that can be only accessed through a link at that route and is only app available and it doesn't make sense to deep link the users into it or navigate through it from somewhere else.
+- The screen you are adding is displaying content that can only be understood within a specific screen context.
 
   Examples:
 
@@ -122,7 +122,16 @@ export const MyScreenNavigationStack = () => {
 }
 ```
 
-All screens inside the stack will now receive the `navigation` and `route` prop. For typescript support, you can define your route props as follows:
+All screens inside the stack will now be able to get the `navigation` and `route` props as follows:
+
+1. **Recommended way:** using `useNavigation` and `useRoute` props.
+
+```typescript
+const navigation = useNavigation<NavigationProp<MyScreenNavigationStack, "MyScreenFirstPage">>()
+const route = useRoute<RouteProp<MyScreenNavigationStack, "MyScreenFirstPage">>()
+```
+
+2. Top level containers/components that are defined in the navigation stack, receive `navigation` and `route` as props. See the example below:
 
 ```typescript
 interface MyScreenFirstPageProps
@@ -139,9 +148,4 @@ const MyScreenFirstPage: React.FC<MyScreenFirstPageProps> = ({navigation, route}
 }
 ```
 
-or you can as well get the same values using `useNavigation` and `useRoute` props.
-
-```typescript
-const navigation = useNavigation<NavigationProp<MyScreenNavigationStack, "MyScreenFirstPage">>()
-const route = useRoute<RouteProp<MyScreenNavigationStack, "MyScreenFirstPage">>()
-```
+or you can as well get the same values
