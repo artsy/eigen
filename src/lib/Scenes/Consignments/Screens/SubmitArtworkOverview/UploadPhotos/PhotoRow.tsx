@@ -35,10 +35,15 @@ export const PhotoRow: React.FC<{
           resizeMode="contain"
           source={{ uri: photo.path }}
           style={{ height: 58, width: 70 }}
-          testID="Submission_image"
+          testID="Submission_Image"
         />
         <Text>{photo.sizeDisplayValue}</Text>
-        <Button variant="text" size="small" onPress={() => handlePhotoDelete(photo)}>
+        <Button
+          variant="text"
+          size="small"
+          onPress={() => handlePhotoDelete(photo)}
+          testID="Submission_Delete_Photo_Button"
+        >
           <Text style={{ textDecorationLine: "underline" }}>Delete</Text>
         </Button>
       </Flex>
@@ -63,7 +68,12 @@ export const PhotoRowPlaceholder = () => (
     >
       <PlaceholderBox width={65} height={58} />
       <PlaceholderText width={60} height={18} />
-      <Button disabled variant="text" size="small">
+      <Button
+        disabled
+        variant="text"
+        size="small"
+        testID="Submission_Placeholder_Delete_Photo_Button"
+      >
         <Text style={{ textDecorationLine: "underline" }}>Delete</Text>
       </Button>
     </Flex>
