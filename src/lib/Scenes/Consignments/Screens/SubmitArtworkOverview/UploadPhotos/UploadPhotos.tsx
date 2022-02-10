@@ -6,10 +6,6 @@ import { ErrorView } from "../Components/ErrorView"
 import { UploadPhotosForm } from "./UploadPhotosForm"
 import { Photo, PhotosFormModel, photosValidationSchema } from "./validation"
 
-// TODO: consider using formik errors
-//  TODO: manual testing
-//  TODO: tests
-
 export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const [photoUploadError, setPhotoUploadError] = useState(false)
@@ -19,6 +15,7 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
   }
 
   const handlePhotosSavePress = (values: PhotosFormModel) => {
+    // set uploaded photos to GStore and move to the next step
     GlobalStore.actions.artworkSubmission.submission.setPhotos({
       photos: [...values.photos],
     })
@@ -54,7 +51,7 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
               <CTAButton
                 disabled={!isValid || isAnyPhotoLoading || isAnyPhotoError}
                 onPress={() => handlePhotosSavePress(values)}
-                testID="Submission_Photos_Button"
+                testID="Submission_Save_Photos_Button"
               >
                 {!!isAnyPhotoLoading ? "Processing Photos..." : "Save & Continue"}
               </CTAButton>

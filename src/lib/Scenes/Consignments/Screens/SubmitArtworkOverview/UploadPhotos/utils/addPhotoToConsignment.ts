@@ -1,11 +1,11 @@
-import { addAssetToConsignment } from "../../../Submission/addAssetToConsignment"
+import { addAssetToConsignment } from "../../../../Submission/addAssetToConsignment"
 import {
   createGeminiAssetWithS3Credentials,
   getConvectionGeminiKey,
   getGeminiCredentialsForEnvironment,
   uploadFileToS3,
-} from "../../../Submission/geminiUploadToS3"
-import { Photo } from "./validation"
+} from "../../../../Submission/geminiUploadToS3"
+import { Photo } from "../validation"
 
 export const addPhotoToConsignment = async (asset: Photo, submissionID: string) => {
   const acl = "private"
