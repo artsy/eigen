@@ -3,10 +3,10 @@ import React from "react"
 import { InfoModal } from "./InfoModal"
 
 describe("InfoModal", () => {
-  it("renders the passed title", () => {
+  it("renders the passed title", async () => {
     const { findByText } = renderWithWrappersTL(
       <InfoModal title="someTitle" visible onDismiss={jest.fn()} />
     )
-    expect(findByText("someTitle")).toBeTruthy()
+    expect(await findByText("someTitle")).toBeTruthy()
   })
 })

@@ -25,6 +25,7 @@ describe("Rarity", () => {
     act(() => fireEvent.press(getByTestId("rarity-select")))
     await flushPromiseQueue()
     act(() => fireEvent.press(getByText("Limited Edition")))
+    await flushPromiseQueue()
 
     expect(findByText("EDITION NUMBER")).toBeTruthy()
   })
