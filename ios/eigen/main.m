@@ -1,9 +1,18 @@
 #import <UIKit/UIKit.h>
+#import <ORKeyboardReactingApplication/ORKeyboardReactingApplication.h>
 
-#import "AppDelegate.h"
-
-int main(int argc, char * argv[]) {
-  @autoreleasepool {
-    return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
-  }
+int main(int argc, char *argv[])
+{
+    @autoreleasepool
+    {
+        NSString *appDelegate = @"JSDecoupledAppDelegate";
+#ifdef DEBUG
+        if (NSClassFromString(@"XCTestCase")) {
+            appDelegate = @"ARTestHelper";
+        }
+#endif
+            return UIApplicationMain(argc, argv, @"ORKeyboardReactingApplication", appDelegate);
+    }
 }
+
+

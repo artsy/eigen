@@ -31,9 +31,7 @@
 		CB61B73027B303710007922D /* ARModalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B52B27B3036F0007922D /* ARModalViewController.m */; };
 		CB61B73127B303710007922D /* ArtsyEcho.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B52D27B3036F0007922D /* ArtsyEcho.m */; };
 		CB61B73227B303710007922D /* ARApplicationShortcutItemDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B52F27B3036F0007922D /* ARApplicationShortcutItemDelegate.m */; };
-		CB61B73327B303710007922D /* ARAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B53027B3036F0007922D /* ARAppDelegate.m */; };
 		CB61B73427B303710007922D /* SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB61B53127B3036F0007922D /* SwiftExtensions.swift */; };
-		CB61B73527B303710007922D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B53727B3036F0007922D /* main.m */; };
 		CB61B73627B303710007922D /* ARAppDelegate+Echo.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B53A27B3036F0007922D /* ARAppDelegate+Echo.m */; };
 		CB61B73727B303710007922D /* ARTArtsyNativeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B53C27B3036F0007922D /* ARTArtsyNativeModule.m */; };
 		CB61B73827B303710007922D /* ARAppDelegate+Emission.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B53E27B3036F0007922D /* ARAppDelegate+Emission.m */; };
@@ -66,7 +64,6 @@
 		CB61B75327B303710007922D /* ARRouter+GraphQL.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B57727B3036F0007922D /* ARRouter+GraphQL.m */; };
 		CB61B75427B303710007922D /* ARReactPackagerHost.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B57827B3036F0007922D /* ARReactPackagerHost.m */; };
 		CB61B75527B303710007922D /* ARSystemTime.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B57B27B3036F0007922D /* ARSystemTime.m */; };
-		CB61B75627B303710007922D /* ARDefaults+SiteFeatures.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B57E27B3036F0007922D /* ARDefaults+SiteFeatures.m */; };
 		CB61B75727B303710007922D /* ARAppConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B58027B3036F0007922D /* ARAppConstants.m */; };
 		CB61B75827B303710007922D /* ARDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B58227B3036F0007922D /* ARDefaults.m */; };
 		CB61B75927B303710007922D /* MapAnnotation_Artsy@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CB61B58527B3036F0007922D /* MapAnnotation_Artsy@2x.png */; };
@@ -191,7 +188,6 @@
 		CB61B7D027B303720007922D /* LiveAuctionStaticDataFetcher+Stubs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB61B63B27B303700007922D /* LiveAuctionStaticDataFetcher+Stubs.swift */; };
 		CB61B7D127B303720007922D /* LiveAuctionsAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CB61B63D27B303700007922D /* LiveAuctionsAssets.xcassets */; };
 		CB61B7D227B303720007922D /* LiveAuctions.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CB61B63E27B303700007922D /* LiveAuctions.storyboard */; };
-		CB61B7D327B303720007922D /* LiveAuctionStateManagerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB61B63F27B303700007922D /* LiveAuctionStateManagerSpec.swift */; };
 		CB61B7D427B303720007922D /* LiveAuctionSaleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB61B64027B303700007922D /* LiveAuctionSaleViewController.swift */; };
 		CB61B7D527B303720007922D /* LiveAuctionStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB61B64127B303700007922D /* LiveAuctionStateManager.swift */; };
 		CB61B7D627B303720007922D /* LiveAuctionBidViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB61B64227B303700007922D /* LiveAuctionBidViewModel.swift */; };
@@ -317,7 +313,8 @@
 		CB61B84E27B303730007922D /* ORStackView+ArtsyViews.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B71C27B303700007922D /* ORStackView+ArtsyViews.m */; };
 		CB61B84F27B303730007922D /* Interstellar+Artsy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB61B71D27B303700007922D /* Interstellar+Artsy.swift */; };
 		CB61B85027B303730007922D /* AFHTTPRequestOperation+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B71F27B303700007922D /* AFHTTPRequestOperation+JSON.m */; };
-		CBEEEFBA279A02B600BA725F /* ARTArtsyNativeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = CBEEEFB9279A02B600BA725F /* ARTArtsyNativeModule.m */; };
+		CB61B85127B45CE00007922D /* LiveAuctionStateManagerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB61B63F27B303700007922D /* LiveAuctionStateManagerSpec.swift */; };
+		CB61B85227B54B330007922D /* ARAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B53027B3036F0007922D /* ARAppDelegate.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -441,10 +438,8 @@
 		CB61B57A27B3036F0007922D /* ArtsyAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArtsyAPI.h; sourceTree = "<group>"; };
 		CB61B57B27B3036F0007922D /* ARSystemTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARSystemTime.m; sourceTree = "<group>"; };
 		CB61B57D27B3036F0007922D /* ARAppConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARAppConstants.h; sourceTree = "<group>"; };
-		CB61B57E27B3036F0007922D /* ARDefaults+SiteFeatures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ARDefaults+SiteFeatures.m"; sourceTree = "<group>"; };
 		CB61B57F27B3036F0007922D /* ARDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARDefaults.h; sourceTree = "<group>"; };
 		CB61B58027B3036F0007922D /* ARAppConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARAppConstants.m; sourceTree = "<group>"; };
-		CB61B58127B3036F0007922D /* ARDefaults+SiteFeatures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ARDefaults+SiteFeatures.h"; sourceTree = "<group>"; };
 		CB61B58227B3036F0007922D /* ARDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARDefaults.m; sourceTree = "<group>"; };
 		CB61B58527B3036F0007922D /* MapAnnotation_Artsy@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "MapAnnotation_Artsy@2x.png"; sourceTree = "<group>"; };
 		CB61B58627B3036F0007922D /* Artsy-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Artsy-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -805,8 +800,6 @@
 		CB61B72227B303700007922D /* ARFollowable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFollowable.h; sourceTree = "<group>"; };
 		CB61B72327B303700007922D /* ARFeedHostItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeedHostItem.h; sourceTree = "<group>"; };
 		CB61B72427B303700007922D /* ARShareableObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARShareableObject.h; sourceTree = "<group>"; };
-		CBEEEFB8279A02B600BA725F /* ARTArtsyNativeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ARTArtsyNativeModule.h; sourceTree = "<group>"; };
-		CBEEEFB9279A02B600BA725F /* ARTArtsyNativeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ARTArtsyNativeModule.m; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE0ED407FA44DD891F5B3246 /* libPods-eigen-eigenTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eigen-eigenTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4EB231E790C61B818E9DBE3 /* libPods-eigen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eigen.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1094,10 +1087,8 @@
 			isa = PBXGroup;
 			children = (
 				CB61B57D27B3036F0007922D /* ARAppConstants.h */,
-				CB61B57E27B3036F0007922D /* ARDefaults+SiteFeatures.m */,
 				CB61B57F27B3036F0007922D /* ARDefaults.h */,
 				CB61B58027B3036F0007922D /* ARAppConstants.m */,
-				CB61B58127B3036F0007922D /* ARDefaults+SiteFeatures.h */,
 				CB61B58227B3036F0007922D /* ARDefaults.m */,
 			);
 			path = Constants;
@@ -1921,8 +1912,6 @@
 		CBEEEFB7279A008800BA725F /* NativeModules */ = {
 			isa = PBXGroup;
 			children = (
-				CBEEEFB8279A02B600BA725F /* ARTArtsyNativeModule.h */,
-				CBEEEFB9279A02B600BA725F /* ARTArtsyNativeModule.m */,
 				CB61B51327B2F4E80007922D /* ARTTestNativeViewManager.h */,
 				CB61B51427B2F4E80007922D /* ARTTestNativeViewManager.m */,
 			);
@@ -2273,6 +2262,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB61B85127B45CE00007922D /* LiveAuctionStateManagerSpec.swift in Sources */,
 				00E356F31AD99517003FC87E /* eigenTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2361,6 +2351,7 @@
 				CB61B7C627B303720007922D /* LiveAuctionEventViewModel.swift in Sources */,
 				CB61B7AD27B303720007922D /* Follow.m in Sources */,
 				CB61B73D27B303710007922D /* MTLModel+Dictionary.m in Sources */,
+				CB61B85227B54B330007922D /* ARAppDelegate.m in Sources */,
 				CB61B74D27B303710007922D /* ArtsyAPI+DeviceTokens.m in Sources */,
 				CB61B7C127B303720007922D /* ARInternalMobileWebViewController.m in Sources */,
 				CB61B80227B303720007922D /* UIApplicationStateEnum.m in Sources */,
@@ -2397,8 +2388,6 @@
 				CB61B75227B303710007922D /* ARRouter.m in Sources */,
 				CB61B84227B303730007922D /* UIViewController+ARUserActivity.m in Sources */,
 				CB61B74C27B303710007922D /* ArtsyAPI+CurrentUserFunctions.m in Sources */,
-				CBEEEFBA279A02B600BA725F /* ARTArtsyNativeModule.m in Sources */,
-				CB61B7D327B303720007922D /* LiveAuctionStateManagerSpec.swift in Sources */,
 				CB61B84727B303730007922D /* NSKeyedUnarchiver+ErrorLogging.m in Sources */,
 				CB61B72827B303710007922D /* ARWebViewCacheHost.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
@@ -2414,7 +2403,6 @@
 				CB61B82827B303720007922D /* SaleAuctionStatus.swift in Sources */,
 				CB61B72F27B303710007922D /* ARAnalyticsConstants.m in Sources */,
 				CB61B84527B303730007922D /* NSArray+Additions.m in Sources */,
-				CB61B75627B303710007922D /* ARDefaults+SiteFeatures.m in Sources */,
 				CB61B7A927B303720007922D /* LiveAuctionLot.m in Sources */,
 				CB61B72A27B303710007922D /* ARScreenPresenterModule.m in Sources */,
 				CB61B84327B303730007922D /* UIImage+ImageFromColor.m in Sources */,
@@ -2458,7 +2446,6 @@
 				CB61B7FA27B303720007922D /* UIViewController+InnermostTopViewController.m in Sources */,
 				CB61B84127B303730007922D /* UILabel+Styling.swift in Sources */,
 				CB61B7B627B303720007922D /* SaleArtwork.m in Sources */,
-				CB61B73327B303710007922D /* ARAppDelegate.m in Sources */,
 				CB61B84627B303730007922D /* UIViewController+Traits.swift in Sources */,
 				CB61B7CA27B303720007922D /* LiveAuctionLotListViewController.swift in Sources */,
 				CB61B7E327B303720007922D /* SimpleProgressView.swift in Sources */,
@@ -2486,7 +2473,6 @@
 				CB61B83627B303720007922D /* ARNotificationView.m in Sources */,
 				CB61B7F527B303720007922D /* ARScrollNavigationChief.m in Sources */,
 				CB61B74027B303710007922D /* LiveAuctionSocketCommunicator.swift in Sources */,
-				CB61B73527B303710007922D /* main.m in Sources */,
 				CB61B51527B2F4E80007922D /* ARTTestNativeViewManager.m in Sources */,
 				CB61B74627B303710007922D /* ARKeychainable.m in Sources */,
 				CB61B7A227B303720007922D /* Partner.m in Sources */,
@@ -2584,6 +2570,18 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 2019.05.24.09;
 				ENABLE_BITCODE = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"FBSDKCOCOAPODS=1",
+					"FB_SONARKIT_ENABLED=1",
+					"$(inherited)",
+					"PB_FIELD_32BIT=1",
+					"PB_NO_PACKED_STRUCTS=1",
+					"PB_ENABLE_MALLOC=1",
+					"APP_SHELL=1",
+				);
 				INFOPLIST_FILE = eigen/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2598,6 +2596,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = eigen;
+				SWIFT_OBJC_BRIDGING_HEADER = "../Artsy/Resources/Artsy-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2612,6 +2611,17 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 2019.05.24.09;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"FBSDKCOCOAPODS=1",
+					"$(inherited)",
+					"PB_FIELD_32BIT=1",
+					"PB_NO_PACKED_STRUCTS=1",
+					"PB_ENABLE_MALLOC=1",
+					"APP_SHELL=1",
+				);
 				INFOPLIST_FILE = eigen/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2626,6 +2636,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = eigen;
+				SWIFT_OBJC_BRIDGING_HEADER = "../Artsy/Resources/Artsy-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
