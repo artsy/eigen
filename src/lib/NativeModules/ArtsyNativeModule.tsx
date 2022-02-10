@@ -10,7 +10,7 @@ import { LegacyNativeModules, usingNewIOSAppShell } from "./LegacyNativeModules"
 
 export const ArtsyNativeModule = {
   launchCount:
-    Platform.OS === "ios" && !usingNewIOSAppShell()
+    Platform.OS === "ios"
       ? LegacyNativeModules.ARNotificationsManager.nativeState.launchCount
       : (NativeModules.ArtsyNativeModule.getConstants().launchCount as number),
   setAppStyling:

@@ -79,7 +79,7 @@ const Main: React.FC<{}> = track()(({}) => {
         if (Platform.OS === "android") {
           ArtsyNativeModule.setAppStyling()
         }
-        if (isLoggedIn) {
+        if (isLoggedIn && Platform.OS === "android") {
           ArtsyNativeModule.setNavigationBarColor("#FFFFFF")
           ArtsyNativeModule.setAppLightContrast(false)
         }

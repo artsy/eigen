@@ -111,7 +111,7 @@ interface LegacyNativeModules {
 }
 const LegacyNativeModulesIOS: LegacyNativeModules = AllNativeModules as any
 
-const PlaceholderModules = {
+const LegacyNativeModulesAndroid = {
   ARTakeCameraPhotoModule: {
     errorCodes: {
       cameraNotAvailable: "cameraNotAvailable",
@@ -161,4 +161,4 @@ const PlaceholderModules = {
 }
 
 export const LegacyNativeModules: LegacyNativeModules =
-  Platform.OS === "ios" && !usingNewIOSAppShell() ? LegacyNativeModulesIOS : PlaceholderModules
+  Platform.OS === "ios" ? LegacyNativeModulesIOS : LegacyNativeModulesAndroid
