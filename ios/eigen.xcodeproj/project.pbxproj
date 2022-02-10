@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* eigenTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* eigenTests.m */; };
-		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1A38C961279B03770031C1A2 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = 1A38C960279B03760031C1A2 /* fonts */; };
@@ -315,6 +314,7 @@
 		CB61B85027B303730007922D /* AFHTTPRequestOperation+JSON.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B71F27B303700007922D /* AFHTTPRequestOperation+JSON.m */; };
 		CB61B85127B45CE00007922D /* LiveAuctionStateManagerSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB61B63F27B303700007922D /* LiveAuctionStateManagerSpec.swift */; };
 		CB61B85227B54B330007922D /* ARAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CB61B53027B3036F0007922D /* ARAppDelegate.m */; };
+		CB61B85427B585F00007922D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB61B85327B585F00007922D /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -333,10 +333,7 @@
 		00E356F21AD99517003FC87E /* eigenTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = eigenTests.m; sourceTree = "<group>"; };
 		02F2C90B06AD6C83572BCE60 /* Pods-eigen.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen.debug.xcconfig"; path = "Target Support Files/Pods-eigen/Pods-eigen.debug.xcconfig"; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* eigen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = eigen.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = eigen/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = eigen/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = eigen/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = eigen/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = eigen/main.m; sourceTree = "<group>"; };
 		13F369B4E56A4D026D55DC53 /* Pods-eigen-eigenTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen-eigenTests.release.xcconfig"; path = "Target Support Files/Pods-eigen-eigenTests/Pods-eigen-eigenTests.release.xcconfig"; sourceTree = "<group>"; };
 		17C42880D2ACAFFAD6731367 /* Pods-eigen-eigenTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-eigen-eigenTests.debug.xcconfig"; path = "Target Support Files/Pods-eigen-eigenTests/Pods-eigen-eigenTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -800,6 +797,7 @@
 		CB61B72227B303700007922D /* ARFollowable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFollowable.h; sourceTree = "<group>"; };
 		CB61B72327B303700007922D /* ARFeedHostItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARFeedHostItem.h; sourceTree = "<group>"; };
 		CB61B72427B303700007922D /* ARShareableObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARShareableObject.h; sourceTree = "<group>"; };
+		CB61B85327B585F00007922D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EE0ED407FA44DD891F5B3246 /* libPods-eigen-eigenTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eigen-eigenTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4EB231E790C61B818E9DBE3 /* libPods-eigen.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-eigen.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -845,11 +843,9 @@
 		13B07FAE1A68108700A75B9A /* eigen */ = {
 			isa = PBXGroup;
 			children = (
+				CB61B85327B585F00007922D /* GoogleService-Info.plist */,
 				CBEEEFB7279A008800BA725F /* NativeModules */,
-				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
-				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
-				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				CB61B51727B303380007922D /* old-native */,
@@ -2027,6 +2023,7 @@
 				CB61B75A27B303710007922D /* ViewInRoom_Wall@2x.png in Resources */,
 				CB61B76E27B303710007922D /* FooterBackground@2x.png in Resources */,
 				CB61B81727B303720007922D /* live_auctions_socket.json in Resources */,
+				CB61B85427B585F00007922D /* GoogleService-Info.plist in Resources */,
 				CB61B81427B303720007922D /* ar_vir_opening_frame.jpg in Resources */,
 				CB61B79727B303720007922D /* full_logo_black_small@2x.png in Resources */,
 				CB61B78127B303710007922D /* Artsy_Logo.png in Resources */,
@@ -2324,7 +2321,6 @@
 				CB61B72727B303710007922D /* ARDispatchManager.m in Sources */,
 				CB61B7A127B303720007922D /* PartnerShow.m in Sources */,
 				CB61B73127B303710007922D /* ArtsyEcho.m in Sources */,
-				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				CB61B75727B303710007922D /* ARAppConstants.m in Sources */,
 				CB61B82D27B303720007922D /* ARCustomEigenLabels.m in Sources */,
 				CB61B7EB27B303720007922D /* LiveAuctionPlaceMaxBidViewController.swift in Sources */,
@@ -2582,7 +2578,7 @@
 					"PB_ENABLE_MALLOC=1",
 					"APP_SHELL=1",
 				);
-				INFOPLIST_FILE = eigen/Info.plist;
+				INFOPLIST_FILE = "../Artsy/App_Resources/Artsy-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2594,7 +2590,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy;
 				PRODUCT_NAME = eigen;
 				SWIFT_OBJC_BRIDGING_HEADER = "../Artsy/Resources/Artsy-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -2622,7 +2618,7 @@
 					"PB_ENABLE_MALLOC=1",
 					"APP_SHELL=1",
 				);
-				INFOPLIST_FILE = eigen/Info.plist;
+				INFOPLIST_FILE = "../Artsy/App_Resources/Artsy-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2634,7 +2630,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = net.artsy.artsy;
 				PRODUCT_NAME = eigen;
 				SWIFT_OBJC_BRIDGING_HEADER = "../Artsy/Resources/Artsy-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
