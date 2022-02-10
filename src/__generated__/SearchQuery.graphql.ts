@@ -1,15 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 4c37bcd310f45ac21e1461d1a58eb832 */
+/* @relayHash 5ecfeb4630ceb211886f7f414402a0a9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SearchQueryVariables = {};
 export type SearchQueryResponse = {
-    readonly system: {
-        readonly " $fragmentRefs": FragmentRefs<"Search_system">;
-    } | null;
+    readonly " $fragmentRefs": FragmentRefs<"Search_system">;
 };
 export type SearchQuery = {
     readonly response: SearchQueryResponse;
@@ -20,20 +18,20 @@ export type SearchQuery = {
 
 /*
 query SearchQuery {
-  system {
-    ...Search_system
-  }
+  ...Search_system
 }
 
-fragment Search_system on System {
-  __typename
-  algolia {
-    appID
-    apiKey
-    indices {
-      name
-      displayName
-      key
+fragment Search_system on Query {
+  system {
+    __typename
+    algolia {
+      appID
+      apiKey
+      indices {
+        name
+        displayName
+        key
+      }
     }
   }
 }
@@ -47,20 +45,9 @@ const node: ConcreteRequest = {
     "name": "SearchQuery",
     "selections": [
       {
-        "alias": null,
         "args": null,
-        "concreteType": "System",
-        "kind": "LinkedField",
-        "name": "system",
-        "plural": false,
-        "selections": [
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "Search_system"
-          }
-        ],
-        "storageKey": null
+        "kind": "FragmentSpread",
+        "name": "Search_system"
       }
     ],
     "type": "Query",
@@ -150,12 +137,12 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "id": "4c37bcd310f45ac21e1461d1a58eb832",
+    "id": "5ecfeb4630ceb211886f7f414402a0a9",
     "metadata": {},
     "name": "SearchQuery",
     "operationKind": "query",
     "text": null
   }
 };
-(node as any).hash = 'ff5e864e3d59274af782f1f94b559b70';
+(node as any).hash = '4a28efe83604aadc1d840f0c811bf2b9';
 export default node;

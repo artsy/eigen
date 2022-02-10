@@ -5,16 +5,18 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type Search_system = {
-    readonly algolia: {
-        readonly appID: string;
-        readonly apiKey: string;
-        readonly indices: ReadonlyArray<{
-            readonly name: string;
-            readonly displayName: string;
-            readonly key: string;
-        }>;
+    readonly system: {
+        readonly __typename: string;
+        readonly algolia: {
+            readonly appID: string;
+            readonly apiKey: string;
+            readonly indices: ReadonlyArray<{
+                readonly name: string;
+                readonly displayName: string;
+                readonly key: string;
+            }>;
+        } | null;
     } | null;
-    readonly __typename: "System";
     readonly " $refType": "Search_system";
 };
 export type Search_system$data = Search_system;
@@ -28,65 +30,82 @@ export type Search_system$key = {
 const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
-  "metadata": null,
+  "metadata": {
+    "refetch": {
+      "connection": null,
+      "fragmentPathInResult": [],
+      "operation": require('./SearchRefetchQuery.graphql')
+    }
+  },
   "name": "Search_system",
   "selections": [
     {
       "alias": null,
       "args": null,
-      "kind": "ScalarField",
-      "name": "__typename",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "Algolia",
+      "concreteType": "System",
       "kind": "LinkedField",
-      "name": "algolia",
+      "name": "system",
       "plural": false,
       "selections": [
         {
           "alias": null,
           "args": null,
           "kind": "ScalarField",
-          "name": "appID",
+          "name": "__typename",
           "storageKey": null
         },
         {
           "alias": null,
           "args": null,
-          "kind": "ScalarField",
-          "name": "apiKey",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "AlgoliaIndex",
+          "concreteType": "Algolia",
           "kind": "LinkedField",
-          "name": "indices",
-          "plural": true,
+          "name": "algolia",
+          "plural": false,
           "selections": [
             {
               "alias": null,
               "args": null,
               "kind": "ScalarField",
-              "name": "name",
+              "name": "appID",
               "storageKey": null
             },
             {
               "alias": null,
               "args": null,
               "kind": "ScalarField",
-              "name": "displayName",
+              "name": "apiKey",
               "storageKey": null
             },
             {
               "alias": null,
               "args": null,
-              "kind": "ScalarField",
-              "name": "key",
+              "concreteType": "AlgoliaIndex",
+              "kind": "LinkedField",
+              "name": "indices",
+              "plural": true,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "name",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "displayName",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "key",
+                  "storageKey": null
+                }
+              ],
               "storageKey": null
             }
           ],
@@ -96,8 +115,8 @@ const node: ReaderFragment = {
       "storageKey": null
     }
   ],
-  "type": "System",
+  "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = '4b9c8adf82c5924e26b3f838a410f4b4';
+(node as any).hash = '9a3b4e2b51c9ac8771ff1ce37e7ddfeb';
 export default node;
