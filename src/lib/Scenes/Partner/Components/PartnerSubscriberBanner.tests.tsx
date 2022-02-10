@@ -29,9 +29,9 @@ describe("CustomPriceInput", () => {
     ).toBeTruthy()
   })
 
-  it(`displays "Are you a representative of Cool Gallery?"`, async () => {
+  it(`displays "Are you a representative of Cool Gallery?"`, () => {
     const { findByText } = renderWithWrappersTL(<TestWrapper partner={{ partner }} />)
-    expect(await findByText("Are you a representative of Cool Gallery?")).toBeTruthy()
+    expect(findByText("Are you a representative of Cool Gallery?")).toBeTruthy()
   })
 
   it(`renders link which navigates to "https://partners.artsy.net/gallery-partnerships"`, () => {
