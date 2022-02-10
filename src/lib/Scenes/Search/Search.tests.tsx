@@ -50,13 +50,6 @@ jest.mock("lodash", () => ({
   },
 }))
 
-jest.mock("lib/relay/createEnvironment", () => ({
-  defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
-  reset(this: { defaultEnvironment: any }) {
-    this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
-  },
-}))
-
 describe("Search Screen", () => {
   let mockEnvironment: ReturnType<typeof createMockEnvironment>
 
