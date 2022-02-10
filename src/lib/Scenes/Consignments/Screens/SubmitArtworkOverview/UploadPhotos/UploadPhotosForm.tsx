@@ -87,7 +87,13 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
         <Text variant="md" color="black60" marginBottom={3}>
           Total Maximum Size: 30MB
         </Text>
-        <Button onPress={handleAddPhotoPress} variant="outline" size="large" block>
+        <Button
+          onPress={handleAddPhotoPress}
+          variant="outline"
+          size="large"
+          block
+          testID="Submission_Add_Photos_Button"
+        >
           Add Photo
         </Button>
         <Spacer mt={1} />
