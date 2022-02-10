@@ -35,7 +35,11 @@
 #import <React/RCTDevSettings.h>
 #import <objc/runtime.h>
 #import "ARAdminNetworkModel.h"
+#ifdef APP_SHELL
+#import "eigen-Swift.h"
+#else
 #import "Artsy-Swift.h"
+#endif
 
 @import Darwin.POSIX.sys.utsname;
 

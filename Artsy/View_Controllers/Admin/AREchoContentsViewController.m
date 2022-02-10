@@ -1,7 +1,11 @@
 #import "AREchoContentsViewController.h"
 
 #import "ArtsyEcho.h"
+#ifdef APP_SHELL
+#import "eigen-Swift.h"
+#else
 #import "Artsy-Swift.h"
+#endif
 #import "ARAppDelegate+Echo.h"
 
 

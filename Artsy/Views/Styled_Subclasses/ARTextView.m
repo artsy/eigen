@@ -2,7 +2,11 @@
 #import "ARTextView.h"
 
 #import "ARDispatchManager.h"
+#ifdef APP_SHELL
+#import "eigen-Swift.h"
+#else
 #import "Artsy-Swift.h"
+#endif
 
 #import <MMMarkdown/MMMarkdown.h>
 

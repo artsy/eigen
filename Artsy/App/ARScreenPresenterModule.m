@@ -5,7 +5,13 @@
 #import "AROptions.h"
 #import "ARSerifNavigationViewController.h"
 #import "ARInternalMobileWebViewController.h"
+
+#ifdef APP_SHELL
+#import "eigen-Swift.h"
+#else
 #import "Artsy-Swift.h"
+#endif
+
 #import "AREigenMapContainerViewController.h"
 #import "ARAuctionWebViewController.h"
 #import "ArtsyEcho.h"
