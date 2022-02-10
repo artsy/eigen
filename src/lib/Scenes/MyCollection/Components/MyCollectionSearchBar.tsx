@@ -48,7 +48,6 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
             enableClearButton
             ref={inputRef}
             value={value}
-            selectTextOnFocus
             returnKeyType="done"
           />
         </Flex>
