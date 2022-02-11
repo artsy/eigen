@@ -5,78 +5,91 @@ import React from "react"
 import { Image } from "react-native"
 import { Photo } from "./validation"
 
-export const PhotoRow: React.FC<{
+interface Props {
   photo: Photo
-  handlePhotoDelete: (arg: Photo) => void
-}> = ({ photo, handlePhotoDelete }) => {
+  onPhotoDelete: (arg: Photo) => void
+}
+
+export const PhotoRow: React.FC<Props> = ({ photo, onPhotoDelete }) => {
   if (photo.loading) {
     return (
-      <ProvidePlaceholderContext>
+      <PhotoRowWrapper>
         <PhotoRowPlaceholder />
-      </ProvidePlaceholderContext>
+      </PhotoRowWrapper>
     )
   }
 
   return (
-    <>
-      <Flex
-        p={1}
-        flexDirection="row"
-        justifyContent="space-between"
-        alignItems="center"
-        style={{
-          borderColor: photo.error ? "#C82400" : "lightgray",
-          borderWidth: 1,
-          borderRadius: 4,
-          height: 68,
-        }}
-      >
-        <Image
-          resizeMode="contain"
-          source={{ uri: photo.path }}
-          style={{ height: 58, width: 70 }}
-          testID="Submission_Image"
-        />
-        <Text>{photo.sizeDisplayValue}</Text>
-        <Button
-          variant="text"
-          size="small"
-          onPress={() => handlePhotoDelete(photo)}
-          testID="Submission_Delete_Photo_Button"
-        >
-          <Text style={{ textDecorationLine: "underline" }}>Delete</Text>
-        </Button>
-      </Flex>
-      {photo.errorMsg && (
-        <Text variant="xs" color="red100">
-          {photo.errorMsg}
-        </Text>
-      )}
-      <Spacer mt={2} />
-    </>
+    <PhotoRowWrapper error={photo.error} errorMsg={photo.errorMessage}>
+      <PhotoRowContent photo={photo} onPhotoDelete={onPhotoDelete} />
+    </PhotoRowWrapper>
   )
 }
 
-export const PhotoRowPlaceholder = () => (
+const PhotoRowContent: React.FC<Props> = ({ photo, onPhotoDelete }) => (
+  <Flex flexDirection="row">
+    <Flex width="55%" justifyContent="center">
+      <Image
+        resizeMode="contain"
+        source={{ uri: photo.path }}
+        style={{ height: 58, width: 58 }}
+        testID="Submission_Image"
+      />
+    </Flex>
+    <Flex flexDirection="row" justifyContent="space-between" alignItems="center" width="45%">
+      <Text>{photo.sizeDisplayValue}</Text>
+      <Button
+        ml={1}
+        variant="text"
+        size="small"
+        onPress={() => onPhotoDelete(photo)}
+        testID="Submission_Delete_Photo_Button"
+      >
+        <Text style={{ textDecorationLine: "underline" }}>Delete</Text>
+      </Button>
+    </Flex>
+  </Flex>
+)
+
+const PhotoRowPlaceholder = () => (
+  <ProvidePlaceholderContext>
+    <Flex flexDirection="row">
+      <Flex width="55%" justifyContent="center" pt={1} pb={1}>
+        <PlaceholderBox width={58} height={58} />
+      </Flex>
+    </Flex>
+    <Flex flexDirection="row" justifyContent="space-between" alignItems="center" width="45%">
+      <PlaceholderText width={55} height={18} />
+      <PlaceholderText width={55} height={18} />
+    </Flex>
+  </ProvidePlaceholderContext>
+)
+
+const PhotoRowWrapper: React.FC<{ error?: boolean; errorMsg?: string }> = ({
+  error,
+  errorMsg,
+  children,
+}) => (
   <>
     <Flex
       p={1}
       flexDirection="row"
       justifyContent="space-between"
       alignItems="center"
-      style={{ borderColor: "lightgray", borderWidth: 1, borderRadius: 4, height: 68 }}
+      style={{
+        borderColor: error ? "#C82400" : "lightgray",
+        borderWidth: 1,
+        borderRadius: 4,
+        height: 68,
+      }}
     >
-      <PlaceholderBox width={65} height={58} />
-      <PlaceholderText width={60} height={18} />
-      <Button
-        disabled
-        variant="text"
-        size="small"
-        testID="Submission_Placeholder_Delete_Photo_Button"
-      >
-        <Text style={{ textDecorationLine: "underline" }}>Delete</Text>
-      </Button>
+      {children}
     </Flex>
+    {errorMsg && (
+      <Text variant="xs" color="red100">
+        {errorMsg}
+      </Text>
+    )}
     <Spacer mt={2} />
   </>
 )

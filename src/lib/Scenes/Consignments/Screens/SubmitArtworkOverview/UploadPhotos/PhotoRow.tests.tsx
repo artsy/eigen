@@ -17,7 +17,7 @@ describe("PhotoRow", () => {
   describe("when passed an uploaded photo", () => {
     const TestRenderer = () => (
       <RelayEnvironmentProvider environment={mockEnvironment}>
-        <PhotoRow photo={mockUploadedPhoto} handlePhotoDelete={mockHandlePhotoDelete} />
+        <PhotoRow photo={mockUploadedPhoto} onPhotoDelete={mockHandlePhotoDelete} />
       </RelayEnvironmentProvider>
     )
 
@@ -52,7 +52,7 @@ describe("PhotoRow", () => {
   describe("when passed a loading photo", () => {
     const TestRenderer = () => (
       <RelayEnvironmentProvider environment={mockEnvironment}>
-        <PhotoRow photo={mockLoadingPhoto} handlePhotoDelete={mockHandlePhotoDelete} />
+        <PhotoRow photo={mockLoadingPhoto} onPhotoDelete={mockHandlePhotoDelete} />
       </RelayEnvironmentProvider>
     )
 
@@ -67,7 +67,7 @@ describe("PhotoRow", () => {
   describe("when passed a photo with error", () => {
     const TestRenderer = () => (
       <RelayEnvironmentProvider environment={mockEnvironment}>
-        <PhotoRow photo={mockPhotoWithError} handlePhotoDelete={mockHandlePhotoDelete} />
+        <PhotoRow photo={mockPhotoWithError} onPhotoDelete={mockHandlePhotoDelete} />
       </RelayEnvironmentProvider>
     )
 
@@ -108,6 +108,6 @@ const mockPhotoWithError: Photo = {
   path: "myPhotos/photo.jpeg",
   loading: false,
   error: true,
-  errorMsg: "some error",
+  errorMessage: "some error",
   sizeDisplayValue: "3.3 MB",
 }

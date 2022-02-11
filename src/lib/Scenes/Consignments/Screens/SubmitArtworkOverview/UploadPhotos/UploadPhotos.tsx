@@ -1,18 +1,13 @@
 import { Formik } from "formik"
 import { GlobalStore } from "lib/store/GlobalStore"
 import { BulletedItem, CTAButton, Flex, Spacer } from "palette"
-import React, { useState } from "react"
-import { ErrorView } from "../Components/ErrorView"
+import React from "react"
 import { UploadPhotosForm } from "./UploadPhotosForm"
+import { isSizeLimitExceeded } from "./utils/calculatePhotoSize"
 import { Photo, PhotosFormModel, photosValidationSchema } from "./validation"
 
 export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
-  const [photoUploadError, setPhotoUploadError] = useState(false)
-
-  if (photoUploadError) {
-    return <ErrorView />
-  }
 
   const handlePhotosSavePress = (values: PhotosFormModel) => {
     // set uploaded photos to GStore and move to the next step
@@ -42,14 +37,13 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
       >
         {({ values, isValid }) => {
           const isAnyPhotoLoading = values.photos.some((photo: Photo) => photo.loading)
-          const isAnyPhotoError = values.photos.some((photo: Photo) => photo.error)
 
           return (
             <>
-              <UploadPhotosForm setPhotoUploadError={setPhotoUploadError} />
+              <UploadPhotosForm />
               <Spacer mt={2} />
               <CTAButton
-                disabled={!isValid || isAnyPhotoLoading || isAnyPhotoError}
+                disabled={!isValid || isAnyPhotoLoading || isSizeLimitExceeded(values.photos)}
                 onPress={() => handlePhotosSavePress(values)}
                 testID="Submission_Save_Photos_Button"
               >

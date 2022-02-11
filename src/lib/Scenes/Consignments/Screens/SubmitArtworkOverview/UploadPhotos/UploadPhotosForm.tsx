@@ -8,12 +8,10 @@ import React from "react"
 import { removeAssetFromSubmission } from "../Mutations/removeAssetFromConsignmentSubmissionMutation"
 import { PhotoRow } from "./PhotoRow"
 import { addPhotoToConsignment } from "./utils/addPhotoToConsignment"
-import { calculatePhotoSize } from "./utils/calculatePhotoSize"
+import { calculateSinglePhotoSize } from "./utils/calculatePhotoSize"
 import { Photo, PhotosFormModel } from "./validation"
 
-export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) => void }> = ({
-  setPhotoUploadError,
-}) => {
+export const UploadPhotosForm = () => {
   const { values, setFieldValue } = useFormikContext<PhotosFormModel>()
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const { showActionSheetWithOptions } = useActionSheet()
@@ -31,13 +29,13 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
         // upload & size the photo, and add it to processed photos
         const uploadedPhoto = await addPhotoToConsignment(photo, submission.submissionId)
         if (uploadedPhoto?.id) {
-          const sizedPhoto = calculatePhotoSize(uploadedPhoto)
+          const sizedPhoto = calculateSinglePhotoSize(uploadedPhoto)
           processedPhotos.push(sizedPhoto)
         }
       } catch (error) {
         // set photo's error state and set it to processed photos
         photo.error = true
-        photo.errorMsg = "Photo could not be uploaded"
+        photo.errorMessage = "Photo could not be uploaded"
         processedPhotos.push(photo)
         captureMessage(JSON.stringify(error))
       } finally {
@@ -51,14 +49,9 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
 
   // show Native action sheet and get photos from user's phone
   const handleAddPhotoPress = async () => {
-    try {
-      const photos = await showPhotoActionSheet(showActionSheetWithOptions, true)
-      if (photos?.length && submission?.submissionId) {
-        addPhotoToSubmission(photos)
-      }
-    } catch (error) {
-      captureMessage(JSON.stringify(error))
-      setPhotoUploadError(true)
+    const photos = await showPhotoActionSheet(showActionSheetWithOptions, true)
+    if (photos?.length && submission?.submissionId) {
+      addPhotoToSubmission(photos)
     }
   }
 
@@ -67,11 +60,11 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
     try {
       await removeAssetFromSubmission({ assetID: photo.id })
       const filteredPhotos = values.photos.filter((p: Photo) => p.id !== photo.id)
-
       setFieldValue("photos", filteredPhotos)
     } catch (error) {
+      photo.error = true
+      photo.errorMessage = "Photo could not be deleted"
       captureMessage(JSON.stringify(error))
-      setPhotoUploadError(true)
     }
   }
 
@@ -100,7 +93,7 @@ export const UploadPhotosForm: React.FC<{ setPhotoUploadError: (arg: boolean) =>
       </Flex>
 
       {values.photos.map((photo: Photo, idx: number) => (
-        <PhotoRow key={idx} photo={photo} handlePhotoDelete={handlePhotoDelete} />
+        <PhotoRow key={idx} photo={photo} onPhotoDelete={handlePhotoDelete} />
       ))}
     </>
   )

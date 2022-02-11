@@ -30,23 +30,19 @@ describe("UploadPhotosForm", () => {
   afterEach(() => jest.clearAllMocks())
 
   it("renders correct explanation messages", () => {
-    const { getByText } = renderWithWrappersTL(<UploadPhotosForm setPhotoUploadError={jest.fn()} />)
+    const { getByText } = renderWithWrappersTL(<UploadPhotosForm />)
     expect(getByText("Add Files Here")).toBeTruthy()
     expect(getByText("Files Supported: JPG, PNG")).toBeTruthy()
     expect(getByText("Total Maximum Size: 30MB")).toBeTruthy()
   })
 
   it("renders Add Photos button", () => {
-    const { getByTestId } = renderWithWrappersTL(
-      <UploadPhotosForm setPhotoUploadError={jest.fn()} />
-    )
+    const { getByTestId } = renderWithWrappersTL(<UploadPhotosForm />)
     expect(getByTestId("Submission_Add_Photos_Button")).toBeTruthy()
   })
 
   it("when Add Photos pressed, opens up native action sheet for user to select photos", async () => {
-    const { getByTestId } = renderWithWrappersTL(
-      <UploadPhotosForm setPhotoUploadError={jest.fn()} />
-    )
+    const { getByTestId } = renderWithWrappersTL(<UploadPhotosForm />)
     const AddPhotoButton = getByTestId("Submission_Add_Photos_Button")
     fireEvent.press(AddPhotoButton)
     expect(mockShowActionSheetWithOptionsMock).toHaveBeenCalled()

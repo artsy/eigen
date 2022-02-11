@@ -16,7 +16,7 @@ export interface Photo {
   imageVersions?: string[]
   loading?: boolean
   error?: boolean
-  errorMsg?: string
+  errorMessage?: string
   size?: number
   sizeDisplayValue?: string
 }
@@ -41,7 +41,7 @@ export const photosValidationSchema = Yup.object().shape({
         imageVersions: Yup.string(),
         loading: Yup.boolean(),
         error: Yup.boolean(),
-        errorMsg: Yup.string(),
+        errorMessage: Yup.string(),
         size: Yup.number(),
         sizeDisplayValue: Yup.string(),
       })
