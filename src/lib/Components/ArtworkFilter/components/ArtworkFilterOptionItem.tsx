@@ -50,8 +50,12 @@ export const ArtworkFilterOptionItem: React.FC<ArtworkFilterOptionItemProps> = (
           </Text>
         </Flex>
 
-        <Flex flex={1} flexDirection="row" alignItems="center" justifyContent="flex-end">
-          <ArrowRightIcon fill="black30" ml={1} />
+        <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
+          {item.RightAccessoryItem ? (
+            item.RightAccessoryItem(props)
+          ) : (
+            <ArrowRightIcon fill="black30" ml={1} />
+          )}
         </Flex>
       </Flex>
     </TouchableRow>

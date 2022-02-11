@@ -103,7 +103,7 @@ export const useLocalArtworkFilter = (artworks: any[]) => {
         allowOnlySubmittedArtworks && {
           displayText: "Show Only Submitted Artworks",
           filterType: "showOnlySubmittedArtworks",
-          ScreenComponent: "FilterOptionsScreen", // so that tapping on it does not navigate to another screen
+          ScreenComponent: "FilterOptionsScreen", // using FilterOptionsScreen so users remain on FilterOptionsScreen if they tap on it
           RightAccessoryItem: ShowOnlySubmittedArtworksRightAccessoryItem,
           // tslint:disable-next-line: no-shadowed-variable
           localSortAndFilter: (artworks, showOnlySubmittedArtworks: boolean) => {
