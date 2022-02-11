@@ -5,7 +5,7 @@ export const transformBytesToSize = (bytes: number): string => {
     return "n/a"
   }
 
-  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1000)).toString(), 10)
+  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)).toString(), 10)
 
   if (i === 0) {
     return `${bytes} ${sizes[i]})`

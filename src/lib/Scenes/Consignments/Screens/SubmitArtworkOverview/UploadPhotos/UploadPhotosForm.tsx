@@ -25,6 +25,7 @@ export const UploadPhotosForm = () => {
     setFieldValue("photos", [...values.photos, ...photos])
 
     for (const photo of photos) {
+      console.log({ photo })
       try {
         // upload & size the photo, and add it to processed photos
         const uploadedPhoto = await addPhotoToConsignment(photo, submission.submissionId)

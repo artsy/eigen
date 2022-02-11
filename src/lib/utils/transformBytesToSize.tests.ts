@@ -7,7 +7,7 @@ describe("transformBytesToSize", () => {
   })
 
   it("correctly transforms bytes into MB", () => {
-    const result = transformBytesToSize(1000000)
-    expect(result).toBe("1.0 MB")
+    const result = transformBytesToSize(3425899)
+    expect(result).toBe("3.3 MB")
   })
 })
