@@ -1,50 +1,44 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash f03bf20d2e7de4be252bc3207298333a */
+/* @relayHash f6b93dbf81b98fb17fb31ec6b680e5c9 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyProfileEditFormModalTestsQueryVariables = {};
-export type MyProfileEditFormModalTestsQueryResponse = {
+export type MyProfileHeaderMyCollectionAndSavedWorksTestsQueryVariables = {};
+export type MyProfileHeaderMyCollectionAndSavedWorksTestsQueryResponse = {
     readonly me: {
-        readonly " $fragmentRefs": FragmentRefs<"MyProfileEditFormModal_me">;
+        readonly " $fragmentRefs": FragmentRefs<"MyProfileHeaderMyCollectionAndSavedWorks_me">;
     } | null;
 };
-export type MyProfileEditFormModalTestsQuery = {
-    readonly response: MyProfileEditFormModalTestsQueryResponse;
-    readonly variables: MyProfileEditFormModalTestsQueryVariables;
+export type MyProfileHeaderMyCollectionAndSavedWorksTestsQuery = {
+    readonly response: MyProfileHeaderMyCollectionAndSavedWorksTestsQueryResponse;
+    readonly variables: MyProfileHeaderMyCollectionAndSavedWorksTestsQueryVariables;
 };
 
 
 
 /*
-query MyProfileEditFormModalTestsQuery {
-  me {
-    ...MyProfileEditFormModal_me_2DDXa1
+query MyProfileHeaderMyCollectionAndSavedWorksTestsQuery {
+  me @optionalField {
+    ...MyProfileHeaderMyCollectionAndSavedWorks_me
     id
   }
 }
 
-fragment MyProfileEditFormModal_me_2DDXa1 on Me {
+fragment MyProfileHeaderMyCollectionAndSavedWorks_me on Me {
   name
-  profession
-  otherRelevantPositions
   bio
   location {
     display
-    city
-    state
-    country
     id
   }
+  otherRelevantPositions
+  profession
   icon {
     url(version: "thumbnail")
   }
-  email
-  emailConfirmed
-  identityVerified
-  canRequestEmailConfirmation
+  createdAt
 }
 */
 
@@ -66,12 +60,6 @@ v2 = {
   "enumValues": null,
   "nullable": false,
   "plural": false,
-  "type": "Boolean"
-},
-v3 = {
-  "enumValues": null,
-  "nullable": false,
-  "plural": false,
   "type": "ID"
 };
 return {
@@ -79,7 +67,7 @@ return {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "MyProfileEditFormModalTestsQuery",
+    "name": "MyProfileHeaderMyCollectionAndSavedWorksTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -90,15 +78,9 @@ return {
         "plural": false,
         "selections": [
           {
-            "args": [
-              {
-                "kind": "Literal",
-                "name": "enableCollectorProfile",
-                "value": true
-              }
-            ],
+            "args": null,
             "kind": "FragmentSpread",
-            "name": "MyProfileEditFormModal_me"
+            "name": "MyProfileHeaderMyCollectionAndSavedWorks_me"
           }
         ],
         "storageKey": null
@@ -111,7 +93,7 @@ return {
   "operation": {
     "argumentDefinitions": [],
     "kind": "Operation",
-    "name": "MyProfileEditFormModalTestsQuery",
+    "name": "MyProfileHeaderMyCollectionAndSavedWorksTestsQuery",
     "selections": [
       {
         "alias": null,
@@ -126,20 +108,6 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "name",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "profession",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "otherRelevantPositions",
             "storageKey": null
           },
           {
@@ -164,29 +132,22 @@ return {
                 "name": "display",
                 "storageKey": null
               },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "city",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "state",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "country",
-                "storageKey": null
-              },
               (v0/*: any*/)
             ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "otherRelevantPositions",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "profession",
             "storageKey": null
           },
           {
@@ -217,28 +178,7 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "email",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "emailConfirmed",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "identityVerified",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "canRequestEmailConfirmation",
+            "name": "createdAt",
             "storageKey": null
           },
           (v0/*: any*/)
@@ -248,7 +188,7 @@ return {
     ]
   },
   "params": {
-    "id": "f03bf20d2e7de4be252bc3207298333a",
+    "id": "f6b93dbf81b98fb17fb31ec6b680e5c9",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -258,9 +198,7 @@ return {
           "type": "Me"
         },
         "me.bio": (v1/*: any*/),
-        "me.canRequestEmailConfirmation": (v2/*: any*/),
-        "me.email": (v1/*: any*/),
-        "me.emailConfirmed": (v2/*: any*/),
+        "me.createdAt": (v1/*: any*/),
         "me.icon": {
           "enumValues": null,
           "nullable": true,
@@ -268,34 +206,25 @@ return {
           "type": "Image"
         },
         "me.icon.url": (v1/*: any*/),
-        "me.id": (v3/*: any*/),
-        "me.identityVerified": {
-          "enumValues": null,
-          "nullable": true,
-          "plural": false,
-          "type": "Boolean"
-        },
+        "me.id": (v2/*: any*/),
         "me.location": {
           "enumValues": null,
           "nullable": true,
           "plural": false,
           "type": "MyLocation"
         },
-        "me.location.city": (v1/*: any*/),
-        "me.location.country": (v1/*: any*/),
         "me.location.display": (v1/*: any*/),
-        "me.location.id": (v3/*: any*/),
-        "me.location.state": (v1/*: any*/),
+        "me.location.id": (v2/*: any*/),
         "me.name": (v1/*: any*/),
         "me.otherRelevantPositions": (v1/*: any*/),
         "me.profession": (v1/*: any*/)
       }
     },
-    "name": "MyProfileEditFormModalTestsQuery",
+    "name": "MyProfileHeaderMyCollectionAndSavedWorksTestsQuery",
     "operationKind": "query",
     "text": null
   }
 };
 })();
-(node as any).hash = 'ce1694871225ea5f97e8b85b526b68bf';
+(node as any).hash = 'ace0b4fafc4d6004bc50de8be5c0d51c';
 export default node;

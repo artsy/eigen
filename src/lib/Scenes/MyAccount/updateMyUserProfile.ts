@@ -16,6 +16,8 @@ export const updateMyUserProfile = async (input: UpdateMyProfileInput = {}) => {
               email
               name
               phone
+              profession
+              otherRelevantPositions
               bio
               icon {
                 internalID

@@ -1,4 +1,4 @@
-import { MyProfileEditFormModal_me } from "__generated__/MyProfileEditFormModal_me.graphql"
+import { MyProfileEditForm_me } from "__generated__/MyProfileEditForm_me.graphql"
 import { LocationResult } from "lib/Scenes/Consignments"
 import {
   getLocationDetails,
@@ -117,5 +117,5 @@ export const DetailedLocationAutocomplete: React.FC<DetailedLocationAutocomplete
   )
 }
 
-export const buildLocationDisplay = (location: MyProfileEditFormModal_me["location"]): string =>
+export const buildLocationDisplay = (location: MyProfileEditForm_me["location"]): string =>
   [location?.city, location?.state, location?.country].filter((x) => x).join(", ")

@@ -1,13 +1,13 @@
 import { OwnerType } from "@artsy/cohesion"
-import { MyCollectionAndSavedWorks_me } from "__generated__/MyCollectionAndSavedWorks_me.graphql"
-import { MyCollectionAndSavedWorksQuery } from "__generated__/MyCollectionAndSavedWorksQuery.graphql"
+import { useNavigation } from "@react-navigation/native"
+import { MyProfileHeaderMyCollectionAndSavedWorks_me } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorks_me.graphql"
+import { MyProfileHeaderMyCollectionAndSavedWorksQuery } from "__generated__/MyProfileHeaderMyCollectionAndSavedWorksQuery.graphql"
 import { Image } from "lib/Components/Bidding/Elements/Image"
 import { FancyModalHeader } from "lib/Components/FancyModal/FancyModalHeader"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { navigate } from "lib/navigation/navigate"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { useFeatureFlag } from "lib/store/GlobalStore"
-import { LocalImage, retrieveLocalImages, storeLocalImages } from "lib/utils/LocalImageStore"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
 import { ProvideScreenTrackingWithCohesionSchema } from "lib/utils/track"
 import { screen } from "lib/utils/track/helpers"
@@ -24,12 +24,12 @@ import {
   Text,
   useColor,
 } from "palette"
-import React, { useEffect, useState } from "react"
-import { createRefetchContainer, QueryRenderer, RelayRefetchProp } from "react-relay"
+import React, { useContext } from "react"
+import { createRefetchContainer, QueryRenderer } from "react-relay"
 import { graphql } from "relay-runtime"
 import { FavoriteArtworksQueryRenderer } from "../Favorites/FavoriteArtworks"
 import { MyCollectionPlaceholder, MyCollectionQueryRenderer } from "../MyCollection/MyCollection"
-import { MyProfileEditFormModal } from "./MyProfileEditFormModal"
+import { MyProfileContext } from "./MyProfileProvider"
 import { normalizeMyProfileBio } from "./utils"
 
 export enum Tab {
@@ -37,10 +37,9 @@ export enum Tab {
   savedWorks = "Saved Works",
 }
 
-export const MyCollectionAndSavedWorks: React.FC<{
-  me?: MyCollectionAndSavedWorks_me
-  relay: RelayRefetchProp
-}> = ({ me, relay }) => {
+export const MyProfileHeaderMyCollectionAndSavedWorks: React.FC<{
+  me: MyProfileHeaderMyCollectionAndSavedWorks_me
+}> = ({ me }) => {
   return (
     <StickyTabPage
       disableBackButtonUpdate
@@ -56,59 +55,27 @@ export const MyCollectionAndSavedWorks: React.FC<{
           initial: false,
         },
       ]}
-      staticHeaderContent={<MyProfileHeader me={me} relay={relay} />}
+      staticHeaderContent={<MyProfileHeader me={me} />}
     />
   )
 }
 
 export const LOCAL_PROFILE_ICON_PATH_KEY = "LOCAL_PROFILE_ICON_PATH_KEY"
 
-export const MyProfileHeader: React.FC<{
-  me?: MyCollectionAndSavedWorks_me
-  relay: RelayRefetchProp
-}> = ({ me, relay }) => {
+export const MyProfileHeader: React.FC<{ me: MyProfileHeaderMyCollectionAndSavedWorks_me }> = ({
+  me,
+}) => {
   const color = useColor()
-
-  const [showModal, setShowModal] = useState(false)
-  const [localImage, setLocalImage] = useState<LocalImage | null>(null)
-
-  const setProfileIconHandler = (path: string) => {
-    const profileIcon: LocalImage = {
-      path,
-      width: 100, // don't care about aspect ratio for profile images
-      height: 100,
-    }
-    setLocalImage(profileIcon)
-    storeLocalImages([profileIcon], LOCAL_PROFILE_ICON_PATH_KEY)
-  }
-
-  useEffect(() => {
-    retrieveLocalImages(LOCAL_PROFILE_ICON_PATH_KEY).then((images) => {
-      if (images && images.length > 0) {
-        setLocalImage(images[0])
-      }
-    })
-  }, [])
-
-  const userProfileImagePath = localImage?.path || me?.icon?.url
+  const navigation = useNavigation()
 
   const showCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
 
+  const { localImage } = useContext(MyProfileContext)
+
+  const userProfileImagePath = localImage || me?.icon?.url
+
   return (
     <>
-      {!!me && (
-        <MyProfileEditFormModal
-          me={me}
-          visible={showModal}
-          onDismiss={() => setShowModal(false)}
-          setProfileIconLocally={setProfileIconHandler}
-          localImage={localImage}
-          refetchProfileIdentification={() => {
-            relay.refetch({}, null, null, { force: true })
-          }}
-          relay={relay}
-        />
-      )}
       <FancyModalHeader
         rightButtonText="Settings"
         hideBottomDivider
@@ -186,7 +153,7 @@ export const MyProfileHeader: React.FC<{
           size="small"
           flex={1}
           onPress={() => {
-            setShowModal(true)
+            navigation.navigate("MyProfileEditForm")
           }}
         >
           Edit Profile
@@ -196,12 +163,11 @@ export const MyProfileHeader: React.FC<{
   )
 }
 
-export const MyCollectionAndSavedWorksFragmentContainer = createRefetchContainer(
-  MyCollectionAndSavedWorks,
+export const MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer = createRefetchContainer(
+  MyProfileHeaderMyCollectionAndSavedWorks,
   {
     me: graphql`
-      fragment MyCollectionAndSavedWorks_me on Me
-      @argumentDefinitions(enableCollectorProfile: { type: "Boolean", defaultValue: false }) {
+      fragment MyProfileHeaderMyCollectionAndSavedWorks_me on Me {
         name
         bio
         location {
@@ -213,44 +179,41 @@ export const MyCollectionAndSavedWorksFragmentContainer = createRefetchContainer
           url(version: "thumbnail")
         }
         createdAt
-        ...MyProfileEditFormModal_me @arguments(enableCollectorProfile: $enableCollectorProfile)
       }
     `,
   },
   graphql`
-    query MyCollectionAndSavedWorksRefetchQuery($enableCollectorProfile: Boolean!) {
+    query MyProfileHeaderMyCollectionAndSavedWorksRefetchQuery {
       me {
-        ...MyProfileEditFormModal_me @arguments(enableCollectorProfile: $enableCollectorProfile)
+        ...MyProfileHeaderMyCollectionAndSavedWorks_me
       }
     }
   `
 )
 
-export const MyCollectionAndSavedWorksScreenQuery = graphql`
-  query MyCollectionAndSavedWorksQuery($enableCollectorProfile: Boolean!) {
+export const MyProfileHeaderMyCollectionAndSavedWorksScreenQuery = graphql`
+  query MyProfileHeaderMyCollectionAndSavedWorksQuery {
     me @optionalField {
-      ...MyCollectionAndSavedWorks_me @arguments(enableCollectorProfile: $enableCollectorProfile)
+      ...MyProfileHeaderMyCollectionAndSavedWorks_me
     }
   }
 `
 
-export const MyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => {
+export const MyProfileHeaderMyCollectionAndSavedWorksQueryRenderer: React.FC<{}> = ({}) => {
   const enableCollectorProfile = useFeatureFlag("AREnableCollectorProfile")
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
       info={screen({ context_screen_owner_type: OwnerType.profile })}
     >
-      <QueryRenderer<MyCollectionAndSavedWorksQuery>
+      <QueryRenderer<MyProfileHeaderMyCollectionAndSavedWorksQuery>
         environment={defaultEnvironment}
-        query={MyCollectionAndSavedWorksScreenQuery}
+        query={MyProfileHeaderMyCollectionAndSavedWorksScreenQuery}
         render={renderWithPlaceholder({
-          Container: MyCollectionAndSavedWorksFragmentContainer,
+          Container: MyProfileHeaderMyCollectionAndSavedWorksFragmentContainer,
           renderPlaceholder: () => <MyCollectionPlaceholder />,
         })}
-        variables={{
-          enableCollectorProfile,
-        }}
+        variables={{ enableCollectorProfile }}
       />
     </ProvideScreenTrackingWithCohesionSchema>
   )

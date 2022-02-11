@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 18c99250fc9e2e63d2a9362b5c943059 */
+/* @relayHash cce37a5f004d4d47a4be1ca13000778d */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -104,6 +104,9 @@ fragment MyCollection_me on Me {
           internalID
           name
           id
+        }
+        consignmentSubmission {
+          displayText
         }
         __typename
       }
@@ -344,6 +347,24 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "concreteType": "ArtworkConsignmentSubmission",
+                        "kind": "LinkedField",
+                        "name": "consignmentSubmission",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "displayText",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "kind": "ScalarField",
                         "name": "__typename",
                         "storageKey": null
@@ -476,7 +497,7 @@ return {
     ]
   },
   "params": {
-    "id": "18c99250fc9e2e63d2a9362b5c943059",
+    "id": "cce37a5f004d4d47a4be1ca13000778d",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {
@@ -524,6 +545,13 @@ return {
         },
         "me.myCollectionConnection.edges.node.attributionClass.id": (v4/*: any*/),
         "me.myCollectionConnection.edges.node.attributionClass.name": (v6/*: any*/),
+        "me.myCollectionConnection.edges.node.consignmentSubmission": {
+          "enumValues": null,
+          "nullable": true,
+          "plural": false,
+          "type": "ArtworkConsignmentSubmission"
+        },
+        "me.myCollectionConnection.edges.node.consignmentSubmission.displayText": (v6/*: any*/),
         "me.myCollectionConnection.edges.node.date": (v6/*: any*/),
         "me.myCollectionConnection.edges.node.height": (v6/*: any*/),
         "me.myCollectionConnection.edges.node.id": (v4/*: any*/),

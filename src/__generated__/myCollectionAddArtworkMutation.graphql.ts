@@ -25,7 +25,9 @@ export type MyCollectionCreateArtworkInput = {
     pricePaidCents?: number | null | undefined;
     pricePaidCurrency?: string | null | undefined;
     provenance?: string | null | undefined;
+    submissionId?: string | null | undefined;
     title: string;
+    userId?: string | null | undefined;
     width?: string | null | undefined;
 };
 export type myCollectionAddArtworkMutationVariables = {

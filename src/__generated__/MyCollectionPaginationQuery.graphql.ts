@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 15371a9e05adbecafc2507d3fe784f69 */
+/* @relayHash 1041601a3d75b07ed2d4b730a9eef701 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -110,6 +110,9 @@ fragment MyCollection_me_1G22uz on Me {
           internalID
           name
           id
+        }
+        consignmentSubmission {
+          displayText
         }
         __typename
       }
@@ -354,6 +357,24 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "concreteType": "ArtworkConsignmentSubmission",
+                        "kind": "LinkedField",
+                        "name": "consignmentSubmission",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "displayText",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "kind": "ScalarField",
                         "name": "__typename",
                         "storageKey": null
@@ -486,7 +507,7 @@ return {
     ]
   },
   "params": {
-    "id": "15371a9e05adbecafc2507d3fe784f69",
+    "id": "1041601a3d75b07ed2d4b730a9eef701",
     "metadata": {},
     "name": "MyCollectionPaginationQuery",
     "operationKind": "query",

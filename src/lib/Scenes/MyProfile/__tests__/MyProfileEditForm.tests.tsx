@@ -1,46 +1,43 @@
 import { fireEvent, waitForElementToBeRemoved } from "@testing-library/react-native"
-import { MyProfileEditFormModalTestsQuery } from "__generated__/MyProfileEditFormModalTestsQuery.graphql"
+import { MyProfileEditFormTestsQuery } from "__generated__/MyProfileEditFormTestsQuery.graphql"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { mockEnvironmentPayload } from "lib/tests/mockEnvironmentPayload"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { createMockEnvironment } from "relay-test-utils"
-import { MyProfileEditFormModal } from "../MyProfileEditFormModal"
+import { MyProfileEditForm } from "../MyProfileEditForm"
 
 jest.unmock("react-relay")
 
-describe("MyProfileEditFormModal", () => {
-  let mockEnvironment: ReturnType<typeof createMockEnvironment>
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native")
+  return {
+    ...actualNav,
+    useNavigation: () => ({
+      navigate: jest.fn(),
+    }),
+  }
+})
 
-  beforeEach(() => {
-    mockEnvironment = createMockEnvironment()
-  })
+describe("MyProfileEditForm", () => {
+  const mockEnvironment = defaultEnvironment as ReturnType<typeof createMockEnvironment>
 
   const TestRenderer = () => (
-    <QueryRenderer<MyProfileEditFormModalTestsQuery>
+    <QueryRenderer<MyProfileEditFormTestsQuery>
       environment={mockEnvironment}
       query={graphql`
-        query MyProfileEditFormModalTestsQuery @relay_test_operation {
+        query MyProfileEditFormTestsQuery @relay_test_operation {
           me {
-            ...MyProfileEditFormModal_me @arguments(enableCollectorProfile: true)
+            ...MyProfileEditForm_me
           }
         }
       `}
       variables={{}}
       render={({ props }) => {
         if (props?.me) {
-          return (
-            <MyProfileEditFormModal
-              me={props.me}
-              visible
-              onDismiss={jest.fn}
-              setProfileIconLocally={jest.fn}
-              localImage={null}
-              refetchProfileIdentification={jest.fn}
-              relay={{ environment: mockEnvironment } as any}
-            />
-          )
+          return <MyProfileEditForm />
         }
         return null
       }}
@@ -60,7 +57,7 @@ describe("MyProfileEditFormModal", () => {
 
     describe("Email Verification", () => {
       describe("When the email is confirmed in Gravity", () => {
-        it("is shown as verified when it's verified in gravity", () => {
+        it("is shown as verified when it's verified in gravity", async () => {
           const { getByText } = renderWithWrappersTL(<TestRenderer />)
           mockEnvironmentPayload(mockEnvironment, {
             Me: () => ({

@@ -1,15 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 90385308c0bc2bd7cbddd64711b3a015 */
+/* @relayHash c6bbf9e6025495998a0a86dd315e76f5 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type SearchRefetchQueryVariables = {};
 export type SearchRefetchQueryResponse = {
-    readonly system: {
-        readonly " $fragmentRefs": FragmentRefs<"Search_system">;
-    } | null;
+    readonly " $fragmentRefs": FragmentRefs<"Search_system">;
 };
 export type SearchRefetchQuery = {
     readonly response: SearchRefetchQueryResponse;
@@ -20,20 +18,20 @@ export type SearchRefetchQuery = {
 
 /*
 query SearchRefetchQuery {
-  system {
-    ...Search_system
-  }
+  ...Search_system
 }
 
-fragment Search_system on System {
-  __typename
-  algolia {
-    appID
-    apiKey
-    indices {
-      name
-      displayName
-      key
+fragment Search_system on Query {
+  system {
+    __typename
+    algolia {
+      appID
+      apiKey
+      indices {
+        name
+        displayName
+        key
+      }
     }
   }
 }
@@ -47,20 +45,9 @@ const node: ConcreteRequest = {
     "name": "SearchRefetchQuery",
     "selections": [
       {
-        "alias": null,
         "args": null,
-        "concreteType": "System",
-        "kind": "LinkedField",
-        "name": "system",
-        "plural": false,
-        "selections": [
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "Search_system"
-          }
-        ],
-        "storageKey": null
+        "kind": "FragmentSpread",
+        "name": "Search_system"
       }
     ],
     "type": "Query",
@@ -150,12 +137,12 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "id": "90385308c0bc2bd7cbddd64711b3a015",
+    "id": "c6bbf9e6025495998a0a86dd315e76f5",
     "metadata": {},
     "name": "SearchRefetchQuery",
     "operationKind": "query",
     "text": null
   }
 };
-(node as any).hash = '7fa3e400793a251791a4c627ceff3950';
+(node as any).hash = '9a3b4e2b51c9ac8771ff1ce37e7ddfeb';
 export default node;

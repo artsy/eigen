@@ -51,7 +51,9 @@ const prefetchQuery = async (
 ) => {
   const operation = createOperationDescriptor(getRequest(query), variables)
 
-  await fetchQuery(environment, query, variables, { networkCacheConfig: { force: false } })
+  await fetchQuery(environment, query, variables, {
+    networkCacheConfig: { force: false },
+  }).toPromise()
 
   // this will retain the result in the relay store so it's not garbage collected.
   environment.retain(operation)

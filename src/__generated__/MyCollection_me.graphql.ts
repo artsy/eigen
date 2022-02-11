@@ -28,6 +28,9 @@ export type MyCollection_me = {
                     readonly internalID: string;
                     readonly name: string | null;
                 } | null;
+                readonly consignmentSubmission: {
+                    readonly displayText: string | null;
+                } | null;
             } | null;
         } | null> | null;
         readonly " $fragmentRefs": FragmentRefs<"InfiniteScrollArtworksGrid_myCollectionConnection">;
@@ -216,6 +219,24 @@ return {
                 {
                   "alias": null,
                   "args": null,
+                  "concreteType": "ArtworkConsignmentSubmission",
+                  "kind": "LinkedField",
+                  "name": "consignmentSubmission",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "displayText",
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
                   "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
@@ -277,5 +298,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '63589ba403bbb9690e2d7aab64fe2cd8';
+(node as any).hash = '2fac5525fb1296de3318331df6bcf979';
 export default node;

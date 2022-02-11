@@ -1,11 +1,16 @@
-import { PlaceholderBox, PlaceholderRaggedText, PlaceholderText } from "lib/utils/placeholders"
+import {
+  PlaceholderBox,
+  PlaceholderRaggedText,
+  PlaceholderText,
+  ProvidePlaceholderContext,
+} from "lib/utils/placeholders"
 import { times } from "lodash"
 import { Box, Flex, Spacer } from "palette"
 import React from "react"
 
 export const SearchPlaceholder: React.FC = () => {
   return (
-    <>
+    <ProvidePlaceholderContext>
       <Box p={2}>
         <PlaceholderBox height={46} />
         <Spacer mt={2} />
@@ -21,6 +26,6 @@ export const SearchPlaceholder: React.FC = () => {
           </Flex>
         ))}
       </Box>
-    </>
+    </ProvidePlaceholderContext>
   )
 }
