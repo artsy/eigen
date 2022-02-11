@@ -3,9 +3,9 @@ import { calculateSinglePhotoSize } from "./calculatePhotoSize"
 describe("calculatePhotoSize", () => {
   it("returns photo with size correctly calculated with units", () => {
     const photo = calculateSinglePhotoSize({
-      size: 1000000,
+      size: 3425899,
     })
-    expect(photo.sizeDisplayValue).toBe("1.0 MB")
+    expect(photo.sizeDisplayValue).toBe("3.3 MB")
   })
   it("sets correct error when size not found", () => {
     const photo = calculateSinglePhotoSize({})
