@@ -1,4 +1,7 @@
 import { CommercialPartnerInformation_artwork } from "__generated__/CommercialPartnerInformation_artwork.graphql"
+import { LinkText } from "lib/Components/Text/LinkText"
+import { navigate } from "lib/navigation/navigate"
+import { unsafe_getFeatureFlag } from "lib/store/GlobalStore"
 import { Sans, Spacer } from "palette"
 import React from "react"
 import { createFragmentContainer, graphql } from "react-relay"
@@ -14,6 +17,7 @@ export class CommercialPartnerInformation extends React.Component<Props> {
     const artworkEcommerceAvailable = artwork.isAcquireable || artwork.isOfferable
     const showsSellerInfo = artwork.partner && artwork.partner.name
     const availabilityDisplayText = artwork.isForSale || artworkIsSold ? "From" : "At"
+    const avalaraPhase2 = unsafe_getFeatureFlag("AREnableAvalaraPhase2")
     return (
       <>
         {showsSellerInfo && (
@@ -32,9 +36,23 @@ export class CommercialPartnerInformation extends React.Component<Props> {
                 {artwork.shippingInfo}
               </Sans>
             )}
-            {artworkEcommerceAvailable && !!artwork.priceIncludesTaxDisplay && (
+            {artworkEcommerceAvailable && !!artwork.priceIncludesTaxDisplay && !avalaraPhase2 && (
               <Sans size="3t" color="black60">
                 {artwork.priceIncludesTaxDisplay}
+              </Sans>
+            )}
+            {avalaraPhase2 && (
+              <Sans size="3t" color="black60">
+                Taxes may apply at checkout.{" "}
+                <LinkText
+                  onPress={() => {
+                    navigate(
+                      "https://support.artsy.net/hc/en-us/articles/360047294733-How-is-sales-tax-and-VAT-handled-on-works-listed-with-secure-checkout-"
+                    )
+                  }}
+                >
+                  Learn more.
+                </LinkText>
               </Sans>
             )}
           </>
