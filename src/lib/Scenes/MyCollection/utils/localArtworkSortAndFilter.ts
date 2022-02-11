@@ -5,7 +5,7 @@ import {
   FilterParamName,
 } from "lib/Components/ArtworkFilter/ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
-import { OnlyShowSubmittedArtworksItem } from "lib/Components/ArtworkFilter/components/OnlyShowSubmittedArtworksItem"
+import { ShowOnlySubmittedArtworksRightAccessoryItem } from "lib/Components/ArtworkFilter/components/ShowOnlySubmittedArtworksRightAccessoryItem"
 import { FilterDisplayConfig } from "lib/Components/ArtworkFilter/types"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { normalizeText } from "lib/utils/normalizeText"
@@ -104,7 +104,7 @@ export const useLocalArtworkFilter = (artworks: any[]) => {
           displayText: "Show Only Submitted Artworks",
           filterType: "showOnlySubmittedArtworks",
           ScreenComponent: "FilterOptionsScreen", // so that tapping on it does not navigate to another screen
-          RightItem: OnlyShowSubmittedArtworksItem,
+          RightAccessoryItem: ShowOnlySubmittedArtworksRightAccessoryItem,
           // tslint:disable-next-line: no-shadowed-variable
           localSortAndFilter: (artworks, showOnlySubmittedArtworks: boolean) => {
             if (!showOnlySubmittedArtworks) {

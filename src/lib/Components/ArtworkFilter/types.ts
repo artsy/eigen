@@ -30,7 +30,7 @@ export interface FilterDisplayConfig {
   filterType: FilterScreen
   displayText: string
   ScreenComponent: keyof ArtworkFilterNavigationStack
-  RightItem?: FunctionComponent<ArtworkFilterOptionItemProps>
+  RightAccessoryItem?: FunctionComponent<ArtworkFilterOptionItemProps>
 
   // for `local` filtering
   values?: any[]
