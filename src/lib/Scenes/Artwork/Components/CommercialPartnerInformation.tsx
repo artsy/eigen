@@ -23,7 +23,7 @@ export const CommercialPartnerInformation: React.FC<Props> = ({ artwork }) => {
         <>
           <Spacer mb={1} />
           <Sans size="3t" color="black60">
-            {availabilityDisplayText} {artwork.partner! /* STRICTNESS_MIGRATION */.name}
+            {availabilityDisplayText} {artwork.partner!.name}
           </Sans>
           {avalaraPhase2 && (
             <Sans size="3t" color="black60">
