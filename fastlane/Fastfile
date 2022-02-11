@@ -42,7 +42,11 @@ lane :ship_beta_ios do
   latest_version = app_json['version']
 
   # TODO: Once changelog infra is nailed down we should get release notes from there
-  beta_readme = "Thanks for using the Artsy beta!"
+  current_branch = sh("git branch --show")
+  beta_readme = `
+  Thanks for using the Artsy beta!
+  Build triggered from #{current_branch}
+  `
 
   # Builds the app
   ios_target_ids = ios_targets.keys
