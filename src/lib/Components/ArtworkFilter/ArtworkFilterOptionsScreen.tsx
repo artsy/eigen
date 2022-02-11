@@ -1,5 +1,6 @@
 import { StackScreenProps } from "@react-navigation/stack"
 import { themeGet } from "@styled-system/theme-get"
+import { EventEmitter } from "events"
 import {
   FilterDisplayName,
   filterKeyFromAggregation,
@@ -41,6 +42,13 @@ export enum FilterModalMode {
   Tag = "Tag",
   Search = "Search",
   Custom = "Custom",
+}
+
+export const filterOptionItemPressedEvent = new EventEmitter()
+export const FILTER_OPTION_ITEM_PRESSED_EVENT_KEY = "FILTER_OPTION_ITEM_PRESSED_EVENT_KEY"
+
+function emitPressEvent(displayText: string) {
+  filterOptionItemPressedEvent.emit(FILTER_OPTION_ITEM_PRESSED_EVENT_KEY, displayText)
 }
 
 export const ArtworkFilterOptionsScreen: React.FC<
@@ -162,7 +170,10 @@ export const ArtworkFilterOptionsScreen: React.FC<
               <ArtworkFilterOptionItem
                 item={item}
                 count={selectedFiltersCount}
-                onPress={() => navigateToNextFilterScreen(item.ScreenComponent)}
+                onPress={() => {
+                  emitPressEvent(item.displayText)
+                  navigateToNextFilterScreen(item.ScreenComponent)
+                }}
               />
             )
           }}

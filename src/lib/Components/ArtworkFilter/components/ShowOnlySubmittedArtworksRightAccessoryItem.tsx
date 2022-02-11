@@ -1,23 +1,33 @@
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { Check, Checkbox } from "palette"
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { TouchableWithoutFeedback } from "react-native"
-import { FilterParamName } from "../ArtworkFilterHelpers"
+import { FILTER_OPTION_ITEM_PRESSED_EVENT_KEY, filterOptionItemPressedEvent } from ".."
+import { FilterParamName, getUnitedSelectedAndAppliedFilters } from "../ArtworkFilterHelpers"
 import { ArtworksFiltersStore } from "../ArtworkFilterStore"
 import { ArtworkFilterOptionItemProps } from "./ArtworkFilterOptionItem"
 
 export const ShowOnlySubmittedArtworksRightAccessoryItem: React.FC<
   ArtworkFilterOptionItemProps
-> = ({ count }) => {
-  const [checked, setChecked] = useState(count ? count > 0 : false)
-
-  useEffect(() => {
-    setChecked(count ? count > 0 : false)
-  }, [count])
-
+> = ({ item }) => {
   const selectFiltersAction = ArtworksFiltersStore.useStoreActions(
     (state) => state.selectFiltersAction
   )
+
+  const selectedFilters = ArtworksFiltersStore.useStoreState((state) => state.selectedFilters)
+
+  const previouslyAppliedFilters = ArtworksFiltersStore.useStoreState(
+    (state) => state.previouslyAppliedFilters
+  )
+
+  const storeFilterType = ArtworksFiltersStore.useStoreState((state) => state.filterType)
+
+  const checked = !!getUnitedSelectedAndAppliedFilters({
+    filterType: storeFilterType,
+    selectedFilters,
+    previouslyAppliedFilters,
+  }).find((f) => f.paramName === item.filterType)?.paramValue
+
   const isEnabledImprovedAlertsFlow = useFeatureFlag("AREnableImprovedAlertsFlow")
 
   const setValueOnFilters = (showOnlySubmitted: boolean) => {
@@ -30,9 +40,27 @@ export const ShowOnlySubmittedArtworksRightAccessoryItem: React.FC<
 
   const onPress = () => {
     const nextValue = !checked
-    setChecked(nextValue)
     setValueOnFilters(nextValue)
   }
+
+  function consumePressEvent(displayText: string) {
+    if (displayText === item.displayText) {
+      onPress()
+    }
+  }
+
+  useEffect(() => {
+    filterOptionItemPressedEvent.addListener(
+      FILTER_OPTION_ITEM_PRESSED_EVENT_KEY,
+      consumePressEvent
+    )
+    return () => {
+      filterOptionItemPressedEvent.removeListener(
+        FILTER_OPTION_ITEM_PRESSED_EVENT_KEY,
+        consumePressEvent
+      )
+    }
+  }, [checked])
 
   if (isEnabledImprovedAlertsFlow) {
     return <Checkbox checked={checked} onPress={onPress} />

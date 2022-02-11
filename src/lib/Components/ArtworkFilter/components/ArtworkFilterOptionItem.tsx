@@ -26,7 +26,7 @@ export const ArtworkFilterOptionItem: React.FC<ArtworkFilterOptionItemProps> = (
           </Flex>
           <Flex alignItems="center" justifyContent="flex-end">
             {item.RightAccessoryItem ? (
-              item.RightAccessoryItem(props)
+              <item.RightAccessoryItem {...props} />
             ) : (
               <ArrowRightIcon fill="black100" ml={1} />
             )}
@@ -52,7 +52,7 @@ export const ArtworkFilterOptionItem: React.FC<ArtworkFilterOptionItemProps> = (
 
         <Flex flexDirection="row" alignItems="center" justifyContent="flex-end">
           {item.RightAccessoryItem ? (
-            item.RightAccessoryItem(props)
+            <item.RightAccessoryItem {...props} />
           ) : (
             <ArrowRightIcon fill="black30" ml={1} />
           )}
