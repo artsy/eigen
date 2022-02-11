@@ -26,6 +26,20 @@ export class CommercialPartnerInformation extends React.Component<Props> {
             <Sans size="3t" color="black60">
               {availabilityDisplayText} {artwork.partner! /* STRICTNESS_MIGRATION */.name}
             </Sans>
+            {avalaraPhase2 && (
+              <Sans size="3t" color="black60">
+                Taxes may apply at checkout.{" "}
+                <LinkText
+                  onPress={() => {
+                    navigate(
+                      "https://support.artsy.net/hc/en-us/articles/360047294733-How-is-sales-tax-and-VAT-handled-on-works-listed-with-secure-checkout-"
+                    )
+                  }}
+                >
+                  Learn more.
+                </LinkText>
+              </Sans>
+            )}
             {artworkEcommerceAvailable && !!artwork.shippingOrigin && (
               <Sans size="3t" color="black60">
                 Ships from {artwork.shippingOrigin}
@@ -39,20 +53,6 @@ export class CommercialPartnerInformation extends React.Component<Props> {
             {artworkEcommerceAvailable && !!artwork.priceIncludesTaxDisplay && !avalaraPhase2 && (
               <Sans size="3t" color="black60">
                 {artwork.priceIncludesTaxDisplay}
-              </Sans>
-            )}
-            {avalaraPhase2 && (
-              <Sans size="3t" color="black60">
-                Taxes may apply at checkout.{" "}
-                <LinkText
-                  onPress={() => {
-                    navigate(
-                      "https://support.artsy.net/hc/en-us/articles/360047294733-How-is-sales-tax-and-VAT-handled-on-works-listed-with-secure-checkout-"
-                    )
-                  }}
-                >
-                  Learn more.
-                </LinkText>
               </Sans>
             )}
           </>
