@@ -1,4 +1,4 @@
-# Testing with Relay
+# Testing with Relay [WIP]
 
 We have 3 ways of testing relay components:
 
@@ -22,10 +22,9 @@ _example file: ItemArtwork.tests.tsx_
 
 Creates query Renderer
 
-Give component
-give test query
-
-pass input variables
+- Pass a component
+- Pass a test query
+- Pass input variables
 
 has an act that resolves the first request that's being made.
 
