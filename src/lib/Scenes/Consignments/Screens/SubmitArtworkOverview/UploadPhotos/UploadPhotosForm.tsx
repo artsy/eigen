@@ -11,7 +11,9 @@ import { addPhotoToConsignment } from "./utils/addPhotoToConsignment"
 import { calculateSinglePhotoSize } from "./utils/calculatePhotoSize"
 import { Photo, PhotosFormModel } from "./validation"
 
-export const UploadPhotosForm = () => {
+export const UploadPhotosForm: React.FC<{ isAnyPhotoLoading?: boolean }> = ({
+  isAnyPhotoLoading,
+}) => {
   const { values, setFieldValue } = useFormikContext<PhotosFormModel>()
   const { submission } = GlobalStore.useAppState((state) => state.artworkSubmission)
   const { showActionSheetWithOptions } = useActionSheet()
@@ -82,6 +84,7 @@ export const UploadPhotosForm = () => {
           Total Maximum Size: 30MB
         </Text>
         <Button
+          disabled={isAnyPhotoLoading}
           onPress={handleAddPhotoPress}
           variant="outline"
           size="large"

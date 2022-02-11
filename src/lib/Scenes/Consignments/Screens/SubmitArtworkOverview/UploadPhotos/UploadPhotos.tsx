@@ -40,7 +40,7 @@ export const UploadPhotos = ({ handlePress }: { handlePress: () => void }) => {
 
           return (
             <>
-              <UploadPhotosForm />
+              <UploadPhotosForm isAnyPhotoLoading={isAnyPhotoLoading} />
               <Spacer mt={2} />
               <CTAButton
                 disabled={!isValid || isAnyPhotoLoading || isSizeLimitExceeded(values.photos)}
