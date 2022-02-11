@@ -16,30 +16,30 @@ export const SubmitArtworkScreen: React.FC<SubmitArtworkScreenNavigationProps> =
   navigation,
 }) => {
   const items = [
-    // {
-    //   overtitle: "Step 1 of 3",
-    //   title: "Artwork Details",
-    //   Content: (
-    //     <ArtworkDetails
-    //       handlePress={() => {
-    //         expandCollapsibleMenuContent(1)
-    //         enableStep(1)
-    //       }}
-    //     />
-    //   ),
-    // },
-    // {
-    //   overtitle: "Step 2 of 3",
-    //   title: "Upload Photos",
-    //   Content: (
-    //     <UploadPhotos
-    //       handlePress={() => {
-    //         expandCollapsibleMenuContent(2)
-    //         enableStep(2)
-    //       }}
-    //     />
-    //   ),
-    // },
+    {
+      overtitle: "Step 1 of 3",
+      title: "Artwork Details",
+      Content: (
+        <ArtworkDetails
+          handlePress={() => {
+            expandCollapsibleMenuContent(1)
+            enableStep(1)
+          }}
+        />
+      ),
+    },
+    {
+      overtitle: "Step 2 of 3",
+      title: "Upload Photos",
+      Content: (
+        <UploadPhotos
+          handlePress={() => {
+            expandCollapsibleMenuContent(2)
+            enableStep(2)
+          }}
+        />
+      ),
+    },
     {
       overtitle: "Step 3 of 3",
       title: "Contact Information",
