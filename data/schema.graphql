@@ -6228,6 +6228,12 @@ type CroppedImageUrl {
   width: Int!
 }
 
+enum CurrencyPreference {
+  EUR
+  GBP
+  USD
+}
+
 type CurrentEvent {
   # Location and date of the event if available
   details: String
@@ -8355,6 +8361,11 @@ type LatLng {
   lng: Float
 }
 
+enum LengthUnitPreference {
+  CM
+  IN
+}
+
 input LinkAuthenticationMutationInput {
   # Unique Apple user id. **Required** for Apple authentication.
   appleUid: String
@@ -8823,6 +8834,9 @@ type Me implements Node {
 
   # A list of the current user’s credit cards
   creditCards(after: String, before: String, first: Int, last: Int): CreditCardConnection
+
+  # Currency preference of the user
+  currencyPreference: CurrencyPreference!
   email: String
 
   # User has confirmed their email address
@@ -8867,6 +8881,9 @@ type Me implements Node {
 
   # List of lab features for this user
   labFeatures: [String!]!
+
+  # Length unit preference of the user
+  lengthUnitPreference: LengthUnitPreference!
   location: MyLocation
 
   # Sale Artworks search results
