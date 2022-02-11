@@ -458,7 +458,7 @@ const ProfileVerifications = ({
 }) => {
   const color = useColor()
   return (
-    <Flex testID="profile-verifications">
+    <Flex testID="profile-verifications" pr={2}>
       {/* ID Verification */}
       {isIDVerified ? (
         renderVerifiedRow({
