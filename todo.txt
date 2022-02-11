@@ -8,7 +8,9 @@
 - updated react-native-config patch to get source directory correct in ios folder, should be able to remove when we have just one dir
 - returning same modules for native for ios as android, many are broken and will need to be fixed, may want to distinguish Android and iOS still here
 - we use a hook in main App for configuring push notifications that fails on iOS, need to figure out how to use our native module instead for iOS
-- pointing to the old plist in the new app, it is fine to use but will have to update path once we actually move all the code
+- pointing to the old plist in the new app, it is fine to use but will have to update path once we actually move all the code 
+- added a preprocessor macro APP_SHELL in new project, remove when ready and just use one set of logic
+- commit where we moved old files over - https://github.com/artsy/eigen/pull/6086/commits/783dc3ada16f1f0604805d41d63d8b711d56a27d
 
 
 possibly need to set up:
