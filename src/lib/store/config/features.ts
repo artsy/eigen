@@ -204,6 +204,11 @@ export const features = defineFeatures({
     showInAdminMenu: true,
     echoFlagKey: "AREnablePlaceholderLayoutAnimation",
   },
+  AREnableShowOnlySubmittedMyCollectionArtworkFilter: {
+    readyForRelease: false,
+    description: "Enable Show Only Submitted MyCollection Artwork Filter",
+    showInAdminMenu: true,
+  },
 })
 
 export interface DevToggleDescriptor {

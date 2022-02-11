@@ -212,6 +212,9 @@ export const MyCollectionContainer = createPaginationContainer(
                 internalID
                 name
               }
+              consignmentSubmission {
+                displayText
+              }
             }
           }
           ...InfiniteScrollArtworksGrid_myCollectionConnection @arguments(skipArtworkGridItem: true)

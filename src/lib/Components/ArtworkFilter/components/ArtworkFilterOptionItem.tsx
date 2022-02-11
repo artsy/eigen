@@ -24,8 +24,9 @@ export const ArtworkFilterOptionItem: React.FC<ArtworkFilterOptionItemProps> = (
               {!!count && <Text variant="md" color="blue100">{` ${bullet} ${count}`}</Text>}
             </Text>
           </Flex>
-
-          <ArrowRightIcon fill="black100" ml={1} />
+          <Flex alignItems="center" justifyContent="flex-end">
+            {item.RightItem ? item.RightItem(props) : <ArrowRightIcon fill="black100" ml={1} />}
+          </Flex>
         </Flex>
       </TouchableRow>
     )

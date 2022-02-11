@@ -1,4 +1,6 @@
+import { FunctionComponent } from "react"
 import { ArtworkFilterNavigationStack } from "./ArtworkFilterNavigator"
+import { ArtworkFilterOptionItemProps } from "./components/ArtworkFilterOptionItem"
 
 export type FilterScreen =
   | "additionalGeneIDs"
@@ -18,6 +20,7 @@ export type FilterScreen =
   | "priceRange"
   | "organizations"
   | "sizes"
+  | "showOnlySubmittedArtworks"
   | "sort"
   | "viewAs"
   | "waysToBuy"
@@ -27,6 +30,7 @@ export interface FilterDisplayConfig {
   filterType: FilterScreen
   displayText: string
   ScreenComponent: keyof ArtworkFilterNavigationStack
+  RightItem?: FunctionComponent<ArtworkFilterOptionItemProps>
 
   // for `local` filtering
   values?: any[]
