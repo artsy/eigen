@@ -35,8 +35,11 @@ describe("CommercialPartnerInformation", () => {
         </Theme>
       </GlobalStoreProvider>
     )
-    expect(component.find(Sans).at(3).render().text()).toMatchInlineSnapshot(
+    expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(
       `"Taxes may apply at checkout. Learn more."`
+    )
+    expect(component.find(Sans).at(3).render().text()).toMatchInlineSnapshot(
+      `"Ships within the continental USA"`
     )
   })
 
