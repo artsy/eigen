@@ -28,7 +28,7 @@ const TabContent = ({
 export const BottomTabsNavigator = () => {
   const selectedTab = useSelectedTab()
   const { bottom } = useScreenDimensions().safeAreaInsets
-  if (Platform.OS === "ios") {
+  if (Platform.OS === "ios" && !usingNewIOSAppShell()) {
     return (
       <View style={{ flex: 1, paddingBottom: bottom }}>
         <FadeBetween

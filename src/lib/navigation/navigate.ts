@@ -3,7 +3,7 @@ import { addBreadcrumb } from "@sentry/react-native"
 import { EventEmitter } from "events"
 import { AppModule, modules, ViewOptions } from "lib/AppRegistry"
 import { __unsafe_switchTab } from "lib/NativeModules/ARScreenPresenterModule"
-import { LegacyNativeModules } from "lib/NativeModules/LegacyNativeModules"
+import { LegacyNativeModules, usingNewIOSAppShell } from "lib/NativeModules/LegacyNativeModules"
 import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import { GlobalStore, unsafe__getSelectedTab } from "lib/store/GlobalStore"
 import { propsStore } from "lib/store/PropsStore"
@@ -125,7 +125,7 @@ export function switchTab(tab: BottomTabType, props?: object) {
   if (props) {
     GlobalStore.actions.bottomTabs.setTabProps({ tab, props })
   }
-  if (Platform.OS === "ios") {
+  if (Platform.OS === "ios" && !usingNewIOSAppShell()) {
     GlobalStore.actions.bottomTabs.switchTab(tab)
   } else {
     __unsafe_switchTab(tab)
