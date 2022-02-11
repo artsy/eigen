@@ -55,7 +55,7 @@ const PhotoRowPlaceholder = () => (
   <ProvidePlaceholderContext>
     <Flex flexDirection="row">
       <Flex width="55%" justifyContent="center" pt={1} pb={1}>
-        <PlaceholderBox width={58} height={58} />
+        <PlaceholderBox testID="Submission_Photo_Placeholder" width={58} height={58} />
       </Flex>
     </Flex>
     <Flex flexDirection="row" justifyContent="space-between" alignItems="center" width="45%">

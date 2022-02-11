@@ -49,21 +49,6 @@ describe("PhotoRow", () => {
     })
   })
 
-  describe("when passed a loading photo", () => {
-    const TestRenderer = () => (
-      <RelayEnvironmentProvider environment={mockEnvironment}>
-        <PhotoRow photo={mockLoadingPhoto} onPhotoDelete={mockHandlePhotoDelete} />
-      </RelayEnvironmentProvider>
-    )
-
-    beforeEach(() => mockEnvironment.mockClear())
-
-    it("return a placeholder", () => {
-      const { getByTestId } = renderWithWrappersTL(<TestRenderer />)
-      expect(getByTestId("Submission_Placeholder_Delete_Photo_Button")).toBeTruthy()
-    })
-  })
-
   describe("when passed a photo with error", () => {
     const TestRenderer = () => (
       <RelayEnvironmentProvider environment={mockEnvironment}>
@@ -87,16 +72,6 @@ const mockUploadedPhoto: Photo = {
   width: 100,
   path: "myPhotos/photo.jpeg",
   loading: false,
-  error: false,
-  sizeDisplayValue: "3.3 MB",
-}
-const mockLoadingPhoto: Photo = {
-  id: "123",
-  geminiToken: "abc",
-  height: 100,
-  width: 100,
-  path: "myPhotos/photo.jpeg",
-  loading: true,
   error: false,
   sizeDisplayValue: "3.3 MB",
 }
