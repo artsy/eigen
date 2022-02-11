@@ -1,3 +1,4 @@
+import { CommercialPartnerInformation_artwork } from "__generated__/CommercialPartnerInformation_artwork.graphql"
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
@@ -126,7 +127,7 @@ describe("CommercialPartnerInformation", () => {
   })
 })
 
-const CommercialPartnerInformationArtwork = {
+const CommercialPartnerInformationArtwork: CommercialPartnerInformation_artwork = {
   availability: "for sale",
   isAcquireable: true,
   isForSale: true,
@@ -137,5 +138,5 @@ const CommercialPartnerInformationArtwork = {
     name: "Bob's Gallery",
   },
   priceIncludesTaxDisplay: "VAT included in price",
-  " $refType": null as any,
+  " $refType": "CommercialPartnerInformation_artwork",
 }
