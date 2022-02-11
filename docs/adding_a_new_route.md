@@ -24,7 +24,7 @@ Example of situations where **you do need** to add a new route:
 1. Add route to `routes.tsx`. Make sure that the route you are adding is the same as in **Force**
    ```typescript
    ...
-   new RouteMatcher("/my-screen", "MyScreen"),
+   addRoute("/my-screen", "MyScreen"),
    ...
    ```
    > Don't forget to write a test at route.tests.tsx
