@@ -32,18 +32,7 @@ export const photosValidationSchema = Yup.object().shape({
       Yup.object().shape({
         id: Yup.string().required(),
         geminiToken: Yup.string().required(),
-        height: Yup.string(),
-        isDefault: Yup.string(),
-        imageURL: Yup.string(),
-        internalID: Yup.string(),
-        path: Yup.string(),
-        width: Yup.number(),
-        imageVersions: Yup.string(),
-        loading: Yup.boolean(),
-        error: Yup.boolean(),
-        errorMessage: Yup.string(),
-        size: Yup.number(),
-        sizeDisplayValue: Yup.string(),
+        path: Yup.string().required(),
       })
     ),
 })
