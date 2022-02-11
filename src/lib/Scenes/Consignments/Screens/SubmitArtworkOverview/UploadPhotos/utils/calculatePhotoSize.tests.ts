@@ -19,7 +19,7 @@ describe("isSizeLimitExceeded", () => {
     const isExceeded = isSizeLimitExceeded(mockPhotos)
     expect(isExceeded).toBe(false)
   })
-  it("calculates all photos size and returns true when limit not exceeded", () => {
+  it("calculates all photos size and returns true when limit exceeded", () => {
     const isExceeded = isSizeLimitExceeded(mockPhotosWithSizeExcess)
     expect(isExceeded).toBe(true)
   })
