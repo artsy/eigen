@@ -36,8 +36,8 @@ export const AppProviders = ({ children }: { children?: ReactNode }) =>
 // Providers with preset props
 
 // relay needs the default environment
-const RelayDefaultEnvProvider: FC = (props) => (
-  <RelayEnvironmentProvider environment={defaultEnvironment} {...props} />
+const RelayDefaultEnvProvider: FC = ({ children, ...otherProps }) => (
+  <RelayEnvironmentProvider environment={defaultEnvironment} children={children} {...otherProps} />
 )
 
 // react-track has no provider, we make one using the decorator and a class wrapper
