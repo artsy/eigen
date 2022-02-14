@@ -15,6 +15,9 @@ export type NewMyCollectionArtworkHeader_artwork = {
     readonly internalID: string;
     readonly slug: string;
     readonly title: string | null;
+    readonly consignmentSubmission: {
+        readonly displayText: string | null;
+    } | null;
     readonly " $refType": "NewMyCollectionArtworkHeader_artwork";
 };
 export type NewMyCollectionArtworkHeader_artwork$data = NewMyCollectionArtworkHeader_artwork;
@@ -95,10 +98,28 @@ const node: ReaderFragment = {
       "kind": "ScalarField",
       "name": "title",
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "ArtworkConsignmentSubmission",
+      "kind": "LinkedField",
+      "name": "consignmentSubmission",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "displayText",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
     }
   ],
   "type": "Artwork",
   "abstractKey": null
 };
-(node as any).hash = 'd930a9b552f847e57f82656207a5fed2';
+(node as any).hash = 'd11a8af9a1cd091dff5e0b9bb6bc866f';
 export default node;

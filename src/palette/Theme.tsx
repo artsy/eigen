@@ -24,6 +24,7 @@ export type SpacingUnit = SpacingUnitV2 | SpacingUnitV3
 export type Color =
   | ColorV3BeforeDevPurple
   | "devpurple"
+  | "yellow150"
   | "yellow100"
   | "yellow30"
   | "yellow10"
@@ -102,6 +103,7 @@ const fixColorV3 = (
 ): typeof eigenUsefulTHEME_V3.colors & { devpurple: string } => {
   const ourColors = colors as any
   ourColors.devpurple = "#6E1EFF"
+  ourColors.yellow150 = "#A47A0F"
   ourColors.yellow100 = "#A85F00"
   ourColors.yellow30 = "#FAE7BA"
   ourColors.yellow10 = "#F6EFE5"
