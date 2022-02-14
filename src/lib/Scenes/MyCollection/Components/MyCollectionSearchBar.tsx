@@ -29,7 +29,11 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
 
   const { hideStaticHeader, showStaticHeader } = useStickyTabPageContext()
 
-  const viewOption = GlobalStore.useAppState((state) => state.userPreferences.artworkViewOption)
+  const viewOptionPreference = GlobalStore.useAppState(
+    (state) => state.userPreferences.artworkViewOption
+  )
+
+  const [viewOption, setViewOption] = useState(viewOptionPreference)
 
   const inputRef = useRef<TextInput>(null)
 
@@ -40,6 +44,8 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
       ...LayoutAnimation.Presets.linear,
       duration: 100,
     })
+
+    setViewOption(selectedViewOption)
 
     GlobalStore.actions.userPreferences.setArtworkViewOption(selectedViewOption)
   }

@@ -5,7 +5,10 @@ import { ArtworkFiltersStoreProvider } from "lib/Components/ArtworkFilter/Artwor
 import { InfiniteScrollMyCollectionArtworksGridContainer } from "lib/Components/ArtworkGrids/InfiniteScrollArtworksGrid"
 import { StickyTabPage } from "lib/Components/StickyTabPage/StickyTabPage"
 import { StickyTabPageScrollView } from "lib/Components/StickyTabPage/StickyTabPageScrollView"
+import { GridViewIcon } from "lib/Icons/GridViewIcon"
+import { ListViewIcon } from "lib/Icons/ListViewIcon"
 import { navigate } from "lib/navigation/navigate"
+import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 import { extractText } from "lib/tests/extractText"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { mockTrackEvent } from "lib/tests/globallyMockedStuff"
@@ -14,6 +17,8 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
+import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
+import { MyCollectionSearchBar } from "./Components/MyCollectionSearchBar"
 import { MyCollectionContainer } from "./MyCollection"
 
 jest.unmock("react-relay")
@@ -121,6 +126,34 @@ describe("MyCollection", () => {
     it("renders without throwing an error", () => {
       expect(tree.root.findByType(StickyTabPageScrollView)).toBeDefined()
       expect(tree.root.findByType(InfiniteScrollMyCollectionArtworksGridContainer)).toBeDefined()
+    })
+  })
+
+  describe("search bar", () => {
+    let tree: ReactTestRenderer
+
+    beforeEach(() => {
+      __globalStoreTestUtils__?.injectFeatureFlags({ AREnableMyCollectionSearchBar: true })
+
+      tree = getWrapper()
+    })
+
+    it("user can switch between grid and list view when search the bar is visible", async () => {
+      const scrollView = tree.root.findByType(StickyTabPageScrollView)
+
+      scrollView.props.onScrollBeginDrag()
+
+      await flushPromiseQueue()
+
+      expect(tree.root.findByType(MyCollectionSearchBar)).toBeDefined()
+
+      act(() => fireEvent.press(tree.root.findByType(GridViewIcon)))
+
+      expect(MyCollectionArtworkList).toBeDefined()
+
+      act(() => fireEvent.press(tree.root.findByType(ListViewIcon)))
+
+      expect(MyCollectionArtworkList).toBeDefined()
     })
   })
 
