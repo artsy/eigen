@@ -674,6 +674,10 @@ type Article implements Node {
   # The byline for the article. Defaults to "Artsy Editorial" if no authors are present.
   byline: String
   cached: Int
+  channelArticles(
+    # Number of articles to return
+    size: Int = 12
+  ): [Article!]!
   channelID: String
   contributingAuthors: [Author]
   description: String
