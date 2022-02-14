@@ -24,6 +24,7 @@ export interface FancyModalHeaderProps {
   useShareButton?: boolean
   rightCloseButton?: boolean
   renderRightButton?: () => JSX.Element
+  displayRightButton?: boolean
 }
 
 export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
@@ -38,6 +39,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
   useShareButton,
   rightCloseButton,
   renderRightButton,
+  displayRightButton = true,
 }) => {
   const { space } = useTheme()
   const leftButton = () => {
@@ -76,7 +78,7 @@ export const FancyModalHeader: React.FC<FancyModalHeaderProps> = ({
         </Flex>
 
         <Flex position="absolute" right={0} alignItems="flex-end">
-          {!!onRightButtonPress && (
+          {!!displayRightButton && !!onRightButtonPress && (
             <RightButtonContainer
               hitSlop={{ top: space(1), bottom: space(1), left: space(1), right: space(1) }}
               onPress={() => !rightButtonDisabled && onRightButtonPress()}

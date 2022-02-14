@@ -20,6 +20,9 @@ const MyCollectionArtworkScreenQuery = graphql`
     artwork(id: $artworkSlug) {
       ...NewMyCollectionArtworkHeader_artwork
       internalID
+      consignmentSubmission {
+        inProgress
+      }
     }
   }
 `
@@ -48,13 +51,18 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({ artwork
     })
   }, [data.artwork])
 
+  const displayEditButton = !data.artwork.consignmentSubmission?.inProgress
+
   return (
     <Flex flex={1}>
-      <FancyModalHeader
-        onLeftButtonPress={goBack}
-        rightButtonText="Edit"
-        onRightButtonPress={handleEdit}
-      />
+      {
+        <FancyModalHeader
+          onLeftButtonPress={goBack}
+          displayRightButton={displayEditButton}
+          rightButtonText="Edit"
+          onRightButtonPress={handleEdit}
+        />
+      }
       <StickyTabPage
         tabs={[
           {

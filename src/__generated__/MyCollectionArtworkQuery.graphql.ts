@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash fba21432b0d67159093bd612173338a0 */
+/* @relayHash 89ad54ea8a2d5f49e0ca3985ba42e171 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -11,6 +11,9 @@ export type MyCollectionArtworkQueryVariables = {
 export type MyCollectionArtworkQueryResponse = {
     readonly artwork: {
         readonly internalID: string;
+        readonly consignmentSubmission: {
+            readonly inProgress: boolean | null;
+        } | null;
         readonly " $fragmentRefs": FragmentRefs<"NewMyCollectionArtworkHeader_artwork">;
     } | null;
 };
@@ -28,6 +31,9 @@ query MyCollectionArtworkQuery(
   artwork(id: $artworkSlug) {
     ...NewMyCollectionArtworkHeader_artwork
     internalID
+    consignmentSubmission {
+      inProgress
+    }
     id
   }
 }
@@ -85,6 +91,24 @@ v2 = {
   "kind": "ScalarField",
   "name": "internalID",
   "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "ArtworkConsignmentSubmission",
+  "kind": "LinkedField",
+  "name": "consignmentSubmission",
+  "plural": false,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "inProgress",
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -102,6 +126,7 @@ return {
         "plural": false,
         "selections": [
           (v2/*: any*/),
+          (v3/*: any*/),
           {
             "args": null,
             "kind": "FragmentSpread",
@@ -271,6 +296,7 @@ return {
             "name": "title",
             "storageKey": null
           },
+          (v3/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -284,7 +310,7 @@ return {
     ]
   },
   "params": {
-    "id": "fba21432b0d67159093bd612173338a0",
+    "id": "89ad54ea8a2d5f49e0ca3985ba42e171",
     "metadata": {},
     "name": "MyCollectionArtworkQuery",
     "operationKind": "query",
@@ -292,5 +318,5 @@ return {
   }
 };
 })();
-(node as any).hash = '10fb19cf4c2e44352de798526fc23dfa';
+(node as any).hash = '8b58747cb9ebdb13171da300bee6237d';
 export default node;

@@ -41,6 +41,9 @@ export type OldMyCollectionArtwork_sharedProps = {
     readonly slug: string;
     readonly title: string | null;
     readonly width: string | null;
+    readonly consignmentSubmission: {
+        readonly inProgress: boolean | null;
+    } | null;
     readonly " $refType": "OldMyCollectionArtwork_sharedProps";
 };
 export type OldMyCollectionArtwork_sharedProps$data = OldMyCollectionArtwork_sharedProps;
@@ -276,11 +279,29 @@ return {
       "name": "title",
       "storageKey": null
     },
-    (v2/*: any*/)
+    (v2/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "ArtworkConsignmentSubmission",
+      "kind": "LinkedField",
+      "name": "consignmentSubmission",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "inProgress",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    }
   ],
   "type": "Artwork",
   "abstractKey": null
 };
 })();
-(node as any).hash = '3f7ad1174539688a07f8ea19108e8f51';
+(node as any).hash = 'f585b39204cdb45e1eecb4c20f14f05f';
 export default node;

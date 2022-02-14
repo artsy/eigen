@@ -41,6 +41,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
   marketPriceInsights,
 }) => {
   const { trackEvent } = useTracking()
+  const displayEditButton = !artwork.consignmentSubmission?.inProgress
 
   return (
     <ProvideScreenTrackingWithCohesionSchema
@@ -66,6 +67,7 @@ export const MyCollectionArtwork: React.FC<MyCollectionArtworkProps> = ({
           }}
           onLeftButtonPress={goBack}
           hideBottomDivider
+          displayRightButton={displayEditButton}
           renderRightButton={() => (
             <Flex pt="2px">
               <Text>Edit</Text>
@@ -149,6 +151,9 @@ export const ArtworkMetaProps = graphql`
     slug
     title
     width
+    consignmentSubmission {
+      inProgress
+    }
   }
 `
 
