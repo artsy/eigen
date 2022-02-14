@@ -12,10 +12,12 @@ Links:
 
 👀 See comment on top of file for template.
 
-## I want to write a test
+## I want to write a test.
 
-We use `@testing-library/react-native` and our helper `renderWithWrappersTL`
+We use `@testing-library/react-native` and our helper `renderWithWrappersTL`.
 
 See:
-- https://github.com/artsy/eigen/blob/main/src/palette/elements/Dialog/Dialog.tests.tsx
-- [here](src/palette/elements/Dialog/Dialog.tests.tsx)
+
+- [](src/palette/elements/Dialog/Dialog.tests.tsx)
+- src/palette/elements/Dialog/Dialog.tests.tsx
+- <a>src/palette/elements/Dialog/Dialog.tests.tsx</a>
