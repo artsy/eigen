@@ -8,6 +8,10 @@ We have 3 ways of testing relay components:
 
 1. Components using both RelayQueryRenderer & relay hooks !
 
+Further documentation on testing
+
+https://github.com/artsy/relay-workshop/tree/main/src/exercises/03-Testing-Queries
+
 ## Case 1: Testing components using RelayQueryRenderer
 
 renderWithWrappersTL : renderWithWrappers(TestingLibrary)
