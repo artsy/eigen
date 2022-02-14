@@ -41,6 +41,9 @@ jest.mock("lib/utils/track/providers", () => ({
 
 jest.mock("lib/relay/createEnvironment", () => ({
   defaultEnvironment: require("relay-test-utils").createMockEnvironment(),
+  reset(this: { defaultEnvironment: any }) {
+    this.defaultEnvironment = require("relay-test-utils").createMockEnvironment()
+  },
 }))
 
 jest.mock("tipsi-stripe", () => ({

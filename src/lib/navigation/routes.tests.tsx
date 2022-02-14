@@ -1,4 +1,4 @@
-import { matchRoute, replaceParams, webViewRoute } from "lib/navigation/routes"
+import { addRoute, addWebViewRoute, matchRoute, replaceParams } from "lib/navigation/routes"
 import { __globalStoreTestUtils__ } from "lib/store/GlobalStore"
 
 describe("artsy.net routes", () => {
@@ -1296,37 +1296,52 @@ describe(replaceParams, () => {
   })
 })
 
-describe(webViewRoute, () => {
+describe(addWebViewRoute, () => {
   it("returns a route matcher for web views", () => {
-    const matcher = webViewRoute("/conditions-of-sale")
+    const matcher = addWebViewRoute("/conditions-of-sale")
     expect(matcher.module).toBe("ReactWebView")
     expect(matcher.match(["conditions-of-sale"])).toEqual({ url: "/conditions-of-sale" })
   })
 
   it("returns react web view when the feature flag is on", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AROptionsUseReactNativeWebView: true })
-    const matcher = webViewRoute("/conditions-of-sale")
+    const matcher = addWebViewRoute("/conditions-of-sale")
     expect(matcher.module).toBe("ReactWebView")
   })
 
   it("inlines params and wildcards in the original route", () => {
-    const matcher = webViewRoute("/artist/:artistID/*")
+    const matcher = addWebViewRoute("/artist/:artistID/*")
     expect(matcher.match(["artist", "banksy", "auction-results", "8907"])).toEqual({
       url: "/artist/banksy/auction-results/8907",
     })
   })
 
   it("inlines params in the original order history route", () => {
-    const matcher = webViewRoute("/user/purchases/:orderID")
+    const matcher = addWebViewRoute("/user/purchases/:orderID")
     expect(matcher.match(["user", "purchases", "8907"])).toEqual({
       url: "/user/purchases/8907",
     })
   })
 
   it("inlines params in the original article route", () => {
-    const matcher = webViewRoute("/article/:orderID")
+    const matcher = addWebViewRoute("/article/:orderID")
     expect(matcher.match(["article", "article-article"])).toEqual({
       url: "/article/article-article",
     })
+  })
+})
+
+describe(addRoute, () => {
+  it("returns a route matcher for a route", () => {
+    expect(
+      addRoute("/home/:id/thing/:slug/other_thing/:slug2", "Home").match([
+        "home",
+        "mounir",
+        "thing",
+        "blah",
+        "other_thing",
+        "blah2",
+      ])
+    ).toEqual({ id: "mounir", slug: "blah", slug2: "blah2" })
   })
 })

@@ -19,3 +19,4 @@
 - [Certificates & Code Signing](certs.md)
 - [Notifications](push_notifications.md)
 - [Updating Emission](updating_emission.md)
+- [Adding a new route](adding_a_new_route.md)
