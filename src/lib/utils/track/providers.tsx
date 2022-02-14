@@ -12,7 +12,13 @@ type NativeIOSTrackingEventID =
       // identifier for native ios events for tracking
       screen_name: string
     }
-  | { event_name: string }
+  | {
+      event_name: string
+      UIApplicationState?: string
+      url?: string
+      message?: string | object
+      label?: string
+    }
 
 export const isCohesionScreen = (info: CohesionAction | Screen): info is Screen =>
   info.action === ActionType.screen

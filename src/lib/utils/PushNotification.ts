@@ -7,6 +7,7 @@ import { PendingPushNotification } from "lib/store/PendingPushNotificationModel"
 import { Platform } from "react-native"
 import { getDeviceId } from "react-native-device-info"
 import PushNotification, { ReceivedNotification } from "react-native-push-notification"
+import { SegmentTrackingProvider } from "./track/SegmentTrackingProvider"
 
 export const PUSH_NOTIFICATION_TOKEN = "PUSH_NOTIFICATION_TOKEN"
 export const HAS_PENDING_NOTIFICATION = "HAS_PENDING_NOTIFICATION"
@@ -164,6 +165,17 @@ export const handleReceivedNotification = (
       delete newNotification.finish
       GlobalStore.actions.pendingPushNotification.setPendingPushNotification(newNotification)
       return
+    }
+    // track notification tapped event only in android
+    // ios handles it in the native side
+    if (Platform.OS === "android") {
+      SegmentTrackingProvider.postEvent({
+        event_name: "notification tapped",
+        label: notification.data.label,
+        url: notification.data.url,
+        UIApplicationState: notification.foreground ? "active" : "background",
+        message: notification.message,
+      })
     }
     const hasUrl = !!notification.data.url
     if (isLoggedIn && hasUrl) {
