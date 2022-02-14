@@ -16,9 +16,6 @@ Links:
 
 We use `@testing-library/react-native` and our helper `renderWithWrappersTL`.
 
-See:
+Links:
 
-- [](src/palette/elements/Dialog/Dialog.tests.tsx)
-- src/palette/elements/Dialog/Dialog.tests.tsx
-- <a>src/palette/elements/Dialog/Dialog.tests.tsx</a>
-- <src/palette/elements/Dialog/Dialog.tests.tsx>
+- [Dialog.tests.tsx](src/palette/elements/Dialog/Dialog.tests.tsx)
