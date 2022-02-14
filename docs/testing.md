@@ -28,16 +28,15 @@ Creates query Renderer
 
 has an act that resolves the first request that's being made.
 
-! When we have consecutive requests setupTestWrapperTL doesnot work
-because it creates the environment inside.
-While we need to create our own environment in this case.
+! When we have consecutive requests setupTestWrapperTL doesnot work because it creates the environment inside.
 
+We need to create our own environment in this case:
 So in this case we'd use renderWithWrappersTL and create our own environments.
 
 Example of using multiple environments: ContactInformation.tests.tsx
 
 setupJest:
-we have initialisations of mocks such as
+We have initialisations of mocks such as
 
 ```
  jest.mock("lib/relay/createEnvironment", () => {
