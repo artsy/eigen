@@ -22,7 +22,7 @@ export const InfoModalScreen: React.FC<Props> = ({
   const { safeAreaInsets } = useScreenDimensions()
   return (
     <FancyModal fullScreen visible={visible} animationPosition="right">
-      <FancyModalHeader onLeftButtonPress={goBack} hideBottomDivider />
+      <FancyModalHeader onLeftButtonPress={onDismiss} hideBottomDivider />
       <ScrollView>
         <Box pt={safeAreaInsets.top} pb={safeAreaInsets.bottom} px={2} my={-2}>
           <Box my={0}>
