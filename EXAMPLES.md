@@ -21,3 +21,4 @@ See:
 - [](src/palette/elements/Dialog/Dialog.tests.tsx)
 - src/palette/elements/Dialog/Dialog.tests.tsx
 - <a>src/palette/elements/Dialog/Dialog.tests.tsx</a>
+- <src/palette/elements/Dialog/Dialog.tests.tsx>
