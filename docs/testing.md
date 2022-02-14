@@ -8,7 +8,7 @@ We have 3 ways of testing relay components:
 
 1. Components using both RelayQueryRenderer & relay hooks !
 
-## Case 1.
+## Case 1: Testing components using RelayQueryRenderer
 
 renderWithWrappersTL : renderWithWrappers(TestingLibrary)
 All our wrappeprs
