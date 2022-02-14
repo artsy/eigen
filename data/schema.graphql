@@ -692,6 +692,7 @@ type Article implements Node {
   keywords: [String!]!
   layout: ArticleLayout!
   media: ArticleMedia
+  newsSource: ArticleNewsSource
   postscript: String
   publishedAt(
     format: String
@@ -793,6 +794,11 @@ type ArticleMedia {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+  url: String
+}
+
+type ArticleNewsSource {
+  title: String
   url: String
 }
 
