@@ -1,16 +1,6 @@
 import { OwnerType } from "@artsy/cohesion"
 import { ArtistSeries_artistSeries } from "__generated__/ArtistSeries_artistSeries.graphql"
 import { ArtistSeriesQuery } from "__generated__/ArtistSeriesQuery.graphql"
-import { StickyHeaderPage } from "lib/Components/StickyHeaderPage"
-import { defaultEnvironment } from "lib/relay/createEnvironment"
-import { ArtistSeriesArtworksFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesArtworks"
-import { ArtistSeriesHeaderFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesHeader"
-import { ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
-import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
-import { ProvideScreenTracking, Schema } from "lib/utils/track"
-import { Box, Flex, Separator, Spacer, Text } from "palette"
-import React, { useState } from "react"
-
 import { ArtworkFilterNavigator, FilterModalMode } from "lib/Components/ArtworkFilter"
 import {
   ArtworkFiltersStoreProvider,
@@ -18,9 +8,18 @@ import {
 } from "lib/Components/ArtworkFilter/ArtworkFilterStore"
 import { useSelectedFiltersCount } from "lib/Components/ArtworkFilter/useArtworkFilters"
 import { ArtworksFilterHeader } from "lib/Components/ArtworkGrids/ArtworksFilterHeader"
+import { StickyHeaderPage } from "lib/Components/StickyHeaderPage"
+import { defaultEnvironment } from "lib/relay/createEnvironment"
+import { ArtistSeriesArtworksFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesArtworks"
+import { ArtistSeriesHeaderFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesHeader"
+import { ArtistSeriesMetaFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMeta"
+import { ArtistSeriesMoreSeriesFragmentContainer } from "lib/Scenes/ArtistSeries/ArtistSeriesMoreSeries"
 import { PlaceholderBox, PlaceholderGrid, PlaceholderText } from "lib/utils/placeholders"
 import { renderWithPlaceholder } from "lib/utils/renderWithPlaceholder"
+import { ProvideScreenTracking, Schema } from "lib/utils/track"
 import { OwnerEntityTypes, PageNames } from "lib/utils/track/schema"
+import { Box, Flex, Separator, Spacer, Text } from "palette"
+import React, { useState } from "react"
 import { createFragmentContainer, graphql, QueryRenderer } from "react-relay"
 import { useTracking } from "react-tracking"
 
@@ -104,10 +103,12 @@ export const ArtistSeries: React.FC<ArtistSeriesProps> = (props) => {
           ) : undefined
         }
         stickyHeaderContent={
-          <ArtworksFilterHeader
-            selectedFiltersCount={selectedFiltersCount}
-            onFilterPress={openFilterArtworksModal}
-          />
+          <Flex backgroundColor="white">
+            <ArtworksFilterHeader
+              selectedFiltersCount={selectedFiltersCount}
+              onFilterPress={openFilterArtworksModal}
+            />
+          </Flex>
         }
       >
         <Flex px={2} mt={2}>
