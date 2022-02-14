@@ -98,7 +98,7 @@ describe("TagArtworks", () => {
     fireEvent.press(getByText("Sort & Filter"))
     fireEvent.press(getByText("Sort By"))
     fireEvent.press(getByText("Recently Added"))
-    fireEvent.press(getByText("Apply Filters"))
+    fireEvent.press(getByText("Show Results"))
 
     mockEnvironmentPayload(environment, {
       FilterArtworksConnection() {
