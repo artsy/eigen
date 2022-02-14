@@ -16,7 +16,7 @@ type NativeIOSTrackingEventID =
       event_name: string
       UIApplicationState?: string
       url?: string
-      message?: string | object
+      message?: string
       label?: string
     }
 

@@ -174,7 +174,7 @@ export const handleReceivedNotification = (
         label: notification.data.label,
         url: notification.data.url,
         UIApplicationState: notification.foreground ? "active" : "background",
-        message: notification.message,
+        message: notification?.message?.toString(),
       })
     }
     const hasUrl = !!notification.data.url
