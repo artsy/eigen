@@ -687,6 +687,7 @@ type Article implements Node {
   internalID: ID!
   keywords: [String!]!
   layout: ArticleLayout!
+  media: ArticleMedia
   postscript: String
   publishedAt(
     format: String
@@ -705,7 +706,9 @@ type Article implements Node {
   ): [Article!]!
   sections: [ArticleSections!]!
   series: ArticleSeries
+  seriesArticle: Article
   slug: String
+  sponsor: ArticleSponsor
   thumbnailImage: Image
   thumbnailTeaser: String
   thumbnailTitle: String
@@ -771,6 +774,22 @@ enum ArticleLayout {
   SERIES
   STANDARD
   VIDEO
+}
+
+type ArticleMedia {
+  coverImage: Image
+  credits: String
+  description: String
+  duration: String
+  releaseDate(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  url: String
 }
 
 type ArticleSectionCallout {
@@ -873,6 +892,16 @@ type ArticleSeries {
 enum ArticleSorts {
   PUBLISHED_AT_ASC
   PUBLISHED_AT_DESC
+}
+
+type ArticleSponsor {
+  description: String
+  partnerCondensedLogo: String
+  partnerDarkLogo: String
+  partnerLightLogo: String
+  partnerLogoLink: String
+  pixelTrackingCode: String
+  subTitle: String
 }
 
 type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Searchable {

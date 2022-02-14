@@ -21,13 +21,19 @@ Example of situations where **you do need** to add a new route:
 
 #### How to add a global app route
 
-1. Add route to `routes.tsx`. Make sure that the route you are adding is the same as in **Force**
+1. Add the new route to `routes.tsx`.
+
    ```typescript
    ...
-   new RouteMatcher("/my-screen", "MyScreen"),
+   addRoute("/my-screen", "MyScreen"),
+   // addWebViewRoute("/my-web-view-screen", "MyWebViewScreen"), // In case the new route is a webview
    ...
    ```
+
    > Don't forget to write a test at route.tests.tsx
+
+   > Ideally, the route you are adding, should match the one in **Force**. This is because we would like _users who receive a deep link into the app and do not have the app installed_, to be redirected to the web version of the route in Web.
+
 2. Add the route to `src/main/AndroidManifest.xml`. This step is required to enable deep linking on Android
    ```xml
    ...
