@@ -159,13 +159,6 @@ export const handleReceivedNotification = (
   }
   const isLoggedIn = !!unsafe_getUserAccessToken()
   if (notification.userInteraction) {
-    if (!isLoggedIn) {
-      // removing finish because we do not use it on android and we don't want to serialise functions at this time
-      const newNotification = { ...notification, finish: undefined, tappedAt: Date.now() }
-      delete newNotification.finish
-      GlobalStore.actions.pendingPushNotification.setPendingPushNotification(newNotification)
-      return
-    }
     // track notification tapped event only in android
     // ios handles it in the native side
     if (Platform.OS === "android") {
@@ -176,6 +169,13 @@ export const handleReceivedNotification = (
         UIApplicationState: notification.foreground ? "active" : "background",
         message: notification?.message?.toString(),
       })
+    }
+    if (!isLoggedIn) {
+      // removing finish because we do not use it on android and we don't want to serialise functions at this time
+      const newNotification = { ...notification, finish: undefined, tappedAt: Date.now() }
+      delete newNotification.finish
+      GlobalStore.actions.pendingPushNotification.setPendingPushNotification(newNotification)
+      return
     }
     const hasUrl = !!notification.data.url
     if (isLoggedIn && hasUrl) {
