@@ -14,17 +14,17 @@ Links should point to specific commits, and not a branch (in case the branch or 
 ## Contents
 
 - [Current Preferred Practices](#current-preferred-practices)
-  - [Use React Native for new feature development](#use-react-native-for-new-feature-development)
-  - [Leverage TypeScript to prevent runtime bugs](#leverage-typescript-to-prevent-runtime-bugs)
-  - [Keep File Structure Organized (in progress)](#keep-file-structure-organized-in-progress)
-  - [Use Relay for Network Requests](#use-relay-for-network-requests)
-  - [Prefer Relay containers (Higher Order Components) over Hooks](#prefer-relay-containers--higher-order-components--over-hooks)
-  - [styled-system / styled-components](#styled-system---styled-components)
-  - [Write unit tests for new components](#write-unit-tests-for-new-components)
-  - [Use the Native Switchboard for Navigation (for now...)](#use-the-native-switchboard-for-navigation--for-now-)
-  - [Analytics](#analytics)
-    - [Follow the tracking docs and examples](#follow-the-tracking-docs-and-examples)
-  - [Miscellaneous](#miscellaneous)
+- [Use React Native for new feature development](#use-react-native-for-new-feature-development)
+- [Leverage TypeScript to prevent runtime bugs](#leverage-typescript-to-prevent-runtime-bugs)
+- [Keep File Structure Organized (in progress)](#keep-file-structure-organized-in-progress)
+- [Use Relay for Network Requests](#use-relay-for-network-requests)
+- [Prefer Relay containers (Higher Order Components) over Hooks](#prefer-relay-containers--higher-order-components--over-hooks)
+- [styled-system / styled-components](#styled-system---styled-components)
+- [Write unit tests for new components](#write-unit-tests-for-new-components)
+- [Use the Native Switchboard for Navigation (for now...)](#use-the-native-switchboard-for-navigation--for-now-)
+- [Analytics](#analytics)
+  - [Follow the tracking docs and examples](#follow-the-tracking-docs-and-examples)
+- [Miscellaneous](#miscellaneous)
 
 ## Current Preferred Practices
 
@@ -72,9 +72,46 @@ touch .i-am-helping-out-with-the-strictness-migration
 
 ### Keep File Structure Organized (in progress)
 
-Everything in `src/` is React Native. Within this folder, things can be a bit of a mess. We are working on cleaning it up. Check back here for more later.
+Everything in `src/` is React Native. Within this folder things can be a bit of a mess and we are working on improving that.
 
-**TODO**: Figure out what we want our directory structure to be and define it here.
+According to the React convention we capitalise **Components and Component Folders**, but keep everything else lowercase.
+
+For example migrations, routes, state would be folders with small letter while MyComponent.tsx would start with a Capital letter.
+
+```
+├── MyComponentFolder
+│   ├── MyComponent.tsx
+│   ├── MyComponent.tests.tsx
+│   ├── mutations
+│   |  ├── mutationFunction.ts
+│   ├── state
+│   |  ├── stateFunction.ts
+│   ├── utils
+│   |  ├── utilFunction.ts
+├── …
+```
+
+Another example is:
+
+If we have a buttons folder which has many ButtonFile.tsx inside we keep a small letter. 
+
+```
+├── buttons
+│   ├── RedButton.tsx
+│   ├── GreenButton.tsx
+│   ├── YellowButton.tsx
+├── …
+```
+However, if we have a Button folder which only exports Button.tsx we write that with a capital letter.
+
+```
+├── Button
+│   ├── Button.tsx
+│   ├── Button.tests.tsx
+
+```
+
+TODO: Add a migration guide? 
 
 ### Use Relay for Network Requests
 
