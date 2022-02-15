@@ -2627,6 +2627,7 @@ type BidderPositionMaxBid {
   # A formatted price with various currency formatting options.
   amount(
     decimal: String = "."
+    disambiguate: Boolean = false
 
     # Allows control of symbol position (%v = value, %s = symbol)
     format: String = "%s%v"
@@ -2658,6 +2659,7 @@ type BidderPositionSuggestedNextBid {
   # A formatted price with various currency formatting options.
   amount(
     decimal: String = "."
+    disambiguate: Boolean = false
 
     # Allows control of symbol position (%v = value, %s = symbol)
     format: String = "%s%v"
@@ -2692,6 +2694,7 @@ type BuyersPremium {
   # A formatted price with various currency formatting options.
   amount(
     decimal: String = "."
+    disambiguate: Boolean = false
 
     # Allows control of symbol position (%v = value, %s = symbol)
     format: String = "%s%v"
@@ -7842,6 +7845,7 @@ type HighestBid {
   # A formatted price with various currency formatting options.
   amount(
     decimal: String = "."
+    disambiguate: Boolean = false
 
     # Allows control of symbol position (%v = value, %s = symbol)
     format: String = "%s%v"
@@ -8376,6 +8380,7 @@ type Invoice implements Node {
   # A formatted price with various currency formatting options.
   total(
     decimal: String = "."
+    disambiguate: Boolean = false
 
     # Allows control of symbol position (%v = value, %s = symbol)
     format: String = "%s%v"
@@ -11921,6 +11926,7 @@ type SaleArtworkCurrentBid {
   # A formatted price with various currency formatting options.
   amount(
     decimal: String = "."
+    disambiguate: Boolean = false
 
     # Allows control of symbol position (%v = value, %s = symbol)
     format: String = "%s%v"
@@ -11949,6 +11955,7 @@ type SaleArtworkHighestBid {
   # A formatted price with various currency formatting options.
   amount(
     decimal: String = "."
+    disambiguate: Boolean = false
 
     # Allows control of symbol position (%v = value, %s = symbol)
     format: String = "%s%v"
@@ -11973,6 +11980,7 @@ type SaleArtworkHighEstimate {
   # A formatted price with various currency formatting options.
   amount(
     decimal: String = "."
+    disambiguate: Boolean = false
 
     # Allows control of symbol position (%v = value, %s = symbol)
     format: String = "%s%v"
@@ -11992,6 +12000,7 @@ type SaleArtworkLowEstimate {
   # A formatted price with various currency formatting options.
   amount(
     decimal: String = "."
+    disambiguate: Boolean = false
 
     # Allows control of symbol position (%v = value, %s = symbol)
     format: String = "%s%v"
@@ -12011,6 +12020,7 @@ type SaleArtworkMinimumNextBid {
   # A formatted price with various currency formatting options.
   amount(
     decimal: String = "."
+    disambiguate: Boolean = false
 
     # Allows control of symbol position (%v = value, %s = symbol)
     format: String = "%s%v"
@@ -12030,6 +12040,7 @@ type SaleArtworkOpeningBid {
   # A formatted price with various currency formatting options.
   amount(
     decimal: String = "."
+    disambiguate: Boolean = false
 
     # Allows control of symbol position (%v = value, %s = symbol)
     format: String = "%s%v"
@@ -12049,6 +12060,7 @@ type SaleArtworkReserve {
   # A formatted price with various currency formatting options.
   amount(
     decimal: String = "."
+    disambiguate: Boolean = false
 
     # Allows control of symbol position (%v = value, %s = symbol)
     format: String = "%s%v"
