@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash eb4ba75730e048d9b5508926d8db6a2e */
+/* @relayHash ec4a7ad68d403eee045d86b9754921f4 */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -79,7 +79,7 @@ fragment MyCollectionArtworkGridItem_artwork on Artwork {
   date
 }
 
-fragment MyCollectionArtworkListItem_artwork on Artwork {
+fragment MyCollectionArtworksListItem_artwork on Artwork {
   internalID
   title
   slug
@@ -104,7 +104,7 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
   date
 }
 
-fragment MyCollectionArtworkList_myCollectionConnection on MyCollectionConnection {
+fragment MyCollectionArtworksList_myCollectionConnection on MyCollectionConnection {
   pageInfo {
     hasNextPage
     startCursor
@@ -112,7 +112,7 @@ fragment MyCollectionArtworkList_myCollectionConnection on MyCollectionConnectio
   }
   edges {
     node {
-      ...MyCollectionArtworkListItem_artwork
+      ...MyCollectionArtworksListItem_artwork
       title
       slug
       id
@@ -164,7 +164,7 @@ fragment MyCollection_me on Me {
       }
       cursor
     }
-    ...MyCollectionArtworkList_myCollectionConnection
+    ...MyCollectionArtworksList_myCollectionConnection
     ...InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX
     pageInfo {
       endCursor
@@ -545,7 +545,7 @@ return {
     ]
   },
   "params": {
-    "id": "eb4ba75730e048d9b5508926d8db6a2e",
+    "id": "ec4a7ad68d403eee045d86b9754921f4",
     "metadata": {
       "relayTestingSelectionTypeInfo": {
         "me": {

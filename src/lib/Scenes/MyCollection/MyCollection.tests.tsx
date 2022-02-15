@@ -17,7 +17,7 @@ import React from "react"
 import { graphql, QueryRenderer } from "react-relay"
 import { act, ReactTestRenderer } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils"
-import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
+import { MyCollectionArtworksList } from "./Components/MyCollectionArtworksList"
 import { MyCollectionSearchBar } from "./Components/MyCollectionSearchBar"
 import { MyCollectionContainer } from "./MyCollection"
 
@@ -149,11 +149,11 @@ describe("MyCollection", () => {
 
       act(() => fireEvent.press(tree.root.findByType(GridViewIcon)))
 
-      expect(MyCollectionArtworkList).toBeDefined()
+      expect(MyCollectionArtworksList).toBeDefined()
 
       act(() => fireEvent.press(tree.root.findByType(ListViewIcon)))
 
-      expect(MyCollectionArtworkList).toBeDefined()
+      expect(MyCollectionArtworksList).toBeDefined()
     })
   })
 

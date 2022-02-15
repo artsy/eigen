@@ -490,3 +490,21 @@ describe("App version Versions.AddArtworkSubmissionModel", () => {
     })
   })
 })
+
+describe("App version Versions.AddArtworkViewOption", () => {
+  const migrationToTest = Versions.AddArtworkViewOption
+
+  it("adds UserPreferences to state", () => {
+    const previousState = migrate({
+      state: { version: 0 },
+      toVersion: migrationToTest - 1,
+    }) as any
+
+    const migratedState = migrate({
+      state: previousState,
+      toVersion: migrationToTest,
+    }) as any
+
+    expect(migratedState.userPreferences.artworkViewOption).toEqual("grid")
+  })
+})

@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionArtworkListItem_artwork = {
+export type MyCollectionArtworksListItem_artwork = {
     readonly internalID: string;
     readonly title: string | null;
     readonly slug: string;
@@ -26,12 +26,12 @@ export type MyCollectionArtworkListItem_artwork = {
     readonly width: string | null;
     readonly height: string | null;
     readonly date: string | null;
-    readonly " $refType": "MyCollectionArtworkListItem_artwork";
+    readonly " $refType": "MyCollectionArtworksListItem_artwork";
 };
-export type MyCollectionArtworkListItem_artwork$data = MyCollectionArtworkListItem_artwork;
-export type MyCollectionArtworkListItem_artwork$key = {
-    readonly " $data"?: MyCollectionArtworkListItem_artwork$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkListItem_artwork">;
+export type MyCollectionArtworksListItem_artwork$data = MyCollectionArtworksListItem_artwork;
+export type MyCollectionArtworksListItem_artwork$key = {
+    readonly " $data"?: MyCollectionArtworksListItem_artwork$data | undefined;
+    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworksListItem_artwork">;
 };
 
 
@@ -48,7 +48,7 @@ return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "MyCollectionArtworkListItem_artwork",
+  "name": "MyCollectionArtworksListItem_artwork",
   "selections": [
     (v0/*: any*/),
     {
@@ -187,5 +187,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '0a3dcae78ab8dbff81b7cf4b2cca246e';
+(node as any).hash = '3f92c1e362c29a453e1d32ba2959aa80';
 export default node;

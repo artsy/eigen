@@ -1,5 +1,5 @@
 import { tappedCollectedArtwork } from "@artsy/cohesion"
-import { MyCollectionArtworkListItem_artwork$key } from "__generated__/MyCollectionArtworkListItem_artwork.graphql"
+import { MyCollectionArtworksListItem_artwork$key } from "__generated__/MyCollectionArtworksListItem_artwork.graphql"
 import OpaqueImageView from "lib/Components/OpaqueImageView/OpaqueImageView"
 import { navigate } from "lib/navigation/navigate"
 import { Flex, NoArtworkIcon, Text, Touchable } from "palette"
@@ -10,12 +10,12 @@ import { graphql } from "relay-runtime"
 
 export const ARTWORK_LIST_IMAGE_SIZE = 80
 
-export const MyCollectionArtworkListItem: React.FC<{
-  artwork: MyCollectionArtworkListItem_artwork$key
+export const MyCollectionArtworksListItem: React.FC<{
+  artwork: MyCollectionArtworksListItem_artwork$key
 }> = ({ ...restProps }) => {
   const { trackEvent } = useTracking()
 
-  const artwork = useFragment<MyCollectionArtworkListItem_artwork$key>(
+  const artwork = useFragment<MyCollectionArtworksListItem_artwork$key>(
     artworkFragment,
     restProps.artwork
   )
@@ -88,7 +88,7 @@ export const MyCollectionArtworkListItem: React.FC<{
 }
 
 const artworkFragment = graphql`
-  fragment MyCollectionArtworkListItem_artwork on Artwork {
+  fragment MyCollectionArtworksListItem_artwork on Artwork {
     internalID
     title
     slug

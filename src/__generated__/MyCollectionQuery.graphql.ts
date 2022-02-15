@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 0016ad171ec4739380ffa1e9183582d1 */
+/* @relayHash 9b02e354abe7dc619dea37af412bc20a */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -79,7 +79,7 @@ fragment MyCollectionArtworkGridItem_artwork on Artwork {
   date
 }
 
-fragment MyCollectionArtworkListItem_artwork on Artwork {
+fragment MyCollectionArtworksListItem_artwork on Artwork {
   internalID
   title
   slug
@@ -104,7 +104,7 @@ fragment MyCollectionArtworkListItem_artwork on Artwork {
   date
 }
 
-fragment MyCollectionArtworkList_myCollectionConnection on MyCollectionConnection {
+fragment MyCollectionArtworksList_myCollectionConnection on MyCollectionConnection {
   pageInfo {
     hasNextPage
     startCursor
@@ -112,7 +112,7 @@ fragment MyCollectionArtworkList_myCollectionConnection on MyCollectionConnectio
   }
   edges {
     node {
-      ...MyCollectionArtworkListItem_artwork
+      ...MyCollectionArtworksListItem_artwork
       title
       slug
       id
@@ -164,7 +164,7 @@ fragment MyCollection_me on Me {
       }
       cursor
     }
-    ...MyCollectionArtworkList_myCollectionConnection
+    ...MyCollectionArtworksList_myCollectionConnection
     ...InfiniteScrollArtworksGrid_myCollectionConnection_15nBhX
     pageInfo {
       endCursor
@@ -521,7 +521,7 @@ return {
     ]
   },
   "params": {
-    "id": "0016ad171ec4739380ffa1e9183582d1",
+    "id": "9b02e354abe7dc619dea37af412bc20a",
     "metadata": {},
     "name": "MyCollectionQuery",
     "operationKind": "query",

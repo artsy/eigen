@@ -12,7 +12,7 @@ import { Button, Flex } from "palette"
 import React from "react"
 import { graphql, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { MyCollectionArtworkList } from "./Components/MyCollectionArtworkList"
+import { MyCollectionArtworksList } from "./Components/MyCollectionArtworksList"
 import { MyCollectionArtworkEdge } from "./MyCollection"
 import { localSortAndFilterArtworks } from "./utils/localArtworkSortAndFilter"
 
@@ -75,7 +75,7 @@ export const MyCollectionArtworks: React.FC<MyCollectionArtworksProps> = ({
           />
         </Flex>
       ) : (
-        <MyCollectionArtworkList
+        <MyCollectionArtworksList
           myCollectionConnection={me.myCollectionConnection}
           hasMore={relay.hasMore}
           loadMore={relay.loadMore}

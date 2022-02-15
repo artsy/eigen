@@ -32,7 +32,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { LayoutAnimation, RefreshControl } from "react-native"
 import { createPaginationContainer, graphql, QueryRenderer, RelayPaginationProp } from "react-relay"
 import { useTracking } from "react-tracking"
-import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworkListItem"
+import { ARTWORK_LIST_IMAGE_SIZE } from "./Components/MyCollectionArtworksListItem"
 import { MyCollectionSearchBar } from "./Components/MyCollectionSearchBar"
 import { MyCollectionArtworks } from "./MyCollectionArtworks"
 import { useLocalArtworkFilter } from "./utils/localArtworkSortAndFilter"
@@ -225,7 +225,7 @@ export const MyCollectionContainer = createPaginationContainer(
               }
             }
           }
-          ...MyCollectionArtworkList_myCollectionConnection
+          ...MyCollectionArtworksList_myCollectionConnection
           ...InfiniteScrollArtworksGrid_myCollectionConnection @arguments(skipArtworkGridItem: true)
         }
       }

@@ -4,7 +4,7 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionArtworkList_myCollectionConnection = {
+export type MyCollectionArtworksList_myCollectionConnection = {
     readonly pageInfo: {
         readonly hasNextPage: boolean;
         readonly startCursor: string | null;
@@ -28,15 +28,15 @@ export type MyCollectionArtworkList_myCollectionConnection = {
             readonly width: string | null;
             readonly height: string | null;
             readonly date: string | null;
-            readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkListItem_artwork">;
+            readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworksListItem_artwork">;
         } | null;
     } | null> | null;
-    readonly " $refType": "MyCollectionArtworkList_myCollectionConnection";
+    readonly " $refType": "MyCollectionArtworksList_myCollectionConnection";
 };
-export type MyCollectionArtworkList_myCollectionConnection$data = MyCollectionArtworkList_myCollectionConnection;
-export type MyCollectionArtworkList_myCollectionConnection$key = {
-    readonly " $data"?: MyCollectionArtworkList_myCollectionConnection$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkList_myCollectionConnection">;
+export type MyCollectionArtworksList_myCollectionConnection$data = MyCollectionArtworksList_myCollectionConnection;
+export type MyCollectionArtworksList_myCollectionConnection$key = {
+    readonly " $data"?: MyCollectionArtworksList_myCollectionConnection$data | undefined;
+    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworksList_myCollectionConnection">;
 };
 
 
@@ -45,7 +45,7 @@ const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "MyCollectionArtworkList_myCollectionConnection",
+  "name": "MyCollectionArtworksList_myCollectionConnection",
   "selections": [
     {
       "alias": null,
@@ -204,7 +204,7 @@ const node: ReaderFragment = {
             {
               "args": null,
               "kind": "FragmentSpread",
-              "name": "MyCollectionArtworkListItem_artwork"
+              "name": "MyCollectionArtworksListItem_artwork"
             }
           ],
           "storageKey": null
@@ -216,5 +216,5 @@ const node: ReaderFragment = {
   "type": "MyCollectionConnection",
   "abstractKey": null
 };
-(node as any).hash = '40dbb09f215530f70a4d871613fc55a9';
+(node as any).hash = '13513327e65619af6c6c76753e012a16';
 export default node;

@@ -30,7 +30,7 @@ export type MyCollection_me = {
                 } | null;
             } | null;
         } | null> | null;
-        readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkList_myCollectionConnection" | "InfiniteScrollArtworksGrid_myCollectionConnection">;
+        readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworksList_myCollectionConnection" | "InfiniteScrollArtworksGrid_myCollectionConnection">;
     } | null;
     readonly " $refType": "MyCollection_me";
 };
@@ -261,7 +261,7 @@ return {
         {
           "args": null,
           "kind": "FragmentSpread",
-          "name": "MyCollectionArtworkList_myCollectionConnection"
+          "name": "MyCollectionArtworksList_myCollectionConnection"
         },
         {
           "args": [
@@ -282,5 +282,5 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = 'b1087901bc1081b997432b35a5e88bca';
+(node as any).hash = '26d538893cbb0827777789aa3d798dab';
 export default node;
