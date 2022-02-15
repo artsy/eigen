@@ -70,7 +70,11 @@ export const LoadFailureView: React.FC<LoadFailureViewProps> = ({ error, onRetry
           <ReloadIcon height={25} width={25} />
         </Animated.View>
       </Touchable>
-      {!!__DEV__ && <Text>Error: {error?.message}</Text>}
+      {!!__DEV__ && (
+        <Flex mx={2}>
+          <Text>Error: {error?.message}</Text>
+        </Flex>
+      )}
     </Flex>
   )
 }

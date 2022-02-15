@@ -82,7 +82,7 @@ export const ContactInformation: React.FC<{
           <PhoneInput
             style={{ flex: 1 }}
             title="Phone number"
-            placeholder="(000) 000 0000"
+            placeholder="(000) 000-0000"
             onChangeText={(e) => setFieldValue("userPhone", e)}
             value={values.userPhone}
             setValidation={() => {

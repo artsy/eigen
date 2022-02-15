@@ -30,7 +30,7 @@ export const CreateSavedSearchModal: React.FC<CreateSavedSearchModalProps> = (pr
 
     popover.show({
       title: "Your alert has been created.",
-      message: "You can edit your alerts with your Profile.",
+      message: "Edit your alerts in your profile, in Settings.",
       onPress: async () => {
         const options: NavigateOptions = {
           popToRootTabView: true,

@@ -674,6 +674,10 @@ type Article implements Node {
   # The byline for the article. Defaults to "Artsy Editorial" if no authors are present.
   byline: String
   cached: Int
+  channelArticles(
+    # Number of articles to return
+    size: Int = 12
+  ): [Article!]!
   channelID: String
   contributingAuthors: [Author]
   description: String
@@ -688,6 +692,7 @@ type Article implements Node {
   keywords: [String!]!
   layout: ArticleLayout!
   media: ArticleMedia
+  newsSource: ArticleNewsSource
   postscript: String
   publishedAt(
     format: String
@@ -789,6 +794,11 @@ type ArticleMedia {
     # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     timezone: String
   ): String
+  url: String
+}
+
+type ArticleNewsSource {
+  title: String
   url: String
 }
 
@@ -10762,6 +10772,7 @@ type Query {
   articlesConnection(
     after: String
     before: String
+    channelId: String
     featured: Boolean
     first: Int
 
@@ -13742,6 +13753,7 @@ type Viewer {
   articlesConnection(
     after: String
     before: String
+    channelId: String
     featured: Boolean
     first: Int
 
