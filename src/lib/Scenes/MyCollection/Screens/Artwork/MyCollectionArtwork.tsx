@@ -5,9 +5,8 @@ import { goBack, navigate, popToRoot } from "lib/navigation/navigate"
 import { useFeatureFlag } from "lib/store/GlobalStore"
 import { PlaceholderBox, ProvidePlaceholderContext } from "lib/utils/placeholders"
 import { Flex, Text } from "palette/elements"
-import React, { Suspense, useCallback, useState } from "react"
+import React, { Suspense, useCallback } from "react"
 import { graphql, useLazyLoadQuery } from "react-relay"
-import { ArtworkSubmissionStatusFAQ } from "./ArtworkSubmissionStatusFAQ"
 import { MyCollectionArtworkHeader } from "./NewComponents/NewMyCollectionArtworkHeader"
 import { OldMyCollectionArtworkQueryRenderer } from "./OldMyCollectionArtwork"
 
@@ -48,10 +47,9 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({ artwork
       },
     })
   }, [data.artwork])
-  const [isInfoModalScreenVisible, setIsInfoModalScreenVisible] = useState(false)
 
   const handleFAQ = () => {
-    setIsInfoModalScreenVisible(true)
+    navigate("/info", { passProps: { component: "ArtworkSubmissionStatusFAQ" } })
   }
 
   return (
@@ -62,12 +60,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({ artwork
         onRightButtonPress={handleEdit}
       />
       <Text onPress={handleFAQ}>What is this?</Text>
-      {!!isInfoModalScreenVisible && (
-        <ArtworkSubmissionStatusFAQ
-          visible={isInfoModalScreenVisible}
-          onDismis={() => setIsInfoModalScreenVisible(false)}
-        />
-      )}
       <StickyTabPage
         tabs={[
           {

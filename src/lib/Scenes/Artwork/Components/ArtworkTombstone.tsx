@@ -41,12 +41,12 @@ export class ArtworkTombstone extends React.Component<
     action_type: Schema.ActionTypes.Tap,
     context_module: Schema.ContextModules.ArtworkTombstone,
   }))
-  handleClassificationTap(href: string) {
-    navigate(href)
+  handleClassificationTap(href: string, component: string) {
+    navigate(href, { passProps: { component } })
   }
 
   showAttributionClassFAQ() {
-    navigate("/artwork-classifications")
+    navigate("/info", { passProps: { component: "ArtworkAttributionClassFAQ" } })
   }
 
   showMoreArtists = () => {

@@ -129,7 +129,6 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/artist/:artistID", "Artist"),
     addRoute("/artist/:artistID/shows", "ArtistShows"),
     addRoute("/artwork/:artworkID", "Artwork"),
-    addRoute("/artwork/:artworkID/medium", "ArtworkMedium"),
     addRoute("/artist/:artistID/auction-results", "Artist", (params) => ({
       ...params,
       initialTab: "Insights",
@@ -242,6 +241,8 @@ function getDomainMap(): Record<string, RouteMatcher[] | null> {
     addRoute("/user/purchases/:orderID", "OrderDetails"),
     addRoute("/my-profile/saved-search-alerts", "SavedSearchAlertsList"),
     addRoute("/my-profile/saved-search-alerts/:savedSearchAlertId", "EditSavedSearchAlert"),
+
+    addRoute("/info", "InfoModalScreen"),
     unsafe_getFeatureFlag("AROptionsUseReactNativeWebView")
       ? addWebViewRoute("/orders/:orderID", {
           mimicBrowserBackButton: true,

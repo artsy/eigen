@@ -24,7 +24,6 @@ import { ArtistSeriesFullArtistSeriesListQueryRenderer } from "./Scenes/ArtistSe
 import { ArtistShows2QueryRenderer } from "./Scenes/ArtistShows/ArtistShows2"
 import { ArtworkQueryRenderer, ArtworkScreenQuery } from "./Scenes/Artwork/Artwork"
 import { ArtworkAttributionClassFAQQueryRenderer } from "./Scenes/ArtworkAttributionClassFAQ"
-import { ArtworkMediumQueryRenderer } from "./Scenes/ArtworkMedium"
 import { AuctionResultQueryRenderer } from "./Scenes/AuctionResult/AuctionResult"
 import {
   AuctionResultsForArtistsYouFollowQueryRenderer,
@@ -43,6 +42,7 @@ import { CollectionQueryRenderer } from "./Scenes/Collection/Collection"
 import { CollectionFullFeaturedArtistListQueryRenderer } from "./Scenes/Collection/Components/FullFeaturedArtistList"
 import { Consignments } from "./Scenes/Consignments"
 import { ConsignmentsSubmissionForm } from "./Scenes/Consignments/ConsignmentsHome/ConsignmentsSubmissionForm"
+import { InfoModalScreen } from "./Scenes/Consignments/Screens/SubmitArtworkOverview/ArtworkDetails/InfoModalScreen"
 import { FairQueryRenderer } from "./Scenes/Fair/Fair"
 import { FairAllFollowedArtistsQueryRenderer } from "./Scenes/Fair/FairAllFollowedArtists"
 import { FairArticlesQueryRenderer } from "./Scenes/Fair/FairArticles"
@@ -309,7 +309,6 @@ export const modules = defineModules({
   ArtistArticles: reactModule(ArtistArticlesQueryRenderer),
   ArtistSeries: reactModule(ArtistSeriesQueryRenderer),
   Artwork: reactModule(Artwork, {}, ArtworkScreenQuery),
-  ArtworkMedium: reactModule(ArtworkMediumQueryRenderer),
   ArtworkAttributionClassFAQ: reactModule(ArtworkAttributionClassFAQQueryRenderer),
   Auction: nativeModule(),
   Auction2: reactModule(SaleQueryRenderer, { fullBleed: true }, SaleScreenQuery),
@@ -341,6 +340,7 @@ export const modules = defineModules({
   CitySectionList: reactModule(CitySectionListQueryRenderer),
   Collection: reactModule(CollectionQueryRenderer, { fullBleed: true }),
   ConsignmentsSubmissionForm: reactModule(ConsignmentsSubmissionForm, {}),
+  InfoModalScreen: reactModule(InfoModalScreen),
   Conversation: reactModule(Conversation, { onlyShowInTabName: "inbox" }),
   ConversationDetails: reactModule(ConversationDetailsQueryRenderer),
   Fair: reactModule(FairQueryRenderer, { fullBleed: true }),
