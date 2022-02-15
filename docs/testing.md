@@ -2,22 +2,22 @@
 
 We have 3 ways of testing relay components:
 
-1. Components using RelayQueryRenderer
+1. Components using Higher Order Components (eg. RelayQueryRenderer)
 
 1. Components using relay hooks
 
-1. Components using both RelayQueryRenderer & relay hooks !
+1. Components using both HoC & relay hooks !
 
 Further documentation on testing
 
 https://github.com/artsy/relay-workshop/tree/main/src/exercises/03-Testing-Queries
 
-## Case 1: Testing components using RelayQueryRenderer
+## Case 1: Testing components using Higher Order Components (eg RelayQueryRenderer, RelayFragmentContainer etc.)
 
 renderWithWrappersTL : renderWithWrappers(TestingLibrary)
 All our wrappeprs
 
-setupTestWrapper : abstract some of the boiler of Relay
+setupTestWrapper : abstract some of the boilerplate of Relay
 Component,
 Query
 Variables
