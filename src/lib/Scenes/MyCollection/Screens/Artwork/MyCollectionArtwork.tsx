@@ -48,10 +48,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({ artwork
     })
   }, [data.artwork])
 
-  const handleFAQ = () => {
-    navigate("artwork-submission-status")
-  }
-
   return (
     <Flex flex={1}>
       <FancyModalHeader
@@ -59,7 +55,6 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({ artwork
         rightButtonText="Edit"
         onRightButtonPress={handleEdit}
       />
-      <Text onPress={handleFAQ}> What is this?</Text>
       <StickyTabPage
         tabs={[
           {
