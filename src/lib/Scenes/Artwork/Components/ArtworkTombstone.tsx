@@ -183,7 +183,7 @@ export class ArtworkTombstone extends React.Component<
         {!!artwork.attribution_class && (
           <Sans color="black60" size="3" mt={1}>
             <TouchableWithoutFeedback
-              onPress={() => this.handleClassificationTap("/artwork-classifications")}
+              onPress={() => this.handleClassificationTap("/info", "ArtworkAttributionClassFAQ")}
             >
               <Text style={{ textDecorationLine: "underline" }}>
                 {artwork.attribution_class.shortDescription}
