@@ -88,7 +88,7 @@ export const ArtworkFilterApplyButton: React.FC<ArtworkFilterApplyButtonProps> =
                 <Box width="1" height={20} backgroundColor="white100" mx={1} />
               </>
             )}
-            <InnerButton disabled={disabled} label="Apply Filters" onPress={onPress} />
+            <InnerButton disabled={disabled} label="Show Results" onPress={onPress} />
           </Box>
         </Box>
       </SafeAreaView>

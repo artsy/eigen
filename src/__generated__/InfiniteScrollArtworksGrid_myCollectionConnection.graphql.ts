@@ -31,7 +31,7 @@ export type InfiniteScrollArtworksGrid_myCollectionConnection = {
             readonly width: string | null;
             readonly height: string | null;
             readonly date: string | null;
-            readonly " $fragmentRefs": FragmentRefs<"ArtworkGridItem_artwork" | "MyCollectionArtworkListItem_artwork">;
+            readonly " $fragmentRefs": FragmentRefs<"ArtworkGridItem_artwork" | "MyCollectionArtworkGridItem_artwork">;
         } | null;
     } | null> | null;
     readonly " $refType": "InfiniteScrollArtworksGrid_myCollectionConnection";
@@ -243,7 +243,7 @@ const node: ReaderFragment = {
             {
               "args": null,
               "kind": "FragmentSpread",
-              "name": "MyCollectionArtworkListItem_artwork"
+              "name": "MyCollectionArtworkGridItem_artwork"
             }
           ],
           "storageKey": null
@@ -255,5 +255,5 @@ const node: ReaderFragment = {
   "type": "MyCollectionConnection",
   "abstractKey": null
 };
-(node as any).hash = '7a3277f17802c64e0dfd6ede4bd4bc74';
+(node as any).hash = '8572f92e63bcf38386dc06ef7f540ac6';
 export default node;

@@ -1,33 +1,21 @@
+import { Search_system$key } from "__generated__/Search_system.graphql"
+import { SearchQuery } from "__generated__/SearchQuery.graphql"
 import { useEffect } from "react"
 import { connectStateResults, StateResultsProvided } from "react-instantsearch-core"
-import { RelayRefetchProp } from "react-relay"
+import { RefetchFnDynamic } from "react-relay"
 import { isAlgoliaApiKeyExpiredError } from "./helpers"
 import { AlgoliaSearchResult } from "./types"
 
 interface ContainerProps extends StateResultsProvided<AlgoliaSearchResult> {
-  relay: RelayRefetchProp
+  refetch: RefetchFnDynamic<SearchQuery, Search_system$key>
 }
 
 const Container: React.FC<ContainerProps> = (props) => {
-  const { error, relay } = props
-
-  const refetch = () => {
-    relay.refetch(
-      {},
-      null,
-      (relayError) => {
-        if (relayError) {
-          // TODO: Handle error (for example, show toast message)
-          console.error(relayError)
-        }
-      },
-      { force: true }
-    )
-  }
+  const { error, refetch } = props
 
   useEffect(() => {
     if (isAlgoliaApiKeyExpiredError(error)) {
-      refetch()
+      refetch({}, { fetchPolicy: "network-only" })
     }
   }, [error?.message])
 

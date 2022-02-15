@@ -30,9 +30,10 @@ export const Versions = {
   AddUserPreferences: 18,
   AddVisualClueModel: 19,
   AddArtworkSubmissionModel: 20,
+  AddArtworkViewOption: 21,
 }
 
-export const CURRENT_APP_VERSION = Versions.AddArtworkSubmissionModel
+export const CURRENT_APP_VERSION = Versions.AddArtworkViewOption
 
 export type Migrations = Record<number, (oldState: any) => any>
 export const artsyAppMigrations: Migrations = {
@@ -156,6 +157,9 @@ export const artsyAppMigrations: Migrations = {
         },
       },
     }
+  },
+  [Versions.AddArtworkViewOption]: (state) => {
+    state.userPreferences.artworkViewOption = "grid"
   },
 }
 

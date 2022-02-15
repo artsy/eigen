@@ -96,12 +96,14 @@ const IndividualMessage: React.FC<{
 
 export class MessageGroup extends React.Component<MessageGroupProps> {
   render() {
-    const { group } = this.props
+    const { group, conversationId } = this.props
 
     // Events come as a single item in an array
     if (isRelevantEventArray(group)) {
       const onlyEvent = group[0]
-      return <OrderUpdateFragmentContainer event={onlyEvent as any} />
+      return (
+        <OrderUpdateFragmentContainer event={onlyEvent as any} conversationId={conversationId} />
+      )
     }
     if (isMessageArray(group)) {
       const firstItem = group[0]
@@ -109,7 +111,7 @@ export class MessageGroup extends React.Component<MessageGroupProps> {
         <View>
           <TimeSince style={{ alignSelf: "center" }} time={firstItem.createdAt} exact mb={1} />
           {[...group].reverse().map((message: Message_message, messageIndex: number) => {
-            const { subjectItem, conversationId } = this.props
+            const { subjectItem } = this.props
             const messageKey = `message-${messageIndex}`
             return (
               <IndividualMessage

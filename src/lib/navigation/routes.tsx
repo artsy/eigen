@@ -58,8 +58,12 @@ export function matchRoute(
   }
 }
 
-export function webViewRoute(url: string, config?: ArtsyWebViewConfig) {
-  return new RouteMatcher(
+export const addRoute = (route: string, module: AppModule, paramsMapper?: (val: any) => object) => {
+  return new RouteMatcher(route, module, paramsMapper)
+}
+
+export function addWebViewRoute(url: string, config?: ArtsyWebViewConfig) {
+  return addRoute(
     url,
     unsafe_getFeatureFlag("AROptionsUseReactNativeWebView") ? "ReactWebView" : "WebView",
     (params) => ({
@@ -107,153 +111,148 @@ function decodeUrl(url: string): string {
 function getDomainMap(): Record<string, RouteMatcher[] | null> {
   const liveDotArtsyDotNet: RouteMatcher[] = compact([
     Platform.OS === "ios"
-      ? new RouteMatcher("/*", "LiveAuction", (params) => ({ slug: params["*"] }))
-      : new RouteMatcher("/*", "ReactWebView", (params) => ({
+      ? addRoute("/*", "LiveAuction", (params) => ({ slug: params["*"] }))
+      : addRoute("/*", "ReactWebView", (params) => ({
           url: unsafe__getEnvironment().predictionURL + "/" + params["*"],
         })),
   ])
 
   const artsyDotNet: RouteMatcher[] = compact([
-    new RouteMatcher("/", "Home"),
-    new RouteMatcher("/sales", "Sales"),
-    new RouteMatcher("/search", "Search"),
-    new RouteMatcher("/inbox", "Inbox"),
-    new RouteMatcher("/my-profile", "MyProfile"),
-    new RouteMatcher("/articles", "Articles"),
-    webViewRoute("/articles/:articleID"),
-    webViewRoute("/article/:articleID", { showShareButton: true }),
-    new RouteMatcher("/artist/:artistID", "Artist"),
-    new RouteMatcher("/artist/:artistID/shows", "ArtistShows"),
-    new RouteMatcher("/artwork/:artworkID", "Artwork"),
-    new RouteMatcher("/artwork/:artworkID/medium", "ArtworkMedium"),
-    new RouteMatcher("/artist/:artistID/auction-results", "Artist", (params) => ({
+    addRoute("/", "Home"),
+    addRoute("/sales", "Sales"),
+    addRoute("/search", "Search"),
+    addRoute("/inbox", "Inbox"),
+    addRoute("/my-profile", "MyProfile"),
+    addRoute("/articles", "Articles"),
+    addWebViewRoute("/articles/:articleID"),
+    addWebViewRoute("/article/:articleID", { showShareButton: true }),
+    addRoute("/artist/:artistID", "Artist"),
+    addRoute("/artist/:artistID/shows", "ArtistShows"),
+    addRoute("/artwork/:artworkID", "Artwork"),
+    addRoute("/artwork/:artworkID/medium", "ArtworkMedium"),
+    addRoute("/artist/:artistID/auction-results", "Artist", (params) => ({
       ...params,
       initialTab: "Insights",
     })),
-    new RouteMatcher("/artist/:artistID/auction-result/:auctionResultInternalID", "AuctionResult"),
-    new RouteMatcher("/artist/:artistID/artist-series", "FullArtistSeriesList"),
-    new RouteMatcher("/artist/:artistID/articles", "ArtistArticles"),
-    new RouteMatcher("/artist/:artistID/*", "Artist"),
+    addRoute("/artist/:artistID/auction-result/:auctionResultInternalID", "AuctionResult"),
+    addRoute("/artist/:artistID/artist-series", "FullArtistSeriesList"),
+    addRoute("/artist/:artistID/articles", "ArtistArticles"),
+    addRoute("/artist/:artistID/*", "Artist"),
     // For artists in a gallery context, like https://www.artsy.net/spruth-magers/artist/astrid-klein . Until we have a native
     // version of the gallery profile/context, we will use the normal native artist view instead of showing a web view.
-    new RouteMatcher("/:profile_id_ignored/artist/:artistID", "Artist"),
-    new RouteMatcher("/auction-registration/:saleID", "AuctionRegistration"),
+    addRoute("/:profile_id_ignored/artist/:artistID", "Artist"),
+    addRoute("/auction-registration/:saleID", "AuctionRegistration"),
     unsafe_getFeatureFlag("AROptionsNewSalePage")
-      ? new RouteMatcher("/auction/:saleID", "Auction2")
-      : new RouteMatcher("/auction/:id", "Auction"),
+      ? addRoute("/auction/:saleID", "Auction2")
+      : addRoute("/auction/:id", "Auction"),
     unsafe_getFeatureFlag("AROptionsNewSalePage")
-      ? new RouteMatcher("/auction/:saleID/info", "AuctionInfo")
+      ? addRoute("/auction/:saleID/info", "AuctionInfo")
       : null,
-    new RouteMatcher("/auction-faq", "AuctionFAQ"),
-    new RouteMatcher("/auction/:saleID/bid/:artworkID", "AuctionBidArtwork"),
-    new RouteMatcher("/gene/:geneID", "Gene"),
-    new RouteMatcher("/tag/:tagID", "Tag"),
-    new RouteMatcher("/show/:showID", "Show"),
-    new RouteMatcher("/show/:showID/info", "ShowMoreInfo"),
+    addRoute("/auction-faq", "AuctionFAQ"),
+    addRoute("/auction/:saleID/bid/:artworkID", "AuctionBidArtwork"),
+    addRoute("/gene/:geneID", "Gene"),
+    addRoute("/tag/:tagID", "Tag"),
+    addRoute("/show/:showID", "Show"),
+    addRoute("/show/:showID/info", "ShowMoreInfo"),
 
-    new RouteMatcher("/inquiry/:artworkID", "Inquiry"),
-    new RouteMatcher("/viewing-rooms", "ViewingRooms"),
-    new RouteMatcher(
-      "/auction-results-for-artists-you-follow",
-      "AuctionResultsForArtistsYouFollow"
-    ),
-    new RouteMatcher("/viewing-room/:viewing_room_id", "ViewingRoom"),
-    new RouteMatcher("/viewing-room/:viewing_room_id/artworks", "ViewingRoomArtworks"),
-    new RouteMatcher("/viewing-room/:viewing_room_id/:artwork_id", "ViewingRoomArtwork"),
-    new RouteMatcher("/feature/:slug", "Feature"),
-    new RouteMatcher("/artist-series/:artistSeriesID", "ArtistSeries"),
-    new RouteMatcher("/collection/:collectionID", "Collection"),
-    new RouteMatcher("/collection/:collectionID/artists", "FullFeaturedArtistList"),
-    new RouteMatcher("/conversation/:conversationID", "Conversation"),
-    new RouteMatcher("/user/conversations/:conversationID", "Conversation"),
-    new RouteMatcher("/admin", "Admin"),
-    new RouteMatcher("/admin2", "Admin2"),
-    new RouteMatcher("/about", "About"),
-    new RouteMatcher("/favorites", "Favorites"),
-    new RouteMatcher("/my-account", "MyAccount"),
-    new RouteMatcher("/my-account/edit-name", "MyAccountEditName"),
-    new RouteMatcher("/my-account/edit-password", "MyAccountEditPassword"),
-    new RouteMatcher("/my-account/edit-email", "MyAccountEditEmail"),
-    new RouteMatcher("/my-account/edit-phone", "MyAccountEditPhone"),
-    new RouteMatcher("/my-profile/payment", "MyProfilePayment"),
-    new RouteMatcher("/my-profile/payment/new-card", "MyProfilePaymentNewCreditCard"),
-    new RouteMatcher("/my-profile/push-notifications", "MyProfilePushNotifications"),
-    new RouteMatcher("/my-profile/saved-addresses", "SavedAddresses"),
-    new RouteMatcher("/my-profile/saved-addresses/new-address", "SavedAddressesForm"),
-    new RouteMatcher("/my-profile/saved-addresses/edit-address", "SavedAddressesForm"),
-    new RouteMatcher("/my-profile/settings", "MyProfileSettings"),
-    new RouteMatcher("/local-discovery", "LocalDiscovery"),
-    new RouteMatcher("/privacy-request", "PrivacyRequest"),
+    addRoute("/inquiry/:artworkID", "Inquiry"),
+    addRoute("/viewing-rooms", "ViewingRooms"),
+    addRoute("/auction-results-for-artists-you-follow", "AuctionResultsForArtistsYouFollow"),
+    addRoute("/viewing-room/:viewing_room_id", "ViewingRoom"),
+    addRoute("/viewing-room/:viewing_room_id/artworks", "ViewingRoomArtworks"),
+    addRoute("/viewing-room/:viewing_room_id/:artwork_id", "ViewingRoomArtwork"),
+    addRoute("/feature/:slug", "Feature"),
+    addRoute("/artist-series/:artistSeriesID", "ArtistSeries"),
+    addRoute("/collection/:collectionID", "Collection"),
+    addRoute("/collection/:collectionID/artists", "FullFeaturedArtistList"),
+    addRoute("/conversation/:conversationID", "Conversation"),
+    addRoute("/conversation/:conversationID/details", "ConversationDetails"),
+    addRoute("/user/conversations/:conversationID", "Conversation"),
+    addRoute("/admin", "Admin"),
+    addRoute("/admin2", "Admin2"),
+    addRoute("/about", "About"),
+    addRoute("/favorites", "Favorites"),
+    addRoute("/my-account", "MyAccount"),
+    addRoute("/my-account/edit-name", "MyAccountEditName"),
+    addRoute("/my-account/edit-password", "MyAccountEditPassword"),
+    addRoute("/my-account/edit-email", "MyAccountEditEmail"),
+    addRoute("/my-account/edit-phone", "MyAccountEditPhone"),
+    addRoute("/my-profile/payment", "MyProfilePayment"),
+    addRoute("/my-profile/payment/new-card", "MyProfilePaymentNewCreditCard"),
+    addRoute("/my-profile/push-notifications", "MyProfilePushNotifications"),
+    addRoute("/my-profile/saved-addresses", "SavedAddresses"),
+    addRoute("/my-profile/saved-addresses/new-address", "SavedAddressesForm"),
+    addRoute("/my-profile/saved-addresses/edit-address", "SavedAddressesForm"),
+    addRoute("/my-profile/settings", "MyProfileSettings"),
+    addRoute("/local-discovery", "LocalDiscovery"),
+    addRoute("/privacy-request", "PrivacyRequest"),
 
-    new RouteMatcher("/orders", "OrderHistory"),
+    addRoute("/orders", "OrderHistory"),
 
-    new RouteMatcher("/my-account", "MyAccount"),
+    addRoute("/my-account", "MyAccount"),
 
-    new RouteMatcher("/my-collection", "MyCollection"),
-    new RouteMatcher("/my-collection/artwork/:artworkSlug", "MyCollectionArtwork"),
-    new RouteMatcher(
-      "/my-collection/artwork-details/:artworkSlug",
-      "MyCollectionArtworkFullDetails"
-    ),
-    new RouteMatcher("/my-collection/artworks/new", "AddOrEditMyCollectionArtwork"),
-    new RouteMatcher("/my-collection/artworks/:artworkID/edit", "AddOrEditMyCollectionArtwork"),
+    addRoute("/my-collection", "MyCollection"),
+    addRoute("/my-collection/artwork/:artworkSlug", "MyCollectionArtwork"),
+    addRoute("/my-collection/artwork-details/:artworkSlug", "MyCollectionArtworkFullDetails"),
+    addRoute("/my-collection/artworks/new", "AddOrEditMyCollectionArtwork"),
+    addRoute("/my-collection/artworks/:artworkID/edit", "AddOrEditMyCollectionArtwork"),
 
     // TODO: Follow-up about below route names
-    new RouteMatcher(
+    addRoute(
       "/collections/my-collection/artworks/new/submissions/new",
       "ConsignmentsSubmissionForm"
     ),
-    new RouteMatcher("/consign/submission", "ConsignmentsSubmissionForm"),
-    new RouteMatcher("/collections/my-collection/marketing-landing", "SalesNotRootTabView"),
+    addRoute("/consign/submission", "ConsignmentsSubmissionForm"),
+    addRoute("/collections/my-collection/marketing-landing", "SalesNotRootTabView"),
 
-    webViewRoute("/conditions-of-sale"),
-    new RouteMatcher("/artwork-classifications", "ArtworkAttributionClassFAQ"),
+    addWebViewRoute("/conditions-of-sale"),
+    addRoute("/artwork-classifications", "ArtworkAttributionClassFAQ"),
 
-    new RouteMatcher("/partner/:partnerID", "Partner"),
-    new RouteMatcher("/partner/:partnerID/works", "Partner"),
-    new RouteMatcher("/partner/:partnerID/artists/:artistID", "Partner"),
-    new RouteMatcher("/partner-locations/:partnerID", "PartnerLocations"),
+    addRoute("/partner/:partnerID", "Partner"),
+    addRoute("/partner/:partnerID/works", "Partner"),
+    addRoute("/partner/:partnerID/artists/:artistID", "Partner"),
+    addRoute("/partner-locations/:partnerID", "PartnerLocations"),
 
-    new RouteMatcher("/fair/:fairID", "Fair"),
-    new RouteMatcher("/fair/:fairID/artworks", "Fair"),
-    new RouteMatcher("/fair/:fairID/artists", "Fair"),
-    new RouteMatcher("/fair/:fairID/exhibitors", "Fair"),
-    new RouteMatcher("/fair/:fairID/info", "FairMoreInfo"),
-    new RouteMatcher("/fair/:fairID/articles", "FairArticles"),
-    new RouteMatcher("/fair/:fairID/followedArtists", "FairAllFollowedArtists"),
-    new RouteMatcher("/fair/:fairID/bmw-sponsored-content", "FairBMWArtActivation"),
+    addRoute("/fair/:fairID", "Fair"),
+    addRoute("/fair/:fairID/artworks", "Fair"),
+    addRoute("/fair/:fairID/artists", "Fair"),
+    addRoute("/fair/:fairID/exhibitors", "Fair"),
+    addRoute("/fair/:fairID/info", "FairMoreInfo"),
+    addRoute("/fair/:fairID/articles", "FairArticles"),
+    addRoute("/fair/:fairID/followedArtists", "FairAllFollowedArtists"),
+    addRoute("/fair/:fairID/bmw-sponsored-content", "FairBMWArtActivation"),
 
-    new RouteMatcher("/city/:citySlug/:section", "CitySectionList"),
-    new RouteMatcher("/city-fair/:citySlug", "CityFairList"),
-    new RouteMatcher("/city-save/:citySlug", "CitySavedList"),
-    new RouteMatcher("/auctions", "Auctions"),
-    new RouteMatcher("/lots-by-artists-you-follow", "LotsByArtistsYouFollow"),
-    new RouteMatcher("/works-for-you", "WorksForYou"),
-    new RouteMatcher("/new-works-for-you", "NewWorksForYou"),
-    webViewRoute("/categories"),
-    webViewRoute("/privacy"),
-    webViewRoute("/identity-verification-faq"),
-    webViewRoute("/terms"),
-    webViewRoute("/buy-now-feature-faq"),
-    webViewRoute("/buyer-guarantee"),
-    webViewRoute("/unsubscribe"),
+    addRoute("/city/:citySlug/:section", "CitySectionList"),
+    addRoute("/city-fair/:citySlug", "CityFairList"),
+    addRoute("/city-save/:citySlug", "CitySavedList"),
+    addRoute("/auctions", "Auctions"),
+    addRoute("/lots-by-artists-you-follow", "LotsByArtistsYouFollow"),
+    addRoute("/works-for-you", "WorksForYou"),
+    addRoute("/new-works-for-you", "NewWorksForYou"),
+    addWebViewRoute("/categories"),
+    addWebViewRoute("/privacy"),
+    addWebViewRoute("/identity-verification-faq"),
+    addWebViewRoute("/terms"),
+    addWebViewRoute("/buy-now-feature-faq"),
+    addWebViewRoute("/buyer-guarantee"),
+    addWebViewRoute("/unsubscribe"),
 
-    new RouteMatcher("/city-bmw-list/:citySlug", "CityBMWList"),
-    new RouteMatcher("/make-offer/:artworkID", "MakeOfferModal"),
-    new RouteMatcher("/user/purchases/:orderID", "OrderDetails"),
-    new RouteMatcher("/my-profile/saved-search-alerts", "SavedSearchAlertsList"),
-    new RouteMatcher("/my-profile/saved-search-alerts/:savedSearchAlertId", "EditSavedSearchAlert"),
+    addRoute("/city-bmw-list/:citySlug", "CityBMWList"),
+    addRoute("/make-offer/:artworkID", "MakeOfferModal"),
+    addRoute("/user/purchases/:orderID", "OrderDetails"),
+    addRoute("/my-profile/saved-search-alerts", "SavedSearchAlertsList"),
+    addRoute("/my-profile/saved-search-alerts/:savedSearchAlertId", "EditSavedSearchAlert"),
     unsafe_getFeatureFlag("AROptionsUseReactNativeWebView")
-      ? webViewRoute("/orders/:orderID", {
+      ? addWebViewRoute("/orders/:orderID", {
           mimicBrowserBackButton: true,
           useRightCloseButton: true,
         })
-      : new RouteMatcher("/orders/:orderID", "Checkout"),
-    __DEV__ && new RouteMatcher("/storybook", "Storybook"),
+      : addRoute("/orders/:orderID", "Checkout"),
+    __DEV__ && addRoute("/storybook", "Storybook"),
 
     // Every other route needs to go above
-    new RouteMatcher("/:slug", "VanityURLEntity"),
-    webViewRoute("/*"),
+    addRoute("/:slug", "VanityURLEntity"),
+    addWebViewRoute("/*"),
   ])
 
   const routesForDomain = {

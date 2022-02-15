@@ -18,7 +18,7 @@ describe("ArtworkFilterApplyButton", () => {
   it("cannot press if disabled prop is passed", () => {
     const onPressMock = jest.fn()
     const { getByText } = renderWithWrappersTL(<TestWrapper disabled />)
-    const button = getByText("Apply Filters")
+    const button = getByText("Show Results")
 
     fireEvent.press(button)
 
@@ -30,7 +30,7 @@ describe("ArtworkFilterApplyButton", () => {
     const onPressMock = jest.fn()
     const { getByText } = renderWithWrappersTL(<TestWrapper onPress={onPressMock} />)
 
-    fireEvent.press(getByText("Apply Filters"))
+    fireEvent.press(getByText("Show Results"))
 
     expect(onPressMock).toBeCalled()
   })

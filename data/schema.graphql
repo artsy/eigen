@@ -674,6 +674,10 @@ type Article implements Node {
   # The byline for the article. Defaults to "Artsy Editorial" if no authors are present.
   byline: String
   cached: Int
+  channelArticles(
+    # Number of articles to return
+    size: Int = 12
+  ): [Article!]!
   channelID: String
   contributingAuthors: [Author]
   description: String
@@ -687,6 +691,8 @@ type Article implements Node {
   internalID: ID!
   keywords: [String!]!
   layout: ArticleLayout!
+  media: ArticleMedia
+  newsSource: ArticleNewsSource
   postscript: String
   publishedAt(
     format: String
@@ -704,7 +710,10 @@ type Article implements Node {
     size: Int = 3
   ): [Article!]!
   sections: [ArticleSections!]!
+  series: ArticleSeries
+  seriesArticle: Article
   slug: String
+  sponsor: ArticleSponsor
   thumbnailImage: Image
   thumbnailTeaser: String
   thumbnailTitle: String
@@ -764,8 +773,33 @@ type ArticleImageSection {
 }
 
 enum ArticleLayout {
+  CLASSIC
   FEATURE
+  NEWS
+  SERIES
   STANDARD
+  VIDEO
+}
+
+type ArticleMedia {
+  coverImage: Image
+  credits: String
+  description: String
+  duration: String
+  releaseDate(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  url: String
+}
+
+type ArticleNewsSource {
+  title: String
+  url: String
 }
 
 type ArticleSectionCallout {
@@ -778,11 +812,17 @@ type ArticleSectionCallout {
 }
 
 type ArticleSectionEmbed {
-  height: String
-  layout: String
-  mobileHeight: String
-  type: String
+  height: Int
+  layout: ArticleSectionEmbedLayout
+  mobileHeight: Int
   url: String
+}
+
+enum ArticleSectionEmbedLayout {
+  COLUMN_WIDTH
+  FILLWIDTH
+  OVERFLOW
+  OVERFLOW_FILLWIDTH
 }
 
 type ArticleSectionImageCollection {
@@ -827,8 +867,8 @@ union ArticleSections =
   | ArticleSectionVideo
 
 type ArticleSectionSocialEmbed {
-  layout: String
-  type: String
+  # oEmbed HTML response. Only Twitter is currently supported.
+  embed: String
   url: String
 }
 
@@ -840,15 +880,38 @@ type ArticleSectionText {
 type ArticleSectionVideo {
   backgroundColor: String
   caption: String
-  coverImageUrl: String
-  layout: String
-  type: String
-  url: String
+
+  # Only YouTube and Vimeo are supported
+  embed(autoPlay: Boolean = false): String
+  image: Image
+  layout: ArticleSectionVideoLayout
+  url: String!
+}
+
+enum ArticleSectionVideoLayout {
+  COLUMN_WIDTH
+  FILLWIDTH
+  OVERFLOW_FILLWIDTH
+}
+
+type ArticleSeries {
+  # HTML string describing the series
+  description: String
 }
 
 enum ArticleSorts {
   PUBLISHED_AT_ASC
   PUBLISHED_AT_DESC
+}
+
+type ArticleSponsor {
+  description: String
+  partnerCondensedLogo: String
+  partnerDarkLogo: String
+  partnerLightLogo: String
+  partnerLogoLink: String
+  pixelTrackingCode: String
+  subTitle: String
 }
 
 type Artist implements EntityWithFilterArtworksConnectionInterface & Node & Searchable {
@@ -1492,6 +1555,7 @@ type Artwork implements Node & Searchable & Sellable {
   certificateOfAuthenticity: ArtworkInfoRow
   collectingInstitution: String
   conditionDescription: ArtworkInfoRow
+  consignmentSubmission: ArtworkConsignmentSubmission
   contactLabel: String
 
   # Pre-filled inquiry text
@@ -1753,6 +1817,11 @@ interface ArtworkConnectionInterface {
   edges: [ArtworkEdgeInterface]
   pageCursors: PageCursors!
   pageInfo: PageInfo!
+}
+
+type ArtworkConsignmentSubmission {
+  displayText: String
+  inProgress: Boolean
 }
 
 union ArtworkContext = Fair | Sale | Show
@@ -2722,6 +2791,10 @@ type CitySponsoredContent {
 enum CollectionSorts {
   POSITION_ASC
   POSITION_DESC
+}
+
+type CollectorProfileArtists {
+  name: String
 }
 
 type CollectorProfileType {
@@ -6194,6 +6267,12 @@ type CroppedImageUrl {
   width: Int!
 }
 
+enum CurrencyPreference {
+  EUR
+  GBP
+  USD
+}
+
 type CurrentEvent {
   # Location and date of the event if available
   details: String
@@ -8063,6 +8142,88 @@ type ImageURLs {
   normalized: String
 }
 
+type InquirerCollectorProfile {
+  # List of affiliated auction house ids, referencing Galaxy.
+  affiliatedAuctionHouseIds: [String]
+
+  # List of affiliated gallery ids, referencing Galaxy.
+  affiliatedGalleryIds: [String]
+  artsyUserSince(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  bio: String
+  collectorLevel: Int
+
+  # List of artists the Collector is interested in.
+  collectorProfileArtists: [CollectorProfileArtists]
+  confirmedBuyerAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  email: String
+  emailConfirmed: Boolean
+  icon: Image
+
+  # A globally unique ID.
+  id: ID!
+  identityVerified: Boolean
+  institutionalAffiliations: String
+  intents: [String]
+
+  # A type-specific ID likely used as a database ID.
+  internalID: ID!
+  isActiveBidder: Boolean
+  isActiveInquirer: Boolean
+  location: MyLocation
+  loyaltyApplicantAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  name: String
+
+  # Collector's position with relevant institutions
+  otherRelevantPositions: String
+
+  # User ID of the collector profile's owner
+  ownerID: ID!
+  privacy: String
+  profession: String
+  professionalBuyerAppliedAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  professionalBuyerAt(
+    format: String
+
+    # A tz database time zone, otherwise falls back to "X-TIMEZONE" header. See
+    # http://www.iana.org/time-zones,
+    # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    timezone: String
+  ): String
+  selfReportedPurchases: String
+  userInterests: [UserInterest]!
+
+  # Collector's brief introduction
+  userIntroduction: String
+}
+
 union InquiryItemType = Artwork | Show
 
 type InquiryQuestion {
@@ -8237,6 +8398,11 @@ scalar JSON
 type LatLng {
   lat: Float
   lng: Float
+}
+
+enum LengthUnitPreference {
+  CM
+  IN
 }
 
 input LinkAuthenticationMutationInput {
@@ -8707,6 +8873,9 @@ type Me implements Node {
 
   # A list of the current user’s credit cards
   creditCards(after: String, before: String, first: Int, last: Int): CreditCardConnection
+
+  # Currency preference of the user
+  currencyPreference: CurrencyPreference!
   email: String
 
   # User has confirmed their email address
@@ -8751,6 +8920,9 @@ type Me implements Node {
 
   # List of lab features for this user
   labFeatures: [String!]!
+
+  # Length unit preference of the user
+  lengthUnitPreference: LengthUnitPreference!
   location: MyLocation
 
   # Sale Artworks search results
@@ -9309,6 +9481,11 @@ type Mutation {
 
   # Update the current logged in user.
   updateMyUserProfile(input: UpdateMyProfileInput!): UpdateMyProfilePayload
+
+  # Update notification preferences.
+  updateNotificationPreferences(
+    input: updateNotificationPreferencesMutationInput!
+  ): updateNotificationPreferencesMutationPayload
   updateSavedSearch(input: UpdateSavedSearchInput!): UpdateSavedSearchPayload
   updateSmsSecondFactor(input: UpdateSmsSecondFactorInput!): UpdateSmsSecondFactorPayload
   updateUserAddress(input: UpdateUserAddressInput!): UpdateUserAddressPayload
@@ -9394,7 +9571,9 @@ input MyCollectionCreateArtworkInput {
   pricePaidCents: Int
   pricePaidCurrency: String
   provenance: String
+  submissionId: String
   title: String!
+  userId: String
   width: String
 }
 
@@ -9490,6 +9669,20 @@ input Near {
 interface Node {
   # A globally unique ID.
   id: ID!
+}
+
+type NotificationPreference {
+  channel: String!
+  id: String!
+  name: String!
+  status: SubGroupStatus!
+}
+
+input NotificationPreferenceInput {
+  channel: String!
+  id: String!
+  name: String!
+  status: SubGroupStatus!
 }
 
 # Consignment Offer Response
@@ -9797,6 +9990,12 @@ type Partner implements Node {
   # A globally unique ID.
   id: ID!
   initials(length: Int = 3): String
+
+  # Inquiry Request details
+  inquiryRequest(
+    # The inquiry id
+    inquiryId: String!
+  ): PartnerInquiryRequest
 
   # A type-specific ID likely used as a database ID.
   internalID: ID!
@@ -10111,6 +10310,10 @@ type PartnerEdge {
 
   # The item at the end of the edge
   node: Partner
+}
+
+type PartnerInquiryRequest {
+  collectorProfile: InquirerCollectorProfile
 }
 
 # A location
@@ -10569,6 +10772,7 @@ type Query {
   articlesConnection(
     after: String
     before: String
+    channelId: String
     featured: Boolean
     first: Int
 
@@ -11021,6 +11225,9 @@ type Query {
     # The globally unique ID of the node.
     id: ID!
   ): Node
+
+  # User's notification preferences
+  notificationPreferences(authenticationToken: String): [NotificationPreference!]!
 
   # Get an Offer
   offer(
@@ -12689,6 +12896,11 @@ type StaticContent {
   slug: ID!
 }
 
+enum SubGroupStatus {
+  SUBSCRIBED
+  UNSUBSCRIBED
+}
+
 # An edge in a connection.
 type SubmissionEdge {
   # A cursor for use in pagination.
@@ -13112,6 +13324,16 @@ type UpdateMyProfilePayload {
   userOrError: UpdateMyProfileMutation
 }
 
+input updateNotificationPreferencesMutationInput {
+  authenticationToken: String
+  clientMutationId: String
+  subscriptionGroups: [NotificationPreferenceInput!]!
+}
+
+type updateNotificationPreferencesMutationPayload {
+  clientMutationId: String
+}
+
 # Autogenerated input type of UpdateSavedSearch
 input UpdateSavedSearchInput {
   attributes: SearchCriteriaAttributes
@@ -13531,6 +13753,7 @@ type Viewer {
   articlesConnection(
     after: String
     before: String
+    channelId: String
     featured: Boolean
     first: Int
 
@@ -13837,6 +14060,9 @@ type Viewer {
     # The globally unique ID of the node.
     id: ID!
   ): Node
+
+  # User's notification preferences
+  notificationPreferences(authenticationToken: String): [NotificationPreference!]!
 
   # An OrderedSet
   orderedSet(

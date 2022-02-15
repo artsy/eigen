@@ -10,11 +10,11 @@ describe("ArtistSearchResult", () => {
     formattedNationalityAndBirthday: "An Artist",
   }
 
-  it("renders correct components", () => {
+  it("renders correct components", async () => {
     const { findByText } = renderWithWrappersTL(
       <ArtistSearchResult result={result as AutosuggestResult} />
     )
-    expect(findByText("Banksy")).toBeTruthy()
-    expect(findByText("An Artist")).toBeTruthy()
+    expect(await findByText("Banksy")).toBeTruthy()
+    expect(await findByText("An Artist")).toBeTruthy()
   })
 })

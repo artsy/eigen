@@ -26,8 +26,9 @@ export const ImageWithLoadingState = React.forwardRef<View, ImageWithLoadingStat
     // color backgrounds
     // show a loading spinner only after a short delay, if the image is taking a while to load
     const { width, height, imageURL, onPress } = props
+
     return (
-      <TouchableWithoutFeedback onPress={onPress}>
+      <TouchableWithoutFeedback onPress={onPress} testID="image-with-loading-state">
         <View style={[{ width, height }, props.style]} ref={ref}>
           <OpaqueImageView
             useRawURL

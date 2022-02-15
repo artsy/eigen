@@ -50,7 +50,7 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
 
   return artwork ? (
     <>
-      <TouchableOpacity onPress={() => toggleExpanded()}>
+      <TouchableOpacity onPress={() => toggleExpanded()} testID="toggle-artwork-details-button">
         <Flex flexDirection="row" padding={2} alignItems="center">
           {!!artwork.image && (
             <OpaqueImageView
@@ -71,7 +71,7 @@ export const CollapsibleArtworkDetails: React.FC<CollapsibleArtworkDetailsProps>
           <ChevronIcon color="black100" expanded={isExpanded} initialDirection="down" />
         </Flex>
       </TouchableOpacity>
-      <Collapse open={isExpanded}>
+      <Collapse isOpen={isExpanded}>
         <Box height="230px">
           <ScrollView>
             <Flex mx={2} mb={1}>
