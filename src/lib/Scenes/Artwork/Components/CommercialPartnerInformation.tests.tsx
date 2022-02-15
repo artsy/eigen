@@ -2,6 +2,7 @@ import { CommercialPartnerInformation_artwork } from "__generated__/CommercialPa
 // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
 import { mount } from "enzyme"
 import { __globalStoreTestUtils__, GlobalStoreProvider } from "lib/store/GlobalStore"
+import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import { Sans, Theme } from "palette"
 import React from "react"
 import { CommercialPartnerInformation } from "./CommercialPartnerInformation"
@@ -29,19 +30,11 @@ describe("CommercialPartnerInformation", () => {
 
   it("it renders 'Taxes may apply at checkout' instead of 'VAT included in price' when Avalara phase 2 flag is enabled", () => {
     __globalStoreTestUtils__?.injectFeatureFlags({ AREnableAvalaraPhase2: true })
-    const component = mount(
-      <GlobalStoreProvider>
-        <Theme>
-          <CommercialPartnerInformation artwork={CommercialPartnerInformationArtwork} />
-        </Theme>
-      </GlobalStoreProvider>
+    const { getByText } = renderWithWrappersTL(
+      <CommercialPartnerInformation artwork={CommercialPartnerInformationArtwork} />
     )
-    expect(component.find(Sans).at(1).render().text()).toMatchInlineSnapshot(
-      `"Taxes may apply at checkout. Learn more."`
-    )
-    expect(component.find(Sans).at(3).render().text()).toMatchInlineSnapshot(
-      `"Ships within the continental USA"`
-    )
+
+    expect(getByText("Taxes may apply at checkout.")).toBeTruthy()
   })
 
   it("hides shipping info for works from closed auctions", () => {
