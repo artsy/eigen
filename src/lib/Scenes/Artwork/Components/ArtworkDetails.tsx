@@ -21,11 +21,7 @@ export const ArtworkDetails: React.FC<ArtworkDetailsProps> = ({ artwork }) => {
       title: "Medium",
       value: !!artwork.mediumType ? (
         <TouchableWithoutFeedback
-          onPress={() =>
-            navigate("/info", {
-              passProps: { artworkSlug: artwork.slug, component: "ArtworkMedium" },
-            })
-          }
+          onPress={() => navigate(`/info?component=ArtworkMedium&artworkSlug=${artwork.slug}`)}
         >
           <Text color="black60" style={{ textDecorationLine: "underline" }}>
             {artwork.category}

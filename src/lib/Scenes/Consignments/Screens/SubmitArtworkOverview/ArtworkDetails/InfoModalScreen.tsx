@@ -17,7 +17,6 @@ export const InfoModalScreen: React.FC<Props> = ({ component, artworkSlug }) => 
       case "ArtworkMedium":
         return artworkSlug && <ArtworkMediumQueryRenderer artworkID={artworkSlug} />
       case "ArtworkAttributionClassFAQ":
-        console.warn("im in switch")
         return <ArtworkAttributionClassFAQQueryRenderer />
       default:
         return <Text>Something is off</Text>

@@ -49,7 +49,7 @@ const MyCollectionArtwork: React.FC<MyCollectionArtworkScreenProps> = ({ artwork
   }, [data.artwork])
 
   const handleFAQ = () => {
-    navigate("/info", { passProps: { component: "ArtworkSubmissionStatusFAQ" } })
+    navigate("/info?component=ArtworkSubmissionStatusFAQ")
   }
 
   return (

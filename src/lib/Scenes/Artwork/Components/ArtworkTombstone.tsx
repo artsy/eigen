@@ -46,7 +46,7 @@ export class ArtworkTombstone extends React.Component<
   }
 
   showAttributionClassFAQ() {
-    navigate("/info", { passProps: { component: "ArtworkAttributionClassFAQ" } })
+    navigate("/info?component=ArtworkAttributionClassFAQ")
   }
 
   showMoreArtists = () => {
