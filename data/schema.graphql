@@ -12263,6 +12263,9 @@ type SearchCriteria {
   href: String!
   inquireableOnly: Boolean
   internalID: ID!
+
+  # Human-friendly labels that are added by Metaphysics to the upstream SearchCriteria type coming from Gravity
+  labels: [SearchCriteriaLabel!]!
   locationCities: [String!]!
   majorPeriods: [String!]!
   materialsTerms: [String!]!
@@ -12320,6 +12323,18 @@ type SearchCriteriaEdge {
 
   # The item at the end of the edge.
   node: SearchCriteria
+}
+
+# Human-friendly representation of a single SearchCriteria filter
+type SearchCriteriaLabel {
+  # The GraphQL field name of the filter facet
+  field: String!
+
+  # The human-friendly name of the filter facet
+  name: String!
+
+  # The human-friendly value of the filter facet
+  value: String!
 }
 
 # A search criteria or errors object
