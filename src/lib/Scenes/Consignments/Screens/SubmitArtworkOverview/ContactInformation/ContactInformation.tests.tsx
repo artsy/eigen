@@ -99,13 +99,13 @@ describe("ContactInformationForm", () => {
     await flushPromiseQueue()
 
     expect(submitButton).toBeDisabled()
-    await waitFor(() => {
-      act(() => {
-        fireEvent.changeText(inputs.nameInput, "Angelika")
-        fireEvent.changeText(inputs.emailInput, "aa@aa.aaa")
-        fireEvent.changeText(inputs.phoneInput, "2025550155")
-      })
-    })
+
+    fireEvent.changeText(inputs.nameInput, "Angelika")
+    fireEvent.changeText(inputs.emailInput, "aa@aa.aaa")
+    fireEvent.changeText(inputs.phoneInput, "2025550155")
+
+    await flushPromiseQueue()
+
     expect(submitButton).not.toBeDisabled()
   })
 })
