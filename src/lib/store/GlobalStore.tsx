@@ -2,6 +2,7 @@ import { useNavigationState } from "@react-navigation/native"
 import { createStore, createTypedHooks, StoreProvider } from "easy-peasy"
 import { __unsafe_mainModalStackRef } from "lib/NativeModules/ARScreenPresenterModule"
 import { ArtsyNativeModule } from "lib/NativeModules/ArtsyNativeModule"
+import { usingNewIOSAppShell } from "lib/NativeModules/LegacyNativeModules"
 import { loadDevNavigationStateCache } from "lib/navigation/useReloadedDevNavigationState"
 import { BottomTabType } from "lib/Scenes/BottomTabs/BottomTabType"
 import React from "react"
@@ -106,7 +107,7 @@ export const GlobalStoreProvider: React.FC<{}> = ({ children }) => {
 }
 
 export function useSelectedTab(): BottomTabType {
-  if (Platform.OS === "ios") {
+  if (Platform.OS === "ios" && !usingNewIOSAppShell()) {
     return hooks.useStoreState((state) => state.bottomTabs.sessionState.selectedTab)
   }
 
@@ -212,7 +213,7 @@ export function getCurrentEmissionState() {
  * react components.
  */
 export function unsafe__getSelectedTab(): BottomTabType {
-  if (Platform.OS === "ios") {
+  if (Platform.OS === "ios" && !usingNewIOSAppShell()) {
     return globalStoreInstance().getState().bottomTabs.sessionState.selectedTab
   }
   const tabState = __unsafe_mainModalStackRef.current
