@@ -16,7 +16,7 @@ Links should point to specific commits, and not a branch (in case the branch or 
 - [Current Preferred Practices](#current-preferred-practices)
   - [Use React Native for new feature development](#use-react-native-for-new-feature-development)
   - [Leverage TypeScript to prevent runtime bugs](#leverage-typescript-to-prevent-runtime-bugs)
-  - [Keep File Structure Organized (in progress)](#Keep-File-Structure-Organized-(in-progress))
+  - [Keep File Structure Organized (in progress)](#keep-file-structure-organized-in-progress)
   - [Use Relay for Network Requests](#use-relay-for-network-requests)
   - [Prefer Relay containers (Higher Order Components) over Hooks](#prefer-relay-containers--higher-order-components--over-hooks)
   - [styled-system / styled-components](#styled-system---styled-components)
