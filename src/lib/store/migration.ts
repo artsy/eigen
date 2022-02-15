@@ -155,6 +155,9 @@ export const artsyAppMigrations: Migrations = {
             country: "",
           },
         },
+        photos: {
+          photos: [],
+        },
       },
     }
   },

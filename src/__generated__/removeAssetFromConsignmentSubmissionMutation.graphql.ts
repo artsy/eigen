@@ -1,44 +1,38 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash 5f53465029dab702c75f1af2153f8b99 */
+/* @relayHash d6ba79ba74aba724eb08852f5bff49b9 */
 
 import { ConcreteRequest } from "relay-runtime";
-export type AddAssetToConsignmentSubmissionInput = {
-    assetType?: string | null | undefined;
+export type RemoveAssetFromConsignmentSubmissionInput = {
+    assetID?: string | null | undefined;
     clientMutationId?: string | null | undefined;
-    filename?: string | null | undefined;
-    geminiToken: string;
     sessionID?: string | null | undefined;
-    size?: string | null | undefined;
-    submissionID: string;
 };
-export type addAssetToConsignmentMutationVariables = {
-    input: AddAssetToConsignmentSubmissionInput;
+export type removeAssetFromConsignmentSubmissionMutationVariables = {
+    input: RemoveAssetFromConsignmentSubmissionInput;
 };
-export type addAssetToConsignmentMutationResponse = {
-    readonly addAssetToConsignmentSubmission: {
+export type removeAssetFromConsignmentSubmissionMutationResponse = {
+    readonly removeAssetFromConsignmentSubmission: {
         readonly asset: {
             readonly id: string;
-            readonly submissionID: string | null;
         } | null;
     } | null;
 };
-export type addAssetToConsignmentMutation = {
-    readonly response: addAssetToConsignmentMutationResponse;
-    readonly variables: addAssetToConsignmentMutationVariables;
+export type removeAssetFromConsignmentSubmissionMutation = {
+    readonly response: removeAssetFromConsignmentSubmissionMutationResponse;
+    readonly variables: removeAssetFromConsignmentSubmissionMutationVariables;
 };
 
 
 
 /*
-mutation addAssetToConsignmentMutation(
-  $input: AddAssetToConsignmentSubmissionInput!
+mutation removeAssetFromConsignmentSubmissionMutation(
+  $input: RemoveAssetFromConsignmentSubmissionInput!
 ) {
-  addAssetToConsignmentSubmission(input: $input) {
+  removeAssetFromConsignmentSubmission(input: $input) {
     asset {
       id
-      submissionID
     }
   }
 }
@@ -62,9 +56,9 @@ v1 = [
         "variableName": "input"
       }
     ],
-    "concreteType": "AddAssetToConsignmentSubmissionPayload",
+    "concreteType": "RemoveAssetFromConsignmentSubmissionPayload",
     "kind": "LinkedField",
-    "name": "addAssetToConsignmentSubmission",
+    "name": "removeAssetFromConsignmentSubmission",
     "plural": false,
     "selections": [
       {
@@ -81,13 +75,6 @@ v1 = [
             "kind": "ScalarField",
             "name": "id",
             "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "submissionID",
-            "storageKey": null
           }
         ],
         "storageKey": null
@@ -101,7 +88,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "addAssetToConsignmentMutation",
+    "name": "removeAssetFromConsignmentSubmissionMutation",
     "selections": (v1/*: any*/),
     "type": "Mutation",
     "abstractKey": null
@@ -110,17 +97,17 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "addAssetToConsignmentMutation",
+    "name": "removeAssetFromConsignmentSubmissionMutation",
     "selections": (v1/*: any*/)
   },
   "params": {
-    "id": "5f53465029dab702c75f1af2153f8b99",
+    "id": "d6ba79ba74aba724eb08852f5bff49b9",
     "metadata": {},
-    "name": "addAssetToConsignmentMutation",
+    "name": "removeAssetFromConsignmentSubmissionMutation",
     "operationKind": "mutation",
     "text": null
   }
 };
 })();
-(node as any).hash = '8c0c5988058b24eba7b4de5a8517c618';
+(node as any).hash = '1843ec8e41ecb33b9f6a47bb0c5fa547';
 export default node;
