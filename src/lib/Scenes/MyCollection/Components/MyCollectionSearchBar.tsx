@@ -1,9 +1,14 @@
 import { useStickyTabPageContext } from "lib/Components/StickyTabPage/SitckyTabPageContext"
+import { GridViewIcon } from "lib/Icons/GridViewIcon"
+import { ListViewIcon } from "lib/Icons/ListViewIcon"
 import SearchIcon from "lib/Icons/SearchIcon"
+import { ViewOption } from "lib/Scenes/Search/UserPreferencesModel"
+import { GlobalStore } from "lib/store/GlobalStore"
 import { debounce } from "lodash"
 import { Flex, Input, Text } from "palette"
 import React, { useEffect, useMemo, useRef, useState } from "react"
 import {
+  LayoutAnimation,
   NativeSyntheticEvent,
   TextInput,
   TextInputFocusEventData,
@@ -24,9 +29,26 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
 
   const { hideStaticHeader, showStaticHeader } = useStickyTabPageContext()
 
+  const viewOptionPreference = GlobalStore.useAppState(
+    (state) => state.userPreferences.artworkViewOption
+  )
+
+  const [viewOption, setViewOption] = useState(viewOptionPreference)
+
   const inputRef = useRef<TextInput>(null)
 
   const debouncedSetKeywordFilter = useMemo(() => debounce((text) => onChangeText?.(text), 200), [])
+
+  const onViewOptionChange = (selectedViewOption: ViewOption) => {
+    LayoutAnimation.configureNext({
+      ...LayoutAnimation.Presets.linear,
+      duration: 100,
+    })
+
+    setViewOption(selectedViewOption)
+
+    GlobalStore.actions.userPreferences.setArtworkViewOption(selectedViewOption)
+  }
 
   useEffect(() => {
     debouncedSetKeywordFilter(value)
@@ -53,17 +75,43 @@ export const MyCollectionSearchBar: React.FC<MyCollectionSearchBarProps> = ({
         </Flex>
       ) : (
         <Flex>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              setIsFocused(true)
-              requestAnimationFrame(() => inputRef.current?.focus())
-            }}
-          >
-            <Flex flexDirection="row" my={1} py={0.5}>
-              <SearchIcon width={18} height={18} />
-              <Text ml={1}>{value.length > 0 ? value : "Search Your Collection"}</Text>
+          <Flex flexDirection="row" my={1} py={0.5} justifyContent="space-between">
+            <Flex>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  setIsFocused(true)
+                  requestAnimationFrame(() => inputRef.current?.focus())
+                }}
+              >
+                <Flex flexDirection="row" alignItems="center">
+                  <SearchIcon width={18} height={18} />
+                  <Text ml={1}>{value.length > 0 ? value : "Search Your Collection"}</Text>
+                </Flex>
+              </TouchableWithoutFeedback>
             </Flex>
-          </TouchableWithoutFeedback>
+            <Flex flexDirection="row">
+              <Flex mr={1}>
+                <TouchableWithoutFeedback onPress={() => onViewOptionChange("list")}>
+                  <Flex width={30} height={30} alignItems="center" justifyContent="center">
+                    <ListViewIcon
+                      fill={viewOption === "list" ? "black" : "gray"}
+                      width={18}
+                      height={18}
+                    />
+                  </Flex>
+                </TouchableWithoutFeedback>
+              </Flex>
+              <TouchableWithoutFeedback onPress={() => onViewOptionChange("grid")}>
+                <Flex width={30} height={30} alignItems="center" justifyContent="center">
+                  <GridViewIcon
+                    fill={viewOption === "grid" ? "black" : "gray"}
+                    width={18}
+                    height={18}
+                  />
+                </Flex>
+              </TouchableWithoutFeedback>
+            </Flex>
+          </Flex>
         </Flex>
       )}
     </Flex>

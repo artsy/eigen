@@ -4,17 +4,12 @@
 
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
-export type MyCollectionArtworkListItem_artwork = {
-    readonly internalID: string;
+export type MyCollectionArtworks_filterProps = {
     readonly title: string | null;
     readonly slug: string;
     readonly id: string;
-    readonly medium: string | null;
-    readonly image: {
-        readonly url: string | null;
-        readonly aspectRatio: number;
-    } | null;
     readonly artistNames: string | null;
+    readonly medium: string | null;
     readonly artist: {
         readonly internalID: string;
         readonly name: string | null;
@@ -26,31 +21,22 @@ export type MyCollectionArtworkListItem_artwork = {
     readonly width: string | null;
     readonly height: string | null;
     readonly date: string | null;
-    readonly " $refType": "MyCollectionArtworkListItem_artwork";
+    readonly " $refType": "MyCollectionArtworks_filterProps";
 };
-export type MyCollectionArtworkListItem_artwork$data = MyCollectionArtworkListItem_artwork;
-export type MyCollectionArtworkListItem_artwork$key = {
-    readonly " $data"?: MyCollectionArtworkListItem_artwork$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworkListItem_artwork">;
+export type MyCollectionArtworks_filterProps$data = MyCollectionArtworks_filterProps;
+export type MyCollectionArtworks_filterProps$key = {
+    readonly " $data"?: MyCollectionArtworks_filterProps$data | undefined;
+    readonly " $fragmentRefs": FragmentRefs<"MyCollectionArtworks_filterProps">;
 };
 
 
 
-const node: ReaderFragment = (function(){
-var v0 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "internalID",
-  "storageKey": null
-};
-return {
+const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "MyCollectionArtworkListItem_artwork",
+  "name": "MyCollectionArtworks_filterProps",
   "selections": [
-    (v0/*: any*/),
     {
       "alias": null,
       "args": null,
@@ -76,45 +62,14 @@ return {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "medium",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "Image",
-      "kind": "LinkedField",
-      "name": "image",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": [
-            {
-              "kind": "Literal",
-              "name": "version",
-              "value": "small"
-            }
-          ],
-          "kind": "ScalarField",
-          "name": "url",
-          "storageKey": "url(version:\"small\")"
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "aspectRatio",
-          "storageKey": null
-        }
-      ],
+      "name": "artistNames",
       "storageKey": null
     },
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "artistNames",
+      "name": "medium",
       "storageKey": null
     },
     {
@@ -125,7 +80,13 @@ return {
       "name": "artist",
       "plural": false,
       "selections": [
-        (v0/*: any*/),
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "internalID",
+          "storageKey": null
+        },
         {
           "alias": null,
           "args": null,
@@ -186,6 +147,5 @@ return {
   "type": "Artwork",
   "abstractKey": null
 };
-})();
-(node as any).hash = '0a3dcae78ab8dbff81b7cf4b2cca246e';
+(node as any).hash = '646d153e9c0f8e1e5d6fafd1823fa908';
 export default node;
