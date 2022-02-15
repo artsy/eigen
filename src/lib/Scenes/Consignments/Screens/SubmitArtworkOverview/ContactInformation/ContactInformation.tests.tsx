@@ -1,10 +1,9 @@
-import { fireEvent, waitFor } from "@testing-library/react-native"
+import { fireEvent } from "@testing-library/react-native"
 import { defaultEnvironment } from "lib/relay/createEnvironment"
 import { flushPromiseQueue } from "lib/tests/flushPromiseQueue"
 import { renderWithWrappersTL } from "lib/tests/renderWithWrappers"
 import React from "react"
 import "react-native"
-import { act } from "react-test-renderer"
 import { createMockEnvironment, MockPayloadGenerator } from "relay-test-utils/"
 import { updateConsignSubmission } from "../Mutations"
 import { ContactInformationQueryRenderer } from "./ContactInformation"
@@ -68,9 +67,7 @@ describe("ContactInformationForm", () => {
 
     expect(getAllByText("Submit Artwork")).toBeTruthy()
 
-    act(() => {
-      fireEvent(getAllByText("Submit Artwork")[0], "press")
-    })
+    fireEvent(getAllByText("Submit Artwork")[0], "press")
 
     expect(updateConsignSubmissionMock).toHaveBeenCalled()
     expect(updateConsignSubmissionMock).toHaveBeenCalledWith({ ...mockFormDataForSubmission })
