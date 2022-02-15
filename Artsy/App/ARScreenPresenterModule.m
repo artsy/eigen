@@ -38,7 +38,10 @@
 static NSMutableDictionary *_cachedNavigationStacks = nil;
 
 @implementation ARScreenPresenterModule
+
+#ifndef APP_SHELL
 RCT_EXPORT_MODULE()
+#endif
 
 @synthesize bridge = _bridge;
 

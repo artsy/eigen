@@ -109,6 +109,7 @@ interface LegacyNativeModules {
     requestAppStoreRating(): void
   }
 }
+
 const LegacyNativeModulesIOS: LegacyNativeModules = AllNativeModules as any
 
 const LegacyNativeModulesAndroid = {
@@ -160,5 +161,25 @@ const LegacyNativeModulesAndroid = {
   },
 }
 
-export const LegacyNativeModules: LegacyNativeModules =
-  Platform.OS === "ios" ? LegacyNativeModulesIOS : LegacyNativeModulesAndroid
+const LegacyNativeModulesIOSNewAppShell: LegacyNativeModules = {
+  ARScreenPresenterModule,
+  ARTakeCameraPhotoModule: AllNativeModules.ARTakeCameraPhotoModule,
+  ARCocoaConstantsModule: AllNativeModules.ARCocoaConstantsModule,
+  ArtsyNativeModule: AllNativeModules.ArtsyNativeModule,
+  ARNotificationsManager: AllNativeModules.ARNotificationsManager,
+  ARTemporaryAPIModule: AllNativeModules.ARTemporaryAPIModule,
+  ARPHPhotoPickerModule: AllNativeModules.ARPHPhotoPickerModule,
+  AREventsModule: AllNativeModules.AREventsModule,
+}
+
+const nativeModules = () => {
+  if (Platform.OS === "android") {
+    return LegacyNativeModulesAndroid
+  } else if (usingNewIOSAppShell()) {
+    return LegacyNativeModulesIOSNewAppShell
+  } else {
+    return LegacyNativeModulesIOS
+  }
+}
+
+export const LegacyNativeModules: LegacyNativeModules = nativeModules()
