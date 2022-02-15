@@ -669,10 +669,11 @@ input ARImageInput {
 }
 
 type Article implements Node {
+  # Maps to the "Primary Author" field in Positron. Ultimately this is only supposed to control the article slug
   author: Author @deprecated(reason: "Use `byline` or `authors` instead")
-  authors: [Author!]
+  authors: [Author!]!
 
-  # The byline for the article. Defaults to "Artsy Editorial" if no authors are present.
+  # The byline for the article. Defaults to "Artsy Editors" if no authors are present.
   byline: String
   cached: Int
   channelArticles(
