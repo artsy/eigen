@@ -1,9 +1,14 @@
 import { toTitleCase } from "@artsy/to-title-case"
 import { navigate } from "lib/navigation/navigate"
 import { InfoModal } from "lib/Scenes/Consignments/Screens/SubmitArtworkOverview/ArtworkDetails/Components/InfoModal"
+import { sendEmailWithMailTo } from "lib/utils/sendEmail"
 import { Box, BulletedItem, Flex, Text, Touchable } from "palette"
 import React, { useState } from "react"
-import { Linking } from "react-native"
+
+const statuses: { [key: string]: { color: string; text: string } } = {
+  "submission in progress": { color: "yellow150", text: "In Progress" },
+  "submission evaluated": { color: "orange150", text: "Evaluation Complete" },
+}
 
 export const MyCollectionArtworkSubmissionStatus: React.FC<{ displayText?: string }> = ({
   displayText,
@@ -15,15 +20,11 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<{ displayText?: strin
 
   const [showExplanation, setShowExplanation] = useState(false)
 
-  const statuses: { [key: string]: { color: string; text: string } } = {
-    "submission in progress": { color: "yellow150", text: "In Progress" },
-    "submission evaluated": { color: "orange150", text: "Evaluation Complete" },
-  }
-
   const approvedDisplayText = statuses[displayText!.toLowerCase()]?.text
 
   if (!Boolean(approvedDisplayText)) {
     // TODO:- Proper logic or flag for when artwork is sold. Returning null for now
+    // See https://artsyproduct.atlassian.net/browse/SWA-217
     return null
   }
   return (
@@ -87,7 +88,7 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<{ displayText?: strin
             ? Or get in touch with one of our specialists at{" "}
             <Text
               style={{ textDecorationLine: "underline" }}
-              onPress={() => Linking.openURL("mailto:consign@artsymail.com")}
+              onPress={() => sendEmailWithMailTo("mailto:consign@artsymail.com")}
             >
               consign@artsymail.com
             </Text>
