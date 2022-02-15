@@ -5,9 +5,12 @@ import { sendEmailWithMailTo } from "lib/utils/sendEmail"
 import { Box, BulletedItem, Flex, Text, Touchable } from "palette"
 import React, { useState } from "react"
 
-const statuses: { [key: string]: { color: string; text: string } } = {
+// TODO:- We are using displayText for Statuses for now. Consider changing the logic when proper statuses are made available on Metaphysics.
+// See https://artsyproduct.atlassian.net/browse/SWA-217
+const STATUSES: { [key: string]: { color: string; text: string } } = {
   "submission in progress": { color: "yellow150", text: "In Progress" },
   "submission evaluated": { color: "orange150", text: "Evaluation Complete" },
+  sold: { color: "black100", text: "Artwork Sold" },
 }
 
 export const MyCollectionArtworkSubmissionStatus: React.FC<{ displayText?: string }> = ({
@@ -20,11 +23,9 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<{ displayText?: strin
 
   const [showExplanation, setShowExplanation] = useState(false)
 
-  const approvedDisplayText = statuses[displayText!.toLowerCase()]?.text
+  const approvedDisplayText = STATUSES[displayText!.toLowerCase()]?.text
 
   if (!Boolean(approvedDisplayText)) {
-    // TODO:- Proper logic or flag for when artwork is sold. Returning null for now
-    // See https://artsyproduct.atlassian.net/browse/SWA-217
     return null
   }
   return (
@@ -43,7 +44,7 @@ export const MyCollectionArtworkSubmissionStatus: React.FC<{ displayText?: strin
         <Text
           lineHeight={16}
           mt={1}
-          color={statuses[displayText!.toLowerCase()]?.color ?? "black100"}
+          color={STATUSES[displayText!.toLowerCase()]?.color ?? "black100"}
         >
           {toTitleCase(approvedDisplayText)}
         </Text>
