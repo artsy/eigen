@@ -8,7 +8,9 @@ export const NativeViewWrapper: React.FC = () => {
 
   return (
     <>
-      <ARTTestNativeView style={{ flex: 1 }} />
+      <ARTTestNativeView // @ts-ignore
+        style={{ flex: 1 }}
+      />
       <BackButton onPress={() => navigation.goBack()} />
     </>
   )

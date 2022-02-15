@@ -1,6 +1,6 @@
 import { appJson } from "lib/utils/jsonFiles"
 import { NativeModules, PixelRatio, Platform } from "react-native"
-import { LegacyNativeModules, usingNewIOSAppShell } from "./LegacyNativeModules"
+import { LegacyNativeModules } from "./LegacyNativeModules"
 
 /**
  * Cross-platform native module facade.
