@@ -93,7 +93,7 @@ For example migrations, routes, state would be folders with small letter while M
 
 Another example is:
 
-If we have a buttons folder which has many ButtonFile.tsx inside we keep a small letter. 
+If we have a `buttons` folder which exports many button components, we keep it **lowercase**. 
 
 ```
 ├── buttons
