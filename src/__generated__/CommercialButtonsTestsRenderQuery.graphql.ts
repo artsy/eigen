@@ -1,7 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
 // @ts-nocheck
-/* @relayHash fc5ff50b2c27b1832a259bdd87a6fc02 */
+/* @relayHash 27a54a5f9f13acb66d61ea9687619b9e */
 
 import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
@@ -16,10 +16,12 @@ export type CommercialButtonsTestsRenderQueryRawResponse = {
         readonly slug: string;
         readonly isAcquireable: boolean | null;
         readonly isOfferable: boolean | null;
+        readonly isOfferableFromInquiry: boolean | null;
         readonly isInquireable: boolean | null;
         readonly isInAuction: boolean | null;
         readonly isBuyNowable: boolean | null;
         readonly isForSale: boolean | null;
+        readonly isPriceHidden: boolean | null;
         readonly editionSets: ReadonlyArray<({
             readonly id: string;
         }) | null> | null;
@@ -57,7 +59,6 @@ export type CommercialButtonsTestsRenderQueryRawResponse = {
             readonly width: number | null;
             readonly height: number | null;
         }) | null;
-        readonly isPriceHidden: boolean | null;
         readonly title: string | null;
         readonly date: string | null;
         readonly medium: string | null;
@@ -192,10 +193,12 @@ fragment CommercialButtons_artwork on Artwork {
   slug
   isAcquireable
   isOfferable
+  isOfferableFromInquiry
   isInquireable
   isInAuction
   isBuyNowable
   isForSale
+  isPriceHidden
   editionSets {
     id
   }
@@ -369,6 +372,13 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "isOfferableFromInquiry",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "isInquireable",
             "storageKey": null
           },
@@ -391,6 +401,13 @@ return {
             "args": null,
             "kind": "ScalarField",
             "name": "isForSale",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "isPriceHidden",
             "storageKey": null
           },
           {
@@ -577,13 +594,6 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
-            "name": "isPriceHidden",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
             "name": "title",
             "storageKey": null
           },
@@ -748,7 +758,7 @@ return {
     ]
   },
   "params": {
-    "id": "fc5ff50b2c27b1832a259bdd87a6fc02",
+    "id": "27a54a5f9f13acb66d61ea9687619b9e",
     "metadata": {},
     "name": "CommercialButtonsTestsRenderQuery",
     "operationKind": "query",

@@ -219,6 +219,12 @@ export const features = defineFeatures({
     description: "Enable Avalara Phase 2",
     showInAdminMenu: true,
   },
+  AREnableMakeOfferOnAllEligibleArtworks: {
+    readyForRelease: false,
+    description: "Enable make offer on all eligible artworks",
+    showInAdminMenu: true,
+    echoFlagKey: "AREnableMakeOfferOnAllEligibleArtworks",
+  },
 })
 
 export interface DevToggleDescriptor {

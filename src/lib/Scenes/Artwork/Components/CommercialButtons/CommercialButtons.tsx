@@ -40,14 +40,19 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
       isBuyNowable,
       isAcquireable,
       isOfferable,
+      isOfferableFromInquiry,
       isInquireable,
       isInAuction,
       editionSets,
       isForSale,
+      isPriceHidden,
     } = artwork
     const noEditions = (editionSets && editionSets.length === 0) || !editionSets
     // GOTCHA: Don't copy this kind of feature flag code if you're working in a functional component. use `useFeatureFlag` instead
     const newFirstInquiry = unsafe_getFeatureFlag("AROptionsNewFirstInquiry")
+    const makeOfferOnAllEligibleArtworks = unsafe_getFeatureFlag(
+      "AREnableMakeOfferOnAllEligibleArtworks"
+    )
 
     if (isInAuction && artwork.sale && auctionState !== AuctionTimerState.CLOSED && isForSale) {
       return (
@@ -90,7 +95,10 @@ export class CommercialButtons extends React.Component<CommercialButtonProps> {
         // @ts-expect-error STRICTNESS_MIGRATION --- 🚨 Unsafe legacy code 🚨 Please delete this and fix any type errors if you have time 🙏
         <BuyNowButtonFragmentContainer artwork={artwork} editionSetID={this.props.editionSetID} />
       )
-    } else if (isOfferable) {
+    } else if (
+      isOfferable ||
+      (!isPriceHidden && isOfferableFromInquiry && makeOfferOnAllEligibleArtworks)
+    ) {
       return (
         <>
           <MakeOfferButtonFragmentContainer
@@ -142,10 +150,12 @@ export const CommercialButtonsFragmentContainer = createFragmentContainer(Commer
       slug
       isAcquireable
       isOfferable
+      isOfferableFromInquiry
       isInquireable
       isInAuction
       isBuyNowable
       isForSale
+      isPriceHidden
       editionSets {
         id
       }

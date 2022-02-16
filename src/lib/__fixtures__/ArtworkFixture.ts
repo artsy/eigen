@@ -12,6 +12,7 @@ export const ArtworkFixture = {
   is_inquireable: false,
   isAcquireable: false,
   isOfferable: false,
+  isOfferableFromInquiry: false,
   isBiddable: false,
   isInquireable: false,
   isInAuction: false,
