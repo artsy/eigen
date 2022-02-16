@@ -74,7 +74,9 @@ touch .i-am-helping-out-with-the-strictness-migration
 
 Everything in `src/` is React Native. Within this folder things can be a bit of a mess and we are working on improving that.
 
-According to the React convention we capitalise **Components and Component Folders**, but keep everything else lowercase. Test files follow the same principle.
+According to the React convention use **PascalCase** for **Components and Component Folders**, but keep everything else within the Component folder(eg. mutations, state, utils) **camelCase**.
+Test files follow the same pattern.
+
 Files that export a component end in `.tsx`, files that don't export a component end in `.ts` by default.
 
 For example `mutations`, `routes`, `state` would be **camelCase** folders, while `MyComponent.tsx` would be a **PascalCase** file.
