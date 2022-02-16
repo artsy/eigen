@@ -1,23 +1,20 @@
 # :world_map: Preferred Practices
 
-As we have built our app in React Native, our understanding of how to build software has evolved. As our understanding grows, newer code uses newer techniques. Older code is often left un-updated. It can be difficult to orient oneself around what the current preferred practices are.
-
-This document is a map. Not of Eigen at a specific time, but a map of how we got here and where we want to go next. This is a living document, expected to be updated regularly, of links to:
+This document is a broad overview of the history and how we prefere to do things on eigen.
+It is a living document, expected to be updated regularly, with links to:
 
 - Example code.
 - Pull requests with interesting discussions.
-- Conversations on Slack.
 - Blog posts.
 
-Links should point to specific commits, and not a branch (in case the branch or file is deleted, these links should always work). But it's possible that a file is outdated, that our understanding has moved on since it was linked to; in that case, please update this document.
+Links should point to specific commits, and not branches (in case the branch or file is deleted, these links should always work). If a file is outdated, or our understanding has moved on since it was linked to, please update this document.
 
 ## Contents
 
-- [Current Preferred Practices](#current-preferred-practices)
-- [Use React Native for new feature development](#use-react-native-for-new-feature-development)
-- [Leverage TypeScript to prevent runtime bugs](#leverage-typescript-to-prevent-runtime-bugs)
-- [Keep File Structure Organized (in progress)](#keep-file-structure-organized-in-progress)
-- [Use Relay for Network Requests](#use-relay-for-network-requests)
+- [History](#history)
+- [TypeScript](#TypeScript)
+- [File Structure Organization](#file-structure-organization)
+- [Relay](#relay)
 - [Prefer Relay containers (Higher Order Components) over Hooks](#prefer-relay-containers--higher-order-components--over-hooks)
 - [styled-system / styled-components](#styled-system---styled-components)
 - [Write unit tests for new components](#write-unit-tests-for-new-components)
@@ -26,9 +23,7 @@ Links should point to specific commits, and not a branch (in case the branch or 
   - [Follow the tracking docs and examples](#follow-the-tracking-docs-and-examples)
 - [Miscellaneous](#miscellaneous)
 
-## Current Preferred Practices
-
-## History
+### History
 
 The app was initially written in Objective-C and Swift and React Native was added in 2016. Some parts of the app are also written with Kotlin.
 New features should be built in React Native.
