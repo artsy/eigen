@@ -303,4 +303,19 @@ describe("CommercialButtons", () => {
     })
     expect(commercialButtons.find(Button).length).toEqual(0)
   })
+
+  it("renders both Make Offer and Contact Gallery buttons when isOfferable and isInquiriable", async () => {
+    const artwork = {
+      ...ArtworkFixture,
+      isOfferable: true,
+      isForSale: false,
+      isInquireable: true,
+      isPriceHidden: false,
+    }
+    const commercialButtons = await relayComponent({
+      artwork,
+    })
+    expect(commercialButtons.find(Button).at(0).text()).toContain("Make offer")
+    expect(commercialButtons.find(Button).at(1).text()).toContain("Contact gallery")
+  })
 })

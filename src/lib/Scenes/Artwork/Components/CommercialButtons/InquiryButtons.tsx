@@ -23,7 +23,7 @@ export interface InquiryButtonsState {
   modalIsVisible: boolean
 }
 
-const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork }) => {
+const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork, variant }) => {
   const [modalVisibility, setModalVisibility] = useState(false)
   const { trackEvent } = useTracking()
   const [notificationVisibility, setNotificationVisibility] = useState(false)
@@ -48,6 +48,7 @@ const InquiryButtons: React.FC<InquiryButtonsProps> = ({ artwork }) => {
           trackEvent(tracks.trackTappedContactGallery(artwork.slug, artwork.internalID))
           dispatchAction(InquiryOptions.ContactGallery)
         }}
+        variant={variant}
         size="large"
         block
         width={100}
